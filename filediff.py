@@ -727,8 +727,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         if k != '\n':
                             text = text.replace('\n', k)
                         break
-        if bufdata.encoding:
-            text = text.encode(bufdata.encoding)
+        if bufdata.encoding and self.prefs.save_encoding==0:
+            try:
+                text = text.encode(bufdata.encoding)
+            except UnicodeEncodeError, e:
+                if misc.run_dialog(
+                    _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.filename, bufdata.encoding),
+                    self, gtk.MESSAGE_ERROR, gtk.BUTTONS_YES_NO) != gtk.RESPONSE_YES:
+                    return melddoc.RESULT_ERROR
         try:
             open(bufdata.filename, "w").write(text)
         except IOError, e:
