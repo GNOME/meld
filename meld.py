@@ -16,6 +16,12 @@ import gnome
 import gnomeglade
 import undo
 
+################################################################################
+#
+# appdir
+#
+################################################################################
+appdir = lambda x:x
 
 ################################################################################
 #
@@ -79,6 +85,15 @@ class BufferDeletionAction:
 # FileDiff2
 #
 ################################################################################
+def _load_pixbuf(fname):
+    image = gtk.Image()
+    image.set_from_file(fname)
+    return image.get_pixbuf()
+################################################################################
+#
+# FileDiff2
+#
+################################################################################
 class FileDiff2(gnomeglade.Component):
     __gsignals__ = {
         'files-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_STRING))
@@ -86,7 +101,7 @@ class FileDiff2(gnomeglade.Component):
 
     def __init__(self):
         self.__gobject_init__()
-        gnomeglade.Component.__init__(self, "glade2/filediff2.glade", "filediff2")
+        gnomeglade.Component.__init__(self, appdir("glade2/filediff2.glade"), "filediff2")
         self.linediffs = []
         self.refresh_timer_id = -1
         sizegroup = gtk.SizeGroup(1)
@@ -101,15 +116,25 @@ class FileDiff2(gnomeglade.Component):
         #(gtk.DEST_DEFAULT_ALL, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY)
         #self.textview0.drag_dest_set_target_list(targetlist)
 
-        self.pixbuf0 = self._load_pixbuf("glade2/apply0.xpm")
-        self.pixbuf1 = self._load_pixbuf("glade2/apply1.xpm")
+        self.pixbuf0 = _load_pixbuf(appdir("glade2/apply0.xpm"))
+        self.pixbuf1 = _load_pixbuf(appdir("glade2/apply1.xpm"))
         self.drawing2.add_events(gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK)
 
         self.textview0.get_buffer().connect("insert-text", self.on_text_insert_text)
         self.textview0.get_buffer().connect("delete-range", self.on_text_delete_range)
         self.textview1.get_buffer().connect("insert-text", self.on_text_insert_text)
         self.textview1.get_buffer().connect("delete-range", self.on_text_delete_range)
+        if 0:
+            self.textview0.get_buffer().connect("begin-user-action", self.on_text_begin_user_action)
+            self.textview0.get_buffer().connect("end-user-action", self.on_text_end_user_action)
+            self.textview1.get_buffer().connect("begin-user-action", self.on_text_begin_user_action)
+            self.textview1.get_buffer().connect("end-user-action", self.on_text_end_user_action)
         self.undosequence = undo.UndoSequence()
+
+    def on_text_begin_user_action(self, *buffer):
+        self.undosequence.begin_group()
+    def on_text_end_user_action(self, *buffer):
+        self.undosequence.end_group()
 
     def on_text_insert_text(self, buffer, iter, text, textlen):
         if not self.undosequence.busy:
@@ -170,12 +195,9 @@ class FileDiff2(gnomeglade.Component):
             else:
                 ok = 0
 
-    def _load_pixbuf(self, fname):
-        image = gtk.Image()
-        image.set_from_file(fname)
-        return image.get_pixbuf()
 
     def set_file(self, filename, which):
+        self.undosequence.clear()
         view = (self.textview0, self.textview1)[which]
         try:
             lines = []
@@ -267,19 +289,19 @@ class FileDiff2(gnomeglade.Component):
                     b0 = self.textview0.get_buffer()
                     t0 = b0.get_text( b0.get_iter_at_line(c[1]), b0.get_iter_at_line(c[2]), 0)
                     b1 = self.textview1.get_buffer()
-                    b1.begin_user_action()
+                    self.on_text_begin_user_action()
                     b1.delete(b1.get_iter_at_line(c[3]), b1.get_iter_at_line(c[4]))
                     b1.insert_with_tags_by_name(b1.get_iter_at_line(c[3]), t0, "edited line")
-                    b1.end_user_action()
+                    self.on_text_end_user_action()
                     self._queue_refresh(0)
                 if which==1 and t0 < event.y and event.y < t0 + ph:
                     b1 = self.textview1.get_buffer()
                     t1 = b1.get_text( b1.get_iter_at_line(c[3]), b1.get_iter_at_line(c[4]), 0)
                     b0 = self.textview0.get_buffer()
-                    b0.begin_user_action()
+                    self.on_text_begin_user_action()
                     b0.delete(b0.get_iter_at_line(c[1]), b0.get_iter_at_line(c[2]))
                     b0.insert_with_tags_by_name(b0.get_iter_at_line(c[1]), t1, "edited line")
-                    b0.end_user_action()
+                    self.on_text_end_user_action()
                     self._queue_refresh(0)
             self.mouse_chunk = None
 
@@ -298,6 +320,7 @@ class FileDiff2(gnomeglade.Component):
         madj = self.scrolledwindow0.get_vadjustment()
         oadj = self.scrolledwindow1.get_vadjustment()
         pixels_per_line = (madj.upper - madj.lower) / self._get_line_count(self.textview0)
+        #if pixels_per_line > 12: #TODO font height pixels_per_line = 12
         indent = 8
 
         # gain function for smoothing
@@ -499,7 +522,7 @@ gobject.type_register(FileDiff2)
 ################################################################################
 class BrowseFile2Dialog(gnomeglade.Dialog):
     def __init__(self, parentapp):
-        gnomeglade.Dialog.__init__(self, "glade2/meld-app.glade", "browsefile2")
+        gnomeglade.Dialog.__init__(self, appdir("glade2/meld-app.glade"), "browsefile2")
         self.parentapp = parentapp
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_OK:
@@ -516,7 +539,7 @@ class BrowseFile2Dialog(gnomeglade.Dialog):
 class MeldApp(gnomeglade.App):
 
     def __init__(self, files):
-        gnomeglade.App.__init__(self, "Meld", "0.1", "glade2/meld-app.glade", "meldapp")
+        gnomeglade.App.__init__(self, "Meld", "0.1", appdir("glade2/meld-app.glade"), "meldapp")
         self.button_undo.set_sensitive(0)
         self.button_redo.set_sensitive(0)
         if len(files)==2:
@@ -528,7 +551,7 @@ class MeldApp(gnomeglade.App):
     def on_app_delete_event(self, *extra):
         self.quit()
     def on_help_about_activate(self, *extra):
-        gtk.glade.XML("glade2/meld-app.glade","about").get_widget("about").show()
+        gtk.glade.XML(appdir("glade2/meld-app.glade"),"about").get_widget("about").show()
     def on_quit_activate(self, *extra):
         self.quit()
     #def on_button_press_event(self, text, event):
@@ -572,9 +595,9 @@ class MeldApp(gnomeglade.App):
     # methods
     #
     def append_filediff2(self, file0, file1):
-        l = gtk.Label("%s\n%s" % (file0,file1))
+        label = gtk.Label("%s : %s" % (file0,file1))
         d = FileDiff2()
-        self.notebook.append_page( d._widget, l ) #TODO why ._widget?
+        self.notebook.append_page( d._widget, label) #TODO why ._widget?
         self.notebook.next_page()
         d.connect("files-loaded", self.on_files_doc_loaded)
         d.set_file(file0,0)
@@ -591,6 +614,10 @@ class MeldApp(gnomeglade.App):
 #
 ################################################################################
 def main():
+    startdir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    global appdir
+    appdir = lambda x: os.path.join(startdir, x)
+
     sys.stdout = sys.stderr
     if len(sys.argv)==3:
         args=sys.argv[1:3]
