@@ -86,62 +86,49 @@ class DirDiffMenu(gnomeglade.Component):
     def __init__(self, app):
         gladefile = misc.appdir("glade2/dirdiff.glade")
         gnomeglade.Component.__init__(self, gladefile, "popup")
-        self._map_widgets_into_lists( ["copy"] )
         self.parent = app
-        self.source_pane = -1
-    def get_selected(self):
-        assert self.source_pane >= 0
-        treeview = self.parent.treeview[self.source_pane]
-        selected = []
-        treeview.get_selection().selected_foreach(lambda store, path, iter: selected.append( (iter, path) ) )
-        return [ misc.struct(name=self.parent.model.value_path(s[0], self.source_pane), path=s[1]) for s in selected]
+    def popup_in_pane( self, pane ):
+        self.copy_left.set_sensitive( pane > 0 )
+        self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
+        self.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
     def on_popup_compare_activate(self, menuitem):
-        get_iter = self.parent.model.get_iter
-        for s in self.get_selected():
-            self.parent.launch_comparison( get_iter(s.path) )
-    def on_popup_copy_activate(self, menuitem):
-        destpane = self.copy.index(menuitem)
-        sel = self.get_selected()
-        sel.reverse()
-        model = self.parent.model
-        for s in filter(lambda x: x.name!=None, sel):
-            iter = model.get_iter(s.path)
-            src = model.value_path(iter, self.source_pane)
-            dst = model.value_path(iter, destpane)
-            try:
-                if os.path.isfile(src):
-                    dstdir = os.path.dirname( dst )
-                    if not os.path.exists( dstdir ):
-                        os.makedirs( dstdir )
-                    shutil.copy( src, dstdir )
-                    self.parent.file_created(s.name, s.path, destpane)
-                elif os.path.isdir(src):
-                    if os.path.exists(dst):
-                        if misc.run_dialog("'%s' exists.\nOverwrite?" % os.path.basename(dst),
-                                buttonstype=gtk.BUTTONS_OK_CANCEL) != gtk.RESPONSE_OK:
-                            continue
-                    misc.copytree(src, dst)
-                    self.parent.recursively_update( s.path )
-            except OSError, e:
-                misc.run_dialog("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
+        self.parent.launch_comparisons_on_selected()
+    def on_popup_copy_left_activate(self, menuitem):
+        self.parent.on_button_copy_left_clicked( None )
+    def on_popup_copy_right_activate(self, menuitem):
+        self.parent.on_button_copy_right_clicked( None )
     def on_popup_delete_activate(self, menuitem):
-        # reverse so paths dont get changed
-        sel = self.get_selected()
-        sel.reverse()
-        for s in sel:
-            iter = self.parent.model.get_iter(s.path)
-            p = self.parent.model.value_path(iter, self.source_pane )
-            try:
-                if os.path.isfile(p):
-                    os.remove(p)
-                    self.parent.file_deleted(s.name, s.path, self.source_pane)
-                elif os.path.isdir(p):
-                    if misc.run_dialog("'%s' is a directory.\nRemove recusively?" % os.path.basename(p),
-                            buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
-                        shutil.rmtree(p)
-                        self.parent.recursively_update( s.path )
-            except OSError, e:
-                misc.run_dialog("Error removing %s\n\n%s." % (p,e))
+        self.parent.on_button_delete_clicked( None )
+
+################################################################################
+#
+# Filters
+#
+################################################################################
+
+def _filter_backups(f):
+    # should write regex here
+    assert len(f)
+    return  not (len(f) >= 2 and f[0] == '#' and f[-1] == '#') \
+        and not f.endswith(".orig") \
+        and not f.endswith(".bak") \
+        and not f.endswith(".swp") \
+        and not f.startswith(".#") \
+        and not (f[0] == '~')
+def _filter_cvs(f):
+    return not f == "CVS"
+def _filter_binaries(f):
+    dot = f.rfind(".")
+    if dot >= 0:
+        ext = f[dot+1:]
+        return ext not in ("pyc", "a", "obj", "o", "so", "la", "lib", "dll")
+    return 1
+def _filter_media(f):
+    dot = f.rfind(".")
+    if dot >= 0:
+        ext = f[dot+1:]
+        return ext not in ("jpg", "gif", "png", "wav", "mp3", "ogg", "xcf", "xpm")
+    return 1
 
 ################################################################################
 #
@@ -156,13 +143,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
     }
 
+
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, misc.appdir("glade2/dirdiff.glade"), "dirdiff")
+        self.toolbar.set_style( self.prefs.get_toolbar_style() )
+        self.prefs.notify_add(self.on_preference_changed)
         self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
         self.lock = 0
         self.popup_menu = DirDiffMenu(self)
         self.set_num_panes(num_panes)
+        self.on_treeview_focus_out_event(None, None)
 
         rentext = gtk.CellRendererText()
         renpix = gtk.CellRendererPixbuf()
@@ -177,6 +168,21 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
         self.linediffs = [[], []]
+        self.type_filters = [
+            _filter_cvs,
+            _filter_backups,
+            _filter_binaries,
+            _filter_media,
+        ]
+        self.state_filters = [
+            tree.STATE_NORMAL,
+            tree.STATE_MODIFIED,
+            tree.STATE_NEW,
+        ]
+
+    def on_preference_changed(self, key, value):
+        if key == "toolbar_style":
+            self.toolbar.set_style( self.prefs.get_toolbar_style() )
 
     def _do_to_others(self, master, objects, methodname, args):
         if self.lock == 0:
@@ -194,20 +200,27 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         adjs = map(lambda x: x.get_hadjustment(), self.scrolledwindow)
         self._do_to_others( adjustment, adjs, "set_value", (adjustment.value,) )
 
-    def file_deleted(self, name, path, pane):
+    def _get_focused_pane(self):
+        focus = [ t.is_focus() for t in self.treeview ]
+        try:
+            return focus.index(1)
+        except ValueError:
+            return None
+
+    def file_deleted(self, path, pane):
         # is file still extant in other pane?
         iter = self.model.get_iter(path)
         files = self.model.value_paths(iter)
         is_present = [ os.path.exists( file ) for file in files ]
         if 1 in is_present:
-            self.update_file_state(iter)
+            self._update_item_state(iter)
         else: # nope its gone
             self.model.remove(iter)
 
-    def file_created(self, name, path, pane):
+    def file_created(self, path, pane):
         iter = self.model.get_iter(path)
         while iter and self.model.get_path(iter) != (0,):
-            self.update_file_state( iter )
+            self._update_item_state( iter )
             iter = self.model.iter_parent(iter)
 
     def on_fileentry_activate(self, entry):
@@ -221,7 +234,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for pane, loc in misc.enumerate(locations):
             self.fileentry[pane].set_filename(loc)
         child = self.model.add_entries(None, locations)
-        self.update_file_state(child)
+        self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
         self.recursively_update( (0,) )
@@ -234,7 +247,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         while child:
             self.model.remove(child)
             child = self.model.iter_children( iter )
-        self.update_file_state(iter)
+        self._update_item_state(iter)
         self.scheduler.add_task( self._search_recursively_iter( path ).next )
 
     def _search_recursively_iter(self, rootpath):
@@ -259,19 +272,20 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.model.add_error( iter, err.strerror, i )
                         differences = [1]
                     else:
+                        for f in self.type_filters:
+                            e = filter(f, e)
                         e.sort()
-                        e = filter(lambda x: not x.endswith(".pyc"), e) #TODO
-                        e = filter(lambda x: x.find("CVS") == -1,    e) #TODO
                         alldirs  += filter(lambda x: os.path.isdir(  join(root, x) ), e)
                         allfiles += filter(lambda x: os.path.isfile( join(root, x) ), e)
+
             alldirs = _uniq(alldirs)
-            allfiles = _uniq(allfiles)
+            allfiles = self._filter_on_state( roots, _uniq(allfiles) )
 
             # then directories and files
             if len(alldirs) + len(allfiles) != 0:
                 def add_entry(entry):
                     child = self.model.add_entries( iter, [join(r,entry) for r in roots] )
-                    differences[0] |= self.update_file_state(child)
+                    differences[0] |= self._update_item_state(child)
                     return child
                 for d in alldirs:
                     c = add_entry(d)
@@ -290,9 +304,92 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.treeview[0].expand_row( path[:level], 0)
         yield "[%s] Done" % self.label_text
 
-    def launch_comparison(self, iter):
+    def launch_comparison(self, iter, pane, force=1):
+        """Launch comparison at 'iter'. 
+           If it is a file we launch a diff.
+           If it is a folder we recursively open diffs for each non equal file.
+        """
         paths = filter(os.path.exists, self.model.value_paths(iter))
-        self.emit("create-diff", paths)
+        arefiles = map(os.path.isfile, paths)
+        if 0 not in arefiles:
+            if force or int(self.model.get_state(iter,pane)) >= tree.STATE_NEW:
+                self.emit("create-diff", paths)
+        else:
+            aredirs = map(os.path.isdir, paths)
+            if aredirs:
+                child = self.model.iter_children(iter)
+                while child:
+                    state = int(self.model.get_state(child, pane))
+                    self.launch_comparison(child, pane, force=0)
+                    child = self.model.iter_next(child)
+            else:
+                print "Mixture of files and folders?", paths
+
+    def launch_comparisons_on_selected(self):
+        """Launch comparisons on all selected elements.
+        """
+        pane = self._get_focused_pane()
+        if pane != None:
+            selected = self._get_selected_paths(pane)
+            get_iter = self.model.get_iter
+            for s in selected:
+                self.launch_comparison( get_iter(s), pane )
+
+    def copy_selected(self, direction):
+        assert direction in (-1,1)
+        src_pane = self._get_focused_pane()
+        if src_pane != None:
+            dst_pane = src_pane + direction
+            assert dst_pane >= 0 and dst_pane < self.num_panes
+            paths = self._get_selected_paths(src_pane)
+            paths.reverse()
+            model = self.model
+            for path in paths: #filter(lambda x: x.name!=None, sel):
+                iter = model.get_iter(path)
+                name = model.value_path(iter, src_pane)
+                if name == None:
+                    continue
+                src = model.value_path(iter, src_pane)
+                dst = model.value_path(iter, dst_pane)
+                try:
+                    if os.path.isfile(src):
+                        dstdir = os.path.dirname( dst )
+                        if not os.path.exists( dstdir ):
+                            os.makedirs( dstdir )
+                        shutil.copy( src, dstdir )
+                        self.file_created( path, dst_pane)
+                    elif os.path.isdir(src):
+                        if os.path.exists(dst):
+                            if misc.run_dialog("'%s' exists.\nOverwrite?" % os.path.basename(dst),
+                                    buttonstype=gtk.BUTTONS_OK_CANCEL) != gtk.RESPONSE_OK:
+                                continue
+                        misc.copytree(src, dst)
+                        self.recursively_update( path )
+                except OSError, e:
+                    misc.run_dialog("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
+
+    def delete_selected(self):
+        """Delete all selected files/folders recursively.
+        """
+        # reverse so paths dont get changed
+        pane = self._get_focused_pane()
+        if pane != None:
+            paths = self._get_selected_paths(pane)
+            paths.reverse()
+            for path in paths:
+                iter = self.model.get_iter(path)
+                name = self.model.value_path(iter, pane)
+                try:
+                    if os.path.isfile(name):
+                        os.remove(name)
+                        self.file_deleted( path, pane) #xxx
+                    elif os.path.isdir(name):
+                        if misc.run_dialog("'%s' is a directory.\nRemove recusively?" % os.path.basename(name),
+                                buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
+                            shutil.rmtree(name)
+                            self.recursively_update( path )
+                except OSError, e:
+                    misc.run_dialog("Error removing %s\n\n%s." % (name,e))
 
     def on_treeview_row_activated(self, view, path, column):
         iter = self.model.get_iter(path)
@@ -323,9 +420,112 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_treeview_row_collapsed(self, view, me, path):
         self._do_to_others(view, self.treeview, "collapse_row", (path,) )
 
-    def update_file_state(self, iter):
+    def on_treeview_focus_in_event(self, tree, event):
+        pane = self.treeview.index(tree)
+        if pane > 0:
+            self.button_copy_left.set_sensitive(1)
+        if pane+1 < self.num_panes:
+            self.button_copy_right.set_sensitive(1)
+        self.button_delete.set_sensitive(1)
+    def on_treeview_focus_out_event(self, tree, event):
+        self.button_copy_left.set_sensitive(0)
+        self.button_copy_right.set_sensitive(0)
+        self.button_delete.set_sensitive(0)
+        #
+        # Toolbar handlers
+        #
+
+    def on_button_diff_clicked(self, button):
+        self.launch_comparisons_on_selected()
+
+    def on_button_copy_left_clicked(self, button):
+        self.copy_selected(-1)
+    def on_button_copy_right_clicked(self, button):
+        self.copy_selected(1)
+    def on_button_delete_clicked(self, button):
+        self.delete_selected()
+
+    def _update_state_filter(self, state, active ):
+        assert state in (tree.STATE_NEW, tree.STATE_MODIFIED, tree.STATE_NORMAL)
+        try:
+            self.state_filters.remove( state )
+        except ValueError:
+            pass
+        if active:
+            self.state_filters.append( state )
+        self.refresh()
+    def on_filter_state_normal_toggled(self, button):
+        self._update_state_filter( tree.STATE_NORMAL, button.get_active() )
+    def on_filter_state_new_toggled(self, button):
+        self._update_state_filter( tree.STATE_NEW, button.get_active() )
+    def on_filter_state_modified_toggled(self, button):
+        self._update_state_filter( tree.STATE_MODIFIED, button.get_active() )
+
+    def _update_type_filter(self, type, active ):
+        assert type in (_filter_backups, _filter_binaries, _filter_cvs, _filter_media)
+        try:
+            self.type_filters.remove( type )
+        except ValueError:
+            pass
+        if not active:
+            self.type_filters.append( type )
+        self.refresh()
+    def on_filter_type_backups_toggled(self, button):
+        self._update_type_filter( _filter_backups, button.get_active() )
+    def on_filter_type_binaries_toggled(self, button):
+        self._update_type_filter( _filter_binaries, button.get_active() )
+    def on_filter_type_cvs_toggled(self, button):
+        self._update_type_filter( _filter_cvs, button.get_active() )
+    def on_filter_type_media_toggled(self, button):
+        self._update_type_filter( _filter_media, button.get_active() )
+
+    def on_filter_hide_current_clicked(self, button):
+        pane = self._get_focused_pane()
+        if pane != None:
+            paths = self._get_selected_paths(pane)
+            paths.reverse()
+            for p in paths:
+                self.model.remove( self.model.get_iter(p) )
+
+        #
+        # Selection
+        #
+    def _get_selected_paths(self, pane):
+        assert pane != None
+        selected_paths = []
+        self.treeview[pane].get_selection().selected_foreach(lambda store, path, iter: selected_paths.append( path ) )
+        return selected_paths
+
+        #
+        # Filtering
+        #
+
+    def _filter_on_state(self, roots, files):
+        """Get state of 'files' for filtering purposes.
+           Returns STATE_NORMAL, STATE_NEW or STATE_MODIFIED
+       """
+        assert len(roots) == self.model.ntree
+        ret = []
+        for file in files:
+            curfiles = [ os.path.join( r, file ) for r in roots ]
+            is_present = [ os.path.exists( f ) for f in curfiles ]
+            all_present = 0 not in is_present
+            if all_present:
+                if _files_same( curfiles ):
+                    state = tree.STATE_NORMAL
+                else:
+                    state = tree.STATE_MODIFIED
+            else:
+                state = tree.STATE_NEW
+            if state in self.state_filters:
+                ret.append( file )
+        return ret
+
+    def _update_item_state(self, iter):
+        """Update the state of the item at 'iter'
+        """
         files = self.model.value_paths(iter)
-        is_present = [ os.path.exists( file ) for file in files ]
+        is_present = [ os.path.exists( file ) for file in files[:self.num_panes] ]
         all_present = 0 not in is_present
         if all_present:
             all_same = _files_same( files )
@@ -362,19 +562,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             sel = t.get_selection()
             sel.unselect_all()
         if event.button == 3:
-            pane = self.treeview.index(treeview)
-            self.popup_menu.source_pane = pane
             path, col, cellx, celly = treeview.get_path_at_pos( event.x, event.y )
+            treeview.grab_focus()
             treeview.set_cursor( path, col, 0)
-            for i in range(3):
-                c = self.popup_menu.copy[i]
-                if i >= self.num_panes:
-                    c.hide()
-                else:
-                    c.show()
-                    c.set_sensitive( i != pane)
-                    c.get_child().set_label("_Copy to pane %i" % (i+1))
-            self.popup_menu.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
+            self.popup_menu.popup_in_pane( self.treeview.index(treeview) )
             return 1
 
     def set_num_panes(self, n):
