@@ -68,9 +68,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.linediffer = diffutil.Differ()
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK )
+        self.bufferdata = []
         for text in self.textview:
             buf = text.get_buffer()
-            buf.set_data("meld", MeldBufferData() )
+            self.bufferdata.append( MeldBufferData() )
             def add_tag(name, props):
                 tag = buf.create_tag(name)
                 for p,v in props.items():
@@ -225,14 +226,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 l.queue_draw_area(a[2]-w, 0, w, a[3])
 
     def is_modified(self):
-        state = map(lambda x: x.get_buffer().get_data("meld").modified, self.textview)
+        state = [b.modified for b in self.bufferdata]
         return 1 in state
 
     def _get_filename(self, i):
-        return self.textview[i].get_buffer().get_data("meld").filename or "<unnamed>"
+        return self.bufferdata[i].filename or "<unnamed>"
 
     def on_delete_event(self, *extra):
-        modified = map(lambda x: x.get_buffer().get_data("meld").modified, self.textview)
+        modified = [b.modified for b in self.bufferdata]
         delete = gnomeglade.DELETE_OK
         if 1 in modified:
             dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
@@ -271,7 +272,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_text_insert_text(self, buffer, iter, text, textlen):
         if not self.undosequence_busy:
             self.undosequence.begin_group()
-            if buffer.get_data("meld").modified != 1:
+            pane = self.textview.index( buffer.textview )
+            if self.bufferdata[pane].modified != 1:
                 self.undosequence.add_action( BufferModifiedAction(buffer, self) )
             self.undosequence.add_action( BufferInsertionAction(buffer, iter.get_offset(), text) )
             self.undosequence.end_group()
@@ -283,7 +285,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.deleted_lines_pending = text.count("\n")
         if not self.undosequence_busy:
             self.undosequence.begin_group()
-            if buffer.get_data("meld").modified != 1:
+            if self.bufferdata[pane].modified != 1:
                 self.undosequence.add_action( BufferModifiedAction(buffer, self) )
             self.undosequence.add_action( BufferDeletionAction(buffer, iter0.get_offset(), text) )
             self.undosequence.end_group()
@@ -394,11 +396,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             filenames.append( self._get_filename(i) )
         shortnames = misc.shorten_names(*filenames)
         for i in range(self.num_panes):
-            if self.textview[i].get_buffer().get_data("meld").modified == 1:
+            if self.bufferdata[i].modified == 1:
                 shortnames[i] += "*"
                 self.statusimage[i].show()
                 self.statusimage[i].set_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_SMALL_TOOLBAR)
-            elif self.textview[i].get_buffer().get_data("meld").writable == 0:
+            elif self.bufferdata[i].writable == 0:
                 self.statusimage[i].show()
                 self.statusimage[i].set_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_SMALL_TOOLBAR)
             else:
@@ -416,7 +418,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 b.delete( b.get_start_iter(), b.get_end_iter() )
                 absfile = os.path.abspath(f)
                 self.fileentry[i].set_filename(absfile)
-                b.set_data("meld", MeldBufferData(absfile))
+                self.bufferdata[i] = MeldBufferData(absfile)
         self.recompute_label()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
@@ -435,7 +437,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if f:
                 try:
                     task = misc.struct(filename = f,
-                                       file = codecs.open(f, "r", try_codecs[0]),
+                                       file = codecs.open(f, "rU", try_codecs[0]),
                                        buf = buffers[i],
                                        codec = try_codecs[:],
                                        text = [],
@@ -456,7 +458,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 except ValueError, err:
                     t.codec.pop(0)
                     if len(t.codec):
-                        t.file = codecs.open(t.filename, "r", t.codec[0])
+                        t.file = codecs.open(t.filename, "rU", t.codec[0])
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
                         t.text = []
                     else:
@@ -476,7 +478,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
                         t.text.append(nextbit)
                     else:
-                        buffers[i].get_data("meld").encoding = t.codec[0]
+                        self.bufferdata[t.pane].encoding = t.codec[0]
+                        if hasattr(t.file, "newlines"):
+                            self.bufferdata[t.pane].newlines = t.file.newlines
                         tasks.remove(t)
                         panetext[t.pane] = "".join(t.text)
                         if len(panetext[t.pane]) and \
@@ -571,7 +575,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         
     def save_file(self, pane, saveas=0):
         buf = self.textview[pane].get_buffer()
-        bufdata = buf.get_data("meld")
+        bufdata = self.bufferdata[pane]
         if saveas or not bufdata.filename:
             fselect = gtk.FileSelection( _("Choose a name for buffer %i.") % (pane+1))
             fselect.set_transient_for(self.widget.get_toplevel() )
@@ -592,6 +596,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 bufdata.filename = os.path.abspath(filename)
                 self.fileentry[pane].set_filename( bufdata.filename)
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
+        if bufdata.newlines:
+            if type(bufdata.newlines) == type(""):
+                if(bufdata.newlines) != '\n':
+                    text = text.replace("\n", bufdata.newlines)
+            elif type(bufdata.newlines) == type(()):
+                buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
+                newline = misc.run_dialog( _("This file contains a mixture of line endings.\n\nWhich format would you like to use?"),
+                    self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_NONE,
+                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] ) 
+                if newline < 0:
+                    return
+                for k,v in buttons.items():
+                    if v[1] == newline:
+                        bufdata.newlines = k
+                        if k != '\n':
+                            text = text.replace('\n', k)
+                        break
         if bufdata.encoding:
             text = text.encode(bufdata.encoding)
         try:
@@ -608,11 +629,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return gnomeglade.RESULT_OK
 
     def set_buffer_writable(self, buf, yesno):
-        buf.get_data("meld").writing = yesno
+        pane = self.textview.index(buf.textview)
+        self.bufferdata[pane].writing = yesno
         self.recompute_label()
 
     def set_buffer_modified(self, buf, yesno):
-        buf.get_data("meld").modified = yesno
+        pane = self.textview.index(buf.textview)
+        self.bufferdata[pane].modified = yesno
         self.recompute_label()
 
     def save(self):
@@ -622,7 +645,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def save_all(self):
         for i in range(self.num_panes):
-            if self.textview[i].get_buffer().get_data("meld").modified:
+            if self.bufferdata[i].modified:
                 self.save_file(i)
 
     def on_fileentry_activate(self, entry):
@@ -653,14 +676,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # refresh, _queue_refresh
         #
     def refresh(self, junk=None):
-        modified = [view.get_buffer().get_data("meld").filename
-                    for view in self.textview[:self.num_panes] if view.get_buffer().get_data("meld").modified]
+        modified = [b.filename for b in self.bufferdata if b.modified]
         if len(modified):
             message = _("Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
             response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
             if response != gtk.RESPONSE_OK:
                 return
-        files = [t.get_buffer().get_data("meld").filename for t in self.textview[:self.num_panes] ]
+        files = [b.filename for b in self.bufferdata[:self.num_panes] ]
         self.set_files(files)
 
     def queue_draw(self, junk=None):
@@ -798,7 +820,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             map( lambda x: x.hide(), tohide )
 
             for i in range(self.num_panes):
-                if self.textview[i].get_buffer().get_data("meld").modified:
+                if self.bufferdata[i].modified:
                     self.statusimage[i].show()
             self.queue_draw()
             self.recompute_label()
@@ -1041,12 +1063,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 ################################################################################
 
 class MeldBufferData:
-    __slots__ = ["modified", "writable", "filename", "encoding"]
+    __slots__ = ("modified", "writable", "filename", "encoding", "newlines")
     def __init__(self, filename=None):
         self.modified = 0
         self.writable = 1
         self.filename = filename
         self.encoding = None
+        self.newlines = None
 
 ################################################################################
 #
