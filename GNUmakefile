@@ -16,6 +16,7 @@ RELEASE := meld-$(VERSION)
 MELD := ./meld #--profile
 TESTNUM := 1
 DEVELOPER := 0
+SPECIALS := meld paths.py
 
 ifeq ($(DEVELOPER), 1)
 .PHONY:rundiff
@@ -26,33 +27,67 @@ rundiff: check
 endif
 
 .PHONY:all
-all: 
+all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	$(MAKE) -C po
 
 .PHONY:clean
 clean: 
+	-rm -f *.pyc *.install meld.desktop
 	$(MAKE) -C po clean
 
 .PHONY:install
-install:
-	mkdir -p $(bindir) $(libdir_) $(sharedir_)/glade2/pixmaps $(docdir_) $(sharedir)/applications
-	python tools/install_paths libdir=$(libdir_) < meld > meld.install
-	install -m 755 meld.install $(bindir)/meld
-	rm meld.install
-	install -m 644 *.py $(libdir_)
-	python tools/install_paths localedir=$(localedir) docdir=$(docdir_) sharedir=$(sharedir_) < paths.py > paths.py.install
-	install -m 644 paths.py.install $(libdir_)/paths.py
-	rm paths.py.install
-	install -m 644 glade2/*.glade $(sharedir_)/glade2
-	install -m 644 glade2/pixmaps/*.xpm glade2/pixmaps/*.png $(sharedir_)/glade2/pixmaps
-	install -m 755 manual/manual.html $(docdir_)/manual.html
-	intltool-merge -d po meld.desktop.in meld.desktop
-	install -m 644 meld.desktop $(sharedir)/applications
+install: $(addsuffix .install,$(SPECIALS)) meld.desktop
+	mkdir -p \
+		$(DESTDIR)$(bindir) \
+		$(DESTDIR)$(libdir_) \
+		$(DESTDIR)$(sharedir_)/glade2/pixmaps \
+		$(DESTDIR)$(docdir_) \
+		$(DESTDIR)$(sharedir)/applications \
+		$(DESTDIR)$(sharedir)/pixmaps
+	install -m 755 meld.install \
+		$(DESTDIR)$(bindir)/meld
+	install -m 644 *.py \
+		$(DESTDIR)$(libdir_)
+	install -m 644 paths.py.install \
+		$(DESTDIR)$(libdir_)/paths.py
+	install -m 644 meld.desktop \
+		$(DESTDIR)$(sharedir)/applications
+	python    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
+	python -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
+	install -m 644 \
+		glade2/*.glade \
+		$(DESTDIR)$(sharedir_)/glade2
+	install -m 644 \
+		glade2/pixmaps/*.xpm \
+		glade2/pixmaps/*.png \
+		$(DESTDIR)$(sharedir_)/glade2/pixmaps
+	install -m 755 \
+		manual/manual.html \
+		$(DESTDIR)$(docdir_)/manual.html
+	install -m 644 glade2/pixmaps/icon.png \
+		$(DESTDIR)$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po install
+
+meld.desktop: meld.desktop.in
+	intltool-merge -d po meld.desktop.in meld.desktop
+
+%.install: %
+	python tools/install_paths \
+		libdir=$(libdir_) \
+		localedir=$(localedir) \
+		docdir=$(docdir_) \
+		sharedir=$(sharedir_) \
+		< $< > $@
 
 .PHONY:uninstall
 uninstall:
-	rm -rf $(sharedir_) $(docdir_) $(libdir_) $(bindir)/meld $(sharedir)/applications/meld.desktop
+	-rm -rf \
+		$(sharedir_) \
+		$(docdir_) \
+		$(libdir_) \
+		$(bindir)/meld \
+		$(sharedir)/applications/meld.desktop \
+		$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po uninstall
 
 .PHONY: test
