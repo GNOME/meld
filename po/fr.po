@@ -20,6 +20,7 @@ msgstr ""
 msgid ""
 "Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
 msgstr ""
+"Ignoré:Non-CVS:::Erreur::Nouvellement ajouté:Modifié:<b>Conflit</b>:Supprimé:Manquant"
 
 #: cvsview.py:173
 msgid ""
@@ -27,10 +28,13 @@ msgid ""
 "The pattern was '%s'\n"
 "The error was '%s'"
 msgstr ""
+"Erreur durant la conversion en expression régulière\n"
+"Le motif était « %s »\n"
+"L'erreur était « %s »"
 
 #: cvsview.py:357
 msgid "Name"
-msgstr "Identique"
+msgstr "Nom"
 
 #: cvsview.py:374
 msgid "Location"
@@ -62,7 +66,7 @@ msgstr "[%s] en cours d'analyse %s"
 
 #: cvsview.py:456
 msgid "(Empty)"
-msgstr ""
+msgstr "(Vide)"
 
 #: cvsview.py:488
 msgid "[%s] Fetching differences"
@@ -82,7 +86,7 @@ msgstr "Sélectionnez d'abord des fichiers"
 
 #: dirdiff.py:254 dirdiff.py:269
 msgid "Error converting pattern '%s' to regular expression"
-msgstr "Erreur durant la convertion de « %s » en expression régulière."
+msgstr "Erreur durant la conversion de « %s » en expression régulière."
 
 #: dirdiff.py:279
 msgid "Hide %s"
@@ -90,7 +94,7 @@ msgstr "Cacher %s"
 
 #: dirdiff.py:398
 msgid "'%s' hidden by '%s'"
-msgstr "« %s » à cause de « %s »"
+msgstr "« %s » est masqué par « %s »"
 
 #: dirdiff.py:404
 msgid ""
@@ -206,7 +210,7 @@ msgstr ""
 
 #: filediff.py:497
 msgid "[%s] Computing differences"
-msgstr "[%s] Calcul des différénces"
+msgstr "[%s] Calcul des différences"
 
 #: filediff.py:590
 msgid "Choose a name for buffer %i."
@@ -226,6 +230,9 @@ msgid ""
 "\n"
 "Which format would you like to use?"
 msgstr ""
+"Le fichier « %s » présente un mélange de fin de lignes.\n"
+"\n"
+"Quel format voulez-vous utiliser ?"
 
 #: filediff.py:632
 msgid ""
@@ -277,11 +284,11 @@ msgstr "_Modifiés"
 
 #: glade2/cvsview.strings:13 glade2/dirdiff.strings:27
 msgid "Show modified"
-msgstr "Affiché les objets modifiés"
+msgstr "Afficher les objets modifiés"
 
 #: glade2/cvsview.strings:14
 msgid "_Normal"
-msgstr ""
+msgstr "_Normal"
 
 #: glade2/cvsview.strings:15
 msgid "Show non-CVS"
@@ -293,7 +300,7 @@ msgstr "_Non-CVS"
 
 #: glade2/cvsview.strings:17
 msgid "Ignored"
-msgstr ""
+msgstr "Ignoré"
 
 #: glade2/cvsview.strings:18 glade2/cvsview.strings:19
 msgid "Commit"
@@ -343,11 +350,12 @@ msgstr "Valider"
 
 #: glade2/cvsview.strings:31
 msgid "_View"
-msgstr "Vue CVS"
+msgstr "Vue"
 
 #: glade2/cvsview.strings:33
+#, fuzzy
 msgid "Add _Binary"
-msgstr ""
+msgstr "Ajouter _Binaire"
 
 #: glade2/cvsview.strings:35
 msgid "Remove _Locally"
@@ -371,7 +379,7 @@ msgstr "Message du journal"
 
 #: glade2/dirdiff.strings:7
 msgid "Launch _Comparison"
-msgstr "Lancer la _comparaison"
+msgstr "Lancer la _Comparaison"
 
 #: glade2/dirdiff.strings:8
 msgid "Copy Left"
@@ -467,7 +475,7 @@ msgid ""
 "Which ones would you like to save?</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Des fichiers ont été modifiés.\n"
-"Lesquels souhaitez vous sauvegarder ?</span>"
+"Lesquels souhaitez-vous sauvegarder ?</span>"
 
 #: glade2/filediff.strings:16
 msgid "Find"
@@ -539,11 +547,11 @@ msgstr "_Contenu"
 
 #: glade2/meldapp.strings:18
 msgid "Report _Bug"
-msgstr ""
+msgstr "Signaler un bug"
 
 #: glade2/meldapp.strings:19
 msgid "_New..."
-msgstr "Nouveau..."
+msgstr "_Nouveau..."
 
 #: glade2/meldapp.strings:20
 msgid "Copyright (C) 2002 Stephen Kennedy"
@@ -564,15 +572,15 @@ msgstr "Sélectionnez les fichiers"
 #: glade2/meldapp.strings:29
 #, fuzzy
 msgid "Preferences : Meld"
-msgstr "Préférences"
+msgstr "Préférences : Meld"
 
 #: glade2/meldapp.strings:30
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">Éditeur</span>"
 
 #: glade2/meldapp.strings:31
 msgid "<b>Font</b>"
-msgstr ""
+msgstr "<b>Police</b>"
 
 #: glade2/meldapp.strings:32
 msgid "Use GNOME monospace font."
@@ -584,7 +592,7 @@ msgstr "Utiliser une police personnalisée."
 
 #: glade2/meldapp.strings:34 glade2/meldapp.strings:82
 msgid "<b>Misc</b>"
-msgstr ""
+msgstr "<b>Divers</b>"
 
 #: glade2/meldapp.strings:35
 msgid "Tabs equivalent to "
@@ -596,8 +604,7 @@ msgstr " espaces."
 
 #: glade2/meldapp.strings:37
 msgid "Automatically supply missing newline at end of file."
-msgstr ""
-"Fournir automatiquement le retour à la ligne manquant en fin de fichier."
+msgstr "Fournir automatiquement le retour à la ligne manquant en fin de fichier."
 
 #: glade2/meldapp.strings:38
 msgid "Editor"
@@ -605,7 +612,7 @@ msgstr "Éditeur"
 
 #: glade2/meldapp.strings:39
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">Affichage</span>"
 
 #: glade2/meldapp.strings:40
 msgid "<b>Drawing Style</b>"
@@ -661,49 +668,49 @@ msgstr "Affichage"
 
 #: glade2/meldapp.strings:52
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">Filtres de Fichiers</span>"
 
 # "<span weight=\"bold\" size=\"larger\">Des fichiers ont été modifiés.\n"
 # "Lesquels souhaitez vous sauvegarder ?</span>"
 #: glade2/meldapp.strings:53
 msgid "File Filters"
-msgstr ""
+msgstr "Filtres de Fichiers"
 
 #: glade2/meldapp.strings:54
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">Filtres de Texte</span>"
 
 #: glade2/meldapp.strings:55
 msgid "Text Filters"
-msgstr ""
+msgstr "Filtres de Texte"
 
 #: glade2/meldapp.strings:56
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">Codage de Caractères</span>"
 
 #: glade2/meldapp.strings:57
 msgid "<b>Loading</b>"
-msgstr ""
+msgstr "<b>Chargement</b>"
 
 #: glade2/meldapp.strings:58
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-msgstr ""
+msgstr "Lord du chargement, essaye ces codecs dans l'ordr. (ex : utf-8, iso8859)"
 
 #: glade2/meldapp.strings:59
 msgid "utf8 iso8859"
-msgstr ""
+msgstr "utf8 iso8859"
 
 #: glade2/meldapp.strings:61
 msgid "<b>Saving</b>"
-msgstr ""
+msgstr "<b>Sauvegarde</b>"
 
 #: glade2/meldapp.strings:62
 msgid "Save in the files original encoding"
-msgstr ""
+msgstr "Sauvegarder en utilisant les codages d'origine"
 
 #: glade2/meldapp.strings:63
 msgid "Save in UTF-8 encoding"
-msgstr ""
+msgstr "Sauvegarder en utilisant l'UTF-8"
 
 #: glade2/meldapp.strings:64
 msgid "Encoding"
@@ -711,23 +718,23 @@ msgstr "Codage du texte"
 
 #: glade2/meldapp.strings:65
 msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 
 #: glade2/meldapp.strings:66
 msgid "<b>Global options</b>"
-msgstr ""
+msgstr "<b>Options globales</b>"
 
 #: glade2/meldapp.strings:67
 msgid "Quiet mode (-q)"
-msgstr ""
+msgstr "Mode silencieux (-q)"
 
 #: glade2/meldapp.strings:68
 msgid "Use Compression (-z)"
-msgstr ""
+msgstr "Utiliser la compression (-z)"
 
 #: glade2/meldapp.strings:69
 msgid "Ignore .cvsrc (-f)"
-msgstr ""
+msgstr "Ignoreer les fichiers .cvsrc (-f)"
 
 #: glade2/meldapp.strings:70
 msgid "CVS binary"
@@ -735,15 +742,15 @@ msgstr "Afficher les binaires"
 
 #: glade2/meldapp.strings:71
 msgid "Locate CVS binary : Meld"
-msgstr ""
+msgstr "Trouver le binaire CVS : Meld"
 
 #: glade2/meldapp.strings:73
 msgid "<b>Update Options</b>"
-msgstr ""
+msgstr "<b>Options de mise à jour</b>"
 
 #: glade2/meldapp.strings:74
 msgid "Create missing directories (-d)"
-msgstr ""
+msgstr "Créer les répertoires manquants (-d)"
 
 #: glade2/meldapp.strings:75
 msgid "Prune empty directories (-P)"
@@ -755,23 +762,24 @@ msgstr "CVS"
 
 #: glade2/meldapp.strings:77
 msgid "_Logo"
-msgstr ""
+msgstr "_Logo"
 
 #: glade2/meldapp.strings:78
 msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">Fichiers Binaires</span>"
 
 #: glade2/meldapp.strings:79
 msgid "Binary files do not have text filters applied to them when comparing."
-msgstr ""
+msgstr "Aucun filtre de texte n'est appliqué aux fichiers binaires lors "
+"d'une comparaison."
 
 #: glade2/meldapp.strings:80
 msgid "_Binary Files"
-msgstr "Binaires"
+msgstr "Fichiers _Binaires"
 
 #: glade2/meldapp.strings:81
 msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
-msgstr ""
+msgstr "<span weight=\"bold\" size=\"x-large\">Diff</span>"
 
 #: glade2/meldapp.strings:83
 msgid ""
@@ -782,7 +790,7 @@ msgstr ""
 
 #: glade2/meldapp.strings:84
 msgid "<b>Whitespace</b>"
-msgstr ""
+msgstr "<b>Caractères d'espacement</b>"
 
 #: glade2/meldapp.strings:85
 msgid "Whitespace is significant"
@@ -790,9 +798,8 @@ msgstr "Prendre en compte les caractères d'espacement"
 
 #: glade2/meldapp.strings:86
 msgid "Ignore changes that just insert or delete blank lines"
-msgstr ""
-"Ignorer les changements qui concernent l'insertion ou l'effacement de lignes "
-"vides."
+msgstr "Ignorer les changements qui concernent l'insertion ou l'effacement "
+"de lignes vides."
 
 #: glade2/meldapp.strings:87
 msgid "Ignore changes in amount of white space"
@@ -808,7 +815,7 @@ msgstr "Meld a besoin d'une version récente de pygtk."
 
 #: meld:61
 msgid "pygtk-%s or higher is recommended."
-msgstr "pygtk-%s ou supérieur est recommendé."
+msgstr "pygtk-%s ou supérieur est recommandé."
 
 #: meld:71
 msgid "Meld works best with pygtk-%s or higher. (found %s)"
@@ -818,8 +825,8 @@ msgstr "Meld fonctionne mieux avec pygtk-%s ou supérieur. (trouvé %s)"
 msgid ""
 "Due to incompatible API changes some functions may not operate as expected."
 msgstr ""
-"En raison de changements de l'API, certaines fonctions n'auront l "
-"fonctionnement attendu."
+"En raison de changements incompatibles de l'API, certaines fonctions "
+"n'auront pas le fonctionnement attendu."
 
 #: meldapp.py:56
 msgid "Browse %s"
@@ -874,29 +881,30 @@ msgid ""
 "For more information choose help -> contents.\n"
 "Report bugs to steve9000@users.sourceforge.net.\n"
 msgstr ""
-"Meld est un outil de comparaison de fichier et d'arborescences. Usage:\n"
+"Meld est un outil de comparaison de fichier et d'arborescences. Usage :\n"
 "\n"
-"    meld                                 Démarrage sans fenêtre ouverte\n"
-"    meld <dir>                  \t  Démarrage en mode CVS dans « dir »\n"
-"    meld <fichier>              \t  Démarrage en mode CVS de « fichier »\n"
-"    meld <fichier> <fichier> [fichier]   Démarrage de la comparaison de 2/3 "
+"    meld				Démarrage sans fenêtre ouverte\n"
+"    meld <rep>				Démarrage en mode CVS dans « rep »\n"
+"    meld <fichier>			Démarrage en mode CVS de « fichier »\n"
+"    meld <fichier> <fichier> [fichier]	Démarrage de la comparaison de 2 ou 3 "
 "fichiers\n"
-"    meld <dir>  <dir>  [dir]             Démarrage de la comparaison de 2/3 "
+"    meld <rep>  <rep>  [rep]		Démarrage de la comparaison de 2 ou 3 "
 "arborescences\n"
 "\n"
 "Pour plus d'informations, choisissez Aide -> Contenu.\n"
-"Envoyer des rapports de bugs à to steve9000@users.sourceforge.net.\n"
+"Envoyer des rapports de bugs à steve9000@users.sourceforge.net.\n"
 
 #: meldapp.py:779
 msgid ""
 "Meld %s\n"
 "Written by Stephen Kennedy <steve9000@users.sf.net>"
 msgstr ""
+"Meld %s\n"
+"Écrit par Stephen Kennedy <steve9000@users.sf.net>"
 
 #: meldapp.py:826
 msgid "`%s' is not a directory or file, cannot open cvs view"
-msgstr ""
-"« %s » n'est ni un fichier ni un dossier, impossible d'ouvrir la vue CVS"
+msgstr "« %s » n'est ni un fichier ni un dossier, impossible d'ouvrir la vue CVS"
 
 #: meldapp.py:832
 msgid "Cannot open "
