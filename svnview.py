@@ -69,7 +69,7 @@ class File(Entry):
         self.options = options
 
 def get_svn_command(command):
-    return ["/usr/local/bin/svn", command]
+    return ["svn", command]
 
 def _lookup_cvs_files(dirs, files):
     "files is array of (name, path). assume all files in same dir"
