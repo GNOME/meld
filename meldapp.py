@@ -688,7 +688,7 @@ class MeldApp(gnomeglade.GnomeApp):
         gnomeglade.url_show("http://meld.sourceforge.net")
 
     def on_menu_help_bug_activate(self, button):
-        gnomeglade.url_show("http://sourceforge.net/tracker/?group_id=53725")
+        gnomeglade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
 
     def on_menu_users_manual_activate(self, button):
         gnomeglade.url_show("file:///"+os.path.abspath(paths.doc_dir("manual.html") ) )
