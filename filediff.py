@@ -5,7 +5,6 @@ import math
 import gtk
 import gobject
 import gnome
-import gconf
 import pango
 
 import diffutil
@@ -110,19 +109,17 @@ class FileDiff(gnomeglade.Component):
         # Pane layout 2 is (<hidden>,  common ancestor, my copy)
         # Pane layout 1 is (<hidden>,  <hidden>,        my copy)
         #
-    def __init__(self, num_panes, statusbar):
+    def __init__(self, num_panes, statusbar, prefs):
         gnomeglade.Component.__init__(self, misc.appdir("glade2/filediff.glade"), "filediff")
         self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
         self.refresh_timer_id = -1
         self.statusbar = statusbar
         self.undosequence = undo.UndoSequence()
         self.undosequence_busy = 0
-        self.prefs = misc.struct(
-            deleted_color="#ffffcc",
-            changed_color="#ffffcc",
-            edited_color="#eeeeee",
-            conflict_color="#ffcccc")
         self.keymask = 0
+        self.prefs = prefs
+        self.prefs.notify_add(self.on_preference_changed)
+        self.load_font()
 
         for i in range(3):
             w = self.scrolledwindow[i]
@@ -130,14 +127,7 @@ class FileDiff(gnomeglade.Component):
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
             self.textview[i].get_buffer().connect("insert-text", self.on_text_insert_text)
             self.textview[i].get_buffer().connect("delete-range", self.on_text_delete_range)
-            if 0: # test different font sizes
-                description = self.textview[i].get_pango_context().get_font_description()
-                description.set_size(4 * 1024)
-                self.textview[i].modify_font(description)
 
-        context = self.textview0.get_pango_context()
-        metrics = context.get_metrics( context.get_font_description(), context.get_language() )
-        self.pixels_per_line = (metrics.get_ascent() + metrics.get_descent()) / 1024
 
         self.linediffs = diffutil.Differ()
         load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
@@ -147,17 +137,6 @@ class FileDiff(gnomeglade.Component):
         self.pixbuf_copy0  = load("button_copy0.xpm")
         self.pixbuf_copy1  = load("button_copy1.xpm")
 
-        self.gconf = gconf.client_get_default()
-        self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
-        self.gconf.notify_add("/apps/meld/filediff", self.on_setting_activate)
-        self.draw_style = self.gconf.get_int('/apps/meld/filediff/draw_style')
-        if self.draw_style == None:
-            self.draw_style = 2
-            self.gconf.set_int('/apps/meld/filediff/draw_style', self.draw_style)
-        self.fallback_encoding = self.gconf.get_string('/apps/meld/filediff/fallback_encoding')
-        if self.fallback_encoding == None:
-            self.fallback_encoding = "latin1"
-            self.gconf.set_string('/apps/meld/filediff/fallback_encoding', self.fallback_encoding)
 
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
@@ -165,21 +144,36 @@ class FileDiff(gnomeglade.Component):
         self.num_panes = 0
         self.set_num_panes(num_panes)
 
-    def on_setting_activate(self, client, timestamp, entry, extra):
-        if entry.key.endswith("draw_style"):
-            self.draw_style = entry.value.get_int()
+    def load_font(self):
+        fontdesc = pango.FontDescription(self.prefs.get_current_font())
+        context = self.textview0.get_pango_context()
+        metrics = context.get_metrics( fontdesc, context.get_language() )
+        self.pixels_per_line = (metrics.get_ascent() + metrics.get_descent()) / 1024
+        self.pango_char_width = metrics.get_approximate_char_width()
+        tabs = pango.TabArray(10, 0)
+        tab_size = self.prefs.tab_size;
+        for i in range(10):
+            tabs.set_tab(i, pango.TAB_LEFT, i*tab_size*self.pango_char_width)
+        for i in range(3):
+            self.textview[i].modify_font(fontdesc)
+            self.textview[i].set_tabs(tabs)
+        for i in range(2):
+            self.linkmap[i].queue_draw()
+
+    def on_preference_changed(self, key, value):
+        if key == "draw_style":
             for l in self.linkmap:
                 l.queue_draw()
-        elif entry.key.endswith("fallback_encoding"):
-            self.fallback_encoding = entry.value.get_string()
-            self.statusbar.add_status("Setting '%s' as the default encoding" % self.fallback_encoding)
-        elif entry.key.endswith("tabsize"):
-            pass
-            #sz = entry.value.get_int()
-            #ta = pango.TabArray(10, 0, pango.TAB_LEFT, sz*20)
-            #self.textview0.set_tabs(ta)
-        else:
-            print "Warning, unknown setting", entry.key, "changed"
+        elif key == "tab_size":
+            tabs = pango.TabArray(10, 0)
+            for i in range(10):
+                tabs.set_tab(i, pango.TAB_LEFT, i*value*self.pango_char_width)
+            for i in range(3):
+                self.textview[i].set_tabs(tabs)
+        elif key == "use_custom_font" or key == "custom_font":
+            self.load_font()
+        elif 0:
+            self.statusbar.add_status("Setting '%s' to '%s' default encoding" % (key,value) )
 
     def on_key_press_event(self, object, event):
         for t in self.textview: # key event bug workaround
@@ -292,22 +286,25 @@ class FileDiff(gnomeglade.Component):
     def set_text(self, text, filename, pane):
         view = self.textview[pane]
         buffer = view.get_buffer()
+        if self.prefs.supply_newline and len(text) and text[-1] != '\n':
+            text += "\n"
         buffer.set_text( text )
         gettext = buffer.get_text( buffer.get_start_iter(), buffer.get_end_iter(), 0 )
         if text == gettext:
             buffer.meld_encoding = None
         else:
-            assert self.fallback_encoding
-            encoding = self.fallback_encoding
+            assert self.prefs.fallback_encoding
+            encoding = self.prefs.fallback_encoding
             text = unicode(text, encoding)
             buffer.set_text( text )
             gettext = buffer.get_text( buffer.get_start_iter(), buffer.get_end_iter(), 0 )
             buffer.meld_encoding = encoding
-        _ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.edited_color } )
+        _ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.color_edited} )
         entry = self.fileentry[pane]
         entry.set_filename(filename)
         self.undosequence.clear()
         self.set_buffer_modified(buffer, 0)
+        self.flushevents()
 
     def label_changed(self):
         filenames = []
@@ -334,9 +331,17 @@ class FileDiff(gnomeglade.Component):
                 self.statusbar.add_status( "Read %s" % filename )
             except IOError, e:
                 self.set_text( "", filename, pane)
-                self.statusbar.add_status( str(e) )
+                d = gtk.MessageDialog(None,
+                    gtk.DIALOG_DESTROY_WITH_PARENT,
+                    gtk.MESSAGE_WARNING,
+                    gtk.BUTTONS_OK,
+                    "Could not open '%s' for reading.\n\nThe error was:\n%s"
+                        % (filename, str(e) )
+                    )
+                d.run()
+                d.destroy()
         else:
-            self.set_text( "", filename, pane)
+            self.set_text("", filename, pane)
 
     def save_file(self, pane):
         name = self.fileentry[pane].get_full_path(0)
@@ -531,11 +536,11 @@ class FileDiff(gnomeglade.Component):
         buffer = widget.get_buffer()
 
         tag_delete_line = _ensure_fresh_tag_exists("delete line", buffer,
-                {"background": self.prefs.deleted_color }  )
+                {"background": self.prefs.color_deleted}  )
         tag_replace_line = _ensure_fresh_tag_exists("replace line", buffer,
-                {"background": self.prefs.changed_color } )
+                {"background": self.prefs.color_changed} )
         tag_conflict_line = _ensure_fresh_tag_exists("conflict line", buffer,
-                {"background": self.prefs.conflict_color } )
+                {"background": self.prefs.color_conflict} )
 
         for c in self.linediffs.single_changes(which):
             start = buffer.get_iter_at_line(c[1])
@@ -633,7 +638,7 @@ class FileDiff(gnomeglade.Component):
         else: # self.keymask == 0:
             pix0 = self.pixbuf_apply0
             pix1 = self.pixbuf_apply1
-
+        draw_style = self.prefs.draw_style
         for c in self.linediffs.pair_changes(which, which+1):
             f0,f1 = map( lambda l: l * self.pixels_per_line - madj.value, c[1:3] )
             t0,t1 = map( lambda l: l * self.pixels_per_line - oadj.value, c[3:5] )
@@ -643,8 +648,8 @@ class FileDiff(gnomeglade.Component):
                 break
             if f0==f1: f0 -= 2; f1 += 2
             if t0==t1: t0 -= 2; t1 += 2
-            if self.draw_style > 0:
-                n = (1.0, 9.0)[self.draw_style-1]
+            if draw_style > 0:
+                n = (1.0, 9.0)[draw_style-1]
                 points0 = []
                 points1 = [] 
                 for t in map(lambda x: x/n, range(n+1)):

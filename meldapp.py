@@ -12,16 +12,16 @@ pygtk.require("2.0")
 import gtk
 import gtk.glade
 import gnome
-import gconf
 
 # project
+import prefs
 import gnomeglade
 import filediff
 import misc
 import cvsview
 import dirdiff
 
-version = "0.6.4"
+version = "0.6.5"
 developer = 0
 
 ################################################################################
@@ -55,7 +55,7 @@ class BrowseFileDialog(gnomeglade.Dialog):
 
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_OK:
-            files = [e.get_full_path(1) or "" for e in self.entries]
+            files = [e.get_full_path(0) or "" for e in self.entries]
             self.callback(files)
         self.widget.destroy()
    
@@ -69,37 +69,46 @@ class PreferencesDialog(gnomeglade.Dialog):
 
     def __init__(self, parentapp):
         gnomeglade.Dialog.__init__(self, misc.appdir("glade2/meld-app.glade"), "preferencesdialog")
-        self.diff_options_frame.set_sensitive(0)
-        self.diff_options_frame.set_sensitive(0)
-        self.tabsize_spin.set_sensitive(0)
-        self._map_widgets_into_lists( ["draw_style"] )
         self.widget.set_transient_for(parentapp.widget)
-        self.gconf = gconf.client_get_default()
-        self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
-        style = self.gconf.get_int("/apps/meld/filediff/draw_style")
-        self.draw_style[style].set_active(1)
+
+        self.prefs = parentapp.prefs
+        # editing pane
+        if self.prefs.use_custom_font:
+            self.radiobutton_custom_font.set_active(1)
+        else:
+            self.radiobutton_gnome_font.set_active(1)
+        self.fontpicker.set_font_name( self.prefs.custom_font )
+        self.spinbutton_tabsize.set_value( self.prefs.tab_size )
+        self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
+        self.entry_encoding.set_text( self.prefs.fallback_encoding )
+        # diff pane
+        self.diff_options_frame.hide()
+        # display pane
+        self._map_widgets_into_lists( ["draw_style"] )
+        self._map_widgets_into_lists( ["toolbar_style"] )
+        self.draw_style[self.prefs.draw_style].set_active(1)
+        self.toolbar_style[self.prefs.toolbar_style].set_active(1)
         self.widget.show()
-        fallback = self.gconf.get_string("/apps/meld/filediff/fallback_encoding")
-        if fallback:
-            self.fallback_entry.gtk_entry().set_property("text", fallback)
-            self.fallback_entry.prepend_history(0, fallback )
-
-    def on_menu_draw_style_toggled(self, radio):
+    def on_fontpicker_font_set(self, picker, font):
+        self.prefs.custom_font = font
+    def on_radiobutton_font_toggled(self, radio):
         if radio.get_active():
-            style = self.draw_style.index(radio)
-            self.gconf.set_int("/apps/meld/filediff/draw_style", style)
-
-    def on_tabsize_spin_value_changed(self, spin):
-        val = spin.get_value()
-        self.gconf.set_int("/apps/meld/filediff/tabsize", val)
-
+            custom = radio == self.radiobutton_custom_font
+            self.fontpicker.set_sensitive(custom)
+            self.prefs.use_custom_font = custom
+    def on_spinbutton_tabsize_changed(self, spin):
+        self.prefs.tab_size = int(spin.get_value())
+    def on_checkbutton_supply_newline_toggled(self, check):
+        self.prefs.supply_newline = check.get_active()
+    def on_draw_style_toggled(self, radio):
+        if radio.get_active():
+            self.prefs.draw_style = self.draw_style.index(radio)
+    def on_toolbar_style_toggled(self, radio):
+        if radio.get_active():
+            self.prefs.toolbar_style = self.toolbar_style.index(radio)
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
-            orig = self.gconf.get_string("/apps/meld/filediff/fallback_encoding")
-            now = self.fallback_entry.gtk_entry().get_property("text")
-            if now != orig:
-                self.fallback_entry.prepend_history(0, now)
-                self.gconf.set_string("/apps/meld/filediff/fallback_encoding", now)
+            self.prefs.fallback_encoding = self.entry_encoding.get_property("text")
         self.widget.destroy()
 
 ################################################################################
@@ -210,9 +219,19 @@ class MeldApp(gnomeglade.GnomeApp):
         self._map_widgets_into_lists( ["menu_file_save_file", "setting_number_panes", "setting_drawstyle"] )
         self.popup_new = MeldNewMenu(self)
         self.statusbar = MeldStatusBar(self.appbar)
+        self.prefs = prefs.Preferences()
         if not developer:#hide magic testing button
             self.toolbar_magic.hide()
             self.setting_filters.hide()
+        else:
+            def showPrefs(): PreferencesDialog(self)
+            gtk.idle_add(showPrefs)
+        self.toolbar.set_style( self.prefs.get_toolbar_style() )
+        self.prefs.notify_add(self.on_preference_changed)
+
+    def on_preference_changed(self, key, value):
+        if key == "toolbar_style":
+            self.toolbar.set_style( self.prefs.get_toolbar_style() )
 
     #
     # General events and callbacks
@@ -246,7 +265,6 @@ class MeldApp(gnomeglade.GnomeApp):
         self.widget.set_title( nbl.label.get_text() + " - Meld")
 
     def on_working_hard(self, widget, working):
-        "Called" 
         if working:
             self.appbar.get_progress().pulse()
         else:
@@ -404,14 +422,10 @@ class MeldApp(gnomeglade.GnomeApp):
         doc.label_changed()
         doc.refresh()
 
-    def append_filediff2(self, file0, file1):
-        self.append_filediff( (file0, file1) )
-    def append_filediff3(self, file0, file1, file2):
-        self.append_filediff( (file0, file1, file2) )
     def append_filediff(self, files):
         assert len(files) in (1,2,3)
         nfiles = len(files)
-        doc = filediff.FileDiff(nfiles, self.statusbar)
+        doc = filediff.FileDiff(nfiles, self.statusbar, self.prefs)
         for i in range(nfiles):
             doc.set_file(files[i],i)
         seq = doc.undosequence
@@ -456,7 +470,7 @@ class MeldApp(gnomeglade.GnomeApp):
         dialog = gnomeglade.Dialog(misc.appdir("glade2/meld-app.glade"),
             "usagedialog")
         dialog.widget.set_transient_for(self.widget.get_toplevel())
-        dialog.label_message.set_text(msg)
+        dialog.label_message.set_label(msg)
         dialog.label_usage.set_text(usage_string)
         response = dialog.widget.run()
         dialog.widget.destroy()
