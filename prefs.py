@@ -107,8 +107,11 @@ class Preferences(object):
             value.current = val
             setfunc = getattr(self._gconf, "set_%s" % value.type)
             setfunc("%s/%s" % (self._rootkey, attr), val)
-            for l in self._listeners:
-                l(attr,val)
+            try:
+                for l in self._listeners:
+                    l(attr,val)
+            except StopIteration:
+                pass
 
     def _on_preference_changed(self, client, timestamp, entry, extra):
         attr = entry.key[ entry.key.rindex("/")+1 : ]
