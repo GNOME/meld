@@ -120,11 +120,11 @@ def _lookup_cvs_files(dirs, files):
                 state = tree.STATE_MISSING
             retdirs.append( Dir(path,name,state) )
         else:
-            if date=="dummy timestamp":
+            if rev.startswith("-"):
+                state = tree.STATE_REMOVED
+            elif date=="dummy timestamp":
                 if rev[0] == "0":
                     state = tree.STATE_NEW
-                elif rev[0] == "-":
-                    state = tree.STATE_REMOVED
                 else:
                     print "Revision '%s' not understood" % rev
             elif date=="dummy timestamp from new-entry":
@@ -212,6 +212,15 @@ def _expand_to_root( treeview, path ):
         level += 1
         treeview.expand_row( path[:level], 0)
 
+def _commonprefix(files):
+    if len(files) != 1:
+        workdir = misc.commonprefix(files)
+    elif os.path.isdir(files[0]):
+        workdir = files[0]
+    else:
+        workdir = os.path.dirname(files[0])
+    return workdir
+
 ################################################################################
 #
 # CommitDialog
@@ -252,6 +261,32 @@ class CvsTreeStore(tree.DiffTreeStore):
         self.ntree = 1
         self._setup_default_styles()
         self.textstyle[tree.STATE_MISSING] = '<span foreground="#000088" strikethrough="true" weight="bold">%s</span>'
+
+################################################################################
+#
+# DirDiffMenu
+#
+################################################################################
+class CvsMenu(gnomeglade.Component):
+    def __init__(self, app, event):
+        gladefile = misc.appdir("glade2/cvsview.glade")
+        gnomeglade.Component.__init__(self, gladefile, "menu_popup")
+        self.parent = app
+        self.widget.popup( None, None, None, 3, event.time )
+    def on_diff_activate(self, menuitem):
+        self.parent.on_button_diff_clicked( menuitem )
+    def on_update_activate(self, menuitem):
+        self.parent.on_button_update_clicked( menuitem )
+    def on_commit_activate(self, menuitem):
+        self.parent.on_button_commit_clicked( menuitem )
+    def on_add_activate(self, menuitem):
+        self.parent.on_button_add_clicked( menuitem )
+    def on_add_binary_activate(self, menuitem):
+        self.parent.on_button_add_binary_clicked( menuitem )
+    def on_remove_activate(self, menuitem):
+        self.parent.on_button_remove_clicked( menuitem )
+    def on_remove_locally_activate(self, menuitem):
+        self.parent.on_button_delete_clicked( menuitem )
 
 ################################################################################
 #
@@ -314,6 +349,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.location = location = os.path.abspath(location or ".")
         self.fileentry.gtk_entry().set_text(location)
         iter = self.model.add_entries( None, [location] )
+        self.treeview.get_selection().select_iter(iter)
         self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
@@ -414,10 +450,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_button_press_event(self, text, event):
         if event.button==3:
-            appdir = misc.appdir("glade2/cvsview.glade")
-            popup = gnomeglade.Menu(appdir, "menu_popup")
-            popup.show_all()
-            popup.popup(None,None,None,event.button,event.time)
+            CvsMenu(self, event)
         return 0
 
 
@@ -441,15 +474,11 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def _command_iter(self, command, files, refresh):
         """Run 'command' on 'files'. Return a tuple of the directory the
-           command was executed in and the output of the command."""
+           command was executed in and the output of the command.
+        """
         msg = " ".join(command)
         yield "[%s] %s" % (self.label_text, msg)
-        if len(files) != 1 :
-            workdir = misc.commonprefix(files)
-        elif os.path.isdir(files[0]):
-            workdir = files[0]
-        else:
-            workdir = os.path.dirname(files[0])
+        workdir = _commonprefix(files)
         kill = len(workdir) and (len(workdir)+1) or 0
         files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
         r = None
@@ -459,9 +488,10 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 r = readfunc()
                 yield 1
         except IOError, e:
-            print "*** ERROR READING PIPE", e
+            misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % (" ".join(command), e),
+                parent=self, messagetype=gtk.MESSAGE_ERROR)
         if refresh:
-            self.refresh()
+            self.refresh_partial(workdir)
         yield workdir, r
 
     def _command(self, command, files, refresh=1):
@@ -474,7 +504,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         if len(files):
             self._command(command, files, refresh)
         else:
-            self.statusbar.add_status( _("Select some files first") )
+            print command
+            misc.run_dialog( _("Select some files first."), parent=self, messagetype=gtk.MESSAGE_INFO)
 
     def on_button_update_clicked(self, object):
         self._command_on_selected(CVS_COMMAND + ["update","-dP"] )
@@ -484,13 +515,17 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_button_add_clicked(self, object):
         self._command_on_selected(CVS_COMMAND + ["add"] )
+    def on_button_add_binary_clicked(self, object):
+        self._command_on_selected(CVS_COMMAND + ["add", "-kb"] )
     def on_button_remove_clicked(self, object):
         self._command_on_selected(CVS_COMMAND + ["rm", "-f"] )
     def on_button_delete_clicked(self, object):
-        for f in self._get_selected_files():
+        files = self._get_selected_files()
+        for f in files:
             try: os.unlink(f)
             except IOError: pass
-        self.refresh()
+        workdir = _commonprefix(files)
+        self.refresh_partial(workdir)
 
     def on_button_diff_clicked(self, object):
         files = self._get_selected_files()
@@ -528,20 +563,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
     def refresh_partial(self, where):
-        assert where.startswith( self.location )
-        where = where[ len(self.location) : ]
-        parts = where.split("/")[1:]
-        print "***", parts
-        return
-        #self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
-        self.model.clear()
-        self.location = location = os.path.abspath(location or ".")
-        self.fileentry.gtk_entry().set_text(location)
-        iter = self.model.add_entries( None, [location] )
-        self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
-        self.recompute_label()
-        self.scheduler.remove_all_tasks()
-        self.scheduler.add_task( self._search_recursively_iter().next )
+        iter = self.find_iter_by_name( where )
+        newiter = self.model.insert_after( None, iter) 
+        self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
+        self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
+        self.model.remove(iter)
+        self.scheduler.add_task( self._search_recursively_iter(newiter).next )
 
     def next_diff(self,*args):
         pass
@@ -602,8 +629,10 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def find_iter_by_name(self, name):
         iter = self.model.get_iter_root()
         path = self.model.value_path(iter, 0)
-        if name.startswith(path): 
-            while iter:
+        while iter:
+            if name == path:
+                return iter
+            if name.startswith(path): 
                 child = self.model.iter_children( iter )
                 while child:
                     path = self.model.value_path(child, 0)
