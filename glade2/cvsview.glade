@@ -256,7 +256,7 @@
       <signal name="activate" handler="on_diff_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image23">
+	<widget class="GtkImage" id="image29">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-dialog-info</property>
 	  <property name="icon_size">1</property>
@@ -277,7 +277,7 @@
       <signal name="activate" handler="on_update_activate"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image24">
+	<widget class="GtkImage" id="image30">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-go-forward</property>
 	  <property name="icon_size">1</property>
@@ -298,7 +298,7 @@
       <signal name="activate" handler="on_commit_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image25">
+	<widget class="GtkImage" id="image31">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-go-back</property>
 	  <property name="icon_size">1</property>
@@ -325,7 +325,7 @@
       <signal name="activate" handler="on_add_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image26">
+	<widget class="GtkImage" id="image32">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-add</property>
 	  <property name="icon_size">1</property>
@@ -346,7 +346,7 @@
       <signal name="activate" handler="on_add_binary_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image27">
+	<widget class="GtkImage" id="image33">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-add</property>
 	  <property name="icon_size">1</property>
@@ -367,7 +367,7 @@
       <signal name="activate" handler="on_remove_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image28">
+	<widget class="GtkImage" id="image34">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-remove</property>
 	  <property name="icon_size">1</property>
@@ -394,7 +394,7 @@
       <signal name="activate" handler="on_remove_locally_activate" last_modification_time="Sun, 31 Aug 2003 12:27:25 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image29">
+	<widget class="GtkImage" id="image35">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-delete</property>
 	  <property name="icon_size">1</property>
@@ -569,7 +569,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkHBox" id="hbox1">
+		    <widget class="GtkHBox" id="previousbox">
 		      <property name="visible">True</property>
 		      <property name="homogeneous">False</property>
 		      <property name="spacing">0</property>
@@ -600,13 +600,14 @@
 			  <property name="border_width">5</property>
 			  <property name="visible">True</property>
 			  <property name="history_id">previousentry</property>
-			  <property name="max_saved">10</property>
+			  <property name="max_saved">15</property>
+			  <signal name="changed" handler="on_previousentry_activate" last_modification_time="Sun, 14 Sep 2003 14:08:20 GMT"/>
 
 			  <child internal-child="entry">
 			    <widget class="GtkEntry" id="comboentry1">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
-			      <property name="editable">True</property>
+			      <property name="editable">False</property>
 			      <property name="visibility">True</property>
 			      <property name="max_length">0</property>
 			      <property name="text" translatable="yes"></property>

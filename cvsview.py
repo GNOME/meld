@@ -233,8 +233,6 @@ class CommitDialog(gnomeglade.Component):
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         self.changedfiles.set_text( " ".join(parent._get_selected_files()))
         self.widget.show_all()
-        self.previousentry.hide()
-        self.previouslogs_label.hide()
 
     def run(self):
         response = self.widget.run()
@@ -242,8 +240,12 @@ class CommitDialog(gnomeglade.Component):
         msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
             self.parent._command_on_selected(CVS_COMMAND + ["commit", "-m", msg] )
-        self.previousentry.append_history(1, msg)
+        if len(msg.strip()):
+            self.previousentry.prepend_history(1, msg)
         self.widget.destroy()
+    def on_previousentry_activate(self, gentry):
+        buf = self.textview.get_buffer()
+        buf.set_text( gentry.gtk_entry().get_text() )
 
 ################################################################################
 #
