@@ -253,7 +253,7 @@ class PreferencesDialog(gnomeglade.Component):
         cols = [ ("Name", type("")), ("Active", type(0)), ("Regex", type("")) ]
         self.textfilter = ListWidget( cols, self.prefs, "regexes")
         self.text_filters_box.pack_start(self.textfilter.widget)
-        self.checkbutton_ignore_blank_lines = self.prefs.ignore_blank_lines
+        self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
         self._map_widgets_into_lists( ["save_encoding"] )
