@@ -29,6 +29,10 @@ endif
 all: 
 	$(MAKE) -C po
 
+.PHONY:clean
+clean: 
+	$(MAKE) -C po clean
+
 .PHONY:install
 install:
 	mkdir -p $(bindir) $(libdir_) $(sharedir_)/glade2/pixmaps $(docdir_)
@@ -42,6 +46,8 @@ install:
 	install -m 644 glade2/*.glade $(sharedir_)/glade2
 	install -m 644 glade2/pixmaps/*.xpm glade2/pixmaps/*.png $(sharedir_)/glade2/pixmaps
 	install -m 755 manual/manual.html $(docdir_)/manual.html
+	intltool-merge -d po meld.desktop.in meld.desktop
+	install -m 644 meld.desktop $(sharedir)/applications
 	$(MAKE) -C po install
 
 .PHONY:uninstall
@@ -63,10 +69,6 @@ changelog:
 .PHONY:check
 check:
 	@tools/check_release
-
-.PHONY:gettext
-gettext:
-	pygettext --keyword=N_ --output-dir=po --default-domain=meld `cat po/POTFILES`
 
 .PHONY:release
 release: check upload announce
