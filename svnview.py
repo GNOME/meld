@@ -692,7 +692,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
         for it in search( start_iter ):
             state = int(self.model.get_state( it, 0))
-            if state != tree.STATE_NORMAL:
+            if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
                 goto_iter(it)
                 return
 

@@ -981,7 +981,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         search = {gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
         for it in search( start_iter ):
             state = int(self.model.get_state( it, pane ))
-            if state != tree.STATE_NORMAL:
+            if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
                 goto_iter(it)
                 return
 
