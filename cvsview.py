@@ -308,10 +308,8 @@ class CvsMenu(gnomeglade.Component):
         self.widget.popup( None, None, None, 3, event.time )
     def on_diff_activate(self, menuitem):
         self.parent.on_button_diff_clicked( menuitem )
-    def on_view_activate(self, menuitem):
-        files = self.parent._get_selected_files()
-        for f in files:
-            self.parent.emit("create-diff", (f,))
+    def on_edit_activate(self, menuitem):
+        self.parent._edit_files( self.parent._get_selected_files() )
     def on_update_activate(self, menuitem):
         self.parent.on_button_update_clicked( menuitem )
     def on_commit_activate(self, menuitem):
@@ -339,11 +337,6 @@ entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 #
 ################################################################################
 class CvsView(melddoc.MeldDoc, gnomeglade.Component):
-
-    __gsignals__ = {
-        'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
-    }
-
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
@@ -393,6 +386,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         size = self.fileentry.size_request()[1]
         self.button_jump.set_size_request(size, size)
         self.button_jump.hide()
+        if not self.prefs.cvs_console_visible:
+            self.on_console_view_toggle(self.console_hide_box)
 
     def set_location(self, location):
         self.model.clear()
@@ -708,11 +703,13 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 break
         return None
 
-    def on_console_view_toggle(self, box, event):
+    def on_console_view_toggle(self, box, event=None):
         if box == self.console_hide_box:
+            self.prefs.cvs_console_visible = 0
             self.console_hbox.hide()
             self.console_show_box.show()
         else:
+            self.prefs.cvs_console_visible = 1
             self.console_hbox.show()
             self.console_show_box.hide()
 
