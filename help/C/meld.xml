@@ -23,7 +23,8 @@
       <holder>Stephen Kennedy</holder>
     </copyright>
 
-    <releaseinfo>This is version 0.1 of the meld manual, describing meld 0.9.6</releaseinfo>
+    <releaseinfo>This is version 0.1 of the meld manual, describing meld
+    0.9.6</releaseinfo>
   </bookinfo>
 
   <chapter id="introduction">
@@ -52,7 +53,8 @@
           </varlistentry>
 
           <varlistentry>
-            <term><userinput>meld &#60;file&#62; &#60;file&#62; [file]</userinput></term>
+            <term><userinput>meld &lt;file&gt; &lt;file&gt;
+            [file]</userinput></term>
 
             <listitem>
               <para>start meld with either a two way or three way file
@@ -61,7 +63,8 @@
           </varlistentry>
 
           <varlistentry>
-            <term><userinput>meld &#60;dir&#62; &#60;dir&#62; [dir]</userinput></term>
+            <term><userinput>meld &lt;dir&gt; &lt;dir&gt;
+            [dir]</userinput></term>
 
             <listitem>
               <para>start meld with either a two way or three way file
@@ -70,7 +73,7 @@
           </varlistentry>
 
           <varlistentry>
-            <term><userinput>meld &#60;dir|file&#62;</userinput></term>
+            <term><userinput>meld &lt;dir|file&gt;</userinput></term>
 
             <listitem>
               <para>start meld with the source control browser</para>
@@ -79,8 +82,8 @@
         </variablelist>
 
         <note>
-          <para>&#34;&#60;&#62;&#34; demote required arguments, &#34;[]&#34;
-          denote optional arguments and &#34;|&#34; a choice.</para>
+          <para>"&lt;&gt;" demote required arguments, "[]" denote optional
+          arguments and "|" a choice.</para>
         </note>
 
         <note>
@@ -97,7 +100,7 @@
     <sect1 id="filecompare_starting">
       <title>Starting</title>
 
-      <para>Use <guimenu>File...-&#62;New...-&#62;File Comparison</guimenu> to
+      <para>Use <guimenu>File...-&gt;New...-&gt;File Comparison</guimenu> to
       start a new file comparison. You can compare two or three files.</para>
 
       <para>For two way comparisons the original is shown in the left pane and
@@ -129,8 +132,8 @@
 
       <para>The area between each file shows where each change occurs in the
       other file. You can scroll through the changes by rolling the mouse
-      wheel over this area or with keyboard shortcuts <keysym>Control+D</keysym>,
-      <keysym>Control+E</keysym>.</para>
+      wheel over this area or with keyboard shortcuts
+      <keysym>Control+D</keysym>, <keysym>Control+E</keysym>.</para>
     </sect1>
 
     <sect1 id="filecompare_editing">
@@ -140,16 +143,18 @@
       differences will update automatically. Use <keysym>Control+F</keysym> to
       search and <keysym>Control+G</keysym> to repeat the last search.</para>
 
-      <para>You can also apply changes by clicking the merge buttons (&#34;<guiicon>-&#62;</guiicon>&#34;
-      and &#34;<guiicon>&#60;-</guiicon>&#34;). Holding <keysym>Shift</keysym>
-      allows blocks to be deleted. Holding <keysym>Control</keysym> allows the
-      current change to be inserted before or after the other change.</para>
+      <para>You can also apply changes by clicking the merge buttons
+      ("<guiicon>-&gt;</guiicon>" and "<guiicon>&lt;-</guiicon>"). Holding
+      <keysym>Shift</keysym> allows blocks to be deleted. Holding
+      <keysym>Control</keysym> allows the current change to be inserted before
+      or after the other change.</para>
 
       <para>You can apply all the changes from a given file by
       <mousebutton>right clicking</mousebutton> a text pane and choosing
       <command>Copy all left</command> or <command>Copy all right</command>.
       You can also launch an external editor from this menu. Configure the
-      external editor in <guimenu>Settings-&#62;Preferences-&#62;Editor</guimenu></para>
+      external editor in
+      <guimenu>Settings-&gt;Preferences-&gt;Editor</guimenu></para>
     </sect1>
 
     <sect1 id="filecompare_filtering">
@@ -157,17 +162,28 @@
 
       <para>You can ignore certain types of differences in order to locate
       important differences. All these settings are available from
-      <guimenu>Settings-&#62;Preferences-&#62;Text Filters</guimenu>.</para>
+      <guimenu>Settings-&gt;Preferences-&gt;Text Filters</guimenu>.</para>
 
       <sect2>
         <title>Regular Expressions</title>
 
         <para>When comparing files, each selected regular expression is run in
-        turn over each line of input. Anything matching the expression is
-        removed from the input.<note><para>See the python re module for more
-        information on regular expressions</para></note><note><para>Differences
-        are computed line-by-line so multiline regulare expressions will
-        likely have unintended consequences.</para></note></para>
+        turn over each file. Anything matching the expression is replaced by
+        the empty string before comparison is performed.</para>
+
+        <warning>
+          <para>Replacement typically happens on several lines at a time. The
+          input string will likely contain newline characters (\n). If your
+          regular expression matches newlines the comparison will be
+          incorrect. (The technical reason is that incremental difference
+          updates with multiline text replacement is tricky and not yet
+          implemented.)</para>
+        </warning>
+
+        <para><note>
+            <para>See the python re module for more information on regular
+            expressions</para>
+          </note></para>
       </sect2>
 
       <sect2>
@@ -187,7 +203,7 @@
       an asterix after the file name.</para>
 
       <para>Save a file pressing <keysym>Control+s</keysym>, by selecting
-      <guimenu>File-&#62;Save</guimenu> from the menu or by the toolbar save
+      <guimenu>File-&gt;Save</guimenu> from the menu or by the toolbar save
       button. All of these save the currently focussed file (the file
       containing the edit cursor)</para>
     </sect1>
@@ -196,7 +212,8 @@
       <title>Status Bar</title>
 
       <para>The status bar shows the cursor location (line and column) and
-      also progress messages as files are initially loaded and compared.</para>
+      also progress messages as files are initially loaded and
+      compared.</para>
     </sect1>
   </chapter>
 
@@ -206,7 +223,7 @@
     <sect1 id="foldercompare_starting">
       <title>Starting</title>
 
-      <para>Use <guimenu>File...-&#62;New...-&#62;Directory Comparison</guimenu>
+      <para>Use <guimenu>File...-&gt;New...-&gt;Directory Comparison</guimenu>
       to start a new directory comparison. You can compare two or three
       directories.</para>
 
@@ -253,11 +270,12 @@
       <para>Activate an item with <mousebutton>double click</mousebutton> or
       <keysym>Return</keysym> to start an individual file comparison.</para>
 
-      <para>Additional options are available from a
-      <mousebutton>right click</mousebutton> context menu.</para>
+      <para>Additional options are available from a <mousebutton>right
+      click</mousebutton> context menu.</para>
 
       <para>Use <mousebutton>Shift+Click</mousebutton> and
-      <mousebutton>Control+Click</mousebutton> to select multiple items.</para>
+      <mousebutton>Control+Click</mousebutton> to select multiple
+      items.</para>
     </sect1>
 
     <sect1 id="foldercompare_filtering">
@@ -284,33 +302,47 @@
       <sect2>
         <title>State Filtering</title>
 
-        <para>All items have a state which is one of:
-        <itemizedlist><listitem><para>Modified (there is some content
-        difference between files which are present)</para></listitem><listitem><para>New
-        (there is no content difference between present files, but the file is
-        missing from at least one directory)</para></listitem><listitem><para>Identical
-        (all files have equal content and are all present)</para></listitem></itemizedlist></para>
+        <para>All items have a state which is one of: <itemizedlist>
+            <listitem>
+              <para>Modified (there is some content difference between files
+              which are present)</para>
+            </listitem>
+
+            <listitem>
+              <para>New (there is no content difference between present files,
+              but the file is missing from at least one directory)</para>
+            </listitem>
+
+            <listitem>
+              <para>Identical (all files have equal content and are all
+              present)</para>
+            </listitem>
+          </itemizedlist></para>
 
         <para>Use the toolbar buttons to control which items are shown by
-        their state.<note><para>In the current version, only files are
-        filtered by state. Directories are always shown.</para></note></para>
+        their state.<note>
+            <para>In the current version, only files are filtered by state.
+            Directories are always shown.</para>
+          </note></para>
       </sect2>
 
       <sect2>
         <title>Name Filtering</title>
 
         <para>You can hide selected filename patterns from the comparison
-        using the toolbar buttons. Use <guimenu>Settings-&#62;Preferences-&#62;File
-        Filters</guimenu> to customise the file patterns.</para>
+        using the toolbar buttons. Use
+        <guimenu>Settings-&gt;Preferences-&gt;File Filters</guimenu> to
+        customise the file patterns.</para>
       </sect2>
 
       <sect2 id="dir_content_filtering">
         <title>Content Filtering</title>
 
         <para>If differences between files exist, but all differences match
-        the active regular expressions specified in <guimenu>Settings-&#62;Preferences-&#62;Text
-        Filters</guimenu>, then the filename is not highlighted in red, but is
-        insted italicised in regular font.</para>
+        the active regular expressions specified in
+        <guimenu>Settings-&gt;Preferences-&gt;Text Filters</guimenu>, then the
+        filename is not highlighted in red, but is insted italicised in
+        regular font.</para>
       </sect2>
     </sect1>
   </chapter>
@@ -321,27 +353,43 @@
     <sect1 id="sourcecontrol_starting">
       <title>Starting</title>
 
-      <para>Use <guimenu>File...-&#62;New...-&#62;CVS Browser</guimenu> or
-      <guimenu>File...-&#62;New...-&#62;SVN Browser</guimenu> to start
-      browsing a working copy.</para>
+      <para>Use <guimenu>File...-&gt;New...-&gt;CVS Browser</guimenu> or
+      <guimenu>File...-&gt;New...-&gt;SVN Browser</guimenu> to start browsing
+      a working copy.</para>
 
       <para>The browser is used for examining and commiting or reverting local
-      changes. It is not intended to be a complete source control client.</para>
+      changes. It is not intended to be a complete source control
+      client.</para>
     </sect1>
 
     <sect1 id="sourcecontrol_filtering">
       <title>Filtering</title>
 
-      <para>The browser can filter on four states:<itemizedlist><listitem><para>Normal
-      (the file is unchanged since it was checked out)</para></listitem><listitem><para>Non
-      controlled (the file exists locally but was not checked out)</para></listitem><listitem><para>Ignored
-      (the file is explicitly ignored e.g. though .cvsignore)</para></listitem><listitem><para>Modified
-      (locally changed, added or removed)</para></listitem></itemizedlist></para>
+      <para>The browser can filter on four states:<itemizedlist>
+          <listitem>
+            <para>Normal (the file is unchanged since it was checked
+            out)</para>
+          </listitem>
+
+          <listitem>
+            <para>Non controlled (the file exists locally but was not checked
+            out)</para>
+          </listitem>
+
+          <listitem>
+            <para>Ignored (the file is explicitly ignored e.g. though
+            .cvsignore)</para>
+          </listitem>
+
+          <listitem>
+            <para>Modified (locally changed, added or removed)</para>
+          </listitem>
+        </itemizedlist></para>
 
       <para>If you have several changes scattered in several directories or in
-      a large tree, the &#39;Recurse&#39; tooggle is flattens the directory
-      listing. This is especially useful in conjunction with only the modified
-      filter active.</para>
+      a large tree, the 'Recurse' tooggle is flattens the directory listing.
+      This is especially useful in conjunction with only the modified filter
+      active.</para>
     </sect1>
 
     <sect1 id="sourcecontrol_viewing">
@@ -352,8 +400,9 @@
       changes.</para>
 
       <para>You can examine many changes at once using
-      <mousebutton>Shift+Click</mousebutton> and <mousebutton>Control+Click</mousebutton>
-      to select multiple items.</para>
+      <mousebutton>Shift+Click</mousebutton> and
+      <mousebutton>Control+Click</mousebutton> to select multiple
+      items.</para>
     </sect1>
 
     <sect1 id="sourcecontrol_changes">

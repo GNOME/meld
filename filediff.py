@@ -102,6 +102,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
         self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
         self._update_regexes()
+        self.warned_bad_comparison = False
         if sourceview_available:
             # ugly hack. http://bugzilla.gnome.org/show_bug.cgi?id=140071
             # will remove the need for this.
@@ -189,7 +190,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for r in [ misc.ListItem(i) for i in self.prefs.regexes.split("\n") ]:
             if r.active:
                 try:
-                    self.regexes.append( re.compile(r.value+"(?m)") )
+                    self.regexes.append( (re.compile(r.value+"(?m)"), r.value) )
                 except re.error, e:
                     pass
 
@@ -241,28 +242,34 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._update_cursor_status(buffer)
 
     def _get_texts(self, raw=0):
-        class FakeTextRaw(object):
-            def __init__(self, buf, regexes):
-                self.buf = buf
-            def __getslice__(self, lo, hi):
-                b = self.buf
-                return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")[:-1]
-        class FakeTextFiltered(object):
-            def __init__(self, buf, regexes):
-                self.buf, self.regexes = buf, regexes
+        class FakeText(object):
+            def __init__(self, buf, textfilter):
+                self.buf, self.textfilter = buf, textfilter
             def __getslice__(self, lo, hi):
                 b = self.buf
                 txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
-                for r in self.regexes:
-                    txt = r.sub("", txt)
-                return txt.split("\n")[:-1]
-        FakeText = (FakeTextFiltered,FakeTextRaw)[raw]
+                txt = self.textfilter(txt)
+                return txt.split("\n")
         class FakeTextArray(object):
-            def __init__(self, bufs, regexes):
-                self.texts = [FakeText(b, regexes) for b in  bufs]
+            def __init__(self, bufs, textfilter):
+                self.texts = [FakeText(b, textfilter) for b in  bufs]
             def __getitem__(self, i):
                 return self.texts[i]
-        return FakeTextArray( [t.get_buffer() for t in self.textview], self.regexes )
+        return FakeTextArray( [t.get_buffer() for t in self.textview], [self._filter_text, lambda x:x][raw] )
+
+    def _filter_text(self, txt):
+        def killit(m):
+            assert m.group().count("\n") == 0
+            return ""
+        try:
+            for c,r in self.regexes:
+                txt = c.sub(killit,txt)
+        except AssertionError:
+            if self.warned_bad_comparison == False:
+                misc.run_dialog(_("Regular expression '%s' changed the number of lines in the file. " \
+                    "Comparison will be incorrect. See the user manual for more details.") % r)
+                self.warned_bad_comparison = True
+        return txt
 
     def after_text_insert_text(self, buffer, iter, newtext, textlen):
         lines_added = newtext.count("\n")
@@ -623,8 +630,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield 1
         self.undosequence.clear()
         yield _("[%s] Computing differences") % self.label_text
-        for r in self.regexes:
-            panetext = [r.sub("",p) for p in panetext]
+        panetext = [self._filter_text(p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
