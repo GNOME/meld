@@ -26,4 +26,5 @@ release:
 	cvs tag release-$(subst .,_,$(VERSION))
 	ssh steve9000@meld.sf.net python make_release $(VERSION)
 	galeon -x http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
-
+	galeon -x http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
+	
