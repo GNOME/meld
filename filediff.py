@@ -174,9 +174,6 @@ class FileDiff(gnomeglade.Component):
             self.statusbar.add_status("Setting '%s' to '%s' default encoding" % (key,value) )
 
     def on_key_press_event(self, object, event):
-        for t in self.textview: # key event bug workaround
-            if t.is_focus() and object != t:
-                return
         x = self.keylookup.get(event.keyval, 0)
         self.keymask |= x
         for l in self.linkmap[:self.num_panes-1]:
@@ -185,9 +182,6 @@ class FileDiff(gnomeglade.Component):
             l.queue_draw_area(0,      0, w, a[3])
             l.queue_draw_area(a[2]-w, 0, w, a[3])
     def on_key_release_event(self, object, event):
-        for t in self.textview: # key event bug workaround
-            if t.is_focus() and object != t:
-                return
         x = self.keylookup.get(event.keyval, 0)
         self.keymask &= ~x
         for l in self.linkmap[:self.num_panes-1]:
@@ -195,13 +189,6 @@ class FileDiff(gnomeglade.Component):
             w = self.pixbuf_copy0.get_width()
             l.queue_draw_area(0,      0, w, a[3])
             l.queue_draw_area(a[2]-w, 0, w, a[3])
-
-    def on_linkmap_focus_in_event(self, *args):
-        #print args
-        return 1
-    def on_linkmap_focus_out_event(self, *args):
-        #print args
-        return 1
 
     def is_modified(self):
         state = map(lambda x: x.get_buffer().get_data("modified"), self.textview)
@@ -684,6 +671,12 @@ class FileDiff(gnomeglade.Component):
         self.next_diff(event.direction)
 
     def on_linkmap_button_press_event(self, area, event):
+        self.focus_before_click = None
+        for t in self.textview:
+            if t.is_focus():
+                self.focus_before_click = t
+                break
+        area.grab_focus()
         self.mouse_chunk = None
         alloc = area.get_allocation()
         (wtotal,htotal) = alloc.width, alloc.height
@@ -702,7 +695,7 @@ class FileDiff(gnomeglade.Component):
             side = 1
             rect_x = wtotal - pix_width
         else:
-            return
+            return  1
         adj = self.scrolledwindow[which+side].get_vadjustment()
         func = lambda c: c[1] * self.pixels_per_line - adj.value
 
@@ -720,8 +713,12 @@ class FileDiff(gnomeglade.Component):
                 self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
                 break
         #print self.mouse_chunk
+        return 1
 
     def on_linkmap_button_release_event(self, area, event):
+        if self.focus_before_click:
+            self.focus_before_click.grab_focus()
+            self.focus_before_click = None
         if self.mouse_chunk:
             (src,dst), rect, chunk = self.mouse_chunk
             # check we're still in button
@@ -749,5 +746,6 @@ class FileDiff(gnomeglade.Component):
                     b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
                     b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
                     self.on_text_end_user_action()
+        return 1
 
 gobject.type_register(FileDiff)

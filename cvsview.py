@@ -409,11 +409,6 @@ class CvsView(gnomeglade.Component):
         path = fileentry.get_full_path(0)
         self.set_location(path)
 
-    def on_key_press_event(self, object, event):
-        pass
-    def on_key_release_event(self, object, event):
-        pass
-
     def _get_selected_files(self):
         ret = []
         def gather(model, path, iter):

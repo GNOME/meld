@@ -239,14 +239,6 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # General events and callbacks
     #
-    def on_key_press_event(self, object, event):
-        misc.safe_apply( self.current_doc(), "on_key_press_event", (object,event) )
-        return 0
-
-    def on_key_release_event(self, object, event):
-        misc.safe_apply( self.current_doc(), "on_key_release_event", (object,event) )
-        return 0
-
     def on_delete_event(self, *extra):
         return self.on_menu_quit_activate()
 
