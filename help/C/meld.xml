@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<book id="index">
+  <title>Meld Users Manual</title>
+
+  <bookinfo>
+    <title>Meld Users Manual</title>
+
+    <authorgroup>
+      <author>
+        <firstname>Stephen</firstname>
+
+        <surname>Kennedy</surname>
+
+        <email>stevek@gnome.org</email>
+      </author>
+    </authorgroup>
+
+    <copyright>
+      <year>2004</year>
+
+      <holder>Stephen Kennedy</holder>
+    </copyright>
+
+    <releaseinfo>This is version 0.1 of the meld manual, describing meld 0.9.6</releaseinfo>
+  </bookinfo>
+
+  <chapter id="introduction">
+    <title>Introduction</title>
+
+    <sect1 id="introduction_whatismeld">
+      <title>What is meld</title>
+
+      <para>Meld views differences between files and between directories. Meld
+      makes it easy to isolate and merge these differences.</para>
+    </sect1>
+
+    <sect1 id="introduction_startingmeld">
+      <title>Starting meld</title>
+
+      <sect2>
+        <title>Command line arguments</title>
+
+        <variablelist>
+          <varlistentry>
+            <term><userinput>meld</userinput></term>
+
+            <listitem>
+              <para>start meld with the new document dialog</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><userinput>meld &#60;file&#62; &#60;file&#62; [file]</userinput></term>
+
+            <listitem>
+              <para>start meld with either a two way or three way file
+              comparison</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><userinput>meld &#60;dir&#62; &#60;dir&#62; [dir]</userinput></term>
+
+            <listitem>
+              <para>start meld with either a two way or three way file
+              comparison</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><userinput>meld &#60;dir|file&#62;</userinput></term>
+
+            <listitem>
+              <para>start meld with the source control browser</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <note>
+          <para>&#34;&#60;&#62;&#34; demote required arguments, &#34;[]&#34;
+          denote optional arguments and &#34;|&#34; a choice.</para>
+        </note>
+
+        <note>
+          <para>Run <userinput>meld --help</userinput> for a complete list of
+          options</para>
+        </note>
+      </sect2>
+    </sect1>
+  </chapter>
+
+  <chapter id="filecompare">
+    <title>File Comparison</title>
+
+    <sect1 id="filecompare_starting">
+      <title>Starting</title>
+
+      <para>Use <guimenu>File...-&#62;New...-&#62;File Comparison</guimenu> to
+      start a new file comparison. You can compare two or three files.</para>
+
+      <para>For two way comparisons the original is shown in the left pane and
+      the modified version in the right pane by convention.</para>
+
+      <para>For three way comparisons, the original is shown in the centre
+      pane and the left and right panes show the modified versions. By
+      convention we put the locally modified file in the right pane.</para>
+    </sect1>
+
+    <sect1 id="filecompare_summary">
+      <title>Change Summary</title>
+
+      <para>The location of the changes is summarised in the window margins at
+      the far left and right. By default green marks insertions and deletions
+      and blue marks changes.</para>
+
+      <para>You can jump to an individual change by clicking in the margin or
+      using the scrollbar.</para>
+    </sect1>
+
+    <sect1 id="filecompare_detailed">
+      <title>Detailed View</title>
+
+      <para>Detailed differences are shown in the text and central pane.
+      Inserted text is shown with a solid background. Lines containing changes
+      are marked with a light background with the individual changes
+      highlighted with a stronger colour.</para>
+
+      <para>The area between each file shows where each change occurs in the
+      other file. You can scroll through the changes by rolling the mouse
+      wheel over this area or with keyboard shortcuts <keysym>Control+D</keysym>,
+      <keysym>Control+E</keysym>.</para>
+    </sect1>
+
+    <sect1 id="filecompare_editing">
+      <title>Editing</title>
+
+      <para>You can edit the files as you would in a normal text editor. The
+      differences will update automatically. Use <keysym>Control+F</keysym> to
+      search and <keysym>Control+G</keysym> to repeat the last search.</para>
+
+      <para>You can also apply changes by clicking the merge buttons (&#34;<guiicon>-&#62;</guiicon>&#34;
+      and &#34;<guiicon>&#60;-</guiicon>&#34;). Holding <keysym>Shift</keysym>
+      allows blocks to be deleted. Holding <keysym>Control</keysym> allows the
+      current change to be inserted before or after the other change.</para>
+
+      <para>You can apply all the changes from a given file by
+      <mousebutton>right clicking</mousebutton> a text pane and choosing
+      <command>Copy all left</command> or <command>Copy all right</command>.
+      You can also launch an external editor from this menu. Configure the
+      external editor in <guimenu>Settings-&#62;Preferences-&#62;Editor</guimenu></para>
+    </sect1>
+
+    <sect1 id="filecompare_filtering">
+      <title>Filtering</title>
+
+      <para>You can ignore certain types of differences in order to locate
+      important differences. All these settings are available from
+      <guimenu>Settings-&#62;Preferences-&#62;Text Filters</guimenu>.</para>
+
+      <sect2>
+        <title>Regular Expressions</title>
+
+        <para>When comparing files, each selected regular expression is run in
+        turn over each line of input. Anything matching the expression is
+        removed from the input.<note><para>See the python re module for more
+        information on regular expressions</para></note><note><para>Differences
+        are computed line-by-line so multiline regulare expressions will
+        likely have unintended consequences.</para></note></para>
+      </sect2>
+
+      <sect2>
+        <title>Blank Lines</title>
+
+        <para>Changes which insert or remove blank lines can be ignored. This
+        option is most useful in conjunction with one or more regular
+        expression filters.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="filecompare_saving">
+      <title>Saving</title>
+
+      <para>When you have unsaved changes, a disk icon will appear beside the
+      file name of the changed file. The tab label and window title also have
+      an asterix after the file name.</para>
+
+      <para>Save a file pressing <keysym>Control+s</keysym>, by selecting
+      <guimenu>File-&#62;Save</guimenu> from the menu or by the toolbar save
+      button. All of these save the currently focussed file (the file
+      containing the edit cursor)</para>
+    </sect1>
+
+    <sect1 id="filecompare_status">
+      <title>Status Bar</title>
+
+      <para>The status bar shows the cursor location (line and column) and
+      also progress messages as files are initially loaded and compared.</para>
+    </sect1>
+  </chapter>
+
+  <chapter id="foldercompare">
+    <title>Folder Comparison</title>
+
+    <sect1 id="foldercompare_starting">
+      <title>Starting</title>
+
+      <para>Use <guimenu>File...-&#62;New...-&#62;Directory Comparison</guimenu>
+      to start a new directory comparison. You can compare two or three
+      directories.</para>
+
+      <para>For two way comparisons the original is shown in the left pane and
+      the modified version in the right pane by convention.</para>
+
+      <para>For three way comparisons, the original is shown in the centre
+      pane and the left and right panes show the modified versions. By
+      convention we put the locally modified file in the right pane.</para>
+    </sect1>
+
+    <sect1 id="foldercompare_summary">
+      <title>Change Summary</title>
+
+      <para>Similarly to the file comparison, the window margins mark file
+      deletions, creations and modifications.</para>
+
+      <para>You can jump to an individual change by clicking in the margin or
+      using the scrollbar.</para>
+    </sect1>
+
+    <sect1 id="foldercompare_detailed">
+      <title>Detailed View</title>
+
+      <para>Modified files are highlighted with red, created files with green
+      and deleted files with a strikethrough. See also <xref
+      linkend="dir_content_filtering" /></para>
+
+      <para>The file or folder most recently modified has a red dot
+      superimposed on its icon. More detailed information such as file
+      permission and modification time can be seen in the status bar when a
+      file is selected.</para>
+
+      <para>Use the mouse or the the cursor keys <keysym>Up</keysym>,
+      <keysym>Down</keysym>, <keysym>Left</keysym> and <keysym>Right</keysym>
+      to navigate. Additionally <keysym>Control+D</keysym> and
+      <keysym>Control+E</keysym> move to the next and previous modification
+      respectively.</para>
+    </sect1>
+
+    <sect1 id="foldercompare_editing">
+      <title>Editing</title>
+
+      <para>Activate an item with <mousebutton>double click</mousebutton> or
+      <keysym>Return</keysym> to start an individual file comparison.</para>
+
+      <para>Additional options are available from a
+      <mousebutton>right click</mousebutton> context menu.</para>
+
+      <para>Use <mousebutton>Shift+Click</mousebutton> and
+      <mousebutton>Control+Click</mousebutton> to select multiple items.</para>
+    </sect1>
+
+    <sect1 id="foldercompare_filtering">
+      <title>Filtering</title>
+
+      <para>Often the initial comparison will contain too much spurious
+      information. You can use filters to isolate the differences which are
+      important to you.</para>
+
+      <sect2>
+        <title>Explicit Hiding</title>
+
+        <para>Use the toolbar button to hide an item (and all subitems for
+        directories).</para>
+      </sect2>
+
+      <sect2>
+        <title>Case Sensitivity</title>
+
+        <para>By default filename comparisons are case sensitive. Use the
+        toolbar button to toggle case sensitivty of filenames.</para>
+      </sect2>
+
+      <sect2>
+        <title>State Filtering</title>
+
+        <para>All items have a state which is one of:
+        <itemizedlist><listitem><para>Modified (there is some content
+        difference between files which are present)</para></listitem><listitem><para>New
+        (there is no content difference between present files, but the file is
+        missing from at least one directory)</para></listitem><listitem><para>Identical
+        (all files have equal content and are all present)</para></listitem></itemizedlist></para>
+
+        <para>Use the toolbar buttons to control which items are shown by
+        their state.<note><para>In the current version, only files are
+        filtered by state. Directories are always shown.</para></note></para>
+      </sect2>
+
+      <sect2>
+        <title>Name Filtering</title>
+
+        <para>You can hide selected filename patterns from the comparison
+        using the toolbar buttons. Use <guimenu>Settings-&#62;Preferences-&#62;File
+        Filters</guimenu> to customise the file patterns.</para>
+      </sect2>
+
+      <sect2 id="dir_content_filtering">
+        <title>Content Filtering</title>
+
+        <para>If differences between files exist, but all differences match
+        the active regular expressions specified in <guimenu>Settings-&#62;Preferences-&#62;Text
+        Filters</guimenu>, then the filename is not highlighted in red, but is
+        insted italicised in regular font.</para>
+      </sect2>
+    </sect1>
+  </chapter>
+
+  <chapter id="sourcecontrol">
+    <title>Source Control</title>
+
+    <sect1 id="sourcecontrol_starting">
+      <title>Starting</title>
+
+      <para>Use <guimenu>File...-&#62;New...-&#62;CVS Browser</guimenu> or
+      <guimenu>File...-&#62;New...-&#62;SVN Browser</guimenu> to start
+      browsing a working copy.</para>
+
+      <para>The browser is used for examining and commiting or reverting local
+      changes. It is not intended to be a complete source control client.</para>
+    </sect1>
+
+    <sect1 id="sourcecontrol_filtering">
+      <title>Filtering</title>
+
+      <para>The browser can filter on four states:<itemizedlist><listitem><para>Normal
+      (the file is unchanged since it was checked out)</para></listitem><listitem><para>Non
+      controlled (the file exists locally but was not checked out)</para></listitem><listitem><para>Ignored
+      (the file is explicitly ignored e.g. though .cvsignore)</para></listitem><listitem><para>Modified
+      (locally changed, added or removed)</para></listitem></itemizedlist></para>
+
+      <para>If you have several changes scattered in several directories or in
+      a large tree, the &#39;Recurse&#39; tooggle is flattens the directory
+      listing. This is especially useful in conjunction with only the modified
+      filter active.</para>
+    </sect1>
+
+    <sect1 id="sourcecontrol_viewing">
+      <title>Viewing Differences</title>
+
+      <para>Activating an unmodified file opens it in the file viewer.
+      Activating a modified file opens up a two way diff to examine your
+      changes.</para>
+
+      <para>You can examine many changes at once using
+      <mousebutton>Shift+Click</mousebutton> and <mousebutton>Control+Click</mousebutton>
+      to select multiple items.</para>
+    </sect1>
+
+    <sect1 id="sourcecontrol_changes">
+      <title>Making Changes</title>
+
+      <para>The toolbar contains commands to perform the most common source
+      control operations. These operations are also accessible through a
+      context menu.</para>
+    </sect1>
+
+    <sect1 id="sourcecontrol_console">
+      <title>Viewing Console</title>
+
+      <para>At the bottom of the source control window is an expander
+      containing all the source control operations and their output. Click the
+      expander bar to toggle between hiding and showing the console.</para>
+    </sect1>
+  </chapter>
+</book>
