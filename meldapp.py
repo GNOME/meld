@@ -481,7 +481,8 @@ class MeldApp(gnomeglade.GnomeApp):
 usage_string = """Meld is a file and directory comparison tool. Usage:
 
     meld                        Start with no windows open
-    meld <dir>                  Start with CVS browser
+    meld <dir>                  Start with CVS browser in 'dir'
+    meld <file>                 Start with CVS diff of 'file'
     meld <file> <file> [file]   Start with 2 or 3 way file comparison
     meld <dir> <dir> [dir]      Start with 2 or 3 way directory comparison
 
