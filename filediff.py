@@ -1145,11 +1145,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 rect_x = wtotal - pix_width
             else:
                 return  1
-            adj = self.scrolledwindow[which+side].get_vadjustment()
-            func = lambda c: self._line_to_pixel(which, c[1]) - adj.value
-
             src = which + side
             dst = which + 1 - side
+            adj = self.scrolledwindow[src].get_vadjustment()
+            func = lambda c: self._line_to_pixel(src, c[1]) - adj.value
+
             for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
                 if c[0] == "insert":
                     continue
