@@ -90,10 +90,10 @@ def all(o):
 #
 ################################################################################
 def read_pipe(command, callback=None):
-    pipe = os.popen(command)
+    childin, childout, childerr = os.popen3(command)
     bits = []
     while len(bits)==0 or bits[-1]!="":
-        state = select.select([pipe], [], [pipe], 0.1)
+        state = select.select([childout], [], [childout], 0.1)
         if len(state[0])==0:
             if len(state[2])==0:
                 if callback:
@@ -102,7 +102,7 @@ def read_pipe(command, callback=None):
                 raise "Error reading pipe"
         else:
             try:
-                bits.append( pipe.read(4096) ) # get buffer size
+                bits.append( childout.read(4096) ) # get buffer size
             except IOError:
                 break # ick need to fix
     return "".join(bits)
@@ -113,8 +113,8 @@ def read_pipe(command, callback=None):
 #
 ################################################################################
 def write_pipe(command, text):
-    p = os.popen(command, "w")
-    w = p.write(text)
+    childin, childout, childerr = os.popen3(command, "w")
+    childin.write(text)
 
 ################################################################################
 #

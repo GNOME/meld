@@ -13,6 +13,8 @@ import re
 import misc
 import gnomeglade
 
+CVS_COMMAND = "cvs -z3 -q".split()
+
 ################################################################################
 #
 # Local Functions
@@ -62,6 +64,7 @@ def _lookup_cvs_files(files, dirs):
     retfiles = []
     retdirs = []
     matches = re.findall("^(D?)/([^/]+)/(.+)$(?m)", entries)
+    matches.sort()
 
     for match in matches:
         isdir = match[0]
@@ -116,6 +119,7 @@ def _find(start):
     cdirs = []
     try:
         entries = os.listdir(start)
+        entries.sort()
     except OSError:
         entries = []
     for f in filter(lambda x: x!="CVS" and x[0]!=".", entries):
@@ -167,9 +171,7 @@ class CommitDialog(gnomeglade.Dialog):
         buf = self.textview.get_buffer()
         msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
-            msg = msg.replace("'", r"\'")
-            #print "cvs commit -m '%s'" % msg
-            self.parent._command_on_selected("cvs -z3 -q commit -m '%s'" % msg )
+            self.parent._command_on_selected(CVS_COMMAND + ["commit", "-m", "msg"] )
         self.previousentry.append_history(1, msg)
         self.widget.destroy()
 
@@ -247,7 +249,7 @@ class CvsView(gnomeglade.Component):
         else:
             if entry.cvs == CVS_MODIFIED:
                 #print "DIFF", entry.path
-                patch = self._command("cvs -z3 -q diff -u %s" % entry.path, refresh=0)
+                patch = self._command(CVS_COMMAND + ["diff", "-u", entry.path] )
                 #print "GOT", patch
                 if patch:
                     self.show_patch(patch)
@@ -383,40 +385,40 @@ class CvsView(gnomeglade.Component):
         def progress():
             self.emit("working-hard", 1)
             self.flushevents()
-        self.statusbar.add_status(command, timeout=0)
+        msg = " ".join(command)
+        self.statusbar.add_status(msg, timeout=0)
         r = misc.read_pipe(command, progress )
-        self.statusbar.remove_status(command)
+        self.statusbar.remove_status(msg)
         self.emit("working-hard", 0)
         if refresh:
             self.refresh()
         return r
         
     def _command_on_selected(self, command, refresh=1):
-        f = self._get_selected_files()
+        files = self._get_selected_files()
 
-        if len(f):
-            fullcmd = "%s %s" % (command, " ".join(f) )
-            return self._command(fullcmd, refresh)
+        if len(files):
+            return self._command(command + files, refresh)
         else:
             self.statusbar.add_status("Select some files first.")
             return None
     def on_button_update_clicked(self, object):
-        self._command_on_selected("cvs -z3 -q update -dP")
+        self._command_on_selected(CVS_COMMAND + ["update","-dP"] )
     def on_button_commit_clicked(self, object):
         dialog = CommitDialog( self )
         dialog.run()
 
     def on_button_add_clicked(self, object):
-        self._command_on_selected("cvs add")
+        self._command_on_selected(CVS_COMMAND + ["add"] )
     def on_button_remove_clicked(self, object):
-        self._command_on_selected("cvs rm -f")
+        self._command_on_selected(CVS_COMMAND + ["rm", "-f"] )
     def on_button_delete_clicked(self, object):
         for f in self._get_selected_files():
             try: os.unlink(f)
             except IOError: pass
         self.refresh()
     def on_button_diff_clicked(self, object):
-        patch = self._command_on_selected("cvs -z3 -q diff -u", refresh=0)
+        patch = self._command_on_selected(CVS_COMMAND + ["diff", "-u"], refresh=0)
         self.show_patch(patch)
 
     def show_patch(self, patch):
@@ -441,7 +443,7 @@ class CvsView(gnomeglade.Component):
                 open(destfile,"w").close()
             diffs.append( (destfile, file) )
 
-        misc.write_pipe("patch --strip=0 --reverse --directory=%s" % tmpdir, patch)
+        misc.write_pipe(["patch","--strip=0","--reverse","--directory=%s" % tmpdir], patch)
         for d in diffs:
             self.emit("create-diff", d)
 
