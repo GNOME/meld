@@ -119,7 +119,7 @@ def _find(start):
         entries = os.listdir(start)
     except OSError:
         entries = []
-    for f in filter(lambda x: x!="CVS", entries):
+    for f in filter(lambda x: x!="CVS" and x[0]!=".", entries):
         fname = start + f
         lname = fname
         if os.path.isdir(fname):
@@ -244,14 +244,18 @@ class CvsView(gnomeglade.Component):
                 model.set_value(iter, 4, f)
             self.emit("working-hard", 0)
         else:
-            files = filter(showable, find(location))
+            allfiles = find(location)
+            files = filter(showable, allfiles)
             for f in files:
                 iter = model.append(me)
                 model.set_value(iter, 1, f.name)
                 if f.isdir:
                     model.set_value(iter, 0, self.image_dir )
                     child = model.append(iter)
-                    model.set_value(child, 1, "<empty>" )
+                    if self.button_unknown.get_active():
+                        model.set_value(child, 1, "<empty>" )
+                    else:
+                        model.set_value(child, 1, "<no cvs files>" )
                 else:
                     model.set_value(iter, 0, self.image_file )
                 model.set_value(iter, 2, self.colors[f.cvs] )
@@ -282,7 +286,7 @@ class CvsView(gnomeglade.Component):
 
     def set_location(self, location):
         #print "1", location
-        if location[-1]!="/":
+        if len(location) and location[-1]!="/":
             location += "/"
         #print "2", location
         abscurdir = os.path.abspath(os.curdir)

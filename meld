@@ -25,7 +25,7 @@ def main():
     if len(sys.argv) == 1:
         pass
     elif len(sys.argv) == 2:
-        app.append_cvsview( sys.argv[1] )
+        app.append_cvsview( [sys.argv[1]] )
     elif len(sys.argv) in (3,4):
         app.append_filediff( sys.argv[1:] )
     app.mainloop()

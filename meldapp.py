@@ -24,7 +24,7 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.5.2"
+version = "0.5.3"
 
 ################################################################################
 #
@@ -191,7 +191,7 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_new_dirdiff_activate(self, *extra):
         BrowseFileDialog(self,["Original Directory", "Modified Directory"], self.append_dirdiff, isdir=1)
     def on_new_cvsview_activate(self, *extra):
-        self.append_cvsview(None)
+        BrowseFileDialog(self,["Root CVS Directory"], self.append_cvsview, isdir=1)
     def on_refresh_doc_clicked(self, *args):
         self.current_doc().refresh()
     def on_undo_doc_clicked(self, *extra):
@@ -244,7 +244,8 @@ class MeldApp(gnomeglade.GnomeApp):
         doc.connect("label-changed", self.on_doc_label_changed)
         doc.label_changed()
         doc.refresh()
-    def append_cvsview(self, location=None):
+    def append_cvsview(self, locations):
+        location = locations[0]
         doc = cvsview.CvsView(location)
         nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
         self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
