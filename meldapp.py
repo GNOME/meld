@@ -470,7 +470,7 @@ class MeldPreferences(prefs.Preferences):
 
     def get_toolbar_style(self):
         if self.toolbar_style == 0:
-            style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style')
+            style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style') or "both"
             style = style.replace("-","_")
             style = {"both":gtk.TOOLBAR_BOTH, "text":gtk.TOOLBAR_TEXT,
                      "icon":gtk.TOOLBAR_ICONS, "icons":gtk.TOOLBAR_ICONS,
