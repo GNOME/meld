@@ -83,7 +83,7 @@ class Preferences:
         if self.use_custom_font:
             return self.custom_font
         else:
-            return self.gconf.get_string('/desktop/gnome/interface/monospace_font_name')
+            return self.gconf.get_string('/desktop/gnome/interface/monospace_font_name') or "Monospace 10"
     def get_toolbar_style(self):
         if self.toolbar_style == 0:
             style = self.gconf.get_string('/desktop/gnome/interface/toolbar_style')
