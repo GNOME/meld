@@ -94,6 +94,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
         self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        self._update_regexes()
         if sourceview_available:
             # ugly hack. http://bugzilla.gnome.org/show_bug.cgi?id=140071
             # will remove the need for this.
@@ -119,6 +120,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.linediffer = diffutil.Differ()
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK )
+            l.set_double_buffered(0) # we call paint_begin ourselves
         self.bufferdata = []
         for text in self.textview:
             text.set_wrap_mode( self.prefs.edit_wrap_lines )
@@ -171,6 +173,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.last_search = None
         self.set_num_panes(num_panes)
 
+    def _update_regexes(self):
+        self.regexes = []
+        for r in [ misc.ListItem(i) for i in self.prefs.regexes.split("\n") ]:
+            if r.active:
+                try:
+                    self.regexes.append( re.compile(r.value+"(?m)") )
+                except re.error, e:
+                    pass
+
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
             buf = textview.get_buffer()
@@ -218,19 +229,29 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.queue_draw()
         self._update_cursor_status(buffer)
 
-    def _get_texts(self):
-        class FakeText(object):
-            def __init__(self, buf):
+    def _get_texts(self, raw=0):
+        class FakeTextRaw(object):
+            def __init__(self, buf, regexes):
                 self.buf = buf
             def __getslice__(self, lo, hi):
                 b = self.buf
                 return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")[:-1]
+        class FakeTextFiltered(object):
+            def __init__(self, buf, regexes):
+                self.buf, self.regexes = buf, regexes
+            def __getslice__(self, lo, hi):
+                b = self.buf
+                txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
+                for r in self.regexes:
+                    txt = r.sub("", txt)
+                return txt.split("\n")[:-1]
+        FakeText = (FakeTextFiltered,FakeTextRaw)[raw]
         class FakeTextArray(object):
-            def __init__(self, bufs):
-                self.texts = map(FakeText, bufs)
+            def __init__(self, bufs, regexes):
+                self.texts = [FakeText(b, regexes) for b in  bufs]
             def __getitem__(self, i):
                 return self.texts[i]
-        return FakeTextArray( [t.get_buffer() for t in self.textview] )
+        return FakeTextArray( [t.get_buffer() for t in self.textview], self.regexes )
 
     def after_text_insert_text(self, buffer, iter, newtext, textlen):
         lines_added = newtext.count("\n")
@@ -288,6 +309,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.textview[i].get_buffer(),
                         self.bufferdata[i].filename,
                         self.prefs.use_syntax_highlighting )
+        elif key == "regexes":
+            self._update_regexes()
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -588,6 +611,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield 1
         self.undosequence.clear()
         yield _("[%s] Computing differences") % self.label_text
+        for r in self.regexes:
+            panetext = [r.sub("",p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
@@ -603,31 +628,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield 0
 
     def _update_highlighting(self, range0, range1):
-        if 0:
-            def line_range(diffs, range, offset, linerange):
-                if len(diffs):
-                    if range[0] > 0:
-                        chunk = diffs[range[0]-1]
-                        l0c = chunk[offset+1]
-                    else:
-                        l0c = linerange[0]
-                    if range[1] < len(diffs):
-                        chunk = diffs[range0[1]]
-                        h0c = chunk[offset]
-                    else:
-                        h0c = linerange[1]
-                    return l0c, h0c
-                return None
-            ranges = [None, None, None, None]
-            ranges[0] = line_range(self.linediffer.diffs[0], range0, 3, (0, self.linediffer.seqlength[0]) )
-            ranges[1] = line_range(self.linediffer.diffs[0], range0, 1, (0, self.linediffer.seqlength[1]) )
-            ranges[2] = line_range(self.linediffer.diffs[1], range1, 1, (0, self.linediffer.seqlength[1]) )
-            ranges[3] = line_range(self.linediffer.diffs[1], range1, 3, (0, self.linediffer.seqlength[2]) )
-            buffers = [t.get_buffer() for t in self.textview]
-            buffers.insert(1, buffers[1])
-            buffers = [t.get_buffer() for t in self.textview]
-            ranges = [(0, length) for length in self.linediffer.seqlength]
-        #for b, l in zip( buffers, ranges ):
         buffers = [t.get_buffer() for t in self.textview]
         for b in buffers:
             taglist = ["delete line", "conflict line", "replace line", "inline line"]
@@ -635,12 +635,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for tagname in taglist:
                 tag = table.lookup(tagname)
                 b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
-        #for chunk in self.linediffer.all_changes_in_range(self._get_texts(), range0[0], range0[1], range1[0], range1[1]):
         for chunk in self.linediffer.all_changes(self._get_texts()):
             for i,c in misc.enumerate(chunk):
                 if c:
                     if c[0] == "insert":
                         buf = buffers[i*2]
+                        #txt = self._get_texts()[0][c[3]:c[4]]
+                        #print txt, "".join(txt) == ""
+                        #if "".join(txt) == "": continue
+                        #print "OK"
                         tag = buf.get_tag_table().lookup("delete line")
                         buf.apply_tag( tag, buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
                     elif c[0] == "delete":
@@ -659,8 +662,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
                             b.apply_tag(t, s, b.get_iter_at_line(l))
                         if 1:
-                            text1 = "\n".join( self._get_texts()[1  ][c[1]:c[2]] )
-                            textn = "\n".join( self._get_texts()[i*2][c[3]:c[4]] )
+                            text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] )
+                            textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] )
                             matcher = difflib.SequenceMatcher(None, text1, textn)
                             #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
                             tags = [b.get_tag_table().lookup("inline line") for b in bufs]
@@ -779,7 +782,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src_pane].get_vadjustment() ) and None )
 
         #
-        # refresh, _queue_refresh
+        # refresh
         #
     def refresh(self, junk=None):
         modified = [b.filename for b in self.bufferdata if b.modified]
@@ -945,7 +948,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if direction == gdk.SCROLL_DOWN:
             for c in self.linediffer.single_changes(1, self._get_texts()):
                 assert c[0] != "equal"
-                if c[1] > curline:
+                if c[1] > curline + 1:
                     break
         else: #direction == gdk.SCROLL_UP
             for chunk in self.linediffer.single_changes(1, self._get_texts()):
@@ -979,12 +982,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         area.meldgc = misc.struct(gc_delete=gcd, gc_insert=gcd, gc_replace=gcc, gc_conflict=gcx)
         area.meldgc.get_gc = lambda p: getattr(area.meldgc, "gc_"+p)
 
-    def on_textview_expose_event(self, textview, event):
-        gcd = textview.window.new_gc()
-        points = [(0,0), (100,100)]
-        textview.window.draw_lines(gcd, points  )
-        #print points
-
         #
         # linkmap drawing
         #
@@ -992,12 +989,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         window = area.window
         # not mapped? 
         if not window: return
-        alloc = area.get_allocation()
-        (wtotal,htotal) = alloc.width, alloc.height
-        
         if not hasattr(area, "meldgc"):
             self._setup_gcs(area)
         gctext = area.get_style().text_gc[0]
+
+        alloc = area.get_allocation()
+        (wtotal,htotal) = alloc.width, alloc.height
+        window.begin_paint_rect( (0,0,wtotal,htotal) )
         window.clear()
 
         # gain function for smoothing
@@ -1031,7 +1029,28 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
         visible = [None] + bounds(which) + bounds(which+1)
 
+        def consume_blank_lines(txt):
+            lo, hi = 0, 0
+            for l in txt:
+                if len(l)==0:
+                    lo += 1
+                else:
+                    break
+            for l in txt[lo:]:
+                if len(l)==0:
+                    hi += 1
+                else:
+                    break
+            return lo,hi
+
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
+            if self.prefs.ignore_blank_lines:
+                c1,c2 = consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
+                c3,c4 = consume_blank_lines( self._get_texts()[which+1][c[3]:c[4]] )
+                c = c[0], c[1]+c1,c[2]-c2, c[3]+c3,c[4]-c4
+                if c[1]==c[2] and c[3]==c[4]:
+                    continue
+
             assert c[0] != "equal"
             if c[2] < visible[1] and c[4] < visible[3]: # find first visible chunk
                 continue
@@ -1054,8 +1073,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 points = points0 + points1 + [points0[0]]
 
                 window.draw_polygon( gc(c[0]), 1, points)
-                window.draw_lines(gctext, points0  )
-                window.draw_lines(gctext, points1  )
+                window.draw_lines(gctext, points0)
+                window.draw_lines(gctext, points1)
             else:
                 w = wtotal
                 p = self.pixbuf_apply0.get_width()
@@ -1076,6 +1095,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # allow for scrollbar at end of textview
         mid = 0.5 * self.textview0.get_allocation().height
         window.draw_line(gctext, int(.25*wtotal), int(mid), int(.75*wtotal), int(mid) )
+        window.end_paint()
 
     def on_linkmap_scroll_event(self, area, event):
         self.next_diff(event.direction)
