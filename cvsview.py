@@ -245,37 +245,20 @@ class CvsView(gnomeglade.Component):
         tvc.add_attribute(rentext, "foreground", MODEL_COLOR)
         self.treeview.append_column(tvc)
 
-        tvc = gtk.TreeViewColumn("Location")
-        rentext = gtk.CellRendererText()
-        tvc.pack_start(rentext, 0)
-        tvc.add_attribute(rentext, "text", MODEL_LOCATION)
-        self.treeview.append_column(tvc)
-        self.treeview_column_location = tvc
+        def addCol(name, num):
+            tvc = gtk.TreeViewColumn(name)
+            rentext = gtk.CellRendererText()
+            tvc.pack_start(rentext, 0)
+            tvc.add_attribute(rentext, "text", num)
+            self.treeview.append_column(tvc)
+            return tvc
+
+        self.treeview_column_location = addCol("Location", MODEL_LOCATION)
         self.treeview_column_location.set_visible(0)
-
-        tvc = gtk.TreeViewColumn("Status")
-        rentext = gtk.CellRendererText()
-        tvc.pack_start(rentext, 0)
-        tvc.add_attribute(rentext, "text", MODEL_STATUS)
-        self.treeview.append_column(tvc)
-
-        tvc = gtk.TreeViewColumn("Rev")
-        rentext = gtk.CellRendererText()
-        tvc.pack_start(rentext, 0)
-        tvc.add_attribute(rentext, "text", MODEL_REVISION)
-        self.treeview.append_column(tvc)
-
-        tvc = gtk.TreeViewColumn("Tag")
-        rentext = gtk.CellRendererText()
-        tvc.pack_start(rentext, 0)
-        tvc.add_attribute(rentext, "text", MODEL_TAG)
-        self.treeview.append_column(tvc)
-
-        tvc = gtk.TreeViewColumn("Options")
-        rentext = gtk.CellRendererText()
-        tvc.pack_start(rentext, 0)
-        tvc.add_attribute(rentext, "text", MODEL_OPTIONS)
-        self.treeview.append_column(tvc)
+        addCol("Status", MODEL_STATUS)
+        addCol("Rev", MODEL_REVISION)
+        addCol("Tag", MODEL_TAG)
+        addCol("Options", MODEL_OPTIONS)
 
         self.colors = ["#888888", "#000000", "#ff0000", "#0000ff"]
         self.status = ["", "", "modified", "missing"]
@@ -318,6 +301,8 @@ class CvsView(gnomeglade.Component):
     def on_row_expanded(self, tree, me, path):
         model = self.treemodel
         location = model.get_value( me, MODEL_ENTRY ).path
+        assert len(location)
+        trimlength = len(location) - 1
 
         filtermask = 0
         if self.button_modified.get_active():
@@ -329,7 +314,7 @@ class CvsView(gnomeglade.Component):
         def update_file(i, f):
             model.set_value(i, MODEL_NAME, f.name)
             model.set_value(i, MODEL_COLOR, self.colors[f.cvs] )
-            model.set_value(i, MODEL_LOCATION, f.parent )
+            model.set_value(i, MODEL_LOCATION, "."+f.parent[trimlength:] )
             model.set_value(i, MODEL_STATUS, self.status[f.cvs])
             model.set_value(i, MODEL_ENTRY, f)
             model.set_value(i, MODEL_REVISION, f.rev)
