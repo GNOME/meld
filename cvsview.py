@@ -16,6 +16,7 @@
 
 from __future__ import generators
 
+import calendar
 import tempfile
 import gobject
 import shutil
@@ -133,7 +134,7 @@ def _lookup_cvs_files(files, dirs):
                 if plus >= 0:
                     cotime = 0
                 try:
-                    cotime = time.mktime( time.strptime(date) )
+                    cotime = calendar.timegm( time.strptime(date) )
                 except ValueError, e:
                     if not date.startswith("Result of merge"):
                         print "Unable to parse date '%s' in '%s/CVS/Entries'" % (date, directory)
