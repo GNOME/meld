@@ -11,6 +11,7 @@ rundiff:
 #	$(PROG) test/lao test/tzu test/tao
 #	$(PROG) test/file$(TESTNUM)*
 	$(PROG) ../old/oldmeld ../svnrepository/meld
+#	$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
 
 #checkfortabs:
 #	grep '	' meld *.py > /dev/null && echo -e '***\n*** TABS DETECTED\n***'

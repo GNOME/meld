@@ -462,9 +462,14 @@ def main():
         pass
 
     elif len(arg) == 1:
-        if os.path.isdir(arg[0]):
-            app.append_cvsview( [arg[0]] )
+        a = arg[0]
+        if os.path.isdir(a):
+            app.append_cvsview( [a] )
+        #TODO open cvs diff for a single file
+        #elif os.path.isfile(a):
+        #   app.append_cvsview( [os.path.dirname(a)] )
         else:
+            #app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
             app.usage("`%s' is not a directory, cannot open cvs view" % arg[0])
                 
     elif len(arg) in (2,3):
