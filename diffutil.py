@@ -48,7 +48,6 @@ class Differ:
             self.diffs = ([], [])
         elif len(text)==2:
             seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
-            print seq0
             seq0 = filter(lambda x: x[0]!="equal", seq0)
             #seq0 = _chunkify_and_filter(seq0, textlines)
             self.diffs = (seq0, [])
