@@ -37,9 +37,15 @@ import paths
 
 sourceview_available = 0
 
-try:
-    import sourceview as gsv
-    sourceview_available = 1
+for sourceview in "gtksourceview sourceview".split():
+    try:
+        gsv = __import__(sourceview)
+        sourceview_available = 1
+        break
+    except ImportError:
+        pass
+
+if sourceview_available:
     def set_highlighting_enabled(buf, fname, enabled):
         # gnome.vfs.get_mime_type seems to be broken. fake it.
         extmap = { "xml":"text/xml",
@@ -67,8 +73,6 @@ try:
         if gsl:
             buf.set_language(gsl)
         buf.set_highlight(enabled)
-except ImportError:
-    pass
 
 gdk = gtk.gdk
 

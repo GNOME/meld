@@ -37,11 +37,13 @@ import task
 # optional
 sourceview_available = 0
 
-try:
-    import sourceview
-    sourceview_available = 1
-except ImportError:
-    pass
+for sourceview in "gtksourceview sourceview".split():
+    try:
+        __import__(sourceview)
+        sourceview_available = 1
+        break
+    except ImportError:
+        pass
 
 version = "0.9.4.1"
 
