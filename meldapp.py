@@ -33,7 +33,7 @@ import cvsview
 import dirdiff
 import task
 
-version = "0.8.5"
+version = "0.9.0"
 developer = 0
 
 ################################################################################
@@ -94,7 +94,6 @@ class PreferencesDialog(gnomeglade.Component):
             label = self.notebook.get_tab_label(c).get_text()
             if not label.startswith("_"):
                 self.model.append( (label,) )
-
         self.prefs = parentapp.prefs
         # editor
         if self.prefs.use_custom_font:
@@ -109,6 +108,36 @@ class PreferencesDialog(gnomeglade.Component):
         self._map_widgets_into_lists( ["toolbar_style"] )
         self.draw_style[self.prefs.draw_style].set_active(1)
         self.toolbar_style[self.prefs.toolbar_style].set_active(1)
+        # filters
+        model = gtk.ListStore( type(""), type(0), type("") )
+        self.filterview.set_model(model)
+        def addTextCol(label, colnum, expand=0):
+            rentext = gtk.CellRendererText()
+            rentext.set_property("editable", 1)
+            def change_text(ren, row, text):
+                iter = model.get_iter( (int(row),))
+                model.set_value( iter, colnum, text)
+                self._update_filter_string()
+            rentext.connect("edited", change_text)
+            column = gtk.TreeViewColumn(label)
+            column.pack_start(rentext, expand=expand)
+            column.set_attributes(rentext, markup=colnum)
+            self.filterview.append_column(column)
+        def addToggleCol(label, colnum):
+            rentoggle = gtk.CellRendererToggle()
+            def change_toggle(ren, row):
+                iter = model.get_iter( (int(row),))
+                model.set_value( iter, colnum, not ren.get_active() )
+                self._update_filter_string()
+            rentoggle.connect("toggled", change_toggle)
+            column = gtk.TreeViewColumn(label)
+            column.pack_start(rentoggle, expand=0)
+            column.set_attributes(rentoggle, active=colnum)
+            self.filterview.append_column(column)
+        addTextCol("Name", 0)
+        addToggleCol("Active", 1)
+        addTextCol("Pattern", 2, expand=1)
+        self._update_filter_model()
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
         self._map_widgets_into_lists( ["save_encoding"] )
@@ -121,7 +150,103 @@ class PreferencesDialog(gnomeglade.Component):
         self.cvs_binary_fileentry.set_filename( self.prefs.cvs_binary )
         self.cvs_create_missing_check.set_active( self.prefs.cvs_create_missing )
         self.cvs_prune_empty_check.set_active( self.prefs.cvs_prune_empty )
-
+    #
+    # treeview
+    #
+    def on_treeview_cursor_changed(self, tree):
+        path, column = tree.get_cursor()
+        self.notebook.set_current_page(path[0])
+    #
+    # editor
+    #
+    def on_fontpicker_font_set(self, picker, font):
+        self.prefs.custom_font = font
+    def on_radiobutton_font_toggled(self, radio):
+        if radio.get_active():
+            custom = radio == self.radiobutton_custom_font
+            self.fontpicker.set_sensitive(custom)
+            self.prefs.use_custom_font = custom
+    def on_spinbutton_tabsize_changed(self, spin):
+        self.prefs.tab_size = int(spin.get_value())
+    def on_checkbutton_supply_newline_toggled(self, check):
+        self.prefs.supply_newline = check.get_active()
+    #
+    # display
+    #
+    def on_draw_style_toggled(self, radio):
+        if radio.get_active():
+            self.prefs.draw_style = self.draw_style.index(radio)
+    def on_toolbar_style_toggled(self, radio):
+        if radio.get_active():
+            self.prefs.toolbar_style = self.toolbar_style.index(radio)
+    #
+    # filters
+    #
+    def on_filters_new_clicked(self, button):
+        model = self.filterview.get_model()
+        iter = model.append()
+        model.set_value(iter, 0, "label")
+        model.set_value(iter, 2, "pattern")
+        self._update_filter_string()
+    def on_filters_delete_clicked(self, button):
+        selected = []
+        self.filterview.get_selection().selected_foreach(lambda store, path, iter: selected.append( path ) )
+        model = self.filterview.get_model()
+        for s in selected:
+            model.remove( model.get_iter(s) )
+        self._update_filter_string()
+    def on_filters_up_clicked(self, button):
+        selected = []
+        self.filterview.get_selection().selected_foreach(lambda store, path, iter: selected.append( path ) )
+        model = self.filterview.get_model()
+        for s in selected:
+            if s[0] > 0: # XXX need model.swap
+                old = model.get_iter(s[0])
+                iter = model.insert( s[0]-1 )
+                for i in range(3):
+                    model.set_value(iter, i, model.get_value(old, i) )
+                model.remove(old)
+                self.filterview.get_selection().select_iter(iter)
+        self._update_filter_string()
+    def on_filters_down_clicked(self, button):
+        selected = []
+        self.filterview.get_selection().selected_foreach(lambda store, path, iter: selected.append( path ) )
+        model = self.filterview.get_model()
+        for s in selected:
+            if s[0] < len(model)-1: # XXX need model.swap
+                old = model.get_iter(s[0])
+                iter = model.insert( s[0]+2 )
+                for i in range(3):
+                    model.set_value(iter, i, model.get_value(old, i) )
+                model.remove(old)
+                self.filterview.get_selection().select_iter(iter)
+        self._update_filter_string()
+    def on_filters_revert_clicked(self, button):
+        self.prefs.filters = self.prefs.get_default("filters")
+        self._update_filter_model()
+    def _update_filter_string(self):
+        model = self.filterview.get_model()
+        pref = []
+        for row in model:
+            pref.append("%s %s %s" % (row[0], row[1], row[2]))
+        self.prefs.filters = "\n".join(pref)
+    def _update_filter_model(self):
+        model = self.filterview.get_model()
+        model.clear()
+        for filtstring in self.prefs.filters.split("\n"):
+            filt = misc.Filter(filtstring)
+            iter = model.append()
+            model.set_value( iter, 0, filt.name)
+            model.set_value( iter, 2, filt.wildcard)
+    #
+    # encoding
+    #
+    def on_save_encoding_toggled(self, radio):
+        if radio.get_active():
+            self.prefs.save_encoding = self.save_encoding.index(radio)
+    #
+    # cvs
+    #
     def on_cvs_quiet_toggled(self, toggle):
         self.prefs.cvs_quiet = toggle.get_active()
     def on_cvs_compression_toggled(self, toggle):
@@ -136,29 +261,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs.cvs_create_missing = toggle.get_active()
     def on_cvs_prune_empty_toggled(self, toggle):
         self.prefs.cvs_prune_empty = toggle.get_active()
-    def on_save_encoding_toggled(self, radio):
-        if radio.get_active():
-            self.prefs.save_encoding = self.save_encoding.index(radio)
-    def on_treeview_cursor_changed(self, tree):
-        path, column = tree.get_cursor()
-        self.notebook.set_current_page(path[0])
-    def on_fontpicker_font_set(self, picker, font):
-        self.prefs.custom_font = font
-    def on_radiobutton_font_toggled(self, radio):
-        if radio.get_active():
-            custom = radio == self.radiobutton_custom_font
-            self.fontpicker.set_sensitive(custom)
-            self.prefs.use_custom_font = custom
-    def on_spinbutton_tabsize_changed(self, spin):
-        self.prefs.tab_size = int(spin.get_value())
-    def on_checkbutton_supply_newline_toggled(self, check):
-        self.prefs.supply_newline = check.get_active()
-    def on_draw_style_toggled(self, radio):
-        if radio.get_active():
-            self.prefs.draw_style = self.draw_style.index(radio)
-    def on_toolbar_style_toggled(self, radio):
-        if radio.get_active():
-            self.prefs.toolbar_style = self.toolbar_style.index(radio)
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
             self.prefs.text_codecs = self.entry_text_codecs.get_property("text")
@@ -295,12 +397,10 @@ class MeldPreferences(prefs.Preferences):
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_edited_bg" : prefs.Value(prefs.STRING, "gray85"),
         "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
-        "filter_pattern_0" : prefs.Value(prefs.STRING, "Backups 1 #*# .#* ~* *~ *.{orig,bak,swp}"),
-        "filter_pattern_1" : prefs.Value(prefs.STRING, "CVS 1 CVS"),
-        "filter_pattern_2" : prefs.Value(prefs.STRING, "Binaries 1 *.{pyc,a,obj,o,so,la,lib,dll}"),
-        "filter_pattern_3" : prefs.Value(prefs.STRING, "Media 0 *.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
-        "filter_pattern_4" : prefs.Value(prefs.STRING, ""),
-        "filter_pattern_5" : prefs.Value(prefs.STRING, ""),
+        "filters" : prefs.Value(prefs.STRING, "Backups  0 #*# .#* ~* *~ *.{orig,bak,swp}\n" + \
+                                              "CVS      0 CVS\n" + \
+                                              "Binaries 0 *.{pyc,a,obj,o,so,la,lib,dll}\n" + \
+                                              "Media    0 *.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}")
     }
 
     def __init__(self):
@@ -312,6 +412,8 @@ class MeldPreferences(prefs.Preferences):
             cmd.append("-q")
         if self.cvs_compression:
             cmd.append("-z%i" % self.cvs_compression_value)
+        if self.cvs_ignore_cvsrc:
+            cmd.append("-f")
         if op:
             cmd.append(op)
             if op == "update":
@@ -349,13 +451,13 @@ class MeldApp(gnomeglade.GnomeApp):
     def __init__(self):
         gladefile = misc.appdir("glade2/meldapp.glade")
         gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
-        self._map_widgets_into_lists( ["menu_file_save_file", "settings_number_panes", "settings_drawstyle"] )
+        self._map_widgets_into_lists( ["menu_file_save_file", "settings_drawstyle"] )
         self.popup_new = MeldNewMenu(self)
         self.statusbar = MeldStatusBar(self.appbar)
         self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
             self.toolbar_magic.hide()
-        elif 0:
+        elif 1:
             def showPrefs(): PreferencesDialog(self)
             gtk.idle_add(showPrefs)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
@@ -363,6 +465,24 @@ class MeldApp(gnomeglade.GnomeApp):
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
+
+#    def _update_filter_menu(self):
+#        filters = [ Filter(s) for s in self.prefs.filters.split("\n") ]
+#        def toggle(i):
+#            name = i.get_child().get_text()
+#            for f in filters:
+#                if name == f.name:
+#                    f.active ^= 1
+#            self.prefs.filters = "\n".join( [ str(f) for f in filters ] )
+#        menu = gtk.Menu()
+#        for filt in filters:
+#            item = gtk.CheckMenuItem( filt.name )
+#            item.set_active( filt.active )
+#            item.connect("activate", toggle)
+#            menu.append(item)
+#            item.show()
+#        self.settings_filters.set_submenu( menu )
+#        menu.show_all()
 
     def on_idle(self):
         ret = self.scheduler.iteration()
@@ -407,8 +527,6 @@ class MeldApp(gnomeglade.GnomeApp):
             self.menu_file_save_file[i].set_sensitive(sensitive)
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title( nbl.label.get_text() + " - Meld")
-        self.settings_number_of_panes.set_sensitive( hasattr(newdoc, "set_num_panes") )
-        self.settings_filters.set_sensitive( hasattr(newdoc, "set_filters") )
         self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook_label_changed(self, component, text):
@@ -509,14 +627,6 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # Toolbar and menu items (settings)
     #
-    def on_menu_number_panes_activate(self, menuitem):
-        n = self.settings_number_panes.index(menuitem) + 1
-        d = self.current_doc()
-        d.set_num_panes(n)
-        for i in range(3):
-            sensitive = d.num_panes > i
-            self.menu_file_save_file[i].set_sensitive(sensitive)
-            
     def on_menu_filter_activate(self, check):
         print check, check.child.get_text()
 
@@ -555,6 +665,9 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def on_toolbar_new_clicked(self, *args):
         self.popup_new.widget.popup(None, None, None, 3, gtk.get_current_event_time() )
+
+    def on_toolbar_stop_clicked(self, *args):
+        self.current_doc().stop()
 
     def try_remove_page(self, page):
         "See if a page will allow itself to be removed"

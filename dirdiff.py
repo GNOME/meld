@@ -199,20 +199,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
         self.linediffs = [[], []]
         self.type_filters_available = []
-        for i in range(6):
-            pattern = getattr(self.prefs, "filter_pattern_%i" % i)
-            if pattern:
-                f = pattern.split()
-                label = f[0]
-                active = int(f[1])
-                regex = "(%s)" % ")|(".join( [misc.shell_to_regex(p)[:-1] for p in f[2:]] )
-                try:
-                    cregex = re.compile(regex)
-                except re.error, e:
-                    misc.run_dialog( _("Error converting pattern '%s' to regular expression") % pattern, self )
-                else:
-                    func = lambda x, r=cregex : r.match(x) == None
-                    self.type_filters_available.append( TypeFilter(label, active, func) )
+        for f in [misc.Filter(s) for s in self.prefs.filters.split("\n") ]:
+            regex = "(%s)" % ")|(".join( [misc.shell_to_regex(p)[:-1] for p in f.wildcard.split()] )
+            try:
+                cregex = re.compile(regex)
+            except re.error, e:
+                misc.run_dialog( _("Error converting pattern '%s' to regular expression") % pattern, self )
+            else:
+                func = lambda x, r=cregex : r.match(x) == None
+                self.type_filters_available.append( TypeFilter(f.name, f.active, func) )
         self.type_filters = []
         for i,f in misc.enumerate(self.type_filters_available):
             icon = gtk.Image()
