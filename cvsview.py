@@ -528,7 +528,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
            command was executed in and the output of the command.
         """
         msg = misc.shelljoin(command)
-        yield "[%s] %s" % (self.label_text, msg)
+        yield "[%s] %s" % (self.label_text, msg.replace("\n", u"\u21b2") )
         if len(files) == 1 and os.path.isdir(files[0]):
             workdir = files[0]
             files = ["."]
@@ -577,9 +577,17 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self._command_on_selected(self.prefs.get_cvs_command("rm") + ["-f"] )
     def on_button_delete_clicked(self, object):
         files = self._get_selected_files()
-        for f in files:
-            try: os.unlink(f)
-            except OSError: pass
+        for name in files:
+            try:
+                if os.path.isfile(name):
+                    os.remove(name)
+                elif os.path.isdir(name):
+                    if misc.run_dialog(_("'%s' is a directory.\nRemove recusively?") % os.path.basename(name),
+                            parent = self,
+                            buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
+                        shutil.rmtree(name)
+            except OSError, e:
+                misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
 
