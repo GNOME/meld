@@ -21,8 +21,8 @@ rundiff:
 	#$(PROG) test/1 test/2
 	#$(PROG) /zip/meld .
 
-.PHONY:ChangeLog
-ChangeLog:
+.PHONY:changelog
+changelog:
 	cvs2cl -t
 
 .PHONY:check
