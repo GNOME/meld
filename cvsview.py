@@ -280,6 +280,9 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
         self.location = None
         self.treeview_column_location.set_visible( self.button_recurse.get_active() )
+        size = self.fileentry.size_request()[1]
+        self.button_jump.set_size_request(size, size)
+        self.button_jump.hide()
 
     def set_location(self, location):
         self.model.clear()
@@ -514,6 +517,37 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def next_diff(self,*args):
         pass
+
+    def on_button_jump_press_event(self, button, event):
+        class MyMenu(gtk.Menu):
+            def __init__(self, parent, loc, toplev=0):
+                gtk.Menu.__init__(self)
+                self.cvsview = parent 
+                self.loc = loc
+                self.scanned = 0
+                self.connect("map", self.on_map)
+                self.toplev = toplev
+            def on_map(self, menu):
+                if self.scanned == 0:
+                    listing = [ os.path.join(self.loc, p) for p in os.listdir(self.loc)]
+                    items = [p for p in listing if os.path.basename(p) != "CVS" and os.path.isdir(p)]
+                    if 0 and self.toplev:
+                        items.insert(0, "..")
+                    for f in items:
+                        base = os.path.basename(f)
+                        item = gtk.MenuItem( base )
+                        item.connect("button-press-event", lambda item,event : self.cvsview.set_location(f) )
+                        self.append(item)
+                        item.set_submenu( MyMenu(self.cvsview, f, base=="..") )
+                    if len(items)==0:
+                        item = gtk.MenuItem("<empty>")
+                        item.set_sensitive(0)
+                        self.append(item)
+                    self.scanned = 1
+                self.show_all()
+        menu = MyMenu( self, os.path.abspath(self.location), 1 )
+        menu.popup(None, None, None, event.button, event.time)
+        #print event
 
 gobject.type_register(CvsView)
 

@@ -29,6 +29,7 @@
 	  <child>
 	    <widget class="button" id="button_diff">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Diff selected</property>
 	      <property name="label" translatable="yes">_Diff</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_pixmap">gtk-dialog-info</property>
@@ -39,11 +40,13 @@
 	  <child>
 	    <widget class="toggle" id="button_recurse">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Recurse</property>
 	      <property name="label" translatable="yes">R_ecurse</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_pixmap">gtk-goto-bottom</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
+	      <property name="new_group">True</property>
 	      <signal name="toggled" handler="on_button_recurse_toggled" last_modification_time="Sun, 28 Jul 2002 12:34:57 GMT"/>
 	    </widget>
 	    <packing>
@@ -54,6 +57,7 @@
 	  <child>
 	    <widget class="toggle" id="button_modified">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Show modified</property>
 	      <property name="label" translatable="yes">_Modified</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_pixmap">gtk-execute</property>
@@ -66,6 +70,7 @@
 	  <child>
 	    <widget class="toggle" id="button_noncvs">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Show non-CVS</property>
 	      <property name="label" translatable="yes">_Non CVS</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_pixmap">gtk-execute</property>
@@ -78,9 +83,11 @@
 	  <child>
 	    <widget class="button" id="button_commit">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Commit</property>
 	      <property name="label" translatable="yes">Commit</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-commit-16.png</property>
+	      <property name="new_group">True</property>
 	      <signal name="clicked" handler="on_button_commit_clicked" last_modification_time="Sat, 03 Aug 2002 17:30:50 GMT"/>
 	    </widget>
 	    <packing>
@@ -91,6 +98,7 @@
 	  <child>
 	    <widget class="button" id="button_update">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Update</property>
 	      <property name="label" translatable="yes">Update</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-update-16.png</property>
@@ -101,6 +109,7 @@
 	  <child>
 	    <widget class="button" id="button_add">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Add to CVS</property>
 	      <property name="label" translatable="yes">_Add</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-add-16.png</property>
@@ -111,6 +120,7 @@
 	  <child>
 	    <widget class="button" id="button_remove">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Remove from CVS</property>
 	      <property name="label" translatable="yes">_Remove</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-remove-16.png</property>
@@ -121,6 +131,7 @@
 	  <child>
 	    <widget class="button" id="button_delete">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Delete locally</property>
 	      <property name="label">gtk-delete</property>
 	      <property name="use_stock">True</property>
 	      <signal name="clicked" handler="on_button_delete_clicked" last_modification_time="Sat, 03 Aug 2002 17:33:24 GMT"/>
@@ -135,26 +146,65 @@
       </child>
 
       <child>
-	<widget class="GnomeFileEntry" id="fileentry">
+	<widget class="GtkHBox" id="hbox2">
 	  <property name="visible">True</property>
-	  <property name="history_id">cvsroot</property>
-	  <property name="max_saved">10</property>
-	  <property name="directory_entry">True</property>
-	  <property name="modal">False</property>
-	  <signal name="activate" handler="on_fileentry_activate" last_modification_time="Sun, 28 Jul 2002 10:50:58 GMT"/>
+	  <property name="homogeneous">False</property>
+	  <property name="spacing">0</property>
 
-	  <child internal-child="entry">
-	    <widget class="GtkEntry" id="comboentry">
+	  <child>
+	    <widget class="GtkButton" id="button_jump">
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="editable">True</property>
-	      <property name="visibility">True</property>
-	      <property name="max_length">0</property>
-	      <property name="text" translatable="yes"></property>
-	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
-	      <property name="activates_default">False</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <signal name="button_press_event" handler="on_button_jump_press_event" last_modification_time="Thu, 22 May 2003 18:32:48 GMT"/>
+
+	      <child>
+		<widget class="GtkImage" id="image1">
+		  <property name="visible">True</property>
+		  <property name="stock">gtk-jump-to</property>
+		  <property name="icon_size">4</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+	      </child>
 	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GnomeFileEntry" id="fileentry">
+	      <property name="visible">True</property>
+	      <property name="history_id">cvsroot</property>
+	      <property name="max_saved">10</property>
+	      <property name="directory_entry">True</property>
+	      <property name="modal">False</property>
+	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Sun, 28 Jul 2002 10:50:58 GMT"/>
+
+	      <child internal-child="entry">
+		<widget class="GtkEntry" id="comboentry">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="editable">True</property>
+		  <property name="visibility">True</property>
+		  <property name="max_length">0</property>
+		  <property name="text" translatable="yes"></property>
+		  <property name="has_frame">True</property>
+		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="activates_default">False</property>
+		</widget>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
 	  </child>
 	</widget>
 	<packing>
