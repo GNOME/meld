@@ -210,3 +210,11 @@ def commonprefix(dirs):
                 break
     return os.sep.join(prefix)
 
+def escape(s):
+    """Replace special characters '&', '<' and '>' by SGML entities.
+    """
+    s = s.replace("&", "&amp;")
+    s = s.replace("<", "&lt;")
+    s = s.replace(">", "&gt;")
+    return s
+
