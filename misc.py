@@ -164,8 +164,8 @@ def read_pipe_iter(command, yield_interval=0.1, workdir=None):
             except IOError:
                 break # ick need to fix
     status = pipe.wait()
-    if status:
-        raise IOError("%i %s" %(status,childerr.read()))
+    #if status:
+    #   raise IOError("%i %s" %(status,childerr.read()))
     yield "".join(bits)
 
 def write_pipe(command, text):
