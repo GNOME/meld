@@ -38,12 +38,13 @@ CVS_COMMAND = ["cvs", "-z3", "-q"]
 #
 ################################################################################
 class Entry:
+    states = _("Non CVS::Error::Newly added:Modified:Removed:Missing").split(":")
     def __str__(self):
         return "%s %s\n" % (self.name, (self.path, self.state))
     def __repr__(self):
         return "%s %s\n" % (self.name, (self.path, self.state))
     def get_status(self):
-        return ["Non CVS", "", "Error", "", "Newly added", "Modified", "Removed", "Missing"][self.state]
+        return self.states[self.state]
 
 class Dir(Entry):
     def __init__(self, path, name, state):
@@ -253,7 +254,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
     }
 
-
     MODIFIED_FILTER_MASK, UNKNOWN_FILTER_MASK = 1,2
 
     filters = [lambda x: (x.state > tree.STATE_NONE),
@@ -287,11 +287,11 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview.append_column(column)
             return column
 
-        self.treeview_column_location = addCol("Location", COL_LOCATION)
-        addCol("Status", COL_STATUS)
-        addCol("Rev", COL_REVISION)
-        addCol("Tag", COL_TAG)
-        addCol("Options", COL_OPTIONS)
+        self.treeview_column_location = addCol( _("Location"), COL_LOCATION)
+        addCol(_("Status"), COL_STATUS)
+        addCol(_("Rev"), COL_REVISION)
+        addCol(_("Tag"), COL_TAG)
+        addCol(_("Options"), COL_OPTIONS)
 
         self.location = None
         self.treeview_column_location.set_visible( self.button_recurse.get_active() )
@@ -314,7 +314,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.label_changed()
 
     def _search_recursively_iter(self):
-        yield "[%s] Scanning" % self.label_text
+        yield _("[%s] Scanning") % self.label_text
         rootpath = self.model.get_path( self.model.get_iter_root() )
         rootname = self.model.value_path( self.model.get_iter(rootpath), 0 )
         prefixlen = 1 + len(rootname)
@@ -335,7 +335,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 iter = self.model.get_iter_root()
                 root = name
-            yield "[%s] Scanning %s" % (self.label_text, root[prefixlen:])
+            yield _("[%s] Scanning %s") % (self.label_text, root[prefixlen:])
             #import time; time.sleep(1.0)
             
             entries = filter(showable, listdir_cvs(root))
@@ -358,7 +358,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                     todo.append( (self.model.get_path(child), None) )
             if not recursive:
                 if len(entries) == 0:
-                    self.model.add_empty(iter, "no cvs files")
+                    self.model.add_empty(iter, _("no cvs files"))
                 if differences or len(path)==1:
                     start = path[:]
                     while len(start) and not self.treeview.row_expanded(start):
@@ -396,14 +396,14 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             self.run_cvs_diff( [path] )
 
     def run_cvs_diff_iter(self, paths, empty_patch_ok):
-        yield "[%s] Fetching differences." % self.label_text
+        yield _("[%s] Fetching differences") % self.label_text
         difffunc = self._command_iter(CVS_COMMAND + ["diff", "-u"], paths, 0).next
         diff = None
         while type(diff) != type(()):
             diff = difffunc()
             yield 1
         prefix, patch = diff[0], diff[1]
-        yield "[%s] Applying patch." % self.label_text
+        yield _("[%s] Applying patch") % self.label_text
         if patch:
             self.show_patch(prefix, patch)
         elif empty_patch_ok:
@@ -477,7 +477,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         if len(files):
             self._command(command, files, refresh)
         else:
-            self.statusbar.add_status("Select some files first.")
+            self.statusbar.add_status( _("Select some files first") )
 
     def on_button_update_clicked(self, object):
         self._command_on_selected(CVS_COMMAND + ["update","-dP"] )

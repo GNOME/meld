@@ -303,7 +303,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( self._search_recursively_iter( path ).next )
 
     def _search_recursively_iter(self, rootpath):
-        yield "[%s] Scanning" % self.label_text
+        yield _("[%s] Scanning") % self.label_text
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         todo = [ rootpath ]
         while len(todo):
@@ -311,7 +311,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             path = todo.pop(0)
             iter = self.model.get_iter( path )
             roots = self.model.value_paths( iter )
-            yield "[%s] Scanning %s" % (self.label_text, roots[0][prefixlen:])
+            yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
             #import time; time.sleep(1.0)
             differences = [0]
             alldirs = []
@@ -352,7 +352,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 while level < len(path):
                     level += 1
                     self.treeview[0].expand_row( path[:level], 0)
-        yield "[%s] Done" % self.label_text
+        yield _("[%s] Done") % self.label_text
 
     def launch_comparison(self, iter, pane, force=1):
         """Launch comparison at 'iter'. 
@@ -410,14 +410,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.file_created( path, dst_pane)
                     elif os.path.isdir(src):
                         if os.path.exists(dst):
-                            if misc.run_dialog("'%s' exists.\nOverwrite?" % os.path.basename(dst),
+                            if misc.run_dialog( _("'%s' exists.\nOverwrite?") % os.path.basename(dst),
                                     parent = self,
                                     buttonstype = gtk.BUTTONS_OK_CANCEL) != gtk.RESPONSE_OK:
                                 continue
                         misc.copytree(src, dst)
                         self.recursively_update( path )
                 except OSError, e:
-                    misc.run_dialog("Error copying '%s' to '%s'\n\n%s." % (src, dst,e), self)
+                    misc.run_dialog(_("Error copying '%s' to '%s'\n\n%s.") % (src, dst,e), self)
 
     def delete_selected(self):
         """Delete all selected files/folders recursively.
@@ -435,13 +435,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         os.remove(name)
                         self.file_deleted( path, pane) #xxx
                     elif os.path.isdir(name):
-                        if misc.run_dialog("'%s' is a directory.\nRemove recusively?" % os.path.basename(name),
+                        if misc.run_dialog(_("'%s' is a directory.\nRemove recusively?") % os.path.basename(name),
                                 parent = self,
                                 buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                             shutil.rmtree(name)
                             self.recursively_update( path )
                 except OSError, e:
-                    misc.run_dialog("Error removing %s\n\n%s." % (name,e), parent = self)
+                    misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
 
     def on_treeview_row_activated(self, view, path, column):
         iter = self.model.get_iter(path)

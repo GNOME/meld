@@ -48,7 +48,7 @@ class BrowseFileDialog(gnomeglade.Component):
         self.numfile = len(labels)
         self.callback = callback
         self.labels = map(gtk.Label, labels )
-        self.entries = map( lambda x:gnome.ui.FileEntry("fileentry", "Browse "+x), labels)
+        self.entries = map( lambda x:gnome.ui.FileEntry("fileentry", _("Browse %s") % x), labels)
         for i in range(self.numfile):
             self.labels[i].set_justify(gtk.JUSTIFY_RIGHT)
             self.table.attach(self.labels[i], 0, 1, i, i+1, gtk.SHRINK)
@@ -358,19 +358,19 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (file)
     #
     def on_menu_new_diff2_activate(self, *extra):
-        BrowseFileDialog(self,_("Original File:Modified File").split(":"), self.append_filediff)
+        BrowseFileDialog(self, [_("Original File"), _("Modified File")], self.append_filediff)
 
     def on_menu_new_diff3_activate(self, *extra):
-        BrowseFileDialog(self,["Other Changes","Common Ancestor","Local Changes"], self.append_filediff )
+        BrowseFileDialog(self, [_("Other Changes"), _("Common Ancestor"), _("Local Changes")], self.append_filediff )
 
     def on_menu_new_dir2_activate(self, *extra):
-        BrowseFileDialog(self,["Original Directory", "Modified Directory"], self.append_dirdiff, isdir=1)
+        BrowseFileDialog(self, [_("Original Directory"), _("Modified Directory")], self.append_dirdiff, isdir=1)
 
     def on_menu_new_dir3_activate(self, *extra):
-        BrowseFileDialog(self,["Other Directory", "Original Directory", "Modified Directory"], self.append_dirdiff, isdir=1)
+        BrowseFileDialog(self, [_("Other Directory"), _("Original Directory"), _("Modified Directory")], self.append_dirdiff, isdir=1)
 
     def on_menu_new_cvsview_activate(self, *extra):
-        BrowseFileDialog(self,["Root CVS Directory"], self.append_cvsview, isdir=1)
+        BrowseFileDialog(self,[_("Root CVS Directory")], self.append_cvsview, isdir=1)
 
     def on_menu_save_activate(self, menuitem):
         try:
@@ -400,7 +400,7 @@ class MeldApp(gnomeglade.GnomeApp):
             try: state.append( c.get_data("pyobject").is_modified() )
             except AttributeError: state.append(0)
         if 1 in state and not developer:
-            response = misc.run_dialog('You have some unsaved changes.\nQuit anyway?',
+            response = misc.run_dialog( _("You have some unsaved changes.\nQuit anyway?"),
                 parent = self,
                 buttonstype=gtk.BUTTONS_OK_CANCEL )
             if response!=gtk.RESPONSE_OK:
@@ -571,7 +571,7 @@ class MeldApp(gnomeglade.GnomeApp):
 # usage
 #
 ################################################################################
-usage_string = """Meld is a file and directory comparison tool. Usage:
+usage_string = _("""Meld is a file and directory comparison tool. Usage:
 
     meld                        Start with no windows open
     meld <dir>                  Start with CVS browser in 'dir'
@@ -581,7 +581,7 @@ usage_string = """Meld is a file and directory comparison tool. Usage:
 
 For more information choose help -> contents.
 Report bugs to steve9000@users.sourceforge.net.
-"""
+""")
 
 ################################################################################
 #
@@ -623,13 +623,13 @@ def main():
             doc.connect("create-diff", lambda obj,arg: app.append_filediff(arg) )
             doc.run_cvs_diff([a])
         else:
-            app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
+            app.usage( _("`%s' is not a directory or file, cannot open cvs view") % arg[0])
                 
     elif len(arg) in (2,3):
         done = 0
         exists = map( lambda a: os.access(a, os.R_OK), arg)
         if 0 in exists:
-            m = "Cannot open "
+            m = _("Cannot open ")
             for i in range(len(arg)):
                 if not exists[i]:
                     m += "`%s'" % arg[i]
@@ -646,12 +646,12 @@ def main():
                 app.append_dirdiff( arg )
                 done = 1
         if not done:
-            m = "Cannot compare a mixture of files and directories.\n"
+            m = _("Cannot compare a mixture of files and directories.\n")
             for i in range(len(arg)):
-                m += "(%s)\t`%s'\n" % (arefiles[i] and "file" or "dir", arg[i])
+                m += "(%s)\t`%s'\n" % (arefiles[i] and _("file") or _("folder"), arg[i])
             app.usage(m)
     else:
-        app.usage("Wrong number of arguments (Got %i)" % len(arg))
+        app.usage( _("Wrong number of arguments (Got %i)") % len(arg))
 
     app.mainloop()
 

@@ -367,7 +367,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         try:
             pattern = re.compile( tofind, (match_case and re.M or (re.M|re.I)) )
         except re.error, e:
-            misc.run_dialog("Regular expression error\n'%s'" % e, self, messagetype=gtk.MESSAGE_ERROR)
+            misc.run_dialog( _("Regular expression error\n'%s'") % e, self, messagetype=gtk.MESSAGE_ERROR)
         else:
             match = pattern.search(text, insert.get_offset()+1 )
             if match == None and wrap:
@@ -378,9 +378,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 iter.forward_chars( match.end() - match.start() )
                 buf.move_mark( buf.get_selection_bound(), iter )
                 view.scroll_to_mark( buf.get_insert(), 0)
+            elif regex:
+                misc.run_dialog( _("The regular expression '%s' was not found." % tofind), self, messagetype=gtk.MESSAGE_INFO)
             else:
-                misc.run_dialog( "The %s '%s' was not found" % (regex and "regular expression" or "text", tofind),
-                    self, messagetype=gtk.MESSAGE_INFO)
+                misc.run_dialog( _("The text '%s' was not found.") % tofind, self, messagetype=gtk.MESSAGE_INFO)
 
         #
         # text buffer loading/saving
@@ -419,14 +420,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( self._set_files_internal(files).next )
 
     def _set_files_internal(self, files):
-        yield "[%s] Set num panes" % self.label_text
+        yield _("[%s] Set num panes") % self.label_text
         self.set_num_panes( len(files) )
         self._disconnect_buffer_handlers()
         self.linediffer.diffs = [[],[]]
         self.queue_draw()
         buffers = [t.get_buffer() for t in self.textview][:self.num_panes]
         try_codecs = self.prefs.text_codecs.split()
-        yield "[%s] Opening files" % self.label_text
+        yield _("[%s] Opening files") % self.label_text
         panetext = ["\n"] * self.num_panes
         tasks = []
         for i,f in misc.enumerate(files):
@@ -442,11 +443,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 except IOError, e:
                     buffers[i].set_text("\n")
                     misc.run_dialog(
-                        "Could not open '%s' for reading.\n\nThe error was:\n%s" % (f, str(e)),
+                        _("Could not open '%s' for reading.\n\nThe error was:\n%s") % (f, str(e)),
                         parent = self)
             else:
                 panetext[i] = buffers[i].get_text( buffers[i].get_start_iter(), buffers[i].get_end_iter() )
-        yield "[%s] Reading files" % self.label_text
+        yield _("[%s] Reading files") % self.label_text
         while len(tasks):
             for t in tasks[:]:
                 try:
@@ -461,7 +462,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
                         misc.run_dialog(
-                            "Could not read from '%s'.\n\nI tried encodings %s." % (t.filename, try_codecs),
+                            _("Could not read from '%s'.\n\nI tried encodings %s.") % (t.filename, try_codecs),
                             parent = self)
                         tasks.remove(t)
                 else:
@@ -478,7 +479,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 panetext[t.pane] += "\n"
             yield 1
         self.undosequence.clear()
-        yield "[%s] Computing differences" % self.label_text
+        yield _("[%s] Computing differences") % self.label_text
         lines = map(lambda x: x.split("\n"), panetext)
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
@@ -565,7 +566,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textview[pane].get_buffer()
         bufdata = buf.get_data("meld")
         if saveas or not bufdata.filename:
-            fselect = gtk.FileSelection("Choose a name for buffer %i" % (pane+1))
+            fselect = gtk.FileSelection( _("Choose a name for buffer %i.") % (pane+1))
             fselect.set_transient_for(self.widget.get_toplevel() )
             response = fselect.run()
             if response != gtk.RESPONSE_OK:
@@ -576,7 +577,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 fselect.destroy()
                 if os.path.exists(filename):
                     response = misc.run_dialog(
-                        '"%s" exists!\nOverwrite?' % os.path.basename(filename),
+                        _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
                         parent = self,
                         buttonstype = gtk.BUTTONS_YES_NO)
                     if response == gtk.RESPONSE_NO:
@@ -590,7 +591,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             open(bufdata.filename, "w").write(text)
         except IOError, e:
             misc.run_dialog(
-                "Error writing to %s\n\n%s." % (bufdata.filename, e),
+                _("Error writing to %s\n\n%s.") % (bufdata.filename, e),
                 self, buttongtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
             return gnomeglade.RESULT_ERROR
         else:
@@ -648,7 +649,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         modified = [view.get_buffer().get_data("meld").filename
                     for view in self.textview[:self.num_panes] if view.get_buffer().get_data("meld").modified]
         if len(modified):
-            message = "Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation." % "\n".join(modified)
+            message = _("Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
             response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
             if response == gtk.RESPONSE_OK:
                 files = [t.get_buffer().get_data("meld").filename for t in self.textview[:self.num_panes] ]

@@ -35,7 +35,7 @@ class MeldDoc(gobject.GObject):
         self.prefs = prefs
         self.prefs.notify_add(self.on_preference_changed)
         self.num_panes = 0
-        self.label_text = "untitled"
+        self.label_text = _("untitled")
 
     def save(self):
         pass
