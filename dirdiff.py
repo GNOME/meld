@@ -63,7 +63,7 @@ def _files_same(lof, regexes):
     lof = tuple(lof)
     def sig(f):
         s = os.stat(f)
-        return misc.struct(mode=stat.S_IFMT(s.st_mode), size=s.st_size, time=s.st_mtime)
+        return misc.struct(mode=stat.S_IFMT(s.st_mode), size=s.st_size)
     def all_same(l):
         for i in l[1:]:
             if l[0] != i:
