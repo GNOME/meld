@@ -29,6 +29,7 @@ import melddoc
 import tree
 import filecmp
 import re
+import stat
 
 gdk = gtk.gdk
 
@@ -48,19 +49,54 @@ def uniq(l):
             yield b
             a = b
 
-def _files_same(lof):
-    """Return 1 if all the files in 'lof' have the same contents"""
+_cache = {}
+
+def _files_same(lof, regexes):
+    """Return 1 if all the files in 'lof' have the same contents.
+       If the files are the same after the regular expression substitution, return 2.
+       Finally, return 0 if the files still differ.
+    """
     # early out if only one file
     if len(lof) <= 1:
         return 1
-
-    arefiles = 1 in [ os.path.isfile(i) for i in lof ] 
-    if arefiles:             
-        first=lof[0]
-        for f in lof[1:]:
-            if not filecmp.cmp(first, f):
-                return 0            
-    return 1
+    # get sigs
+    lof = tuple(lof)
+    def sig(f):
+        s = os.stat(f)
+        return misc.struct(mode=stat.S_IFMT(s.st_mode), size=s.st_size, time=s.st_mtime)
+    def all_same(l):
+        for i in l[1:]:
+            if l[0] != i:
+                return 0
+        return 1
+    sigs = tuple( [ sig(f) for f in lof ] )
+    # check for directories
+    arefiles = [ stat.S_ISREG(s.mode) for s in sigs ]
+    if arefiles.count(0) == len(arefiles): # all dirs
+        return 1
+    elif arefiles.count(0): # mixture
+        return 0
+    # any obvious differences
+    if len(regexes) == 0 and all_same(sigs) == 0:
+        return 0
+    # try cache
+    try:
+        cache = _cache[ lof ]
+    except KeyError:
+        pass
+    else:
+        if cache.sigs == sigs: # up to date
+            return cache.result
+    # do it
+    contents = [ open(f, "r").read() for f in lof ]
+    if all_same(contents):
+        result = 1
+    else:
+        for r in regexes:
+            contents = [ re.sub(r, "", c) for c in contents ]
+        result = all_same(contents) and 2
+    _cache[ lof ] = misc.struct(sigs=sigs, result=result)
+    return result
 
 def _not_none(l):
     """Return list with Nones filtered out"""
@@ -68,7 +104,7 @@ def _not_none(l):
 
 join = os.path.join
 
-COL_NEWER = tree.COL_END + 1
+COL_EMBLEM = tree.COL_END + 1
 pixbuf_newer = gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/tree-file-newer.png"), 14)
 TYPE_PIXBUF = type(pixbuf_newer)
 
@@ -79,9 +115,9 @@ TYPE_PIXBUF = type(pixbuf_newer)
 ################################################################################
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        types = [type("")] * COL_NEWER * ntree
+        types = [type("")] * COL_EMBLEM * ntree
         types[tree.COL_ICON*ntree:tree.COL_ICON*ntree+ntree] = [TYPE_PIXBUF] * ntree
-        types[COL_NEWER*ntree:COL_NEWER*ntree+ntree] = [TYPE_PIXBUF] * ntree
+        types[COL_EMBLEM*ntree:COL_EMBLEM*ntree+ntree] = [TYPE_PIXBUF] * ntree
         gtk.TreeStore.__init__(self, *types)
         self.ntree = ntree
         self._setup_default_styles()
@@ -192,39 +228,55 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.pack_start(renicon, expand=0)
             column.pack_start(rentext, expand=1)
             column.set_attributes(renicon, pixbuf=self.model.column_index(tree.COL_ICON,i),
-                                           emblem=self.model.column_index(COL_NEWER,i))
+                                           emblem=self.model.column_index(COL_EMBLEM,i))
             column.set_attributes(rentext, markup=self.model.column_index(tree.COL_TEXT,i))
             self.treeview[i].append_column(column)
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
         self.linediffs = [[], []]
-        self.type_filters_available = []
-        for f in [misc.Filter(s) for s in self.prefs.filters.split("\n") ]:
-            regex = "(%s)" % ")|(".join( [misc.shell_to_regex(p)[:-1] for p in f.wildcard.split()] )
+        self.state_filters = [
+            tree.STATE_NORMAL,
+            tree.STATE_MODIFIED,
+            tree.STATE_NEW,
+        ]
+        self.create_name_filters()
+        self.update_regexes()
+
+    def update_regexes(self):
+        self.regexes = []
+        for r in [ misc.ListItem(i) for i in self.prefs.regexes.split("\n") ]:
+            if r.active:
+                try:
+                    self.regexes.append( re.compile(r.value) )
+                except re.error, e:
+                    misc.run_dialog(
+                        text=_("Error converting pattern '%s' to regular expression") % r.value )
+
+    def create_name_filters(self):
+        self.name_filters_available = []
+        for f in [misc.ListItem(s) for s in self.prefs.filters.split("\n") ]:
+            regex = "(%s)" % ")|(".join( [misc.shell_to_regex(p)[:-1] for p in f.value.split()] )
             try:
                 cregex = re.compile(regex)
             except re.error, e:
                 misc.run_dialog( _("Error converting pattern '%s' to regular expression") % pattern, self )
             else:
                 func = lambda x, r=cregex : r.match(x) == None
-                self.type_filters_available.append( TypeFilter(f.name, f.active, func) )
-        self.type_filters = []
-        for i,f in misc.enumerate(self.type_filters_available):
+                self.name_filters_available.append( TypeFilter(f.name, f.active, func) )
+        self.name_filters = []
+        for i,f in misc.enumerate(self.name_filters_available):
             icon = gtk.Image()
             icon.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_LARGE_TOOLBAR)
             icon.show()
             toggle = self.toolbar.append_element(gtk.TOOLBAR_CHILD_TOGGLEBUTTON, None, f.label,
-                _("Hide %s") % f.label, "", icon, self._update_type_filter, i )
+                _("Hide %s") % f.label, "", icon, self._update_name_filter, i )
             toggle.set_active(f.active)
-        self.state_filters = [
-            tree.STATE_NORMAL,
-            tree.STATE_MODIFIED,
-            tree.STATE_NEW,
-        ]
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
             self.toolbar.set_style( self.prefs.get_toolbar_style() )
+        elif key == "regexes":
+            self.update_regexes()
 
     def _do_to_others(self, master, objects, methodname, args):
         if self.lock == 0:
@@ -360,7 +412,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.model.add_error( iter, err.strerror, pane )
                         differences = [1]
                     else:
-                        for f in self.type_filters:
+                        for f in self.name_filters:
                             entries = filter(f.filter, entries)
                         accumdirs.add( pane, [e for e in entries if os.path.isdir(  join(root, e) ) ] )
                         accumfiles.add(pane, [e for e in entries if os.path.isfile( join(root, e) ) ] )
@@ -552,13 +604,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_filter_state_modified_toggled(self, button):
         self._update_state_filter( tree.STATE_MODIFIED, button.get_active() )
 
-    def _update_type_filter(self, button, idx):
-        for i in range(len(self.type_filters)):
-            if self.type_filters[i] == self.type_filters_available[idx]:
-                self.type_filters.pop(i)
+    def _update_name_filter(self, button, idx):
+        for i in range(len(self.name_filters)):
+            if self.name_filters[i] == self.name_filters_available[idx]:
+                self.name_filters.pop(i)
                 break
         if button.get_active():
-            self.type_filters.append( self.type_filters_available[idx] )
+            self.name_filters.append( self.name_filters_available[idx] )
         self.refresh()
 
     def on_filter_hide_current_clicked(self, button):
@@ -575,7 +627,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _get_selected_paths(self, pane):
         assert pane != None
         selected_paths = []
-        self.treeview[pane].get_selection().selected_foreach(lambda store, path, iter: selected_paths.append( path ) )
+        self.treeview[pane].get_selection().selected_foreach(
+            lambda store, path, iter: selected_paths.append( path ) )
         return selected_paths
 
         #
@@ -585,7 +638,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _filter_on_state(self, roots, fileslist):
         """Get state of 'files' for filtering purposes.
            Returns STATE_NORMAL, STATE_NEW or STATE_MODIFIED
-       """
+
+               roots - array of root directories
+               fileslist - array of filename tuples of length len(roots)
+        """
         assert len(roots) == self.model.ntree
         ret = []
         for files in fileslist:
@@ -593,7 +649,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             is_present = [ os.path.exists( f ) for f in curfiles ]
             all_present = 0 not in is_present
             if all_present:
-                if _files_same( curfiles ):
+                if _files_same( curfiles, self.regexes ):
                     state = tree.STATE_NORMAL
                 else:
                     state = tree.STATE_MODIFIED
@@ -612,11 +668,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return os.stat(f).st_mtime
             except OSError:
                 return 0
+        # find the newest file, checking also that they differ
         mod_times = [ mtime( file ) for file in files[:self.num_panes] ]
         newest_index = mod_times.index( max(mod_times) )
+        if mod_times.count( max(mod_times) ) == len(mod_times):
+            newest_index = -1 # all same
         all_present = 0 not in mod_times
         if all_present:
-            all_same = _files_same( files )
+            all_same = _files_same( files, self.regexes )
             all_present_same = all_same
         else:
             lof = []
@@ -624,20 +683,23 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if mod_times[j]:
                     lof.append( files[j] )
             all_same = 0
-            all_present_same = _files_same( lof )
+            all_present_same = _files_same( lof, self.regexes )
         different = 1
         for j in range(self.model.ntree):
             if mod_times[j]:
                 isdir = os.path.isdir( files[j] )
-                if all_same:
+                if all_same == 1:
                     self.model.set_state(iter, j,  tree.STATE_NORMAL, isdir)
+                    different = 0
+                elif all_same == 2:
+                    self.model.set_state(iter, j,  tree.STATE_NOCHANGE, isdir)
                     different = 0
                 elif all_present_same:
                     self.model.set_state(iter, j,  tree.STATE_NEW, isdir)
                 else:
                     self.model.set_state(iter, j,  tree.STATE_MODIFIED, isdir)
                 self.model.set_value(iter,
-                    self.model.column_index(COL_NEWER, j),
+                    self.model.column_index(COL_EMBLEM, j),
                     j == newest_index and pixbuf_newer or None)
             else:
                 self.model.set_state(iter, j,  tree.STATE_MISSING)
@@ -743,6 +805,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             area.meldgc = [None, # ignore
                            None, # none
                            None, # normal
+                           None, # nochange
                            gce,  # error
                            None, # empty
                            gcd,  # new
