@@ -28,6 +28,7 @@ import shutil
 import melddoc
 import tree
 import filecmp
+import re
 
 gdk = gtk.gdk
 
@@ -153,37 +154,6 @@ class DirDiffMenu(gnomeglade.Component):
 
 ################################################################################
 #
-# Filters
-#
-################################################################################
-
-def _filter_backups(f):
-    # should write regex here
-    assert len(f)
-    return  not (len(f) >= 2 and f[0] == '#' and f[-1] == '#') \
-        and not f.endswith(".orig") \
-        and not f.endswith(".bak") \
-        and not f.endswith(".swp") \
-        and not f.startswith(".#") \
-        and not (f[0] == '~') \
-        and not (f[-1] == '~')
-def _filter_cvs(f):
-    return not f == "CVS"
-def _filter_binaries(f):
-    dot = f.rfind(".")
-    if dot >= 0:
-        ext = f[dot+1:]
-        return ext not in ("pyc", "a", "obj", "o", "so", "la", "lib", "dll")
-    return 1
-def _filter_media(f):
-    dot = f.rfind(".")
-    if dot >= 0:
-        ext = f[dot+1:]
-        return ext not in ("jpg", "gif", "png", "wav", "mp3", "ogg", "xcf", "xpm")
-    return 1
-
-################################################################################
-#
 # DirDiff
 #
 ################################################################################
@@ -220,12 +190,33 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
         self.linediffs = [[], []]
-        self.type_filters = [
-            _filter_cvs,
-            _filter_backups,
-            _filter_binaries,
-            _filter_media,
-        ]
+        self.type_filters_available = []
+        for i in range(6):
+            pattern = getattr(self.prefs, "filter_pattern_%i" % i)
+            if pattern:
+                f = pattern.split()
+                label = f[0]
+                active = int(f[1])
+                regexps = [misc.shell_to_regex(p)[:-1] for p in f[2:]]
+                try:
+                    cregexps = [re.compile(r) for r in regexps]
+                    def func(x, cr=cregexps):
+                        for c in cr:
+                            if c.match(x)!=None:
+                                return 0
+                        return 1
+                except re.error, e:
+                    misc.run_dialog( _("Error converting pattern '%s' to regular expression") % pattern, self )
+                else:
+                    self.type_filters_available.append( (f[0], active, func) )
+        self.type_filters = []
+        for i,f in misc.enumerate(self.type_filters_available):
+            icon = gtk.Image()
+            icon.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_LARGE_TOOLBAR)
+            icon.show()
+            toggle = self.toolbar.append_element(gtk.TOOLBAR_CHILD_TOGGLEBUTTON, None, f[0],
+                _("Hide %s") % f[0], "", icon, self._update_type_filter, i )
+            toggle.set_active(f[1])
         self.state_filters = [
             tree.STATE_NORMAL,
             tree.STATE_MODIFIED,
@@ -325,7 +316,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         differences = [1]
                     else:
                         for f in self.type_filters:
-                            e = filter(f, e)
+                            e = filter(f[2], e)
                         e.sort()
                         alldirs  += filter(lambda x: os.path.isdir(  join(root, x) ), e)
                         allfiles += filter(lambda x: os.path.isfile( join(root, x) ), e)
@@ -499,7 +490,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_delete_clicked(self, button):
         self.delete_selected()
 
-    def _update_state_filter(self, state, active ):
+    def _update_state_filter(self, state, idx):
         assert state in (tree.STATE_NEW, tree.STATE_MODIFIED, tree.STATE_NORMAL)
         try:
             self.state_filters.remove( state )
@@ -515,23 +506,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_filter_state_modified_toggled(self, button):
         self._update_state_filter( tree.STATE_MODIFIED, button.get_active() )
 
-    def _update_type_filter(self, type, active ):
-        assert type in (_filter_backups, _filter_binaries, _filter_cvs, _filter_media)
-        try:
-            self.type_filters.remove( type )
-        except ValueError:
-            pass
-        if not active:
-            self.type_filters.append( type )
+    def _update_type_filter(self, button, idx):
+        for i in range(len(self.type_filters)):
+            if self.type_filters[i] == self.type_filters_available[idx]:
+                self.type_filters.pop(i)
+                break
+        if button.get_active():
+            self.type_filters.append( self.type_filters_available[idx] )
         self.refresh()
-    def on_filter_type_backups_toggled(self, button):
-        self._update_type_filter( _filter_backups, button.get_active() )
-    def on_filter_type_binaries_toggled(self, button):
-        self._update_type_filter( _filter_binaries, button.get_active() )
-    def on_filter_type_cvs_toggled(self, button):
-        self._update_type_filter( _filter_cvs, button.get_active() )
-    def on_filter_type_media_toggled(self, button):
-        self._update_type_filter( _filter_media, button.get_active() )
 
     def on_filter_hide_current_clicked(self, button):
         pane = self._get_focused_pane()
@@ -649,8 +631,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def refresh(self):
         root = self.model.get_iter_root()
-        roots = self.model.value_paths(root)
-        self.set_locations( roots )
+        if root:
+            roots = self.model.value_paths(root)
+            self.set_locations( roots )
 
     def recompute_label(self):
         root = self.model.get_iter_root()
