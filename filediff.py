@@ -34,16 +34,14 @@ import gnomeglade
 import misc
 import melddoc
 import paths
+import stock
 
 sourceview_available = 0
-
-for sourceview in "gtksourceview sourceview".split():
-    try:
-        gsv = __import__(sourceview)
-        sourceview_available = 1
-        break
-    except ImportError:
-        pass
+try:
+    import gtksourceview
+    sourceview_available = 1
+except ImportError:
+    pass
 
 if sourceview_available:
     def set_highlighting_enabled(buf, fname, enabled):
@@ -68,7 +66,7 @@ if sourceview_available:
                    "po": "text/x-po",
                    "py": "text/x-python" }
         ext = fname.split(".")[-1]
-        man = gsv.SourceLanguagesManager()
+        man = gtksourceview.SourceLanguagesManager()
         gsl = man.get_language_from_mime_type( extmap.get(ext, "text/plain") )
         if gsl:
             buf.set_language(gsl)
@@ -88,6 +86,62 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
 
+    UI_DEFINITION = """
+    <ui>
+      <menubar name="MenuBar">
+        <placeholder name="menu_extras">
+          <menu action="edit_menu">
+            <menuitem action="edit_undo"/>
+            <menuitem action="edit_redo"/>
+            <separator/>
+            <menuitem action="edit_find"/>
+            <menuitem action="edit_find_next"/>
+            <separator/>
+            <menuitem action="edit_next_difference"/>
+            <menuitem action="edit_previous_difference"/>
+            <separator/>
+            <menuitem action="edit_cut"/>
+            <menuitem action="edit_copy"/>
+            <menuitem action="edit_paste"/>
+            <separator/>
+          </menu>
+        </placeholder>
+      </menubar>
+      <toolbar name="ToolBar">
+          <separator/>
+          <toolitem action="edit_undo"/>
+          <toolitem action="edit_redo"/>
+          <toolitem action="edit_find"/>
+          <separator/>
+          <toolitem action="edit_next_difference"/>
+          <toolitem action="edit_previous_difference"/>
+          <separator/>
+      </toolbar>
+    </ui>
+    """
+
+    UI_ACTIONS = (
+        ('edit_menu', None, _('_Edit')),
+            ('edit_undo', gtk.STOCK_UNDO,
+                _('_Undo'), '<Control>z', _('Undo last change')),
+            ('edit_redo', gtk.STOCK_REDO,
+                _('_Redo'), '<Control><Shift>z', _('Redo last change')),
+            ('edit_find', gtk.STOCK_FIND,
+                _('_Find'), '<Control>f', _('Search the document')),
+            ('edit_find_next', gtk.STOCK_FIND,
+                _('_Find Next'), '<Control>g', _('Repeat the last find')),
+            ('edit_next_difference', gtk.STOCK_GO_DOWN,
+                _('_Next'), '<Control>d', _('Next difference')),
+            ('edit_previous_difference', gtk.STOCK_GO_UP,
+                _('Pr_ev'), '<Control>e', _('Previous difference')),
+            ('edit_cut', gtk.STOCK_CUT,
+                _('Cu_t'), '<Control>x', _('Copy selected text')),
+            ('edit_copy', gtk.STOCK_PASTE,
+                _('_Copy'), '<Control>c', _('Copy selected text')),
+            ('edit_paste', gtk.STOCK_PASTE,
+                _('_Paste'), '<Control>v', _('Paste selected text')),
+    )
+
     keylookup = {gtk.keysyms.Shift_L : MASK_SHIFT,
                  gtk.keysyms.Control_L : MASK_CTRL,
                  gtk.keysyms.Alt_L : MASK_ALT}
@@ -96,20 +150,38 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
-        self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
-        self._update_regexes()
+        override = {}
         if sourceview_available:
+            override["GtkTextView"] = gtksourceview.SourceView
+        gnomeglade.Component.__init__(self,
+            paths.share_dir("glade2/filediff.glade"),
+            "filediff",
+            override)
+        self.map_widgets_into_lists(
+            ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        if sourceview_available:
+            [v.set_buffer( gtksourceview.SourceBuffer() ) for v in self.textview ]
+        self.connect_signal_handlers()
+        self.actiongroup = gtk.ActionGroup("FilediffActions")
+        self.add_actions( self.actiongroup, self.UI_ACTIONS )
+        self.undosequence.connect("can-undo", lambda o,can:
+            self.actiongroup.get_action("edit_undo").set_property("sensitive",can))
+        self.undosequence.connect("can-redo", lambda o,can:
+            self.actiongroup.get_action("edit_redo").set_property("sensitive",can))
+        self.undosequence.clear()
+
+        self._update_regexes()
+        #if sourceview_available:
             # ugly hack. http://bugzilla.gnome.org/show_bug.cgi?id=140071
             # will remove the need for this.
-            self.textview = []
-            for w in self.scrolledwindow:
-                w.remove( w.get_child() )
-                v = gsv.SourceView()
-                self.textview.append( v )
-                v.show()
-                w.add(v)
-                v.set_show_line_numbers(self.prefs.show_line_numbers)
+            #self.textview = []
+            #for w in self.scrolledwindow:
+                #w.remove( w.get_child() )
+                #v = gsv.SourceView()
+                #self.textview.append( v )
+                #v.show()
+                #w.add(v)
+                #v.set_show_line_numbers(self.prefs.show_line_numbers)
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -423,52 +495,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if t.is_focus():
                 return t
         return None
-
-    def on_find_activate(self, *args):
-        if self.find_dialog:
-            self.find_dialog.widget.present()
-        else:
-            class FindDialog(gnomeglade.Component):
-                def __init__(self, app):
-                    self.parent = app
-                    self.pane = -1
-                    gladefile = paths.share_dir("glade2/filediff.glade")
-                    gnomeglade.Component.__init__(self, gladefile, "finddialog")
-                    self.widget.set_transient_for(app.widget.get_toplevel())
-                    self.widget.show_all()
-                def on_destroy(self, *args):
-                    self.parent.find_dialog = None
-                    self.widget.destroy()
-                def on_entry_search_for_activate(self, *args):
-                    self.parent._find_text( self.entry_search_for.get_chars(0,-1),
-                        self.check_case.get_active(),
-                        self.check_word.get_active(),
-                        self.check_wrap.get_active(),
-                        self.check_regex.get_active() )
-                    return 1
-            self.find_dialog = FindDialog(self)
-
-    def on_find_next_activate(self, *args):
-        if self.last_search:
-            s = self.last_search
-            self._find_text(s.text, s.case, s.word, s.wrap, s.regex)
-        else:
-            self.on_find_activate()
-
-    def on_copy_activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("copy-clipboard") #XXX .get_buffer().copy_clipboard()
-
-    def on_cut_activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("cut-clipboard") #XXX get_buffer().cut_clipboard()
-
-    def on_paste_activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("paste-clipboard") #XXX t.get_buffer().paste_clipboard(None, 1)
 
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
@@ -893,14 +919,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if master != 1:
                     line = other_line
                     master = 1
-            self.on_linkmap_expose_event(self.linkmap0, None)
-            self.on_linkmap_expose_event(self.linkmap1, None)
+            self.on_linkmap__expose_event(self.linkmap0, None)
+            self.on_linkmap__expose_event(self.linkmap1, None)
             self._sync_vscroll_lock = 0
 
         #
         # diffmap drawing
         #
-    def on_diffmap_expose_event(self, area, event):
+    def on_diffmap__expose_event(self, area, event):
         diffmapindex = self.diffmap.index(area)
         textindex = (0, self.num_panes-1)[diffmapindex]
 
@@ -974,12 +1000,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
         curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
         c = None
-        if direction == gdk.SCROLL_DOWN:
+        if direction == gtk.SCROLL_STEP_FORWARD:
             for c in self.linediffer.single_changes(1, self._get_texts()):
                 assert c[0] != "equal"
                 if c[1] > curline + 1:
                     break
-        else: #direction == gdk.SCROLL_UP
+        else: #direction == gtk.SCROLL_STEP_BACKWARD
             for chunk in self.linediffer.single_changes(1, self._get_texts()):
                 if chunk[2] < curline:
                     c = chunk
@@ -1014,7 +1040,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # linkmap drawing
         #
-    def on_linkmap_expose_event(self, area, event):
+    def on_linkmap__expose_event(self, area, event):
         window = area.window
         # not mapped? 
         if not window: return
@@ -1227,6 +1253,71 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_linkmap_drag_begin(self, *args):
         print args
+
+    def action__edit_undo_activate(self, action):
+        self.action__undo()
+
+    def action__edit_redo_activate(self, action):
+        self.action__redo()
+
+    def action__edit_find_activate(self, action):
+        if self.find_dialog:
+            self.find_dialog.widget.present()
+        else:
+            class FindDialog(gnomeglade.Component):
+                def __init__(self, app):
+                    self.parent = app
+                    self.pane = -1
+                    gladefile = paths.share_dir("glade2/filediff.glade")
+                    gnomeglade.Component.__init__(self, gladefile, "finddialog")
+                    self.connect_signal_handlers()
+                    self.widget.set_transient_for(app.widget.get_toplevel())
+                    self.widget.show_all()
+                def on_widget__destroy(self, *args):
+                    self.parent.find_dialog = None
+                    self.widget.destroy()
+                def on_entry_search_for__activate(self, *args):
+                    self.parent._find_text( self.entry_search_for.get_chars(0,-1),
+                        self.check_case.get_active(),
+                        self.check_word.get_active(),
+                        self.check_wrap.get_active(),
+                        self.check_regex.get_active() )
+                    return 1
+                def on_button_find__clicked(self, *args):
+                    return self.on_entry_search_for__activate()
+                def on_button_close__clicked(self, *args):
+                    return self.on_widget__destroy()
+            self.find_dialog = FindDialog(self)
+
+    def action__edit_find_next_activate(self, action):
+        if self.last_search:
+            s = self.last_search
+            self._find_text(s.text, s.case, s.word, s.wrap, s.regex)
+        else:
+            self.on_find_activate()
+
+    def action__edit_next_difference_activate(self, action):
+        self.next_diff(gtk.SCROLL_STEP_FORWARD)
+
+    def action__edit_previous_difference_activate(self, action):
+        self.next_diff(gtk.SCROLL_STEP_BACKWARD)
+
+    def action__edit_cut_activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("cut-clipboard") #XXX get_buffer().cut_clipboard()
+
+    def action__edit_copy_activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("copy-clipboard") #XXX .get_buffer().copy_clipboard()
+
+
+    def action__edit_paste_activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("paste-clipboard") #XXX t.get_buffer().paste_clipboard(None, 1)
+
 
 gobject.type_register(FileDiff)
 
