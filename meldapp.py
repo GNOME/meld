@@ -407,6 +407,7 @@ class MeldPreferences(prefs.Preferences):
         "use_custom_font": prefs.Value(prefs.BOOL,0),
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "tab_size": prefs.Value(prefs.INT, 4),
+        "show_line_numbers": prefs.Value(prefs.BOOL, 0),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "edit_command_type" : prefs.Value(prefs.STRING, "internal"), #internal, gnome, custom
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),

@@ -35,6 +35,41 @@ import misc
 import melddoc
 import paths
 
+sourceview_available = 0
+
+try:
+    import sourceview as gsv
+    sourceview_available = 1
+    def enable_highlighting(buf, fname):
+        # gnome.vfs.get_mime_type seems to be broken. fake it.
+        extmap = { "xml":"text/xml",
+                   "glade":"text/xml",
+                   "cpp":"text/x-cpp",
+                   "cxx":"text/x-cpp",
+                   "cc":"text/x-cpp",
+                   "C":"text/x-cpp",
+                   "c":"text/x-c",
+                   "hpp":"text/x-cpp",
+                   "hxx":"text/x-cpp",
+                   "hh":"text/x-cpp",
+                   "H":"text/x-cpp",
+                   "h":"text/x-cpp",
+                   "inl":"text/x-cpp",
+                   "desktop": "application/x-desktop",
+                   "diff": "text/x-diff",
+                   "patch": "text/x-diff",
+                   "html": "text/html",
+                   "po": "text/x-po",
+                   "py": "text/x-python" }
+        ext = fname.split(".")[-1]
+        man = gsv.SourceLanguagesManager()
+        gsl = man.get_language_from_mime_type( extmap.get(ext, "text/plain") )
+        if 1 and gsl:
+            buf.set_language(gsl)
+            buf.set_highlight(1)
+except ImportError:
+    pass
+
 gdk = gtk.gdk
 
 ################################################################################
@@ -59,6 +94,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
         self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        if sourceview_available:
+            # ugly hack. http://bugzilla.gnome.org/show_bug.cgi?id=140071
+            # will remove the need for this.
+            self.textview = []
+            for w in self.scrolledwindow:
+                w.remove( w.get_child() )
+                v = gsv.SourceView()
+                self.textview.append( v )
+                v.show()
+                w.add(v)
+                v.set_show_line_numbers(self.prefs.show_line_numbers)
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -231,6 +277,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.textview[i].set_tabs(tabs)
         elif key == "use_custom_font" or key == "custom_font":
             self.load_font()
+        elif key == "show_line_numbers":
+            if sourceview_available:
+                for t in self.textview:
+                    t.set_show_line_numbers( value )
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -539,6 +589,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         lenseq = [len(d) for d in self.linediffer.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
         self._connect_buffer_handlers()
+        if sourceview_available:
+            for i in range(len(files)):
+                if files[i]:
+                    enable_highlighting( self.textview[i].get_buffer(), files[i] )
         yield 0
 
     def _update_highlighting(self, range0, range1):
