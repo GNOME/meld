@@ -256,6 +256,8 @@
 	      <signal name="key_press_event" handler="on_key_press_event" last_modification_time="Fri, 01 Nov 2002 13:48:55 GMT"/>
 	      <signal name="key_release_event" handler="on_key_release_event" last_modification_time="Fri, 01 Nov 2002 13:49:27 GMT"/>
 	      <signal name="button_press_event" handler="on_textview_button_press_event" last_modification_time="Sat, 12 Jul 2003 11:56:29 GMT"/>
+	      <signal name="move_cursor" handler="on_textview_move_cursor" last_modification_time="Sat, 24 Apr 2004 12:51:40 GMT"/>
+	      <signal name="focus_in_event" handler="on_textview_focus_in_event" last_modification_time="Sat, 24 Apr 2004 12:51:56 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -293,6 +295,8 @@
 	      <signal name="key_press_event" handler="on_key_press_event" last_modification_time="Fri, 01 Nov 2002 13:49:00 GMT"/>
 	      <signal name="key_release_event" handler="on_key_release_event" last_modification_time="Fri, 01 Nov 2002 13:49:13 GMT"/>
 	      <signal name="button_press_event" handler="on_textview_button_press_event" last_modification_time="Sat, 12 Jul 2003 11:56:37 GMT"/>
+	      <signal name="move_cursor" handler="on_textview_move_cursor" last_modification_time="Sat, 24 Apr 2004 12:52:05 GMT"/>
+	      <signal name="focus_in_event" handler="on_textview_focus_in_event" last_modification_time="Sat, 24 Apr 2004 12:52:14 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -370,6 +374,8 @@
 	  <child>
 	    <widget class="GtkTextView" id="textview0">
 	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="editable">True</property>
 	      <property name="justification">GTK_JUSTIFY_LEFT</property>
@@ -385,6 +391,8 @@
 	      <signal name="key_press_event" handler="on_key_press_event" last_modification_time="Fri, 01 Nov 2002 13:48:40 GMT"/>
 	      <signal name="key_release_event" handler="on_key_release_event" last_modification_time="Fri, 01 Nov 2002 13:49:32 GMT"/>
 	      <signal name="button_press_event" handler="on_textview_button_press_event" last_modification_time="Sat, 12 Jul 2003 11:56:19 GMT"/>
+	      <signal name="move_cursor" handler="on_textview_move_cursor" last_modification_time="Wed, 07 Jan 2004 22:48:33 GMT"/>
+	      <signal name="focus_in_event" handler="on_textview_focus_in_event" last_modification_time="Sat, 24 Apr 2004 13:00:43 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
