@@ -180,14 +180,18 @@ class MeldStatusBar:
 ################################################################################
 class NotebookLabel(gtk.HBox):
 
-    def __init__(self, text="", onclose=None):
+    def __init__(self, iconname, text="", onclose=None):
         gtk.HBox.__init__(self)
         self.label = gtk.Label(text)
         self.button = gtk.Button()
+        icon = gtk.Image()
+        icon.set_from_file( misc.appdir("glade2/pixmaps/%s" % iconname) )
+        icon.set_from_pixbuf( icon.get_pixbuf().scale_simple(15, 15, 2) ) #TODO font height
         image = gtk.Image()
         image.set_from_file( misc.appdir("glade2/pixmaps/button_delete.xpm") )
         image.set_from_pixbuf( image.get_pixbuf().scale_simple(9, 9, 2) ) #TODO font height
         self.button.add( image )
+        self.pack_start( icon )
         self.pack_start( self.label )
         self.pack_start( self.button, expand=0 )
         self.show_all()
@@ -257,7 +261,8 @@ class MeldPreferences(prefs.Preferences):
         if self.toolbar_style == 0:
             style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style')
             style = {"both":gtk.TOOLBAR_BOTH, "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
-                    "icons":gtk.TOOLBAR_ICONS, "text":gtk.TOOLBAR_TEXT}[style]
+                     "icon":gtk.TOOLBAR_ICONS, "icons":gtk.TOOLBAR_ICONS,
+                     "text":gtk.TOOLBAR_TEXT}[style]
         else:
             style = self.toolbar_style - 1
         return style
@@ -488,8 +493,8 @@ class MeldApp(gnomeglade.GnomeApp):
             assert(i>=0)
             self.notebook.remove_page(i)
 
-    def _append_page(self, page):
-        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(page))
+    def _append_page(self, page, icon):
+        nbl = NotebookLabel(icon, onclose=lambda b: self.try_remove_page(page))
         self.notebook.append_page( page.widget, nbl)
         self.notebook.set_current_page( self.notebook.page_num(page.widget) )
         self.scheduler.add_scheduler(page.scheduler)
@@ -497,7 +502,7 @@ class MeldApp(gnomeglade.GnomeApp):
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
-        self._append_page(doc)
+        self._append_page(doc, "tree-folder-normal.png")
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.set_locations(dirs)
@@ -509,7 +514,7 @@ class MeldApp(gnomeglade.GnomeApp):
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
         seq.connect("can-redo", self.on_can_redo)
-        self._append_page(doc)
+        self._append_page(doc, "tree-file-normal.png")
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.set_files(files)
 
@@ -517,7 +522,7 @@ class MeldApp(gnomeglade.GnomeApp):
         assert len(locations) in (1,)
         location = locations[0]
         doc = cvsview.CvsView(self.prefs)
-        self._append_page(doc)
+        self._append_page(doc, "cvs-icon.png")
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.set_location(location)
