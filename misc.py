@@ -28,12 +28,19 @@ import errno
 import gtk
 import shutil
 
-def run_dialog( text, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK):
+def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=[]):
+    """Run a dialog with text 'text'.
+       Extra buttons are passed as tuples of (button label, response id).
+    """
     d = gtk.MessageDialog(None,
         gtk.DIALOG_DESTROY_WITH_PARENT,
         messagetype,
         buttonstype,
         '<span weight="bold" size="larger">%s</span>' % text)
+    if parent:
+        d.set_transient_for(parent.widget.get_toplevel())
+    for b,id in extrabuttons:
+        d.add_button(b,id)
     d.set_has_separator(0)
     d.vbox.set_spacing(12)
     hbox = d.vbox.get_children()[0]
