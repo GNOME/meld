@@ -119,7 +119,8 @@ upload:
 .PHONY:announce
 announce:
 	galeon -n http://freshmeat.net/add-release/29735/ &
-	galeon -n http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
+	galeon -n http://www.gnomefiles.org/devs/newversion.php?soft_id=203 &
+	#galeon -n http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
 	#galeon -n http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
 	
 .PHONY:backup
