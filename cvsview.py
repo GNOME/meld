@@ -266,8 +266,12 @@ class CommitDialog(gnomeglade.Component):
         self.widget.show_all()
 
     def run(self):
-        response = self.widget.run()
+        self.previousentry.list.select_item(0)
+        self.textview.grab_focus()
         buf = self.textview.get_buffer()
+        buf.place_cursor( buf.get_start_iter() )
+        buf.move_mark( buf.get_selection_bound(), buf.get_end_iter() )
+        response = self.widget.run()
         msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
             self.parent._command_on_selected(self.parent.prefs.get_cvs_command("commit") + ["-m", msg] )
@@ -533,7 +537,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         kill = len(workdir) and (len(workdir)+1) or 0
         files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
         r = None
-        self.consolestream.write( misc.shelljoin(command+files) + "\n")
+        self.consolestream.write( misc.shelljoin(command+files) + "(in %s)\n" % workdir)
         readfunc = misc.read_pipe_iter(command + files, self.consolestream, workdir=workdir).next
         try:
             while r == None:
