@@ -1,4 +1,18 @@
-## python
+### Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+
+### This program is free software; you can redistribute it and/or modify
+### it under the terms of the GNU General Public License as published by
+### the Free Software Foundation; either version 2 of the License, or
+### (at your option) any later version.
+
+### This program is distributed in the hope that it will be useful,
+### but WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+### GNU General Public License for more details.
+
+### You should have received a copy of the GNU General Public License
+### along with this program; if not, write to the Free Software
+### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 # system
 import sys
@@ -16,8 +30,9 @@ import filediff
 import misc
 import cvsview
 import dirdiff
+import task
 
-version = "0.7.9"
+version = "0.8.0"
 developer = 0
 
 ################################################################################
@@ -26,9 +41,9 @@ developer = 0
 #
 ################################################################################
 
-class BrowseFileDialog(gnomeglade.Dialog):
+class BrowseFileDialog(gnomeglade.Component):
     def __init__(self, parentapp, labels, callback, isdir=0):
-        gnomeglade.Dialog.__init__(self, misc.appdir("glade2/meld-app.glade"), "browsefile")
+        gnomeglade.Component.__init__(self, misc.appdir("glade2/meld-app.glade"), "browsefile")
         self.widget.set_transient_for(parentapp.widget)
         self.numfile = len(labels)
         self.callback = callback
@@ -61,10 +76,10 @@ class BrowseFileDialog(gnomeglade.Dialog):
 #
 ################################################################################
 
-class PreferencesDialog(gnomeglade.Dialog):
+class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parentapp):
-        gnomeglade.Dialog.__init__(self, misc.appdir("glade2/meld-app.glade"), "preferencesdialog")
+        gnomeglade.Component.__init__(self, misc.appdir("glade2/meld-app.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
 
         self.prefs = parentapp.prefs
@@ -76,7 +91,7 @@ class PreferencesDialog(gnomeglade.Dialog):
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
-        self.entry_encoding.set_text( self.prefs.fallback_encoding )
+        self.entry_text_codecs.set_text( self.prefs.text_codecs )
         # diff pane
         self.diff_options_frame.hide()
         # display pane
@@ -104,7 +119,7 @@ class PreferencesDialog(gnomeglade.Dialog):
             self.prefs.toolbar_style = self.toolbar_style.index(radio)
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
-            self.prefs.fallback_encoding = self.entry_encoding.get_property("text")
+            self.prefs.text_codecs = self.entry_text_codecs.get_property("text")
         self.widget.destroy()
 
 ################################################################################
@@ -186,10 +201,10 @@ class NotebookLabel(gtk.HBox):
 # MeldNewMenu
 #
 ################################################################################
-class MeldNewMenu(gnomeglade.Menu):
+class MeldNewMenu(gnomeglade.Component):
     def __init__(self, app):
         gladefile = misc.appdir("glade2/meld-app.glade")
-        gnomeglade.Menu.__init__(self, gladefile, "popup_new")
+        gnomeglade.Component.__init__(self, gladefile, "popup_new")
         self.parent = app
     def on_menu_new_diff2_activate(self, *extra):
         self.parent.on_menu_new_diff2_activate()
@@ -204,6 +219,44 @@ class MeldNewMenu(gnomeglade.Menu):
 
 ################################################################################
 #
+# MeldPreferences
+#
+################################################################################
+class MeldPreferences(prefs.Preferences):
+    defaults = {
+        "use_custom_font": prefs.Value(prefs.BOOL,0),
+        "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
+        "tab_size": prefs.Value(prefs.INT, 4),
+        "supply_newline": prefs.Value(prefs.BOOL,1),
+        "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"), 
+        "draw_style": prefs.Value(prefs.INT,2),
+        "toolbar_style": prefs.Value(prefs.INT,0),
+        "color_deleted" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
+        "color_changed" : prefs.Value(prefs.STRING, "LightSteelBlue1"),
+        "color_edited" : prefs.Value(prefs.STRING, "gray85"),
+        "color_conflict" : prefs.Value(prefs.STRING, "Pink")
+    }
+
+    def __init__(self):
+        prefs.Preferences.__init__(self, "/apps/meld", self.defaults)
+
+    def get_current_font(self):
+        if self.use_custom_font:
+            return self.custom_font
+        else:
+            return self._gconf.get_string('/desktop/gnome/interface/monospace_font_name') or "Monospace 10"
+
+    def get_toolbar_style(self):
+        if self.toolbar_style == 0:
+            style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style')
+            style = {"both":gtk.TOOLBAR_BOTH, "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
+                    "icons":gtk.TOOLBAR_ICONS, "text":gtk.TOOLBAR_TEXT}[style]
+        else:
+            style = self.toolbar_style - 1
+        return style
+
+################################################################################
+#
 # MeldApp
 #
 ################################################################################
@@ -215,18 +268,43 @@ class MeldApp(gnomeglade.GnomeApp):
     def __init__(self):
         gladefile = misc.appdir("glade2/meld-app.glade")
         gnomeglade.GnomeApp.__init__(self, "Meld", version, gladefile, "meldapp")
-        self._map_widgets_into_lists( ["menu_file_save_file", "setting_number_panes", "setting_drawstyle"] )
+        self._map_widgets_into_lists( ["menu_file_save_file", "settings_number_panes", "settings_drawstyle"] )
         self.popup_new = MeldNewMenu(self)
         self.statusbar = MeldStatusBar(self.appbar)
-        self.prefs = prefs.Preferences()
+        self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
             self.toolbar_magic.hide()
-            self.setting_filters.hide()
         elif 0:
             def showPrefs(): PreferencesDialog(self)
             gtk.idle_add(showPrefs)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.prefs.notify_add(self.on_preference_changed)
+        self.idle_hooked = 0
+        self.scheduler = task.LifoScheduler()
+        self.scheduler.connect("runnable", self.on_scheduler_runnable )
+
+    def on_idle(self):
+        ret = self.scheduler.iteration()
+        if ret:
+            if type(ret) == type(""):
+                self.appbar.set_status(ret)
+            elif type(ret) == type(0.0):
+                self.appbar.get_progress().set_fraction(ret)
+            else:
+                self.appbar.get_progress().pulse()
+        else:
+                self.appbar.pop()
+                self.appbar.get_progress().set_fraction(0)
+        if self.scheduler.tasks_pending():
+            return 1
+        else:
+            self.idle_hooked = 0
+            return 0
+
+    def on_scheduler_runnable(self, sched):
+        if not self.idle_hooked:
+            self.idle_hooked = 1
+            gtk.idle_add( self.on_idle )
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
@@ -240,26 +318,17 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def on_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject")
-        if hasattr(newdoc, "undosequence"):
-            newseq = newdoc.undosequence
-            self.button_undo.set_sensitive(newseq.can_undo())
-            self.button_redo.set_sensitive(newseq.can_redo())
-            for i in range(3):
-                sensitive = newdoc.num_panes > i
-                self.menu_file_save_file[i].set_sensitive(sensitive)
-        else:
-            self.button_undo.set_sensitive(0)
-            self.button_redo.set_sensitive(0)
-            for i in range(3):
-                self.menu_file_save_file[i].set_sensitive(0)
+        newseq = newdoc.undosequence
+        self.button_undo.set_sensitive(newseq.can_undo())
+        self.button_redo.set_sensitive(newseq.can_redo())
+        for i in range(3):
+            sensitive = newdoc.num_panes > i
+            self.menu_file_save_file[i].set_sensitive(sensitive)
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title( nbl.label.get_text() + " - Meld")
-
-    def on_working_hard(self, widget, working):
-        if working:
-            self.appbar.get_progress().pulse()
-        else:
-            self.appbar.get_progress().set_fraction(0)
+        self.settings_number_of_panes.set_sensitive( hasattr(newdoc, "set_num_panes") )
+        self.settings_filters.set_sensitive( hasattr(newdoc, "set_filters") )
+        self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook_label_changed(self, component, text):
         nbl = self.notebook.get_tab_label( component.widget )
@@ -319,7 +388,7 @@ class MeldApp(gnomeglade.GnomeApp):
             try: state.append( c.get_data("pyobject").is_modified() )
             except AttributeError: state.append(0)
         if 1 in state and not developer:
-            dialog = gnomeglade.Dialog(misc.appdir("glade2/meld-app.glade"), "closedialog")
+            dialog = gnomeglade.Component(misc.appdir("glade2/meld-app.glade"), "closedialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             response = dialog.widget.run()
             dialog.widget.destroy()
@@ -334,19 +403,28 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (edit)
     #
     def on_menu_undo_activate(self, *extra):
-        misc.safe_apply( self.current_doc(), "undo", () )
+        self.current_doc().on_undo_activate()
 
     def on_menu_redo_activate(self, *extra):
-        misc.safe_apply( self.current_doc(), "redo", () )
+        self.current_doc().on_redo_activate()
+  
+    def on_menu_copy_activate(self, *extra):
+        self.current_doc().on_copy_activate()
+
+    def on_menu_cut_activate(self, *extra):
+        self.current_doc().on_cut_activate()
+
+    def on_menu_paste_activate(self, *extra):
+        self.current_doc().on_paste_activate()
 
     #
     # Toolbar and menu items (settings)
     #
     def on_menu_number_panes_activate(self, menuitem):
-        n = self.setting_number_panes.index(menuitem) + 1
+        n = self.settings_number_panes.index(menuitem) + 1
         d = self.current_doc()
-        misc.safe_apply( d, "set_num_panes", n )
-        for i in range(3): #TODO
+        d.set_num_panes(n)
+        for i in range(3):
             sensitive = d.num_panes > i
             self.menu_file_save_file[i].set_sensitive(sensitive)
             
@@ -375,6 +453,9 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (misc)
     #
     def on_menu_magic_activate(self, *args):
+        for i in range(8):
+            self.append_filediff( ("ntest/file%ia"%i, "ntest/file%ib"%i) )
+            #self.append_filediff( ("ntest/file9a", "ntest/file9b") )
         pass
 
     def on_menu_down_activate(self, *args):
@@ -395,18 +476,20 @@ class MeldApp(gnomeglade.GnomeApp):
         else:
             delete = deletefunc(self)
         if delete == gnomeglade.DELETE_OK:
-            i = self.notebook.page_num(page.widget)
+            self.scheduler.remove_scheduler( page.scheduler )
+            i = self.notebook.page_num( page.widget )
             assert(i>=0)
             self.notebook.remove_page(i)
 
     def _append_page(self, page):
-        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(page.widget))
+        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(page))
         self.notebook.append_page( page.widget, nbl)
         self.notebook.set_current_page( self.notebook.page_num(page.widget) )
+        self.scheduler.add_scheduler(page.scheduler)
 
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
-        doc = dirdiff.DirDiff(len(dirs), self.statusbar)
+        doc = dirdiff.DirDiff(self.prefs, len(dirs))
         self._append_page(doc)
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
@@ -414,7 +497,7 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def append_filediff(self, files):
         assert len(files) in (1,2,3)
-        doc = filediff.FileDiff(len(files), self.statusbar, self.prefs)
+        doc = filediff.FileDiff(self.prefs, len(files))
         seq = doc.undosequence
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
@@ -426,10 +509,9 @@ class MeldApp(gnomeglade.GnomeApp):
     def append_cvsview(self, locations):
         assert len(locations) in (1,)
         location = locations[0]
-        doc = cvsview.CvsView(self.statusbar)
+        doc = cvsview.CvsView(self.prefs)
         self._append_page(doc)
         doc.connect("label-changed", self.on_notebook_label_changed)
-        doc.connect("working-hard", self.on_working_hard)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.set_location(location)
 
@@ -449,7 +531,7 @@ class MeldApp(gnomeglade.GnomeApp):
     # Usage
     #
     def usage(self, msg):
-        dialog = gnomeglade.Dialog(misc.appdir("glade2/meld-app.glade"),
+        dialog = gnomeglade.Component(misc.appdir("glade2/meld-app.glade"),
             "usagedialog")
         dialog.widget.set_transient_for(self.widget.get_toplevel())
         label = '<span weight="bold" size="larger">%s</span>' % msg
@@ -512,7 +594,7 @@ def main():
             doc = cvsview.CvsView(app.statusbar)
             doc.set_location( os.path.dirname(a) )
             doc.connect("create-diff", lambda obj,arg: app.append_filediff(arg) )
-            doc.run_cvs_diff(a)
+            doc.run_cvs_diff([a])
             del doc
         else:
             app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
