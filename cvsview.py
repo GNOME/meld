@@ -461,6 +461,10 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             else: # just the root
                 self.treeview.expand_row( (0,), 0)
 
+    def on_preference_changed(self, key, value):
+        if key == "toolbar_style":
+            self.toolbar.set_style( self.prefs.get_toolbar_style() )
+
     def on_fileentry_activate(self, fileentry):
         path = fileentry.get_full_path(0)
         self.set_location(path)
