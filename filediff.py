@@ -656,10 +656,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if len(modified):
             message = _("Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
             response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
-            if response == gtk.RESPONSE_OK:
-                files = [t.get_buffer().get_data("meld").filename for t in self.textview[:self.num_panes] ]
-                self.set_files(files)
-        self.queue_draw()
+            if response != gtk.RESPONSE_OK:
+                return
+        files = [t.get_buffer().get_data("meld").filename for t in self.textview[:self.num_panes] ]
+        self.set_files(files)
 
     def queue_draw(self, junk=None):
         for i in range(self.num_panes-1):
