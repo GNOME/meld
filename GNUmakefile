@@ -9,14 +9,14 @@ VERSION := $(shell grep "^version" meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
 MELD_CMD := ./meld #--profile
 TESTNUM := 1
-DEVELOPER := 1
+DEVELOPER := 0
 SPECIALS := meld paths.py
 
 ifeq ($(DEVELOPER), 1)
 .PHONY:rundiff
 rundiff: check
 	echo $(prefix)
-	$(MELD_CMD) *test/fi*3* #. ../meld #?.txt
+	$(MELD_CMD) . ../meld #?.txt
 	#$(MELD_CMD) ntest/file$(TESTNUM)*
 endif
 
