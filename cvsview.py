@@ -112,6 +112,8 @@ def _lookup_cvs_files(files, dirs):
                     state = tree.STATE_REMOVED
                 else:
                     print "Revision '%s' not understood" % rev
+            elif date=="dummy timestamp from new-entry":
+				state = tree.STATE_MODIFIED
             else:
                 plus = date.find("+")
                 if plus >= 0:
