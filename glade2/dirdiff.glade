@@ -471,7 +471,9 @@
 	    <widget class="GtkDrawingArea" id="diffmap1">
 	      <property name="width_request">20</property>
 	      <property name="visible">True</property>
+	      <property name="events">GDK_BUTTON_PRESS_MASK</property>
 	      <signal name="expose_event" handler="on_diffmap_expose_event" last_modification_time="Wed, 21 May 2003 19:30:53 GMT"/>
+	      <signal name="button_press_event" handler="on_diffmap_button_press_event" last_modification_time="Thu, 24 Jul 2003 19:32:10 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="left_attach">6</property>
@@ -503,7 +505,9 @@
 	    <widget class="GtkDrawingArea" id="diffmap0">
 	      <property name="width_request">20</property>
 	      <property name="visible">True</property>
+	      <property name="events">GDK_BUTTON_PRESS_MASK</property>
 	      <signal name="expose_event" handler="on_diffmap_expose_event" last_modification_time="Wed, 21 May 2003 19:30:44 GMT"/>
+	      <signal name="button_press_event" handler="on_diffmap_button_press_event" last_modification_time="Thu, 24 Jul 2003 19:32:02 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="left_attach">0</property>

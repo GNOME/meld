@@ -77,6 +77,61 @@ def _not_none(l):
 join = os.path.join
 
 
+COL_NEWER = tree.COL_END + 1
+pixbuf_newer = gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/tree-file-newer.png"), 14)
+TYPE_PIXBUF = type(pixbuf_newer)
+
+################################################################################
+#
+# DirDiffTreeStore
+#
+################################################################################
+class DirDiffTreeStore(tree.DiffTreeStore):
+    def __init__(self, ntree):
+        types = [type("")] * COL_NEWER * ntree
+        types[tree.COL_ICON*ntree:tree.COL_ICON*ntree+ntree] = [TYPE_PIXBUF] * ntree
+        types[COL_NEWER*ntree:COL_NEWER*ntree+ntree] = [TYPE_PIXBUF] * ntree
+        gtk.TreeStore.__init__(self, *types)
+        self.ntree = ntree
+        self._setup_default_styles()
+
+################################################################################
+#
+# EmblemCellRenderer
+#
+################################################################################
+class EmblemCellRenderer(gtk.GenericCellRenderer):
+    __gproperties__ = {
+        'pixbuf': (gtk.gdk.Pixbuf, 'pixmap property', 'the base pixmap', gobject.PARAM_READWRITE),
+        'emblem': (gtk.gdk.Pixbuf, 'emblem property', 'the emblem pixmap', gobject.PARAM_READWRITE),
+    }
+    def __init__(self):
+        self.__gobject_init__()
+        self.renderer = gtk.CellRendererPixbuf()
+        self.pixbuf = None
+        self.emblem = None
+
+    def do_set_property(self, pspec, value):
+        if not hasattr(self, pspec.name):
+            raise AttributeError, 'unknown property %s' % pspec.name
+        setattr(self, pspec.name, value)
+    def do_get_property(self, pspec):
+        return getattr(self, pspec.name)
+
+    def on_render(self, window, widget, background_area, cell_area, expose_area, flags):
+        r = self.renderer
+        r.set_property("pixbuf", self.pixbuf)
+        r.render(window, widget, background_area, cell_area, expose_area, flags)
+        r.set_property("pixbuf", self.emblem)
+        r.render(window, widget, background_area, cell_area, expose_area, flags)
+
+    def on_get_size(self, widget, cell_area):
+        if not hasattr(self, "size"):
+            r = self.renderer
+            r.set_property("pixbuf", self.pixbuf)
+            self.size = r.get_size(widget, cell_area)
+        return self.size
+gobject.type_register(EmblemCellRenderer)
 ################################################################################
 #
 # DirDiffMenu
@@ -155,14 +210,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.set_num_panes(num_panes)
         self.on_treeview_focus_out_event(None, None)
 
-        rentext = gtk.CellRendererText()
-        renpix = gtk.CellRendererPixbuf()
         for i in range(3):
             self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             column = gtk.TreeViewColumn()
-            column.pack_start(renpix, expand=0)
+            rentext = gtk.CellRendererText()
+            renicon = EmblemCellRenderer()
+            column.pack_start(renicon, expand=0)
             column.pack_start(rentext, expand=1)
-            column.set_attributes(renpix, pixbuf=self.model.column_index(tree.COL_ICON,i))
+            column.set_attributes(renicon, pixbuf=self.model.column_index(tree.COL_ICON,i),
+                                           emblem=self.model.column_index(COL_NEWER,i))
             column.set_attributes(rentext, markup=self.model.column_index(tree.COL_TEXT,i))
             self.treeview[i].append_column(column)
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
@@ -529,22 +585,28 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Update the state of the item at 'iter'
         """
         files = self.model.value_paths(iter)
-        is_present = [ os.path.exists( file ) for file in files[:self.num_panes] ]
-        all_present = 0 not in is_present
+        def mtime(f):
+            try:
+                return os.stat(f).st_mtime
+            except OSError:
+                return 0
+        mod_times = [ mtime( file ) for file in files[:self.num_panes] ]
+        newest_index = mod_times.index( max(mod_times) )
+        all_present = 0 not in mod_times
         if all_present:
             all_same = _files_same( files )
             all_present_same = all_same
         else:
             lof = []
-            for j in range(len(is_present)):
-                if is_present[j]:
+            for j in range(len(mod_times)):
+                if mod_times[j]:
                     lof.append( files[j] )
             all_same = 0
             all_present_same = _files_same( lof )
         filename = os.path.basename(file)
         different = 1
         for j in range(self.model.ntree):
-            if is_present[j]:
+            if mod_times[j]:
                 isdir = os.path.isdir( files[j] )
                 if all_same:
                     self.model.set_state(iter, j,  tree.STATE_NORMAL, isdir)
@@ -553,6 +615,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.model.set_state(iter, j,  tree.STATE_NEW, isdir)
                 else:
                     self.model.set_state(iter, j,  tree.STATE_MODIFIED, isdir)
+                if j == newest_index:
+                    index = self.model.column_index(COL_NEWER, j)
+                    self.model.set_value(iter, index,  pixbuf_newer)
             else:
                 self.model.set_state(iter, j,  tree.STATE_MISSING)
         return different
@@ -574,7 +639,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def set_num_panes(self, n):
         if n != self.num_panes and n in (1,2,3):
-            self.model = tree.DiffTreeStore(n)
+            self.model = DirDiffTreeStore(n)
             for i in range(n):
                 self.treeview[i].set_model(self.model)
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
@@ -652,7 +717,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             gcb.set_rgb_fg_color( gdk.color_parse("black") )
             area.meldgc = [None, None, gce, None, gcd, gcc, gcc, None, gcb]
 
-        #TODO need height of arrow button on scrollbar - how do we get that?
+        #TODO need gutter of scrollbar - how do we get that?
         size_of_arrow = 14
         hperline = float( area.get_allocation().height - 3*size_of_arrow) / numlines
         scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
@@ -672,5 +737,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 window.draw_rectangle( gc, 1, x0, s, x1, e-s)
                 window.draw_rectangle( area.meldgc[-1], 0, x0, s, x1, e-s)
             start = end
+
+    def on_diffmap_button_press_event(self, area, event):
+        #TODO need gutter of scrollbar - how do we get that?
+        if event.button == 1:
+            size_of_arrow = 14
+            diffmapindex = self.diffmap.index(area)
+            index = (0, self.num_panes-1)[diffmapindex]
+            height = area.get_allocation().height
+            fraction = (event.y - size_of_arrow) / (height - 3.75*size_of_arrow)
+            adj = self.scrolledwindow[index].get_vadjustment()
+            val = fraction * adj.upper - adj.page_size/2
+            upper = adj.upper - adj.page_size
+            adj.set_value( max( min(upper, val), 0) )
+            return 1
 
 gobject.type_register(DirDiff)
