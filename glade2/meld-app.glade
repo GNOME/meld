@@ -664,7 +664,7 @@
   <property name="modal">False</property>
   <property name="default_width">600</property>
   <property name="resizable">True</property>
-  <property name="destroy_with_parent">True</property>
+  <property name="destroy_with_parent">False</property>
   <property name="icon">pixmaps/icon.png</property>
   <property name="has_separator">True</property>
   <signal name="response" handler="on_response" last_modification_time="Fri, 01 Nov 2002 13:31:01 GMT"/>
@@ -681,7 +681,7 @@
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
-	    <widget class="GtkButton" id="button9">
+	    <widget class="GtkButton" id="button_cancel">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
@@ -693,7 +693,7 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkButton" id="button10">
+	    <widget class="GtkButton" id="button_ok">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="has_default">True</property>

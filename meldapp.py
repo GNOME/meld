@@ -36,16 +36,23 @@ class BrowseFileDialog(gnomeglade.Dialog):
         self.widget.set_transient_for(parentapp.widget)
         self.numfile = len(labels)
         self.callback = callback
-        self.entries = []
+        self.labels = map(gtk.Label, labels )
+        self.entries = map( lambda x:gnome.ui.FileEntry("fileentry", "Browse "+x), labels)
         for i in range(self.numfile):
-            l = gtk.Label(labels[i])
-            l.set_justify(gtk.JUSTIFY_RIGHT)
-            self.table.attach(l , 0, 1, i, i+1, gtk.SHRINK)
-            e = gnome.ui.FileEntry("fileentry", "Browse "+labels[i])
-            e.set_directory_entry(isdir)
-            self.table.attach(e , 1, 2, i, i+1)
-            self.entries.append(e)
+            self.labels[i].set_justify(gtk.JUSTIFY_RIGHT)
+            self.table.attach(self.labels[i], 0, 1, i, i+1, gtk.SHRINK)
+            self.entries[i].set_directory_entry(isdir)
+            self.entries[i].connect("activate", self.on_activate)
+            self.table.attach(self.entries[i] , 1, 2, i, i+1)
         self.widget.show_all()
+
+    def on_activate(self, entry):
+        i = self.entries.index(entry)
+        if i == self.numfile - 1:
+            self.button_ok.activate()
+        else:
+            self.entries[i+1].gtk_entry().grab_focus()
+
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_OK:
             files = [e.get_full_path(1) or "" for e in self.entries]
@@ -317,10 +324,10 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (edit)
     #
     def on_menu_undo_activate(self, *extra):
-        self.current_doc().undo()
+        misc.safe_apply( self.current_doc(), "undo", () )
 
     def on_menu_redo_activate(self, *extra):
-        self.current_doc().redo()
+        misc.safe_apply( self.current_doc(), "redo", () )
 
     #
     # Toolbar and menu items (settings)
