@@ -439,7 +439,7 @@ class MeldPreferences(prefs.Preferences):
                                               "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
         "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$[^:]+:[^\\n\$]+\$\n" + \
                                               "C++ comment\t0\t//.*\n" + \
-                                              "C comment\t0\t/\*[^*]*\*+([^/*][^*]*\*+)*/\n" + \
+                                              "C comment\t0\t/\*.*?\*/\n" + \
                                               "All whitespace\t0\t[ \\t\\r\\f\\v]*\n" + \
                                               "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n" + \
                                               "Script comment\t0\t#.*"),
