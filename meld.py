@@ -13,8 +13,8 @@ import gobject
 import gtk
 import gtk.glade
 import gnome
-import gnome.ui
 import gnomeglade
+import undo
 
 
 ################################################################################
@@ -35,24 +35,64 @@ class struct:
 
 def look(s, o):
     return filter(lambda x:x.find(s)!=-1, dir(o))
-#print filter(lambda x:x.find("MASK")!=-1, dir(gtk.gdk))
-#print filter(lambda x:x.lower().find("wheel")!=-1, dir(gtk.gdk))
 #print filter(lambda x:x.find("RUN")!=-1, dir(gobject))
+#print look("", gobject)
+
+
+################################################################################
+#
+# BufferInsertionAction 
+#
+################################################################################
+class BufferInsertionAction:
+    def __init__(self, buffer, offset, text):
+        self.buffer = buffer
+        self.offset = offset 
+        self.text = text
+    def undo(self):
+        b = self.buffer
+        b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
+    def redo(self):
+        b = self.buffer
+        b.insert( b.get_iter_at_offset( self.offset), self.text, len(self.text)) 
+
+################################################################################
+#
+# BufferDeletionAction
+#
+################################################################################
+class BufferDeletionAction:
+    def __init__(self, buffer, offset, text):
+        self.buffer = buffer
+        self.offset = offset 
+        self.text = text
+    def undo(self):
+        b = self.buffer
+        b.insert( b.get_iter_at_offset( self.offset), self.text, len(self.text)) 
+    def redo(self):
+        b = self.buffer
+        b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
+
+
 ################################################################################
 #
 # FileDiff2
 #
 ################################################################################
 class FileDiff2(gnomeglade.Component):
-    __gsignals__ = { 'files-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_STRING)) }
+    __gsignals__ = {
+        'files-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_STRING))
+    }
 
     def __init__(self):
         self.__gobject_init__()
         gnomeglade.Component.__init__(self, "glade2/filediff2.glade", "filediff2")
         self.linediffs = []
+        self.refresh_timer_id = -1
         sizegroup = gtk.SizeGroup(1)
         sizegroup.add_widget(self.textview0)
         sizegroup.add_widget(self.textview1)
+
         self.scrolledwindow0.get_vadjustment().connect("value-changed", lambda adj: self._sync_scroll(0) )
         self.scrolledwindow1.get_vadjustment().connect("value-changed", lambda adj: self._sync_scroll(1) )
         self.prefs = struct(deleted_color="#ebffeb", changed_color="#ebebff")
@@ -64,6 +104,33 @@ class FileDiff2(gnomeglade.Component):
         self.pixbuf0 = self._load_pixbuf("glade2/apply0.xpm")
         self.pixbuf1 = self._load_pixbuf("glade2/apply1.xpm")
         self.drawing2.add_events(gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK)
+
+        self.textview0.get_buffer().connect("insert-text", self.on_text_insert_text)
+        self.textview0.get_buffer().connect("delete-range", self.on_text_delete_range)
+        self.textview1.get_buffer().connect("insert-text", self.on_text_insert_text)
+        self.textview1.get_buffer().connect("delete-range", self.on_text_delete_range)
+        self.undosequence = undo.UndoSequence()
+
+    def on_text_insert_text(self, buffer, iter, text, textlen):
+        if not self.undosequence.busy:
+            self.undosequence.add_action( BufferInsertionAction(buffer, iter.get_offset(), text) )
+            self._queue_refresh()
+    def on_text_delete_range(self, buffer, iter0, iter1):
+        if not self.undosequence.busy:
+            text = buffer.get_text(iter0, iter1, 0)
+            self.undosequence.add_action( BufferDeletionAction(buffer, iter0.get_offset(), text) )
+            self._queue_refresh()
+
+    def undo(self):
+        self.undosequence.busy = 1
+        self.undosequence.undo()
+        self.undosequence.busy = 0
+        self._queue_refresh(0)
+    def redo(self):
+        self.undosequence.busy = 1
+        self.undosequence.redo()
+        self.undosequence.busy = 0
+        self._queue_refresh(0)
 
     def on_drawing2_scroll_event(self, area, event):
         self.next_diff(event.direction)
@@ -204,7 +271,7 @@ class FileDiff2(gnomeglade.Component):
                     b1.delete(b1.get_iter_at_line(c[3]), b1.get_iter_at_line(c[4]))
                     b1.insert_with_tags_by_name(b1.get_iter_at_line(c[3]), t0, "edited line")
                     b1.end_user_action()
-                    self.refresh()
+                    self._queue_refresh(0)
                 if which==1 and t0 < event.y and event.y < t0 + ph:
                     b1 = self.textview1.get_buffer()
                     t1 = b1.get_text( b1.get_iter_at_line(c[3]), b1.get_iter_at_line(c[4]), 0)
@@ -213,13 +280,11 @@ class FileDiff2(gnomeglade.Component):
                     b0.delete(b0.get_iter_at_line(c[1]), b0.get_iter_at_line(c[2]))
                     b0.insert_with_tags_by_name(b0.get_iter_at_line(c[1]), t1, "edited line")
                     b0.end_user_action()
-                    self.refresh()
+                    self._queue_refresh(0)
             self.mouse_chunk = None
 
     def on_drawing2_expose_event(self, area, event):
-        #print "expose", event, dir(event)
         window = area.window
-        #print "*", area.get_events()
         # not mapped? 
         if not window: return
         alloc = area.get_allocation()
@@ -275,9 +340,11 @@ class FileDiff2(gnomeglade.Component):
             else: #replace
                 self.pixbuf0.render_to_drawable( window, gcfg, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
                 self.pixbuf1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
-        window.draw_line(style.text_gc[0], .25*wtotal,  0.5*htotal,.75*wtotal, 0.5*htotal)
+        window.draw_line(style.text_gc[0], .25*wtotal, 0.5*htotal,.75*wtotal, 0.5*htotal)
         
     def refresh(self, *args):
+        if self.refresh_timer_id != -1:
+            gtk.timeout_remove(self.refresh_timer_id)
         self.flushevents()
         b0 = self.textview0.get_buffer()
         t0 = b0.get_text(b0.get_start_iter(), b0.get_end_iter(), 0)
@@ -306,6 +373,15 @@ class FileDiff2(gnomeglade.Component):
             if c[0] != "equal":
                 break
         text.scroll_to_iter( buf.get_iter_at_line(c[index]), 0.4, 1, 0.5, 0)
+
+    def _queue_refresh(self, delay=1000):
+        if self.refresh_timer_id != -1:
+            #print "extra refresh"
+            gtk.timeout_remove(self.refresh_timer_id)
+        if delay:
+            self.refresh_timer_id = gtk.timeout_add(delay, self.refresh, 0)
+        else:
+            self.refresh()
 
     def _highlight_buffer(self, which):
         base = (1,3)[which]
@@ -441,6 +517,8 @@ class MeldApp(gnomeglade.App):
 
     def __init__(self, files):
         gnomeglade.App.__init__(self, "Meld", "0.1", "glade2/meld-app.glade", "meldapp")
+        self.button_undo.set_sensitive(0)
+        self.button_redo.set_sensitive(0)
         if len(files)==2:
             self.append_filediff2( files[0],files[1] )
 
@@ -462,6 +540,10 @@ class MeldApp(gnomeglade.App):
     #
     # current doc
     #
+    def current_doc(self):
+        index = self.notebook.get_current_page()
+        return self.notebook.get_nth_page(index).get_data("pyobject") #TODO why not pyobject?
+        
     def on_close_doc_activate(self, *extra):
         page = self.notebook.get_current_page()
         if page >= 0:
@@ -469,8 +551,11 @@ class MeldApp(gnomeglade.App):
     def on_new_doc_activate(self, *extra):
         BrowseFile2Dialog(self)
     def on_refresh_doc_clicked(self, *args):
-        index = self.notebook.get_current_page()
-        self.notebook.get_nth_page(index).get_data("pyobject").refresh() #TODO why not just w.refresh()
+        self.current_doc().refresh()
+    def on_undo_doc_clicked(self, *extra):
+        self.current_doc().undo()
+    def on_redo_doc_clicked(self, *extra):
+        self.current_doc().redo()
 
     def on_files_doc_loaded(self, component, file0, file1):
         l = self.notebook.get_tab_label( component._widget ) #TODO why ._widget?
@@ -478,6 +563,11 @@ class MeldApp(gnomeglade.App):
             f0 = os.path.basename(file0)
             f1 = os.path.basename(file1)
             l.set_text("%s\n%s" % (f0,f1))
+
+    def on_can_undo_doc(self, undosequence, can):
+        self.button_undo.set_sensitive(can)
+    def on_can_redo_doc(self, undosequence, can):
+        self.button_redo.set_sensitive(can)
     #
     # methods
     #
@@ -490,6 +580,9 @@ class MeldApp(gnomeglade.App):
         d.set_file(file0,0)
         d.set_file(file1,1)
         d.refresh()
+        d.undosequence.clear()
+        d.undosequence.connect("can-undo", self.on_can_undo_doc)
+        d.undosequence.connect("can-redo", self.on_can_redo_doc)
 
 
 ################################################################################
