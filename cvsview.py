@@ -169,7 +169,7 @@ class CommitDialog(gnomeglade.Dialog):
         if response == gtk.RESPONSE_OK:
             msg = msg.replace("'", r"\'")
             #print "cvs commit -m '%s'" % msg
-            self.parent._command_on_selected("cvs -z3 -q commit -m '%s' %s" % (msg,self.changedfiles.get_text()) )
+            self.parent._command_on_selected("cvs -z3 -q commit -m '%s'" % msg )
         self.previousentry.append_history(1, msg)
         self.widget.destroy()
 
