@@ -63,7 +63,7 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
     d.destroy()
     return ret
 
-class struct:
+class struct(object):
     """Similar to a dictionary except that members may be accessed as s.member.
 
     Usage:
@@ -143,7 +143,7 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     When all the data is read, the entire string is yeilded.
     If 'workdir' is specified the command is run from that directory.
     """
-    class sentinel:
+    class sentinel(object):
         def __del__(self):
             if self.pipe:
                 errorstream.write("killing '%s' with pid '%i'\n" % (command[0], self.pipe.pid) )

@@ -61,7 +61,7 @@ FLOAT = "float"
 
 ##
 
-class Preferences:
+class Preferences(object):
     """Persistent preferences object.
 
     Example:

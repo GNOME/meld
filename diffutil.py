@@ -64,7 +64,7 @@ class IncrementalSequenceMatcher(difflib.SequenceMatcher):
 # Differ
 #
 ################################################################################
-class Differ:
+class Differ(object):
     """Utility class to hold diff2 or diff3 chunks"""
     reversemap = {
         "replace":"replace",

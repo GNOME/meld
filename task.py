@@ -20,7 +20,7 @@
 from __future__ import generators
 import traceback
 
-class SchedulerBase:
+class SchedulerBase(object):
     """Base class with common functionality for schedulers.
 
     Derived classes should implement the 'get_current_task' method.

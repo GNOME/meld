@@ -365,7 +365,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
             differences = [0]
             if not self.button_ignore_case.get_active():
-                class accum:
+                class accum(object):
                     def __init__(self, parent, roots):
                         self.items = []
                         self.n = parent.num_panes
@@ -379,7 +379,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         return [ tuple(repeat(i,self.n)) for i in  uniq(self.items) ]
             else:
                 canonicalize = lambda x : x.lower()
-                class accum:
+                class accum(object):
                     def __init__(self, parent, roots):
                         self.items = {} # map canonical names to realnames
                         self.bad = []

@@ -146,13 +146,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.queue_draw()
 
     def _get_texts(self):
-        class FakeText:
+        class FakeText(object):
             def __init__(self, buf):
                 self.buf = buf
             def __getslice__(self, lo, hi):
                 b = self.buf
                 return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")[:-1]
-        class FakeTextArray:
+        class FakeTextArray(object):
             def __init__(self, bufs):
                 self.texts = map(FakeText, bufs)
             def __getitem__(self, i):
@@ -447,7 +447,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                        text = [],
                                        pane = i)
                     tasks.append(task)
-                except IOError, e:
+                except (IOError, LookupError), e:
                     buffers[i].set_text("\n")
                     misc.run_dialog(
                         _("Could not open '%s' for reading.\n\nThe error was:\n%s") % (f, str(e)),
@@ -561,26 +561,25 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
                         for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
                             b.apply_tag(t, s, b.get_iter_at_line(l))
-                        #text1 = "\n".join(lines[1]  [c[1]:c[2]])
-                        #textn = "\n".join(lines[i*2][c[3]:c[4]])
-                        text1 = "\n".join( self._get_texts()[1  ][c[1]:c[2]] )
-                        textn = "\n".join( self._get_texts()[i*2][c[3]:c[4]] )
-                        matcher = difflib.SequenceMatcher(None, text1, textn)
-                        #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
-                        tags = [b.get_tag_table().lookup("inline line") for b in bufs]
-                        back = (0,0)
-                        for o in matcher.get_opcodes():
-                            if o[0] == "equal":
-                                if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
-                                    back = o[4]-o[3], o[2]-o[1]
-                                continue
-                            for i in range(2):
-                                s,e = starts[i].copy(), starts[i].copy()
-                                s.forward_chars( o[1+2*i] - back[i] )
-                                e.forward_chars( o[2+2*i] )
-                                bufs[i].apply_tag(tags[i], s, e)
+                        if 0:
+                            text1 = "\n".join( self._get_texts()[1  ][c[1]:c[2]] )
+                            textn = "\n".join( self._get_texts()[i*2][c[3]:c[4]] )
+                            matcher = difflib.SequenceMatcher(None, text1, textn)
+                            #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
+                            tags = [b.get_tag_table().lookup("inline line") for b in bufs]
                             back = (0,0)
-                        yield 1
+                            for o in matcher.get_opcodes():
+                                if o[0] == "equal":
+                                    if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
+                                        back = o[4]-o[3], o[2]-o[1]
+                                    continue
+                                for i in range(2):
+                                    s,e = starts[i].copy(), starts[i].copy()
+                                    s.forward_chars( o[1+2*i] - back[i] )
+                                    e.forward_chars( o[2+2*i] )
+                                    bufs[i].apply_tag(tags[i], s, e)
+                                back = (0,0)
+                            yield 1
         yield 1
         
     def save_file(self, pane, saveas=0):
@@ -1072,7 +1071,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 #
 ################################################################################
 
-class MeldBufferData:
+class MeldBufferData(object):
     __slots__ = ("modified", "writable", "filename", "encoding", "newlines")
     def __init__(self, filename=None):
         self.modified = 0
@@ -1086,7 +1085,7 @@ class MeldBufferData:
 # BufferInsertionAction 
 #
 ################################################################################
-class BufferInsertionAction:
+class BufferInsertionAction(object):
     """A helper to undo/redo text insertion into a text buffer"""
     def __init__(self, buffer, offset, text):
         self.buffer = buffer
@@ -1104,7 +1103,7 @@ class BufferInsertionAction:
 # BufferDeletionAction
 #
 ################################################################################
-class BufferDeletionAction:
+class BufferDeletionAction(object):
     """A helper to undo/redo text deletion from a text buffer"""
     def __init__(self, buffer, offset, text):
         self.buffer = buffer
@@ -1121,7 +1120,7 @@ class BufferDeletionAction:
 # BufferModifiedAction 
 #
 ################################################################################
-class BufferModifiedAction:
+class BufferModifiedAction(object):
     """A helper set modified flag on a text buffer"""
     def __init__(self, buffer, app):
         self.buffer, self.app = buffer, app

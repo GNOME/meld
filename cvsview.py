@@ -37,7 +37,7 @@ import paths
 # Local Functions
 #
 ################################################################################
-class Entry:
+class Entry(object):
     states = _("Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
     assert len(states)==tree.STATE_MAX
     def __str__(self):
@@ -174,7 +174,7 @@ def _lookup_cvs_files(dirs, files):
                               "The pattern was '%s'\n" \
                               "The error was '%s'") % (",".join(ignored), e))
     else:
-        class dummy:
+        class dummy(object):
             def match(*args): return None
         ignore_re = dummy()
 
@@ -377,7 +377,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         addCol(_("Tag"), COL_TAG)
         addCol(_("Options"), COL_OPTIONS)
 
-        class ConsoleStream:
+        class ConsoleStream(object):
             def __init__(this, textview):
                 this.textview = textview
                 b = textview.get_buffer()

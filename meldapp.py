@@ -301,7 +301,7 @@ class PreferencesDialog(gnomeglade.Component):
 #
 ################################################################################
 
-class MeldStatusBar:
+class MeldStatusBar(object):
 
     def __init__(self, appbar):
         self.appbar = appbar
@@ -741,7 +741,7 @@ class MeldApp(gnomeglade.GnomeApp):
         index = self.notebook.get_current_page()
         if index >= 0:
             return self.notebook.get_nth_page(index).get_data("pyobject")
-        class DummyDoc:
+        class DummyDoc(object):
             def __getattr__(self, a): return lambda *x: None
         return DummyDoc()
 
@@ -785,7 +785,7 @@ Written by Stephen Kennedy <steve9000@users.sf.net>""") % version
 #
 ################################################################################
 def main():
-    class Unbuffered:
+    class Unbuffered(object):
         def __init__(self, file):
             self.file = file
         def write(self, arg):

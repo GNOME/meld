@@ -24,7 +24,7 @@ import gnome
 import gnome.ui
 import gettext
 
-class Base:
+class Base(object):
     """Base class for all glade objects.
 
     This class handles loading the xml glade file and connects
