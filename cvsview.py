@@ -81,7 +81,7 @@ def _lookup_cvs_files(files, dirs):
                 try:
                     cotime = time.mktime( time.strptime(date) )
                 except ValueError, e:
-                    if date != "Result of merge":
+                    if not date.startswith("Result of merge"):
                         print "Unable to parse date '%s' in '%s/CVS/Entries'" % (date, directory)
                     cotime = 0
                 try:
@@ -168,8 +168,8 @@ class CommitDialog(gnomeglade.Dialog):
         msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
             msg = msg.replace("'", r"\'")
-            print "cvs commit -m '%s'" % msg
-            self.parent._command("cvs commit -m '%s' %s" % (msg,self.changedfiles.get_text()) )
+            #print "cvs commit -m '%s'" % msg
+            self.parent._command_on_selected("cvs -z3 -q commit -m '%s' %s" % (msg,self.changedfiles.get_text()) )
         self.previousentry.append_history(1, msg)
         self.widget.destroy()
 
@@ -193,11 +193,10 @@ class CvsView(gnomeglade.Component):
                lambda x: 1, 
                lambda x: x.cvs in [CVS_NONE,CVS_MODIFIED,CVS_MISSING] or x.isdir  ]
 
-    def __init__(self, location=None):
-        self.__gobject_init__()
-        self.tempfiles = []
+    def __init__(self, statusbar, location=None):
         gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "cvsview")
-
+        self.statusbar = statusbar
+        self.tempfiles = []
         self.image_dir = gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-folder.png", 14)
         self.image_file= gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-file-c.png", 14)
         self.treemodel = gtk.TreeStore( type(self.image_dir), type(""), type(""), type(""), gobject.TYPE_PYOBJECT )
@@ -238,7 +237,8 @@ class CvsView(gnomeglade.Component):
     def on_row_activated(self, treeview, path, tvc):
         iter = self.treemodel.get_iter(path)
         entry = self.treemodel.get_value(iter, 4)
-        if not entry: return
+        if not entry:
+            return
         if entry.isdir:
             if self.treeview.row_expanded(path):
                 self.treeview.collapse_row(path)
@@ -246,12 +246,15 @@ class CvsView(gnomeglade.Component):
                 self.treeview.expand_row(path,0)
         else:
             if entry.cvs == CVS_MODIFIED:
-                patch = misc.read_pipe("cvs -z3 diff -u %s" % entry.path)
+                #print "DIFF", entry.path
+                patch = self._command("cvs -z3 -q diff -u %s" % entry.path)
+                #print "GOT", patch
                 if patch:
-                    print entry.path, "\n", patch
                     self.show_patch(patch)
-                    return
-            self.emit("create-diff", [entry.path])
+                else:
+                    self.statusbar.add_status("%s has no differences" % entry.path)
+            else:
+                self.statusbar.add_status("%s is not modified" % entry.path)
 
     def on_row_expanded(self, tree, me, path):
         model = self.treemodel
@@ -371,39 +374,51 @@ class CvsView(gnomeglade.Component):
             ret.append( model.get_value(iter,4).path )
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
-        return filter(lambda x: x!=None, ret)
+        # remove empty entries and remove trailing slashes
+        return map(lambda x: x[-1]!="/" and x or x[:-1], filter(lambda x: x!=None, ret))
+
     def _command(self, command):
+        def progress():
+            self.emit("working-hard", 1)
+            self.flushevents()
+        self.statusbar.add_status(command, timeout=0)
+        r = misc.read_pipe(command, progress )
+        self.statusbar.remove_status(command)
+        self.emit("working-hard", 0)
+        self.refresh()
+        return r
+        
+    def _command_on_selected(self, command):
         f = self._get_selected_files()
+
         if len(f):
-            r = misc.read_pipe("%s %s" % (command, " ".join(f) ) )
-            self.refresh()
-            return r
-        return None
+            fullcmd = "%s %s" % (command, " ".join(f) )
+            return self._command(fullcmd)
+        else:
+            self.statusbar.add_status("Select some files first.")
+            return None
     def on_button_update_clicked(self, object):
-        self._command("cvs update -dP")
+        self._command_on_selected("cvs -z3 -q update -dP")
     def on_button_commit_clicked(self, object):
         dialog = CommitDialog( self )
         dialog.run()
 
     def on_button_add_clicked(self, object):
-        self._command("cvs add")
+        self._command_on_selected("cvs add")
     def on_button_remove_clicked(self, object):
-        self._command("cvs rm -f")
+        self._command_on_selected("cvs rm -f")
     def on_button_delete_clicked(self, object):
         for f in self._get_selected_files():
             try: os.unlink(f)
             except IOError: pass
         self.refresh()
     def on_button_diff_clicked(self, object):
-        print "Getting diff"
-        patch = self._command("cvs -z3 -q diff -u")
-        print patch
+        patch = self._command_on_selected("cvs -z3 -q diff -u")
         self.show_patch(patch)
 
     def show_patch(self, patch):
         if not patch: return
 
-        print "Copying files"
         tmpdir = tempfile.mktemp("-meld")
         self.tempfiles.append(tmpdir)
         os.mkdir(tmpdir)
