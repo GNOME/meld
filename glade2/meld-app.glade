@@ -14,8 +14,9 @@
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="icon">icon.png</property>
   <property name="enable_layout_config">True</property>
-  <signal name="delete_event" handler="on_app_delete_event" last_modification_time="Fri, 10 May 2002 14:54:45 GMT"/>
+  <signal name="delete_event" handler="on_delete_event" last_modification_time="Fri, 01 Nov 2002 18:34:38 GMT"/>
 
   <child internal-child="dock">
     <widget class="BonoboDock" id="bonobodock1">
@@ -40,84 +41,117 @@
 		    <widget class="GtkMenu" id="menuitem_file_menu">
 
 		      <child>
-			<widget class="GtkImageMenuItem" id="menu_file_newdiff2">
+			<widget class="GtkImageMenuItem" id="new1">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Two-way Diff</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_new_diff2_activate" last_modification_time="Fri, 21 Jun 2002 13:24:30 GMT"/>
+			  <property name="stock_item">GNOMEUIINFO_MENU_NEW_SUBTREE</property>
 
-			  <child internal-child="image">
-			    <widget class="GtkImage" id="image105">
-			      <property name="visible">True</property>
-			      <property name="stock">gtk-new</property>
-			      <property name="icon_size">1</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
-			    </widget>
-			  </child>
-			</widget>
-		      </child>
+			  <child>
+			    <widget class="GtkMenu" id="new1_menu">
 
-		      <child>
-			<widget class="GtkImageMenuItem" id="menu_file_newdiff3">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Three-way Diff</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_new_diff3_activate" last_modification_time="Fri, 21 Jun 2002 13:24:30 GMT"/>
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_new_diff2">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Two way file</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_menu_new_diff2_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
-			  <child internal-child="image">
-			    <widget class="GtkImage" id="image106">
-			      <property name="visible">True</property>
-			      <property name="stock">gtk-new</property>
-			      <property name="icon_size">1</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
-			    </widget>
-			  </child>
-			</widget>
-		      </child>
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image260">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-new</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
 
-		      <child>
-			<widget class="GtkImageMenuItem" id="menu_file_directory_diff">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Directory Diff</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_directory_diff_activate" last_modification_time="Wed, 25 Sep 2002 12:04:04 GMT"/>
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_new_diff3">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Three way file</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_menu_new_diff3_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
-			  <child internal-child="image">
-			    <widget class="GtkImage" id="image107">
-			      <property name="visible">True</property>
-			      <property name="stock">gtk-open</property>
-			      <property name="icon_size">1</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
-			    </widget>
-			  </child>
-			</widget>
-		      </child>
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image261">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-new</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
 
-		      <child>
-			<widget class="GtkImageMenuItem" id="menu_file_cvs_diff">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">CVS diff</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_new_cvsview_activate" last_modification_time="Tue, 01 Oct 2002 10:22:58 GMT"/>
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_new_dir2">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Two way directory</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_menu_new_dir2_activate" last_modification_time="Sat, 02 Nov 2002 17:55:35 GMT"/>
 
-			  <child internal-child="image">
-			    <widget class="GtkImage" id="image108">
-			      <property name="visible">True</property>
-			      <property name="stock">gtk-open</property>
-			      <property name="icon_size">1</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image262">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-open</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
+
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_new_dir3">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Three way directory</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_menu_new_dir3_activate" last_modification_time="Sat, 02 Nov 2002 17:55:35 GMT"/>
+
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image263">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-open</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
+
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_new_cvs_diff">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">CVS view</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_menu_new_cvsview_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
+
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image264">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-add</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
 			    </widget>
 			  </child>
 			</widget>
@@ -130,7 +164,7 @@
 			  <property name="use_underline">True</property>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image109">
+			    <widget class="GtkImage" id="image265">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-save</property>
 			      <property name="icon_size">1</property>
@@ -149,10 +183,10 @@
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Save File 1</property>
 				  <property name="use_underline">True</property>
-				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
+				  <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image110">
+				    <widget class="GtkImage" id="image266">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -170,10 +204,10 @@
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Save File 2</property>
 				  <property name="use_underline">True</property>
-				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
+				  <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image111">
+				    <widget class="GtkImage" id="image267">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -191,10 +225,10 @@
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Save File 3</property>
 				  <property name="use_underline">True</property>
-				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
+				  <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image112">
+				    <widget class="GtkImage" id="image268">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -221,7 +255,7 @@
 			<widget class="GtkImageMenuItem" id="menu_file_close">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_CLOSE_ITEM</property>
-			  <signal name="activate" handler="on_close_doc_activate" last_modification_time="Wed, 15 May 2002 13:56:03 GMT"/>
+			  <signal name="activate" handler="on_menu_close_activate" last_modification_time="Fri, 01 Nov 2002 18:35:02 GMT"/>
 			</widget>
 		      </child>
 
@@ -229,7 +263,7 @@
 			<widget class="GtkImageMenuItem" id="menu_file_quit">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_EXIT_ITEM</property>
-			  <signal name="activate" handler="on_quit_activate" last_modification_time="Fri, 10 May 2002 16:07:38 GMT"/>
+			  <signal name="activate" handler="on_menu_quit_activate" last_modification_time="Fri, 01 Nov 2002 18:34:47 GMT"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -249,7 +283,7 @@
 			<widget class="GtkImageMenuItem" id="menu_edit_undo">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_UNDO_ITEM</property>
-			  <signal name="activate" handler="on_undo_doc_clicked" last_modification_time="Wed, 12 Jun 2002 19:23:34 GMT"/>
+			  <signal name="activate" handler="on_menu_undo_activate" last_modification_time="Fri, 01 Nov 2002 18:35:41 GMT"/>
 			</widget>
 		      </child>
 
@@ -257,7 +291,7 @@
 			<widget class="GtkImageMenuItem" id="menu_edit_redo">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_REDO_ITEM</property>
-			  <signal name="activate" handler="on_redo_doc_clicked" last_modification_time="Wed, 12 Jun 2002 19:23:47 GMT"/>
+			  <signal name="activate" handler="on_menu_redo_activate" last_modification_time="Fri, 01 Nov 2002 18:35:51 GMT"/>
 			</widget>
 		      </child>
 
@@ -293,6 +327,80 @@
 	      </child>
 
 	      <child>
+		<widget class="GtkMenuItem" id="settings">
+		  <property name="visible">True</property>
+		  <property name="stock_item">GNOMEUIINFO_MENU_SETTINGS_TREE</property>
+
+		  <child>
+		    <widget class="GtkMenu" id="settings_menu">
+
+		      <child>
+			<widget class="GtkCheckMenuItem" id="setting_smooth_lines">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Smooth Lines</property>
+			  <property name="use_underline">True</property>
+			  <property name="active">True</property>
+			  <signal name="activate" handler="on_menu_smooth_lines_activate" last_modification_time="Fri, 01 Nov 2002 18:31:50 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkImageMenuItem" id="setting_number_of_panes">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Number Of Panes</property>
+			  <property name="use_underline">True</property>
+
+			  <child internal-child="image">
+			    <widget class="GtkImage" id="image269">
+			      <property name="visible">True</property>
+			      <property name="stock">gtk-dnd-multiple</property>
+			      <property name="icon_size">1</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			  </child>
+
+			  <child>
+			    <widget class="GtkMenu" id="setting_number_of_panes_menu">
+
+			      <child>
+				<widget class="GtkMenuItem" id="setting_number0">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">_One</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_setting_number_activate" last_modification_time="Sat, 02 Nov 2002 12:17:51 GMT"/>
+				</widget>
+			      </child>
+
+			      <child>
+				<widget class="GtkMenuItem" id="setting_number1">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">_Two</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_setting_number_activate" last_modification_time="Sat, 02 Nov 2002 12:17:51 GMT"/>
+				</widget>
+			      </child>
+
+			      <child>
+				<widget class="GtkMenuItem" id="setting_number2">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">T_hree</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_setting_number_activate" last_modification_time="Sat, 02 Nov 2002 12:17:51 GMT"/>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+
+	      <child>
 		<widget class="GtkMenuItem" id="menuitem_help">
 		  <property name="visible">True</property>
 		  <property name="stock_item">GNOMEUIINFO_MENU_HELP_TREE</property>
@@ -305,10 +413,10 @@
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">_Contents</property>
 			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_menu_help_users_manual" last_modification_time="Thu, 18 Jul 2002 22:16:55 GMT"/>
+			  <signal name="activate" handler="on_menu_users_manual_activate" last_modification_time="Fri, 01 Nov 2002 18:36:34 GMT"/>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image113">
+			    <widget class="GtkImage" id="image270">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-help</property>
 			      <property name="icon_size">1</property>
@@ -322,10 +430,10 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkImageMenuItem" id="menu_help_about">
+			<widget class="GtkImageMenuItem" id="about1">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_ABOUT_ITEM</property>
-			  <signal name="activate" handler="on_help_about_activate" last_modification_time="Fri, 10 May 2002 15:46:39 GMT"/>
+			  <signal name="activate" handler="on_menu_about_activate" last_modification_time="Fri, 01 Nov 2002 18:34:07 GMT"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -358,43 +466,22 @@
 	      <property name="tooltips">True</property>
 
 	      <child>
-		<widget class="button" id="toolbar_new_diff2">
+		<widget class="button" id="toolbar_new">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">New File</property>
-		  <property name="label" translatable="yes">Two-way</property>
+		  <property name="label" translatable="yes">_New...</property>
 		  <property name="use_underline">True</property>
 		  <property name="stock_pixmap">gtk-new</property>
-		  <signal name="clicked" handler="on_new_diff2_activate" last_modification_time="Fri, 21 Jun 2002 11:25:51 GMT"/>
+		  <signal name="pressed" handler="on_toolbar_new_clicked" last_modification_time="Sat, 02 Nov 2002 17:52:37 GMT"/>
+		  <signal name="clicked" handler="on_toolbar_new_clicked" last_modification_time="Sat, 02 Nov 2002 17:29:13 GMT"/>
 		</widget>
 	      </child>
 
 	      <child>
-		<widget class="button" id="toolbar_new_diff3">
+		<widget class="button" id="toolbar_magic">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Three-way</property>
-		  <property name="use_underline">True</property>
-		  <property name="stock_pixmap">gtk-new</property>
-		  <signal name="clicked" handler="on_new_diff3_activate" last_modification_time="Fri, 21 Jun 2002 11:26:20 GMT"/>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="toolbar_new_dirdiff">
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Directory</property>
-		  <property name="use_underline">True</property>
-		  <property name="stock_pixmap">gtk-open</property>
-		  <signal name="clicked" handler="on_new_dirdiff_activate" last_modification_time="Mon, 26 Aug 2002 00:02:42 GMT"/>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="toolbar_new_cvsview">
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_CVS</property>
-		  <property name="use_underline">True</property>
-		  <property name="stock_pixmap">gtk-open</property>
-		  <signal name="clicked" handler="on_new_cvsview_activate" last_modification_time="Sat, 27 Jul 2002 19:37:05 GMT"/>
+		  <property name="label">gtk-yes</property>
+		  <property name="use_stock">True</property>
+		  <signal name="clicked" handler="on_menu_magic_activate" last_modification_time="Fri, 01 Nov 2002 19:25:42 GMT"/>
 		</widget>
 	      </child>
 
@@ -403,7 +490,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-save</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_save_doc_clicked" last_modification_time="Thu, 18 Jul 2002 11:06:04 GMT"/>
+		  <signal name="clicked" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:25:12 GMT"/>
 		  <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 	      </child>
@@ -413,7 +500,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-refresh</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_refresh_doc_clicked" last_modification_time="Fri, 24 May 2002 20:07:06 GMT"/>
+		  <signal name="clicked" handler="on_menu_refresh_activate" last_modification_time="Fri, 01 Nov 2002 18:25:19 GMT"/>
 		</widget>
 		<packing>
 		  <property name="new_group">True</property>
@@ -425,7 +512,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-undo</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_undo_doc_clicked" last_modification_time="Sun, 09 Jun 2002 16:12:18 GMT"/>
+		  <signal name="clicked" handler="on_menu_undo_activate" last_modification_time="Fri, 01 Nov 2002 18:25:26 GMT"/>
 		</widget>
 	      </child>
 
@@ -434,7 +521,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-redo</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_redo_doc_clicked" last_modification_time="Sun, 09 Jun 2002 16:12:05 GMT"/>
+		  <signal name="clicked" handler="on_menu_redo_activate" last_modification_time="Fri, 01 Nov 2002 18:21:08 GMT"/>
 		</widget>
 	      </child>
 
@@ -443,7 +530,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-go-down</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_down_doc_clicked" last_modification_time="Thu, 18 Jul 2002 11:04:57 GMT"/>
+		  <signal name="clicked" handler="on_menu_down_activate" last_modification_time="Fri, 01 Nov 2002 18:19:33 GMT"/>
 		</widget>
 		<packing>
 		  <property name="new_group">True</property>
@@ -455,7 +542,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-go-up</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_up_doc_clicked" last_modification_time="Thu, 18 Jul 2002 11:05:05 GMT"/>
+		  <signal name="clicked" handler="on_menu_up_activate" last_modification_time="Fri, 01 Nov 2002 18:19:39 GMT"/>
 		</widget>
 	      </child>
 	    </widget>
@@ -513,7 +600,7 @@
   <property name="destroy_with_parent">True</property>
   <property name="icon">icon.png</property>
   <property name="logo">logo.png</property>
-  <property name="authors">Stephen Kennedy &lt;stephen-sourceforge@telekinesys.com&gt;</property>
+  <property name="authors">Stephen Kennedy &lt;steve9000@users.sourceforge.net&gt;</property>
   <property name="translator_credits" translatable="yes">translator_credits</property>
 </widget>
 
@@ -521,13 +608,14 @@
   <property name="visible">True</property>
   <property name="title" translatable="yes">Choose Files</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
-  <property name="window_position">GTK_WIN_POS_CENTER</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
   <property name="default_width">600</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">True</property>
+  <property name="icon">icon.png</property>
   <property name="has_separator">True</property>
-  <signal name="response" handler="on_response" last_modification_time="Fri, 24 May 2002 19:14:45 GMT"/>
+  <signal name="response" handler="on_response" last_modification_time="Fri, 01 Nov 2002 13:31:01 GMT"/>
 
   <child internal-child="vbox">
     <widget class="GtkVBox" id="vbox">
@@ -578,7 +666,7 @@
 	<widget class="GtkTable" id="table">
 	  <property name="border_width">10</property>
 	  <property name="visible">True</property>
-	  <property name="n_rows">5</property>
+	  <property name="n_rows">1</property>
 	  <property name="n_columns">2</property>
 	  <property name="homogeneous">False</property>
 	  <property name="row_spacing">10</property>
@@ -589,6 +677,387 @@
 	  <property name="expand">True</property>
 	  <property name="fill">True</property>
 	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkDialog" id="closedialog">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">Really Quit?</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <property name="icon">icon.png</property>
+  <property name="has_separator">True</property>
+
+  <child internal-child="vbox">
+    <widget class="GtkVBox" id="dialog-vbox1">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child internal-child="action_area">
+	<widget class="GtkHButtonBox" id="dialog-action_area1">
+	  <property name="visible">True</property>
+	  <property name="layout_style">GTK_BUTTONBOX_END</property>
+
+	  <child>
+	    <widget class="GtkButton" id="button16">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="button17">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-ok</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-5</property>
+	    </widget>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">True</property>
+	  <property name="pack_type">GTK_PACK_END</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkHBox" id="hbox1">
+	  <property name="visible">True</property>
+	  <property name="homogeneous">False</property>
+	  <property name="spacing">0</property>
+
+	  <child>
+	    <widget class="GtkImage" id="image114">
+	      <property name="visible">True</property>
+	      <property name="stock">gtk-dialog-warning</property>
+	      <property name="icon_size">6</property>
+	      <property name="xalign">0.5</property>
+	      <property name="yalign">0.5</property>
+	      <property name="xpad">40</property>
+	      <property name="ypad">0</property>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkLabel" id="label2">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">You have some unsaved changes.
+Quit anyway?</property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">False</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">False</property>
+	      <property name="selectable">False</property>
+	      <property name="xalign">0.5</property>
+	      <property name="yalign">0.5</property>
+	      <property name="xpad">40</property>
+	      <property name="ypad">40</property>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">True</property>
+	  <property name="fill">True</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkDialog" id="usagedialog">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">dialog1</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <property name="has_separator">True</property>
+
+  <child internal-child="vbox">
+    <widget class="GtkVBox" id="dialog-vbox2">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child internal-child="action_area">
+	<widget class="GtkHButtonBox" id="dialog-action_area2">
+	  <property name="visible">True</property>
+	  <property name="layout_style">GTK_BUTTONBOX_END</property>
+
+	  <child>
+	    <widget class="GtkButton" id="cancelbutton1">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-quit</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="okbutton1">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-ok</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-5</property>
+	    </widget>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">True</property>
+	  <property name="pack_type">GTK_PACK_END</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkVBox" id="vbox1">
+	  <property name="visible">True</property>
+	  <property name="homogeneous">False</property>
+	  <property name="spacing">0</property>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox2">
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">0</property>
+
+	      <child>
+		<widget class="GtkImage" id="image227">
+		  <property name="visible">True</property>
+		  <property name="stock">gtk-dialog-error</property>
+		  <property name="icon_size">6</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">40</property>
+		  <property name="ypad">40</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkLabel" id="label_message">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes"></property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkLabel" id="label_usage">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes"></property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">False</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">False</property>
+	      <property name="selectable">False</property>
+	      <property name="xalign">0.5</property>
+	      <property name="yalign">0.5</property>
+	      <property name="xpad">4</property>
+	      <property name="ypad">0</property>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">True</property>
+	  <property name="fill">True</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkWindow" id="window1">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">window1</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+
+  <child>
+    <widget class="GtkOptionMenu" id="optionmenu1">
+      <property name="visible">True</property>
+      <property name="can_focus">True</property>
+      <property name="history">-1</property>
+
+      <child>
+	<widget class="GtkMenu" id="menu1">
+	</widget>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkMenu" id="popup_new">
+
+  <child>
+    <widget class="GtkImageMenuItem" id="new_diff2">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">Two way file</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_menu_new_diff2_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image271">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-new</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="new_diff3">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">Three way file</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_menu_new_diff3_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image272">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-new</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="new_dir2">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">Two way directory</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_menu_new_dir2_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image273">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-open</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="new_dir3">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">Three way directory</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_menu_new_dir3_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image274">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-open</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="new_cvsview">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">CVS view</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_menu_new_cvsview_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image275">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-add</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
       </child>
     </widget>
   </child>

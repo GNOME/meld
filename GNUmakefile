@@ -4,20 +4,13 @@ TESTNUM := 5
 VERSION := $(shell python2.2 -c "import meldapp; print meldapp.version")
 RELEASE := meld-$(VERSION)
 
-run0 : rundiff
-	#echo
-
-#run1 : runcvs
-#	echo
+run : rundiff
+	@echo
 
 rundiff:
 #	$(PROG) test/lao test/tzu test/tao
-	$(PROG) test/file$(TESTNUM)*
-
-runcvs: 
-	meld ..
-	#(cd .. && meld/$(PROG) meld)
-	#(cd ../.. && Projects/meld/$(PROG) Projects/meld)
+#	$(PROG) test/file$(TESTNUM)*
+	$(PROG) ../old/oldmeld ../svnrepository/meld
 
 #checkfortabs:
 #	grep '	' meld *.py > /dev/null && echo -e '***\n*** TABS DETECTED\n***'
@@ -28,3 +21,5 @@ release:
 	galeon -x http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
 	galeon -x http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
 	
+backup:
+	tar cvfz ~/archive/meld-`date -I`.tgz .

@@ -1,6 +1,7 @@
 ## python
 
 # system
+import sys
 import os
 
 # recent versions of python-gnome include pygtk
@@ -16,6 +17,7 @@ else:
 import gtk
 import gtk.glade
 import gnome
+import gconf
 
 # project
 import gnomeglade
@@ -24,7 +26,8 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.5.4"
+version = "0.5.5pre"
+developer = 0
 
 ################################################################################
 #
@@ -35,6 +38,7 @@ version = "0.5.4"
 class BrowseFileDialog(gnomeglade.Dialog):
     def __init__(self, parentapp, labels, callback, isdir=0):
         gnomeglade.Dialog.__init__(self, misc.appdir("glade2/meld-app.glade"), "browsefile")
+        self.widget.set_transient_for(parentapp.widget)
         self.numfile = len(labels)
         self.callback = callback
         self.entries = []
@@ -46,12 +50,12 @@ class BrowseFileDialog(gnomeglade.Dialog):
             e.set_directory_entry(isdir)
             self.table.attach(e , 1, 2, i, i+1)
             self.entries.append(e)
-        self.table.show_all()
+        self.widget.show_all()
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_OK:
             files = [e.get_full_path(1) or "" for e in self.entries]
             self.callback(files)
-        self._widget.destroy() #TODO why ._widget?
+        self.widget.destroy()
    
 ################################################################################
 #
@@ -120,6 +124,30 @@ class NotebookLabel(gtk.HBox):
         self.show_all()
         if onclose:
             self.button.connect("clicked", onclose)
+
+
+
+################################################################################
+#
+# MeldNewMenu
+#
+################################################################################
+class MeldNewMenu(gnomeglade.Menu):
+    def __init__(self, app):
+        gladefile = misc.appdir("glade2/meld-app.glade")
+        gnomeglade.Menu.__init__(self, gladefile, "popup_new")
+        self.parent = app
+    def on_menu_new_diff2_activate(self, *extra):
+        self.parent.on_menu_new_diff2_activate()
+    def on_menu_new_diff3_activate(self, *extra):
+        self.parent.on_menu_new_diff3_activate()
+    def on_menu_new_dir2_activate(self, *extra):
+        self.parent.on_menu_new_dir2_activate()
+    def on_menu_new_dir3_activate(self, *extra):
+        self.parent.on_menu_new_dir3_activate()
+    def on_menu_new_cvsview_activate(self, *extra):
+        self.parent.on_menu_new_cvsview_activate()
+
 ################################################################################
 #
 # MeldApp
@@ -127,107 +155,205 @@ class NotebookLabel(gtk.HBox):
 ################################################################################
 class MeldApp(gnomeglade.GnomeApp):
 
+    #
+    # init
+    #
     def __init__(self):
-        gnomeglade.GnomeApp.__init__(self, "Meld", version, misc.appdir("glade2/meld-app.glade"), "meldapp")
-        self._map_widgets_into_lists( ["menu_file_save_file"] )
+        gladefile = misc.appdir("glade2/meld-app.glade")
+        gnomeglade.GnomeApp.__init__(self, "Meld", version, gladefile, "meldapp")
+        self._map_widgets_into_lists( ["menu_file_save_file", "setting_number"] )
+        self.popup_new = MeldNewMenu(self)
         self.statusbar = MeldStatusBar(self.appbar)
-        #hide dirdiff until it's ready
-        self.toolbar_new_dirdiff.hide()
-        self.menu_file_directory_diff.hide()
+        if not developer:#hide magic testing button
+            self.toolbar_magic.hide()
+        self.init_settings()
+
+    def init_settings(self):
+        self.gconf = gconf.client_get_default()
+        self.gconf.add_dir ("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
+        sensitive = self.gconf.key_is_writable ("/apps/meld/filediff/num_link_segments")
+        self.setting_smooth_lines.set_sensitive( sensitive )
+        segs = self.gconf.get_float("/apps/meld/filediff/num_link_segments")
+        self.setting_smooth_lines.set_active( segs!=1.0 )
+
+    def on_setting_number_activate(self, menuitem):
+        n = self.setting_number.index(menuitem) + 1
+        d = self.current_doc()
+        misc.safe_apply( d, "set_num_panes", n )
+        for i in range(3): #TODO
+            sensitive = d.num_panes > i
+            self.menu_file_save_file[i].set_sensitive(sensitive)
             
+    #
+    # General events and callbacks
+    #
     def on_key_press_event(self, object, event):
-        self.current_doc().on_key_press_event(object, event)
-        return 0
-    def on_key_release_event(self, object, event):
-        self.current_doc().on_key_release_event(object, event)
+        misc.safe_apply( self.current_doc(), "on_key_press_event", (object,event) )
         return 0
 
+    def on_key_release_event(self, object, event):
+        misc.safe_apply( self.current_doc(), "on_key_release_event", (object,event) )
+        return 0
+
+    def on_delete_event(self, *extra):
+        return self.on_menu_quit_activate()
+
     def on_switch_page(self, notebook, page, which):
-        newdoc = notebook.get_nth_page(which).get_data("pyobject") #TODO why pyobject?
+        newdoc = notebook.get_nth_page(which).get_data("pyobject")
         if hasattr(newdoc, "undosequence"):
             newseq = newdoc.undosequence
             self.button_undo.set_sensitive(newseq.can_undo())
             self.button_redo.set_sensitive(newseq.can_redo())
             for i in range(3):
-                sensitive = newdoc.numpanes > i
+                sensitive = newdoc.num_panes > i
                 self.menu_file_save_file[i].set_sensitive(sensitive)
         else:
             self.button_undo.set_sensitive(0)
             self.button_redo.set_sensitive(0)
             for i in range(3):
                 self.menu_file_save_file[i].set_sensitive(0)
-        nbl = self.notebook.get_tab_label( newdoc._widget ) #TODO why ._widget?
-        self.set_title( nbl.label.get_text() + " : meld")
+        nbl = self.notebook.get_tab_label( newdoc.widget )
+        self.widget.set_title( nbl.label.get_text() + " - Meld")
 
-    #
-    # global
-    #
-    def on_app_delete_event(self, *extra):
-        self.quit()
-    def on_help_about_activate(self, *extra):
-        gtk.glade.XML(misc.appdir("glade2/meld-app.glade"),"about").get_widget("about").show()
-    def on_quit_activate(self, *extra):
-        self.quit()
-    #def on_button_press_event(self, text, event):
-    #    if event.button==3:
-    #        self.popup_menu.popup(None,None,None,3,0)
-    #        return 1
-    #    return 0
+    def on_working_hard(self, widget, working):
+        "Called" 
+        if working:
+            self.appbar.get_progress().pulse()
+        else:
+            self.appbar.get_progress().set_fraction(0)
 
+    def on_notebook_label_changed(self, component, text):
+        nbl = self.notebook.get_tab_label( component.widget )
+        nbl.label.set_text(text)
+        self.widget.set_title(text + " - Meld")
+
+    def on_can_undo(self, undosequence, can):
+        self.button_undo.set_sensitive(can)
+
+    def on_can_redo(self, undosequence, can):
+        self.button_redo.set_sensitive(can)
+    
     #
-    # current doc
+    # Toolbar and menu items (file)
     #
-    def current_doc(self):
-        index = self.notebook.get_current_page()
-        if index >= 0:
-            return self.notebook.get_nth_page(index).get_data("pyobject") #TODO why pyobject?
-        class DummyDoc:
-            def __getattr__(self, a): return lambda *x: None
-        return DummyDoc()
-        
-    def on_close_doc_activate(self, *extra):
-        page = self.notebook.get_current_page()
-        if page >= 0:
-            self.notebook.remove_page(page)
-    def on_new_diff2_activate(self, *extra):
+    def on_menu_new_diff2_activate(self, *extra):
         BrowseFileDialog(self,["Original File", "Modified File"], self.append_filediff)
-    def on_new_diff3_activate(self, *extra):
+
+    def on_menu_new_diff3_activate(self, *extra):
         BrowseFileDialog(self,["Other Changes","Common Ancestor","Local Changes"], self.append_filediff )
-    def on_new_dirdiff_activate(self, *extra):
+
+    def on_menu_new_dir2_activate(self, *extra):
         BrowseFileDialog(self,["Original Directory", "Modified Directory"], self.append_dirdiff, isdir=1)
-    def on_new_cvsview_activate(self, *extra):
+
+    def on_menu_new_dir3_activate(self, *extra):
+        BrowseFileDialog(self,["Other Directory", "Original Directory", "Modified Directory"], self.append_dirdiff, isdir=1)
+
+    def on_menu_new_cvsview_activate(self, *extra):
         BrowseFileDialog(self,["Root CVS Directory"], self.append_cvsview, isdir=1)
-    def on_refresh_doc_clicked(self, *args):
+
+    def on_menu_save_activate(self, menuitem):
+        try:
+            index = self.menu_file_save_file.index(menuitem)
+        except ValueError:
+            index = -1
+        try:
+            if index >= 0: # save one
+                self.current_doc().save_file(index)
+            else: # save all
+                self.current_doc().save_all()
+        except AttributeError:
+            pass
+
+    def on_menu_refresh_activate(self, *args):
         self.current_doc().refresh()
-    def on_undo_doc_clicked(self, *extra):
+
+    def on_menu_close_activate(self, *extra):
+        i = self.notebook.get_current_page()
+        if i >= 0:
+            page = self.notebook.get_nth_page(i).get_data("pyobject")
+            self.try_remove_page(page)
+
+    def on_menu_quit_activate(self, *extra):
+        state = []
+        for c in self.notebook.get_children():
+            try: state.append( c.get_data("pyobject").is_modified() )
+            except AttributeError: state.append(0)
+        if 1 in state:
+            dialog = gnomeglade.Dialog(misc.appdir("glade2/meld-app.glade"), "closedialog")
+            dialog.widget.set_transient_for(self.widget.get_toplevel())
+            response = dialog.widget.run()
+            dialog.widget.destroy()
+            if response!=gtk.RESPONSE_OK:
+                return gnomeglade.DELETE_ABORT
+        self.quit()
+        return gnomeglade.DELETE_OK
+
+    #
+    # Toolbar and menu items (edit)
+    #
+    def on_menu_undo_activate(self, *extra):
         self.current_doc().undo()
-    def on_redo_doc_clicked(self, *extra):
+
+    def on_menu_redo_activate(self, *extra):
         self.current_doc().redo()
 
-    def on_save_file_activate(self, menuitem):
-        index = self.menu_file_save_file.index(menuitem)
-        self.current_doc().save_file(index)
-
-    def on_doc_label_changed(self, component, text):
-        nbl = self.notebook.get_tab_label( component._widget ) #TODO why ._widget?
-        nbl.label.set_text(text)
-        self.set_title(text + " : meld")
-
-    def on_can_undo_doc(self, undosequence, can):
-        self.button_undo.set_sensitive(can)
-    def on_can_redo_doc(self, undosequence, can):
-        self.button_redo.set_sensitive(can)
     #
-    # methods
+    # Toolbar and menu items (settings)
     #
-    def _remove_page(self, page):
-        i = self.notebook.page_num(page._widget)
-        assert(i>=0)
-        self.notebook.remove_page(i)
+    def on_menu_smooth_lines_activate(self, check):
+        num = check.get_active() and 9.0 or 1.0
+        self.gconf.set_float("/apps/meld/filediff/num_link_segments", num)
 
-    def append_dirdiff(self, files):
-        print "XXX",files #self.append_filediff( (file0, file1) )
-        doc = dirdiff.DirDiff()
+    #
+    # Toolbar and menu items (help)
+    #
+    def on_menu_meld_home_page_activate(self, button):
+        gnome.url_show("http://meld.sourceforge.net")
+
+    def on_menu_users_manual_activate(self, button):
+        gnome.url_show("file:///"+os.path.abspath(misc.appdir("manual/index.html") ) )
+
+    def on_menu_about_activate(self, *extra):
+        gtk.glade.XML(misc.appdir("glade2/meld-app.glade"),"about").get_widget("about").show()
+
+    #
+    # Toolbar and menu items (misc)
+    #
+    def on_menu_magic_activate(self, *args):
+        pass
+
+    def on_menu_down_activate(self, *args):
+        misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_DOWN )
+
+    def on_menu_up_activate(self, *args):
+        misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_UP )
+
+    def on_toolbar_new_clicked(self, *args):
+        self.popup_new.widget.popup(None,None,None,3,0)
+
+    def try_remove_page(self, page):
+        "See if a page will allow itself to be removed"
+        try:
+            delete = page.on_delete_event(self)
+        except AttributeError:
+            delete = gnomeglade.DELETE_OK
+        if delete == gnomeglade.DELETE_OK:
+            i = self.notebook.page_num(page.widget)
+            assert(i>=0)
+            self.notebook.remove_page(i)
+
+    def append_dirdiff(self, dirs):
+        ndirs = len(dirs)
+        doc = dirdiff.DirDiff(ndirs, self.statusbar)
+        for i in range(ndirs):
+            doc.set_location(dirs[i], i)
+        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(doc))
+        self.notebook.append_page( doc.widget, nbl)
+        self.notebook.set_current_page( self.notebook.page_num(doc.widget) )
+        doc.connect("label-changed", self.on_notebook_label_changed)
+        doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
+        doc.label_changed()
+        doc.refresh()
 
     def append_filediff2(self, file0, file1):
         self.append_filediff( (file0, file1) )
@@ -241,42 +367,133 @@ class MeldApp(gnomeglade.GnomeApp):
             doc.set_file(files[i],i)
         seq = doc.undosequence
         seq.clear()
-        seq.connect("can-undo", self.on_can_undo_doc)
-        seq.connect("can-redo", self.on_can_redo_doc)
-        nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
-        self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
-        self.notebook.set_current_page( self.notebook.page_num(doc._widget) )
-        doc.connect("label-changed", self.on_doc_label_changed)
+        seq.connect("can-undo", self.on_can_undo)
+        seq.connect("can-redo", self.on_can_redo)
+        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(doc))
+        self.notebook.append_page( doc.widget, nbl)
+        self.notebook.set_current_page( self.notebook.page_num(doc.widget) )
+        doc.connect("label-changed", self.on_notebook_label_changed)
         doc.label_changed()
         doc.refresh()
+
     def append_cvsview(self, locations):
         location = locations[0]
         doc = cvsview.CvsView(location)
-        nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
-        self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
+        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(doc))
+        self.notebook.append_page( doc.widget, nbl)
         self.notebook.next_page()
-        doc.connect("label-changed", self.on_doc_label_changed)
-        doc.connect("working-hard", self.on_doc_working_hard)
+        doc.connect("label-changed", self.on_notebook_label_changed)
+        doc.connect("working-hard", self.on_working_hard)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.label_changed()
         doc.refresh()
 
-    def on_doc_working_hard(self, widget, working):
-        if working:
-            self.appbar.get_progress().pulse()
+    #
+    # Current doc actions
+    #
+    def current_doc(self):
+        "Get the current doc or a dummy object if there is no current"
+        index = self.notebook.get_current_page()
+        if index >= 0:
+            return self.notebook.get_nth_page(index).get_data("pyobject")
+        class DummyDoc:
+            def __getattr__(self, a): return lambda *x: None
+        return DummyDoc()
+
+    #
+    # Usage
+    #
+    def usage(self, msg):
+        dialog = gnomeglade.Dialog(misc.appdir("glade2/meld-app.glade"),
+            "usagedialog")
+        dialog.widget.set_transient_for(self.widget.get_toplevel())
+        dialog.label_message.set_text(msg)
+        dialog.label_usage.set_text(usage_string)
+        response = dialog.widget.run()
+        dialog.widget.destroy()
+        if response == gtk.RESPONSE_CANCEL:
+            sys.exit(0)
+        
+        
+        
+################################################################################
+#
+# usage
+#
+################################################################################
+usage_string = """Meld is a file and directory comparison tool. Usage:
+
+    meld                        Start with no windows open
+    meld <dir>                  Start with CVS browser
+    meld <file> <file> [file]   Start with 2 or 3 way file comparison
+    meld <dir> <dir> [dir]      Start with 2 or 3 way directory comparison
+
+CVS browser is alpha. For best results, chdir to the top level
+of your source tree and run `meld .'
+
+For more information choose help -> contents.
+Report bugs to steve9000@users.sourceforge.net.
+"""
+
+################################################################################
+#
+# Main
+#
+################################################################################
+def main():
+    class Unbuffered:
+        def __init__(self, file):
+            self.file = file
+        def write(self, arg):
+            self.file.write(arg)
+            self.file.flush()
+        def __getattr__(self, attr):
+            return getattr(self.file, attr)
+    sys.stdout = Unbuffered(sys.stdout)
+
+    if len(sys.argv) == 2 and sys.argv[1] in ("-h", "--help"):
+        print usage_string
+        return
+
+    app = MeldApp()
+    arg = sys.argv[1:]
+
+    if len(sys.argv) == 1:
+        pass
+
+    elif len(arg) == 1:
+        if os.path.isdir(arg[0]):
+            app.append_cvsview( [arg[0]] )
         else:
-            self.appbar.get_progress().set_fraction(0)
+            app.usage("`%s' is not a directory, cannot open cvs view" % arg[0])
+                
+    elif len(arg) in (2,3):
+        done = 0
+        exists = map( lambda a: os.access(a, os.R_OK), arg)
+        if 0 in exists:
+            m = "Cannot open "
+            for i in range(len(arg)):
+                if not exists[i]:
+                    m += "`%s'" % arg[i]
+            app.usage(m)
+            done = 1
+        if not done:
+            arefiles = map( os.path.isfile, arg)
+            if 0 not in arefiles:
+                app.append_filediff( arg )
+                done = 1
+        if not done:
+            aredirs = map( os.path.isdir, arg)
+            if 0 not in aredirs:
+                app.append_dirdiff( arg )
+                done = 1
+        if not done:
+            m = "Cannot compare a mixture of files and directories.\n"
+            for i in range(len(arg)):
+                m += "(%s)\t`%s'\n" % (arefiles[i] and "file" or "dir", arg[i])
+            app.usage(m)
+    else:
+        app.usage("Wrong number of arguments (Got %i)" % len(arg))
 
-    def on_down_doc_clicked(self, *args):
-        self.current_doc().next_diff( gtk.gdk.SCROLL_DOWN)
-    def on_up_doc_clicked(self, *args):
-        self.current_doc().next_diff( gtk.gdk.SCROLL_UP)
+    app.mainloop()
 
-    def on_save_doc_clicked(self, *args):
-        self.current_doc().save()
-
-
-    def on_menu_help_meld_home_page_activate(self, button):
-        gnome.url_show("http://meld.sourceforge.net")
-    def on_menu_help_users_manual(self, button):
-        gnome.url_show("file:///"+os.path.abspath(misc.appdir("manual/index.html") ) )
