@@ -476,7 +476,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         """Run 'command' on 'files'. Return a tuple of the directory the
            command was executed in and the output of the command.
         """
-        print "***", command
         msg = misc.shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg)
         workdir = _commonprefix(files)
