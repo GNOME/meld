@@ -92,17 +92,18 @@ def _lookup_cvs_files(dirs, files):
     retfiles = []
     retdirs = []
     matches = re.findall("^(.)....\s*\d*\s*(\d*)\s*\w*\s*(.*?)$(?m)", entries)
+    matches = [ (m[2].split()[-1],m[0],m[1]) for m in matches]
     matches.sort()
 
     for match in matches:
-        name = match[2]
-        if(match[0] == "!" or match[0] == "A"):
+        name = match[0]
+        if(match[1] == "!" or match[1] == "A"):
             # for new or missing files, the findall expression
             # does not supply the correct name 
             name = re.sub(r'^[?]\s*(.*)$', r'\1', name)
         isdir = os.path.isdir(name)
         path = os.path.join(directory, name)
-        rev = match[1]
+        rev = match[2]
         options = ""
         tag = ""
         if tag:
@@ -122,7 +123,7 @@ def _lookup_cvs_files(dirs, files):
                       "!": tree.STATE_MISSING,
                       "I": tree.STATE_IGNORED,
                       "M": tree.STATE_MODIFIED,
-                      "C": tree.STATE_CONFLICT }.get(match[0], tree.STATE_NONE)
+                      "C": tree.STATE_CONFLICT }.get(match[1], tree.STATE_NONE)
             retfiles.append( File(path, name, state, rev, tag, options) )
 
     return retdirs, retfiles
