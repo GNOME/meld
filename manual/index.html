@@ -38,12 +38,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <p>
             Using <em>File...-&gt;New...-&gt;Two way file</em>, open up two files, original and modified.<br/>
             The location of the changes is summarised in the left and right margins.
-			More detailed differences are shown in the text and central pane.
+            More detailed differences are shown in the text and central pane.
         </p>
         
         <p>
             You can scroll through the changes using the scrollbar, keyboard or mouse wheel in the text pane.
-			The quickest way to browse however is by using the mouse wheel over
+            The quickest way to browse however is by using the mouse wheel over
             the central bar to skip between changed sections.
         </p>
         
@@ -70,34 +70,34 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             bar in the bottom of the window. Error messages will trigger a popup dialog.
         </p>
 
-		<h2>Directory comparison</h2>
+        <h2>Directory comparison</h2>
 
-		<p>
+        <p>
             Using <em>File...-&gt;New...-&gt;Two way file</em>, open up two directories, original and modified.<br/>
-			Files and folders which are present in one location only appear in green bold typeface. The corresponding
-			missing file from the other location is drawn in gray with a strikethrough. If files are
-			present in both locations but differ, they appear in red. Identical files appear in normal black typeface.
-		</p>
+            Files and folders which are present in one location only appear in green bold typeface. The corresponding
+            missing file from the other location is drawn in gray with a strikethrough. If files are
+            present in both locations but differ, they appear in red. Identical files appear in normal black typeface.
+        </p>
 
-		<p>
-			Right clicking brings up a context menu which allows you to 
-			<ul>
-			<li>Compare selected files</li>
-			<li>Copy the file or directory to another location</li>
-			<li>Delete the file</li>
-			</ul>
-		</p>
+        <p>
+            Right clicking brings up a context menu which allows you to 
+            <ul>
+            <li>Compare selected files</li>
+            <li>Copy the file or directory to another location</li>
+            <li>Delete the file</li>
+            </ul>
+        </p>
 
-		<p>
-			You can select several files at once. Hold <em>Shift</em> to select a range. Hold <em>Ctrl</em> to
-			select individual files.
-		</p>
-			
-		<p>
-			Double clicking an item or selecting it and pressing <em>Enter</em> is a shortcut to launching the
-			file comparison.
-		</p>
-        
+        <p>
+            You can select several files at once. Hold <em>Shift</em> to select a range. Hold <em>Ctrl</em> to
+            select individual files.
+        </p>
+            
+        <p>
+            Double clicking an item or selecting it and pressing <em>Enter</em> is a shortcut to launching the
+            file comparison.
+        </p>
+
         <h2>CVS browsing</h2>
         
         <p>
@@ -122,5 +122,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             You can examine many changes at once by clicking on a one or more directories and/or
             files and clicking the diff button.
         </p>
+
+        <h2>Preferences</h2>
+
+        <p>
+            Some preferences are not hooked up to the gui and are only available by accessing gconf
+            directly (gconf-editor:/apps/meld). See meldapp.py:MeldPreferences for a list of the preferences available.
+        </p>
+
+        <p>
+            Directory comparison filters can be changed in this way. The key is filter_pattern_[0-5] and the
+            format is "&lt;label&gt; &lt;enabled by default&gt; &lt;shell patterns&gt;" 
+        </p>
+        
     </body>
 </html>
