@@ -131,6 +131,9 @@ class MeldApp(gnomeglade.GnomeApp):
         gnomeglade.GnomeApp.__init__(self, "Meld", version, misc.appdir("glade2/meld-app.glade"), "meldapp")
         self._map_widgets_into_lists( ["menu_file_save_file"] )
         self.statusbar = MeldStatusBar(self.appbar)
+        #hide dirdiff until it's ready
+        self.toolbar_new_dirdiff.hide()
+        self.menu_file_directory_diff.hide()
             
     def on_key_press_event(self, object, event):
         self.current_doc().on_key_press_event(object, event)
