@@ -162,8 +162,8 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
                 savepwd = os.getcwd()
                 os.chdir( workdir )
             self.pipe = popen2.Popen3(command, capturestderr=1)
-            childin, childout, childerr = self.pipe.tochild, self.pipe.fromchild, self.pipe.childerr
-            childin.close()
+            self.pipe.tochild.close()
+            childout, childerr = self.pipe.fromchild, self.pipe.childerr
             if workdir:
                 os.chdir( savepwd )
             bits = []
@@ -181,13 +181,14 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
                         break # ick need to fix
                 if childerr in state[0]:
                     try:
-                        errorstream.write( childerr.read(4096) ) # get buffer size
+                        errorstream.write( childerr.read(1) ) # how many chars?
                     except IOError:
                         break # ick need to fix
             status = self.pipe.wait()
+            errorstream.write( childerr.read() )
             self.pipe = None
             if status:
-               errorstream.write("Exit code: %i %s\n" %(status,childerr.read()))
+               errorstream.write("Exit code: %i\n" % status)
             yield "".join(bits)
     return sentinel()()
 
