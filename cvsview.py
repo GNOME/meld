@@ -511,7 +511,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         if len(files):
             self._command(command, files, refresh)
         else:
-            print command
             misc.run_dialog( _("Select some files first."), parent=self, messagetype=gtk.MESSAGE_INFO)
 
     def on_button_update_clicked(self, object):

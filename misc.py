@@ -311,9 +311,9 @@ def shell_to_regex(pat):
 class Filter(object):
     __slots__ = ("name", "active", "wildcard")
     def __init__(self, s):
-        a = s.split()
+        a = s.split(":")
         self.name = a.pop(0)
         self.active = int(a.pop(0))
-        self.wildcard = " ".join(a)
+        self.wildcard = ":".join(a)
     def __str__(self):
         return "%s %i %s" % ( self.name, self.active, self.wildcard )

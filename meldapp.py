@@ -70,6 +70,106 @@ class BrowseFileDialog(gnomeglade.Component):
             files = [e.get_full_path(0) or "" for e in self.entries]
             self.callback(files)
         self.widget.destroy()
+
+################################################################################
+#
+# ListWidget
+#
+################################################################################
+class ListWidget(gnomeglade.Component):
+    def __init__(self, columns, prefs, key):
+        gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "listwidget")
+        self.prefs = prefs
+        self.key = key
+        self.treeview.set_model( gtk.ListStore( *[c[1] for c in columns] ) )
+        view = self.treeview
+        def addTextCol(label, colnum, expand=0):
+            model = view.get_model()
+            rentext = gtk.CellRendererText()
+            rentext.set_property("editable", 1)
+            def change_text(ren, row, text):
+                iter = model.get_iter( (int(row),))
+                model.set_value( iter, colnum, text)
+                self._update_filter_string()
+            rentext.connect("edited", change_text)
+            column = gtk.TreeViewColumn(label)
+            column.pack_start(rentext, expand=expand)
+            column.set_attributes(rentext, markup=colnum)
+            view.append_column(column)
+        def addToggleCol(label, colnum):
+            model = view.get_model()
+            rentoggle = gtk.CellRendererToggle()
+            def change_toggle(ren, row):
+                iter = model.get_iter( (int(row),))
+                model.set_value( iter, colnum, not ren.get_active() )
+                self._update_filter_string()
+            rentoggle.connect("toggled", change_toggle)
+            column = gtk.TreeViewColumn(label)
+            column.pack_start(rentoggle, expand=0)
+            column.set_attributes(rentoggle, active=colnum)
+            view.append_column(column)
+        for c,i in zip( columns, range(len(columns))):
+            if c[1] == type(""):
+                e = (i == (len(columns)-1))
+                addTextCol( c[0], i, expand=e)
+            elif c[1] == type(0):
+                addToggleCol( c[0], 1)
+        self._update_filter_model()
+    def on_filters_new_clicked(self, button):
+        model = self.treeview.get_model()
+        iter = model.append()
+        model.set_value(iter, 0, "label")
+        model.set_value(iter, 2, "pattern")
+        self._update_filter_string()
+    def _get_selected(self):
+        selected = []
+        self.treeview.get_selection().selected_foreach(
+            lambda store, path, iter: selected.append( path ) )
+        return selected
+    def on_item_delete_clicked(self, button):
+        model = self.treeview.get_model()
+        for s in self._get_selected():
+            model.remove( model.get_iter(s) )
+        self._update_filter_string()
+    def on_item_up_clicked(self, button):
+        model = self.treeview.get_model()
+        for s in self._get_selected():
+            if s[0] > 0: # XXX need model.swap
+                old = model.get_iter(s[0])
+                iter = model.insert( s[0]-1 )
+                for i in range(3):
+                    model.set_value(iter, i, model.get_value(old, i) )
+                model.remove(old)
+                self.treeview.get_selection().select_iter(iter)
+        self._update_filter_string()
+    def on_item_down_clicked(self, button):
+        model = self.treeview.get_model()
+        for s in self._get_selected():
+            if s[0] < len(model)-1: # XXX need model.swap
+                old = model.get_iter(s[0])
+                iter = model.insert( s[0]+2 )
+                for i in range(3):
+                    model.set_value(iter, i, model.get_value(old, i) )
+                model.remove(old)
+                self.treeview.get_selection().select_iter(iter)
+        self._update_filter_string()
+    def on_items_revert_clicked(self, button):
+        setattr( self.prefs, self.key, self.prefs.get_default(self.key) )
+        self._update_filter_model()
+    def _update_filter_string(self):
+        model = self.treeview.get_model()
+        pref = []
+        for row in model:
+            pref.append("%s\t%s\t%s" % (row[0], row[1], row[2]))
+        setattr( self.prefs, self.key, "\n".join(pref) )
+    def _update_filter_model(self):
+        model = self.treeview.get_model()
+        model.clear()
+        for filtstring in getattr( self.prefs, self.key).split("\n"):
+            filt = misc.Filter(filtstring)
+            iter = model.append()
+            model.set_value( iter, 0, filt.name)
+            model.set_value( iter, 2, filt.wildcard)
    
 ################################################################################
 #
@@ -83,6 +183,7 @@ class PreferencesDialog(gnomeglade.Component):
         gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
         self.notebook.set_show_tabs(0)
+        # tab selector
         self.model = gtk.ListStore(type(""))
         column = gtk.TreeViewColumn()
         rentext = gtk.CellRendererText()
@@ -108,36 +209,14 @@ class PreferencesDialog(gnomeglade.Component):
         self._map_widgets_into_lists( ["toolbar_style"] )
         self.draw_style[self.prefs.draw_style].set_active(1)
         self.toolbar_style[self.prefs.toolbar_style].set_active(1)
-        # filters
-        model = gtk.ListStore( type(""), type(0), type("") )
-        self.filterview.set_model(model)
-        def addTextCol(label, colnum, expand=0):
-            rentext = gtk.CellRendererText()
-            rentext.set_property("editable", 1)
-            def change_text(ren, row, text):
-                iter = model.get_iter( (int(row),))
-                model.set_value( iter, colnum, text)
-                self._update_filter_string()
-            rentext.connect("edited", change_text)
-            column = gtk.TreeViewColumn(label)
-            column.pack_start(rentext, expand=expand)
-            column.set_attributes(rentext, markup=colnum)
-            self.filterview.append_column(column)
-        def addToggleCol(label, colnum):
-            rentoggle = gtk.CellRendererToggle()
-            def change_toggle(ren, row):
-                iter = model.get_iter( (int(row),))
-                model.set_value( iter, colnum, not ren.get_active() )
-                self._update_filter_string()
-            rentoggle.connect("toggled", change_toggle)
-            column = gtk.TreeViewColumn(label)
-            column.pack_start(rentoggle, expand=0)
-            column.set_attributes(rentoggle, active=colnum)
-            self.filterview.append_column(column)
-        addTextCol("Name", 0)
-        addToggleCol("Active", 1)
-        addTextCol("Pattern", 2, expand=1)
-        self._update_filter_model()
+        # file filters
+        cols = [ ("Name", type("")), ("Active", type(0)), ("Pattern", type("")) ]
+        self.filefilter = ListWidget( cols, self.prefs, "filters")
+        self.file_filters_box.pack_start(self.filefilter.widget)
+        # text filters
+        cols = [ ("Name", type("")), ("Active", type(0)), ("Regex", type("")) ]
+        self.textfilter = ListWidget( cols, self.prefs, "regexes")
+        self.text_filters_box.pack_start(self.textfilter.widget)
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
         self._map_widgets_into_lists( ["save_encoding"] )
@@ -182,62 +261,7 @@ class PreferencesDialog(gnomeglade.Component):
     #
     # filters
     #
-    def on_filters_new_clicked(self, button):
-        model = self.filterview.get_model()
-        iter = model.append()
-        model.set_value(iter, 0, "label")
-        model.set_value(iter, 2, "pattern")
-        self._update_filter_string()
-    def on_filters_delete_clicked(self, button):
-        selected = []
-        self.filterview.get_selection().selected_foreach(lambda store, path, iter: selected.append( path ) )
-        model = self.filterview.get_model()
-        for s in selected:
-            model.remove( model.get_iter(s) )
-        self._update_filter_string()
-    def on_filters_up_clicked(self, button):
-        selected = []
-        self.filterview.get_selection().selected_foreach(lambda store, path, iter: selected.append( path ) )
-        model = self.filterview.get_model()
-        for s in selected:
-            if s[0] > 0: # XXX need model.swap
-                old = model.get_iter(s[0])
-                iter = model.insert( s[0]-1 )
-                for i in range(3):
-                    model.set_value(iter, i, model.get_value(old, i) )
-                model.remove(old)
-                self.filterview.get_selection().select_iter(iter)
-        self._update_filter_string()
-    def on_filters_down_clicked(self, button):
-        selected = []
-        self.filterview.get_selection().selected_foreach(lambda store, path, iter: selected.append( path ) )
-        model = self.filterview.get_model()
-        for s in selected:
-            if s[0] < len(model)-1: # XXX need model.swap
-                old = model.get_iter(s[0])
-                iter = model.insert( s[0]+2 )
-                for i in range(3):
-                    model.set_value(iter, i, model.get_value(old, i) )
-                model.remove(old)
-                self.filterview.get_selection().select_iter(iter)
-        self._update_filter_string()
-    def on_filters_revert_clicked(self, button):
-        self.prefs.filters = self.prefs.get_default("filters")
-        self._update_filter_model()
-    def _update_filter_string(self):
-        model = self.filterview.get_model()
-        pref = []
-        for row in model:
-            pref.append("%s %s %s" % (row[0], row[1], row[2]))
-        self.prefs.filters = "\n".join(pref)
-    def _update_filter_model(self):
-        model = self.filterview.get_model()
-        model.clear()
-        for filtstring in self.prefs.filters.split("\n"):
-            filt = misc.Filter(filtstring)
-            iter = model.append()
-            model.set_value( iter, 0, filt.name)
-            model.set_value( iter, 2, filt.wildcard)
+
     #
     # encoding
     #
@@ -397,10 +421,13 @@ class MeldPreferences(prefs.Preferences):
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_edited_bg" : prefs.Value(prefs.STRING, "gray85"),
         "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
-        "filters" : prefs.Value(prefs.STRING, "Backups  0 #*# .#* ~* *~ *.{orig,bak,swp}\n" + \
-                                              "CVS      0 CVS\n" + \
-                                              "Binaries 0 *.{pyc,a,obj,o,so,la,lib,dll}\n" + \
-                                              "Media    0 *.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}")
+        "filters" : prefs.Value(prefs.STRING, "Backups:0:#*# .#* ~* *~ *.{orig,bak,swp}\n" + \
+                                              "CVS:0:CVS\n" + \
+                                              "Binaries:0:*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
+                                              "Media:0:*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
+        "regexes" : prefs.Value(prefs.STRING, "CVS keywords:0:\$[^:]+:[^\$]+\$\n" + \
+                                              "C/C++ comments:0:(?x) /\*  (?:  [^\*]  |  (?: \*(?!/)) )+   \*/\n" + \
+                                              "Script Comments:0:#.*")
     }
 
     def __init__(self):
@@ -638,6 +665,9 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     def on_menu_meld_home_page_activate(self, button):
         gnome.url_show("http://meld.sourceforge.net")
+
+    def on_menu_help_bug_activate(self, button):
+        gnome.url_show("http://sourceforge.net/tracker/?group_id=53725")
 
     def on_menu_users_manual_activate(self, button):
         gnome.url_show("file:///"+os.path.abspath(misc.appdir("manual/index.html") ) )
