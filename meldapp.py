@@ -461,9 +461,11 @@ class MeldPreferences(prefs.Preferences):
         if self.toolbar_style == 0:
             style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style')
             style = style.replace("-","_")
-            style = {"both":gtk.TOOLBAR_BOTH, "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
+            style = {"both":gtk.TOOLBAR_BOTH, "text":gtk.TOOLBAR_TEXT,
                      "icon":gtk.TOOLBAR_ICONS, "icons":gtk.TOOLBAR_ICONS,
-                     "text":gtk.TOOLBAR_TEXT}[style]
+                     "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
+                     "both-horiz":gtk.TOOLBAR_BOTH_HORIZ
+                     }[style]
         else:
             style = self.toolbar_style - 1
         return style
