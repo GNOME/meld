@@ -27,6 +27,7 @@ import gtk
 import os
 import re
 
+import tree
 import misc
 import gnomeglade
 import melddoc
@@ -40,30 +41,29 @@ CVS_COMMAND = ["cvs", "-z3", "-q"]
 ################################################################################
 class Entry:
     def __str__(self):
-        return "%s %s\n" % (self.name, (self.path, self.cvs))
+        return "%s %s\n" % (self.name, (self.path, self.state))
     def __repr__(self):
-        return "%s %s\n" % (self.name, (self.path, self.cvs))
-
-CVS_NONE, CVS_NORMAL, CVS_MODIFIED, CVS_MISSING = range(4)
+        return "%s %s\n" % (self.name, (self.path, self.state))
+    def get_status(self):
+        return ["Non CVS", "", "Newly added", "Modified", "Removed", "Missing"][self.state]
 
 class Dir(Entry):
-    def __init__(self, path, name, status):
-        if path[-1] != "/":
-            path += "/"
+    def __init__(self, path, name, state):
+        #if path[-1] != "/": path += "/"
         self.path = path
         self.parent, self.name = os.path.split(path[:-1])
-        self.cvs = status 
+        self.state = state
         self.isdir = 1
         self.rev = ""
         self.tag = ""
         self.options = ""
 
 class File(Entry):
-    def __init__(self, path, name, status, rev="", tag="", options=""):
+    def __init__(self, path, name, state, rev="", tag="", options=""):
         assert path[-1] != "/"
         self.path = path
         self.parent, self.name = os.path.split(path)
-        self.cvs = status
+        self.state = state
         self.isdir = 0
         self.rev = rev
         self.tag = tag
@@ -81,13 +81,17 @@ def _lookup_cvs_files(files, dirs):
     try:
         entries = open( os.path.join(directory, "CVS/Entries")).read()
     except IOError, e:
-        d = map(lambda x: Dir(x[1],x[0], CVS_NONE), dirs) 
-        f = map(lambda x: File(x[1],x[0], CVS_NONE, "-1.1"), files) 
+        d = map(lambda x: Dir(x[1],x[0], tree.STATE_NONE), dirs) 
+        f = map(lambda x: File(x[1],x[0], tree.STATE_NONE, None), files) 
         return d,f
+    try:
+        entries += open( os.path.join(directory, "CVS/Entries.Log")).read()
+    except IOError, e:
+        pass
 
     retfiles = []
     retdirs = []
-    matches = re.findall("^(D?)/([^/]+)/(.+)$(?m)", entries)
+    matches = re.findall("^(?:A )?(D?)/([^/]+)/(.+)$(?m)", entries)
     matches.sort()
 
     for match in matches:
@@ -98,11 +102,14 @@ def _lookup_cvs_files(files, dirs):
         if tag:
             tag = tag[1:]
         if isdir:
-            state = os.path.exists(path) and CVS_NORMAL or CVS_MISSING
+            if os.path.exists(path):
+                state = tree.STATE_NORMAL
+            else:
+                state = tree.STATE_MISSING
             retdirs.append( Dir(path,name,state) )
         else:
             if date=="dummy timestamp":
-                state = CVS_MODIFIED
+                state = tree.STATE_NEW
             else:
                 plus = date.find("+")
                 if plus >= 0:
@@ -116,21 +123,21 @@ def _lookup_cvs_files(files, dirs):
                 try:
                     mtime = os.stat(path).st_mtime
                 except OSError:
-                    state = CVS_MISSING
+                    state = tree.STATE_MISSING
                 else:
                     if mtime==cotime:
-                        state = CVS_NORMAL
+                        state = tree.STATE_NORMAL
                     else:
-                        state = CVS_MODIFIED
+                        state = tree.STATE_MODIFIED
             retfiles.append( File(path, name, state, rev, tag, options) )
     # find missing
     cvsfiles = map(lambda x: x[1], matches)
     for f,path in files:
         if f not in cvsfiles:
-            retfiles.append( File(path, f, CVS_NONE, "") )
+            retfiles.append( File(path, f, tree.STATE_NONE, "") )
     for d,path in dirs:
         if d not in cvsfiles:
-            retdirs.append( Dir(path, d, CVS_NONE) )
+            retdirs.append( Dir(path, d, tree.STATE_NONE) )
 
     return retdirs, retfiles
 
@@ -170,7 +177,7 @@ def recursive_find(start):
     os.path.walk(start, visit, ret)
     return ret
 
-def find(start):
+def listdir_cvs(start):
     if start=="":
         start="."
     dirs, files = _find(start)
@@ -201,8 +208,20 @@ class CommitDialog(gnomeglade.Component):
         self.previousentry.append_history(1, msg)
         self.widget.destroy()
 
+################################################################################
+#
+# CvsTreeStore
+#
+################################################################################
 
-MODEL_PIXMAP, MODEL_ENTRY, MODEL_NAME, MODEL_COLOR, MODEL_LOCATION, MODEL_STATUS, MODEL_REVISION, MODEL_TAG, MODEL_OPTIONS, MODEL_MAX = range(10)
+COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tree.COL_END, tree.COL_END+6)
+
+class CvsTreeStore(tree.DiffTreeStore):
+    def __init__(self):
+        types = [type("")] * COL_END
+        types[tree.COL_ICON] = type(tree.pixbuf_file)
+        gtk.TreeStore.__init__(self, *types)
+        self.ntree = 1
 
 ################################################################################
 #
@@ -215,55 +234,125 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
     }
 
+
     MODIFIED_FILTER_MASK, UNKNOWN_FILTER_MASK = 1,2
 
-    filters = [lambda x: x.cvs != CVS_NONE,
-               lambda x: x.cvs > CVS_NORMAL or (x.cvs and x.isdir),
+    filters = [lambda x: (x.state > tree.STATE_NONE),
+               lambda x: (x.state > tree.STATE_NORMAL) or (x.isdir and (x.state > tree.STATE_NONE)),
                lambda x: 1, 
-               lambda x: x.cvs in [CVS_NONE,CVS_MODIFIED,CVS_MISSING] or x.isdir  ]
+               lambda x: (x.state != tree.STATE_NORMAL) or (x.isdir and (x.state > tree.STATE_NONE)) ]
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "cvsview")
         self.tempfiles = []
-        self.image_dir = gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-folder.png", 14)
-        self.image_file= gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-file-c.png", 14)
-        args = [type(self.image_dir), gobject.TYPE_PYOBJECT]
-        args += [type("")] * (MODEL_MAX - MODEL_NAME)
-        self.treemodel = gtk.TreeStore( *args )
-        self.treeview.set_model(self.treemodel)
+        self.model = CvsTreeStore()
+        self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
-        tvc = gtk.TreeViewColumn("Name")
+        column = gtk.TreeViewColumn("Name")
         renpix = gtk.CellRendererPixbuf()
         rentext = gtk.CellRendererText()
-        tvc.pack_start(renpix, 0)
-        tvc.pack_start(rentext, 1)
-        tvc.add_attribute(renpix, "pixbuf", MODEL_PIXMAP)
-        tvc.add_attribute(rentext, "text", MODEL_NAME)
-        tvc.add_attribute(rentext, "foreground", MODEL_COLOR)
-        self.treeview.append_column(tvc)
+        column.pack_start(renpix, expand=0)
+        column.pack_start(rentext, expand=1)
+        column.set_attributes(renpix, pixbuf=self.model.column_index(tree.COL_ICON, 0))
+        column.set_attributes(rentext, markup=self.model.column_index(tree.COL_TEXT, 0))
+        self.treeview.append_column(column)
 
         def addCol(name, num):
-            tvc = gtk.TreeViewColumn(name)
+            column = gtk.TreeViewColumn(name)
             rentext = gtk.CellRendererText()
-            tvc.pack_start(rentext, 0)
-            tvc.add_attribute(rentext, "text", num)
-            self.treeview.append_column(tvc)
-            return tvc
+            column.pack_start(rentext, expand=0)
+            column.set_attributes(rentext, markup=self.model.column_index(num, 0))
+            self.treeview.append_column(column)
+            return column
 
-        self.treeview_column_location = addCol("Location", MODEL_LOCATION)
-        self.treeview_column_location.set_visible(0)
-        addCol("Status", MODEL_STATUS)
-        addCol("Rev", MODEL_REVISION)
-        addCol("Tag", MODEL_TAG)
-        addCol("Options", MODEL_OPTIONS)
+        self.treeview_column_location = addCol("Location", COL_LOCATION)
+        addCol("Status", COL_STATUS)
+        addCol("Rev", COL_REVISION)
+        addCol("Tag", COL_TAG)
+        addCol("Options", COL_OPTIONS)
 
-        self.colors = ["#888888", "#000000", "#ff0000", "#0000ff"]
-        self.status = ["", "", "modified", "missing"]
         self.location = None
+        self.treeview_column_location.set_visible( self.button_recurse.get_active() )
+
+    def set_location(self, location):
+        self.model.clear()
+        self.location = location = os.path.abspath(location or ".")
+        self.fileentry.gtk_entry().set_text(location)
+        iter = self.model.add_entries( None, [location] )
+        self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
+        self.recompute_label()
+        self.scheduler.remove_all_tasks()
+        self.scheduler.add_task( self._search_recursively_iter().next )
+
+    def recompute_label(self):
+        self.label_text = "[CVS] %s" % os.path.basename(self.location)
+        self.label_changed()
+
+    def _search_recursively_iter(self):
+        yield "[%s] Scanning" % self.label_text
+        rootpath = self.model.get_path( self.model.get_iter_root() )
+        rootname = self.model.value_path( self.model.get_iter(rootpath), 0 )
+        prefixlen = 1 + len(rootname)
+        todo = [ (rootpath, rootname) ]
+        filtermask = 0
+        if self.button_modified.get_active():
+            filtermask |= self.MODIFIED_FILTER_MASK
+        if self.button_noncvs.get_active():
+            filtermask |= self.UNKNOWN_FILTER_MASK
+        showable = self.filters[filtermask]
+        recursive = self.button_recurse.get_active()
+        while len(todo):
+            todo.sort() # depth first
+            path, name = todo.pop(0)
+            if path:
+                iter = self.model.get_iter( path )
+                root = self.model.value_path( iter, 0 )
+            else:
+                iter = self.model.get_iter_root()
+                root = name
+            yield "[%s] Scanning %s" % (self.label_text, root[prefixlen:])
+            #import time; time.sleep(1.0)
+            
+            entries = filter(showable, listdir_cvs(root))
+            differences = 0
+            for e in entries:
+                differences |= (e.state != tree.STATE_NORMAL)
+                if e.isdir and recursive:
+                    todo.append( (None, e.path) )
+                    continue
+                child = self.model.add_entries(iter, [e.path])
+                self.model.set_state( child, 0, e.state, e.isdir )
+                def set(col, val):
+                    self.model.set_value( child, self.model.column_index(col,0), val)
+                set( COL_LOCATION, root[prefixlen:] )
+                set( COL_STATUS, e.get_status())
+                set( COL_REVISION, e.rev)
+                set( COL_TAG, e.tag)
+                set( COL_OPTIONS, e.options)
+                if e.isdir:
+                    todo.append( (self.model.get_path(child), None) )
+            if not recursive:
+                if len(entries) == 0:
+                    self.model.add_empty(iter, "no cvs files")
+                if differences or len(path)==1:
+                    start = path[:]
+                    while len(start) and not self.treeview.row_expanded(start):
+                        start = start[:-1]
+                    level = len(start)
+                    while level < len(path):
+                        level += 1
+                        self.treeview.expand_row( path[:level], 0)
+            else:
+                self.treeview.expand_row( (0,), 0)
+
+    def on_fileentry_activate(self, fileentry):
+        path = fileentry.get_full_path(0)
+        self.set_location(path)
 
     def on_quit_event(self):
+        self.scheduler.remove_all_tasks()
         for f in self.tempfiles:
             if os.path.exists(f):
                 shutil.rmtree(f, ignore_errors=1)
@@ -273,32 +362,25 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         return gnomeglade.DELETE_OK
 
     def on_row_activated(self, treeview, path, tvc):
-        iter = self.treemodel.get_iter(path)
-        entry = self.treemodel.get_value(iter, MODEL_ENTRY)
-        if not entry:
-            return
-        if entry.isdir:
+        iter = self.model.get_iter(path)
+        if self.model.iter_has_child(iter):
             if self.treeview.row_expanded(path):
                 self.treeview.collapse_row(path)
             else:
                 self.treeview.expand_row(path,0)
         else:
-            if entry.cvs == CVS_MODIFIED:
-                self.run_cvs_diff( [entry.path] )
-            else:
-                #self.statusbar.add_status("%s is not modified" % entry.path)
-                self.emit("create-diff", [entry.path])
+            path = self.model.value_path(iter, 0)
+            self.run_cvs_diff( [path] )
 
     def run_cvs_diff_iter(self, paths, empty_patch_ok):
-        yield  "Fetching differences."
-        print "Fetching differences."
+        yield "[%s] Fetching differences." % self.label_text
         difffunc = self._command_iter(CVS_COMMAND + ["diff", "-u"], paths, 0).next
         diff = None
         while type(diff) != type(()):
             diff = difffunc()
             yield 1
         prefix, patch = diff[0], diff[1]
-        yield  "Applying patch."
+        yield "[%s] Applying patch." % self.label_text
         if patch:
             self.show_patch(prefix, patch)
         elif empty_patch_ok:
@@ -310,64 +392,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def run_cvs_diff(self, paths, empty_patch_ok=0):
         self.scheduler.add_task( self.run_cvs_diff_iter(paths, empty_patch_ok).next )
 
-    def on_row_expanded(self, tree, me, path):
-        model = self.treemodel
-        location = model.get_value( me, MODEL_ENTRY ).path
-        assert len(location)
-        trimlength = len(location) - 1
-
-        filtermask = 0
-        if self.button_modified.get_active():
-            filtermask |= self.MODIFIED_FILTER_MASK
-        if self.button_unknown.get_active():
-            filtermask |= self.UNKNOWN_FILTER_MASK
-        showable = self.filters[filtermask]
-
-        def update_file(i, f):
-            model.set_value(i, MODEL_NAME, f.name)
-            model.set_value(i, MODEL_COLOR, self.colors[f.cvs] )
-            model.set_value(i, MODEL_LOCATION, "."+f.parent[trimlength:] )
-            model.set_value(i, MODEL_STATUS, self.status[f.cvs])
-            model.set_value(i, MODEL_ENTRY, f)
-            model.set_value(i, MODEL_REVISION, f.rev)
-            model.set_value(i, MODEL_TAG, f.tag)
-            model.set_value(i, MODEL_OPTIONS, f.options)
-
-        if self.button_recurse.get_active():
-            files = filter(showable, recursive_find(location))
-            files = filter(lambda x: not x.isdir, files)
-            for f in files:
-                iter = model.append(me)
-                update_file(iter, f)
-        else:
-            allfiles = find(location)
-            files = filter(showable, allfiles)
-            for f in files:
-                iter = model.append(me)
-                if f.isdir:
-                    model.set_value(iter, MODEL_PIXMAP, self.image_dir )
-                    child = model.append(iter)
-                    if self.button_unknown.get_active():
-                        model.set_value(child, MODEL_NAME, "<empty>" )
-                    else:
-                        model.set_value(child, MODEL_NAME, "<no cvs files>" )
-                else:
-                    model.set_value(iter, MODEL_PIXMAP, self.image_file )
-                update_file(iter, f)
-        if len(files):
-            child = model.iter_children(me)
-            model.remove(child)
-
-    def on_row_collapsed(self, tree, me, path):
-        model = self.treemodel
-        child = model.iter_children(me)
-        while child:
-            model.remove(child)
-            child = model.iter_children(me)
-        child = model.append(me)
-        model.set_value(child, MODEL_NAME, "<empty>" )
-
-
     def on_button_press_event(self, text, event):
         if event.button==3:
             appdir = misc.appdir("glade2/cvsview.glade")
@@ -376,37 +400,20 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             popup.popup(None,None,None,event.button,event.time)
         return 0
 
-    def set_location(self, location):
-        self.treemodel.clear()
-        self.location = location = os.path.abspath(location or ".")
-        self.fileentry.gtk_entry().set_text(location)
-        root = self.treemodel.append(None)
-        self.treemodel.set_value( root, MODEL_PIXMAP, self.image_dir )
-        self.treemodel.set_value( root, MODEL_NAME, location )
-        self.treemodel.set_value( root, MODEL_COLOR, self.colors[1])
-        self.treemodel.set_value( root, MODEL_STATUS, "")
-        self.treemodel.set_value( root, MODEL_ENTRY, Dir(location, location, CVS_NORMAL) )
-        child = self.treemodel.append(root)
-        self.treemodel.set_value(child, MODEL_NAME, "<empty>" )
-        self.treeview.expand_row(self.treemodel.get_path(root), 0)
-        self.recompute_label()
 
     def on_button_recurse_toggled(self, button):
         self.treeview_column_location.set_visible( self.button_recurse.get_active() )
         self.refresh()
     def on_button_modified_toggled(self, button):
         self.refresh()
-    def on_button_unknown_toggled(self, button):
+    def on_button_noncvs_toggled(self, button):
         self.refresh()
 
-    def on_fileentry_activate(self, fileentry):
-        path = fileentry.get_full_path(0)
-        self.set_location(path)
 
     def _get_selected_files(self):
         ret = []
         def gather(model, path, iter):
-            ret.append( model.get_value(iter,MODEL_ENTRY).path )
+            ret.append( model.value_path(iter,0) )
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
         # remove empty entries and remove trailing slashes
@@ -416,24 +423,26 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         """Run 'command' on 'files'. Return a tuple of the directory the
            command was executed in and the output of the command."""
         msg = " ".join(command)
-        yield msg
+        yield "[%s] %s." % (self.label_text, msg)
         if len(files) != 1 :
-            prefix = misc.commonprefix(files)
+            workdir = misc.commonprefix(files)
+        elif os.path.isdir(files[0]):
+            workdir = files[0]
         else:
-            prefix = os.path.dirname(files[0])
-        kill = len(prefix) and (len(prefix)+1) or 0
-        files = map(lambda x: x[kill:], files)
-        savepwd = os.getcwd()
-        if prefix: os.chdir( prefix )
+            workdir = os.path.dirname(files[0])
+        kill = len(workdir) and (len(workdir)+1) or 0
+        files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
         r = None
-        readfunc = misc.read_pipe_iter(command + files).next
-        while r == None:
-            r = readfunc()
-            yield 1
-        if prefix: os.chdir( savepwd )
+        readfunc = misc.read_pipe_iter(command + files, workdir=workdir).next
+        try:
+            while r == None:
+                r = readfunc()
+                yield 1
+        except IOError, e:
+            print "*** ERROR READING PIPE", e
         if refresh:
             self.refresh()
-        yield prefix, r
+        yield workdir, r
 
     def _command(self, command, files, refresh=1):
         """Run 'command' on 'files'.
@@ -496,22 +505,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("create-diff", d)
 
     def refresh(self):
-        root = self.treemodel.get_path( self.treemodel.get_iter_root() )
-        self.treeview.collapse_row(root)
-        self.treeview.expand_row(root, 0)
-        iter_root = self.treemodel.get_iter_root()
-        if not self.treemodel.iter_has_child(iter_root):
-            child = model.append(iter_root)
-            model.set_value(child, MODEL_NAME, "<empty>" )
+        self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
     def save(self,*args):
         pass
     def next_diff(self,*args):
         pass
-
-    def recompute_label(self):
-        self.label_text = "[CVS] %s " % self.location
-        self.label_changed()
 
 gobject.type_register(CvsView)
 
