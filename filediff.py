@@ -19,6 +19,7 @@ from __future__ import generators
 import codecs
 import math
 import os
+import re
 import sys
 import tempfile
 import difflib
@@ -34,37 +35,6 @@ import misc
 import melddoc
 
 gdk = gtk.gdk
-
-################################################################################
-#
-# FileDiffMenu
-#
-################################################################################
-class FileDiffMenu(gnomeglade.Component):
-    def __init__(self, app):
-        gladefile = misc.appdir("glade2/filediff.glade")
-        gnomeglade.Component.__init__(self, gladefile, "popup")
-        self.parent = app
-        self.pane = -1
-    def popup_in_pane( self, pane ):
-        self.pane = pane
-        self.copy_left.set_sensitive( pane > 0 )
-        self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
-        self.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
-    def on_save_activate(self, menuitem):
-        self.parent.save()
-    def on_save_as_activate(self, menuitem):
-        self.parent.save_file( self.pane, 1)
-    def on_cut_activate(self, menuitem):
-        self.parent.on_cut_activate()
-    def on_copy_activate(self, menuitem):
-        self.parent.on_copy_activate()
-    def on_paste_activate(self, menuitem):
-        self.parent.on_paste_activate()
-    def on_copy_left_activate(self, menuitem):
-        self.parent.copy_selected(-1)
-    def on_copy_right_activate(self, menuitem):
-        self.parent.copy_selected(1)
 
 ################################################################################
 #
@@ -114,9 +84,36 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                       "foreground": self.prefs.color_replace_fg} )
             add_tag("conflict line", {"background": self.prefs.color_conflict_bg,
                                       "foreground": self.prefs.color_conflict_fg} )
-        self.popup_menu = FileDiffMenu(self)
+        class ContextMenu(gnomeglade.Component):
+            def __init__(self, app):
+                gladefile = misc.appdir("glade2/filediff.glade")
+                gnomeglade.Component.__init__(self, gladefile, "popup")
+                self.parent = app
+                self.pane = -1
+            def popup_in_pane( self, pane ):
+                self.pane = pane
+                self.copy_left.set_sensitive( pane > 0 )
+                self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
+                self.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
+            def on_save_activate(self, menuitem):
+                self.parent.save()
+            def on_save_as_activate(self, menuitem):
+                self.parent.save_file( self.pane, 1)
+            def on_cut_activate(self, menuitem):
+                self.parent.on_cut_activate()
+            def on_copy_activate(self, menuitem):
+                self.parent.on_copy_activate()
+            def on_paste_activate(self, menuitem):
+                self.parent.on_paste_activate()
+            def on_copy_left_activate(self, menuitem):
+                self.parent.copy_selected(-1)
+            def on_copy_right_activate(self, menuitem):
+                self.parent.copy_selected(1)
+        self.popup_menu = ContextMenu(self)
+        self.find_dialog = None
+        self.last_search = None
         self.set_num_panes(num_panes)
-            
+
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
             buf = textview.get_buffer()
@@ -301,6 +298,37 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return t
         return None
 
+    def on_find_activate(self, *args):
+        if self.find_dialog:
+            self.find_dialog.widget.present()
+        else:
+            class FindDialog(gnomeglade.Component):
+                def __init__(self, app):
+                    self.parent = app
+                    self.pane = -1
+                    gladefile = misc.appdir("glade2/filediff.glade")
+                    gnomeglade.Component.__init__(self, gladefile, "finddialog")
+                    self.widget.set_transient_for(app.widget.get_toplevel())
+                    self.widget.show_all()
+                def on_destroy(self, *args):
+                    self.parent.find_dialog = None
+                    self.widget.destroy()
+                def on_entry_search_for_activate(self, *args):
+                    self.parent._find_text( self.entry_search_for.get_chars(0,-1),
+                        self.check_case.get_active(),
+                        self.check_word.get_active(),
+                        self.check_wrap.get_active(),
+                        self.check_regex.get_active() )
+                    return 1
+            self.find_dialog = FindDialog(self)
+
+    def on_find_next_activate(self, *args):
+        if self.last_search:
+            s = self.last_search
+            self._find_text(s.text, s.case, s.word, s.wrap, s.regex)
+        else:
+            self.on_find_activate()
+
     def on_copy_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
@@ -309,7 +337,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_cut_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            t.emit("cut-clipboard") #XXX).cut_clipboard()
+            t.emit("cut-clipboard") #XXX get_buffer().cut_clipboard()
 
     def on_paste_activate(self, *extra):
         t = self._get_focused_textview()
@@ -322,6 +350,37 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pane = self.textview.index(textview)
             self.popup_menu.popup_in_pane( pane )
             return 1
+
+        #
+        # find/replace buffer
+        #
+    def _find_text(self, tofind, match_case=0, entire_word=0, wrap=1, regex=0):
+        self.last_search = misc.struct(text=tofind, case=match_case, word=entire_word, wrap=wrap, regex=regex)
+        view = self._get_focused_textview() or self.textview0
+        buf = view.get_buffer()
+        insert = buf.get_iter_at_mark( buf.get_insert() )
+        text = buf.get_text(*buf.get_bounds() )
+        if not regex:
+            tofind = re.escape(tofind)
+        if entire_word:
+            tofind = r'\b' + tofind + r'\b'
+        try:
+            pattern = re.compile( tofind, (match_case and re.M or (re.M|re.I)) )
+        except re.error, e:
+            misc.run_dialog("Regular expression error\n'%s'" % e, self, messagetype=gtk.MESSAGE_ERROR)
+        else:
+            match = pattern.search(text, insert.get_offset()+1 )
+            if match == None and wrap:
+                match = pattern.search(text, 0)
+            if match:
+                iter = buf.get_iter_at_offset( match.start() )
+                buf.place_cursor( iter )
+                iter.forward_chars( match.end() - match.start() )
+                buf.move_mark( buf.get_selection_bound(), iter )
+                view.scroll_to_mark( buf.get_insert(), 0)
+            else:
+                misc.run_dialog( "The %s '%s' was not found" % (regex and "regular expression" or "text", tofind),
+                    self, messagetype=gtk.MESSAGE_INFO)
 
         #
         # text buffer loading/saving

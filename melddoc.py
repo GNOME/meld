@@ -59,6 +59,13 @@ class MeldDoc(gobject.GObject):
                 self.undosequence_busy = 0
             self.undosequence_busy = 0
 
+    def on_find_activate(self, *extra):
+        pass
+    def on_find_next_activate(self, *extra):
+        pass
+    def on_replace_activate(self, *extra):
+        pass
+
     def on_copy_activate(self, *args):
         pass
     def on_cut_activate(self, *args):

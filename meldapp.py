@@ -419,6 +419,15 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_menu_redo_activate(self, *extra):
         self.current_doc().on_redo_activate()
   
+    def on_menu_find_activate(self, *extra):
+        self.current_doc().on_find_activate()
+
+    def on_menu_find_next_activate(self, *extra):
+        self.current_doc().on_find_next_activate()
+
+    def on_menu_replace_activate(self, *extra):
+        self.current_doc().on_replace_activate()
+
     def on_menu_copy_activate(self, *extra):
         self.current_doc().on_copy_activate()
 
