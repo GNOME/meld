@@ -465,6 +465,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             _("Could not read from '%s'.\n\nI tried encodings %s.") % (t.filename, try_codecs),
                             parent = self)
                         tasks.remove(t)
+                except IOError, ioerr:
+                    misc.run_dialog(
+                        _("Could not read from '%s'.\n\nThe error was:\n%s") % (t.filename, str(ioerr)),
+                        parent = self)
+                    tasks.remove(t)
                 else:
                     if len(nextbit):
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
