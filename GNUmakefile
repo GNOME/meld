@@ -4,11 +4,11 @@ TESTNUM := 5
 VERSION := $(shell python2.2 -c "import meldapp; print meldapp.version")
 RELEASE := meld-$(VERSION)
 
-#run0 : rundiff
+run0 : rundiff
 	#echo
 
-run1 : runcvs
-	echo
+#run1 : runcvs
+#	echo
 
 rundiff:
 #	$(PROG) test/lao test/tzu test/tao
