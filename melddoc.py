@@ -42,6 +42,10 @@ class MeldDoc(gobject.GObject):
     def save_all(self):
         pass
 
+    def stop(self):
+        if len(self.scheduler.tasks):
+            del self.scheduler.tasks[0]
+
     def on_undo_activate(self):
         if self.undosequence.can_undo():
             self.undosequence_busy = 1
