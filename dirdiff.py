@@ -404,7 +404,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 self.items[ ci ][pane] = i
                     def get(self):
                         if len(self.bad):
-                            misc.run_dialog(_("You are running a case insensitve comparison on"
+                            misc.run_dialog(_("You are running a case insensitive comparison on"
                                 " a case sensitive filesystem. Some files are not visible:\n%s")
                                 % "\n".join( self.bad ), self.parent )
                         keys = self.items.keys()
