@@ -16,7 +16,10 @@ runcvs:
 	#(cd .. && meld/$(PROG) meld)
 	#(cd ../.. && Projects/meld/$(PROG) Projects/meld)
 
-$(RELEASE).tgz:
+checkfortabs:
+	@grep '	' meld *.py > /dev/null && echo -e '***\n*** TABS DETECTED\n***'
+
+$(RELEASE).tgz: checkfortabs
 	cvs tag release-$(subst .,_,$(VERSION))
 	cvs -q -z3 export -r release-$(subst .,_,$(VERSION)) -d $(RELEASE) meld
 	tar cvfz $(RELEASE).tgz $(RELEASE)

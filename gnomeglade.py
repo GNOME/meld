@@ -86,10 +86,10 @@ class Dialog(gtk.Dialog, Base):
 
 ################################################################################
 #
-# GnomeGladeApp
+# GnomeApp
 #
 ################################################################################
-class App(gnome.ui.App, Base):
+class GnomeApp(gnome.ui.App, Base):
     """A convenience base class for apps created in glade"""
 
     def __init__(self, name, version, file, root=None):
@@ -104,6 +104,24 @@ class App(gnome.ui.App, Base):
         """Signal the gtk main loop to quit"""
         gtk.main_quit()
 
+################################################################################
+#
+# GtkApp
+#
+################################################################################
+class GtkApp(gtk.Window, Base):
+    """A convenience base class for apps created in glade"""
+
+    def __init__(self, name, version, file, root=None):
+        gtk.Window.__init__(self)
+        Base.__init__(self,file,root)
+
+    def mainloop(self):
+        """Enter the gtk main loop"""
+        gtk.mainloop()
+    def quit(*args):
+        """Signal the gtk main loop to quit"""
+        gtk.main_quit()
 ################################################################################
 #
 # load_pixbuf
