@@ -237,11 +237,19 @@ def commonprefix(dirs):
     return os.sep.join(prefix)
 
 def escape(s):
-    """Replace special characters '&', '<' and '>' by SGML entities.
+    """Replace special characters by SGML entities.
     """
-    s = s.replace("&", "&amp;")
-    s = s.replace("<", "&lt;")
-    s = s.replace(">", "&gt;")
+    entities = ("&&amp;", "<&lt;", ">&gt;")
+    for e in entities:
+        s = s.replace(e[0], e[1:])
+    return s
+
+def unescape(s):
+    """Inverse of escape.
+    """
+    entities = (">&gt;", "<&lt;", "&&amp;")
+    for e in entities:
+        s = s.replace(e[1:], e[0])
     return s
 
 def copytree(src, dst, symlinks=1):
