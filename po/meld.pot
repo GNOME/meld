@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Aug  1 18:54:00 2003\n"
+"POT-Creation-Date: Fri Aug  1 21:09:49 2003\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,6 +14,154 @@ msgstr ""
 "Content-Transfer-Encoding: ENCODING\n"
 "Generated-By: pygettext.py 1.4\n"
 
+
+#: cvsview.py:41
+msgid "Non CVS::Error::Newly added:Modified:Removed:Missing"
+msgstr ""
+
+#: cvsview.py:290
+msgid "Location"
+msgstr ""
+
+#: cvsview.py:291
+msgid "Status"
+msgstr ""
+
+#: cvsview.py:292
+msgid "Rev"
+msgstr ""
+
+#: cvsview.py:293
+msgid "Tag"
+msgstr ""
+
+#: cvsview.py:294
+msgid "Options"
+msgstr ""
+
+#: cvsview.py:317 dirdiff.py:306
+msgid "[%s] Scanning"
+msgstr ""
+
+#: cvsview.py:338 dirdiff.py:314
+msgid "[%s] Scanning %s"
+msgstr ""
+
+#: cvsview.py:361
+msgid "no cvs files"
+msgstr ""
+
+#: cvsview.py:399
+msgid "[%s] Fetching differences"
+msgstr ""
+
+#: cvsview.py:406
+msgid "[%s] Applying patch"
+msgstr ""
+
+#: cvsview.py:480
+msgid "Select some files first"
+msgstr ""
+
+#: dirdiff.py:355
+msgid "[%s] Done"
+msgstr ""
+
+#: dirdiff.py:413
+msgid ""
+"'%s' exists.\n"
+"Overwrite?"
+msgstr ""
+
+#: dirdiff.py:420
+msgid ""
+"Error copying '%s' to '%s'\n"
+"\n"
+"%s."
+msgstr ""
+
+#: dirdiff.py:438
+msgid ""
+"'%s' is a directory.\n"
+"Remove recusively?"
+msgstr ""
+
+#: dirdiff.py:444
+msgid ""
+"Error removing %s\n"
+"\n"
+"%s."
+msgstr ""
+
+#: filediff.py:370
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+
+#: filediff.py:382
+msgid "The regular expression '%s' was not found."
+msgstr ""
+
+#: filediff.py:384
+msgid "The text '%s' was not found."
+msgstr ""
+
+#: filediff.py:423
+msgid "[%s] Set num panes"
+msgstr ""
+
+#: filediff.py:430
+msgid "[%s] Opening files"
+msgstr ""
+
+#: filediff.py:446
+msgid ""
+"Could not open '%s' for reading.\n"
+"\n"
+"The error was:\n"
+"%s"
+msgstr ""
+
+#: filediff.py:450
+msgid "[%s] Reading files"
+msgstr ""
+
+#: filediff.py:465
+msgid ""
+"Could not read from '%s'.\n"
+"\n"
+"I tried encodings %s."
+msgstr ""
+
+#: filediff.py:482
+msgid "[%s] Computing differences"
+msgstr ""
+
+#: filediff.py:569
+msgid "Choose a name for buffer %i."
+msgstr ""
+
+#: filediff.py:580
+msgid ""
+"\"%s\" exists!\n"
+"Overwrite?"
+msgstr ""
+
+#: filediff.py:594
+msgid ""
+"Error writing to %s\n"
+"\n"
+"%s."
+msgstr ""
+
+#: filediff.py:652
+msgid ""
+"Refreshing will discard changes in:\n"
+"%s\n"
+"\n"
+"You cannot undo this operation."
+msgstr ""
 
 #: glade2/cvsview.strings:7 glade2/dirdiff.strings:11
 #: glade2/filediff.strings:9
@@ -466,27 +614,123 @@ msgstr ""
 msgid "Display"
 msgstr ""
 
-#: meld:44
+#: meld:33
 msgid "Meld requires python%s or higher."
 msgstr ""
 
-#: meld:54
+#: meld:43
 msgid "Meld requires a recent version of pygtk."
 msgstr ""
 
-#: meld:55
+#: meld:44
 msgid "pygtk-%s or higher is recommended."
 msgstr ""
 
-#: meld:65
+#: meld:54
 msgid "Meld works best with pygtk-%s or higher. (found %s)"
 msgstr ""
 
-#: meld:66
+#: meld:55
 msgid "Due to incompatible API changes some functions may not operate as expected."
 msgstr ""
 
+#: meldapp.py:51
+msgid "Browse %s"
+msgstr ""
+
 #: meldapp.py:361
-msgid "Original File:Modified File"
+msgid "Modified File"
+msgstr ""
+
+#: meldapp.py:361
+msgid "Original File"
+msgstr ""
+
+#: meldapp.py:364
+msgid "Common Ancestor"
+msgstr ""
+
+#: meldapp.py:364
+msgid "Local Changes"
+msgstr ""
+
+#: meldapp.py:364
+msgid "Other Changes"
+msgstr ""
+
+#: meldapp.py:367 meldapp.py:370
+msgid "Modified Directory"
+msgstr ""
+
+#: meldapp.py:367 meldapp.py:370
+msgid "Original Directory"
+msgstr ""
+
+#: meldapp.py:370
+msgid "Other Directory"
+msgstr ""
+
+#: meldapp.py:373
+msgid "Root CVS Directory"
+msgstr ""
+
+#: meldapp.py:403
+msgid ""
+"You have some unsaved changes.\n"
+"Quit anyway?"
+msgstr ""
+
+#: meldapp.py:574
+msgid ""
+"Meld is a file and directory comparison tool. Usage:\n"
+"\n"
+"    meld                        Start with no windows open\n"
+"    meld <dir>                  Start with CVS browser in 'dir'\n"
+"    meld <file>                 Start with CVS diff of 'file'\n"
+"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
+"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
+"\n"
+"For more information choose help -> contents.\n"
+"Report bugs to steve9000@users.sourceforge.net.\n"
+msgstr ""
+
+#: meldapp.py:626
+msgid "`%s' is not a directory or file, cannot open cvs view"
+msgstr ""
+
+#: meldapp.py:632
+msgid "Cannot open "
+msgstr ""
+
+#: meldapp.py:649
+msgid ""
+"Cannot compare a mixture of files and directories.\n"
+msgstr ""
+
+#: meldapp.py:651
+msgid "file"
+msgstr ""
+
+#: meldapp.py:651
+msgid "folder"
+msgstr ""
+
+#: meldapp.py:654
+msgid "Wrong number of arguments (Got %i)"
+msgstr ""
+
+#: melddoc.py:38
+msgid "untitled"
+msgstr ""
+
+#: misc.py:62
+msgid ""
+"Cannot find '%s'\n"
+"I looked in '%s'\n"
+"(%s)"
+msgstr ""
+
+#: misc.py:119
+msgid "[None]"
 msgstr ""
 
