@@ -232,9 +232,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _get_filename(self, i):
         return self.bufferdata[i].filename or "<unnamed>"
 
-    def on_delete_event(self, *extra):
+    def on_delete_event(self, appquit=0):
         modified = [b.modified for b in self.bufferdata]
-        delete = gnomeglade.DELETE_OK
         if 1 in modified:
             dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
@@ -248,17 +247,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 else:
                     b.set_active(1)
             dialog.widget.show_all()
+            if not appquit:
+                dialog.button_quit.hide()
             response = dialog.widget.run()
             try_save = [ b.get_active() for b in buttons]
             dialog.widget.destroy()
             if response==gtk.RESPONSE_OK:
                 for i in range(self.num_panes):
                     if try_save[i]:
-                        if self.save_file(i) != gnomeglade.RESULT_OK:
-                            delete = gnomeglade.DELETE_ABORT
+                        if self.save_file(i) != melddoc.RESULT_OK:
+                            return gtk.RESPONSE_CANCEL
+            elif response==gtk.RESPONSE_CLOSE:
+                return gtk.RESPONSE_CLOSE
             else:
-                delete = gnomeglade.DELETE_ABORT
-        return delete
+                return gtk.RESPONSE_CANCEL
+        return gtk.RESPONSE_OK
 
         #
         # text buffer undo/redo
@@ -582,7 +585,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             response = fselect.run()
             if response != gtk.RESPONSE_OK:
                 fselect.destroy()
-                return gnomeglade.RESULT_ERROR
+                return melddoc.RESULT_ERROR
             else:
                 filename = fselect.get_filename()
                 fselect.destroy()
@@ -592,7 +595,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         parent = self,
                         buttonstype = gtk.BUTTONS_YES_NO)
                     if response == gtk.RESPONSE_NO:
-                        return gnomeglade.RESULT_ERROR
+                        return melddoc.RESULT_ERROR
                 bufdata.filename = os.path.abspath(filename)
                 self.fileentry[pane].set_filename( bufdata.filename)
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
@@ -602,8 +605,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     text = text.replace("\n", bufdata.newlines)
             elif type(bufdata.newlines) == type(()):
                 buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
-                newline = misc.run_dialog( _("This file contains a mixture of line endings.\n\nWhich format would you like to use?"),
-                    self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_NONE,
+                newline = misc.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
+                    self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_CANCEL,
                     extrabuttons=[ buttons[b] for b in bufdata.newlines ] ) 
                 if newline < 0:
                     return
@@ -621,12 +624,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             misc.run_dialog(
                 _("Error writing to %s\n\n%s.") % (bufdata.filename, e),
                 self, buttongtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
-            return gnomeglade.RESULT_ERROR
+            return melddoc.RESULT_ERROR
         else:
             self.emit("file-changed", bufdata.filename)
             self.undosequence.clear()
             self.set_buffer_modified(buf, 0)
-        return gnomeglade.RESULT_OK
+        return melddoc.RESULT_OK
 
     def set_buffer_writable(self, buf, yesno):
         pane = self.textview.index(buf.textview)
@@ -649,7 +652,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.save_file(i)
 
     def on_fileentry_activate(self, entry):
-        if self.on_delete_event() == gnomeglade.DELETE_OK:
+        if self.on_delete_event() == gtk.RESPONSE_OK:
             files = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
             self.set_files(files)
         return 1

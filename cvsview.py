@@ -469,9 +469,9 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             if os.path.exists(f):
                 shutil.rmtree(f, ignore_errors=1)
 
-    def on_delete_event(self, parent):
+    def on_delete_event(self, appquit=0):
         self.on_quit_event()
-        return gnomeglade.DELETE_OK
+        return gtk.RESPONSE_OK
 
     def on_row_activated(self, treeview, path, tvc):
         iter = self.model.get_iter(path)

@@ -28,13 +28,16 @@ import gnome.ui
 import paths
 import prefs
 import gnomeglade
-import filediff
 import misc
+import melddoc
+import filediff
 import cvsview
 import dirdiff
 import task
 
 version = "0.9.1"
+
+# magic developer switch, changes some behaviour
 developer = 0
 
 ################################################################################
@@ -597,20 +600,16 @@ class MeldApp(gnomeglade.GnomeApp):
             self.try_remove_page(page)
 
     def on_menu_quit_activate(self, *extra):
-        state = []
+        if not developer:
+            for c in self.notebook.get_children():
+                response = c.get_data("pyobject").on_delete_event(appquit=1)
+                if response == gtk.RESPONSE_CANCEL:
+                    return gtk.RESPONSE_CANCEL
+                elif response == gtk.RESPONSE_CLOSE:
+                    break
         for c in self.notebook.get_children():
-            try: state.append( c.get_data("pyobject").is_modified() )
-            except AttributeError: state.append(0)
-        if 1 in state and not developer:
-            response = misc.run_dialog( _("You have some unsaved changes.\nQuit anyway?"),
-                parent = self,
-                buttonstype=gtk.BUTTONS_OK_CANCEL )
-            if response!=gtk.RESPONSE_OK:
-                return gnomeglade.DELETE_ABORT
-        for c in self.notebook.get_children():
-            misc.safe_apply( c.get_data("pyobject"), "on_quit_event", () )
+            c.get_data("pyobject").on_quit_event()
         self.quit()
-        return gnomeglade.DELETE_OK
 
     #
     # Toolbar and menu items (edit)
@@ -658,7 +657,7 @@ class MeldApp(gnomeglade.GnomeApp):
         gnome.url_show("http://sourceforge.net/tracker/?group_id=53725")
 
     def on_menu_users_manual_activate(self, button):
-        gnome.url_show("file:///"+os.path.abspath(paths.doc_dir("index.html") ) )
+        gnome.url_show("file:///"+os.path.abspath(paths.doc_dir("manual.html") ) )
 
     def on_menu_about_activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
@@ -689,13 +688,7 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def try_remove_page(self, page):
         "See if a page will allow itself to be removed"
-        try:
-            deletefunc = page.on_delete_event
-        except AttributeError, a:
-            delete = gnomeglade.DELETE_OK
-        else:
-            delete = deletefunc(self)
-        if delete == gnomeglade.DELETE_OK:
+        if page.on_delete_event() == gtk.RESPONSE_OK:
             self.scheduler.remove_scheduler( page.scheduler )
             i = self.notebook.page_num( page.widget )
             assert(i>=0)
