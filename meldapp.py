@@ -17,8 +17,8 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.7.0b"
-developer = 0
+version = "0.7.2"
+developer = 1
 
 ################################################################################
 #
@@ -222,7 +222,7 @@ class MeldApp(gnomeglade.GnomeApp):
         if not developer:#hide magic testing button
             self.toolbar_magic.hide()
             self.setting_filters.hide()
-        else:
+        elif 0:
             def showPrefs(): PreferencesDialog(self)
             gtk.idle_add(showPrefs)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
@@ -265,6 +265,7 @@ class MeldApp(gnomeglade.GnomeApp):
         nbl = self.notebook.get_tab_label( component.widget )
         nbl.label.set_text(text)
         self.widget.set_title(text + " - Meld")
+        self.notebook.child_set_property(component.widget, "menu-label", text)
 
     def on_can_undo(self, undosequence, can):
         self.button_undo.set_sensitive(can)
@@ -317,7 +318,7 @@ class MeldApp(gnomeglade.GnomeApp):
         for c in self.notebook.get_children():
             try: state.append( c.get_data("pyobject").is_modified() )
             except AttributeError: state.append(0)
-        if 1 in state:
+        if 1 in state and not developer:
             dialog = gnomeglade.Dialog(misc.appdir("glade2/meld-app.glade"), "closedialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             response = dialog.widget.run()
@@ -351,8 +352,6 @@ class MeldApp(gnomeglade.GnomeApp):
             
     def on_menu_filter_activate(self, check):
         print check, check.child.get_text()
-        #style = self.setting_drawstyle.index(radio)
-        #self.gconf.set_int("/apps/meld/filediff/draw_style", style)
 
     def on_menu_preferences_activate(self, item):
         PreferencesDialog(self)
@@ -400,14 +399,17 @@ class MeldApp(gnomeglade.GnomeApp):
             assert(i>=0)
             self.notebook.remove_page(i)
 
+    def _append_page(self, page):
+        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(page))
+        self.notebook.append_page( page, nbl)
+        self.notebook.set_current_page( self.notebook.page_num(page) )
+
     def append_dirdiff(self, dirs):
         ndirs = len(dirs)
         doc = dirdiff.DirDiff(ndirs, self.statusbar)
         for i in range(ndirs):
             doc.set_location(dirs[i], i)
-        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(doc))
-        self.notebook.append_page( doc.widget, nbl)
-        self.notebook.set_current_page( self.notebook.page_num(doc.widget) )
+        self._append_page(doc.widget)
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.label_changed()
@@ -421,24 +423,15 @@ class MeldApp(gnomeglade.GnomeApp):
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
         seq.connect("can-redo", self.on_can_redo)
-        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(doc))
-        self.notebook.append_page( doc.widget, nbl)
-        self.notebook.set_current_page( self.notebook.page_num(doc.widget) )
+        self._append_page(doc.widget)
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.label_changed()
-        def setup_docs():
-            for i in range(nfiles):
-                doc.set_file(files[i],i)
-            seq.clear()
-            doc.refresh()
-        gtk.idle_add( setup_docs )
+        doc.set_files(files)
 
     def append_cvsview(self, locations):
         location = locations[0]
         doc = cvsview.CvsView(self.statusbar, location)
-        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(doc))
-        self.notebook.append_page( doc.widget, nbl)
-        self.notebook.next_page()
+        self._append_page(doc.widget)
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("working-hard", self.on_working_hard)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
@@ -464,8 +457,8 @@ class MeldApp(gnomeglade.GnomeApp):
         dialog = gnomeglade.Dialog(misc.appdir("glade2/meld-app.glade"),
             "usagedialog")
         dialog.widget.set_transient_for(self.widget.get_toplevel())
-        dialog.label_message.set_label(msg)
-        dialog.label_usage.set_text(usage_string)
+        label = '<span weight="bold" size="larger">%s</span>' % msg
+        dialog.label_message.set_label(label)
         response = dialog.widget.run()
         dialog.widget.destroy()
         if response == gtk.RESPONSE_CANCEL:
@@ -529,8 +522,7 @@ def main():
             doc.run_cvs_diff(a)
             del doc
         else:
-            #app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
-            app.usage("`%s' is not a directory, cannot open cvs view" % arg[0])
+            app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
                 
     elif len(arg) in (2,3):
         done = 0

@@ -134,3 +134,11 @@ def safe_apply(object, method, args):
             args = (args,)
         apply(m, args)
 
+################################################################################
+#
+# clamp
+#
+################################################################################
+def clamp(val, lower, upper):
+    assert lower <= upper
+    return min( max(val, lower), upper)

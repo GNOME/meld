@@ -13,32 +13,77 @@ def _null_or_space(s):
 ################################################################################
 class Differ:
     """Utility class to hold diff2 or diff3 chunks"""
-    lookup = {"replace":"replace",
+    reverse = {
+        "replace":"replace",
               "insert":"delete",
               "delete":"insert",
               "conflict":"conflict",
               "equal":"equal"}
 
-    def __init__(self, *text):
-        #print "\n\ntext0\n", text[0]
-        #print "\n\ntext1\n", text[1]
-        # diffs are stored from text1 -> text0 and text1 -> text2 for consistency
-        textlines = text #map( lambda x: x.split("\n"), text)
+    def __init__(self, *sequences):
+        """Initialise with 1,2 or 3 sequences to compare"""
+        # Internally, diffs are stored from text1 -> text0 and text1 -> text2 for consistency
 
-        if len(text)==0 or len(text)==1:
+        if len(sequences)==0 or len(sequences)==1:
             self.diffs = [[], []]
-        elif len(text)==2:
-            seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
-            #seq0 = filter(lambda x: x[0]!="equal", seq0)
+        elif len(sequences)==2:
+            seq0 = difflib.SequenceMatcher(None, sequences[1], sequences[0]).get_opcodes()
             self.diffs = [seq0, []]
-        elif len(text)==3:
-            seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
-            seq0 = filter(lambda x: x[0]!="equal", seq0)
-            seq1 = difflib.SequenceMatcher(None, textlines[1], textlines[2]).get_opcodes()
-            seq1 = filter(lambda x: x[0]!="equal", seq1)
-            self.diffs = self._merge_diffs(seq0, seq1, textlines)
+        elif len(sequences)==3:
+            seq0 = difflib.SequenceMatcher(None, sequences[1], sequences[0]).get_opcodes()
+            seq1 = difflib.SequenceMatcher(None, sequences[1], sequences[2]).get_opcodes()
+            self.diffs = self._merge_diffs(seq0, seq1, sequences)
         else:
-            raise "Bad number of arguments to Differ constructor (%i)" % len(text)
+            raise "Bad number of arguments to Differ constructor (%i)" % len(sequences)
+
+    def _locate_chunk(self, fromindex, toindex, line):
+        """Find the index of the chunk which contains line."""
+        #XXX 3way
+        idx = 1 + 2*(1-fromindex)
+        line_in_chunk = lambda x: x[idx] <= line and line < c[idx+1]
+        i = 0
+        for c in self.diffs[0]:
+            if line_in_chunk(c):
+                break
+            else:
+                i += 1
+        return i
+
+    def change_sequence(self, sequence, startidx, sizechange, getlines ):
+        """gettext(sequence, lo, hi)"""
+        diffs = self.diffs[0]
+        lines_added = [0,0,0]
+        lines_added[sequence] = sizechange
+        if len(diffs) == 0:
+            assert min(lines_added) >= 0
+            self.diffs[0] = [("replace", 0, 1+lines_added[1], 0, 1+lines_added[0])]
+            return
+# clamp range!!!
+        endidx = startidx + sizechange
+        loidx = self._locate_chunk(sequence, 1-sequence, startidx)
+        hiidx = min(self._locate_chunk(sequence, 1-sequence, endidx) + 1, len(diffs))
+        while loidx > 0:
+            loidx -= 1
+            if diffs[loidx][0] == "equal":
+                break
+        while hiidx < len(diffs):
+            hiidx += 1
+            if diffs[hiidx-1][0] == "equal":
+                break
+        range0 = diffs[loidx][3], diffs[hiidx-1][4] + lines_added[0]
+        assert range0[0] <= range0[1]
+        range1 = diffs[loidx][1], diffs[hiidx-1][2] + lines_added[1]
+        assert range1[0] <= range1[1]
+        lines0 = getlines(0, range0[0], range0[1])
+        lines1 = getlines(1, range1[0], range1[1])
+        newdiffs = difflib.SequenceMatcher( None, lines1, lines0).get_opcodes()
+        newdiffs = [ (c[0], c[1]+range1[0],c[2]+range1[0], c[3]+range0[0],c[4]+range0[0]) for c in newdiffs]
+        if hiidx < len(self.diffs[0]):
+            self.diffs[0][hiidx:] = [ (c[0],
+                                       c[1] + lines_added[1], c[2] + lines_added[1],
+                                       c[3] + lines_added[0], c[4] + lines_added[0])
+                                                for c in self.diffs[0][hiidx:] ]
+        self.diffs[0][loidx:hiidx] = newdiffs
 
     def pair_changes(self, fromindex, toindex):
         """give all changes between specified files"""
@@ -53,7 +98,7 @@ class Differ:
                 yield c
         else: # diff hunks are reversed
             for c in self.diffs[whichdiff]:
-                yield self.lookup[c[0]], c[3],c[4], c[1],c[2]
+                yield self.reverse[c[0]], c[3],c[4], c[1],c[2]
 
     def single_changes(self, textindex):
         """give changes for single file only. do not return 'equal' hunks"""
