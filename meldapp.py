@@ -13,6 +13,7 @@ import gnomeglade
 import filediff
 import misc
 import cvsview
+import dirdiff
 
 version = "0.5.2"
 
@@ -23,7 +24,7 @@ version = "0.5.2"
 ################################################################################
 
 class BrowseFileDialog(gnomeglade.Dialog):
-    def __init__(self, parentapp, labels, callback):
+    def __init__(self, parentapp, labels, callback, isdir=0):
         gnomeglade.Dialog.__init__(self, misc.appdir("glade2/meld-app.glade"), "browsefile")
         self.numfile = len(labels)
         self.callback = callback
@@ -33,6 +34,7 @@ class BrowseFileDialog(gnomeglade.Dialog):
             l.set_justify(gtk.JUSTIFY_RIGHT)
             self.table.attach(l , 0, 1, i, i+1, gtk.SHRINK)
             e = gnome.ui.FileEntry("fileentry", "Browse "+labels[i])
+            e.set_directory_entry(isdir)
             self.table.attach(e , 1, 2, i, i+1)
             self.entries.append(e)
         self.table.show_all()
@@ -141,7 +143,7 @@ class MeldApp(gnomeglade.GnomeApp):
             for i in range(3):
                 self.menu_file_save_file[i].set_sensitive(0)
         nbl = self.notebook.get_tab_label( newdoc._widget ) #TODO why ._widget?
-        self.set_title( nbl.label.get_text() )
+        self.set_title( nbl.label.get_text() + " : meld")
 
     #
     # global
@@ -177,6 +179,8 @@ class MeldApp(gnomeglade.GnomeApp):
         BrowseFileDialog(self,["Original File", "Modified File"], self.append_filediff)
     def on_new_diff3_activate(self, *extra):
         BrowseFileDialog(self,["Other Changes","Common Ancestor","Local Changes"], self.append_filediff )
+    def on_new_dirdiff_activate(self, *extra):
+        BrowseFileDialog(self,["Original Directory", "Modified Directory"], self.append_dirdiff, isdir=1)
     def on_new_cvsview_activate(self, *extra):
         self.append_cvsview(None)
     def on_refresh_doc_clicked(self, *args):
@@ -193,6 +197,7 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_doc_label_changed(self, component, text):
         nbl = self.notebook.get_tab_label( component._widget ) #TODO why ._widget?
         nbl.label.set_text(text)
+        self.set_title(text + " : meld")
 
     def on_can_undo_doc(self, undosequence, can):
         self.button_undo.set_sensitive(can)
@@ -205,6 +210,10 @@ class MeldApp(gnomeglade.GnomeApp):
         i = self.notebook.page_num(page._widget)
         assert(i>=0)
         self.notebook.remove_page(i)
+
+    def append_dirdiff(self, files):
+        print "XXX",files #self.append_filediff( (file0, file1) )
+        doc = dirdiff.DirDiff()
 
     def append_filediff2(self, file0, file1):
         self.append_filediff( (file0, file1) )
