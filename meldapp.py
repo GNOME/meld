@@ -522,9 +522,11 @@ def main():
         a = arg[0]
         if os.path.isdir(a):
             app.append_cvsview( [a] )
-        #TODO open cvs diff for a single file
-        #elif os.path.isfile(a):
-        #   app.append_cvsview( [os.path.dirname(a)] )
+        elif os.path.isfile(a):
+            doc = cvsview.CvsView(app.statusbar, os.path.dirname(a) )
+            doc.connect("create-diff", lambda obj,arg: app.append_filediff(arg) )
+            doc.run_cvs_diff(a)
+            del doc
         else:
             #app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
             app.usage("`%s' is not a directory, cannot open cvs view" % arg[0])
