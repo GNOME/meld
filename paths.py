@@ -18,7 +18,7 @@ import os
 
 _locale_dir = ( #LOCALEDIR#
 )
-_doc_dir = ( #DOCDIR#
+_help_dir = ( #HELPDIR#
 )
 _share_dir = ( #SHAREDIR#
 )
@@ -27,14 +27,14 @@ import sys
 appdir = os.path.dirname(__file__)
 
 if not _locale_dir: _locale_dir = os.path.join(appdir,"po")
-if not _doc_dir:    _doc_dir    = os.path.join(appdir,"manual")
+if not _help_dir:    _help_dir  = os.path.join(appdir,"help")
 if not _share_dir:  _share_dir  = appdir
 
 def locale_dir(*args): # i18n files
     return os.path.join(_locale_dir, *args)
 
-def doc_dir(*args): # manual
-    return os.path.join(_doc_dir, *args)
+def help_dir(*args): # help
+    return os.path.join(_help_dir, *args)
 
 def share_dir(*args): # glade + pixmaps
     return os.path.join(_share_dir, *args)

@@ -40,7 +40,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(docdir_) \
 		$(DESTDIR)$(sharedir)/applications \
 		$(DESTDIR)$(sharedir)/application-registry \
-		$(DESTDIR)$(sharedir)/pixmaps
+		$(DESTDIR)$(sharedir)/pixmaps \
+		$(DESTDIR)$(helpdir_)
 	install -m 755 meld.install \
 		$(DESTDIR)$(bindir)/meld
 	install -m 644 *.py \
@@ -72,7 +73,7 @@ meld.desktop: meld.desktop.in
 	python tools/install_paths \
 		libdir=$(libdir_) \
 		localedir=$(localedir) \
-		docdir=$(docdir_) \
+		helpdir=$(helpdir_) \
 		sharedir=$(sharedir_) \
 		< $< > $@
 
@@ -81,6 +82,7 @@ uninstall:
 	-rm -rf \
 		$(sharedir_) \
 		$(docdir_) \
+		$(helpdir_) \
 		$(libdir_) \
 		$(bindir)/meld \
 		$(sharedir)/applications/meld.desktop \

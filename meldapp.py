@@ -668,7 +668,7 @@ class MeldApp(gnomeglade.GnomeApp):
         gnomeglade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
 
     def on_menu_users_manual_activate(self, button):
-        gnomeglade.url_show("file:///"+os.path.abspath(paths.doc_dir("manual.html") ) )
+        gnomeglade.url_show("ghelp:///"+os.path.abspath(paths.help_dir("C/meld.xml") ))
 
     def on_menu_about_activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")

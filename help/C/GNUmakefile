@@ -3,9 +3,9 @@
 include ../../INSTALL
 
 LANG := $(notdir $(CURDIR))
-XML_DIR_ := $(DESTDIR)$(helpdir_)/$(LANG)
+XML_DIR_ := $(helpdir_)/$(LANG)
 OMF_NAME := meld-$(LANG).omf
-OMF_DIR_ := $(DESTDIR)$(sharedir)/omf/meld
+OMF_DIR_ := $(sharedir)/omf/meld
 
 .PHONY : all
 all $(OMF_NAME) : $(OMF_NAME).in
@@ -13,15 +13,15 @@ all $(OMF_NAME) : $(OMF_NAME).in
 
 .PHONY : install
 install : $(OMF_NAME)
-	mkdir -m 755 -p $(OMF_DIR_) $(XML_DIR_) $(XML_DIR_)/figures
-	install -m 644 meld.xml $(XML_DIR_)/meld.xml
-	install -m 644 figures/*.png $(XML_DIR_)/figures
-	install -m 644 $(OMF_NAME) $(OMF_DIR_)/$(OMF_NAME)
-	scrollkeeper-install $(OMF_DIR_)/$(OMF_NAME)
+	mkdir -m 755 -p $(DESTDIR)$(OMF_DIR_) $(DESTDIR)$(XML_DIR_) $(DESTDIR)$(XML_DIR_)/figures
+	install -m 644 meld.xml $(DESTDIR)$(XML_DIR_)/meld.xml
+	install -m 644 figures/*.png $(DESTDIR)$(XML_DIR_)/figures
+	install -m 644 $(OMF_NAME) $(DESTDIR)$(OMF_DIR_)/$(OMF_NAME)
+	-scrollkeeper-install $(DESTDIR)$(OMF_DIR_)/$(OMF_NAME)
 
 .PHONY : uninstall
 uninstall :
-	scrollkeeper-uninstall $(OMF_DIR_)/$(OMF_NAME)
+	-scrollkeeper-uninstall $(OMF_DIR_)/$(OMF_NAME)
 	-rm -f $(OMF_DIR_)/$(OMF_NAME) \
 		$(XML_DIR_)/meld.xml \
 		$(XML_DIR_)/figures/*.png
