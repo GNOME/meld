@@ -64,7 +64,7 @@
 				      <signal name="activate" handler="on_menu_new_diff2_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				      <child internal-child="image">
-					<widget class="GtkImage" id="image638">
+					<widget class="GtkImage" id="image665">
 					  <property name="visible">True</property>
 					  <property name="stock">gtk-new</property>
 					  <property name="icon_size">1</property>
@@ -85,7 +85,7 @@
 				      <signal name="activate" handler="on_menu_new_diff3_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				      <child internal-child="image">
-					<widget class="GtkImage" id="image639">
+					<widget class="GtkImage" id="image666">
 					  <property name="visible">True</property>
 					  <property name="stock">gtk-new</property>
 					  <property name="icon_size">1</property>
@@ -106,7 +106,7 @@
 				      <signal name="activate" handler="on_menu_new_dir2_activate" last_modification_time="Sat, 02 Nov 2002 17:55:35 GMT"/>
 
 				      <child internal-child="image">
-					<widget class="GtkImage" id="image640">
+					<widget class="GtkImage" id="image667">
 					  <property name="visible">True</property>
 					  <property name="stock">gtk-open</property>
 					  <property name="icon_size">1</property>
@@ -127,7 +127,7 @@
 				      <signal name="activate" handler="on_menu_new_dir3_activate" last_modification_time="Sat, 02 Nov 2002 17:55:35 GMT"/>
 
 				      <child internal-child="image">
-					<widget class="GtkImage" id="image641">
+					<widget class="GtkImage" id="image668">
 					  <property name="visible">True</property>
 					  <property name="stock">gtk-open</property>
 					  <property name="icon_size">1</property>
@@ -141,20 +141,42 @@
 				  </child>
 
 				  <child>
-				    <widget class="GtkMenuItem" id="menu_new_cvs_view">
+				    <widget class="GtkImageMenuItem" id="menu_new_cvs_view">
 				      <property name="visible">True</property>
 				      <property name="label" translatable="yes">CVS view</property>
 				      <property name="use_underline">True</property>
 				      <signal name="activate" handler="on_menu_new_cvsview_activate" last_modification_time="Sun, 25 Apr 2004 11:01:12 GMT"/>
+
+				      <child internal-child="image">
+					<widget class="GtkImage" id="image669">
+					  <property name="visible">True</property>
+					  <property name="pixbuf">pixmaps/cvs-icon-small.png</property>
+					  <property name="xalign">0.5</property>
+					  <property name="yalign">0.5</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					</widget>
+				      </child>
 				    </widget>
 				  </child>
 
 				  <child>
-				    <widget class="GtkMenuItem" id="menu_new_cvs_diff">
+				    <widget class="GtkImageMenuItem" id="menu_new_cvs_diff">
 				      <property name="visible">True</property>
 				      <property name="label" translatable="yes">SVN view</property>
 				      <property name="use_underline">True</property>
 				      <signal name="activate" handler="on_menu_new_svnview_activate" last_modification_time="Sun, 25 Apr 2004 11:01:12 GMT"/>
+
+				      <child internal-child="image">
+					<widget class="GtkImage" id="image670">
+					  <property name="visible">True</property>
+					  <property name="pixbuf">pixmaps/svn-icon-small.png</property>
+					  <property name="xalign">0.5</property>
+					  <property name="yalign">0.5</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					</widget>
+				      </child>
 				    </widget>
 				  </child>
 				</widget>
@@ -169,7 +191,7 @@
 			      <property name="use_underline">True</property>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image642">
+				<widget class="GtkImage" id="image671">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-save</property>
 				  <property name="icon_size">1</property>
@@ -191,7 +213,7 @@
 				      <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				      <child internal-child="image">
-					<widget class="GtkImage" id="image643">
+					<widget class="GtkImage" id="image672">
 					  <property name="visible">True</property>
 					  <property name="stock">gtk-save</property>
 					  <property name="icon_size">1</property>
@@ -212,7 +234,7 @@
 				      <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				      <child internal-child="image">
-					<widget class="GtkImage" id="image644">
+					<widget class="GtkImage" id="image673">
 					  <property name="visible">True</property>
 					  <property name="stock">gtk-save</property>
 					  <property name="icon_size">1</property>
@@ -233,7 +255,7 @@
 				      <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				      <child internal-child="image">
-					<widget class="GtkImage" id="image645">
+					<widget class="GtkImage" id="image674">
 					  <property name="visible">True</property>
 					  <property name="stock">gtk-save</property>
 					  <property name="icon_size">1</property>
@@ -392,7 +414,7 @@
 			      <signal name="activate" handler="on_menu_users_manual_activate" last_modification_time="Fri, 01 Nov 2002 18:36:34 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image646">
+				<widget class="GtkImage" id="image675">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-help</property>
 				  <property name="icon_size">1</property>
@@ -413,7 +435,7 @@
 			      <signal name="activate" handler="on_menu_help_bug_activate" last_modification_time="Mon, 29 Sep 2003 19:59:09 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image647">
+				<widget class="GtkImage" id="image676">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dialog-warning</property>
 				  <property name="icon_size">1</property>
@@ -1404,7 +1426,7 @@ Takeshi Aihana (Japanese)</property>
       <signal name="activate" handler="on_menu_new_diff2_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image652">
+	<widget class="GtkImage" id="image659">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-new</property>
 	  <property name="icon_size">1</property>
@@ -1425,7 +1447,7 @@ Takeshi Aihana (Japanese)</property>
       <signal name="activate" handler="on_menu_new_diff3_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image653">
+	<widget class="GtkImage" id="image660">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-new</property>
 	  <property name="icon_size">1</property>
@@ -1446,7 +1468,7 @@ Takeshi Aihana (Japanese)</property>
       <signal name="activate" handler="on_menu_new_dir2_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image654">
+	<widget class="GtkImage" id="image661">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-open</property>
 	  <property name="icon_size">1</property>
@@ -1467,7 +1489,7 @@ Takeshi Aihana (Japanese)</property>
       <signal name="activate" handler="on_menu_new_dir3_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image655">
+	<widget class="GtkImage" id="image662">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-open</property>
 	  <property name="icon_size">1</property>
@@ -1481,20 +1503,42 @@ Takeshi Aihana (Japanese)</property>
   </child>
 
   <child>
-    <widget class="GtkMenuItem" id="new_cvsview">
+    <widget class="GtkImageMenuItem" id="new_cvsview">
       <property name="visible">True</property>
       <property name="label" translatable="yes">CVS view</property>
       <property name="use_underline">True</property>
       <signal name="activate" handler="on_menu_new_cvsview_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image663">
+	  <property name="visible">True</property>
+	  <property name="pixbuf">pixmaps/cvs-icon-small.png</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
     </widget>
   </child>
 
   <child>
-    <widget class="GtkMenuItem" id="new_svnview">
+    <widget class="GtkImageMenuItem" id="new_svnview">
       <property name="visible">True</property>
       <property name="label" translatable="yes">SVN view</property>
       <property name="use_underline">True</property>
       <signal name="activate" handler="on_menu_new_svnview_activate" last_modification_time="Sun, 25 Apr 2004 11:04:07 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image664">
+	  <property name="visible">True</property>
+	  <property name="pixbuf">pixmaps/svn-icon-small.png</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
     </widget>
   </child>
 </widget>
