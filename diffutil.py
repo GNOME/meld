@@ -58,7 +58,6 @@ class IncrementalSequenceMatcher(difflib.SequenceMatcher):
 
     def get_difference_opcodes(self):
         return filter(lambda x: x[0]!="equal", self.get_opcodes())
-        #return self.get_opcodes()
 
 ################################################################################
 #
@@ -90,27 +89,21 @@ class Differ:
         elif len(sequences)==3:
             seq0 = IncrementalSequenceMatcher(None, sequences[1], sequences[0]).get_difference_opcodes()
             seq1 = IncrementalSequenceMatcher(None, sequences[1], sequences[2]).get_difference_opcodes()
-            self.diffs = self._merge_diffs(seq0, seq1, sequences)
+            self.diffs = seq0, seq1
         else:
             raise "Bad number of arguments to Differ constructor (%i)" % len(sequences)
 
-    def change_sequence(self, sequence, startidx, sizechange, getlines ):
-        """getlines(sequence, lo, hi)"""
+    def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0,1,2)
+        changes = [[0,0],[0,0]]
         if sequence != 1: #0 or 2
-            self._change_sequence(sequence/2, sequence, startidx, sizechange, getlines)
-        else:# sequence==1:
-            self._change_sequence(         0, sequence, startidx, sizechange, getlines)
+            which = sequence / 2
+            changes[which] = self._change_sequence(which, sequence, startidx, sizechange, texts)
+        else: # sequence==1:
+            changes[0] = self._change_sequence(         0, sequence, startidx, sizechange, texts)
             if self.num_sequences == 3:
-                self._change_sequence(     1, sequence, startidx, sizechange, getlines)
-        if self.num_sequences == 3: # conflict update
-            class Lazytext:
-                def __init__(self, get):
-                    self.get = get
-                def __getslice__(self, lo, hi):
-                    return self.get(lo,hi)
-            text = [Lazytext(lambda l,h:getlines(i,l,h)) for i in range(3)]
-            self.diffs = self._merge_diffs(self.diffs[0], self.diffs[1], text)
+                changes[1] = self._change_sequence(     1, sequence, startidx, sizechange, texts)
+        return changes
 
     def _locate_chunk(self, whichdiffs, sequence, line):
         """Find the index of the chunk which contains line."""
@@ -124,7 +117,7 @@ class Differ:
                 i += 1
         return i
 
-    def _change_sequence(self, which, sequence, startidx, sizechange, getlines ):
+    def _change_sequence(self, which, sequence, startidx, sizechange, texts):
         diffs = self.diffs[which]
         lines_added = [0,0,0]
         lines_added[sequence] = sizechange
@@ -149,8 +142,8 @@ class Differ:
         range1 = lorange[1], hirange[1] + lines_added[1]
         #print "^^^^^", rangex, range1
         assert rangex[0] <= rangex[1] and range1[0] <= range1[1]
-        linesx = getlines(x, rangex[0], rangex[1])
-        lines1 = getlines(1, range1[0], range1[1])
+        linesx = texts[x][rangex[0]:rangex[1]]
+        lines1 = texts[1][range1[0]:range1[1]]
         #print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
         newdiffs = IncrementalSequenceMatcher( None, lines1, linesx).get_difference_opcodes()
         newdiffs = [ (c[0], c[1]+range1[0],c[2]+range1[0], c[3]+rangex[0],c[4]+rangex[0]) for c in newdiffs]
@@ -161,45 +154,50 @@ class Differ:
                                                 for c in self.diffs[which][hiidx:] ]
         self.diffs[which][loidx:hiidx] = newdiffs
         self.seqlength[sequence] += sizechange
+        return loidx,hiidx
 
     def reverse(self, c):
         return self.reversemap[c[0]], c[3],c[4], c[1],c[2]
 
-    def pair_changes(self, fromindex, toindex):
-        """give all changes between specified files"""
-        assert abs(fromindex - toindex) == 1
-        assert 1 in (fromindex, toindex)
-        whichdiff = 2 in (fromindex, toindex)
-        if fromindex == 1:
-            for c in _not_equal(self.diffs[whichdiff]):
-                yield c
-        else: # diff hunks are reversed
-            for c in _not_equal(self.diffs[whichdiff]):
-                yield self.reverse(c)
+    def all_changes(self, texts):
+        for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts):
+            yield c
 
-    def single_changes(self, textindex):
-        """give changes for single file only. do not return 'equal' hunks"""
-        if textindex in (0,2):
-            for c in _not_equal(self.diffs[textindex/2]):
-                yield self.reversemap[c[0]], c[3], c[4], c[1], c[2], 1
+    def all_changes_in_range(self, texts, l0, h0, l1, h1):
+        for c in self._merge_diffs(self.diffs[0][l0:h0], self.diffs[1][l0:h0], texts):
+            yield c
+
+    def pair_changes(self, fromindex, toindex, texts):
+        """Give all changes between file1 and either file0 or file2.
+        """
+        if fromindex == 1:
+            seq = toindex/2
+            for c in self.all_changes( texts ):
+                if c[seq]:
+                    yield c[seq]
         else:
-            thread0 = _not_equal(self.diffs[0])
-            thread1 = _not_equal(self.diffs[1])
-            i0 = 0
-            i1 = 0
-            while i0 < len(thread0) and i1 < len(thread1):
-                if thread0[i0][1] <= thread1[i1][1]:
-                    yield list(thread0[i0]) + [0]
-                    i0 += 1
-                else:
-                    yield list(thread1[i1]) + [2]
-                    i1 += 1
-            while i0 < len(thread0):
-                yield list(thread0[i0]) + [0]
-                i0 += 1
-            while i1 < len(thread1):
-                yield list(thread1[i1]) + [2]
-                i1 += 1
+            seq = fromindex/2
+            for c in self.all_changes( texts ):
+                if c[seq]:
+                    yield self.reverse(c[seq])
+
+    def single_changes(self, textindex, texts):
+        """Give changes for single file only. do not return 'equal' hunks.
+        """
+        if textindex in (0,2):
+            seq = textindex/2
+            for cs in self.all_changes( texts ):
+                c = cs[seq]
+                if c:
+                    yield self.reversemap[c[0]], c[3], c[4], c[1], c[2], 1
+        else:
+            for cs in self.all_changes( texts ):
+                if cs[0]:
+                    c = cs[0]
+                    yield c[0], c[1], c[2], c[3], c[4], 0
+                elif cs[1]:
+                    c = cs[1]
+                    yield c[0], c[1], c[2], c[3], c[4], 2
 
     def _merge_blocks(self, using, low_seq, high_seq, last_diff):
         LO, HI = 1,2
@@ -219,9 +217,8 @@ class Differ:
         return low[0], high[0], lowc, highc, low[1], high[1]
 
     def _merge_diffs(self, seq0, seq1, texts):
+        seq0, seq1 = seq0[:], seq1[:]
         seq = seq0, seq1
-        out0 = []
-        out1 = []
         LO, HI = 1,2
         block = [0,0,0,0,0,0]
         while len(seq0) or len(seq1):
@@ -260,19 +257,24 @@ class Differ:
             block = self._merge_blocks( using, base_seq, high_seq, block)
 
             if len(using[0])==0:
-                out1 += using[1]
+                assert len(using[1])==1
+                yield None, using[1][0]
             elif len(using[1])==0:
-                out0 += using[0]
+                assert len(using[0])==1
+                yield using[0][0], None
             else:
                 l0, h0, l1, h1, l2, h2 = block
                 if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
-                    out0.append( ('replace', block[2], block[3], block[0], block[1]) )
-                    out1.append( ('replace', block[2], block[3], block[4], block[5]) )
+                    if l1 != h1:
+                        out0 = ('replace', block[2], block[3], block[0], block[1])
+                        out1 = ('replace', block[2], block[3], block[4], block[5])
+                    else:
+                        out0 = ('insert', block[2], block[3], block[0], block[1])
+                        out1 = ('insert', block[2], block[3], block[4], block[5])
                 else:
-                    out0.append( ('conflict', block[2], block[3], block[0], block[1]) )
-                    out1.append( ('conflict', block[2], block[3], block[4], block[5]) )
-
-        return [out0, out1]
+                    out0 = ('conflict', block[2], block[3], block[0], block[1])
+                    out1 = ('conflict', block[2], block[3], block[4], block[5])
+                yield out0, out1
 
     def set_sequences_iter(self, *sequences):
         if len(sequences)==0 or len(sequences)==1:
@@ -291,12 +293,11 @@ class Differ:
                 while work.next() == None:
                     yield None
                 diffs[i] = matcher.get_difference_opcodes()
-            diffs = self._merge_diffs(diffs[0], diffs[1], sequences)
         else:
             raise "Bad number of arguments to Differ constructor (%i)" % len(sequences)
         self.diffs = diffs
         self.num_sequences = len(sequences)
-        self.seqlength = [0] * self.num_sequences
+        self.seqlength = [0,0,0]
         for i,s in misc.enumerate(sequences):
             self.seqlength[i] = len(s)
         yield 1
