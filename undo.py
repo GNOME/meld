@@ -34,7 +34,6 @@ class UndoSequence(gobject.GObject):
             assert self.group == None
         self.actions = []
         self.next_redo = 0
-        self.busy = 0
         self.group = None
 
     def can_undo(self):
@@ -91,7 +90,7 @@ class UndoSequence(gobject.GObject):
         else:
             group = self.group
             self.group = None
-            if len(group.actions) == 1:
+            if len(group.actions) == 1: # collapse 
                 self.add_action( group.actions[0] )
             elif len(group.actions) > 1:
                 self.add_action( GroupAction(group) )

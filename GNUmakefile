@@ -1,10 +1,14 @@
 
-NUM=2
+PROG=meld.py
+#PROG=xxdiff
+TESTNUM=6
 VERSION=0.3
 RELEASE=meld-$(VERSION)
 
-run:
-	./meld.py test/file$(NUM)a test/file$(NUM)b
+run: 
+#	$(PROG) test/lao test/tzu test/tao
+#	./niff3.py
+	$(PROG) test/file$(TESTNUM)*
 
 $(RELEASE).tgz:
 	cvs -q -z3 export -d $(RELEASE) -D now meld

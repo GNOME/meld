@@ -1,5 +1,3 @@
-import sys
-sys.path.append("/home/stephen/garnome/lib/python2.2/site-packages")
 import gtk
 import gtk.glade
 import gnome.ui
@@ -32,6 +30,21 @@ class Base:
         """Handle all the events currently in the main queue"""
         while gtk.events_pending():
             gtk.main_iteration();
+
+    def _map_widgets_into_lists(self, widgetnames):
+        """e.g. make widgets self.button0, self.button1, ... available as self.button[0], self.button[1], ..."""
+        for item in widgetnames:
+            setattr(self,item, [])
+            list = getattr(self,item)
+            i = 0
+            while 1:
+                key = "%s%i"%(item,i)
+                try:
+                    val = getattr(self, key)
+                except AttributeError:
+                    break
+                list.append(val)
+                i += 1
 
 ################################################################################
 #
