@@ -23,8 +23,8 @@ else:
 
 import gtk
 if gtk.pygtk_version < pygtkver:
-    print "Meld works best with pygtk-%s." % ver2str(pygtkver)
-    print "Some functions may not operate as expected"
+    print "Meld works best with pygtk-%s or higher. (found %s)" % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
+    print "Due to incompatible API changes some functions may not operate as expected."
 
 import meldapp
 try:

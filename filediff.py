@@ -504,16 +504,21 @@ class FileDiff(gnomeglade.Component):
 
         window = area.window
         window.clear()
-        style = area.get_style()
+        gctext = area.get_style().text_gc[0]
+        '''style = area.get_style()
         gc = { "insert":style.light_gc[0],
                "delete":style.light_gc[0],
                "replace":style.light_gc[0],
-               "conflict":style.dark_gc[3] }
+               "conflict":style.dark_gc[3] }'''
+        if not hasattr(area, "meldgc"):
+            self._setup_gcs(area)
 
+        gc = area.meldgc.get_gc
         for c in self.linediffs.single_changes(textindex):
             s,e = ( scaleit(c[1]), scaleit(c[2]+(c[1]==c[2])) )
             s,e = math.floor(s), math.ceil(e)
-            window.draw_rectangle(gc[c[0]], 1, x0, s, x1, e-s)
+            window.draw_rectangle( gc(c[0]), 1, x0, s, x1, e-s)
+            window.draw_rectangle( gctext, 0, x0, s, x1, e-s)
 
     def on_diffmap_button_press_event(self, area, event):
         #TODO need height of arrow button on scrollbar - how do we get that?
@@ -544,7 +549,9 @@ class FileDiff(gnomeglade.Component):
                 start = buffer.get_iter_at_line(c[1])
                 end   = buffer.get_iter_at_line(c[2]-1)
                 end.forward_to_line_end()
-                if c[0] == "insert" or c[0] == "replace":
+                if c[0] == "insert":
+                    buffer.apply_tag(tag_delete_line, start, end)
+                elif c[0] == "replace":
                     buffer.apply_tag(tag_replace_line, start, end)
                 elif c[0] == "delete":
                     buffer.apply_tag(tag_delete_line, start, end)
@@ -599,6 +606,19 @@ class FileDiff(gnomeglade.Component):
             want = _clamp(want, 0, a.upper-a.page_size)
             a.set_value( want )
 
+    def _setup_gcs(self, area):
+        assert area.window
+        gcd = area.window.new_gc()
+        gcd.set_rgb_fg_color( gdk.color_parse(self.prefs.color_deleted) )
+        gcc = area.window.new_gc()
+        gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_changed) )
+        gce = area.window.new_gc()
+        gce.set_rgb_fg_color( gdk.color_parse(self.prefs.color_edited) )
+        gcx = area.window.new_gc()
+        gcx.set_rgb_fg_color( gdk.color_parse(self.prefs.color_conflict) )
+        area.meldgc = misc.struct(gc_delete=gcd, gc_insert=gcd, gc_replace=gcc, gc_conflict=gcx)
+        area.meldgc.get_gc = lambda p: getattr(area.meldgc, "gc_"+p)
+
         #
         # linkmap drawing
         #
@@ -609,9 +629,9 @@ class FileDiff(gnomeglade.Component):
         alloc = area.get_allocation()
         (wtotal,htotal) = alloc.width, alloc.height
         
-        # sync bar
-        style = area.get_style()
-        gcfg = style.light_gc[0]
+        if not hasattr(area, "meldgc"):
+            self._setup_gcs(area)
+        gctext = area.get_style().text_gc[0]
         window.clear()
 
         which = self.linkmap.index(area)
@@ -638,6 +658,7 @@ class FileDiff(gnomeglade.Component):
             pix0 = self.pixbuf_apply0
             pix1 = self.pixbuf_apply1
         draw_style = self.prefs.draw_style
+        gc = area.meldgc.get_gc
         for c in self.linediffs.pair_changes(which, which+1):
             f0,f1 = map( lambda l: l * self.pixels_per_line - madj.value, c[1:3] )
             t0,t1 = map( lambda l: l * self.pixels_per_line - oadj.value, c[3:5] )
@@ -657,30 +678,29 @@ class FileDiff(gnomeglade.Component):
 
                 points = points0 + points1 + [points0[0]]
 
-                window.draw_polygon(gcfg, 1, points)
-                window.draw_lines(style.text_gc[0], points0  )
-                window.draw_lines(style.text_gc[0], points1  )
+                window.draw_polygon( gc(c[0]), 1, points)
+                window.draw_lines(gctext, points0  )
+                window.draw_lines(gctext, points1  )
             else:
                 w = wtotal
                 p = self.pixbuf_apply0.get_width()
-                gc = style.text_gc[0]
-                window.draw_polygon(gc, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
-                window.draw_polygon(gc, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
+                window.draw_polygon(gctext, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
+                window.draw_polygon(gctext, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
                 points0 = (0,f0), (0,t0)
-                window.draw_line( gc, p, 0.5*(f0+f1), w-p, 0.5*(t0+t1) )
+                window.draw_line( gctext, p, 0.5*(f0+f1), w-p, 0.5*(t0+t1) )
 
             x = wtotal-self.pixbuf_apply0.get_width()
             if c[0]=="insert":
-                pix1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+                pix1.render_to_drawable( window, gctext, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
             elif c[0] == "delete":
-                pix0.render_to_drawable( window, gcfg, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+                pix0.render_to_drawable( window, gctext, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
             else: #replace
-                pix0.render_to_drawable( window, gcfg, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
-                pix1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+                pix0.render_to_drawable( window, gctext, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+                pix1.render_to_drawable( window, gctext, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
 
         # allow for scrollbar at end of textview
         mid = 0.5 * self.textview0.get_allocation().height
-        window.draw_line(style.text_gc[0], .25*wtotal, mid,.75*wtotal, mid)
+        window.draw_line(gctext, .25*wtotal, mid,.75*wtotal, mid)
 
     def on_linkmap_scroll_event(self, area, event):
         self.next_diff(event.direction)

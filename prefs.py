@@ -40,10 +40,10 @@ class Preferences:
             "fallback_encoding": Value("string", "latin1"), 
             "draw_style": Value("int",2),
             "toolbar_style": Value("int",0),
-            "color_deleted" : Value("string", "#ffffcc"),
-            "color_changed" : Value("string", "#ffffcc"),
-            "color_edited" : Value("string", "#eeeeee"),
-            "color_conflict" : Value("string", "#ffcccc")
+            "color_deleted" : Value("string", "DarkSeaGreen1"),
+            "color_changed" : Value("string", "LightSteelBlue1"),
+            "color_edited" : Value("string", "gray85"),
+            "color_conflict" : Value("string", "Pink")
             }
         self.gconf.add_dir("/apps/meld", gconf.CLIENT_PRELOAD_NONE)
         self.gconf.notify_add("/apps/meld", self.on_preference_changed)
