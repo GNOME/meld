@@ -52,7 +52,7 @@ release: check upload announce
 
 .PHONY:update
 update:
-	cvs update
+	cvs -z3 -q update
 	
 .PHONY:upload
 upload:
