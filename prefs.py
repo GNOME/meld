@@ -98,6 +98,9 @@ class Preferences:
     def __getattr__(self, attr):
         return self._prefs[attr].current
 
+    def get_default(self, attr):
+        return self._prefs[attr].default
+
     def __setattr__(self, attr, val):
         value = self._prefs[attr]
         if value.current != val:
