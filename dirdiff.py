@@ -651,10 +651,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for t in filter(lambda x:x!=treeview, self.treeview[:self.num_panes]):
             t.get_selection().unselect_all()
         if event.button == 3:
-            path, col, cellx, celly = treeview.get_path_at_pos( int(event.x), int(event.y) )
-            treeview.grab_focus()
-            treeview.set_cursor( path, col, 0)
-            self.popup_menu.popup_in_pane( self.treeview.index(treeview) )
+            try:
+                path, col, cellx, celly = treeview.get_path_at_pos( int(event.x), int(event.y) )
+            except TypeError:
+                pass # clicked outside tree
+            else:
+                treeview.grab_focus()
+                treeview.set_cursor( path, col, 0)
+                self.popup_menu.popup_in_pane( self.treeview.index(treeview) )
             return 1
 
     def set_num_panes(self, n):
@@ -736,7 +740,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             gce.set_rgb_fg_color( gdk.color_parse("yellow") )
             gcb = area.window.new_gc()
             gcb.set_rgb_fg_color( gdk.color_parse("black") )
-            area.meldgc = [None, None, gce, None, gcd, gcc, gcc, None, gcb]
+            area.meldgc = [None, # ignore
+                           None, # none
+                           None, # normal
+                           gce,  # error
+                           None, # empty
+                           gcd,  # new
+                           gcc,  # modified
+                           gcc,  # conflict
+                           gcc,  # removed
+                           gcb]  # missing
+            assert len(area.meldgc) == tree.STATE_MAX
 
         #TODO need gutter of scrollbar - how do we get that?
         size_of_arrow = 14
