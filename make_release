@@ -18,13 +18,12 @@
 
 import os
 import sys
-import string
 
 def system(s):
 	print s
 	os.system(s)
 
-tag = "release-%s" % string.replace(sys.argv[1],".","_")
+tag = "release-%s" % sys.argv[1].replace(".","_")
 release = "meld-" + sys.argv[1]
 export = "cvs -d :pserver:anonymous@cvs1:2401/cvsroot/meld -q -z3 export -r %s -d %s meld" % (tag, release)
 system(export)
