@@ -105,6 +105,9 @@ class MeldDoc(gobject.GObject):
     def label_changed(self):
         self.emit("label-changed", self.label_text)
 
+    def on_switch_event(self):
+        pass
+
     def on_delete_event(self, appquit=0):
         """Called when the docs container is about to close.
            A doc normally returns gtk.RESPONSE_OK but may return
