@@ -836,30 +836,39 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.statusimage[i].show()
             self.queue_draw()
             self.recompute_label()
+
+    def _line_to_pixel(self, pane, line ):
+        iter = self.textview[pane].get_buffer().get_iter_at_line(line)
+        return self.textview[pane].get_iter_location( iter ).y
+
+    def _pixel_to_line(self, pane, pixel ):
+        return self.textview[pane].get_line_at_y( pixel )[0].get_line()
         
     def next_diff(self, direction):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-        line = (adjs[1].value + adjs[1].page_size/2) / self.pixels_per_line
+        curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
         c = None
         if direction == gdk.SCROLL_DOWN:
             for c in self.linediffer.single_changes(1, self._get_texts()):
                 assert c[0] != "equal"
-                if c[1] > line:
+                if c[1] > curline:
                     break
         else: #direction == gdk.SCROLL_UP
             for chunk in self.linediffer.single_changes(1, self._get_texts()):
-                if chunk[2] < line:
+                if chunk[2] < curline:
                     c = chunk
                 elif c:
                     break
         if c:
             if c[2] - c[1]: # no range, use other side
-                l = c[1]+c[2]
-                a = adjs[1]
+                l0,l1 = c[1],c[2]
+                aidx = 1
+                a = adjs[aidx]
             else:
-                l = c[3]+c[4]
-                a = adjs[c[5]]
-            want = 0.5 * (self.pixels_per_line * l - a.page_size)
+                l0,l1 = c[3],c[4]
+                aidx = c[5]
+                a = adjs[aidx]
+            want = 0.5 * ( self._line_to_pixel(aidx, l0) + self._line_to_pixel(aidx,l1) - a.page_size )
             want = misc.clamp(want, 0, a.upper-a.page_size)
             a.set_value( want )
 
@@ -897,10 +906,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gctext = area.get_style().text_gc[0]
         window.clear()
 
-        which = self.linkmap.index(area)
-        madj = self.scrolledwindow[which  ].get_vadjustment()
-        oadj = self.scrolledwindow[which+1].get_vadjustment()
-
         # gain function for smoothing
         #TODO cache these values
         bias = lambda x,g: math.pow(x, math.log(g) / math.log(0.5))
@@ -922,14 +927,26 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pix1 = self.pixbuf_apply1
         draw_style = self.prefs.draw_style
         gc = area.meldgc.get_gc
+
+        which = self.linkmap.index(area)
+        pix_start = [None] * self.num_panes
+        pix_start[which  ] = self.textview[which  ].get_visible_rect().y
+        pix_start[which+1] = self.textview[which+1].get_visible_rect().y
+
+        def bounds(idx):
+            return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
+        visible = [None] + bounds(which) + bounds(which+1)
+
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             assert c[0] != "equal"
-            f0,f1 = map( lambda l: int(l * self.pixels_per_line - madj.value), c[1:3] )
-            t0,t1 = map( lambda l: int(l * self.pixels_per_line - oadj.value), c[3:5] )
-            if f1<0 and t1<0: # find first visible chunk
+            if c[2] < visible[1] and c[4] < visible[3]: # find first visible chunk
                 continue
-            if f0>htotal and t0>htotal: # we've gone past last visible
+            elif c[1] > visible[2] and c[3] > visible[4]: # we've gone past last visible
                 break
+
+            f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
+            t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
+
             if f0==f1: f0 -= 2; f1 += 2
             if t0==t1: t0 -= 2; t1 += 2
             if draw_style > 0:
@@ -997,7 +1014,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 return  1
             adj = self.scrolledwindow[which+side].get_vadjustment()
-            func = lambda c: c[1] * self.pixels_per_line - adj.value
+            func = lambda c: self._line_to_pixel(which, c[1]) - adj.value
 
             src = which + side
             dst = which + 1 - side
