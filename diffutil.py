@@ -130,13 +130,14 @@ class Differ:
             hirange = diffs[hiidx-1][4], diffs[hiidx-1][2]
         else:
             hirange = self.seqlength[x], self.seqlength[1]
-        print "diffs", loidx, hiidx, len(diffs), lorange, hirange #diffs[loidx], diffs[hiidx-1]
+        #print "diffs", loidx, hiidx, len(diffs), lorange, hirange #diffs[loidx], diffs[hiidx-1]
         rangex = lorange[0], hirange[0] + lines_added[x]
         range1 = lorange[1], hirange[1] + lines_added[1]
+        #print "^^^^^", rangex, range1
         assert rangex[0] <= rangex[1] and range1[0] <= range1[1]
         linesx = getlines(x, rangex[0], rangex[1])
         lines1 = getlines(1, range1[0], range1[1])
-        print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
+        #print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
         newdiffs = IncrementalSequenceMatcher( None, lines1, linesx).get_difference_opcodes()
         newdiffs = [ (c[0], c[1]+range1[0],c[2]+range1[0], c[3]+rangex[0],c[4]+rangex[0]) for c in newdiffs]
         if hiidx < len(self.diffs[which]):
