@@ -564,7 +564,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
                         for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
                             b.apply_tag(t, s, b.get_iter_at_line(l))
-                        if 0:
+                        if 1:
                             text1 = "\n".join( self._get_texts()[1  ][c[1]:c[2]] )
                             textn = "\n".join( self._get_texts()[i*2][c[3]:c[4]] )
                             matcher = difflib.SequenceMatcher(None, text1, textn)
