@@ -188,6 +188,19 @@
 	  </child>
 
 	  <child>
+	    <widget class="toggle" id="button_ignore_case">
+	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Ignore case of entries</property>
+	      <property name="label" translatable="yes">Case</property>
+	      <property name="use_underline">True</property>
+	      <property name="stock_pixmap">gtk-italic</property>
+	      <property name="active">False</property>
+	      <property name="inconsistent">False</property>
+	      <signal name="toggled" handler="on_button_ignore_case_toggled" last_modification_time="Tue, 19 Aug 2003 17:44:14 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="toggle" id="filter_state_normal">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Show identical</property>

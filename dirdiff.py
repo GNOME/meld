@@ -42,17 +42,6 @@ def _clamp(val, lower, upper):
     assert lower <= upper
     return min( max(val, lower), upper)
 
-def _uniq(l):
-    """Sort the list 'l' and return its unique items"""
-    l.sort()
-    r = []
-    c = None
-    for i in l:
-        if i != c:
-            r.append(i)
-            c = i
-    return r
-
 def _files_same(lof):
     """Return 1 if all the files in 'lof' have the same contents"""
     # early out if only one file
@@ -305,34 +294,76 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
             #import time; time.sleep(1.0)
             differences = [0]
-            alldirs = []
-            allfiles = []
+            if not self.button_ignore_case.get_active():
+                class accum:
+                    def __init__(self, parent, roots):
+                        self.items = []
+                    def add(self, idx, items):
+                        self.items.extend(items)
+                    def get(self):
+                        self.items.sort()
+                        r = []
+                        c = None
+                        for i in self.items:
+                            if i != c:
+                                r.append(i)
+                                c = i
+                        return zip(r,r)
+            else:
+                class accum:
+                    def __init__(self, parent, roots):
+                        self.items = {}
+                        self.bad = []
+                        self.parent = parent
+                        self.roots = roots
+                    def add(self, idx, items):
+                        for i in items:
+                            try:
+                                assert self.items[i.lower()][idx] == None
+                            except KeyError:
+                                self.items[i.lower()] = [None] * 2
+                                self.items[i.lower()][idx] = i
+                            except AssertionError:
+                                self.bad.append( _("'%s' because of '%s'") %
+                                    ( os.path.join(self.roots[idx], i), self.items[i.lower()][idx]) )
+                            else:
+                                self.items[i.lower()][idx] = i
+                    def get(self):
+                        keys = self.items.keys()
+                        keys.sort()
+                        if len(self.bad):
+                            misc.run_dialog(_("You are running a case insensitve comparison on"
+                                " a case sensitive filesystem. Some files are not visible:\n%s")
+                                % "\n".join( self.bad ), self.parent )
+                        def fixup(key, tuples):
+                            return [ t or key for t in tuples ]
+                        return [ fixup(k, self.items[k]) for k in keys ]
+            alldirs = accum(self, roots)
+            allfiles = accum(self, roots)
             for i, root in misc.enumerate(roots):
                 if os.path.isdir( root ):
                     try:
-                        e = os.listdir( root )
+                        entries = os.listdir( root )
                     except OSError, err:
                         self.model.add_error( iter, err.strerror, i )
                         differences = [1]
                     else:
                         for f in self.type_filters:
-                            e = filter(f[2], e)
-                        e.sort()
-                        alldirs  += filter(lambda x: os.path.isdir(  join(root, x) ), e)
-                        allfiles += filter(lambda x: os.path.isfile( join(root, x) ), e)
+                            entris = filter(f[2], entries)
+                        alldirs.add( i, [e for e in entries if os.path.isdir(  join(root, e) ) ] )
+                        allfiles.add(i, [e for e in entries if os.path.isfile( join(root, e) ) ] )
 
-            alldirs = _uniq(alldirs)
-            allfiles = self._filter_on_state( roots, _uniq(allfiles) )
+            alldirs = alldirs.get()
+            allfiles = self._filter_on_state( roots, allfiles.get() )
 
             # then directories and files
             if len(alldirs) + len(allfiles) != 0:
-                def add_entry(entry):
-                    child = self.model.add_entries( iter, [join(r,entry) for r in roots] )
+                def add_entry(names):
+                    child = self.model.add_entries( iter, [join(r,n) for r,n in zip(roots, names) ] )
                     differences[0] |= self._update_item_state(child)
                     return child
                 map(lambda x: todo.append(self.model.get_path(add_entry(x))), alldirs)                
                 map(add_entry, allfiles)
-
             else: # directory is empty, add a placeholder
                 self.model.add_empty(iter)
             if differences[0]:
@@ -490,6 +521,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_delete_clicked(self, button):
         self.delete_selected()
 
+    def on_button_ignore_case_toggled(self, button):
+        self.refresh()
+
     def _update_state_filter(self, state, idx):
         assert state in (tree.STATE_NEW, tree.STATE_MODIFIED, tree.STATE_NORMAL)
         try:
@@ -536,14 +570,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # Filtering
         #
 
-    def _filter_on_state(self, roots, files):
+    def _filter_on_state(self, roots, fileslist):
         """Get state of 'files' for filtering purposes.
            Returns STATE_NORMAL, STATE_NEW or STATE_MODIFIED
        """
         assert len(roots) == self.model.ntree
         ret = []
-        for file in files:
-            curfiles = [ os.path.join( r, file ) for r in roots ]
+        for files in fileslist:
+            curfiles = [ os.path.join( r, f ) for r,f in zip(roots,files) ]
             is_present = [ os.path.exists( f ) for f in curfiles ]
             all_present = 0 not in is_present
             if all_present:
@@ -554,7 +588,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 state = tree.STATE_NEW
             if state in self.state_filters:
-                ret.append( file )
+                ret.append( files )
         return ret
 
     def _update_item_state(self, iter):
@@ -579,7 +613,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     lof.append( files[j] )
             all_same = 0
             all_present_same = _files_same( lof )
-        filename = os.path.basename(file)
         different = 1
         for j in range(self.model.ntree):
             if mod_times[j]:
@@ -606,7 +639,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for t in filter(lambda x:x!=treeview, self.treeview[:self.num_panes]):
             t.get_selection().unselect_all()
         if event.button == 3:
-            path, col, cellx, celly = treeview.get_path_at_pos( event.x, event.y )
+            path, col, cellx, celly = treeview.get_path_at_pos( int(event.x), int(event.y) )
             treeview.grab_focus()
             treeview.set_cursor( path, col, 0)
             self.popup_menu.popup_in_pane( self.treeview.index(treeview) )
