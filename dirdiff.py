@@ -800,6 +800,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_replace_bg) )
             gce = area.window.new_gc()
             gce.set_rgb_fg_color( gdk.color_parse("yellow") )
+            gcm = area.window.new_gc()
+            gcm.set_rgb_fg_color( gdk.color_parse("white") )
             gcb = area.window.new_gc()
             gcb.set_rgb_fg_color( gdk.color_parse("black") )
             area.meldgc = [None, # ignore
@@ -812,8 +814,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                            gcc,  # modified
                            gcc,  # conflict
                            gcc,  # removed
-                           gcb]  # missing
-            assert len(area.meldgc) == tree.STATE_MAX
+                           gcm,  # missing
+                           gcb ] # border
+            assert len(area.meldgc) - 1 == tree.STATE_MAX
 
         #TODO need gutter of scrollbar - how do we get that?
         size_of_arrow = 14
