@@ -18,6 +18,7 @@
 """
 
 from __future__ import generators
+import traceback
 
 class SchedulerBase:
     """Base class with common functionality for schedulers.
@@ -123,6 +124,8 @@ class SchedulerBase:
             ret = task()
         except StopIteration:
             pass
+        except Exception, e:
+            traceback.print_exc()
         else:
             if ret:
                 return ret
@@ -201,7 +204,7 @@ if __name__=="__main__":
     #m.add_task( sayhello(4).next )
     #m.add_task( sayhello(5).next )
     #m.mainloop()
-    #while s.tasks_pending(): s.iteration()
+    while s.tasks_pending(): s.iteration()
     time.sleep(2)
     print "***"
     #print "***"
