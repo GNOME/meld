@@ -349,7 +349,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         differences = [1]
                     else:
                         for f in self.type_filters:
-                            entris = filter(f[2], entries)
+                            entries = filter(f[2], entries)
                         alldirs.add( i, [e for e in entries if os.path.isdir(  join(root, e) ) ] )
                         allfiles.add(i, [e for e in entries if os.path.isfile( join(root, e) ) ] )
 
@@ -524,7 +524,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_ignore_case_toggled(self, button):
         self.refresh()
 
-    def _update_state_filter(self, state, idx):
+    def _update_state_filter(self, state, active):
         assert state in (tree.STATE_NEW, tree.STATE_MODIFIED, tree.STATE_NORMAL)
         try:
             self.state_filters.remove( state )
