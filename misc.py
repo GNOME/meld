@@ -27,6 +27,7 @@ import popen2
 import errno
 import gtk
 import shutil
+import re
 
 def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=[]):
     """Run a dialog with text 'text'.
@@ -244,3 +245,42 @@ def copytree(src, dst, symlinks=1):
             copytree(srcname, dstname, symlinks)
         else:
             shutil.copy2(srcname, dstname)
+
+def shell_to_regex(pat):
+    """Translate a shell PATTERN to a regular expression.
+
+    Based on fnmatch.translate(). There is no way to quote meta-characters.
+    """
+
+    i, n = 0, len(pat)
+    res = ''
+    while i < n:
+        c = pat[i]
+        i = i+1
+        if c == '*':
+            res += '.*'
+        elif c == '?':
+            res += '.'
+        elif c == '[':
+            try:
+                j = pat.index(']', i)
+                stuff = pat[i:j]
+                i = j+1
+                if stuff[0] == '!':
+                    stuff = '^%s' % stuff[1:]
+                elif stuff[0] == '^':
+                    stuff = r'\^%s' % stuff[1:]
+                res += '[%s]' % stuff
+            except ValueError:
+                res += r'\['
+        elif c == '{':
+            try:
+                j = pat.index('}', i)
+                stuff = pat[i:j]
+                i = j+1
+                res += '(%s)' % "|".join([shell_to_regex(p)[:-1] for p in stuff.split(",")])
+            except ValueError:
+                res += '\\{'
+        else:
+            res += re.escape(c)
+    return res + "$"
