@@ -1,19 +1,13 @@
 
+.SUFFIXES :
+
 # default install directories
-prefix := /usr/local
-bindir := $(prefix)/bin
-libdir := $(prefix)/lib
-docdir := $(prefix)/share/doc
-sharedir := $(prefix)/share
-localedir := $(prefix)/share/locale
-libdir_ := $(libdir)/meld
-docdir_ := $(docdir)/meld
-sharedir_ := $(sharedir)/meld
+include INSTALL
 
 #
 VERSION := $(shell grep "^version" meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
-MELD := ./meld #--profile
+MELD_CMD := ./meld #--profile
 TESTNUM := 1
 DEVELOPER := 0
 SPECIALS := meld paths.py
@@ -22,22 +16,24 @@ ifeq ($(DEVELOPER), 1)
 .PHONY:rundiff
 rundiff: check
 	echo $(prefix)
-	$(MELD) . ../meld #?.txt
-	#$(MELD) ntest/file$(TESTNUM)*
+	$(MELD_CMD) . ../meld #?.txt
+	#$(MELD_CMD) ntest/file$(TESTNUM)*
 endif
 
 .PHONY:all
 all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	$(MAKE) -C po
+	$(MAKE) -C help
 
 .PHONY:clean
 clean: 
 	-rm -f *.pyc *.install meld.desktop *.bak glade2/*.bak
 	$(MAKE) -C po clean
+	$(MAKE) -C help clean
 
 .PHONY:install
 install: $(addsuffix .install,$(SPECIALS)) meld.desktop
-	mkdir -p \
+	mkdir -m 755 -p \
 		$(DESTDIR)$(bindir) \
 		$(DESTDIR)$(libdir_) \
 		$(DESTDIR)$(sharedir_)/glade2/pixmaps \
@@ -64,12 +60,10 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		glade2/pixmaps/*.xpm \
 		glade2/pixmaps/*.png \
 		$(DESTDIR)$(sharedir_)/glade2/pixmaps
-	install -m 755 \
-		manual/manual.html \
-		$(DESTDIR)$(docdir_)/manual.html
 	install -m 644 glade2/pixmaps/icon.png \
 		$(DESTDIR)$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po install
+	$(MAKE) -C help install
 
 meld.desktop: meld.desktop.in
 	intltool-merge -d po meld.desktop.in meld.desktop
@@ -92,13 +86,14 @@ uninstall:
 		$(sharedir)/applications/meld.desktop \
 		$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po uninstall
+	$(MAKE) -C help uninstall
 
 .PHONY: test
 test:
-	$(MELD) ntest/file0{a,b}
-	$(MELD) ntest/file5{a,b,c}
-	$(MELD) ntest/{1,2}
-	$(MELD) ntest/{1,2,3}
+	$(MELD_CMD) ntest/file0{a,b}
+	$(MELD_CMD) ntest/file5{a,b,c}
+	$(MELD_CMD) ntest/{1,2}
+	$(MELD_CMD) ntest/{1,2,3}
 
 .PHONY:changelog
 changelog:
