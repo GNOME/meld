@@ -12,6 +12,15 @@ Meld can be installed in two ways:
    "make prefix=/usr/local install"
    Now run "/usr/local/bin/meld"
 
+Python Version
+**************
+
+Meld will run with either python2.2 or python2.3. There are several advantages
+to running python2.3 however. Pythons difflib has had its worst case behaviour
+improved massively - in some cases this can result in a 300x (times not percent!)
+speedup in meld. Python2.3 has universal newline support so you can easily compare
+unix/windows/mac files without conversion.
+
 Dependencies
 ************
 
