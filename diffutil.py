@@ -3,111 +3,6 @@
 from __future__ import generators
 import difflib
 
-LOLINE = 1
-HILINE = 2
-
-class diff3_block:
-    __slots__ = ["difftype", "lo", "hi"]
-    def __init__(self, lo0, hi0, loC, hiC, lo1, hi1):
-        self.difftype = None
-        self.lo = (lo0, loC, lo1)
-        self.hi = (hi0, hiC, hi1)
-    def __str__(self):
-        return "diff3_block (%s) %s" % (self.difftype, zip(self.lo, self.hi),)
-
-def merge_blocks(using, low_thread, high_thread, last_diff, orig_texts):
-    #print using, low_thread, high_thread
-    lowc  = using[low_thread][0][LOLINE]
-    highc = using[high_thread][0][HILINE]
-    low = []
-    high = []
-    for i in (0,1):
-        if len(using[i]):
-            d = using[i][0]
-            low.append(  lowc  - d[LOLINE] + d[2+LOLINE] )
-            high.append( highc - d[HILINE] + d[2+HILINE] )
-        else:
-            d = last_diff
-            low.append(  lowc  - d.hi[1] + d.hi[i+i] )
-            high.append( highc - d.hi[1] + d.hi[i+i] )
-
-    result = diff3_block(low[0], high[0], lowc, highc, low[1], high[1])
-    if len(using[0])==0:
-        result.difftype = 2
-    elif len(using[1])==0:
-        result.difftype = 0
-    else:
-        h0, l0, h2, l2 = result.hi[0], result.lo[0], result.hi[2], result.lo[2]
-        if h0-l0 == h2-l2 and orig_texts[0][l0:h0] == orig_texts[2][l2:h2]:
-            result.difftype = 1
-        else:
-            result.difftype = 3
-
-    return result
-
-def make_3way_diff(thread0, thread1, orig_texts):
-    """Input thread0, thread1 which are diffs of common->file0 and common->file1 respectively"""
-
-    thread = [thread0, thread1]
-    last_diff = diff3_block(0,0,0,0,0,0)
-    blocks = []
-
-    while len(thread0) or len(thread1):
-
-        # pick the lowest diff to start with
-        if len(thread0)==0:
-            base_water_thread = 1
-        elif len(thread1)==0:
-            base_water_thread = 0
-        else:
-            base_water_thread = (1,0)[ thread0[0][LOLINE] <= thread1[0][LOLINE] ]
-
-        high_water_thead = base_water_thread
-        high_water_diff = thread[high_water_thead].pop(0)
-        high_water_mark = high_water_diff[HILINE]
-
-        using = [[], []]
-        using[high_water_thead].append(high_water_diff)
-
-        # pick up diffs overlapping with this one
-        while 1:
-            other_thread = high_water_thead ^ 1
-            try:
-                other_diff = thread[other_thread][0]
-            except IndexError:
-                break 
-            else:
-                if high_water_mark + 1 < other_diff[LOLINE]:
-                    break
-
-            # add the overlapping diff
-            using[other_thread].append(other_diff)
-            thread[other_thread].pop(0)
-
-            # keep high_water_* up to date
-            if high_water_mark < other_diff[HILINE]:
-                high_water_thead ^= 1
-                high_water_diff = other_diff
-                high_water_mark = other_diff[HILINE]
-
-        last_diff = merge_blocks(using, base_water_thread, high_water_thead, last_diff, orig_texts)
-        blocks.append(last_diff)
-        print "****", last_diff
-    return blocks
-
-def pretty(blocks, texts):
-    for b in blocks:
-        print "====%s" % (b.difftype+1,"")[b.difftype==3]
-        for i in range(3):
-            if b.lo[i] + 1 >= b.hi[i]:
-                print "%i:%i" % (i+1, b.lo[i]+ (b.lo[i]!=b.hi[i]))
-            else:
-                print "%i:%i,%i" % (i+1, b.lo[i]+1, b.hi[i])
-
-def max2(x,y):
-    if x>y: return x
-    else: return y
-
 ################################################################################
 #
 # Differ
@@ -119,16 +14,19 @@ class Differ:
 
     def __init__(self, *text):
         # diffs are stored from text1 -> text0 and text1 -> text2 for consistency
+        textlines = map( lambda x: x.split("\n"), text)
         if len(text)==0 or len(text)==1:
             self.diffs = ([], [])
         elif len(text)==2:
-            seq0 = difflib.SequenceMatcher(None, text[1].split("\n"), text[0].split("\n")).get_opcodes()
+            seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
             seq0 = filter(lambda x: x[0]!="equal", seq0)
             self.diffs = (seq0, [])
         elif len(text)==3:
-            seq0 = difflib.SequenceMatcher(None, text[1].split("\n"), text[0].split("\n")).get_opcodes()
-            seq1 = difflib.SequenceMatcher(None, text[1].split("\n"), text[2].split("\n")).get_opcodes()
-            self.diffs = self._merge(seq0, seq1)
+            seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
+            seq0 = filter(lambda x: x[0]!="equal", seq0)
+            seq1 = difflib.SequenceMatcher(None, textlines[1], textlines[2]).get_opcodes()
+            seq1 = filter(lambda x: x[0]!="equal", seq1)
+            self.diffs = self._merge_diffs(seq0, seq1, textlines)
         else:
             raise "Bad number of arguments to Differ constructor (%i)" % len(text)
 
@@ -151,66 +49,97 @@ class Differ:
         """give changes for single file only. do not return 'equal' hunks"""
         if textindex == 0 or textindex == 2:
             for c in self.diffs[textindex/2]:
-                if c[0]!='equal':
-                    yield self.lookup[c[0]], c[3], c[4]
+                yield self.lookup[c[0]], c[3], c[4]
         else:
-            thread0 = filter(lambda x: x[0]!="equal", self.diffs[0])
-            thread1 = filter(lambda x: x[0]!="equal", self.diffs[1])
-            while len(thread0) or len(thread1):
-                if len(thread0) == 0:
-                    yield thread1.pop(0)[:3]
-                elif len(thread1) == 0:
-                    yield thread0.pop(0)[:3]
+            thread0 = self.diffs[0]
+            thread1 = self.diffs[1]
+            i0 = len(thread0) - 1
+            i1 = len(thread1) - 1
+            while i0 >= 0 and i1 >= 0:
+                if thread0[i0][1] <= thread1[i1][1]:
+                    yield thread0[i0][:3]
+                    i0 -= 1
                 else:
-                    if thread0[0][1] <= thread1[0][1]:
-                        yield thread0.pop(0)[:3]
-                    else:
-                        yield thread1.pop(0)[:3]
+                    yield thread1[i1][:3]
+                    i1 -= 1
+            while i0 >= 0:
+                yield thread0[i0][:3]
+                i0 -= 1
+            while i1 >= 0:
+                yield thread1[i1][:3]
+                i1 -= 1
 
+    def _merge_blocks(self, using, low_seq, high_seq, last_diff):
+        LO, HI = 1,2
+        lowc  = using[low_seq][0][LO]
+        highc = using[high_seq][0][HI]
+        low = []
+        high = []
+        for i in (0,1):
+            if len(using[i]):
+                d = using[i][0]
+                low.append(  lowc  - d[LO] + d[2+LO] )
+                high.append( highc - d[HI] + d[2+HI] )
+            else:
+                d = last_diff
+                low.append(  lowc  - d[LO] + d[2+LO] )
+                high.append( highc - d[HI] + d[2+HI] )
+        return low[0], high[0], lowc, highc, low[1], high[1]
 
-    def _merge(self, seq0, seq1):
-        thread0 = filter(lambda x: x[0]!="equal", seq0)
-        thread1 = filter(lambda x: x[0]!="equal", seq1)
-        thread = thread0,thread1
+    def _merge_diffs(self, seq0, seq1, texts):
+        seq = seq0, seq1
         out0 = []
         out1 = []
-        while len(thread0) or len(thread1):
-            if len(thread0) == 0:
-                base_thread = 1
-            elif len(thread1) == 0:
-                base_thread = 0
+        LO, HI = 1,2
+        block = [0,0,0,0,0,0]
+        while len(seq0) or len(seq1):
+            if len(seq0) == 0:
+                base_seq = 1
+            elif len(seq1) == 0:
+                base_seq = 0
             else:
-                base_thread = (1,0)[ thread0[0][1] <= thread1[0][1] ]
+                base_seq = seq0[0][LO] > seq1[0][LO]
 
-            d = thread[base_thread].pop(0)
-            diff = d[:3]
-            range = [None, None]
-            range[base_thread] = d[3:5]
+            high_seq = base_seq
+            high_diff = seq[high_seq].pop(0)
+            high_mark = high_diff[HI]
+
+            using = [[], []]
+            using[high_seq].append(high_diff)
 
             while 1:
-                other_thread = base_thread ^ 1
-
+                other_seq = high_seq ^ 1
                 try:
-                    other_diff = thread[other_thread][0]
+                    other_diff = seq[other_seq][0]
                 except IndexError:
                     break 
                 else:
-                    if diff[2] < other_diff[1]:
+                    if high_mark < other_diff[LO]:
                         break
 
-                #TODO fixme
-                other_diff = thread[other_thread].pop(0)
-                diff = ("conflict", diff[1], max2(other_diff[2], diff[2]) )
-                if range[other_thread]:
-                    range[other_thread] = range[other_thread][0], other_diff[4]
-                else:
-                    range[other_thread] = other_diff[3], other_diff[4]
-                base_thread ^= 1
+                using[other_seq].append(other_diff)
+                seq[other_seq].pop(0)
 
-            if range[0]:
-                out0.append( diff + range[0] )
-            if range[1]:
-                out1.append( diff + range[1] )
+                if high_mark < other_diff[HI]:
+                    high_seq ^= 1
+                    high_diff = other_diff
+                    high_mark = other_diff[HI]
+
+            block = self._merge_blocks( using, base_seq, high_seq, block)
+
+            if len(using[0])==0:
+                out1 += using[1]
+            elif len(using[1])==0:
+                out0 += using[0]
+            else:
+                l0, h0, l1, h1, l2, h2 = block
+                if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
+                    out0.append( ('replace', block[2], block[3], block[0], block[1]) )
+                    out1.append( ('replace', block[2], block[3], block[4], block[5]) )
+                else:
+                    out0.append( ('conflict', block[2], block[3], block[0], block[1]) )
+                    out1.append( ('conflict', block[2], block[3], block[4], block[5]) )
+
         return out0, out1
 
 def main():
@@ -222,8 +151,6 @@ def main():
     thread1 = filter(lambda x: x[0]!="equal", difflib.SequenceMatcher(None, tc, t1).get_opcodes())
 
     texts = (t0,tc,t1)
-    d3 = make_3way_diff(thread0, thread1, texts)
-    pretty(d3, texts)
 
 if __name__=="__main__": 
     main()

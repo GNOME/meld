@@ -1,14 +1,15 @@
 
-PROG=./meld
-TESTNUM=3
-VERSION=0.5.1
-RELEASE=meld-$(VERSION)
+PROG := ./meld
+TESTNUM := 7
+VERSION := $(shell python2.2 -c "import meldapp; print meldapp.version")
+RELEASE := meld-$(VERSION)
 
 run : rundiff
+#run : runcvs
 
 rundiff:
-	$(PROG) test/lao test/tzu test/tao
-#	$(PROG) test/file$(TESTNUM)*
+#	$(PROG) test/lao test/tzu test/tao
+	$(PROG) test/file$(TESTNUM)*
 
 runcvs: 
 	(cd . && $(PROG) .)
@@ -17,7 +18,7 @@ runcvs:
 
 $(RELEASE).tgz:
 	cvs tag release-$(subst .,_,$(VERSION))
-	cvs -q -z3 export -d $(RELEASE) -r release-$(subst .,_,$(VERSION))
+	cvs -q -z3 export -r release-$(subst .,_,$(VERSION)) -d $(RELEASE) meld
 	tar cvfz $(RELEASE).tgz $(RELEASE)
 	rm -rf $(RELEASE)
 
@@ -28,3 +29,4 @@ notify:
 	galeon -x http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
 
 release: $(RELEASE).tgz upload notify
+

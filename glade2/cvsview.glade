@@ -29,7 +29,7 @@
 	  <child>
 	    <widget class="button" id="button_diff">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Diff</property>
+	      <property name="label" translatable="yes">_DIff</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_pixmap">gtk-dialog-info</property>
 	      <signal name="clicked" handler="on_button_diff_clicked" last_modification_time="Sat, 03 Aug 2002 18:22:20 GMT"/>
@@ -80,7 +80,7 @@
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">Commit</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-go-back</property>
+	      <property name="icon">cvs-commit-16.png</property>
 	      <signal name="clicked" handler="on_button_commit_clicked" last_modification_time="Sat, 03 Aug 2002 17:30:50 GMT"/>
 	    </widget>
 	    <packing>
@@ -93,7 +93,7 @@
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">Update</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-go-forward</property>
+	      <property name="icon">cvs-update-16.png</property>
 	      <signal name="clicked" handler="on_button_update_clicked" last_modification_time="Sat, 03 Aug 2002 17:30:18 GMT"/>
 	    </widget>
 	  </child>
@@ -101,8 +101,9 @@
 	  <child>
 	    <widget class="button" id="button_add">
 	      <property name="visible">True</property>
-	      <property name="label">gtk-add</property>
-	      <property name="use_stock">True</property>
+	      <property name="label" translatable="yes">_Add</property>
+	      <property name="use_underline">True</property>
+	      <property name="icon">cvs-add-16.png</property>
 	      <signal name="clicked" handler="on_button_add_clicked" last_modification_time="Sat, 03 Aug 2002 17:27:37 GMT"/>
 	    </widget>
 	  </child>
@@ -110,8 +111,9 @@
 	  <child>
 	    <widget class="button" id="button_remove">
 	      <property name="visible">True</property>
-	      <property name="label">gtk-remove</property>
-	      <property name="use_stock">True</property>
+	      <property name="label" translatable="yes">_Remove</property>
+	      <property name="use_underline">True</property>
+	      <property name="icon">cvs-remove-16.png</property>
 	      <signal name="clicked" handler="on_button_remove_clicked" last_modification_time="Sat, 03 Aug 2002 17:27:59 GMT"/>
 	    </widget>
 	  </child>

@@ -14,7 +14,7 @@ import filediff
 import misc
 import cvsview
 
-version = "0.5.1"
+version = "0.5.2"
 
 ################################################################################
 #
@@ -222,7 +222,7 @@ class MeldApp(gnomeglade.App):
         seq.connect("can-redo", self.on_can_redo_doc)
         nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
         self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
-        self.notebook.next_page()
+        self.notebook.set_current_page( self.notebook.page_num(doc._widget) )
         doc.connect("label-changed", self.on_doc_label_changed)
         doc.label_changed()
         doc.refresh()

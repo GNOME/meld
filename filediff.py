@@ -109,10 +109,10 @@ class FileDiff(gnomeglade.Component):
         self.undosequence = undo.UndoSequence()
         self.undosequence_busy = 0
         self.prefs = misc.struct(
-            deleted_color="#ffff00",
-            changed_color="#ffff00",
+            deleted_color="#ffffcc",
+            changed_color="#ffffcc",
             edited_color="#cccccc",
-            conflict_color="#ff0000")
+            conflict_color="#ffcccc")
         self.keymask = 0
 
         for i in range(self.numpanes):
@@ -146,22 +146,22 @@ class FileDiff(gnomeglade.Component):
         for t in self.textview: # key event bug workaround
             if t.is_focus() and object != t:
                 return
-        #print "*  dn", object, event
         x = self.keylookup.get(event.keyval, 0)
         self.keymask |= x
-        a = self.linkmap0.get_allocation()
-        self.linkmap0.queue_draw_area(0,       0, 16, a[3])
-        self.linkmap0.queue_draw_area(a[2]-16, 0, 16, a[3])
+        for l in self.linkmap[:self.numpanes-1]:
+            a = l.get_allocation()
+            l.queue_draw_area(0,       0, 16, a[3])
+            l.queue_draw_area(a[2]-16, 0, 16, a[3])
     def on_key_release_event(self, object, event):
         for t in self.textview: # key event bug workaround
             if t.is_focus() and object != t:
                 return
-        #print "*  up", object, event
         x = self.keylookup.get(event.keyval, 0)
         self.keymask &= ~x
-        a = self.linkmap0.get_allocation()
-        self.linkmap0.queue_draw_area(0,       0, 16, a[3])
-        self.linkmap0.queue_draw_area(a[2]-16, 0, 16, a[3])
+        for l in self.linkmap[:self.numpanes-1]:
+            a = l.get_allocation()
+            l.queue_draw_area(0,       0, 16, a[3])
+            l.queue_draw_area(a[2]-16, 0, 16, a[3])
 
     def on_linkmap_focus_in_event(self, *args):
         print args
@@ -536,8 +536,6 @@ class FileDiff(gnomeglade.Component):
             window.draw_lines(style.text_gc[0], points0  )
             window.draw_lines(style.text_gc[0], points1  )
 
-            if self.numpanes == 3: # 3way buggy
-                continue
             x = wtotal-self.pixbuf_apply0.get_width()
             if c[0]=="insert":
                 pix1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
@@ -552,8 +550,6 @@ class FileDiff(gnomeglade.Component):
         self.next_diff(event.direction)
 
     def on_linkmap_button_press_event(self, area, event):
-        if self.numpanes != 2: # 3way merge is buggy
-            return
         self.mouse_chunk = None
         alloc = area.get_allocation()
         (wtotal,htotal) = alloc.width, alloc.height
@@ -562,24 +558,25 @@ class FileDiff(gnomeglade.Component):
         if self.keymask == MASK_SHIFT: # hack
             pix_height *= 2
 
-        madj = self.scrolledwindow0.get_vadjustment()
-        oadj = self.scrolledwindow1.get_vadjustment()
+        which = self.linkmap.index(area)
 
-        # are we near the gutter?
+        # quick reject are we near the gutter?
         if event.x < pix_width:
             side = 0
             skip_type = "insert"
-            func = lambda c: c[1] * self.pixels_per_line - madj.value
             rect_x = 0
         elif event.x > wtotal - pix_width:
             side = 1
             skip_type = "delete"
-            func = lambda c: c[3] * self.pixels_per_line - oadj.value
             rect_x = wtotal - pix_width
         else:
             return
-        
-        for c in self.linediffs.pair_changes(0,1):
+        adj = self.scrolledwindow[which+side].get_vadjustment()
+        func = lambda c: c[1] * self.pixels_per_line - adj.value
+
+        src = which + side
+        dst = which + 1 - side
+        for c in self.linediffs.pair_changes(src,dst):
             if c[0] == skip_type:
                 continue
             h = func(c)
@@ -588,22 +585,17 @@ class FileDiff(gnomeglade.Component):
             elif h > htotal: # we've gone past last visible
                 break
             elif h < event.y and event.y < h + pix_height:
-                self.mouse_chunk = (side, (rect_x, h, pix_width, pix_height), c)
+                self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
                 break
+        print self.mouse_chunk
 
     def on_linkmap_button_release_event(self, area, event):
-        if self.numpanes != 2: # 3way merge is buggy
-            return
         if self.mouse_chunk:
-            src, rect, chunk = self.mouse_chunk
-            dst = src^1
+            (src,dst), rect, chunk = self.mouse_chunk
             # check we're still in button
             inrect = lambda p, r: ((r[0] < p.x) and (p.x < r[0]+r[2]) and (r[1] < p.y) and (p.y < r[1]+r[3]))
             if inrect(event, rect):
-                # make chunk is src0, src1, dst0, dst1
                 chunk = chunk[1:]
-                if src==1:
-                    chunk = chunk[2],chunk[3], chunk[0],chunk[1]
                 self.mouse_chunk = None
 
                 if self.keymask & MASK_CTRL: # delete
