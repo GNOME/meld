@@ -617,6 +617,8 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # Toolbar and menu items (file)
     #
+    def on_menu_file_new_activate(self, *extra):
+        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
     def on_menu_new_diff2_activate(self, *extra):
         NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
     def on_menu_new_diff3_activate(self, *extra):
