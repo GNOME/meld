@@ -55,11 +55,24 @@ import gconf
 BOOL = "bool"
 INT = "int"
 STRING = "string"
+FLOAT = "float"
+# LIST = "list"
+# PAIR = "pair"
 
 ##
 
 class Preferences:
     """Persistent preferences object.
+
+    Example:
+    import prefs
+    defaults = {"spacing": prefs.Value(prefs.INT, 4),
+                "font": prefs.Value(prefs.STRING, "monospace") }
+    p = prefs.Prefs("myapp", defaults)
+    print p.font
+    p.font = "sans" # written to gconf too
+    p2 = prefs.Prefs("myapp", defaults)
+    print p.font # prints "sans"
     """
 
     def __init__(self, rootkey, initial):
@@ -76,7 +89,7 @@ class Preferences:
         self.__dict__["_rootkey"] = rootkey
         self.__dict__["_prefs"] = initial
         self._gconf.add_dir(rootkey, gconf.CLIENT_PRELOAD_NONE)
-        self._gconf.notify_add(rootkey, self.on_preference_changed)
+        self._gconf.notify_add(rootkey, self._on_preference_changed)
         for key, value in self._prefs.items():
             gval = self._gconf.get_without_default("%s/%s" % (rootkey, key) )
             if gval != None:
@@ -94,7 +107,7 @@ class Preferences:
             for l in self._listeners:
                 l(attr,val)
 
-    def on_preference_changed(self, client, timestamp, entry, extra):
+    def _on_preference_changed(self, client, timestamp, entry, extra):
         attr = entry.key[ entry.key.rindex("/")+1 : ]
         try:
             valuestruct = self._prefs[attr]
