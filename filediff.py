@@ -102,7 +102,7 @@ class FileDiff(gnomeglade.Component):
     def __init__(self, numpanes, statusbar):
         self.__gobject_init__()
         gnomeglade.Component.__init__(self, misc.appdir("glade2/filediff.glade"), "filediff")
-        self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
+        self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "labelmodified"] )
         self.numpanes = 0
         self.set_num_panes(numpanes)
         self.statusbar = statusbar
@@ -232,9 +232,20 @@ class FileDiff(gnomeglade.Component):
         filenames = []
         for i in range(self.numpanes):
             f = self.fileentry[i].get_full_path(0) or ""
-            m = self.textview[i].get_buffer().get_data("modified") and "*" or ""
-            filenames.append( f+m )
-        labeltext = " : ".join( misc.shorten_names(*filenames)) + " "
+            filenames.append( f )
+        shortnames = misc.shorten_names(*filenames)
+        for i in range(self.numpanes):
+            if self.textview[i].get_buffer().get_data("modified"):
+                shortnames[i] += "*"
+                #self.statuslabel[i].show()
+                #print misc.ilook("set", self.labelmodified[i])
+                if i==0:
+                    self.statuslabel0.show()
+            else:
+                #self.labelmodified[i].set_text("")
+                if i==0:
+                    self.statuslabel0.hide()
+        labeltext = " : ".join(shortnames) + " "
         self.emit("label-changed", labeltext)
 
     def set_file(self, filename, pane):

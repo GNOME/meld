@@ -137,8 +137,10 @@ class MeldApp(gnomeglade.GnomeApp):
             
     def on_key_press_event(self, object, event):
         self.current_doc().on_key_press_event(object, event)
+        return 0
     def on_key_release_event(self, object, event):
         self.current_doc().on_key_release_event(object, event)
+        return 0
 
     def on_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject") #TODO why pyobject?
