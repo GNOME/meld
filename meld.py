@@ -8,7 +8,7 @@ import sys
 import string
 import difflib
 import math
-sys.path.append("/home/stephen/gnome/head/INSTALL/lib/python2.2/site-packages")
+sys.path.append("/home/stephen/garnome/lib/python2.2/site-packages")
 
 import gtk
 import gtk.glade
@@ -39,10 +39,9 @@ class struct:
 #
 ################################################################################
 class FileDiff2(gnomeglade.Component):
-    def __init__(self, notebooklabel, application):
+    def __init__(self, notebooklabel):
         gnomeglade.Component.__init__(self, "glade2/filediff2.glade", "filediff2")
         self.notebooklabel = notebooklabel
-        self.application = application
         sizegroup = gtk.SizeGroup(1)
         sizegroup.add_widget(self.textview0)
         sizegroup.add_widget(self.textview1)
@@ -50,6 +49,9 @@ class FileDiff2(gnomeglade.Component):
         self.scrolledwindow1.get_vadjustment().connect("value-changed", lambda adj: self._sync_scroll(1) )
         self.prefs = struct(deleted_color="#ebffeb", changed_color="#ebebff")
         self.prefs = struct(deleted_color="#ffaaaa", changed_color="#aaffaa")
+        #targetlist = self.textview0.drag_dest_get_target_list()
+        #(gtk.DEST_DEFAULT_ALL, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY)
+        #self.textview0.drag_dest_set_target_list(targetlist)
         self.linediffs = []
 
     def set_file(self, filename, which):
@@ -66,14 +68,17 @@ class FileDiff2(gnomeglade.Component):
         f1 = os.path.basename( self.fileentry1.get_full_path(0) or "None" )
         self.notebooklabel.set_text( "%s\n%s" % (f0,f1) )
 
+    #def on_textview0_drag_data_received(self, text, context, x,y, typesel, id, time):
+    def on_vbox0_drag_data_received(self, *args):
+        print "**", dir(args[1])
     def on_fileentry0_activate(self, entry):
         self.set_file( entry.get_full_path(0), 0)
     def on_fileentry1_activate(self, entry):
         self.set_file( entry.get_full_path(0), 1)
     def on_drawing0_expose_event(self, area, event):
-        self._draw_diff_map(self.drawing0, self.textview0, 1, "delete")
+        self._draw_diff_map(self.drawing0, self.textview0, 0)
     def on_drawing1_expose_event(self, area, event):
-        self._draw_diff_map(self.drawing1, self.textview1, 3, "insert")
+        self._draw_diff_map(self.drawing1, self.textview1, 1)
     def on_drawing2_expose_event(self, area, event):
         window = area.window
         # not mapped? 
@@ -138,6 +143,10 @@ class FileDiff2(gnomeglade.Component):
         self.linediffs = difflib.SequenceMatcher(None, t0.split("\n"), t1.split("\n")).get_opcodes()
         self._highlight_buffer(0)
         self._highlight_buffer(1)
+        #TODO how do we get a gtk.gdk.Rectangle?
+        #self.drawing2.window.invalidate_rect( (0,0,100,100), 0) 
+        self.on_drawing0_expose_event(self.drawing0, None)
+        self.on_drawing1_expose_event(self.drawing1, None)
         self.on_drawing2_expose_event(self.drawing2, None)
 
     def goto_top(self):
@@ -182,20 +191,22 @@ class FileDiff2(gnomeglade.Component):
     def _get_line_count(self, text):
         return text.get_buffer().get_line_count()
 
-    def _draw_diff_map(self, drawing, text, base, ignore):
+    def _draw_diff_map(self, drawing, text, which):
         XXXX = 14 # height of arrow button on scrollbar - how do we get that?
         offset = self.fileentry0.get_allocation()[3] + XXXX
         hperline = float( text.get_allocation()[3] - 2*XXXX) / self._get_line_count(text)
         scaleit = lambda x,s=hperline,o=offset: x*s+o
-        x0 = 3
+        x0 = 4
         x1 = drawing.get_allocation()[2] - 2*x0
+        base = (1,3)[which]
 
         window = drawing.window
+        window.clear()
         style = drawing.get_style()
         gc = { "insert":style.light_gc[0],
                "delete":style.light_gc[0],
                "replace":style.dark_gc[0] }
-        for c in filter(lambda x: x[0]!='equal' and x[0]!=ignore, self.linediffs):
+        for c in filter(lambda x: x[0]!='equal', self.linediffs):
             (s,e) = c[base:base+2]
             e += s==e
             (s,e) = map( scaleit, (s,e+1) )
@@ -257,7 +268,22 @@ class FileDiff2(gnomeglade.Component):
             buffer.remove_tag(tag, buffer.get_start_iter(), buffer.get_end_iter())
         return tag
 
-
+################################################################################
+#
+# MeldApp
+#
+################################################################################
+class BrowseFile2Dialog(gnomeglade.Dialog):
+    def __init__(self, parentapp):
+        gnomeglade.Dialog.__init__(self, "glade2/meld-app.glade", "browsefile2")
+        self.parentapp = parentapp
+    def on_response(self, dialog, arg):
+        if arg==gtk.RESPONSE_OK:
+            f0 = self.fileentry0.get_full_path(1) or ""
+            f1 = self.fileentry1.get_full_path(1) or ""
+            self.parentapp.append_filediff2( f0, f1 )
+        self._widget.destroy() # why not self.widget.destroy()?
+   
 ################################################################################
 #
 # MeldApp
@@ -268,12 +294,7 @@ class MeldApp(gnomeglade.App):
     def __init__(self, files):
         gnomeglade.App.__init__(self, "Meld", "0.1", "glade2/meld-app.glade", "meldapp")
         if len(files)==2:
-            l = gtk.Label("%s\n%s" % (files[0],files[1]))
-            w = FileDiff2(l,self)
-            self.notebook.append_page( w._widget, l )
-            w.set_file(files[0],0)
-            w.set_file(files[1],1)
-            w.refresh()
+            self.append_filediff2( files[0],files[1] )
 
     #
     # global
@@ -298,14 +319,22 @@ class MeldApp(gnomeglade.App):
         if page >= 0:
             self.notebook.remove_page(page)
     def on_new_doc_activate(self, *extra):
-        l = gtk.Label("%s\n%s" % (None,None))
-        w = FileDiff2(l,self)
-        self.notebook.append_page( w._widget, l )
-    def on_refresh_doc_clicked(self, *extra):
-        self.notebook.get_nth_page( self.notebook.get_current_page() ).refresh()
+        BrowseFile2Dialog(self)
     def on_refresh_doc_clicked(self, *args):
         index = self.notebook.get_current_page()
         self.notebook.get_nth_page(index).get_data("pyobject").refresh()
+
+    #
+    # methods
+    #
+    def append_filediff2(self, file0, file1):
+        l = gtk.Label("%s\n%s" % (file0,file1))
+        d = FileDiff2(l)
+        self.notebook.append_page( d._widget, l )
+        self.notebook.next_page()
+        d.set_file(file0,0)
+        d.set_file(file1,1)
+        d.refresh()
 
 
 ################################################################################
