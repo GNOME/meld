@@ -42,7 +42,7 @@ class SchedulerBase:
         except ValueError:
             self.callbacks.append( action )
 
-    def add_task(self, task):
+    def add_task(self, task, atfront=0):
         """Add 'task' to the task list.
 
         'task' may be a function, generator or scheduler.
@@ -53,7 +53,12 @@ class SchedulerBase:
             self.tasks.remove(task)
         except ValueError:
             pass
-        self.tasks.append(task)
+
+        if atfront:
+            self.tasks.insert(0, task)
+        else:
+            self.tasks.append(task)
+
         for callback in self.callbacks:
             callback(self)
 
