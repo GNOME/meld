@@ -12,7 +12,16 @@
 <li><a href="http://sourceforge.net/project/showfiles.php?group_id=53725">Latest Version</a>
 <li><a href="http://sourceforge.net/mail/?group_id=53725">Mail</a>
 
-<h2>Getting started</h2>
+<h2>Command line usage</h2>
+
+<dl>
+<dt><code>meld.py</code><dd>starts with no active files<br>
+<dt><code>meld.py file0 file1</code> <dd>starts two way diff<br>
+<dt><code>meld.py file0 file1 file2</code> <dd>starts three way diff<br>
+<dt><code>meld.py directory</code> <dd>starts the CVS browser<br>
+</dl>
+
+<h2>Getting started (Diff2 and Diff3)</h2>
 
 <p>
 Open up two files, original and modified.<br>
@@ -27,8 +36,10 @@ the central bar to skip between changed sections.
 </p>
 
 <p>
-You can apply changes by clicking the merge buttons ("&gt;&gt;" and "&lt;&lt;").
-Or for more detailed changes simply edit the text inplace and the diffs automatically
+You can apply changes by clicking the merge buttons ("-&gt;" and "&lt;-"). Holding
+control allows diffs to be deleted. Shift allows the current change to be inserted
+before or after the other change.
+For more detailed changes simply edit the text inplace and the diffs automatically
 update.
 </p>
 
@@ -47,13 +58,27 @@ Messages such as being unable to load or save files appear in the status
 bar in the bottom of the window.
 </p>
 
-<h2>Command line usage</h2>
+<h2>CVS browsing</h2>
+
+<p><b>CVS browsing is under development - if you want to try it, I recommend running
+meld from a console so you can see diagnostic messages</b></p>
 
 <p>
-<code>meld.py</code> starts with no active files
-<code>meld.py file0 file1</code> starts two way diff
-<code>meld.py file0 file1 file2</code> starts three way diff
-<code>meld.py -C</code> from a directory under CVS control, show local changes
+Click the cvs button to open up a new CVS browser tab. By default only files under
+CVS control are shown. To see all files click the 'Unknown' filter button. You can also
+show only locally modified files by clicking the 'Modified' filter button. If you have
+several changes scattered in several directories, the 'Recurse' tooggle is flattens
+the directory listing.
+</p>
+
+<p>
+Clicking on an unmodified file opens it in the file viewer. Clicking a modified file
+opens up a two way diff to examine your changes.
+</p>
+
+<p>
+You can examine many changes at once by clicking on a one or more directories and/or
+files and clicking the diff button.
 </p>
 
 

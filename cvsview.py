@@ -19,29 +19,30 @@ import gnomeglade
 #
 ################################################################################
 class Entry:
-    def __init__(self, path, name):
-        self.path = path
-        self.isdir = 0
-        assert path[-1] != "/"
-        self.parent, self.name = os.path.split(path)
-        #print self.parent, self.name
     def __str__(self):
         return "%s %s" % (self.name, (self.path, self.isdir, self.parent))
-    def __repr__(self):
+    def _repr__(self):
         return self.name
 
 CVS_NONE, CVS_NORMAL, CVS_MODIFIED, CVS_MISSING = range(4)
 
 class Dir(Entry):
-    def __init__(self, path, name, state):
-        Entry.__init__(self, path, name)
-        self.cvs = state 
+    def __init__(self, path, name, status):
+        if path[-1] != "/": path += "/"
+        self.path = path
+        self.parent, self.name = os.path.split(path[:-1])
+        self.cvs = status 
         self.isdir = 1
+        #print self.parent, self.name
 
 class File(Entry):
     def __init__(self, path, name, status):
-        Entry.__init__(self, path, name)
+        assert path[-1] != "/"
+        self.path = path
+        self.parent, self.name = os.path.split(path)
         self.cvs = status
+        self.isdir = 0
+        #print self.parent, self.name
 
 def _lookup_cvs_files(files, dirs):
     "files is array of (name, path). assume all files in same dir"
@@ -103,6 +104,7 @@ def _lookup_cvs_files(files, dirs):
 #
 ################################################################################
 def _find(start):
+    if start[-1] != "/": start+="/"
     cfiles = []
     cdirs = []
     try:
@@ -110,7 +112,7 @@ def _find(start):
     except OSError:
         entries = []
     for f in filter(lambda x: x!="CVS", entries):
-        fname = os.path.join(start,f)
+        fname = start + f
         lname = fname
         if os.path.isdir(fname):
             cdirs.append( (f, lname) )
@@ -224,14 +226,14 @@ class CvsView(gnomeglade.Component):
                 self.emit("working-hard", 1)
                 self.flushevents()
             files = filter(showable, recursive_find(location, progressfunc))
+            files = filter(lambda x: not x.isdir, files)
             for f in files:
-                if not f.isdir:
-                    iter = model.append(me)
-                    model.set_value(iter, 0, self.image_file )
-                    model.set_value(iter, 1, f.name )
-                    model.set_value(iter, 2, self.colors[f.cvs] )
-                    model.set_value(iter, 3, f.parent )
-                    model.set_value(iter, 4, f)
+                iter = model.append(me)
+                model.set_value(iter, 0, self.image_file )
+                model.set_value(iter, 1, f.name )
+                model.set_value(iter, 2, self.colors[f.cvs] )
+                model.set_value(iter, 3, f.parent )
+                model.set_value(iter, 4, f)
             self.emit("working-hard", 0)
         else:
             files = filter(showable, find(location))
@@ -260,7 +262,28 @@ class CvsView(gnomeglade.Component):
         child = model.append(me)
         model.set_value(child, 1, "<empty>" )
 
+
+    def on_button_press_event(self, text, event):
+        if event.button==3:
+            appdir = misc.appdir("glade2/cvsview.glade")
+            popup = gnomeglade.Menu(appdir, "menu_popup")
+            popup.show_all()
+            popup.popup(None,None,None,event.button,event.time)
+            return 0
+        return 0
+
     def set_location(self, location):
+        #print "1", location
+        if location[-1]!="/":
+            location += "/"
+        #print "2", location
+        abscurdir = os.path.abspath(os.curdir)
+        if location.startswith(abscurdir):
+            location = location[ len(abscurdir)+1 : ]
+        #print "3", location
+        if len(location)==0:
+            location = "./"
+        #print "4", location
         self.treemodel.clear()
         if location:
             self.location = location
@@ -287,7 +310,8 @@ class CvsView(gnomeglade.Component):
         self.refresh()
 
     def on_fileentry_activate(self, fileentry):
-        self.set_location(fileentry.get_full_path(0))
+        path = fileentry.get_full_path(0)
+        self.set_location(path)
 
     def on_key_press_event(self, object, event):
         pass
@@ -357,6 +381,11 @@ class CvsView(gnomeglade.Component):
         root = self.treemodel.get_path( self.treemodel.get_iter_root() )
         self.treeview.collapse_row(root)
         self.treeview.expand_row(root, 0)
+        iter_root = self.treemodel.get_iter_root()
+        if not self.treemodel.iter_has_child(iter_root):
+            child = model.append(iter_root)
+            model.set_value(child, 1, "<empty>" )
+
     def save(self,*args):
         pass
     def next_diff(self,*args):

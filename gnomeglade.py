@@ -58,6 +58,18 @@ class Component(gtk.Widget, Base):
         """Create from node 'root' in a specified file"""
         Base.__init__(self,file,root)
 
+################################################################################
+#
+# GnomeGladeMenu
+#
+################################################################################
+class Menu(gtk.Menu, Base):
+    """A convenience base class for widgets which use glade"""
+
+    def __init__(self, file, root):
+        """Create from node 'root' in a specified file"""
+        gtk.Menu.__init__(self)
+        Base.__init__(self,file,root)
 
 ################################################################################
 #

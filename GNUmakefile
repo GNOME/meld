@@ -1,7 +1,7 @@
 
 PROG=./meld
 TESTNUM=3
-VERSION=0.5.0
+VERSION=0.5.1
 RELEASE=meld-$(VERSION)
 
 run : runcvs
