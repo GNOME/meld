@@ -31,28 +31,23 @@ sharedir_ := $(sharedir)/meld
 ## Python Version
 ## **************
 ## 
-## Meld will run with either python2.2 or python2.3. There are several
-## advantages to running python2.3 however. Pythons difflib has had its worst
-## case behaviour improved massively - in some cases this can result in a 300x
-## (times not percent!) speedup in meld. Python2.3 has universal newline
-## support so you can easily compare unix/windows/mac files without
-## conversion.
+## Meld requires at least python2.3. If you need a version which 
+## works with python2.2 try one of the 0.9 series.
 ## 
 ## Dependencies
 ## ************
 ## 
-## For best results, use version 2.0 or above of the following packages.
 ## At the very least you will need:
-##  * pyorbit-1.99
-##  * pygtk-1.99.15
-##  * gnome-python-1.99.15
+##  * pygtk-2.4.0
+##  * gnome-python-2.6.0
 ## 
 ## Optional:
 ##  * pygtksourceview 0.9 or higher
 ##    (http://sourceforge.net/projects/pygtksourceview)
-##  * or pysourceview 1.0.1 (no longer maintained. 1.0.0 does not work)
 ## 
 ## Meld will not work with earlier versions of these packages.
+## Earlier versions of meld (up to 0.9.x) required only version
+## pygtk and gnome-python 2.0.
 ## 
 ## They are all available from your favourite gnome mirror.
 ## Alternatively many distributions provide binary packages.
