@@ -34,34 +34,38 @@ DEBUG = False
 class Base(object):
     """Base class for all glade objects.
 
-    This class handles loading the xml glade file and connects
-    all methods name 'on_*' to the signals in the glade file.
-
-    The handle to the xml file is stored in 'self.xml'. The
-    toplevel widget is stored in 'self.widget'.
-
-    In addition it calls widget.set_data("pyobject", self) - this
-    allows us to get the python object given only the 'raw' gtk+
-    object, which is sadly sometimes necessary.
+    The handle to the xml file is stored in 'self.glade_xml'. The
+    toplevel widget is stored in 'self.toplevel'. The python object
+    is stored in the "pyobject" property of the toplevel widget.
     """
 
-    RE_HANDLER = re.compile(r"on_(.+?)__(.+)")
+    RE_ON_HANDLER = re.compile(r"on_(.+?)__(.+)")
+    RE_AFTER_HANDLER = re.compile(r"after_(.+?)__(.+)")
 
     def __init__(self, file, root, override={}):
         """Load the widgets from the node 'root' in file 'file'.
         """
-        self.xml = gtk.glade.XML(file, root, gettext.textdomain(), typedict=override)
-        self.widget = getattr(self, root)
-        self.widget.set_data("pyobject", self)
+        self.glade_xml = gtk.glade.XML(file, root, gettext.textdomain(), typedict=override)
+        self.toplevel = getattr(self, root)
+        self.toplevel.set_data("pyobject", self)
 
     def __getattr__(self, key):
         """Allow glade widgets to be accessed as self.widgetname.
         """
-        widget = self.xml.get_widget(key)
+        widget = self.glade_xml.get_widget(key)
         if widget: # cache lookups
             setattr(self, key, widget)
             return widget
         raise AttributeError(key)
+
+    def enter_locked_region(self, key):
+        if not hasattr(self, key):
+            setattr(self, key, 1)
+            return key
+        return None
+
+    def exit_locked_region(self, key):
+        delattr(self, key)
 
     def flushevents(self):
         """Handle all the events currently in the main queue and return.
@@ -70,23 +74,56 @@ class Base(object):
             gtk.main_iteration();
 
     def connect_signal_handlers(self):
+        """Connect method named on_<widget>__<event> or after_<widget>__<event>
+        to the relevant widget events
+        """
         for methodname in dir(self.__class__):
             method = getattr(self, methodname)
-            match = self.RE_HANDLER.match(methodname)
+            match = self.RE_ON_HANDLER.match(methodname)
+            after = 0
+            if not match:
+                match = self.RE_AFTER_HANDLER.match(methodname)
+                after = 1
             if match:
                 widget, signal = match.groups()
                 #print "%s::%s" % (widget, signal)
-                attr = getattr(self, widget or "widget")
+                attr = getattr(self, widget or "toplevel")
                 if isinstance(attr,gobject.GObject):
-                    attr.connect(signal, method)
+                    if after:
+                        id = attr.connect_after(signal, method)
+                    else:
+                        id = attr.connect(signal, method)
+                    try:
+                        attr.signal_handler_ids.append(id)
+                    except AttributeError:
+                        attr.signal_handler_ids = [id]
                 elif isinstance(attr,type([])):
                     for a in attr:
-                        a.connect(signal, method)
+                        if after:
+                            id = a.connect_after(signal, method)
+                        else:
+                            id = a.connect(signal, method)
+                        try:
+                            a.signal_handler_ids.append(id)
+                        except AttributeError:
+                            a.signal_handler_ids = [id]
                 else:
                     print attr, type(attr)
                     assert 0
 
+    def block_signal_handlers(self, *widgets):
+        for widget in widgets:
+            for id in widget.signal_handler_ids:
+                widget.handler_block(id)
+
+    def unblock_signal_handlers(self, *widgets):
+        for widget in widgets:
+            for id in widget.signal_handler_ids:
+                widget.handler_unblock(id)
+
     def add_actions(self, actiongroup, actiondefs):
+        """Connect actions to their methods.
+        """
         normal_actions = []
         toggle_actions = []
         radio_actions = []
@@ -95,13 +132,13 @@ class Base(object):
                 normal_actions.append( action )
             else:
                 if len(action)==5:
-                    handler = getattr(self, "action__%s_activate"%action[0])
+                    handler = getattr(self, "action_%s__activate"%action[0])
                     normal_actions.append( action + (handler,) )
                 elif isinstance(action[-1], type(True)): 
-                    handler = getattr(self, "action__%s_toggled"%action[0])
+                    handler = getattr(self, "action_%s__toggled"%action[0])
                     toggle_actions.append( action[:-1] + (handler,action[-1]) )
                 elif isinstance(action[-1], type(0)): 
-                    handler = getattr(self, "action__%s_changed"%action[0])
+                    handler = getattr(self, "action_%s__changed"%action[0])
                     radio_actions.append( action + (handler,) )
                 else:
                     assert 0
