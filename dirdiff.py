@@ -116,9 +116,12 @@ class DirDiffMenu(gnomeglade.Component):
                     shutil.copy( src, dstdir )
                     self.parent.file_created(s.name, s.path, destpane)
                 elif os.path.isdir(src):
-                    if not os.path.isdir(dst):
-                        os.makedirs( dst )
-                    self.parent.file_created(s.name, s.path, destpane)
+                    if os.path.exists(dst):
+                        if misc.run_dialog("'%s' exists.\nOverwrite?" % os.path.basename(dst),
+                                buttonstype=gtk.BUTTONS_OK_CANCEL) != gtk.RESPONSE_OK:
+                            continue
+                    misc.copytree(src, dst)
+                    self.parent.recursively_update( s.path )
             except OSError, e:
                 misc.run_dialog("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
     def on_popup_delete_activate(self, menuitem):
@@ -131,12 +134,14 @@ class DirDiffMenu(gnomeglade.Component):
             try:
                 if os.path.isfile(p):
                     os.remove(p)
+                    self.parent.file_deleted(s.name, s.path, self.source_pane)
                 elif os.path.isdir(p):
-                    os.rmdir(p)
+                    if misc.run_dialog("'%s' is a directory.\nRemove recusively?" % os.path.basename(p),
+                            buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
+                        shutil.rmtree(p)
+                        self.parent.recursively_update( s.path )
             except OSError, e:
                 misc.run_dialog("Error removing %s\n\n%s." % (p,e))
-            else:
-                self.parent.file_deleted(s.name, s.path, self.source_pane)
 
 ################################################################################
 #
@@ -219,11 +224,21 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.update_file_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
-        self.scheduler.add_task( self._search_recursively_iter().next )
+        self.recursively_update( (0,) )
 
-    def _search_recursively_iter(self):
+    def recursively_update( self, path ):
+        """Recursively update from tree path 'path'.
+        """
+        iter = self.model.get_iter( path )
+        child = self.model.iter_children( iter )
+        while child:
+            self.model.remove(child)
+            child = self.model.iter_children( iter )
+        self.update_file_state(iter)
+        self.scheduler.add_task( self._search_recursively_iter( path ).next )
+
+    def _search_recursively_iter(self, rootpath):
         yield "[%s] Scanning" % self.label_text
-        rootpath = self.model.get_path( self.model.get_iter_root() )
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         todo = [ rootpath ]
         while len(todo):
