@@ -104,6 +104,9 @@ def pretty(blocks, texts):
             else:
                 print "%i:%i,%i" % (i+1, b.lo[i]+1, b.hi[i])
 
+def max2(x,y):
+    if x>y: return x
+    else: return y
 
 ################################################################################
 #
@@ -166,48 +169,49 @@ class Differ:
 
 
     def _merge(self, seq0, seq1):
-            thread0 = filter(lambda x: x[0]!="equal", seq0)
-            thread1 = filter(lambda x: x[0]!="equal", seq1)
-            thread = thread0,thread1
-            out0 = []
-            out1 = []
-            while len(thread0) or len(thread1):
-                if len(thread0) == 0:
-                    base_thread = 1
-                elif len(thread1) == 0:
-                    base_thread = 0
+        thread0 = filter(lambda x: x[0]!="equal", seq0)
+        thread1 = filter(lambda x: x[0]!="equal", seq1)
+        thread = thread0,thread1
+        out0 = []
+        out1 = []
+        while len(thread0) or len(thread1):
+            if len(thread0) == 0:
+                base_thread = 1
+            elif len(thread1) == 0:
+                base_thread = 0
+            else:
+                base_thread = (1,0)[ thread0[0][1] <= thread1[0][1] ]
+
+            d = thread[base_thread].pop(0)
+            diff = d[:3]
+            range = [None, None]
+            range[base_thread] = d[3:5]
+
+            while 1:
+                other_thread = base_thread ^ 1
+
+                try:
+                    other_diff = thread[other_thread][0]
+                except IndexError:
+                    break 
                 else:
-                    base_thread = (1,0)[ thread0[0][1] <= thread1[0][1] ]
+                    if diff[2] < other_diff[1]:
+                        break
 
-                d = thread[base_thread].pop(0)
-                diff = d[:3]
-                range = [None, None]
-                range[base_thread] = d[3:5]
+                #TODO fixme
+                other_diff = thread[other_thread].pop(0)
+                diff = ("conflict", diff[1], max2(other_diff[2], diff[2]) )
+                if range[other_thread]:
+                    range[other_thread] = range[other_thread][0], other_diff[4]
+                else:
+                    range[other_thread] = other_diff[3], other_diff[4]
+                base_thread ^= 1
 
-                while 1:
-                    other_thread = base_thread ^ 1
-
-                    try:
-                        other_diff = thread[other_thread][0]
-                    except IndexError:
-                        break 
-                    else:
-                        if diff[2] < other_diff[1]:
-                            break
-
-                    other_diff = thread[other_thread].pop(0)
-                    diff = ("conflict", diff[1], other_diff[2])
-                    if range[other_thread]:
-                        range[other_thread] = range[other_thread][0], other_diff[4]
-                    else:
-                        range[other_thread] = other_diff[3], other_diff[4]
-                    base_thread ^= 1
-
-                if range[0]:
-                    out0.append( diff + range[0] )
-                if range[1]:
-                    out1.append( diff + range[1] )
-            return out0, out1
+            if range[0]:
+                out0.append( diff + range[0] )
+            if range[1]:
+                out1.append( diff + range[1] )
+        return out0, out1
 
 def main():
     t0 = open("test/lao").readlines()

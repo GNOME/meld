@@ -47,7 +47,7 @@
 			  <signal name="activate" handler="on_new_diff2_activate" last_modification_time="Fri, 21 Jun 2002 13:24:30 GMT"/>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image40">
+			    <widget class="GtkImage" id="image72">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-new</property>
 			      <property name="icon_size">1</property>
@@ -68,7 +68,7 @@
 			  <signal name="activate" handler="on_new_diff3_activate" last_modification_time="Fri, 21 Jun 2002 13:24:30 GMT"/>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image41">
+			    <widget class="GtkImage" id="image73">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-new</property>
 			      <property name="icon_size">1</property>
@@ -88,7 +88,7 @@
 			  <property name="use_underline">True</property>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image42">
+			    <widget class="GtkImage" id="image74">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-save</property>
 			      <property name="icon_size">1</property>
@@ -103,14 +103,35 @@
 			    <widget class="GtkMenu" id="menu_file_save_menu">
 
 			      <child>
-				<widget class="GtkImageMenuItem" id="menu_file_save_file1">
+				<widget class="GtkImageMenuItem" id="menu_file_save_file0">
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Save File 1</property>
 				  <property name="use_underline">True</property>
-				  <signal name="activate" handler="on_save_file1_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
+				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image43">
+				    <widget class="GtkImage" id="image75">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-save</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
+
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_file_save_file1">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Save File 2</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
+
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image76">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -126,33 +147,12 @@
 			      <child>
 				<widget class="GtkImageMenuItem" id="menu_file_save_file2">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">Save File 2</property>
-				  <property name="use_underline">True</property>
-				  <signal name="activate" handler="on_save_file2_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
-
-				  <child internal-child="image">
-				    <widget class="GtkImage" id="image44">
-				      <property name="visible">True</property>
-				      <property name="stock">gtk-save</property>
-				      <property name="icon_size">1</property>
-				      <property name="xalign">0.5</property>
-				      <property name="yalign">0.5</property>
-				      <property name="xpad">0</property>
-				      <property name="ypad">0</property>
-				    </widget>
-				  </child>
-				</widget>
-			      </child>
-
-			      <child>
-				<widget class="GtkImageMenuItem" id="menu_file_save_file3">
-				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Save File 3</property>
 				  <property name="use_underline">True</property>
-				  <signal name="activate" handler="on_save_file3_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
+				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image45">
+				    <widget class="GtkImage" id="image77">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -253,6 +253,48 @@
 		    <widget class="GtkMenu" id="menuitem_help_menu">
 
 		      <child>
+			<widget class="GtkImageMenuItem" id="menu_help_meld_home_page">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Meld _Home Page</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_menu_help_meld_home_page_activate" last_modification_time="Thu, 18 Jul 2002 22:15:56 GMT"/>
+
+			  <child internal-child="image">
+			    <widget class="GtkImage" id="image78">
+			      <property name="visible">True</property>
+			      <property name="stock">gtk-home</property>
+			      <property name="icon_size">1</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			  </child>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkImageMenuItem" id="menu_help_users_manual">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Users _Manual</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_menu_help_users_manual" last_modification_time="Thu, 18 Jul 2002 22:16:55 GMT"/>
+
+			  <child internal-child="image">
+			    <widget class="GtkImage" id="image79">
+			      <property name="visible">True</property>
+			      <property name="stock">gtk-help</property>
+			      <property name="icon_size">1</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			  </child>
+			</widget>
+		      </child>
+
+		      <child>
 			<widget class="GtkImageMenuItem" id="menu_help_about">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_ABOUT_ITEM</property>
@@ -310,12 +352,20 @@
 	      </child>
 
 	      <child>
-		<widget class="button" id="button7">
+		<widget class="button" id="button14">
 		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Save File</property>
+		  <property name="label">gtk-execute</property>
+		  <property name="use_stock">True</property>
+		</widget>
+	      </child>
+
+	      <child>
+		<widget class="button" id="button15">
+		  <property name="visible">True</property>
 		  <property name="label">gtk-save</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_save_both_activate" last_modification_time="Wed, 12 Jun 2002 19:11:10 GMT"/>
+		  <signal name="clicked" handler="on_save_doc_clicked" last_modification_time="Thu, 18 Jul 2002 11:06:04 GMT"/>
+		  <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 	      </child>
 
@@ -354,7 +404,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-go-down</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_down_clicked" last_modification_time="Wed, 17 Jul 2002 19:26:45 GMT"/>
+		  <signal name="clicked" handler="on_down_doc_clicked" last_modification_time="Thu, 18 Jul 2002 11:04:57 GMT"/>
 		</widget>
 		<packing>
 		  <property name="new_group">True</property>
@@ -366,7 +416,7 @@
 		  <property name="visible">True</property>
 		  <property name="label">gtk-go-up</property>
 		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_up_clicked" last_modification_time="Wed, 17 Jul 2002 19:26:57 GMT"/>
+		  <signal name="clicked" handler="on_up_doc_clicked" last_modification_time="Thu, 18 Jul 2002 11:05:05 GMT"/>
 		</widget>
 	      </child>
 	    </widget>
@@ -467,7 +517,9 @@
 	    <widget class="GtkButton" id="button10">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
+	      <property name="has_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>

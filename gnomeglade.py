@@ -92,3 +92,13 @@ class App(gnome.ui.App, Base):
         """Signal the gtk main loop to quit"""
         gtk.main_quit()
 
+################################################################################
+#
+# load_pixbuf
+#
+################################################################################
+def load_pixbuf(fname):
+    """Load an image from a file as a pixbuf"""
+    image = gtk.Image()
+    image.set_from_file(fname)
+    return image.get_pixbuf()
