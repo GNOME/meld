@@ -141,7 +141,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             #print "***", range, len(self.linediffer.diffs[0])
             for iter in self._update_highlighting( range[0], range[1] ):
                 pass
-            self.refresh()
+            self.queue_draw()
 
     def _get_texts(self):
         class FakeText:
@@ -423,7 +423,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.set_num_panes( len(files) )
         self._disconnect_buffer_handlers()
         self.linediffer.diffs = [[],[]]
-        self.refresh()
+        self.queue_draw()
         buffers = [t.get_buffer() for t in self.textview][:self.num_panes]
         try_codecs = self.prefs.text_codecs.split()
         yield "[%s] Opening files" % self.label_text
@@ -483,7 +483,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
-        self.refresh()
+        self.queue_draw()
         lenseq = [len(d) for d in self.linediffer.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
         self._connect_buffer_handlers()
@@ -645,6 +645,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # refresh, _queue_refresh
         #
     def refresh(self, junk=None):
+        modified = [view.get_buffer().get_data("meld").filename
+                    for view in self.textview[:self.num_panes] if view.get_buffer().get_data("meld").modified]
+        if len(modified):
+            message = "Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation." % "\n".join(modified)
+            response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
+            if response == gtk.RESPONSE_OK:
+                files = [t.get_buffer().get_data("meld").filename for t in self.textview[:self.num_panes] ]
+                self.set_files(files)
+        self.queue_draw()
+
+    def queue_draw(self, junk=None):
         for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
         self.diffmap0.queue_draw()
@@ -782,7 +793,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for i in range(self.num_panes):
                 if self.textview[i].get_buffer().get_data("meld").modified:
                     self.statusimage[i].show()
-            self.refresh()
+            self.queue_draw()
             self.recompute_label()
         
     def next_diff(self, direction):
