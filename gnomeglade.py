@@ -102,7 +102,7 @@ class GtkApp(Base):
     def __init__(self, file, root=None):
         Base.__init__(self, file, root)
 
-    def mainloop(self):
+    def main(self):
         """Enter the gtk main loop.
         """
         gtk.main()
