@@ -175,20 +175,22 @@ class FileDiff(gnomeglade.Component):
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
-        self.keymask |= x
-        for l in self.linkmap[:self.num_panes-1]:
-            a = l.get_allocation()
-            w = self.pixbuf_copy0.get_width()
-            l.queue_draw_area(0,      0, w, a[3])
-            l.queue_draw_area(a[2]-w, 0, w, a[3])
+        if self.keymask | x != self.keymask:
+            self.keymask |= x
+            for l in self.linkmap[:self.num_panes-1]:
+                a = l.get_allocation()
+                w = self.pixbuf_copy0.get_width()
+                l.queue_draw_area(0,      0, w, a[3])
+                l.queue_draw_area(a[2]-w, 0, w, a[3])
     def on_key_release_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
-        self.keymask &= ~x
-        for l in self.linkmap[:self.num_panes-1]:
-            a = l.get_allocation()
-            w = self.pixbuf_copy0.get_width()
-            l.queue_draw_area(0,      0, w, a[3])
-            l.queue_draw_area(a[2]-w, 0, w, a[3])
+        if self.keymask & ~x != self.keymask:
+            self.keymask &= ~x
+            for l in self.linkmap[:self.num_panes-1]:
+                a = l.get_allocation()
+                w = self.pixbuf_copy0.get_width()
+                l.queue_draw_area(0,      0, w, a[3])
+                l.queue_draw_area(a[2]-w, 0, w, a[3])
 
     def is_modified(self):
         state = map(lambda x: x.get_buffer().get_data("modified"), self.textview)
