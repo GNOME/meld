@@ -115,7 +115,10 @@ class SchedulerBase:
         Calls self.get_current_task() to find the current task.
         Remove task from self.tasks if it is complete.
         """
-        task = self.get_current_task()
+        try:
+            task = self.get_current_task()
+        except StopIteration:
+            return 0
         try:
             ret = task()
         except StopIteration:
@@ -132,7 +135,10 @@ class LifoScheduler(SchedulerBase):
     def __init__(self):
         SchedulerBase.__init__(self)
     def get_current_task(self):
-        return self.tasks[-1]
+        try:
+            return self.tasks[-1]
+        except IndexError:
+            raise StopIteration
 
 
 class FifoScheduler(SchedulerBase):
@@ -141,7 +147,10 @@ class FifoScheduler(SchedulerBase):
     def __init__(self):
         SchedulerBase.__init__(self)
     def get_current_task(self):
-        return self.tasks[0]
+        try:
+            return self.tasks[0]
+        except IndexError:
+            raise StopIteration
 
 
 class RoundRobinScheduler(SchedulerBase):
@@ -150,10 +159,11 @@ class RoundRobinScheduler(SchedulerBase):
     def __init__(self):
         SchedulerBase.__init__(self)
     def get_current_task(self):
-        self.tasks.append(self.tasks.pop(0))
-        return self.tasks[0]
-
-
+        try:
+            self.tasks.append(self.tasks.pop(0))
+            return self.tasks[0]
+        except IndexError:
+            raise StopIteration
 
 
 
