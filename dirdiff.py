@@ -27,6 +27,7 @@ import os
 import shutil
 import melddoc
 import tree
+import filecmp
 
 gdk = gtk.gdk
 
@@ -56,18 +57,13 @@ def _files_same(lof):
     # early out if only one file
     if len(lof) <= 1:
         return 1
-    # early out if size differs
-    arefiles = 1 in [ os.path.isfile(i) for i in lof ]
-    if arefiles:
-        sizes = [ os.stat(f).st_size for f in lof]
-        for s in sizes[1:]:
-            if s != sizes[0]:
-                return 0
-        # compare entire file
-        text = [ open(f).read() for f in lof]
-        for t in text[1:]:
-            if t != text[0]:
-                return 0
+
+    arefiles = 1 in [ os.path.isfile(i) for i in lof ] 
+    if arefiles:             
+        first=lof[0]
+        for f in lof[1:]:
+            if not filecmp.cmp(first, f):
+                return 0            
     return 1
 
 def _not_none(l):
@@ -343,11 +339,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     child = self.model.add_entries( iter, [join(r,entry) for r in roots] )
                     differences[0] |= self._update_item_state(child)
                     return child
-                for d in alldirs:
-                    c = add_entry(d)
-                    todo.append( self.model.get_path(c) )
-                for f in allfiles:
-                    add_entry(f)
+                map(lambda x: todo.append(self.model.get_path(add_entry(x))), alldirs)                
+                map(add_entry, allfiles)
+
             else: # directory is empty, add a placeholder
                 self.model.add_empty(iter)
             if differences[0]:
@@ -628,8 +622,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_treeview_button_press_event(self, treeview, event):
         # unselect others
         for t in filter(lambda x:x!=treeview, self.treeview[:self.num_panes]):
-            sel = t.get_selection()
-            sel.unselect_all()
+            t.get_selection().unselect_all()
         if event.button == 3:
             path, col, cellx, celly = treeview.get_path_at_pos( event.x, event.y )
             treeview.grab_focus()
