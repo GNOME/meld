@@ -76,7 +76,15 @@ def _lookup_cvs_files(files, dirs):
             if date=="dummy timestamp":
                 state = CVS_MODIFIED
             else:
-                cotime = time.mktime( time.strptime(date) )
+                plus = date.find("+")
+                if plus >= 0:
+                    date = date[plus+1:]
+                try:
+                    cotime = time.mktime( time.strptime(date) )
+                except ValueError, e:
+                    if date != "Result of merge":
+                        print "Unable to parse date '%s' in '%s/CVS/Entries'" % (date, directory)
+                    cotime = 0
                 try:
                     mtime = os.stat(path).st_mtime
                 except OSError:
