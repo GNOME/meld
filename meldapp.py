@@ -231,10 +231,17 @@ class MeldPreferences(prefs.Preferences):
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"), 
         "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
-        "color_deleted" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
-        "color_changed" : prefs.Value(prefs.STRING, "LightSteelBlue1"),
-        "color_edited" : prefs.Value(prefs.STRING, "gray85"),
-        "color_conflict" : prefs.Value(prefs.STRING, "Pink")
+        "color_delete_bg" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
+        "color_delete_fg" : prefs.Value(prefs.STRING, "Red"),
+        "color_replace_bg" : prefs.Value(prefs.STRING, "#ddeeff"),
+        #"color_replace_bg" : prefs.Value(prefs.STRING, "LightSteelBlue1"),
+        "color_replace_fg" : prefs.Value(prefs.STRING, "Black"),
+        "color_conflict_bg" : prefs.Value(prefs.STRING, "Pink"),
+        "color_conflict_fg" : prefs.Value(prefs.STRING, "Black"),
+        "color_inline_bg" : prefs.Value(prefs.STRING, "LightSteelBlue1"),
+        "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
+        "color_edited_bg" : prefs.Value(prefs.STRING, "gray85"),
+        "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
     }
 
     def __init__(self):
