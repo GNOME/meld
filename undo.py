@@ -34,6 +34,8 @@ def on_undo_button_pressed():
 import gobject
 
 class GroupAction:
+    """A group action combines several actions into one logical action.
+    """
     def __init__(self, seq):
         self.seq = seq
     def undo(self):
