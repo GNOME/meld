@@ -186,7 +186,7 @@ class ListWidget(gnomeglade.Component):
         model = self.treeview.get_model()
         pref = []
         for row in model:
-            pref.append("%s\t%s\t%s" % (row[0], row[1], row[2]))
+            pref.append("%s\t%s\t%s" % (row[0], row[1], misc.unescape(row[2])))
         setattr( self.prefs, self.key, "\n".join(pref) )
     def _update_filter_model(self):
         model = self.treeview.get_model()
@@ -196,7 +196,7 @@ class ListWidget(gnomeglade.Component):
             iter = model.append()
             model.set_value( iter, 0, filt.name)
             model.set_value( iter, 1, filt.active)
-            model.set_value( iter, 2, filt.value)
+            model.set_value( iter, 2, misc.escape(filt.value))
    
 ################################################################################
 #
@@ -437,7 +437,7 @@ class MeldPreferences(prefs.Preferences):
                                               "CVS\t1\tCVS\n" + \
                                               "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
                                               "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
-        "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$[^:]+:[^\\n\$]+\$\n" + \
+        "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n" + \
                                               "C++ comment\t0\t//.*\n" + \
                                               "C comment\t0\t/\*.*?\*/\n" + \
                                               "All whitespace\t0\t[ \\t\\r\\f\\v]*\n" + \

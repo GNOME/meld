@@ -168,8 +168,11 @@
         <title>Regular Expressions</title>
 
         <para>When comparing files, each selected regular expression is run in
-        turn over each file. Anything matching the expression is replaced by
-        the empty string before comparison is performed.</para>
+        turn over each file. If the expression does not contain groups then
+        anything matching the expression is replaced by the empty string
+        before comparison is performed. If there are one or more groups then
+        only the groups are replaced by the empty string instead of the entire
+        match.</para>
 
         <warning>
           <para>Replacement typically happens on several lines at a time. The

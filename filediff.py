@@ -260,7 +260,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _filter_text(self, txt):
         def killit(m):
             assert m.group().count("\n") == 0
-            return ""
+            if len(m.groups()):
+                s = m.group()
+                for g in m.groups():
+                    if g:
+                        s = s.replace(g,"")
+                return s
+            else:
+                return ""
         try:
             for c,r in self.regexes:
                 txt = c.sub(killit,txt)
