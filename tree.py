@@ -21,11 +21,14 @@ import gnomeglade
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
 
-# ignored, dont care, normal, cvs added, modified, cvs conflict, cvs removed, locally removed
-STATE_IGNORED, STATE_NONE, STATE_NORMAL, \
+# ignored, new, normal, ignored changes,
+# error, placeholder, cvs added
+# cvs modified, cvs conflict, cvs removed
+# locally removed, end
+STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
 STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
-STATE_MISSING, STATE_MAX = range(11)
+STATE_MISSING, STATE_MAX = range(12)
 
 load = lambda x,s=14: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), s)
 pixbuf_folder = load("tree-folder-normal.png")
@@ -48,6 +51,7 @@ class DiffTreeStore(gtk.TreeStore):
             '<span foreground="#888888">%s</span>', # STATE_IGNORED
             '<span foreground="#888888">%s</span>', # STATE_NONE
             '<span foreground="black">%s</span>', # STATE_NORMAL
+            '<span foreground="black" style="italic">%s</span>', # STATE_NOCHANGE
             '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR 
             '<span foreground="#999999" style="italic">%s</span>', # STATE_EMPTY
             '<span foreground="#008800" weight="bold">%s</span>', # STATE_NEW
@@ -61,6 +65,7 @@ class DiffTreeStore(gtk.TreeStore):
             (pixbuf_file, pixbuf_folder), # IGNORED
             (pixbuf_file, pixbuf_folder), # NONE
             (pixbuf_file, pixbuf_folder), # NORMAL
+            (pixbuf_file, pixbuf_folder), # NOCHANGE
             (None, None), # ERROR
             (None, None), # EMPTY
             (pixbuf_file_new, pixbuf_folder_new), # NEW
@@ -112,3 +117,4 @@ class DiffTreeStore(gtk.TreeStore):
     def get_state(self, iter, pane):
         STATE = self.column_index(COL_STATE, pane)
         return self.get_value(iter, STATE)
+
