@@ -114,10 +114,10 @@ class NotebookLabel(gtk.HBox):
 # MeldApp
 #
 ################################################################################
-class MeldApp(gnomeglade.App):
+class MeldApp(gnomeglade.GnomeApp):
 
     def __init__(self):
-        gnomeglade.App.__init__(self, "Meld", version, misc.appdir("glade2/meld-app.glade"), "meldapp")
+        gnomeglade.GnomeApp.__init__(self, "Meld", version, misc.appdir("glade2/meld-app.glade"), "meldapp")
         self._map_widgets_into_lists( ["menu_file_save_file"] )
         self.statusbar = MeldStatusBar(self.appbar)
             
