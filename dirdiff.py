@@ -183,6 +183,8 @@ class DirDiffMenu(gnomeglade.Component):
         self.parent.on_button_copy_right_clicked( None )
     def on_popup_delete_activate(self, menuitem):
         self.parent.on_button_delete_clicked( None )
+    def on_popup_edit_activate(self, menuitem):
+        self.parent.on_button_edit_clicked( None )
 
 ################################################################################
 #
@@ -205,11 +207,6 @@ class TypeFilter(object):
 
 class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of directories"""
-
-    __gsignals__ = {
-        'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
-    }
-
 
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
@@ -591,6 +588,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.copy_selected(1)
     def on_button_delete_clicked(self, button):
         self.delete_selected()
+    def on_button_edit_clicked(self, button):
+        pane = self._get_focused_pane()
+        if pane != None:
+            m = self.model
+            files = [ m.value_path( m.get_iter(p), pane ) for p in self._get_selected_paths(pane) ]
+            self._edit_files( [f for f in files if os.path.isfile(f)] )
 
     def on_button_ignore_case_toggled(self, button):
         self.refresh()

@@ -111,6 +111,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.parent.copy_selected(-1)
             def on_copy_right_activate(self, menuitem):
                 self.parent.copy_selected(1)
+            def on_edit_activate(self, menuitem):
+                if self.parent.bufferdata[self.pane].filename:
+                    self.parent._edit_files( [self.parent.bufferdata[self.pane].filename] )
         self.popup_menu = ContextMenu(self)
         self.find_dialog = None
         self.last_search = None
@@ -1064,6 +1067,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_linkmap_drag_begin(self, *args):
         print args
+
+gobject.type_register(FileDiff)
 
 ################################################################################
 #
