@@ -65,6 +65,7 @@ class DirDiff(gnomeglade.Component):
         rentext = gtk.CellRendererText()
         renpix = gtk.CellRendererPixbuf()
         for i in range(3):
+            self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             column = gtk.TreeViewColumn()
             column.pack_start(renpix, expand=0)
             column.pack_start(rentext, expand=1)
