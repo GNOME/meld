@@ -52,7 +52,7 @@ class BufferInsertionAction:
         b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
     def redo(self):
         b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text, len(self.text)) 
+        b.insert( b.get_iter_at_offset( self.offset), self.text) 
 
 ################################################################################
 #
@@ -67,7 +67,7 @@ class BufferDeletionAction:
         self.text = text
     def undo(self):
         b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text, len(self.text)) 
+        b.insert( b.get_iter_at_offset( self.offset), self.text) 
     def redo(self):
         b = self.buffer
         b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
@@ -128,7 +128,6 @@ class FileDiff(gnomeglade.Component):
             self.textview[i].get_buffer().connect("insert-text", self.on_text_insert_text)
             self.textview[i].get_buffer().connect("delete-range", self.on_text_delete_range)
 
-
         self.linediffs = diffutil.Differ()
         load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
         self.pixbuf_apply0 = load("button_apply0.xpm")
@@ -136,7 +135,6 @@ class FileDiff(gnomeglade.Component):
         self.pixbuf_delete = load("button_delete.xpm")
         self.pixbuf_copy0  = load("button_copy0.xpm")
         self.pixbuf_copy1  = load("button_copy1.xpm")
-
 
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
@@ -518,9 +516,6 @@ class FileDiff(gnomeglade.Component):
         window = area.window
         window.clear()
         style = area.get_style()
-        #if not hasattr(style, "meld_gc"):
-        #   setattr(style, "meld_gc", [])
-        #   a = gdk.GC()
         gc = { "insert":style.light_gc[0],
                "delete":style.light_gc[0],
                "replace":style.light_gc[0],
@@ -543,14 +538,16 @@ class FileDiff(gnomeglade.Component):
                 {"background": self.prefs.color_conflict} )
 
         for c in self.linediffs.single_changes(which):
-            start = buffer.get_iter_at_line(c[1])
-            end =   buffer.get_iter_at_line(c[2])
-            if c[0] == "insert" or c[0] == "replace":
-                buffer.apply_tag(tag_replace_line, start,end)
-            elif c[0] == "delete":
-                buffer.apply_tag(tag_delete_line, start,end)
-            elif c[0] == "conflict":
-                buffer.apply_tag(tag_conflict_line, start,end)
+            if c[1] != c[2]:
+                start = buffer.get_iter_at_line(c[1])
+                end   = buffer.get_iter_at_line(c[2]-1)
+                end.forward_to_line_end()
+                if c[0] == "insert" or c[0] == "replace":
+                    buffer.apply_tag(tag_replace_line, start, end)
+                elif c[0] == "delete":
+                    buffer.apply_tag(tag_delete_line, start, end)
+                elif c[0] == "conflict":
+                    buffer.apply_tag(tag_conflict_line, start, end)
 
     def _get_line_count(self, index):
         """Return the number of lines in the buffer of textview 'text'"""
