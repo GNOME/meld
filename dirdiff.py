@@ -415,9 +415,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_treeview_row_expanded(self, view, iter, path):
         self._do_to_others(view, self.treeview, "expand_row", (path,0) )
+        self._update_difmaps()
 
     def on_treeview_row_collapsed(self, view, me, path):
         self._do_to_others(view, self.treeview, "collapse_row", (path,) )
+        self._update_difmaps()
 
     def on_treeview_focus_in_event(self, tree, event):
         pane = self.treeview.index(tree)
@@ -596,51 +598,76 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.label_text = " : ".join(shortnames)
         self.label_changed()
 
+    def _update_difmaps(self):
+        self.diffmap[0].queue_draw()
+        self.diffmap[1].queue_draw()
+
     def on_diffmap_expose_event(self, area, event):
-        return
         diffmapindex = self.diffmap.index(area)
         treeindex = (0, self.num_panes-1)[diffmapindex]
         treeview = self.treeview[treeindex]
 
-        root = self.model.get_iter_root()
-        todo = [root]
-        lines = []
-        while len(todo):
-            iter = todo.pop(0)
-            path = self.model.get_path(iter)
-            foo = self.model.value_path(iter)
-            lines.append(foo)
-            if treeview.row_expanded(path):
-                child = self.model.iter_children(iter)
-                while child:
-                    todo.append(child)
-                    child = self.model.iter_next(child)
-        #print lines
-        return
-            
-##
+        def traverse_states(root):
+            todo = [root]
+            model = self.model
+            while len(todo):
+                iter = todo.pop(0)
+                #print model.value_path(iter, treeindex), model.get_state(iter, treeindex)
+                yield model.get_state(iter, treeindex)
+                path = model.get_path(iter)
+                if treeview.row_expanded(path):
+                    children = []
+                    child = model.iter_children(iter)
+                    while child:
+                        children.append(child)
+                        child = model.iter_next(child)
+                    todo = children + todo
+            yield None # end marker
+
+        chunks = []
+        laststate = None
+        lastlines = 0
+        numlines = -1
+        for state in traverse_states( self.model.get_iter_root() ):
+            if state != laststate:
+                chunks.append( (lastlines, laststate) )
+                laststate = state
+                lastlines = 1
+            else:
+                lastlines += 1
+            numlines += 1
+
+        if not hasattr(area, "meldgc"):
+            assert area.window
+            gcd = area.window.new_gc()
+            gcd.set_rgb_fg_color( gdk.color_parse(self.prefs.color_delete_bg) )
+            gcc = area.window.new_gc()
+            gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_replace_bg) )
+            gce = area.window.new_gc()
+            gce.set_rgb_fg_color( gdk.color_parse("yellow") )
+            gcb = area.window.new_gc()
+            gcb.set_rgb_fg_color( gdk.color_parse("black") )
+            area.meldgc = [None, None, gce, None, gcd, gcc, gcc, None, gcb]
 
         #TODO need height of arrow button on scrollbar - how do we get that?
-        #size_of_arrow = 14
-        #hperline = float( self.treeview0.get_allocation().height - 4*size_of_arrow) / self.linediffs[diffmapindex].numlines
-        #if hperline > 14:#self.pixels_per_line:
-        #    hperline = 14#self.pixels_per_line
-        #scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
+        size_of_arrow = 14
+        hperline = float( area.get_allocation().height - 3*size_of_arrow) / numlines
+        scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
         x0 = 4
         x1 = area.get_allocation().width - 2*x0
-        madj = self.scrolledwindow[treeindex].get_vadjustment()
 
         window = area.window
         window.clear()
-        style = area.get_style()
-        gc = { "insert":style.light_gc[0],
-               "delete":style.light_gc[0],
-               "replace":style.light_gc[0],
-               "conflict":style.dark_gc[3] }
 
-        for c in self.linediffs[diffmapindex].changes:
-            s,e = ( scaleit(c[1]), scaleit(c[2]+(c[1]==c[2])) )
+        start = 0
+        for c in chunks[1:]:
+            end = start + c[0]
+            s,e = scaleit(start), scaleit(end)
             s,e = math.floor(s), math.ceil(e)
-            window.draw_rectangle(gc[c[0]], 1, x0, s, x1, e-s)
+            gc = area.meldgc[ int(c[1]) ]
+            if gc:
+                window.draw_rectangle( gc, 1, x0, s, x1, e-s)
+                window.draw_rectangle( area.meldgc[-1], 0, x0, s, x1, e-s)
+            start = end
 
 gobject.type_register(DirDiff)
