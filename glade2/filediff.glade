@@ -491,13 +491,28 @@
       <child internal-child="action_area">
 	<widget class="GtkHButtonBox" id="dialog-action_area1">
 	  <property name="visible">True</property>
+	  <property name="can_default">True</property>
+	  <property name="has_default">True</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
-	    <widget class="GtkButton" id="cancelbutton1">
+	    <widget class="GtkButton" id="button_quit">
+	      <property name="visible">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-quit</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-7</property>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="button_cancel">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
+	      <property name="has_focus">True</property>
 	      <property name="label">gtk-cancel</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
@@ -506,7 +521,7 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkButton" id="okbutton1">
+	    <widget class="GtkButton" id="button_ok">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
