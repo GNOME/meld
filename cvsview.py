@@ -30,6 +30,7 @@ import misc
 import gnomeglade
 import melddoc
 import paths
+import stock
 
 ################################################################################
 #
@@ -392,18 +393,16 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     """
 
     UI_ACTIONS = (
-        ('edit_menu', None, _('_Edit')),
-
         ('version_menu', None, _('_Version')),
-            ('diff', None,
+            ('diff', stock.STOCK_VERSION_DIFF,
                 _('_Diff'), None, _('Compare versions')),
-            ('update', None,
+            ('update', stock.STOCK_VERSION_UPDATE,
                 _('_Update'), None, _('Update the local copy')),
-            ('commit', None,
+            ('commit', stock.STOCK_VERSION_COMMIT,
                 _('_Commit'), None, _('Commit changes')),
-            ('add', None,
+            ('add', stock.STOCK_VERSION_ADD,
                 _('_Add'), None, _('Add to control')),
-            ('remove', None,
+            ('remove', stock.STOCK_VERSION_REMOVE,
                 _('_Remove'), None, _('Remove from control')),
             ('delete', gtk.STOCK_DELETE,
                 _('_Delete'), None, _('Remove locally')),
@@ -415,13 +414,13 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 _('_Down'), '<Control>d', _('Next change')),
             ('flatten', gtk.STOCK_GOTO_BOTTOM,
                 _('_Flatten'), None, _('Flatten tree'), False),
-            ('view_modified', None,
+            ('view_modified', stock.STOCK_FILTER_MODIFIED,
                 _('_Modified'), None, _('View modified files'), True),
-            ('view_normal', None,
+            ('view_normal', stock.STOCK_FILTER_NORMAL,
                 _('_Normal'), None, _('View normal files'), False),
-            ('view_unknown', None,
+            ('view_unknown', stock.STOCK_FILTER_UNKNOWN,
                 _('Un_known'), None, _('View non version controlled files'), False),
-            ('view_ignored', None,
+            ('view_ignored', stock.STOCK_FILTER_IGNORED,
                 _('_Ignored'), None, _('View ignored items'), False),
             ('view_console', None,
                 _('_Console'), None, _('View command line output'), False),

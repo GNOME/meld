@@ -34,6 +34,7 @@ import cvsview
 import svnview
 import dirdiff
 import task
+import stock
 
 # optional
 sourceview_available = 0
@@ -576,9 +577,9 @@ class MeldApp(gnomeglade.GtkApp):
         ('help_menu', None, _('_Help')),
             ('help_contents', gtk.STOCK_HELP,
                 _('_Contents'), "F1", _('Users manual')),
-            ('help_reportbug', None,
+            ('help_reportbug', stock.STOCK_REPORTBUG,
                 _('_Report Bug'), None, _('Report a bug')),
-            ('help_about', None,
+            ('help_about', stock.STOCK_ABOUT,
                 _('_About'), None, _('About the application')),
     )
 
