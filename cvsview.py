@@ -184,7 +184,7 @@ class CommitDialog(gnomeglade.Dialog):
         self.widget.destroy()
 
 
-MODEL_PIXMAP, MODEL_ENTRY, MODEL_NAME, MODEL_COLOR, MODEL_STATUS, MODEL_REVISION, MODEL_TAG, MODEL_OPTIONS, MODEL_MAX = range(9)
+MODEL_PIXMAP, MODEL_ENTRY, MODEL_NAME, MODEL_COLOR, MODEL_LOCATION, MODEL_STATUS, MODEL_REVISION, MODEL_TAG, MODEL_OPTIONS, MODEL_MAX = range(10)
 
 ################################################################################
 #
@@ -227,6 +227,14 @@ class CvsView(gnomeglade.Component):
         tvc.add_attribute(rentext, "text", MODEL_NAME)
         tvc.add_attribute(rentext, "foreground", MODEL_COLOR)
         self.treeview.append_column(tvc)
+
+        tvc = gtk.TreeViewColumn("Location")
+        rentext = gtk.CellRendererText()
+        tvc.pack_start(rentext, 0)
+        tvc.add_attribute(rentext, "text", MODEL_LOCATION)
+        self.treeview.append_column(tvc)
+        self.treeview_column_location = tvc
+        self.treeview_column_location.set_visible(0)
 
         tvc = gtk.TreeViewColumn("Status")
         rentext = gtk.CellRendererText()
@@ -302,6 +310,16 @@ class CvsView(gnomeglade.Component):
             filtermask |= self.UNKNOWN_FILTER_MASK
         showable = self.filters[filtermask]
 
+        def update_file(i, f):
+            model.set_value(i, MODEL_NAME, f.name)
+            model.set_value(i, MODEL_COLOR, self.colors[f.cvs] )
+            model.set_value(i, MODEL_LOCATION, f.parent )
+            model.set_value(i, MODEL_STATUS, self.status[f.cvs])
+            model.set_value(i, MODEL_ENTRY, f)
+            model.set_value(i, MODEL_REVISION, f.rev)
+            model.set_value(i, MODEL_TAG, f.tag)
+            model.set_value(i, MODEL_OPTIONS, f.options)
+
         if self.button_recurse.get_active():
             def progressfunc():
                 self.emit("working-hard", 1)
@@ -310,18 +328,13 @@ class CvsView(gnomeglade.Component):
             files = filter(lambda x: not x.isdir, files)
             for f in files:
                 iter = model.append(me)
-                model.set_value(iter, MODEL_PIXMAP, self.image_file )
-                model.set_value(iter, MODEL_NAME, f.name )
-                model.set_value(iter, MODEL_COLOR, self.colors[f.cvs] )
-                model.set_value(iter, MODEL_STATUS, f.parent )
-                model.set_value(iter, MODEL_ENTRY, f)
+                update_file(iter, f)
             self.emit("working-hard", 0)
         else:
             allfiles = find(location)
             files = filter(showable, allfiles)
             for f in files:
                 iter = model.append(me)
-                model.set_value(iter, MODEL_NAME, f.name)
                 if f.isdir:
                     model.set_value(iter, MODEL_PIXMAP, self.image_dir )
                     child = model.append(iter)
@@ -331,12 +344,7 @@ class CvsView(gnomeglade.Component):
                         model.set_value(child, MODEL_NAME, "<no cvs files>" )
                 else:
                     model.set_value(iter, MODEL_PIXMAP, self.image_file )
-                model.set_value(iter, MODEL_COLOR, self.colors[f.cvs] )
-                model.set_value(iter, MODEL_STATUS, self.status[f.cvs])
-                model.set_value(iter, MODEL_ENTRY, f)
-                model.set_value(iter, MODEL_REVISION, f.rev)
-                model.set_value(iter, MODEL_TAG, f.tag)
-                model.set_value(iter, MODEL_OPTIONS, f.options)
+                update_file(iter, f)
         if len(files):
             child = model.iter_children(me)
             model.remove(child)
@@ -390,6 +398,7 @@ class CvsView(gnomeglade.Component):
 
 
     def on_button_recurse_toggled(self, button):
+        self.treeview_column_location.set_visible( self.button_recurse.get_active() )
         self.refresh()
     def on_button_modified_toggled(self, button):
         self.refresh()
