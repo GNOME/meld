@@ -47,12 +47,12 @@ class DiffTreeStore(gtk.TreeStore):
         for i in range(self.ntree):
             self.set_value(child, self.column_index(COL_PATH,i), None)
             self.set_value(child, self.column_index(COL_TEXT,i),
-                '<span foreground="#999999" style="italic">%s</span>' % text)
+                '<span foreground="#999999" style="italic">%s</span>' % misc.escape(text) )
         return child
 
     def add_error(self, parent, msg, pane):
         err = self.append(parent)
-        self.set_value(err, self.column_index(COL_TEXT,pane),
+        self.set_value(err, self.column_index(COL_TEXT, misc.escape(pane) ),
             '<span foreground="#ff0000" background="yellow" weight="bold">*** %s ***</span>' % msg )
         
     def value_paths(self, iter):
@@ -71,7 +71,9 @@ class DiffTreeStore(gtk.TreeStore):
             pixbuf_normal = pixbuf_file
             pixbuf_new = pixbuf_file_new
             pixbuf_modified = pixbuf_file_changed
-        name = os.path.basename( self.get_value(iter, self.column_index(COL_PATH,pane)) )
+        name = self.get_value(iter, self.column_index(COL_PATH,pane))
+        name = os.path.basename(name)
+        name = misc.escape(name)
         TEXT = self.column_index(COL_TEXT,pane)
         ICON = self.column_index(COL_ICON,pane)
         if state == STATE_NONE:
