@@ -1,95 +1,107 @@
-## python
-import gconf
-import gtk
+"""Module to help implement 'instant-apply' preferences.
 
-################################################################################
-#
-# Preferences
-#
-################################################################################
+Usage:
+
+import prefs
+defaults = {
+    "colour" : prefs.Value(prefs.STRING, "red")
+    "size" : prefs.Value(prefs.INT, 10)
+}
+
+p = prefs.Preferences("/apps/myapp", defaults)
+# use variables as if they were normal attributes.
+draw(p.colour, p.size)
+# settings are persistent. (saved in gconf)
+p.color = "blue"
+
+"""
+
 class Value(object):
+    """Represents a settable preference.
+    """
+
     __slots__ = ["type", "default", "current"]
+
     def __init__(self, t, d):
+        """Create a value.
+
+        t : a string : one of ("bool", "int", "string")
+        d : the default value, also the initial value
+        """
         self.type = t
         self.default = d
         self.current = d
 
-class ToggleValue(object):
-    __slots__ = ["index", "values"]
-    def __init__(self, i, v):
-        self.index = i
-        self.values = v
-    def getcurrent(self):
-        return self.values[ self.index.current ].current
-    current = property(getcurrent)
+# maybe fall back to ConfigParser if gconf is unavailable.
+import gconf
 
-################################################################################
-#
-# Preferences
-#
-################################################################################
+# types of values allowed
+BOOL = "bool"
+INT = "int"
+STRING = "string"
+
+##
+
 class Preferences:
-    def __init__(self):
-        self.__dict__["gconf"] = gconf.client_get_default()
-        self.__dict__["listeners"] = []
-        self.__dict__["data"] = {
-            "use_custom_font": Value("bool",0),
-            "custom_font": Value("string","monospace, 14"),
-            "tab_size": Value("int", 4),
-            "supply_newline": Value("bool",1),
-            "fallback_encoding": Value("string", "latin1"), 
-            "draw_style": Value("int",2),
-            "toolbar_style": Value("int",0),
-            "color_deleted" : Value("string", "DarkSeaGreen1"),
-            "color_changed" : Value("string", "LightSteelBlue1"),
-            "color_edited" : Value("string", "gray85"),
-            "color_conflict" : Value("string", "Pink")
-            }
-        self.gconf.add_dir("/apps/meld", gconf.CLIENT_PRELOAD_NONE)
-        self.gconf.notify_add("/apps/meld", self.on_preference_changed)
-        for key, value in self.data.items():
-            gval = self.gconf.get_without_default("/apps/meld/%s" % key)
+    """Persistent preferences object.
+    """
+
+    def __init__(self, rootkey, initial):
+        """Create a preferences object.
+
+        Settings are initialised with 'initial' and then overriden
+        from values in the gconf database if available.
+
+        rootkey : the root gconf key where the values will be stored
+        initial : a dictionary of string to Value objects.
+        """
+        self.__dict__["_gconf"] = gconf.client_get_default()
+        self.__dict__["_listeners"] = []
+        self.__dict__["_rootkey"] = rootkey
+        self.__dict__["_prefs"] = initial
+        self._gconf.add_dir(rootkey, gconf.CLIENT_PRELOAD_NONE)
+        self._gconf.notify_add(rootkey, self.on_preference_changed)
+        for key, value in self._prefs.items():
+            gval = self._gconf.get_without_default("%s/%s" % (rootkey, key) )
             if gval != None:
                 value.current = getattr( gval, "get_%s" % value.type )()
-            #print key, value.current, gval
+
     def __getattr__(self, attr):
-        #print "get", attr, self.data[attr].current
-        return self.data[attr].current
+        return self._prefs[attr].current
+
     def __setattr__(self, attr, val):
-        value = self.data[attr]
+        value = self._prefs[attr]
         if value.current != val:
-            #print "REALSET", attr, val, value.current
             value.current = val
-            setfunc = getattr(self.gconf, "set_%s" % value.type)
-            setfunc("/apps/meld/%s" % attr, val)
-            for l in self.listeners:
+            setfunc = getattr(self._gconf, "set_%s" % value.type)
+            setfunc("%s/%s" % (self._rootkey, attr), val)
+            for l in self._listeners:
                 l(attr,val)
-        else:
-            #print "fakeset", attr, val, value.current
-            pass
+
     def on_preference_changed(self, client, timestamp, entry, extra):
         attr = entry.key[ entry.key.rindex("/")+1 : ]
-        value = self.data[attr]
-        val   = getattr(entry.value, "get_%s" % value.type)()
-        setattr( self, attr, val)
+        try:
+            valuestruct = self._prefs[attr]
+        except KeyError: # unknown key, we don't care about it
+            pass
+        else:
+            if entry.value != None: # value has changed
+                newval = getattr(entry.value, "get_%s" % valuestruct.type)()
+                setattr( self, attr, newval)
+            else: # value has been deleted
+                setattr( self, attr, valuestruct.default )
+
     def notify_add(self, callback):
-        self.listeners.append(callback)
+        """Register a callback to be called when a preference changes.
+
+        callback : a callable object which take two parameters, 'attr' the
+                   name of the attribute changed and 'val' the new value.
+        """
+        self._listeners.append(callback)
+
     def dump(self):
-        #print self
-        for k,v in self.data.items():
-            print v
-            #print k, v.current
-    def get_current_font(self):
-        if self.use_custom_font:
-            return self.custom_font
-        else:
-            return self.gconf.get_string('/desktop/gnome/interface/monospace_font_name') or "Monospace 10"
-    def get_toolbar_style(self):
-        if self.toolbar_style == 0:
-            style = self.gconf.get_string('/desktop/gnome/interface/toolbar_style')
-            style = {"both":gtk.TOOLBAR_BOTH, "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
-                    "icons":gtk.TOOLBAR_ICONS, "text":gtk.TOOLBAR_TEXT}[style]
-        else:
-            style = self.toolbar_style - 1
-        return style
+        """Print all preferences.
+        """
+        for k,v in self._prefs.items():
+            print k, v.type, v.current
 
