@@ -13,10 +13,10 @@ Source: http://prdownloads.sourceforge.net/meld/%{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/root-%{name}-%{version}
 Prefix: %{_prefix}
 
-BuildRequires: pygtk2-devel >= 1.99.14, gnome-python2 >= 1.99.14
+BuildRequires: pygtk2-devel >= 1.99.15, gnome-python2 >= 1.99.15
 BuildRequires: pyorbit-devel >= 1.99
 
-Requires: pygtk2 >= 1.99.14, gnome-python2 >= 1.99, gnome-python2-canvas
+Requires: pygtk2 >= 1.99.15, gnome-python2 >= 1.99, gnome-python2-canvas
 Requires: pygtk2-libglade
 
 BuildArch: noarch
