@@ -52,7 +52,6 @@ msgstr ""
 #. known
 #. ignored
 #: cvsview.py:173
-#, python-format
 msgid ""
 "Error converting to a regular expression\n"
 "The pattern was '%s'\n"
@@ -96,7 +95,7 @@ msgstr "Naam"
 
 #: cvsview.py:367
 msgid "Location"
-msgstr "Locatie"
+msgstr "Lokatie"
 
 #: cvsview.py:368
 msgid "Status"
@@ -117,13 +116,11 @@ msgstr "Opties"
 #. is file still extant in other pane?
 #. nope its gone
 #: cvsview.py:408 dirdiff.py:354
-#, python-format
 msgid "[%s] Scanning"
 msgstr "[%s] Zoeken"
 
 #. depth first
 #: cvsview.py:435 dirdiff.py:362
-#, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Zoeken %s"
 
@@ -135,12 +132,10 @@ msgstr "(Leeg)"
 
 #. just the root
 #: cvsview.py:483
-#, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Ophalen verschillen"
 
 #: cvsview.py:490
-#, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Verwerken wijzigingen"
 
@@ -236,23 +231,19 @@ msgstr "Selecteer eerst een aantal bestanden."
 #.
 #. ###############################################################################
 #: dirdiff.py:251 dirdiff.py:266
-#, python-format
 msgid "Error converting pattern '%s' to regular expression"
 msgstr "Fout bij het converteren van patroon '%s' naar reguliere expressie"
 
 #: dirdiff.py:276
-#, python-format
 msgid "Hide %s"
 msgstr "%s verbergen"
 
 #. map canonical names to realnames
 #: dirdiff.py:395
-#, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "'%s' verborgen door '%s'"
 
 #: dirdiff.py:401
-#, python-format
 msgid ""
 "You are running a case insensitve comparison on a case sensitive filesystem. "
 "Some files are not visible:\n"
@@ -265,13 +256,11 @@ msgstr ""
 #. then directories and files
 #. directory is empty, add a placeholder
 #: dirdiff.py:445
-#, python-format
 msgid "[%s] Done"
 msgstr "[%s] Gedaan"
 
 #. filter(lambda x: x.name!=None, sel):
 #: dirdiff.py:503
-#, python-format
 msgid ""
 "'%s' exists.\n"
 "Overwrite?"
@@ -280,7 +269,6 @@ msgstr ""
 "Overschrijven?"
 
 #: dirdiff.py:510
-#, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
 "\n"
@@ -293,7 +281,6 @@ msgstr ""
 #. reverse so paths dont get changed
 #. xxx
 #: dirdiff.py:528
-#, python-format
 msgid ""
 "'%s' is a directory.\n"
 "Remove recusively?"
@@ -302,7 +289,6 @@ msgstr ""
 "Recursief verwijderen?"
 
 #: dirdiff.py:534
-#, python-format
 msgid ""
 "Error removing %s\n"
 "\n"
@@ -379,7 +365,6 @@ msgstr ""
 #. tofind is utf-8 encoded
 #. as is buffer
 #: filediff.py:380
-#, python-format
 msgid ""
 "Regular expression error\n"
 "'%s'"
@@ -388,12 +373,10 @@ msgstr ""
 "'%s'"
 
 #: filediff.py:392
-#, python-format
 msgid "The regular expression '%s' was not found."
 msgstr "De reguliere expressie '%s' is niet gevonden."
 
 #: filediff.py:394
-#, python-format
 msgid "The text '%s' was not found."
 msgstr "De tekst '%s' is niet gevonden."
 
@@ -401,17 +384,14 @@ msgstr "De tekst '%s' is niet gevonden."
 #. text buffer loading/saving
 #.
 #: filediff.py:433
-#, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Instellen num panes"
 
 #: filediff.py:440
-#, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Openen bestanden"
 
 #: filediff.py:456
-#, python-format
 msgid ""
 "Could not open '%s' for reading.\n"
 "\n"
@@ -424,12 +404,10 @@ msgstr ""
 "%s"
 
 #: filediff.py:460
-#, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Lezen bestanden"
 
 #: filediff.py:475
-#, python-format
 msgid ""
 "Could not read from '%s'.\n"
 "\n"
@@ -440,7 +418,6 @@ msgstr ""
 "Geprobeerde coderingen %s"
 
 #: filediff.py:480
-#, python-format
 msgid ""
 "Could not read from '%s'.\n"
 "\n"
@@ -453,7 +430,6 @@ msgstr ""
 "%s"
 
 #: filediff.py:500
-#, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Berekenen verschillen"
 
@@ -461,12 +437,10 @@ msgstr "[%s] Berekenen verschillen"
 #. for chunk in self.linediffer.all_changes_in_range(self._get_texts(), range0[0], range0[1], range1[0], range1[1]):
 #. print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
 #: filediff.py:592
-#, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Kies een naam voor buffer %i"
 
 #: filediff.py:603
-#, python-format
 msgid ""
 "\"%s\" exists!\n"
 "Overwrite?"
@@ -475,7 +449,6 @@ msgstr ""
 "Overschrijven?"
 
 #: filediff.py:617
-#, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
 "\n"
@@ -486,7 +459,6 @@ msgstr ""
 "Welk formaat wilt u gebruiken?"
 
 #: filediff.py:634
-#, python-format
 msgid ""
 "Error writing to %s\n"
 "\n"
@@ -500,7 +472,6 @@ msgstr ""
 #. refresh, _queue_refresh
 #.
 #: filediff.py:693
-#, python-format
 msgid ""
 "Refreshing will discard changes in:\n"
 "%s\n"
@@ -558,7 +529,6 @@ msgstr "Door incompatibiliteit in API wijzigingen kunnen sommige functies niet w
 #.
 #. ###############################################################################
 #: meldapp.py:56
-#, python-format
 msgid "Browse %s"
 msgstr "%s doorbladeren"
 
@@ -724,7 +694,6 @@ msgstr ""
 "Reporteer bugs aan steve9000@users.sourceforge.net.\n"
 
 #: meldapp.py:814
-#, python-format
 msgid ""
 "Meld %s\n"
 "Written by Stephen Kennedy <steve9000@users.sf.net>"
@@ -738,7 +707,6 @@ msgstr ""
 #.
 #. ###############################################################################
 #: meldapp.py:861
-#, python-format
 msgid "`%s' is not a directory or file, cannot open cvs view"
 msgstr "`%s' is niet een map of bestand, kan cvs weergave niet openen"
 
@@ -759,7 +727,6 @@ msgid "folder"
 msgstr "map"
 
 #: meldapp.py:889
-#, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Ongeldig aantal argumenten (Was %i)"
 
@@ -966,7 +933,7 @@ msgstr "Doorvoeren"
 
 #: glade2/cvsview.strings:20
 msgid "Update"
-msgstr "Vernieuwen"
+msgstr "Verversen"
 
 #: glade2/cvsview.strings:21 glade2/cvsview.strings:29
 msgid "_Update"
@@ -978,7 +945,7 @@ msgstr "Toevoegen aan CVS"
 
 #: glade2/cvsview.strings:23 glade2/cvsview.strings:32
 msgid "_Add"
-msgstr "Toevoegen"
+msgstr "_Toevoegen"
 
 #: glade2/cvsview.strings:24
 msgid "Remove from CVS"
@@ -986,7 +953,7 @@ msgstr "Verwijderen van CVS"
 
 #: glade2/cvsview.strings:25 glade2/cvsview.strings:34
 msgid "_Remove"
-msgstr "Ve_rwijderen"
+msgstr "_Verwijderen"
 
 #: glade2/cvsview.strings:26
 msgid "Delete locally"
@@ -1003,7 +970,7 @@ msgstr "*"
 
 #: glade2/cvsview.strings:31
 msgid "_Edit"
-msgstr "B_ewerken"
+msgstr "Be_werken"
 
 #: glade2/cvsview.strings:33
 msgid "Add _Binary"
@@ -1214,7 +1181,7 @@ msgstr "Opslaan bestand 3"
 
 #: glade2/meldapp.strings:17
 msgid "_Contents"
-msgstr "Inhoud"
+msgstr "_Inhoud"
 
 #: glade2/meldapp.strings:18
 msgid "Report _Bug"
