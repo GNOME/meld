@@ -438,6 +438,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return None
 
     def on_find_activate(self, *args):
+        self.keymask = 0
+        self.queue_draw()
         if self.find_dialog:
             self.find_dialog.widget.present()
         else:
