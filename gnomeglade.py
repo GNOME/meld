@@ -105,7 +105,7 @@ class GtkApp(Base):
     def mainloop(self):
         """Enter the gtk main loop.
         """
-        gtk.mainloop()
+        gtk.main()
 
     def quit(*args):
         """Signal the gtk main loop to quit.
