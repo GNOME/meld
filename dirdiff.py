@@ -76,9 +76,11 @@ def _files_same(lof, regexes):
         return 1
     elif arefiles.count(0): # mixture
         return 0
-    # any obvious differences
-    if len(regexes) == 0 and all_same(sigs) == 0:
-        return 0
+    # if no substitutions look for different sizes
+    if len(regexes) == 0:
+        for s in sigs[1:]:
+            if sigs[0].size != s.size:
+                return 0
     # try cache
     try:
         cache = _cache[ lof ]
