@@ -150,3 +150,9 @@ def load_pixbuf(fname, size=0):
         image = image.scale_simple(size, int(aspect*size), 2)
     return image
 
+def url_show(url):
+    return gnome.url_show(url)
+
+def FileEntry(*args):
+    return gnome.ui.FileEntry(*args)
+

@@ -21,8 +21,6 @@ import os
 # gnome
 import gtk
 import gtk.glade
-import gnome
-import gnome.ui
 
 # project
 import paths
@@ -53,7 +51,7 @@ class BrowseFileDialog(gnomeglade.Component):
         self.numfile = len(labels)
         self.callback = callback
         self.labels = map(gtk.Label, labels )
-        self.entries = map( lambda x:gnome.ui.FileEntry("fileentry", _("Browse %s") % x), labels)
+        self.entries = [ gnomeglade.FileEntry("fileentry", _("Browse %s") % x) for x in labels ]
         for i in range(self.numfile):
             self.labels[i].set_justify(gtk.JUSTIFY_RIGHT)
             self.table.attach(self.labels[i], 0, 1, i, i+1, gtk.SHRINK)
@@ -687,13 +685,13 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (help)
     #
     def on_menu_meld_home_page_activate(self, button):
-        gnome.url_show("http://meld.sourceforge.net")
+        gnomeglade.url_show("http://meld.sourceforge.net")
 
     def on_menu_help_bug_activate(self, button):
-        gnome.url_show("http://sourceforge.net/tracker/?group_id=53725")
+        gnomeglade.url_show("http://sourceforge.net/tracker/?group_id=53725")
 
     def on_menu_users_manual_activate(self, button):
-        gnome.url_show("file:///"+os.path.abspath(paths.doc_dir("manual.html") ) )
+        gnomeglade.url_show("file:///"+os.path.abspath(paths.doc_dir("manual.html") ) )
 
     def on_menu_about_activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
