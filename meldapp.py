@@ -30,6 +30,7 @@ import misc
 import melddoc
 import filediff
 import cvsview
+import svnview
 import dirdiff
 import task
 
@@ -40,37 +41,52 @@ developer = 0
 
 ################################################################################
 #
-# BrowseFileDialog
+# NewDocDialog
 #
 ################################################################################
 
-class BrowseFileDialog(gnomeglade.Component):
-    def __init__(self, parentapp, labels, callback, isdir=0):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "browsefile")
-        self.widget.set_transient_for(parentapp.widget)
-        self.numfile = len(labels)
-        self.callback = callback
-        self.labels = map(gtk.Label, labels )
-        self.entries = [ gnomeglade.FileEntry("fileentry", _("Browse %s") % x) for x in labels ]
-        for i in range(self.numfile):
-            self.labels[i].set_justify(gtk.JUSTIFY_RIGHT)
-            self.table.attach(self.labels[i], 0, 1, i, i+1, gtk.SHRINK)
-            self.entries[i].set_directory_entry(isdir)
-            self.entries[i].connect("activate", self.on_activate)
-            self.table.attach(self.entries[i] , 1, 2, i, i+1)
-        self.widget.show_all()
+class NewDocDialog(gnomeglade.Component):
 
-    def on_activate(self, entry):
-        i = self.entries.index(entry)
-        if i == self.numfile - 1:
-            self.button_ok.activate()
-        else:
-            self.entries[i+1].gtk_entry().grab_focus()
+    TYPE = misc.struct(DIFF2=0, DIFF3=1, DIR2=2, DIR3=3, CVS=4, SVN=6)
+         
+    def __init__(self, parentapp, type):
+        self.parentapp = parentapp
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
+        self._map_widgets_into_lists( ("fileentry", "direntry", "cvsentry", "svnentry", "three_way_compare") )
+        self.entrylists = self.fileentry, self.direntry, self.cvsentry, self.svnentry
+        self.widget.set_transient_for(parentapp.widget)
+        cur_page = type // 2
+        self.notebook.set_current_page( cur_page )
+        if cur_page < 2:
+            self.three_way_compare[cur_page].set_active( (type+1) % 2 )
+            self.three_way_compare[cur_page].set_active( (type+0) % 2 )
+        self.widget.show()
+
+    def on_entry_activate(self, entry):
+        for el in self.entrylists:
+            if entry in el:
+                i = el.index(entry)
+                if i == len(el) - 1:
+                    self.button_ok.grab_focus()
+                else:
+                    el[i+1].gtk_entry().grab_focus()
+
+    def on_three_way_toggled(self, button):
+        page = self.three_way_compare.index(button)
+        self.entrylists[page][0].set_sensitive( button.get_active() )
+        self.entrylists[page][ not button.get_active() ].gtk_entry().grab_focus()
 
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_OK:
-            files = [e.get_full_path(0) or "" for e in self.entries]
-            self.callback(files)
+            page = self.notebook.get_current_page()
+            paths = [ e.get_full_path(0) or "" for e in self.entrylists[page] ]
+            if page < 2 and not self.three_way_compare[page].get_active():
+                paths.pop(0)
+            methods = (self.parentapp.append_filediff,
+                       self.parentapp.append_dirdiff,
+                       self.parentapp.append_cvsview,
+                       self.parentapp.append_svnview )
+            methods[page](paths)
         self.widget.destroy()
 
 ################################################################################
@@ -209,6 +225,7 @@ class PreferencesDialog(gnomeglade.Component):
             self.radiobutton_gnome_font.set_active(1)
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
+        self.option_wrap_lines.set_history( self.prefs.edit_wrap_lines )
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
         self.editor_command[ self.editor_radio_values.get(self.prefs.edit_command_type, "internal") ].set_active(1)
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
@@ -256,6 +273,8 @@ class PreferencesDialog(gnomeglade.Component):
             self.prefs.use_custom_font = custom
     def on_spinbutton_tabsize_changed(self, spin):
         self.prefs.tab_size = int(spin.get_value())
+    def on_option_wrap_lines_changed(self, option):
+        self.prefs.edit_wrap_lines = option.get_history()
     def on_checkbutton_supply_newline_toggled(self, check):
         self.prefs.supply_newline = check.get_active()
     def on_editor_command_toggled(self, radio):
@@ -315,48 +334,18 @@ class PreferencesDialog(gnomeglade.Component):
 
 class MeldStatusBar(object):
 
-    def __init__(self, appbar):
-        self.appbar = appbar
-        self.statusmessages = []
-        self.statuscount = []
-        self.appbar.set_default("OK")
+    def __init__(self, task_progress, task_status, doc_status):
+        self.task_progress = task_progress
+        self.task_status = task_status
+        self.doc_status = doc_status
 
-    def add_status(self, status, timeout=4000, allow_duplicate=0):
-        if not allow_duplicate:
-            try:
-                dup = self.statusmessages.index(status)
-            except ValueError:
-                pass
-            else:
-                self.statuscount[dup] += 1
-                gtk.timeout_add(timeout, lambda x: self.remove_status(status), 0)
-                return
+    def set_task_status(self, status):
+        self.task_status.pop(1)
+        self.task_status.push(1, status)
 
-        self.statusmessages.append(status)
-        message = self._get_status_message()
-        if len(self.statusmessages)==1:
-            self.appbar.push(message)
-        else:
-            self.appbar.set_status(message)
-        if timeout:
-            gtk.timeout_add(timeout, lambda x: self.remove_status(status), 0)
-        self.statuscount.append(1)
-
-    def _get_status_message(self):
-        return "[%s]" % "] [".join(self.statusmessages)
-
-    def remove_status(self, status):
-        i = self.statusmessages.index(status)
-        if self.statuscount[i] == 1:
-            self.statusmessages.pop(i)
-            self.statuscount.pop(i)
-            if len(self.statusmessages)==0:
-                self.appbar.pop()
-            else:
-                message = self._get_status_message()
-                self.appbar.set_status(message)
-        else:
-            self.statuscount[i] -= 1
+    def set_doc_status(self, status):
+        self.doc_status.pop(1)
+        self.doc_status.push(1, status)
 
 ################################################################################
 #
@@ -405,6 +394,8 @@ class MeldNewMenu(gnomeglade.Component):
         self.parent.on_menu_new_dir3_activate()
     def on_menu_new_cvsview_activate(self, *extra):
         self.parent.on_menu_new_cvsview_activate()
+    def on_menu_new_svnview_activate(self, *extra):
+        self.parent.on_menu_new_svnview_activate()
 
 ################################################################################
 #
@@ -416,6 +407,7 @@ class MeldPreferences(prefs.Preferences):
         "use_custom_font": prefs.Value(prefs.BOOL,0),
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "tab_size": prefs.Value(prefs.INT, 4),
+        "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "edit_command_type" : prefs.Value(prefs.STRING, "internal"), #internal, gnome, custom
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "supply_newline": prefs.Value(prefs.BOOL,1),
@@ -523,7 +515,7 @@ class MeldApp(gnomeglade.GnomeApp):
         gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
         self._map_widgets_into_lists( ["menu_file_save_file", "settings_drawstyle"] )
         self.popup_new = MeldNewMenu(self)
-        self.statusbar = MeldStatusBar(self.appbar)
+        self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
         self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
             self.toolbar_magic.hide()
@@ -539,18 +531,18 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_idle(self):
         ret = self.scheduler.iteration()
         if ret:
-            if type(ret) == type(""):
-                self.appbar.set_status(ret)
+            if isinstance(ret, basestring):
+                self.statusbar.set_task_status(ret)
             elif type(ret) == type(0.0):
-                self.appbar.get_progress().set_fraction(ret)
+                self.statusbar.task_progress.set_fraction(ret)
             else:
-                self.appbar.get_progress().pulse()
+                self.statusbar.task_progress.pulse()
         else:
-                self.appbar.pop()
-                self.appbar.get_progress().set_fraction(0)
+            self.statusbar.task_progress.set_fraction(0)
         if self.scheduler.tasks_pending():
             return 1
         else:
+            self.statusbar.set_task_status("")
             self.idle_hooked = 0
             return 0
 
@@ -579,6 +571,8 @@ class MeldApp(gnomeglade.GnomeApp):
             self.menu_file_save_file[i].set_sensitive(sensitive)
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title( nbl.label.get_text() + " - Meld")
+        self.statusbar.set_doc_status("")
+        newdoc.on_switch_event()
         self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook_label_changed(self, component, text):
@@ -597,19 +591,17 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (file)
     #
     def on_menu_new_diff2_activate(self, *extra):
-        BrowseFileDialog(self, [_("Original File"), _("Modified File")], self.append_filediff)
-
+        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
     def on_menu_new_diff3_activate(self, *extra):
-        BrowseFileDialog(self, [_("Other Changes"), _("Common Ancestor"), _("Local Changes")], self.append_filediff )
-
+        NewDocDialog(self, NewDocDialog.TYPE.DIFF3)
     def on_menu_new_dir2_activate(self, *extra):
-        BrowseFileDialog(self, [_("Original Directory"), _("Modified Directory")], self.append_dirdiff, isdir=1)
-
+        NewDocDialog(self, NewDocDialog.TYPE.DIR2)
     def on_menu_new_dir3_activate(self, *extra):
-        BrowseFileDialog(self, [_("Other Directory"), _("Original Directory"), _("Modified Directory")], self.append_dirdiff, isdir=1)
-
+        NewDocDialog(self, NewDocDialog.TYPE.DIR3)
     def on_menu_new_cvsview_activate(self, *extra):
-        BrowseFileDialog(self,[_("Root CVS Directory")], self.append_cvsview, isdir=1)
+        NewDocDialog(self, NewDocDialog.TYPE.CVS)
+    def on_menu_new_svnview_activate(self, *extra):
+        NewDocDialog(self, NewDocDialog.TYPE.SVN)
 
     def on_menu_save_activate(self, menuitem):
         try:
@@ -742,6 +734,7 @@ class MeldApp(gnomeglade.GnomeApp):
         page.connect("label-changed", self.on_notebook_label_changed)
         page.connect("file-changed", self.on_file_changed)
         page.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
+        page.connect("status-changed", lambda junk,arg: self.statusbar.set_doc_status(arg) )
 
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
@@ -759,11 +752,31 @@ class MeldApp(gnomeglade.GnomeApp):
         self._append_page(doc, "tree-file-normal.png")
         doc.set_files(files)
 
+    def append_diff(self, paths):
+        if 0 not in [os.path.isfile(p) for p in paths]:
+            self.append_filediff(paths)
+        elif 0 not in [os.path.isdir(p) for p in paths]:
+            self.append_dirdiff(paths)
+        else:
+            m = _("Cannot compare a mixture of files and directories.\n")
+            for p in paths:
+                m += "\n".join( ["(%s)\t`%s'" % (os.path.isfile(p) and _("file") or _("folder"), p) for p in paths] )
+            misc.run_dialog( m,
+                    parent = self,
+                    buttonstype = gtk.BUTTONS_OK)
+
     def append_cvsview(self, locations):
         assert len(locations) in (1,)
         location = locations[0]
         doc = cvsview.CvsView(self.prefs)
         self._append_page(doc, "cvs-icon.png")
+        doc.set_location(location)
+
+    def append_svnview(self, locations):
+        assert len(locations) in (1,)
+        location = locations[0]
+        doc = svnview.CvsView(self.prefs)
+        self._append_page(doc, "svn-icon.png")
         doc.set_location(location)
 
     #
@@ -854,7 +867,7 @@ def main():
             app.scheduler.add_task(cleanup)
             app.scheduler.add_scheduler(doc.scheduler)
             doc.set_location( os.path.dirname(a) )
-            doc.connect("create-diff", lambda obj,arg: app.append_filediff(arg) )
+            doc.connect("create-diff", lambda obj,arg: app.append_diff(arg) )
             doc.run_cvs_diff([a])
         else:
             app.usage( _("`%s' is not a directory or file, cannot open cvs view") % arg[0])
@@ -872,7 +885,7 @@ def main():
         if not done:
             arefiles = map( os.path.isfile, arg)
             if 0 not in arefiles:
-                app.append_filediff( arg )
+                app.append_diff( arg )
                 done = 1
         if not done:
             aredirs = map( os.path.isdir, arg)
