@@ -431,9 +431,9 @@ class MeldPreferences(prefs.Preferences):
                                               "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
                                               "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
         "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$[^:]+:[^\$]+\$\n" + \
-                                              "C comment\t0\t/\*(?:[^\*]|(?:\*(?!/)))+\*/\n" + \
+                                              "C comment\t0\t/\*[^*]*\*+([^/*][^*]*\*+)*/\n" + \
                                               "C++ comment\t0\t//.*\n" + \
-                                              "Script Comment\t0\t#.*")
+                                              "Script comment\t0\t#.*")
     }
 
     def __init__(self):
