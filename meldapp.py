@@ -841,7 +841,7 @@ def main():
     app = MeldApp()
     arg = sys.argv[1:]
 
-    if len(sys.argv) == 1:
+    if len(arg) == 0:
         pass
 
     elif len(arg) == 1:
