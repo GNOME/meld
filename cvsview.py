@@ -311,7 +311,7 @@ class CvsView(gnomeglade.Component):
     def on_button_update_clicked(self, object):
         self._command("cvs update -dP")
     def on_button_commit_clicked(self, object):
-        self._command("cvs commit")
+        self._command("cvs commit -m ''")
     def on_button_add_clicked(self, object):
         self._command("cvs add")
     def on_button_remove_clicked(self, object):
