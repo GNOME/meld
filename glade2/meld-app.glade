@@ -42,12 +42,12 @@
 		      <child>
 			<widget class="GtkImageMenuItem" id="menu_file_newdiff2">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">New Diff2</property>
+			  <property name="label" translatable="yes">Two-way Diff</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_new_diff2_activate" last_modification_time="Fri, 21 Jun 2002 13:24:30 GMT"/>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image72">
+			    <widget class="GtkImage" id="image105">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-new</property>
 			      <property name="icon_size">1</property>
@@ -63,14 +63,56 @@
 		      <child>
 			<widget class="GtkImageMenuItem" id="menu_file_newdiff3">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">New Diff3</property>
+			  <property name="label" translatable="yes">Three-way Diff</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_new_diff3_activate" last_modification_time="Fri, 21 Jun 2002 13:24:30 GMT"/>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image73">
+			    <widget class="GtkImage" id="image106">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-new</property>
+			      <property name="icon_size">1</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			  </child>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkImageMenuItem" id="menu_file_directory_diff">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Directory Diff</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_directory_diff_activate" last_modification_time="Wed, 25 Sep 2002 12:04:04 GMT"/>
+
+			  <child internal-child="image">
+			    <widget class="GtkImage" id="image107">
+			      <property name="visible">True</property>
+			      <property name="stock">gtk-open</property>
+			      <property name="icon_size">1</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			  </child>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkImageMenuItem" id="menu_file_cvs_diff">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">CVS diff</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_menu_file_cvs_diff_activate" last_modification_time="Wed, 25 Sep 2002 12:04:04 GMT"/>
+
+			  <child internal-child="image">
+			    <widget class="GtkImage" id="image108">
+			      <property name="visible">True</property>
+			      <property name="stock">gtk-open</property>
 			      <property name="icon_size">1</property>
 			      <property name="xalign">0.5</property>
 			      <property name="yalign">0.5</property>
@@ -88,7 +130,7 @@
 			  <property name="use_underline">True</property>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image74">
+			    <widget class="GtkImage" id="image109">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-save</property>
 			      <property name="icon_size">1</property>
@@ -110,7 +152,7 @@
 				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image75">
+				    <widget class="GtkImage" id="image110">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -131,7 +173,7 @@
 				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image76">
+				    <widget class="GtkImage" id="image111">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -152,7 +194,7 @@
 				  <signal name="activate" handler="on_save_file_activate" last_modification_time="Wed, 17 Jul 2002 19:02:46 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image77">
+				    <widget class="GtkImage" id="image112">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -220,6 +262,12 @@
 		      </child>
 
 		      <child>
+			<widget class="GtkMenuItem" id="separator5">
+			  <property name="visible">True</property>
+			</widget>
+		      </child>
+
+		      <child>
 			<widget class="GtkImageMenuItem" id="cut1">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_CUT_ITEM</property>
@@ -253,35 +301,14 @@
 		    <widget class="GtkMenu" id="menuitem_help_menu">
 
 		      <child>
-			<widget class="GtkImageMenuItem" id="menu_help_meld_home_page">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Meld _Home Page</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_menu_help_meld_home_page_activate" last_modification_time="Thu, 18 Jul 2002 22:15:56 GMT"/>
-
-			  <child internal-child="image">
-			    <widget class="GtkImage" id="image78">
-			      <property name="visible">True</property>
-			      <property name="stock">gtk-home</property>
-			      <property name="icon_size">1</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
-			    </widget>
-			  </child>
-			</widget>
-		      </child>
-
-		      <child>
 			<widget class="GtkImageMenuItem" id="menu_help_users_manual">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Users _Manual</property>
+			  <property name="label" translatable="yes">_Contents</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_menu_help_users_manual" last_modification_time="Thu, 18 Jul 2002 22:16:55 GMT"/>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image79">
+			    <widget class="GtkImage" id="image113">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-help</property>
 			      <property name="icon_size">1</property>
@@ -334,7 +361,7 @@
 		<widget class="button" id="toolbar_new">
 		  <property name="visible">True</property>
 		  <property name="tooltip" translatable="yes">New File</property>
-		  <property name="label" translatable="yes">Diff _2</property>
+		  <property name="label" translatable="yes">Two-way</property>
 		  <property name="use_underline">True</property>
 		  <property name="stock_pixmap">gtk-new</property>
 		  <signal name="clicked" handler="on_new_diff2_activate" last_modification_time="Fri, 21 Jun 2002 11:25:51 GMT"/>
@@ -344,7 +371,7 @@
 	      <child>
 		<widget class="button" id="button8">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Diff _3</property>
+		  <property name="label" translatable="yes">Three-way</property>
 		  <property name="use_underline">True</property>
 		  <property name="stock_pixmap">gtk-new</property>
 		  <signal name="clicked" handler="on_new_diff3_activate" last_modification_time="Fri, 21 Jun 2002 11:26:20 GMT"/>
@@ -354,7 +381,7 @@
 	      <child>
 		<widget class="button" id="button16">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">DirDiff</property>
+		  <property name="label" translatable="yes">Directory</property>
 		  <property name="use_underline">True</property>
 		  <property name="stock_pixmap">gtk-open</property>
 		  <signal name="clicked" handler="on_new_dirdiff_activate" last_modification_time="Mon, 26 Aug 2002 00:02:42 GMT"/>
@@ -364,7 +391,7 @@
 	      <child>
 		<widget class="button" id="button14">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_CvsView</property>
+		  <property name="label" translatable="yes">_CVS</property>
 		  <property name="use_underline">True</property>
 		  <property name="stock_pixmap">gtk-open</property>
 		  <signal name="clicked" handler="on_new_cvsview_activate" last_modification_time="Sat, 27 Jul 2002 19:37:05 GMT"/>

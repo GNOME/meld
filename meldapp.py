@@ -3,6 +3,15 @@
 # system
 import os
 
+# recent versions of python-gnome include pygtk
+# older versions don't have it.
+try:
+    import pygtk
+except ImportError:
+    pass
+else:
+    pygtk.require("2.0")
+
 # gnome
 import gtk
 import gtk.glade
