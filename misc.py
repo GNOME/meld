@@ -3,6 +3,7 @@
 import errno
 import sys
 import os
+import select
 
 ################################################################################
 #
@@ -88,20 +89,23 @@ def all(o):
 # system
 #
 ################################################################################
-def read_pipe(command):
-    p = os.popen(command)
-    r = []
-    while 1:
-        try:
-            l = p.read()
-            if l != "":
-                r.append(l)
+def read_pipe(command, callback=None):
+    pipe = os.popen(command)
+    bits = []
+    while len(bits)==0 or bits[-1]!="":
+        state = select.select([pipe], [], [pipe], 0.1)
+        if len(state[0])==0:
+            if len(state[2])==0:
+                if callback:
+                    callback()
             else:
-                break
-        except IOError, e:
-            if e.errno != errno.EINTR:
-                raise
-    return "".join(r)
+                raise "Error reading pipe"
+        else:
+            try:
+                bits.append( pipe.read(4096) ) # get buffer size
+            except IOError:
+                break # ick need to fix
+    return "".join(bits)
 
 ################################################################################
 #
