@@ -1,10 +1,28 @@
 
-PO:=$(wildcard *.po)
-GMO:=$(PO:.po=/LC_MESSAGES/meld.mo)
-DIRS:=$(PO:.po=/LC_MESSAGES)
+prefix := $(shell grep "^prefix" ../GNUmakefile | cut -d = -f 2)
+localedir := $(prefix)/share/locale
 
-.PHONY:all
-all: $(DIRS) $(GMO)
+PO:=$(wildcard *.po)
+MO:=$(PO:.po=/LC_MESSAGES/meld.mo)
+DIRS:=$(PO:.po=/LC_MESSAGES)
+INST_MO:=$(addprefix $(localedir)/,$(MO))
+
+.PHONY : all
+all : $(DIRS) $(MO)
+
+.PHONY : install
+install : all $(INST_MO)
+
+.PHONY : uninstall
+uninstall :
+	rm -rf $(INST_MO)
+
+.PHONY : clean
+clean :
+	rm -rf $(PO:.po=)
+
+$(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo
+	install -D -m 644 $^ $@
 
 %/LC_MESSAGES/meld.mo : %.po
 	msgfmt -o $@ $*.po
