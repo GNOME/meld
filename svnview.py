@@ -109,22 +109,13 @@ def _lookup_cvs_files(dirs, files):
             if(os.path.basename(name) != os.path.basename(directory)):
                 retdirs.append( Dir(path,name,state) )
         else:
-            state=0
-            if(match[0] == "?"):
-                state = tree.STATE_NONE
-            if(match[0] == "A"):
-                state = tree.STATE_NEW
-            elif(match[0] == " "):
-                state = tree.STATE_NORMAL                
-            elif(match[0] == "!"):
-                state = tree.STATE_MISSING
-            elif(match[0] == "I"):
-                state = tree.STATE_IGNORED                
-            elif(match[0] == "M"):
-                state = tree.STATE_MODIFIED
-            elif(match[0] == "C"):
-                state = tree.STATE_CONFLICT
-
+            state = { "?": tree.STATE_NONE,
+                      "A": tree.STATE_NEW,
+                      " ": tree.STATE_NORMAL,
+                      "!": tree.STATE_MISSING,
+                      "I": tree.STATE_IGNORED,
+                      "M": tree.STATE_MODIFIED,
+                      "C": tree.STATE_CONFLICT }.get(match[0], tree.STATE_NONE)
             retfiles.append( File(path, name, state, rev, tag, options) )
 
     return retdirs, retfiles
