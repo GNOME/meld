@@ -4,14 +4,9 @@
 import sys
 import os
 
-# recent versions of python-gnome include pygtk
-# older versions don't have it.
-try:
-    import pygtk
-except ImportError:
-    pass
-else:
-    pygtk.require("2.0")
+# pygtk
+import pygtk
+pygtk.require("2.0")
 
 # gnome
 import gtk
@@ -26,7 +21,7 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.6.0"
+version = "0.6.2"
 developer = 0
 
 ################################################################################
@@ -320,7 +315,10 @@ class MeldApp(gnomeglade.GnomeApp):
         gnome.url_show("file:///"+os.path.abspath(misc.appdir("manual/index.html") ) )
 
     def on_menu_about_activate(self, *extra):
-        gtk.glade.XML(misc.appdir("glade2/meld-app.glade"),"about").get_widget("about").show()
+        about = gtk.glade.XML(misc.appdir("glade2/meld-app.glade"),"about").get_widget("about")
+        about.set_property("name", "Meld")
+        about.set_property("version", version)
+        about.show()
 
     #
     # Toolbar and menu items (misc)

@@ -136,7 +136,7 @@ class FileDiff(gnomeglade.Component):
         self.pixels_per_line = (metrics.get_ascent() + metrics.get_descent()) / 1024
 
         self.linediffs = diffutil.Differ()
-        load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/"+x), self.pixels_per_line)
+        load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
         self.pixbuf_delete = load("button_delete.xpm")

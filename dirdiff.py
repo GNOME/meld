@@ -55,7 +55,7 @@ class DirDiff(gnomeglade.Component):
         self.undosequence = undo.UndoSequence()
         self.lock = 0
         self.cache = {}
-        load = lambda x,s=14: gnomeglade.load_pixbuf(misc.appdir("glade2/"+x), s)
+        load = lambda x,s=14: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), s)
         self.pixbuf_folder = load("i-directory.png")
         self.pixbuf_file = load("i-regular.png")
         types = map(lambda x: type(""), range(ICON)) \
