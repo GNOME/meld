@@ -8,7 +8,7 @@ DIRS:=$(PO:.po=/LC_MESSAGES)
 INST_MO:=$(addprefix $(localedir)/,$(MO))
 
 .PHONY : all
-all : $(DIRS) $(MO)
+all : $(DIRS) meld.pot $(MO)
 
 .PHONY : install
 install : all $(INST_MO)
@@ -21,16 +21,14 @@ uninstall :
 clean :
 	rm -rf $(PO:.po=)
 
-$(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo
-	mkdir -m 755 -p $(dir $@) && install -m 644 $^ $@
+$(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo meld.pot
+	mkdir -m 755 -p $(dir $@) && install -m 644 $< $@
 
 %/LC_MESSAGES/meld.mo : %.po
-	msgfmt -o $@ $*.po
+	./update-lang $*
 
 %/LC_MESSAGES : 
 	mkdir -p $@
 
-.PHONY:update-po
-update-po:
-	@make -C .. gettext
-	python ./update-po.py
+meld.pot : 
+	./update-pot.sh
