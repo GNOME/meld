@@ -215,31 +215,167 @@
       </child>
 
       <child>
-	<widget class="GtkScrolledWindow" id="scrolledwindow">
+	<widget class="GtkVPaned" id="vpaned">
 	  <property name="visible">True</property>
 	  <property name="can_focus">True</property>
-	  <property name="hscrollbar_policy">GTK_POLICY_ALWAYS</property>
-	  <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
-	  <property name="shadow_type">GTK_SHADOW_NONE</property>
-	  <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+	  <property name="position">250</property>
+	  <signal name="move_handle" handler="on_vpaned_move_handle" last_modification_time="Sat, 27 Sep 2003 16:23:15 GMT"/>
 
 	  <child>
-	    <widget class="GtkTreeView" id="treeview">
+	    <widget class="GtkScrolledWindow" id="scrolledwindow">
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="headers_visible">True</property>
-	      <property name="rules_hint">False</property>
-	      <property name="reorderable">False</property>
-	      <property name="enable_search">True</property>
-	      <signal name="row_activated" handler="on_row_activated" last_modification_time="Sat, 03 Aug 2002 23:32:49 GMT"/>
-	      <signal name="button_press_event" handler="on_button_press_event" last_modification_time="Sat, 30 Aug 2003 12:42:19 GMT"/>
+	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+	      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+	      <property name="shadow_type">GTK_SHADOW_IN</property>
+	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+
+	      <child>
+		<widget class="GtkTreeView" id="treeview">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="headers_visible">True</property>
+		  <property name="rules_hint">False</property>
+		  <property name="reorderable">False</property>
+		  <property name="enable_search">True</property>
+		  <signal name="row_activated" handler="on_row_activated" last_modification_time="Sat, 03 Aug 2002 23:32:49 GMT"/>
+		  <signal name="button_press_event" handler="on_button_press_event" last_modification_time="Sat, 30 Aug 2003 12:42:19 GMT"/>
+		</widget>
+	      </child>
 	    </widget>
+	    <packing>
+	      <property name="shrink">False</property>
+	      <property name="resize">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkHBox" id="console_hbox">
+	      <property name="height_request">70</property>
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">0</property>
+
+	      <child>
+		<widget class="GtkEventBox" id="console_hide_box">
+		  <property name="visible">True</property>
+		  <signal name="button_press_event" handler="on_console_view_toggle" last_modification_time="Sat, 27 Sep 2003 16:10:20 GMT"/>
+
+		  <child>
+		    <widget class="GtkArrow" id="console_arrow_down">
+		      <property name="width_request">14</property>
+		      <property name="height_request">14</property>
+		      <property name="visible">True</property>
+		      <property name="arrow_type">GTK_ARROW_DOWN</property>
+		      <property name="shadow_type">GTK_SHADOW_OUT</property>
+		      <property name="xalign">0.5</property>
+		      <property name="yalign">0</property>
+		      <property name="xpad">0</property>
+		      <property name="ypad">0</property>
+		    </widget>
+		  </child>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkScrolledWindow" id="console_scrolledwindow">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+		  <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+		  <property name="shadow_type">GTK_SHADOW_IN</property>
+		  <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+
+		  <child>
+		    <widget class="GtkTextView" id="consoleview">
+		      <property name="visible">True</property>
+		      <property name="can_focus">True</property>
+		      <property name="editable">False</property>
+		      <property name="justification">GTK_JUSTIFY_LEFT</property>
+		      <property name="wrap_mode">GTK_WRAP_NONE</property>
+		      <property name="cursor_visible">True</property>
+		      <property name="pixels_above_lines">0</property>
+		      <property name="pixels_below_lines">0</property>
+		      <property name="pixels_inside_wrap">0</property>
+		      <property name="left_margin">0</property>
+		      <property name="right_margin">0</property>
+		      <property name="indent">0</property>
+		      <property name="text" translatable="yes"></property>
+		      <signal name="populate_popup" handler="on_consoleview_populate_popup" last_modification_time="Sat, 27 Sep 2003 17:09:16 GMT"/>
+		    </widget>
+		  </child>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="shrink">True</property>
+	      <property name="resize">True</property>
+	    </packing>
 	  </child>
 	</widget>
 	<packing>
 	  <property name="padding">0</property>
 	  <property name="expand">True</property>
 	  <property name="fill">True</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkEventBox" id="console_show_box">
+	  <signal name="button_press_event" handler="on_console_view_toggle" last_modification_time="Sat, 27 Sep 2003 16:10:28 GMT"/>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox3">
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">0</property>
+
+	      <child>
+		<widget class="GtkArrow" id="console_arrow_right">
+		  <property name="width_request">14</property>
+		  <property name="height_request">14</property>
+		  <property name="visible">True</property>
+		  <property name="arrow_type">GTK_ARROW_RIGHT</property>
+		  <property name="shadow_type">GTK_SHADOW_OUT</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkHSeparator" id="hseparator1">
+		  <property name="visible">True</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+	    </widget>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
 	</packing>
       </child>
     </widget>
