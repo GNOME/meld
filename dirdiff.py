@@ -89,7 +89,7 @@ class DirDiffMenu(gnomeglade.Menu):
         sel.reverse()
         srcbase = self.parent.get_location(self.source_pane)
         dstbase = self.parent.get_location(destpane)
-        for s in sel:
+        for s in filter(lambda x: x.name!=None, sel):
             src = join(srcbase, s.name)
             dst = join(dstbase, s.name)
             try:
@@ -104,7 +104,7 @@ class DirDiffMenu(gnomeglade.Menu):
                         os.makedirs( dst )
                     self.parent.file_created(s.name, s.path, destpane)
             except OSError, e:
-                print "*** could not mkdir", e
+                self.error_message("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
     def on_delete_activate(self, menuitem):
         loc = self.parent.get_location(self.source_pane)
         # reverse so paths dont get changed
@@ -118,16 +118,17 @@ class DirDiffMenu(gnomeglade.Menu):
                 elif os.path.isdir(p):
                     os.rmdir(p)
             except OSError, e:
-                message = "Error removing %s\n\n%s." % (p,e)
-                d = gtk.MessageDialog(self.widget.get_toplevel(),
-                        gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_ERROR,
-                        gtk.BUTTONS_OK,
-                        message)
-                d.run()
-                d.destroy()
+                self.error_message("Error removing %s\n\n%s." % (p,e))
             else:
                 self.parent.file_deleted(s.name, s.path, self.source_pane)
+    def error_message(self, message):
+        d = gtk.MessageDialog(self.widget.get_toplevel(),
+                gtk.DIALOG_DESTROY_WITH_PARENT,
+                gtk.MESSAGE_ERROR,
+                gtk.BUTTONS_OK,
+                message)
+        d.run()
+        d.destroy()
 
 
 ################################################################################
@@ -387,7 +388,6 @@ class DirDiff(gnomeglade.Component):
 
     def update_diff_maps(self):
         return
-        print "XXXX"
         #for d in self.linediffs[0]:
             #traverse = [ self.model.get_iter_root() ]
             #while len(traverse):
