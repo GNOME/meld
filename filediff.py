@@ -223,7 +223,7 @@ class FileDiff(gnomeglade.Component):
             dialog.widget.show_all()
             response = dialog.widget.run()
             try_save = [ b.get_active() for b in buttons]
-            print "try_save", try_save
+            #print "try_save", try_save
             dialog.widget.destroy()
             if response==gtk.RESPONSE_OK:
                 for i in range(self.num_panes):

@@ -64,6 +64,7 @@ class PreferencesDialog(gnomeglade.Dialog):
         gnomeglade.Dialog.__init__(self, misc.appdir("glade2/meld-app.glade"), "preferencesdialog")
         self.diff_options_frame.set_sensitive(0)
         self.diff_options_frame.set_sensitive(0)
+        self.tabsize_spin.set_sensitive(0)
         self._map_widgets_into_lists( ["draw_style"] )
         self.widget.set_transient_for(parentapp.widget)
         self.gconf = gconf.client_get_default()
