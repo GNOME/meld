@@ -24,6 +24,7 @@ class MeldDoc(gobject.GObject):
 
     __gsignals__ = {
         'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        'file-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
     }
 
     def __init__(self, prefs):
@@ -66,6 +67,9 @@ class MeldDoc(gobject.GObject):
         pass
 
     def on_preference_changed(self, key, value):
+        pass
+
+    def on_file_changed(self, filename):
         pass
 
     def label_changed(self):

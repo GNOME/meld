@@ -535,6 +535,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self, buttongtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
             return gnomeglade.RESULT_ERROR
         else:
+            self.emit("file-changed", bufdata.filename)
             self.undosequence.clear()
             self.set_buffer_modified(buf, 0)
         return gnomeglade.RESULT_OK

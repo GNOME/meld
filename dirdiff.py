@@ -615,9 +615,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.model.set_state(iter, j,  tree.STATE_NEW, isdir)
                 else:
                     self.model.set_state(iter, j,  tree.STATE_MODIFIED, isdir)
-                if j == newest_index:
-                    index = self.model.column_index(COL_NEWER, j)
-                    self.model.set_value(iter, index,  pixbuf_newer)
+                self.model.set_value(iter,
+                    self.model.column_index(COL_NEWER, j),
+                    j == newest_index and pixbuf_newer or None)
             else:
                 self.model.set_state(iter, j,  tree.STATE_MISSING)
         return different
@@ -751,5 +751,24 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             upper = adj.upper - adj.page_size
             adj.set_value( max( min(upper, val), 0) )
             return 1
+
+    def on_file_changed(self, filename):
+        model = self.model
+        iter = model.get_iter_root()
+        for pane,path in misc.enumerate( model.value_paths(iter) ):
+            if filename.startswith(path): 
+                while iter:
+                    child = model.iter_children( iter )
+                    while child:
+                        path = model.value_path(child, pane)
+                        if filename == path:
+                            self._update_item_state(child)
+                            return
+                        elif filename.startswith(path):
+                            break
+                        else:
+                            child = self.model.iter_next( child )
+                    iter = child
+                return
 
 gobject.type_register(DirDiff)

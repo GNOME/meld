@@ -492,17 +492,24 @@ class MeldApp(gnomeglade.GnomeApp):
             assert(i>=0)
             self.notebook.remove_page(i)
 
+    def on_file_changed(self, srcpage, filename):
+        for c in self.notebook.get_children():
+            page = c.get_data("pyobject")
+            if page != srcpage:
+                page.on_file_changed(filename)
+
     def _append_page(self, page, icon):
         nbl = NotebookLabel(icon, onclose=lambda b: self.try_remove_page(page))
         self.notebook.append_page( page.widget, nbl)
         self.notebook.set_current_page( self.notebook.page_num(page.widget) )
         self.scheduler.add_scheduler(page.scheduler)
+        page.connect("label-changed", self.on_notebook_label_changed)
+        page.connect("file-changed", self.on_file_changed)
 
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
         self._append_page(doc, "tree-folder-normal.png")
-        doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.set_locations(dirs)
 
@@ -514,7 +521,6 @@ class MeldApp(gnomeglade.GnomeApp):
         seq.connect("can-undo", self.on_can_undo)
         seq.connect("can-redo", self.on_can_redo)
         self._append_page(doc, "tree-file-normal.png")
-        doc.connect("label-changed", self.on_notebook_label_changed)
         doc.set_files(files)
 
     def append_cvsview(self, locations):
@@ -522,7 +528,6 @@ class MeldApp(gnomeglade.GnomeApp):
         location = locations[0]
         doc = cvsview.CvsView(self.prefs)
         self._append_page(doc, "cvs-icon.png")
-        doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.set_location(location)
 
