@@ -262,7 +262,10 @@ class CommitDialog(gnomeglade.Component):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
-        self.changedfiles.set_text( " ".join(parent._get_selected_files()))
+        selected = parent._get_selected_files()
+        topdir = _commonprefix(selected)
+        selected = [ s[len(topdir):] for s in selected ]
+        self.changedfiles.set_text( ("(in %s) "%topdir) + " ".join(selected) )
         self.widget.show_all()
 
     def run(self):
@@ -643,34 +646,33 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_button_jump_press_event(self, button, event):
         class MyMenu(gtk.Menu):
-            def __init__(self, parent, loc, toplev=0):
+            def __init__(self, parent, where, showup=1):
                 gtk.Menu.__init__(self)
                 self.cvsview = parent 
-                self.loc = loc
-                self.scanned = 0
-                self.connect("map", self.on_map)
-                self.toplev = toplev
-            def on_map(self, menu):
-                if self.scanned == 0:
-                    listing = [ os.path.join(self.loc, p) for p in os.listdir(self.loc)]
-                    items = [p for p in listing if os.path.basename(p) != "CVS" and os.path.isdir(p)]
-                    if 0 and self.toplev:
-                        items.insert(0, "..")
-                    for f in items:
-                        base = os.path.basename(f)
-                        item = gtk.MenuItem( base )
-                        item.connect("button-press-event", lambda item,event : self.cvsview.set_location(f) )
-                        self.append(item)
-                        item.set_submenu( MyMenu(self.cvsview, f, base=="..") )
-                    if len(items)==0:
-                        item = gtk.MenuItem("<empty>")
-                        item.set_sensitive(0)
-                        self.append(item)
-                    self.scanned = 1
+                self.map_id = self.connect("map", lambda item: self.on_map(item,where,showup) )
+            def add_item(self, name, submenu, showup):
+                item = gtk.MenuItem(name)
+                if submenu:
+                    item.set_submenu( MyMenu(self.cvsview, submenu, showup ) )
+                self.append( item )
+            def on_map(self, item, where, showup):
+                if showup:
+                    self.add_item("..", os.path.dirname(where), 1 )
+                self.populate( where, self.listdir(where) )
                 self.show_all()
-        menu = MyMenu( self, os.path.abspath(self.location), 1 )
+                self.disconnect(self.map_id)
+                del self.map_id
+            def listdir(self, d):
+                try:
+                    return [p for p in os.listdir(d) if os.path.basename(p) != "CVS" and os.path.isdir( os.path.join(d,p))]
+                except OSError:
+                    return []
+            def populate(self, where, children):
+                for child in children:
+                    cc = self.listdir( os.path.join(where, child) )
+                    self.add_item( child, len(cc) and os.path.join(where,child), 0 )
+        menu = MyMenu( self, os.path.abspath(self.location) )
         menu.popup(None, None, None, event.button, event.time)
-        #print event
 
     def _update_item_state(self, iter, cvsentry, location):
         e = cvsentry
