@@ -18,6 +18,7 @@ import gobject
 import task
 import undo
 import gtk
+import os
 
 # Use these to ensure consistent return values.
 RESULT_OK, RESULT_ERROR = (0,1)
@@ -29,6 +30,7 @@ class MeldDoc(gobject.GObject):
     __gsignals__ = {
         'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
         'file-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
     }
 
     def __init__(self, prefs):
@@ -49,6 +51,18 @@ class MeldDoc(gobject.GObject):
     def stop(self):
         if len(self.scheduler.tasks):
             del self.scheduler.tasks[0]
+
+    def _edit_files(self, files):
+        if len(files):
+            if self.prefs.edit_command_type == "internal":
+                for f in files:
+                    self.emit("create-diff", (f,))
+            elif self.prefs.edit_command_type == "gnome":
+                cmd = self.prefs.get_gnome_editor_command(files)
+                os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
+            elif self.prefs.edit_command_type == "custom":
+                cmd = self.prefs.get_custom_editor_command(files)
+                os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
 
     def on_undo_activate(self):
         if self.undosequence.can_undo():
