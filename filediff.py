@@ -1,9 +1,11 @@
 ## python
+import sys
 import math
 import gtk
 import gobject
 import gnome
 import gconf
+import pango
 
 import diffutil
 import gnomeglade
@@ -144,9 +146,10 @@ class FileDiff(gnomeglade.Component):
         self.pixbuf_copy1  = load("button_copy1.xpm")
 
         self.gconf = gconf.client_get_default()
+        self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
+        self.gconf.notify_add("/apps/meld/filediff", self.on_setting_activate)
         self.draw_style = self.gconf.get_int('/apps/meld/filediff/draw_style')
-        self.gconf.add_dir('/apps/meld/filediff', gconf.CLIENT_PRELOAD_NONE)
-        self.gconf.notify_add ("/apps/meld/filediff/draw_style", self.on_setting_drawstyle_activate)
+        self.fallback_encoding = self.gconf.get_string('/apps/meld/filediff/fallback_encoding')
 
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
@@ -154,11 +157,19 @@ class FileDiff(gnomeglade.Component):
         self.num_panes = 0
         self.set_num_panes(num_panes)
 
-    def on_setting_drawstyle_activate(self, client, timestamp, entry, extra):
+    def on_setting_activate(self, client, timestamp, entry, extra):
         if entry.key.endswith("draw_style"):
             self.draw_style = entry.value.get_int()
             for l in self.linkmap:
                 l.queue_draw()
+        elif entry.key.endswith("fallback_encoding"):
+            self.fallback_encoding = entry.value.get_string()
+            self.statusbar.add_status("Setting '%s' as the default encoding" % self.fallback_encoding)
+        elif entry.key.endswith("tabsize"):
+            pass
+            #sz = entry.value.get_int()
+            #ta = pango.TabArray(10, 0, pango.TAB_LEFT, sz*20)
+            #self.textview0.set_tabs(ta)
         else:
             print "Warning, unknown setting", entry.key, "changed"
 
@@ -274,6 +285,16 @@ class FileDiff(gnomeglade.Component):
         view = self.textview[pane]
         buffer = view.get_buffer()
         buffer.set_text( text )
+        gettext = buffer.get_text( buffer.get_start_iter(), buffer.get_end_iter(), 0 )
+        if text == gettext:
+            buffer.meld_encoding = None
+        else:
+            assert self.fallback_encoding
+            encoding = self.fallback_encoding
+            text = unicode(text, encoding)
+            buffer.set_text( text )
+            gettext = buffer.get_text( buffer.get_start_iter(), buffer.get_end_iter(), 0 )
+            buffer.meld_encoding = encoding
         _ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.edited_color } )
         entry = self.fileentry[pane]
         entry.set_filename(filename)
@@ -311,6 +332,8 @@ class FileDiff(gnomeglade.Component):
         name = self.fileentry[pane].get_full_path(0)
         buf = self.textview[pane].get_buffer()
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
+        if buf.meld_encoding:
+            text = text.encode(buf.meld_encoding)
         try:
             open(name,"w").write(text)
         except IOError, e:
