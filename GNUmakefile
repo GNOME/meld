@@ -35,7 +35,7 @@ clean:
 
 .PHONY:install
 install:
-	mkdir -p $(bindir) $(libdir_) $(sharedir_)/glade2/pixmaps $(docdir_)
+	mkdir -p $(bindir) $(libdir_) $(sharedir_)/glade2/pixmaps $(docdir_) $(sharedir)/applications
 	python tools/install_paths libdir=$(libdir_) < meld > meld.install
 	install -m 755 meld.install $(bindir)/meld
 	rm meld.install
@@ -52,7 +52,7 @@ install:
 
 .PHONY:uninstall
 uninstall:
-	rm -rf $(sharedir_) $(docdir_) $(libdir_) $(bindir)/meld
+	rm -rf $(sharedir_) $(docdir_) $(libdir_) $(bindir)/meld $(sharedir)/applications/meld.desktop
 	$(MAKE) -C po uninstall
 
 .PHONY: test
@@ -80,14 +80,14 @@ update:
 .PHONY:upload
 upload:
 	cvs tag release-$(subst .,_,$(VERSION))
-	scp tools/make_release steve9000@meld.sf.net:
-	ssh steve9000@meld.sf.net python make_release $(VERSION)
+	scp tools/make_release stevek@master.gnome.org:
+	ssh stevek@master.gnome.org python make_release $(VERSION)
 
 .PHONY:announce
 announce:
-	galeon -n http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
 	galeon -n http://freshmeat.net/add-release/29735/ &
 	galeon -n http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
+	#galeon -n http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
 	
 .PHONY:backup
 backup:
