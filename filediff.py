@@ -726,7 +726,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         except IOError, e:
             misc.run_dialog(
                 _("Error writing to %s\n\n%s.") % (bufdata.filename, e),
-                self, buttongtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
+                self, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
             return melddoc.RESULT_ERROR
         else:
             self.emit("file-changed", bufdata.filename)
