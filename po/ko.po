@@ -1,0 +1,1503 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-05 14:36+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: meld.desktop.in.h:1
+msgid "Compare and merge your files."
+msgstr ""
+
+#: meld.desktop.in.h:2
+msgid "Meld Diff Viewer"
+msgstr ""
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. Local Functions
+#.
+#. ###############################################################################
+#: cvsview.py:41
+msgid ""
+"Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+msgstr ""
+
+#. no cvs dir
+#. print "Unable to parse date '%s' in '%s/CVS/Entries' (%s)" % (date, directory, e)
+#. known
+#. ignored
+#: cvsview.py:173
+#, python-format
+msgid ""
+"Error converting to a regular expression\n"
+"The pattern was '%s'\n"
+"The error was '%s'"
+msgstr ""
+"정규식으로 변환 중 오류\n"
+"패턴: '%s'\n"
+"오류: was '%s'"
+
+#. ###############################################################################
+#.
+#. Local Functions
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. CommitDialog
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. CvsTreeStore
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. DirDiffMenu
+#.
+#. ###############################################################################
+#. ###############################################################################
+#. filters
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. CvsView
+#.
+#. ###############################################################################
+#: cvsview.py:350
+msgid "Name"
+msgstr "이름"
+
+#: cvsview.py:367
+msgid "Location"
+msgstr "위치"
+
+#: cvsview.py:368
+msgid "Status"
+msgstr "상태"
+
+#: cvsview.py:369
+msgid "Rev"
+msgstr "Rev"
+
+#: cvsview.py:370
+msgid "Tag"
+msgstr "태그"
+
+#: cvsview.py:371
+msgid "Options"
+msgstr "선택사항"
+
+#. is file still extant in other pane?
+#. nope its gone
+#: cvsview.py:408 dirdiff.py:354
+#, python-format
+msgid "[%s] Scanning"
+msgstr "[%s] 분석 중"
+
+#. depth first
+#: cvsview.py:435 dirdiff.py:362
+#, python-format
+msgid "[%s] Scanning %s"
+msgstr "[%s] 분석 중 %s"
+
+#. import time; time.sleep(1.0)
+#. expand parents
+#: cvsview.py:451
+msgid "(Empty)"
+msgstr "(비어있음)"
+
+#. just the root
+#: cvsview.py:483
+#, python-format
+msgid "[%s] Fetching differences"
+msgstr "[%s] 차이점 추출중"
+
+#: cvsview.py:490
+#, python-format
+msgid "[%s] Applying patch"
+msgstr "[%s] 패치 적용중"
+
+#: cvsview.py:494
+msgid "No differences found."
+msgstr "차이점이 없습니다."
+
+#. remove empty entries and remove trailing slashes
+#: cvsview.py:560
+msgid "Select some files first."
+msgstr "파일(들)을 먼저 선택하십시오."
+
+#. it is missing, create empty file
+#. XXX fixme
+#. print event
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. Differ
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. Differ
+#.
+#. ###############################################################################
+#. Internally, diffs are stored from text1 -> text0 and text1 -> text2.
+#. 0 or 2
+#. sequence==1:
+#. print "diffs", loidx, hiidx, len(diffs), lorange, hirange #diffs[loidx], diffs[hiidx-1]
+#. print "^^^^^", rangex, range1
+#. print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. Local Functions
+#.
+#. ###############################################################################
+#. early out if only one file
+#. get sigs
+#. check for directories
+#. all dirs
+#. mixture
+#. if no substitutions look for different sizes
+#. try cache
+#. up to date
+#. do it
+#. ###############################################################################
+#.
+#. DirDiffTreeStore
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. EmblemCellRenderer
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. DirDiffMenu
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. TypeFilter
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. DirDiff
+#.
+#. ###############################################################################
+#: dirdiff.py:251 dirdiff.py:266
+#, python-format
+msgid "Error converting pattern '%s' to regular expression"
+msgstr "패턴 '%s'을(를) 정규식으로 변환 중 오류"
+
+#: dirdiff.py:276
+#, python-format
+msgid "Hide %s"
+msgstr "%s 숨김"
+
+#. map canonical names to realnames
+#: dirdiff.py:395
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "'%s'이(가) '%s'에 의해 숨겨짐"
+
+#: dirdiff.py:401
+#, python-format
+msgid ""
+"You are running a case insensitve comparison on a case sensitive filesystem. "
+"Some files are not visible:\n"
+"%s"
+msgstr ""
+"대소문자를 구별하는 파일시스템에서 대소문자를 무시하는 비교를 하고 있습니다. "
+"일부 파일들은 볼 수 없습니다:\n"
+"%s"
+
+#. then directories and files
+#. directory is empty, add a placeholder
+#: dirdiff.py:445
+#, python-format
+msgid "[%s] Done"
+msgstr "[%s] 완료"
+
+#. filter(lambda x: x.name!=None, sel):
+#: dirdiff.py:503
+#, python-format
+msgid ""
+"'%s' exists.\n"
+"Overwrite?"
+msgstr ""
+"'%s'이(가) 존재합니다.\n"
+"덮어 쓸까요?"
+
+#: dirdiff.py:510
+#, python-format
+msgid ""
+"Error copying '%s' to '%s'\n"
+"\n"
+"%s."
+msgstr ""
+"'%s'을(를) '%s'(으)로 복사 중 오류\n"
+"\n"
+"%s."
+
+#. reverse so paths dont get changed
+#. xxx
+#: dirdiff.py:528
+#, python-format
+msgid ""
+"'%s' is a directory.\n"
+"Remove recusively?"
+msgstr ""
+"'%s'은(는) 디렉토리입니다.\n"
+"재귀적으로 삭제할까요?"
+
+#: dirdiff.py:534
+#, python-format
+msgid ""
+"Error removing %s\n"
+"\n"
+"%s."
+msgstr ""
+"%s을(를) 삭제 중 오류\n"
+"\n"
+"%s."
+
+#. Its possible to have file 'foo' in one pane and dir 'foo' in another.
+#. We want to do the right thing depending on the one clicked.
+#. clicked on missing entry?
+#.
+#. Toolbar handlers
+#.
+#.
+#. Selection
+#.
+#.
+#. Filtering
+#.
+#. find the newest file, checking also that they differ
+#. all same
+#. unselect others
+#. clicked outside tree
+#. not first time through
+#. print model.value_path(iter, treeindex), model.get_state(iter, treeindex)
+#. end marker
+#. ignore
+#. none
+#. normal
+#. nochange
+#. error
+#. empty
+#. new
+#. modified
+#. conflict
+#. removed
+#. missing
+#. border
+#. TODO need gutter of scrollbar - how do we get that?
+#. TODO need gutter of scrollbar - how do we get that?
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. FileDiff
+#.
+#. ###############################################################################
+#. glade bug workaround
+#. print "***", range, len(self.linediffer.diffs[0])
+#.
+#. text buffer undo/redo
+#.
+#.
+#.
+#.
+#. XXX .get_buffer().copy_clipboard()
+#. XXX get_buffer().cut_clipboard()
+#. XXX t.get_buffer().paste_clipboard(None, 1)
+#.
+#. find/replace buffer
+#.
+#. tofind is utf-8 encoded
+#. as is buffer
+#: filediff.py:380
+#, python-format
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+"정규식 오류\n"
+"'%s'"
+
+#: filediff.py:392
+#, python-format
+msgid "The regular expression '%s' was not found."
+msgstr "정규식 '%s'을(를) 찾을 수 없습니다."
+
+#: filediff.py:394
+#, python-format
+msgid "The text '%s' was not found."
+msgstr "텍스트 '%s'을(를) 찾을 수 없습니다."
+
+#.
+#. text buffer loading/saving
+#.
+#: filediff.py:433
+#, python-format
+msgid "[%s] Set num panes"
+msgstr "[%s] 분할 수 설정"
+
+#: filediff.py:440
+#, python-format
+msgid "[%s] Opening files"
+msgstr "[%s] 파일 여는 중"
+
+#: filediff.py:456
+#, fuzzy, python-format
+msgid ""
+"Could not open '%s' for reading.\n"
+"\n"
+"The error was:\n"
+"%s"
+msgstr ""
+"'%s'(을)를 읽기용으로 열 수 없습니다.\n"
+"\n"
+"오류:\n"
+
+#: filediff.py:460
+#, python-format
+msgid "[%s] Reading files"
+msgstr "[%s] 파일 읽는 중"
+
+#: filediff.py:475
+#, python-format
+msgid ""
+"Could not read from '%s'.\n"
+"\n"
+"I tried encodings %s."
+msgstr ""
+"'%s'(으)로 부터 읽을 수 없습니다.\n"
+"\n"
+"%s 인코딩으로 시도했습니다."
+
+#: filediff.py:480
+#, fuzzy, python-format
+msgid ""
+"Could not read from '%s'.\n"
+"\n"
+"The error was:\n"
+"%s"
+msgstr ""
+"'%s'(으)로 부터 읽을 수 없습니다.\n"
+"\n"
+"오류:\n"
+
+#: filediff.py:500
+#, python-format
+msgid "[%s] Computing differences"
+msgstr "[%s] 차이점 계산 중"
+
+#. for b, l in zip( buffers, ranges ):
+#. for chunk in self.linediffer.all_changes_in_range(self._get_texts(), range0[0], range0[1], range1[0], range1[1]):
+#. print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
+#: filediff.py:592
+#, python-format
+msgid "Choose a name for buffer %i."
+msgstr "버퍼 %i의 이름을 선택하세요."
+
+#: filediff.py:603
+#, python-format
+msgid ""
+"\"%s\" exists!\n"
+"Overwrite?"
+msgstr ""
+"\"%s\"이(가) 존재합니다!\n"
+"덮어 쓸까요?"
+
+#: filediff.py:617
+#, python-format
+msgid ""
+"This file '%s' contains a mixture of line endings.\n"
+"\n"
+"Which format would you like to use?"
+msgstr ""
+"파일 '%s'은(는) 혼합된 줄 끝을 갖고 있습니다.\n"
+"\n"
+"이 형식이 사용하고자 하는 것입니까?"
+
+#: filediff.py:634
+#, python-format
+msgid ""
+"Error writing to %s\n"
+"\n"
+"%s."
+msgstr ""
+"%s에 쓰는 중 오류\n"
+"\n"
+"%s."
+
+#.
+#. refresh, _queue_refresh
+#.
+#: filediff.py:693
+#, python-format
+msgid ""
+"Refreshing will discard changes in:\n"
+"%s\n"
+"\n"
+"You cannot undo this operation."
+msgstr ""
+"새로 고치면 다음의 변경 사항을 버리게 됩니다:\n"
+"%s\n"
+"\n"
+"이 작업은 취소할 수 없습니다."
+
+#: meld:50
+#, c-format
+msgid "Meld requires python%s or higher."
+msgstr "Meld는 파이썬 %s 이상 버전이 필요합니다."
+
+#: meld:60
+msgid "Meld requires a recent version of pygtk."
+msgstr "MEld는 최신 버전의 pygtk가 필요합니다."
+
+#: meld:61
+#, c-format
+msgid "pygtk-%s or higher is recommended."
+msgstr "pygtk-%s 이상 버전을 권장합니다."
+
+#: meld:71
+#, c-format
+msgid "Meld works best with pygtk-%s or higher. (found %s)"
+msgstr ""
+"Meld는 pygtk-%s 이상 버전에서 가장 잘 동작합니다. (%s을(를) 찾았습니다)"
+
+#: meld:72
+msgid ""
+"Due to incompatible API changes some functions may not operate as expected."
+msgstr ""
+"호환성 없는 API의 변화로 인해 몇가지 기능은 기대한 대로 동작하지 않을 수 있습"
+"니다."
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. system
+#. gnome
+#. project
+#. magic developer switch, changes some behaviour
+#. ###############################################################################
+#.
+#. BrowseFileDialog
+#.
+#. ###############################################################################
+#: meldapp.py:56
+#, python-format
+msgid "Browse %s"
+msgstr "%s 열람"
+
+#. ###############################################################################
+#.
+#. ListWidget
+#.
+#. ###############################################################################
+#. XXX need model.swap
+#. XXX need model.swap
+#. ###############################################################################
+#.
+#. PreferencesDialog
+#.
+#. ###############################################################################
+#. tab selector
+#. editor
+#. display
+#. file filters
+#. text filters
+#. encoding
+#. cvs
+#.
+#. treeview
+#.
+#.
+#. editor
+#.
+#.
+#. display
+#.
+#.
+#. filters
+#.
+#.
+#. encoding
+#.
+#.
+#. cvs
+#.
+#. ###############################################################################
+#.
+#. MeldStatusBar
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. NotebookLabel
+#.
+#. ###############################################################################
+#. TODO font height
+#. TODO font height
+#. ###############################################################################
+#.
+#. MeldNewMenu
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. MeldPreferences
+#.
+#. ###############################################################################
+#. internal, gnome, custom
+#. ###############################################################################
+#.
+#. MeldApp
+#.
+#. ###############################################################################
+#.
+#. init
+#.
+#. hide magic testing button
+#.
+#. General events and callbacks
+#.
+#.
+#. Toolbar and menu items (file)
+#.
+#: meldapp.py:602
+msgid "Original File"
+msgstr "원래 파일"
+
+#: meldapp.py:602
+msgid "Modified File"
+msgstr "변경된 파일"
+
+#: meldapp.py:605
+msgid "Other Changes"
+msgstr "기타 변경사항"
+
+#: meldapp.py:605
+msgid "Common Ancestor"
+msgstr "공통 조상"
+
+#: meldapp.py:605
+msgid "Local Changes"
+msgstr "로컬 변경사항"
+
+#: meldapp.py:608 meldapp.py:611
+msgid "Original Directory"
+msgstr "원래 디렉토리"
+
+#: meldapp.py:608 meldapp.py:611
+msgid "Modified Directory"
+msgstr "변경된 디렉토리"
+
+#: meldapp.py:611
+msgid "Other Directory"
+msgstr "기타 디렉토리"
+
+#: meldapp.py:614
+msgid "Root CVS Directory"
+msgstr "루트 CVS 디렉토리"
+
+#. save one
+#. save all
+#.
+#. Toolbar and menu items (edit)
+#.
+#.
+#. Toolbar and menu items (settings)
+#.
+#.
+#. Toolbar and menu items (help)
+#.
+#.
+#. Toolbar and menu items (misc)
+#.
+#. self.append_filediff( ("ntest/file9a", "ntest/file9b") )
+#.
+#. Current doc actions
+#.
+#.
+#. Usage
+#.
+#. ###############################################################################
+#.
+#. usage
+#.
+#. ###############################################################################
+#: meldapp.py:802
+msgid ""
+"Meld is a file and directory comparison tool. Usage:\n"
+"\n"
+"    meld                        Start with no windows open\n"
+"    meld <dir>                  Start with CVS browser in 'dir'\n"
+"    meld <file>                 Start with CVS diff of 'file'\n"
+"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
+"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
+"\n"
+"For more information choose help -> contents.\n"
+"Report bugs to steve9000@users.sourceforge.net.\n"
+msgstr ""
+"Meld는 파일과 디렉토리 비교 도구입니다. 사용법:\n"
+"\n"
+"    meld                        창을 열지 않고 시작\n"
+"    meld <dir>                  'dir'에서 CVS 브라우져로 시작\n"
+"    meld <file>                 'file'의 CVS diff로 시작'\n"
+"    meld <file> <file> [file]   2 또는 3 개의 파일 비교로 시작\n"
+"    meld <dir>  <dir>  [dir]    2 또는 3 개의 디렉토리 비교로 시작\n"
+"\n"
+"더 자세한 정보는 도움말 -> 내용을 선택하세요.\n"
+"버그는 steve9000@users.sourceforge.net에게 보고하세요.\n"
+
+#: meldapp.py:814
+#, python-format
+msgid ""
+"Meld %s\n"
+"Written by Stephen Kennedy <steve9000@users.sf.net>"
+msgstr ""
+"Meld %s\n"
+"Written by Stephen Kennedy <steve9000@users.sf.net>"
+
+#. ###############################################################################
+#.
+#. Main
+#.
+#. ###############################################################################
+#: meldapp.py:861
+#, python-format
+msgid "`%s' is not a directory or file, cannot open cvs view"
+msgstr "'%s'은(는) 디렉토리나 파일이 아닙니다, cvs 보기를 열 수 없습니다"
+
+#: meldapp.py:867
+msgid "Cannot open "
+msgstr "열 수 없습니다 "
+
+#: meldapp.py:884
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "파일과 디렉토리의 혼합은 비교할 수 없습니다.\n"
+
+#: meldapp.py:886
+msgid "file"
+msgstr "파일"
+
+#: meldapp.py:886
+msgid "folder"
+msgstr "폴더"
+
+#: meldapp.py:889
+#, python-format
+msgid "Wrong number of arguments (Got %i)"
+msgstr "잘못된 인자의 개수(%i개를 받았습니다)"
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. Use these to ensure consistent return values.
+#: melddoc.py:44
+msgid "untitled"
+msgstr "제목없음"
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. remove common prefix
+#. split on /
+#. no common path. empty names get changed to "[None]"
+#: misc.py:121
+msgid "[None]"
+msgstr "[없음]"
+
+#. get buffer size
+#. ick need to fix
+#. how many chars?
+#. ick need to fix
+#. allow single arguments to be passed as is.
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. maybe fall back to ConfigParser if gconf is unavailable.
+#. types of values allowed
+#. LIST = "list"
+#. PAIR = "pair"
+#. #
+#. unknown key, we don't care about it
+#. value has changed
+#. value has been deleted
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. m.add_task(h)
+#. m.add_task(h)
+#. s.add_task( sayhello(40).next )
+#. s.add_task( sayhello(50).next )
+#. s.add_task( sayhello(60).next )
+#. m.add_task( s )
+#. time.sleep(.71)
+#. m.add_task( s )#sayhello(2).next )
+#. m.add_task( sayhello(3).next )
+#. m.add_task( lambda t=time.time() : timetask(t) )
+#. m.add_task( sayhello(4).next )
+#. m.add_task( sayhello(5).next )
+#. m.mainloop()
+#. print "***"
+#. m.add_task( sayhello(20).next )
+#. m.add_task( s )
+#. s.complete_tasks()
+#. time.sleep(3)
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ignored, new, normal, ignored changes,
+#. error, placeholder, cvs added
+#. cvs modified, cvs conflict, cvs removed
+#. locally removed, end
+#. STATE_IGNORED
+#. STATE_NONE
+#. STATE_NORMAL
+#. STATE_NOCHANGE
+#. STATE_ERROR
+#. STATE_EMPTY
+#. STATE_NEW
+#. STATE_MODIFIED
+#. STATE_CONFLICT
+#. STATE_REMOVED
+#. STATE_MISSING
+#. IGNORED
+#. NONE
+#. NORMAL
+#. NOCHANGE
+#. ERROR
+#. EMPTY
+#. NEW
+#. MODIFIED
+#. CONFLICT
+#. REMOVED
+#. MISSING
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. collapse
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/cvsview.strings:7 glade2/filediff.strings:10
+#: glade2/dirdiff.strings:12 glade2/meldapp.strings:95
+msgid "window1"
+msgstr "창1"
+
+#: glade2/cvsview.strings:8
+msgid "Diff selected"
+msgstr "차이 선택됨"
+
+#: glade2/cvsview.strings:9 glade2/cvsview.strings:28
+#: glade2/meldapp.strings:94
+msgid "_Diff"
+msgstr "차이(_D)"
+
+#: glade2/cvsview.strings:10
+#, fuzzy
+msgid "Flatten directories"
+msgstr "빠진 디렉토리 생성 (-d)"
+
+#: glade2/cvsview.strings:11
+msgid "_Flatten"
+msgstr "평면화(_F)"
+
+#: glade2/cvsview.strings:12
+msgid "_Modified"
+msgstr "변경됨(_M)"
+
+#: glade2/cvsview.strings:13 glade2/dirdiff.strings:28
+msgid "Show modified"
+msgstr "변경됨 표시"
+
+#: glade2/cvsview.strings:14
+msgid "_Normal"
+msgstr "보통(_N)"
+
+#: glade2/cvsview.strings:15
+msgid "Show non-CVS"
+msgstr "비-CVS 표시"
+
+#: glade2/cvsview.strings:16
+msgid "Non _CVS"
+msgstr "비 _CVS"
+
+#: glade2/cvsview.strings:17
+msgid "Ignored"
+msgstr "무시됨"
+
+#: glade2/cvsview.strings:18
+msgid "Commit"
+msgstr "커밋"
+
+#: glade2/cvsview.strings:19 glade2/cvsview.strings:30
+msgid "_Commit"
+msgstr "커밋(_C)"
+
+#: glade2/cvsview.strings:20
+msgid "Update"
+msgstr "갱신"
+
+#: glade2/cvsview.strings:21 glade2/cvsview.strings:29
+msgid "_Update"
+msgstr "갱신(_U)"
+
+#: glade2/cvsview.strings:22
+msgid "Add to CVS"
+msgstr "CVS에 추가"
+
+#: glade2/cvsview.strings:23 glade2/cvsview.strings:32
+msgid "_Add"
+msgstr "추가(_A)"
+
+#: glade2/cvsview.strings:24
+msgid "Remove from CVS"
+msgstr "CVS에서 삭제"
+
+#: glade2/cvsview.strings:25 glade2/cvsview.strings:34
+msgid "_Remove"
+msgstr "삭제(_R)"
+
+#: glade2/cvsview.strings:26
+msgid "Delete locally"
+msgstr "로컬에서 삭제"
+
+#: glade2/cvsview.strings:27 glade2/cvsview.strings:39
+#: glade2/filediff.strings:11 glade2/filediff.strings:12
+#: glade2/filediff.strings:13 glade2/filediff.strings:23
+#: glade2/dirdiff.strings:30 glade2/dirdiff.strings:31
+#: glade2/dirdiff.strings:32 glade2/meldapp.strings:43
+#: glade2/meldapp.strings:66 glade2/meldapp.strings:78
+msgid "*"
+msgstr "*"
+
+#: glade2/cvsview.strings:31
+#, fuzzy
+msgid "_Edit"
+msgstr "편집기"
+
+#: glade2/cvsview.strings:33
+msgid "Add _Binary"
+msgstr "바이너리 추가(_B)"
+
+#: glade2/cvsview.strings:35
+msgid "Remove _Locally"
+msgstr "로컬에서 제거(_L)"
+
+#: glade2/cvsview.strings:36
+msgid "CVS Log"
+msgstr "CVS 로그"
+
+#: glade2/cvsview.strings:37
+msgid "Commit Files"
+msgstr "파일(들) 커밋"
+
+#: glade2/cvsview.strings:38
+msgid "Previous Logs"
+msgstr "이전 로그"
+
+#: glade2/cvsview.strings:40
+msgid "Log Message"
+msgstr "로그 메시지"
+
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/filediff.strings:7
+msgid "Copy All _Left"
+msgstr "모든 왼쪽 복사(_L)"
+
+#: glade2/filediff.strings:8
+msgid "Copy All _Right"
+msgstr "모든 오른쪽 복사(_R)"
+
+#: glade2/filediff.strings:9 glade2/dirdiff.strings:10
+#, fuzzy
+msgid "Edit"
+msgstr "편집기"
+
+#: glade2/filediff.strings:14
+msgid "Save modified files?"
+msgstr "변경된 파일(들)을 저장할까요?"
+
+#: glade2/filediff.strings:15
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
+"Which ones would you like to save?</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">일부 파일(들)이 변경되었습니다.\n"
+"어떤 것(들)을 저장할까요?</span>"
+
+#: glade2/filediff.strings:17
+msgid "Find"
+msgstr "찾기"
+
+#: glade2/filediff.strings:18
+msgid "Search for:"
+msgstr "찾을 내용:"
+
+#: glade2/filediff.strings:19
+msgid "_Match case"
+msgstr "대소문자 일치(_M)"
+
+#: glade2/filediff.strings:20
+msgid "Match _entire word only"
+msgstr "단어 전체가 일치(_E)"
+
+#: glade2/filediff.strings:21
+msgid "_Wrap around"
+msgstr "끝에가면 처음부터 시작(_W)"
+
+#: glade2/filediff.strings:22
+msgid "Regular e_xpression"
+msgstr "정규식(_X)"
+
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/dirdiff.strings:7
+msgid "Launch _Comparison"
+msgstr "비교 실행(_C)"
+
+#: glade2/dirdiff.strings:8
+msgid "Copy Left"
+msgstr "왼쪽 복사"
+
+#: glade2/dirdiff.strings:9
+msgid "Copy Right"
+msgstr "오른쪽 복사"
+
+#: glade2/dirdiff.strings:11
+msgid "_Delete Selected"
+msgstr "선택된 것 삭제(_D)"
+
+#: glade2/dirdiff.strings:13
+msgid "Diff selection"
+msgstr "선택 비교"
+
+#: glade2/dirdiff.strings:14
+msgid "Diff"
+msgstr "차이"
+
+#: glade2/dirdiff.strings:15
+msgid "Copy left"
+msgstr "왼쪽 복사"
+
+#: glade2/dirdiff.strings:16
+msgid "Left"
+msgstr "왼쪽"
+
+#: glade2/dirdiff.strings:17
+msgid "Copy right"
+msgstr "오른쪽 복사"
+
+#: glade2/dirdiff.strings:18
+msgid "Right"
+msgstr "오른쪽"
+
+#: glade2/dirdiff.strings:19
+msgid "Delete selected"
+msgstr "선택된 것 삭제"
+
+#: glade2/dirdiff.strings:20
+msgid "Hide selected"
+msgstr "선택된 것 숨김"
+
+#: glade2/dirdiff.strings:21
+msgid "Hide..."
+msgstr "숨김..."
+
+#: glade2/dirdiff.strings:22
+msgid "Ignore case of entries"
+msgstr "항목의 대소문자 무시"
+
+#: glade2/dirdiff.strings:23
+msgid "Case"
+msgstr "대소문자"
+
+#: glade2/dirdiff.strings:24
+msgid "Show identical"
+msgstr "동일한 것 표시"
+
+#: glade2/dirdiff.strings:25
+msgid "Same"
+msgstr "같음"
+
+#: glade2/dirdiff.strings:26
+msgid "Show new"
+msgstr "새로운 것 표시"
+
+#: glade2/dirdiff.strings:27
+msgid "New"
+msgstr "새로"
+
+#: glade2/dirdiff.strings:29
+msgid "Modified"
+msgstr "변경됨"
+
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/meldapp.strings:7
+msgid "Meld"
+msgstr "Meld"
+
+#: glade2/meldapp.strings:8 glade2/meldapp.strings:23
+msgid "Two way file"
+msgstr "파일 2개"
+
+#: glade2/meldapp.strings:9 glade2/meldapp.strings:24
+msgid "Three way file"
+msgstr "파일 3개"
+
+#: glade2/meldapp.strings:10 glade2/meldapp.strings:25
+msgid "Two way directory"
+msgstr "디렉토리 2개"
+
+#: glade2/meldapp.strings:11 glade2/meldapp.strings:26
+msgid "Three way directory"
+msgstr "디렉토리 3개"
+
+#: glade2/meldapp.strings:12 glade2/meldapp.strings:27
+msgid "CVS view"
+msgstr "CVS 보기"
+
+#: glade2/meldapp.strings:13
+msgid "_Save"
+msgstr "저장(_S)"
+
+#: glade2/meldapp.strings:14
+msgid "Save File 1"
+msgstr "파일 1 저장"
+
+#: glade2/meldapp.strings:15
+msgid "Save File 2"
+msgstr "파일 2 저장"
+
+#: glade2/meldapp.strings:16
+msgid "Save File 3"
+msgstr "파일 3 저장"
+
+#: glade2/meldapp.strings:17
+msgid "_Contents"
+msgstr "내용(_C)"
+
+#: glade2/meldapp.strings:18
+msgid "Report _Bug"
+msgstr "버그 보고(_B)"
+
+#: glade2/meldapp.strings:19
+msgid "_New..."
+msgstr "새로(_N)..."
+
+#: glade2/meldapp.strings:20
+msgid "Copyright (C) 2002 Stephen Kennedy"
+msgstr "Copyright (C) 2002 Stephen Kennedy"
+
+#: glade2/meldapp.strings:21
+msgid "http://meld.sourceforge.net"
+msgstr "http://meld.sourceforge.net"
+
+#: glade2/meldapp.strings:22
+msgid "Choose Files"
+msgstr "파일 선택"
+
+#: glade2/meldapp.strings:28
+msgid "Preferences : Meld"
+msgstr "기본 설정 : Meld"
+
+#: glade2/meldapp.strings:29
+msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">편집기</span>"
+
+#: glade2/meldapp.strings:30
+msgid "<b>Font</b>"
+msgstr "<b>글꼴</b>"
+
+#: glade2/meldapp.strings:31
+msgid "Use GNOME monospace font."
+msgstr "GNOME 고정폭 글꼴 사용."
+
+#: glade2/meldapp.strings:32
+msgid "Use custom font."
+msgstr "사용자가 지정한 글꼴 사용."
+
+#: glade2/meldapp.strings:33 glade2/meldapp.strings:88
+msgid "<b>Misc</b>"
+msgstr "<b>기타</b>"
+
+#: glade2/meldapp.strings:34
+msgid "Tabs equivalent to "
+msgstr "탭은 "
+
+#: glade2/meldapp.strings:35
+msgid " spaces."
+msgstr " 공백과 동일함"
+
+#: glade2/meldapp.strings:36
+msgid "Automatically supply missing newline at end of file."
+msgstr "파일 끝에 빠진 개행문자를 자동으로 추가."
+
+#: glade2/meldapp.strings:37
+#, fuzzy
+msgid "<b>Edit Menu</b>"
+msgstr "<b>불러오는 중</b>"
+
+#: glade2/meldapp.strings:38
+msgid "Edit menu popup invokes"
+msgstr ""
+
+#: glade2/meldapp.strings:39
+msgid "Internal editor"
+msgstr ""
+
+#: glade2/meldapp.strings:40
+#, fuzzy
+msgid "Gnome default editor"
+msgstr "그놈 기본"
+
+#: glade2/meldapp.strings:41
+msgid "(gnome-default-editor)"
+msgstr ""
+
+#: glade2/meldapp.strings:42
+msgid "Custom command"
+msgstr ""
+
+#: glade2/meldapp.strings:44
+msgid "Editor"
+msgstr "편집기"
+
+#: glade2/meldapp.strings:45
+msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">표시</span>"
+
+#: glade2/meldapp.strings:46
+msgid "<b>Drawing Style</b>"
+msgstr "<b>그리기 스타일</b>"
+
+#: glade2/meldapp.strings:47
+msgid ""
+"Choose how the central bar of the diff viewer is drawn. You may wish to "
+"choose a simpler mode if you find scrolling is slow."
+msgstr ""
+"차이 보기의 중앙 막대를 어떻게 그릴지 선택하십시오. 스크롤링이 느리다고 생각"
+"되면 더 간단한 모드를 선택할 수 있습니다."
+
+#: glade2/meldapp.strings:48
+msgid "Simple : Lines only"
+msgstr "단순 : 선으로만"
+
+#: glade2/meldapp.strings:49
+msgid "Solid   Filled Quadilaterals"
+msgstr "채움 : 채워진 다각형"
+
+#: glade2/meldapp.strings:50
+msgid "Curved : Filled Curves"
+msgstr "곡선 : 채워진 곡선"
+
+#: glade2/meldapp.strings:51
+msgid "<b>Toolbar Appearance</b>"
+msgstr "<b>도구모음 모양</b>"
+
+#: glade2/meldapp.strings:52
+msgid "Gnome Default"
+msgstr "그놈 기본"
+
+#: glade2/meldapp.strings:53
+msgid "Icons Only"
+msgstr "아이콘만"
+
+#: glade2/meldapp.strings:54
+msgid "Text Only"
+msgstr "글자만"
+
+#: glade2/meldapp.strings:55
+msgid "Text Under Icons"
+msgstr "아이콘 아래에 글자"
+
+#: glade2/meldapp.strings:56
+msgid "Text Beside Icons"
+msgstr "아이콘 옆에 글자"
+
+#: glade2/meldapp.strings:57
+msgid "Display"
+msgstr "표시"
+
+#: glade2/meldapp.strings:58
+msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">파일 필터</span>"
+
+#: glade2/meldapp.strings:59
+msgid "File Filters"
+msgstr "파일 필터"
+
+#: glade2/meldapp.strings:60
+msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">텍스트 필터</span>"
+
+#: glade2/meldapp.strings:61
+msgid "Text Filters"
+msgstr "텍스트 필터"
+
+#: glade2/meldapp.strings:62
+msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">인코딩</span>"
+
+#: glade2/meldapp.strings:63
+msgid "<b>Loading</b>"
+msgstr "<b>불러오는 중</b>"
+
+#: glade2/meldapp.strings:64
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr "불러올 때, 다음 코덱을 순서대로 시도합니다. (예. utf8, iso8859)"
+
+#: glade2/meldapp.strings:65
+msgid "utf8 iso8859"
+msgstr "utf8 iso8859"
+
+#: glade2/meldapp.strings:67
+msgid "<b>Saving</b>"
+msgstr "<b>저장 중</b>"
+
+#: glade2/meldapp.strings:68
+msgid "Save in the files original encoding"
+msgstr "파일을 원래 인코딩으로 저장"
+
+#: glade2/meldapp.strings:69
+msgid "Save in UTF-8 encoding"
+msgstr "파일을 UTF-8 인코딩으로 저장"
+
+#: glade2/meldapp.strings:70
+msgid "Encoding"
+msgstr "인코딩"
+
+#: glade2/meldapp.strings:71
+msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+
+#: glade2/meldapp.strings:72
+msgid "<b>Global options</b>"
+msgstr "<b>전역 선택사항</b>"
+
+#: glade2/meldapp.strings:73
+msgid "Quiet mode (-q)"
+msgstr "조용한 모드 (-q)"
+
+#: glade2/meldapp.strings:74
+msgid "Use Compression (-z)"
+msgstr "압축 사용 (-z)"
+
+#: glade2/meldapp.strings:75
+msgid "Ignore .cvsrc (-f)"
+msgstr ".cvsrc 무시 (-f)"
+
+#: glade2/meldapp.strings:76
+msgid "CVS binary"
+msgstr "CVS 바이너리"
+
+#: glade2/meldapp.strings:77
+msgid "Locate CVS binary : Meld"
+msgstr "CVS 바이너리 위치 : Meld"
+
+#: glade2/meldapp.strings:79
+msgid "<b>Update Options</b>"
+msgstr "<b>갱신 선택사항</b>"
+
+#: glade2/meldapp.strings:80
+msgid "Create missing directories (-d)"
+msgstr "빠진 디렉토리 생성 (-d)"
+
+#: glade2/meldapp.strings:81
+msgid "Prune empty directories (-P)"
+msgstr "빈 디렉토리 가지치기 (-P)"
+
+#: glade2/meldapp.strings:82
+msgid "CVS"
+msgstr "CVS"
+
+#: glade2/meldapp.strings:83
+msgid "_Logo"
+msgstr "로고(_L)"
+
+#: glade2/meldapp.strings:84
+msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">바이너리 파일</span>"
+
+#: glade2/meldapp.strings:85
+msgid "Binary files do not have text filters applied to them when comparing."
+msgstr "바이너리 파일은 비교할 때 적용되는 텍스트 필터가 없습니다."
+
+#: glade2/meldapp.strings:86
+msgid "_Binary Files"
+msgstr "바이너리 파일"
+
+#: glade2/meldapp.strings:87
+msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">차이</span>"
+
+#: glade2/meldapp.strings:89
+msgid ""
+"Ignore changes in case; consider upper and lower-case letters equivalent"
+msgstr "대소문자의 변화 무시; 대소문자는 동일한 것으로 간주"
+
+#: glade2/meldapp.strings:90
+msgid "<b>Whitespace</b>"
+msgstr "<b>공백</b>"
+
+#: glade2/meldapp.strings:91
+msgid "Whitespace is significant"
+msgstr "공백은 유효함"
+
+#: glade2/meldapp.strings:92
+msgid "Ignore changes that just insert or delete blank lines"
+msgstr "빈 줄의 추가나 삭제는 무시"
+
+#: glade2/meldapp.strings:93
+msgid "Ignore changes in amount of white space"
+msgstr "공백 문자의 양은 무시"
+
+#~ msgid "Recurse"
+#~ msgstr "재귀"
+
+#~ msgid "_View"
+#~ msgstr "보기(_V)"
+
+#~ msgid "translator_credits"
+#~ msgstr "장동수 <iolo@hellocity.net>"
