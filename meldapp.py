@@ -437,7 +437,7 @@ class MeldPreferences(prefs.Preferences):
                                               "CVS\t1\tCVS\n" + \
                                               "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
                                               "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
-        "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$[^:]+:[^\$]+\$\n" + \
+        "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$[^:]+:[^\\n\$]+\$\n" + \
                                               "C++ comment\t0\t//.*\n" + \
                                               "C comment\t0\t/\*[^*]*\*+([^/*][^*]*\*+)*/\n" + \
                                               "All whitespace\t0\t[ \\t\\r\\f\\v]*\n" + \
@@ -870,7 +870,7 @@ def main():
     elif len(args) in (2,3):
         app.append_diff(args)
     else:
-        app.usage( _("Wrong number of arguments (Got %i)") % len(arg))
+        app.usage( _("Wrong number of arguments (Got %i)") % len(args))
 
     app.main()
 
