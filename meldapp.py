@@ -166,10 +166,11 @@ class ListWidget(gnomeglade.Component):
         model = self.treeview.get_model()
         model.clear()
         for filtstring in getattr( self.prefs, self.key).split("\n"):
-            filt = misc.Filter(filtstring)
+            filt = misc.ListItem(filtstring)
             iter = model.append()
             model.set_value( iter, 0, filt.name)
-            model.set_value( iter, 2, filt.wildcard)
+            model.set_value( iter, 1, filt.active)
+            model.set_value( iter, 2, filt.value)
    
 ################################################################################
 #
@@ -421,13 +422,14 @@ class MeldPreferences(prefs.Preferences):
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_edited_bg" : prefs.Value(prefs.STRING, "gray85"),
         "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
-        "filters" : prefs.Value(prefs.STRING, "Backups:0:#*# .#* ~* *~ *.{orig,bak,swp}\n" + \
-                                              "CVS:0:CVS\n" + \
-                                              "Binaries:0:*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
-                                              "Media:0:*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
-        "regexes" : prefs.Value(prefs.STRING, "CVS keywords:0:\$[^:]+:[^\$]+\$\n" + \
-                                              "C/C++ comments:0:(?x) /\*  (?:  [^\*]  |  (?: \*(?!/)) )+   \*/\n" + \
-                                              "Script Comments:0:#.*")
+        "filters" : prefs.Value(prefs.STRING, "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n" + \
+                                              "CVS\t1\tCVS\n" + \
+                                              "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
+                                              "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
+        "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$[^:]+:[^\$]+\$\n" + \
+                                              "C comment\t0\t/\*(?:[^\*]|(?:\*(?!/)))+\*/\n" + \
+                                              "C++ comment\t0\t//.*\n" + \
+                                              "Script Comment\t0\t#.*")
     }
 
     def __init__(self):
@@ -492,24 +494,6 @@ class MeldApp(gnomeglade.GnomeApp):
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
-
-#    def _update_filter_menu(self):
-#        filters = [ Filter(s) for s in self.prefs.filters.split("\n") ]
-#        def toggle(i):
-#            name = i.get_child().get_text()
-#            for f in filters:
-#                if name == f.name:
-#                    f.active ^= 1
-#            self.prefs.filters = "\n".join( [ str(f) for f in filters ] )
-#        menu = gtk.Menu()
-#        for filt in filters:
-#            item = gtk.CheckMenuItem( filt.name )
-#            item.set_active( filt.active )
-#            item.connect("activate", toggle)
-#            menu.append(item)
-#            item.show()
-#        self.settings_filters.set_submenu( menu )
-#        menu.show_all()
 
     def on_idle(self):
         ret = self.scheduler.iteration()
