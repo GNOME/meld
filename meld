@@ -23,11 +23,11 @@ def main():
         sys.exit(1)
     app = meldapp.MeldApp()
     if len(sys.argv) == 1:
-		pass
+        pass
     elif len(sys.argv) == 2:
-		app.append_cvsview( sys.argv[1] )
+        app.append_cvsview( sys.argv[1] )
     elif len(sys.argv) in (3,4):
-		app.append_filediff( sys.argv[1:] )
+        app.append_filediff( sys.argv[1:] )
     app.mainloop()
 
 if __name__=="__main__":
