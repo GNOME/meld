@@ -38,7 +38,7 @@
 		  <property name="stock_item">GNOMEUIINFO_MENU_FILE_TREE</property>
 
 		  <child>
-		    <widget class="GtkMenu" id="menu_file">
+		    <widget class="GtkMenu" id="menuitem_file_menu">
 
 		      <child>
 			<widget class="GtkImageMenuItem" id="menu_file_new">
@@ -60,14 +60,89 @@
 		      <child>
 			<widget class="GtkImageMenuItem" id="menu_file_save">
 			  <property name="visible">True</property>
-			  <property name="stock_item">GNOMEUIINFO_MENU_SAVE_ITEM</property>
-			</widget>
-		      </child>
+			  <property name="label" translatable="yes">_Save</property>
+			  <property name="use_underline">True</property>
 
-		      <child>
-			<widget class="GtkImageMenuItem" id="menu_file_save_as">
-			  <property name="visible">True</property>
-			  <property name="stock_item">GNOMEUIINFO_MENU_SAVE_AS_ITEM</property>
+			  <child internal-child="image">
+			    <widget class="GtkImage" id="image23">
+			      <property name="visible">True</property>
+			      <property name="stock">gtk-save</property>
+			      <property name="icon_size">1</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			  </child>
+
+			  <child>
+			    <widget class="GtkMenu" id="menu_file_save_menu">
+
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_file_save_left">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Save Left</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_save_left_activate" last_modification_time="Wed, 12 Jun 2002 19:05:12 GMT"/>
+
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image24">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-save</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
+
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_file_save_right">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Save Right</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_save_right_activate" last_modification_time="Wed, 12 Jun 2002 19:05:23 GMT"/>
+
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image25">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-save</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
+
+			      <child>
+				<widget class="GtkImageMenuItem" id="menu_file_save_both">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Save Both</property>
+				  <property name="use_underline">True</property>
+				  <signal name="activate" handler="on_save_both_activate" last_modification_time="Wed, 12 Jun 2002 19:05:56 GMT"/>
+				  <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+
+				  <child internal-child="image">
+				    <widget class="GtkImage" id="image26">
+				      <property name="visible">True</property>
+				      <property name="stock">gtk-save</property>
+				      <property name="icon_size">1</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
 			</widget>
 		      </child>
 
@@ -103,7 +178,23 @@
 		  <property name="stock_item">GNOMEUIINFO_MENU_EDIT_TREE</property>
 
 		  <child>
-		    <widget class="GtkMenu" id="menu_edit">
+		    <widget class="GtkMenu" id="menuitem_edit_menu">
+
+		      <child>
+			<widget class="GtkImageMenuItem" id="menu_edit_undo">
+			  <property name="visible">True</property>
+			  <property name="stock_item">GNOMEUIINFO_MENU_UNDO_ITEM</property>
+			  <signal name="activate" handler="on_undo_doc_clicked" last_modification_time="Wed, 12 Jun 2002 19:23:34 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkImageMenuItem" id="menu_edit_redo">
+			  <property name="visible">True</property>
+			  <property name="stock_item">GNOMEUIINFO_MENU_REDO_ITEM</property>
+			  <signal name="activate" handler="on_redo_doc_clicked" last_modification_time="Wed, 12 Jun 2002 19:23:47 GMT"/>
+			</widget>
+		      </child>
 
 		      <child>
 			<widget class="GtkImageMenuItem" id="cut1">
@@ -125,48 +216,8 @@
 			  <property name="stock_item">GNOMEUIINFO_MENU_PASTE_ITEM</property>
 			</widget>
 		      </child>
-
-		      <child>
-			<widget class="GtkImageMenuItem" id="clear1">
-			  <property name="visible">True</property>
-			  <property name="stock_item">GNOMEUIINFO_MENU_CLEAR_ITEM</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkMenuItem" id="separator5">
-			  <property name="visible">True</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkImageMenuItem" id="properties1">
-			  <property name="visible">True</property>
-			  <property name="stock_item">GNOMEUIINFO_MENU_PROPERTIES_ITEM</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkMenuItem" id="separator6">
-			  <property name="visible">True</property>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkImageMenuItem" id="preferences1">
-			  <property name="visible">True</property>
-			  <property name="stock_item">GNOMEUIINFO_MENU_PREFERENCES_ITEM</property>
-			</widget>
-		      </child>
 		    </widget>
 		  </child>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="GtkMenuItem" id="view1">
-		  <property name="visible">True</property>
-		  <property name="stock_item">GNOMEUIINFO_MENU_VIEW_TREE</property>
 		</widget>
 	      </child>
 
@@ -176,7 +227,7 @@
 		  <property name="stock_item">GNOMEUIINFO_MENU_HELP_TREE</property>
 
 		  <child>
-		    <widget class="GtkMenu" id="menu_help">
+		    <widget class="GtkMenu" id="menuitem_help_menu">
 
 		      <child>
 			<widget class="GtkImageMenuItem" id="menu_help_about">
@@ -225,20 +276,12 @@
 	      </child>
 
 	      <child>
-		<widget class="button" id="button4">
-		  <property name="visible">True</property>
-		  <property name="tooltip" translatable="yes">Open File</property>
-		  <property name="label">gtk-open</property>
-		  <property name="use_stock">True</property>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="button5">
+		<widget class="button" id="button7">
 		  <property name="visible">True</property>
 		  <property name="tooltip" translatable="yes">Save File</property>
 		  <property name="label">gtk-save</property>
 		  <property name="use_stock">True</property>
+		  <signal name="clicked" handler="on_save_both_activate" last_modification_time="Wed, 12 Jun 2002 19:11:10 GMT"/>
 		</widget>
 	      </child>
 
@@ -257,7 +300,6 @@
 		  <property name="label">gtk-undo</property>
 		  <property name="use_stock">True</property>
 		  <signal name="clicked" handler="on_undo_doc_clicked" last_modification_time="Sun, 09 Jun 2002 16:12:18 GMT"/>
-		  <accelerator key="z" modifiers="GDK_CONTROL_MASK" signal="clicked"/>
 		</widget>
 	      </child>
 

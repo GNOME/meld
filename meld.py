@@ -41,8 +41,10 @@ class struct:
 
 def look(s, o):
     return filter(lambda x:x.find(s)!=-1, dir(o))
+def ilook(s, o):
+    return filter(lambda x:x.lower().find(s)!=-1, dir(o))
 #print filter(lambda x:x.find("RUN")!=-1, dir(gobject))
-#print look("", gobject)
+#print ilook("message", gnome.ui)
 
 
 ################################################################################
@@ -147,15 +149,17 @@ class FileDiff2(gnomeglade.Component):
             self._queue_refresh()
 
     def undo(self):
-        self.undosequence.busy = 1
-        self.undosequence.undo()
-        self.undosequence.busy = 0
-        self._queue_refresh(0)
+        if self.undosequence.can_undo():
+            self.undosequence.busy = 1
+            self.undosequence.undo()
+            self.undosequence.busy = 0
+            self._queue_refresh(0)
     def redo(self):
-        self.undosequence.busy = 1
-        self.undosequence.redo()
-        self.undosequence.busy = 0
-        self._queue_refresh(0)
+        if self.undosequence.can_redo():
+            self.undosequence.busy = 1
+            self.undosequence.redo()
+            self.undosequence.busy = 0
+            self._queue_refresh(0)
 
     def on_drawing2_scroll_event(self, area, event):
         self.next_diff(event.direction)
@@ -204,9 +208,11 @@ class FileDiff2(gnomeglade.Component):
             for l in open(filename).read().split("\n"):
                 lines.append( "%s%s"% (len(lines)%50==0 and "*"*80 or "",l) )
             text = "\n".join(lines)
+            view.filename = filename
         except IOError, e:
             print e
             text = ""
+            view.filename = None
         buffer = view.get_buffer()
         buffer.set_text( text )
         self._ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.edited_color } )
@@ -397,6 +403,19 @@ class FileDiff2(gnomeglade.Component):
                 break
         text.scroll_to_iter( buf.get_iter_at_line(c[index]), 0.4, 1, 0.5, 0)
 
+    def save_left(self):
+        self._save_textview(self.textview0)
+    def save_right(self):
+        self._save_textview(self.textview1)
+    def _save_textview(self, textview):
+        b = textview.get_buffer()
+        txt = b.get_text(b.get_start_iter(), b.get_end_iter(), 0)
+        try:
+            open(textview.filename,"w").write( txt )
+            self.undosequence.clear()
+        except IOError, e:
+            raise e
+
     def _queue_refresh(self, delay=1000):
         if self.refresh_timer_id != -1:
             #print "extra refresh"
@@ -579,6 +598,28 @@ class MeldApp(gnomeglade.App):
         self.current_doc().undo()
     def on_redo_doc_clicked(self, *extra):
         self.current_doc().redo()
+
+    def on_save_left_activate(self, *extra):
+        try:
+            self.current_doc().save_left()
+        except IOError, e:
+            self.appbar.set_status("Error saving left file (%s)"%e)
+        else:
+            self.appbar.set_status("Saved left file OK")
+    def on_save_right_activate(self, *extra):
+        try:
+            self.current_doc().save_right()
+        except IOError, e:
+            self.appbar.set_status("Error saving right file (%s)"%e)
+        else:
+            self.appbar.set_status("Saved right file OK")
+    def on_save_both_activate(self, *extra):
+        self.on_save_left_activate()
+        stat = self.appbar.get_status().get_text()
+        self.on_save_right_activate()
+        stat = "%s, %s" % (stat, self.appbar.get_status().get_text())
+        self.appbar.set_status(stat)
+        gtk.timeout_add(5000, lambda x: self.appbar.set_status(""), 0)
 
     def on_files_doc_loaded(self, component, file0, file1):
         l = self.notebook.get_tab_label( component._widget ) #TODO why ._widget?
