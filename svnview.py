@@ -20,6 +20,7 @@ import calendar
 import tempfile
 import gobject
 import shutil
+import errno
 import time
 import copy
 import gtk
@@ -80,7 +81,13 @@ def _lookup_cvs_files(dirs, files):
     else:
         return [],[]
 
-    entries = os.popen("svn status -Nv "+directory).read()
+    while 1:
+        try:
+            entries = os.popen("svn status -Nv "+directory).read()
+            break
+        except OSError, e:
+            if e.errno != errno.EAGAIN:
+                raise
 
     retfiles = []
     retdirs = []
