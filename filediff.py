@@ -165,10 +165,7 @@ class FileDiff(gnomeglade.Component):
         def getlines(pane,lo,hi):
             b = buffers[pane]
             text = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
-            lines = text.split("\n")
-            if len(text) and text[-1]=='\n':
-                del lines[-1]
-            return lines
+            return text.split("\n")[:-1]
         self.linediffer.change_sequence( pane, startline, sizechange, getlines )
         self.refresh()
 
@@ -410,6 +407,11 @@ class FileDiff(gnomeglade.Component):
                     else:
                         tasks.remove(t)
                         panetext[t.pane] = "".join(t.text)
+                        if len(panetext[t.pane]) and \
+                            panetext[t.pane][-1] != "\n" and \
+                            self.prefs.supply_newline:
+                                t.buf.insert( t.buf.get_end_iter(), "\n")
+                                panetext[t.pane] += "\n"
             yield 1
         yield "Computing differences"
         lines = map(lambda x: x.split("\n"), panetext)
@@ -629,8 +631,7 @@ class FileDiff(gnomeglade.Component):
 
         for c in self.linediffer.single_changes(which):
             if c[1] != c[2]:
-                start = buffer.get_iter_at_line(c[1])
-                end   = buffer.get_iter_at_line(c[2])
+                start, end = map(buffer.get_iter_at_line, (c[1], c[2]) )
                 if c[0] == "insert":
                     buffer.apply_tag(tag_delete_line, start, end)
                 elif c[0] == "replace":

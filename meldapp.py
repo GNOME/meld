@@ -17,8 +17,8 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.7.2"
-developer = 1
+version = "0.7.9"
+developer = 0
 
 ################################################################################
 #
@@ -509,7 +509,8 @@ def main():
         if os.path.isdir(a):
             app.append_cvsview( [a] )
         elif os.path.isfile(a):
-            doc = cvsview.CvsView(app.statusbar, os.path.dirname(a) )
+            doc = cvsview.CvsView(app.statusbar)
+            doc.set_location( os.path.dirname(a) )
             doc.connect("create-diff", lambda obj,arg: app.append_filediff(arg) )
             doc.run_cvs_diff(a)
             del doc
