@@ -49,8 +49,10 @@ class SchedulerBase:
         The task is deemed to be finished when either it returns a
         false value or raises StopIteration.
         """
-        try: self.tasks.remove(task)
-        except ValueError: pass
+        try:
+            self.tasks.remove(task)
+        except ValueError:
+            pass
         self.tasks.append(task)
         for callback in self.callbacks:
             callback(self)
