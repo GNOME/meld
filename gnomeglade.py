@@ -24,14 +24,6 @@ import gnome
 import gnome.ui
 import gettext
 
-# Return values from the 'delete-event' handler.
-# Return DELETE_OK to allow the window to close or DELETE_ABORT
-# if the window should not be deleted
-DELETE_OK, DELETE_ABORT = (0,1)
-
-# Use these to ensure consistent return values.
-RESULT_OK, RESULT_ERROR = (0,1)
-
 class Base:
     """Base class for all glade objects.
 
