@@ -88,6 +88,8 @@ class struct:
             r.append("%s=%s" % (i, getattr(self,i)))
         r.append(">\n")
         return " ".join(r)
+    def __cmp__(self, other):
+        return cmp(self.__dict__, other.__dict__)
 
 def all_equal(list):
     """Return true if all members of the list are equal to the first.
@@ -273,7 +275,8 @@ def copytree(src, dst, symlinks=1):
 def shell_to_regex(pat):
     """Translate a shell PATTERN to a regular expression.
 
-    Based on fnmatch.translate(). There is no way to quote meta-characters.
+    Based on fnmatch.translate(). We also handle {a,b,c} where fnmatch does not.
+    There is no way to quote meta-characters.
     """
 
     i, n = 0, len(pat)
@@ -309,12 +312,12 @@ def shell_to_regex(pat):
             res += re.escape(c)
     return res + "$"
 
-class Filter(object):
-    __slots__ = ("name", "active", "wildcard")
+class ListItem(object):
+    __slots__ = ("name", "active", "value")
     def __init__(self, s):
-        a = s.split(":")
+        a = s.split("\t")
         self.name = a.pop(0)
         self.active = int(a.pop(0))
-        self.wildcard = ":".join(a)
+        self.value = " ".join(a)
     def __str__(self):
-        return "%s %i %s" % ( self.name, self.active, self.wildcard )
+        return "<%s %s %i %s>" % ( self.__class__, self.name, self.active, self.value )
