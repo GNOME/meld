@@ -517,19 +517,6 @@
 	      </child>
 
 	      <child>
-		<widget class="button" id="button6">
-		  <property name="visible">True</property>
-		  <property name="label">gtk-refresh</property>
-		  <property name="use_stock">True</property>
-		  <property name="new_group">True</property>
-		  <signal name="clicked" handler="on_menu_refresh_activate" last_modification_time="Fri, 01 Nov 2002 18:25:19 GMT"/>
-		</widget>
-		<packing>
-		  <property name="new_group">True</property>
-		</packing>
-	      </child>
-
-	      <child>
 		<widget class="button" id="button_undo">
 		  <property name="visible">True</property>
 		  <property name="label">gtk-undo</property>
@@ -2964,6 +2951,27 @@ Adam Weinberger (en_CA)</property>
 		      </child>
 
 		      <child>
+			<widget class="GtkLabel" id="label86">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces.</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">True</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">15</property>
+			  <property name="ypad">15</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
 			<placeholder/>
 		      </child>
 		    </widget>
@@ -3020,7 +3028,7 @@ Adam Weinberger (en_CA)</property>
 			  <child>
 			    <widget class="GtkImage" id="image615">
 			      <property name="visible">True</property>
-			      <property name="stock">gtk-yes</property>
+			      <property name="stock">gtk-no</property>
 			      <property name="icon_size">3</property>
 			      <property name="xalign">0.5</property>
 			      <property name="yalign">0.5</property>
@@ -3065,6 +3073,61 @@ Adam Weinberger (en_CA)</property>
 		      <child>
 			<widget class="GtkHSeparator" id="hseparator8">
 			  <property name="visible">True</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkLabel" id="label87">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which will be applied in turn to each line of the input text.</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_FILL</property>
+			  <property name="wrap">True</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">15</property>
+			  <property name="ypad">15</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkHBox" id="hbox39">
+			  <property name="border_width">7</property>
+			  <property name="visible">True</property>
+			  <property name="homogeneous">False</property>
+			  <property name="spacing">0</property>
+
+			  <child>
+			    <widget class="GtkCheckButton" id="checkbutton_ignore_blank_lines">
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="label" translatable="yes">Ignore changes which insert or delete blank lines</property>
+			      <property name="use_underline">True</property>
+			      <property name="relief">GTK_RELIEF_NORMAL</property>
+			      <property name="focus_on_click">True</property>
+			      <property name="active">False</property>
+			      <property name="inconsistent">False</property>
+			      <property name="draw_indicator">True</property>
+			      <signal name="toggled" handler="on_checkbutton_ignore_blank_lines_toggled" last_modification_time="Sun, 11 Jul 2004 22:40:43 GMT"/>
+			    </widget>
+			    <packing>
+			      <property name="padding">5</property>
+			      <property name="expand">False</property>
+			      <property name="fill">False</property>
+			    </packing>
+			  </child>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -3946,137 +4009,6 @@ Adam Weinberger (en_CA)</property>
 	      <child>
 		<widget class="GtkLabel" id="_logo_label">
 		  <property name="label" translatable="yes">_Logo</property>
-		  <property name="use_underline">False</property>
-		  <property name="use_markup">False</property>
-		  <property name="justify">GTK_JUSTIFY_LEFT</property>
-		  <property name="wrap">False</property>
-		  <property name="selectable">False</property>
-		  <property name="xalign">0.5</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
-		</widget>
-		<packing>
-		  <property name="type">tab</property>
-		</packing>
-	      </child>
-
-	      <child>
-		<widget class="GtkVBox" id="binary_tab">
-		  <property name="visible">True</property>
-		  <property name="homogeneous">False</property>
-		  <property name="spacing">12</property>
-
-		  <child>
-		    <widget class="GtkVBox" id="binary_box">
-		      <property name="visible">True</property>
-		      <property name="homogeneous">False</property>
-		      <property name="spacing">0</property>
-
-		      <child>
-			<widget class="GtkHBox" id="hbox33">
-			  <property name="visible">True</property>
-			  <property name="homogeneous">False</property>
-			  <property name="spacing">6</property>
-
-			  <child>
-			    <widget class="GtkImage" id="image616">
-			      <property name="visible">True</property>
-			      <property name="stock">gtk-execute</property>
-			      <property name="icon_size">4</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
-			    </widget>
-			    <packing>
-			      <property name="padding">0</property>
-			      <property name="expand">False</property>
-			      <property name="fill">True</property>
-			    </packing>
-			  </child>
-
-			  <child>
-			    <widget class="GtkLabel" id="label62">
-			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">&lt;span weight=&quot;bold&quot; size=&quot;x-large&quot;&gt;Binary Files&lt;/span&gt;</property>
-			      <property name="use_underline">False</property>
-			      <property name="use_markup">True</property>
-			      <property name="justify">GTK_JUSTIFY_LEFT</property>
-			      <property name="wrap">False</property>
-			      <property name="selectable">False</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
-			    </widget>
-			    <packing>
-			      <property name="padding">0</property>
-			      <property name="expand">False</property>
-			      <property name="fill">False</property>
-			    </packing>
-			  </child>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">True</property>
-			  <property name="fill">True</property>
-			</packing>
-		      </child>
-
-		      <child>
-			<widget class="GtkHSeparator" id="hseparator9">
-			  <property name="visible">True</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">True</property>
-			  <property name="fill">True</property>
-			</packing>
-		      </child>
-		    </widget>
-		    <packing>
-		      <property name="padding">0</property>
-		      <property name="expand">False</property>
-		      <property name="fill">False</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <widget class="GtkLabel" id="label68">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Binary files do not have text filters applied to them when comparing.</property>
-		      <property name="use_underline">False</property>
-		      <property name="use_markup">False</property>
-		      <property name="justify">GTK_JUSTIFY_LEFT</property>
-		      <property name="wrap">False</property>
-		      <property name="selectable">False</property>
-		      <property name="xalign">0</property>
-		      <property name="yalign">0.5</property>
-		      <property name="xpad">0</property>
-		      <property name="ypad">0</property>
-		    </widget>
-		    <packing>
-		      <property name="padding">0</property>
-		      <property name="expand">False</property>
-		      <property name="fill">False</property>
-		    </packing>
-		  </child>
-
-		  <child>
-		    <placeholder/>
-		  </child>
-		</widget>
-		<packing>
-		  <property name="tab_expand">False</property>
-		  <property name="tab_fill">True</property>
-		</packing>
-	      </child>
-
-	      <child>
-		<widget class="GtkLabel" id="binary_label">
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_Binary Files</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
