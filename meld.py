@@ -5,11 +5,11 @@ import re
 import stat
 import time
 import sys
-import string
 import difflib
 import math
 sys.path.append("/home/stephen/garnome/lib/python2.2/site-packages")
 
+import gobject
 import gtk
 import gtk.glade
 import gnome
@@ -33,15 +33,19 @@ class struct:
         return " ".join(r)
 
 
+#print filter(lambda x:x.find("TYPE")!=-1, dir(gobject))
+#print filter(lambda x:x.find("RUN")!=-1, dir(gobject))
 ################################################################################
 #
 # FileDiff2
 #
 ################################################################################
 class FileDiff2(gnomeglade.Component):
-    def __init__(self, notebooklabel):
+    __gsignals__ = { 'files-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_STRING)) }
+
+    def __init__(self):
+        self.__gobject_init__()
         gnomeglade.Component.__init__(self, "glade2/filediff2.glade", "filediff2")
-        self.notebooklabel = notebooklabel
         sizegroup = gtk.SizeGroup(1)
         sizegroup.add_widget(self.textview0)
         sizegroup.add_widget(self.textview1)
@@ -64,9 +68,9 @@ class FileDiff2(gnomeglade.Component):
         view.get_buffer().set_text( text )
         entry = (self.fileentry0, self.fileentry1)[which]
         entry.set_filename(filename)
-        f0 = os.path.basename( self.fileentry0.get_full_path(0) or "None" )
-        f1 = os.path.basename( self.fileentry1.get_full_path(0) or "None" )
-        self.notebooklabel.set_text( "%s\n%s" % (f0,f1) )
+        f0 = self.fileentry0.get_full_path(0) or "None"
+        f1 = self.fileentry1.get_full_path(0) or "None"
+        self.emit("files-loaded", f0, f1)
 
     #def on_textview0_drag_data_received(self, text, context, x,y, typesel, id, time):
     def on_vbox0_drag_data_received(self, *args):
@@ -268,6 +272,8 @@ class FileDiff2(gnomeglade.Component):
             buffer.remove_tag(tag, buffer.get_start_iter(), buffer.get_end_iter())
         return tag
 
+gobject.type_register(FileDiff2)
+
 ################################################################################
 #
 # MeldApp
@@ -282,7 +288,7 @@ class BrowseFile2Dialog(gnomeglade.Dialog):
             f0 = self.fileentry0.get_full_path(1) or ""
             f1 = self.fileentry1.get_full_path(1) or ""
             self.parentapp.append_filediff2( f0, f1 )
-        self._widget.destroy() # why not self.widget.destroy()?
+        self._widget.destroy() #TODO why ._widget?
    
 ################################################################################
 #
@@ -322,16 +328,23 @@ class MeldApp(gnomeglade.App):
         BrowseFile2Dialog(self)
     def on_refresh_doc_clicked(self, *args):
         index = self.notebook.get_current_page()
-        self.notebook.get_nth_page(index).get_data("pyobject").refresh()
+        self.notebook.get_nth_page(index).get_data("pyobject").refresh() #TODO why not just w.refresh()
 
+    def on_files_doc_loaded(self, component, file0, file1):
+        l = self.notebook.get_tab_label( component._widget ) #TODO why ._widget?
+        if l:
+            f0 = os.path.basename(file0)
+            f1 = os.path.basename(file1)
+            l.set_text("%s\n%s" % (f0,f1))
     #
     # methods
     #
     def append_filediff2(self, file0, file1):
         l = gtk.Label("%s\n%s" % (file0,file1))
-        d = FileDiff2(l)
-        self.notebook.append_page( d._widget, l )
+        d = FileDiff2()
+        self.notebook.append_page( d._widget, l ) #TODO why ._widget?
         self.notebook.next_page()
+        d.connect("files-loaded", self.on_files_doc_loaded)
         d.set_file(file0,0)
         d.set_file(file1,1)
         d.refresh()
@@ -342,11 +355,14 @@ class MeldApp(gnomeglade.App):
 # Main
 #
 ################################################################################
-if __name__=="__main__":
+def main():
     sys.stdout = sys.stderr
     if len(sys.argv)==3:
         args=sys.argv[1:3]
     else:
         args = []
     MeldApp(args).mainloop()
+
+if __name__=="__main__":
+    main()
 
