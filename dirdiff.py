@@ -38,9 +38,15 @@ gdk = gtk.gdk
 #
 ################################################################################
 
-def _clamp(val, lower, upper):
-    assert lower <= upper
-    return min( max(val, lower), upper)
+def uniq(l):
+    i = iter(l)
+    a = i.next()
+    yield a
+    while 1:
+        b = i.next()
+        if a != b:
+            yield b
+            a = b
 
 def _files_same(lof):
     """Return 1 if all the files in 'lof' have the same contents"""
@@ -61,7 +67,6 @@ def _not_none(l):
     return filter(lambda x: x!=None, l)
 
 join = os.path.join
-
 
 COL_NEWER = tree.COL_END + 1
 pixbuf_newer = gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/tree-file-newer.png"), 14)
@@ -118,6 +123,7 @@ class EmblemCellRenderer(gtk.GenericCellRenderer):
             self.size = r.get_size(widget, cell_area)
         return self.size
 gobject.type_register(EmblemCellRenderer)
+
 ################################################################################
 #
 # DirDiffMenu
@@ -140,6 +146,19 @@ class DirDiffMenu(gnomeglade.Component):
         self.parent.on_button_copy_right_clicked( None )
     def on_popup_delete_activate(self, menuitem):
         self.parent.on_button_delete_clicked( None )
+
+################################################################################
+#
+# TypeFilter
+#
+################################################################################
+
+class TypeFilter(object):
+    __slots__ = ("label", "filter", "active")
+    def __init__(self, label, active, filter):
+        self.label = label
+        self.active = active
+        self.filter = filter
 
 ################################################################################
 #
@@ -186,26 +205,22 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 f = pattern.split()
                 label = f[0]
                 active = int(f[1])
-                regexps = [misc.shell_to_regex(p)[:-1] for p in f[2:]]
+                regex = "(%s)" % ")|(".join( [misc.shell_to_regex(p)[:-1] for p in f[2:]] )
                 try:
-                    cregexps = [re.compile(r) for r in regexps]
-                    def func(x, cr=cregexps):
-                        for c in cr:
-                            if c.match(x)!=None:
-                                return 0
-                        return 1
+                    cregex = re.compile(regex)
                 except re.error, e:
                     misc.run_dialog( _("Error converting pattern '%s' to regular expression") % pattern, self )
                 else:
-                    self.type_filters_available.append( (f[0], active, func) )
+                    func = lambda x, r=cregex : r.match(x) == None
+                    self.type_filters_available.append( TypeFilter(label, active, func) )
         self.type_filters = []
         for i,f in misc.enumerate(self.type_filters_available):
             icon = gtk.Image()
             icon.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_LARGE_TOOLBAR)
             icon.show()
-            toggle = self.toolbar.append_element(gtk.TOOLBAR_CHILD_TOGGLEBUTTON, None, f[0],
-                _("Hide %s") % f[0], "", icon, self._update_type_filter, i )
-            toggle.set_active(f[1])
+            toggle = self.toolbar.append_element(gtk.TOOLBAR_CHILD_TOGGLEBUTTON, None, f.label,
+                _("Hide %s") % f.label, "", icon, self._update_type_filter, i )
+            toggle.set_active(f.active)
         self.state_filters = [
             tree.STATE_NORMAL,
             tree.STATE_MODIFIED,
@@ -219,10 +234,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _do_to_others(self, master, objects, methodname, args):
         if self.lock == 0:
             self.lock = 1
-            for o in filter(lambda x:x!=master, objects[:self.num_panes]):
-                method = getattr(o,methodname)
-                method(*args)
-            self.lock = 0
+            try:
+                for o in filter(lambda x:x!=master, objects[:self.num_panes]):
+                    method = getattr(o,methodname)
+                    method(*args)
+            finally:
+                self.lock = 0
 
     def _sync_vscroll(self, adjustment):
         adjs = map(lambda x: x.get_vadjustment(), self.scrolledwindow)
@@ -292,69 +309,69 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             iter = self.model.get_iter( path )
             roots = self.model.value_paths( iter )
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
-            #import time; time.sleep(1.0)
             differences = [0]
             if not self.button_ignore_case.get_active():
                 class accum:
                     def __init__(self, parent, roots):
                         self.items = []
-                    def add(self, idx, items):
+                        self.n = parent.num_panes
+                    def add(self, pane, items):
                         self.items.extend(items)
                     def get(self):
                         self.items.sort()
-                        r = []
-                        c = None
-                        for i in self.items:
-                            if i != c:
-                                r.append(i)
-                                c = i
-                        return zip(r,r)
+                        def repeat(s, n):
+                            for i in xrange(n):
+                                yield s
+                        return [ tuple(repeat(i,self.n)) for i in  uniq(self.items) ]
             else:
+                canonicalize = lambda x : x.lower()
                 class accum:
                     def __init__(self, parent, roots):
-                        self.items = {}
+                        self.items = {} # map canonical names to realnames
                         self.bad = []
                         self.parent = parent
                         self.roots = roots
-                    def add(self, idx, items):
+                        self.default = [None] * self.parent.num_panes
+                    def add(self, pane, items):
                         for i in items:
+                            ci = canonicalize(i)
                             try:
-                                assert self.items[i.lower()][idx] == None
+                                assert self.items[ ci ][pane] == None
                             except KeyError:
-                                self.items[i.lower()] = [None] * 2
-                                self.items[i.lower()][idx] = i
+                                self.items[ ci ] = self.default[:]
+                                self.items[ ci ][pane] = i
                             except AssertionError:
-                                self.bad.append( _("'%s' because of '%s'") %
-                                    ( os.path.join(self.roots[idx], i), self.items[i.lower()][idx]) )
+                                self.bad.append( _("'%s' hidden by '%s'") %
+                                    ( os.path.join(self.roots[pane], i), self.items[ ci ][pane]) )
                             else:
-                                self.items[i.lower()][idx] = i
+                                self.items[ ci ][pane] = i
                     def get(self):
-                        keys = self.items.keys()
-                        keys.sort()
                         if len(self.bad):
                             misc.run_dialog(_("You are running a case insensitve comparison on"
                                 " a case sensitive filesystem. Some files are not visible:\n%s")
                                 % "\n".join( self.bad ), self.parent )
+                        keys = self.items.keys()
+                        keys.sort()
                         def fixup(key, tuples):
-                            return [ t or key for t in tuples ]
+                            return tuple([ t or key for t in tuples ])
                         return [ fixup(k, self.items[k]) for k in keys ]
-            alldirs = accum(self, roots)
-            allfiles = accum(self, roots)
-            for i, root in misc.enumerate(roots):
+            accumdirs = accum(self, roots)
+            accumfiles = accum(self, roots)
+            for pane, root in misc.enumerate(roots):
                 if os.path.isdir( root ):
                     try:
                         entries = os.listdir( root )
                     except OSError, err:
-                        self.model.add_error( iter, err.strerror, i )
+                        self.model.add_error( iter, err.strerror, pane )
                         differences = [1]
                     else:
                         for f in self.type_filters:
-                            entries = filter(f[2], entries)
-                        alldirs.add( i, [e for e in entries if os.path.isdir(  join(root, e) ) ] )
-                        allfiles.add(i, [e for e in entries if os.path.isfile( join(root, e) ) ] )
+                            entries = filter(f.filter, entries)
+                        accumdirs.add( pane, [e for e in entries if os.path.isdir(  join(root, e) ) ] )
+                        accumfiles.add(pane, [e for e in entries if os.path.isfile( join(root, e) ) ] )
 
-            alldirs = alldirs.get()
-            allfiles = self._filter_on_state( roots, allfiles.get() )
+            alldirs = accumdirs.get()
+            allfiles = self._filter_on_state( roots, accumfiles.get() )
 
             # then directories and files
             if len(alldirs) + len(allfiles) != 0:
@@ -362,7 +379,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     child = self.model.add_entries( iter, [join(r,n) for r,n in zip(roots, names) ] )
                     differences[0] |= self._update_item_state(child)
                     return child
-                map(lambda x: todo.append(self.model.get_path(add_entry(x))), alldirs)                
+                map(lambda x : todo.append( self.model.get_path(add_entry(x))), alldirs )
                 map(add_entry, allfiles)
             else: # directory is empty, add a placeholder
                 self.model.add_empty(iter)
