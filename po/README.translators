@@ -1,12 +1,16 @@
 
-Intltool does not (yet) know how to find the gettext domain
-for packages which do not use autoconf. Thus you have to specify
-the domain every time you run intltool-update.
-See http://bugzilla.gnome.org/show_bug.cgi?id=131114
+Versions of intltool before 0.31 do not know how to find the gettext domain for
+packages which do not use autoconf. Thus you have to specify the domain every
+time you run intltool-update.
 
 To regenerate meld.pot:
 intltool-update -g meld -p
 
 To update a language:
 intltool-update -g meld <lang>
+
+Since intltool-0.31 you no longer need to specify "-g meld" as the domain is
+extracted from the Makevars file.
+
+(This was http://bugzilla.gnome.org/show_bug.cgi?id=131114)
 
