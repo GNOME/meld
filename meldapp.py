@@ -591,11 +591,14 @@ def main():
         if os.path.isdir(a):
             app.append_cvsview( [a] )
         elif os.path.isfile(a):
-            doc = cvsview.CvsView(app.statusbar)
+            doc = cvsview.CvsView(app.prefs)
+            def cleanup():
+                app.scheduler.remove_scheduler(doc.scheduler)
+            app.scheduler.add_task(cleanup)
+            app.scheduler.add_scheduler(doc.scheduler)
             doc.set_location( os.path.dirname(a) )
             doc.connect("create-diff", lambda obj,arg: app.append_filediff(arg) )
-            doc.run_cvs_diff([a])
-            del doc
+            doc.run_cvs_diff([a], 1)
         else:
             app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
                 

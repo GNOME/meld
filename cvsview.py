@@ -291,6 +291,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def run_cvs_diff_iter(self, paths, empty_patch_ok):
         yield  "Fetching differences."
+        print "Fetching differences."
         difffunc = self._command_iter(CVS_COMMAND + ["diff", "-u"], paths, 0).next
         diff = None
         while type(diff) != type(()):
