@@ -247,14 +247,16 @@ class CvsView(gnomeglade.Component):
         else:
             if entry.cvs == CVS_MODIFIED:
                 #print "DIFF", entry.path
-                patch = self._command("cvs -z3 -q diff -u %s" % entry.path)
+                patch = self._command("cvs -z3 -q diff -u %s" % entry.path, refresh=0)
                 #print "GOT", patch
                 if patch:
                     self.show_patch(patch)
                 else:
                     self.statusbar.add_status("%s has no differences" % entry.path)
+                    self.emit("create-diff", [entry.path])
             else:
                 self.statusbar.add_status("%s is not modified" % entry.path)
+                self.emit("create-diff", [entry.path])
 
     def on_row_expanded(self, tree, me, path):
         model = self.treemodel
