@@ -114,7 +114,7 @@ def _lookup_cvs_files(dirs, files):
             else:
                 state = tree.STATE_MISSING
             # svn adds the directory reported to the status list we get.
-            if(os.path.basename(name) != os.path.basename(directory)):
+            if name != directory:
                 retdirs.append( Dir(path,name,state) )
         else:
             state = { "?": tree.STATE_NONE,
