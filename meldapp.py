@@ -116,7 +116,7 @@ class ListWidget(gnomeglade.Component):
             elif c[1] == type(0):
                 addToggleCol( c[0], 1)
         self._update_filter_model()
-    def on_filters_new_clicked(self, button):
+    def on_item_new_clicked(self, button):
         model = self.treeview.get_model()
         iter = model.append()
         model.set_value(iter, 0, "label")
