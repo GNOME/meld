@@ -476,6 +476,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
                         t.text.append(nextbit)
                     else:
+                        buffers[i].get_data("meld").encoding = t.codec[0]
                         tasks.remove(t)
                         panetext[t.pane] = "".join(t.text)
                         if len(panetext[t.pane]) and \
