@@ -1,8 +1,9 @@
 
 PROG := ./meld #--profile
-TESTNUM := 8
+TESTNUM := 1
 VERSION := $(shell grep "^version" meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
+PREFIX := /home/stephen/a
 
 .PHONY:run
 run : check rundiff
@@ -20,6 +21,19 @@ rundiff:
 	#$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
 	#$(PROG) test/1 test/2
 	#$(PROG) /zip/meld .
+
+.PHONY:install
+install:
+	mkdir -p $(PREFIX)/{bin,lib/meld,share/applications,share/meld,share/doc/meld}
+	install -m 755 meld $(PREFIX)/bin
+	install -m 755 manual/index.html $(PREFIX)/share/doc/meld
+
+.PHONY: test
+test:
+	$(PROG) ntest/file0{a,b}
+	$(PROG) ntest/file5{a,b,c}
+	$(PROG) ntest/{1,2}
+	$(PROG) ntest/{1,2,3}
 
 .PHONY:changelog
 changelog:
