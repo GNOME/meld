@@ -37,30 +37,6 @@ def shelljoin( command ):
         return ((whitespace_re.search(s) == None) and s or ('"%s"' % s))
     return " ".join( [ quote(x) for x in command ] )
 
-def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=[]):
-    """Run a dialog with text 'text'.
-       Extra buttons are passed as tuples of (button label, response id).
-    """
-    d = gtk.MessageDialog(None,
-        gtk.DIALOG_DESTROY_WITH_PARENT,
-        messagetype,
-        buttonstype,
-        '<span weight="bold" size="larger">%s</span>' % text)
-    if parent:
-        d.set_transient_for(parent.toplevel.get_toplevel())
-    for b,id in extrabuttons:
-        d.add_button(b,id)
-    d.vbox.set_spacing(12)
-    hbox = d.vbox.get_children()[0]
-    hbox.set_spacing(12)
-    d.image.set_alignment(0.5, 0)
-    d.image.set_padding(12, 12)
-    d.label.set_use_markup(1)
-    d.label.set_padding(12, 12)
-    ret = d.run()
-    d.destroy()
-    return ret
-
 class struct(object):
     """Similar to a dictionary except that members may be accessed as s.member.
 
