@@ -22,6 +22,7 @@ import gtk
 import gtk.glade
 import gnome
 import gnome.ui
+import gettext
 
 # Return values from the 'delete-event' handler.
 # Return DELETE_OK to allow the window to close or DELETE_ABORT
@@ -50,7 +51,7 @@ class Base:
 
         Automatically connects signal handlers named 'on_*'.
         """
-        self.xml = gtk.glade.XML(file, root)
+        self.xml = gtk.glade.XML(file, root, gettext.textdomain() )
         handlers = {}
         for h in filter(lambda x:x.startswith("on_"), dir(self.__class__)):
             handlers[h] = getattr(self, h)

@@ -352,7 +352,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
-        column = gtk.TreeViewColumn("Name")
+        column = gtk.TreeViewColumn( _("Name") )
         renpix = gtk.CellRendererPixbuf()
         rentext = gtk.CellRendererText()
         column.pack_start(renpix, expand=0)

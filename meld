@@ -16,8 +16,26 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# fake gettext until translations in place
-__builtins__.__dict__["_"] = lambda x : x
+#
+# i18n support
+#
+import paths
+import gettext
+import locale
+
+try:
+    locale.setlocale(locale.LC_ALL, '')
+    gettext.bindtextdomain("meld", paths.locale_dir() )
+    gettext.textdomain("meld")
+    gettext.install("meld", paths.locale_dir(), unicode=1)
+except (IOError,locale.Error), e:
+    # fake gettext until translations in place
+    print "(meld): WARNING **: %s" % e
+    __builtins__.__dict__["_"] = lambda x : x
+
+#
+# python version
+#
 
 pyver = (2,2)
 pygtkver = (1,99,15)
@@ -25,9 +43,6 @@ pygtkver = (1,99,15)
 def ver2str(ver):
     return ".".join(map(str,ver))
 
-#
-# python version
-#
 import sys
 if sys.version_info[:2] < pyver:
     print _("Meld requires python%s or higher.") % ver2str(pyver)
@@ -53,6 +68,9 @@ import gtk
 if gtk.pygtk_version < pygtkver:
     print _("Meld works best with pygtk-%s or higher. (found %s)") % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
     print _("Due to incompatible API changes some functions may not operate as expected.")
+
+import gtk.glade # python2.2 needs this
+gtk.glade.bindtextdomain("meld", paths.locale_dir() )
 
 #
 # main
