@@ -853,7 +853,10 @@ def main():
     elif len(args) == 1:
         a = args[0]
         if os.path.isfile(a):
-            doc = cvsview.CvsView(app.prefs)
+            if os.path.exists(os.path.join(os.path.dirname(a), 'CVS')):
+                doc = cvsview.CvsView(app.prefs)
+            else:
+                doc = svnview.CvsView(app.prefs)
             def cleanup():
                 app.scheduler.remove_scheduler(doc.scheduler)
             app.scheduler.add_task(cleanup)
