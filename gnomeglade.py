@@ -139,6 +139,6 @@ def load_pixbuf(fname, size=0):
     image = image.get_pixbuf()
     if size:
         aspect = float(image.get_height()) / image.get_width()
-        image = image.scale_simple(size, aspect*size, 2)
+        image = image.scale_simple(size, int(aspect*size), 2)
     return image
 

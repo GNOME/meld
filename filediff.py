@@ -757,8 +757,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gc = area.meldgc.get_gc
         for c in self.linediffer.single_changes(textindex, self._get_texts()):
             assert c[0] != "equal"
-            s,e = ( scaleit(c[1]), scaleit(c[2]+(c[1]==c[2])) )
-            s,e = math.floor(s), math.ceil(e)
+            s,e = [int(x) for x in ( math.floor(scaleit(c[1])), math.ceil(scaleit(c[2]+(c[1]==c[2]))) ) ]
             window.draw_rectangle( gc(c[0]), 1, x0, s, x1, e-s)
             window.draw_rectangle( gctext, 0, x0, s, x1, e-s)
 
@@ -884,8 +883,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gc = area.meldgc.get_gc
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             assert c[0] != "equal"
-            f0,f1 = map( lambda l: l * self.pixels_per_line - madj.value, c[1:3] )
-            t0,t1 = map( lambda l: l * self.pixels_per_line - oadj.value, c[3:5] )
+            f0,f1 = map( lambda l: int(l * self.pixels_per_line - madj.value), c[1:3] )
+            t0,t1 = map( lambda l: int(l * self.pixels_per_line - oadj.value), c[3:5] )
             if f1<0 and t1<0: # find first visible chunk
                 continue
             if f0>htotal and t0>htotal: # we've gone past last visible
@@ -893,12 +892,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if f0==f1: f0 -= 2; f1 += 2
             if t0==t1: t0 -= 2; t1 += 2
             if draw_style > 0:
-                n = (1.0, 9.0)[draw_style-1]
+                n = (1, 9)[draw_style-1]
                 points0 = []
                 points1 = [] 
-                for t in map(lambda x: x/n, range(n+1)):
-                    points0.append( (    t*wtotal, (1-f(t))*f0 + f(t)*t0 ) )
-                    points1.append( ((1-t)*wtotal, f(t)*f1 + (1-f(t))*t1 ) )
+                for t in map(lambda x: float(x)/n, range(n+1)):
+                    points0.append( (int(    t*wtotal), int((1-f(t))*f0 + f(t)*t0 )) )
+                    points1.append( (int((1-t)*wtotal), int(f(t)*f1 + (1-f(t))*t1 )) )
 
                 points = points0 + points1 + [points0[0]]
 
@@ -911,7 +910,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 window.draw_polygon(gctext, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
                 window.draw_polygon(gctext, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
                 points0 = (0,f0), (0,t0)
-                window.draw_line( gctext, p, 0.5*(f0+f1), w-p, 0.5*(t0+t1) )
+                window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
 
             x = wtotal-self.pixbuf_apply0.get_width()
             if c[0]=="insert":
@@ -924,7 +923,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # allow for scrollbar at end of textview
         mid = 0.5 * self.textview0.get_allocation().height
-        window.draw_line(gctext, .25*wtotal, mid,.75*wtotal, mid)
+        window.draw_line(gctext, int(.25*wtotal), int(mid), int(.75*wtotal), int(mid) )
 
     def on_linkmap_scroll_event(self, area, event):
         self.next_diff(event.direction)

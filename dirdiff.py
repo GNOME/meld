@@ -706,8 +706,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         start = 0
         for c in chunks[1:]:
             end = start + c[0]
-            s,e = scaleit(start), scaleit(end)
-            s,e = math.floor(s), math.ceil(e)
+            s,e = [int(x) for x in (math.floor(scaleit(start)), math.ceil(scaleit(end))) ]
             gc = area.meldgc[ int(c[1]) ]
             if gc:
                 window.draw_rectangle( gc, 1, x0, s, x1, e-s)
