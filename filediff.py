@@ -330,7 +330,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     tasks.append(task)
                 except IOError, e:
                     buffers[i].set_text("\n")
-                    self._dialog("Could not open '%s' for reading.\n\nThe error was:\n%s" % (f, str(e)) )
+                    misc.run_dialog("Could not open '%s' for reading.\n\nThe error was:\n%s" % (f, str(e)) )
             else:
                 panetext[i] = buffers[i].get_text( buffers[i].get_start_iter(), buffers[i].get_end_iter() )
         yield "[%s] Reading files" % self.label_text
@@ -347,7 +347,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     else:
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
-                        self._dialog("Could not read from '%s'.\n\nI tried encodings %s."
+                        misc.run_dialog("Could not read from '%s'.\n\nI tried encodings %s."
                             % (t.filename, try_codecs))
                         tasks.remove(t)
                 else:
@@ -391,7 +391,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         try:
             open(bufdata.filename, "w").write(text)
         except IOError, e:
-            self._dialog( "Error writing to %s\n\n%s." % (bufdata.filename, e),
+            misc.run_dialog( "Error writing to %s\n\n%s." % (bufdata.filename, e),
                           gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
             return gnomeglade.RESULT_ERROR
         else:

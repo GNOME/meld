@@ -24,11 +24,35 @@ import sys
 import os
 import select
 import popen2
+import gtk
 
-def appdir(path):
+def run_dialog( text, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK):
+    d = gtk.MessageDialog(None,
+        gtk.DIALOG_DESTROY_WITH_PARENT,
+        messagetype,
+        buttonstype,
+        '<span weight="bold" size="larger">%s</span>' % text)
+    d.set_has_separator(0)
+    d.vbox.set_spacing(12)
+    hbox = d.vbox.get_children()[0]
+    hbox.set_spacing(12)
+    d.image.set_alignment(0.5, 0)
+    d.image.set_padding(12, 12)
+    d.label.set_use_markup(1)
+    d.label.set_padding(12, 12)
+    ret = d.run()
+    d.destroy()
+    return ret
+
+def appdir(pathin):
     """Return where the application is installed.
     """
-    return os.path.join( os.path.dirname(sys.argv[0]), path )
+    where = os.path.dirname(sys.argv[0])
+    pathout = os.path.join( where, pathin )
+    if not os.path.exists(pathout):
+        run_dialog("Cannot find '%s'\nI looked in '%s'\n(%s)" % (pathin,where,pathout), gtk.MESSAGE_ERROR)
+        sys.exit(1)
+    return pathout
 
 class struct:
     """Similar to a dictionary except that members may be accessed as s.member.

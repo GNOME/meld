@@ -119,7 +119,7 @@ class DirDiffMenu(gnomeglade.Component):
                         os.makedirs( dst )
                     self.parent.file_created(s.name, s.path, destpane)
             except OSError, e:
-                self.error_message("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
+                misc.run_dialog("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
     def on_popup_delete_activate(self, menuitem):
         # reverse so paths dont get changed
         sel = self.get_selected()
@@ -133,18 +133,9 @@ class DirDiffMenu(gnomeglade.Component):
                 elif os.path.isdir(p):
                     os.rmdir(p)
             except OSError, e:
-                self.error_message("Error removing %s\n\n%s." % (p,e))
+                misc.run_dialog("Error removing %s\n\n%s." % (p,e))
             else:
                 self.parent.file_deleted(s.name, s.path, self.source_pane)
-    def error_message(self, message):
-        d = gtk.MessageDialog(self.widget.get_toplevel(),
-                gtk.DIALOG_DESTROY_WITH_PARENT,
-                gtk.MESSAGE_ERROR,
-                gtk.BUTTONS_OK,
-                message)
-        d.run()
-        d.destroy()
-
 
 ################################################################################
 #
