@@ -73,13 +73,11 @@ class UndoSequence(gobject.GObject):
 
         if hasattr(self, "group"):
             assert self.group == None
-        if self.can_undo():
-            self.emit('can-undo', 0)
-        if self.can_redo():
-            self.emit('can-redo', 0)
         self.actions = []
         self.next_redo = 0
         self.group = None
+        self.emit('can-undo', self.can_undo())
+        self.emit('can-redo', self.can_redo())
 
     def can_undo(self):
         """Return if an undo is possible.
