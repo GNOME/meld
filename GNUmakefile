@@ -10,7 +10,7 @@ run : rundiff
 rundiff:
 #	$(PROG) test/lao test/tzu test/tao
 #	$(PROG) test/file$(TESTNUM)*
-	$(PROG) ../old/oldmeld ../svnrepository/meld
+	$(PROG) ../old/meld-2002-11-12 .
 #	$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
 
 #checkfortabs:

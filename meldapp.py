@@ -161,29 +161,22 @@ class MeldApp(gnomeglade.GnomeApp):
     def __init__(self):
         gladefile = misc.appdir("glade2/meld-app.glade")
         gnomeglade.GnomeApp.__init__(self, "Meld", version, gladefile, "meldapp")
-        self._map_widgets_into_lists( ["menu_file_save_file", "setting_number"] )
+        self._map_widgets_into_lists( ["menu_file_save_file", "setting_number_panes", "setting_drawstyle"] )
         self.popup_new = MeldNewMenu(self)
         self.statusbar = MeldStatusBar(self.appbar)
         if not developer:#hide magic testing button
             self.toolbar_magic.hide()
+            self.setting_filters.hide()
         self.init_settings()
 
     def init_settings(self):
         self.gconf = gconf.client_get_default()
-        self.gconf.add_dir ("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
-        sensitive = self.gconf.key_is_writable ("/apps/meld/filediff/num_link_segments")
-        self.setting_smooth_lines.set_sensitive( sensitive )
-        segs = self.gconf.get_float("/apps/meld/filediff/num_link_segments")
-        self.setting_smooth_lines.set_active( segs!=1.0 )
+        self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
+        sensitive = self.gconf.key_is_writable ("/apps/meld/filediff/draw_style")
+        self.setting_draw_style.set_sensitive(sensitive)
+        style = self.gconf.get_int("/apps/meld/filediff/draw_style")
+        self.setting_drawstyle[style].set_active(1)
 
-    def on_setting_number_activate(self, menuitem):
-        n = self.setting_number.index(menuitem) + 1
-        d = self.current_doc()
-        misc.safe_apply( d, "set_num_panes", n )
-        for i in range(3): #TODO
-            sensitive = d.num_panes > i
-            self.menu_file_save_file[i].set_sensitive(sensitive)
-            
     #
     # General events and callbacks
     #
@@ -300,9 +293,22 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # Toolbar and menu items (settings)
     #
-    def on_menu_smooth_lines_activate(self, check):
-        num = check.get_active() and 9.0 or 1.0
-        self.gconf.set_float("/apps/meld/filediff/num_link_segments", num)
+    def on_menu_drawstyle_activate(self, radio):
+        style = self.setting_drawstyle.index(radio)
+        self.gconf.set_int("/apps/meld/filediff/draw_style", style)
+
+    def on_menu_number_panes_activate(self, menuitem):
+        n = self.setting_number_panes.index(menuitem) + 1
+        d = self.current_doc()
+        misc.safe_apply( d, "set_num_panes", n )
+        for i in range(3): #TODO
+            sensitive = d.num_panes > i
+            self.menu_file_save_file[i].set_sensitive(sensitive)
+            
+    def on_menu_filter_activate(self, check):
+        print check, check.child.get_text()
+        #style = self.setting_drawstyle.index(radio)
+        #self.gconf.set_int("/apps/meld/filediff/draw_style", style)
 
     #
     # Toolbar and menu items (help)
@@ -334,9 +340,11 @@ class MeldApp(gnomeglade.GnomeApp):
     def try_remove_page(self, page):
         "See if a page will allow itself to be removed"
         try:
-            delete = page.on_delete_event(self)
-        except AttributeError:
+            deletefunc = page.on_delete_event
+        except AttributeError, a:
             delete = gnomeglade.DELETE_OK
+        else:
+            delete = deletefunc(self)
         if delete == gnomeglade.DELETE_OK:
             i = self.notebook.page_num(page.widget)
             assert(i>=0)

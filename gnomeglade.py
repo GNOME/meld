@@ -5,6 +5,7 @@ import gnome
 import gnome.ui
 
 DELETE_OK, DELETE_ABORT = (0,1)
+RESULT_OK, RESULT_ERROR = (0,1)
 
 ################################################################################
 #

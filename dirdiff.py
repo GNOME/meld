@@ -24,7 +24,7 @@ def _clamp(val, lower, upper):
 
 join = os.path.join
 
-NAME, TYPE, TEXT, FOREGROUND, LAST = 0,1,2,5,8
+NAME, TEXT, STATE, ICON, LAST = 0,1,4,7,10
 
 ################################################################################
 #
@@ -55,12 +55,21 @@ class DirDiff(gnomeglade.Component):
         self.undosequence = undo.UndoSequence()
         self.lock = 0
         self.cache = {}
-        types = map(lambda x: type(""), range(LAST))
+        load = lambda x,s=14: gnomeglade.load_pixbuf(misc.appdir("glade2/"+x), s)
+        self.pixbuf_folder = load("i-directory.png")
+        self.pixbuf_file = load("i-regular.png")
+        types = map(lambda x: type(""), range(ICON)) \
+                + map(lambda x: type(self.pixbuf_folder), range(LAST-ICON))
         self.model = apply(gtk.TreeStore, types )
 
+        rentext = gtk.CellRendererText()
+        renpix = gtk.CellRendererPixbuf()
         for i in range(3):
-            rentext = gtk.CellRendererText()
-            column = gtk.TreeViewColumn("", rentext, text=i+TEXT, foreground=i+FOREGROUND)
+            column = gtk.TreeViewColumn()
+            column.pack_start(renpix, expand=0)
+            column.pack_start(rentext, expand=1)
+            column.set_attributes(renpix, pixbuf=i+ICON)
+            column.set_attributes(rentext, text=i+TEXT, foreground=i+STATE)
             self.treeview[i].append_column(column)
             self.treeview[i].set_model(self.model)
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
@@ -135,24 +144,25 @@ class DirDiff(gnomeglade.Component):
     def on_treeview_row_expanded(self, view, iter, path):
         if self.lock == 0:
             self.lock = 1
-            p = self.model.get_value(iter,NAME)
+            current_dir = self.model.get_value(iter,NAME)
+            roots = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
+            roots = [ e and join(e, current_dir) for e in roots]
             dirs = []
             files = []
             alldirs = []
             allfiles = []
             for i in range(self.num_panes):
-                r = self.fileentry[i].get_full_path(0)
-                if r and os.path.isdir( join(r,p) ):
+                if roots[i] != None and os.path.isdir( roots[i] ):
                     try:
-                        e = os.listdir( join(r,p) )
+                        e = os.listdir( roots[i] )
                     except OSError, err:
                         if err.errno == errno.ENOENT:
                             e = ["(No such directory)" + str(err)]
                         else:
                             e = ["(Permission Denied)" + str(err)]
                     e.sort()
-                    dirs.append( filter(lambda x: os.path.isdir( join(r, p, x) ), e) )
-                    files.append( filter(lambda x: x not in dirs[-1], e) )
+                    dirs.append(  filter(lambda x: os.path.isdir(  join(roots[i], x) ), e) )
+                    files.append( filter(lambda x: os.path.isfile( join(roots[i], x) ), e) )
                 else:
                     dirs.append( [] )
                     files.append( [] )
@@ -173,16 +183,46 @@ class DirDiff(gnomeglade.Component):
                 i = self.model.append(iter)
                 child = self.model.append(i)
                 self.model.set_value(i, NAME, d)
+                is_present = [d in flist for flist in dirs]
                 for j in range(self.num_panes):
                     self.model.set_value(child, j+TEXT, "")
-                    if d in dirs[j]:
+                    if is_present[j]:
+                        self.model.set_value(i, j+ICON, self.pixbuf_folder)
                         self.model.set_value(i, j+TEXT, d)
+                        self.model.set_value(i, j+STATE, "#999999")
+                if 0 in is_present:
+                    for j in range(self.num_panes):
+                        if is_present[j]:
+                            self.model.set_value(i, j+STATE, "#005500")
+            def _files_same(lof):
+                # early out?
+                sizes = [ os.stat(f).st_size for f in lof]
+                for s in sizes[1:]:
+                    if s != sizes[0]:
+                        return 0
+                # compare entire file
+                text = [ open(f).read() for f in lof]
+                for t in text[1:]:
+                    if t != text[0]:
+                        return 0
+                return 1
             for d in allfiles:
                 i = self.model.append(iter)
                 self.model.set_value(i, 0, d)
+                is_present = [d in flist for flist in files]
                 for j in range(self.num_panes):
-                    if d in files[j]:
+                    if is_present[j]:
+                        self.model.set_value(i, j+ICON, self.pixbuf_file)
                         self.model.set_value(i, j+TEXT, d)
+                        self.model.set_value(i, j+STATE, "#999999")
+                if 0 not in is_present: # all present
+                    if not _files_same( [ join(r,d) for r in roots ] ):
+                        for j in range(self.num_panes):
+                            self.model.set_value(i, j+STATE, "#550000")
+                else: # at least one missing
+                    for j in range(self.num_panes):
+                        if is_present[j]:
+                            self.model.set_value(i, j+STATE, "#005500")
             if 1:#len(alldirs) + len(allfiles):
                 child = self.model.iter_children(iter)
                 self.model.remove(child)

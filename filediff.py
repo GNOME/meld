@@ -144,9 +144,9 @@ class FileDiff(gnomeglade.Component):
         self.pixbuf_copy1  = load("button_copy1.xpm")
 
         self.gconf = gconf.client_get_default()
-        self.num_link_segments = self.gconf.get_float('/apps/meld/filediff/num_link_segments') or 1.0
+        self.draw_style = self.gconf.get_int('/apps/meld/filediff/draw_style')
         self.gconf.add_dir('/apps/meld/filediff', gconf.CLIENT_PRELOAD_NONE)
-        self.gconf.notify_add ("/apps/meld/filediff/num_link_segments", self.on_setting_changed)
+        self.gconf.notify_add ("/apps/meld/filediff/draw_style", self.on_setting_drawstyle_activate)
 
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
@@ -154,9 +154,9 @@ class FileDiff(gnomeglade.Component):
         self.num_panes = 0
         self.set_num_panes(num_panes)
 
-    def on_setting_changed(self, client, timestamp, entry, extra):
-        if entry.key.endswith("num_link_segments"):
-            self.num_link_segments = entry.value.get_float()
+    def on_setting_drawstyle_activate(self, client, timestamp, entry, extra):
+        if entry.key.endswith("draw_style"):
+            self.draw_style = entry.value.get_int()
             for l in self.linkmap:
                 l.queue_draw()
         else:
@@ -211,13 +211,16 @@ class FileDiff(gnomeglade.Component):
                     b.set_sensitive(0)
             dialog.widget.show_all()
             response = dialog.widget.run()
+            try_save = [ b.get_active() for b in buttons]
+            print "try_save", try_save
+            dialog.widget.destroy()
             if response==gtk.RESPONSE_OK:
                 for i in range(self.num_panes):
-                    if buttons[i].get_active():
-                        self.save_file(i)
+                    if try_save[i]:
+                        if self.save_file(i) != gnomeglade.RESULT_OK:
+                            delete = gnomeglade.DELETE_ABORT
             else:
                 delete = gnomeglade.DELETE_ABORT
-            dialog.widget.destroy()
         return delete
 
         #
@@ -311,12 +314,22 @@ class FileDiff(gnomeglade.Component):
         try:
             open(name,"w").write(text)
         except IOError, e:
-            status = "Error writing to %s (%s)." % (name,e)
+            self.statusbar.add_status("Error writing to %s (%s)." % (name,e))
+            message = "Error writing to %s\n\n%s." % (name,e)
+            d = gtk.MessageDialog(self.widget.get_toplevel(),
+                gtk.DIALOG_DESTROY_WITH_PARENT,
+                gtk.MESSAGE_ERROR,
+                gtk.BUTTONS_OK,
+                message)
+            d.run()
+            d.destroy()
+            return gnomeglade.RESULT_ERROR
         else:
             self.undosequence.clear()
             self.set_buffer_modified(buf, 0)
             status = "Saved %s." % name
         self.statusbar.add_status(status)
+        return gnomeglade.RESULT_OK
 
     def set_buffer_modified(self, buf, yesno):
         buf.set_data("modified", yesno)
@@ -588,18 +601,27 @@ class FileDiff(gnomeglade.Component):
                 break
             if f0==f1: f0 -= 2; f1 += 2
             if t0==t1: t0 -= 2; t1 += 2
-            n = float(self.num_link_segments)
-            points0 = []
-            points1 = [] 
-            for t in map(lambda x: x/n, range(n+1)):
-                points0.append( (    t*wtotal, (1-f(t))*f0 + f(t)*t0 ) )
-                points1.append( ((1-t)*wtotal, f(t)*f1 + (1-f(t))*t1 ) )
+            if self.draw_style > 0:
+                n = (1.0, 9.0)[self.draw_style-1]
+                points0 = []
+                points1 = [] 
+                for t in map(lambda x: x/n, range(n+1)):
+                    points0.append( (    t*wtotal, (1-f(t))*f0 + f(t)*t0 ) )
+                    points1.append( ((1-t)*wtotal, f(t)*f1 + (1-f(t))*t1 ) )
 
-            points = points0 + points1 + [points0[0]]
+                points = points0 + points1 + [points0[0]]
 
-            window.draw_polygon(gcfg, 1, points)
-            window.draw_lines(style.text_gc[0], points0  )
-            window.draw_lines(style.text_gc[0], points1  )
+                window.draw_polygon(gcfg, 1, points)
+                window.draw_lines(style.text_gc[0], points0  )
+                window.draw_lines(style.text_gc[0], points1  )
+            else:
+                w = wtotal
+                p = self.pixbuf_apply0.get_width()
+                gc = style.text_gc[0]
+                window.draw_polygon(gc, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
+                window.draw_polygon(gc, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
+                points0 = (0,f0), (0,t0)
+                window.draw_line( gc, p, 0.5*(f0+f1), w-p, 0.5*(t0+t1) )
 
             x = wtotal-self.pixbuf_apply0.get_width()
             if c[0]=="insert":
@@ -609,6 +631,7 @@ class FileDiff(gnomeglade.Component):
             else: #replace
                 pix0.render_to_drawable( window, gcfg, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
                 pix1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+
         # allow for scrollbar at end of textview
         mid = 0.5 * self.textview0.get_allocation().height
         window.draw_line(style.text_gc[0], .25*wtotal, mid,.75*wtotal, mid)
