@@ -408,7 +408,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         if patch:
             self.show_patch(prefix, patch)
         elif empty_patch_ok:
-            pass #self.statusbar.add_status("%s has no differences" % path)
+            misc.run_dialog( _("No differences found."), parent=self, messagetype=gtk.MESSAGE_INFO)
         else:
             for path in paths:
                 self.emit("create-diff", [path])
