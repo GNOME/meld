@@ -78,6 +78,8 @@ class DiffTreeStore(gtk.TreeStore):
 
     def add_error(self, parent, msg, pane):
         err = self.append(parent)
+        for i in range(self.ntree):
+            self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR) 
         self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
         self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % misc.escape(msg) )
         
