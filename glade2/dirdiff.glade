@@ -498,9 +498,10 @@
 
 	  <child>
 	    <widget class="GtkDrawingArea" id="linkmap1">
-	      <property name="width_request">80</property>
+	      <property name="width_request">50</property>
 	      <property name="visible">True</property>
 	      <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+	      <signal name="scroll_event" handler="on_linkmap_scroll_event" last_modification_time="Fri, 01 Aug 2003 12:42:20 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="left_attach">4</property>
@@ -564,9 +565,10 @@
 
 	  <child>
 	    <widget class="GtkDrawingArea" id="linkmap0">
-	      <property name="width_request">80</property>
+	      <property name="width_request">50</property>
 	      <property name="visible">True</property>
 	      <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+	      <signal name="scroll_event" handler="on_linkmap_scroll_event" last_modification_time="Fri, 01 Aug 2003 12:42:07 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="left_attach">2</property>
