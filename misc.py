@@ -28,6 +28,8 @@ import errno
 import gtk
 import shutil
 import re
+import os
+import signal
 
 whitespace_re = re.compile(r"\s")
 
@@ -149,36 +151,45 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     When all the data is read, the entire string is yeilded.
     If 'workdir' is specified the command is run from that directory.
     """
-    if workdir:
-        savepwd = os.getcwd()
-        os.chdir( workdir )
-    pipe = popen2.Popen3(command, capturestderr=1)
-    childin, childout, childerr = pipe.tochild, pipe.fromchild, pipe.childerr
-    childin.close()
-    if workdir:
-        os.chdir( savepwd )
-    bits = []
-    while len(bits) == 0 or bits[-1] != "":
-        state = select.select([childout, childerr], [], [childout, childerr], yield_interval)
-        if len(state[0]) == 0:
-            if len(state[2]) == 0:
-                yield None
-            else:
-                raise "Error reading pipe"
-        if childout in state[0]:
-            try:
-                bits.append( childout.read(4096) ) # get buffer size
-            except IOError:
-                break # ick need to fix
-        if childerr in state[0]:
-            try:
-                errorstream.write( childerr.read(4096) ) # get buffer size
-            except IOError:
-                break # ick need to fix
-    status = pipe.wait()
-    if status:
-       errorstream.write("Exit code: %i %s\n" %(status,childerr.read()))
-    yield "".join(bits)
+    class sentinel:
+        def __del__(self):
+            if self.pipe:
+                errorstream.write("killing '%s' with pid '%i'\n" % (command[0], self.pipe.pid) )
+                os.kill(self.pipe.pid,  signal.SIGTERM)
+                errorstream.write("killed (staus was '%i')\n" % (self.pipe.wait()))
+        def __call__(self):
+            if workdir:
+                savepwd = os.getcwd()
+                os.chdir( workdir )
+            self.pipe = popen2.Popen3(command, capturestderr=1)
+            childin, childout, childerr = self.pipe.tochild, self.pipe.fromchild, self.pipe.childerr
+            childin.close()
+            if workdir:
+                os.chdir( savepwd )
+            bits = []
+            while len(bits) == 0 or bits[-1] != "":
+                state = select.select([childout, childerr], [], [childout, childerr], yield_interval)
+                if len(state[0]) == 0:
+                    if len(state[2]) == 0:
+                        yield None
+                    else:
+                        raise "Error reading pipe"
+                if childout in state[0]:
+                    try:
+                        bits.append( childout.read(4096) ) # get buffer size
+                    except IOError:
+                        break # ick need to fix
+                if childerr in state[0]:
+                    try:
+                        errorstream.write( childerr.read(4096) ) # get buffer size
+                    except IOError:
+                        break # ick need to fix
+            status = self.pipe.wait()
+            self.pipe = None
+            if status:
+               errorstream.write("Exit code: %i %s\n" %(status,childerr.read()))
+            yield "".join(bits)
+    return sentinel()()
 
 def write_pipe(command, text):
     """Write 'text' into a shell command.
@@ -296,3 +307,13 @@ def shell_to_regex(pat):
         else:
             res += re.escape(c)
     return res + "$"
+
+class Filter(object):
+    __slots__ = ("name", "active", "wildcard")
+    def __init__(self, s):
+        a = s.split()
+        self.name = a.pop(0)
+        self.active = int(a.pop(0))
+        self.wildcard = " ".join(a)
+    def __str__(self):
+        return "%s %i %s" % ( self.name, self.active, self.wildcard )
