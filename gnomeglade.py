@@ -6,14 +6,12 @@ import gnome.ui
 
 ################################################################################
 #
-# GnomeGladeComponent
+# Base
 #
 ################################################################################
-class Component(gtk.Widget):
-    """A convenience base class for widgets which use glade"""
+class Base:
 
     def __init__(self, file, root):
-        """Create from node 'root' in a specified file"""
         self.xml = gtk.glade.XML(file, root)
         handlers = {}
         for h in filter(lambda x:x[:3]=="on_", dir(self.__class__)):
@@ -23,65 +21,61 @@ class Component(gtk.Widget):
         self._widget.set_data("pyobject", self)
 
     def __getattr__(self, key):
-        """Allow widgets to be accessed as self.widget"""
+        """Allow glade widgets to be accessed as self.widgetname"""
         widget = self.xml.get_widget(key)
         if widget: # cache lookups
             setattr(self, key, widget)#self.__dict__[key] = widget
             return widget
         raise AttributeError(key)
 
+    def flushevents(self):
+        """Handle all the events currently in the main queue"""
+        while gtk.events_pending():
+            gtk.main_iteration();
+
 ################################################################################
 #
 # GnomeGladeComponent
 #
 ################################################################################
-class Dialog(gtk.Dialog):
+class Component(gtk.Widget, Base):
+    """A convenience base class for widgets which use glade"""
+
+    def __init__(self, file, root):
+        """Create from node 'root' in a specified file"""
+        Base.__init__(self,file,root)
+
+
+################################################################################
+#
+# GnomeGladeComponent
+#
+################################################################################
+class Dialog(gtk.Dialog, Base):
     """A convenience base class for dialogs created in glade"""
 
     def __init__(self, file, root):
         """Create from node 'root' in a specified file"""
         gtk.Dialog.__init__(self)
-        self.xml = gtk.glade.XML(file, root)
-        handlers = {}
-        for h in filter(lambda x:x[:3]=="on_", dir(self.__class__)):
-            handlers[h] = getattr(self, h)
-        self.xml.signal_autoconnect( handlers )
-        self._widget = getattr(self, root)
-        self._widget.set_data("pyobject", self)
-
-    def __getattr__(self, key):
-        """Allow widgets to be accessed as self.widget"""
-        widget = self.xml.get_widget(key)
-        if widget: # cache lookups
-            setattr(self, key, widget)#self.__dict__[key] = widget
-            return widget
-        raise AttributeError(key)
+        Base.__init__(self,file,root)
 
 ################################################################################
 #
 # GnomeGladeApp
 #
 ################################################################################
-class App(gnome.ui.App):
+class App(gnome.ui.App, Base):
     """A convenience base class for apps created in glade"""
+
     def __init__(self, name, version, file, root=None):
         self.program = gnome.program_init(name, version)
         gnome.ui.App.__init__(self, appname=name, title="%s %s" % (name,version))
-        self.xml = gtk.glade.XML(file, root)
-        handlers = {}
-        for h in filter(lambda x:x[:3]=="on_", dir(self.__class__)):
-            handlers[h] = getattr(self, h)
-        self.xml.signal_autoconnect( handlers )
-
-    def __getattr__(self, key):
-        widget = self.xml.get_widget(key)
-        if widget: # cache lookups
-            setattr(self, key, widget)
-            return widget
-        raise AttributeError(key)
+        Base.__init__(self,file,root)
 
     def mainloop(self):
+        """Enter the gtk main loop"""
         gtk.mainloop()
     def quit(*args):
+        """Signal the gtk main loop to quit"""
         gtk.main_quit()
 
