@@ -880,7 +880,10 @@ def main():
     elif len(arg) == 1:
         a = arg[0]
         if os.path.isdir(a):
-            app.append_cvsview( [a] )
+            if os.path.exists( os.path.join(a,".svn") ):
+                app.append_svnview( [a] )
+            else:
+                app.append_cvsview( [a] )
         elif os.path.isfile(a):
             doc = cvsview.CvsView(app.prefs)
             def cleanup():
