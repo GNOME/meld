@@ -106,19 +106,25 @@ class FileDiff2(gnomeglade.Component):
         #im.set_from_file("/usr/share/pixmaps/tcd/rw.xpm")
         #imrw = im.get_pixbuf()
 
+        # gain function for smoothing
+        bias = lambda x,g: math.pow(x, math.log(g) / math.log(0.5))
+        def gain(t,g):
+            if t<0.5:
+                return bias(2*t,1-g)/2.0
+            else:
+                return (2-bias(2-2*t,1-g))/2.0
+        f = lambda x: gain( x, 0.85)
+
         for c in filter( lambda x: x[0]!="equal", self.linediffs):
             f0,f1 = map( lambda l: l * pixels_per_line - madj.value, c[1:3] )
             t0,t1 = map( lambda l: l * pixels_per_line - oadj.value, c[3:5] )
+            if f1<0 and t1<0: # find first visible chunk
+                continue
+            if f0>htotal and t0>htotal: # we've gone past last visible
+                break
             if f0==f1: f0 -= 3; f1 += 1
             if t0==t1: t0 -= 3; t1 += 1
-            bias = lambda x,g: math.pow(x, math.log(g) / math.log(0.5))
-            def gain(t,g):
-                if t<0.5:
-                    return bias(2*t,1-g)/2.0
-                else:
-                    return (2-bias(2-2*t,1-g))/2.0
-            f = lambda x: gain( x, 0.85)
-            n = 10.0
+            n = 10.0 # num line segments
             points0 = []
             points1 = [] 
             for t in map(lambda x: x/n, range(n+1)):
