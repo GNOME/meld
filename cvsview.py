@@ -68,7 +68,7 @@ class File(Entry):
         self.tag = tag
         self.options = options
 
-def _lookup_cvs_files(files, dirs):
+def _lookup_cvs_files(dirs, files):
     "files is array of (name, path). assume all files in same dir"
     if len(files):
         directory = os.path.dirname(files[0][1])
@@ -181,7 +181,7 @@ def _find(start):
             cdirs.append( (f, lname) )
         else:
             cfiles.append( (f, lname) )
-    return _lookup_cvs_files(cfiles, cdirs)
+    return _lookup_cvs_files(cdirs, cfiles)
 
 def recursive_find(start):
     if start=="":
@@ -202,6 +202,15 @@ def listdir_cvs(start):
     dirs, files = _find(start)
     return dirs+files
 
+def _expand_to_root( treeview, path ):
+    """Expand rows from path up to root"""
+    start = path[:]
+    while len(start) and not treeview.row_expanded(start):
+        start = start[:-1]
+    level = len(start)
+    while level < len(path):
+        level += 1
+        treeview.expand_row( path[:level], 0)
 
 ################################################################################
 #
@@ -308,17 +317,17 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
-        self.scheduler.add_task( self._search_recursively_iter().next )
+        self.scheduler.add_task( self._search_recursively_iter(self.model.get_iter_root()).next )
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)
         self.label_changed()
 
-    def _search_recursively_iter(self):
+    def _search_recursively_iter(self, iterstart):
         yield _("[%s] Scanning") % self.label_text
-        rootpath = self.model.get_path( self.model.get_iter_root() )
+        rootpath = self.model.get_path( iterstart  )
         rootname = self.model.value_path( self.model.get_iter(rootpath), 0 )
-        prefixlen = 1 + len(rootname)
+        prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
         todo = [ (rootpath, rootname) ]
         filtermask = 0
         if self.button_modified.get_active():
@@ -347,28 +356,15 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                     todo.append( (None, e.path) )
                     continue
                 child = self.model.add_entries(iter, [e.path])
-                self.model.set_state( child, 0, e.state, e.isdir )
-                def set(col, val):
-                    self.model.set_value( child, self.model.column_index(col,0), val)
-                set( COL_LOCATION, root[prefixlen:] )
-                set( COL_STATUS, e.get_status())
-                set( COL_REVISION, e.rev)
-                set( COL_TAG, e.tag)
-                set( COL_OPTIONS, e.options)
+                self._update_item_state( child, e, root[prefixlen:] )
                 if e.isdir:
                     todo.append( (self.model.get_path(child), None) )
-            if not recursive:
+            if not recursive: # expand parents
                 if len(entries) == 0:
                     self.model.add_empty(iter, _("no cvs files"))
                 if differences or len(path)==1:
-                    start = path[:]
-                    while len(start) and not self.treeview.row_expanded(start):
-                        start = start[:-1]
-                    level = len(start)
-                    while level < len(path):
-                        level += 1
-                        self.treeview.expand_row( path[:level], 0)
-            else:
+                    _expand_to_root( self.treeview, path )
+            else: # just the root
                 self.treeview.expand_row( (0,), 0)
 
     def on_fileentry_activate(self, fileentry):
@@ -531,6 +527,22 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def refresh(self):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
+    def refresh_partial(self, where):
+        assert where.startswith( self.location )
+        where = where[ len(self.location) : ]
+        parts = where.split("/")[1:]
+        print "***", parts
+        return
+        #self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
+        self.model.clear()
+        self.location = location = os.path.abspath(location or ".")
+        self.fileentry.gtk_entry().set_text(location)
+        iter = self.model.add_entries( None, [location] )
+        self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
+        self.recompute_label()
+        self.scheduler.remove_all_tasks()
+        self.scheduler.add_task( self._search_recursively_iter().next )
+
     def next_diff(self,*args):
         pass
 
@@ -564,6 +576,45 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         menu = MyMenu( self, os.path.abspath(self.location), 1 )
         menu.popup(None, None, None, event.button, event.time)
         #print event
+
+    def _update_item_state(self, iter, cvsentry, location):
+        e = cvsentry
+        self.model.set_state( iter, 0, e.state, e.isdir )
+        def set(col, val):
+            self.model.set_value( iter, self.model.column_index(col,0), val)
+        set( COL_LOCATION, location )
+        set( COL_STATUS, e.get_status())
+        set( COL_REVISION, e.rev)
+        set( COL_TAG, e.tag)
+        set( COL_OPTIONS, e.options)
+
+    def on_file_changed(self, filename):
+        iter = self.find_iter_by_name(filename)
+        if iter:
+            path = self.model.value_path(iter, 0)
+            dirs, files = _lookup_cvs_files( [], [ (os.path.basename(path), path)] )
+            for e in files:
+                if e.path == path:
+                    prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
+                    self._update_item_state( iter, e, e.parent[prefixlen:])
+                    return
+
+    def find_iter_by_name(self, name):
+        iter = self.model.get_iter_root()
+        path = self.model.value_path(iter, 0)
+        if name.startswith(path): 
+            while iter:
+                child = self.model.iter_children( iter )
+                while child:
+                    path = self.model.value_path(child, 0)
+                    if name == path:
+                        return child
+                    elif name.startswith(path):
+                        break
+                    else:
+                        child = self.model.iter_next( child )
+                iter = child
+        return None
 
 gobject.type_register(CvsView)
 
