@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld cvs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-04 03:32+0100\n"
+"POT-Creation-Date: 2004-07-07 04:48+0200\n"
 "PO-Revision-Date: 2004-01-04 20:22+0100\n"
 "Last-Translator: Daniel van Eeden <daniel_e@dds.nl>\n"
 "Language-Team: Dutch <vertaling@nl.li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: meld.desktop.in.h:1
 msgid "Compare and merge your files."
@@ -23,23 +23,6 @@ msgstr "Vergelijken en samenvoegen van uw bestanden."
 msgid "Meld Diff Viewer"
 msgstr "Meld Diff Weergave"
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. ###############################################################################
-#.
-#. Local Functions
-#.
-#. ###############################################################################
 #: cvsview.py:41
 msgid ""
 "Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
@@ -47,11 +30,8 @@ msgstr ""
 "Genegeerd:Niet CVS:::Fout::Nieuw toegevoegd:Gewijzigd:<b>Conflict</b>:"
 "Verwijderd:Missend"
 
-#. no cvs dir
-#. print "Unable to parse date '%s' in '%s/CVS/Entries' (%s)" % (date, directory, e)
-#. known
-#. ignored
 #: cvsview.py:173
+#, python-format
 msgid ""
 "Error converting to a regular expression\n"
 "The pattern was '%s'\n"
@@ -61,226 +41,64 @@ msgstr ""
 "Het patroon is '%s'\n"
 "De fout is '%s'"
 
-#. ###############################################################################
-#.
-#. Local Functions
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. CommitDialog
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. CvsTreeStore
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. DirDiffMenu
-#.
-#. ###############################################################################
-#. ###############################################################################
-#. filters
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. CvsView
-#.
-#. ###############################################################################
-#: cvsview.py:350
+#: cvsview.py:357
 msgid "Name"
 msgstr "Naam"
 
-#: cvsview.py:367
+#: cvsview.py:374
 msgid "Location"
 msgstr "Lokatie"
 
-#: cvsview.py:368
+#: cvsview.py:375
 msgid "Status"
 msgstr "Status"
 
-#: cvsview.py:369
+#: cvsview.py:376
 msgid "Rev"
 msgstr "Rev"
 
-#: cvsview.py:370
+#: cvsview.py:377 glade2/cvsview.glade.h:22
 msgid "Tag"
 msgstr "Label"
 
-#: cvsview.py:371
+#: cvsview.py:378
 msgid "Options"
 msgstr "Opties"
 
-#. is file still extant in other pane?
-#. nope its gone
-#: cvsview.py:408 dirdiff.py:354
+#: cvsview.py:415 dirdiff.py:359
+#, python-format
 msgid "[%s] Scanning"
 msgstr "[%s] Zoeken"
 
-#. depth first
-#: cvsview.py:435 dirdiff.py:362
+#: cvsview.py:442 dirdiff.py:368
+#, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Zoeken %s"
 
-#. import time; time.sleep(1.0)
-#. expand parents
-#: cvsview.py:451
+#: cvsview.py:458
 msgid "(Empty)"
 msgstr "(Leeg)"
 
-#. just the root
-#: cvsview.py:483
+#: cvsview.py:494
+#, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Ophalen verschillen"
 
-#: cvsview.py:490
+#: cvsview.py:501
+#, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Verwerken wijzigingen"
 
-#: cvsview.py:494
+#: cvsview.py:505
 msgid "No differences found."
 msgstr "Geen verschillen gevonden."
 
-#. remove empty entries and remove trailing slashes
-#: cvsview.py:560
+#: cvsview.py:571
 msgid "Select some files first."
 msgstr "Selecteer eerst een aantal bestanden."
 
-#. it is missing, create empty file
-#. XXX fixme
-#. print event
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. ###############################################################################
-#.
-#. Differ
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. Differ
-#.
-#. ###############################################################################
-#. Internally, diffs are stored from text1 -> text0 and text1 -> text2.
-#. 0 or 2
-#. sequence==1:
-#. print "diffs", loidx, hiidx, len(diffs), lorange, hirange #diffs[loidx], diffs[hiidx-1]
-#. print "^^^^^", rangex, range1
-#. print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. ###############################################################################
-#.
-#. Local Functions
-#.
-#. ###############################################################################
-#. early out if only one file
-#. get sigs
-#. check for directories
-#. all dirs
-#. mixture
-#. if no substitutions look for different sizes
-#. try cache
-#. up to date
-#. do it
-#. ###############################################################################
-#.
-#. DirDiffTreeStore
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. EmblemCellRenderer
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. DirDiffMenu
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. TypeFilter
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. DirDiff
-#.
-#. ###############################################################################
-#: dirdiff.py:251 dirdiff.py:266
-msgid "Error converting pattern '%s' to regular expression"
-msgstr "Fout bij het converteren van patroon '%s' naar reguliere expressie"
-
-#: dirdiff.py:276
-msgid "Hide %s"
-msgstr "%s verbergen"
-
-#. map canonical names to realnames
-#: dirdiff.py:395
-msgid "'%s' hidden by '%s'"
-msgstr "'%s' verborgen door '%s'"
-
-#: dirdiff.py:401
-msgid ""
-"You are running a case insensitve comparison on a case sensitive filesystem. "
-"Some files are not visible:\n"
-"%s"
-msgstr ""
-"U gebruikt een hoofdletterongevoelige vergelijking op een "
-"hoofdlettergevoelig bestandssysteem. Sommige bestanden zijn niet zichtbaar:\n"
-"%s"
-
-#. then directories and files
-#. directory is empty, add a placeholder
-#: dirdiff.py:445
-msgid "[%s] Done"
-msgstr "[%s] Gedaan"
-
-#. filter(lambda x: x.name!=None, sel):
-#: dirdiff.py:503
-msgid ""
-"'%s' exists.\n"
-"Overwrite?"
-msgstr ""
-"'%s' bestaat.\n"
-"Overschrijven?"
-
-#: dirdiff.py:510
-msgid ""
-"Error copying '%s' to '%s'\n"
-"\n"
-"%s."
-msgstr ""
-"Fout bij kopieëren van '%s' naar '%s'\n"
-"\n"
-"%s."
-
-#. reverse so paths dont get changed
-#. xxx
-#: dirdiff.py:528
+#: cvsview.py:592 dirdiff.py:543
+#, python-format
 msgid ""
 "'%s' is a directory.\n"
 "Remove recusively?"
@@ -288,7 +106,8 @@ msgstr ""
 "'%s' is een map.\n"
 "Recursief verwijderen?"
 
-#: dirdiff.py:534
+#: cvsview.py:597 dirdiff.py:550
+#, python-format
 msgid ""
 "Error removing %s\n"
 "\n"
@@ -298,73 +117,76 @@ msgstr ""
 "\n"
 "%s."
 
-#. Its possible to have file 'foo' in one pane and dir 'foo' in another.
-#. We want to do the right thing depending on the one clicked.
-#. clicked on missing entry?
-#.
-#. Toolbar handlers
-#.
-#.
-#. Selection
-#.
-#.
-#. Filtering
-#.
-#. find the newest file, checking also that they differ
-#. all same
-#. unselect others
-#. clicked outside tree
-#. not first time through
-#. print model.value_path(iter, treeindex), model.get_state(iter, treeindex)
-#. end marker
-#. ignore
-#. none
-#. normal
-#. nochange
-#. error
-#. empty
-#. new
-#. modified
-#. conflict
-#. removed
-#. missing
-#. border
-#. TODO need gutter of scrollbar - how do we get that?
-#. TODO need gutter of scrollbar - how do we get that?
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. ###############################################################################
-#.
-#. FileDiff
-#.
-#. ###############################################################################
-#. glade bug workaround
-#. print "***", range, len(self.linediffer.diffs[0])
-#.
-#. text buffer undo/redo
-#.
-#.
-#.
-#.
-#. XXX .get_buffer().copy_clipboard()
-#. XXX get_buffer().cut_clipboard()
-#. XXX t.get_buffer().paste_clipboard(None, 1)
-#.
-#. find/replace buffer
-#.
-#. tofind is utf-8 encoded
-#. as is buffer
-#: filediff.py:380
+#: dirdiff.py:254 dirdiff.py:269
+#, python-format
+msgid "Error converting pattern '%s' to regular expression"
+msgstr "Fout bij het converteren van patroon '%s' naar reguliere expressie"
+
+#: dirdiff.py:279
+#, python-format
+msgid "Hide %s"
+msgstr "%s verbergen"
+
+#: dirdiff.py:401
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "'%s' verborgen door '%s'"
+
+#: dirdiff.py:407
+#, python-format
+msgid ""
+"You are running a case insensitve comparison on a case sensitive filesystem. "
+"Some files are not visible:\n"
+"%s"
+msgstr ""
+"U gebruikt een hoofdletterongevoelige vergelijking op een "
+"hoofdlettergevoelig bestandssysteem. Sommige bestanden zijn niet zichtbaar:\n"
+"%s"
+
+#: dirdiff.py:473
+#, python-format
+msgid "[%s] Done"
+msgstr "[%s] Gedaan"
+
+#: dirdiff.py:518
+#, python-format
+msgid ""
+"'%s' exists.\n"
+"Overwrite?"
+msgstr ""
+"'%s' bestaat.\n"
+"Overschrijven?"
+
+#: dirdiff.py:525
+#, python-format
+msgid ""
+"Error copying '%s' to '%s'\n"
+"\n"
+"%s."
+msgstr ""
+"Fout bij kopieëren van '%s' naar '%s'\n"
+"\n"
+"%s."
+
+#. singular,plural
+#: dirdiff.py:561
+msgid ""
+"second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:"
+"year,years"
+msgstr "seconde,secondes:minuut:minuten:uur,uren:dag,dagen:week,weken:maand,maanden:jaar,jaren"
+
+#: filediff.py:196
+msgid "INS,OVR"
+msgstr "INS,OVR"
+
+#. insert/overwrite
+#: filediff.py:197
+#, python-format
+msgid "Ln %i, Col %i"
+msgstr "Ln %i, Kol %i"
+
+#: filediff.py:470
+#, python-format
 msgid ""
 "Regular expression error\n"
 "'%s'"
@@ -372,26 +194,28 @@ msgstr ""
 "Reguliere expressie fout\n"
 "'%s'"
 
-#: filediff.py:392
+#: filediff.py:482
+#, python-format
 msgid "The regular expression '%s' was not found."
 msgstr "De reguliere expressie '%s' is niet gevonden."
 
-#: filediff.py:394
+#: filediff.py:484
+#, python-format
 msgid "The text '%s' was not found."
 msgstr "De tekst '%s' is niet gevonden."
 
-#.
-#. text buffer loading/saving
-#.
-#: filediff.py:433
+#: filediff.py:523
+#, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Instellen num panes"
 
-#: filediff.py:440
+#: filediff.py:530
+#, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Openen bestanden"
 
-#: filediff.py:456
+#: filediff.py:546
+#, python-format
 msgid ""
 "Could not open '%s' for reading.\n"
 "\n"
@@ -403,11 +227,13 @@ msgstr ""
 "De fout is:\n"
 "%s"
 
-#: filediff.py:460
+#: filediff.py:550
+#, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Lezen bestanden"
 
-#: filediff.py:475
+#: filediff.py:565
+#, python-format
 msgid ""
 "Could not read from '%s'.\n"
 "\n"
@@ -417,7 +243,8 @@ msgstr ""
 "\n"
 "Geprobeerde coderingen %s"
 
-#: filediff.py:480
+#: filediff.py:570
+#, python-format
 msgid ""
 "Could not read from '%s'.\n"
 "\n"
@@ -429,18 +256,18 @@ msgstr ""
 "De fout is:\n"
 "%s"
 
-#: filediff.py:500
+#: filediff.py:590
+#, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Berekenen verschillen"
 
-#. for b, l in zip( buffers, ranges ):
-#. for chunk in self.linediffer.all_changes_in_range(self._get_texts(), range0[0], range0[1], range1[0], range1[1]):
-#. print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
-#: filediff.py:592
+#: filediff.py:686
+#, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Kies een naam voor buffer %i"
 
-#: filediff.py:603
+#: filediff.py:697
+#, python-format
 msgid ""
 "\"%s\" exists!\n"
 "Overwrite?"
@@ -448,7 +275,8 @@ msgstr ""
 "\"%s\" bestaat!\n"
 "Overschrijven?"
 
-#: filediff.py:617
+#: filediff.py:711
+#, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
 "\n"
@@ -458,7 +286,8 @@ msgstr ""
 "\n"
 "Welk formaat wilt u gebruiken?"
 
-#: filediff.py:634
+#: filediff.py:728
+#, python-format
 msgid ""
 "Error writing to %s\n"
 "\n"
@@ -468,10 +297,8 @@ msgstr ""
 "\n"
 "%s."
 
-#.
-#. refresh, _queue_refresh
-#.
-#: filediff.py:693
+#: filediff.py:787
+#, python-format
 msgid ""
 "Refreshing will discard changes in:\n"
 "%s\n"
@@ -505,171 +332,37 @@ msgstr "Meld zal beter werken met pygtk %s of hoger. (gevonden %s)"
 #: meld:72
 msgid ""
 "Due to incompatible API changes some functions may not operate as expected."
-msgstr "Door incompatibiliteit in API wijzigingen kunnen sommige functies niet werken zoals verwacht."
+msgstr ""
+"Door incompatibiliteit in API wijzigingen kunnen sommige functies niet "
+"werken zoals verwacht."
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. system
-#. gnome
-#. project
-#. magic developer switch, changes some behaviour
-#. ###############################################################################
-#.
-#. BrowseFileDialog
-#.
-#. ###############################################################################
-#: meldapp.py:56
-msgid "Browse %s"
-msgstr "%s doorbladeren"
+#: meldapp.py:294
+msgid "Line numbers are only available if you have pysourceview installed."
+msgstr "Regel nummers zijn enkel beschikbaar als u pysourceview heeft geinstalleerd."
 
-#. ###############################################################################
-#.
-#. ListWidget
-#.
-#. ###############################################################################
-#. XXX need model.swap
-#. XXX need model.swap
-#. ###############################################################################
-#.
-#. PreferencesDialog
-#.
-#. ###############################################################################
-#. tab selector
-#. editor
-#. display
-#. file filters
-#. text filters
-#. encoding
-#. cvs
-#.
-#. treeview
-#.
-#.
-#. editor
-#.
-#.
-#. display
-#.
-#.
-#. filters
-#.
-#.
-#. encoding
-#.
-#.
-#. cvs
-#.
-#. ###############################################################################
-#.
-#. MeldStatusBar
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. NotebookLabel
-#.
-#. ###############################################################################
-#. TODO font height
-#. TODO font height
-#. ###############################################################################
-#.
-#. MeldNewMenu
-#.
-#. ###############################################################################
-#. ###############################################################################
-#.
-#. MeldPreferences
-#.
-#. ###############################################################################
-#. internal, gnome, custom
-#. ###############################################################################
-#.
-#. MeldApp
-#.
-#. ###############################################################################
-#.
-#. init
-#.
-#. hide magic testing button
-#.
-#. General events and callbacks
-#.
-#.
-#. Toolbar and menu items (file)
-#.
-#: meldapp.py:602
-msgid "Original File"
-msgstr "Bron Bestand"
+#: meldapp.py:298
+msgid ""
+"Syntax highlighting is only available if you have pysourceview installed."
+msgstr "Syntax highlighting is enkel beschibaar als u pysourceview heeft geinstalleerd."
 
-#: meldapp.py:602
-msgid "Modified File"
-msgstr "Gewijzigd bestand"
+#: meldapp.py:782 meldapp.py:920
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "Kan een mix van bestanden en mappen niet vergelijken.\n"
 
-#: meldapp.py:605
-msgid "Other Changes"
-msgstr "Andere wijzigingen"
+#: meldapp.py:784 meldapp.py:922
+msgid "file"
+msgstr "bestand"
 
-#: meldapp.py:605
-msgid "Common Ancestor"
-msgstr "Gelijke bron"
+#: meldapp.py:784 meldapp.py:922
+msgid "folder"
+msgstr "map"
 
-#: meldapp.py:605
-msgid "Local Changes"
-msgstr "Lokale wijzigingen"
-
-#: meldapp.py:608 meldapp.py:611
-msgid "Original Directory"
-msgstr "Bron map"
-
-#: meldapp.py:608 meldapp.py:611
-msgid "Modified Directory"
-msgstr "Gewijzigde map"
-
-#: meldapp.py:611
-msgid "Other Directory"
-msgstr "Andere map"
-
-#: meldapp.py:614
-msgid "Root CVS Directory"
-msgstr "Basis CVS map"
-
-#. save one
-#. save all
-#.
-#. Toolbar and menu items (edit)
-#.
-#.
-#. Toolbar and menu items (settings)
-#.
-#.
-#. Toolbar and menu items (help)
-#.
-#.
-#. Toolbar and menu items (misc)
-#.
-#. self.append_filediff( ("ntest/file9a", "ntest/file9b") )
-#.
-#. Current doc actions
-#.
-#.
-#. Usage
-#.
 #. ###############################################################################
 #.
 #. usage
 #.
 #. ###############################################################################
-#: meldapp.py:802
+#: meldapp.py:834
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -680,7 +373,8 @@ msgid ""
 "    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
 "\n"
 "For more information choose help -> contents.\n"
-"Report bugs to steve9000@users.sourceforge.net.\n"
+"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
+"stevek@gnome.org\n"
 msgstr ""
 "Meld is een bestands en mappen vergelijk programma. Gebruik:\n"
 "\n"
@@ -691,334 +385,167 @@ msgstr ""
 "    meld <map>  <map>  [map]       Begin met 2 of 3 weg mappen vergelijking\n"
 "\n"
 "Voor mee informatie kies help -> inhoud.\n"
-"Reporteer bugs aan steve9000@users.sourceforge.net.\n"
+"Reporteer bugs op http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
+"stevek@gnome.org\n"
 
-#: meldapp.py:814
+#: meldapp.py:847
+#, python-format
 msgid ""
 "Meld %s\n"
-"Written by Stephen Kennedy <steve9000@users.sf.net>"
+"Written by Stephen Kennedy <stevek@gnome.org>"
 msgstr ""
 "Meld %s\n"
-"Geschreven door Stephen Kennedy <steve9000@users.sf.net>"
+"Geschreven door Stephen Kennedy <stevek@gnome.org>"
 
-#. ###############################################################################
-#.
-#. Main
-#.
-#. ###############################################################################
-#: meldapp.py:861
+#: meldapp.py:897
+#, python-format
 msgid "`%s' is not a directory or file, cannot open cvs view"
 msgstr "`%s' is niet een map of bestand, kan cvs weergave niet openen"
 
-#: meldapp.py:867
+#: meldapp.py:903
 msgid "Cannot open "
 msgstr "Kan niet openen "
 
-#: meldapp.py:884
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "Kan een mix van bestanden en mappen niet vergelijken.\n"
-
-#: meldapp.py:886
-msgid "file"
-msgstr "bestand"
-
-#: meldapp.py:886
-msgid "folder"
-msgstr "map"
-
-#: meldapp.py:889
+#: meldapp.py:925
+#, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Ongeldig aantal argumenten (Was %i)"
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. Use these to ensure consistent return values.
-#: melddoc.py:44
+#: melddoc.py:45
 msgid "untitled"
 msgstr "naamloos"
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. remove common prefix
-#. split on /
 #. no common path. empty names get changed to "[None]"
 #: misc.py:121
 msgid "[None]"
 msgstr "[Geen]"
 
-#. get buffer size
-#. ick need to fix
-#. how many chars?
-#. ick need to fix
-#. allow single arguments to be passed as is.
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. maybe fall back to ConfigParser if gconf is unavailable.
-#. types of values allowed
-#. LIST = "list"
-#. PAIR = "pair"
-#. #
-#. unknown key, we don't care about it
-#. value has changed
-#. value has been deleted
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. m.add_task(h)
-#. m.add_task(h)
-#. s.add_task( sayhello(40).next )
-#. s.add_task( sayhello(50).next )
-#. s.add_task( sayhello(60).next )
-#. m.add_task( s )
-#. time.sleep(.71)
-#. m.add_task( s )#sayhello(2).next )
-#. m.add_task( sayhello(3).next )
-#. m.add_task( lambda t=time.time() : timetask(t) )
-#. m.add_task( sayhello(4).next )
-#. m.add_task( sayhello(5).next )
-#. m.mainloop()
-#. print "***"
-#. m.add_task( sayhello(20).next )
-#. m.add_task( s )
-#. s.complete_tasks()
-#. time.sleep(3)
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. ignored, new, normal, ignored changes,
-#. error, placeholder, cvs added
-#. cvs modified, cvs conflict, cvs removed
-#. locally removed, end
-#. STATE_IGNORED
-#. STATE_NONE
-#. STATE_NORMAL
-#. STATE_NOCHANGE
-#. STATE_ERROR
-#. STATE_EMPTY
-#. STATE_NEW
-#. STATE_MODIFIED
-#. STATE_CONFLICT
-#. STATE_REMOVED
-#. STATE_MISSING
-#. IGNORED
-#. NONE
-#. NORMAL
-#. NOCHANGE
-#. ERROR
-#. EMPTY
-#. NEW
-#. MODIFIED
-#. CONFLICT
-#. REMOVED
-#. MISSING
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
-#. ## This program is free software; you can redistribute it and/or modify
-#. ## it under the terms of the GNU General Public License as published by
-#. ## the Free Software Foundation; either version 2 of the License, or
-#. ## (at your option) any later version.
-#. ## This program is distributed in the hope that it will be useful,
-#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
-#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#. ## GNU General Public License for more details.
-#. ## You should have received a copy of the GNU General Public License
-#. ## along with this program; if not, write to the Free Software
-#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#. collapse
-#.
-#. * Translatable strings file generated by Glade.
-#. * Add this file to your project's POTFILES.in.
-#. * DO NOT compile it as part of your application.
-#.
-#: glade2/cvsview.strings:7 glade2/filediff.strings:10
-#: glade2/dirdiff.strings:12 glade2/meldapp.strings:95
-msgid "window1"
-msgstr "venster1"
-
-#: glade2/cvsview.strings:8
-msgid "Diff selected"
-msgstr "Diff geselecteerd"
-
-#: glade2/cvsview.strings:9 glade2/cvsview.strings:28
-#: glade2/meldapp.strings:94
-msgid "_Diff"
-msgstr "_Diff"
-
-#: glade2/cvsview.strings:10
-msgid "Flatten directories"
-msgstr "Vervlakken mappen"
-
-#: glade2/cvsview.strings:11
-msgid "_Flatten"
-msgstr "Vervlakken"
-
-#: glade2/cvsview.strings:12
-msgid "_Modified"
-msgstr "Gewijzigd"
-
-#: glade2/cvsview.strings:13 glade2/dirdiff.strings:28
-msgid "Show modified"
-msgstr "Laat veranderde zien"
-
-#: glade2/cvsview.strings:14
-msgid "_Normal"
-msgstr "_Normaal"
-
-#: glade2/cvsview.strings:15
-msgid "Show non-CVS"
-msgstr "Weergeven niet-CVS"
-
-#: glade2/cvsview.strings:16
-msgid "Non _CVS"
-msgstr "Niet _CVS"
-
-#: glade2/cvsview.strings:17
-msgid "Ignored"
-msgstr "Genegeerd"
-
-#: glade2/cvsview.strings:18
-msgid "Commit"
-msgstr "Doorvoeren"
-
-#: glade2/cvsview.strings:19 glade2/cvsview.strings:30
-msgid "_Commit"
-msgstr "Doorvoeren"
-
-#: glade2/cvsview.strings:20
-msgid "Update"
-msgstr "Verversen"
-
-#. GRUT modified this item
-#: glade2/cvsview.strings:21 glade2/cvsview.strings:29
-msgid "_Update"
-msgstr "_Verversen"
-
-#: glade2/cvsview.strings:22
-msgid "Add to CVS"
-msgstr "Toevoegen aan CVS"
-
-#: glade2/cvsview.strings:23 glade2/cvsview.strings:32
-msgid "_Add"
-msgstr "_Toevoegen"
-
-#: glade2/cvsview.strings:24
-msgid "Remove from CVS"
-msgstr "Verwijderen van CVS"
-
-#: glade2/cvsview.strings:25 glade2/cvsview.strings:34
-msgid "_Remove"
-msgstr "_Verwijderen"
-
-#: glade2/cvsview.strings:26
-msgid "Delete locally"
-msgstr "Lokaal verwijderen"
-
-#: glade2/cvsview.strings:27 glade2/cvsview.strings:39
-#: glade2/filediff.strings:11 glade2/filediff.strings:12
-#: glade2/filediff.strings:13 glade2/filediff.strings:23
-#: glade2/dirdiff.strings:30 glade2/dirdiff.strings:31
-#: glade2/dirdiff.strings:32 glade2/meldapp.strings:43
-#: glade2/meldapp.strings:66 glade2/meldapp.strings:78
+#: glade2/cvsview.glade.h:1 glade2/filediff.glade.h:1 glade2/dirdiff.glade.h:1
+#: glade2/meldapp.glade.h:3
 msgid "*"
 msgstr "*"
 
-#: glade2/cvsview.strings:31
-msgid "_Edit"
-msgstr "Be_werken"
-
-#: glade2/cvsview.strings:33
+#: glade2/cvsview.glade.h:2
 msgid "Add _Binary"
 msgstr "Toevoegen _binair"
 
-#: glade2/cvsview.strings:35
-msgid "Remove _Locally"
-msgstr "_Lokaal verwijderen"
+#: glade2/cvsview.glade.h:3
+msgid "Add to CVS"
+msgstr "Toevoegen aan CVS"
 
-#: glade2/cvsview.strings:36
+#: glade2/cvsview.glade.h:4
 msgid "CVS Log"
 msgstr "CVS Log"
 
-#: glade2/cvsview.strings:37
+#: glade2/cvsview.glade.h:5
+msgid "Commit"
+msgstr "Doorvoeren"
+
+#: glade2/cvsview.glade.h:6
 msgid "Commit Files"
 msgstr "Doorvoeren bestanden"
 
-#: glade2/cvsview.strings:38
-msgid "Previous Logs"
-msgstr "Vorige logs"
+#: glade2/cvsview.glade.h:7
+msgid "Date"
+msgstr "Datum"
 
-#: glade2/cvsview.strings:40
+#: glade2/cvsview.glade.h:8
+msgid "Delete locally"
+msgstr "Lokaal verwijderen"
+
+#: glade2/cvsview.glade.h:9
+msgid "Diff Options"
+msgstr "Diff Opties"
+
+#: glade2/cvsview.glade.h:10
+msgid "Diff selected"
+msgstr "Diff geselecteerd"
+
+#: glade2/cvsview.glade.h:11
+msgid "Flatten directories"
+msgstr "Vervlakken mappen"
+
+#: glade2/cvsview.glade.h:12
+msgid "Ignored"
+msgstr "Genegeerd"
+
+#: glade2/cvsview.glade.h:13
+msgid "Local copy against other remote revision"
+msgstr "Lokale kopie tegen remote revisie"
+
+#: glade2/cvsview.glade.h:14
+msgid "Local copy against same remote revision"
+msgstr "Lokale kopie tegen gelijke remote revisie"
+
+#: glade2/cvsview.glade.h:15
 msgid "Log Message"
 msgstr "Log bericht"
 
-#.
-#. * Translatable strings file generated by Glade.
-#. * Add this file to your project's POTFILES.in.
-#. * DO NOT compile it as part of your application.
-#.
-#: glade2/filediff.strings:7
-msgid "Copy All _Left"
-msgstr "Alles naar links kopieëren"
+#: glade2/cvsview.glade.h:16
+msgid "Non _CVS"
+msgstr "Niet _CVS"
 
-#: glade2/filediff.strings:8
-msgid "Copy All _Right"
-msgstr "Alles naar _rechts kopieëren"
+#: glade2/cvsview.glade.h:17
+msgid "Previous Logs"
+msgstr "Vorige logs"
 
-#: glade2/filediff.strings:9 glade2/dirdiff.strings:10
-msgid "Edit"
-msgstr "Bewerken"
+#: glade2/cvsview.glade.h:18
+msgid "Remove _Locally"
+msgstr "_Lokaal verwijderen"
 
-#: glade2/filediff.strings:14
-msgid "Save modified files?"
-msgstr "Gewijzigde bestanden opslaan?"
+#: glade2/cvsview.glade.h:19
+msgid "Remove from CVS"
+msgstr "Verwijderen van CVS"
 
-#: glade2/filediff.strings:15
+#: glade2/cvsview.glade.h:20 glade2/dirdiff.glade.h:21
+msgid "Show modified"
+msgstr "Laat veranderde zien"
+
+#: glade2/cvsview.glade.h:21
+msgid "Show non-CVS"
+msgstr "Weergeven niet-CVS"
+
+#: glade2/cvsview.glade.h:23
+msgid "Update"
+msgstr "Verversen"
+
+#: glade2/cvsview.glade.h:24
+msgid "_Add"
+msgstr "_Toevoegen"
+
+#: glade2/cvsview.glade.h:25
+msgid "_Commit"
+msgstr "Doorvoeren"
+
+#: glade2/cvsview.glade.h:26 glade2/meldapp.glade.h:95
+msgid "_Diff"
+msgstr "_Diff"
+
+#: glade2/cvsview.glade.h:27
+msgid "_Edit"
+msgstr "Be_werken"
+
+#: glade2/cvsview.glade.h:28
+msgid "_Flatten"
+msgstr "Vervlakken"
+
+#: glade2/cvsview.glade.h:29
+msgid "_Modified"
+msgstr "Gewijzigd"
+
+#: glade2/cvsview.glade.h:30
+msgid "_Normal"
+msgstr "_Normaal"
+
+#: glade2/cvsview.glade.h:31
+msgid "_Remove"
+msgstr "_Verwijderen"
+
+#: glade2/cvsview.glade.h:32
+msgid "_Update"
+msgstr "_Verversen"
+
+#: glade2/filediff.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
 "Which ones would you like to save?</span>"
@@ -1026,437 +553,553 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Sommige bestanden zijn gewijzigd.\n"
 "Welke wilt u opslaan?</span>"
 
-#: glade2/filediff.strings:17
+#: glade2/filediff.glade.h:4
+msgid "Copy All _Left"
+msgstr "Alles naar links kopieëren"
+
+#: glade2/filediff.glade.h:5
+msgid "Copy All _Right"
+msgstr "Alles naar _rechts kopieëren"
+
+#: glade2/filediff.glade.h:6 glade2/dirdiff.glade.h:10
+msgid "Edit"
+msgstr "Bewerken"
+
+#: glade2/filediff.glade.h:7
 msgid "Find"
 msgstr "Zoeken"
 
-#: glade2/filediff.strings:18
-msgid "Search for:"
-msgstr "Zoeken naar:"
-
-#: glade2/filediff.strings:19
-msgid "_Match case"
-msgstr "Hoofdlettergevoelig"
-
-#. GRUT modified this item
-#: glade2/filediff.strings:20
+#: glade2/filediff.glade.h:8
 msgid "Match _entire word only"
 msgstr "_Enkel complete woorden"
 
-#: glade2/filediff.strings:21
-msgid "_Wrap around"
-msgstr "_Woordafbraak"
-
-#: glade2/filediff.strings:22
+#: glade2/filediff.glade.h:9
 msgid "Regular e_xpression"
 msgstr "Reguliere e_xpressie"
 
-#.
-#. * Translatable strings file generated by Glade.
-#. * Add this file to your project's POTFILES.in.
-#. * DO NOT compile it as part of your application.
-#.
-#: glade2/dirdiff.strings:7
-msgid "Launch _Comparison"
-msgstr "Starten vergelijking"
+#: glade2/filediff.glade.h:10
+msgid "Save modified files?"
+msgstr "Gewijzigde bestanden opslaan?"
 
-#: glade2/dirdiff.strings:8
-msgid "Copy Left"
-msgstr "Naar links kopieëren"
+#: glade2/filediff.glade.h:11
+msgid "Search for:"
+msgstr "Zoeken naar:"
 
-#: glade2/dirdiff.strings:9
-msgid "Copy Right"
-msgstr "Naar rechts kopieëren"
+#: glade2/filediff.glade.h:12
+msgid "_Match case"
+msgstr "Hoofdlettergevoelig"
 
-#: glade2/dirdiff.strings:11
-msgid "_Delete Selected"
-msgstr "Verwijderen geselecteerde"
+#: glade2/filediff.glade.h:13
+msgid "_Wrap around"
+msgstr "_Woordafbraak"
 
-#: glade2/dirdiff.strings:13
-msgid "Diff selection"
-msgstr "Diff selectie"
-
-#: glade2/dirdiff.strings:14
-msgid "Diff"
-msgstr "Diff"
-
-#: glade2/dirdiff.strings:15
-msgid "Copy left"
-msgstr "Naar links kopieëren"
-
-#: glade2/dirdiff.strings:16
-msgid "Left"
-msgstr "Links"
-
-#: glade2/dirdiff.strings:17
-msgid "Copy right"
-msgstr "Naar rechts kopieëren"
-
-#: glade2/dirdiff.strings:18
-msgid "Right"
-msgstr "Rechts"
-
-#: glade2/dirdiff.strings:19
-msgid "Delete selected"
-msgstr "Verwijderen geselecteerde"
-
-#: glade2/dirdiff.strings:20
-msgid "Hide selected"
-msgstr "Verbergen geselecteerde"
-
-#: glade2/dirdiff.strings:21
-msgid "Hide..."
-msgstr "Verbergen..."
-
-#: glade2/dirdiff.strings:22
-msgid "Ignore case of entries"
-msgstr "Negeer hoofdlettergebruik van ingangen"
-
-#: glade2/dirdiff.strings:23
+#: glade2/dirdiff.glade.h:2
 msgid "Case"
 msgstr "Hoofdlettergebruik"
 
-#: glade2/dirdiff.strings:24
-msgid "Show identical"
-msgstr "Laat gelijke zien"
+#: glade2/dirdiff.glade.h:3
+msgid "Copy Left"
+msgstr "Naar links kopieëren"
 
-#: glade2/dirdiff.strings:25
-msgid "Same"
-msgstr "Zelfde"
+#: glade2/dirdiff.glade.h:4
+msgid "Copy Right"
+msgstr "Naar rechts kopieëren"
 
-#: glade2/dirdiff.strings:26
-msgid "Show new"
-msgstr "Laat nieuwe zien"
+#: glade2/dirdiff.glade.h:5
+msgid "Copy left"
+msgstr "Naar links kopieëren"
 
-#: glade2/dirdiff.strings:27
-msgid "New"
-msgstr "Nieuw"
+#: glade2/dirdiff.glade.h:6
+msgid "Copy right"
+msgstr "Naar rechts kopieëren"
 
-#: glade2/dirdiff.strings:29
+#: glade2/dirdiff.glade.h:7
+msgid "Delete selected"
+msgstr "Verwijderen geselecteerde"
+
+#: glade2/dirdiff.glade.h:8
+msgid "Diff"
+msgstr "Diff"
+
+#: glade2/dirdiff.glade.h:9
+msgid "Diff selection"
+msgstr "Diff selectie"
+
+#: glade2/dirdiff.glade.h:11
+msgid "Hide selected"
+msgstr "Verbergen geselecteerde"
+
+#: glade2/dirdiff.glade.h:12
+msgid "Hide..."
+msgstr "Verbergen..."
+
+#: glade2/dirdiff.glade.h:13
+msgid "Ignore case of entries"
+msgstr "Negeer hoofdlettergebruik van ingangen"
+
+#: glade2/dirdiff.glade.h:14
+msgid "Launch _Comparison"
+msgstr "Starten vergelijking"
+
+#: glade2/dirdiff.glade.h:15
+msgid "Left"
+msgstr "Links"
+
+#: glade2/dirdiff.glade.h:16
 msgid "Modified"
 msgstr "Bewerkt"
 
-#.
-#. * Translatable strings file generated by Glade.
-#. * Add this file to your project's POTFILES.in.
-#. * DO NOT compile it as part of your application.
-#.
-#: glade2/meldapp.strings:7
-msgid "Meld"
-msgstr "Meld"
+#: glade2/dirdiff.glade.h:17
+msgid "New"
+msgstr "Nieuw"
 
-#: glade2/meldapp.strings:8 glade2/meldapp.strings:23
-msgid "Two way file"
-msgstr "Twee weg bestand"
+#: glade2/dirdiff.glade.h:18
+msgid "Right"
+msgstr "Rechts"
 
-#: glade2/meldapp.strings:9 glade2/meldapp.strings:24
-msgid "Three way file"
-msgstr "Drie weg bestand"
+#: glade2/dirdiff.glade.h:19
+msgid "Same"
+msgstr "Zelfde"
 
-#: glade2/meldapp.strings:10 glade2/meldapp.strings:25
-msgid "Two way directory"
-msgstr "Twee weg map"
+#: glade2/dirdiff.glade.h:20
+msgid "Show identical"
+msgstr "Laat gelijke zien"
 
-#: glade2/meldapp.strings:11 glade2/meldapp.strings:26
-msgid "Three way directory"
-msgstr "Drie weg bestand"
+#: glade2/dirdiff.glade.h:22
+msgid "Show new"
+msgstr "Laat nieuwe zien"
 
-#: glade2/meldapp.strings:12 glade2/meldapp.strings:27
-msgid "CVS view"
-msgstr "CVS weergave"
+#: glade2/dirdiff.glade.h:23
+msgid "_Delete Selected"
+msgstr "Verwijderen geselecteerde"
 
-#: glade2/meldapp.strings:13
-msgid "_Save"
-msgstr "Op_slaan"
-
-#: glade2/meldapp.strings:14
-msgid "Save File 1"
-msgstr "Opslaan bestand 1"
-
-#: glade2/meldapp.strings:15
-msgid "Save File 2"
-msgstr "Opslaan bestand 2"
-
-#: glade2/meldapp.strings:16
-msgid "Save File 3"
-msgstr "Opslaan bestand 3"
-
-#: glade2/meldapp.strings:17
-msgid "_Contents"
-msgstr "_Inhoud"
-
-#: glade2/meldapp.strings:18
-msgid "Report _Bug"
-msgstr "_Bug reporteren"
-
-#: glade2/meldapp.strings:19
-msgid "_New..."
-msgstr "_Nieuw..."
-
-#: glade2/meldapp.strings:20
-msgid "Copyright (C) 2002 Stephen Kennedy"
-msgstr "Copyright (C) 2002 Stephen Kennedy"
-
-#: glade2/meldapp.strings:21
-msgid "http://meld.sourceforge.net"
-msgstr "http://meld.sourceforge.net"
-
-#: glade2/meldapp.strings:22
-msgid "Choose Files"
-msgstr "Kies bestanden"
-
-#: glade2/meldapp.strings:28
-msgid "Preferences : Meld"
-msgstr "Voorkeuren : Meld"
-
-#: glade2/meldapp.strings:29
-msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-
-#: glade2/meldapp.strings:30
-msgid "<b>Font</b>"
-msgstr "<b>Lettertype</b>"
-
-#: glade2/meldapp.strings:31
-msgid "Use GNOME monospace font."
-msgstr "Gebruik GNOME monospace lettertype."
-
-#: glade2/meldapp.strings:32
-msgid "Use custom font."
-msgstr "Gebruik aangepast lettertype."
-
-#: glade2/meldapp.strings:33 glade2/meldapp.strings:88
-msgid "<b>Misc</b>"
-msgstr "<b>Overig</b>"
-
-#: glade2/meldapp.strings:34
-msgid "Tabs equivalent to "
-msgstr "Tabs zijn gelijk aan "
-
-#: glade2/meldapp.strings:35
+#: glade2/meldapp.glade.h:1
 msgid " spaces."
 msgstr " spaties."
 
-#: glade2/meldapp.strings:36
+#: glade2/meldapp.glade.h:2
+msgid "(gnome-default-editor)"
+msgstr "(gnome standaard editor)"
+
+#: glade2/meldapp.glade.h:4
+msgid "<b>Drawing Style</b>"
+msgstr "<b>Teken stijl</b>"
+
+#: glade2/meldapp.glade.h:5
+msgid "<b>Edit Menu</b>"
+msgstr "<b>Menu bewerken</b>"
+
+#: glade2/meldapp.glade.h:6
+msgid "<b>Font</b>"
+msgstr "<b>Lettertype</b>"
+
+#: glade2/meldapp.glade.h:7
+msgid "<b>Global options</b>"
+msgstr "<b>Globale opties</b>"
+
+#: glade2/meldapp.glade.h:8
+msgid "<b>Loading</b>"
+msgstr "<b>Laden</b>"
+
+#: glade2/meldapp.glade.h:9
+msgid "<b>Misc</b>"
+msgstr "<b>Overig</b>"
+
+#: glade2/meldapp.glade.h:10
+msgid "<b>Saving</b>"
+msgstr "<b>Opslaan</b>"
+
+#: glade2/meldapp.glade.h:11
+msgid "<b>Toolbar Appearance</b>"
+msgstr "<b>Werkbalk weergave</b>"
+
+#: glade2/meldapp.glade.h:12
+msgid "<b>Update Options</b>"
+msgstr "<b>Vernieuwen Opties</b>"
+
+#: glade2/meldapp.glade.h:13
+msgid "<b>Whitespace</b>"
+msgstr "<b>Witruimtes</b>"
+
+#: glade2/meldapp.glade.h:14
+msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Binaire bestanden</span>"
+
+#: glade2/meldapp.glade.h:15
+msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+
+#: glade2/meldapp.glade.h:16
+msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Diff</span>"
+
+#: glade2/meldapp.glade.h:17
+msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Weergave</span>"
+
+#: glade2/meldapp.glade.h:18
+msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
+
+#: glade2/meldapp.glade.h:19
+msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Codering</span>"
+
+#: glade2/meldapp.glade.h:20
+msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Bestands Filters</span>"
+
+#: glade2/meldapp.glade.h:21
+msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Tekst Filters</span>"
+
+#: glade2/meldapp.glade.h:22
 msgid "Automatically supply missing newline at end of file."
 msgstr ""
 "Automatisch toevoegen ontbrekende nieuwregel aan het einde van het bestand."
 
-#: glade2/meldapp.strings:37
-msgid "<b>Edit Menu</b>"
-msgstr "<b>Menu bewerken</b>"
+#: glade2/meldapp.glade.h:23
+msgid "Binary files do not have text filters applied to them when comparing."
+msgstr ""
+"Binaire bestanden maken geen gebruik van tekst filters bij vergelijkingen."
 
-#: glade2/meldapp.strings:38
-msgid "Edit menu popup invokes"
-msgstr "Bewerken menu popup start"
+#: glade2/meldapp.glade.h:24
+msgid "CVS"
+msgstr "CVS"
 
-#: glade2/meldapp.strings:39
-msgid "Internal editor"
-msgstr "Interne editor"
+#: glade2/meldapp.glade.h:25
+msgid "CVS Browser"
+msgstr "CVS verkenner"
 
-#: glade2/meldapp.strings:40
-msgid "Gnome default editor"
-msgstr "Gnome standaard editor"
+#: glade2/meldapp.glade.h:26
+msgid "CVS Directory"
+msgstr "CVS map"
 
-#: glade2/meldapp.strings:41
-msgid "(gnome-default-editor)"
-msgstr "(gnome standaard editor)"
+#: glade2/meldapp.glade.h:27
+msgid "CVS binary"
+msgstr "CVS programma"
 
-#: glade2/meldapp.strings:42
-msgid "Custom command"
-msgstr "Aangepast commando"
+#: glade2/meldapp.glade.h:28
+msgid "CVS view"
+msgstr "CVS weergave"
 
-#: glade2/meldapp.strings:44
-msgid "Editor"
-msgstr "Editor"
+#: glade2/meldapp.glade.h:29
+msgid "Choose Files"
+msgstr "Kies bestanden"
 
-#: glade2/meldapp.strings:45
-msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Weergave</span>"
-
-#: glade2/meldapp.strings:46
-msgid "<b>Drawing Style</b>"
-msgstr "<b>Teken stijl</b>"
-
-#: glade2/meldapp.strings:47
+#: glade2/meldapp.glade.h:30
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
 msgstr ""
-"Kies hoe de centrale balk van de diff weergave getekent wordt. U kunt een"
-"simpelere mode kiezen voor als het verschuiven langzaam gaat."
+"Kies hoe de centrale balk van de diff weergave getekent wordt. U kunt "
+"eensimpelere mode kiezen voor als het verschuiven langzaam gaat."
 
-#: glade2/meldapp.strings:48
-msgid "Simple : Lines only"
-msgstr "Simpel : Enkel lijnen"
+#: glade2/meldapp.glade.h:31
+msgid "Copyright (C) 2002 Stephen Kennedy"
+msgstr "Copyright (C) 2002 Stephen Kennedy"
 
-#: glade2/meldapp.strings:49
-msgid "Solid   Filled Quadilaterals"
-msgstr "Vast : Gevulde Quadilaterals"
-
-#: glade2/meldapp.strings:50
-msgid "Curved : Filled Curves"
-msgstr "Curves : Gevulde curves"
-
-#: glade2/meldapp.strings:51
-msgid "<b>Toolbar Appearance</b>"
-msgstr "<b>Werkbalk weergave</b>"
-
-#: glade2/meldapp.strings:52
-msgid "Gnome Default"
-msgstr "Gnome standaard"
-
-#: glade2/meldapp.strings:53
-msgid "Icons Only"
-msgstr "Enkel pictogrammen"
-
-#: glade2/meldapp.strings:54
-msgid "Text Only"
-msgstr "Enkel tekst"
-
-#: glade2/meldapp.strings:55
-msgid "Text Under Icons"
-msgstr "Text onder pictogrammen"
-
-#: glade2/meldapp.strings:56
-msgid "Text Beside Icons"
-msgstr "Tekst naast pictogrammen"
-
-#: glade2/meldapp.strings:57
-msgid "Display"
-msgstr "Weergave"
-
-#: glade2/meldapp.strings:58
-msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Bestands Filters</span>"
-
-#: glade2/meldapp.strings:59
-msgid "File Filters"
-msgstr "Bestands filters"
-
-#: glade2/meldapp.strings:60
-msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Tekst Filters</span>"
-
-#: glade2/meldapp.strings:61
-msgid "Text Filters"
-msgstr "Tekst filters"
-
-#: glade2/meldapp.strings:62
-msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Codering</span>"
-
-#: glade2/meldapp.strings:63
-msgid "<b>Loading</b>"
-msgstr "<b>Laden</b>"
-
-#: glade2/meldapp.strings:64
-msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-msgstr "Probeer deze coderingen in volgorde bij het laden (b.v. utf8, iso8859)"
-
-#: glade2/meldapp.strings:65
-msgid "utf8 iso8859"
-msgstr "utf8 iso8859"
-
-#: glade2/meldapp.strings:67
-msgid "<b>Saving</b>"
-msgstr "<b>Opslaan</b>"
-
-#: glade2/meldapp.strings:68
-msgid "Save in the files original encoding"
-msgstr "Sla bestanden op in orgineele codering"
-
-#: glade2/meldapp.strings:69
-msgid "Save in UTF-8 encoding"
-msgstr "Opslaan in UTF-8 codering"
-
-#: glade2/meldapp.strings:70
-msgid "Encoding"
-msgstr "Codering"
-
-#: glade2/meldapp.strings:71
-msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-
-#: glade2/meldapp.strings:72
-msgid "<b>Global options</b>"
-msgstr "<b>Globale opties</b>"
-
-#: glade2/meldapp.strings:73
-msgid "Quiet mode (-q)"
-msgstr "Stille mode (-q)"
-
-#: glade2/meldapp.strings:74
-msgid "Use Compression (-z)"
-msgstr "Gebruik compressie (-z)"
-
-#: glade2/meldapp.strings:75
-msgid "Ignore .cvsrc (-f)"
-msgstr "Negeren .cvsrc (-f)"
-
-#: glade2/meldapp.strings:76
-msgid "CVS binary"
-msgstr "CVS programma"
-
-#: glade2/meldapp.strings:77
-msgid "Locate CVS binary : Meld"
-msgstr "Localiseer CVS programma : Meld"
-
-#: glade2/meldapp.strings:79
-msgid "<b>Update Options</b>"
-msgstr "<b>Vernieuwen Opties</b>"
-
-#: glade2/meldapp.strings:80
+#: glade2/meldapp.glade.h:32
 msgid "Create missing directories (-d)"
 msgstr "Aanmaken ontbrekende mappen (-d)"
 
-#: glade2/meldapp.strings:81
-msgid "Prune empty directories (-P)"
-msgstr "Verwijderen lege mappen (-P)"
+#: glade2/meldapp.glade.h:33
+msgid "Curved : Filled Curves"
+msgstr "Curves : Gevulde curves"
 
-#: glade2/meldapp.strings:82
-msgid "CVS"
-msgstr "CVS"
+#: glade2/meldapp.glade.h:34
+msgid "Custom command"
+msgstr "Aangepast commando"
 
-#: glade2/meldapp.strings:83
-msgid "_Logo"
-msgstr "_Logo"
+#: glade2/meldapp.glade.h:35
+msgid "Directory Comparison"
+msgstr "Map vergelijking"
 
-#: glade2/meldapp.strings:84
-msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Binaire bestanden</span>"
+#: glade2/meldapp.glade.h:36
+msgid "Display"
+msgstr "Weergave"
 
-#: glade2/meldapp.strings:85
-msgid "Binary files do not have text filters applied to them when comparing."
-msgstr "Binaire bestanden maken geen gebruik van tekst filters bij vergelijkingen."
+#: glade2/meldapp.glade.h:37
+msgid "Edit menu popup invokes"
+msgstr "Bewerken menu popup start"
 
-#: glade2/meldapp.strings:86
-msgid "_Binary Files"
-msgstr "_Binaire bestanden"
+#: glade2/meldapp.glade.h:38
+msgid "Editor"
+msgstr "Editor"
 
-#: glade2/meldapp.strings:87
-msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Diff</span>"
+#: glade2/meldapp.glade.h:39
+msgid "Encoding"
+msgstr "Codering"
 
-#: glade2/meldapp.strings:89
-msgid ""
-"Ignore changes in case; consider upper and lower-case letters equivalent"
-msgstr ""
-"Negeer veranderingen in hoofdlettergebruik; beschouw hoofdletters en kleine letters gelijk"
+#: glade2/meldapp.glade.h:40
+msgid "File Comparison"
+msgstr " Bestands vergelijking"
 
-#: glade2/meldapp.strings:90
-msgid "<b>Whitespace</b>"
-msgstr "<b>Witruimtes</b>"
+#: glade2/meldapp.glade.h:41
+msgid "File Filters"
+msgstr "Bestands filters"
 
-#: glade2/meldapp.strings:91
-msgid "Whitespace is significant"
-msgstr "Witruimte is signifikant"
+#: glade2/meldapp.glade.h:42
+msgid "Gnome Default"
+msgstr "Gnome standaard"
 
-#: glade2/meldapp.strings:92
-msgid "Ignore changes that just insert or delete blank lines"
-msgstr "Negeer veranderingen in het aantal witregels"
+#: glade2/meldapp.glade.h:43
+msgid "Gnome default editor"
+msgstr "Gnome standaard editor"
 
-#: glade2/meldapp.strings:93
+#: glade2/meldapp.glade.h:44
+msgid "Icons Only"
+msgstr "Enkel pictogrammen"
+
+#: glade2/meldapp.glade.h:45
+msgid "Ignore .cvsrc (-f)"
+msgstr "Negeren .cvsrc (-f)"
+
+#: glade2/meldapp.glade.h:46
 msgid "Ignore changes in amount of white space"
 msgstr "Negeer veranderingen in het aantal witruimtes"
 
+#: glade2/meldapp.glade.h:47
+msgid ""
+"Ignore changes in case; consider upper and lower-case letters equivalent"
+msgstr ""
+"Negeer veranderingen in hoofdlettergebruik; beschouw hoofdletters en kleine "
+"letters gelijk"
+
+#: glade2/meldapp.glade.h:48
+msgid "Ignore changes that just insert or delete blank lines"
+msgstr "Negeer veranderingen in het aantal witregels"
+
+#: glade2/meldapp.glade.h:49
+msgid "Internal editor"
+msgstr "Interne editor"
+
+#: glade2/meldapp.glade.h:50
+msgid "Line Wrapping "
+msgstr "Regelafbraak "
+
+#: glade2/meldapp.glade.h:51
+msgid "Locate CVS binary : Meld"
+msgstr "Localiseer CVS programma : Meld"
+
+#: glade2/meldapp.glade.h:52
+msgid "Meld"
+msgstr "Meld"
+
+#: glade2/meldapp.glade.h:53
+msgid "Mine"
+msgstr "Mijn"
+
+#: glade2/meldapp.glade.h:54
+msgid "My Directory"
+msgstr "Mijn Map"
+
+#: glade2/meldapp.glade.h:55
+msgid "My File"
+msgstr "Mijn bestand"
+
+#: glade2/meldapp.glade.h:56
+msgid "Original"
+msgstr "Orgineel"
+
+#: glade2/meldapp.glade.h:57
+msgid "Original Directory"
+msgstr "Bron map"
+
+#: glade2/meldapp.glade.h:58
+msgid "Original File"
+msgstr "Bron Bestand"
+
+#: glade2/meldapp.glade.h:59
+msgid "Other"
+msgstr "Andere"
+
+#: glade2/meldapp.glade.h:60
+msgid "Other Directory"
+msgstr "Andere map"
+
+#: glade2/meldapp.glade.h:61
+msgid "Other File"
+msgstr "Ander bestand"
+
+#: glade2/meldapp.glade.h:62
+msgid "Preferences : Meld"
+msgstr "Voorkeuren : Meld"
+
+#: glade2/meldapp.glade.h:63
+msgid "Prune empty directories (-P)"
+msgstr "Verwijderen lege mappen (-P)"
+
+#: glade2/meldapp.glade.h:64
+msgid "Quiet mode (-q)"
+msgstr "Stille mode (-q)"
+
+#: glade2/meldapp.glade.h:65
+msgid "Report _Bug"
+msgstr "_Bug reporteren"
+
+#: glade2/meldapp.glade.h:66
+msgid "SVN Browser"
+msgstr "SVN verkenner"
+
+#: glade2/meldapp.glade.h:67
+msgid "SVN Directory"
+msgstr "SVN map"
+
+#: glade2/meldapp.glade.h:68
+msgid "SVN view"
+msgstr "SVN weergave"
+
+#: glade2/meldapp.glade.h:69
+msgid "Save File 1"
+msgstr "Opslaan bestand 1"
+
+#: glade2/meldapp.glade.h:70
+msgid "Save File 2"
+msgstr "Opslaan bestand 2"
+
+#: glade2/meldapp.glade.h:71
+msgid "Save File 3"
+msgstr "Opslaan bestand 3"
+
+#: glade2/meldapp.glade.h:72
+msgid "Save in UTF-8 encoding"
+msgstr "Opslaan in UTF-8 codering"
+
+#: glade2/meldapp.glade.h:73
+msgid "Save in the files original encoding"
+msgstr "Sla bestanden op in orgineele codering"
+
+#: glade2/meldapp.glade.h:74
+msgid "Show line numbers"
+msgstr "Toon regelnummers"
+
+#: glade2/meldapp.glade.h:75
+msgid "Simple : Lines only"
+msgstr "Simpel : Enkel lijnen"
+
+#: glade2/meldapp.glade.h:76
+msgid "Solid   Filled Quadilaterals"
+msgstr "Vast : Gevulde Quadilaterals"
+
+#: glade2/meldapp.glade.h:77
+msgid "Tabs equivalent to "
+msgstr "Tabs zijn gelijk aan "
+
+#: glade2/meldapp.glade.h:78
+msgid "Text Beside Icons"
+msgstr "Tekst naast pictogrammen"
+
+#: glade2/meldapp.glade.h:79
+msgid "Text Filters"
+msgstr "Tekst filters"
+
+#: glade2/meldapp.glade.h:80
+msgid "Text Only"
+msgstr "Enkel tekst"
+
+#: glade2/meldapp.glade.h:81
+msgid "Text Under Icons"
+msgstr "Text onder pictogrammen"
+
+#: glade2/meldapp.glade.h:82
+msgid "Three way directory"
+msgstr "Drie weg bestand"
+
+#: glade2/meldapp.glade.h:83
+msgid "Three way file"
+msgstr "Drie weg bestand"
+
+#: glade2/meldapp.glade.h:84
+msgid "Two way directory"
+msgstr "Twee weg map"
+
+#: glade2/meldapp.glade.h:85
+msgid "Two way file"
+msgstr "Twee weg bestand"
+
+#: glade2/meldapp.glade.h:86
+msgid "Use Compression (-z)"
+msgstr "Gebruik compressie (-z)"
+
+#: glade2/meldapp.glade.h:87
+msgid "Use GNOME monospace font."
+msgstr "Gebruik GNOME monospace lettertype."
+
+#: glade2/meldapp.glade.h:88
+msgid "Use custom font."
+msgstr "Gebruik aangepast lettertype."
+
+#: glade2/meldapp.glade.h:89
+msgid "Use syntax highlighting"
+msgstr "Gebruik syntax highlighting"
+
+#: glade2/meldapp.glade.h:90
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr "Probeer deze coderingen in volgorde bij het laden (b.v. utf8, iso8859)"
+
+#: glade2/meldapp.glade.h:91
+msgid "Whitespace is significant"
+msgstr "Witruimte is signifikant"
+
+#: glade2/meldapp.glade.h:92
+msgid "_Binary Files"
+msgstr "_Binaire bestanden"
+
+#: glade2/meldapp.glade.h:93
+msgid "_Character"
+msgstr "_Karakter"
+
+#: glade2/meldapp.glade.h:94
+msgid "_Contents"
+msgstr "_Inhoud"
+
+#: glade2/meldapp.glade.h:96
+msgid "_Logo"
+msgstr "_Logo"
+
+#: glade2/meldapp.glade.h:97
+msgid "_New..."
+msgstr "_Nieuw..."
+
+#: glade2/meldapp.glade.h:98
+msgid "_None"
+msgstr "_Geen"
+
+#: glade2/meldapp.glade.h:99
+msgid "_Save"
+msgstr "Op_slaan"
+
+#: glade2/meldapp.glade.h:100
+msgid "_Three Way Compare"
+msgstr "_Drie weg bestands vergelijking"
+
+#: glade2/meldapp.glade.h:101
+msgid "_Word"
+msgstr "_Woord"
+
+#: glade2/meldapp.glade.h:102
+msgid "http://meld.sourceforge.net"
+msgstr "http://meld.sourceforge.net"
+
+#: glade2/meldapp.glade.h:103
+msgid "utf8 iso8859"
+msgstr "utf8 iso8859"
+
+#~ msgid "Modified File"
+#~ msgstr "Gewijzigd bestand"
+
+#~ msgid "Other Changes"
+#~ msgstr "Andere wijzigingen"
+
+#~ msgid "Common Ancestor"
+#~ msgstr "Gelijke bron"
+
+#~ msgid "Local Changes"
+#~ msgstr "Lokale wijzigingen"
+
+#~ msgid "Modified Directory"
+#~ msgstr "Gewijzigde map"
+
+#~ msgid "window1"
+#~ msgstr "venster1"
