@@ -14,8 +14,6 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# todo use .cvsignore
-
 from __future__ import generators
 
 import tempfile
@@ -45,11 +43,10 @@ class Entry:
     def __repr__(self):
         return "%s %s\n" % (self.name, (self.path, self.state))
     def get_status(self):
-        return ["Non CVS", "", "Newly added", "Modified", "Removed", "Missing"][self.state]
+        return ["Non CVS", "", "Error", "", "Newly added", "Modified", "Removed", "Missing"][self.state]
 
 class Dir(Entry):
     def __init__(self, path, name, state):
-        #if path[-1] != "/": path += "/"
         self.path = path
         self.parent, self.name = os.path.split(path[:-1])
         self.state = state
@@ -109,7 +106,12 @@ def _lookup_cvs_files(files, dirs):
             retdirs.append( Dir(path,name,state) )
         else:
             if date=="dummy timestamp":
-                state = tree.STATE_NEW
+                if rev[0] == "0":
+                    state = tree.STATE_NEW
+                elif rev[0] == "-":
+                    state = tree.STATE_REMOVED
+                else:
+                    print "Revision '%s' not understood" % rev
             else:
                 plus = date.find("+")
                 if plus >= 0:
@@ -222,6 +224,8 @@ class CvsTreeStore(tree.DiffTreeStore):
         types[tree.COL_ICON] = type(tree.pixbuf_file)
         gtk.TreeStore.__init__(self, *types)
         self.ntree = 1
+        self._setup_default_styles()
+        self.textstyle[tree.STATE_MISSING] = '<span foreground="#000088" strikethrough="true" weight="bold">%s</span>'
 
 ################################################################################
 #
