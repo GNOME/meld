@@ -37,9 +37,10 @@ import melddoc
 #
 ################################################################################
 class Entry:
-    states = _("Ignored:Non CVS::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
+    states = _("Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
+    assert len(states)==tree.STATE_MAX
     def __str__(self):
-        return "%s %s\n" % (self.name, (self.path, self.state))
+        return "<%s:%s %s>\n" % (self.__class__, self.name, (self.path, self.state))
     def __repr__(self):
         return "%s %s\n" % (self.name, (self.path, self.state))
     def get_status(self):
@@ -154,8 +155,8 @@ def _lookup_cvs_files(dirs, files):
     cvsfiles = map(lambda x: x[1], matches)
     # ignored
     try:
-        ignored = open( os.path.join(directory, "/home/stephen/.cvsignore")).read().split()
-    except IOError:
+        ignored = open( os.path.join(directory, "%s/.cvsignore" % os.environ["HOME"] )).read().split()
+    except (IOError,KeyError):
         ignored = []
     try:
         ignored += open( os.path.join(directory, ".cvsignore")).read().split()
@@ -305,6 +306,10 @@ class CvsMenu(gnomeglade.Component):
         self.widget.popup( None, None, None, 3, event.time )
     def on_diff_activate(self, menuitem):
         self.parent.on_button_diff_clicked( menuitem )
+    def on_view_activate(self, menuitem):
+        files = self.parent._get_selected_files()
+        for f in files:
+            self.parent.emit("create-diff", (f,))
     def on_update_activate(self, menuitem):
         self.parent.on_button_update_clicked( menuitem )
     def on_commit_activate(self, menuitem):
@@ -319,6 +324,14 @@ class CvsMenu(gnomeglade.Component):
         self.parent.on_button_delete_clicked( menuitem )
 
 ################################################################################
+# filters
+################################################################################
+entry_modified = lambda x: (x.state >= tree.STATE_NEW) or (x.isdir and (x.state > tree.STATE_NONE))
+entry_normal   = lambda x: (x.state == tree.STATE_NORMAL) 
+entry_noncvs   = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
+entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
+
+################################################################################
 #
 # CvsView
 #
@@ -329,12 +342,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
     }
 
-    MODIFIED_FILTER_MASK, UNKNOWN_FILTER_MASK = 1,2
-
-    filters = [lambda x: (x.state > tree.STATE_NONE),
-               lambda x: (x.state > tree.STATE_NORMAL) or (x.isdir and (x.state > tree.STATE_NONE)),
-               lambda x: (x.state > tree.STATE_IGNORED), 
-               lambda x: (x.state != tree.STATE_NORMAL) or (x.isdir and (x.state > tree.STATE_NONE)) ]
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
@@ -369,7 +376,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         addCol(_("Options"), COL_OPTIONS)
 
         self.location = None
-        self.treeview_column_location.set_visible( self.button_recurse.get_active() )
+        self.treeview_column_location.set_visible( self.button_flatten.get_active() )
         size = self.fileentry.size_request()[1]
         self.button_jump.set_size_request(size, size)
         self.button_jump.hide()
@@ -395,13 +402,19 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         rootname = self.model.value_path( self.model.get_iter(rootpath), 0 )
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
         todo = [ (rootpath, rootname) ]
-        filtermask = 0
+        filters = []
         if self.button_modified.get_active():
-            filtermask |= self.MODIFIED_FILTER_MASK
+            filters.append( entry_modified )
+        if self.button_normal.get_active():
+            filters.append( entry_normal )
         if self.button_noncvs.get_active():
-            filtermask |= self.UNKNOWN_FILTER_MASK
-        showable = self.filters[filtermask]
-        recursive = self.button_recurse.get_active()
+            filters.append( entry_noncvs )
+        if self.button_ignored.get_active():
+            filters.append( entry_ignored )
+        def showable(entry):
+            for f in filters:
+                if f(entry): return 1
+        recursive = self.button_flatten.get_active()
         while len(todo):
             todo.sort() # depth first
             path, name = todo.pop(0)
@@ -427,7 +440,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                     todo.append( (self.model.get_path(child), None) )
             if not recursive: # expand parents
                 if len(entries) == 0:
-                    self.model.add_empty(iter, _("no cvs files"))
+                    self.model.add_empty(iter, _("(Empty)"))
                 if differences or len(path)==1:
                     _expand_to_root( self.treeview, path )
             else: # just the root
@@ -483,15 +496,11 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             CvsMenu(self, event)
         return 0
 
-
-    def on_button_recurse_toggled(self, button):
-        self.treeview_column_location.set_visible( self.button_recurse.get_active() )
+    def on_button_flatten_toggled(self, button):
+        self.treeview_column_location.set_visible( self.button_flatten.get_active() )
         self.refresh()
-    def on_button_modified_toggled(self, button):
+    def on_button_filter_toggled(self, button):
         self.refresh()
-    def on_button_noncvs_toggled(self, button):
-        self.refresh()
-
 
     def _get_selected_files(self):
         ret = []
@@ -605,7 +614,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
     def refresh_partial(self, where):
-        if not self.button_recurse.get_active():
+        if not self.button_flatten.get_active():
             iter = self.find_iter_by_name( where )
             assert iter != None
             newiter = self.model.insert_after( None, iter) 
