@@ -37,8 +37,6 @@ import task
 import stock
 import sourceview
 
-# optional
-
 version = "0.9.4.1"
 
 # magic developer switch, changes some behaviour
@@ -60,10 +58,10 @@ class NewDocDialog(gnomeglade.Component):
         self.map_widgets_into_lists( ("fileentry", "direntry", "cvsentry", "svnentry", "three_way_compare", "tablabel") )
         self.connect_signal_handlers()
         self.entrylists = self.fileentry, self.direntry, self.cvsentry, self.svnentry
-        self.widget.set_transient_for(parentapp.widget)
+        self.toplevel.set_transient_for(parentapp.toplevel)
         cur_page = type // 2
         self.notebook.set_current_page( cur_page )
-        self.widget.show_all()
+        self.toplevel.show_all()
 
     def _on_entry__activate(self, entry):
         for el in self.entrylists:
@@ -98,7 +96,7 @@ class NewDocDialog(gnomeglade.Component):
                        self.parentapp.append_cvsview,
                        self.parentapp.append_svnview )
             methods[page](paths)
-        self.widget.destroy()
+        self.toplevel.destroy()
 
 ################################################################################
 #
@@ -214,7 +212,7 @@ class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parentapp):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "preferencesdialog")
-        self.widget.set_transient_for(parentapp.widget)
+        self.toplevel.set_transient_for(parentapp.toplevel)
         self.notebook.set_show_tabs(0)
         # tab selector
         self.model = gtk.ListStore(type(""))
@@ -252,11 +250,11 @@ class PreferencesDialog(gnomeglade.Component):
         # file filters
         cols = [ ("Name", type("")), ("Active", type(0)), ("Pattern", type("")) ]
         self.filefilter = ListWidget( cols, self.prefs, "filters")
-        self.file_filters_box.pack_start(self.filefilter.widget)
+        self.file_filters_box.pack_start(self.filefilter.toplevel)
         # text filters
         cols = [ ("Name", type("")), ("Active", type(0)), ("Regex", type("")) ]
         self.textfilter = ListWidget( cols, self.prefs, "regexes")
-        self.text_filters_box.pack_start(self.textfilter.widget)
+        self.text_filters_box.pack_start(self.textfilter.toplevel)
         self.checkbutton_ignore_blank_lines.set_active(self.prefs.ignore_blank_lines)
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
@@ -358,7 +356,7 @@ class PreferencesDialog(gnomeglade.Component):
         if arg==gtk.RESPONSE_CLOSE:
             self.prefs.text_codecs = self.entry_text_codecs.get_property("text")
             self.prefs.edit_command_custom = self.custom_edit_command_entry.get_property("text")
-        self.widget.destroy()
+        self.toplevel.destroy()
 
 ################################################################################
 #
@@ -531,47 +529,44 @@ class MeldApp(gnomeglade.GtkApp):
     <ui>
       <menubar name="MenuBar">
         <menu action="file_menu">
-          <menuitem action="file_new"/>
-          <placeholder name="file_extras"/>
+          <menuitem action="new"/>
           <separator/>
-          <menuitem action="file_close"/>
-          <menuitem action="file_quit"/>
+          <placeholder name="file_extras"/>
+          <menuitem action="quit"/>
         </menu>
         <placeholder name="menu_extras"/>
         <menu action="settings_menu">
-          <menuitem action="settings_preferences"/>
+          <menuitem action="preferences"/>
         </menu>
         <menu action="help_menu">
           <menuitem action="help_contents"/>
-          <menuitem action="help_reportbug"/>
-          <menuitem action="help_about"/>
+          <menuitem action="reportbug"/>
+          <menuitem action="about"/>
         </menu>
       </menubar>
       <toolbar name="ToolBar">
-          <toolitem action="file_new"/>
+          <toolitem action="new"/>
       </toolbar>
     </ui>
     """
 
     UI_ACTIONS = (
         ('file_menu', None, _('_File')),
-            ('file_new', gtk.STOCK_NEW,
-                _('_New'), '<Control>n', _('Open a new tab')),
-            ('file_close', gtk.STOCK_CLOSE,
-                _('_Close'), '<Control>w', _('Close tab')),
-            ('file_quit', gtk.STOCK_QUIT,
+            ('new', gtk.STOCK_NEW,
+                _('_New...'), '<Control>n', _('Open a new tab')),
+            ('quit', gtk.STOCK_QUIT,
                 _('_Quit'), '<Control>q', _('Quit the application')),
 
         ('settings_menu', None, _('_Settings')),
-            ('settings_preferences', gtk.STOCK_PREFERENCES,
+            ('preferences', gtk.STOCK_PREFERENCES,
                 _('_Preferences'), None, _('Configure preferences')),
 
         ('help_menu', None, _('_Help')),
             ('help_contents', gtk.STOCK_HELP,
                 _('_Contents'), "F1", _('Users manual')),
-            ('help_reportbug', stock.STOCK_REPORTBUG,
+            ('reportbug', stock.STOCK_REPORTBUG,
                 _('_Report Bug'), None, _('Report a bug')),
-            ('help_about', stock.STOCK_ABOUT,
+            ('about', stock.STOCK_ABOUT,
                 _('_About'), None, _('About the application')),
     )
 
@@ -584,12 +579,11 @@ class MeldApp(gnomeglade.GtkApp):
         gnomeglade.GtkApp.__init__(self, gladefile, "meldapp")
 
         self.uimanager = gtk.UIManager()
-        self.widget.add_accel_group( self.uimanager.get_accel_group() )
+        self.toplevel.add_accel_group( self.uimanager.get_accel_group() )
         self.actiongroup = gtk.ActionGroup("AppActions")
         self.add_actions( self.actiongroup, self.UI_ACTIONS )
         self.uimanager.insert_action_group(self.actiongroup, 0)
         self.uimanager.add_ui_from_string(self.UI_DEFINITION)
-        self.action_file_close.set_property("sensitive",0)
 
         self.menubar = self.uimanager.get_widget('/MenuBar')
         self.toolbar = self.uimanager.get_widget('/ToolBar')
@@ -607,9 +601,12 @@ class MeldApp(gnomeglade.GtkApp):
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
-        self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
-        self.widget.show()
+        self.toplevel.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
+        self.toplevel.show()
 
+    #
+    # Scheduler
+    #
     def on_idle(self):
         ret = self.scheduler.iteration()
         if ret:
@@ -640,81 +637,74 @@ class MeldApp(gnomeglade.GtkApp):
     #
     # General events and callbacks
     #
-    def on__delete_event(self, *extra):
-        return self.action__file_quit_activate()
+    def on_toplevel__delete_event(self, *extra):
+        return self.action_quit__activate()
 
-    def on__size_allocate(self, window, rect):
+    def on_toplevel__size_allocate(self, window, rect):
         self.prefs.window_size_x = rect.width
         self.prefs.window_size_y = rect.height
 
     def on_notebook__switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject")
-        nbl = self.notebook.get_tab_label( newdoc.widget )
-        self.widget.set_title( nbl.label.get_text() + " - Meld")
+        nbl = self.notebook.get_tab_label( newdoc.toplevel )
+        self.toplevel.set_title( nbl.label.get_text() + " - Meld")
         self.statusbar.set_doc_status("")
-        newdoc.on_switch_event()
+        newdoc.on_container_switch_event()
         self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook__remove(self, *args):#k, page, which):
-        print args
         return
         newdoc = notebook.get_nth_page(which).get_data("pyobject")
-        nbl = self.notebook.get_tab_label( newdoc.widget )
-        self.widget.set_title( nbl.label.get_text() + " - Meld")
+        nbl = self.notebook.get_tab_label( newdoc.toplevel )
+        self.toplevel.set_title( nbl.label.get_text() + " - Meld")
         self.statusbar.set_doc_status("")
-        newdoc.on_switch_event()
+        newdoc.on_container_switch_event()
         self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook_label_changed(self, component, text):
-        nbl = self.notebook.get_tab_label( component.widget )
+        nbl = self.notebook.get_tab_label( component.toplevel )
         nbl.label.set_text(text)
-        self.widget.set_title(text + " - Meld")
-        self.notebook.child_set_property(component.widget, "menu-label", text)
+        self.toplevel.set_title(text + " - Meld")
+        self.notebook.child_set_property(component.toplevel, "menu-label", text)
 
     #
     # Toolbar and menu items (file)
     #
-    def action__file_new_activate(self, *extra):
+    def action_new__activate(self, *extra):
         NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
 
-    def action__file_save_activate(self, *extra):
+    def action_save__activate(self, *extra):
         self.current_doc().save()
 
-    def action__file_close_activate(self, *extra):
-        i = self.notebook.get_current_page()
-        if i >= 0:
-            page = self.notebook.get_nth_page(i).get_data("pyobject")
-            self.try_remove_page(page)
-
-    def action__file_quit_activate(self, *extra):
+    def action_quit__activate(self, *extra):
         if not developer:
             for c in self.notebook.get_children():
-                response = c.get_data("pyobject").on_delete_event(appquit=1)
+                response = c.get_data("pyobject").on_container_delete_event(app_quit=1)
                 if response == gtk.RESPONSE_CANCEL:
                     return gtk.RESPONSE_CANCEL
                 elif response == gtk.RESPONSE_CLOSE:
                     break
         for c in self.notebook.get_children():
-            c.get_data("pyobject").on_quit_event()
+            c.get_data("pyobject").on_container_quit_event()
         self.quit()
 
     #
     # Toolbar and menu items (settings)
     #
-    def action__settings_preferences_activate(self, *extra):
+    def action_preferences__activate(self, *extra):
         PreferencesDialog(self)
 
     #
     # Toolbar and menu items (help)
     #
-    def action__help_contents_activate(self, *extra):
+    def action_help_contents__activate(self, *extra):
         print "file:///"+os.path.abspath(paths.doc_dir("meld.xml"))
         gnomeglade.url_show("file:///"+os.path.abspath(paths.doc_dir("meld.xml") ), self)
 
-    def action__help_reportbug_activate(self, *extra):
+    def action_reportbug__activate(self, *extra):
         gnomeglade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld", self)
 
-    def action__help_about_activate(self, *extra):
+    def action_about__activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
         about.set_property("name", "Meld")
         about.set_property("version", version)
@@ -726,29 +716,31 @@ class MeldApp(gnomeglade.GtkApp):
     def try_remove_page(self, page):
         """See if a page will allow itself to be removed
         """
-        if page.on_delete_event() == gtk.RESPONSE_OK:
-            self.scheduler.remove_scheduler( page.scheduler )
-            i = self.notebook.page_num( page.widget )
-            assert(i>=0)
-            self.notebook.remove_page(i)
-            self.uimanager.remove_action_group(page.actiongroup)
-            self.uimanager.remove_ui(page.ui_merge_id)
+        if page.on_container_delete_event() == gtk.RESPONSE_OK:
+            self.remove_page(page)
+
+    def remove_page(self, page):
+        self.scheduler.remove_scheduler( page.scheduler )
+        self.notebook.remove_page( self.notebook.page_num(page.toplevel) )
+        self.uimanager.remove_action_group( page.actiongroup )
+        self.uimanager.remove_ui( page.ui_merge_id )
 
     def on_file_changed(self, srcpage, filename):
         for c in self.notebook.get_children():
             page = c.get_data("pyobject")
             if page != srcpage:
-                page.on_file_changed(filename)
+                page.on_container_file_changed(filename)
 
     def _append_page(self, page, icon):
         nbl = NotebookLabel(icon, onclose=lambda b: self.try_remove_page(page))
-        self.notebook.append_page( page.widget, nbl)
-        self.notebook.set_current_page( self.notebook.page_num(page.widget) )
+        self.notebook.append_page( page.toplevel, nbl)
+        self.notebook.set_current_page( self.notebook.page_num(page.toplevel) )
         self.scheduler.add_scheduler(page.scheduler)
         page.connect("label-changed", self.on_notebook_label_changed)
         page.connect("file-changed", self.on_file_changed)
         page.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         page.connect("status-changed", lambda junk,arg: self.statusbar.set_doc_status(arg) )
+        page.connect("closed", lambda page: self.remove_page(page) )
         self.uimanager.insert_action_group(page.actiongroup, 1)
         page.ui_merge_id = self.uimanager.add_ui_from_string(page.UI_DEFINITION)
 
@@ -763,6 +755,8 @@ class MeldApp(gnomeglade.GtkApp):
         doc = filediff.FileDiff(self.prefs, len(files))
         self._append_page(doc, "tree-file-normal.png")
         doc.set_files(files)
+        #XXX
+        #doc.scheduler.add_task( lambda *args: doc.action_print__activate(0) )
 
     def append_diff(self, paths):
         aredirs = [ os.path.isdir(p) for p in paths ]
