@@ -81,6 +81,18 @@
 	  </child>
 
 	  <child>
+	    <widget class="toggle" id="button_ignored">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">Ignored</property>
+	      <property name="use_underline">True</property>
+	      <property name="stock_pixmap">gtk-execute</property>
+	      <property name="active">False</property>
+	      <property name="inconsistent">False</property>
+	      <signal name="toggled" handler="on_button_ignored_toggled" last_modification_time="Wed, 01 Oct 2003 20:20:29 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="button" id="button_commit">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Commit</property>
