@@ -292,7 +292,7 @@ class PreferencesDialog(gnomeglade.Component):
     def on_cvs_compression_toggled(self, toggle):
         self.prefs.cvs_compression = toggle.get_active()
     def on_cvs_compression_value_changed(self, spin):
-        self.prefs.cvs_compression_value = spin.get_value()
+        self.prefs.cvs_compression_value = int(spin.get_value())
     def on_cvs_ignore_cvsrc_toggled(self, toggle):
         self.prefs.cvs_ignore_cvsrc = toggle.get_active()
     def on_cvs_binary_activate(self, fileentry):
