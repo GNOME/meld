@@ -288,7 +288,7 @@ class CvsView(gnomeglade.Component):
         else:
             if entry.cvs == CVS_MODIFIED:
                 #print "DIFF", entry.path
-                patch = self._command(CVS_COMMAND + ["diff", "-u", entry.path] )
+                patch = self._command(CVS_COMMAND + ["diff", "-u", entry.path], 0)
                 #print "GOT", patch
                 if patch:
                     self.show_patch(patch)
