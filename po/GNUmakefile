@@ -25,7 +25,7 @@ $(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo meld.pot
 	mkdir -m 755 -p $(dir $@) && install -m 644 $< $@
 
 %/LC_MESSAGES/meld.mo : %.po
-	./update-lang $*
+	./update-lang.sh $*
 
 %/LC_MESSAGES : 
 	mkdir -p $@
