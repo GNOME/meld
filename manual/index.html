@@ -1,86 +1,98 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<title>Meld User Manual</title>
-</head>
-<body>
-<h1>Meld User Manual</h1>
-
-<h2>Links</h2>
-
-<li><a href="http://sourceforge.net/projects/meld">Project Home</a>
-<li><a href="http://sourceforge.net/project/showfiles.php?group_id=53725">Latest Version</a>
-<li><a href="http://sourceforge.net/mail/?group_id=53725">Mail</a>
-
-<h2>Command line usage</h2>
-
-<dl>
-<dt><code>meld</code><dd>starts with no active files<br>
-<dt><code>meld file0 file1</code> <dd>starts two way diff<br>
-<dt><code>meld file0 file1 file2</code> <dd>starts three way diff<br>
-<dt><code>meld directory</code> <dd>starts the CVS browser<br>
-</dl>
-
-<h2>Getting started (Diff2 and Diff3)</h2>
-
-<p>
-Open up two files, original and modified.<br>
-Location of the changes is summarised in the left and right margins. More detailed
-differences are shown in the text and central pane.
-</p>
-
-<p>
-You can scroll through the changes
-through the scrollbar or text, but the quickest way is by using the mouse wheel over
-the central bar to skip between changed sections. 
-</p>
-
-<p>
-You can apply changes by clicking the merge buttons ("-&gt;" and "&lt;-"). Holding
-control allows diffs to be deleted. Shift allows the current change to be inserted
-before or after the other change.
-For more detailed changes simply edit the text inplace and the diffs automatically
-update.
-</p>
-
-<p>
-Save a file by clicking in it and pressing Control+s or by selecting
-file-&gt;save&gt;save file. The save button on the toolbar saves the file
-which has focus.
-</p>
-
-<p>
-Control+W to close current tab and control+Q to quit the app.
-</p>
-
-<p>
-Messages such as being unable to load or save files appear in the status
-bar in the bottom of the window.
-</p>
-
-<h2>CVS browsing</h2>
-
-<p><b>CVS browsing is under development - if you want to try it, I recommend running
-meld from a console so you can see diagnostic messages.</b></p>
-
-<p>
-Click the cvs button to open up a new CVS browser tab. By default only files under
-CVS control are shown. To see all files click the 'Unknown' filter button. You can also
-show only locally modified files by clicking the 'Modified' filter button. If you have
-several changes scattered in several directories, the 'Recurse' tooggle is flattens
-the directory listing.
-</p>
-
-<p>
-Clicking on an unmodified file opens it in the file viewer. Clicking a modified file
-opens up a two way diff to examine your changes.
-</p>
-
-<p>
-You can examine many changes at once by clicking on a one or more directories and/or
-files and clicking the diff button.
-</p>
-
-
-</body>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <title>Meld User Manual</title>
+        <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <h1>Meld User Manual</h1>
+        
+        <h2>Links</h2>
+        
+        <ul>
+            <li>
+	    <a href="http://sourceforge.net/projects/meld">Project Home</a>
+	    </li>
+            <li>
+	    <a href="http://sourceforge.net/project/showfiles.php?group_id=53725">Latest Version</a>
+	    </li>
+            <li>
+	    <a href="http://sourceforge.net/mail/?group_id=53725">Mail</a>
+	    </li>
+        </ul>
+        
+        <h2>Command line usage</h2>
+        
+        <dl>
+            <dt><code>meld</code></dt><dd>starts with no active files</dd>
+            <dt><code>meld file0 file1</code></dt><dd>starts two way diff</dd>
+            <dt><code>meld file0 file1 file2</code></dt><dd>starts three way diff</dd>
+            <dt><code>meld directory</code></dt><dd>starts the CVS browser</dd>
+        </dl>
+        
+        <h2>Getting started (Diff2 and Diff3)</h2>
+        
+        <p>
+            Open up two files, original and modified.<br/>
+            Location of the changes is summarised in the left and right margins. More detailed
+            differences are shown in the text and central pane.
+        </p>
+        
+        <p>
+            You can scroll through the changes
+            through the scrollbar or text, but the quickest way is by using the mouse wheel over
+            the central bar to skip between changed sections.
+        </p>
+        
+        <p>
+            You can apply changes by clicking the merge buttons ("-&gt;" and "&lt;-"). Holding
+            control allows blocks to be deleted. Holding Shift allows the current change to be inserted
+            before or after the other change.
+            For more detailed changes simply edit the text inplace and the diffs automatically
+            update.
+        </p>
+        
+        <p>
+            Save a file by clicking in it and pressing Control+s or by selecting
+            file-&gt;save&gt;save file. The save button on the toolbar saves the file
+            which has focus.
+        </p>
+        
+        <p>
+            Control+W to close current tab and control+Q to quit the app.
+        </p>
+        
+        <p>
+            Messages such as being unable to load or save files appear in the status
+            bar in the bottom of the window.
+        </p>
+        
+        <h2>CVS browsing</h2>
+        
+        <p>
+            <b>CVS browsing is under development - if you want to try it, I recommend running
+            meld from a console so you can see diagnostic messages.</b>
+        </p>
+        
+        <p>
+            Click the cvs button to open up a new CVS browser tab. By default only files under
+            CVS control are shown. To see all files click the 'Unknown' filter button. You can also
+            show only locally modified files by clicking the 'Modified' filter button. If you have
+            several changes scattered in several directories, the 'Recurse' tooggle is flattens
+            the directory listing.
+        </p>
+        
+        <p>
+            Clicking on an unmodified file opens it in the file viewer. Clicking a modified file
+            opens up a two way diff to examine your changes.
+        </p>
+        
+        <p>
+            You can examine many changes at once by clicking on a one or more directories and/or
+            files and clicking the diff button.
+        </p>
+    </body>
 </html>
