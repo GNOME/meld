@@ -125,6 +125,7 @@ class GtkApp(Base):
     def quit(*args):
         """Signal the gtk main loop to quit"""
         gtk.main_quit()
+
 ################################################################################
 #
 # load_pixbuf
