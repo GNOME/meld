@@ -162,7 +162,7 @@ def find(start):
     return dirs+files
 
 
-def commonprefix(dirs):
+def _commonprefix(dirs):
     "Given a list of pathnames, returns the longest common leading component"
     if not dirs: return ''
     n = copy.copy(dirs)
@@ -311,9 +311,9 @@ class CvsView(gnomeglade.Component):
                 self.emit("create-diff", [entry.path])
 
     def run_cvs_diff(self, path):
-        patch = self._command(CVS_COMMAND + ["diff", "-u"], [path], 0)
+        prefix, patch = self._command(CVS_COMMAND + ["diff", "-u"], [path], 0)
         if patch:
-            self.show_patch(patch)
+            self.show_patch(prefix, patch)
         else:
             self.statusbar.add_status("%s has no differences" % path)
             self.emit("create-diff", [path])
@@ -387,18 +387,7 @@ class CvsView(gnomeglade.Component):
         return 0
 
     def set_location(self, location):
-        #location = os.path.abspath(location)
-        #print "1", location
-        if len(location) and location[-1]!="/":
-            location += "/"
-        #print "2", location
-        abscurdir = os.path.abspath(os.curdir)
-        if location.startswith(abscurdir):
-            location = location[ len(abscurdir)+1 : ]
-        #print "3", location
-        if len(location)==0:
-            location = "./"
-        #print "4", location
+        location = os.path.abspath(location)
         self.treemodel.clear()
         if location:
             self.location = location
@@ -444,14 +433,21 @@ class CvsView(gnomeglade.Component):
             self.flushevents()
         msg = " ".join(command)
         self.statusbar.add_status(msg, timeout=0)
-        prefix = commonprefix(files)
-        r = misc.read_pipe(command, progress )
-        #r = "" print "***", prefix
+        if len(files) != 1 :
+            prefix = _commonprefix(files)
+        else:
+            prefix = os.path.dirname(files[0])
+        kill = len(prefix) and (len(prefix)+1) or 0
+        files = map(lambda x: x[kill:], files)
+        savepwd = os.getcwd()
+        if prefix: os.chdir( prefix )
+        r = misc.read_pipe(command + files, progress )
+        if prefix: os.chdir( savepwd )
         self.statusbar.remove_status(msg)
         self.emit("working-hard", 0)
         if refresh:
             self.refresh()
-        return r
+        return prefix, r
         
     def _command_on_selected(self, command, refresh=1):
         files = self._get_selected_files()
@@ -477,10 +473,10 @@ class CvsView(gnomeglade.Component):
             except IOError: pass
         self.refresh()
     def on_button_diff_clicked(self, object):
-        patch = self._command_on_selected(CVS_COMMAND + ["diff", "-u"], refresh=0)
-        self.show_patch(patch)
+        prefix, patch = self._command_on_selected(CVS_COMMAND + ["diff", "-u"], refresh=0)
+        self.show_patch(prefix, patch)
 
-    def show_patch(self, patch):
+    def show_patch(self, prefix, patch):
         if not patch: return
 
         tmpdir = tempfile.mktemp("-meld")
@@ -496,11 +492,12 @@ class CvsView(gnomeglade.Component):
 
             if not os.path.exists(destdir):
                 os.makedirs(destdir)
+            pathtofile = os.path.join(prefix, file)
             try:
-                shutil.copyfile(file, destfile)
-            except IOError: # missing, create empty file
+                shutil.copyfile( pathtofile, destfile)
+            except IOError: # it is missing, create empty file
                 open(destfile,"w").close()
-            diffs.append( (destfile, file) )
+            diffs.append( (destfile, pathtofile) )
 
         misc.write_pipe(["patch","--strip=0","--reverse","--directory=%s" % tmpdir], patch)
         for d in diffs:
