@@ -476,7 +476,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         """Run 'command' on 'files'. Return a tuple of the directory the
            command was executed in and the output of the command.
         """
-        msg = " ".join(command)
+        print "***", command
+        msg = misc.shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg)
         workdir = _commonprefix(files)
         kill = len(workdir) and (len(workdir)+1) or 0
@@ -488,14 +489,14 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 b.insert(b.get_end_iter(), s)
                 self.consoleview.scroll_to_iter( b.get_end_iter(), 0 )
         errorstream = Errorstream()
-        errorstream.write( " ".join(command+files) + "\n")
+        errorstream.write( misc.shelljoin(command+files) + "\n")
         readfunc = misc.read_pipe_iter(command + files, errorstream, workdir=workdir).next
         try:
             while r == None:
                 r = readfunc()
                 yield 1
         except IOError, e:
-            misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % (" ".join(command), e),
+            misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % ( misc.shelljoin(command), e),
                 parent=self, messagetype=gtk.MESSAGE_ERROR)
         if refresh:
             self.refresh_partial(workdir)
