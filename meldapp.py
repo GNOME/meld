@@ -254,6 +254,7 @@ class PreferencesDialog(gnomeglade.Component):
         cols = [ ("Name", type("")), ("Active", type(0)), ("Regex", type("")) ]
         self.textfilter = ListWidget( cols, self.prefs, "regexes")
         self.text_filters_box.pack_start(self.textfilter.widget)
+        self.checkbutton_ignore_blank_lines = self.prefs.ignore_blank_lines
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
         self._map_widgets_into_lists( ["save_encoding"] )
@@ -315,6 +316,8 @@ class PreferencesDialog(gnomeglade.Component):
     #
     # filters
     #
+    def on_checkbutton_ignore_blank_lines_toggled(self, check):
+        self.prefs.ignore_blank_lines = check.get_active()
 
     #
     # encoding
@@ -459,9 +462,12 @@ class MeldPreferences(prefs.Preferences):
                                               "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
                                               "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
         "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$[^:]+:[^\$]+\$\n" + \
-                                              "C comment\t0\t/\*[^*]*\*+([^/*][^*]*\*+)*/\n" + \
                                               "C++ comment\t0\t//.*\n" + \
-                                              "Script comment\t0\t#.*")
+                                              "C comment\t0\t/\*[^*]*\*+([^/*][^*]*\*+)*/\n" + \
+                                              "All whitespace\t0\t[ \\t\\r\\f\\v]*\n" + \
+                                              "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n" + \
+                                              "Script comment\t0\t#.*"),
+        "ignore_blank_lines" : prefs.Value(prefs.BOOL, 1)
     }
 
     def __init__(self):
@@ -924,5 +930,5 @@ def main():
     else:
         app.usage( _("Wrong number of arguments (Got %i)") % len(arg))
 
-    app.mainloop()
+    app.main()
 
