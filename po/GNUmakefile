@@ -27,12 +27,3 @@ $(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo
 %/LC_MESSAGES/meld.mo : %.po
 	mkdir -m 755 -p $(dir $@) && msgfmt -o $@ $<
 
-%.po : meld.pot.stamp
-	intltool-update -g meld $(basename $@)
-
-%/LC_MESSAGES : 
-	mkdir -p $@
-
-meld.pot : $(addprefix ../,$(shell cat POTFILES.in))
-	intltool-update -g meld -p
-	touch meld.pot.stamp
