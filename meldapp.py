@@ -21,7 +21,7 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.6.4b"
+version = "0.6.4"
 developer = 0
 
 ################################################################################
