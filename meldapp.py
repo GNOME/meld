@@ -35,17 +35,9 @@ import svnview
 import dirdiff
 import task
 import stock
+import sourceview
 
 # optional
-sourceview_available = 0
-
-for sourceview in "gtksourceview sourceview".split():
-    try:
-        __import__(sourceview)
-        sourceview_available = 1
-        break
-    except ImportError:
-        pass
 
 version = "0.9.4.1"
 
@@ -308,12 +300,12 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs.supply_newline = check.get_active()
     def on_checkbutton_show_line_numbers__toggled(self, check):
         self.prefs.show_line_numbers = check.get_active()
-        if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Line numbers are only available if you have pysourceview installed.") )
+        if check.get_active() and not sourceview.available:
+            misc.run_dialog(_("Line numbers are only available if you have pygtksourceview installed.") )
     def on_checkbutton_use_syntax_highlighting__toggled(self, check):
         self.prefs.use_syntax_highlighting = check.get_active()
-        if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Syntax highlighting is only available if you have pysourceview installed.") )
+        if check.get_active() and not sourceview.available:
+            misc.run_dialog(_("Syntax highlighting is only available if you have pygtksourceview installed.") )
     def on_editor_command__toggled(self, radio):
         if radio.get_active():
             idx = self.editor_command.index(radio)
