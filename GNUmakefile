@@ -1,39 +1,60 @@
 
-PROG := ./meld #--profile
-TESTNUM := 1
+# default install directories
+prefix := /home/stephen/local
+bindir := $(prefix)/bin
+libdir := $(prefix)/share/lib
+docdir := $(prefix)/share/doc
+sharedir := $(prefix)/share
+localedir := $(prefix)/share/locale
+libdir_ := $(libdir)/meld
+docdir_ := $(docdir)/meld
+sharedir_ := $(sharedir)/meld
+
+#
 VERSION := $(shell grep "^version" meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
-PREFIX := /home/stephen/a
+MELD := ./meld #--profile
+TESTNUM := 1
+DEVELOPER := 0
 
-.PHONY:run
-run : check rundiff
-	@echo
-
+ifeq ($(DEVELOPER), 1)
 .PHONY:rundiff
-rundiff:
-	#$(PROG) .
-	$(PROG) foo?
-	#$(PROG) ../old/meld-2003-05-02 . #../old/meld-2002-12-21
-	#$(PROG) test/lao test/tzu test/tao
-	#$(PROG) ntest/file$(TESTNUM)*
-	#$(PROG) ntest/file$(TESTNUM)a ntest/file$(TESTNUM)a
-	#$(PROG) ../old/meld-2003-05-02/ .
-	#$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
-	#$(PROG) test/1 test/2
-	#$(PROG) /zip/meld .
+rundiff: check
+	echo $(prefix)
+	$(MELD) ?.txt
+	#$(MELD) ntest/file$(TESTNUM)*
+endif
+
+.PHONY:all
+all: 
+	$(MAKE) -C po
 
 .PHONY:install
 install:
-	mkdir -p $(PREFIX)/{bin,lib/meld,share/applications,share/meld,share/doc/meld}
-	install -m 755 meld $(PREFIX)/bin
-	install -m 755 manual/index.html $(PREFIX)/share/doc/meld
+	mkdir -p $(bindir) $(libdir_) $(sharedir_)/glade2/pixmaps $(docdir_)
+	python tools/install_paths libdir=$(libdir_) < meld > meld.install
+	install -m 755 meld.install $(bindir)/meld
+	rm meld.install
+	install -m 644 *.py $(libdir_)
+	python tools/install_paths localedir=$(localedir) docdir=$(docdir_) sharedir=$(sharedir_) < paths.py > paths.py.install
+	install -m 644 paths.py.install $(libdir_)/paths.py
+	rm paths.py.install
+	install -m 644 glade2/*.glade $(sharedir_)/glade2
+	install -m 644 glade2/pixmaps/*.{xpm,png} $(sharedir_)/glade2/pixmaps
+	install -m 755 manual/manual.html $(docdir_)/manual.html
+	$(MAKE) -C po install
+
+.PHONY:uninstall
+uninstall:
+	rm -rf $(sharedir_) $(docdir_) $(libdir_) $(bindir)/meld
+	$(MAKE) -C po uninstall
 
 .PHONY: test
 test:
-	$(PROG) ntest/file0{a,b}
-	$(PROG) ntest/file5{a,b,c}
-	$(PROG) ntest/{1,2}
-	$(PROG) ntest/{1,2,3}
+	$(MELD) ntest/file0{a,b}
+	$(MELD) ntest/file5{a,b,c}
+	$(MELD) ntest/{1,2}
+	$(MELD) ntest/{1,2,3}
 
 .PHONY:changelog
 changelog:
@@ -41,7 +62,7 @@ changelog:
 
 .PHONY:check
 check:
-	@check_release
+	@tools/check_release
 
 .PHONY:gettext
 gettext:
@@ -57,7 +78,7 @@ update:
 .PHONY:upload
 upload:
 	cvs tag release-$(subst .,_,$(VERSION))
-	ssh steve9000@meld.sf.net python make_release $(VERSION)
+	ssh steve9000@meld.sf.net python tools/make_release $(VERSION)
 
 .PHONY:announce
 announce:
