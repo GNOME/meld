@@ -78,7 +78,8 @@ update:
 .PHONY:upload
 upload:
 	cvs tag release-$(subst .,_,$(VERSION))
-	ssh steve9000@meld.sf.net python tools/make_release $(VERSION)
+	scp tools/make_release steve9000@meld.sf.net:
+	ssh steve9000@meld.sf.net python make_release $(VERSION)
 
 .PHONY:announce
 announce:
