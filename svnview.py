@@ -397,6 +397,10 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             else: # just the root
                 self.treeview.expand_row( (0,), 0)
 
+    def on_preference_changed(self, key, value):
+        if key == "toolbar_style":
+            self.toolbar.set_style( self.prefs.get_toolbar_style() )
+
     def on_fileentry_activate(self, fileentry):
         path = fileentry.get_full_path(0)
         self.set_location(path)
@@ -470,14 +474,14 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         msg = misc.shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg.replace("\n", u"\u21b2") )
         if len(files) == 1 and os.path.isdir(files[0]):
-            workdir = files[0]
-            files = ["."]
+            workdir = os.path.dirname( files[0] )
+            files = [ os.path.basename( files[0] ) ]
         else:
             workdir = _commonprefix(files)
-        kill = len(workdir) and (len(workdir)+1) or 0
-        files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
+            kill = len(workdir) and (len(workdir)+1) or 0
+            files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
         r = None
-        self.consolestream.write( misc.shelljoin(command+files) + "(in %s)\n" % workdir)
+        self.consolestream.write( misc.shelljoin(command+files) + " (in %s)\n" % workdir)
         readfunc = misc.read_pipe_iter(command + files, self.consolestream, workdir=workdir).next
         try:
             while r == None:
