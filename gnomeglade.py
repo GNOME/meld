@@ -47,10 +47,10 @@ class Base(object):
 
     RE_HANDLER = re.compile(r"on_(.+?)__(.+)")
 
-    def __init__(self, file, root):
+    def __init__(self, file, root, override={}):
         """Load the widgets from the node 'root' in file 'file'.
         """
-        self.xml = gtk.glade.XML(file, root, gettext.textdomain() )
+        self.xml = gtk.glade.XML(file, root, gettext.textdomain(), typedict=override)
         self.widget = getattr(self, root)
         self.widget.set_data("pyobject", self)
 
@@ -137,16 +137,16 @@ class Component(Base):
     """A convenience base class for widgets which use glade.
     """
 
-    def __init__(self, file, root):
-        Base.__init__(self, file, root)
+    def __init__(self, file, root, override={}):
+        Base.__init__(self, file, root, override)
 
 
 class GtkApp(Base):
     """A convenience base class for gtk+ apps created in glade.
     """
 
-    def __init__(self, file, root):
-        Base.__init__(self, file, root)
+    def __init__(self, file, root, override={}):
+        Base.__init__(self, file, root, override)
 
     def main(self):
         """Enter the gtk main loop.
