@@ -22,6 +22,7 @@ import errno
 import gnomeglade
 import gobject
 import gtk
+import gtk.keysyms
 import math
 import misc
 import os
@@ -31,6 +32,7 @@ import tree
 import filecmp
 import re
 import stat
+import time
 
 gdk = gtk.gdk
 
@@ -532,6 +534,46 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             self.recursively_update( path )
                 except OSError, e:
                     misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
+
+    def on_treeview_cursor_changed(self, *args):
+        pane = self._get_focused_pane()
+        paths = self._get_selected_paths(pane)
+        if len(paths) > 0:
+            def rwx(mode):
+                return "".join( [ ((mode& (1<<i)) and "xwr"[i%3] or "-") for i in range(8,-1,-1) ] )
+            def nice(deltat):
+                # singular,plural 
+                times = _("second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:year,years").split(":")
+                d = abs(int(deltat))
+                for div, time in zip((60,60,24,7,4,12,100), times):
+                    if d < div * 5:
+                        return "%s%i %s" % (deltat<0 and "-" or "", d, time.split(",")[d != 1])
+                    d /= div
+            file = self.model.value_path( self.model.get_iter(paths[0]), pane )
+            stat = os.stat(file)
+            self.emit("status-changed", 0, "%s" % rwx(stat.st_mode) )
+            self.emit("status-changed", 1, "%s" % nice(time.time() - stat.st_mtime) )
+
+    def on_treeview_key_press_event(self, view, event):
+        pane = self.treeview.index(view)
+        tree = None
+        if gtk.keysyms.Right == event.keyval:
+            if pane+1 < self.num_panes:
+                tree = self.treeview[pane+1]
+        elif gtk.keysyms.Left == event.keyval:
+            if pane-1 >= 0:
+                tree = self.treeview[pane-1]
+        if tree != None:
+            paths = self._get_selected_paths(pane)
+            view.get_selection().unselect_all()
+            tree.grab_focus()
+            tree.get_selection().unselect_all()
+            if len(paths):
+                tree.set_cursor(paths[0])
+                for p in paths:
+                    tree.get_selection().select_path(p)
+            tree.emit("cursor-changed")
+        return event.keyval in (gtk.keysyms.Left, gtk.keysyms.Right) #handled
 
     def on_treeview_row_activated(self, view, path, column):
         iter = self.model.get_iter(path)
