@@ -6,11 +6,17 @@ pygtkver = (1,99,15)
 def ver2str(ver):
     return ".".join(map(str,ver))
 
+#
+# python version
+#
 import sys
 if sys.version_info[:2] < pyver:
     print "Meld requires python%s or higher to run." % ver2str(pyver)
     sys.exit(1)
 
+#
+# pygtk 2 
+#
 try:
     import pygtk
 except ImportError, e:
@@ -21,11 +27,17 @@ except ImportError, e:
 else:
     pygtk.require("2.0")
 
+#
+# pygtk version
+#
 import gtk
 if gtk.pygtk_version < pygtkver:
     print "Meld works best with pygtk-%s or higher. (found %s)" % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
     print "Due to incompatible API changes some functions may not operate as expected."
 
+#
+# main
+#
 import meldapp
 try:
     minusp = sys.argv.index("--profile")
