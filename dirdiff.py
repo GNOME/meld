@@ -15,6 +15,7 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 from __future__ import generators
+
 import diffutil
 import errno
 import gnomeglade
@@ -93,7 +94,7 @@ class DirDiffMenu(gnomeglade.Component):
         treeview = self.parent.treeview[self.source_pane]
         selected = []
         treeview.get_selection().selected_foreach(lambda store, path, iter: selected.append( (iter, path) ) )
-        return [ misc.struct(name=self.parent.model.path(s[0], self.source_pane), path=s[1]) for s in selected]
+        return [ misc.struct(name=self.parent.model.value_path(s[0], self.source_pane), path=s[1]) for s in selected]
     def on_popup_compare_activate(self, menuitem):
         get_iter = self.parent.model.get_iter
         for s in self.get_selected():
@@ -245,6 +246,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     else:
                         e.sort()
                         e = filter(lambda x: not x.endswith(".pyc"), e) #TODO
+                        e = filter(lambda x: x.find("CVS") == -1,    e) #TODO
                         alldirs  += filter(lambda x: os.path.isdir(  join(root, x) ), e)
                         allfiles += filter(lambda x: os.path.isfile( join(root, x) ), e)
             alldirs = _uniq(alldirs)
@@ -274,14 +276,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield "[%s] Done" % self.label_text
 
     def launch_comparison(self, iter):
-        paths = filter(os.path.exists, self.model.paths(iter))
+        paths = filter(os.path.exists, self.model.value_paths(iter))
         self.emit("create-diff", paths)
 
     def on_treeview_row_activated(self, view, path, column):
         iter = self.model.get_iter(path)
         files = []
         for i in range(self.num_panes):
-            file = self.model.value_path( iter )
+            file = self.model.value_path( iter, i )
             if os.path.exists(file):
                 files.append(file)
             else:
