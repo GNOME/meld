@@ -486,6 +486,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             def write(this, s):
                 b = self.consoleview.get_buffer()
                 b.insert(b.get_end_iter(), s)
+                self.consoleview.scroll_to_iter( b.get_end_iter(), 0 )
         errorstream = Errorstream()
         errorstream.write( " ".join(command+files) + "\n")
         readfunc = misc.read_pipe_iter(command + files, errorstream, workdir=workdir).next
