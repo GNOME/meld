@@ -3,6 +3,7 @@ import sys
 import glob
 import re
 
+# check for tabs
 for file in ["meld"] + glob.glob("*.py"):
 	txt = open(file).read()
 	firsttab = txt.find('\t')
@@ -11,7 +12,8 @@ for file in ["meld"] + glob.glob("*.py"):
 		print "%s:%i:Tabs detected" % (file, line)
 		sys.exit(1)
 
-def foo(matchobj):
+# fix glade files - glade strips directory names from pixmaps :-(
+def add_pixmap_dir(matchobj):
 	ret = matchobj.group(1)
 	ico = matchobj.group(2)
 	if ico.find("/") == -1:
@@ -24,7 +26,7 @@ def foo(matchobj):
 icon_re = re.compile(r'(<property name="(?:icon|logo)">([^<]+)</property>)')
 for file in glob.glob("glade2/*.glade"):
 	txt = open(file).read()
-	newtxt = icon_re.sub(foo, txt)
+	newtxt = icon_re.sub(add_pixmap_dir, txt)
 	if txt != newtxt:
 		open(file,"w").write(newtxt)
 	
