@@ -32,7 +32,7 @@ all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 
 .PHONY:clean
 clean: 
-	-rm -f *.pyc *.install meld.desktop
+	-rm -f *.pyc *.install meld.desktop *.bak glade2/*.bak
 	$(MAKE) -C po clean
 
 .PHONY:install
