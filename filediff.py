@@ -56,11 +56,11 @@ class FileDiffMenu(gnomeglade.Component):
     def on_save_as_activate(self, menuitem):
         self.parent.save_file( self.pane, 1)
     def on_cut_activate(self, menuitem):
-        print menuitem
+        self.parent.on_cut_activate()
     def on_copy_activate(self, menuitem):
-        print menuitem
+        self.parent.on_copy_activate()
     def on_paste_activate(self, menuitem):
-        print menuitem
+        self.parent.on_paste_activate()
     def on_copy_left_activate(self, menuitem):
         self.parent.copy_selected(-1)
     def on_copy_right_activate(self, menuitem):
@@ -246,6 +246,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 dialog.box.pack_start(b, 1, 1)
                 if not modified[i]:
                     b.set_sensitive(0)
+                else:
+                    b.set_active(1)
             dialog.widget.show_all()
             response = dialog.widget.run()
             try_save = [ b.get_active() for b in buttons]
@@ -302,17 +304,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_copy_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            pass #XXX t.get_buffer().copy_clipboard()
+            t.emit("copy-clipboard") #XXX .get_buffer().copy_clipboard()
 
     def on_cut_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            pass #XXX t.get_buffer().cut_clipboard()
+            t.emit("cut-clipboard") #XXX).cut_clipboard()
 
     def on_paste_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            pass #XXX t.get_buffer().paste_clipboard(None, 1)
+            t.emit("paste-clipboard") #XXX t.get_buffer().paste_clipboard(None, 1)
 
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
@@ -689,19 +691,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             window.draw_rectangle( gctext, 0, x0, s, x1, e-s)
 
     def on_diffmap_button_press_event(self, area, event):
-        #TODO need height of arrow button on scrollbar - how do we get that?
+        #TODO need gutter of scrollbar - how do we get that?
         if event.button == 1:
             size_of_arrow = 14
             diffmapindex = self.diffmap.index(area)
-            textindex = (0, self.num_panes-1)[diffmapindex]
-            textview = self.textview[textindex]
-            textheight = textview.get_allocation().height
-            fraction = (event.y - size_of_arrow) / (textheight - 2*size_of_arrow)
-            linecount = self._get_line_count(textindex)
-            wantline = misc.clamp(fraction * linecount, 0, linecount)
-            iter = textview.get_buffer().get_iter_at_line(wantline)
-            self.textview[textindex].scroll_to_iter(iter, 0.0, use_align=1, xalign=0, yalign=0.5)
-            gtk.idle_add( lambda *a : self.linkmap[0].grab_focus() )
+            index = (0, self.num_panes-1)[diffmapindex]
+            height = area.get_allocation().height
+            fraction = (event.y - size_of_arrow) / (height - 3.75*size_of_arrow)
+            adj = self.scrolledwindow[index].get_vadjustment()
+            val = fraction * adj.upper - adj.page_size/2
+            upper = adj.upper - adj.page_size
+            adj.set_value( max( min(upper, val), 0) )
             return 1
 
     def _get_line_count(self, index):
