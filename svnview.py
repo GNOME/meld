@@ -84,7 +84,7 @@ def _lookup_cvs_files(dirs, files):
 
     retfiles = []
     retdirs = []
-    matches = re.findall("^(.)....\s*\d*\s*(\d*) [^ ]*\s*(.*)$(?m)", entries)
+    matches = re.findall("^(.)....\s*\d*\s*(\d*)\s*[^ ]*\s*(.*)$(?m)", entries)
     matches.sort()
 
     for match in matches:
