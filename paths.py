@@ -27,7 +27,7 @@ import sys
 appdir = os.path.dirname(__file__)
 
 if not _locale_dir: _locale_dir = os.path.join(appdir,"po")
-if not _doc_dir:    _doc_dir    = os.path.join(appdir,"manual")
+if not _doc_dir:    _doc_dir    = os.path.join(appdir,"help","C")
 if not _share_dir:  _share_dir  = appdir
 
 def locale_dir(*args): # i18n files

@@ -32,7 +32,6 @@ try:
     gettext.textdomain("meld")
     gettext.install("meld", paths.locale_dir(), unicode=1)
 except (IOError,locale.Error), e:
-    # fake gettext until translations in place
     print "(meld): WARNING **: %s" % e
     __builtins__.__dict__["_"] = lambda x : x
 
@@ -40,8 +39,8 @@ except (IOError,locale.Error), e:
 # python version
 #
 
-pyver = (2,2)
-pygtkver = (1,99,15)
+pyver = (2,3)
+pygtkver = (2,4,0)
 
 def ver2str(ver):
     return ".".join(map(str,ver))
@@ -68,12 +67,7 @@ else:
 #
 import gtk
 if gtk.pygtk_version < pygtkver:
-    print _("Meld works best with pygtk-%s or higher. (found %s)") % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
-    print _("Due to incompatible API changes some functions may not operate as expected.")
-
-# python2.2 needs this.
-import gtk.glade
-gtk.glade.bindtextdomain("meld", paths.locale_dir() )
+    print _("Meld requires pygtk-%s or higher. (found %s)") % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
 
 #
 # main

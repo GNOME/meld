@@ -214,7 +214,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
-        self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
+        self.map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
         self.popup_menu = DirDiffMenu(self)
         self.set_num_panes(num_panes)
         self.on_treeview_focus_out_event(None, None)

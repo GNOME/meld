@@ -22,7 +22,14 @@ import gtk
 import gtk.glade
 import gnome
 import gnome.ui
+import glob
+import os
 import gettext
+import gobject
+import re
+import misc
+
+DEBUG = False
 
 class Base(object):
     """Base class for all glade objects.
@@ -38,16 +45,12 @@ class Base(object):
     object, which is sadly sometimes necessary.
     """
 
+    RE_HANDLER = re.compile(r"on_(.+?)__(.+)")
+
     def __init__(self, file, root):
         """Load the widgets from the node 'root' in file 'file'.
-
-        Automatically connects signal handlers named 'on_*'.
         """
         self.xml = gtk.glade.XML(file, root, gettext.textdomain() )
-        handlers = {}
-        for h in filter(lambda x:x.startswith("on_"), dir(self.__class__)):
-            handlers[h] = getattr(self, h)
-        self.xml.signal_autoconnect( handlers )
         self.widget = getattr(self, root)
         self.widget.set_data("pyobject", self)
 
@@ -66,26 +69,69 @@ class Base(object):
         while gtk.events_pending():
             gtk.main_iteration();
 
-    def _map_widgets_into_lists(self, widgetnames):
+    def connect_signal_handlers(self):
+        for methodname in dir(self.__class__):
+            method = getattr(self, methodname)
+            match = self.RE_HANDLER.match(methodname)
+            if match:
+                widget, signal = match.groups()
+                #print "%s::%s" % (widget, signal)
+                attr = getattr(self, widget or "widget")
+                if isinstance(attr,gobject.GObject):
+                    attr.connect(signal, method)
+                elif isinstance(attr,type([])):
+                    for a in attr:
+                        a.connect(signal, method)
+                else:
+                    print attr, type(attr)
+                    assert 0
+
+    def add_actions(self, actiongroup, actiondefs):
+        normal_actions = []
+        toggle_actions = []
+        radio_actions = []
+        for action in actiondefs:
+            if len(action) == 3:
+                normal_actions.append( action )
+            else:
+                if len(action)==5:
+                    handler = getattr(self, "action__%s_activate"%action[0])
+                    normal_actions.append( action + (handler,) )
+                elif isinstance(action[-1], type(True)): 
+                    handler = getattr(self, "action__%s_toggled"%action[0])
+                    toggle_actions.append( action[:-1] + (handler,action[-1]) )
+                elif isinstance(action[-1], type(0)): 
+                    handler = getattr(self, "action__%s_changed"%action[0])
+                    radio_actions.append( action + (handler,) )
+                else:
+                    assert 0
+        actiongroup.add_actions( normal_actions )
+        actiongroup.add_toggle_actions( toggle_actions )
+        actiongroup.add_radio_actions( radio_actions )
+        for action in actiondefs:
+            setattr(self, "action_"+action[0], actiongroup.get_action(action[0]))
+
+    def map_widgets_into_lists(self, widgetnames):
         """Put sequentially numbered widgets into lists.
         
         e.g. If an object had widgets self.button0, self.button1, ...,
-        then after a call to object._map_widgets_into_lists(["button"])
+        then after a call to object.map_widgets_into_lists(["button"])
         object has an attribute self.button == [self.button0, self.button1, ...]."
         """
         for item in widgetnames:
-            setattr(self,item, [])
-            list = getattr(self,item)
+            setattr(self, item, [])
+            lst = getattr(self,item)
             i = 0
             while 1:
                 key = "%s%i"%(item,i)
                 try:
                     val = getattr(self, key)
                 except AttributeError:
+                    if i == 0:
+                        raise
                     break
-                list.append(val)
+                lst.append(val)
                 i += 1
-
 
 class Component(Base):
     """A convenience base class for widgets which use glade.
@@ -99,7 +145,7 @@ class GtkApp(Base):
     """A convenience base class for gtk+ apps created in glade.
     """
 
-    def __init__(self, file, root=None):
+    def __init__(self, file, root):
         Base.__init__(self, file, root)
 
     def main(self):
@@ -112,32 +158,56 @@ class GtkApp(Base):
         """
         gtk.main_quit()
 
+class DirectoryEntry(object):
+    def __init__(self, comboentry, prefs, key):
+        self.combo = comboentry
+        self.entry = comboentry.child
+        self.prefs = prefs
+        self.key = key
 
-class GnomeApp(GtkApp):
-    """A convenience base class for apps created in glade.
-    """
+        # history
+        model = gtk.ListStore(type(""))
+        self.combo.set_model( model )
+        self.combo.set_text_column(0)
+        history = getattr(prefs,key)
+        if len(history):
+            for p in history.split(":"):
+                model.append([p])
 
-    def __init__(self, name, version, file, root):
-        """Initialise program 'name' and version from 'file' containing root node 'root'.
-        """
-        self.program = gnome.program_init(name, version)
-        GtkApp.__init__(self,file,root)
-        if 0:
-            self.client = gnome.ui.Client()
-            self.client.disconnect()
-            def connected(*args):
-                print "CONNECTED", args
-            def cb(name):
-                def cb2(*args):
-                    print name, args, "\n"
-                return cb2
-            self.client.connect("connect", cb("CON"))
-            self.client.connect("die", cb("DIE"))
-            self.client.connect("disconnect", cb("DIS"))
-            self.client.connect("save-yourself", cb("SAVE"))
-            self.client.connect("shutdown-cancelled", cb("CAN"))
-            self.client.connect_to_session_manager()
+        # completion
+        self.completion = gtk.EntryCompletion()
+        model = gtk.ListStore(type(""))
+        self.completion.set_model( model )
+        self.completion.set_text_column(0)
+        self.entry.set_completion(self.completion)
 
+        # signals
+        self.entry.connect("changed", self.on_entry__changed)
+        self.entry.connect("activate", self.on_entry__activate)
+
+    def on_entry__changed(self, entry):
+        model = entry.get_completion().get_model()
+        model.clear()
+        for m in [x for x in glob.glob( entry.get_text()+"*" ) if os.path.isdir(x)]:
+            model.append( [m] )
+
+    def on_entry__activate(self, entry):
+        location = entry.get_text()
+        if not os.path.isdir( location ):
+            misc.run_dialog(_("No such directory '%s'") % location )
+            return
+        history = (getattr(self.prefs, self.key) or location).split(":")
+        try:
+            history.remove(location)
+        except ValueError:
+            if len(history) > 8:
+                history.pop()
+        history.insert(0,location)
+        model.self.combo.get_model()
+        model.clear()
+        for h in history:
+            model.append([h])
+        setattr( self.prefs, self.key, ":".join(history) )
 
 def load_pixbuf(fname, size=0):
     """Load an image from a file as a pixbuf, with optional resizing.
@@ -150,9 +220,9 @@ def load_pixbuf(fname, size=0):
         image = image.scale_simple(size, int(aspect*size), 2)
     return image
 
-def url_show(url):
-    return gnome.url_show(url)
-
-def FileEntry(*args):
-    return gnome.ui.FileEntry(*args)
+def url_show(url, parent=None):
+    try:
+        return gnome.url_show(url)
+    except gobject.GError, e:
+        misc.run_dialog(_("Could not open '%s'.\n%s")%(url,e), parent)
 

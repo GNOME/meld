@@ -21,6 +21,7 @@ import os
 # gnome
 import gtk
 import gtk.glade
+import gnome
 
 # project
 import paths
@@ -63,14 +64,15 @@ class NewDocDialog(gnomeglade.Component):
     def __init__(self, parentapp, type):
         self.parentapp = parentapp
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
-        self._map_widgets_into_lists( ("fileentry", "direntry", "cvsentry", "svnentry", "three_way_compare", "tablabel") )
+        self.map_widgets_into_lists( ("fileentry", "direntry", "cvsentry", "svnentry", "three_way_compare", "tablabel") )
+        self.connect_signal_handlers()
         self.entrylists = self.fileentry, self.direntry, self.cvsentry, self.svnentry
         self.widget.set_transient_for(parentapp.widget)
         cur_page = type // 2
         self.notebook.set_current_page( cur_page )
         self.widget.show_all()
 
-    def on_entry_activate(self, entry):
+    def _on_entry__activate(self, entry):
         for el in self.entrylists:
             if entry in el:
                 i = el.index(entry)
@@ -78,13 +80,21 @@ class NewDocDialog(gnomeglade.Component):
                     self.button_ok.grab_focus()
                 else:
                     el[i+1].gtk_entry().grab_focus()
+    def on_fileentry__activate(self, entry):
+        self._on_entry__activate(entry)
+    def on_direntry__activate(self, entry):
+        self._on_entry__activate(entry)
+    def on_cvsentry__activate(self, entry):
+        self._on_entry__activate(entry)
+    def on_svnentry__activate(self, entry):
+        self._on_entry__activate(entry)
 
-    def on_three_way_toggled(self, button):
+    def on_three_way_compare__toggled(self, button):
         page = self.three_way_compare.index(button)
         self.entrylists[page][0].set_sensitive( button.get_active() )
         self.entrylists[page][ not button.get_active() ].gtk_entry().grab_focus()
 
-    def on_response(self, dialog, arg):
+    def on__response(self, dialog, arg):
         if arg==gtk.RESPONSE_OK:
             page = self.notebook.get_current_page()
             paths = [ e.get_full_path(0) or "" for e in self.entrylists[page] ]
@@ -141,7 +151,8 @@ class ListWidget(gnomeglade.Component):
             elif c[1] == type(0):
                 addToggleCol( c[0], 1)
         self._update_filter_model()
-    def on_item_new_clicked(self, button):
+        self.connect_signal_handlers()
+    def on_item_new__clicked(self, button):
         model = self.treeview.get_model()
         iter = model.append()
         model.set_value(iter, 0, "label")
@@ -152,12 +163,12 @@ class ListWidget(gnomeglade.Component):
         self.treeview.get_selection().selected_foreach(
             lambda store, path, iter: selected.append( path ) )
         return selected
-    def on_item_delete_clicked(self, button):
+    def on_item_delete__clicked(self, button):
         model = self.treeview.get_model()
         for s in self._get_selected():
             model.remove( model.get_iter(s) )
         self._update_filter_string()
-    def on_item_up_clicked(self, button):
+    def on_item_up__clicked(self, button):
         model = self.treeview.get_model()
         for s in self._get_selected():
             if s[0] > 0: # XXX need model.swap
@@ -168,7 +179,7 @@ class ListWidget(gnomeglade.Component):
                 model.remove(old)
                 self.treeview.get_selection().select_iter(iter)
         self._update_filter_string()
-    def on_item_down_clicked(self, button):
+    def on_item_down__clicked(self, button):
         model = self.treeview.get_model()
         for s in self._get_selected():
             if s[0] < len(model)-1: # XXX need model.swap
@@ -179,7 +190,7 @@ class ListWidget(gnomeglade.Component):
                 model.remove(old)
                 self.treeview.get_selection().select_iter(iter)
         self._update_filter_string()
-    def on_items_revert_clicked(self, button):
+    def on_items_revert__clicked(self, button):
         setattr( self.prefs, self.key, self.prefs.get_default(self.key) )
         self._update_filter_model()
     def _update_filter_string(self):
@@ -226,7 +237,7 @@ class PreferencesDialog(gnomeglade.Component):
                 self.model.append( (label,) )
         self.prefs = parentapp.prefs
         # editor
-        self._map_widgets_into_lists( ["editor_command"] )
+        self.map_widgets_into_lists( ["editor_command"] )
         if self.prefs.use_custom_font:
             self.radiobutton_custom_font.set_active(1)
         else:
@@ -241,8 +252,8 @@ class PreferencesDialog(gnomeglade.Component):
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
         # display
-        self._map_widgets_into_lists( ["draw_style"] )
-        self._map_widgets_into_lists( ["toolbar_style"] )
+        self.map_widgets_into_lists( ["draw_style"] )
+        self.map_widgets_into_lists( ["toolbar_style"] )
         self.draw_style[self.prefs.draw_style].set_active(1)
         self.toolbar_style[self.prefs.toolbar_style].set_active(1)
         # file filters
@@ -253,10 +264,10 @@ class PreferencesDialog(gnomeglade.Component):
         cols = [ ("Name", type("")), ("Active", type(0)), ("Regex", type("")) ]
         self.textfilter = ListWidget( cols, self.prefs, "regexes")
         self.text_filters_box.pack_start(self.textfilter.widget)
-        self.checkbutton_ignore_blank_lines = self.prefs.ignore_blank_lines
+        self.checkbutton_ignore_blank_lines.set_active(self.prefs.ignore_blank_lines)
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
-        self._map_widgets_into_lists( ["save_encoding"] )
+        self.map_widgets_into_lists( ["save_encoding"] )
         self.save_encoding[self.prefs.save_encoding].set_active(1)
         # cvs
         self.cvs_quiet_check.set_active( self.prefs.cvs_quiet )
@@ -266,37 +277,43 @@ class PreferencesDialog(gnomeglade.Component):
         self.cvs_binary_fileentry.set_filename( self.prefs.cvs_binary )
         self.cvs_create_missing_check.set_active( self.prefs.cvs_create_missing )
         self.cvs_prune_empty_check.set_active( self.prefs.cvs_prune_empty )
+        # finally connect handlers
+        self.connect_signal_handlers()
     #
     # treeview
     #
-    def on_treeview_cursor_changed(self, tree):
+    def on_treeview__cursor_changed(self, tree):
         path, column = tree.get_cursor()
         self.notebook.set_current_page(path[0])
     #
     # editor
     #
-    def on_fontpicker_font_set(self, picker, font):
-        self.prefs.custom_font = font
-    def on_radiobutton_font_toggled(self, radio):
+    def _on_radiobutton_font__toggled(self, radio):
         if radio.get_active():
-            custom = radio == self.radiobutton_custom_font
-            self.fontpicker.set_sensitive(custom)
-            self.prefs.use_custom_font = custom
-    def on_spinbutton_tabsize_changed(self, spin):
+            iscustom = (radio == self.radiobutton_custom_font)
+            self.fontpicker.set_sensitive(iscustom)
+            self.prefs.use_custom_font = iscustom
+    def on_radiobutton_gnome_font__toggled(self, radio):
+        self._on_radiobutton_font__toggled(radio)
+    def on_radiobutton_custom_font__toggled(self, radio):
+        self._on_radiobutton_font__toggled(radio)
+    def on_fontpicker__font_set(self, picker, font):
+        self.prefs.custom_font = font
+    def on_spinbutton_tabsize__changed(self, spin):
         self.prefs.tab_size = int(spin.get_value())
-    def on_option_wrap_lines_changed(self, option):
+    def on_option_wrap_lines__changed(self, option):
         self.prefs.edit_wrap_lines = option.get_history()
-    def on_checkbutton_supply_newline_toggled(self, check):
+    def on_checkbutton_supply_newline__toggled(self, check):
         self.prefs.supply_newline = check.get_active()
-    def on_checkbutton_show_line_numbers_toggled(self, check):
+    def on_checkbutton_show_line_numbers__toggled(self, check):
         self.prefs.show_line_numbers = check.get_active()
         if check.get_active() and not sourceview_available:
             misc.run_dialog(_("Line numbers are only available if you have pysourceview installed.") )
-    def on_checkbutton_use_syntax_highlighting_toggled(self, check):
+    def on_checkbutton_use_syntax_highlighting__toggled(self, check):
         self.prefs.use_syntax_highlighting = check.get_active()
         if check.get_active() and not sourceview_available:
             misc.run_dialog(_("Syntax highlighting is only available if you have pysourceview installed.") )
-    def on_editor_command_toggled(self, radio):
+    def on_editor_command__toggled(self, radio):
         if radio.get_active():
             idx = self.editor_command.index(radio)
             for k,v in self.editor_radio_values.items():
@@ -306,42 +323,45 @@ class PreferencesDialog(gnomeglade.Component):
     #
     # display
     #
-    def on_draw_style_toggled(self, radio):
+    def on_draw_style__toggled(self, radio):
         if radio.get_active():
             self.prefs.draw_style = self.draw_style.index(radio)
-    def on_toolbar_style_toggled(self, radio):
+    def on_toolbar_style__toggled(self, radio):
         if radio.get_active():
             self.prefs.toolbar_style = self.toolbar_style.index(radio)
     #
     # filters
     #
-    def on_checkbutton_ignore_blank_lines_toggled(self, check):
+    def on_checkbutton_ignore_blank_lines__toggled(self, check):
         self.prefs.ignore_blank_lines = check.get_active()
 
     #
     # encoding
     #
-    def on_save_encoding_toggled(self, radio):
+    def on_save_encoding__toggled(self, radio):
         if radio.get_active():
             self.prefs.save_encoding = self.save_encoding.index(radio)
     #
     # cvs
     #
-    def on_cvs_quiet_toggled(self, toggle):
+    def on_cvs_quiet_check__toggled(self, toggle):
         self.prefs.cvs_quiet = toggle.get_active()
-    def on_cvs_compression_toggled(self, toggle):
+    def on_cvs_compression_check__toggled(self, toggle):
         self.prefs.cvs_compression = toggle.get_active()
-    def on_cvs_compression_value_changed(self, spin):
+    def on_cvs_compression_value_spin__changed(self, spin):
         self.prefs.cvs_compression_value = int(spin.get_value())
-    def on_cvs_ignore_cvsrc_toggled(self, toggle):
+    def on_cvs_ignore_cvsrc_check__toggled(self, toggle):
         self.prefs.cvs_ignore_cvsrc = toggle.get_active()
-    def on_cvs_binary_activate(self, fileentry):
+    def on_cvs_binary_fileentry__activate(self, fileentry):
         self.prefs.cvs_binary = fileentry.gtk_entry().get_text()
-    def on_cvs_create_missing_toggled(self, toggle):
+    def on_cvs_create_missing_check__toggled(self, toggle):
         self.prefs.cvs_create_missing = toggle.get_active()
-    def on_cvs_prune_empty_toggled(self, toggle):
+    def on_cvs_prune_empty_check__toggled(self, toggle):
         self.prefs.cvs_prune_empty = toggle.get_active()
-    def on_response(self, dialog, arg):
+    #
+    # dialog response
+    #
+    def on__response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
             self.prefs.text_codecs = self.entry_text_codecs.get_property("text")
             self.prefs.edit_command_custom = self.custom_edit_command_entry.get_property("text")
@@ -400,6 +420,8 @@ class NotebookLabel(gtk.HBox):
 ################################################################################
 class MeldPreferences(prefs.Preferences):
     defaults = {
+        "window_size_x": prefs.Value(prefs.INT, 600),
+        "window_size_y": prefs.Value(prefs.INT, 600),
         "use_custom_font": prefs.Value(prefs.BOOL,0),
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "tab_size": prefs.Value(prefs.INT, 4),
@@ -413,6 +435,8 @@ class MeldPreferences(prefs.Preferences):
         "save_encoding": prefs.Value(prefs.INT, 0),
         "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
+        "cvs_location_history": prefs.Value(prefs.STRING, ""),
+        "cvs_flatten": prefs.Value(prefs.BOOL, 1),
         "cvs_quiet": prefs.Value(prefs.BOOL, 1),
         "cvs_compression": prefs.Value(prefs.BOOL, 1),
         "cvs_compression_value": prefs.Value(prefs.INT, 3),
@@ -425,8 +449,10 @@ class MeldPreferences(prefs.Preferences):
         "color_delete_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_replace_bg" : prefs.Value(prefs.STRING, "#ddeeff"),
         "color_replace_fg" : prefs.Value(prefs.STRING, "Black"),
-        "color_conflict_bg" : prefs.Value(prefs.STRING, "Pink"),
+        "color_conflict_bg" : prefs.Value(prefs.STRING, "misty rose"),
         "color_conflict_fg" : prefs.Value(prefs.STRING, "Black"),
+        "color_inline2_bg" : prefs.Value(prefs.STRING, "pink1"),
+        "color_inline2_fg" : prefs.Value(prefs.STRING, "DarkBlue"),
         "color_inline_bg" : prefs.Value(prefs.STRING, "LightSteelBlue2"),
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_edited_bg" : prefs.Value(prefs.STRING, "gray90"),
@@ -506,27 +532,90 @@ class MeldPreferences(prefs.Preferences):
 # MeldApp
 #
 ################################################################################
-class MeldApp(gnomeglade.GnomeApp):
+class MeldApp(gnomeglade.GtkApp):
+
+    UI_DEFINITION = """
+    <ui>
+      <menubar name="MenuBar">
+        <menu action="file_menu">
+          <menuitem action="file_new"/>
+          <placeholder name="file_extras"/>
+          <separator/>
+          <menuitem action="file_close"/>
+          <menuitem action="file_quit"/>
+        </menu>
+        <placeholder name="menu_extras"/>
+        <menu action="settings_menu">
+          <menuitem action="settings_preferences"/>
+        </menu>
+        <menu action="help_menu">
+          <menuitem action="help_contents"/>
+          <menuitem action="help_reportbug"/>
+          <menuitem action="help_about"/>
+        </menu>
+      </menubar>
+      <toolbar name="ToolBar">
+          <toolitem action="file_new"/>
+      </toolbar>
+    </ui>
+    """
+
+    UI_ACTIONS = (
+        ('file_menu', None, _('_File')),
+            ('file_new', gtk.STOCK_NEW,
+                _('_New'), '<Control>n', _('Open a new tab')),
+            ('file_close', gtk.STOCK_CLOSE,
+                _('_Close'), '<Control>w', _('Close tab')),
+            ('file_quit', gtk.STOCK_QUIT,
+                _('_Quit'), '<Control>q', _('Quit the application')),
+
+        ('settings_menu', None, _('_Settings')),
+            ('settings_preferences', gtk.STOCK_PREFERENCES,
+                _('_Preferences'), None, _('Configure preferences')),
+
+        ('help_menu', None, _('_Help')),
+            ('help_contents', gtk.STOCK_HELP,
+                _('_Contents'), "F1", _('Users manual')),
+            ('help_reportbug', None,
+                _('_Report Bug'), None, _('Report a bug')),
+            ('help_about', None,
+                _('_About'), None, _('About the application')),
+    )
 
     #
     # init
     #
     def __init__(self):
+        gnome.program_init("meld","1")#XXX
         gladefile = paths.share_dir("glade2/meldapp.glade")
-        gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
-        self._map_widgets_into_lists( "settings_drawstyle".split() )
+        gnomeglade.GtkApp.__init__(self, gladefile, "meldapp")
+
+        self.uimanager = gtk.UIManager()
+        self.widget.add_accel_group( self.uimanager.get_accel_group() )
+        self.actiongroup = gtk.ActionGroup("AppActions")
+        self.add_actions( self.actiongroup, self.UI_ACTIONS )
+        self.uimanager.insert_action_group(self.actiongroup, 0)
+        self.uimanager.add_ui_from_string(self.UI_DEFINITION)
+        self.action_file_close.set_property("sensitive",0)
+
+        self.menubar = self.uimanager.get_widget('/MenuBar')
+        self.toolbar = self.uimanager.get_widget('/ToolBar')
+        self.vbox.pack_start(self.menubar, False)
+        self.vbox.reorder_child(self.menubar, 0)
+        self.vbox.pack_start(self.toolbar, False)
+        self.vbox.reorder_child(self.toolbar, 1)
+
+        self.connect_signal_handlers()
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
         self.prefs = MeldPreferences()
-        if not developer:#hide magic testing button
-            self.toolbar_magic.hide()
-        elif 1:
-            def showPrefs(): PreferencesDialog(self)
-            gtk.idle_add(showPrefs)
+
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
+        self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
+        self.widget.show()
 
     def on_idle(self):
         ret = self.scheduler.iteration()
@@ -558,14 +647,25 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # General events and callbacks
     #
-    def on_delete_event(self, *extra):
-        return self.on_menu_quit_activate()
+    def on__delete_event(self, *extra):
+        return self.action__file_quit_activate()
 
-    def on_switch_page(self, notebook, page, which):
+    def on__size_allocate(self, window, rect):
+        self.prefs.window_size_x = rect.width
+        self.prefs.window_size_y = rect.height
+
+    def on_notebook__switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject")
-        newseq = newdoc.undosequence
-        self.button_undo.set_sensitive(newseq.can_undo())
-        self.button_redo.set_sensitive(newseq.can_redo())
+        nbl = self.notebook.get_tab_label( newdoc.widget )
+        self.widget.set_title( nbl.label.get_text() + " - Meld")
+        self.statusbar.set_doc_status("")
+        newdoc.on_switch_event()
+        self.scheduler.add_task( newdoc.scheduler )
+
+    def on_notebook__remove(self, *args):#k, page, which):
+        print args
+        return
+        newdoc = notebook.get_nth_page(which).get_data("pyobject")
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title( nbl.label.get_text() + " - Meld")
         self.statusbar.set_doc_status("")
@@ -578,31 +678,22 @@ class MeldApp(gnomeglade.GnomeApp):
         self.widget.set_title(text + " - Meld")
         self.notebook.child_set_property(component.widget, "menu-label", text)
 
-    def on_can_undo(self, undosequence, can):
-        self.button_undo.set_sensitive(can)
-
-    def on_can_redo(self, undosequence, can):
-        self.button_redo.set_sensitive(can)
-    
     #
     # Toolbar and menu items (file)
     #
-    def on_menu_file_new_activate(self, menuitem):
+    def action__file_new_activate(self, *extra):
         NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
 
-    def on_menu_save_activate(self, menuitem):
+    def action__file_save_activate(self, *extra):
         self.current_doc().save()
 
-    def on_menu_refresh_activate(self, *args):
-        self.current_doc().refresh()
-
-    def on_menu_close_activate(self, *extra):
+    def action__file_close_activate(self, *extra):
         i = self.notebook.get_current_page()
         if i >= 0:
             page = self.notebook.get_nth_page(i).get_data("pyobject")
             self.try_remove_page(page)
 
-    def on_menu_quit_activate(self, *extra):
+    def action__file_quit_activate(self, *extra):
         if not developer:
             for c in self.notebook.get_children():
                 response = c.get_data("pyobject").on_delete_event(appquit=1)
@@ -615,87 +706,40 @@ class MeldApp(gnomeglade.GnomeApp):
         self.quit()
 
     #
-    # Toolbar and menu items (edit)
-    #
-    def on_menu_undo_activate(self, *extra):
-        self.current_doc().on_undo_activate()
-
-    def on_menu_redo_activate(self, *extra):
-        self.current_doc().on_redo_activate()
-  
-    def on_menu_find_activate(self, *extra):
-        self.current_doc().on_find_activate()
-
-    def on_menu_find_next_activate(self, *extra):
-        self.current_doc().on_find_next_activate()
-
-    def on_menu_replace_activate(self, *extra):
-        self.current_doc().on_replace_activate()
-
-    def on_menu_copy_activate(self, *extra):
-        self.current_doc().on_copy_activate()
-
-    def on_menu_cut_activate(self, *extra):
-        self.current_doc().on_cut_activate()
-
-    def on_menu_paste_activate(self, *extra):
-        self.current_doc().on_paste_activate()
-
-    #
     # Toolbar and menu items (settings)
     #
-    def on_menu_filter_activate(self, check):
-        print check, check.child.get_text()
-
-    def on_menu_preferences_activate(self, item):
+    def action__settings_preferences_activate(self, *extra):
         PreferencesDialog(self)
 
     #
     # Toolbar and menu items (help)
     #
-    def on_menu_meld_home_page_activate(self, button):
-        gnomeglade.url_show("http://meld.sourceforge.net")
+    def action__help_contents_activate(self, *extra):
+        print "file:///"+os.path.abspath(paths.doc_dir("meld.xml"))
+        gnomeglade.url_show("file:///"+os.path.abspath(paths.doc_dir("meld.xml") ), self)
 
-    def on_menu_help_bug_activate(self, button):
-        gnomeglade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
+    def action__help_reportbug_activate(self, *extra):
+        gnomeglade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld", self)
 
-    def on_menu_users_manual_activate(self, button):
-        gnomeglade.url_show("file:///"+os.path.abspath(paths.doc_dir("manual.html") ) )
-
-    def on_menu_about_activate(self, *extra):
+    def action__help_about_activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
         about.set_property("name", "Meld")
         about.set_property("version", version)
         about.show()
 
     #
-    # Toolbar and menu items (misc)
     #
-    def on_menu_magic_activate(self, *args):
-        for i in range(8):
-            self.append_filediff( ("ntest/file%ia"%i, "ntest/file%ib"%i) )
-            #self.append_filediff( ("ntest/file9a", "ntest/file9b") )
-        pass
-
-    def on_menu_edit_down_activate(self, *args):
-        misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_DOWN )
-
-    def on_menu_edit_up_activate(self, *args):
-        misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_UP )
-
-    def on_toolbar_new_clicked(self, *args):
-        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
-
-    def on_toolbar_stop_clicked(self, *args):
-        self.current_doc().stop()
-
+    #
     def try_remove_page(self, page):
-        "See if a page will allow itself to be removed"
+        """See if a page will allow itself to be removed
+        """
         if page.on_delete_event() == gtk.RESPONSE_OK:
             self.scheduler.remove_scheduler( page.scheduler )
             i = self.notebook.page_num( page.widget )
             assert(i>=0)
             self.notebook.remove_page(i)
+            self.uimanager.remove_action_group(page.actiongroup)
+            self.uimanager.remove_ui(page.ui_merge_id)
 
     def on_file_changed(self, srcpage, filename):
         for c in self.notebook.get_children():
@@ -712,6 +756,8 @@ class MeldApp(gnomeglade.GnomeApp):
         page.connect("file-changed", self.on_file_changed)
         page.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         page.connect("status-changed", lambda junk,arg: self.statusbar.set_doc_status(arg) )
+        self.uimanager.insert_action_group(page.actiongroup, 1)
+        page.ui_merge_id = self.uimanager.add_ui_from_string(page.UI_DEFINITION)
 
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
@@ -722,10 +768,6 @@ class MeldApp(gnomeglade.GnomeApp):
     def append_filediff(self, files):
         assert len(files) in (1,2,3)
         doc = filediff.FileDiff(self.prefs, len(files))
-        seq = doc.undosequence
-        seq.clear()
-        seq.connect("can-undo", self.on_can_undo)
-        seq.connect("can-redo", self.on_can_redo)
         self._append_page(doc, "tree-file-normal.png")
         doc.set_files(files)
 

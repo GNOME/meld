@@ -97,7 +97,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
-        self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
         self._update_regexes()
         if sourceview_available:
             # ugly hack. http://bugzilla.gnome.org/show_bug.cgi?id=140071
@@ -144,6 +144,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                       "foreground": self.prefs.color_conflict_fg} )
             add_tag("inline line",   {"background": self.prefs.color_inline_bg,
                                       "foreground": self.prefs.color_inline_fg} )
+            add_tag("inline line2",   {"background": self.prefs.color_inline2_bg,
+                                      "foreground": self.prefs.color_inline2_fg} )
         class ContextMenu(gnomeglade.Component):
             def __init__(self, app):
                 gladefile = paths.share_dir("glade2/filediff.glade")
@@ -217,6 +219,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_textview_move_cursor(self, view, *args):
         self._update_cursor_status(view.get_buffer())
     def on_textview_focus_in_event(self, view, event):
+        self.textview_focussed = view
+        self._update_cursor_status(view.get_buffer())
+    def on_filediff_focus_in_event(self, view, event):
+        print view, event
         self.textview_focussed = view
         self._update_cursor_status(view.get_buffer())
     def on_switch_event(self):
@@ -315,6 +321,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.prefs.use_syntax_highlighting )
         elif key == "regexes":
             self._update_regexes()
+        elif key == "edit_wrap_lines":
+            for text in self.textview:
+                text.set_wrap_mode( value )
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -634,7 +643,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _update_highlighting(self, range0, range1):
         buffers = [t.get_buffer() for t in self.textview]
         for b in buffers:
-            taglist = ["delete line", "conflict line", "replace line", "inline line"]
+            taglist = ["delete line", "conflict line", "replace line", "inline line", "inline line2"]
             table = b.get_tag_table()
             for tagname in taglist:
                 tag = table.lookup(tagname)
@@ -684,7 +693,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                     bufs[i].apply_tag(tags[i], s, e)
                                 back = (0,0)
                             yield 1
-        yield 1
+            yield 1
+#            if chunk[0] and chunk[0][0] == "conflict":
+#                chunk0, chunk1 = chunk
+#                ranges = chunk0[3:5], chunk0[1:3], chunk1[3:5]
+#                starts = [b.get_iter_at_line(l[0]) for b,l in zip(buffers, ranges) ]
+#                texts = [ "\n".join( self._get_texts(raw=1)[i].__getslice__(*ranges[i]) ) for i in range(3) ]
+#                tags = [b.get_tag_table().lookup("inline line2") for b in buffers]
+#                differ = diffutil.Differ(*texts)
+#                for change in differ.all_changes(texts):
+#                    print change
+#                    for i,c in enumerate(change):
+#                        if c and i==0:
+#                            print c
+#                            s,e = starts[i].copy(), starts[i].copy()
+#                            s.forward_chars( c[3] )
+#                            e.forward_chars( c[4] )
+#                            buffers[i].apply_tag(tags[i], s, e)
         
     def save_file(self, pane, saveas=0):
         buf = self.textview[pane].get_buffer()

@@ -37,7 +37,7 @@ import paths
 #
 ################################################################################
 class Entry(object):
-    states = _("Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
+    states = _("Ignored:Unknown:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
     assert len(states)==tree.STATE_MAX
     def __str__(self):
         return "<%s:%s %s>\n" % (self.__class__, self.name, (self.path, self.state))
@@ -254,6 +254,7 @@ def _commonprefix(files):
 class CommitDialog(gnomeglade.Component):
     def __init__(self, parent):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
+        self.connect_signal_handlers()
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         selected = parent._get_selected_files()
@@ -275,7 +276,8 @@ class CommitDialog(gnomeglade.Component):
         if len(msg.strip()):
             self.previousentry.prepend_history(1, msg)
         self.widget.destroy()
-    def on_previousentry_activate(self, gentry):
+
+    def on_previousentry__changed(self, gentry):
         buf = self.textview.get_buffer()
         buf.set_text( gentry.gtk_entry().get_text() )
 
@@ -302,35 +304,39 @@ class CvsTreeStore(tree.DiffTreeStore):
 #
 ################################################################################
 class CvsMenu(gnomeglade.Component):
-    def __init__(self, app, event):
-        gladefile = paths.share_dir("glade2/cvsview.glade")
-        gnomeglade.Component.__init__(self, gladefile, "menu_popup")
-        self.parent = app
+    def __init__(self, parent, event):
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "menu_popup")
+        self.connect_action_proxy("popup", parent)
+        self.parent = parent
         self.widget.popup( None, None, None, 3, event.time )
-    def on_diff_activate(self, menuitem):
-        self.parent.on_button_diff_clicked( menuitem )
-    def on_edit_activate(self, menuitem):
-        self.parent._edit_files( self.parent._get_selected_files() )
-    def on_update_activate(self, menuitem):
-        self.parent.on_button_update_clicked( menuitem )
-    def on_commit_activate(self, menuitem):
-        self.parent.on_button_commit_clicked( menuitem )
-    def on_add_activate(self, menuitem):
-        self.parent.on_button_add_clicked( menuitem )
-    def on_add_binary_activate(self, menuitem):
-        self.parent.on_button_add_binary_clicked( menuitem )
-    def on_remove_activate(self, menuitem):
-        self.parent.on_button_remove_clicked( menuitem )
-    def on_remove_locally_activate(self, menuitem):
-        self.parent.on_button_delete_clicked( menuitem )
 
 ################################################################################
+#
 # filters
+#
 ################################################################################
 entry_modified = lambda x: (x.state >= tree.STATE_NEW) or (x.isdir and (x.state > tree.STATE_NONE))
 entry_normal   = lambda x: (x.state == tree.STATE_NORMAL) 
 entry_noncvs   = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
 entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
+
+        
+################################################################################
+#
+# DirectoryBrowser
+#
+################################################################################
+class DirectoryBrowser(gnomeglade.Component):
+    def __init__(self, parent):
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "dirchooserdialog")
+        self.parent = parent
+        self.widget.set_transient_for(self.parent.widget.get_toplevel())
+        self.connect_signal_handlers()
+    def on__response(self, dialog, arg):
+        if arg == gtk.RESPONSE_OK:
+            self.parent.combo_location.child.set_text( dialog.get_filename() )
+            self.parent.set_location( dialog.get_filename() )
+        self.widget.destroy()
 
 ################################################################################
 #
@@ -339,10 +345,95 @@ entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 ################################################################################
 class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
+    UI_DEFINITION = """
+    <ui>
+      <menubar name="MenuBar">
+        <placeholder name="menu_extras">
+          <menu action="version_menu">
+            <menuitem action="diff"/>
+            <separator/>
+            <menuitem action="update"/>
+            <menuitem action="commit"/>
+            <menuitem action="add"/>
+            <menuitem action="remove"/>
+            <menuitem action="delete"/>
+          </menu>
+          <menu action="view_menu">
+            <menuitem action="view_up"/>
+            <menuitem action="view_down"/>
+            <separator/>
+            <menuitem action="flatten"/>
+            <separator/>
+            <menuitem action="view_modified"/>
+            <menuitem action="view_normal"/>
+            <menuitem action="view_unknown"/>
+            <menuitem action="view_ignored"/>
+            <separator/>
+            <menuitem action="view_console"/>
+          </menu>
+        </placeholder>
+      </menubar>
+      <toolbar name="ToolBar">
+          <toolitem action="diff"/>
+          <separator/>
+          <toolitem action="flatten"/>
+          <toolitem action="view_modified"/>
+          <toolitem action="view_normal"/>
+          <toolitem action="view_unknown"/>
+          <toolitem action="view_ignored"/>
+          <separator/>
+          <toolitem action="update"/>
+          <toolitem action="commit"/>
+          <toolitem action="add"/>
+          <toolitem action="remove"/>
+          <toolitem action="delete"/>
+      </toolbar>
+    </ui>
+    """
+
+    UI_ACTIONS = (
+        ('edit_menu', None, _('_Edit')),
+
+        ('version_menu', None, _('_Version')),
+            ('diff', None,
+                _('_Diff'), None, _('Compare versions')),
+            ('update', None,
+                _('_Update'), None, _('Update the local copy')),
+            ('commit', None,
+                _('_Commit'), None, _('Commit changes')),
+            ('add', None,
+                _('_Add'), None, _('Add to control')),
+            ('remove', None,
+                _('_Remove'), None, _('Remove from control')),
+            ('delete', gtk.STOCK_DELETE,
+                _('_Delete'), None, _('Remove locally')),
+
+        ('view_menu', None, _('_View')),
+            ('view_up', gtk.STOCK_GO_UP,
+                _('_Up'), '<Control>e', _('Previous change')),
+            ('view_down', gtk.STOCK_GO_DOWN,
+                _('_Down'), '<Control>d', _('Next change')),
+            ('flatten', gtk.STOCK_GOTO_BOTTOM,
+                _('_Flatten'), None, _('Flatten tree'), False),
+            ('view_modified', None,
+                _('_Modified'), None, _('View modified files'), True),
+            ('view_normal', None,
+                _('_Normal'), None, _('View normal files'), False),
+            ('view_unknown', None,
+                _('Un_known'), None, _('View non version controlled files'), False),
+            ('view_ignored', None,
+                _('_Ignored'), None, _('View ignored items'), False),
+            ('view_console', None,
+                _('_Console'), None, _('View command line output'), False),
+    )
+
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "cvsview")
-        self.toolbar.set_style( self.prefs.get_toolbar_style() )
+
+        self.actiongroup = gtk.ActionGroup("CvsActions")
+        self.add_actions( self.actiongroup, self.UI_ACTIONS )
+
         self.tempfiles = []
         self.model = CvsTreeStore()
         self.treeview.set_model(self.model)
@@ -383,17 +474,17 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                     this.textview.scroll_mark_onscreen( this.mark )
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
-        self.treeview_column_location.set_visible( self.button_flatten.get_active() )
-        size = self.fileentry.size_request()[1]
-        self.button_jump.set_size_request(size, size)
-        self.button_jump.hide()
-        if not self.prefs.cvs_console_visible:
-            self.on_console_view_toggle(self.console_hide_box)
+        self.treeview_column_location.set_visible( self.prefs.cvs_flatten )
+        self.location_history = gnomeglade.DirectoryEntry(self.combo_location, self.prefs, "cvs_location_history")
+        self.action__view_console_toggled(self.action_view_console)
+        self.connect_signal_handlers()
 
+    def on_button_browsedir__clicked(self, *args):
+        DirectoryBrowser(self)
+        
     def set_location(self, location):
         self.model.clear()
         self.location = location = os.path.abspath(location or ".")
-        self.fileentry.gtk_entry().set_text(location)
         iter = self.model.add_entries( None, [location] )
         self.treeview.get_selection().select_iter(iter)
         self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
@@ -412,18 +503,18 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
         todo = [ (rootpath, rootname) ]
         filters = []
-        if self.button_modified.get_active():
+        if self.action_view_modified.get_active():
             filters.append( entry_modified )
-        if self.button_normal.get_active():
+        if self.action_view_normal.get_active():
             filters.append( entry_normal )
-        if self.button_noncvs.get_active():
+        if self.action_view_unknown.get_active():
             filters.append( entry_noncvs )
-        if self.button_ignored.get_active():
+        if self.action_view_ignored.get_active():
             filters.append( entry_ignored )
         def showable(entry):
             for f in filters:
                 if f(entry): return 1
-        recursive = self.button_flatten.get_active()
+        recursive = self.actiongroup.get_action("flatten").get_active()
         while len(todo):
             todo.sort() # depth first
             path, name = todo.pop(0)
@@ -459,10 +550,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         if key == "toolbar_style":
             self.toolbar.set_style( self.prefs.get_toolbar_style() )
 
-    def on_fileentry_activate(self, fileentry):
-        path = fileentry.get_full_path(0)
-        self.set_location(path)
-
     def on_quit_event(self):
         self.scheduler.remove_all_tasks()
         for f in self.tempfiles:
@@ -473,7 +560,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.on_quit_event()
         return gtk.RESPONSE_OK
 
-    def on_row_activated(self, treeview, path, tvc):
+    def on_treeview__row_activated(self, treeview, path, tvc):
         iter = self.model.get_iter(path)
         if self.model.iter_has_child(iter):
             if self.treeview.row_expanded(path):
@@ -504,16 +591,18 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def run_cvs_diff(self, paths, empty_patch_ok=0):
         self.scheduler.add_task( self.run_cvs_diff_iter(paths, empty_patch_ok).next, atfront=1 )
 
-    def on_button_press_event(self, text, event):
+    def on_treeview__button_press_event(self, text, event):
         if event.button==3:
             CvsMenu(self, event)
         return 0
 
-    def on_button_flatten_toggled(self, button):
-        self.treeview_column_location.set_visible( self.button_flatten.get_active() )
-        self.refresh()
-    def on_button_filter_toggled(self, button):
-        self.refresh()
+    def _get_selected_treepaths(self):
+        sel = []
+        def gather(model, path, iter):
+            sel.append( model.get_path(iter) )
+        s = self.treeview.get_selection()
+        s.selected_foreach(gather)
+        return sel
 
     def _get_selected_treepaths(self):
         sel = []
@@ -572,19 +661,32 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         else:
             misc.run_dialog( _("Select some files first."), parent=self, messagetype=gtk.MESSAGE_INFO)
 
-    def on_button_update_clicked(self, object):
-        self._command_on_selected( self.prefs.get_cvs_command("update") )
-    def on_button_commit_clicked(self, object):
+    #
+    # Actions
+    #
+    def action__diff_activate(self, object):
+        files = self._get_selected_files()
+        if len(files):
+            self.run_cvs_diff(files, empty_patch_ok=1)
+
+    def action__flatten_toggled(self, button):
+        #self.treeview_column_location.set_visible( self.toolbar_cvs_flatten.get_active() )
+        self.refresh()
+
+    def action__commit_activate(self, object):
         dialog = CommitDialog( self )
         dialog.run()
 
-    def on_button_add_clicked(self, object):
+    def action__update_activate(self, object):
+        self._command_on_selected( self.prefs.get_cvs_command("update") )
+
+    def action__add_activate(self, object):
         self._command_on_selected(self.prefs.get_cvs_command("add") )
-    def on_button_add_binary_clicked(self, object):
-        self._command_on_selected(self.prefs.get_cvs_command("add") + ["-kb"] )
-    def on_button_remove_clicked(self, object):
+
+    def action__remove_activate(self, object):
         self._command_on_selected(self.prefs.get_cvs_command("rm") + ["-f"] )
-    def on_button_delete_clicked(self, object):
+
+    def action__delete_activate(self, object):
         files = self._get_selected_files()
         for name in files:
             try:
@@ -600,10 +702,17 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
 
-    def on_button_diff_clicked(self, object):
-        files = self._get_selected_files()
-        if len(files):
-            self.run_cvs_diff(files, empty_patch_ok=1)
+    def action__view_modified_toggled(self,*args):
+        self.refresh()
+    def action__view_normal_toggled(self,*args):
+        self.refresh()
+    def action__view_unknown_toggled(self,*args):
+        self.refresh()
+    def action__view_ignored_toggled(self,*args):
+        self.refresh()
+
+    def action__cvs_edit_local_activate(self, object):
+        self._edit_files( self._get_selected_files() )
 
     def show_patch(self, prefix, patch):
         if not patch: return
@@ -632,11 +741,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         for d in diffs:
             self.emit("create-diff", d)
 
+
     def refresh(self):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
     def refresh_partial(self, where):
-        if not self.button_flatten.get_active():
+        if not self.toolbar_cvs_flatten.get_active():
             iter = self.find_iter_by_name( where )
             if iter:
                 newiter = self.model.insert_after( None, iter) 
@@ -646,9 +756,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 self.scheduler.add_task( self._search_recursively_iter(newiter).next )
         else: # XXX fixme
             self.refresh()
-
-    def next_diff(self,*args):
-        pass
 
     def on_button_jump_press_event(self, button, event):
         class MyMenu(gtk.Menu):
@@ -723,17 +830,23 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 break
         return None
 
-    def on_console_view_toggle(self, box, event=None):
-        if box == self.console_hide_box:
-            self.prefs.cvs_console_visible = 0
-            self.console_hbox.hide()
-            self.console_show_box.show()
-        else:
+    def on_console_hide_box__button_press_event(self, box, event=None):
+        self.action_view_console.set_active( not self.action_view_console.get_active() )
+
+    def on_console_show_box__button_press_event(self, box, event=None):
+        self.action_view_console.set_active( not self.action_view_console.get_active() )
+
+    def action__view_console_toggled(self, toggle):
+        if toggle.get_active():
             self.prefs.cvs_console_visible = 1
             self.console_hbox.show()
             self.console_show_box.hide()
+        else:
+            self.prefs.cvs_console_visible = 0
+            self.console_hbox.hide()
+            self.console_show_box.show()
 
-    def on_consoleview_populate_popup(self, text, menu):
+    def on_consoleview__populate_popup(self, text, menu):
         item = gtk.ImageMenuItem(gtk.STOCK_CLEAR)
         def activate(*args):
             buf = text.get_buffer()
@@ -745,15 +858,19 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         item.show()
         menu.insert( item, 1 )
 
-    def next_diff(self, direction):
-        start_iter = self.model.get_iter( (self._get_selected_treepaths() or [(0,)])[-1] )
+    def action__view_up_activate(self):
+        self.action_view_go(gtk.gdk.SCROLL_UP)
 
+    def action__view_down_activate(self):
+        self.action_view_go(gtk.gdk.SCROLL_DOWN)
+
+    def action__view_go_activate(self, direction):
+        start_iter = self.model.get_iter( (self._get_selected_treepaths() or [(0,)])[-1] )
         def goto_iter(it):
             curpath = self.model.get_path(it)
             for i in range(len(curpath)-1):
                 self.treeview.expand_row( curpath[:i+1], 0)
             self.treeview.set_cursor(curpath)
-
         search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
         for it in search( start_iter ):
             state = int(self.model.get_state( it, 0))
