@@ -24,7 +24,7 @@ _share_dir = ( #SHAREDIR#
 )
 
 import sys
-appdir = os.path.dirname(sys.argv[0])
+appdir = os.path.dirname(__file__)
 
 if not _locale_dir: _locale_dir = os.path.join(appdir,"po")
 if not _doc_dir:    _doc_dir    = os.path.join(appdir,"manual")
