@@ -37,6 +37,37 @@ gdk = gtk.gdk
 
 ################################################################################
 #
+# FileDiffMenu
+#
+################################################################################
+class FileDiffMenu(gnomeglade.Component):
+    def __init__(self, app):
+        gladefile = misc.appdir("glade2/filediff.glade")
+        gnomeglade.Component.__init__(self, gladefile, "popup")
+        self.parent = app
+        self.pane = -1
+    def popup_in_pane( self, pane ):
+        self.pane = pane
+        self.copy_left.set_sensitive( pane > 0 )
+        self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
+        self.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
+    def on_save_activate(self, menuitem):
+        self.parent.save()
+    def on_save_as_activate(self, menuitem):
+        self.parent.save_file( self.pane, 1)
+    def on_cut_activate(self, menuitem):
+        print menuitem
+    def on_copy_activate(self, menuitem):
+        print menuitem
+    def on_paste_activate(self, menuitem):
+        print menuitem
+    def on_copy_left_activate(self, menuitem):
+        self.parent.copy_selected(-1)
+    def on_copy_right_activate(self, menuitem):
+        self.parent.copy_selected(1)
+
+################################################################################
+#
 # FileDiff
 #
 ################################################################################
@@ -65,7 +96,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self.linediffer = diffutil.Differ()
         for l in self.linkmap: # glade bug workaround
-            l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
+            l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK )
         for text in self.textview:
             buf = text.get_buffer()
             buf.set_data("meld", MeldBufferData() )
@@ -83,6 +114,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                       "foreground": self.prefs.color_replace_fg} )
             add_tag("conflict line", {"background": self.prefs.color_conflict_bg,
                                       "foreground": self.prefs.color_conflict_fg} )
+        self.popup_menu = FileDiffMenu(self)
         self.set_num_panes(num_panes)
             
     def _disconnect_buffer_handlers(self):
@@ -270,17 +302,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_copy_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            misc.safe_apply(t.get_buffer(),"copy_clipboard", ())
+            pass #XXX t.get_buffer().copy_clipboard()
 
     def on_cut_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            misc.safe_apply(t.get_buffer(),"cut_clipboard", ())
+            pass #XXX t.get_buffer().cut_clipboard()
 
     def on_paste_activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            misc.safe_apply(t.get_buffer(),"paste_clipboard", ())
+            pass #XXX t.get_buffer().paste_clipboard(None, 1)
+
+    def on_textview_button_press_event(self, textview, event):
+        if event.button == 3:
+            textview.grab_focus()
+            pane = self.textview.index(textview)
+            self.popup_menu.popup_in_pane( pane )
+            return 1
 
         #
         # text buffer loading/saving
@@ -312,8 +351,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if f:
                 b = self.textview[i].get_buffer()
                 b.delete( b.get_start_iter(), b.get_end_iter() )
-                self.fileentry[i].set_filename( os.path.abspath(f) )
-                b.set_data("meld", MeldBufferData(f))
+                absfile = os.path.abspath(f)
+                self.fileentry[i].set_filename(absfile)
+                b.set_data("meld", MeldBufferData(absfile))
         self.recompute_label()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
@@ -340,7 +380,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     tasks.append(task)
                 except IOError, e:
                     buffers[i].set_text("\n")
-                    misc.run_dialog("Could not open '%s' for reading.\n\nThe error was:\n%s" % (f, str(e)) )
+                    misc.run_dialog(
+                        "Could not open '%s' for reading.\n\nThe error was:\n%s" % (f, str(e)),
+                        parent = self)
             else:
                 panetext[i] = buffers[i].get_text( buffers[i].get_start_iter(), buffers[i].get_end_iter() )
         yield "[%s] Reading files" % self.label_text
@@ -357,8 +399,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     else:
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
-                        misc.run_dialog("Could not read from '%s'.\n\nI tried encodings %s."
-                            % (t.filename, try_codecs))
+                        misc.run_dialog(
+                            "Could not read from '%s'.\n\nI tried encodings %s." % (t.filename, try_codecs),
+                            parent = self)
                         tasks.remove(t)
                 else:
                     if len(nextbit):
@@ -457,27 +500,37 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         #yield 1
         yield 1
         
-    def save_file(self, pane):
+    def save_file(self, pane, saveas=0):
         buf = self.textview[pane].get_buffer()
         bufdata = buf.get_data("meld")
-        if not bufdata.filename:
+        if saveas or not bufdata.filename:
             fselect = gtk.FileSelection("Choose a name for buffer %i" % (pane+1))
+            fselect.set_transient_for(self.widget.get_toplevel() )
             response = fselect.run()
             if response != gtk.RESPONSE_OK:
                 fselect.destroy()
                 return gnomeglade.RESULT_ERROR
             else:
-                bufdata.filename = os.path.abspath(fselect.get_filename())
-                self.fileentry[pane].set_filename( bufdata.filename)
+                filename = fselect.get_filename()
                 fselect.destroy()
+                if os.path.exists(filename):
+                    response = misc.run_dialog(
+                        '"%s" exists!\nOverwrite?' % os.path.basename(filename),
+                        parent = self,
+                        buttonstype = gtk.BUTTONS_YES_NO)
+                    if response == gtk.RESPONSE_NO:
+                        return gnomeglade.RESULT_ERROR
+                bufdata.filename = os.path.abspath(filename)
+                self.fileentry[pane].set_filename( bufdata.filename)
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if bufdata.encoding:
             text = text.encode(bufdata.encoding)
         try:
             open(bufdata.filename, "w").write(text)
         except IOError, e:
-            misc.run_dialog( "Error writing to %s\n\n%s." % (bufdata.filename, e),
-                          gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
+            misc.run_dialog(
+                "Error writing to %s\n\n%s." % (bufdata.filename, e),
+                self, buttongtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
             return gnomeglade.RESULT_ERROR
         else:
             self.undosequence.clear()
@@ -492,12 +545,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf.get_data("meld").modified = yesno
         self.recompute_label()
 
-    def save_focused(self):
-        for i in range(self.num_panes):
-            t = self.textview[i]
-            if t.is_focus():
-                self.save_file(i)
-                return
+    def save(self):
+        pane = self._get_focused_pane()
+        if pane >= 0:
+            self.save_file(pane)
 
     def save_all(self):
         for i in range(self.num_panes):
@@ -509,6 +560,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             files = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
             self.set_files(files)
         return 1
+
+    def _get_focused_pane(self):
+        for i in range(self.num_panes):
+            if self.textview[i].is_focus():
+                return i
+        return -1
+
+    def copy_selected(self, direction):
+        assert direction in (-1,1)
+        src_pane = self._get_focused_pane()
+        dst_pane = src_pane + direction
+        assert dst_pane in range(self.num_panes)
+        buffers = [t.get_buffer() for t in self.textview]
+        text = buffers[src_pane].get_text( buffers[src_pane].get_start_iter(), buffers[src_pane].get_end_iter() )
+        self.on_text_begin_user_action()
+        buffers[dst_pane].set_text( text )
+        self.on_text_end_user_action()
+        self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src_pane].get_vadjustment() ) and None )
 
         #
         # refresh, _queue_refresh
@@ -621,18 +690,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_diffmap_button_press_event(self, area, event):
         #TODO need height of arrow button on scrollbar - how do we get that?
-        size_of_arrow = 14
-        diffmapindex = self.diffmap.index(area)
-        textindex = (0, self.num_panes-1)[diffmapindex]
-        textview = self.textview[textindex]
-        textheight = textview.get_allocation().height
-        fraction = (event.y - size_of_arrow) / (textheight - 2*size_of_arrow)
-        linecount = self._get_line_count(textindex)
-        wantline = misc.clamp(fraction * linecount, 0, linecount)
-        iter = textview.get_buffer().get_iter_at_line(wantline)
-        self.textview[textindex].scroll_to_iter(iter, 0.0, use_align=1, xalign=0, yalign=0.5)
-        gtk.idle_add( lambda *a : self.linkmap[0].grab_focus() )
-        return 1
+        if event.button == 1:
+            size_of_arrow = 14
+            diffmapindex = self.diffmap.index(area)
+            textindex = (0, self.num_panes-1)[diffmapindex]
+            textview = self.textview[textindex]
+            textheight = textview.get_allocation().height
+            fraction = (event.y - size_of_arrow) / (textheight - 2*size_of_arrow)
+            linecount = self._get_line_count(textindex)
+            wantline = misc.clamp(fraction * linecount, 0, linecount)
+            iter = textview.get_buffer().get_iter_at_line(wantline)
+            self.textview[textindex].scroll_to_iter(iter, 0.0, use_align=1, xalign=0, yalign=0.5)
+            gtk.idle_add( lambda *a : self.linkmap[0].grab_focus() )
+            return 1
 
     def _get_line_count(self, index):
         """Return the number of lines in the buffer of textview 'text'"""
@@ -788,85 +858,103 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.next_diff(event.direction)
 
     def on_linkmap_button_press_event(self, area, event):
-        self.focus_before_click = None
-        for t in self.textview:
-            if t.is_focus():
-                self.focus_before_click = t
-                break
-        area.grab_focus()
-        self.mouse_chunk = None
-        alloc = area.get_allocation()
-        (wtotal,htotal) = alloc.width, alloc.height
-        pix_width = self.pixbuf_apply0.get_width()
-        pix_height = self.pixbuf_apply0.get_height()
-        if self.keymask == MASK_CTRL: # hack
-            pix_height *= 2
+        if event.button == 1:
+            self.focus_before_click = None
+            for t in self.textview:
+                if t.is_focus():
+                    self.focus_before_click = t
+                    break
+            area.grab_focus()
+            self.mouse_chunk = None
+            alloc = area.get_allocation()
+            (wtotal,htotal) = alloc.width, alloc.height
+            pix_width = self.pixbuf_apply0.get_width()
+            pix_height = self.pixbuf_apply0.get_height()
+            if self.keymask == MASK_CTRL: # hack
+                pix_height *= 2
 
-        which = self.linkmap.index(area)
+            which = self.linkmap.index(area)
 
-        # quick reject are we near the gutter?
-        if event.x < pix_width:
-            side = 0
-            rect_x = 0
-        elif event.x > wtotal - pix_width:
-            side = 1
-            rect_x = wtotal - pix_width
-        else:
-            return  1
-        adj = self.scrolledwindow[which+side].get_vadjustment()
-        func = lambda c: c[1] * self.pixels_per_line - adj.value
+            # quick reject are we near the gutter?
+            if event.x < pix_width:
+                side = 0
+                rect_x = 0
+            elif event.x > wtotal - pix_width:
+                side = 1
+                rect_x = wtotal - pix_width
+            else:
+                return  1
+            adj = self.scrolledwindow[which+side].get_vadjustment()
+            func = lambda c: c[1] * self.pixels_per_line - adj.value
 
-        src = which + side
-        dst = which + 1 - side
-        for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
-            if c[0] == "insert":
-                continue
-            h = func(c)
-            if h < 0: # find first visible chunk
-                continue
-            elif h > htotal: # we've gone past last visible
-                break
-            elif h < event.y and event.y < h + pix_height:
-                self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
-                break
-        #print self.mouse_chunk
-        return 1
+            src = which + side
+            dst = which + 1 - side
+            for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
+                if c[0] == "insert":
+                    continue
+                h = func(c)
+                if h < 0: # find first visible chunk
+                    continue
+                elif h > htotal: # we've gone past last visible
+                    break
+                elif h < event.y and event.y < h + pix_height:
+                    self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
+                    break
+            #print self.mouse_chunk
+            return 1
+        elif event.button == 2:
+            self.linkmap_drag_coord = event.x
+
+    def on_linkmap_motion_notify_event(self, area, event):
+        return 
+        #dx = event.x - self.linkmap_drag_coord
+        #self.linkmap_drag_coord = event.x
+        #w,h = self.scrolledwindow0.size_request()
+        #w,h = size[2] - size[0], size[3] - size[1]
+        #self.scrolledwindow0.set_size_request(w+dx,h)
+        #print w+dx
+        #textview0.get_allocation(
+        #print misc.all(event)
 
     def on_linkmap_button_release_event(self, area, event):
-        if self.focus_before_click:
-            self.focus_before_click.grab_focus()
-            self.focus_before_click = None
-        if self.mouse_chunk:
-            (src,dst), rect, chunk = self.mouse_chunk
-            # check we're still in button
-            inrect = lambda p, r: ((r[0] < p.x) and (p.x < r[0]+r[2]) and (r[1] < p.y) and (p.y < r[1]+r[3]))
-            if inrect(event, rect):
-                # gtk tries to jump back to where the cursor was unless we move the cursor
-                self.textview[src].place_cursor_onscreen()
-                self.textview[dst].place_cursor_onscreen()
-                chunk = chunk[1:]
-                self.mouse_chunk = None
+        if event.button == 1:
+            if self.focus_before_click:
+                self.focus_before_click.grab_focus()
+                self.focus_before_click = None
+            if self.mouse_chunk:
+                (src,dst), rect, chunk = self.mouse_chunk
+                # check we're still in button
+                inrect = lambda p, r: ((r[0] < p.x) and (p.x < r[0]+r[2]) and (r[1] < p.y) and (p.y < r[1]+r[3]))
+                if inrect(event, rect):
+                    # gtk tries to jump back to where the cursor was unless we move the cursor
+                    self.textview[src].place_cursor_onscreen()
+                    self.textview[dst].place_cursor_onscreen()
+                    chunk = chunk[1:]
+                    self.mouse_chunk = None
 
-                if self.keymask & MASK_SHIFT: # delete
-                    b = self.textview[src].get_buffer()
-                    b.delete(b.get_iter_at_line(chunk[0]), b.get_iter_at_line(chunk[1]))
-                elif self.keymask & MASK_CTRL: # copy up or down
-                    b0 = self.textview[src].get_buffer()
-                    t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
-                    b1 = self.textview[dst].get_buffer()
-                    if event.y - rect[1] < 0.5 * rect[3]: # copy up
+                    if self.keymask & MASK_SHIFT: # delete
+                        b = self.textview[src].get_buffer()
+                        b.delete(b.get_iter_at_line(chunk[0]), b.get_iter_at_line(chunk[1]))
+                    elif self.keymask & MASK_CTRL: # copy up or down
+                        b0 = self.textview[src].get_buffer()
+                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
+                        b1 = self.textview[dst].get_buffer()
+                        if event.y - rect[1] < 0.5 * rect[3]: # copy up
+                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
+                        else: # copy down
+                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[3]), t0, "edited line")
+                    else: # replace
+                        b0 = self.textview[src].get_buffer()
+                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
+                        b1 = self.textview[dst].get_buffer()
+                        self.on_text_begin_user_action()
+                        b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
                         b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
-                    else: # copy down
-                        b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[3]), t0, "edited line")
-                else: # replace
-                    b0 = self.textview[src].get_buffer()
-                    t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
-                    b1 = self.textview[dst].get_buffer()
-                    self.on_text_begin_user_action()
-                    b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
-                    b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
-                    self.on_text_end_user_action()
-        return 1
+                        self.on_text_end_user_action()
+            return 1
+
+    def on_linkmap_drag_begin(self, *args):
+        print args
 
 ################################################################################
 #
