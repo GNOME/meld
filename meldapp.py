@@ -26,7 +26,7 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.5.5pre"
+version = "0.6.0"
 developer = 0
 
 ################################################################################
