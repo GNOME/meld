@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld 0.9.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-20 23:04+0200\n"
-"PO-Revision-Date: 2004-09-20 23:07+0200\n"
+"POT-Creation-Date: 2004-10-29 20:10+0200\n"
+"PO-Revision-Date: 2004-10-29 20:16+0200\n"
 "Last-Translator: Hendrik Brandt <eru@gmx.li>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Vergleichen und Zusammenführen von Dateien."
 msgid "Meld Diff Viewer"
 msgstr "Meld-Diff-Betrachter"
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -178,7 +178,7 @@ msgstr ""
 
 #. it is missing, create empty file
 #. XXX fixme
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -206,7 +206,7 @@ msgstr ""
 #. print "diffs", loidx, hiidx, len(diffs), lorange, hirange #diffs[loidx], diffs[hiidx-1]
 #. print "^^^^^", rangex, range1
 #. print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -362,7 +362,7 @@ msgstr ""
 #. next
 #. save if found and unique
 #. do the update
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -572,7 +572,7 @@ msgstr ""
 "Aufgrund inkompatibler Veränderungen des API werden einige Funktionennicht "
 "wie erwartet arbeiten."
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -688,19 +688,19 @@ msgstr " ist nur verfügbar, wenn Sie pysourceview installiert haben."
 #. Toolbar and menu items (misc)
 #.
 #. self.append_filediff( ("ntest/file9a", "ntest/file9b") )
-#: meldapp.py:735
+#: meldapp.py:736
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Es kann kein Mix aus Dateien und Verzeichnissen verglichen werden.\n"
 
-#: meldapp.py:737
+#: meldapp.py:738
 msgid "folder"
 msgstr "Verzeichnis"
 
-#: meldapp.py:738
+#: meldapp.py:739
 msgid "file"
 msgstr "Datei"
 
-#: meldapp.py:739
+#: meldapp.py:740
 msgid "nonexistant"
 msgstr "nicht vorhanden"
 
@@ -715,7 +715,7 @@ msgstr "nicht vorhanden"
 #. usage
 #.
 #. ###############################################################################
-#: meldapp.py:794
+#: meldapp.py:795
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -725,24 +725,33 @@ msgid ""
 "    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
 "    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
 "\n"
+"Options:\n"
+"    -h, --help                  Show this help text and exit\n"
+"    -v, --version               Display the version and exit\n"
+"\n"
 "For more information choose help -> contents.\n"
 "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"stevek@gnome.org\n"
+"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
 msgstr ""
 "Meld ist ein Werkzeug zum Vergleichen von Dateien und Verzeichnissen.\n"
-"Anwendung:\n"
+"Verwendung:\n"
 "\n"
-"    meld                        Start ohne das Fenster geöffnet sind\n"
+"    meld                        Start ohne das Fenster geöffnet werden\n"
 "    meld <dir>                  Start mit CVS-Browser im Verzeichnis »dir«\n"
 "    meld <file>                 Start mit CVS diff von Datei »file«\n"
-"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
-"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
+"    meld <file> <file> [file]   Start mit 2- oder 3-Wege-Dateivergleich\n"
+"    meld <dir>  <dir>  [dir]    Start mit 2- oder 3-Wege-Verzeichnisvergleich\n"
 "\n"
-"For more information choose help -> contents.\n"
-"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
+"Optionen:\n"
+"    -h, --help                  Diese Hilfe anzeigen\n"
+"    -v, --version               Die aktuelle Programmversion anzeigen\n"
+"\n"
+"Schauen Sie für weitergehende Informationen unter Hilfe -> Inhalt nach.\n"
+"Melden Sie Fehler bitte an:\n"
+"http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
 "stevek@gnome.org\n"
 
-#: meldapp.py:807
+#: meldapp.py:812
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -756,12 +765,12 @@ msgstr ""
 #. Main
 #.
 #. ###############################################################################
-#: meldapp.py:860
+#: meldapp.py:865
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Falsche Argument"
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -778,7 +787,7 @@ msgstr "Falsche Argument"
 msgid "untitled"
 msgstr "unbenannt"
 
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -802,7 +811,7 @@ msgstr "[Nichts]"
 #. how many chars?
 #. ick need to fix
 #. allow single arguments to be passed as is.
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -822,7 +831,7 @@ msgstr "[Nichts]"
 #. unknown key, we don't care about it
 #. value has changed
 #. value has been deleted
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -852,7 +861,7 @@ msgstr "[Nichts]"
 #. m.add_task( s )
 #. s.complete_tasks()
 #. time.sleep(3)
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
@@ -890,7 +899,7 @@ msgstr "[Nichts]"
 #. CONFLICT
 #. REMOVED
 #. MISSING
-#. ## Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
+#. ## Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 #. ## This program is free software; you can redistribute it and/or modify
 #. ## it under the terms of the GNU General Public License as published by
 #. ## the Free Software Foundation; either version 2 of the License, or
