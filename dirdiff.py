@@ -360,12 +360,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     elif os.path.isdir(src):
                         if os.path.exists(dst):
                             if misc.run_dialog("'%s' exists.\nOverwrite?" % os.path.basename(dst),
-                                    buttonstype=gtk.BUTTONS_OK_CANCEL) != gtk.RESPONSE_OK:
+                                    parent = self,
+                                    buttonstype = gtk.BUTTONS_OK_CANCEL) != gtk.RESPONSE_OK:
                                 continue
                         misc.copytree(src, dst)
                         self.recursively_update( path )
                 except OSError, e:
-                    misc.run_dialog("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
+                    misc.run_dialog("Error copying '%s' to '%s'\n\n%s." % (src, dst,e), self)
 
     def delete_selected(self):
         """Delete all selected files/folders recursively.
@@ -384,11 +385,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.file_deleted( path, pane) #xxx
                     elif os.path.isdir(name):
                         if misc.run_dialog("'%s' is a directory.\nRemove recusively?" % os.path.basename(name),
+                                parent = self,
                                 buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                             shutil.rmtree(name)
                             self.recursively_update( path )
                 except OSError, e:
-                    misc.run_dialog("Error removing %s\n\n%s." % (name,e))
+                    misc.run_dialog("Error removing %s\n\n%s." % (name,e), parent = self)
 
     def on_treeview_row_activated(self, view, path, column):
         iter = self.model.get_iter(path)
