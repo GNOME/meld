@@ -129,4 +129,5 @@ announce:
 	
 .PHONY:backup
 backup:
-	tar cvfz ~/archive/meld-`date -I`.tgz .
+	tar cvfz ~/archive/meld-`date -I`.tgz --exclude='*.pyc' --exclude='*.bak' --exclude='*.swp' .
+	@echo Created ~/archive/meld-`date -I`.tgz
