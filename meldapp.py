@@ -4,10 +4,6 @@
 import sys
 import os
 
-# pygtk
-import pygtk
-pygtk.require("2.0")
-
 # gnome
 import gtk
 import gtk.glade

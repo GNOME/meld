@@ -1,9 +1,32 @@
 #! /usr/bin/env python
 
+pyver = (2,2)
+pygtkver = (1,99,15)
+
+def ver2str(ver):
+    return ".".join(map(str,ver))
+
+import sys
+if sys.version_info[:2] < pyver:
+    print "Meld requires python%s or higher to run." % ver2str(pyver)
+    sys.exit(1)
+
+try:
+    import pygtk
+except ImportError, e:
+    print e
+    print "Meld requires a recent version of pygtk to run."
+    print "pygtk-%s or higher is recommended." % ver2str(pygtkver)
+    sys.exit(1)
+else:
+    pygtk.require("2.0")
+
+import gtk
+if gtk.pygtk_version < pygtkver:
+    print "Meld works best with pygtk-%s." % ver2str(pygtkver)
+    print "Some functions may not operate as expected"
+
 import meldapp
-
-if __name__=="__main__":
-    #import profile
-    #profile.run("meldapp.main()", "profile.meld")
-    meldapp.main()
-
+#import profile
+#profile.run("meldapp.main()", "profile.meld")
+meldapp.main()
