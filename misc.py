@@ -29,19 +29,47 @@ class struct:
 
 ################################################################################
 #
+# equal
+#
+################################################################################
+def equal(list):
+    if len(list):
+        first = list[0]
+        for n in list[1:]:
+            if n != first:
+                return 0
+    return 1
+    
+################################################################################
+#
 # shorten_names
 #
 ################################################################################
 def shorten_names(*names):
     """Remove redunant parts of a list of names (e.g. /tmp/foo{1,2} -> foo{1,2}"""
-    prefix = os.path.commonprefix( filter(lambda x: x, names) )
-    lastslash = prefix.rfind("/") + 1
-    if lastslash != 0:
-        # strip leading path from name. empty names get changed to "[None]"
-        return [ (n[lastslash:],"[None]")[n.strip()==""] for n in names ]
+    prefix = os.path.commonprefix( names )
+    try:
+        prefixslash = prefix.rindex("/") + 1
+    except ValueError:
+        prefixslash = 0
+
+    names = map( lambda x: x[prefixslash:], names) # remove common prefix
+    paths = map(lambda x: x.split("/"), names) # split on /
+
+    try:
+        basenames = map(lambda x: x[-1], paths)
+    except IndexError:
+        pass
     else:
-        # no common path. empty names get changed to "[None]"
-        return map( lambda x: x or "[None]", names)
+        if equal(basenames):
+            def firstpart(list):
+                if len(list): return list[0]
+                else: return ""
+            roots = map(firstpart, paths)
+            base = basenames[0].strip()
+            return [ "[%s] %s" % (r,base) for r in roots ]
+    # no common path. empty names get changed to "[None]"
+    return map( lambda x: x or "[None]", names)
 
 ################################################################################
 #

@@ -1,4 +1,4 @@
-#! python
+## python
 import math
 import gtk
 import gobject
@@ -111,7 +111,7 @@ class FileDiff(gnomeglade.Component):
         self.prefs = misc.struct(
             deleted_color="#ffffcc",
             changed_color="#ffffcc",
-            edited_color="#cccccc",
+            edited_color="#eeeeee",
             conflict_color="#ffcccc")
         self.keymask = 0
 
@@ -425,7 +425,7 @@ class FileDiff(gnomeglade.Component):
         for c in self.linediffs.single_changes(which):
             start = buffer.get_iter_at_line(c[1])
             end =   buffer.get_iter_at_line(c[2])
-            if c[0] == "replace":
+            if c[0] == "insert" or c[0] == "replace":
                 buffer.apply_tag(tag_replace_line, start,end)
             elif c[0] == "delete":
                 buffer.apply_tag(tag_delete_line, start,end)
@@ -568,11 +568,9 @@ class FileDiff(gnomeglade.Component):
         # quick reject are we near the gutter?
         if event.x < pix_width:
             side = 0
-            skip_type = "insert"
             rect_x = 0
         elif event.x > wtotal - pix_width:
             side = 1
-            skip_type = "delete"
             rect_x = wtotal - pix_width
         else:
             return
@@ -582,7 +580,7 @@ class FileDiff(gnomeglade.Component):
         src = which + side
         dst = which + 1 - side
         for c in self.linediffs.pair_changes(src,dst):
-            if c[0] == skip_type:
+            if c[0] == "insert":
                 continue
             h = func(c)
             if h < 0: # find first visible chunk
@@ -592,6 +590,7 @@ class FileDiff(gnomeglade.Component):
             elif h < event.y and event.y < h + pix_height:
                 self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
                 break
+        print self.mouse_chunk
 
     def on_linkmap_button_release_event(self, area, event):
         if self.mouse_chunk:

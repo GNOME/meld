@@ -1,4 +1,4 @@
-#! python
+## python
 
 # todo use .cvsignore
 

@@ -1,19 +1,21 @@
 
-PROG := python2.2 -t ./meld
-TESTNUM := 2
+PROG := ./meld
+TESTNUM := 5
 VERSION := $(shell python2.2 -c "import meldapp; print meldapp.version")
 RELEASE := meld-$(VERSION)
 
-run : rundiff
-#run : runcvs
+run0 : rundiff
+	echo
+
+run1 : runcvs
+	echo
 
 rundiff:
 #	$(PROG) test/lao test/tzu test/tao
 	$(PROG) test/file$(TESTNUM)*
 
 runcvs: 
-	(cd . && $(PROG) .)
-	#(cd .. && meld/$(PROG) meld)
+	(cd .. && meld/$(PROG) meld)
 	#(cd ../.. && Projects/meld/$(PROG) Projects/meld)
 
 checkfortabs:

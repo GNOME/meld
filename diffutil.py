@@ -1,4 +1,4 @@
-#! /usr/bin/env python2.2
+## /usr/bin/env python2.2
 
 from __future__ import generators
 import difflib
