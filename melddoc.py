@@ -63,7 +63,7 @@ class MeldDoc(gobject.GObject):
                 cmd = self.prefs.get_custom_editor_command(files)
                 os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
 
-    def on_undo_activate(self):
+    def action__undo(self):
         if self.undosequence.can_undo():
             self.undosequence_busy = 1
             try:
@@ -71,7 +71,7 @@ class MeldDoc(gobject.GObject):
             finally:
                 self.undosequence_busy = 0
 
-    def on_redo_activate(self):
+    def action__redo(self):
         if self.undosequence.can_redo():
             self.undosequence_busy = 1
             try:
