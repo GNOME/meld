@@ -429,8 +429,10 @@ class FileDiff(gnomeglade.Component):
         return self.textview[index].get_buffer().get_line_count()
 
     def set_num_panes(self, numpanes):
-        if numpanes != self.numpanes and numpanes in (2,3):
-            if numpanes == 2:
+        if numpanes != self.numpanes and numpanes in (1,2,3):
+            if numpanes == 1:
+                map( lambda x: x.hide(), self.linkmap + self.scrolledwindow[1:] + self.fileentry[1:])
+            elif numpanes == 2:
                 self.linkmap1.hide()
                 self.scrolledwindow2.hide()
                 self.fileentry2.hide()

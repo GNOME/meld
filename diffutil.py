@@ -119,7 +119,7 @@ class Differ:
 
     def __init__(self, *text):
         # diffs are stored from text1 -> text0 and text1 -> text2 for consistency
-        if len(text)==0:
+        if len(text)==0 or len(text)==1:
             self.diffs = ([], [])
         elif len(text)==2:
             seq0 = difflib.SequenceMatcher(None, text[1].split("\n"), text[0].split("\n")).get_opcodes()

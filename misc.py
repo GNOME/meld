@@ -70,7 +70,7 @@ def read_pipe(command):
                 break
         except IOError, e:
             if e.errno != errno.EINTR:
-                break
+                raise
     return "".join(r)
 
 ################################################################################

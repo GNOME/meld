@@ -211,7 +211,7 @@ class MeldApp(gnomeglade.App):
     def append_filediff3(self, file0, file1, file2):
         self.append_filediff( (file0, file1, file2) )
     def append_filediff(self, files):
-        assert len(files)==2 or len(files)==3
+        assert len(files) in (1,2,3)
         nfiles = len(files)
         doc = filediff.FileDiff(nfiles, self.statusbar)
         for i in range(nfiles):

@@ -1,5 +1,7 @@
 #! python
 
+# todo use .cvsignore
+
 import tempfile
 import gobject
 import shutil
@@ -24,76 +26,106 @@ class Entry:
         self.parent, self.name = os.path.split(path)
         #print self.parent, self.name
     def __str__(self):
-        return self.name
+        return "%s %s" % (self.name, (self.path, self.isdir, self.parent))
     def __repr__(self):
         return self.name
 
-CVS_NONE, CVS_NORMAL, CVS_MODIFIED = range(3)
+CVS_NONE, CVS_NORMAL, CVS_MODIFIED, CVS_MISSING = range(4)
 
 class Dir(Entry):
-    def __init__(self, path, name):
+    def __init__(self, path, name, state):
         Entry.__init__(self, path, name)
-        if os.path.exists( os.path.join(self.path, "CVS")):
-            self.cvs = CVS_NORMAL
-        else:
-            self.cvs = CVS_NONE
+        self.cvs = state 
         self.isdir = 1
 
-         
 class File(Entry):
-    def __init__(self, path, name):
+    def __init__(self, path, name, status):
         Entry.__init__(self, path, name)
-        try: #todo optimse
-            entries = open( os.path.join(self.parent, "CVS/Entries")).read()
-            #print "*", self.parent, "*", name
-            match = re.search("^/%s/(.+)$" % name, entries, re.M)
-            if match:
-                self.cvs = 1
-                rev, date, junk0, junk1 = match.group(1).split("/")
-                if date=="dummy timestamp":
-                    self.cvs = CVS_MODIFIED
-                else:
-                    cotime = time.mktime( time.strptime(date) )
-                    mtime = os.stat(path).st_mtime
-                    if mtime==cotime:
-                        self.cvs = CVS_NORMAL
-                    else:
-                        self.cvs = CVS_MODIFIED
+        self.cvs = status
+
+def _lookup_cvs_files(files, dirs):
+    "files is array of (name, path). assume all files in same dir"
+    if len(files):
+        directory = os.path.dirname(files[0][1])
+    elif len(dirs):
+        directory = os.path.dirname(dirs[0][1])
+    else:
+        return [],[]
+
+    try:
+        entries = open( os.path.join(directory, "CVS/Entries")).read()
+    except IOError, e:
+        d = map(lambda x: Dir(x[1],x[0], CVS_NONE), dirs) 
+        f = map(lambda x: File(x[1],x[0], CVS_NONE), files) 
+        return d,f
+
+    retfiles = []
+    retdirs = []
+    matches = re.findall("^(D?)/([^/]+)/(.+)$(?m)", entries)
+
+    for match in matches:
+        isdir = match[0]
+        name = match[1]
+        path = os.path.join(directory, name)
+        rev, date, junk0, junk1 = match[2].split("/")
+        if isdir:
+            state = os.path.exists(path) and CVS_NORMAL or CVS_MISSING
+            retdirs.append( Dir(path,name,state) )
+        else:
+            if date=="dummy timestamp":
+                state = CVS_MODIFIED
             else:
-                self.cvs = CVS_NONE
-        except IOError, e:
-            self.cvs = CVS_NONE
+                cotime = time.mktime( time.strptime(date) )
+                try:
+                    mtime = os.stat(path).st_mtime
+                except OSError:
+                    state = CVS_MISSING
+                else:
+                    if mtime==cotime:
+                        state = CVS_NORMAL
+                    else:
+                        state = CVS_MODIFIED
+            retfiles.append( File(path, name, state) )
+    # find missing
+    cvsfiles = map(lambda x: x[1], matches)
+    for f,path in files:
+        if f not in cvsfiles:
+            retfiles.append( File(path, f, CVS_NONE) )
+    for d,path in dirs:
+        if d not in cvsfiles:
+            retdirs.append( Dir(path, d, CVS_NONE) )
+
+    return retdirs, retfiles
 
 ################################################################################
 #
 # Local Functions
 #
 ################################################################################
-def _find(start, cull=0):
+def _find(start):
     cfiles = []
     cdirs = []
-    for f in filter(lambda x: x!="CVS", os.listdir(start)):
+    try:
+        entries = os.listdir(start)
+    except OSError:
+        entries = []
+    for f in filter(lambda x: x!="CVS", entries):
         fname = os.path.join(start,f)
-        lname = fname[cull:]
+        lname = fname
         if os.path.isdir(fname):
             cdirs.append( (f, lname) )
         else:
             cfiles.append( (f, lname) )
-    cfiles.sort()
-    cdirs.sort()
-    cfiles = map(lambda x: File(x[1],x[0]), cfiles )
-    cdirs  = map(lambda x: Dir(x[1],x[0]), cdirs )
-    return cdirs, cfiles
+    return _lookup_cvs_files(cfiles, cdirs)
 
 def recursive_find(start, progressfunc):
     if start=="":
         start="."
     ret = []
-    cull = len(start) + (start[-1]!="/")
     def visit(arg, dirname, names):
         try: names.remove("CVS")
         except ValueError: pass
-        dirs, files = _find(dirname, cull)
+        dirs, files = _find(dirname)
         ret.extend( dirs )
         ret.extend( files )
         progressfunc()
@@ -122,9 +154,9 @@ class CvsView(gnomeglade.Component):
     MODIFIED_FILTER_MASK, UNKNOWN_FILTER_MASK = 1,2
 
     filters = [lambda x: x.cvs != CVS_NONE,
-               lambda x: x.cvs == CVS_MODIFIED or (x.cvs and x.isdir == 1),
+               lambda x: x.cvs > CVS_NORMAL or (x.cvs and x.isdir),
                lambda x: 1, 
-               lambda x: x.cvs in [CVS_NONE,CVS_MODIFIED]  ]
+               lambda x: x.cvs in [CVS_NONE,CVS_MODIFIED,CVS_MISSING] or x.isdir  ]
 
     def __init__(self, location=None):
         self.__gobject_init__()
@@ -132,9 +164,10 @@ class CvsView(gnomeglade.Component):
 
         self.image_dir = gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-folder.png", 14)
         self.image_file= gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-file-c.png", 14)
-        self.treemodel = gtk.TreeStore( type(self.image_dir), type(""), type(""), type(""), type("")  )
+        self.treemodel = gtk.TreeStore( type(self.image_dir), type(""), type(""), type(""), gobject.TYPE_PYOBJECT )
         self.treeview.set_model(self.treemodel)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.treeview.set_headers_visible(0)
         tvc = gtk.TreeViewColumn()
         renpix = gtk.CellRendererPixbuf()
         rentext = gtk.CellRendererText()
@@ -149,17 +182,35 @@ class CvsView(gnomeglade.Component):
         rentext = gtk.CellRendererText()
         tvc.pack_start(rentext, 0)
         tvc.add_attribute(rentext, "text", 3)
-        #tvc.add_attribute(rentext, "foreground", 2)
         self.treeview.append_column(tvc)
 
-        self.colors = ["#888888", "#000000", "#ff0000"]
+        self.colors = ["#888888", "#000000", "#ff0000", "#0000ff"]
+        self.status = ["", "", "modified", "missing"]
 
         self.location = None
         self.set_location(location)
 
+    def on_row_activated(self, treeview, path, tvc):
+        iter = self.treemodel.get_iter(path)
+        entry = self.treemodel.get_value(iter, 4)
+        if not entry: return
+        if entry.isdir:
+            if self.treeview.row_expanded(path):
+                self.treeview.collapse_row(path)
+            else:
+                self.treeview.expand_row(path,0)
+        else:
+            if entry.cvs == CVS_MODIFIED:
+                patch = misc.read_pipe("cvs -z3 diff -u %s" % entry.path)
+                if patch:
+                    print entry.path, "\n", patch
+                    self.show_patch(patch)
+                    return
+            self.emit("create-diff", [entry.path])
+
     def on_row_expanded(self, tree, me, path):
         model = self.treemodel
-        location = model.get_value( me, 4 )
+        location = model.get_value( me, 4 ).path
 
         filtermask = 0
         if self.button_modified.get_active():
@@ -180,7 +231,7 @@ class CvsView(gnomeglade.Component):
                     model.set_value(iter, 1, f.name )
                     model.set_value(iter, 2, self.colors[f.cvs] )
                     model.set_value(iter, 3, f.parent )
-                    model.set_value(iter, 4, f.path)
+                    model.set_value(iter, 4, f)
             self.emit("working-hard", 0)
         else:
             files = filter(showable, find(location))
@@ -194,8 +245,8 @@ class CvsView(gnomeglade.Component):
                 else:
                     model.set_value(iter, 0, self.image_file )
                 model.set_value(iter, 2, self.colors[f.cvs] )
-                model.set_value(iter, 3, "")
-                model.set_value(iter, 4, f.path)
+                model.set_value(iter, 3, self.status[f.cvs])
+                model.set_value(iter, 4, f)
         if len(files):
             child = model.iter_children(me)
             model.remove(child)
@@ -219,13 +270,14 @@ class CvsView(gnomeglade.Component):
             self.treemodel.set_value( root, 1, location )
             self.treemodel.set_value( root, 2, self.colors[1])
             self.treemodel.set_value( root, 3, "")
-            self.treemodel.set_value( root, 4, location )
+            self.treemodel.set_value( root, 4, Dir(location,location, CVS_NORMAL) )
             child = self.treemodel.append(root)
             self.treemodel.set_value(child, 1, "<empty>" )
             self.treeview.expand_row(self.treemodel.get_path(root), 0)
         else: #not location:
             self.location = location
         self.label_changed()
+
 
     def on_button_recurse_toggled(self, button):
         self.refresh()
@@ -245,7 +297,7 @@ class CvsView(gnomeglade.Component):
     def _get_selected_files(self):
         ret = []
         def gather(model, path, iter):
-            ret.append( model.get_value(iter,4) )
+            ret.append( model.get_value(iter,4).path )
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
         return filter(lambda x: x!=None, ret)
@@ -271,7 +323,11 @@ class CvsView(gnomeglade.Component):
         self.refresh()
     def on_button_diff_clicked(self, object):
         print "Getting diff"
-        patch = self._command("cvs -q diff -u")
+        patch = self._command("cvs -z3 -q diff -u")
+        print patch
+        self.show_patch(patch)
+
+    def show_patch(self, patch):
         if not patch: return
 
         print "Copying files"
@@ -287,7 +343,10 @@ class CvsView(gnomeglade.Component):
 
             if not os.path.exists(destdir):
                 os.makedirs(destdir)
-            shutil.copyfile(file, destfile)
+            try:
+                shutil.copyfile(file, destfile)
+            except IOError: # missing, create empty file
+                open(destfile,"w").close()
             diffs.append( (destfile, file) )
 
         misc.write_pipe("patch --strip=0 --reverse --directory=%s" % tmpdir, patch)
