@@ -355,6 +355,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( self._search_recursively_iter( path ).next )
 
     def _search_recursively_iter(self, rootpath):
+        self.filter_hide_current.set_sensitive(False)
         yield _("[%s] Scanning") % self.label_text
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         symlinks_followed = {} # only follow symlinks once
@@ -470,6 +471,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     level += 1
                     self.treeview[0].expand_row( path[:level], 0)
         yield _("[%s] Done") % self.label_text
+        self.filter_hide_current.set_sensitive(True)
 
     def launch_comparison(self, iter, pane, force=1):
         """Launch comparison at 'iter'. 
