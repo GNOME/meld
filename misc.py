@@ -24,7 +24,9 @@ import sys
 import os
 import select
 import popen2
+import errno
 import gtk
+import shutil
 
 def run_dialog( text, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK):
     d = gtk.MessageDialog(None,
@@ -218,3 +220,20 @@ def escape(s):
     s = s.replace(">", "&gt;")
     return s
 
+def copytree(src, dst, symlinks=1):
+    try:
+        os.mkdir(dst)
+    except OSError, e:
+        if e.errno != errno.EEXIST:
+            raise
+    names = os.listdir(src)
+    for name in names:
+        srcname = os.path.join(src, name)
+        dstname = os.path.join(dst, name)
+        if symlinks and os.path.islink(srcname):
+            linkto = os.readlink(srcname)
+            os.symlink(linkto, dstname)
+        elif os.path.isdir(srcname):
+            copytree(srcname, dstname, symlinks)
+        else:
+            shutil.copy2(srcname, dstname)
