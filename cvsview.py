@@ -223,7 +223,7 @@ class CvsView(gnomeglade.Component):
                lambda x: 1, 
                lambda x: x.cvs in [CVS_NONE,CVS_MODIFIED,CVS_MISSING] or x.isdir  ]
 
-    def __init__(self, statusbar, location=None):
+    def __init__(self, statusbar):
         gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "cvsview")
         self.statusbar = statusbar
         self.tempfiles = []
@@ -279,9 +279,7 @@ class CvsView(gnomeglade.Component):
 
         self.colors = ["#888888", "#000000", "#ff0000", "#0000ff"]
         self.status = ["", "", "modified", "missing"]
-
         self.location = None
-        self.set_location(location)
 
     def on_quit_event(self):
         for f in self.tempfiles:
@@ -386,24 +384,19 @@ class CvsView(gnomeglade.Component):
         return 0
 
     def set_location(self, location):
-        location = os.path.abspath(location)
         self.treemodel.clear()
-        if location:
-            self.location = location
-            self.fileentry.gtk_entry().set_text(location)
-            root = self.treemodel.append(None)
-            self.treemodel.set_value( root, MODEL_PIXMAP, self.image_dir )
-            self.treemodel.set_value( root, MODEL_NAME, location )
-            self.treemodel.set_value( root, MODEL_COLOR, self.colors[1])
-            self.treemodel.set_value( root, MODEL_STATUS, "")
-            self.treemodel.set_value( root, MODEL_ENTRY, Dir(location,location, CVS_NORMAL) )
-            child = self.treemodel.append(root)
-            self.treemodel.set_value(child, MODEL_NAME, "<empty>" )
-            self.treeview.expand_row(self.treemodel.get_path(root), 0)
-        else: #not location:
-            self.location = location
+        self.location = location = os.path.abspath(location or ".")
+        self.fileentry.gtk_entry().set_text(location)
+        root = self.treemodel.append(None)
+        self.treemodel.set_value( root, MODEL_PIXMAP, self.image_dir )
+        self.treemodel.set_value( root, MODEL_NAME, location )
+        self.treemodel.set_value( root, MODEL_COLOR, self.colors[1])
+        self.treemodel.set_value( root, MODEL_STATUS, "")
+        self.treemodel.set_value( root, MODEL_ENTRY, Dir(location, location, CVS_NORMAL) )
+        child = self.treemodel.append(root)
+        self.treemodel.set_value(child, MODEL_NAME, "<empty>" )
+        self.treeview.expand_row(self.treemodel.get_path(root), 0)
         self.label_changed()
-
 
     def on_button_recurse_toggled(self, button):
         self.treeview_column_location.set_visible( self.button_recurse.get_active() )
@@ -427,6 +420,8 @@ class CvsView(gnomeglade.Component):
         return map(lambda x: x[-1]!="/" and x or x[:-1], filter(lambda x: x!=None, ret))
 
     def _command(self, command, files, refresh=1):
+        """Run 'command' on 'files'. Return a tuple of the directory the
+           command was executed in and the output of the command."""
         def progress():
             self.emit("working-hard", 1)
             self.flushevents()

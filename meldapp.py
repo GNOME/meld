@@ -400,43 +400,38 @@ class MeldApp(gnomeglade.GnomeApp):
             self.notebook.remove_page(i)
 
     def _append_page(self, page):
-        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(page))
-        self.notebook.append_page( page, nbl)
-        self.notebook.set_current_page( self.notebook.page_num(page) )
+        nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(page.widget))
+        self.notebook.append_page( page.widget, nbl)
+        self.notebook.set_current_page( self.notebook.page_num(page.widget) )
 
     def append_dirdiff(self, dirs):
-        ndirs = len(dirs)
-        doc = dirdiff.DirDiff(ndirs, self.statusbar)
-        for i in range(ndirs):
-            doc.set_location(dirs[i], i)
-        self._append_page(doc.widget)
+        assert len(dirs) in (1,2,3)
+        doc = dirdiff.DirDiff(len(dirs), self.statusbar)
+        self._append_page(doc)
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
-        doc.label_changed()
-        doc.refresh()
+        doc.set_locations(dirs)
 
     def append_filediff(self, files):
         assert len(files) in (1,2,3)
-        nfiles = len(files)
-        doc = filediff.FileDiff(nfiles, self.statusbar, self.prefs)
+        doc = filediff.FileDiff(len(files), self.statusbar, self.prefs)
         seq = doc.undosequence
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
         seq.connect("can-redo", self.on_can_redo)
-        self._append_page(doc.widget)
+        self._append_page(doc)
         doc.connect("label-changed", self.on_notebook_label_changed)
-        doc.label_changed()
         doc.set_files(files)
 
     def append_cvsview(self, locations):
+        assert len(locations) in (1,)
         location = locations[0]
-        doc = cvsview.CvsView(self.statusbar, location)
-        self._append_page(doc.widget)
+        doc = cvsview.CvsView(self.statusbar)
+        self._append_page(doc)
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.connect("working-hard", self.on_working_hard)
         doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
-        doc.label_changed()
-        doc.refresh()
+        doc.set_location(location)
 
     #
     # Current doc actions
@@ -477,10 +472,7 @@ usage_string = """Meld is a file and directory comparison tool. Usage:
     meld <dir>                  Start with CVS browser in 'dir'
     meld <file>                 Start with CVS diff of 'file'
     meld <file> <file> [file]   Start with 2 or 3 way file comparison
-    meld <dir> <dir> [dir]      Start with 2 or 3 way directory comparison
-
-CVS browser is alpha. For best results, chdir to the top level
-of your source tree and run `meld .'
+    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison
 
 For more information choose help -> contents.
 Report bugs to steve9000@users.sourceforge.net.

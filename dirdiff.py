@@ -153,8 +153,6 @@ class DirDiff(gnomeglade.Component):
     def __init__(self, num_panes, statusbar):
         gnomeglade.Component.__init__(self, misc.appdir("glade2/dirdiff.glade"), "dirdiff")
         self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
-        self.num_panes = 0
-        self.set_num_panes(num_panes)
         self.statusbar = statusbar
         self.undosequence = undo.UndoSequence()
         self.lock = 0
@@ -183,6 +181,8 @@ class DirDiff(gnomeglade.Component):
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
         #self.linediffs = [DiffMap(),DiffMap()]
+        self.num_panes = 0
+        self.set_num_panes(num_panes)
 
     def _do_to_others(self, master, objects, methodname, args):
         for o in filter(lambda x:x!=master, objects):
@@ -222,24 +222,24 @@ class DirDiff(gnomeglade.Component):
         return self.fileentry[pane].get_full_path(0) or ""
 
     def on_fileentry_activate(self, entry):
-        pane = self.fileentry.index(entry)
-        loc = entry.get_full_path(0)
-        self.set_location(loc, pane)
+        locs = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
+        self.set_locations(locs)
 
-    def set_location(self, loc, pane):
-        loc = os.path.abspath(loc or ".")
-        self.fileentry[pane].set_filename(loc)
-        self.statusbar.add_status( "Set location %i %s" % (pane, loc) )
+    def set_locations(self, locations):
+        self.set_num_panes(len(locations))
+        for pane, loc in misc.enumerate(locations):
+            loc = os.path.abspath(loc or ".")
+            self.fileentry[pane].set_filename(loc)
+            self.statusbar.add_status( "Set location %i %s" % (pane, loc) )
+            self.model.clear()
+            root = self.model.append(None)
+            child = self.model.append(root)
+            self.model.set_value( root, PATH, "")
+            self.model.set_value(child, PATH, "")
+            l = self.fileentry[pane].get_full_path(0) or ""
+            self.model.set_value( root, pane+TEXT, os.path.basename(l))
+            self.model.set_value( root, pane+ICON, self.pixbuf_folder)
         self.label_changed()
-        self.model.clear()
-        root = self.model.append(None)
-        child = self.model.append(root)
-        self.model.set_value( root, PATH, "")
-        self.model.set_value(child, PATH, "")
-        for i in range(self.num_panes):
-            l = self.fileentry[i].get_full_path(0) or ""
-            self.model.set_value( root, i+TEXT, os.path.basename(l))
-            self.model.set_value( root, i+ICON, self.pixbuf_folder)
         self.treeview[pane].expand_row(self.model.get_path(root), 0)
 
     def launch_comparison(self, file):
@@ -429,15 +429,17 @@ class DirDiff(gnomeglade.Component):
 
     def set_num_panes(self, n):
         if n != self.num_panes and n in (1,2,3):
-            self.num_panes = n
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
             map( lambda x: x.show(), toshow )
-
             tohide =  self.scrolledwindow[n:] + self.fileentry[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
             map( lambda x: x.hide(), tohide )
-            self.label_changed()
+            if self.num_panes != 0: # not first time through
+                self.num_panes = n
+                self.on_fileentry_activate(None)
+            else:
+                self.num_panes = n
 
     def refresh(self):
         pass        

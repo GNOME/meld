@@ -1,5 +1,6 @@
 ## python
 
+from __future__ import generators
 import errno
 import sys
 import os
@@ -142,3 +143,15 @@ def safe_apply(object, method, args):
 def clamp(val, lower, upper):
     assert lower <= upper
     return min( max(val, lower), upper)
+
+################################################################################
+#
+# clamp
+#
+################################################################################
+def enumerate(seq):
+    i = 0
+    for s in seq:
+        yield (i,s)
+        i += 1
+

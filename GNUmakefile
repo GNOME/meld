@@ -13,7 +13,8 @@ rundiff:
 	#$(PROG) ../old/meld-2003-03-01 . #../old/meld-2002-12-21
 	#$(PROG) test/lao test/tzu test/tao
 	#$(PROG) hkBaseSystem.cpp hkBaseSystem.cpp
-	$(PROG) ntest/file$(TESTNUM)*
+	#$(PROG) ntest/file$(TESTNUM)*
+	$(PROG) ntest/file$(TESTNUM)a ntest/file$(TESTNUM)a
 	#$(PROG) ../old/meld-2002-11-12 .
 	#$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
 	#$(PROG) test/1 test/2

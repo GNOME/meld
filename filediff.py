@@ -3,7 +3,6 @@
 from __future__ import generators
 
 import codecs
-import difflib
 import math
 import os
 import pango
@@ -20,9 +19,6 @@ import misc
 import undo
 
 gdk = gtk.gdk
-
-def _enumerate(s):
-    return zip(range(len(s)),s)
 
 ################################################################################
 #
@@ -110,9 +106,9 @@ class FileDiff(gnomeglade.Component):
     keylookup = {65505 : MASK_SHIFT, 65507 : MASK_CTRL, 65513: MASK_ALT}
 
     def __init__(self, num_panes, statusbar, prefs):
+        """Start up an filediff with num_panes empty contents"""
         gnomeglade.Component.__init__(self, misc.appdir("glade2/filediff.glade"), "filediff")
         self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
-        self.refresh_timer_id = -1
         self.statusbar = statusbar
         self.undosequence = undo.UndoSequence()
         self.undosequence_busy = 0
@@ -128,7 +124,7 @@ class FileDiff(gnomeglade.Component):
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
         self._connect_buffer_handlers()
 
-        self.linediffs = diffutil.Differ()
+        self.linediffer = diffutil.Differ()
         load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
@@ -141,17 +137,21 @@ class FileDiff(gnomeglade.Component):
 
         self.num_panes = 0
         self.set_num_panes(num_panes)
+        for t in self.textview:
+            _ensure_fresh_tag_exists("edited line", t.get_buffer(), {"background": self.prefs.color_edited} )
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
             buf = textview.get_buffer()
             assert hasattr(buf,"handlers")
+            textview.set_editable(0)
             for h in buf.handlers:
                 buf.disconnect(h)
 
     def _connect_buffer_handlers(self):
         for textview in self.textview:
             buf = textview.get_buffer()
+            textview.set_editable(1)
             id0 = buf.connect("insert-text", self.on_text_insert_text)
             id1 = buf.connect("delete-range", self.on_text_delete_range)
             id2 = buf.connect_after("insert-text", self.after_text_insert_text)
@@ -164,8 +164,12 @@ class FileDiff(gnomeglade.Component):
         pane = buffers.index(buffer)
         def getlines(pane,lo,hi):
             b = buffers[pane]
-            return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")[:-1]
-        self.linediffs.change_sequence( pane, startline, sizechange, getlines )
+            text = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
+            lines = text.split("\n")
+            if len(text) and text[-1]=='\n':
+                del lines[-1]
+            return lines
+        self.linediffer.change_sequence( pane, startline, sizechange, getlines )
         self.refresh()
 
     def after_text_insert_text(self, buffer, iter, newtext, textlen):
@@ -175,7 +179,8 @@ class FileDiff(gnomeglade.Component):
 
     def after_text_delete_range(self, buffer, iter0, iter1):
         starting_at = iter0.get_line()
-        self._after_text_modified(buffer, starting_at, self.deleted_lines_pending)
+        assert self.deleted_lines_pending != -1
+        self._after_text_modified(buffer, starting_at, -self.deleted_lines_pending)
         self.deleted_lines_pending = -1
 
     def load_font(self):
@@ -218,6 +223,7 @@ class FileDiff(gnomeglade.Component):
                 w = self.pixbuf_copy0.get_width()
                 l.queue_draw_area(0,      0, w, a[3])
                 l.queue_draw_area(a[2]-w, 0, w, a[3])
+
     def on_key_release_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask & ~x != self.keymask:
@@ -264,6 +270,7 @@ class FileDiff(gnomeglade.Component):
         #
     def on_text_begin_user_action(self, *buffer):
         self.undosequence.begin_group()
+
     def on_text_end_user_action(self, *buffer):
         self.undosequence.end_group()
 
@@ -294,6 +301,7 @@ class FileDiff(gnomeglade.Component):
                 self.undosequence.undo()
             finally:
                 self.undosequence_busy = 0
+
     def redo(self):
         if self.undosequence.can_redo():
             self.undosequence_busy = 1
@@ -306,30 +314,16 @@ class FileDiff(gnomeglade.Component):
         #
         # text buffer loading/saving
         #
-    def set_text(self, text, filename, pane, writable=1):
-        raise "FOO"
-        view = self.textview[pane]
-        buffer = view.get_buffer()
-        if self.prefs.supply_newline and len(text) and text[-1] != '\n':
+    def _set_text(self, text, filename, pane, writable=1):
+        """Set the contents of 'pane' to utf8 'text'"""
+        self.fileentry[pane].set_filename(filename)
+        buffer = self.textview[pane].get_buffer()
+        if self.prefs.supply_newline and (len(text)==0 or text[-1] != '\n'):
             text += "\n"
         buffer.set_text( text )
-        gettext = buffer.get_text( buffer.get_start_iter(), buffer.get_end_iter(), 0 )
-        if text == gettext:
-            buffer.meld_encoding = None
-        else:
-            assert self.prefs.fallback_encoding
-            encoding = self.prefs.fallback_encoding
-            text = unicode(text, encoding)
-            buffer.set_text( text )
-            gettext = buffer.get_text( buffer.get_start_iter(), buffer.get_end_iter(), 0 )
-            buffer.meld_encoding = encoding
         _ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.color_edited} )
-        entry = self.fileentry[pane]
-        entry.set_filename(filename)
-        self.undosequence.clear()
         self.set_buffer_modified(buffer, 0)
         self.set_buffer_writable(buffer, writable)
-        self.flushevents()
 
     def label_changed(self):
         filenames = []
@@ -360,17 +354,23 @@ class FileDiff(gnomeglade.Component):
         d.destroy()
 
     def set_files(self, files):
+        """Set num panes to len(files) and load each file given.
+           If an element is None, the text of a pane is left"""
         gtk.idle_add( self._set_files_internal(files).next )
 
     def _set_files_internal(self, files):
+        self.set_num_panes( len(files) )
         self._disconnect_buffer_handlers()
+        self.linediffer.diffs = [[],[]]
+        self.refresh()
         buffers = [t.get_buffer() for t in self.textview][:self.num_panes]
-        [b.delete( b.get_start_iter(), b.get_end_iter() ) for b in buffers]
         try_codecs = ["utf8", "latin1"]
         yield "Opening files"
+        panetext = ["\n"] * self.num_panes
         tasks = []
-        for i,f in _enumerate(files):
+        for i,f in misc.enumerate(files):
             if f:
+                buffers[i].delete( buffers[i].get_start_iter(), buffers[i].get_end_iter() )
                 self.fileentry[i].set_filename(f)
                 try:
                     task = misc.struct(filename = f,
@@ -378,43 +378,46 @@ class FileDiff(gnomeglade.Component):
                                        buf = buffers[i],
                                        codec = try_codecs[:],
                                        text = [],
-                                       done = 0)
+                                       pane = i)
                     tasks.append(task)
                 except IOError, e:
-                    self.set_text( "", filename, pane)
+                    self._set_text( "", filename, pane)
                     self._dialog("Could not open '%s' for reading.\n\nThe error was:\n%s" % (filename, str(e)) )
+            else:
+                panetext[i] = buffers[i].get_text( buffers[i].get_start_iter(), buffers[i].get_end_iter() )
+        self.label_changed()
         yield "Reading files"
-        while 0 in map(lambda x: x.done, tasks):
-            for t in tasks:
+        while len(tasks):
+            for t in tasks[:]:
                 try:
                     nextbit = t.file.read(4096)
                 except ValueError, err:
                     t.codec.pop(0)
                     if len(t.codec):
-                        #print "codec error reset", err
                         t.file = codecs.open(t.filename, "r", t.codec[0])
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
                         t.text = []
                     else:
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
-                        t.text = []
                         self._dialog("Could not read from '%s'.\n\nI tried encodings %s."
                             % (t.filename, try_codecs))
-                        t.done = 1
+                        tasks.remove(t)
                 else:
                     if len(nextbit):
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
                         t.text.append(nextbit)
                     else:
-                        t.done = 1
+                        tasks.remove(t)
+                        panetext[t.pane] = "".join(t.text)
             yield 1
         yield "Computing differences"
-        text  = ["".join(t.text) for t in tasks]
-        lines = map(lambda x: x.split("\n"), text)
-        print lines
- 
+        lines = map(lambda x: x.split("\n"), panetext)
+        step = self.linediffer.set_sequences_iter(*lines)
+        while step.next() == None:
+            yield 1
         self._connect_buffer_handlers()
+        self.refresh()
         yield 0
         
     def save_file(self, pane):
@@ -429,6 +432,7 @@ class FileDiff(gnomeglade.Component):
             self.fileentry[pane].set_filename(name)
         buf = self.textview[pane].get_buffer()
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
+        buf.meld_encoding = None
         if buf.meld_encoding:
             text = text.encode(buf.meld_encoding)
         try:
@@ -473,9 +477,9 @@ class FileDiff(gnomeglade.Component):
                 self.save_file(i)
 
     def on_fileentry_activate(self, entry):
-        pane = self.fileentry.index(entry)
-        file = entry.get_full_path(0)
-        self.set_file(file, pane)
+        files = [None] * self.num_panes
+        files[ self.fileentry.index(entry) ] = entry.get_full_path(0)
+        self.set_files(files)
 
         #
         # refresh, _queue_refresh
@@ -535,7 +539,7 @@ class FileDiff(gnomeglade.Component):
             for (i,adj) in others:
                 mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
                 # look for the chunk containing 'line'
-                for c in self.linediffs.pair_changes(master, i):
+                for c in self.linediffer.pair_changes(master, i):
                     c = c[1:]
                     if c[0] >= line:
                         mend = c[0]
@@ -592,8 +596,8 @@ class FileDiff(gnomeglade.Component):
             self._setup_gcs(area)
 
         gc = area.meldgc.get_gc
-        for c in self.linediffs.single_changes(textindex):
-            if c[0] == "equal": continue
+        for c in self.linediffer.single_changes(textindex):
+            assert c[0] != "equal"
             s,e = ( scaleit(c[1]), scaleit(c[2]+(c[1]==c[2])) )
             s,e = math.floor(s), math.ceil(e)
             window.draw_rectangle( gc(c[0]), 1, x0, s, x1, e-s)
@@ -623,7 +627,7 @@ class FileDiff(gnomeglade.Component):
         tag_conflict_line = _ensure_fresh_tag_exists("conflict line", buffer,
                 {"background": self.prefs.color_conflict} )
 
-        for c in self.linediffs.single_changes(which):
+        for c in self.linediffer.single_changes(which):
             if c[1] != c[2]:
                 start = buffer.get_iter_at_line(c[1])
                 end   = buffer.get_iter_at_line(c[2])
@@ -661,21 +665,19 @@ class FileDiff(gnomeglade.Component):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
         line = (adjs[1].value + adjs[1].page_size/2) / self.pixels_per_line
         c = None
-
         if direction == gdk.SCROLL_DOWN:
-            for c in self.linediffs.single_changes(1):
-                if c[1] > line and c[0] != "equal":
+            for c in self.linediffer.single_changes(1):
+                assert c[0] != "equal"
+                if c[1] > line:
                     break
         else: #direction == gdk.SCROLL_UP
-            for chunk in self.linediffs.single_changes(1):
-                if chunk[0] == "equal":
-                    continue
+            for chunk in self.linediffer.single_changes(1):
                 if chunk[2] < line:
                     c = chunk
                 elif c:
                     break
         if c:
-            if c[2] - c[1]:
+            if c[2] - c[1]: # no range, use other side
                 l = c[1]+c[2]
                 a = adjs[1]
             else:
@@ -738,8 +740,8 @@ class FileDiff(gnomeglade.Component):
             pix1 = self.pixbuf_apply1
         draw_style = self.prefs.draw_style
         gc = area.meldgc.get_gc
-        for c in self.linediffs.pair_changes(which, which+1):
-            if c[0] == "equal": continue
+        for c in self.linediffer.pair_changes(which, which+1):
+            assert c[0] != "equal"
             f0,f1 = map( lambda l: l * self.pixels_per_line - madj.value, c[1:3] )
             t0,t1 = map( lambda l: l * self.pixels_per_line - oadj.value, c[3:5] )
             if f1<0 and t1<0: # find first visible chunk
@@ -816,7 +818,7 @@ class FileDiff(gnomeglade.Component):
 
         src = which + side
         dst = which + 1 - side
-        for c in self.linediffs.pair_changes(src,dst):
+        for c in self.linediffer.pair_changes(src,dst):
             if c[0] == "insert":
                 continue
             h = func(c)
@@ -839,6 +841,9 @@ class FileDiff(gnomeglade.Component):
             # check we're still in button
             inrect = lambda p, r: ((r[0] < p.x) and (p.x < r[0]+r[2]) and (r[1] < p.y) and (p.y < r[1]+r[3]))
             if inrect(event, rect):
+                # gtk tries to jump back to where the cursor was unless we move the cursor
+                self.textview[src].place_cursor_onscreen()
+                self.textview[dst].place_cursor_onscreen()
                 chunk = chunk[1:]
                 self.mouse_chunk = None
 
