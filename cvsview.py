@@ -31,8 +31,6 @@ import misc
 import gnomeglade
 import melddoc
 
-CVS_COMMAND = ["cvs", "-z3", "-q"]
-
 ################################################################################
 #
 # Local Functions
@@ -239,7 +237,7 @@ class CommitDialog(gnomeglade.Component):
         buf = self.textview.get_buffer()
         msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
-            self.parent._command_on_selected(CVS_COMMAND + ["commit", "-m", msg] )
+            self.parent._command_on_selected(self.parent.prefs.get_cvs_command("commit") + ["-m", msg] )
         if len(msg.strip()):
             self.previousentry.prepend_history(1, msg)
         self.widget.destroy()
@@ -432,7 +430,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def run_cvs_diff_iter(self, paths, empty_patch_ok):
         yield _("[%s] Fetching differences") % self.label_text
-        difffunc = self._command_iter(CVS_COMMAND + ["diff", "-u"], paths, 0).next
+        difffunc = self._command_iter(self.prefs.get_cvs_command("diff") + ["-u"], paths, 0).next
         diff = None
         while type(diff) != type(()):
             diff = difffunc()
@@ -484,7 +482,13 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         kill = len(workdir) and (len(workdir)+1) or 0
         files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
         r = None
-        readfunc = misc.read_pipe_iter(command + files, workdir=workdir).next
+        class Errorstream:
+            def write(this, s):
+                b = self.consoleview.get_buffer()
+                b.insert(b.get_end_iter(), s)
+        errorstream = Errorstream()
+        errorstream.write( " ".join(command+files) + "\n")
+        readfunc = misc.read_pipe_iter(command + files, errorstream, workdir=workdir).next
         try:
             while r == None:
                 r = readfunc()
@@ -510,17 +514,17 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             misc.run_dialog( _("Select some files first."), parent=self, messagetype=gtk.MESSAGE_INFO)
 
     def on_button_update_clicked(self, object):
-        self._command_on_selected(CVS_COMMAND + ["update","-dP"] )
+        self._command_on_selected( self.prefs.get_cvs_command("update") )
     def on_button_commit_clicked(self, object):
         dialog = CommitDialog( self )
         dialog.run()
 
     def on_button_add_clicked(self, object):
-        self._command_on_selected(CVS_COMMAND + ["add"] )
+        self._command_on_selected(self.prefs.get_cvs_command("add") )
     def on_button_add_binary_clicked(self, object):
-        self._command_on_selected(CVS_COMMAND + ["add", "-kb"] )
+        self._command_on_selected(self.prefs.get_cvs_command("add") + ["-kb"] )
     def on_button_remove_clicked(self, object):
-        self._command_on_selected(CVS_COMMAND + ["rm", "-f"] )
+        self._command_on_selected(self.prefs.get_cvs_command("rm") + ["-f"] )
     def on_button_delete_clicked(self, object):
         files = self._get_selected_files()
         for f in files:
@@ -646,6 +650,26 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                         child = self.model.iter_next( child )
                 iter = child
         return None
+
+    def on_console_view_toggle(self, box, event):
+        if box == self.console_hide_box:
+            self.console_hbox.hide()
+            self.console_show_box.show()
+        else:
+            self.console_hbox.show()
+            self.console_show_box.hide()
+
+    def on_consoleview_populate_popup(self, text, menu):
+        item = gtk.ImageMenuItem(gtk.STOCK_CLEAR)
+        def activate(*args):
+            buf = text.get_buffer()
+            bufourceforgedelete( buf.get_start_iter(), buf.get_end_iter() )
+        item.connect("activate", activate)
+        item.show()
+        menu.insert( item, 0 )
+        item = gtk.SeparatorMenuItem()
+        item.show()
+        menu.insert( item, 1 )
 
 gobject.type_register(CvsView)
 
