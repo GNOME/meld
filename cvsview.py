@@ -150,14 +150,43 @@ def _lookup_cvs_files(dirs, files):
                         else:
                             state = tree.STATE_MODIFIED
             retfiles.append( File(path, name, state, rev, tag, options) )
-    # find missing
+    # known
     cvsfiles = map(lambda x: x[1], matches)
+    # ignored
+    try:
+        ignored = open( os.path.join(directory, "/home/stephen/.cvsignore")).read().split()
+    except IOError:
+        ignored = []
+    try:
+        ignored += open( os.path.join(directory, ".cvsignore")).read().split()
+    except IOError:
+        pass
+
+    if len(ignored):
+        try:
+            regexes = [ misc.shell_to_regex(i)[:-1] for i in ignored ]
+            ignore_re = re.compile( "(" + "|".join(regexes) + ")" )
+        except re.error, e:
+            misc.run_dialog(_("Error converting to a regular expression\n" \
+                              "The pattern was '%s'\n" \
+                              "The error was '%s'") % (",".join(ignored), e))
+    else:
+        class dummy:
+            def match(*args): return None
+        ignore_re = dummy()
+
     for f,path in files:
         if f not in cvsfiles:
-            retfiles.append( File(path, f, tree.STATE_NONE, "") )
+            if ignore_re.match(f) == None:
+                retfiles.append( File(path, f, tree.STATE_NONE, "") )
+            else:
+                retfiles.append( File(path, f, tree.STATE_IGNORED, "") )
     for d,path in dirs:
         if d not in cvsfiles:
-            retdirs.append( Dir(path, d, tree.STATE_NONE) )
+            if ignore_re.match(d) == None:
+                retdirs.append( Dir(path, d, tree.STATE_NONE) )
+            else:
+                retfiles.append( Dir(path, d, tree.STATE_IGNORED) )
 
     return retdirs, retfiles
 
@@ -304,7 +333,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     filters = [lambda x: (x.state > tree.STATE_NONE),
                lambda x: (x.state > tree.STATE_NORMAL) or (x.isdir and (x.state > tree.STATE_NONE)),
-               lambda x: 1, 
+               lambda x: (x.state > tree.STATE_IGNORED), 
                lambda x: (x.state != tree.STATE_NORMAL) or (x.isdir and (x.state > tree.STATE_NONE)) ]
 
     def __init__(self, prefs):
