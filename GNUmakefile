@@ -2,7 +2,7 @@
 # default install directories
 prefix := /usr/local
 bindir := $(prefix)/bin
-libdir := $(prefix)/share/lib
+libdir := $(prefix)/lib
 docdir := $(prefix)/share/doc
 sharedir := $(prefix)/share
 localedir := $(prefix)/share/locale
