@@ -19,6 +19,9 @@
 #
 # i18n support
 #
+import sys
+sys.path += [ #LIBDIR#
+]
 import paths
 import gettext
 import locale
@@ -43,7 +46,6 @@ pygtkver = (1,99,15)
 def ver2str(ver):
     return ".".join(map(str,ver))
 
-import sys
 if sys.version_info[:2] < pyver:
     print _("Meld requires python%s or higher.") % ver2str(pyver)
     sys.exit(1)
