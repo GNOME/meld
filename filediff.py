@@ -121,10 +121,10 @@ class FileDiff(gnomeglade.Component):
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
             self.textview[i].get_buffer().connect("insert-text", self.on_text_insert_text)
             self.textview[i].get_buffer().connect("delete-range", self.on_text_delete_range)
-            #if 0: # test different font sizes
-            #    description = self.textview[i].get_pango_context().get_font_description()
-            #    description.set_size(7 * 1024)
-            #    self.textview[i].modify_font(description)
+            if 0: # test different font sizes
+                description = self.textview[i].get_pango_context().get_font_description()
+                description.set_size(17 * 1024)
+                self.textview[i].modify_font(description)
 
         context = self.textview0.get_pango_context()
         metrics = context.get_metrics( context.get_font_description(), context.get_language() )
@@ -387,8 +387,8 @@ class FileDiff(gnomeglade.Component):
         #TODO need height of arrow button on scrollbar - how do we get that?
         size_of_arrow = 14
         hperline = float( self.scrolledwindow[textindex].get_allocation().height - 4*size_of_arrow) / self._get_line_count(textindex)
-        if hperline > 11:
-            hperline = 11
+        if hperline > self.pixels_per_line:
+            hperline = self.pixels_per_line
 
         scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
         x0 = 4
@@ -507,10 +507,10 @@ class FileDiff(gnomeglade.Component):
                 return (2-bias(2-2*t,1-g))/2.0
         f = lambda x: gain( x, 0.85)
 
-        if self.keymask & MASK_CTRL:
+        if self.keymask & MASK_SHIFT:
             pix0 = self.pixbuf_delete
             pix1 = self.pixbuf_delete
-        elif self.keymask & MASK_SHIFT:
+        elif self.keymask & MASK_CTRL:
             pix0 = self.pixbuf_copy0
             pix1 = self.pixbuf_copy1
         else: # self.keymask == 0:
@@ -560,7 +560,7 @@ class FileDiff(gnomeglade.Component):
         (wtotal,htotal) = alloc.width, alloc.height
         pix_width = self.pixbuf_apply0.get_width()
         pix_height = self.pixbuf_apply0.get_height()
-        if self.keymask == MASK_SHIFT: # hack
+        if self.keymask == MASK_CTRL: # hack
             pix_height *= 2
 
         which = self.linkmap.index(area)
@@ -602,10 +602,10 @@ class FileDiff(gnomeglade.Component):
                 chunk = chunk[1:]
                 self.mouse_chunk = None
 
-                if self.keymask & MASK_CTRL: # delete
+                if self.keymask & MASK_SHIFT: # delete
                     b = self.textview[src].get_buffer()
                     b.delete(b.get_iter_at_line(chunk[0]), b.get_iter_at_line(chunk[1]))
-                elif self.keymask & MASK_SHIFT: # copy up or down
+                elif self.keymask & MASK_CTRL: # copy up or down
                     b0 = self.textview[src].get_buffer()
                     t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
                     b1 = self.textview[dst].get_buffer()
