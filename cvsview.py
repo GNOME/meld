@@ -82,13 +82,26 @@ def _lookup_cvs_files(files, dirs):
         f = map(lambda x: File(x[1],x[0], tree.STATE_NONE, None), files) 
         return d,f
     try:
-        entries += open( os.path.join(directory, "CVS/Entries.Log")).read()
+        logentries = open( os.path.join(directory, "CVS/Entries.Log")).read()
+        matches = re.findall("^([AR])\s*(.+)$(?m)", logentries)
+        toadd = []
+        for match in matches:
+            if match[0] == "A":
+                toadd.append( match[1] )
+            elif match[0] == "R":
+                try:
+                    toadd.remove( match[1] )
+                except ValueError:
+                    pass
+            else:
+                print "Unknown Entries.Log line '%s'" % match[0]
+        entries += "\n".join(toadd)
     except IOError, e:
         pass
 
     retfiles = []
     retdirs = []
-    matches = re.findall("^(?:A )?(D?)/([^/]+)/(.+)$(?m)", entries)
+    matches = re.findall("^(D?)/([^/]+)/(.+)$(?m)", entries)
     matches.sort()
 
     for match in matches:
@@ -113,7 +126,7 @@ def _lookup_cvs_files(files, dirs):
                 else:
                     print "Revision '%s' not understood" % rev
             elif date=="dummy timestamp from new-entry":
-				state = tree.STATE_MODIFIED
+                state = tree.STATE_MODIFIED
             else:
                 plus = date.find("+")
                 if plus >= 0:
