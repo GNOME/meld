@@ -54,7 +54,7 @@ def shorten_names(*names):
         prefixslash = 0
 
     names = map( lambda x: x[prefixslash:], names) # remove common prefix
-    paths = map(lambda x: x.split("/"), names) # split on /
+    paths = map( lambda x: x.split("/"), names) # split on /
 
     try:
         basenames = map(lambda x: x[-1], paths)
@@ -63,11 +63,11 @@ def shorten_names(*names):
     else:
         if equal(basenames):
             def firstpart(list):
-                if len(list): return list[0]
+                if len(list) > 1: return "[%s] " % list[0]
                 else: return ""
             roots = map(firstpart, paths)
             base = basenames[0].strip()
-            return [ "[%s] %s" % (r,base) for r in roots ]
+            return [ r+base for r in roots ]
     # no common path. empty names get changed to "[None]"
     return map( lambda x: x or "[None]", names)
 
@@ -111,3 +111,20 @@ def read_pipe(command):
 def write_pipe(command, text):
     p = os.popen(command, "w")
     w = p.write(text)
+
+################################################################################
+#
+# safe_apply
+#
+################################################################################
+def safe_apply(object, method, args):
+    try:
+        m = getattr(object,method)
+    except AttributeError:
+        pass
+    else:
+        # allow single arguments to be passed as is.
+        if type(args) != type(()):
+            args = (args,)
+        apply(m, args)
+
