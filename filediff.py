@@ -40,7 +40,7 @@ sourceview_available = 0
 try:
     import sourceview as gsv
     sourceview_available = 1
-    def enable_highlighting(buf, fname):
+    def set_highlighting_enabled(buf, fname, enabled):
         # gnome.vfs.get_mime_type seems to be broken. fake it.
         extmap = { "xml":"text/xml",
                    "glade":"text/xml",
@@ -64,9 +64,9 @@ try:
         ext = fname.split(".")[-1]
         man = gsv.SourceLanguagesManager()
         gsl = man.get_language_from_mime_type( extmap.get(ext, "text/plain") )
-        if 1 and gsl:
+        if gsl:
             buf.set_language(gsl)
-            buf.set_highlight(1)
+        buf.set_highlight(enabled)
 except ImportError:
     pass
 
@@ -281,6 +281,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if sourceview_available:
                 for t in self.textview:
                     t.set_show_line_numbers( value )
+        elif key == "use_syntax_highlighting":
+            if sourceview_available:
+                for i in range(self.num_panes):
+                    set_highlighting_enabled(
+                        self.textview[i].get_buffer(),
+                        self.bufferdata[i].filename,
+                        self.prefs.use_syntax_highlighting )
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -592,7 +599,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if sourceview_available:
             for i in range(len(files)):
                 if files[i]:
-                    enable_highlighting( self.textview[i].get_buffer(), files[i] )
+                    set_highlighting_enabled( self.textview[i].get_buffer(), files[i], self.prefs.use_syntax_highlighting )
         yield 0
 
     def _update_highlighting(self, range0, range1):
