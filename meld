@@ -71,8 +71,11 @@ if gtk.pygtk_version < pygtkver:
     print _("Meld works best with pygtk-%s or higher. (found %s)") % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
     print _("Due to incompatible API changes some functions may not operate as expected.")
 
-import gtk.glade # python2.2 needs this
+# python2.2 needs this.
+import gtk.glade
 gtk.glade.bindtextdomain("meld", paths.locale_dir() )
+
+# time.strptime works on locale, but cvs dates are in "C"
 locale.setlocale(locale.LC_TIME, "C")
 
 #
