@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+### Copyright (C) 2002-2003 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -491,7 +491,7 @@ class MeldPreferences(prefs.Preferences):
 
     def get_gnome_editor_command(self, files):
         argv = []
-        editor = self._gconf.get_string('/desktop/gnome/applications/editor/exec')
+        editor = self._gconf.get_string('/desktop/gnome/applications/editor/exec') or "gedit"
         if self._gconf.get_bool("/desktop/gnome/applications/editor/needs_term"):
             texec = self._gconf.get_string("/desktop/gnome/applications/terminal/exec")
             if texec:
@@ -806,11 +806,12 @@ usage_string = _("""Meld is a file and directory comparison tool. Usage:
     meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison
 
 For more information choose help -> contents.
-Report bugs to steve9000@users.sourceforge.net.
+Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld
+stevek@gnome.org
 """)
 
 version_string = _("""Meld %s
-Written by Stephen Kennedy <steve9000@users.sf.net>""") % version
+Written by Stephen Kennedy <stevek@gnome.org>""") % version
 
 ################################################################################
 #
