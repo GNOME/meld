@@ -88,7 +88,7 @@ class Preferences:
         if self.toolbar_style == 0:
             style = self.gconf.get_string('/desktop/gnome/interface/toolbar_style')
             style = {"both":gtk.TOOLBAR_BOTH, "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
-                    "icon":gtk.TOOLBAR_ICONS, "text":gtk.TOOLBAR_TEXT}[style]
+                    "icons":gtk.TOOLBAR_ICONS, "text":gtk.TOOLBAR_TEXT}[style]
         else:
             style = self.toolbar_style - 1
         return style
