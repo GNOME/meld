@@ -21,6 +21,10 @@ rundiff:
 	#$(PROG) test/1 test/2
 	#$(PROG) /zip/meld .
 
+.PHONY:ChangeLog
+ChangeLog:
+	cvs2cl -t
+
 .PHONY:check
 check:
 	@check_release
@@ -32,6 +36,10 @@ gettext:
 .PHONY:release
 release: check upload announce
 
+.PHONY:update
+update:
+	cvs update
+	
 .PHONY:upload
 upload:
 	cvs tag release-$(subst .,_,$(VERSION))
