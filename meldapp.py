@@ -33,7 +33,7 @@ import cvsview
 import dirdiff
 import task
 
-version = "0.9.1"
+version = "0.9.2"
 
 # magic developer switch, changes some behaviour
 developer = 0
