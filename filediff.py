@@ -125,7 +125,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ('find_next', gtk.STOCK_FIND,
                 _('_Find Next'), '<Control>g', _('Repeat the last find')),
             ('find_replace', gtk.STOCK_FIND_AND_REPLACE,
-                _('_Replace'), '<Control>r', _('Fine and replace text')),
+                _('_Replace'), '<Control>r', _('Find and replace text')),
             ('cut', gtk.STOCK_CUT,
                 _('Cu_t'), '<Control>x', _('Copy selected text')),
             ('copy', gtk.STOCK_PASTE,
