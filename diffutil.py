@@ -41,16 +41,18 @@ class Differ:
     lookup = {"replace":"replace", "insert":"delete", "delete":"insert", "conflict":"conflict"}
 
     def __init__(self, *text):
+        #print "\n\ntext0\n", text[0]
+        #print "\n\ntext1\n", text[1]
         # diffs are stored from text1 -> text0 and text1 -> text2 for consistency
         textlines = map( lambda x: x.split("\n"), text)
 
         if len(text)==0 or len(text)==1:
-            self.diffs = ([], [])
+            self.diffs = [[], []]
         elif len(text)==2:
             seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
             seq0 = filter(lambda x: x[0]!="equal", seq0)
             #seq0 = _chunkify_and_filter(seq0, textlines)
-            self.diffs = (seq0, [])
+            self.diffs = [seq0, []]
         elif len(text)==3:
             seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
             seq0 = filter(lambda x: x[0]!="equal", seq0)
@@ -172,7 +174,7 @@ class Differ:
                     out0.append( ('conflict', block[2], block[3], block[0], block[1]) )
                     out1.append( ('conflict', block[2], block[3], block[4], block[5]) )
 
-        return out0, out1
+        return [out0, out1]
 
 def main():
     t0 = open("test/lao").readlines()
