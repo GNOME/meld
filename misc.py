@@ -197,9 +197,10 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
 def write_pipe(command, text):
     """Write 'text' into a shell command.
     """
-    childin, childout, childerr = os.popen3(command, "w")
-    childin.write(text)
-    childin.close()
+    pipe = popen2.Popen3(command, capturestderr=1)
+    pipe.tochild.write(text)
+    pipe.tochild.close()
+    pipe.wait()
 
 def safe_apply(object, method, args):
     """Call 'object.method(args)' if 'object' has an attribute named 'method'.
