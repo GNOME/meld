@@ -43,7 +43,7 @@ try:
 except ImportError:
     pass
 
-version = "0.9.4"
+version = "0.9.4.1"
 
 # magic developer switch, changes some behaviour
 developer = 0
