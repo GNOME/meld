@@ -21,13 +21,16 @@ import gnomeglade
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
 
-STATE_NONE, STATE_NORMAL, STATE_NEW, STATE_MODIFIED, STATE_REMOVED, STATE_MISSING = range(6)
+# dont care, normal, cvs added, modified, cvs removed, locally removed
+STATE_NONE, STATE_NORMAL, STATE_ERROR, STATE_EMPTY, STATE_NEW, STATE_MODIFIED, STATE_REMOVED, STATE_MISSING = range(8)
 
 load = lambda x,s=14: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), s)
-pixbuf_folder = load("i-directory.png")
-pixbuf_file = load("i-regular.png")
-pixbuf_file_new = load("i-new.png")
-pixbuf_file_changed = load("i-changed.png")
+pixbuf_folder = load("tree-folder-normal.png")
+pixbuf_folder_new = load("tree-folder-new.png")
+pixbuf_folder_changed = load("tree-folder-changed.png")
+pixbuf_file = load("tree-file-normal.png")
+pixbuf_file_new = load("tree-file-new.png")
+pixbuf_file_changed = load("tree-file-changed.png")
 
 class DiffTreeStore(gtk.TreeStore):
     def __init__(self, ntree = 3):
@@ -35,6 +38,29 @@ class DiffTreeStore(gtk.TreeStore):
         types[COL_ICON*ntree:COL_ICON*ntree+ntree] = [type(pixbuf_file)] * ntree
         gtk.TreeStore.__init__(self, *types)
         self.ntree = ntree
+        self._setup_default_styles()
+
+    def _setup_default_styles(self):
+        self.textstyle = [
+            '<span foreground="#888888">%s</span>', # STATE_NONE 
+            '<span foreground="black">%s</span>', # STATE_NORMAL
+            '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR 
+            '<span foreground="#999999" style="italic">%s</span>', # STATE_EMPTY
+            '<span foreground="#008800" weight="bold">%s</span>', # STATE_NEW
+            '<span foreground="#880000" weight="bold">%s</span>', # STATE_MODIFIED
+            '<span foreground="#880000" strikethrough="true" weight="bold">%s</span>', # STATE_REMOVED
+            '<span foreground="#888888" strikethrough="true">%s</span>' # STATE_MISSING
+        ]
+        self.pixstyle = [
+            (pixbuf_file, pixbuf_folder), # NONE
+            (pixbuf_file, pixbuf_folder), # NORMAL
+            (None, None), # ERROR
+            (None, None), # EMPTY
+            (pixbuf_file_new, pixbuf_folder_new), # NEW
+            (pixbuf_file_changed, pixbuf_folder_changed), # MODIFIED
+            (pixbuf_file_changed, pixbuf_folder_changed), # REMOVED
+            (None, None) # MISSING
+        ]
 
     def add_entries(self, parent, names):
         child = self.append(parent)
@@ -45,15 +71,14 @@ class DiffTreeStore(gtk.TreeStore):
     def add_empty(self, parent, text="empty folder"):
         child = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(child, self.column_index(COL_PATH,i), None)
-            self.set_value(child, self.column_index(COL_TEXT,i),
-                '<span foreground="#999999" style="italic">%s</span>' % misc.escape(text) )
+            self.set_value(child, self.column_index(COL_PATH,i), self.pixstyle[STATE_EMPTY])
+            self.set_value(child, self.column_index(COL_TEXT,i), self.textstyle[STATE_EMPTY] % misc.escape(text) )
         return child
 
     def add_error(self, parent, msg, pane):
         err = self.append(parent)
-        self.set_value(err, self.column_index(COL_TEXT, misc.escape(pane) ),
-            '<span foreground="#ff0000" background="yellow" weight="bold">*** %s ***</span>' % msg )
+        self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
+        self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % misc.escape(msg) )
         
     def value_paths(self, iter):
         return [ self.value_path(iter, i) for i in range(self.ntree) ]
@@ -63,43 +88,10 @@ class DiffTreeStore(gtk.TreeStore):
         return self.ntree * col + pane
 
     def set_state(self, iter, pane, state, isdir=0):
-        if isdir:
-            pixbuf_normal = pixbuf_folder
-            pixbuf_new = pixbuf_folder
-            pixbuf_modified = pixbuf_folder
-        else:
-            pixbuf_normal = pixbuf_file
-            pixbuf_new = pixbuf_file_new
-            pixbuf_modified = pixbuf_file_changed
-        name = self.get_value(iter, self.column_index(COL_PATH,pane))
-        name = os.path.basename(name)
-        name = misc.escape(name)
+        fullname = self.get_value(iter, self.column_index(COL_PATH,pane))
+        name = misc.escape( os.path.basename(fullname) )
         TEXT = self.column_index(COL_TEXT,pane)
         ICON = self.column_index(COL_ICON,pane)
-        if state == STATE_NONE:
-            self.set_value(iter, TEXT,
-                '<span foreground="#888888">%s</span>' % name)
-            self.set_value(iter, ICON, pixbuf_normal)
-        elif state == STATE_NORMAL:
-            self.set_value(iter, TEXT,
-                '<span foreground="black">%s</span>' % name)
-            self.set_value(iter, ICON, pixbuf_normal)
-        elif state == STATE_NEW:
-            self.set_value(iter, TEXT,
-                '<span foreground="#008800" weight="bold">%s</span>' % name)
-            self.set_value(iter, ICON, pixbuf_new)
-        elif state == STATE_MODIFIED:
-            self.set_value(iter, TEXT,
-                '<span foreground="#880000" weight="bold">%s</span>' % name)
-            self.set_value(iter, ICON, pixbuf_modified)
-        elif state == STATE_REMOVED:
-            self.set_value(iter, TEXT,
-                '<span foreground="#880000" strikethrough="true" weight="bold">%s</span>' % name)
-            self.set_value(iter, ICON, pixbuf_modified)
-        elif state == STATE_MISSING:
-            self.set_value(iter, TEXT,
-                '<span foreground="#000088" strikethrough="true" weight="bold">%s</span>' % name)
-            self.set_value(iter, ICON, None)
-        else:
-            raise "HUH? %i" % state
+        self.set_value(iter, TEXT, self.textstyle[state] % name)
+        self.set_value(iter, ICON, self.pixstyle[state][isdir])
 
