@@ -375,6 +375,17 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         addCol(_("Tag"), COL_TAG)
         addCol(_("Options"), COL_OPTIONS)
 
+        class ConsoleStream:
+            def __init__(this, textview):
+                this.textview = textview
+                b = textview.get_buffer()
+                this.mark = b.create_mark("END", b.get_end_iter(), 0)
+            def write(this, s):
+                if s:
+                    b = this.textview.get_buffer()
+                    b.insert(b.get_end_iter(), s)
+                    this.textview.scroll_mark_onscreen( this.mark )
+        self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible( self.button_flatten.get_active() )
         size = self.fileentry.size_request()[1]
@@ -517,7 +528,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         """
         msg = misc.shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg)
-        if len(files) == 0 and os.path.isdir(files[0]):
+        if len(files) == 1 and os.path.isdir(files[0]):
             workdir = files[0]
             files = ["."]
         else:
@@ -525,19 +536,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         kill = len(workdir) and (len(workdir)+1) or 0
         files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
         r = None
-        class Errorstream:
-            def write(this, s):
-                if s:
-                    b = self.consoleview.get_buffer()
-                    b.insert(b.get_end_iter(), s)
-                    self.consoleview.scroll_to_iter( b.get_end_iter(), 0 )
-        errorstream = Errorstream()
-        errorstream.write( misc.shelljoin(command+files) + "\n")
-        readfunc = misc.read_pipe_iter(command + files, errorstream, workdir=workdir).next
+        self.consolestream.write( misc.shelljoin(command+files) + "\n")
+        readfunc = misc.read_pipe_iter(command + files, self.consolestream, workdir=workdir).next
         try:
             while r == None:
                 r = readfunc()
-                errorstream.write(r)
+                self.consolestream.write(r)
                 yield 1
         except IOError, e:
             misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % ( misc.shelljoin(command), e),
@@ -574,7 +578,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         files = self._get_selected_files()
         for f in files:
             try: os.unlink(f)
-            except IOError: pass
+            except OSError: pass
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
 
@@ -623,9 +627,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             self.model.remove(iter)
             self.scheduler.add_task( self._search_recursively_iter(newiter).next )
         else: # XXX fixme
-            print "+++", where
-            print "+++", os.path.basename(where)
-            print "+++", self.find_iter_by_name(os.path.basename(where))
+            self.refresh()
 
     def next_diff(self,*args):
         pass
