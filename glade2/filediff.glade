@@ -92,7 +92,9 @@
 	      <property name="left_margin">0</property>
 	      <property name="right_margin">0</property>
 	      <property name="indent">0</property>
-	      <property name="text" translatable="yes"></property>
+	      <property name="text" translatable="yes">
+
+</property>
 	    </widget>
 	  </child>
 	</widget>
@@ -347,33 +349,13 @@
       </child>
 
       <child>
-	<widget class="GtkDrawingArea" id="linkmap0">
-	  <property name="width_request">80</property>
-	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
-	  <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-	  <signal name="expose_event" handler="on_linkmap_expose_event" last_modification_time="Sat, 29 Jun 2002 17:39:33 GMT"/>
-	  <signal name="button_press_event" handler="on_linkmap_button_press_event" last_modification_time="Sat, 29 Jun 2002 17:39:41 GMT"/>
-	  <signal name="button_release_event" handler="on_linkmap_button_release_event" last_modification_time="Sat, 29 Jun 2002 17:39:46 GMT"/>
-	  <signal name="scroll_event" handler="on_linkmap_scroll_event" last_modification_time="Sat, 29 Jun 2002 17:39:59 GMT"/>
-	</widget>
-	<packing>
-	  <property name="left_attach">2</property>
-	  <property name="right_attach">3</property>
-	  <property name="top_attach">1</property>
-	  <property name="bottom_attach">2</property>
-	  <property name="x_options">fill</property>
-	  <property name="y_options">fill</property>
-	</packing>
-      </child>
-
-      <child>
 	<widget class="GtkDrawingArea" id="linkmap1">
 	  <property name="width_request">80</property>
 	  <property name="visible">True</property>
 	  <property name="can_focus">True</property>
 	  <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
 	  <signal name="expose_event" handler="on_linkmap_expose_event" last_modification_time="Sat, 29 Jun 2002 17:40:51 GMT"/>
+	  <signal name="scroll_event" handler="on_linkmap_scroll_event" last_modification_time="Wed, 17 Jul 2002 19:21:59 GMT"/>
 	</widget>
 	<packing>
 	  <property name="left_attach">4</property>
@@ -432,6 +414,27 @@
 	  <property name="right_attach">6</property>
 	  <property name="top_attach">1</property>
 	  <property name="bottom_attach">2</property>
+	  <property name="y_options">fill</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkDrawingArea" id="linkmap0">
+	  <property name="width_request">80</property>
+	  <property name="visible">True</property>
+	  <property name="can_focus">True</property>
+	  <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+	  <signal name="expose_event" handler="on_linkmap_expose_event" last_modification_time="Sat, 29 Jun 2002 17:39:33 GMT"/>
+	  <signal name="button_press_event" handler="on_linkmap_button_press_event" last_modification_time="Sat, 29 Jun 2002 17:39:41 GMT"/>
+	  <signal name="button_release_event" handler="on_linkmap_button_release_event" last_modification_time="Sat, 29 Jun 2002 17:39:46 GMT"/>
+	  <signal name="scroll_event" handler="on_linkmap_scroll_event" last_modification_time="Sat, 29 Jun 2002 17:39:59 GMT"/>
+	</widget>
+	<packing>
+	  <property name="left_attach">2</property>
+	  <property name="right_attach">3</property>
+	  <property name="top_attach">1</property>
+	  <property name="bottom_attach">2</property>
+	  <property name="x_options">fill</property>
 	  <property name="y_options">fill</property>
 	</packing>
       </child>

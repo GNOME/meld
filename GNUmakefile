@@ -1,5 +1,5 @@
 
-PROG=meld.py
+PROG=./meld.py
 #PROG=xxdiff
 TESTNUM=6
 VERSION=0.3

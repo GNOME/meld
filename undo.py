@@ -27,11 +27,17 @@ class UndoSequence(gobject.GObject):
 
     def __init__(self):
         self.__gobject_init__()
-        self.clear()
+        self.actions = []
+        self.next_redo = 0
+        self.group = None
 
     def clear(self):
         if hasattr(self, "group"):
             assert self.group == None
+        if self.can_undo():
+            self.emit('can-undo', 0)
+        if self.can_redo():
+            self.emit('can-redo', 0)
         self.actions = []
         self.next_redo = 0
         self.group = None
