@@ -588,6 +588,9 @@ For more information choose help -> contents.
 Report bugs to steve9000@users.sourceforge.net.
 """)
 
+version_string = _("""Meld %s
+Written by Stephen Kennedy <steve9000@users.sf.net>""") % version
+
 ################################################################################
 #
 # Main
@@ -604,9 +607,13 @@ def main():
             return getattr(self.file, attr)
     sys.stdout = Unbuffered(sys.stdout)
 
-    if len(sys.argv) == 2 and sys.argv[1] in ("-h", "--help"):
-        print usage_string
-        return
+    if len(sys.argv) == 2:
+        if sys.argv[1] in ("-h", "--help"):
+            print usage_string
+            return
+        elif sys.argv[1] in ("-v", "--version"):
+            print version_string
+            return
 
     app = MeldApp()
     arg = sys.argv[1:]
