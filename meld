@@ -16,6 +16,9 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+# fake gettext until translations in place
+__builtins__.__dict__["_"] = lambda x : x
+
 pyver = (2,2)
 pygtkver = (1,99,15)
 
@@ -27,7 +30,7 @@ def ver2str(ver):
 #
 import sys
 if sys.version_info[:2] < pyver:
-    print "Meld requires python%s or higher to run." % ver2str(pyver)
+    print _("Meld requires python%s or higher.") % ver2str(pyver)
     sys.exit(1)
 
 #
@@ -37,8 +40,8 @@ try:
     import pygtk
 except ImportError, e:
     print e
-    print "Meld requires a recent version of pygtk to run."
-    print "pygtk-%s or higher is recommended." % ver2str(pygtkver)
+    print _("Meld requires a recent version of pygtk.")
+    print _("pygtk-%s or higher is recommended.") % ver2str(pygtkver)
     sys.exit(1)
 else:
     pygtk.require("2.0")
@@ -48,8 +51,8 @@ else:
 #
 import gtk
 if gtk.pygtk_version < pygtkver:
-    print "Meld works best with pygtk-%s or higher. (found %s)" % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
-    print "Due to incompatible API changes some functions may not operate as expected."
+    print _("Meld works best with pygtk-%s or higher. (found %s)") % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
+    print _("Due to incompatible API changes some functions may not operate as expected.")
 
 #
 # main
