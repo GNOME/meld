@@ -21,7 +21,7 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.6.6.1"
+version = "0.7.0b"
 developer = 0
 
 ################################################################################
@@ -172,8 +172,11 @@ class NotebookLabel(gtk.HBox):
     def __init__(self, text="", onclose=None):
         gtk.HBox.__init__(self)
         self.label = gtk.Label(text)
-        self.button = gtk.Button("X")
-        self.button.set_size_request(14,14) #TODO font height
+        self.button = gtk.Button()
+        image = gtk.Image()
+        image.set_from_file( misc.appdir("glade2/pixmaps/button_delete.xpm") )
+        image.set_from_pixbuf( image.get_pixbuf().scale_simple(9, 9, 2) ) #TODO font height
+        self.button.add( image )
         self.pack_start( self.label )
         self.pack_start( self.button, expand=0 )
         self.show_all()
@@ -426,8 +429,6 @@ class MeldApp(gnomeglade.GnomeApp):
         assert len(files) in (1,2,3)
         nfiles = len(files)
         doc = filediff.FileDiff(nfiles, self.statusbar, self.prefs)
-        for i in range(nfiles):
-            doc.set_file(files[i],i)
         seq = doc.undosequence
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
@@ -437,7 +438,12 @@ class MeldApp(gnomeglade.GnomeApp):
         self.notebook.set_current_page( self.notebook.page_num(doc.widget) )
         doc.connect("label-changed", self.on_notebook_label_changed)
         doc.label_changed()
-        doc.refresh()
+        def setup_docs():
+            for i in range(nfiles):
+                doc.set_file(files[i],i)
+            seq.clear()
+            doc.refresh()
+        gtk.idle_add( setup_docs )
 
     def append_cvsview(self, locations):
         location = locations[0]
