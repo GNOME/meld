@@ -33,7 +33,10 @@ class struct:
         return " ".join(r)
 
 
-#print filter(lambda x:x.find("TYPE")!=-1, dir(gobject))
+def look(s, o):
+    return filter(lambda x:x.find(s)!=-1, dir(o))
+#print filter(lambda x:x.find("MASK")!=-1, dir(gtk.gdk))
+#print filter(lambda x:x.lower().find("wheel")!=-1, dir(gtk.gdk))
 #print filter(lambda x:x.find("RUN")!=-1, dir(gobject))
 ################################################################################
 #
@@ -46,26 +49,78 @@ class FileDiff2(gnomeglade.Component):
     def __init__(self):
         self.__gobject_init__()
         gnomeglade.Component.__init__(self, "glade2/filediff2.glade", "filediff2")
+        self.linediffs = []
         sizegroup = gtk.SizeGroup(1)
         sizegroup.add_widget(self.textview0)
         sizegroup.add_widget(self.textview1)
         self.scrolledwindow0.get_vadjustment().connect("value-changed", lambda adj: self._sync_scroll(0) )
         self.scrolledwindow1.get_vadjustment().connect("value-changed", lambda adj: self._sync_scroll(1) )
         self.prefs = struct(deleted_color="#ebffeb", changed_color="#ebebff")
-        self.prefs = struct(deleted_color="#ffaaaa", changed_color="#aaffaa")
+        self.prefs = struct(deleted_color="#ffaaaa", changed_color="#aaffaa", edited_color="#eeeeee")
         #targetlist = self.textview0.drag_dest_get_target_list()
         #(gtk.DEST_DEFAULT_ALL, [("text/uri-list", 0, 0)], gtk.gdk.ACTION_COPY)
         #self.textview0.drag_dest_set_target_list(targetlist)
-        self.linediffs = []
+
+        self.pixbuf0 = self._load_pixbuf("glade2/apply0.xpm")
+        self.pixbuf1 = self._load_pixbuf("glade2/apply1.xpm")
+        self.drawing2.add_events(gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK)
+
+    def on_drawing2_scroll_event(self, area, event):
+        self.next_diff(event.direction)
+
+    def next_diff(self, direction):
+        madj = self.scrolledwindow0.get_vadjustment()
+        oadj = self.scrolledwindow1.get_vadjustment()
+        pixels_per_line = (madj.upper - madj.lower) / self._get_line_count(self.textview0)
+        line0 = (madj.value + madj.page_size/2) / pixels_per_line
+        line1 = (oadj.value + oadj.page_size/2) / pixels_per_line
+        if direction == gtk.gdk.SCROLL_DOWN:
+            comparison = lambda x: line0 < x[2]
+            start, end, step = (0, len(self.linediffs), 1)
+        else:
+            comparison = lambda x: line0 > x[1]
+            start,end, step = (len(self.linediffs)-1, -1, -1)
+
+        ok = 1
+        for i in xrange(start,end,step):
+            c = self.linediffs[i]
+            if c[0]=="equal" and comparison(c):
+                ok = 1
+            elif ok and comparison(c):
+                if c[1] != c[2]:
+                    v = (0.5 * pixels_per_line * (c[1]+c[2])) - madj.page_size/2
+                else: # tricky, use the other adjustment if this range is empty
+                    madj, oadj = oadj, madj
+                    v = (0.5 * pixels_per_line * (c[3]+c[4])) - madj.page_size/2
+                if v <= 0:
+                    oadj.set_value(0)
+                elif v > madj.upper-madj.page_size:
+                    oadj.set_value( oadj.upper - oadj.page_size )
+                else:
+                    madj.set_value(v)
+                break
+
+            else:
+                ok = 0
+
+    def _load_pixbuf(self, fname):
+        image = gtk.Image()
+        image.set_from_file(fname)
+        return image.get_pixbuf()
 
     def set_file(self, filename, which):
         view = (self.textview0, self.textview1)[which]
         try:
-            text = open(filename).read()
+            lines = []
+            for l in open(filename).read().split("\n"):
+                lines.append( "%s%s"% (len(lines)%50==0 and "*"*80 or "",l) )
+            text = "\n".join(lines)
         except IOError, e:
             print e
             text = ""
-        view.get_buffer().set_text( text )
+        buffer = view.get_buffer()
+        buffer.set_text( text )
+        self._ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.edited_color } )
         entry = (self.fileentry0, self.fileentry1)[which]
         entry.set_filename(filename)
         f0 = self.fileentry0.get_full_path(0) or "None"
@@ -83,8 +138,88 @@ class FileDiff2(gnomeglade.Component):
         self._draw_diff_map(self.drawing0, self.textview0, 0)
     def on_drawing1_expose_event(self, area, event):
         self._draw_diff_map(self.drawing1, self.textview1, 1)
-    def on_drawing2_expose_event(self, area, event):
+
+    def on_drawing2_button_press_event(self, area, event):
+        self.mouse_chunk = None
+        alloc = area.get_allocation()
+        (wtotal,htotal) = alloc.width, alloc.height
+        pw = self.pixbuf0.get_width()
+        if event.x < pw:
+            which = 0
+        elif event.x > wtotal - pw:
+            which = 1
+        else:
+            return
+        
+        madj = self.scrolledwindow0.get_vadjustment()
+        oadj = self.scrolledwindow1.get_vadjustment()
+        pixels_per_line = (madj.upper - madj.lower) / self._get_line_count(self.textview0)
         window = area.window
+        style = area.get_style()
+        gcfg = style.light_gc[0]
+
+        #TODO move these traversals into a utility function or class
+        ph = self.pixbuf0.get_height()
+        if which==0:
+            for c in filter( lambda x: x[0]=="replace" or x[0]=="delete", self.linediffs):
+                f0 = c[1] * pixels_per_line - madj.value
+                if f0<0: # find first visible chunk
+                    continue
+                if f0>htotal: # we've gone past last visible
+                    break
+                if f0 < event.y and event.y < f0 + ph:
+                    self.pixbuf1.render_to_drawable( window, gcfg, 0,0, 0, f0, -1,-1, 0,0,0)
+                    self.mouse_chunk = (0, c)
+                    break
+        else:
+            for c in filter( lambda x: x[0]=="replace" or x[0]=="insert", self.linediffs):
+                t0 = c[3] * pixels_per_line - oadj.value
+                if t0<0: # find first visible chunk
+                    continue
+                if t0>htotal: # we've gone past last visible
+                    break
+                if t0 < event.y and event.y < t0 + ph:
+                    self.pixbuf0.render_to_drawable( window, gcfg, 0,0, wtotal-pw, t0, -1,-1, 0,0,0)
+                    self.mouse_chunk = (1, c)
+                    break
+
+    def on_drawing2_button_release_event(self, area, event):
+        if self.mouse_chunk:
+            pw = self.pixbuf0.get_width()
+            wtotal = area.get_allocation().width
+            # check we're still in button
+            if (event.x < pw) or (wtotal - pw < event.x):
+                ph = self.pixbuf0.get_height()
+                which, c = self.mouse_chunk
+                madj = self.scrolledwindow0.get_vadjustment()
+                oadj = self.scrolledwindow1.get_vadjustment()
+                pixels_per_line = (madj.upper - madj.lower) / self._get_line_count(self.textview0)
+                f0 = c[1] * pixels_per_line - madj.value
+                t0 = c[3] * pixels_per_line - oadj.value
+                if which==0 and f0 < event.y and event.y < f0 + ph:
+                    b0 = self.textview0.get_buffer()
+                    t0 = b0.get_text( b0.get_iter_at_line(c[1]), b0.get_iter_at_line(c[2]), 0)
+                    b1 = self.textview1.get_buffer()
+                    b1.begin_user_action()
+                    b1.delete(b1.get_iter_at_line(c[3]), b1.get_iter_at_line(c[4]))
+                    b1.insert_with_tags_by_name(b1.get_iter_at_line(c[3]), t0, "edited line")
+                    b1.end_user_action()
+                    self.refresh()
+                if which==1 and t0 < event.y and event.y < t0 + ph:
+                    b1 = self.textview1.get_buffer()
+                    t1 = b1.get_text( b1.get_iter_at_line(c[3]), b1.get_iter_at_line(c[4]), 0)
+                    b0 = self.textview0.get_buffer()
+                    b0.begin_user_action()
+                    b0.delete(b0.get_iter_at_line(c[1]), b0.get_iter_at_line(c[2]))
+                    b0.insert_with_tags_by_name(b0.get_iter_at_line(c[1]), t1, "edited line")
+                    b0.end_user_action()
+                    self.refresh()
+            self.mouse_chunk = None
+
+    def on_drawing2_expose_event(self, area, event):
+        #print "expose", event, dir(event)
+        window = area.window
+        #print "*", area.get_events()
         # not mapped? 
         if not window: return
         alloc = area.get_allocation()
@@ -100,13 +235,8 @@ class FileDiff2(gnomeglade.Component):
         pixels_per_line = (madj.upper - madj.lower) / self._get_line_count(self.textview0)
         indent = 8
 
-        #im = gtk.Image()
-        #im.set_from_file("/usr/share/pixmaps/tcd/ff.xpm")
-        #imff = im.get_pixbuf()
-        #im.set_from_file("/usr/share/pixmaps/tcd/rw.xpm")
-        #imrw = im.get_pixbuf()
-
         # gain function for smoothing
+        #TODO cache these values
         bias = lambda x,g: math.pow(x, math.log(g) / math.log(0.5))
         def gain(t,g):
             if t<0.5:
@@ -122,9 +252,9 @@ class FileDiff2(gnomeglade.Component):
                 continue
             if f0>htotal and t0>htotal: # we've gone past last visible
                 break
-            if f0==f1: f0 -= 3; f1 += 1
-            if t0==t1: t0 -= 3; t1 += 1
-            n = 10.0 # num line segments
+            if f0==f1: f0 -= 2; f1 += 2
+            if t0==t1: t0 -= 2; t1 += 2
+            n = 10.0 #TODO cache
             points0 = []
             points1 = [] 
             for t in map(lambda x: x/n, range(n+1)):
@@ -132,20 +262,23 @@ class FileDiff2(gnomeglade.Component):
                 points1.append( ((1-t)*wtotal, f(t)*f1 + (1-f(t))*t1 ) )
 
             points = points0 + points1 + [points0[0]]
+
             window.draw_polygon(gcfg, 1, points)
             window.draw_lines(style.text_gc[0], points0  )
             window.draw_lines(style.text_gc[0], points1  )
 
-            #impos = [wtotal/2, (points0[0][1] + points0[-1][1] + points1[0][1] + points1[-1][1])/4 ]
-            #impos[0] -= imff.get_width()/2
-            #impos[1] -= imff.get_height()/2
-            #if c[0]=="insert":
-            #    imff.render_to_drawable( window, gcfg, 0,0, impos[0],impos[1], -1,-1, 0,0,0)
-            #else:
-            #    imrw.render_to_drawable( window, gcfg, 0,0, impos[0],impos[1], -1,-1, 0,0,0)
+            x = wtotal-self.pixbuf0.get_width()
+            if c[0]=="insert":
+                self.pixbuf1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+            elif c[0] == "delete":
+                self.pixbuf0.render_to_drawable( window, gcfg, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+            else: #replace
+                self.pixbuf0.render_to_drawable( window, gcfg, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+                self.pixbuf1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
         window.draw_line(style.text_gc[0], .25*wtotal,  0.5*htotal,.75*wtotal, 0.5*htotal)
         
     def refresh(self, *args):
+        self.flushevents()
         b0 = self.textview0.get_buffer()
         t0 = b0.get_text(b0.get_start_iter(), b0.get_end_iter(), 0)
         b1 = self.textview1.get_buffer()
@@ -153,11 +286,9 @@ class FileDiff2(gnomeglade.Component):
         self.linediffs = difflib.SequenceMatcher(None, t0.split("\n"), t1.split("\n")).get_opcodes()
         self._highlight_buffer(0)
         self._highlight_buffer(1)
-        #TODO how do we get a gtk.gdk.Rectangle?
-        #self.drawing2.window.invalidate_rect( (0,0,100,100), 0) 
-        self.on_drawing0_expose_event(self.drawing0, None)
-        self.on_drawing1_expose_event(self.drawing1, None)
-        self.on_drawing2_expose_event(self.drawing2, None)
+        self.drawing0.queue_draw()
+        self.drawing1.queue_draw()
+        self.drawing2.queue_draw()
 
     def goto_top(self):
         tofrom = self.textview1.is_focus()
@@ -202,13 +333,16 @@ class FileDiff2(gnomeglade.Component):
         return text.get_buffer().get_line_count()
 
     def _draw_diff_map(self, drawing, text, which):
-        XXXX = 14 # height of arrow button on scrollbar - how do we get that?
+        XXXX = 14 #TODO height of arrow button on scrollbar - how do we get that?
         offset = self.fileentry0.get_allocation()[3] + XXXX
         hperline = float( text.get_allocation()[3] - 2*XXXX) / self._get_line_count(text)
+        if hperline > 11: #TODO font height 
+            hperline = 11
         scaleit = lambda x,s=hperline,o=offset: x*s+o
         x0 = 4
         x1 = drawing.get_allocation()[2] - 2*x0
         base = (1,3)[which]
+        madj = self.scrolledwindow0.get_vadjustment()
 
         window = drawing.window
         window.clear()
@@ -219,7 +353,7 @@ class FileDiff2(gnomeglade.Component):
         for c in filter(lambda x: x[0]!='equal', self.linediffs):
             (s,e) = c[base:base+2]
             e += s==e
-            (s,e) = map( scaleit, (s,e+1) )
+            (s,e) = map( scaleit, (s,e) )
             s = math.floor(s)
             e = math.ceil(e)
             window.draw_rectangle(gc[c[0]], 1,  x0, s,  x1, e-s)
@@ -262,8 +396,10 @@ class FileDiff2(gnomeglade.Component):
             oline = (obegin + mfrac * (oend - obegin))
             opct =  oline / otextlen
             oval = oadj.lower + opct * (oadj.upper - oadj.lower) - oadj.page_size * syncpoint
+            oval = min(oval, oadj.upper - oadj.page_size)
             oadj.set_value( oval )
             self.on_drawing2_expose_event(self.drawing2, None)
+            #self.drawing2.queue_draw()
             self._sync_scroll_lock = 0
 
     def _ensure_fresh_tag_exists(self, name, buffer, properties):
@@ -370,5 +506,7 @@ def main():
     MeldApp(args).mainloop()
 
 if __name__=="__main__":
+    #import profile
+    #profile.run("main()", "profile.meld")
     main()
 

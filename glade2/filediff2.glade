@@ -134,7 +134,12 @@
 	  <child>
 	    <widget class="GtkDrawingArea" id="drawing2">
 	      <property name="visible">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
 	      <signal name="expose_event" handler="on_drawing2_expose_event" last_modification_time="Sat, 18 May 2002 20:51:02 GMT"/>
+	      <signal name="button_press_event" handler="on_drawing2_button_press_event" last_modification_time="Fri, 07 Jun 2002 17:26:28 GMT"/>
+	      <signal name="button_release_event" handler="on_drawing2_button_release_event" last_modification_time="Fri, 07 Jun 2002 17:26:33 GMT"/>
+	      <signal name="scroll_event" handler="on_drawing2_scroll_event" last_modification_time="Fri, 07 Jun 2002 19:48:49 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
