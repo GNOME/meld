@@ -219,6 +219,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.popup_menu = DirDiffMenu(self)
         self.set_num_panes(num_panes)
         self.on_treeview_focus_out_event(None, None)
+        self.treeview_focussed = None
 
         for i in range(3):
             self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
@@ -318,12 +319,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._update_item_state(iter)
         else: # nope its gone
             self.model.remove(iter)
+        self._update_difmaps()
 
     def file_created(self, path, pane):
         iter = self.model.get_iter(path)
         while iter and self.model.get_path(iter) != (0,):
             self._update_item_state( iter )
             iter = self.model.iter_parent(iter)
+        self._update_difmaps()
 
     def on_fileentry_activate(self, entry):
         locs = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
@@ -475,20 +478,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
            If it is a folder we recursively open diffs for each non equal file.
         """
         paths = filter(os.path.exists, self.model.value_paths(iter))
-        arefiles = map(os.path.isfile, paths)
-        if 0 not in arefiles:
-            if force or int(self.model.get_state(iter,pane)) >= tree.STATE_NEW:
-                self.emit("create-diff", paths)
-        else:
-            aredirs = map(os.path.isdir, paths)
-            if aredirs:
-                child = self.model.iter_children(iter)
-                while child:
-                    state = int(self.model.get_state(child, pane))
-                    self.launch_comparison(child, pane, force=0)
-                    child = self.model.iter_next(child)
-            else:
-                print "Mixture of files and folders?", paths
+        self.emit("create-diff", paths)
 
     def launch_comparisons_on_selected(self):
         """Launch comparisons on all selected elements.
@@ -531,7 +521,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 continue
                         misc.copytree(src, dst)
                         self.recursively_update( path )
-                except OSError, e:
+                except (OSError,IOError), e:
                     misc.run_dialog(_("Error copying '%s' to '%s'\n\n%s.") % (src, dst,e), self)
 
     def delete_selected(self):
@@ -561,6 +551,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
+        if pane == None: return
         paths = self._get_selected_paths(pane)
         if len(paths) > 0:
             def rwx(mode):
@@ -580,6 +571,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.emit("status-changed", "" )
             else:
                 self.emit("status-changed", "%s : %s" % (rwx(stat.st_mode), nice(time.time() - stat.st_mtime) ) )
+
+    def on_switch_event(self):
+        if self.treeview_focussed:
+            self.scheduler.add_task( self.treeview_focussed.grab_focus )
+            self.scheduler.add_task( self.on_treeview_cursor_changed )
 
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)
@@ -634,6 +630,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._update_difmaps()
 
     def on_treeview_focus_in_event(self, tree, event):
+        self.treeview_focussed = tree
         pane = self.treeview.index(tree)
         if pane > 0:
             self.button_copy_left.set_sensitive(1)
@@ -788,7 +785,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return
 
     def on_treeview_button_press_event(self, treeview, event):
-        # unselect others
+        # unselect other panes
         for t in filter(lambda x:x!=treeview, self.treeview[:self.num_panes]):
             t.get_selection().unselect_all()
         if event.button == 3:
@@ -798,9 +795,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pass # clicked outside tree
             else:
                 treeview.grab_focus()
-                treeview.set_cursor( path, col, 0)
+                selected = self._get_selected_paths( self.treeview.index(treeview) )
+                if len(selected) <= 1 and event.state == 0:
+                    treeview.set_cursor( path, col, 0)
                 self.popup_menu.popup_in_pane( self.treeview.index(treeview) )
-            return 1
+            return event.state==0
 
     def set_num_panes(self, n):
         if n != self.num_panes and n in (1,2,3):
@@ -931,23 +930,43 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             adj.set_value( max( min(upper, val), 0) )
             return 1
 
-    def on_file_changed(self, filename):
+    def on_file_changed(self, changed_filename):
+        """When a file has changed, try to find it in our tree
+           and update its status if necessary
+        """
         model = self.model
-        iter = model.get_iter_root()
-        for pane,path in misc.enumerate( model.value_paths(iter) ):
-            if filename.startswith(path): 
-                while iter:
-                    child = model.iter_children( iter )
-                    while child:
-                        path = model.value_path(child, pane)
-                        if filename == path:
-                            self._update_item_state(child)
-                            return
-                        elif filename.startswith(path):
-                            break
-                        else:
-                            child = self.model.iter_next( child )
-                    iter = child
-                return
+        changed_paths = []
+        # search each panes tree for changed_filename
+        for pane in range(self.num_panes):
+            it = model.get_iter_root()
+            current = model.value_path(it, pane).split(os.sep)
+            changed = changed_filename.split(os.sep)
+            # early exit. does filename begin with root?
+            try:
+                if changed[:len(current)] != current:
+                    continue
+            except IndexError:
+                continue
+            changed = changed[len(current):]
+            # search the tree component at a time
+            for component in changed:
+                child = model.iter_children( it )
+                while child:
+                    leading, name = os.path.split( model.value_path(child, pane) )
+                    if component == name : # found it
+                        it = child
+                        break
+                    else:
+                        child = self.model.iter_next( child ) # next
+                if not it:
+                    break
+            # save if found and unique
+            if it:
+                path = model.get_path(it)
+                if path not in changed_paths:
+                    changed_paths.append(path)
+        # do the update
+        for path in changed_paths:
+            self._update_item_state( model.get_iter(path) )
 
 gobject.type_register(DirDiff)
