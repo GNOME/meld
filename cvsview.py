@@ -78,6 +78,8 @@ def _lookup_cvs_files(dirs, files):
 
     try:
         entries = open( os.path.join(directory, "CVS/Entries")).read()
+        # poor mans universal newline
+        entries = entries.replace("\r","\n").replace("\n\n","\n")
     except IOError, e: # no cvs dir
         d = map(lambda x: Dir(x[1],x[0], tree.STATE_NONE), dirs) 
         f = map(lambda x: File(x[1],x[0], tree.STATE_NONE, None), files) 
