@@ -847,6 +847,8 @@ Written by Stephen Kennedy <stevek@gnome.org>""") % version
 #
 ################################################################################
 def main():
+    import optparse
+
     class Unbuffered(object):
         def __init__(self, file):
             self.file = file
@@ -856,15 +858,11 @@ def main():
         def __getattr__(self, attr):
             return getattr(self.file, attr)
     sys.stdout = Unbuffered(sys.stdout)
-    args = sys.argv[1:]
 
-    if len(args) >= 2:
-        if "-h" in args or "--help" in args:
-            print usage_string
-            return
-        if "-v" in args or "--version" in args:
-            print version_string
-            return
+    parser = optparse.OptionParser(usage=_("Usage: meld [options] [arguments]"), version=version_string)
+    parser.add_option("-L", "--label", action="append", help=_("Use label instead of filename. This option may be used several times."))
+    parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
+    options, args = parser.parse_args()
 
     app = MeldApp()
 
