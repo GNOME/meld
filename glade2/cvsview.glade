@@ -38,16 +38,16 @@
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="button_recurse">
+	    <widget class="toggle" id="button_flatten">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Recurse</property>
-	      <property name="label" translatable="yes">R_ecurse</property>
+	      <property name="label" translatable="yes">_Flatten</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_pixmap">gtk-goto-bottom</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
 	      <property name="new_group">True</property>
-	      <signal name="toggled" handler="on_button_recurse_toggled" last_modification_time="Sun, 28 Jul 2002 12:34:57 GMT"/>
+	      <signal name="toggled" handler="on_button_flatten_toggled" last_modification_time="Sun, 12 Oct 2003 11:40:43 GMT"/>
 	    </widget>
 	    <packing>
 	      <property name="new_group">True</property>
@@ -57,13 +57,25 @@
 	  <child>
 	    <widget class="toggle" id="button_modified">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Show modified</property>
 	      <property name="label" translatable="yes">_Modified</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-execute</property>
-	      <property name="active">False</property>
+	      <property name="stock_pixmap">gtk-find</property>
+	      <property name="active">True</property>
 	      <property name="inconsistent">False</property>
-	      <signal name="toggled" handler="on_button_modified_toggled" last_modification_time="Sat, 03 Aug 2002 15:56:33 GMT"/>
+	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:38 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="toggle" id="button_normal">
+	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Show modified</property>
+	      <property name="label" translatable="yes">_Normal</property>
+	      <property name="use_underline">True</property>
+	      <property name="stock_pixmap">gtk-find</property>
+	      <property name="active">True</property>
+	      <property name="inconsistent">False</property>
+	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:32 GMT"/>
 	    </widget>
 	  </child>
 
@@ -71,12 +83,12 @@
 	    <widget class="toggle" id="button_noncvs">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Show non-CVS</property>
-	      <property name="label" translatable="yes">_Non CVS</property>
+	      <property name="label" translatable="yes">Non _CVS</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-execute</property>
+	      <property name="stock_pixmap">gtk-find</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
-	      <signal name="toggled" handler="on_button_noncvs_toggled" last_modification_time="Sat, 03 Aug 2002 16:08:24 GMT"/>
+	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:43 GMT"/>
 	    </widget>
 	  </child>
 
@@ -85,10 +97,10 @@
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">Ignored</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-execute</property>
+	      <property name="stock_pixmap">gtk-find</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
-	      <signal name="toggled" handler="on_button_ignored_toggled" last_modification_time="Wed, 01 Oct 2003 20:20:29 GMT"/>
+	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:50 GMT"/>
 	    </widget>
 	  </child>
 
@@ -404,9 +416,30 @@
       <signal name="activate" handler="on_diff_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image29">
+	<widget class="GtkImage" id="image49">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-dialog-info</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="view">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">_View</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_view_activate" last_modification_time="Sun, 12 Oct 2003 12:42:46 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image50">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-find</property>
 	  <property name="icon_size">1</property>
 	  <property name="xalign">0.5</property>
 	  <property name="yalign">0.5</property>
@@ -425,7 +458,7 @@
       <signal name="activate" handler="on_update_activate"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image30">
+	<widget class="GtkImage" id="image51">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-go-forward</property>
 	  <property name="icon_size">1</property>
@@ -446,7 +479,7 @@
       <signal name="activate" handler="on_commit_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image31">
+	<widget class="GtkImage" id="image52">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-go-back</property>
 	  <property name="icon_size">1</property>
@@ -473,7 +506,7 @@
       <signal name="activate" handler="on_add_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image32">
+	<widget class="GtkImage" id="image53">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-add</property>
 	  <property name="icon_size">1</property>
@@ -494,7 +527,7 @@
       <signal name="activate" handler="on_add_binary_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image33">
+	<widget class="GtkImage" id="image54">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-add</property>
 	  <property name="icon_size">1</property>
@@ -515,7 +548,7 @@
       <signal name="activate" handler="on_remove_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image34">
+	<widget class="GtkImage" id="image55">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-remove</property>
 	  <property name="icon_size">1</property>
@@ -542,7 +575,7 @@
       <signal name="activate" handler="on_remove_locally_activate" last_modification_time="Sun, 31 Aug 2003 12:27:25 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image35">
+	<widget class="GtkImage" id="image56">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-delete</property>
 	  <property name="icon_size">1</property>

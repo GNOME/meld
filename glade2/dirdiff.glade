@@ -176,7 +176,7 @@
 	    <widget class="button" id="filter_hide_current">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Hide selected</property>
-	      <property name="label" translatable="yes">Hide</property>
+	      <property name="label" translatable="yes">Hide...</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_pixmap">gtk-no</property>
 	      <property name="new_group">True</property>
@@ -196,8 +196,12 @@
 	      <property name="stock_pixmap">gtk-italic</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
+	      <property name="new_group">True</property>
 	      <signal name="toggled" handler="on_button_ignore_case_toggled" last_modification_time="Tue, 19 Aug 2003 17:44:14 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="new_group">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
