@@ -145,8 +145,16 @@ class DirDiff(gnomeglade.Component):
         if self.lock == 0:
             self.lock = 1
             current_dir = self.model.get_value(iter,NAME)
-            roots = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
-            roots = [ e and join(e, current_dir) for e in roots]
+            paneroots = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
+            uptree = iter
+            stack = []
+            while uptree:
+                stack.append( self.model.get_value(uptree, NAME) )
+                uptree = self.model.iter_parent(uptree)
+            stack.reverse()
+            current_dir = "/".join(stack)[1:]
+            roots = [ e and join(e, current_dir) for e in paneroots]
+
             dirs = []
             files = []
             alldirs = []
