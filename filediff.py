@@ -351,6 +351,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buttons = []
             for i in range(self.num_panes):
                 b = gtk.CheckButton( self._get_filename(i) )
+                b.set_use_underline(False)
                 buttons.append(b)
                 dialog.box.pack_start(b, 1, 1)
                 if not modified[i]:
