@@ -1,21 +1,55 @@
-import gobject
+### Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+
+### This program is free software; you can redistribute it and/or modify
+### it under the terms of the GNU General Public License as published by
+### the Free Software Foundation; either version 2 of the License, or
+### (at your option) any later version.
+
+### This program is distributed in the hope that it will be useful,
+### but WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+### GNU General Public License for more details.
+
+### You should have received a copy of the GNU General Public License
+### along with this program; if not, write to the Free Software
+### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+"""Utility classes for working with glade files.
+
+"""
+
 import gtk
 import gtk.glade
 import gnome
 import gnome.ui
 
+# Return values from the 'delete-event' handler.
+# Return DELETE_OK to allow the window to close or DELETE_ABORT
+# if the window should not be deleted
 DELETE_OK, DELETE_ABORT = (0,1)
+
+# Use these to ensure consistent return values.
 RESULT_OK, RESULT_ERROR = (0,1)
 
-################################################################################
-#
-# Base
-#
-################################################################################
-class Base(gobject.GObject):
+class Base:
+    """Base class for all glade objects.
+
+    This class handles loading the xml glade file and connects
+    all methods name 'on_*' to the signals in the glade file.
+
+    The handle to the xml file is stored in 'self.xml'. The
+    toplevel widget is stored in 'self.widget'.
+
+    In addition it calls widget.set_data("pyobject", self) - this
+    allows us to get the python object given only the 'raw' gtk+
+    object, which is sadly sometimes necessary.
+    """
 
     def __init__(self, file, root):
-        self.__gobject_init__()
+        """Load the widgets from the node 'root' in file 'file'.
+
+        Automatically connects signal handlers named 'on_*'.
+        """
         self.xml = gtk.glade.XML(file, root)
         handlers = {}
         for h in filter(lambda x:x[:3]=="on_", dir(self.__class__)):
@@ -25,7 +59,8 @@ class Base(gobject.GObject):
         self.widget.set_data("pyobject", self)
 
     def __getattr__(self, key):
-        """Allow glade widgets to be accessed as self.widgetname"""
+        """Allow glade widgets to be accessed as self.widgetname.
+        """
         widget = self.xml.get_widget(key)
         if widget: # cache lookups
             setattr(self, key, widget)
@@ -33,13 +68,18 @@ class Base(gobject.GObject):
         raise AttributeError(key)
 
     def flushevents(self):
-        """Handle all the events currently in the main queue"""
+        """Handle all the events currently in the main queue and return.
+        """
         while gtk.events_pending():
             gtk.main_iteration();
 
     def _map_widgets_into_lists(self, widgetnames):
-        "e.g. make widgets self.button0, self.button1, ... "
-        "available as self.button[0], self.button[1], ..."
+        """Put sequentially numbered widgets into lists.
+        
+        e.g. If an object had widgets self.button0, self.button1, ...,
+        then after a call to object._map_widgets_into_lists(["button"])
+        object has an attribute self.button == [self.button0, self.button1, ...]."
+        """
         for item in widgetnames:
             setattr(self,item, [])
             list = getattr(self,item)
@@ -53,86 +93,47 @@ class Base(gobject.GObject):
                 list.append(val)
                 i += 1
 
-################################################################################
-#
-# GnomeGladeComponent
-#
-################################################################################
+
 class Component(Base):
-    """A convenience base class for widgets which use glade"""
+    """A convenience base class for widgets which use glade.
+    """
 
     def __init__(self, file, root):
-        """Create from node 'root' in a specified file"""
-        Base.__init__(self,file,root)
+        Base.__init__(self, file, root)
 
-################################################################################
-#
-# GnomeGladeMenu
-#
-################################################################################
-class Menu(Base):
-    """A convenience base class for widgets which use glade"""
 
-    def __init__(self, file, root):
-        """Create from node 'root' in a specified file"""
-        Base.__init__(self,file,root)
-
-################################################################################
-#
-# GnomeGladeComponent
-#
-################################################################################
-class Dialog(Base):
-    """A convenience base class for dialogs created in glade"""
-
-    def __init__(self, file, root):
-        """Create from node 'root' in a specified file"""
-        Base.__init__(self,file,root)
-
-################################################################################
-#
-# GnomeApp
-#
-################################################################################
-class GnomeApp(Base):
-    """A convenience base class for apps created in glade"""
-
-    def __init__(self, name, version, file, root=None):
-        self.program = gnome.program_init(name, version)
-        Base.__init__(self,file,root)
-
-    def mainloop(self):
-        """Enter the gtk main loop"""
-        gtk.mainloop()
-    def quit(*args):
-        """Signal the gtk main loop to quit"""
-        gtk.main_quit()
-
-################################################################################
-#
-# GtkApp
-#
-################################################################################
 class GtkApp(Base):
-    """A convenience base class for apps created in glade"""
+    """A convenience base class for gtk+ apps created in glade.
+    """
 
-    def __init__(self, name, version, file, root=None):
-        Base.__init__(self,file,root)
+    def __init__(self, file, root=None):
+        Base.__init__(self, file, root)
 
     def mainloop(self):
-        """Enter the gtk main loop"""
+        """Enter the gtk main loop.
+        """
         gtk.mainloop()
+
     def quit(*args):
-        """Signal the gtk main loop to quit"""
+        """Signal the gtk main loop to quit.
+        """
         gtk.main_quit()
 
-################################################################################
-#
-# load_pixbuf
-#
-################################################################################
+
+class GnomeApp(GtkApp):
+    """A convenience base class for apps created in glade.
+    """
+
+    def __init__(self, name, version, file, root):
+        """Initialise program 'name' and version from 'file' containing root node 'root'.
+        """
+        self.program = gnome.program_init(name, version)
+        GtkApp.__init__(self,file,root)
+
+
 def load_pixbuf(fname, size=0):
-    """Load an image from a file as a pixbuf"""
+    """Load an image from a file as a pixbuf, with optional resizing.
+    """
     image = gtk.Image()
     image.set_from_file(fname)
     image = image.get_pixbuf()
