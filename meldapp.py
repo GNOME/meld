@@ -43,7 +43,7 @@ developer = 0
 
 class BrowseFileDialog(gnomeglade.Component):
     def __init__(self, parentapp, labels, callback, isdir=0):
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/meld-app.glade"), "browsefile")
+        gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "browsefile")
         self.widget.set_transient_for(parentapp.widget)
         self.numfile = len(labels)
         self.callback = callback
@@ -79,7 +79,7 @@ class BrowseFileDialog(gnomeglade.Component):
 class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parentapp):
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/meld-app.glade"), "preferencesdialog")
+        gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
 
         self.prefs = parentapp.prefs
@@ -207,7 +207,7 @@ class NotebookLabel(gtk.HBox):
 ################################################################################
 class MeldNewMenu(gnomeglade.Component):
     def __init__(self, app):
-        gladefile = misc.appdir("glade2/meld-app.glade")
+        gladefile = misc.appdir("glade2/meldapp.glade")
         gnomeglade.Component.__init__(self, gladefile, "popup_new")
         self.parent = app
     def on_menu_new_diff2_activate(self, *extra):
@@ -278,8 +278,8 @@ class MeldApp(gnomeglade.GnomeApp):
     # init
     #
     def __init__(self):
-        gladefile = misc.appdir("glade2/meld-app.glade")
-        gnomeglade.GnomeApp.__init__(self, "Meld", version, gladefile, "meldapp")
+        gladefile = misc.appdir("glade2/meldapp.glade")
+        gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
         self._map_widgets_into_lists( ["menu_file_save_file", "settings_number_panes", "settings_drawstyle"] )
         self.popup_new = MeldNewMenu(self)
         self.statusbar = MeldStatusBar(self.appbar)
@@ -358,7 +358,7 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (file)
     #
     def on_menu_new_diff2_activate(self, *extra):
-        BrowseFileDialog(self,["Original File", "Modified File"], self.append_filediff)
+        BrowseFileDialog(self,_("Original File:Modified File").split(":"), self.append_filediff)
 
     def on_menu_new_diff3_activate(self, *extra):
         BrowseFileDialog(self,["Other Changes","Common Ancestor","Local Changes"], self.append_filediff )
@@ -464,7 +464,7 @@ class MeldApp(gnomeglade.GnomeApp):
         gnome.url_show("file:///"+os.path.abspath(misc.appdir("manual/index.html") ) )
 
     def on_menu_about_activate(self, *extra):
-        about = gtk.glade.XML(misc.appdir("glade2/meld-app.glade"),"about").get_widget("about")
+        about = gtk.glade.XML(misc.appdir("glade2/meldapp.glade"),"about").get_widget("about")
         about.set_property("name", "Meld")
         about.set_property("version", version)
         about.show()
