@@ -355,6 +355,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _search_recursively_iter(self, rootpath):
         yield _("[%s] Scanning") % self.label_text
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
+        symlinks_followed = {} # only follow symlinks once
         todo = [ rootpath ]
         while len(todo):
             todo.sort() # depth first
@@ -420,8 +421,30 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     else:
                         for f in self.name_filters:
                             entries = filter(f.filter, entries)
-                        accumdirs.add( pane, [e for e in entries if os.path.isdir(  join(root, e) ) ] )
-                        accumfiles.add(pane, [e for e in entries if os.path.isfile( join(root, e) ) ] )
+                        for e in entries:
+                            s = os.lstat( join(root,e) )
+                            files = []
+                            dirs = []
+                            if stat.S_ISREG(s.st_mode):
+                                files.append(e)
+                            elif stat.S_ISDIR(s.st_mode):
+                                dirs.append(e)
+                            elif stat.S_ISLNK(s.st_mode):
+                                key = (s.st_dev, s.st_ino)
+                                if symlinks_followed.get( key, 0 ) == 0:
+                                    symlinks_followed[key] = 1
+                                    try:
+                                        s = os.stat( join(root,e) )
+                                    except OSError, err:
+                                        print "ignoring dangling symlink", e
+                                        pass
+                                    else:
+                                        if stat.S_ISREG(s.st_mode):
+                                            files.append(e)
+                                        elif stat.S_ISDIR(s.st_mode):
+                                            dirs.append(e)
+                            accumfiles.add( pane, files )
+                            accumdirs.add( pane, dirs )
 
             alldirs = accumdirs.get()
             allfiles = self._filter_on_state( roots, accumfiles.get() )
@@ -525,13 +548,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 try:
                     if os.path.isfile(name):
                         os.remove(name)
-                        self.file_deleted( path, pane) #xxx
+                        self.file_deleted( path, pane)
                     elif os.path.isdir(name):
                         if misc.run_dialog(_("'%s' is a directory.\nRemove recusively?") % os.path.basename(name),
                                 parent = self,
                                 buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                             shutil.rmtree(name)
                             self.recursively_update( path )
+                        self.file_deleted( path, pane)
                 except OSError, e:
                     misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
 
@@ -550,9 +574,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         return "%s%i %s" % (deltat<0 and "-" or "", d, time.split(",")[d != 1])
                     d /= div
             file = self.model.value_path( self.model.get_iter(paths[0]), pane )
-            stat = os.stat(file)
-            self.emit("status-changed", 0, "%s" % rwx(stat.st_mode) )
-            self.emit("status-changed", 1, "%s" % nice(time.time() - stat.st_mtime) )
+            try:
+                stat = os.stat(file)
+            except OSError:
+                self.emit("status-changed", "" )
+            else:
+                self.emit("status-changed", "%s : %s" % (rwx(stat.st_mode), nice(time.time() - stat.st_mtime) ) )
 
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)
