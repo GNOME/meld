@@ -663,7 +663,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         item = gtk.ImageMenuItem(gtk.STOCK_CLEAR)
         def activate(*args):
             buf = text.get_buffer()
-            bufourceforgedelete( buf.get_start_iter(), buf.get_end_iter() )
+            buf.delete( buf.get_start_iter(), buf.get_end_iter() )
         item.connect("activate", activate)
         item.show()
         menu.insert( item, 0 )
