@@ -17,6 +17,10 @@
 import gobject
 import task
 import undo
+import gtk
+
+# Use these to ensure consistent return values.
+RESULT_OK, RESULT_ERROR = (0,1)
 
 class MeldDoc(gobject.GObject):
     """Base class for documents in the meld application.
@@ -85,5 +89,22 @@ class MeldDoc(gobject.GObject):
 
     def label_changed(self):
         self.emit("label-changed", self.label_text)
+
+    def on_delete_event(self, appquit=0):
+        """Called when the docs container is about to close.
+           A doc normally returns gtk.RESPONSE_OK but may return
+           gtk.RESPONSE_CANCEL which requests the container
+           to not delete it. In the special case when the
+           app is about to quit, gtk.RESPONSE_CLOSE may be returned
+           which instructs the container to quit without any
+           more callbacks.
+        """
+        return gtk.RESPONSE_OK
+
+    def on_quit_event(self):
+        """Called when the docs container is about to close.
+           There is no way to interrupt the quit event.
+        """
+        pass
 
 gobject.type_register(MeldDoc)
