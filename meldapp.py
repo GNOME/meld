@@ -422,9 +422,9 @@ class MeldPreferences(prefs.Preferences):
         "color_replace_fg" : prefs.Value(prefs.STRING, "Black"),
         "color_conflict_bg" : prefs.Value(prefs.STRING, "Pink"),
         "color_conflict_fg" : prefs.Value(prefs.STRING, "Black"),
-        "color_inline_bg" : prefs.Value(prefs.STRING, "LightSteelBlue1"),
+        "color_inline_bg" : prefs.Value(prefs.STRING, "LightSteelBlue2"),
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
-        "color_edited_bg" : prefs.Value(prefs.STRING, "gray85"),
+        "color_edited_bg" : prefs.Value(prefs.STRING, "gray90"),
         "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
         "filters" : prefs.Value(prefs.STRING, "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n" + \
                                               "CVS\t1\tCVS\n" + \
