@@ -32,7 +32,7 @@ import cvsview
 import dirdiff
 import task
 
-version = "0.8.2"
+version = "0.8.3"
 developer = 0
 
 ################################################################################
