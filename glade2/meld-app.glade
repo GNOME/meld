@@ -56,7 +56,7 @@
 				  <signal name="activate" handler="on_menu_new_diff2_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image485">
+				    <widget class="GtkImage" id="image496">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-new</property>
 				      <property name="icon_size">1</property>
@@ -77,7 +77,7 @@
 				  <signal name="activate" handler="on_menu_new_diff3_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image486">
+				    <widget class="GtkImage" id="image497">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-new</property>
 				      <property name="icon_size">1</property>
@@ -98,7 +98,7 @@
 				  <signal name="activate" handler="on_menu_new_dir2_activate" last_modification_time="Sat, 02 Nov 2002 17:55:35 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image487">
+				    <widget class="GtkImage" id="image498">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-open</property>
 				      <property name="icon_size">1</property>
@@ -119,7 +119,7 @@
 				  <signal name="activate" handler="on_menu_new_dir3_activate" last_modification_time="Sat, 02 Nov 2002 17:55:35 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image488">
+				    <widget class="GtkImage" id="image499">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-open</property>
 				      <property name="icon_size">1</property>
@@ -140,7 +140,7 @@
 				  <signal name="activate" handler="on_menu_new_cvsview_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image489">
+				    <widget class="GtkImage" id="image500">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-add</property>
 				      <property name="icon_size">1</property>
@@ -164,7 +164,7 @@
 			  <property name="use_underline">True</property>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image490">
+			    <widget class="GtkImage" id="image501">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-save</property>
 			      <property name="icon_size">1</property>
@@ -186,7 +186,7 @@
 				  <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image491">
+				    <widget class="GtkImage" id="image502">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -207,7 +207,7 @@
 				  <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image492">
+				    <widget class="GtkImage" id="image503">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -228,7 +228,7 @@
 				  <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
 
 				  <child internal-child="image">
-				    <widget class="GtkImage" id="image493">
+				    <widget class="GtkImage" id="image504">
 				      <property name="visible">True</property>
 				      <property name="stock">gtk-save</property>
 				      <property name="icon_size">1</property>
@@ -305,6 +305,7 @@
 			<widget class="GtkImageMenuItem" id="cut1">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_CUT_ITEM</property>
+			  <signal name="activate" handler="on_menu_cut_activate" last_modification_time="Sun, 18 May 2003 12:01:18 GMT"/>
 			</widget>
 		      </child>
 
@@ -312,6 +313,7 @@
 			<widget class="GtkImageMenuItem" id="copy1">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_COPY_ITEM</property>
+			  <signal name="activate" handler="on_menu_copy_activate" last_modification_time="Sun, 18 May 2003 12:01:29 GMT"/>
 			</widget>
 		      </child>
 
@@ -319,6 +321,7 @@
 			<widget class="GtkImageMenuItem" id="paste1">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_PASTE_ITEM</property>
+			  <signal name="activate" handler="on_menu_paste_activate" last_modification_time="Sun, 18 May 2003 12:01:38 GMT"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -335,13 +338,13 @@
 		    <widget class="GtkMenu" id="settings_menu">
 
 		      <child>
-			<widget class="GtkImageMenuItem" id="setting_filters">
+			<widget class="GtkImageMenuItem" id="settings_filters">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">_Filters</property>
 			  <property name="use_underline">True</property>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image494">
+			    <widget class="GtkImage" id="image505">
 			      <property name="visible">True</property>
 			      <property name="stock">gnome-stock-text-bulleted-list</property>
 			      <property name="icon_size">1</property>
@@ -353,10 +356,10 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkMenu" id="setting_filters_menu">
+			    <widget class="GtkMenu" id="settings_filters_menu">
 
 			      <child>
-				<widget class="GtkCheckMenuItem" id="setting_filter_dotfiles">
+				<widget class="GtkCheckMenuItem" id="settings_filter_dotfiles">
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Dotfiles (.*)</property>
 				  <property name="use_underline">True</property>
@@ -366,7 +369,7 @@
 			      </child>
 
 			      <child>
-				<widget class="GtkCheckMenuItem" id="setting_filter_python">
+				<widget class="GtkCheckMenuItem" id="settings_filter_python">
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Python bytecode (*.py[co])</property>
 				  <property name="use_underline">True</property>
@@ -376,7 +379,7 @@
 			      </child>
 
 			      <child>
-				<widget class="GtkCheckMenuItem" id="setting_filter_binary">
+				<widget class="GtkCheckMenuItem" id="settings_filter_binary">
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">Binaries (*.{a,s,o,so})</property>
 				  <property name="use_underline">True</property>
@@ -390,13 +393,13 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkImageMenuItem" id="setting_number_of_panes">
+			<widget class="GtkImageMenuItem" id="settings_number_of_panes">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">_Number Of Panes</property>
 			  <property name="use_underline">True</property>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image495">
+			    <widget class="GtkImage" id="image506">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-dnd-multiple</property>
 			      <property name="icon_size">1</property>
@@ -408,10 +411,10 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkMenu" id="setting_number_of_panes_menu">
+			    <widget class="GtkMenu" id="settings_number_of_panes_menu">
 
 			      <child>
-				<widget class="GtkMenuItem" id="setting_number_panes0">
+				<widget class="GtkMenuItem" id="settings_number_panes0">
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">_One</property>
 				  <property name="use_underline">True</property>
@@ -420,7 +423,7 @@
 			      </child>
 
 			      <child>
-				<widget class="GtkMenuItem" id="setting_number_panes1">
+				<widget class="GtkMenuItem" id="settings_number_panes1">
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">_Two</property>
 				  <property name="use_underline">True</property>
@@ -429,7 +432,7 @@
 			      </child>
 
 			      <child>
-				<widget class="GtkMenuItem" id="setting_number_panes2">
+				<widget class="GtkMenuItem" id="settings_number_panes2">
 				  <property name="visible">True</property>
 				  <property name="label" translatable="yes">T_hree</property>
 				  <property name="use_underline">True</property>
@@ -442,7 +445,7 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkImageMenuItem" id="setting_preferences">
+			<widget class="GtkImageMenuItem" id="settings_preferences">
 			  <property name="visible">True</property>
 			  <property name="stock_item">GNOMEUIINFO_MENU_PREFERENCES_ITEM</property>
 			  <signal name="activate" handler="on_menu_preferences_activate" last_modification_time="Fri, 06 Dec 2002 19:54:21 GMT"/>
@@ -469,7 +472,7 @@
 			  <signal name="activate" handler="on_menu_users_manual_activate" last_modification_time="Fri, 01 Nov 2002 18:36:34 GMT"/>
 
 			  <child internal-child="image">
-			    <widget class="GtkImage" id="image496">
+			    <widget class="GtkImage" id="image507">
 			      <property name="visible">True</property>
 			      <property name="stock">gtk-help</property>
 			      <property name="icon_size">1</property>
@@ -1355,10 +1358,10 @@ Quit anyway?&lt;/span&gt;</property>
 		      <child>
 			<widget class="GtkLabel" id="label19">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">For files which are not utf8 encoded, you need to specify the text encoding.
-For example &quot;latin1&quot;, &quot;UCS-2&quot;, &quot;EBCDIC&quot; or &quot;ISO8859-15&quot;</property>
+			  <property name="label" translatable="yes">List of codecs to try when reading files. Separate multiple codecs with spaces.
+For example: &lt;span style=&quot;oblique&quot;&gt;utf8 latin1&lt;/span&gt;</property>
 			  <property name="use_underline">False</property>
-			  <property name="use_markup">False</property>
+			  <property name="use_markup">True</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
 			  <property name="wrap">True</property>
 			  <property name="selectable">False</property>
@@ -1381,7 +1384,7 @@ For example &quot;latin1&quot;, &quot;UCS-2&quot;, &quot;EBCDIC&quot; or &quot;I
 			  <property name="spacing">0</property>
 
 			  <child>
-			    <widget class="GtkEntry" id="entry_encoding">
+			    <widget class="GtkEntry" id="entry_text_codecs">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
 			      <property name="editable">True</property>
@@ -1913,6 +1916,62 @@ For example &quot;latin1&quot;, &quot;UCS-2&quot;, &quot;EBCDIC&quot; or &quot;I
 	      <property name="type">tab</property>
 	    </packing>
 	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">True</property>
+	  <property name="fill">True</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkWindow" id="window1">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">window1</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+
+  <child>
+    <widget class="GtkHBox" id="hbox8">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child>
+	<widget class="GtkProgressBar" id="progressbar1">
+	  <property name="visible">True</property>
+	  <property name="orientation">GTK_PROGRESS_LEFT_TO_RIGHT</property>
+	  <property name="fraction">0</property>
+	  <property name="pulse_step">0.1</property>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkStatusbar" id="statusbar2">
+	  <property name="visible">True</property>
+	  <property name="has_resize_grip">True</property>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">True</property>
+	  <property name="fill">True</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkStatusbar" id="statusbar1">
+	  <property name="visible">True</property>
+	  <property name="has_resize_grip">True</property>
 	</widget>
 	<packing>
 	  <property name="padding">0</property>
