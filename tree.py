@@ -71,6 +71,7 @@ class DiffTreeStore(gtk.TreeStore):
     def add_empty(self, parent, text="empty folder"):
         child = self.append(parent)
         for i in range(self.ntree):
+            self.set_value(child, self.column_index(COL_STATE,i), STATE_EMPTY) 
             self.set_value(child, self.column_index(COL_PATH,i), self.pixstyle[STATE_EMPTY])
             self.set_value(child, self.column_index(COL_TEXT,i), self.textstyle[STATE_EMPTY] % misc.escape(text) )
         return child
@@ -90,8 +91,13 @@ class DiffTreeStore(gtk.TreeStore):
     def set_state(self, iter, pane, state, isdir=0):
         fullname = self.get_value(iter, self.column_index(COL_PATH,pane))
         name = misc.escape( os.path.basename(fullname) )
-        TEXT = self.column_index(COL_TEXT,pane)
-        ICON = self.column_index(COL_ICON,pane)
-        self.set_value(iter, TEXT, self.textstyle[state] % name)
-        self.set_value(iter, ICON, self.pixstyle[state][isdir])
+        STATE = self.column_index(COL_STATE, pane)
+        TEXT  = self.column_index(COL_TEXT,  pane)
+        ICON  = self.column_index(COL_ICON,  pane)
+        self.set_value(iter, STATE, state)
+        self.set_value(iter, TEXT,  self.textstyle[state] % name)
+        self.set_value(iter, ICON,  self.pixstyle[state][isdir])
 
+    def get_state(self, iter, pane):
+        STATE = self.column_index(COL_STATE, pane)
+        return self.get_value(iter, STATE)
