@@ -32,7 +32,7 @@ import cvsview
 import dirdiff
 import task
 
-version = "0.8.0"
+version = "0.8.1"
 developer = 0
 
 ################################################################################
@@ -598,7 +598,7 @@ def main():
             app.scheduler.add_scheduler(doc.scheduler)
             doc.set_location( os.path.dirname(a) )
             doc.connect("create-diff", lambda obj,arg: app.append_filediff(arg) )
-            doc.run_cvs_diff([a], 1)
+            doc.run_cvs_diff([a])
         else:
             app.usage("`%s' is not a directory or file, cannot open cvs view" % arg[0])
                 
