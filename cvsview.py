@@ -195,6 +195,7 @@ class CvsView(gnomeglade.Component):
 
     def __init__(self, location=None):
         self.__gobject_init__()
+        self.tempfiles = []
         gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "cvsview")
 
         self.image_dir = gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-folder.png", 14)
@@ -224,6 +225,15 @@ class CvsView(gnomeglade.Component):
 
         self.location = None
         self.set_location(location)
+
+    def on_quit_event(self):
+        for f in self.tempfiles:
+            if os.path.exists(f):
+                shutil.rmtree(f, ignore_errors=1)
+
+    def on_delete_event(self, parent):
+        self.on_quit_event()
+        return gnomeglade.DELETE_OK
 
     def on_row_activated(self, treeview, path, tvc):
         iter = self.treemodel.get_iter(path)
@@ -395,6 +405,7 @@ class CvsView(gnomeglade.Component):
 
         print "Copying files"
         tmpdir = tempfile.mktemp("-meld")
+        self.tempfiles.append(tmpdir)
         os.mkdir(tmpdir)
 
         regex = re.compile("^Index:\s+(.*$)", re.M)
