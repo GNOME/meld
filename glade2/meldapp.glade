@@ -7,6 +7,7 @@
 
 <widget class="GnomeApp" id="meldapp">
   <property name="height_request">480</property>
+  <property name="visible">True</property>
   <property name="title" translatable="yes">Meld</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
@@ -16,6 +17,7 @@
   <property name="icon">pixmaps/icon.png</property>
   <property name="enable_layout_config">True</property>
   <signal name="delete_event" handler="on_delete_event" last_modification_time="Fri, 01 Nov 2002 18:34:38 GMT"/>
+
   <child internal-child="dock">
     <widget class="BonoboDock" id="bonobodock1">
       <property name="visible">True</property>
