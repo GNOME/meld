@@ -6,6 +6,7 @@ import tempfile
 import gobject
 import shutil
 import time
+import copy
 import gtk
 import os
 import re
@@ -14,6 +15,7 @@ import misc
 import gnomeglade
 
 CVS_COMMAND = ["cvs", "-z3", "-q"]
+
 
 ################################################################################
 #
@@ -159,6 +161,22 @@ def find(start):
     dirs, files = _find(start)
     return dirs+files
 
+
+def commonprefix(dirs):
+    "Given a list of pathnames, returns the longest common leading component"
+    if not dirs: return ''
+    n = copy.copy(dirs)
+    for i in range(len(n)):
+        n[i] = n[i].split(os.sep)
+    prefix = n[0]
+    for item in n:
+        for i in range(len(prefix)):
+            if prefix[:i+1] <> item[:i+1]:
+                prefix = prefix[:i]
+                if i == 0: return ''
+                break
+    return os.sep.join(prefix)
+
 ################################################################################
 #
 # CommitDialog
@@ -293,7 +311,7 @@ class CvsView(gnomeglade.Component):
                 self.emit("create-diff", [entry.path])
 
     def run_cvs_diff(self, path):
-        patch = self._command(CVS_COMMAND + ["diff", "-u", path], 0)
+        patch = self._command(CVS_COMMAND + ["diff", "-u"], [path], 0)
         if patch:
             self.show_patch(patch)
         else:
@@ -369,6 +387,7 @@ class CvsView(gnomeglade.Component):
         return 0
 
     def set_location(self, location):
+        #location = os.path.abspath(location)
         #print "1", location
         if len(location) and location[-1]!="/":
             location += "/"
@@ -419,13 +438,15 @@ class CvsView(gnomeglade.Component):
         # remove empty entries and remove trailing slashes
         return map(lambda x: x[-1]!="/" and x or x[:-1], filter(lambda x: x!=None, ret))
 
-    def _command(self, command, refresh=1):
+    def _command(self, command, files, refresh=1):
         def progress():
             self.emit("working-hard", 1)
             self.flushevents()
         msg = " ".join(command)
         self.statusbar.add_status(msg, timeout=0)
+        prefix = commonprefix(files)
         r = misc.read_pipe(command, progress )
+        #r = "" print "***", prefix
         self.statusbar.remove_status(msg)
         self.emit("working-hard", 0)
         if refresh:
@@ -436,7 +457,7 @@ class CvsView(gnomeglade.Component):
         files = self._get_selected_files()
 
         if len(files):
-            return self._command(command + files, refresh)
+            return self._command(command, files, refresh)
         else:
             self.statusbar.add_status("Select some files first.")
             return None

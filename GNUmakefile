@@ -1,6 +1,6 @@
 
-PROG := ./meld
-TESTNUM := 8
+PROG := ./meld #--profile
+TESTNUM := 1
 VERSION := $(shell grep "^version" meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
 
@@ -8,15 +8,16 @@ run : check rundiff
 	@echo
 
 rundiff:
-	$(PROG) .
-	#$(PROG) ../old/meld-2003-02-17 . #../old/meld-2002-12-21
+	#$(PROG) .
+	#$(PROG) scratch*
+	#$(PROG) ../old/meld-2003-03-01 . #../old/meld-2002-12-21
 	#$(PROG) test/lao test/tzu test/tao
 	#$(PROG) hkBaseSystem.cpp hkBaseSystem.cpp
-	#$(PROG) test/file$(TESTNUM)*
-#	$(PROG) ../old/meld-2002-11-12 .
-#	$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
-#	$(PROG) test/1 test/2
-#	$(PROG) /zip/meld .
+	$(PROG) ntest/file$(TESTNUM)*
+	#$(PROG) ../old/meld-2002-11-12 .
+	#$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
+	#$(PROG) test/1 test/2
+	#$(PROG) /zip/meld .
 
 check:
 	@check_release

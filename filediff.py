@@ -127,8 +127,10 @@ class FileDiff(gnomeglade.Component):
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
             self.textview[i].get_buffer().connect("insert-text", self.on_text_insert_text)
             self.textview[i].get_buffer().connect("delete-range", self.on_text_delete_range)
+            self.textview[i].get_buffer().connect_after("insert-text", self.on_text_insert_text_after)
+            #self.textview[i].get_buffer().connect_after("delete-range", self.on_text_insert_text_after)
 
-        self.linediffs = diffutil.Differ()
+        self.linediffs = diffutil.Differ([[""],[""]])
         load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
@@ -238,7 +240,70 @@ class FileDiff(gnomeglade.Component):
                 self.undosequence.add_action( BufferModifiedAction(buffer, self) )
             self.undosequence.add_action( BufferInsertionAction(buffer, iter.get_offset(), text) )
             self.undosequence.end_group()
-            self._queue_refresh()
+
+    def on_text_insert_text_after(self, buffer, iter, text, textlen):
+        line = iter.get_line()
+        #print line, buffer.get_text( buffer.get_iter_at_line(line), buffer.get_iter_at_line(line+1) )
+        #print line, iter.get_line_offset()
+        def foo(a, b):
+            print buffer.get_text( buffer.get_iter_at_line(a), buffer.get_iter_at_line(b) )
+        def foo2(a, b):
+            buf = self.textview[1].get_buffer()
+            print buf.get_text( buf.get_iter_at_line(a), buf.get_iter_at_line(b) )
+        prev = None
+        c = None
+        print "LINE", line
+        changes = self.linediffs.pair_changes(0, 1)
+        idx = 0
+        newlines = text.count("\n")
+        for c in changes:
+            #if c[1] > line:
+                #foo( prev[2], c[1], prev[4], c[3])
+                #break
+            if c[2] > line:
+                #print line, c[2], prev
+                #foo( c[1], c[2], c[3], c[4] )
+                break
+            prev = c
+            idx += 1
+        if c==None: return
+        print idx
+        loidx, hiidx = idx, idx
+        if prev == None:
+            prev = c
+        else:
+            loidx -= 1
+        try:
+            next = changes.next()
+            hiidx += 1
+        except StopIteration:
+            next = c
+        next = next[0], next[1], next[2] + newlines, next[3], next[4]
+        #print prev, next
+        print "<<<"
+        foo( prev[1], next[2] )
+        print "==="
+        foo2( prev[3], next[4] )
+        print ">>>"
+        txt0 = buffer.get_text( buffer.get_iter_at_line(prev[1]), buffer.get_iter_at_line(next[2]) ).split("\n")[:-1]
+        buf = self.textview[1].get_buffer()
+        txt1 = buf.get_text( buf.get_iter_at_line(prev[3]), buf.get_iter_at_line(next[4]) ).split("\n")[:-1]
+        #d = diffutil.Differ([txt0, txt1])
+        import difflib
+        ops = difflib.SequenceMatcher(None, txt1, txt0).get_opcodes()
+        rops = []
+        for o in ops:
+            rops.append( (o[0], prev[1]+o[1], prev[1]+o[2], prev[3]+o[3], prev[3]+o[4]) )
+        print self.linediffs.diffs[0][loidx:hiidx+1]
+        print rops
+        self.linediffs.diffs[0][loidx:hiidx+1] = rops
+        print "***", idx
+        #print d.diffs
+        self.linkmap[0].queue_draw()
+        self._highlight_buffer(0)
+        self._highlight_buffer(1)
+
+
     def on_text_delete_range(self, buffer, iter0, iter1):
         if not self.undosequence_busy:
             self.undosequence.begin_group()
@@ -247,7 +312,6 @@ class FileDiff(gnomeglade.Component):
             text = buffer.get_text(iter0, iter1, 0)
             self.undosequence.add_action( BufferDeletionAction(buffer, iter0.get_offset(), text) )
             self.undosequence.end_group()
-            self._queue_refresh()
 
     def undo(self):
         if self.undosequence.can_undo():
@@ -256,7 +320,6 @@ class FileDiff(gnomeglade.Component):
                 self.undosequence.undo()
             finally:
                 self.undosequence_busy = 0
-            self._queue_refresh(0)
     def redo(self):
         if self.undosequence.can_redo():
             self.undosequence_busy = 1
@@ -265,7 +328,6 @@ class FileDiff(gnomeglade.Component):
             finally:
                 self.undosequence_busy = 0
             self.undosequence_busy = 0
-            self._queue_refresh(0)
 
         #
         # text buffer loading/saving
@@ -398,7 +460,9 @@ class FileDiff(gnomeglade.Component):
         for i in range(self.num_panes):
             b = self.textview[i].get_buffer()
             t = b.get_text(b.get_start_iter(), b.get_end_iter(), 0)
-            text.append(t)
+            t = t.replace(" ","")
+            t = t.replace("\t","")
+            text.append(t.split("\n"))
         self.linediffs = apply(diffutil.Differ,text)
         for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
@@ -515,6 +579,7 @@ class FileDiff(gnomeglade.Component):
 
         gc = area.meldgc.get_gc
         for c in self.linediffs.single_changes(textindex):
+            if c[0] == "equal": continue
             s,e = ( scaleit(c[1]), scaleit(c[2]+(c[1]==c[2])) )
             s,e = math.floor(s), math.ceil(e)
             window.draw_rectangle( gc(c[0]), 1, x0, s, x1, e-s)
@@ -660,6 +725,7 @@ class FileDiff(gnomeglade.Component):
         draw_style = self.prefs.draw_style
         gc = area.meldgc.get_gc
         for c in self.linediffs.pair_changes(which, which+1):
+            if c[0]=="equal": continue
             f0,f1 = map( lambda l: l * self.pixels_per_line - madj.value, c[1:3] )
             t0,t1 = map( lambda l: l * self.pixels_per_line - oadj.value, c[3:5] )
             if f1<0 and t1<0: # find first visible chunk
