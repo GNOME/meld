@@ -16,7 +16,6 @@
 
 from __future__ import generators
 
-import calendar
 import tempfile
 import gobject
 import shutil
@@ -137,18 +136,11 @@ def _lookup_cvs_files(dirs, files):
                     state = tree.STATE_CONFLICT
                 else:
                     try:
-                        cotime = calendar.timegm( time.strptime(date) )
-                    except ValueError, e:
-                        if not date.startswith("Result of merge"):
-                            #print "Unable to parse date '%s' in '%s/CVS/Entries' (%s)" % (date, directory, e)
-                            pass
-                        cotime = 0
-                    try:
                         mtime = os.stat(path).st_mtime
                     except OSError:
                         state = tree.STATE_MISSING
                     else:
-                        if mtime==cotime:
+                        if time.asctime(time.gmtime(mtime))==date:
                             state = tree.STATE_NORMAL
                         else:
                             state = tree.STATE_MODIFIED

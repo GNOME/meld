@@ -75,9 +75,6 @@ if gtk.pygtk_version < pygtkver:
 import gtk.glade
 gtk.glade.bindtextdomain("meld", paths.locale_dir() )
 
-# time.strptime works on locale, but cvs dates are in "C"
-locale.setlocale(locale.LC_TIME, "C")
-
 #
 # main
 #
