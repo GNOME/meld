@@ -20,20 +20,20 @@ import gnomeglade
 ################################################################################
 class Entry:
     def __str__(self):
-        return "%s %s" % (self.name, (self.path, self.isdir, self.parent))
-    def _repr__(self):
-        return self.name
+        return "%s %s\n" % (self.name, (self.path, self.cvs))
+    def __repr__(self):
+        return "%s %s\n" % (self.name, (self.path, self.cvs))
 
 CVS_NONE, CVS_NORMAL, CVS_MODIFIED, CVS_MISSING = range(4)
 
 class Dir(Entry):
     def __init__(self, path, name, status):
-        if path[-1] != "/": path += "/"
+        if path[-1] != "/":
+            path += "/"
         self.path = path
         self.parent, self.name = os.path.split(path[:-1])
         self.cvs = status 
         self.isdir = 1
-        #print self.parent, self.name
 
 class File(Entry):
     def __init__(self, path, name, status):
@@ -42,7 +42,6 @@ class File(Entry):
         self.parent, self.name = os.path.split(path)
         self.cvs = status
         self.isdir = 0
-        #print self.parent, self.name
 
 def _lookup_cvs_files(files, dirs):
     "files is array of (name, path). assume all files in same dir"
@@ -78,7 +77,7 @@ def _lookup_cvs_files(files, dirs):
             else:
                 plus = date.find("+")
                 if plus >= 0:
-                    date = date[plus+1:]
+                    cotime = 0
                 try:
                     cotime = time.mktime( time.strptime(date) )
                 except ValueError, e:
@@ -147,6 +146,32 @@ def find(start):
         start="."
     dirs, files = _find(start)
     return dirs+files
+
+################################################################################
+#
+# CommitDialog
+#
+################################################################################
+class CommitDialog(gnomeglade.Dialog):
+    def __init__(self, parent):
+        gnomeglade.Dialog.__init__(self, misc.appdir("glade2/cvsview.glade"), "commitdialog")
+        self.parent = parent
+        self.widget.set_transient_for( parent.widget.get_toplevel() )
+        self.changedfiles.set_text( " ".join(parent._get_selected_files()))
+        self.widget.show_all()
+        self.previousentry.hide()
+        self.previouslogs_label.hide()
+
+    def run(self):
+        response = self.widget.run()
+        buf = self.textview.get_buffer()
+        msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
+        if response == gtk.RESPONSE_OK:
+            msg = msg.replace("'", r"\'")
+            print "cvs commit -m '%s'" % msg
+            self.parent._command("cvs commit -m '%s' %s" % (msg,self.changedfiles.get_text()) )
+        self.previousentry.append_history(1, msg)
+        self.widget.destroy()
 
 ################################################################################
 #
@@ -347,7 +372,9 @@ class CvsView(gnomeglade.Component):
     def on_button_update_clicked(self, object):
         self._command("cvs update -dP")
     def on_button_commit_clicked(self, object):
-        self._command("cvs commit -m ''")
+        dialog = CommitDialog( self )
+        dialog.run()
+
     def on_button_add_clicked(self, object):
         self._command("cvs add")
     def on_button_remove_clicked(self, object):
