@@ -13,7 +13,7 @@ import re
 import misc
 import gnomeglade
 
-CVS_COMMAND = "cvs -z3 -q".split()
+CVS_COMMAND = ["cvs", "-z3", "-q"]
 
 ################################################################################
 #
@@ -36,14 +36,20 @@ class Dir(Entry):
         self.parent, self.name = os.path.split(path[:-1])
         self.cvs = status 
         self.isdir = 1
+        self.rev = ""
+        self.tag = ""
+        self.options = ""
 
 class File(Entry):
-    def __init__(self, path, name, status):
+    def __init__(self, path, name, status, rev="", tag="", options=""):
         assert path[-1] != "/"
         self.path = path
         self.parent, self.name = os.path.split(path)
         self.cvs = status
         self.isdir = 0
+        self.rev = rev
+        self.tag = tag
+        self.options = options
 
 def _lookup_cvs_files(files, dirs):
     "files is array of (name, path). assume all files in same dir"
@@ -58,7 +64,7 @@ def _lookup_cvs_files(files, dirs):
         entries = open( os.path.join(directory, "CVS/Entries")).read()
     except IOError, e:
         d = map(lambda x: Dir(x[1],x[0], CVS_NONE), dirs) 
-        f = map(lambda x: File(x[1],x[0], CVS_NONE), files) 
+        f = map(lambda x: File(x[1],x[0], CVS_NONE, "-1.1"), files) 
         return d,f
 
     retfiles = []
@@ -70,7 +76,9 @@ def _lookup_cvs_files(files, dirs):
         isdir = match[0]
         name = match[1]
         path = os.path.join(directory, name)
-        rev, date, junk0, junk1 = match[2].split("/")
+        rev, date, options, tag = match[2].split("/")
+        if tag:
+            tag = tag[1:]
         if isdir:
             state = os.path.exists(path) and CVS_NORMAL or CVS_MISSING
             retdirs.append( Dir(path,name,state) )
@@ -96,12 +104,12 @@ def _lookup_cvs_files(files, dirs):
                         state = CVS_NORMAL
                     else:
                         state = CVS_MODIFIED
-            retfiles.append( File(path, name, state) )
+            retfiles.append( File(path, name, state, rev, tag, options) )
     # find missing
     cvsfiles = map(lambda x: x[1], matches)
     for f,path in files:
         if f not in cvsfiles:
-            retfiles.append( File(path, f, CVS_NONE) )
+            retfiles.append( File(path, f, CVS_NONE, "") )
     for d,path in dirs:
         if d not in cvsfiles:
             retdirs.append( Dir(path, d, CVS_NONE) )
@@ -171,9 +179,12 @@ class CommitDialog(gnomeglade.Dialog):
         buf = self.textview.get_buffer()
         msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
-            self.parent._command_on_selected(CVS_COMMAND + ["commit", "-m", "msg"] )
+            self.parent._command_on_selected(CVS_COMMAND + ["commit", "-m", msg] )
         self.previousentry.append_history(1, msg)
         self.widget.destroy()
+
+
+MODEL_PIXMAP, MODEL_ENTRY, MODEL_NAME, MODEL_COLOR, MODEL_STATUS, MODEL_REVISION, MODEL_TAG, MODEL_OPTIONS, MODEL_MAX = range(9)
 
 ################################################################################
 #
@@ -201,24 +212,44 @@ class CvsView(gnomeglade.Component):
         self.tempfiles = []
         self.image_dir = gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-folder.png", 14)
         self.image_file= gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-file-c.png", 14)
-        self.treemodel = gtk.TreeStore( type(self.image_dir), type(""), type(""), type(""), gobject.TYPE_PYOBJECT )
+        args = [type(self.image_dir), gobject.TYPE_PYOBJECT]
+        args += [type("")] * (MODEL_MAX - MODEL_NAME)
+        self.treemodel = gtk.TreeStore( *args )
         self.treeview.set_model(self.treemodel)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-        self.treeview.set_headers_visible(0)
-        tvc = gtk.TreeViewColumn()
+        self.treeview.set_headers_visible(1)
+        tvc = gtk.TreeViewColumn("Name")
         renpix = gtk.CellRendererPixbuf()
         rentext = gtk.CellRendererText()
         tvc.pack_start(renpix, 0)
         tvc.pack_start(rentext, 1)
-        tvc.add_attribute(renpix, "pixbuf", 0)
-        tvc.add_attribute(rentext, "text", 1)
-        tvc.add_attribute(rentext, "foreground", 2)
+        tvc.add_attribute(renpix, "pixbuf", MODEL_PIXMAP)
+        tvc.add_attribute(rentext, "text", MODEL_NAME)
+        tvc.add_attribute(rentext, "foreground", MODEL_COLOR)
         self.treeview.append_column(tvc)
 
-        tvc = gtk.TreeViewColumn()
+        tvc = gtk.TreeViewColumn("Status")
         rentext = gtk.CellRendererText()
         tvc.pack_start(rentext, 0)
-        tvc.add_attribute(rentext, "text", 3)
+        tvc.add_attribute(rentext, "text", MODEL_STATUS)
+        self.treeview.append_column(tvc)
+
+        tvc = gtk.TreeViewColumn("Rev")
+        rentext = gtk.CellRendererText()
+        tvc.pack_start(rentext, 0)
+        tvc.add_attribute(rentext, "text", MODEL_REVISION)
+        self.treeview.append_column(tvc)
+
+        tvc = gtk.TreeViewColumn("Tag")
+        rentext = gtk.CellRendererText()
+        tvc.pack_start(rentext, 0)
+        tvc.add_attribute(rentext, "text", MODEL_TAG)
+        self.treeview.append_column(tvc)
+
+        tvc = gtk.TreeViewColumn("Options")
+        rentext = gtk.CellRendererText()
+        tvc.pack_start(rentext, 0)
+        tvc.add_attribute(rentext, "text", MODEL_OPTIONS)
         self.treeview.append_column(tvc)
 
         self.colors = ["#888888", "#000000", "#ff0000", "#0000ff"]
@@ -238,7 +269,7 @@ class CvsView(gnomeglade.Component):
 
     def on_row_activated(self, treeview, path, tvc):
         iter = self.treemodel.get_iter(path)
-        entry = self.treemodel.get_value(iter, 4)
+        entry = self.treemodel.get_value(iter, MODEL_ENTRY)
         if not entry:
             return
         if entry.isdir:
@@ -262,7 +293,7 @@ class CvsView(gnomeglade.Component):
 
     def on_row_expanded(self, tree, me, path):
         model = self.treemodel
-        location = model.get_value( me, 4 ).path
+        location = model.get_value( me, MODEL_ENTRY ).path
 
         filtermask = 0
         if self.button_modified.get_active():
@@ -279,30 +310,33 @@ class CvsView(gnomeglade.Component):
             files = filter(lambda x: not x.isdir, files)
             for f in files:
                 iter = model.append(me)
-                model.set_value(iter, 0, self.image_file )
-                model.set_value(iter, 1, f.name )
-                model.set_value(iter, 2, self.colors[f.cvs] )
-                model.set_value(iter, 3, f.parent )
-                model.set_value(iter, 4, f)
+                model.set_value(iter, MODEL_PIXMAP, self.image_file )
+                model.set_value(iter, MODEL_NAME, f.name )
+                model.set_value(iter, MODEL_COLOR, self.colors[f.cvs] )
+                model.set_value(iter, MODEL_STATUS, f.parent )
+                model.set_value(iter, MODEL_ENTRY, f)
             self.emit("working-hard", 0)
         else:
             allfiles = find(location)
             files = filter(showable, allfiles)
             for f in files:
                 iter = model.append(me)
-                model.set_value(iter, 1, f.name)
+                model.set_value(iter, MODEL_NAME, f.name)
                 if f.isdir:
-                    model.set_value(iter, 0, self.image_dir )
+                    model.set_value(iter, MODEL_PIXMAP, self.image_dir )
                     child = model.append(iter)
                     if self.button_unknown.get_active():
-                        model.set_value(child, 1, "<empty>" )
+                        model.set_value(child, MODEL_NAME, "<empty>" )
                     else:
-                        model.set_value(child, 1, "<no cvs files>" )
+                        model.set_value(child, MODEL_NAME, "<no cvs files>" )
                 else:
-                    model.set_value(iter, 0, self.image_file )
-                model.set_value(iter, 2, self.colors[f.cvs] )
-                model.set_value(iter, 3, self.status[f.cvs])
-                model.set_value(iter, 4, f)
+                    model.set_value(iter, MODEL_PIXMAP, self.image_file )
+                model.set_value(iter, MODEL_COLOR, self.colors[f.cvs] )
+                model.set_value(iter, MODEL_STATUS, self.status[f.cvs])
+                model.set_value(iter, MODEL_ENTRY, f)
+                model.set_value(iter, MODEL_REVISION, f.rev)
+                model.set_value(iter, MODEL_TAG, f.tag)
+                model.set_value(iter, MODEL_OPTIONS, f.options)
         if len(files):
             child = model.iter_children(me)
             model.remove(child)
@@ -314,7 +348,7 @@ class CvsView(gnomeglade.Component):
             model.remove(child)
             child = model.iter_children(me)
         child = model.append(me)
-        model.set_value(child, 1, "<empty>" )
+        model.set_value(child, MODEL_NAME, "<empty>" )
 
 
     def on_button_press_event(self, text, event):
@@ -323,7 +357,6 @@ class CvsView(gnomeglade.Component):
             popup = gnomeglade.Menu(appdir, "menu_popup")
             popup.show_all()
             popup.popup(None,None,None,event.button,event.time)
-            return 0
         return 0
 
     def set_location(self, location):
@@ -343,13 +376,13 @@ class CvsView(gnomeglade.Component):
             self.location = location
             self.fileentry.gtk_entry().set_text(location)
             root = self.treemodel.append(None)
-            self.treemodel.set_value( root, 0, self.image_dir )
-            self.treemodel.set_value( root, 1, location )
-            self.treemodel.set_value( root, 2, self.colors[1])
-            self.treemodel.set_value( root, 3, "")
-            self.treemodel.set_value( root, 4, Dir(location,location, CVS_NORMAL) )
+            self.treemodel.set_value( root, MODEL_PIXMAP, self.image_dir )
+            self.treemodel.set_value( root, MODEL_NAME, location )
+            self.treemodel.set_value( root, MODEL_COLOR, self.colors[1])
+            self.treemodel.set_value( root, MODEL_STATUS, "")
+            self.treemodel.set_value( root, MODEL_ENTRY, Dir(location,location, CVS_NORMAL) )
             child = self.treemodel.append(root)
-            self.treemodel.set_value(child, 1, "<empty>" )
+            self.treemodel.set_value(child, MODEL_NAME, "<empty>" )
             self.treeview.expand_row(self.treemodel.get_path(root), 0)
         else: #not location:
             self.location = location
@@ -375,7 +408,7 @@ class CvsView(gnomeglade.Component):
     def _get_selected_files(self):
         ret = []
         def gather(model, path, iter):
-            ret.append( model.get_value(iter,4).path )
+            ret.append( model.get_value(iter,MODEL_ENTRY).path )
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
         # remove empty entries and remove trailing slashes
@@ -454,7 +487,7 @@ class CvsView(gnomeglade.Component):
         iter_root = self.treemodel.get_iter_root()
         if not self.treemodel.iter_has_child(iter_root):
             child = model.append(iter_root)
-            model.set_value(child, 1, "<empty>" )
+            model.set_value(child, MODEL_NAME, "<empty>" )
 
     def save(self,*args):
         pass
