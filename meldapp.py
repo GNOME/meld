@@ -82,9 +82,21 @@ class PreferencesDialog(gnomeglade.Component):
     def __init__(self, parentapp):
         gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
+        self.notebook.set_show_tabs(0)
+        self.model = gtk.ListStore(type(""))
+        column = gtk.TreeViewColumn()
+        rentext = gtk.CellRendererText()
+        column.pack_start(rentext, expand=0)
+        column.set_attributes(rentext, text=0)
+        self.treeview.append_column(column)
+        self.treeview.set_model(self.model)
+        for c in self.notebook.get_children():
+            label = self.notebook.get_tab_label(c).get_text()
+            if not label.startswith("_"):
+                self.model.append( (label,) )
 
         self.prefs = parentapp.prefs
-        # editing pane
+        # editor
         if self.prefs.use_custom_font:
             self.radiobutton_custom_font.set_active(1)
         else:
@@ -92,15 +104,44 @@ class PreferencesDialog(gnomeglade.Component):
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
-        self.entry_text_codecs.set_text( self.prefs.text_codecs )
-        # diff pane
-        self.diff_options_frame.hide()
-        # display pane
+        # display
         self._map_widgets_into_lists( ["draw_style"] )
         self._map_widgets_into_lists( ["toolbar_style"] )
         self.draw_style[self.prefs.draw_style].set_active(1)
         self.toolbar_style[self.prefs.toolbar_style].set_active(1)
-        self.widget.show()
+        # encoding
+        self.entry_text_codecs.set_text( self.prefs.text_codecs )
+        self._map_widgets_into_lists( ["save_encoding"] )
+        self.save_encoding[self.prefs.save_encoding].set_active(1)
+        # cvs
+        self.cvs_quiet_check.set_active( self.prefs.cvs_quiet )
+        self.cvs_compression_check.set_active( self.prefs.cvs_compression )
+        self.cvs_compression_value_spin.set_value( self.prefs.cvs_compression_value )
+        self.cvs_ignore_cvsrc_check.set_active( self.prefs.cvs_ignore_cvsrc )
+        self.cvs_binary_fileentry.set_filename( self.prefs.cvs_binary )
+        self.cvs_create_missing_check.set_active( self.prefs.cvs_create_missing )
+        self.cvs_prune_empty_check.set_active( self.prefs.cvs_prune_empty )
+
+    def on_cvs_quiet_toggled(self, toggle):
+        self.prefs.cvs_quiet = toggle.get_active()
+    def on_cvs_compression_toggled(self, toggle):
+        self.prefs.cvs_compression = toggle.get_active()
+    def on_cvs_compression_value_changed(self, spin):
+        self.prefs.cvs_compression_value = spin.get_value()
+    def on_cvs_ignore_cvsrc_toggled(self, toggle):
+        self.prefs.cvs_ignore_cvsrc = toggle.get_active()
+    def on_cvs_binary_activate(self, fileentry):
+        self.prefs.cvs_binary = fileentry.gtk_entry().get_text()
+    def on_cvs_create_missing_toggled(self, toggle):
+        self.prefs.cvs_create_missing = toggle.get_active()
+    def on_cvs_prune_empty_toggled(self, toggle):
+        self.prefs.cvs_prune_empty = toggle.get_active()
+    def on_save_encoding_toggled(self, radio):
+        if radio.get_active():
+            self.prefs.save_encoding = self.save_encoding.index(radio)
+    def on_treeview_cursor_changed(self, tree):
+        path, column = tree.get_cursor()
+        self.notebook.set_current_page(path[0])
     def on_fontpicker_font_set(self, picker, font):
         self.prefs.custom_font = font
     def on_radiobutton_font_toggled(self, radio):
@@ -234,8 +275,16 @@ class MeldPreferences(prefs.Preferences):
         "tab_size": prefs.Value(prefs.INT, 4),
         "supply_newline": prefs.Value(prefs.BOOL,1),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"), 
+        "save_encoding": prefs.Value(prefs.INT, 0),
         "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
+        "cvs_quiet": prefs.Value(prefs.BOOL, 1),
+        "cvs_compression": prefs.Value(prefs.BOOL, 1),
+        "cvs_compression_value": prefs.Value(prefs.INT, 3),
+        "cvs_ignore_cvsrc": prefs.Value(prefs.BOOL, 0),
+        "cvs_binary": prefs.Value(prefs.STRING, "/usr/bin/cvs"),
+        "cvs_create_missing": prefs.Value(prefs.BOOL, 1),
+        "cvs_prune_empty": prefs.Value(prefs.BOOL, 1),
         "color_delete_bg" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
         "color_delete_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_replace_bg" : prefs.Value(prefs.STRING, "#ddeeff"),
@@ -257,6 +306,20 @@ class MeldPreferences(prefs.Preferences):
     def __init__(self):
         prefs.Preferences.__init__(self, "/apps/meld", self.defaults)
 
+    def get_cvs_command(self, op=None):
+        cmd = [self.cvs_binary]
+        if self.cvs_quiet:
+            cmd.append("-q")
+        if self.cvs_compression:
+            cmd.append("-z%i" % self.cvs_compression_value)
+        if op:
+            cmd.append(op)
+            if op == "update":
+                if self.cvs_create_missing:
+                    cmd.append("-d")
+                if self.cvs_prune_empty:
+                    cmd.append("-P")
+        return cmd
     def get_current_font(self):
         if self.use_custom_font:
             return self.custom_font
