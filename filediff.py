@@ -1,11 +1,15 @@
 #! python
 import math
 import gtk
+import gobject
 
 import diffutil
 import gnomeglade
 import misc
 import undo
+
+#XXX
+import difflib
 
 ################################################################################
 #
@@ -59,6 +63,20 @@ class BufferDeletionAction:
     def redo(self):
         b = self.buffer
         b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
+################################################################################
+#
+# BufferModifiedAction 
+#
+################################################################################
+class BufferModifiedAction:
+    """A helper set modified flag on a text buffer"""
+    def __init__(self, buffer, app):
+        self.buffer, self.app = buffer, app
+        self.app.set_buffer_modified(self.buffer, 1)
+    def undo(self):
+        self.app.set_buffer_modified(self.buffer, 0)
+    def redo(self):
+        self.app.set_buffer_modified(self.buffer, 1)
 
 ################################################################################
 #
@@ -67,6 +85,10 @@ class BufferDeletionAction:
 ################################################################################
 class FileDiff(gnomeglade.Component):
     """Two or three way diff of text files"""
+
+    __gsignals__ = {
+        'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,))
+    }
 
     def __init__(self, numpanes, statusbar):
         self.__gobject_init__()
@@ -105,15 +127,25 @@ class FileDiff(gnomeglade.Component):
         self.undosequence.begin_group()
     def on_text_end_user_action(self, *buffer):
         self.undosequence.end_group()
+
     def on_text_insert_text(self, buffer, iter, text, textlen):
         if not self.undosequence_busy:
+            self.undosequence.begin_group()
+            if buffer.get_data("modified") != 1:
+                self.undosequence.add_action( BufferModifiedAction(buffer, self) )
             self.undosequence.add_action( BufferInsertionAction(buffer, iter.get_offset(), text) )
+            self.undosequence.end_group()
             self._queue_refresh()
     def on_text_delete_range(self, buffer, iter0, iter1):
         if not self.undosequence_busy:
+            self.undosequence.begin_group()
+            if buffer.get_data("modified") != 1:
+                self.undosequence.add_action( BufferModifiedAction(buffer, self) )
             text = buffer.get_text(iter0, iter1, 0)
             self.undosequence.add_action( BufferDeletionAction(buffer, iter0.get_offset(), text) )
+            self.undosequence.end_group()
             self._queue_refresh()
+
     def undo(self):
         if self.undosequence.can_undo():
             self.undosequence_busy = 1
@@ -144,6 +176,16 @@ class FileDiff(gnomeglade.Component):
         entry.set_filename(filename)
         view.set_editable(editable)
         self.undosequence.clear()
+        self.set_buffer_modified(buffer, 0)
+
+    def label_changed(self):
+        filenames = []
+        for i in range(self.numpanes):
+            f = self.fileentry[i].get_full_path(0) or ""
+            m = self.textview[i].get_buffer().get_data("modified") and "*" or ""
+            filenames.append( f+m )
+        labeltext = " : ".join( misc.shorten_names(*filenames)) + " "
+        self.emit("label-changed", labeltext)
 
     def set_file(self, filename, pane):
         self.fileentry[pane].set_filename(filename)
@@ -165,8 +207,13 @@ class FileDiff(gnomeglade.Component):
             status = "Error writing to %s (%s)." % (name,e)
         else:
             self.undosequence.clear()
+            self.set_buffer_modified(buf, 0)
             status = "Saved %s." % name
         self.statusbar.add_status(status)
+
+    def set_buffer_modified(self, buf, yesno):
+        buf.set_data("modified", yesno)
+        self.label_changed()
 
     def save(self):
         for i in range(self.numpanes):
@@ -250,7 +297,7 @@ class FileDiff(gnomeglade.Component):
             line /= (adjustment.upper - adjustment.lower) 
 
             for (i,adj) in others:
-                mbegin,mend, obegin,oend = 0,0,0,0
+                mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
                 # look for the chunk containing 'line'
                 for c in self.linediffs.pair_changes(master, i):
                     c = c[1:]
@@ -477,7 +524,7 @@ class FileDiff(gnomeglade.Component):
                 if f0>htotal: # we've gone past last visible
                     break
                 if f0 < event.y and event.y < f0 + ph:
-                    self.pixbuf1.render_to_drawable( window, gcfg, 0,0, 0, f0, -1,-1, 0,0,0)
+                    #self.pixbuf1.render_to_drawable( window, gcfg, 0,0, 0, f0, -1,-1, 0,0,0)
                     self.mouse_chunk = (0, c)
                     break
         else:
@@ -491,7 +538,7 @@ class FileDiff(gnomeglade.Component):
                 if t0>htotal: # we've gone past last visible
                     break
                 if t0 < event.y and event.y < t0 + ph:
-                    self.pixbuf0.render_to_drawable( window, gcfg, 0,0, wtotal-pw, t0, -1,-1, 0,0,0)
+                    #self.pixbuf0.render_to_drawable( window, gcfg, 0,0, wtotal-pw, t0, -1,-1, 0,0,0)
                     self.mouse_chunk = (1, c)
                     break
 
@@ -530,3 +577,4 @@ class FileDiff(gnomeglade.Component):
                     self._queue_refresh(0)
             self.mouse_chunk = None
 
+gobject.type_register(FileDiff)

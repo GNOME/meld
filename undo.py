@@ -1,3 +1,5 @@
+#! python
+
 import gobject
 
 ################################################################################
@@ -85,7 +87,7 @@ class UndoSequence(gobject.GObject):
 
     def begin_group(self):
         if self.group:
-            self.group.start_group() 
+            self.group.begin_group() 
         else:
             self.group = UndoSequence()
 

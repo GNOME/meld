@@ -1,6 +1,5 @@
 #! /usr/bin/env python2.2
 
-
 # system
 import os
 
@@ -13,8 +12,9 @@ import gnome
 import gnomeglade
 import filediff
 import misc
+#import cvsview
 
-version = "0.4.1"
+version = "0.4.2"
 
 ################################################################################
 #
@@ -96,6 +96,23 @@ class MeldStatusBar:
 # MeldApp
 #
 ################################################################################
+class NotebookLabel(gtk.HBox):
+
+    def __init__(self, text="", onclose=None):
+        gtk.HBox.__init__(self)
+        self.label = gtk.Label(text)
+        self.button = gtk.Button("X")
+        self.button.set_size_request(14,14) #TODO font height
+        self.pack_start( self.label )
+        self.pack_start( self.button )
+        self.show_all()
+        if onclose:
+            self.button.connect("clicked", onclose)
+################################################################################
+#
+# MeldApp
+#
+################################################################################
 class MeldApp(gnomeglade.App):
 
     def __init__(self, files):
@@ -119,20 +136,21 @@ class MeldApp(gnomeglade.App):
             
 
     def switch_page(self, notebook, page, which):
-        olddoc = self.current_doc()
-        if olddoc:
-            oldseq = olddoc.undosequence
-            oldseq.disconnect(oldseq.can_undo_id)
-            oldseq.disconnect(oldseq.can_redo_id)
         newdoc = notebook.get_nth_page(which).get_data("pyobject") #TODO why pyobject?
-        newseq = newdoc.undosequence
-        newseq.can_undo_id = newseq.connect("can-undo", self.on_can_undo_doc)
-        newseq.can_redo_id = newseq.connect("can-redo", self.on_can_redo_doc)
-        self.button_undo.set_sensitive(newseq.can_undo())
-        self.button_redo.set_sensitive(newseq.can_redo())
-        for i in range(3):
-            sensitive = newdoc.numpanes > i
-            self.menu_file_save_file[i].set_sensitive(sensitive)
+        if hasattr(newdoc, "undosequence"):
+            newseq = newdoc.undosequence
+            self.button_undo.set_sensitive(newseq.can_undo())
+            self.button_redo.set_sensitive(newseq.can_redo())
+            for i in range(3):
+                sensitive = newdoc.numpanes > i
+                self.menu_file_save_file[i].set_sensitive(sensitive)
+        else:
+            self.button_undo.set_sensitive(0)
+            self.button_redo.set_sensitive(0)
+            for i in range(3):
+                self.menu_file_save_file[i].set_sensitive(0)
+        nbl = self.notebook.get_tab_label( newdoc._widget ) #TODO why ._widget?
+        self.set_title( nbl.label.get_text() )
 
     #
     # global
@@ -177,12 +195,9 @@ class MeldApp(gnomeglade.App):
         index = self.menu_file_save_file.index(menuitem)
         self.current_doc().save_file(index)
 
-    def on_files_doc_loaded(self, component, file0, file1):
-        l = self.notebook.get_tab_label( component._widget ) #TODO why ._widget?
-        if l:
-            f0 = os.path.basename(file0)
-            f1 = os.path.basename(file1)
-            l.set_text("%s : %s" % (f0,f1))
+    def on_doc_label_changed(self, component, text):
+        nbl = self.notebook.get_tab_label( component._widget ) #TODO why ._widget?
+        nbl.label.set_text(text)
 
     def on_can_undo_doc(self, undosequence, can):
         self.button_undo.set_sensitive(can)
@@ -191,47 +206,32 @@ class MeldApp(gnomeglade.App):
     #
     # methods
     #
-    def _create_label(self, page, *files):
-        l = gtk.HBox()
-        l.pack_start( gtk.Label(" : ".join( misc.shorten_names(*files)) + " "  ) )
-        b = gtk.Button("X")
-        b.set_size_request(14,14) #TODO font height
-        b.connect("clicked", lambda b: self._remove_page(page))
-        l.pack_start(b)
-        l.show_all()
-        return l
     def _remove_page(self, page):
         i = self.notebook.page_num(page._widget)
         assert(i>=0)
         self.notebook.remove_page(i)
 
     def append_filediff2(self, file0, file1):
-        d = filediff.FileDiff(2, self.statusbar)
-        label = self._create_label(d, file0, file1)
-        self.notebook.append_page( d._widget, label) #TODO why ._widget?
-        self.notebook.next_page()
-        d.set_file(file0, 0)
-        d.set_file(file1, 1)
-        d.refresh()
-        d.undosequence.clear()
-
+        self.append_filediff( (file0, file1) )
     def append_filediff3(self, file0, file1, file2):
-        d = filediff.FileDiff(3, self.statusbar)
-        label = self._create_label(d, file0, file1, file2)
-        self.notebook.append_page( d._widget, label) #TODO why ._widget?
-        self.notebook.next_page()
-        d.set_file(file0,0)
-        d.set_file(file1,1)
-        d.set_file(file2,2)
-        d.refresh()
-        d.undosequence.clear()
+        self.append_filediff( (file0, file1, file2) )
     def append_filediff(self, files):
-        if len(files)==2:
-            apply(self.append_filediff2, files)
-        elif len(files)==3:
-            apply(self.append_filediff3, files)
-        else:
-            raise "wrong number of arguments"
+        assert len(files)==2 or len(files)==3
+        nfiles = len(files)
+        doc = filediff.FileDiff(nfiles, self.statusbar)
+        for i in range(nfiles):
+            doc.set_file(files[i],i)
+        seq = doc.undosequence
+        seq.clear()
+        seq.connect("can-undo", self.on_can_undo_doc)
+        seq.connect("can-redo", self.on_can_redo_doc)
+        nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
+        self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
+        self.notebook.next_page()
+        doc.connect("label-changed", self.on_doc_label_changed)
+        doc.label_changed()
+        doc.refresh()
+
 
     def on_down_doc_clicked(self, *args):
         self.current_doc().next_diff( gtk.gdk.SCROLL_DOWN)
@@ -241,9 +241,16 @@ class MeldApp(gnomeglade.App):
     def on_save_doc_clicked(self, *args):
         self.current_doc().save()
 
-    def on_button_activate(self, *args):
+    def on_foo_clicked(self, *args):
         pass
-        #self.current_doc().save()
+        #print "foo"
+        #doc = cvsview.CvsView()
+        #nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
+        #self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
+        #self.notebook.next_page()
+        #doc.connect("label-changed", self.on_doc_label_changed)
+        #doc.label_changed()
+        #doc.refresh()
 
     def on_menu_help_meld_home_page_activate(self, button):
         gnome.url_show("http://meld.sourceforge.net")
