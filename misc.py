@@ -134,7 +134,7 @@ def all(o):
     """
     return "\n".join( ["%s\t%s" % (x,getattr(o,x)) for x in dir(o)] )
 
-def read_pipe_iter(command, yield_interval=0.1, workdir=None):
+def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     """Read the output of a shell command iteratively.
 
     Each time 'callback_interval' seconds pass without reading any data,
@@ -151,21 +151,26 @@ def read_pipe_iter(command, yield_interval=0.1, workdir=None):
     if workdir:
         os.chdir( savepwd )
     bits = []
-    while len(bits)==0 or bits[-1]!="":
-        state = select.select([childout], [], [childout], yield_interval)
-        if len(state[0])==0:
-            if len(state[2])==0:
+    while len(bits) == 0 or bits[-1] != "":
+        state = select.select([childout, childerr], [], [childout, childerr], yield_interval)
+        if len(state[0]) == 0:
+            if len(state[2]) == 0:
                 yield None
             else:
                 raise "Error reading pipe"
-        else:
+        if childout in state[0]:
             try:
                 bits.append( childout.read(4096) ) # get buffer size
             except IOError:
                 break # ick need to fix
+        if childerr in state[0]:
+            try:
+                errorstream.write( childerr.read(4096) ) # get buffer size
+            except IOError:
+                break # ick need to fix
     status = pipe.wait()
-    #if status:
-    #   raise IOError("%i %s" %(status,childerr.read()))
+    if status:
+       errorstream.write("Exit code: %i %s\n" %(status,childerr.read()))
     yield "".join(bits)
 
 def write_pipe(command, text):
