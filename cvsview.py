@@ -1,6 +1,22 @@
-## python
+### Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+
+### This program is free software; you can redistribute it and/or modify
+### it under the terms of the GNU General Public License as published by
+### the Free Software Foundation; either version 2 of the License, or
+### (at your option) any later version.
+
+### This program is distributed in the hope that it will be useful,
+### but WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+### GNU General Public License for more details.
+
+### You should have received a copy of the GNU General Public License
+### along with this program; if not, write to the Free Software
+### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 # todo use .cvsignore
+
+from __future__ import generators
 
 import tempfile
 import gobject
@@ -13,6 +29,7 @@ import re
 
 import misc
 import gnomeglade
+import melddoc
 
 CVS_COMMAND = ["cvs", "-z3", "-q"]
 
@@ -161,29 +178,14 @@ def find(start):
     return dirs+files
 
 
-def _commonprefix(dirs):
-    "Given a list of pathnames, returns the longest common leading component"
-    if not dirs: return ''
-    n = copy.copy(dirs)
-    for i in range(len(n)):
-        n[i] = n[i].split(os.sep)
-    prefix = n[0]
-    for item in n:
-        for i in range(len(prefix)):
-            if prefix[:i+1] <> item[:i+1]:
-                prefix = prefix[:i]
-                if i == 0: return ''
-                break
-    return os.sep.join(prefix)
-
 ################################################################################
 #
 # CommitDialog
 #
 ################################################################################
-class CommitDialog(gnomeglade.Dialog):
+class CommitDialog(gnomeglade.Component):
     def __init__(self, parent):
-        gnomeglade.Dialog.__init__(self, misc.appdir("glade2/cvsview.glade"), "commitdialog")
+        gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "commitdialog")
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         self.changedfiles.set_text( " ".join(parent._get_selected_files()))
@@ -208,11 +210,9 @@ MODEL_PIXMAP, MODEL_ENTRY, MODEL_NAME, MODEL_COLOR, MODEL_LOCATION, MODEL_STATUS
 # CvsView
 #
 ################################################################################
-class CvsView(gnomeglade.Component):
+class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     __gsignals__ = {
-        'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
-        'working-hard': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT,)),
         'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
     }
 
@@ -223,9 +223,9 @@ class CvsView(gnomeglade.Component):
                lambda x: 1, 
                lambda x: x.cvs in [CVS_NONE,CVS_MODIFIED,CVS_MISSING] or x.isdir  ]
 
-    def __init__(self, statusbar):
+    def __init__(self, prefs):
+        melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "cvsview")
-        self.statusbar = statusbar
         self.tempfiles = []
         self.image_dir = gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-folder.png", 14)
         self.image_file= gnomeglade.load_pixbuf("/usr/share/pixmaps/gnome-file-c.png", 14)
@@ -285,18 +285,30 @@ class CvsView(gnomeglade.Component):
                 self.treeview.expand_row(path,0)
         else:
             if entry.cvs == CVS_MODIFIED:
-                self.run_cvs_diff(entry.path)
+                self.run_cvs_diff( [entry.path] )
             else:
-                self.statusbar.add_status("%s is not modified" % entry.path)
+                #self.statusbar.add_status("%s is not modified" % entry.path)
                 self.emit("create-diff", [entry.path])
 
-    def run_cvs_diff(self, path):
-        prefix, patch = self._command(CVS_COMMAND + ["diff", "-u"], [path], 0)
+    def run_cvs_diff_iter(self, paths, empty_patch_ok):
+        yield  "Fetching differences."
+        difffunc = self._command_iter(CVS_COMMAND + ["diff", "-u"], paths, 0).next
+        diff = None
+        while type(diff) != type(()):
+            diff = difffunc()
+            yield 1
+        prefix, patch = diff[0], diff[1]
+        yield  "Applying patch."
         if patch:
             self.show_patch(prefix, patch)
+        elif empty_patch_ok:
+            pass #self.statusbar.add_status("%s has no differences" % path)
         else:
-            self.statusbar.add_status("%s has no differences" % path)
-            self.emit("create-diff", [path])
+            for path in paths:
+                self.emit("create-diff", [path])
+
+    def run_cvs_diff(self, paths, empty_patch_ok=0):
+        self.scheduler.add_task( self.run_cvs_diff_iter(paths, empty_patch_ok).next )
 
     def on_row_expanded(self, tree, me, path):
         model = self.treemodel
@@ -322,15 +334,11 @@ class CvsView(gnomeglade.Component):
             model.set_value(i, MODEL_OPTIONS, f.options)
 
         if self.button_recurse.get_active():
-            def progressfunc():
-                self.emit("working-hard", 1)
-                self.flushevents()
             files = filter(showable, recursive_find(location, progressfunc))
             files = filter(lambda x: not x.isdir, files)
             for f in files:
                 iter = model.append(me)
                 update_file(iter, f)
-            self.emit("working-hard", 0)
         else:
             allfiles = find(location)
             files = filter(showable, allfiles)
@@ -381,7 +389,7 @@ class CvsView(gnomeglade.Component):
         child = self.treemodel.append(root)
         self.treemodel.set_value(child, MODEL_NAME, "<empty>" )
         self.treeview.expand_row(self.treemodel.get_path(root), 0)
-        self.label_changed()
+        self.recompute_label()
 
     def on_button_recurse_toggled(self, button):
         self.treeview_column_location.set_visible( self.button_recurse.get_active() )
@@ -404,38 +412,41 @@ class CvsView(gnomeglade.Component):
         # remove empty entries and remove trailing slashes
         return map(lambda x: x[-1]!="/" and x or x[:-1], filter(lambda x: x!=None, ret))
 
-    def _command(self, command, files, refresh=1):
+    def _command_iter(self, command, files, refresh):
         """Run 'command' on 'files'. Return a tuple of the directory the
            command was executed in and the output of the command."""
-        def progress():
-            self.emit("working-hard", 1)
-            self.flushevents()
         msg = " ".join(command)
-        self.statusbar.add_status(msg, timeout=0)
+        yield msg
         if len(files) != 1 :
-            prefix = _commonprefix(files)
+            prefix = misc.commonprefix(files)
         else:
             prefix = os.path.dirname(files[0])
         kill = len(prefix) and (len(prefix)+1) or 0
         files = map(lambda x: x[kill:], files)
         savepwd = os.getcwd()
         if prefix: os.chdir( prefix )
-        r = misc.read_pipe(command + files, progress )
+        r = None
+        readfunc = misc.read_pipe_iter(command + files).next
+        while r == None:
+            r = readfunc()
+            yield 1
         if prefix: os.chdir( savepwd )
-        self.statusbar.remove_status(msg)
-        self.emit("working-hard", 0)
         if refresh:
             self.refresh()
-        return prefix, r
+        yield prefix, r
+
+    def _command(self, command, files, refresh=1):
+        """Run 'command' on 'files'.
+        """
+        self.scheduler.add_task( self._command_iter(command, files, refresh).next )
         
     def _command_on_selected(self, command, refresh=1):
         files = self._get_selected_files()
-
         if len(files):
-            return self._command(command, files, refresh)
+            self._command(command, files, refresh)
         else:
             self.statusbar.add_status("Select some files first.")
-            return None
+
     def on_button_update_clicked(self, object):
         self._command_on_selected(CVS_COMMAND + ["update","-dP"] )
     def on_button_commit_clicked(self, object):
@@ -451,9 +462,11 @@ class CvsView(gnomeglade.Component):
             try: os.unlink(f)
             except IOError: pass
         self.refresh()
+
     def on_button_diff_clicked(self, object):
-        prefix, patch = self._command_on_selected(CVS_COMMAND + ["diff", "-u"], refresh=0)
-        self.show_patch(prefix, patch)
+        files = self._get_selected_files()
+        if len(files):
+            self.run_cvs_diff(files, empty_patch_ok=1)
 
     def show_patch(self, prefix, patch):
         if not patch: return
@@ -496,8 +509,9 @@ class CvsView(gnomeglade.Component):
     def next_diff(self,*args):
         pass
 
-    def label_changed(self):
-        self.emit("label-changed", "[CVS] %s " % self.location)
+    def recompute_label(self):
+        self.label_text = "[CVS] %s " % self.location
+        self.label_changed()
 
 gobject.type_register(CvsView)
 
