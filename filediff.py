@@ -1,4 +1,5 @@
 ## python
+import os
 import sys
 import math
 import gtk
@@ -11,6 +12,7 @@ import diffutil
 import gnomeglade
 import misc
 import undo
+import tempfile
 
 gdk = gtk.gdk
 
@@ -221,7 +223,7 @@ class FileDiff(gnomeglade.Component):
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             buttons = []
             for i in range(self.num_panes):
-                b = gtk.ToggleButton( self.fileentry[i].get_full_path(0) or "" )
+                b = gtk.ToggleButton( self.fileentry[i].get_full_path(0) or "<unnamed>" )
                 buttons.append(b)
                 dialog.box.pack_start(b)
                 if state[i]==0:
@@ -287,7 +289,7 @@ class FileDiff(gnomeglade.Component):
         #
         # text buffer loading/saving
         #
-    def set_text(self, text, filename, pane, editable=1):
+    def set_text(self, text, filename, pane):
         view = self.textview[pane]
         buffer = view.get_buffer()
         buffer.set_text( text )
@@ -304,7 +306,6 @@ class FileDiff(gnomeglade.Component):
         _ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.edited_color } )
         entry = self.fileentry[pane]
         entry.set_filename(filename)
-        view.set_editable(editable)
         self.undosequence.clear()
         self.set_buffer_modified(buffer, 0)
 
@@ -325,17 +326,28 @@ class FileDiff(gnomeglade.Component):
         self.emit("label-changed", labeltext)
 
     def set_file(self, filename, pane):
-        self.fileentry[pane].set_filename(filename)
-        try:
-            text = open(filename).read()
-            self.set_text( text, filename, pane, 1)
-            self.statusbar.add_status( "Read %s" % filename )
-        except IOError, e:
-            self.set_text( "", filename, pane, 0)
-            self.statusbar.add_status( str(e) )
+        if filename:
+            self.fileentry[pane].set_filename(filename)
+            try:
+                text = open(filename).read()
+                self.set_text( text, filename, pane)
+                self.statusbar.add_status( "Read %s" % filename )
+            except IOError, e:
+                self.set_text( "", filename, pane)
+                self.statusbar.add_status( str(e) )
+        else:
+            self.set_text( "", filename, pane)
 
     def save_file(self, pane):
         name = self.fileentry[pane].get_full_path(0)
+        if not name:
+            fselect = gtk.FileSelection("Choose a name for buffer %i" % pane)
+            response = fselect.run()
+            name = os.path.abspath(fselect.get_property("filename"))
+            fselect.destroy()
+            if response != gtk.RESPONSE_OK:
+                return gnomeglade.RESULT_ERROR
+            self.fileentry[pane].set_filename(name)
         buf = self.textview[pane].get_buffer()
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if buf.meld_encoding:
@@ -374,7 +386,8 @@ class FileDiff(gnomeglade.Component):
 
     def save_all(self):
         for i in range(self.num_panes):
-            self.save_file(i)
+            if self.textview[i].get_buffer().get_data("modified"):
+                self.save_file(i)
 
     def on_fileentry_activate(self, entry):
         pane = self.fileentry.index(entry)
