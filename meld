@@ -71,6 +71,7 @@ if gtk.pygtk_version < pygtkver:
 
 import gtk.glade # python2.2 needs this
 gtk.glade.bindtextdomain("meld", paths.locale_dir() )
+locale.setlocale(locale.LC_TIME, "C")
 
 #
 # main
