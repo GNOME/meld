@@ -25,9 +25,9 @@ import tempfile
 import difflib
 
 import pango
-import gnome
 import gobject
 import gtk
+import gtk.keysyms
 
 import diffutil
 import gnomeglade
@@ -49,7 +49,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
 
-    keylookup = {65505 : MASK_SHIFT, 65507 : MASK_CTRL, 65513: MASK_ALT}
+    keylookup = {gtk.keysyms.Shift_L : MASK_SHIFT,
+                 gtk.keysyms.Control_L : MASK_CTRL,
+                 gtk.keysyms.Alt_L : MASK_ALT}
 
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
@@ -359,6 +361,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pane = self.textview.index(textview)
             self.popup_menu.popup_in_pane( pane )
             return 1
+
+    #def on_textview_toggle_overwrite(self, view):
+        #print view.overwrite_mode
+        #print misc.ilook("over", view)
+        #for v in view:
 
         #
         # find/replace buffer
