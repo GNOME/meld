@@ -19,10 +19,11 @@ from __future__ import generators
 import codecs
 import math
 import os
-import pango
 import sys
 import tempfile
+import difflib
 
+import pango
 import gnome
 import gobject
 import gtk
@@ -57,32 +58,33 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
-
         for i in range(3):
             w = self.scrolledwindow[i]
             w.get_vadjustment().connect("value-changed", self._sync_vscroll )
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
         self._connect_buffer_handlers()
-
         self.linediffer = diffutil.Differ()
-        load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
-        self.pixbuf_apply0 = load("button_apply0.xpm")
-        self.pixbuf_apply1 = load("button_apply1.xpm")
-        self.pixbuf_delete = load("button_delete.xpm")
-        self.pixbuf_copy0  = load("button_copy0.xpm")
-        self.pixbuf_copy1  = load("button_copy1.xpm")
-
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
-
         for text in self.textview:
             buf = text.get_buffer()
-            _ensure_fresh_tag_exists("edited line", buf, {"background": self.prefs.color_edited} )
             buf.set_data("meld", MeldBufferData() )
-
+            def add_tag(name, props):
+                tag = buf.create_tag(name)
+                for p,v in props.items():
+                    tag.set_property(p,v)
+            add_tag("edited line",   {"background": self.prefs.color_edited_bg,
+                                      "foreground": self.prefs.color_edited_fg} )
+            add_tag("inline line",   {"background": self.prefs.color_inline_bg,
+                                      "foreground": self.prefs.color_inline_fg} )
+            add_tag("delete line",   {"background": self.prefs.color_delete_bg,
+                                      "foreground": self.prefs.color_delete_fg}  )
+            add_tag("replace line",  {"background": self.prefs.color_replace_bg,
+                                      "foreground": self.prefs.color_replace_fg} )
+            add_tag("conflict line", {"background": self.prefs.color_conflict_bg,
+                                      "foreground": self.prefs.color_conflict_fg} )
         self.set_num_panes(num_panes)
             
-
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
             buf = textview.get_buffer()
@@ -106,12 +108,25 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.num_panes > 1:
             buffers = [t.get_buffer() for t in self.textview[:self.num_panes] ]
             pane = buffers.index(buffer)
-            def getlines(pane,lo,hi):
-                b = buffers[pane]
-                text = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
-                return text.split("\n")[:-1]
-            self.linediffer.change_sequence( pane, startline, sizechange, getlines )
+            range = self.linediffer.change_sequence( pane, startline, sizechange, self._get_texts())
+            #print "***", range, len(self.linediffer.diffs[0])
+            for iter in self._update_highlighting( range[0], range[1] ):
+                pass
             self.refresh()
+
+    def _get_texts(self):
+        class FakeText:
+            def __init__(self, buf):
+                self.buf = buf
+            def __getslice__(self, lo, hi):
+                b = self.buf
+                return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")[:-1]
+        class FakeTextArray:
+            def __init__(self, bufs):
+                self.texts = map(FakeText, bufs)
+            def __getitem__(self, i):
+                return self.texts[i]
+        return FakeTextArray( [t.get_buffer() for t in self.textview] )
 
     def after_text_insert_text(self, buffer, iter, newtext, textlen):
         lines_added = newtext.count("\n")
@@ -139,6 +154,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
+        load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
+        self.pixbuf_apply0 = load("button_apply0.xpm")
+        self.pixbuf_apply1 = load("button_apply1.xpm")
+        self.pixbuf_delete = load("button_delete.xpm")
+        self.pixbuf_copy0  = load("button_copy0.xpm")
+        self.pixbuf_copy1  = load("button_copy1.xpm")
 
     def on_preference_changed(self, key, value):
         if key == "draw_style":
@@ -264,17 +285,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # text buffer loading/saving
         #
-    #def _set_text(self, text, filename, pane, writable=1):
-        #"""Set the contents of 'pane' to utf8 'text'"""
-        #filename = os.path.abspath(filename)
-        #self.fileentry[pane].set_filename(filename)
-        #buffer = self.textview[pane].get_buffer()
-        #if self.prefs.supply_newline and (len(text)==0 or text[-1] != '\n'):
-            #text += "\n"
-        #buffer.set_text( text )
-        #_ensure_fresh_tag_exists("edited line", buffer, {"background": self.prefs.color_edited} )
-        #self.set_buffer_modified(buffer, 0)
-        #self.set_buffer_writable(buffer, writable)
 
     def recompute_label(self):
         filenames = []
@@ -363,14 +373,89 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 t.buf.insert( t.buf.get_end_iter(), "\n")
                                 panetext[t.pane] += "\n"
             yield 1
+        self.undosequence.clear()
         yield "[%s] Computing differences" % self.label_text
         lines = map(lambda x: x.split("\n"), panetext)
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
-        self._connect_buffer_handlers()
         self.refresh()
+        lenseq = [len(d) for d in self.linediffer.diffs]
+        self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
+        self._connect_buffer_handlers()
         yield 0
+
+    def _update_highlighting(self, range0, range1):
+        if 0:
+            def line_range(diffs, range, offset, linerange):
+                if len(diffs):
+                    if range[0] > 0:
+                        chunk = diffs[range[0]-1]
+                        l0c = chunk[offset+1]
+                    else:
+                        l0c = linerange[0]
+                    if range[1] < len(diffs):
+                        chunk = diffs[range0[1]]
+                        h0c = chunk[offset]
+                    else:
+                        h0c = linerange[1]
+                    return l0c, h0c
+                return None
+            ranges = [None, None, None, None]
+            ranges[0] = line_range(self.linediffer.diffs[0], range0, 3, (0, self.linediffer.seqlength[0]) )
+            ranges[1] = line_range(self.linediffer.diffs[0], range0, 1, (0, self.linediffer.seqlength[1]) )
+            ranges[2] = line_range(self.linediffer.diffs[1], range1, 1, (0, self.linediffer.seqlength[1]) )
+            ranges[3] = line_range(self.linediffer.diffs[1], range1, 3, (0, self.linediffer.seqlength[2]) )
+            buffers = [t.get_buffer() for t in self.textview]
+            buffers.insert(1, buffers[1])
+            buffers = [t.get_buffer() for t in self.textview]
+            ranges = [(0, length) for length in self.linediffer.seqlength]
+        #for b, l in zip( buffers, ranges ):
+        buffers = [t.get_buffer() for t in self.textview]
+        for b in buffers:
+            taglist = ["delete line", "conflict line", "replace line", "inline line"]
+            table = b.get_tag_table()
+            for tagname in taglist:
+                tag = table.lookup(tagname)
+                b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
+        #for chunk in self.linediffer.all_changes_in_range(self._get_texts(), range0[0], range0[1], range1[0], range1[1]):
+        for chunk in self.linediffer.all_changes(self._get_texts()):
+            for i,c in misc.enumerate(chunk):
+                if c:
+                    if c[0] == "insert":
+                        buf = buffers[i*2]
+                        tag = buf.get_tag_table().lookup("delete line")
+                        buf.apply_tag( tag, buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
+                    elif c[0] == "delete":
+                        buf = buffers[1]
+                        tag = buf.get_tag_table().lookup("delete line")
+                        buf.apply_tag( tag, buf.get_iter_at_line(c[1]), buf.get_iter_at_line(c[2]) )
+                    elif c[0] == "conflict":
+                        bufs = buffers[1], buffers[i*2]
+                        tags = [b.get_tag_table().lookup("conflict line") for b in bufs]
+                        for b,t,o in zip(bufs, tags, (0,2)):
+                            b.apply_tag( t, b.get_iter_at_line(c[o+1]), b.get_iter_at_line(c[o+2]) )
+                    elif c[0] == "replace":
+                        bufs = buffers[1], buffers[i*2]
+                        tags = [b.get_tag_table().lookup("replace line") for b in bufs]
+                        starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
+                        for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
+                            b.apply_tag(t, s, b.get_iter_at_line(l))
+                        #text1 = "\n".join(lines[1]  [c[1]:c[2]])
+                        #textn = "\n".join(lines[i*2][c[3]:c[4]])
+                        #text1 = "\n".join( self._get_texts()[1  ][c[1]:c[2]] )
+                        #textn = "\n".join( self._get_texts()[i*2][c[3]:c[4]] )
+                        #matcher = difflib.SequenceMatcher(None, text1, textn)
+                        #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
+                        #tags = [b.get_tag_table().lookup("inline line") for b in bufs]
+                        #for o in filter( lambda x: x[0]!="equal", matcher.get_opcodes()):
+                            #for i in range(2):
+                                #s,e = starts[i].copy(), starts[i].copy()
+                                #s.forward_chars( o[1+2*i] )
+                                #e.forward_chars( o[2+2*i] )
+                                #bufs[i].apply_tag(tags[i], s, e)
+                        #yield 1
+        yield 1
         
     def save_file(self, pane):
         buf = self.textview[pane].get_buffer()
@@ -429,15 +514,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # refresh, _queue_refresh
         #
     def refresh(self, junk=None):
-        text = []
-        for i in range(self.num_panes):
-            b = self.textview[i].get_buffer()
-            t = b.get_text(b.get_start_iter(), b.get_end_iter(), 0)
-            text.append(t)
         for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
-        for i in range(self.num_panes):
-            self._highlight_buffer(i)
         self.diffmap0.queue_draw()
         self.diffmap1.queue_draw()
 
@@ -482,7 +560,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for (i,adj) in others:
                 mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
                 # look for the chunk containing 'line'
-                for c in self.linediffer.pair_changes(master, i):
+                for c in self.linediffer.pair_changes(master, i, self._get_texts()):
                     c = c[1:]
                     if c[0] >= line:
                         mend = c[0]
@@ -530,16 +608,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         window = area.window
         window.clear()
         gctext = area.get_style().text_gc[0]
-        '''style = area.get_style()
-        gc = { "insert":style.light_gc[0],
-               "delete":style.light_gc[0],
-               "replace":style.light_gc[0],
-               "conflict":style.dark_gc[3] }'''
         if not hasattr(area, "meldgc"):
             self._setup_gcs(area)
 
         gc = area.meldgc.get_gc
-        for c in self.linediffer.single_changes(textindex):
+        for c in self.linediffer.single_changes(textindex, self._get_texts()):
             assert c[0] != "equal"
             s,e = ( scaleit(c[1]), scaleit(c[2]+(c[1]==c[2])) )
             s,e = math.floor(s), math.ceil(e)
@@ -560,29 +633,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview[textindex].scroll_to_iter(iter, 0.0, use_align=1, xalign=0, yalign=0.5)
         gtk.idle_add( lambda *a : self.linkmap[0].grab_focus() )
         return 1
-
-    def _highlight_buffer(self, which):
-        widget = self.textview[which]
-        buffer = widget.get_buffer()
-
-        tag_delete_line = _ensure_fresh_tag_exists("delete line", buffer,
-                {"background": self.prefs.color_deleted}  )
-        tag_replace_line = _ensure_fresh_tag_exists("replace line", buffer,
-                {"background": self.prefs.color_changed} )
-        tag_conflict_line = _ensure_fresh_tag_exists("conflict line", buffer,
-                {"background": self.prefs.color_conflict} )
-
-        for c in self.linediffer.single_changes(which):
-            if c[1] != c[2]:
-                start, end = map(buffer.get_iter_at_line, (c[1], c[2]) )
-                if c[0] == "insert":
-                    buffer.apply_tag(tag_delete_line, start, end)
-                elif c[0] == "replace":
-                    buffer.apply_tag(tag_replace_line, start, end)
-                elif c[0] == "delete":
-                    buffer.apply_tag(tag_delete_line, start, end)
-                elif c[0] == "conflict":
-                    buffer.apply_tag(tag_conflict_line, start, end)
 
     def _get_line_count(self, index):
         """Return the number of lines in the buffer of textview 'text'"""
@@ -610,12 +660,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         line = (adjs[1].value + adjs[1].page_size/2) / self.pixels_per_line
         c = None
         if direction == gdk.SCROLL_DOWN:
-            for c in self.linediffer.single_changes(1):
+            for c in self.linediffer.single_changes(1, self._get_texts()):
                 assert c[0] != "equal"
                 if c[1] > line:
                     break
         else: #direction == gdk.SCROLL_UP
-            for chunk in self.linediffer.single_changes(1):
+            for chunk in self.linediffer.single_changes(1, self._get_texts()):
                 if chunk[2] < line:
                     c = chunk
                 elif c:
@@ -634,15 +684,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _setup_gcs(self, area):
         assert area.window
         gcd = area.window.new_gc()
-        gcd.set_rgb_fg_color( gdk.color_parse(self.prefs.color_deleted) )
+        gcd.set_rgb_fg_color( gdk.color_parse(self.prefs.color_delete_bg) )
         gcc = area.window.new_gc()
-        gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_changed) )
+        gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_replace_bg) )
         gce = area.window.new_gc()
-        gce.set_rgb_fg_color( gdk.color_parse(self.prefs.color_edited) )
+        gce.set_rgb_fg_color( gdk.color_parse(self.prefs.color_edited_bg) )
         gcx = area.window.new_gc()
-        gcx.set_rgb_fg_color( gdk.color_parse(self.prefs.color_conflict) )
+        gcx.set_rgb_fg_color( gdk.color_parse(self.prefs.color_conflict_bg) )
         area.meldgc = misc.struct(gc_delete=gcd, gc_insert=gcd, gc_replace=gcc, gc_conflict=gcx)
         area.meldgc.get_gc = lambda p: getattr(area.meldgc, "gc_"+p)
+
+    def on_textview_expose_event(self, textview, event):
+        gcd = textview.window.new_gc()
+        points = [(0,0), (100,100)]
+        textview.window.draw_lines(gcd, points  )
+        #print points
 
         #
         # linkmap drawing
@@ -684,7 +740,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pix1 = self.pixbuf_apply1
         draw_style = self.prefs.draw_style
         gc = area.meldgc.get_gc
-        for c in self.linediffer.pair_changes(which, which+1):
+        for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             assert c[0] != "equal"
             f0,f1 = map( lambda l: l * self.pixels_per_line - madj.value, c[1:3] )
             t0,t1 = map( lambda l: l * self.pixels_per_line - oadj.value, c[3:5] )
@@ -762,7 +818,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         src = which + side
         dst = which + 1 - side
-        for c in self.linediffer.pair_changes(src,dst):
+        for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
             if c[0] == "insert":
                 continue
             h = func(c)
@@ -825,23 +881,6 @@ class MeldBufferData:
         self.writable = 1
         self.filename = filename
         self.encoding = None
-
-################################################################################
-#
-# Local Functions
-#
-################################################################################
-def _ensure_fresh_tag_exists(name, buffer, properties):
-    """Tag exists in buffer and is not applied to any text"""
-    table = buffer.get_tag_table()
-    tag = table.lookup(name)
-    if not tag:
-        tag = buffer.create_tag(name)
-        for prop,val in properties.items():
-            tag.set_property(prop, val)
-    else:
-        buffer.remove_tag(tag, buffer.get_start_iter(), buffer.get_end_iter())
-    return tag
 
 ################################################################################
 #
