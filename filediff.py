@@ -379,7 +379,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 buf.move_mark( buf.get_selection_bound(), iter )
                 view.scroll_to_mark( buf.get_insert(), 0)
             elif regex:
-                misc.run_dialog( _("The regular expression '%s' was not found." % tofind), self, messagetype=gtk.MESSAGE_INFO)
+                misc.run_dialog( _("The regular expression '%s' was not found.") % tofind, self, messagetype=gtk.MESSAGE_INFO)
             else:
                 misc.run_dialog( _("The text '%s' was not found.") % tofind, self, messagetype=gtk.MESSAGE_INFO)
 
