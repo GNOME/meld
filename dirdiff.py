@@ -114,7 +114,8 @@ def _filter_backups(f):
         and not f.endswith(".bak") \
         and not f.endswith(".swp") \
         and not f.startswith(".#") \
-        and not (f[0] == '~')
+        and not (f[0] == '~') \
+        and not (f[-1] == '~')
 def _filter_cvs(f):
     return not f == "CVS"
 def _filter_binaries(f):
