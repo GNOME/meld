@@ -256,7 +256,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def create_name_filters(self):
         self.name_filters_available = []
         for f in [misc.ListItem(s) for s in self.prefs.filters.split("\n") ]:
-            regex = "(%s)" % ")|(".join( [misc.shell_to_regex(p)[:-1] for p in f.value.split()] )
+            bits = f.value.split()
+            if len(bits) > 1:
+                regex = "(%s)$" % ")|(".join( [misc.shell_to_regex(b)[:-1] for b in bits] )
+            elif len(bits):
+                regex = misc.shell_to_regex(bits[0])
+            else: # an empty pattern would match anything, skip it
+                continue
             try:
                 cregex = re.compile(regex)
             except re.error, e:
