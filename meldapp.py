@@ -54,6 +54,49 @@ class BrowseFileDialog(gnomeglade.Dialog):
    
 ################################################################################
 #
+# PreferencesDialog
+#
+################################################################################
+
+class PreferencesDialog(gnomeglade.Dialog):
+
+    def __init__(self, parentapp):
+        gnomeglade.Dialog.__init__(self, misc.appdir("glade2/meld-app.glade"), "preferencesdialog")
+        self.diff_options_frame.set_sensitive(0)
+        self.diff_options_frame.set_sensitive(0)
+        self._map_widgets_into_lists( ["draw_style"] )
+        self.widget.set_transient_for(parentapp.widget)
+        self.gconf = gconf.client_get_default()
+        if not self.gconf.dir_exists ('/apps/meld/filediff'):
+            self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
+        style = self.gconf.get_int("/apps/meld/filediff/draw_style")
+        self.draw_style[style].set_active(1)
+        self.widget.show()
+        fallback = self.gconf.get_string("/apps/meld/filediff/fallback_encoding")
+        if fallback:
+            self.fallback_entry.gtk_entry().set_property("text", fallback)
+            self.fallback_entry.prepend_history(0, fallback )
+
+    def on_menu_draw_style_toggled(self, radio):
+        if radio.get_active():
+            style = self.draw_style.index(radio)
+            self.gconf.set_int("/apps/meld/filediff/draw_style", style)
+
+    def on_tabsize_spin_value_changed(self, spin):
+        val = spin.get_value()
+        self.gconf.set_int("/apps/meld/filediff/tabsize", val)
+
+    def on_response(self, dialog, arg):
+        if arg==gtk.RESPONSE_CLOSE:
+            orig = self.gconf.get_string("/apps/meld/filediff/fallback_encoding")
+            now = self.fallback_entry.gtk_entry().get_property("text")
+            if now != orig:
+                self.fallback_entry.prepend_history(0, now)
+                self.gconf.set_string("/apps/meld/filediff/fallback_encoding", now)
+        self.widget.destroy()
+
+################################################################################
+#
 # MeldStatusBar
 #
 ################################################################################
@@ -74,7 +117,7 @@ class MeldStatusBar:
                 pass
             else:
                 self.statuscount[dup] += 1
-                gtk.timeout_add(timeout, lambda x: self._remove_status(status), 0)
+                gtk.timeout_add(timeout, lambda x: self.remove_status(status), 0)
                 return
 
         self.statusmessages.append(status)
@@ -83,13 +126,14 @@ class MeldStatusBar:
             self.appbar.push(message)
         else:
             self.appbar.set_status(message)
-        gtk.timeout_add(timeout, lambda x: self._remove_status(status), 0)
+        if timeout:
+            gtk.timeout_add(timeout, lambda x: self.remove_status(status), 0)
         self.statuscount.append(1)
 
     def _get_status_message(self):
         return "[%s]" % "] [".join(self.statusmessages)
 
-    def _remove_status(self, status):
+    def remove_status(self, status):
         i = self.statusmessages.index(status)
         if self.statuscount[i] == 1:
             self.statusmessages.pop(i)
@@ -162,15 +206,6 @@ class MeldApp(gnomeglade.GnomeApp):
         if not developer:#hide magic testing button
             self.toolbar_magic.hide()
             self.setting_filters.hide()
-        self.init_settings()
-
-    def init_settings(self):
-        self.gconf = gconf.client_get_default()
-        self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
-        sensitive = self.gconf.key_is_writable ("/apps/meld/filediff/draw_style")
-        self.setting_draw_style.set_sensitive(sensitive)
-        style = self.gconf.get_int("/apps/meld/filediff/draw_style")
-        self.setting_drawstyle[style].set_active(1)
 
     #
     # General events and callbacks
@@ -273,6 +308,8 @@ class MeldApp(gnomeglade.GnomeApp):
             dialog.widget.destroy()
             if response!=gtk.RESPONSE_OK:
                 return gnomeglade.DELETE_ABORT
+        for c in self.notebook.get_children():
+            misc.safe_apply( c.get_data("pyobject"), "on_quit_event", () )
         self.quit()
         return gnomeglade.DELETE_OK
 
@@ -288,10 +325,6 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # Toolbar and menu items (settings)
     #
-    def on_menu_drawstyle_activate(self, radio):
-        style = self.setting_drawstyle.index(radio)
-        self.gconf.set_int("/apps/meld/filediff/draw_style", style)
-
     def on_menu_number_panes_activate(self, menuitem):
         n = self.setting_number_panes.index(menuitem) + 1
         d = self.current_doc()
@@ -304,6 +337,9 @@ class MeldApp(gnomeglade.GnomeApp):
         print check, check.child.get_text()
         #style = self.setting_drawstyle.index(radio)
         #self.gconf.set_int("/apps/meld/filediff/draw_style", style)
+
+    def on_menu_preferences_activate(self, item):
+        PreferencesDialog(self)
 
     #
     # Toolbar and menu items (help)
@@ -384,7 +420,7 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def append_cvsview(self, locations):
         location = locations[0]
-        doc = cvsview.CvsView(location)
+        doc = cvsview.CvsView(self.statusbar, location)
         nbl = NotebookLabel(onclose=lambda b: self.try_remove_page(doc))
         self.notebook.append_page( doc.widget, nbl)
         self.notebook.next_page()
