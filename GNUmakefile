@@ -1,6 +1,6 @@
 
-PROG := ./meld
-TESTNUM := 7
+PROG := python2.2 -t ./meld
+TESTNUM := 2
 VERSION := $(shell python2.2 -c "import meldapp; print meldapp.version")
 RELEASE := meld-$(VERSION)
 

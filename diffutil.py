@@ -49,25 +49,25 @@ class Differ:
         """give changes for single file only. do not return 'equal' hunks"""
         if textindex == 0 or textindex == 2:
             for c in self.diffs[textindex/2]:
-                yield self.lookup[c[0]], c[3], c[4]
+                yield c[0], c[3], c[4], c[1], c[2], 1
         else:
             thread0 = self.diffs[0]
             thread1 = self.diffs[1]
-            i0 = len(thread0) - 1
-            i1 = len(thread1) - 1
-            while i0 >= 0 and i1 >= 0:
+            i0 = 0
+            i1 = 0
+            while i0 < len(thread0) and i1 < len(thread1):
                 if thread0[i0][1] <= thread1[i1][1]:
-                    yield thread0[i0][:3]
-                    i0 -= 1
+                    yield list(thread0[i0]) + [0]
+                    i0 += 1
                 else:
-                    yield thread1[i1][:3]
-                    i1 -= 1
-            while i0 >= 0:
-                yield thread0[i0][:3]
-                i0 -= 1
-            while i1 >= 0:
-                yield thread1[i1][:3]
-                i1 -= 1
+                    yield list(thread1[i1]) + [2]
+                    i1 += 1
+            while i0 < len(thread0):
+                yield list(thread0[i0]) + [0]
+                i0 += 1
+            while i1 < len(thread1):
+                yield list(thread1[i1]) + [2]
+                i1 += 1
 
     def _merge_blocks(self, using, low_seq, high_seq, last_diff):
         LO, HI = 1,2

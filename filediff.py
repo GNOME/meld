@@ -451,28 +451,31 @@ class FileDiff(gnomeglade.Component):
             self.numpanes = numpanes
         
     def next_diff(self, direction):
-        adj = self.scrolledwindow1.get_vadjustment()
-
-        line = (adj.value + adj.page_size/2) / self.pixels_per_line
+        adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
+        line = (adjs[1].value + adjs[1].page_size/2) / self.pixels_per_line
+        c = None
 
         if direction == gdk.SCROLL_DOWN:
             for c in self.linediffs.single_changes(1):
                 if c[1] > line:
-                    want = 0.5 * (self.pixels_per_line * (c[1] + c[2]) - adj.page_size)
-                    want = _clamp(want, 0, adj.upper-adj.page_size)
-                    adj.set_value( want )
-                    return
+                    break
         else: #direction == gdk.SCROLL_UP
             save = None
-            for c in self.linediffs.single_changes(1):
-                if c[2] < line:
-                    save = c
-                else:
-                    if save:
-                        want = 0.5 * (self.pixels_per_line * (save[1]+save[2]) - adj.page_size)
-                        want = _clamp(want, 0, adj.upper-adj.page_size)
-                        adj.set_value( want )
-                        return
+            for chunk in self.linediffs.single_changes(1):
+                if chunk[2] < line:
+                    c = chunk
+                elif c:
+                    break
+        if c:
+            if c[2] - c[1]:
+                l = c[1]+c[2]
+                a = adjs[1]
+            else:
+                l = c[3]+c[4]
+                a = adjs[c[5]]
+            want = 0.5 * (self.pixels_per_line * l - a.page_size)
+            want = _clamp(want, 0, a.upper-a.page_size)
+            a.set_value( want )
 
         #
         # linkmap drawing
@@ -544,7 +547,9 @@ class FileDiff(gnomeglade.Component):
             else: #replace
                 pix0.render_to_drawable( window, gcfg, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
                 pix1.render_to_drawable( window, gcfg, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
-        window.draw_line(style.text_gc[0], .25*wtotal, 0.5*htotal,.75*wtotal, 0.5*htotal)
+        # allow for scrollbar at end of textview
+        mid = 0.5 * self.textview0.get_allocation().height
+        window.draw_line(style.text_gc[0], .25*wtotal, mid,.75*wtotal, mid)
 
     def on_linkmap_scroll_event(self, area, event):
         self.next_diff(event.direction)
@@ -587,7 +592,6 @@ class FileDiff(gnomeglade.Component):
             elif h < event.y and event.y < h + pix_height:
                 self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
                 break
-        print self.mouse_chunk
 
     def on_linkmap_button_release_event(self, area, event):
         if self.mouse_chunk:
