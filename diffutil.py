@@ -3,26 +3,34 @@
 from __future__ import generators
 import difflib
 
-def null_or_space(s):
+def _null_or_space(s):
     return len(s) == 0 or s.isspace()
 
-def chunkify(seq, txts):
-    """Merge diff blocks if they are seperated by whitespace"""
+def _chunkify_and_filter(seq, txts):
+    """Merge diff blocks if they are separated by only whitespace.
+    Also remove 'equal' blocks in the process"""
     if len(seq) >= 2:
         ret = []
-        cur = seq[0]
-        for n in seq[1:]:
-            if n[1]-cur[2] == 1 and n[3]-cur[4] == 1 and \
-                    null_or_space(txts[1][n[1]-1]) and \
-                    null_or_space(txts[0][n[3]-1]):
-                cur = ("replace", cur[1], n[2], cur[3], n[4])
+        i = 0
+        while i < len(seq):
+            s = seq[i]
+            if s[0] == "equal":
+                if _null_or_space( "".join(txts[1][s[1]:s[2]])):
+                    if i > 0:
+                        r = ret[-1]
+                        ret[-1] = ["replace", r[1], s[2], r[3], s[4]]
+                    i += 1
+                    if i < len(seq) and len(ret):
+                        s = seq[i]
+                        r = ret[-1]
+                        ret[-1] = ["replace", r[1], s[2], r[3], s[4]]
             else:
-                ret.append(cur)
-                cur = n
-        ret.append(cur)
+                ret.append(s)
+            i += 1
     else:
         ret = seq
     return ret
+
 ################################################################################
 #
 # Differ
@@ -35,22 +43,22 @@ class Differ:
     def __init__(self, *text):
         # diffs are stored from text1 -> text0 and text1 -> text2 for consistency
         textlines = map( lambda x: x.split("\n"), text)
-        mungelines = textlines
-        #for i in range(len(textlines)):
-        #   m = map( lambda x: (len(x)==0 or x.isspace()) and (i+1) or x, textlines[i])
-        #   mungelines.append(m)
 
         if len(text)==0 or len(text)==1:
             self.diffs = ([], [])
         elif len(text)==2:
-            seq0 = difflib.SequenceMatcher(None, mungelines[1], mungelines[0]).get_opcodes()
+            seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
+            print seq0
             seq0 = filter(lambda x: x[0]!="equal", seq0)
+            #seq0 = _chunkify_and_filter(seq0, textlines)
             self.diffs = (seq0, [])
         elif len(text)==3:
-            seq0 = difflib.SequenceMatcher(None, mungelines[1], mungelines[0]).get_opcodes()
+            seq0 = difflib.SequenceMatcher(None, textlines[1], textlines[0]).get_opcodes()
             seq0 = filter(lambda x: x[0]!="equal", seq0)
-            seq1 = difflib.SequenceMatcher(None, mungelines[1], mungelines[2]).get_opcodes()
+            #seq0 = _chunkify_and_filter(seq0, textlines[:-1])
+            seq1 = difflib.SequenceMatcher(None, textlines[1], textlines[2]).get_opcodes()
             seq1 = filter(lambda x: x[0]!="equal", seq1)
+            #seq1 = _chunkify_and_filter(seq1, textlines[1:])
             self.diffs = self._merge_diffs(seq0, seq1, textlines)
         else:
             raise "Bad number of arguments to Differ constructor (%i)" % len(text)
