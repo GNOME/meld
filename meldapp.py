@@ -782,17 +782,22 @@ class MeldApp(gnomeglade.GnomeApp):
         doc.set_files(files)
 
     def append_diff(self, paths):
-        if 0 not in [os.path.isfile(p) for p in paths]:
-            self.append_filediff(paths)
-        elif 0 not in [os.path.isdir(p) for p in paths]:
-            self.append_dirdiff(paths)
-        else:
+        aredirs = [ os.path.isdir(p) for p in paths ]
+        arefiles = [ os.path.isfile(p) for p in paths ]
+        if (1 in aredirs) and (1 in arefiles):
             m = _("Cannot compare a mixture of files and directories.\n")
-            for p in paths:
-                m += "\n".join( ["(%s)\t`%s'" % (os.path.isfile(p) and _("file") or _("folder"), p) for p in paths] )
+            for i in range(len(paths)):
+                status = aredirs[i] and _("folder") \
+                    or arefiles[i] and _("file") \
+                    or _("nonexistant")
+                m += "\n(%s)\t`%s'" % (status, paths[i])
             misc.run_dialog( m,
                     parent = self,
                     buttonstype = gtk.BUTTONS_OK)
+        elif 1 in aredirs:
+            self.append_dirdiff(paths)
+        else:
+            self.append_filediff(paths)
 
     def append_cvsview(self, locations):
         assert len(locations) in (1,)
@@ -880,19 +885,14 @@ def main():
             return
 
     app = MeldApp()
-    arg = sys.argv[1:]
+    args = sys.argv[1:]
 
-    if len(arg) == 0:
+    if len(args) == 0:
         pass
 
-    elif len(arg) == 1:
-        a = arg[0]
-        if os.path.isdir(a):
-            if os.path.exists( os.path.join(a,".svn") ):
-                app.append_svnview( [a] )
-            else:
-                app.append_cvsview( [a] )
-        elif os.path.isfile(a):
+    elif len(args) == 1:
+        a = args[0]
+        if os.path.isfile(a):
             doc = cvsview.CvsView(app.prefs)
             def cleanup():
                 app.scheduler.remove_scheduler(doc.scheduler)
@@ -902,33 +902,13 @@ def main():
             doc.connect("create-diff", lambda obj,arg: app.append_diff(arg) )
             doc.run_cvs_diff([a])
         else:
-            app.usage( _("`%s' is not a directory or file, cannot open cvs view") % arg[0])
+            if os.path.exists( os.path.join(a,".svn") ):
+                app.append_svnview( [a] )
+            else:
+                app.append_cvsview( [a] )
                 
-    elif len(arg) in (2,3):
-        done = 0
-        exists = map( lambda a: os.access(a, os.R_OK), arg)
-        if 0 in exists:
-            m = _("Cannot open ")
-            for i in range(len(arg)):
-                if not exists[i]:
-                    m += "`%s'" % arg[i]
-            app.usage(m)
-            done = 1
-        if not done:
-            arefiles = map( os.path.isfile, arg)
-            if 0 not in arefiles:
-                app.append_diff( arg )
-                done = 1
-        if not done:
-            aredirs = map( os.path.isdir, arg)
-            if 0 not in aredirs:
-                app.append_dirdiff( arg )
-                done = 1
-        if not done:
-            m = _("Cannot compare a mixture of files and directories.\n")
-            for i in range(len(arg)):
-                m += "(%s)\t`%s'\n" % (arefiles[i] and _("file") or _("folder"), arg[i])
-            app.usage(m)
+    elif len(args) in (2,3):
+        app.append_diff(args)
     else:
         app.usage( _("Wrong number of arguments (Got %i)") % len(arg))
 
