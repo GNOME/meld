@@ -184,6 +184,8 @@ class ListWidget(gnomeglade.Component):
 
 class PreferencesDialog(gnomeglade.Component):
 
+    editor_radio_values = {"internal":0, "gnome":1, "custom":2}
+
     def __init__(self, parentapp):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
@@ -202,6 +204,7 @@ class PreferencesDialog(gnomeglade.Component):
                 self.model.append( (label,) )
         self.prefs = parentapp.prefs
         # editor
+        self._map_widgets_into_lists( ["editor_command"] )
         if self.prefs.use_custom_font:
             self.radiobutton_custom_font.set_active(1)
         else:
@@ -209,6 +212,9 @@ class PreferencesDialog(gnomeglade.Component):
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
+        self.editor_command[ self.editor_radio_values.get(self.prefs.edit_command_type, "internal") ].set_active(1)
+        self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
+        self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
         # display
         self._map_widgets_into_lists( ["draw_style"] )
         self._map_widgets_into_lists( ["toolbar_style"] )
@@ -254,6 +260,13 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs.tab_size = int(spin.get_value())
     def on_checkbutton_supply_newline_toggled(self, check):
         self.prefs.supply_newline = check.get_active()
+    def on_editor_command_toggled(self, radio):
+        if radio.get_active():
+            idx = self.editor_command.index(radio)
+            for k,v in self.editor_radio_values.items():
+                if v == idx:
+                    self.prefs.edit_command_type = k
+                    break
     #
     # display
     #
@@ -293,6 +306,7 @@ class PreferencesDialog(gnomeglade.Component):
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
             self.prefs.text_codecs = self.entry_text_codecs.get_property("text")
+            self.prefs.edit_command_custom = self.custom_edit_command_entry.get_property("text")
         self.widget.destroy()
 
 ################################################################################
@@ -404,6 +418,8 @@ class MeldPreferences(prefs.Preferences):
         "use_custom_font": prefs.Value(prefs.BOOL,0),
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "tab_size": prefs.Value(prefs.INT, 4),
+        "edit_command_type" : prefs.Value(prefs.STRING, "internal"), #internal, gnome, custom
+        "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "supply_newline": prefs.Value(prefs.BOOL,1),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"), 
         "save_encoding": prefs.Value(prefs.INT, 0),
@@ -416,6 +432,7 @@ class MeldPreferences(prefs.Preferences):
         "cvs_binary": prefs.Value(prefs.STRING, "/usr/bin/cvs"),
         "cvs_create_missing": prefs.Value(prefs.BOOL, 1),
         "cvs_prune_empty": prefs.Value(prefs.BOOL, 1),
+        "cvs_console_visible": prefs.Value(prefs.BOOL, 0),
         "color_delete_bg" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
         "color_delete_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_replace_bg" : prefs.Value(prefs.STRING, "#ddeeff"),
@@ -473,6 +490,25 @@ class MeldPreferences(prefs.Preferences):
         else:
             style = self.toolbar_style - 1
         return style
+
+    def get_gnome_editor_command(self, files):
+        argv = []
+        editor = self._gconf.get_string('/desktop/gnome/applications/editor/exec')
+        if self._gconf.get_bool("/desktop/gnome/applications/editor/needs_term"):
+            texec = self._gconf.get_string("/desktop/gnome/applications/terminal/exec")
+            if texec:
+                argv.append(texec)
+                targ = self._gconf.get_string("/desktop/gnome/applications/terminal/exec_arg")
+                if targ:
+                    argv.append(targ)
+            argv.append( "%s %s" % (editor, " ".join( [f.replace(" ","\\ ") for f in files]) ) )
+        else:
+            argv = [editor] + files
+        return argv
+
+    def get_custom_editor_command(self, files):
+        return self.edit_command_custom.split() + files
+
 
 ################################################################################
 #
@@ -707,12 +743,12 @@ class MeldApp(gnomeglade.GnomeApp):
         self.scheduler.add_scheduler(page.scheduler)
         page.connect("label-changed", self.on_notebook_label_changed)
         page.connect("file-changed", self.on_file_changed)
+        page.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
 
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
         self._append_page(doc, "tree-folder-normal.png")
-        doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.set_locations(dirs)
 
     def append_filediff(self, files):
@@ -730,7 +766,6 @@ class MeldApp(gnomeglade.GnomeApp):
         location = locations[0]
         doc = cvsview.CvsView(self.prefs)
         self._append_page(doc, "cvs-icon.png")
-        doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
         doc.set_location(location)
 
     #
