@@ -23,6 +23,7 @@ import copy
 import sys
 import os
 import select
+import popen2
 
 def appdir(path):
     """Return where the application is installed.
@@ -99,15 +100,22 @@ def all(o):
     """
     return "\n".join( ["%s\t%s" % (x,getattr(o,x)) for x in dir(o)] )
 
-def read_pipe_iter(command, yield_interval=0.1):
+def read_pipe_iter(command, yield_interval=0.1, workdir=None):
     """Read the output of a shell command iteratively.
 
     Each time 'callback_interval' seconds pass without reading any data,
     this function yeilds None.
     When all the data is read, the entire string is yeilded.
+    If 'workdir' is specified the command is run from that directory.
     """
-    childin, childout, childerr = os.popen3(command)
+    if workdir:
+        savepwd = os.getcwd()
+        os.chdir( workdir )
+    pipe = popen2.Popen3(command, capturestderr=1)
+    childin, childout, childerr = pipe.tochild, pipe.fromchild, pipe.childerr
     childin.close()
+    if workdir:
+        os.chdir( savepwd )
     bits = []
     while len(bits)==0 or bits[-1]!="":
         state = select.select([childout], [], [childout], yield_interval)
@@ -121,6 +129,9 @@ def read_pipe_iter(command, yield_interval=0.1):
                 bits.append( childout.read(4096) ) # get buffer size
             except IOError:
                 break # ick need to fix
+    status = pipe.wait()
+    #if status:
+        #raise IOError("%i %s" %(status,childerr.read()))
     yield "".join(bits)
 
 def write_pipe(command, text):
