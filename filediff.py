@@ -62,6 +62,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
+        self.textview_overwrite = 0
+        self.textview_focussed = None
+        self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         for i in range(3):
             w = self.scrolledwindow[i]
             w.get_vadjustment().connect("value-changed", self._sync_vscroll )
@@ -72,6 +75,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK )
         self.bufferdata = []
         for text in self.textview:
+            text.set_wrap_mode( self.prefs.edit_wrap_lines )
             buf = text.get_buffer()
             self.bufferdata.append( MeldBufferData() )
             def add_tag(name, props):
@@ -140,15 +144,33 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.textview = textview
             buf.handlers = id0, id1, id2, id3
 
+    def _update_cursor_status(self, buf):
+        def update():
+            iter = buf.get_iter_at_mark( buf.get_insert() )
+            status = "%s : %s" % ( _("INS,OVR").split(",")[ self.textview_overwrite ], #insert/overwrite
+                                   _("Ln %i, Col %i") % (iter.get_line()+1, iter.get_line_offset()+1) ) #line/column
+            self.emit("status-changed", status  )
+            raise StopIteration; yield 0
+        self.scheduler.add_task( update().next )
+
+    def on_textview_move_cursor(self, view, *args):
+        self._update_cursor_status(view.get_buffer())
+    def on_textview_focus_in_event(self, view, event):
+        self.textview_focussed = view
+        self._update_cursor_status(view.get_buffer())
+    def on_switch_event(self):
+        if self.textview_focussed:
+            self.scheduler.add_task( self.textview_focussed.grab_focus )
+
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
             buffers = [t.get_buffer() for t in self.textview[:self.num_panes] ]
             pane = buffers.index(buffer)
             range = self.linediffer.change_sequence( pane, startline, sizechange, self._get_texts())
-            #print "***", range, len(self.linediffer.diffs[0])
             for iter in self._update_highlighting( range[0], range[1] ):
                 pass
             self.queue_draw()
+        self._update_cursor_status(buffer)
 
     def _get_texts(self):
         class FakeText(object):
@@ -362,10 +384,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.popup_menu.popup_in_pane( pane )
             return 1
 
-    #def on_textview_toggle_overwrite(self, view):
-        #print view.overwrite_mode
-        #print misc.ilook("over", view)
-        #for v in view:
+    def on_textview_toggle_overwrite(self, view):
+        self.textview_overwrite = not self.textview_overwrite
+        for v,h in zip(self.textview, self.textview_overwrite_handlers):
+            v.disconnect(h)
+            if v != view:
+                v.emit("toggle-overwrite")
+        self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
+        self._update_cursor_status(view.get_buffer())
 
         #
         # find/replace buffer
