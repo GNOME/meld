@@ -32,9 +32,9 @@ STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
 STATE_MISSING, STATE_MAX = range(12)
 
 load = lambda x,s=14: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
-pixbuf_folder = load("tree-folder-normal.png")
-pixbuf_folder_new = load("tree-folder-new.png")
-pixbuf_folder_changed = load("tree-folder-changed.png")
+pixbuf_folder = load("tree-folder-normal.png", 20)
+pixbuf_folder_new = load("tree-folder-new.png", 20)
+pixbuf_folder_changed = load("tree-folder-changed.png", 20)
 pixbuf_file = load("tree-file-normal.png")
 pixbuf_file_new = load("tree-file-new.png")
 pixbuf_file_changed = load("tree-file-changed.png")
