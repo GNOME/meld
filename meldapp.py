@@ -381,7 +381,7 @@ class MeldApp(gnomeglade.GnomeApp):
             if index >= 0: # save one
                 self.current_doc().save_file(index)
             else: # save all
-                self.current_doc().save_all()
+                self.current_doc().save()
         except AttributeError:
             pass
 
@@ -400,10 +400,9 @@ class MeldApp(gnomeglade.GnomeApp):
             try: state.append( c.get_data("pyobject").is_modified() )
             except AttributeError: state.append(0)
         if 1 in state and not developer:
-            dialog = gnomeglade.Component(misc.appdir("glade2/meld-app.glade"), "closedialog")
-            dialog.widget.set_transient_for(self.widget.get_toplevel())
-            response = dialog.widget.run()
-            dialog.widget.destroy()
+            response = misc.run_dialog('You have some unsaved changes.\nQuit anyway?',
+                parent = self,
+                buttonstype=gtk.BUTTONS_OK_CANCEL )
             if response!=gtk.RESPONSE_OK:
                 return gnomeglade.DELETE_ABORT
         for c in self.notebook.get_children():
@@ -477,7 +476,7 @@ class MeldApp(gnomeglade.GnomeApp):
         misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_UP )
 
     def on_toolbar_new_clicked(self, *args):
-        self.popup_new.widget.popup(None,None,None,3,0)
+        self.popup_new.widget.popup(None, None, None, 3, gtk.get_current_event_time() )
 
     def try_remove_page(self, page):
         "See if a page will allow itself to be removed"
@@ -543,13 +542,11 @@ class MeldApp(gnomeglade.GnomeApp):
     # Usage
     #
     def usage(self, msg):
-        dialog = gnomeglade.Component(misc.appdir("glade2/meld-app.glade"),
-            "usagedialog")
-        dialog.widget.set_transient_for(self.widget.get_toplevel())
-        label = '<span weight="bold" size="larger">%s</span>' % msg
-        dialog.label_message.set_label(label)
-        response = dialog.widget.run()
-        dialog.widget.destroy()
+        response = misc.run_dialog(msg,
+            self,
+            gtk.MESSAGE_ERROR,
+            gtk.BUTTONS_NONE,
+            [(gtk.STOCK_QUIT, gtk.RESPONSE_CANCEL), (gtk.STOCK_OK, gtk.RESPONSE_OK)] )
         if response == gtk.RESPONSE_CANCEL:
             sys.exit(0)
         
