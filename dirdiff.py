@@ -215,7 +215,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
-        self.lock = 0
         self.popup_menu = DirDiffMenu(self)
         self.set_num_panes(num_panes)
         self.on_treeview_focus_out_event(None, None)
@@ -248,7 +247,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for r in [ misc.ListItem(i) for i in self.prefs.regexes.split("\n") ]:
             if r.active:
                 try:
-                    self.regexes.append( re.compile(r.value) )
+                    self.regexes.append( re.compile(r.value+"(?m)") )
                 except re.error, e:
                     misc.run_dialog(
                         text=_("Error converting pattern '%s' to regular expression") % r.value )
@@ -286,14 +285,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.update_regexes()
 
     def _do_to_others(self, master, objects, methodname, args):
-        if self.lock == 0:
-            self.lock = 1
+        if not hasattr(self, "do_to_others_lock"):
+            self.do_to_others_lock = 1
             try:
                 for o in filter(lambda x:x!=master, objects[:self.num_panes]):
                     method = getattr(o,methodname)
                     method(*args)
             finally:
-                self.lock = 0
+                delattr(self, "do_to_others_lock")
 
     def _sync_vscroll(self, adjustment):
         adjs = map(lambda x: x.get_vadjustment(), self.scrolledwindow)
@@ -319,14 +318,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._update_item_state(iter)
         else: # nope its gone
             self.model.remove(iter)
-        self._update_difmaps()
+        self._update_diffmaps()
 
     def file_created(self, path, pane):
         iter = self.model.get_iter(path)
         while iter and self.model.get_path(iter) != (0,):
             self._update_item_state( iter )
             iter = self.model.iter_parent(iter)
-        self._update_difmaps()
+        self._update_diffmaps()
 
     def on_fileentry_activate(self, entry):
         locs = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
@@ -623,11 +622,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_treeview_row_expanded(self, view, iter, path):
         self._do_to_others(view, self.treeview, "expand_row", (path,0) )
-        self._update_difmaps()
+        self._update_diffmaps()
 
     def on_treeview_row_collapsed(self, view, me, path):
         self._do_to_others(view, self.treeview, "collapse_row", (path,) )
-        self._update_difmaps()
+        self._update_diffmaps()
 
     def on_treeview_focus_in_event(self, tree, event):
         self.treeview_focussed = tree
@@ -781,9 +780,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.model.set_state(iter, j,  tree.STATE_MISSING)
         return different
 
-    def update_diff_maps(self):
-        return
-
     def on_treeview_button_press_event(self, treeview, event):
         # unselect other panes
         for t in filter(lambda x:x!=treeview, self.treeview[:self.num_panes]):
@@ -831,7 +827,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.label_text = " : ".join(shortnames)
         self.label_changed()
 
-    def _update_difmaps(self):
+    def _update_diffmaps(self):
         self.diffmap[0].queue_draw()
         self.diffmap[1].queue_draw()
 
@@ -968,5 +964,66 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # do the update
         for path in changed_paths:
             self._update_item_state( model.get_iter(path) )
+
+    def next_diff(self, direction):
+        if self.treeview_focussed:
+            pane = self.treeview.index( self.treeview_focussed )
+        else:
+            pane = 0
+        start_iter = self.model.get_iter( (self._get_selected_paths(pane) or [(0,)])[-1] )
+
+        def inorder_search_down(model, it):
+            while it:
+                child = model.iter_children(it)
+                if child:
+                    it = child
+                else:
+                    next = model.iter_next(it)
+                    if next:
+                        it = next
+                    else:
+                        while 1:
+                            it = model.iter_parent(it)
+                            if it:
+                                next = model.iter_next(it)
+                                if next:
+                                    it = next
+                                    break
+                            else:
+                                raise StopIteration()
+                yield it
+
+        def inorder_search_up(model, it):
+            while it:
+                path = model.get_path(it)
+                if path[-1]:
+                    path = path[:-1] + (path[-1]-1,)
+                    it = model.get_iter(path)
+                    while 1:
+                        nc = model.iter_n_children(it)
+                        if nc:
+                            it = model.iter_nth_child(it, nc-1)
+                        else:
+                            break
+                else:
+                    up = model.iter_parent(it)
+                    if up:
+                        it = up
+                    else:
+                        raise StopIteration()
+                yield it
+
+        def goto_iter(it):
+            curpath = self.model.get_path(it)
+            for i in range(len(curpath)-1):
+                self.treeview[pane].expand_row( curpath[:i+1], 0)
+            self.treeview[pane].set_cursor(curpath)
+
+        search = {gdk.SCROLL_UP:inorder_search_up}.get(direction, inorder_search_down)
+        for it in search( self.model, start_iter ):
+            state = int(self.model.get_state( it, pane ))
+            if state != tree.STATE_NORMAL:
+                goto_iter(it)
+                return
 
 gobject.type_register(DirDiff)
