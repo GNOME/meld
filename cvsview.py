@@ -377,7 +377,7 @@ class CvsView(gnomeglade.Component):
         # remove empty entries and remove trailing slashes
         return map(lambda x: x[-1]!="/" and x or x[:-1], filter(lambda x: x!=None, ret))
 
-    def _command(self, command):
+    def _command(self, command, refresh=1):
         def progress():
             self.emit("working-hard", 1)
             self.flushevents()
@@ -385,15 +385,16 @@ class CvsView(gnomeglade.Component):
         r = misc.read_pipe(command, progress )
         self.statusbar.remove_status(command)
         self.emit("working-hard", 0)
-        self.refresh()
+        if refresh:
+            self.refresh()
         return r
         
-    def _command_on_selected(self, command):
+    def _command_on_selected(self, command, refresh=1):
         f = self._get_selected_files()
 
         if len(f):
             fullcmd = "%s %s" % (command, " ".join(f) )
-            return self._command(fullcmd)
+            return self._command(fullcmd, refresh)
         else:
             self.statusbar.add_status("Select some files first.")
             return None
@@ -413,7 +414,7 @@ class CvsView(gnomeglade.Component):
             except IOError: pass
         self.refresh()
     def on_button_diff_clicked(self, object):
-        patch = self._command_on_selected("cvs -z3 -q diff -u")
+        patch = self._command_on_selected("cvs -z3 -q diff -u", refresh=0)
         self.show_patch(patch)
 
     def show_patch(self, patch):
