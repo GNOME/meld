@@ -21,8 +21,11 @@ import gnomeglade
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
 
-# dont care, normal, cvs added, modified, cvs removed, locally removed
-STATE_NONE, STATE_NORMAL, STATE_ERROR, STATE_EMPTY, STATE_NEW, STATE_MODIFIED, STATE_REMOVED, STATE_MISSING = range(8)
+# ignored, dont care, normal, cvs added, modified, cvs conflict, cvs removed, locally removed
+STATE_IGNORED, STATE_NONE, STATE_NORMAL, \
+STATE_ERROR, STATE_EMPTY, STATE_NEW, \
+STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
+STATE_MISSING, STATE_MAX = range(11)
 
 load = lambda x,s=14: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), s)
 pixbuf_folder = load("tree-folder-normal.png")
@@ -42,25 +45,31 @@ class DiffTreeStore(gtk.TreeStore):
 
     def _setup_default_styles(self):
         self.textstyle = [
-            '<span foreground="#888888">%s</span>', # STATE_NONE 
+            '<span foreground="#888888">%s</span>', # STATE_IGNORED
+            '<span foreground="#888888">%s</span>', # STATE_NONE
             '<span foreground="black">%s</span>', # STATE_NORMAL
             '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR 
             '<span foreground="#999999" style="italic">%s</span>', # STATE_EMPTY
             '<span foreground="#008800" weight="bold">%s</span>', # STATE_NEW
             '<span foreground="#880000" weight="bold">%s</span>', # STATE_MODIFIED
+            '<span foreground="#ff0000" background="#ffeeee" weight="bold">%s</span>', # STATE_CONFLICT
             '<span foreground="#880000" strikethrough="true" weight="bold">%s</span>', # STATE_REMOVED
             '<span foreground="#888888" strikethrough="true">%s</span>' # STATE_MISSING
         ]
+        assert len(self.textstyle) == STATE_MAX
         self.pixstyle = [
+            (pixbuf_file, pixbuf_folder), # IGNORED
             (pixbuf_file, pixbuf_folder), # NONE
             (pixbuf_file, pixbuf_folder), # NORMAL
             (None, None), # ERROR
             (None, None), # EMPTY
             (pixbuf_file_new, pixbuf_folder_new), # NEW
             (pixbuf_file_changed, pixbuf_folder_changed), # MODIFIED
+            (pixbuf_file_changed, pixbuf_folder_changed), # CONFLICT
             (pixbuf_file_changed, pixbuf_folder_changed), # REMOVED
             (None, None) # MISSING
         ]
+        assert len(self.pixstyle) == STATE_MAX
 
     def add_entries(self, parent, names):
         child = self.append(parent)
