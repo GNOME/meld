@@ -400,6 +400,8 @@ class NotebookLabel(gtk.HBox):
 ################################################################################
 class MeldPreferences(prefs.Preferences):
     defaults = {
+        "window_size_x": prefs.Value(prefs.INT, 600),
+        "window_size_y": prefs.Value(prefs.INT, 600),
         "use_custom_font": prefs.Value(prefs.BOOL,0),
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "tab_size": prefs.Value(prefs.INT, 4),
@@ -527,6 +529,8 @@ class MeldApp(gnomeglade.GnomeApp):
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
+        self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
+        self.widget.show()
 
     def on_idle(self):
         ret = self.scheduler.iteration()
@@ -583,7 +587,11 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def on_can_redo(self, undosequence, can):
         self.button_redo.set_sensitive(can)
-    
+
+    def on_size_allocate(self, window, rect):
+        self.prefs.window_size_x = rect.width
+        self.prefs.window_size_y = rect.height
+
     #
     # Toolbar and menu items (file)
     #
