@@ -414,8 +414,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 % "\n".join( self.bad ), self.parent )
                         keys = self.items.keys()
                         keys.sort()
-                        def fixup(key, tuples):
-                            return tuple([ t or key for t in tuples ])
+                        def fixup(key, tuples): # replace None with a usable label
+                            def first_nonempty(seq):
+                                for s in seq:
+                                    if s: return s
+                            return tuple([ t or first_nonempty(tuples) or k for t in tuples ])
                         return [ fixup(k, self.items[k]) for k in keys ]
             accumdirs = accum(self, roots)
             accumfiles = accum(self, roots)
