@@ -1,17 +1,17 @@
 
+.SUFFIXES:
+
 prefix := $(shell grep "^prefix" ../GNUmakefile | cut -d = -f 2)
 localedir := $(prefix)/share/locale
 
 PO:=$(wildcard *.po)
 MO:=$(PO:.po=/LC_MESSAGES/meld.mo)
-DIRS:=$(PO:.po=/LC_MESSAGES)
-INST_MO:=$(addprefix $(localedir)/,$(MO))
 
 .PHONY : all
-all : $(DIRS) meld.pot $(MO)
+all : $(MO)
 
 .PHONY : install
-install : all $(INST_MO)
+install : $(addprefix $(localedir)/,$(MO))
 
 .PHONY : uninstall
 uninstall :
@@ -21,14 +21,18 @@ uninstall :
 clean :
 	rm -rf $(PO:.po=)
 
-$(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo meld.pot
-	mkdir -m 755 -p $(dir $@) && install -m 644 $< $@
+$(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo
+	mkdir -m 755 -p $(dir $@) && install -m 644 $<
 
 %/LC_MESSAGES/meld.mo : %.po
-	./update-lang.sh $*
+	mkdir -m 755 -p $(dir $@) && msgfmt -o $@ $<
+
+%.po : meld.pot.stamp
+	intltool-update -g meld $(basename $@)
 
 %/LC_MESSAGES : 
 	mkdir -p $@
 
-meld.pot : 
-	./update-pot.sh
+meld.pot : $(addprefix ../,$(shell cat POTFILES.in))
+	intltool-update -g meld -p
+	touch meld.pot.stamp
