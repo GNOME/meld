@@ -37,7 +37,7 @@ import melddoc
 #
 ################################################################################
 class Entry:
-    states = _("Non CVS::Error::Newly added:Modified:Removed:Missing").split(":")
+    states = _("Ignored:Non CVS::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
     def __str__(self):
         return "%s %s\n" % (self.name, (self.path, self.state))
     def __repr__(self):
@@ -77,12 +77,16 @@ def _lookup_cvs_files(dirs, files):
 
     try:
         entries = open( os.path.join(directory, "CVS/Entries")).read()
-    except IOError, e:
+    except IOError, e: # no cvs dir
         d = map(lambda x: Dir(x[1],x[0], tree.STATE_NONE), dirs) 
         f = map(lambda x: File(x[1],x[0], tree.STATE_NONE, None), files) 
         return d,f
+
     try:
         logentries = open( os.path.join(directory, "CVS/Entries.Log")).read()
+    except IOError, e:
+        pass
+    else:
         matches = re.findall("^([AR])\s*(.+)$(?m)", logentries)
         toadd = []
         for match in matches:
@@ -96,8 +100,6 @@ def _lookup_cvs_files(dirs, files):
             else:
                 print "Unknown Entries.Log line '%s'" % match[0]
         entries += "\n".join(toadd)
-    except IOError, e:
-        pass
 
     retfiles = []
     retdirs = []
@@ -130,22 +132,23 @@ def _lookup_cvs_files(dirs, files):
             else:
                 plus = date.find("+")
                 if plus >= 0:
-                    cotime = 0
-                try:
-                    cotime = calendar.timegm( time.strptime(date) )
-                except ValueError, e:
-                    if not date.startswith("Result of merge"):
-                        print "Unable to parse date '%s' in '%s/CVS/Entries'" % (date, directory)
-                    cotime = 0
-                try:
-                    mtime = os.stat(path).st_mtime
-                except OSError:
-                    state = tree.STATE_MISSING
+                    state = tree.STATE_CONFLICT
                 else:
-                    if mtime==cotime:
-                        state = tree.STATE_NORMAL
+                    try:
+                        cotime = calendar.timegm( time.strptime(date) )
+                    except ValueError, e:
+                        if not date.startswith("Result of merge"):
+                            print "Unable to parse date '%s' in '%s/CVS/Entries'" % (date, directory)
+                        cotime = 0
+                    try:
+                        mtime = os.stat(path).st_mtime
+                    except OSError:
+                        state = tree.STATE_MISSING
                     else:
-                        state = tree.STATE_MODIFIED
+                        if mtime==cotime:
+                            state = tree.STATE_NORMAL
+                        else:
+                            state = tree.STATE_MODIFIED
             retfiles.append( File(path, name, state, rev, tag, options) )
     # find missing
     cvsfiles = map(lambda x: x[1], matches)
@@ -213,8 +216,6 @@ def _expand_to_root( treeview, path ):
 def _commonprefix(files):
     if len(files) != 1:
         workdir = misc.commonprefix(files)
-    elif os.path.isdir(files[0]):
-        workdir = files[0]
     else:
         workdir = os.path.dirname(files[0])
     return workdir
@@ -446,7 +447,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 self.emit("create-diff", [path])
 
     def run_cvs_diff(self, paths, empty_patch_ok=0):
-        self.scheduler.add_task( self.run_cvs_diff_iter(paths, empty_patch_ok).next )
+        self.scheduler.add_task( self.run_cvs_diff_iter(paths, empty_patch_ok).next, atfront=1 )
 
     def on_button_press_event(self, text, event):
         if event.button==3:
@@ -478,21 +479,27 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         """
         msg = misc.shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg)
-        workdir = _commonprefix(files)
+        if len(files) == 0 and os.path.isdir(files[0]):
+            workdir = files[0]
+            files = ["."]
+        else:
+            workdir = _commonprefix(files)
         kill = len(workdir) and (len(workdir)+1) or 0
         files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
         r = None
         class Errorstream:
             def write(this, s):
-                b = self.consoleview.get_buffer()
-                b.insert(b.get_end_iter(), s)
-                self.consoleview.scroll_to_iter( b.get_end_iter(), 0 )
+                if s:
+                    b = self.consoleview.get_buffer()
+                    b.insert(b.get_end_iter(), s)
+                    self.consoleview.scroll_to_iter( b.get_end_iter(), 0 )
         errorstream = Errorstream()
         errorstream.write( misc.shelljoin(command+files) + "\n")
         readfunc = misc.read_pipe_iter(command + files, errorstream, workdir=workdir).next
         try:
             while r == None:
                 r = readfunc()
+                errorstream.write(r)
                 yield 1
         except IOError, e:
             misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % ( misc.shelljoin(command), e),
@@ -569,12 +576,18 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
     def refresh_partial(self, where):
-        iter = self.find_iter_by_name( where )
-        newiter = self.model.insert_after( None, iter) 
-        self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
-        self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
-        self.model.remove(iter)
-        self.scheduler.add_task( self._search_recursively_iter(newiter).next )
+        if not self.button_recurse.get_active():
+            iter = self.find_iter_by_name( where )
+            assert iter != None
+            newiter = self.model.insert_after( None, iter) 
+            self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
+            self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
+            self.model.remove(iter)
+            self.scheduler.add_task( self._search_recursively_iter(newiter).next )
+        else: # XXX fixme
+            print "+++", where
+            print "+++", os.path.basename(where)
+            print "+++", self.find_iter_by_name(os.path.basename(where))
 
     def next_diff(self,*args):
         pass
@@ -638,7 +651,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         while iter:
             if name == path:
                 return iter
-            if name.startswith(path): 
+            elif name.startswith(path): 
                 child = self.model.iter_children( iter )
                 while child:
                     path = self.model.value_path(child, 0)
@@ -649,6 +662,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                     else:
                         child = self.model.iter_next( child )
                 iter = child
+            else:
+                break
         return None
 
     def on_console_view_toggle(self, box, event):
