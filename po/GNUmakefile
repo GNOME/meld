@@ -22,7 +22,7 @@ clean :
 	rm -rf $(PO:.po=)
 
 $(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo
-	install -D -m 644 $^ $@
+	mkdir -m 755 -p $(dir $@) && install -m 644 $^ $@
 
 %/LC_MESSAGES/meld.mo : %.po
 	msgfmt -o $@ $*.po

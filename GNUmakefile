@@ -1,6 +1,6 @@
 
 # default install directories
-prefix := /home/stephen/local
+prefix := /usr/local
 bindir := $(prefix)/bin
 libdir := $(prefix)/share/lib
 docdir := $(prefix)/share/doc
@@ -21,7 +21,7 @@ ifeq ($(DEVELOPER), 1)
 .PHONY:rundiff
 rundiff: check
 	echo $(prefix)
-	$(MELD) ?.txt
+	$(MELD) . ../meld #?.txt
 	#$(MELD) ntest/file$(TESTNUM)*
 endif
 
@@ -40,7 +40,7 @@ install:
 	install -m 644 paths.py.install $(libdir_)/paths.py
 	rm paths.py.install
 	install -m 644 glade2/*.glade $(sharedir_)/glade2
-	install -m 644 glade2/pixmaps/*.{xpm,png} $(sharedir_)/glade2/pixmaps
+	install -m 644 glade2/pixmaps/*.xpm glade2/pixmaps/*.png $(sharedir_)/glade2/pixmaps
 	install -m 755 manual/manual.html $(docdir_)/manual.html
 	$(MAKE) -C po install
 
