@@ -47,5 +47,5 @@ tar = "tar cvfz %s %s" % (targz, release)
 system(tar)
 clean = "rm -rf " + release
 system(clean)
-system(upload)
+system(upload % targz)
 
