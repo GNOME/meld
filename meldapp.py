@@ -552,7 +552,7 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_idle(self):
         ret = self.scheduler.iteration()
         if ret:
-            if isinstance(ret, basestring):
+            if type(ret) in (type(""), type(u"")):
                 self.statusbar.set_task_status(ret)
             elif type(ret) == type(0.0):
                 self.statusbar.task_progress.set_fraction(ret)
