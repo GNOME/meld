@@ -34,7 +34,7 @@ import svnview
 import dirdiff
 import task
 
-version = "0.9.2.1"
+version = "0.9.3"
 
 # magic developer switch, changes some behaviour
 developer = 0
