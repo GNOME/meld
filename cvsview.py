@@ -512,8 +512,6 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def refresh(self):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
-    def save(self,*args):
-        pass
     def next_diff(self,*args):
         pass
 
