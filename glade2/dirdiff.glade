@@ -138,6 +138,11 @@
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
 
   <child>
     <widget class="GtkVBox" id="dirdiff">
@@ -151,127 +156,222 @@
 	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
 	  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 	  <property name="tooltips">True</property>
+	  <property name="show_arrow">True</property>
 
 	  <child>
-	    <widget class="button" id="button_diff">
+	    <widget class="GtkToolButton" id="button_diff">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Diff selection</property>
 	      <property name="label" translatable="yes">Diff</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-dialog-info</property>
+	      <property name="stock_id">gtk-dialog-info</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_diff_clicked" last_modification_time="Sat, 21 Jun 2003 15:43:29 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_copy_left">
+	    <widget class="GtkSeparatorToolItem" id="separatortoolitem1">
+	      <property name="visible">True</property>
+	      <property name="draw">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolButton" id="button_copy_left">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Copy left</property>
 	      <property name="label" translatable="yes">Left</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-go-back</property>
-	      <property name="new_group">True</property>
+	      <property name="stock_id">gtk-go-back</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_copy_left_clicked" last_modification_time="Sat, 21 Jun 2003 16:39:58 GMT"/>
 	    </widget>
 	    <packing>
-	      <property name="new_group">True</property>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_copy_right">
+	    <widget class="GtkToolButton" id="button_copy_right">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Copy right</property>
 	      <property name="label" translatable="yes">Right</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-go-forward</property>
+	      <property name="stock_id">gtk-go-forward</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_copy_right_clicked" last_modification_time="Sat, 21 Jun 2003 16:40:05 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_delete">
+	    <widget class="GtkToolButton" id="button_delete">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Delete selected</property>
-	      <property name="label">gtk-delete</property>
-	      <property name="use_stock">True</property>
+	      <property name="stock_id">gtk-delete</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_delete_clicked" last_modification_time="Sat, 21 Jun 2003 16:41:16 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="filter_hide_current">
+	    <widget class="GtkSeparatorToolItem" id="separatortoolitem2">
+	      <property name="visible">True</property>
+	      <property name="draw">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolButton" id="filter_hide_current">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Hide selected</property>
 	      <property name="label" translatable="yes">Hide...</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-no</property>
-	      <property name="new_group">True</property>
+	      <property name="stock_id">gtk-no</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_filter_hide_current_clicked" last_modification_time="Sat, 21 Jun 2003 15:09:55 GMT"/>
 	    </widget>
 	    <packing>
-	      <property name="new_group">True</property>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="button_ignore_case">
+	    <widget class="GtkSeparatorToolItem" id="separatortoolitem3">
+	      <property name="visible">True</property>
+	      <property name="draw">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToggleToolButton" id="button_ignore_case">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Ignore case of entries</property>
 	      <property name="label" translatable="yes">Case</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-italic</property>
+	      <property name="stock_id">gtk-italic</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">False</property>
-	      <property name="inconsistent">False</property>
-	      <property name="new_group">True</property>
 	      <signal name="toggled" handler="on_button_ignore_case_toggled" last_modification_time="Tue, 19 Aug 2003 17:44:14 GMT"/>
 	    </widget>
 	    <packing>
-	      <property name="new_group">True</property>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="filter_state_normal">
+	    <widget class="GtkSeparatorToolItem" id="separatortoolitem4">
+	      <property name="visible">True</property>
+	      <property name="draw">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToggleToolButton" id="filter_state_normal">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Show identical</property>
 	      <property name="label" translatable="yes">Same</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-apply</property>
+	      <property name="stock_id">gtk-apply</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">True</property>
-	      <property name="inconsistent">False</property>
-	      <property name="new_group">True</property>
 	      <signal name="toggled" handler="on_filter_state_normal_toggled" last_modification_time="Sat, 21 Jun 2003 15:04:10 GMT"/>
 	    </widget>
 	    <packing>
-	      <property name="new_group">True</property>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="filter_state_new">
+	    <widget class="GtkToggleToolButton" id="filter_state_new">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Show new</property>
 	      <property name="label" translatable="yes">New</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-add</property>
+	      <property name="stock_id">gtk-add</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">True</property>
-	      <property name="inconsistent">False</property>
 	      <signal name="toggled" handler="on_filter_state_new_toggled" last_modification_time="Sat, 21 Jun 2003 15:02:24 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="filter_state_modified">
+	    <widget class="GtkToggleToolButton" id="filter_state_modified">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Show modified</property>
 	      <property name="label" translatable="yes">Modified</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-remove</property>
+	      <property name="stock_id">gtk-remove</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">True</property>
-	      <property name="inconsistent">False</property>
 	      <signal name="toggled" handler="on_filter_state_modified_toggled" last_modification_time="Sat, 21 Jun 2003 15:02:32 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 	</widget>
 	<packing>
@@ -369,6 +469,8 @@
 	      <property name="max_saved">10</property>
 	      <property name="directory_entry">True</property>
 	      <property name="modal">False</property>
+	      <property name="use_filechooser">False</property>
+	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Tue, 30 Jul 2002 21:08:21 GMT"/>
 
 	      <child internal-child="entry">
@@ -380,7 +482,7 @@
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 	      </child>
@@ -401,6 +503,8 @@
 	      <property name="max_saved">10</property>
 	      <property name="directory_entry">True</property>
 	      <property name="modal">False</property>
+	      <property name="use_filechooser">False</property>
+	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Thu, 18 Jul 2002 10:45:51 GMT"/>
 
 	      <child internal-child="entry">
@@ -412,7 +516,7 @@
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 	      </child>
@@ -434,6 +538,8 @@
 	      <property name="browse_dialog_title" translatable="yes"></property>
 	      <property name="directory_entry">True</property>
 	      <property name="modal">False</property>
+	      <property name="use_filechooser">False</property>
+	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Thu, 18 Jul 2002 10:46:00 GMT"/>
 
 	      <child internal-child="entry">
@@ -445,7 +551,7 @@
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 	      </child>

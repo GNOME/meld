@@ -7,7 +7,6 @@
 
 <widget class="GnomeApp" id="meldapp">
   <property name="height_request">480</property>
-  <property name="visible">False</property>
   <property name="title" translatable="yes">Meld</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
@@ -15,6 +14,11 @@
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
   <property name="icon">pixmaps/icon.png</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="enable_layout_config">True</property>
   <signal name="delete_event" handler="on_delete_event" last_modification_time="Fri, 01 Nov 2002 18:34:38 GMT"/>
   <signal name="size_allocate" handler="on_size_allocate" last_modification_time="Fri, 01 Nov 2002 18:34:38 GMT"/>
@@ -36,6 +40,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xscale">1</property>
 	      <property name="yscale">1</property>
+	      <property name="top_padding">0</property>
+	      <property name="bottom_padding">0</property>
+	      <property name="left_padding">0</property>
+	      <property name="right_padding">0</property>
 
 	      <child>
 		<widget class="GtkMenuBar" id="menu">
@@ -54,19 +62,20 @@
 			      <property name="visible">True</property>
 			      <property name="label" translatable="yes">_New...</property>
 			      <property name="use_underline">True</property>
-                              <signal name="activate" handler="on_menu_file_new_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
-                              <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-                              <child internal-child="image">
-                                <widget class="GtkImage" id="image670">
-                                  <property name="visible">True</property>
-                                  <property name="stock">gtk-new</property>
-                                  <property name="icon_size">1</property>
-                                  <property name="xalign">0.5</property>
-                                  <property name="yalign">0.5</property>
-                                  <property name="xpad">0</property>
-                                  <property name="ypad">0</property>
-                                </widget>
-                              </child>
+			      <signal name="activate" handler="on_menu_file_new_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
+			      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+
+			      <child internal-child="image">
+				<widget class="GtkImage" id="image670">
+				  <property name="visible">True</property>
+				  <property name="stock">gtk-new</property>
+				  <property name="icon_size">1</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+			      </child>
 			    </widget>
 			  </child>
 
@@ -75,8 +84,8 @@
 			      <property name="visible">True</property>
 			      <property name="label" translatable="yes">_Save</property>
 			      <property name="use_underline">True</property>
-                              <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
-                              <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+			      <signal name="activate" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:22:54 GMT"/>
+			      <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
 				<widget class="GtkImage" id="image671">
@@ -89,8 +98,8 @@
 				  <property name="ypad">0</property>
 				</widget>
 			      </child>
-                            </widget>
-                          </child>
+			    </widget>
+			  </child>
 
 			  <child>
 			    <widget class="GtkMenuItem" id="separator4">
@@ -176,7 +185,7 @@
 			      <property name="label" translatable="yes">_Down</property>
 			      <property name="use_underline">True</property>
 			      <signal name="activate" handler="on_menu_edit_down_activate" last_modification_time="Mon, 28 Jul 2003 18:46:25 GMT"/>
-                              <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+			      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
 				<widget class="GtkImage" id="image671">
@@ -189,7 +198,7 @@
 				  <property name="ypad">0</property>
 				</widget>
 			      </child>
-                            </widget>
+			    </widget>
 			  </child>
 
 			  <child>
@@ -198,7 +207,7 @@
 			      <property name="label" translatable="yes">_Up</property>
 			      <property name="use_underline">True</property>
 			      <signal name="activate" handler="on_menu_edit_up_activate" last_modification_time="Mon, 28 Jul 2003 18:46:25 GMT"/>
-                              <accelerator key="e" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+			      <accelerator key="e" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
 				<widget class="GtkImage" id="image673">
@@ -211,7 +220,7 @@
 				  <property name="ypad">0</property>
 				</widget>
 			      </child>
-                            </widget>
+			    </widget>
 			  </child>
 
 			  <child>
@@ -355,85 +364,165 @@
 	      <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
 	      <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 	      <property name="tooltips">True</property>
+	      <property name="show_arrow">True</property>
 
 	      <child>
-		<widget class="button" id="toolbar_new">
+		<widget class="GtkToolButton" id="toolbar_new">
 		  <property name="visible">True</property>
 		  <property name="label" translatable="yes">New...</property>
-		  <property name="use_underline">False</property>
-		  <property name="stock_pixmap">gtk-new</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-new</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="on_toolbar_new_clicked" last_modification_time="Sat, 02 Nov 2002 17:29:13 GMT"/>
 		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="toolbar_magic">
-		  <property name="visible">True</property>
-		  <property name="label">gtk-yes</property>
-		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_menu_magic_activate" last_modification_time="Fri, 01 Nov 2002 19:25:42 GMT"/>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="button15">
-		  <property name="visible">True</property>
-		  <property name="label">Save</property>
-		  <property name="stock_pixmap">gtk-save</property>
-		  <signal name="clicked" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:25:12 GMT"/>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="button_undo">
-		  <property name="visible">True</property>
-		  <property name="label">Undo</property>
-		  <property name="stock_pixmap">gtk-undo</property>
-		  <signal name="clicked" handler="on_menu_undo_activate" last_modification_time="Fri, 01 Nov 2002 18:25:26 GMT"/>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="button_redo">
-		  <property name="visible">True</property>
-		  <property name="label">Redo</property>
-		  <property name="stock_pixmap">gtk-redo</property>
-		  <signal name="clicked" handler="on_menu_redo_activate" last_modification_time="Fri, 01 Nov 2002 18:21:08 GMT"/>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="button" id="button12">
-		  <property name="visible">True</property>
-		  <property name="label">Down</property>
-		  <property name="stock_pixmap">gtk-go-down</property>
-		  <property name="new_group">True</property>
-		  <signal name="clicked" handler="on_menu_down_activate" last_modification_time="Fri, 01 Nov 2002 18:19:33 GMT"/>
-		</widget>
 		<packing>
-		  <property name="new_group">True</property>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
 		</packing>
 	      </child>
 
 	      <child>
-		<widget class="button" id="button13">
+		<widget class="GtkToolButton" id="toolbar_magic">
 		  <property name="visible">True</property>
-		  <property name="label">Up</property>
-		  <property name="stock_pixmap">gtk-go-up</property>
-		  <signal name="clicked" handler="on_menu_up_activate" last_modification_time="Fri, 01 Nov 2002 18:19:39 GMT"/>
+		  <property name="stock_id">gtk-yes</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="on_menu_magic_activate" last_modification_time="Fri, 01 Nov 2002 19:25:42 GMT"/>
 		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
 	      </child>
 
 	      <child>
-		<widget class="button" id="toolbar_stop">
+		<widget class="GtkToolButton" id="button15">
+		  <property name="visible">True</property>
+		  <property name="label">Save</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-save</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:25:12 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="button_undo">
+		  <property name="visible">True</property>
+		  <property name="label">Undo</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-undo</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="on_menu_undo_activate" last_modification_time="Fri, 01 Nov 2002 18:25:26 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="button_redo">
+		  <property name="visible">True</property>
+		  <property name="label">Redo</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-redo</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="on_menu_redo_activate" last_modification_time="Fri, 01 Nov 2002 18:21:08 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkSeparatorToolItem" id="separatortoolitem1">
+		  <property name="visible">True</property>
+		  <property name="draw">True</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="button12">
+		  <property name="visible">True</property>
+		  <property name="label">Down</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-go-down</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="on_menu_down_activate" last_modification_time="Fri, 01 Nov 2002 18:19:33 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="button13">
+		  <property name="visible">True</property>
+		  <property name="label">Up</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-go-up</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
+		  <signal name="clicked" handler="on_menu_up_activate" last_modification_time="Fri, 01 Nov 2002 18:19:39 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkSeparatorToolItem" id="separatortoolitem2">
+		  <property name="visible">True</property>
+		  <property name="draw">True</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="toolbar_stop">
 		  <property name="visible">True</property>
 		  <property name="label">Stop</property>
-		  <property name="stock_pixmap">gtk-stop</property>
-		  <property name="new_group">True</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_id">gtk-stop</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">False</property>
 		  <signal name="clicked" handler="on_toolbar_stop_clicked" last_modification_time="Sun, 28 Sep 2003 14:44:41 GMT"/>
 		</widget>
 		<packing>
-		  <property name="new_group">True</property>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
 		</packing>
 	      </child>
 	    </widget>
@@ -484,7 +573,7 @@
 		  <property name="visible">True</property>
 		  <property name="orientation">GTK_PROGRESS_LEFT_TO_RIGHT</property>
 		  <property name="fraction">0</property>
-		  <property name="pulse_step">0.11</property>
+		  <property name="pulse_step">0.109999999404</property>
 		  <property name="text" translatable="yes"></property>
 		</widget>
 		<packing>
@@ -541,6 +630,11 @@
   <property name="visible">True</property>
   <property name="destroy_with_parent">True</property>
   <property name="icon">pixmaps/icon.png</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="logo">pixmaps/icon.png</property>
   <property name="copyright" translatable="yes">Copyright (C) 2002 Stephen Kennedy</property>
   <property name="comments" translatable="yes">http://meld.sourceforge.net</property>
@@ -568,6 +662,11 @@ Adam Weinberger (en_CA)</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
   <property name="icon">pixmaps/icon.png</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="has_separator">True</property>
   <signal name="response" handler="on_response" last_modification_time="Fri, 01 Nov 2002 13:31:01 GMT"/>
 
@@ -590,6 +689,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-cancel</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-6</property>
 	    </widget>
 	  </child>
@@ -604,6 +704,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-5</property>
 	    </widget>
 	  </child>
@@ -625,7 +726,7 @@ Adam Weinberger (en_CA)</property>
 	  <property name="tab_pos">GTK_POS_TOP</property>
 	  <property name="scrollable">False</property>
 	  <property name="enable_popup">False</property>
-      <signal name="switch_page" handler="on_switch_page" last_modification_time="Sat, 03 Aug 2002 14:15:37 GMT"/>
+	  <signal name="switch_page" handler="on_switch_page" last_modification_time="Sat, 03 Aug 2002 14:15:37 GMT"/>
 
 	  <child>
 	    <widget class="GtkTable" id="table1">
@@ -714,12 +815,13 @@ Adam Weinberger (en_CA)</property>
 		  <property name="visible">True</property>
 		  <property name="sensitive">False</property>
 		  <property name="can_default">True</property>
-		  <property name="has_default">False</property>
 		  <property name="history_id">file_comparison</property>
 		  <property name="max_saved">10</property>
 		  <property name="browse_dialog_title" translatable="yes">Other File</property>
 		  <property name="directory_entry">False</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:35:21 GMT"/>
 
 		  <child internal-child="entry">
@@ -731,7 +833,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -753,6 +855,8 @@ Adam Weinberger (en_CA)</property>
 		  <property name="browse_dialog_title" translatable="yes">Original File</property>
 		  <property name="directory_entry">False</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:35:29 GMT"/>
 
 		  <child internal-child="entry">
@@ -764,7 +868,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -786,6 +890,8 @@ Adam Weinberger (en_CA)</property>
 		  <property name="browse_dialog_title" translatable="yes">My File</property>
 		  <property name="directory_entry">False</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:35:44 GMT"/>
 
 		  <child internal-child="entry">
@@ -797,7 +903,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -818,6 +924,7 @@ Adam Weinberger (en_CA)</property>
 		  <property name="label" translatable="yes">_Three Way Compare</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
 		  <property name="active">False</property>
 		  <property name="inconsistent">False</property>
 		  <property name="draw_indicator">True</property>
@@ -951,6 +1058,8 @@ Adam Weinberger (en_CA)</property>
 		  <property name="browse_dialog_title" translatable="yes">Other Directory</property>
 		  <property name="directory_entry">True</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:34:36 GMT"/>
 
 		  <child internal-child="entry">
@@ -962,7 +1071,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -984,6 +1093,8 @@ Adam Weinberger (en_CA)</property>
 		  <property name="browse_dialog_title" translatable="yes">Original Directory</property>
 		  <property name="directory_entry">True</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:34:49 GMT"/>
 
 		  <child internal-child="entry">
@@ -995,7 +1106,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -1017,6 +1128,8 @@ Adam Weinberger (en_CA)</property>
 		  <property name="browse_dialog_title" translatable="yes">My Directory</property>
 		  <property name="directory_entry">True</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:34:59 GMT"/>
 
 		  <child internal-child="entry">
@@ -1028,7 +1141,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -1049,6 +1162,7 @@ Adam Weinberger (en_CA)</property>
 		  <property name="label" translatable="yes">_Three Way Compare</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
 		  <property name="active">False</property>
 		  <property name="inconsistent">False</property>
 		  <property name="draw_indicator">True</property>
@@ -1131,6 +1245,8 @@ Adam Weinberger (en_CA)</property>
 		  <property name="browse_dialog_title" translatable="yes">CVS Directory</property>
 		  <property name="directory_entry">True</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:34:07 GMT"/>
 
 		  <child internal-child="entry">
@@ -1142,7 +1258,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -1223,6 +1339,8 @@ Adam Weinberger (en_CA)</property>
 		  <property name="browse_dialog_title" translatable="yes">SVN Directory</property>
 		  <property name="directory_entry">True</property>
 		  <property name="modal">False</property>
+		  <property name="use_filechooser">False</property>
+		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:34:07 GMT"/>
 
 		  <child internal-child="entry">
@@ -1234,7 +1352,7 @@ Adam Weinberger (en_CA)</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		  </child>
@@ -1418,6 +1536,11 @@ Adam Weinberger (en_CA)</property>
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="has_separator">False</property>
   <signal name="response" handler="on_response" last_modification_time="Sat, 27 Sep 2003 14:25:53 GMT"/>
 
@@ -1439,6 +1562,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-help</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-11</property>
 	    </widget>
 	  </child>
@@ -1451,6 +1575,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-close</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-7</property>
 	      <accelerator key="Escape" modifiers="0" signal="clicked"/>
 	    </widget>
@@ -1659,6 +1784,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Use GNOME monospace font.</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -1684,6 +1810,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Use custom font.</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -1705,6 +1832,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="show_size">True</property>
 				      <property name="use_font_in_label">True</property>
 				      <property name="label_font_size">10</property>
+				      <property name="focus_on_click">True</property>
 				      <signal name="font_set" handler="on_fontpicker_font_set" last_modification_time="Tue, 11 Feb 2003 21:55:41 GMT"/>
 				    </widget>
 				    <packing>
@@ -1964,6 +2092,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Automatically supply missing newline at end of file.</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -1983,6 +2112,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Show line numbers</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -2002,6 +2132,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Use syntax highlighting</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -2123,6 +2254,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Internal editor</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -2148,6 +2280,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Gnome default editor</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -2202,6 +2335,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Custom command</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -2224,7 +2358,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="max_length">0</property>
 				      <property name="text" translatable="yes"></property>
 				      <property name="has_frame">True</property>
-				      <property name="invisible_char" translatable="yes">*</property>
+				      <property name="invisible_char">*</property>
 				      <property name="activates_default">False</property>
 				    </widget>
 				    <packing>
@@ -2456,6 +2590,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Simple : Lines only</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -2475,6 +2610,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Solid   Filled Quadilaterals</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -2495,6 +2631,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Curved : Filled Curves</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -2602,6 +2739,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Gnome Default</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -2621,6 +2759,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Icons Only</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -2641,6 +2780,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Text Only</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -2661,6 +2801,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Text Under Icons</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -2681,6 +2822,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Text Beside Icons</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -3220,7 +3362,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="max_length">0</property>
 				      <property name="text" translatable="yes">utf8 iso8859</property>
 				      <property name="has_frame">True</property>
-				      <property name="invisible_char" translatable="yes">*</property>
+				      <property name="invisible_char">*</property>
 				      <property name="activates_default">False</property>
 				    </widget>
 				    <packing>
@@ -3325,6 +3467,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Save in the files original encoding</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -3344,6 +3487,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Save in UTF-8 encoding</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -3550,6 +3694,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Quiet mode (-q)</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -3575,6 +3720,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Use Compression (-z)</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -3621,6 +3767,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Ignore .cvsrc (-f)</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -3667,6 +3814,8 @@ Adam Weinberger (en_CA)</property>
 				      <property name="browse_dialog_title" translatable="yes">Locate CVS binary : Meld</property>
 				      <property name="directory_entry">False</property>
 				      <property name="modal">False</property>
+				      <property name="use_filechooser">False</property>
+				      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 				      <signal name="activate" handler="on_cvs_binary_activate" last_modification_time="Sat, 27 Sep 2003 15:04:26 GMT"/>
 
 				      <child internal-child="entry">
@@ -3678,7 +3827,7 @@ Adam Weinberger (en_CA)</property>
 					  <property name="max_length">0</property>
 					  <property name="text" translatable="yes"></property>
 					  <property name="has_frame">True</property>
-					  <property name="invisible_char" translatable="yes">*</property>
+					  <property name="invisible_char">*</property>
 					  <property name="activates_default">False</property>
 					</widget>
 				      </child>
@@ -3785,6 +3934,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Create missing directories (-d)</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -3804,6 +3954,7 @@ Adam Weinberger (en_CA)</property>
 				  <property name="label" translatable="yes">Prune empty directories (-P)</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
@@ -4050,6 +4201,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Ignore changes in case; consider upper and lower-case letters equivalent</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -4163,6 +4315,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Whitespace is significant</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -4181,6 +4334,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Ignore changes that just insert or delete blank lines</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -4200,6 +4354,7 @@ Adam Weinberger (en_CA)</property>
 				      <property name="label" translatable="yes">Ignore changes in amount of white space</property>
 				      <property name="use_underline">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
 				      <property name="active">False</property>
 				      <property name="inconsistent">False</property>
 				      <property name="draw_indicator">True</property>
@@ -4290,6 +4445,11 @@ Adam Weinberger (en_CA)</property>
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
 
   <child>
     <widget class="GtkTable" id="listwidget">
@@ -4344,6 +4504,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-new</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <signal name="clicked" handler="on_item_new_clicked" last_modification_time="Wed, 01 Oct 2003 07:56:41 GMT"/>
 	    </widget>
 	  </child>
@@ -4356,6 +4517,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-delete</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <signal name="clicked" handler="on_item_delete_clicked" last_modification_time="Wed, 01 Oct 2003 07:56:48 GMT"/>
 	    </widget>
 	  </child>
@@ -4384,6 +4546,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-go-up</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <signal name="clicked" handler="on_item_up_clicked" last_modification_time="Wed, 01 Oct 2003 07:57:08 GMT"/>
 	    </widget>
 	  </child>
@@ -4396,6 +4559,7 @@ Adam Weinberger (en_CA)</property>
 	      <property name="label">gtk-go-down</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <signal name="clicked" handler="on_item_down_clicked" last_modification_time="Wed, 01 Oct 2003 07:57:17 GMT"/>
 	    </widget>
 	  </child>
@@ -4417,6 +4581,7 @@ Adam Weinberger (en_CA)</property>
 	  <property name="label">gtk-revert-to-saved</property>
 	  <property name="use_stock">True</property>
 	  <property name="relief">GTK_RELIEF_NORMAL</property>
+	  <property name="focus_on_click">True</property>
 	  <signal name="clicked" handler="on_items_revert_clicked" last_modification_time="Wed, 01 Oct 2003 07:57:37 GMT"/>
 	</widget>
 	<packing>

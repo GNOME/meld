@@ -12,6 +12,11 @@
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
 
   <child>
     <widget class="GtkVBox" id="cvsview">
@@ -25,141 +30,231 @@
 	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
 	  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 	  <property name="tooltips">True</property>
+	  <property name="show_arrow">True</property>
 
 	  <child>
-	    <widget class="button" id="button_diff">
+	    <widget class="GtkToolButton" id="button_diff">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Diff selected</property>
 	      <property name="label" translatable="yes">_Diff</property>
 	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-dialog-info</property>
+	      <property name="stock_id">gtk-dialog-info</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_diff_clicked" last_modification_time="Sat, 03 Aug 2002 18:22:20 GMT"/>
 	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="toggle" id="button_flatten">
-	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Flatten directories</property>
-	      <property name="label" translatable="yes">_Flatten</property>
-	      <property name="use_underline">True</property>
-	      <property name="stock_pixmap">gtk-goto-bottom</property>
-	      <property name="active">False</property>
-	      <property name="inconsistent">False</property>
-	      <property name="new_group">True</property>
-	      <signal name="toggled" handler="on_button_flatten_toggled" last_modification_time="Sun, 12 Oct 2003 11:40:43 GMT"/>
-	    </widget>
 	    <packing>
-	      <property name="new_group">True</property>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="button_modified">
+	    <widget class="GtkSeparatorToolItem" id="separatortoolitem1">
+	      <property name="visible">True</property>
+	      <property name="draw">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToggleToolButton" id="button_flatten">
+	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Flatten directories</property>
+	      <property name="label" translatable="yes">_Flatten</property>
+	      <property name="use_underline">True</property>
+	      <property name="stock_id">gtk-goto-bottom</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+	      <property name="active">False</property>
+	      <signal name="toggled" handler="on_button_flatten_toggled" last_modification_time="Sun, 12 Oct 2003 11:40:43 GMT"/>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToggleToolButton" id="button_modified">
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">_Modified</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/filter-modified-24.png</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">True</property>
-	      <property name="inconsistent">False</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:38 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="button_normal">
+	    <widget class="GtkToggleToolButton" id="button_normal">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Show modified</property>
 	      <property name="label" translatable="yes">_Normal</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/filter-normal-24.png</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">True</property>
-	      <property name="inconsistent">False</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:32 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="button_noncvs">
+	    <widget class="GtkToggleToolButton" id="button_noncvs">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Show non-CVS</property>
 	      <property name="label" translatable="yes">Non _CVS</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/filter-noncvs-24.png</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">False</property>
-	      <property name="inconsistent">False</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:43 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="toggle" id="button_ignored">
+	    <widget class="GtkToggleToolButton" id="button_ignored">
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">Ignored</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/filter-ignored-24.png</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <property name="active">False</property>
-	      <property name="inconsistent">False</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:50 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_commit">
+	    <widget class="GtkSeparatorToolItem" id="separatortoolitem2">
+	      <property name="visible">True</property>
+	      <property name="draw">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkToolButton" id="button_commit">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Commit</property>
 	      <property name="label" translatable="yes">_Commit</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-commit-24.png</property>
-	      <property name="new_group">True</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_commit_clicked" last_modification_time="Sat, 03 Aug 2002 17:30:50 GMT"/>
 	    </widget>
 	    <packing>
-	      <property name="new_group">True</property>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
 	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_update">
+	    <widget class="GtkToolButton" id="button_update">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Update</property>
 	      <property name="label" translatable="yes">_Update</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-update-24.png</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_update_clicked" last_modification_time="Sat, 03 Aug 2002 17:30:18 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_add">
+	    <widget class="GtkToolButton" id="button_add">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Add to CVS</property>
 	      <property name="label" translatable="yes">_Add</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-add-24.png</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_add_clicked" last_modification_time="Sat, 03 Aug 2002 17:27:37 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_remove">
+	    <widget class="GtkToolButton" id="button_remove">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Remove from CVS</property>
 	      <property name="label" translatable="yes">_Remove</property>
 	      <property name="use_underline">True</property>
 	      <property name="icon">pixmaps/cvs-remove-24.png</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_remove_clicked" last_modification_time="Sat, 03 Aug 2002 17:27:59 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 
 	  <child>
-	    <widget class="button" id="button_delete">
+	    <widget class="GtkToolButton" id="button_delete">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Delete locally</property>
-	      <property name="label">gtk-delete</property>
-	      <property name="use_stock">True</property>
+	      <property name="stock_id">gtk-delete</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
 	      <signal name="clicked" handler="on_button_delete_clicked" last_modification_time="Sat, 03 Aug 2002 17:33:24 GMT"/>
 	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
 	  </child>
 	</widget>
 	<packing>
@@ -182,6 +277,8 @@
 	      <property name="max_saved">10</property>
 	      <property name="directory_entry">True</property>
 	      <property name="modal">False</property>
+	      <property name="use_filechooser">False</property>
+	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Sun, 28 Jul 2002 10:50:58 GMT"/>
 
 	      <child internal-child="entry">
@@ -193,7 +290,7 @@
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 	      </child>
@@ -210,6 +307,7 @@
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <signal name="button_press_event" handler="on_button_jump_press_event" last_modification_time="Thu, 22 May 2003 18:32:48 GMT"/>
 
 	      <child>
@@ -283,6 +381,8 @@
 	      <child>
 		<widget class="GtkEventBox" id="console_hide_box">
 		  <property name="visible">True</property>
+		  <property name="visible_window">True</property>
+		  <property name="above_child">False</property>
 		  <signal name="button_press_event" handler="on_console_view_toggle" last_modification_time="Sat, 27 Sep 2003 16:10:20 GMT"/>
 
 		  <child>
@@ -320,6 +420,8 @@
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">False</property>
+		      <property name="overwrite">False</property>
+		      <property name="accepts_tab">True</property>
 		      <property name="justification">GTK_JUSTIFY_LEFT</property>
 		      <property name="wrap_mode">GTK_WRAP_NONE</property>
 		      <property name="cursor_visible">False</property>
@@ -356,6 +458,8 @@
 
       <child>
 	<widget class="GtkEventBox" id="console_show_box">
+	  <property name="visible_window">True</property>
+	  <property name="above_child">False</property>
 	  <signal name="button_press_event" handler="on_console_view_toggle" last_modification_time="Sat, 27 Sep 2003 16:10:28 GMT"/>
 
 	  <child>
@@ -603,6 +707,11 @@
   <property name="modal">True</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -624,6 +733,7 @@
 	      <property name="label">gtk-cancel</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-6</property>
 	    </widget>
 	  </child>
@@ -636,6 +746,7 @@
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-5</property>
 	      <accelerator key="Return" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 	      <accelerator key="KP_Enter" modifiers="GDK_CONTROL_MASK" signal="activate"/>
@@ -737,6 +848,8 @@
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="editable">True</property>
+			  <property name="overwrite">False</property>
+			  <property name="accepts_tab">True</property>
 			  <property name="justification">GTK_JUSTIFY_LEFT</property>
 			  <property name="wrap_mode">GTK_WRAP_NONE</property>
 			  <property name="cursor_visible">True</property>
@@ -801,7 +914,7 @@
 			      <property name="max_length">0</property>
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
-			      <property name="invisible_char" translatable="yes">*</property>
+			      <property name="invisible_char">*</property>
 			      <property name="activates_default">False</property>
 			    </widget>
 			  </child>
@@ -866,6 +979,11 @@
   <property name="modal">True</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -887,6 +1005,7 @@
 	      <property name="label">gtk-cancel</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-6</property>
 	    </widget>
 	  </child>
@@ -899,6 +1018,7 @@
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-5</property>
 	    </widget>
 	  </child>
@@ -924,6 +1044,7 @@
 	      <property name="label" translatable="yes">Local copy against same remote revision</property>
 	      <property name="use_underline">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
 	      <property name="draw_indicator">True</property>
@@ -948,6 +1069,7 @@
 		  <property name="label" translatable="yes">Local copy against other remote revision</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
 		  <property name="active">False</property>
 		  <property name="inconsistent">False</property>
 		  <property name="draw_indicator">True</property>
@@ -1005,7 +1127,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 		      </child>
@@ -1037,6 +1159,7 @@
 			  <property name="label" translatable="yes">Tag</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
+			  <property name="focus_on_click">True</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
@@ -1055,6 +1178,7 @@
 			  <property name="label" translatable="yes">Date</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
+			  <property name="focus_on_click">True</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>

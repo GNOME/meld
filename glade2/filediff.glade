@@ -136,6 +136,11 @@
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <signal name="destroy" handler="on_delete_event" last_modification_time="Wed, 02 Oct 2002 21:50:32 GMT"/>
 
   <child>
@@ -243,6 +248,8 @@
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="editable">True</property>
+	      <property name="overwrite">False</property>
+	      <property name="accepts_tab">True</property>
 	      <property name="justification">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap_mode">GTK_WRAP_NONE</property>
 	      <property name="cursor_visible">True</property>
@@ -282,6 +289,8 @@
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="editable">True</property>
+	      <property name="overwrite">False</property>
+	      <property name="accepts_tab">True</property>
 	      <property name="justification">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap_mode">GTK_WRAP_NONE</property>
 	      <property name="cursor_visible">True</property>
@@ -378,6 +387,8 @@
 	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="editable">True</property>
+	      <property name="overwrite">False</property>
+	      <property name="accepts_tab">True</property>
 	      <property name="justification">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap_mode">GTK_WRAP_NONE</property>
 	      <property name="cursor_visible">True</property>
@@ -411,6 +422,8 @@
 	  <property name="max_saved">10</property>
 	  <property name="directory_entry">False</property>
 	  <property name="modal">False</property>
+	  <property name="use_filechooser">False</property>
+	  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 	  <signal name="activate" handler="on_fileentry_activate" last_modification_time="Tue, 30 Jul 2002 21:08:21 GMT"/>
 
 	  <child internal-child="entry">
@@ -422,7 +435,7 @@
 	      <property name="max_length">0</property>
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
+	      <property name="invisible_char">*</property>
 	      <property name="activates_default">False</property>
 	    </widget>
 	  </child>
@@ -444,6 +457,8 @@
 	  <property name="max_saved">10</property>
 	  <property name="directory_entry">False</property>
 	  <property name="modal">False</property>
+	  <property name="use_filechooser">False</property>
+	  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 	  <signal name="activate" handler="on_fileentry_activate" last_modification_time="Thu, 18 Jul 2002 10:45:51 GMT"/>
 
 	  <child internal-child="entry">
@@ -455,7 +470,7 @@
 	      <property name="max_length">0</property>
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
+	      <property name="invisible_char">*</property>
 	      <property name="activates_default">False</property>
 	    </widget>
 	  </child>
@@ -477,6 +492,8 @@
 	  <property name="max_saved">10</property>
 	  <property name="directory_entry">False</property>
 	  <property name="modal">False</property>
+	  <property name="use_filechooser">False</property>
+	  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 	  <signal name="activate" handler="on_fileentry_activate" last_modification_time="Thu, 18 Jul 2002 10:46:00 GMT"/>
 
 	  <child internal-child="entry">
@@ -488,7 +505,7 @@
 	      <property name="max_length">0</property>
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
+	      <property name="invisible_char">*</property>
 	      <property name="activates_default">False</property>
 	    </widget>
 	  </child>
@@ -515,6 +532,11 @@
   <property name="resizable">False</property>
   <property name="destroy_with_parent">False</property>
   <property name="icon">pixmaps/icon.png</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -537,6 +559,7 @@
 	      <property name="label">gtk-quit</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-7</property>
 	    </widget>
 	  </child>
@@ -551,6 +574,7 @@
 	      <property name="label">gtk-cancel</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-6</property>
 	    </widget>
 	  </child>
@@ -563,6 +587,7 @@
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-5</property>
 	    </widget>
 	  </child>
@@ -651,6 +676,11 @@ Which ones would you like to save?&lt;/span&gt;</property>
   <property name="modal">False</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="decorated">True</property>
+  <property name="skip_taskbar_hint">False</property>
+  <property name="skip_pager_hint">False</property>
+  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="has_separator">False</property>
   <signal name="delete_event" handler="on_destroy" last_modification_time="Mon, 28 Jul 2003 19:37:00 GMT"/>
 
@@ -672,6 +702,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
 	      <property name="label">gtk-close</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-7</property>
 	      <signal name="clicked" handler="on_destroy" last_modification_time="Mon, 28 Jul 2003 19:37:20 GMT"/>
 	      <accelerator key="Escape" modifiers="0" signal="clicked"/>
@@ -702,6 +733,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
 	      <property name="label">gtk-find</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="focus_on_click">True</property>
 	      <signal name="clicked" handler="on_entry_search_for_activate" last_modification_time="Mon, 28 Jul 2003 21:20:28 GMT"/>
 	    </widget>
 	    <packing>
@@ -754,6 +786,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
 		  <property name="label" translatable="yes">_Match case</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
 		  <property name="active">False</property>
 		  <property name="inconsistent">False</property>
 		  <property name="draw_indicator">True</property>
@@ -772,6 +805,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
 		  <property name="label" translatable="yes">Match _entire word only</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
 		  <property name="active">False</property>
 		  <property name="inconsistent">False</property>
 		  <property name="draw_indicator">True</property>
@@ -790,6 +824,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
 		  <property name="label" translatable="yes">_Wrap around</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
 		  <property name="active">True</property>
 		  <property name="inconsistent">False</property>
 		  <property name="draw_indicator">True</property>
@@ -808,6 +843,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
 		  <property name="label" translatable="yes">Regular e_xpression</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
 		  <property name="active">False</property>
 		  <property name="inconsistent">False</property>
 		  <property name="draw_indicator">True</property>
@@ -845,7 +881,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		  <signal name="activate" handler="on_entry_search_for_activate" last_modification_time="Mon, 28 Jul 2003 21:30:37 GMT"/>
 		</widget>

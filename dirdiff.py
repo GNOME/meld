@@ -270,13 +270,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 func = lambda x, r=cregex : r.match(x) == None
                 self.name_filters_available.append( TypeFilter(f.name, f.active, func) )
         self.name_filters = []
+        tips = gtk.Tooltips()
         for i,f in misc.enumerate(self.name_filters_available):
             icon = gtk.Image()
             icon.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_LARGE_TOOLBAR)
-            icon.show()
-            toggle = self.toolbar.append_element(gtk.TOOLBAR_CHILD_TOGGLEBUTTON, None, f.label,
-                _("Hide %s") % f.label, "", icon, self._update_name_filter, i )
+            toggle = gtk.ToggleToolButton()
+            toggle.set_property("label",f.label)
+            toggle.set_icon_widget(icon)
+            toggle.connect("toggled", lambda b,i=i : self._update_name_filter(b,i) )
             toggle.set_active(f.active)
+            self.toolbar.insert(toggle, -1)
+            toggle.show_all()
+            toggle.set_tooltip(tips, _("Hide %s") % f.label )
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
