@@ -620,12 +620,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def refresh_partial(self, where):
         if not self.button_flatten.get_active():
             iter = self.find_iter_by_name( where )
-            assert iter != None
-            newiter = self.model.insert_after( None, iter) 
-            self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
-            self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
-            self.model.remove(iter)
-            self.scheduler.add_task( self._search_recursively_iter(newiter).next )
+            if iter:
+                newiter = self.model.insert_after( None, iter) 
+                self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
+                self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
+                self.model.remove(iter)
+                self.scheduler.add_task( self._search_recursively_iter(newiter).next )
         else: # XXX fixme
             self.refresh()
 
