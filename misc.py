@@ -51,7 +51,6 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
         d.set_transient_for(parent.widget.get_toplevel())
     for b,id in extrabuttons:
         d.add_button(b,id)
-    d.set_has_separator(0)
     d.vbox.set_spacing(12)
     hbox = d.vbox.get_children()[0]
     hbox.set_spacing(12)
