@@ -21,7 +21,7 @@ def foo(matchobj):
 		print newico
 	return ret 
 
-icon_re = re.compile(r'(<property name="icon">([^<]+)</property>)')
+icon_re = re.compile(r'(<property name="(?:icon|logo)">([^<]+)</property>)')
 for file in glob.glob("glade2/*.glade"):
 	txt = open(file).read()
 	newtxt = icon_re.sub(foo, txt)

@@ -149,7 +149,13 @@ class FileDiff(gnomeglade.Component):
         self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
         self.gconf.notify_add("/apps/meld/filediff", self.on_setting_activate)
         self.draw_style = self.gconf.get_int('/apps/meld/filediff/draw_style')
+        if self.draw_style == None:
+            self.draw_style = 2
+            self.gconf.set_int('/apps/meld/filediff/draw_style', self.draw_style)
         self.fallback_encoding = self.gconf.get_string('/apps/meld/filediff/fallback_encoding')
+        if self.fallback_encoding == None:
+            self.fallback_encoding = "latin1"
+            self.gconf.set_string('/apps/meld/filediff/fallback_encoding', self.fallback_encoding)
 
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)

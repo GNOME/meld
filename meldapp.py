@@ -21,7 +21,7 @@ import misc
 import cvsview
 import dirdiff
 
-version = "0.6.2"
+version = "0.6.4b"
 developer = 0
 
 ################################################################################
@@ -68,8 +68,7 @@ class PreferencesDialog(gnomeglade.Dialog):
         self._map_widgets_into_lists( ["draw_style"] )
         self.widget.set_transient_for(parentapp.widget)
         self.gconf = gconf.client_get_default()
-        if not self.gconf.dir_exists ('/apps/meld/filediff'):
-            self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
+        self.gconf.add_dir("/apps/meld/filediff", gconf.CLIENT_PRELOAD_NONE)
         style = self.gconf.get_int("/apps/meld/filediff/draw_style")
         self.draw_style[style].set_active(1)
         self.widget.show()

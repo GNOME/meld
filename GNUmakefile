@@ -12,17 +12,21 @@ rundiff:
 #	$(PROG) test/file$(TESTNUM)*
 #	$(PROG) ../old/meld-2002-11-12 .
 #	$(PROG) {../old/oldmeld,../svnrepository/meld}/GNUmakefile
-	$(PROG) .
+	$(PROG) test/1 test/2
 
 check:
 	@check_release
 
-release: check
+release: check upload announce
+
+upload:
 	cvs tag release-$(subst .,_,$(VERSION))
 	ssh steve9000@meld.sf.net python make_release $(VERSION)
-	galeon -x -n http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
-	galeon -x -n http://freshmeat.net/add-release/29735/ &
-	galeon -x -n http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
+
+announce:
+	galeon -n http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
+	galeon -n http://freshmeat.net/add-release/29735/ &
+	galeon -n http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
 	
 backup:
 	tar cvfz ~/archive/meld-`date -I`.tgz .
