@@ -91,6 +91,7 @@ def all(o):
 ################################################################################
 def read_pipe(command, callback=None):
     childin, childout, childerr = os.popen3(command)
+    childin.close()
     bits = []
     while len(bits)==0 or bits[-1]!="":
         state = select.select([childout], [], [childout], 0.1)
@@ -115,6 +116,7 @@ def read_pipe(command, callback=None):
 def write_pipe(command, text):
     childin, childout, childerr = os.popen3(command, "w")
     childin.write(text)
+    childin.close()
 
 ################################################################################
 #
