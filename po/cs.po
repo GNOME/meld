@@ -1,15 +1,15 @@
 # Czech translation of meld.
 # Copyright (C) 2003 meld'S COPYRIGHT HOLDER
-# Copyright (C) 2003, 2004 Miloslav Trmac <mitr@volny.cz>
+# Copyright (C) 2003, 2004, 2005 Miloslav Trmac <mitr@volny.cz>
 # This file is distributed under the same license as the meld package.
-# Miloslav Trmac <mitr@volny.cz>, 2003, 2004.
+# Miloslav Trmac <mitr@volny.cz>, 2003, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-13 19:22+0100\n"
-"PO-Revision-Date: 2004-12-13 22:33+0100\n"
+"POT-Creation-Date: 2005-02-02 20:16+0100\n"
+"PO-Revision-Date: 2005-02-02 21:34+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "_Version"
 msgstr "_Verze"
 
-#: cvsview.py:396 glade2/cvsview.glade.h:15 glade2/meldapp.glade.h:80
+#: cvsview.py:396 glade2/cvsview.glade.h:15 glade2/meldapp.glade.h:79
 msgid "_Diff"
 msgstr "_Diff"
 
@@ -162,63 +162,63 @@ msgstr "_Konzola"
 msgid "View command line output"
 msgstr "Zobrazit výstup příkazového řádku"
 
-#: cvsview.py:439
+#: cvsview.py:439 svnview.py:289
 msgid "Name"
 msgstr "Název"
 
-#: cvsview.py:456
+#: cvsview.py:456 svnview.py:306
 msgid "Location"
 msgstr "Umístění"
 
-#: cvsview.py:457
+#: cvsview.py:457 svnview.py:307
 msgid "Status"
 msgstr "Stav"
 
-#: cvsview.py:458
+#: cvsview.py:458 svnview.py:308
 msgid "Rev"
 msgstr "Rev"
 
-#: cvsview.py:459 glade2/cvsview.glade.h:12
+#: cvsview.py:459 svnview.py:309 glade2/cvsview.glade.h:12
 msgid "Tag"
 msgstr "Tag"
 
-#: cvsview.py:460
+#: cvsview.py:460 svnview.py:310
 msgid "Options"
 msgstr "Možnosti"
 
-#: cvsview.py:497 dirdiff.py:356
+#: cvsview.py:497 dirdiff.py:356 svnview.py:347
 #, python-format
 msgid "[%s] Scanning"
 msgstr "[%s] Procházím"
 
-#: cvsview.py:524 dirdiff.py:365
+#: cvsview.py:524 dirdiff.py:365 svnview.py:374
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Procházím %s"
 
-#: cvsview.py:540
+#: cvsview.py:540 svnview.py:390
 msgid "(Empty)"
 msgstr "(Prázdný)"
 
-#: cvsview.py:572
+#: cvsview.py:572 svnview.py:426
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Stahuji rozdíly"
 
-#: cvsview.py:579
+#: cvsview.py:579 svnview.py:434
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Používám patch"
 
-#: cvsview.py:583
+#: cvsview.py:583 svnview.py:438
 msgid "No differences found."
 msgstr "Nenalezeny žádné rozdíly."
 
-#: cvsview.py:659
+#: cvsview.py:659 svnview.py:512
 msgid "Select some files first."
 msgstr "Nejdříve vyberte soubory."
 
-#: cvsview.py:693 dirdiff.py:540
+#: cvsview.py:693 dirdiff.py:540 svnview.py:533
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -227,7 +227,7 @@ msgstr ""
 "'%s' je adresář.\n"
 "Odstranit rekurzivně?"
 
-#: cvsview.py:698 dirdiff.py:547
+#: cvsview.py:698 dirdiff.py:547 svnview.py:538
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -298,7 +298,7 @@ msgstr ""
 "sekunda,sekund:minuta,minut:hodina,hodin:den,dnů:týden,týdnů:měsíc,měsíců:"
 "rok,let"
 
-#: filediff.py:107 meldapp.py:554
+#: filediff.py:107 meldapp.py:75
 msgid "_File"
 msgstr "_Soubor"
 
@@ -582,17 +582,16 @@ msgstr "_Rozsah"
 msgid "Print Preview"
 msgstr "Náhled před tiskem"
 
-#: filediff.py:1334
+#: filediff.py:1334 findreplace.py:106
 #, python-format
 msgid "%s"
 msgstr "%s"
 
-#: gnomeglade.py:234
-#, python-format
-msgid "No such directory '%s'"
-msgstr "Adresář '%s' neexistuje"
+#: glade.py:247
+msgid "_Browse..."
+msgstr "_Procházet..."
 
-#: gnomeglade.py:264
+#: glade.py:360
 #, python-format
 msgid ""
 "Could not open '%s'.\n"
@@ -620,96 +619,88 @@ msgstr "doporučuje se pygtk-%s nebo vyšší."
 msgid "Meld requires pygtk-%s or higher. (found %s)"
 msgstr "Meld vyžaduje pygtk-%s nebo vyšší. (nalezeno %s)"
 
-#: meldapp.py:302
-msgid "Line numbers are only available if you have pygtksourceview installed."
-msgstr ""
-"Čísla řádků jsou k dispozici, jen pokud máte nainstalován pygtksourceview."
-
-#: meldapp.py:306
-msgid ""
-"Syntax highlighting is only available if you have pygtksourceview installed."
-msgstr ""
-"Zvýrazňování syntaxe je k dispozici, jen pokud máte nainstalován "
-"pygtksourceview."
-
-#: meldapp.py:556
+#: meldapp.py:77
 msgid "_New..."
 msgstr "_Nový..."
 
-#: meldapp.py:556
+#: meldapp.py:77
 msgid "Open a new tab"
 msgstr "Otevřít novou kartu"
 
-#: meldapp.py:558
+#: meldapp.py:79
 msgid "_Quit"
 msgstr "U_končit"
 
-#: meldapp.py:558
+#: meldapp.py:79
 msgid "Quit the application"
 msgstr "Ukončit aplikaci"
 
-#: meldapp.py:560
+#: meldapp.py:81
 msgid "_Settings"
 msgstr "_nastavení"
 
-#: meldapp.py:562
+#: meldapp.py:83
 msgid "_Preferences"
 msgstr "_Nastavení"
 
-#: meldapp.py:562
+#: meldapp.py:83
 msgid "Configure preferences"
 msgstr "Upravit nastavení"
 
-#: meldapp.py:564
+#: meldapp.py:85
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: meldapp.py:566
+#: meldapp.py:87
 msgid "_Contents"
 msgstr "_Obsah"
 
-#: meldapp.py:566
+#: meldapp.py:87
 msgid "Users manual"
 msgstr "Příručka uživatele"
 
-#: meldapp.py:568
+#: meldapp.py:89
 msgid "_Report Bug"
 msgstr "Ohlásit _chybu"
 
-#: meldapp.py:568
+#: meldapp.py:89
 msgid "Report a bug"
 msgstr "Ohlásit chybu"
 
-#: meldapp.py:570
+#: meldapp.py:91
 msgid "_About"
 msgstr "O _aplikaci"
 
-#: meldapp.py:570
+#: meldapp.py:91
 msgid "About the application"
 msgstr "O aplikaci"
 
-#: meldapp.py:765
+#: meldapp.py:303
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Nemohu porovnávat směs souborů a adresářů.\n"
 
-#: meldapp.py:767
+#: meldapp.py:306
 msgid "folder"
 msgstr "adresář"
 
-#: meldapp.py:768
+#: meldapp.py:307
 msgid "file"
 msgstr "soubor"
 
-#: meldapp.py:769
+#: meldapp.py:308
 msgid "nonexistant"
 msgstr "neexistující"
+
+#: meldapp.py:335
+msgid "Run meld --help for help"
+msgstr "Pro nápovědu spusťte meld --help"
 
 #. ###############################################################################
 #.
 #. usage
 #.
 #. ###############################################################################
-#: meldapp.py:824
+#: meldapp.py:394
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -744,7 +735,7 @@ msgstr ""
 "Chyby hlaste na http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
 "Diskutujte o meldu na http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
 
-#: meldapp.py:841
+#: meldapp.py:411
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -753,20 +744,24 @@ msgstr ""
 "Meld %s\n"
 "Napsal Stephen Kennedy <stevek@gnome.org>"
 
-#: meldapp.py:862
+#: meldapp.py:432
 msgid "Usage: meld [options] [arguments]"
 msgstr "Použití: meld [přepínače] [parametry]"
 
-#: meldapp.py:863
+#: meldapp.py:433
 msgid "Use label instead of filename. This option may be used several times."
 msgstr ""
 "Použít popis místo názvu souboru. Tento přepínač může být použit několikrát."
 
-#: meldapp.py:864
+#: meldapp.py:434
+msgid "Use an existing instance"
+msgstr "Použít existující instanci"
+
+#: meldapp.py:435
 msgid "Ignored for compatibility"
 msgstr "Ignorováno pro kompatibilitu"
 
-#: meldapp.py:892
+#: meldapp.py:476
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Nesprávný počet argumentů (mám %i)"
@@ -776,12 +771,28 @@ msgid "untitled"
 msgstr "nepojmenovaný"
 
 #. no common path. empty names get changed to "[None]"
-#: misc.py:119
+#: misc.py:95
 msgid "[None]"
 msgstr "[Žádný]"
 
-#: glade2/cvsview.glade.h:1 glade2/filediff.glade.h:1 glade2/dirdiff.glade.h:1
-#: glade2/meldapp.glade.h:3
+#: prefsui.py:215
+msgid "Line numbers are only available if you have pygtksourceview installed."
+msgstr ""
+"Čísla řádků jsou k dispozici, jen pokud máte nainstalován pygtksourceview."
+
+#: prefsui.py:219
+msgid ""
+"Syntax highlighting is only available if you have pygtksourceview installed."
+msgstr ""
+"Zvýrazňování syntaxe je k dispozici, jen pokud máte nainstalován "
+"pygtksourceview."
+
+#: svnview.py:40
+msgid ""
+"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+msgstr "Ignorováno:Není v SVN:::Chyba::Nově přidáno:Změněno:<b>Konflikt</b>:Odstraněno:Chybí"
+
+#: glade2/cvsview.glade.h:1 glade2/dirdiff.glade.h:1 glade2/meldapp.glade.h:3
 msgid "*"
 msgstr "*"
 
@@ -825,7 +836,7 @@ msgstr "Předchozí záznamy"
 msgid "Remove _Locally"
 msgstr "Odstranit _místně"
 
-#: glade2/filediff.glade.h:2
+#: glade2/filediff.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
 "Which ones would you like to save?</span>"
@@ -833,37 +844,41 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Některé soubory byly změněny.\n"
 "Které chcete uložit?</span>"
 
-#: glade2/filediff.glade.h:4
+#: glade2/filediff.glade.h:3
 msgid "Copy All _Left"
 msgstr "Zkopírovat vše z_leva"
 
-#: glade2/filediff.glade.h:5
+#: glade2/filediff.glade.h:4
 msgid "Copy All _Right"
 msgstr "Zkopírovat vše z_prava"
 
-#: glade2/filediff.glade.h:6 glade2/dirdiff.glade.h:10
+#: glade2/filediff.glade.h:5 glade2/dirdiff.glade.h:10
 msgid "Edit"
 msgstr "Upravit"
 
-#: glade2/filediff.glade.h:7
+#: glade2/filediff.glade.h:6
 msgid "Find"
 msgstr "Hledat"
 
-#: glade2/filediff.glade.h:8
+#: glade2/filediff.glade.h:7
 msgid "Match _entire word only"
 msgstr "Hledat jen _celá slova"
 
-#: glade2/filediff.glade.h:9
+#: glade2/filediff.glade.h:8
 msgid "Regular e_xpression"
 msgstr "_Regulární výraz"
 
-#: glade2/filediff.glade.h:10
+#: glade2/filediff.glade.h:9
 msgid "Replace _All"
 msgstr "Nahradit _vše"
 
-#: glade2/filediff.glade.h:11
+#: glade2/filediff.glade.h:10
 msgid "Replace _with:"
 msgstr "Nahradit _s:"
+
+#: glade2/filediff.glade.h:11
+msgid "Save _As..."
+msgstr "Uložit _jako..."
 
 #: glade2/filediff.glade.h:12
 msgid "Save modified files?"
@@ -1014,58 +1029,66 @@ msgid "<b>Whitespace</b>"
 msgstr "<b>Mezery</b>"
 
 #: glade2/meldapp.glade.h:14
+msgid "<span size=\"smaller\">Copyright (c) 2002-2004 Stephen Kennedy</span>"
+msgstr "<span size=\"smaller\">Copyright © 2002-2004 Stephen Kennedy</span>"
+
+#: glade2/meldapp.glade.h:15
+msgid "<span size=\"xx-large\" weight=\"bold\">Meld x.x.x</span>"
+msgstr "<span size=\"xx-large\" weight=\"bold\">Meld x.x.x</span>"
+
+#: glade2/meldapp.glade.h:16
 msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 
-#: glade2/meldapp.glade.h:15
+#: glade2/meldapp.glade.h:17
 msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Diff</span>"
 
-#: glade2/meldapp.glade.h:16
+#: glade2/meldapp.glade.h:18
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Zobrazení</span>"
 
-#: glade2/meldapp.glade.h:17
+#: glade2/meldapp.glade.h:19
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 
-#: glade2/meldapp.glade.h:18
+#: glade2/meldapp.glade.h:20
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Kódování</span>"
 
-#: glade2/meldapp.glade.h:19
+#: glade2/meldapp.glade.h:21
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filtry souborů</span>"
 
-#: glade2/meldapp.glade.h:20
+#: glade2/meldapp.glade.h:22
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filtry textu</span>"
 
-#: glade2/meldapp.glade.h:21
+#: glade2/meldapp.glade.h:23
+msgid "A_rch"
+msgstr "A_rch"
+
+#: glade2/meldapp.glade.h:24
 msgid "Automatically supply missing newline at end of file."
 msgstr "Automaticky přidávat chybějící konec řádku na konci souboru."
 
-#: glade2/meldapp.glade.h:22
+#: glade2/meldapp.glade.h:25
 msgid "CVS"
 msgstr "CVS"
 
-#: glade2/meldapp.glade.h:23
-msgid "CVS Directory"
-msgstr "Adresář CVS"
-
-#: glade2/meldapp.glade.h:24
+#: glade2/meldapp.glade.h:26
 msgid "CVS binary"
 msgstr "Binárka CVS"
 
-#: glade2/meldapp.glade.h:25
-msgid "C_VS Browser"
-msgstr "Prohlížeč _CVS"
+#: glade2/meldapp.glade.h:27
+msgid "C_redits"
+msgstr "_Kredity"
 
-#: glade2/meldapp.glade.h:26
+#: glade2/meldapp.glade.h:28
 msgid "Choose Files"
 msgstr "Zvolte soubory"
 
-#: glade2/meldapp.glade.h:27
+#: glade2/meldapp.glade.h:29
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
@@ -1073,202 +1096,182 @@ msgstr ""
 "Zvolte, jak je kreslen střední sloupec zobrazovače rozdílů. Pokud vám "
 "posouvání připadá pomalé, můžete zvolit jednodušší režim"
 
-#: glade2/meldapp.glade.h:28
-msgid "Copyright (C) 2002 Stephen Kennedy"
-msgstr "Copyright © 2002 Stephen Kennedy"
-
-#: glade2/meldapp.glade.h:29
+#: glade2/meldapp.glade.h:30
 msgid "Create missing directories (-d)"
 msgstr "Vytvářet chybějící adresáře (-d)"
 
-#: glade2/meldapp.glade.h:30
+#: glade2/meldapp.glade.h:31
 msgid "Curved : Filled Curves"
 msgstr "Oblý: Vyplněné křivky"
 
-#: glade2/meldapp.glade.h:31
+#: glade2/meldapp.glade.h:32
 msgid "Custom command"
 msgstr "Vlastní příkaz"
 
-#: glade2/meldapp.glade.h:32
+#: glade2/meldapp.glade.h:33
+msgid "Directory"
+msgstr "Adresář"
+
+#: glade2/meldapp.glade.h:34
 msgid "Display"
 msgstr "Zobrazení"
 
-#: glade2/meldapp.glade.h:33
+#: glade2/meldapp.glade.h:35
 msgid "Edit menu popup invokes"
 msgstr "Upravit příkazy kontextového menu"
 
-#: glade2/meldapp.glade.h:34
+#: glade2/meldapp.glade.h:36
 msgid "Editor"
 msgstr "Editor"
 
-#: glade2/meldapp.glade.h:35
+#: glade2/meldapp.glade.h:37
 msgid "Encoding"
 msgstr "Kódování"
 
-#: glade2/meldapp.glade.h:36
+#: glade2/meldapp.glade.h:38
 msgid "File Filters"
 msgstr "Filtry souborů"
 
-#: glade2/meldapp.glade.h:37
+#: glade2/meldapp.glade.h:39
 msgid "Gnome Default"
 msgstr "Implicitní Gnome"
 
-#: glade2/meldapp.glade.h:38
+#: glade2/meldapp.glade.h:40
 msgid "Gnome default editor"
 msgstr "Implicitní editor Gnome"
 
-#: glade2/meldapp.glade.h:39
+#: glade2/meldapp.glade.h:41
 msgid "Icons Only"
 msgstr "Jen ikony"
 
-#: glade2/meldapp.glade.h:40
+#: glade2/meldapp.glade.h:42
 msgid "Ignore .cvsrc (-f)"
 msgstr "Ignorovat .cvsrc (-f)"
 
-#: glade2/meldapp.glade.h:41
+#: glade2/meldapp.glade.h:43
 msgid "Ignore changes in amount of white space"
 msgstr "Ignorovat změny v počtu mezer"
 
-#: glade2/meldapp.glade.h:42
+#: glade2/meldapp.glade.h:44
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr ""
 "Ignorovat změny velikosti písmen; považovat velká a malá písmena za "
 "ekvivalentní"
 
-#: glade2/meldapp.glade.h:43
+#: glade2/meldapp.glade.h:45
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr "Ignorovat změny, které jen přidávají nebo odstraňují prázdné řádky"
 
-#: glade2/meldapp.glade.h:44
+#: glade2/meldapp.glade.h:46
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Ignorovat změny, které přidávají nebo odstraňují prázdné řádky"
 
-#: glade2/meldapp.glade.h:45
+#: glade2/meldapp.glade.h:47
 msgid "Internal editor"
 msgstr "Interní editor"
 
-#: glade2/meldapp.glade.h:46
+#: glade2/meldapp.glade.h:48
 msgid "Line Wrapping "
 msgstr "Lámání řádek "
 
-#: glade2/meldapp.glade.h:47
-msgid "Locate CVS binary : Meld"
-msgstr "Najít binárku CVS: Meld"
-
-#: glade2/meldapp.glade.h:48
+#: glade2/meldapp.glade.h:49
 msgid "Mine"
 msgstr "Moje"
 
-#: glade2/meldapp.glade.h:49
-msgid "My Directory"
-msgstr "Můj adresář"
-
 #: glade2/meldapp.glade.h:50
-msgid "My File"
-msgstr "Můj soubor"
-
-#: glade2/meldapp.glade.h:51
 msgid "Original"
 msgstr "Původní"
 
-#: glade2/meldapp.glade.h:52
-msgid "Original Directory"
-msgstr "Původní adresář"
-
-#: glade2/meldapp.glade.h:53
-msgid "Original File"
-msgstr "Původní soubor"
-
-#: glade2/meldapp.glade.h:54
+#: glade2/meldapp.glade.h:51
 msgid "Other"
 msgstr "Jiné"
 
-#: glade2/meldapp.glade.h:55
-msgid "Other Directory"
-msgstr "Jiný adresář"
-
-#: glade2/meldapp.glade.h:56
-msgid "Other File"
-msgstr "Jiný soubor"
-
-#: glade2/meldapp.glade.h:57
+#: glade2/meldapp.glade.h:52
 msgid "Preferences : Meld"
 msgstr "Nastavení: Meld"
 
-#: glade2/meldapp.glade.h:58
+#: glade2/meldapp.glade.h:53
 msgid "Prune empty directories (-P)"
 msgstr "Odstraňovat prázdné adresáře (-P)"
 
-#: glade2/meldapp.glade.h:59
+#: glade2/meldapp.glade.h:54
 msgid "Quiet mode (-q)"
 msgstr "Tichý režim (-q)"
 
-#: glade2/meldapp.glade.h:60
-msgid "SVN Directory"
-msgstr "Adresář SVN"
-
-#: glade2/meldapp.glade.h:61
+#: glade2/meldapp.glade.h:55
 msgid "Save in UTF-8 encoding"
 msgstr "Ukládat v kódování UTF-8"
 
-#: glade2/meldapp.glade.h:62
+#: glade2/meldapp.glade.h:56
 msgid "Save in the files original encoding"
 msgstr "Ukládat v původních kódováních souborů"
 
-#: glade2/meldapp.glade.h:63
+#: glade2/meldapp.glade.h:57
+msgid "Select..."
+msgstr "Vybrat..."
+
+#: glade2/meldapp.glade.h:58
 msgid "Show line numbers"
 msgstr "Zobrazovat čísla řádků"
 
-#: glade2/meldapp.glade.h:64
+#: glade2/meldapp.glade.h:59
 msgid "Simple : Lines only"
 msgstr "Jednoduchý: Jen úsečky"
 
-#: glade2/meldapp.glade.h:65
+#: glade2/meldapp.glade.h:60
 msgid "Solid   Filled Quadilaterals"
 msgstr "Vyplněné čtyřúhelníky"
 
-#: glade2/meldapp.glade.h:66
+#: glade2/meldapp.glade.h:61
+msgid "Stepen Kennedy <stevek@gnome.org>"
+msgstr "Stepen Kennedy <stevek@gnome.org>"
+
+#: glade2/meldapp.glade.h:62
 msgid "Tabs equivalent to "
 msgstr "Tabelátory jsou ekvivalentní "
 
-#: glade2/meldapp.glade.h:67
+#: glade2/meldapp.glade.h:63
 msgid "Text Beside Icons"
 msgstr "Text vedle ikon"
 
-#: glade2/meldapp.glade.h:68
+#: glade2/meldapp.glade.h:64
 msgid "Text Filters"
 msgstr "Filtry textu"
 
-#: glade2/meldapp.glade.h:69
+#: glade2/meldapp.glade.h:65
 msgid "Text Only"
 msgstr "Jen text"
 
-#: glade2/meldapp.glade.h:70
+#: glade2/meldapp.glade.h:66
 msgid "Text Under Icons"
 msgstr "Text pod ikonami"
 
-#: glade2/meldapp.glade.h:71
+#: glade2/meldapp.glade.h:67
 msgid "Use Compression (-z)"
 msgstr "Používat kompresi (-z)"
 
-#: glade2/meldapp.glade.h:72
+#: glade2/meldapp.glade.h:68
 msgid "Use GNOME monospace font."
 msgstr "Používat neproporcionální písmo GNOME."
 
-#: glade2/meldapp.glade.h:73
+#: glade2/meldapp.glade.h:69
 msgid "Use custom font."
 msgstr "Používat vlastní písmo."
 
-#: glade2/meldapp.glade.h:74
+#: glade2/meldapp.glade.h:70
 msgid "Use syntax highlighting"
 msgstr "Používat zvýrazňování syntaxe"
 
-#: glade2/meldapp.glade.h:75
+#: glade2/meldapp.glade.h:71
+msgid "Version System"
+msgstr "Systém verzí"
+
+#: glade2/meldapp.glade.h:72
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr "Při načítání zkusit postupně tyto kodeky (např. utf8, iso8859)"
 
-#: glade2/meldapp.glade.h:76
+#: glade2/meldapp.glade.h:73
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1277,7 +1280,7 @@ msgstr ""
 "Při porovnávání adresářů můžete odfiltrovat soubory a adresáře podle názevu. "
 "Každý vzorek je seznam zástupných znaků ve stylu shellu oddělovaný mezerami."
 
-#: glade2/meldapp.glade.h:77
+#: glade2/meldapp.glade.h:74
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which will be applied in "
@@ -1287,46 +1290,101 @@ msgstr ""
 "regulární výraz pythonu, který bude postupně použit na každý řádek vstupního "
 "textu."
 
-#: glade2/meldapp.glade.h:78
+#: glade2/meldapp.glade.h:75
 msgid "Whitespace is significant"
 msgstr "Mezery mají význam"
 
-#: glade2/meldapp.glade.h:79
+#: glade2/meldapp.glade.h:76
+msgid "_Autodetect"
+msgstr "_Automaticky detekovat"
+
+#: glade2/meldapp.glade.h:77
+msgid "_CVS"
+msgstr "_CVS"
+
+#: glade2/meldapp.glade.h:78
 msgid "_Character"
 msgstr "_Znak"
 
-#: glade2/meldapp.glade.h:81
+#: glade2/meldapp.glade.h:80
 msgid "_Directory Comparison"
 msgstr "Porovnávání _adresářů"
 
-#: glade2/meldapp.glade.h:82
+#: glade2/meldapp.glade.h:81
 msgid "_File Comparison"
 msgstr "Porovnávání _souborů"
 
-#: glade2/meldapp.glade.h:83
+#: glade2/meldapp.glade.h:82
 msgid "_Logo"
 msgstr "_Logo"
 
-#: glade2/meldapp.glade.h:84
+#: glade2/meldapp.glade.h:83
 msgid "_None"
 msgstr "_Žádný"
 
-#: glade2/meldapp.glade.h:85
-msgid "_SVN Browser"
-msgstr "Prohlížeč _SVN"
+#: glade2/meldapp.glade.h:84
+msgid "_Subversion"
+msgstr "_Subversion"
 
-#: glade2/meldapp.glade.h:86
+#: glade2/meldapp.glade.h:85
 msgid "_Three Way Compare"
 msgstr "_Trojcestné porovnávání"
 
+#: glade2/meldapp.glade.h:86
+msgid "_Translated by"
+msgstr "_Přeložili"
+
 #: glade2/meldapp.glade.h:87
+msgid "_Version Browser"
+msgstr "Prohlížeč _verzí"
+
+#: glade2/meldapp.glade.h:88
 msgid "_Word"
 msgstr "_Slovo"
 
-#: glade2/meldapp.glade.h:88
+#: glade2/meldapp.glade.h:89
+msgid "_Written by"
+msgstr "_Napsali"
+
+#: glade2/meldapp.glade.h:90
+msgid "dialog1"
+msgstr "dialog1"
+
+#: glade2/meldapp.glade.h:91
+msgid "dialog2"
+msgstr "dialog2"
+
+#: glade2/meldapp.glade.h:92
 msgid "http://meld.sourceforge.net"
 msgstr "http://meld.sourceforge.net"
 
-#: glade2/meldapp.glade.h:89
+#: glade2/meldapp.glade.h:93
 msgid "utf8 iso8859"
 msgstr "utf8 iso8859"
+
+#~ msgid "No such directory '%s'"
+#~ msgstr "Adresář '%s' neexistuje"
+
+#~ msgid "CVS Directory"
+#~ msgstr "Adresář CVS"
+
+#~ msgid "Locate CVS binary : Meld"
+#~ msgstr "Najít binárku CVS: Meld"
+
+#~ msgid "My File"
+#~ msgstr "Můj soubor"
+
+#~ msgid "Original Directory"
+#~ msgstr "Původní adresář"
+
+#~ msgid "Original File"
+#~ msgstr "Původní soubor"
+
+#~ msgid "Other Directory"
+#~ msgstr "Jiný adresář"
+
+#~ msgid "Other File"
+#~ msgstr "Jiný soubor"
+
+#~ msgid "SVN Directory"
+#~ msgstr "Adresář SVN"
