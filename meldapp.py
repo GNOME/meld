@@ -63,15 +63,12 @@ class NewDocDialog(gnomeglade.Component):
     def __init__(self, parentapp, type):
         self.parentapp = parentapp
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
-        self._map_widgets_into_lists( ("fileentry", "direntry", "cvsentry", "svnentry", "three_way_compare") )
+        self._map_widgets_into_lists( ("fileentry", "direntry", "cvsentry", "svnentry", "three_way_compare", "tablabel") )
         self.entrylists = self.fileentry, self.direntry, self.cvsentry, self.svnentry
         self.widget.set_transient_for(parentapp.widget)
         cur_page = type // 2
         self.notebook.set_current_page( cur_page )
-        if cur_page < 2:
-            self.three_way_compare[cur_page].set_active( (type+1) % 2 )
-            self.three_way_compare[cur_page].set_active( (type+0) % 2 )
-        self.widget.show()
+        self.widget.show_all()
 
     def on_entry_activate(self, entry):
         for el in self.entrylists:
@@ -396,31 +393,6 @@ class NotebookLabel(gtk.HBox):
         if onclose:
             self.button.connect("clicked", onclose)
 
-
-
-################################################################################
-#
-# MeldNewMenu
-#
-################################################################################
-class MeldNewMenu(gnomeglade.Component):
-    def __init__(self, app):
-        gladefile = paths.share_dir("glade2/meldapp.glade")
-        gnomeglade.Component.__init__(self, gladefile, "popup_new")
-        self.parent = app
-    def on_menu_new_diff2_activate(self, *extra):
-        self.parent.on_menu_new_diff2_activate()
-    def on_menu_new_diff3_activate(self, *extra):
-        self.parent.on_menu_new_diff3_activate()
-    def on_menu_new_dir2_activate(self, *extra):
-        self.parent.on_menu_new_dir2_activate()
-    def on_menu_new_dir3_activate(self, *extra):
-        self.parent.on_menu_new_dir3_activate()
-    def on_menu_new_cvsview_activate(self, *extra):
-        self.parent.on_menu_new_cvsview_activate()
-    def on_menu_new_svnview_activate(self, *extra):
-        self.parent.on_menu_new_svnview_activate()
-
 ################################################################################
 #
 # MeldPreferences
@@ -542,8 +514,7 @@ class MeldApp(gnomeglade.GnomeApp):
     def __init__(self):
         gladefile = paths.share_dir("glade2/meldapp.glade")
         gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
-        self._map_widgets_into_lists( ["menu_file_save_file", "settings_drawstyle"] )
-        self.popup_new = MeldNewMenu(self)
+        self._map_widgets_into_lists( "settings_drawstyle".split() )
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
         self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
@@ -595,9 +566,6 @@ class MeldApp(gnomeglade.GnomeApp):
         newseq = newdoc.undosequence
         self.button_undo.set_sensitive(newseq.can_undo())
         self.button_redo.set_sensitive(newseq.can_redo())
-        for i in range(3):
-            sensitive = newdoc.num_panes > i
-            self.menu_file_save_file[i].set_sensitive(sensitive)
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title( nbl.label.get_text() + " - Meld")
         self.statusbar.set_doc_status("")
@@ -619,33 +587,10 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # Toolbar and menu items (file)
     #
-    def on_menu_file_new_activate(self, *extra):
         NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
-    def on_menu_new_diff2_activate(self, *extra):
-        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
-    def on_menu_new_diff3_activate(self, *extra):
-        NewDocDialog(self, NewDocDialog.TYPE.DIFF3)
-    def on_menu_new_dir2_activate(self, *extra):
-        NewDocDialog(self, NewDocDialog.TYPE.DIR2)
-    def on_menu_new_dir3_activate(self, *extra):
-        NewDocDialog(self, NewDocDialog.TYPE.DIR3)
-    def on_menu_new_cvsview_activate(self, *extra):
-        NewDocDialog(self, NewDocDialog.TYPE.CVS)
-    def on_menu_new_svnview_activate(self, *extra):
-        NewDocDialog(self, NewDocDialog.TYPE.SVN)
 
     def on_menu_save_activate(self, menuitem):
-        try:
-            index = self.menu_file_save_file.index(menuitem)
-        except ValueError:
-            index = -1
-        try:
-            if index >= 0: # save one
-                self.current_doc().save_file(index)
-            else: # save all
-                self.current_doc().save()
-        except AttributeError:
-            pass
+        self.current_doc().save()
 
     def on_menu_refresh_activate(self, *args):
         self.current_doc().refresh()
@@ -731,14 +676,14 @@ class MeldApp(gnomeglade.GnomeApp):
             #self.append_filediff( ("ntest/file9a", "ntest/file9b") )
         pass
 
-    def on_menu_down_activate(self, *args):
+    def on_menu_edit_down_activate(self, *args):
         misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_DOWN )
 
-    def on_menu_up_activate(self, *args):
+    def on_menu_edit_up_activate(self, *args):
         misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_UP )
 
     def on_toolbar_new_clicked(self, *args):
-        self.popup_new.widget.popup(None, None, None, 3, gtk.get_current_event_time() )
+        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
 
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()

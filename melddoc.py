@@ -46,8 +46,6 @@ class MeldDoc(gobject.GObject):
 
     def save(self):
         pass
-    def save_all(self):
-        pass
 
     def stop(self):
         if len(self.scheduler.tasks):
