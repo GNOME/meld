@@ -18,7 +18,6 @@
 
 """
 
-from __future__ import generators
 import copy
 import sys
 import os
@@ -239,10 +238,7 @@ def commonprefix(dirs):
 def escape(s):
     """Replace special characters '&', '<' and '>' by SGML entities.
     """
-    s = s.replace("&", "&amp;")
-    s = s.replace("<", "&lt;")
-    s = s.replace(">", "&gt;")
-    return s
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 def copytree(src, dst, symlinks=1):
     try:

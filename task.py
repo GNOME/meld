@@ -17,7 +17,6 @@
 """Classes to implement scheduling for cooperative threads.
 """
 
-from __future__ import generators
 import traceback
 
 class SchedulerBase(object):
@@ -131,6 +130,8 @@ class SchedulerBase(object):
             ret = task()
         except StopIteration:
             pass
+        except SystemExit:
+            raise
         except Exception, e:
             traceback.print_exc()
         else:
