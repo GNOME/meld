@@ -800,6 +800,10 @@ usage_string = _("""Meld is a file and directory comparison tool. Usage:
     meld <file> <file> [file]   Start with 2 or 3 way file comparison
     meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison
 
+Options:
+    -h, --help                  Show this help text and exit
+    -v, --version               Display the version and exit
+
 For more information choose help -> contents.
 Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld
 Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools
@@ -823,17 +827,17 @@ def main():
         def __getattr__(self, attr):
             return getattr(self.file, attr)
     sys.stdout = Unbuffered(sys.stdout)
+    args = sys.argv[1:]
 
-    if len(sys.argv) == 2:
-        if sys.argv[1] in ("-h", "--help"):
+    if len(args) >= 2:
+        if "-h" in args or "--help" in args:
             print usage_string
             return
-        elif sys.argv[1] in ("-v", "--version"):
+        if "-v" in args or "--version" in args:
             print version_string
             return
 
     app = MeldApp()
-    args = sys.argv[1:]
 
     if len(args) == 0:
         pass
