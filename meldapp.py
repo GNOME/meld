@@ -25,6 +25,7 @@ import gnome
 import gnome.ui
 
 # project
+import paths
 import prefs
 import gnomeglade
 import filediff
@@ -44,7 +45,7 @@ developer = 0
 
 class BrowseFileDialog(gnomeglade.Component):
     def __init__(self, parentapp, labels, callback, isdir=0):
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "browsefile")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "browsefile")
         self.widget.set_transient_for(parentapp.widget)
         self.numfile = len(labels)
         self.callback = callback
@@ -78,7 +79,7 @@ class BrowseFileDialog(gnomeglade.Component):
 ################################################################################
 class ListWidget(gnomeglade.Component):
     def __init__(self, columns, prefs, key):
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "listwidget")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "listwidget")
         self.prefs = prefs
         self.key = key
         self.treeview.set_model( gtk.ListStore( *[c[1] for c in columns] ) )
@@ -181,7 +182,7 @@ class ListWidget(gnomeglade.Component):
 class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parentapp):
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/meldapp.glade"), "preferencesdialog")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
         self.notebook.set_show_tabs(0)
         # tab selector
@@ -354,10 +355,10 @@ class NotebookLabel(gtk.HBox):
         self.label = gtk.Label(text)
         self.button = gtk.Button()
         icon = gtk.Image()
-        icon.set_from_file( misc.appdir("glade2/pixmaps/%s" % iconname) )
+        icon.set_from_file( paths.share_dir("glade2/pixmaps/%s" % iconname) )
         icon.set_from_pixbuf( icon.get_pixbuf().scale_simple(15, 15, 2) ) #TODO font height
         image = gtk.Image()
-        image.set_from_file( misc.appdir("glade2/pixmaps/button_delete.xpm") )
+        image.set_from_file( paths.share_dir("glade2/pixmaps/button_delete.xpm") )
         image.set_from_pixbuf( image.get_pixbuf().scale_simple(9, 9, 2) ) #TODO font height
         self.button.add( image )
         self.pack_start( icon )
@@ -376,7 +377,7 @@ class NotebookLabel(gtk.HBox):
 ################################################################################
 class MeldNewMenu(gnomeglade.Component):
     def __init__(self, app):
-        gladefile = misc.appdir("glade2/meldapp.glade")
+        gladefile = paths.share_dir("glade2/meldapp.glade")
         gnomeglade.Component.__init__(self, gladefile, "popup_new")
         self.parent = app
     def on_menu_new_diff2_activate(self, *extra):
@@ -481,7 +482,7 @@ class MeldApp(gnomeglade.GnomeApp):
     # init
     #
     def __init__(self):
-        gladefile = misc.appdir("glade2/meldapp.glade")
+        gladefile = paths.share_dir("glade2/meldapp.glade")
         gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
         self._map_widgets_into_lists( ["menu_file_save_file", "settings_drawstyle"] )
         self.popup_new = MeldNewMenu(self)
@@ -657,10 +658,10 @@ class MeldApp(gnomeglade.GnomeApp):
         gnome.url_show("http://sourceforge.net/tracker/?group_id=53725")
 
     def on_menu_users_manual_activate(self, button):
-        gnome.url_show("file:///"+os.path.abspath(misc.appdir("manual/index.html") ) )
+        gnome.url_show("file:///"+os.path.abspath(paths.doc_dir("index.html") ) )
 
     def on_menu_about_activate(self, *extra):
-        about = gtk.glade.XML(misc.appdir("glade2/meldapp.glade"),"about").get_widget("about")
+        about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
         about.set_property("name", "Meld")
         about.set_property("version", version)
         about.show()

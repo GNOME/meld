@@ -63,16 +63,6 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
     d.destroy()
     return ret
 
-def appdir(pathin):
-    """Return where the application is installed.
-    """
-    where = os.path.dirname(sys.argv[0])
-    pathout = os.path.join( where, pathin )
-    if not os.path.exists(pathout):
-        run_dialog(_("Cannot find '%s'\nI looked in '%s'\n(%s)") % (pathin,where,pathout), None, gtk.MESSAGE_ERROR)
-        sys.exit(1)
-    return pathout
-
 class struct:
     """Similar to a dictionary except that members may be accessed as s.member.
 

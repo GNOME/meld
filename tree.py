@@ -18,6 +18,7 @@ import os
 import gtk
 import misc
 import gnomeglade
+import paths
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
 
@@ -30,7 +31,7 @@ STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
 STATE_MISSING, STATE_MAX = range(12)
 
-load = lambda x,s=14: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), s)
+load = lambda x,s=14: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
 pixbuf_folder = load("tree-folder-normal.png")
 pixbuf_folder_new = load("tree-folder-new.png")
 pixbuf_folder_changed = load("tree-folder-changed.png")

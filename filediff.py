@@ -33,6 +33,7 @@ import diffutil
 import gnomeglade
 import misc
 import melddoc
+import paths
 
 gdk = gtk.gdk
 
@@ -54,7 +55,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/filediff.glade"), "filediff")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
         self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
         self.keymask = 0
         self.load_font()
@@ -86,7 +87,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                       "foreground": self.prefs.color_conflict_fg} )
         class ContextMenu(gnomeglade.Component):
             def __init__(self, app):
-                gladefile = misc.appdir("glade2/filediff.glade")
+                gladefile = paths.share_dir("glade2/filediff.glade")
                 gnomeglade.Component.__init__(self, gladefile, "popup")
                 self.parent = app
                 self.pane = -1
@@ -183,7 +184,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
-        load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/"+x), self.pixels_per_line)
+        load = lambda x: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
         self.pixbuf_delete = load("button_delete.xpm")
@@ -234,7 +235,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         modified = map(lambda x: x.get_buffer().get_data("meld").modified, self.textview)
         delete = gnomeglade.DELETE_OK
         if 1 in modified:
-            dialog = gnomeglade.Component(misc.appdir("glade2/filediff.glade"), "closedialog")
+            dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             buttons = []
             for i in range(self.num_panes):
@@ -306,7 +307,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 def __init__(self, app):
                     self.parent = app
                     self.pane = -1
-                    gladefile = misc.appdir("glade2/filediff.glade")
+                    gladefile = paths.share_dir("glade2/filediff.glade")
                     gnomeglade.Component.__init__(self, gladefile, "finddialog")
                     self.widget.set_transient_for(app.widget.get_toplevel())
                     self.widget.show_all()

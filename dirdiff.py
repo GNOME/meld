@@ -16,6 +16,7 @@
 
 from __future__ import generators
 
+import paths
 import diffutil
 import errno
 import gnomeglade
@@ -105,7 +106,7 @@ def _not_none(l):
 join = os.path.join
 
 COL_EMBLEM = tree.COL_END + 1
-pixbuf_newer = gnomeglade.load_pixbuf(misc.appdir("glade2/pixmaps/tree-file-newer.png"), 14)
+pixbuf_newer = gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps/tree-file-newer.png"), 14)
 TYPE_PIXBUF = type(pixbuf_newer)
 
 ################################################################################
@@ -167,7 +168,7 @@ gobject.type_register(EmblemCellRenderer)
 ################################################################################
 class DirDiffMenu(gnomeglade.Component):
     def __init__(self, app):
-        gladefile = misc.appdir("glade2/dirdiff.glade")
+        gladefile = paths.share_dir("glade2/dirdiff.glade")
         gnomeglade.Component.__init__(self, gladefile, "popup")
         self.parent = app
     def popup_in_pane( self, pane ):
@@ -212,7 +213,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/dirdiff.glade"), "dirdiff")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
         self.lock = 0

@@ -30,6 +30,7 @@ import tree
 import misc
 import gnomeglade
 import melddoc
+import paths
 
 ################################################################################
 #
@@ -139,7 +140,8 @@ def _lookup_cvs_files(dirs, files):
                         cotime = calendar.timegm( time.strptime(date) )
                     except ValueError, e:
                         if not date.startswith("Result of merge"):
-                            print "Unable to parse date '%s' in '%s/CVS/Entries'" % (date, directory)
+                            #print "Unable to parse date '%s' in '%s/CVS/Entries' (%s)" % (date, directory, e)
+                            pass
                         cotime = 0
                     try:
                         mtime = os.stat(path).st_mtime
@@ -257,7 +259,7 @@ def _commonprefix(files):
 ################################################################################
 class CommitDialog(gnomeglade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "commitdialog")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         self.changedfiles.set_text( " ".join(parent._get_selected_files()))
@@ -300,7 +302,7 @@ class CvsTreeStore(tree.DiffTreeStore):
 ################################################################################
 class CvsMenu(gnomeglade.Component):
     def __init__(self, app, event):
-        gladefile = misc.appdir("glade2/cvsview.glade")
+        gladefile = paths.share_dir("glade2/cvsview.glade")
         gnomeglade.Component.__init__(self, gladefile, "menu_popup")
         self.parent = app
         self.widget.popup( None, None, None, 3, event.time )
@@ -345,7 +347,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "cvsview")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "cvsview")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.tempfiles = []
         self.model = CvsTreeStore()
