@@ -47,7 +47,7 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
         buttonstype,
         '<span weight="bold" size="larger">%s</span>' % text)
     if parent:
-        d.set_transient_for(parent.widget.get_toplevel())
+        d.set_transient_for(parent.toplevel.get_toplevel())
     for b,id in extrabuttons:
         d.add_button(b,id)
     d.vbox.set_spacing(12)
