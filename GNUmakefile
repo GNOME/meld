@@ -2,7 +2,7 @@
 PROG=./meld.py
 #PROG=xxdiff
 TESTNUM=3
-VERSION=0.4
+VERSION=0.4.1
 RELEASE=meld-$(VERSION)
 
 run: 

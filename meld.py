@@ -14,7 +14,7 @@ import gnomeglade
 import filediff
 import misc
 
-version = "0.4"
+version = "0.4.1"
 
 ################################################################################
 #
