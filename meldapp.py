@@ -587,6 +587,7 @@ class MeldApp(gnomeglade.GnomeApp):
     #
     # Toolbar and menu items (file)
     #
+    def on_menu_file_new_activate(self, menuitem):
         NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
 
     def on_menu_save_activate(self, menuitem):
@@ -801,7 +802,7 @@ usage_string = _("""Meld is a file and directory comparison tool. Usage:
 
 For more information choose help -> contents.
 Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld
-stevek@gnome.org
+Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools
 """)
 
 version_string = _("""Meld %s
