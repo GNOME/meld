@@ -5,7 +5,7 @@ include ../../INSTALL
 LANG := $(notdir $(CURDIR))
 XML_DIR_ := $(DESTDIR)$(helpdir)/meld/$(LANG)
 OMF_NAME := meld-$(LANG).omf
-OMF_DIR_ := $(DESTDIR)$(shell scrollkeeper-config --omfdir)/meld
+OMF_DIR_ := $(DESTDIR)$(sharedir)/omf/meld
 OMF_STATE:=	$(shell scrollkeeper-config --pkglocalstatedir)
 
 .PHONY : all
