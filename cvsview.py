@@ -249,6 +249,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, misc.appdir("glade2/cvsview.glade"), "cvsview")
+        self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.tempfiles = []
         self.model = CvsTreeStore()
         self.treeview.set_model(self.model)
@@ -291,7 +292,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( self._search_recursively_iter().next )
 
     def recompute_label(self):
-        self.label_text = "[CVS] %s" % os.path.basename(self.location)
+        self.label_text = os.path.basename(self.location)
         self.label_changed()
 
     def _search_recursively_iter(self):
