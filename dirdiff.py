@@ -1,5 +1,20 @@
-## /usr/bin/env python2.2
+### Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
 
+### This program is free software; you can redistribute it and/or modify
+### it under the terms of the GNU General Public License as published by
+### the Free Software Foundation; either version 2 of the License, or
+### (at your option) any later version.
+
+### This program is distributed in the hope that it will be useful,
+### but WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+### GNU General Public License for more details.
+
+### You should have received a copy of the GNU General Public License
+### along with this program; if not, write to the Free Software
+### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+from __future__ import generators
 import diffutil
 import errno
 import gnomeglade
@@ -8,8 +23,8 @@ import gtk
 import math
 import misc
 import os
-import undo
 import shutil
+import melddoc
 
 gdk = gtk.gdk
 
@@ -59,18 +74,18 @@ def _not_none(l):
 
 join = os.path.join
 
-# nameoffile, text in cell
-PATH, TEXT, FGCOLOR, ICON, LAST = 0,1,4,7,13
+# fullpath, text in cell, color, icon
+PATH, TEXT, FGCOLOR, ICON, LAST = 0,3,6,9,12
 
 ################################################################################
 #
 # DirDiffMenu
 #
 ################################################################################
-class DirDiffMenu(gnomeglade.Menu):
+class DirDiffMenu(gnomeglade.Component):
     def __init__(self, app):
         gladefile = misc.appdir("glade2/dirdiff.glade")
-        gnomeglade.Menu.__init__(self, gladefile, "popup")
+        gnomeglade.Component.__init__(self, gladefile, "popup")
         self._map_widgets_into_lists( ["copy"] )
         self.parent = app
         self.source_pane = -1
@@ -80,21 +95,22 @@ class DirDiffMenu(gnomeglade.Menu):
         selected = []
         treeview.get_selection().selected_foreach(lambda store, path, iter: selected.append( (iter, path) ) )
         return [ misc.struct(name=self.parent.model.get_value(s[0], PATH), path=s[1]) for s in selected]
-    def on_compare_activate(self, menuitem):
+    def on_popup_compare_activate(self, menuitem):
+        get_iter = self.parent.model.get_iter
         for s in self.get_selected():
-            self.parent.launch_comparison(s.name)
-    def on_copy_activate(self, menuitem):
+            self.parent.launch_comparison( get_iter(s.path) )
+    def on_popup_copy_activate(self, menuitem):
         destpane = self.copy.index(menuitem)
         sel = self.get_selected()
         sel.reverse()
-        srcbase = self.parent.get_location(self.source_pane)
-        dstbase = self.parent.get_location(destpane)
+        model = self.parent.model
         for s in filter(lambda x: x.name!=None, sel):
-            src = join(srcbase, s.name)
-            dst = join(dstbase, s.name)
+            iter = model.get_iter(s.path)
+            src = model.get_value(iter, self.source_pane+PATH )
+            dst = model.get_value(iter, destpane        +PATH )
             try:
                 if os.path.isfile(src):
-                    dstdir = os.path.dirname( join(dstbase, s.name) )
+                    dstdir = os.path.dirname( dst )
                     if not os.path.exists( dstdir ):
                         os.makedirs( dstdir )
                     shutil.copy( src, dstdir )
@@ -105,13 +121,13 @@ class DirDiffMenu(gnomeglade.Menu):
                     self.parent.file_created(s.name, s.path, destpane)
             except OSError, e:
                 self.error_message("Error copying '%s' to '%s'\n\n%s." % (src, dst,e))
-    def on_delete_activate(self, menuitem):
-        loc = self.parent.get_location(self.source_pane)
+    def on_popup_delete_activate(self, menuitem):
         # reverse so paths dont get changed
         sel = self.get_selected()
         sel.reverse()
         for s in sel:
-            p = os.path.join( loc, s.name) 
+            iter = self.parent.model.get_iter(s.path)
+            p = self.parent.model.get_value(iter, self.source_pane+PATH )
             try:
                 if os.path.isfile(p):
                     os.remove(p)
@@ -139,22 +155,19 @@ class DirDiffMenu(gnomeglade.Menu):
 
 MASK_SHIFT, MASK_CTRL, MASK_ALT = 1, 2, 3
 
-class DirDiff(gnomeglade.Component):
+class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of directories"""
 
     __gsignals__ = {
-        'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
-        'working-hard': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT,)),
         'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
     }
 
     keylookup = {65505 : MASK_SHIFT, 65507 : MASK_CTRL, 65513: MASK_ALT}
 
-    def __init__(self, num_panes, statusbar):
+    def __init__(self, prefs, num_panes):
+        melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, misc.appdir("glade2/dirdiff.glade"), "dirdiff")
         self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
-        self.statusbar = statusbar
-        self.undosequence = undo.UndoSequence()
         self.lock = 0
         self.cache = {}
         self.popup_menu = DirDiffMenu(self)
@@ -180,46 +193,39 @@ class DirDiff(gnomeglade.Component):
             self.treeview[i].set_model(self.model)
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
-        #self.linediffs = [DiffMap(),DiffMap()]
-        self.num_panes = 0
         self.set_num_panes(num_panes)
 
     def _do_to_others(self, master, objects, methodname, args):
-        for o in filter(lambda x:x!=master, objects):
-            method = getattr(o,methodname)
-            method(*args)
+        if self.lock == 0:
+            self.lock = 1
+            for o in filter(lambda x:x!=master, objects[:self.num_panes]):
+                method = getattr(o,methodname)
+                method(*args)
+            self.lock = 0
 
     def _sync_vscroll(self, adjustment):
-        if self.lock==0:
-            self.lock = 1
-            adjs = map(lambda x: x.get_vadjustment(), self.scrolledwindow)
-            self._do_to_others( adjustment, adjs, "set_value", (adjustment.value,) )
-            self.lock = 0
+        adjs = map(lambda x: x.get_vadjustment(), self.scrolledwindow)
+        self._do_to_others( adjustment, adjs, "set_value", (adjustment.value,) )
+
     def _sync_hscroll(self, adjustment):
-        if self.lock==0:
-            self.lock = 1
-            adjs = map(lambda x: x.get_hadjustment(), self.scrolledwindow)
-            self._do_to_others( adjustment, adjs, "set_value", (adjustment.value,) )
-            self.lock = 0
+        adjs = map(lambda x: x.get_hadjustment(), self.scrolledwindow)
+        self._do_to_others( adjustment, adjs, "set_value", (adjustment.value,) )
 
     def file_deleted(self, name, path, pane):
         # is file still extant in other pane?
-        is_present = [ os.path.exists( join( self.get_location(i), name ) ) for i in range(self.num_panes) ]
         iter = self.model.get_iter(path)
+        files = [ self.model.get_value(iter, i+PATH) for i in range(self.num_panes) ]
+        is_present = [ os.path.exists( file ) for file in files ]
         if 1 in is_present:
-            self.update_file_state( name, iter)
+            self.update_file_state(iter)
         else: # nope its gone
             self.model.remove(iter)
 
     def file_created(self, name, path, pane):
         iter = self.model.get_iter(path)
         while iter and self.model.get_path(iter) != (0,):
-            self.update_file_state( name, iter )
+            self.update_file_state( iter )
             iter = self.model.iter_parent(iter)
-            name = os.path.dirname(name)
-
-    def get_location(self, pane):
-        return self.fileentry[pane].get_full_path(0) or ""
 
     def on_fileentry_activate(self, entry):
         locs = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
@@ -227,25 +233,96 @@ class DirDiff(gnomeglade.Component):
 
     def set_locations(self, locations):
         self.set_num_panes(len(locations))
+        self.model.clear()
+        root = self.model.append(None)
         for pane, loc in misc.enumerate(locations):
             loc = os.path.abspath(loc or ".")
             self.fileentry[pane].set_filename(loc)
-            self.statusbar.add_status( "Set location %i %s" % (pane, loc) )
-            self.model.clear()
-            root = self.model.append(None)
-            child = self.model.append(root)
-            self.model.set_value( root, PATH, "")
-            self.model.set_value(child, PATH, "")
-            l = self.fileentry[pane].get_full_path(0) or ""
-            self.model.set_value( root, pane+TEXT, os.path.basename(l))
+            self.model.set_value( root, pane+PATH, loc)
+            self.model.set_value( root, pane+TEXT, os.path.basename(loc))
             self.model.set_value( root, pane+ICON, self.pixbuf_folder)
-        self.label_changed()
-        self.treeview[pane].expand_row(self.model.get_path(root), 0)
+        self.recompute_label()
+        self.scheduler.remove_all_tasks()
+        self.scheduler.add_task( self._search_recursively_iter().next )
 
-    def launch_comparison(self, file):
+    def _search_recursively_iter(self):
+        yield "[%s] Scanning" % self.label_text
+        rootpath = self.model.get_path( self.model.get_iter_root() )
+        prefixlen = 1 + len( self.model.get_value( self.model.get_iter(rootpath), 0+PATH ) )
+        todo = [ rootpath ]
+        while len(todo):
+            path = todo.pop(0)
+            iter = self.model.get_iter( path )
+            roots = [ self.model.get_value( iter, i+PATH ) for i in range(self.num_panes) ]
+            yield "[%s] Scanning %s" % (self.label_text, roots[0][prefixlen:])
+            errors = []
+            dirs = []
+            files = []
+            alldirs = []
+            allfiles = []
+            for root in roots:
+                dirs.append([])
+                files.append([])
+                if os.path.isdir( root ):
+                    try:
+                        e = os.listdir( root )
+                    except OSError, err:
+                        errors.append( misc.struct(pane=i, msg=err.strerror) )
+                    else:
+                        e.sort()
+                        e = filter(lambda x: not x.endswith(".pyc"), e) #TODO
+                        dirs[-1]  = filter(lambda x: os.path.isdir(  join(root, x) ), e)
+                        files[-1] = filter(lambda x: os.path.isfile( join(root, x) ), e)
+                alldirs += dirs[-1]
+                allfiles+= files[-1]
+            alldirs = _uniq(alldirs)
+            allfiles = _uniq(allfiles)
+            differences = [0]
+
+            # errors first
+            if len(errors):
+                differences = [1]
+                err = self.model.append(iter)
+                for e in errors:
+                    self.model.set_value(err, e.pane+TEXT,
+                        '<span background="yellow" weight="bold">*** %s ***</span>' % e.msg )
+                    self.model.set_value(err, e.pane+FGCOLOR, "#ff0000")
+
+            # then directories and files
+            if len(alldirs) + len(allfiles) != 0:
+                def add_entry(entry):
+                    child = self.model.append(iter)
+                    for i in range(self.num_panes):
+                        self.model.set_value(child, PATH+i, join(roots[i],entry) )
+                    differences[0] |= self.update_file_state(child)
+                    return child
+                for d in alldirs:
+                    c = add_entry(d)
+                    todo.append( self.model.get_path(c) )
+                for f in allfiles:
+                    add_entry(f)
+            else: # directory is empty, add a placeholder
+                child = self.model.append(iter)
+                for i in range(self.num_panes):
+                    self.model.set_value(child, i+PATH, None)
+                    self.model.set_value(child, i+TEXT, "<i>empty folder</i>")
+                    self.model.set_value(child, i+FGCOLOR, "#999999")
+            if differences[0]:
+                #print "X", path
+                start = path[:]
+                while len(start) and not self.treeview[0].row_expanded(start):
+                    start = start[:-1]
+                level = len(start)
+                while level < len(path):
+                    level += 1
+                    #print "+", path[:level]
+                    self.treeview[0].expand_row( path[:level], 0)
+        yield "[%s] Done" % self.label_text
+
+    def launch_comparison(self, iter):
         paths = []
         for i in range(self.num_panes):
-            path = join( self.fileentry[i].get_full_path(0), file)
+            path = self.model.get_value(iter, i+PATH)
             if os.path.exists(path):
                 paths.append(path)
         self.emit("create-diff", paths)
@@ -254,8 +331,7 @@ class DirDiff(gnomeglade.Component):
         iter = self.model.get_iter(path)
         files = []
         for i in range(self.num_panes):
-            file = self.model.get_value( iter, PATH)
-            file = join( self.fileentry[i].get_full_path(0), file)
+            file = self.model.get_value( iter, i+PATH)
             if os.path.exists(file):
                 files.append(file)
             else:
@@ -267,7 +343,7 @@ class DirDiff(gnomeglade.Component):
             while files[clicked_pane] == None: # clicked on missing entry?
                 clicked_pane = (clicked_pane+1) % self.num_panes
             if os.path.isfile( files[clicked_pane] ):
-                self.emit("create-diff", _not_none(files) )
+                self.emit("create-diff", filter(os.path.isfile, _not_none(files) ))
             else:
                 if view.row_expanded(path):
                     view.collapse_row(path)
@@ -275,102 +351,35 @@ class DirDiff(gnomeglade.Component):
                     view.expand_row(path,0)
 
     def on_treeview_row_expanded(self, view, iter, path):
-        if self.lock == 0:
-            self.lock = 1
-            # where are we?
-            current_dir = self.model.get_value(iter, PATH)
-            paneroots = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
-            roots = [ e and join(e, current_dir) for e in paneroots]
+        self._do_to_others(view, self.treeview, "expand_row", (path,0) )
 
-            # scan the directories
-            errors = []
-            dirs = []
-            files = []
-            alldirs = []
-            allfiles = []
-            for i in range(self.num_panes):
-                dirs.append( [] )
-                files.append( [] )
-                if roots[i] != None and os.path.isdir( roots[i] ):
-                    try:
-                        e = os.listdir( roots[i] )
-                    except OSError, err:
-                        errors.append( misc.struct(pane=i, msg=err.strerror) )
-                    else:
-                        e.sort()
-                        e = filter(lambda x: not x.endswith(".pyc"), e)
-                        dirs[i]  = filter(lambda x: os.path.isdir(  join(roots[i], x) ), e)
-                        files[i] = filter(lambda x: os.path.isfile( join(roots[i], x) ), e)
-                alldirs += dirs[i]
-                allfiles+= files[i]
-            alldirs = _uniq(alldirs)
-            allfiles = _uniq(allfiles)
+    def on_treeview_row_collapsed(self, view, me, path):
+        self._do_to_others(view, self.treeview, "collapse_row", (path,) )
 
-            # errors first
-            if len(errors):
-                err = self.model.append(iter)
-                for e in errors:
-                    self.model.set_value(err, e.pane+TEXT,
-                        '<span background="yellow" weight="bold">*** %s ***</span>' % e.msg )
-                    self.model.set_value(err, e.pane+FGCOLOR, "#ff0000")
-            # then directories
-            for d in alldirs:
-                i = self.model.append(iter)
-                self.model.set_value(i, PATH, join(current_dir,d) )
-                child = self.model.append(i)
-                for j in range(self.num_panes):
-                    self.update_file_state( join(current_dir,d), i)
-            # and files 
-            for d in allfiles:
-                i = self.model.append(iter)
-                self.model.set_value(i, PATH, join(current_dir,d) )
-                self.update_file_state( join(current_dir,d), i)
-            # remove dummy node if we have some entries
-            if len(alldirs) + len(allfiles):
-                child = self.model.iter_children(iter)
-                self.model.remove(child)
-            else: # nope, still need it
-                child = self.model.iter_children(iter)
-                for i in range(self.num_panes):
-                    self.model.set_value(child, i+TEXT, "<i>empty folder</i>")
-                    self.model.set_value(child, i+FGCOLOR, "#999999")
-            self._do_to_others(view, self.treeview, "expand_row", (path,0) )
-            #self.update_diff_maps()
-            self.lock = 0
-
-
-#                    if is_present[j]:
-#                        if 0 in is_present:
-#                            self.model.set_value(i, j+TEXT, "<b>%s</b>" % d)
-#                            self.model.set_value(i, j+FGCOLOR, "#008800")
-#                        else:
-#                            self.model.set_value(i, j+TEXT, d)
-#                            self.model.set_value(i, j+FGCOLOR, "#888888")
-#                    else:
-#                        self.model.set_value(i, j+TEXT, "<s>%s</s>" % d)
-#                        self.model.set_value(i, j+FGCOLOR, "#888888")
-
-    def update_file_state(self, file, iter):
-        is_present = [ os.path.exists( join( self.get_location(i), file) ) for i in range(self.num_panes) ]
+    def update_file_state(self, iter):
+        files = [ self.model.get_value(iter, i+PATH) for i in range(self.num_panes) ]
+        is_present = [ os.path.exists( file ) for file in files ]
+        #print zip(files, is_present)
         all_present = 0 not in is_present
-        roots = [ e.get_full_path(0) or "" for e in self.fileentry[:self.num_panes] ]
         if all_present:
-            all_same = _files_same( [ join(r,file) for r in roots ] )
+            all_same = _files_same( files )
             all_present_same = all_same
         else:
             lof = []
             for j in range(len(is_present)):
                 if is_present[j]:
-                    lof.append( join(roots[j], file) )
+                    lof.append( files[j] )
             all_same = 0
             all_present_same = _files_same( lof )
         filename = os.path.basename(file)
+        different = 1
         for j in range(self.num_panes):
             if is_present[j]:
                 if all_same:
                     self.model.set_value(iter, j+TEXT, filename)
                     self.model.set_value(iter, j+FGCOLOR, "#000000")
                     self.model.set_value(iter, j+ICON, self.pixbuf_file)
+                    different = 0
                 elif all_present_same:
                     self.model.set_value(iter, j+TEXT, "<b>%s</b>" % filename)
                     self.model.set_value(iter, j+ICON, self.pixbuf_file_new)
@@ -379,32 +388,16 @@ class DirDiff(gnomeglade.Component):
                     self.model.set_value(iter, j+TEXT, "<b>%s</b>" % filename)
                     self.model.set_value(iter, j+ICON, self.pixbuf_file_changed)
                     self.model.set_value(iter, j+FGCOLOR, "#880000")
-                if os.path.isdir( join(roots[j], file) ):
+                if os.path.isdir( files[j] ):
                     self.model.set_value(iter, j+ICON, self.pixbuf_folder)
             else:
                 self.model.set_value(iter, j+TEXT, "<s>%s</s>" % filename)
                 self.model.set_value(iter, j+ICON, None)
                 self.model.set_value(iter, j+FGCOLOR, "#888888")
+        return different
 
     def update_diff_maps(self):
         return
-        #for d in self.linediffs[0]:
-            #traverse = [ self.model.get_iter_root() ]
-            #while len(traverse):
-                #node = traverse.pop(0)
-                #if self.model.get_value(node, 
-
-    def on_treeview_row_collapsed(self, view, me, path):
-        if self.lock == 0:
-            self.lock = 1
-            child = self.model.iter_children(me)
-            while child:
-                self.model.remove(child)
-                child = self.model.iter_children(me)
-            child = self.model.append(me)
-            self.model.set_value(child, TEXT, "" )
-            self._do_to_others(view, self.treeview, "collapse_row", (path,) )
-            self.lock = 0
 
     def on_treeview_button_press_event(self, treeview, event):
         # unselect others
@@ -442,18 +435,19 @@ class DirDiff(gnomeglade.Component):
                 self.num_panes = n
 
     def refresh(self):
-        pass        
+        root = self.model.get_iter_root()
+        roots = [ self.model.get_value( root, i+PATH ) for i in range(self.num_panes) ]
+        self.set_locations( roots )
 
-    def label_changed(self):
-        filenames = []
-        for i in range(self.num_panes):
-            f = self.fileentry[i].get_full_path(0) or ""
-            filenames.append( f )
+    def recompute_label(self):
+        root = self.model.get_iter_root()
+        filenames = [ self.model.get_value(root, i+PATH) for i in range(self.num_panes) ]
         shortnames = misc.shorten_names(*filenames)
-        labeltext = " : ".join(shortnames) + " "
-        self.emit("label-changed", labeltext)
+        self.label_text = " : ".join(shortnames)
+        self.label_changed()
 
     def on_diffmap_expose_event(self, area, event):
+        raise NotImplementedError
         diffmapindex = self.diffmap.index(area)
         treeindex = (0, self.num_panes-1)[diffmapindex]
 
