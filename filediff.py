@@ -90,7 +90,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     keylookup = {gtk.keysyms.Shift_L : MASK_SHIFT,
                  gtk.keysyms.Control_L : MASK_CTRL,
-                 gtk.keysyms.Alt_L : MASK_ALT}
+                 gtk.keysyms.Alt_L : MASK_ALT,
+                 gtk.keysyms.Shift_R : MASK_SHIFT,
+                 gtk.keysyms.Control_R : MASK_CTRL,
+                 gtk.keysyms.Alt_R : MASK_ALT }
 
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
@@ -110,6 +113,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 v.show()
                 w.add(v)
                 v.set_show_line_numbers(self.prefs.show_line_numbers)
+                for s in "key_press_event key_release_event".split():
+                    v.connect(s, getattr(self,"on_%s"%s))
+                for s in "button_press_event move_cursor focus_in_event".split():
+                    v.connect(s, getattr(self,"on_textview_%s"%s))
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
