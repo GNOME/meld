@@ -18,30 +18,26 @@
 
 import os
 
-if 1: # run in place. packagers change this line
-    import sys
-    appdir = os.path.dirname(sys.argv[0])
-    def locale_dir(*args): # i18n files
-        return os.path.join(appdir, "po", *args)
+_locale_dir = ( #LOCALEDIR#
+)
+_doc_dir = ( #DOCDIR#
+)
+_share_dir = ( #SHAREDIR#
+)
 
-    def lib_dir(*args): # *.py 
-        return os.path.join(appdir, *args)
+import sys
+appdir = os.path.dirname(sys.argv[0])
 
-    def doc_dir(*args): # manual
-        return os.path.join(appdir, "manual", *args)
+if not _locale_dir: _locale_dir = os.path.join(appdir,"po")
+if not _doc_dir:    _doc_dir    = os.path.join(appdir,"manual")
+if not _share_dir:  _share_dir  = appdir
 
-    def share_dir(*args): # glade + pixmaps
-        return os.path.join(appdir, *args)
-else:
-    def locale_dir(*args): # i18n files
-        return os.path.join("/usr/share/locale", *args)
+def locale_dir(*args): # i18n files
+    return os.path.join(_locale_dir, *args)
 
-    def lib_dir(*args): # *.py 
-        return os.path.join("/usr/lib/meld", *args)
+def doc_dir(*args): # manual
+    return os.path.join(_doc_dir, *args)
 
-    def doc_dir(*args): # manual
-        return os.path.join("/usr/share/doc/meld", *args)
-
-    def share_dir(*args): # glade + pixmaps
-        return os.path.join("/usr/share/meld", *args)
+def share_dir(*args): # glade + pixmaps
+    return os.path.join(_share_dir, *args)
 
