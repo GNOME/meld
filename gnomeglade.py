@@ -97,8 +97,12 @@ class App(gnome.ui.App, Base):
 # load_pixbuf
 #
 ################################################################################
-def load_pixbuf(fname):
+def load_pixbuf(fname, size=0):
     """Load an image from a file as a pixbuf"""
     image = gtk.Image()
     image.set_from_file(fname)
-    return image.get_pixbuf()
+    image = image.get_pixbuf()
+    if size:
+        image = image.scale_simple(size, size, 2)
+    return image
+

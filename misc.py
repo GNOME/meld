@@ -1,4 +1,6 @@
+#! python
 
+import errno
 import sys
 import os
 
@@ -51,3 +53,31 @@ def look(s, o):
 def ilook(s, o):
     return filter(lambda x:x.lower().find(s)!=-1, dir(o))
 
+################################################################################
+#
+# system
+#
+################################################################################
+def read_pipe(command):
+    p = os.popen(command)
+    r = []
+    while 1:
+        try:
+            l = p.read()
+            if l != "":
+                r.append(l)
+            else:
+                break
+        except IOError, e:
+            if e.errno != errno.EINTR:
+                break
+    return "".join(r)
+
+################################################################################
+#
+# system
+#
+################################################################################
+def write_pipe(command, text):
+    p = os.popen(command, "w")
+    w = p.write(text)

@@ -354,9 +354,10 @@
 	      <child>
 		<widget class="button" id="button14">
 		  <property name="visible">True</property>
-		  <property name="label">gtk-execute</property>
-		  <property name="use_stock">True</property>
-		  <signal name="clicked" handler="on_foo_clicked" last_modification_time="Sat, 27 Jul 2002 19:37:05 GMT"/>
+		  <property name="label" translatable="yes">_CvsView</property>
+		  <property name="use_underline">True</property>
+		  <property name="stock_pixmap">gtk-open</property>
+		  <signal name="clicked" handler="on_new_cvsview_activate" last_modification_time="Sat, 27 Jul 2002 19:37:05 GMT"/>
 		</widget>
 	      </child>
 
@@ -443,6 +444,9 @@
 	  <property name="tab_hborder">2</property>
 	  <property name="tab_vborder">2</property>
 	  <property name="enable_popup">False</property>
+	  <signal name="switch_page" handler="on_switch_page" last_modification_time="Sat, 03 Aug 2002 14:15:37 GMT"/>
+	  <signal name="key_press_event" handler="on_key_press_event" last_modification_time="Sat, 03 Aug 2002 14:15:52 GMT"/>
+	  <signal name="key_release_event" handler="on_key_release_event" last_modification_time="Sat, 03 Aug 2002 14:16:03 GMT"/>
 	</widget>
       </child>
     </widget>

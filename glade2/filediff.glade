@@ -72,7 +72,6 @@
       <child>
 	<widget class="GtkScrolledWindow" id="scrolledwindow0">
 	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
 	  <property name="hscrollbar_policy">GTK_POLICY_ALWAYS</property>
 	  <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
 	  <property name="shadow_type">GTK_SHADOW_NONE</property>
@@ -95,6 +94,8 @@
 	      <property name="text" translatable="yes">
 
 </property>
+	      <signal name="key_press_event" handler="on_key_press_event" last_modification_time="Sat, 03 Aug 2002 12:53:43 GMT"/>
+	      <signal name="key_release_event" handler="on_key_release_event" last_modification_time="Sat, 03 Aug 2002 12:53:54 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -110,7 +111,6 @@
       <child>
 	<widget class="GtkScrolledWindow" id="scrolledwindow1">
 	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
 	  <property name="hscrollbar_policy">GTK_POLICY_ALWAYS</property>
 	  <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
 	  <property name="shadow_type">GTK_SHADOW_NONE</property>
@@ -131,6 +131,8 @@
 	      <property name="right_margin">0</property>
 	      <property name="indent">0</property>
 	      <property name="text" translatable="yes"></property>
+	      <signal name="key_press_event" handler="on_key_press_event" last_modification_time="Sat, 03 Aug 2002 13:01:58 GMT"/>
+	      <signal name="key_release_event" handler="on_key_release_event" last_modification_time="Sat, 03 Aug 2002 13:02:08 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -150,7 +152,7 @@
 	  <property name="max_saved">10</property>
 	  <property name="directory_entry">False</property>
 	  <property name="modal">False</property>
-	  <signal name="activate" handler="on_fileentry_activate" last_modification_time="Thu, 18 Jul 2002 10:45:43 GMT"/>
+	  <signal name="activate" handler="on_fileentry_activate" last_modification_time="Tue, 30 Jul 2002 21:08:21 GMT"/>
 
 	  <child internal-child="entry">
 	    <widget class="GtkEntry" id="combo-entry1">
@@ -245,7 +247,7 @@
 	  <property name="label" translatable="yes"></property>
 	  <property name="use_underline">False</property>
 	  <property name="use_markup">False</property>
-	  <property name="justify">GTK_JUSTIFY_LEFT</property>
+	  <property name="justify">GTK_JUSTIFY_RIGHT</property>
 	  <property name="wrap">False</property>
 	  <property name="selectable">False</property>
 	  <property name="xalign">0</property>
@@ -269,7 +271,7 @@
 	  <property name="label" translatable="yes"></property>
 	  <property name="use_underline">False</property>
 	  <property name="use_markup">False</property>
-	  <property name="justify">GTK_JUSTIFY_LEFT</property>
+	  <property name="justify">GTK_JUSTIFY_RIGHT</property>
 	  <property name="wrap">False</property>
 	  <property name="selectable">False</property>
 	  <property name="xalign">0</property>
@@ -293,7 +295,7 @@
 	  <property name="label" translatable="yes"></property>
 	  <property name="use_underline">False</property>
 	  <property name="use_markup">False</property>
-	  <property name="justify">GTK_JUSTIFY_LEFT</property>
+	  <property name="justify">GTK_JUSTIFY_RIGHT</property>
 	  <property name="wrap">False</property>
 	  <property name="selectable">False</property>
 	  <property name="xalign">0</property>
@@ -355,10 +357,11 @@
 	<widget class="GtkDrawingArea" id="linkmap1">
 	  <property name="width_request">80</property>
 	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
 	  <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
 	  <signal name="expose_event" handler="on_linkmap_expose_event" last_modification_time="Sat, 29 Jun 2002 17:40:51 GMT"/>
 	  <signal name="scroll_event" handler="on_linkmap_scroll_event" last_modification_time="Wed, 17 Jul 2002 19:21:59 GMT"/>
+	  <signal name="button_press_event" handler="on_linkmap_button_press_event" last_modification_time="Thu, 01 Aug 2002 22:39:27 GMT"/>
+	  <signal name="button_release_event" handler="on_linkmap_button_release_event" last_modification_time="Thu, 01 Aug 2002 22:39:33 GMT"/>
 	</widget>
 	<packing>
 	  <property name="left_attach">4</property>
@@ -388,7 +391,6 @@
       <child>
 	<widget class="GtkScrolledWindow" id="scrolledwindow2">
 	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
 	  <property name="hscrollbar_policy">GTK_POLICY_ALWAYS</property>
 	  <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
 	  <property name="shadow_type">GTK_SHADOW_NONE</property>
@@ -409,6 +411,8 @@
 	      <property name="right_margin">0</property>
 	      <property name="indent">0</property>
 	      <property name="text" translatable="yes"></property>
+	      <signal name="key_press_event" handler="on_key_press_event" last_modification_time="Sat, 03 Aug 2002 13:02:23 GMT"/>
+	      <signal name="key_release_event" handler="on_key_release_event" last_modification_time="Sat, 03 Aug 2002 13:02:32 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -425,7 +429,6 @@
 	<widget class="GtkDrawingArea" id="linkmap0">
 	  <property name="width_request">80</property>
 	  <property name="visible">True</property>
-	  <property name="can_focus">True</property>
 	  <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
 	  <signal name="expose_event" handler="on_linkmap_expose_event" last_modification_time="Sat, 29 Jun 2002 17:39:33 GMT"/>
 	  <signal name="button_press_event" handler="on_linkmap_button_press_event" last_modification_time="Sat, 29 Jun 2002 17:39:41 GMT"/>

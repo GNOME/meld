@@ -1,4 +1,4 @@
-#! /usr/bin/env python2.2
+#! python
 
 # system
 import os
@@ -12,9 +12,9 @@ import gnome
 import gnomeglade
 import filediff
 import misc
-#import cvsview
+import cvsview
 
-version = "0.4.2"
+version = "0.5.0"
 
 ################################################################################
 #
@@ -54,6 +54,7 @@ class MeldStatusBar:
         self.appbar = appbar
         self.statusmessages = []
         self.statuscount = []
+        self.appbar.set_default("OK")
 
     def add_status(self, status, timeout=4000, allow_duplicate=0):
         if not allow_duplicate:
@@ -93,7 +94,7 @@ class MeldStatusBar:
 
 ################################################################################
 #
-# MeldApp
+# NotebookLabel
 #
 ################################################################################
 class NotebookLabel(gtk.HBox):
@@ -104,7 +105,7 @@ class NotebookLabel(gtk.HBox):
         self.button = gtk.Button("X")
         self.button.set_size_request(14,14) #TODO font height
         self.pack_start( self.label )
-        self.pack_start( self.button )
+        self.pack_start( self.button, expand=0 )
         self.show_all()
         if onclose:
             self.button.connect("clicked", onclose)
@@ -115,27 +116,17 @@ class NotebookLabel(gtk.HBox):
 ################################################################################
 class MeldApp(gnomeglade.App):
 
-    def __init__(self, files):
+    def __init__(self):
         gnomeglade.App.__init__(self, "Meld", version, misc.appdir("glade2/meld-app.glade"), "meldapp")
         self._map_widgets_into_lists( ["menu_file_save_file"] )
-        self.notebook.connect("switch-page", self.switch_page)
-        self.appbar.set_default("OK")
         self.statusbar = MeldStatusBar(self.appbar)
-        i = 0
-        if len(files)==2:
-            self.append_filediff2( files[i],files[i+1] )
-        elif len(files)==3:
-            self.append_filediff3( files[i],files[i+1], files[i+2] )
-        else:
-            while 1:
-                try:
-                    self.append_filediff2( files[i],files[i+1] )
-                    i += 2
-                except IndexError:
-                    break
             
+    def on_key_press_event(self, object, event):
+        self.current_doc().on_key_press_event(object, event)
+    def on_key_release_event(self, object, event):
+        self.current_doc().on_key_release_event(object, event)
 
-    def switch_page(self, notebook, page, which):
+    def on_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject") #TODO why pyobject?
         if hasattr(newdoc, "undosequence"):
             newseq = newdoc.undosequence
@@ -174,7 +165,9 @@ class MeldApp(gnomeglade.App):
         index = self.notebook.get_current_page()
         if index >= 0:
             return self.notebook.get_nth_page(index).get_data("pyobject") #TODO why pyobject?
-        return None
+        class DummyDoc:
+            def __getattr__(self, a): return lambda *x: None
+        return DummyDoc()
         
     def on_close_doc_activate(self, *extra):
         page = self.notebook.get_current_page()
@@ -184,6 +177,8 @@ class MeldApp(gnomeglade.App):
         BrowseFileDialog(self,["Original File", "Modified File"], self.append_filediff)
     def on_new_diff3_activate(self, *extra):
         BrowseFileDialog(self,["Other Changes","Common Ancestor","Local Changes"], self.append_filediff )
+    def on_new_cvsview_activate(self, *extra):
+        self.append_cvsview(None)
     def on_refresh_doc_clicked(self, *args):
         self.current_doc().refresh()
     def on_undo_doc_clicked(self, *extra):
@@ -231,7 +226,22 @@ class MeldApp(gnomeglade.App):
         doc.connect("label-changed", self.on_doc_label_changed)
         doc.label_changed()
         doc.refresh()
+    def append_cvsview(self, location=None):
+        doc = cvsview.CvsView(location)
+        nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
+        self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
+        self.notebook.next_page()
+        doc.connect("label-changed", self.on_doc_label_changed)
+        doc.connect("working-hard", self.on_doc_working_hard)
+        doc.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
+        doc.label_changed()
+        doc.refresh()
 
+    def on_doc_working_hard(self, widget, working):
+        if working:
+            self.appbar.get_progress().pulse()
+        else:
+            self.appbar.get_progress().set_fraction(0)
 
     def on_down_doc_clicked(self, *args):
         self.current_doc().next_diff( gtk.gdk.SCROLL_DOWN)
@@ -241,65 +251,8 @@ class MeldApp(gnomeglade.App):
     def on_save_doc_clicked(self, *args):
         self.current_doc().save()
 
-    def on_foo_clicked(self, *args):
-        pass
-        #print "foo"
-        #doc = cvsview.CvsView()
-        #nbl = NotebookLabel(onclose=lambda b: self._remove_page(doc))
-        #self.notebook.append_page( doc._widget, nbl) #TODO why ._widget?
-        #self.notebook.next_page()
-        #doc.connect("label-changed", self.on_doc_label_changed)
-        #doc.label_changed()
-        #doc.refresh()
 
     def on_menu_help_meld_home_page_activate(self, button):
         gnome.url_show("http://meld.sourceforge.net")
     def on_menu_help_users_manual(self, button):
         gnome.url_show("file:///"+os.path.abspath(misc.appdir("manual/index.html") ) )
-
-
-################################################################################
-#
-# Main
-#
-################################################################################
-def main():
-    import sys
-    sys.stdout = sys.stderr
-    argv = sys.argv[1:]
-    if len(argv)==0 or argv[0].strip() != "-C":
-        MeldApp(argv).mainloop()
-    else:
-        import shutil
-        import re
-        import tempfile
-        print "Getting diff"
-        text = os.popen("cvs -z3 -q diff -u").read()
-        print "Copying files"
-        tmpdir = tempfile.mktemp("-meld")
-        os.mkdir(tmpdir)
-
-        regex = re.compile("^Index:\s+(.*$)", re.M)
-        files = regex.findall(text)
-        cmdline = []
-        for file in files:
-            destfile = os.path.join(tmpdir,file)
-            destdir = os.path.dirname( destfile )
-
-            if not os.path.exists(destdir):
-                os.makedirs(destdir)
-            shutil.copyfile(file, destfile)
-            cmdline.append(destfile)
-            cmdline.append(file)
-
-        os.popen("patch --strip=0 --reverse --directory=%s" % tmpdir, "w").write(text)
-        print "Running meld"
-        os.system("/home/stephen/Projects/meld/meld.py %s" % " ".join(cmdline))
-        print "Cleaning up"
-        shutil.rmtree(tmpdir, ignore_errors=1)
-
-if __name__=="__main__":
-    #import profile
-    #profile.run("main()", "profile.meld")
-    main()
-
