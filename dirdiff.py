@@ -972,55 +972,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             pane = 0
         start_iter = self.model.get_iter( (self._get_selected_paths(pane) or [(0,)])[-1] )
 
-        def inorder_search_down(model, it):
-            while it:
-                child = model.iter_children(it)
-                if child:
-                    it = child
-                else:
-                    next = model.iter_next(it)
-                    if next:
-                        it = next
-                    else:
-                        while 1:
-                            it = model.iter_parent(it)
-                            if it:
-                                next = model.iter_next(it)
-                                if next:
-                                    it = next
-                                    break
-                            else:
-                                raise StopIteration()
-                yield it
-
-        def inorder_search_up(model, it):
-            while it:
-                path = model.get_path(it)
-                if path[-1]:
-                    path = path[:-1] + (path[-1]-1,)
-                    it = model.get_iter(path)
-                    while 1:
-                        nc = model.iter_n_children(it)
-                        if nc:
-                            it = model.iter_nth_child(it, nc-1)
-                        else:
-                            break
-                else:
-                    up = model.iter_parent(it)
-                    if up:
-                        it = up
-                    else:
-                        raise StopIteration()
-                yield it
-
         def goto_iter(it):
             curpath = self.model.get_path(it)
             for i in range(len(curpath)-1):
                 self.treeview[pane].expand_row( curpath[:i+1], 0)
             self.treeview[pane].set_cursor(curpath)
 
-        search = {gdk.SCROLL_UP:inorder_search_up}.get(direction, inorder_search_down)
-        for it in search( self.model, start_iter ):
+        search = {gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
+        for it in search( start_iter ):
             state = int(self.model.get_state( it, pane ))
             if state != tree.STATE_NORMAL:
                 goto_iter(it)

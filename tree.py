@@ -119,3 +119,44 @@ class DiffTreeStore(gtk.TreeStore):
         STATE = self.column_index(COL_STATE, pane)
         return self.get_value(iter, STATE)
 
+    def inorder_search_down(self, it):
+        while it:
+            child = self.iter_children(it)
+            if child:
+                it = child
+            else:
+                next = self.iter_next(it)
+                if next:
+                    it = next
+                else:
+                    while 1:
+                        it = self.iter_parent(it)
+                        if it:
+                            next = self.iter_next(it)
+                            if next:
+                                it = next
+                                break
+                        else:
+                            raise StopIteration()
+            yield it
+
+    def inorder_search_up(self, it):
+        while it:
+            path = self.get_path(it)
+            if path[-1]:
+                path = path[:-1] + (path[-1]-1,)
+                it = self.get_iter(path)
+                while 1:
+                    nc = self.iter_n_children(it)
+                    if nc:
+                        it = self.iter_nth_child(it, nc-1)
+                    else:
+                        break
+            else:
+                up = self.iter_parent(it)
+                if up:
+                    it = up
+                else:
+                    raise StopIteration()
+            yield it
+

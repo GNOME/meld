@@ -449,14 +449,22 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_filter_toggled(self, button):
         self.refresh()
 
-    def _get_selected_files(self):
-        ret = []
+    def _get_selected_treepaths(self):
+        sel = []
         def gather(model, path, iter):
-            ret.append( model.value_path(iter,0) )
+            sel.append( model.get_path(iter) )
+        s = self.treeview.get_selection()
+        s.selected_foreach(gather)
+        return sel
+
+    def _get_selected_files(self):
+        sel = []
+        def gather(model, path, iter):
+            sel.append( model.value_path(iter,0) )
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
         # remove empty entries and remove trailing slashes
-        return map(lambda x: x[-1]!="/" and x or x[:-1], filter(lambda x: x!=None, ret))
+        return [ x[-1]!="/" and x or x[:-1] for x in sel if x != None ]
 
     def _command_iter(self, command, files, refresh):
         """Run 'command' on 'files'. Return a tuple of the directory the
@@ -671,6 +679,22 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         item = gtk.SeparatorMenuItem()
         item.show()
         menu.insert( item, 1 )
+
+    def next_diff(self, direction):
+        start_iter = self.model.get_iter( (self._get_selected_treepaths() or [(0,)])[-1] )
+
+        def goto_iter(it):
+            curpath = self.model.get_path(it)
+            for i in range(len(curpath)-1):
+                self.treeview.expand_row( curpath[:i+1], 0)
+            self.treeview.set_cursor(curpath)
+
+        search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
+        for it in search( start_iter ):
+            state = int(self.model.get_state( it, 0))
+            if state != tree.STATE_NORMAL:
+                goto_iter(it)
+                return
 
 gobject.type_register(CvsView)
 
