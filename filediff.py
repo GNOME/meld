@@ -2,6 +2,8 @@
 import math
 import gtk
 import gobject
+import gnome
+import gconf
 
 import diffutil
 import gnomeglade
@@ -99,12 +101,15 @@ class FileDiff(gnomeglade.Component):
 
     keylookup = {65505 : MASK_SHIFT, 65507 : MASK_CTRL, 65513: MASK_ALT}
 
-    def __init__(self, numpanes, statusbar):
-        self.__gobject_init__()
+        #
+        # Pane layout 3 is (your copy, common ancestor, my copy)
+        # Pane layout 2 is (<hidden>,  common ancestor, my copy)
+        # Pane layout 1 is (<hidden>,  <hidden>,        my copy)
+        #
+    def __init__(self, num_panes, statusbar):
         gnomeglade.Component.__init__(self, misc.appdir("glade2/filediff.glade"), "filediff")
-        self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "labelmodified"] )
-        self.numpanes = 0
-        self.set_num_panes(numpanes)
+        self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        self.refresh_timer_id = -1
         self.statusbar = statusbar
         self.undosequence = undo.UndoSequence()
         self.undosequence_busy = 0
@@ -115,7 +120,7 @@ class FileDiff(gnomeglade.Component):
             conflict_color="#ffcccc")
         self.keymask = 0
 
-        for i in range(self.numpanes):
+        for i in range(3):
             w = self.scrolledwindow[i]
             w.get_vadjustment().connect("value-changed", self._sync_vscroll )
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
@@ -123,7 +128,7 @@ class FileDiff(gnomeglade.Component):
             self.textview[i].get_buffer().connect("delete-range", self.on_text_delete_range)
             if 0: # test different font sizes
                 description = self.textview[i].get_pango_context().get_font_description()
-                description.set_size(17 * 1024)
+                description.set_size(4 * 1024)
                 self.textview[i].modify_font(description)
 
         context = self.textview0.get_pango_context()
@@ -131,16 +136,31 @@ class FileDiff(gnomeglade.Component):
         self.pixels_per_line = (metrics.get_ascent() + metrics.get_descent()) / 1024
 
         self.linediffs = diffutil.Differ()
-        self.refresh_timer_id = -1
-        self.pixbuf_apply0 = gnomeglade.load_pixbuf(misc.appdir("glade2/button_apply0.xpm"))
-        self.pixbuf_apply1 = gnomeglade.load_pixbuf(misc.appdir("glade2/button_apply1.xpm"))
-        self.pixbuf_delete = gnomeglade.load_pixbuf(misc.appdir("glade2/button_delete.xpm"))
-        self.pixbuf_copy0  = gnomeglade.load_pixbuf(misc.appdir("glade2/button_copy0.xpm"))
-        self.pixbuf_copy1  = gnomeglade.load_pixbuf(misc.appdir("glade2/button_copy1.xpm"))
+        load = lambda x: gnomeglade.load_pixbuf(misc.appdir("glade2/"+x), self.pixels_per_line)
+        self.pixbuf_apply0 = load("button_apply0.xpm")
+        self.pixbuf_apply1 = load("button_apply1.xpm")
+        self.pixbuf_delete = load("button_delete.xpm")
+        self.pixbuf_copy0  = load("button_copy0.xpm")
+        self.pixbuf_copy1  = load("button_copy1.xpm")
+
+        self.gconf = gconf.client_get_default()
+        self.num_link_segments = self.gconf.get_float('/apps/meld/filediff/num_link_segments') or 1.0
+        self.gconf.add_dir('/apps/meld/filediff', gconf.CLIENT_PRELOAD_NONE)
+        self.gconf.notify_add ("/apps/meld/filediff/num_link_segments", self.on_setting_changed)
 
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
 
+        self.num_panes = 0
+        self.set_num_panes(num_panes)
+
+    def on_setting_changed(self, client, timestamp, entry, extra):
+        if entry.key.endswith("num_link_segments"):
+            self.num_link_segments = entry.value.get_float()
+            for l in self.linkmap:
+                l.queue_draw()
+        else:
+            print "Warning, unknown setting", entry.key, "changed"
 
     def on_key_press_event(self, object, event):
         for t in self.textview: # key event bug workaround
@@ -148,27 +168,57 @@ class FileDiff(gnomeglade.Component):
                 return
         x = self.keylookup.get(event.keyval, 0)
         self.keymask |= x
-        for l in self.linkmap[:self.numpanes-1]:
+        for l in self.linkmap[:self.num_panes-1]:
             a = l.get_allocation()
-            l.queue_draw_area(0,       0, 16, a[3])
-            l.queue_draw_area(a[2]-16, 0, 16, a[3])
+            w = self.pixbuf_copy0.get_width()
+            l.queue_draw_area(0,      0, w, a[3])
+            l.queue_draw_area(a[2]-w, 0, w, a[3])
     def on_key_release_event(self, object, event):
         for t in self.textview: # key event bug workaround
             if t.is_focus() and object != t:
                 return
         x = self.keylookup.get(event.keyval, 0)
         self.keymask &= ~x
-        for l in self.linkmap[:self.numpanes-1]:
+        for l in self.linkmap[:self.num_panes-1]:
             a = l.get_allocation()
-            l.queue_draw_area(0,       0, 16, a[3])
-            l.queue_draw_area(a[2]-16, 0, 16, a[3])
+            w = self.pixbuf_copy0.get_width()
+            l.queue_draw_area(0,      0, w, a[3])
+            l.queue_draw_area(a[2]-w, 0, w, a[3])
 
     def on_linkmap_focus_in_event(self, *args):
-        print args
+        #print args
         return 1
     def on_linkmap_focus_out_event(self, *args):
-        print args
+        #print args
         return 1
+
+    def is_modified(self):
+        state = map(lambda x: x.get_buffer().get_data("modified"), self.textview)
+        return 1 in state
+
+    def on_delete_event(self, parent):
+        state = map(lambda x: x.get_buffer().get_data("modified"), self.textview)
+        delete = gnomeglade.DELETE_OK
+        if 1 in state:
+            dialog = gnomeglade.Dialog(misc.appdir("glade2/filediff.glade"), "closedialog")
+            dialog.widget.set_transient_for(self.widget.get_toplevel())
+            buttons = []
+            for i in range(self.num_panes):
+                b = gtk.ToggleButton( self.fileentry[i].get_full_path(0) or "" )
+                buttons.append(b)
+                dialog.box.pack_start(b)
+                if state[i]==0:
+                    b.set_sensitive(0)
+            dialog.widget.show_all()
+            response = dialog.widget.run()
+            if response==gtk.RESPONSE_OK:
+                for i in range(self.num_panes):
+                    if buttons[i].get_active():
+                        self.save_file(i)
+            else:
+                delete = gnomeglade.DELETE_ABORT
+            dialog.widget.destroy()
+        return delete
 
         #
         # text buffer undo/redo
@@ -230,21 +280,17 @@ class FileDiff(gnomeglade.Component):
 
     def label_changed(self):
         filenames = []
-        for i in range(self.numpanes):
+        for i in range(self.num_panes):
             f = self.fileentry[i].get_full_path(0) or ""
             filenames.append( f )
         shortnames = misc.shorten_names(*filenames)
-        for i in range(self.numpanes):
+        for i in range(self.num_panes):
             if self.textview[i].get_buffer().get_data("modified"):
                 shortnames[i] += "*"
-                #self.statuslabel[i].show()
-                #print misc.ilook("set", self.labelmodified[i])
-                if i==0:
-                    self.statuslabel0.show()
+                self.statusimage[i].show()
+                self.statusimage[i].set_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_SMALL_TOOLBAR)
             else:
-                #self.labelmodified[i].set_text("")
-                if i==0:
-                    self.statuslabel0.hide()
+                self.statusimage[i].hide()
         labeltext = " : ".join(shortnames) + " "
         self.emit("label-changed", labeltext)
 
@@ -276,13 +322,17 @@ class FileDiff(gnomeglade.Component):
         buf.set_data("modified", yesno)
         self.label_changed()
 
-    def save(self):
-        for i in range(self.numpanes):
+    def save_focused(self):
+        for i in range(self.num_panes):
             t = self.textview[i]
             if t.is_focus():
                 self.save_file(i)
                 return
         self.statusbar.add_status("Click in the file you want to save")
+
+    def save_all(self):
+        for i in range(self.num_panes):
+            self.save_file(i)
 
     def on_fileentry_activate(self, entry):
         pane = self.fileentry.index(entry)
@@ -298,14 +348,14 @@ class FileDiff(gnomeglade.Component):
             self.refresh_timer_id = -1
         self.flushevents()
         text = []
-        for i in range(self.numpanes):
+        for i in range(self.num_panes):
             b = self.textview[i].get_buffer()
             t = b.get_text(b.get_start_iter(), b.get_end_iter(), 0)
             text.append(t)
         self.linediffs = apply(diffutil.Differ,text)
-        for i in range(self.numpanes-1):
+        for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
-        for i in range(self.numpanes):
+        for i in range(self.num_panes):
             self._highlight_buffer(i)
         self.diffmap0.queue_draw()
         self.diffmap1.queue_draw()
@@ -344,10 +394,10 @@ class FileDiff(gnomeglade.Component):
             syncpoint = 0.5
 
             adjustments = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-            adjustments = adjustments[:self.numpanes]
+            adjustments = adjustments[:self.num_panes]
             master = adjustments.index(adjustment)
             # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-            others = zip( range(self.numpanes), adjustments)
+            others = zip( range(self.num_panes), adjustments)
             del others[master]
             if master == 2:
                 others.reverse()
@@ -392,9 +442,8 @@ class FileDiff(gnomeglade.Component):
         #
     def on_diffmap_expose_event(self, area, event):
         diffmapindex = self.diffmap.index(area)
-        textindex = (0, self.numpanes-1)[diffmapindex]
+        textindex = (0, self.num_panes-1)[diffmapindex]
 
-        #TODO this is wrong
         #TODO need height of arrow button on scrollbar - how do we get that?
         size_of_arrow = 14
         hperline = float( self.scrolledwindow[textindex].get_allocation().height - 4*size_of_arrow) / self._get_line_count(textindex)
@@ -447,19 +496,22 @@ class FileDiff(gnomeglade.Component):
         """Return the number of lines in the buffer of textview 'text'"""
         return self.textview[index].get_buffer().get_line_count()
 
-    def set_num_panes(self, numpanes):
-        if numpanes != self.numpanes and numpanes in (1,2,3):
-            if numpanes == 1:
-                map( lambda x: x.hide(), self.linkmap + self.scrolledwindow[1:] + self.fileentry[1:])
-            elif numpanes == 2:
-                self.linkmap1.hide()
-                self.scrolledwindow2.hide()
-                self.fileentry2.hide()
-            else:
-                self.linkmap1.show()
-                self.scrolledwindow2.show()
-                self.fileentry2.show()
-            self.numpanes = numpanes
+    def set_num_panes(self, n):
+        if n != self.num_panes and n in (1,2,3):
+            self.num_panes = n
+            toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
+            toshow += self.linkmap[:n-1] + self.diffmap[:n]
+            map( lambda x: x.show(), toshow )
+
+            tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
+            tohide += self.linkmap[n-1:] + self.diffmap[n:]
+            map( lambda x: x.hide(), tohide )
+
+            for i in range(self.num_panes):
+                if self.textview[i].get_buffer().get_data("modified"):
+                    self.statusimage[i].show()
+            self.refresh()
+            self.label_changed()
         
     def next_diff(self, direction):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
@@ -506,7 +558,6 @@ class FileDiff(gnomeglade.Component):
         which = self.linkmap.index(area)
         madj = self.scrolledwindow[which  ].get_vadjustment()
         oadj = self.scrolledwindow[which+1].get_vadjustment()
-        indent = 8
 
         # gain function for smoothing
         #TODO cache these values
@@ -537,7 +588,7 @@ class FileDiff(gnomeglade.Component):
                 break
             if f0==f1: f0 -= 2; f1 += 2
             if t0==t1: t0 -= 2; t1 += 2
-            n = 1.0 #TODO cache
+            n = float(self.num_link_segments)
             points0 = []
             points1 = [] 
             for t in map(lambda x: x/n, range(n+1)):
@@ -601,7 +652,7 @@ class FileDiff(gnomeglade.Component):
             elif h < event.y and event.y < h + pix_height:
                 self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
                 break
-        print self.mouse_chunk
+        #print self.mouse_chunk
 
     def on_linkmap_button_release_event(self, area, event):
         if self.mouse_chunk:
