@@ -52,7 +52,7 @@ class Base:
         """
         self.xml = gtk.glade.XML(file, root)
         handlers = {}
-        for h in filter(lambda x:x[:3]=="on_", dir(self.__class__)):
+        for h in filter(lambda x:x.startswith("on_"), dir(self.__class__)):
             handlers[h] = getattr(self, h)
         self.xml.signal_autoconnect( handlers )
         self.widget = getattr(self, root)
@@ -129,6 +129,21 @@ class GnomeApp(GtkApp):
         """
         self.program = gnome.program_init(name, version)
         GtkApp.__init__(self,file,root)
+        if 0:
+            self.client = gnome.ui.Client()
+            self.client.disconnect()
+            def connected(*args):
+                print "CONNECTED", args
+            def cb(name):
+                def cb2(*args):
+                    print name, args, "\n"
+                return cb2
+            self.client.connect("connect", cb("CON"))
+            self.client.connect("die", cb("DIE"))
+            self.client.connect("disconnect", cb("DIS"))
+            self.client.connect("save-yourself", cb("SAVE"))
+            self.client.connect("shutdown-cancelled", cb("CAN"))
+            self.client.connect_to_session_manager()
 
 
 def load_pixbuf(fname, size=0):

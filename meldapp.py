@@ -22,6 +22,7 @@ import os
 import gtk
 import gtk.glade
 import gnome
+import gnome.ui
 
 # project
 import prefs
