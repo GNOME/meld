@@ -59,7 +59,7 @@ def appdir(pathin):
     where = os.path.dirname(sys.argv[0])
     pathout = os.path.join( where, pathin )
     if not os.path.exists(pathout):
-        run_dialog("Cannot find '%s'\nI looked in '%s'\n(%s)" % (pathin,where,pathout), gtk.MESSAGE_ERROR)
+        run_dialog("Cannot find '%s'\nI looked in '%s'\n(%s)" % (pathin,where,pathout), None, gtk.MESSAGE_ERROR)
         sys.exit(1)
     return pathout
 
