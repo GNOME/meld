@@ -26,5 +26,5 @@ $(DESTDIR)$(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo
 	mkdir -m 755 -p $(dir $@) && install -m 644 $< $@
 
 %/LC_MESSAGES/meld.mo : %.po
-	mkdir -m 755 -p $(dir $@) && msgfmt -o $@ $<
+	mkdir -m 755 -p $(dir $@) && msgfmt -c -o $@ $<
 
