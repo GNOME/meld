@@ -121,6 +121,14 @@ class FileDiff(gnomeglade.Component):
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
             self.textview[i].get_buffer().connect("insert-text", self.on_text_insert_text)
             self.textview[i].get_buffer().connect("delete-range", self.on_text_delete_range)
+            #if 0: # test different font sizes
+            #    description = self.textview[i].get_pango_context().get_font_description()
+            #    description.set_size(7 * 1024)
+            #    self.textview[i].modify_font(description)
+
+        context = self.textview0.get_pango_context()
+        metrics = context.get_metrics( context.get_font_description(), context.get_language() )
+        self.pixels_per_line = (metrics.get_ascent() + metrics.get_descent()) / 1024
 
         self.linediffs = diffutil.Differ()
         self.refresh_timer_id = -1
@@ -132,6 +140,7 @@ class FileDiff(gnomeglade.Component):
 
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
+
 
     def on_key_press_event(self, object, event):
         for t in self.textview: # key event bug workaround
@@ -376,7 +385,6 @@ class FileDiff(gnomeglade.Component):
 
         #TODO this is wrong
         #TODO need height of arrow button on scrollbar - how do we get that?
-        #TODO also need font height 
         size_of_arrow = 14
         hperline = float( self.scrolledwindow[textindex].get_allocation().height - 4*size_of_arrow) / self._get_line_count(textindex)
         if hperline > 11:
@@ -445,14 +453,12 @@ class FileDiff(gnomeglade.Component):
     def next_diff(self, direction):
         adj = self.scrolledwindow1.get_vadjustment()
 
-        pixels_per_line = (adj.upper - adj.lower) / self._get_line_count(1)
-        pixels_per_line = min(pixels_per_line, 12) #TODO font height
-        line = (adj.value + adj.page_size/2) / pixels_per_line
+        line = (adj.value + adj.page_size/2) / self.pixels_per_line
 
         if direction == gdk.SCROLL_DOWN:
             for c in self.linediffs.single_changes(1):
                 if c[1] > line:
-                    want = 0.5 * (pixels_per_line * (c[1] + c[2]) - adj.page_size)
+                    want = 0.5 * (self.pixels_per_line * (c[1] + c[2]) - adj.page_size)
                     want = _clamp(want, 0, adj.upper-adj.page_size)
                     adj.set_value( want )
                     return
@@ -463,7 +469,7 @@ class FileDiff(gnomeglade.Component):
                     save = c
                 else:
                     if save:
-                        want = 0.5 * (pixels_per_line * (save[1]+save[2]) - adj.page_size)
+                        want = 0.5 * (self.pixels_per_line * (save[1]+save[2]) - adj.page_size)
                         want = _clamp(want, 0, adj.upper-adj.page_size)
                         adj.set_value( want )
                         return
@@ -486,8 +492,6 @@ class FileDiff(gnomeglade.Component):
         which = self.linkmap.index(area)
         madj = self.scrolledwindow[which  ].get_vadjustment()
         oadj = self.scrolledwindow[which+1].get_vadjustment()
-        pixels_per_line = (madj.upper - madj.lower) / self._get_line_count(which)
-        pixels_per_line = min(pixels_per_line, 12) #TODO font height
         indent = 8
 
         # gain function for smoothing
@@ -511,8 +515,8 @@ class FileDiff(gnomeglade.Component):
             pix1 = self.pixbuf_apply1
 
         for c in self.linediffs.pair_changes(which, which+1):
-            f0,f1 = map( lambda l: l * pixels_per_line - madj.value, c[1:3] )
-            t0,t1 = map( lambda l: l * pixels_per_line - oadj.value, c[3:5] )
+            f0,f1 = map( lambda l: l * self.pixels_per_line - madj.value, c[1:3] )
+            t0,t1 = map( lambda l: l * self.pixels_per_line - oadj.value, c[3:5] )
             if f1<0 and t1<0: # find first visible chunk
                 continue
             if f0>htotal and t0>htotal: # we've gone past last visible
@@ -560,19 +564,17 @@ class FileDiff(gnomeglade.Component):
 
         madj = self.scrolledwindow0.get_vadjustment()
         oadj = self.scrolledwindow1.get_vadjustment()
-        pixels_per_line = (madj.upper - madj.lower) / self._get_line_count(0)
-        pixels_per_line = min(pixels_per_line, 12) #TODO font height
 
         # are we near the gutter?
         if event.x < pix_width:
             side = 0
             skip_type = "insert"
-            func = lambda c: c[1] * pixels_per_line - madj.value
+            func = lambda c: c[1] * self.pixels_per_line - madj.value
             rect_x = 0
         elif event.x > wtotal - pix_width:
             side = 1
             skip_type = "delete"
-            func = lambda c: c[3] * pixels_per_line - oadj.value
+            func = lambda c: c[3] * self.pixels_per_line - oadj.value
             rect_x = wtotal - pix_width
         else:
             return

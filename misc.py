@@ -45,13 +45,15 @@ def shorten_names(*names):
 
 ################################################################################
 #
-# look, ilook
+# look, ilook, all
 #
 ################################################################################
 def look(s, o):
     return filter(lambda x:x.find(s)!=-1, dir(o))
 def ilook(s, o):
     return filter(lambda x:x.lower().find(s)!=-1, dir(o))
+def all(o):
+    return "\n".join( ["%s\t%s" % (x,getattr(o,x)) for x in dir(o)] )
 
 ################################################################################
 #

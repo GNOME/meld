@@ -4,7 +4,7 @@ TESTNUM=3
 VERSION=0.5.1
 RELEASE=meld-$(VERSION)
 
-run : runcvs
+run : rundiff
 
 rundiff:
 	$(PROG) test/lao test/tzu test/tao
@@ -16,7 +16,8 @@ runcvs:
 	#(cd ../.. && Projects/meld/$(PROG) Projects/meld)
 
 $(RELEASE).tgz:
-	cvs -q -z3 export -d $(RELEASE) -D now meld
+	cvs tag release-$(subst .,_,$(VERSION))
+	cvs -q -z3 export -d $(RELEASE) -r release-$(subst .,_,$(VERSION))
 	tar cvfz $(RELEASE).tgz $(RELEASE)
 	rm -rf $(RELEASE)
 
@@ -24,6 +25,6 @@ upload: $(RELEASE).tgz
 	lftp -c "open upload.sourceforge.net; cd incoming; put $(RELEASE).tgz"
 
 notify:
-	galeon http://sourceforge.net/project/admin/editpackages.php?group_id=53725
+	galeon -x http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
 
 release: $(RELEASE).tgz upload notify
