@@ -515,6 +515,19 @@ class FileDiff(gnomeglade.Component):
             s,e = math.floor(s), math.ceil(e)
             window.draw_rectangle(gc[c[0]], 1, x0, s, x1, e-s)
 
+    def on_diffmap_button_press_event(self, area, event):
+        #TODO need height of arrow button on scrollbar - how do we get that?
+        size_of_arrow = 14
+        diffmapindex = self.diffmap.index(area)
+        textindex = (0, self.num_panes-1)[diffmapindex]
+        textview = self.textview[textindex]
+        textheight = textview.get_allocation().height
+        fraction = (event.y - size_of_arrow) / (textheight - 2*size_of_arrow)
+        linecount = self._get_line_count(textindex)
+        wantline = _clamp(fraction * linecount, 0, linecount)
+        iter = textview.get_buffer().get_iter_at_line(wantline)
+        self.textview[textindex].scroll_to_iter(iter, 0.0, use_align=1, xalign=0, yalign=0.5)
+
     def _highlight_buffer(self, which):
         widget = self.textview[which]
         buffer = widget.get_buffer()
