@@ -8,7 +8,6 @@ import gtk
 import os
 import re
 
-
 import misc
 import gnomeglade
 
