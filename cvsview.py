@@ -25,7 +25,7 @@ import re
 
 import tree
 import misc
-import gnomeglade
+import glade
 import melddoc
 import paths
 import stock
@@ -250,9 +250,9 @@ def _commonprefix(files):
 # CommitDialog
 #
 ################################################################################
-class CommitDialog(gnomeglade.Component):
+class CommitDialog(glade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
+        glade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
         self.connect_signal_handlers()
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
@@ -302,9 +302,9 @@ class CvsTreeStore(tree.DiffTreeStore):
 # DirDiffMenu
 #
 ################################################################################
-class CvsMenu(gnomeglade.Component):
+class CvsMenu(glade.Component):
     def __init__(self, parent, event):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "menu_popup")
+        glade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "menu_popup")
         self.connect_action_proxy("popup", parent)
         self.parent = parent
         self.widget.popup( None, None, None, 3, event.time )
@@ -325,9 +325,9 @@ entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 # DirectoryBrowser
 #
 ################################################################################
-class DirectoryBrowser(gnomeglade.Component):
+class DirectoryBrowser(glade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "dirchooserdialog")
+        glade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "dirchooserdialog")
         self.parent = parent
         self.widget.set_transient_for(self.parent.widget.get_toplevel())
         self.connect_signal_handlers()
@@ -342,7 +342,7 @@ class DirectoryBrowser(gnomeglade.Component):
 # CvsView
 #
 ################################################################################
-class CvsView(melddoc.MeldDoc, gnomeglade.Component):
+class CvsView(melddoc.MeldDoc, glade.Component):
 
     UI_DEFINITION = """
     <ui>
@@ -426,7 +426,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "cvsview")
+        glade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "cvsview")
 
         self.actiongroup = gtk.ActionGroup("CvsActions")
         self.add_actions( self.actiongroup, self.UI_ACTIONS )
@@ -472,7 +472,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible( self.prefs.cvs_flatten )
-        self.location_history = gnomeglade.DirectoryEntry(self.combo_location, self.prefs, "cvs_location_history")
+        self.location_history = glade.DirectoryEntry(self.combo_location, self.prefs, "cvs_location_history")
         self.action__view_console_toggled(self.action_view_console)
         self.connect_signal_handlers()
 

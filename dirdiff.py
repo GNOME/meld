@@ -17,7 +17,7 @@
 import paths
 import diffutil
 import errno
-import gnomeglade
+import glade
 import gobject
 import gtk
 import gtk.keysyms
@@ -106,7 +106,7 @@ def _not_none(l):
 join = os.path.join
 
 COL_EMBLEM = tree.COL_END + 1
-pixbuf_newer = gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps/tree-file-newer.png"), 14)
+pixbuf_newer = glade.load_pixbuf( paths.share_dir("glade2/pixmaps/tree-file-newer.png"), 14)
 TYPE_PIXBUF = type(pixbuf_newer)
 
 ################################################################################
@@ -166,10 +166,10 @@ gobject.type_register(EmblemCellRenderer)
 # DirDiffMenu
 #
 ################################################################################
-class DirDiffMenu(gnomeglade.Component):
+class DirDiffMenu(glade.Component):
     def __init__(self, app):
         gladefile = paths.share_dir("glade2/dirdiff.glade")
-        gnomeglade.Component.__init__(self, gladefile, "popup")
+        glade.Component.__init__(self, gladefile, "popup")
         self.parent = app
     def popup_in_pane( self, pane ):
         self.copy_left.set_sensitive( pane > 0 )
@@ -205,12 +205,12 @@ class TypeFilter(object):
 #
 ################################################################################
 
-class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
+class DirDiff(melddoc.MeldDoc, glade.Component):
     """Two or three way diff of directories"""
 
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
+        glade.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
         self.popup_menu = DirDiffMenu(self)

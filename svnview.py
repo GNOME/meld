@@ -27,7 +27,7 @@ import re
 
 import tree
 import misc
-import gnomeglade
+import glade
 import melddoc
 import paths
 
@@ -189,9 +189,9 @@ def _commonprefix(files):
 # CommitDialog
 #
 ################################################################################
-class CommitDialog(gnomeglade.Component):
+class CommitDialog(glade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
+        glade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         selected = parent._get_selected_files()
@@ -239,10 +239,10 @@ class CvsTreeStore(tree.DiffTreeStore):
 # DirDiffMenu
 #
 ################################################################################
-class CvsMenu(gnomeglade.Component):
+class CvsMenu(glade.Component):
     def __init__(self, app, event):
         gladefile = paths.share_dir("glade2/cvsview.glade")
-        gnomeglade.Component.__init__(self, gladefile, "menu_popup")
+        glade.Component.__init__(self, gladefile, "menu_popup")
         self.parent = app
         self.widget.popup( None, None, None, 3, event.time )
     def on_diff_activate(self, menuitem):
@@ -275,11 +275,11 @@ entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 # CvsView
 #
 ################################################################################
-class CvsView(melddoc.MeldDoc, gnomeglade.Component):
+class CvsView(melddoc.MeldDoc, glade.Component):
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "cvsview")
+        glade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "cvsview")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.tempfiles = []
         self.model = CvsTreeStore()
