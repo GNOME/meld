@@ -357,7 +357,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     c.show()
                     c.set_sensitive( i != pane)
                     c.get_child().set_label("_Copy to pane %i" % (i+1))
-            self.popup_menu.widget.popup(None,None,None,3,0)
+            self.popup_menu.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
             return 1
 
     def set_num_panes(self, n):
