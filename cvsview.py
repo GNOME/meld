@@ -157,7 +157,7 @@ def _find(start):
             cfiles.append( (f, lname) )
     return _lookup_cvs_files(cfiles, cdirs)
 
-def recursive_find(start, progressfunc):
+def recursive_find(start):
     if start=="":
         start="."
     ret = []
@@ -167,7 +167,6 @@ def recursive_find(start, progressfunc):
         dirs, files = _find(dirname)
         ret.extend( dirs )
         ret.extend( files )
-        progressfunc()
     os.path.walk(start, visit, ret)
     return ret
 
@@ -334,7 +333,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             model.set_value(i, MODEL_OPTIONS, f.options)
 
         if self.button_recurse.get_active():
-            files = filter(showable, recursive_find(location, progressfunc))
+            files = filter(showable, recursive_find(location))
             files = filter(lambda x: not x.isdir, files)
             for f in files:
                 iter = model.append(me)
