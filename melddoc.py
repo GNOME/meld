@@ -36,6 +36,11 @@ class MeldDoc(gobject.GObject):
         self.num_panes = 0
         self.label_text = "untitled"
 
+    def save(self):
+        pass
+    def save_all(self):
+        pass
+
     def on_undo_activate(self):
         if self.undosequence.can_undo():
             self.undosequence_busy = 1
