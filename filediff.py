@@ -78,14 +78,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     tag.set_property(p,v)
             add_tag("edited line",   {"background": self.prefs.color_edited_bg,
                                       "foreground": self.prefs.color_edited_fg} )
-            add_tag("inline line",   {"background": self.prefs.color_inline_bg,
-                                      "foreground": self.prefs.color_inline_fg} )
             add_tag("delete line",   {"background": self.prefs.color_delete_bg,
                                       "foreground": self.prefs.color_delete_fg}  )
             add_tag("replace line",  {"background": self.prefs.color_replace_bg,
                                       "foreground": self.prefs.color_replace_fg} )
             add_tag("conflict line", {"background": self.prefs.color_conflict_bg,
                                       "foreground": self.prefs.color_conflict_fg} )
+            add_tag("inline line",   {"background": self.prefs.color_inline_bg,
+                                      "foreground": self.prefs.color_inline_fg} )
         class ContextMenu(gnomeglade.Component):
             def __init__(self, app):
                 gladefile = paths.share_dir("glade2/filediff.glade")
@@ -360,12 +360,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # find/replace buffer
         #
-    def _find_text(self, tofind, match_case=0, entire_word=0, wrap=1, regex=0):
-        self.last_search = misc.struct(text=tofind, case=match_case, word=entire_word, wrap=wrap, regex=regex)
+    def _find_text(self, tofind_utf8, match_case=0, entire_word=0, wrap=1, regex=0):
+        self.last_search = misc.struct(text=tofind_utf8, case=match_case, word=entire_word, wrap=wrap, regex=regex)
         view = self._get_focused_textview() or self.textview0
         buf = view.get_buffer()
         insert = buf.get_iter_at_mark( buf.get_insert() )
-        text = buf.get_text(*buf.get_bounds() )
+        tofind = tofind_utf8.decode("utf-8") # tofind is utf-8 encoded
+        text = buf.get_text(*buf.get_bounds() ).decode("utf-8") # as is buffer
         if not regex:
             tofind = re.escape(tofind)
         if entire_word:
@@ -375,7 +376,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         except re.error, e:
             misc.run_dialog( _("Regular expression error\n'%s'") % e, self, messagetype=gtk.MESSAGE_ERROR)
         else:
-            match = pattern.search(text, insert.get_offset()+1 )
+            match = pattern.search(text, insert.get_offset()+1)
             if match == None and wrap:
                 match = pattern.search(text, 0)
             if match:
@@ -385,9 +386,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 buf.move_mark( buf.get_selection_bound(), iter )
                 view.scroll_to_mark( buf.get_insert(), 0)
             elif regex:
-                misc.run_dialog( _("The regular expression '%s' was not found.") % tofind, self, messagetype=gtk.MESSAGE_INFO)
+                misc.run_dialog( _("The regular expression '%s' was not found.") % tofind_utf8, self, messagetype=gtk.MESSAGE_INFO)
             else:
-                misc.run_dialog( _("The text '%s' was not found.") % tofind, self, messagetype=gtk.MESSAGE_INFO)
+                misc.run_dialog( _("The text '%s' was not found.") % tofind_utf8, self, messagetype=gtk.MESSAGE_INFO)
 
         #
         # text buffer loading/saving
@@ -562,18 +563,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             b.apply_tag(t, s, b.get_iter_at_line(l))
                         #text1 = "\n".join(lines[1]  [c[1]:c[2]])
                         #textn = "\n".join(lines[i*2][c[3]:c[4]])
-                        #text1 = "\n".join( self._get_texts()[1  ][c[1]:c[2]] )
-                        #textn = "\n".join( self._get_texts()[i*2][c[3]:c[4]] )
-                        #matcher = difflib.SequenceMatcher(None, text1, textn)
+                        text1 = "\n".join( self._get_texts()[1  ][c[1]:c[2]] )
+                        textn = "\n".join( self._get_texts()[i*2][c[3]:c[4]] )
+                        matcher = difflib.SequenceMatcher(None, text1, textn)
                         #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
-                        #tags = [b.get_tag_table().lookup("inline line") for b in bufs]
-                        #for o in filter( lambda x: x[0]!="equal", matcher.get_opcodes()):
-                            #for i in range(2):
-                                #s,e = starts[i].copy(), starts[i].copy()
-                                #s.forward_chars( o[1+2*i] )
-                                #e.forward_chars( o[2+2*i] )
-                                #bufs[i].apply_tag(tags[i], s, e)
-                        #yield 1
+                        tags = [b.get_tag_table().lookup("inline line") for b in bufs]
+                        back = (0,0)
+                        for o in matcher.get_opcodes():
+                            if o[0] == "equal":
+                                if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
+                                    back = o[4]-o[3], o[2]-o[1]
+                                continue
+                            for i in range(2):
+                                s,e = starts[i].copy(), starts[i].copy()
+                                s.forward_chars( o[1+2*i] - back[i] )
+                                e.forward_chars( o[2+2*i] )
+                                bufs[i].apply_tag(tags[i], s, e)
+                            back = (0,0)
+                        yield 1
         yield 1
         
     def save_file(self, pane, saveas=0):
