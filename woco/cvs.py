@@ -26,44 +26,36 @@ class WorkingCopy:
     def __init__(self, root):
         """Open working copy rooted at local path "root"
         """
-        self.root = root
+        self.root = os.path.abspath(root)
         
     def listdir(self, relpath):
-        """Return list of <dirs>,<files> at relpath.
+        """Return list of <dirs>+<files> at relpath.
         
-        Can raise OSError if relpath does not exist.
         """
         directory = os.path.join(self.root, relpath)
-        local_entries = self._list_local(directory)
         try:
             cvs_entries_file = self._read_cvs_entries(directory)
         except IOError, e: # no cvs dir
-            pathto = lambda d : os.path.join(directory,d)
-            dirs, files = local_entries
-            return [woco.Entry(pathto(d)) for d in dirs], [woco.Entry(pathto(f)) for f in files]
-        cvs_entries = self._parse_cvs_entries_file(directory, cvs_entries_file)
-        return self._merge_lists(directory, cvs_entries, local_entries)
+            cvs_entries = []
+        else:
+            cvs_entries, cvs_dict = self._parse_cvs_entries_file(directory, cvs_entries_file)
+
+        print "**",relpath, "**",directory,"**",cvs_entries
+        return cvs_entries
+        ret = self._merge_local(directory, cvs_entries, cvs_dict)
+        print ret
+        return ret
 
 
     #
     # Internal
     #
 
-    def _list_local(self, directory):
-        """List the local directory contents.
-        """
-        entries = os.listdir(directory)
-        pathto = lambda d : os.path.join(directory,d)
-        isdir = lambda d : os.path.isdir( os.path.join(directory,d) )
-        dirs = [ e for e in entries if isdir(e) ]
-        files= [ e for e in entries if not isdir(e) ]
-        return dirs, files
-
     def _read_cvs_entries(self, directory):
         """Read contents of CVS/Entries as one big string
         """
         # CVS/Entries contains main info
-        cvsentries = open( os.path.join(directory, "CVS/Entries"), "U").read()
+        cvsntries = open( os.path.join(directory, "CVS/Entries"), "U").read()
 
         # CVS/Entries.Log may contain info not yet added to CVS/Entries
         try:
@@ -83,7 +75,7 @@ class WorkingCopy:
                         pass
                 else:
                     print "Unknown Entries.Log line '%s'" % match[0]
-            cvsentries = "\n".join(extras)
+            cvsentries += "\n".join(extras)
         return cvsentries
 
     def _parse_cvs_entries_file(self, directory, cvsentries):
@@ -104,6 +96,7 @@ class WorkingCopy:
             if tag:
                 entry.tag = tag[1:]
             if isdir:
+                entry.isdir = True
                 if os.path.exists(path):
                     entry.status = woco.Status.NORMAL
                 else:
@@ -135,40 +128,50 @@ class WorkingCopy:
                             else:
                                 entry.status = woco.Status.MODIFIED
                 retfiles.append( entry )
-        return retdirs, retfiles
+        return retdirs + retfiles, knowndict
 
     def _get_cvs_ignore_func(self, directory):
         """Return a function to test whether a file is ignored.
         """
+        ignored = ["CVS"]
         try:
-            ignored = open("%s/.cvsignore" % os.environ["HOME"]).read().split()
+            ignored += open("%s/.cvsignore" % os.environ["HOME"]).read().split()
         except (IOError,KeyError):
-            ignored = []
+            pass
         try:
             ignored += open( os.path.join(directory, ".cvsignore") ).read().split()
         except IOError:
             pass
+        print ignored
 
         if len(ignored):
-            regexes = [ woco.shell_to_regex(i)[:-1] for i in ignored ]
+            regexes = [ woco.shell_to_regex(i, extended=False)[:-1] for i in ignored ]
             try:
                 return lambda x : re.compile( "(" + "|".join(regexes) + ")" ).match(x) != None
             except re.error:
                 pass
         return lambda x : False
 
-    def _merge_lists(self, directory, cvs_entries, local_entries):
+
+    def _merge_local(self, directory, cvs_entries, cvs_dict):
         """Merge the local entries into the cvs entries.
         """
+        return cvs_entries
         pathto = lambda d : os.path.join(directory,d)
         cvs_ignored = self._get_cvs_ignore_func(directory)
-        cvs_dirs, cvs_files = cvs_entries
-        versiondict = {}
-        for e in cvs_dirs + cvs_files:
-            versiondict[ os.path.basename(e.path) ] = 1
+
+        local = os.listdir(directory)
+        local.sort()
+        for e in local:
+            if not d in knowndict and not cvs_ignored(d):
+                dirs.append( woco.Entry(pathto(d)) )
+
+        #    e in local if isdir(e) ]:
+
+        files= [ e for e in entries if not isdir(e) ]
+        return dirs, files
         local_dirs, local_files = local_entries
-        cvs_dirs  += [woco.Entry(pathto(d)) for d in local_dirs  if not cvs_ignored(d) and d not in versiondict]
         cvs_files += [woco.Entry(pathto(f)) for f in local_files if not cvs_ignored(f) and f not in versiondict]
 
         # ignored
-        return cvs_dirs, cvs_files
+        return dirs + files

@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -287,11 +287,13 @@ class Differ(object):
         elif len(sequences)==3:
             diffs = [[], []]
             for i in range(2):
-                matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[i*2])
-                work = matcher.initialise()
-                while work.next() == None:
-                    yield None
-                diffs[i] = matcher.get_difference_opcodes()
+                if len(sequences[i*2]) != 0 and len(sequences[i*2][0]) != 0:
+                    print 1, i*2
+                    matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[i*2])
+                    work = matcher.initialise()
+                    while work.next() == None:
+                        yield None
+                    diffs[i] = matcher.get_difference_opcodes()
         else:
             raise "Bad number of arguments to Differ constructor (%i)" % len(sequences)
         self.diffs = diffs

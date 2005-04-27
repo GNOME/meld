@@ -14,28 +14,32 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import os
+__metaclass__ = type
 
-_locale_dir = ( #LOCALEDIR#
-)
-_doc_dir = ( #DOCDIR#
-)
-_share_dir = ( #SHAREDIR#
-)
+import gtk
 
-import sys
-appdir = os.path.dirname(__file__)
-
-if not _locale_dir: _locale_dir = os.path.join(appdir,"po")
-if not _doc_dir:    _doc_dir    = os.path.join(appdir,"help","C")
-if not _share_dir:  _share_dir  = appdir
-
-def locale_dir(*args): # i18n files
-    return os.path.join(_locale_dir, *args)
-
-def doc_dir(*args): # manual
-    return os.path.join(_doc_dir, *args)
-
-def share_dir(*args): # glade + pixmaps
-    return os.path.join(_share_dir, *args)
-
+class Tree(gtk.GenericTreeModel):
+    def on_get_flags(self):
+        pass
+    def on_get_n_columns(self):
+        pass
+    def on_get_column_type(self, index):
+        pass
+    def on_get_iter(self, path):
+        pass
+    def on_get_path(self, rowref):
+        pass
+    def on_get_value(self, rowref, column):
+        pass
+    def on_iter_next(self, rowref):
+        pass
+    def on_iter_children(self, parent):
+        pass
+    def on_iter_has_child(self, rowref):
+        pass
+    def on_iter_n_children(self, rowref):
+        pass
+    def on_iter_nth_child(self, parent, n):
+        pass
+    def on_iter_parent(self, child):
+        pass

@@ -55,10 +55,7 @@ if sys.version_info[:2] < pyver:
 try:
     import pygtk
 except ImportError, e:
-    print e
-    print _("Meld requires a recent version of pygtk.")
-    print _("pygtk-%s or higher is recommended.") % ver2str(pygtkver)
-    sys.exit(1)
+    pass # catch gtk version later
 else:
     pygtk.require("2.0")
 
@@ -67,7 +64,9 @@ else:
 #
 import gtk
 if gtk.pygtk_version < pygtkver:
-    print _("Meld requires pygtk-%s or higher. (found %s)") % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
+    print _("Meld requires pygtk-%s or higher. (found %s)") % (
+        ver2str(pygtkver), ver2str(gtk.pygtk_version))
+    sys.exit(1)
 
 #
 # main

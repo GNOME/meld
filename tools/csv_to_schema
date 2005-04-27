@@ -1,0 +1,67 @@
+#! /usr/bin/env python
+
+import csv
+import sys
+sys.path.append("..")
+
+columns = "name type default short long".split()
+template = """\t<schema>
+\t\t<key>/schemas%(keyname)s</key>
+\t\t<applyto>%(keyname)s</applyto>
+\t\t<owner>meld</owner>
+\t\t<type>%(keytype)s</type>%(extratype)s
+\t\t<default>%(keydefault)s</default>
+\t\t<locale name="C">
+\t\t\t<short>%(keyshort)s</short>
+\t\t\t<long>%(keylong)s</long>
+\t\t</locale>
+\t</schema>"""
+
+def csv_to_schema(infilename):
+    out = []
+    out.append('<?xml version="1.0"?>\n<gconfschemafile>\n<schemalist>')
+    for line in csv.reader( open(infilename) ):
+        assert(len(line)) == len(columns)
+        if len(line[0]) == 0:
+            if len("".join(line)) != 0:
+                raise AssertionError("First column must not be empty'%s'" % line)
+        elif line[0].find("/") != -1:
+            curroot = line[0]
+            if len("".join(line[1:])) != 0:
+                raise AssertionError("Found junk after key directory '%s'" % line)
+            out.append("\n\n<!-- %s -->\n\n" % curroot)
+        else:
+            for i,k in enumerate(line[:3]):
+                if not k:
+                    raise AssertionError("Missing '%s' for '%s'" % (columns[i], line[0]))
+            keyname = "%s/%s" % (curroot, line[0])
+            keytype, keydefault, keyshort, keylong = line[1:]
+            if keytype.startswith("list"):
+                try:
+                    listtype = keytype.split(":")[1]
+                except IndexError:
+                    raise AssertionError("Missing type of list for '%s' e.g. list:string." % line[0])
+                extratype = "\n\t\t<list_type>%s</list_type>" % listtype
+                keytype = "list"
+            elif keytype.startswith("enum"):
+                ename = keytype.split(":",1)[-1]
+                modname, modenum = ename.split(".",1)
+                mod = __import__(modname)
+                e = getattr(mod, modenum)
+                values = '", "'.join([v.value_nick for v in e.__enum_values__.values()])
+                keylong = 'Enum %s : "%s"' % (ename, values)
+                keytype = "string"
+            else:
+                extratype = ""
+            out.append( template % locals() )
+    out.append("\n</schemalist>\n</gconfschemafile>\n")
+    return "\n".join(out)
+
+def main():
+    import sys
+    infile, outfile = sys.argv[1:]
+    out = csv_to_schema(infile)
+    open(outfile,"w").write(out)
+
+if __name__=="__main__":
+    main()

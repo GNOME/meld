@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 
 """
 
+__metaclass__ = type
+
 import gconf
 import gettext
 import glade
@@ -28,9 +30,17 @@ import gtk.glade
 import os
 import paths
 import re
+import sys
+
+DEBUG = lambda x : None
+DEBUG = lambda x : sys.stdout.write(x+"\n")
 
 RE_ON_HANDLER = re.compile(r"on_(.+?)__(.+)")
 RE_AFTER_HANDLER = re.compile(r"after_(.+?)__(.+)")
+
+class struct:
+    def __init__(self, **args):
+        self.__dict__.update(args)
 
 def connect_signal_handlers(self):
     """Connect method named on_<widget>__<event> or after_<widget>__<event>
@@ -72,7 +82,7 @@ def connect_signal_handlers(self):
                 print attr, type(attr)
                 assert 0
 
-class Component(object):
+class Component:
     """Base class for all glade objects.
 
     The handle to the xml file is stored in 'self.glade_xml'. The
@@ -143,17 +153,22 @@ class Component(object):
                 if len(action)==5:
                     handler = getattr(self, "action_%s__activate"%action[0])
                     normal_actions.append( action + (handler,) )
-                elif isinstance(action[-1], type(True)): 
+                elif len(action)==6:
+                    assert isinstance(action[-1], type(True))
                     handler = getattr(self, "action_%s__toggled"%action[0])
                     toggle_actions.append( action[:-1] + (handler,action[-1]) )
-                elif isinstance(action[-1], type(0)): 
-                    handler = getattr(self, "action_%s__changed"%action[0])
-                    radio_actions.append( action + (handler,) )
+                elif len(action)==7:
+                    assert isinstance(action[-2], type(0))
+                    radio_actions.append( action )
                 else:
                     assert 0
         actiongroup.add_actions( normal_actions )
         actiongroup.add_toggle_actions( toggle_actions )
-        actiongroup.add_radio_actions( radio_actions )
+        for i in range(len(radio_actions)):
+            if i+1==len(radio_actions) or radio_actions[i] != radio_actions[i+1]:
+                handler = getattr(self, "action_%s__changed"%radio_actions[i][-1])
+                actions = [a[:-1] for a in radio_actions]
+                actiongroup.add_radio_actions( actions, -1, handler )
         for action in actiondefs:
             setattr(self, "action_"+action[0], actiongroup.get_action(action[0]))
 
@@ -208,22 +223,28 @@ class GtkApp(Component):
         """
         gtk.main_quit()
 
+def _load_close_pixbuf():
+    image = gtk.Image()
+    image.set_from_file( paths.share_dir("glade2/pixmaps/button_delete.xpm") )
+    image.set_from_pixbuf( image.get_pixbuf().scale_simple(9, 9, 2) )
+    return image.get_pixbuf()
+
 class CloseLabel(gtk.HBox):
     __gsignals__ = {
         'closed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
     }
 
+    CLOSE_ICON_PIXBUF = _load_close_pixbuf()
+
     def __init__(self, iconname, text=""):
         gtk.HBox.__init__(self)
         self.label = gtk.Label(text)
+        self.label.set_padding(3,0)
         self.button = gtk.Button()
-        icon = gtk.Image()
-        icon.set_from_file( paths.share_dir("glade2/pixmaps/%s" % iconname) )
-        icon.set_from_pixbuf( icon.get_pixbuf().scale_simple(15, 15, 2) ) #TODO font height
-        image = gtk.Image()
-        image.set_from_file( paths.share_dir("glade2/pixmaps/button_delete.xpm") )
-        image.set_from_pixbuf( image.get_pixbuf().scale_simple(9, 9, 2) ) #TODO font height
-        self.button.add( image )
+        close = gtk.Image()
+        close.set_from_pixbuf(self.CLOSE_ICON_PIXBUF)
+        self.button.add( close )
+        icon = gtk.image_new_from_stock( iconname, gtk.ICON_SIZE_SMALL_TOOLBAR )
         self.pack_start( icon )
         self.pack_start( self.label )
         self.pack_start( self.button, expand=0 )
@@ -237,48 +258,59 @@ class CloseLabel(gtk.HBox):
         self.label.set_markup(markup)
 gobject.type_register(CloseLabel)
 
-class BaseEntry(gtk.HBox):
+class BaseEntry(gobject.GObject):
     ROOT_KEY = "/apps/meld/state"
 
-    def __init__(self, history_id=None):
+    __gsignals__ = {
+        "activate" : ( gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, () )
+    }
+
+    def __init__(self, comboentry, button, history_id=None):
         self.__gobject_init__()
-        self.combo = gtk.combo_box_entry_new_text()
+        self.combo = comboentry
+        self.combo.set_model( gtk.ListStore(type("")) )
+        self.combo.set_text_column(0)
         self.entry = self.combo.child
-        self.button = gtk.Button(_("_Browse..."))
-        self.pack_start(self.combo)
-        self.pack_start(self.button, expand=False)
-        self.set_spacing(3)
+        self.button = button
         # history
         self.gconf = gconf.client_get_default()
-        self.history_id = history_id
-        self.add_history(None)
+        self.history_id = history_id or comboentry.get_name()
+        self.set_filename(None)
         # completion
         self.completion = gtk.EntryCompletion()
-        model = gtk.ListStore(type(""))
-        self.completion.set_model( model )
+        self.completion.set_model(gtk.ListStore(gobject.TYPE_STRING))
         self.completion.set_text_column(0)
         self.entry.set_completion(self.completion)
         glade.connect_signal_handlers(self)
-        self.show_all()
 
     def on_button__clicked(self, button):
         buttons = gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK
-        dialog = gtk.FileChooserDialog(parent=self.get_toplevel(), action=self.FILE_CHOOSER_ACTION, buttons=buttons)
+        dialog = gtk.FileChooserDialog(parent=button.get_toplevel(), action=self.FILE_CHOOSER_ACTION, buttons=buttons)
         if dialog.run() == gtk.RESPONSE_OK:
-            self.entry.set_text(dialog.get_filename())
+            self.set_filename(dialog.get_filename())
+            self.entry.emit("activate")
         dialog.destroy()
 
     def on_entry__changed(self, entry):
         model = entry.get_completion().get_model()
         model.clear()
-        loc = entry.get_text()
-        if os.path.isdir(loc) and loc != "/":
-            loc += "/"
-        completions = [x for x in glob.glob( loc+"*" ) if self.COMPLETION_FILTER(x)]
+        def add_slash(p):
+            if os.path.isdir(p) and p != "/":
+                return p + "/"
+            return p
+        loc = add_slash(entry.get_text())
+        completions = [add_slash(x) for x in glob.glob( loc+"*" ) if self.COMPLETION_FILTER(x)]
         for m in completions[:10]:
             model.append( [m] )
 
-    def add_history(self, name):
+    def on_entry__activate(self, entry):
+        self.set_filename(entry.get_text())
+        self.emit("activate")
+
+    def get_filename(self):
+        return self.entry.get_text()
+
+    def set_filename(self, name):
         history = self.gconf.get_list("%s/%s" % (self.ROOT_KEY, self.history_id), gconf.VALUE_STRING )
         try:
             history.remove(name)
@@ -293,15 +325,15 @@ class BaseEntry(gtk.HBox):
         for h in history:
             model.append([h])
         if name:
-            self.combo.set_active(0)
+            self.entry.set_text(name)
             self.gconf.set_list("%s/%s" % (self.ROOT_KEY, self.history_id), gconf.VALUE_STRING, history )
 gobject.type_register(BaseEntry)
 
 class FileEntry(BaseEntry):
     FILE_CHOOSER_ACTION = gtk.FILE_CHOOSER_ACTION_OPEN
     COMPLETION_FILTER = lambda s,x: True
-    def __init__(self, history_id=None):
-        BaseEntry.__init__(self, history_id)
+    def __init__(self, comboentry, button, history_id=None):
+        BaseEntry.__init__(self, comboentry, button, history_id)
         
     
 class DirEntry(BaseEntry):
@@ -353,18 +385,16 @@ def run_dialog( maintext, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonst
     d.destroy()
     return ret
 
-def url_show(url, parent=None):
-    try:
-        return gnome.url_show(url)
-    except gobject.GError, e:
-        misc.run_dialog(_("Could not open '%s'.\n%s")%(url,e), parent)
-
 def tie_to_gconf(rootkey, *widgets):
     conf = gconf.client_get_default()
-    get_name = gtk.glade.get_widget_name
+    def get_name(w):
+        return gtk.glade.get_widget_name(w) or w.__class__.__name__.lower()
+    def _name_to_enum(enum, val):
+        for k,v in enum.__enum_values__.items():
+            if v.value_nick == val: return v
+        return v
 
-    def connect( widget ):
-        name = get_name(widget)
+    def connect( widget, name ):
         key = "%s/%s" % (rootkey, name)
         if isinstance( widget, gtk.RadioButton ):
             # radio widgets must be named <keyname>_<value>
@@ -383,18 +413,82 @@ def tie_to_gconf(rootkey, *widgets):
                     conf.set_string("%s/%s" %(rootkey,rkey), val )
             for w in group:
                 w.connect("toggled", toggled)
-        elif isinstance( widget, gtk.ToggleButton ):
+        elif isinstance( widget, gtk.ToggleButton ) or isinstance( widget, gtk.ToggleToolButton ):
             # toggles are named as their glade widget
             active = conf.get_bool(key)
             widget.set_active(active)
             widget.connect("toggled", lambda b,k=key : conf.set_bool(k, b.get_active()) )
+        elif isinstance( widget, gtk.Toolbar ):
+            # toolbars are named as their glade widget
+            widget.connect("style-changed", lambda t,s,k=key : conf.set_string(key, s.value_nick))
+            widget.set_style( _name_to_enum(gtk.ToolbarStyle, conf.get_string(key) ) )
+        elif isinstance( widget, gtk.Window ):
+            # save window pos and size
+            keys = struct(width="%s_width"% key, height="%s_height"% key,x="%s_x"% key,y="%s_y"% key)
+            def configure_event(window, rect):
+                conf.set_int(keys.width, rect.width)
+                conf.set_int(keys.height, rect.height)
+                x,y = window.get_position()
+                conf.set_int(keys.x, x)
+                conf.set_int(keys.y, y)
+            widget.connect("configure-event", configure_event)
+            orig_size = conf.get_int(keys.width) or 600, conf.get_int(keys.height) or 400
+            orig_pos = conf.get_int(keys.x), conf.get_int(keys.y)
+            widget.set_default_size(*orig_size)
+            widget.move(*orig_pos)
+        elif isinstance( widget, gtk.SpinButton ):
+            # spinbuttons are named as their glade widget
+            value = conf.get_int(key)
+            widget.set_value(value)
+            widget.connect("changed", lambda b,k=key : conf.set_int(k, b.get_value_as_int()) )
+        elif isinstance( widget, gtk.ComboBox ):
+            # comboboxes are named as their glade widget
+            value = conf.get_string(key)
+            model = widget.get_model()
+            idx, iter = 0, model.get_iter_first()
+            while iter:
+                if value == model.get_value(iter,0):
+                    widget.set_active(idx)
+                    break
+                idx, iter = idx+1, model.iter_next(iter)
+            def changed(c,k=key):
+                m = c.get_model()
+                conf.set_string(k, m.get_value( m.get_iter(c.get_active()), 0))
+            widget.connect("changed", changed)
+        elif isinstance( widget, gtk.Entry ):
+            # entries are named as their glade widget
+            value = conf.get_string(key)
+            widget.set_text(value)
+            widget.connect("changed", lambda b,k=key : conf.set_string(k, b.get_text()) )
+        elif isinstance( widget, gtk.FontButton ):
+            # fontbuttons are named as their glade widget
+            value = conf.get_string(key)
+            widget.set_font_name(value)
+            widget.connect("font-set", lambda b,k=key : conf.set_string(k, b.get_font_name()) )
         else:
-            print "Fixme", widget, type(widget)
+            print "Fixme connect to gconf for", widget, type(widget)
+            raise ""
 
     for widget in widgets:
-        if isinstance( widget, list ):
+        if isinstance( widget, tuple):
+            assert len(widget) == 2
+            connect( widget[0], widget[1] )
+        elif isinstance( widget, list ):
             for w in widget:
-                connect( w )
+                connect( w, get_name(w) )
         else:
-            connect(widget)
+            connect( widget, get_name(widget) )
+
+def url_show(url):
+    conf = gconf.client_get_default()
+    if url.startswith("ghelp:"):
+        prog = conf.get_string('/desktop/gnome/url-handlers/ghelp/command') or 'gnome-help "%s"'
+    elif url.startswith("file:") or url.startswith("http:") or url.startswith("https:"):
+        prog = conf.get_string('/desktop/gnome/url-handlers/http/command') or 'galeon "%s"'
+    else:
+        assert 0
+
+    args = (prog % url).split() # shell split
+    args = [a.strip('"\'') for a in args] # strip shell quotes
+    os.spawnvp(os.P_NOWAIT, args[0], args)
 

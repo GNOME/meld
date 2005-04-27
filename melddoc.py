@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -38,7 +38,6 @@ class MeldDoc(gobject.GObject):
         self.__gobject_init__()
         self.scheduler = task.FifoScheduler()
         self.prefs = prefs
-        self.prefs.notify_add(self.on_preference_changed)
         self.label_text = _("untitled")
 
     def stop(self):
@@ -56,9 +55,6 @@ class MeldDoc(gobject.GObject):
             elif self.prefs.edit_command_type == "custom":
                 cmd = self.prefs.get_custom_editor_command(files)
                 os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
-
-    def on_preference_changed(self, key, value):
-        pass
 
     def on_container_delete_event(self, app_quit=0):
         """Called when the docs container is about to close.
@@ -84,7 +80,12 @@ class MeldDoc(gobject.GObject):
         """
         pass
 
-    def on_container_switch_event(self):
+    def on_container_switch_in_event(self, uimanager):
+        """Called when the container app switches to this tab.
+        """
+        pass
+
+    def on_container_switch_out_event(self, uimanager):
         """Called when the container app switches to this tab.
         """
         pass

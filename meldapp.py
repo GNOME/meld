@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 import sys
 import os
 
-# gnome
+# gtk
+import gobject
 import gtk
 
 # project
@@ -29,10 +30,8 @@ import task
 import stock
 import filediff
 import dirdiff
-import cvsview
-
+import wocoview
 import prefs
-import prefsui
 
 try:
     import dbus
@@ -67,6 +66,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
       </menubar>
       <toolbar name="ToolBar">
           <toolitem action="new"/>
+          <separator/>
       </toolbar>
     </ui>
     """
@@ -95,7 +95,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
     # init
     #
     def __init__(self, dbus_service):
-        glade.GtkApp.__init__(self, paths.share_dir("glade2/meldapp.glade"), "meldapp")
+        glade.GtkApp.__init__(self, paths.share_dir("glade2/meldapp.glade"), "window")
 
         self.uimanager = gtk.UIManager()
         self.toplevel.add_accel_group( self.uimanager.get_accel_group() )
@@ -112,18 +112,29 @@ class MeldApp(glade.GtkApp, dbus.Object):
         self.vbox.reorder_child(self.toolbar, 1)
 
         self.connect_signal_handlers()
-        self.prefs = prefsui.MeldPreferences()
+        self.prefs = prefs.Preferences("/apps/meld")
+        glade.tie_to_gconf("/apps/meld/state/app", self.toplevel)
 
-        self.toolbar.set_style( self.prefs.get_toolbar_style() )
-        self.prefs.notify_add( self.on_preference_changed )
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
-        self.toplevel.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
         self.toplevel.show()
+        print self.toplevel.get_name()
+
         if dbus_service:
             dbus.Object.__init__(self, "/App", dbus_service,
-                [self.action_about__activate] )
+                [self.action_about__activate,
+                 self.save_snapshot] )
+
+    def save_snapshot(self, message, filename, x=0, y=0, width=-1, height=-1):
+        win = self.toplevel.window
+        if width == -1:
+            width = win.get_size()[0]
+        if height == -1:
+            height = win.get_size()[1]
+        pix = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width,height)
+        pix.get_from_drawable( win, win.get_colormap(), x,y, 0,0, width,height )
+        pix.save(filename, "png")
 
     def _set_doc_status(self, status):
         self.doc_status.pop(1)
@@ -157,11 +168,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
     def on_scheduler_runnable(self, sched):
         if not self.idle_hooked:
             self.idle_hooked = 1
-            gtk.idle_add( self.on_idle )
-
-    def on_preference_changed(self, key, value):
-        if key == "toolbar_style":
-            self.toolbar.set_style( self.prefs.get_toolbar_style() )
+            gobject.idle_add( self.on_idle )
 
     #
     # General events and callbacks
@@ -169,23 +176,44 @@ class MeldApp(glade.GtkApp, dbus.Object):
     def on_toplevel__delete_event(self, *extra):
         return self.action_quit__activate()
 
-    def on_toplevel__size_allocate(self, window, rect):
-        self.prefs.window_size_x = rect.width
-        self.prefs.window_size_y = rect.height
-
     def on_notebook__switch_page(self, notebook, page, which):
-        newdoc = notebook.get_nth_page(which).get_data("pyobject")
+        get_doc = lambda i : notebook.get_nth_page(i).get_data("pyobject")
+        if notebook.get_current_page() >= 0:
+            old_doc = get_doc( notebook.get_current_page() )
+            old_doc.on_container_switch_out_event(self.uimanager)
+        newdoc = get_doc(which)
         nbl = self.notebook.get_tab_label( newdoc.toplevel )
         self.toplevel.set_title( nbl.label.get_text() + " - Meld")
         self._set_doc_status("")
-        newdoc.on_container_switch_event()
+        newdoc.on_container_switch_event(self.uimanager)
         self.scheduler.add_task( newdoc.scheduler )
 
-    def on_notebook_label_changed(self, component, text):
+    #
+    # Response to contained page signals
+    #
+    def on_page_label_changed(self, component, text):
         nbl = self.notebook.get_tab_label( component.toplevel )
         nbl.set_text(text)
         self.toplevel.set_title(text + " - Meld")
         self.notebook.child_set_property(component.toplevel, "menu-label", text)
+
+    def on_page_file_changed(self, srcpage, filename):
+        """A page has changed a file.
+        """
+        for c in self.notebook.get_children():
+            page = c.get_data("pyobject")
+            if page != srcpage:
+                page.on_container_file_changed(filename)
+
+    def on_page_create_diff(self, srcpage, filenames):
+        self.append_filediff(filenames)
+
+    def on_page_status_changed(self, srcpage, status):
+        self._set_doc_status(status)
+
+    def on_page_closed(self, srcpage):
+        self.remove_page(srcpage)
+
 
     #
     # File actions
@@ -209,40 +237,29 @@ class MeldApp(glade.GtkApp, dbus.Object):
     # Settings actions
     #
     def action_preferences__activate(self, *extra):
-        prefsui.PreferencesDialog(self)
+        prefs.PreferencesDialog(self)
 
     #
     # Help actions
     #
     def action_help_contents__activate(self, *extra):
-        print "file:///"+os.path.abspath(paths.doc_dir("meld.xml"))
-        glade.url_show("file:///"+os.path.abspath(paths.doc_dir("meld.xml") ), self)
+        glade.url_show("ghelp:///"+os.path.abspath(paths.doc_dir("meld.xml") ))
 
     def action_reportbug__activate(self, *extra):
-        glade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld", self)
+        glade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
 
     def action_about__activate(self, *extra):
-        class About(glade.Dialog):
-            def __init__(self, parent):
-                glade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "about")
-                self.connect_signal_handlers()
-                self.toplevel.set_transient_for(parent)
-                self.label_version.set_markup('<span size="xx-large" weight="bold">Meld %s</span>' % version)
-            #def on_button_home_page__clicked(self, *args):
-            #    print "XXX fixme"
-            def on_button_credits__clicked(self, *args):
-                class Credits(glade.Dialog):
-                    def __init__(self, parent):
-                        glade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "about_credits")
-                        self.toplevel.set_transient_for(parent)
-                Credits(self.toplevel.get_toplevel()).run()
-                return True
-            def on_button_close__clicked(self, *args):
-                self.toplevel.destroy()
-        About( self.toplevel.get_toplevel() )
+        dialog = gtk.AboutDialog()
+        dialog.set_name("Meld")
+        dialog.set_version(version)
+        dialog.set_website("http://meld.sf.net")
+        dialog.set_authors(["Stephen Kennedy <stevek@gnome.org>"])
+        dialog.set_logo_icon_name("glade2/pixmaps/icon.png")
+        dialog.run()
+        dialog.destroy()
 
     #
-    #
+    # Child page operations
     #
     def try_remove_page(self, page):
         """Remove a page if the doc allows it.
@@ -253,20 +270,11 @@ class MeldApp(glade.GtkApp, dbus.Object):
     def remove_page(self, page):
         """Unconditionally remove a page.
         """
+        page.on_container_switch_out_event(self.uimanager)
         self.scheduler.remove_scheduler( page.scheduler )
-        self.uimanager.remove_action_group( page.actiongroup )
-        self.uimanager.remove_ui( page.ui_merge_id )
         self.toplevel.set_title("Meld")
         self._set_doc_status("")
         self.notebook.remove_page( self.notebook.page_num(page.toplevel) )
-
-    def on_file_changed(self, srcpage, filename):
-        """A page has changed a file.
-        """
-        for c in self.notebook.get_children():
-            page = c.get_data("pyobject")
-            if page != srcpage:
-                page.on_container_file_changed(filename)
 
     def _append_page(self, page, icon):
         """Common page append code.
@@ -276,24 +284,22 @@ class MeldApp(glade.GtkApp, dbus.Object):
         self.notebook.append_page( page.toplevel, nbl)
         self.notebook.set_current_page( self.notebook.page_num(page.toplevel) )
         self.scheduler.add_scheduler(page.scheduler)
-        page.connect("label-changed", self.on_notebook_label_changed)
-        page.connect("file-changed", self.on_file_changed)
-        page.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
-        page.connect("status-changed", lambda junk,arg: self._set_doc_status(arg) )
-        page.connect("closed", lambda page: self.remove_page(page) )
-        self.uimanager.insert_action_group(page.actiongroup, 1)
-        page.ui_merge_id = self.uimanager.add_ui_from_string(page.UI_DEFINITION)
+        page.connect("label-changed", self.on_page_label_changed)
+        page.connect("file-changed", self.on_page_file_changed)
+        page.connect("create-diff", self.on_page_create_diff )
+        page.connect("status-changed", self.on_page_status_changed )
+        page.connect("closed", self.on_page_closed )
 
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
-        self._append_page(doc, "tree-folder-normal.png")
+        self._append_page(doc, stock.STOCK_DIRDIFF_ICON)
         doc.set_locations(dirs)
 
     def append_filediff(self, files):
         assert len(files) in (1,2,3)
         doc = filediff.FileDiff(self.prefs, len(files))
-        self._append_page(doc, "tree-file-normal.png")
+        self._append_page(doc, stock.STOCK_FILEDIFF_ICON)
         doc.set_files(files)
 
     def append_diff(self, paths):
@@ -316,11 +322,11 @@ class MeldApp(glade.GtkApp, dbus.Object):
         else:
             self.append_filediff(paths)
 
-    def append_version(self, locations):
+    def append_woco(self, locations):
         assert len(locations) in (1,)
         location = locations[0]
-        doc = cvsview.CvsView(self.prefs)
-        self._append_page(doc, "cvs-icon.png")
+        doc = wocoview.WocoView(self.prefs, self.uimanager)
+        self._append_page(doc, stock.STOCK_WOCO_ICON)
         doc.set_location(location)
 
     #
@@ -381,8 +387,7 @@ class NewDocDialog(glade.Component):
                 paths.pop(0)
             methods = (self.parentapp.append_filediff,
                        self.parentapp.append_dirdiff,
-                       self.parentapp.append_version )
-            print "OK", page, paths
+                       self.parentapp.append_woco)
             methods[page](paths)
         self.toplevel.destroy()
         
@@ -431,27 +436,33 @@ def main():
 
     parser = optparse.OptionParser(usage=_("Usage: meld [options] [arguments]"), version=version_string)
     parser.add_option("-L", "--label", action="append", help=_("Use label instead of filename. This option may be used several times."))
+    parser.add_option("-s", "--snapshot", action="store", help=_("Save snapshot to file,x,y,w,h"))
     parser.add_option("-x", "--existing", action="store_true", help=_("Use an existing instance"))
     parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
     options, args = parser.parse_args()
 
     remote = None
-    ok = False
     if options.existing:
-        bus = dbus.SessionBus()
-        remote_service = bus.get_service("org.gnome.meld")
-        remote = remote_service.get_object("/App", "org.gnome.meld")
-        ok = True
+        try:
+            bus = dbus.SessionBus()
+            remote_service = bus.get_service("org.gnome.meld")
+            remote = remote_service.get_object("/App", "org.gnome.meld")
+        except dbus.dbus_bindings.DBusException, e:
+            print _("Connection to existing app failed: %s") % e
+        if remote and options.snapshot: #XXX
+            args = options.snapshot.split(",")
+            args[1:] = [int(a) for a in args[1:]]
+            remote.save_snapshot(*args)
+            sys.exit(0)
 
-    if ok:
+    if remote:
         app = remote
     else:
         try:
             service = dbus.Service("org.gnome.meld")
         except dbus.dbus_bindings.DBusException, e:
             service = None
-
-        app = MeldApp( None )
+        app = MeldApp( service )
 
     if len(args) == 0:
         pass
@@ -459,7 +470,7 @@ def main():
     elif len(args) == 1:
         a = args[0]
         if os.path.isfile(a):
-            doc = cvsview.CvsView(app.prefs)
+            doc = wocoview.WocoView(app.prefs, app.uimanager)
             def cleanup():
                 app.scheduler.remove_scheduler(doc.scheduler)
             app.scheduler.add_task(cleanup)
@@ -468,13 +479,13 @@ def main():
             doc.connect("create-diff", lambda obj,arg: app.append_diff(arg) )
             doc.run_cvs_diff([a])
         else:
-            app.append_version( [a] )
+            app.append_woco( [a] )
                 
     elif len(args) in (2,3):
         app.append_diff( args )
     else:
         app.usage( _("Wrong number of arguments (Got %i)") % len(args))
 
-    if not ok:
+    if not remote:
         app.main()
 
