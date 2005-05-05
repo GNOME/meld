@@ -1015,6 +1015,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         area.meldgc = misc.struct(gc_delete=gcd, gc_insert=gcd, gc_replace=gcc, gc_conflict=gcx)
         area.meldgc.get_gc = lambda p: getattr(area.meldgc, "gc_"+p)
 
+    def _consume_blank_lines(self, txt):
+        lo, hi = 0, 0
+        for l in txt:
+            if len(l)==0:
+                lo += 1
+            else:
+                break
+        for l in txt[lo:]:
+            if len(l)==0:
+                hi += 1
+            else:
+                break
+        return lo,hi
+
         #
         # linkmap drawing
         #
@@ -1062,24 +1076,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
         visible = [None] + bounds(which) + bounds(which+1)
 
-        def consume_blank_lines(txt):
-            lo, hi = 0, 0
-            for l in txt:
-                if len(l)==0:
-                    lo += 1
-                else:
-                    break
-            for l in txt[lo:]:
-                if len(l)==0:
-                    hi += 1
-                else:
-                    break
-            return lo,hi
-
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             if self.prefs.ignore_blank_lines:
-                c1,c2 = consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
-                c3,c4 = consume_blank_lines( self._get_texts()[which+1][c[3]:c[4]] )
+                c1,c2 = self._consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
+                c3,c4 = self._consume_blank_lines( self._get_texts()[which+1][c[3]:c[4]] )
                 c = c[0], c[1]+c1,c[2]-c2, c[3]+c3,c[4]-c4
                 if c[1]==c[2] and c[3]==c[4]:
                     continue
@@ -1166,6 +1166,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             func = lambda c: self._line_to_pixel(src, c[1]) - adj.value
 
             for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
+                if self.prefs.ignore_blank_lines:
+                    c1,c2 = self._consume_blank_lines( self._get_texts()[src][c[1]:c[2]] )
+                    c3,c4 = self._consume_blank_lines( self._get_texts()[dst][c[3]:c[4]] )
+                    c = c[0], c[1]+c1,c[2]-c2, c[3]+c3,c[4]-c4
+                    if c[1]==c[2] and c[3]==c[4]:
+                        continue
                 if c[0] == "insert":
                     continue
                 h = func(c)
