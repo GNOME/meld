@@ -133,6 +133,7 @@ def _lookup_cvs_files(dirs, files):
             elif date=="dummy timestamp from new-entry":
                 state = tree.STATE_MODIFIED
             else:
+                date = re.sub(r"\s*\d+", lambda x : "%3i" % int(x.group()), date, 1)
                 plus = date.find("+")
                 if plus >= 0:
                     state = tree.STATE_CONFLICT
