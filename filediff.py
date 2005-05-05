@@ -249,7 +249,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 b = self.buf
                 txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
                 txt = self.textfilter(txt)
-                return txt.split("\n")
+                return txt.split("\n")[:-1]
         class FakeTextArray(object):
             def __init__(self, bufs, textfilter):
                 self.texts = [FakeText(b, textfilter) for b in  bufs]
