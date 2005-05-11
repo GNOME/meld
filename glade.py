@@ -339,8 +339,8 @@ class FileEntry(BaseEntry):
 class DirEntry(BaseEntry):
     FILE_CHOOSER_ACTION = gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER
     COMPLETION_FILTER = lambda s,x : os.path.isdir(x)
-    def __init__(self, history_id=None):
-        BaseEntry.__init__(self, history_id)
+    def __init__(self, comboentry, button, history_id=None):
+        BaseEntry.__init__(self, comboentry, button, history_id)
 
 
 def _custom_handler(xml, klass, name, *rest):

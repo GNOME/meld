@@ -41,8 +41,6 @@ import stock
 import undo
 import undoaction
 
-MASK_SHIFT, MASK_CTRL = 1, 2
-
 class FileDiff(melddoc.MeldDoc, glade.Component):
     """Two or three way diff of text files.
     """
@@ -151,7 +149,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             ('replace_right_file', gtk.STOCK_GO_FORWARD,
                 _('Copy contents right'), None, None),
     )
-
+    MASK_SHIFT = 1
+    MASK_CTRL = 2
     keylookup = { gtk.keysyms.Shift_L : MASK_SHIFT,
                   gtk.keysyms.Shift_R : MASK_SHIFT,
                   gtk.keysyms.Control_L : MASK_CTRL,
@@ -248,12 +247,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         # scroll bars
         for i in range(3):
             w = self.scrolledwindow[i]
-            w.get_vadjustment().connect("value-changed", self._sync_vscroll )
-            w.get_hadjustment().connect("value-changed", self._sync_hscroll )
-        # link/diff maps
-        for i in range(2):
-            self.linkmap[i].set_double_buffered(0)
-            self.diffmap[i].set_double_buffered(0)
+            v,h = w.get_vadjustment(), w.get_hadjustment()
+            v.signal_handler_ids = [v.connect("value-changed", self._sync_vscroll )]
+            h.signal_handler_ids = [h.connect("value-changed", self._sync_hscroll )]
+        group = gtk.SizeGroup(gtk.SIZE_GROUP_VERTICAL)
+        group.add_widget(self.spacer0)
+        group.add_widget(self.fileentryhbox0)
         # misc state variables
         self.popup_menu = self.ContextMenu(self)
         self.find_dialog = None
@@ -267,6 +266,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.num_panes = 0
         self.set_num_panes(num_panes)
         self.connect_signal_handlers()
+
+    def on_textbuffer__mark_set(self, buf, it, mark):
+        if mark.get_name() == "insert":
+            self._update_cursor_status(buf)
 
     def _update_regexes(self):
         self.regexes = []
@@ -361,16 +364,19 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 self.buf = buf
             def __getslice__(self, lo, hi):
                 b = self.buf
-                return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")[:-1]
+                return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")
         class FakeTextFiltered(object):
             def __init__(self, buf, regexes):
                 self.buf, self.regexes = buf, regexes
             def __getslice__(self, lo, hi):
                 b = self.buf
-                txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
+                #txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
+                i1 = b.get_iter_at_line(hi)
+                i1.forward_to_line_end()
+                txt = b.get_text(b.get_iter_at_line(lo), i1, 0)
                 for r in self.regexes:
                     txt = r.sub("", txt)
-                return txt.split("\n")[:-1]
+                return txt.split("\n")
         FakeText = (FakeTextFiltered,FakeTextRaw)[raw]
         class FakeTextArray(object):
             def __init__(self, bufs, regexes):
@@ -619,11 +625,11 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                             self.bufferextra[t.pane].newlines = t.file.newlines
                         tasks.remove(t)
                         panetext[t.pane] = "".join(t.text)
-                        if len(panetext[t.pane]) and \
-                            panetext[t.pane][-1] != "\n" and \
-                            self.prefs.supply_newline:
-                                t.buf.insert( t.buf.get_end_iter(), "\n")
-                                panetext[t.pane] += "\n"
+                        #if len(panetext[t.pane]) and \
+                            #panetext[t.pane][-1] != "\n" and \
+                            #self.prefs.supply_newline:
+                                #t.buf.insert( t.buf.get_end_iter(), "\n")
+                                #panetext[t.pane] += "\n"
             yield 1
         self.undosequence.clear()
         yield _("[%s] Computing differences") % self.label_text
@@ -633,7 +639,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
-        self.queue_draw()
+        self._update_merge_buttons()
+        self.toplevel.queue_draw()
         lenseq = [len(d) for d in self.linediffer.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
         self.unblock_signal_handlers(*self.textbuffer)
@@ -644,6 +651,60 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         [b.set_modified(0) for b in self.textbuffer]
         yield 0
 
+    def _update_merge_buttons(self):
+        area = self.linkmap0
+        class ButtonManager:
+            def __init__(self):
+                self.index = 0
+                self.buttons = []
+            def next(self):
+                try:
+                    b = self.buttons[self.index]
+                except IndexError:
+                    im = gtk.Image()
+                    b = gtk.Button()
+                    b.set_property("relief", gtk.RELIEF_NONE)
+                    b.set_focus_on_click(False)
+                    b.add(im)
+                    b.show_all()
+                    area.put( b, 0, 0 )
+                    self.buttons.append(b)
+                self.index += 1
+                b.show()
+                return b
+            def finished(self):
+                for b in self.buttons[self.index:]:
+                    b.hide()
+                self.index = 0
+        if not hasattr(self,"_buttons"):
+            self._buttons = ButtonManager()
+        visible = [t.get_visible_rect() for t in self.textview]
+        start = self._pixel_to_line(0, visible[0].y)
+        end = self._pixel_to_line(0, visible[0].y+visible[0].height)
+        for c in self.linediffer.diffs[0]:
+            if c[4] < start: continue
+            if c[3] > end: break
+            xpos = -6
+            ypos = self._line_to_pixel(0, c[3]) - visible[0].y
+            bf = self._buttons.next()
+            bf.child.set_from_pixbuf(self.pixbuf_apply0)
+            if c[0] == "delete":
+                ypos -= bf.size_request()[1]/2
+            area.move( bf, xpos, ypos )
+        start = self._pixel_to_line(1, visible[1].y)
+        end = self._pixel_to_line(1, visible[1].y+visible[1].height)
+        for c in self.linediffer.diffs[0]:
+            if c[2] < start: continue
+            if c[1] > end: break
+            ypos = self._line_to_pixel(0, c[1]) - visible[1].y
+            bf = self._buttons.next()
+            bf.child.set_from_pixbuf(self.pixbuf_apply1)
+            xpos = area.size_request()[0] - (bf.size_request()[0]-6)
+            if c[0] == "insert":
+                ypos -= bf.size_request()[1]/2
+            area.move( bf, xpos, ypos )
+        self._buttons.finished()
+
     def _update_highlighting(self, range0, range1):
         buffers = self.textbuffer
         for b in buffers:
@@ -652,31 +713,40 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             for tagname in taglist:
                 tag = table.lookup(tagname)
                 b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
+
+        def get_iters(buf, line0, line1):
+            i0 = buf.get_iter_at_line(line0)
+            i1 = buf.get_iter_at_line(line1-1)
+            if not i1.ends_line(): i1.forward_to_line_end()
+            return i0,i1
+
         for i,diff in enumerate(self.linediffer.diffs):
             for c in diff:
-                if c[0] == "insert":
-                    buf = buffers[i*2]
-                    #txt = self._get_texts()[0][c[3]:c[4]]
-                    #print txt, "".join(txt) == ""
-                    #if "".join(txt) == "": continue
-                    #print "OK"
-                    tag = buf.get_tag_table().lookup("delete line")
-                    buf.apply_tag( tag, buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
-                elif c[0] == "delete":
-                    buf = buffers[1]
-                    tag = buf.get_tag_table().lookup("delete line")
-                    buf.apply_tag( tag, buf.get_iter_at_line(c[1]), buf.get_iter_at_line(c[2]) )
-                elif c[0] == "conflict":
-                    bufs = buffers[1], buffers[i*2]
-                    tags = [b.get_tag_table().lookup("conflict line") for b in bufs]
-                    for b,t,o in zip(bufs, tags, (0,2)):
-                        b.apply_tag( t, b.get_iter_at_line(c[o+1]), b.get_iter_at_line(c[o+2]) )
-                elif c[0] == "replace":
+#                if c[0] == "insert":
+#                    buf = buffers[i*2]
+#                    #txt = self._get_texts()[0][c[3]:c[4]]
+#                    #print txt, "".join(txt) == ""
+#                    #if "".join(txt) == "": continue
+#                    #print "OK"
+#                    tag = buf.get_tag_table().lookup("delete line")
+#                    #buf.apply_tag( tag, buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
+#                    buf.apply_tag( tag, *get_iters(buf,c[3],c[4]) )#buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
+#                elif c[0] == "delete":
+#                    buf = buffers[1]
+#                    tag = buf.get_tag_table().lookup("delete line")
+#                    ##buf.apply_tag( tag, buf.get_iter_at_line(c[1]), buf.get_iter_at_line(c[2]) )
+#                    buf.apply_tag( tag, *get_iters(buf,c[1],c[2]) )#buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
+#                elif c[0] == "conflict":
+#                    bufs = buffers[1], buffers[i*2]
+#                    tags = [b.get_tag_table().lookup("conflict line") for b in bufs]
+#                    for b,t,o in zip(bufs, tags, (0,2)):
+#                        b.apply_tag( t, b.get_iter_at_line(c[o+1]), b.get_iter_at_line(c[o+2]) )
+                if c[0] == "replace":
                     bufs = buffers[1], buffers[i*2]
                     tags = [b.get_tag_table().lookup("replace line") for b in bufs]
                     starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
-                    for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
-                        b.apply_tag(t, s, b.get_iter_at_line(l))
+#                    for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
+#                        b.apply_tag(t, s, b.get_iter_at_line(l))
                     if 1:
                         text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] )
                         textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] )
@@ -697,22 +767,22 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                             back = (0,0)
                         yield 1
             yield 1
-#            if chunk[0] and chunk[0][0] == "conflict":
-#                chunk0, chunk1 = chunk
-#                ranges = chunk0[3:5], chunk0[1:3], chunk1[3:5]
-#                starts = [b.get_iter_at_line(l[0]) for b,l in zip(buffers, ranges) ]
-#                texts = [ "\n".join( self._get_texts(raw=1)[i].__getslice__(*ranges[i]) ) for i in range(3) ]
-#                tags = [b.get_tag_table().lookup("inline line2") for b in buffers]
-#                differ = diffutil.Differ(*texts)
-#                for change in differ.all_changes(texts):
-#                    print change
-#                    for i,c in enumerate(change):
-#                        if c and i==0:
-#                            print c
-#                            s,e = starts[i].copy(), starts[i].copy()
-#                            s.forward_chars( c[3] )
-#                            e.forward_chars( c[4] )
-#                            buffers[i].apply_tag(tags[i], s, e)
+            #if chunk[0] and chunk[0][0] == "conflict":
+            #    chunk0, chunk1 = chunk
+            #    ranges = chunk0[3:5], chunk0[1:3], chunk1[3:5]
+            #    starts = [b.get_iter_at_line(l[0]) for b,l in zip(buffers, ranges) ]
+            #    texts = [ "\n".join( self._get_texts(raw=1)[i].__getslice__(*ranges[i]) ) for i in range(3) ]
+            #    tags = [b.get_tag_table().lookup("inline line2") for b in buffers]
+            #    differ = diffutil.Differ(*texts)
+            #    for change in differ.all_changes(texts):
+            #        print change
+            #        for i,c in enumerate(change):
+            #            if c and i==0:
+            #                print c
+            #                s,e = starts[i].copy(), starts[i].copy()
+            #                s.forward_chars( c[3] )
+            #                e.forward_chars( c[4] )
+            #                buffers[i].apply_tag(tags[i], s, e)
         
     def save_file(self, pane, saveas=0):
         buf = self.textbuffer[pane]
@@ -831,90 +901,91 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 a.set_value(val)
             self._sync_hscroll_lock = 0
 
+    def _handlers_block(self, wid):
+        for sig in wid.signal_handler_ids:
+            wid.handler_block( sig )
+    def _handlers_unblock(self, wid):
+        for sig in wid.signal_handler_ids:
+            wid.handler_unblock( sig )
+
     def _sync_vscroll(self, adjustment):
-        # only allow one scrollbar to be here at a time
-        if not hasattr(self,"_sync_vscroll_lock"):
-            self._sync_vscroll_lock = 0
-        if not self._sync_vscroll_lock:
-            self._sync_vscroll_lock = 1
-            syncpoint = 0.5
+        [self._handlers_block(w.get_vadjustment()) for w in self.scrolledwindow]
+        syncpoint = 0.5
 
-            adjustments = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-            adjustments = adjustments[:self.num_panes]
-            master = adjustments.index(adjustment)
+        adjustments = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
+        adjustments = adjustments[:self.num_panes]
+        master = adjustments.index(adjustment)
+        # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
+        others = zip( range(self.num_panes), adjustments)
+        del others[master]
+        if master == 2:
+            others.reverse()
+
+        # the line to search for in the 'master' text
+        line  = (adjustment.value + adjustment.page_size * syncpoint)
+        line *= self._get_line_count(master)
+        line /= (adjustment.upper - adjustment.lower)
+
+        for (i,adj) in others:
+            mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
+            # look for the chunk containing 'line'
+            for c in self.linediffer.pair_changes(master, i, self._get_texts()):
+                c = c[1:]
+                if c[0] >= line:
+                    mend = c[0]
+                    oend = c[2]
+                    break
+                elif c[1] >= line:
+                    mbegin,mend = c[0],c[1]
+                    obegin,oend = c[2],c[3]
+                    break
+                else:
+                    mbegin = c[1]
+                    obegin = c[3]
+            fraction = (line - mbegin) / ((mend - mbegin) or 1)
+            other_line = (obegin + fraction * (oend - obegin))
+            val = adj.lower + (other_line / self._get_line_count(i) * (adj.upper - adj.lower)) - adj.page_size * syncpoint
+            val = misc.clamp(val, 0, adj.upper - adj.page_size)
+            adj.set_value( val )
+
             # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-            others = zip( range(self.num_panes), adjustments)
-            del others[master]
-            if master == 2:
-                others.reverse()
+            if master != 1:
+                line = other_line
+                master = 1
+        self.linkmap0.queue_draw()
+        self.linkmap1.queue_draw()
+        self._update_merge_buttons()
+        self.flushevents()
+        [self._handlers_unblock(w.get_vadjustment()) for w in self.scrolledwindow]
 
-            # the line to search for in the 'master' text
-            line  = (adjustment.value + adjustment.page_size * syncpoint)
-            line *= self._get_line_count(master)
-            line /= (adjustment.upper - adjustment.lower) 
-
-            for (i,adj) in others:
-                mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
-                # look for the chunk containing 'line'
-                for c in self.linediffer.pair_changes(master, i, self._get_texts()):
-                    c = c[1:]
-                    if c[0] >= line:
-                        mend = c[0]
-                        oend = c[2]
-                        break
-                    elif c[1] >= line:
-                        mbegin,mend = c[0],c[1]
-                        obegin,oend = c[2],c[3]
-                        break
-                    else:
-                        mbegin = c[1]
-                        obegin = c[3]
-                fraction = (line - mbegin) / ((mend - mbegin) or 1)
-                other_line = (obegin + fraction * (oend - obegin))
-                val = adj.lower + (other_line / self._get_line_count(i) * (adj.upper - adj.lower)) - adj.page_size * syncpoint
-                val = misc.clamp(val, 0, adj.upper - adj.page_size)
-                adj.set_value( val )
-
-                # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-                if master != 1:
-                    line = other_line
-                    master = 1
-            self.on_linkmap__expose_event(self.linkmap0, None)
-            self.on_linkmap__expose_event(self.linkmap1, None)
-            self._sync_vscroll_lock = 0
 
         #
         # diffmap drawing
         #
     def on_diffmap__expose_event(self, area, event):
         diffmapindex = self.diffmap.index(area)
-        textindex = (3-self.num_panes, 2)[diffmapindex]
-        #print "map", diffmapindex, "text", textindex
-
-        #TODO need height of arrow button on scrollbar - how do we get that?
-        size_of_arrow = 14
-        hperline = float( self.scrolledwindow[textindex].get_allocation().height - 4*size_of_arrow) / self._get_line_count(textindex)
+        textindex = self.num_panes-2 + diffmapindex
+        size_of_arrow = 14 # TODO from style
+        hperline = float( self.textview[textindex].get_allocation().height - 2*size_of_arrow) / self._get_line_count(textindex)
         if hperline > self.pixels_per_line:
             hperline = self.pixels_per_line
-
-        scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
-        x0 = 4
-        x1 = area.get_allocation().width - 2*x0
+        
+        yoffset = self.textview[textindex].get_allocation().y - area.get_allocation().y + size_of_arrow
+        scaleit = lambda x,s=hperline,o=yoffset: x*s+o
         madj = self.scrolledwindow[textindex].get_vadjustment()
 
         window = area.window
-        window.clear()
         gctext = area.get_style().text_gc[0]
-        if not hasattr(area, "meldgc"):
-            self._setup_gcs(area)
 
-        gc = area.meldgc.get_gc
+        rect_indent = 4
+        rect_width = area.get_allocation().width - 2*rect_indent
+        gc = lambda x : getattr(self.graphics_contexts, x)
         for c in self.linediffer.single_changes(textindex, self._get_texts()):
-            #if diffmapindex == 0: print c
             assert c[0] != "equal"
+            if textindex == 2: print c
             s,e = [int(x) for x in ( math.floor(scaleit(c[1])), math.ceil(scaleit(c[2]+(c[1]==c[2]))) ) ]
-            window.draw_rectangle( gc(c[0]), 1, x0, s, x1, e-s)
-            window.draw_rectangle( gctext, 0, x0, s, x1, e-s)
+            window.draw_rectangle( gc(c[0]), 1, rect_indent, s, rect_width, e-s)
+            window.draw_rectangle( gctext, 0, rect_indent, s, rect_width, e-s)
 
     def on_diffmap__motion_notify_event(self, area, event):
         self.diffmap_mouse_down(area,event)
@@ -925,7 +996,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             return 1
 
     def diffmap_mouse_down(self, area, event):
-        #TODO need gutter of scrollbar - how do we get that?
         size_of_arrow = 14
         diffmapindex = self.diffmap.index(area)
         index = (0, self.num_panes-1)[diffmapindex]
@@ -992,50 +1062,81 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 l0,l1 = c[3],c[4]
                 aidx = c[5]
                 a = adjs[aidx]
+            view = self._get_focused_textview()
+            if view:
+                buf = view.get_buffer()
+                it = buf.get_iter_at_line( (c[1],c[3])[self.textview.index(view)==0] )
+                buf.place_cursor( it )
             want = 0.5 * ( self._line_to_pixel(aidx, l0) + self._line_to_pixel(aidx,l1) - a.page_size )
             want = misc.clamp(want, 0, a.upper-a.page_size)
             a.set_value( want )
 
-    def _setup_gcs(self, area):
-        assert area.window
-        gcd = area.window.new_gc()
+    def on_toplevel__realize(self, toplevel):
+        window = self.toplevel.window
+        gcd = window.new_gc()
         common = self.prefs.common
         gcd.set_rgb_fg_color( gtk.gdk.color_parse(common.color_delete_bg) )
-        gcc = area.window.new_gc()
+        gcc = window.new_gc()
         gcc.set_rgb_fg_color( gtk.gdk.color_parse(common.color_replace_bg) )
-        gce = area.window.new_gc()
+        gce = window.new_gc()
         gce.set_rgb_fg_color( gtk.gdk.color_parse(common.color_edited_bg) )
-        gcx = area.window.new_gc()
+        gcx = window.new_gc()
         gcx.set_rgb_fg_color( gtk.gdk.color_parse(common.color_conflict_bg) )
-        area.meldgc = misc.struct(gc_delete=gcd, gc_insert=gcd, gc_replace=gcc, gc_conflict=gcx)
-        area.meldgc.get_gc = lambda p: getattr(area.meldgc, "gc_"+p)
+        self.graphics_contexts = misc.struct(delete=gcd, insert=gcd, replace=gcc, conflict=gcx)
+
+    def on_textview__expose_event(self, textview, event):
+        window = textview.get_window(gtk.TEXT_WINDOW_TEXT)
+        if event.window != window:
+            return
+        style = self.toplevel.get_style()
+        area = event.area
+        gctext = textview.get_style().text_gc[0]
+        visible = textview.get_visible_rect()
+        start = self._pixel_to_line(0, visible.y)
+        end = self._pixel_to_line(0, visible.y+visible.height)
+
+        # draw background and thin lines
+        off = (2,0)[ self.textview.index(textview) ]
+        gc = lambda x : getattr(self.graphics_contexts, x)
+        for c in self.linediffer.diffs[0]:
+            if c[off+2] < start: continue
+            if c[off+1] > end: break
+            ypos0 = self._line_to_pixel(0, c[off+1]) - visible.y
+            window.draw_line(gctext, 0,ypos0-1, 1000,ypos0-1)
+            if c[off+2] != c[off+1]:
+                ypos1 = self._line_to_pixel(0, c[off+2]) - visible.y
+                window.draw_line(gctext, 0,ypos1, 1000,ypos1)
+                window.draw_rectangle(gc(c[0]), 1, 0,ypos0, 1000,ypos1-ypos0)
+
+        # maybe draw heavier lines for current difference
+        if 1:
+            view = self._get_focused_textview()
+            if view and self.textview.index(view) == 0 and textview == view:
+                buf = view.get_buffer()
+                iter = buf.get_iter_at_mark( buf.get_insert() )
+                line = iter.get_line()
+                off = (0,2)[ view == textview ]
+                for c in self.linediffer.diffs[0]:
+                    if c[off+2] < line-1: continue
+                    if c[off+1] > line+1: break
+                    off = (2,0)[ self.textview.index(textview) ]
+                    ypos0 = self._line_to_pixel(0, c[off+1]) - visible.y
+                    ypos1 = self._line_to_pixel(0, c[off+2]) - visible.y
+                    window.draw_rectangle(gctext, 1, 0,ypos0, 10,ypos1)
+                    break
 
         #
         # linkmap drawing
         #
     def on_linkmap__expose_event(self, area, event):
-        window = area.window
         # not mapped? 
-        if not window: return
-        if not hasattr(area, "meldgc"):
-            self._setup_gcs(area)
+        if not area.window: return
+        window = area.bin_window
         gctext = area.get_style().text_gc[0]
+        window.clear()
 
         alloc = area.get_allocation()
         (wtotal,htotal) = alloc.width, alloc.height
-        window.begin_paint_rect( (0,0,wtotal,htotal) )
-        window.clear()
-
-        print alloc[0], alloc[1], alloc[2], alloc[3] 
-        alloc = self.textview0.get_allocation()
-        print alloc[0], alloc[1], alloc[2], alloc[3] 
-        alloc = self.scrolledwindow0.get_allocation()
-        print alloc[0], alloc[1], alloc[2], alloc[3] 
-        print
-
-#473 109 50 1013
-#47 140 425 963
-
 
         # gain function for smoothing
         #TODO cache these values
@@ -1045,24 +1146,14 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 return bias(2*t,1-g)/2.0
             else:
                 return (2-bias(2-2*t,1-g))/2.0
-        f = lambda x: gain( x, 0.85)
+        f = lambda x: gain( x, 0.95)
 
-        if self.keymask & MASK_SHIFT:
-            pix0 = self.pixbuf_delete
-            pix1 = self.pixbuf_delete
-        elif self.keymask & MASK_CTRL:
-            pix0 = self.pixbuf_copy0
-            pix1 = self.pixbuf_copy1
-        else: # self.keymask == 0:
-            pix0 = self.pixbuf_apply0
-            pix1 = self.pixbuf_apply1
         draw_style = 2#self.prefs.draw_style
-        gc = area.meldgc.get_gc
 
         which = self.linkmap.index(area)
         pix_start = [None] * self.num_panes
-        pix_start[which  ] = self.textview[which  ].get_visible_rect().y
-        pix_start[which+1] = self.textview[which+1].get_visible_rect().y
+        pix_start[which  ] = self.textview[which  ].get_visible_rect().y - 0
+        pix_start[which+1] = self.textview[which+1].get_visible_rect().y - 0
 
         def bounds(idx):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
@@ -1082,6 +1173,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     break
             return lo,hi
 
+        gc = lambda x : getattr(self.graphics_contexts, x)
+
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             if self.prefs.ignore_blank_lines:
                 c1,c2 = consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
@@ -1099,18 +1192,15 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
             t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
 
-            if f0==f1: f0 -= 2; f1 += 2
-            if t0==t1: t0 -= 2; t1 += 2
             if draw_style > 0:
-                n = (1, 9)[draw_style-1]
+                n = (1, 20)[draw_style-1]
                 points0 = []
-                points1 = [] 
+                points1 = []
                 for t in map(lambda x: float(x)/n, range(n+1)):
-                    points0.append( (int(    t*wtotal), int((1-f(t))*f0 + f(t)*t0 )) )
-                    points1.append( (int((1-t)*wtotal), int(f(t)*f1 + (1-f(t))*t1 )) )
+                    points0.append( (int(    t*wtotal), 0+int((1-f(t))*f0 + f(t)*t0 )) )
+                    points1.append( (int((1-t)*wtotal), 1+int(f(t)*f1 + (1-f(t))*t1 )) )
 
                 points = points0 + points1 + [points0[0]]
-
                 window.draw_polygon( gc(c[0]), 1, points)
                 window.draw_lines(gctext, points0)
                 window.draw_lines(gctext, points1)
@@ -1122,19 +1212,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 points0 = (0,f0), (0,t0)
                 window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
 
-            x = wtotal-self.pixbuf_apply0.get_width()
-            if c[0]=="insert":
-                window.draw_pixbuf(gctext, pix1, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
-            elif c[0] == "delete":
-                window.draw_pixbuf(gctext, pix0, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
-            else: #replace
-                window.draw_pixbuf(gctext, pix0, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
-                window.draw_pixbuf(gctext, pix1, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
-
         # allow for scrollbar at end of textview
         mid = 0.5 * self.textview0.get_allocation().height
-        window.draw_line(gctext, int(.25*wtotal), int(mid), int(.75*wtotal), int(mid) )
-        window.end_paint()
+        window.draw_arc(gctext, False, int(.5*wtotal)-10, int(mid)-0, 20,7, 0,      180*64)
+        window.draw_arc(gctext, False, int(.5*wtotal)-10, int(mid)+0, 20,7, 180*64, 180*64)
 
     def on_linkmap__scroll_event(self, area, event):
         self.next_diff(event.direction)
@@ -1152,7 +1233,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             (wtotal,htotal) = alloc.width, alloc.height
             pix_width = self.pixbuf_apply0.get_width()
             pix_height = self.pixbuf_apply0.get_height()
-            if self.keymask == MASK_CTRL: # hack
+            if self.keymask == self.MASK_CTRL: # hack
                 pix_height *= 2
 
             which = self.linkmap.index(area)
@@ -1214,10 +1295,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     chunk = chunk[1:]
                     self.mouse_chunk = None
 
-                    if self.keymask & MASK_SHIFT: # delete
+                    if self.keymask & self.MASK_SHIFT: # delete
                         b = self.textbuffer[src]
                         b.delete(b.get_iter_at_line(chunk[0]), b.get_iter_at_line(chunk[1]))
-                    elif self.keymask & MASK_CTRL: # copy up or down
+                    elif self.keymask & self.MASK_CTRL: # copy up or down
                         b0 = self.textbuffer[src]
                         t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
                         b1 = self.textbuffer[dst]
