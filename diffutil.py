@@ -287,8 +287,7 @@ class Differ(object):
         elif len(sequences)==3:
             diffs = [[], []]
             for i in range(2):
-                if len(sequences[i*2]) != 0 and len(sequences[i*2][0]) != 0:
-                    print 1, i*2
+                if len(sequences[i*2]) != 0:
                     matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[i*2])
                     work = matcher.initialise()
                     while work.next() == None:
