@@ -116,8 +116,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 v.set_show_line_numbers(self.prefs.show_line_numbers)
                 for s in "key_press_event key_release_event".split():
                     v.connect(s, getattr(self,"on_%s"%s))
-                for s in "button_press_event move_cursor focus_in_event".split():
+                for s in "button_press_event focus_in_event".split():
                     v.connect(s, getattr(self,"on_textview_%s"%s))
+                v.get_buffer().connect("mark-set", self.on_textbuffer_mark_set)
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -222,8 +223,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             raise StopIteration; yield 0
         self.scheduler.add_task( update().next )
 
-    def on_textview_move_cursor(self, view, *args):
-        self._update_cursor_status(view.get_buffer())
+    def on_textbuffer_mark_set(self, buffer, it, mark):
+        if mark.get_name() == "insert":
+            self._update_cursor_status(buffer)
     def on_textview_focus_in_event(self, view, event):
         self.textview_focussed = view
         self._update_cursor_status(view.get_buffer())
