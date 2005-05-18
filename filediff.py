@@ -54,6 +54,11 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="save"/>
             <menuitem action="save_as"/>
             <menuitem action="save_all"/>
+            <menu action="save_menu">
+              <menuitem action="save_pane0"/>
+              <menuitem action="save_pane1"/>
+              <menuitem action="save_pane2"/>
+            </menu>
             <separator/>
             <menuitem action="print"/>
             <separator/>
@@ -105,49 +110,34 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     """
 
     UI_ACTIONS = (
+        # action_name, stock_icon, label, accelerator, tooltip,
         ('file_menu', None, _('_File')),
-            ('save', gtk.STOCK_SAVE,
-                _('_Save'), '<Control>s', _('Save the current file')),
-            ('save_as', gtk.STOCK_SAVE_AS,
-                _('_Save As...'), None, _('Save the current file')),
-            ('save_all', gtk.STOCK_SAVE,
-                _('_Save All'), '<Control><Shift>s', _('Save all files')),
-            ('print', gtk.STOCK_PRINT,
-                _('_Print...'), '<Control><Shift>p', _('Print this comparison')),
-            ('close', gtk.STOCK_CLOSE,
-                _('_Close'), '<Control>w', _('Close this tab')),
+            ('save', gtk.STOCK_SAVE, _('_Save'), '<Control>s', _('Save the current file')),
+            ('save_as', gtk.STOCK_SAVE_AS, _('_Save As...'), None, _('Save the current file')),
+            ('save_all', gtk.STOCK_SAVE, _('_Save All'), '<Control><Shift>s', _('Save all files')),
+            ('save_menu', gtk.STOCK_SAVE, _('_Save Pane')),
+                ('save_pane0', gtk.STOCK_SAVE, _('Pane 1'), '<Control>1', ''),
+                ('save_pane1', gtk.STOCK_SAVE, _('Pane 2'), '<Control>2', ''),
+                ('save_pane2', gtk.STOCK_SAVE, _('Pane 3'), '<Control>3', ''),
+            ('print', gtk.STOCK_PRINT, _('_Print...'), '<Control><Shift>p', _('Print this comparison')),
+            ('close', gtk.STOCK_CLOSE, _('_Close'), '<Control>w', _('Close this tab')),
         ('edit_menu', None, _('_Edit')),
-            ('undo', gtk.STOCK_UNDO,
-                _('_Undo'), '<Control>z', _('Undo last change')),
-            ('redo', gtk.STOCK_REDO,
-                _('_Redo'), '<Control><Shift>z', _('Redo last change')),
-            ('find', gtk.STOCK_FIND,
-                _('_Find'), '<Control>f', _('Search the document')),
-            ('find_next', gtk.STOCK_FIND,
-                _('_Find Next'), '<Control>g', _('Repeat the last find')),
-            ('find_replace', gtk.STOCK_FIND_AND_REPLACE,
-                _('_Replace'), '<Control>r', _('Find and replace text')),
-            ('cut', gtk.STOCK_CUT,
-                _('Cu_t'), '<Control>x', _('Copy selected text')),
-            ('copy', gtk.STOCK_PASTE,
-                _('_Copy'), '<Control>c', _('Copy selected text')),
-            ('paste', gtk.STOCK_PASTE,
-                _('_Paste'), '<Control>v', _('Paste selected text')),
+            ('undo', gtk.STOCK_UNDO, _('_Undo'), '<Control>z', _('Undo last change')),
+            ('redo', gtk.STOCK_REDO, _('_Redo'), '<Control><Shift>z', _('Redo last change')),
+            ('find', gtk.STOCK_FIND, _('_Find'), '<Control>f', _('Search the document')),
+            ('find_next', gtk.STOCK_FIND, _('_Find Next'), '<Control>g', _('Repeat the last find')),
+            ('find_replace', gtk.STOCK_FIND_AND_REPLACE, _('_Replace'), '<Control>r', _('Find and replace text')),
+            ('cut', gtk.STOCK_CUT, _('Cu_t'), '<Control>x', _('Copy selected text')),
+            ('copy', gtk.STOCK_PASTE, _('_Copy'), '<Control>c', _('Copy selected text')),
+            ('paste', gtk.STOCK_PASTE, _('_Paste'), '<Control>v', _('Paste selected text')),
         ('diff_menu', None, _('Diff')),
-            ('next_difference', gtk.STOCK_GO_DOWN,
-                _('_Next'), '<Control>d', _('Next difference')),
-            ('previous_difference', gtk.STOCK_GO_UP,
-                _('Pr_ev'), '<Control>e', _('Previous difference')),
-            ('one_pane', None,
-                _('One pane'), '<Control>1', _(''), 1, 'num_panes'),
-            ('two_panes', None,
-                _('Two panes'), '<Control>2', _(''), 2, 'num_panes'),
-            ('three_panes', None,
-                _('Three panes'), '<Control>3', _(''), 3, 'num_panes'),
-            ('replace_left_file', gtk.STOCK_GO_BACK,
-                _('Copy contents left'), None, None),
-            ('replace_right_file', gtk.STOCK_GO_FORWARD,
-                _('Copy contents right'), None, None),
+            ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
+            ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
+            ('one_pane', None, _('One pane'), '<Control><Alt>1', '', 1, 'num_panes'),
+            ('two_panes', None, _('Two panes'), '<Control><Alt>2', '', 2, 'num_panes'),
+            ('three_panes', None, _('Three panes'), '<Control><Alt>3', '', 3, 'num_panes'),
+            ('replace_left_file', gtk.STOCK_GO_BACK, _('Copy contents left'), None, None),
+            ('replace_right_file', gtk.STOCK_GO_FORWARD, _('Copy contents right'), None, None),
     )
     MASK_SHIFT = 1
     MASK_CTRL = 2
@@ -237,6 +227,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         # ui and actions
         self.actiongroup = gtk.ActionGroup("FilediffActions")
         self.add_actions( self.actiongroup, self.UI_ACTIONS )
+        self.map_widgets_into_lists( ["action_save_pane"] )
         # undo
         self.undosequence = undo.UndoSequence()
         self.undosequence.connect("can-undo", lambda o,can:
@@ -1015,8 +1006,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             self.num_panes = num_panes
             for i in range(self.num_panes):
                 self.pane[i].show()
+                self.action_save_pane[i].set_sensitive(True)
             for i in range(self.num_panes,3):
                 self.pane[i].hide()
+                self.action_save_pane[i].set_sensitive(False)
             if num_panes == 1:
                 [x.hide() for x in self.diffmap + self.linkmap]
                 self.action_one_pane.activate()
@@ -1085,15 +1078,17 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.graphics_contexts = misc.struct(delete=gcd, insert=gcd, replace=gcc, conflict=gcx)
 
     def on_textview__expose_event(self, textview, event):
-        window = textview.get_window(gtk.TEXT_WINDOW_TEXT)
-        if event.window != window:
+        if event.window != textview.get_window(gtk.TEXT_WINDOW_TEXT) \
+            and event.window != textview.get_window(gtk.TEXT_WINDOW_LEFT):
             return
+        window = event.window
         style = self.toplevel.get_style()
         area = event.area
         gctext = textview.get_style().text_gc[0]
         visible = textview.get_visible_rect()
-        start = self._pixel_to_line(0, visible.y)
-        end = self._pixel_to_line(0, visible.y+visible.height)
+        pane = self.textview.index(textview)
+        start = self._pixel_to_line(pane, visible.y)
+        end = self._pixel_to_line(pane, visible.y+visible.height)
 
         # draw background and thin lines
         off = (2,0)[ self.textview.index(textview) ]
@@ -1101,15 +1096,15 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         for c in self.linediffer.diffs[0]:
             if c[off+2] < start: continue
             if c[off+1] > end: break
-            ypos0 = self._line_to_pixel(0, c[off+1]) - visible.y
+            ypos0 = self._line_to_pixel(pane, c[off+1]) - visible.y
             window.draw_line(gctext, 0,ypos0-1, 1000,ypos0-1)
             if c[off+2] != c[off+1]:
-                ypos1 = self._line_to_pixel(0, c[off+2]) - visible.y
+                ypos1 = self._line_to_pixel(pane, c[off+2]) - visible.y
                 window.draw_line(gctext, 0,ypos1, 1000,ypos1)
                 window.draw_rectangle(gc(c[0]), 1, 0,ypos0, 1000,ypos1-ypos0)
 
         # maybe draw heavier lines for current difference
-        if 1:
+        if 0:
             view = self._get_focused_textview()
             if view and self.textview.index(view) == 0 and textview == view:
                 buf = view.get_buffer()
@@ -1211,11 +1206,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 window.draw_polygon(gctext, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
                 points0 = (0,f0), (0,t0)
                 window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
-
-        # allow for scrollbar at end of textview
-        mid = 0.5 * self.textview0.get_allocation().height
-        window.draw_arc(gctext, False, int(.5*wtotal)-10, int(mid)-0, 20,7, 0,      180*64)
-        window.draw_arc(gctext, False, int(.5*wtotal)-10, int(mid)+0, 20,7, 180*64, 180*64)
 
     def on_linkmap__scroll_event(self, area, event):
         self.next_diff(event.direction)
@@ -1333,6 +1323,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         for i in range(self.num_panes):
             if self.textbuffer[i].get_modified():
                 self.save_file(i)
+
+    def action_save_pane0__activate(self, action):
+        self.save_file(0)
+    def action_save_pane1__activate(self, action):
+        self.save_file(1)
+    def action_save_pane2__activate(self, action):
+        self.save_file(2)
 
     def action_print__activate(self, action):
         config = gnomeprint.config_default()
