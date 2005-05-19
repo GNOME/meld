@@ -45,7 +45,7 @@ for sourceview in "gtksourceview sourceview".split():
     except ImportError:
         pass
 
-version = "0.9.5"
+version = "0.9.6"
 
 # magic developer switch, changes some behaviour
 developer = 0
