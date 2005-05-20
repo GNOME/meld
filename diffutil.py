@@ -67,30 +67,67 @@ class Differ(object):
     """Utility class to hold diff2 or diff3 chunks"""
     reversemap = {
         "replace":"replace",
-         "insert":"delete",
-         "delete":"insert",
-         "conflict":"conflict",
-         "equal":"equal"}
+        "insert":"delete",
+        "delete":"insert",
+        "conflict":"conflict",
+        "equal":"equal" }
 
-    def __init__(self, *sequences):
-        """Initialise with 1,2 or 3 sequences to compare"""
-        # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
-        self.num_sequences = len(sequences)
-        self.seqlength = [0,0,0]
-        for i,s in misc.enumerate(sequences):
-            self.seqlength[i] = len(s)
+    def __init__(self):
+        # text0 text1 text2
+        # Internally, diffs are stored from text0 -> text1 and text2 -> text1.
+        self.numlines = [0,0,0]
+        self.diffs = [[], []]
 
-        if len(sequences)==0 or len(sequences)==1:
-            self.diffs = [[], []]
-        elif len(sequences)==2:
-            seq0 = IncrementalSequenceMatcher(None, sequences[1], sequences[0]).get_difference_opcodes()
-            self.diffs = [seq0, []]
-        elif len(sequences)==3:
-            seq0 = IncrementalSequenceMatcher(None, sequences[1], sequences[0]).get_difference_opcodes()
-            seq1 = IncrementalSequenceMatcher(None, sequences[1], sequences[2]).get_difference_opcodes()
-            self.diffs = seq0, seq1
-        else:
-            raise "Bad number of arguments to Differ constructor (%i)" % len(sequences)
+    def set_sequences_iter(self, *sequences):
+        assert len(sequences) in (1,2,3)
+        diffs = [[], []]
+        if len(sequences) >= 2:
+            matcher = IncrementalSequenceMatcher(None, sequences[0], sequences[1])
+            work = matcher.initialise()
+            while work.next() == None:
+                yield None
+            diffs[0] = matcher.get_difference_opcodes()
+            if len(sequences) == 3:
+                matcher.set_seq1( sequences[2] )
+                work = matcher.initialise()
+                while work.next() == None:
+                    yield None
+                diffs[1] = matcher.get_difference_opcodes()
+        self.diffs = diffs
+        self.numlines = [len(s) for s in sequences]
+        yield 1
+
+    def single_changes(self, textindex, reversed=False):
+        """Give changes for single file only.
+           Do not return 'equal' hunks.
+           Do not find conflicts.
+        """
+        identity= lambda c : c
+        reverse = lambda c,m=self.reversemap : (m[c[0]], c[3], c[4], c[1], c[2])
+        if textindex in (0,2):
+            proc = (identity, reverse)[reversed]
+            for c in self.diffs[textindex/2]:
+                yield proc(c)
+        elif len(self.numlines) == 2: # textindex == 1
+            proc = (reverse, identity)[reversed]
+            for c in self.diffs[0]:
+                yield proc(c)
+        else: # textindex == 1 and panes == 3
+            proc = (reverse, identity)[reversed]
+            ix0, ix1 = 0,0
+            while ix0 < len(self.diffs[0]) and ix1 < len(self.diffs[1]):
+                c0, c1 = self.diffs[0][ix0], self.diffs[1][ix1]
+                if c0[3] < c1[3]:
+                    c = c0
+                    ix0 += 1
+                else:
+                    c = c1
+                    ix1 += 1
+                yield proc(c)
+            for c in self.diffs[0][ix0:]:
+                yield proc(c)
+            for c in self.diffs[1][ix1:]:
+                yield proc(c)
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0,1,2)
@@ -180,26 +217,8 @@ class Differ(object):
                 if c[seq]:
                     yield self.reverse(c[seq])
 
-    def single_changes(self, textindex, texts):
-        """Give changes for single file only. do not return 'equal' hunks.
-        """
-        if textindex in (0,2):
-            seq = textindex/2
-            for cs in self.all_changes( texts ):
-                c = cs[seq]
-                if c:
-                    yield self.reversemap[c[0]], c[3], c[4], c[1], c[2], 1
-        else:
-            for cs in self.all_changes( texts ):
-                if cs[0]:
-                    c = cs[0]
-                    yield c[0], c[1], c[2], c[3], c[4], 0
-                elif cs[1]:
-                    c = cs[1]
-                    yield c[0], c[1], c[2], c[3], c[4], 2
-
     def _merge_blocks(self, using, low_seq, high_seq, last_diff):
-        LO, HI = 1,2
+        LO, HI = 3,4
         lowc  = using[low_seq][0][LO]
         highc = using[high_seq][0][HI]
         low = []
@@ -207,18 +226,18 @@ class Differ(object):
         for i in (0,1):
             if len(using[i]):
                 d = using[i][0]
-                low.append(  lowc  - d[LO] + d[2+LO] )
-                high.append( highc - d[HI] + d[2+HI] )
+                low.append(  lowc  - d[LO] + d[LO-2] )
+                high.append( highc - d[HI] + d[HI-2] )
             else:
                 d = last_diff
-                low.append(  lowc  - d[LO] + d[2+LO] )
-                high.append( highc - d[HI] + d[2+HI] )
+                low.append(  lowc  - d[LO] + d[LO-2] )
+                high.append( highc - d[HI] + d[HI-2] )
         return low[0], high[0], lowc, highc, low[1], high[1]
 
     def _merge_diffs(self, seq0, seq1, texts):
         seq0, seq1 = seq0[:], seq1[:]
         seq = seq0, seq1
-        LO, HI = 1,2
+        LO, HI = 3,4
         block = [0,0,0,0,0,0]
         while len(seq0) or len(seq1):
             if len(seq0) == 0:
@@ -274,33 +293,6 @@ class Differ(object):
                     out0 = ('conflict', block[2], block[3], block[0], block[1])
                     out1 = ('conflict', block[2], block[3], block[4], block[5])
                 yield out0, out1
-
-    def set_sequences_iter(self, *sequences):
-        if len(sequences)==0 or len(sequences)==1:
-            diffs = [[], []]
-        elif len(sequences)==2:
-            matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[0])
-            work = matcher.initialise()
-            while work.next() == None:
-                yield None
-            diffs = [matcher.get_difference_opcodes(), []]
-        elif len(sequences)==3:
-            diffs = [[], []]
-            for i in range(2):
-                if len(sequences[i*2]) != 0:
-                    matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[i*2])
-                    work = matcher.initialise()
-                    while work.next() == None:
-                        yield None
-                    diffs[i] = matcher.get_difference_opcodes()
-        else:
-            raise "Bad number of arguments to Differ constructor (%i)" % len(sequences)
-        self.diffs = diffs
-        self.num_sequences = len(sequences)
-        self.seqlength = [0,0,0]
-        for i,s in misc.enumerate(sequences):
-            self.seqlength[i] = len(s)
-        yield 1
 
 def main():
     t0 = open("test/lao").readlines()

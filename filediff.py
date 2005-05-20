@@ -212,17 +212,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 for p,v in props.items():
                     tag.set_property(p,v)
             common = self.prefs.common
-            add_tag("edited line",   {"background": common.color_edited_bg,
-                                      "foreground": common.color_edited_fg} )
-            add_tag("delete line",   {"background": common.color_delete_bg,
-                                      "foreground": common.color_delete_fg}  )
-            add_tag("replace line",  {"background": common.color_replace_bg,
-                                      "foreground": common.color_replace_fg} )
-            add_tag("conflict line", {"background": common.color_conflict_bg,
-                                      "foreground": common.color_conflict_fg} )
             add_tag("inline line",   {"background": common.color_inline_bg,
-                                      "foreground": common.color_inline_fg} )
-            add_tag("inline line2",   {"background": common.color_inline_bg,
                                       "foreground": common.color_inline_fg} )
         # ui and actions
         self.actiongroup = gtk.ActionGroup("FilediffActions")
@@ -253,7 +243,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.textview_focussed = None
         self._update_regexes()
         self.load_font()
-        self.linediffer = diffutil.Differ()
+        self.differ = diffutil.Differ()
         self.num_panes = 0
         self.set_num_panes(num_panes)
         self.connect_signal_handlers()
@@ -341,12 +331,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         uimanager.ensure_update()
 
     def _after_text_modified(self, buffer, startline, sizechange):
-        if self.num_panes > 1:
-            pane = self.textbuffer.index(buffer)
-            range = self.linediffer.change_sequence( pane, startline, sizechange, self._get_texts())
-            for iter in self._update_highlighting( range[0], range[1] ):
-                pass
-            self.queue_draw()
+#        if self.num_panes > 1:
+#            pane = self.textbuffer.index(buffer)
+#            range = self.differ.change_sequence( pane, startline, sizechange, self._get_texts())
+#            for iter in self._update_highlighting( range[0], range[1] ):
+#                pass
+#            self.queue_draw()
         self._update_cursor_status(buffer)
 
     def _get_texts(self, raw=0):
@@ -559,7 +549,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def _set_files_internal(self, files):
         yield _("[%s] Set num panes") % self.label_text
         self.block_signal_handlers(*self.textbuffer)
-        self.linediffer.diffs = [[],[]]
+        self.differ = diffutil.Differ()
         self.queue_draw()
         try_codecs = self.prefs.text_codecs.split()
         yield _("[%s] Opening files") % self.label_text
@@ -580,7 +570,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     buffers[i].set_text("\n")
                     glade.run_dialog(
                         _("Could not open '%s' for reading.\n\nThe error was:\n%s") % (f, str(e)),
-                        parent = self)
+                        parent = self.toplevel.get_toplevel())
             else:
                 panetext[i] = buffers[i].get_text( *buffers[i].get_bounds() )
         yield _("[%s] Reading files") % self.label_text
@@ -627,12 +617,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         for r in self.regexes:
             panetext = [r.sub("",p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
-        step = self.linediffer.set_sequences_iter(*lines)
+        step = self.differ.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
         self._update_merge_buttons()
         self.toplevel.queue_draw()
-        lenseq = [len(d) for d in self.linediffer.diffs]
+        lenseq = [len(d) for d in self.differ.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
         self.unblock_signal_handlers(*self.textbuffer)
         for i in range(len(files)):
@@ -643,12 +633,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         yield 0
 
     def _update_merge_buttons(self):
-        area = self.linkmap0
         class ButtonManager:
-            def __init__(self):
+            def __init__(self, area):
+                self.area = area
                 self.index = 0
                 self.buttons = []
-            def next(self):
+            def next(self, pixbuf):
                 try:
                     b = self.buttons[self.index]
                 except IndexError:
@@ -658,52 +648,46 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     b.set_focus_on_click(False)
                     b.add(im)
                     b.show_all()
-                    area.put( b, 0, 0 )
+                    b.set_border_width(0)
+                    self.area.put( b, 0, 0 )
                     self.buttons.append(b)
                 self.index += 1
+                b.child.set_from_pixbuf(pixbuf)
                 b.show()
                 return b
+            def put_back(self, button):
+                self.index -= 1
             def finished(self):
                 for b in self.buttons[self.index:]:
                     b.hide()
                 self.index = 0
-        if not hasattr(self,"_buttons"):
-            self._buttons = ButtonManager()
+        if not hasattr(self,"_button_manager"):
+            self._button_manager = ButtonManager(self.linkmap0), ButtonManager(self.linkmap1)
         visible = [t.get_visible_rect() for t in self.textview]
-        start = self._pixel_to_line(0, visible[0].y)
-        end = self._pixel_to_line(0, visible[0].y+visible[0].height)
-        for c in self.linediffer.diffs[0]:
-            if c[4] < start: continue
-            if c[3] > end: break
-            xpos = -6
-            ypos = self._line_to_pixel(0, c[3]) - visible[0].y
-            bf = self._buttons.next()
-            bf.child.set_from_pixbuf(self.pixbuf_apply0)
-            if c[0] == "delete":
-                ypos -= bf.size_request()[1]/2
-            area.move( bf, xpos, ypos )
-        start = self._pixel_to_line(1, visible[1].y)
-        end = self._pixel_to_line(1, visible[1].y+visible[1].height)
-        for c in self.linediffer.diffs[0]:
-            if c[2] < start: continue
-            if c[1] > end: break
-            ypos = self._line_to_pixel(0, c[1]) - visible[1].y
-            bf = self._buttons.next()
-            bf.child.set_from_pixbuf(self.pixbuf_apply1)
-            xpos = area.size_request()[0] - (bf.size_request()[0]-6)
-            if c[0] == "insert":
-                ypos -= bf.size_request()[1]/2
-            area.move( bf, xpos, ypos )
-        self._buttons.finished()
+        for linkindex in range(self.num_panes-1):
+            start = [self._pixel_to_line(linkindex+i, visible[linkindex+i].y) for i in range(2)]
+            end =   [self._pixel_to_line(linkindex+i, visible[linkindex+i].y+visible[linkindex+i].height) for i in range(2)]
+            pixbufs = self.pixbuf_apply0, self.pixbuf_apply1
+            button_indent = 6
+            button = self._button_manager[linkindex].next(pixbufs[0])
+            xpos = (-button_indent, self.linkmap0.size_request()[0] - (button.size_request()[0]-6))
+            self._button_manager[linkindex].put_back(button)
+            for change in self.differ.single_changes(linkindex*2, linkindex==1):
+                if change[2] < start[0] and change[4] < start[1]: continue
+                if change[1] > end[0] and change[3] > end[1]: break
+                for side in range(2):
+                    button = self._button_manager[linkindex].next(pixbufs[side])
+                    ypos = self._line_to_pixel(linkindex+side, change[1+2*side]) - visible[linkindex+side].y
+                    if change[0] == ("insert","delete")[side]:
+                        ypos -= button.size_request()[1]/2
+                    self.linkmap[linkindex].move( button, xpos[side], ypos)
+            self._button_manager[linkindex].finished()
 
     def _update_highlighting(self, range0, range1):
         buffers = self.textbuffer
         for b in buffers:
-            taglist = ["delete line", "conflict line", "replace line", "inline line", "inline line2"]
-            table = b.get_tag_table()
-            for tagname in taglist:
-                tag = table.lookup(tagname)
-                b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
+            tag = b.get_tag_table().lookup("inline line")
+            b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
 
         def get_iters(buf, line0, line1):
             i0 = buf.get_iter_at_line(line0)
@@ -711,34 +695,15 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             if not i1.ends_line(): i1.forward_to_line_end()
             return i0,i1
 
-        for i,diff in enumerate(self.linediffer.diffs):
+        for i,diff in enumerate(self.differ.diffs):
             for c in diff:
-#                if c[0] == "insert":
-#                    buf = buffers[i*2]
-#                    #txt = self._get_texts()[0][c[3]:c[4]]
-#                    #print txt, "".join(txt) == ""
-#                    #if "".join(txt) == "": continue
-#                    #print "OK"
-#                    tag = buf.get_tag_table().lookup("delete line")
-#                    #buf.apply_tag( tag, buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
-#                    buf.apply_tag( tag, *get_iters(buf,c[3],c[4]) )#buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
-#                elif c[0] == "delete":
-#                    buf = buffers[1]
-#                    tag = buf.get_tag_table().lookup("delete line")
-#                    ##buf.apply_tag( tag, buf.get_iter_at_line(c[1]), buf.get_iter_at_line(c[2]) )
-#                    buf.apply_tag( tag, *get_iters(buf,c[1],c[2]) )#buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
-#                elif c[0] == "conflict":
-#                    bufs = buffers[1], buffers[i*2]
-#                    tags = [b.get_tag_table().lookup("conflict line") for b in bufs]
-#                    for b,t,o in zip(bufs, tags, (0,2)):
-#                        b.apply_tag( t, b.get_iter_at_line(c[o+1]), b.get_iter_at_line(c[o+2]) )
                 if c[0] == "replace":
                     bufs = buffers[1], buffers[i*2]
                     tags = [b.get_tag_table().lookup("replace line") for b in bufs]
                     starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
 #                    for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
 #                        b.apply_tag(t, s, b.get_iter_at_line(l))
-                    if 1:
+                    if 0:
                         text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] )
                         textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] )
                         matcher = difflib.SequenceMatcher(None, text1, textn)
@@ -920,7 +885,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         for (i,adj) in others:
             mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
             # look for the chunk containing 'line'
-            for c in self.linediffer.pair_changes(master, i, self._get_texts()):
+            for c in self.differ.single_changes(master):
                 c = c[1:]
                 if c[0] >= line:
                     mend = c[0]
@@ -955,7 +920,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         #
     def on_diffmap__expose_event(self, area, event):
         diffmapindex = self.diffmap.index(area)
-        textindex = self.num_panes-2 + diffmapindex
+        textindex = (0, self.num_panes-1)[diffmapindex]
         size_of_arrow = 14 # TODO from style
         hperline = float( self.textview[textindex].get_allocation().height - 2*size_of_arrow) / self._get_line_count(textindex)
         if hperline > self.pixels_per_line:
@@ -971,9 +936,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         rect_indent = 4
         rect_width = area.get_allocation().width - 2*rect_indent
         gc = lambda x : getattr(self.graphics_contexts, x)
-        for c in self.linediffer.single_changes(textindex, self._get_texts()):
+        for c in self.differ.single_changes(textindex):
             assert c[0] != "equal"
-            if textindex == 2: print c
             s,e = [int(x) for x in ( math.floor(scaleit(c[1])), math.ceil(scaleit(c[2]+(c[1]==c[2]))) ) ]
             window.draw_rectangle( gc(c[0]), 1, rect_indent, s, rect_width, e-s)
             window.draw_rectangle( gctext, 0, rect_indent, s, rect_width, e-s)
@@ -1022,7 +986,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 self.action_three_panes.activate()
             self.scrolledwindow[0].set_placement( (gtk.CORNER_TOP_RIGHT, gtk.CORNER_TOP_LEFT)[num_panes==1] )
             self.queue_draw()
-            self.recompute_label()
+            self.set_files([None]*num_panes)
 
     def _line_to_pixel(self, pane, line ):
         iter = self.textbuffer[pane].get_iter_at_line(line)
@@ -1036,12 +1000,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
         c = None
         if direction == gtk.gdk.SCROLL_DOWN:
-            for c in self.linediffer.single_changes(1, self._get_texts()):
+            for c in self.differ.single_changes(1):
                 assert c[0] != "equal"
                 if c[1] > curline + 1:
                     break
         else: #direction == gtk.SCROLL_STEP_BACKWARD
-            for chunk in self.linediffer.single_changes(1, self._get_texts()):
+            for chunk in self.differ.single_changes(1):
                 if chunk[2] < curline:
                     c = chunk
                 elif c:
@@ -1078,30 +1042,28 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.graphics_contexts = misc.struct(delete=gcd, insert=gcd, replace=gcc, conflict=gcx)
 
     def on_textview__expose_event(self, textview, event):
+        if self.num_panes == 1:
+            return
         if event.window != textview.get_window(gtk.TEXT_WINDOW_TEXT) \
             and event.window != textview.get_window(gtk.TEXT_WINDOW_LEFT):
             return
-        window = event.window
-        style = self.toplevel.get_style()
-        area = event.area
         gctext = textview.get_style().text_gc[0]
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
-        start = self._pixel_to_line(pane, visible.y)
-        end = self._pixel_to_line(pane, visible.y+visible.height)
+        start_line = self._pixel_to_line(pane, visible.y)
+        end_line = self._pixel_to_line(pane, visible.y+visible.height)
 
         # draw background and thin lines
-        off = (2,0)[ self.textview.index(textview) ]
         gc = lambda x : getattr(self.graphics_contexts, x)
-        for c in self.linediffer.diffs[0]:
-            if c[off+2] < start: continue
-            if c[off+1] > end: break
-            ypos0 = self._line_to_pixel(pane, c[off+1]) - visible.y
-            window.draw_line(gctext, 0,ypos0-1, 1000,ypos0-1)
-            if c[off+2] != c[off+1]:
-                ypos1 = self._line_to_pixel(pane, c[off+2]) - visible.y
-                window.draw_line(gctext, 0,ypos1, 1000,ypos1)
-                window.draw_rectangle(gc(c[0]), 1, 0,ypos0, 1000,ypos1-ypos0)
+        for change in self.differ.single_changes(pane):
+            if change[2] < start_line: continue
+            if change[1] > end_line: break
+            ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
+            event.window.draw_line(gctext, 0,ypos0-1, 1000,ypos0-1)
+            if change[2] != change[1]:
+                ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
+                event.window.draw_line(gctext, 0,ypos1, 1000,ypos1)
+                event.window.draw_rectangle(gc(change[0]), 1, 0,ypos0, 1000,ypos1-ypos0)
 
         # maybe draw heavier lines for current difference
         if 0:
@@ -1111,7 +1073,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 iter = buf.get_iter_at_mark( buf.get_insert() )
                 line = iter.get_line()
                 off = (0,2)[ view == textview ]
-                for c in self.linediffer.diffs[0]:
+                for c in self.differ.diffs[0]:
                     if c[off+2] < line-1: continue
                     if c[off+1] > line+1: break
                     off = (2,0)[ self.textview.index(textview) ]
@@ -1143,8 +1105,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 return (2-bias(2-2*t,1-g))/2.0
         f = lambda x: gain( x, 0.95)
 
-        draw_style = 2#self.prefs.draw_style
-
         which = self.linkmap.index(area)
         pix_start = [None] * self.num_panes
         pix_start[which  ] = self.textview[which  ].get_visible_rect().y - 0
@@ -1170,7 +1130,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
         gc = lambda x : getattr(self.graphics_contexts, x)
 
-        for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
+        for c in self.differ.single_changes(which*2, which==1):
             if self.prefs.ignore_blank_lines:
                 c1,c2 = consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
                 c3,c4 = consume_blank_lines( self._get_texts()[which+1][c[3]:c[4]] )
@@ -1187,25 +1147,17 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
             t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
 
-            if draw_style > 0:
-                n = (1, 20)[draw_style-1]
-                points0 = []
-                points1 = []
-                for t in map(lambda x: float(x)/n, range(n+1)):
-                    points0.append( (int(    t*wtotal), 0+int((1-f(t))*f0 + f(t)*t0 )) )
-                    points1.append( (int((1-t)*wtotal), 1+int(f(t)*f1 + (1-f(t))*t1 )) )
+            n = 20
+            points0 = []
+            points1 = []
+            for t in map(lambda x: float(x)/n, range(n+1)):
+                points0.append( (int(    t*wtotal), 0+int((1-f(t))*f0 + f(t)*t0 )) )
+                points1.append( (int((1-t)*wtotal), 1+int(f(t)*f1 + (1-f(t))*t1 )) )
 
-                points = points0 + points1 + [points0[0]]
-                window.draw_polygon( gc(c[0]), 1, points)
-                window.draw_lines(gctext, points0)
-                window.draw_lines(gctext, points1)
-            else:
-                w = wtotal
-                p = self.pixbuf_apply0.get_width()
-                window.draw_polygon(gctext, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
-                window.draw_polygon(gctext, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
-                points0 = (0,f0), (0,t0)
-                window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
+            points = points0 + points1 + [points0[0]]
+            window.draw_polygon( gc(c[0]), 1, points)
+            window.draw_lines(gctext, points0)
+            window.draw_lines(gctext, points1)
 
     def on_linkmap__scroll_event(self, area, event):
         self.next_diff(event.direction)
@@ -1242,7 +1194,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
             src = which + side
             dst = which + 1 - side
-            for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
+            for c in self.differ.pair_changes(src, dst, self._get_texts()):
                 if c[0] == "insert":
                     continue
                 h = func(c)
@@ -1369,7 +1321,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
     def print_to_job(self, job):
         texts = [b.get_text(*b.get_bounds()).split("\n") for b in self.textbuffer]
-        chunks = self.linediffer.all_changes(texts)
+        chunks = self.differ.all_changes(texts)
         self.scheduler.add_task( fileprint.do_print(
             job,
             texts[:self.num_panes],
