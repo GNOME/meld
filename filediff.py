@@ -96,6 +96,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
       <toolbar name="ToolBar">
           <separator/>
           <toolitem action="save"/>
+          <toolitem action="refresh"/>
           <separator/>
           <toolitem action="undo"/>
           <toolitem action="redo"/>
@@ -122,6 +123,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             ('print', gtk.STOCK_PRINT, _('_Print...'), '<Control><Shift>p', _('Print this comparison')),
             ('close', gtk.STOCK_CLOSE, _('_Close'), '<Control>w', _('Close this tab')),
         ('edit_menu', None, _('_Edit')),
+            ('refresh', gtk.STOCK_REFRESH, _('Refres_h'), None, ''),
             ('undo', gtk.STOCK_UNDO, _('_Undo'), '<Control>z', _('Undo last change')),
             ('redo', gtk.STOCK_REDO, _('_Redo'), '<Control><Shift>z', _('Redo last change')),
             ('find', gtk.STOCK_FIND, _('_Find'), '<Control>f', _('Search the document')),
@@ -385,8 +387,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
         self.pixbuf_delete = load("button_delete.xpm")
-        self.pixbuf_copy0  = load("button_copy0.xpm")
-        self.pixbuf_copy1  = load("button_copy1.xpm")
+        self.pixbuf_copy =   load("button_copy.xpm")
 
     def on_preference_changed(self, key, value):
         if key == "draw_style":
@@ -419,21 +420,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask | x != self.keymask:
             self.keymask |= x
-            for l in self.linkmap[:self.num_panes-1]:
-                a = l.get_allocation()
-                w = self.pixbuf_copy0.get_width()
-                l.queue_draw_area(0,      0, w, a[3])
-                l.queue_draw_area(a[2]-w, 0, w, a[3])
+            self._update_merge_buttons()
 
     def on_toplevel__key_release_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
-            for l in self.linkmap[:self.num_panes-1]:
-                a = l.get_allocation()
-                w = self.pixbuf_copy0.get_width()
-                l.queue_draw_area(0,      0, w, a[3])
-                l.queue_draw_area(a[2]-w, 0, w, a[3])
+            self._update_merge_buttons()
 
     def is_modified(self):
         state = [b.get_modified() for b in self.textbuffer]
@@ -634,13 +627,16 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
     def _update_merge_buttons(self):
         class ButtonManager:
-            def __init__(self, area):
+            def __init__(self, area, textviews):
                 self.area = area
                 self.index = 0
                 self.buttons = []
-            def next(self, pixbuf):
+                self.textview = textviews
+                self.extra = []
+            def next(self, pixbuf, extra):
                 try:
                     b = self.buttons[self.index]
+                    self.extra[self.index] = extra
                 except IndexError:
                     im = gtk.Image()
                     b = gtk.Button()
@@ -651,10 +647,33 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     b.set_border_width(0)
                     self.area.put( b, 0, 0 )
                     self.buttons.append(b)
+                    self.extra.append(extra)
+                    b.connect("clicked", self.on_clicked)
                 self.index += 1
                 b.child.set_from_pixbuf(pixbuf)
                 b.show()
                 return b
+            def on_clicked(self, button):
+                operation, chunk, linkindex, side = self.extra[ self.buttons.index(button) ]
+                src = linkindex + side
+                dst = linkindex + (1-side)
+                self.textview[src].place_cursor_onscreen()
+                self.textview[dst].place_cursor_onscreen()
+                off = side*2
+                if operation == "delete":
+                    b = self.textview[src].get_buffer()
+                    b.delete(b.get_iter_at_line(chunk[1+off]), b.get_iter_at_line(chunk[2+off]))
+                elif operation == "copy":
+                    b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
+                    t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
+                    b1.insert(b1.get_iter_at_line(chunk[4-off]), t0)
+                else: # replace
+                    b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
+                    t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
+                    b1.begin_user_action()
+                    b1.delete(b1.get_iter_at_line(chunk[3-off]), b1.get_iter_at_line(chunk[4-off]))
+                    b1.insert(b1.get_iter_at_line(chunk[3-off]), t0)
+                    b1.end_user_action()
             def put_back(self, button):
                 self.index -= 1
             def finished(self):
@@ -662,21 +681,34 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     b.hide()
                 self.index = 0
         if not hasattr(self,"_button_manager"):
-            self._button_manager = ButtonManager(self.linkmap0), ButtonManager(self.linkmap1)
+            self._button_manager = [ ButtonManager(l, self.textview) for l in self.linkmap]
+
+
+        if self.keymask & self.MASK_SHIFT: # delete
+            operation = "delete"
+            pixbufs = self.pixbuf_delete, self.pixbuf_delete
+        elif self.keymask & self.MASK_CTRL: # copy up
+            operation = "copy"
+            pixbufs = self.pixbuf_copy, self.pixbuf_copy
+        else:
+            operation = "apply"
+            pixbufs = self.pixbuf_apply0, self.pixbuf_apply1
+
         visible = [t.get_visible_rect() for t in self.textview]
         for linkindex in range(self.num_panes-1):
             start = [self._pixel_to_line(linkindex+i, visible[linkindex+i].y) for i in range(2)]
             end =   [self._pixel_to_line(linkindex+i, visible[linkindex+i].y+visible[linkindex+i].height) for i in range(2)]
-            pixbufs = self.pixbuf_apply0, self.pixbuf_apply1
-            button_indent = 6
-            button = self._button_manager[linkindex].next(pixbufs[0])
-            xpos = (-button_indent, self.linkmap0.size_request()[0] - (button.size_request()[0]-6))
+            button_indent = 5
+            button = self._button_manager[linkindex].next(pixbufs[0], None)
+            xpos = (-button_indent, self.linkmap0.size_request()[0] - (button.size_request()[0]-button_indent))
             self._button_manager[linkindex].put_back(button)
             for change in self.differ.single_changes(linkindex*2, linkindex==1):
                 if change[2] < start[0] and change[4] < start[1]: continue
                 if change[1] > end[0] and change[3] > end[1]: break
                 for side in range(2):
-                    button = self._button_manager[linkindex].next(pixbufs[side])
+                    if change[0] == ("insert","delete")[side] and self.keymask:
+                        continue
+                    button = self._button_manager[linkindex].next( pixbufs[side], (operation, change, linkindex, side) )
                     ypos = self._line_to_pixel(linkindex+side, change[1+2*side]) - visible[linkindex+side].y
                     if change[0] == ("insert","delete")[side]:
                         ypos -= button.size_request()[1]/2
@@ -1162,105 +1194,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def on_linkmap__scroll_event(self, area, event):
         self.next_diff(event.direction)
 
-    def on_linkmap__button_press_event(self, area, event):
-        if event.button == 1:
-            self.focus_before_click = None
-            for t in self.textview:
-                if t.is_focus():
-                    self.focus_before_click = t
-                    break
-            area.grab_focus()
-            self.mouse_chunk = None
-            alloc = area.get_allocation()
-            (wtotal,htotal) = alloc.width, alloc.height
-            pix_width = self.pixbuf_apply0.get_width()
-            pix_height = self.pixbuf_apply0.get_height()
-            if self.keymask == self.MASK_CTRL: # hack
-                pix_height *= 2
-
-            which = self.linkmap.index(area)
-
-            # quick reject are we near the gutter?
-            if event.x < pix_width:
-                side = 0
-                rect_x = 0
-            elif event.x > wtotal - pix_width:
-                side = 1
-                rect_x = wtotal - pix_width
-            else:
-                return  1
-            adj = self.scrolledwindow[which+side].get_vadjustment()
-            func = lambda c: self._line_to_pixel(which, c[1]) - adj.value
-
-            src = which + side
-            dst = which + 1 - side
-            for c in self.differ.pair_changes(src, dst, self._get_texts()):
-                if c[0] == "insert":
-                    continue
-                h = func(c)
-                if h < 0: # find first visible chunk
-                    continue
-                elif h > htotal: # we've gone past last visible
-                    break
-                elif h < event.y and event.y < h + pix_height:
-                    self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
-                    break
-            #print self.mouse_chunk
-            return 1
-        elif event.button == 2:
-            self.linkmap_drag_coord = event.x
-
-    def on_linkmap__motion_notify_event(self, area, event):
-        return 
-        #dx = event.x - self.linkmap_drag_coord
-        #self.linkmap_drag_coord = event.x
-        #w,h = self.scrolledwindow0.size_request()
-        #w,h = size[2] - size[0], size[3] - size[1]
-        #self.scrolledwindow0.set_size_request(w+dx,h)
-        #print w+dx
-        #textview0.get_allocation(
-        #print misc.all(event)
-
-    def on_linkmap__button_release_event(self, area, event):
-        if event.button == 1:
-            if self.focus_before_click:
-                self.focus_before_click.grab_focus()
-                self.focus_before_click = None
-            if self.mouse_chunk:
-                (src,dst), rect, chunk = self.mouse_chunk
-                # check we're still in button
-                inrect = lambda p, r: ((r[0] < p.x) and (p.x < r[0]+r[2]) and (r[1] < p.y) and (p.y < r[1]+r[3]))
-                if inrect(event, rect):
-                    # gtk tries to jump back to where the cursor was unless we move the cursor
-                    self.textview[src].place_cursor_onscreen()
-                    self.textview[dst].place_cursor_onscreen()
-                    chunk = chunk[1:]
-                    self.mouse_chunk = None
-
-                    if self.keymask & self.MASK_SHIFT: # delete
-                        b = self.textbuffer[src]
-                        b.delete(b.get_iter_at_line(chunk[0]), b.get_iter_at_line(chunk[1]))
-                    elif self.keymask & self.MASK_CTRL: # copy up or down
-                        b0 = self.textbuffer[src]
-                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
-                        b1 = self.textbuffer[dst]
-                        if event.y - rect[1] < 0.5 * rect[3]: # copy up
-                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
-                        else: # copy down
-                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[3]), t0, "edited line")
-                    else: # replace
-                        b0 = self.textbuffer[src]
-                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
-                        b1 = self.textbuffer[dst]
-                        self.on_textbuffer__begin_user_action()
-                        b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
-                        b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
-                        self.on_textbuffer__end_user_action()
-            return 1
-
-    def on_linkmap__drag_begin(self, *args):
-        print "drag", args
-
     def action_save__activate(self, action):
         pane = self._get_focused_pane()
         if pane >= 0:
@@ -1294,7 +1227,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         dialog.construct_range_page(flags, 1,100, _("_Current"), _("_Range"))
         dialog.connect("response", self.on_print_dialog_response, job)
         dialog.show()
-        print "*+++"
 
     def on_print_dialog_response(self, dialog, response, job):
         if response == gnomeprint.ui.DIALOG_RESPONSE_PREVIEW:
@@ -1329,6 +1261,9 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
     def action_close__activate(self, action):
         self.emit("closed")
+
+    def action_refresh__activate(self, *action):
+        self.set_files([None]*self.num_panes)
 
     def action_undo__activate(self, *action):
         self.undosequence.undo()

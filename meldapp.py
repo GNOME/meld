@@ -119,7 +119,6 @@ class MeldApp(glade.GtkApp, dbus.Object):
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
         self.toplevel.show()
-        print self.toplevel.get_name()
 
         if dbus_service:
             dbus.Object.__init__(self, "/App", dbus_service,
