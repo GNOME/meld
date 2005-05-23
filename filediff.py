@@ -31,7 +31,6 @@ import pango
 
 import diffutil
 import fileprint
-import findreplace
 import glade
 import melddoc
 import misc
@@ -40,6 +39,7 @@ import sourceview
 import stock
 import undo
 import undoaction
+import gconf
 
 class FileDiff(melddoc.MeldDoc, glade.Component):
     """Two or three way diff of text files.
@@ -79,13 +79,16 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="paste"/>
             <separator/>
           </menu>
-          <menu action="diff_menu">
-            <menuitem action="next_difference"/>
-            <menuitem action="previous_difference"/>
-            <separator/>
+          <menu action="view_menu">
             <menuitem action="one_pane"/>
             <menuitem action="two_panes"/>
             <menuitem action="three_panes"/>
+            <separator/>
+            <menuitem action="rotate_view"/>
+          </menu>
+          <menu action="diff_menu">
+            <menuitem action="next_difference"/>
+            <menuitem action="previous_difference"/>
             <separator/>
             <menuitem action="replace_left_file"/>
             <menuitem action="replace_right_file"/>
@@ -123,7 +126,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             ('print', gtk.STOCK_PRINT, _('_Print...'), '<Control><Shift>p', _('Print this comparison')),
             ('close', gtk.STOCK_CLOSE, _('_Close'), '<Control>w', _('Close this tab')),
         ('edit_menu', None, _('_Edit')),
-            ('refresh', gtk.STOCK_REFRESH, _('Refres_h'), None, ''),
+            ('refresh', gtk.STOCK_REFRESH, _('Refres_h'), None, _('Recompute differences')),
             ('undo', gtk.STOCK_UNDO, _('_Undo'), '<Control>z', _('Undo last change')),
             ('redo', gtk.STOCK_REDO, _('_Redo'), '<Control><Shift>z', _('Redo last change')),
             ('find', gtk.STOCK_FIND, _('_Find'), '<Control>f', _('Search the document')),
@@ -132,15 +135,20 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             ('cut', gtk.STOCK_CUT, _('Cu_t'), '<Control>x', _('Copy selected text')),
             ('copy', gtk.STOCK_PASTE, _('_Copy'), '<Control>c', _('Copy selected text')),
             ('paste', gtk.STOCK_PASTE, _('_Paste'), '<Control>v', _('Paste selected text')),
-        ('diff_menu', None, _('Diff')),
-            ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
-            ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
+        ('view_menu', None, _('_View')),
             ('one_pane', None, _('One pane'), '<Control><Alt>1', '', 1, 'num_panes'),
             ('two_panes', None, _('Two panes'), '<Control><Alt>2', '', 2, 'num_panes'),
             ('three_panes', None, _('Three panes'), '<Control><Alt>3', '', 3, 'num_panes'),
+            ('rotate_view', None, _('Rotate View'), None, None),
+        ('diff_menu', None, _('_Diff')),
+            ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
+            ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
             ('replace_left_file', gtk.STOCK_GO_BACK, _('Copy contents left'), None, None),
             ('replace_right_file', gtk.STOCK_GO_FORWARD, _('Copy contents right'), None, None),
     )
+
+    FIND_STATE_ROOT = "/apps/meld/state/find"
+
     MASK_SHIFT = 1
     MASK_CTRL = 2
     keylookup = { gtk.keysyms.Shift_L : MASK_SHIFT,
@@ -191,6 +199,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         def on_edit__activate(self, menuitem):
             self.parent._edit_files( [self.parent.bufferextra[self.pane].filename] )
 
+    class FindReplaceState:
+        __slots__=("tofind", "toreplace", "match_case", "entire_word", "wrap_around", "use_regex", "replace_all")
+        def __init__(self):
+            for s in self.__slots__:
+                setattr(self, s, None)
+
+
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
         """
@@ -200,12 +215,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         override["GtkTextView"] = sourceview.SourceView
         override["GtkTextBuffer"] = sourceview.SourceBuffer
         glade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
-        self.map_widgets_into_lists( ["textview", "filecombo", "openbutton", "diffmap", "pane", "scrolledwindow", "linkmap", "statusbutton"] )
+        self.map_widgets_into_lists( "textview filecombo openbutton diffmap pane scrolledwindow linkmap statusbutton".split() )
         self.fileentry = [ glade.FileEntry(c,b) for c,b in zip(self.filecombo, self.openbutton) ]
         # text views and buffers
         self.textbuffer = [ sourceview.SourceBuffer() for i in range(3) ]
         self.bufferextra = [ self.BufferExtra() for i in range(3) ]
         for view,buffer in zip(self.textview, self.textbuffer):
+            #view.set_border_window_size(gtk.TEXT_WINDOW_LEFT,10)
             view.set_show_line_numbers( self.prefs.line_numbers )
             view.set_wrap_mode( self.prefs.wrap_lines )
             view.set_buffer(buffer)
@@ -214,8 +230,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 for p,v in props.items():
                     tag.set_property(p,v)
             common = self.prefs.common
-            add_tag("inline line",   {"background": common.color_inline_bg,
-                                      "foreground": common.color_inline_fg} )
+            add_tag("inline line0", {"background": common.color_inline_bg0,
+                                     "foreground": common.color_inline_fg0,
+                                     "weight": pango.WEIGHT_BOLD
+                                     } )
+            add_tag("inline line1", {"background": common.color_inline_bg1,
+                                     "weight": pango.WEIGHT_BOLD,
+                                     "underline": True} )
         # ui and actions
         self.actiongroup = gtk.ActionGroup("FilediffActions")
         self.add_actions( self.actiongroup, self.UI_ACTIONS )
@@ -233,9 +254,11 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             v,h = w.get_vadjustment(), w.get_hadjustment()
             v.signal_handler_ids = [v.connect("value-changed", self._sync_vscroll )]
             h.signal_handler_ids = [h.connect("value-changed", self._sync_hscroll )]
-        group = gtk.SizeGroup(gtk.SIZE_GROUP_VERTICAL)
-        group.add_widget(self.spacer0)
-        group.add_widget(self.fileentryhbox0)
+        #group = gtk.SizeGroup(gtk.SIZE_GROUP_VERTICAL)
+        #group.add_widget(self.spacer0)
+        #group.add_widget(self.fileentryhbox0)
+        # find replace state
+        self.setup_find_replace_state()
         # misc state variables
         self.popup_menu = self.ContextMenu(self)
         self.find_dialog = None
@@ -333,12 +356,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         uimanager.ensure_update()
 
     def _after_text_modified(self, buffer, startline, sizechange):
-#        if self.num_panes > 1:
-#            pane = self.textbuffer.index(buffer)
-#            range = self.differ.change_sequence( pane, startline, sizechange, self._get_texts())
-#            for iter in self._update_highlighting( range[0], range[1] ):
-#                pass
-#            self.queue_draw()
+        if self.num_panes > 1:
+            pane = self.textbuffer.index(buffer)
+            range = self.differ.change_sequence( pane, startline, sizechange, self._get_texts())
+            print range
+            #for iter in self._update_highlighting( range[0], range[1] ):
+            #    pass
+            #self.queue_draw()
         self._update_cursor_status(buffer)
 
     def _get_texts(self, raw=0):
@@ -421,6 +445,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         if self.keymask | x != self.keymask:
             self.keymask |= x
             self._update_merge_buttons()
+        if event.keyval == gtk.keysyms.Escape:
+            self.button_find_close.clicked()
 
     def on_toplevel__key_release_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -500,10 +526,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def on_textview__toggle_overwrite(self, view):
         lock = self.enter_locked_region("__on_textview__toggle_overwrite")
         if lock:
-            over = not view.get_overwrite()
-            [v.set_overwrite(over) for v in self.textview if v != view]
-            self._update_cursor_status(view.get_buffer())
-            self.exit_locked_region(lock)
+            try:
+                over = not view.get_overwrite()
+                [v.set_overwrite(over) for v in self.textview if v != view]
+                self._update_cursor_status(view.get_buffer())
+            finally:
+                self.exit_locked_region(lock)
 
         #
         # text buffer loading/saving
@@ -581,7 +609,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
                         glade.run_dialog(
-                            _("Could not read from '%s'.\n\nI tried encodings %s.") 
+                            _("Could not read from '%s'.\n\nI tried encodings %s.")
                             % (t.filename, try_codecs), parent = self)
                         tasks.remove(t)
                 except IOError, ioerr:
@@ -605,7 +633,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                                 #t.buf.insert( t.buf.get_end_iter(), "\n")
                                 #panetext[t.pane] += "\n"
             yield 1
-        self.undosequence.clear()
         yield _("[%s] Computing differences") % self.label_text
         for r in self.regexes:
             panetext = [r.sub("",p) for p in panetext]
@@ -622,7 +649,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             if files[i]:
                 sourceview.set_highlighting_enabled( self.textbuffer[i],
                 files[i], self.prefs.syntax_highlighting )
-        [b.set_modified(0) for b in self.textbuffer]
+        for b,f in zip(self.textbuffer,files):
+            if f:
+                b.set_modified(0)
+                self.undosequence.clear()
         yield 0
 
     def _update_merge_buttons(self):
@@ -695,6 +725,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             pixbufs = self.pixbuf_apply0, self.pixbuf_apply1
 
         visible = [t.get_visible_rect() for t in self.textview]
+        yoff = self.textview0.get_allocation().y - self.linkmap0.get_allocation().y
         for linkindex in range(self.num_panes-1):
             start = [self._pixel_to_line(linkindex+i, visible[linkindex+i].y) for i in range(2)]
             end =   [self._pixel_to_line(linkindex+i, visible[linkindex+i].y+visible[linkindex+i].height) for i in range(2)]
@@ -709,7 +740,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     if change[0] == ("insert","delete")[side] and self.keymask:
                         continue
                     button = self._button_manager[linkindex].next( pixbufs[side], (operation, change, linkindex, side) )
-                    ypos = self._line_to_pixel(linkindex+side, change[1+2*side]) - visible[linkindex+side].y
+                    ypos = self._line_to_pixel(linkindex+side, change[1+2*side]) - visible[linkindex+side].y + yoff
                     if change[0] == ("insert","delete")[side]:
                         ypos -= button.size_request()[1]/2
                     self.linkmap[linkindex].move( button, xpos[side], ypos)
@@ -718,7 +749,9 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def _update_highlighting(self, range0, range1):
         buffers = self.textbuffer
         for b in buffers:
-            tag = b.get_tag_table().lookup("inline line")
+            tag = b.get_tag_table().lookup("inline line0")
+            b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
+            tag = b.get_tag_table().lookup("inline line1")
             b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
 
         def get_iters(buf, line0, line1):
@@ -727,50 +760,29 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             if not i1.ends_line(): i1.forward_to_line_end()
             return i0,i1
 
-        for i,diff in enumerate(self.differ.diffs):
-            for c in diff:
-                if c[0] == "replace":
-                    bufs = buffers[1], buffers[i*2]
-                    tags = [b.get_tag_table().lookup("replace line") for b in bufs]
-                    starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
-#                    for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
-#                        b.apply_tag(t, s, b.get_iter_at_line(l))
-                    if 0:
-                        text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] )
-                        textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] )
-                        matcher = difflib.SequenceMatcher(None, text1, textn)
-                        #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
-                        tags = [b.get_tag_table().lookup("inline line") for b in bufs]
-                        back = (0,0)
-                        for o in matcher.get_opcodes():
-                            if o[0] == "equal":
-                                if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
-                                    back = o[4]-o[3], o[2]-o[1]
-                                continue
-                            for i in range(2):
-                                s,e = starts[i].copy(), starts[i].copy()
-                                s.forward_chars( o[1+2*i] - back[i] )
-                                e.forward_chars( o[2+2*i] )
-                                bufs[i].apply_tag(tags[i], s, e)
-                            back = (0,0)
-                        yield 1
+        for c in [change for change in self.differ.single_changes(1) if change[0]=="replace"]:
+            other = c[5]*2
+            bufs = buffers[1], buffers[other]
+            tags = [b.get_tag_table().lookup("inline line%i"%c[5]) for b in bufs]
+            starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
+
+            text1 = "\n".join( self._get_texts(raw=1)[1    ][c[1]:c[2]] )
+            textn = "\n".join( self._get_texts(raw=1)[other][c[3]:c[4]] )
+            matcher = difflib.SequenceMatcher(None, text1, textn)
+            #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
+            back = (0,0)
+            for o in matcher.get_opcodes():
+                if o[0] == "equal":
+                    if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
+                        back = o[4]-o[3], o[2]-o[1]
+                    continue
+                for i in range(2):
+                    s,e = starts[i].copy(), starts[i].copy()
+                    s.forward_chars( o[1+2*i] - back[i] )
+                    e.forward_chars( o[2+2*i] )
+                    bufs[i].apply_tag(tags[i], s, e)
+                back = (0,0)
             yield 1
-            #if chunk[0] and chunk[0][0] == "conflict":
-            #    chunk0, chunk1 = chunk
-            #    ranges = chunk0[3:5], chunk0[1:3], chunk1[3:5]
-            #    starts = [b.get_iter_at_line(l[0]) for b,l in zip(buffers, ranges) ]
-            #    texts = [ "\n".join( self._get_texts(raw=1)[i].__getslice__(*ranges[i]) ) for i in range(3) ]
-            #    tags = [b.get_tag_table().lookup("inline line2") for b in buffers]
-            #    differ = diffutil.Differ(*texts)
-            #    for change in differ.all_changes(texts):
-            #        print change
-            #        for i,c in enumerate(change):
-            #            if c and i==0:
-            #                print c
-            #                s,e = starts[i].copy(), starts[i].copy()
-            #                s.forward_chars( c[3] )
-            #                e.forward_chars( c[4] )
-            #                buffers[i].apply_tag(tags[i], s, e)
         
     def save_file(self, pane, saveas=0):
         buf = self.textbuffer[pane]
@@ -804,7 +816,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
                 newline = glade.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
                     self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_CANCEL,
-                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] ) 
+                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] )
                 if newline < 0:
                     return
                 for k,v in buttons.items():
@@ -877,17 +889,18 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         # scrollbars
         #
     def _sync_hscroll(self, adjustment):
-        if not hasattr(self,"_sync_hscroll_lock"):
-            self._sync_hscroll_lock = 0
-        if not self._sync_hscroll_lock:
-            self._sync_hscroll_lock = 1
-            adjs = map( lambda x: x.get_hadjustment(), self.scrolledwindow)
-            master = adjs.index(adjustment)
-            adjs.remove(adjustment)
-            val = adjustment.get_value()
-            for a in adjs:
-                a.set_value(val)
-            self._sync_hscroll_lock = 0
+        lock = self.enter_locked_region("__sync_hscroll_lock")
+        if lock:
+            try:
+                self._sync_hscroll_lock = 1
+                adjs = map( lambda x: x.get_hadjustment(), self.scrolledwindow)
+                master = adjs.index(adjustment)
+                adjs.remove(adjustment)
+                val = adjustment.get_value()
+                for a in adjs:
+                    a.set_value(val)
+            finally:
+                self.exit_locked_region(lock)
 
     def _handlers_block(self, wid):
         for sig in wid.signal_handler_ids:
@@ -897,55 +910,56 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             wid.handler_unblock( sig )
 
     def _sync_vscroll(self, adjustment):
-        [self._handlers_block(w.get_vadjustment()) for w in self.scrolledwindow]
-        syncpoint = 0.5
+        lock = self.enter_locked_region("__sync_vscroll_lock")
+        if lock:
+            try:
+                adjustments = [w.get_vadjustment() for w in self.scrolledwindow[:self.num_panes]]
+                master = adjustments.index(adjustment)
+                # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
+                others = zip( range(self.num_panes), adjustments)
+                del others[master]
+                if master == 2:
+                    others.reverse()
 
-        adjustments = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-        adjustments = adjustments[:self.num_panes]
-        master = adjustments.index(adjustment)
-        # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-        others = zip( range(self.num_panes), adjustments)
-        del others[master]
-        if master == 2:
-            others.reverse()
+                # the line to search for in the 'master' text
+                line  = (adjustment.value + adjustment.page_size * 0.5)
+                line *= self._get_line_count(master)
+                line /= (adjustment.upper - adjustment.lower)
 
-        # the line to search for in the 'master' text
-        line  = (adjustment.value + adjustment.page_size * syncpoint)
-        line *= self._get_line_count(master)
-        line /= (adjustment.upper - adjustment.lower)
+                for (i,adj) in others:
+                    mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
+                    # look for the chunk containing 'line'
+                    for c in self.differ.single_changes(master):
+                        if master==1 and i != c[5]*2:
+                            continue
+                        c = c[1:]
+                        if c[0] >= line:
+                            mend = c[0]
+                            oend = c[2]
+                            break
+                        elif c[1] >= line:
+                            mbegin,mend = c[0],c[1]
+                            obegin,oend = c[2],c[3]
+                            break
+                        else:
+                            mbegin = c[1]
+                            obegin = c[3]
+                    fraction = (line - mbegin) / ((mend - mbegin) or 1)
+                    other_line = (obegin + fraction * (oend - obegin))
+                    val = adj.lower + (other_line / self._get_line_count(i) * (adj.upper - adj.lower)) - 0.5*adj.page_size
+                    val = misc.clamp(val, 0, adj.upper - adj.page_size)
+                    adj.set_value( val )
 
-        for (i,adj) in others:
-            mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
-            # look for the chunk containing 'line'
-            for c in self.differ.single_changes(master):
-                c = c[1:]
-                if c[0] >= line:
-                    mend = c[0]
-                    oend = c[2]
-                    break
-                elif c[1] >= line:
-                    mbegin,mend = c[0],c[1]
-                    obegin,oend = c[2],c[3]
-                    break
-                else:
-                    mbegin = c[1]
-                    obegin = c[3]
-            fraction = (line - mbegin) / ((mend - mbegin) or 1)
-            other_line = (obegin + fraction * (oend - obegin))
-            val = adj.lower + (other_line / self._get_line_count(i) * (adj.upper - adj.lower)) - adj.page_size * syncpoint
-            val = misc.clamp(val, 0, adj.upper - adj.page_size)
-            adj.set_value( val )
-
-            # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-            if master != 1:
-                line = other_line
-                master = 1
-        self.linkmap0.queue_draw()
-        self.linkmap1.queue_draw()
-        self._update_merge_buttons()
-        self.flushevents()
-        [self._handlers_unblock(w.get_vadjustment()) for w in self.scrolledwindow]
-
+                    # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
+                    if master != 1:
+                        line = other_line
+                        master = 1
+                self._update_merge_buttons()
+                self.linkmap0.queue_draw()
+                self.linkmap1.queue_draw()
+                self.toplevel.window.process_updates(True)
+            finally:
+                self.exit_locked_region(lock)
 
         #
         # diffmap drawing
@@ -1006,6 +1020,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             for i in range(self.num_panes,3):
                 self.pane[i].hide()
                 self.action_save_pane[i].set_sensitive(False)
+            self.action_next_difference.set_sensitive( num_panes != 1 )
+            self.action_previous_difference.set_sensitive( num_panes != 1 )
             if num_panes == 1:
                 [x.hide() for x in self.diffmap + self.linkmap]
                 self.action_one_pane.activate()
@@ -1043,13 +1059,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 elif c:
                     break
         if c:
-            if c[2] - c[1]: # no range, use other side
+            if c[2] - c[1]:
                 l0,l1 = c[1],c[2]
                 aidx = 1
                 a = adjs[aidx]
-            else:
+            else: # no range, use other side
                 l0,l1 = c[3],c[4]
-                aidx = c[5]
+                aidx = c[5]*2
                 a = adjs[aidx]
             view = self._get_focused_textview()
             if view:
@@ -1072,6 +1088,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         gcx = window.new_gc()
         gcx.set_rgb_fg_color( gtk.gdk.color_parse(common.color_conflict_bg) )
         self.graphics_contexts = misc.struct(delete=gcd, insert=gcd, replace=gcc, conflict=gcx)
+        #gtk.gdk.gdk_window_set_debug_updates(True)
 
     def on_textview__expose_event(self, textview, event):
         if self.num_panes == 1:
@@ -1084,34 +1101,44 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         pane = self.textview.index(textview)
         start_line = self._pixel_to_line(pane, visible.y)
         end_line = self._pixel_to_line(pane, visible.y+visible.height)
-
-        # draw background and thin lines
         gc = lambda x : getattr(self.graphics_contexts, x)
+
+        def draw_change(change): # draw background and thin lines
+            ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
+            width = event.window.get_size()[0]
+            event.window.draw_line(gctext, 0,ypos0-1, width,ypos0-1)
+            if change[2] != change[1]:
+                ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
+                event.window.draw_line(gctext, 0,ypos1, width,ypos1)
+                event.window.draw_rectangle(gc(change[0]), 1, 0,ypos0, width,ypos1-ypos0)
+        last_change = None
         for change in self.differ.single_changes(pane):
             if change[2] < start_line: continue
             if change[1] > end_line: break
-            ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
-            event.window.draw_line(gctext, 0,ypos0-1, 1000,ypos0-1)
-            if change[2] != change[1]:
-                ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
-                event.window.draw_line(gctext, 0,ypos1, 1000,ypos1)
-                event.window.draw_rectangle(gc(change[0]), 1, 0,ypos0, 1000,ypos1-ypos0)
+            if last_change and change[1] <= last_change[2]:
+                last_change = ("conflict", last_change[1], max(last_change[2],change[2]))
+            else:
+                if last_change:
+                    draw_change(last_change)
+                last_change = change
+        if last_change:
+            draw_change(last_change)
 
-        # maybe draw heavier lines for current difference
-        if 0:
+        # highlight current difference
+        if 0 and event.window == textview.get_window(gtk.TEXT_WINDOW_LEFT):
+            event.window.clear()
             view = self._get_focused_textview()
-            if view and self.textview.index(view) == 0 and textview == view:
+            if view and textview == view:
                 buf = view.get_buffer()
                 iter = buf.get_iter_at_mark( buf.get_insert() )
                 line = iter.get_line()
-                off = (0,2)[ view == textview ]
-                for c in self.differ.diffs[0]:
-                    if c[off+2] < line-1: continue
-                    if c[off+1] > line+1: break
-                    off = (2,0)[ self.textview.index(textview) ]
-                    ypos0 = self._line_to_pixel(0, c[off+1]) - visible.y
-                    ypos1 = self._line_to_pixel(0, c[off+2]) - visible.y
-                    window.draw_rectangle(gctext, 1, 0,ypos0, 10,ypos1)
+                for c in self.differ.single_changes(pane):
+                    if c[2] < line-1: continue
+                    if c[1] > line+1: break
+                    ypos0 = self._line_to_pixel(pane, c[1]) - visible.y
+                    ypos1 = self._line_to_pixel(pane, c[2]) - visible.y
+                    event.window.draw_rectangle(gctext, 1, 0,ypos0, 10,ypos1-ypos0)
+                    print "**", pane, line, c
                     break
 
         #
@@ -1138,9 +1165,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         f = lambda x: gain( x, 0.95)
 
         which = self.linkmap.index(area)
+        yoff = self.textview0.get_allocation().y - self.linkmap0.get_allocation().y
         pix_start = [None] * self.num_panes
-        pix_start[which  ] = self.textview[which  ].get_visible_rect().y - 0
-        pix_start[which+1] = self.textview[which+1].get_visible_rect().y - 0
+        pix_start[which  ] = self.textview[which  ].get_visible_rect().y - yoff
+        pix_start[which+1] = self.textview[which+1].get_visible_rect().y - yoff
 
         def bounds(idx):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
@@ -1271,15 +1299,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def action_redo__activate(self, *action):
         self.undosequence.redo()
 
-    def create_find_dialog(self):
-        self.find_dialog = findreplace.FindReplaceDialog(self.toplevel.get_toplevel())
-        def on_find_response(dialog, id):
-            if id < 0:
-                if id == gtk.RESPONSE_CLOSE:
-                    self.find_dialog.toplevel.destroy()
-                self.find_dialog = None
-        self.find_dialog.toplevel.connect("response", on_find_response)
-        self.find_dialog.connect("activate", self._do_find_replace)
+        #self.find_dialog.toplevel.connect("response", on_find_response)
+        #self.find_dialog.connect("activate", self._do_find_replace)
 
     def _do_find_replace(self, dialog, state):
         view = self._get_focused_textview() or self.textview0
@@ -1291,10 +1312,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.last_find_replace = state
 
     def action_find__activate(self, *action):
-        if self.find_dialog:
-            self.find_dialog.toplevel.present()
-        else:
-            self.create_find_dialog()
+        self.findreplace.show()
+        gobject.idle_add( lambda *args : self.entry_search_for.grab_focus() )
 
     def action_find_next__activate(self, action):
         if self.last_find_replace:
@@ -1304,12 +1323,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             self.action_find__activate()
 
     def action_find_replace__activate(self, *action):
-        if self.find_dialog:
-            self.find_dialog.enable_search_replace()
-            self.find_dialog.toplevel.present()
-        else:
-            self.create_find_dialog()
-            self.find_dialog.enable_search_replace()
+        self.findreplace.show_all()
+        self.button_show_replace.hide()
 
     def action_next_difference__activate(self, action):
         self.next_diff(gtk.gdk.SCROLL_DOWN)
@@ -1326,20 +1341,207 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def action_replace_right_file__activate(self, action):
         self.copy_entire_file(+1)
 
+    def action_rotate_view__activate(self, action):
+        if self.horizontal_root.get_property("visible"):
+            self.horizontal_root.hide()
+            self.vertical_root.show()
+            for i,p in enumerate(self.pane):
+                self.horizontal_root.remove(p)
+                self.vertical_root.add(p)
+                self.vertical_root.reorder_child(p, 1+2*i)
+            self.scrolledwindow[0].set_placement( (gtk.CORNER_TOP_RIGHT, gtk.CORNER_TOP_LEFT)[self.num_panes==1] )
+        else:
+            self.horizontal_root.show()
+            self.vertical_root.hide()
+            for p in self.pane:
+                self.vertical_root.remove(p)
+                self.horizontal_root.add(p)
+            self.scrolledwindow[0].set_placement(gtk.CORNER_TOP_LEFT)
+
+
+
     def action_cut__activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            t.emit("cut-clipboard") #XXX get_buffer().cut_clipboard()
+            t.emit("cut-clipboard")
 
     def action_copy__activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            t.emit("copy-clipboard") #XXX .get_buffer().copy_clipboard()
+            t.emit("copy-clipboard")
 
     def action_paste__activate(self, *extra):
         t = self._get_focused_textview()
         if t:
-            t.emit("paste-clipboard") #XXX t.get_buffer().paste_clipboard(None, 1)
+            t.emit("paste-clipboard")
 
+    #
+    # find / replace
+    #
+    def setup_find_replace_state(self):
+        self.entry_search_for = self.combo_search_for.child
+        self.entry_replace_with = self.combo_replace_with.child
+        self.combo_search_for.set_model( gtk.ListStore(type("")))
+        self.combo_search_for.set_text_column(0)
+        self.combo_replace_with.set_model( gtk.ListStore(type("")))
+        self.combo_replace_with.set_text_column(0)
+        self.gconf = gconf.client_get_default()
+        self.update_history()
+        for check in "match_case entire_word wrap_around use_regex".split():
+            widget = getattr(self, "check_%s" % check)
+            key = "%s/%s" % (self.FIND_STATE_ROOT, check)
+            active = self.gconf.get_bool(key)
+            widget.connect("toggled", lambda b,k=key : self.gconf.set_bool(k, b.get_active()) )
+            widget.set_active(active)
+        gobject.idle_add( lambda : self.entry_replace_with.select_region(0,-1) )
+        gobject.idle_add( lambda : self.entry_search_for.select_region(0,-1) )
+
+    def update_history(self):
+        for entry,history_id in ( (self.entry_search_for,"search_for"),
+                                  (self.entry_replace_with, "replace_with") ):
+            history = self.gconf.get_list("%s/%s" % (self.FIND_STATE_ROOT, history_id), gconf.VALUE_STRING )
+            name = entry.get_text()
+            try:
+                history.remove(name)
+            except ValueError:
+                pass
+            while len(history) > 7:
+                history.pop()
+            if name:
+                history.insert( 0, name )
+            combo = entry.parent
+            model = combo.get_model()
+            model.clear()
+            for h in history:
+                model.append([h])
+            if len(history):
+                combo.set_active(0)
+                self.gconf.set_list("%s/%s" % (self.FIND_STATE_ROOT, history_id), gconf.VALUE_STRING, history )
+
+    def on_findreplace__show(self, findreplace):
+        self.entry_search_for.emit("changed")
+
+    def on_button_find_close__clicked(self, button):
+        self.button_show_replace.show()
+        self.label_replace_with.hide()
+        self.combo_replace_with.hide()
+        self.button_replace_all.hide()
+        self.button_replace.hide()
+        self.findreplace.hide()
+        self.emit("status-changed", "")
+
+    def on_button_show_replace__clicked(self, *args):
+        self.findreplace.show_all()
+        self.button_show_replace.hide()
+
+    def after_check_use_regex__toggled(self, check):
+        self.on_entry_search_for__changed(self.entry_search_for)
+        if check.get_active:
+            self.emit("status-changed", self.find_regex_status)
+
+    def on_entry_search_for__changed(self, entry):
+        sensitive = True
+        if self.check_use_regex.get_active():
+            try:
+                re.compile( entry.get_text() )
+            except re.error, e:
+                msg = _("%s") % str(e)
+                self.find_regex_status = (_('Regex Error: %s') % msg)
+                sensitive = False
+            else:
+                self.find_regex_status = ""
+            self.emit("status-changed", self.find_regex_status)
+        self.button_replace_all.set_sensitive(sensitive)
+        self.button_replace.set_sensitive(sensitive)
+        self.button_find.set_sensitive(sensitive)
+
+    def on_entry_search_for__activate(self, *args):
+        self.update_history()
+        if self.combo_replace_with.get_property("visible"):
+            self.entry_replace_with.grab_focus()
+        elif self.button_find.get_property("sensitive"):
+            self.on_button_find__clicked()
+
+    def on_entry_replace_with__activate(self, *args):
+        self.update_history()
+        self.button_find.grab_focus()
+
+    def _get_state(self, *args):
+        s = self.FindReplaceState()
+        s.tofind = self.entry_search_for.get_text().decode("utf-8") # widget chars utf-8 encoded
+        s.toreplace = self.entry_replace_with.get_text().decode("utf-8") # widget chars utf-8 encoded
+        s.match_case = self.check_match_case.get_active()
+        s.entire_word = self.check_entire_word.get_active()
+        s.wrap_around = self.check_wrap_around.get_active()
+        s.use_regex = self.check_use_regex.get_active()
+        return s
+
+    def on_button_find__clicked(self, *args):
+        self.update_history()
+        s = self._get_state()
+        s.toreplace = None
+        self.perform_find_replace(s)
+
+    def on_button_replace__clicked(self, *args):
+        self.update_history()
+        self.perform_find_replace(self._get_state())
+
+    def on_button_replace_all__clicked(self, *args):
+        self.update_history()
+        s = self._get_state()
+        s.replace_all = True
+        self.perform_find_replace(s)
+
+    def perform_find_replace(self, state):
+        textview = self.textview_focussed or self.textview0
+        buffer = textview.get_buffer()
+        tofind = state.tofind
+        if not state.use_regex:
+            tofind = re.escape(tofind)
+        if state.entire_word:
+            tofind = r'\b' + tofind + r'\b'
+        pattern = re.compile( tofind, (state.match_case and re.M or (re.M|re.I)) )
+
+        orig_cursor = buffer.create_mark( "orig_cursor", buffer.get_iter_at_mark( buffer.get_insert() ) )
+        end_search = buffer.create_mark( "endsearch", buffer.get_end_iter(), True )
+
+        done_something = False
+        already_wrapped = False
+
+        while 1:
+            if buffer.get_selection_bounds():
+                if pattern.match( buffer.get_text( *buffer.get_selection_bounds() ) ):
+                    if state.toreplace:
+                        buffer.begin_user_action()
+                        buffer.delete( *buffer.get_selection_bounds() )
+                        buffer.insert_at_cursor( state.toreplace )
+                        buffer.end_user_action()
+                        done_something = True
+                    else:
+                        buffer.place_cursor( buffer.get_selection_bounds()[1] )
+            
+            search_start = buffer.get_iter_at_mark( buffer.get_insert() )
+            text = buffer.get_text( *buffer.get_bounds() )
+
+            end_offset = buffer.get_iter_at_mark(end_search).get_offset()
+            match = pattern.search( text, search_start.get_offset(), end_offset )
+            if match == None and state.wrap_around and not already_wrapped:
+                match = pattern.search( text, 0, end_offset )
+                buffer.move_mark( end_search, buffer.get_iter_at_mark(orig_cursor) )
+                already_wrapped = True
+            if match:
+                sel = buffer.get_iter_at_offset( match.start() )
+                buffer.place_cursor( sel )
+                sel.forward_chars( match.end() - match.start() )
+                buffer.move_mark( buffer.get_selection_bound(), sel )
+                textview.place_cursor_onscreen()
+                done_something = True
+            else:
+                break
+            if not state.replace_all:
+                break
+        buffer.delete_mark(orig_cursor)
+        buffer.delete_mark(end_search)
+        return done_something
 gobject.type_register(FileDiff)
 
