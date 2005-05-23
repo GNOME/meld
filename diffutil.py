@@ -86,13 +86,13 @@ class Differ(object):
             work = matcher.initialise()
             while work.next() == None:
                 yield None
-            diffs[0] = matcher.get_difference_opcodes()
+            diffs[0] = [op + (0,) for op in matcher.get_difference_opcodes()]
             if len(sequences) == 3:
                 matcher.set_seq1( sequences[2] )
                 work = matcher.initialise()
                 while work.next() == None:
                     yield None
-                diffs[1] = matcher.get_difference_opcodes()
+                diffs[1] = [op + (1,) for op in matcher.get_difference_opcodes()]
         self.diffs = diffs
         self.numlines = [len(s) for s in sequences]
         yield 1
@@ -103,7 +103,7 @@ class Differ(object):
            Do not find conflicts.
         """
         identity= lambda c : c
-        reverse = lambda c,m=self.reversemap : (m[c[0]], c[3], c[4], c[1], c[2])
+        reverse = lambda c,m=self.reversemap : (m[c[0]], c[3], c[4], c[1], c[2], c[5])
         if textindex in (0,2):
             proc = (identity, reverse)[reversed]
             for c in self.diffs[textindex/2]:
@@ -130,6 +130,8 @@ class Differ(object):
                 yield proc(c)
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
+        print sequence, startidx, sizechange
+        return
         assert sequence in (0,1,2)
         changes = [[0,0],[0,0]]
         if sequence != 1: #0 or 2
@@ -304,5 +306,5 @@ def main():
 
     texts = (t0,tc,t1)
 
-if __name__=="__main__": 
+if __name__=="__main__":
     main()
