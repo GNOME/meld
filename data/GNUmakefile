@@ -1,3 +1,4 @@
+.SUFFIXES:
 
 include ../INSTALL
 
