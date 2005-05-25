@@ -261,8 +261,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.setup_find_replace_state()
         # misc state variables
         self.popup_menu = self.ContextMenu(self)
-        self.find_dialog = None
-        self.last_find_replace = None
         self.keymask = 0
         self.deleted_lines_pending = -1
         self.textview_focussed = None
@@ -1299,26 +1297,14 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def action_redo__activate(self, *action):
         self.undosequence.redo()
 
-        #self.find_dialog.toplevel.connect("response", on_find_response)
-        #self.find_dialog.connect("activate", self._do_find_replace)
-
-    def _do_find_replace(self, dialog, state):
-        view = self._get_focused_textview() or self.textview0
-        if findreplace.find_replace( state, view.get_buffer() ) == False:
-            glade.run_dialog(
-                _("'%s' was not found.") % state.tofind,
-                self.toplevel.get_toplevel(),
-                messagetype=gtk.MESSAGE_INFO)
-        self.last_find_replace = state
-
     def action_find__activate(self, *action):
         self.findreplace.show()
         gobject.idle_add( lambda *args : self.entry_search_for.grab_focus() )
 
     def action_find_next__activate(self, action):
-        if self.last_find_replace:
-            self.last_find_replace.toreplace = None
-            self._do_find_replace(None, self.last_find_replace )
+        if self.last_find_state:
+            self.last_find_state.toreplace = None
+            self.perform_find_replace(self.last_find_state)
         else:
             self.action_find__activate()
 
@@ -1379,6 +1365,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     # find / replace
     #
     def setup_find_replace_state(self):
+        self.last_find_state = None
         self.entry_search_for = self.combo_search_for.child
         self.entry_replace_with = self.combo_replace_with.child
         self.combo_search_for.set_model( gtk.ListStore(type("")))
@@ -1493,6 +1480,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.perform_find_replace(s)
 
     def perform_find_replace(self, state):
+        self.last_find_state = state
         textview = self.textview_focussed or self.textview0
         buffer = textview.get_buffer()
         tofind = state.tofind
@@ -1534,7 +1522,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 buffer.place_cursor( sel )
                 sel.forward_chars( match.end() - match.start() )
                 buffer.move_mark( buffer.get_selection_bound(), sel )
-                textview.place_cursor_onscreen()
+                textview.scroll_to_mark(buffer.get_insert(),0.25)
                 done_something = True
             else:
                 break
@@ -1542,6 +1530,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 break
         buffer.delete_mark(orig_cursor)
         buffer.delete_mark(end_search)
+        if done_something == False:
+            glade.run_dialog(
+                _("'%s' was not found.") % state.tofind,
+                self.toplevel.get_toplevel(),
+                messagetype=gtk.MESSAGE_INFO)
         return done_something
+
 gobject.type_register(FileDiff)
 
