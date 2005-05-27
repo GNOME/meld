@@ -168,6 +168,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.parent.save()
             def on_save_as_activate(self, menuitem):
                 self.parent.save_file( self.pane, 1)
+            def on_make_patch_activate(self, menuitem):
+                self.parent.make_patch( self.pane )
             def on_cut_activate(self, menuitem):
                 self.parent.on_cut_activate()
             def on_copy_activate(self, menuitem):
@@ -771,6 +773,28 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.undosequence.clear()
             self.set_buffer_modified(buf, 0)
         return melddoc.RESULT_OK
+
+    def make_patch(self, pane):
+        fontdesc = pango.FontDescription(self.prefs.get_current_font())
+        dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "patchdialog")
+        bufs = [t.get_buffer() for t in self.textview]
+        texts = [b.get_text(*b.get_bounds()).split("\n") for b in bufs]
+        texts[0] = [l+"\n" for l in texts[0]]
+        texts[1] = [l+"\n" for l in texts[1]]
+        names = [self._get_filename(i) for i in range(2)]
+        dialog.textview.modify_font(fontdesc)
+        buf = dialog.textview.get_buffer()
+        for line in difflib.unified_diff(texts[0], texts[1], names[0], names[1]):
+            buf.insert( buf.get_end_iter(), line )
+        result = dialog.widget.run()
+        # XXX fixme
+        if result == gtk.RESPONSE_CANCEL:
+            pass
+        elif result == 0:
+            pass
+        elif result == 1:
+            dialog.textview.emit("copy-clipboard")
+        dialog.widget.destroy()
 
     def set_buffer_writable(self, buf, yesno):
         pane = self.textview.index(buf.textview)
