@@ -435,6 +435,7 @@ class MeldPreferences(prefs.Preferences):
         "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
         "filters" : prefs.Value(prefs.STRING, "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n" + \
                                               "CVS\t1\tCVS\n" + \
+                                              "SVN\t1\t.svn\n" + \
                                               "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
                                               "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
         "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n" + \
