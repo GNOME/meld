@@ -23,6 +23,7 @@ import re
 import sys
 import tempfile
 import difflib
+import struct
 
 import pango
 import gobject
@@ -693,8 +694,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
                             b.apply_tag(t, s, b.get_iter_at_line(l))
                         if 1:
-                            text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] )
-                            textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] )
+                            text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] ).encode("utf16")
+                            text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
+                            textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] ).encode("utf16")
+                            textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
                             matcher = difflib.SequenceMatcher(None, text1, textn)
                             #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
                             tags = [b.get_tag_table().lookup("inline line") for b in bufs]
