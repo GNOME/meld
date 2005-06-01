@@ -87,8 +87,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="rotate_view"/>
           </menu>
           <menu action="diff_menu">
-            <menuitem action="next_difference"/>
             <menuitem action="previous_difference"/>
+            <menuitem action="next_difference"/>
             <separator/>
             <menuitem action="replace_left_file"/>
             <menuitem action="replace_right_file"/>
@@ -106,8 +106,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
           <toolitem action="find"/>
           <toolitem action="find_replace"/>
           <separator/>
-          <toolitem action="next_difference"/>
           <toolitem action="previous_difference"/>
+          <toolitem action="next_difference"/>
           <separator/>
       </toolbar>
     </ui>
@@ -141,8 +141,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             ('three_panes', None, _('Three panes'), '<Control><Alt>3', '', 3, 'num_panes'),
             ('rotate_view', None, _('Rotate View'), None, None),
         ('diff_menu', None, _('_Diff')),
-            ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
             ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
+            ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
             ('replace_left_file', gtk.STOCK_GO_BACK, _('Copy contents left'), None, None),
             ('replace_right_file', gtk.STOCK_GO_FORWARD, _('Copy contents right'), None, None),
     )
@@ -1312,11 +1312,11 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.findreplace.show_all()
         self.button_show_replace.hide()
 
-    def action_next_difference__activate(self, action):
-        self.next_diff(gtk.gdk.SCROLL_DOWN)
-
     def action_previous_difference__activate(self, action):
         self.next_diff(gtk.gdk.SCROLL_UP)
+
+    def action_next_difference__activate(self, action):
+        self.next_diff(gtk.gdk.SCROLL_DOWN)
 
     def action_num_panes__changed(self, group, action):
         self.set_num_panes( action.get_property("value") )
