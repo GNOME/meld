@@ -713,28 +713,49 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             yield 1
         yield 1
         
+    def _get_filename_for_saving(self, title ):
+        #dialog = gtk.FileChooserDialog( ## try
+        #parent = self.widget.get_toplevel(), 
+        #action = gtk.FILE_CHOOSER_ACTION_SAVE,
+        #buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK) )
+        fselect = gtk.FileSelection( title )
+        fselect.set_transient_for(self.widget.get_toplevel() )
+        response = fselect.run()
+        if response != gtk.RESPONSE_OK:
+            fselect.destroy()
+            return None
+        else:
+            filename = fselect.get_filename()
+            fselect.destroy()
+            if os.path.exists(filename):
+                response = misc.run_dialog(
+                    _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
+                    parent = self,
+                    buttonstype = gtk.BUTTONS_YES_NO)
+                if response == gtk.RESPONSE_NO:
+                    return None
+            return filename
+
+    def _save_text_to_filename(self, filename, text):
+        try:
+            open(filename, "w").write(text)
+        except IOError, e:
+            misc.run_dialog(
+                _("Error writing to %s\n\n%s.") % (filename, e),
+                self, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
+            return False
+        return True
+
     def save_file(self, pane, saveas=0):
         buf = self.textview[pane].get_buffer()
         bufdata = self.bufferdata[pane]
         if saveas or not bufdata.filename:
-            fselect = gtk.FileSelection( _("Choose a name for buffer %i.") % (pane+1))
-            fselect.set_transient_for(self.widget.get_toplevel() )
-            response = fselect.run()
-            if response != gtk.RESPONSE_OK:
-                fselect.destroy()
-                return melddoc.RESULT_ERROR
-            else:
-                filename = fselect.get_filename()
-                fselect.destroy()
-                if os.path.exists(filename):
-                    response = misc.run_dialog(
-                        _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
-                        parent = self,
-                        buttonstype = gtk.BUTTONS_YES_NO)
-                    if response == gtk.RESPONSE_NO:
-                        return melddoc.RESULT_ERROR
+            filename = self._get_filename_for_saving( _("Choose a name for buffer %i.") % (pane+1) )
+            if filename:
                 bufdata.filename = os.path.abspath(filename)
                 self.fileentry[pane].set_filename( bufdata.filename)
+            else:
+                return melddoc.RESULT_ERROR
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if bufdata.newlines:
             if type(bufdata.newlines) == type(""):
@@ -761,22 +782,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.filename, bufdata.encoding),
                     self, gtk.MESSAGE_ERROR, gtk.BUTTONS_YES_NO) != gtk.RESPONSE_YES:
                     return melddoc.RESULT_ERROR
-        try:
-            open(bufdata.filename, "w").write(text)
-        except IOError, e:
-            misc.run_dialog(
-                _("Error writing to %s\n\n%s.") % (bufdata.filename, e),
-                self, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
-            return melddoc.RESULT_ERROR
-        else:
+        if self._save_text_to_filename(bufdata.filename, text):
             self.emit("file-changed", bufdata.filename)
             self.undosequence.clear()
             self.set_buffer_modified(buf, 0)
-        return melddoc.RESULT_OK
+            return melddoc.RESULT_OK
+        else:
+            return melddoc.RESULT_ERROR
 
     def make_patch(self, pane):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
         dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "patchdialog")
+        dialog.widget.set_transient_for( self.widget.get_toplevel() )
         bufs = [t.get_buffer() for t in self.textview]
         texts = [b.get_text(*b.get_bounds()).split("\n") for b in bufs]
         texts[0] = [l+"\n" for l in texts[0]]
@@ -784,17 +801,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         names = [self._get_filename(i) for i in range(2)]
         dialog.textview.modify_font(fontdesc)
         buf = dialog.textview.get_buffer()
+        lines = []
         for line in difflib.unified_diff(texts[0], texts[1], names[0], names[1]):
             buf.insert( buf.get_end_iter(), line )
+            lines.append(line)
         result = dialog.widget.run()
-        # XXX fixme
-        if result == gtk.RESPONSE_CANCEL:
-            pass
-        elif result == 0:
-            pass
-        elif result == 1:
-            dialog.textview.emit("copy-clipboard")
         dialog.widget.destroy()
+        if result >= 0:
+            txt = "".join(lines)
+            if result == 1: # copy
+                clip = gtk.clipboard_get()
+                clip.set_text(txt)
+                clip.store()
+            else:# save as
+                filename = self._get_filename_for_saving( _("Save patch as...") )
+                if filename:
+                    self._save_text_to_filename(filename, txt)
 
     def set_buffer_writable(self, buf, yesno):
         pane = self.textview.index(buf.textview)
