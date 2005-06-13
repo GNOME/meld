@@ -275,7 +275,7 @@ class PreferencesDialog(glade.Component):
         glade.tie_to_gconf("/apps/meld/filediff", self.custom_font_enabled, self.custom_font,
             self.tab_size, self.wrap_lines, self.supply_newline,
             self.line_numbers, self.syntax_highlighting, self.editor_internal,
-            self.editor_custom, self.drawstyle_simple, self.text_codecs,
+            self.editor_custom, self.text_codecs,
             self.encoding_preserve, self.ignore_blank_lines
             )
         # editor
