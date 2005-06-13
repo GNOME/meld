@@ -19,11 +19,10 @@ import difflib
 import math
 import os
 import re
+import struct
 import sys
 import tempfile
 
-import gnomeprint
-import gnomeprint.ui
 import gobject
 import gtk
 import gtk.keysyms
@@ -65,7 +64,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="close"/>
           </placeholder>
         </menu>
-        <placeholder name="menu_extras">
+        <placeholder name="edit_menu">
           <menu action="edit_menu">
             <menuitem action="undo"/>
             <menuitem action="redo"/>
@@ -79,14 +78,21 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="paste"/>
             <separator/>
           </menu>
-          <menu action="view_menu">
+        </placeholder>
+        <menu action="view_menu">
+          <placeholder name="view_extras">
             <menuitem action="one_pane"/>
             <menuitem action="two_panes"/>
             <menuitem action="three_panes"/>
             <separator/>
-            <menuitem action="rotate_view"/>
-          </menu>
+            <menuitem action="rotate_panes"/>
+            <menuitem action="show_filenames"/>
+          </placeholder>
+        </menu>
+        <placeholder name="menu_extras">
           <menu action="diff_menu">
+            <menuitem action="refresh"/>
+            <separator/>
             <menuitem action="previous_difference"/>
             <menuitem action="next_difference"/>
             <separator/>
@@ -116,17 +122,16 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     UI_ACTIONS = (
         # action_name, stock_icon, label, accelerator, tooltip,
         ('file_menu', None, _('_File')),
-            ('save', gtk.STOCK_SAVE, _('_Save'), '<Control>s', _('Save the current file')),
-            ('save_as', gtk.STOCK_SAVE_AS, _('_Save As...'), None, _('Save the current file')),
+            ('save', gtk.STOCK_SAVE, None, None, _('Save the current file')),
+            ('save_as', gtk.STOCK_SAVE_AS, None, None, _('Save the current file')),
             ('save_all', gtk.STOCK_SAVE, _('_Save All'), '<Control><Shift>s', _('Save all files')),
-            ('save_menu', gtk.STOCK_SAVE, _('_Save Pane')),
+            ('save_menu', gtk.STOCK_SAVE, None),
                 ('save_pane0', gtk.STOCK_SAVE, _('Pane 1'), '<Control>1', ''),
                 ('save_pane1', gtk.STOCK_SAVE, _('Pane 2'), '<Control>2', ''),
                 ('save_pane2', gtk.STOCK_SAVE, _('Pane 3'), '<Control>3', ''),
             ('print', gtk.STOCK_PRINT, _('_Print...'), '<Control><Shift>p', _('Print this comparison')),
             ('close', gtk.STOCK_CLOSE, _('_Close'), '<Control>w', _('Close this tab')),
         ('edit_menu', None, _('_Edit')),
-            ('refresh', gtk.STOCK_REFRESH, _('Refres_h'), None, _('Recompute differences')),
             ('undo', gtk.STOCK_UNDO, _('_Undo'), '<Control>z', _('Undo last change')),
             ('redo', gtk.STOCK_REDO, _('_Redo'), '<Control><Shift>z', _('Redo last change')),
             ('find', gtk.STOCK_FIND, _('_Find'), '<Control>f', _('Search the document')),
@@ -136,11 +141,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             ('copy', gtk.STOCK_PASTE, _('_Copy'), '<Control>c', _('Copy selected text')),
             ('paste', gtk.STOCK_PASTE, _('_Paste'), '<Control>v', _('Paste selected text')),
         ('view_menu', None, _('_View')),
-            ('one_pane', None, _('One pane'), '<Control><Alt>1', '', 1, 'num_panes'),
-            ('two_panes', None, _('Two panes'), '<Control><Alt>2', '', 2, 'num_panes'),
-            ('three_panes', None, _('Three panes'), '<Control><Alt>3', '', 3, 'num_panes'),
-            ('rotate_view', None, _('Rotate View'), None, None),
+            ('one_pane', None, _('One Pane'), '<Control><Alt>1', '', 1, 'num_panes'),
+            ('two_panes', None, _('Two Panes'), '<Control><Alt>2', '', 2, 'num_panes'),
+            ('three_panes', None, _('Three Panes'), '<Control><Alt>3', '', 3, 'num_panes'),
+            ('rotate_panes', None, _('Rotate View'), '<Control><Alt>R', None),
+            ('show_filenames', None, _('Show Filenames'), '<Control><Alt>F', None, True),
         ('diff_menu', None, _('_Diff')),
+            ('refresh', gtk.STOCK_REFRESH, _('Refres_h'), '<Control><Alt>C', _('Recompute differences')),
             ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
             ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
             ('replace_left_file', gtk.STOCK_GO_BACK, _('Copy contents left'), None, None),
@@ -205,7 +212,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             for s in self.__slots__:
                 setattr(self, s, None)
 
-
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
         """
@@ -215,7 +221,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         override["GtkTextView"] = sourceview.SourceView
         override["GtkTextBuffer"] = sourceview.SourceBuffer
         glade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
-        self.map_widgets_into_lists( "textview filecombo openbutton diffmap pane scrolledwindow linkmap statusbutton".split() )
+        self.map_widgets_into_lists( "textview filecombo openbutton diffmap pane scrolledwindow linkmap statusbutton fileentryhbox".split() )
         self.fileentry = [ glade.FileEntry(c,b) for c,b in zip(self.filecombo, self.openbutton) ]
         # text views and buffers
         self.textbuffer = [ sourceview.SourceBuffer() for i in range(3) ]
@@ -254,9 +260,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             v,h = w.get_vadjustment(), w.get_hadjustment()
             v.signal_handler_ids = [v.connect("value-changed", self._sync_vscroll )]
             h.signal_handler_ids = [h.connect("value-changed", self._sync_hscroll )]
-        #group = gtk.SizeGroup(gtk.SIZE_GROUP_VERTICAL)
-        #group.add_widget(self.spacer0)
-        #group.add_widget(self.fileentryhbox0)
         # find replace state
         self.setup_find_replace_state()
         # misc state variables
@@ -270,6 +273,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.num_panes = 0
         self.set_num_panes(num_panes)
         self.connect_signal_handlers()
+        self.scheduler.add_task( self.recompute_label )
 
     def on_textbuffer__mark_set(self, buf, it, mark):
         if mark.get_name() == "insert":
@@ -286,10 +290,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
     def _update_cursor_status(self, buf):
         def update():
-            iter = buf.get_iter_at_mark( buf.get_insert() )
+            it = buf.get_iter_at_mark( buf.get_insert() )
             view = self.textview[ self.textbuffer.index(buf) ]
             status = "%s : %s" % ( _("Insert,Overwrite").split(",")[ view.get_overwrite() ], #insert/overwrite
-                                   _("Line %i, Column %i") % (iter.get_line()+1, iter.get_line_offset()+1) ) #line/column
+                                   _("Line %i, Column %i") % (it.get_line()+1, it.get_line_offset()+1) ) #line/column
             self.emit("status-changed", status)
         self.scheduler.add_task( update )
 
@@ -354,13 +358,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         uimanager.ensure_update()
 
     def _after_text_modified(self, buffer, startline, sizechange):
-        if self.num_panes > 1:
-            pane = self.textbuffer.index(buffer)
-            range = self.differ.change_sequence( pane, startline, sizechange, self._get_texts())
-            print range
-            #for iter in self._update_highlighting( range[0], range[1] ):
-            #    pass
-            #self.queue_draw()
+        if 0 and self.num_panes > 1:
+            #pane = self.textbuffer.index(buffer)
+            #trange = self.differ.change_sequence( pane, startline, sizechange, self._get_texts())
+            #print range
+            #for it in self._update_highlighting( range[0], range[1] ):
+                #pass
+            self.queue_draw()
         self._update_cursor_status(buffer)
 
     def _get_texts(self, raw=0):
@@ -368,17 +372,14 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             def __init__(self, buf, regexes):
                 self.buf = buf
             def __getslice__(self, lo, hi):
-                b = self.buf
-                return b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0).split("\n")
+                i0, i1 = misc.buffer_get_iter_range(self.buf, lo, hi)
+                return self.buf.get_text(i0, i1, 0).split("\n")
         class FakeTextFiltered(object):
             def __init__(self, buf, regexes):
                 self.buf, self.regexes = buf, regexes
             def __getslice__(self, lo, hi):
-                b = self.buf
-                #txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
-                i1 = b.get_iter_at_line(hi)
-                i1.forward_to_line_end()
-                txt = b.get_text(b.get_iter_at_line(lo), i1, 0)
+                i0, i1 = misc.buffer_get_iter_range(self.buf, lo, hi)
+                txt = self.buf.get_text(i0, i1, 0)
                 for r in self.regexes:
                     txt = r.sub("", txt)
                 return txt.split("\n")
@@ -405,7 +406,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
-        load = lambda x: glade.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line)
+        load = lambda x: glade.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line-5)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
         self.pixbuf_delete = load("button_delete.xpm")
@@ -438,7 +439,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             for text in self.textview:
                 text.set_wrap_mode( value )
 
-    def on_toplevel__key_press_event(self, object, event):
+    def on_toplevel__key_press_event(self, obj, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask | x != self.keymask:
             self.keymask |= x
@@ -446,7 +447,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         if event.keyval == gtk.keysyms.Escape:
             self.button_find_close.clicked()
 
-    def on_toplevel__key_release_event(self, object, event):
+    def on_toplevel__key_release_event(self, obj, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
@@ -459,48 +460,47 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def _get_filename(self, i):
         return self.bufferextra[i].filename or "<unnamed>"
 
-
         #
         # text buffer undo/redo
         #
-    def on_textbuffer__begin_user_action(self, *buffer):
+    def on_textbuffer__begin_user_action(self, *rest):
         self.undosequence.begin_group()
 
-    def on_textbuffer__end_user_action(self, *buffer):
+    def on_textbuffer__end_user_action(self, *rest):
         self.undosequence.end_group()
 
     def on_textbuffer__modified_changed(self, buf):
         self.recompute_label()
 
-    def on_textbuffer__insert_text(self, buffer, iter, text, textlen):
+    def on_textbuffer__insert_text(self, buf, it, text, textlen):
         if not self.undosequence.in_progress:
             self.undosequence.begin_group()
-            if not buffer.get_modified():
-                self.undosequence.add_action( undoaction.TextBufferModify(buffer) )
-            self.undosequence.add_action( undoaction.TextBufferInsert(buffer, iter.get_offset(), text) )
+            if not buf.get_modified():
+                self.undosequence.add_action( undoaction.TextBufferModify(buf) )
+            self.undosequence.add_action( undoaction.TextBufferInsert(buf, it.get_offset(), text) )
             self.undosequence.end_group()
 
-    def on_textbuffer__delete_range(self, buffer, iter0, iter1):
-        text = buffer.get_text(iter0, iter1, 0)
-        pane = self.textbuffer.index(buffer)
+    def on_textbuffer__delete_range(self, buf, iter0, iter1):
+        text = buf.get_text(iter0, iter1, 0)
+        pane = self.textbuffer.index(buf)
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = text.count("\n")
         if not self.undosequence.in_progress:
             self.undosequence.begin_group()
-            if not buffer.get_modified():
-                self.undosequence.add_action( undoaction.TextBufferModify(buffer) )
-            self.undosequence.add_action( undoaction.TextBufferDelete(buffer, iter0.get_offset(), text) )
+            if not buf.get_modified():
+                self.undosequence.add_action( undoaction.TextBufferModify(buf) )
+            self.undosequence.add_action( undoaction.TextBufferDelete(buf, iter0.get_offset(), text) )
             self.undosequence.end_group()
 
-    def after_textbuffer__insert_text(self, buffer, iter, newtext, textlen):
+    def after_textbuffer__insert_text(self, buf, iter, newtext, textlen):
         lines_added = newtext.count("\n")
         starting_at = iter.get_line() - lines_added
-        self._after_text_modified(buffer, starting_at, lines_added)
+        self._after_text_modified(buf, starting_at, lines_added)
 
-    def after_textbuffer__delete_range(self, buffer, iter0, iter1):
+    def after_textbuffer__delete_range(self, buf, iter0, iter1):
         starting_at = iter0.get_line()
         assert self.deleted_lines_pending != -1
-        self._after_text_modified(buffer, starting_at, -self.deleted_lines_pending)
+        self._after_text_modified(buf, starting_at, -self.deleted_lines_pending)
         self.deleted_lines_pending = -1
 
         #
@@ -519,7 +519,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             textview.grab_focus()
             pane = self.textview.index(textview)
             self.popup_menu.popup_in_pane( pane )
-            return 1
+            return True
+        return False
 
     def on_textview__toggle_overwrite(self, view):
         lock = self.enter_locked_region("__on_textview__toggle_overwrite")
@@ -608,12 +609,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
                         glade.run_dialog(
                             _("Could not read from '%s'.\n\nI tried encodings %s.")
-                            % (t.filename, try_codecs), parent = self)
+                            % (t.filename, try_codecs), parent = self.toplevel.get_toplevel())
                         tasks.remove(t)
                 except IOError, ioerr:
                     glade.run_dialog(
                         _("Could not read from '%s'.\n\nThe error was:\n%s")
-                        % (t.filename, str(ioerr)), parent = self)
+                        % (t.filename, str(ioerr)), parent = self.toplevel.get_toplevel())
                     tasks.remove(t)
                 else:
                     if len(nextbit):
@@ -653,13 +654,34 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 self.undosequence.clear()
         yield 0
 
+    def _apply_diff(self, operation, chunk, linkindex, side):
+        src = linkindex + side
+        dst = linkindex + (1-side)
+        self.textview[src].place_cursor_onscreen()
+        self.textview[dst].place_cursor_onscreen()
+        off = side*2
+        if operation == "delete":
+            b = self.textview[src].get_buffer()
+            b.delete(b.get_iter_at_line(chunk[1+off]), b.get_iter_at_line(chunk[2+off]))
+        elif operation == "copy":
+            b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
+            t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
+            b1.insert(b1.get_iter_at_line(chunk[4-off]), t0)
+        else: # replace
+            b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
+            t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
+            b1.begin_user_action()
+            b1.delete(b1.get_iter_at_line(chunk[3-off]), b1.get_iter_at_line(chunk[4-off]))
+            b1.insert(b1.get_iter_at_line(chunk[3-off]), t0)
+            b1.end_user_action()
+
     def _update_merge_buttons(self):
+        app = self
         class ButtonManager:
-            def __init__(self, area, textviews):
+            def __init__(self, area):
                 self.area = area
                 self.index = 0
                 self.buttons = []
-                self.textview = textviews
                 self.extra = []
             def next(self, pixbuf, extra):
                 try:
@@ -671,8 +693,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     b.set_property("relief", gtk.RELIEF_NONE)
                     b.set_focus_on_click(False)
                     b.add(im)
-                    b.show_all()
                     b.set_border_width(0)
+                    b.show_all()
                     self.area.put( b, 0, 0 )
                     self.buttons.append(b)
                     self.extra.append(extra)
@@ -683,25 +705,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 return b
             def on_clicked(self, button):
                 operation, chunk, linkindex, side = self.extra[ self.buttons.index(button) ]
-                src = linkindex + side
-                dst = linkindex + (1-side)
-                self.textview[src].place_cursor_onscreen()
-                self.textview[dst].place_cursor_onscreen()
-                off = side*2
-                if operation == "delete":
-                    b = self.textview[src].get_buffer()
-                    b.delete(b.get_iter_at_line(chunk[1+off]), b.get_iter_at_line(chunk[2+off]))
-                elif operation == "copy":
-                    b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
-                    t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
-                    b1.insert(b1.get_iter_at_line(chunk[4-off]), t0)
-                else: # replace
-                    b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
-                    t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
-                    b1.begin_user_action()
-                    b1.delete(b1.get_iter_at_line(chunk[3-off]), b1.get_iter_at_line(chunk[4-off]))
-                    b1.insert(b1.get_iter_at_line(chunk[3-off]), t0)
-                    b1.end_user_action()
+                app._apply_diff(operation, chunk, linkindex, side)
             def put_back(self, button):
                 self.index -= 1
             def finished(self):
@@ -709,8 +713,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     b.hide()
                 self.index = 0
         if not hasattr(self,"_button_manager"):
-            self._button_manager = [ ButtonManager(l, self.textview) for l in self.linkmap]
-
+            self._button_manager = [ ButtonManager(l) for l in self.linkmap]
 
         if self.keymask & self.MASK_SHIFT: # delete
             operation = "delete"
@@ -752,26 +755,22 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             tag = b.get_tag_table().lookup("inline line1")
             b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
 
-        def get_iters(buf, line0, line1):
-            i0 = buf.get_iter_at_line(line0)
-            i1 = buf.get_iter_at_line(line1-1)
-            if not i1.ends_line(): i1.forward_to_line_end()
-            return i0,i1
-
         for c in [change for change in self.differ.single_changes(1) if change[0]=="replace"]:
             other = c[5]*2
             bufs = buffers[1], buffers[other]
             tags = [b.get_tag_table().lookup("inline line%i"%c[5]) for b in bufs]
             starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
 
-            text1 = "\n".join( self._get_texts(raw=1)[1    ][c[1]:c[2]] )
-            textn = "\n".join( self._get_texts(raw=1)[other][c[3]:c[4]] )
+            text1 = "\n".join( self._get_texts(raw=1)[1    ][c[1]:c[2]] ).encode("utf16")
+            text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
+            textn = "\n".join( self._get_texts(raw=1)[other][c[3]:c[4]] ).encode("utf16")
+            textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
             matcher = difflib.SequenceMatcher(None, text1, textn)
-            #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
             back = (0,0)
+            MIN_MATCH = 3
             for o in matcher.get_opcodes():
                 if o[0] == "equal":
-                    if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
+                    if (o[2]-o[1] < MIN_MATCH) or (o[4]-o[3] < MIN_MATCH):
                         back = o[4]-o[3], o[2]-o[1]
                     continue
                 for i in range(2):
@@ -786,20 +785,22 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         buf = self.textbuffer[pane]
         bufdata = self.bufferextra[pane]
         if saveas or not bufdata.filename or bufdata.writable == 0:
-            fselect = gtk.FileSelection( _("Save buffer %i as.") % (pane+1))
-            fselect.set_has_separator(False)
-            fselect.set_transient_for(self.toplevel.get_toplevel() )
-            response = fselect.run()
+            buttons = gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK
+            fchooser = gtk.FileChooserDialog( _("Save buffer %i as.") % (pane+1),
+                parent=self.toplevel.get_toplevel(),
+                action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                buttons=buttons)
+            response = fchooser.run()
             if response != gtk.RESPONSE_OK:
-                fselect.destroy()
+                fchooser.destroy()
                 return melddoc.RESULT_ERROR
             else:
-                filename = fselect.get_filename()
-                fselect.destroy()
+                filename = fchooser.get_filename()
+                fchooser.destroy()
                 if os.path.exists(filename):
                     response = glade.run_dialog(
                         _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
-                        parent = self,
+                        parent = self.toplevel.get_toplevel(),
                         buttonstype = gtk.BUTTONS_YES_NO)
                     if response == gtk.RESPONSE_NO:
                         return melddoc.RESULT_ERROR
@@ -835,9 +836,11 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 buttonstype = gtk.BUTTONS_OK)
             return melddoc.RESULT_ERROR
         else:
+            bufdata.writable = True
             self.emit("file-changed", bufdata.filename)
             self.undosequence.clear()
             buf.set_modified(False)
+            self.recompute_label()
         return melddoc.RESULT_OK
 
     def on_fileentry__activate(self, entry):
@@ -871,7 +874,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         modified = [b.filename for b in self.bufferextra if b.modified]
         if len(modified):
             message = _("Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
-            response = glade.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
+            response = glade.run_dialog( message, parent=self.toplevel.get_toplevel(), messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
             if response != gtk.RESPONSE_OK:
                 return
         files = [b.filename for b in self.bufferextra[:self.num_panes] ]
@@ -992,7 +995,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def on_diffmap__button_press_event(self, area, event):
         if event.button == 1:
             self.diffmap_mouse_down(area, event)
-            return 1
+            return True
+        return False
 
     def diffmap_mouse_down(self, area, event):
         size_of_arrow = 14
@@ -1030,20 +1034,30 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             elif num_panes == 3:
                 [x.show() for x in self.diffmap + self.linkmap]
                 self.action_three_panes.activate()
-            self.scrolledwindow[0].set_placement( (gtk.CORNER_TOP_RIGHT, gtk.CORNER_TOP_LEFT)[num_panes==1] )
+            topleft = num_panes == 1 or self.horizontal_root.get_property("visible")
+            self.scrolledwindow[0].set_placement( (gtk.CORNER_TOP_RIGHT, gtk.CORNER_TOP_LEFT)[topleft] )
             self.queue_draw()
             self.set_files([None]*num_panes)
 
     def _line_to_pixel(self, pane, line ):
-        iter = self.textbuffer[pane].get_iter_at_line(line)
-        return self.textview[pane].get_iter_location( iter ).y
+        if line > 0:
+            it = self.textbuffer[pane].get_iter_at_line(line-1)
+            rect = self.textview[pane].get_iter_location( it )
+            return rect.y + rect.height
+        else:
+            it = self.textbuffer[pane].get_iter_at_line(line)
+            rect = self.textview[pane].get_iter_location( it )
+            return rect.y
 
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
         
     def next_diff(self, direction):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-        curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
+        def midpixel():
+            r = self.textview[1].get_visible_rect()
+            return int(r.y + 0.5*r.height)
+        curline = self._pixel_to_line( 1, midpixel() )
         c = None
         if direction == gtk.gdk.SCROLL_DOWN:
             for c in self.differ.single_changes(1):
@@ -1098,7 +1112,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
         start_line = self._pixel_to_line(pane, visible.y)
-        end_line = self._pixel_to_line(pane, visible.y+visible.height)
+        end_line = 1+self._pixel_to_line(pane, visible.y+visible.height)
         gc = lambda x : getattr(self.graphics_contexts, x)
 
         def draw_change(change): # draw background and thin lines
@@ -1128,15 +1142,14 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             view = self._get_focused_textview()
             if view and textview == view:
                 buf = view.get_buffer()
-                iter = buf.get_iter_at_mark( buf.get_insert() )
-                line = iter.get_line()
+                it = buf.get_iter_at_mark( buf.get_insert() )
+                line = it.get_line()
                 for c in self.differ.single_changes(pane):
                     if c[2] < line-1: continue
                     if c[1] > line+1: break
                     ypos0 = self._line_to_pixel(pane, c[1]) - visible.y
                     ypos1 = self._line_to_pixel(pane, c[2]) - visible.y
                     event.window.draw_rectangle(gctext, 1, 0,ypos0, 10,ypos1-ypos0)
-                    print "**", pane, line, c
                     break
 
         #
@@ -1243,47 +1256,13 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.save_file(2)
 
     def action_print__activate(self, action):
-        config = gnomeprint.config_default()
-        config.set( gnomeprint.KEY_DOCUMENT_NAME, self.label_text )
-        job = gnomeprint.Job(config)
-        dialog = gnomeprint.ui.Dialog(job, _("Print... %s") % self.label_text,
-            gnomeprint.ui.DIALOG_RANGE| gnomeprint.ui.DIALOG_COPIES)
-        flags = (gnomeprint.ui.RANGE_ALL
-                |gnomeprint.ui.RANGE_RANGE )
-        dialog.construct_range_page(flags, 1,100, _("_Current"), _("_Range"))
-        dialog.connect("response", self.on_print_dialog_response, job)
-        dialog.show()
-
-    def on_print_dialog_response(self, dialog, response, job):
-        if response == gnomeprint.ui.DIALOG_RESPONSE_PREVIEW:
-            self.print_show_preview(dialog)
-        elif response == gnomeprint.ui.DIALOG_RESPONSE_CANCEL:
-            dialog.destroy()
-        elif response == gnomeprint.ui.DIALOG_RESPONSE_PRINT:
-            self.print_to_job(job)
-            pc = gnomeprint.Context(dialog.get_config())
-            job.render(pc)
-            pc.close()
-            dialog.destroy()
-
-    def print_show_preview(self, dialog):
-        job = gnomeprint.Job(dialog.get_config())
-        self.print_to_job(job)
-        def popup():
-            w = gnomeprint.ui.JobPreview(job, _("Print Preview") )
-            w.set_property('allow-grow', 1)
-            w.set_property('allow-shrink', 1)
-            w.set_transient_for(dialog)
-            w.show_all()
-        self.scheduler.add_task( popup )
-
-    def print_to_job(self, job):
-        texts = [b.get_text(*b.get_bounds()).split("\n") for b in self.textbuffer]
-        chunks = self.differ.all_changes(texts)
-        self.scheduler.add_task( fileprint.do_print(
-            job,
-            texts[:self.num_panes],
-            chunks, self.label_text).next )
+        def get(buf):
+            return buf.get_text(*buf.get_bounds()).split("\n")
+        text = [ get(b) for b in self.textbuffer[:2] ]
+        text = text[1], text[0]
+        chunks = self.differ.all_changes(text)
+        dialog = fileprint.PrintDialog(self.label_text, text, chunks)
+        dialog.run()
 
     def action_close__activate(self, action):
         self.emit("closed")
@@ -1327,7 +1306,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def action_replace_right_file__activate(self, action):
         self.copy_entire_file(+1)
 
-    def action_rotate_view__activate(self, action):
+    def action_rotate_panes__activate(self, action):
         if self.horizontal_root.get_property("visible"):
             self.horizontal_root.hide()
             self.vertical_root.show()
@@ -1344,7 +1323,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 self.horizontal_root.add(p)
             self.scrolledwindow[0].set_placement(gtk.CORNER_TOP_LEFT)
 
-
+    def action_show_filenames__toggled(self, action):
+        visible = action.get_active()
+        for f in self.fileentryhbox:
+            f.set_property("visible",visible)
+        self.scheduler.add_task( self._update_merge_buttons )
+        self.scheduler.add_task( self.queue_draw )
 
     def action_cut__activate(self, *extra):
         t = self._get_focused_textview()
@@ -1482,7 +1466,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def perform_find_replace(self, state):
         self.last_find_state = state
         textview = self.textview_focussed or self.textview0
-        buffer = textview.get_buffer()
+        buf = textview.get_buffer()
         tofind = state.tofind
         if not state.use_regex:
             tofind = re.escape(tofind)
@@ -1490,47 +1474,47 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             tofind = r'\b' + tofind + r'\b'
         pattern = re.compile( tofind, (state.match_case and re.M or (re.M|re.I)) )
 
-        orig_cursor = buffer.create_mark( "orig_cursor", buffer.get_iter_at_mark( buffer.get_insert() ) )
-        end_search = buffer.create_mark( "endsearch", buffer.get_end_iter(), True )
+        orig_cursor = buf.create_mark( "orig_cursor", buf.get_iter_at_mark( buf.get_insert() ) )
+        end_search = buf.create_mark( "endsearch", buf.get_end_iter(), True )
 
         done_something = False
         already_wrapped = False
 
         while 1:
-            if buffer.get_selection_bounds():
-                if pattern.match( buffer.get_text( *buffer.get_selection_bounds() ) ):
+            if buf.get_selection_bounds():
+                if pattern.match( buf.get_text( *buf.get_selection_bounds() ) ):
                     if state.toreplace:
-                        buffer.begin_user_action()
-                        buffer.delete( *buffer.get_selection_bounds() )
-                        buffer.insert_at_cursor( state.toreplace )
-                        buffer.end_user_action()
+                        buf.begin_user_action()
+                        buf.delete( *buf.get_selection_bounds() )
+                        buf.insert_at_cursor( state.toreplace )
+                        buf.end_user_action()
                         done_something = True
                     else:
-                        buffer.place_cursor( buffer.get_selection_bounds()[1] )
+                        buf.place_cursor( buf.get_selection_bounds()[1] )
             
-            search_start = buffer.get_iter_at_mark( buffer.get_insert() )
-            text = buffer.get_text( *buffer.get_bounds() )
+            search_start = buf.get_iter_at_mark( buf.get_insert() )
+            text = buf.get_text( *buf.get_bounds() )
 
-            end_offset = buffer.get_iter_at_mark(end_search).get_offset()
+            end_offset = buf.get_iter_at_mark(end_search).get_offset()
             match = pattern.search( text, search_start.get_offset(), end_offset )
             if match == None and state.wrap_around and not already_wrapped:
                 match = pattern.search( text, 0, end_offset )
-                buffer.move_mark( end_search, buffer.get_iter_at_mark(orig_cursor) )
+                buf.move_mark( end_search, buf.get_iter_at_mark(orig_cursor) )
                 already_wrapped = True
             if match:
-                sel = buffer.get_iter_at_offset( match.start() )
-                buffer.place_cursor( sel )
+                sel = buf.get_iter_at_offset( match.start() )
+                buf.place_cursor( sel )
                 sel.forward_chars( match.end() - match.start() )
-                buffer.move_mark( buffer.get_selection_bound(), sel )
-                textview.scroll_to_mark(buffer.get_insert(),0.25)
+                buf.move_mark( buf.get_selection_bound(), sel )
+                textview.scroll_to_mark(buf.get_insert(),0.25)
                 done_something = True
             else:
                 break
             if not state.replace_all:
                 break
-        buffer.delete_mark(orig_cursor)
-        buffer.delete_mark(end_search)
-        if done_something == False:
+        buf.delete_mark(orig_cursor)
+        buf.delete_mark(end_search)
+        if not done_something:
             glade.run_dialog(
                 _("'%s' was not found.") % state.tofind,
                 self.toplevel.get_toplevel(),
