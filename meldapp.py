@@ -49,10 +49,22 @@ class MeldApp(glade.GtkApp, dbus.Object):
     <ui>
       <menubar name="MenuBar">
         <menu action="file_menu">
-          <menuitem action="new"/>
+          <menu action="new">
+            <menuitem action="filediff2"/>
+            <menuitem action="filediff3"/>
+            <menuitem action="dirdiff2"/>
+            <menuitem action="dirdiff3"/>
+            <menuitem action="working_copy"/>
+          </menu>
           <separator/>
           <placeholder name="file_extras"/>
           <menuitem action="quit"/>
+        </menu>
+        <placeholder name="edit_menu"/>
+        <menu action="view_menu">
+          <placeholder name="view_extras"/>
+          <menuitem action="show_toolbar"/>
+          <menuitem action="show_statusbar"/>
         </menu>
         <placeholder name="menu_extras"/>
         <menu action="settings_menu">
@@ -65,7 +77,11 @@ class MeldApp(glade.GtkApp, dbus.Object):
         </menu>
       </menubar>
       <toolbar name="ToolBar">
-          <toolitem action="new"/>
+          <toolitem action="filediff2"/>
+          <toolitem action="filediff3"/>
+          <toolitem action="dirdiff2"/>
+          <toolitem action="dirdiff3"/>
+          <toolitem action="working_copy"/>
           <separator/>
       </toolbar>
     </ui>
@@ -73,22 +89,25 @@ class MeldApp(glade.GtkApp, dbus.Object):
 
     UI_ACTIONS = (
         ('file_menu', None, _('_File')),
-            ('new', gtk.STOCK_NEW,
-                _('_New...'), '<Control>n', _('Open a new tab')),
-            ('quit', gtk.STOCK_QUIT,
-                _('_Quit'), '<Control>q', _('Quit the application')),
+            ('new', None, _('_New')),
+                ('filediff2', stock.STOCK_FILEDIFF2, _('File Comparision'), None, None),
+                ('filediff3', stock.STOCK_FILEDIFF3, _('File Comparision'), None, None),
+                ('dirdiff2', stock.STOCK_DIRDIFF2, _('Folder Comparision'), None, None),
+                ('dirdiff3', stock.STOCK_DIRDIFF3, _('Folder Comparision'), None, None),
+                ('working_copy', stock.STOCK_WOCO_ICON, _('Working Copy Browser'), None, None),
+            ('quit', gtk.STOCK_QUIT, None, None, None),
 
         ('settings_menu', None, _('_Settings')),
-            ('preferences', gtk.STOCK_PREFERENCES,
-                _('_Preferences'), None, _('Configure preferences')),
+            ('preferences', gtk.STOCK_PREFERENCES, None, None, None),
+
+        ('view_menu', None, _('_View')),
+            ('show_toolbar', None, _('Show Toolbar'), '<Control><Alt>T', None, True),
+            ('show_statusbar', None, _('Show Statusbar'), '<Control><Alt>s', None, True),
 
         ('help_menu', None, _('_Help')),
-            ('help_contents', gtk.STOCK_HELP,
-                _('_Contents'), "F1", _('Users manual')),
-            ('reportbug', stock.STOCK_REPORTBUG,
-                _('_Report Bug'), None, _('Report a bug')),
-            ('about', stock.STOCK_ABOUT,
-                _('_About'), None, _('About the application')),
+            ('help_contents', gtk.STOCK_HELP, None, "F1", None),
+            ('reportbug', stock.STOCK_REPORTBUG, _('_Report Bug'), None, None),
+            ('about', gtk.STOCK_ABOUT, None, None, None),
     )
 
     #
@@ -217,8 +236,16 @@ class MeldApp(glade.GtkApp, dbus.Object):
     #
     # File actions
     #
-    def action_new__activate(self, *extra):
-        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
+    def action_filediff2__activate(self, *extra):
+        self._append_page( filediff.FileDiff(self.prefs, 2), gtk.STOCK_FILE)
+    def action_filediff3__activate(self, *extra):
+        self._append_page( filediff.FileDiff(self.prefs, 3), gtk.STOCK_FILE)
+    def action_dirdiff2__activate(self, *extra):
+        self._append_page( dirdiff.DirDiff(self.prefs, 2), stock.STOCK_FOLDER)
+    def action_dirdiff3__activate(self, *extra):
+        self._append_page( dirdiff.DirDiff(self.prefs, 3), stock.STOCK_FOLDER)
+    def action_working_copy__activate(self, *extra):
+        self._append_page( wocoview.WocoView(self.prefs, self.uimanager), stock.STOCK_WOCO_ICON)
 
     def action_quit__activate(self, *extra):
         if not developer:
@@ -231,6 +258,15 @@ class MeldApp(glade.GtkApp, dbus.Object):
         for c in self.notebook.get_children():
             c.get_data("pyobject").on_container_quit_event()
         self.quit()
+
+    #
+    # View actions
+    #
+    def action_show_toolbar__toggled(self, action):
+        self.toolbar.set_property("visible", action.get_active())
+
+    def action_show_statusbar__toggled(self, action):
+        self.status_box.set_property("visible", action.get_active())
 
     #
     # Settings actions
@@ -292,13 +328,13 @@ class MeldApp(glade.GtkApp, dbus.Object):
     def append_dirdiff(self, dirs):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
-        self._append_page(doc, stock.STOCK_DIRDIFF_ICON)
+        self._append_page(doc, stock.STOCK_FOLDER)
         doc.set_locations(dirs)
 
     def append_filediff(self, files):
         assert len(files) in (1,2,3)
         doc = filediff.FileDiff(self.prefs, len(files))
-        self._append_page(doc, stock.STOCK_FILEDIFF_ICON)
+        self._append_page(doc, gtk.STOCK_FILE)
         doc.set_files(files)
 
     def append_diff(self, paths):
@@ -325,7 +361,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
         assert len(locations) in (1,)
         location = locations[0]
         doc = wocoview.WocoView(self.prefs, self.uimanager)
-        self._append_page(doc, stock.STOCK_WOCO_ICON)
+        self._append_page(doc, stock.STOCK_WOCO)
         doc.set_location(location)
 
     #
@@ -357,31 +393,39 @@ class NewDocDialog(glade.Component):
         cur_page = type // 2
         self.notebook.set_current_page( cur_page )
         for e in self.fileentry + self.direntry + self.versionentry:
-            e.entry.connect("activate", self._on_entry__activate)
+            e.child.connect("activate", self._on_entry__activate)
         self.toplevel.show_all()
 
     def _on_entry__activate(self, gtkentry):
-        entry = gtkentry.parent.parent
+        entry = gtkentry.parent
         for el in self.entrylists:
             if entry in el:
                 i = el.index(entry)
                 if i == len(el) - 1:
                     self.button_ok.grab_focus()
                 else:
-                    el[i+1].entry.grab_focus()
+                    el[i+1].child.grab_focus()
 
     def on_three_way_compare__toggled(self, button):
         page = self.three_way_compare.index(button)
         self.entrylists[page][0].set_sensitive( button.get_active() )
         if button.flags() & gtk.REALIZED == gtk.REALIZED:
-            self.entrylists[page][ not button.get_active() ].entry.grab_focus()
+            self.entrylists[page][ not button.get_active() ].child.grab_focus()
+
+    def after_notebook__switch_page(self, notebook, pointer, page):
+        def grab():
+            for e in self.entrylists[page]:
+                if e.get_property("sensitive"):
+                    e.child.grab_focus()
+                    break
+        gobject.idle_add( grab )
 
     def on_toplevel__response(self, dialog, arg):
         if arg==gtk.RESPONSE_OK:
             page = self.notebook.get_current_page()
-            for e in self.entrylists[page]:
-                e.add_history(e.entry.get_text())
-            paths = [ e.entry.get_text() or "" for e in self.entrylists[page] ]
+            #for e in self.entrylists[page]:
+                #e.add_history(e.child.get_text())
+            paths = [ e.child.get_text() or "" for e in self.entrylists[page] ]
             if page < 2 and not self.three_way_compare[page].get_active():
                 paths.pop(0)
             methods = (self.parentapp.append_filediff,
