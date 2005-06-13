@@ -68,15 +68,20 @@ if gtk.pygtk_version < pygtkver:
         ver2str(pygtkver), ver2str(gtk.pygtk_version))
     sys.exit(1)
 
+
 #
 # main
 #
 import meldapp
-try:
-    minusp = sys.argv.index("--profile")
-    del sys.argv[minusp]
-    import profile
-    profile.run("meldapp.main()")
-except ValueError:
-    meldapp.main()
-sys.exit(0)
+def main():
+    try:
+        minusp = sys.argv.index("--profile")
+        del sys.argv[minusp]
+        import profile
+        profile.run("meldapp.main()")
+    except ValueError:
+        meldapp.main()
+    sys.exit(0)
+
+if __name__=="__main__":
+    main()
