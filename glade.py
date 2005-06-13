@@ -132,13 +132,13 @@ class Component:
 
     def block_signal_handlers(self, *widgets):
         for widget in widgets:
-            for id in widget.signal_handler_ids:
-                widget.handler_block(id)
+            for hid in widget.signal_handler_ids:
+                widget.handler_block(hid)
 
     def unblock_signal_handlers(self, *widgets):
         for widget in widgets:
-            for id in widget.signal_handler_ids:
-                widget.handler_unblock(id)
+            for hid in widget.signal_handler_ids:
+                widget.handler_unblock(hid)
 
     def add_actions(self, actiongroup, actiondefs):
         """Connect actions to their methods.
