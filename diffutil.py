@@ -129,9 +129,17 @@ class Differ(object):
             for c in self.diffs[1][ix1:]:
                 yield proc(c)
 
+    def _locate_chunk(self, whichdiffs, sequence, line):
+        """Find the index of the chunk which contains line."""
+        idx = 1 + 2*(sequence == 1)
+        for i,c in enumerate(self.diffs[whichdiffs]):
+            if line < c[idx+1]:
+                if line >= c[idx]:
+                    return i
+                assert 0#return i-1
+        return 0
+
     def change_sequence(self, sequence, startidx, sizechange, texts):
-        print sequence, startidx, sizechange
-        return
         assert sequence in (0,1,2)
         changes = [[0,0],[0,0]]
         if sequence != 1: #0 or 2
@@ -139,42 +147,66 @@ class Differ(object):
             changes[which] = self._change_sequence(which, sequence, startidx, sizechange, texts)
         else: # sequence==1:
             changes[0] = self._change_sequence(         0, sequence, startidx, sizechange, texts)
-            if self.num_sequences == 3:
+            if len(self.numlines) == 3:
                 changes[1] = self._change_sequence(     1, sequence, startidx, sizechange, texts)
         return changes
 
-    def _locate_chunk(self, whichdiffs, sequence, line):
-        """Find the index of the chunk which contains line."""
-        idx = 1 + 2*(sequence != 1)
-        line_in_chunk = lambda x: line < c[idx+1]
-        i = 0
-        for c in self.diffs[whichdiffs]:
-            if line_in_chunk(c):
-                break
-            else:
-                i += 1
-        return i
-
     def _change_sequence(self, which, sequence, startidx, sizechange, texts):
-        diffs = self.diffs[which]
+        #print "_change_sequence(", self, which, sequence, startidx, sizechange, texts
         lines_added = [0,0,0]
         lines_added[sequence] = sizechange
-        loidx = self._locate_chunk(which, sequence, startidx)
         if sizechange < 0:
-            hiidx = self._locate_chunk(which, sequence, startidx-sizechange)
+            idx = 1 + 2*(sequence == 1)
+            odx = 1 + 2*(sequence != 1)
+            diffs = self.diffs[which]
+            print "***1***", diffs
+            for i,c in enumerate(diffs):
+                if startidx < c[idx+1]:
+                    if startidx < c[idx]:
+                        d = [None] + [startidx]*4 + [which]
+                        d[  odx] = c[idx]-startidx
+                        d[1+odx] = d[odx]-sizechange
+                        diffs.insert(i, tuple(d))
+                    break
+            endline = startidx-sizechange
+            print "***2***", diffs, i
+            diffs[i] = list(diffs[i])
+            diffs[i][1+idx] = startidx
+            for j in range(i+1, len(diffs)):
+                print "M", j, diffs[j]
+                if endline < diffs[j][idx]:
+                    diffs[i][2], diffs[i][4] = diffs[j-1][2], diffs[j-1][4]
+                    del diffs[i+1:j-1]
+                    for k in range(j, len(diffs)):
+                        d = list(diffs[k])
+                        d[  idx] += sizechange
+                        d[1+idx] += sizechange
+                        diffs[k] = tuple(d)
+                    break
+            if diffs[i][idx] == diffs[i][1+idx]:
+                if diffs[i][odx] == diffs[i][1+odx]:
+                    del diffs[i]
+                    return
+                diffs[i][0] = ("delete","insert")[which]
+            else:
+                diffs[i][0] = "replace"
+            diffs[i] = tuple(diffs[i])
+            #return diffs[i][idx], diffs[i][1+idx]
+            return
         else:
+            return
             hiidx = loidx
         if loidx > 0:
             loidx -= 1
-            lorange = diffs[loidx][3], diffs[loidx][1]
+            lorange = diffs[loidx][1], diffs[loidx][3]
         else:
             lorange = (0,0)
         x = which*2
         if hiidx < len(diffs):
             hiidx += 1
-            hirange = diffs[hiidx-1][4], diffs[hiidx-1][2]
+            hirange = diffs[hiidx-1][2], diffs[hiidx-1][4]
         else:
-            hirange = self.seqlength[x], self.seqlength[1]
+            hirange = self.numlines[x], self.numlines[1]
         #print "diffs", loidx, hiidx, len(diffs), lorange, hirange #diffs[loidx], diffs[hiidx-1]
         rangex = lorange[0], hirange[0] + lines_added[x]
         range1 = lorange[1], hirange[1] + lines_added[1]
@@ -184,14 +216,14 @@ class Differ(object):
         lines1 = texts[1][range1[0]:range1[1]]
         #print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
         newdiffs = IncrementalSequenceMatcher( None, lines1, linesx).get_difference_opcodes()
-        newdiffs = [ (c[0], c[1]+range1[0],c[2]+range1[0], c[3]+rangex[0],c[4]+rangex[0]) for c in newdiffs]
+        newdiffs = [ (c[0], c[1]+rangex[0],c[2]+rangex[0], c[3]+range1[0],c[4]+range1[0]) for c in newdiffs]
         if hiidx < len(self.diffs[which]):
             self.diffs[which][hiidx:] = [ (c[0],
-                                           c[1] + lines_added[1], c[2] + lines_added[1],
-                                           c[3] + lines_added[x], c[4] + lines_added[x])
+                                           c[1] + lines_added[x], c[2] + lines_added[x],
+                                           c[3] + lines_added[1], c[4] + lines_added[1])
                                                 for c in self.diffs[which][hiidx:] ]
         self.diffs[which][loidx:hiidx] = newdiffs
-        self.seqlength[sequence] += sizechange
+        self.numlines[sequence] += sizechange
         return loidx,hiidx
 
     def reverse(self, c):
