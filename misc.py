@@ -274,6 +274,14 @@ def shell_to_regex(pat):
             res += re.escape(c)
     return res + "$"
 
+def buffer_get_iter_range(buf, lo, hi):
+    i0 = buf.get_iter_at_line(lo)
+    i1 = buf.get_iter_at_line(hi-1)
+    if not i1.ends_line():
+        i1.forward_to_line_end()
+    return i0, i1
+
+
 class ListItem(object):
     __slots__ = ("name", "active", "value")
     def __init__(self, s):
