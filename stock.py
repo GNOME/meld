@@ -22,8 +22,11 @@ __stock_items = (
     # meldapp
     "reportbug",
     "about",
-    "filediff-icon",
-    "dirdiff-icon",
+    "folder",
+    "filediff2",
+    "filediff3",
+    "dirdiff2",
+    "dirdiff3",
     "woco-icon",
     "tab-close",
 
