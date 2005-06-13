@@ -15,6 +15,7 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import gnomeprint
+import gnomeprint.ui
 import gobject
 import pango
 import misc
@@ -23,18 +24,18 @@ import misc
 
 
 def do_print(job, texts, chunks, label_text):
-    options = misc.struct(landscape=True, color=False)
+    options = misc.struct(landscape=False, color=False)
     config = job.get_config()
     context = gnomeprint.pango_create_context(
         gnomeprint.pango_get_default_font_map())
-    #if options.landscape:
-   #     config.set( gnomeprint.KEY_PAPER_ORIENTATION, "R90" )
+    if options.landscape:
+       config.set( gnomeprint.KEY_PAPER_ORIENTATION, "R90" )
 
     def units(key):
         v,u = config.get_length( key )
         return v * u.unittobase
     paper_width = units( gnomeprint.KEY_PAPER_WIDTH )
-    paper_height = units( gnomeprint.KEY_PAPER_HEIGHT ) 
+    paper_height = units( gnomeprint.KEY_PAPER_HEIGHT )
     transform_rotate = 0
     transform_ytranslate = 0
     if options.landscape:
@@ -63,17 +64,16 @@ def do_print(job, texts, chunks, label_text):
         l.set_font_description( pango.FontDescription("Mono 10") )
         l.set_wrap(pango.WRAP_WORD_CHAR)
         l.set_width( int(usable_width*pango.SCALE) )
-        print dir(l)
 
     def mul_tuple(s, t):
         return tuple( [ s*i for i in t ] )
 
     reversemap = {
         "replace":"replace",
-         "insert":"delete",
-         "delete":"insert",
-         "conflict":"conflict",
-         "equal":"equal"}
+        "insert":"delete",
+        "delete":"insert",
+        "conflict":"conflict",
+        "equal":"equal"}
 
     gpc = job.get_context()
 
@@ -147,6 +147,7 @@ def do_print(job, texts, chunks, label_text):
     gpc.translate(0,transform_ytranslate)
 
     for chunk in chunks:
+        print chunk
         cbegin = [0,0,0]
         if chunk[0]:
             cbegin[0] = chunk[0][3]
@@ -178,3 +179,44 @@ def do_print(job, texts, chunks, label_text):
     yield "[%s] : Sending to printer" % label_text
     #job.print_()
 
+class PrintDialog:
+    def __init__(self, document_name, texts, chunks):
+        self.document_name = document_name
+        self.texts = texts
+        self.chunks = chunks
+
+    def run(self):
+        config = gnomeprint.config_default()
+        config.set( gnomeprint.KEY_DOCUMENT_NAME, self.document_name )
+        job = gnomeprint.Job(config)
+        dialog = gnomeprint.ui.Dialog(
+            job,
+            _("Print... %s") % self.document_name,
+            gnomeprint.ui.DIALOG_COPIES)
+        dialog.connect("response", self.on_print_dialog_response, job)
+        dialog.show()
+
+    def on_print_dialog_response(self, dialog, response, job):
+        if response == gnomeprint.ui.DIALOG_RESPONSE_PREVIEW:
+            self.print_show_preview(dialog)
+        elif response == gnomeprint.ui.DIALOG_RESPONSE_CANCEL:
+            dialog.destroy()
+        elif response == gnomeprint.ui.DIALOG_RESPONSE_PRINT:
+            self.print_to_job(job)
+            pc = gnomeprint.Context(dialog.get_config())
+            job.render(pc)
+            pc.close()
+            dialog.destroy()
+
+    def print_show_preview(self, dialog):
+        job = gnomeprint.Job(dialog.get_config())
+        self.print_to_job(job)
+        w = gnomeprint.ui.JobPreview(job, _("Print Preview") )
+        w.set_property('allow-grow', 1)
+        w.set_property('allow-shrink', 1)
+        w.set_transient_for(dialog)
+        w.show_all()
+
+    def print_to_job(self, job):
+        for i in do_print( job, self.texts, self.chunks, self.document_name):
+            pass
