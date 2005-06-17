@@ -815,7 +815,7 @@ Options:
 
 For more information choose help -> contents.
 Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld
-Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools
+Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list
 """)
 
 version_string = _("""Meld %s
