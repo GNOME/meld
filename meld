@@ -79,7 +79,13 @@ gtk.glade.bindtextdomain("meld", paths.locale_dir() )
 # main
 #
 import meldapp
-try:
+try: # ignore session management
+    smprefix = sys.argv.index("--sm-config-prefix")
+    del sys.argv[smprefix]
+    del sys.argv[smprefix]
+except (ValueError,IndexError):
+    pass
+try: # don't pass on the profiling flag
     minusp = sys.argv.index("--profile")
     del sys.argv[minusp]
     import profile
