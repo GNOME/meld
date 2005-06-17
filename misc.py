@@ -117,7 +117,7 @@ def shorten_names(*names):
             base = basenames[0].strip()
             return [ r+base for r in roots ]
     # no common path. empty names get changed to "[None]"
-    return map( lambda x: x or _("[None]"), names)
+    return map( lambda x: x or _("[None]"), basenames)
 
 def look(s, o):
     """Return a list of attributes in 'o' which contain the string 's'
