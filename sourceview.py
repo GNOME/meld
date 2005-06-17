@@ -17,7 +17,7 @@
 import os
 import gtk
 import gobject
-import gnome.vfs
+import gnomevfs
 
 try:
     #raise ImportError
@@ -38,7 +38,7 @@ except ImportError:
             return None
 
 def set_highlighting_enabled(buf, fname, enabled):
-    mime_type = gnome.vfs.get_mime_type(os.path.abspath(fname))
+    mime_type = gnomevfs.get_mime_type(os.path.abspath(fname))
     man = SourceLanguagesManager()
     gsl = man.get_language_from_mime_type( mime_type )
     if gsl:
