@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Funda Wang <fundawang@linux.net.cn>, 2004.
+# Funda Wang <fundawang@linux.net.cn>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-18 06:36+0800\n"
+"POT-Creation-Date: 2005-06-18 04:01+0000\n"
 "PO-Revision-Date: 2005-06-18 03:35+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -21,7 +21,7 @@ msgstr "比较并合并您的文件。"
 
 #: ../meld.desktop.in.h:2
 msgid "Meld Diff Viewer"
-msgstr ""
+msgstr "Meld 差异查看器"
 
 #: ../cvsview.py:40
 msgid ""
@@ -50,11 +50,11 @@ msgstr "状态"
 
 #: ../cvsview.py:371 ../svnview.py:311
 msgid "Rev"
-msgstr ""
+msgstr "版本"
 
 #: ../cvsview.py:372 ../svnview.py:312 ../glade2/cvsview.glade.h:21
 msgid "Tag"
-msgstr ""
+msgstr "标签"
 
 #: ../cvsview.py:373 ../svnview.py:313
 msgid "Options"
@@ -77,7 +77,7 @@ msgstr "(空)"
 #: ../cvsview.py:489 ../svnview.py:429
 #, python-format
 msgid "[%s] Fetching differences"
-msgstr ""
+msgstr "[%s] 正获取差异"
 
 #: ../cvsview.py:496 ../svnview.py:437
 #, python-format
@@ -86,11 +86,11 @@ msgstr "[%s] 正应用补丁"
 
 #: ../cvsview.py:500 ../svnview.py:441
 msgid "No differences found."
-msgstr ""
+msgstr "未发现差异。"
 
 #: ../cvsview.py:574 ../svnview.py:515
 msgid "Select some files first."
-msgstr ""
+msgstr "先选择一些文件。"
 
 #: ../cvsview.py:595 ../dirdiff.py:552 ../svnview.py:536
 #, python-format
@@ -171,11 +171,11 @@ msgstr ""
 
 #: ../filediff.py:223
 msgid "INS,OVR"
-msgstr ""
+msgstr "插入,覆盖"
 
 #. insert/overwrite
 #: ../filediff.py:224
-#, fuzzy, python-format
+#, python-format
 msgid "Ln %i, Col %i"
 msgstr "行号 %i，列号 %i"
 
@@ -187,21 +187,21 @@ msgid ""
 msgstr ""
 
 #: ../filediff.py:526
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Regular expression error\n"
 "'%s'"
-msgstr "正则表达式(_X)"
+msgstr "正则表达式错误\n“%s”"
 
 #: ../filediff.py:538
-#, fuzzy, python-format
+#, python-format
 msgid "The regular expression '%s' was not found."
-msgstr "“%s”未找到。"
+msgstr "正则表达式“%s”未找到。"
 
 #: ../filediff.py:540
-#, fuzzy, python-format
+#, python-format
 msgid "The text '%s' was not found."
-msgstr "“%s”未找到。"
+msgstr "文本“%s”未找到。"
 
 #: ../filediff.py:579
 #, python-format
@@ -265,7 +265,7 @@ msgstr "[%s] 正在计算差异"
 msgid ""
 "\"%s\" exists!\n"
 "Overwrite?"
-msgstr ""
+msgstr "“%s”已存在！\n覆盖吗？"
 
 #: ../filediff.py:747
 #, python-format
@@ -273,12 +273,12 @@ msgid ""
 "Error writing to %s\n"
 "\n"
 "%s."
-msgstr ""
+msgstr "写入 %s 出错\n\n%s。"
 
 #: ../filediff.py:756
 #, python-format
 msgid "Choose a name for buffer %i."
-msgstr ""
+msgstr "为缓冲区 %i 选择一个名称。"
 
 #: ../filediff.py:769
 #, python-format
@@ -286,7 +286,7 @@ msgid ""
 "This file '%s' contains a mixture of line endings.\n"
 "\n"
 "Which format would you like to use?"
-msgstr ""
+msgstr "文件“%s”包含不同的行结束符。\n\n您想要使用何种格式？"
 
 #: ../filediff.py:785
 #, python-format
@@ -294,12 +294,12 @@ msgid ""
 "'%s' contains characters not encodable with '%s'\n"
 "Would you like to save as UTF-8?"
 msgstr ""
+"“%s”包含无法用“%s”表示的字符\n您是否想要另存为 UTF-8？"
 
 #. save as
 #: ../filediff.py:820
-#, fuzzy
 msgid "Save patch as..."
-msgstr "另存为(_A)..."
+msgstr "补丁另存为..."
 
 #: ../filediff.py:874
 #, python-format
@@ -308,7 +308,7 @@ msgid ""
 "%s\n"
 "\n"
 "You cannot undo this operation."
-msgstr ""
+msgstr "刷新将丢弃以下文件中的更改：\n%s\n\n您无法撤消此操作。"
 
 #: ../meld:50
 #, c-format
@@ -316,9 +316,8 @@ msgid "Meld requires python%s or higher."
 msgstr "Meld 需要 python %s 或更高版本。"
 
 #: ../meld:60
-#, fuzzy
 msgid "Meld requires a recent version of pygtk."
-msgstr "Meld 需要 python %s 或更高版本。"
+msgstr "Meld 需要 pygtk 的最新版本。"
 
 #: ../meld:61
 #, c-format
@@ -326,27 +325,28 @@ msgid "pygtk-%s or higher is recommended."
 msgstr ""
 
 #: ../meld:71
-#, fuzzy, c-format
+#, c-format
 msgid "Meld works best with pygtk-%s or higher. (found %s)"
-msgstr "Meld 需要 python %s 或更高版本。(找到了 %s)"
+msgstr "Meld 在 pygtk %s 或更高版本中工作较好。(找到了 %s)"
 
 #: ../meld:72
 msgid ""
 "Due to incompatible API changes some functions may not operate as expected."
 msgstr ""
+"由于 API 不兼容，某些函数可能无法按设计预期工作。"
 
 #: ../meldapp.py:294
 msgid "Line numbers are only available if you have pysourceview installed."
-msgstr ""
+msgstr "仅当您安装了 pysourceview 时行号才可用。"
 
 #: ../meldapp.py:298
 msgid ""
 "Syntax highlighting is only available if you have pysourceview installed."
-msgstr ""
+msgstr "仅当您安装了 pysourceview 时语法加亮才可用。"
 
 #: ../meldapp.py:745
 msgid "Cannot compare a mixture of files and directories.\n"
-msgstr ""
+msgstr "无法比较文件和目录的混合。\n"
 
 #: ../meldapp.py:747
 msgid "folder"
@@ -396,7 +396,7 @@ msgstr ""
 #: ../meldapp.py:877
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
-msgstr ""
+msgstr "参数个数不对(共 %i 个)"
 
 #: ../melddoc.py:45
 msgid "untitled"
@@ -414,20 +414,19 @@ msgstr ""
 
 #: ../glade2/cvsview.glade.h:1
 msgid "Add _Binary"
-msgstr ""
+msgstr "添加二进制(_B)"
 
 #: ../glade2/cvsview.glade.h:2
 msgid "Add to CVS"
-msgstr ""
+msgstr "添加到 CVS"
 
 #: ../glade2/cvsview.glade.h:3
 msgid "CVS Log"
-msgstr ""
+msgstr "CVS 日志"
 
 #: ../glade2/cvsview.glade.h:4
-#, fuzzy
 msgid "Commit"
-msgstr "提交(_C)"
+msgstr "提交"
 
 #: ../glade2/cvsview.glade.h:5
 msgid "Commit Files"
@@ -438,7 +437,6 @@ msgid "Date"
 msgstr "日期"
 
 #: ../glade2/cvsview.glade.h:7
-#, fuzzy
 msgid "Delete locally"
 msgstr "本地删除"
 
@@ -447,18 +445,16 @@ msgid "Diff Options"
 msgstr "差异选项"
 
 #: ../glade2/cvsview.glade.h:9
-#, fuzzy
 msgid "Diff selected"
-msgstr "删除所选(_D)"
+msgstr "差异所选"
 
 #: ../glade2/cvsview.glade.h:10
 msgid "Flatten directories"
 msgstr ""
 
 #: ../glade2/cvsview.glade.h:11
-#, fuzzy
 msgid "Ignored"
-msgstr "已忽略(_I)"
+msgstr "忽略的"
 
 #: ../glade2/cvsview.glade.h:12
 msgid "Local copy against other remote revision"
@@ -474,7 +470,7 @@ msgstr "日志消息"
 
 #: ../glade2/cvsview.glade.h:15
 msgid "Non _CVS"
-msgstr ""
+msgstr "非 _CVS"
 
 #: ../glade2/cvsview.glade.h:16
 msgid "Previous Logs"
@@ -485,23 +481,20 @@ msgid "Remove _Locally"
 msgstr "本地删除(_L)"
 
 #: ../glade2/cvsview.glade.h:18
-#, fuzzy
 msgid "Remove from CVS"
-msgstr "从控制中删除"
+msgstr "从 CVS 中删除"
 
 #: ../glade2/cvsview.glade.h:19 ../glade2/dirdiff.glade.h:20
 msgid "Show modified"
 msgstr "显示修改的文件"
 
 #: ../glade2/cvsview.glade.h:20
-#, fuzzy
 msgid "Show non-CVS"
-msgstr "显示新文件"
+msgstr "显示非 CVS"
 
 #: ../glade2/cvsview.glade.h:22
-#, fuzzy
 msgid "Update"
-msgstr "更新(_U)"
+msgstr "更新"
 
 #: ../glade2/cvsview.glade.h:23
 msgid "_Add"
@@ -544,6 +537,8 @@ msgid ""
 "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
 "Which ones would you like to save?</span>"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">某些文件已经修改。\n"
+"您想要保存哪些文件？</span>"
 
 #: ../glade2/filediff.glade.h:3
 msgid "Copy All _Left"
@@ -555,24 +550,23 @@ msgstr "右侧全部复制(_R)"
 
 #: ../glade2/filediff.glade.h:5
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "复制到剪贴板"
 
 #: ../glade2/filediff.glade.h:6
 msgid "Create Patch"
-msgstr ""
+msgstr "创建补丁"
 
 #: ../glade2/filediff.glade.h:7 ../glade2/dirdiff.glade.h:9
 msgid "Edit"
 msgstr "编辑"
 
 #: ../glade2/filediff.glade.h:8
-#, fuzzy
 msgid "Find"
-msgstr "查找(_F)"
+msgstr "查找"
 
 #: ../glade2/filediff.glade.h:9
 msgid "Make Patch"
-msgstr ""
+msgstr "制作补丁"
 
 #: ../glade2/filediff.glade.h:10
 msgid "Match _entire word only"
@@ -587,7 +581,6 @@ msgid "Save modified files?"
 msgstr "保存修改过的文件吗？"
 
 #: ../glade2/filediff.glade.h:13
-#, fuzzy
 msgid "Search for:"
 msgstr "搜索："
 
@@ -601,39 +594,39 @@ msgstr "环绕(_W)"
 
 #: ../glade2/dirdiff.glade.h:1
 msgid "Case"
-msgstr ""
+msgstr "大小写"
 
 #: ../glade2/dirdiff.glade.h:2
 msgid "Copy Left"
-msgstr ""
+msgstr "复制左侧"
 
 #: ../glade2/dirdiff.glade.h:3
 msgid "Copy Right"
-msgstr ""
+msgstr "复制右侧"
 
 #: ../glade2/dirdiff.glade.h:4
 msgid "Copy left"
-msgstr ""
+msgstr "复制左侧"
 
 #: ../glade2/dirdiff.glade.h:5
 msgid "Copy right"
-msgstr ""
+msgstr "复制右侧"
 
 #: ../glade2/dirdiff.glade.h:6
 msgid "Delete selected"
-msgstr ""
+msgstr "删除所选"
 
 #: ../glade2/dirdiff.glade.h:7
 msgid "Diff"
-msgstr ""
+msgstr "差异"
 
 #: ../glade2/dirdiff.glade.h:8
 msgid "Diff selection"
-msgstr ""
+msgstr "差异所选"
 
 #: ../glade2/dirdiff.glade.h:10
 msgid "Hide selected"
-msgstr ""
+msgstr "隐藏所选"
 
 #: ../glade2/dirdiff.glade.h:11
 msgid "Hide..."
@@ -645,27 +638,27 @@ msgstr ""
 
 #: ../glade2/dirdiff.glade.h:13
 msgid "Launch _Comparison"
-msgstr ""
+msgstr "调用比较(_C)"
 
 #: ../glade2/dirdiff.glade.h:14
 msgid "Left"
-msgstr ""
+msgstr "左侧"
 
 #: ../glade2/dirdiff.glade.h:15
 msgid "Modified"
-msgstr ""
+msgstr "修改"
 
 #: ../glade2/dirdiff.glade.h:16
 msgid "New"
-msgstr ""
+msgstr "新增"
 
 #: ../glade2/dirdiff.glade.h:17
 msgid "Right"
-msgstr ""
+msgstr "右侧"
 
 #: ../glade2/dirdiff.glade.h:18
 msgid "Same"
-msgstr ""
+msgstr "相同"
 
 #: ../glade2/dirdiff.glade.h:19
 msgid "Show identical"
@@ -681,16 +674,15 @@ msgstr "删除所选(_D)"
 
 #: ../glade2/meldapp.glade.h:1
 msgid " spaces."
-msgstr ""
+msgstr " 空格。"
 
 #: ../glade2/meldapp.glade.h:2
 msgid "(gnome-default-editor)"
-msgstr ""
+msgstr "(gnome-default-editor)"
 
 #: ../glade2/meldapp.glade.h:3
-#, fuzzy
 msgid "<b>Drawing Style</b>"
-msgstr "<b>保存</b>"
+msgstr "<b>绘制样式</b>"
 
 #: ../glade2/meldapp.glade.h:4
 msgid "<b>Edit Menu</b>"
@@ -765,27 +757,24 @@ msgid "CVS"
 msgstr "CVS"
 
 #: ../glade2/meldapp.glade.h:22
-#, fuzzy
 msgid "CVS Directory"
-msgstr "选择目录 - Meld"
+msgstr "CVS 目录"
 
 #: ../glade2/meldapp.glade.h:23
 msgid "CVS binary"
-msgstr ""
+msgstr "CVS 二进制"
 
 #: ../glade2/meldapp.glade.h:24
-#, fuzzy
 msgid "CVS view"
-msgstr "查看(_V)"
+msgstr "CVS 查看"
 
 #: ../glade2/meldapp.glade.h:25
 msgid "C_VS Browser"
-msgstr ""
+msgstr "CVS 浏览器(_V)"
 
 #: ../glade2/meldapp.glade.h:26
-#, fuzzy
 msgid "Choose Files"
-msgstr "提交文件"
+msgstr "选择文件"
 
 #: ../glade2/meldapp.glade.h:27
 msgid ""
@@ -831,15 +820,15 @@ msgstr "文件过滤器"
 
 #: ../glade2/meldapp.glade.h:37
 msgid "Gnome Default"
-msgstr ""
+msgstr "GNOME 默认"
 
 #: ../glade2/meldapp.glade.h:38
 msgid "Gnome default editor"
-msgstr ""
+msgstr "GNOME 默认编辑器"
 
 #: ../glade2/meldapp.glade.h:39
 msgid "Icons Only"
-msgstr ""
+msgstr "只有图标"
 
 #: ../glade2/meldapp.glade.h:40
 msgid "Ignore .cvsrc (-f)"
@@ -868,11 +857,11 @@ msgstr "内部编辑器"
 
 #: ../glade2/meldapp.glade.h:46
 msgid "Line Wrapping "
-msgstr ""
+msgstr "换行"
 
 #: ../glade2/meldapp.glade.h:47
 msgid "Locate CVS binary : Meld"
-msgstr ""
+msgstr "定位 CVS 二进制：Meld"
 
 #: ../glade2/meldapp.glade.h:48
 msgid "Meld"
@@ -880,46 +869,43 @@ msgstr "Meld"
 
 #: ../glade2/meldapp.glade.h:49
 msgid "Mine"
-msgstr ""
+msgstr "我的"
 
 #: ../glade2/meldapp.glade.h:50
 msgid "My Directory"
-msgstr ""
+msgstr "我的目录"
 
 #: ../glade2/meldapp.glade.h:51
-#, fuzzy
 msgid "My File"
-msgstr "文件(_F)"
+msgstr "我的文件"
 
 #: ../glade2/meldapp.glade.h:52
-#, fuzzy
 msgid "New..."
-msgstr "..."
+msgstr "新建..."
 
 #: ../glade2/meldapp.glade.h:53
 msgid "Original"
-msgstr ""
+msgstr "原始"
 
 #: ../glade2/meldapp.glade.h:54
 msgid "Original Directory"
-msgstr ""
+msgstr "原始目录"
 
 #: ../glade2/meldapp.glade.h:55
 msgid "Original File"
-msgstr ""
+msgstr "原始文件"
 
 #: ../glade2/meldapp.glade.h:56
 msgid "Other"
-msgstr ""
+msgstr "其它"
 
 #: ../glade2/meldapp.glade.h:57
-#, fuzzy
 msgid "Other Directory"
-msgstr "选择目录 - Meld"
+msgstr "其它目录"
 
 #: ../glade2/meldapp.glade.h:58
 msgid "Other File"
-msgstr ""
+msgstr "其它文件"
 
 #: ../glade2/meldapp.glade.h:59
 msgid "Preferences : Meld"
@@ -927,42 +913,39 @@ msgstr "首选项：Meld"
 
 #: ../glade2/meldapp.glade.h:60
 msgid "Prune empty directories (-P)"
-msgstr ""
+msgstr "销毁空目录(-P)"
 
 #: ../glade2/meldapp.glade.h:61
 msgid "Quiet mode (-q)"
-msgstr ""
+msgstr "安静模式(-q)"
 
 #: ../glade2/meldapp.glade.h:62
-#, fuzzy
 msgid "Report _Bug"
-msgstr "报告错误(_R)"
+msgstr "报告错误(_B)"
 
 #: ../glade2/meldapp.glade.h:63
 msgid "SVN Directory"
-msgstr ""
+msgstr "SVN 目录"
 
 #: ../glade2/meldapp.glade.h:64
-#, fuzzy
 msgid "SVN view"
-msgstr "查看(_V)"
+msgstr "SVN 查看"
 
 #: ../glade2/meldapp.glade.h:65
 msgid "Save in UTF-8 encoding"
-msgstr ""
+msgstr "以 UTF-8 编码保存"
 
 #: ../glade2/meldapp.glade.h:66
 msgid "Save in the files original encoding"
-msgstr ""
+msgstr "以文件的原始编码保存"
 
 #: ../glade2/meldapp.glade.h:67
-#, fuzzy
 msgid "Show line numbers"
-msgstr "行号"
+msgstr "显示行号"
 
 #: ../glade2/meldapp.glade.h:68
 msgid "Simple : Lines only"
-msgstr ""
+msgstr "简单：只有行"
 
 #: ../glade2/meldapp.glade.h:69
 msgid "Solid   Filled Quadilaterals"
@@ -974,7 +957,7 @@ msgstr ""
 
 #: ../glade2/meldapp.glade.h:71
 msgid "Text Beside Icons"
-msgstr ""
+msgstr "文本在图标旁"
 
 #: ../glade2/meldapp.glade.h:72
 msgid "Text Filters"
@@ -982,47 +965,47 @@ msgstr "文字过滤器"
 
 #: ../glade2/meldapp.glade.h:73
 msgid "Text Only"
-msgstr ""
+msgstr "只有文本"
 
 #: ../glade2/meldapp.glade.h:74
 msgid "Text Under Icons"
-msgstr ""
+msgstr "文本在图标下"
 
 #: ../glade2/meldapp.glade.h:75
 msgid "Three way directory"
-msgstr ""
+msgstr "三向目录"
 
 #: ../glade2/meldapp.glade.h:76
 msgid "Three way file"
-msgstr ""
+msgstr "三向文件"
 
 #: ../glade2/meldapp.glade.h:77
 msgid "Two way directory"
-msgstr ""
+msgstr "两向目录"
 
 #: ../glade2/meldapp.glade.h:78
 msgid "Two way file"
-msgstr ""
+msgstr "两向文件"
 
 #: ../glade2/meldapp.glade.h:79
 msgid "Use Compression (-z)"
-msgstr ""
+msgstr "使用压缩(-z)"
 
 #: ../glade2/meldapp.glade.h:80
 msgid "Use GNOME monospace font."
-msgstr ""
+msgstr "使用 GNOME 等距字体。"
 
 #: ../glade2/meldapp.glade.h:81
 msgid "Use custom font."
-msgstr ""
+msgstr "使用自定义字体。"
 
 #: ../glade2/meldapp.glade.h:82
 msgid "Use syntax highlighting"
-msgstr ""
+msgstr "使用语法加亮"
 
 #: ../glade2/meldapp.glade.h:83
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-msgstr ""
+msgstr "装入时，按此顺序尝试编码。(如 utf8，gb18030)"
 
 #: ../glade2/meldapp.glade.h:84
 msgid ""
@@ -1046,65 +1029,59 @@ msgstr ""
 
 #: ../glade2/meldapp.glade.h:87
 msgid "_Character"
-msgstr ""
+msgstr "字符(_C)"
 
 #: ../glade2/meldapp.glade.h:88
 msgid "_Contents"
-msgstr ""
+msgstr "内容(_C)"
 
 #: ../glade2/meldapp.glade.h:90
-#, fuzzy
 msgid "_Directory Comparison"
-msgstr "文件比较"
+msgstr "目录比较(_D)"
 
 #: ../glade2/meldapp.glade.h:91
 msgid "_Down"
 msgstr "下移(_D)"
 
 #: ../glade2/meldapp.glade.h:92
-#, fuzzy
 msgid "_File Comparison"
-msgstr "文件比较"
+msgstr "文件比较(_F)"
 
 #: ../glade2/meldapp.glade.h:93
 msgid "_Logo"
 msgstr "标志(_L)"
 
 #: ../glade2/meldapp.glade.h:94
-#, fuzzy
 msgid "_New..."
-msgstr "新建(_N)"
+msgstr "新建(_N)..."
 
 #: ../glade2/meldapp.glade.h:95
-#, fuzzy
 msgid "_None"
-msgstr "[无]"
+msgstr "无(_N)"
 
 #: ../glade2/meldapp.glade.h:96
 msgid "_SVN Browser"
-msgstr ""
+msgstr "SVN 浏览器(_S)"
 
 #: ../glade2/meldapp.glade.h:97
-#, fuzzy
 msgid "_Save"
-msgstr "全部保存(_S)"
+msgstr "保存(_S)"
 
 #: ../glade2/meldapp.glade.h:98
 msgid "_Three Way Compare"
-msgstr ""
+msgstr "三向比较(_T)"
 
 #: ../glade2/meldapp.glade.h:99
 msgid "_Up"
 msgstr "向上(_U)"
 
 #: ../glade2/meldapp.glade.h:100
-#, fuzzy
 msgid "_Word"
-msgstr "已忽略(_I)"
+msgstr "单词(_W)"
 
 #: ../glade2/meldapp.glade.h:101
 msgid "http://meld.sourceforge.net"
-msgstr ""
+msgstr "http://meld.sourceforge.net"
 
 #: ../glade2/meldapp.glade.h:102
 msgid "utf8 iso8859"
