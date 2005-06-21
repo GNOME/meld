@@ -220,8 +220,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _update_cursor_status(self, buf):
         def update():
             iter = buf.get_iter_at_mark( buf.get_insert() )
-            status = "%s : %s" % ( _("INS,OVR").split(",")[ self.textview_overwrite ], #insert/overwrite
-                                   _("Ln %i, Col %i") % (iter.get_line()+1, iter.get_line_offset()+1) ) #line/column
+            # Abbreviation for insert,overwrite so that it will fit in the status bar
+            insert_overwrite = _("INS,OVR").split(",")[ self.textview_overwrite ]
+            # Abbreviation for line, column so that it will fit in the status bar
+            line_column = _("Ln %i, Col %i") % (iter.get_line()+1, iter.get_line_offset()+1)
+            status = "%s : %s" % ( insert_overwrite, line_column )
             self.emit("status-changed", status  )
             raise StopIteration; yield 0
         self.scheduler.add_task( update().next )
@@ -599,7 +602,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 except (IOError, LookupError), e:
                     buffers[i].set_text("\n")
                     misc.run_dialog(
-                        _("Could not open '%s' for reading.\n\nThe error was:\n%s") % (f, str(e)),
+                        "%s\n\n%s\n%s" % (
+                            _("Could not read from '%s'") % f,
+                            _("The error was:"),
+                            str(e)),
                         parent = self)
             else:
                 panetext[i] = buffers[i].get_text( buffers[i].get_start_iter(), buffers[i].get_end_iter() )
@@ -618,12 +624,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
                         misc.run_dialog(
-                            _("Could not read from '%s'.\n\nI tried encodings %s.") % (t.filename, try_codecs),
+                            "%s\n\n%s" % (
+                                _("Could not read from '%s'") % t.filename,
+                                _("I tried encodings %s.") % try_codecs ),
                             parent = self)
                         tasks.remove(t)
                 except IOError, ioerr:
                     misc.run_dialog(
-                        _("Could not read from '%s'.\n\nThe error was:\n%s") % (t.filename, str(ioerr)),
+                        "%s\n\n%s\n%s" % (
+                            _("Could not read from '%s'") % t.filename,
+                            _("The error was:"),
+                            str(ioerr)),
                         parent = self)
                     tasks.remove(t)
                 else:

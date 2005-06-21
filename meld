@@ -61,7 +61,7 @@ def ver2str(ver):
     return ".".join(map(str,ver))
 
 if sys.version_info[:2] < pyver:
-    print _("Meld requires python%s or higher.") % ver2str(pyver)
+    print _("Meld requires %s or higher.") % ("python%s"%ver2str(pyver))
     sys.exit(1)
 
 #
@@ -71,8 +71,7 @@ try:
     import pygtk
 except ImportError, e:
     print e
-    print _("Meld requires a recent version of pygtk.")
-    print _("pygtk-%s or higher is recommended.") % ver2str(pygtkver)
+    print _("Meld requires %s or higher.") % ("pygtk%s"%ver2str(pygtkver))
     sys.exit(1)
 else:
     pygtk.require("2.0")
@@ -82,7 +81,7 @@ else:
 #
 import gtk
 if gtk.pygtk_version < pygtkver:
-    print _("Meld works best with pygtk-%s or higher. (found %s)") % (ver2str(pygtkver), ver2str(gtk.pygtk_version))
+    print _("Meld requires %s or higher.") % ("pygtk%s"%ver2str(pygtkver))
     print _("Due to incompatible API changes some functions may not operate as expected.")
 
 # python2.2 needs this.
