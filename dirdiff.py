@@ -566,12 +566,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             def rwx(mode):
                 return "".join( [ ((mode& (1<<i)) and "xwr"[i%3] or "-") for i in range(8,-1,-1) ] )
             def nice(deltat):
-                # singular,plural 
-                times = _("second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:year,years").split(":")
+                times = [
+                    N_ngettext("%i second","%i seconds"),
+                    N_ngettext("%i minute","%i minutes"),
+                    N_ngettext("%i hour","%i hours"),
+                    N_ngettext("%i day","%i days"),
+                    N_ngettext("%i week","%i weeks"),
+                    N_ngettext("%i month","%i months"),
+                    N_ngettext("%i year","%i years") ]
                 d = abs(int(deltat))
                 for div, time in zip((60,60,24,7,4,12,100), times):
                     if d < div * 5:
-                        return "%s%i %s" % (deltat<0 and "-" or "", d, time.split(",")[d != 1])
+                        timestr = ngettext(time[0], time[1], d )
+                        return "%s%s" % (deltat<0 and "-" or "", timestr%d)
                     d /= div
             file = self.model.value_path( self.model.get_iter(paths[0]), pane )
             try:
