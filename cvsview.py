@@ -37,6 +37,7 @@ import paths
 #
 ################################################################################
 class Entry(object):
+    # These are the possible states of files. Be sure to get the colons correct.
     states = _("Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
     assert len(states)==tree.STATE_MAX
     def __str__(self):
