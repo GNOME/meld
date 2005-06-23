@@ -614,6 +614,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for t in tasks[:]:
                 try:
                     nextbit = t.file.read(4096)
+                    if nextbit.find("\x00") != -1:
+                        misc.run_dialog(
+                            "%s\n\n%s" % (
+                                _("Could not read from '%s'") % t.filename,
+                                _("It contains ascii nulls.\nPerhaps it is a binary file.") ),
+                                parent = self )
+                        t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
+                        tasks.remove(t)
                 except ValueError, err:
                     t.codec.pop(0)
                     if len(t.codec):
