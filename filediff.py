@@ -25,7 +25,6 @@ import tempfile
 
 import gobject
 import gtk
-import gtk.keysyms
 import pango
 
 import diffutil
@@ -85,7 +84,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="two_panes"/>
             <menuitem action="three_panes"/>
             <separator/>
-            <menuitem action="rotate_panes"/>
+            <menuitem action="horizontal_panes"/>
             <menuitem action="show_filenames"/>
           </placeholder>
         </menu>
@@ -93,8 +92,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
           <menu action="diff_menu">
             <menuitem action="refresh"/>
             <separator/>
-            <menuitem action="previous_difference"/>
             <menuitem action="next_difference"/>
+            <menuitem action="previous_difference"/>
             <separator/>
             <menuitem action="replace_left_file"/>
             <menuitem action="replace_right_file"/>
@@ -103,18 +102,18 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         </placeholder>
       </menubar>
       <toolbar name="ToolBar">
-          <separator/>
-          <toolitem action="save"/>
-          <toolitem action="refresh"/>
-          <separator/>
-          <toolitem action="undo"/>
-          <toolitem action="redo"/>
-          <toolitem action="find"/>
-          <toolitem action="find_replace"/>
-          <separator/>
-          <toolitem action="previous_difference"/>
-          <toolitem action="next_difference"/>
-          <separator/>
+        <separator/>
+        <toolitem action="save"/>
+        <toolitem action="refresh"/>
+        <separator/>
+        <toolitem action="undo"/>
+        <toolitem action="redo"/>
+        <toolitem action="find"/>
+        <toolitem action="find_replace"/>
+        <separator/>
+        <toolitem action="previous_difference"/>
+        <toolitem action="next_difference"/>
+        <separator/>
       </toolbar>
     </ui>
     """
@@ -144,12 +143,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             ('one_pane', None, _('One Pane'), '<Control><Alt>1', '', 1, 'num_panes'),
             ('two_panes', None, _('Two Panes'), '<Control><Alt>2', '', 2, 'num_panes'),
             ('three_panes', None, _('Three Panes'), '<Control><Alt>3', '', 3, 'num_panes'),
-            ('rotate_panes', None, _('Rotate View'), '<Control><Alt>R', None),
+            ('horizontal_panes', None, _('Horizontal View'), '<Control><Alt>H', None, False),
             ('show_filenames', None, _('Show Filenames'), '<Control><Alt>F', None, True),
         ('diff_menu', None, _('_Diff')),
             ('refresh', gtk.STOCK_REFRESH, _('Refres_h'), '<Control><Alt>C', _('Recompute differences')),
-            ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
             ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
+            ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
             ('replace_left_file', gtk.STOCK_GO_BACK, _('Copy contents left'), None, None),
             ('replace_right_file', gtk.STOCK_GO_FORWARD, _('Copy contents right'), None, None),
     )
@@ -1090,6 +1089,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
     def on_toplevel__realize(self, toplevel):
         window = self.toplevel.window
+        # graphics contexts
         gcd = window.new_gc()
         common = self.prefs.common
         gcd.set_rgb_fg_color( gtk.gdk.color_parse(common.color_delete_bg) )
@@ -1101,6 +1101,9 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         gcx.set_rgb_fg_color( gtk.gdk.color_parse(common.color_conflict_bg) )
         self.graphics_contexts = misc.struct(delete=gcd, insert=gcd, replace=gcc, conflict=gcx)
         #gtk.gdk.gdk_window_set_debug_updates(True)
+
+    def on_textview__realize(self, toplevel):
+        pass#[area.modify_bg( gtk.STATE_NORMAL, self.textview0.get_style().base[gtk.STATE_NORMAL]) for area in self.linkmap]
 
     def on_textview__expose_event(self, textview, event):
         if self.num_panes == 1:
@@ -1114,14 +1117,19 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         start_line = self._pixel_to_line(pane, visible.y)
         end_line = 1+self._pixel_to_line(pane, visible.y+visible.height)
         gc = lambda x : getattr(self.graphics_contexts, x)
-
+        #gcdark = textview.get_style().black_gc
+        gclight = textview.get_style().bg_gc[gtk.STATE_ACTIVE]
+        #curline = textview.get_buffer().get_iter_at_mark( textview.get_buffer().get_insert() ).get_line()
+               
         def draw_change(change): # draw background and thin lines
             ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
             width = event.window.get_size()[0]
-            event.window.draw_line(gctext, 0,ypos0-1, width,ypos0-1)
+            #gcline = (gclight, gcdark)[change[1] <= curline and curline < change[2]]
+            gcline = gclight
+            event.window.draw_line(gcline, 0,ypos0-1, width,ypos0-1)
             if change[2] != change[1]:
                 ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
-                event.window.draw_line(gctext, 0,ypos1, width,ypos1)
+                event.window.draw_line(gcline, 0,ypos1, width,ypos1)
                 event.window.draw_rectangle(gc(change[0]), 1, 0,ypos0, width,ypos1-ypos0)
         last_change = None
         for change in self.differ.single_changes(pane):
@@ -1136,22 +1144,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         if last_change:
             draw_change(last_change)
 
-        # highlight current difference
-        if 0 and event.window == textview.get_window(gtk.TEXT_WINDOW_LEFT):
-            event.window.clear()
-            view = self._get_focused_textview()
-            if view and textview == view:
-                buf = view.get_buffer()
-                it = buf.get_iter_at_mark( buf.get_insert() )
-                line = it.get_line()
-                for c in self.differ.single_changes(pane):
-                    if c[2] < line-1: continue
-                    if c[1] > line+1: break
-                    ypos0 = self._line_to_pixel(pane, c[1]) - visible.y
-                    ypos1 = self._line_to_pixel(pane, c[2]) - visible.y
-                    event.window.draw_rectangle(gctext, 1, 0,ypos0, 10,ypos1-ypos0)
-                    break
-
         #
         # linkmap drawing
         #
@@ -1159,7 +1151,6 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         # not mapped? 
         if not area.window: return
         window = area.bin_window
-        gctext = area.get_style().text_gc[0]
         window.clear()
 
         alloc = area.get_allocation()
@@ -1200,6 +1191,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             return lo,hi
 
         gc = lambda x : getattr(self.graphics_contexts, x)
+        gcline = area.get_style().bg_gc[gtk.STATE_ACTIVE]
+        window.draw_rectangle( gcline, 0, 0, -1, wtotal-1, htotal+1)
 
         for c in self.differ.single_changes(which*2, which==1):
             if self.prefs.ignore_blank_lines:
@@ -1227,12 +1220,15 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
             points = points0 + points1 + [points0[0]]
             window.draw_polygon( gc(c[0]), 1, points)
-            window.draw_lines(gctext, points0)
-            window.draw_lines(gctext, points1)
+            window.draw_lines(gcline, points0)
+            window.draw_lines(gcline, points1)
 
     def on_linkmap__scroll_event(self, area, event):
         self.next_diff(event.direction)
 
+        #
+        # File Actions
+        #
     def action_save__activate(self, action):
         pane = self._get_focused_pane()
         if pane >= 0:
@@ -1267,9 +1263,9 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def action_close__activate(self, action):
         self.emit("closed")
 
-    def action_refresh__activate(self, *action):
-        self.set_files([None]*self.num_panes)
-
+        #
+        # Edit Actions
+        #
     def action_undo__activate(self, *action):
         self.undosequence.undo()
 
@@ -1291,22 +1287,28 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.findreplace.show_all()
         self.button_show_replace.hide()
 
-    def action_previous_difference__activate(self, action):
-        self.next_diff(gtk.gdk.SCROLL_UP)
+    def action_cut__activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("cut-clipboard")
 
-    def action_next_difference__activate(self, action):
-        self.next_diff(gtk.gdk.SCROLL_DOWN)
+    def action_copy__activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("copy-clipboard")
 
+    def action_paste__activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("paste-clipboard")
+
+        #
+        # View Actions
+        #
     def action_num_panes__changed(self, group, action):
         self.set_num_panes( action.get_property("value") )
 
-    def action_replace_left_file__activate(self, action):
-        self.copy_entire_file(-1)
-
-    def action_replace_right_file__activate(self, action):
-        self.copy_entire_file(+1)
-
-    def action_rotate_panes__activate(self, action):
+    def action_horizontal_panes__toggled(self, action):
         if self.horizontal_root.get_property("visible"):
             self.horizontal_root.hide()
             self.vertical_root.show()
@@ -1330,20 +1332,23 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.scheduler.add_task( self._update_merge_buttons )
         self.scheduler.add_task( self.queue_draw )
 
-    def action_cut__activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("cut-clipboard")
+        #
+        # Diff Actions
+        #
+    def action_refresh__activate(self, *action):
+        self.set_files([None]*self.num_panes)
 
-    def action_copy__activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("copy-clipboard")
+    def action_previous_difference__activate(self, action):
+        self.next_diff(gtk.gdk.SCROLL_UP)
 
-    def action_paste__activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("paste-clipboard")
+    def action_next_difference__activate(self, action):
+        self.next_diff(gtk.gdk.SCROLL_DOWN)
+
+    def action_replace_left_file__activate(self, action):
+        self.copy_entire_file(-1)
+
+    def action_replace_right_file__activate(self, action):
+        self.copy_entire_file(+1)
 
     #
     # find / replace
@@ -1357,7 +1362,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.combo_replace_with.set_model( gtk.ListStore(type("")))
         self.combo_replace_with.set_text_column(0)
         self.gconf = gconf.client_get_default()
-        self.update_history()
+        self.update_find_replace_history()
         for check in "match_case entire_word wrap_around use_regex".split():
             widget = getattr(self, "check_%s" % check)
             key = "%s/%s" % (self.FIND_STATE_ROOT, check)
@@ -1367,7 +1372,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         gobject.idle_add( lambda : self.entry_replace_with.select_region(0,-1) )
         gobject.idle_add( lambda : self.entry_search_for.select_region(0,-1) )
 
-    def update_history(self):
+    def update_find_replace_history(self):
         for entry,history_id in ( (self.entry_search_for,"search_for"),
                                   (self.entry_replace_with, "replace_with") ):
             history = self.gconf.get_list("%s/%s" % (self.FIND_STATE_ROOT, history_id), gconf.VALUE_STRING )
@@ -1427,14 +1432,14 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         self.button_find.set_sensitive(sensitive)
 
     def on_entry_search_for__activate(self, *args):
-        self.update_history()
+        self.update_find_replace_history()
         if self.combo_replace_with.get_property("visible"):
             self.entry_replace_with.grab_focus()
         elif self.button_find.get_property("sensitive"):
             self.on_button_find__clicked()
 
     def on_entry_replace_with__activate(self, *args):
-        self.update_history()
+        self.update_find_replace_history()
         self.button_find.grab_focus()
 
     def _get_state(self, *args):
@@ -1448,17 +1453,17 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         return s
 
     def on_button_find__clicked(self, *args):
-        self.update_history()
+        self.update_find_replace_history()
         s = self._get_state()
         s.toreplace = None
         self.perform_find_replace(s)
 
     def on_button_replace__clicked(self, *args):
-        self.update_history()
+        self.update_find_replace_history()
         self.perform_find_replace(self._get_state())
 
     def on_button_replace_all__clicked(self, *args):
-        self.update_history()
+        self.update_find_replace_history()
         s = self._get_state()
         s.replace_all = True
         self.perform_find_replace(s)
