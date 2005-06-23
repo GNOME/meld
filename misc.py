@@ -32,6 +32,16 @@ import signal
 
 whitespace_re = re.compile(r"\s")
 
+def uniq(l):
+    i = iter(l)
+    a = i.next()
+    yield a
+    while 1:
+        b = i.next()
+        if a != b:
+            yield b
+            a = b
+
 def shelljoin( command ):
     def quote(s):
         return ((whitespace_re.search(s) == None) and s or ('"%s"' % s))
