@@ -22,23 +22,23 @@ Use with undo.UndoSequence()
 class TextBufferInsert(object):
     def __init__(self, buffer, offset, text):
         self.buffer = buffer
-        self.offset = offset 
+        self.offset = offset
         self.text = text
     def undo(self):
         b = self.buffer
         b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
     def redo(self):
         b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text) 
+        b.insert( b.get_iter_at_offset( self.offset), self.text)
 
 class TextBufferDelete(object):
     def __init__(self, buffer, offset, text):
         self.buffer = buffer
-        self.offset = offset 
+        self.offset = offset
         self.text = text
     def undo(self):
         b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text) 
+        b.insert( b.get_iter_at_offset( self.offset), self.text)
     def redo(self):
         b = self.buffer
         b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
