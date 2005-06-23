@@ -26,29 +26,22 @@ import paths
 import gettext
 import locale
 
-def ngettext_fake( singular, plural, number ):
-    return _((singular,plural)[number!=1])
-def ngettext_noop( singular, plural ):
-    return singular, plural
-
 try:
     locale.setlocale(locale.LC_ALL, '')
     gettext.bindtextdomain("meld", paths.locale_dir() )
     gettext.textdomain("meld")
     gettext.install("meld", paths.locale_dir(), unicode=1)
-    builtins = __builtins__.__dict__
-    builtins["N_ngettext"] = ngettext_noop
-    try:
-        builtins["ngettext"] = gettext.ngettext
-    except AttributeError: # python2.2 does not have ngettext
-        builtins["ngettext"] = ngettext_fake
 except (IOError,locale.Error), e:
     # fake gettext until translations in place
     print "(meld): WARNING **: %s" % e
-    builtins = __builtins__.__dict__
-    builtins["_"] = lambda x : x
-    builtins["N_ngettext"] = ngettext_noop
-    builtins["ngettext"] = ngettext_fake
+    __builtins__.__dict__["_"] = lambda x : x
+
+try:
+    __builtins__.__dict__["ngettext"] = gettext.ngettext
+except AttributeError: # python2.2 does not have ngettext
+    __builtins__.__dict__["ngettext"] = \
+        lambda singular, plural, number: _((singular,plural)[number!=1])
+
 
 #
 # python version
