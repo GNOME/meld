@@ -742,13 +742,7 @@ class MeldApp(gnomeglade.GnomeApp):
         aredirs = [ os.path.isdir(p) for p in paths ]
         arefiles = [ os.path.isfile(p) for p in paths ]
         if (1 in aredirs) and (1 in arefiles):
-            m = _("Cannot compare a mixture of files and directories.\n")
-            for i in range(len(paths)):
-                status = aredirs[i] and _("folder") \
-                    or arefiles[i] and _("file") \
-                    or _("nonexistant")
-                m += "\n(%s)\t`%s'" % (status, paths[i])
-            misc.run_dialog( m,
+            misc.run_dialog( _("Cannot compare a mixture of files and directories.\n"),
                     parent = self,
                     buttonstype = gtk.BUTTONS_OK)
         elif 1 in aredirs:
