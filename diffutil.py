@@ -201,14 +201,18 @@ class Differ(object):
 
     def _merge_blocks(self, using, low_seq, high_seq, last_diff):
         LO, HI = 1,2
-        lowc  = using[low_seq][0][LO]
-        highc = using[high_seq][0][HI]
+        lowc  = using[low_seq][ 0][LO]
+        highc = using[low_seq][-1][HI]
+        if len(using[not low_seq]):
+            lowc  =  min(lowc,  using[not low_seq][ 0][LO])
+            highc =  max(highc, using[not low_seq][-1][HI])
         low = []
         high = []
         for i in (0,1):
             if len(using[i]):
                 d = using[i][0]
                 low.append(  lowc  - d[LO] + d[2+LO] )
+                d = using[i][-1]
                 high.append( highc - d[HI] + d[2+HI] )
             else:
                 d = last_diff
