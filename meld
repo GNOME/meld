@@ -81,6 +81,10 @@ if gtk.pygtk_version < pygtkver:
 import gtk.glade
 gtk.glade.bindtextdomain("meld", paths.locale_dir() )
 
+import warnings # Crude hack to fix bug 310315
+warnings.filterwarnings("ignore", category=DeprecationWarning, module= \
+    "^(cvsview|diffutil|dirdiff|filediff|gnomeglade|melddoc" \
+    "|meldapp|misc|paths|prefs|svnview|task|tree|undo)$")
 #
 # main
 #
