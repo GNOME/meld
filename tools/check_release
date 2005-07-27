@@ -38,7 +38,7 @@ def add_pixmap_dir(matchobj):
 		newico = "pixmaps/"+ico
 		ret = ret.replace(ico, newico)
 		print newico
-	return ret 
+	return ret
 
 icon_re = re.compile(r'(<property name="(?:icon|logo|pixbuf)">([^<]+)</property>)')
 for file in glob.glob("glade2/*.glade"):
