@@ -23,8 +23,8 @@ import gobject
 import gtk
 
 # project
+import gui
 import paths
-import glade
 import misc
 import task
 import stock
@@ -43,7 +43,7 @@ version = "1.1.0"
 # magic developer switch, changes some behaviour
 developer = 0
 
-class MeldApp(glade.GtkApp, dbus.Object):
+class MeldApp(gui.GtkApp, dbus.Object):
 
     UI_DEFINITION = """
     <ui>
@@ -60,16 +60,16 @@ class MeldApp(glade.GtkApp, dbus.Object):
           <placeholder name="file_extras"/>
           <menuitem action="quit"/>
         </menu>
-        <placeholder name="edit_menu"/>
+        <menu action="edit_menu">
+          <placeholder name="edit_extras"/>
+          <menuitem action="preferences"/>
+        </menu>
         <menu action="view_menu">
           <placeholder name="view_extras"/>
           <menuitem action="show_toolbar"/>
           <menuitem action="show_statusbar"/>
         </menu>
         <placeholder name="menu_extras"/>
-        <menu action="settings_menu">
-          <menuitem action="preferences"/>
-        </menu>
         <menu action="help_menu">
           <menuitem action="help_contents"/>
           <menuitem action="reportbug"/>
@@ -94,10 +94,10 @@ class MeldApp(glade.GtkApp, dbus.Object):
                 ('filediff3', stock.STOCK_FILEDIFF3, _('File Comparision'), None, None),
                 ('dirdiff2', stock.STOCK_DIRDIFF2, _('Folder Comparision'), None, None),
                 ('dirdiff3', stock.STOCK_DIRDIFF3, _('Folder Comparision'), None, None),
-                ('working_copy', stock.STOCK_WOCO_ICON, _('Working Copy Browser'), None, None),
+                ('working_copy', stock.STOCK_WOCO, _('Working Copy Browser'), None, None),
             ('quit', gtk.STOCK_QUIT, None, None, None),
 
-        ('settings_menu', None, _('_Settings')),
+        ('edit_menu', None, _('_Edit')),
             ('preferences', gtk.STOCK_PREFERENCES, None, None, None),
 
         ('view_menu', None, _('_View')),
@@ -114,7 +114,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
     # init
     #
     def __init__(self, dbus_service):
-        glade.GtkApp.__init__(self, paths.share_dir("glade2/meldapp.glade"), "window")
+        gui.GtkApp.__init__(self, paths.share_dir("glade2/meldapp.glade"), "window")
 
         self.uimanager = gtk.UIManager()
         self.toplevel.add_accel_group( self.uimanager.get_accel_group() )
@@ -132,7 +132,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
 
         self.connect_signal_handlers()
         self.prefs = prefs.Preferences("/apps/meld")
-        glade.tie_to_gconf("/apps/meld/state/app", self.toplevel)
+        gui.tie_to_gconf("/apps/meld/state/app", self.toplevel)
 
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
@@ -203,7 +203,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
         nbl = self.notebook.get_tab_label( newdoc.toplevel )
         self.toplevel.set_title( nbl.label.get_text() + " - Meld")
         self._set_doc_status("")
-        newdoc.on_container_switch_event(self.uimanager)
+        newdoc.on_container_switch_in_event(self.uimanager)
         self.scheduler.add_task( newdoc.scheduler )
 
     #
@@ -245,7 +245,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
     def action_dirdiff3__activate(self, *extra):
         self._append_page( dirdiff.DirDiff(self.prefs, 3), stock.STOCK_FOLDER)
     def action_working_copy__activate(self, *extra):
-        self._append_page( wocoview.WocoView(self.prefs, self.uimanager), stock.STOCK_WOCO_ICON)
+        self._append_page( wocoview.WocoView(self.prefs, self.uimanager), stock.STOCK_WOCO)
 
     def action_quit__activate(self, *extra):
         if not developer:
@@ -278,10 +278,10 @@ class MeldApp(glade.GtkApp, dbus.Object):
     # Help actions
     #
     def action_help_contents__activate(self, *extra):
-        glade.url_show("ghelp:///"+os.path.abspath(paths.doc_dir("meld.xml") ))
+        gui.url_show("ghelp:///"+os.path.abspath(paths.doc_dir("meld.xml") ))
 
     def action_reportbug__activate(self, *extra):
-        glade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
+        gui.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
 
     def action_about__activate(self, *extra):
         dialog = gtk.AboutDialog()
@@ -314,7 +314,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
     def _append_page(self, page, icon):
         """Common page append code.
         """
-        nbl = glade.CloseLabel(icon)
+        nbl = gui.CloseLabel(icon)
         nbl.connect("closed", lambda b: self.try_remove_page(page))
         self.notebook.append_page( page.toplevel, nbl)
         self.notebook.set_current_page( self.notebook.page_num(page.toplevel) )
@@ -348,7 +348,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
                     or arefiles[i] and _("file") \
                     or _("nonexistant")
                 extra.append( "(%s)\t`%s'" % (what, paths[i]) )
-            glade.run_dialog( main,
+            gui.run_dialog( main,
                     self.toplevel,
                     buttonstype = gtk.BUTTONS_OK,
                     subtext = "\n".join(extra) )
@@ -368,7 +368,7 @@ class MeldApp(glade.GtkApp, dbus.Object):
     # Usage
     #
     def usage(self, msg):
-        response = glade.run_dialog(msg,
+        response = gui.run_dialog(msg,
             self.toplevel,
             gtk.MESSAGE_ERROR,
             gtk.BUTTONS_NONE,
@@ -378,17 +378,17 @@ class MeldApp(glade.GtkApp, dbus.Object):
             sys.exit(0)
         
         
-class NewDocDialog(glade.Component):
+class NewDocDialog(gui.Component):
 
     TYPE = misc.struct(DIFF2=0, DIFF3=1, DIR2=2, DIR3=3, CVS=4, SVN=6)
          
     def __init__(self, parentapp, type):
         self.parentapp = parentapp
-        glade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
+        gui.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
         self.map_widgets_into_lists( ("fileentry", "direntry", "versionentry", "three_way_compare", "tablabel") )
         self.entrylists = self.fileentry, self.direntry, self.versionentry
         self.connect_signal_handlers()
-        glade.tie_to_gconf("/apps/meld/state/new", self.three_way_compare, self.version_autodetect)
+        gui.tie_to_gconf("/apps/meld/state/new", self.three_way_compare, self.version_autodetect)
         self.toplevel.set_transient_for(parentapp.toplevel)
         cur_page = type // 2
         self.notebook.set_current_page( cur_page )
