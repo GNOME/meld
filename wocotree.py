@@ -17,29 +17,19 @@
 __metaclass__ = type
 
 import gtk
+import fsmodel
+import os
 
-class Tree(gtk.GenericTreeModel):
-    def on_get_flags(self):
-        pass
-    def on_get_n_columns(self):
-        pass
-    def on_get_column_type(self, index):
-        pass
-    def on_get_iter(self, path):
-        pass
-    def on_get_path(self, rowref):
-        pass
-    def on_get_value(self, rowref, column):
-        pass
-    def on_iter_next(self, rowref):
-        pass
-    def on_iter_children(self, parent):
-        pass
-    def on_iter_has_child(self, rowref):
-        pass
-    def on_iter_n_children(self, rowref):
-        pass
-    def on_iter_nth_child(self, parent, n):
-        pass
-    def on_iter_parent(self, child):
-        pass
+class Tree(fsmodel.FileSystemTreeModel):
+    def __init__(self):
+        fsmodel.FileSystemTreeModel.__init__(self, type("") )
+
+    def on_get_value(self, it, column):
+        '''returns the value stored in a particular column for the iter'''
+        self.getters = [
+            lambda i : it.name(),
+            lambda i : it.dirname(),
+            lambda i : "%s" % os.stat(it.fullname())[0]
+        ]
+        return self.getters[column](it)
+

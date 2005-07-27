@@ -20,11 +20,11 @@ import gobject
 #import time
 #import copy
 import gtk
-#import os
+import os
 #import re
 
 #import misc
-import glade
+import gui
 import melddoc
 import paths
 import stock
@@ -32,12 +32,14 @@ import woco
 #iimport tree
 import wocotree
 
+COL_NAME, COL_LOCATION, COL_STATUS = range(3)
+
 ################################################################################
 #
 # WocoView
 #
 ################################################################################
-class WocoView(melddoc.MeldDoc, glade.Component):
+class WocoView(melddoc.MeldDoc, gui.Component):
 
     UI_DEFINITION = """
     <ui>
@@ -45,6 +47,22 @@ class WocoView(melddoc.MeldDoc, glade.Component):
         <menu action="file_menu">
           <placeholder name="file_extras">
             <menuitem action="close"/>
+          </placeholder>
+        </menu>
+        <menu action="view_menu">
+          <placeholder name="view_extras">
+          <menuitem action="view_up"/>
+          <menuitem action="view_down"/>
+          <separator/>
+          <menuitem action="flatten"/>
+          <separator/>
+          <menuitem action="view_modified"/>
+          <menuitem action="view_normal"/>
+          <menuitem action="view_unknown"/>
+          <menuitem action="view_ignored"/>
+          <separator/>
+          <menuitem action="view_console"/>
+          <separator/>
           </placeholder>
         </menu>
         <placeholder name="menu_extras">
@@ -56,19 +74,6 @@ class WocoView(melddoc.MeldDoc, glade.Component):
             <menuitem action="add"/>
             <menuitem action="remove"/>
             <menuitem action="delete"/>
-          </menu>
-          <menu action="view_menu">
-            <menuitem action="view_up"/>
-            <menuitem action="view_down"/>
-            <separator/>
-            <menuitem action="flatten"/>
-            <separator/>
-            <menuitem action="view_modified"/>
-            <menuitem action="view_normal"/>
-            <menuitem action="view_unknown"/>
-            <menuitem action="view_ignored"/>
-            <separator/>
-            <menuitem action="view_console"/>
           </menu>
         </placeholder>
       </menubar>
@@ -127,28 +132,15 @@ class WocoView(melddoc.MeldDoc, glade.Component):
                 _('_Console'), None, _('View command line output'), False),
     )
 
-    class DirectoryBrowser(glade.Component):
-        def __init__(self, parent):
-            glade.Component.__init__(self, paths.share_dir("glade2/wocoview.glade"), "dirchooserdialog")
-            self.parent = parent
-            self.toplevel.set_transient_for(self.parent.toplevel.get_toplevel())
-            self.connect_signal_handlers()
-        def on_toplevel__response(self, dialog, arg):
-            if arg == gtk.RESPONSE_OK:
-                self.parent.set_location( dialog.get_filename() )
-            self.toplevel.destroy()
-
-
     def __init__(self, prefs, uimanager):
         melddoc.MeldDoc.__init__(self, prefs)
-        glade.Component.__init__(self, paths.share_dir("glade2/wocoview.glade"), "wocoview")
+        gui.Component.__init__(self, paths.share_dir("glade2/wocoview.glade"), "wocoview")
 
         self.actiongroup = gtk.ActionGroup("WocoActions")
         self.add_actions( self.actiongroup, self.UI_ACTIONS )
-        uimanager.insert_action_group(self.actiongroup, 1)
-        self.ui_merge_id = uimanager.add_ui_from_string(self.UI_DEFINITION)
 
-        self.tempfiles = []
+        self.direntry = gui.DirEntry(self.combo_location, self.button_browsedir, "woco-location")
+
         self.model = wocotree.Tree()
         self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
@@ -158,61 +150,84 @@ class WocoView(melddoc.MeldDoc, glade.Component):
         rentext = gtk.CellRendererText()
         column.pack_start(renpix, expand=0)
         column.pack_start(rentext, expand=1)
-        column.set_attributes(renpix, pixbuf=self.model.column_index(tree.COL_ICON, 0))
-        column.set_attributes(rentext, markup=self.model.column_index(tree.COL_TEXT, 0))
+        #column.set_attributes(renpix, pixbuf=0)
+        column.set_attributes(rentext, markup=COL_NAME)
         self.treeview.append_column(column)
 
         def addCol(name, num):
             column = gtk.TreeViewColumn(name)
             rentext = gtk.CellRendererText()
-            column.pack_start(rentext, expand=0)
-            column.set_attributes(rentext, markup=self.model.column_index(num, 0))
+            column.pack_start(rentext, expand=1)
+            column.set_attributes(rentext, markup=num)
             self.treeview.append_column(column)
             return column
 
         self.treeview_column_location = addCol( _("Location"), COL_LOCATION)
+        self.treeview_column_location.set_visible( False )
         addCol(_("Status"), COL_STATUS)
-        addCol(_("Rev"), COL_REVISION)
-        addCol(_("Tag"), COL_TAG)
-        addCol(_("Options"), COL_OPTIONS)
+#        addCol(_("Rev"), COL_REVISION)
+#        addCol(_("Tag"), COL_TAG)
+#        addCol(_("Options"), COL_OPTIONS)
 
-        class ConsoleStream(object):
-            def __init__(this, textview):
-                this.textview = textview
-                b = textview.get_buffer()
-                this.mark = b.create_mark("END", b.get_end_iter(), 0)
-            def write(this, s):
-                if s:
-                    b = this.textview.get_buffer()
-                    b.insert(b.get_end_iter(), s)
-                    this.textview.scroll_mark_onscreen( this.mark )
-        self.consolestream = ConsoleStream(self.consoleview)
-        self.location = None
-        toolbuttons = [(uimanager.get_widget("/ToolBar/%s"%w),w) for w in
+#        class ConsoleStream(object):
+#            def __init__(this, textview):
+#                this.textview = textview
+#                b = textview.get_buffer()
+#                this.mark = b.create_mark("END", b.get_end_iter(), 0)
+#            def write(this, s):
+#                if s:
+#                    b = this.textview.get_buffer()
+#                    b.insert(b.get_end_iter(), s)
+#                    this.textview.scroll_mark_onscreen( this.mark )
+#        self.consolestream = ConsoleStream(self.consoleview)
+#        self.location = None
+#        self.action_view_console__toggled(self.action_view_console)
+#        self.connect_signal_handlers()
+        toolbuttons = [(getattr(self,"action_%s"%w),w) for w in
             "flatten view_modified view_normal view_unknown view_ignored".split() ]
-        self.treeview_column_location.set_visible( not self.action_flatten.get_active() )
-        self.action_view_console__toggled(self.action_view_console)
+        gui.tie_to_gconf("/apps/meld/state/woco", *toolbuttons)
         self.connect_signal_handlers()
-        glade.tie_to_gconf("/apps/meld/state/woco", *toolbuttons)
 
+    def refresh(self):
+        pass
+
+    def set_location(self, location):
+        self.direntry.set_path( os.path.abspath(location) )
+        self.model.add_filesystem(location)
+        self.treeview.set_model(self.model)
+        self.recompute_label()
+
+    def recompute_label(self):
+        where = os.path.basename( self.direntry.get_path() )
+        self.emit("label-changed", where)
+
+        #
+        # melddoc methods
+        #
+    def on_container_quit_event(self):
+        #cleanup temp files
+        pass
+
+        #
+        # File actions
+        #
     def action_close__activate(self, object):
         self.emit("closed")
 
+        #
+        # Version actions
+        #
     def action_diff__activate(self, object):
         files = self._get_selected_files()
         if len(files):
             self.run_cvs_diff(files, empty_patch_ok=1)
 
-    def action_flatten__toggled(self, button):
-        self.treeview_column_location.set_visible( not self.action_flatten.get_active() )
-        self.refresh()
+    def action_update__activate(self, object):
+        self._command_on_selected( self.prefs.get_cvs_command("update") )
 
     def action_commit__activate(self, object):
         dialog = CommitDialog( self )
         dialog.run()
-
-    def action_update__activate(self, object):
-        self._command_on_selected( self.prefs.get_cvs_command("update") )
 
     def action_add__activate(self, object):
         self._command_on_selected(self.prefs.get_cvs_command("add") )
@@ -236,6 +251,35 @@ class WocoView(melddoc.MeldDoc, glade.Component):
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
 
+        #
+        # View actions
+        #
+    def action_view_go(self, direction):
+        start_iter = self.model.get_iter( (self._get_selected_treepaths() or [(0,)])[-1] )
+        def goto_iter(it):
+            curpath = self.model.get_path(it)
+            for i in range(len(curpath)-1):
+                self.treeview.expand_row( curpath[:i+1], 0)
+            self.treeview.set_cursor(curpath)
+        search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction,
+            self.model.inorder_search_down)
+        for it in search( start_iter ):
+            state = int(self.model.get_state( it, 0))
+            if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
+                goto_iter(it)
+                return
+
+    def action_view_up__activate(self, *args):
+        self.action_view_go(gtk.gdk.SCROLL_UP)
+
+    def action_view_down__activate(self, *args):
+        self.action_view_go(gtk.gdk.SCROLL_DOWN)
+
+    def action_flatten__toggled(self, button):
+        self.treeview_column_location.set_visible(
+            self.action_flatten.get_active() )
+        self.refresh()
+
     def action_view_modified__toggled(self,*args):
         self.refresh()
 
@@ -248,35 +292,25 @@ class WocoView(melddoc.MeldDoc, glade.Component):
     def action_view_ignored__toggled(self,*args):
         self.refresh()
 
-    def action_view_up__activate(self):
-        self.action_view_go(gtk.gdk.SCROLL_UP)
-
-    def action_view_down__activate(self):
-        self.action_view_go(gtk.gdk.SCROLL_DOWN)
-
-    def action_view_go__activate(self, direction):
-        start_iter = self.model.get_iter( (self._get_selected_treepaths() or [(0,)])[-1] )
-        def goto_iter(it):
-            curpath = self.model.get_path(it)
-            for i in range(len(curpath)-1):
-                self.treeview.expand_row( curpath[:i+1], 0)
-            self.treeview.set_cursor(curpath)
-        search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
-        for it in search( start_iter ):
-            state = int(self.model.get_state( it, 0))
-            if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
-                goto_iter(it)
-                return
-
     def action_view_console__toggled(self, toggle):
+        self.prefs.cvs_console_visible = toggle.get_active()
         if toggle.get_active():
-            self.prefs.cvs_console_visible = 1
             self.console_hbox.show()
             self.console_show_box.hide()
         else:
-            self.prefs.cvs_console_visible = 0
             self.console_hbox.hide()
             self.console_show_box.show()
 
+        #
+        # Signal handlers
+        #
+    def on_console_hide_box__button_press_event(self, *args):
+        self.action_view_console.set_active(False)
 
+    def on_console_show_box__button_press_event(self, *args):
+        self.action_view_console.set_active(True)
+
+    def on_direntry__activate(self, *args):
+        self.set_location(self.direntry.get_path())
+        
 gobject.type_register(WocoView)
