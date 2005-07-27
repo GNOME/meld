@@ -100,7 +100,7 @@
 	  <child>
 	    <widget class="GtkHBox" id="console_hbox">
 	      <property name="height_request">70</property>
-	      <property name="visible">True</property>
+	      <property name="visible">False</property>
 	      <property name="homogeneous">False</property>
 	      <property name="spacing">0</property>
 
@@ -182,6 +182,7 @@
 
       <child>
 	<widget class="GtkEventBox" id="console_show_box">
+	  <property name="visible">True</property>
 	  <property name="visible_window">True</property>
 	  <property name="above_child">False</property>
 
@@ -608,7 +609,7 @@
 			      <property name="max_length">0</property>
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
-			      <property name="invisible_char" translatable="yes">*</property>
+			      <property name="invisible_char">*</property>
 			      <property name="activates_default">False</property>
 			    </widget>
 			  </child>
@@ -821,7 +822,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 		      </child>
@@ -910,73 +911,6 @@
 	  <property name="padding">5</property>
 	  <property name="expand">True</property>
 	  <property name="fill">True</property>
-	</packing>
-      </child>
-    </widget>
-  </child>
-</widget>
-
-<widget class="GtkFileChooserDialog" id="dirchooserdialog">
-  <property name="visible">True</property>
-  <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
-  <property name="local_only">True</property>
-  <property name="select_multiple">False</property>
-  <property name="show_hidden">False</property>
-  <property name="title" translatable="yes">Choose Directory - Meld</property>
-  <property name="type">GTK_WINDOW_TOPLEVEL</property>
-  <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-  <property name="modal">False</property>
-  <property name="resizable">True</property>
-  <property name="destroy_with_parent">False</property>
-  <property name="decorated">True</property>
-  <property name="skip_taskbar_hint">False</property>
-  <property name="skip_pager_hint">False</property>
-  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
-
-  <child internal-child="vbox">
-    <widget class="GtkVBox" id="dialog-vbox3">
-      <property name="visible">True</property>
-      <property name="homogeneous">False</property>
-      <property name="spacing">24</property>
-
-      <child internal-child="action_area">
-	<widget class="GtkHButtonBox" id="dialog-action_area3">
-	  <property name="visible">True</property>
-	  <property name="layout_style">GTK_BUTTONBOX_END</property>
-
-	  <child>
-	    <widget class="GtkButton" id="button2">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="focus_on_click">True</property>
-	      <property name="response_id">-6</property>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="button3">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="has_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-open</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="focus_on_click">True</property>
-	      <property name="response_id">-5</property>
-	    </widget>
-	  </child>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">True</property>
-	  <property name="pack_type">GTK_PACK_END</property>
 	</packing>
       </child>
     </widget>
