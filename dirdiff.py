@@ -24,12 +24,12 @@ import time
 import gobject
 import gtk
 
-import glade
+import gui
 import melddoc
 import misc
 import paths
 
-class DirDiff(melddoc.MeldDoc, glade.Component):
+class DirDiff(melddoc.MeldDoc, gui.Component):
     """Two or three way diff of directories.
     """
 
@@ -90,7 +90,7 @@ class DirDiff(melddoc.MeldDoc, glade.Component):
 
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs.dirdiff)
-        glade.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
+        gui.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
         self.map_widgets_into_lists( """scrolledwindow treeview diffmap linkmap pane
             fileentryhbox filecombo""".split() )
         self.actiongroup = gtk.ActionGroup("DirdiffActions")
@@ -539,17 +539,12 @@ class DirDiff(melddoc.MeldDoc, glade.Component):
 #            else:
 #                self.emit("status-changed", "%s : %s" % (rwx(stat.st_mode), nice(time.time() - stat.st_mtime) ) )
 #
-    def on_container_switch_event(self, uimanager):
-        self.ui_merge_id = uimanager.add_ui_from_string( self.UI_DEFINITION )
-        uimanager.insert_action_group( self.actiongroup, -1 )
+    def on_container_switch_in_event(self, uimanager):
+        pass
 #        if self.treeview_focussed:
 #            self.scheduler.add_task( self.treeview_focussed.grab_focus )
 #            self.scheduler.add_task( self.on_treeview_cursor_changed )
 #
-    def on_container_switch_out_event(self, uimanager):
-        uimanager.remove_ui( self.ui_merge_id )
-        uimanager.remove_action_group( self.actiongroup )
-        uimanager.ensure_update()
 
 #    def on_treeview_key_press_event(self, view, event):
 #        pane = self.treeview.index(view)
@@ -988,7 +983,7 @@ gobject.type_register(DirDiff)
 #join = os.path.join
 #
 ##COL_EMBLEM = tree.COL_END + 1
-##pixbuf_newer = glade.load_pixbuf( paths.share_dir("glade2/pixmaps/tree-file-newer.png"), 14)
+##pixbuf_newer = gui.load_pixbuf( paths.share_dir("glade2/pixmaps/tree-file-newer.png"), 14)
 ##TYPE_PIXBUF = type(pixbuf_newer)
 #
 #################################################################################
@@ -1048,10 +1043,10 @@ gobject.type_register(DirDiff)
 ## DirDiffMenu
 ##
 #################################################################################
-#class DirDiffMenu(glade.Component):
+#class DirDiffMenu(gui.Component):
 #    def __init__(self, app):
 #        gladefile = paths.share_dir("glade2/dirdiff.glade")
-#        glade.Component.__init__(self, gladefile, "popup")
+#        gui.Component.__init__(self, gladefile, "popup")
 #        self.parent = app
 #    def popup_in_pane( self, pane ):
 #        self.copy_left.set_sensitive( pane > 0 )

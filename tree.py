@@ -17,7 +17,7 @@
 import os
 import gtk
 import misc
-import glade
+import gui
 import paths
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
@@ -31,7 +31,7 @@ STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
 STATE_MISSING, STATE_MAX = range(12)
 
-load = lambda x,s=14: glade.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
+load = lambda x,s=14: gui.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
 pixbuf_folder = load("tree-folder-normal.png", 20)
 pixbuf_folder_new = load("tree-folder-new.png", 20)
 pixbuf_folder_changed = load("tree-folder-changed.png", 20)
@@ -39,7 +39,7 @@ pixbuf_file = load("tree-file-normal.png")
 pixbuf_file_new = load("tree-file-new.png")
 pixbuf_file_changed = load("tree-file-changed.png")
 
-class DiffTreeStore(gtk.TreeStore):
+class OldDiffTreeStore(gtk.TreeStore):
     def __init__(self, ntree = 3):
         types = [type("")] * COL_END * ntree
         types[COL_ICON*ntree:COL_ICON*ntree+ntree] = [type(pixbuf_file)] * ntree
@@ -53,7 +53,7 @@ class DiffTreeStore(gtk.TreeStore):
             '<span foreground="#888888">%s</span>', # STATE_NONE
             '<span foreground="black">%s</span>', # STATE_NORMAL
             '<span foreground="black" style="italic">%s</span>', # STATE_NOCHANGE
-            '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR 
+            '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR
             '<span foreground="#999999" style="italic">%s</span>', # STATE_EMPTY
             '<span foreground="#008800" weight="bold">%s</span>', # STATE_NEW
             '<span foreground="#880000" weight="bold">%s</span>', # STATE_MODIFIED
@@ -86,7 +86,7 @@ class DiffTreeStore(gtk.TreeStore):
     def add_empty(self, parent, text="empty folder"):
         child = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(child, self.column_index(COL_STATE,i), STATE_EMPTY) 
+            self.set_value(child, self.column_index(COL_STATE,i), STATE_EMPTY)
             self.set_value(child, self.column_index(COL_PATH,i), self.pixstyle[STATE_EMPTY])
             self.set_value(child, self.column_index(COL_TEXT,i), self.textstyle[STATE_EMPTY] % misc.escape(text) )
         return child
@@ -94,10 +94,10 @@ class DiffTreeStore(gtk.TreeStore):
     def add_error(self, parent, msg, pane):
         err = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR) 
+            self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR)
         self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
         self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % misc.escape(msg) )
-        
+
     def value_paths(self, iter):
         return [ self.value_path(iter, i) for i in range(self.ntree) ]
     def value_path(self, iter, pane):

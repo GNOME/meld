@@ -29,7 +29,6 @@ import pango
 
 import diffutil
 import fileprint
-import glade
 import melddoc
 import misc
 import paths
@@ -38,8 +37,9 @@ import stock
 import undo
 import undoaction
 import gconf
+import gui
 
-class FileDiff(melddoc.MeldDoc, glade.Component):
+class FileDiff(melddoc.MeldDoc, gui.Component):
     """Two or three way diff of text files.
     """
 
@@ -63,8 +63,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="close"/>
           </placeholder>
         </menu>
-        <placeholder name="edit_menu">
-          <menu action="edit_menu">
+        <menu action="edit_menu">
+          <placeholder name="edit_extras">
             <menuitem action="undo"/>
             <menuitem action="redo"/>
             <separator/>
@@ -76,8 +76,8 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             <menuitem action="copy"/>
             <menuitem action="paste"/>
             <separator/>
-          </menu>
-        </placeholder>
+          </placeholder>
+        </menu>
         <menu action="view_menu">
           <placeholder name="view_extras">
             <menuitem action="one_pane"/>
@@ -175,12 +175,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             self.__filename = absname
         filename = property(lambda x : x.__filename, set_filename)
 
-    class ContextMenu(glade.Component):
+    class ContextMenu(gui.Component):
         def __init__(self, parent):
             self.parent = parent
             self.pane = -1
             gladefile = paths.share_dir("glade2/filediff.glade")
-            glade.Component.__init__(self, gladefile, "popup")
+            gui.Component.__init__(self, gladefile, "popup")
             self.connect_signal_handlers()
         def popup_in_pane( self, pane ):
             self.pane = pane
@@ -219,9 +219,9 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         override = {}
         override["GtkTextView"] = sourceview.SourceView
         override["GtkTextBuffer"] = sourceview.SourceBuffer
-        glade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
+        gui.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
         self.map_widgets_into_lists( "textview filecombo openbutton diffmap pane scrolledwindow linkmap statusbutton fileentryhbox".split() )
-        self.fileentry = [ glade.FileEntry(c,b) for c,b in zip(self.filecombo, self.openbutton) ]
+        self.fileentry = [ gui.FileEntry(c,b) for c,b in zip(self.filecombo, self.openbutton) ]
         # text views and buffers
         self.textbuffer = [ sourceview.SourceBuffer() for i in range(3) ]
         self.bufferextra = [ self.BufferExtra() for i in range(3) ]
@@ -317,7 +317,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
     def on_container_delete_event(self, app_quit=0):
         modified = [b.get_modified() for b in self.textbuffer]
         if 1 in modified:
-            dialog = glade.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
+            dialog = gui.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
             dialog.toplevel.set_transient_for(self.toplevel.get_toplevel())
             buttons = []
             for i in range(self.num_panes):
@@ -345,16 +345,10 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 return gtk.RESPONSE_CANCEL
         return gtk.RESPONSE_OK
 
-    def on_container_switch_event(self, uimanager):
-        self.ui_merge_id = uimanager.add_ui_from_string( self.UI_DEFINITION )
-        uimanager.insert_action_group( self.actiongroup, -1 )
+    def on_container_switch_in_event(self, uimanager):
+        melddoc.MeldDoc.on_container_switch_in_event(self, uimanager)
         if self.textview_focussed:
             self.scheduler.add_task( self.textview_focussed.grab_focus )
-
-    def on_container_switch_out_event(self, uimanager):
-        uimanager.remove_ui( self.ui_merge_id )
-        uimanager.remove_action_group( self.actiongroup )
-        uimanager.ensure_update()
 
     def _after_text_modified(self, buffer, startline, sizechange):
         if 0 and self.num_panes > 1:
@@ -405,7 +399,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
             self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
-        load = lambda x: glade.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line-5)
+        load = lambda x: gui.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line-5)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
         self.pixbuf_delete = load("button_delete.xpm")
@@ -560,7 +554,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 b = self.textbuffer[i]
                 b.delete( b.get_start_iter(), b.get_end_iter() )
                 absfile = os.path.abspath(f)
-                self.fileentry[i].set_filename(absfile)
+                self.fileentry[i].set_path(absfile)
                 self.bufferextra[i] = self.BufferExtra(absfile)
         self.recompute_label()
         self.scheduler.add_task( self._set_files_internal(files).next )
@@ -587,7 +581,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     tasks.append(task)
                 except (IOError, LookupError), e:
                     buffers[i].set_text("\n")
-                    glade.run_dialog(
+                    gui.run_dialog(
                         _("Could not open '%s' for reading.\n\nThe error was:\n%s") % (f, str(e)),
                         parent = self.toplevel.get_toplevel())
             else:
@@ -606,12 +600,12 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     else:
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
-                        glade.run_dialog(
+                        gui.run_dialog(
                             _("Could not read from '%s'.\n\nI tried encodings %s.")
                             % (t.filename, try_codecs), parent = self.toplevel.get_toplevel())
                         tasks.remove(t)
                 except IOError, ioerr:
-                    glade.run_dialog(
+                    gui.run_dialog(
                         _("Could not read from '%s'.\n\nThe error was:\n%s")
                         % (t.filename, str(ioerr)), parent = self.toplevel.get_toplevel())
                     tasks.remove(t)
@@ -797,14 +791,14 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                 filename = fchooser.get_filename()
                 fchooser.destroy()
                 if os.path.exists(filename):
-                    response = glade.run_dialog(
+                    response = gui.run_dialog(
                         _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
                         parent = self.toplevel.get_toplevel(),
                         buttonstype = gtk.BUTTONS_YES_NO)
                     if response == gtk.RESPONSE_NO:
                         return melddoc.RESULT_ERROR
                 bufdata.filename = os.path.abspath(filename)
-                self.fileentry[pane].set_filename( bufdata.filename )
+                self.fileentry[pane].set_path( bufdata.filename )
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if bufdata.newlines:
             if type(bufdata.newlines) == type(""):
@@ -812,7 +806,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
                     text = text.replace("\n", bufdata.newlines)
             elif type(bufdata.newlines) == type(()):
                 buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
-                newline = glade.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
+                newline = gui.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
                     self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_CANCEL,
                     extrabuttons=[ buttons[b] for b in bufdata.newlines ] )
                 if newline < 0:
@@ -828,7 +822,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         try:
             open(bufdata.filename, "w").write(text)
         except IOError, e:
-            glade.run_dialog(
+            gui.run_dialog(
                 maintext = _("Error writing to %s\n\n%s.") % (bufdata.filename, e),
                 parent = self.toplevel.get_toplevel(),
                 messagetype = gtk.MESSAGE_ERROR,
@@ -844,7 +838,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
 
     def on_fileentry__activate(self, entry):
         if self.on_container_delete_event() == gtk.RESPONSE_OK:
-            files = [ e.get_filename() for e in self.fileentry[:self.num_panes] ]
+            files = [ e.get_path() for e in self.fileentry[:self.num_panes] ]
             self.set_files(files)
         return 1
 
@@ -873,7 +867,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         modified = [b.filename for b in self.bufferextra if b.modified]
         if len(modified):
             message = _("Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
-            response = glade.run_dialog( message, parent=self.toplevel.get_toplevel(), messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
+            response = gui.run_dialog( message, parent=self.toplevel.get_toplevel(), messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
             if response != gtk.RESPONSE_OK:
                 return
         files = [b.filename for b in self.bufferextra[:self.num_panes] ]
@@ -1520,7 +1514,7 @@ class FileDiff(melddoc.MeldDoc, glade.Component):
         buf.delete_mark(orig_cursor)
         buf.delete_mark(end_search)
         if not done_something:
-            glade.run_dialog(
+            gui.run_dialog(
                 _("'%s' was not found.") % state.tofind,
                 self.toplevel.get_toplevel(),
                 messagetype=gtk.MESSAGE_INFO)

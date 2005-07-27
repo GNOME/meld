@@ -22,7 +22,6 @@ __metaclass__ = type
 
 import gconf
 import gettext
-import glade
 import glob
 import gobject
 import gtk
@@ -275,19 +274,19 @@ class BaseEntry(gobject.GObject):
         # history
         self.gconf = gconf.client_get_default()
         self.history_id = history_id or comboentry.get_name()
-        self.set_filename(None)
+        self.set_path(None)
         # completion
         self.completion = gtk.EntryCompletion()
         self.completion.set_model(gtk.ListStore(gobject.TYPE_STRING))
         self.completion.set_text_column(0)
         self.entry.set_completion(self.completion)
-        glade.connect_signal_handlers(self)
+        connect_signal_handlers(self)
 
     def on_button__clicked(self, button):
         buttons = gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK
         dialog = gtk.FileChooserDialog(parent=button.get_toplevel(), action=self.FILE_CHOOSER_ACTION, buttons=buttons)
         if dialog.run() == gtk.RESPONSE_OK:
-            self.set_filename(dialog.get_filename())
+            self.set_path(dialog.get_filename())
             self.entry.emit("activate")
         dialog.destroy()
 
@@ -295,7 +294,7 @@ class BaseEntry(gobject.GObject):
         model = entry.get_completion().get_model()
         model.clear()
         def add_slash(p):
-            if os.path.isdir(p) and p != "/":
+            if os.path.isdir(p) and not p.endswith("/"):
                 return p + "/"
             return p
         loc = add_slash(entry.get_text())
@@ -304,13 +303,13 @@ class BaseEntry(gobject.GObject):
             model.append( [m] )
 
     def on_entry__activate(self, entry):
-        self.set_filename(entry.get_text())
+        self.set_path(entry.get_text())
         self.emit("activate")
 
-    def get_filename(self):
+    def get_path(self):
         return self.entry.get_text()
 
-    def set_filename(self, name):
+    def set_path(self, name):
         history = self.gconf.get_list("%s/%s" % (self.ROOT_KEY, self.history_id), gconf.VALUE_STRING )
         try:
             history.remove(name)
@@ -465,6 +464,13 @@ def tie_to_gconf(rootkey, *widgets):
             value = conf.get_string(key)
             widget.set_font_name(value)
             widget.connect("font-set", lambda b,k=key : conf.set_string(k, b.get_font_name()) )
+        elif isinstance( widget, gtk.RadioAction ):
+            print "Fixme connect to gconf for", widget, type(widget)
+            raise ""
+        elif isinstance( widget, gtk.ToggleAction ):
+            value = conf.get_bool(key)
+            widget.set_active(value)
+            widget.connect("toggled", lambda b,k=key : conf.set_bool(k, b.get_active()) )
         else:
             print "Fixme connect to gconf for", widget, type(widget)
             raise ""

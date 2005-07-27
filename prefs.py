@@ -22,7 +22,7 @@ import gconf
 import gtk
 import paths
 import misc
-import glade
+import gui
 
 __metaclass__ = type
 
@@ -153,9 +153,9 @@ class Preferences:
 
 
 
-class ListWidget(glade.Component):
+class ListWidget(gui.Component):
     def __init__(self, columns, prefs, key):
-        glade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "listwidget")
+        gui.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "listwidget")
         self.prefs = prefs
         self.key = key
         self.treeview.set_model( gtk.ListStore( *[c[1] for c in columns] ) )
@@ -252,10 +252,10 @@ class ListWidget(glade.Component):
    
 
 
-class PreferencesDialog(glade.Component):
+class PreferencesDialog(gui.Component):
 
     def __init__(self, parentapp):
-        glade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "preferencesdialog")
+        gui.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "preferencesdialog")
         self.toplevel.set_transient_for(parentapp.toplevel)
         self.notebook.set_show_tabs(0)
         # tab selector
@@ -272,7 +272,7 @@ class PreferencesDialog(glade.Component):
                 self.model.append( (label,) )
         self.prefs = parentapp.prefs
         # filediff
-        glade.tie_to_gconf("/apps/meld/filediff", self.custom_font_enabled, self.custom_font,
+        gui.tie_to_gconf("/apps/meld/filediff", self.custom_font_enabled, self.custom_font,
             self.tab_size, self.wrap_lines, self.supply_newline,
             self.line_numbers, self.syntax_highlighting, self.editor_internal,
             self.editor_custom, self.text_codecs,
@@ -281,7 +281,7 @@ class PreferencesDialog(glade.Component):
         # editor
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
         # display
-        glade.tie_to_gconf("/apps/meld/common", self.custom_toolbar_enabled, self.custom_toolbar)
+        gui.tie_to_gconf("/apps/meld/common", self.custom_toolbar_enabled, self.custom_toolbar)
         # file filters
         cols = [ ("Name", type("")), ("Active", type(0)), ("Pattern", type("")) ]
         self.filefilter = ListWidget( cols, self.prefs.dirdiff, "filters")
@@ -291,7 +291,7 @@ class PreferencesDialog(glade.Component):
         self.textfilter = ListWidget( cols, self.prefs.common, "regexes")
         self.text_filters_box.pack_start(self.textfilter.toplevel)
         # cvs
-        glade.tie_to_gconf("/apps/meld/cvs", self.cvs_compression_enabled, self.cvs_compression,
+        gui.tie_to_gconf("/apps/meld/cvs", self.cvs_compression_enabled, self.cvs_compression,
             self.cvs_create_missing, self.cvs_executable, self.cvs_ignore_cvsrc,
             self.cvs_prune_empty, self.cvs_quiet )
         # finally connect handlers

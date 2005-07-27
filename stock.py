@@ -27,7 +27,7 @@ __stock_items = (
     "filediff3",
     "dirdiff2",
     "dirdiff3",
-    "woco-icon",
+    "woco",
     "tab-close",
 
     # version
