@@ -19,6 +19,7 @@
 #
 # i18n support
 #
+import program
 import sys
 sys.path += [ #LIBDIR#
 ]
@@ -28,11 +29,11 @@ import locale
 
 try:
     locale.setlocale(locale.LC_ALL, '')
-    gettext.bindtextdomain("meld", paths.locale_dir() )
-    gettext.textdomain("meld")
-    gettext.install("meld", paths.locale_dir(), unicode=1)
+    gettext.bindtextdomain(program.name, paths.locale_dir() )
+    gettext.textdomain(program.name)
+    gettext.install(program.name, paths.locale_dir(), unicode=1)
 except (IOError,locale.Error), e:
-    print "(meld): WARNING **: %s" % e
+    print "(%s): WARNING **: %s" % (program.name, e)
     __builtins__.__dict__["_"] = lambda x : x
 
 #
@@ -46,7 +47,8 @@ def ver2str(ver):
     return ".".join(map(str,ver))
 
 if sys.version_info[:2] < pyver:
-    print _("Meld requires python%s or higher.") % ver2str(pyver)
+    print _("%(program_name)s requires %(package)s %(version)s or higher.") % \
+        {"program_name":program.name, "package":"python", "version":ver2str(pyver)}
     sys.exit(1)
 
 #
@@ -64,23 +66,17 @@ else:
 #
 import gtk
 if gtk.pygtk_version < pygtkver:
-    print _("Meld requires pygtk-%s or higher. (found %s)") % (
-        ver2str(pygtkver), ver2str(gtk.pygtk_version))
+    print _("%(program_name)s requires %(package)s %(version)s or higher.") % \
+        {"program_name":program.name, "package":"pygtk", "version":ver2str(pyver)}
     sys.exit(1)
 
 
 #
 # main
 #
-import meldapp
 def main():
-    try:
-        minusp = sys.argv.index("--profile")
-        del sys.argv[minusp]
-        import profile
-        profile.run("meldapp.main()")
-    except ValueError:
-        meldapp.main()
+    import main
+    main.main()
     sys.exit(0)
 
 if __name__=="__main__":
