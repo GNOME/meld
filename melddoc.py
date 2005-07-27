@@ -83,10 +83,14 @@ class MeldDoc(gobject.GObject):
     def on_container_switch_in_event(self, uimanager):
         """Called when the container app switches to this tab.
         """
-        pass
+        self.ui_merge_id = uimanager.add_ui_from_string( self.UI_DEFINITION )
+        uimanager.insert_action_group( self.actiongroup, -1 )
 
     def on_container_switch_out_event(self, uimanager):
         """Called when the container app switches to this tab.
         """
-        pass
+        uimanager.remove_ui( self.ui_merge_id )
+        uimanager.remove_action_group( self.actiongroup )
+        uimanager.ensure_update()
+
 gobject.type_register(MeldDoc)
