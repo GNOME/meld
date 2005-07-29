@@ -8,25 +8,33 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-23 19:50-0400\n"
-"PO-Revision-Date: 2005-06-23 16:51-0400\n"
+"POT-Creation-Date: 2005-07-29 00:10-0400\n"
+"PO-Revision-Date: 2005-07-29 16:51-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: data/meld.desktop.in.h:1
+msgid "Compare and merge your files."
+msgstr "Compare and merge your files."
+
+#: data/meld.desktop.in.h:2
+msgid "Meld Diff Viewer"
+msgstr "Meld Diff Viewer"
+
 #. action_name, stock_icon, label, accelerator, tooltip,
-#: dirdiff.py:76 filediff.py:123 meldapp.py:91 wocoview.py:94
+#: dirdiff.py:76 filediff.py:123 main.py:91 wocoview.py:99
 msgid "_File"
 msgstr "_File"
 
-#: dirdiff.py:78 filediff.py:148 wocoview.py:99 glade2/meldapp.glade.h:53
-#: glade2/wocoview.glade.h:16
+#: dirdiff.py:78 filediff.py:148 glade2/meldapp.glade.h:53
+#: glade2/wocoview.glade.h:14 wocoview.py:104
 msgid "_Diff"
 msgstr "_Diff"
 
-#: dirdiff.py:82 filediff.py:142 meldapp.py:103 wocoview.py:111
+#: dirdiff.py:82 filediff.py:142 main.py:103 wocoview.py:116
 msgid "_View"
 msgstr "_View"
 
@@ -82,15 +90,15 @@ msgstr "_Print..."
 msgid "Print this comparison"
 msgstr "Print this comparison"
 
-#: filediff.py:132 wocoview.py:96
+#: filediff.py:132 wocoview.py:101
 msgid "_Close"
 msgstr "_Close"
 
-#: filediff.py:132 wocoview.py:96
+#: filediff.py:132 wocoview.py:101
 msgid "Close this tab"
 msgstr "Close this tab"
 
-#: filediff.py:133 glade2/wocoview.glade.h:17
+#: filediff.py:133 glade2/wocoview.glade.h:15 main.py:100
 msgid "_Edit"
 msgstr "_Edit"
 
@@ -196,17 +204,17 @@ msgstr "Insert,Overwrite"
 msgid "Line %i, Column %i"
 msgstr "Line %i, Column %i"
 
-#: filediff.py:569
+#: filediff.py:563
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Set num panes"
 
-#: filediff.py:574
+#: filediff.py:568
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Opening files"
 
-#: filediff.py:591
+#: filediff.py:585
 #, python-format
 msgid ""
 "Could not open '%s' for reading.\n"
@@ -219,12 +227,12 @@ msgstr ""
 "The error was:\n"
 "%s"
 
-#: filediff.py:595
+#: filediff.py:589
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Reading files"
 
-#: filediff.py:610
+#: filediff.py:604
 #, python-format
 msgid ""
 "Could not read from '%s'.\n"
@@ -235,7 +243,7 @@ msgstr ""
 "\n"
 "I tried encodings %s."
 
-#: filediff.py:615
+#: filediff.py:609
 #, python-format
 msgid ""
 "Could not read from '%s'.\n"
@@ -248,17 +256,17 @@ msgstr ""
 "The error was:\n"
 "%s"
 
-#: filediff.py:634
+#: filediff.py:628
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Computing differences"
 
-#: filediff.py:788
+#: filediff.py:782
 #, python-format
 msgid "Save buffer %i as."
 msgstr "Save buffer %i as."
 
-#: filediff.py:801
+#: filediff.py:795
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -267,7 +275,7 @@ msgstr ""
 "\"%s\" exists!\n"
 "Overwrite?"
 
-#: filediff.py:815
+#: filediff.py:809
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -278,7 +286,7 @@ msgstr ""
 "\n"
 "Which format would you like to use?"
 
-#: filediff.py:832
+#: filediff.py:826
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -289,7 +297,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: filediff.py:875
+#: filediff.py:869
 #, python-format
 msgid ""
 "Refreshing will discard changes in:\n"
@@ -302,17 +310,17 @@ msgstr ""
 "\n"
 "You cannot undo this operation."
 
-#: filediff.py:1424
+#: filediff.py:1418
 #, python-format
 msgid "%s"
 msgstr "%s"
 
-#: filediff.py:1425
+#: filediff.py:1419
 #, python-format
 msgid "Regex Error: %s"
 msgstr "Regex Error: %s"
 
-#: filediff.py:1524
+#: filediff.py:1518
 #, python-format
 msgid "'%s' was not found."
 msgstr "'%s' was not found."
@@ -325,371 +333,6 @@ msgstr "Print... %s"
 #: fileprint.py:214
 msgid "Print Preview"
 msgstr "Print Preview"
-
-#: meld:49
-#, c-format
-msgid "Meld requires python%s or higher."
-msgstr "Meld requires python%s or higher."
-
-#: meld:67
-#, c-format
-msgid "Meld requires pygtk-%s or higher. (found %s)"
-msgstr "Meld requires pygtk-%s or higher. (found %s)"
-
-#: meldapp.py:92
-msgid "_New"
-msgstr "_New"
-
-#: meldapp.py:93 meldapp.py:94
-msgid "File Comparision"
-msgstr "File Comparision"
-
-#: meldapp.py:95 meldapp.py:96
-msgid "Folder Comparision"
-msgstr "Folder Comparision"
-
-#: meldapp.py:97
-msgid "Working Copy Browser"
-msgstr "Working Copy Browser"
-
-#: meldapp.py:100
-msgid "_Settings"
-msgstr "_Settings"
-
-#: meldapp.py:104
-msgid "Show Toolbar"
-msgstr "Show Toolbar"
-
-#: meldapp.py:105
-msgid "Show Statusbar"
-msgstr "Show Statusbar"
-
-#: meldapp.py:107
-msgid "_Help"
-msgstr "_Help"
-
-#: meldapp.py:109
-msgid "_Report Bug"
-msgstr "_Report Bug"
-
-#: meldapp.py:344
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "Cannot compare a mixture of files and directories.\n"
-
-#: meldapp.py:347
-msgid "folder"
-msgstr "folder"
-
-#: meldapp.py:348
-msgid "file"
-msgstr "file"
-
-#: meldapp.py:349
-msgid "nonexistant"
-msgstr "nonexistent"
-
-#: meldapp.py:376
-msgid "Run meld --help for help"
-msgstr "Run meld --help for help"
-
-#. ###############################################################################
-#.
-#. usage
-#.
-#. ###############################################################################
-#: meldapp.py:442
-msgid ""
-"Meld is a file and directory comparison tool. Usage:\n"
-"\n"
-"    meld                        Start with no windows open\n"
-"    meld <dir>                  Start with CVS browser in 'dir'\n"
-"    meld <file>                 Start with CVS diff of 'file'\n"
-"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
-"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
-"\n"
-"Options:\n"
-"    -h, --help                  Show this help text and exit\n"
-"    -v, --version               Display the version and exit\n"
-"\n"
-"For more information choose help -> contents.\n"
-"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
-msgstr ""
-"Meld is a file and directory comparison tool. Usage:\n"
-"\n"
-"    meld                        Start with no windows open\n"
-"    meld <dir>                  Start with CVS browser in 'dir'\n"
-"    meld <file>                 Start with CVS diff of 'file'\n"
-"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
-"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
-"\n"
-"Options:\n"
-"    -h, --help                  Show this help text and exit\n"
-"    -v, --version               Display the version and exit\n"
-"\n"
-"For more information choose help -> contents.\n"
-"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
-
-#: meldapp.py:459
-#, python-format
-msgid ""
-"Meld %s\n"
-"Written by Stephen Kennedy <stevek@gnome.org>"
-msgstr ""
-"Meld %s\n"
-"Written by Stephen Kennedy <stevek@gnome.org>"
-
-#: meldapp.py:480
-msgid "Usage: meld [options] [arguments]"
-msgstr "Usage: meld [options] [arguments]"
-
-#: meldapp.py:481
-msgid "Use label instead of filename. This option may be used several times."
-msgstr "Use label instead of filename. This option may be used several times."
-
-#: meldapp.py:482
-msgid "Save snapshot to file,x,y,w,h"
-msgstr "Save snapshot to file,x,y,w,h"
-
-#: meldapp.py:483
-msgid "Use an existing instance"
-msgstr "Use an existing instance"
-
-#: meldapp.py:484
-msgid "Ignored for compatibility"
-msgstr "Ignored for compatibility"
-
-#: meldapp.py:494
-#, python-format
-msgid "Connection to existing app failed: %s"
-msgstr "Connection to existing app failed: %s"
-
-#: meldapp.py:530
-#, python-format
-msgid "Wrong number of arguments (Got %i)"
-msgstr "Wrong number of arguments (Got %i)"
-
-#: melddoc.py:41
-msgid "untitled"
-msgstr "untitled"
-
-#. no common path. empty names get changed to "[None]"
-#: misc.py:105
-msgid "[None]"
-msgstr "[None]"
-
-#: prefsui.py:215
-msgid "Line numbers are only available if you have pygtksourceview installed."
-msgstr "Line numbers are only available if you have pygtksourceview installed."
-
-#: prefsui.py:219
-msgid ""
-"Syntax highlighting is only available if you have pygtksourceview installed."
-msgstr ""
-"Syntax highlighting is only available if you have pygtksourceview installed."
-
-#: svnview.py:40
-msgid ""
-"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr ""
-"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-
-#: svnview.py:289 wocoview.py:156
-msgid "Name"
-msgstr "Name"
-
-#: svnview.py:306 wocoview.py:173
-msgid "Location"
-msgstr "Location"
-
-#: svnview.py:307 wocoview.py:174
-msgid "Status"
-msgstr "Status"
-
-#: svnview.py:308 wocoview.py:175
-msgid "Rev"
-msgstr "Rev"
-
-#: svnview.py:309 wocoview.py:176 glade2/wocoview.glade.h:13
-msgid "Tag"
-msgstr "Tag"
-
-#: svnview.py:310 wocoview.py:177
-msgid "Options"
-msgstr "Options"
-
-#: svnview.py:347
-#, python-format
-msgid "[%s] Scanning"
-msgstr "[%s] Scanning"
-
-#: svnview.py:374
-#, python-format
-msgid "[%s] Scanning %s"
-msgstr "[%s] Scanning %s"
-
-#: svnview.py:390
-msgid "(Empty)"
-msgstr "(Empty)"
-
-#: svnview.py:426
-#, python-format
-msgid "[%s] Fetching differences"
-msgstr "[%s] Fetching differences"
-
-#: svnview.py:434
-#, python-format
-msgid "[%s] Applying patch"
-msgstr "[%s] Applying patch"
-
-#: svnview.py:438
-msgid "No differences found."
-msgstr "No differences found."
-
-#: svnview.py:512
-msgid "Select some files first."
-msgstr "Select some files first."
-
-#: svnview.py:533 wocoview.py:230
-#, python-format
-msgid ""
-"'%s' is a directory.\n"
-"Remove recusively?"
-msgstr ""
-"'%s' is a directory.\n"
-"Remove recusively?"
-
-#: svnview.py:538 wocoview.py:235
-#, python-format
-msgid ""
-"Error removing %s\n"
-"\n"
-"%s."
-msgstr ""
-"Error removing %s\n"
-"\n"
-"%s."
-
-#: wocoview.py:97
-msgid "_Version"
-msgstr "_Version"
-
-#: wocoview.py:99
-msgid "Compare versions"
-msgstr "Compare versions"
-
-#: wocoview.py:101 glade2/wocoview.glade.h:19
-msgid "_Update"
-msgstr "_Update"
-
-#: wocoview.py:101
-msgid "Update the local copy"
-msgstr "Update the local copy"
-
-#: wocoview.py:103 glade2/wocoview.glade.h:15
-msgid "_Commit"
-msgstr "_Commit"
-
-#: wocoview.py:103
-msgid "Commit changes"
-msgstr "Commit changes"
-
-#: wocoview.py:105 glade2/wocoview.glade.h:14
-msgid "_Add"
-msgstr "_Add"
-
-#: wocoview.py:105
-msgid "Add to control"
-msgstr "Add to control"
-
-#: wocoview.py:107 glade2/wocoview.glade.h:18
-msgid "_Remove"
-msgstr "_Remove"
-
-#: wocoview.py:107
-msgid "Remove from control"
-msgstr "Remove from control"
-
-#: wocoview.py:109
-msgid "_Delete"
-msgstr "_Delete"
-
-#: wocoview.py:109
-msgid "Remove locally"
-msgstr "Remove locally"
-
-#: wocoview.py:113
-msgid "_Up"
-msgstr "_Up"
-
-#: wocoview.py:113
-msgid "Previous change"
-msgstr "Previous change"
-
-#: wocoview.py:115
-msgid "_Down"
-msgstr "_Down"
-
-#: wocoview.py:115
-msgid "Next change"
-msgstr "Next change"
-
-#: wocoview.py:117
-msgid "_Flatten"
-msgstr "_Flatten"
-
-#: wocoview.py:117
-msgid "Flatten tree"
-msgstr "Flatten tree"
-
-#: wocoview.py:119
-msgid "_Modified"
-msgstr "_Modified"
-
-#: wocoview.py:119
-msgid "View modified files"
-msgstr "View modified files"
-
-#: wocoview.py:121
-msgid "_Normal"
-msgstr "_Normal"
-
-#: wocoview.py:121
-msgid "View normal files"
-msgstr "View normal files"
-
-#: wocoview.py:123
-msgid "Un_known"
-msgstr "Un_known"
-
-#: wocoview.py:123
-msgid "View non version controlled files"
-msgstr "View non-version controlled files"
-
-#: wocoview.py:125
-msgid "_Ignored"
-msgstr "_Ignored"
-
-#: wocoview.py:125
-msgid "View ignored items"
-msgstr "View ignored items"
-
-#: wocoview.py:127
-msgid "_Console"
-msgstr "_Console"
-
-#: wocoview.py:127
-msgid "View command line output"
-msgstr "View command line output"
-
-#: data/meld.desktop.in.h:1
-msgid "Compare and merge your files."
-msgstr "Compare and merge your files."
-
-#: data/meld.desktop.in.h:2
-msgid "Meld Diff Viewer"
-msgstr "Meld Diff Viewer"
 
 #: glade2/dirdiff.glade.h:1
 msgid "Copy Left"
@@ -1020,49 +663,388 @@ msgid "utf8 iso8859"
 msgstr "utf8 iso8859"
 
 #: glade2/wocoview.glade.h:1
-msgid "*"
-msgstr "*"
-
-#: glade2/wocoview.glade.h:2
 msgid "..."
 msgstr "..."
 
-#: glade2/wocoview.glade.h:3
+#: glade2/wocoview.glade.h:2
 msgid "CVS Log"
 msgstr "CVS Log"
 
-#: glade2/wocoview.glade.h:4
-msgid "Choose Directory - Meld"
-msgstr "Choose Directory - Meld"
-
-#: glade2/wocoview.glade.h:5
+#: glade2/wocoview.glade.h:3
 msgid "Commit Files"
 msgstr "Commit Files"
 
-#: glade2/wocoview.glade.h:6
+#: glade2/wocoview.glade.h:4
 msgid "Date"
 msgstr "Date"
 
-#: glade2/wocoview.glade.h:7
+#: glade2/wocoview.glade.h:5
 msgid "Diff Options"
 msgstr "Diff Options"
 
-#: glade2/wocoview.glade.h:8
+#: glade2/wocoview.glade.h:6
 msgid "Local copy against other remote revision"
 msgstr "Local copy against other remote revision"
 
-#: glade2/wocoview.glade.h:9
+#: glade2/wocoview.glade.h:7
 msgid "Local copy against same remote revision"
 msgstr "Local copy against same remote revision"
 
-#: glade2/wocoview.glade.h:10
+#: glade2/wocoview.glade.h:8
 msgid "Log Message"
 msgstr "Log Message"
 
-#: glade2/wocoview.glade.h:11
+#: glade2/wocoview.glade.h:9
 msgid "Previous Logs"
 msgstr "Previous Logs"
 
-#: glade2/wocoview.glade.h:12
+#: glade2/wocoview.glade.h:10
 msgid "Remove _Locally"
 msgstr "Remove _Locally"
+
+#: glade2/wocoview.glade.h:11 svnview.py:309
+msgid "Tag"
+msgstr "Tag"
+
+#: glade2/wocoview.glade.h:12 wocoview.py:110
+msgid "_Add"
+msgstr "_Add"
+
+#: glade2/wocoview.glade.h:13 wocoview.py:108
+msgid "_Commit"
+msgstr "_Commit"
+
+#: glade2/wocoview.glade.h:16 wocoview.py:112
+msgid "_Remove"
+msgstr "_Remove"
+
+#: glade2/wocoview.glade.h:17 wocoview.py:106
+msgid "_Update"
+msgstr "_Update"
+
+#: main.py:92
+msgid "_New"
+msgstr "_New"
+
+#: main.py:93 main.py:94
+msgid "File Comparision"
+msgstr "File Comparision"
+
+#: main.py:95 main.py:96
+msgid "Folder Comparision"
+msgstr "Folder Comparision"
+
+#: main.py:97
+msgid "Working Copy Browser"
+msgstr "Working Copy Browser"
+
+#: main.py:104
+msgid "Show Toolbar"
+msgstr "Show Toolbar"
+
+#: main.py:105
+msgid "Show Statusbar"
+msgstr "Show Statusbar"
+
+#: main.py:107
+msgid "_Help"
+msgstr "_Help"
+
+#: main.py:109
+msgid "_Report Bug"
+msgstr "_Report Bug"
+
+#: main.py:344
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "Cannot compare a mixture of files and directories.\n"
+
+#: main.py:347
+msgid "folder"
+msgstr "folder"
+
+#: main.py:348
+msgid "file"
+msgstr "file"
+
+#: main.py:349
+msgid "nonexistant"
+msgstr "nonexistent"
+
+#: main.py:376
+msgid "Run meld --help for help"
+msgstr "Run meld --help for help"
+
+#. ###############################################################################
+#.
+#. usage
+#.
+#. ###############################################################################
+#: main.py:442
+msgid ""
+"Meld is a file and directory comparison tool. Usage:\n"
+"\n"
+"    meld                        Start with no windows open\n"
+"    meld <dir>                  Start with CVS browser in 'dir'\n"
+"    meld <file>                 Start with CVS diff of 'file'\n"
+"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
+"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
+"\n"
+"Options:\n"
+"    -h, --help                  Show this help text and exit\n"
+"    -v, --version               Display the version and exit\n"
+"\n"
+"For more information choose help -> contents.\n"
+"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
+"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+msgstr ""
+"Meld is a file and directory comparison tool. Usage:\n"
+"\n"
+"    meld                        Start with no windows open\n"
+"    meld <dir>                  Start with CVS browser in 'dir'\n"
+"    meld <file>                 Start with CVS diff of 'file'\n"
+"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
+"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
+"\n"
+"Options:\n"
+"    -h, --help                  Show this help text and exit\n"
+"    -v, --version               Display the version and exit\n"
+"\n"
+"For more information choose help -> contents.\n"
+"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
+"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+
+#: main.py:459
+#, python-format
+msgid ""
+"Meld %s\n"
+"Written by Stephen Kennedy <stevek@gnome.org>"
+msgstr ""
+"Meld %s\n"
+"Written by Stephen Kennedy <stevek@gnome.org>"
+
+#: main.py:480
+msgid "Usage: meld [options] [arguments]"
+msgstr "Usage: meld [options] [arguments]"
+
+#: main.py:481
+msgid "Use label instead of filename. This option may be used several times."
+msgstr "Use label instead of filename. This option may be used several times."
+
+#: main.py:482
+msgid "Save snapshot to file,x,y,w,h"
+msgstr "Save snapshot to file,x,y,w,h"
+
+#: main.py:483
+msgid "Use an existing instance"
+msgstr "Use an existing instance"
+
+#: main.py:484
+msgid "Ignored for compatibility"
+msgstr "Ignored for compatibility"
+
+#: main.py:494
+#, python-format
+msgid "Connection to existing app failed: %s"
+msgstr "Connection to existing app failed: %s"
+
+#: main.py:530
+#, python-format
+msgid "Wrong number of arguments (Got %i)"
+msgstr "Wrong number of arguments (Got %i)"
+
+#: meld:50 meld:69
+msgid "%(program_name)s requires %(package)s %(version)s or higher."
+msgstr "%(program_name)s requires %(package)s %(version)s or higher."
+
+#: melddoc.py:41
+msgid "untitled"
+msgstr "untitled"
+
+#. no common path. empty names get changed to "[None]"
+#: misc.py:105
+msgid "[None]"
+msgstr "[None]"
+
+#: prefsui.py:215
+msgid "Line numbers are only available if you have pygtksourceview installed."
+msgstr "Line numbers are only available if you have pygtksourceview installed."
+
+#: prefsui.py:219
+msgid ""
+"Syntax highlighting is only available if you have pygtksourceview installed."
+msgstr ""
+"Syntax highlighting is only available if you have pygtksourceview installed."
+
+#: svnview.py:40
+msgid ""
+"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+msgstr ""
+"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+
+#: svnview.py:289 wocoview.py:148
+msgid "Name"
+msgstr "Name"
+
+#: svnview.py:306 wocoview.py:165
+msgid "Location"
+msgstr "Location"
+
+#: svnview.py:307 wocoview.py:167
+msgid "Status"
+msgstr "Status"
+
+#: svnview.py:308
+msgid "Rev"
+msgstr "Rev"
+
+#: svnview.py:310
+msgid "Options"
+msgstr "Options"
+
+#: svnview.py:347
+#, python-format
+msgid "[%s] Scanning"
+msgstr "[%s] Scanning"
+
+#: svnview.py:374
+#, python-format
+msgid "[%s] Scanning %s"
+msgstr "[%s] Scanning %s"
+
+#: svnview.py:390
+msgid "(Empty)"
+msgstr "(Empty)"
+
+#: svnview.py:426
+#, python-format
+msgid "[%s] Fetching differences"
+msgstr "[%s] Fetching differences"
+
+#: svnview.py:434
+#, python-format
+msgid "[%s] Applying patch"
+msgstr "[%s] Applying patch"
+
+#: svnview.py:438
+msgid "No differences found."
+msgstr "No differences found."
+
+#: svnview.py:512
+msgid "Select some files first."
+msgstr "Select some files first."
+
+#: svnview.py:533 wocoview.py:245
+#, python-format
+msgid ""
+"'%s' is a directory.\n"
+"Remove recusively?"
+msgstr ""
+"'%s' is a directory.\n"
+"Remove recusively?"
+
+#: svnview.py:538 wocoview.py:250
+#, python-format
+msgid ""
+"Error removing %s\n"
+"\n"
+"%s."
+msgstr ""
+"Error removing %s\n"
+"\n"
+"%s."
+
+#: wocoview.py:102
+msgid "_Version"
+msgstr "_Version"
+
+#: wocoview.py:104
+msgid "Compare versions"
+msgstr "Compare versions"
+
+#: wocoview.py:106
+msgid "Update the local copy"
+msgstr "Update the local copy"
+
+#: wocoview.py:108
+msgid "Commit changes"
+msgstr "Commit changes"
+
+#: wocoview.py:110
+msgid "Add to control"
+msgstr "Add to control"
+
+#: wocoview.py:112
+msgid "Remove from control"
+msgstr "Remove from control"
+
+#: wocoview.py:114
+msgid "_Delete"
+msgstr "_Delete"
+
+#: wocoview.py:114
+msgid "Remove locally"
+msgstr "Remove locally"
+
+#: wocoview.py:118
+msgid "_Up"
+msgstr "_Up"
+
+#: wocoview.py:118
+msgid "Previous change"
+msgstr "Previous change"
+
+#: wocoview.py:120
+msgid "_Down"
+msgstr "_Down"
+
+#: wocoview.py:120
+msgid "Next change"
+msgstr "Next change"
+
+#: wocoview.py:122
+msgid "_Flatten"
+msgstr "_Flatten"
+
+#: wocoview.py:122
+msgid "Flatten tree"
+msgstr "Flatten tree"
+
+#: wocoview.py:124
+msgid "_Modified"
+msgstr "_Modified"
+
+#: wocoview.py:124
+msgid "View modified files"
+msgstr "View modified files"
+
+#: wocoview.py:126
+msgid "_Normal"
+msgstr "_Normal"
+
+#: wocoview.py:126
+msgid "View normal files"
+msgstr "View normal files"
+
+#: wocoview.py:128
+msgid "Un_known"
+msgstr "Un_known"
+
+#: wocoview.py:128
+msgid "View non version controlled files"
+msgstr "View non-version controlled files"
+
+#: wocoview.py:130
+msgid "_Ignored"
+msgstr "_Ignored"
+
+#: wocoview.py:130
+msgid "View ignored items"
+msgstr "View ignored items"
+
+#: wocoview.py:132
+msgid "_Console"
+msgstr "_Console"
+
+#: wocoview.py:132
+msgid "View command line output"
+msgstr "View command line output"
