@@ -82,8 +82,8 @@ def _lookup_cvs_files(dirs, files):
         # poor mans universal newline
         entries = entries.replace("\r","\n").replace("\n\n","\n")
     except IOError, e: # no cvs dir
-        d = map(lambda x: Dir(x[1],x[0], tree.STATE_NONE), dirs) 
-        f = map(lambda x: File(x[1],x[0], tree.STATE_NONE, None), files) 
+        d = map(lambda x: Dir(x[1],x[0], tree.STATE_NONE), dirs)
+        f = map(lambda x: File(x[1],x[0], tree.STATE_NONE, None), files)
         return d,f
 
     try:
@@ -330,7 +330,7 @@ class CvsMenu(gnomeglade.Component):
 # filters
 ################################################################################
 entry_modified = lambda x: (x.state >= tree.STATE_NEW) or (x.isdir and (x.state > tree.STATE_NONE))
-entry_normal   = lambda x: (x.state == tree.STATE_NORMAL) 
+entry_normal   = lambda x: (x.state == tree.STATE_NORMAL)
 entry_noncvs   = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
 entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 
@@ -641,7 +641,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         if not self.button_flatten.get_active():
             iter = self.find_iter_by_name( where )
             if iter:
-                newiter = self.model.insert_after( None, iter) 
+                newiter = self.model.insert_after( None, iter)
                 self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
                 self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
                 self.model.remove(iter)
@@ -656,7 +656,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         class MyMenu(gtk.Menu):
             def __init__(self, parent, where, showup=1):
                 gtk.Menu.__init__(self)
-                self.cvsview = parent 
+                self.cvsview = parent
                 self.map_id = self.connect("map", lambda item: self.on_map(item,where,showup) )
             def add_item(self, name, submenu, showup):
                 item = gtk.MenuItem(name)
@@ -710,7 +710,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         while iter:
             if name == path:
                 return iter
-            elif name.startswith(path): 
+            elif name.startswith(path):
                 child = self.model.iter_children( iter )
                 while child:
                     path = self.model.value_path(child, 0)
