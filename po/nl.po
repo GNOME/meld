@@ -2,18 +2,19 @@
 # Copyright (C) 2004 the meld's copyright holder.
 # This file is distributed under the same license as the meld package.
 # Daniel van Eeden <daniel_e@dds.nl>, 2004.
-#
+# Tino Meinen <a.t.meinen@chello.nl>, 2005.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld cvs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-01 04:11+0000\n"
-"PO-Revision-Date: 2004-09-20 09:59+0200\n"
-"Last-Translator: Daniel van Eeden <daniel_e@dds.nl>\n"
+"POT-Creation-Date: 2005-09-23 20:37+0200\n"
+"PO-Revision-Date: 2005-09-24 01:54+0200\n"
+"Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
 
 #: ../meld.desktop.in.h:1
 msgid "Compare and merge your files."
@@ -21,15 +22,13 @@ msgstr "Vergelijken en samenvoegen van uw bestanden."
 
 #: ../meld.desktop.in.h:2
 msgid "Meld Diff Viewer"
-msgstr "Meld Diff Weergave"
+msgstr "Meld diff-weergave"
 
 #. These are the possible states of files. Be sure to get the colons correct.
 #: ../cvsview.py:41
 msgid ""
 "Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr ""
-"Genegeerd:Niet CVS:::Fout::Nieuw toegevoegd:Gewijzigd:<b>Conflict</b>:"
-"Verwijderd:Missend"
+msgstr "Genegeerd:Niet CVS:::Fout::Nieuw toegevoegd:Gewijzigd:<b>Conflict</b>:Verwijderd:Ontbrekend"
 
 #: ../cvsview.py:169
 #, python-format
@@ -170,53 +169,53 @@ msgstr ""
 "%s."
 
 #: ../dirdiff.py:570
-#, fuzzy, python-format
+#, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
-msgstr[0] "Diff selectie"
-msgstr[1] "Diff selectie"
+msgstr[0] "%i seconde"
+msgstr[1] "%i seconden"
 
 #: ../dirdiff.py:571
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i minuut"
+msgstr[1] "%i minuten"
 
 #: ../dirdiff.py:572
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i uur"
+msgstr[1] "%i uur"
 
 #: ../dirdiff.py:573
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i dag"
+msgstr[1] "%i dagen"
 
 #: ../dirdiff.py:574
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i week"
+msgstr[1] "%i weken"
 
 #: ../dirdiff.py:575
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i maand"
+msgstr[1] "%i maanden"
 
 #: ../dirdiff.py:576
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i jaar"
+msgstr[1] "%i jaren"
 
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
 #: ../filediff.py:224
@@ -234,7 +233,7 @@ msgstr "Ln %i, Kol %i"
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
 "will be incorrect. See the user manual for more details."
-msgstr ""
+msgstr "Reguliere expressie '%s' heeft het aantal regels in het bestand gewijzigd. De vergelijking zal onjuist zijn. Zie de gebruikshandleiding voor meer details."
 
 #: ../filediff.py:529
 #, python-format
@@ -266,36 +265,32 @@ msgid "[%s] Opening files"
 msgstr "[%s] Openen bestanden"
 
 #: ../filediff.py:606 ../filediff.py:620 ../filediff.py:636 ../filediff.py:643
-#, fuzzy, python-format
+#, python-format
 msgid "Could not read from '%s'"
-msgstr ""
-"Kan niet lezen vanuit '%s'.\n"
-"\n"
-"De fout is:\n"
-"%s"
+msgstr "Kan niet lezen vanuit '%s'."
 
 #: ../filediff.py:607 ../filediff.py:644
 msgid "The error was:"
-msgstr ""
+msgstr "De fout was:"
 
 #: ../filediff.py:612
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Lezen bestanden"
 
+# Mogelijkerwijs/Misschien
 #: ../filediff.py:621
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
 msgstr ""
+"Het bevat ascii-nullen.\n"
+"Misschien is het een binair bestand."
 
 #: ../filediff.py:637
-#, fuzzy, python-format
+#, python-format
 msgid "I tried encodings %s."
-msgstr ""
-"Kan niet lezen vanuit '%s'.\n"
-"\n"
-"Geprobeerde coderingen %s"
+msgstr "Geprobeerd met tekensets %s."
 
 #: ../filediff.py:665
 #, python-format
@@ -344,11 +339,13 @@ msgid ""
 "'%s' contains characters not encodable with '%s'\n"
 "Would you like to save as UTF-8?"
 msgstr ""
+"'%s' bevat tekens die niet in '%s' zijn uit te drukken\n"
+"Wilt u opslaan als UTF-8"
 
 #. save as
 #: ../filediff.py:839
 msgid "Save patch as..."
-msgstr ""
+msgstr "Patch opslaan als..."
 
 #: ../filediff.py:893
 #, python-format
@@ -364,9 +361,9 @@ msgstr ""
 "U kan deze operatie niet ongedaan maken."
 
 #: ../meld:57 ../meld:67 ../meld:77
-#, fuzzy, c-format
+#, c-format
 msgid "Meld requires %s or higher."
-msgstr "Meld vereist python%s of hoger."
+msgstr "Meld vereist %s of hoger."
 
 #: ../meld:78
 msgid ""
@@ -391,13 +388,13 @@ msgstr ""
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Kan een mix van bestanden en mappen niet vergelijken.\n"
 
+# bespreek/bediscussieer
 #. ###############################################################################
 #.
 #. usage
 #.
 #. ###############################################################################
 #: ../meldapp.py:798
-#, fuzzy
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -415,18 +412,22 @@ msgid ""
 "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
 "Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
 msgstr ""
-"Meld is een bestands en mappen vergelijk programma. Gebruik:\n"
+"Meld is een programma voor het vergelijken van bestanden en mappen.\n"
+"Gebruik:\n"
 "\n"
-"    meld                           Begin zonder vensters open\n"
+"    meld                           Begin zonder geopende vensters\n"
 "    meld <map>                     Begin met CVS browser in 'map'\n"
 "    meld <bestand>                 Begin met CVS diff van 'bestand'\n"
-"    meld <bestand> <bestand> [bestand]         Begin met 2 of 3 weg bestands "
-"vergelijking\n"
-"    meld <map>  <map>  [map]       Begin met 2 of 3 weg mappen vergelijking\n"
+"    meld <bestand> <bestand> [bestand]         Begin met 2 of 3-weg bestandsvergelijking\n"
+"    meld <map>  <map>  [map]       Begin met 2 of 3-weg mappenvergelijking\n"
 "\n"
-"Voor mee informatie kies help -> inhoud.\n"
+"Opties:\n"
+"    -h, --help                     Toon deze helptekst en sluit af\n"
+"    -v, --version                  Toon de versie en sluit af\n"
+"\n"
+"Voor mee informatie kies hulp -> inhoud.\n"
 "Reporteer bugs op http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"stevek@gnome.org\n"
+"Bediscussieer meld op:  http://mail.gnome.org/mailman/listinfo/meld-list\n"
 
 #: ../meldapp.py:815
 #, python-format
@@ -452,12 +453,9 @@ msgid "[None]"
 msgstr "[Geen]"
 
 #: ../svnview.py:42
-#, fuzzy
 msgid ""
 "Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr ""
-"Genegeerd:Niet CVS:::Fout::Nieuw toegevoegd:Gewijzigd:<b>Conflict</b>:"
-"Verwijderd:Missend"
+msgstr "Genegeerd:Niet SVN:::Fout::Nieuw toegevoegd:Gewijzigd:<b>Conflict</b>:Verwijderd:Ontbrekend"
 
 #: ../glade2/cvsview.glade.h:1
 msgid "Add _Binary"
@@ -597,11 +595,11 @@ msgstr "Alles naar _rechts kopieëren"
 
 #: ../glade2/filediff.glade.h:5
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Kopiëren naar klembord"
 
 #: ../glade2/filediff.glade.h:6
 msgid "Create Patch"
-msgstr ""
+msgstr "Patch aanmaken"
 
 #: ../glade2/filediff.glade.h:7 ../glade2/dirdiff.glade.h:9
 msgid "Edit"
@@ -613,7 +611,7 @@ msgstr "Zoeken"
 
 #: ../glade2/filediff.glade.h:9
 msgid "Make Patch"
-msgstr ""
+msgstr "Patch maken"
 
 #: ../glade2/filediff.glade.h:10
 msgid "Match _entire word only"
@@ -996,13 +994,13 @@ msgid "Simple : Lines only"
 msgstr "Simpel : Enkel lijnen"
 
 #: ../glade2/meldapp.glade.h:68
-#, fuzzy
 msgid "Solid : Filled Quadilaterals"
 msgstr "Vast : Gevulde Quadilaterals"
 
+# breedte tab/tabbreedte
 #: ../glade2/meldapp.glade.h:69
 msgid "Tab width"
-msgstr ""
+msgstr "Tabbreedte"
 
 #: ../glade2/meldapp.glade.h:70
 msgid "Text Beside Icons"
@@ -1010,7 +1008,7 @@ msgstr "Tekst naast pictogrammen"
 
 #: ../glade2/meldapp.glade.h:71
 msgid "Text Filters"
-msgstr "Tekst filters"
+msgstr "Tekstfilters"
 
 #: ../glade2/meldapp.glade.h:72
 msgid "Text Only"
@@ -1067,17 +1065,13 @@ msgstr ""
 "spaties."
 
 #: ../glade2/meldapp.glade.h:84
-#, fuzzy
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
 "text with the empty string before comparison is performed. If the expression "
 "contains groups, only the groups are replaced. See the user manual for more "
 "details."
-msgstr ""
-"Bij het uitvoeren van bestandsvergelijkingen kunt u sommige veranderingen "
-"negeren. Elk patroon is een python reguliere expressie, welke telkens op de "
-"invoer van elke regel tekst zal worden toegepast."
+msgstr "Bij het uitvoeren van bestandsvergelijkingen kunt u sommige wijzigingen negeren. Elk patroon is een python reguliere expressie die overeenkomende tekst vervangt met lege tekst voordat wordt vergeleken. Indien de expressie groepen bevat worden alleen de groepen vervangen. Zie de gebruikshandleiding voor meer details."
 
 #: ../glade2/meldapp.glade.h:85
 msgid "Whitespace is significant"
@@ -1134,13 +1128,6 @@ msgstr "_Omhoog"
 #: ../glade2/meldapp.glade.h:99
 msgid "_Word"
 msgstr "_Woord"
-
-#~ msgid ""
-#~ "second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:"
-#~ "year,years"
-#~ msgstr ""
-#~ "seconde,secondes:minuut:minuten:uur,uren:dag,dagen:week,weken:maand,"
-#~ "maanden:jaar,jaren"
 
 #~ msgid ""
 #~ "Could not open '%s' for reading.\n"
