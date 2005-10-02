@@ -54,7 +54,7 @@ class DiffTreeStore(gtk.TreeStore):
             '<span foreground="#888888">%s</span>', # STATE_NONE
             '<span foreground="black">%s</span>', # STATE_NORMAL
             '<span foreground="black" style="italic">%s</span>', # STATE_NOCHANGE
-            '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR 
+            '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR
             '<span foreground="#999999" style="italic">%s</span>', # STATE_EMPTY
             '<span foreground="#008800" weight="bold">%s</span>', # STATE_NEW
             '<span foreground="#880000" weight="bold">%s</span>', # STATE_MODIFIED
@@ -87,7 +87,7 @@ class DiffTreeStore(gtk.TreeStore):
     def add_empty(self, parent, text="empty folder"):
         child = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(child, self.column_index(COL_STATE,i), STATE_EMPTY) 
+            self.set_value(child, self.column_index(COL_STATE,i), STATE_EMPTY)
             self.set_value(child, self.column_index(COL_PATH,i), self.pixstyle[STATE_EMPTY])
             self.set_value(child, self.column_index(COL_TEXT,i), self.textstyle[STATE_EMPTY] % misc.escape(text) )
         return child
@@ -95,10 +95,10 @@ class DiffTreeStore(gtk.TreeStore):
     def add_error(self, parent, msg, pane):
         err = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR) 
+            self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR)
         self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
         self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % misc.escape(msg) )
-        
+
     def value_paths(self, iter):
         return [ self.value_path(iter, i) for i in range(self.ntree) ]
     def value_path(self, iter, pane):
