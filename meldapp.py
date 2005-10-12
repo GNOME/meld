@@ -602,6 +602,11 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_menu_save_activate(self, menuitem):
         self.current_doc().save()
 
+    def on_menu_save_as_activate(self, menuitem):
+        pane = self.current_doc()._get_focused_pane()
+        if pane >= 0:
+            self.current_doc().save_file(pane, 1)
+
     def on_menu_refresh_activate(self, *args):
         self.current_doc().refresh()
 
