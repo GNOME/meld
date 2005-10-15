@@ -138,6 +138,13 @@ def _lookup_cvs_files(dirs, files):
                 plus = date.find("+")
                 if plus >= 0:
                     state = tree.STATE_CONFLICT
+                    try:
+                        txt = open(filedata, "U").read()
+                    except IOError:
+                        pass
+                    else:
+                        if txt.find("\n=======\n") == -1:
+                            state = tree.STATE_MODIFIED
                 else:
                     try:
                         mtime = os.stat(path).st_mtime
