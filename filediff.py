@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -14,375 +14,288 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import generators
+
 import codecs
-import difflib
 import math
 import os
 import re
-import struct
 import sys
 import tempfile
+import difflib
+import struct
 
+import pango
 import gobject
 import gtk
-import pango
+import gtk.keysyms
 
 import diffutil
-import fileprint
-import melddoc
+import gnomeglade
 import misc
+import melddoc
 import paths
-import sourceview
-import stock
-import undo
-import undoaction
-import gconf
-import gui
 
-class FileDiff(melddoc.MeldDoc, gui.Component):
+sourceview_available = 0
+
+for sourceview in "gtksourceview sourceview".split():
+    try:
+        gsv = __import__(sourceview)
+        sourceview_available = 1
+        break
+    except ImportError:
+        pass
+
+if sourceview_available:
+    def set_highlighting_enabled(buf, fname, enabled):
+        # gnome.vfs.get_mime_type seems to be broken. fake it.
+        extmap = { "xml":"text/xml",
+                   "glade":"text/xml",
+                   "cpp":"text/x-cpp",
+                   "cxx":"text/x-cpp",
+                   "cc":"text/x-cpp",
+                   "C":"text/x-cpp",
+                   "c":"text/x-c",
+                   "hpp":"text/x-cpp",
+                   "hxx":"text/x-cpp",
+                   "hh":"text/x-cpp",
+                   "H":"text/x-cpp",
+                   "h":"text/x-cpp",
+                   "inl":"text/x-cpp",
+                   "desktop": "application/x-desktop",
+                   "diff": "text/x-diff",
+                   "patch": "text/x-diff",
+                   "html": "text/html",
+                   "po": "text/x-po",
+                   "py": "text/x-python" }
+        ext = fname.split(".")[-1]
+        man = gsv.SourceLanguagesManager()
+        gsl = man.get_language_from_mime_type( extmap.get(ext, "text/plain") )
+        if gsl:
+            buf.set_language(gsl)
+        buf.set_highlight(enabled)
+
+gdk = gtk.gdk
+
+################################################################################
+#
+# FileDiff
+#
+################################################################################
+
+MASK_SHIFT, MASK_CTRL, MASK_ALT = 1, 2, 3
+
+class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
 
-    UI_DEFINITION = """
-    <ui>
-      <menubar name="MenuBar">
-        <menu action="file_menu">
-          <placeholder name="file_extras">
-            <separator/>
-            <menuitem action="save"/>
-            <menuitem action="save_as"/>
-            <menuitem action="save_all"/>
-            <menu action="save_menu">
-              <menuitem action="save_pane0"/>
-              <menuitem action="save_pane1"/>
-              <menuitem action="save_pane2"/>
-            </menu>
-            <separator/>
-            <menuitem action="print"/>
-            <separator/>
-            <menuitem action="close"/>
-          </placeholder>
-        </menu>
-        <menu action="edit_menu">
-          <placeholder name="edit_extras">
-            <menuitem action="undo"/>
-            <menuitem action="redo"/>
-            <separator/>
-            <menuitem action="find"/>
-            <menuitem action="find_next"/>
-            <menuitem action="find_replace"/>
-            <separator/>
-            <menuitem action="cut"/>
-            <menuitem action="copy"/>
-            <menuitem action="paste"/>
-            <separator/>
-          </placeholder>
-        </menu>
-        <menu action="view_menu">
-          <placeholder name="view_extras">
-            <menuitem action="one_pane"/>
-            <menuitem action="two_panes"/>
-            <menuitem action="three_panes"/>
-            <separator/>
-            <menuitem action="horizontal_panes"/>
-            <menuitem action="show_filenames"/>
-          </placeholder>
-        </menu>
-        <placeholder name="menu_extras">
-          <menu action="diff_menu">
-            <menuitem action="refresh"/>
-            <separator/>
-            <menuitem action="next_difference"/>
-            <menuitem action="previous_difference"/>
-            <separator/>
-            <menuitem action="replace_left_file"/>
-            <menuitem action="replace_right_file"/>
-            <separator/>
-          </menu>
-        </placeholder>
-      </menubar>
-      <toolbar name="ToolBar">
-        <separator/>
-        <toolitem action="save"/>
-        <toolitem action="refresh"/>
-        <separator/>
-        <toolitem action="undo"/>
-        <toolitem action="redo"/>
-        <toolitem action="find"/>
-        <toolitem action="find_replace"/>
-        <separator/>
-        <toolitem action="previous_difference"/>
-        <toolitem action="next_difference"/>
-        <separator/>
-      </toolbar>
-    </ui>
-    """
-
-    UI_ACTIONS = (
-        # action_name, stock_icon, label, accelerator, tooltip,
-        ('file_menu', None, _('_File')),
-            ('save', gtk.STOCK_SAVE, None, None, _('Save the current file')),
-            ('save_as', gtk.STOCK_SAVE_AS, None, None, _('Save the current file')),
-            ('save_all', gtk.STOCK_SAVE, _('_Save All'), '<Control><Shift>s', _('Save all files')),
-            ('save_menu', gtk.STOCK_SAVE, None),
-                ('save_pane0', gtk.STOCK_SAVE, _('Pane 1'), '<Control>1', ''),
-                ('save_pane1', gtk.STOCK_SAVE, _('Pane 2'), '<Control>2', ''),
-                ('save_pane2', gtk.STOCK_SAVE, _('Pane 3'), '<Control>3', ''),
-            ('print', gtk.STOCK_PRINT, _('_Print...'), '<Control><Shift>p', _('Print this comparison')),
-            ('close', gtk.STOCK_CLOSE, _('_Close'), '<Control>w', _('Close this tab')),
-        ('edit_menu', None, _('_Edit')),
-            ('undo', gtk.STOCK_UNDO, _('_Undo'), '<Control>z', _('Undo last change')),
-            ('redo', gtk.STOCK_REDO, _('_Redo'), '<Control><Shift>z', _('Redo last change')),
-            ('find', gtk.STOCK_FIND, _('_Find'), '<Control>f', _('Search the document')),
-            ('find_next', gtk.STOCK_FIND, _('_Find Next'), '<Control>g', _('Repeat the last find')),
-            ('find_replace', gtk.STOCK_FIND_AND_REPLACE, _('_Replace'), '<Control>r', _('Find and replace text')),
-            ('cut', gtk.STOCK_CUT, _('Cu_t'), '<Control>x', _('Copy selected text')),
-            ('copy', gtk.STOCK_PASTE, _('_Copy'), '<Control>c', _('Copy selected text')),
-            ('paste', gtk.STOCK_PASTE, _('_Paste'), '<Control>v', _('Paste selected text')),
-        ('view_menu', None, _('_View')),
-            ('one_pane', None, _('One Pane'), '<Control><Alt>1', '', 1, 'num_panes'),
-            ('two_panes', None, _('Two Panes'), '<Control><Alt>2', '', 2, 'num_panes'),
-            ('three_panes', None, _('Three Panes'), '<Control><Alt>3', '', 3, 'num_panes'),
-            ('horizontal_panes', None, _('Horizontal View'), '<Control><Alt>H', None, False),
-            ('show_filenames', None, _('Show Filenames'), '<Control><Alt>F', None, True),
-        ('diff_menu', None, _('_Diff')),
-            ('refresh', gtk.STOCK_REFRESH, _('Refres_h'), '<Control><Alt>C', _('Recompute differences')),
-            ('next_difference', gtk.STOCK_GO_DOWN, _('_Next'), '<Control>d', _('Next difference')),
-            ('previous_difference', gtk.STOCK_GO_UP, _('Pr_ev'), '<Control>e', _('Previous difference')),
-            ('replace_left_file', gtk.STOCK_GO_BACK, _('Copy contents left'), None, None),
-            ('replace_right_file', gtk.STOCK_GO_FORWARD, _('Copy contents right'), None, None),
-    )
-
-    FIND_STATE_ROOT = "/apps/meld/state/find"
-
-    MASK_SHIFT = 1
-    MASK_CTRL = 2
-    keylookup = { gtk.keysyms.Shift_L : MASK_SHIFT,
-                  gtk.keysyms.Shift_R : MASK_SHIFT,
-                  gtk.keysyms.Control_L : MASK_CTRL,
-                  gtk.keysyms.Control_R : MASK_CTRL }
-
-    class BufferExtra(object):
-        __slots__ = ("writable", "__filename", "encoding", "newlines")
-        def __init__(self, filename=None):
-            self.writable = 1
-            self.filename = filename
-            self.encoding = None
-            self.newlines = None
-        def set_filename(self, absname):
-            if absname:
-                self.writable = os.access(absname, os.W_OK)
-            self.__filename = absname
-        filename = property(lambda x : x.__filename, set_filename)
-
-    class ContextMenu(gui.Component):
-        def __init__(self, parent):
-            self.parent = parent
-            self.pane = -1
-            gladefile = paths.share_dir("glade2/filediff.glade")
-            gui.Component.__init__(self, gladefile, "popup")
-            self.connect_signal_handlers()
-        def popup_in_pane( self, pane ):
-            self.pane = pane
-            self.copy_left.set_sensitive( pane > 0 )
-            self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
-            self.edit.set_sensitive(self.parent.bufferextra[self.pane].filename != None)
-            self.toplevel.popup( None, None, None, 3, gtk.get_current_event_time() )
-        def on_save__activate(self, menuitem):
-            self.parent.save_file(self.pane)
-        def on_save_as__activate(self, menuitem):
-            self.parent.save_file(self.pane, 1)
-        def on_cut__activate(self, menuitem):
-            self.parent.action_cut__activate()
-        def on_copy__activate(self, menuitem):
-            self.parent.action_copy__activate()
-        def on_paste__activate(self, menuitem):
-            self.parent.action_paste__activate()
-        def on_copy_left__activate(self, menuitem):
-            self.parent.copy_entire_file(-1)
-        def on_copy_right__activate(self, menuitem):
-            self.parent.copy_entire_file(1)
-        def on_edit__activate(self, menuitem):
-            self.parent._edit_files( [self.parent.bufferextra[self.pane].filename] )
-
-    class FindReplaceState:
-        __slots__=("tofind", "toreplace", "match_case", "entire_word", "wrap_around", "use_regex", "replace_all")
-        def __init__(self):
-            for s in self.__slots__:
-                setattr(self, s, None)
+    keylookup = {gtk.keysyms.Shift_L : MASK_SHIFT,
+                 gtk.keysyms.Control_L : MASK_CTRL,
+                 gtk.keysyms.Alt_L : MASK_ALT,
+                 gtk.keysyms.Shift_R : MASK_SHIFT,
+                 gtk.keysyms.Control_R : MASK_CTRL,
+                 gtk.keysyms.Alt_R : MASK_ALT }
 
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
         """
-        melddoc.MeldDoc.__init__(self, prefs.filediff)
-        # text views
-        override = {}
-        override["GtkTextView"] = sourceview.SourceView
-        override["GtkTextBuffer"] = sourceview.SourceBuffer
-        gui.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
-        self.map_widgets_into_lists( "textview filecombo openbutton diffmap pane scrolledwindow linkmap statusbutton fileentryhbox".split() )
-        self.fileentry = [ gui.FileEntry(c,b) for c,b in zip(self.filecombo, self.openbutton) ]
-        # text views and buffers
-        self.textbuffer = [ sourceview.SourceBuffer() for i in range(3) ]
-        self.bufferextra = [ self.BufferExtra() for i in range(3) ]
-        for view,buffer in zip(self.textview, self.textbuffer):
-            #view.set_border_window_size(gtk.TEXT_WINDOW_LEFT,10)
-            view.set_show_line_numbers( self.prefs.line_numbers )
-            view.set_wrap_mode( self.prefs.wrap_lines )
-            view.set_buffer(buffer)
-            def add_tag(name, props):
-                tag = buffer.create_tag(name)
-                for p,v in props.items():
-                    tag.set_property(p,v)
-            common = self.prefs.common
-            add_tag("inline line0", {"background": common.color_inline_bg0,
-                                     "foreground": common.color_inline_fg0,
-                                     "weight": pango.WEIGHT_BOLD
-                                     } )
-            add_tag("inline line1", {"background": common.color_inline_bg1,
-                                     "weight": pango.WEIGHT_BOLD,
-                                     "underline": True} )
-        # ui and actions
-        self.actiongroup = gtk.ActionGroup("FilediffActions")
-        self.add_actions( self.actiongroup, self.UI_ACTIONS )
-        self.map_widgets_into_lists( ["action_save_pane"] )
-        # undo
-        self.undosequence = undo.UndoSequence()
-        self.undosequence.connect("can-undo", lambda o,can:
-            self.action_undo.set_property("sensitive",can))
-        self.undosequence.connect("can-redo", lambda o,can:
-            self.action_redo.set_property("sensitive",can))
-        self.undosequence.clear()
-        # scroll bars
+        melddoc.MeldDoc.__init__(self, prefs)
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
+        self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        self._update_regexes()
+        self.warned_bad_comparison = False
+        if sourceview_available:
+            # ugly hack. http://bugzilla.gnome.org/show_bug.cgi?id=140071
+            # will remove the need for this.
+            self.textview = []
+            for w in self.scrolledwindow:
+                w.remove( w.get_child() )
+                v = gsv.SourceView()
+                self.textview.append( v )
+                v.show()
+                w.add(v)
+                v.set_show_line_numbers(self.prefs.show_line_numbers)
+                for s in "key_press_event key_release_event".split():
+                    v.connect(s, getattr(self,"on_%s"%s))
+                for s in "button_press_event focus_in_event".split():
+                    v.connect(s, getattr(self,"on_textview_%s"%s))
+                v.get_buffer().connect("mark-set", self.on_textbuffer_mark_set)
+        self.keymask = 0
+        self.load_font()
+        self.deleted_lines_pending = -1
+        self.textview_overwrite = 0
+        self.textview_focussed = None
+        self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         for i in range(3):
             w = self.scrolledwindow[i]
-            v,h = w.get_vadjustment(), w.get_hadjustment()
-            v.signal_handler_ids = [v.connect("value-changed", self._sync_vscroll )]
-            h.signal_handler_ids = [h.connect("value-changed", self._sync_hscroll )]
-        # find replace state
-        self.setup_find_replace_state()
-        # misc state variables
-        self.popup_menu = self.ContextMenu(self)
-        self.keymask = 0
-        self.deleted_lines_pending = -1
-        self.textview_focussed = None
-        self._update_regexes()
-        self.load_font()
-        self.differ = diffutil.Differ()
-        self.num_panes = 0
+            w.get_vadjustment().connect("value-changed", self._sync_vscroll )
+            w.get_hadjustment().connect("value-changed", self._sync_hscroll )
+        self._connect_buffer_handlers()
+        self.linediffer = diffutil.Differ()
+        for l in self.linkmap: # glade bug workaround
+            l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK )
+            l.set_double_buffered(0) # we call paint_begin ourselves
+        self.bufferdata = []
+        for text in self.textview:
+            text.set_wrap_mode( self.prefs.edit_wrap_lines )
+            buf = text.get_buffer()
+            self.bufferdata.append( MeldBufferData() )
+            def add_tag(name, props):
+                tag = buf.create_tag(name)
+                for p,v in props.items():
+                    tag.set_property(p,v)
+            add_tag("edited line",   {"background": self.prefs.color_edited_bg,
+                                      "foreground": self.prefs.color_edited_fg} )
+            add_tag("delete line",   {"background": self.prefs.color_delete_bg,
+                                      "foreground": self.prefs.color_delete_fg}  )
+            add_tag("replace line",  {"background": self.prefs.color_replace_bg,
+                                      "foreground": self.prefs.color_replace_fg} )
+            add_tag("conflict line", {"background": self.prefs.color_conflict_bg,
+                                      "foreground": self.prefs.color_conflict_fg} )
+            add_tag("inline line",   {"background": self.prefs.color_inline_bg,
+                                      "foreground": self.prefs.color_inline_fg} )
+        class ContextMenu(gnomeglade.Component):
+            def __init__(self, app):
+                gladefile = paths.share_dir("glade2/filediff.glade")
+                gnomeglade.Component.__init__(self, gladefile, "popup")
+                self.parent = app
+                self.pane = -1
+            def popup_in_pane( self, pane ):
+                self.pane = pane
+                self.copy_left.set_sensitive( pane > 0 )
+                self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
+                self.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
+            def on_save_activate(self, menuitem):
+                self.parent.save()
+            def on_save_as_activate(self, menuitem):
+                self.parent.save_file( self.pane, 1)
+            def on_make_patch_activate(self, menuitem):
+                self.parent.make_patch( self.pane )
+            def on_cut_activate(self, menuitem):
+                self.parent.on_cut_activate()
+            def on_copy_activate(self, menuitem):
+                self.parent.on_copy_activate()
+            def on_paste_activate(self, menuitem):
+                self.parent.on_paste_activate()
+            def on_copy_left_activate(self, menuitem):
+                self.parent.copy_selected(-1)
+            def on_copy_right_activate(self, menuitem):
+                self.parent.copy_selected(1)
+            def on_edit_activate(self, menuitem):
+                if self.parent.bufferdata[self.pane].filename:
+                    self.parent._edit_files( [self.parent.bufferdata[self.pane].filename] )
+        self.popup_menu = ContextMenu(self)
+        self.find_dialog = None
+        self.last_search = None
         self.set_num_panes(num_panes)
-        self.connect_signal_handlers()
-        self.scheduler.add_task( self.recompute_label )
-
-    def on_textbuffer__mark_set(self, buf, it, mark):
-        if mark.get_name() == "insert":
-            self._update_cursor_status(buf)
 
     def _update_regexes(self):
         self.regexes = []
-        for r in [ misc.ListItem(i) for i in self.prefs.common.regexes ]:
+        for r in [ misc.ListItem(i) for i in self.prefs.regexes.split("\n") ]:
             if r.active:
                 try:
-                    self.regexes.append( re.compile(r.value+"(?m)") )
+                    self.regexes.append( (re.compile(r.value+"(?m)"), r.value) )
                 except re.error, e:
                     pass
 
+    def _disconnect_buffer_handlers(self):
+        for textview in self.textview:
+            buf = textview.get_buffer()
+            assert hasattr(buf,"handlers")
+            textview.set_editable(0)
+            for h in buf.handlers:
+                buf.disconnect(h)
+
+    def _connect_buffer_handlers(self):
+        for textview in self.textview:
+            buf = textview.get_buffer()
+            textview.set_editable(1)
+            id0 = buf.connect("insert-text", self.on_text_insert_text)
+            id1 = buf.connect("delete-range", self.on_text_delete_range)
+            id2 = buf.connect_after("insert-text", self.after_text_insert_text)
+            id3 = buf.connect_after("delete-range", self.after_text_delete_range)
+            buf.textview = textview
+            buf.handlers = id0, id1, id2, id3
+
     def _update_cursor_status(self, buf):
         def update():
-            it = buf.get_iter_at_mark( buf.get_insert() )
-            view = self.textview[ self.textbuffer.index(buf) ]
-            status = "%s : %s" % ( _("Insert,Overwrite").split(",")[ view.get_overwrite() ], #insert/overwrite
-                                   _("Line %i, Column %i") % (it.get_line()+1, it.get_line_offset()+1) ) #line/column
-            self.emit("status-changed", status)
-        self.scheduler.add_task( update )
+            iter = buf.get_iter_at_mark( buf.get_insert() )
+            # Abbreviation for insert,overwrite so that it will fit in the status bar
+            insert_overwrite = _("INS,OVR").split(",")[ self.textview_overwrite ]
+            # Abbreviation for line, column so that it will fit in the status bar
+            line_column = _("Ln %i, Col %i") % (iter.get_line()+1, iter.get_line_offset()+1)
+            status = "%s : %s" % ( insert_overwrite, line_column )
+            self.emit("status-changed", status  )
+            raise StopIteration; yield 0
+        self.scheduler.add_task( update().next )
 
-    def on_textview__move_cursor(self, view, *args):
-        self._update_cursor_status(view.get_buffer())
-
-    def on_textview__focus_in_event(self, view, event):
+    def on_textbuffer_mark_set(self, buffer, it, mark):
+        if mark.get_name() == "insert":
+            self._update_cursor_status(buffer)
+    def on_textview_focus_in_event(self, view, event):
         self.textview_focussed = view
         self._update_cursor_status(view.get_buffer())
-
-    def on_filediff__focus_in_event(self, view, event):
-        self.textview_focussed = view
-        self._update_cursor_status(view.get_buffer())
-
-    def on_statusbutton__clicked(self, button):
-        pane = self.statusbutton.index(button)
-        self.save_file(pane)
-
-    #
-    # Container methods
-    #
-    def on_container_delete_event(self, app_quit=0):
-        modified = [b.get_modified() for b in self.textbuffer]
-        if 1 in modified:
-            dialog = gui.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
-            dialog.toplevel.set_transient_for(self.toplevel.get_toplevel())
-            buttons = []
-            for i in range(self.num_panes):
-                b = gtk.CheckButton( self._get_filename(i) )
-                buttons.append(b)
-                dialog.box.pack_start(b, 1, 1)
-                if not modified[i]:
-                    b.set_sensitive(-1)
-                else:
-                    b.set_active(1)
-            dialog.toplevel.show_all()
-            if not app_quit:
-                dialog.button_quit.hide()
-            response = dialog.toplevel.run()
-            try_save = [ b.get_active() for b in buttons]
-            dialog.toplevel.destroy()
-            if response==gtk.RESPONSE_OK:
-                for i in range(self.num_panes):
-                    if try_save[i]:
-                        if self.save_file(i) != melddoc.RESULT_OK:
-                            return gtk.RESPONSE_CANCEL
-            elif response==gtk.RESPONSE_CLOSE:
-                return gtk.RESPONSE_CLOSE
-            else:
-                return gtk.RESPONSE_CANCEL
-        return gtk.RESPONSE_OK
-
-    def on_container_switch_in_event(self, uimanager):
-        melddoc.MeldDoc.on_container_switch_in_event(self, uimanager)
+    def on_switch_event(self):
         if self.textview_focussed:
             self.scheduler.add_task( self.textview_focussed.grab_focus )
 
     def _after_text_modified(self, buffer, startline, sizechange):
-        if 0 and self.num_panes > 1:
-            #pane = self.textbuffer.index(buffer)
-            #trange = self.differ.change_sequence( pane, startline, sizechange, self._get_texts())
-            #print range
-            #for it in self._update_highlighting( range[0], range[1] ):
-                #pass
+        if self.num_panes > 1:
+            buffers = [t.get_buffer() for t in self.textview[:self.num_panes] ]
+            pane = buffers.index(buffer)
+            range = self.linediffer.change_sequence( pane, startline, sizechange, self._get_texts())
+            for iter in self._update_highlighting( range[0], range[1] ):
+                pass
             self.queue_draw()
         self._update_cursor_status(buffer)
 
     def _get_texts(self, raw=0):
-        class FakeTextRaw(object):
-            def __init__(self, buf, regexes):
-                self.buf = buf
+        class FakeText(object):
+            def __init__(self, buf, textfilter):
+                self.buf, self.textfilter = buf, textfilter
             def __getslice__(self, lo, hi):
-                i0, i1 = misc.buffer_get_iter_range(self.buf, lo, hi)
-                return self.buf.get_text(i0, i1, 0).split("\n")
-        class FakeTextFiltered(object):
-            def __init__(self, buf, regexes):
-                self.buf, self.regexes = buf, regexes
-            def __getslice__(self, lo, hi):
-                i0, i1 = misc.buffer_get_iter_range(self.buf, lo, hi)
-                txt = self.buf.get_text(i0, i1, 0)
-                for r in self.regexes:
-                    txt = r.sub("", txt)
-                return txt.split("\n")
-        FakeText = (FakeTextFiltered,FakeTextRaw)[raw]
+                b = self.buf
+                txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
+                txt = self.textfilter(txt)
+                return txt.split("\n")[:-1]
         class FakeTextArray(object):
-            def __init__(self, bufs, regexes):
-                self.texts = [FakeText(b, regexes) for b in  bufs]
+            def __init__(self, bufs, textfilter):
+                self.texts = [FakeText(b, textfilter) for b in  bufs]
             def __getitem__(self, i):
                 return self.texts[i]
-        return FakeTextArray( self.textbuffer, self.regexes )
+        return FakeTextArray( [t.get_buffer() for t in self.textview], [self._filter_text, lambda x:x][raw] )
+
+    def _filter_text(self, txt):
+        def killit(m):
+            assert m.group().count("\n") == 0
+            if len(m.groups()):
+                s = m.group()
+                for g in m.groups():
+                    if g:
+                        s = s.replace(g,"")
+                return s
+            else:
+                return ""
+        try:
+            for c,r in self.regexes:
+                txt = c.sub(killit,txt)
+        except AssertionError:
+            if self.warned_bad_comparison == False:
+                misc.run_dialog(_("Regular expression '%s' changed the number of lines in the file. " \
+                    "Comparison will be incorrect. See the user manual for more details.") % r)
+                self.warned_bad_comparison = True
+        return txt
+
+    def after_text_insert_text(self, buffer, iter, newtext, textlen):
+        lines_added = newtext.count("\n")
+        starting_at = iter.get_line() - lines_added
+        self._after_text_modified(buffer, starting_at, lines_added)
+
+    def after_text_delete_range(self, buffer, iter0, iter1):
+        starting_at = iter0.get_line()
+        assert self.deleted_lines_pending != -1
+        self._after_text_modified(buffer, starting_at, -self.deleted_lines_pending)
+        self.deleted_lines_pending = -1
 
     def load_font(self):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
@@ -399,11 +312,12 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
             self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
-        load = lambda x: gui.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line-5)
+        load = lambda x: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
         self.pixbuf_delete = load("button_delete.xpm")
-        self.pixbuf_copy =   load("button_copy.xpm")
+        self.pixbuf_copy0  = load("button_copy0.xpm")
+        self.pixbuf_copy1  = load("button_copy1.xpm")
 
     def on_preference_changed(self, key, value):
         if key == "draw_style":
@@ -415,86 +329,110 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
                 tabs.set_tab(i, pango.TAB_LEFT, i*value*self.pango_char_width)
             for i in range(3):
                 self.textview[i].set_tabs(tabs)
-        elif key == "custom_font_enabled" or key == "custom_font":
+        elif key == "use_custom_font" or key == "custom_font":
             self.load_font()
-        elif key == "line_numbers":
-            for t in self.textview:
-                t.set_show_line_numbers( value )
-        elif key == "syntax_highlighting":
-            for i in range(self.num_panes):
-                sourceview.set_highlighting_enabled(
-                    self.textbuffer[i],
-                    self.bufferextra[i].filename,
-                    self.prefs.syntax_highlighting )
+        elif key == "show_line_numbers":
+            if sourceview_available:
+                for t in self.textview:
+                    t.set_show_line_numbers( value )
+        elif key == "use_syntax_highlighting":
+            if sourceview_available:
+                for i in range(self.num_panes):
+                    set_highlighting_enabled(
+                        self.textview[i].get_buffer(),
+                        self.bufferdata[i].filename,
+                        self.prefs.use_syntax_highlighting )
         elif key == "regexes":
             self._update_regexes()
-        elif key == "wrap_lines":
-            for text in self.textview:
-                text.set_wrap_mode( value )
 
-    def on_toplevel__key_press_event(self, obj, event):
+    def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask | x != self.keymask:
             self.keymask |= x
-            self._update_merge_buttons()
-        if event.keyval == gtk.keysyms.Escape:
-            self.button_find_close.clicked()
+            for l in self.linkmap[:self.num_panes-1]:
+                a = l.get_allocation()
+                w = self.pixbuf_copy0.get_width()
+                l.queue_draw_area(0,      0, w, a[3])
+                l.queue_draw_area(a[2]-w, 0, w, a[3])
 
-    def on_toplevel__key_release_event(self, obj, event):
+    def on_key_release_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
-            self._update_merge_buttons()
+            for l in self.linkmap[:self.num_panes-1]:
+                a = l.get_allocation()
+                w = self.pixbuf_copy0.get_width()
+                l.queue_draw_area(0,      0, w, a[3])
+                l.queue_draw_area(a[2]-w, 0, w, a[3])
 
     def is_modified(self):
-        state = [b.get_modified() for b in self.textbuffer]
+        state = [b.modified for b in self.bufferdata]
         return 1 in state
 
     def _get_filename(self, i):
-        return self.bufferextra[i].filename or "<unnamed>"
+        return self.bufferdata[i].filename or "<unnamed>"
+
+    def on_delete_event(self, appquit=0):
+        modified = [b.modified for b in self.bufferdata]
+        if 1 in modified:
+            dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
+            dialog.widget.set_transient_for(self.widget.get_toplevel())
+            buttons = []
+            for i in range(self.num_panes):
+                b = gtk.CheckButton( self._get_filename(i) )
+                b.set_use_underline(False)
+                buttons.append(b)
+                dialog.box.pack_start(b, 1, 1)
+                if not modified[i]:
+                    b.set_sensitive(0)
+                else:
+                    b.set_active(1)
+            dialog.widget.show_all()
+            if not appquit:
+                dialog.button_quit.hide()
+            response = dialog.widget.run()
+            try_save = [ b.get_active() for b in buttons]
+            dialog.widget.destroy()
+            if response==gtk.RESPONSE_OK:
+                for i in range(self.num_panes):
+                    if try_save[i]:
+                        if self.save_file(i) != melddoc.RESULT_OK:
+                            return gtk.RESPONSE_CANCEL
+            elif response==gtk.RESPONSE_CLOSE:
+                return gtk.RESPONSE_CLOSE
+            else:
+                return gtk.RESPONSE_CANCEL
+        return gtk.RESPONSE_OK
 
         #
         # text buffer undo/redo
         #
-    def on_textbuffer__begin_user_action(self, *rest):
+    def on_text_begin_user_action(self, *buffer):
         self.undosequence.begin_group()
 
-    def on_textbuffer__end_user_action(self, *rest):
+    def on_text_end_user_action(self, *buffer):
         self.undosequence.end_group()
 
-    def on_textbuffer__modified_changed(self, buf):
-        self.recompute_label()
-
-    def on_textbuffer__insert_text(self, buf, it, text, textlen):
-        if not self.undosequence.in_progress:
+    def on_text_insert_text(self, buffer, iter, text, textlen):
+        if not self.undosequence_busy:
             self.undosequence.begin_group()
-            if not buf.get_modified():
-                self.undosequence.add_action( undoaction.TextBufferModify(buf) )
-            self.undosequence.add_action( undoaction.TextBufferInsert(buf, it.get_offset(), text) )
+            pane = self.textview.index( buffer.textview )
+            if self.bufferdata[pane].modified != 1:
+                self.undosequence.add_action( BufferModifiedAction(buffer, self) )
+            self.undosequence.add_action( BufferInsertionAction(buffer, iter.get_offset(), text) )
             self.undosequence.end_group()
 
-    def on_textbuffer__delete_range(self, buf, iter0, iter1):
-        text = buf.get_text(iter0, iter1, 0)
-        pane = self.textbuffer.index(buf)
+    def on_text_delete_range(self, buffer, iter0, iter1):
+        text = buffer.get_text(iter0, iter1, 0)
+        pane = self.textview.index(buffer.textview)
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = text.count("\n")
-        if not self.undosequence.in_progress:
+        if not self.undosequence_busy:
             self.undosequence.begin_group()
-            if not buf.get_modified():
-                self.undosequence.add_action( undoaction.TextBufferModify(buf) )
-            self.undosequence.add_action( undoaction.TextBufferDelete(buf, iter0.get_offset(), text) )
+            if self.bufferdata[pane].modified != 1:
+                self.undosequence.add_action( BufferModifiedAction(buffer, self) )
+            self.undosequence.add_action( BufferDeletionAction(buffer, iter0.get_offset(), text) )
             self.undosequence.end_group()
-
-    def after_textbuffer__insert_text(self, buf, iter, newtext, textlen):
-        lines_added = newtext.count("\n")
-        starting_at = iter.get_line() - lines_added
-        self._after_text_modified(buf, starting_at, lines_added)
-
-    def after_textbuffer__delete_range(self, buf, iter0, iter1):
-        starting_at = iter0.get_line()
-        assert self.deleted_lines_pending != -1
-        self._after_text_modified(buf, starting_at, -self.deleted_lines_pending)
-        self.deleted_lines_pending = -1
 
         #
         #
@@ -507,68 +445,150 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
                 return t
         return None
 
-    def on_textview__button_press_event(self, textview, event):
+    def on_find_activate(self, *args):
+        self.keymask = 0
+        self.queue_draw()
+        if self.find_dialog:
+            self.find_dialog.widget.present()
+        else:
+            class FindDialog(gnomeglade.Component):
+                def __init__(self, app):
+                    self.parent = app
+                    self.pane = -1
+                    gladefile = paths.share_dir("glade2/filediff.glade")
+                    gnomeglade.Component.__init__(self, gladefile, "finddialog")
+                    self.widget.set_transient_for(app.widget.get_toplevel())
+                    self.widget.show_all()
+                def on_destroy(self, *args):
+                    self.parent.find_dialog = None
+                    self.widget.destroy()
+                def on_entry_search_for_activate(self, *args):
+                    self.parent._find_text( self.entry_search_for.get_chars(0,-1),
+                        self.check_case.get_active(),
+                        self.check_word.get_active(),
+                        self.check_wrap.get_active(),
+                        self.check_regex.get_active() )
+                    return 1
+            self.find_dialog = FindDialog(self)
+
+    def on_find_next_activate(self, *args):
+        if self.last_search:
+            s = self.last_search
+            self._find_text(s.text, s.case, s.word, s.wrap, s.regex)
+        else:
+            self.on_find_activate()
+
+    def on_copy_activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("copy-clipboard") #XXX .get_buffer().copy_clipboard()
+
+    def on_cut_activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("cut-clipboard") #XXX get_buffer().cut_clipboard()
+
+    def on_paste_activate(self, *extra):
+        t = self._get_focused_textview()
+        if t:
+            t.emit("paste-clipboard") #XXX t.get_buffer().paste_clipboard(None, 1)
+
+    def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
             pane = self.textview.index(textview)
             self.popup_menu.popup_in_pane( pane )
-            return True
-        return False
+            return 1
 
-    def on_textview__toggle_overwrite(self, view):
-        lock = self.enter_locked_region("__on_textview__toggle_overwrite")
-        if lock:
-            try:
-                over = not view.get_overwrite()
-                [v.set_overwrite(over) for v in self.textview if v != view]
-                self._update_cursor_status(view.get_buffer())
-            finally:
-                self.exit_locked_region(lock)
+    def on_textview_toggle_overwrite(self, view):
+        self.textview_overwrite = not self.textview_overwrite
+        for v,h in zip(self.textview, self.textview_overwrite_handlers):
+            v.disconnect(h)
+            if v != view:
+                v.emit("toggle-overwrite")
+        self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
+        self._update_cursor_status(view.get_buffer())
+
+        #
+        # find/replace buffer
+        #
+    def _find_text(self, tofind_utf8, match_case=0, entire_word=0, wrap=1, regex=0):
+        self.last_search = misc.struct(text=tofind_utf8, case=match_case, word=entire_word, wrap=wrap, regex=regex)
+        view = self._get_focused_textview() or self.textview0
+        buf = view.get_buffer()
+        insert = buf.get_iter_at_mark( buf.get_insert() )
+        tofind = tofind_utf8.decode("utf-8") # tofind is utf-8 encoded
+        text = buf.get_text(*buf.get_bounds() ).decode("utf-8") # as is buffer
+        if not regex:
+            tofind = re.escape(tofind)
+        if entire_word:
+            tofind = r'\b' + tofind + r'\b'
+        try:
+            pattern = re.compile( tofind, (match_case and re.M or (re.M|re.I)) )
+        except re.error, e:
+            misc.run_dialog( _("Regular expression error\n'%s'") % e, self, messagetype=gtk.MESSAGE_ERROR)
+        else:
+            match = pattern.search(text, insert.get_offset()+1)
+            if match == None and wrap:
+                match = pattern.search(text, 0)
+            if match:
+                iter = buf.get_iter_at_offset( match.start() )
+                buf.place_cursor( iter )
+                iter.forward_chars( match.end() - match.start() )
+                buf.move_mark( buf.get_selection_bound(), iter )
+                view.scroll_to_mark( buf.get_insert(), 0)
+            elif regex:
+                misc.run_dialog( _("The regular expression '%s' was not found.") % tofind_utf8, self, messagetype=gtk.MESSAGE_INFO)
+            else:
+                misc.run_dialog( _("The text '%s' was not found.") % tofind_utf8, self, messagetype=gtk.MESSAGE_INFO)
 
         #
         # text buffer loading/saving
         #
 
     def recompute_label(self):
-        filenames = [ self._get_filename(i) for i in range(3) ]
+        filenames = []
         for i in range(self.num_panes):
-            if self.bufferextra[i].writable == 0:
-                self.statusbutton[i].child.set_from_stock(gtk.STOCK_SAVE_AS, gtk.ICON_SIZE_SMALL_TOOLBAR)
+            filenames.append( self._get_filename(i) )
+        shortnames = misc.shorten_names(*filenames)
+        for i in range(self.num_panes):
+            if self.bufferdata[i].modified == 1:
+                shortnames[i] += "*"
+                self.statusimage[i].show()
+                self.statusimage[i].set_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_SMALL_TOOLBAR)
+            elif self.bufferdata[i].writable == 0:
+                self.statusimage[i].show()
+                self.statusimage[i].set_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_SMALL_TOOLBAR)
             else:
-                self.statusbutton[i].child.set_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_SMALL_TOOLBAR)
-            if self.textbuffer[i].get_modified() == 1:
-                filenames[i] += "*"
-                self.statusbutton[i].set_sensitive(True)
-            else:
-                self.statusbutton[i].set_sensitive(False)
-        shortnames = misc.shorten_names( *filenames[:self.num_panes] )
+                self.statusimage[i].hide()
         self.label_text = " : ".join(shortnames)
-        self.emit("label-changed", self.label_text)
+        self.label_changed()
 
     def set_files(self, files):
         """Set num panes to len(files) and load each file given.
+           If an element is None, the text of a pane is left as is.
         """
-        self.set_num_panes( len(files) )
         for i,f in misc.enumerate(files):
             if f:
-                b = self.textbuffer[i]
+                b = self.textview[i].get_buffer()
                 b.delete( b.get_start_iter(), b.get_end_iter() )
                 absfile = os.path.abspath(f)
-                self.fileentry[i].set_path(absfile)
-                self.bufferextra[i] = self.BufferExtra(absfile)
+                self.fileentry[i].set_filename(absfile)
+                self.bufferdata[i] = MeldBufferData(absfile)
         self.recompute_label()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
     def _set_files_internal(self, files):
         yield _("[%s] Set num panes") % self.label_text
-        self.block_signal_handlers(*self.textbuffer)
-        self.differ = diffutil.Differ()
+        self.set_num_panes( len(files) )
+        self._disconnect_buffer_handlers()
+        self.linediffer.diffs = [[],[]]
         self.queue_draw()
+        buffers = [t.get_buffer() for t in self.textview][:self.num_panes]
         try_codecs = self.prefs.text_codecs.split()
         yield _("[%s] Opening files") % self.label_text
-        panetext = [None] * len(files)
+        panetext = ["\n"] * self.num_panes
         tasks = []
-        buffers = self.textbuffer
         for i,f in misc.enumerate(files):
             if f:
                 try:
@@ -581,16 +601,27 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
                     tasks.append(task)
                 except (IOError, LookupError), e:
                     buffers[i].set_text("\n")
-                    gui.run_dialog(
-                        _("Could not open '%s' for reading.\n\nThe error was:\n%s") % (f, str(e)),
-                        parent = self.toplevel.get_toplevel())
+                    misc.run_dialog(
+                        "%s\n\n%s\n%s" % (
+                            _("Could not read from '%s'") % f,
+                            _("The error was:"),
+                            str(e)),
+                        parent = self)
             else:
-                panetext[i] = buffers[i].get_text( *buffers[i].get_bounds() )
+                panetext[i] = buffers[i].get_text( buffers[i].get_start_iter(), buffers[i].get_end_iter() )
         yield _("[%s] Reading files") % self.label_text
         while len(tasks):
             for t in tasks[:]:
                 try:
                     nextbit = t.file.read(4096)
+                    if nextbit.find("\x00") != -1:
+                        misc.run_dialog(
+                            "%s\n\n%s" % (
+                                _("Could not read from '%s'") % t.filename,
+                                _("It contains ascii nulls.\nPerhaps it is a binary file.") ),
+                                parent = self )
+                        t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
+                        tasks.remove(t)
                 except ValueError, err:
                     t.codec.pop(0)
                     if len(t.codec):
@@ -600,205 +631,153 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
                     else:
                         print "codec error fallback", err
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
-                        gui.run_dialog(
-                            _("Could not read from '%s'.\n\nI tried encodings %s.")
-                            % (t.filename, try_codecs), parent = self.toplevel.get_toplevel())
+                        misc.run_dialog(
+                            "%s\n\n%s" % (
+                                _("Could not read from '%s'") % t.filename,
+                                _("I tried encodings %s.") % try_codecs ),
+                            parent = self)
                         tasks.remove(t)
                 except IOError, ioerr:
-                    gui.run_dialog(
-                        _("Could not read from '%s'.\n\nThe error was:\n%s")
-                        % (t.filename, str(ioerr)), parent = self.toplevel.get_toplevel())
+                    misc.run_dialog(
+                        "%s\n\n%s\n%s" % (
+                            _("Could not read from '%s'") % t.filename,
+                            _("The error was:"),
+                            str(ioerr)),
+                        parent = self)
                     tasks.remove(t)
                 else:
                     if len(nextbit):
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
                         t.text.append(nextbit)
                     else:
-                        self.bufferextra[t.pane].encoding = t.codec[0]
+                        self.bufferdata[t.pane].encoding = t.codec[0]
                         if hasattr(t.file, "newlines"):
-                            self.bufferextra[t.pane].newlines = t.file.newlines
+                            self.bufferdata[t.pane].newlines = t.file.newlines
                         tasks.remove(t)
                         panetext[t.pane] = "".join(t.text)
-                        #if len(panetext[t.pane]) and \
-                            #panetext[t.pane][-1] != "\n" and \
-                            #self.prefs.supply_newline:
-                                #t.buf.insert( t.buf.get_end_iter(), "\n")
-                                #panetext[t.pane] += "\n"
+                        if len(panetext[t.pane]) and \
+                            panetext[t.pane][-1] != "\n" and \
+                            self.prefs.supply_newline:
+                                t.buf.insert( t.buf.get_end_iter(), "\n")
+                                panetext[t.pane] += "\n"
             yield 1
+        self.undosequence.clear()
         yield _("[%s] Computing differences") % self.label_text
-        for r in self.regexes:
-            panetext = [r.sub("",p) for p in panetext]
+        panetext = [self._filter_text(p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
-        step = self.differ.set_sequences_iter(*lines)
+        step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
-        self._update_merge_buttons()
-        self.toplevel.queue_draw()
-        lenseq = [len(d) for d in self.differ.diffs]
+        self.queue_draw()
+        lenseq = [len(d) for d in self.linediffer.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
-        self.unblock_signal_handlers(*self.textbuffer)
-        for i in range(len(files)):
-            if files[i]:
-                sourceview.set_highlighting_enabled( self.textbuffer[i],
-                files[i], self.prefs.syntax_highlighting )
-        for b,f in zip(self.textbuffer,files):
-            if f:
-                b.set_modified(0)
-                self.undosequence.clear()
+        self._connect_buffer_handlers()
+        if sourceview_available:
+            for i in range(len(files)):
+                if files[i]:
+                    set_highlighting_enabled( self.textview[i].get_buffer(), files[i], self.prefs.use_syntax_highlighting )
         yield 0
 
-    def _apply_diff(self, operation, chunk, linkindex, side):
-        src = linkindex + side
-        dst = linkindex + (1-side)
-        self.textview[src].place_cursor_onscreen()
-        self.textview[dst].place_cursor_onscreen()
-        off = side*2
-        if operation == "delete":
-            b = self.textview[src].get_buffer()
-            b.delete(b.get_iter_at_line(chunk[1+off]), b.get_iter_at_line(chunk[2+off]))
-        elif operation == "copy":
-            b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
-            t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
-            b1.insert(b1.get_iter_at_line(chunk[4-off]), t0)
-        else: # replace
-            b0, b1 = self.textview[src].get_buffer(), self.textview[dst].get_buffer()
-            t0 = b0.get_text( b0.get_iter_at_line(chunk[1+off]), b0.get_iter_at_line(chunk[2+off]), 0)
-            b1.begin_user_action()
-            b1.delete(b1.get_iter_at_line(chunk[3-off]), b1.get_iter_at_line(chunk[4-off]))
-            b1.insert(b1.get_iter_at_line(chunk[3-off]), t0)
-            b1.end_user_action()
-
-    def _update_merge_buttons(self):
-        app = self
-        class ButtonManager:
-            def __init__(self, area):
-                self.area = area
-                self.index = 0
-                self.buttons = []
-                self.extra = []
-            def next(self, pixbuf, extra):
-                try:
-                    b = self.buttons[self.index]
-                    self.extra[self.index] = extra
-                except IndexError:
-                    im = gtk.Image()
-                    b = gtk.Button()
-                    b.set_property("relief", gtk.RELIEF_NONE)
-                    b.set_focus_on_click(False)
-                    b.add(im)
-                    b.set_border_width(0)
-                    b.show_all()
-                    self.area.put( b, 0, 0 )
-                    self.buttons.append(b)
-                    self.extra.append(extra)
-                    b.connect("clicked", self.on_clicked)
-                self.index += 1
-                b.child.set_from_pixbuf(pixbuf)
-                b.show()
-                return b
-            def on_clicked(self, button):
-                operation, chunk, linkindex, side = self.extra[ self.buttons.index(button) ]
-                app._apply_diff(operation, chunk, linkindex, side)
-            def put_back(self, button):
-                self.index -= 1
-            def finished(self):
-                for b in self.buttons[self.index:]:
-                    b.hide()
-                self.index = 0
-        if not hasattr(self,"_button_manager"):
-            self._button_manager = [ ButtonManager(l) for l in self.linkmap]
-
-        if self.keymask & self.MASK_SHIFT: # delete
-            operation = "delete"
-            pixbufs = self.pixbuf_delete, self.pixbuf_delete
-        elif self.keymask & self.MASK_CTRL: # copy up
-            operation = "copy"
-            pixbufs = self.pixbuf_copy, self.pixbuf_copy
-        else:
-            operation = "apply"
-            pixbufs = self.pixbuf_apply0, self.pixbuf_apply1
-
-        visible = [t.get_visible_rect() for t in self.textview]
-        yoff = self.textview0.get_allocation().y - self.linkmap0.get_allocation().y
-        for linkindex in range(self.num_panes-1):
-            start = [self._pixel_to_line(linkindex+i, visible[linkindex+i].y) for i in range(2)]
-            end =   [self._pixel_to_line(linkindex+i, visible[linkindex+i].y+visible[linkindex+i].height) for i in range(2)]
-            button_indent = 5
-            button = self._button_manager[linkindex].next(pixbufs[0], None)
-            xpos = (-button_indent, self.linkmap0.size_request()[0] - (button.size_request()[0]-button_indent))
-            self._button_manager[linkindex].put_back(button)
-            for change in self.differ.single_changes(linkindex*2, linkindex==1):
-                if change[2] < start[0] and change[4] < start[1]: continue
-                if change[1] > end[0] and change[3] > end[1]: break
-                for side in range(2):
-                    if change[0] == ("insert","delete")[side] and self.keymask:
-                        continue
-                    button = self._button_manager[linkindex].next( pixbufs[side], (operation, change, linkindex, side) )
-                    ypos = self._line_to_pixel(linkindex+side, change[1+2*side]) - visible[linkindex+side].y + yoff
-                    if change[0] == ("insert","delete")[side]:
-                        ypos -= button.size_request()[1]/2
-                    self.linkmap[linkindex].move( button, xpos[side], ypos)
-            self._button_manager[linkindex].finished()
-
     def _update_highlighting(self, range0, range1):
-        buffers = self.textbuffer
+        buffers = [t.get_buffer() for t in self.textview]
         for b in buffers:
-            tag = b.get_tag_table().lookup("inline line0")
-            b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
-            tag = b.get_tag_table().lookup("inline line1")
-            b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
-
-        for c in [change for change in self.differ.single_changes(1) if change[0]=="replace"]:
-            other = c[5]*2
-            bufs = buffers[1], buffers[other]
-            tags = [b.get_tag_table().lookup("inline line%i"%c[5]) for b in bufs]
-            starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
-
-            text1 = "\n".join( self._get_texts(raw=1)[1    ][c[1]:c[2]] ).encode("utf16")
-            text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
-            textn = "\n".join( self._get_texts(raw=1)[other][c[3]:c[4]] ).encode("utf16")
-            textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
-            matcher = difflib.SequenceMatcher(None, text1, textn)
-            back = (0,0)
-            MIN_MATCH = 3
-            for o in matcher.get_opcodes():
-                if o[0] == "equal":
-                    if (o[2]-o[1] < MIN_MATCH) or (o[4]-o[3] < MIN_MATCH):
-                        back = o[4]-o[3], o[2]-o[1]
-                    continue
-                for i in range(2):
-                    s,e = starts[i].copy(), starts[i].copy()
-                    s.forward_chars( o[1+2*i] - back[i] )
-                    e.forward_chars( o[2+2*i] )
-                    bufs[i].apply_tag(tags[i], s, e)
-                back = (0,0)
-            yield 1
+            taglist = ["delete line", "conflict line", "replace line", "inline line"]
+            table = b.get_tag_table()
+            for tagname in taglist:
+                tag = table.lookup(tagname)
+                b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
+        for chunk in self.linediffer.all_changes(self._get_texts()):
+            for i,c in misc.enumerate(chunk):
+                if c:
+                    if c[0] == "insert":
+                        buf = buffers[i*2]
+                        #txt = self._get_texts()[0][c[3]:c[4]]
+                        #print txt, "".join(txt) == ""
+                        #if "".join(txt) == "": continue
+                        #print "OK"
+                        tag = buf.get_tag_table().lookup("delete line")
+                        buf.apply_tag( tag, buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
+                    elif c[0] == "delete":
+                        buf = buffers[1]
+                        tag = buf.get_tag_table().lookup("delete line")
+                        buf.apply_tag( tag, buf.get_iter_at_line(c[1]), buf.get_iter_at_line(c[2]) )
+                    elif c[0] == "conflict":
+                        bufs = buffers[1], buffers[i*2]
+                        tags = [b.get_tag_table().lookup("conflict line") for b in bufs]
+                        for b,t,o in zip(bufs, tags, (0,2)):
+                            b.apply_tag( t, b.get_iter_at_line(c[o+1]), b.get_iter_at_line(c[o+2]) )
+                    elif c[0] == "replace":
+                        bufs = buffers[1], buffers[i*2]
+                        tags = [b.get_tag_table().lookup("replace line") for b in bufs]
+                        starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
+                        for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
+                            b.apply_tag(t, s, b.get_iter_at_line(l))
+                        if 1:
+                            text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] ).encode("utf16")
+                            text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
+                            textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] ).encode("utf16")
+                            textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
+                            matcher = difflib.SequenceMatcher(None, text1, textn)
+                            #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
+                            tags = [b.get_tag_table().lookup("inline line") for b in bufs]
+                            back = (0,0)
+                            for o in matcher.get_opcodes():
+                                if o[0] == "equal":
+                                    if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
+                                        back = o[4]-o[3], o[2]-o[1]
+                                    continue
+                                for i in range(2):
+                                    s,e = starts[i].copy(), starts[i].copy()
+                                    s.forward_chars( o[1+2*i] - back[i] )
+                                    e.forward_chars( o[2+2*i] )
+                                    bufs[i].apply_tag(tags[i], s, e)
+                                back = (0,0)
+                            yield 1
+        yield 1
         
+    def _get_filename_for_saving(self, title ):
+        #dialog = gtk.FileChooserDialog( ## try
+        #parent = self.widget.get_toplevel(), 
+        #action = gtk.FILE_CHOOSER_ACTION_SAVE,
+        #buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK) )
+        fselect = gtk.FileSelection( title )
+        fselect.set_transient_for(self.widget.get_toplevel() )
+        response = fselect.run()
+        if response != gtk.RESPONSE_OK:
+            fselect.destroy()
+            return None
+        else:
+            filename = fselect.get_filename()
+            fselect.destroy()
+            if os.path.exists(filename):
+                response = misc.run_dialog(
+                    _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
+                    parent = self,
+                    buttonstype = gtk.BUTTONS_YES_NO)
+                if response == gtk.RESPONSE_NO:
+                    return None
+            return filename
+
+    def _save_text_to_filename(self, filename, text):
+        try:
+            open(filename, "w").write(text)
+        except IOError, e:
+            misc.run_dialog(
+                _("Error writing to %s\n\n%s.") % (filename, e),
+                self, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
+            return False
+        return True
+
     def save_file(self, pane, saveas=0):
-        buf = self.textbuffer[pane]
-        bufdata = self.bufferextra[pane]
-        if saveas or not bufdata.filename or bufdata.writable == 0:
-            buttons = gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK
-            fchooser = gtk.FileChooserDialog( _("Save buffer %i as.") % (pane+1),
-                parent=self.toplevel.get_toplevel(),
-                action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                buttons=buttons)
-            response = fchooser.run()
-            if response != gtk.RESPONSE_OK:
-                fchooser.destroy()
-                return melddoc.RESULT_ERROR
-            else:
-                filename = fchooser.get_filename()
-                fchooser.destroy()
-                if os.path.exists(filename):
-                    response = gui.run_dialog(
-                        _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
-                        parent = self.toplevel.get_toplevel(),
-                        buttonstype = gtk.BUTTONS_YES_NO)
-                    if response == gtk.RESPONSE_NO:
-                        return melddoc.RESULT_ERROR
+        buf = self.textview[pane].get_buffer()
+        bufdata = self.bufferdata[pane]
+        if saveas or not bufdata.filename:
+            filename = self._get_filename_for_saving( _("Choose a name for buffer %i.") % (pane+1) )
+            if filename:
                 bufdata.filename = os.path.abspath(filename)
-                self.fileentry[pane].set_path( bufdata.filename )
+                self.fileentry[pane].set_filename( bufdata.filename)
+            else:
+                return melddoc.RESULT_ERROR
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if bufdata.newlines:
             if type(bufdata.newlines) == type(""):
@@ -806,9 +785,9 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
                     text = text.replace("\n", bufdata.newlines)
             elif type(bufdata.newlines) == type(()):
                 buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
-                newline = gui.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
+                newline = misc.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
                     self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_CANCEL,
-                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] )
+                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] ) 
                 if newline < 0:
                     return
                 for k,v in buttons.items():
@@ -817,60 +796,105 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
                         if k != '\n':
                             text = text.replace('\n', k)
                         break
-        if bufdata.encoding:
-            text = text.encode(bufdata.encoding)
-        try:
-            open(bufdata.filename, "w").write(text)
-        except IOError, e:
-            gui.run_dialog(
-                maintext = _("Error writing to %s\n\n%s.") % (bufdata.filename, e),
-                parent = self.toplevel.get_toplevel(),
-                messagetype = gtk.MESSAGE_ERROR,
-                buttonstype = gtk.BUTTONS_OK)
-            return melddoc.RESULT_ERROR
-        else:
-            bufdata.writable = True
+        if bufdata.encoding and self.prefs.save_encoding==0:
+            try:
+                text = text.encode(bufdata.encoding)
+            except UnicodeEncodeError, e:
+                if misc.run_dialog(
+                    _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.filename, bufdata.encoding),
+                    self, gtk.MESSAGE_ERROR, gtk.BUTTONS_YES_NO) != gtk.RESPONSE_YES:
+                    return melddoc.RESULT_ERROR
+        if self._save_text_to_filename(bufdata.filename, text):
             self.emit("file-changed", bufdata.filename)
             self.undosequence.clear()
-            buf.set_modified(False)
-            self.recompute_label()
-        return melddoc.RESULT_OK
+            self.set_buffer_modified(buf, 0)
+            return melddoc.RESULT_OK
+        else:
+            return melddoc.RESULT_ERROR
 
-    def on_fileentry__activate(self, entry):
-        if self.on_container_delete_event() == gtk.RESPONSE_OK:
-            files = [ e.get_path() for e in self.fileentry[:self.num_panes] ]
+    def make_patch(self, pane):
+        fontdesc = pango.FontDescription(self.prefs.get_current_font())
+        dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "patchdialog")
+        dialog.widget.set_transient_for( self.widget.get_toplevel() )
+        bufs = [t.get_buffer() for t in self.textview]
+        texts = [b.get_text(*b.get_bounds()).split("\n") for b in bufs]
+        texts[0] = [l+"\n" for l in texts[0]]
+        texts[1] = [l+"\n" for l in texts[1]]
+        names = [self._get_filename(i) for i in range(2)]
+        dialog.textview.modify_font(fontdesc)
+        buf = dialog.textview.get_buffer()
+        lines = []
+        for line in difflib.unified_diff(texts[0], texts[1], names[0], names[1]):
+            buf.insert( buf.get_end_iter(), line )
+            lines.append(line)
+        result = dialog.widget.run()
+        dialog.widget.destroy()
+        if result >= 0:
+            txt = "".join(lines)
+            if result == 1: # copy
+                clip = gtk.clipboard_get()
+                clip.set_text(txt)
+                clip.store()
+            else:# save as
+                filename = self._get_filename_for_saving( _("Save patch as...") )
+                if filename:
+                    self._save_text_to_filename(filename, txt)
+
+    def set_buffer_writable(self, buf, yesno):
+        pane = self.textview.index(buf.textview)
+        self.bufferdata[pane].writing = yesno
+        self.recompute_label()
+
+    def set_buffer_modified(self, buf, yesno):
+        pane = self.textview.index(buf.textview)
+        self.bufferdata[pane].modified = yesno
+        self.recompute_label()
+
+    def save(self):
+        pane = self._get_focused_pane()
+        if pane >= 0:
+            self.save_file(pane)
+
+    def save_all(self):
+        for i in range(self.num_panes):
+            if self.bufferdata[i].modified:
+                self.save_file(i)
+
+    def on_fileentry_activate(self, entry):
+        if self.on_delete_event() == gtk.RESPONSE_OK:
+            files = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
             self.set_files(files)
         return 1
 
     def _get_focused_pane(self):
-        for i,t in enumerate(self.textview):
-            if t.is_focus():
+        for i in range(self.num_panes):
+            if self.textview[i].is_focus():
                 return i
         return -1
 
-    def copy_entire_file(self, direction):
+    def copy_selected(self, direction):
         assert direction in (-1,1)
         src_pane = self._get_focused_pane()
         dst_pane = src_pane + direction
         assert dst_pane in range(self.num_panes)
-        buffers = self.textbuffer
+        buffers = [t.get_buffer() for t in self.textview]
         text = buffers[src_pane].get_text( buffers[src_pane].get_start_iter(), buffers[src_pane].get_end_iter() )
-        self.on_textbuffer__begin_user_action()
+        self.on_text_begin_user_action()
         buffers[dst_pane].set_text( text )
-        self.on_textbuffer__end_user_action()
+        self.on_text_end_user_action()
         self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src_pane].get_vadjustment() ) and None )
 
         #
         # refresh
         #
     def refresh(self, junk=None):
-        modified = [b.filename for b in self.bufferextra if b.modified]
+        modified = [b.filename for b in self.bufferdata if b.modified]
         if len(modified):
             message = _("Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
-            response = gui.run_dialog( message, parent=self.toplevel.get_toplevel(), messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
+            response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
             if response != gtk.RESPONSE_OK:
                 return
-        files = [b.filename for b in self.bufferextra[:self.num_panes] ]
+        files = [b.filename for b in self.bufferdata[:self.num_panes] ]
         self.set_files(files)
 
     def queue_draw(self, junk=None):
@@ -883,272 +907,213 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
         # scrollbars
         #
     def _sync_hscroll(self, adjustment):
-        lock = self.enter_locked_region("__sync_hscroll_lock")
-        if lock:
-            try:
-                self._sync_hscroll_lock = 1
-                adjs = map( lambda x: x.get_hadjustment(), self.scrolledwindow)
-                master = adjs.index(adjustment)
-                adjs.remove(adjustment)
-                val = adjustment.get_value()
-                for a in adjs:
-                    a.set_value(val)
-            finally:
-                self.exit_locked_region(lock)
-
-    def _handlers_block(self, wid):
-        for sig in wid.signal_handler_ids:
-            wid.handler_block( sig )
-    def _handlers_unblock(self, wid):
-        for sig in wid.signal_handler_ids:
-            wid.handler_unblock( sig )
+        if not hasattr(self,"_sync_hscroll_lock"):
+            self._sync_hscroll_lock = 0
+        if not self._sync_hscroll_lock:
+            self._sync_hscroll_lock = 1
+            adjs = map( lambda x: x.get_hadjustment(), self.scrolledwindow)
+            master = adjs.index(adjustment)
+            adjs.remove(adjustment)
+            val = adjustment.get_value()
+            for a in adjs:
+                a.set_value(val)
+            self._sync_hscroll_lock = 0
 
     def _sync_vscroll(self, adjustment):
-        lock = self.enter_locked_region("__sync_vscroll_lock")
-        if lock:
-            try:
-                adjustments = [w.get_vadjustment() for w in self.scrolledwindow[:self.num_panes]]
-                master = adjustments.index(adjustment)
+        # only allow one scrollbar to be here at a time
+        if not hasattr(self,"_sync_vscroll_lock"):
+            self._sync_vscroll_lock = 0
+        if not self._sync_vscroll_lock:
+            self._sync_vscroll_lock = 1
+            syncpoint = 0.5
+
+            adjustments = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
+            adjustments = adjustments[:self.num_panes]
+            master = adjustments.index(adjustment)
+            # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
+            others = zip( range(self.num_panes), adjustments)
+            del others[master]
+            if master == 2:
+                others.reverse()
+
+            # the line to search for in the 'master' text
+            line  = (adjustment.value + adjustment.page_size * syncpoint)
+            line *= self._get_line_count(master)
+            line /= (adjustment.upper - adjustment.lower) 
+
+            for (i,adj) in others:
+                mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
+                # look for the chunk containing 'line'
+                for c in self.linediffer.pair_changes(master, i, self._get_texts()):
+                    c = c[1:]
+                    if c[0] >= line:
+                        mend = c[0]
+                        oend = c[2]
+                        break
+                    elif c[1] >= line:
+                        mbegin,mend = c[0],c[1]
+                        obegin,oend = c[2],c[3]
+                        break
+                    else:
+                        mbegin = c[1]
+                        obegin = c[3]
+                fraction = (line - mbegin) / ((mend - mbegin) or 1)
+                other_line = (obegin + fraction * (oend - obegin))
+                val = adj.lower + (other_line / self._get_line_count(i) * (adj.upper - adj.lower)) - adj.page_size * syncpoint
+                val = misc.clamp(val, 0, adj.upper - adj.page_size)
+                adj.set_value( val )
+
                 # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-                others = zip( range(self.num_panes), adjustments)
-                del others[master]
-                if master == 2:
-                    others.reverse()
-
-                # the line to search for in the 'master' text
-                line  = (adjustment.value + adjustment.page_size * 0.5)
-                line *= self._get_line_count(master)
-                line /= (adjustment.upper - adjustment.lower)
-
-                for (i,adj) in others:
-                    mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
-                    # look for the chunk containing 'line'
-                    for c in self.differ.single_changes(master):
-                        if master==1 and i != c[5]*2:
-                            continue
-                        c = c[1:]
-                        if c[0] >= line:
-                            mend = c[0]
-                            oend = c[2]
-                            break
-                        elif c[1] >= line:
-                            mbegin,mend = c[0],c[1]
-                            obegin,oend = c[2],c[3]
-                            break
-                        else:
-                            mbegin = c[1]
-                            obegin = c[3]
-                    fraction = (line - mbegin) / ((mend - mbegin) or 1)
-                    other_line = (obegin + fraction * (oend - obegin))
-                    val = adj.lower + (other_line / self._get_line_count(i) * (adj.upper - adj.lower)) - 0.5*adj.page_size
-                    val = misc.clamp(val, 0, adj.upper - adj.page_size)
-                    adj.set_value( val )
-
-                    # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-                    if master != 1:
-                        line = other_line
-                        master = 1
-                self._update_merge_buttons()
-                self.linkmap0.queue_draw()
-                self.linkmap1.queue_draw()
-                self.toplevel.window.process_updates(True)
-            finally:
-                self.exit_locked_region(lock)
+                if master != 1:
+                    line = other_line
+                    master = 1
+            self.on_linkmap_expose_event(self.linkmap0, None)
+            self.on_linkmap_expose_event(self.linkmap1, None)
+            self._sync_vscroll_lock = 0
 
         #
         # diffmap drawing
         #
-    def on_diffmap__expose_event(self, area, event):
+    def on_diffmap_expose_event(self, area, event):
         diffmapindex = self.diffmap.index(area)
         textindex = (0, self.num_panes-1)[diffmapindex]
-        size_of_arrow = 14 # TODO from style
-        hperline = float( self.textview[textindex].get_allocation().height - 2*size_of_arrow) / self._get_line_count(textindex)
+
+        #TODO need height of arrow button on scrollbar - how do we get that?
+        size_of_arrow = 14
+        hperline = float( self.scrolledwindow[textindex].get_allocation().height - 4*size_of_arrow) / self._get_line_count(textindex)
         if hperline > self.pixels_per_line:
             hperline = self.pixels_per_line
-        
-        yoffset = self.textview[textindex].get_allocation().y - area.get_allocation().y + size_of_arrow
-        scaleit = lambda x,s=hperline,o=yoffset: x*s+o
+
+        scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
+        x0 = 4
+        x1 = area.get_allocation().width - 2*x0
         madj = self.scrolledwindow[textindex].get_vadjustment()
 
         window = area.window
+        window.clear()
         gctext = area.get_style().text_gc[0]
+        if not hasattr(area, "meldgc"):
+            self._setup_gcs(area)
 
-        rect_indent = 4
-        rect_width = area.get_allocation().width - 2*rect_indent
-        gc = lambda x : getattr(self.graphics_contexts, x)
-        for c in self.differ.single_changes(textindex):
+        gc = area.meldgc.get_gc
+        for c in self.linediffer.single_changes(textindex, self._get_texts()):
             assert c[0] != "equal"
             s,e = [int(x) for x in ( math.floor(scaleit(c[1])), math.ceil(scaleit(c[2]+(c[1]==c[2]))) ) ]
-            window.draw_rectangle( gc(c[0]), 1, rect_indent, s, rect_width, e-s)
-            window.draw_rectangle( gctext, 0, rect_indent, s, rect_width, e-s)
+            window.draw_rectangle( gc(c[0]), 1, x0, s, x1, e-s)
+            window.draw_rectangle( gctext, 0, x0, s, x1, e-s)
 
-    def on_diffmap__motion_notify_event(self, area, event):
-        self.diffmap_mouse_down(area,event)
-
-    def on_diffmap__button_press_event(self, area, event):
+    def on_diffmap_button_press_event(self, area, event):
+        #TODO need gutter of scrollbar - how do we get that?
         if event.button == 1:
-            self.diffmap_mouse_down(area, event)
-            return True
-        return False
-
-    def diffmap_mouse_down(self, area, event):
-        size_of_arrow = 14
-        diffmapindex = self.diffmap.index(area)
-        index = (0, self.num_panes-1)[diffmapindex]
-        height = area.get_allocation().height
-        fraction = (event.y - size_of_arrow) / (height - 3.75*size_of_arrow)
-        adj = self.scrolledwindow[index].get_vadjustment()
-        val = fraction * adj.upper - adj.page_size/2
-        upper = adj.upper - adj.page_size
-        adj.set_value( max( min(upper, val), 0) )
+            size_of_arrow = 14
+            diffmapindex = self.diffmap.index(area)
+            index = (0, self.num_panes-1)[diffmapindex]
+            height = area.get_allocation().height
+            fraction = (event.y - size_of_arrow) / (height - 3.75*size_of_arrow)
+            adj = self.scrolledwindow[index].get_vadjustment()
+            val = fraction * adj.upper - adj.page_size/2
+            upper = adj.upper - adj.page_size
+            adj.set_value( max( min(upper, val), 0) )
+            return 1
 
     def _get_line_count(self, index):
         """Return the number of lines in the buffer of textview 'text'"""
-        return self.textbuffer[index].get_line_count()
+        return self.textview[index].get_buffer().get_line_count()
 
-    def set_num_panes(self, num_panes):
-        if num_panes != self.num_panes and num_panes in (1,2,3):
-            self.num_panes = num_panes
+    def set_num_panes(self, n):
+        if n != self.num_panes and n in (1,2,3):
+            self.num_panes = n
+            toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
+            toshow += self.linkmap[:n-1] + self.diffmap[:n]
+            map( lambda x: x.show(), toshow )
+
+            tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
+            tohide += self.linkmap[n-1:] + self.diffmap[n:]
+            map( lambda x: x.hide(), tohide )
+
             for i in range(self.num_panes):
-                self.pane[i].show()
-                self.action_save_pane[i].set_sensitive(True)
-            for i in range(self.num_panes,3):
-                self.pane[i].hide()
-                self.action_save_pane[i].set_sensitive(False)
-            self.action_next_difference.set_sensitive( num_panes != 1 )
-            self.action_previous_difference.set_sensitive( num_panes != 1 )
-            if num_panes == 1:
-                [x.hide() for x in self.diffmap + self.linkmap]
-                self.action_one_pane.activate()
-            elif num_panes == 2:
-                [x.show() for x in self.diffmap + self.linkmap[:1] ]
-                self.linkmap[1].hide()
-                self.action_two_panes.activate()
-            elif num_panes == 3:
-                [x.show() for x in self.diffmap + self.linkmap]
-                self.action_three_panes.activate()
-            topleft = num_panes == 1 or self.horizontal_root.get_property("visible")
-            self.scrolledwindow[0].set_placement( (gtk.CORNER_TOP_RIGHT, gtk.CORNER_TOP_LEFT)[topleft] )
+                if self.bufferdata[i].modified:
+                    self.statusimage[i].show()
             self.queue_draw()
-            self.set_files([None]*num_panes)
+            self.recompute_label()
 
     def _line_to_pixel(self, pane, line ):
-        if line > 0:
-            it = self.textbuffer[pane].get_iter_at_line(line-1)
-            rect = self.textview[pane].get_iter_location( it )
-            return rect.y + rect.height
-        else:
-            it = self.textbuffer[pane].get_iter_at_line(line)
-            rect = self.textview[pane].get_iter_location( it )
-            return rect.y
+        iter = self.textview[pane].get_buffer().get_iter_at_line(line)
+        return self.textview[pane].get_iter_location( iter ).y
 
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
         
     def next_diff(self, direction):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-        def midpixel():
-            r = self.textview[1].get_visible_rect()
-            return int(r.y + 0.5*r.height)
-        curline = self._pixel_to_line( 1, midpixel() )
+        curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
         c = None
-        if direction == gtk.gdk.SCROLL_DOWN:
-            for c in self.differ.single_changes(1):
+        if direction == gdk.SCROLL_DOWN:
+            for c in self.linediffer.single_changes(1, self._get_texts()):
                 assert c[0] != "equal"
                 if c[1] > curline + 1:
                     break
-        else: #direction == gtk.SCROLL_STEP_BACKWARD
-            for chunk in self.differ.single_changes(1):
+        else: #direction == gdk.SCROLL_UP
+            for chunk in self.linediffer.single_changes(1, self._get_texts()):
                 if chunk[2] < curline:
                     c = chunk
                 elif c:
                     break
         if c:
-            if c[2] - c[1]:
+            if c[2] - c[1]: # no range, use other side
                 l0,l1 = c[1],c[2]
                 aidx = 1
                 a = adjs[aidx]
-            else: # no range, use other side
+            else:
                 l0,l1 = c[3],c[4]
-                aidx = c[5]*2
+                aidx = c[5]
                 a = adjs[aidx]
-            view = self._get_focused_textview()
-            if view:
-                buf = view.get_buffer()
-                it = buf.get_iter_at_line( (c[1],c[3])[self.textview.index(view)==0] )
-                buf.place_cursor( it )
             want = 0.5 * ( self._line_to_pixel(aidx, l0) + self._line_to_pixel(aidx,l1) - a.page_size )
             want = misc.clamp(want, 0, a.upper-a.page_size)
             a.set_value( want )
 
-    def on_toplevel__realize(self, toplevel):
-        window = self.toplevel.window
-        # graphics contexts
-        gcd = window.new_gc()
-        common = self.prefs.common
-        gcd.set_rgb_fg_color( gtk.gdk.color_parse(common.color_delete_bg) )
-        gcc = window.new_gc()
-        gcc.set_rgb_fg_color( gtk.gdk.color_parse(common.color_replace_bg) )
-        gce = window.new_gc()
-        gce.set_rgb_fg_color( gtk.gdk.color_parse(common.color_edited_bg) )
-        gcx = window.new_gc()
-        gcx.set_rgb_fg_color( gtk.gdk.color_parse(common.color_conflict_bg) )
-        self.graphics_contexts = misc.struct(delete=gcd, insert=gcd, replace=gcc, conflict=gcx)
-        #gtk.gdk.gdk_window_set_debug_updates(True)
+    def _setup_gcs(self, area):
+        assert area.window
+        gcd = area.window.new_gc()
+        gcd.set_rgb_fg_color( gdk.color_parse(self.prefs.color_delete_bg) )
+        gcc = area.window.new_gc()
+        gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_replace_bg) )
+        gce = area.window.new_gc()
+        gce.set_rgb_fg_color( gdk.color_parse(self.prefs.color_edited_bg) )
+        gcx = area.window.new_gc()
+        gcx.set_rgb_fg_color( gdk.color_parse(self.prefs.color_conflict_bg) )
+        area.meldgc = misc.struct(gc_delete=gcd, gc_insert=gcd, gc_replace=gcc, gc_conflict=gcx)
+        area.meldgc.get_gc = lambda p: getattr(area.meldgc, "gc_"+p)
 
-    def on_textview__realize(self, toplevel):
-        pass#[area.modify_bg( gtk.STATE_NORMAL, self.textview0.get_style().base[gtk.STATE_NORMAL]) for area in self.linkmap]
-
-    def on_textview__expose_event(self, textview, event):
-        if self.num_panes == 1:
-            return
-        if event.window != textview.get_window(gtk.TEXT_WINDOW_TEXT) \
-            and event.window != textview.get_window(gtk.TEXT_WINDOW_LEFT):
-            return
-        gctext = textview.get_style().text_gc[0]
-        visible = textview.get_visible_rect()
-        pane = self.textview.index(textview)
-        start_line = self._pixel_to_line(pane, visible.y)
-        end_line = 1+self._pixel_to_line(pane, visible.y+visible.height)
-        gc = lambda x : getattr(self.graphics_contexts, x)
-        #gcdark = textview.get_style().black_gc
-        gclight = textview.get_style().bg_gc[gtk.STATE_ACTIVE]
-        #curline = textview.get_buffer().get_iter_at_mark( textview.get_buffer().get_insert() ).get_line()
-               
-        def draw_change(change): # draw background and thin lines
-            ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
-            width = event.window.get_size()[0]
-            #gcline = (gclight, gcdark)[change[1] <= curline and curline < change[2]]
-            gcline = gclight
-            event.window.draw_line(gcline, 0,ypos0-1, width,ypos0-1)
-            if change[2] != change[1]:
-                ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
-                event.window.draw_line(gcline, 0,ypos1, width,ypos1)
-                event.window.draw_rectangle(gc(change[0]), 1, 0,ypos0, width,ypos1-ypos0)
-        last_change = None
-        for change in self.differ.single_changes(pane):
-            if change[2] < start_line: continue
-            if change[1] > end_line: break
-            if last_change and change[1] <= last_change[2]:
-                last_change = ("conflict", last_change[1], max(last_change[2],change[2]))
+    def _consume_blank_lines(self, txt):
+        lo, hi = 0, 0
+        for l in txt:
+            if len(l)==0:
+                lo += 1
             else:
-                if last_change:
-                    draw_change(last_change)
-                last_change = change
-        if last_change:
-            draw_change(last_change)
+                break
+        for l in txt[lo:]:
+            if len(l)==0:
+                hi += 1
+            else:
+                break
+        return lo,hi
 
         #
         # linkmap drawing
         #
-    def on_linkmap__expose_event(self, area, event):
+    def on_linkmap_expose_event(self, area, event):
+        window = area.window
         # not mapped? 
-        if not area.window: return
-        window = area.bin_window
-        window.clear()
+        if not window: return
+        if not hasattr(area, "meldgc"):
+            self._setup_gcs(area)
+        gctext = area.get_style().text_gc[0]
 
         alloc = area.get_allocation()
         (wtotal,htotal) = alloc.width, alloc.height
+        window.begin_paint_rect( (0,0,wtotal,htotal) )
+        window.clear()
 
         # gain function for smoothing
         #TODO cache these values
@@ -1158,40 +1123,33 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
                 return bias(2*t,1-g)/2.0
             else:
                 return (2-bias(2-2*t,1-g))/2.0
-        f = lambda x: gain( x, 0.95)
+        f = lambda x: gain( x, 0.85)
+
+        if self.keymask & MASK_SHIFT:
+            pix0 = self.pixbuf_delete
+            pix1 = self.pixbuf_delete
+        elif self.keymask & MASK_CTRL:
+            pix0 = self.pixbuf_copy0
+            pix1 = self.pixbuf_copy1
+        else: # self.keymask == 0:
+            pix0 = self.pixbuf_apply0
+            pix1 = self.pixbuf_apply1
+        draw_style = self.prefs.draw_style
+        gc = area.meldgc.get_gc
 
         which = self.linkmap.index(area)
-        yoff = self.textview0.get_allocation().y - self.linkmap0.get_allocation().y
         pix_start = [None] * self.num_panes
-        pix_start[which  ] = self.textview[which  ].get_visible_rect().y - yoff
-        pix_start[which+1] = self.textview[which+1].get_visible_rect().y - yoff
+        pix_start[which  ] = self.textview[which  ].get_visible_rect().y
+        pix_start[which+1] = self.textview[which+1].get_visible_rect().y
 
         def bounds(idx):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
         visible = [None] + bounds(which) + bounds(which+1)
 
-        def consume_blank_lines(txt):
-            lo, hi = 0, 0
-            for l in txt:
-                if len(l)==0:
-                    lo += 1
-                else:
-                    break
-            for l in txt[lo:]:
-                if len(l)==0:
-                    hi += 1
-                else:
-                    break
-            return lo,hi
-
-        gc = lambda x : getattr(self.graphics_contexts, x)
-        gcline = area.get_style().bg_gc[gtk.STATE_ACTIVE]
-        window.draw_rectangle( gcline, 0, 0, -1, wtotal-1, htotal+1)
-
-        for c in self.differ.single_changes(which*2, which==1):
+        for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             if self.prefs.ignore_blank_lines:
-                c1,c2 = consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
-                c3,c4 = consume_blank_lines( self._get_texts()[which+1][c[3]:c[4]] )
+                c1,c2 = self._consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
+                c3,c4 = self._consume_blank_lines( self._get_texts()[which+1][c[3]:c[4]] )
                 c = c[0], c[1]+c1,c[2]-c2, c[3]+c3,c[4]-c4
                 if c[1]==c[2] and c[3]==c[4]:
                     continue
@@ -1205,320 +1163,215 @@ class FileDiff(melddoc.MeldDoc, gui.Component):
             f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
             t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
 
-            n = 20
-            points0 = []
-            points1 = []
-            for t in map(lambda x: float(x)/n, range(n+1)):
-                points0.append( (int(    t*wtotal), 0+int((1-f(t))*f0 + f(t)*t0 )) )
-                points1.append( (int((1-t)*wtotal), 1+int(f(t)*f1 + (1-f(t))*t1 )) )
+            if f0==f1: f0 -= 2; f1 += 2
+            if t0==t1: t0 -= 2; t1 += 2
+            if draw_style > 0:
+                n = (1, 9)[draw_style-1]
+                points0 = []
+                points1 = [] 
+                for t in map(lambda x: float(x)/n, range(n+1)):
+                    points0.append( (int(    t*wtotal), int((1-f(t))*f0 + f(t)*t0 )) )
+                    points1.append( (int((1-t)*wtotal), int(f(t)*f1 + (1-f(t))*t1 )) )
 
-            points = points0 + points1 + [points0[0]]
-            window.draw_polygon( gc(c[0]), 1, points)
-            window.draw_lines(gcline, points0)
-            window.draw_lines(gcline, points1)
+                points = points0 + points1 + [points0[0]]
 
-    def on_linkmap__scroll_event(self, area, event):
+                window.draw_polygon( gc(c[0]), 1, points)
+                window.draw_lines(gctext, points0)
+                window.draw_lines(gctext, points1)
+            else:
+                w = wtotal
+                p = self.pixbuf_apply0.get_width()
+                window.draw_polygon(gctext, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
+                window.draw_polygon(gctext, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
+                points0 = (0,f0), (0,t0)
+                window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
+
+            x = wtotal-self.pixbuf_apply0.get_width()
+            if c[0]=="insert":
+                pix1.render_to_drawable( window, gctext, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+            elif c[0] == "delete":
+                pix0.render_to_drawable( window, gctext, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+            else: #replace
+                pix0.render_to_drawable( window, gctext, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+                pix1.render_to_drawable( window, gctext, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+
+        # allow for scrollbar at end of textview
+        mid = 0.5 * self.textview0.get_allocation().height
+        window.draw_line(gctext, int(.25*wtotal), int(mid), int(.75*wtotal), int(mid) )
+        window.end_paint()
+
+    def on_linkmap_scroll_event(self, area, event):
         self.next_diff(event.direction)
 
-        #
-        # File Actions
-        #
-    def action_save__activate(self, action):
-        pane = self._get_focused_pane()
-        if pane >= 0:
-            self.save_file(pane)
+    def on_linkmap_button_press_event(self, area, event):
+        if event.button == 1:
+            self.focus_before_click = None
+            for t in self.textview:
+                if t.is_focus():
+                    self.focus_before_click = t
+                    break
+            area.grab_focus()
+            self.mouse_chunk = None
+            alloc = area.get_allocation()
+            (wtotal,htotal) = alloc.width, alloc.height
+            pix_width = self.pixbuf_apply0.get_width()
+            pix_height = self.pixbuf_apply0.get_height()
+            if self.keymask == MASK_CTRL: # hack
+                pix_height *= 2
 
-    def action_save_as__activate(self, action):
-        pane = self._get_focused_pane()
-        if pane >= 0:
-            self.save_file(pane, saveas=1)
+            which = self.linkmap.index(area)
 
-    def action_save_all__activate(self, action):
-        for i in range(self.num_panes):
-            if self.textbuffer[i].get_modified():
-                self.save_file(i)
-
-    def action_save_pane0__activate(self, action):
-        self.save_file(0)
-    def action_save_pane1__activate(self, action):
-        self.save_file(1)
-    def action_save_pane2__activate(self, action):
-        self.save_file(2)
-
-    def action_print__activate(self, action):
-        def get(buf):
-            return buf.get_text(*buf.get_bounds()).split("\n")
-        text = [ get(b) for b in self.textbuffer[:2] ]
-        text = text[1], text[0]
-        chunks = self.differ.all_changes(text)
-        dialog = fileprint.PrintDialog(self.label_text, text, chunks)
-        dialog.run()
-
-    def action_close__activate(self, action):
-        self.emit("closed")
-
-        #
-        # Edit Actions
-        #
-    def action_undo__activate(self, *action):
-        self.undosequence.undo()
-
-    def action_redo__activate(self, *action):
-        self.undosequence.redo()
-
-    def action_find__activate(self, *action):
-        self.findreplace.show()
-        gobject.idle_add( lambda *args : self.entry_search_for.grab_focus() )
-
-    def action_find_next__activate(self, action):
-        if self.last_find_state:
-            self.last_find_state.toreplace = None
-            self.perform_find_replace(self.last_find_state)
-        else:
-            self.action_find__activate()
-
-    def action_find_replace__activate(self, *action):
-        self.findreplace.show_all()
-        self.button_show_replace.hide()
-
-    def action_cut__activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("cut-clipboard")
-
-    def action_copy__activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("copy-clipboard")
-
-    def action_paste__activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("paste-clipboard")
-
-        #
-        # View Actions
-        #
-    def action_num_panes__changed(self, group, action):
-        self.set_num_panes( action.get_property("value") )
-
-    def action_horizontal_panes__toggled(self, action):
-        if self.horizontal_root.get_property("visible"):
-            self.horizontal_root.hide()
-            self.vertical_root.show()
-            for i,p in enumerate(self.pane):
-                self.horizontal_root.remove(p)
-                self.vertical_root.add(p)
-                self.vertical_root.reorder_child(p, 1+2*i)
-            self.scrolledwindow[0].set_placement( (gtk.CORNER_TOP_RIGHT, gtk.CORNER_TOP_LEFT)[self.num_panes==1] )
-        else:
-            self.horizontal_root.show()
-            self.vertical_root.hide()
-            for p in self.pane:
-                self.vertical_root.remove(p)
-                self.horizontal_root.add(p)
-            self.scrolledwindow[0].set_placement(gtk.CORNER_TOP_LEFT)
-
-    def action_show_filenames__toggled(self, action):
-        visible = action.get_active()
-        for f in self.fileentryhbox:
-            f.set_property("visible",visible)
-        self.scheduler.add_task( self._update_merge_buttons )
-        self.scheduler.add_task( self.queue_draw )
-
-        #
-        # Diff Actions
-        #
-    def action_refresh__activate(self, *action):
-        self.set_files([None]*self.num_panes)
-
-    def action_previous_difference__activate(self, action):
-        self.next_diff(gtk.gdk.SCROLL_UP)
-
-    def action_next_difference__activate(self, action):
-        self.next_diff(gtk.gdk.SCROLL_DOWN)
-
-    def action_replace_left_file__activate(self, action):
-        self.copy_entire_file(-1)
-
-    def action_replace_right_file__activate(self, action):
-        self.copy_entire_file(+1)
-
-    #
-    # find / replace
-    #
-    def setup_find_replace_state(self):
-        self.last_find_state = None
-        self.entry_search_for = self.combo_search_for.child
-        self.entry_replace_with = self.combo_replace_with.child
-        self.combo_search_for.set_model( gtk.ListStore(type("")))
-        self.combo_search_for.set_text_column(0)
-        self.combo_replace_with.set_model( gtk.ListStore(type("")))
-        self.combo_replace_with.set_text_column(0)
-        self.gconf = gconf.client_get_default()
-        self.update_find_replace_history()
-        for check in "match_case entire_word wrap_around use_regex".split():
-            widget = getattr(self, "check_%s" % check)
-            key = "%s/%s" % (self.FIND_STATE_ROOT, check)
-            active = self.gconf.get_bool(key)
-            widget.connect("toggled", lambda b,k=key : self.gconf.set_bool(k, b.get_active()) )
-            widget.set_active(active)
-        gobject.idle_add( lambda : self.entry_replace_with.select_region(0,-1) )
-        gobject.idle_add( lambda : self.entry_search_for.select_region(0,-1) )
-
-    def update_find_replace_history(self):
-        for entry,history_id in ( (self.entry_search_for,"search_for"),
-                                  (self.entry_replace_with, "replace_with") ):
-            history = self.gconf.get_list("%s/%s" % (self.FIND_STATE_ROOT, history_id), gconf.VALUE_STRING )
-            name = entry.get_text()
-            try:
-                history.remove(name)
-            except ValueError:
-                pass
-            while len(history) > 7:
-                history.pop()
-            if name:
-                history.insert( 0, name )
-            combo = entry.parent
-            model = combo.get_model()
-            model.clear()
-            for h in history:
-                model.append([h])
-            if len(history):
-                combo.set_active(0)
-                self.gconf.set_list("%s/%s" % (self.FIND_STATE_ROOT, history_id), gconf.VALUE_STRING, history )
-
-    def on_findreplace__show(self, findreplace):
-        self.entry_search_for.emit("changed")
-
-    def on_button_find_close__clicked(self, button):
-        self.button_show_replace.show()
-        self.label_replace_with.hide()
-        self.combo_replace_with.hide()
-        self.button_replace_all.hide()
-        self.button_replace.hide()
-        self.findreplace.hide()
-        self.emit("status-changed", "")
-
-    def on_button_show_replace__clicked(self, *args):
-        self.findreplace.show_all()
-        self.button_show_replace.hide()
-
-    def after_check_use_regex__toggled(self, check):
-        self.on_entry_search_for__changed(self.entry_search_for)
-        if check.get_active:
-            self.emit("status-changed", self.find_regex_status)
-
-    def on_entry_search_for__changed(self, entry):
-        sensitive = True
-        if self.check_use_regex.get_active():
-            try:
-                re.compile( entry.get_text() )
-            except re.error, e:
-                msg = _("%s") % str(e)
-                self.find_regex_status = (_('Regex Error: %s') % msg)
-                sensitive = False
+            # quick reject are we near the gutter?
+            if event.x < pix_width:
+                side = 0
+                rect_x = 0
+            elif event.x > wtotal - pix_width:
+                side = 1
+                rect_x = wtotal - pix_width
             else:
-                self.find_regex_status = ""
-            self.emit("status-changed", self.find_regex_status)
-        self.button_replace_all.set_sensitive(sensitive)
-        self.button_replace.set_sensitive(sensitive)
-        self.button_find.set_sensitive(sensitive)
+                return  1
+            src = which + side
+            dst = which + 1 - side
+            adj = self.scrolledwindow[src].get_vadjustment()
+            func = lambda c: self._line_to_pixel(src, c[1]) - adj.value
 
-    def on_entry_search_for__activate(self, *args):
-        self.update_find_replace_history()
-        if self.combo_replace_with.get_property("visible"):
-            self.entry_replace_with.grab_focus()
-        elif self.button_find.get_property("sensitive"):
-            self.on_button_find__clicked()
+            for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
+                if self.prefs.ignore_blank_lines:
+                    c1,c2 = self._consume_blank_lines( self._get_texts()[src][c[1]:c[2]] )
+                    c3,c4 = self._consume_blank_lines( self._get_texts()[dst][c[3]:c[4]] )
+                    c = c[0], c[1]+c1,c[2]-c2, c[3]+c3,c[4]-c4
+                    if c[1]==c[2] and c[3]==c[4]:
+                        continue
+                if c[0] == "insert":
+                    continue
+                h = func(c)
+                if h < 0: # find first visible chunk
+                    continue
+                elif h > htotal: # we've gone past last visible
+                    break
+                elif h < event.y and event.y < h + pix_height:
+                    self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
+                    break
+            #print self.mouse_chunk
+            return 1
+        elif event.button == 2:
+            self.linkmap_drag_coord = event.x
 
-    def on_entry_replace_with__activate(self, *args):
-        self.update_find_replace_history()
-        self.button_find.grab_focus()
+    def on_linkmap_motion_notify_event(self, area, event):
+        return 
+        #dx = event.x - self.linkmap_drag_coord
+        #self.linkmap_drag_coord = event.x
+        #w,h = self.scrolledwindow0.size_request()
+        #w,h = size[2] - size[0], size[3] - size[1]
+        #self.scrolledwindow0.set_size_request(w+dx,h)
+        #print w+dx
+        #textview0.get_allocation(
+        #print misc.all(event)
 
-    def _get_state(self, *args):
-        s = self.FindReplaceState()
-        s.tofind = self.entry_search_for.get_text().decode("utf-8") # widget chars utf-8 encoded
-        s.toreplace = self.entry_replace_with.get_text().decode("utf-8") # widget chars utf-8 encoded
-        s.match_case = self.check_match_case.get_active()
-        s.entire_word = self.check_entire_word.get_active()
-        s.wrap_around = self.check_wrap_around.get_active()
-        s.use_regex = self.check_use_regex.get_active()
-        return s
+    def on_linkmap_button_release_event(self, area, event):
+        if event.button == 1:
+            if self.focus_before_click:
+                self.focus_before_click.grab_focus()
+                self.focus_before_click = None
+            if self.mouse_chunk:
+                (src,dst), rect, chunk = self.mouse_chunk
+                # check we're still in button
+                inrect = lambda p, r: ((r[0] < p.x) and (p.x < r[0]+r[2]) and (r[1] < p.y) and (p.y < r[1]+r[3]))
+                if inrect(event, rect):
+                    # gtk tries to jump back to where the cursor was unless we move the cursor
+                    self.textview[src].place_cursor_onscreen()
+                    self.textview[dst].place_cursor_onscreen()
+                    chunk = chunk[1:]
+                    self.mouse_chunk = None
 
-    def on_button_find__clicked(self, *args):
-        self.update_find_replace_history()
-        s = self._get_state()
-        s.toreplace = None
-        self.perform_find_replace(s)
+                    if self.keymask & MASK_SHIFT: # delete
+                        b = self.textview[src].get_buffer()
+                        b.delete(b.get_iter_at_line(chunk[0]), b.get_iter_at_line(chunk[1]))
+                    elif self.keymask & MASK_CTRL: # copy up or down
+                        b0 = self.textview[src].get_buffer()
+                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
+                        b1 = self.textview[dst].get_buffer()
+                        if event.y - rect[1] < 0.5 * rect[3]: # copy up
+                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
+                        else: # copy down
+                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[3]), t0, "edited line")
+                    else: # replace
+                        b0 = self.textview[src].get_buffer()
+                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
+                        b1 = self.textview[dst].get_buffer()
+                        self.on_text_begin_user_action()
+                        b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
+                        b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
+                        self.on_text_end_user_action()
+            return 1
 
-    def on_button_replace__clicked(self, *args):
-        self.update_find_replace_history()
-        self.perform_find_replace(self._get_state())
-
-    def on_button_replace_all__clicked(self, *args):
-        self.update_find_replace_history()
-        s = self._get_state()
-        s.replace_all = True
-        self.perform_find_replace(s)
-
-    def perform_find_replace(self, state):
-        self.last_find_state = state
-        textview = self.textview_focussed or self.textview0
-        buf = textview.get_buffer()
-        tofind = state.tofind
-        if not state.use_regex:
-            tofind = re.escape(tofind)
-        if state.entire_word:
-            tofind = r'\b' + tofind + r'\b'
-        pattern = re.compile( tofind, (state.match_case and re.M or (re.M|re.I)) )
-
-        orig_cursor = buf.create_mark( "orig_cursor", buf.get_iter_at_mark( buf.get_insert() ) )
-        end_search = buf.create_mark( "endsearch", buf.get_end_iter(), True )
-
-        done_something = False
-        already_wrapped = False
-
-        while 1:
-            if buf.get_selection_bounds():
-                if pattern.match( buf.get_text( *buf.get_selection_bounds() ) ):
-                    if state.toreplace:
-                        buf.begin_user_action()
-                        buf.delete( *buf.get_selection_bounds() )
-                        buf.insert_at_cursor( state.toreplace )
-                        buf.end_user_action()
-                        done_something = True
-                    else:
-                        buf.place_cursor( buf.get_selection_bounds()[1] )
-            
-            search_start = buf.get_iter_at_mark( buf.get_insert() )
-            text = buf.get_text( *buf.get_bounds() )
-
-            end_offset = buf.get_iter_at_mark(end_search).get_offset()
-            match = pattern.search( text, search_start.get_offset(), end_offset )
-            if match == None and state.wrap_around and not already_wrapped:
-                match = pattern.search( text, 0, end_offset )
-                buf.move_mark( end_search, buf.get_iter_at_mark(orig_cursor) )
-                already_wrapped = True
-            if match:
-                sel = buf.get_iter_at_offset( match.start() )
-                buf.place_cursor( sel )
-                sel.forward_chars( match.end() - match.start() )
-                buf.move_mark( buf.get_selection_bound(), sel )
-                textview.scroll_to_mark(buf.get_insert(),0.25)
-                done_something = True
-            else:
-                break
-            if not state.replace_all:
-                break
-        buf.delete_mark(orig_cursor)
-        buf.delete_mark(end_search)
-        if not done_something:
-            gui.run_dialog(
-                _("'%s' was not found.") % state.tofind,
-                self.toplevel.get_toplevel(),
-                messagetype=gtk.MESSAGE_INFO)
-        return done_something
+    def on_linkmap_drag_begin(self, *args):
+        print args
 
 gobject.type_register(FileDiff)
+
+################################################################################
+#
+# Local Functions
+#
+################################################################################
+
+class MeldBufferData(object):
+    __slots__ = ("modified", "writable", "filename", "encoding", "newlines")
+    def __init__(self, filename=None):
+        self.modified = 0
+        self.writable = 1
+        self.filename = filename
+        self.encoding = None
+        self.newlines = None
+
+################################################################################
+#
+# BufferInsertionAction 
+#
+################################################################################
+class BufferInsertionAction(object):
+    """A helper to undo/redo text insertion into a text buffer"""
+    def __init__(self, buffer, offset, text):
+        self.buffer = buffer
+        self.offset = offset 
+        self.text = text
+    def undo(self):
+        b = self.buffer
+        b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
+    def redo(self):
+        b = self.buffer
+        b.insert( b.get_iter_at_offset( self.offset), self.text) 
+
+################################################################################
+#
+# BufferDeletionAction
+#
+################################################################################
+class BufferDeletionAction(object):
+    """A helper to undo/redo text deletion from a text buffer"""
+    def __init__(self, buffer, offset, text):
+        self.buffer = buffer
+        self.offset = offset 
+        self.text = text
+    def undo(self):
+        b = self.buffer
+        b.insert( b.get_iter_at_offset( self.offset), self.text) 
+    def redo(self):
+        b = self.buffer
+        b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
+################################################################################
+#
+# BufferModifiedAction 
+#
+################################################################################
+class BufferModifiedAction(object):
+    """A helper set modified flag on a text buffer"""
+    def __init__(self, buffer, app):
+        self.buffer, self.app = buffer, app
+        self.app.set_buffer_modified(self.buffer, 1)
+    def undo(self):
+        self.app.set_buffer_modified(self.buffer, 0)
+    def redo(self):
+        self.app.set_buffer_modified(self.buffer, 1)
 

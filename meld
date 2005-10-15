@@ -19,7 +19,6 @@
 #
 # i18n support
 #
-import program
 import sys
 sys.path += [ #LIBDIR#
 ]
@@ -29,26 +28,33 @@ import locale
 
 try:
     locale.setlocale(locale.LC_ALL, '')
-    gettext.bindtextdomain(program.name, paths.locale_dir() )
-    gettext.textdomain(program.name)
-    gettext.install(program.name, paths.locale_dir(), unicode=1)
+    gettext.bindtextdomain("meld", paths.locale_dir() )
+    gettext.textdomain("meld")
+    gettext.install("meld", paths.locale_dir(), unicode=1)
 except (IOError,locale.Error), e:
-    print "(%s): WARNING **: %s" % (program.name, e)
+    # fake gettext until translations in place
+    print "(meld): WARNING **: %s" % e
     __builtins__.__dict__["_"] = lambda x : x
+
+try:
+    __builtins__.__dict__["ngettext"] = gettext.ngettext
+except AttributeError: # python2.2 does not have ngettext
+    __builtins__.__dict__["ngettext"] = \
+        lambda singular, plural, number: _((singular,plural)[number!=1])
+
 
 #
 # python version
 #
 
-pyver = (2,3)
-pygtkver = (2,4,0)
+pyver = (2,2)
+pygtkver = (1,99,15)
 
 def ver2str(ver):
     return ".".join(map(str,ver))
 
 if sys.version_info[:2] < pyver:
-    print _("%(program_name)s requires %(package)s %(version)s or higher.") % \
-        {"program_name":program.name, "package":"python", "version":ver2str(pyver)}
+    print _("Meld requires %s or higher.") % ("python%s"%ver2str(pyver))
     sys.exit(1)
 
 #
@@ -57,7 +63,9 @@ if sys.version_info[:2] < pyver:
 try:
     import pygtk
 except ImportError, e:
-    pass # catch gtk version later
+    print e
+    print _("Meld requires %s or higher.") % ("pygtk%s"%ver2str(pygtkver))
+    sys.exit(1)
 else:
     pygtk.require("2.0")
 
@@ -66,18 +74,32 @@ else:
 #
 import gtk
 if gtk.pygtk_version < pygtkver:
-    print _("%(program_name)s requires %(package)s %(version)s or higher.") % \
-        {"program_name":program.name, "package":"pygtk", "version":ver2str(pyver)}
-    sys.exit(1)
+    print _("Meld requires %s or higher.") % ("pygtk%s"%ver2str(pygtkver))
+    print _("Due to incompatible API changes some functions may not operate as expected.")
 
+# python2.2 needs this.
+import gtk.glade
+gtk.glade.bindtextdomain("meld", paths.locale_dir() )
 
+import warnings # Crude hack to fix bug 310315
+warnings.filterwarnings("ignore", category=DeprecationWarning, module= \
+    "^(cvsview|diffutil|dirdiff|filediff|gnomeglade|melddoc" \
+    "|meldapp|misc|paths|prefs|svnview|task|tree|undo)$")
 #
 # main
 #
-def main():
-    import main
-    main.main()
-    sys.exit(0)
-
-if __name__=="__main__":
-    main()
+import meldapp
+try: # ignore session management
+    smprefix = sys.argv.index("--sm-config-prefix")
+    del sys.argv[smprefix]
+    del sys.argv[smprefix]
+except (ValueError,IndexError):
+    pass
+try: # don't pass on the profiling flag
+    minusp = sys.argv.index("--profile")
+    del sys.argv[minusp]
+    import profile
+    profile.run("meldapp.main()")
+except ValueError:
+    meldapp.main()
+sys.exit(0)

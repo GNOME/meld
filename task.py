@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 """Classes to implement scheduling for cooperative threads.
 """
 
+from __future__ import generators
 import traceback
 
 class SchedulerBase(object):
@@ -130,8 +131,6 @@ class SchedulerBase(object):
             ret = task()
         except StopIteration:
             pass
-        except SystemExit:
-            raise
         except Exception, e:
             traceback.print_exc()
         else:

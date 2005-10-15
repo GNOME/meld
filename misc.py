@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 """
 
+from __future__ import generators
 import copy
 import sys
 import os
@@ -32,20 +33,34 @@ import signal
 
 whitespace_re = re.compile(r"\s")
 
-def uniq(l):
-    i = iter(l)
-    a = i.next()
-    yield a
-    while 1:
-        b = i.next()
-        if a != b:
-            yield b
-            a = b
-
 def shelljoin( command ):
     def quote(s):
         return ((whitespace_re.search(s) == None) and s or ('"%s"' % s))
     return " ".join( [ quote(x) for x in command ] )
+
+def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=[]):
+    """Run a dialog with text 'text'.
+       Extra buttons are passed as tuples of (button label, response id).
+    """
+    d = gtk.MessageDialog(None,
+        gtk.DIALOG_DESTROY_WITH_PARENT,
+        messagetype,
+        buttonstype,
+        '<span weight="bold" size="larger">%s</span>' % text)
+    if parent:
+        d.set_transient_for(parent.widget.get_toplevel())
+    for b,id in extrabuttons:
+        d.add_button(b,id)
+    d.vbox.set_spacing(12)
+    hbox = d.vbox.get_children()[0]
+    hbox.set_spacing(12)
+    d.image.set_alignment(0.5, 0)
+    d.image.set_padding(12, 12)
+    d.label.set_use_markup(1)
+    d.label.set_padding(12, 12)
+    ret = d.run()
+    d.destroy()
+    return ret
 
 class struct(object):
     """Similar to a dictionary except that members may be accessed as s.member.
@@ -102,7 +117,7 @@ def shorten_names(*names):
             base = basenames[0].strip()
             return [ r+base for r in roots ]
     # no common path. empty names get changed to "[None]"
-    return map( lambda x: x or _("[None]"), names)
+    return map( lambda x: x or _("[None]"), basenames)
 
 def look(s, o):
     """Return a list of attributes in 'o' which contain the string 's'
@@ -123,8 +138,8 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     """Read the output of a shell command iteratively.
 
     Each time 'callback_interval' seconds pass without reading any data,
-    this function yeilds None.
-    When all the data is read, the entire string is yeilded.
+    this function yields None.
+    When all the data is read, the entire string is yielded.
     If 'workdir' is specified the command is run from that directory.
     """
     class sentinel(object):
@@ -222,9 +237,20 @@ def commonprefix(dirs):
     return os.sep.join(prefix)
 
 def escape(s):
-    """Replace special characters '&', '<' and '>' by SGML entities.
+    """Replace special characters by SGML entities.
     """
-    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    entities = ("&&amp;", "<&lt;", ">&gt;")
+    for e in entities:
+        s = s.replace(e[0], e[1:])
+    return s
+
+def unescape(s):
+    """Inverse of escape.
+    """
+    entities = (">&gt;", "<&lt;", "&&amp;")
+    for e in entities:
+        s = s.replace(e[1:], e[0])
+    return s
 
 def copytree(src, dst, symlinks=1):
     try:
@@ -283,14 +309,6 @@ def shell_to_regex(pat):
         else:
             res += re.escape(c)
     return res + "$"
-
-def buffer_get_iter_range(buf, lo, hi):
-    i0 = buf.get_iter_at_line(lo)
-    i1 = buf.get_iter_at_line(hi-1)
-    if not i1.ends_line():
-        i1.forward_to_line_end()
-    return i0, i1
-
 
 class ListItem(object):
     __slots__ = ("name", "active", "value")

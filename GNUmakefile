@@ -9,44 +9,49 @@ VERSION := $(shell grep "^version" meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
 MELD_CMD := ./meld #--profile
 TESTNUM := 1
-DEVELOPER := 1
+DEVELOPER := 0
 SPECIALS := meld paths.py
 
 ifeq ($(DEVELOPER), 1)
 .PHONY:rundiff
 rundiff: check
 	echo $(prefix)
-	#$(MELD_CMD) GNUmakefile ../branch-0.9/GNUmakefile #?.txt
-	$(MELD_CMD) test/file$(TESTNUM)*
+	$(MELD_CMD) . ../meld #?.txt
+	#$(MELD_CMD) ntest/file$(TESTNUM)*
 endif
 
 .PHONY:all
-all:
-	$(MAKE) -C data
+all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	$(MAKE) -C po
 	$(MAKE) -C help
 
 .PHONY:clean
 clean: 
-	-rm -f *.pyc *.bak glade2/*.bak
-	$(MAKE) -C data clean
+	-rm -f *.pyc *.install meld.desktop *.bak glade2/*.bak
 	$(MAKE) -C po clean
 	$(MAKE) -C help clean
 
 .PHONY:install
-install:
+install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	mkdir -m 755 -p \
 		$(DESTDIR)$(bindir) \
 		$(DESTDIR)$(libdir_) \
 		$(DESTDIR)$(sharedir_)/glade2/pixmaps \
 		$(DESTDIR)$(docdir_) \
-		$(DESTDIR)$(sharedir)/pixmaps
+		$(DESTDIR)$(sharedir)/applications \
+		$(DESTDIR)$(sharedir)/application-registry \
+		$(DESTDIR)$(sharedir)/pixmaps \
+		$(DESTDIR)$(helpdir_)
 	install -m 755 meld.install \
 		$(DESTDIR)$(bindir)/meld
 	install -m 644 *.py \
 		$(DESTDIR)$(libdir_)
 	install -m 644 paths.py.install \
 		$(DESTDIR)$(libdir_)/paths.py
+	install -m 644 meld.applications \
+		$(DESTDIR)$(sharedir)/application-registry/meld.applications
+	install -m 644 meld.desktop \
+		$(DESTDIR)$(sharedir)/applications
 	python    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
 	python -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
 	install -m 644 \
@@ -58,15 +63,17 @@ install:
 		$(DESTDIR)$(sharedir_)/glade2/pixmaps
 	install -m 644 glade2/pixmaps/icon.png \
 		$(DESTDIR)$(sharedir)/pixmaps/meld.png
-	$(MAKE) -C data install
 	$(MAKE) -C po install
 	$(MAKE) -C help install
+
+meld.desktop: meld.desktop.in
+	intltool-merge -d po meld.desktop.in meld.desktop
 
 %.install: %
 	python tools/install_paths \
 		libdir=$(libdir_) \
 		localedir=$(localedir) \
-		docdir=$(docdir_) \
+		helpdir=$(helpdir_) \
 		sharedir=$(sharedir_) \
 		< $< > $@
 
@@ -75,10 +82,11 @@ uninstall:
 	-rm -rf \
 		$(sharedir_) \
 		$(docdir_) \
+		$(helpdir_) \
 		$(libdir_) \
 		$(bindir)/meld \
+		$(sharedir)/applications/meld.desktop \
 		$(sharedir)/pixmaps/meld.png
-	$(MAKE) -C data uninstall
 	$(MAKE) -C po uninstall
 	$(MAKE) -C help uninstall
 
@@ -113,7 +121,8 @@ upload:
 .PHONY:announce
 announce:
 	galeon -n http://freshmeat.net/add-release/29735/ &
-	galeon -n http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
+	galeon -n http://www.gnomefiles.org/devs/newversion.php?soft_id=203 &
+	#galeon -n http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
 	#galeon -n http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
 	
 .PHONY:backup

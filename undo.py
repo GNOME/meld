@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -61,7 +61,6 @@ class UndoSequence(gobject.GObject):
         self.actions = []
         self.next_redo = 0
         self.group = None
-        self.in_progress = False
 
     def clear(self):
         """Remove all undo and redo actions from this sequence
@@ -72,14 +71,15 @@ class UndoSequence(gobject.GObject):
         Raises an AssertionError if a group is in progress.
         """
 
-        assert self.in_progress == False
         if hasattr(self, "group"):
             assert self.group == None
+        if self.can_undo():
+            self.emit('can-undo', 0)
+        if self.can_redo():
+            self.emit('can-redo', 0)
         self.actions = []
         self.next_redo = 0
         self.group = None
-        self.emit('can-undo', self.can_undo())
-        self.emit('can-redo', self.can_redo())
 
     def can_undo(self):
         """Return if an undo is possible.
@@ -99,19 +99,18 @@ class UndoSequence(gobject.GObject):
         action -- A class with two callable attributes: 'undo' and 'redo'
                   which are called by this sequence during an undo or redo.
         """
-        if self.in_progress == False:
-            if self.group == None:
-                could_undo = self.can_undo()
-                could_redo = self.can_redo()
-                self.actions[self.next_redo:] = []
-                self.actions.append(action)
-                self.next_redo += 1
-                if not could_undo:
-                    self.emit('can-undo', 1)
-                if could_redo:
-                    self.emit('can-redo', 0)
-            else:
-                self.group.add_action(action)
+        if self.group == None:
+            could_undo = self.can_undo()
+            could_redo = self.can_redo()
+            self.actions[self.next_redo:] = []
+            self.actions.append(action)
+            self.next_redo += 1
+            if not could_undo:
+                self.emit('can-undo', 1)
+            if could_redo:
+                self.emit('can-redo', 0)
+        else:
+            self.group.add_action(action)
 
     def undo(self):
         """Undo an action.
@@ -119,8 +118,6 @@ class UndoSequence(gobject.GObject):
         Raises an AssertionError if the sequence is not undoable.
         """
         assert self.next_redo > 0
-        assert self.in_progress == False
-        self.in_progress = True
         could_redo = self.can_redo()
         self.next_redo -= 1
         self.actions[self.next_redo].undo()
@@ -128,7 +125,6 @@ class UndoSequence(gobject.GObject):
             self.emit('can-undo', 0)
         if not could_redo:
             self.emit('can-redo', 1)
-        self.in_progress = False
 
     def redo(self):
         """Redo an action.
@@ -136,8 +132,6 @@ class UndoSequence(gobject.GObject):
         Raises and AssertionError if the sequence is not undoable.
         """
         assert self.next_redo < len(self.actions)
-        assert self.in_progress == False
-        self.in_progress = True
         could_undo = self.can_undo()
         a = self.actions[self.next_redo]
         self.next_redo += 1
@@ -146,7 +140,6 @@ class UndoSequence(gobject.GObject):
             self.emit('can-undo', 1)
         if not self.can_redo():
             self.emit('can-redo', 0)
-        self.in_progress = False
 
     def begin_group(self):
         """Group several actions into a single logical action.
@@ -157,11 +150,10 @@ class UndoSequence(gobject.GObject):
         implemented as a pair of 'delete' and 'create' actions, but
         undoing should undo both of them.
         """
-        if self.in_progress == False:
-            if self.group:
-                self.group.begin_group() 
-            else:
-                self.group = UndoSequence()
+        if self.group:
+            self.group.begin_group() 
+        else:
+            self.group = UndoSequence()
 
     def end_group(self):
         """End a logical group action. See also begin_group().
@@ -169,17 +161,16 @@ class UndoSequence(gobject.GObject):
         Raises an AssertionError if there was not a matching call to
         begin_group().
         """
-        if self.in_progress == False:
-            assert self.group != None
-            if self.group.group != None:
-                self.group.end_group()
-            else:
-                group = self.group
-                self.group = None
-                if len(group.actions) == 1: # collapse 
-                    self.add_action( group.actions[0] )
-                elif len(group.actions) > 1:
-                    self.add_action( GroupAction(group) )
+        assert self.group != None
+        if self.group.group != None:
+            self.group.end_group()
+        else:
+            group = self.group
+            self.group = None
+            if len(group.actions) == 1: # collapse 
+                self.add_action( group.actions[0] )
+            elif len(group.actions) > 1:
+                self.add_action( GroupAction(group) )
 
     def abort_group(self):
         """Revert the sequence to the state before begin_group() was called.

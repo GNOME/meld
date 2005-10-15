@@ -1,4 +1,4 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -14,10 +14,11 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import generators
 import os
 import gtk
 import misc
-import gui
+import gnomeglade
 import paths
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
@@ -31,7 +32,7 @@ STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
 STATE_MISSING, STATE_MAX = range(12)
 
-load = lambda x,s=14: gui.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
+load = lambda x,s=14: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
 pixbuf_folder = load("tree-folder-normal.png", 20)
 pixbuf_folder_new = load("tree-folder-new.png", 20)
 pixbuf_folder_changed = load("tree-folder-changed.png", 20)
@@ -39,7 +40,7 @@ pixbuf_file = load("tree-file-normal.png")
 pixbuf_file_new = load("tree-file-new.png")
 pixbuf_file_changed = load("tree-file-changed.png")
 
-class OldDiffTreeStore(gtk.TreeStore):
+class DiffTreeStore(gtk.TreeStore):
     def __init__(self, ntree = 3):
         types = [type("")] * COL_END * ntree
         types[COL_ICON*ntree:COL_ICON*ntree+ntree] = [type(pixbuf_file)] * ntree
