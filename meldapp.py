@@ -21,6 +21,7 @@ import os
 # gnome
 import gtk
 import gtk.glade
+import gobject
 
 # project
 import paths
@@ -524,7 +525,7 @@ class MeldApp(gnomeglade.GnomeApp):
             self.toolbar_magic.hide()
         elif 1:
             def showPrefs(): PreferencesDialog(self)
-            gtk.idle_add(showPrefs)
+            gobject.idle_add(showPrefs)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
@@ -554,7 +555,7 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_scheduler_runnable(self, sched):
         if not self.idle_hooked:
             self.idle_hooked = 1
-            gtk.idle_add( self.on_idle )
+            gobject.idle_add( self.on_idle )
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":

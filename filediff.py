@@ -736,19 +736,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield 1
         
     def _get_filename_for_saving(self, title ):
-        #dialog = gtk.FileChooserDialog( ## try
-        #parent = self.widget.get_toplevel(), 
-        #action = gtk.FILE_CHOOSER_ACTION_SAVE,
-        #buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK) )
-        fselect = gtk.FileSelection( title )
-        fselect.set_transient_for(self.widget.get_toplevel() )
-        response = fselect.run()
-        if response != gtk.RESPONSE_OK:
-            fselect.destroy()
-            return None
-        else:
-            filename = fselect.get_filename()
-            fselect.destroy()
+        dialog = gtk.FileChooserDialog(title,
+            parent=self.widget.get_toplevel(),
+            action=gtk.FILE_CHOOSER_ACTION_SAVE,
+            buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK) )
+        response = ilenamedialog.run()
+        fname = None
+        if response == gtk.RESPONSE_OK:
+            filename = dialog.get_filename()
+        dialog.destroy()
+        if filename:
             if os.path.exists(filename):
                 response = misc.run_dialog(
                     _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
@@ -1188,12 +1185,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             x = wtotal-self.pixbuf_apply0.get_width()
             if c[0]=="insert":
-                pix1.render_to_drawable( window, gctext, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix1, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
             elif c[0] == "delete":
-                pix0.render_to_drawable( window, gctext, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix0, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
             else: #replace
-                pix0.render_to_drawable( window, gctext, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
-                pix1.render_to_drawable( window, gctext, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix0, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix1, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
 
         # allow for scrollbar at end of textview
         mid = 0.5 * self.textview0.get_allocation().height

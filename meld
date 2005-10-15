@@ -35,20 +35,14 @@ except (IOError,locale.Error), e:
     # fake gettext until translations in place
     print "(meld): WARNING **: %s" % e
     __builtins__.__dict__["_"] = lambda x : x
-
-try:
     __builtins__.__dict__["ngettext"] = gettext.ngettext
-except AttributeError: # python2.2 does not have ngettext
-    __builtins__.__dict__["ngettext"] = \
-        lambda singular, plural, number: _((singular,plural)[number!=1])
-
 
 #
 # python version
 #
 
-pyver = (2,2)
-pygtkver = (1,99,15)
+pyver = (2,3)
+pygtkver = (2,6,0)
 
 def ver2str(ver):
     return ".".join(map(str,ver))
@@ -77,14 +71,6 @@ if gtk.pygtk_version < pygtkver:
     print _("Meld requires %s or higher.") % ("pygtk%s"%ver2str(pygtkver))
     print _("Due to incompatible API changes some functions may not operate as expected.")
 
-# python2.2 needs this.
-import gtk.glade
-gtk.glade.bindtextdomain("meld", paths.locale_dir() )
-
-import warnings # Crude hack to fix bug 310315
-warnings.filterwarnings("ignore", category=DeprecationWarning, module= \
-    "^(cvsview|diffutil|dirdiff|filediff|gnomeglade|melddoc" \
-    "|meldapp|misc|paths|prefs|svnview|task|tree|undo)$")
 #
 # main
 #
