@@ -323,6 +323,8 @@ class CvsMenu(gnomeglade.Component):
         self.parent.on_button_add_binary_clicked( menuitem )
     def on_remove_activate(self, menuitem):
         self.parent.on_button_remove_clicked( menuitem )
+    def on_revert_activate(self, menuitem):
+        self.parent.on_button_revert_clicked( menuitem )
     def on_remove_locally_activate(self, menuitem):
         self.parent.on_button_delete_clicked( menuitem )
 
@@ -586,6 +588,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self._command_on_selected(self.prefs.get_cvs_command("add") + ["-kb"] )
     def on_button_remove_clicked(self, object):
         self._command_on_selected(self.prefs.get_cvs_command("rm") + ["-f"] )
+    def on_button_revert_clicked(self, object):
+        self._command_on_selected(self.prefs.get_cvs_command("update") + ["-C"] )
     def on_button_delete_clicked(self, object):
         files = self._get_selected_files()
         for name in files:

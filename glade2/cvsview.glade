@@ -243,6 +243,21 @@
 	  </child>
 
 	  <child>
+	    <widget class="GtkToolButton" id="button_revert">
+	      <property name="visible">True</property>
+	      <property name="stock_id">gtk-revert-to-saved</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+	      <signal name="clicked" handler="on_button_revert_clicked" last_modification_time="Sat, 15 Oct 2005 20:59:40 GMT"/>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
 	    <widget class="GtkToolButton" id="button_delete">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Delete locally</property>
@@ -524,7 +539,7 @@
       <signal name="activate" handler="on_diff_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image63">
+	<widget class="GtkImage" id="image70">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-dialog-info</property>
 	  <property name="icon_size">1</property>
@@ -545,7 +560,7 @@
       <signal name="activate" handler="on_update_activate"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image64">
+	<widget class="GtkImage" id="image71">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-go-forward</property>
 	  <property name="icon_size">1</property>
@@ -566,7 +581,7 @@
       <signal name="activate" handler="on_commit_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image65">
+	<widget class="GtkImage" id="image72">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-go-back</property>
 	  <property name="icon_size">1</property>
@@ -580,7 +595,7 @@
   </child>
 
   <child>
-    <widget class="GtkMenuItem" id="separator3">
+    <widget class="GtkSeparatorMenuItem" id="separator3">
       <property name="visible">True</property>
     </widget>
   </child>
@@ -593,7 +608,7 @@
       <signal name="activate" handler="on_edit_activate" last_modification_time="Sat, 13 Dec 2003 11:44:50 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image66">
+	<widget class="GtkImage" id="image73">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-find-and-replace</property>
 	  <property name="icon_size">1</property>
@@ -607,7 +622,7 @@
   </child>
 
   <child>
-    <widget class="GtkMenuItem" id="separator1">
+    <widget class="GtkSeparatorMenuItem" id="separator1">
       <property name="visible">True</property>
     </widget>
   </child>
@@ -620,7 +635,7 @@
       <signal name="activate" handler="on_add_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image67">
+	<widget class="GtkImage" id="image74">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-add</property>
 	  <property name="icon_size">1</property>
@@ -641,7 +656,7 @@
       <signal name="activate" handler="on_add_binary_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image68">
+	<widget class="GtkImage" id="image75">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-add</property>
 	  <property name="icon_size">1</property>
@@ -662,7 +677,7 @@
       <signal name="activate" handler="on_remove_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image69">
+	<widget class="GtkImage" id="image76">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-remove</property>
 	  <property name="icon_size">1</property>
@@ -676,7 +691,15 @@
   </child>
 
   <child>
-    <widget class="GtkMenuItem" id="separator2">
+    <widget class="GtkImageMenuItem" id="revert">
+      <property name="visible">True</property>
+      <property name="stock_item">GNOMEUIINFO_MENU_REVERT_ITEM</property>
+      <signal name="activate" handler="on_revert_activate" last_modification_time="Sat, 15 Oct 2005 20:55:50 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkSeparatorMenuItem" id="separator2">
       <property name="visible">True</property>
     </widget>
   </child>
@@ -689,7 +712,7 @@
       <signal name="activate" handler="on_remove_locally_activate" last_modification_time="Sun, 31 Aug 2003 12:27:25 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image70">
+	<widget class="GtkImage" id="image77">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-delete</property>
 	  <property name="icon_size">1</property>
