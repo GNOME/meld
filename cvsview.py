@@ -139,7 +139,7 @@ def _lookup_cvs_files(dirs, files):
                 if plus >= 0:
                     state = tree.STATE_CONFLICT
                     try:
-                        txt = open(filedata, "U").read()
+                        txt = open(path, "U").read()
                     except IOError:
                         pass
                     else:
