@@ -21,29 +21,35 @@ import tree
 import misc
 import _vc
 
-HG = "hg"
-
 class Vc(_vc.Vc):
+
+    CMD = "hg"
     NAME = "Mercurial"
+    PATCH_STRIP_NUM = 1
+    PATCH_INDEX_RE = "^diff(.*)$"
+
     def __init__(self, location):
         while location != "/":
             if os.path.isdir( "%s/.hg" % location):
+                self.root = location
                 return
             location = os.path.dirname(location)
         raise ValueError()
 
     def commit_command(self, message):
-        return [HG,"commit","-m",message]
+        return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        return [HG,"diff"]
+        return [self.CMD,"diff"]
     def update_command(self):
-        return [HG,"update"]
+        return [self.CMD,"update"]
     def add_command(self, binary=0):
-        return [HG,"add"]
+        return [self.CMD,"add"]
     def remove_command(self, force=0):
-        return [HG,"rm"]
+        return [self.CMD,"rm"]
     def revert_command(self):
-        return [HG,"revert"]
+        return [self.CMD,"revert"]
+    def get_working_directory(self, workdir):
+        return self.root
 
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"

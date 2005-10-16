@@ -18,27 +18,29 @@ import os
 import tree
 import _vc
 
-NULL = "echo"
 
 class Vc(_vc.Vc):
+
+    CMD = "echo"
     NAME = "Null"
+
     def __init__(self, location):
         pass
 
     def commit_command(self, message):
-        return [NULL,"commit","-m",message]
+        return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        return [NULL,"diff","-u"]
+        return [self.CMD,"diff","-u"]
     def update_command(self):
-        return [NULL,"update"]
+        return [self.CMD,"update"]
     def add_command(self, binary=0):
         if binary:
-            return [NULL,"add","-kb"]
-        return [NULL,"add"]
+            return [self.CMD,"add","-kb"]
+        return [self.CMD,"add"]
     def remove_command(self, force=0):
-        return [NULL,"rm","-f"]
+        return [self.CMD,"rm","-f"]
     def revert_command(self):
-        return [NULL,"update","-C"]
+        return [self.CMD,"update","-C"]
 
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"

@@ -51,6 +51,8 @@ class File(Entry):
 
 class Vc(object):
 
+    PATCH_STRIP_NUM = 0
+
     def __init__(self, location):
         pass
 
@@ -66,9 +68,14 @@ class Vc(object):
         raise NotImplementedError()
     def revert_command(self):
         raise NotImplementedError()
+    def patch_command(self, workdir):
+        return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
 
     def lookup_files(self, cdirs, cfiles):
         raise NotImplementedError()
+
+    def get_working_directory(self, workdir):
+        return workdir
 
     def listdir(self, start):
         if start=="": start="."

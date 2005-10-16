@@ -19,28 +19,30 @@ import re
 import tree
 import _vc
 
-SVN = "svn"
-
 class Vc(_vc.Vc):
+
+    CMD = "svn"
     NAME = "Subversion"
+    PATCH_INDEX_RE = "^Index:(.*)$"
+
     def __init__(self, location):
         if not os.path.exists("%s/.svn"%location):
             raise ValueError()
 
     def commit_command(self, message):
-        return [SVN,"commit","-m",message]
+        return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        return [SVN,"diff","-u"]
+        return [self.CMD,"diff","-u"]
     def update_command(self):
-        return [SVN,"update"]
+        return [self.CMD,"update"]
     def add_command(self, binary=0):
         if binary:
-            return [SVN,"add","-kb"]
-        return [SVN,"add"]
+            return [self.CMD,"add","-kb"]
+        return [self.CMD,"add"]
     def remove_command(self, force=0):
-        return [SVN,"rm","-f"]
+        return [self.CMD,"rm","-f"]
     def revert_command(self):
-        return [SVN,"revert"]
+        return [self.CMD,"revert"]
 
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"

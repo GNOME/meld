@@ -21,28 +21,30 @@ import tree
 import misc
 import _vc
 
-CVS = "cvs"
 
 class Vc(_vc.Vc):
+    CMD = "cvs"
     NAME = "CVS"
+    PATCH_INDEX_RE = "^Index:(.*)$"
+
     def __init__(self, location):
         if not os.path.exists("%s/CVS"% location):
             raise ValueError
 
     def commit_command(self, message):
-        return [CVS,"commit","-m",message]
+        return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        return [CVS,"diff","-u"]
+        return [self.CMD,"diff","-u"]
     def update_command(self):
-        return [CVS,"update"]
+        return [self.CMD,"update"]
     def add_command(self, binary=0):
         if binary:
-            return [CVS,"add","-kb"]
-        return [CVS,"add"]
+            return [self.CMD,"add","-kb"]
+        return [self.CMD,"add"]
     def remove_command(self, force=0):
-        return [CVS,"rm","-f"]
+        return [self.CMD,"rm","-f"]
     def revert_command(self):
-        return [CVS,"update","-C"]
+        return [self.CMD,"update","-C"]
 
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"

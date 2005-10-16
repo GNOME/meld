@@ -344,13 +344,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         """
         msg = misc.shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg.replace("\n", u"\u21b2") )
+        def relpath(pbase, p):
+            assert p.startswith(pbase)
+            kill = len(pbase) and (len(pbase)+1) or 0
+            return p[kill:] or "."
         if len(files) == 1 and os.path.isdir(files[0]):
-            workdir = os.path.dirname( files[0] )
-            files = [ os.path.basename( files[0] ) ]
+            workdir = self.vc.get_working_directory(files[0])
         else:
-            workdir = _commonprefix(files)
-            kill = len(workdir) and (len(workdir)+1) or 0
-            files = filter(lambda x: len(x), map(lambda x: x[kill:], files))
+            workdir = self.vc.get_working_directory( _commonprefix(files) )
+        files = [ relpath(workdir, f) for f in files ]
         r = None
         self.consolestream.write( misc.shelljoin(command+files) + " (in %s)\n" % workdir)
         readfunc = misc.read_pipe_iter(command + files, self.consolestream, workdir=workdir).next
@@ -391,7 +393,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_remove_clicked(self, object):
         self._command_on_selected(self.vc.remove_command())
     def on_button_revert_clicked(self, object):
-        self._command_on_selected(self.vc.update_command())
+        self._command_on_selected(self.vc.revert_command())
     def on_button_delete_clicked(self, object):
         files = self._get_selected_files()
         for name in files:
@@ -421,11 +423,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         os.mkdir(tmpdir)
 
         regex = re.compile("^diff(.*$)", re.M)
-        files = [f.split()[-1] for f in regex.findall(patch)] #XXX
-        #files = ["/".join(f.split("/")[1:]) for f in regex.findall(patch)]
+        regex = re.compile(self.vc.PATCH_INDEX_RE, re.M)
+        files = [f.split()[-1] for f in regex.findall(patch)]
         diffs = []
         for file in files:
-            print file
             destfile = os.path.join(tmpdir,file)
             destdir = os.path.dirname( destfile )
 
@@ -438,8 +439,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 open(destfile,"w").close()
             diffs.append( (destfile, pathtofile) )
 
-        misc.write_pipe(["patch","--strip=0","--reverse","--directory=%s" % tmpdir], patch) #XXX
-        #misc.write_pipe(["patch","--strip=2","--reverse","--directory=%s" % tmpdir], patch)
+        patchcmd = self.vc.patch_command( tmpdir )
+        misc.write_pipe(patchcmd, patch)
         for d in diffs:
             self.emit("create-diff", d)
 
