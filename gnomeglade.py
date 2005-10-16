@@ -38,12 +38,12 @@ class Base(object):
     object, which is sadly sometimes necessary.
     """
 
-    def __init__(self, file, root):
+    def __init__(self, file, root, override={}):
         """Load the widgets from the node 'root' in file 'file'.
 
         Automatically connects signal handlers named 'on_*'.
         """
-        self.xml = gtk.glade.XML(file, root, gettext.textdomain() )
+        self.xml = gtk.glade.XML(file, root, gettext.textdomain(), override )
         handlers = {}
         for h in filter(lambda x:x.startswith("on_"), dir(self.__class__)):
             handlers[h] = getattr(self, h)
@@ -91,8 +91,8 @@ class Component(Base):
     """A convenience base class for widgets which use glade.
     """
 
-    def __init__(self, file, root):
-        Base.__init__(self, file, root)
+    def __init__(self, file, root, override={}):
+        Base.__init__(self, file, root, override)
 
 
 class GtkApp(Base):

@@ -100,26 +100,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff")
+        override = {}
+        if sourceview_available:
+            override["GtkTextView"] = gsv.SourceView
+            override["GtkTextBuffer"] = gsv.SourceBuffer
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
         self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
         self._update_regexes()
         self.warned_bad_comparison = False
         if sourceview_available:
-            # ugly hack. http://bugzilla.gnome.org/show_bug.cgi?id=140071
-            # will remove the need for this.
-            self.textview = []
-            for w in self.scrolledwindow:
-                w.remove( w.get_child() )
-                v = gsv.SourceView()
-                self.textview.append( v )
-                v.show()
-                w.add(v)
+            for v in self.textview:
+                v.set_buffer( gsv.SourceBuffer() )
                 v.set_show_line_numbers(self.prefs.show_line_numbers)
-                for s in "key_press_event key_release_event".split():
-                    v.connect(s, getattr(self,"on_%s"%s))
-                for s in "button_press_event focus_in_event".split():
-                    v.connect(s, getattr(self,"on_textview_%s"%s))
-                v.get_buffer().connect("mark-set", self.on_textbuffer_mark_set)
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -688,52 +680,71 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
         for chunk in self.linediffer.all_changes(self._get_texts()):
             for i,c in misc.enumerate(chunk):
-                if c:
-                    if c[0] == "insert":
-                        buf = buffers[i*2]
-                        #txt = self._get_texts()[0][c[3]:c[4]]
-                        #print txt, "".join(txt) == ""
-                        #if "".join(txt) == "": continue
-                        #print "OK"
-                        tag = buf.get_tag_table().lookup("delete line")
-                        buf.apply_tag( tag, buf.get_iter_at_line(c[3]), buf.get_iter_at_line(c[4]) )
-                    elif c[0] == "delete":
-                        buf = buffers[1]
-                        tag = buf.get_tag_table().lookup("delete line")
-                        buf.apply_tag( tag, buf.get_iter_at_line(c[1]), buf.get_iter_at_line(c[2]) )
-                    elif c[0] == "conflict":
-                        bufs = buffers[1], buffers[i*2]
-                        tags = [b.get_tag_table().lookup("conflict line") for b in bufs]
-                        for b,t,o in zip(bufs, tags, (0,2)):
-                            b.apply_tag( t, b.get_iter_at_line(c[o+1]), b.get_iter_at_line(c[o+2]) )
-                    elif c[0] == "replace":
-                        bufs = buffers[1], buffers[i*2]
-                        tags = [b.get_tag_table().lookup("replace line") for b in bufs]
-                        starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
-                        for b, t, s, l in zip(bufs, tags, starts, (c[2],c[4])):
-                            b.apply_tag(t, s, b.get_iter_at_line(l))
-                        if 1:
-                            text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] ).encode("utf16")
-                            text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
-                            textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] ).encode("utf16")
-                            textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
-                            matcher = difflib.SequenceMatcher(None, text1, textn)
-                            #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
-                            tags = [b.get_tag_table().lookup("inline line") for b in bufs]
-                            back = (0,0)
-                            for o in matcher.get_opcodes():
-                                if o[0] == "equal":
-                                    if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
-                                        back = o[4]-o[3], o[2]-o[1]
-                                    continue
-                                for i in range(2):
-                                    s,e = starts[i].copy(), starts[i].copy()
-                                    s.forward_chars( o[1+2*i] - back[i] )
-                                    e.forward_chars( o[2+2*i] )
-                                    bufs[i].apply_tag(tags[i], s, e)
-                                back = (0,0)
-                            yield 1
-        yield 1
+                if c and c[0] == "replace":
+                    bufs = buffers[1], buffers[i*2]
+                    #tags = [b.get_tag_table().lookup("replace line") for b in bufs]
+                    starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
+                    text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] ).encode("utf16")
+                    text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
+                    textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] ).encode("utf16")
+                    textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
+                    matcher = difflib.SequenceMatcher(None, text1, textn)
+                    #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
+                    tags = [b.get_tag_table().lookup("inline line") for b in bufs]
+                    back = (0,0)
+                    for o in matcher.get_opcodes():
+                        if o[0] == "equal":
+                            if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
+                                back = o[4]-o[3], o[2]-o[1]
+                            continue
+                        for i in range(2):
+                            s,e = starts[i].copy(), starts[i].copy()
+                            s.forward_chars( o[1+2*i] - back[i] )
+                            e.forward_chars( o[2+2*i] )
+                            bufs[i].apply_tag(tags[i], s, e)
+                        back = (0,0)
+                    yield 1
+ 
+    def on_textview_expose_event(self, textview, event):
+        if self.num_panes == 1:
+            return
+        if event.window != textview.get_window(gtk.TEXT_WINDOW_TEXT) \
+            and event.window != textview.get_window(gtk.TEXT_WINDOW_LEFT):
+            return
+        if not hasattr(textview, "meldgc"):
+            self._setup_gcs(textview)
+        gctext = textview.get_style().text_gc[0]
+        visible = textview.get_visible_rect()
+        pane = self.textview.index(textview)
+        start_line = self._pixel_to_line(pane, visible.y)
+        end_line = 1+self._pixel_to_line(pane, visible.y+visible.height)
+        gc = lambda x : getattr(textview.meldgc, "gc_"+x)
+        #gcdark = textview.get_style().black_gc
+        gclight = textview.get_style().bg_gc[gtk.STATE_ACTIVE]
+        #curline = textview.get_buffer().get_iter_at_mark( textview.get_buffer().get_insert() ).get_line()
+               
+        def draw_change(change): # draw background and thin lines
+            ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
+            width = event.window.get_size()[0]
+            #gcline = (gclight, gcdark)[change[1] <= curline and curline < change[2]]
+            gcline = gclight
+            event.window.draw_line(gcline, 0,ypos0-1, width,ypos0-1)
+            if change[2] != change[1]:
+                ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
+                event.window.draw_line(gcline, 0,ypos1, width,ypos1)
+                event.window.draw_rectangle(gc(change[0]), 1, 0,ypos0, width,ypos1-ypos0)
+        last_change = None
+        for change in self.linediffer.single_changes(pane, self._get_texts()):
+            if change[2] < start_line: continue
+            if change[1] > end_line: break
+            if last_change and change[1] <= last_change[2]:
+                last_change = ("conflict", last_change[1], max(last_change[2],change[2]))
+            else:
+                if last_change:
+                    draw_change(last_change)
+                last_change = change
+        if last_change:
+            draw_change(last_change)
         
     def _get_filename_for_saving(self, title ):
         dialog = gtk.FileChooserDialog(title,
@@ -1105,7 +1116,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if not window: return
         if not hasattr(area, "meldgc"):
             self._setup_gcs(area)
-        gctext = area.get_style().text_gc[0]
+        gctext = area.get_style().bg_gc[gtk.STATE_ACTIVE]
 
         alloc = area.get_allocation()
         (wtotal,htotal) = alloc.width, alloc.height
