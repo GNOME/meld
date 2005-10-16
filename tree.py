@@ -24,8 +24,8 @@ import paths
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
 
 # ignored, new, normal, ignored changes,
-# error, placeholder, cvs added
-# cvs modified, cvs conflict, cvs removed
+# error, placeholder, vc added
+# vc modified, vc conflict, vc removed
 # locally removed, end
 STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
 STATE_ERROR, STATE_EMPTY, STATE_NEW, \

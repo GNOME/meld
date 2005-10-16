@@ -30,213 +30,13 @@ import misc
 import gnomeglade
 import melddoc
 import paths
+import vc
 
 ################################################################################
 #
 # Local Functions
 #
 ################################################################################
-class Entry(object):
-    # These are the possible states of files. Be sure to get the colons correct.
-    states = _("Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
-    assert len(states)==tree.STATE_MAX
-    def __str__(self):
-        return "<%s:%s %s>\n" % (self.__class__, self.name, (self.path, self.state))
-    def __repr__(self):
-        return "%s %s\n" % (self.name, (self.path, self.state))
-    def get_status(self):
-        return self.states[self.state]
-
-class Dir(Entry):
-    def __init__(self, path, name, state):
-        self.path = path
-        self.parent, self.name = os.path.split(path[:-1])
-        self.state = state
-        self.isdir = 1
-        self.rev = ""
-        self.tag = ""
-        self.options = ""
-
-class File(Entry):
-    def __init__(self, path, name, state, rev="", tag="", options=""):
-        assert path[-1] != "/"
-        self.path = path
-        self.parent, self.name = os.path.split(path)
-        self.state = state
-        self.isdir = 0
-        self.rev = rev
-        self.tag = tag
-        self.options = options
-
-def _lookup_cvs_files(dirs, files):
-    "files is array of (name, path). assume all files in same dir"
-    if len(files):
-        directory = os.path.dirname(files[0][1])
-    elif len(dirs):
-        directory = os.path.dirname(dirs[0][1])
-    else:
-        return [],[]
-
-    try:
-        entries = open( os.path.join(directory, "CVS/Entries")).read()
-        # poor mans universal newline
-        entries = entries.replace("\r","\n").replace("\n\n","\n")
-    except IOError, e: # no cvs dir
-        d = map(lambda x: Dir(x[1],x[0], tree.STATE_NONE), dirs)
-        f = map(lambda x: File(x[1],x[0], tree.STATE_NONE, None), files)
-        return d,f
-
-    try:
-        logentries = open( os.path.join(directory, "CVS/Entries.Log")).read()
-    except IOError, e:
-        pass
-    else:
-        matches = re.findall("^([AR])\s*(.+)$(?m)", logentries)
-        toadd = []
-        for match in matches:
-            if match[0] == "A":
-                toadd.append( match[1] )
-            elif match[0] == "R":
-                try:
-                    toadd.remove( match[1] )
-                except ValueError:
-                    pass
-            else:
-                print "Unknown Entries.Log line '%s'" % match[0]
-        entries += "\n".join(toadd)
-
-    retfiles = []
-    retdirs = []
-    matches = re.findall("^(D?)/([^/]+)/(.+)$(?m)", entries)
-    matches.sort()
-
-    for match in matches:
-        isdir = match[0]
-        name = match[1]
-        path = os.path.join(directory, name)
-        rev, date, options, tag = match[2].split("/")
-        if tag:
-            tag = tag[1:]
-        if isdir:
-            if os.path.exists(path):
-                state = tree.STATE_NORMAL
-            else:
-                state = tree.STATE_MISSING
-            retdirs.append( Dir(path,name,state) )
-        else:
-            if rev.startswith("-"):
-                state = tree.STATE_REMOVED
-            elif date=="dummy timestamp":
-                if rev[0] == "0":
-                    state = tree.STATE_NEW
-                else:
-                    print "Revision '%s' not understood" % rev
-            elif date=="dummy timestamp from new-entry":
-                state = tree.STATE_MODIFIED
-            else:
-                date = re.sub(r"\s*\d+", lambda x : "%3i" % int(x.group()), date, 1)
-                plus = date.find("+")
-                if plus >= 0:
-                    state = tree.STATE_CONFLICT
-                    try:
-                        txt = open(path, "U").read()
-                    except IOError:
-                        pass
-                    else:
-                        if txt.find("\n=======\n") == -1:
-                            state = tree.STATE_MODIFIED
-                else:
-                    try:
-                        mtime = os.stat(path).st_mtime
-                    except OSError:
-                        state = tree.STATE_MISSING
-                    else:
-                        if time.asctime(time.gmtime(mtime))==date:
-                            state = tree.STATE_NORMAL
-                        else:
-                            state = tree.STATE_MODIFIED
-            retfiles.append( File(path, name, state, rev, tag, options) )
-    # known
-    cvsfiles = map(lambda x: x[1], matches)
-    # ignored
-    try:
-        ignored = open( os.path.join(directory, "%s/.cvsignore" % os.environ["HOME"] )).read().split()
-    except (IOError,KeyError):
-        ignored = []
-    try:
-        ignored += open( os.path.join(directory, ".cvsignore")).read().split()
-    except IOError:
-        pass
-
-    if len(ignored):
-        try:
-            regexes = [ misc.shell_to_regex(i)[:-1] for i in ignored ]
-            ignore_re = re.compile( "(" + "|".join(regexes) + ")" )
-        except re.error, e:
-            misc.run_dialog(_("Error converting to a regular expression\n" \
-                              "The pattern was '%s'\n" \
-                              "The error was '%s'") % (",".join(ignored), e))
-    else:
-        class dummy(object):
-            def match(*args): return None
-        ignore_re = dummy()
-
-    for f,path in files:
-        if f not in cvsfiles:
-            if ignore_re.match(f) == None:
-                retfiles.append( File(path, f, tree.STATE_NONE, "") )
-            else:
-                retfiles.append( File(path, f, tree.STATE_IGNORED, "") )
-    for d,path in dirs:
-        if d not in cvsfiles:
-            if ignore_re.match(d) == None:
-                retdirs.append( Dir(path, d, tree.STATE_NONE) )
-            else:
-                retfiles.append( Dir(path, d, tree.STATE_IGNORED) )
-
-    return retdirs, retfiles
-
-################################################################################
-#
-# Local Functions
-#
-################################################################################
-def _find(start):
-    if start[-1] != "/": start+="/"
-    cfiles = []
-    cdirs = []
-    try:
-        entries = os.listdir(start)
-        entries.sort()
-    except OSError:
-        entries = []
-    for f in filter(lambda x: x!="CVS" and x[0]!=".", entries):
-        fname = start + f
-        lname = fname
-        if os.path.isdir(fname):
-            cdirs.append( (f, lname) )
-        else:
-            cfiles.append( (f, lname) )
-    return _lookup_cvs_files(cdirs, cfiles)
-
-def recursive_find(start):
-    if start=="":
-        start="."
-    ret = []
-    def visit(arg, dirname, names):
-        try: names.remove("CVS")
-        except ValueError: pass
-        dirs, files = _find(dirname)
-        ret.extend( dirs )
-        ret.extend( files )
-    os.path.walk(start, visit, ret)
-    return ret
-
-def listdir_cvs(start):
-    if start=="":
-        start="."
-    dirs, files = _find(start)
-    return dirs+files
 
 def _expand_to_root( treeview, path ):
     """Expand rows from path up to root"""
@@ -262,7 +62,7 @@ def _commonprefix(files):
 ################################################################################
 class CommitDialog(gnomeglade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "commitdialog")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/vcview.glade"), "commitdialog")
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         selected = parent._get_selected_files()
@@ -280,7 +80,7 @@ class CommitDialog(gnomeglade.Component):
         response = self.widget.run()
         msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
-            self.parent._command_on_selected(self.parent.prefs.get_cvs_command("commit") + ["-m", msg] )
+            self.parent._command_on_selected( self.parent.vc.commit_command(msg) )
         if len(msg.strip()):
             self.previousentry.prepend_history(1, msg)
         self.widget.destroy()
@@ -288,15 +88,9 @@ class CommitDialog(gnomeglade.Component):
         buf = self.textview.get_buffer()
         buf.set_text( gentry.gtk_entry().get_text() )
 
-################################################################################
-#
-# CvsTreeStore
-#
-################################################################################
-
 COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tree.COL_END, tree.COL_END+6)
 
-class CvsTreeStore(tree.DiffTreeStore):
+class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
         types = [type("")] * COL_END
         types[tree.COL_ICON] = type(tree.pixbuf_file)
@@ -310,9 +104,9 @@ class CvsTreeStore(tree.DiffTreeStore):
 # DirDiffMenu
 #
 ################################################################################
-class CvsMenu(gnomeglade.Component):
+class VcMenu(gnomeglade.Component):
     def __init__(self, app, event):
-        gladefile = paths.share_dir("glade2/cvsview.glade")
+        gladefile = paths.share_dir("glade2/vcview.glade")
         gnomeglade.Component.__init__(self, gladefile, "menu_popup")
         self.parent = app
         self.widget.popup( None, None, None, 3, event.time )
@@ -340,22 +134,22 @@ class CvsMenu(gnomeglade.Component):
 ################################################################################
 entry_modified = lambda x: (x.state >= tree.STATE_NEW) or (x.isdir and (x.state > tree.STATE_NONE))
 entry_normal   = lambda x: (x.state == tree.STATE_NORMAL)
-entry_noncvs   = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
+entry_nonvc    = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
 entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 
 ################################################################################
 #
-# CvsView
+# VcView
 #
 ################################################################################
-class CvsView(melddoc.MeldDoc, gnomeglade.Component):
+class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/cvsview.glade"), "cvsview")
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/vcview.glade"), "vcview")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.tempfiles = []
-        self.model = CvsTreeStore()
+        self.model = VcTreeStore()
         self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
@@ -398,13 +192,14 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         size = self.fileentry.size_request()[1]
         self.button_jump.set_size_request(size, size)
         self.button_jump.hide()
-        if not self.prefs.cvs_console_visible:
+        if not self.prefs.vc_console_visible:
             self.on_console_view_toggle(self.console_hide_box)
 
     def set_location(self, location):
         self.model.clear()
         self.location = location = os.path.abspath(location or ".")
         self.fileentry.gtk_entry().set_text(location)
+        self.vc = vc.Vc(location)
         iter = self.model.add_entries( None, [location] )
         self.treeview.get_selection().select_iter(iter)
         self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
@@ -427,8 +222,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             filters.append( entry_modified )
         if self.button_normal.get_active():
             filters.append( entry_normal )
-        if self.button_noncvs.get_active():
-            filters.append( entry_noncvs )
+        if self.button_nonvc.get_active():
+            filters.append( entry_nonvc )
         if self.button_ignored.get_active():
             filters.append( entry_ignored )
         def showable(entry):
@@ -447,7 +242,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             yield _("[%s] Scanning %s") % (self.label_text, root[prefixlen:])
             #import time; time.sleep(1.0)
             
-            entries = filter(showable, listdir_cvs(root))
+            entries = filter(showable, self.vc.listdir(root))
             differences = 0
             for e in entries:
                 differences |= (e.state != tree.STATE_NORMAL)
@@ -493,11 +288,11 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 self.treeview.expand_row(path,0)
         else:
             path = self.model.value_path(iter, 0)
-            self.run_cvs_diff( [path] )
+            self.run_diff( [path] )
 
-    def run_cvs_diff_iter(self, paths, empty_patch_ok):
+    def run_diff_iter(self, paths, empty_patch_ok):
         yield _("[%s] Fetching differences") % self.label_text
-        difffunc = self._command_iter(self.prefs.get_cvs_command("diff") + ["-u"], paths, 0).next
+        difffunc = self._command_iter(self.vc.diff_command(), paths, 0).next
         diff = None
         while type(diff) != type(()):
             diff = difffunc()
@@ -512,12 +307,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             for path in paths:
                 self.emit("create-diff", [path])
 
-    def run_cvs_diff(self, paths, empty_patch_ok=0):
-        self.scheduler.add_task( self.run_cvs_diff_iter(paths, empty_patch_ok).next, atfront=1 )
+    def run_diff(self, paths, empty_patch_ok=0):
+        self.scheduler.add_task( self.run_diff_iter(paths, empty_patch_ok).next, atfront=1 )
 
     def on_button_press_event(self, text, event):
         if event.button==3:
-            CvsMenu(self, event)
+            VcMenu(self, event)
         return 0
 
     def on_button_flatten_toggled(self, button):
@@ -584,19 +379,19 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             misc.run_dialog( _("Select some files first."), parent=self, messagetype=gtk.MESSAGE_INFO)
 
     def on_button_update_clicked(self, object):
-        self._command_on_selected( self.prefs.get_cvs_command("update") )
+        self._command_on_selected( self.vc.update_command() )
     def on_button_commit_clicked(self, object):
         dialog = CommitDialog( self )
         dialog.run()
 
     def on_button_add_clicked(self, object):
-        self._command_on_selected(self.prefs.get_cvs_command("add") )
+        self._command_on_selected(self.vc.add_command() )
     def on_button_add_binary_clicked(self, object):
-        self._command_on_selected(self.prefs.get_cvs_command("add") + ["-kb"] )
+        self._command_on_selected(self.vc.add_command(binary=1))
     def on_button_remove_clicked(self, object):
-        self._command_on_selected(self.prefs.get_cvs_command("rm") + ["-f"] )
+        self._command_on_selected(self.vc.remove_command())
     def on_button_revert_clicked(self, object):
-        self._command_on_selected(self.prefs.get_cvs_command("update") + ["-C"] )
+        self._command_on_selected(self.vc.update_command())
     def on_button_delete_clicked(self, object):
         files = self._get_selected_files()
         for name in files:
@@ -616,7 +411,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_diff_clicked(self, object):
         files = self._get_selected_files()
         if len(files):
-            self.run_cvs_diff(files, empty_patch_ok=1)
+            self.run_diff(files, empty_patch_ok=1)
 
     def show_patch(self, prefix, patch):
         if not patch: return
@@ -625,10 +420,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         self.tempfiles.append(tmpdir)
         os.mkdir(tmpdir)
 
-        regex = re.compile("^Index:\s+(.*$)", re.M)
-        files = regex.findall(patch)
+        regex = re.compile("^diff(.*$)", re.M)
+        files = [f.split()[-1] for f in regex.findall(patch)] #XXX
+        #files = ["/".join(f.split("/")[1:]) for f in regex.findall(patch)]
         diffs = []
         for file in files:
+            print file
             destfile = os.path.join(tmpdir,file)
             destdir = os.path.dirname( destfile )
 
@@ -641,7 +438,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 open(destfile,"w").close()
             diffs.append( (destfile, pathtofile) )
 
-        misc.write_pipe(["patch","--strip=0","--reverse","--directory=%s" % tmpdir], patch)
+        misc.write_pipe(["patch","--strip=0","--reverse","--directory=%s" % tmpdir], patch) #XXX
+        #misc.write_pipe(["patch","--strip=2","--reverse","--directory=%s" % tmpdir], patch)
         for d in diffs:
             self.emit("create-diff", d)
 
@@ -667,12 +465,12 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         class MyMenu(gtk.Menu):
             def __init__(self, parent, where, showup=1):
                 gtk.Menu.__init__(self)
-                self.cvsview = parent
+                self.vcview = parent
                 self.map_id = self.connect("map", lambda item: self.on_map(item,where,showup) )
             def add_item(self, name, submenu, showup):
                 item = gtk.MenuItem(name)
                 if submenu:
-                    item.set_submenu( MyMenu(self.cvsview, submenu, showup ) )
+                    item.set_submenu( MyMenu(self.vcview, submenu, showup ) )
                 self.append( item )
             def on_map(self, item, where, showup):
                 if showup:
@@ -683,7 +481,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
                 del self.map_id
             def listdir(self, d):
                 try:
-                    return [p for p in os.listdir(d) if os.path.basename(p) != "CVS" and os.path.isdir( os.path.join(d,p))]
+                    return [p for p in os.listdir(d) if os.path.isdir( os.path.join(d,p))]
                 except OSError:
                     return []
             def populate(self, where, children):
@@ -693,8 +491,8 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         menu = MyMenu( self, os.path.abspath(self.location) )
         menu.popup(None, None, None, event.button, event.time)
 
-    def _update_item_state(self, iter, cvsentry, location):
-        e = cvsentry
+    def _update_item_state(self, iter, vcentry, location):
+        e = vcentry
         self.model.set_state( iter, 0, e.state, e.isdir )
         def set(col, val):
             self.model.set_value( iter, self.model.column_index(col,0), val)
@@ -708,7 +506,7 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
         iter = self.find_iter_by_name(filename)
         if iter:
             path = self.model.value_path(iter, 0)
-            dirs, files = _lookup_cvs_files( [], [ (os.path.basename(path), path)] )
+            dirs, files = self.vc.lookup_files( [], [ (os.path.basename(path), path)] )
             for e in files:
                 if e.path == path:
                     prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
@@ -738,11 +536,11 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_console_view_toggle(self, box, event=None):
         if box == self.console_hide_box:
-            self.prefs.cvs_console_visible = 0
+            self.prefs.vc_console_visible = 0
             self.console_hbox.hide()
             self.console_show_box.show()
         else:
-            self.prefs.cvs_console_visible = 1
+            self.prefs.vc_console_visible = 1
             self.console_hbox.show()
             self.console_show_box.hide()
 
@@ -773,6 +571,4 @@ class CvsView(melddoc.MeldDoc, gnomeglade.Component):
             if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
                 goto_iter(it)
                 return
-
-gobject.type_register(CvsView)
 

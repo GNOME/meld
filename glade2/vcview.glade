@@ -20,7 +20,7 @@
   <property name="focus_on_map">True</property>
 
   <child>
-    <widget class="GtkVBox" id="cvsview">
+    <widget class="GtkVBox" id="vcview">
       <property name="visible">True</property>
       <property name="homogeneous">False</property>
       <property name="spacing">0</property>
@@ -121,12 +121,12 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkToggleToolButton" id="button_noncvs">
+	    <widget class="GtkToggleToolButton" id="button_nonvc">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Show non-CVS</property>
-	      <property name="label" translatable="yes">Non _CVS</property>
+	      <property name="tooltip" translatable="yes">Show unversioned files</property>
+	      <property name="label" translatable="yes">Non _VC</property>
 	      <property name="use_underline">True</property>
-	      <property name="icon">pixmaps/filter-noncvs-24.png</property>
+	      <property name="icon">pixmaps/filter-nonvc-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
@@ -176,7 +176,7 @@
 	      <property name="tooltip" translatable="yes">Commit</property>
 	      <property name="label" translatable="yes">_Commit</property>
 	      <property name="use_underline">True</property>
-	      <property name="icon">pixmaps/cvs-commit-24.png</property>
+	      <property name="icon">pixmaps/vc-commit-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
@@ -194,7 +194,7 @@
 	      <property name="tooltip" translatable="yes">Update</property>
 	      <property name="label" translatable="yes">_Update</property>
 	      <property name="use_underline">True</property>
-	      <property name="icon">pixmaps/cvs-update-24.png</property>
+	      <property name="icon">pixmaps/vc-update-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
@@ -209,10 +209,10 @@
 	  <child>
 	    <widget class="GtkToolButton" id="button_add">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Add to CVS</property>
+	      <property name="tooltip" translatable="yes">Add to VC</property>
 	      <property name="label" translatable="yes">_Add</property>
 	      <property name="use_underline">True</property>
-	      <property name="icon">pixmaps/cvs-add-24.png</property>
+	      <property name="icon">pixmaps/vc-add-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
@@ -227,10 +227,10 @@
 	  <child>
 	    <widget class="GtkToolButton" id="button_remove">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Remove from CVS</property>
+	      <property name="tooltip" translatable="yes">Remove from VC</property>
 	      <property name="label" translatable="yes">_Remove</property>
 	      <property name="use_underline">True</property>
-	      <property name="icon">pixmaps/cvs-remove-24.png</property>
+	      <property name="icon">pixmaps/vc-remove-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
 	      <property name="is_important">False</property>
@@ -289,7 +289,7 @@
 	  <child>
 	    <widget class="GnomeFileEntry" id="fileentry">
 	      <property name="visible">True</property>
-	      <property name="history_id">cvsroot</property>
+	      <property name="history_id">vcroot</property>
 	      <property name="max_saved">10</property>
 	      <property name="directory_entry">True</property>
 	      <property name="modal">False</property>
@@ -729,7 +729,7 @@
 <widget class="GtkDialog" id="commitdialog">
   <property name="width_request">450</property>
   <property name="visible">True</property>
-  <property name="title" translatable="yes">CVS Log</property>
+  <property name="title" translatable="yes">VC Log</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_CENTER</property>
   <property name="modal">True</property>

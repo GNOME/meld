@@ -30,8 +30,7 @@ import gnomeglade
 import misc
 import melddoc
 import filediff
-import cvsview
-import svnview
+import vcview
 import dirdiff
 import task
 
@@ -59,13 +58,13 @@ developer = 0
 
 class NewDocDialog(gnomeglade.Component):
 
-    TYPE = misc.struct(DIFF2=0, DIFF3=1, DIR2=2, DIR3=3, CVS=4, SVN=6)
+    TYPE = misc.struct(DIFF2=0, DIFF3=1, DIR2=2, DIR3=3, VC=4)
          
     def __init__(self, parentapp, type):
         self.parentapp = parentapp
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
-        self._map_widgets_into_lists( ("fileentry", "direntry", "cvsentry", "svnentry", "three_way_compare", "tablabel") )
-        self.entrylists = self.fileentry, self.direntry, self.cvsentry, self.svnentry
+        self._map_widgets_into_lists( ("fileentry", "direntry", "vcentry", "three_way_compare", "tablabel") )
+        self.entrylists = self.fileentry, self.direntry, self.vcentry
         self.widget.set_transient_for(parentapp.widget)
         cur_page = type // 2
         self.notebook.set_current_page( cur_page )
@@ -93,8 +92,7 @@ class NewDocDialog(gnomeglade.Component):
                 paths.pop(0)
             methods = (self.parentapp.append_filediff,
                        self.parentapp.append_dirdiff,
-                       self.parentapp.append_cvsview,
-                       self.parentapp.append_svnview )
+                       self.parentapp.append_vcview )
             methods[page](paths)
         self.widget.destroy()
 
@@ -412,7 +410,7 @@ class MeldPreferences(prefs.Preferences):
         "edit_command_type" : prefs.Value(prefs.STRING, "internal"), #internal, gnome, custom
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "supply_newline": prefs.Value(prefs.BOOL,1),
-        "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"), 
+        "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
         "save_encoding": prefs.Value(prefs.INT, 0),
         "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
@@ -423,7 +421,7 @@ class MeldPreferences(prefs.Preferences):
         "cvs_binary": prefs.Value(prefs.STRING, "/usr/bin/cvs"),
         "cvs_create_missing": prefs.Value(prefs.BOOL, 1),
         "cvs_prune_empty": prefs.Value(prefs.BOOL, 1),
-        "cvs_console_visible": prefs.Value(prefs.BOOL, 0),
+        "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "color_delete_bg" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
         "color_delete_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_replace_bg" : prefs.Value(prefs.STRING, "#ddeeff"),
@@ -756,18 +754,11 @@ class MeldApp(gnomeglade.GnomeApp):
         else:
             self.append_filediff(paths)
 
-    def append_cvsview(self, locations):
+    def append_vcview(self, locations):
         assert len(locations) in (1,)
         location = locations[0]
-        doc = cvsview.CvsView(self.prefs)
-        self._append_page(doc, "cvs-icon.png")
-        doc.set_location(location)
-
-    def append_svnview(self, locations):
-        assert len(locations) in (1,)
-        location = locations[0]
-        doc = svnview.CvsView(self.prefs)
-        self._append_page(doc, "svn-icon.png")
+        doc = vcview.VcView(self.prefs)
+        self._append_page(doc, "vc-icon.png")
         doc.set_location(location)
 
     #
@@ -804,8 +795,8 @@ class MeldApp(gnomeglade.GnomeApp):
 usage_string = _("""Meld is a file and directory comparison tool. Usage:
 
     meld                        Start with no windows open
-    meld <dir>                  Start with CVS browser in 'dir'
-    meld <file>                 Start with CVS diff of 'file'
+    meld <dir>                  Start with VC browser in 'dir'
+    meld <file>                 Start with VC diff of 'file'
     meld <file> <file> [file]   Start with 2 or 3 way file comparison
     meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison
 
@@ -854,22 +845,16 @@ def main():
     elif len(args) == 1:
         a = args[0]
         if os.path.isfile(a):
-            if os.path.exists(os.path.join(os.path.dirname(a), '.svn')):
-                doc = svnview.CvsView(app.prefs)
-            else:
-                doc = cvsview.CvsView(app.prefs)
+            doc = vcview.VcView(app.prefs)
             def cleanup():
                 app.scheduler.remove_scheduler(doc.scheduler)
             app.scheduler.add_task(cleanup)
             app.scheduler.add_scheduler(doc.scheduler)
             doc.set_location( os.path.dirname(a) )
             doc.connect("create-diff", lambda obj,arg: app.append_diff(arg) )
-            doc.run_cvs_diff([a])
+            doc.run_diff([a])
         else:
-            if os.path.exists( os.path.join(a,".svn") ):
-                app.append_svnview( [a] )
-            else:
-                app.append_cvsview( [a] )
+            app.append_vcview( [a] )
                 
     elif len(args) in (2,3):
         app.append_diff(args)

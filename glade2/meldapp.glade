@@ -1274,7 +1274,7 @@ Adam Weinberger (en_CA)</property>
 	      <child>
 		<widget class="GtkLabel" id="label81">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">CVS Directory</property>
+		  <property name="label" translatable="yes">Directory</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1300,9 +1300,9 @@ Adam Weinberger (en_CA)</property>
 	      </child>
 
 	      <child>
-		<widget class="GnomeFileEntry" id="cvsentry0">
+		<widget class="GnomeFileEntry" id="vcentry0">
 		  <property name="visible">True</property>
-		  <property name="history_id">cvs_directory</property>
+		  <property name="history_id">vc_directory</property>
 		  <property name="max_saved">10</property>
 		  <property name="browse_dialog_title" translatable="yes">CVS Directory</property>
 		  <property name="directory_entry">True</property>
@@ -1343,7 +1343,7 @@ Adam Weinberger (en_CA)</property>
 	  <child>
 	    <widget class="GtkLabel" id="tablabel2">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">C_VS Browser</property>
+	      <property name="label" translatable="yes">_Version Control Browser</property>
 	      <property name="use_underline">True</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1363,107 +1363,6 @@ Adam Weinberger (en_CA)</property>
 	    </packing>
 	  </child>
 
-	  <child>
-	    <widget class="GtkTable" id="table4">
-	      <property name="border_width">10</property>
-	      <property name="visible">True</property>
-	      <property name="n_rows">1</property>
-	      <property name="n_columns">2</property>
-	      <property name="homogeneous">False</property>
-	      <property name="row_spacing">10</property>
-	      <property name="column_spacing">10</property>
-
-	      <child>
-		<widget class="GtkLabel" id="label83">
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">SVN Directory</property>
-		  <property name="use_underline">False</property>
-		  <property name="use_markup">False</property>
-		  <property name="justify">GTK_JUSTIFY_LEFT</property>
-		  <property name="wrap">False</property>
-		  <property name="selectable">False</property>
-		  <property name="xalign">1</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">5</property>
-		  <property name="ypad">5</property>
-		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-		  <property name="width_chars">-1</property>
-		  <property name="single_line_mode">False</property>
-		  <property name="angle">0</property>
-		</widget>
-		<packing>
-		  <property name="left_attach">0</property>
-		  <property name="right_attach">1</property>
-		  <property name="top_attach">0</property>
-		  <property name="bottom_attach">1</property>
-		  <property name="x_options">fill</property>
-		  <property name="y_options"></property>
-		</packing>
-	      </child>
-
-	      <child>
-		<widget class="GnomeFileEntry" id="svnentry0">
-		  <property name="visible">True</property>
-		  <property name="history_id">svn_directory</property>
-		  <property name="max_saved">10</property>
-		  <property name="browse_dialog_title" translatable="yes">SVN Directory</property>
-		  <property name="directory_entry">True</property>
-		  <property name="modal">False</property>
-		  <property name="use_filechooser">True</property>
-		  <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-		  <signal name="activate" handler="on_entry_activate" last_modification_time="Thu, 11 Mar 2004 14:34:07 GMT"/>
-
-		  <child internal-child="entry">
-		    <widget class="GtkEntry" id="entry5">
-		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="editable">True</property>
-		      <property name="visibility">True</property>
-		      <property name="max_length">0</property>
-		      <property name="text" translatable="yes"></property>
-		      <property name="has_frame">True</property>
-		      <property name="invisible_char">*</property>
-		      <property name="activates_default">False</property>
-		    </widget>
-		  </child>
-		</widget>
-		<packing>
-		  <property name="left_attach">1</property>
-		  <property name="right_attach">2</property>
-		  <property name="top_attach">0</property>
-		  <property name="bottom_attach">1</property>
-		  <property name="y_options"></property>
-		</packing>
-	      </child>
-	    </widget>
-	    <packing>
-	      <property name="tab_expand">False</property>
-	      <property name="tab_fill">True</property>
-	    </packing>
-	  </child>
-
-	  <child>
-	    <widget class="GtkLabel" id="tablabel3">
-	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_SVN Browser</property>
-	      <property name="use_underline">True</property>
-	      <property name="use_markup">False</property>
-	      <property name="justify">GTK_JUSTIFY_LEFT</property>
-	      <property name="wrap">False</property>
-	      <property name="selectable">False</property>
-	      <property name="xalign">0.5</property>
-	      <property name="yalign">0.5</property>
-	      <property name="xpad">0</property>
-	      <property name="ypad">0</property>
-	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-	      <property name="width_chars">-1</property>
-	      <property name="single_line_mode">False</property>
-	      <property name="angle">0</property>
-	    </widget>
-	    <packing>
-	      <property name="type">tab</property>
-	    </packing>
-	  </child>
 	</widget>
 	<packing>
 	  <property name="padding">0</property>
@@ -1485,7 +1384,7 @@ Adam Weinberger (en_CA)</property>
       <signal name="activate" handler="on_menu_new_diff2_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image659">
+	<widget class="GtkImage" id="image678">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-new</property>
 	  <property name="icon_size">1</property>
@@ -1506,7 +1405,7 @@ Adam Weinberger (en_CA)</property>
       <signal name="activate" handler="on_menu_new_diff3_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image660">
+	<widget class="GtkImage" id="image679">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-new</property>
 	  <property name="icon_size">1</property>
@@ -1527,7 +1426,7 @@ Adam Weinberger (en_CA)</property>
       <signal name="activate" handler="on_menu_new_dir2_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image661">
+	<widget class="GtkImage" id="image680">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-open</property>
 	  <property name="icon_size">1</property>
@@ -1548,7 +1447,7 @@ Adam Weinberger (en_CA)</property>
       <signal name="activate" handler="on_menu_new_dir3_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image662">
+	<widget class="GtkImage" id="image681">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-open</property>
 	  <property name="icon_size">1</property>
@@ -1562,42 +1461,11 @@ Adam Weinberger (en_CA)</property>
   </child>
 
   <child>
-    <widget class="GtkImageMenuItem" id="new_cvsview">
+    <widget class="GtkMenuItem" id="new_vcview">
       <property name="visible">True</property>
-      <property name="label" translatable="yes">CVS view</property>
+      <property name="label" translatable="yes">Version control view</property>
       <property name="use_underline">True</property>
-      <signal name="activate" handler="on_menu_new_cvsview_activate" last_modification_time="Sat, 02 Nov 2002 17:46:41 GMT"/>
-
-      <child internal-child="image">
-	<widget class="GtkImage" id="image663">
-	  <property name="visible">True</property>
-	  <property name="pixbuf">pixmaps/cvs-icon-small.png</property>
-	  <property name="xalign">0.5</property>
-	  <property name="yalign">0.5</property>
-	  <property name="xpad">0</property>
-	  <property name="ypad">0</property>
-	</widget>
-      </child>
-    </widget>
-  </child>
-
-  <child>
-    <widget class="GtkImageMenuItem" id="new_svnview">
-      <property name="visible">True</property>
-      <property name="label" translatable="yes">SVN view</property>
-      <property name="use_underline">True</property>
-      <signal name="activate" handler="on_menu_new_svnview_activate" last_modification_time="Sun, 25 Apr 2004 11:04:07 GMT"/>
-
-      <child internal-child="image">
-	<widget class="GtkImage" id="image664">
-	  <property name="visible">True</property>
-	  <property name="pixbuf">pixmaps/svn-icon-small.png</property>
-	  <property name="xalign">0.5</property>
-	  <property name="yalign">0.5</property>
-	  <property name="xpad">0</property>
-	  <property name="ypad">0</property>
-	</widget>
-      </child>
+      <signal name="activate" handler="on_menu_new_vcview_activate" last_modification_time="Sat, 15 Oct 2005 23:04:37 GMT"/>
     </widget>
   </child>
 </widget>
@@ -3733,7 +3601,7 @@ Adam Weinberger (en_CA)</property>
 	      </child>
 
 	      <child>
-		<widget class="GtkVBox" id="cvs_tab">
+		<widget class="GtkVBox" id="vc_tab">
 		  <property name="visible">True</property>
 		  <property name="homogeneous">False</property>
 		  <property name="spacing">12</property>
@@ -3753,7 +3621,7 @@ Adam Weinberger (en_CA)</property>
 			  <child>
 			    <widget class="GtkImage" id="image585">
 			      <property name="visible">True</property>
-			      <property name="pixbuf">pixmaps/cvs-icon.png</property>
+			      <property name="pixbuf">pixmaps/vc-icon.png</property>
 			      <property name="xalign">0.5</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
