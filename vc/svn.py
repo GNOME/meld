@@ -17,6 +17,7 @@
 import os
 import re
 import tree
+import errno
 import _vc
 
 class Vc(_vc.Vc):

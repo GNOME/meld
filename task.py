@@ -131,12 +131,13 @@ class SchedulerBase(object):
             ret = task()
         except StopIteration:
             pass
-        except Exception, e:
+        except Exception:
             traceback.print_exc()
         else:
             if ret:
                 return ret
         self.tasks.remove(task)
+        return 0
 
 
 class LifoScheduler(SchedulerBase):
@@ -179,7 +180,7 @@ class RoundRobinScheduler(SchedulerBase):
 
 if __name__=="__main__":
     import time
-    import whrandom
+    import random
     m = LifoScheduler()
     def timetask(t):
         while time.time() - t < 1:
@@ -187,7 +188,7 @@ if __name__=="__main__":
             time.sleep(0.1)
         print "!!!"
     def sayhello(x):
-        for i in range(whrandom.randint(2,8)):
+        for i in range(random.randint(2,8)):
             print "hello", x
             time.sleep(0.1)
             yield 1

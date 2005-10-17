@@ -75,7 +75,7 @@ class Base(object):
         """
         for item in widgetnames:
             setattr(self,item, [])
-            list = getattr(self,item)
+            lst = getattr(self,item)
             i = 0
             while 1:
                 key = "%s%i"%(item,i)
@@ -83,7 +83,7 @@ class Base(object):
                     val = getattr(self, key)
                 except AttributeError:
                     break
-                list.append(val)
+                lst.append(val)
                 i += 1
 
 
@@ -107,7 +107,7 @@ class GtkApp(Base):
         """
         gtk.main()
 
-    def quit(*args):
+    def quit(self, *args):
         """Signal the gtk main loop to quit.
         """
         gtk.main_quit()

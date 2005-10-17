@@ -28,7 +28,6 @@ import paths
 import prefs
 import gnomeglade
 import misc
-import melddoc
 import filediff
 import vcview
 import dirdiff
@@ -113,8 +112,8 @@ class ListWidget(gnomeglade.Component):
             rentext = gtk.CellRendererText()
             rentext.set_property("editable", 1)
             def change_text(ren, row, text):
-                iter = model.get_iter( (int(row),))
-                model.set_value( iter, colnum, text)
+                it = model.get_iter( (int(row),))
+                model.set_value( it, colnum, text)
                 self._update_filter_string()
             rentext.connect("edited", change_text)
             column = gtk.TreeViewColumn(label)
@@ -125,8 +124,8 @@ class ListWidget(gnomeglade.Component):
             model = view.get_model()
             rentoggle = gtk.CellRendererToggle()
             def change_toggle(ren, row):
-                iter = model.get_iter( (int(row),))
-                model.set_value( iter, colnum, not ren.get_active() )
+                it = model.get_iter( (int(row),))
+                model.set_value( it, colnum, not ren.get_active() )
                 self._update_filter_string()
             rentoggle.connect("toggled", change_toggle)
             column = gtk.TreeViewColumn(label)
@@ -142,14 +141,14 @@ class ListWidget(gnomeglade.Component):
         self._update_filter_model()
     def on_item_new_clicked(self, button):
         model = self.treeview.get_model()
-        iter = model.append()
-        model.set_value(iter, 0, "label")
-        model.set_value(iter, 2, "pattern")
+        it = model.append()
+        model.set_value(it, 0, "label")
+        model.set_value(it, 2, "pattern")
         self._update_filter_string()
     def _get_selected(self):
         selected = []
         self.treeview.get_selection().selected_foreach(
-            lambda store, path, iter: selected.append( path ) )
+            lambda store, path, it: selected.append( path ) )
         return selected
     def on_item_delete_clicked(self, button):
         model = self.treeview.get_model()
@@ -161,22 +160,22 @@ class ListWidget(gnomeglade.Component):
         for s in self._get_selected():
             if s[0] > 0: # XXX need model.swap
                 old = model.get_iter(s[0])
-                iter = model.insert( s[0]-1 )
+                it = model.insert( s[0]-1 )
                 for i in range(3):
-                    model.set_value(iter, i, model.get_value(old, i) )
+                    model.set_value(it, i, model.get_value(old, i) )
                 model.remove(old)
-                self.treeview.get_selection().select_iter(iter)
+                self.treeview.get_selection().select_iter(it)
         self._update_filter_string()
     def on_item_down_clicked(self, button):
         model = self.treeview.get_model()
         for s in self._get_selected():
             if s[0] < len(model)-1: # XXX need model.swap
                 old = model.get_iter(s[0])
-                iter = model.insert( s[0]+2 )
+                it = model.insert( s[0]+2 )
                 for i in range(3):
-                    model.set_value(iter, i, model.get_value(old, i) )
+                    model.set_value(it, i, model.get_value(old, i) )
                 model.remove(old)
-                self.treeview.get_selection().select_iter(iter)
+                self.treeview.get_selection().select_iter(it)
         self._update_filter_string()
     def on_items_revert_clicked(self, button):
         setattr( self.prefs, self.key, self.prefs.get_default(self.key) )
@@ -192,10 +191,10 @@ class ListWidget(gnomeglade.Component):
         model.clear()
         for filtstring in getattr( self.prefs, self.key).split("\n"):
             filt = misc.ListItem(filtstring)
-            iter = model.append()
-            model.set_value( iter, 0, filt.name)
-            model.set_value( iter, 1, filt.active)
-            model.set_value( iter, 2, misc.escape(filt.value))
+            it = model.append()
+            model.set_value( it, 0, filt.name)
+            model.set_value( it, 1, filt.active)
+            model.set_value( it, 2, misc.escape(filt.value))
    
 ################################################################################
 #
@@ -626,6 +625,7 @@ class MeldApp(gnomeglade.GnomeApp):
         for c in self.notebook.get_children():
             c.get_data("pyobject").on_quit_event()
         self.quit()
+        return gtk.RESPONSE_CLOSE
 
     #
     # Toolbar and menu items (edit)

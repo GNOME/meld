@@ -23,7 +23,6 @@ _help_dir = ( #HELPDIR#
 _share_dir = ( #SHAREDIR#
 )
 
-import sys
 appdir = os.path.dirname(__file__)
 
 if not _locale_dir: _locale_dir = os.path.join(appdir,"po")

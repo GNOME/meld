@@ -17,10 +17,7 @@
 from __future__ import generators
 
 import tempfile
-import gobject
 import shutil
-import time
-import copy
 import gtk
 import os
 import re
@@ -148,7 +145,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/vcview.glade"), "vcview")
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
-        self.tempfiles = []
+        self.tempdirs = []
         self.model = VcTreeStore()
         self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
@@ -200,9 +197,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.location = location = os.path.abspath(location or ".")
         self.fileentry.gtk_entry().set_text(location)
         self.vc = vc.Vc(location)
-        iter = self.model.add_entries( None, [location] )
-        self.treeview.get_selection().select_iter(iter)
-        self.model.set_state(iter, 0, tree.STATE_NORMAL, isdir=1)
+        it = self.model.add_entries( None, [location] )
+        self.treeview.get_selection().select_iter(it)
+        self.model.set_state(it, 0, tree.STATE_NORMAL, isdir=1)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
         self.scheduler.add_task( self._search_recursively_iter(self.model.get_iter_root()).next )
@@ -234,10 +231,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             todo.sort() # depth first
             path, name = todo.pop(0)
             if path:
-                iter = self.model.get_iter( path )
-                root = self.model.value_path( iter, 0 )
+                it = self.model.get_iter( path )
+                root = self.model.value_path( it, 0 )
             else:
-                iter = self.model.get_iter_root()
+                it = self.model.get_iter_root()
                 root = name
             yield _("[%s] Scanning %s") % (self.label_text, root[prefixlen:])
             #import time; time.sleep(1.0)
@@ -249,13 +246,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 if e.isdir and recursive:
                     todo.append( (None, e.path) )
                     continue
-                child = self.model.add_entries(iter, [e.path])
+                child = self.model.add_entries(it, [e.path])
                 self._update_item_state( child, e, root[prefixlen:] )
                 if e.isdir:
                     todo.append( (self.model.get_path(child), None) )
             if not recursive: # expand parents
                 if len(entries) == 0:
-                    self.model.add_empty(iter, _("(Empty)"))
+                    self.model.add_empty(it, _("(Empty)"))
                 if differences or len(path)==1:
                     _expand_to_root( self.treeview, path )
             else: # just the root
@@ -271,7 +268,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_quit_event(self):
         self.scheduler.remove_all_tasks()
-        for f in self.tempfiles:
+        for f in self.tempdirs:
             if os.path.exists(f):
                 shutil.rmtree(f, ignore_errors=1)
 
@@ -280,14 +277,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return gtk.RESPONSE_OK
 
     def on_row_activated(self, treeview, path, tvc):
-        iter = self.model.get_iter(path)
-        if self.model.iter_has_child(iter):
+        it = self.model.get_iter(path)
+        if self.model.iter_has_child(it):
             if self.treeview.row_expanded(path):
                 self.treeview.collapse_row(path)
             else:
                 self.treeview.expand_row(path,0)
         else:
-            path = self.model.value_path(iter, 0)
+            path = self.model.value_path(it, 0)
             self.run_diff( [path] )
 
     def run_diff_iter(self, paths, empty_patch_ok):
@@ -323,16 +320,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def _get_selected_treepaths(self):
         sel = []
-        def gather(model, path, iter):
-            sel.append( model.get_path(iter) )
+        def gather(model, path, it):
+            sel.append( model.get_path(it) )
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
         return sel
 
     def _get_selected_files(self):
         sel = []
-        def gather(model, path, iter):
-            sel.append( model.value_path(iter,0) )
+        def gather(model, path, it):
+            sel.append( model.value_path(it,0) )
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
         # remove empty entries and remove trailing slashes
@@ -418,21 +415,20 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def show_patch(self, prefix, patch):
         if not patch: return
 
-        tmpdir = tempfile.mktemp("-meld")
-        self.tempfiles.append(tmpdir)
-        os.mkdir(tmpdir)
+        tmpdir = tempfile.mkdtemp("-meld")
+        self.tempdirs.append(tmpdir)
 
         regex = re.compile("^diff(.*$)", re.M)
         regex = re.compile(self.vc.PATCH_INDEX_RE, re.M)
         files = [f.split()[-1] for f in regex.findall(patch)]
         diffs = []
-        for file in files:
-            destfile = os.path.join(tmpdir,file)
+        for fname in files:
+            destfile = os.path.join(tmpdir,fname)
             destdir = os.path.dirname( destfile )
 
             if not os.path.exists(destdir):
                 os.makedirs(destdir)
-            pathtofile = os.path.join(prefix, file)
+            pathtofile = os.path.join(prefix, fname)
             try:
                 shutil.copyfile( pathtofile, destfile)
             except IOError: # it is missing, create empty file
@@ -449,18 +445,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def refresh_partial(self, where):
         if not self.button_flatten.get_active():
-            iter = self.find_iter_by_name( where )
-            if iter:
-                newiter = self.model.insert_after( None, iter)
+            it = self.find_iter_by_name( where )
+            if it:
+                newiter = self.model.insert_after( None, it)
                 self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
                 self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
-                self.model.remove(iter)
+                self.model.remove(it)
                 self.scheduler.add_task( self._search_recursively_iter(newiter).next )
         else: # XXX fixme
             self.refresh()
-
-    def next_diff(self,*args):
-        pass
 
     def on_button_jump_press_event(self, button, event):
         class MyMenu(gtk.Menu):
@@ -492,11 +485,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         menu = MyMenu( self, os.path.abspath(self.location) )
         menu.popup(None, None, None, event.button, event.time)
 
-    def _update_item_state(self, iter, vcentry, location):
+    def _update_item_state(self, it, vcentry, location):
         e = vcentry
-        self.model.set_state( iter, 0, e.state, e.isdir )
+        self.model.set_state( it, 0, e.state, e.isdir )
         def set(col, val):
-            self.model.set_value( iter, self.model.column_index(col,0), val)
+            self.model.set_value( it, self.model.column_index(col,0), val)
         set( COL_LOCATION, location )
         set( COL_STATUS, e.get_status())
         set( COL_REVISION, e.rev)
@@ -504,24 +497,24 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         set( COL_OPTIONS, e.options)
 
     def on_file_changed(self, filename):
-        iter = self.find_iter_by_name(filename)
-        if iter:
-            path = self.model.value_path(iter, 0)
+        it = self.find_iter_by_name(filename)
+        if it:
+            path = self.model.value_path(it, 0)
             dirs, files = self.vc.lookup_files( [], [ (os.path.basename(path), path)] )
             for e in files:
                 if e.path == path:
                     prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
-                    self._update_item_state( iter, e, e.parent[prefixlen:])
+                    self._update_item_state( it, e, e.parent[prefixlen:])
                     return
 
     def find_iter_by_name(self, name):
-        iter = self.model.get_iter_root()
-        path = self.model.value_path(iter, 0)
-        while iter:
+        it = self.model.get_iter_root()
+        path = self.model.value_path(it, 0)
+        while it:
             if name == path:
-                return iter
+                return it
             elif name.startswith(path):
-                child = self.model.iter_children( iter )
+                child = self.model.iter_children( it )
                 while child:
                     path = self.model.value_path(child, 0)
                     if name == path:
@@ -530,7 +523,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                         break
                     else:
                         child = self.model.iter_next( child )
-                iter = child
+                it = child
             else:
                 break
         return None

@@ -16,7 +16,6 @@
 
 from __future__ import generators
 import difflib
-import misc
 
 def _null_or_space(s):
     return len(s.strip()) == 0
@@ -78,7 +77,7 @@ class Differ(object):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
         self.num_sequences = len(sequences)
         self.seqlength = [0,0,0]
-        for i,s in misc.enumerate(sequences):
+        for i,s in enumerate(sequences):
             self.seqlength[i] = len(s)
 
         if len(sequences)==0 or len(sequences)==1:
@@ -302,19 +301,20 @@ class Differ(object):
         self.diffs = diffs
         self.num_sequences = len(sequences)
         self.seqlength = [0,0,0]
-        for i,s in misc.enumerate(sequences):
+        for i,s in enumerate(sequences):
             self.seqlength[i] = len(s)
         yield 1
 
 def main():
-    t0 = open("test/lao").readlines()
-    tc = open("test/tzu").readlines()
-    t1 = open("test/tao").readlines()
+    pass
+#    t0 = open("test/lao").readlines()
+#    tc = open("test/tzu").readlines()
+#    t1 = open("test/tao").readlines()
+#
+#    thread0 = IncrementalSequenceMatcher(None, tc, t0).get_difference_opcodes()
+#    thread1 = IncrementalSequenceMatcher(None, tc, t1).get_difference_opcodes()
+#
+#    texts = (t0,tc,t1)
 
-    thread0 = IncrementalSequenceMatcher(None, tc, t0).get_difference_opcodes()
-    thread1 = IncrementalSequenceMatcher(None, tc, t1).get_difference_opcodes()
-
-    texts = (t0,tc,t1)
-
-if __name__=="__main__": 
+if __name__=="__main__":
     main()

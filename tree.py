@@ -80,7 +80,7 @@ class DiffTreeStore(gtk.TreeStore):
 
     def add_entries(self, parent, names):
         child = self.append(parent)
-        for i,f in misc.enumerate(names):
+        for i,f in enumerate(names):
             self.set_value( child, self.column_index(COL_PATH,i), f)
         return child
 

@@ -20,8 +20,6 @@ import codecs
 import math
 import os
 import re
-import sys
-import tempfile
 import difflib
 import struct
 
@@ -187,7 +185,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if r.active:
                 try:
                     self.regexes.append( (re.compile(r.value+"(?m)"), r.value) )
-                except re.error, e:
+                except re.error:
                     pass
 
     def _disconnect_buffer_handlers(self):
@@ -211,11 +209,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _update_cursor_status(self, buf):
         def update():
-            iter = buf.get_iter_at_mark( buf.get_insert() )
+            it = buf.get_iter_at_mark( buf.get_insert() )
             # Abbreviation for insert,overwrite so that it will fit in the status bar
             insert_overwrite = _("INS,OVR").split(",")[ self.textview_overwrite ]
             # Abbreviation for line, column so that it will fit in the status bar
-            line_column = _("Ln %i, Col %i") % (iter.get_line()+1, iter.get_line_offset()+1)
+            line_column = _("Ln %i, Col %i") % (it.get_line()+1, it.get_line_offset()+1)
             status = "%s : %s" % ( insert_overwrite, line_column )
             self.emit("status-changed", status  )
             raise StopIteration; yield 0
@@ -235,8 +233,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.num_panes > 1:
             buffers = [t.get_buffer() for t in self.textview[:self.num_panes] ]
             pane = buffers.index(buffer)
-            range = self.linediffer.change_sequence( pane, startline, sizechange, self._get_texts())
-            for iter in self._update_highlighting( range[0], range[1] ):
+            change_range = self.linediffer.change_sequence( pane, startline, sizechange, self._get_texts())
+            for it in self._update_highlighting( change_range[0], change_range[1] ):
                 pass
             self.queue_draw()
         self._update_cursor_status(buffer)
@@ -272,19 +270,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for c,r in self.regexes:
                 txt = c.sub(killit,txt)
         except AssertionError:
-            if self.warned_bad_comparison == False:
+            if not self.warned_bad_comparison:
                 misc.run_dialog(_("Regular expression '%s' changed the number of lines in the file. " \
                     "Comparison will be incorrect. See the user manual for more details.") % r)
                 self.warned_bad_comparison = True
         return txt
 
-    def after_text_insert_text(self, buffer, iter, newtext, textlen):
+    def after_text_insert_text(self, buffer, it, newtext, textlen):
         lines_added = newtext.count("\n")
-        starting_at = iter.get_line() - lines_added
+        starting_at = it.get_line() - lines_added
         self._after_text_modified(buffer, starting_at, lines_added)
 
-    def after_text_delete_range(self, buffer, iter0, iter1):
-        starting_at = iter0.get_line()
+    def after_text_delete_range(self, buffer, it0, it1):
+        starting_at = it0.get_line()
         assert self.deleted_lines_pending != -1
         self._after_text_modified(buffer, starting_at, -self.deleted_lines_pending)
         self.deleted_lines_pending = -1
@@ -405,17 +403,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_text_end_user_action(self, *buffer):
         self.undosequence.end_group()
 
-    def on_text_insert_text(self, buffer, iter, text, textlen):
+    def on_text_insert_text(self, buffer, it, text, textlen):
         if not self.undosequence_busy:
             self.undosequence.begin_group()
             pane = self.textview.index( buffer.textview )
             if self.bufferdata[pane].modified != 1:
                 self.undosequence.add_action( BufferModifiedAction(buffer, self) )
-            self.undosequence.add_action( BufferInsertionAction(buffer, iter.get_offset(), text) )
+            self.undosequence.add_action( BufferInsertionAction(buffer, it.get_offset(), text) )
             self.undosequence.end_group()
 
-    def on_text_delete_range(self, buffer, iter0, iter1):
-        text = buffer.get_text(iter0, iter1, 0)
+    def on_text_delete_range(self, buffer, it0, it1):
+        text = buffer.get_text(it0, it1, 0)
         pane = self.textview.index(buffer.textview)
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = text.count("\n")
@@ -423,7 +421,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.undosequence.begin_group()
             if self.bufferdata[pane].modified != 1:
                 self.undosequence.add_action( BufferModifiedAction(buffer, self) )
-            self.undosequence.add_action( BufferDeletionAction(buffer, iter0.get_offset(), text) )
+            self.undosequence.add_action( BufferDeletionAction(buffer, it0.get_offset(), text) )
             self.undosequence.end_group()
 
         #
@@ -491,6 +489,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pane = self.textview.index(textview)
             self.popup_menu.popup_in_pane( pane )
             return 1
+        return 0
 
     def on_textview_toggle_overwrite(self, view):
         self.textview_overwrite = not self.textview_overwrite
@@ -524,10 +523,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if match == None and wrap:
                 match = pattern.search(text, 0)
             if match:
-                iter = buf.get_iter_at_offset( match.start() )
-                buf.place_cursor( iter )
-                iter.forward_chars( match.end() - match.start() )
-                buf.move_mark( buf.get_selection_bound(), iter )
+                it = buf.get_iter_at_offset( match.start() )
+                buf.place_cursor( it )
+                it.forward_chars( match.end() - match.start() )
+                buf.move_mark( buf.get_selection_bound(), it )
                 view.scroll_to_mark( buf.get_insert(), 0)
             elif regex:
                 misc.run_dialog( _("The regular expression '%s' was not found.") % tofind_utf8, self, messagetype=gtk.MESSAGE_INFO)
@@ -560,7 +559,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Set num panes to len(files) and load each file given.
            If an element is None, the text of a pane is left as is.
         """
-        for i,f in misc.enumerate(files):
+        for i,f in enumerate(files):
             if f:
                 b = self.textview[i].get_buffer()
                 b.delete( b.get_start_iter(), b.get_end_iter() )
@@ -581,7 +580,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Opening files") % self.label_text
         panetext = ["\n"] * self.num_panes
         tasks = []
-        for i,f in misc.enumerate(files):
+        for i,f in enumerate(files):
             if f:
                 try:
                     task = misc.struct(filename = f,
@@ -679,7 +678,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 tag = table.lookup(tagname)
                 b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
         for chunk in self.linediffer.all_changes(self._get_texts()):
-            for i,c in misc.enumerate(chunk):
+            for i,c in enumerate(chunk):
                 if c and c[0] == "replace":
                     bufs = buffers[1], buffers[i*2]
                     #tags = [b.get_tag_table().lookup("replace line") for b in bufs]
@@ -713,7 +712,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
         if not hasattr(textview, "meldgc"):
             self._setup_gcs(textview)
-        gctext = textview.get_style().text_gc[0]
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
         start_line = self._pixel_to_line(pane, visible.y)
@@ -751,8 +749,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             parent=self.widget.get_toplevel(),
             action=gtk.FILE_CHOOSER_ACTION_SAVE,
             buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK) )
-        response = ilenamedialog.run()
-        fname = None
+        response = dialog.run()
+        filename = None
         if response == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
         dialog.destroy()
@@ -765,6 +763,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if response == gtk.RESPONSE_NO:
                     return None
             return filename
+        return None
 
     def _save_text_to_filename(self, filename, text):
         try:
@@ -807,7 +806,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if bufdata.encoding and self.prefs.save_encoding==0:
             try:
                 text = text.encode(bufdata.encoding)
-            except UnicodeEncodeError, e:
+            except UnicodeEncodeError:
                 if misc.run_dialog(
                     _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.filename, bufdata.encoding),
                     self, gtk.MESSAGE_ERROR, gtk.BUTTONS_YES_NO) != gtk.RESPONSE_YES:
@@ -920,7 +919,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if not self._sync_hscroll_lock:
             self._sync_hscroll_lock = 1
             adjs = map( lambda x: x.get_hadjustment(), self.scrolledwindow)
-            master = adjs.index(adjustment)
             adjs.remove(adjustment)
             val = adjustment.get_value()
             for a in adjs:
@@ -995,7 +993,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
         x0 = 4
         x1 = area.get_allocation().width - 2*x0
-        madj = self.scrolledwindow[textindex].get_vadjustment()
 
         window = area.window
         window.clear()
@@ -1023,6 +1020,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             upper = adj.upper - adj.page_size
             adj.set_value( max( min(upper, val), 0) )
             return 1
+        return 0
 
     def _get_line_count(self, index):
         """Return the number of lines in the buffer of textview 'text'"""
@@ -1046,8 +1044,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.recompute_label()
 
     def _line_to_pixel(self, pane, line ):
-        iter = self.textview[pane].get_buffer().get_iter_at_line(line)
-        return self.textview[pane].get_iter_location( iter ).y
+        it = self.textview[pane].get_buffer().get_iter_at_line(line)
+        return self.textview[pane].get_iter_location( it ).y
 
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
@@ -1264,6 +1262,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return 1
         elif event.button == 2:
             self.linkmap_drag_coord = event.x
+        return 0
 
     def on_linkmap_motion_notify_event(self, area, event):
         return 
@@ -1312,6 +1311,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
                         self.on_text_end_user_action()
             return 1
+        return 0
 
     def on_linkmap_drag_begin(self, *args):
         print args

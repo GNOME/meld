@@ -20,7 +20,6 @@
 
 from __future__ import generators
 import copy
-import sys
 import os
 import select
 import popen2
@@ -28,7 +27,6 @@ import errno
 import gtk
 import shutil
 import re
-import os
 import signal
 
 whitespace_re = re.compile(r"\s")
@@ -49,8 +47,8 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
         '<span weight="bold" size="larger">%s</span>' % text)
     if parent:
         d.set_transient_for(parent.widget.get_toplevel())
-    for b,id in extrabuttons:
-        d.add_button(b,id)
+    for b,rid in extrabuttons:
+        d.add_button(b,rid)
     d.vbox.set_spacing(12)
     hbox = d.vbox.get_children()[0]
     hbox.set_spacing(12)
@@ -211,14 +209,6 @@ def clamp(val, lower, upper):
     """
     assert lower <= upper
     return min( max(val, lower), upper)
-
-def enumerate(seq):
-    """Emulate enumerate from python2.3.
-    """
-    i = 0
-    for s in seq:
-        yield (i,s)
-        i += 1
 
 def commonprefix(dirs):
     """Given a list of pathnames, returns the longest common leading component.

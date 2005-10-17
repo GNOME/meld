@@ -44,11 +44,7 @@ class Vc(_vc.Vc):
 
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"
-        if len(files):
-            directory = os.path.dirname(files[0][1])
-        elif len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        else:
+        if len(files) == 0 and len(dirs) == 0:
             return [],[]
 
         d = map(lambda x: _vc.Dir(x[1],x[0], tree.STATE_NONE), dirs)
