@@ -36,6 +36,7 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	mkdir -m 755 -p \
 		$(DESTDIR)$(bindir) \
 		$(DESTDIR)$(libdir_) \
+		$(DESTDIR)$(libdir_)/vc \
 		$(DESTDIR)$(sharedir_)/glade2/pixmaps \
 		$(DESTDIR)$(docdir_) \
 		$(DESTDIR)$(sharedir)/applications \
@@ -46,6 +47,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(bindir)/meld
 	install -m 644 *.py \
 		$(DESTDIR)$(libdir_)
+	install -m 644 vc/*.py \
+		$(DESTDIR)$(libdir_)/vc
 	install -m 644 paths.py.install \
 		$(DESTDIR)$(libdir_)/paths.py
 	install -m 644 meld.applications \
