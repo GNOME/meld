@@ -23,14 +23,10 @@ import paths
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
 
-# ignored, new, normal, ignored changes,
-# error, placeholder, vc added
-# vc modified, vc conflict, vc removed
-# locally removed, end
-STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
-STATE_ERROR, STATE_EMPTY, STATE_NEW, \
-STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
-STATE_MISSING, STATE_MAX = range(12)
+from vc._vc import STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
+    STATE_ERROR, STATE_EMPTY, STATE_NEW, \
+    STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
+    STATE_MISSING, STATE_MAX
 
 load = lambda x,s=14: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
 pixbuf_folder = load("tree-folder-normal.png", 20)
