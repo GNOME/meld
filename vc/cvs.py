@@ -1,23 +1,29 @@
-### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 
-### This program is free software; you can redistribute it and/or modify
-### it under the terms of the GNU General Public License as published by
-### the Free Software Foundation; either version 2 of the License, or
-### (at your option) any later version.
+### Redistribution and use in source and binary forms, with or without
+### modification, are permitted provided that the following conditions
+### are met:
+### 
+### 1. Redistributions of source code must retain the above copyright
+###    notice, this list of conditions and the following disclaimer.
+### 2. Redistributions in binary form must reproduce the above copyright
+###    notice, this list of conditions and the following disclaimer in the
+###    documentation and/or other materials provided with the distribution.
 
-### This program is distributed in the hope that it will be useful,
-### but WITHOUT ANY WARRANTY; without even the implied warranty of
-### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-### GNU General Public License for more details.
-
-### You should have received a copy of the GNU General Public License
-### along with this program; if not, write to the Free Software
-### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+### THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+### IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+### OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+### IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+### INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+### NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+### DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+### THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import re
 import time
-import tree
 import misc
 import _vc
 
@@ -60,8 +66,8 @@ class Vc(_vc.Vc):
             # poor mans universal newline
             entries = entries.replace("\r","\n").replace("\n\n","\n")
         except IOError, e: # no cvs dir
-            d = map(lambda x: _vc.Dir(x[1],x[0], tree.STATE_NONE), dirs)
-            f = map(lambda x: _vc.File(x[1],x[0], tree.STATE_NONE, None), files)
+            d = map(lambda x: _vc.Dir(x[1],x[0], _vc.STATE_NONE), dirs)
+            f = map(lambda x: _vc.File(x[1],x[0], _vc.STATE_NONE, None), files)
             return d,f
 
         try:
@@ -97,42 +103,42 @@ class Vc(_vc.Vc):
                 tag = tag[1:]
             if isdir:
                 if os.path.exists(path):
-                    state = tree.STATE_NORMAL
+                    state = _vc.STATE_NORMAL
                 else:
-                    state = tree.STATE_MISSING
+                    state = _vc.STATE_MISSING
                 retdirs.append( _vc.Dir(path,name,state) )
             else:
                 if rev.startswith("-"):
-                    state = tree.STATE_REMOVED
+                    state = _vc.STATE_REMOVED
                 elif date=="dummy timestamp":
                     if rev[0] == "0":
-                        state = tree.STATE_NEW
+                        state = _vc.STATE_NEW
                     else:
                         print "Revision '%s' not understood" % rev
                 elif date=="dummy timestamp from new-entry":
-                    state = tree.STATE_MODIFIED
+                    state = _vc.STATE_MODIFIED
                 else:
                     date = re.sub(r"\s*\d+", lambda x : "%3i" % int(x.group()), date, 1)
                     plus = date.find("+")
                     if plus >= 0:
-                        state = tree.STATE_CONFLICT
+                        state = _vc.STATE_CONFLICT
                         try:
                             txt = open(path, "U").read()
                         except IOError:
                             pass
                         else:
                             if txt.find("\n=======\n") == -1:
-                                state = tree.STATE_MODIFIED
+                                state = _vc.STATE_MODIFIED
                     else:
                         try:
                             mtime = os.stat(path).st_mtime
                         except OSError:
-                            state = tree.STATE_MISSING
+                            state = _vc.STATE_MISSING
                         else:
                             if time.asctime(time.gmtime(mtime))==date:
-                                state = tree.STATE_NORMAL
+                                state = _vc.STATE_NORMAL
                             else:
-                                state = tree.STATE_MODIFIED
+                                state = _vc.STATE_MODIFIED
                 retfiles.append( _vc.File(path, name, state, rev, tag, options) )
         # known
         cvsfiles = map(lambda x: x[1], matches)
@@ -161,11 +167,11 @@ class Vc(_vc.Vc):
 
         for f,path in files:
             if f not in cvsfiles:
-                state = ignore_re.match(f) == None and tree.STATE_NONE or tree.STATE_IGNORED
+                state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 retfiles.append( _vc.File(path, f, state, "") )
         for d,path in dirs:
             if d not in cvsfiles:
-                state = ignore_re.match(d) == None and tree.STATE_NONE or tree.STATE_IGNORED
+                state = ignore_re.match(d) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 retdirs.append( _vc.Dir(path, d, state) )
 
         return retdirs, retfiles

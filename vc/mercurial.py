@@ -1,21 +1,27 @@
-### Copyright (C) 2002-2004 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 
-### This program is free software; you can redistribute it and/or modify
-### it under the terms of the GNU General Public License as published by
-### the Free Software Foundation; either version 2 of the License, or
-### (at your option) any later version.
+### Redistribution and use in source and binary forms, with or without
+### modification, are permitted provided that the following conditions
+### are met:
+### 
+### 1. Redistributions of source code must retain the above copyright
+###    notice, this list of conditions and the following disclaimer.
+### 2. Redistributions in binary form must reproduce the above copyright
+###    notice, this list of conditions and the following disclaimer in the
+###    documentation and/or other materials provided with the distribution.
 
-### This program is distributed in the hope that it will be useful,
-### but WITHOUT ANY WARRANTY; without even the implied warranty of
-### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-### GNU General Public License for more details.
-
-### You should have received a copy of the GNU General Public License
-### along with this program; if not, write to the Free Software
-### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+### THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+### IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+### OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+### IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+### INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+### NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+### DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+### THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
-import tree
 import errno
 import _vc
 
@@ -69,29 +75,29 @@ class Vc(_vc.Vc):
         retfiles = []
         retdirs = []
         statemap = {
-            "?": tree.STATE_NONE,
-            "A": tree.STATE_NEW,
-            " ": tree.STATE_NORMAL,
-            "!": tree.STATE_MISSING,
-            "I": tree.STATE_IGNORED,
-            "M": tree.STATE_MODIFIED,
-            "C": tree.STATE_CONFLICT }
+            "?": _vc.STATE_NONE,
+            "A": _vc.STATE_NEW,
+            " ": _vc.STATE_NORMAL,
+            "!": _vc.STATE_MISSING,
+            "I": _vc.STATE_IGNORED,
+            "M": _vc.STATE_MODIFIED,
+            "C": _vc.STATE_CONFLICT }
         hgfiles = {}
         for statekey, name in [ (entry[0], entry[2:]) for entry in entries if entry.find("/")==-1 ]:
             path = os.path.join(directory, name)
             rev, date, options, tag = "","","",""
-            state = statemap.get(statekey, tree.STATE_NONE)
+            state = statemap.get(statekey, _vc.STATE_NONE)
             retfiles.append( _vc.File(path, name, state, rev, tag, options) )
             hgfiles[name] = 1
         for f,path in files:
             if f not in hgfiles:
-                #state = ignore_re.match(f) == None and tree.STATE_NONE or tree.STATE_IGNORED
-                state = tree.STATE_NORMAL
+                #state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
+                state = _vc.STATE_NORMAL
                 retfiles.append( _vc.File(path, f, state, "") )
         for d,path in dirs:
             if d not in hgfiles:
-                #state = ignore_re.match(f) == None and tree.STATE_NONE or tree.STATE_IGNORED
-                state = tree.STATE_NORMAL
+                #state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
+                state = _vc.STATE_NORMAL
                 retdirs.append( _vc.Dir(path, d, state) )
 
         return retdirs, retfiles
