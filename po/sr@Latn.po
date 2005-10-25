@@ -1,84 +1,104 @@
 # Serbian translation of meld
-# Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004, 2005.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004.
 #
 # This file is distributed under the same license as the meld package.
 #
-# Maintainer: Danilo Šegan <danilo@gnome.org>
+# Maintainer: Danilo Šegan <dsegan@gmx.net>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-20 19:55+0200\n"
-"PO-Revision-Date: 2005-06-20 20:18+0200\n"
-"Last-Translator: Danilo Šegan <danilo@gnome.org>\n"
-"Language-Team: Serbian (sr) <gnom@prevod.org>\n"
+"POT-Creation-Date: 2004-03-03 06:13+0100\n"
+"PO-Revision-Date: 2004-03-03 06:18+0100\n"
+"Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
+"Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../dirdiff.py:251 ../dirdiff.py:266
-#, python-format
-msgid "Error converting pattern '%s' to regular expression"
-msgstr "Greška pri pretvaranju obrasca „%s“ u regularni izraz"
+#: meld.desktop.in.h:1
+msgid "Compare and merge your files."
+msgstr "Poredite i spojite vaše datoteke."
 
-#: ../dirdiff.py:276
-#, python-format
-msgid "Hide %s"
-msgstr "Sakrij %s"
+#: meld.desktop.in.h:2
+msgid "Meld Diff Viewer"
+msgstr "Pregledač razlika Meld"
 
-#: ../dirdiff.py:356 ../svnview.py:347
+#: cvsview.py:41
+msgid ""
+"Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+msgstr ""
+"Zanemaren:Ne-CVS:::Greška::Pridodat:Izmenjen:<b>Sudar</b>:Uklonjen:Nedostaje"
+
+#: cvsview.py:173
+#, python-format
+msgid ""
+"Error converting to a regular expression\n"
+"The pattern was '%s'\n"
+"The error was '%s'"
+msgstr ""
+"Greška pri pretvaranju u regularni izraz\n"
+"Obrazac je bio „%s“\n"
+"Greška je bila „%s“"
+
+#: cvsview.py:354
+msgid "Name"
+msgstr "Ime"
+
+#: cvsview.py:371
+msgid "Location"
+msgstr "Putanja"
+
+#: cvsview.py:372
+msgid "Status"
+msgstr "Stanje"
+
+#: cvsview.py:373
+msgid "Rev"
+msgstr "Izd"
+
+#: cvsview.py:374
+msgid "Tag"
+msgstr "Oznaka"
+
+#: cvsview.py:375
+msgid "Options"
+msgstr "Opcije"
+
+#: cvsview.py:412 dirdiff.py:356
 #, python-format
 msgid "[%s] Scanning"
 msgstr "[%s] pregledam"
 
-#: ../dirdiff.py:365 ../svnview.py:374
+#: cvsview.py:439 dirdiff.py:365
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] pregledam %s"
 
-#: ../dirdiff.py:398
-#, python-format
-msgid "'%s' hidden by '%s'"
-msgstr "„%s“ sakriveno od strane „%s“"
+#: cvsview.py:455
+msgid "(Empty)"
+msgstr "(Prazno)"
 
-#: ../dirdiff.py:404
+#: cvsview.py:487
 #, python-format
-msgid ""
-"You are running a case insensitive comparison on a case sensitive "
-"filesystem. Some files are not visible:\n"
-"%s"
-msgstr ""
-"Pokrenuli ste poređenje nezavisno od veličine slova na sistemu datoteka gde "
-"je ona bitna. Neke datoteke nisu vidljive:\n"
-"%s"
+msgid "[%s] Fetching differences"
+msgstr "[%s] Pribavljam razlike"
 
-#: ../dirdiff.py:470
+#: cvsview.py:494
 #, python-format
-msgid "[%s] Done"
-msgstr "[%s] Gotovo"
+msgid "[%s] Applying patch"
+msgstr "[%s] Primenjujem zakrpu"
 
-#: ../dirdiff.py:515
-#, python-format
-msgid ""
-"'%s' exists.\n"
-"Overwrite?"
-msgstr ""
-"„%s“ postoji.\n"
-"Da presnimim?"
+#: cvsview.py:498
+msgid "No differences found."
+msgstr "Razlike ne postoje."
 
-#: ../dirdiff.py:522
-#, python-format
-msgid ""
-"Error copying '%s' to '%s'\n"
-"\n"
-"%s."
-msgstr ""
-"Greška pri umnožavanju „%s“ u „%s“\n"
-"\n"
-"%s."
+#: cvsview.py:564
+msgid "Select some files first."
+msgstr "Prvo izaberite neke datoteke."
 
-#: ../dirdiff.py:540 ../svnview.py:533 ../wocoview.py:230
+#: cvsview.py:585 dirdiff.py:553
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -87,7 +107,7 @@ msgstr ""
 "„%s“ je direktorijum.\n"
 "Da uklonim rekurzivno?"
 
-#: ../dirdiff.py:547 ../svnview.py:538 ../wocoview.py:235
+#: cvsview.py:590 dirdiff.py:560
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -98,210 +118,95 @@ msgstr ""
 "\n"
 "%s."
 
+#: dirdiff.py:253 dirdiff.py:268
+#, python-format
+msgid "Error converting pattern '%s' to regular expression"
+msgstr "Greška pri pretvaranju obrasca „%s“ u regularni izraz"
+
+#: dirdiff.py:278
+#, python-format
+msgid "Hide %s"
+msgstr "Sakrij %s"
+
+#: dirdiff.py:398
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "„%s“ sakriveno od strane „%s“"
+
+#: dirdiff.py:404
+#, python-format
+msgid ""
+"You are running a case insensitve comparison on a case sensitive filesystem. "
+"Some files are not visible:\n"
+"%s"
+msgstr ""
+"Pokrenuli ste poređenje nezavisno od veličine slova na sistemu datoteka gde "
+"je ona bitna. Neke datoteke nisu vidljive:\n"
+"%s"
+
+#: dirdiff.py:470
+#, python-format
+msgid "[%s] Done"
+msgstr "[%s] Gotovo"
+
+#: dirdiff.py:528
+#, python-format
+msgid ""
+"'%s' exists.\n"
+"Overwrite?"
+msgstr ""
+"„%s“ postoji.\n"
+"Da presnimim?"
+
+#: dirdiff.py:535
+#, python-format
+msgid ""
+"Error copying '%s' to '%s'\n"
+"\n"
+"%s."
+msgstr ""
+"Greška pri umnožavanju „%s“ u „%s“\n"
+"\n"
+"%s."
+
 # bug: plural-forms
 #. singular,plural
-#: ../dirdiff.py:558
+#: dirdiff.py:570
 msgid ""
 "second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:"
 "year,years"
-msgstr ""
-"sekundu,sekundi:minut,minuta:čas,časa:dan,dana:nedelju,nedelja:mesec,meseci:"
-"godinu,godina"
+msgstr "sekundu,sekundi:minut,minuta:čas,časa:dan,dana:nedelju,nedelja:mesec,meseci:godinu,godina"
 
-#. action_name, stock_icon, label, accelerator, tooltip,
-#: ../filediff.py:124 ../meldapp.py:91 ../wocoview.py:94
-msgid "_File"
-msgstr "_Datoteka"
-
-#: ../filediff.py:125 ../filediff.py:126
-msgid "Save the current file"
-msgstr "Sačuvaj tekuću datoteku"
-
-#: ../filediff.py:127
-msgid "_Save All"
-msgstr "Sačuvaj _sve"
-
-#: ../filediff.py:127
-msgid "Save all files"
-msgstr "Sačuvaj sve datoteke"
-
-#: ../filediff.py:129
-msgid "Pane 1"
-msgstr "Površ 1"
-
-#: ../filediff.py:130
-msgid "Pane 2"
-msgstr "Površ 2"
-
-#: ../filediff.py:131
-msgid "Pane 3"
-msgstr "Površ 3"
-
-#: ../filediff.py:132
-msgid "_Print..."
-msgstr "_Štampaj..."
-
-#: ../filediff.py:132
-msgid "Print this comparison"
-msgstr "Ištampaj ovo poređenje"
-
-#: ../filediff.py:133 ../wocoview.py:96
-msgid "_Close"
-msgstr "_Zatvori"
-
-#: ../filediff.py:133 ../wocoview.py:96
-msgid "Close this tab"
-msgstr "Zatvori ovaj list"
-
-#: ../filediff.py:134 ../glade2/wocoview.glade.h:17
-msgid "_Edit"
-msgstr "_Uređivanje"
-
-#: ../filediff.py:135
-msgid "_Undo"
-msgstr "_Vrati"
-
-#: ../filediff.py:135
-msgid "Undo last change"
-msgstr "Vrati poslednju izmenu"
-
-#: ../filediff.py:136
-msgid "_Redo"
-msgstr "Po_novi"
-
-#: ../filediff.py:136
-msgid "Redo last change"
-msgstr "Ponovi poslednju izmenu"
-
-#: ../filediff.py:137
-msgid "_Find"
-msgstr "_Nađi"
-
-#: ../filediff.py:137
-msgid "Search the document"
-msgstr "Pretraži dokument"
-
-#: ../filediff.py:138
-msgid "_Find Next"
-msgstr "Nađi _sledeće"
-
-#: ../filediff.py:138
-msgid "Repeat the last find"
-msgstr "Ponovi prethodnu pretragu"
-
-#: ../filediff.py:139 ../glade2/filediff.glade.h:13
-msgid "_Replace"
-msgstr "_Zameni"
-
-#: ../filediff.py:139
-msgid "Find and replace text"
-msgstr "Nađi i zameni tekst"
-
-#: ../filediff.py:140
-msgid "Cu_t"
-msgstr "_Iseci"
-
-# bug: maybe one should be "Cut selected text"
-#: ../filediff.py:140 ../filediff.py:141
-msgid "Copy selected text"
-msgstr "Umnoži izabrani tekst"
-
-#: ../filediff.py:141
-msgid "_Copy"
-msgstr "_Umnoži"
-
-#: ../filediff.py:142
-msgid "_Paste"
-msgstr "U_baci"
-
-#: ../filediff.py:142
-msgid "Paste selected text"
-msgstr "Ubaci izabrani tekst"
-
-#: ../filediff.py:143 ../meldapp.py:103 ../wocoview.py:111
-msgid "_View"
-msgstr "P_regled"
-
-#: ../filediff.py:144
-msgid "One Pane"
-msgstr "Jedna površ"
-
-#: ../filediff.py:145
-msgid "Two Panes"
-msgstr "Dve površi"
-
-#: ../filediff.py:146
-msgid "Three Panes"
-msgstr "Tri površi"
-
-#: ../filediff.py:147
-msgid "Rotate View"
-msgstr "Rotiraj pogled"
-
-#: ../filediff.py:148
-msgid "Show Filenames"
-msgstr "Prikaži imena datoteka"
-
-#: ../filediff.py:149 ../wocoview.py:99 ../glade2/meldapp.glade.h:53
-#: ../glade2/wocoview.glade.h:16
-msgid "_Diff"
-msgstr "_Razlike"
-
-#: ../filediff.py:150
-msgid "Refres_h"
-msgstr "_Osveži"
-
-#: ../filediff.py:150
-msgid "Recompute differences"
-msgstr "Preračunaj razlike"
-
-# bug: no technobabble and slang
-#: ../filediff.py:151
-msgid "Pr_ev"
-msgstr "Pr_ethodna"
-
-#: ../filediff.py:151
-msgid "Previous difference"
-msgstr "Prethodna razlika"
-
-#: ../filediff.py:152
-msgid "_Next"
-msgstr "_Sledeća"
-
-#: ../filediff.py:152
-msgid "Next difference"
-msgstr "Sledeća razlika"
-
-#: ../filediff.py:153
-msgid "Copy contents left"
-msgstr "Umnoži sadržaj levo"
-
-#: ../filediff.py:154
-msgid "Copy contents right"
-msgstr "Umnoži sadržaj desno"
-
-# bug: separate this out
-#: ../filediff.py:295
-msgid "Insert,Overwrite"
-msgstr "Umetni,Prepiši"
-
-#. insert/overwrite
-#: ../filediff.py:296
+#: filediff.py:387
 #, python-format
-msgid "Line %i, Column %i"
-msgstr "%i. red, %i. stubac"
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+"Greška sa regularnim izrazom\n"
+"„%s“"
 
-#: ../filediff.py:570
+#: filediff.py:399
+#, python-format
+msgid "The regular expression '%s' was not found."
+msgstr "Regularni izraz „%s“ nije nađen."
+
+#: filediff.py:401
+#, python-format
+msgid "The text '%s' was not found."
+msgstr "Tekst „%s“ nije nađen."
+
+#: filediff.py:440
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Postavi broj ploča"
 
-#: ../filediff.py:575
+#: filediff.py:447
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Otvaram datoteke"
 
-#: ../filediff.py:592
+#: filediff.py:463
 #, python-format
 msgid ""
 "Could not open '%s' for reading.\n"
@@ -314,12 +219,12 @@ msgstr ""
 "Greška beše:\n"
 "%s"
 
-#: ../filediff.py:596
+#: filediff.py:467
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Čitam datoteke"
 
-#: ../filediff.py:611
+#: filediff.py:482
 #, python-format
 msgid ""
 "Could not read from '%s'.\n"
@@ -330,7 +235,7 @@ msgstr ""
 "\n"
 "Pokušah kodiranja %s."
 
-#: ../filediff.py:616
+#: filediff.py:487
 #, python-format
 msgid ""
 "Could not read from '%s'.\n"
@@ -343,17 +248,17 @@ msgstr ""
 "Greška beše:\n"
 "%s."
 
-#: ../filediff.py:635
+#: filediff.py:507
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Sračunavam razlike"
 
-#: ../filediff.py:789
+#: filediff.py:599
 #, python-format
-msgid "Save buffer %i as."
-msgstr "Sačuvaj bafer %i kao."
+msgid "Choose a name for buffer %i."
+msgstr "Izaberite ime za %i. bafer."
 
-#: ../filediff.py:802
+#: filediff.py:610
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -362,7 +267,7 @@ msgstr ""
 "„%s“ postoji!\n"
 "Da presnimim?"
 
-#: ../filediff.py:816
+#: filediff.py:624
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -373,7 +278,7 @@ msgstr ""
 "\n"
 "Koji oblik želite da koristite?"
 
-#: ../filediff.py:833
+#: filediff.py:641
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -384,7 +289,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:876
+#: filediff.py:700
 #, python-format
 msgid ""
 "Refreshing will discard changes in:\n"
@@ -397,107 +302,79 @@ msgstr ""
 "\n"
 "Ovu operaciju ne možete opozvati."
 
-# bug: no need to mark for translation
-#: ../filediff.py:1419
-#, python-format
-msgid "%s"
-msgstr "%s"
-
-# bug: s/regex/regular expression/ (technobabble + slang; at least it should be technobabble, not both)
-#: ../filediff.py:1420
-#, python-format
-msgid "Regex Error: %s"
-msgstr "Greška u regularnom izrazu: %s"
-
-#: ../filediff.py:1519
-#, python-format
-msgid "'%s' was not found."
-msgstr "„%s“ nije nađen."
-
-#: ../fileprint.py:194
-#, python-format
-msgid "Print... %s"
-msgstr "Štampaj... %s"
-
-#: ../fileprint.py:214
-msgid "Print Preview"
-msgstr "Pregled pred štampu"
-
-#: ../meld:49
+#: meld:50
 #, c-format
 msgid "Meld requires python%s or higher."
-msgstr "Meld zahteva python%s ili noviji."
+msgstr "Meld zahteva piton %s ili noviji."
 
-#: ../meld:67
+#: meld:60
+msgid "Meld requires a recent version of pygtk."
+msgstr "Meld zahteva skoro izdanje PiGtk-a."
+
+#: meld:61
 #, c-format
-msgid "Meld requires pygtk-%s or higher. (found %s)"
-msgstr "Meld zahteva pygtk-%s ili noviji. (našao %s)"
+msgid "pygtk-%s or higher is recommended."
+msgstr "Preporučuje se PiGtk %s ili noviji."
 
-#: ../meldapp.py:92
-msgid "_New"
-msgstr "_Novo"
+#: meld:71
+#, c-format
+msgid "Meld works best with pygtk-%s or higher. (found %s)"
+msgstr "Meld najbolje radi uz PiGtk %s ili noviji. (nađoh %s)"
 
-#: ../meldapp.py:93 ../meldapp.py:94
-msgid "File Comparision"
-msgstr "Poređenje datoteka"
+#: meld:72
+msgid ""
+"Due to incompatible API changes some functions may not operate as expected."
+msgstr ""
+"Zbog nesaglasnih izmena programerske sprege, neke funkcije možda neće raditi "
+"kako treba."
 
-#: ../meldapp.py:95 ../meldapp.py:96
-msgid "Folder Comparision"
-msgstr "Poređenje direktorijuma"
+#: meldapp.py:54
+#, python-format
+msgid "Browse %s"
+msgstr "Pregledaj %s"
 
-#: ../meldapp.py:97
-msgid "Working Copy Browser"
-msgstr "Razgledanje radnog primerka"
+#: meldapp.py:600
+msgid "Original File"
+msgstr "Izvorna datoteka"
 
-#: ../meldapp.py:100
-msgid "_Settings"
-msgstr "_Podešavanja"
+#: meldapp.py:600
+msgid "Modified File"
+msgstr "Izmenjena datoteka"
 
-#: ../meldapp.py:104
-msgid "Show Toolbar"
-msgstr "Prikaži alatke"
+#: meldapp.py:603
+msgid "Other Changes"
+msgstr "Ostale izmene"
 
-#: ../meldapp.py:105
-msgid "Show Statusbar"
-msgstr "Prikaži traku sa stanjem"
+#: meldapp.py:603
+msgid "Common Ancestor"
+msgstr "Zajednički predak"
 
-#: ../meldapp.py:107
-msgid "_Help"
-msgstr "_Pomoć"
+#: meldapp.py:603
+msgid "Local Changes"
+msgstr "Lokalne izmene"
 
-#: ../meldapp.py:109
-msgid "_Report Bug"
-msgstr "Prijavi _grešku"
+#: meldapp.py:606 meldapp.py:609
+msgid "Original Directory"
+msgstr "Izvorni direktorijum"
 
-#: ../meldapp.py:344
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "Ne mogu da poredim mešavinu datoteka i direktorijuma.\n"
+#: meldapp.py:606 meldapp.py:609
+msgid "Modified Directory"
+msgstr "Izmenjen direktorijum"
 
-# bug: string composition
-#: ../meldapp.py:347
-msgid "folder"
-msgstr "direktorijum"
+#: meldapp.py:609
+msgid "Other Directory"
+msgstr "Ostali direktorijumi"
 
-# bug: string composition is bad i18n, and will make l10n hard
-#: ../meldapp.py:348
-msgid "file"
-msgstr "datoteku"
-
-# bug: string composition
-#: ../meldapp.py:349
-msgid "nonexistant"
-msgstr "nepostojeći"
-
-#: ../meldapp.py:376
-msgid "Run meld --help for help"
-msgstr "Pokrenite meld --help za pomoć"
+#: meldapp.py:612
+msgid "Root CVS Directory"
+msgstr "Koreni CVS direktorijum"
 
 #. ###############################################################################
 #.
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:442
+#: meldapp.py:800
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -507,13 +384,9 @@ msgid ""
 "    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
 "    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
 "\n"
-"Options:\n"
-"    -h, --help                  Show this help text and exit\n"
-"    -v, --version               Display the version and exit\n"
-"\n"
 "For more information choose help -> contents.\n"
 "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+"stevek@gnome.org\n"
 msgstr ""
 "Meld je alat za poređenje datoteka i direktorijuma. Upotreba:\n"
 "\n"
@@ -525,15 +398,11 @@ msgstr ""
 "    meld <dir>  <dir>  [dir]    Pokreni dvo- ili trosmerno poređenje \n"
 "                                direktorijuma\n"
 "\n"
-"Opcije:\n"
-"    -h, --help                  Prikaži ovu pomoć i završi\n"
-"    -v, --version               Prikaži izdanje i završi\n"
-"\n"
 "Za više podataka izaberite pomoć -> sadržaj.\n"
 "Prijavite greške na http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Raspravljajte o Meldu na http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+"stevek@gnome.org\n"
 
-#: ../meldapp.py:459
+#: meldapp.py:813
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -542,320 +411,153 @@ msgstr ""
 "Meld %s\n"
 "Napisao Stifen Kenedi (Stephen Kennedy) <stevek@gnome.org>"
 
-#: ../meldapp.py:480
-msgid "Usage: meld [options] [arguments]"
-msgstr "Upotreba: meld [opcije] [argumenti]"
-
-#: ../meldapp.py:481
-msgid "Use label instead of filename. This option may be used several times."
-msgstr "Koristi oznaku umesto imena datoteke. Ova opcija se može upotrebiti više puta."
-
-# bug: file,x,y,w,h????
-#: ../meldapp.py:482
-msgid "Save snapshot to file,x,y,w,h"
-msgstr "Sačuvaj snimak u datoteku,x,y,w,h"
-
-#: ../meldapp.py:483
-msgid "Use an existing instance"
-msgstr "Koristi postojeći primerak"
-
-#: ../meldapp.py:484
-msgid "Ignored for compatibility"
-msgstr "Zanemareno zarad saglasnosti"
-
-# bug: s/app/application/
-#: ../meldapp.py:494
+#: meldapp.py:860
 #, python-format
-msgid "Connection to existing app failed: %s"
-msgstr "Neuspešna veza sa postojećim programom: %s"
+msgid "`%s' is not a directory or file, cannot open cvs view"
+msgstr ""
+"„%s“ ne predstavlja direktorijum ni datoteku, ne mogu da otvorim CVS pregled"
 
-#: ../meldapp.py:530
+#: meldapp.py:866
+msgid "Cannot open "
+msgstr "Ne mogu da otvorim "
+
+#: meldapp.py:883
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "Ne mogu da poredim mešavinu datoteka i direktorijuma.\n"
+
+# bug: string composition is bad i18n, and will make l10n hard
+#: meldapp.py:885
+msgid "file"
+msgstr "datoteku"
+
+#: meldapp.py:885
+msgid "folder"
+msgstr "direktorijum"
+
+#: meldapp.py:888
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Pogrešan broj argumenata (primih %i)"
 
-#: ../melddoc.py:41
+#: melddoc.py:45
 msgid "untitled"
 msgstr "bezimeni"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:95
+#: misc.py:121
 msgid "[None]"
 msgstr "[ništa]"
 
-#: ../prefsui.py:215
-msgid "Line numbers are only available if you have pygtksourceview installed."
-msgstr "Brojevi redova su jedino dostupni ukoliko imate instaliran pygtksourceview."
-
-#: ../prefsui.py:219
-msgid ""
-"Syntax highlighting is only available if you have pygtksourceview installed."
-msgstr "Isticanje sintakse su jedino dostupno ukoliko imate instaliran pygtksourceview."
-
-#: ../svnview.py:40
-msgid ""
-"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr "Zanemaren:Ne-SVN:::Greška::Pridodat:Izmenjen:<b>Sudar</b>:Uklonjen:Nedostaje"
-
-#: ../svnview.py:289 ../wocoview.py:156
-msgid "Name"
-msgstr "Ime"
-
-#: ../svnview.py:306 ../wocoview.py:173
-msgid "Location"
-msgstr "Putanja"
-
-#: ../svnview.py:307 ../wocoview.py:174
-msgid "Status"
-msgstr "Stanje"
-
-#: ../svnview.py:308 ../wocoview.py:175
-msgid "Rev"
-msgstr "Izd"
-
-#: ../svnview.py:309 ../wocoview.py:176 ../glade2/wocoview.glade.h:13
-msgid "Tag"
-msgstr "Oznaka"
-
-#: ../svnview.py:310 ../wocoview.py:177
-msgid "Options"
-msgstr "Opcije"
-
-#: ../svnview.py:390
-msgid "(Empty)"
-msgstr "(Prazno)"
-
-#: ../svnview.py:426
-#, python-format
-msgid "[%s] Fetching differences"
-msgstr "[%s] Pribavljam razlike"
-
-#: ../svnview.py:434
-#, python-format
-msgid "[%s] Applying patch"
-msgstr "[%s] Primenjujem zakrpu"
-
-#: ../svnview.py:438
-msgid "No differences found."
-msgstr "Razlike ne postoje."
-
-#: ../svnview.py:512
-msgid "Select some files first."
-msgstr "Prvo izaberite neke datoteke."
-
-#: ../wocoview.py:97
-msgid "_Version"
-msgstr "_Izdanje"
-
-#: ../wocoview.py:99
-msgid "Compare versions"
-msgstr "Uporedi izdanja"
-
-#: ../wocoview.py:101 ../glade2/wocoview.glade.h:19
-msgid "_Update"
-msgstr "_Osveži"
-
-#: ../wocoview.py:101
-msgid "Update the local copy"
-msgstr "Osveži lokalni primerak"
-
-#: ../wocoview.py:103 ../glade2/wocoview.glade.h:15
-msgid "_Commit"
-msgstr "U_gradi"
-
-#: ../wocoview.py:103
-msgid "Commit changes"
-msgstr "Ugradi izmene"
-
-#: ../wocoview.py:105 ../glade2/wocoview.glade.h:14
-msgid "_Add"
-msgstr "_Dodaj"
-
-#: ../wocoview.py:105
-msgid "Add to control"
-msgstr "Dodaj pod upravu"
-
-#: ../wocoview.py:107 ../glade2/wocoview.glade.h:18
-msgid "_Remove"
-msgstr "U_kloni"
-
-#: ../wocoview.py:107
-msgid "Remove from control"
-msgstr "Ukloni iz uprave"
-
-#: ../wocoview.py:109
-msgid "_Delete"
-msgstr "O_briši"
-
-#: ../wocoview.py:109
-msgid "Remove locally"
-msgstr "Ukloni u lokalu"
-
-#: ../wocoview.py:113
-msgid "_Up"
-msgstr "_Gore"
-
-#: ../wocoview.py:113
-msgid "Previous change"
-msgstr "Prethodna izmena"
-
-#: ../wocoview.py:115
-msgid "_Down"
-msgstr "_Dole"
-
-#: ../wocoview.py:115
-msgid "Next change"
-msgstr "Sledeća izmena"
-
-#: ../wocoview.py:117
-msgid "_Flatten"
-msgstr "_Izravnaj"
-
-#: ../wocoview.py:117
-msgid "Flatten tree"
-msgstr "Izravnaj stablo"
-
-#: ../wocoview.py:119
-msgid "_Modified"
-msgstr "Iz_menjene"
-
-#: ../wocoview.py:119
-msgid "View modified files"
-msgstr "Gledaj izmenjene datoteke"
-
-#: ../wocoview.py:121
-msgid "_Normal"
-msgstr "_Obične"
-
-#: ../wocoview.py:121
-msgid "View normal files"
-msgstr "Gledaj obične datoteke"
-
-#: ../wocoview.py:123
-msgid "Un_known"
-msgstr "_Nepoznate"
-
-#: ../wocoview.py:123
-msgid "View non version controlled files"
-msgstr "Gledaj nepraćene datoteke"
-
-#: ../wocoview.py:125
-msgid "_Ignored"
-msgstr "_Zanemarene"
-
-#: ../wocoview.py:125
-msgid "View ignored items"
-msgstr "Gledaj zanemarene stavke"
-
-#: ../wocoview.py:127
-msgid "_Console"
-msgstr "_Konzola"
-
-#: ../wocoview.py:127
-msgid "View command line output"
-msgstr "Pogledaj izlaz naredbe"
-
-#: ../data/meld.desktop.in.h:1
-msgid "Compare and merge your files."
-msgstr "Poredite i spojite vaše datoteke."
-
-#: ../data/meld.desktop.in.h:2
-msgid "Meld Diff Viewer"
-msgstr "Pregledač razlika Meld"
-
-#: ../glade2/dirdiff.glade.h:1 ../glade2/wocoview.glade.h:1
+#: glade2/cvsview.glade.h:1 glade2/filediff.glade.h:1 glade2/dirdiff.glade.h:1
+#: glade2/meldapp.glade.h:3
 msgid "*"
 msgstr "*"
 
-#: ../glade2/dirdiff.glade.h:2
-msgid "Case"
-msgstr "Veličina slova"
+#: glade2/cvsview.glade.h:2
+msgid "Add _Binary"
+msgstr "Dodaj _binarno"
 
-#: ../glade2/dirdiff.glade.h:3
-msgid "Copy Left"
-msgstr "Umnoži levo"
+#: glade2/cvsview.glade.h:3
+msgid "Add to CVS"
+msgstr "Dodaj u CVS"
 
-#: ../glade2/dirdiff.glade.h:4
-msgid "Copy Right"
-msgstr "Umnoži desno"
+#: glade2/cvsview.glade.h:4
+msgid "CVS Log"
+msgstr "CVS dnevnik"
 
-#: ../glade2/dirdiff.glade.h:5
-msgid "Copy left"
-msgstr "Umnoži levo"
+#: glade2/cvsview.glade.h:5
+msgid "Commit"
+msgstr "Ugradi"
 
-#: ../glade2/dirdiff.glade.h:6
-msgid "Copy right"
-msgstr "Umnoži desno"
+#: glade2/cvsview.glade.h:6
+msgid "Commit Files"
+msgstr "Ugradi datoteke"
 
-#: ../glade2/dirdiff.glade.h:7
-msgid "Delete selected"
-msgstr "Obriši izabrano"
+#: glade2/cvsview.glade.h:7
+msgid "Delete locally"
+msgstr "Obriši u lokalu"
 
-#: ../glade2/dirdiff.glade.h:8
-msgid "Diff"
-msgstr "Razlike"
+#: glade2/cvsview.glade.h:8
+msgid "Diff selected"
+msgstr "Izabrane razlike"
 
-#: ../glade2/dirdiff.glade.h:9
-msgid "Diff selection"
-msgstr "Razlike za izbor"
+#: glade2/cvsview.glade.h:9
+msgid "Flatten directories"
+msgstr "Izravnaj direktorijume"
 
-#: ../glade2/dirdiff.glade.h:10 ../glade2/filediff.glade.h:5
-msgid "Edit"
-msgstr "Uredi"
+#: glade2/cvsview.glade.h:10
+msgid "Ignored"
+msgstr "Zanemaren"
 
-#: ../glade2/dirdiff.glade.h:11
-msgid "Hide selected"
-msgstr "Sakrij izabrano"
+#: glade2/cvsview.glade.h:11
+msgid "Log Message"
+msgstr "Poruka za dnevnik"
 
-#: ../glade2/dirdiff.glade.h:12
-msgid "Hide..."
-msgstr "Sakrij..."
+#: glade2/cvsview.glade.h:12
+msgid "Non _CVS"
+msgstr "Ne-_CVS"
 
-#: ../glade2/dirdiff.glade.h:13
-msgid "Ignore case of entries"
-msgstr "Zanemari veličinu slova unosa"
+#: glade2/cvsview.glade.h:13
+msgid "Previous Logs"
+msgstr "Prethodni dnevnici"
 
-#: ../glade2/dirdiff.glade.h:14
-msgid "Launch _Comparison"
-msgstr "Pokreni po_ređenje"
+#: glade2/cvsview.glade.h:14
+msgid "Remove _Locally"
+msgstr "Ukloni u _lokalu"
 
-#: ../glade2/dirdiff.glade.h:15
-msgid "Left"
-msgstr "Levo"
+#: glade2/cvsview.glade.h:15
+msgid "Remove from CVS"
+msgstr "Ukloni iz CVS-a"
 
-#: ../glade2/dirdiff.glade.h:16
-msgid "Modified"
-msgstr "Izmenjen"
-
-#: ../glade2/dirdiff.glade.h:17
-msgid "New"
-msgstr "Novi"
-
-#: ../glade2/dirdiff.glade.h:18
-msgid "Right"
-msgstr "Desno"
-
-#: ../glade2/dirdiff.glade.h:19
-msgid "Same"
-msgstr "Isto"
-
-#: ../glade2/dirdiff.glade.h:20
-msgid "Show identical"
-msgstr "Prikaži istovetne"
-
-#: ../glade2/dirdiff.glade.h:21
+#: glade2/cvsview.glade.h:16 glade2/dirdiff.glade.h:21
 msgid "Show modified"
 msgstr "Prikaži izmenjene"
 
-#: ../glade2/dirdiff.glade.h:22
-msgid "Show new"
-msgstr "Prikaži nove"
+#: glade2/cvsview.glade.h:17
+msgid "Show non-CVS"
+msgstr "Prikaži ne-CVS"
 
-#: ../glade2/dirdiff.glade.h:23
-msgid "_Delete Selected"
-msgstr "Obriši _izabrano"
+#: glade2/cvsview.glade.h:18
+msgid "Update"
+msgstr "Dopuni"
 
-#: ../glade2/filediff.glade.h:1
+#: glade2/cvsview.glade.h:19
+msgid "_Add"
+msgstr "_Dodaj"
+
+#: glade2/cvsview.glade.h:20
+msgid "_Commit"
+msgstr "U_gradi"
+
+#: glade2/cvsview.glade.h:21 glade2/meldapp.glade.h:75
+msgid "_Diff"
+msgstr "_Razlike"
+
+#: glade2/cvsview.glade.h:22
+msgid "_Edit"
+msgstr "_Uređivanje"
+
+#: glade2/cvsview.glade.h:23
+msgid "_Flatten"
+msgstr "_Izravnaj"
+
+#: glade2/cvsview.glade.h:24
+msgid "_Modified"
+msgstr "Iz_menjen"
+
+#: glade2/cvsview.glade.h:25
+msgid "_Normal"
+msgstr "_Obično"
+
+#: glade2/cvsview.glade.h:26
+msgid "_Remove"
+msgstr "U_kloni"
+
+#: glade2/cvsview.glade.h:27
+msgid "_Update"
+msgstr "_Dopuni"
+
+#: glade2/filediff.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
 "Which ones would you like to save?</span>"
@@ -863,538 +565,454 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Neke datoteke su izmenjene.\n"
 "Koje želite da sačuvate?</span>"
 
-#: ../glade2/filediff.glade.h:3
+#: glade2/filediff.glade.h:4
 msgid "Copy All _Left"
 msgstr "Umnoži sve _levo"
 
-#: ../glade2/filediff.glade.h:4
+#: glade2/filediff.glade.h:5
 msgid "Copy All _Right"
 msgstr "Umnoži sve _desno"
 
-#: ../glade2/filediff.glade.h:6
+#: glade2/filediff.glade.h:6 glade2/dirdiff.glade.h:10
+msgid "Edit"
+msgstr "Uredi"
+
+#: glade2/filediff.glade.h:7
+msgid "Find"
+msgstr "Pronađi"
+
+#: glade2/filediff.glade.h:8
 msgid "Match _entire word only"
 msgstr "Poklapanje samo _celih reči"
 
-#: ../glade2/filediff.glade.h:7
+#: glade2/filediff.glade.h:9
 msgid "Regular e_xpression"
 msgstr "_Regularni izraz"
 
-#: ../glade2/filediff.glade.h:8
-msgid "Replace _All"
-msgstr "Zameni _sve"
-
-#: ../glade2/filediff.glade.h:9
-msgid "Save _As..."
-msgstr "Sačuvaj _kao..."
-
-#: ../glade2/filediff.glade.h:10
+#: glade2/filediff.glade.h:10
 msgid "Save modified files?"
 msgstr "Sačuvaj izmenjene datoteke?"
 
-#: ../glade2/filediff.glade.h:11
-msgid "Search:"
+#: glade2/filediff.glade.h:11
+msgid "Search for:"
 msgstr "Traži:"
 
-#: ../glade2/filediff.glade.h:12
+#: glade2/filediff.glade.h:12
 msgid "_Match case"
 msgstr "_Ista veličina slova"
 
-#: ../glade2/filediff.glade.h:14
-msgid "_Replace..."
-msgstr "_Zameni..."
-
-#: ../glade2/filediff.glade.h:15
-msgid "_Replace:"
-msgstr "_Zameni:"
-
-#: ../glade2/filediff.glade.h:16
+#: glade2/filediff.glade.h:13
 msgid "_Wrap around"
 msgstr "U _krug"
 
-#: ../glade2/meldapp.glade.h:1
+#: glade2/dirdiff.glade.h:2
+msgid "Case"
+msgstr "Veličina slova"
+
+#: glade2/dirdiff.glade.h:3
+msgid "Copy Left"
+msgstr "Umnoži levo"
+
+#: glade2/dirdiff.glade.h:4
+msgid "Copy Right"
+msgstr "Umnoži desno"
+
+#: glade2/dirdiff.glade.h:5
+msgid "Copy left"
+msgstr "Umnoži levo"
+
+#: glade2/dirdiff.glade.h:6
+msgid "Copy right"
+msgstr "Umnoži desno"
+
+#: glade2/dirdiff.glade.h:7
+msgid "Delete selected"
+msgstr "Obriši izabrano"
+
+#: glade2/dirdiff.glade.h:8
+msgid "Diff"
+msgstr "Razlike"
+
+#: glade2/dirdiff.glade.h:9
+msgid "Diff selection"
+msgstr "Razlike za izbor"
+
+#: glade2/dirdiff.glade.h:11
+msgid "Hide selected"
+msgstr "Sakrij izabrano"
+
+#: glade2/dirdiff.glade.h:12
+msgid "Hide..."
+msgstr "Sakrij..."
+
+#: glade2/dirdiff.glade.h:13
+msgid "Ignore case of entries"
+msgstr "Zanemari veličinu slova unosa"
+
+#: glade2/dirdiff.glade.h:14
+msgid "Launch _Comparison"
+msgstr "Pokreni po_ređenje"
+
+#: glade2/dirdiff.glade.h:15
+msgid "Left"
+msgstr "Levo"
+
+#: glade2/dirdiff.glade.h:16
+msgid "Modified"
+msgstr "Izmenjen"
+
+#: glade2/dirdiff.glade.h:17
+msgid "New"
+msgstr "Novi"
+
+#: glade2/dirdiff.glade.h:18
+msgid "Right"
+msgstr "Desno"
+
+#: glade2/dirdiff.glade.h:19
+msgid "Same"
+msgstr "Isto"
+
+#: glade2/dirdiff.glade.h:20
+msgid "Show identical"
+msgstr "Prikaži istovetne"
+
+#: glade2/dirdiff.glade.h:22
+msgid "Show new"
+msgstr "Prikaži nove"
+
+#: glade2/dirdiff.glade.h:23
+msgid "_Delete Selected"
+msgstr "Obriši _izabrano"
+
+# bug: plural-forms
+#: glade2/meldapp.glade.h:1
+msgid " spaces."
+msgstr " razmaka."
+
+#: glade2/meldapp.glade.h:2
 msgid "(gnome-default-editor)"
 msgstr "(podrazumevani-uređivač-gnoma)"
 
-#: ../glade2/meldapp.glade.h:2
+#: glade2/meldapp.glade.h:4
+msgid "<b>Drawing Style</b>"
+msgstr "<b>Stil iscrtavanja</b>"
+
+#: glade2/meldapp.glade.h:5
 msgid "<b>Edit Menu</b>"
 msgstr "<b>Meni za uređivanje</b>"
 
-#: ../glade2/meldapp.glade.h:3
+#: glade2/meldapp.glade.h:6
 msgid "<b>Font</b>"
 msgstr "<b>Font</b>"
 
-#: ../glade2/meldapp.glade.h:4
+#: glade2/meldapp.glade.h:7
 msgid "<b>Global options</b>"
 msgstr "<b>Opšte opcije</b>"
 
-#: ../glade2/meldapp.glade.h:5
+#: glade2/meldapp.glade.h:8
 msgid "<b>Loading</b>"
 msgstr "<b>Učitavanje</b>"
 
-#: ../glade2/meldapp.glade.h:6
+#: glade2/meldapp.glade.h:9
 msgid "<b>Misc</b>"
 msgstr "<b>Razno</b>"
 
-#: ../glade2/meldapp.glade.h:7
+#: glade2/meldapp.glade.h:10
 msgid "<b>Saving</b>"
 msgstr "<b>Čuvanje</b>"
 
-#: ../glade2/meldapp.glade.h:8
+#: glade2/meldapp.glade.h:11
 msgid "<b>Toolbar Appearance</b>"
 msgstr "<b>Izgled alatki</b>"
 
-#: ../glade2/meldapp.glade.h:9
+#: glade2/meldapp.glade.h:12
 msgid "<b>Update Options</b>"
 msgstr "<b>Opcije dopunjavanja</b>"
 
-#: ../glade2/meldapp.glade.h:10
+#: glade2/meldapp.glade.h:13
 msgid "<b>Whitespace</b>"
 msgstr "<b>Beline</b>"
 
-#: ../glade2/meldapp.glade.h:11
+#: glade2/meldapp.glade.h:14
+msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Binarne datoteke</span>"
+
+#: glade2/meldapp.glade.h:15
 msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 
-#: ../glade2/meldapp.glade.h:12
+#: glade2/meldapp.glade.h:16
 msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Razlike</span>"
 
-#: ../glade2/meldapp.glade.h:13
+#: glade2/meldapp.glade.h:17
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Prikaz</span>"
 
-#: ../glade2/meldapp.glade.h:14
+#: glade2/meldapp.glade.h:18
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Uređivač</span>"
 
-#: ../glade2/meldapp.glade.h:15
+#: glade2/meldapp.glade.h:19
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Kodiranje</span>"
 
-#: ../glade2/meldapp.glade.h:16
+#: glade2/meldapp.glade.h:20
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filteri datoteka</span>"
 
-#: ../glade2/meldapp.glade.h:17
+#: glade2/meldapp.glade.h:21
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filteri teksta</span>"
 
-#: ../glade2/meldapp.glade.h:18
+#: glade2/meldapp.glade.h:22
+msgid "Automatically supply missing newline at end of file."
+msgstr "Sam dodaj nedostajući novi-red na kraju datoteke."
+
+#: glade2/meldapp.glade.h:23
+msgid "Binary files do not have text filters applied to them when comparing."
+msgstr "Na binarne datoteke se ne primenjuju filteri teksta pri poređenju."
+
+#: glade2/meldapp.glade.h:24
 msgid "CVS"
 msgstr "CVS"
 
-#: ../glade2/meldapp.glade.h:19
+#: glade2/meldapp.glade.h:25
 msgid "CVS binary"
 msgstr "CVS program"
 
-#: ../glade2/meldapp.glade.h:20
+#: glade2/meldapp.glade.h:26
+msgid "CVS view"
+msgstr "CVS pregled"
+
+#: glade2/meldapp.glade.h:27
+msgid "Choose Files"
+msgstr "Izaberi datoteke"
+
+#: glade2/meldapp.glade.h:28
+msgid ""
+"Choose how the central bar of the diff viewer is drawn. You may wish to "
+"choose a simpler mode if you find scrolling is slow."
+msgstr ""
+"Izaberite kako se iscrtava centralna traka prikazivanja razlika. Možete "
+"želeti da izaberete jednostavniji način ako je klizanje sporo."
+
+#: glade2/meldapp.glade.h:29
+msgid "Copyright (C) 2002 Stephen Kennedy"
+msgstr "Sva prava zadržana © 2002 Stifen Kenedi (Stephen Kennedy)"
+
+#: glade2/meldapp.glade.h:30
 msgid "Create missing directories (-d)"
 msgstr "Napravi nedostajuće direktorijume (-d)"
 
-#: ../glade2/meldapp.glade.h:21
+#: glade2/meldapp.glade.h:31
+msgid "Curved : Filled Curves"
+msgstr "Kriva : ispunjene krive"
+
+#: glade2/meldapp.glade.h:32
 msgid "Custom command"
 msgstr "Proizvoljna naredba"
 
-#: ../glade2/meldapp.glade.h:22
+#: glade2/meldapp.glade.h:33
 msgid "Display"
 msgstr "Prikaz"
 
-#: ../glade2/meldapp.glade.h:23
+#: glade2/meldapp.glade.h:34
 msgid "Edit menu popup invokes"
 msgstr "Iskačući prozor menija za uređivanje pokreće"
 
-#: ../glade2/meldapp.glade.h:24
+#: glade2/meldapp.glade.h:35
 msgid "Editor"
 msgstr "Uređivač"
 
-#: ../glade2/meldapp.glade.h:25
+#: glade2/meldapp.glade.h:36
 msgid "Encoding"
 msgstr "Kodiranje"
 
-#: ../glade2/meldapp.glade.h:26
+#: glade2/meldapp.glade.h:37
 msgid "File Filters"
 msgstr "Filteri datoteka"
 
-#: ../glade2/meldapp.glade.h:27
+#: glade2/meldapp.glade.h:38
+msgid "Gnome Default"
+msgstr "Podrazumevano u Gnomu"
+
+#: glade2/meldapp.glade.h:39
 msgid "Gnome default editor"
 msgstr "Podrazumevani uređivač u Gnomu"
 
-#: ../glade2/meldapp.glade.h:28
+#: glade2/meldapp.glade.h:40
+msgid "Icons Only"
+msgstr "Samo slike"
+
+#: glade2/meldapp.glade.h:41
 msgid "Ignore .cvsrc (-f)"
 msgstr "Zanemari .cvsrc (-f)"
 
-#: ../glade2/meldapp.glade.h:29
+#: glade2/meldapp.glade.h:42
 msgid "Ignore changes in amount of white space"
 msgstr "Zanemari izmene količine belina"
 
-#: ../glade2/meldapp.glade.h:30
+#: glade2/meldapp.glade.h:43
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr "Zanemari izmene veličine slova; smatraj velika i mala slova jednakim"
 
-#: ../glade2/meldapp.glade.h:31
+#: glade2/meldapp.glade.h:44
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr "Zanemari izmene koje jedino ubacuju ili brišu prazne redove"
 
-#: ../glade2/meldapp.glade.h:32
-msgid "Ignore changes which insert or delete blank lines"
-msgstr "Zanemari izmene koje ubacuju ili brišu prazne redove"
-
-#: ../glade2/meldapp.glade.h:33
+#: glade2/meldapp.glade.h:45
 msgid "Internal editor"
 msgstr "Unutrašnji uređivač"
 
-#: ../glade2/meldapp.glade.h:34
-msgid "Line numbers"
-msgstr "Brojevi redova"
+#: glade2/meldapp.glade.h:46
+msgid "Locate CVS binary : Meld"
+msgstr "Pronađi CVS program : Meld"
 
-#: ../glade2/meldapp.glade.h:35
-msgid "Line wrapping"
-msgstr "Prelom reda"
-
-#: ../glade2/meldapp.glade.h:36
+#: glade2/meldapp.glade.h:47
 msgid "Meld"
 msgstr "Meld"
 
-#: ../glade2/meldapp.glade.h:37
-msgid "Override GNOME font"
-msgstr "Prevaziđi font Gnoma"
-
-#: ../glade2/meldapp.glade.h:38
-msgid "Override GNOME toolbar style"
-msgstr "Prevaziđi stil alatki iz Gnoma"
-
-#: ../glade2/meldapp.glade.h:39
+#: glade2/meldapp.glade.h:48
 msgid "Preferences : Meld"
 msgstr "Postavke: Meld"
 
-#: ../glade2/meldapp.glade.h:40
+#: glade2/meldapp.glade.h:49
 msgid "Prune empty directories (-P)"
 msgstr "Obriši prazne direktorijume (-P)"
 
-#: ../glade2/meldapp.glade.h:41
+#: glade2/meldapp.glade.h:50
 msgid "Quiet mode (-q)"
 msgstr "Tihi režim (-q)"
 
-#: ../glade2/meldapp.glade.h:42
+#: glade2/meldapp.glade.h:51
+msgid "Report _Bug"
+msgstr "Prijavi _grešku"
+
+#: glade2/meldapp.glade.h:52
+msgid "Save File 1"
+msgstr "Sačuvaj 1. datoteku"
+
+#: glade2/meldapp.glade.h:53
+msgid "Save File 2"
+msgstr "Sačuvaj 2. datoteku"
+
+#: glade2/meldapp.glade.h:54
+msgid "Save File 3"
+msgstr "Sačuvaj 3. datoteku"
+
+#: glade2/meldapp.glade.h:55
 msgid "Save in UTF-8 encoding"
 msgstr "Sačuvaj sa UTF-8 kodiranjem"
 
-#: ../glade2/meldapp.glade.h:43
+#: glade2/meldapp.glade.h:56
 msgid "Save in the files original encoding"
 msgstr "Sačuvaj datoteke sa izvornim kodiranjem"
 
-# bug: s/tab/tabulator/ (tab is techno babble)
-#: ../glade2/meldapp.glade.h:44
-msgid "Spaces per tab"
-msgstr "Razmaka po tabulatoru"
+#: glade2/meldapp.glade.h:57
+msgid "Simple : Lines only"
+msgstr "Jednostavno : samo linije"
 
-#: ../glade2/meldapp.glade.h:45
-msgid "Supply missing newline at end of file"
-msgstr "Dodaj nedostajući novi-red na kraju datoteke"
+# bug: missing colon ":", s/quadilaterals/quadrilaterals/
+#: glade2/meldapp.glade.h:58
+msgid "Solid   Filled Quadilaterals"
+msgstr "Ispunjeno : ispunjeni pravougaonici"
 
-#: ../glade2/meldapp.glade.h:46
-msgid "Syntax highlighting"
-msgstr "Isticanje sintakse"
+#: glade2/meldapp.glade.h:59
+msgid "Tabs equivalent to "
+msgstr "Tabulatori su istovetni sa "
 
-#: ../glade2/meldapp.glade.h:47
+#: glade2/meldapp.glade.h:60
+msgid "Text Beside Icons"
+msgstr "Tekst pored ikona"
+
+#: glade2/meldapp.glade.h:61
 msgid "Text Filters"
 msgstr "Filteri teksta"
 
-#: ../glade2/meldapp.glade.h:48
+#: glade2/meldapp.glade.h:62
+msgid "Text Only"
+msgstr "Samo tekst"
+
+#: glade2/meldapp.glade.h:63
+msgid "Text Under Icons"
+msgstr "Tekst ispod ikona"
+
+#: glade2/meldapp.glade.h:64
+msgid "Three way directory"
+msgstr "Trosmerni direktorijum"
+
+#: glade2/meldapp.glade.h:65
+msgid "Three way file"
+msgstr "Trosmerna datoteka"
+
+#: glade2/meldapp.glade.h:66
+msgid "Two way directory"
+msgstr "Dvosmerni direktorijum"
+
+#: glade2/meldapp.glade.h:67
+msgid "Two way file"
+msgstr "Dvosmerna datoteka"
+
+#: glade2/meldapp.glade.h:68
 msgid "Use Compression (-z)"
 msgstr "Koristi sažimanje (-z)"
 
+#: glade2/meldapp.glade.h:69
+msgid "Use GNOME monospace font."
+msgstr "Koristi Gnomov font utvrđene širine."
+
+#: glade2/meldapp.glade.h:70
+msgid "Use custom font."
+msgstr "Koristi poseban font."
+
 # bug: what encoding is iso8859? it's a registry of encodings, and encoding is eg. iso8859-5
-#: ../glade2/meldapp.glade.h:49
+#: glade2/meldapp.glade.h:71
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr "Pri učitavanju, probaj ova kodiranja redom. (npr. utf8, iso8859)"
 
-#: ../glade2/meldapp.glade.h:50
-msgid ""
-"When performing directory comparisons, you may filter out files and "
-"directories by name. Each pattern is a list of shell style wildcards "
-"separated by spaces."
-msgstr "Pri poređenju direktorijuma, možete zanemariti izvesne promene. Svaki obrazac ovde predstavlja regularni izraz u Pitonu koji će biti redom primenjen na svaki red ulaznog teksta."
-
-#: ../glade2/meldapp.glade.h:51
-msgid ""
-"When performing file comparisons, you may ignore certain types of changes. "
-"Each pattern here is a python regular expression which will be applied in "
-"turn to each line of the input text."
-msgstr "Pri poređenju datoteka, možete zanemariti izvesne promene. Svaki obrazac ovde predstavlja regularni izraz u Pitonu koji će biti redom primenjen na svaki red ulaznog teksta."
-
-#: ../glade2/meldapp.glade.h:52
+#: glade2/meldapp.glade.h:72
 msgid "Whitespace is significant"
 msgstr "Beline su bitne"
 
-#: ../glade2/meldapp.glade.h:54
+#: glade2/meldapp.glade.h:73
+msgid "_Binary Files"
+msgstr "_Binarne datoteke"
+
+#: glade2/meldapp.glade.h:74
+msgid "_Contents"
+msgstr "_Sadržaj"
+
+#: glade2/meldapp.glade.h:76
 msgid "_Logo"
 msgstr "_Logotip"
 
-# bug: we definitely don't want this to show up, it's too technical (toolbar style gconf key values), even for developers
-#: ../glade2/meldapp.glade.h:55
-msgid ""
-"icons\n"
-"text\n"
-"both\n"
-"both-horiz"
-msgstr ""
-"icons\n"
-"text\n"
-"both\n"
-"both-horiz"
+#: glade2/meldapp.glade.h:77
+msgid "_New..."
+msgstr "_Novi..."
 
-# bug: too technical
-#: ../glade2/meldapp.glade.h:59
-msgid ""
-"none\n"
-"char\n"
-"word"
-msgstr ""
-"none\n"
-"char\n"
-"word"
+#: glade2/meldapp.glade.h:78
+msgid "_Save"
+msgstr "_Sačuvaj"
 
-# bug: iso8859 is not an encoding, add comment to describe this
-#: ../glade2/meldapp.glade.h:62
+#: glade2/meldapp.glade.h:79
+msgid "http://meld.sourceforge.net"
+msgstr "http://meld.sourceforge.net"
+
+#: glade2/meldapp.glade.h:80
 msgid "utf8 iso8859"
 msgstr "utf8 iso8859-5 iso8859-2 iso8859"
-
-#: ../glade2/wocoview.glade.h:2
-msgid "..."
-msgstr "..."
-
-#: ../glade2/wocoview.glade.h:3
-msgid "CVS Log"
-msgstr "CVS dnevnik"
-
-#: ../glade2/wocoview.glade.h:4
-msgid "Choose Directory - Meld"
-msgstr "Izaberite direktorijum — Meld"
-
-#: ../glade2/wocoview.glade.h:5
-msgid "Commit Files"
-msgstr "Ugradi datoteke"
-
-#: ../glade2/wocoview.glade.h:6
-msgid "Date"
-msgstr "Datum"
-
-#: ../glade2/wocoview.glade.h:7
-msgid "Diff Options"
-msgstr "Opcije za razlike"
-
-#: ../glade2/wocoview.glade.h:8
-msgid "Local copy against other remote revision"
-msgstr "Lokalni primerak u odnosu na neku drugu reviziju udaljenog"
-
-#: ../glade2/wocoview.glade.h:9
-msgid "Local copy against same remote revision"
-msgstr "Lokalni primerak u odnosu na istu reviziju udaljenog"
-
-#: ../glade2/wocoview.glade.h:10
-msgid "Log Message"
-msgstr "Poruka za dnevnik"
-
-#: ../glade2/wocoview.glade.h:11
-msgid "Previous Logs"
-msgstr "Prethodni dnevnici"
-
-#: ../glade2/wocoview.glade.h:12
-msgid "Remove _Locally"
-msgstr "Ukloni u _lokalu"
-
-#~ msgid ""
-#~ "Error converting to a regular expression\n"
-#~ "The pattern was '%s'\n"
-#~ "The error was '%s'"
-#~ msgstr ""
-#~ "Greška pri pretvaranju u regularni izraz\n"
-#~ "Obrazac je bio „%s“\n"
-#~ "Greška je bila „%s“"
-
-#~ msgid ""
-#~ "Regular expression error\n"
-#~ "'%s'"
-#~ msgstr ""
-#~ "Greška sa regularnim izrazom\n"
-#~ "„%s“"
-
-#~ msgid "The regular expression '%s' was not found."
-#~ msgstr "Regularni izraz „%s“ nije nađen."
-
-#~ msgid "Choose a name for buffer %i."
-#~ msgstr "Izaberite ime za %i. bafer."
-
-#~ msgid "Meld requires a recent version of pygtk."
-#~ msgstr "Meld zahteva skoro izdanje PiGtk-a."
-
-#~ msgid "pygtk-%s or higher is recommended."
-#~ msgstr "Preporučuje se PiGtk %s ili noviji."
-
-#~ msgid ""
-#~ "Due to incompatible API changes some functions may not operate as "
-#~ "expected."
-#~ msgstr ""
-#~ "Zbog nesaglasnih izmena programerske sprege, neke funkcije možda neće "
-#~ "raditi kako treba."
-
-#~ msgid "Browse %s"
-#~ msgstr "Pregledaj %s"
-
-#~ msgid "Original File"
-#~ msgstr "Izvorna datoteka"
-
-#~ msgid "Modified File"
-#~ msgstr "Izmenjena datoteka"
-
-#~ msgid "Other Changes"
-#~ msgstr "Ostale izmene"
-
-#~ msgid "Common Ancestor"
-#~ msgstr "Zajednički predak"
-
-#~ msgid "Local Changes"
-#~ msgstr "Lokalne izmene"
-
-#~ msgid "Original Directory"
-#~ msgstr "Izvorni direktorijum"
-
-#~ msgid "Modified Directory"
-#~ msgstr "Izmenjen direktorijum"
-
-#~ msgid "Root CVS Directory"
-#~ msgstr "Koreni CVS direktorijum"
-
-#~ msgid "`%s' is not a directory or file, cannot open cvs view"
-#~ msgstr ""
-#~ "„%s“ ne predstavlja direktorijum ni datoteku, ne mogu da otvorim CVS "
-#~ "pregled"
-
-#~ msgid "Cannot open "
-#~ msgstr "Ne mogu da otvorim "
-
-#~ msgid "Add _Binary"
-#~ msgstr "Dodaj _binarno"
-
-#~ msgid "Add to CVS"
-#~ msgstr "Dodaj u CVS"
-
-#~ msgid "Commit"
-#~ msgstr "Ugradi"
-
-#~ msgid "Delete locally"
-#~ msgstr "Obriši u lokalu"
-
-#~ msgid "Diff selected"
-#~ msgstr "Izabrane razlike"
-
-#~ msgid "Non _CVS"
-#~ msgstr "Ne-_CVS"
-
-#~ msgid "Show non-CVS"
-#~ msgstr "Prikaži ne-CVS"
-
-# bug: plural-forms
-#~ msgid " spaces."
-#~ msgstr " razmaka."
-
-#~ msgid "<b>Drawing Style</b>"
-#~ msgstr "<b>Stil iscrtavanja</b>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Binarne datoteke</span>"
-
-#~ msgid ""
-#~ "Binary files do not have text filters applied to them when comparing."
-#~ msgstr "Na binarne datoteke se ne primenjuju filteri teksta pri poređenju."
-
-#~ msgid "CVS view"
-#~ msgstr "CVS pregled"
-
-#~ msgid "Choose Files"
-#~ msgstr "Izaberi datoteke"
-
-#~ msgid ""
-#~ "Choose how the central bar of the diff viewer is drawn. You may wish to "
-#~ "choose a simpler mode if you find scrolling is slow."
-#~ msgstr ""
-#~ "Izaberite kako se iscrtava centralna traka prikazivanja razlika. Možete "
-#~ "želeti da izaberete jednostavniji način ako je klizanje sporo."
-
-#~ msgid "Copyright (C) 2002 Stephen Kennedy"
-#~ msgstr "Sva prava zadržana © 2002 Stifen Kenedi (Stephen Kennedy)"
-
-#~ msgid "Curved : Filled Curves"
-#~ msgstr "Kriva : ispunjene krive"
-
-#~ msgid "Gnome Default"
-#~ msgstr "Podrazumevano u Gnomu"
-
-#~ msgid "Icons Only"
-#~ msgstr "Samo slike"
-
-#~ msgid "Locate CVS binary : Meld"
-#~ msgstr "Pronađi CVS program : Meld"
-
-#~ msgid "Save File 1"
-#~ msgstr "Sačuvaj 1. datoteku"
-
-#~ msgid "Save File 2"
-#~ msgstr "Sačuvaj 2. datoteku"
-
-#~ msgid "Save File 3"
-#~ msgstr "Sačuvaj 3. datoteku"
-
-#~ msgid "Simple : Lines only"
-#~ msgstr "Jednostavno : samo linije"
-
-# bug: missing colon ":", s/quadilaterals/quadrilaterals/
-#~ msgid "Solid   Filled Quadilaterals"
-#~ msgstr "Ispunjeno : ispunjeni pravougaonici"
-
-#~ msgid "Tabs equivalent to "
-#~ msgstr "Tabulatori su istovetni sa "
-
-#~ msgid "Text Beside Icons"
-#~ msgstr "Tekst pored ikona"
-
-#~ msgid "Text Only"
-#~ msgstr "Samo tekst"
-
-#~ msgid "Text Under Icons"
-#~ msgstr "Tekst ispod ikona"
-
-#~ msgid "Three way directory"
-#~ msgstr "Trosmerni direktorijum"
-
-#~ msgid "Two way directory"
-#~ msgstr "Dvosmerni direktorijum"
-
-#~ msgid "Two way file"
-#~ msgstr "Dvosmerna datoteka"
-
-#~ msgid "Use GNOME monospace font."
-#~ msgstr "Koristi Gnomov font utvrđene širine."
-
-#~ msgid "Use custom font."
-#~ msgstr "Koristi poseban font."
-
-#~ msgid "_Binary Files"
-#~ msgstr "_Binarne datoteke"
-
-#~ msgid "_Contents"
-#~ msgstr "_Sadržaj"
-
-#~ msgid "http://meld.sourceforge.net"
-#~ msgstr "http://meld.sourceforge.net"
 
 #~ msgid "window1"
 #~ msgstr "prozor1"
 
 #~ msgid "Recurse"
 #~ msgstr "Rekurzivno"
+
+#~ msgid "_View"
+#~ msgstr "P_regled"
 
 #~ msgid "translator_credits"
 #~ msgstr ""

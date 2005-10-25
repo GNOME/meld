@@ -1,121 +1,131 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meld 0.9.4.1\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2005-01-09 13:09+0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-10 02:57+0400\n"
+"PO-Revision-Date: 2005-06-30 13:12+0300\n"
 "Last-Translator: Alexey Rusakov <ktirf@users.sourceforge.net>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Russian\n"
-"X-Poedit-Basepath: .\n"
+"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: glade2\n"
+"X-Poedit-SearchPath-2: tools\n"
 
-#: ../glade.py:247
-msgid "_Browse..."
-msgstr "П_росмотреть..."
+#: ../meld.desktop.in.h:1
+msgid "Compare and merge your files."
+msgstr "Программа для сравнения и слияния файлов"
 
-#: ../glade.py:360
+#: ../meld.desktop.in.h:2
+msgid "Meld Diff Viewer"
+msgstr "Meld - Просмотр различий"
+
+#. These are the possible states of files. Be sure to get the colons correct.
+#: ../cvsview.py:41
+msgid "Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+msgstr "Игнорируется:Нет в CVS:::Ошибка::Добавлен:Изменен:<b>Конфликт</b>:Удален:Отсутствует"
+
+#: ../cvsview.py:169
 #, python-format
 msgid ""
-"Could not open '%s'.\n"
-"%s"
+"Error converting to a regular expression\n"
+"The pattern was '%s'\n"
+"The error was '%s'"
 msgstr ""
-"Не удалось открыть '%s'.\n"
-"%s"
+"Ошибка при преобразовании регулярного выражения.\n"
+"Шаблон: '%s'\n"
+"Ошибка: '%s'"
 
-#: ../prefsui.py:215
-msgid "Line numbers are only available if you have pygtksourceview installed."
-msgstr "Номера строк могут показываться только при установленном модуле pygtksourceview."
+#: ../cvsview.py:353
+#: ../svnview.py:292
+msgid "Name"
+msgstr "Имя"
 
-#: ../prefsui.py:219
-msgid "Syntax highlighting is only available if you have pygtksourceview installed."
-msgstr "Подсветка синтаксиса может использоваться только при установленном модуле pygtksourceview."
+#: ../cvsview.py:370
+#: ../svnview.py:309
+msgid "Location"
+msgstr "Местоположение"
 
-#: ../misc.py:95
-msgid "[None]"
-msgstr "(нет)"
+#: ../cvsview.py:371
+#: ../svnview.py:310
+msgid "Status"
+msgstr "Состояние"
 
-#: ../dirdiff.py:251
-#: ../dirdiff.py:266
-#, python-format
-msgid "Error converting pattern '%s' to regular expression"
-msgstr "Ошибка при преобразовании шаблона '%s' в регулярное выражение"
+#: ../cvsview.py:372
+#: ../svnview.py:311
+msgid "Rev"
+msgstr "Редакция"
 
-#: ../dirdiff.py:276
-#, python-format
-msgid "Hide %s"
-msgstr "_Скрыть %s"
+#: ../cvsview.py:373
+#: ../svnview.py:312
+#: ../glade2/cvsview.glade.h:21
+msgid "Tag"
+msgstr "Тег"
 
-#: ../dirdiff.py:356
-#: ../svnview.py:347
-#: ../cvsview.py:497
+#: ../cvsview.py:374
+#: ../svnview.py:313
+msgid "Options"
+msgstr "Настройки"
+
+#: ../cvsview.py:411
+#: ../dirdiff.py:364
+#: ../svnview.py:350
 #, python-format
 msgid "[%s] Scanning"
-msgstr "[%s] Сканирование"
+msgstr "[%s] Просмотр"
 
-#: ../dirdiff.py:365
-#: ../svnview.py:374
-#: ../cvsview.py:524
+#: ../cvsview.py:438
+#: ../dirdiff.py:373
+#: ../svnview.py:377
 #, python-format
 msgid "[%s] Scanning %s"
-msgstr "[%s] Сканирование %s"
+msgstr "[%s] Просмотр %s"
 
-#: ../dirdiff.py:398
+#: ../cvsview.py:454
+#: ../svnview.py:393
+msgid "(Empty)"
+msgstr "(Пусто)"
+
+#: ../cvsview.py:490
+#: ../svnview.py:429
 #, python-format
-msgid "'%s' hidden by '%s'"
-msgstr "'%s' скрывается '%s'"
+msgid "[%s] Fetching differences"
+msgstr "[%s] Вычисляются различия"
 
-#: ../dirdiff.py:404
+#: ../cvsview.py:497
+#: ../svnview.py:437
 #, python-format
-msgid ""
-"You are running a case insensitive comparison on a case sensitive filesystem. Some files are not visible:\n"
-"%s"
-msgstr ""
-"Вы проводите сравнение без учета регистра на файловой системе, чувствительной к регистру. Некоторые файлы могут быть не видны:\n"
-"%s"
+msgid "[%s] Applying patch"
+msgstr "[%s] Накладывается заплатка"
 
-#: ../dirdiff.py:470
-#, python-format
-msgid "[%s] Done"
-msgstr "[%s] Готово"
+#: ../cvsview.py:501
+#: ../svnview.py:441
+msgid "No differences found."
+msgstr "Различий не найдено."
 
-#: ../dirdiff.py:515
-#, python-format
-msgid ""
-"'%s' exists.\n"
-"Overwrite?"
-msgstr ""
-"Файл '%s' существует.\n"
-"Переписать?"
+#: ../cvsview.py:575
+#: ../svnview.py:515
+msgid "Select some files first."
+msgstr "Сначала выберите файлы."
 
-#: ../dirdiff.py:522
-#, python-format
-msgid ""
-"Error copying '%s' to '%s'\n"
-"\n"
-"%s."
-msgstr ""
-"Произошла ошибка при копировании '%s' в '%s'\n"
-"\n"
-"%s."
-
-#: ../dirdiff.py:540
-#: ../svnview.py:533
-#: ../cvsview.py:693
+#: ../cvsview.py:596
+#: ../dirdiff.py:552
+#: ../svnview.py:536
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
 "Remove recusively?"
 msgstr ""
-"'%s' является каталогом.\n"
+"'%s' - это каталог.\n"
 "Удалить его вместе с содержимым?"
 
-#: ../dirdiff.py:547
-#: ../svnview.py:538
-#: ../cvsview.py:698
+#: ../cvsview.py:601
+#: ../dirdiff.py:559
+#: ../svnview.py:541
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -126,99 +136,281 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:558
-#, fuzzy
-msgid "second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:year,years"
-msgstr "сек,сек:мин,мин:ч,ч:день,дней:нед,нед:мес,мес:г,г"
-
-#: ../findreplace.py:106
-#: ../filediff.py:1334
+#: ../dirdiff.py:253
+#: ../dirdiff.py:268
 #, python-format
-msgid "%s"
-msgstr "%s"
+msgid "Error converting pattern '%s' to regular expression"
+msgstr "Ошибка при преобразовании шаблона '%s' в регулярное выражение"
 
-#: ../meldapp.py:75
-#: ../filediff.py:107
-msgid "_File"
-msgstr "_Файл"
+#: ../dirdiff.py:284
+#, python-format
+msgid "Hide %s"
+msgstr "_Скрыть %s"
 
-#: ../meldapp.py:77
-msgid "_New..."
-msgstr "_Новый..."
+#: ../dirdiff.py:406
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "'%s' скрывается '%s'"
 
-#: ../meldapp.py:77
-msgid "Open a new tab"
-msgstr "Открыть новую вкладку"
+#: ../dirdiff.py:412
+#, python-format
+msgid ""
+"You are running a case insensitive comparison on a case sensitive filesystem. Some files are not visible:\n"
+"%s"
+msgstr ""
+"Вы проводите сравнение без учета регистра на файловой системе, чувствительной к регистру. Некоторые файлы могут быть не видны:\n"
+"%s"
 
-#: ../meldapp.py:79
-msgid "_Quit"
-msgstr "_Выйти"
+#: ../dirdiff.py:481
+#, python-format
+msgid "[%s] Done"
+msgstr "[%s] Готово"
 
-#: ../meldapp.py:79
-msgid "Quit the application"
-msgstr "Выйти из приложения"
+#: ../dirdiff.py:527
+#, python-format
+msgid ""
+"'%s' exists.\n"
+"Overwrite?"
+msgstr ""
+"'%s' существует.\n"
+"Переписать?"
 
-#: ../meldapp.py:81
-msgid "_Settings"
-msgstr "_Установки"
+#: ../dirdiff.py:534
+#, python-format
+msgid ""
+"Error copying '%s' to '%s'\n"
+"\n"
+"%s."
+msgstr ""
+"Произошла ошибка при копировании '%s' в '%s'\n"
+"\n"
+"%s."
 
-#: ../meldapp.py:83
-msgid "_Preferences"
-msgstr "_Настройки"
+#: ../dirdiff.py:570
+#, python-format
+msgid "%i second"
+msgid_plural "%i seconds"
+msgstr[0] "секунда"
+msgstr[1] "секунды"
+msgstr[2] "секунд"
 
-#: ../meldapp.py:83
-msgid "Configure preferences"
-msgstr "Изменить настройки"
+#: ../dirdiff.py:571
+#, python-format
+msgid "%i minute"
+msgid_plural "%i minutes"
+msgstr[0] "минута"
+msgstr[1] "минуты"
+msgstr[2] "минут"
 
-#: ../meldapp.py:85
-msgid "_Help"
-msgstr "_Справка"
+#: ../dirdiff.py:572
+#, python-format
+msgid "%i hour"
+msgid_plural "%i hours"
+msgstr[0] "час"
+msgstr[1] "часа"
+msgstr[2] "часов"
 
-#: ../meldapp.py:87
-msgid "_Contents"
-msgstr "_Содержание"
+#: ../dirdiff.py:573
+#, python-format
+msgid "%i day"
+msgid_plural "%i days"
+msgstr[0] "день"
+msgstr[1] "дня"
+msgstr[2] "дней"
 
-#: ../meldapp.py:87
-msgid "Users manual"
-msgstr "Руководство пользователя"
+#: ../dirdiff.py:574
+#, python-format
+msgid "%i week"
+msgid_plural "%i weeks"
+msgstr[0] "неделя"
+msgstr[1] "недели"
+msgstr[2] "недель"
 
-#: ../meldapp.py:89
-msgid "_Report Bug"
-msgstr "О_тослать отчёт об ошибке"
+#: ../dirdiff.py:575
+#, python-format
+msgid "%i month"
+msgid_plural "%i months"
+msgstr[0] "месяц"
+msgstr[1] "месяца"
+msgstr[2] "месяцев"
 
-#: ../meldapp.py:89
-msgid "Report a bug"
-msgstr "Отослать отчёт об ошибке"
+#: ../dirdiff.py:576
+#, python-format
+msgid "%i year"
+msgid_plural "%i years"
+msgstr[0] "год"
+msgstr[1] "года"
+msgstr[2] "лет"
 
-#: ../meldapp.py:91
-msgid "_About"
-msgstr "_О программе"
+#. Abbreviation for insert,overwrite so that it will fit in the status bar
+#: ../filediff.py:224
+msgid "INS,OVR"
+msgstr "ВСТ,ЗАМ"
 
-#: ../meldapp.py:91
-msgid "About the application"
-msgstr "Получить информацию об этом приложении"
+#. Abbreviation for line, column so that it will fit in the status bar
+#: ../filediff.py:226
+#, python-format
+msgid "Ln %i, Col %i"
+msgstr "  Стр %d, Стлб %d"
 
-#: ../meldapp.py:303
+#: ../filediff.py:284
+#, python-format
+msgid "Regular expression '%s' changed the number of lines in the file. Comparison will be incorrect. See the user manual for more details."
+msgstr "Регулярное выражение '%s' охватывает больше одной строки. Результат сравнения будет неточным. Подробности можно узнать в руководстве пользователя."
+
+#: ../filediff.py:529
+#, python-format
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+"Ошибка в регулярном выражении\n"
+"'%s'"
+
+#: ../filediff.py:541
+#, python-format
+msgid "The regular expression '%s' was not found."
+msgstr "Регулярное выражение `%s' не найдено."
+
+#: ../filediff.py:543
+#, python-format
+msgid "The text '%s' was not found."
+msgstr "Текст '%s' не найден."
+
+#: ../filediff.py:582
+#, python-format
+msgid "[%s] Set num panes"
+msgstr "[%s] Определяется количество панелей"
+
+#: ../filediff.py:589
+#, python-format
+msgid "[%s] Opening files"
+msgstr "[%s] Открываются файлы"
+
+#: ../filediff.py:606
+#: ../filediff.py:620
+#: ../filediff.py:636
+#: ../filediff.py:643
+#, python-format
+msgid "Could not read from '%s'"
+msgstr "Невозможно прочитать файл '%s'"
+
+#: ../filediff.py:607
+#: ../filediff.py:644
+msgid "The error was:"
+msgstr "Произошла ошибка:"
+
+#: ../filediff.py:612
+#, python-format
+msgid "[%s] Reading files"
+msgstr "[%s] Загружаются файлы"
+
+#: ../filediff.py:621
+msgid ""
+"It contains ascii nulls.\n"
+"Perhaps it is a binary file."
+msgstr ""
+"Он содержит нулевые символы.\n"
+"Возможно, это нетекстовый файл."
+
+#: ../filediff.py:637
+#, python-format
+msgid "I tried encodings %s."
+msgstr "Были испробованы кодировки %s."
+
+#: ../filediff.py:665
+#, python-format
+msgid "[%s] Computing differences"
+msgstr "[%s] Вычисляются различия"
+
+#: ../filediff.py:754
+#, python-format
+msgid ""
+"\"%s\" exists!\n"
+"Overwrite?"
+msgstr ""
+"'%s' существует!\n"
+"Переписать?"
+
+#: ../filediff.py:766
+#, python-format
+msgid ""
+"Error writing to %s\n"
+"\n"
+"%s."
+msgstr ""
+"Ошибка записи в '%s'\n"
+"\n"
+"%s."
+
+#: ../filediff.py:775
+#, python-format
+msgid "Choose a name for buffer %i."
+msgstr "Выберите имя для буфера %i."
+
+#: ../filediff.py:788
+#, python-format
+msgid ""
+"This file '%s' contains a mixture of line endings.\n"
+"\n"
+"Which format would you like to use?"
+msgstr ""
+"Файл '%s' содержит концы строк в разных форматах.\n"
+"\n"
+"Какой формат вы хотите использовать?"
+
+#: ../filediff.py:804
+#, python-format
+msgid ""
+"'%s' contains characters not encodable with '%s'\n"
+"Would you like to save as UTF-8?"
+msgstr ""
+"'%s' содержит символы, которые нельзя закодировать в '%s'.\n"
+"Хотите сохранить в UTF-8?"
+
+#. save as
+#: ../filediff.py:839
+msgid "Save patch as..."
+msgstr "Сохранить заплатку в файл..."
+
+#: ../filediff.py:893
+#, python-format
+msgid ""
+"Refreshing will discard changes in:\n"
+"%s\n"
+"\n"
+"You cannot undo this operation."
+msgstr ""
+"Обновление приведет к потере изменений в следующих файлах:\n"
+"%s\n"
+"\n"
+"Вы не сможете отменить эту операцию."
+
+#: ../meld:57
+#: ../meld:67
+#: ../meld:77
+#, c-format
+msgid "Meld requires %s or higher."
+msgstr "Meld требует %s или более позднюю версию."
+
+#: ../meld:78
+msgid "Due to incompatible API changes some functions may not operate as expected."
+msgstr "Несоответствие программного интерфейса может привести к тому, что некоторые функции не будут нормально работать."
+
+#: ../meldapp.py:294
+msgid "Line numbers are only available if you have pysourceview installed."
+msgstr "Для подсветки синтаксиса нужно установить модуль pygtksourceview."
+
+#: ../meldapp.py:298
+msgid "Syntax highlighting is only available if you have pysourceview installed."
+msgstr "Подсветка синтаксиса может использоваться только при установленном модуле pygtksourceview."
+
+#: ../meldapp.py:745
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Невозможно сравнить смесь файлов и каталогов.\n"
 
-#: ../meldapp.py:306
-msgid "folder"
-msgstr "папка"
-
-#: ../meldapp.py:307
-msgid "file"
-msgstr "файл"
-
-#: ../meldapp.py:308
-msgid "nonexistant"
-msgstr "не существует"
-
-#: ../meldapp.py:335
-msgid "Run meld --help for help"
-msgstr "Запустите meld --help для подсказки по опциям командной строки."
-
-#: ../meldapp.py:394
+#. ###############################################################################
+#: ../meldapp.py:798
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -234,25 +426,25 @@ msgid ""
 "\n"
 "For more information choose help -> contents.\n"
 "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+"Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
 msgstr ""
-"Meld - это инструмент для сравнения файлов и папок. Использование:\n"
+"Meld - это средство сравнения файлов и папок. Использование:\n"
 "\n"
 "    meld                        Запуск без открытых вкладок\n"
-"    meld <dir>                  Просмотреть отличия файлов из <dir> от их копий в CVS/SVN\n"
-"    meld <file>                 Сравнить <file> с его копией в CVS/SVN (cvs diff)\n"
+"    meld <dir>                  Просмотреть отличия файлов из <dir> от их копий в CVS\n"
+"    meld <file>                 Сравнить <file> с его копией в CVS (cvs diff)\n"
 "    meld <file> <file> [file]   Сравнить 2 или 3 файла\n"
 "    meld <dir>  <dir>  [dir]    Сравнить 2 или 3 папки\n"
 "\n"
 "Параметры:\n"
-"    -h, --help                  Показать этот справочный текст и выйти\n"
+"    -h, --help                  Показать этот текст и выйти\n"
 "    -v, --version               Показать данные о версии и выйти\n"
 "\n"
 "Для дальнейшей информации выберите в меню Справка -> Содержание.\n"
 "Об ошибках и пожеланиях сообщайте на at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Meld обсуждается на http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+"Meld обсуждается на http://mail.gnome.org/mailman/listinfo/meld-list\n"
 
-#: ../meldapp.py:411
+#: ../meldapp.py:815
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -261,508 +453,684 @@ msgstr ""
 "Meld %s\n"
 "Автор - Стивен Кеннеди <stevek@gnome.org>"
 
-#: ../meldapp.py:432
-msgid "Usage: meld [options] [arguments]"
-msgstr "Использование: meld [опции] [аргументы]"
-
-#: ../meldapp.py:433
-msgid "Use label instead of filename. This option may be used several times."
-msgstr "Использовать метку вместо имени файла. Параметр можно указать несколько раз."
-
-#: ../meldapp.py:434
-msgid "Use an existing instance"
-msgstr "Использовать уже запущенный экземпляр"
-
-#: ../meldapp.py:435
-msgid "Ignored for compatibility"
-msgstr "для совместимости; игнорируется"
-
-#: ../meldapp.py:476
+#: ../meldapp.py:871
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Неверное число аргументов (всего %i) "
 
-#: ../melddoc.py:42
+#: ../melddoc.py:45
 msgid "untitled"
 msgstr "без имени"
 
-#: ../svnview.py:40
+#. no common path. empty names get changed to "[None]"
+#: ../misc.py:120
+msgid "[None]"
+msgstr "(Нет)"
+
+#: ../svnview.py:42
 msgid "Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
 msgstr "Игнорируется:Не из SVN:::Ошибка::Добавлен:Изменен:<b>Конфликт</b>:Удален:Отсутствует"
 
-#: ../svnview.py:289
-#: ../cvsview.py:439
-msgid "Name"
-msgstr "Имя"
+#: ../glade2/cvsview.glade.h:1
+msgid "Add _Binary"
+msgstr "Добавить как двоичный файл"
 
-#: ../svnview.py:306
-#: ../cvsview.py:456
-msgid "Location"
-msgstr "Местоположение"
+#: ../glade2/cvsview.glade.h:2
+msgid "Add to CVS"
+msgstr "Добавить в CVS"
 
-#: ../svnview.py:307
-#: ../cvsview.py:457
-msgid "Status"
-msgstr "Состояние"
+#: ../glade2/cvsview.glade.h:3
+msgid "CVS Log"
+msgstr "Журнал CVS"
 
-#: ../svnview.py:308
-#: ../cvsview.py:458
-msgid "Rev"
-msgstr "Редакция"
+#: ../glade2/cvsview.glade.h:4
+msgid "Commit"
+msgstr "Сохранить изменения в CVS"
 
-#: ../svnview.py:309
-#: ../cvsview.py:459
-msgid "Tag"
-msgstr "Тег"
+#: ../glade2/cvsview.glade.h:5
+msgid "Commit Files"
+msgstr "Сохранить изменения файлов в CVS"
 
-#: ../svnview.py:310
-#: ../cvsview.py:460
-msgid "Options"
-msgstr "Параметры"
+#: ../glade2/cvsview.glade.h:6
+msgid "Date"
+msgstr "Дата"
 
-#: ../svnview.py:390
-#: ../cvsview.py:540
-msgid "(Empty)"
-msgstr "(Пусто)"
+#: ../glade2/cvsview.glade.h:7
+msgid "Delete locally"
+msgstr "Удалить рабочую копию"
 
-#: ../svnview.py:426
-#: ../cvsview.py:572
-#, python-format
-msgid "[%s] Fetching differences"
-msgstr "[%s] Объединяются различия"
+#: ../glade2/cvsview.glade.h:8
+msgid "Diff Options"
+msgstr "Настройки сравнения"
 
-#: ../svnview.py:434
-#: ../cvsview.py:579
-#, python-format
-msgid "[%s] Applying patch"
-msgstr "[%s] Наложение заплатки"
+#: ../glade2/cvsview.glade.h:9
+msgid "Diff selected"
+msgstr "Сравнить выбранное"
 
-#: ../svnview.py:438
-#: ../cvsview.py:583
-msgid "No differences found."
-msgstr "Различий не найдено."
+#: ../glade2/cvsview.glade.h:10
+msgid "Flatten directories"
+msgstr "Показывать плоским списком"
 
-#: ../svnview.py:512
-#: ../cvsview.py:659
-msgid "Select some files first."
-msgstr "Сначала выберите файлы."
+#: ../glade2/cvsview.glade.h:11
+msgid "Ignored"
+msgstr "Игнорируемые"
 
-#: ../cvsview.py:39
-msgid "Ignored:Unknown:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr "Игнорируется:Неизвестен:::Ошибка::Добавлен:Изменен:<b>Конфликт</b>:Удален:Отсутствует"
+#: ../glade2/cvsview.glade.h:12
+msgid "Local copy against other remote revision"
+msgstr "Свою копию с другой ревизией на сервере"
 
-#: ../cvsview.py:166
-#, python-format
-msgid ""
-"Error converting to a regular expression\n"
-"The pattern was '%s'\n"
-"The error was '%s'"
-msgstr ""
-"Ошибка при преобразовании регулярного выражения.\n"
-"Шаблон: '%s'\n"
-"Ошибка: '%s'"
+#: ../glade2/cvsview.glade.h:13
+msgid "Local copy against same remote revision"
+msgstr "Свою копию с соответствующей ревизией на сервере"
 
-#: ../cvsview.py:394
-msgid "_Version"
-msgstr "_Версия"
+#: ../glade2/cvsview.glade.h:14
+msgid "Log Message"
+msgstr "Комментарий для журнала CVS"
 
-#: ../cvsview.py:396
-msgid "_Diff"
-msgstr "_Различия"
+#: ../glade2/cvsview.glade.h:15
+msgid "Non _CVS"
+msgstr "Нет в CVS"
 
-#: ../cvsview.py:396
-msgid "Compare versions"
-msgstr "Сравнить версии"
+#: ../glade2/cvsview.glade.h:16
+msgid "Previous Logs"
+msgstr "Прошлые комментарии"
 
-#: ../cvsview.py:398
-msgid "_Update"
-msgstr "_Обновить"
+#: ../glade2/cvsview.glade.h:17
+msgid "Remove _Locally"
+msgstr "Удалить рабочую копию"
 
-#: ../cvsview.py:398
-msgid "Update the local copy"
-msgstr "Обновить локальную копию"
+#: ../glade2/cvsview.glade.h:18
+msgid "Remove from CVS"
+msgstr "Удалить из CVS"
 
-#: ../cvsview.py:400
-msgid "_Commit"
-msgstr "_Принять изменения"
+#: ../glade2/cvsview.glade.h:19
+#: ../glade2/dirdiff.glade.h:20
+msgid "Show modified"
+msgstr "Показать изменённые"
 
-#: ../cvsview.py:400
-msgid "Commit changes"
-msgstr "Принять изменения"
+#: ../glade2/cvsview.glade.h:20
+msgid "Show non-CVS"
+msgstr "Показать файлы, которых нет в CVS"
 
-#: ../cvsview.py:402
+#: ../glade2/cvsview.glade.h:22
+msgid "Update"
+msgstr "Обновить"
+
+#: ../glade2/cvsview.glade.h:23
 msgid "_Add"
 msgstr "Доб_авить"
 
-#: ../cvsview.py:402
-msgid "Add to control"
-msgstr "Добавить в систему контроля версий"
+#: ../glade2/cvsview.glade.h:24
+msgid "_Commit"
+msgstr "Отправить в CVS"
 
-#: ../cvsview.py:404
-msgid "_Remove"
-msgstr "_Убрать"
+#: ../glade2/cvsview.glade.h:25
+#: ../glade2/meldapp.glade.h:88
+msgid "_Diff"
+msgstr "Сравнение"
 
-#: ../cvsview.py:404
-msgid "Remove from control"
-msgstr "Удалить из системы контроля версий (и с диска)"
+#: ../glade2/cvsview.glade.h:26
+msgid "_Edit"
+msgstr "_Редактировать"
 
-#: ../cvsview.py:406
-msgid "_Delete"
-msgstr "У_далить"
-
-#: ../cvsview.py:406
-msgid "Remove locally"
-msgstr "Удалить файл с диска (оставив его в системе контроля версий)"
-
-#: ../cvsview.py:408
-msgid "_View"
-msgstr "_Вид"
-
-#: ../cvsview.py:410
-msgid "_Up"
-msgstr "_Вверх"
-
-#: ../cvsview.py:410
-msgid "Previous change"
-msgstr "Предыдущее изменение"
-
-#: ../cvsview.py:412
-msgid "_Down"
-msgstr "В_низ"
-
-#: ../cvsview.py:412
-msgid "Next change"
-msgstr "Следующее изменение"
-
-#: ../cvsview.py:414
+#: ../glade2/cvsview.glade.h:27
 msgid "_Flatten"
-msgstr "Плоский список"
+msgstr "Как список"
 
-#: ../cvsview.py:414
-msgid "Flatten tree"
-msgstr "Показать дерево с файлами в виде списка"
-
-#: ../cvsview.py:416
+#: ../glade2/cvsview.glade.h:28
 msgid "_Modified"
-msgstr "И_зменённые"
+msgstr "Измененные"
 
-#: ../cvsview.py:416
-msgid "View modified files"
-msgstr "Показывать измененные файлы"
-
-#: ../cvsview.py:418
+#: ../glade2/cvsview.glade.h:29
 msgid "_Normal"
 msgstr "_Обычные"
 
-#: ../cvsview.py:418
-msgid "View normal files"
-msgstr "Показывать обычные файлы"
+#: ../glade2/cvsview.glade.h:30
+msgid "_Remove"
+msgstr "У_далить"
 
-#: ../cvsview.py:420
-msgid "Un_known"
-msgstr "_Неизвестные"
+#: ../glade2/cvsview.glade.h:31
+msgid "_Update"
+msgstr "_Обновить"
 
-#: ../cvsview.py:420
-msgid "View non version controlled files"
-msgstr "Показать файлы, неизвестные системе контроля версий"
+#: ../glade2/filediff.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
+"Which ones would you like to save?</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Некоторые файлы были изменены.\n"
+"Какие из них вы хотите сохранить?</span>"
 
-#: ../cvsview.py:422
-msgid "_Ignored"
-msgstr "_Игнорируемые"
+#: ../glade2/filediff.glade.h:3
+msgid "Copy All _Left"
+msgstr "Скопировать влево"
 
-#: ../cvsview.py:422
-msgid "View ignored items"
-msgstr "Показывать игнорируемые элементы"
+#: ../glade2/filediff.glade.h:4
+msgid "Copy All _Right"
+msgstr "Скопировать вправо"
 
-#: ../cvsview.py:424
-msgid "_Console"
-msgstr "_Консоль"
+#: ../glade2/filediff.glade.h:5
+msgid "Copy to Clipboard"
+msgstr "Cкопировать в буфер обмена"
 
-#: ../cvsview.py:424
-msgid "View command line output"
-msgstr "Показать вывод в консоли"
+#: ../glade2/filediff.glade.h:6
+msgid "Create Patch"
+msgstr "[%s] Создать заплатку на базе разницы"
 
-#: ../filediff.py:109
+#: ../glade2/filediff.glade.h:7
+#: ../glade2/dirdiff.glade.h:9
+msgid "Edit"
+msgstr "Открыть в редакторе"
+
+#: ../glade2/filediff.glade.h:8
+msgid "Find"
+msgstr "Найти"
+
+#: ../glade2/filediff.glade.h:9
+msgid "Make Patch"
+msgstr "[%s] Создать заплатку"
+
+#: ../glade2/filediff.glade.h:10
+msgid "Match _entire word only"
+msgstr "Только _полные слова"
+
+#: ../glade2/filediff.glade.h:11
+msgid "Regular e_xpression"
+msgstr "_Регулярное выражение"
+
+#: ../glade2/filediff.glade.h:12
+msgid "Save modified files?"
+msgstr "Сохранить изменённые файлы?"
+
+#: ../glade2/filediff.glade.h:13
+msgid "Search for:"
+msgstr "Найти:"
+
+#: ../glade2/filediff.glade.h:14
+msgid "_Match case"
+msgstr "Учитывать _регистр"
+
+#: ../glade2/filediff.glade.h:15
+msgid "_Wrap around"
+msgstr "Пере_ходить к началу"
+
+#: ../glade2/dirdiff.glade.h:1
+msgid "Case"
+msgstr "Без регистра"
+
+#: ../glade2/dirdiff.glade.h:2
+msgid "Copy Left"
+msgstr "Скопировать влево"
+
+#: ../glade2/dirdiff.glade.h:3
+msgid "Copy Right"
+msgstr "Скопировать вправо"
+
+#: ../glade2/dirdiff.glade.h:4
+msgid "Copy left"
+msgstr "Скопировать влево"
+
+#: ../glade2/dirdiff.glade.h:5
+msgid "Copy right"
+msgstr "Скопировать вправо"
+
+#: ../glade2/dirdiff.glade.h:6
+msgid "Delete selected"
+msgstr "Удалить выбранное"
+
+#: ../glade2/dirdiff.glade.h:7
+msgid "Diff"
+msgstr "Сравнить"
+
+#: ../glade2/dirdiff.glade.h:8
+msgid "Diff selection"
+msgstr "Сравнить выбранное"
+
+#: ../glade2/dirdiff.glade.h:10
+msgid "Hide selected"
+msgstr "Скрыть выбранное"
+
+#: ../glade2/dirdiff.glade.h:11
+msgid "Hide..."
+msgstr "Скрыть..."
+
+#: ../glade2/dirdiff.glade.h:12
+msgid "Ignore case of entries"
+msgstr "Игнорировать регистр"
+
+#: ../glade2/dirdiff.glade.h:13
+msgid "Launch _Comparison"
+msgstr "Сравнить"
+
+#: ../glade2/dirdiff.glade.h:14
+msgid "Left"
+msgstr "Слева"
+
+#: ../glade2/dirdiff.glade.h:15
+msgid "Modified"
+msgstr "Изменённые"
+
+#: ../glade2/dirdiff.glade.h:16
+msgid "New"
+msgstr "Новые"
+
+#: ../glade2/dirdiff.glade.h:17
+msgid "Right"
+msgstr "Справа"
+
+#: ../glade2/dirdiff.glade.h:18
+msgid "Same"
+msgstr "Одинаковые"
+
+#: ../glade2/dirdiff.glade.h:19
+msgid "Show identical"
+msgstr "Показать идентичные"
+
+#: ../glade2/dirdiff.glade.h:21
+msgid "Show new"
+msgstr "Показать новые"
+
+#: ../glade2/dirdiff.glade.h:22
+msgid "_Delete Selected"
+msgstr "Удалить выбранное"
+
+#: ../glade2/meldapp.glade.h:1
+msgid "(gnome-default-editor)"
+msgstr "Текстовый редактор по умолчанию"
+
+#: ../glade2/meldapp.glade.h:2
+msgid "<b>Drawing Style</b>"
+msgstr "<b>Вид полосы с различиями</b>"
+
+#: ../glade2/meldapp.glade.h:3
+msgid "<b>Edit Menu</b>"
+msgstr "<b>Редактор</b>"
+
+#: ../glade2/meldapp.glade.h:4
+msgid "<b>Font</b>"
+msgstr "<b>Шрифт</b>"
+
+#: ../glade2/meldapp.glade.h:5
+msgid "<b>Global options</b>"
+msgstr "<b>Общие параметры</b>"
+
+#: ../glade2/meldapp.glade.h:6
+msgid "<b>Loading</b>"
+msgstr "<b>Загрузка файлов</b>"
+
+#: ../glade2/meldapp.glade.h:7
+msgid "<b>Misc</b>"
+msgstr "<b>Разное</b>"
+
+#: ../glade2/meldapp.glade.h:8
+msgid "<b>Saving</b>"
+msgstr "<b>Сохранение файлов</b>"
+
+#: ../glade2/meldapp.glade.h:9
+msgid "<b>Toolbar Appearance</b>"
+msgstr "<b>Вид панели инструментов</b>"
+
+#: ../glade2/meldapp.glade.h:10
+msgid "<b>Update Options</b>"
+msgstr "<b>Параметры обновления</b>"
+
+#: ../glade2/meldapp.glade.h:11
+msgid "<b>Whitespace</b>"
+msgstr "<b>Пробел</b>"
+
+#: ../glade2/meldapp.glade.h:12
+msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+
+#: ../glade2/meldapp.glade.h:13
+msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Сравнение</span>"
+
+#: ../glade2/meldapp.glade.h:14
+msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Внешний вид</span>"
+
+#: ../glade2/meldapp.glade.h:15
+msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Внутренний редактор</span>"
+
+#: ../glade2/meldapp.glade.h:16
+msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Кодировки</span>"
+
+#: ../glade2/meldapp.glade.h:17
+msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Фильтры файлов</span>"
+
+#: ../glade2/meldapp.glade.h:18
+msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Фильтры различий</span>"
+
+#: ../glade2/meldapp.glade.h:19
+msgid "Automatically supply missing newline at end of file."
+msgstr "Добавлять символ новой строки в конце файла, если его там нет"
+
+#: ../glade2/meldapp.glade.h:20
+msgid "CVS"
+msgstr "CVS"
+
+#: ../glade2/meldapp.glade.h:21
+msgid "CVS Directory"
+msgstr "Каталог CVS"
+
+#: ../glade2/meldapp.glade.h:22
+msgid "CVS binary"
+msgstr "Программа CVS"
+
+#: ../glade2/meldapp.glade.h:23
+msgid "CVS view"
+msgstr "Вид CVS"
+
+#: ../glade2/meldapp.glade.h:24
+msgid "C_VS Browser"
+msgstr "Сравнение с CVS"
+
+#: ../glade2/meldapp.glade.h:25
+msgid "Choose Files"
+msgstr "Выберите сравниваемые объекты"
+
+#: ../glade2/meldapp.glade.h:26
+msgid "Choose how the central bar of the diff viewer is drawn. You may wish to choose a simpler mode if you find scrolling is slow."
+msgstr "Выберите вид полосы различий при сравнении. Если прокрутка покажется вам медленной, попробуйте выбрать вид попроще."
+
+#: ../glade2/meldapp.glade.h:27
+msgid "Copyright (C) 2002 Stephen Kennedy"
+msgstr "Copyright (C) 2002 Stephen Kennedy"
+
+#: ../glade2/meldapp.glade.h:28
+msgid "Create missing directories (-d)"
+msgstr "Создавать отсутствующие каталоги (-d)"
+
+#: ../glade2/meldapp.glade.h:29
+msgid "Curved : Filled Curves"
+msgstr "Кривые: сглаженные линии, заполненные цветом"
+
+#: ../glade2/meldapp.glade.h:30
+msgid "Custom command"
+msgstr "Пользовательская команда"
+
+#: ../glade2/meldapp.glade.h:31
+msgid "Display"
+msgstr "Внешний вид"
+
+#: ../glade2/meldapp.glade.h:32
+msgid "Edit menu popup invokes"
+msgstr "Команда редактирования из контекстного меню вызывает"
+
+#: ../glade2/meldapp.glade.h:33
+msgid "Editor"
+msgstr "Редактор"
+
+#: ../glade2/meldapp.glade.h:34
+msgid "Encoding"
+msgstr "Кодировка"
+
+#: ../glade2/meldapp.glade.h:35
+msgid "File Filters"
+msgstr "Фильтры файлов"
+
+#: ../glade2/meldapp.glade.h:36
+msgid "Gnome Default"
+msgstr "По умолчанию для GNOME"
+
+#: ../glade2/meldapp.glade.h:37
+msgid "Gnome default editor"
+msgstr "Текстовый редактор по умолчанию"
+
+#: ../glade2/meldapp.glade.h:38
+msgid "Icons Only"
+msgstr "Только значки"
+
+#: ../glade2/meldapp.glade.h:39
+msgid "Ignore .cvsrc (-f)"
+msgstr "Не использовать .cvsrc (-f)"
+
+#: ../glade2/meldapp.glade.h:40
+msgid "Ignore changes in amount of white space"
+msgstr "Игнорировать различия в числе пробелов"
+
+#: ../glade2/meldapp.glade.h:41
+msgid "Ignore changes in case; consider upper and lower-case letters equivalent"
+msgstr "Пропускать различия в регистре символов"
+
+#: ../glade2/meldapp.glade.h:42
+msgid "Ignore changes that just insert or delete blank lines"
+msgstr "Пропускать различия в числе пустых строк"
+
+#: ../glade2/meldapp.glade.h:43
+msgid "Ignore changes which insert or delete blank lines"
+msgstr "Пропускать различия в пустых строках"
+
+#: ../glade2/meldapp.glade.h:44
+msgid "Internal editor"
+msgstr "Внутренний редактор"
+
+#: ../glade2/meldapp.glade.h:45
+msgid "Line Wrapping "
+msgstr "Перенос строк "
+
+#: ../glade2/meldapp.glade.h:46
+msgid "Locate CVS binary : Meld"
+msgstr "Укажите расположение программы CVS : Meld"
+
+#: ../glade2/meldapp.glade.h:47
+msgid "Meld"
+msgstr "Meld"
+
+#: ../glade2/meldapp.glade.h:48
+msgid "Mine"
+msgstr "Мой"
+
+#: ../glade2/meldapp.glade.h:49
+msgid "My Directory"
+msgstr "Мой каталог"
+
+#: ../glade2/meldapp.glade.h:50
+msgid "My File"
+msgstr "Мой файл"
+
+#: ../glade2/meldapp.glade.h:51
+msgid "New..."
+msgstr "Сравнить..."
+
+#: ../glade2/meldapp.glade.h:52
+msgid "Original"
+msgstr "Оригинал"
+
+#: ../glade2/meldapp.glade.h:53
+msgid "Original Directory"
+msgstr "Исходный каталог"
+
+#: ../glade2/meldapp.glade.h:54
+msgid "Original File"
+msgstr "Исходный файл"
+
+#: ../glade2/meldapp.glade.h:55
+msgid "Other"
+msgstr "Третий"
+
+#: ../glade2/meldapp.glade.h:56
+msgid "Other Directory"
+msgstr "Третий каталог"
+
+#: ../glade2/meldapp.glade.h:57
+msgid "Other File"
+msgstr "Третий файл"
+
+#: ../glade2/meldapp.glade.h:58
+msgid "Preferences : Meld"
+msgstr "Настройки : Meld"
+
+#: ../glade2/meldapp.glade.h:59
+msgid "Prune empty directories (-P)"
+msgstr "Удалять пустые каталоги (-P)"
+
+#: ../glade2/meldapp.glade.h:60
+msgid "Quiet mode (-q)"
+msgstr "Тихий режим (-q)"
+
+#: ../glade2/meldapp.glade.h:61
+msgid "Report _Bug"
+msgstr "О_тослать отчёт об ошибке"
+
+#: ../glade2/meldapp.glade.h:62
+msgid "SVN Directory"
+msgstr "Каталог SVN"
+
+#: ../glade2/meldapp.glade.h:63
+msgid "SVN view"
+msgstr "Работа с SVN"
+
+#: ../glade2/meldapp.glade.h:64
+msgid "Save in UTF-8 encoding"
+msgstr "Сохранять в UTF-8"
+
+#: ../glade2/meldapp.glade.h:65
+msgid "Save in the files original encoding"
+msgstr "Сохранять файлы в их исходной кодировке"
+
+#: ../glade2/meldapp.glade.h:66
+msgid "Show line numbers"
+msgstr "Показывать номера строк"
+
+#: ../glade2/meldapp.glade.h:67
+msgid "Simple : Lines only"
+msgstr "Простой: прямые линии без заполнения цветом"
+
+#: ../glade2/meldapp.glade.h:68
+msgid "Solid : Filled Quadilaterals"
+msgstr "С заполнением: цветные трапеции"
+
+#: ../glade2/meldapp.glade.h:69
+msgid "Tab width"
+msgstr "Шаг табуляции"
+
+#: ../glade2/meldapp.glade.h:70
+msgid "Text Beside Icons"
+msgstr "Текст сбоку от значков"
+
+#: ../glade2/meldapp.glade.h:71
+msgid "Text Filters"
+msgstr "Фильтры различий"
+
+#: ../glade2/meldapp.glade.h:72
+msgid "Text Only"
+msgstr "Только текст"
+
+#: ../glade2/meldapp.glade.h:73
+msgid "Text Under Icons"
+msgstr "Текст под значками"
+
+#: ../glade2/meldapp.glade.h:74
+msgid "Three way directory"
+msgstr "Сравнение с третьим каталогом"
+
+#: ../glade2/meldapp.glade.h:75
+msgid "Three way file"
+msgstr "Сравнение с третьим файлом"
+
+#: ../glade2/meldapp.glade.h:76
+msgid "Two way directory"
+msgstr "Сравнение двух каталогов"
+
+#: ../glade2/meldapp.glade.h:77
+msgid "Two way file"
+msgstr "Сравнение двух файлов"
+
+#: ../glade2/meldapp.glade.h:78
+msgid "Use Compression (-z)"
+msgstr "Использовать сжатие (-z)"
+
+#: ../glade2/meldapp.glade.h:79
+msgid "Use GNOME monospace font."
+msgstr "Использовать стандартный шрифт терминала GNOME"
+
+#: ../glade2/meldapp.glade.h:80
+msgid "Use custom font."
+msgstr "Использовать другой шрифт "
+
+#: ../glade2/meldapp.glade.h:81
+msgid "Use syntax highlighting"
+msgstr "Включить подсветку синтаксиса"
+
+#: ../glade2/meldapp.glade.h:82
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr "Пробовать кодировки в этом порядке (напр., utf8, iso8859)"
+
+#: ../glade2/meldapp.glade.h:83
+msgid "When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces."
+msgstr "При сравнении папок вы можете фильтровать файлы и папки по их названиям. Каждая строка - это список файловых шаблонов, разделённых пробелами."
+
+#: ../glade2/meldapp.glade.h:84
+msgid "When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which replaces matching text with the empty string before comparison is performed. If the expression contains groups, only the groups are replaced. See the user manual for more details."
+msgstr "При сравнении файлов вы можете игнорировать определённые типы различий. Здесь в каждой строке - регулярное выражение Python; совпадающий с ним текст заменяется пустой строкой. Если выражение содержит группы, заменяются только группы. Подробности можно найти в руководстве."
+
+#: ../glade2/meldapp.glade.h:85
+msgid "Whitespace is significant"
+msgstr "Учитывать все пробелы"
+
+#: ../glade2/meldapp.glade.h:86
+msgid "_Character"
+msgstr "По символам"
+
+#: ../glade2/meldapp.glade.h:87
+msgid "_Contents"
+msgstr "_Содержание"
+
+#: ../glade2/meldapp.glade.h:89
+msgid "_Directory Comparison"
+msgstr "Сравнение каталогов"
+
+#: ../glade2/meldapp.glade.h:90
+msgid "_Down"
+msgstr "В_низ"
+
+#: ../glade2/meldapp.glade.h:91
+msgid "_File Comparison"
+msgstr "Сравнение файлов"
+
+#: ../glade2/meldapp.glade.h:92
+msgid "_Logo"
+msgstr "Эмблема"
+
+#: ../glade2/meldapp.glade.h:93
+msgid "_New..."
+msgstr "Сравнить..."
+
+#: ../glade2/meldapp.glade.h:94
+msgid "_None"
+msgstr "_Нет"
+
+#: ../glade2/meldapp.glade.h:95
+msgid "_SVN Browser"
+msgstr "Сравнение с SVN"
+
+#: ../glade2/meldapp.glade.h:96
 msgid "_Save"
 msgstr "_Сохранить"
 
-#: ../filediff.py:109
-#: ../filediff.py:111
-msgid "Save the current file"
-msgstr "Сохранить текущий файл"
+#: ../glade2/meldapp.glade.h:97
+msgid "_Three Way Compare"
+msgstr "Трёхместное сравнение"
 
-#: ../filediff.py:111
-msgid "_Save As..."
-msgstr "_Сохранить как..."
+#: ../glade2/meldapp.glade.h:98
+msgid "_Up"
+msgstr "_Вверх"
 
-#: ../filediff.py:113
-msgid "_Save All"
-msgstr "Со_хранить все"
+#: ../glade2/meldapp.glade.h:99
+msgid "_Word"
+msgstr "По словам"
 
-#: ../filediff.py:113
-msgid "Save all files"
-msgstr "Сохранить все открытые файлы"
+#: ../glade2/meldapp.glade.h:100
+msgid "http://meld.sourceforge.net"
+msgstr "http://meld.sourceforge.net"
 
-#: ../filediff.py:115
-msgid "_Print..."
-msgstr "_Печать..."
-
-#: ../filediff.py:115
-msgid "Print this comparison"
-msgstr "Напечатать это сравнение"
-
-#: ../filediff.py:117
-msgid "_Close"
-msgstr "_Закрыть"
-
-#: ../filediff.py:117
-msgid "Close this tab"
-msgstr "Закрыть эту вкладку"
-
-#: ../filediff.py:118
-msgid "_Edit"
-msgstr "_Правка"
-
-#: ../filediff.py:120
-msgid "_Undo"
-msgstr "_Отменить"
-
-#: ../filediff.py:120
-msgid "Undo last change"
-msgstr "Отменить последнее действие"
-
-#: ../filediff.py:122
-msgid "_Redo"
-msgstr "Ве_рнуть"
-
-#: ../filediff.py:122
-msgid "Redo last change"
-msgstr "Вернуть последнее действие"
-
-#: ../filediff.py:124
-msgid "_Find"
-msgstr "_Найти"
-
-#: ../filediff.py:124
-msgid "Search the document"
-msgstr "Поиск фразы в документе"
-
-#: ../filediff.py:126
-msgid "_Find Next"
-msgstr "Найти _следующее"
-
-#: ../filediff.py:126
-msgid "Repeat the last find"
-msgstr "Повторить последний поиск"
-
-#: ../filediff.py:128
-msgid "_Replace"
-msgstr "_Заменить"
-
-#: ../filediff.py:128
-msgid "Find and replace text"
-msgstr "Поиск и замена текста"
-
-#: ../filediff.py:130
-msgid "Cu_t"
-msgstr "Вы_резать"
-
-#: ../filediff.py:130
-msgid "Cut selected text"
-msgstr "Вырезать выделенный текст в буфер обмена"
-
-#: ../filediff.py:132
-msgid "_Copy"
-msgstr "_Копировать"
-
-#: ../filediff.py:132
-msgid "Copy selected text"
-msgstr "Скопировать выделенный текст в буфер обмена"
-
-#: ../filediff.py:134
-msgid "_Paste"
-msgstr "_Вставить"
-
-#: ../filediff.py:134
-msgid "Paste the text from clipboard"
-msgstr "Вставить текст из буфера обмена"
-
-#: ../filediff.py:135
-msgid "Diff"
-msgstr "Различие"
-
-#: ../filediff.py:137
-msgid "_Next"
-msgstr "_Следующее"
-
-#: ../filediff.py:137
-msgid "Next difference"
-msgstr "Следующее различие"
-
-#: ../filediff.py:139
-msgid "Pr_ev"
-msgstr "_Предыдущее"
-
-#: ../filediff.py:139
-msgid "Previous difference"
-msgstr "Предыдущее различие"
-
-#: ../filediff.py:141
-msgid "Copy contents left"
-msgstr "Скопировать влево"
-
-#: ../filediff.py:143
-msgid "Copy contents right"
-msgstr "Скопировать вправо"
-
-#: ../filediff.py:267
-msgid "INS,OVR"
-msgstr "ВСТ,ЗАМ"
-
-#: ../filediff.py:268
-#, python-format
-msgid "Ln %i, Col %i"
-msgstr "  Стр %d, Стлб %d"
-
-#: ../filediff.py:516
-#, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
-msgstr ""
-"Ошибка в регулярном выражении\n"
-"'%s'"
-
-#: ../filediff.py:531
-#, python-format
-msgid "The regular expression '%s' was not found."
-msgstr "Регулярное выражение `%s' не найдено."
-
-#: ../filediff.py:533
-#, python-format
-msgid "The text '%s' was not found."
-msgstr "Текст '%s' не найден."
-
-#: ../filediff.py:574
-#, python-format
-msgid "[%s] Set num panes"
-msgstr "[%s] Определение количества панелей"
-
-#: ../filediff.py:581
-#, python-format
-msgid "[%s] Opening files"
-msgstr "[%s] Открывание файлов"
-
-#: ../filediff.py:597
-#, python-format
-msgid ""
-"Could not open '%s' for reading.\n"
-"\n"
-"The error was:\n"
-"%s"
-msgstr ""
-"Не удалось открыть '%s' на чтение.\n"
-"\n"
-"Ошибка:\n"
-"%s"
-
-#: ../filediff.py:601
-#, python-format
-msgid "[%s] Reading files"
-msgstr "[%s] Чтение файлов"
-
-#: ../filediff.py:616
-#, python-format
-msgid ""
-"Could not read from '%s'.\n"
-"\n"
-"I tried encodings %s."
-msgstr ""
-"Не удалось прочитать '%s'.\n"
-"\n"
-"Пробовались кодировки %s."
-
-#: ../filediff.py:621
-#, python-format
-msgid ""
-"Could not read from '%s'.\n"
-"\n"
-"The error was:\n"
-"%s"
-msgstr ""
-"Не удалось прочитать '%s'.\n"
-"\n"
-"Ошибка:\n"
-"%s"
-
-#: ../filediff.py:641
-#, python-format
-msgid "[%s] Computing differences"
-msgstr "[%s] Вычисление различий"
-
-#: ../filediff.py:733
-#, python-format
-msgid "Choose a name for buffer %i."
-msgstr "Выберите имя для буфера %i."
-
-#: ../filediff.py:744
-#, python-format
-msgid ""
-"\"%s\" exists!\n"
-"Overwrite?"
-msgstr ""
-"'%s' существует!\n"
-"Переписать?"
-
-#: ../filediff.py:758
-#, python-format
-msgid ""
-"This file '%s' contains a mixture of line endings.\n"
-"\n"
-"Which format would you like to use?"
-msgstr ""
-"Файл '%s' содержит концы строк в разных форматах.\n"
-"\n"
-"Какой формат вы хотите использовать?"
-
-#: ../filediff.py:775
-#, python-format
-msgid ""
-"Error writing to %s\n"
-"\n"
-"%s."
-msgstr ""
-"Ошибка записи в '%s'\n"
-"\n"
-"%s."
-
-#: ../filediff.py:814
-#, python-format
-msgid ""
-"Refreshing will discard changes in:\n"
-"%s\n"
-"\n"
-"You cannot undo this operation."
-msgstr ""
-"Обновление приведет к потере изменений в следующих файлах:\n"
-"%s\n"
-"\n"
-"Эту операцию будет нельзя отменить."
-
-#: ../filediff.py:1251
-#, python-format
-msgid "Print... %s"
-msgstr "Печать... %s"
-
-#: ../filediff.py:1255
-msgid "_Current"
-msgstr "_Текущая страница"
-
-#: ../filediff.py:1255
-msgid "_Range"
-msgstr "_Диапазон страниц"
-
-#: ../filediff.py:1275
-msgid "Print Preview"
-msgstr "Предварительный просмотр"
+#: ../glade2/meldapp.glade.h:101
+msgid "utf8 iso8859"
+msgstr "utf8 iso8859"
 

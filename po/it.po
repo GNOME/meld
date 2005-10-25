@@ -1,559 +1,358 @@
 # Italian translation.
 # Copyright (C) 2004 THE meld'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
-# Andrea Zagli <azagli@inwind.it>, 2004.
+# Andrea Zagli <azagli@inwind.it>, 2004-2005.
 # 
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: meld-it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-28 19:48+0200\n"
-"PO-Revision-Date: 2005-03-19 09:11+0100\n"
+"POT-Creation-Date: 2005-09-26 20:28+0200\n"
+"PO-Revision-Date: 2005-09-26 20:28+0200\n"
 "Last-Translator: Andrea Zagli <azagli@inwind.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../meld.desktop.in.h:1
 msgid "Compare and merge your files."
-msgstr "Confronta e unisce i file."
+msgstr "Confronta e unisci i tuoi file."
 
 #: ../meld.desktop.in.h:2
 msgid "Meld Diff Viewer"
-msgstr "Meld - Visualizzatore di differenze"
+msgstr "Visualizzatore Diff di Meld"
 
-#: ../cvsview.py:39
+#. These are the possible states of files. Be sure to get the colons correct.
+#: ../cvsview.py:41
 msgid ""
-"Ignored:Unknown:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+"Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
 msgstr ""
-"Ignorato:Sconosciuto:::Errore::Aggiunto recentemente:Modificato:"
-"<b>Conflitto</b>:Rimosso:Mancante"
+"Ignorato:Non CVS:::Errore::Aggiunto recentemente:Modificato:<b>Conflitto</b>:"
+"Rimosso:Mancante"
 
-#: ../cvsview.py:166
+#: ../cvsview.py:169
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
 "The pattern was '%s'\n"
 "The error was '%s'"
 msgstr ""
-"Errore nel convertire in un'espressione regolare\n"
-"Il modello era «%s»\n"
-"L'errore era «%s»"
+"Errore convertendo a un'espressione regolare\n"
+"Il modello era '%s'\n"
+"L'errore era '%s'"
 
-#: ../cvsview.py:394
-msgid "_Version"
-msgstr "_Versione"
-
-#: ../cvsview.py:396 ../glade2/cvsview.glade.h:15 ../glade2/meldapp.glade.h:79
-msgid "_Diff"
-msgstr "_Diff"
-
-#: ../cvsview.py:396
-msgid "Compare versions"
-msgstr "Confronta le versioni"
-
-#: ../cvsview.py:398 ../glade2/cvsview.glade.h:18
-msgid "_Update"
-msgstr "_Aggiorna"
-
-#: ../cvsview.py:398
-msgid "Update the local copy"
-msgstr "Aggiorna la copia locale"
-
-#: ../cvsview.py:400 ../glade2/cvsview.glade.h:14
-msgid "_Commit"
-msgstr "_Commit"
-
-#: ../cvsview.py:400
-msgid "Commit changes"
-msgstr "Commit dei cambiamenti"
-
-#: ../cvsview.py:402 ../glade2/cvsview.glade.h:13
-msgid "_Add"
-msgstr "A_ggiungi"
-
-#: ../cvsview.py:402
-msgid "Add to control"
-msgstr "Aggiunge al controllo"
-
-#: ../cvsview.py:404 ../glade2/cvsview.glade.h:17
-msgid "_Remove"
-msgstr "_Rimuovi"
-
-#: ../cvsview.py:404
-msgid "Remove from control"
-msgstr "Rimuove dal controllo"
-
-#: ../cvsview.py:406
-msgid "_Delete"
-msgstr "Eli_mina"
-
-#: ../cvsview.py:406
-msgid "Remove locally"
-msgstr "Elimina localmente"
-
-#: ../cvsview.py:408
-msgid "_View"
-msgstr "_Visualizza"
-
-#: ../cvsview.py:410
-msgid "_Up"
-msgstr "_Su"
-
-#: ../cvsview.py:410
-msgid "Previous change"
-msgstr "Cambiamento precedente"
-
-#: ../cvsview.py:412
-msgid "_Down"
-msgstr "_Giu"
-
-#: ../cvsview.py:412
-msgid "Next change"
-msgstr "Prossimo cambiamento"
-
-#: ../cvsview.py:414
-msgid "_Flatten"
-msgstr "_Appiattisci"
-
-#: ../cvsview.py:414
-msgid "Flatten tree"
-msgstr "Directory appiattita"
-
-#: ../cvsview.py:416
-msgid "_Modified"
-msgstr "_Modificati"
-
-#: ../cvsview.py:416
-msgid "View modified files"
-msgstr "Visualizza i file modificati"
-
-#: ../cvsview.py:418
-msgid "_Normal"
-msgstr "_Normale"
-
-#: ../cvsview.py:418
-msgid "View normal files"
-msgstr "Visualizza i file normali"
-
-#: ../cvsview.py:420
-msgid "Un_known"
-msgstr "_Sconosciuto"
-
-#: ../cvsview.py:420
-msgid "View non version controlled files"
-msgstr "Visualizza i file senza controllo di versione"
-
-#: ../cvsview.py:422
-msgid "_Ignored"
-msgstr "_Ignorato"
-
-#: ../cvsview.py:422
-msgid "View ignored items"
-msgstr "Visualizza gli elementi ignorati"
-
-#: ../cvsview.py:424
-msgid "_Console"
-msgstr "_Console"
-
-#: ../cvsview.py:424
-msgid "View command line output"
-msgstr "Visualizza l'output della riga di comando"
-
-#: ../cvsview.py:439 ../svnview.py:289
+#: ../cvsview.py:353 ../svnview.py:292
 msgid "Name"
 msgstr "Nome"
 
-#: ../cvsview.py:456 ../svnview.py:306
+#: ../cvsview.py:370 ../svnview.py:309
 msgid "Location"
 msgstr "Posizione"
 
-#: ../cvsview.py:457 ../svnview.py:307
+#: ../cvsview.py:371 ../svnview.py:310
 msgid "Status"
 msgstr "Stato"
 
-#: ../cvsview.py:458 ../svnview.py:308
+#: ../cvsview.py:372 ../svnview.py:311
 msgid "Rev"
 msgstr "Rev"
 
-#: ../cvsview.py:459 ../svnview.py:309 ../glade2/cvsview.glade.h:12
+#: ../cvsview.py:373 ../svnview.py:312 ../glade2/cvsview.glade.h:21
 msgid "Tag"
 msgstr "Tag"
 
-#: ../cvsview.py:460 ../svnview.py:310
+#: ../cvsview.py:374 ../svnview.py:313
 msgid "Options"
 msgstr "Opzioni"
 
-#: ../cvsview.py:497 ../dirdiff.py:356 ../svnview.py:347
+#: ../cvsview.py:411 ../dirdiff.py:364 ../svnview.py:350
 #, python-format
 msgid "[%s] Scanning"
 msgstr "[%s] Scansione"
 
-#: ../cvsview.py:524 ../dirdiff.py:365 ../svnview.py:374
+#: ../cvsview.py:438 ../dirdiff.py:373 ../svnview.py:377
 #, python-format
 msgid "[%s] Scanning %s"
-msgstr "[%s] Scansione di %s"
+msgstr "[%s] Scansione %s"
 
-#: ../cvsview.py:540 ../svnview.py:390
+#: ../cvsview.py:454 ../svnview.py:393
 msgid "(Empty)"
 msgstr "(Vuoto)"
 
-#: ../cvsview.py:572 ../svnview.py:426
+#: ../cvsview.py:490 ../svnview.py:429
 #, python-format
 msgid "[%s] Fetching differences"
-msgstr "[%s] Prelievo differenze"
+msgstr "[%s] Applicazione differenze"
 
-#: ../cvsview.py:579 ../svnview.py:434
+#: ../cvsview.py:497 ../svnview.py:437
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Applicazione patch"
 
-#: ../cvsview.py:583 ../svnview.py:438
+#: ../cvsview.py:501 ../svnview.py:441
 msgid "No differences found."
 msgstr "Nessuna differenza trovata."
 
-#: ../cvsview.py:659 ../svnview.py:512
+#: ../cvsview.py:575 ../svnview.py:515
 msgid "Select some files first."
-msgstr "Selezionare prima alcuni file."
+msgstr "Seleziona prima un file."
 
-#: ../cvsview.py:693 ../dirdiff.py:540 ../svnview.py:533
+#: ../cvsview.py:596 ../dirdiff.py:552 ../svnview.py:536
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
 "Remove recusively?"
 msgstr ""
-"«%s» è una directory.\n"
+"'%s' è una directory.\n"
 "Eliminare ricorsivamente?"
 
-#: ../cvsview.py:698 ../dirdiff.py:547 ../svnview.py:538
+#: ../cvsview.py:601 ../dirdiff.py:559 ../svnview.py:541
 #, python-format
 msgid ""
 "Error removing %s\n"
 "\n"
 "%s."
 msgstr ""
-"Errore nel rimuovere di %s\n"
+"Errore rimuovendo %s\n"
 "\n"
 "%s."
 
-#: ../dirdiff.py:251 ../dirdiff.py:266
+#: ../dirdiff.py:253 ../dirdiff.py:268
 #, python-format
 msgid "Error converting pattern '%s' to regular expression"
-msgstr "Errore nel convertire il modello «%s» in un'espressione regolare"
+msgstr "Errore convertendo il modello '%s' in un'espressione regolare"
 
-#: ../dirdiff.py:276
+#: ../dirdiff.py:284
 #, python-format
 msgid "Hide %s"
 msgstr "Nascondi %s"
 
-#: ../dirdiff.py:398
+#: ../dirdiff.py:406
 #, python-format
 msgid "'%s' hidden by '%s'"
-msgstr "«%s» nascosto da «%s»"
+msgstr "'%s' nascosto da '%s'"
 
-#: ../dirdiff.py:404
+#: ../dirdiff.py:412
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. Some files are not visible:\n"
 "%s"
 msgstr ""
-"Si sta eseguendo un confronto con distinzione tra maiuscole e minuscole su "
-"un file system che non le distingue. Alcuni file non sono visibili:\n"
+"Stai eseguendo un confronto non sensibile alle maiuscole in un file system "
+"sensibile alle maiuscole. Alcuni file non sono visibili:\n"
 "%s"
 
-#: ../dirdiff.py:470
+#: ../dirdiff.py:481
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Fatto"
 
-#: ../dirdiff.py:515
+#: ../dirdiff.py:527
 #, python-format
 msgid ""
 "'%s' exists.\n"
 "Overwrite?"
 msgstr ""
-"«%s» esiste.\n"
-"Sovrascrivere?"
+"'%s' esiste.\n"
+"Sovrascrivo?"
 
-#: ../dirdiff.py:522
+#: ../dirdiff.py:534
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
 "\n"
 "%s."
 msgstr ""
-"Errore nel copiare «%s» in «%s»\n"
+"Errore durante la copia di '%s' in '%s'\n"
 "\n"
 "%s."
 
-#. singular,plural
-#: ../dirdiff.py:558
-msgid ""
-"second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:"
-"year,years"
-msgstr ""
-"secondo,secondi:minuto,minuti:ora,ore:giorno,giorni:settimana,settimane:mese,"
-"mesi:anno,anni"
+#: ../dirdiff.py:570
+#, python-format
+msgid "%i second"
+msgid_plural "%i seconds"
+msgstr[0] "%i secondo"
+msgstr[1] "%i secondi"
 
-#: ../filediff.py:107 ../meldapp.py:75
-msgid "_File"
-msgstr "_File"
+#: ../dirdiff.py:571
+#, python-format
+msgid "%i minute"
+msgid_plural "%i minutes"
+msgstr[0] "%i minuto"
+msgstr[1] "%i minuti"
 
-#: ../filediff.py:109
-msgid "_Save"
-msgstr "_Salva"
+#: ../dirdiff.py:572
+#, python-format
+msgid "%i hour"
+msgid_plural "%i hours"
+msgstr[0] "%i ora"
+msgstr[1] "%i ore"
 
-#: ../filediff.py:109 ../filediff.py:111
-msgid "Save the current file"
-msgstr "Salva il file corrente"
+#: ../dirdiff.py:573
+#, python-format
+msgid "%i day"
+msgid_plural "%i days"
+msgstr[0] "%i giorno"
+msgstr[1] "%i giorni"
 
-#: ../filediff.py:111
-msgid "_Save As..."
-msgstr "Sa_lva come..."
+#: ../dirdiff.py:574
+#, python-format
+msgid "%i week"
+msgid_plural "%i weeks"
+msgstr[0] "%i settimana"
+msgstr[1] "%i settimane"
 
-#: ../filediff.py:113
-msgid "_Save All"
-msgstr "Salva _tutti"
+#: ../dirdiff.py:575
+#, python-format
+msgid "%i month"
+msgid_plural "%i months"
+msgstr[0] "%i mese"
+msgstr[1] "%i mesi"
 
-#: ../filediff.py:113
-msgid "Save all files"
-msgstr "Salva tutti i file"
+#: ../dirdiff.py:576
+#, python-format
+msgid "%i year"
+msgid_plural "%i years"
+msgstr[0] "%i anno"
+msgstr[1] "%i anni"
 
-#: ../filediff.py:115
-msgid "_Print..."
-msgstr "Stam_pa..."
-
-#: ../filediff.py:115
-msgid "Print this comparison"
-msgstr "Stampa questo confronto"
-
-#: ../filediff.py:117
-msgid "_Close"
-msgstr "_Chiudi"
-
-#: ../filediff.py:117
-msgid "Close this tab"
-msgstr "Chiude questa scheda"
-
-#: ../filediff.py:118 ../glade2/cvsview.glade.h:16
-msgid "_Edit"
-msgstr "_Modifica"
-
-#: ../filediff.py:120
-msgid "_Undo"
-msgstr "_Annulla"
-
-#: ../filediff.py:120
-msgid "Undo last change"
-msgstr "Annulla l'ultimo cambiamento"
-
-#: ../filediff.py:122
-msgid "_Redo"
-msgstr "_Ripeti"
-
-#: ../filediff.py:122
-msgid "Redo last change"
-msgstr "Ripete l'ultimo cambiamento"
-
-#: ../filediff.py:124
-msgid "_Find"
-msgstr "Tr_ova"
-
-#: ../filediff.py:124
-msgid "Search the document"
-msgstr "Cerca nel documento"
-
-#: ../filediff.py:126
-msgid "_Find Next"
-msgstr "Trova successi_vo"
-
-#: ../filediff.py:126
-msgid "Repeat the last find"
-msgstr "Ripete l'ultima ricerca"
-
-#: ../filediff.py:128 ../glade2/filediff.glade.h:14
-msgid "_Replace"
-msgstr "Sostit_uisci"
-
-#: ../filediff.py:128
-msgid "Find and replace text"
-msgstr "Trova e sostituisce il testo"
-
-#: ../filediff.py:130
-msgid "Cu_t"
-msgstr "_Taglia"
-
-#: ../filediff.py:130 ../filediff.py:132
-msgid "Copy selected text"
-msgstr "Copia il testo selezionato"
-
-#: ../filediff.py:132
-msgid "_Copy"
-msgstr "_Copia"
-
-#: ../filediff.py:134
-msgid "_Paste"
-msgstr "_Incolla"
-
-#: ../filediff.py:134
-msgid "Paste selected text"
-msgstr "Incolla il testo selezionato"
-
-#: ../filediff.py:135 ../glade2/dirdiff.glade.h:8
-msgid "Diff"
-msgstr "Diff"
-
-#: ../filediff.py:137
-msgid "_Next"
-msgstr "S_uccessivo"
-
-#: ../filediff.py:137
-msgid "Next difference"
-msgstr "Differenza successiva"
-
-#: ../filediff.py:139
-msgid "Pr_ev"
-msgstr "Pr_ecedente"
-
-#: ../filediff.py:139
-msgid "Previous difference"
-msgstr "Differenza precedente"
-
-#: ../filediff.py:141
-msgid "Copy contents left"
-msgstr "Copia i contenuti a sinistra"
-
-#: ../filediff.py:143
-msgid "Copy contents right"
-msgstr "Copia i contenuti a destra"
-
-#: ../filediff.py:267
+#. Abbreviation for insert,overwrite so that it will fit in the status bar
+#: ../filediff.py:224
 msgid "INS,OVR"
 msgstr "INS,SSC"
 
-#. insert/overwrite
-#: ../filediff.py:268
+#. Abbreviation for line, column so that it will fit in the status bar
+#: ../filediff.py:226
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Rg %i, Col %i"
 
-#: ../filediff.py:516
+#: ../filediff.py:284
+#, python-format
+msgid ""
+"Regular expression '%s' changed the number of lines in the file. Comparison "
+"will be incorrect. See the user manual for more details."
+msgstr ""
+"L'espressione regolare '%s' ha cambiato il numero di righe nel file. Il "
+"confronto non sarà corretto. Vedere il manuale utente per maggiori dettagli."
+
+#: ../filediff.py:529
 #, python-format
 msgid ""
 "Regular expression error\n"
 "'%s'"
 msgstr ""
 "Errore nell'espressione regolare\n"
-"«%s»"
+"'%s'"
 
-#: ../filediff.py:531
+#: ../filediff.py:541
 #, python-format
 msgid "The regular expression '%s' was not found."
-msgstr ""
-"Non è stata trovata nessuna occorrenza per l'espressione regolare «%s»."
+msgstr "L'espressione regolare '%s' non è stata trovata."
 
-#: ../filediff.py:533
+#: ../filediff.py:543
 #, python-format
 msgid "The text '%s' was not found."
-msgstr "Il testo «%s» non è stato trovato."
+msgstr "Il testo '%s' non è stato trovato."
 
-#: ../filediff.py:574
+#: ../filediff.py:582
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Impostazione del numero dei pannelli"
 
-#: ../filediff.py:581
+#: ../filediff.py:589
 #, python-format
 msgid "[%s] Opening files"
-msgstr "[%s] Apertura dei file"
+msgstr "[%s] File aperti"
 
-#: ../filediff.py:597
+#: ../filediff.py:606 ../filediff.py:620 ../filediff.py:636 ../filediff.py:643
 #, python-format
-msgid ""
-"Could not open '%s' for reading.\n"
-"\n"
-"The error was:\n"
-"%s"
-msgstr ""
-"Impossibile aprire «%s» per la lettura.\n"
-"\n"
-"L'errore era:\n"
-"%s"
+msgid "Could not read from '%s'"
+msgstr "Impossibile leggere da '%s'"
 
-#: ../filediff.py:601
+#: ../filediff.py:607 ../filediff.py:644
+msgid "The error was:"
+msgstr "L'errore è stato:"
+
+#: ../filediff.py:612
 #, python-format
 msgid "[%s] Reading files"
-msgstr "[%s] Lettura file"
-
-#: ../filediff.py:616
-#, python-format
-msgid ""
-"Could not read from '%s'.\n"
-"\n"
-"I tried encodings %s."
-msgstr ""
-"Impossibile leggere da «%s».\n"
-"\n"
-"Sono state provate le codifiche %s."
+msgstr "[%s] Lettura dei file"
 
 #: ../filediff.py:621
-#, python-format
+#, fuzzy
 msgid ""
-"Could not read from '%s'.\n"
-"\n"
-"The error was:\n"
-"%s"
+"It contains ascii nulls.\n"
+"Perhaps it is a binary file."
 msgstr ""
-"Impossibile leggere da «%s».\n"
-"\n"
-"L'errore era:\n"
-"%s"
+"Contiene ascii nulli.\n"
+"Forse è un file binario."
 
-#: ../filediff.py:641
+#: ../filediff.py:637
+#, python-format
+msgid "I tried encodings %s."
+msgstr "Tentativo di codifica %s."
+
+#: ../filediff.py:665
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Calcolo delle differenze"
 
-#: ../filediff.py:733
-#, python-format
-msgid "Choose a name for buffer %i."
-msgstr "Scegliere un nome per il buffer %i."
-
-#: ../filediff.py:744
+#: ../filediff.py:754
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
 "Overwrite?"
 msgstr ""
-"«%s» esiste!\n"
-"Sovrascrivere?"
+"\"%s\" esiste!\n"
+"Sovrascrivo?"
 
-#: ../filediff.py:758
-#, python-format
-msgid ""
-"This file '%s' contains a mixture of line endings.\n"
-"\n"
-"Which format would you like to use?"
-msgstr ""
-"Il file «%s» contiene vari tipi di fine riga.\n"
-"\n"
-"Che formato si vuole utilizzare?"
-
-#: ../filediff.py:775
+#: ../filediff.py:766
 #, python-format
 msgid ""
 "Error writing to %s\n"
 "\n"
 "%s."
 msgstr ""
-"Errore nello scrivere su %s\n"
+"Errore durante la scrittura di %s\n"
 "\n"
 "%s."
 
-#: ../filediff.py:814
+#: ../filediff.py:775
+#, python-format
+msgid "Choose a name for buffer %i."
+msgstr "Scegliere un nome per il buffer %i."
+
+#: ../filediff.py:788
+#, python-format
+msgid ""
+"This file '%s' contains a mixture of line endings.\n"
+"\n"
+"Which format would you like to use?"
+msgstr ""
+"Questo file '%s' contiene una mistura di finali di linea.\n"
+"\n"
+"Che formato vuoi utilizzare?"
+
+#: ../filediff.py:804
+#, python-format
+msgid ""
+"'%s' contains characters not encodable with '%s'\n"
+"Would you like to save as UTF-8?"
+msgstr ""
+"'%s' contiene caratteri non codificabili con '%s'\n"
+"Si vuole salvare in UTF-8?"
+
+#. save as
+#: ../filediff.py:839
+msgid "Save patch as..."
+msgstr "Salva patch come..."
+
+#: ../filediff.py:893
 #, python-format
 msgid ""
 "Refreshing will discard changes in:\n"
@@ -564,144 +363,41 @@ msgstr ""
 "L'aggiornamento scarterà i cambiamenti in:\n"
 "%s\n"
 "\n"
-"Non sarà possibile annullare questa operazione."
+"Non puoi annullare questa operazione."
 
-#: ../filediff.py:1251
-#, python-format
-msgid "Print... %s"
-msgstr "Stampa... %s"
+#: ../meld:57 ../meld:67 ../meld:77
+#, c-format
+msgid "Meld requires %s or higher."
+msgstr "Meld richiede %s o più recente."
 
-#: ../filediff.py:1255
-msgid "_Current"
-msgstr "_Corrente"
-
-#: ../filediff.py:1255
-msgid "_Range"
-msgstr "_Intervallo"
-
-#: ../filediff.py:1275
-msgid "Print Preview"
-msgstr "Anteprima di stampa"
-
-#: ../filediff.py:1334 ../findreplace.py:106
-#, python-format
-msgid "%s"
-msgstr "%s"
-
-#: ../glade.py:247
-msgid "_Browse..."
-msgstr "_Sfoglia..."
-
-#: ../glade.py:360
-#, python-format
+#: ../meld:78
 msgid ""
-"Could not open '%s'.\n"
-"%s"
+"Due to incompatible API changes some functions may not operate as expected."
 msgstr ""
-"Impossibile aprire «%s».\n"
-"%s"
+"A causa di cambiamenti incompatibili alle API alcune funzioni potrebbero non "
+"funzionare come ci si aspetta."
 
-#: ../meld:49
-#, c-format
-msgid "Meld requires python%s or higher."
-msgstr "Meld richiede python%s o più recente."
+#: ../meldapp.py:294
+msgid "Line numbers are only available if you have pysourceview installed."
+msgstr "I numeri di riga sono disponibili solo se hai pysourceview installato."
 
-#: ../meld:59
-msgid "Meld requires a recent version of pygtk."
-msgstr "Meld richiede una versione più recente di pygtk."
+#: ../meldapp.py:298
+msgid ""
+"Syntax highlighting is only available if you have pysourceview installed."
+msgstr ""
+"L'evidenziazione della sinstassi è disponibile solamente se si ha installato "
+"pysourceview."
 
-#: ../meld:60
-#, c-format
-msgid "pygtk-%s or higher is recommended."
-msgstr "È consigliato pygtk-%s o una versione più recente."
-
-#: ../meld:70
-#, c-format
-msgid "Meld requires pygtk-%s or higher. (found %s)"
-msgstr "Meld richiede pygtk-%s o più recente. (trovato %s)"
-
-#: ../meldapp.py:77
-msgid "_New..."
-msgstr "_Nuovo..."
-
-#: ../meldapp.py:77
-msgid "Open a new tab"
-msgstr "Apre una nuova scheda"
-
-#: ../meldapp.py:79
-msgid "_Quit"
-msgstr "_Esci"
-
-#: ../meldapp.py:79
-msgid "Quit the application"
-msgstr "Esce dal programma"
-
-#: ../meldapp.py:81
-msgid "_Settings"
-msgstr "_Impostazioni"
-
-#: ../meldapp.py:83
-msgid "_Preferences"
-msgstr "Preferen_ze"
-
-#: ../meldapp.py:83
-msgid "Configure preferences"
-msgstr "Modifica le preferenze"
-
-#: ../meldapp.py:85
-msgid "_Help"
-msgstr "A_iuto"
-
-#: ../meldapp.py:87
-msgid "_Contents"
-msgstr "_Sommario"
-
-#: ../meldapp.py:87
-msgid "Users manual"
-msgstr "Mostra la documentazione di questa applicazione"
-
-#: ../meldapp.py:89
-msgid "_Report Bug"
-msgstr "Segnala _errore"
-
-#: ../meldapp.py:89
-msgid "Report a bug"
-msgstr "Segnala un errore"
-
-#: ../meldapp.py:91
-msgid "_About"
-msgstr "I_nformazioni"
-
-#: ../meldapp.py:91
-msgid "About the application"
-msgstr "Informazioni su questa applicazione"
-
-#: ../meldapp.py:303
+#: ../meldapp.py:745
 msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "Non è possibile confrontare un misto di file e directory.\n"
-
-#: ../meldapp.py:306
-msgid "folder"
-msgstr "cartella"
-
-#: ../meldapp.py:307
-msgid "file"
-msgstr "file"
-
-#: ../meldapp.py:308
-msgid "nonexistant"
-msgstr "inesistente"
-
-#: ../meldapp.py:335
-msgid "Run meld --help for help"
-msgstr "Esegui meld --help per l'aiuto"
+msgstr "Non è possibile confrontare sia file che directory.\n"
 
 #. ###############################################################################
 #.
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:394
+#: ../meldapp.py:798
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -717,25 +413,25 @@ msgid ""
 "\n"
 "For more information choose help -> contents.\n"
 "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Discuss meld at http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+"Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
 msgstr ""
 "Meld è uno strumento di confronto di file e directory. Uso:\n"
 "\n"
 "    meld                        Parte senza nessuna finestra aperta\n"
-"    meld <dir>                  Parte con il browser CVS in «dir»\n"
-"    meld <file>                 Parte con il diff CVS di «file»\n"
-"    meld <file> <file> [file]   Parte con un confronto fra 2 o 3 file\n"
-"    meld <dir>  <dir>  [dir]    Parte con un confronto fra 2 o 3 directory\n"
+"    meld <dir>                  Parte con il browser CVS in 'dir'\n"
+"    meld <file>                 Parte con il diff CVS di 'file'\n"
+"    meld <file> <file> [file]   Parte con un confronto tra 2 o 3 file\n"
+"    meld <dir>  <dir>  [dir]    Parte con un confronto tra 2 o 3 directory\n"
 "\n"
 "Opzioni:\n"
 "    -h, --help                  Mostra questo testo di aiuto ed esce\n"
 "    -v, --version               Visualizza la versione ed esce\n"
 "\n"
-"Per altre informazioni scegliere il menu aiuto -> sommario.\n"
+"Per maggiori informazioni scegliere il menu aiuto -> sommario.\n"
 "Segnalare gli errori a http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Discussioni su meld a http://mail.gnome.org/mailman/listinfo/gnome-devtools\n"
+"Discussioni su meld a http://mail.gnome.org/mailman/listinfo/meld-list\n"
 
-#: ../meldapp.py:411
+#: ../meldapp.py:815
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -744,101 +440,147 @@ msgstr ""
 "Meld %s\n"
 "Scritto da Stephen Kennedy <stevek@gnome.org>"
 
-#: ../meldapp.py:432
-msgid "Usage: meld [options] [arguments]"
-msgstr "Uso: meld [opzioni] [argomenti]"
-
-#: ../meldapp.py:433
-msgid "Use label instead of filename. This option may be used several times."
-msgstr ""
-"Usa l'etichetta al posto del nome del file. Questa opzione può essere usata "
-"più volte."
-
-#: ../meldapp.py:434
-msgid "Use an existing instance"
-msgstr "Usa un'istanza esistente"
-
-#: ../meldapp.py:435
-msgid "Ignored for compatibility"
-msgstr "Ignorato per compatibilità"
-
-#: ../meldapp.py:476
+#: ../meldapp.py:871
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Numero di argomenti errato (%i)"
 
-#: ../melddoc.py:42
+#: ../melddoc.py:45
 msgid "untitled"
 msgstr "senza titolo"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:95
+#: ../misc.py:120
 msgid "[None]"
 msgstr "[Nessuno]"
 
-#: ../prefsui.py:215
-msgid "Line numbers are only available if you have pygtksourceview installed."
-msgstr ""
-"I numeri di riga sono disponibili solo se pygtksourceview è installato."
-
-#: ../prefsui.py:219
-msgid ""
-"Syntax highlighting is only available if you have pygtksourceview installed."
-msgstr ""
-"L'evidenziazione della sintassi è disponibile solo se pygtksourceview è "
-"installato."
-
-#: ../svnview.py:40
+#: ../svnview.py:42
+#, fuzzy
 msgid ""
 "Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
 msgstr ""
 "Ignorato:Non SVN:::Errore::Aggiunto recentemente:Modificato:<b>Conflitto</b>:"
 "Rimosso:Mancante"
 
-#: ../glade2/cvsview.glade.h:1 ../glade2/dirdiff.glade.h:1
-#: ../glade2/meldapp.glade.h:3
-msgid "*"
-msgstr "*"
+#: ../glade2/cvsview.glade.h:1
+msgid "Add _Binary"
+msgstr "Aggiungi _binario"
 
 #: ../glade2/cvsview.glade.h:2
-msgid "..."
-msgstr "..."
+msgid "Add to CVS"
+msgstr "Aggiungi al CVS"
 
 #: ../glade2/cvsview.glade.h:3
 msgid "CVS Log"
 msgstr "Log del CVS"
 
 #: ../glade2/cvsview.glade.h:4
-msgid "Commit Files"
-msgstr "Commit del file"
+msgid "Commit"
+msgstr "Commit"
 
 #: ../glade2/cvsview.glade.h:5
+msgid "Commit Files"
+msgstr "Commit file"
+
+#: ../glade2/cvsview.glade.h:6
 msgid "Date"
 msgstr "Data"
 
-#: ../glade2/cvsview.glade.h:6
+#: ../glade2/cvsview.glade.h:7
+msgid "Delete locally"
+msgstr "Elimina localmente"
+
+#: ../glade2/cvsview.glade.h:8
 msgid "Diff Options"
 msgstr "Opzioni per Diff"
 
-#: ../glade2/cvsview.glade.h:7
+#: ../glade2/cvsview.glade.h:9
+msgid "Diff selected"
+msgstr "Esegui Diff sulla selezione"
+
+#: ../glade2/cvsview.glade.h:10
+msgid "Flatten directories"
+msgstr "Flatten directories"
+
+#: ../glade2/cvsview.glade.h:11
+msgid "Ignored"
+msgstr "Ignorato"
+
+#: ../glade2/cvsview.glade.h:12
 msgid "Local copy against other remote revision"
 msgstr "Copia locale contro un'altra revisione in remoto"
 
-#: ../glade2/cvsview.glade.h:8
+#: ../glade2/cvsview.glade.h:13
 msgid "Local copy against same remote revision"
 msgstr "Copia locale contro la stessa revisione in remoto"
 
-#: ../glade2/cvsview.glade.h:9
+#: ../glade2/cvsview.glade.h:14
 msgid "Log Message"
 msgstr "Messaggio di log"
 
-#: ../glade2/cvsview.glade.h:10
-msgid "Previous Logs"
-msgstr "Log precedenti"
+#: ../glade2/cvsview.glade.h:15
+msgid "Non _CVS"
+msgstr "Non _CVS"
 
-#: ../glade2/cvsview.glade.h:11
+#: ../glade2/cvsview.glade.h:16
+msgid "Previous Logs"
+msgstr "Log Precedenti"
+
+#: ../glade2/cvsview.glade.h:17
 msgid "Remove _Locally"
 msgstr "Elimina _localmente"
+
+#: ../glade2/cvsview.glade.h:18
+msgid "Remove from CVS"
+msgstr "Elimina dal CVS"
+
+#: ../glade2/cvsview.glade.h:19 ../glade2/dirdiff.glade.h:20
+msgid "Show modified"
+msgstr "Visualizza modificati"
+
+#: ../glade2/cvsview.glade.h:20
+msgid "Show non-CVS"
+msgstr "Visualizza non-CVS"
+
+#: ../glade2/cvsview.glade.h:22
+msgid "Update"
+msgstr "Aggiorna"
+
+#: ../glade2/cvsview.glade.h:23
+msgid "_Add"
+msgstr "_Aggiungi"
+
+#: ../glade2/cvsview.glade.h:24
+msgid "_Commit"
+msgstr "_Commit"
+
+#: ../glade2/cvsview.glade.h:25 ../glade2/meldapp.glade.h:88
+msgid "_Diff"
+msgstr "_Diff"
+
+#: ../glade2/cvsview.glade.h:26
+msgid "_Edit"
+msgstr "_Modifica"
+
+#: ../glade2/cvsview.glade.h:27
+msgid "_Flatten"
+msgstr "_Flatten"
+
+#: ../glade2/cvsview.glade.h:28
+msgid "_Modified"
+msgstr "_Modificati"
+
+#: ../glade2/cvsview.glade.h:29
+msgid "_Normal"
+msgstr "_Normale"
+
+#: ../glade2/cvsview.glade.h:30
+msgid "_Remove"
+msgstr "_Elimina"
+
+#: ../glade2/cvsview.glade.h:31
+msgid "_Update"
+msgstr "_Aggiorna"
 
 #: ../glade2/filediff.glade.h:1
 msgid ""
@@ -846,7 +588,7 @@ msgid ""
 "Which ones would you like to save?</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Alcuni file sono stati modificati.\n"
-"Quali si vuole salvare?</span>"
+"Quali vuoi salvare?</span>"
 
 #: ../glade2/filediff.glade.h:3
 msgid "Copy All _Left"
@@ -856,515 +598,545 @@ msgstr "Copia tutto a _sinistra"
 msgid "Copy All _Right"
 msgstr "Copia tutto a _destra"
 
-#: ../glade2/filediff.glade.h:5 ../glade2/dirdiff.glade.h:10
+#: ../glade2/filediff.glade.h:5
+msgid "Copy to Clipboard"
+msgstr "Copia negli appunti"
+
+#: ../glade2/filediff.glade.h:6
+msgid "Create Patch"
+msgstr "Crea patch"
+
+#: ../glade2/filediff.glade.h:7 ../glade2/dirdiff.glade.h:9
 msgid "Edit"
 msgstr "Modifica"
 
-#: ../glade2/filediff.glade.h:6
+#: ../glade2/filediff.glade.h:8
 msgid "Find"
 msgstr "Trova"
 
-#: ../glade2/filediff.glade.h:7
+#: ../glade2/filediff.glade.h:9
+#, fuzzy
+msgid "Make Patch"
+msgstr "Esegui Patch"
+
+#: ../glade2/filediff.glade.h:10
 msgid "Match _entire word only"
 msgstr "Solo parole int_ere"
 
-#: ../glade2/filediff.glade.h:8
+#: ../glade2/filediff.glade.h:11
 msgid "Regular e_xpression"
 msgstr "E_spressione regolare"
-
-#: ../glade2/filediff.glade.h:9
-msgid "Replace _All"
-msgstr "Sostituisci _tutti"
-
-#: ../glade2/filediff.glade.h:10
-msgid "Replace _with:"
-msgstr "Sostituisci _con:"
-
-#: ../glade2/filediff.glade.h:11
-msgid "Save _As..."
-msgstr "Sa_lva come..."
 
 #: ../glade2/filediff.glade.h:12
 msgid "Save modified files?"
 msgstr "Salvare i file modificati?"
 
 #: ../glade2/filediff.glade.h:13
+msgid "Search for:"
+msgstr "Trova:"
+
+#: ../glade2/filediff.glade.h:14
 msgid "_Match case"
-msgstr "_Maiuscole/Minuscole"
+msgstr "_Maiuscole/minuscole"
 
 #: ../glade2/filediff.glade.h:15
-msgid "_Replace..."
-msgstr "_Sostituisci..."
-
-#: ../glade2/filediff.glade.h:16
-msgid "_Search for:"
-msgstr "_Cerca:"
-
-#: ../glade2/filediff.glade.h:17
 msgid "_Wrap around"
 msgstr "_Ricomincia dall'inizio"
 
-#: ../glade2/dirdiff.glade.h:2
+#: ../glade2/dirdiff.glade.h:1
 msgid "Case"
-msgstr "Mai/Min"
+msgstr "Case"
+
+#: ../glade2/dirdiff.glade.h:2
+msgid "Copy Left"
+msgstr "Copia da sinistra"
 
 #: ../glade2/dirdiff.glade.h:3
-msgid "Copy Left"
-msgstr "Copia a sinistra"
+msgid "Copy Right"
+msgstr "Copia da destra"
 
 #: ../glade2/dirdiff.glade.h:4
-msgid "Copy Right"
-msgstr "Copia a destra"
+msgid "Copy left"
+msgstr "Copia da sinistra"
 
 #: ../glade2/dirdiff.glade.h:5
-msgid "Copy left"
-msgstr "Copia a sinistra"
+msgid "Copy right"
+msgstr "Copia da destra"
 
 #: ../glade2/dirdiff.glade.h:6
-msgid "Copy right"
-msgstr "Copia a destra"
-
-#: ../glade2/dirdiff.glade.h:7
 msgid "Delete selected"
 msgstr "Elimina selezionati"
 
-#: ../glade2/dirdiff.glade.h:9
+#: ../glade2/dirdiff.glade.h:7
+msgid "Diff"
+msgstr "Diff"
+
+#: ../glade2/dirdiff.glade.h:8
 msgid "Diff selection"
 msgstr "Esegui Diff sulla selezione"
 
-#: ../glade2/dirdiff.glade.h:11
+#: ../glade2/dirdiff.glade.h:10
 msgid "Hide selected"
 msgstr "Nascondi selezionati"
 
-#: ../glade2/dirdiff.glade.h:12
+#: ../glade2/dirdiff.glade.h:11
 msgid "Hide..."
 msgstr "Nascondi..."
 
-#: ../glade2/dirdiff.glade.h:13
+#: ../glade2/dirdiff.glade.h:12
 msgid "Ignore case of entries"
 msgstr "Ignora maiuscole/minuscole"
 
-#: ../glade2/dirdiff.glade.h:14
+#: ../glade2/dirdiff.glade.h:13
 msgid "Launch _Comparison"
 msgstr "Esegui il _confronto"
 
-#: ../glade2/dirdiff.glade.h:15
+#: ../glade2/dirdiff.glade.h:14
 msgid "Left"
 msgstr "Sinistra"
 
-#: ../glade2/dirdiff.glade.h:16
+#: ../glade2/dirdiff.glade.h:15
 msgid "Modified"
 msgstr "Modificato"
 
-#: ../glade2/dirdiff.glade.h:17
+#: ../glade2/dirdiff.glade.h:16
 msgid "New"
 msgstr "Nuovo"
 
-#: ../glade2/dirdiff.glade.h:18
+#: ../glade2/dirdiff.glade.h:17
 msgid "Right"
 msgstr "Destra"
 
-#: ../glade2/dirdiff.glade.h:19
+#: ../glade2/dirdiff.glade.h:18
 msgid "Same"
 msgstr "Se stesso"
 
-#: ../glade2/dirdiff.glade.h:20
+#: ../glade2/dirdiff.glade.h:19
 msgid "Show identical"
 msgstr "Mostra identici"
 
 #: ../glade2/dirdiff.glade.h:21
-msgid "Show modified"
-msgstr "Visualizza modificati"
-
-#: ../glade2/dirdiff.glade.h:22
 msgid "Show new"
 msgstr "Mostra nuovi"
 
-#: ../glade2/dirdiff.glade.h:23
+#: ../glade2/dirdiff.glade.h:22
 msgid "_Delete Selected"
-msgstr "Eli_mina selezionati"
+msgstr "_Elimina selezionati"
 
 #: ../glade2/meldapp.glade.h:1
-msgid " spaces."
-msgstr " spazi."
-
-#: ../glade2/meldapp.glade.h:2
 msgid "(gnome-default-editor)"
 msgstr "(gnome-default-editor)"
 
-#: ../glade2/meldapp.glade.h:4
+#: ../glade2/meldapp.glade.h:2
 msgid "<b>Drawing Style</b>"
 msgstr "<b>Stile del disegno</b>"
 
-#: ../glade2/meldapp.glade.h:5
+#: ../glade2/meldapp.glade.h:3
 msgid "<b>Edit Menu</b>"
-msgstr "<b>Voce «modifica» nel menù a comparsa</b>"
+msgstr "<b>Menu modifica</b>"
 
-#: ../glade2/meldapp.glade.h:6
+#: ../glade2/meldapp.glade.h:4
 msgid "<b>Font</b>"
 msgstr "<b>Tipo di carattere</b>"
 
-#: ../glade2/meldapp.glade.h:7
+#: ../glade2/meldapp.glade.h:5
 msgid "<b>Global options</b>"
 msgstr "<b>Opzioni globali</b>"
 
-#: ../glade2/meldapp.glade.h:8
+#: ../glade2/meldapp.glade.h:6
 msgid "<b>Loading</b>"
 msgstr "<b>Caricamento</b>"
 
-#: ../glade2/meldapp.glade.h:9
+#: ../glade2/meldapp.glade.h:7
 msgid "<b>Misc</b>"
 msgstr "<b>Varie</b>"
 
-#: ../glade2/meldapp.glade.h:10
+#: ../glade2/meldapp.glade.h:8
 msgid "<b>Saving</b>"
 msgstr "<b>Salvataggio</b>"
 
-#: ../glade2/meldapp.glade.h:11
+#: ../glade2/meldapp.glade.h:9
 msgid "<b>Toolbar Appearance</b>"
-msgstr "<b>Aspetto della barra strumenti</b>"
+msgstr "<b>Aspetto della toolbar</b>"
 
-#: ../glade2/meldapp.glade.h:12
+#: ../glade2/meldapp.glade.h:10
 msgid "<b>Update Options</b>"
 msgstr "<b>Opzioni di aggiornamento</b>"
 
-#: ../glade2/meldapp.glade.h:13
+#: ../glade2/meldapp.glade.h:11
 msgid "<b>Whitespace</b>"
 msgstr "<b>Spazio</b>"
 
-#: ../glade2/meldapp.glade.h:14
-msgid "<span size=\"smaller\">Copyright (c) 2002-2004 Stephen Kennedy</span>"
-msgstr "<span size=\"smaller\">Copyright (c) 2002-2004 Stephen Kennedy</span>"
-
-#: ../glade2/meldapp.glade.h:15
-msgid "<span size=\"xx-large\" weight=\"bold\">Meld x.x.x</span>"
-msgstr "<span size=\"xx-large\" weight=\"bold\">Meld x.x.x</span>"
-
-#: ../glade2/meldapp.glade.h:16
+#: ../glade2/meldapp.glade.h:12
 msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 
-#: ../glade2/meldapp.glade.h:17
+#: ../glade2/meldapp.glade.h:13
 msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Diff</span>"
 
-#: ../glade2/meldapp.glade.h:18
+#: ../glade2/meldapp.glade.h:14
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Mostra</span>"
 
-#: ../glade2/meldapp.glade.h:19
+#: ../glade2/meldapp.glade.h:15
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 
-#: ../glade2/meldapp.glade.h:20
+#: ../glade2/meldapp.glade.h:16
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Codifica</span>"
 
-#: ../glade2/meldapp.glade.h:21
+#: ../glade2/meldapp.glade.h:17
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filtri sui file</span>"
 
-#: ../glade2/meldapp.glade.h:22
+#: ../glade2/meldapp.glade.h:18
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filtri sul testo</span>"
 
-#: ../glade2/meldapp.glade.h:23
-msgid "A_rch"
-msgstr "A_rch"
-
-#: ../glade2/meldapp.glade.h:24
+#: ../glade2/meldapp.glade.h:19
 msgid "Automatically supply missing newline at end of file."
-msgstr "Aggiungere automaticamente una nuova riga alla fine del file."
+msgstr "Aggiungi automaticamente una nuova riga alla fine del file."
 
-#: ../glade2/meldapp.glade.h:25
+#: ../glade2/meldapp.glade.h:20
 msgid "CVS"
 msgstr "CVS"
 
-#: ../glade2/meldapp.glade.h:26
+#: ../glade2/meldapp.glade.h:21
+msgid "CVS Directory"
+msgstr "Directory CVS"
+
+#: ../glade2/meldapp.glade.h:22
 msgid "CVS binary"
 msgstr "Eseguibile CVS"
 
-#: ../glade2/meldapp.glade.h:27
-msgid "C_redits"
-msgstr "C_rediti"
+#: ../glade2/meldapp.glade.h:23
+msgid "CVS view"
+msgstr "Vista CVS"
 
-#: ../glade2/meldapp.glade.h:28
+#: ../glade2/meldapp.glade.h:24
+msgid "C_VS Browser"
+msgstr "Browser C_VS"
+
+#: ../glade2/meldapp.glade.h:25
 msgid "Choose Files"
 msgstr "Scegli i file"
 
-#: ../glade2/meldapp.glade.h:29
+#: ../glade2/meldapp.glade.h:26
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
 msgstr ""
-"Scegliere come deve apparire la barra centrale del visualizzatore diff. È "
-"meglio scegliere il modo semplice se lo scrolling è lento."
+"Scegli come deve apparire la barra centrale del visualizzatore diff. "
+"Dovresti scegliere il modo semplice se lo scrolling è lento."
+
+#: ../glade2/meldapp.glade.h:27
+msgid "Copyright (C) 2002 Stephen Kennedy"
+msgstr "Copyright (C) 2002 Stephen Kennedy"
+
+#: ../glade2/meldapp.glade.h:28
+msgid "Create missing directories (-d)"
+msgstr "Crea directory mancanti (-d)"
+
+#: ../glade2/meldapp.glade.h:29
+msgid "Curved : Filled Curves"
+msgstr "Curvato : curve riempite"
 
 #: ../glade2/meldapp.glade.h:30
-msgid "Create missing directories (-d)"
-msgstr "Creare directory mancanti (-d)"
-
-#: ../glade2/meldapp.glade.h:31
-msgid "Curved : Filled Curves"
-msgstr "Curvato : curve piene"
-
-#: ../glade2/meldapp.glade.h:32
 msgid "Custom command"
 msgstr "Comando personalizzato"
 
-#: ../glade2/meldapp.glade.h:33
-msgid "Directory"
-msgstr "Directory"
-
-#: ../glade2/meldapp.glade.h:34
+#: ../glade2/meldapp.glade.h:31
 msgid "Display"
 msgstr "Mostra"
 
-#: ../glade2/meldapp.glade.h:35
+#: ../glade2/meldapp.glade.h:32
 msgid "Edit menu popup invokes"
-msgstr "La voce «modifica» nel menù a comparsa esegue"
+msgstr "Il menu popup modifica esegue"
 
-#: ../glade2/meldapp.glade.h:36
+#: ../glade2/meldapp.glade.h:33
 msgid "Editor"
 msgstr "Editor"
 
-#: ../glade2/meldapp.glade.h:37
+#: ../glade2/meldapp.glade.h:34
 msgid "Encoding"
 msgstr "Codifica"
 
-#: ../glade2/meldapp.glade.h:38
+#: ../glade2/meldapp.glade.h:35
 msgid "File Filters"
-msgstr "Filtri sui file"
+msgstr "Filtri sul file"
 
-#: ../glade2/meldapp.glade.h:39
+#: ../glade2/meldapp.glade.h:36
 msgid "Gnome Default"
-msgstr "Predefinito di GNOME"
+msgstr "Default di GNOME"
 
-#: ../glade2/meldapp.glade.h:40
+#: ../glade2/meldapp.glade.h:37
 msgid "Gnome default editor"
-msgstr "Editor di GNOME predefinito"
+msgstr "Editor GNOME di default"
 
-#: ../glade2/meldapp.glade.h:41
+#: ../glade2/meldapp.glade.h:38
 msgid "Icons Only"
 msgstr "Solo icone"
 
-#: ../glade2/meldapp.glade.h:42
+#: ../glade2/meldapp.glade.h:39
 msgid "Ignore .cvsrc (-f)"
-msgstr "Ignorare .cvsrc (-f)"
+msgstr "Ignora .cvsrc (-f)"
 
-#: ../glade2/meldapp.glade.h:43
+#: ../glade2/meldapp.glade.h:40
 msgid "Ignore changes in amount of white space"
-msgstr "Ignorare cambiamenti nel numero degli spazi"
+msgstr "Ignora cambiamenti nello spazio bianco"
 
-#: ../glade2/meldapp.glade.h:44
+#: ../glade2/meldapp.glade.h:41
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr ""
 "Ignora i cambiamenti tra maiuscole/minuscole; considera lettere maiuscole e "
 "minuscole equivalenti"
 
-#: ../glade2/meldapp.glade.h:45
+#: ../glade2/meldapp.glade.h:42
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr "Ignora cambiamenti che aggiungono o eliminano solamente righe vuote"
 
-#: ../glade2/meldapp.glade.h:46
+#: ../glade2/meldapp.glade.h:43
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Ignora cambiamenti che inseriscono e eliminano righe vuote"
 
-#: ../glade2/meldapp.glade.h:47
+#: ../glade2/meldapp.glade.h:44
 msgid "Internal editor"
 msgstr "Editor interno"
 
-#: ../glade2/meldapp.glade.h:48
+#: ../glade2/meldapp.glade.h:45
 msgid "Line Wrapping "
 msgstr "A capo automatico "
 
-#: ../glade2/meldapp.glade.h:49
+#: ../glade2/meldapp.glade.h:46
+msgid "Locate CVS binary : Meld"
+msgstr "Locate CVS binary : Meld"
+
+#: ../glade2/meldapp.glade.h:47
+msgid "Meld"
+msgstr "Meld"
+
+#: ../glade2/meldapp.glade.h:48
 msgid "Mine"
 msgstr "Mio"
 
+#: ../glade2/meldapp.glade.h:49
+msgid "My Directory"
+msgstr "Mia directory"
+
 #: ../glade2/meldapp.glade.h:50
+msgid "My File"
+msgstr "Mio file"
+
+#: ../glade2/meldapp.glade.h:51
+msgid "New..."
+msgstr "Nuovo..."
+
+#: ../glade2/meldapp.glade.h:52
 msgid "Original"
 msgstr "Originale"
 
-#: ../glade2/meldapp.glade.h:51
+#: ../glade2/meldapp.glade.h:53
+msgid "Original Directory"
+msgstr "Directory originale"
+
+#: ../glade2/meldapp.glade.h:54
+msgid "Original File"
+msgstr "File originale"
+
+#: ../glade2/meldapp.glade.h:55
 msgid "Other"
 msgstr "Altro"
 
-#: ../glade2/meldapp.glade.h:52
+#: ../glade2/meldapp.glade.h:56
+msgid "Other Directory"
+msgstr "Altra directory"
+
+#: ../glade2/meldapp.glade.h:57
+msgid "Other File"
+msgstr "Altro file"
+
+#: ../glade2/meldapp.glade.h:58
 msgid "Preferences : Meld"
 msgstr "Preferenze : Meld"
 
-#: ../glade2/meldapp.glade.h:53
+#: ../glade2/meldapp.glade.h:59
 msgid "Prune empty directories (-P)"
-msgstr "Eliminare directory vuote (-P)"
+msgstr "Elimina directory vuote (-P)"
 
-#: ../glade2/meldapp.glade.h:54
+#: ../glade2/meldapp.glade.h:60
 msgid "Quiet mode (-q)"
 msgstr "Senza output (-q)"
 
-#: ../glade2/meldapp.glade.h:55
+#: ../glade2/meldapp.glade.h:61
+msgid "Report _Bug"
+msgstr "Segnala _errore"
+
+#: ../glade2/meldapp.glade.h:62
+msgid "SVN Directory"
+msgstr "Directory SVN"
+
+#: ../glade2/meldapp.glade.h:63
+msgid "SVN view"
+msgstr "Vista SVN"
+
+#: ../glade2/meldapp.glade.h:64
 msgid "Save in UTF-8 encoding"
-msgstr "Salvare nella codifica UTF-8"
+msgstr "Salva nella codifica UTF-8"
 
-#: ../glade2/meldapp.glade.h:56
+#: ../glade2/meldapp.glade.h:65
 msgid "Save in the files original encoding"
-msgstr "Salvare i file nella codifica originale"
+msgstr "Salva i file nella codifica originale"
 
-#: ../glade2/meldapp.glade.h:57
-msgid "Select..."
-msgstr "Seleziona..."
-
-#: ../glade2/meldapp.glade.h:58
+#: ../glade2/meldapp.glade.h:66
 msgid "Show line numbers"
-msgstr "Visualizzare i numeri delle righe"
+msgstr "Visualizza i numeri delle righe"
 
-#: ../glade2/meldapp.glade.h:59
+#: ../glade2/meldapp.glade.h:67
 msgid "Simple : Lines only"
 msgstr "Semplice : solo righe"
 
-#: ../glade2/meldapp.glade.h:60
-msgid "Solid   Filled Quadilaterals"
-msgstr "Solido : quadrilateri pieni"
+#: ../glade2/meldapp.glade.h:68
+msgid "Solid : Filled Quadilaterals"
+msgstr "Solido : Quadrilateri Riempiti"
 
-#: ../glade2/meldapp.glade.h:61
-msgid "Stepen Kennedy <stevek@gnome.org>"
-msgstr "Stepen Kennedy <stevek@gnome.org>"
+#: ../glade2/meldapp.glade.h:69
+msgid "Tab width"
+msgstr "Ampiezza tabulazione"
 
-#: ../glade2/meldapp.glade.h:62
-msgid "Tabs equivalent to "
-msgstr "Le tabulazioni equivalgono a "
-
-#: ../glade2/meldapp.glade.h:63
+#: ../glade2/meldapp.glade.h:70
 msgid "Text Beside Icons"
 msgstr "Testo al lato delle icone"
 
-#: ../glade2/meldapp.glade.h:64
+#: ../glade2/meldapp.glade.h:71
 msgid "Text Filters"
 msgstr "Filtri sul testo"
 
-#: ../glade2/meldapp.glade.h:65
+#: ../glade2/meldapp.glade.h:72
 msgid "Text Only"
 msgstr "Solo testo"
 
-#: ../glade2/meldapp.glade.h:66
+#: ../glade2/meldapp.glade.h:73
 msgid "Text Under Icons"
 msgstr "Testo sotto le icone"
 
-#: ../glade2/meldapp.glade.h:67
+#: ../glade2/meldapp.glade.h:74
+msgid "Three way directory"
+msgstr "Confronto a tre directory"
+
+#: ../glade2/meldapp.glade.h:75
+msgid "Three way file"
+msgstr "Confronto a tre file"
+
+#: ../glade2/meldapp.glade.h:76
+msgid "Two way directory"
+msgstr "Confronto a due directory"
+
+#: ../glade2/meldapp.glade.h:77
+msgid "Two way file"
+msgstr "Confronto a due file"
+
+#: ../glade2/meldapp.glade.h:78
 msgid "Use Compression (-z)"
-msgstr "Usare compressione (-z)"
+msgstr "Usa Compressione (-z)"
 
-#: ../glade2/meldapp.glade.h:68
+#: ../glade2/meldapp.glade.h:79
 msgid "Use GNOME monospace font."
-msgstr "Usare il carattere a spaziatura fissa di GNOME."
+msgstr "Usa il carattere monoposto di GNOME."
 
-#: ../glade2/meldapp.glade.h:69
+#: ../glade2/meldapp.glade.h:80
 msgid "Use custom font."
-msgstr "Usare carattere personalizzato."
+msgstr "Usa carattere personalizzato."
 
-#: ../glade2/meldapp.glade.h:70
+#: ../glade2/meldapp.glade.h:81
 msgid "Use syntax highlighting"
-msgstr "Usare evidenziazione della sintassi"
+msgstr "Usa evidenziazione della sintassi"
 
-#: ../glade2/meldapp.glade.h:71
-msgid "Version System"
-msgstr "Sistema di versionamento"
-
-#: ../glade2/meldapp.glade.h:72
+#: ../glade2/meldapp.glade.h:82
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
-"Durante il caricamento, prova queste codifiche nell'ordine. (es. utf8, "
+"Quando carichi i file, prova queste codifiche in questo ordine. (es. utf8, "
 "iso8859)"
 
-#: ../glade2/meldapp.glade.h:73
+#: ../glade2/meldapp.glade.h:83
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
 "separated by spaces."
 msgstr ""
-"Quando si esegue il confronto tra directory, è possibile filtrare i file e "
-"le directory per nome. Ogni modello è una lista caratteri jolly separati da "
+"Quando esegui il confronto tra directory, puoi filtrare i file e le "
+"directory per nome. Ogni modello è una lista caratteri jolly separati da "
 "spazi."
 
-#: ../glade2/meldapp.glade.h:74
+#: ../glade2/meldapp.glade.h:84
+#, fuzzy
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
-"Each pattern here is a python regular expression which will be applied in "
-"turn to each line of the input text."
+"Each pattern here is a python regular expression which replaces matching "
+"text with the empty string before comparison is performed. If the expression "
+"contains groups, only the groups are replaced. See the user manual for more "
+"details."
 msgstr ""
-"Quando esegui il confronto tra file, puoi ignorare certi tipi di "
-"cambiamenti. Ogni modello è una espressione regolare python che sarà  "
-"applicata a turno ad ogni riga del testo in input."
+"Quando si esegue il confronto tra file, si possono ignorare certi tipi di "
+"cambiamenti. Ogni modello è una espressione regolare python che sostituirà "
+"il testo corrispondente con la stringa vuota prima che sia effettuata la "
+"comparazione. Se l'espressione contiene gruppi, solamente i gruppi saranno "
+"sostituiti. Vedere il manuale utente per maggiori dettagli."
 
-#: ../glade2/meldapp.glade.h:75
+#: ../glade2/meldapp.glade.h:85
 msgid "Whitespace is significant"
 msgstr "Gli spazi bianchi sono significativi"
 
-#: ../glade2/meldapp.glade.h:76
-msgid "_Autodetect"
-msgstr "Riconoscimento _automatico"
-
-#: ../glade2/meldapp.glade.h:77
-msgid "_CVS"
-msgstr "_CVS"
-
-#: ../glade2/meldapp.glade.h:78
+#: ../glade2/meldapp.glade.h:86
 msgid "_Character"
 msgstr "_Carattere"
 
-#: ../glade2/meldapp.glade.h:80
+#: ../glade2/meldapp.glade.h:87
+msgid "_Contents"
+msgstr "_Sommario"
+
+#: ../glade2/meldapp.glade.h:89
 msgid "_Directory Comparison"
 msgstr "Confronta _directory"
 
-#: ../glade2/meldapp.glade.h:81
+#: ../glade2/meldapp.glade.h:90
+msgid "_Down"
+msgstr "_Giu"
+
+#: ../glade2/meldapp.glade.h:91
 msgid "_File Comparison"
 msgstr "Confronta _file"
 
-#: ../glade2/meldapp.glade.h:82
+#: ../glade2/meldapp.glade.h:92
 msgid "_Logo"
 msgstr "_Logo"
 
-#: ../glade2/meldapp.glade.h:83
+#: ../glade2/meldapp.glade.h:93
+msgid "_New..."
+msgstr "_Nuovo..."
+
+#: ../glade2/meldapp.glade.h:94
 msgid "_None"
 msgstr "_Nessuno"
 
-#: ../glade2/meldapp.glade.h:84
-msgid "_Subversion"
-msgstr "_Sottoversione"
+#: ../glade2/meldapp.glade.h:95
+msgid "_SVN Browser"
+msgstr "Browser _SVN"
 
-#: ../glade2/meldapp.glade.h:85
+#: ../glade2/meldapp.glade.h:96
+msgid "_Save"
+msgstr "_Salva"
+
+#: ../glade2/meldapp.glade.h:97
 msgid "_Three Way Compare"
 msgstr "Confronto a _tre"
 
-#: ../glade2/meldapp.glade.h:86
-msgid "_Translated by"
-msgstr "_Tradotto da"
+#: ../glade2/meldapp.glade.h:98
+msgid "_Up"
+msgstr "_Su"
 
-#: ../glade2/meldapp.glade.h:87
-msgid "_Version Browser"
-msgstr "Browser di _versione"
-
-#: ../glade2/meldapp.glade.h:88
+#: ../glade2/meldapp.glade.h:99
 msgid "_Word"
 msgstr "_Parola"
-
-#: ../glade2/meldapp.glade.h:89
-msgid "_Written by"
-msgstr "_Scritto da"
-
-#: ../glade2/meldapp.glade.h:90
-msgid "dialog1"
-msgstr "dialog1"
-
-#: ../glade2/meldapp.glade.h:91
-msgid "dialog2"
-msgstr "dialog2"
-
-#: ../glade2/meldapp.glade.h:92
-msgid "http://meld.sourceforge.net"
-msgstr "http://meld.sourceforge.net"
-
-#: ../glade2/meldapp.glade.h:93
-msgid "utf8 iso8859"
-msgstr "utf8 iso8859"

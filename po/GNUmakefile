@@ -1,8 +1,7 @@
 
 .SUFFIXES:
 
-prefix := $(strip $(shell grep "^prefix" ../GNUmakefile | cut -d = -f 2))
-localedir := $(prefix)/share/locale
+include ../INSTALL
 
 PO:=$(wildcard *.po)
 MO:=$(PO:.po=/LC_MESSAGES/meld.mo)
