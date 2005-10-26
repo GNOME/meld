@@ -29,7 +29,7 @@ if host == SFORGE:
     cvsroot = ":pserver:anonymous@cvs1:2401/cvsroot/meld"
     upload = 'lftp -c "open upload; cd incoming; put %s"'
 else:
-    cvsroot = ":pserver:stevek@cvs.gnome.org:/cvs/gnome"
+    cvsroot = ":pserver:anonymous@anoncvs.gnome.org:/cvs/gnome"
     upload = 'install-module %s'
 
 def system(s):
