@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meld branch-0_9\n"
+"Project-Id-Version: meld HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-04 19:14+0900\n"
-"PO-Revision-Date: 2005-07-04 19:14+0900\n"
+"POT-Creation-Date: 2005-10-29 18:05+0900\n"
+"PO-Revision-Date: 2005-10-29 18:03+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -16,124 +16,32 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../meld.desktop.in.h:1
-msgid "Compare and merge your files."
-msgstr "ファイルを比較したりマージします"
-
-#: ../meld.desktop.in.h:2
-msgid "Meld Diff Viewer"
-msgstr "Meld 差分ビューア"
-
-#. These are the possible states of files. Be sure to get the colons correct.
-#: ../cvsview.py:41
-msgid ""
-"Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr ""
-"Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-
-#: ../cvsview.py:169
-#, python-format
-msgid ""
-"Error converting to a regular expression\n"
-"The pattern was '%s'\n"
-"The error was '%s'"
-msgstr ""
-"正規表現に変換中にエラー\n"
-"パターン: '%s'\n"
-"エラー: %s"
-
-#: ../cvsview.py:353 ../svnview.py:292
-msgid "Name"
-msgstr "名前"
-
-#: ../cvsview.py:370 ../svnview.py:309
-msgid "Location"
-msgstr "場所"
-
-#: ../cvsview.py:371 ../svnview.py:310
-msgid "Status"
-msgstr "状態"
-
-#: ../cvsview.py:372 ../svnview.py:311
-msgid "Rev"
-msgstr "リビジョン"
-
-#: ../cvsview.py:373 ../svnview.py:312 ../glade2/cvsview.glade.h:21
-msgid "Tag"
-msgstr "タグ"
-
-#: ../cvsview.py:374 ../svnview.py:313
-msgid "Options"
-msgstr "オプション"
-
-#: ../cvsview.py:411 ../dirdiff.py:364 ../svnview.py:350
-#, python-format
-msgid "[%s] Scanning"
-msgstr "[%s] スキャン中"
-
-#: ../cvsview.py:438 ../dirdiff.py:373 ../svnview.py:377
-#, python-format
-msgid "[%s] Scanning %s"
-msgstr "[%s] %s のスキャン中"
-
-#: ../cvsview.py:454 ../svnview.py:393
-msgid "(Empty)"
-msgstr "(空)"
-
-#: ../cvsview.py:490 ../svnview.py:429
-#, python-format
-msgid "[%s] Fetching differences"
-msgstr "[%s] 差分の取得中"
-
-#: ../cvsview.py:497 ../svnview.py:437
-#, python-format
-msgid "[%s] Applying patch"
-msgstr "[%s] パッチの適用中"
-
-#: ../cvsview.py:501 ../svnview.py:441
-msgid "No differences found."
-msgstr "差分が見つかりませんでした。"
-
-#: ../cvsview.py:575 ../svnview.py:515
-msgid "Select some files first."
-msgstr "まず最初にファイルを選択して下さい。"
-
-#: ../cvsview.py:596 ../dirdiff.py:552 ../svnview.py:536
-#, python-format
-msgid ""
-"'%s' is a directory.\n"
-"Remove recusively?"
-msgstr ""
-"'%s' はフォルダです。\n"
-"再帰的に削除しますか？"
-
-#: ../cvsview.py:601 ../dirdiff.py:559 ../svnview.py:541
-#, python-format
-msgid ""
-"Error removing %s\n"
-"\n"
-"%s."
-msgstr ""
-"%s を削除する際にエラー\n"
-"\n"
-"%s"
-
-#: ../dirdiff.py:253 ../dirdiff.py:268
+#: ../dirdiff.py:250 ../dirdiff.py:265
 #, python-format
 msgid "Error converting pattern '%s' to regular expression"
 msgstr "パターン '%s' を正規表現に変換する際にエラー"
 
-#: ../dirdiff.py:284
+#: ../dirdiff.py:281
 #, python-format
 msgid "Hide %s"
 msgstr "%s を隠す"
 
-#: ../dirdiff.py:406
+#: ../dirdiff.py:361 ../vcview.py:212
+#, python-format
+msgid "[%s] Scanning"
+msgstr "[%s] スキャン中"
+
+#: ../dirdiff.py:370 ../vcview.py:239
+#, python-format
+msgid "[%s] Scanning %s"
+msgstr "[%s] %s のスキャン中"
+
+#: ../dirdiff.py:403
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "'%s' は '%s' によって隠されています"
 
-#: ../dirdiff.py:412
+#: ../dirdiff.py:409
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
@@ -144,12 +52,12 @@ msgstr ""
 "す。いくつかのファイルは表示されません:\n"
 "%s"
 
-#: ../dirdiff.py:481
+#: ../dirdiff.py:478
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] 完了"
 
-#: ../dirdiff.py:527
+#: ../dirdiff.py:524
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -158,7 +66,7 @@ msgstr ""
 "'%s' は存在します。\n"
 "上書きしますか？"
 
-#: ../dirdiff.py:534
+#: ../dirdiff.py:531
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -169,49 +77,69 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../dirdiff.py:570
+#: ../dirdiff.py:549 ../vcview.py:401
+#, python-format
+msgid ""
+"'%s' is a directory.\n"
+"Remove recusively?"
+msgstr ""
+"'%s' はフォルダです。\n"
+"再帰的に削除しますか？"
+
+#: ../dirdiff.py:556 ../vcview.py:406
+#, python-format
+msgid ""
+"Error removing %s\n"
+"\n"
+"%s."
+msgstr ""
+"%s を削除する際にエラー\n"
+"\n"
+"%s"
+
+#: ../dirdiff.py:567
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i 秒"
 msgstr[1] "%i 秒"
 
-#: ../dirdiff.py:571
+#: ../dirdiff.py:568
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i 分"
 msgstr[1] "%i 分"
 
-#: ../dirdiff.py:572
+#: ../dirdiff.py:569
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i 時間"
 msgstr[1] "%i 時間"
 
-#: ../dirdiff.py:573
+#: ../dirdiff.py:570
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i 日"
 msgstr[1] "%i 日"
 
-#: ../dirdiff.py:574
+#: ../dirdiff.py:571
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i 週間"
 msgstr[1] "%i 週間"
 
-#: ../dirdiff.py:575
+#: ../dirdiff.py:572
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i ヶ月"
 msgstr[1] "%i ヶ月"
 
-#: ../dirdiff.py:576
+#: ../dirdiff.py:573
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -219,17 +147,17 @@ msgstr[0] "%i 年"
 msgstr[1] "%i 年"
 
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:224
+#: ../filediff.py:214
 msgid "INS,OVR"
 msgstr "挿入,上書き"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:226
+#: ../filediff.py:216
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "%i 行, %i 桁"
 
-#: ../filediff.py:284
+#: ../filediff.py:274
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -238,7 +166,7 @@ msgstr ""
 "正規表現 '%s' でファイルの行数が変更されました。差分に不整合が発生します。詳"
 "細はユーザーズ・マニュアルをご覧下さい。"
 
-#: ../filediff.py:529
+#: ../filediff.py:520
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -247,41 +175,41 @@ msgstr ""
 "正規表現エラー\n"
 "'%s'"
 
-#: ../filediff.py:541
+#: ../filediff.py:532
 #, python-format
 msgid "The regular expression '%s' was not found."
 msgstr "正規表現 '%s' が見つかりませんでした。"
 
-#: ../filediff.py:543
+#: ../filediff.py:534
 #, python-format
 msgid "The text '%s' was not found."
 msgstr "テキスト '%s' が見つかりませんでした。"
 
-#: ../filediff.py:582
+#: ../filediff.py:573
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] 番号ペインのセット"
 
-#: ../filediff.py:589
+#: ../filediff.py:580
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] ファイルのオープン中"
 
-#: ../filediff.py:606 ../filediff.py:620 ../filediff.py:636 ../filediff.py:643
+#: ../filediff.py:597 ../filediff.py:611 ../filediff.py:627 ../filediff.py:634
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "'%s' を読み込めませんでした。"
 
-#: ../filediff.py:607 ../filediff.py:644
+#: ../filediff.py:598 ../filediff.py:635
 msgid "The error was:"
 msgstr "エラー:"
 
-#: ../filediff.py:612
+#: ../filediff.py:603
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] ファイルの読み込み中"
 
-#: ../filediff.py:621
+#: ../filediff.py:612
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -289,17 +217,17 @@ msgstr ""
 "ACII のヌル文字が含まれています。\n"
 "バイナリ・ファイルのようです。"
 
-#: ../filediff.py:637
+#: ../filediff.py:628
 #, python-format
 msgid "I tried encodings %s."
 msgstr "%s というエンコーディングで試してみました。"
 
-#: ../filediff.py:665
+#: ../filediff.py:656
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] 差分の計算中"
 
-#: ../filediff.py:754
+#: ../filediff.py:760
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -308,7 +236,7 @@ msgstr ""
 "\"%s\" は存在しています！\n"
 "上書きしますか？"
 
-#: ../filediff.py:766
+#: ../filediff.py:773
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -319,12 +247,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../filediff.py:775
+#: ../filediff.py:782
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "バッファ %i の名前を選択して下さい。"
 
-#: ../filediff.py:788
+#: ../filediff.py:795
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -335,7 +263,7 @@ msgstr ""
 "\n"
 "どのフォーマットを使用しますか？"
 
-#: ../filediff.py:804
+#: ../filediff.py:811
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -345,11 +273,11 @@ msgstr ""
 "UTF-8 エンコーディングとして保存してもよろしいですか？"
 
 #. save as
-#: ../filediff.py:839
+#: ../filediff.py:846
 msgid "Save patch as..."
 msgstr "別名でパッチの保存..."
 
-#: ../filediff.py:893
+#: ../filediff.py:900
 #, python-format
 msgid ""
 "Refreshing will discard changes in:\n"
@@ -361,283 +289,6 @@ msgstr ""
 "%s\n"
 "\n"
 "この操作を元に戻すことはできません。"
-
-#: ../meld:57 ../meld:67 ../meld:77
-#, c-format
-msgid "Meld requires %s or higher."
-msgstr "Meld には %s 以上が必要です。"
-
-#: ../meld:78
-msgid ""
-"Due to incompatible API changes some functions may not operate as expected."
-msgstr "いくつかの関数に対する互換性のない API 変更によって操作できません。"
-
-#: ../meldapp.py:294
-msgid "Line numbers are only available if you have pysourceview installed."
-msgstr ""
-"'pysourceview' をインストールしている場合にのみ行番号を表示することができま"
-"す。"
-
-#: ../meldapp.py:298
-msgid ""
-"Syntax highlighting is only available if you have pysourceview installed."
-msgstr ""
-"'pysourceview' をインストールしている場合にのみ強調表示を利用できます。"
-
-#: ../meldapp.py:745
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "ファイルとフォルダの間での比較はできません。\n"
-
-#. ###############################################################################
-#.
-#. usage
-#.
-#. ###############################################################################
-#: ../meldapp.py:798
-msgid ""
-"Meld is a file and directory comparison tool. Usage:\n"
-"\n"
-"    meld                        Start with no windows open\n"
-"    meld <dir>                  Start with CVS browser in 'dir'\n"
-"    meld <file>                 Start with CVS diff of 'file'\n"
-"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
-"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
-"\n"
-"Options:\n"
-"    -h, --help                  Show this help text and exit\n"
-"    -v, --version               Display the version and exit\n"
-"\n"
-"For more information choose help -> contents.\n"
-"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-"Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
-msgstr ""
-"Meld はファイルとフォルダを比較するツールです。\n"
-"用法:\n"
-"    meld                        ウィンドウを開かずに起動する\n"
-"    meld <dir>                  <dir> の CVS 表示モードで起動する\n"
-"    meld <file>                 <file> の CVS 差分モードで起動する\n"
-"    meld <file> <file> [file]   2-3 個のファイル同士の比較モードで起動する\n"
-"    meld <dir>  <dir>  [dir]    2-3 個のディレクトリ同士の比較モードで起動す"
-"る\n"
-"\n"
-"オプション:\n"
-"    -h, --help                  このヘルプを表示して終了する\n"
-"    -v, --version               バージョンを表示して終了する\n"
-"\n"
-"詳細なヘルプは [ヘルプ] -> [目次] をご覧下さい。\n"
-"バグの報告は  http://bugzilla.gnome.org/buglist.cgi?product=meld まで。\n"
-"メーリング・リストは http://mail.gnome.org/mailman/listinfo/gnome-devtools に"
-"て。\n"
-
-#: ../meldapp.py:815
-#, python-format
-msgid ""
-"Meld %s\n"
-"Written by Stephen Kennedy <stevek@gnome.org>"
-msgstr ""
-"Meld %s\n"
-"作者: Stephen Kennedy <stevek@gnome.org>"
-
-#: ../meldapp.py:871
-#, python-format
-msgid "Wrong number of arguments (Got %i)"
-msgstr "引数の数が間違っています (%i 個と受け取りました)"
-
-#: ../melddoc.py:45
-msgid "untitled"
-msgstr "タイトルなし"
-
-#. no common path. empty names get changed to "[None]"
-#: ../misc.py:120
-msgid "[None]"
-msgstr "[なし]"
-
-#: ../svnview.py:42
-msgid ""
-"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr ""
-"Ignored:Non SVN:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-
-#: ../glade2/cvsview.glade.h:1
-msgid "Add _Binary"
-msgstr "バイナリの追加(_B)"
-
-#: ../glade2/cvsview.glade.h:2
-msgid "Add to CVS"
-msgstr "CVS へ追加"
-
-#: ../glade2/cvsview.glade.h:3
-msgid "CVS Log"
-msgstr "CVS ログ"
-
-#: ../glade2/cvsview.glade.h:4
-msgid "Commit"
-msgstr "コミット"
-
-#: ../glade2/cvsview.glade.h:5
-msgid "Commit Files"
-msgstr "ファイルのコミット"
-
-#: ../glade2/cvsview.glade.h:6
-msgid "Date"
-msgstr "日付"
-
-#: ../glade2/cvsview.glade.h:7
-msgid "Delete locally"
-msgstr "ローカルの削除"
-
-#: ../glade2/cvsview.glade.h:8
-msgid "Diff Options"
-msgstr "差分のオプション"
-
-#: ../glade2/cvsview.glade.h:9
-msgid "Diff selected"
-msgstr "差分を選択しました"
-
-#: ../glade2/cvsview.glade.h:10
-msgid "Flatten directories"
-msgstr "フォルダを平らにする"
-
-#: ../glade2/cvsview.glade.h:11
-msgid "Ignored"
-msgstr "無視されました"
-
-#: ../glade2/cvsview.glade.h:12
-msgid "Local copy against other remote revision"
-msgstr "リモートの他のリビジョンをローカルへコピーする"
-
-#: ../glade2/cvsview.glade.h:13
-msgid "Local copy against same remote revision"
-msgstr "リモートの同じリビジョンをローカルへコピーする"
-
-#: ../glade2/cvsview.glade.h:14
-msgid "Log Message"
-msgstr "ログ・メッセージ"
-
-#: ../glade2/cvsview.glade.h:15
-msgid "Non _CVS"
-msgstr "非 CVS(_C)"
-
-#: ../glade2/cvsview.glade.h:16
-msgid "Previous Logs"
-msgstr "前のログ"
-
-#: ../glade2/cvsview.glade.h:17
-msgid "Remove _Locally"
-msgstr "ローカルの削除(_L)"
-
-#: ../glade2/cvsview.glade.h:18
-msgid "Remove from CVS"
-msgstr "CVS から削除"
-
-#: ../glade2/cvsview.glade.h:19 ../glade2/dirdiff.glade.h:20
-msgid "Show modified"
-msgstr "変更点の表示"
-
-#: ../glade2/cvsview.glade.h:20
-msgid "Show non-CVS"
-msgstr "非 CVS の表示"
-
-#: ../glade2/cvsview.glade.h:22
-msgid "Update"
-msgstr "更新"
-
-#: ../glade2/cvsview.glade.h:23
-msgid "_Add"
-msgstr "追加(_A)"
-
-#: ../glade2/cvsview.glade.h:24
-msgid "_Commit"
-msgstr "コミット(_C)"
-
-#: ../glade2/cvsview.glade.h:25 ../glade2/meldapp.glade.h:88
-msgid "_Diff"
-msgstr "差分"
-
-#: ../glade2/cvsview.glade.h:26
-msgid "_Edit"
-msgstr "編集(_E)"
-
-#: ../glade2/cvsview.glade.h:27
-msgid "_Flatten"
-msgstr "平滑化(_F)"
-
-#: ../glade2/cvsview.glade.h:28
-msgid "_Modified"
-msgstr "変更済(_M)"
-
-#: ../glade2/cvsview.glade.h:29
-msgid "_Normal"
-msgstr "標準(_N)"
-
-#: ../glade2/cvsview.glade.h:30
-msgid "_Remove"
-msgstr "削除(_R)"
-
-#: ../glade2/cvsview.glade.h:31
-msgid "_Update"
-msgstr "更新(_U)"
-
-#: ../glade2/filediff.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
-"Which ones would you like to save?</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">いくつかのファイルが変更されていま"
-"す。\n"
-"どのファイルを保存しますか？</span>"
-
-#: ../glade2/filediff.glade.h:3
-msgid "Copy All _Left"
-msgstr "全てを左へコピー(_L)"
-
-#: ../glade2/filediff.glade.h:4
-msgid "Copy All _Right"
-msgstr "全てを右へコピー(_R)"
-
-#: ../glade2/filediff.glade.h:5
-msgid "Copy to Clipboard"
-msgstr "クリップボードへコピー"
-
-#: ../glade2/filediff.glade.h:6
-msgid "Create Patch"
-msgstr "パッチの生成"
-
-#: ../glade2/filediff.glade.h:7 ../glade2/dirdiff.glade.h:9
-msgid "Edit"
-msgstr "編集"
-
-#: ../glade2/filediff.glade.h:8
-msgid "Find"
-msgstr "検索"
-
-#: ../glade2/filediff.glade.h:9
-msgid "Make Patch"
-msgstr "パッチの生成"
-
-#: ../glade2/filediff.glade.h:10
-msgid "Match _entire word only"
-msgstr "単語全体に一致するもののみ検索する(_E)"
-
-#: ../glade2/filediff.glade.h:11
-msgid "Regular e_xpression"
-msgstr "正規表現で検索する(_X)"
-
-#: ../glade2/filediff.glade.h:12
-msgid "Save modified files?"
-msgstr "変更したファイルを保存しますか？"
-
-#: ../glade2/filediff.glade.h:13
-msgid "Search for:"
-msgstr "検索する単語:"
-
-#: ../glade2/filediff.glade.h:14
-msgid "_Match case"
-msgstr "大/小文字を区別する(_M)"
-
-#: ../glade2/filediff.glade.h:15
-msgid "_Wrap around"
-msgstr "複数行にまたがる単語も検索する(_W)"
 
 #: ../glade2/dirdiff.glade.h:1
 msgid "Case"
@@ -670,6 +321,10 @@ msgstr "差分"
 #: ../glade2/dirdiff.glade.h:8
 msgid "Diff selection"
 msgstr "差分の選択"
+
+#: ../glade2/dirdiff.glade.h:9 ../glade2/filediff.glade.h:7
+msgid "Edit"
+msgstr "編集"
 
 #: ../glade2/dirdiff.glade.h:10
 msgid "Hide selected"
@@ -711,6 +366,10 @@ msgstr "同じ部分"
 msgid "Show identical"
 msgstr "同じ部分の表示"
 
+#: ../glade2/dirdiff.glade.h:20 ../glade2/vcview.glade.h:18
+msgid "Show modified"
+msgstr "変更点の表示"
+
 #: ../glade2/dirdiff.glade.h:21
 msgid "Show new"
 msgstr "新しい部分の表示"
@@ -718,6 +377,63 @@ msgstr "新しい部分の表示"
 #: ../glade2/dirdiff.glade.h:22
 msgid "_Delete Selected"
 msgstr "選択範囲の削除(_D)"
+
+#: ../glade2/filediff.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
+"Which ones would you like to save?</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">いくつかのファイルが変更されていま"
+"す。\n"
+"どのファイルを保存しますか？</span>"
+
+#: ../glade2/filediff.glade.h:3
+msgid "Copy All _Left"
+msgstr "全てを左へコピー(_L)"
+
+#: ../glade2/filediff.glade.h:4
+msgid "Copy All _Right"
+msgstr "全てを右へコピー(_R)"
+
+#: ../glade2/filediff.glade.h:5
+msgid "Copy to Clipboard"
+msgstr "クリップボードへコピー"
+
+#: ../glade2/filediff.glade.h:6
+msgid "Create Patch"
+msgstr "パッチの生成"
+
+#: ../glade2/filediff.glade.h:8
+msgid "Find"
+msgstr "検索"
+
+#: ../glade2/filediff.glade.h:9
+msgid "Make Patch"
+msgstr "パッチの生成"
+
+#: ../glade2/filediff.glade.h:10
+msgid "Match _entire word only"
+msgstr "単語全体に一致するもののみ検索する(_E)"
+
+#: ../glade2/filediff.glade.h:11
+msgid "Regular e_xpression"
+msgstr "正規表現で検索する(_X)"
+
+#: ../glade2/filediff.glade.h:12
+msgid "Save modified files?"
+msgstr "変更したファイルを保存しますか？"
+
+#: ../glade2/filediff.glade.h:13
+msgid "Search for:"
+msgstr "検索する単語:"
+
+#: ../glade2/filediff.glade.h:14
+msgid "_Match case"
+msgstr "大/小文字を区別する(_M)"
+
+#: ../glade2/filediff.glade.h:15
+msgid "_Wrap around"
+msgstr "複数行にまたがる単語も検索する(_W)"
 
 #: ../glade2/meldapp.glade.h:1
 msgid "(gnome-default-editor)"
@@ -808,18 +524,10 @@ msgid "CVS binary"
 msgstr "CVS コマンド"
 
 #: ../glade2/meldapp.glade.h:23
-msgid "CVS view"
-msgstr "CVS 表示"
-
-#: ../glade2/meldapp.glade.h:24
-msgid "C_VS Browser"
-msgstr "CVS ブラウザ(_V)"
-
-#: ../glade2/meldapp.glade.h:25
 msgid "Choose Files"
 msgstr "ファイルの選択"
 
-#: ../glade2/meldapp.glade.h:26
+#: ../glade2/meldapp.glade.h:24
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
@@ -827,234 +535,238 @@ msgstr ""
 "中央バーに差分を表示するスタイルを選択して下さい。スクロール表示が遅い場合"
 "は、より \"シンプル\" なスタイルを選択した方がよいでしょう。"
 
-#: ../glade2/meldapp.glade.h:27
+#: ../glade2/meldapp.glade.h:25
 msgid "Copyright (C) 2002 Stephen Kennedy"
 msgstr "Copyright (C) 2002 Stephen Kennedy"
 
-#: ../glade2/meldapp.glade.h:28
+#: ../glade2/meldapp.glade.h:26
 msgid "Create missing directories (-d)"
 msgstr "存在しないフォルダを作成する (-d)"
 
-#: ../glade2/meldapp.glade.h:29
+#: ../glade2/meldapp.glade.h:27
 msgid "Curved : Filled Curves"
 msgstr "曲線 : 曲線を使って塗りつぶす"
 
-#: ../glade2/meldapp.glade.h:30
+#: ../glade2/meldapp.glade.h:28
 msgid "Custom command"
 msgstr "それ以外のエディタ"
 
-#: ../glade2/meldapp.glade.h:31
+#: ../glade2/meldapp.glade.h:29
+msgid "Directory"
+msgstr "フォルダ"
+
+#: ../glade2/meldapp.glade.h:30
 msgid "Display"
 msgstr "表示"
 
-#: ../glade2/meldapp.glade.h:32
+#: ../glade2/meldapp.glade.h:31
 msgid "Edit menu popup invokes"
 msgstr "ポップアップ・メニュー [編集] で呼び出すコマンド:"
 
-#: ../glade2/meldapp.glade.h:33
+#: ../glade2/meldapp.glade.h:32
 msgid "Editor"
 msgstr "エディタ"
 
-#: ../glade2/meldapp.glade.h:34
+#: ../glade2/meldapp.glade.h:33
 msgid "Encoding"
 msgstr "エンコーディング"
 
-#: ../glade2/meldapp.glade.h:35
+#: ../glade2/meldapp.glade.h:34
 msgid "File Filters"
 msgstr "ファイルのフィルタ"
 
-#: ../glade2/meldapp.glade.h:36
+#: ../glade2/meldapp.glade.h:35
 msgid "Gnome Default"
 msgstr "デスクトップに従う"
 
-#: ../glade2/meldapp.glade.h:37
+#: ../glade2/meldapp.glade.h:36
 msgid "Gnome default editor"
 msgstr "GNOME のデフォルト・エディタ"
 
-#: ../glade2/meldapp.glade.h:38
+#: ../glade2/meldapp.glade.h:37
 msgid "Icons Only"
 msgstr "アイコンのみ"
 
-#: ../glade2/meldapp.glade.h:39
+#: ../glade2/meldapp.glade.h:38
 msgid "Ignore .cvsrc (-f)"
 msgstr ".cvsrc ファイルを無視する (-f)"
 
-#: ../glade2/meldapp.glade.h:40
+#: ../glade2/meldapp.glade.h:39
 msgid "Ignore changes in amount of white space"
 msgstr "ホワイトスペースの数を無視する"
 
-#: ../glade2/meldapp.glade.h:41
+#: ../glade2/meldapp.glade.h:40
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr "大/小文字の変更を無視する; 大文字と小文字を同等に扱う"
 
-#: ../glade2/meldapp.glade.h:42
+#: ../glade2/meldapp.glade.h:41
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr "空行の挿入/削除を無視する"
 
-#: ../glade2/meldapp.glade.h:43
+#: ../glade2/meldapp.glade.h:42
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "空行の挿入や削除を無視する"
 
-#: ../glade2/meldapp.glade.h:44
+#: ../glade2/meldapp.glade.h:43
 msgid "Internal editor"
 msgstr "Meld 内部のエディタ"
 
-#: ../glade2/meldapp.glade.h:45
+#: ../glade2/meldapp.glade.h:44
 msgid "Line Wrapping "
 msgstr "行のラップ: "
 
-#: ../glade2/meldapp.glade.h:46
+#: ../glade2/meldapp.glade.h:45
 msgid "Locate CVS binary : Meld"
 msgstr "ローカルの CVS コマンド : Meld"
 
-#: ../glade2/meldapp.glade.h:47
+#: ../glade2/meldapp.glade.h:46
 msgid "Meld"
 msgstr "Meld"
 
-#: ../glade2/meldapp.glade.h:48
+#: ../glade2/meldapp.glade.h:47
 msgid "Mine"
 msgstr "自分のもの"
 
-#: ../glade2/meldapp.glade.h:49
+#: ../glade2/meldapp.glade.h:48
 msgid "My Directory"
 msgstr "自分のフォルダ"
 
-#: ../glade2/meldapp.glade.h:50
+#: ../glade2/meldapp.glade.h:49
 msgid "My File"
 msgstr "自分のファイル"
 
-#: ../glade2/meldapp.glade.h:51
+#: ../glade2/meldapp.glade.h:50
 msgid "New..."
 msgstr "新規..."
 
-#: ../glade2/meldapp.glade.h:52
+#: ../glade2/meldapp.glade.h:51
 msgid "Original"
 msgstr "オリジナル"
 
-#: ../glade2/meldapp.glade.h:53
+#: ../glade2/meldapp.glade.h:52
 msgid "Original Directory"
 msgstr "オリジナルのフォルダ"
 
-#: ../glade2/meldapp.glade.h:54
+#: ../glade2/meldapp.glade.h:53
 msgid "Original File"
 msgstr "オリジナルのファイル"
 
-#: ../glade2/meldapp.glade.h:55
+#: ../glade2/meldapp.glade.h:54
 msgid "Other"
 msgstr "他のもの"
 
-#: ../glade2/meldapp.glade.h:56
+#: ../glade2/meldapp.glade.h:55
 msgid "Other Directory"
 msgstr "他のフォルダ"
 
-#: ../glade2/meldapp.glade.h:57
+#: ../glade2/meldapp.glade.h:56
 msgid "Other File"
 msgstr "他のフォルダ"
 
-#: ../glade2/meldapp.glade.h:58
+#: ../glade2/meldapp.glade.h:57
 msgid "Preferences : Meld"
 msgstr "設定: Meld"
 
-#: ../glade2/meldapp.glade.h:59
+#: ../glade2/meldapp.glade.h:58
 msgid "Prune empty directories (-P)"
 msgstr "空のフォルダを除去する (-P)"
 
-#: ../glade2/meldapp.glade.h:60
+#: ../glade2/meldapp.glade.h:59
 msgid "Quiet mode (-q)"
 msgstr "メッセージ抑制モード (-q) を有効にする"
 
-#: ../glade2/meldapp.glade.h:61
+#: ../glade2/meldapp.glade.h:60
 msgid "Report _Bug"
 msgstr "バグの報告(_B)"
 
+#: ../glade2/meldapp.glade.h:61
+msgid "Save _As"
+msgstr "別名で保存(_A)"
+
 #: ../glade2/meldapp.glade.h:62
-msgid "SVN Directory"
-msgstr "SVN ディレクトリ"
-
-#: ../glade2/meldapp.glade.h:63
-msgid "SVN view"
-msgstr "SVN 表示"
-
-#: ../glade2/meldapp.glade.h:64
 msgid "Save in UTF-8 encoding"
 msgstr "UTF-8 エンコーディングで保存する"
 
-#: ../glade2/meldapp.glade.h:65
+#: ../glade2/meldapp.glade.h:63
 msgid "Save in the files original encoding"
 msgstr "オリジナルのエンコーディングで保存する"
 
-#: ../glade2/meldapp.glade.h:66
+#: ../glade2/meldapp.glade.h:64
 msgid "Show line numbers"
 msgstr "行番号を表示する"
 
-#: ../glade2/meldapp.glade.h:67
+#: ../glade2/meldapp.glade.h:65
 msgid "Simple : Lines only"
 msgstr "シンプル : 線画のみ"
 
-#: ../glade2/meldapp.glade.h:68
+#: ../glade2/meldapp.glade.h:66
 msgid "Solid : Filled Quadilaterals"
 msgstr "矩形 : 四角形で塗りつぶす"
 
-#: ../glade2/meldapp.glade.h:69
+#: ../glade2/meldapp.glade.h:67
 msgid "Tab width"
 msgstr "タブ幅"
 
-#: ../glade2/meldapp.glade.h:70
+#: ../glade2/meldapp.glade.h:68
 msgid "Text Beside Icons"
 msgstr "アイコンの横にラベル"
 
-#: ../glade2/meldapp.glade.h:71
+#: ../glade2/meldapp.glade.h:69
 msgid "Text Filters"
 msgstr "テキストのフィルタ"
 
-#: ../glade2/meldapp.glade.h:72
+#: ../glade2/meldapp.glade.h:70
 msgid "Text Only"
 msgstr "ラベルのみ"
 
-#: ../glade2/meldapp.glade.h:73
+#: ../glade2/meldapp.glade.h:71
 msgid "Text Under Icons"
 msgstr "アイコンの下にラベル"
 
-#: ../glade2/meldapp.glade.h:74
+#: ../glade2/meldapp.glade.h:72
 msgid "Three way directory"
 msgstr "三つのフォルダ"
 
-#: ../glade2/meldapp.glade.h:75
+#: ../glade2/meldapp.glade.h:73
 msgid "Three way file"
 msgstr "三つのファイル"
 
-#: ../glade2/meldapp.glade.h:76
+#: ../glade2/meldapp.glade.h:74
 msgid "Two way directory"
 msgstr "二つのフォルダ"
 
-#: ../glade2/meldapp.glade.h:77
+#: ../glade2/meldapp.glade.h:75
 msgid "Two way file"
 msgstr "二つのファイル"
 
-#: ../glade2/meldapp.glade.h:78
+#: ../glade2/meldapp.glade.h:76
 msgid "Use Compression (-z)"
 msgstr "圧縮レベル (-z) "
 
-#: ../glade2/meldapp.glade.h:79
+#: ../glade2/meldapp.glade.h:77
 msgid "Use GNOME monospace font."
 msgstr "GNOME の固定フォントを使用する"
 
-#: ../glade2/meldapp.glade.h:80
+#: ../glade2/meldapp.glade.h:78
 msgid "Use custom font."
 msgstr "フォントのカスタマイズ: "
 
-#: ../glade2/meldapp.glade.h:81
+#: ../glade2/meldapp.glade.h:79
 msgid "Use syntax highlighting"
 msgstr "強調表示する"
 
-#: ../glade2/meldapp.glade.h:82
+#: ../glade2/meldapp.glade.h:80
+msgid "Version control view"
+msgstr "バージョン・コントロール表示"
+
+#: ../glade2/meldapp.glade.h:81
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
 "ファイルを読む込む際に、次の順番でエンコーディングを試行します (例: utf8, "
 "iso8859)"
 
-#: ../glade2/meldapp.glade.h:83
+#: ../glade2/meldapp.glade.h:82
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1064,7 +776,7 @@ msgstr ""
 "フィルタリングのパターンはそれぞれ、スペースで区切った SHELL 型式のワイルド"
 "カードの並びです。"
 
-#: ../glade2/meldapp.glade.h:84
+#: ../glade2/meldapp.glade.h:83
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1078,58 +790,318 @@ msgstr ""
 "ら、該当するグループの文字列だけ置き換えます。詳細はユーザーズ・マニュアルを"
 "ご覧下さい。"
 
-#: ../glade2/meldapp.glade.h:85
+#: ../glade2/meldapp.glade.h:84
 msgid "Whitespace is significant"
 msgstr "ホワイトスペースを無視しない"
 
-#: ../glade2/meldapp.glade.h:86
+#: ../glade2/meldapp.glade.h:85
 msgid "_Character"
 msgstr "文字(_C)"
 
-#: ../glade2/meldapp.glade.h:87
+#: ../glade2/meldapp.glade.h:86
 msgid "_Contents"
 msgstr "目次(_C)"
 
-#: ../glade2/meldapp.glade.h:89
+#: ../glade2/meldapp.glade.h:87 ../glade2/vcview.glade.h:25
+msgid "_Diff"
+msgstr "差分"
+
+#: ../glade2/meldapp.glade.h:88
 msgid "_Directory Comparison"
 msgstr "フォルダの比較(_D)"
 
-#: ../glade2/meldapp.glade.h:90
+#: ../glade2/meldapp.glade.h:89
 msgid "_Down"
 msgstr "次へ(_N)"
 
-#: ../glade2/meldapp.glade.h:91
+#: ../glade2/meldapp.glade.h:90
 msgid "_File Comparison"
 msgstr "ファイルの比較(_F)"
 
-#: ../glade2/meldapp.glade.h:92
+#: ../glade2/meldapp.glade.h:91
 msgid "_Logo"
 msgstr "ロゴ"
 
-#: ../glade2/meldapp.glade.h:93
+#: ../glade2/meldapp.glade.h:92
 msgid "_New..."
 msgstr "新規(_N)..."
 
-#: ../glade2/meldapp.glade.h:94
+#: ../glade2/meldapp.glade.h:93
 msgid "_None"
 msgstr "なし(_N)"
 
-#: ../glade2/meldapp.glade.h:95
-msgid "_SVN Browser"
-msgstr "SVN ブラウザ(_S)"
-
-#: ../glade2/meldapp.glade.h:96
+#: ../glade2/meldapp.glade.h:94
 msgid "_Save"
 msgstr "保存(_S)"
 
-#: ../glade2/meldapp.glade.h:97
+#: ../glade2/meldapp.glade.h:95
 msgid "_Three Way Compare"
 msgstr "三通りの比較"
 
-#: ../glade2/meldapp.glade.h:98
+#: ../glade2/meldapp.glade.h:96
 msgid "_Up"
 msgstr "前へ(_U)"
 
-#: ../glade2/meldapp.glade.h:99
+#: ../glade2/meldapp.glade.h:97
+msgid "_Version Control Browser"
+msgstr "バージョン・コントロール・ブラウザ(_V)"
+
+#: ../glade2/meldapp.glade.h:98
 msgid "_Word"
 msgstr "単語(_W)"
+
+#: ../glade2/vcview.glade.h:1
+msgid "Add _Binary"
+msgstr "バイナリの追加(_B)"
+
+#: ../glade2/vcview.glade.h:2
+msgid "Add to VC"
+msgstr "VC へ追加します"
+
+#: ../glade2/vcview.glade.h:3
+msgid "Commit"
+msgstr "コミットします"
+
+#: ../glade2/vcview.glade.h:4
+msgid "Commit Files"
+msgstr "ファイルのコミット"
+
+#: ../glade2/vcview.glade.h:5
+msgid "Date"
+msgstr "日付"
+
+#: ../glade2/vcview.glade.h:6
+msgid "Delete locally"
+msgstr "ローカル・ファイルを削除します"
+
+#: ../glade2/vcview.glade.h:7
+msgid "Diff Options"
+msgstr "差分のオプション"
+
+#: ../glade2/vcview.glade.h:8
+msgid "Diff selected"
+msgstr "選択したファイルの差分を出力します"
+
+#: ../glade2/vcview.glade.h:9
+msgid "Flatten directories"
+msgstr "ディレクトリ階層を無視します"
+
+#: ../glade2/vcview.glade.h:10
+msgid "Ignored"
+msgstr "無視されました"
+
+#: ../glade2/vcview.glade.h:11
+msgid "Local copy against other remote revision"
+msgstr "リモートの他のリビジョンをローカルへコピーする"
+
+#: ../glade2/vcview.glade.h:12
+msgid "Local copy against same remote revision"
+msgstr "リモートの同じリビジョンをローカルへコピーする"
+
+#: ../glade2/vcview.glade.h:13
+msgid "Log Message"
+msgstr "ログ・メッセージ"
+
+#: ../glade2/vcview.glade.h:14
+msgid "Non _VC"
+msgstr "非 VC 化(_V)"
+
+#: ../glade2/vcview.glade.h:15
+msgid "Previous Logs"
+msgstr "前のログ"
+
+#: ../glade2/vcview.glade.h:16
+msgid "Remove _Locally"
+msgstr "ローカルの削除(_L)"
+
+#: ../glade2/vcview.glade.h:17
+msgid "Remove from VC"
+msgstr "VC から削除します"
+
+#: ../glade2/vcview.glade.h:19
+msgid "Show unversioned files"
+msgstr "バージョン管理外のファイルを表示します"
+
+#: ../glade2/vcview.glade.h:20 ../vcview.py:173
+msgid "Tag"
+msgstr "タグ"
+
+#: ../glade2/vcview.glade.h:21
+msgid "Update"
+msgstr "更新 (updated) します"
+
+#: ../glade2/vcview.glade.h:22
+msgid "VC Log"
+msgstr "VC ログのログ"
+
+#: ../glade2/vcview.glade.h:23
+msgid "_Add"
+msgstr "追加(_A)"
+
+#: ../glade2/vcview.glade.h:24
+msgid "_Commit"
+msgstr "コミット(_C)"
+
+#: ../glade2/vcview.glade.h:26
+msgid "_Edit"
+msgstr "編集(_E)"
+
+#: ../glade2/vcview.glade.h:27
+msgid "_Flatten"
+msgstr "ディレクトリ階層を無視する(_F)"
+
+#: ../glade2/vcview.glade.h:28
+msgid "_Modified"
+msgstr "変更済(_M)"
+
+#: ../glade2/vcview.glade.h:29
+msgid "_Normal"
+msgstr "標準(_N)"
+
+#: ../glade2/vcview.glade.h:30
+msgid "_Remove"
+msgstr "削除(_R)"
+
+#: ../glade2/vcview.glade.h:31
+msgid "_Update"
+msgstr "更新(_U)"
+
+#: ../meld:60 ../meld:70 ../meld:80
+#, c-format
+msgid "Meld requires %s or higher."
+msgstr "Meld には %s 以上が必要です。"
+
+#: ../meld:81
+msgid ""
+"Due to incompatible API changes some functions may not operate as expected."
+msgstr "いくつかの関数に対する互換性のない API 変更によって操作できません。"
+
+#: ../meld.desktop.in.h:1
+msgid "Compare and merge your files."
+msgstr "ファイルを比較したりマージします"
+
+#: ../meld.desktop.in.h:2
+msgid "Meld Diff Viewer"
+msgstr "Meld 差分ビューア"
+
+#: ../meldapp.py:292
+msgid "Line numbers are only available if you have pysourceview installed."
+msgstr ""
+"'pysourceview' をインストールしている場合にのみ行番号を表示することができま"
+"す。"
+
+#: ../meldapp.py:296
+msgid ""
+"Syntax highlighting is only available if you have pysourceview installed."
+msgstr ""
+"'pysourceview' をインストールしている場合にのみ強調表示を利用できます。"
+
+#: ../meldapp.py:749
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "ファイルとフォルダの間での比較はできません。\n"
+
+#. ###############################################################################
+#.
+#. usage
+#.
+#. ###############################################################################
+#: ../meldapp.py:795
+msgid ""
+"Meld is a file and directory comparison tool. Usage:\n"
+"\n"
+"    meld                        Start with no windows open\n"
+"    meld <dir>                  Start with VC browser in 'dir'\n"
+"    meld <file>                 Start with VC diff of 'file'\n"
+"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
+"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
+"\n"
+"Options:\n"
+"    -h, --help                  Show this help text and exit\n"
+"    -v, --version               Display the version and exit\n"
+"\n"
+"For more information choose help -> contents.\n"
+"Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
+"Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
+msgstr ""
+"Meld はファイルとフォルダを比較するツールです。\n"
+"用法:\n"
+"    meld                        ウィンドウを開かずに起動する\n"
+"    meld <dir>                  <dir> の CVS 表示モードで起動する\n"
+"    meld <file>                 <file> の CVS 差分モードで起動する\n"
+"    meld <file> <file> [file]   2-3 個のファイル同士の比較モードで起動する\n"
+"    meld <dir>  <dir>  [dir]    2-3 個のディレクトリ同士の比較モードで起動す"
+"る\n"
+"\n"
+"オプション:\n"
+"    -h, --help                  このヘルプを表示して終了する\n"
+"    -v, --version               バージョンを表示して終了する\n"
+"\n"
+"詳細なヘルプはメニューから [ヘルプ] -> [目次] をご覧下さい。\n"
+"バグの報告は  http://bugzilla.gnome.org/buglist.cgi?product=meld まで。\n"
+"メーリング・リストは http://mail.gnome.org/mailman/listinfo/meld-list に"
+"て。\n"
+
+#: ../meldapp.py:812
+#, python-format
+msgid ""
+"Meld %s\n"
+"Written by Stephen Kennedy <stevek@gnome.org>"
+msgstr ""
+"Meld %s\n"
+"作者: Stephen Kennedy <stevek@gnome.org>"
+
+#: ../meldapp.py:862
+#, python-format
+msgid "Wrong number of arguments (Got %i)"
+msgstr "引数の数が間違っています (%i 個と受け取りました)"
+
+#: ../melddoc.py:45
+msgid "untitled"
+msgstr "タイトルなし"
+
+#. no common path. empty names get changed to "[None]"
+#: ../misc.py:118
+msgid "[None]"
+msgstr "[なし]"
+
+#: ../vcview.py:153
+msgid "Name"
+msgstr "名前"
+
+#: ../vcview.py:170
+msgid "Location"
+msgstr "場所"
+
+#: ../vcview.py:171
+msgid "Status"
+msgstr "状態"
+
+#: ../vcview.py:172
+msgid "Rev"
+msgstr "リビジョン"
+
+#: ../vcview.py:174
+msgid "Options"
+msgstr "オプション"
+
+#: ../vcview.py:255
+msgid "(Empty)"
+msgstr "(空)"
+
+#: ../vcview.py:291
+#, python-format
+msgid "[%s] Fetching differences"
+msgstr "[%s] 差分の取得中"
+
+#: ../vcview.py:298
+#, python-format
+msgid "[%s] Applying patch"
+msgstr "[%s] パッチの適用中"
+
+#: ../vcview.py:302
+msgid "No differences found."
+msgstr "差分はありませんでした。"
+
+#: ../vcview.py:378
+msgid "Select some files first."
+msgstr "まず最初にファイルを選択して下さい。"
