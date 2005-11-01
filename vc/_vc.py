@@ -92,6 +92,12 @@ class Vc(object):
     def get_working_directory(self, workdir):
         return workdir
 
+    def cache_inventory(self, topdir):
+        pass
+
+    def uncache_inventory(self):
+        pass
+
     def listdir(self, start):
         if start=="": start="."
         if start[-1] != "/": start+="/"

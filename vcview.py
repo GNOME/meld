@@ -227,6 +227,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             for f in filters:
                 if f(entry): return 1
         recursive = self.button_flatten.get_active()
+        self.vc.cache_inventory(rootname)
         while len(todo):
             todo.sort() # depth first
             path, name = todo.pop(0)
@@ -257,6 +258,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     _expand_to_root( self.treeview, path )
             else: # just the root
                 self.treeview.expand_row( (0,), 0)
+        self.vc.uncache_inventory()
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
