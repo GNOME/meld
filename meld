@@ -44,7 +44,7 @@ except (IOError,locale.Error), e:
     # fake gettext until translations in place
     print "(meld): WARNING **: %s" % e
     __builtins__.__dict__["_"] = lambda x : x
-    __builtins__.__dict__["ngettext"] = gettext.ngettext
+__builtins__.__dict__["ngettext"] = gettext.ngettext
 
 #
 # python version
