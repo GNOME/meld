@@ -81,6 +81,12 @@ if gtk.pygtk_version < pygtkver:
     print _("Due to incompatible API changes some functions may not operate as expected.")
 
 #
+# We target pygtk 2.6
+#
+if gtk.pygtk_version >= (2,8,0):
+	import warnings
+	warnings.filterwarnings("ignore", category=DeprecationWarning)
+#
 # main
 #
 import meldapp
