@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-29 18:05+0900\n"
-"PO-Revision-Date: 2005-10-29 18:03+0900\n"
+"POT-Creation-Date: 2005-11-13 23:30+0900\n"
+"PO-Revision-Date: 2005-11-13 23:29+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "%s を隠す"
 msgid "[%s] Scanning"
 msgstr "[%s] スキャン中"
 
-#: ../dirdiff.py:370 ../vcview.py:239
+#: ../dirdiff.py:370 ../vcview.py:240
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] %s のスキャン中"
@@ -77,7 +77,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../dirdiff.py:549 ../vcview.py:401
+#: ../dirdiff.py:549 ../vcview.py:403
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -86,7 +86,7 @@ msgstr ""
 "'%s' はフォルダです。\n"
 "再帰的に削除しますか？"
 
-#: ../dirdiff.py:556 ../vcview.py:406
+#: ../dirdiff.py:556 ../vcview.py:408
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -1084,24 +1084,43 @@ msgstr "リビジョン"
 msgid "Options"
 msgstr "オプション"
 
-#: ../vcview.py:255
+#: ../vcview.py:256
 msgid "(Empty)"
 msgstr "(空)"
 
-#: ../vcview.py:291
+#: ../vcview.py:293
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] 差分の取得中"
 
-#: ../vcview.py:298
+#: ../vcview.py:300
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] パッチの適用中"
 
-#: ../vcview.py:302
+#: ../vcview.py:304
 msgid "No differences found."
 msgstr "差分はありませんでした。"
 
-#: ../vcview.py:378
+#: ../vcview.py:380
 msgid "Select some files first."
 msgstr "まず最初にファイルを選択して下さい。"
+
+#. These are the possible states of files. Be sure to get the colons correct.
+#: ../vc/_vc.py:37
+msgid ""
+"Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
+"Missing"
+msgstr ""
+"Ignored:Unversioned:::Error::Newly added:Modified:<b>衝突</b>:Removed:Missing"
+
+#: ../vc/cvs.py:160
+#, python-format
+msgid ""
+"Error converting to a regular expression\n"
+"The pattern was '%s'\n"
+"The error was '%s'"
+msgstr ""
+"正規表現に変換する際にエラー\n"
+"パターン: '%s'\n"
+"エラー: '%s'"
