@@ -829,7 +829,7 @@ def main():
     sys.stdout = Unbuffered(sys.stdout)
     args = sys.argv[1:]
 
-    if len(args) >= 2:
+    if args:
         if "-h" in args or "--help" in args:
             print usage_string
             return
