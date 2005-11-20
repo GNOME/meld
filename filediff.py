@@ -543,13 +543,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             filenames.append( self._get_filename(i) )
         shortnames = misc.shorten_names(*filenames)
         for i in range(self.num_panes):
+            stock = None
             if self.bufferdata[i].modified == 1:
                 shortnames[i] += "*"
-                self.statusimage[i].show()
-                self.statusimage[i].set_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_SMALL_TOOLBAR)
+                if self.bufferdata[i].writable == 1:
+                    stock = gtk.STOCK_SAVE
+                else:
+                    stock = gtk.STOCK_SAVE_AS
             elif self.bufferdata[i].writable == 0:
+                stock = gtk.STOCK_NO
+            if stock:
                 self.statusimage[i].show()
-                self.statusimage[i].set_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_SMALL_TOOLBAR)
+                self.statusimage[i].set_from_stock(stock, gtk.ICON_SIZE_SMALL_TOOLBAR)
             else:
                 self.statusimage[i].hide()
         self.label_text = " : ".join(shortnames)
@@ -641,6 +646,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
                         t.text.append(nextbit)
                     else:
+                        self.set_buffer_writable(t.buf, os.access(t.filename, os.W_OK))
                         self.bufferdata[t.pane].encoding = t.codec[0]
                         if hasattr(t.file, "newlines"):
                             self.bufferdata[t.pane].newlines = t.file.newlines
@@ -849,7 +855,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def set_buffer_writable(self, buf, yesno):
         pane = self.textview.index(buf.textview)
-        self.bufferdata[pane].writing = yesno
+        self.bufferdata[pane].writable = yesno
         self.recompute_label()
 
     def set_buffer_modified(self, buf, yesno):
