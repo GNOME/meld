@@ -39,7 +39,7 @@ class Vc(_vc.Vc):
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        return [self.CMD,"diff","-u"]
+        return [self.CMD,"diff"]
     def update_command(self):
         return [self.CMD,"update"]
     def add_command(self, binary=0):
