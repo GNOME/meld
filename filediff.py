@@ -703,7 +703,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             bufs[i].apply_tag(tags[i], s, e)
                         back = (0,0)
                     yield 1
- 
+
     def on_textview_expose_event(self, textview, event):
         if self.num_panes == 1:
             return
@@ -794,7 +794,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
                 newline = misc.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
                     self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_CANCEL,
-                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] ) 
+                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] )
                 if newline < 0:
                     return
                 for k,v in buttons.items():
@@ -945,7 +945,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # the line to search for in the 'master' text
             line  = (adjustment.value + adjustment.page_size * syncpoint)
             line *= self._get_line_count(master)
-            line /= (adjustment.upper - adjustment.lower) 
+            line /= (adjustment.upper - adjustment.lower)
 
             for (i,adj) in others:
                 mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
@@ -1049,7 +1049,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
-        
+
     def next_diff(self, direction):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
         curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
@@ -1110,7 +1110,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
     def on_linkmap_expose_event(self, area, event):
         window = area.window
-        # not mapped? 
+        # not mapped?
         if not window: return
         if not hasattr(area, "meldgc"):
             self._setup_gcs(area)
@@ -1174,7 +1174,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if draw_style > 0:
                 n = (1, 9)[draw_style-1]
                 points0 = []
-                points1 = [] 
+                points1 = []
                 for t in map(lambda x: float(x)/n, range(n+1)):
                     points0.append( (int(    t*wtotal), int((1-f(t))*f0 + f(t)*t0 )) )
                     points1.append( (int((1-t)*wtotal), int(f(t)*f1 + (1-f(t))*t1 )) )
@@ -1265,7 +1265,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return 0
 
     def on_linkmap_motion_notify_event(self, area, event):
-        return 
+        return
         #dx = event.x - self.linkmap_drag_coord
         #self.linkmap_drag_coord = event.x
         #w,h = self.scrolledwindow0.size_request()
@@ -1335,21 +1335,21 @@ class MeldBufferData(object):
 
 ################################################################################
 #
-# BufferInsertionAction 
+# BufferInsertionAction
 #
 ################################################################################
 class BufferInsertionAction(object):
     """A helper to undo/redo text insertion into a text buffer"""
     def __init__(self, buffer, offset, text):
         self.buffer = buffer
-        self.offset = offset 
+        self.offset = offset
         self.text = text
     def undo(self):
         b = self.buffer
         b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
     def redo(self):
         b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text) 
+        b.insert( b.get_iter_at_offset( self.offset), self.text)
 
 ################################################################################
 #
@@ -1360,17 +1360,17 @@ class BufferDeletionAction(object):
     """A helper to undo/redo text deletion from a text buffer"""
     def __init__(self, buffer, offset, text):
         self.buffer = buffer
-        self.offset = offset 
+        self.offset = offset
         self.text = text
     def undo(self):
         b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text) 
+        b.insert( b.get_iter_at_offset( self.offset), self.text)
     def redo(self):
         b = self.buffer
         b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
 ################################################################################
 #
-# BufferModifiedAction 
+# BufferModifiedAction
 #
 ################################################################################
 class BufferModifiedAction(object):
