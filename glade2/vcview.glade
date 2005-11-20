@@ -36,8 +36,8 @@
 	  <child>
 	    <widget class="GtkToolButton" id="button_diff">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Diff selected</property>
-	      <property name="label" translatable="yes">_Diff</property>
+	      <property name="tooltip" translatable="yes">Compare selected</property>
+	      <property name="label" translatable="yes">_Compare</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-dialog-info</property>
 	      <property name="visible_horizontal">True</property>
@@ -534,7 +534,7 @@
   <child>
     <widget class="GtkImageMenuItem" id="diff">
       <property name="visible">True</property>
-      <property name="label" translatable="yes">_Diff</property>
+      <property name="label" translatable="yes">_Compare</property>
       <property name="use_underline">True</property>
       <signal name="activate" handler="on_diff_activate" last_modification_time="Sat, 30 Aug 2003 12:39:59 GMT"/>
 
@@ -1018,7 +1018,7 @@
 
 <widget class="GtkDialog" id="diffdialog">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Diff Options</property>
+  <property name="title" translatable="yes">Compare Options</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_CENTER</property>
   <property name="modal">True</property>

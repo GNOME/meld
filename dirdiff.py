@@ -358,7 +358,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _search_recursively_iter(self, rootpath):
         self.filter_hide_current.set_sensitive(False)
-        yield _("[%s] Scanning") % self.label_text
+        yield _("[%s] Scanning %s") % (self.label_text, "")
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         symlinks_followed = {} # only follow symlinks once
         todo = [ rootpath ]

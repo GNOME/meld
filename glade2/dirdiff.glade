@@ -9,7 +9,7 @@
   <child>
     <widget class="GtkImageMenuItem" id="compare">
       <property name="visible">True</property>
-      <property name="label" translatable="yes">Launch _Comparison</property>
+      <property name="label" translatable="yes">_Compare</property>
       <property name="use_underline">True</property>
       <signal name="activate" handler="on_popup_compare_activate" last_modification_time="Sun, 18 May 2003 13:37:14 GMT"/>
 
@@ -36,7 +36,7 @@
   <child>
     <widget class="GtkImageMenuItem" id="copy_left">
       <property name="visible">True</property>
-      <property name="label" translatable="yes">Copy Left</property>
+      <property name="label" translatable="yes">Copy To Left</property>
       <property name="use_underline">True</property>
       <signal name="activate" handler="on_popup_copy_left_activate" last_modification_time="Sat, 21 Jun 2003 17:03:12 GMT"/>
 
@@ -57,7 +57,7 @@
   <child>
     <widget class="GtkImageMenuItem" id="copy_right">
       <property name="visible">True</property>
-      <property name="label" translatable="yes">Copy Right</property>
+      <property name="label" translatable="yes">Copy To Right</property>
       <property name="use_underline">True</property>
       <signal name="activate" handler="on_popup_copy_right_activate" last_modification_time="Sat, 21 Jun 2003 17:03:12 GMT"/>
 
@@ -162,8 +162,8 @@
 	  <child>
 	    <widget class="GtkToolButton" id="button_diff">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Diff selection</property>
-	      <property name="label" translatable="yes">Diff</property>
+	      <property name="tooltip" translatable="yes">Compare selected</property>
+	      <property name="label" translatable="yes">Compare</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-dialog-info</property>
 	      <property name="visible_horizontal">True</property>
@@ -193,7 +193,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="button_copy_left">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Copy left</property>
+	      <property name="tooltip" translatable="yes">Copy To Left</property>
 	      <property name="label" translatable="yes">Left</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-go-back</property>
@@ -211,7 +211,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="button_copy_right">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Copy right</property>
+	      <property name="tooltip" translatable="yes">Copy To Right</property>
 	      <property name="label" translatable="yes">Right</property>
 	      <property name="use_underline">True</property>
 	      <property name="stock_id">gtk-go-forward</property>

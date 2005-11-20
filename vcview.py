@@ -209,7 +209,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.label_changed()
 
     def _search_recursively_iter(self, iterstart):
-        yield _("[%s] Scanning") % self.label_text
+        yield _("[%s] Scanning %s") % (self.label_text,"")
         rootpath = self.model.get_path( iterstart  )
         rootname = self.model.value_path( self.model.get_iter(rootpath), 0 )
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
