@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-31 14:30-0500\n"
+"POT-Creation-Date: 2005-12-03 20:02-0500\n"
 "PO-Revision-Date: 2005-06-23 16:51-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
@@ -27,12 +27,7 @@ msgstr "Error converting pattern '%s' to regular expression"
 msgid "Hide %s"
 msgstr "Hide %s"
 
-#: dirdiff.py:361 vcview.py:212
-#, python-format
-msgid "[%s] Scanning"
-msgstr "[%s] Scanning"
-
-#: dirdiff.py:370 vcview.py:239
+#: dirdiff.py:361 dirdiff.py:370 vcview.py:212 vcview.py:240
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Scanning %s"
@@ -78,7 +73,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: dirdiff.py:549 vcview.py:401
+#: dirdiff.py:549 vcview.py:403
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -87,7 +82,7 @@ msgstr ""
 "'%s' is a directory.\n"
 "Remove recusively?"
 
-#: dirdiff.py:556 vcview.py:406
+#: dirdiff.py:556 vcview.py:408
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -186,31 +181,31 @@ msgstr "The regular expression '%s' was not found."
 msgid "The text '%s' was not found."
 msgstr "The text '%s' was not found."
 
-#: filediff.py:573
+#: filediff.py:578
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Set num panes"
 
-#: filediff.py:580
+#: filediff.py:585
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Opening files"
 
-#: filediff.py:597 filediff.py:611 filediff.py:627 filediff.py:634
+#: filediff.py:602 filediff.py:616 filediff.py:632 filediff.py:639
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Could not read from '%s'"
 
-#: filediff.py:598 filediff.py:635
+#: filediff.py:603 filediff.py:640
 msgid "The error was:"
 msgstr "The error was:"
 
-#: filediff.py:603
+#: filediff.py:608
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Reading files"
 
-#: filediff.py:612
+#: filediff.py:617
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -218,17 +213,17 @@ msgstr ""
 "It contains ASCII NULLs.\n"
 "Perhaps it is a binary file."
 
-#: filediff.py:628
+#: filediff.py:633
 #, python-format
 msgid "I tried encodings %s."
 msgstr "I tried encodings %s."
 
-#: filediff.py:656
+#: filediff.py:662
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Computing differences"
 
-#: filediff.py:760
+#: filediff.py:766
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -237,7 +232,7 @@ msgstr ""
 "\"%s\" exists!\n"
 "Overwrite?"
 
-#: filediff.py:773
+#: filediff.py:779
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -248,12 +243,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: filediff.py:782
+#: filediff.py:788
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Choose a name for buffer %i."
 
-#: filediff.py:795
+#: filediff.py:801
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -264,7 +259,7 @@ msgstr ""
 "\n"
 "Which format would you like to use?"
 
-#: filediff.py:811
+#: filediff.py:817
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -274,11 +269,11 @@ msgstr ""
 "Would you like to save as UTF-8?"
 
 #. save as
-#: filediff.py:846
+#: filediff.py:852
 msgid "Save patch as..."
 msgstr "Save patch as..."
 
-#: filediff.py:900
+#: filediff.py:906
 #, python-format
 msgid ""
 "Refreshing will discard changes in:\n"
@@ -296,86 +291,79 @@ msgid "Case"
 msgstr "Case"
 
 #: glade2/dirdiff.glade.h:2
-msgid "Copy Left"
-msgstr "Copy Left"
+msgid "Compare"
+msgstr "Compare"
 
-#: glade2/dirdiff.glade.h:3
-msgid "Copy Right"
-msgstr "Copy Right"
+#: glade2/dirdiff.glade.h:3 glade2/vcview.glade.h:6
+msgid "Compare selected"
+msgstr "Compare selected"
 
 #: glade2/dirdiff.glade.h:4
-msgid "Copy left"
-msgstr "Copy left"
+msgid "Copy To Left"
+msgstr "Copy To Left"
 
 #: glade2/dirdiff.glade.h:5
-msgid "Copy right"
-msgstr "Copy right"
+msgid "Copy To Right"
+msgstr "Copy To Right"
 
 #: glade2/dirdiff.glade.h:6
 msgid "Delete selected"
 msgstr "Delete selected"
 
-#: glade2/dirdiff.glade.h:7
-msgid "Diff"
-msgstr "Diff"
-
-#: glade2/dirdiff.glade.h:8
-msgid "Diff selection"
-msgstr "Diff selection"
-
-#: glade2/dirdiff.glade.h:9 glade2/filediff.glade.h:7
+#: glade2/dirdiff.glade.h:7 glade2/filediff.glade.h:7
 msgid "Edit"
 msgstr "Edit"
 
-#: glade2/dirdiff.glade.h:10
+#: glade2/dirdiff.glade.h:8
 msgid "Hide selected"
 msgstr "Hide selected"
 
-#: glade2/dirdiff.glade.h:11
+#: glade2/dirdiff.glade.h:9
 msgid "Hide..."
 msgstr "Hide..."
 
-#: glade2/dirdiff.glade.h:12
+#: glade2/dirdiff.glade.h:10
 msgid "Ignore case of entries"
 msgstr "Ignore case of entries"
 
-#: glade2/dirdiff.glade.h:13
-msgid "Launch _Comparison"
-msgstr "Launch _Comparison"
-
-#: glade2/dirdiff.glade.h:14
+#: glade2/dirdiff.glade.h:11
 msgid "Left"
 msgstr "Left"
 
-#: glade2/dirdiff.glade.h:15
+#: glade2/dirdiff.glade.h:12
 msgid "Modified"
 msgstr "Modified"
 
-#: glade2/dirdiff.glade.h:16
+#: glade2/dirdiff.glade.h:13
 msgid "New"
 msgstr "New"
 
-#: glade2/dirdiff.glade.h:17
+#: glade2/dirdiff.glade.h:14
 msgid "Right"
 msgstr "Right"
 
-#: glade2/dirdiff.glade.h:18
+#: glade2/dirdiff.glade.h:15
 msgid "Same"
 msgstr "Same"
 
-#: glade2/dirdiff.glade.h:19
+#: glade2/dirdiff.glade.h:16
 msgid "Show identical"
 msgstr "Show identical"
 
-#: glade2/dirdiff.glade.h:20 glade2/vcview.glade.h:18
+#: glade2/dirdiff.glade.h:17 glade2/vcview.glade.h:18
 msgid "Show modified"
 msgstr "Show modified"
 
-#: glade2/dirdiff.glade.h:21
+#: glade2/dirdiff.glade.h:18
 msgid "Show new"
 msgstr "Show new"
 
-#: glade2/dirdiff.glade.h:22
+#: glade2/dirdiff.glade.h:19 glade2/meldapp.glade.h:86
+#: glade2/vcview.glade.h:25
+msgid "_Compare"
+msgstr "_Compare"
+
+#: glade2/dirdiff.glade.h:20
 msgid "_Delete Selected"
 msgstr "_Delete Selected"
 
@@ -388,12 +376,12 @@ msgstr ""
 "Which ones would you like to save?</span>"
 
 #: glade2/filediff.glade.h:3
-msgid "Copy All _Left"
-msgstr "Copy All _Left"
+msgid "Copy All To _Left"
+msgstr "Copy All To _Left"
 
 #: glade2/filediff.glade.h:4
-msgid "Copy All _Right"
-msgstr "Copy All _Right"
+msgid "Copy All To _Right"
+msgstr "Copy All To _Right"
 
 #: glade2/filediff.glade.h:5
 msgid "Copy to Clipboard"
@@ -408,30 +396,26 @@ msgid "Find"
 msgstr "Find"
 
 #: glade2/filediff.glade.h:9
-msgid "Make Patch"
-msgstr "Make Patch"
-
-#: glade2/filediff.glade.h:10
 msgid "Match _entire word only"
 msgstr "Match _entire word only"
 
-#: glade2/filediff.glade.h:11
+#: glade2/filediff.glade.h:10
 msgid "Regular e_xpression"
 msgstr "Regular e_xpression"
 
-#: glade2/filediff.glade.h:12
+#: glade2/filediff.glade.h:11
 msgid "Save modified files?"
 msgstr "Save modified files?"
 
-#: glade2/filediff.glade.h:13
+#: glade2/filediff.glade.h:12
 msgid "Search for:"
 msgstr "Search for:"
 
-#: glade2/filediff.glade.h:14
+#: glade2/filediff.glade.h:13
 msgid "_Match case"
 msgstr "_Match case"
 
-#: glade2/filediff.glade.h:15
+#: glade2/filediff.glade.h:14
 msgid "_Wrap around"
 msgstr "_Wrap around"
 
@@ -484,8 +468,8 @@ msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
 
 #: glade2/meldapp.glade.h:13
-msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Diff</span>"
+msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Compare</span>"
 
 #: glade2/meldapp.glade.h:14
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
@@ -797,13 +781,9 @@ msgstr "Whitespace is significant"
 msgid "_Character"
 msgstr "_Character"
 
-#: glade2/meldapp.glade.h:86
+#: glade2/meldapp.glade.h:87
 msgid "_Contents"
 msgstr "_Contents"
-
-#: glade2/meldapp.glade.h:87 glade2/vcview.glade.h:25
-msgid "_Diff"
-msgstr "_Diff"
 
 #: glade2/meldapp.glade.h:88
 msgid "_Directory Comparison"
@@ -866,20 +846,16 @@ msgid "Commit Files"
 msgstr "Commit Files"
 
 #: glade2/vcview.glade.h:5
+msgid "Compare Options"
+msgstr "Compare Options"
+
+#: glade2/vcview.glade.h:7
 msgid "Date"
 msgstr "Date"
 
-#: glade2/vcview.glade.h:6
+#: glade2/vcview.glade.h:8
 msgid "Delete locally"
 msgstr "Delete locally"
-
-#: glade2/vcview.glade.h:7
-msgid "Diff Options"
-msgstr "Diff Options"
-
-#: glade2/vcview.glade.h:8
-msgid "Diff selected"
-msgstr "Diff selected"
 
 #: glade2/vcview.glade.h:9
 msgid "Flatten directories"
@@ -994,7 +970,7 @@ msgid ""
 msgstr ""
 "Syntax highlighting is only available if you have pysourceview installed."
 
-#: meldapp.py:749
+#: meldapp.py:750
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Cannot compare a mixture of files and directories.\n"
 
@@ -1003,7 +979,7 @@ msgstr "Cannot compare a mixture of files and directories.\n"
 #. usage
 #.
 #. ###############################################################################
-#: meldapp.py:795
+#: meldapp.py:796
 msgid ""
 "Meld is a file and directory comparison tool. Usage:\n"
 "\n"
@@ -1037,7 +1013,7 @@ msgstr ""
 "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
 "Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
 
-#: meldapp.py:812
+#: meldapp.py:813
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -1046,7 +1022,7 @@ msgstr ""
 "Meld %s\n"
 "Written by Stephen Kennedy <stevek@gnome.org>"
 
-#: meldapp.py:862
+#: meldapp.py:863
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Wrong number of arguments (Got %i)"
@@ -1080,25 +1056,25 @@ msgstr "Rev"
 msgid "Options"
 msgstr "Options"
 
-#: vcview.py:255
+#: vcview.py:256
 msgid "(Empty)"
 msgstr "(Empty)"
 
-#: vcview.py:291
+#: vcview.py:293
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Fetching differences"
 
-#: vcview.py:298
+#: vcview.py:300
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Applying patch"
 
-#: vcview.py:302
+#: vcview.py:304
 msgid "No differences found."
 msgstr "No differences found."
 
-#: vcview.py:378
+#: vcview.py:380
 msgid "Select some files first."
 msgstr "Select some files first."
 
