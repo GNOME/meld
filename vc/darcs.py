@@ -29,7 +29,8 @@ STATES = {
     "a": _vc.STATE_NONE,
     "A": _vc.STATE_NEW,
     "M": _vc.STATE_MODIFIED,
-    "C": _vc.STATE_CONFLICT
+    "C": _vc.STATE_CONFLICT,
+    "R": _vc.STATE_REMOVED
 }
 
 class Vc(_vc.Vc):
@@ -122,10 +123,16 @@ class Vc(_vc.Vc):
                     raise
         for line in p:
             elements = line.split()
-            status = STATES[elements.pop(0)]
-            filename = os.path.join(self.root,
-                        os.path.normpath(elements.pop(0)))
-            whatsnew[filename] = status
+            if len(elements) > 1:
+                if elements[1] == '->':
+                    status = _vc.STATE_NEW
+                    filename = elements.pop()
+                else:
+                    status = STATES[elements.pop(0)]
+                    filename = elements.pop(0)
+                filepath = os.path.join(self.root,
+                                        os.path.normpath(filename))
+                whatsnew[filepath] = status
         return whatsnew
 
     def _get_statuses(self, whatsnew, files, fstype):
