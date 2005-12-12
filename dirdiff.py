@@ -158,7 +158,9 @@ class EmblemCellRenderer(gtk.GenericCellRenderer):
             r.set_property("pixbuf", self.pixbuf)
             self.size = r.get_size(widget, cell_area)
         return self.size
-gobject.type_register(EmblemCellRenderer)
+
+if gobject.pygtk_version < (2,8,0):
+    gobject.type_register(EmblemCellRenderer)
 
 ################################################################################
 #
@@ -999,4 +1001,5 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 goto_iter(it)
                 return
 
-gobject.type_register(DirDiff)
+if gobject.pygtk_version < (2,8,0):
+    gobject.type_register(DirDiff)

@@ -1322,7 +1322,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_linkmap_drag_begin(self, *args):
         print args
 
-gobject.type_register(FileDiff)
+if gobject.pygtk_version < (2,8,0):
+    gobject.type_register(FileDiff)
 
 ################################################################################
 #
