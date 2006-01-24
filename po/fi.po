@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-22 20:43+0200\n"
-"PO-Revision-Date: 2006-01-22 21:39+0200\n"
+"POT-Creation-Date: 2006-01-24 06:19+0200\n"
+"PO-Revision-Date: 2006-01-24 06:11+0200\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -19,8 +19,7 @@ msgstr ""
 #: ../dirdiff.py:252 ../dirdiff.py:267
 #, python-format
 msgid "Error converting pattern '%s' to regular expression"
-msgstr "Virhe muunnettaessa mallia \"%s\" säännölliseksi "
-"lausekkeeksi"
+msgstr "Virhe muunnettaessa mallia \"%s\" säännölliseksi lausekkeeksi"
 
 #: ../dirdiff.py:283
 #, python-format
@@ -44,8 +43,8 @@ msgid ""
 "filesystem. Some files are not visible:\n"
 "%s"
 msgstr ""
-"Suoritat kirjainkoosta riippuvaa vertailua tiedostojärjestelmässä, "
-"joka ei tue kirjainkokoja. Jotkut tiedostot eivät näy:\n"
+"Suoritat kirjainkoosta riippuvaa vertailua tiedostojärjestelmässä, joka ei "
+"tue kirjainkokoja. Jotkut tiedostot eivät näy:\n"
 "%s"
 
 #: ../dirdiff.py:480
@@ -118,29 +117,29 @@ msgstr[1] "%i tuntia"
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i päivä"
+msgstr[1] "%i päivää"
 
 #: ../dirdiff.py:573
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i viikko"
+msgstr[1] "%i viikkoa"
 
 #: ../dirdiff.py:574
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i kuukausi"
+msgstr[1] "%i kuukautta"
 
 #: ../dirdiff.py:575
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i vuosi"
+msgstr[1] "%i vuotta"
 
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
 #: ../filediff.py:214
@@ -159,6 +158,8 @@ msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
 "will be incorrect. See the user manual for more details."
 msgstr ""
+"Säännöllinen lauseke \"%s\" muutti tiedoston rivien määrää, joten vertailu "
+"on nyt virheellinen. Katso opaskirjasta lisätietoja."
 
 #: ../filediff.py:520
 #, python-format
@@ -263,6 +264,8 @@ msgid ""
 "'%s' contains characters not encodable with '%s'\n"
 "Would you like to save as UTF-8?"
 msgstr ""
+"\"%s\" sisältää merkkejä, joita ei voi esittää merkistössä \"%s\".\n"
+"Haluatko tallentaa UTF-8 -muodossa?"
 
 #. save as
 #: ../filediff.py:852
@@ -277,6 +280,10 @@ msgid ""
 "\n"
 "You cannot undo this operation."
 msgstr ""
+"Päivitys poistaa muutokset tiedostossa:\n"
+"%s\n"
+"\n"
+"Suoritettua toimintoa ei voi perua."
 
 #: ../glade2/dirdiff.glade.h:1
 msgid "Case"
@@ -508,6 +515,8 @@ msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
 msgstr ""
+"Valitse, kuinka vertailunäkymän keskipalkki piirretään. Voi olla että haluat "
+"käyttää yksinkertaisempaa mallia, jos vieritys tuntuu hitaalta."
 
 #: ../glade2/meldapp.glade.h:25
 msgid "Copyright (C) 2002 Stephen Kennedy"
@@ -519,7 +528,7 @@ msgstr "Luo puuttuvat kansiot(-d)"
 
 #: ../glade2/meldapp.glade.h:27
 msgid "Curved : Filled Curves"
-msgstr ""
+msgstr "Kaaret: täytettyjä kaaria"
 
 #: ../glade2/meldapp.glade.h:28
 msgid "Custom command"
@@ -573,8 +582,8 @@ msgstr "Älä huomioi muutoksia välilyöntien määrään"
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr ""
-"Älä huomioi muutoksia kirjainkoossa: pienet ja suuret kirjaimet ovat "
-"sama asia."
+"Älä huomioi muutoksia kirjainkoossa: pienet ja suuret kirjaimet ovat sama "
+"asia."
 
 #: ../glade2/meldapp.glade.h:41
 msgid "Ignore changes that just insert or delete blank lines"
@@ -746,6 +755,9 @@ msgid ""
 "directories by name. Each pattern is a list of shell style wildcards "
 "separated by spaces."
 msgstr ""
+"Voit suodattaa pois tiedostoja ja hakemistoja nimen perusteella "
+"suoritettaessa hakemistojen vertailuja. Kukin malli on lista komentorivin "
+"tapaisia jokerimerkkejä erotettuna välilyönneillä."
 
 #: ../glade2/meldapp.glade.h:83
 msgid ""
@@ -755,6 +767,11 @@ msgid ""
 "contains groups, only the groups are replaced. See the user manual for more "
 "details."
 msgstr ""
+"Tietyn tyyppiset muutokset voidaan jättää huomiotta vertailtaessa "
+"suoritettaessa tiedostojen vertailuja. Kukin malli on pythonin säännöllinen "
+"lauseke, joka korvaa täsmäävän tekstin tyhjällä merkkijonolla ennen "
+"vertailua. Jos lauseke sisältää ryhmiä, vain ryhmät korvataan. Katso "
+"lisätietoja käyttöohjeesta."
 
 #: ../glade2/meldapp.glade.h:84
 msgid "Whitespace is significant"
@@ -933,8 +950,8 @@ msgstr "Meld vaatii version %s tai uudemman."
 msgid ""
 "Due to incompatible API changes some functions may not operate as expected."
 msgstr ""
-"Epäyhteensopivista API-muutoksista johtuen jotkut funktiot eivät toimi "
-"kuten voisi olettaa."
+"Epäyhteensopivista API-muutoksista johtuen jotkut funktiot eivät toimi kuten "
+"voisi olettaa."
 
 #: ../meld.desktop.in.h:1
 msgid "Compare and merge your files."
@@ -981,6 +998,14 @@ msgid ""
 "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
 "Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
 msgstr ""
+"Meld on tiedostojen ja hakemistojen vertailutyökalu. Käyttö:\n"
+"\n"
+"    meld                      Käynnistä ilman avoimia vertailuja\n"
+"    meld <hakemisto>          Käynnistä versionhallintaselain\n"
+"    meld <file>               Käynnistä versionhallinnan vertailu\n"
+"    meld <file> <file> [file] Käynnistä 2- tai 3-osainen tiedostovertailu\n"
+"    meld <dir>  <dir>  [dir]  Käynnistä 2- tai 3-osainen hakemistovertailu\n"
+"\n"
 
 #: ../meldapp.py:813
 #, python-format
@@ -1053,6 +1078,8 @@ msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
 msgstr ""
+"Ei huomioitu:Ei versiohallinnassa:::Virhe::Lisätty:Muokattu:<b>Ristiriita</"
+"b>:Poistettu:"
 
 #: ../vc/cvs.py:160
 #, python-format
@@ -1064,4 +1091,3 @@ msgstr ""
 "Virhe muunnettaessa säännöllistä lauseketta\n"
 "Malli oli \"%s\"\n"
 "Virhe oli \"%s\""
-
