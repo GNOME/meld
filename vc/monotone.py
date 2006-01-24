@@ -25,7 +25,6 @@
 import os
 import re
 import time
-import misc
 import _vc
 
 

@@ -47,7 +47,7 @@ class Vc(_vc.Vc):
             return [self.CMD,"add","-kb"]
         return [self.CMD,"add"]
     def remove_command(self, force=0):
-        return [self.CMD,"rm","-f"]
+        return [self.CMD,"rm","--force"]
     def revert_command(self):
         return [self.CMD,"revert"]
 
@@ -102,6 +102,7 @@ class Vc(_vc.Vc):
                           "!": _vc.STATE_MISSING,
                           "I": _vc.STATE_IGNORED,
                           "M": _vc.STATE_MODIFIED,
+                          "D": _vc.STATE_REMOVED,
                           "C": _vc.STATE_CONFLICT }.get(match[1], _vc.STATE_NONE)
                 retfiles.append( _vc.File(path, name, state, rev, tag, options) )
 

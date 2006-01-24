@@ -41,7 +41,7 @@ class Vc(_vc.Vc):
         raise ValueError()
 
     def commit_command(self, message):
-        return [self.CMD,"commit","-m",message]
+        return [self.CMD,"commit","-t",message]
     def diff_command(self):
         return [self.CMD,"diff"]
     def update_command(self):
