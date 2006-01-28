@@ -334,6 +334,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.prefs.use_syntax_highlighting )
         elif key == "regexes":
             self._update_regexes()
+        elif key == "edit_wrap_lines":
+            [t.set_wrap_mode( self.prefs.edit_wrap_lines ) for t in self.textview]
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -949,9 +951,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 others.reverse()
 
             # the line to search for in the 'master' text
-            line  = (adjustment.value + adjustment.page_size * syncpoint)
-            line *= self._get_line_count(master)
-            line /= (adjustment.upper - adjustment.lower)
+            master_y = adjustment.value + adjustment.page_size * syncpoint
+            it = self.textview[master].get_line_at_y(master_y)[0]
+            line_y, height = self.textview[master].get_line_yrange(it)
+            line = it.get_line() + ((master_y-line_y)/height)
 
             for (i,adj) in others:
                 mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
@@ -971,7 +974,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         obegin = c[3]
                 fraction = (line - mbegin) / ((mend - mbegin) or 1)
                 other_line = (obegin + fraction * (oend - obegin))
-                val = adj.lower + (other_line / self._get_line_count(i) * (adj.upper - adj.lower)) - adj.page_size * syncpoint
+                it = self.textview[i].get_buffer().get_iter_at_line(other_line)
+                val, height = self.textview[i].get_line_yrange(it)
+                val -= (adj.page_size) * syncpoint
+                val += (other_line-int(other_line)) * height
                 val = misc.clamp(val, 0, adj.upper - adj.page_size)
                 adj.set_value( val )
 
