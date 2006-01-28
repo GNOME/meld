@@ -102,7 +102,7 @@ test:
 
 .PHONY:changelog
 changelog:
-	cvs2cl -t
+	cvs2cl -t -d -F HEAD
 
 .PHONY:check
 check:
