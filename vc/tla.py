@@ -25,12 +25,36 @@ import os
 import errno
 import _vc
 
+# From the Arch manual (kept here for reference)
+
+# A/   added directory
+# D/   deleted directory
+# />   renamed directory
+# -/   directory permissions changed
+ 
+# A    added file
+# D    deleted file
+# M    file modified
+# Mb   binary file modified
+# --   permissions of file changed
+# =>   renamed file
+# fl   file replaced by link
+# lf   link replaced by file
+# ->   link target changed
+
 STATES = {
     "a": _vc.STATE_NONE,
     "A": _vc.STATE_NEW,
     "M": _vc.STATE_MODIFIED,
     "C": _vc.STATE_CONFLICT,
-    "D": _vc.STATE_REMOVED
+    "D": _vc.STATE_REMOVED,
+    "--": _vc.STATE_MODIFIED,
+    "=>": _vc.STATE_REMOVED,
+    "->": _vc.STATE_MODIFIED,
+    "A/": _vc.STATE_NEW,
+    "D/": _vc.STATE_REMOVED,
+    "/>": _vc.STATE_REMOVED,
+    "-/": _vc.STATE_MODIFIED,
 }
 
 class Vc(_vc.Vc):
@@ -58,10 +82,7 @@ class Vc(_vc.Vc):
         return [self.CMD, "file-diff"]
 
     def update_command(self):
-        # This will not work while passing the files parameter after it
-        # This hack alows you to update in the root directory
-        # but we don't need the hack in pida
-        return [self.CMD, "pull"]
+        return [self.CMD, "update", "--dir"]
 
     def add_command(self, binary=0):
         return [self.CMD, "add-id"]
@@ -70,8 +91,8 @@ class Vc(_vc.Vc):
         return [self.CMD, "rm"]
  
     def revert_command(self):
-        # will not work, since darcs needs interaction it seems
-        return [self.CMD, "undo", "--filename"]
+        # Will only work on later versions of tla
+        return [self.CMD, "undo", "--"]
 
     def get_working_directory(self, workdir):
         return self.root
