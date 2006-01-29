@@ -18,6 +18,7 @@ rundiff: check
 	echo $(prefix)
 	$(MELD_CMD) . ../meld #?.txt
 	#$(MELD_CMD) ntest/file$(TESTNUM)*
+	#./meld {.,../old/dev/meld}/meld
 endif
 
 .PHONY:all
@@ -102,7 +103,7 @@ test:
 
 .PHONY:changelog
 changelog:
-	cvs2cl -t -d -F HEAD
+	cvs2cl -t -d
 
 .PHONY:check
 check:
