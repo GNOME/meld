@@ -58,15 +58,17 @@ class Vc(_vc.Vc):
         return self.root
 
     def cache_inventory(self, rootdir):
-        self._tree_cache = self.lookup_tree()
+        self._tree_cache = self.lookup_tree(rootdir)
 
     def uncache_inventory(self):
         self._tree_cache = None
 
-    def lookup_tree(self):
+    def lookup_tree(self, rootdir):
+        branch_root = os.popen("bzr root %s" % rootdir).read().rstrip('\n')
         while 1:
             try:
-                entries = os.popen("bzr status --all").read().split("\n")[:-1]
+                proc = os.popen("bzr status --all %s" % branch_root)
+                entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
@@ -81,29 +83,30 @@ class Vc(_vc.Vc):
             "conflicts:": _vc.STATE_CONFLICT }
         tree_state = {}
         for entry in entries:
+            if entry == "pending merges:":
+                break
             if entry in statemap:
                 cur_state = statemap[entry]
             else:
                 if entry.startswith("  "):
-                    tree_state[os.path.join(self.root, entry[2:])] = cur_state
+                    tree_state[os.path.join(rootdir, entry[2:])] = cur_state
         return tree_state
 
-    def get_tree(self):
+    def get_tree(self, directory):
         if self._tree_cache is None:
-            return self.lookup_tree()
+            return self.lookup_tree(directory)
         else:
             return self._tree_cache
         
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"
-        tree = self.get_tree()
         if len(files):
             directory = os.path.dirname(files[0][1])
         elif len(dirs):
             directory = os.path.dirname(dirs[0][1])
         else:
             return [],[]
-
+        tree = self.get_tree(directory)
 
         retfiles = []
         retdirs = []
