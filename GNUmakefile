@@ -56,8 +56,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/application-registry/meld.applications
 	install -m 644 meld.desktop \
 		$(DESTDIR)$(sharedir)/applications
-	python    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
-	python -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
+	$(PYTHON) -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
+	$(PYTHON) -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)")'
 	install -m 644 \
 		glade2/*.glade \
 		$(DESTDIR)$(sharedir_)/glade2
@@ -74,7 +74,7 @@ meld.desktop: meld.desktop.in
 	intltool-merge -d po meld.desktop.in meld.desktop
 
 %.install: %
-	python tools/install_paths \
+	$(PYTHON) tools/install_paths \
 		libdir=$(libdir_) \
 		localedir=$(localedir) \
 		helpdir=$(helpdir_) \
