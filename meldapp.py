@@ -142,8 +142,8 @@ class ListWidget(gnomeglade.Component):
     def on_item_new_clicked(self, button):
         model = self.treeview.get_model()
         it = model.append()
-        model.set_value(it, 0, "label")
-        model.set_value(it, 2, "pattern")
+        model.set_value(it, 0, _("label"))
+        model.set_value(it, 2, _("pattern"))
         self._update_filter_string()
     def _get_selected(self):
         selected = []
@@ -244,11 +244,11 @@ class PreferencesDialog(gnomeglade.Component):
         self.draw_style[self.prefs.draw_style].set_active(1)
         self.toolbar_style[self.prefs.toolbar_style].set_active(1)
         # file filters
-        cols = [ ("Name", type("")), ("Active", type(0)), ("Pattern", type("")) ]
+        cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Pattern"), type("")) ]
         self.filefilter = ListWidget( cols, self.prefs, "filters")
         self.file_filters_box.pack_start(self.filefilter.widget)
         # text filters
-        cols = [ ("Name", type("")), ("Active", type(0)), ("Regex", type("")) ]
+        cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Regex"), type("")) ]
         self.textfilter = ListWidget( cols, self.prefs, "regexes")
         self.text_filters_box.pack_start(self.textfilter.widget)
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
@@ -431,18 +431,30 @@ class MeldPreferences(prefs.Preferences):
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_edited_bg" : prefs.Value(prefs.STRING, "gray90"),
         "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
-        "filters" : prefs.Value(prefs.STRING, "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n" + \
-                                              "CVS\t1\tCVS\n" + \
-                                              "SVN\t1\t.svn\n" + \
-                                              "Monotone\t1\tMT\n" + \
-                                              "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n" + \
-                                              "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"),
-        "regexes" : prefs.Value(prefs.STRING, "CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n" + \
-                                              "C++ comment\t0\t//.*\n" + \
-                                              "C comment\t0\t/\*.*?\*/\n" + \
-                                              "All whitespace\t0\t[ \\t\\r\\f\\v]*\n" + \
-                                              "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n" + \
-                                              "Script comment\t0\t#.*"),
+	 #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+        "filters" : prefs.Value(prefs.STRING, _("Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("CVS\t1\tCVS\n") + \
+	 	 				#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("SVN\t1\t.svn\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("Monotone\t1\tMT\n") + \
+	 	 				#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}")),
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+        "regexes" : prefs.Value(prefs.STRING, _("CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("C++ comment\t0\t//.*\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("C comment\t0\t/\*.*?\*/\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("All whitespace\t0\t[ \\t\\r\\f\\v]*\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n") + \
+	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+                                              _("Script comment\t0\t#.*")),
         "ignore_blank_lines" : prefs.Value(prefs.BOOL, 1)
     }
 
