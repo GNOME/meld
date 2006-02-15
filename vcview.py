@@ -312,6 +312,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_press_event(self, text, event):
         if event.button==3:
             VcMenu(self, event)
+            return len(self._get_selected_treepaths()) != 1
         return 0
 
     def on_button_flatten_toggled(self, button):
@@ -420,7 +421,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         tmpdir = tempfile.mkdtemp("-meld")
         self.tempdirs.append(tmpdir)
 
-        regex = re.compile("^diff(.*$)", re.M)
         regex = re.compile(self.vc.PATCH_INDEX_RE, re.M)
         files = [f.split()[-1] for f in regex.findall(patch)]
         diffs = []
