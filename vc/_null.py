@@ -26,7 +26,7 @@ import _vc
 
 class Vc(_vc.Vc):
 
-    CMD = "echo"
+    CMD = "true"
     NAME = "Null"
 
     def __init__(self, location):
