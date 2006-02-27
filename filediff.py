@@ -178,6 +178,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.find_dialog = None
         self.last_search = None
         self.set_num_panes(num_panes)
+        gtk.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
 
     def _update_regexes(self):
         self.regexes = []
