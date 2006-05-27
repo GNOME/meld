@@ -264,21 +264,31 @@ def shell_to_regex(pat):
     """Translate a shell PATTERN to a regular expression.
 
     Based on fnmatch.translate(). We also handle {a,b,c} where fnmatch does not.
-    There is no way to quote meta-characters.
     """
 
     i, n = 0, len(pat)
     res = ''
     while i < n:
         c = pat[i]
-        i = i+1
-        if c == '*':
+        i += 1
+        if c == '\\':
+            try:
+                c = pat[i]
+            except IndexError:
+                pass
+            else:
+                i += 1
+                res += re.escape(c)
+        elif c == '*':
             res += '.*'
         elif c == '?':
             res += '.'
         elif c == '[':
             try:
                 j = pat.index(']', i)
+            except ValueError:
+                res += r'\['
+            else:
                 stuff = pat[i:j]
                 i = j+1
                 if stuff[0] == '!':
@@ -286,16 +296,15 @@ def shell_to_regex(pat):
                 elif stuff[0] == '^':
                     stuff = r'\^%s' % stuff[1:]
                 res += '[%s]' % stuff
-            except ValueError:
-                res += r'\['
         elif c == '{':
             try:
                 j = pat.index('}', i)
+            except ValueError:
+                res += '\\{'
+            else:
                 stuff = pat[i:j]
                 i = j+1
                 res += '(%s)' % "|".join([shell_to_regex(p)[:-1] for p in stuff.split(",")])
-            except ValueError:
-                res += '\\{'
         else:
             res += re.escape(c)
     return res + "$"
