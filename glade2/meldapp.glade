@@ -70,7 +70,7 @@
 			      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image670">
+				<widget class="GtkImage" id="image706">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -92,7 +92,7 @@
 			      <accelerator key="s" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image677">
+				<widget class="GtkImage" id="image707">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-save-as</property>
 				  <property name="icon_size">1</property>
@@ -114,7 +114,7 @@
 			      <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image671">
+				<widget class="GtkImage" id="image708">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-save</property>
 				  <property name="icon_size">1</property>
@@ -128,7 +128,7 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkMenuItem" id="separator4">
+			    <widget class="GtkSeparatorMenuItem" id="separator4">
 			      <property name="visible">True</property>
 			    </widget>
 			  </child>
@@ -178,7 +178,51 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkMenuItem" id="separator5">
+			    <widget class="GtkImageMenuItem" id="menu_edit_refresh">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">Refresh</property>
+			      <property name="use_underline">True</property>
+			      <signal name="activate" handler="on_menu_refresh_activate" last_modification_time="Sat, 27 May 2006 22:26:40 GMT"/>
+			      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+
+			      <child internal-child="image">
+				<widget class="GtkImage" id="image709">
+				  <property name="visible">True</property>
+				  <property name="stock">gtk-refresh</property>
+				  <property name="icon_size">1</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
+
+			  <child>
+			    <widget class="GtkImageMenuItem" id="menu_edit_reload">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">Reload</property>
+			      <property name="use_underline">True</property>
+			      <signal name="activate" handler="on_menu_reload_activate" last_modification_time="Sat, 27 May 2006 22:26:40 GMT"/>
+			      <accelerator key="r" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK" signal="activate"/>
+
+			      <child internal-child="image">
+				<widget class="GtkImage" id="image710">
+				  <property name="visible">True</property>
+				  <property name="stock">gtk-refresh</property>
+				  <property name="icon_size">1</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
+
+			  <child>
+			    <widget class="GtkSeparatorMenuItem" id="separator5">
 			      <property name="visible">True</property>
 			    </widget>
 			  </child>
@@ -200,7 +244,7 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkMenuItem" id="separator6">
+			    <widget class="GtkSeparatorMenuItem" id="separator6">
 			      <property name="visible">True</property>
 			    </widget>
 			  </child>
@@ -214,7 +258,7 @@
 			      <accelerator key="d" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image671">
+				<widget class="GtkImage" id="image711">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-go-down</property>
 				  <property name="icon_size">1</property>
@@ -236,7 +280,7 @@
 			      <accelerator key="e" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image673">
+				<widget class="GtkImage" id="image712">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-go-up</property>
 				  <property name="icon_size">1</property>
@@ -250,7 +294,7 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkMenuItem" id="separator7">
+			    <widget class="GtkSeparatorMenuItem" id="separator7">
 			      <property name="visible">True</property>
 			    </widget>
 			  </child>
@@ -319,7 +363,7 @@
 			      <signal name="activate" handler="on_menu_users_manual_activate" last_modification_time="Fri, 01 Nov 2002 18:36:34 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image675">
+				<widget class="GtkImage" id="image713">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-help</property>
 				  <property name="icon_size">1</property>
@@ -340,7 +384,7 @@
 			      <signal name="activate" handler="on_menu_help_bug_activate" last_modification_time="Mon, 29 Sep 2003 19:59:09 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image676">
+				<widget class="GtkImage" id="image714">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dialog-warning</property>
 				  <property name="icon_size">1</property>
@@ -395,8 +439,6 @@
 	      <child>
 		<widget class="GtkToolButton" id="toolbar_new">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">New...</property>
-		  <property name="use_underline">True</property>
 		  <property name="stock_id">gtk-new</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
@@ -476,6 +518,7 @@
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
 		  <property name="is_important">True</property>
+		  <signal name="clicked" handler="on_menu_refresh_activate" last_modification_time="Sat, 27 May 2006 22:28:55 GMT"/>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -497,7 +540,7 @@
 	      </child>
 
 	      <child>
-		<widget class="GtkToolButton" id="button12">
+		<widget class="GtkToolButton" id="button_down">
 		  <property name="visible">True</property>
 		  <property name="stock_id">gtk-go-down</property>
 		  <property name="visible_horizontal">True</property>
@@ -512,7 +555,7 @@
 	      </child>
 
 	      <child>
-		<widget class="GtkToolButton" id="button13">
+		<widget class="GtkToolButton" id="button_up">
 		  <property name="visible">True</property>
 		  <property name="stock_id">gtk-go-up</property>
 		  <property name="visible_horizontal">True</property>

@@ -83,6 +83,10 @@ class MeldDoc(gobject.GObject):
                 self.undosequence_busy = 0
             self.undosequence_busy = 0
 
+    def on_refresh_activate(self, *extra):
+        self.on_reload_activate(self, *extra)
+    def on_reload_activate(self, *extra):
+        pass
     def on_find_activate(self, *extra):
         pass
     def on_find_next_activate(self, *extra):

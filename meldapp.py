@@ -649,6 +649,12 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def on_menu_redo_activate(self, *extra):
         self.current_doc().on_redo_activate()
+
+    def on_menu_refresh_activate(self, *extra):
+        self.current_doc().on_refresh_activate()
+
+    def on_menu_reload_activate(self, *extra):
+        self.current_doc().on_reload_activate()
   
     def on_menu_find_activate(self, *extra):
         self.current_doc().on_find_activate()

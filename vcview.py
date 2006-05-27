@@ -568,3 +568,5 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 goto_iter(it)
                 return
 
+    def on_reload_activate(self, *extra):
+        self.on_fileentry_activate(self.fileentry)

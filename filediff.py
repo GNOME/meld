@@ -901,16 +901,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src_pane].get_vadjustment() ) and None )
 
         #
-        # refresh
+        # refresh and reload
         #
-    def refresh(self, junk=None):
+    def on_reload_activate(self, *extra):
         modified = [b.filename for b in self.bufferdata if b.modified]
         if len(modified):
-            message = _("Refreshing will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
+            message = _("Reloading will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
             response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
             if response != gtk.RESPONSE_OK:
                 return
         files = [b.filename for b in self.bufferdata[:self.num_panes] ]
+        self.set_files(files)
+
+    def on_refresh_activate(self, *extra):
+        files = [None for b in self.bufferdata[:self.num_panes] ]
         self.set_files(files)
 
     def queue_draw(self, junk=None):

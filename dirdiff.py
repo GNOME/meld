@@ -1001,5 +1001,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 goto_iter(it)
                 return
 
+    def on_reload_activate(self, *extra):
+        self.on_fileentry_activate(None)
+
 if gobject.pygtk_version < (2,8,0):
     gobject.type_register(DirDiff)
