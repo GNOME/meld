@@ -722,6 +722,8 @@ class MeldApp(gnomeglade.GnomeApp):
             i = self.notebook.page_num( page.widget )
             assert(i>=0)
             self.notebook.remove_page(i)
+            if self.notebook.get_n_pages() == 0:
+                self.widget.set_title("Meld")
 
     def on_file_changed(self, srcpage, filename):
         for c in self.notebook.get_children():
