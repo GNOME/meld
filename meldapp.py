@@ -557,10 +557,12 @@ class MeldApp(gnomeglade.GnomeApp):
         else:
             self.statusbar.task_progress.set_fraction(0)
         if self.scheduler.tasks_pending():
+            self.toolbar_stop.set_sensitive(1)
             return 1
         else:
             self.statusbar.set_task_status("")
             self.idle_hooked = 0
+            self.toolbar_stop.set_sensitive(0)
             return 0
 
     def on_scheduler_runnable(self, sched):
