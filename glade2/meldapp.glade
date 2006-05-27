@@ -20,6 +20,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="enable_layout_config">True</property>
   <signal name="delete_event" handler="on_delete_event" last_modification_time="Fri, 01 Nov 2002 18:34:38 GMT"/>
   <signal name="size_allocate" handler="on_size_allocate" last_modification_time="Fri, 01 Nov 2002 18:34:38 GMT"/>
@@ -49,6 +50,8 @@
 	      <child>
 		<widget class="GtkMenuBar" id="menu">
 		  <property name="visible">True</property>
+		  <property name="pack_direction">GTK_PACK_DIRECTION_LTR</property>
+		  <property name="child_pack_direction">GTK_PACK_DIRECTION_LTR</property>
 
 		  <child>
 		    <widget class="GtkMenuItem" id="menuitem_file">
@@ -397,7 +400,7 @@
 		  <property name="stock_id">gtk-new</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
-		  <property name="is_important">False</property>
+		  <property name="is_important">True</property>
 		  <signal name="clicked" handler="on_toolbar_new_clicked" last_modification_time="Sat, 02 Nov 2002 17:29:13 GMT"/>
 		</widget>
 		<packing>
@@ -427,7 +430,7 @@
 		  <property name="stock_id">gtk-save</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
-		  <property name="is_important">False</property>
+		  <property name="is_important">True</property>
 		  <signal name="clicked" handler="on_menu_save_activate" last_modification_time="Fri, 01 Nov 2002 18:25:12 GMT"/>
 		</widget>
 		<packing>
@@ -442,7 +445,7 @@
 		  <property name="stock_id">gtk-undo</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
-		  <property name="is_important">False</property>
+		  <property name="is_important">True</property>
 		  <signal name="clicked" handler="on_menu_undo_activate" last_modification_time="Fri, 01 Nov 2002 18:25:26 GMT"/>
 		</widget>
 		<packing>
@@ -457,8 +460,22 @@
 		  <property name="stock_id">gtk-redo</property>
 		  <property name="visible_horizontal">True</property>
 		  <property name="visible_vertical">True</property>
-		  <property name="is_important">False</property>
+		  <property name="is_important">True</property>
 		  <signal name="clicked" handler="on_menu_redo_activate" last_modification_time="Fri, 01 Nov 2002 18:21:08 GMT"/>
+		</widget>
+		<packing>
+		  <property name="expand">False</property>
+		  <property name="homogeneous">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkToolButton" id="button_refresh">
+		  <property name="visible">True</property>
+		  <property name="stock_id">gtk-refresh</property>
+		  <property name="visible_horizontal">True</property>
+		  <property name="visible_vertical">True</property>
+		  <property name="is_important">True</property>
 		</widget>
 		<packing>
 		  <property name="expand">False</property>
@@ -691,6 +708,7 @@ Adam Weinberger (en_CA)</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
   <signal name="response" handler="on_response" last_modification_time="Fri, 01 Nov 2002 13:31:01 GMT"/>
 
@@ -1360,7 +1378,6 @@ Adam Weinberger (en_CA)</property>
 	      <property name="type">tab</property>
 	    </packing>
 	  </child>
-
 	</widget>
 	<packing>
 	  <property name="padding">0</property>
@@ -1482,6 +1499,7 @@ Adam Weinberger (en_CA)</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
   <signal name="response" handler="on_response" last_modification_time="Sat, 27 Sep 2003 14:25:53 GMT"/>
 
@@ -4558,6 +4576,7 @@ Adam Weinberger (en_CA)</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkTable" id="listwidget">

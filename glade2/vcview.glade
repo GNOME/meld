@@ -18,6 +18,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vcview">
@@ -42,7 +43,7 @@
 	      <property name="stock_id">gtk-dialog-info</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
+	      <property name="is_important">True</property>
 	      <signal name="clicked" handler="on_button_diff_clicked" last_modification_time="Sat, 03 Aug 2002 18:22:20 GMT"/>
 	    </widget>
 	    <packing>
@@ -73,7 +74,7 @@
 	      <property name="stock_id">gtk-goto-bottom</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
+	      <property name="is_important">True</property>
 	      <property name="active">False</property>
 	      <signal name="toggled" handler="on_button_flatten_toggled" last_modification_time="Sun, 12 Oct 2003 11:40:43 GMT"/>
 	    </widget>
@@ -91,7 +92,7 @@
 	      <property name="icon">pixmaps/filter-modified-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
+	      <property name="is_important">True</property>
 	      <property name="active">True</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:38 GMT"/>
 	    </widget>
@@ -110,7 +111,7 @@
 	      <property name="icon">pixmaps/filter-normal-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
+	      <property name="is_important">True</property>
 	      <property name="active">True</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:32 GMT"/>
 	    </widget>
@@ -129,7 +130,7 @@
 	      <property name="icon">pixmaps/filter-nonvc-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
+	      <property name="is_important">True</property>
 	      <property name="active">False</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:43 GMT"/>
 	    </widget>
@@ -147,7 +148,7 @@
 	      <property name="icon">pixmaps/filter-ignored-24.png</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>
-	      <property name="is_important">False</property>
+	      <property name="is_important">True</property>
 	      <property name="active">False</property>
 	      <signal name="toggled" handler="on_button_filter_toggled" last_modification_time="Sun, 12 Oct 2003 12:30:50 GMT"/>
 	    </widget>
@@ -741,6 +742,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -1030,6 +1032,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
