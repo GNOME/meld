@@ -431,30 +431,31 @@ class MeldPreferences(prefs.Preferences):
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_edited_bg" : prefs.Value(prefs.STRING, "gray90"),
         "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
-	 #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-        "filters" : prefs.Value(prefs.STRING, _("Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("CVS\t1\tCVS\n") + \
-	 	 				#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("SVN\t1\t.svn\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("Monotone\t1\tMT\n") + \
-	 	 				#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}")),
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-        "regexes" : prefs.Value(prefs.STRING, _("CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("C++ comment\t0\t//.*\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("C comment\t0\t/\*.*?\*/\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("All whitespace\t0\t[ \\t\\r\\f\\v]*\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n") + \
-	 					#TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-                                              _("Script comment\t0\t#.*")),
+        "filters" : prefs.Value(prefs.STRING,
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("CVS\t1\tCVS\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("SVN\t1\t.svn\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("Monotone\t1\tMT\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}")),
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            "regexes" : prefs.Value(prefs.STRING, _("CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("C++ comment\t0\t//.*\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("C comment\t0\t/\*.*?\*/\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("All whitespace\t0\t[ \\t\\r\\f\\v]*\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n") + \
+            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+            _("Script comment\t0\t#.*")),
         "ignore_blank_lines" : prefs.Value(prefs.BOOL, 1)
     }
 
