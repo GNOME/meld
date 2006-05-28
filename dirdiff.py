@@ -431,30 +431,31 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     else:
                         for f in self.name_filters:
                             entries = filter(f.filter, entries)
+                        files = []
+                        dirs = []
                         for e in entries:
                             s = os.lstat( join(root,e) )
-                            files = []
-                            dirs = []
-                            if stat.S_ISREG(s.st_mode):
+                            if stat.S_ISLNK(s.st_mode):
+                                if not self.prefs.ignore_symlinks:
+                                    key = (s.st_dev, s.st_ino)
+                                    if symlinks_followed.get( key, 0 ) == 0:
+                                        symlinks_followed[key] = 1
+                                        try:
+                                            s = os.stat( join(root,e) )
+                                        except OSError, err:
+                                            print "ignoring dangling symlink", e
+                                            pass
+                                        else:
+                                            if stat.S_ISREG(s.st_mode):
+                                                files.append(e)
+                                            elif stat.S_ISDIR(s.st_mode):
+                                                dirs.append(e)
+                            elif stat.S_ISREG(s.st_mode):
                                 files.append(e)
                             elif stat.S_ISDIR(s.st_mode):
                                 dirs.append(e)
-                            elif stat.S_ISLNK(s.st_mode):
-                                key = (s.st_dev, s.st_ino)
-                                if symlinks_followed.get( key, 0 ) == 0:
-                                    symlinks_followed[key] = 1
-                                    try:
-                                        s = os.stat( join(root,e) )
-                                    except OSError, err:
-                                        print "ignoring dangling symlink", e
-                                        pass
-                                    else:
-                                        if stat.S_ISREG(s.st_mode):
-                                            files.append(e)
-                                        elif stat.S_ISDIR(s.st_mode):
-                                            dirs.append(e)
-                            accumfiles.add( pane, files )
-                            accumdirs.add( pane, dirs )
+                        accumfiles.add( pane, files )
+                        accumdirs.add( pane, dirs )
 
             alldirs = accumdirs.get()
             allfiles = self._filter_on_state( roots, accumfiles.get() )

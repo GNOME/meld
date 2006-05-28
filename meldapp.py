@@ -247,6 +247,7 @@ class PreferencesDialog(gnomeglade.Component):
         cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Pattern"), type("")) ]
         self.filefilter = ListWidget( cols, self.prefs, "filters")
         self.file_filters_box.pack_start(self.filefilter.widget)
+        self.checkbutton_ignore_symlinks.set_active( self.prefs.ignore_symlinks)
         # text filters
         cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Regex"), type("")) ]
         self.textfilter = ListWidget( cols, self.prefs, "regexes")
@@ -313,6 +314,8 @@ class PreferencesDialog(gnomeglade.Component):
     #
     # filters
     #
+    def on_checkbutton_ignore_symlinks_toggled(self, check):
+        self.prefs.ignore_symlinks = check.get_active()
     def on_checkbutton_ignore_blank_lines_toggled(self, check):
         self.prefs.ignore_blank_lines = check.get_active()
 
@@ -413,6 +416,7 @@ class MeldPreferences(prefs.Preferences):
         "save_encoding": prefs.Value(prefs.INT, 0),
         "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
+        "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "cvs_quiet": prefs.Value(prefs.BOOL, 1),
         "cvs_compression": prefs.Value(prefs.BOOL, 1),
         "cvs_compression_value": prefs.Value(prefs.INT, 3),
