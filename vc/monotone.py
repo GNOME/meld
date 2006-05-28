@@ -29,18 +29,35 @@ import _vc
 
 
 class Vc(_vc.Vc):
-    CMD = "monotone"
+    CMD = "mtn"
     NAME = "Monotone"
     PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^[+]{3,3} ([^  ]*)\t[0-9a-f]{40,40}$"
 
     def __init__(self, location):
         self._tree_cache = None
-        while location != "/":
-            if os.path.isdir( "%s/MT" % location):
-                self.root = location
-                return
-            location = os.path.dirname(location)
+        location = os.path.normpath(location)
+
+        def find_folder(where, tofind):
+            while where != "/":
+                cur = os.path.join(where,tofind)
+                if os.path.isdir(cur):
+                    return cur
+                where = os.path.dirname(where)
+
+        # for monotone >= 0.26
+        mtn = find_folder(location,"_MTN")
+        if mtn:
+            self.root = mtn
+            return
+
+        # for monotone <= 0.25 (different metadata directory, different executable)
+        mt = find_folder(location,"MT")
+        if mt:
+            self.root = mt
+            self.CMD = "monotone"
+            return
+
         raise ValueError
 
     def commit_command(self, message):
@@ -69,7 +86,7 @@ class Vc(_vc.Vc):
     def lookup_tree(self):
         while 1:
             try:
-                entries = os.popen("monotone automate inventory").read().split("\n")[:-1]
+                entries = os.popen(self.CMD + " automate inventory").read().split("\n")[:-1]
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
