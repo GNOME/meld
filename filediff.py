@@ -362,8 +362,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         state = [b.modified for b in self.bufferdata]
         return 1 in state
 
-    def _get_filename(self, i):
-        return self.bufferdata[i].filename or "<unnamed>"
+    def _get_pane_label(self, i):
+        return self.bufferdata[i].label or "<unnamed>"
 
     def on_delete_event(self, appquit=0):
         modified = [b.modified for b in self.bufferdata]
@@ -372,7 +372,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             buttons = []
             for i in range(self.num_panes):
-                b = gtk.CheckButton( self._get_filename(i) )
+                b = gtk.CheckButton( self._get_pane_label(i) )
                 b.set_use_underline(False)
                 buttons.append(b)
                 dialog.box.pack_start(b, 1, 1)
@@ -540,10 +540,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # text buffer loading/saving
         #
 
+    def set_labels(self, lst):
+        assert len(lst) <= len(self.bufferdata)
+        for l,d in zip(lst,self.bufferdata):
+            if len(l): d.label = l
+
     def recompute_label(self):
         filenames = []
         for i in range(self.num_panes):
-            filenames.append( self._get_filename(i) )
+            filenames.append( self._get_pane_label(i) )
         shortnames = misc.shorten_names(*filenames)
         for i in range(self.num_panes):
             stock = None
@@ -573,7 +578,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 b.delete( b.get_start_iter(), b.get_end_iter() )
                 absfile = os.path.abspath(f)
                 self.fileentry[i].set_filename(absfile)
-                self.bufferdata[i] = MeldBufferData(absfile)
+                bold, bnew = self.bufferdata[i], MeldBufferData(absfile)
+                if bold.filename == bnew.filename:
+                    bnew.label = bold.label
+                self.bufferdata[i] = bnew
         self.recompute_label()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
@@ -790,7 +798,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if saveas or not bufdata.filename:
             filename = self._get_filename_for_saving( _("Choose a name for buffer %i.") % (pane+1) )
             if filename:
-                bufdata.filename = os.path.abspath(filename)
+                bufdata.filename = bufdata.label = os.path.abspath(filename)
                 self.fileentry[pane].set_filename( bufdata.filename)
             else:
                 return melddoc.RESULT_ERROR
@@ -801,7 +809,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     text = text.replace("\n", bufdata.newlines)
             elif type(bufdata.newlines) == type(()):
                 buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
-                newline = misc.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.filename,
+                newline = misc.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.label,
                     self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_CANCEL,
                     extrabuttons=[ buttons[b] for b in bufdata.newlines ] )
                 if newline < 0:
@@ -817,7 +825,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 text = text.encode(bufdata.encoding)
             except UnicodeEncodeError:
                 if misc.run_dialog(
-                    _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.filename, bufdata.encoding),
+                    _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.label, bufdata.encoding),
                     self, gtk.MESSAGE_ERROR, gtk.BUTTONS_YES_NO) != gtk.RESPONSE_YES:
                     return melddoc.RESULT_ERROR
         if self._save_text_to_filename(bufdata.filename, text):
@@ -836,7 +844,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         texts = [b.get_text(*b.get_bounds()).split("\n") for b in bufs]
         texts[0] = [l+"\n" for l in texts[0]]
         texts[1] = [l+"\n" for l in texts[1]]
-        names = [self._get_filename(i) for i in range(2)]
+        names = [self._get_pane_label(i) for i in range(2)]
         dialog.textview.modify_font(fontdesc)
         buf = dialog.textview.get_buffer()
         lines = []
@@ -904,7 +912,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # refresh and reload
         #
     def on_reload_activate(self, *extra):
-        modified = [b.filename for b in self.bufferdata if b.modified]
+        modified = [os.path.basename(b.label) for b in self.bufferdata if b.modified]
         if len(modified):
             message = _("Reloading will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
             response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
@@ -1343,11 +1351,12 @@ if gobject.pygtk_version < (2,8,0):
 ################################################################################
 
 class MeldBufferData(object):
-    __slots__ = ("modified", "writable", "filename", "encoding", "newlines")
+    __slots__ = ("modified", "writable", "filename", "label", "encoding", "newlines")
     def __init__(self, filename=None):
         self.modified = 0
         self.writable = 1
         self.filename = filename
+        self.label = filename
         self.encoding = None
         self.newlines = None
 

@@ -759,6 +759,7 @@ class MeldApp(gnomeglade.GnomeApp):
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
         self._append_page(doc, "tree-folder-normal.png")
         doc.set_locations(dirs)
+        return doc
 
     def append_filediff(self, files):
         assert len(files) in (1,2,3)
@@ -769,6 +770,7 @@ class MeldApp(gnomeglade.GnomeApp):
         seq.connect("can-redo", self.on_can_redo)
         self._append_page(doc, "tree-file-normal.png")
         doc.set_files(files)
+        return doc
 
     def append_diff(self, paths):
         aredirs = [ os.path.isdir(p) for p in paths ]
@@ -778,9 +780,9 @@ class MeldApp(gnomeglade.GnomeApp):
                     parent = self,
                     buttonstype = gtk.BUTTONS_OK)
         elif 1 in aredirs:
-            self.append_dirdiff(paths)
+            return self.append_dirdiff(paths)
         else:
-            self.append_filediff(paths)
+            return self.append_filediff(paths)
 
     def append_vcview(self, locations):
         assert len(locations) in (1,)
@@ -788,6 +790,7 @@ class MeldApp(gnomeglade.GnomeApp):
         doc = vcview.VcView(self.prefs)
         self._append_page(doc, "vc-icon.png")
         doc.set_location(location)
+        return doc
 
     #
     # Current doc actions
@@ -820,22 +823,6 @@ class MeldApp(gnomeglade.GnomeApp):
 # usage
 #
 ################################################################################
-usage_string = _("""Meld is a file and directory comparison tool. Usage:
-
-    meld                        Start with no windows open
-    meld <dir>                  Start with VC browser in 'dir'
-    meld <file>                 Start with VC diff of 'file'
-    meld <file> <file> [file]   Start with 2 or 3 way file comparison
-    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison
-
-Options:
-    -h, --help                  Show this help text and exit
-    -v, --version               Display the version and exit
-
-For more information choose help -> contents.
-Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld
-Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list
-""")
 
 version_string = _("""Meld %s
 Written by Stephen Kennedy <stevek@gnome.org>""") % version
@@ -846,6 +833,7 @@ Written by Stephen Kennedy <stevek@gnome.org>""") % version
 #
 ################################################################################
 def main():
+    import optparse
     class Unbuffered(object):
         def __init__(self, file):
             self.file = file
@@ -855,17 +843,25 @@ def main():
         def __getattr__(self, attr):
             return getattr(self.file, attr)
     sys.stdout = Unbuffered(sys.stdout)
-    args = sys.argv[1:]
 
-    if args:
-        if "-h" in args or "--help" in args:
-            print usage_string
-            return
-        if "-v" in args or "--version" in args:
-            print version_string
-            return
+    parser = optparse.OptionParser(
+    usage="""
+    %prog                       Start with no windows open
+    %prog <dir>                 Start with VC browser in 'dir'
+    %prog <file>                Start with VC diff of 'file'
+    %prog <file> <file> [file]  Start with 2 or 3 way file comparison
+    %prog <dir>  <dir>  [dir]   Start with 2 or 3 way directory comparison""",
+    description="""Meld is a file and directory comparison tool.""",
+    version="%prog "+version)
+    parser.add_option("-L", "--label", action="append", help=_("Set label to use instead of file name"))
+    parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
+    parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
+    parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
+    parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
+    options, args = parser.parse_args()
 
     app = MeldApp()
+    tab = None
 
     if len(args) == 0:
         pass
@@ -882,12 +878,14 @@ def main():
             doc.connect("create-diff", lambda obj,arg: app.append_diff(arg) )
             doc.run_diff([a])
         else:
-            app.append_vcview( [a] )
+            tab = app.append_vcview( [a] )
                 
     elif len(args) in (2,3):
-        app.append_diff(args)
+        tab = app.append_diff(args)
     else:
         app.usage( _("Wrong number of arguments (Got %i)") % len(args))
 
+    if tab:
+        tab.set_labels( options.label )
     app.main()
 

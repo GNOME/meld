@@ -110,6 +110,9 @@ class MeldDoc(gobject.GObject):
     def label_changed(self):
         self.emit("label-changed", self.label_text)
 
+    def set_labels(self, lst):
+        pass
+
     def on_switch_event(self):
         pass
 
