@@ -46,31 +46,15 @@ for sourceview in "gtksourceview sourceview".split():
 
 if sourceview_available:
     def set_highlighting_enabled(buf, fname, enabled):
-        # gnome.vfs.get_mime_type seems to be broken. fake it.
-        extmap = { "xml":"text/xml",
-                   "glade":"text/xml",
-                   "cpp":"text/x-cpp",
-                   "cxx":"text/x-cpp",
-                   "cc":"text/x-cpp",
-                   "C":"text/x-cpp",
-                   "c":"text/x-c",
-                   "hpp":"text/x-cpp",
-                   "hxx":"text/x-cpp",
-                   "hh":"text/x-cpp",
-                   "H":"text/x-cpp",
-                   "h":"text/x-cpp",
-                   "inl":"text/x-cpp",
-                   "desktop": "application/x-desktop",
-                   "diff": "text/x-diff",
-                   "patch": "text/x-diff",
-                   "html": "text/html",
-                   "po": "text/x-po",
-                   "py": "text/x-python" }
-        ext = fname.split(".")[-1]
-        man = gsv.SourceLanguagesManager()
-        gsl = man.get_language_from_mime_type( extmap.get(ext, "text/plain") )
-        if gsl:
-            buf.set_language(gsl)
+        if enabled:
+            import gnomevfs
+            mime_type = gnomevfs.get_mime_type( os.path.abspath(fname) ) # needs ASCII filename, not URI
+            man = gsv.SourceLanguagesManager()
+            gsl = man.get_language_from_mime_type( mime_type )
+            if gsl:
+                buf.set_language(gsl)
+            else:
+                enabled = False
         buf.set_highlight(enabled)
 
 gdk = gtk.gdk
