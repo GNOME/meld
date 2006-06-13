@@ -853,7 +853,7 @@ def main():
     %prog <dir>  <dir>  [dir]   Start with 2 or 3 way directory comparison""",
     description="""Meld is a file and directory comparison tool.""",
     version="%prog "+version)
-    parser.add_option("-L", "--label", action="append", help=_("Set label to use instead of file name"))
+    parser.add_option("-L", "--label", action="append", default=[], help=_("Set label to use instead of file name"))
     parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
     parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
     parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
