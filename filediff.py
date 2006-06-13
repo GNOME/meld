@@ -1012,9 +1012,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gc = area.meldgc.get_gc
         for c in self.linediffer.single_changes(textindex, self._get_texts()):
             assert c[0] != "equal"
+            outline = True
+            if self.prefs.ignore_blank_lines:
+                c1,c2 = self._consume_blank_lines( self._get_texts()[textindex][c[1]:c[2]] )
+                if (c1 or c2) and (c[1]+c1 == c[2]-c2):
+                    outline = False
             s,e = [int(x) for x in ( math.floor(scaleit(c[1])), math.ceil(scaleit(c[2]+(c[1]==c[2]))) ) ]
             window.draw_rectangle( gc(c[0]), 1, x0, s, x1, e-s)
-            window.draw_rectangle( gctext, 0, x0, s, x1, e-s)
+            if outline: window.draw_rectangle( gctext, 0, x0, s, x1, e-s)
 
     def on_diffmap_button_press_event(self, area, event):
         #TODO need gutter of scrollbar - how do we get that?
@@ -1066,10 +1071,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if direction == gdk.SCROLL_DOWN:
             for c in self.linediffer.single_changes(1, self._get_texts()):
                 assert c[0] != "equal"
+                c1,c2 = self._consume_blank_lines( self._get_texts()[1][c[1]:c[2]] )
+                if c[1]+c1 == c[2]-c2:
+                    continue
                 if c[1] > curline + 1:
                     break
         else: #direction == gdk.SCROLL_UP
             for chunk in self.linediffer.single_changes(1, self._get_texts()):
+                c1,c2 = self._consume_blank_lines( self._get_texts()[1][chunk[1]:chunk[2]] )
+                if chunk[1]+c1 == chunk[2]-c2:
+                    continue
                 if chunk[2] < curline:
                     c = chunk
                 elif c:
