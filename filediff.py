@@ -48,7 +48,7 @@ if sourceview_available:
     def set_highlighting_enabled(buf, fname, enabled):
         if enabled:
             import gnomevfs
-            mime_type = gnomevfs.get_mime_type( os.path.abspath(fname) ) # needs ASCII filename, not URI
+            mime_type = gnomevfs.get_mime_type( os.path.abspath(fname) )
             man = gsv.SourceLanguagesManager()
             gsl = man.get_language_from_mime_type( mime_type )
             if gsl:
