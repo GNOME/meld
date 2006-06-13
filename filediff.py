@@ -829,6 +829,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         texts[0] = [l+"\n" for l in texts[0]]
         texts[1] = [l+"\n" for l in texts[1]]
         names = [self._get_pane_label(i) for i in range(2)]
+        prefix = os.path.commonprefix( names )
+        try: prefixslash = prefix.rindex("/") + 1
+        except ValueError: prefixslash = 0
+        names = [n[prefixslash:] for n in names]
         dialog.textview.modify_font(fontdesc)
         buf = dialog.textview.get_buffer()
         lines = []
@@ -838,7 +842,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         result = dialog.widget.run()
         dialog.widget.destroy()
         if result >= 0:
-            txt = "".join(lines)
+            txt = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
             if result == 1: # copy
                 clip = gtk.clipboard_get()
                 clip.set_text(txt)
