@@ -822,7 +822,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def make_patch(self, pane):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
-        dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "patchdialog")
+        override = {}
+        if sourceview_available:
+            override["GtkTextView"] = gsv.SourceView
+            override["GtkTextBuffer"] = gsv.SourceBuffer
+        dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "patchdialog", override)
         dialog.widget.set_transient_for( self.widget.get_toplevel() )
         bufs = [t.get_buffer() for t in self.textview]
         texts = [b.get_text(*b.get_bounds()).split("\n") for b in bufs]
@@ -833,12 +837,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         try: prefixslash = prefix.rindex("/") + 1
         except ValueError: prefixslash = 0
         names = [n[prefixslash:] for n in names]
+        if sourceview_available:
+            dialog.textview.set_buffer( gsv.SourceBuffer() )
         dialog.textview.modify_font(fontdesc)
         buf = dialog.textview.get_buffer()
         lines = []
         for line in difflib.unified_diff(texts[0], texts[1], names[0], names[1]):
             buf.insert( buf.get_end_iter(), line )
             lines.append(line)
+        if sourceview_available:
+            man = gsv.SourceLanguagesManager()
+            gsl = man.get_language_from_mime_type("text/x-diff")
+            if gsl:
+                buf.set_language(gsl)
+                buf.set_highlight(True)
         result = dialog.widget.run()
         dialog.widget.destroy()
         if result >= 0:
