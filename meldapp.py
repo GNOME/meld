@@ -380,13 +380,14 @@ class NotebookLabel(gtk.HBox):
         gtk.HBox.__init__(self)
         self.label = gtk.Label(text)
         self.button = gtk.Button()
+        self.button.set_relief(gtk.RELIEF_NONE)
+        image = gtk.Image()
+        image.set_from_stock( gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
+        image.set_size_request( 10,10 ) #TODO font height
+        self.button.add( image )
         icon = gtk.Image()
         icon.set_from_file( paths.share_dir("glade2/pixmaps/%s" % iconname) )
-        icon.set_from_pixbuf( icon.get_pixbuf().scale_simple(15, 15, 2) ) #TODO font height
-        image = gtk.Image()
-        image.set_from_file( paths.share_dir("glade2/pixmaps/button_delete.xpm") )
-        image.set_from_pixbuf( image.get_pixbuf().scale_simple(9, 9, 2) ) #TODO font height
-        self.button.add( image )
+        icon.set_from_pixbuf( icon.get_pixbuf().scale_simple(15, 15, 2) ) #TODO stock image
         self.pack_start( icon )
         self.pack_start( self.label )
         self.pack_start( self.button, expand=0 )
