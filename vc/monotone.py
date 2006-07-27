@@ -42,7 +42,7 @@ class Vc(_vc.Vc):
             while where != "/":
                 cur = os.path.join(where,tofind)
                 if os.path.isdir(cur):
-                    return cur
+                    return where
                 where = os.path.dirname(where)
 
         # for monotone >= 0.26
@@ -99,7 +99,11 @@ class Vc(_vc.Vc):
             '  I' : _vc.STATE_IGNORED,  # ignored (exists on the filesystem but excluded by lua hook)
             '  M' : _vc.STATE_MISSING,  # missing (exists in the manifest but not on the filesystem)
 
-            ' A ' : _vc.STATE_ERROR,    # added (invalid, add should have associated patch)
+	    # Added files are not consistantly handled by all releases:
+	    #   0.28: although documented as invalid added files are tagged ' A '.
+	    #   0.26, 0.27: ???
+	    #   0.25: added files are tagged ' AP'.
+            ' A ' : _vc.STATE_NEW,      # added (invalid, add should have associated patch)
             ' AP' : _vc.STATE_NEW,      # added and patched
             ' AU' : _vc.STATE_ERROR,    # added but unknown (invalid)
             ' AI' : _vc.STATE_ERROR,    # added but ignored (seems invalid, but may be possible)
