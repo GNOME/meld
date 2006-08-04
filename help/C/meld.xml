@@ -97,8 +97,8 @@
     <sect1 id="filecompare_starting">
       <title>Starting</title>
 
-      <para>Use <guimenu>File...-&#62;New...-&#62;File Comparison</guimenu> to
-      start a new file comparison. You can compare two or three files.</para>
+      <para>To compare files, choose <menuchoice><guimenu>File</guimenu><guimenuitem>New</guimenuitem>
+      </menuchoice> and select the <guilabel>File Comparison</guilabel> tab. You can compare two or three files.</para>
 
       <para>For two way comparisons the original is shown in the left pane and
       the modified version in the right pane by convention.</para>
@@ -129,35 +129,34 @@
 
       <para>The area between each file shows where each change occurs in the
       other file. You can scroll through the changes by rolling the mouse
-      wheel over this area or with keyboard shortcuts <keysym>Control+D</keysym>,
-      <keysym>Control+E</keysym>.</para>
+      wheel over this area or with keyboard shortcuts <keycombo><keycap>Ctrl</keycap><keycap>D</keycap></keycombo>,
+      <keycombo><keycap>Ctrl</keycap><keycap>E</keycap></keycombo>.</para>
     </sect1>
 
     <sect1 id="filecompare_editing">
       <title>Editing</title>
 
       <para>You can edit the files as you would in a normal text editor. The
-      differences will update automatically. Use <keysym>Control+F</keysym> to
-      search and <keysym>Control+G</keysym> to repeat the last search.</para>
+      differences will update automatically. Use <keycombo><keycap>Ctrl</keycap><keycap>F</keycap></keycombo> to
+      search and <keycombo><keycap>Ctrl</keycap><keycap>G</keycap></keycombo> to repeat the last search.</para>
 
       <para>You can also apply changes by clicking the merge buttons (&#34;<guiicon>-&#62;</guiicon>&#34;
-      and &#34;<guiicon>&#60;-</guiicon>&#34;). Holding <keysym>Shift</keysym>
-      allows blocks to be deleted. Holding <keysym>Control</keysym> allows the
+      and &#34;<guiicon>&#60;-</guiicon>&#34;). Holding <keycap>Shift</keycap>
+      allows blocks to be deleted. Holding <keycap>Control</keycap> allows the
       current change to be inserted before or after the other change.</para>
 
       <para>You can apply all the changes from a given file by
-      <mousebutton>right clicking</mousebutton> a text pane and choosing
-      <command>Copy all left</command> or <command>Copy all right</command>.
+      right clicking a text pane and choosing
+      <guimenuitem>Copy all left</guimenuitem> or <guimenuitem>Copy all right</guimenuitem>.
       You can also launch an external editor from this menu. Configure the
-      external editor in <guimenu>Settings-&#62;Preferences-&#62;Editor</guimenu></para>
+      external editor in <menuchoice><guimenu>Settings</guimenu><guimenuitem>Preferences</guimenuitem></menuchoice>.</para>
     </sect1>
 
     <sect1 id="filecompare_filtering">
       <title>Filtering</title>
 
       <para>You can ignore certain types of differences in order to locate
-      important differences. All these settings are available from
-      <guimenu>Settings-&#62;Preferences-&#62;Text Filters</guimenu>.</para>
+      important differences. All these settings are available in the Text Filters section of the <guilabel>Preferences</guilabel> dialog.</para>
 
       <sect2>
         <title>Regular Expressions</title>
@@ -186,10 +185,12 @@
       file name of the changed file. The tab label and window title also have
       an asterix after the file name.</para>
 
-      <para>Save a file pressing <keysym>Control+s</keysym>, by selecting
-      <guimenu>File-&#62;Save</guimenu> from the menu or by the toolbar save
+      <para>To save a file, choose
+      <menuchoice><guimenu>File</guimenu><guimenuitem>Save</guimenuitem></menuchoice>,
+      press <keycombo><keycap>Ctrl</keycap><keycap>S</keycap></keycombo>, 
+      or press the toolbar save
       button. All of these save the currently focussed file (the file
-      containing the edit cursor)</para>
+      containing the edit cursor).</para>
     </sect1>
 
     <sect1 id="filecompare_status">
@@ -206,8 +207,7 @@
     <sect1 id="foldercompare_starting">
       <title>Starting</title>
 
-      <para>Use <guimenu>File...-&#62;New...-&#62;Directory Comparison</guimenu>
-      to start a new directory comparison. You can compare two or three
+      <para>To compare directories, choose <menuchoice><guimenu>File</guimenu><guimenuitem>New</guimenuitem></menuchoice> and select the <guilabel>Directory Comparison</guilabel> tab. You can compare two or three
       directories.</para>
 
       <para>For two way comparisons the original is shown in the left pane and
@@ -240,24 +240,24 @@
       permission and modification time can be seen in the status bar when a
       file is selected.</para>
 
-      <para>Use the mouse or the the cursor keys <keysym>Up</keysym>,
-      <keysym>Down</keysym>, <keysym>Left</keysym> and <keysym>Right</keysym>
-      to navigate. Additionally <keysym>Control+D</keysym> and
-      <keysym>Control+E</keysym> move to the next and previous modification
+      <para>Use the mouse or the the cursor keys <keycap>Up</keycap>,
+      <keycap>Down</keycap>, <keycap>Left</keycap> and <keycap>Right</keycap>
+      to navigate. Additionally <keycombo><keycap>Ctrl</keycap><keycap>D</keycap></keycombo> and
+      <keycombo><keycap>Ctrl</keycap><keycap>E</keycap></keycombo> move to the next and previous modification
       respectively.</para>
     </sect1>
 
     <sect1 id="foldercompare_editing">
       <title>Editing</title>
 
-      <para>Activate an item with <mousebutton>double click</mousebutton> or
-      <keysym>Return</keysym> to start an individual file comparison.</para>
+      <para>Activate an item with double click or
+      <keycap>Return</keycap> to start an individual file comparison.</para>
 
       <para>Additional options are available from a
-      <mousebutton>right click</mousebutton> context menu.</para>
+      right click context menu.</para>
 
-      <para>Use <mousebutton>Shift+Click</mousebutton> and
-      <mousebutton>Control+Click</mousebutton> to select multiple items.</para>
+      <para>Use Shift+Click and
+      Control+Click to select multiple items.</para>
     </sect1>
 
     <sect1 id="foldercompare_filtering">
@@ -299,17 +299,17 @@
       <sect2>
         <title>Name Filtering</title>
 
-        <para>You can hide selected filename patterns from the comparison
-        using the toolbar buttons. Use <guimenu>Settings-&#62;Preferences-&#62;File
-        Filters</guimenu> to customise the file patterns.</para>
+        <para>Meld can hide certain filename patterns from the comparison
+        using the toolbar buttons. Customise the file patterns that 
+        are hidden in the File Filters section of the <guilabel>Preferences</guilabel> dialog.</para>
       </sect2>
 
       <sect2 id="dir_content_filtering">
         <title>Content Filtering</title>
 
         <para>If differences between files exist, but all differences match
-        the active regular expressions specified in <guimenu>Settings-&#62;Preferences-&#62;Text
-        Filters</guimenu>, then the filename is not highlighted in red, but is
+        the active regular expressions specified in Text
+        Filters section of the <guilabel>Preferences</guilabel> dialog, then the filename is not highlighted in red, but is
         insted italicised in regular font.</para>
       </sect2>
     </sect1>
@@ -321,9 +321,8 @@
     <sect1 id="sourcecontrol_starting">
       <title>Starting</title>
 
-      <para>Use <guimenu>File...-&#62;New...-&#62;CVS Browser</guimenu> or
-      <guimenu>File...-&#62;New...-&#62;SVN Browser</guimenu> to start
-      browsing a working copy.</para>
+      <para>To browse a working copy of a source control repository, 
+      choose <menuchoice><guimenu>File</guimenu><guimenuitem>New</guimenuitem></menuchoice> and select the <guilabel>Version Control Browser</guilabel> tab.</para>
 
       <para>The browser is used for examining and commiting or reverting local
       changes. It is not intended to be a complete source control client.</para>
@@ -352,7 +351,7 @@
       changes.</para>
 
       <para>You can examine many changes at once using
-      <mousebutton>Shift+Click</mousebutton> and <mousebutton>Control+Click</mousebutton>
+      Shift+Click and Control+Click
       to select multiple items.</para>
     </sect1>
 
