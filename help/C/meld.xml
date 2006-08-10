@@ -331,15 +331,27 @@
     <sect1 id="sourcecontrol_filtering">
       <title>Filtering</title>
 
-      <para>The browser can filter on four states:<itemizedlist><listitem><para>Normal
-      (the file is unchanged since it was checked out)</para></listitem><listitem><para>Non
-      controlled (the file exists locally but was not checked out)</para></listitem><listitem><para>Ignored
-      (the file is explicitly ignored e.g. though .cvsignore)</para></listitem><listitem><para>Modified
-      (locally changed, added or removed)</para></listitem></itemizedlist></para>
-
-      <para>If you have several changes scattered in several directories or in
-      a large tree, the &#39;Recurse&#39; tooggle is flattens the directory
-      listing. This is especially useful in conjunction with only the modified
+      <para>The browser can filter on four states. To show or hide all files in a particular state, select or deselect the corresponding toggle button in the toolbar.</para>
+      
+      <variablelist>
+      	<varlistentry><term><guibutton>Normal</guibutton></term>
+        	<listitem><para>The file has not changed since it was checked out or committed.</para></listitem>
+      	</varlistentry>
+      	<varlistentry><term><guibutton>Modified</guibutton></term>
+        	<listitem><para>The file has been locally changed, added, or removed.</para></listitem>
+      	</varlistentry>
+      	<varlistentry><term><guibutton>Non VC</guibutton></term>
+        	<listitem><para>The file is non-version controlled: it exists locally but was not checked out from a repository.</para></listitem>
+      	</varlistentry>   
+      	<varlistentry><term><guibutton>Ignored</guibutton></term>
+        	<listitem><para>The file is explicitly ignored e.g. though a <filename>.cvsignore</filename> file.</para></listitem>
+      	</varlistentry>         	
+      </variablelist>
+            
+      <para>The <guibutton>Flatten</guibutton> toggle displays the directory
+      listing as a plain list, showing all subdirectory contents together.
+      This makes it easier to see several changes scattered in several directories or in
+      a large tree. This is especially useful in conjunction with only the modified
       filter active.</para>
     </sect1>
 
