@@ -750,6 +750,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             parent=self.widget.get_toplevel(),
             action=gtk.FILE_CHOOSER_ACTION_SAVE,
             buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK) )
+        dialog.set_default_response(gtk.RESPONSE_OK)
         response = dialog.run()
         filename = None
         if response == gtk.RESPONSE_OK:
