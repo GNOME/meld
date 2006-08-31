@@ -364,7 +364,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     b.set_sensitive(0)
                 else:
                     b.set_active(1)
-            dialog.widget.show_all()
+            dialog.box.show_all()
             if not appquit:
                 dialog.button_quit.hide()
             response = dialog.widget.run()
