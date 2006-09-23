@@ -290,11 +290,11 @@ class PreferencesDialog(gnomeglade.Component):
     def on_checkbutton_show_line_numbers_toggled(self, check):
         self.prefs.show_line_numbers = check.get_active()
         if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Line numbers are only available if you have pysourceview installed.") )
+            misc.run_dialog(_("Line numbers are only available if you have gnome-python-desktop installed.") )
     def on_checkbutton_use_syntax_highlighting_toggled(self, check):
         self.prefs.use_syntax_highlighting = check.get_active()
         if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Syntax highlighting is only available if you have pysourceview installed.") )
+            misc.run_dialog(_("Syntax highlighting is only available if you have gnome-python-desktop installed.") )
     def on_editor_command_toggled(self, radio):
         if radio.get_active():
             idx = self.editor_command.index(radio)
