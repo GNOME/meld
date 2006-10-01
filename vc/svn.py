@@ -70,23 +70,16 @@ class Vc(_vc.Vc):
 
         retfiles = []
         retdirs = []
-        matches = re.findall("^(.)....\s+(?:\d+\s+(\d+)\s+\w+\s+)?(.*)$(?m)", entries)
+        matches = re.findall("^(.)....\s+(?:\d+\s+([^\s]+)\s+[^\s]+\s+)?(.*)$(?m)", entries)
         matches = [ (m[2],m[0],m[1]) for m in matches]
         matches.sort()
 
         for match in matches:
             name = match[0]
-            if(match[1] == "!" or match[1] == "A"):
-                # for new or missing files, the findall expression
-                # does not supply the correct name 
-                name = re.sub(r'^[?]\s*(.*)$', r'\1', name)
             isdir = os.path.isdir(name)
             path = os.path.join(directory, name)
             rev = match[2]
             options = ""
-            tag = ""
-            if tag:
-                tag = tag[1:]
             if isdir:
                 if os.path.exists(path):
                     state = _vc.STATE_NORMAL
@@ -104,6 +97,6 @@ class Vc(_vc.Vc):
                           "M": _vc.STATE_MODIFIED,
                           "D": _vc.STATE_REMOVED,
                           "C": _vc.STATE_CONFLICT }.get(match[1], _vc.STATE_NONE)
-                retfiles.append( _vc.File(path, name, state, rev, tag, options) )
+                retfiles.append( _vc.File(path, name, state, rev, "", options) )
 
         return retdirs, retfiles
