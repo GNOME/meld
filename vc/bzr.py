@@ -67,7 +67,7 @@ class Vc(_vc.Vc):
         branch_root = os.popen("bzr root %s" % rootdir).read().rstrip('\n')
         while 1:
             try:
-                proc = os.popen("bzr status --all %s" % branch_root)
+                proc = os.popen("bzr status %s" % branch_root)
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
