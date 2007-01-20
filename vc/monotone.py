@@ -206,7 +206,7 @@ class Vc(_vc.Vc):
         for f,path in files:
             if f not in vcfiles:
                 # if the ignore MT filter is not enabled these will crop up
-                ignorelist = [ 'log', 'options', 'revision', 'work' ]
+                ignorelist = [ 'format', 'log', 'options', 'revision', 'work' ]
 
                 if f not in ignorelist:
                     print "WARNING: '%s' was not listed by 'automate inventory'" % f
