@@ -342,6 +342,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for pane, loc in enumerate(locations):
             self.fileentry[pane].set_filename(loc)
         child = self.model.add_entries(None, locations)
+        self.treeview0.grab_focus()
         self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()

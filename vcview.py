@@ -198,6 +198,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.fileentry.gtk_entry().set_text(location)
         self.vc = vc.Vc(location)
         it = self.model.add_entries( None, [location] )
+        self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
         self.model.set_state(it, 0, tree.STATE_NORMAL, isdir=1)
         self.recompute_label()
