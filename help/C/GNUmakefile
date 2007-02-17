@@ -6,7 +6,8 @@ LANG := $(notdir $(CURDIR))
 XML_DIR_ := $(DESTDIR)$(helpdir)/meld/$(LANG)
 OMF_NAME := meld-$(LANG).omf
 OMF_DIR_ := $(DESTDIR)$(sharedir)/omf/meld
-OMF_STATE:= $(DESTDIR)$(prefix)/var/lib/scrollkeeper
+OMF_STATE:= $(DESTDIR)$(localstatedir)/lib/scrollkeeper
+INST_XML := $(helpdir_)/$(LANG)/meld.xml
 
 .PHONY : all
 all $(OMF_NAME).install : $(OMF_NAME)
