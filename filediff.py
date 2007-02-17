@@ -189,8 +189,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             id1 = buf.connect("delete-range", self.on_text_delete_range)
             id2 = buf.connect_after("insert-text", self.after_text_insert_text)
             id3 = buf.connect_after("delete-range", self.after_text_delete_range)
+            id4 = buf.connect("mark-set", self.on_textbuffer_mark_set)
             buf.textview = textview
-            buf.handlers = id0, id1, id2, id3
+            buf.handlers = id0, id1, id2, id3, id4
 
     def _update_cursor_status(self, buf):
         def update():
