@@ -41,7 +41,7 @@ class Vc(_vc.Vc):
         raise ValueError()
 
     def commit_command(self, message):
-        return [self.CMD,"commit","-t",message]
+        return [self.CMD,"commit","-m",message]
     def diff_command(self):
         return [self.CMD,"diff"]
     def update_command(self):
@@ -66,7 +66,7 @@ class Vc(_vc.Vc):
 
         while 1:
             try:
-                entries = os.popen("cd %s && hg status "%directory).read().split("\n")[:-1]
+                entries = os.popen("cd %s && hg status -A ."%directory).read().split("\n")[:-1]
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
@@ -77,11 +77,11 @@ class Vc(_vc.Vc):
         statemap = {
             "?": _vc.STATE_NONE,
             "A": _vc.STATE_NEW,
-            " ": _vc.STATE_NORMAL,
+            "C": _vc.STATE_NORMAL,
             "!": _vc.STATE_MISSING,
             "I": _vc.STATE_IGNORED,
             "M": _vc.STATE_MODIFIED,
-            "C": _vc.STATE_CONFLICT }
+            "R": _vc.STATE_REMOVED }
         hgfiles = {}
         for statekey, name in [ (entry[0], entry[2:]) for entry in entries if entry.find("/")==-1 ]:
             path = os.path.join(directory, name)
