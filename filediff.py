@@ -952,7 +952,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # only allow one scrollbar to be here at a time
         if not hasattr(self,"_sync_vscroll_lock"):
             self._sync_vscroll_lock = 0
-        if not self._sync_vscroll_lock:
+        if (self.keymask & MASK_SHIFT)==0 and not self._sync_vscroll_lock:
             self._sync_vscroll_lock = 1
             syncpoint = 0.5
 
