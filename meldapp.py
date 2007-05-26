@@ -89,6 +89,8 @@ class NewDocDialog(gnomeglade.Component):
             paths = [ e.get_full_path(0) or "" for e in self.entrylists[page] ]
             if page < 2 and not self.three_way_compare[page].get_active():
                 paths.pop(0)
+            for path in paths:
+                self.entrylists[page][0].gnome_entry().append_history(True, path)
             methods = (self.parentapp.append_filediff,
                        self.parentapp.append_dirdiff,
                        self.parentapp.append_vcview )
