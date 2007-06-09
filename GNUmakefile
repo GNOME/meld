@@ -119,7 +119,7 @@ update:
 	
 .PHONY:upload
 upload:
-	cvs tag release-$(subst .,_,$(VERSION))
+	#svn cp . svn+ssh://stevek@svn.gnome.org/svn/meld/tags/release-$(subst .,_,$(VERSION))
 	scp tools/make_release stevek@master.gnome.org:
 	ssh stevek@master.gnome.org python make_release $(VERSION)
 
