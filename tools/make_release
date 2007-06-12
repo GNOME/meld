@@ -41,7 +41,7 @@ def system(s):
 tag = "release-%s" % string.replace(sys.argv[1], ".", "_")
 release = "meld-" + sys.argv[1]
 #export = "cvs -d %s -q -z3 export -r %s -d %s meld" % (cvsroot, tag, release)
-export = "svn co http://svn.gnome.org/svn/meld/tags/%s %s" % (tag, release)
+export = "svn export http://svn.gnome.org/svn/meld/tags/%s %s" % (tag, release)
 system(export)
 targz = release + ".tar.gz"
 tar = "tar cvfz %s %s" % (targz, release)
