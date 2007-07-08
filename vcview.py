@@ -439,9 +439,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             diffs.append( (destfile, pathtofile) )
 
         patchcmd = self.vc.patch_command( tmpdir )
-        misc.write_pipe(patchcmd, patch)
-        for d in diffs:
-            self.emit("create-diff", d)
+        if misc.write_pipe(patchcmd, patch) == 0:
+            for d in diffs:
+                self.emit("create-diff", d)
+        else:
+            misc.run_dialog( _("Invoking patch failed, you need GNU patch.")+ "\n'%s'"%" ".join(patchcmd), parent=self)
 
     def refresh(self):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )

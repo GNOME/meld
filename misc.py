@@ -187,7 +187,7 @@ def write_pipe(command, text):
     pipe = popen2.Popen3(command, capturestderr=1)
     pipe.tochild.write(text)
     pipe.tochild.close()
-    pipe.wait()
+    return pipe.wait()
 
 def safe_apply(object, method, args):
     """Call 'object.method(args)' if 'object' has an attribute named 'method'.
