@@ -442,7 +442,7 @@ class MeldPreferences(prefs.Preferences):
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n") + \
+            _("Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
