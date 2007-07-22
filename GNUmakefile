@@ -104,22 +104,21 @@ test:
 
 .PHONY:changelog
 changelog:
-	cvs2cl -t -d
+	svn2cl -t -d
+
+.PHONY:release
+release: check tag upload announce
 
 .PHONY:check
 check:
 	@tools/check_release
 
-.PHONY:release
-release: check upload announce
+.PHONY:tag
+tag:
+	svn cp -m "Tagged." svn+ssh://stevek@svn.gnome.org/svn/meld/trunk svn+ssh://stevek@svn.gnome.org/svn/meld/tags/release-$(subst .,_,$(VERSION))
 
-.PHONY:update
-update:
-	cvs -z3 -q update
-	
 .PHONY:upload
 upload:
-	#svn cp . svn+ssh://stevek@svn.gnome.org/svn/meld/tags/release-$(subst .,_,$(VERSION))
 	scp tools/make_release stevek@master.gnome.org:
 	ssh stevek@master.gnome.org python make_release $(VERSION)
 
@@ -129,6 +128,10 @@ announce:
 	$(BROWSER) http://www.gnomefiles.org/devs/newversion.php?soft_id=203 &
 	$(BROWSER) http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
 	$(BROWSER) http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
+	
+.PHONY:update
+update:
+	svn update
 	
 .PHONY:backup
 backup:
