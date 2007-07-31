@@ -70,8 +70,10 @@ class Vc(_vc.Vc):
 
         retfiles = []
         retdirs = []
-        matches = re.findall("^(.)....\s+(?:\d+\s+([^\s]+)\s+[^\s]+\s+)?(.*)$(?m)", entries)
-        matches = [ (m[2],m[0],m[1]) for m in matches]
+        matches = []
+        for line in entries.split("\n"):
+            if len(line) > 40:
+                matches.append( (line[40:], line[0], line[17:26].strip()))
         matches.sort()
 
         for match in matches:
