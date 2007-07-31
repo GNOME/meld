@@ -30,7 +30,7 @@ class Vc(_vc.Vc):
     CMD = "hg"
     NAME = "Mercurial"
     PATCH_STRIP_NUM = 1
-    PATCH_INDEX_RE = "^diff(.*)$"
+    PATCH_INDEX_RE = "^diff -r \w+ (.*)$"
 
     def __init__(self, location):
         while location != "/":
