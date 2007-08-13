@@ -37,7 +37,7 @@ import locale
 
 try:
     locale.setlocale(locale.LC_ALL, '')
-    gettext.bindtextdomain("meld", paths.locale_dir() )
+    locale.bindtextdomain("meld", paths.locale_dir() )
     gettext.textdomain("meld")
     gettext.install("meld", paths.locale_dir(), unicode=1)
 except (IOError,locale.Error), e:
