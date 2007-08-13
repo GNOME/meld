@@ -267,6 +267,7 @@ class PreferencesDialog(gnomeglade.Component):
         self.cvs_binary_fileentry.set_filename( self.prefs.cvs_binary )
         self.cvs_create_missing_check.set_active( self.prefs.cvs_create_missing )
         self.cvs_prune_empty_check.set_active( self.prefs.cvs_prune_empty )
+        self.treeview.set_cursor(0)
     #
     # treeview
     #
