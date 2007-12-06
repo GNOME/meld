@@ -5,14 +5,15 @@
 # Stephen Kennedy <steve9000@users.sourceforge.net>, 2003.
 # Jonathan Ernst <jonathan@ernstfamily.ch>, 2006.
 # Claude Paroz <claude@2xlibre.net>, 2006-2007.
+# Robert-André Mauchin <zebob.m@pengzone.org>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Meld 0.8.4\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2007-02-25 21:27+0100\n"
-"PO-Revision-Date: 2007-02-23 23:09+0100\n"
-"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
+"POT-Creation-Date: 2007-12-06 21:30+0100\n"
+"PO-Revision-Date: 2007-12-06 21:35+0100\n"
+"Last-Translator: Robert-André Mauchin <zebob.m@pengzone.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -232,7 +233,7 @@ msgid ""
 "\"%s\" exists!\n"
 "Overwrite?"
 msgstr ""
-"« %s » existe déjà !\n"
+"« %s » existe déjà !\n"
 "Écraser ?"
 
 #: ../filediff.py:776
@@ -268,7 +269,7 @@ msgid ""
 "'%s' contains characters not encodable with '%s'\n"
 "Would you like to save as UTF-8?"
 msgstr ""
-"« %s » contient des caractères qui ne peuvent être codés avec « %s »\n"
+"« %s » contient des caractères qui ne peuvent être codés avec « %s »\n"
 "Voulez-vous enregistrer en UTF-8 ?"
 
 #. save as
@@ -284,7 +285,7 @@ msgid ""
 "\n"
 "You cannot undo this operation."
 msgstr ""
-"Rafraîchir annulera tous les changements dans :\n"
+"Recharger annulera tous les changements dans :\n"
 "%s\n"
 "\n"
 "Vous ne pouvez pas annuler cette opération."
@@ -319,11 +320,11 @@ msgstr "Édition"
 
 #: ../glade2/dirdiff.glade.h:8
 msgid "Hide selected"
-msgstr "Cacher la sélection"
+msgstr "Masquer la sélection"
 
 #: ../glade2/dirdiff.glade.h:9
 msgid "Hide..."
-msgstr "Cacher..."
+msgstr "Masquer..."
 
 #: ../glade2/dirdiff.glade.h:10
 msgid "Ignore case of entries"
@@ -353,7 +354,7 @@ msgstr "Identique"
 msgid "Show identical"
 msgstr "Afficher les fichiers identiques"
 
-#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:18
+#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:20
 msgid "Show modified"
 msgstr "Afficher les objets modifiés"
 
@@ -362,7 +363,7 @@ msgid "Show new"
 msgstr "Afficher les nouveaux fichiers"
 
 #: ../glade2/dirdiff.glade.h:19 ../glade2/meldapp.glade.h:89
-#: ../glade2/vcview.glade.h:25
+#: ../glade2/vcview.glade.h:28
 msgid "_Compare"
 msgstr "_Comparer"
 
@@ -520,8 +521,8 @@ msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
 msgstr ""
-"Choisir le mode de la barre centrale du mode Différence. Vous devriez "
-"choisir un mode plus simple si le le défilement est lent."
+"Choisir le mode d'affichage de la barre centrale du mode Différence. Vous "
+"devriez choisir un mode plus simple si le le défilement est lent."
 
 #: ../glade2/meldapp.glade.h:25
 msgid "Copyright (C) 2002-2006 Stephen Kennedy"
@@ -559,8 +560,6 @@ msgstr "Éditeur"
 msgid "Encoding"
 msgstr "Codage des caractères"
 
-# "<span weight=\"bold\" size=\"larger\">Des fichiers ont été modifiés.\n"
-# "Lesquels souhaitez vous sauvegarder ?</span>"
 #: ../glade2/meldapp.glade.h:34
 msgid "File Filters"
 msgstr "Filtres de fichiers"
@@ -583,26 +582,26 @@ msgstr "Ignorer le fichier .cvsrc (-f)"
 
 #: ../glade2/meldapp.glade.h:39
 msgid "Ignore changes in amount of white space"
-msgstr "Ignorer les changements relatifs au nombre d'espaces."
+msgstr "Ignorer les modifications relatives au nombre d'espaces."
 
 #: ../glade2/meldapp.glade.h:40
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr ""
-"Ignorer les changements relatifs à la casse; considérer les majuscules et "
-"minuscules comme équivalentes."
+"Ignorer les modifications relatives à la casse ; considérer les majuscules "
+"et minuscules comme équivalentes."
 
 #: ../glade2/meldapp.glade.h:41
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr ""
-"Ignorer les changements qui concernent l'insertion ou l'effacement de lignes "
-"vides."
+"Ignorer les modifications qui concernent l'insertion ou l'effacement de "
+"lignes vides."
 
 #: ../glade2/meldapp.glade.h:42
 msgid "Ignore changes which insert or delete blank lines"
 msgstr ""
-"Ignorer les changements qui concernent l'insertion ou l'effacement de lignes "
-"vides."
+"Ignorer les modifications qui concernent l'insertion ou l'effacement de "
+"lignes vides."
 
 #: ../glade2/meldapp.glade.h:43
 msgid "Ignore symbolic links"
@@ -682,11 +681,11 @@ msgstr "Actualiser"
 
 #: ../glade2/meldapp.glade.h:62
 msgid "Reload"
-msgstr "Recharcher"
+msgstr "Recharger"
 
 #: ../glade2/meldapp.glade.h:63
 msgid "Report _Bug"
-msgstr "Rapporter un _Bogue"
+msgstr "Rapporter une _anomalie"
 
 #: ../glade2/meldapp.glade.h:64
 msgid "Save _As"
@@ -694,11 +693,11 @@ msgstr "Enregistrer _sous"
 
 #: ../glade2/meldapp.glade.h:65
 msgid "Save in UTF-8 encoding"
-msgstr "Sauvegarder en utilisant l'UTF-8"
+msgstr "Enregistrer en utilisant le codage UTF-8"
 
 #: ../glade2/meldapp.glade.h:66
 msgid "Save in the files original encoding"
-msgstr "Sauvegarder en utilisant les codages d'origine"
+msgstr "Enregistrer en utilisant les codages d'origine"
 
 #: ../glade2/meldapp.glade.h:67
 msgid "Show line numbers"
@@ -754,7 +753,7 @@ msgstr "Utiliser la compression (-z)"
 
 #: ../glade2/meldapp.glade.h:80
 msgid "Use GNOME monospace font"
-msgstr "Utiliser la police à largeur fixe de GNOME"
+msgstr "Utiliser la police à chasse fixe de GNOME"
 
 #: ../glade2/meldapp.glade.h:81
 msgid "Use custom font"
@@ -771,7 +770,7 @@ msgstr "Affichage contrôle de version"
 #: ../glade2/meldapp.glade.h:84
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
-"Lors du chargement, essayer ces codecs dans l'ordre (ex : utf-8, iso8859)"
+"Lors du chargement, essayer ces codages dans l'ordre (ex : utf-8, iso8859)"
 
 #: ../glade2/meldapp.glade.h:85
 msgid ""
@@ -917,58 +916,70 @@ msgstr "Effacer _localement"
 msgid "Remove from VC"
 msgstr "Supprimer du gestionnaire de versions"
 
-#: ../glade2/vcview.glade.h:19
-msgid "Show unversioned files"
-msgstr "Montrer les fichiers qui ne sont pas versionnés"
+#: ../glade2/vcview.glade.h:18
+msgid "Revert to original"
+msgstr "Revenir à l'original"
 
-#: ../glade2/vcview.glade.h:20 ../vcview.py:173
+#: ../glade2/vcview.glade.h:19
+msgid "Show ignored files"
+msgstr "Afficher les fichiers ignorés"
+
+#: ../glade2/vcview.glade.h:21
+msgid "Show normal"
+msgstr "Affichage normal"
+
+#: ../glade2/vcview.glade.h:22
+msgid "Show unversioned files"
+msgstr "Afficher les fichiers qui ne sont pas versionnés"
+
+#: ../glade2/vcview.glade.h:23 ../vcview.py:173
 msgid "Tag"
 msgstr "Étiquette"
 
-#: ../glade2/vcview.glade.h:21
+#: ../glade2/vcview.glade.h:24
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: ../glade2/vcview.glade.h:22
+#: ../glade2/vcview.glade.h:25
 msgid "VC Log"
 msgstr "Journal du gestionnaire de versions"
 
-#: ../glade2/vcview.glade.h:23
+#: ../glade2/vcview.glade.h:26
 msgid "_Add"
 msgstr "_Ajouter"
 
-#: ../glade2/vcview.glade.h:24
+#: ../glade2/vcview.glade.h:27
 msgid "_Commit"
 msgstr "_Valider"
 
-#: ../glade2/vcview.glade.h:26
+#: ../glade2/vcview.glade.h:29
 msgid "_Edit"
 msgstr "É_dition"
 
-#: ../glade2/vcview.glade.h:27
+#: ../glade2/vcview.glade.h:30
 msgid "_Flatten"
 msgstr "A_platir"
 
-#: ../glade2/vcview.glade.h:28
+#: ../glade2/vcview.glade.h:31
 msgid "_Modified"
 msgstr "_Modifiés"
 
-#: ../glade2/vcview.glade.h:29
+#: ../glade2/vcview.glade.h:32
 msgid "_Normal"
 msgstr "_Normal"
 
-#: ../glade2/vcview.glade.h:30
+#: ../glade2/vcview.glade.h:33
 msgid "_Remove"
 msgstr "_Supprimer"
 
-#: ../glade2/vcview.glade.h:31
+#: ../glade2/vcview.glade.h:34
 msgid "_Update"
 msgstr "Mettre à _jour"
 
 #: ../meld:60 ../meld:70 ../meld:80
 #, c-format
 msgid "Meld requires %s or higher."
-msgstr "Meld exige %s ou supérieur."
+msgstr "Meld nécessite %s ou supérieur."
 
 #: ../meld:81
 msgid ""
@@ -983,42 +994,42 @@ msgstr "Compare et fusionne vos fichiers."
 
 #: ../meld.desktop.in.h:2
 msgid "Meld Diff Viewer"
-msgstr "Meld visualiseur de différences"
+msgstr "Meld visionneur de différences"
 
-#: ../meldapp.py:145
+#: ../meldapp.py:147
 msgid "label"
 msgstr "étiquette"
 
-#: ../meldapp.py:146
+#: ../meldapp.py:148
 msgid "pattern"
 msgstr "motif"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:247 ../meldapp.py:252 ../vcview.py:153
+#: ../meldapp.py:249 ../meldapp.py:254 ../vcview.py:153
 msgid "Name"
 msgstr "Nom"
 
-#: ../meldapp.py:247 ../meldapp.py:252
+#: ../meldapp.py:249 ../meldapp.py:254
 msgid "Active"
 msgstr "Actif"
 
-#: ../meldapp.py:247
+#: ../meldapp.py:249
 msgid "Pattern"
 msgstr "Motif"
 
-#: ../meldapp.py:252
+#: ../meldapp.py:254
 msgid "Regex"
 msgstr "Expression régulière"
 
-#: ../meldapp.py:293
+#: ../meldapp.py:296
 msgid ""
 "Line numbers are only available if you have gnome-python-desktop installed."
 msgstr ""
 "La numérotation des lignes est disponible uniquement si gnome-python-desktop "
 "est installé."
 
-#: ../meldapp.py:297
+#: ../meldapp.py:300
 msgid ""
 "Syntax highlighting is only available if you have gnome-python-desktop "
 "installed."
@@ -1027,57 +1038,59 @@ msgstr ""
 "est installé."
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:441
+#: ../meldapp.py:444
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Sauvegardes\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:443
-msgid "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n"
+#: ../meldapp.py:446
+msgid ""
+"Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 msgstr ""
-"Gestion des révisions\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n"
+"Gestion des révisions\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory "
+"RCS\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:445
+#: ../meldapp.py:448
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binaires\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:447
+#: ../meldapp.py:450
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Média\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:449
+#: ../meldapp.py:452
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "Mots-clés CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:451
+#: ../meldapp.py:454
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Commentaire C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:453
+#: ../meldapp.py:456
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Commentaire C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:455
+#: ../meldapp.py:458
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Tout caractère d'espacement\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:457
+#: ../meldapp.py:460
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Caractère d'espacement en début de ligne\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:459
+#: ../meldapp.py:462
 msgid "Script comment\t0\t#.*"
 msgstr "Commentaire de script\t0\t#.*"
 
-#: ../meldapp.py:776
+#: ../meldapp.py:779
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Impossible de comparer des fichiers avec des répertoires.\n"
 
@@ -1086,7 +1099,7 @@ msgstr "Impossible de comparer des fichiers avec des répertoires.\n"
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:824
+#: ../meldapp.py:827
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -1095,18 +1108,18 @@ msgstr ""
 "Meld %s\n"
 "Écrit par Stephen Kennedy <stevek@gnome.org>"
 
-#: ../meldapp.py:853
+#: ../meldapp.py:856
 msgid "Set label to use instead of file name"
 msgstr "Définit l'étiquette à utiliser au lieu du nom de fichier"
 
-#: ../meldapp.py:854 ../meldapp.py:855 ../meldapp.py:856 ../meldapp.py:857
+#: ../meldapp.py:857 ../meldapp.py:858 ../meldapp.py:859 ../meldapp.py:860
 msgid "Ignored for compatibility"
 msgstr "Ignorée pour compatibilité"
 
-#: ../meldapp.py:883
+#: ../meldapp.py:886
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
-msgstr "Nombre d'arguments invalide (reçu %i)"
+msgstr "Nombre de paramètres invalide (reçu %i)"
 
 #: ../melddoc.py:45
 msgid "untitled"
@@ -1155,8 +1168,12 @@ msgstr "Aucune différence trouvée."
 msgid "Select some files first."
 msgstr "Sélectionnez d'abord des fichiers."
 
+#: ../vcview.py:446
+msgid "Invoking patch failed, you need GNU patch."
+msgstr "L'appel à « patch » a échoué, il vous faut GNU patch."
+
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:37
+#: ../vc/_vc.py:39
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
