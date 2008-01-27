@@ -60,18 +60,21 @@ class Vc(_vc.Vc):
     def revert_command(self):
         return [self.CMD,"checkout"]
     def get_working_directory(self, workdir):
-        return self.root
+        if workdir.startswith("/"):
+            return self.root
+        else:
+            return ''
 
-    def cache_inventory(self, rootdir):
-        self._tree_cache = self.lookup_tree(rootdir)
+    def cache_inventory(self, topdir):
+        self._tree_cache = self.lookup_tree()
 
     def uncache_inventory(self):
         self._tree_cache = None
 
-    def lookup_tree(self, rootdir):
+    def lookup_tree(self):
         while 1:
             try:
-                proc = os.popen("cd %s && git status" % self.root)
+                proc = os.popen("cd %s && git status --untracked-files" % self.root)
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
@@ -80,65 +83,87 @@ class Vc(_vc.Vc):
         statemap = {
             "unknown": _vc.STATE_NONE,
             "new file": _vc.STATE_NEW,
-            "copied": _vc.STATE_NORMAL,
             "deleted": _vc.STATE_REMOVED,
             "modified": _vc.STATE_MODIFIED,
-            "renamed": _vc.STATE_NORMAL,
             "typechange": _vc.STATE_NORMAL,
             "unmerged": _vc.STATE_CONFLICT }
         tree_state = {}
         for entry in entries:
             if not entry.startswith("#\t"):
-              continue
+                continue
             try:
-              statekey, name = entry[2:].split(":", 2)
+                statekey, name = entry[2:].split(":", 2)
             except ValueError:
-              continue
-            path = os.path.join(self.root, name.strip())
-            state = statemap.get(statekey.strip(), _vc.STATE_NONE)
-            tree_state[path] = state
+                # untracked
+                name = entry[2:]
+                path = os.path.join(self.root, name.strip())
+                tree_state[path] = _vc.STATE_NONE
+            else:
+                statekey = statekey.strip()
+                name = name.strip()
+                try:
+                    src, dst = name.split(" -> ", 2)
+                except ValueError:
+                    path = os.path.join(self.root, name.strip())
+                    state = statemap.get(statekey, _vc.STATE_NONE)
+                    tree_state[path] = state
+                else:
+                    # copied, renamed
+                    if statekey == "renamed":
+                        tree_state[os.path.join(self.root, src)] = _vc.STATE_REMOVED
+                    tree_state[os.path.join(self.root, dst)] = _vc.STATE_NEW
         return tree_state
 
-    def get_tree(self, directory):
+    def get_tree(self):
         if self._tree_cache is None:
-            return self.lookup_tree(directory)
+            return self.lookup_tree()
         else:
             return self._tree_cache
         
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"
+
         if len(files):
             directory = os.path.dirname(files[0][1])
         elif len(dirs):
             directory = os.path.dirname(dirs[0][1])
         else:
             return [],[]
-        tree = self.get_tree(directory)
+
+        tree = self.get_tree()
 
         retfiles = []
         retdirs = []
-        gitfiles = {}
-        for path,state in tree.iteritems():
-            mydir, name = os.path.split(path)
-            if path.endswith('/'):
-                mydir, name = os.path.split(mydir)
-            if mydir != directory:
-                continue
-            rev, date, options, tag = "","","",""
-            if path.endswith('/'):
-                retdirs.append( _vc.Dir(path[:-1], name, state))
-            else:
-                retfiles.append( _vc.File(path, name, state, rev, tag, options) )
-            gitfiles[name] = 1
-        for f,path in files:
-            if f not in gitfiles:
-                #state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
-                state = _vc.STATE_NORMAL
-                retfiles.append( _vc.File(path, f, state, "") )
-        for d,path in dirs:
-            if d not in gitfiles:
-                #state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
-                state = _vc.STATE_NORMAL
-                retdirs.append( _vc.Dir(path, d, state) )
+        for name,path in files:
+            state = tree.get(path, _vc.STATE_IGNORED)
+            retfiles.append( _vc.File(path, name, state) )
+        for name,path in dirs:
+            # git does not operate on dirs, just files
+            retdirs.append( _vc.Dir(path, name, _vc.STATE_NORMAL))
+        for path, state in tree.iteritems():
+            # removed files are not in the filesystem, so must be added here
+            if state is _vc.STATE_REMOVED:
+                if os.path.dirname(path) == directory:
+                    retfiles.append( _vc.File(path, name, state) )
         return retdirs, retfiles
 
+    def listdir(self, start):
+        # just like _vc.Vc.listdir, but ignores just .git
+        if start=="": start="."
+        if start[-1] != "/": start+="/"
+        cfiles = []
+        cdirs = []
+        try:
+            entries = os.listdir(start)
+            entries.sort()
+        except OSError:
+            entries = []
+        for f in [f for f in entries if f!=".git"]:
+            fname = start + f
+            lname = fname
+            if os.path.isdir(fname):
+                cdirs.append( (f, lname) )
+            else:
+                cfiles.append( (f, lname) )
+        dirs, files = self.lookup_files(cdirs, cfiles)
+        return dirs+files
