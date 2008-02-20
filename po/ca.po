@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2007-03-28 07:07+0200\n"
-"PO-Revision-Date: 2007-03-22 12:48+0200\n"
+"POT-Creation-Date: 2008-02-19 15:04+0100\n"
+"PO-Revision-Date: 2008-02-20 01:17+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,8 +45,8 @@ msgid ""
 "%s"
 msgstr ""
 "Esteu executant una comparació que considera iguals les majúscules i les "
-"minúscules en un sistema de fitxers que les considera diferents. Alguns "
-"fitxers no són visibles:\n"
+"minúscules en un sistema de fitxers que les diferencia. Alguns fitxers no "
+"són visibles:\n"
 "%s"
 
 #: ../dirdiff.py:482
@@ -211,7 +211,7 @@ msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
 msgstr ""
-"Conté caràcters ascii nuls.\n"
+"Conté el caràcter nul de l'ASCII.\n"
 "Potser és un fitxer binari."
 
 #: ../filediff.py:629
@@ -352,7 +352,7 @@ msgstr "Igual"
 msgid "Show identical"
 msgstr "Mostra el text idèntic"
 
-#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:18
+#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:20
 msgid "Show modified"
 msgstr "Mostra el text modificat"
 
@@ -361,7 +361,7 @@ msgid "Show new"
 msgstr "Mostra el text nou"
 
 #: ../glade2/dirdiff.glade.h:19 ../glade2/meldapp.glade.h:89
-#: ../glade2/vcview.glade.h:25
+#: ../glade2/vcview.glade.h:28
 msgid "_Compare"
 msgstr "_Compara"
 
@@ -393,12 +393,10 @@ msgstr "Copia al porta-retalls"
 msgid "Create Patch"
 msgstr "Crea un pedaç"
 
-# Winrar 2.9->Dialog Caption:rarlng.dll
 #: ../glade2/filediff.glade.h:8
 msgid "Find"
 msgstr "Cerca"
 
-# Gnome_2.6_Desktop [gedit.HEAD.ca.po]
 #: ../glade2/filediff.glade.h:9
 msgid "Match _entire word only"
 msgstr "Només coincideixen paraules s_enceres"
@@ -415,12 +413,10 @@ msgstr "Voleu desar els fitxers modificats?"
 msgid "Search for:"
 msgstr "Cerca:"
 
-# Gnome_2.6_Desktop [gedit.HEAD.ca.po]
 #: ../glade2/filediff.glade.h:13
 msgid "_Match case"
 msgstr "Coincidència de _majúscules i minúscules"
 
-# Gnome_2.6_Desktop [yelp.HEAD.ca.po]
 #: ../glade2/filediff.glade.h:14
 msgid "_Wrap around"
 msgstr "_Torna al principi en arribar al final de fitxer"
@@ -437,7 +433,6 @@ msgstr "<b>Estil de dibuix</b>"
 msgid "<b>Edit Menu</b>"
 msgstr "<b>Menú d'edició</b>"
 
-# Gnome_2.6_Desktop [gok.HEAD.ca.po]
 #: ../glade2/meldapp.glade.h:4
 msgid "<b>Font</b>"
 msgstr "<b>Tipus de lletra</b>"
@@ -454,7 +449,6 @@ msgstr "<b>Càrrega</b>"
 msgid "<b>Misc</b>"
 msgstr "<b>Miscel·lània</b>"
 
-# Gnome_2.6_Fifth_Toe [gthumb.HEAD.ca.po]
 #: ../glade2/meldapp.glade.h:8
 msgid "<b>Saving</b>"
 msgstr "<b>Desament</b>"
@@ -572,13 +566,12 @@ msgstr "Filtres de fitxer"
 
 #: ../glade2/meldapp.glade.h:35
 msgid "Gnome Default"
-msgstr "Predeterminat del Gnome"
+msgstr "Predeterminat del GNOME"
 
 #: ../glade2/meldapp.glade.h:36
 msgid "Gnome default editor"
-msgstr "Editor predeterminat del Gnome"
+msgstr "Editor predeterminat del GNOME"
 
-# Gnome_2.6_Developer [libgnomeui.HEAD.ca.po]
 #: ../glade2/meldapp.glade.h:37
 msgid "Icons Only"
 msgstr "Només les icones"
@@ -589,7 +582,7 @@ msgstr "Ignora el fitxer .cvsrc (-f)"
 
 #: ../glade2/meldapp.glade.h:39
 msgid "Ignore changes in amount of white space"
-msgstr "Ignora els canvis en la quantitat d'espais en blanc"
+msgstr "Ignora els canvis en el nombre d'espais en blanc"
 
 #: ../glade2/meldapp.glade.h:40
 msgid ""
@@ -924,60 +917,72 @@ msgstr "Suprimeix _localment"
 msgid "Remove from VC"
 msgstr "Suprimeix del control de versions"
 
+#: ../glade2/vcview.glade.h:18
+msgid "Revert to original"
+msgstr "Reverteix a l'original"
+
 #: ../glade2/vcview.glade.h:19
+msgid "Show ignored files"
+msgstr "Mostra els fitxers ignorats"
+
+#: ../glade2/vcview.glade.h:21
+msgid "Show normal"
+msgstr "Mostra el normal"
+
+#: ../glade2/vcview.glade.h:22
 msgid "Show unversioned files"
 msgstr "Mostra els fitxers sense versionat"
 
-#: ../glade2/vcview.glade.h:20 ../vcview.py:173
+#: ../glade2/vcview.glade.h:23 ../vcview.py:173
 msgid "Tag"
 msgstr "Etiqueta"
 
-#: ../glade2/vcview.glade.h:21
+#: ../glade2/vcview.glade.h:24
 msgid "Update"
 msgstr "Actualitza"
 
-#: ../glade2/vcview.glade.h:22
+#: ../glade2/vcview.glade.h:25
 msgid "VC Log"
 msgstr "Registre del control de versions"
 
-#: ../glade2/vcview.glade.h:23
+#: ../glade2/vcview.glade.h:26
 msgid "_Add"
 msgstr "_Afegeix"
 
-#: ../glade2/vcview.glade.h:24
+#: ../glade2/vcview.glade.h:27
 msgid "_Commit"
 msgstr "_Confirma canvis"
 
-#: ../glade2/vcview.glade.h:26
+#: ../glade2/vcview.glade.h:29
 msgid "_Edit"
 msgstr "_Edita"
 
-#: ../glade2/vcview.glade.h:27
+#: ../glade2/vcview.glade.h:30
 msgid "_Flatten"
 msgstr "_Aplanar"
 
-#: ../glade2/vcview.glade.h:28
+#: ../glade2/vcview.glade.h:31
 msgid "_Modified"
 msgstr "_Modificat"
 
 # Netscape_4.7->Menu:RESDLL.DLL
 # Gnome_2.6_Desktop [gnopernicus.HEAD.ca.po]
-#: ../glade2/vcview.glade.h:29
+#: ../glade2/vcview.glade.h:32
 msgid "_Normal"
 msgstr "_Normal"
 
-#: ../glade2/vcview.glade.h:30
+#: ../glade2/vcview.glade.h:33
 msgid "_Remove"
 msgstr "Sup_rimeix"
 
-#: ../glade2/vcview.glade.h:31
+#: ../glade2/vcview.glade.h:34
 msgid "_Update"
 msgstr "Act_ualitza"
 
 #: ../meld:60 ../meld:70 ../meld:80
 #, c-format
 msgid "Meld requires %s or higher."
-msgstr "El Meld necessita el python %s o superior."
+msgstr "El Meld necessita el %s o superior."
 
 #: ../meld:81
 msgid ""
@@ -994,40 +999,40 @@ msgstr "Compareu i fusioneu els vostres fitxers."
 msgid "Meld Diff Viewer"
 msgstr "Visualitzador de diferències Meld"
 
-#: ../meldapp.py:145
+#: ../meldapp.py:147
 msgid "label"
 msgstr "etiqueta"
 
-#: ../meldapp.py:146
+#: ../meldapp.py:148
 msgid "pattern"
 msgstr "patró"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:247 ../meldapp.py:252 ../vcview.py:153
+#: ../meldapp.py:249 ../meldapp.py:254 ../vcview.py:153
 msgid "Name"
 msgstr "Nom"
 
-#: ../meldapp.py:247 ../meldapp.py:252
+#: ../meldapp.py:249 ../meldapp.py:254
 msgid "Active"
 msgstr "Actiu"
 
-#: ../meldapp.py:247
+#: ../meldapp.py:249
 msgid "Pattern"
 msgstr "Patró"
 
-#: ../meldapp.py:252
+#: ../meldapp.py:254
 msgid "Regex"
 msgstr "Expressió regular"
 
-#: ../meldapp.py:293
+#: ../meldapp.py:296
 msgid ""
 "Line numbers are only available if you have gnome-python-desktop installed."
 msgstr ""
 "Els números de línia només estan disponibles si teniu instal·lat el gnome-"
 "python-desktop."
 
-#: ../meldapp.py:297
+#: ../meldapp.py:300
 msgid ""
 "Syntax highlighting is only available if you have gnome-python-desktop "
 "installed."
@@ -1036,57 +1041,58 @@ msgstr ""
 "python-desktop."
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:441
+#: ../meldapp.py:444
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Còpies de seguretat\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:443
-msgid "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n"
+#: ../meldapp.py:446
+msgid ""
+"Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 msgstr ""
-"Control de versió\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n"
+"Control de versió\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:445
+#: ../meldapp.py:448
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binaris\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:447
+#: ../meldapp.py:450
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:449
+#: ../meldapp.py:452
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "Paraules clau del CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:451
+#: ../meldapp.py:454
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Comentari de C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:453
+#: ../meldapp.py:456
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Comentari de C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:455
+#: ../meldapp.py:458
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Tot els espais blancs\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:457
+#: ../meldapp.py:460
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Espais en blanc a l'inici\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:459
+#: ../meldapp.py:462
 msgid "Script comment\t0\t#.*"
 msgstr "Comentari d'script\t0\t#.*"
 
-#: ../meldapp.py:776
+#: ../meldapp.py:779
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "No es pot comparar una mescla de fitxers i directoris.\n"
 
@@ -1095,7 +1101,7 @@ msgstr "No es pot comparar una mescla de fitxers i directoris.\n"
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:824
+#: ../meldapp.py:827
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -1104,15 +1110,15 @@ msgstr ""
 "Meld %s\n"
 "Escrit per l'Stephen Kennedy <stevek@gnome.org>"
 
-#: ../meldapp.py:853
+#: ../meldapp.py:856
 msgid "Set label to use instead of file name"
 msgstr "Estableix l'etiqueta a emprar en lloc del nom del fitxer"
 
-#: ../meldapp.py:854 ../meldapp.py:855 ../meldapp.py:856 ../meldapp.py:857
+#: ../meldapp.py:857 ../meldapp.py:858 ../meldapp.py:859 ../meldapp.py:860
 msgid "Ignored for compatibility"
 msgstr "Ignorat per compatibilitat"
 
-#: ../meldapp.py:883
+#: ../meldapp.py:886
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Nombre d'arguments incorrecte (se n'han rebut %i)"
@@ -1169,8 +1175,12 @@ msgstr "No s'ha trobat cap diferència."
 msgid "Select some files first."
 msgstr "Primer seleccioneu alguns fitxers."
 
+#: ../vcview.py:446
+msgid "Invoking patch failed, you need GNU patch."
+msgstr "No s'ha trobat l'ordre «patch», necessiteu el patch del GNU."
+
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:37
+#: ../vc/_vc.py:39
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
@@ -1187,7 +1197,7 @@ msgid ""
 msgstr ""
 "S'ha produït un error en convertir en expressió regular\n"
 "El patró era «%s»\n"
-"L'error era «%s»"
+"L'error foufoufoufoufoufoufoufou «%s»"
 
 #~ msgid "[%s] Scanning"
 #~ msgstr "[%s] S'està escanejant"
