@@ -55,14 +55,7 @@ class Vc(_vc.Vc):
     def get_working_directory(self, workdir):
         return self.root
 
-    def lookup_files(self, dirs, files):
-        "files is array of (name, path). assume all files in same dir"
-        if len(files):
-            directory = os.path.dirname(files[0][1])
-        elif len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        else:
-            return [],[]
+    def _get_dirsandfiles(self, directory, dirs, files):
 
         while 1:
             try:

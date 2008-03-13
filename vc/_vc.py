@@ -122,3 +122,22 @@ class Vc(object):
 
     def get_capabilities(self):
         return 0
+
+    def lookup_files(self, dirs, files):
+        "Assume all files are in the same dir, files is an array of (name, path) tuples."
+        directory = self._get_directoryname(files, dirs)
+        if directory is None:
+            return [], []
+        else:
+            return self._get_dirsandfiles(directory, dirs, files)
+
+    def _get_directoryname(self, dirs, files):
+        directory = None
+        if len(files):
+            directory = os.path.dirname(files[0][1])
+        elif len(dirs):
+            directory = os.path.dirname(dirs[0][1])
+        return directory
+
+    def _get_dirsandfiles(self, directory, dirs, files):
+        raise NotImplementedError()

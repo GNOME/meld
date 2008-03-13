@@ -84,16 +84,11 @@ class Vc(_vc.Vc):
     def uncache_inventory(self):
         self._cached_statuses = None
 
-    def lookup_files(self, dirs, files):
-        "files is array of (name, path). assume all files in same dir"
-        directory = self._get_directoryname(files, dirs)
-        if directory is None:
-            return [], []
-        else:
-            whatsnew = self._get_cached_statuses()
-            retfiles, retdirs = (self._get_statuses(whatsnew, files, _vc.File),
-                                 self._get_statuses(whatsnew, dirs, _vc.Dir))
-            return retfiles, retdirs
+    def _get_dirsandfiles(self, directory, dirs, files):
+        whatsnew = self._get_cached_statuses()
+        retfiles, retdirs = (self._get_statuses(whatsnew, files, _vc.File),
+                             self._get_statuses(whatsnew, dirs, _vc.Dir))
+        return retfiles, retdirs
 
     def _get_cached_statuses(self):
         if self._cached_statuses is None:
@@ -145,12 +140,3 @@ class Vc(_vc.Vc):
             if filename != "_darcs":
                 rets.append(vcfile)
         return rets
-
-    def _get_directoryname(self, files, dirs):
-        directory = None
-        if len(files):
-            directory = os.path.dirname(files[0][1])
-        elif len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        return directory
-

@@ -176,16 +176,13 @@ class Vc(_vc.Vc):
         else:
             return self._tree_cache
 
+    # TODO: if get_tree() could be called later,
+    # we wouldn't need this override for lookup_files()
     def lookup_files(self, dirs, files):
-        "files is array of (name, path). assume all files in same dir"
         tree = self.get_tree()
-        if len(files):
-            directory = os.path.dirname(files[0][1])
-        elif len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        else:
-            return [],[]
+        _vc.Vc.lookup_files(self, dirs, files)
 
+    def _get_dirsandfiles(self, directory, dirs, files):
 
         retfiles = []
         retdirs = []

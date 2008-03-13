@@ -52,14 +52,7 @@ class Vc(_vc.Vc):
     def revert_command(self):
         return [self.CMD,"update","-C"]
 
-    def lookup_files(self, dirs, files):
-        "files is array of (name, path). assume all files in same dir"
-        if len(files):
-            directory = os.path.dirname(files[0][1])
-        elif len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        else:
-            return [],[]
+    def _get_dirsandfiles(self, directory, dirs, files):
 
         try:
             entries = open( os.path.join(directory, "CVS/Entries")).read()

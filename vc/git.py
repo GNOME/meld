@@ -119,16 +119,8 @@ class Vc(_vc.Vc):
             return self.lookup_tree()
         else:
             return self._tree_cache
-        
-    def lookup_files(self, dirs, files):
-        "files is array of (name, path). assume all files in same dir"
 
-        if len(files):
-            directory = os.path.dirname(files[0][1])
-        elif len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        else:
-            return [],[]
+    def _get_dirsandfiles(self, directory, dirs, files):
 
         tree = self.get_tree()
 
