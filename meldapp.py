@@ -449,7 +449,7 @@ class MeldPreferences(prefs.Preferences):
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}")),
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            "regexes" : prefs.Value(prefs.STRING, _("CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n") + \
+        "regexes" : prefs.Value(prefs.STRING, _("CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("C++ comment\t0\t//.*\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
