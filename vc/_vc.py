@@ -48,7 +48,7 @@ class Entry(object):
 class Dir(Entry):
     def __init__(self, path, name, state):
         self.path = path
-        self.parent, self.name = os.path.split(path[:-1])
+        self.parent, self.name = os.path.split(path.rstrip("/"))
         self.state = state
         self.isdir = 1
         self.rev = ""
