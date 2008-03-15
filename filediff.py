@@ -569,6 +569,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.bufferdata[i] = bnew
         self.recompute_label()
         self.scheduler.add_task( self._set_files_internal(files).next )
+        self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN), True )
 
     def _set_files_internal(self, files):
         yield _("[%s] Set num panes") % self.label_text
