@@ -143,9 +143,9 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     class sentinel(object):
         def __del__(self):
             if self.pipe:
-                errorstream.write("killing '%s' with pid '%i'\n" % (command[0], self.pipe.pid) )
-                os.kill(self.pipe.pid,  signal.SIGTERM)
-                errorstream.write("killed (staus was '%i')\n" % (self.pipe.wait()))
+                errorstream.write("killing '%s' with pid '%i'\n" % (command[0], self.pipe.pid))
+                os.kill(self.pipe.pid, signal.SIGTERM)
+                errorstream.write("killed (status was '%i')\n" % self.pipe.wait())
         def __call__(self):
             if workdir:
                 savepwd = os.getcwd()
