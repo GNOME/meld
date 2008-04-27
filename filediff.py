@@ -352,6 +352,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return self.bufferdata[i].label or "<unnamed>"
 
     def on_delete_event(self, appquit=0):
+        response = gtk.RESPONSE_OK
         modified = [b.modified for b in self.bufferdata]
         if 1 in modified:
             dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
@@ -367,8 +368,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 else:
                     b.set_active(1)
             dialog.box.show_all()
-            if not appquit:
-                dialog.button_quit.hide()
             response = dialog.widget.run()
             try_save = [ b.get_active() for b in buttons]
             dialog.widget.destroy()
@@ -377,11 +376,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if try_save[i]:
                         if self.save_file(i) != melddoc.RESULT_OK:
                             return gtk.RESPONSE_CANCEL
-            elif response==gtk.RESPONSE_CLOSE:
-                return gtk.RESPONSE_CLOSE
-            else:
-                return gtk.RESPONSE_CANCEL
-        return gtk.RESPONSE_OK
+        return response
 
         #
         # text buffer undo/redo
@@ -889,7 +884,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.save_file(i)
 
     def on_fileentry_activate(self, entry):
-        if self.on_delete_event() == gtk.RESPONSE_OK:
+        if self.on_delete_event() != gtk.RESPONSE_CANCEL:
             files = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
             self.set_files(files)
         return 1

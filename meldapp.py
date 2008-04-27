@@ -84,7 +84,7 @@ class NewDocDialog(gnomeglade.Component):
         self.entrylists[page][ not button.get_active() ].gtk_entry().grab_focus()
 
     def on_response(self, dialog, arg):
-        if arg==gtk.RESPONSE_OK:
+        if arg != gtk.RESPONSE_CANCEL:
             page = self.notebook.get_current_page()
             paths = [ e.get_full_path(0) or "" for e in self.entrylists[page] ]
             if page < 2 and not self.three_way_compare[page].get_active():
@@ -562,11 +562,13 @@ class MeldApp(gnomeglade.GnomeApp):
             self.statusbar.task_progress.set_fraction(0)
         if self.scheduler.tasks_pending():
             self.toolbar_stop.set_sensitive(1)
+            self.menu_view_stop.set_sensitive(1)
             return 1
         else:
             self.statusbar.set_task_status("")
             self.idle_hooked = 0
             self.toolbar_stop.set_sensitive(0)
+            self.menu_view_stop.set_sensitive(0)
             return 0
 
     def on_scheduler_runnable(self, sched):
@@ -730,7 +732,7 @@ class MeldApp(gnomeglade.GnomeApp):
 
     def try_remove_page(self, page):
         "See if a page will allow itself to be removed"
-        if page.on_delete_event() == gtk.RESPONSE_OK:
+        if page.on_delete_event() != gtk.RESPONSE_CANCEL:
             self.scheduler.remove_scheduler( page.scheduler )
             i = self.notebook.page_num( page.widget )
             assert(i>=0)
