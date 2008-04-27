@@ -33,6 +33,7 @@ import gnomeglade
 import misc
 import melddoc
 import paths
+import cairo
 
 sourceview_available = 0
 
@@ -1160,15 +1161,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         window.begin_paint_rect( (0,0,wtotal,htotal) )
         window.clear()
 
-        # gain function for smoothing
-        #TODO cache these values
-        bias = lambda x,g: math.pow(x, math.log(g) / math.log(0.5))
-        def gain(t,g):
-            if t<0.5:
-                return bias(2*t,1-g)/2.0
-            else:
-                return (2-bias(2-2*t,1-g))/2.0
-        f = lambda x: gain( x, 0.85)
+        context = window.cairo_create()
+        context.rectangle(0, 0, wtotal, htotal)
+        context.clip()
+        context.set_line_width(0.5)
 
         if self.keymask & MASK_SHIFT:
             pix0 = self.pixbuf_delete
@@ -1191,6 +1187,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
         visible = [None] + bounds(which) + bounds(which+1)
 
+
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             if self.prefs.ignore_blank_lines:
                 c1,c2 = self._consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
@@ -1205,40 +1202,57 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             elif c[1] > visible[2] and c[3] > visible[4]: # we've gone past last visible
                 break
 
+            # f and t are short for "from" and "to"
             f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
             t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
 
-            if f0==f1: f0 -= 2; f1 += 2
-            if t0==t1: t0 -= 2; t1 += 2
-            if draw_style > 0:
-                n = (1, 9)[draw_style-1]
-                points0 = []
-                points1 = []
-                for t in map(lambda x: float(x)/n, range(n+1)):
-                    points0.append( (int(    t*wtotal), int((1-f(t))*f0 + f(t)*t0 )) )
-                    points1.append( (int((1-t)*wtotal), int(f(t)*f1 + (1-f(t))*t1 )) )
+            if f0==f1: f0 -= 1; f1 += 1
+            if t0==t1: t0 -= 1; t1 += 1
+            
+            if draw_style == 2:
+                x_step = wtotal / 3.0 # bezier control point distance
+                
+                # thin antialiased lines in cairo look thicker than they are
+                # this is a workaround (works like a charm)
+                aa_adjustment = 0.2
+                
+                context.move_to(0, f0 - aa_adjustment)
+                context.curve_to(x_step, f0 - aa_adjustment,
+                                 x_step * 2, t0 - aa_adjustment,
+                                 wtotal + 1, t0 - aa_adjustment)
 
-                points = points0 + points1 + [points0[0]]
+                context.line_to(wtotal + 1, t1 + aa_adjustment)
+                context.curve_to(x_step * 2, t1 + aa_adjustment,
+                                 x_step, f1 + aa_adjustment,
+                                 0, f1 + aa_adjustment)
+                
+                if c[0] in ("insert", "delete"):
+                    bg = gdk.color_parse(self.prefs.color_delete_bg)
+                else: #replace
+                    bg = gdk.color_parse(self.prefs.color_replace_bg)
 
-                window.draw_polygon( gc(c[0]), 1, points)
-                window.draw_lines(gctext, points0)
-                window.draw_lines(gctext, points1)
+                context.set_source_rgb(bg.red / 65535.0, bg.green / 65535.0, bg.blue / 65535.0)
+                context.fill_preserve()
+
+                context.set_source_rgb(bg.red / 65535.0 * 0.8,
+                                       bg.green / 65535.0 * 0.8,
+                                       bg.blue / 65535.0 * 0.8)
+                context.stroke()
             else:
                 w = wtotal
                 p = self.pixbuf_apply0.get_width()
                 window.draw_polygon(gctext, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
                 window.draw_polygon(gctext, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
-                points0 = (0,f0), (0,t0)
                 window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
 
             x = wtotal-self.pixbuf_apply0.get_width()
             if c[0]=="insert":
-                window.draw_pixbuf( gctext, pix1, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix1, 0,0, x, t0, -1,-1, 0,0,0)
             elif c[0] == "delete":
-                window.draw_pixbuf( gctext, pix0, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix0, 0,0, 0, f0, -1,-1, 0,0,0)
             else: #replace
-                window.draw_pixbuf( gctext, pix0, 0,0, 0, points0[ 0][1], -1,-1, 0,0,0)
-                window.draw_pixbuf( gctext, pix1, 0,0, x, points0[-1][1], -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix1, 0,0, x, t0, -1,-1, 0,0,0)
+                window.draw_pixbuf( gctext, pix0, 0,0, 0, f0, -1,-1, 0,0,0)
 
         # allow for scrollbar at end of textview
         mid = 0.5 * self.textview0.get_allocation().height
