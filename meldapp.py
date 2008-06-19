@@ -259,14 +259,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
         self._map_widgets_into_lists( ["save_encoding"] )
         self.save_encoding[self.prefs.save_encoding].set_active(1)
-        # cvs
-        self.cvs_quiet_check.set_active( self.prefs.cvs_quiet )
-        self.cvs_compression_check.set_active( self.prefs.cvs_compression )
-        self.cvs_compression_value_spin.set_value( self.prefs.cvs_compression_value )
-        self.cvs_ignore_cvsrc_check.set_active( self.prefs.cvs_ignore_cvsrc )
-        self.cvs_binary_fileentry.set_filename( self.prefs.cvs_binary )
-        self.cvs_create_missing_check.set_active( self.prefs.cvs_create_missing )
-        self.cvs_prune_empty_check.set_active( self.prefs.cvs_prune_empty )
         self.treeview.set_cursor(0)
     #
     # treeview
@@ -328,23 +320,6 @@ class PreferencesDialog(gnomeglade.Component):
     def on_save_encoding_toggled(self, radio):
         if radio.get_active():
             self.prefs.save_encoding = self.save_encoding.index(radio)
-    #
-    # cvs
-    #
-    def on_cvs_quiet_toggled(self, toggle):
-        self.prefs.cvs_quiet = toggle.get_active()
-    def on_cvs_compression_toggled(self, toggle):
-        self.prefs.cvs_compression = toggle.get_active()
-    def on_cvs_compression_value_changed(self, spin):
-        self.prefs.cvs_compression_value = int(spin.get_value())
-    def on_cvs_ignore_cvsrc_toggled(self, toggle):
-        self.prefs.cvs_ignore_cvsrc = toggle.get_active()
-    def on_cvs_binary_activate(self, fileentry):
-        self.prefs.cvs_binary = fileentry.gtk_entry().get_text()
-    def on_cvs_create_missing_toggled(self, toggle):
-        self.prefs.cvs_create_missing = toggle.get_active()
-    def on_cvs_prune_empty_toggled(self, toggle):
-        self.prefs.cvs_prune_empty = toggle.get_active()
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
             self.prefs.text_codecs = self.entry_text_codecs.get_property("text")
@@ -421,13 +396,6 @@ class MeldPreferences(prefs.Preferences):
         "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
-        "cvs_quiet": prefs.Value(prefs.BOOL, 1),
-        "cvs_compression": prefs.Value(prefs.BOOL, 1),
-        "cvs_compression_value": prefs.Value(prefs.INT, 3),
-        "cvs_ignore_cvsrc": prefs.Value(prefs.BOOL, 0),
-        "cvs_binary": prefs.Value(prefs.STRING, "/usr/bin/cvs"),
-        "cvs_create_missing": prefs.Value(prefs.BOOL, 1),
-        "cvs_prune_empty": prefs.Value(prefs.BOOL, 1),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "color_delete_bg" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
         "color_delete_fg" : prefs.Value(prefs.STRING, "Red"),
@@ -466,22 +434,6 @@ class MeldPreferences(prefs.Preferences):
     def __init__(self):
         prefs.Preferences.__init__(self, "/apps/meld", self.defaults)
 
-    def get_cvs_command(self, op=None):
-        cmd = [self.cvs_binary]
-        if self.cvs_quiet:
-            cmd.append("-q")
-        if self.cvs_compression:
-            cmd.append("-z%i" % self.cvs_compression_value)
-        if self.cvs_ignore_cvsrc:
-            cmd.append("-f")
-        if op:
-            cmd.append(op)
-            if op == "update":
-                if self.cvs_create_missing:
-                    cmd.append("-d")
-                if self.cvs_prune_empty:
-                    cmd.append("-P")
-        return cmd
     def get_current_font(self):
         if self.use_custom_font:
             return self.custom_font
