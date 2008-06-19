@@ -43,7 +43,7 @@ class Base(object):
 
         Automatically connects signal handlers named 'on_*'.
         """
-        self.xml = gtk.glade.XML(file, root, gettext.textdomain(), override )
+        self.xml = gtk.glade.XML(file, root, typedict=override)
         handlers = {}
         for h in filter(lambda x:x.startswith("on_"), dir(self.__class__)):
             handlers[h] = getattr(self, h)

@@ -33,14 +33,12 @@ sys.path += [ #LIBDIR#
 ]
 import paths
 import gettext
-import locale
 
 try:
-    locale.setlocale(locale.LC_ALL, '')
-    locale.bindtextdomain("meld", paths.locale_dir() )
+    gettext.bindtextdomain("meld", paths.locale_dir())
     gettext.textdomain("meld")
     gettext.install("meld", paths.locale_dir(), unicode=1)
-except (IOError,locale.Error), e:
+except IOError, e:
     # fake gettext until translations in place
     print "(meld): WARNING **: %s" % e
     __builtins__.__dict__["_"] = lambda x : x
@@ -76,6 +74,7 @@ else:
 # pygtk version
 #
 import gtk
+import gtk.glade
 if gtk.pygtk_version < pygtkver:
     print _("Meld requires %s or higher.") % ("pygtk%s"%ver2str(pygtkver))
     print _("Due to incompatible API changes some functions may not operate as expected.")
@@ -86,6 +85,9 @@ if gtk.pygtk_version < pygtkver:
 if gtk.pygtk_version >= (2,8,0):
     import warnings
     warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+gtk.glade.bindtextdomain("meld", paths.locale_dir())
+gtk.glade.textdomain("meld")
 
 #
 # main
