@@ -45,6 +45,10 @@ class Vc(_vc.Vc):
                 self.root = location
                 return
             location = os.path.dirname(location)
+        gitdir = os.environ.get("GIT_DIR")
+        if gitdir and os.path.isdir(gitdir):
+            self.root = gitdir
+            return
         raise ValueError()
 
     def commit_command(self, message):
