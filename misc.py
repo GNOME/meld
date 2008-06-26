@@ -24,6 +24,7 @@ import os
 import select
 import popen2
 import errno
+import gobject
 import gtk
 import shutil
 import re
@@ -40,11 +41,12 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
     """Run a dialog with text 'text'.
        Extra buttons are passed as tuples of (button label, response id).
     """
+    escaped = gobject.markup_escape_text(text)
     d = gtk.MessageDialog(None,
         gtk.DIALOG_DESTROY_WITH_PARENT,
         messagetype,
         buttonstype,
-        '<span weight="bold" size="larger">%s</span>' % text)
+        '<span weight="bold" size="larger">%s</span>' % escaped)
     if parent:
         d.set_transient_for(parent.widget.get_toplevel())
     for b,rid in extrabuttons:
