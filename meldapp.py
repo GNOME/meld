@@ -22,6 +22,7 @@ import os
 import gtk
 import gtk.glade
 import gobject
+import pango
 
 # project
 import paths
@@ -353,25 +354,54 @@ class MeldStatusBar(object):
 #
 ################################################################################
 class NotebookLabel(gtk.HBox):
+    tab_width_in_chars = 30
 
-    def __init__(self, iconname, text="", onclose=None):
-        gtk.HBox.__init__(self)
-        self.label = gtk.Label(text)
-        self.button = gtk.Button()
-        self.button.set_relief(gtk.RELIEF_NONE)
-        image = gtk.Image()
-        image.set_from_stock( gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
-        image.set_size_request( 10,10 ) #TODO font height
-        self.button.add( image )
+    def __init__(self, iconname, text, onclose):
+        gtk.HBox.__init__(self, False, 4)
+
+        label = gtk.Label(text)
+        # FIXME: ideally, we would use custom ellipsization that ellipsized the
+        # two paths separately, but that requires significant changes to label
+        # generation in many different parts of the code
+        label.set_ellipsize(pango.ELLIPSIZE_MIDDLE);
+        label.set_single_line_mode(True)
+        label.set_alignment(0.0, 0.5)
+        label.set_padding(0, 0)
+
+        context = self.get_pango_context()
+        metrics = context.get_metrics(self.style.font_desc, context.get_language())
+        char_width = metrics.get_approximate_digit_width()
+        (w, h) = gtk.icon_size_lookup_for_settings (self.get_settings(), gtk.ICON_SIZE_MENU)
+        self.set_size_request(self.tab_width_in_chars * pango.PIXELS(char_width) + 2 * w, -1)
+
+        button = gtk.Button()
+        button.set_relief(gtk.RELIEF_NONE)
+        button.set_focus_on_click(False)
+        image = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
+        image.set_tooltip_text(_("Close tab"))
+        button.add(image)
+        button.set_name("meld-tab-close-button")
+        button.set_size_request(w + 2, h + 2)
+        button.connect("clicked", onclose)
+
         icon = gtk.Image()
         icon.set_from_file( paths.share_dir("glade2/pixmaps/%s" % iconname) )
-        icon.set_from_pixbuf( icon.get_pixbuf().scale_simple(15, 15, 2) ) #TODO stock image
-        self.pack_start( icon )
-        self.pack_start( self.label )
-        self.pack_start( self.button, expand=0 )
+        icon.set_from_pixbuf(icon.get_pixbuf().scale_simple(16, 16, 2)) #TODO stock image
+
+        self.pack_start(icon, expand=False)
+        self.pack_start(label)
+        self.pack_start(button, expand=False)
+        self.set_tooltip_text(text)
         self.show_all()
-        if onclose:
-            self.button.connect("clicked", onclose)
+
+        self.__label = label
+
+    def get_label_text(self):
+        return self.__label.get_text()
+
+    def set_label_text(self, text):
+        self.__label.set_text(text)
+        self.set_tooltip_text(text)
 
 ################################################################################
 #
@@ -483,6 +513,14 @@ class MeldApp(gnomeglade.GnomeApp):
     # init
     #
     def __init__(self):
+        gtk.rc_parse_string ("style \"meld-tab-close-button-style\"\n"
+                     "{\n"
+                         "GtkWidget::focus-padding = 0\n"
+                         "GtkWidget::focus-line-width = 0\n"
+                         "xthickness = 0\n"
+                         "ythickness = 0\n"
+                     "}\n"
+                     "widget \"*.meld-tab-close-button\" style \"meld-tab-close-button-style\"")
         gladefile = paths.share_dir("glade2/meldapp.glade")
         gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
         self._map_widgets_into_lists( "settings_drawstyle".split() )
@@ -544,14 +582,14 @@ class MeldApp(gnomeglade.GnomeApp):
         self.button_undo.set_sensitive(newseq.can_undo())
         self.button_redo.set_sensitive(newseq.can_redo())
         nbl = self.notebook.get_tab_label( newdoc.widget )
-        self.widget.set_title( nbl.label.get_text() + " - Meld")
+        self.widget.set_title(nbl.get_label_text() + " - Meld")
         self.statusbar.set_doc_status("")
         newdoc.on_switch_event()
         self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook_label_changed(self, component, text):
         nbl = self.notebook.get_tab_label( component.widget )
-        nbl.label.set_text(text)
+        nbl.set_label_text(text)
         self.widget.set_title(text + " - Meld")
         self.notebook.child_set_property(component.widget, "menu-label", text)
 
@@ -699,7 +737,7 @@ class MeldApp(gnomeglade.GnomeApp):
                 page.on_file_changed(filename)
 
     def _append_page(self, page, icon):
-        nbl = NotebookLabel(icon, onclose=lambda b: self.try_remove_page(page))
+        nbl = NotebookLabel(icon, "", lambda b: self.try_remove_page(page))
         self.notebook.append_page( page.widget, nbl)
         self.notebook.set_current_page( self.notebook.page_num(page.widget) )
         self.scheduler.add_scheduler(page.scheduler)
