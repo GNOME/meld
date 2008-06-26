@@ -1,0 +1,386 @@
+# Spanish translation of Meld's manual
+# Traducción al español del manual de Meld
+# Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: manual_meld\n"
+"POT-Creation-Date: 2005-07-12 11:42+0200\n"
+"PO-Revision-Date: 2005-07-14 21:13+0200\n"
+"Last-Translator: Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>\n"
+"Language-Team:  <traductores@es.gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+
+#: meld.xml:4(title) meld.xml:7(title)
+msgid "Meld Users Manual"
+msgstr "Manual del usuario de Meld"
+
+#: meld.xml:11(firstname)
+msgid "Stephen"
+msgstr "Stephen"
+
+#: meld.xml:13(surname)
+msgid "Kennedy"
+msgstr "Kennedy"
+
+#: meld.xml:15(email)
+msgid "stevek@gnome.org"
+msgstr "stevek@gnome.org"
+
+#: meld.xml:20(year)
+msgid "2004"
+msgstr "2004"
+
+#: meld.xml:22(holder)
+msgid "Stephen Kennedy"
+msgstr "Stephen Kennedy"
+
+#: meld.xml:25(releaseinfo)
+msgid "This is version 0.1 of the meld manual, describing meld 0.9.6"
+msgstr "Esta es la versión 0.1 del manual de meld y describe la versión 0.9.6 de meld"
+
+#: meld.xml:30(title)
+msgid "Introduction"
+msgstr "Introducción"
+
+#: meld.xml:33(title)
+msgid "What is meld"
+msgstr "¿Qué es meld?"
+
+#: meld.xml:35(para)
+msgid "Meld views differences between files and between directories. Meld makes it easy to isolate and merge these differences."
+msgstr "Meld muestra las diferencias entre archivos y directorios. Meld hace sencillo aislar y mezclar estas diferencias."
+
+#: meld.xml:40(title)
+msgid "Starting meld"
+msgstr "Iniciar meld"
+
+#: meld.xml:43(title)
+msgid "Command line arguments"
+msgstr "Argumentos para la línea de comandos"
+
+#: meld.xml:47(userinput)
+#, no-wrap
+msgid "meld"
+msgstr "meld"
+
+#: meld.xml:50(para)
+msgid "start meld with the new document dialog"
+msgstr "iniciar meld con el diálogo de documento nuevo"
+
+#: meld.xml:55(userinput)
+#, no-wrap
+msgid "meld &lt;file&gt; &lt;file&gt;\n            [file]"
+msgstr "meld &lt;archivo&gt; &lt;archivo&gt;\n            [archivo]"
+
+#: meld.xml:59(para) meld.xml:69(para)
+msgid "start meld with either a two way or three way file comparison"
+msgstr "iniciar meld con el modo de comparación para 2 o 3 archivos"
+
+#: meld.xml:65(userinput)
+#, no-wrap
+msgid "meld &lt;dir&gt; &lt;dir&gt;\n            [dir]"
+msgstr "meld &lt;dir&gt; &lt;dir&gt;\n            [dir]"
+
+#: meld.xml:75(userinput)
+#, no-wrap
+msgid "meld &lt;dir|file&gt;"
+msgstr "meld &lt;dir|archivo&gt;"
+
+#: meld.xml:78(para)
+msgid "start meld with the source control browser"
+msgstr "iniciar meld con el visor de control de código"
+
+#: meld.xml:84(para)
+msgid "\"&lt;&gt;\" demote required arguments, \"[]\" denote optional arguments and \"|\" a choice."
+msgstr "«&lt;&gt;» denotan argumentos requeridos, «[]» denotan argumentos opcionales y «|» una opción."
+
+#: meld.xml:89(para)
+msgid "Run <userinput>meld --help</userinput> for a complete list of options"
+msgstr "Ejecute <userinput>meld --help</userinput> para obtener una lista completa de las opciones"
+
+#: meld.xml:97(title)
+msgid "File Comparison"
+msgstr "Comparación de archivos"
+
+#: meld.xml:100(title) meld.xml:226(title) meld.xml:355(title)
+msgid "Starting"
+msgstr "Comenzar"
+
+#: meld.xml:102(para)
+msgid "Use <guimenu>File...-&gt;New...-&gt;File Comparison</guimenu> to start a new file comparison. You can compare two or three files."
+msgstr "Para comenzar una comparación nueva use <guimenu>Archivo...-&gt;Nuevo...-&gt;Comparación de archivos</guimenu>. Puede comparar dos o tres archivos."
+
+#: meld.xml:105(para) meld.xml:232(para)
+msgid "For two way comparisons the original is shown in the left pane and the modified version in the right pane by convention."
+msgstr "Para una comparación de dos archivos, por convenio, el original se muestra en el panel de la izquierda y la versión modificada en el panel de la derecha."
+
+#: meld.xml:108(para) meld.xml:235(para)
+msgid "For three way comparisons, the original is shown in the centre pane and the left and right panes show the modified versions. By convention we put the locally modified file in the right pane."
+msgstr "Para una comparación de tres archivos, el original se muestra en el panel del centro y los paneles a izquierda y derecha muestran las versiones modificadas. Por convenio se pone en el panel de la derecha la copia local modificada."
+
+#: meld.xml:114(title) meld.xml:241(title)
+msgid "Change Summary"
+msgstr "Resumen de cambios"
+
+#: meld.xml:116(para)
+msgid "The location of the changes is summarised in the window margins at the far left and right. By default green marks insertions and deletions and blue marks changes."
+msgstr "La posición de los cambios se resume en los márgenes de la ventana a izquierda y derecha. Por omisión el verde marca los añadidos y borrados mientras que el azul son cambios."
+
+#: meld.xml:120(para) meld.xml:246(para)
+msgid "You can jump to an individual change by clicking in the margin or using the scrollbar."
+msgstr "Puede saltar a un cambio individual pulsando en el margen o usando la barra de desplazamiento."
+
+#: meld.xml:125(title) meld.xml:251(title)
+msgid "Detailed View"
+msgstr "Vista detallada"
+
+#: meld.xml:127(para)
+msgid "Detailed differences are shown in the text and central pane. Inserted text is shown with a solid background. Lines containing changes are marked with a light background with the individual changes highlighted with a stronger colour."
+msgstr "Los detalles de las diferencias se muestran en el texto y en el panel central. El texto insertado se muestra sobre un fondo sólido. Las líneas que contienen cambios se marcan sobre un fondo claro con los cambios individuales resaltados en un color más fuerte."
+
+#: meld.xml:132(para)
+msgid "The area between each file shows where each change occurs in the other file. You can scroll through the changes by rolling the mouse wheel over this area or with keyboard shortcuts <keysym>Control+D</keysym>, <keysym>Control+E</keysym>."
+msgstr "El área entre cada archivo muestra dónde ocurre cada cambio en el otro archivos. Puede desplazarse a través de los cambios utilizando la rueda del ratón sobre este área o bien usando las combinaciones de teclas <keysym>Control+D</keysym>, <keysym>Control+E</keysym>."
+
+#: meld.xml:139(title) meld.xml:269(title)
+msgid "Editing"
+msgstr "Edición"
+
+#: meld.xml:141(para)
+msgid "You can edit the files as you would in a normal text editor. The differences will update automatically. Use <keysym>Control+F</keysym> to search and <keysym>Control+G</keysym> to repeat the last search."
+msgstr "Puede editar los archivos al igual que si fuese un editor de textos normal. Las diferencias se actualizarán automáticamente. Utilice <keysym>Control+F</keysym> para buscar y <keysym>Control+G</keysym> para repetir la última búsqueda."
+
+#: meld.xml:145(para)
+msgid "You can also apply changes by clicking the merge buttons (\"<guiicon>-&gt;</guiicon>\" and \"<guiicon>&lt;-</guiicon>\"). Holding <keysym>Shift</keysym> allows blocks to be deleted. Holding <keysym>Control</keysym> allows the current change to be inserted before or after the other change."
+msgstr "Puede aplicar cambios pulsando los botones de combinar  (\"<guiicon>-&gt;</guiicon>\" y \"<guiicon>&lt;-</guiicon>\"). Manteniendo pulsada la tecla <keysym>Mayús.</keysym> se pueden borrar bloques. Manteniendo pulsada la tecla <keysym>Control</keysym> se puede hacer que el cambio actual se inserte antes o después de otro cambio."
+
+#: meld.xml:151(para)
+msgid "You can apply all the changes from a given file by <mousebutton>right clicking</mousebutton> a text pane and choosing <command>Copy all left</command> or <command>Copy all right</command>. You can also launch an external editor from this menu. Configure the external editor in <guimenu>Settings-&gt;Preferences-&gt;Editor</guimenu>"
+msgstr "Puede aplicar todos los cambios desde un archivo pulsando con el <mousebutton>botón derecho</mousebutton> sobre uno de los paneles de texto y eligiendo <command>Copiar todo lo de la izquierda</command> o <command>Copiar todo lo de la derecha</command>. También puede lanzar un editor externo desde este menú. Configure el editor externo en <guimenu>Configuración-&gt;Preferencias-&gt;Editor</guimenu>"
+
+#: meld.xml:160(title) meld.xml:283(title) meld.xml:367(title)
+msgid "Filtering"
+msgstr "Filtrado"
+
+#: meld.xml:162(para)
+msgid "You can ignore certain types of differences in order to locate important differences. All these settings are available from <guimenu>Settings-&gt;Preferences-&gt;Text Filters</guimenu>."
+msgstr "Puede ignorar cierto tipo de diferencias para encontrar diferencias más importantes. Todas estas opciones están disponibles en <guimenu>Configuración-&gt;Preferencias-&gt;Filtros de texto</guimenu>."
+
+#: meld.xml:167(title)
+msgid "Regular Expressions"
+msgstr "Expresiones regulares"
+
+#: meld.xml:169(para)
+msgid "When comparing files, each selected regular expression is run in turn over each file. If the expression does not contain groups then anything matching the expression is replaced by the empty string before comparison is performed. If there are one or more groups then only the groups are replaced by the empty string instead of the entire match."
+msgstr "Al comparar archivos, cada una de las expresiones regulares seleccionadas se ejecuta alternadamente sobre cada archivo. Si la expresión no contiene grupos entonces cualquier cosa que coincida con la expresión regular se sustituye por una cadena vacía antes de que comience la comparación. Si hay uno o más grupos entonces sólo estos grupos son sustituidos por la cadena vacía en lugar de la coincidencia completa."
+
+#: meld.xml:177(para)
+msgid "Replacement typically happens on several lines at a time. The input string will likely contain newline characters (\\n). If your regular expression matches newlines the comparison will be incorrect. (The technical reason is that incremental difference updates with multiline text replacement is tricky and not yet implemented.)"
+msgstr "El reemplazo ocurre a menudo en varias líneas a la vez. La cadena de entrada puede que contenga caracteres de línea nueva (\\n). Si su expresión regular coincide con líneas nuevas la comparación será incorrecta. (La razón técnica es que las actualizaciones de diferencias incrementales en textos multilínea es complicada y no está implementada.)"
+
+#: meld.xml:186(para)
+msgid "See the python re module for more information on regular expressions"
+msgstr "Vea el módulo «re» de python para obtener más información acerca de expresiones regulares"
+
+#: meld.xml:192(title)
+msgid "Blank Lines"
+msgstr "Líneas en blanco"
+
+#: meld.xml:194(para)
+msgid "Changes which insert or remove blank lines can be ignored. This option is most useful in conjunction with one or more regular expression filters."
+msgstr "Los cambios que introducen o eliminan líneas en blanco pueden ignorarse. Esta opción es más útil si se usa combinada con uno o más filtros de expresiones regulares."
+
+#: meld.xml:201(title)
+msgid "Saving"
+msgstr "Guardar"
+
+#: meld.xml:203(para)
+msgid "When you have unsaved changes, a disk icon will appear beside the file name of the changed file. The tab label and window title also have an asterix after the file name."
+msgstr "Cuando se tienen cambios sin guardar, un icono con un disco aparecerá al lado del nombre del archivo que se ha modificado. La etiqueta de la solapa y la ventana contendrán un asterisco después del nombre del archivo."
+
+#: meld.xml:207(para)
+msgid "Save a file pressing <keysym>Control+s</keysym>, by selecting <guimenu>File-&gt;Save</guimenu> from the menu or by the toolbar save button. All of these save the currently focussed file (the file containing the edit cursor)"
+msgstr "Guarde un archivo pulsando <keysym>Control+s</keysym>, seleccionando <guimenu>Archivo-&gt;Guardar</guimenu> desde el menú o bien con el botón de guardar de la barra de herramientas. Todas estas opciones guardan el archivo con el que se está trabajando actualmente (el que contiene el cursor)"
+
+#: meld.xml:214(title)
+msgid "Status Bar"
+msgstr "Barra de estado"
+
+#: meld.xml:216(para)
+msgid "The status bar shows the cursor location (line and column) and also progress messages as files are initially loaded and compared."
+msgstr "La barra de estado muestra la posición del cursor (línea y columna) y también el progreso de los mensajes mientras se cargan y comparan archivos."
+
+#: meld.xml:223(title)
+msgid "Folder Comparison"
+msgstr "Comparación de carpetas"
+
+#: meld.xml:228(para)
+msgid "Use <guimenu>File...-&gt;New...-&gt;Directory Comparison</guimenu> to start a new directory comparison. You can compare two or three directories."
+msgstr "Para comenzar una nueva comparación de directorios use <guimenu>Archivo-&gt;Nuevo...-&gt;Comparación de directorios</guimenu>. Puede comparar dos o tres directorios."
+
+#: meld.xml:243(para)
+msgid "Similarly to the file comparison, the window margins mark file deletions, creations and modifications."
+msgstr "Similar a la comparación de archivos, en los márgenes de las ventanas se marcan los directorios nuevos, borrados y/o modificados."
+
+#: meld.xml:253(para)
+msgid "Modified files are highlighted with red, created files with green and deleted files with a strikethrough. See also <xref linkend=\"dir_content_filtering\"/>"
+msgstr "Los archivos modificados se resaltan en rojo, los nuevos en verde y los borrados se tachan. Vea también <xref linkend=\"dir_content_filtering\"/>"
+
+#: meld.xml:256(para)
+msgid "The file or folder most recently modified has a red dot superimposed on its icon. More detailed information such as file permission and modification time can be seen in the status bar when a file is selected."
+msgstr "El archivo o carpeta más recientemente modificado tiene un punto rojo superpuesto en el icono. Se puede ver información detallada acerca de los permisos y la hora de modificación en la barra de estado al seleccionar el archivo o directorio."
+
+#: meld.xml:261(para)
+msgid "Use the mouse or the the cursor keys <keysym>Up</keysym>, <keysym>Down</keysym>, <keysym>Left</keysym> and <keysym>Right</keysym> to navigate. Additionally <keysym>Control+D</keysym> and <keysym>Control+E</keysym> move to the next and previous modification respectively."
+msgstr "Para navegar utilice el ratón o las teclas <keysym>Arriba</keysym>, <keysym>Abajo</keysym>, <keysym>Izquierda</keysym> y <keysym>Derecha</keysym>. Adicionalmente puede usar <keysym>Control+D</keysym> y <keysym>Control+E</keysym> para moverse por las modificaciones siguiente y previa respectivamente."
+
+#: meld.xml:271(para)
+msgid "Activate an item with <mousebutton>double click</mousebutton> or <keysym>Return</keysym> to start an individual file comparison."
+msgstr "Active un objeto con una <mousebutton>pulsación doble</mousebutton> del ratón o bien pulsando la tecla <keysym>Intro</keysym>para comenzar una comparación de archivos individual."
+
+#: meld.xml:274(para)
+msgid "Additional options are available from a <mousebutton>right click</mousebutton> context menu."
+msgstr "Existen opciones adiciones disponibles en el menú contextual al pulsar con el <mousebutton>botón derecho del ratón</mousebutton>."
+
+#: meld.xml:277(para)
+msgid "Use <mousebutton>Shift+Click</mousebutton> and <mousebutton>Control+Click</mousebutton> to select multiple items."
+msgstr "Para seleccionar múltiples objetos utilice <mousebutton>Mayús.+pulsación del ratón</mousebutton> y <mousebutton>Control+pulsación del ratón</mousebutton>."
+
+#: meld.xml:285(para)
+msgid "Often the initial comparison will contain too much spurious information. You can use filters to isolate the differences which are important to you."
+msgstr "A menudo la comparación inicial contiene demasiada información espúrea. Puede usar los filtros para aislar las diferencias que considere importantes."
+
+#: meld.xml:290(title)
+msgid "Explicit Hiding"
+msgstr "Ocultar explícitamente"
+
+#: meld.xml:292(para)
+msgid "Use the toolbar button to hide an item (and all subitems for directories)."
+msgstr "Para ocultar un objeto (y todos los subdirectorios para directorios) use el botón de ocultar de la barra de herramientas."
+
+#: meld.xml:297(title)
+msgid "Case Sensitivity"
+msgstr "Sensibilidad a capitalización"
+
+#: meld.xml:299(para)
+msgid "By default filename comparisons are case sensitive. Use the toolbar button to toggle case sensitivty of filenames."
+msgstr "Por omisión las comparaciones de archivos por nombre son sensibles a capitalización. Utilice el botón de la barra de herramientas para cambiar esta opción."
+
+#: meld.xml:304(title)
+msgid "State Filtering"
+msgstr "Filtrado por estado"
+
+#: meld.xml:308(para)
+msgid "Modified (there is some content difference between files which are present)"
+msgstr "Modificado (hay alguna diferencia de contenido entre los archivos presentes)"
+
+#: meld.xml:313(para)
+msgid "New (there is no content difference between present files, but the file is missing from at least one directory)"
+msgstr "Nuevo (no hay diferencias de contenido entre los archivos presentes pero el archivo falta en, al menos, un directorio)"
+
+#: meld.xml:318(para)
+msgid "Identical (all files have equal content and are all present)"
+msgstr "Idéntico (los archivos tienen el mismo contenido y todos existen)"
+
+#: meld.xml:306(para)
+msgid "All items have a state which is one of: <placeholder-1/>"
+msgstr "Todos los objetos tienen un estado que es uno de: <placeholder-1/>"
+
+#: meld.xml:325(para)
+msgid "In the current version, only files are filtered by state. Directories are always shown."
+msgstr "En la versión actual sólo los archivos se filtran por estado. Los directorios siempre se muestran."
+
+#: meld.xml:323(para)
+msgid "Use the toolbar buttons to control which items are shown by their state.<note><placeholder-1/></note>"
+msgstr "Para controlar qué objetos se muestran por su estado use los botones de la barra de herramientas.<note><placeholder-1/></note>"
+
+#: meld.xml:331(title)
+msgid "Name Filtering"
+msgstr "Filtrado por nombre"
+
+#: meld.xml:333(para)
+msgid "You can hide selected filename patterns from the comparison using the toolbar buttons. Use <guimenu>Settings-&gt;Preferences-&gt;File Filters</guimenu> to customise the file patterns."
+msgstr "Puede ocultar de la comparación los patrones de nombres de archivo seleccionados usando la barra de herramientas. Utilice <guimenu>Configuración-&gt;Preferencias-&gt;Filtros de archivo</guimenu> para personalizar los patrones."
+
+#: meld.xml:340(title)
+msgid "Content Filtering"
+msgstr "Filtrado por contenido"
+
+#: meld.xml:342(para)
+msgid "If differences between files exist, but all differences match the active regular expressions specified in <guimenu>Settings-&gt;Preferences-&gt;Text Filters</guimenu>, then the filename is not highlighted in red, but is insted italicised in regular font."
+msgstr "Si existen diferencias entre archivos, pero todas ellas coinciden con las expresiones regulares especificadas en <guimenu>Configuración-&gt;Preferencias-&gt;Filtros de texto</guimenu>, entonces el nombre de archivo no se resalta en rojo pero aparece en cursiva."
+
+#: meld.xml:352(title)
+msgid "Source Control"
+msgstr "Control de código"
+
+#: meld.xml:357(para)
+msgid "Use <guimenu>File...-&gt;New...-&gt;CVS Browser</guimenu> or <guimenu>File...-&gt;New...-&gt;SVN Browser</guimenu> to start browsing a working copy."
+msgstr "Para visualizar una copia de trabajo utilice <guimenu>Archivo-&gt;Nuevo...-&gt;Visor CVS</guimenu> o <guimenu>Archivo-&gt;Nuevo...-&gt;Visor SVN</guimenu>."
+
+#: meld.xml:361(para)
+msgid "The browser is used for examining and commiting or reverting local changes. It is not intended to be a complete source control client."
+msgstr "El visor se usa para examinar y efectuar o revertir cambios locales. No está desarrollado para ser un cliente de control de código completo."
+
+#: meld.xml:371(para)
+msgid "Normal (the file is unchanged since it was checked out)"
+msgstr "Normal (el archivo no ha sufrido cambios desde la última vez que se revisó)"
+
+#: meld.xml:376(para)
+msgid "Non controlled (the file exists locally but was not checked out)"
+msgstr "No controlados (el archivo existe localmente pero no se ha revisado)"
+
+#: meld.xml:381(para)
+msgid "Ignored (the file is explicitly ignored e.g. though .cvsignore)"
+msgstr "Ignorados (el archivo se ignora explícitamente e.j. a través de .cvsignore)"
+
+#: meld.xml:386(para)
+msgid "Modified (locally changed, added or removed)"
+msgstr "Modificados (localmente, añadidos o eliminados)"
+
+#: meld.xml:369(para)
+msgid "The browser can filter on four states:<placeholder-1/>"
+msgstr "El visor puede filtrar sobre cuatro estados: <placeholder-1/>"
+
+#: meld.xml:390(para)
+msgid "If you have several changes scattered in several directories or in a large tree, the 'Recurse' tooggle is flattens the directory listing. This is especially useful in conjunction with only the modified filter active."
+msgstr "Si existen varios cambios en varios directorios o en un árbol grande, el conmutador «Recursivo»  aplanar el listado de directorios. Es especialmente útil usarlo junto con el filtro de «modificados»."
+
+#: meld.xml:397(title)
+msgid "Viewing Differences"
+msgstr "Ver las diferencias"
+
+#: meld.xml:399(para)
+msgid "Activating an unmodified file opens it in the file viewer. Activating a modified file opens up a two way diff to examine your changes."
+msgstr "Activar un archivo sin modificar lo abre en el visor de archivos. Activar un archivo modificado abre una comparación de dos vías para examinar los cambios."
+
+#: meld.xml:403(para)
+msgid "You can examine many changes at once using <mousebutton>Shift+Click</mousebutton> and <mousebutton>Control+Click</mousebutton> to select multiple items."
+msgstr "Puede examinar varios cambios a la vez usando <mousebutton>Mayús+pulsación del ratón</mousebutton> y <mousebutton>Control+pulsación del ratón</mousebutton> para seleccionar múltiples objetos."
+
+#: meld.xml:410(title)
+msgid "Making Changes"
+msgstr "Cambios"
+
+#: meld.xml:412(para)
+msgid "The toolbar contains commands to perform the most common source control operations. These operations are also accessible through a context menu."
+msgstr "La barra de herramientas contiene comandos para realizar las operaciones más comunes sobre el control del código. También se puede acceder a estas operaciones a través de un menú contextual."
+
+#: meld.xml:418(title)
+msgid "Viewing Console"
+msgstr "Mostrar la consola"
+
+#: meld.xml:420(para)
+msgid "At the bottom of the source control window is an expander containing all the source control operations and their output. Click the expander bar to toggle between hiding and showing the console."
+msgstr "En la parte inferior de la ventana de control de código se puede expandir una ventana que contiene todas las operaciones de control de código y su salida. Pulse en la barra del expansor para cambiar entre ocultar y mostrar la consola."
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#: meld.xml:0(None)
+msgid "translator-credits"
+msgstr ""
+"Jorge González <jorge.gonzalez.gonzalez@hispalinux.es>, 2005\n"
+"Francisco Javier F. Serrador <serrador@gnome.org>, 2005"
+

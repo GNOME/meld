@@ -1,0 +1,384 @@
+# Spanish translation of Meld's manual
+# Traducción al español del manual de Meld
+# Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: manual_meld\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-12 11:42+0200\n"
+"PO-Revision-Date: 2007-12-31 21:09+0100\n"
+"Last-Translator: Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>\n"
+"Language-Team:  <traductores@es.gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: meld.xml:4(title) meld.xml:7(title)
+msgid "Meld Users Manual"
+msgstr ""
+
+#: meld.xml:11(firstname)
+msgid "Stephen"
+msgstr "Stephen"
+
+#: meld.xml:13(surname)
+msgid "Kennedy"
+msgstr "Kennedy"
+
+#: meld.xml:15(email)
+msgid "stevek@gnome.org"
+msgstr "stevek@gnome.org"
+
+#: meld.xml:20(year)
+msgid "2004"
+msgstr "2004"
+
+#: meld.xml:22(holder)
+msgid "Stephen Kennedy"
+msgstr "Stephen Kennedy"
+
+#: meld.xml:25(releaseinfo)
+msgid "This is version 0.1 of the meld manual, describing meld 0.9.6"
+msgstr ""
+
+#: meld.xml:30(title)
+msgid "Introduction"
+msgstr "Introduccion"
+
+#: meld.xml:33(title)
+msgid "What is meld"
+msgstr ""
+
+#: meld.xml:35(para)
+msgid "Meld views differences between files and between directories. Meld makes it easy to isolate and merge these differences."
+msgstr ""
+
+#: meld.xml:40(title)
+msgid "Starting meld"
+msgstr ""
+
+#: meld.xml:43(title)
+msgid "Command line arguments"
+msgstr ""
+
+#: meld.xml:47(userinput)
+#, no-wrap
+msgid "meld"
+msgstr "meld"
+
+#: meld.xml:50(para)
+msgid "start meld with the new document dialog"
+msgstr ""
+
+#: meld.xml:55(userinput)
+#, no-wrap
+msgid "meld &lt;file&gt; &lt;file&gt;\n            [file]"
+msgstr ""
+
+#: meld.xml:59(para) meld.xml:69(para)
+msgid "start meld with either a two way or three way file comparison"
+msgstr ""
+
+#: meld.xml:65(userinput)
+#, no-wrap
+msgid "meld &lt;dir&gt; &lt;dir&gt;\n            [dir]"
+msgstr ""
+
+#: meld.xml:75(userinput)
+#, no-wrap
+msgid "meld &lt;dir|file&gt;"
+msgstr ""
+
+#: meld.xml:78(para)
+msgid "start meld with the source control browser"
+msgstr ""
+
+#: meld.xml:84(para)
+msgid "\"&lt;&gt;\" demote required arguments, \"[]\" denote optional arguments and \"|\" a choice."
+msgstr ""
+
+#: meld.xml:89(para)
+msgid "Run <userinput>meld --help</userinput> for a complete list of options"
+msgstr ""
+
+#: meld.xml:97(title)
+msgid "File Comparison"
+msgstr ""
+
+#: meld.xml:100(title) meld.xml:226(title) meld.xml:355(title)
+msgid "Starting"
+msgstr "Aviada"
+
+#: meld.xml:102(para)
+msgid "Use <guimenu>File...-&gt;New...-&gt;File Comparison</guimenu> to start a new file comparison. You can compare two or three files."
+msgstr ""
+
+#: meld.xml:105(para) meld.xml:232(para)
+msgid "For two way comparisons the original is shown in the left pane and the modified version in the right pane by convention."
+msgstr ""
+
+#: meld.xml:108(para) meld.xml:235(para)
+msgid "For three way comparisons, the original is shown in the centre pane and the left and right panes show the modified versions. By convention we put the locally modified file in the right pane."
+msgstr ""
+
+#: meld.xml:114(title) meld.xml:241(title)
+msgid "Change Summary"
+msgstr ""
+
+#: meld.xml:116(para)
+msgid "The location of the changes is summarised in the window margins at the far left and right. By default green marks insertions and deletions and blue marks changes."
+msgstr ""
+
+#: meld.xml:120(para) meld.xml:246(para)
+msgid "You can jump to an individual change by clicking in the margin or using the scrollbar."
+msgstr ""
+
+#: meld.xml:125(title) meld.xml:251(title)
+msgid "Detailed View"
+msgstr ""
+
+#: meld.xml:127(para)
+msgid "Detailed differences are shown in the text and central pane. Inserted text is shown with a solid background. Lines containing changes are marked with a light background with the individual changes highlighted with a stronger colour."
+msgstr ""
+
+#: meld.xml:132(para)
+msgid "The area between each file shows where each change occurs in the other file. You can scroll through the changes by rolling the mouse wheel over this area or with keyboard shortcuts <keysym>Control+D</keysym>, <keysym>Control+E</keysym>."
+msgstr ""
+
+#: meld.xml:139(title) meld.xml:269(title)
+msgid "Editing"
+msgstr "Modificacion"
+
+#: meld.xml:141(para)
+msgid "You can edit the files as you would in a normal text editor. The differences will update automatically. Use <keysym>Control+F</keysym> to search and <keysym>Control+G</keysym> to repeat the last search."
+msgstr ""
+
+#: meld.xml:145(para)
+msgid "You can also apply changes by clicking the merge buttons (\"<guiicon>-&gt;</guiicon>\" and \"<guiicon>&lt;-</guiicon>\"). Holding <keysym>Shift</keysym> allows blocks to be deleted. Holding <keysym>Control</keysym> allows the current change to be inserted before or after the other change."
+msgstr ""
+
+#: meld.xml:151(para)
+msgid "You can apply all the changes from a given file by <mousebutton>right clicking</mousebutton> a text pane and choosing <command>Copy all left</command> or <command>Copy all right</command>. You can also launch an external editor from this menu. Configure the external editor in <guimenu>Settings-&gt;Preferences-&gt;Editor</guimenu>"
+msgstr ""
+
+#: meld.xml:160(title) meld.xml:283(title) meld.xml:367(title)
+msgid "Filtering"
+msgstr ""
+
+#: meld.xml:162(para)
+msgid "You can ignore certain types of differences in order to locate important differences. All these settings are available from <guimenu>Settings-&gt;Preferences-&gt;Text Filters</guimenu>."
+msgstr ""
+
+#: meld.xml:167(title)
+msgid "Regular Expressions"
+msgstr ""
+
+#: meld.xml:169(para)
+msgid "When comparing files, each selected regular expression is run in turn over each file. If the expression does not contain groups then anything matching the expression is replaced by the empty string before comparison is performed. If there are one or more groups then only the groups are replaced by the empty string instead of the entire match."
+msgstr ""
+
+#: meld.xml:177(para)
+msgid "Replacement typically happens on several lines at a time. The input string will likely contain newline characters (\\n). If your regular expression matches newlines the comparison will be incorrect. (The technical reason is that incremental difference updates with multiline text replacement is tricky and not yet implemented.)"
+msgstr ""
+
+#: meld.xml:186(para)
+msgid "See the python re module for more information on regular expressions"
+msgstr ""
+
+#: meld.xml:192(title)
+msgid "Blank Lines"
+msgstr ""
+
+#: meld.xml:194(para)
+msgid "Changes which insert or remove blank lines can be ignored. This option is most useful in conjunction with one or more regular expression filters."
+msgstr ""
+
+#: meld.xml:201(title)
+msgid "Saving"
+msgstr "A enregistrar"
+
+#: meld.xml:203(para)
+msgid "When you have unsaved changes, a disk icon will appear beside the file name of the changed file. The tab label and window title also have an asterix after the file name."
+msgstr ""
+
+#: meld.xml:207(para)
+msgid "Save a file pressing <keysym>Control+s</keysym>, by selecting <guimenu>File-&gt;Save</guimenu> from the menu or by the toolbar save button. All of these save the currently focussed file (the file containing the edit cursor)"
+msgstr ""
+
+#: meld.xml:214(title)
+msgid "Status Bar"
+msgstr "Barra d'estat"
+
+#: meld.xml:216(para)
+msgid "The status bar shows the cursor location (line and column) and also progress messages as files are initially loaded and compared."
+msgstr ""
+
+#: meld.xml:223(title)
+msgid "Folder Comparison"
+msgstr ""
+
+#: meld.xml:228(para)
+msgid "Use <guimenu>File...-&gt;New...-&gt;Directory Comparison</guimenu> to start a new directory comparison. You can compare two or three directories."
+msgstr ""
+
+#: meld.xml:243(para)
+msgid "Similarly to the file comparison, the window margins mark file deletions, creations and modifications."
+msgstr ""
+
+#: meld.xml:253(para)
+msgid "Modified files are highlighted with red, created files with green and deleted files with a strikethrough. See also <xref linkend=\"dir_content_filtering\"/>"
+msgstr ""
+
+#: meld.xml:256(para)
+msgid "The file or folder most recently modified has a red dot superimposed on its icon. More detailed information such as file permission and modification time can be seen in the status bar when a file is selected."
+msgstr ""
+
+#: meld.xml:261(para)
+msgid "Use the mouse or the the cursor keys <keysym>Up</keysym>, <keysym>Down</keysym>, <keysym>Left</keysym> and <keysym>Right</keysym> to navigate. Additionally <keysym>Control+D</keysym> and <keysym>Control+E</keysym> move to the next and previous modification respectively."
+msgstr ""
+
+#: meld.xml:271(para)
+msgid "Activate an item with <mousebutton>double click</mousebutton> or <keysym>Return</keysym> to start an individual file comparison."
+msgstr ""
+
+#: meld.xml:274(para)
+msgid "Additional options are available from a <mousebutton>right click</mousebutton> context menu."
+msgstr ""
+
+#: meld.xml:277(para)
+msgid "Use <mousebutton>Shift+Click</mousebutton> and <mousebutton>Control+Click</mousebutton> to select multiple items."
+msgstr ""
+
+#: meld.xml:285(para)
+msgid "Often the initial comparison will contain too much spurious information. You can use filters to isolate the differences which are important to you."
+msgstr ""
+
+#: meld.xml:290(title)
+msgid "Explicit Hiding"
+msgstr ""
+
+#: meld.xml:292(para)
+msgid "Use the toolbar button to hide an item (and all subitems for directories)."
+msgstr ""
+
+#: meld.xml:297(title)
+msgid "Case Sensitivity"
+msgstr ""
+
+#: meld.xml:299(para)
+msgid "By default filename comparisons are case sensitive. Use the toolbar button to toggle case sensitivty of filenames."
+msgstr ""
+
+#: meld.xml:304(title)
+msgid "State Filtering"
+msgstr ""
+
+#: meld.xml:308(para)
+msgid "Modified (there is some content difference between files which are present)"
+msgstr ""
+
+#: meld.xml:313(para)
+msgid "New (there is no content difference between present files, but the file is missing from at least one directory)"
+msgstr ""
+
+#: meld.xml:318(para)
+msgid "Identical (all files have equal content and are all present)"
+msgstr ""
+
+#: meld.xml:306(para)
+msgid "All items have a state which is one of: <placeholder-1/>"
+msgstr ""
+
+#: meld.xml:325(para)
+msgid "In the current version, only files are filtered by state. Directories are always shown."
+msgstr ""
+
+#: meld.xml:323(para)
+msgid "Use the toolbar buttons to control which items are shown by their state.<note><placeholder-1/></note>"
+msgstr ""
+
+#: meld.xml:331(title)
+msgid "Name Filtering"
+msgstr ""
+
+#: meld.xml:333(para)
+msgid "You can hide selected filename patterns from the comparison using the toolbar buttons. Use <guimenu>Settings-&gt;Preferences-&gt;File Filters</guimenu> to customise the file patterns."
+msgstr ""
+
+#: meld.xml:340(title)
+msgid "Content Filtering"
+msgstr ""
+
+#: meld.xml:342(para)
+msgid "If differences between files exist, but all differences match the active regular expressions specified in <guimenu>Settings-&gt;Preferences-&gt;Text Filters</guimenu>, then the filename is not highlighted in red, but is insted italicised in regular font."
+msgstr ""
+
+#: meld.xml:352(title)
+msgid "Source Control"
+msgstr ""
+
+#: meld.xml:357(para)
+msgid "Use <guimenu>File...-&gt;New...-&gt;CVS Browser</guimenu> or <guimenu>File...-&gt;New...-&gt;SVN Browser</guimenu> to start browsing a working copy."
+msgstr ""
+
+#: meld.xml:361(para)
+msgid "The browser is used for examining and commiting or reverting local changes. It is not intended to be a complete source control client."
+msgstr ""
+
+#: meld.xml:371(para)
+msgid "Normal (the file is unchanged since it was checked out)"
+msgstr ""
+
+#: meld.xml:376(para)
+msgid "Non controlled (the file exists locally but was not checked out)"
+msgstr ""
+
+#: meld.xml:381(para)
+msgid "Ignored (the file is explicitly ignored e.g. though .cvsignore)"
+msgstr ""
+
+#: meld.xml:386(para)
+msgid "Modified (locally changed, added or removed)"
+msgstr ""
+
+#: meld.xml:369(para)
+msgid "The browser can filter on four states:<placeholder-1/>"
+msgstr ""
+
+#: meld.xml:390(para)
+msgid "If you have several changes scattered in several directories or in a large tree, the 'Recurse' tooggle is flattens the directory listing. This is especially useful in conjunction with only the modified filter active."
+msgstr ""
+
+#: meld.xml:397(title)
+msgid "Viewing Differences"
+msgstr ""
+
+#: meld.xml:399(para)
+msgid "Activating an unmodified file opens it in the file viewer. Activating a modified file opens up a two way diff to examine your changes."
+msgstr ""
+
+#: meld.xml:403(para)
+msgid "You can examine many changes at once using <mousebutton>Shift+Click</mousebutton> and <mousebutton>Control+Click</mousebutton> to select multiple items."
+msgstr ""
+
+#: meld.xml:410(title)
+msgid "Making Changes"
+msgstr ""
+
+#: meld.xml:412(para)
+msgid "The toolbar contains commands to perform the most common source control operations. These operations are also accessible through a context menu."
+msgstr ""
+
+#: meld.xml:418(title)
+msgid "Viewing Console"
+msgstr ""
+
+#: meld.xml:420(para)
+msgid "At the bottom of the source control window is an expander containing all the source control operations and their output. Click the expander bar to toggle between hiding and showing the console."
+msgstr ""
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#: meld.xml:0(None)
+msgid "translator-credits"
+msgstr "Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>"
+

@@ -1,0 +1,58 @@
+## 
+## Install
+## *******
+##
+## Meld can be installed in two ways:
+## 
+##   Run directly from untar directory:
+##   "make" to create translations
+##   Now run "./meld"
+##   You can create a symlink to the executable
+##   i.e. /usr/local/bin/meld -> <melddir>/meld
+##
+##   OR
+##
+##   Install into (for instance) /usr/local
+##   "make prefix=/usr/local install"
+##   Now run "/usr/local/bin/meld"
+## 
+##   You can customise the install paths used here:
+PYTHON ?= python
+prefix := /usr/local
+bindir := $(prefix)/bin
+libdir := $(prefix)/lib
+docdir := $(prefix)/share/doc
+sharedir := $(prefix)/share
+helpdir := $(sharedir)/gnome/help
+localedir := $(prefix)/share/locale
+localstatedir := $(prefix)/var
+libdir_ := $(libdir)/meld
+docdir_ := $(docdir)/meld
+sharedir_ := $(sharedir)/meld
+helpdir_ := $(helpdir)/meld
+## 
+## Python Version
+## **************
+## 
+## Meld requires at least python2.3. If you need a version which 
+## works with python2.2 try one of the 0.9 series. 0.9.4.1 will
+## work with old pygtk packages too.
+## 
+## Dependencies
+## ************
+## 
+## At the very least you will need:
+##  * pygtk-2.6.0
+##  * gnome-python-2.6.0
+## 
+## Optional:
+##  * pygtksourceview 0.9 or higher
+##    (http://sourceforge.net/projects/pygtksourceview)
+## 
+## Meld will not work with earlier versions of these packages.
+## Earlier versions of meld (up to 0.9.x) required only version
+## pygtk and gnome-python 2.0.
+## 
+## They are all available from your favourite gnome mirror.
+## Alternatively many distributions provide binary packages.
+## 

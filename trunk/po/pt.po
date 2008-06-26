@@ -1,0 +1,1493 @@
+# meld's Portuguese translation.
+# Copyright (C) 2003 meld
+# This file is distributed under the same license as the meld package.
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 2.6\n"
+"Report-Msgid-Bugs-To: Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"POT-Creation-Date: 2003-12-24 02:21+0000\n"
+"PO-Revision-Date: 2003-12-24 02:40+0000\n"
+"Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: meld.desktop.in.h:1
+msgid "Compare and merge your files."
+msgstr "Compare e junte os seus ficheiros."
+
+#: meld.desktop.in.h:2
+msgid "Meld Diff Viewer"
+msgstr "Visualizador de Diferenças Meld"
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. Local Functions
+#.
+#. ###############################################################################
+#: cvsview.py:41
+msgid ""
+"Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
+msgstr ""
+"Ignorado:Não CVS:::Erro::Recentemente adicionado:Alterado:<b>Conflito</b>:Removido:Falta"
+
+#. no cvs dir
+#. print "Unable to parse date '%s' in '%s/CVS/Entries' (%s)" % (date, directory, e)
+#. known
+#. ignored
+#: cvsview.py:173
+#, python-format
+msgid ""
+"Error converting to a regular expression\n"
+"The pattern was '%s'\n"
+"The error was '%s'"
+msgstr ""
+"Erro ao converter numa expressão regular\n"
+"O padrão era '%s'\n"
+"O erro foi '%s'"
+
+#. ###############################################################################
+#.
+#. Local Functions
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. CommitDialog
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. CvsTreeStore
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. DirDiffMenu
+#.
+#. ###############################################################################
+#. ###############################################################################
+#. filters
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. CvsView
+#.
+#. ###############################################################################
+#: cvsview.py:350
+msgid "Name"
+msgstr "Nome"
+
+#: cvsview.py:367
+msgid "Location"
+msgstr "Localização"
+
+#: cvsview.py:368
+msgid "Status"
+msgstr "Estado"
+
+#: cvsview.py:369
+msgid "Rev"
+msgstr "Rev"
+
+#: cvsview.py:370
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: cvsview.py:371
+msgid "Options"
+msgstr "Opções"
+
+#. is file still extant in other pane?
+#. nope its gone
+#: cvsview.py:408 dirdiff.py:354
+#, python-format
+msgid "[%s] Scanning"
+msgstr "[%s] A analizar"
+
+#. depth first
+#: cvsview.py:435 dirdiff.py:362
+#, python-format
+msgid "[%s] Scanning %s"
+msgstr "[%s] A analizar %s"
+
+#. import time; time.sleep(1.0)
+#. expand parents
+#: cvsview.py:451
+msgid "(Empty)"
+msgstr "(Vazio)"
+
+#. just the root
+#: cvsview.py:483
+#, python-format
+msgid "[%s] Fetching differences"
+msgstr "[%s] A obter diferenças"
+
+#: cvsview.py:490
+#, python-format
+msgid "[%s] Applying patch"
+msgstr "[%s] A aplicar alteração"
+
+#: cvsview.py:494
+msgid "No differences found."
+msgstr "Nenhuma diferença encontrada."
+
+#. remove empty entries and remove trailing slashes
+#: cvsview.py:560
+msgid "Select some files first."
+msgstr "Seleccione primeiro alguns ficheiros."
+
+#. it is missing, create empty file
+#. XXX fixme
+#. print event
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. Differ
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. Differ
+#.
+#. ###############################################################################
+#. Internally, diffs are stored from text1 -> text0 and text1 -> text2.
+#. 0 or 2
+#. sequence==1:
+#. print "diffs", loidx, hiidx, len(diffs), lorange, hirange #diffs[loidx], diffs[hiidx-1]
+#. print "^^^^^", rangex, range1
+#. print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. Local Functions
+#.
+#. ###############################################################################
+#. early out if only one file
+#. get sigs
+#. check for directories
+#. all dirs
+#. mixture
+#. if no substitutions look for different sizes
+#. try cache
+#. up to date
+#. do it
+#. ###############################################################################
+#.
+#. DirDiffTreeStore
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. EmblemCellRenderer
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. DirDiffMenu
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. TypeFilter
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. DirDiff
+#.
+#. ###############################################################################
+#: dirdiff.py:251 dirdiff.py:266
+#, python-format
+msgid "Error converting pattern '%s' to regular expression"
+msgstr "Erro ao converter padrão '%s' em expressão regular"
+
+#: dirdiff.py:276
+#, python-format
+msgid "Hide %s"
+msgstr "Esconder %s"
+
+#. map canonical names to realnames
+#: dirdiff.py:395
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "'%s' escondido por '%s'"
+
+#: dirdiff.py:401
+#, python-format
+msgid ""
+"You are running a case insensitve comparison on a case sensitive filesystem. "
+"Some files are not visible:\n"
+"%s"
+msgstr ""
+"Está a efectuar uma comparação insensível à capitalização sobre um sistema de "
+"ficheiros sensível à capitalização. Alguns ficheiros não são visíveis:\n"
+"%s"
+
+#. then directories and files
+#. directory is empty, add a placeholder
+#: dirdiff.py:445
+#, python-format
+msgid "[%s] Done"
+msgstr "[%s] Terminado"
+
+#. filter(lambda x: x.name!=None, sel):
+#: dirdiff.py:503
+#, python-format
+msgid ""
+"'%s' exists.\n"
+"Overwrite?"
+msgstr ""
+"'%s' existe.\n"
+"Sobrepor?"
+
+#: dirdiff.py:510
+#, python-format
+msgid ""
+"Error copying '%s' to '%s'\n"
+"\n"
+"%s."
+msgstr ""
+"Erro ao copiar '%s' para '%s'\n"
+"\n"
+"%s."
+
+#. reverse so paths dont get changed
+#. xxx
+#: dirdiff.py:528
+#, python-format
+msgid ""
+"'%s' is a directory.\n"
+"Remove recusively?"
+msgstr ""
+"'%s' é um directório.\n"
+"Remover recursivamente?"
+
+#: dirdiff.py:534
+#, python-format
+msgid ""
+"Error removing %s\n"
+"\n"
+"%s."
+msgstr ""
+"Erro ao remover %s\n"
+"\n"
+"%s."
+
+#. Its possible to have file 'foo' in one pane and dir 'foo' in another.
+#. We want to do the right thing depending on the one clicked.
+#. clicked on missing entry?
+#.
+#. Toolbar handlers
+#.
+#.
+#. Selection
+#.
+#.
+#. Filtering
+#.
+#. find the newest file, checking also that they differ
+#. all same
+#. unselect others
+#. clicked outside tree
+#. not first time through
+#. print model.value_path(iter, treeindex), model.get_state(iter, treeindex)
+#. end marker
+#. ignore
+#. none
+#. normal
+#. nochange
+#. error
+#. empty
+#. new
+#. modified
+#. conflict
+#. removed
+#. missing
+#. border
+#. TODO need gutter of scrollbar - how do we get that?
+#. TODO need gutter of scrollbar - how do we get that?
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ###############################################################################
+#.
+#. FileDiff
+#.
+#. ###############################################################################
+#. glade bug workaround
+#. print "***", range, len(self.linediffer.diffs[0])
+#.
+#. text buffer undo/redo
+#.
+#.
+#.
+#.
+#. XXX .get_buffer().copy_clipboard()
+#. XXX get_buffer().cut_clipboard()
+#. XXX t.get_buffer().paste_clipboard(None, 1)
+#.
+#. find/replace buffer
+#.
+#. tofind is utf-8 encoded
+#. as is buffer
+#: filediff.py:380
+#, python-format
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+"Erro de expressão regular\n"
+"'%s'"
+
+#: filediff.py:392
+#, python-format
+msgid "The regular expression '%s' was not found."
+msgstr "A expressão regular '%s' não foi encontrada."
+
+#: filediff.py:394
+#, python-format
+msgid "The text '%s' was not found."
+msgstr "O texto '%s' não foi encontrado."
+
+#.
+#. text buffer loading/saving
+#.
+#: filediff.py:433
+#, python-format
+msgid "[%s] Set num panes"
+msgstr "[%s] Definir número de paineis"
+
+#: filediff.py:440
+#, python-format
+msgid "[%s] Opening files"
+msgstr "[%s] A abrir ficheiros"
+
+#: filediff.py:456
+#, python-format
+msgid ""
+"Could not open '%s' for reading.\n"
+"\n"
+"The error was:\n"
+"%s"
+msgstr ""
+"Incapaz de abrir '%s' para leitura.\n"
+"\n"
+"O erro foi:\n"
+"%s"
+
+#: filediff.py:460
+#, python-format
+msgid "[%s] Reading files"
+msgstr "[%s] A ler ficheiros"
+
+#: filediff.py:475
+#, python-format
+msgid ""
+"Could not read from '%s'.\n"
+"\n"
+"I tried encodings %s."
+msgstr ""
+"Incapaz de ler de '%s'.\n"
+"\n"
+"Codificações testadas foram %s."
+
+#: filediff.py:480
+#, python-format
+msgid ""
+"Could not read from '%s'.\n"
+"\n"
+"The error was:\n"
+"%s"
+msgstr ""
+"Incapaz de ler de '%s'.\n"
+"\n"
+"O erro foi:\n"
+"%s"
+
+#: filediff.py:500
+#, python-format
+msgid "[%s] Computing differences"
+msgstr "[%s] A calcular diferenças"
+
+#. for b, l in zip( buffers, ranges ):
+#. for chunk in self.linediffer.all_changes_in_range(self._get_texts(), range0[0], range0[1], range1[0], range1[1]):
+#. print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
+#: filediff.py:592
+#, python-format
+msgid "Choose a name for buffer %i."
+msgstr "Seleccione um nome para o buffer %i."
+
+#: filediff.py:603
+#, python-format
+msgid ""
+"\"%s\" exists!\n"
+"Overwrite?"
+msgstr ""
+"\"%s\" existe!\n"
+"Sobrepor?"
+
+#: filediff.py:617
+#, python-format
+msgid ""
+"This file '%s' contains a mixture of line endings.\n"
+"\n"
+"Which format would you like to use?"
+msgstr ""
+"O ficheiro '%s' contém uma mistura de terminações de linha.\n"
+"\n"
+"Que formato deseja utilizar?"
+
+#: filediff.py:634
+#, python-format
+msgid ""
+"Error writing to %s\n"
+"\n"
+"%s."
+msgstr ""
+"Erro ao escrever para %s\n"
+"\n"
+"%s."
+
+#.
+#. refresh, _queue_refresh
+#.
+#: filediff.py:693
+#, python-format
+msgid ""
+"Refreshing will discard changes in:\n"
+"%s\n"
+"\n"
+"You cannot undo this operation."
+msgstr ""
+"Actualizar irá descartar alterações em:\n"
+"%s\n"
+"\n"
+"Não poderá desfazer esta operação."
+
+#: meld:50
+#, c-format
+msgid "Meld requires python%s or higher."
+msgstr "Meld necessita do python%s ou superior."
+
+#: meld:60
+msgid "Meld requires a recent version of pygtk."
+msgstr "Meld necessita de uma versão recente do pygtk."
+
+#: meld:61
+#, c-format
+msgid "pygtk-%s or higher is recommended."
+msgstr "É recomendado o pygtk-%s ou superior."
+
+#: meld:71
+#, c-format
+msgid "Meld works best with pygtk-%s or higher. (found %s)"
+msgstr "Meld funciona melhor com o pygtk-%s ou superior. (encontrado %s)"
+
+#: meld:72
+msgid ""
+"Due to incompatible API changes some functions may not operate as expected."
+msgstr ""
+"Devido a alterações incompatíveis de API algumas funções poderão não "
+"funcionar tal como esperado."
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. system
+#. gnome
+#. project
+#. magic developer switch, changes some behaviour
+#. ###############################################################################
+#.
+#. BrowseFileDialog
+#.
+#. ###############################################################################
+#: meldapp.py:56
+#, python-format
+msgid "Browse %s"
+msgstr "Navegar %s"
+
+#. ###############################################################################
+#.
+#. ListWidget
+#.
+#. ###############################################################################
+#. XXX need model.swap
+#. XXX need model.swap
+#. ###############################################################################
+#.
+#. PreferencesDialog
+#.
+#. ###############################################################################
+#. tab selector
+#. editor
+#. display
+#. file filters
+#. text filters
+#. encoding
+#. cvs
+#.
+#. treeview
+#.
+#.
+#. editor
+#.
+#.
+#. display
+#.
+#.
+#. filters
+#.
+#.
+#. encoding
+#.
+#.
+#. cvs
+#.
+#. ###############################################################################
+#.
+#. MeldStatusBar
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. NotebookLabel
+#.
+#. ###############################################################################
+#. TODO font height
+#. TODO font height
+#. ###############################################################################
+#.
+#. MeldNewMenu
+#.
+#. ###############################################################################
+#. ###############################################################################
+#.
+#. MeldPreferences
+#.
+#. ###############################################################################
+#. internal, gnome, custom
+#. ###############################################################################
+#.
+#. MeldApp
+#.
+#. ###############################################################################
+#.
+#. init
+#.
+#. hide magic testing button
+#.
+#. General events and callbacks
+#.
+#.
+#. Toolbar and menu items (file)
+#.
+#: meldapp.py:602
+msgid "Original File"
+msgstr "Ficheiro Original"
+
+#: meldapp.py:602
+msgid "Modified File"
+msgstr "Ficheiro Alterado"
+
+#: meldapp.py:605
+msgid "Other Changes"
+msgstr "Outras Alterações"
+
+#: meldapp.py:605
+msgid "Common Ancestor"
+msgstr "Antepassado Comum"
+
+#: meldapp.py:605
+msgid "Local Changes"
+msgstr "Alterações Locais"
+
+#: meldapp.py:608 meldapp.py:611
+msgid "Original Directory"
+msgstr "Directório Original"
+
+#: meldapp.py:608 meldapp.py:611
+msgid "Modified Directory"
+msgstr "Directório Alterado"
+
+#: meldapp.py:611
+msgid "Other Directory"
+msgstr "Outro Directório"
+
+#: meldapp.py:614
+msgid "Root CVS Directory"
+msgstr "Directório Raíz CVS"
+
+#. save one
+#. save all
+#.
+#. Toolbar and menu items (edit)
+#.
+#.
+#. Toolbar and menu items (settings)
+#.
+#.
+#. Toolbar and menu items (help)
+#.
+#.
+#. Toolbar and menu items (misc)
+#.
+#. self.append_filediff( ("ntest/file9a", "ntest/file9b") )
+#.
+#. Current doc actions
+#.
+#.
+#. Usage
+#.
+#. ###############################################################################
+#.
+#. usage
+#.
+#. ###############################################################################
+#: meldapp.py:802
+msgid ""
+"Meld is a file and directory comparison tool. Usage:\n"
+"\n"
+"    meld                        Start with no windows open\n"
+"    meld <dir>                  Start with CVS browser in 'dir'\n"
+"    meld <file>                 Start with CVS diff of 'file'\n"
+"    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
+"    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory comparison\n"
+"\n"
+"For more information choose help -> contents.\n"
+"Report bugs to steve9000@users.sourceforge.net.\n"
+msgstr ""
+"Meld é uma ferramenta de comparação de ficheiros e directórios. Utilização:\n"
+"\n"
+"    meld                        Iniciar sem janelas abertas\n"
+"    meld <dir>                  Iniciar com navegador CVS em 'dir'\n"
+"    meld <file>                 Iniciar com diferenças CVS de 'file'\n"
+"    meld <file> <file> [file]   Iniciar com comparação de 2 ou 3 ficheiros\n"
+"    meld <dir>  <dir>  [dir]    Iniciar com comparação de 2 ou 3 directórios\n"
+"\n"
+"Para mais informações seleccione ajuda -> conteúdo.\n"
+"Relate bugs para http://bugzilla.gnome.org/buglist.cgi?product=meld (em inglês).\n"
+"http://mail.gnome.org/mailman/listinfo/meld-list\n"
+
+#: meldapp.py:814
+#, python-format
+msgid ""
+"Meld %s\n"
+"Written by Stephen Kennedy <steve9000@users.sf.net>"
+msgstr ""
+"Meld %s\n"
+"Desenvolvido por Stephen Kennedy <steve9000@users.sf.net>"
+
+#. ###############################################################################
+#.
+#. Main
+#.
+#. ###############################################################################
+#: meldapp.py:861
+#, python-format
+msgid "`%s' is not a directory or file, cannot open cvs view"
+msgstr "`%s' não é um directório ou ficheiro, incapaz de abrir vista cvs"
+
+#: meldapp.py:867
+msgid "Cannot open "
+msgstr "Incapaz de abrir "
+
+#: meldapp.py:884
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "Incapaz de comparar um misto de ficheiros e directórios.\n"
+
+#: meldapp.py:886
+msgid "file"
+msgstr "ficheiro"
+
+#: meldapp.py:886
+msgid "folder"
+msgstr "pasta"
+
+#: meldapp.py:889
+#, python-format
+msgid "Wrong number of arguments (Got %i)"
+msgstr "Número incorrecto de argumentos (Obtidos %i)"
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. Use these to ensure consistent return values.
+#: melddoc.py:44
+msgid "untitled"
+msgstr "sem título"
+
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. remove common prefix
+#. split on /
+#. no common path. empty names get changed to "[None]"
+#: misc.py:121
+msgid "[None]"
+msgstr "[Nenhum]"
+
+#. get buffer size
+#. ick need to fix
+#. how many chars?
+#. ick need to fix
+#. allow single arguments to be passed as is.
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. maybe fall back to ConfigParser if gconf is unavailable.
+#. types of values allowed
+#. LIST = "list"
+#. PAIR = "pair"
+#. #
+#. unknown key, we don't care about it
+#. value has changed
+#. value has been deleted
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. m.add_task(h)
+#. m.add_task(h)
+#. s.add_task( sayhello(40).next )
+#. s.add_task( sayhello(50).next )
+#. s.add_task( sayhello(60).next )
+#. m.add_task( s )
+#. time.sleep(.71)
+#. m.add_task( s )#sayhello(2).next )
+#. m.add_task( sayhello(3).next )
+#. m.add_task( lambda t=time.time() : timetask(t) )
+#. m.add_task( sayhello(4).next )
+#. m.add_task( sayhello(5).next )
+#. m.mainloop()
+#. print "***"
+#. m.add_task( sayhello(20).next )
+#. m.add_task( s )
+#. s.complete_tasks()
+#. time.sleep(3)
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. ignored, new, normal, ignored changes,
+#. error, placeholder, cvs added
+#. cvs modified, cvs conflict, cvs removed
+#. locally removed, end
+#. STATE_IGNORED
+#. STATE_NONE
+#. STATE_NORMAL
+#. STATE_NOCHANGE
+#. STATE_ERROR
+#. STATE_EMPTY
+#. STATE_NEW
+#. STATE_MODIFIED
+#. STATE_CONFLICT
+#. STATE_REMOVED
+#. STATE_MISSING
+#. IGNORED
+#. NONE
+#. NORMAL
+#. NOCHANGE
+#. ERROR
+#. EMPTY
+#. NEW
+#. MODIFIED
+#. CONFLICT
+#. REMOVED
+#. MISSING
+#. ## Copyright (C) 2002-2003 Stephen Kennedy <steve9000@users.sf.net>
+#. ## This program is free software; you can redistribute it and/or modify
+#. ## it under the terms of the GNU General Public License as published by
+#. ## the Free Software Foundation; either version 2 of the License, or
+#. ## (at your option) any later version.
+#. ## This program is distributed in the hope that it will be useful,
+#. ## but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. ## GNU General Public License for more details.
+#. ## You should have received a copy of the GNU General Public License
+#. ## along with this program; if not, write to the Free Software
+#. ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#. collapse
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/cvsview.strings:7 glade2/filediff.strings:10
+#: glade2/dirdiff.strings:12 glade2/meldapp.strings:95
+msgid "window1"
+msgstr "janela1"
+
+#: glade2/cvsview.strings:8
+msgid "Diff selected"
+msgstr "Diferenças de seleccionados"
+
+#: glade2/cvsview.strings:9 glade2/cvsview.strings:28
+#: glade2/meldapp.strings:94
+msgid "_Diff"
+msgstr "_Dif"
+
+#: glade2/cvsview.strings:10
+msgid "Flatten directories"
+msgstr "Unificar directórios"
+
+#: glade2/cvsview.strings:11
+msgid "_Flatten"
+msgstr "_Unificar"
+
+#: glade2/cvsview.strings:12
+msgid "_Modified"
+msgstr "_Alterado"
+
+#: glade2/cvsview.strings:13 glade2/dirdiff.strings:28
+msgid "Show modified"
+msgstr "Apresentar alterados"
+
+#: glade2/cvsview.strings:14
+msgid "_Normal"
+msgstr "_Normal"
+
+#: glade2/cvsview.strings:15
+msgid "Show non-CVS"
+msgstr "Apresentar não-CVS"
+
+#: glade2/cvsview.strings:16
+msgid "Non _CVS"
+msgstr "Não _CVS"
+
+#: glade2/cvsview.strings:17
+msgid "Ignored"
+msgstr "Ignorado"
+
+#: glade2/cvsview.strings:18
+msgid "Commit"
+msgstr "Submeter (commit)"
+
+#: glade2/cvsview.strings:19 glade2/cvsview.strings:30
+msgid "_Commit"
+msgstr "_Submeter"
+
+#: glade2/cvsview.strings:20
+msgid "Update"
+msgstr "Actualizar"
+
+#: glade2/cvsview.strings:21 glade2/cvsview.strings:29
+msgid "_Update"
+msgstr "Act_ualizar"
+
+#: glade2/cvsview.strings:22
+msgid "Add to CVS"
+msgstr "Adicionar ao CVS"
+
+#: glade2/cvsview.strings:23 glade2/cvsview.strings:32
+msgid "_Add"
+msgstr "_Adicionar"
+
+#: glade2/cvsview.strings:24
+msgid "Remove from CVS"
+msgstr "Remover do CVS"
+
+#: glade2/cvsview.strings:25 glade2/cvsview.strings:34
+msgid "_Remove"
+msgstr "_Remover"
+
+#: glade2/cvsview.strings:26
+msgid "Delete locally"
+msgstr "Apagar localmente"
+
+#: glade2/cvsview.strings:27 glade2/cvsview.strings:39
+#: glade2/filediff.strings:11 glade2/filediff.strings:12
+#: glade2/filediff.strings:13 glade2/filediff.strings:23
+#: glade2/dirdiff.strings:30 glade2/dirdiff.strings:31
+#: glade2/dirdiff.strings:32 glade2/meldapp.strings:43
+#: glade2/meldapp.strings:66 glade2/meldapp.strings:78
+msgid "*"
+msgstr "*"
+
+#: glade2/cvsview.strings:31
+msgid "_Edit"
+msgstr "_Editar"
+
+#: glade2/cvsview.strings:33
+msgid "Add _Binary"
+msgstr "Adicionar _Binário"
+
+#: glade2/cvsview.strings:35
+msgid "Remove _Locally"
+msgstr "Remover _Localmente"
+
+#: glade2/cvsview.strings:36
+msgid "CVS Log"
+msgstr "Registo CVS"
+
+#: glade2/cvsview.strings:37
+msgid "Commit Files"
+msgstr "Submeter Ficheiros"
+
+#: glade2/cvsview.strings:38
+msgid "Previous Logs"
+msgstr "Registos Anteriores"
+
+#: glade2/cvsview.strings:40
+msgid "Log Message"
+msgstr "Mensagem de Registo"
+
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/filediff.strings:7
+msgid "Copy All _Left"
+msgstr "Copiar Tudo à _Esquerda"
+
+#: glade2/filediff.strings:8
+msgid "Copy All _Right"
+msgstr "Copiar Tudo à _Direita"
+
+#: glade2/filediff.strings:9 glade2/dirdiff.strings:10
+msgid "Edit"
+msgstr "Editar"
+
+#: glade2/filediff.strings:14
+msgid "Save modified files?"
+msgstr "Gravar ficheiros alterados?"
+
+#: glade2/filediff.strings:15
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
+"Which ones would you like to save?</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Alguns ficheiros foram alterados.\n"
+"Quais deseja gravar?</span>"
+
+#: glade2/filediff.strings:17
+msgid "Find"
+msgstr "Procurar"
+
+#: glade2/filediff.strings:18
+msgid "Search for:"
+msgstr "Procurar por:"
+
+#: glade2/filediff.strings:19
+msgid "_Match case"
+msgstr "_Coincidir Capitalização"
+
+#: glade2/filediff.strings:20
+msgid "Match _entire word only"
+msgstr "Coincidir apenas _palavra completa"
+
+#: glade2/filediff.strings:21
+msgid "_Wrap around"
+msgstr "Dar a _volta"
+
+#: glade2/filediff.strings:22
+msgid "Regular e_xpression"
+msgstr "E_xpressão regular"
+
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/dirdiff.strings:7
+msgid "Launch _Comparison"
+msgstr "Iniciar _Comparação"
+
+#: glade2/dirdiff.strings:8
+msgid "Copy Left"
+msgstr "Copiar à Esquerda"
+
+#: glade2/dirdiff.strings:9
+msgid "Copy Right"
+msgstr "Copiar à Direita"
+
+#: glade2/dirdiff.strings:11
+msgid "_Delete Selected"
+msgstr "_Apagar Seleccionado"
+
+#: glade2/dirdiff.strings:13
+msgid "Diff selection"
+msgstr "Diferenças na selecção"
+
+#: glade2/dirdiff.strings:14
+msgid "Diff"
+msgstr "Dif"
+
+#: glade2/dirdiff.strings:15
+msgid "Copy left"
+msgstr "Copiar à esquerda"
+
+#: glade2/dirdiff.strings:16
+msgid "Left"
+msgstr "Esquerda"
+
+#: glade2/dirdiff.strings:17
+msgid "Copy right"
+msgstr "Copiar à direita"
+
+#: glade2/dirdiff.strings:18
+msgid "Right"
+msgstr "Direita"
+
+#: glade2/dirdiff.strings:19
+msgid "Delete selected"
+msgstr "Apagar selecção"
+
+#: glade2/dirdiff.strings:20
+msgid "Hide selected"
+msgstr "Esconder selecção"
+
+#: glade2/dirdiff.strings:21
+msgid "Hide..."
+msgstr "Esconder..."
+
+#: glade2/dirdiff.strings:22
+msgid "Ignore case of entries"
+msgstr "Ignorar capitalização das entradas"
+
+#: glade2/dirdiff.strings:23
+msgid "Case"
+msgstr "Capitalização"
+
+#: glade2/dirdiff.strings:24
+msgid "Show identical"
+msgstr "Apresentar idênticos"
+
+#: glade2/dirdiff.strings:25
+msgid "Same"
+msgstr "Mesmo"
+
+#: glade2/dirdiff.strings:26
+msgid "Show new"
+msgstr "Apresentar novo"
+
+#: glade2/dirdiff.strings:27
+msgid "New"
+msgstr "Novo"
+
+#: glade2/dirdiff.strings:29
+msgid "Modified"
+msgstr "Alterado"
+
+#.
+#. * Translatable strings file generated by Glade.
+#. * Add this file to your project's POTFILES.in.
+#. * DO NOT compile it as part of your application.
+#.
+#: glade2/meldapp.strings:7
+msgid "Meld"
+msgstr "Meld"
+
+#: glade2/meldapp.strings:8 glade2/meldapp.strings:23
+msgid "Two way file"
+msgstr "Ficheiro em duas vistas"
+
+#: glade2/meldapp.strings:9 glade2/meldapp.strings:24
+msgid "Three way file"
+msgstr "Ficheiro em três vistas"
+
+#: glade2/meldapp.strings:10 glade2/meldapp.strings:25
+msgid "Two way directory"
+msgstr "Directório em duas vistas"
+
+#: glade2/meldapp.strings:11 glade2/meldapp.strings:26
+msgid "Three way directory"
+msgstr "Directório em três vistas"
+
+#: glade2/meldapp.strings:12 glade2/meldapp.strings:27
+msgid "CVS view"
+msgstr "Vista CVS"
+
+#: glade2/meldapp.strings:13
+msgid "_Save"
+msgstr "_Gravar"
+
+#: glade2/meldapp.strings:14
+msgid "Save File 1"
+msgstr "Gravar Ficheiro 1"
+
+#: glade2/meldapp.strings:15
+msgid "Save File 2"
+msgstr "Gravar Ficheiro 2"
+
+#: glade2/meldapp.strings:16
+msgid "Save File 3"
+msgstr "Gravar Ficheiro 3"
+
+#: glade2/meldapp.strings:17
+msgid "_Contents"
+msgstr "_Conteúdo"
+
+#: glade2/meldapp.strings:18
+msgid "Report _Bug"
+msgstr "Relatar _Bug"
+
+#: glade2/meldapp.strings:19
+msgid "_New..."
+msgstr "_Novo..."
+
+#: glade2/meldapp.strings:20
+msgid "Copyright (C) 2002 Stephen Kennedy"
+msgstr "Copyright (C) 2002 Stephen Kennedy"
+
+#: glade2/meldapp.strings:21
+msgid "http://meld.sourceforge.net"
+msgstr "http://meld.sourceforge.net"
+
+#: glade2/meldapp.strings:22
+msgid "Choose Files"
+msgstr "Seleccionar Ficheiros"
+
+#: glade2/meldapp.strings:28
+msgid "Preferences : Meld"
+msgstr "Preferências : Meld"
+
+#: glade2/meldapp.strings:29
+msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
+
+#: glade2/meldapp.strings:30
+msgid "<b>Font</b>"
+msgstr "<b>Fonte</b>"
+
+#: glade2/meldapp.strings:31
+msgid "Use GNOME monospace font."
+msgstr "Utilizar fonte mono-espaçada GNOME."
+
+#: glade2/meldapp.strings:32
+msgid "Use custom font."
+msgstr "Utilizar fonte personalizada."
+
+#: glade2/meldapp.strings:33 glade2/meldapp.strings:88
+msgid "<b>Misc</b>"
+msgstr "<b>Misc</b>"
+
+#: glade2/meldapp.strings:34
+msgid "Tabs equivalent to "
+msgstr "Tabulações equivalentes a "
+
+#: glade2/meldapp.strings:35
+msgid " spaces."
+msgstr " espaços."
+
+#: glade2/meldapp.strings:36
+msgid "Automatically supply missing newline at end of file."
+msgstr "Acrescentar automaticamente quebra de linha em falta no final do ficheiro."
+
+#: glade2/meldapp.strings:37
+msgid "<b>Edit Menu</b>"
+msgstr "<b>Menu Editar</b>"
+
+#: glade2/meldapp.strings:38
+msgid "Edit menu popup invokes"
+msgstr "Popup de menu editar invoca"
+
+#: glade2/meldapp.strings:39
+msgid "Internal editor"
+msgstr "Editor interno"
+
+#: glade2/meldapp.strings:40
+msgid "Gnome default editor"
+msgstr "Editor GNOME por omissão"
+
+#: glade2/meldapp.strings:41
+msgid "(gnome-default-editor)"
+msgstr "(gnome-default-editor)"
+
+#: glade2/meldapp.strings:42
+msgid "Custom command"
+msgstr "Comando personalizado"
+
+#: glade2/meldapp.strings:44
+msgid "Editor"
+msgstr "Editor"
+
+#: glade2/meldapp.strings:45
+msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Ecrã</span>"
+
+#: glade2/meldapp.strings:46
+msgid "<b>Drawing Style</b>"
+msgstr "<b>Estilo de Desenho</b>"
+
+#: glade2/meldapp.strings:47
+msgid ""
+"Choose how the central bar of the diff viewer is drawn. You may wish to "
+"choose a simpler mode if you find scrolling is slow."
+msgstr ""
+"Seleccionar como é desenhada a barra central da vista de diferenças. "
+"Poderá desejar um modo mais simples se considerar o rolamento lento."
+
+#: glade2/meldapp.strings:48
+msgid "Simple : Lines only"
+msgstr "Simples : Apenas linhas"
+
+#: glade2/meldapp.strings:49
+msgid "Solid   Filled Quadilaterals"
+msgstr "Sólido   Rectângulos Preenchidos"
+
+#: glade2/meldapp.strings:50
+msgid "Curved : Filled Curves"
+msgstr "Curvo : Curvas Preenchidas"
+
+#: glade2/meldapp.strings:51
+msgid "<b>Toolbar Appearance</b>"
+msgstr "<b>Aparência da Barra de Ferramentas</b>"
+
+#: glade2/meldapp.strings:52
+msgid "Gnome Default"
+msgstr "Omissão GNOME"
+
+#: glade2/meldapp.strings:53
+msgid "Icons Only"
+msgstr "Apenas Ícones"
+
+#: glade2/meldapp.strings:54
+msgid "Text Only"
+msgstr "Apenas Texto"
+
+#: glade2/meldapp.strings:55
+msgid "Text Under Icons"
+msgstr "Texto Sob Ícones"
+
+#: glade2/meldapp.strings:56
+msgid "Text Beside Icons"
+msgstr "Texto ao Lado de Ícones"
+
+#: glade2/meldapp.strings:57
+msgid "Display"
+msgstr "Ecrã"
+
+#: glade2/meldapp.strings:58
+msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Filtros de Ficheiros</span>"
+
+#: glade2/meldapp.strings:59
+msgid "File Filters"
+msgstr "Filtros de Ficheiros"
+
+#: glade2/meldapp.strings:60
+msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Filtros de Texto</span>"
+
+#: glade2/meldapp.strings:61
+msgid "Text Filters"
+msgstr "Filtros de Texto"
+
+#: glade2/meldapp.strings:62
+msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Codificação</span>"
+
+#: glade2/meldapp.strings:63
+msgid "<b>Loading</b>"
+msgstr "<b>Leitura</b>"
+
+#: glade2/meldapp.strings:64
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr "Ao ler, testar estas codificações, por ordem. (por ex. utf8, iso8859)"
+
+#: glade2/meldapp.strings:65
+msgid "utf8 iso8859"
+msgstr "utf8 iso8859"
+
+#: glade2/meldapp.strings:67
+msgid "<b>Saving</b>"
+msgstr "<b>Gravação</b>"
+
+#: glade2/meldapp.strings:68
+msgid "Save in the files original encoding"
+msgstr "Gravar os ficheiros na codificação original"
+
+#: glade2/meldapp.strings:69
+msgid "Save in UTF-8 encoding"
+msgstr "Gravar na codificação UTF-8"
+
+#: glade2/meldapp.strings:70
+msgid "Encoding"
+msgstr "Codificação"
+
+#: glade2/meldapp.strings:71
+msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+
+#: glade2/meldapp.strings:72
+msgid "<b>Global options</b>"
+msgstr "<b>Opções globais</b>"
+
+#: glade2/meldapp.strings:73
+msgid "Quiet mode (-q)"
+msgstr "Modo silencioso (-q)"
+
+#: glade2/meldapp.strings:74
+msgid "Use Compression (-z)"
+msgstr "Utilizar Compressão (-z)"
+
+#: glade2/meldapp.strings:75
+msgid "Ignore .cvsrc (-f)"
+msgstr "Ignorar .cvsrc (-f)"
+
+#: glade2/meldapp.strings:76
+msgid "CVS binary"
+msgstr "Binário CVS"
+
+#: glade2/meldapp.strings:77
+msgid "Locate CVS binary : Meld"
+msgstr "Localizar binário CVS : Meld"
+
+#: glade2/meldapp.strings:79
+msgid "<b>Update Options</b>"
+msgstr "<b>Opções de Actualização</b>"
+
+#: glade2/meldapp.strings:80
+msgid "Create missing directories (-d)"
+msgstr "Criar directórios em falta (-d)"
+
+#: glade2/meldapp.strings:81
+msgid "Prune empty directories (-P)"
+msgstr "Expurgar directórios vazios (-P)"
+
+#: glade2/meldapp.strings:82
+msgid "CVS"
+msgstr "CVS"
+
+#: glade2/meldapp.strings:83
+msgid "_Logo"
+msgstr "_Logotipo"
+
+#: glade2/meldapp.strings:84
+msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Ficheiros Binários</span>"
+
+#: glade2/meldapp.strings:85
+msgid "Binary files do not have text filters applied to them when comparing."
+msgstr "Ao comparar ficheiros binários não lhes são aplicados filtros de texto."
+
+#: glade2/meldapp.strings:86
+msgid "_Binary Files"
+msgstr "Ficheiros _Binários"
+
+#: glade2/meldapp.strings:87
+msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Dif</span>"
+
+#: glade2/meldapp.strings:89
+msgid ""
+"Ignore changes in case; consider upper and lower-case letters equivalent"
+msgstr ""
+"Ignorar alterações de capitalização; considerar equivalente maiúsculas e minúsculas"
+
+#: glade2/meldapp.strings:90
+msgid "<b>Whitespace</b>"
+msgstr "<b>Espaços</b>"
+
+#: glade2/meldapp.strings:91
+msgid "Whitespace is significant"
+msgstr "Espaços em branco são significativos"
+
+#: glade2/meldapp.strings:92
+msgid "Ignore changes that just insert or delete blank lines"
+msgstr "Ignorar alterações que apenas inseriram ou removeram linhas em branco"
+
+#: glade2/meldapp.strings:93
+msgid "Ignore changes in amount of white space"
+msgstr "Ignorar alterações em quantidad de espaço em branco"
