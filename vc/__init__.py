@@ -35,9 +35,15 @@ def load_plugins():
 _plugins = load_plugins()
 
 def Vc(location):
+    vcs = []
     for plugin in _plugins:
         try:
-            return plugin.Vc(location)
+            vcs.append(plugin.Vc(location))
         except ValueError:
             pass
-    return _null.Vc(location)
+
+    if not vcs:
+        return _null.Vc(location)
+
+    #Pick the Vc with the longest repo root
+    return max(vcs, key=lambda repo: len(repo.root))
