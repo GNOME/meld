@@ -30,7 +30,7 @@ class Vc(_vc.Vc):
     NAME = "Null"
 
     def __init__(self, location):
-        pass
+        self.root = location
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]

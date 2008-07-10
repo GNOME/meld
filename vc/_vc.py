@@ -70,9 +70,6 @@ class Vc(object):
 
     PATCH_STRIP_NUM = 0
 
-    def __init__(self, location):
-        pass
-
     def commit_command(self, message):
         raise NotImplementedError()
     def diff_command(self):

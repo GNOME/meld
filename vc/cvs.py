@@ -36,6 +36,7 @@ class Vc(_vc.Vc):
     def __init__(self, location):
         if not os.path.exists("%s/CVS"% location):
             raise ValueError
+        self.root = location
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
