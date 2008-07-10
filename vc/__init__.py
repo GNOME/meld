@@ -46,4 +46,5 @@ def Vc(location):
         return _null.Vc(location)
 
     #Pick the Vc with the longest repo root
-    return max(vcs, key=lambda repo: len(repo.root))
+    #return max(vcs, key=lambda repo: len(repo.root))
+    return vcs[0]
