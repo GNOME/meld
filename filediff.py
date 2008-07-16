@@ -129,37 +129,27 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                       "foreground": self.prefs.color_conflict_fg} )
             add_tag("inline line",   {"background": self.prefs.color_inline_bg,
                                       "foreground": self.prefs.color_inline_fg} )
-        class ContextMenu(gnomeglade.Component):
-            def __init__(self, app):
-                gladefile = paths.share_dir("glade2/filediff.glade")
-                gnomeglade.Component.__init__(self, gladefile, "popup")
-                self.parent = app
-                self.pane = -1
-            def popup_in_pane( self, pane ):
-                self.pane = pane
-                self.copy_left.set_sensitive( pane > 0 )
-                self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
-                self.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
-            def on_save_activate(self, menuitem):
-                self.parent.save()
-            def on_save_as_activate(self, menuitem):
-                self.parent.save_file( self.pane, 1)
-            def on_make_patch_activate(self, menuitem):
-                self.parent.make_patch( self.pane )
-            def on_cut_activate(self, menuitem):
-                self.parent.on_cut_activate()
-            def on_copy_activate(self, menuitem):
-                self.parent.on_copy_activate()
-            def on_paste_activate(self, menuitem):
-                self.parent.on_paste_activate()
-            def on_copy_left_activate(self, menuitem):
-                self.parent.copy_selected(-1)
-            def on_copy_right_activate(self, menuitem):
-                self.parent.copy_selected(1)
-            def on_edit_activate(self, menuitem):
-                if self.parent.bufferdata[self.pane].filename:
-                    self.parent._edit_files( [self.parent.bufferdata[self.pane].filename] )
-        self.popup_menu = ContextMenu(self)
+
+        actions = (
+            ("FilePopupSave",     gtk.STOCK_SAVE,       None,            None, _("Save the current file"), self.save),
+            ("FilePopupSaveAs",   gtk.STOCK_SAVE_AS,    None,            "<control><shift>S", _("Save the current file with a different name"), self.save_as),
+            ("FilePopupCut",      gtk.STOCK_CUT,        None,            None, _("Cut the selection"), self.on_cut_activate),
+            ("FilePopupCopy",     gtk.STOCK_COPY,       None,            None, _("Copy the selection"), self.on_copy_activate),
+            ("FilePopupPaste",    gtk.STOCK_PASTE,      None,            None, _("Paste the clipboard"), self.on_paste_activate),
+            ("FilePopupEditFile", gtk.STOCK_EDIT,       None,            None, _("Edit the selected file"), self.on_edit_activate),
+            ("CreatePatch",       None,                 _("Create Patch"),  None, _("Create a patch"), self.make_patch),
+            ("CopyAllLeft",       gtk.STOCK_GOTO_FIRST, _("Copy To Left"),  None, _("Copy all changes from right pane to left pane"), lambda x: self.copy_selected(-1)),
+            ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
+        )
+
+        ui_file = paths.share_dir("glade2/filediff-ui.xml")
+        self.actiongroup = gtk.ActionGroup('FilediffPopupActions')
+        self.actiongroup.set_translation_domain("meld")
+        self.actiongroup.add_actions(actions)
+        self.ui = gtk.UIManager()
+        self.ui.insert_action_group(self.actiongroup, 0)
+        self.ui.add_ui_from_file(ui_file)
+        self.popup_menu = self.ui.get_widget('/FilediffPopup')
         self.find_dialog = None
         self.last_search = None
         self.set_num_panes(num_panes)
@@ -419,6 +409,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return t
         return None
 
+    def on_edit_activate(self, *args):
+        pane = self._get_focused_pane()
+        if pane >= 0:
+            if self.bufferdata[pane].filename:
+                self._edit_files( [self.bufferdata[pane].filename] )
+
     def on_find_activate(self, *args):
         self.keymask = 0
         self.queue_draw()
@@ -467,11 +463,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if t:
             t.emit("paste-clipboard") #XXX t.get_buffer().paste_clipboard(None, 1)
 
+    def popup_in_pane(self, pane):
+        self.actiongroup.get_action("CopyAllLeft").set_sensitive(pane > 0)
+        self.actiongroup.get_action("CopyAllRight").set_sensitive(pane+1 < self.num_panes)
+        self.popup_menu.popup(None, None, None, 3, gtk.get_current_event_time())
+
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
             pane = self.textview.index(textview)
-            self.popup_menu.popup_in_pane( pane )
+            self.popup_in_pane(pane)
             return 1
         return 0
 
@@ -819,7 +820,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         else:
             return melddoc.RESULT_ERROR
 
-    def make_patch(self, pane):
+    def make_patch(self, *extra):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
         override = {}
         if sourceview_available:
@@ -873,10 +874,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.bufferdata[pane].modified = yesno
         self.recompute_label()
 
-    def save(self):
+    def save(self, *extra):
         pane = self._get_focused_pane()
         if pane >= 0:
             self.save_file(pane)
+
+    def save_as(self, *extra):
+        pane = self._get_focused_pane()
+        if pane >= 0:
+            self.save_file(pane, True)
 
     def save_all(self):
         for i in range(self.num_panes):

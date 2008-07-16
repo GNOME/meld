@@ -63,6 +63,9 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		glade2/*.glade \
 		$(DESTDIR)$(sharedir_)/glade2
 	install -m 644 \
+		glade2/*.xml \
+		$(DESTDIR)$(sharedir_)/glade2
+	install -m 644 \
 		glade2/pixmaps/*.xpm \
 		glade2/pixmaps/*.png \
 		$(DESTDIR)$(sharedir_)/glade2/pixmaps

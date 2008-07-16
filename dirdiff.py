@@ -164,31 +164,6 @@ if gobject.pygtk_version < (2,8,0):
 
 ################################################################################
 #
-# DirDiffMenu
-#
-################################################################################
-class DirDiffMenu(gnomeglade.Component):
-    def __init__(self, app):
-        gladefile = paths.share_dir("glade2/dirdiff.glade")
-        gnomeglade.Component.__init__(self, gladefile, "popup")
-        self.parent = app
-    def popup_in_pane( self, pane ):
-        self.copy_left.set_sensitive( pane > 0 )
-        self.copy_right.set_sensitive( pane+1 < self.parent.num_panes )
-        self.widget.popup( None, None, None, 3, gtk.get_current_event_time() )
-    def on_popup_compare_activate(self, menuitem):
-        self.parent.launch_comparisons_on_selected()
-    def on_popup_copy_left_activate(self, menuitem):
-        self.parent.on_button_copy_left_clicked( None )
-    def on_popup_copy_right_activate(self, menuitem):
-        self.parent.on_button_copy_right_clicked( None )
-    def on_popup_delete_activate(self, menuitem):
-        self.parent.on_button_delete_clicked( None )
-    def on_popup_edit_activate(self, menuitem):
-        self.parent.on_button_edit_clicked( None )
-
-################################################################################
-#
 # TypeFilter
 #
 ################################################################################
@@ -212,10 +187,52 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/dirdiff.glade"), "dirdiff")
+
+        actions = (
+            ("DirCompare",   gtk.STOCK_DIALOG_INFO,  _("_Compare"), None, _("Compare selected"), self.on_button_diff_clicked),
+            # FIXME: the glade files were inconsistent: GO_BACK vs GOTO_FIRST, "Left" vs "Copy To Left"
+            ("DirCopyLeft",  gtk.STOCK_GO_BACK,      _("Left"),     None, _("Copy To Left"), self.on_button_copy_left_clicked),
+            # FIXME: the glade files were inconsistent: GO_FORWARD vs GOTO_LAST, "Right" vs "Copy To Right"
+            ("DirCopyRight", gtk.STOCK_GO_FORWARD,   _("Right"),    None, _("Copy To Right"), self.on_button_copy_right_clicked),
+            ("DirDelete",    gtk.STOCK_DELETE,        None,         None, _("Delete selected"), self.on_button_delete_clicked),
+            ("Hide",         gtk.STOCK_NO,           _("Hide..."),  None, _("Hide selected"), self.on_filter_hide_current_clicked),
+
+            ("DirEditFile",  gtk.STOCK_FIND_AND_REPLACE, _("Edit"), None, _("Edit selected"), self.on_button_edit_clicked),
+        )
+
+        toggleactions = (
+            ("IgnoreCase",   gtk.STOCK_ITALIC,  _("Case"),     None, _("Ignore case of entries"), self.on_button_ignore_case_toggled, False),
+            ("ShowSame",     gtk.STOCK_APPLY,   _("Same"),     None, _("Show identical"), self.on_filter_state_normal_toggled, True),
+            ("ShowNew",      gtk.STOCK_ADD,     _("New"),      None, _("Show new"), self.on_filter_state_new_toggled, True),
+            ("ShowModified", gtk.STOCK_REMOVE,  _("Modified"), None, _("Show modified"), self.on_filter_state_modified_toggled, True),
+        )
+        ui_file = paths.share_dir("glade2/dirdiff-ui.xml")
+        self.ui = gtk.UIManager()
+        self.actiongroup = gtk.ActionGroup('DirdiffToolbarActions')
+        self.actiongroup.set_translation_domain("meld")
+        self.actiongroup.add_actions(actions)
+        self.actiongroup.add_toggle_actions(toggleactions)
+        self.ui.insert_action_group(self.actiongroup, 0)
+        self.ui.add_ui_from_file(ui_file)
+        self.create_name_filters()
+        for button in ("DirCompare", "DirCopyLeft", "DirCopyRight",
+                       "DirDelete", "Hide", "IgnoreCase", "ShowSame",
+                       "ShowNew", "ShowModified"):
+            self.actiongroup.get_action(button).props.is_important = True
+        self.toolbar = self.ui.get_widget('/DirdiffToolbar')
+        self.dirdiff.pack_start(self.toolbar, False, True, 0)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
-        self.popup_menu = DirDiffMenu(self)
+        self.popup_menu = self.ui.get_widget('/DirdiffPopup')
+        self.popup_menu.connect("deactivate", self.on_popup_deactivate_event)
         self.set_num_panes(num_panes)
+        self.focus_in_events = []
+        self.focus_out_events = []
+        for treeview in self.treeview:
+            handler_id = treeview.connect("focus-in-event", self.on_treeview_focus_in_event)
+            self.focus_in_events.append(handler_id)
+            handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
+            self.focus_out_events.append(handler_id)
         self.on_treeview_focus_out_event(None, None)
         self.treeview_focussed = None
 
@@ -238,7 +255,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             tree.STATE_MODIFIED,
             tree.STATE_NEW,
         ]
-        self.create_name_filters()
         self.update_regexes()
 
     def update_regexes(self):
@@ -269,18 +285,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 func = lambda x, r=cregex : r.match(x) == None
                 self.name_filters_available.append( TypeFilter(f.name, f.active, func) )
         self.name_filters = []
-        tips = gtk.Tooltips()
+        merge_id = self.ui.new_merge_id()
         for i,f in enumerate(self.name_filters_available):
-            icon = gtk.Image()
-            icon.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_LARGE_TOOLBAR)
-            toggle = gtk.ToggleToolButton()
-            toggle.set_property("label",f.label)
-            toggle.set_icon_widget(icon)
-            toggle.connect("toggled", lambda b,i=i : self._update_name_filter(b,i) )
-            toggle.set_active(f.active)
-            self.toolbar.insert(toggle, -1)
-            toggle.show_all()
-            toggle.set_tooltip(tips, _("Hide %s") % f.label )
+            name = "Hide%d" % i
+            entry = (name, gtk.STOCK_FIND, f.label, None, _("Hide %s") % f.label, lambda b,i=i : self._update_name_filter(b,i), f.active)
+            self.actiongroup.add_toggle_actions([entry])
+            if f.active:
+                self.name_filters.append(self.name_filters_available[i])
+            self.ui.add_ui(merge_id, "/DirdiffToolbar/FilterButtons", name, name, gtk.UI_MANAGER_TOOLITEM, False)
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
@@ -360,7 +372,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( self._search_recursively_iter( path ).next )
 
     def _search_recursively_iter(self, rootpath):
-        self.filter_hide_current.set_sensitive(False)
+        self.actiongroup.get_action("Hide").set_sensitive(False)
         yield _("[%s] Scanning %s") % (self.label_text, "")
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         symlinks_followed = {} # only follow symlinks once
@@ -373,7 +385,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             roots = self.model.value_paths( it )
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
             differences = [0]
-            if not self.button_ignore_case.get_active():
+            if not self.actiongroup.get_action("IgnoreCase").get_active():
                 class accum(object):
                     def __init__(self, parent, roots):
                         self.items = []
@@ -485,7 +497,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 expanded[cur] = True
                 self.treeview[0].expand_row( cur, 0)
         yield _("[%s] Done") % self.label_text
-        self.filter_hide_current.set_sensitive(True)
+        self.actiongroup.get_action("Hide").set_sensitive(True)
 
     def launch_comparison(self, it, pane, force=1):
         """Launch comparison at 'it'. 
@@ -649,18 +661,23 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._do_to_others(view, self.treeview, "collapse_row", (path,) )
         self._update_diffmaps()
 
+    def on_popup_deactivate_event(self, popup):
+        for (treeview, inid, outid) in zip(self.treeview, self.focus_in_events, self.focus_out_events):
+            treeview.handler_unblock(inid)
+            treeview.handler_unblock(outid)
+
     def on_treeview_focus_in_event(self, tree, event):
         self.treeview_focussed = tree
         pane = self.treeview.index(tree)
         if pane > 0:
-            self.button_copy_left.set_sensitive(1)
+            self.actiongroup.get_action("DirCopyLeft").set_sensitive(True)
         if pane+1 < self.num_panes:
-            self.button_copy_right.set_sensitive(1)
-        self.button_delete.set_sensitive(1)
+            self.actiongroup.get_action("DirCopyRight").set_sensitive(True)
+        self.actiongroup.get_action("DirDelete").set_sensitive(True)
     def on_treeview_focus_out_event(self, tree, event):
-        self.button_copy_left.set_sensitive(0)
-        self.button_copy_right.set_sensitive(0)
-        self.button_delete.set_sensitive(0)
+        self.actiongroup.get_action("DirCopyLeft").set_sensitive(False)
+        self.actiongroup.get_action("DirCopyRight").set_sensitive(False)
+        self.actiongroup.get_action("DirDelete").set_sensitive(False)
         #
         # Toolbar handlers
         #
@@ -801,6 +818,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.model.set_state(it, j,  tree.STATE_MISSING)
         return different
 
+    def popup_in_pane(self, pane):
+        for (treeview, inid, outid) in zip(self.treeview, self.focus_in_events, self.focus_out_events):
+            treeview.handler_block(inid)
+            treeview.handler_block(outid)
+        self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
+        self.actiongroup.get_action("DirCopyRight").set_sensitive(pane+1 < self.num_panes)
+        self.popup_menu.popup(None, None, None, 3, gtk.get_current_event_time())
+
     def on_treeview_button_press_event(self, treeview, event):
         # unselect other panes
         for t in filter(lambda x:x!=treeview, self.treeview[:self.num_panes]):
@@ -815,7 +840,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 selected = self._get_selected_paths( self.treeview.index(treeview) )
                 if len(selected) <= 1 and event.state == 0:
                     treeview.set_cursor( path, col, 0)
-                self.popup_menu.popup_in_pane( self.treeview.index(treeview) )
+                self.popup_in_pane( self.treeview.index(treeview) )
             return event.state==0
         return 0
 

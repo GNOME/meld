@@ -97,36 +97,6 @@ class VcTreeStore(tree.DiffTreeStore):
         self.textstyle[tree.STATE_MISSING] = '<span foreground="#000088" strikethrough="true" weight="bold">%s</span>'
 
 ################################################################################
-#
-# DirDiffMenu
-#
-################################################################################
-class VcMenu(gnomeglade.Component):
-    def __init__(self, app, event):
-        gladefile = paths.share_dir("glade2/vcview.glade")
-        gnomeglade.Component.__init__(self, gladefile, "menu_popup")
-        self.parent = app
-        self.widget.popup( None, None, None, 3, event.time )
-    def on_diff_activate(self, menuitem):
-        self.parent.on_button_diff_clicked( menuitem )
-    def on_edit_activate(self, menuitem):
-        self.parent._edit_files( self.parent._get_selected_files() )
-    def on_update_activate(self, menuitem):
-        self.parent.on_button_update_clicked( menuitem )
-    def on_commit_activate(self, menuitem):
-        self.parent.on_button_commit_clicked( menuitem )
-    def on_add_activate(self, menuitem):
-        self.parent.on_button_add_clicked( menuitem )
-    def on_add_binary_activate(self, menuitem):
-        self.parent.on_button_add_binary_clicked( menuitem )
-    def on_remove_activate(self, menuitem):
-        self.parent.on_button_remove_clicked( menuitem )
-    def on_revert_activate(self, menuitem):
-        self.parent.on_button_revert_clicked( menuitem )
-    def on_remove_locally_activate(self, menuitem):
-        self.parent.on_button_delete_clicked( menuitem )
-
-################################################################################
 # filters
 ################################################################################
 entry_modified = lambda x: (x.state >= tree.STATE_NEW) or (x.isdir and (x.state > tree.STATE_NONE))
@@ -144,7 +114,48 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/vcview.glade"), "vcview")
+
+        actions = (
+            ("VcCompare",       gtk.STOCK_DIALOG_INFO,      _("_Compare"),      None, _("Compare selected"), self.on_button_diff_clicked),
+            ("VcEditFile",      gtk.STOCK_FIND_AND_REPLACE, _("_Edit"),         None, _("Edit files"), self.on_button_edit_clicked),
+            ("VcCommit",        "vc-commit-24",             _("_Commit"),       None, _("Commit"), self.on_button_commit_clicked), # FIXME: popup used to use gtk.STOCK_GO_BACK
+            ("VcUpdate",        "vc-update-24",             _("_Update"),       None, _("Update"), self.on_button_update_clicked), # FIXME: popup used to use gtk.STOCK_GO_FORWARD
+            ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked), # FIXME: popup used to use gtk.STOCK_ADD
+            ("VcAddBinary",     gtk.STOCK_ADD,              _("Add _Binary"),   None, _("Add binary to VC"), self.on_button_add_binary_clicked), # FIXME: stock is inconsistent with other VC actions
+            ("VcRemove",        "vc-remove-24",             _("_Remove"),       None, _("Remove from VC"), self.on_button_remove_clicked), # FIXME: popup used to use gtk.STOCK_REMOVE
+            ("VcRevert",        gtk.STOCK_REVERT_TO_SAVED,  None,               None, _("Revert to original"), self.on_button_revert_clicked),
+            ("VcDeleteLocally", gtk.STOCK_DELETE,           None,               None, _("Delete locally"), self.on_button_delete_clicked), # FIXME: popup label was "_Remove locally"
+        )
+
+        toggleactions = (
+            ("VcFlatten",     gtk.STOCK_GOTO_BOTTOM, _("_Flatten"),  None, _("Flatten directories"), self.on_button_flatten_toggled, True),
+            ("VcShowModified","filter-modified-24",  _("_Modified"), None, _("Show modified"), self.on_button_filter_toggled, True),
+            ("VcShowNormal",  "filter-normal-24",    _("_Normal"),   None, _("Show normal"), self.on_button_filter_toggled, False),
+            ("VcShowNonVC",   "filter-nonvc-24",     _("Non _VC"),   None, _("Show unversioned files"), self.on_button_filter_toggled, False),
+            ("VcShowIgnored", "filter-ignored-24",   _("Ignored"),   None, _("Show ignored files"), self.on_button_filter_toggled, False),
+        )
+
+        ui_file = paths.share_dir("glade2/vcview-ui.xml")
+        self.actiongroup = gtk.ActionGroup('VcviewActions')
+        self.actiongroup.set_translation_domain("meld")
+        self.actiongroup.add_actions(actions)
+        self.actiongroup.add_toggle_actions(toggleactions)
+        self.ui = gtk.UIManager()
+        self.ui.insert_action_group(self.actiongroup, 0)
+        self.ui.add_ui_from_file(ui_file)
+        for action in ("VcCompare", "VcFlatten", "VcShowModified",
+                       "VcShowNormal", "VcShowNonVC", "VcShowIgnored"):
+            self.actiongroup.get_action(action).props.is_important = True
+        for action in ("VcCommit", "VcUpdate", "VcAdd", "VcRemove",
+                       "VcShowModified", "VcShowNormal", "VcShowNonVC",
+                       "VcShowIgnored"):
+            button = self.actiongroup.get_action(action)
+            button.props.icon_name = button.props.stock_id
+        self.toolbar = self.ui.get_widget('/VcviewToolbar')
+        self.vcview.pack_start(self.toolbar, False, True, 0)
+        self.vcview.reorder_child(self.toolbar, 0)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
+        self.popup_menu = self.ui.get_widget('/VcviewPopup')
         self.tempdirs = []
         self.model = VcTreeStore()
         self.treeview.set_model(self.model)
@@ -185,7 +196,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     this.textview.scroll_mark_onscreen( this.mark )
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
-        self.treeview_column_location.set_visible( self.button_flatten.get_active() )
+        self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         size = self.fileentry.size_request()[1]
         self.button_jump.set_size_request(size, size)
         self.button_jump.hide()
@@ -216,18 +227,18 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
         todo = [ (rootpath, rootname) ]
         filters = []
-        if self.button_modified.get_active():
+        if self.actiongroup.get_action("VcShowModified").get_active():
             filters.append( entry_modified )
-        if self.button_normal.get_active():
+        if self.actiongroup.get_action("VcShowNormal").get_active():
             filters.append( entry_normal )
-        if self.button_nonvc.get_active():
+        if self.actiongroup.get_action("VcShowNonVC").get_active():
             filters.append( entry_nonvc )
-        if self.button_ignored.get_active():
+        if self.actiongroup.get_action("VcShowIgnored").get_active():
             filters.append( entry_ignored )
         def showable(entry):
             for f in filters:
                 if f(entry): return 1
-        recursive = self.button_flatten.get_active()
+        recursive = self.actiongroup.get_action("VcFlatten").get_active()
         self.vc.cache_inventory(rootname)
         while len(todo):
             todo.sort() # depth first
@@ -312,12 +323,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_button_press_event(self, text, event):
         if event.button==3:
-            VcMenu(self, event)
+            self.popup_menu.popup(None, None, None, 3, event.time)
             return len(self._get_selected_treepaths()) != 1
         return 0
 
     def on_button_flatten_toggled(self, button):
-        self.treeview_column_location.set_visible( self.button_flatten.get_active() )
+        self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         self.refresh()
     def on_button_filter_toggled(self, button):
         self.refresh()
@@ -416,6 +427,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if len(files):
             self.run_diff(files, empty_patch_ok=1)
 
+    def on_button_edit_clicked(self, object):
+        self._edit_files(self._get_selected_files())
+
     def show_patch(self, prefix, patch):
         if not patch: return
 
@@ -449,7 +463,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
 
     def refresh_partial(self, where):
-        if not self.button_flatten.get_active():
+        if not self.actiongroup.get_action("VcFlatten").get_active():
             it = self.find_iter_by_name( where )
             if it:
                 newiter = self.model.insert_after( None, it)

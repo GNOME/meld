@@ -523,11 +523,59 @@ class MeldApp(gnomeglade.GnomeApp):
                      "widget \"*.meld-tab-close-button\" style \"meld-tab-close-button-style\"")
         gladefile = paths.share_dir("glade2/meldapp.glade")
         gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
+
+        actions = (
+            ("FileMenu", None, "_File"),
+            ("New",     gtk.STOCK_NEW,      _("_New..."), "<control>N", _("Start a new comparison"), self.on_menu_file_new_activate),
+            ("Save",    gtk.STOCK_SAVE,     None, None, _("Save the current file"), self.on_menu_save_activate),
+            ("SaveAs",  gtk.STOCK_SAVE_AS,  None, "<control><shift>S", "Save the current file with a different name", self.on_menu_save_as_activate),
+            ("Close",   gtk.STOCK_CLOSE,    None, None, _("Close the current file"), self.on_menu_close_activate),
+            ("Quit",    gtk.STOCK_QUIT,     None, None, _("Quit the program"), self.on_menu_quit_activate),
+
+            ("EditMenu", None, "_Edit"),
+            ("Undo",    gtk.STOCK_UNDO,     None, "<control>Z", _("Undo the last action"), self.on_menu_undo_activate),
+            ("Redo",    gtk.STOCK_REDO,     None, "<control><shift>Z", _("Redo the last undone action"), self.on_menu_redo_activate),
+            ("Cut",     gtk.STOCK_CUT,      None, None, _("Cut the selection"), self.on_menu_cut_activate),
+            ("Copy",    gtk.STOCK_COPY,     None, None, _("Copy the selection"), self.on_menu_copy_activate),
+            ("Paste",   gtk.STOCK_PASTE,    None, None, _("Paste the clipboard"), self.on_menu_paste_activate),
+            ("Find",    gtk.STOCK_FIND,     None, None, _("Search for text"), self.on_menu_find_activate),
+            ("FindNext", None,              _("Find Ne_xt"), "<control>G", _("Search forwards for the same text"), self.on_menu_find_next_activate),
+            ("Down",    gtk.STOCK_GO_DOWN,  None, "<control>D", _("Go to the next difference"), self.on_menu_edit_down_activate),
+            ("Up",      gtk.STOCK_GO_UP,    None, "<control>E", _("Go to the previous difference"), self.on_menu_edit_up_activate),
+            ("Preferences", gtk.STOCK_PREFERENCES, None, None, _("Configure the application"), self.on_menu_preferences_activate),
+
+            ("ViewMenu", None, "_View"),
+            ("Stop",    gtk.STOCK_STOP,     None, "Escape", _("Stop the current action"), self.on_toolbar_stop_clicked),
+            ("Refresh", gtk.STOCK_REFRESH,  None, "<control>R", _("Refresh the view"), self.on_menu_refresh_activate),
+            ("Reload",  gtk.STOCK_REFRESH,  _("Reload"), "<control><shift>R", _("Reload the comparison"), self.on_menu_reload_activate),
+
+            ("HelpMenu", None, "_Help"),
+            ("Help",        gtk.STOCK_HELP,  _("_Contents"), "F1", _("Open the Meld manual"), self.on_menu_users_manual_activate),
+            ("BugReport",   gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None, _("Report a bug in Meld"), self.on_menu_help_bug_activate),
+            ("MailingList", None,            _("Mailing _List"), None, _("Go to the Meld mailing list"), self.on_menu_about_activate),
+            ("About",       gtk.STOCK_ABOUT, None, None, _("About this program"), self.on_menu_about_activate),
+
+            ("Magic",       gtk.STOCK_YES,   None,     None, None, self.on_menu_magic_activate),
+        )
+        ui_file = paths.share_dir("glade2/meldapp-ui.xml")
+        self.actiongroup = gtk.ActionGroup('MainActions')
+        self.actiongroup.set_translation_domain("meld")
+        self.actiongroup.add_actions(actions)
+        self.ui = gtk.UIManager()
+        self.ui.insert_action_group(self.actiongroup, 0)
+        self.ui.add_ui_from_file(ui_file)
+        for menuitem in ("New", "Save", "Undo", "Redo"):
+            self.actiongroup.get_action(menuitem).props.is_important = True
+        self.widget.add_accel_group(self.ui.get_accel_group())
+        self.menubar = self.ui.get_widget('/Menubar')
+        self.toolbar = self.ui.get_widget('/Toolbar')
+        self.appvbox.pack_start(self.menubar, expand=False)
+        self.appvbox.pack_start(self.toolbar, expand=False)
         self._map_widgets_into_lists( "settings_drawstyle".split() )
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
         self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
-            self.toolbar_magic.hide()
+            self.ui.get_widget("/Toolbar/Magic").hide()
         elif 1:
             def showPrefs(): PreferencesDialog(self)
             gobject.idle_add(showPrefs)
@@ -537,6 +585,7 @@ class MeldApp(gnomeglade.GnomeApp):
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
         self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
+        self.ui.ensure_update()
         self.widget.show()
 
     def on_idle(self):
@@ -551,14 +600,12 @@ class MeldApp(gnomeglade.GnomeApp):
         else:
             self.statusbar.task_progress.set_fraction(0)
         if self.scheduler.tasks_pending():
-            self.toolbar_stop.set_sensitive(1)
-            self.menu_view_stop.set_sensitive(1)
+            self.actiongroup.get_action("Stop").set_sensitive(True)
             return 1
         else:
             self.statusbar.set_task_status("")
             self.idle_hooked = 0
-            self.toolbar_stop.set_sensitive(0)
-            self.menu_view_stop.set_sensitive(0)
+            self.actiongroup.get_action("Stop").set_sensitive(False)
             return 0
 
     def on_scheduler_runnable(self, sched):
@@ -579,8 +626,8 @@ class MeldApp(gnomeglade.GnomeApp):
     def on_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject")
         newseq = newdoc.undosequence
-        self.button_undo.set_sensitive(newseq.can_undo())
-        self.button_redo.set_sensitive(newseq.can_redo())
+        self.actiongroup.get_action("Undo").set_sensitive(newseq.can_undo())
+        self.actiongroup.get_action("Redo").set_sensitive(newseq.can_redo())
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title(nbl.get_label_text() + " - Meld")
         self.statusbar.set_doc_status("")
@@ -594,10 +641,10 @@ class MeldApp(gnomeglade.GnomeApp):
         self.notebook.child_set_property(component.widget, "menu-label", text)
 
     def on_can_undo(self, undosequence, can):
-        self.button_undo.set_sensitive(can)
+        self.actiongroup.get_action("Undo").set_sensitive(can)
 
     def on_can_redo(self, undosequence, can):
-        self.button_redo.set_sensitive(can)
+        self.actiongroup.get_action("Redo").set_sensitive(can)
 
     def on_size_allocate(self, window, rect):
         self.prefs.window_size_x = rect.width
@@ -852,6 +899,8 @@ def main():
     parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
     options, args = parser.parse_args()
 
+    icon_theme = gtk.icon_theme_get_default()
+    icon_theme.append_search_path(paths.share_dir("glade2/pixmaps/"))
     app = MeldApp()
     tab = None
 
