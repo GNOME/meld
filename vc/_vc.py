@@ -22,6 +22,7 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
+from gettext import gettext as _
 
 # ignored, new, normal, ignored changes,
 # error, placeholder, vc added

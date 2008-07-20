@@ -17,6 +17,7 @@
 # system
 import sys
 import os
+from gettext import gettext as _
 
 # gnome
 import gtk

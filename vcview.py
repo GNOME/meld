@@ -20,6 +20,7 @@ import tempfile
 import shutil
 import gtk
 import os
+from gettext import gettext as _
 import re
 
 import tree

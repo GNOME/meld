@@ -19,6 +19,7 @@ import task
 import undo
 import gtk
 import os
+from gettext import gettext as _
 
 # Use these to ensure consistent return values.
 RESULT_OK, RESULT_ERROR = (0,1)

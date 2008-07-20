@@ -24,6 +24,8 @@ import gtk.keysyms
 import math
 import misc
 import os
+from gettext import gettext as _
+from gettext import ngettext
 import shutil
 import melddoc
 import tree

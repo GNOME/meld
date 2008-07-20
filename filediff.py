@@ -19,6 +19,7 @@ from __future__ import generators
 import codecs
 import math
 import os
+from gettext import gettext as _
 import re
 import difflib
 import struct
