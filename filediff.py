@@ -88,7 +88,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             override["GtkTextView"] = gsv.SourceView
             override["GtkTextBuffer"] = gsv.SourceBuffer
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
-        self._map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
         self._update_regexes()
         self.warned_bad_comparison = False
         if sourceview_available:

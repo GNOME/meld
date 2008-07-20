@@ -23,6 +23,7 @@ import gtk
 import gtk.glade
 import gobject
 import pango
+import gnome
 
 # project
 import paths
@@ -63,7 +64,7 @@ class NewDocDialog(gnomeglade.Component):
     def __init__(self, parentapp, type):
         self.parentapp = parentapp
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
-        self._map_widgets_into_lists( ("fileentry", "direntry", "vcentry", "three_way_compare", "tablabel") )
+        self.map_widgets_into_lists( ("fileentry", "direntry", "vcentry", "three_way_compare", "tablabel") )
         self.entrylists = self.fileentry, self.direntry, self.vcentry
         self.widget.set_transient_for(parentapp.widget)
         cur_page = type // 2
@@ -227,7 +228,7 @@ class PreferencesDialog(gnomeglade.Component):
                 self.model.append( (label,) )
         self.prefs = parentapp.prefs
         # editor
-        self._map_widgets_into_lists( ["editor_command"] )
+        self.map_widgets_into_lists( ["editor_command"] )
         if self.prefs.use_custom_font:
             self.radiobutton_custom_font.set_active(1)
         else:
@@ -242,8 +243,8 @@ class PreferencesDialog(gnomeglade.Component):
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
         # display
-        self._map_widgets_into_lists( ["draw_style"] )
-        self._map_widgets_into_lists( ["toolbar_style"] )
+        self.map_widgets_into_lists( ["draw_style"] )
+        self.map_widgets_into_lists( ["toolbar_style"] )
         self.draw_style[self.prefs.draw_style].set_active(1)
         self.toolbar_style[self.prefs.toolbar_style].set_active(1)
         # file filters
@@ -258,7 +259,7 @@ class PreferencesDialog(gnomeglade.Component):
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
-        self._map_widgets_into_lists( ["save_encoding"] )
+        self.map_widgets_into_lists( ["save_encoding"] )
         self.save_encoding[self.prefs.save_encoding].set_active(1)
         self.treeview.set_cursor(0)
     #
@@ -507,7 +508,7 @@ class MeldPreferences(prefs.Preferences):
 # MeldApp
 #
 ################################################################################
-class MeldApp(gnomeglade.GnomeApp):
+class MeldApp(gnomeglade.Component):
 
     #
     # init
@@ -522,7 +523,8 @@ class MeldApp(gnomeglade.GnomeApp):
                      "}\n"
                      "widget \"*.meld-tab-close-button\" style \"meld-tab-close-button-style\"")
         gladefile = paths.share_dir("glade2/meldapp.glade")
-        gnomeglade.GnomeApp.__init__(self, "meld", version, gladefile, "meldapp")
+        self.program = gnome.program_init("meld", version)
+        gnomeglade.Component.__init__(self, gladefile, "meldapp")
 
         actions = (
             ("FileMenu", None, "_File"),
@@ -571,7 +573,7 @@ class MeldApp(gnomeglade.GnomeApp):
         self.toolbar = self.ui.get_widget('/Toolbar')
         self.appvbox.pack_start(self.menubar, expand=False)
         self.appvbox.pack_start(self.toolbar, expand=False)
-        self._map_widgets_into_lists( "settings_drawstyle".split() )
+        self.map_widgets_into_lists( "settings_drawstyle".split() )
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
         self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
@@ -683,7 +685,7 @@ class MeldApp(gnomeglade.GnomeApp):
                     break
         for c in self.notebook.get_children():
             c.get_data("pyobject").on_quit_event()
-        self.quit()
+        gtk.main_quit()
         return gtk.RESPONSE_CLOSE
 
     #
@@ -732,13 +734,13 @@ class MeldApp(gnomeglade.GnomeApp):
     # Toolbar and menu items (help)
     #
     def on_menu_meld_home_page_activate(self, button):
-        gnomeglade.url_show("http://meld.sourceforge.net")
+        gnome.url_show("http://meld.sourceforge.net")
 
     def on_menu_help_bug_activate(self, button):
-        gnomeglade.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
+        gnome.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
 
     def on_menu_users_manual_activate(self, button):
-        gnomeglade.url_show("ghelp:///"+os.path.abspath(paths.help_dir("C/meld.xml") ))
+        gnome.url_show("ghelp:///"+os.path.abspath(paths.help_dir("C/meld.xml") ))
 
     def on_menu_about_activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
@@ -928,5 +930,5 @@ def main():
 
     if tab:
         tab.set_labels( options.label )
-    app.main()
+    gtk.main()
 

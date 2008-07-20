@@ -222,7 +222,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.toolbar = self.ui.get_widget('/DirdiffToolbar')
         self.dirdiff.pack_start(self.toolbar, False, True, 0)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
-        self._map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
+        self.map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
         self.popup_menu = self.ui.get_widget('/DirdiffPopup')
         self.popup_menu.connect("deactivate", self.on_popup_deactivate_event)
         self.set_num_panes(num_panes)
