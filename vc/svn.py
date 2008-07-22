@@ -54,7 +54,7 @@ class Vc(_vc.Vc):
 
         while 1:
             try:
-                entries = os.popen("svn status -Nv "+directory).read()
+                entries = os.popen('svn status -Nv "%s"'%directory).read()
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
