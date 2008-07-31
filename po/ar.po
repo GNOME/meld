@@ -7,39 +7,130 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arabic\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2007-04-21 22:52+0100\n"
+"POT-Creation-Date: 2008-07-31 11:08+0100\n"
 "PO-Revision-Date: 2007-04-14 18:49+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabeyes <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && "
-"n<=10 ? 2 : 3\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : "
+"3\n"
 
+#: ../dirdiff.py:194 ../glade2/meldapp.glade.h:65 ../vcview.py:120
+#, fuzzy
+msgid "_Compare"
+msgstr "كولمار"
 
+#: ../dirdiff.py:194 ../vcview.py:120
+#, fuzzy
+msgid "Compare selected"
+msgstr "%d صفحة مختارة"
 
-#: ../dirdiff.py:252 ../dirdiff.py:267
+#. FIXME: the glade files were inconsistent: GO_BACK vs GOTO_FIRST, "Left" vs "Copy To Left"
+#: ../dirdiff.py:196
+msgid "Left"
+msgstr "يسار"
+
+#: ../dirdiff.py:196 ../filediff.py:142
+#, fuzzy
+msgid "Copy To Left"
+msgstr "أعلى اليسار"
+
+#. FIXME: the glade files were inconsistent: GO_FORWARD vs GOTO_LAST, "Right" vs "Copy To Right"
+#: ../dirdiff.py:198
+msgid "Right"
+msgstr "يمين"
+
+#: ../dirdiff.py:198 ../filediff.py:143
+#, fuzzy
+msgid "Copy To Right"
+msgstr "حقوق النسخ"
+
+#: ../dirdiff.py:199
+#, fuzzy
+msgid "Delete selected"
+msgstr "احذف المفاتيح المنتقاة"
+
+#: ../dirdiff.py:200
+#, fuzzy
+msgid "Hide..."
+msgstr "_شريحة..."
+
+#: ../dirdiff.py:200
+#, fuzzy
+msgid "Hide selected"
+msgstr "النسق المنتقى:"
+
+#: ../dirdiff.py:202
+#, fuzzy
+msgid "Edit"
+msgstr "المحرر"
+
+#: ../dirdiff.py:202
+#, fuzzy
+msgid "Edit selected"
+msgstr "النسق المنتقى:"
+
+#: ../dirdiff.py:206
+#, fuzzy
+msgid "Case"
+msgstr "كاسبر"
+
+#: ../dirdiff.py:206
+#, fuzzy
+msgid "Ignore case of entries"
+msgstr "تج_اهل الحالة"
+
+#: ../dirdiff.py:207
+msgid "Same"
+msgstr "سايم"
+
+#: ../dirdiff.py:207
+#, fuzzy
+msgid "Show identical"
+msgstr "أظهر الإشارة"
+
+#: ../dirdiff.py:208
+msgid "New"
+msgstr "جديد"
+
+#: ../dirdiff.py:208
+#, fuzzy
+msgid "Show new"
+msgstr "أظهر م_لاحظة"
+
+#: ../dirdiff.py:209
+#, fuzzy
+msgid "Modified"
+msgstr "عُدّل:"
+
+#: ../dirdiff.py:209 ../vcview.py:133
+#, fuzzy
+msgid "Show modified"
+msgstr "مفتاح التعديل Shift"
+
+#: ../dirdiff.py:270 ../dirdiff.py:285
 #, fuzzy, python-format
 msgid "Error converting pattern '%s' to regular expression"
 msgstr "خطأ عند تجميع التعبير النظامي \"%s\"."
 
-#: ../dirdiff.py:283
+#: ../dirdiff.py:293
 #, fuzzy, python-format
 msgid "Hide %s"
 msgstr "إخفاء"
 
-#: ../dirdiff.py:364 ../dirdiff.py:373 ../vcview.py:213 ../vcview.py:241
+#: ../dirdiff.py:378 ../dirdiff.py:388 ../vcview.py:225 ../vcview.py:253
 #, fuzzy, python-format
 msgid "[%s] Scanning %s"
 msgstr "يجري مسح %s"
 
-#: ../dirdiff.py:406
+#: ../dirdiff.py:421
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr ""
 
-#: ../dirdiff.py:412
+#: ../dirdiff.py:427
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
@@ -47,19 +138,19 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../dirdiff.py:482
+#: ../dirdiff.py:501
 #, fuzzy, python-format
 msgid "[%s] Done"
 msgstr "%s بدون اسم"
 
-#: ../dirdiff.py:528
+#: ../dirdiff.py:547
 #, python-format
 msgid ""
 "'%s' exists.\n"
 "Overwrite?"
 msgstr ""
 
-#: ../dirdiff.py:535
+#: ../dirdiff.py:554
 #, fuzzy, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -67,14 +158,14 @@ msgid ""
 "%s."
 msgstr "خطأ أثناء الكتابة في '%s': %s"
 
-#: ../dirdiff.py:553 ../vcview.py:405
+#: ../dirdiff.py:572 ../vcview.py:417
 #, fuzzy, python-format
 msgid ""
 "'%s' is a directory.\n"
 "Remove recusively?"
 msgstr "%s دليل"
 
-#: ../dirdiff.py:560 ../vcview.py:410
+#: ../dirdiff.py:579 ../vcview.py:422
 #, fuzzy, python-format
 msgid ""
 "Error removing %s\n"
@@ -82,7 +173,7 @@ msgid ""
 "%s."
 msgstr "خطأ أثناء إزالة القائمة"
 
-#: ../dirdiff.py:571
+#: ../dirdiff.py:590
 #, fuzzy, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
@@ -91,7 +182,7 @@ msgstr[1] "ثانيتان"
 msgstr[2] "%s ثوان"
 msgstr[3] "%s ثانية"
 
-#: ../dirdiff.py:572
+#: ../dirdiff.py:591
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
@@ -100,7 +191,7 @@ msgstr[1] "%i دّقيقة"
 msgstr[2] "%i دّقيقة"
 msgstr[3] "%i دّقيقة"
 
-#: ../dirdiff.py:573
+#: ../dirdiff.py:592
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
@@ -109,7 +200,7 @@ msgstr[1] "%i ساعة"
 msgstr[2] "%i ساعات"
 msgstr[3] "%i ساعات"
 
-#: ../dirdiff.py:574
+#: ../dirdiff.py:593
 #, fuzzy, python-format
 msgid "%i day"
 msgid_plural "%i days"
@@ -118,7 +209,7 @@ msgstr[1] "يومان"
 msgstr[2] "%s أيام"
 msgstr[3] "%s يوماً"
 
-#: ../dirdiff.py:575
+#: ../dirdiff.py:594
 #, fuzzy, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
@@ -127,7 +218,7 @@ msgstr[1] "أسبوعين"
 msgstr[2] "%d أسابيع"
 msgstr[3] "%d أسبوعاً"
 
-#: ../dirdiff.py:576
+#: ../dirdiff.py:595
 #, fuzzy, python-format
 msgid "%i month"
 msgid_plural "%i months"
@@ -136,7 +227,7 @@ msgstr[1] "شهران"
 msgstr[2] "%s أشهر"
 msgstr[3] "%s شهراً"
 
-#: ../dirdiff.py:577
+#: ../dirdiff.py:596
 #, fuzzy, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -145,90 +236,135 @@ msgstr[1] "سنتان"
 msgstr[2] "%s سنين"
 msgstr[3] "%s سنوات"
 
+#: ../filediff.py:135 ../meldapp.py:533
+msgid "Save the current file"
+msgstr ""
+
+#: ../filediff.py:136
+msgid "Save the current file with a different name"
+msgstr ""
+
+#: ../filediff.py:137 ../meldapp.py:541
+msgid "Cut the selection"
+msgstr ""
+
+#: ../filediff.py:138 ../meldapp.py:542
+#, fuzzy
+msgid "Copy the selection"
+msgstr "%d صفحة مختارة"
+
+#: ../filediff.py:139 ../meldapp.py:543
+#, fuzzy
+msgid "Paste the clipboard"
+msgstr "ا_نسخ العنوان إلى الحافظة"
+
+#: ../filediff.py:140
+#, fuzzy
+msgid "Edit the selected file"
+msgstr "النسق المنتقى:"
+
+#: ../filediff.py:141 ../glade2/filediff.glade.h:4
+#, fuzzy
+msgid "Create Patch"
+msgstr "أنشيء مطلق"
+
+#: ../filediff.py:141
+#, fuzzy
+msgid "Create a patch"
+msgstr "أنشيء مطلق"
+
+#: ../filediff.py:142
+msgid "Copy all changes from right pane to left pane"
+msgstr ""
+
+#: ../filediff.py:143
+msgid "Copy all changes from left pane to right pane"
+msgstr ""
+
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:200
+#: ../filediff.py:192
 msgid "INS,OVR"
 msgstr ""
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:202
+#: ../filediff.py:194
 #, fuzzy, python-format
 msgid "Ln %i, Col %i"
 msgstr "  السطر %d، العمود %d"
 
-#: ../filediff.py:260
+#: ../filediff.py:252
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
 "will be incorrect. See the user manual for more details."
 msgstr ""
 
-#: ../filediff.py:508
+#: ../filediff.py:506
 #, fuzzy, python-format
 msgid ""
 "Regular expression error\n"
 "'%s'"
 msgstr "بحث عن تعابير نمطيّة"
 
-#: ../filediff.py:520
+#: ../filediff.py:518
 #, fuzzy, python-format
 msgid "The regular expression '%s' was not found."
 msgstr "لا يمكن العثور على العنوان '%s'"
 
-#: ../filediff.py:522
+#: ../filediff.py:520
 #, fuzzy, python-format
 msgid "The text '%s' was not found."
 msgstr "حساب المستخدم '%s' غير موجود"
 
-#: ../filediff.py:574
+#: ../filediff.py:573
 #, python-format
 msgid "[%s] Set num panes"
 msgstr ""
 
-#: ../filediff.py:581
+#: ../filediff.py:580
 #, fuzzy, python-format
 msgid "[%s] Opening files"
 msgstr "يجري فتح المجلّد %s"
 
-#: ../filediff.py:598 ../filediff.py:612 ../filediff.py:628 ../filediff.py:635
+#: ../filediff.py:597 ../filediff.py:611 ../filediff.py:627 ../filediff.py:634
 #, fuzzy, python-format
 msgid "Could not read from '%s'"
 msgstr "تعذّر إعادة تسمية '%s': %s"
 
-#: ../filediff.py:599 ../filediff.py:636
+#: ../filediff.py:598 ../filediff.py:635
 #, fuzzy
 msgid "The error was:"
 msgstr "خطأ HTML في %s:"
 
-#: ../filediff.py:604
+#: ../filediff.py:603
 #, fuzzy, python-format
 msgid "[%s] Reading files"
 msgstr "جاري حذف الملفات"
 
-#: ../filediff.py:613
+#: ../filediff.py:612
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
 msgstr ""
 
-#: ../filediff.py:629
+#: ../filediff.py:628
 #, fuzzy, python-format
 msgid "I tried encodings %s."
 msgstr "ترميزات أخرى"
 
-#: ../filediff.py:658
+#: ../filediff.py:657
 #, python-format
 msgid "[%s] Computing differences"
 msgstr ""
 
-#: ../filediff.py:763
+#: ../filediff.py:762
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
 "Overwrite?"
 msgstr ""
 
-#: ../filediff.py:776
+#: ../filediff.py:775
 #, fuzzy, python-format
 msgid ""
 "Error writing to %s\n"
@@ -236,12 +372,12 @@ msgid ""
 "%s."
 msgstr "خطأ في الكتابة إلى %s: %s"
 
-#: ../filediff.py:785
+#: ../filediff.py:784
 #, fuzzy, python-format
 msgid "Choose a name for buffer %i."
 msgstr "أدخل اسم لهذا الحاجز"
 
-#: ../filediff.py:798
+#: ../filediff.py:797
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -249,7 +385,7 @@ msgid ""
 "Which format would you like to use?"
 msgstr ""
 
-#: ../filediff.py:814
+#: ../filediff.py:813
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -257,12 +393,12 @@ msgid ""
 msgstr ""
 
 #. save as
-#: ../filediff.py:865
+#: ../filediff.py:864
 #, fuzzy
 msgid "Save patch as..."
 msgstr "احفظ كـ..."
 
-#: ../filediff.py:919
+#: ../filediff.py:923
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -270,103 +406,6 @@ msgid ""
 "\n"
 "You cannot undo this operation."
 msgstr ""
-
-#: ../glade2/dirdiff.glade.h:1
-#, fuzzy
-msgid "Case"
-msgstr "كاسبر"
-
-#: ../glade2/dirdiff.glade.h:2
-#, fuzzy
-msgid "Compare"
-msgstr "كولمار"
-
-#: ../glade2/dirdiff.glade.h:3 ../glade2/vcview.glade.h:6
-#, fuzzy
-msgid "Compare selected"
-msgstr "%d صفحة مختارة"
-
-#: ../glade2/dirdiff.glade.h:4
-#, fuzzy
-msgid "Copy To Left"
-msgstr "أعلى اليسار"
-
-#: ../glade2/dirdiff.glade.h:5
-#, fuzzy
-msgid "Copy To Right"
-msgstr "حقوق النسخ"
-
-#: ../glade2/dirdiff.glade.h:6
-#, fuzzy
-msgid "Delete selected"
-msgstr "احذف المفاتيح المنتقاة"
-
-#: ../glade2/dirdiff.glade.h:7 ../glade2/filediff.glade.h:7
-#, fuzzy
-msgid "Edit"
-msgstr "المحرر"
-
-#: ../glade2/dirdiff.glade.h:8
-#, fuzzy
-msgid "Hide selected"
-msgstr "النسق المنتقى:"
-
-#: ../glade2/dirdiff.glade.h:9
-#, fuzzy
-msgid "Hide..."
-msgstr "_شريحة..."
-
-#: ../glade2/dirdiff.glade.h:10
-#, fuzzy
-msgid "Ignore case of entries"
-msgstr "تج_اهل الحالة"
-
-#: ../glade2/dirdiff.glade.h:11
-msgid "Left"
-msgstr "يسار"
-
-#: ../glade2/dirdiff.glade.h:12
-#, fuzzy
-msgid "Modified"
-msgstr "عُدّل:"
-
-#: ../glade2/dirdiff.glade.h:13
-msgid "New"
-msgstr "جديد"
-
-#: ../glade2/dirdiff.glade.h:14
-msgid "Right"
-msgstr "يمين"
-
-#: ../glade2/dirdiff.glade.h:15
-msgid "Same"
-msgstr "سايم"
-
-#: ../glade2/dirdiff.glade.h:16
-#, fuzzy
-msgid "Show identical"
-msgstr "أظهر الإشارة"
-
-#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:18
-#, fuzzy
-msgid "Show modified"
-msgstr "مفتاح التعديل Shift"
-
-#: ../glade2/dirdiff.glade.h:18
-#, fuzzy
-msgid "Show new"
-msgstr "أظهر م_لاحظة"
-
-#: ../glade2/dirdiff.glade.h:19 ../glade2/meldapp.glade.h:89
-#: ../glade2/vcview.glade.h:25
-#, fuzzy
-msgid "_Compare"
-msgstr "كولمار"
-
-#: ../glade2/dirdiff.glade.h:20
-#, fuzzy
-msgid "_Delete Selected"
-msgstr "حذف التحديد"
 
 #: ../glade2/filediff.glade.h:1
 #, fuzzy
@@ -377,51 +416,37 @@ msgstr "<span weight=\"bold\" size=\"larger\">رجاء أدخل كلمة سر ا
 
 #: ../glade2/filediff.glade.h:3
 #, fuzzy
-msgid "Copy All To _Left"
-msgstr "انسخ ال_كل"
-
-#: ../glade2/filediff.glade.h:4
-msgid "Copy All To _Right"
-msgstr ""
-
-#: ../glade2/filediff.glade.h:5
-#, fuzzy
 msgid "Copy to Clipboard"
 msgstr "ا_نسخ العنوان إلى الحافظة"
 
-#: ../glade2/filediff.glade.h:6
-#, fuzzy
-msgid "Create Patch"
-msgstr "أنشيء مطلق"
-
-#: ../glade2/filediff.glade.h:8
+#: ../glade2/filediff.glade.h:5
 #, fuzzy
 msgid "Find"
 msgstr "ا_بحث"
 
-#: ../glade2/filediff.glade.h:9
+#: ../glade2/filediff.glade.h:6
 msgid "Match _entire word only"
 msgstr "طابِق ك_امل الكلمة فقط"
 
-#: ../glade2/filediff.glade.h:10
+#: ../glade2/filediff.glade.h:7
 #, fuzzy
 msgid "Regular e_xpression"
 msgstr "_عبارة منتظمة"
 
-#: ../glade2/filediff.glade.h:11
+#: ../glade2/filediff.glade.h:8
 #, fuzzy
 msgid "Save modified files?"
 msgstr "_تاريخ التّعديل أقل من"
 
-#: ../glade2/filediff.glade.h:12
+#: ../glade2/filediff.glade.h:9
 msgid "Search for:"
 msgstr "ابحث عن:"
 
-#: ../glade2/filediff.glade.h:13
+#: ../glade2/filediff.glade.h:10
 msgid "_Match case"
 msgstr "_طابِق الحالة"
 
-#: ../glade2/filediff.glade.h:14
+#: ../glade2/filediff.glade.h:11
 #, fuzzy
 msgid "_Wrap around"
 msgstr "_لف حول"
@@ -447,395 +472,285 @@ msgstr "<b>الصيغة</b>"
 
 #: ../glade2/meldapp.glade.h:5
 #, fuzzy
-msgid "<b>Global options</b>"
-msgstr "<b>خيارات التقويم</b>"
-
-#: ../glade2/meldapp.glade.h:6
-#, fuzzy
 msgid "<b>Loading</b>"
 msgstr "<b>جاري التحميل...</b>"
 
-#: ../glade2/meldapp.glade.h:7
+#: ../glade2/meldapp.glade.h:6
 #, fuzzy
 msgid "<b>Misc</b>"
 msgstr "<b>فأرات</b>"
 
-#: ../glade2/meldapp.glade.h:8
+#: ../glade2/meldapp.glade.h:7
 #, fuzzy
 msgid "<b>Saving</b>"
 msgstr "<b>المشاركة</b>"
 
-#: ../glade2/meldapp.glade.h:9
+#: ../glade2/meldapp.glade.h:8
 #, fuzzy
 msgid "<b>Toolbar Appearance</b>"
 msgstr "<b>المظهر</b>"
 
-#: ../glade2/meldapp.glade.h:10
-#, fuzzy
-msgid "<b>Update Options</b>"
-msgstr "<b>خيارات الكتابة</b>"
-
-#: ../glade2/meldapp.glade.h:11
+#: ../glade2/meldapp.glade.h:9
 #, fuzzy
 msgid "<b>Whitespace</b>"
 msgstr "<b>مساحات العمل</b>"
 
-#: ../glade2/meldapp.glade.h:12
-#, fuzzy
-msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
-
-#: ../glade2/meldapp.glade.h:13
+#: ../glade2/meldapp.glade.h:10
 #, fuzzy
 msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
 
-#: ../glade2/meldapp.glade.h:14
+#: ../glade2/meldapp.glade.h:11
 #, fuzzy
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
 
-#: ../glade2/meldapp.glade.h:15
+#: ../glade2/meldapp.glade.h:12
 #, fuzzy
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
 
-#: ../glade2/meldapp.glade.h:16
+#: ../glade2/meldapp.glade.h:13
 #, fuzzy
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
 
-#: ../glade2/meldapp.glade.h:17
+#: ../glade2/meldapp.glade.h:14
 #, fuzzy
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
 
-#: ../glade2/meldapp.glade.h:18
+#: ../glade2/meldapp.glade.h:15
 #, fuzzy
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
 
-#: ../glade2/meldapp.glade.h:19
+#: ../glade2/meldapp.glade.h:16
 #, fuzzy
 msgid "Automatically supply missing newline at end of file"
 msgstr "نزّل و افتح الملفات آ_لياً"
 
-#: ../glade2/meldapp.glade.h:20
-#, fuzzy
-msgid "CVS"
-msgstr "CNV"
-
-#: ../glade2/meldapp.glade.h:21
-#, fuzzy
-msgid "CVS Directory"
-msgstr "دليل GPS"
-
-#: ../glade2/meldapp.glade.h:22
-#, fuzzy
-msgid "CVS binary"
-msgstr "ثنائى"
-
-#: ../glade2/meldapp.glade.h:23
+#: ../glade2/meldapp.glade.h:17
 #, fuzzy
 msgid "Choose Files"
 msgstr "اختر ملف"
 
-#: ../glade2/meldapp.glade.h:24
+#: ../glade2/meldapp.glade.h:18
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:25
+#: ../glade2/meldapp.glade.h:19
 #, fuzzy
 msgid "Copyright (C) 2002-2006 Stephen Kennedy"
 msgstr "حقوق النسخ © 2002-2005 Bastien Nocera"
 
-#: ../glade2/meldapp.glade.h:26
-#, fuzzy
-msgid "Create missing directories (-d)"
-msgstr "أنشيء دلائل"
-
-#: ../glade2/meldapp.glade.h:27
+#: ../glade2/meldapp.glade.h:20
 msgid "Curved: Filled Curves"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:28
+#: ../glade2/meldapp.glade.h:21
 #, fuzzy
 msgid "Custom command"
 msgstr "ال_أمر المخصّص:"
 
-#: ../glade2/meldapp.glade.h:29
+#: ../glade2/meldapp.glade.h:22
 msgid "Directory"
 msgstr "دليل"
 
-#: ../glade2/meldapp.glade.h:30
+#: ../glade2/meldapp.glade.h:23
 msgid "Display"
 msgstr "العرض"
 
-#: ../glade2/meldapp.glade.h:31
+#: ../glade2/meldapp.glade.h:24
 #, fuzzy
 msgid "Edit files with:"
 msgstr "حرّر الملفات النصية"
 
-#: ../glade2/meldapp.glade.h:32
+#: ../glade2/meldapp.glade.h:25
 msgid "Editor"
 msgstr "المحرر"
 
-#: ../glade2/meldapp.glade.h:33
+#: ../glade2/meldapp.glade.h:26
 msgid "Encoding"
 msgstr "التشفيرة"
 
-#: ../glade2/meldapp.glade.h:34
+#: ../glade2/meldapp.glade.h:27
 #, fuzzy
 msgid "File Filters"
 msgstr "مرشحات البريد"
 
-#: ../glade2/meldapp.glade.h:35
+#: ../glade2/meldapp.glade.h:28
 #, fuzzy
 msgid "Gnome Default"
 msgstr "بدون (افتراضي)"
 
-#: ../glade2/meldapp.glade.h:36
+#: ../glade2/meldapp.glade.h:29
 #, fuzzy
 msgid "Gnome default editor"
 msgstr "محرر التاريخ لجنوم"
 
-#: ../glade2/meldapp.glade.h:37
+#: ../glade2/meldapp.glade.h:30
 msgid "Icons Only"
 msgstr "أيقونات فقط"
 
-#: ../glade2/meldapp.glade.h:38
-#, fuzzy
-msgid "Ignore .cvsrc (-f)"
-msgstr "تج_اهل الحالة"
-
-#: ../glade2/meldapp.glade.h:39
+#: ../glade2/meldapp.glade.h:31
 msgid "Ignore changes in amount of white space"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:40
+#: ../glade2/meldapp.glade.h:32
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:41
+#: ../glade2/meldapp.glade.h:33
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:42
+#: ../glade2/meldapp.glade.h:34
 msgid "Ignore changes which insert or delete blank lines"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:43
+#: ../glade2/meldapp.glade.h:35
 #, fuzzy
 msgid "Ignore symbolic links"
 msgstr "تتبع الوصلات الرمزية"
 
-#: ../glade2/meldapp.glade.h:44
+#: ../glade2/meldapp.glade.h:36
 #, fuzzy
 msgid "Internal editor"
 msgstr "خطأ داخلي"
 
-#: ../glade2/meldapp.glade.h:45
+#: ../glade2/meldapp.glade.h:37
 #, fuzzy
 msgid "Line Wrapping "
 msgstr "نمط لف السطر"
 
-#: ../glade2/meldapp.glade.h:46
-msgid "Locate CVS binary : Meld"
-msgstr ""
-
-#: ../glade2/meldapp.glade.h:47
-msgid "Mailing _List"
-msgstr "قائمة بري_دية"
-
-#: ../glade2/meldapp.glade.h:48
+#: ../glade2/meldapp.glade.h:38
 #, fuzzy
 msgid "Meld"
 msgstr "لحن"
 
-#: ../glade2/meldapp.glade.h:49
+#: ../glade2/meldapp.glade.h:39
 #, fuzzy
 msgid "Mine"
 msgstr "ماين"
 
-#: ../glade2/meldapp.glade.h:50
-#, fuzzy
-msgid "My Directory"
-msgstr "دليل"
-
-#: ../glade2/meldapp.glade.h:51
-#, fuzzy
-msgid "My File"
-msgstr "ملف"
-
-#: ../glade2/meldapp.glade.h:52
+#: ../glade2/meldapp.glade.h:40
 #, fuzzy
 msgid "Original"
 msgstr "هامشي"
 
-#: ../glade2/meldapp.glade.h:53
-#, fuzzy
-msgid "Original Directory"
-msgstr "دليل بيكسماب"
-
-#: ../glade2/meldapp.glade.h:54
-#, fuzzy
-msgid "Original File"
-msgstr "اظهر ال_حجم الأصلي"
-
-#: ../glade2/meldapp.glade.h:55
+#: ../glade2/meldapp.glade.h:41
 #, fuzzy
 msgid "Other"
 msgstr "أخ_رى"
 
-#: ../glade2/meldapp.glade.h:56
-#, fuzzy
-msgid "Other Directory"
-msgstr "دليل المستخدمين"
-
-#: ../glade2/meldapp.glade.h:57
-#, fuzzy
-msgid "Other File"
-msgstr "بريد إلكتروني آخر"
-
-#: ../glade2/meldapp.glade.h:58
+#: ../glade2/meldapp.glade.h:42
 #, fuzzy
 msgid "Preferences : Meld"
 msgstr "قائمة التفضيلات"
 
-#: ../glade2/meldapp.glade.h:59
-#, fuzzy
-msgid "Prune empty directories (-P)"
-msgstr "أنشيء دلائل"
-
-#: ../glade2/meldapp.glade.h:60
-msgid "Quiet mode (-q)"
-msgstr ""
-
-#: ../glade2/meldapp.glade.h:61
-#, fuzzy
-msgid "Refresh"
-msgstr "أ_نعِش:"
-
-#: ../glade2/meldapp.glade.h:62
-msgid "Reload"
-msgstr "أعد التحميل"
-
-#: ../glade2/meldapp.glade.h:63
-#, fuzzy
-msgid "Report _Bug"
-msgstr "التقارير"
-
-#: ../glade2/meldapp.glade.h:64
-msgid "Save _As"
-msgstr "ا_حفظ باسم"
-
-#: ../glade2/meldapp.glade.h:65
+#: ../glade2/meldapp.glade.h:43
 #, fuzzy
 msgid "Save in UTF-8 encoding"
 msgstr "ا_حفظ في حلقة المفاتيح"
 
-#: ../glade2/meldapp.glade.h:66
+#: ../glade2/meldapp.glade.h:44
 msgid "Save in the files original encoding"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:67
+#: ../glade2/meldapp.glade.h:45
 #, fuzzy
 msgid "Show line numbers"
 msgstr "اظهار أرقام السطور"
 
-#: ../glade2/meldapp.glade.h:68
+#: ../glade2/meldapp.glade.h:46
 #, fuzzy
 msgid "Simple: Lines only"
 msgstr "ملفات صور فقط"
 
-#: ../glade2/meldapp.glade.h:69
+#: ../glade2/meldapp.glade.h:47
 msgid "Solid: Filled Quadilaterals"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:70
+#: ../glade2/meldapp.glade.h:48
 #, fuzzy
 msgid "Tab width"
 msgstr "ع_رض اللسان:"
 
-#: ../glade2/meldapp.glade.h:71
+#: ../glade2/meldapp.glade.h:49
 #, fuzzy
 msgid "Text Beside Icons"
 msgstr "نص بجانب الأيقونة"
 
-#: ../glade2/meldapp.glade.h:72
+#: ../glade2/meldapp.glade.h:50
 #, fuzzy
 msgid "Text Filters"
 msgstr "ملف نصي"
 
-#: ../glade2/meldapp.glade.h:73
+#: ../glade2/meldapp.glade.h:51
 msgid "Text Only"
 msgstr "نص فقط"
 
-#: ../glade2/meldapp.glade.h:74
+#: ../glade2/meldapp.glade.h:52
 #, fuzzy
 msgid "Text Under Icons"
 msgstr "_نص و أيقونة"
 
-#: ../glade2/meldapp.glade.h:75
+#: ../glade2/meldapp.glade.h:53
 #, fuzzy
 msgid "Three way directory"
 msgstr "اختر دليل"
 
-#: ../glade2/meldapp.glade.h:76
+#: ../glade2/meldapp.glade.h:54
 #, fuzzy
 msgid "Three way file"
 msgstr "ملف البكسمب"
 
-#: ../glade2/meldapp.glade.h:77
+#: ../glade2/meldapp.glade.h:55
 #, fuzzy
 msgid "Two way directory"
 msgstr "ليس دليلا"
 
-#: ../glade2/meldapp.glade.h:78
+#: ../glade2/meldapp.glade.h:56
 #, fuzzy
 msgid "Two way file"
 msgstr "حمِّل ملف"
 
-#: ../glade2/meldapp.glade.h:79
-#, fuzzy
-msgid "Use Compression (-z)"
-msgstr "استخدم ضغط MPPC"
-
-#: ../glade2/meldapp.glade.h:80
+#: ../glade2/meldapp.glade.h:57
 #, fuzzy
 msgid "Use GNOME monospace font"
 msgstr "خط ثابت العرض"
 
-#: ../glade2/meldapp.glade.h:81
+#: ../glade2/meldapp.glade.h:58
 #, fuzzy
 msgid "Use custom font"
 msgstr "إستعمال خطوط مخصّصة"
 
-#: ../glade2/meldapp.glade.h:82
+#: ../glade2/meldapp.glade.h:59
 #, fuzzy
 msgid "Use syntax highlighting"
 msgstr "عطّل إبراز التراكيب"
 
-#: ../glade2/meldapp.glade.h:83
+#: ../glade2/meldapp.glade.h:60
 #, fuzzy
 msgid "Version control view"
 msgstr "تحكم النُسخ"
 
-#: ../glade2/meldapp.glade.h:84
+#: ../glade2/meldapp.glade.h:61
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:85
+#: ../glade2/meldapp.glade.h:62
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
 "separated by spaces."
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:86
+#: ../glade2/meldapp.glade.h:63
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -844,211 +759,80 @@ msgid ""
 "details."
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:87
+#: ../glade2/meldapp.glade.h:64
 msgid "Whitespace is significant"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:88
-#, fuzzy
-msgid "_Character"
-msgstr "حر_ف"
-
-#: ../glade2/meldapp.glade.h:90
-#, fuzzy
-msgid "_Contents"
-msgstr "المحتويات"
-
-#: ../glade2/meldapp.glade.h:91
+#: ../glade2/meldapp.glade.h:66
 #, fuzzy
 msgid "_Directory Comparison"
 msgstr "لوح الدليل"
 
-#: ../glade2/meldapp.glade.h:92
-msgid "_Down"
-msgstr "أ_سفل"
-
-#: ../glade2/meldapp.glade.h:93
+#: ../glade2/meldapp.glade.h:67
 #, fuzzy
 msgid "_File Comparison"
 msgstr "معلومات الملف"
 
-#: ../glade2/meldapp.glade.h:94
+#: ../glade2/meldapp.glade.h:68
 #, fuzzy
 msgid "_Logo"
 msgstr "ال_شعارات"
 
-#: ../glade2/meldapp.glade.h:95
-msgid "_New..."
-msgstr "_جديد..."
-
-#: ../glade2/meldapp.glade.h:96
-msgid "_None"
-msgstr "_لا شيء"
-
-#: ../glade2/meldapp.glade.h:97
-msgid "_Save"
-msgstr "حفظ"
-
-#: ../glade2/meldapp.glade.h:98
+#: ../glade2/meldapp.glade.h:69
 msgid "_Three Way Compare"
 msgstr ""
 
-#: ../glade2/meldapp.glade.h:99
-#, fuzzy
-msgid "_Up"
-msgstr "فوق"
-
-#: ../glade2/meldapp.glade.h:100
+#: ../glade2/meldapp.glade.h:70
 #, fuzzy
 msgid "_Version Control Browser"
 msgstr "تحكم النُسخ"
 
-#: ../glade2/meldapp.glade.h:101
-msgid "_Word"
-msgstr "_كلمة"
-
 #: ../glade2/vcview.glade.h:1
-#, fuzzy
-msgid "Add _Binary"
-msgstr "أظهر الملفات ال_ثنائية"
-
-#: ../glade2/vcview.glade.h:2
-#, fuzzy
-msgid "Add to VC"
-msgstr "أ_ضف"
-
-#: ../glade2/vcview.glade.h:3
-msgid "Commit"
-msgstr "أرسِل"
-
-#: ../glade2/vcview.glade.h:4
 #, fuzzy
 msgid "Commit Files"
 msgstr "تحرير ملف "
 
-#: ../glade2/vcview.glade.h:5
+#: ../glade2/vcview.glade.h:2
 #, fuzzy
 msgid "Compare Options"
 msgstr "_خيارات أخرى"
 
-#: ../glade2/vcview.glade.h:7
+#: ../glade2/vcview.glade.h:3
 #, fuzzy
 msgid "Date"
 msgstr "التّاريخ:"
 
-#: ../glade2/vcview.glade.h:8
-#, fuzzy
-msgid "Delete locally"
-msgstr "ا_حذف الكل"
-
-#: ../glade2/vcview.glade.h:9
-#, fuzzy
-msgid "Flatten directories"
-msgstr "أنشيء دلائل"
-
-#: ../glade2/vcview.glade.h:10
-#, fuzzy
-msgid "Ignored"
-msgstr "تجاهل"
-
-#: ../glade2/vcview.glade.h:11
+#: ../glade2/vcview.glade.h:4
 msgid "Local copy against other remote revision"
 msgstr ""
 
-#: ../glade2/vcview.glade.h:12
+#: ../glade2/vcview.glade.h:5
 msgid "Local copy against same remote revision"
 msgstr ""
 
-#: ../glade2/vcview.glade.h:13
+#: ../glade2/vcview.glade.h:6
 #, fuzzy
 msgid "Log Message"
 msgstr "رسالة التسجيل في VPN"
 
-#: ../glade2/vcview.glade.h:14
-msgid "Non _VC"
-msgstr ""
-
-#: ../glade2/vcview.glade.h:15
+#: ../glade2/vcview.glade.h:7
 #, fuzzy
 msgid "Previous Logs"
 msgstr "سابقا"
 
-#: ../glade2/vcview.glade.h:16
-#, fuzzy
-msgid "Remove _Locally"
-msgstr "أزل الكل"
-
-#: ../glade2/vcview.glade.h:17
-#, fuzzy
-msgid "Remove from VC"
-msgstr "أزل من القائمة"
-
-#: ../glade2/vcview.glade.h:19
-#, fuzzy
-msgid "Show unversioned files"
-msgstr "اظهر الملفات المخفية"
-
-#: ../glade2/vcview.glade.h:20 ../vcview.py:173
+#: ../glade2/vcview.glade.h:8 ../vcview.py:185
 #, fuzzy
 msgid "Tag"
 msgstr "وسم:"
 
-#: ../glade2/vcview.glade.h:21
-#, fuzzy
-msgid "Update"
-msgstr "_حدّث"
-
-#: ../glade2/vcview.glade.h:22
+#: ../glade2/vcview.glade.h:9
 #, fuzzy
 msgid "VC Log"
 msgstr "لغ"
 
-#: ../glade2/vcview.glade.h:23
-#, fuzzy
-msgid "_Add"
-msgstr "أ_ضف"
-
-#: ../glade2/vcview.glade.h:24
-#, fuzzy
-msgid "_Commit"
-msgstr "أرسِل"
-
-#: ../glade2/vcview.glade.h:26
-#, fuzzy
-msgid "_Edit"
-msgstr "_تحرير/"
-
-#: ../glade2/vcview.glade.h:27
-#, fuzzy
-msgid "_Flatten"
-msgstr "تسطيح الصورة"
-
-#: ../glade2/vcview.glade.h:28
-#, fuzzy
-msgid "_Modified"
-msgstr "عُدّل:"
-
-#: ../glade2/vcview.glade.h:29
-msgid "_Normal"
-msgstr "_عادي"
-
-#: ../glade2/vcview.glade.h:30
-#, fuzzy
-msgid "_Remove"
-msgstr "احذف"
-
-#: ../glade2/vcview.glade.h:31
-msgid "_Update"
-msgstr "_حدّث"
-
-#: ../meld:60 ../meld:70 ../meld:80
+#: ../meld:47
 #, c-format
 msgid "Meld requires %s or higher."
-msgstr ""
-
-#: ../meld:81
-msgid ""
-"Due to incompatible API changes some functions may not operate as expected."
 msgstr ""
 
 #: ../meld.desktop.in.h:1
@@ -1061,99 +845,202 @@ msgstr "انشيء واحذف الملفات"
 msgid "Meld Diff Viewer"
 msgstr "عارض الصوت"
 
-#: ../meldapp.py:145
+#: ../meldapp.py:150
 msgid "label"
 msgstr "شارة"
 
-#: ../meldapp.py:146
+#: ../meldapp.py:151
 #, fuzzy
 msgid "pattern"
 msgstr "نمط:"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:247 ../meldapp.py:252 ../vcview.py:153
+#: ../meldapp.py:252 ../meldapp.py:257 ../vcview.py:165
 #, fuzzy
 msgid "Name"
 msgstr "الإ_سم"
 
-#: ../meldapp.py:247 ../meldapp.py:252
+#: ../meldapp.py:252 ../meldapp.py:257
 msgid "Active"
 msgstr "نشط"
 
-#: ../meldapp.py:247
+#: ../meldapp.py:252
 #, fuzzy
 msgid "Pattern"
 msgstr "نمط:"
 
-#: ../meldapp.py:252
+#: ../meldapp.py:257
 #, fuzzy
 msgid "Regex"
 msgstr "ريجي"
 
-#: ../meldapp.py:293
+#: ../meldapp.py:291
 msgid ""
 "Line numbers are only available if you have gnome-python-desktop installed."
 msgstr ""
 
-#: ../meldapp.py:297
+#: ../meldapp.py:295
 msgid ""
 "Syntax highlighting is only available if you have gnome-python-desktop "
 "installed."
 msgstr ""
 
+#: ../meldapp.py:383
+msgid "Close tab"
+msgstr ""
+
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:441
+#: ../meldapp.py:444
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:443
-msgid "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n"
+#: ../meldapp.py:446
+msgid ""
+"Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:445
+#: ../meldapp.py:448
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:447
+#: ../meldapp.py:450
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:449
+#: ../meldapp.py:452
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:451
+#: ../meldapp.py:454
 msgid "C++ comment\t0\t//.*\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:453
+#: ../meldapp.py:456
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:455
+#: ../meldapp.py:458
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:457
+#: ../meldapp.py:460
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr ""
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:459
+#: ../meldapp.py:462
 #, fuzzy
 msgid "Script comment\t0\t#.*"
 msgstr "جُمل المخطوط"
 
-#: ../meldapp.py:776
+#: ../meldapp.py:532
+msgid "_New..."
+msgstr "_جديد..."
+
+#: ../meldapp.py:532
+msgid "Start a new comparison"
+msgstr ""
+
+#: ../meldapp.py:535
+msgid "Close the current file"
+msgstr ""
+
+#: ../meldapp.py:536
+msgid "Quit the program"
+msgstr ""
+
+#: ../meldapp.py:539
+msgid "Undo the last action"
+msgstr ""
+
+#: ../meldapp.py:540
+msgid "Redo the last undone action"
+msgstr ""
+
+#: ../meldapp.py:544
+#, fuzzy
+msgid "Search for text"
+msgstr "ابحث عن:"
+
+#: ../meldapp.py:545
+msgid "Find Ne_xt"
+msgstr ""
+
+#: ../meldapp.py:545
+msgid "Search forwards for the same text"
+msgstr ""
+
+#: ../meldapp.py:546
+#, fuzzy
+msgid "Go to the next difference"
+msgstr "تفضيلات اشتراك الملفات"
+
+#: ../meldapp.py:547
+msgid "Go to the previous difference"
+msgstr ""
+
+#: ../meldapp.py:548
+msgid "Configure the application"
+msgstr ""
+
+#: ../meldapp.py:551
+msgid "Stop the current action"
+msgstr ""
+
+#: ../meldapp.py:552
+#, fuzzy
+msgid "Refresh the view"
+msgstr "أ_نعِش:"
+
+#: ../meldapp.py:553
+msgid "Reload"
+msgstr "أعد التحميل"
+
+#: ../meldapp.py:553
+#, fuzzy
+msgid "Reload the comparison"
+msgstr "معلومات الملف"
+
+#: ../meldapp.py:556
+#, fuzzy
+msgid "_Contents"
+msgstr "المحتويات"
+
+#: ../meldapp.py:556
+msgid "Open the Meld manual"
+msgstr ""
+
+#: ../meldapp.py:557
+#, fuzzy
+msgid "Report _Bug"
+msgstr "التقارير"
+
+#: ../meldapp.py:557
+msgid "Report a bug in Meld"
+msgstr ""
+
+#: ../meldapp.py:558
+msgid "Mailing _List"
+msgstr "قائمة بري_دية"
+
+#: ../meldapp.py:558
+msgid "Go to the Meld mailing list"
+msgstr ""
+
+#: ../meldapp.py:559
+msgid "About this program"
+msgstr ""
+
+#: ../meldapp.py:821
 #, fuzzy
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "اسمح بملفات وأدلّة قابلة للكتابة من المجموعة."
@@ -1163,88 +1050,207 @@ msgstr "اسمح بملفات وأدلّة قابلة للكتابة من الم
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:824
+#: ../meldapp.py:869
 #, python-format
 msgid ""
 "Meld %s\n"
 "Written by Stephen Kennedy <stevek@gnome.org>"
 msgstr ""
 
-#: ../meldapp.py:853
+#: ../meldapp.py:898
 #, fuzzy
 msgid "Set label to use instead of file name"
 msgstr "الأمر الخاص الذي سيستعمل عوض الصدفة"
 
-#: ../meldapp.py:854 ../meldapp.py:855 ../meldapp.py:856 ../meldapp.py:857
+#: ../meldapp.py:899 ../meldapp.py:900 ../meldapp.py:901 ../meldapp.py:902
 #, fuzzy
 msgid "Ignored for compatibility"
 msgstr "التوافقية مع ويندوز"
 
-#: ../meldapp.py:883
+#: ../meldapp.py:930
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr ""
 
-#: ../melddoc.py:45
+#: ../melddoc.py:46
 #, fuzzy
 msgid "untitled"
 msgstr "(بدون عنوان)"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:118
+#: ../misc.py:121
 #, fuzzy
 msgid "[None]"
 msgstr "[لاشيء]"
 
-#: ../vcview.py:170
+#: ../vcview.py:121
+#, fuzzy
+msgid "_Edit"
+msgstr "_تحرير/"
+
+#: ../vcview.py:121
+#, fuzzy
+msgid "Edit files"
+msgstr "حرّر الملفات النصية"
+
+#: ../vcview.py:122
+#, fuzzy
+msgid "_Commit"
+msgstr "أرسِل"
+
+#: ../vcview.py:122
+msgid "Commit"
+msgstr "أرسِل"
+
+#. FIXME: popup used to use gtk.STOCK_GO_BACK
+#: ../vcview.py:123
+msgid "_Update"
+msgstr "_حدّث"
+
+#: ../vcview.py:123
+#, fuzzy
+msgid "Update"
+msgstr "_حدّث"
+
+#. FIXME: popup used to use gtk.STOCK_GO_FORWARD
+#: ../vcview.py:124
+#, fuzzy
+msgid "_Add"
+msgstr "أ_ضف"
+
+#: ../vcview.py:124
+#, fuzzy
+msgid "Add to VC"
+msgstr "أ_ضف"
+
+#. FIXME: popup used to use gtk.STOCK_ADD
+#: ../vcview.py:125
+#, fuzzy
+msgid "Add _Binary"
+msgstr "أظهر الملفات ال_ثنائية"
+
+#: ../vcview.py:125
+#, fuzzy
+msgid "Add binary to VC"
+msgstr "أ_ضف"
+
+#. FIXME: stock is inconsistent with other VC actions
+#: ../vcview.py:126
+#, fuzzy
+msgid "_Remove"
+msgstr "احذف"
+
+#: ../vcview.py:126
+#, fuzzy
+msgid "Remove from VC"
+msgstr "أزل من القائمة"
+
+#. FIXME: popup used to use gtk.STOCK_REMOVE
+#: ../vcview.py:127
+msgid "Revert to original"
+msgstr ""
+
+#: ../vcview.py:128
+#, fuzzy
+msgid "Delete locally"
+msgstr "ا_حذف الكل"
+
+#: ../vcview.py:132
+#, fuzzy
+msgid "_Flatten"
+msgstr "تسطيح الصورة"
+
+#: ../vcview.py:132
+#, fuzzy
+msgid "Flatten directories"
+msgstr "أنشيء دلائل"
+
+#: ../vcview.py:133
+#, fuzzy
+msgid "_Modified"
+msgstr "عُدّل:"
+
+#: ../vcview.py:134
+msgid "_Normal"
+msgstr "_عادي"
+
+#: ../vcview.py:134
+#, fuzzy
+msgid "Show normal"
+msgstr "أظهر الإشارة"
+
+#: ../vcview.py:135
+msgid "Non _VC"
+msgstr ""
+
+#: ../vcview.py:135
+#, fuzzy
+msgid "Show unversioned files"
+msgstr "اظهر الملفات المخفية"
+
+#: ../vcview.py:136
+#, fuzzy
+msgid "Ignored"
+msgstr "تجاهل"
+
+#: ../vcview.py:136
+#, fuzzy
+msgid "Show ignored files"
+msgstr "اظهر الملفات المخفية"
+
+#: ../vcview.py:182
 msgid "Location"
 msgstr "الموقع"
 
-#: ../vcview.py:171
+#: ../vcview.py:183
 msgid "Status"
 msgstr "الحالة"
 
-#: ../vcview.py:172
+#: ../vcview.py:184
 #, fuzzy
 msgid "Rev"
 msgstr "احذف"
 
-#: ../vcview.py:174
+#: ../vcview.py:186
 msgid "Options"
 msgstr "خيارات"
 
-#: ../vcview.py:257
+#: ../vcview.py:269
 msgid "(Empty)"
 msgstr "(فارغ)"
 
-#: ../vcview.py:294
+#: ../vcview.py:306
 #, fuzzy, python-format
 msgid "[%s] Fetching differences"
 msgstr "تفضيلات اشتراك الملفات"
 
-#: ../vcview.py:301
+#: ../vcview.py:313
 #, python-format
 msgid "[%s] Applying patch"
 msgstr ""
 
-#: ../vcview.py:305
+#: ../vcview.py:317
 #, fuzzy
 msgid "No differences found."
 msgstr "لم يُعثر على أجهزة"
 
-#: ../vcview.py:382
+#: ../vcview.py:394
 #, fuzzy
 msgid "Select some files first."
 msgstr "انتقي ملف صوت..."
 
+#: ../vcview.py:461
+msgid "Invoking patch failed, you need GNU patch."
+msgstr ""
+
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:37
+#: ../vc/_vc.py:40
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
 msgstr ""
 
-#: ../vc/cvs.py:160
+#: ../vc/cvs.py:155
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1252,3 +1258,105 @@ msgid ""
 "The error was '%s'"
 msgstr ""
 
+#, fuzzy
+#~ msgid "Compare"
+#~ msgstr "كولمار"
+
+#, fuzzy
+#~ msgid "_Delete Selected"
+#~ msgstr "حذف التحديد"
+
+#, fuzzy
+#~ msgid "Copy All To _Left"
+#~ msgstr "انسخ ال_كل"
+
+#, fuzzy
+#~ msgid "<b>Global options</b>"
+#~ msgstr "<b>خيارات التقويم</b>"
+
+#, fuzzy
+#~ msgid "<b>Update Options</b>"
+#~ msgstr "<b>خيارات الكتابة</b>"
+
+#, fuzzy
+#~ msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\">اختبار...</span>"
+
+#, fuzzy
+#~ msgid "CVS"
+#~ msgstr "CNV"
+
+#, fuzzy
+#~ msgid "CVS Directory"
+#~ msgstr "دليل GPS"
+
+#, fuzzy
+#~ msgid "CVS binary"
+#~ msgstr "ثنائى"
+
+#, fuzzy
+#~ msgid "Create missing directories (-d)"
+#~ msgstr "أنشيء دلائل"
+
+#, fuzzy
+#~ msgid "Ignore .cvsrc (-f)"
+#~ msgstr "تج_اهل الحالة"
+
+#, fuzzy
+#~ msgid "My Directory"
+#~ msgstr "دليل"
+
+#, fuzzy
+#~ msgid "My File"
+#~ msgstr "ملف"
+
+#, fuzzy
+#~ msgid "Original Directory"
+#~ msgstr "دليل بيكسماب"
+
+#, fuzzy
+#~ msgid "Original File"
+#~ msgstr "اظهر ال_حجم الأصلي"
+
+#, fuzzy
+#~ msgid "Other Directory"
+#~ msgstr "دليل المستخدمين"
+
+#, fuzzy
+#~ msgid "Other File"
+#~ msgstr "بريد إلكتروني آخر"
+
+#, fuzzy
+#~ msgid "Prune empty directories (-P)"
+#~ msgstr "أنشيء دلائل"
+
+#~ msgid "Save _As"
+#~ msgstr "ا_حفظ باسم"
+
+#, fuzzy
+#~ msgid "Use Compression (-z)"
+#~ msgstr "استخدم ضغط MPPC"
+
+#, fuzzy
+#~ msgid "_Character"
+#~ msgstr "حر_ف"
+
+#~ msgid "_Down"
+#~ msgstr "أ_سفل"
+
+#~ msgid "_None"
+#~ msgstr "_لا شيء"
+
+#~ msgid "_Save"
+#~ msgstr "حفظ"
+
+#, fuzzy
+#~ msgid "_Up"
+#~ msgstr "فوق"
+
+#~ msgid "_Word"
+#~ msgstr "_كلمة"
+
+#, fuzzy
+#~ msgid "Remove _Locally"
+#~ msgstr "أزل الكل"
