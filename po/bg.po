@@ -1,14 +1,14 @@
-# Bulgarian translation of meld pot file
-# Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+# Bulgarian translation of meld po-file
+# Copyright (C) 2004, 2005, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the meld package.
-# Alexander Shopov <ash@contact.bg>, 2004, 2005.
+# Alexander Shopov <ash@contact.bg>, 2004, 2005, 2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meld-0.9.4.1\n"
+"Project-Id-Version: meld trunk\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2007-03-11 22:53+0200\n"
-"PO-Revision-Date: 2007-03-11 22:53+0200\n"
+"POT-Creation-Date: 2008-08-02 09:01+0300\n"
+"PO-Revision-Date: 2008-08-02 08:39+0300\n"
 "Last-Translator: Alexander Shopov  <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,27 +16,105 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../dirdiff.py:252 ../dirdiff.py:267
+#: ../dirdiff.py:194 ../glade2/meldapp.glade.h:65 ../vcview.py:120
+msgid "_Compare"
+msgstr "_Сравняване"
+
+#: ../dirdiff.py:194 ../vcview.py:120
+msgid "Compare selected"
+msgstr "Сравняване на избраното"
+
+#. FIXME: the glade files were inconsistent: GO_BACK vs GOTO_FIRST, "Left" vs "Copy To Left"
+#: ../dirdiff.py:196
+msgid "Left"
+msgstr "Ляв"
+
+#: ../dirdiff.py:196 ../filediff.py:142
+msgid "Copy To Left"
+msgstr "Копиране наляво"
+
+#. FIXME: the glade files were inconsistent: GO_FORWARD vs GOTO_LAST, "Right" vs "Copy To Right"
+#: ../dirdiff.py:198
+msgid "Right"
+msgstr "Десен"
+
+#: ../dirdiff.py:198 ../filediff.py:143
+msgid "Copy To Right"
+msgstr "Копиране надясно"
+
+#: ../dirdiff.py:199
+msgid "Delete selected"
+msgstr "Изтриване на избраното"
+
+#: ../dirdiff.py:200
+msgid "Hide..."
+msgstr "Скриване…"
+
+#: ../dirdiff.py:200
+msgid "Hide selected"
+msgstr "Скриване на избраното"
+
+#: ../dirdiff.py:202
+msgid "Edit"
+msgstr "Редактиране"
+
+#: ../dirdiff.py:202
+msgid "Edit selected"
+msgstr "Редактиране на избраното"
+
+#: ../dirdiff.py:206
+msgid "Case"
+msgstr "Регистър"
+
+#: ../dirdiff.py:206
+msgid "Ignore case of entries"
+msgstr "Регистърът на избраното да е без значение"
+
+#: ../dirdiff.py:207
+msgid "Same"
+msgstr "Еднакъв"
+
+#: ../dirdiff.py:207
+msgid "Show identical"
+msgstr "Показване на еднаквите"
+
+#: ../dirdiff.py:208
+msgid "New"
+msgstr "Нов"
+
+#: ../dirdiff.py:208
+msgid "Show new"
+msgstr "Показване на новите"
+
+#: ../dirdiff.py:209
+msgid "Modified"
+msgstr "Променен"
+
+#: ../dirdiff.py:209 ../vcview.py:133
+msgid "Show modified"
+msgstr "Показване на променените"
+
+#: ../dirdiff.py:270 ../dirdiff.py:285
 #, python-format
 msgid "Error converting pattern '%s' to regular expression"
 msgstr "Грешка при преобразуването на шаблона „%s“ към регулярен израз"
 
-#: ../dirdiff.py:283
+#: ../dirdiff.py:293
 #, python-format
 msgid "Hide %s"
 msgstr "Скриване на %s"
 
-#: ../dirdiff.py:364 ../dirdiff.py:373 ../vcview.py:213 ../vcview.py:241
+#: ../dirdiff.py:378 ../dirdiff.py:388 ../vcview.py:225 ../vcview.py:253
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Проверка на %s"
 
-#: ../dirdiff.py:406
+#: ../dirdiff.py:421
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ е скрит от „%s“"
 
-#: ../dirdiff.py:412
+#: ../dirdiff.py:427
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
@@ -47,12 +125,12 @@ msgstr ""
 "система, която отчита регистъра на буквите. Някои файлове не се виждат:\n"
 "%s"
 
-#: ../dirdiff.py:482
+#: ../dirdiff.py:501
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Готово"
 
-#: ../dirdiff.py:528
+#: ../dirdiff.py:547
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -61,7 +139,7 @@ msgstr ""
 "„%s“ съществува.\n"
 "Да се презапише?"
 
-#: ../dirdiff.py:535
+#: ../dirdiff.py:554
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -72,16 +150,16 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:553 ../vcview.py:405
+#: ../dirdiff.py:572 ../vcview.py:417
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
 "Remove recusively?"
 msgstr ""
-"„%s“ е директория.\n"
+"„%s“ е папка.\n"
 "Да се изтрие ли рекурсивно?"
 
-#: ../dirdiff.py:560 ../vcview.py:410
+#: ../dirdiff.py:579 ../vcview.py:422
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -92,67 +170,107 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:571
+#: ../dirdiff.py:590
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i секунда"
 msgstr[1] "%i секунди"
 
-#: ../dirdiff.py:572
+#: ../dirdiff.py:591
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i минута"
 msgstr[1] "%i минути"
 
-#: ../dirdiff.py:573
+#: ../dirdiff.py:592
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i час"
 msgstr[1] "%i часа"
 
-#: ../dirdiff.py:574
+#: ../dirdiff.py:593
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i ден"
 msgstr[1] "%i дена"
 
-#: ../dirdiff.py:575
+#: ../dirdiff.py:594
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i седмица"
 msgstr[1] "%i седмици"
 
-#: ../dirdiff.py:576
+#: ../dirdiff.py:595
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i месец"
 msgstr[1] "%i месеца"
 
-#: ../dirdiff.py:577
+#: ../dirdiff.py:596
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
 msgstr[0] "%i година"
 msgstr[1] "%i години"
 
+#: ../filediff.py:135 ../meldapp.py:533
+msgid "Save the current file"
+msgstr "Запазване на текущия файл"
+
+#: ../filediff.py:136
+msgid "Save the current file with a different name"
+msgstr "Запазване на текущия файл с различно име"
+
+#: ../filediff.py:137 ../meldapp.py:541
+msgid "Cut the selection"
+msgstr "Отрязване на избраното"
+
+#: ../filediff.py:138 ../meldapp.py:542
+msgid "Copy the selection"
+msgstr "Копиране на избраното"
+
+#: ../filediff.py:139 ../meldapp.py:543
+msgid "Paste the clipboard"
+msgstr "Поставяне на междинния буфер"
+
+#: ../filediff.py:140
+msgid "Edit the selected file"
+msgstr "Редактиране на избраното"
+
+#: ../filediff.py:141 ../glade2/filediff.glade.h:4
+msgid "Create Patch"
+msgstr "Създаване на кръпка"
+
+#: ../filediff.py:141
+msgid "Create a patch"
+msgstr "Създаване на кръпка"
+
+#: ../filediff.py:142
+msgid "Copy all changes from right pane to left pane"
+msgstr "Копиране на всички промени от левия панел в десния"
+
+#: ../filediff.py:143
+msgid "Copy all changes from left pane to right pane"
+msgstr "Копиране на всички промени от десния панел в левия"
+
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:200
+#: ../filediff.py:192
 msgid "INS,OVR"
 msgstr "Вмъкване,Заместване"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:202
+#: ../filediff.py:194
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Ред %i, Кол. %i"
 
-#: ../filediff.py:260
+#: ../filediff.py:252
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -161,68 +279,68 @@ msgstr ""
 "Регулярният израз „%s“ промени броя на редовете във файла. Сравняването няма "
 "да бъде коректно. Обърнете се към ръководството за повече информация."
 
-#: ../filediff.py:508
+#: ../filediff.py:506
 #, python-format
 msgid ""
 "Regular expression error\n"
 "'%s'"
 msgstr ""
-"Грешка в регулярния израз\n"
+"Грешка в регулярния израз:\n"
 "„%s“"
 
-#: ../filediff.py:520
+#: ../filediff.py:518
 #, python-format
 msgid "The regular expression '%s' was not found."
 msgstr "Регулярният израз „%s“ не бе открит"
 
-#: ../filediff.py:522
+#: ../filediff.py:520
 #, python-format
 msgid "The text '%s' was not found."
 msgstr "Текстът „%s“ не бе открит"
 
-#: ../filediff.py:574
+#: ../filediff.py:573
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Задаване на броя панели"
 
-#: ../filediff.py:581
+#: ../filediff.py:580
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Отваряне на файлове"
 
-#: ../filediff.py:598 ../filediff.py:612 ../filediff.py:628 ../filediff.py:635
+#: ../filediff.py:597 ../filediff.py:611 ../filediff.py:627 ../filediff.py:634
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Невъзможно четене от „%s“"
 
-#: ../filediff.py:599 ../filediff.py:636
+#: ../filediff.py:598 ../filediff.py:635
 msgid "The error was:"
 msgstr "Грешката бе:"
 
-#: ../filediff.py:604
+#: ../filediff.py:603
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Прочитане на файлове"
 
-#: ../filediff.py:613
+#: ../filediff.py:612
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
 msgstr ""
-"Съдъжа символа ASCII NUL.\n"
+"Съдържа знака ASCII NUL.\n"
 "Вероятно е двоичен файл."
 
-#: ../filediff.py:629
+#: ../filediff.py:628
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Беше пробвано кодиране %s."
 
-#: ../filediff.py:658
+#: ../filediff.py:657
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Изчисляване на разликите"
 
-#: ../filediff.py:763
+#: ../filediff.py:762
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -231,7 +349,7 @@ msgstr ""
 "„%s“ съществува.\n"
 "Да се презапише?"
 
-#: ../filediff.py:776
+#: ../filediff.py:775
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -242,12 +360,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:785
+#: ../filediff.py:784
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Избор на име за буфера %i."
 
-#: ../filediff.py:798
+#: ../filediff.py:797
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -258,21 +376,21 @@ msgstr ""
 "\n"
 "Кой вариант искате да се ползва?"
 
-#: ../filediff.py:814
+#: ../filediff.py:813
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
 "Would you like to save as UTF-8?"
 msgstr ""
-"„%s“ съдържа символи, които не могат да се кодират чрез „%s“\n"
+"„%s“ съдържа знаци, които не могат да се кодират чрез „%s“\n"
 "Желаете ли да се запише в „UTF-8“?"
 
 #. save as
-#: ../filediff.py:865
+#: ../filediff.py:864
 msgid "Save patch as..."
-msgstr "Запис на кръпка като..."
+msgstr "Запис на кръпка като…"
 
-#: ../filediff.py:919
+#: ../filediff.py:923
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -285,87 +403,6 @@ msgstr ""
 "\n"
 "Няма да можете да отмените тази операция."
 
-#: ../glade2/dirdiff.glade.h:1
-msgid "Case"
-msgstr "Регистър"
-
-#: ../glade2/dirdiff.glade.h:2
-msgid "Compare"
-msgstr "Сравняване"
-
-#: ../glade2/dirdiff.glade.h:3 ../glade2/vcview.glade.h:6
-msgid "Compare selected"
-msgstr "Сравняване на избраното"
-
-#: ../glade2/dirdiff.glade.h:4
-msgid "Copy To Left"
-msgstr "Копиране наляво"
-
-#: ../glade2/dirdiff.glade.h:5
-msgid "Copy To Right"
-msgstr "Копиране надясно"
-
-#: ../glade2/dirdiff.glade.h:6
-msgid "Delete selected"
-msgstr "Изтриване на избраното"
-
-#: ../glade2/dirdiff.glade.h:7 ../glade2/filediff.glade.h:7
-msgid "Edit"
-msgstr "Редактиране"
-
-#: ../glade2/dirdiff.glade.h:8
-msgid "Hide selected"
-msgstr "Скриване на избраното"
-
-#: ../glade2/dirdiff.glade.h:9
-msgid "Hide..."
-msgstr "Скриване..."
-
-#: ../glade2/dirdiff.glade.h:10
-msgid "Ignore case of entries"
-msgstr "Регистърът на избраното да е без значение"
-
-#: ../glade2/dirdiff.glade.h:11
-msgid "Left"
-msgstr "Ляв"
-
-#: ../glade2/dirdiff.glade.h:12
-msgid "Modified"
-msgstr "Променен"
-
-#: ../glade2/dirdiff.glade.h:13
-msgid "New"
-msgstr "Нов"
-
-#: ../glade2/dirdiff.glade.h:14
-msgid "Right"
-msgstr "Десен"
-
-#: ../glade2/dirdiff.glade.h:15
-msgid "Same"
-msgstr "Еднакъв"
-
-#: ../glade2/dirdiff.glade.h:16
-msgid "Show identical"
-msgstr "Показване на еднаквите"
-
-#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:18
-msgid "Show modified"
-msgstr "Показване на променените"
-
-#: ../glade2/dirdiff.glade.h:18
-msgid "Show new"
-msgstr "Показване на новите"
-
-#: ../glade2/dirdiff.glade.h:19 ../glade2/meldapp.glade.h:89
-#: ../glade2/vcview.glade.h:25
-msgid "_Compare"
-msgstr "_Сравняване"
-
-#: ../glade2/dirdiff.glade.h:20
-msgid "_Delete Selected"
-msgstr "_Изтриване на избраните"
-
 #: ../glade2/filediff.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
@@ -375,52 +412,40 @@ msgstr ""
 "Кои от тях искате да се запишат?</span>"
 
 #: ../glade2/filediff.glade.h:3
-msgid "Copy All To _Left"
-msgstr "Копиране всичко на_ляво"
-
-#: ../glade2/filediff.glade.h:4
-msgid "Copy All To _Right"
-msgstr "Копиране всичко на_дясно"
-
-#: ../glade2/filediff.glade.h:5
 msgid "Copy to Clipboard"
 msgstr "Копиране в междинния буфер"
 
-#: ../glade2/filediff.glade.h:6
-msgid "Create Patch"
-msgstr "Създаване на кръпка"
-
-#: ../glade2/filediff.glade.h:8
+#: ../glade2/filediff.glade.h:5
 msgid "Find"
 msgstr "Търсене"
 
-#: ../glade2/filediff.glade.h:9
+#: ../glade2/filediff.glade.h:6
 msgid "Match _entire word only"
 msgstr "Съвпадане само по _цели думи"
 
-#: ../glade2/filediff.glade.h:10
+#: ../glade2/filediff.glade.h:7
 msgid "Regular e_xpression"
 msgstr "Ре_гулярен израз"
 
-#: ../glade2/filediff.glade.h:11
+#: ../glade2/filediff.glade.h:8
 msgid "Save modified files?"
 msgstr "Запис на променените файлове?"
 
-#: ../glade2/filediff.glade.h:12
+#: ../glade2/filediff.glade.h:9
 msgid "Search for:"
 msgstr "Търсене за:"
 
-#: ../glade2/filediff.glade.h:13
+#: ../glade2/filediff.glade.h:10
 msgid "_Match case"
 msgstr "_Регистърът на буквите е от значение"
 
-#: ../glade2/filediff.glade.h:14
+#: ../glade2/filediff.glade.h:11
 msgid "_Wrap around"
 msgstr "_С достигане до края да се почне отначало"
 
 #: ../glade2/meldapp.glade.h:1
 msgid "(gnome-default-editor)"
-msgstr "(редактор-на-GNOME-по-подразбиране)"
+msgstr "(стандартен-редактор-на-GNOME)"
 
 #: ../glade2/meldapp.glade.h:2
 msgid "<b>Drawing Style</b>"
@@ -435,82 +460,58 @@ msgid "<b>Font</b>"
 msgstr "<b>Шрифт</b>"
 
 #: ../glade2/meldapp.glade.h:5
-msgid "<b>Global options</b>"
-msgstr "<b>Глобални настройки</b>"
-
-#: ../glade2/meldapp.glade.h:6
 msgid "<b>Loading</b>"
 msgstr "<b>Зареждане</b>"
 
-#: ../glade2/meldapp.glade.h:7
+#: ../glade2/meldapp.glade.h:6
 msgid "<b>Misc</b>"
 msgstr "<b>Разни</b>"
 
-#: ../glade2/meldapp.glade.h:8
+#: ../glade2/meldapp.glade.h:7
 msgid "<b>Saving</b>"
 msgstr "<b>Запис</b>"
 
-#: ../glade2/meldapp.glade.h:9
+#: ../glade2/meldapp.glade.h:8
 msgid "<b>Toolbar Appearance</b>"
 msgstr "<b>Вид на лентата с инструменти</b>"
 
-#: ../glade2/meldapp.glade.h:10
-msgid "<b>Update Options</b>"
-msgstr "<b>Настройки за обновяване</b>"
-
-#: ../glade2/meldapp.glade.h:11
+#: ../glade2/meldapp.glade.h:9
 msgid "<b>Whitespace</b>"
-msgstr "<b>Празни символи</b>"
+msgstr "<b>Празни знаци</b>"
 
-#: ../glade2/meldapp.glade.h:12
-msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-
-#: ../glade2/meldapp.glade.h:13
+#: ../glade2/meldapp.glade.h:10
 msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Сравняване</span>"
 
-#: ../glade2/meldapp.glade.h:14
+#: ../glade2/meldapp.glade.h:11
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Визуализация</span>"
 
-#: ../glade2/meldapp.glade.h:15
+#: ../glade2/meldapp.glade.h:12
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Редактор</span>"
 
-#: ../glade2/meldapp.glade.h:16
+#: ../glade2/meldapp.glade.h:13
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Кодиране</span>"
 
-#: ../glade2/meldapp.glade.h:17
+#: ../glade2/meldapp.glade.h:14
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Филтри за файлове</span>"
 
-#: ../glade2/meldapp.glade.h:18
+#: ../glade2/meldapp.glade.h:15
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Филтри за текст</span>"
 
-#: ../glade2/meldapp.glade.h:19
+#: ../glade2/meldapp.glade.h:16
 msgid "Automatically supply missing newline at end of file"
 msgstr "Автоматично завършване на файл с празен ред."
 
-#: ../glade2/meldapp.glade.h:20
-msgid "CVS"
-msgstr "CVS"
-
-#: ../glade2/meldapp.glade.h:21
-msgid "CVS Directory"
-msgstr "Директория под CVS"
-
-#: ../glade2/meldapp.glade.h:22
-msgid "CVS binary"
-msgstr "Програма за CVS"
-
-#: ../glade2/meldapp.glade.h:23
+#: ../glade2/meldapp.glade.h:17
 msgid "Choose Files"
 msgstr "Избор на файлове"
 
-#: ../glade2/meldapp.glade.h:24
+#: ../glade2/meldapp.glade.h:18
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
@@ -518,261 +519,192 @@ msgstr ""
 "Избор на изобразяваме на централния панел. Може да предпочетете по-семпъл "
 "вариант, ако прелистването е прекалено бавно"
 
-#: ../glade2/meldapp.glade.h:25
+#: ../glade2/meldapp.glade.h:19
 msgid "Copyright (C) 2002-2006 Stephen Kennedy"
 msgstr "Авторски права (C) 2002-2006 Stephen Kennedy"
 
-#: ../glade2/meldapp.glade.h:26
-msgid "Create missing directories (-d)"
-msgstr "Създаване на липсващите директории (-d)"
-
-#: ../glade2/meldapp.glade.h:27
+#: ../glade2/meldapp.glade.h:20
 msgid "Curved: Filled Curves"
 msgstr "Криви: запълнени криви"
 
-#: ../glade2/meldapp.glade.h:28
+#: ../glade2/meldapp.glade.h:21
 msgid "Custom command"
 msgstr "Потребителска команда"
 
-#: ../glade2/meldapp.glade.h:29
+#: ../glade2/meldapp.glade.h:22
 msgid "Directory"
 msgstr "Папка"
 
-#: ../glade2/meldapp.glade.h:30
+#: ../glade2/meldapp.glade.h:23
 msgid "Display"
 msgstr "Визуализация"
 
-#: ../glade2/meldapp.glade.h:31
+#: ../glade2/meldapp.glade.h:24
 msgid "Edit files with:"
 msgstr "Редактиране на файловете с:"
 
-#: ../glade2/meldapp.glade.h:32
+#: ../glade2/meldapp.glade.h:25
 msgid "Editor"
 msgstr "Редактор"
 
-#: ../glade2/meldapp.glade.h:33
+#: ../glade2/meldapp.glade.h:26
 msgid "Encoding"
 msgstr "Кодиране"
 
-#: ../glade2/meldapp.glade.h:34
+#: ../glade2/meldapp.glade.h:27
 msgid "File Filters"
 msgstr "Филтър за файлове"
 
-#: ../glade2/meldapp.glade.h:35
+#: ../glade2/meldapp.glade.h:28
 msgid "Gnome Default"
-msgstr "Подразбиращата настройка на GNOME"
+msgstr "Стандартната настройка на GNOME"
 
-#: ../glade2/meldapp.glade.h:36
+#: ../glade2/meldapp.glade.h:29
 msgid "Gnome default editor"
-msgstr "Подразбиращият се за GNOME редактор"
+msgstr "Стандартният редактор на GNOME"
 
-#: ../glade2/meldapp.glade.h:37
+#: ../glade2/meldapp.glade.h:30
 msgid "Icons Only"
 msgstr "Само икони"
 
-#: ../glade2/meldapp.glade.h:38
-msgid "Ignore .cvsrc (-f)"
-msgstr "Игнориране на .cvsrc (-f)"
-
-#: ../glade2/meldapp.glade.h:39
+#: ../glade2/meldapp.glade.h:31
 msgid "Ignore changes in amount of white space"
-msgstr "Игнориране на промените в празните символи"
+msgstr "Игнориране на промените в празните знаци"
 
-#: ../glade2/meldapp.glade.h:40
+#: ../glade2/meldapp.glade.h:32
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr ""
-"Игнориране на регистъра - главните и малките букви се считат за еквивалентни"
+"Игнориране на регистъра — главните и малките букви се считат за еквивалентни"
 
-#: ../glade2/meldapp.glade.h:41
+#: ../glade2/meldapp.glade.h:33
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr "Игнориране на промени в броя и положението на празните редове"
 
-#: ../glade2/meldapp.glade.h:42
+#: ../glade2/meldapp.glade.h:34
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Игнориране на промени в броя и положението на празните редове"
 
-#: ../glade2/meldapp.glade.h:43
+#: ../glade2/meldapp.glade.h:35
 msgid "Ignore symbolic links"
 msgstr "Игнориране на символните връзки"
 
-#: ../glade2/meldapp.glade.h:44
+#: ../glade2/meldapp.glade.h:36
 msgid "Internal editor"
 msgstr "Вътрешен редактор"
 
-#: ../glade2/meldapp.glade.h:45
+#: ../glade2/meldapp.glade.h:37
 msgid "Line Wrapping "
 msgstr "Пренасяне на редове"
 
-#: ../glade2/meldapp.glade.h:46
-msgid "Locate CVS binary : Meld"
-msgstr "Meld: избор на програма за CVS"
-
-#: ../glade2/meldapp.glade.h:47
-msgid "Mailing _List"
-msgstr "_Пощенски списък"
-
-#: ../glade2/meldapp.glade.h:48
+#: ../glade2/meldapp.glade.h:38
 msgid "Meld"
 msgstr "Meld"
 
-#: ../glade2/meldapp.glade.h:49
+#: ../glade2/meldapp.glade.h:39
 msgid "Mine"
 msgstr "Мои"
 
-#: ../glade2/meldapp.glade.h:50
-msgid "My Directory"
-msgstr "Моята директория"
-
-#: ../glade2/meldapp.glade.h:51
-msgid "My File"
-msgstr "Моят файл"
-
-#: ../glade2/meldapp.glade.h:52
+#: ../glade2/meldapp.glade.h:40
 msgid "Original"
 msgstr "Първоначални"
 
-#: ../glade2/meldapp.glade.h:53
-msgid "Original Directory"
-msgstr "Първоначална директория"
-
-#: ../glade2/meldapp.glade.h:54
-msgid "Original File"
-msgstr "Първоначален файл"
-
-#: ../glade2/meldapp.glade.h:55
+#: ../glade2/meldapp.glade.h:41
 msgid "Other"
 msgstr "Чужди"
 
-#: ../glade2/meldapp.glade.h:56
-msgid "Other Directory"
-msgstr "Чужда директория"
-
-#: ../glade2/meldapp.glade.h:57
-msgid "Other File"
-msgstr "Чужд файл"
-
-#: ../glade2/meldapp.glade.h:58
+#: ../glade2/meldapp.glade.h:42
 msgid "Preferences : Meld"
 msgstr "Настройки: Meld"
 
-#: ../glade2/meldapp.glade.h:59
-msgid "Prune empty directories (-P)"
-msgstr "Премахване на празните директории (-P)"
-
-#: ../glade2/meldapp.glade.h:60
-msgid "Quiet mode (-q)"
-msgstr "Тих режим (-q)"
-
-#: ../glade2/meldapp.glade.h:61
-msgid "Refresh"
-msgstr "Обновяване"
-
-#: ../glade2/meldapp.glade.h:62
-msgid "Reload"
-msgstr "Презареждане"
-
-#: ../glade2/meldapp.glade.h:63
-msgid "Report _Bug"
-msgstr "_Докладване на грешка"
-
-#: ../glade2/meldapp.glade.h:64
-msgid "Save _As"
-msgstr "Запис _като"
-
-#: ../glade2/meldapp.glade.h:65
+#: ../glade2/meldapp.glade.h:43
 msgid "Save in UTF-8 encoding"
 msgstr "Запис в файловете в кодиране UTF-8"
 
-#: ../glade2/meldapp.glade.h:66
+#: ../glade2/meldapp.glade.h:44
 msgid "Save in the files original encoding"
 msgstr "Запис на файловете в първоначалното кодиране"
 
-#: ../glade2/meldapp.glade.h:67
+#: ../glade2/meldapp.glade.h:45
 msgid "Show line numbers"
 msgstr "Показване на номерата на редовете"
 
-#: ../glade2/meldapp.glade.h:68
+#: ../glade2/meldapp.glade.h:46
 msgid "Simple: Lines only"
 msgstr "Семпли: само линии"
 
-#: ../glade2/meldapp.glade.h:69
+#: ../glade2/meldapp.glade.h:47
 msgid "Solid: Filled Quadilaterals"
 msgstr "Запълнени: запълнени четириъгълници"
 
-#: ../glade2/meldapp.glade.h:70
+#: ../glade2/meldapp.glade.h:48
 msgid "Tab width"
 msgstr "Ширина на табулатора"
 
-#: ../glade2/meldapp.glade.h:71
+#: ../glade2/meldapp.glade.h:49
 msgid "Text Beside Icons"
 msgstr "Текст до иконите"
 
-#: ../glade2/meldapp.glade.h:72
+#: ../glade2/meldapp.glade.h:50
 msgid "Text Filters"
 msgstr "Филтри за текст"
 
-#: ../glade2/meldapp.glade.h:73
+#: ../glade2/meldapp.glade.h:51
 msgid "Text Only"
 msgstr "Само текст"
 
-#: ../glade2/meldapp.glade.h:74
+#: ../glade2/meldapp.glade.h:52
 msgid "Text Under Icons"
 msgstr "Текст под иконите"
 
-#: ../glade2/meldapp.glade.h:75
+#: ../glade2/meldapp.glade.h:53
 msgid "Three way directory"
-msgstr "Сравняване на 3 директории"
+msgstr "Сравняване на 3 папки"
 
-#: ../glade2/meldapp.glade.h:76
+#: ../glade2/meldapp.glade.h:54
 msgid "Three way file"
 msgstr "Сравняване на 3 файла"
 
-#: ../glade2/meldapp.glade.h:77
+#: ../glade2/meldapp.glade.h:55
 msgid "Two way directory"
-msgstr "Сравняване на 2 директории"
+msgstr "Сравняване на 2 папки"
 
-#: ../glade2/meldapp.glade.h:78
+#: ../glade2/meldapp.glade.h:56
 msgid "Two way file"
 msgstr "Сравняване на 2 файла"
 
-#: ../glade2/meldapp.glade.h:79
-msgid "Use Compression (-z)"
-msgstr "Ползване на компресия (-z)"
-
-#: ../glade2/meldapp.glade.h:80
+#: ../glade2/meldapp.glade.h:57
 msgid "Use GNOME monospace font"
 msgstr "Ползване на едноразреден шрифт"
 
-#: ../glade2/meldapp.glade.h:81
+#: ../glade2/meldapp.glade.h:58
 msgid "Use custom font"
 msgstr "Използване на потребителски шрифт"
 
-#: ../glade2/meldapp.glade.h:82
+#: ../glade2/meldapp.glade.h:59
 msgid "Use syntax highlighting"
 msgstr "Използване на осветяване на синтаксиса"
 
-#: ../glade2/meldapp.glade.h:83
+#: ../glade2/meldapp.glade.h:60
 msgid "Version control view"
 msgstr "Изглед спрямо контрола на версиите"
 
-#: ../glade2/meldapp.glade.h:84
+#: ../glade2/meldapp.glade.h:61
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
-"При зареждане на файл, пробвай кодиранията в тази последователност (напр.: "
-"utf8, iso8859)"
+"При зареждане на файл, да се пробват кодиранията в тази последователност "
+"(напр.: utf8, iso8859)"
 
-#: ../glade2/meldapp.glade.h:85
+#: ../glade2/meldapp.glade.h:62
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
 "separated by spaces."
 msgstr ""
-"При сравнявания на директории някои файлове и директории може да се "
-"пренебрегват. Всеки ред е списък от шаблони на обвивката, разделени с "
-"интервали."
+"При сравняване на папки някои файлове и директории може да се пренебрегват. "
+"Всеки ред е списък от шаблони на обвивката, разделени с интервали."
 
-#: ../glade2/meldapp.glade.h:86
+#: ../glade2/meldapp.glade.h:63
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -782,189 +714,74 @@ msgid ""
 msgstr ""
 "При сравняване на файлове някои промени може да се пренебрегват. Всеки "
 "шаблон тук е регулярен израз в езика Питон, който заменя всеки напасващ "
-"текст с празен низ преди да се извърши сравняването. Ако изразът съдържа "
+"текст с празен низ, преди да се извърши сравняването. Ако изразът съдържа "
 "групи, само групите се заменят. Обърнете се към ръководството за повече "
 "подробности."
 
-#: ../glade2/meldapp.glade.h:87
+#: ../glade2/meldapp.glade.h:64
 msgid "Whitespace is significant"
-msgstr "Празните символи имат значение"
+msgstr "Празните знаци имат значение"
 
-#: ../glade2/meldapp.glade.h:88
-msgid "_Character"
-msgstr "_Символ"
-
-#: ../glade2/meldapp.glade.h:90
-msgid "_Contents"
-msgstr "_Съдържание"
-
-#: ../glade2/meldapp.glade.h:91
+#: ../glade2/meldapp.glade.h:66
 msgid "_Directory Comparison"
-msgstr "Сравняване на _директории"
+msgstr "Сравняване на _папки"
 
-#: ../glade2/meldapp.glade.h:92
-msgid "_Down"
-msgstr "На_долу"
-
-#: ../glade2/meldapp.glade.h:93
+#: ../glade2/meldapp.glade.h:67
 msgid "_File Comparison"
 msgstr "Сравняване на _файлове"
 
-#: ../glade2/meldapp.glade.h:94
+#: ../glade2/meldapp.glade.h:68
 msgid "_Logo"
 msgstr "_Лого"
 
-#: ../glade2/meldapp.glade.h:95
-msgid "_New..."
-msgstr "_Нов..."
-
-#: ../glade2/meldapp.glade.h:96
-msgid "_None"
-msgstr "_Без"
-
-#: ../glade2/meldapp.glade.h:97
-msgid "_Save"
-msgstr "Запис"
-
-#: ../glade2/meldapp.glade.h:98
+#: ../glade2/meldapp.glade.h:69
 msgid "_Three Way Compare"
 msgstr "_Тройно сравняване"
 
-#: ../glade2/meldapp.glade.h:99
-msgid "_Up"
-msgstr "На_горе"
-
-#: ../glade2/meldapp.glade.h:100
+#: ../glade2/meldapp.glade.h:70
 msgid "_Version Control Browser"
 msgstr "Навигация при контрола на _версиите"
 
-#: ../glade2/meldapp.glade.h:101
-msgid "_Word"
-msgstr "_Дума"
-
 #: ../glade2/vcview.glade.h:1
-msgid "Add _Binary"
-msgstr "Добавяне на д_воичен"
-
-#: ../glade2/vcview.glade.h:2
-msgid "Add to VC"
-msgstr "Добавяне към КВ"
-
-#: ../glade2/vcview.glade.h:3
-msgid "Commit"
-msgstr "Подаване"
-
-#: ../glade2/vcview.glade.h:4
 msgid "Commit Files"
 msgstr "Файлове за подаване"
 
-#: ../glade2/vcview.glade.h:5
+#: ../glade2/vcview.glade.h:2
 msgid "Compare Options"
 msgstr "Настройки на сравняването"
 
-#: ../glade2/vcview.glade.h:7
+#: ../glade2/vcview.glade.h:3
 msgid "Date"
 msgstr "Дата"
 
-#: ../glade2/vcview.glade.h:8
-msgid "Delete locally"
-msgstr "Локално изтриване"
-
-#: ../glade2/vcview.glade.h:9
-msgid "Flatten directories"
-msgstr "Представяне на директориите като една"
-
-#: ../glade2/vcview.glade.h:10
-msgid "Ignored"
-msgstr "Игнорирани"
-
-#: ../glade2/vcview.glade.h:11
+#: ../glade2/vcview.glade.h:4
 msgid "Local copy against other remote revision"
 msgstr "Работно копие спрямо различна версия в хранилището"
 
-#: ../glade2/vcview.glade.h:12
+#: ../glade2/vcview.glade.h:5
 msgid "Local copy against same remote revision"
 msgstr "Работно копие спрямо същата версия в хранилището"
 
-#: ../glade2/vcview.glade.h:13
+#: ../glade2/vcview.glade.h:6
 msgid "Log Message"
 msgstr "Съобщение в дневника"
 
-#: ../glade2/vcview.glade.h:14
-msgid "Non _VC"
-msgstr "Извън _контрол"
-
-#: ../glade2/vcview.glade.h:15
+#: ../glade2/vcview.glade.h:7
 msgid "Previous Logs"
 msgstr "Предишни съобщения"
 
-#: ../glade2/vcview.glade.h:16
-msgid "Remove _Locally"
-msgstr "_Локално изтриване"
-
-#: ../glade2/vcview.glade.h:17
-msgid "Remove from VC"
-msgstr "Премахване от контрол"
-
-#: ../glade2/vcview.glade.h:19
-msgid "Show unversioned files"
-msgstr "Показване на неконтролираните файлове"
-
-#: ../glade2/vcview.glade.h:20 ../vcview.py:173
+#: ../glade2/vcview.glade.h:8 ../vcview.py:185
 msgid "Tag"
 msgstr "Етикет"
 
-#: ../glade2/vcview.glade.h:21
-msgid "Update"
-msgstr "Обновяване"
-
-#: ../glade2/vcview.glade.h:22
+#: ../glade2/vcview.glade.h:9
 msgid "VC Log"
 msgstr "Дневник на хранилището"
 
-#: ../glade2/vcview.glade.h:23
-msgid "_Add"
-msgstr "_Добавяне"
-
-#: ../glade2/vcview.glade.h:24
-msgid "_Commit"
-msgstr "_Подаване"
-
-#: ../glade2/vcview.glade.h:26
-msgid "_Edit"
-msgstr "_Редактиране"
-
-#: ../glade2/vcview.glade.h:27
-msgid "_Flatten"
-msgstr "_Без йерархия"
-
-#: ../glade2/vcview.glade.h:28
-msgid "_Modified"
-msgstr "_Променени"
-
-#: ../glade2/vcview.glade.h:29
-msgid "_Normal"
-msgstr "_Нормални"
-
-#: ../glade2/vcview.glade.h:30
-msgid "_Remove"
-msgstr "_Премахване"
-
-#: ../glade2/vcview.glade.h:31
-msgid "_Update"
-msgstr "_Обновяване"
-
-#: ../meld:60 ../meld:70 ../meld:80
+#: ../meld:47
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld изисква %s или по-висока версия."
-
-#: ../meld:81
-msgid ""
-"Due to incompatible API changes some functions may not operate as expected."
-msgstr ""
-"Поради несъвместими промени в API-тата, някои функции работят по различен от "
-"очаквания начин."
 
 #: ../meld.desktop.in.h:1
 msgid "Compare and merge your files."
@@ -974,106 +791,204 @@ msgstr "Сравняване и сливане на файлове."
 msgid "Meld Diff Viewer"
 msgstr "Програма за сравняване Meld"
 
-#: ../meldapp.py:145
+#: ../meldapp.py:150
 msgid "label"
 msgstr "етикет"
 
-#: ../meldapp.py:146
+#: ../meldapp.py:151
 msgid "pattern"
 msgstr "шаблон"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:247 ../meldapp.py:252 ../vcview.py:153
+#: ../meldapp.py:252 ../meldapp.py:257 ../vcview.py:165
 msgid "Name"
 msgstr "Име"
 
-#: ../meldapp.py:247 ../meldapp.py:252
+#: ../meldapp.py:252 ../meldapp.py:257
 msgid "Active"
 msgstr "Действащ"
 
-#: ../meldapp.py:247
+#: ../meldapp.py:252
 msgid "Pattern"
 msgstr "Шаблон"
 
-#: ../meldapp.py:252
+#: ../meldapp.py:257
 msgid "Regex"
 msgstr "Регулярен израз"
 
-#: ../meldapp.py:293
+#: ../meldapp.py:291
 msgid ""
 "Line numbers are only available if you have gnome-python-desktop installed."
 msgstr ""
 "Номерата на редовете се визуализират, само ако имате инсталиран "
 "pygtksourceview."
 
-#: ../meldapp.py:297
+#: ../meldapp.py:295
 msgid ""
 "Syntax highlighting is only available if you have gnome-python-desktop "
 "installed."
 msgstr "Синтаксисът се осветява, само ако имате инсталиран pygtksourceview."
 
+#: ../meldapp.py:383
+msgid "Close tab"
+msgstr "Затваряне на таба"
+
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:441
+#: ../meldapp.py:444
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-msgstr "Резерни копия\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
+msgstr "Резервни копия\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:443
-msgid "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n"
+#: ../meldapp.py:446
+msgid ""
+"Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 msgstr ""
-"Контрол на версиите\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory\n"
+"Контрол на версиите\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory "
+"RCS\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:445
+#: ../meldapp.py:448
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Двоични файлове\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:447
+#: ../meldapp.py:450
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Мултимедия\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:449
+#: ../meldapp.py:452
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "Ключови думи на CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:451
+#: ../meldapp.py:454
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Коментар на C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:453
+#: ../meldapp.py:456
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Коментар на C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:455
+#: ../meldapp.py:458
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Всички празни знаци\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:457
+#: ../meldapp.py:460
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Празни знаци в началото на реда\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:459
+#: ../meldapp.py:462
 msgid "Script comment\t0\t#.*"
 msgstr "Коментар в скрипт\t0\t#.*"
 
-#: ../meldapp.py:776
+#: ../meldapp.py:532
+msgid "_New..."
+msgstr "_Ново…"
+
+#: ../meldapp.py:532
+msgid "Start a new comparison"
+msgstr "Ново сравнение"
+
+#: ../meldapp.py:535
+msgid "Close the current file"
+msgstr "Затваряне на текущия файл"
+
+#: ../meldapp.py:536
+msgid "Quit the program"
+msgstr "Спиране на програмата"
+
+#: ../meldapp.py:539
+msgid "Undo the last action"
+msgstr "Отмяна на последното действие"
+
+#: ../meldapp.py:540
+msgid "Redo the last undone action"
+msgstr "Повтаряне на последното отменено действие"
+
+#: ../meldapp.py:544
+msgid "Search for text"
+msgstr "Търсене на текст"
+
+#: ../meldapp.py:545
+msgid "Find Ne_xt"
+msgstr "_Следваща поява"
+
+#: ../meldapp.py:545
+msgid "Search forwards for the same text"
+msgstr "Търсене напред за същия текст"
+
+#: ../meldapp.py:546
+msgid "Go to the next difference"
+msgstr "Към следващата разлика"
+
+#: ../meldapp.py:547
+msgid "Go to the previous difference"
+msgstr "Към предишната разлика"
+
+#: ../meldapp.py:548
+msgid "Configure the application"
+msgstr "Настройки на програмата"
+
+#: ../meldapp.py:551
+msgid "Stop the current action"
+msgstr "Спиране на текущото действие"
+
+#: ../meldapp.py:552
+msgid "Refresh the view"
+msgstr "Обновяване на изгледа"
+
+#: ../meldapp.py:553
+msgid "Reload"
+msgstr "Презареждане"
+
+#: ../meldapp.py:553
+msgid "Reload the comparison"
+msgstr "Презареждане на сравнението"
+
+#: ../meldapp.py:556
+msgid "_Contents"
+msgstr "_Съдържание"
+
+#: ../meldapp.py:556
+msgid "Open the Meld manual"
+msgstr "Отваряне на ръководството на Meld"
+
+#: ../meldapp.py:557
+msgid "Report _Bug"
+msgstr "_Докладване на грешка"
+
+#: ../meldapp.py:557
+msgid "Report a bug in Meld"
+msgstr "Докладване на грешка в Meld"
+
+#: ../meldapp.py:558
+msgid "Mailing _List"
+msgstr "_Пощенски списък"
+
+#: ../meldapp.py:558
+msgid "Go to the Meld mailing list"
+msgstr "Към пощенския списък на Meld"
+
+#: ../meldapp.py:559
+msgid "About this program"
+msgstr "Информация за тази програма"
+
+#: ../meldapp.py:821
 msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "Невъзможно е да се сравняват файлове с директории.\n"
+msgstr "Невъзможно е да се сравняват файлове с папки.\n"
 
 #. ###############################################################################
 #.
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:824
+#: ../meldapp.py:869
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -1082,68 +997,170 @@ msgstr ""
 "Meld %s\n"
 "Написан от Stephen Kennedy <stevek@gnome.org>"
 
-#: ../meldapp.py:853
+#: ../meldapp.py:898
 msgid "Set label to use instead of file name"
 msgstr "Задаване на етикет, който да се ползва вместо име на файл"
 
-#: ../meldapp.py:854 ../meldapp.py:855 ../meldapp.py:856 ../meldapp.py:857
+#: ../meldapp.py:899 ../meldapp.py:900 ../meldapp.py:901 ../meldapp.py:902
 msgid "Ignored for compatibility"
 msgstr "Игнорира се за съвместимост"
 
-#: ../meldapp.py:883
+#: ../meldapp.py:930
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Грешен брой аргументи (получени са %i)"
 
-#: ../melddoc.py:45
+#: ../melddoc.py:46
 msgid "untitled"
 msgstr "безименен"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:118
+#: ../misc.py:121
 msgid "[None]"
 msgstr "[Липсва]"
 
-#: ../vcview.py:170
+#: ../vcview.py:121
+msgid "_Edit"
+msgstr "_Редактиране"
+
+#: ../vcview.py:121
+msgid "Edit files"
+msgstr "Редактиране на файловете"
+
+#: ../vcview.py:122
+msgid "_Commit"
+msgstr "_Подаване"
+
+#: ../vcview.py:122
+msgid "Commit"
+msgstr "Подаване"
+
+#. FIXME: popup used to use gtk.STOCK_GO_BACK
+#: ../vcview.py:123
+msgid "_Update"
+msgstr "_Обновяване"
+
+#: ../vcview.py:123
+msgid "Update"
+msgstr "Обновяване"
+
+#. FIXME: popup used to use gtk.STOCK_GO_FORWARD
+#: ../vcview.py:124
+msgid "_Add"
+msgstr "_Добавяне"
+
+#: ../vcview.py:124
+msgid "Add to VC"
+msgstr "Добавяне към контрола"
+
+#. FIXME: popup used to use gtk.STOCK_ADD
+#: ../vcview.py:125
+msgid "Add _Binary"
+msgstr "Добавяне на д_воичен"
+
+#: ../vcview.py:125
+msgid "Add binary to VC"
+msgstr "Двоично добавяне към контрола"
+
+#. FIXME: stock is inconsistent with other VC actions
+#: ../vcview.py:126
+msgid "_Remove"
+msgstr "_Премахване"
+
+#: ../vcview.py:126
+msgid "Remove from VC"
+msgstr "Премахване от контрол"
+
+#. FIXME: popup used to use gtk.STOCK_REMOVE
+#: ../vcview.py:127
+msgid "Revert to original"
+msgstr "Връщане към оригинала"
+
+#: ../vcview.py:128
+msgid "Delete locally"
+msgstr "Локално изтриване"
+
+#: ../vcview.py:132
+msgid "_Flatten"
+msgstr "_Без йерархия"
+
+#: ../vcview.py:132
+msgid "Flatten directories"
+msgstr "Представяне на папките като една"
+
+#: ../vcview.py:133
+msgid "_Modified"
+msgstr "_Променени"
+
+#: ../vcview.py:134
+msgid "_Normal"
+msgstr "_Нормални"
+
+#: ../vcview.py:134
+msgid "Show normal"
+msgstr "Показване на нормалните"
+
+#: ../vcview.py:135
+msgid "Non _VC"
+msgstr "Извън _контрол"
+
+#: ../vcview.py:135
+msgid "Show unversioned files"
+msgstr "Показване на неконтролираните файлове"
+
+#: ../vcview.py:136
+msgid "Ignored"
+msgstr "Игнорирани"
+
+#: ../vcview.py:136
+msgid "Show ignored files"
+msgstr "Показване на игнорираните файлове"
+
+#: ../vcview.py:182
 msgid "Location"
 msgstr "Местоположение"
 
-#: ../vcview.py:171
+#: ../vcview.py:183
 msgid "Status"
 msgstr "Състояние"
 
-#: ../vcview.py:172
+#: ../vcview.py:184
 msgid "Rev"
 msgstr "Ревизия"
 
-#: ../vcview.py:174
+#: ../vcview.py:186
 msgid "Options"
 msgstr "Настройки"
 
-#: ../vcview.py:257
+#: ../vcview.py:269
 msgid "(Empty)"
 msgstr "(Празен)"
 
-#: ../vcview.py:294
+#: ../vcview.py:306
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Извличане на разликите"
 
-#: ../vcview.py:301
+#: ../vcview.py:313
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Прилагане на кръпка"
 
-#: ../vcview.py:305
+#: ../vcview.py:317
 msgid "No differences found."
 msgstr "Няма намерени разлики"
 
-#: ../vcview.py:382
+#: ../vcview.py:394
 msgid "Select some files first."
 msgstr "Първо изберете файлове."
 
+#: ../vcview.py:461
+msgid "Invoking patch failed, you need GNU patch."
+msgstr ""
+"Неуспешно стартиране на patch. Необходима ви е версията на проекта GNU."
+
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:37
+#: ../vc/_vc.py:40
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
@@ -1151,7 +1168,7 @@ msgstr ""
 "Игнориран:Неконтролиран:::Грешка::Новодобавен:Променен:<b>В конфликт</b>:"
 "Изтрит:Липсващ"
 
-#: ../vc/cvs.py:160
+#: ../vc/cvs.py:155
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
