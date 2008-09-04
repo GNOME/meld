@@ -567,7 +567,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.bufferdata[i] = bnew
         self.recompute_label()
         self.scheduler.add_task( self._set_files_internal(files).next )
-        self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN), True )
 
     def _set_files_internal(self, files):
         yield _("[%s] Set num panes") % self.label_text
@@ -660,6 +659,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
+        self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN), True )
         self.queue_draw()
         lenseq = [len(d) for d in self.linediffer.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
