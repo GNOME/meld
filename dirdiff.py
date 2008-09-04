@@ -199,7 +199,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("DirDelete",    gtk.STOCK_DELETE,        None,         None, _("Delete selected"), self.on_button_delete_clicked),
             ("Hide",         gtk.STOCK_NO,           _("Hide..."),  None, _("Hide selected"), self.on_filter_hide_current_clicked),
 
-            ("DirEditFile",  gtk.STOCK_FIND_AND_REPLACE, _("Edit"), None, _("Edit selected"), self.on_button_edit_clicked),
+            ("DirOpen",      gtk.STOCK_OPEN,          None,         None, _("Open selected"), self.on_button_open_clicked),
         )
 
         toggleactions = (
@@ -693,12 +693,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.copy_selected(1)
     def on_button_delete_clicked(self, button):
         self.delete_selected()
-    def on_button_edit_clicked(self, button):
+    def on_button_open_clicked(self, button):
         pane = self._get_focused_pane()
         if pane != None:
             m = self.model
             files = [ m.value_path( m.get_iter(p), pane ) for p in self._get_selected_paths(pane) ]
-            self._edit_files( [f for f in files if os.path.isfile(f)] )
+            self._open_files(files)
 
     def on_button_ignore_case_toggled(self, button):
         self.refresh()

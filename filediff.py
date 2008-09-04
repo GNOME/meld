@@ -137,7 +137,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("FilePopupCut",      gtk.STOCK_CUT,        None,            None, _("Cut the selection"), self.on_cut_activate),
             ("FilePopupCopy",     gtk.STOCK_COPY,       None,            None, _("Copy the selection"), self.on_copy_activate),
             ("FilePopupPaste",    gtk.STOCK_PASTE,      None,            None, _("Paste the clipboard"), self.on_paste_activate),
-            ("FilePopupEditFile", gtk.STOCK_EDIT,       None,            None, _("Edit the selected file"), self.on_edit_activate),
+            ("FileOpen",          gtk.STOCK_OPEN,       None,            None, _("Open selected"), self.on_open_activate),
             ("CreatePatch",       None,                 _("Create Patch"),  None, _("Create a patch"), self.make_patch),
             ("CopyAllLeft",       gtk.STOCK_GOTO_FIRST, _("Copy To Left"),  None, _("Copy all changes from right pane to left pane"), lambda x: self.copy_selected(-1)),
             ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
@@ -410,11 +410,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return t
         return None
 
-    def on_edit_activate(self, *args):
+    def on_open_activate(self, *args):
         pane = self._get_focused_pane()
         if pane >= 0:
             if self.bufferdata[pane].filename:
-                self._edit_files( [self.bufferdata[pane].filename] )
+                self._open_files([self.bufferdata[pane].filename])
 
     def on_find_activate(self, *args):
         self.keymask = 0

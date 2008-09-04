@@ -55,7 +55,9 @@ class MeldDoc(gobject.GObject):
         if len(self.scheduler.tasks):
             del self.scheduler.tasks[0]
 
-    def _edit_files(self, files):
+    def _open_files(self, selected):
+        files = [f for f in selected if os.path.isfile(f)]
+        dirs =  [d for d in selected if os.path.isdir(d)]
         if len(files):
             if self.prefs.edit_command_type == "internal":
                 for f in files:
@@ -66,6 +68,9 @@ class MeldDoc(gobject.GObject):
             elif self.prefs.edit_command_type == "custom":
                 cmd = self.prefs.get_custom_editor_command(files)
                 os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
+        for d in dirs:
+            cmd = ["xdg-open", d]
+            os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
 
     def on_undo_activate(self):
         if self.undosequence.can_undo():
