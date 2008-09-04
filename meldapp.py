@@ -793,7 +793,7 @@ class MeldApp(gnomeglade.Component):
         self.scheduler.add_scheduler(page.scheduler)
         page.connect("label-changed", self.on_notebook_label_changed)
         page.connect("file-changed", self.on_file_changed)
-        page.connect("create-diff", lambda obj,arg: self.append_filediff(arg) )
+        page.connect("create-diff", lambda obj,arg: self.append_diff(arg) )
         page.connect("status-changed", lambda junk,arg: self.statusbar.set_doc_status(arg) )
 
     def append_dirdiff(self, dirs):
