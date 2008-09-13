@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2008-08-29 02:35+0200\n"
-"PO-Revision-Date: 2008-08-29 02:39+0100\n"
+"POT-Creation-Date: 2008-09-13 20:06+0200\n"
+"PO-Revision-Date: 2008-09-13 20:07+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -60,12 +60,10 @@ msgid "Hide selected"
 msgstr "Dölj markerade"
 
 #: ../dirdiff.py:202
-msgid "Edit"
-msgstr "Redigera"
-
-#: ../dirdiff.py:202
-msgid "Edit selected"
-msgstr "Redigera markerade"
+#: ../filediff.py:140
+#: ../vcview.py:121
+msgid "Open selected"
+msgstr "Öppna markerade"
 
 #: ../dirdiff.py:206
 msgid "Case"
@@ -253,10 +251,6 @@ msgstr "Kopiera markering"
 msgid "Paste the clipboard"
 msgstr "Klistra in urklipp"
 
-#: ../filediff.py:140
-msgid "Edit the selected file"
-msgstr "Redigera markerad fil"
-
 #: ../filediff.py:141
 #: ../glade2/filediff.glade.h:4
 msgid "Create Patch"
@@ -309,35 +303,35 @@ msgstr "Det reguljära uttrycket \"%s\" hittades inte."
 msgid "The text '%s' was not found."
 msgstr "Texten \"%s\" hittades inte."
 
-#: ../filediff.py:573
+#: ../filediff.py:572
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Ställ in numrerade paneler"
 
-#: ../filediff.py:580
+#: ../filediff.py:579
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Öppnar filer"
 
-#: ../filediff.py:597
-#: ../filediff.py:611
-#: ../filediff.py:627
-#: ../filediff.py:634
+#: ../filediff.py:596
+#: ../filediff.py:610
+#: ../filediff.py:626
+#: ../filediff.py:633
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Kunde inte läsa från \"%s\""
 
-#: ../filediff.py:598
-#: ../filediff.py:635
+#: ../filediff.py:597
+#: ../filediff.py:634
 msgid "The error was:"
 msgstr "Felet var:"
 
-#: ../filediff.py:603
+#: ../filediff.py:602
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Läser filer"
 
-#: ../filediff.py:612
+#: ../filediff.py:611
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -345,12 +339,12 @@ msgstr ""
 "Den innehåller ascii-nulltecken.\n"
 "Den kanske är en binär fil."
 
-#: ../filediff.py:628
+#: ../filediff.py:627
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Jag provade med kodningar %s."
 
-#: ../filediff.py:657
+#: ../filediff.py:656
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Beräknar skillnader"
@@ -455,6 +449,10 @@ msgid "_Match case"
 msgstr "_Gör skillnad på gemener/VERSALER"
 
 #: ../glade2/filediff.glade.h:11
+msgid "_Save Selected"
+msgstr "_Spara markerade"
+
+#: ../glade2/filediff.glade.h:12
 msgid "_Wrap around"
 msgstr "_Börja om från början"
 
@@ -1014,14 +1012,6 @@ msgstr "namnlös"
 msgid "[None]"
 msgstr "[Ingen]"
 
-#: ../vcview.py:121
-msgid "_Edit"
-msgstr "_Redigera"
-
-#: ../vcview.py:121
-msgid "Edit files"
-msgstr "Redigera filer"
-
 #: ../vcview.py:122
 msgid "_Commit"
 msgstr "_Verkställ"
@@ -1169,10 +1159,18 @@ msgstr ""
 "Mönstret var \"%s\"\n"
 "Felet var \"%s\""
 
+#~ msgid "Edit"
+#~ msgstr "Redigera"
+#~ msgid "Edit selected"
+#~ msgstr "Redigera markerade"
+#~ msgid "Edit the selected file"
+#~ msgstr "Redigera markerad fil"
+#~ msgid "_Edit"
+#~ msgstr "_Redigera"
+#~ msgid "Edit files"
+#~ msgstr "Redigera filer"
 #~ msgid "Compare"
 #~ msgstr "Jämför"
-#~ msgid "_Delete Selected"
-#~ msgstr "_Ta bort markerade"
 #~ msgid "Copy All To _Left"
 #~ msgstr "Kopiera allt till _vänster"
 #~ msgid "Copy All To _Right"
