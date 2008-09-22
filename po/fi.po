@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2008-08-27 14:42+0300\n"
-"PO-Revision-Date: 2008-08-27 14:30+0300\n"
+"POT-Creation-Date: 2008-09-22 10:33+0300\n"
+"PO-Revision-Date: 2008-09-22 10:30+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -54,14 +54,9 @@ msgstr "Piilota..."
 msgid "Hide selected"
 msgstr "Piilota valittu"
 
-#: ../dirdiff.py:202
-msgid "Edit"
-msgstr "Muokkaa"
-
-#: ../dirdiff.py:202
-#, fuzzddy
-msgid "Edit selected"
-msgstr "Muokkaa valittua"
+#: ../dirdiff.py:202 ../filediff.py:140 ../vcview.py:121
+msgid "Open selected"
+msgstr "Avaa valittu"
 
 #: ../dirdiff.py:206
 msgid "Case"
@@ -240,10 +235,6 @@ msgstr "Kopioi valinta"
 msgid "Paste the clipboard"
 msgstr "Liitä leikepöydältä"
 
-#: ../filediff.py:140
-msgid "Edit the selected file"
-msgstr "Muokkaa valittua tiedostoa"
-
 #: ../filediff.py:141 ../glade2/filediff.glade.h:4
 msgid "Create Patch"
 msgstr "Luo paikkatiedosto"
@@ -299,31 +290,31 @@ msgstr "Säännöllistä lauseketta \"%s\" ei löytynyt."
 msgid "The text '%s' was not found."
 msgstr "Tekstiä \"%s\" ei löytynyt."
 
-#: ../filediff.py:573
+#: ../filediff.py:572
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s} aseta paneelien lukumäärä"
 
-#: ../filediff.py:580
+#: ../filediff.py:579
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] avataan tiedostoja"
 
-#: ../filediff.py:597 ../filediff.py:611 ../filediff.py:627 ../filediff.py:634
+#: ../filediff.py:596 ../filediff.py:610 ../filediff.py:626 ../filediff.py:633
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Tiedostosta \"%s\" ei voitu lukea"
 
-#: ../filediff.py:598 ../filediff.py:635
+#: ../filediff.py:597 ../filediff.py:634
 msgid "The error was:"
 msgstr "Virhe oli:"
 
-#: ../filediff.py:603
+#: ../filediff.py:602
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] luetaan tiedostoja"
 
-#: ../filediff.py:612
+#: ../filediff.py:611
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -331,12 +322,12 @@ msgstr ""
 "Sisältää ASCII-NULL -merkkejä.\n"
 "Tiedosto saattaa olla binääritiedosto."
 
-#: ../filediff.py:628
+#: ../filediff.py:627
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Yritettiin merkistöjä %s."
 
-#: ../filediff.py:657
+#: ../filediff.py:656
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] lasketaan eroja"
@@ -441,6 +432,10 @@ msgid "_Match case"
 msgstr "Huomioi _kirjainkoko"
 
 #: ../glade2/filediff.glade.h:11
+msgid "_Save Selected"
+msgstr "_Tallenna valittu"
+
+#: ../glade2/filediff.glade.h:12
 msgid "_Wrap around"
 msgstr "_Rivitä"
 
@@ -1020,14 +1015,6 @@ msgstr "nimeämätön"
 msgid "[None]"
 msgstr "[Ei mitään]"
 
-#: ../vcview.py:121
-msgid "_Edit"
-msgstr "_Muokkaa"
-
-#: ../vcview.py:121
-msgid "Edit files"
-msgstr "Muokkaa tiedostoja"
-
 #: ../vcview.py:122
 msgid "_Commit"
 msgstr "_Toteuta"
@@ -1179,11 +1166,23 @@ msgstr ""
 "Malli oli \"%s\"\n"
 "Virhe oli \"%s\""
 
+#~ msgid "Edit"
+#~ msgstr "Muokkaa"
+
+#~ msgid "Edit selected"
+#~ msgstr "Muokkaa valittua"
+
+#~ msgid "Edit the selected file"
+#~ msgstr "Muokkaa valittua tiedostoa"
+
+#~ msgid "_Edit"
+#~ msgstr "_Muokkaa"
+
+#~ msgid "Edit files"
+#~ msgstr "Muokkaa tiedostoja"
+
 #~ msgid "Compare"
 #~ msgstr "Vertaa"
-
-#~ msgid "_Delete Selected"
-#~ msgstr "_Poista valittu"
 
 #~ msgid "Copy All To _Left"
 #~ msgstr "Kopioi kaikki _vasemmalle"
