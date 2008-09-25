@@ -659,7 +659,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
-        self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN), True )
+        self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN, jump_to_first=True), True )
         self.queue_draw()
         lenseq = [len(d) for d in self.linediffer.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
@@ -1086,9 +1086,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
 
-    def next_diff(self, direction):
+    def next_diff(self, direction, jump_to_first=False):
         adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
         curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
+        if jump_to_first:
+            # curline already has some positive value due to scrollbar size
+            curline = -1
         c = None
         if direction == gdk.SCROLL_DOWN:
             for c in self.linediffer.single_changes(1, self._get_texts()):
