@@ -796,11 +796,14 @@ class MeldApp(gnomeglade.Component):
         page.connect("create-diff", lambda obj,arg: self.append_diff(arg) )
         page.connect("status-changed", lambda junk,arg: self.statusbar.set_doc_status(arg) )
 
-    def append_dirdiff(self, dirs):
+    def append_dirdiff(self, dirs, auto_compare=False):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
         self._append_page(doc, "tree-folder-normal.png")
         doc.set_locations(dirs)
+        # FIXME: This doesn't work, as dirdiff behaves differently to vcview
+        if auto_compare:
+            doc.on_button_diff_clicked(None)
         return doc
 
     def append_filediff(self, files):
@@ -814,7 +817,7 @@ class MeldApp(gnomeglade.Component):
         doc.set_files(files)
         return doc
 
-    def append_diff(self, paths):
+    def append_diff(self, paths, auto_compare=False):
         aredirs = [ os.path.isdir(p) for p in paths ]
         arefiles = [ os.path.isfile(p) for p in paths ]
         if (1 in aredirs) and (1 in arefiles):
@@ -822,16 +825,18 @@ class MeldApp(gnomeglade.Component):
                     parent = self,
                     buttonstype = gtk.BUTTONS_OK)
         elif 1 in aredirs:
-            return self.append_dirdiff(paths)
+            return self.append_dirdiff(paths, auto_compare)
         else:
             return self.append_filediff(paths)
 
-    def append_vcview(self, locations):
+    def append_vcview(self, locations, auto_compare=False):
         assert len(locations) in (1,)
         location = locations[0]
         doc = vcview.VcView(self.prefs)
         self._append_page(doc, "vc-icon.png")
         doc.set_location(location)
+        if auto_compare:
+            doc.on_button_diff_clicked(None)
         return doc
 
     #
@@ -896,6 +901,7 @@ def main():
     description="""Meld is a file and directory comparison tool.""",
     version="%prog "+version)
     parser.add_option("-L", "--label", action="append", default=[], help=_("Set label to use instead of file name"))
+    parser.add_option("-a", "--auto-compare", action="store_true", default=False, help=_("Automatically compare all differing files on startup"))
     parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
     parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
     parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
@@ -922,10 +928,10 @@ def main():
             doc.connect("create-diff", lambda obj,arg: app.append_diff(arg) )
             doc.run_diff([a])
         else:
-            tab = app.append_vcview( [a] )
+            tab = app.append_vcview([a], options.auto_compare)
                 
     elif len(args) in (2,3):
-        tab = app.append_diff(args)
+        tab = app.append_diff(args, options.auto_compare)
     else:
         app.usage( _("Wrong number of arguments (Got %i)") % len(args))
 
