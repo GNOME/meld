@@ -236,10 +236,16 @@ class PreferencesDialog(gnomeglade.Component):
             self.radiobutton_gnome_font.set_active(1)
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
+        if sourceview_available:
+            self.checkbutton_spaces_instead_of_tabs.set_active( self.prefs.spaces_instead_of_tabs )
+            self.checkbutton_show_line_numbers.set_active( self.prefs.show_line_numbers )
+            self.checkbutton_use_syntax_highlighting.set_active( self.prefs.use_syntax_highlighting )
+        else:
+            self.checkbutton_spaces_instead_of_tabs.set_sensitive(False)
+            self.checkbutton_show_line_numbers.set_sensitive(False)
+            self.checkbutton_use_syntax_highlighting.set_sensitive(False)
         self.option_wrap_lines.set_history( self.prefs.edit_wrap_lines )
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
-        self.checkbutton_show_line_numbers.set_active( self.prefs.show_line_numbers )
-        self.checkbutton_use_syntax_highlighting.set_active( self.prefs.use_syntax_highlighting )
         self.editor_command[ self.editor_radio_values.get(self.prefs.edit_command_type, "internal") ].set_active(1)
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
@@ -281,6 +287,10 @@ class PreferencesDialog(gnomeglade.Component):
             self.prefs.use_custom_font = custom
     def on_spinbutton_tabsize_changed(self, spin):
         self.prefs.tab_size = int(spin.get_value())
+    def on_checkbutton_spaces_instead_of_tabs_toggled(self, check):
+        self.prefs.spaces_instead_of_tabs = check.get_active()
+        if check.get_active() and not sourceview_available:
+            misc.run_dialog(_("Spaces instead of_tab is only available if you have gnome-python-desktop installed.") )
     def on_option_wrap_lines_changed(self, option):
         self.prefs.edit_wrap_lines = option.get_history()
     def on_checkbutton_supply_newline_toggled(self, check):
@@ -417,6 +427,7 @@ class MeldPreferences(prefs.Preferences):
         "use_custom_font": prefs.Value(prefs.BOOL,0),
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "tab_size": prefs.Value(prefs.INT, 4),
+        "spaces_instead_of_tabs": prefs.Value(prefs.BOOL, False),
         "show_line_numbers": prefs.Value(prefs.BOOL, 0),
         "use_syntax_highlighting": prefs.Value(prefs.BOOL, 0),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),

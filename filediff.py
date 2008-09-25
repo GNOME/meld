@@ -96,6 +96,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for v in self.textview:
                 v.set_buffer( gsv.SourceBuffer() )
                 v.set_show_line_numbers(self.prefs.show_line_numbers)
+                v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
+                v.set_tabs_width(self.prefs.tab_size)
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -297,6 +299,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 tabs.set_tab(i, pango.TAB_LEFT, i*value*self.pango_char_width)
             for i in range(3):
                 self.textview[i].set_tabs(tabs)
+            if sourceview_available:
+                for t in self.textview:
+                    t.set_tabs_width(value)
         elif key == "use_custom_font" or key == "custom_font":
             self.load_font()
         elif key == "show_line_numbers":
@@ -314,6 +319,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._update_regexes()
         elif key == "edit_wrap_lines":
             [t.set_wrap_mode( self.prefs.edit_wrap_lines ) for t in self.textview]
+        elif key == "spaces_instead_of_tabs":
+            if sourceview_available:
+                for t in self.textview:
+                    t.set_insert_spaces_instead_of_tabs(value)
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
