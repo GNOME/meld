@@ -576,6 +576,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     bnew.label = bold.label
                 self.bufferdata[i] = bnew
         self.recompute_label()
+        self.textview0.grab_focus()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
     def _set_files_internal(self, files):
