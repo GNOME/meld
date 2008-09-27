@@ -143,23 +143,5 @@ class Vc(_vc.Vc):
                     retfiles.append( _vc.File(path, name, state) )
         return retdirs, retfiles
 
-    def listdir(self, start):
-        # just like _vc.Vc.listdir, but ignores just .git
-        if start=="": start="."
-        if start[-1] != "/": start+="/"
-        cfiles = []
-        cdirs = []
-        try:
-            entries = os.listdir(start)
-            entries.sort()
-        except OSError:
-            entries = []
-        for f in [f for f in entries if f!=".git"]:
-            fname = start + f
-            lname = fname
-            if os.path.isdir(fname):
-                cdirs.append( (f, lname) )
-            else:
-                cfiles.append( (f, lname) )
-        dirs, files = self.lookup_files(cdirs, cfiles)
-        return dirs+files
+    def listdir_filter(self, entries):
+        return [f for f in entries if f!=".git"]

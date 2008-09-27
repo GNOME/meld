@@ -98,6 +98,9 @@ class Vc(object):
     def uncache_inventory(self):
         pass
 
+    def listdir_filter(self, entries):
+        return [f for f in entries if f[0]!="." and f!="CVS"]
+
     def listdir(self, start):
         if start=="": start="."
         if start[-1] != "/": start+="/"
@@ -108,7 +111,7 @@ class Vc(object):
             entries.sort()
         except OSError:
             entries = []
-        for f in [f for f in entries if f[0]!="." and f!="CVS" and f!=".svn"]:
+        for f in self.listdir_filter(entries):
             fname = start + f
             lname = fname
             if os.path.isdir(fname):
