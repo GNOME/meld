@@ -49,6 +49,11 @@ class Vc(_vc.Vc):
         mtn = find_folder(location,"_MTN")
         if mtn:
             self.root = mtn
+
+	    self.interface_version = float(os.popen("mtn" + " automate interface_version").read())
+	    if self.interface_version > 6.0:
+		print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
+
             return
 
         # for monotone <= 0.25 (different metadata directory, different executable)
@@ -91,6 +96,72 @@ class Vc(_vc.Vc):
             except OSError, e:
                 if e.errno != errno.EAGAIN:
                     raise
+
+	if self.interface_version >= 6.0:
+	    # this version of monotone uses the new inventory format
+
+	    statemap = {
+		'added known rename_source' : _vc.STATE_NEW,
+		'added known' : _vc.STATE_NEW,
+		'added missing' : _vc.STATE_EMPTY,
+		'dropped' : _vc.STATE_REMOVED,
+		'dropped unknown' : _vc.STATE_REMOVED,
+		'known' : _vc.STATE_NORMAL,
+		'known rename_target' : _vc.STATE_MODIFIED,
+		'missing' : _vc.STATE_MISSING,
+		'missing rename_target' : _vc.STATE_MISSING,
+		'ignored' : _vc.STATE_IGNORED,
+		'unknown' : _vc.STATE_NONE,
+		'rename_source' : _vc.STATE_NONE, # the rename target is what we now care about
+		'rename_source unknown' : _vc.STATE_NONE,
+		'known rename_target' : _vc.STATE_MODIFIED,
+		'known rename_source rename_target' : _vc.STATE_MODIFIED,
+	    }
+
+	    # terminate the final stanza. basic io stanzas are blank line seperated with no
+	    # blank line at the beginning or end (and we need to loop below to act upon the
+            # final stanza
+	    entries.append('')
+
+	    tree_state = {}
+	    stanza = {}
+	    for entry in entries:
+		if entry != '':
+		    # this is part of a stanza and is structured '   word "value1" "value2"',
+                    # we convert this into a dictionary of lists: stanza['word'] = [ 'value1', 'value2' ]
+		    entry = entry.strip().split()
+		    tag = entry[0]
+		    values = [i.strip('"') for i in entry[1:]]
+		    stanza[tag] = values
+                else:
+		    # extract the filename (and append / if is is a directory)
+		    fname = stanza['path'][0]
+		    if stanza['fs_type'][0] == 'directory':
+			fname = fname + '/'
+
+		    # sort the list and reduce it from a list to a space seperated string.
+		    mstate = stanza['status']
+		    mstate.sort()
+		    mstate = reduce(lambda s1, s2: s1 + ' ' + s2, mstate)
+
+		    if mstate in statemap:
+		        if 'changes' in stanza:
+			    state = _vc.STATE_MODIFIED
+			else:
+			    state = statemap[mstate]
+			    if state == _vc.STATE_ERROR:
+			        print "WARNING: invalid state ('%s') reported by 'automate inventory' for %s" % (mstate, fname)
+		    else:
+			state = _vc.STATE_ERROR
+			print "WARNING: impossible state ('%s') reported by 'automate inventory' for %s (version skew?)" % (mstate, fname)
+
+                    # insert the file into the summarized inventory
+		    tree_state[os.path.join(self.root, fname)] = state
+
+		    # clear the stanza ready for next iteration
+		    stanza = {}
+
+	    return tree_state
 
         statemap = {
             '   ' : _vc.STATE_NORMAL,   # unchanged
@@ -203,7 +274,7 @@ class Vc(_vc.Vc):
         for f,path in files:
             if f not in vcfiles:
                 # if the ignore MT filter is not enabled these will crop up
-                ignorelist = [ 'format', 'log', 'options', 'revision', 'work' ]
+                ignorelist = [ 'format', 'log', 'options', 'revision', 'work', 'debug', 'inodeprints' ]
 
                 if f not in ignorelist:
                     print "WARNING: '%s' was not listed by 'automate inventory'" % f
