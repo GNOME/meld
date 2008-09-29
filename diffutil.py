@@ -80,14 +80,11 @@ class Differ(object):
 
     def _locate_chunk(self, whichdiffs, sequence, line):
         """Find the index of the chunk which contains line."""
-        idx = 1 + 2 * (sequence != 1)
-        i = 0
-        for c in self.diffs[whichdiffs]:
-            if line < c[idx + 1]: # Is line in chunk ?
-                break
-            else:
-                i += 1
-        return i
+        high_index = 2 + 2 * int(sequence != 1)
+        for i, c in enumerate(self.diffs[whichdiffs]):
+            if line < c[high_index]:
+                return i
+        return len(self.diffs[whichdiffs])
 
     def _change_sequence(self, which, sequence, startidx, sizechange, texts):
         diffs = self.diffs[which]
