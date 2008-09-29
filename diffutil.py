@@ -69,16 +69,14 @@ class Differ(object):
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0,1,2)
-        changes = [[0,0],[0,0]]
         if sequence != 1: #0 or 2
             which = sequence / 2
-            changes[which] = self._change_sequence(which, sequence, startidx, sizechange, texts)
+            self._change_sequence(which, sequence, startidx, sizechange, texts)
         else: # sequence==1:
-            changes[0] = self._change_sequence(         0, sequence, startidx, sizechange, texts)
+            self._change_sequence(0, sequence, startidx, sizechange, texts)
             if self.num_sequences == 3:
-                changes[1] = self._change_sequence(     1, sequence, startidx, sizechange, texts)
+                self._change_sequence(1, sequence, startidx, sizechange, texts)
         self.seqlength[sequence] += sizechange
-        return changes
 
     def _locate_chunk(self, whichdiffs, sequence, line):
         """Find the index of the chunk which contains line."""
@@ -127,17 +125,12 @@ class Differ(object):
                                            c[3] + lines_added[x], c[4] + lines_added[x])
                                                 for c in self.diffs[which][hiidx:] ]
         self.diffs[which][loidx:hiidx] = newdiffs
-        return loidx,hiidx
 
     def reverse(self, c):
         return self.reversemap[c[0]], c[3],c[4], c[1],c[2]
 
     def all_changes(self, texts):
         for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts):
-            yield c
-
-    def all_changes_in_range(self, texts, l0, h0, l1, h1):
-        for c in self._merge_diffs(self.diffs[0][l0:h0], self.diffs[1][l0:h0], texts):
             yield c
 
     def pair_changes(self, fromindex, toindex, texts):

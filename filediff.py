@@ -195,8 +195,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
             pane = self.textbuffer.index(buffer)
-            change_range = self.linediffer.change_sequence( pane, startline, sizechange, self._get_texts())
-            for it in self._update_highlighting( change_range[0], change_range[1] ):
+            self.linediffer.change_sequence(pane, startline, sizechange, self._get_texts())
+            for it in self._update_highlighting():
                 pass
             self.queue_draw()
         self._update_cursor_status(buffer)
@@ -595,8 +595,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield 1
         self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN, jump_to_first=True), True )
         self.queue_draw()
-        lenseq = [len(d) for d in self.linediffer.diffs]
-        self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
+        self.scheduler.add_task(self._update_highlighting().next)
         self._connect_buffer_handlers()
         if srcviewer:
             for i in range(len(files)):
@@ -604,7 +603,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
         yield 0
 
-    def _update_highlighting(self, range0, range1):
+    def _update_highlighting(self):
         for b in self.textbuffer:
             taglist = ["delete line", "conflict line", "replace line", "inline line"]
             table = b.get_tag_table()
