@@ -233,14 +233,13 @@ class Differ(object):
                 l0, h0, l1, h1, l2, h2 = block
                 if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
                     if l1 != h1:
-                        out0 = ('replace', block[2], block[3], block[0], block[1])
-                        out1 = ('replace', block[2], block[3], block[4], block[5])
+                        tag = "replace"
                     else:
-                        out0 = ('insert', block[2], block[3], block[0], block[1])
-                        out1 = ('insert', block[2], block[3], block[4], block[5])
+                        tag = "insert"
                 else:
-                    out0 = ('conflict', block[2], block[3], block[0], block[1])
-                    out1 = ('conflict', block[2], block[3], block[4], block[5])
+                    tag = "conflict"
+                out0 = (tag, l1, h1, l0, h0)
+                out1 = (tag, l1, h1, l2, h2)
                 yield out0, out1
 
     def set_sequences_iter(self, *sequences):
