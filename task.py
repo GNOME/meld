@@ -17,7 +17,6 @@
 """Classes to implement scheduling for cooperative threads.
 """
 
-from __future__ import generators
 import traceback
 
 class SchedulerBase(object):

@@ -14,8 +14,6 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from __future__ import generators
-
 import paths
 import gnomeglade
 import gobject
@@ -149,20 +147,17 @@ class EmblemCellRenderer(gtk.GenericCellRenderer):
 
     def on_render(self, window, widget, background_area, cell_area, expose_area, flags):
         r = self.renderer
-        r.set_property("pixbuf", self.pixbuf)
+        r.props.pixbuf = self.pixbuf
         r.render(window, widget, background_area, cell_area, expose_area, flags)
-        r.set_property("pixbuf", self.emblem)
+        r.props.pixbuf = self.emblem
         r.render(window, widget, background_area, cell_area, expose_area, flags)
 
     def on_get_size(self, widget, cell_area):
         if not hasattr(self, "size"):
             r = self.renderer
-            r.set_property("pixbuf", self.pixbuf)
+            r.props.pixbuf = self.pixbuf
             self.size = r.get_size(widget, cell_area)
         return self.size
-
-if gobject.pygtk_version < (2,8,0):
-    gobject.type_register(EmblemCellRenderer)
 
 ################################################################################
 #
@@ -1038,5 +1033,3 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_reload_activate(self, *extra):
         self.on_fileentry_activate(None)
 
-if gobject.pygtk_version < (2,8,0):
-    gobject.type_register(DirDiff)

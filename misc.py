@@ -18,7 +18,6 @@
 
 """
 
-from __future__ import generators
 import copy
 import os
 from gettext import gettext as _

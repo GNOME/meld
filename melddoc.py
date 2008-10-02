@@ -139,5 +139,3 @@ class MeldDoc(gobject.GObject):
         """
         pass
 
-if gobject.pygtk_version < (2,8,0):
-    gobject.type_register(MeldDoc)

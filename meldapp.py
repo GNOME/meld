@@ -115,7 +115,7 @@ class ListWidget(gnomeglade.Component):
         def addTextCol(label, colnum, expand=0):
             model = view.get_model()
             rentext = gtk.CellRendererText()
-            rentext.set_property("editable", 1)
+            rentext.props.editable = 1
             def change_text(ren, row, text):
                 it = model.get_iter( (int(row),))
                 model.set_value( it, colnum, text)
@@ -335,8 +335,8 @@ class PreferencesDialog(gnomeglade.Component):
             self.prefs.save_encoding = self.save_encoding.index(radio)
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
-            self.prefs.text_codecs = self.entry_text_codecs.get_property("text")
-            self.prefs.edit_command_custom = self.custom_edit_command_entry.get_property("text")
+            self.prefs.text_codecs = self.entry_text_codecs.props.text
+            self.prefs.edit_command_custom = self.custom_edit_command_entry.props.text
         self.widget.destroy()
 
 ################################################################################
@@ -756,8 +756,8 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_about_activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
-        about.set_property("name", "Meld")
-        about.set_property("version", version)
+        about.props.name = "Meld"
+        about.props.version = version
         about.show()
 
     #

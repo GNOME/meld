@@ -183,6 +183,3 @@ class UndoSequence(gobject.GObject):
         else:
             self.group = None
 
-if gobject.pygtk_version < (2,8,0):
-    gobject.type_register(UndoSequence)
-

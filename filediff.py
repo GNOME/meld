@@ -14,8 +14,6 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from __future__ import generators
-
 import codecs
 import math
 import os
@@ -119,20 +117,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             text.set_wrap_mode( self.prefs.edit_wrap_lines )
             buf = text.get_buffer()
             self.bufferdata.append( MeldBufferData() )
-            def add_tag(name, props):
-                tag = buf.create_tag(name)
-                for p,v in props.items():
-                    tag.set_property(p,v)
-            add_tag("edited line",   {"background": self.prefs.color_edited_bg,
-                                      "foreground": self.prefs.color_edited_fg} )
-            add_tag("delete line",   {"background": self.prefs.color_delete_bg,
-                                      "foreground": self.prefs.color_delete_fg}  )
-            add_tag("replace line",  {"background": self.prefs.color_replace_bg,
-                                      "foreground": self.prefs.color_replace_fg} )
-            add_tag("conflict line", {"background": self.prefs.color_conflict_bg,
-                                      "foreground": self.prefs.color_conflict_fg} )
-            add_tag("inline line",   {"background": self.prefs.color_inline_bg,
-                                      "foreground": self.prefs.color_inline_fg} )
+            buf.create_tag("edited line",   background = self.prefs.color_edited_bg,
+                                            foreground = self.prefs.color_edited_fg)
+            buf.create_tag("delete line",   background = self.prefs.color_delete_bg,
+                                            foreground = self.prefs.color_delete_fg)
+            buf.create_tag("replace line",  background = self.prefs.color_replace_bg,
+                                            foreground = self.prefs.color_replace_fg)
+            buf.create_tag("conflict line", background = self.prefs.color_conflict_bg,
+                                            foreground = self.prefs.color_conflict_fg)
+            buf.create_tag("inline line",   background = self.prefs.color_inline_bg,
+                                            foreground = self.prefs.color_inline_fg)
 
         actions = (
             ("FilePopupSave",     gtk.STOCK_SAVE,       None,            None, _("Save the current file"), self.save),
@@ -1384,9 +1378,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_linkmap_drag_begin(self, *args):
         print args
-
-if gobject.pygtk_version < (2,8,0):
-    gobject.type_register(FileDiff)
 
 ################################################################################
 #
