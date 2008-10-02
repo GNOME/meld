@@ -903,6 +903,7 @@ def main():
     sys.stdout = Unbuffered(sys.stdout)
 
     parser = optparse.OptionParser(
+    option_class=misc.MeldOption,
     usage="""
     %prog                       Start with no windows open
     %prog <dir>                 Start with VC browser in 'dir'
@@ -917,12 +918,20 @@ def main():
     parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
     parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
     parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
+    parser.add_option("", "--diff", action="diff_files", dest='diff',
+                      default=[],
+                      help=_("Creates a diff tab for up to 3 supplied files."))
     options, args = parser.parse_args()
 
     icon_theme = gtk.icon_theme_get_default()
     icon_theme.append_search_path(paths.share_dir("glade2/pixmaps/"))
     app = MeldApp()
     tab = None
+
+    for files in options.diff:
+        if len(files) not in (1, 2, 3):
+            app.usage(_("Invalid number of arguments supplied for --diff."))
+        app.append_diff(files)
 
     if len(args) == 0:
         pass
