@@ -149,17 +149,14 @@ class Differ(object):
         if textindex in (0,2):
             seq = textindex/2
             for cs in self.all_changes( texts ):
-                c = cs[seq]
-                if c:
-                    yield opcode_reverse[c[0]], c[3], c[4], c[1], c[2], 1
+                if cs[seq]:
+                    yield reverse_chunk(cs[seq]) + (1,)
         else:
             for cs in self.all_changes( texts ):
                 if cs[0]:
-                    c = cs[0]
-                    yield c[0], c[1], c[2], c[3], c[4], 0
+                    yield cs[0] + (0,)
                 elif cs[1]:
-                    c = cs[1]
-                    yield c[0], c[1], c[2], c[3], c[4], 2
+                    yield cs[1] + (2,)
 
     def _merge_blocks(self, using):
         LO, HI = 1,2
