@@ -181,34 +181,29 @@ class Differ(object):
         LO, HI = 1,2
         while len(seq0) or len(seq1):
             if len(seq0) == 0:
-                base_seq = 1
+                high_seq = 1
             elif len(seq1) == 0:
-                base_seq = 0
+                high_seq = 0
             else:
-                base_seq = seq0[0][LO] > seq1[0][LO]
+                high_seq = int(seq0[0][LO] > seq1[0][LO])
 
-            high_seq = base_seq
             high_diff = seq[high_seq].pop(0)
             high_mark = high_diff[HI]
+            other_seq = high_seq ^ 1
 
             using = [[], []]
             using[high_seq].append(high_diff)
 
-            while 1:
-                other_seq = high_seq ^ 1
-                try:
-                    other_diff = seq[other_seq][0]
-                except IndexError:
-                    break 
-                else:
-                    if high_mark < other_diff[LO]:
-                        break
+            while seq[other_seq]:
+                other_diff = seq[other_seq][0]
+                if high_mark < other_diff[LO]:
+                    break
 
                 using[other_seq].append(other_diff)
                 seq[other_seq].pop(0)
 
                 if high_mark < other_diff[HI]:
-                    high_seq ^= 1
+                    (high_seq, other_seq) = (other_seq, high_seq)
                     high_mark = other_diff[HI]
 
             if len(using[0])==0:
