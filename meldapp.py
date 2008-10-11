@@ -400,13 +400,23 @@ class NotebookLabel(gtk.HBox):
         icon.set_from_file( paths.share_dir("glade2/pixmaps/%s" % iconname) )
         icon.set_from_pixbuf(icon.get_pixbuf().scale_simple(16, 16, 2)) #TODO stock image
 
+        label_box = gtk.EventBox()
+        label_box.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+        label_box.connect("button-press-event", self.on_label_clicked)
+        label_box.add(label)
+
         self.pack_start(icon, expand=False)
-        self.pack_start(label)
+        self.pack_start(label_box)
         self.pack_start(button, expand=False)
         self.set_tooltip_text(text)
         self.show_all()
 
         self.__label = label
+        self.__onclose = onclose
+
+    def on_label_clicked(self, box, event):
+        if event.type == gtk.gdk.BUTTON_PRESS and event.button == 2:
+            self.__onclose(None)
 
     def get_label_text(self):
         return self.__label.get_text()
