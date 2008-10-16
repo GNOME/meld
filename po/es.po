@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld.HEAD\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2008-10-03 03:58+0000\n"
-"PO-Revision-Date: 2008-10-11 13:09+0200\n"
+"POT-Creation-Date: 2008-10-14 17:16+0000\n"
+"PO-Revision-Date: 2008-10-16 21:00+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../dirdiff.py:189 ../glade2/meldapp.glade.h:66 ../vcview.py:118
+#: ../dirdiff.py:189 ../glade2/meldapp.glade.h:67 ../vcview.py:118
 msgid "_Compare"
 msgstr "_Comparar"
 
@@ -220,7 +220,7 @@ msgid_plural "%i years"
 msgstr[0] "%i año"
 msgstr[1] "%i años"
 
-#: ../filediff.py:132 ../meldapp.py:544
+#: ../filediff.py:132 ../meldapp.py:554
 msgid "Save the current file"
 msgstr "Guardar el archivo actual"
 
@@ -228,15 +228,15 @@ msgstr "Guardar el archivo actual"
 msgid "Save the current file with a different name"
 msgstr "Guardar el archivo actual con un nombre diferente"
 
-#: ../filediff.py:134 ../meldapp.py:552
+#: ../filediff.py:134 ../meldapp.py:562
 msgid "Cut the selection"
 msgstr "Cortar la selección"
 
-#: ../filediff.py:135 ../meldapp.py:553
+#: ../filediff.py:135 ../meldapp.py:563
 msgid "Copy the selection"
 msgstr "Copiar la selección"
 
-#: ../filediff.py:136 ../meldapp.py:554
+#: ../filediff.py:136 ../meldapp.py:564
 msgid "Paste the clipboard"
 msgstr "Pegar del portapapeles"
 
@@ -732,25 +732,37 @@ msgstr ""
 msgid "Whitespace is significant"
 msgstr "El espacio en blanco es significativo"
 
-#: ../glade2/meldapp.glade.h:67
+#: ../glade2/meldapp.glade.h:66
+msgid "_Character"
+msgstr "_Carácter"
+
+#: ../glade2/meldapp.glade.h:68
 msgid "_Directory Comparison"
 msgstr "Comparación de _directorios"
 
-#: ../glade2/meldapp.glade.h:68
+#: ../glade2/meldapp.glade.h:69
 msgid "_File Comparison"
 msgstr "Comparación de _archivos"
 
-#: ../glade2/meldapp.glade.h:69
+#: ../glade2/meldapp.glade.h:70
 msgid "_Logo"
 msgstr "_Logotipo"
 
-#: ../glade2/meldapp.glade.h:70
+#: ../glade2/meldapp.glade.h:71
+msgid "_None"
+msgstr "_Ninguno"
+
+#: ../glade2/meldapp.glade.h:72
 msgid "_Three Way Compare"
 msgstr "_Comparación de tres vías"
 
-#: ../glade2/meldapp.glade.h:71
+#: ../glade2/meldapp.glade.h:73
 msgid "_Version Control Browser"
 msgstr "Examinador de control de _versión"
+
+#: ../glade2/meldapp.glade.h:74
+msgid "_Word"
+msgstr "_Palabra"
 
 #: ../glade2/vcview.glade.h:1
 msgid "Commit Files"
@@ -855,12 +867,12 @@ msgid "Close tab"
 msgstr "Cerrar solapa"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:455
+#: ../meldapp.py:465
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:457
+#: ../meldapp.py:467
 msgid ""
 "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 msgstr ""
@@ -868,138 +880,138 @@ msgstr ""
 "RCS\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:459
+#: ../meldapp.py:469
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binarios\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:461
+#: ../meldapp.py:471
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:463
+#: ../meldapp.py:473
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "palabras reservadas CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:465
+#: ../meldapp.py:475
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Comentario C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:467
+#: ../meldapp.py:477
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Comentario C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:469
+#: ../meldapp.py:479
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Todos los espacios en blanco\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:471
+#: ../meldapp.py:481
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Espacio en blanco al inicio\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:473
+#: ../meldapp.py:483
 msgid "Script comment\t0\t#.*"
 msgstr "Comentario de script\t0\t#.*"
 
-#: ../meldapp.py:543
+#: ../meldapp.py:553
 msgid "_New..."
 msgstr "_Nuevo…"
 
-#: ../meldapp.py:543
+#: ../meldapp.py:553
 msgid "Start a new comparison"
 msgstr "Iniciar una nueva comparación"
 
-#: ../meldapp.py:546
+#: ../meldapp.py:556
 msgid "Close the current file"
 msgstr "Cerrar el archivo actual"
 
-#: ../meldapp.py:547
+#: ../meldapp.py:557
 msgid "Quit the program"
 msgstr "Salir del programa"
 
-#: ../meldapp.py:550
+#: ../meldapp.py:560
 msgid "Undo the last action"
 msgstr "Deshacer la última acción"
 
-#: ../meldapp.py:551
+#: ../meldapp.py:561
 msgid "Redo the last undone action"
 msgstr "Rehacer la última acción deshecha"
 
-#: ../meldapp.py:555
+#: ../meldapp.py:565
 msgid "Search for text"
 msgstr "Buscar el texto"
 
-#: ../meldapp.py:556
+#: ../meldapp.py:566
 msgid "Find Ne_xt"
 msgstr "Buscar _siguiente"
 
-#: ../meldapp.py:556
+#: ../meldapp.py:566
 msgid "Search forwards for the same text"
 msgstr "Buscar el mismo texto hacia adelante"
 
-#: ../meldapp.py:557
+#: ../meldapp.py:567
 msgid "Go to the next difference"
 msgstr "Ir a la siguiente diferencia"
 
-#: ../meldapp.py:558
+#: ../meldapp.py:568
 msgid "Go to the previous difference"
 msgstr "Ir a la diferencia anterior"
 
-#: ../meldapp.py:559
+#: ../meldapp.py:569
 msgid "Configure the application"
 msgstr "Configurar la aplicación"
 
-#: ../meldapp.py:562
+#: ../meldapp.py:572
 msgid "Stop the current action"
 msgstr "Parar la acción actual"
 
-#: ../meldapp.py:563
+#: ../meldapp.py:573
 msgid "Refresh the view"
 msgstr "Actualizar la vista"
 
-#: ../meldapp.py:564
+#: ../meldapp.py:574
 msgid "Reload"
 msgstr "Recargar"
 
-#: ../meldapp.py:564
+#: ../meldapp.py:574
 msgid "Reload the comparison"
 msgstr "Recargar la comparación"
 
-#: ../meldapp.py:567
+#: ../meldapp.py:577
 msgid "_Contents"
 msgstr "_Índice"
 
-#: ../meldapp.py:567
+#: ../meldapp.py:577
 msgid "Open the Meld manual"
 msgstr "Abrir el manual de Meld"
 
-#: ../meldapp.py:568
+#: ../meldapp.py:578
 msgid "Report _Bug"
 msgstr "Informar de un _fallo"
 
-#: ../meldapp.py:568
+#: ../meldapp.py:578
 msgid "Report a bug in Meld"
 msgstr "Informar de un error en Meld"
 
-#: ../meldapp.py:569
+#: ../meldapp.py:579
 msgid "Mailing _List"
 msgstr "Lista de _correo"
 
-#: ../meldapp.py:569
+#: ../meldapp.py:579
 msgid "Go to the Meld mailing list"
 msgstr "Ir a la lista de correo de Meld"
 
-#: ../meldapp.py:570
+#: ../meldapp.py:580
 msgid "About this program"
 msgstr "Acerca de este programa"
 
-#: ../meldapp.py:835
+#: ../meldapp.py:845
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "No se puede comparar una mezcla de archivos y directorios.\n"
 
@@ -1008,7 +1020,7 @@ msgstr "No se puede comparar una mezcla de archivos y directorios.\n"
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:885
+#: ../meldapp.py:895
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -1017,27 +1029,27 @@ msgstr ""
 "Meld %s\n"
 "Escrito por Stephen Kennedy <stevek@gnome.org>"
 
-#: ../meldapp.py:915
+#: ../meldapp.py:925
 msgid "Set label to use instead of file name"
 msgstr "Establecer etiqueta que usar en vez del nombre del archivo"
 
-#: ../meldapp.py:916
+#: ../meldapp.py:926
 msgid "Automatically compare all differing files on startup"
 msgstr "Comparar automáticamente al inicio todos los archivos que difieran"
 
-#: ../meldapp.py:917 ../meldapp.py:918 ../meldapp.py:919 ../meldapp.py:920
+#: ../meldapp.py:927 ../meldapp.py:928 ../meldapp.py:929 ../meldapp.py:930
 msgid "Ignored for compatibility"
 msgstr "Ignorado por compatibilidad"
 
-#: ../meldapp.py:923
+#: ../meldapp.py:933
 msgid "Creates a diff tab for up to 3 supplied files."
 msgstr "Crea una solapa diff para hasta tres archivos proporcionados."
 
-#: ../meldapp.py:933
+#: ../meldapp.py:943
 msgid "Invalid number of arguments supplied for --diff."
 msgstr "El número de argumentos proporcionados para --diff no es válido."
 
-#: ../meldapp.py:956
+#: ../meldapp.py:966
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Número erróneo de argumentos (se obtuvo %i)"
