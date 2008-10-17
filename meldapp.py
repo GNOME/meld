@@ -390,7 +390,8 @@ class NotebookLabel(gtk.HBox):
         button.set_relief(gtk.RELIEF_NONE)
         button.set_focus_on_click(False)
         image = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
-        image.set_tooltip_text(_("Close tab"))
+        if gtk.pygtk_version >= (2,12,0):
+            image.set_tooltip_text(_("Close tab"))
         button.add(image)
         button.set_name("meld-tab-close-button")
         button.set_size_request(w + 2, h + 2)
@@ -409,7 +410,8 @@ class NotebookLabel(gtk.HBox):
         self.pack_start(icon, expand=False)
         self.pack_start(label_box)
         self.pack_start(button, expand=False)
-        self.set_tooltip_text(text)
+        if gtk.pygtk_version >= (2,12,0):
+            self.set_tooltip_text(text)
         self.show_all()
 
         self.__label = label
@@ -424,7 +426,8 @@ class NotebookLabel(gtk.HBox):
 
     def set_label_text(self, text):
         self.__label.set_text(text)
-        self.set_tooltip_text(text)
+        if gtk.pygtk_version >= (2,12,0):
+            self.set_tooltip_text(text)
 
 ################################################################################
 #
