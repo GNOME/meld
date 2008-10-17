@@ -402,6 +402,7 @@ class NotebookLabel(gtk.HBox):
 
         label_box = gtk.EventBox()
         label_box.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+        label_box.props.visible_window = False
         label_box.connect("button-press-event", self.on_label_clicked)
         label_box.add(label)
 
