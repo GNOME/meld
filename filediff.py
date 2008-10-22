@@ -66,7 +66,7 @@ gdk = gtk.gdk
 #
 ################################################################################
 
-MASK_SHIFT, MASK_CTRL, MASK_ALT = 1, 2, 3
+MASK_SHIFT, MASK_CTRL = 1, 2
 
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
@@ -74,10 +74,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     keylookup = {gtk.keysyms.Shift_L : MASK_SHIFT,
                  gtk.keysyms.Control_L : MASK_CTRL,
-                 gtk.keysyms.Alt_L : MASK_ALT,
                  gtk.keysyms.Shift_R : MASK_SHIFT,
-                 gtk.keysyms.Control_R : MASK_CTRL,
-                 gtk.keysyms.Alt_R : MASK_ALT }
+                 gtk.keysyms.Control_R : MASK_CTRL}
 
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
