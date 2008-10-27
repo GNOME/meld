@@ -9,36 +9,111 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2008-06-04 21:06+0200\n"
-"PO-Revision-Date: 2008-06-04 21:05+0100\n"
+"POT-Creation-Date: 2008-10-27 22:14+0100\n"
+"PO-Revision-Date: 2008-10-27 21:45+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: KBabel 1.11.4\n"
 
-#: ../dirdiff.py:252 ../dirdiff.py:267
+#: ../dirdiff.py:189 ../glade2/meldapp.glade.h:67 ../vcview.py:118
+msgid "_Compare"
+msgstr "_Porovnat"
+
+#: ../dirdiff.py:189 ../vcview.py:118
+msgid "Compare selected"
+msgstr "Porovnat vybrané"
+
+#. FIXME: the glade files were inconsistent: GO_BACK vs GOTO_FIRST, "Left" vs "Copy To Left"
+#: ../dirdiff.py:191
+msgid "Left"
+msgstr "Levé"
+
+#: ../dirdiff.py:191 ../filediff.py:137
+msgid "Copy To Left"
+msgstr "Kopírovat doleva"
+
+#. FIXME: the glade files were inconsistent: GO_FORWARD vs GOTO_LAST, "Right" vs "Copy To Right"
+#: ../dirdiff.py:193
+msgid "Right"
+msgstr "Pravé"
+
+#: ../dirdiff.py:193 ../filediff.py:138
+msgid "Copy To Right"
+msgstr "Kopírovat doprava"
+
+#: ../dirdiff.py:194
+msgid "Delete selected"
+msgstr "Odstranit vybrané"
+
+#: ../dirdiff.py:195
+msgid "Hide..."
+msgstr "Skrýt..."
+
+#: ../dirdiff.py:195
+msgid "Hide selected"
+msgstr "Skrýt vybrané"
+
+#: ../dirdiff.py:197 ../filediff.py:135 ../vcview.py:119
+msgid "Open selected"
+msgstr "Otevřít vybrané"
+
+#: ../dirdiff.py:201
+msgid "Case"
+msgstr "Velikost písmen"
+
+#: ../dirdiff.py:201
+msgid "Ignore case of entries"
+msgstr "Ignorovat velikost písmen"
+
+#: ../dirdiff.py:202
+msgid "Same"
+msgstr "Stejné"
+
+#: ../dirdiff.py:202
+msgid "Show identical"
+msgstr "Zobrazovat stejné"
+
+#: ../dirdiff.py:203
+msgid "New"
+msgstr "Nové"
+
+#: ../dirdiff.py:203
+msgid "Show new"
+msgstr "Zobrazovat nové"
+
+#: ../dirdiff.py:204
+msgid "Modified"
+msgstr "Změněné"
+
+#: ../dirdiff.py:204 ../vcview.py:131
+msgid "Show modified"
+msgstr "Zobrazovat změněné"
+
+#: ../dirdiff.py:265 ../dirdiff.py:280
 #, python-format
 msgid "Error converting pattern '%s' to regular expression"
 msgstr "Chyba při převodu vzorku \"%s\" na regulární výraz"
 
-#: ../dirdiff.py:283
+#: ../dirdiff.py:288
 #, python-format
 msgid "Hide %s"
 msgstr "Skrýt %s"
 
-#: ../dirdiff.py:364 ../dirdiff.py:374 ../vcview.py:213 ../vcview.py:241
+#: ../dirdiff.py:373 ../dirdiff.py:383 ../vcview.py:223 ../vcview.py:251
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Prochází se %s"
 
-#: ../dirdiff.py:407
+#: ../dirdiff.py:416
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "\"%s\" skryto \"%s\""
 
-#: ../dirdiff.py:413
+#: ../dirdiff.py:422
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
@@ -49,12 +124,12 @@ msgstr ""
 "rozlišujícím velikost písmen. Některé soubory nejsou zobrazené:\n"
 "%s"
 
-#: ../dirdiff.py:487
+#: ../dirdiff.py:496
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Hotovo"
 
-#: ../dirdiff.py:533
+#: ../dirdiff.py:542
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -63,7 +138,7 @@ msgstr ""
 "\"%s\" existuje.\n"
 "Přepsat?"
 
-#: ../dirdiff.py:540
+#: ../dirdiff.py:549
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -74,7 +149,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:558 ../vcview.py:405
+#: ../dirdiff.py:567 ../vcview.py:415
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -83,7 +158,7 @@ msgstr ""
 "\"%s\" je adresář.\n"
 "Odstranit rekurzivně?"
 
-#: ../dirdiff.py:565 ../vcview.py:410
+#: ../dirdiff.py:574 ../vcview.py:420
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -94,7 +169,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:576
+#: ../dirdiff.py:585
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
@@ -102,7 +177,7 @@ msgstr[0] "%i sekunda"
 msgstr[1] "%i sekundy"
 msgstr[2] "%i sekund"
 
-#: ../dirdiff.py:577
+#: ../dirdiff.py:586
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
@@ -110,7 +185,7 @@ msgstr[0] "%i minuta"
 msgstr[1] "%i minuty"
 msgstr[2] "%i minut"
 
-#: ../dirdiff.py:578
+#: ../dirdiff.py:587
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
@@ -118,7 +193,7 @@ msgstr[0] "%i hodina"
 msgstr[1] "%i hodiny"
 msgstr[2] "%i hodin"
 
-#: ../dirdiff.py:579
+#: ../dirdiff.py:588
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
@@ -126,7 +201,7 @@ msgstr[0] "%i den"
 msgstr[1] "%i dny"
 msgstr[2] "%i dnů"
 
-#: ../dirdiff.py:580
+#: ../dirdiff.py:589
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
@@ -134,7 +209,7 @@ msgstr[0] "%i týden"
 msgstr[1] "%i týdny"
 msgstr[2] "%i týdnů"
 
-#: ../dirdiff.py:581
+#: ../dirdiff.py:590
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
@@ -142,7 +217,7 @@ msgstr[0] "%i měsíc"
 msgstr[1] "%i měsíce"
 msgstr[2] "%i měsíců"
 
-#: ../dirdiff.py:582
+#: ../dirdiff.py:591
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -150,18 +225,54 @@ msgstr[0] "%i rok"
 msgstr[1] "%i roky"
 msgstr[2] "%i let"
 
+#: ../filediff.py:130 ../meldapp.py:558
+msgid "Save the current file"
+msgstr "Uložit aktuální soubor"
+
+#: ../filediff.py:131
+msgid "Save the current file with a different name"
+msgstr "Uložit aktuální soubor pod jiným jménem"
+
+#: ../filediff.py:132 ../meldapp.py:566
+msgid "Cut the selection"
+msgstr "Vyjmout výběr"
+
+#: ../filediff.py:133 ../meldapp.py:567
+msgid "Copy the selection"
+msgstr "Kopírovat výběr"
+
+#: ../filediff.py:134 ../meldapp.py:568
+msgid "Paste the clipboard"
+msgstr "Vložit obsah schránky"
+
+#: ../filediff.py:136 ../glade2/filediff.glade.h:4
+msgid "Create Patch"
+msgstr "Vytvořit patch"
+
+#: ../filediff.py:136
+msgid "Create a patch"
+msgstr "Vytvořit patch"
+
+#: ../filediff.py:137
+msgid "Copy all changes from right pane to left pane"
+msgstr "Kopírovat všechny změny z pravého panelu do levého"
+
+#: ../filediff.py:138
+msgid "Copy all changes from left pane to right pane"
+msgstr "Kopírovat všechny změny z levého panelu do pravého"
+
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:201
+#: ../filediff.py:187
 msgid "INS,OVR"
 msgstr "VKL,PŘE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:203
+#: ../filediff.py:189
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Řád %i, sl %i"
 
-#: ../filediff.py:261
+#: ../filediff.py:247
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -170,7 +281,7 @@ msgstr ""
 "Regulární výraz \"%s\" změnil počet řádků v souboru. Porovnání nebude "
 "správné. Další podrobnosti viz příručka uživatele."
 
-#: ../filediff.py:504
+#: ../filediff.py:508
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -179,41 +290,41 @@ msgstr ""
 "Chyba v regulárním výrazu\n"
 "\"%s\""
 
-#: ../filediff.py:516
+#: ../filediff.py:520
 #, python-format
 msgid "The regular expression '%s' was not found."
 msgstr "Regulární výraz \"%s\" nebyl nalezen."
 
-#: ../filediff.py:518
+#: ../filediff.py:522
 #, python-format
 msgid "The text '%s' was not found."
 msgstr "Text \"%s\" nebyl nalezen."
 
-#: ../filediff.py:571
+#: ../filediff.py:575
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Nastaven počet panelů"
 
-#: ../filediff.py:578
+#: ../filediff.py:582
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Otevírají se soubory"
 
-#: ../filediff.py:595 ../filediff.py:609 ../filediff.py:625 ../filediff.py:632
+#: ../filediff.py:599 ../filediff.py:613 ../filediff.py:629 ../filediff.py:636
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Nelze číst z \"%s\""
 
-#: ../filediff.py:596 ../filediff.py:633
+#: ../filediff.py:600 ../filediff.py:637
 msgid "The error was:"
 msgstr "Chyba byla následující:"
 
-#: ../filediff.py:601
+#: ../filediff.py:605
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Čtou se soubory"
 
-#: ../filediff.py:610
+#: ../filediff.py:614
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -221,17 +332,17 @@ msgstr ""
 "Obsahuje nuly ascii.\n"
 "Možná jde o binární soubor."
 
-#: ../filediff.py:626
+#: ../filediff.py:630
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Vyzkoušena kódování %s."
 
-#: ../filediff.py:655
+#: ../filediff.py:659
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Počítají se rozdíly"
 
-#: ../filediff.py:760
+#: ../filediff.py:765
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -240,7 +351,7 @@ msgstr ""
 "\"%s\" existuje!\n"
 "Přepsat?"
 
-#: ../filediff.py:773
+#: ../filediff.py:778
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -251,12 +362,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:782
+#: ../filediff.py:787
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Zvolte název vyrovnávací paměti %i."
 
-#: ../filediff.py:795
+#: ../filediff.py:800
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -267,7 +378,7 @@ msgstr ""
 "\n"
 "Jaký formát chcete používat?"
 
-#: ../filediff.py:811
+#: ../filediff.py:816
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -277,11 +388,11 @@ msgstr ""
 "Chcete uložit jako UTF-8?"
 
 #. save as
-#: ../filediff.py:862
+#: ../filediff.py:867
 msgid "Save patch as..."
 msgstr "Uložit patch jako..."
 
-#: ../filediff.py:916
+#: ../filediff.py:926
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -294,87 +405,6 @@ msgstr ""
 "\n"
 "Tuto operaci nelze vzít zpět."
 
-#: ../glade2/dirdiff.glade.h:1
-msgid "Case"
-msgstr "Velikost písmen"
-
-#: ../glade2/dirdiff.glade.h:2
-msgid "Compare"
-msgstr "Porovnat"
-
-#: ../glade2/dirdiff.glade.h:3 ../glade2/vcview.glade.h:6
-msgid "Compare selected"
-msgstr "Porovnat vybrané"
-
-#: ../glade2/dirdiff.glade.h:4
-msgid "Copy To Left"
-msgstr "Kopírovat doleva"
-
-#: ../glade2/dirdiff.glade.h:5
-msgid "Copy To Right"
-msgstr "Kopírovat doprava"
-
-#: ../glade2/dirdiff.glade.h:6
-msgid "Delete selected"
-msgstr "Odstranit vybrané"
-
-#: ../glade2/dirdiff.glade.h:7 ../glade2/filediff.glade.h:7
-msgid "Edit"
-msgstr "Upravit"
-
-#: ../glade2/dirdiff.glade.h:8
-msgid "Hide selected"
-msgstr "Skrýt vybrané"
-
-#: ../glade2/dirdiff.glade.h:9
-msgid "Hide..."
-msgstr "Skrýt..."
-
-#: ../glade2/dirdiff.glade.h:10
-msgid "Ignore case of entries"
-msgstr "Ignorovat velikost písmen"
-
-#: ../glade2/dirdiff.glade.h:11
-msgid "Left"
-msgstr "Levé"
-
-#: ../glade2/dirdiff.glade.h:12
-msgid "Modified"
-msgstr "Změněné"
-
-#: ../glade2/dirdiff.glade.h:13 ../glade2/meldapp.glade.h:50
-msgid "New"
-msgstr "Nové"
-
-#: ../glade2/dirdiff.glade.h:14
-msgid "Right"
-msgstr "Pravé"
-
-#: ../glade2/dirdiff.glade.h:15
-msgid "Same"
-msgstr "Stejné"
-
-#: ../glade2/dirdiff.glade.h:16
-msgid "Show identical"
-msgstr "Zobrazovat stejné"
-
-#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:20
-msgid "Show modified"
-msgstr "Zobrazovat změněné"
-
-#: ../glade2/dirdiff.glade.h:18
-msgid "Show new"
-msgstr "Zobrazovat nové"
-
-#: ../glade2/dirdiff.glade.h:19 ../glade2/meldapp.glade.h:89
-#: ../glade2/vcview.glade.h:28
-msgid "_Compare"
-msgstr "_Porovnat"
-
-#: ../glade2/dirdiff.glade.h:20
-msgid "_Delete Selected"
-msgstr "_Odstranit vybrané"
-
 #: ../glade2/filediff.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
@@ -384,46 +414,42 @@ msgstr ""
 "Které z nich chcete uložit?</span>"
 
 #: ../glade2/filediff.glade.h:3
-msgid "Copy All To _Left"
-msgstr "Kopírovat vše do_leva"
-
-#: ../glade2/filediff.glade.h:4
-msgid "Copy All To _Right"
-msgstr "Kopírovat vše do_prava"
-
-#: ../glade2/filediff.glade.h:5
 msgid "Copy to Clipboard"
 msgstr "Kopírovat do schránky"
 
-#: ../glade2/filediff.glade.h:6
-msgid "Create Patch"
-msgstr "Vytvořit patch"
-
-#: ../glade2/filediff.glade.h:8
+#: ../glade2/filediff.glade.h:5
 msgid "Find"
 msgstr "Hledat"
 
-#: ../glade2/filediff.glade.h:9
+#: ../glade2/filediff.glade.h:6
 msgid "Match _entire word only"
 msgstr "Hledat jen _celá slova"
 
-#: ../glade2/filediff.glade.h:10
+#: ../glade2/filediff.glade.h:7
 msgid "Regular e_xpression"
 msgstr "_Regulární výraz"
 
-#: ../glade2/filediff.glade.h:11
+#: ../glade2/filediff.glade.h:8
 msgid "Save modified files?"
 msgstr "Uložit změněné soubory?"
 
-#: ../glade2/filediff.glade.h:12
+#: ../glade2/filediff.glade.h:9
 msgid "Search for:"
 msgstr "Hledat:"
 
-#: ../glade2/filediff.glade.h:13
+#: ../glade2/filediff.glade.h:10
+msgid "_Discard Changes"
+msgstr "_Zahodit změny"
+
+#: ../glade2/filediff.glade.h:11
 msgid "_Match case"
 msgstr "_Rozlišovat velikost písmen"
 
-#: ../glade2/filediff.glade.h:14
+#: ../glade2/filediff.glade.h:12
+msgid "_Save Selected"
+msgstr "_Uložit vybrané"
+
+#: ../glade2/filediff.glade.h:13
 msgid "_Wrap around"
 msgstr "Přecházet přes _okraj"
 
@@ -433,7 +459,7 @@ msgstr "(gnome-default-editor)"
 
 #: ../glade2/meldapp.glade.h:2
 msgid "<b>Drawing Style</b>"
-msgstr "<b>Styl kreslení</b>"
+msgstr "<b>Styl vykreslení</b>"
 
 #: ../glade2/meldapp.glade.h:3
 msgid "<b>Edit Menu</b>"
@@ -444,78 +470,58 @@ msgid "<b>Font</b>"
 msgstr "<b>Písmo</b>"
 
 #: ../glade2/meldapp.glade.h:5
-msgid "<b>Global options</b>"
-msgstr "<b>Globální nastavení</b>"
-
-#: ../glade2/meldapp.glade.h:6
 msgid "<b>Loading</b>"
 msgstr "<b>Načítání</b>"
 
-#: ../glade2/meldapp.glade.h:7
+#: ../glade2/meldapp.glade.h:6
 msgid "<b>Misc</b>"
 msgstr "<b>Různé</b>"
 
-#: ../glade2/meldapp.glade.h:8
+#: ../glade2/meldapp.glade.h:7
 msgid "<b>Saving</b>"
 msgstr "<b>Ukládání</b>"
 
-#: ../glade2/meldapp.glade.h:9
+#: ../glade2/meldapp.glade.h:8
 msgid "<b>Toolbar Appearance</b>"
 msgstr "<b>Vzhled lišty nástrojů</b>"
 
-#: ../glade2/meldapp.glade.h:10
-msgid "<b>Update Options</b>"
-msgstr "<b>Možnosti update</b>"
-
-#: ../glade2/meldapp.glade.h:11
+#: ../glade2/meldapp.glade.h:9
 msgid "<b>Whitespace</b>"
 msgstr "<b>Mezery</b>"
 
-#: ../glade2/meldapp.glade.h:12
-msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-
-#: ../glade2/meldapp.glade.h:13
+#: ../glade2/meldapp.glade.h:10
 msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Porovnávání</span>"
 
-#: ../glade2/meldapp.glade.h:14
+#: ../glade2/meldapp.glade.h:11
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Zobrazení</span>"
 
-#: ../glade2/meldapp.glade.h:15
+#: ../glade2/meldapp.glade.h:12
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 
-#: ../glade2/meldapp.glade.h:16
+#: ../glade2/meldapp.glade.h:13
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Kódování</span>"
 
-#: ../glade2/meldapp.glade.h:17
+#: ../glade2/meldapp.glade.h:14
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filtry souborů</span>"
 
-#: ../glade2/meldapp.glade.h:18
+#: ../glade2/meldapp.glade.h:15
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Filtry textu</span>"
 
-#: ../glade2/meldapp.glade.h:19
+#: ../glade2/meldapp.glade.h:16
 msgid "Automatically supply missing newline at end of file"
 msgstr "Automaticky přidávat chybějící nový řádek na konci souboru"
 
-#: ../glade2/meldapp.glade.h:20
-msgid "CVS"
-msgstr "CVS"
-
-#: ../glade2/meldapp.glade.h:21
-msgid "CVS binary"
-msgstr "Binární soubor CVS"
-
-#: ../glade2/meldapp.glade.h:22
+#: ../glade2/meldapp.glade.h:17
 msgid "Choose Files"
 msgstr "Zvolte soubory"
 
-#: ../glade2/meldapp.glade.h:23
+#: ../glade2/meldapp.glade.h:18
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
@@ -523,250 +529,186 @@ msgstr ""
 "Zvolte způsob vykreslení středního sloupce zobrazovače rozdílů. Pokud vám "
 "posouvání připadá pomalé, můžete zvolit jednodušší režim."
 
-#: ../glade2/meldapp.glade.h:24
+#: ../glade2/meldapp.glade.h:19
 msgid "Copyright (C) 2002-2006 Stephen Kennedy"
 msgstr "Copyright (C) 2002-2006 Stephen Kennedy"
 
-#: ../glade2/meldapp.glade.h:25
-msgid "Create missing directories (-d)"
-msgstr "Vytvářet chybějící adresáře (-d)"
-
-#: ../glade2/meldapp.glade.h:26
+#: ../glade2/meldapp.glade.h:20
 msgid "Curved: Filled Curves"
-msgstr "Oblý: Vyplněné křivky"
+msgstr "Oblý: vyplněné křivky"
 
-#: ../glade2/meldapp.glade.h:27
+#: ../glade2/meldapp.glade.h:21
 msgid "Custom command"
 msgstr "Vlastní příkaz"
 
-#: ../glade2/meldapp.glade.h:28
+#: ../glade2/meldapp.glade.h:22
 msgid "Directory"
 msgstr "Adresář"
 
-#: ../glade2/meldapp.glade.h:29
+#: ../glade2/meldapp.glade.h:23
 msgid "Display"
 msgstr "Zobrazení"
 
-#: ../glade2/meldapp.glade.h:30
-msgid "Down"
-msgstr "Dolů"
-
-#: ../glade2/meldapp.glade.h:31
+#: ../glade2/meldapp.glade.h:24
 msgid "Edit files with:"
 msgstr "Upravit soubory s:"
 
-#: ../glade2/meldapp.glade.h:32
+#: ../glade2/meldapp.glade.h:25
 msgid "Editor"
 msgstr "Editor"
 
-#: ../glade2/meldapp.glade.h:33
+#: ../glade2/meldapp.glade.h:26
 msgid "Encoding"
 msgstr "Kódování"
 
-#: ../glade2/meldapp.glade.h:34
+#: ../glade2/meldapp.glade.h:27
 msgid "File Filters"
 msgstr "Filtry souborů"
 
-#: ../glade2/meldapp.glade.h:35
-msgid "Find Ne_xt"
-msgstr "_Najít následující"
-
-#: ../glade2/meldapp.glade.h:36
+#: ../glade2/meldapp.glade.h:28
 msgid "Gnome Default"
 msgstr "Výchozí GNOME"
 
-#: ../glade2/meldapp.glade.h:37
+#: ../glade2/meldapp.glade.h:29
 msgid "Gnome default editor"
 msgstr "Výchozí editor GNOME"
 
-#: ../glade2/meldapp.glade.h:38
+#: ../glade2/meldapp.glade.h:30
 msgid "Icons Only"
 msgstr "Jen ikony"
 
-#: ../glade2/meldapp.glade.h:39
-msgid "Ignore .cvsrc (-f)"
-msgstr "Ignorovat .cvsrc (-f)"
-
-#: ../glade2/meldapp.glade.h:40
+#: ../glade2/meldapp.glade.h:31
 msgid "Ignore changes in amount of white space"
 msgstr "Ignorovat změny v počtu mezer"
 
-#: ../glade2/meldapp.glade.h:41
+#: ../glade2/meldapp.glade.h:32
 msgid ""
 "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr ""
 "Ignorovat změny velikosti písmen; považovat velká a malá písmena za "
 "ekvivalentní"
 
-#: ../glade2/meldapp.glade.h:42
+#: ../glade2/meldapp.glade.h:33
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr "Ignorovat změny, které jen přidávají nebo odstraňují prázdné řádky"
 
-#: ../glade2/meldapp.glade.h:43
+#: ../glade2/meldapp.glade.h:34
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Ignorovat změny, které přidávají nebo odstraňují prázdné řádky"
 
-#: ../glade2/meldapp.glade.h:44
+#: ../glade2/meldapp.glade.h:35
 msgid "Ignore symbolic links"
 msgstr "Ignorovat symbolické odkazy"
 
-#: ../glade2/meldapp.glade.h:45
-msgid "Internal editor"
-msgstr "Interní editor"
+#: ../glade2/meldapp.glade.h:36
+msgid "Insert spaces instead of tabs"
+msgstr "Vkládat mezery namísto tabulátorů"
 
-#: ../glade2/meldapp.glade.h:46
+#: ../glade2/meldapp.glade.h:37
+msgid "Internal editor"
+msgstr "Vnitřní editor"
+
+#: ../glade2/meldapp.glade.h:38
 msgid "Line Wrapping "
 msgstr "Zalamování řádků "
 
-#: ../glade2/meldapp.glade.h:47
-msgid "Mailing _List"
-msgstr "_Elektronická konference"
-
-#: ../glade2/meldapp.glade.h:48
+#: ../glade2/meldapp.glade.h:39
 msgid "Meld"
 msgstr "Meld"
 
-#: ../glade2/meldapp.glade.h:49
+#: ../glade2/meldapp.glade.h:40
 msgid "Mine"
 msgstr "Moje"
 
-#: ../glade2/meldapp.glade.h:51
+#: ../glade2/meldapp.glade.h:41
 msgid "Original"
 msgstr "Původní"
 
-#: ../glade2/meldapp.glade.h:52
+#: ../glade2/meldapp.glade.h:42
 msgid "Other"
 msgstr "Jiné"
 
-#: ../glade2/meldapp.glade.h:53
+#: ../glade2/meldapp.glade.h:43
 msgid "Preferences : Meld"
 msgstr "Nastavení: Meld"
 
-#: ../glade2/meldapp.glade.h:54
-msgid "Prune empty directories (-P)"
-msgstr "Odstraňovat prázdné adresáře (-P)"
-
-#: ../glade2/meldapp.glade.h:55
-msgid "Quiet mode (-q)"
-msgstr "Tichý režim (-q)"
-
-#: ../glade2/meldapp.glade.h:56
-msgid "Redo"
-msgstr "Provést znovu"
-
-#: ../glade2/meldapp.glade.h:57
-msgid "Refresh"
-msgstr "Obnovit"
-
-#: ../glade2/meldapp.glade.h:58
-msgid "Reload"
-msgstr "Znovu načíst"
-
-#: ../glade2/meldapp.glade.h:59
-msgid "Report _Bug"
-msgstr "Ohlásit _chybu"
-
-#: ../glade2/meldapp.glade.h:60
-msgid "Save"
-msgstr "Uložit"
-
-#: ../glade2/meldapp.glade.h:61
-msgid "Save _As"
-msgstr "Uložit _jako"
-
-#: ../glade2/meldapp.glade.h:62
+#: ../glade2/meldapp.glade.h:44
 msgid "Save in UTF-8 encoding"
 msgstr "Ukládat v kódování UTF-8"
 
-#: ../glade2/meldapp.glade.h:63
+#: ../glade2/meldapp.glade.h:45
 msgid "Save in the files original encoding"
 msgstr "Ukládat v původních kódováních souborů"
 
-#: ../glade2/meldapp.glade.h:64
+#: ../glade2/meldapp.glade.h:46
 msgid "Show line numbers"
 msgstr "Zobrazovat čísla řádků"
 
-#: ../glade2/meldapp.glade.h:65
+#: ../glade2/meldapp.glade.h:47
 msgid "Simple: Lines only"
-msgstr "Jednoduchý: Jen úsečky"
+msgstr "Jednoduchý: jen úsečky"
 
-#: ../glade2/meldapp.glade.h:66
+#: ../glade2/meldapp.glade.h:48
 msgid "Solid: Filled Quadilaterals"
-msgstr "Pevný: Vyplněné čtyřúhelníky"
+msgstr "Pevný: vyplněné čtyřúhelníky"
 
-#: ../glade2/meldapp.glade.h:67
-msgid "Stop"
-msgstr "Zastavit"
-
-#: ../glade2/meldapp.glade.h:68
+#: ../glade2/meldapp.glade.h:49
 msgid "Tab width"
-msgstr "Šířka tabelátoru"
+msgstr "Šířka tabulátoru"
 
-#: ../glade2/meldapp.glade.h:69
+#: ../glade2/meldapp.glade.h:50
 msgid "Text Beside Icons"
 msgstr "Text vedle ikon"
 
-#: ../glade2/meldapp.glade.h:70
+#: ../glade2/meldapp.glade.h:51
 msgid "Text Filters"
 msgstr "Filtry textu"
 
-#: ../glade2/meldapp.glade.h:71
+#: ../glade2/meldapp.glade.h:52
 msgid "Text Only"
 msgstr "Jen text"
 
-#: ../glade2/meldapp.glade.h:72
+#: ../glade2/meldapp.glade.h:53
 msgid "Text Under Icons"
 msgstr "Text pod ikonami"
 
-#: ../glade2/meldapp.glade.h:73
+#: ../glade2/meldapp.glade.h:54
 msgid "Three way directory"
 msgstr "Tři adresáře"
 
-#: ../glade2/meldapp.glade.h:74
+#: ../glade2/meldapp.glade.h:55
 msgid "Three way file"
 msgstr "Tři soubory"
 
-#: ../glade2/meldapp.glade.h:75
+#: ../glade2/meldapp.glade.h:56
 msgid "Two way directory"
 msgstr "Dva adresáře"
 
-#: ../glade2/meldapp.glade.h:76
+#: ../glade2/meldapp.glade.h:57
 msgid "Two way file"
 msgstr "Dva soubory"
 
-#: ../glade2/meldapp.glade.h:77
-msgid "Undo"
-msgstr "Vrátit"
-
-#: ../glade2/meldapp.glade.h:78
-msgid "Up"
-msgstr "Nahoru"
-
-#: ../glade2/meldapp.glade.h:79
-msgid "Use Compression (-z)"
-msgstr "Používat kompresi (-z)"
-
-#: ../glade2/meldapp.glade.h:80
+#: ../glade2/meldapp.glade.h:58
 msgid "Use GNOME monospace font"
 msgstr "Používat neproporcionální písmo GNOME"
 
-#: ../glade2/meldapp.glade.h:81
+#: ../glade2/meldapp.glade.h:59
 msgid "Use custom font"
 msgstr "Používat vlastní písmo"
 
-#: ../glade2/meldapp.glade.h:82
+#: ../glade2/meldapp.glade.h:60
 msgid "Use syntax highlighting"
 msgstr "Používat zvýrazňování syntaxe"
 
-#: ../glade2/meldapp.glade.h:83
+#: ../glade2/meldapp.glade.h:61
 msgid "Version control view"
 msgstr "Zobrazení správy verzí"
 
-#: ../glade2/meldapp.glade.h:84
+#: ../glade2/meldapp.glade.h:62
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr "Při načítání zkusit postupně tyto kodeky (např. utf8, iso8859)"
 
-#: ../glade2/meldapp.glade.h:85
+#: ../glade2/meldapp.glade.h:63
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -776,7 +718,7 @@ msgstr ""
 "Každý vzorek je seznamem zástupných znaků ve stylu shellu oddělovaný "
 "mezerami."
 
-#: ../glade2/meldapp.glade.h:86
+#: ../glade2/meldapp.glade.h:64
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -789,205 +731,82 @@ msgstr ""
 "před provedením porovnání. Pokud výraz obsahuje skupiny, jsou nahrazeny jen "
 "skupiny. Více podrobností viz příručka uživatele."
 
-#: ../glade2/meldapp.glade.h:87
+#: ../glade2/meldapp.glade.h:65
 msgid "Whitespace is significant"
 msgstr "Mezery mají význam"
 
-#: ../glade2/meldapp.glade.h:88
-msgid "Yes"
-msgstr "Ano"
+#: ../glade2/meldapp.glade.h:66
+msgid "_Character"
+msgstr "Zna_k"
 
-#: ../glade2/meldapp.glade.h:90
-msgid "_Contents"
-msgstr "_Obsah"
-
-#: ../glade2/meldapp.glade.h:91
+#: ../glade2/meldapp.glade.h:68
 msgid "_Directory Comparison"
 msgstr "Porovnávání _adresářů"
 
-#: ../glade2/meldapp.glade.h:92
-msgid "_Down"
-msgstr "_Dolů"
-
-#: ../glade2/meldapp.glade.h:93 ../glade2/vcview.glade.h:29
-msgid "_Edit"
-msgstr "_Upravit"
-
-#: ../glade2/meldapp.glade.h:94
-msgid "_File"
-msgstr "_Soubor"
-
-#: ../glade2/meldapp.glade.h:95
+#: ../glade2/meldapp.glade.h:69
 msgid "_File Comparison"
 msgstr "Porovnávání _souborů"
 
-#: ../glade2/meldapp.glade.h:96
-msgid "_Help"
-msgstr "_Nápověda"
-
-#: ../glade2/meldapp.glade.h:97
+#: ../glade2/meldapp.glade.h:70
 msgid "_Logo"
 msgstr "_Logo"
 
-#: ../glade2/meldapp.glade.h:98
-msgid "_New..."
-msgstr "_Nový..."
+#: ../glade2/meldapp.glade.h:71
+msgid "_None"
+msgstr "Žád_né"
 
-#: ../glade2/meldapp.glade.h:99
-msgid "_Save"
-msgstr "_Uložit"
-
-#: ../glade2/meldapp.glade.h:100
-msgid "_Stop"
-msgstr "Zasta_vit"
-
-#: ../glade2/meldapp.glade.h:101
+#: ../glade2/meldapp.glade.h:72
 msgid "_Three Way Compare"
 msgstr "_Trojcestné porovnávání"
 
-#: ../glade2/meldapp.glade.h:102
-msgid "_Up"
-msgstr "_Nahoru"
-
-#: ../glade2/meldapp.glade.h:103
+#: ../glade2/meldapp.glade.h:73
 msgid "_Version Control Browser"
 msgstr "_Prohlížeč správy verzí"
 
-#: ../glade2/meldapp.glade.h:104
-msgid "_View"
-msgstr "_Zobrazit"
+#: ../glade2/meldapp.glade.h:74
+msgid "_Word"
+msgstr "_Slovo"
 
 #: ../glade2/vcview.glade.h:1
-msgid "Add _Binary"
-msgstr "Přidat _binární"
-
-#: ../glade2/vcview.glade.h:2
-msgid "Add to VC"
-msgstr "Přidat do VC"
-
-#: ../glade2/vcview.glade.h:3
-msgid "Commit"
-msgstr "Commit"
-
-#: ../glade2/vcview.glade.h:4
 msgid "Commit Files"
 msgstr "Commit souborů"
 
-#: ../glade2/vcview.glade.h:5
+#: ../glade2/vcview.glade.h:2
 msgid "Compare Options"
 msgstr "Možnosti porovnávání"
 
-#: ../glade2/vcview.glade.h:7
+#: ../glade2/vcview.glade.h:3
 msgid "Date"
 msgstr "Datum"
 
-#: ../glade2/vcview.glade.h:8
-msgid "Delete locally"
-msgstr "Odstranit místně"
-
-#: ../glade2/vcview.glade.h:9
-msgid "Flatten directories"
-msgstr "Zploštit adresáře"
-
-#: ../glade2/vcview.glade.h:10
-msgid "Ignored"
-msgstr "Ignorované"
-
-#: ../glade2/vcview.glade.h:11
+#: ../glade2/vcview.glade.h:4
 msgid "Local copy against other remote revision"
 msgstr "Místní kopii s jinou vzdálenou verzí"
 
-#: ../glade2/vcview.glade.h:12
+#: ../glade2/vcview.glade.h:5
 msgid "Local copy against same remote revision"
 msgstr "Místní kopii se stejnou vzdálenou verzí"
 
-#: ../glade2/vcview.glade.h:13
+#: ../glade2/vcview.glade.h:6
 msgid "Log Message"
 msgstr "Zpráva záznamu"
 
-#: ../glade2/vcview.glade.h:14
-msgid "Non _VC"
-msgstr "Nikoliv V_C"
-
-#: ../glade2/vcview.glade.h:15
+#: ../glade2/vcview.glade.h:7
 msgid "Previous Logs"
 msgstr "Předchozí záznamy"
 
-#: ../glade2/vcview.glade.h:16
-msgid "Remove _Locally"
-msgstr "Odstranit _místně"
-
-#: ../glade2/vcview.glade.h:17
-msgid "Remove from VC"
-msgstr "Odstranit z VC"
-
-#: ../glade2/vcview.glade.h:18
-msgid "Revert to original"
-msgstr "Vrátit zpět na původní"
-
-#: ../glade2/vcview.glade.h:19
-msgid "Show ignored files"
-msgstr "Zobrazovat ignorované soubory"
-
-#: ../glade2/vcview.glade.h:21
-msgid "Show normal"
-msgstr "Zobrazovat běžné"
-
-#: ../glade2/vcview.glade.h:22
-msgid "Show unversioned files"
-msgstr "Zobrazovat soubory bez verzí"
-
-#: ../glade2/vcview.glade.h:23 ../vcview.py:173
+#: ../glade2/vcview.glade.h:8 ../vcview.py:183
 msgid "Tag"
 msgstr "Tag"
 
-#: ../glade2/vcview.glade.h:24
-msgid "Update"
-msgstr "Update"
-
-#: ../glade2/vcview.glade.h:25
+#: ../glade2/vcview.glade.h:9
 msgid "VC Log"
 msgstr "Záznam VC"
 
-#: ../glade2/vcview.glade.h:26
-msgid "_Add"
-msgstr "_Přidat"
-
-#: ../glade2/vcview.glade.h:27
-msgid "_Commit"
-msgstr "_Commit"
-
-#: ../glade2/vcview.glade.h:30
-msgid "_Flatten"
-msgstr "Z_ploštit"
-
-#: ../glade2/vcview.glade.h:31
-msgid "_Modified"
-msgstr "_Změněné"
-
-#: ../glade2/vcview.glade.h:32
-msgid "_Normal"
-msgstr "_Normální"
-
-#: ../glade2/vcview.glade.h:33
-msgid "_Remove"
-msgstr "_Odstranit"
-
-#: ../glade2/vcview.glade.h:34
-msgid "_Update"
-msgstr "_Update"
-
-#: ../meld:60 ../meld:70 ../meld:80
+#: ../meld:47
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld vyžaduje %s nebo vyšší."
-
-#: ../meld:81
-msgid ""
-"Due to incompatible API changes some functions may not operate as expected."
-msgstr ""
-"Kvůli nekompatibilním změnám v API možná některé funkce nebudou pracovat "
-"podle očekávání."
 
 #: ../meld.desktop.in.h:1
 msgid "Compare and merge your files."
@@ -997,39 +816,47 @@ msgstr "Porovnává a slučuje soubory."
 msgid "Meld Diff Viewer"
 msgstr "Prohlížeč rozdílů Meld"
 
-#: ../meldapp.py:147
+#: ../meldapp.py:150
 msgid "label"
 msgstr "popisek"
 
-#: ../meldapp.py:148
+#: ../meldapp.py:151
 msgid "pattern"
 msgstr "vzorek"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:249 ../meldapp.py:254 ../vcview.py:153
+#: ../meldapp.py:258 ../meldapp.py:263 ../vcview.py:163
 msgid "Name"
 msgstr "Název"
 
-#: ../meldapp.py:249 ../meldapp.py:254
+#: ../meldapp.py:258 ../meldapp.py:263
 msgid "Active"
 msgstr "Aktivní"
 
-#: ../meldapp.py:249
+#: ../meldapp.py:258
 msgid "Pattern"
 msgstr "Vzorek"
 
-#: ../meldapp.py:254
+#: ../meldapp.py:263
 msgid "Regex"
 msgstr "Reg. výraz"
 
-#: ../meldapp.py:296
+#: ../meldapp.py:293
+msgid ""
+"Spaces instead of_tab is only available if you have gnome-python-desktop "
+"installed."
+msgstr ""
+"Funkce mezer namísto _tabulátorů je k dispozici jen tehdy, pokud je "
+"nainstalován gnome-python-desktop."
+
+#: ../meldapp.py:301
 msgid ""
 "Line numbers are only available if you have gnome-python-desktop installed."
 msgstr ""
 "Čísla řádků jsou k dispozici, jen pokud je nainstalován gnome-python-desktop."
 
-#: ../meldapp.py:300
+#: ../meldapp.py:305
 msgid ""
 "Syntax highlighting is only available if you have gnome-python-desktop "
 "installed."
@@ -1037,59 +864,155 @@ msgstr ""
 "Zvýrazňování syntaxe je k dispozici, jen pokud je nainstalován gnome-python-"
 "desktop."
 
+#: ../meldapp.py:394
+msgid "Close tab"
+msgstr "Zavřít kartu"
+
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:444
+#: ../meldapp.py:469
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Zálohy\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:446
+#: ../meldapp.py:471
 msgid ""
 "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 msgstr ""
 "Správa verzí\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:448
+#: ../meldapp.py:473
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binární soubory\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:450
+#: ../meldapp.py:475
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Multimédia\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:452
+#: ../meldapp.py:477
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "Klíčová slova CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:454
+#: ../meldapp.py:479
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Komentář C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:456
+#: ../meldapp.py:481
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Komentář C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:458
+#: ../meldapp.py:483
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Všechny mezery\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:460
+#: ../meldapp.py:485
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Počáteční mezery\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:462
+#: ../meldapp.py:487
 msgid "Script comment\t0\t#.*"
 msgstr "Komentář skriptu\t0\t#.*"
 
-#: ../meldapp.py:781
+#: ../meldapp.py:557
+msgid "_New..."
+msgstr "_Nový..."
+
+#: ../meldapp.py:557
+msgid "Start a new comparison"
+msgstr "Spustit nové porovnání"
+
+#: ../meldapp.py:560
+msgid "Close the current file"
+msgstr "Zavřít aktuální soubor"
+
+#: ../meldapp.py:561
+msgid "Quit the program"
+msgstr "Ukončit program"
+
+#: ../meldapp.py:564
+msgid "Undo the last action"
+msgstr "Vrátit zpět poslední činnost"
+
+#: ../meldapp.py:565
+msgid "Redo the last undone action"
+msgstr "Zopakovat poslední činnost vrácenou zpět"
+
+#: ../meldapp.py:569
+msgid "Search for text"
+msgstr "Hledat text"
+
+#: ../meldapp.py:570
+msgid "Find Ne_xt"
+msgstr "_Najít následující"
+
+#: ../meldapp.py:570
+msgid "Search forwards for the same text"
+msgstr "Hledat tentýž text vpřed"
+
+#: ../meldapp.py:571
+msgid "Go to the next difference"
+msgstr "Přejít na další rozdíl"
+
+#: ../meldapp.py:572
+msgid "Go to the previous difference"
+msgstr "Přejít na předchozí rozdíl"
+
+#: ../meldapp.py:573
+msgid "Configure the application"
+msgstr "Nastavit aplikaci"
+
+#: ../meldapp.py:576
+msgid "Stop the current action"
+msgstr "Zastavit aktuální činnost"
+
+#: ../meldapp.py:577
+msgid "Refresh the view"
+msgstr "Obnovit zobrazení"
+
+#: ../meldapp.py:578
+msgid "Reload"
+msgstr "Znovu načíst"
+
+#: ../meldapp.py:578
+msgid "Reload the comparison"
+msgstr "Znovu načíst porovnání"
+
+#: ../meldapp.py:581
+msgid "_Contents"
+msgstr "_Obsah"
+
+#: ../meldapp.py:581
+msgid "Open the Meld manual"
+msgstr "Otevřít příručku aplikace Meld"
+
+#: ../meldapp.py:582
+msgid "Report _Bug"
+msgstr "Ohlásit _chybu"
+
+#: ../meldapp.py:582
+msgid "Report a bug in Meld"
+msgstr "Nahlásit chybu v aplikaci Meld"
+
+#: ../meldapp.py:583
+msgid "Mailing _List"
+msgstr "_Elektronická konference"
+
+#: ../meldapp.py:583
+msgid "Go to the Meld mailing list"
+msgstr "Přejít na elektronickou konferenci aplikace Meld"
+
+#: ../meldapp.py:584
+msgid "About this program"
+msgstr "O této aplikaci"
+
+#: ../meldapp.py:849
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Nelze porovnávat kombinaci souborů a adresářů.\n"
 
@@ -1098,7 +1021,7 @@ msgstr "Nelze porovnávat kombinaci souborů a adresářů.\n"
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:829
+#: ../meldapp.py:899
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -1107,72 +1030,173 @@ msgstr ""
 "Meld %s\n"
 "Napsal Stephen Kennedy <stevek@gnome.org>"
 
-#: ../meldapp.py:858
+#: ../meldapp.py:929
 msgid "Set label to use instead of file name"
 msgstr "Nastavit k použití popisek namísto názvu souboru"
 
-#: ../meldapp.py:859 ../meldapp.py:860 ../meldapp.py:861 ../meldapp.py:862
+#: ../meldapp.py:930
+msgid "Automatically compare all differing files on startup"
+msgstr "Automaticky při spuštění porovnat všechny lišící se soubory"
+
+#: ../meldapp.py:931 ../meldapp.py:932 ../meldapp.py:933 ../meldapp.py:934
 msgid "Ignored for compatibility"
 msgstr "Ignorováno z důvodu kompatibility"
 
-#: ../meldapp.py:888
+#: ../meldapp.py:937
+msgid "Creates a diff tab for up to 3 supplied files."
+msgstr "Vytvoří kartu s porovnáním až pro tři poskytnuté soubory."
+
+#: ../meldapp.py:947
+msgid "Invalid number of arguments supplied for --diff."
+msgstr "Poskytnut nesprávný počet argumentů --diff."
+
+#: ../meldapp.py:970
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Nesprávný počet argumentů (obdrženo %i)"
 
-#: ../melddoc.py:45
+#: ../melddoc.py:46
 msgid "untitled"
 msgstr "nepojmenovaný"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:118
+#: ../misc.py:120
 msgid "[None]"
 msgstr "[Žádný]"
 
-#: ../vcview.py:170
+#: ../vcview.py:120
+msgid "_Commit"
+msgstr "_Commit"
+
+#: ../vcview.py:120
+msgid "Commit"
+msgstr "Commit"
+
+#. FIXME: popup used to use gtk.STOCK_GO_BACK
+#: ../vcview.py:121
+msgid "_Update"
+msgstr "_Update"
+
+#: ../vcview.py:121
+msgid "Update"
+msgstr "Update"
+
+#. FIXME: popup used to use gtk.STOCK_GO_FORWARD
+#: ../vcview.py:122
+msgid "_Add"
+msgstr "_Přidat"
+
+#: ../vcview.py:122
+msgid "Add to VC"
+msgstr "Přidat do VC"
+
+#. FIXME: popup used to use gtk.STOCK_ADD
+#: ../vcview.py:123
+msgid "Add _Binary"
+msgstr "Přidat _binární"
+
+#: ../vcview.py:123
+msgid "Add binary to VC"
+msgstr "Přidat binární soubor do VC"
+
+#. FIXME: stock is inconsistent with other VC actions
+#: ../vcview.py:124
+msgid "_Remove"
+msgstr "_Odstranit"
+
+#: ../vcview.py:124
+msgid "Remove from VC"
+msgstr "Odstranit z VC"
+
+#. FIXME: popup used to use gtk.STOCK_REMOVE
+#: ../vcview.py:125
+msgid "Revert to original"
+msgstr "Vrátit zpět na původní"
+
+#: ../vcview.py:126
+msgid "Delete locally"
+msgstr "Odstranit místně"
+
+#: ../vcview.py:130
+msgid "_Flatten"
+msgstr "Z_ploštit"
+
+#: ../vcview.py:130
+msgid "Flatten directories"
+msgstr "Zploštit adresáře"
+
+#: ../vcview.py:131
+msgid "_Modified"
+msgstr "_Změněné"
+
+#: ../vcview.py:132
+msgid "_Normal"
+msgstr "_Normální"
+
+#: ../vcview.py:132
+msgid "Show normal"
+msgstr "Zobrazovat běžné"
+
+#: ../vcview.py:133
+msgid "Non _VC"
+msgstr "Nikoliv V_C"
+
+#: ../vcview.py:133
+msgid "Show unversioned files"
+msgstr "Zobrazovat soubory bez verzí"
+
+#: ../vcview.py:134
+msgid "Ignored"
+msgstr "Ignorované"
+
+#: ../vcview.py:134
+msgid "Show ignored files"
+msgstr "Zobrazovat ignorované soubory"
+
+#: ../vcview.py:180
 msgid "Location"
 msgstr "Umístění"
 
-#: ../vcview.py:171
+#: ../vcview.py:181
 msgid "Status"
 msgstr "Stav"
 
-#: ../vcview.py:172
+#: ../vcview.py:182
 msgid "Rev"
 msgstr "Rev"
 
-#: ../vcview.py:174
+#: ../vcview.py:184
 msgid "Options"
 msgstr "Možnosti"
 
-#: ../vcview.py:257
+#: ../vcview.py:267
 msgid "(Empty)"
 msgstr "(Prázdný)"
 
-#: ../vcview.py:294
+#: ../vcview.py:304
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Stahují se rozdíly"
 
-#: ../vcview.py:301
+#: ../vcview.py:311
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Použití patche"
 
-#: ../vcview.py:305
+#: ../vcview.py:315
 msgid "No differences found."
 msgstr "Nenalezeny žádné rozdíly."
 
-#: ../vcview.py:382
+#: ../vcview.py:392
 msgid "Select some files first."
 msgstr "Nejdříve je nutné vybrat soubory."
 
-#: ../vcview.py:446
+#: ../vcview.py:459
 msgid "Invoking patch failed, you need GNU patch."
 msgstr "Použití patche selhalo, je vyžadován GNU patch."
 
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:39
+#: ../vc/_vc.py:40
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
@@ -1180,7 +1204,7 @@ msgstr ""
 "Ignorováno:Bez verze:::Chyba::Nově přidáno:Změněno:<b>Konflikt</b>:"
 "Odstraněno:Chybí"
 
-#: ../vc/cvs.py:153
+#: ../vc/cvs.py:155
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1190,3 +1214,115 @@ msgstr ""
 "Chyba při převodu na regulární výraz\n"
 "Vzorkem byl \"%s\"\n"
 "Chyba byla následující: \"%s\""
+
+#~ msgid "Edit"
+#~ msgstr "Upravit"
+
+#, fuzzy
+#~ msgid "Edit selected"
+#~ msgstr "Skrýt vybrané"
+
+#, fuzzy
+#~ msgid "Edit the selected file"
+#~ msgstr "Skrýt vybrané"
+
+#~ msgid "_Edit"
+#~ msgstr "_Upravit"
+
+#, fuzzy
+#~ msgid "Edit files"
+#~ msgstr "Upravit soubory s:"
+
+#~ msgid "Compare"
+#~ msgstr "Porovnat"
+
+#~ msgid "Copy All To _Left"
+#~ msgstr "Kopírovat vše do_leva"
+
+#~ msgid "Copy All To _Right"
+#~ msgstr "Kopírovat vše do_prava"
+
+#~ msgid "<b>Global options</b>"
+#~ msgstr "<b>Globální nastavení</b>"
+
+#~ msgid "<b>Update Options</b>"
+#~ msgstr "<b>Možnosti update</b>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+
+#~ msgid "CVS"
+#~ msgstr "CVS"
+
+#~ msgid "CVS binary"
+#~ msgstr "Binární soubor CVS"
+
+#~ msgid "Create missing directories (-d)"
+#~ msgstr "Vytvářet chybějící adresáře (-d)"
+
+#~ msgid "Down"
+#~ msgstr "Dolů"
+
+#~ msgid "Ignore .cvsrc (-f)"
+#~ msgstr "Ignorovat .cvsrc (-f)"
+
+#~ msgid "Prune empty directories (-P)"
+#~ msgstr "Odstraňovat prázdné adresáře (-P)"
+
+#~ msgid "Quiet mode (-q)"
+#~ msgstr "Tichý režim (-q)"
+
+#~ msgid "Redo"
+#~ msgstr "Provést znovu"
+
+#~ msgid "Save"
+#~ msgstr "Uložit"
+
+#~ msgid "Save _As"
+#~ msgstr "Uložit _jako"
+
+#~ msgid "Stop"
+#~ msgstr "Zastavit"
+
+#~ msgid "Undo"
+#~ msgstr "Vrátit"
+
+#~ msgid "Up"
+#~ msgstr "Nahoru"
+
+#~ msgid "Use Compression (-z)"
+#~ msgstr "Používat kompresi (-z)"
+
+#~ msgid "Yes"
+#~ msgstr "Ano"
+
+#~ msgid "_Down"
+#~ msgstr "_Dolů"
+
+#~ msgid "_File"
+#~ msgstr "_Soubor"
+
+#~ msgid "_Help"
+#~ msgstr "_Nápověda"
+
+#~ msgid "_Save"
+#~ msgstr "_Uložit"
+
+#~ msgid "_Stop"
+#~ msgstr "Zasta_vit"
+
+#~ msgid "_Up"
+#~ msgstr "_Nahoru"
+
+#~ msgid "_View"
+#~ msgstr "_Zobrazit"
+
+#~ msgid "Remove _Locally"
+#~ msgstr "Odstranit _místně"
+
+#~ msgid ""
+#~ "Due to incompatible API changes some functions may not operate as "
+#~ "expected."
+#~ msgstr ""
+#~ "Kvůli nekompatibilním změnám v API možná některé funkce nebudou pracovat "
+#~ "podle očekávání."
