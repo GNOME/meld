@@ -290,7 +290,7 @@ class PreferencesDialog(gnomeglade.Component):
     def on_checkbutton_spaces_instead_of_tabs_toggled(self, check):
         self.prefs.spaces_instead_of_tabs = check.get_active()
         if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Spaces instead of_tab is only available if you have gnome-python-desktop installed.") )
+            misc.run_dialog(_("Spaces instead of tab is only available if you have gnome-python-desktop installed.") )
     def on_option_wrap_lines_changed(self, option):
         self.prefs.edit_wrap_lines = option.get_history()
     def on_checkbutton_supply_newline_toggled(self, check):
