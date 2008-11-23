@@ -2,7 +2,6 @@
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
 <!--*- mode: xml -*-->
 <glade-interface>
-  <requires lib="gnome"/>
   <widget class="GtkWindow" id="container">
     <property name="visible">True</property>
     <property name="title" translatable="yes">window1</property>
@@ -16,19 +15,11 @@
           <placeholder/>
         </child>
         <child>
-          <widget class="GnomeFileEntry" id="fileentry2">
+          <widget class="Custom" id="fileentry2">
             <property name="visible">True</property>
-            <property name="history_id">fileentry</property>
-            <property name="use_filechooser">True</property>
-            <property name="max_saved">10</property>
+            <property name="creation_function">create_fileentry</property>
+            <property name="string1">fileentry</property>
             <signal name="activate" handler="on_fileentry_activate"/>
-            <child internal-child="entry">
-              <widget class="GtkEntry" id="comboentry0">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">*</property>
-              </widget>
-            </child>
           </widget>
           <packing>
             <property name="left_attach">5</property>
@@ -38,19 +29,11 @@
           </packing>
         </child>
         <child>
-          <widget class="GnomeFileEntry" id="fileentry1">
+          <widget class="Custom" id="fileentry1">
             <property name="visible">True</property>
-            <property name="history_id">fileentry</property>
-            <property name="use_filechooser">True</property>
-            <property name="max_saved">10</property>
+            <property name="creation_function">create_fileentry</property>
+            <property name="string1">fileentry</property>
             <signal name="activate" handler="on_fileentry_activate"/>
-            <child internal-child="entry">
-              <widget class="GtkEntry" id="comboentry1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">*</property>
-              </widget>
-            </child>
           </widget>
           <packing>
             <property name="left_attach">3</property>
@@ -60,19 +43,11 @@
           </packing>
         </child>
         <child>
-          <widget class="GnomeFileEntry" id="fileentry0">
+          <widget class="Custom" id="fileentry0">
             <property name="visible">True</property>
-            <property name="history_id">fileentry</property>
-            <property name="use_filechooser">True</property>
-            <property name="max_saved">10</property>
+            <property name="string1">fileentry</property>
+            <property name="creation_function">create_fileentry</property>
             <signal name="activate" handler="on_fileentry_activate"/>
-            <child internal-child="entry">
-              <widget class="GtkEntry" id="comboentry0">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">*</property>
-              </widget>
-            </child>
           </widget>
           <packing>
             <property name="left_attach">1</property>
@@ -467,18 +442,10 @@ Which ones would you like to save?&lt;/span&gt;</property>
               <placeholder/>
             </child>
             <child>
-              <widget class="GnomeEntry" id="gnome_entry_search_for">
+              <widget class="Custom" id="gnome_entry_search_for">
                 <property name="visible">True</property>
-                <property name="history_id">search_for</property>
-                <property name="max_saved">10</property>
-                <child internal-child="entry">
-                  <widget class="GtkEntry" id="entry_search_for">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">*</property>
-                    <signal name="activate" handler="on_entry_search_for_activate"/>
-                  </widget>
-                </child>
+                <property name="string1">search_for</property>
+                <property name="creation_function">create_entry</property>
               </widget>
               <packing>
                 <property name="left_attach">1</property>

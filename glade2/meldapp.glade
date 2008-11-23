@@ -2,7 +2,6 @@
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
 <!--*- mode: xml -*-->
 <glade-interface>
-  <requires lib="gnome"/>
   <widget class="GtkWindow" id="meldapp">
     <property name="height_request">480</property>
     <property name="title" translatable="yes">Meld</property>
@@ -70,27 +69,21 @@
           </widget>
         </child>
   </widget>
-  <widget class="GnomeAbout" id="about">
+  <widget class="GtkAboutDialog" id="about">
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon">pixmaps/icon.png</property>
+    <property name="program-name">Meld</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <property name="copyright" translatable="yes">Copyright (C) 2002-2006 Stephen Kennedy</property>
-    <property name="comments">http://meld.sourceforge.net</property>
+    <property name="copyright" translatable="yes">Copyright © 2002-2008 Stephen Kennedy</property>
+    <property name="website">http://meld.sourceforge.net/</property>
     <property name="authors">Stephen Kennedy &lt;stevek@gnome.org&gt;
 
 With help from:
-
-Ross Burton (debian packaging, patches)
-Dag Wieers (rpm packaging)
-Martin Pool (localtime cvs patch)
-Adam Muegge (patched cvsview to support svn)
-Aaron Bentley (bzr vc plugin)
-Daniel Thompson (monotone vc plugin)
-
+See changelog for individual credits.
 </property>
-    <property name="translator_credits">Benoît Dejean (fr)
+    <property name="translator-credits">Benoît Dejean (fr)
 Takeshi Aihana (ja)
 Dongsu Jang (ko)
 Danilo Šegan (sr)
@@ -148,20 +141,12 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GnomeFileEntry" id="fileentry2">
+                  <widget class="Custom" id="fileentry2">
                     <property name="visible">True</property>
-                    <property name="history_id">file_comparison</property>
-                    <property name="browse_dialog_title">My File</property>
-                    <property name="use_filechooser">True</property>
-                    <property name="max_saved">10</property>
+                    <property name="creation_function">create_fileentry</property>
+                    <property name="string1">file_comparison</property>
+                    <property name="string2">My File</property>
                     <signal name="activate" handler="on_entry_activate"/>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="combo-entry6">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">*</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -172,20 +157,12 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GnomeFileEntry" id="fileentry1">
+                  <widget class="Custom" id="fileentry1">
                     <property name="visible">True</property>
-                    <property name="history_id">file_comparison</property>
-                    <property name="browse_dialog_title">Original File</property>
-                    <property name="use_filechooser">True</property>
-                    <property name="max_saved">10</property>
+                    <property name="creation_function">create_fileentry</property>
+                    <property name="string1">file_comparison</property>
+                    <property name="string2">Original File</property>
                     <signal name="activate" handler="on_entry_activate"/>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="combo-entry5">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">*</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -196,22 +173,13 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GnomeFileEntry" id="fileentry0">
+                  <widget class="Custom" id="fileentry0">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
-                    <property name="can_default">True</property>
-                    <property name="history_id">file_comparison</property>
-                    <property name="browse_dialog_title">Other File</property>
-                    <property name="use_filechooser">True</property>
-                    <property name="max_saved">10</property>
+                    <property name="creation_function">create_fileentry</property>
+                    <property name="string1">file_comparison</property>
+                    <property name="string2">Other File</property>
                     <signal name="activate" handler="on_entry_activate"/>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="combo-entry4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">*</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -311,21 +279,13 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GnomeFileEntry" id="direntry2">
+                  <widget class="Custom" id="direntry2">
                     <property name="visible">True</property>
-                    <property name="history_id">dir_comparison</property>
-                    <property name="browse_dialog_title">My Directory</property>
-                    <property name="directory_entry">True</property>
-                    <property name="use_filechooser">True</property>
-                    <property name="max_saved">10</property>
+                    <property name="creation_function">create_fileentry</property>
+                    <property name="string1">dir_comparison</property>
+                    <property name="string2">My Directory</property>
+                    <property name="int1">1</property>
                     <signal name="activate" handler="on_entry_activate"/>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="entry3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">*</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -336,21 +296,13 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GnomeFileEntry" id="direntry1">
+                  <widget class="Custom" id="direntry1">
                     <property name="visible">True</property>
-                    <property name="history_id">dir_comparison</property>
-                    <property name="browse_dialog_title">Original Directory</property>
-                    <property name="directory_entry">True</property>
-                    <property name="use_filechooser">True</property>
-                    <property name="max_saved">10</property>
+                    <property name="creation_function">create_fileentry</property>
+                    <property name="string1">dir_comparison</property>
+                    <property name="string2">Original Directory</property>
+                    <property name="int1">1</property>
                     <signal name="activate" handler="on_entry_activate"/>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="entry2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">*</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -361,24 +313,14 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GnomeFileEntry" id="direntry0">
+                  <widget class="Custom" id="direntry0">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
-                    <property name="can_default">True</property>
-                    <property name="has_default">True</property>
-                    <property name="history_id">dir_comparison</property>
-                    <property name="browse_dialog_title">Other Directory</property>
-                    <property name="directory_entry">True</property>
-                    <property name="use_filechooser">True</property>
-                    <property name="max_saved">10</property>
+                    <property name="creation_function">create_fileentry</property>
+                    <property name="string1">dir_comparison</property>
+                    <property name="string2">Other Directory</property>
+                    <property name="int1">1</property>
                     <signal name="activate" handler="on_entry_activate"/>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="entry1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">*</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -461,21 +403,13 @@ Adam Weinberger (en_CA)</property>
                 <property name="column_spacing">10</property>
                 <property name="row_spacing">10</property>
                 <child>
-                  <widget class="GnomeFileEntry" id="vcentry0">
+                  <widget class="Custom" id="vcentry0">
                     <property name="visible">True</property>
-                    <property name="history_id">vc_directory</property>
-                    <property name="browse_dialog_title">CVS Directory</property>
-                    <property name="directory_entry">True</property>
-                    <property name="use_filechooser">True</property>
-                    <property name="max_saved">10</property>
+                    <property name="creation_function">create_fileentry</property>
+                    <property name="string1">vc_directory</property>
+                    <property name="string2">VC Directory</property>
+                    <property name="int1">1</property>
                     <signal name="activate" handler="on_entry_activate"/>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="entry4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">*</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
@@ -783,14 +717,12 @@ Adam Weinberger (en_CA)</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GnomeFontPicker" id="fontpicker">
+                                      <widget class="GtkFontButton" id="fontpicker">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="response_id">0</property>
-                                        <property name="mode">GNOME_FONT_PICKER_MODE_FONT_INFO</property>
-                                        <property name="use_font_in_label">True</property>
-                                        <property name="label_font_size">10</property>
-                                        <signal name="font_set" handler="on_fontpicker_font_set"/>
+                                        <property name="use-font">True</property>
+                                        <signal name="font-set" handler="on_fontpicker_font_set"/>
                                       </widget>
                                       <packing>
                                         <property name="expand">False</property>

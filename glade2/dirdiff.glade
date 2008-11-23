@@ -2,8 +2,6 @@
 <!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
 
 <glade-interface>
-<requires lib="gnome"/>
-
 <widget class="GtkWindow" id="container">
   <property name="visible">True</property>
   <property name="title" translatable="yes">window1</property>
@@ -111,30 +109,13 @@
 	  </child>
 
 	  <child>
-	    <widget class="GnomeFileEntry" id="fileentry0">
-	      <property name="visible">True</property>
-	      <property name="history_id">direntry</property>
-	      <property name="max_saved">10</property>
-	      <property name="directory_entry">True</property>
-	      <property name="modal">False</property>
-	      <property name="use_filechooser">True</property>
-	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Tue, 30 Jul 2002 21:08:21 GMT"/>
-
-	      <child internal-child="entry">
-		<widget class="GtkEntry" id="comboentry0">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
-		  <property name="visibility">True</property>
-		  <property name="max_length">0</property>
-		  <property name="text" translatable="yes"></property>
-		  <property name="has_frame">True</property>
-		  <property name="invisible_char">*</property>
-		  <property name="activates_default">False</property>
-		</widget>
-	      </child>
-	    </widget>
+            <widget class="Custom" id="fileentry0">
+              <property name="visible">True</property>
+              <property name="creation_function">create_fileentry</property>
+              <property name="string1">direntry</property>
+              <property name="int1">1</property>
+              <signal name="activate" handler="on_fileentry_activate"/>
+            </widget>
 	    <packing>
 	      <property name="left_attach">1</property>
 	      <property name="right_attach">2</property>
@@ -145,30 +126,13 @@
 	  </child>
 
 	  <child>
-	    <widget class="GnomeFileEntry" id="fileentry1">
-	      <property name="visible">True</property>
-	      <property name="history_id">direntry</property>
-	      <property name="max_saved">10</property>
-	      <property name="directory_entry">True</property>
-	      <property name="modal">False</property>
-	      <property name="use_filechooser">True</property>
-	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Thu, 18 Jul 2002 10:45:51 GMT"/>
-
-	      <child internal-child="entry">
-		<widget class="GtkEntry" id="comboentry1">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
-		  <property name="visibility">True</property>
-		  <property name="max_length">0</property>
-		  <property name="text" translatable="yes"></property>
-		  <property name="has_frame">True</property>
-		  <property name="invisible_char">*</property>
-		  <property name="activates_default">False</property>
-		</widget>
-	      </child>
-	    </widget>
+            <widget class="Custom" id="fileentry1">
+              <property name="visible">True</property>
+              <property name="creation_function">create_fileentry</property>
+              <property name="string1">direntry</property>
+              <property name="int1">1</property>
+              <signal name="activate" handler="on_fileentry_activate"/>
+            </widget>
 	    <packing>
 	      <property name="left_attach">3</property>
 	      <property name="right_attach">4</property>
@@ -179,31 +143,13 @@
 	  </child>
 
 	  <child>
-	    <widget class="GnomeFileEntry" id="fileentry2">
-	      <property name="visible">True</property>
-	      <property name="history_id">direntry</property>
-	      <property name="max_saved">10</property>
-	      <property name="browse_dialog_title" translatable="yes"></property>
-	      <property name="directory_entry">True</property>
-	      <property name="modal">False</property>
-	      <property name="use_filechooser">True</property>
-	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Thu, 18 Jul 2002 10:46:00 GMT"/>
-
-	      <child internal-child="entry">
-		<widget class="GtkEntry" id="comboentry2">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
-		  <property name="visibility">True</property>
-		  <property name="max_length">0</property>
-		  <property name="text" translatable="yes"></property>
-		  <property name="has_frame">True</property>
-		  <property name="invisible_char">*</property>
-		  <property name="activates_default">False</property>
-		</widget>
-	      </child>
-	    </widget>
+            <widget class="Custom" id="fileentry2">
+              <property name="visible">True</property>
+              <property name="creation_function">create_fileentry</property>
+              <property name="string1">direntry</property>
+              <property name="int1">1</property>
+              <signal name="activate" handler="on_fileentry_activate"/>
+            </widget>
 	    <packing>
 	      <property name="left_attach">5</property>
 	      <property name="right_attach">6</property>

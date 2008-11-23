@@ -70,6 +70,8 @@ class NewDocDialog(gnomeglade.Component):
         self.widget.set_transient_for(parentapp.widget)
         cur_page = type // 2
         self.notebook.set_current_page( cur_page )
+        self.fileentry[0].set_sensitive(self.three_way_compare[0].get_active())
+        self.direntry[0].set_sensitive(self.three_way_compare[1].get_active())
         self.widget.show_all()
 
     def on_entry_activate(self, entry):
@@ -79,12 +81,12 @@ class NewDocDialog(gnomeglade.Component):
                 if i == len(el) - 1:
                     self.button_ok.grab_focus()
                 else:
-                    el[i+1].gtk_entry().grab_focus()
+                    el[i+1].gtk_entry.grab_focus()
 
     def on_three_way_toggled(self, button):
         page = self.three_way_compare.index(button)
         self.entrylists[page][0].set_sensitive( button.get_active() )
-        self.entrylists[page][ not button.get_active() ].gtk_entry().grab_focus()
+        self.entrylists[page][ not button.get_active() ].gtk_entry.grab_focus()
 
     def on_response(self, dialog, arg):
         if arg != gtk.RESPONSE_CANCEL:
@@ -93,7 +95,7 @@ class NewDocDialog(gnomeglade.Component):
             if page < 2 and not self.three_way_compare[page].get_active():
                 paths.pop(0)
             for path in paths:
-                self.entrylists[page][0].gnome_entry().append_history(True, path)
+                self.entrylists[page][0].gnome_entry.append_text(path)
             methods = (self.parentapp.append_filediff,
                        self.parentapp.append_dirdiff,
                        self.parentapp.append_vcview )
@@ -278,8 +280,8 @@ class PreferencesDialog(gnomeglade.Component):
     #
     # editor
     #
-    def on_fontpicker_font_set(self, picker, font):
-        self.prefs.custom_font = font
+    def on_fontpicker_font_set(self, picker):
+        self.prefs.custom_font = picker.get_font_name()
     def on_radiobutton_font_toggled(self, radio):
         if radio.get_active():
             custom = radio == self.radiobutton_custom_font
@@ -770,9 +772,9 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_about_activate(self, *extra):
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
-        about.props.name = "Meld"
         about.props.version = version
-        about.show()
+        about.run()
+        about.hide()
 
     #
     # Toolbar and menu items (misc)

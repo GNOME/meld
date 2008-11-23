@@ -431,12 +431,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     gladefile = paths.share_dir("glade2/filediff.glade")
                     gnomeglade.Component.__init__(self, gladefile, "finddialog")
                     self.widget.set_transient_for(app.widget.get_toplevel())
+                    self.gnome_entry_search_for.child.connect("activate", self.on_entry_search_for_activate)
                     self.widget.show_all()
                 def on_destroy(self, *args):
                     self.parent.find_dialog = None
                     self.widget.destroy()
                 def on_entry_search_for_activate(self, *args):
-                    self.parent._find_text( self.entry_search_for.get_chars(0,-1),
+                    search_text = self.gnome_entry_search_for.get_active_text()
+                    self.gnome_entry_search_for.prepend_text(search_text)
+                    self.parent._find_text(search_text,
                         self.check_case.get_active(),
                         self.check_word.get_active(),
                         self.check_wrap.get_active(),

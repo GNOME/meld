@@ -68,7 +68,8 @@ class CommitDialog(gnomeglade.Component):
         self.widget.show_all()
 
     def run(self):
-        self.previousentry.list.select_item(0)
+        self.previousentry.child.set_editable(False)
+        self.previousentry.set_active(0)
         self.textview.grab_focus()
         buf = self.textview.get_buffer()
         buf.place_cursor( buf.get_start_iter() )
@@ -78,11 +79,11 @@ class CommitDialog(gnomeglade.Component):
         if response == gtk.RESPONSE_OK:
             self.parent._command_on_selected( self.parent.vc.commit_command(msg) )
         if len(msg.strip()):
-            self.previousentry.prepend_history(1, msg)
+            self.previousentry.prepend_text(msg)
         self.widget.destroy()
     def on_previousentry_activate(self, gentry):
         buf = self.textview.get_buffer()
-        buf.set_text( gentry.gtk_entry().get_text() )
+        buf.set_text( gentry.child.get_text() )
 
 COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tree.COL_END, tree.COL_END+6)
 
@@ -196,6 +197,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
+        self.fileentry.show() #TODO: remove
         size = self.fileentry.size_request()[1]
         self.button_jump.set_size_request(size, size)
         self.button_jump.hide()
@@ -205,7 +207,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def set_location(self, location):
         self.model.clear()
         self.location = location = os.path.abspath(location or ".")
-        self.fileentry.gtk_entry().set_text(location)
+        self.fileentry.gtk_entry.set_text(location)
         self.vc = vc.Vc(location)
         it = self.model.add_entries( None, [location] )
         self.treeview.grab_focus()

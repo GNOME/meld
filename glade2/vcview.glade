@@ -2,8 +2,6 @@
 <!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
 
 <glade-interface>
-<requires lib="gnome"/>
-
 <widget class="GtkWindow" id="container">
   <property name="visible">True</property>
   <property name="title" translatable="yes">window1</property>
@@ -33,29 +31,12 @@
 	  <property name="spacing">0</property>
 
 	  <child>
-	    <widget class="GnomeFileEntry" id="fileentry">
+	    <widget class="Custom" id="fileentry">
 	      <property name="visible">True</property>
-	      <property name="history_id">vcroot</property>
-	      <property name="max_saved">10</property>
-	      <property name="directory_entry">True</property>
-	      <property name="modal">False</property>
-	      <property name="use_filechooser">True</property>
-	      <property name="filechooser_action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-	      <signal name="activate" handler="on_fileentry_activate" last_modification_time="Sun, 28 Jul 2002 10:50:58 GMT"/>
-
-	      <child internal-child="entry">
-		<widget class="GtkEntry" id="comboentry">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
-		  <property name="visibility">True</property>
-		  <property name="max_length">0</property>
-		  <property name="text" translatable="yes"></property>
-		  <property name="has_frame">True</property>
-		  <property name="invisible_char">*</property>
-		  <property name="activates_default">False</property>
-		</widget>
-	      </child>
+	      <property name="creation_function">create_fileentry</property>
+	      <property name="string1">direntry</property>
+	      <property name="int1">1</property>
+	      <signal name="activate" handler="on_fileentry_activate"/>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -494,27 +475,13 @@
 		      </child>
 
 		      <child>
-			<widget class="GnomeEntry" id="previousentry">
+            <widget class="Custom" id="previousentry">
 			  <property name="border_width">5</property>
-			  <property name="visible">True</property>
-			  <property name="history_id">previousentry</property>
-			  <property name="max_saved">15</property>
-			  <signal name="changed" handler="on_previousentry_activate" last_modification_time="Sun, 14 Sep 2003 14:08:20 GMT"/>
-
-			  <child internal-child="entry">
-			    <widget class="GtkEntry" id="comboentry1">
-			      <property name="visible">True</property>
-			      <property name="can_focus">True</property>
-			      <property name="editable">False</property>
-			      <property name="visibility">True</property>
-			      <property name="max_length">0</property>
-			      <property name="text" translatable="yes"></property>
-			      <property name="has_frame">True</property>
-			      <property name="invisible_char">*</property>
-			      <property name="activates_default">False</property>
-			    </widget>
-			  </child>
-			</widget>
+              <property name="visible">True</property>
+              <property name="string1">previousentry</property>
+              <property name="creation_function">create_entry</property>
+              <signal name="changed" handler="on_previousentry_activate"/>
+            </widget>
 			<packing>
 			  <property name="padding">5</property>
 			  <property name="expand">True</property>
