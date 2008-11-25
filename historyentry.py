@@ -398,7 +398,7 @@ class HistoryFileEntry(gtk.VBox, gtk.Editable):
         else:
             action = self.__filechooser_action
 
-        title = self.browse_dialog_title if self.browse_dialog_title else _("Select file")
+        title = self.browse_dialog_title or _("Select file")
         self.fsw = gtk.FileChooserDialog(title, None, action,
                                (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL), None)
 
