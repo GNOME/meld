@@ -197,7 +197,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
-        self.fileentry.show() #TODO: remove
+        self.fileentry.show() #TODO: remove once bug 97503 is fixed
         size = self.fileentry.size_request()[1]
         self.button_jump.set_size_request(size, size)
         self.button_jump.hide()

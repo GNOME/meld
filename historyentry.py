@@ -344,13 +344,13 @@ class HistoryFileEntry(gtk.VBox, gtk.Editable):
         self.gtk_entry.set_text(locale_filename)
         self.gtk_entry.emit("changed")
         self.gtk_entry.activate()
-        filewidget.destroy()
+        filewidget.hide()
 
     def __browse_dialog_response(self, widget, response):
         if response == gtk.RESPONSE_ACCEPT:
             self.__browse_dialog_ok(widget)
         else:
-            widget.destroy()
+            widget.hide()
 
     def __setup_filter(self, filechooser, *args):
         filefilter = gtk.FileFilter()
