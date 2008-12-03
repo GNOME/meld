@@ -741,13 +741,25 @@ class MeldApp(gnomeglade.Component):
         self.current_doc().on_replace_activate()
 
     def on_menu_copy_activate(self, *extra):
-        self.current_doc().on_copy_activate()
+        widget = self.widget.get_focus()
+        if isinstance(widget, gtk.Editable):
+            widget.copy_clipboard()
+        elif isinstance(widget, gtk.TextView):
+            widget.emit("copy-clipboard")
 
     def on_menu_cut_activate(self, *extra):
-        self.current_doc().on_cut_activate()
+        widget = self.widget.get_focus()
+        if isinstance(widget, gtk.Editable):
+            widget.cut_clipboard()
+        elif isinstance(widget, gtk.TextView):
+            widget.emit("cut-clipboard")
 
     def on_menu_paste_activate(self, *extra):
-        self.current_doc().on_paste_activate()
+        widget = self.widget.get_focus()
+        if isinstance(widget, gtk.Editable):
+            widget.paste_clipboard()
+        elif isinstance(widget, gtk.TextView):
+            widget.emit("paste-clipboard")
 
     #
     # Toolbar and menu items (settings)

@@ -100,13 +100,6 @@ class MeldDoc(gobject.GObject):
     def on_replace_activate(self, *extra):
         pass
 
-    def on_copy_activate(self, *args):
-        pass
-    def on_cut_activate(self, *args):
-        pass
-    def on_paste_activate(self, *args):
-        pass
-
     def on_preference_changed(self, key, value):
         pass
 
