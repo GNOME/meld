@@ -16,7 +16,9 @@
 
 import os
 
-import gtk, gobject, atk
+import gtk
+import gobject
+import atk
 # gconf is also imported; see end of HistoryEntry class for details
 # gnomevfs is also imported; see end of HistoryFileEntry class for details
 from gettext import gettext as _
@@ -138,7 +140,7 @@ class HistoryEntry(gtk.ComboBoxEntry):
     def clear(self):
         store = self.__get_history_store()
         store.clear()
-        self.save_history(entry);
+        self._save_history()
 
     def set_history_length(self, max_saved):
         if max_saved <= 0:
@@ -181,7 +183,7 @@ class HistoryEntry(gtk.ComboBoxEntry):
         return self.child
 
     def set_escape_func(self, escape_func):
-        cells = entry.get_cells()
+        cells = self.get_cells()
         # We only have one cell renderer
         if len(cells) == 0 or len(cells) > 1:
             return
@@ -205,18 +207,18 @@ except ImportError:
 
 
 
-def _expand_filename(input, default_dir):
-    if not input:
+def _expand_filename(filename, default_dir):
+    if not filename:
         return ""
-    if os.path.isabs(input):
-        return input
-    expanded = os.path.expanduser(input)
-    if expanded != input:
+    if os.path.isabs(filename):
+        return filename
+    expanded = os.path.expanduser(filename)
+    if expanded != filename:
         return expanded
     elif default_dir:
-        return os.path.expanduser(os.path.join([default_dir, input]))
+        return os.path.expanduser(os.path.join([default_dir, filename]))
     else:
-        return os.path.join([os.getcwd(), input])
+        return os.path.join([os.getcwd(), filename])
 
 
 class HistoryFileEntry(gtk.VBox, gtk.Editable):
@@ -327,7 +329,7 @@ class HistoryFileEntry(gtk.VBox, gtk.Editable):
         self.__gentry.child.set_text(filename)
 
     def set_modal(self, is_modal):
-        self.__is_model = is_modal
+        self.__is_modal = is_modal
 
     def get_modal(self):
         return self.__is_modal
@@ -367,7 +369,7 @@ class HistoryFileEntry(gtk.VBox, gtk.Editable):
         if locale_text is None:
             return self.__default_path + os.sep
 
-        filename = _expand_filename(locale_text, self.__default_path);
+        filename = _expand_filename(locale_text, self.__default_path)
         if not filename:
             return self.__default_path + os.sep
 
@@ -443,18 +445,18 @@ class HistoryFileEntry(gtk.VBox, gtk.Editable):
     def history_entry_drag_data_received(self, widget, context, x, y, selection_data, info, time):
         uris = selection_data.data.split()
         if not uris:
-            context.finish(False, False, time);
+            context.finish(False, False, time)
             return
 
         for uri in uris:
-            file = gnomevfs.get_local_path_from_uri(uri)
-            if file:
+            path = gnomevfs.get_local_path_from_uri(uri)
+            if path:
                 break
         else:
-            context.finish(False, False, time);
+            context.finish(False, False, time)
             return
 
-        widget.gtk_entry.set_text(file)
+        widget.gtk_entry.set_text(path)
         widget.gtk_entry.emit("changed")
         widget.gtk_entry.activate()
 
