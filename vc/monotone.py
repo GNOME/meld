@@ -247,13 +247,9 @@ class Vc(_vc.Vc):
         else:
             return self._tree_cache
 
-    # TODO: if get_tree() could be called later,
-    # we wouldn't need this override for lookup_files()
-    def lookup_files(self, dirs, files):
-        tree = self.get_tree()
-        _vc.Vc.lookup_files(self, dirs, files)
-
     def _get_dirsandfiles(self, directory, dirs, files):
+
+        tree = self.get_tree()
 
         retfiles = []
         retdirs = []
