@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: meld.HEAD\n"
-"Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2008-02-22 03:44+0000\n"
-"PO-Revision-Date: 2008-03-30 22:00+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&amp;component=general\n"
+"POT-Creation-Date: 2008-11-23 15:30+0000\n"
+"PO-Revision-Date: 2008-12-22 15:10+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@fsf.hu>\n"
 "MIME-Version: 1.0\n"
@@ -18,27 +18,101 @@ msgstr ""
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../dirdiff.py:252 ../dirdiff.py:267
+#: ../dirdiff.py:189 ../glade2/meldapp.glade.h:67 ../vcview.py:119
+msgid "_Compare"
+msgstr "Össze_hasonlítás"
+
+#: ../dirdiff.py:189 ../vcview.py:119
+msgid "Compare selected"
+msgstr "Kijelöltek összehasonlítása"
+
+#. FIXME: the glade files were inconsistent: GO_BACK vs GOTO_FIRST, "Left" vs "Copy To Left"
+#: ../dirdiff.py:191
+msgid "Left"
+msgstr "Bal"
+
+#: ../dirdiff.py:191 ../filediff.py:137
+msgid "Copy To Left"
+msgstr "Másolás balra"
+
+#. FIXME: the glade files were inconsistent: GO_FORWARD vs GOTO_LAST, "Right" vs "Copy To Right"
+#: ../dirdiff.py:193
+msgid "Right"
+msgstr "Jobb"
+
+#: ../dirdiff.py:193 ../filediff.py:138
+msgid "Copy To Right"
+msgstr "Másolás jobbra"
+
+#: ../dirdiff.py:194
+msgid "Delete selected"
+msgstr "Kijelölt törlése"
+
+#: ../dirdiff.py:195
+msgid "Hide..."
+msgstr "Elrejtés…"
+
+#: ../dirdiff.py:195
+msgid "Hide selected"
+msgstr "Kijelölt elrejtése"
+
+#: ../dirdiff.py:197 ../filediff.py:135 ../vcview.py:120
+msgid "Open selected"
+msgstr "Kijelölt megnyitása"
+
+#: ../dirdiff.py:201
+msgid "Case"
+msgstr "Kis- és nagybetűk"
+
+#: ../dirdiff.py:201
+msgid "Ignore case of entries"
+msgstr "Kis- és nagybetűk egyenértékűek"
+
+#: ../dirdiff.py:202
+msgid "Same"
+msgstr "Egyezik"
+
+#: ../dirdiff.py:202
+msgid "Show identical"
+msgstr "Azonosak megjelenítése"
+
+#: ../dirdiff.py:203
+msgid "New"
+msgstr "Új"
+
+#: ../dirdiff.py:203
+msgid "Show new"
+msgstr "Újak megjelenítése"
+
+#: ../dirdiff.py:204
+msgid "Modified"
+msgstr "Módosítva"
+
+#: ../dirdiff.py:204 ../vcview.py:132
+msgid "Show modified"
+msgstr "Módosítottak megjelenítése"
+
+#: ../dirdiff.py:265 ../dirdiff.py:280
 #, python-format
 msgid "Error converting pattern '%s' to regular expression"
 msgstr "Hiba „%s” minta szabályos kifejezéssé alakításakor"
 
-#: ../dirdiff.py:283
+#: ../dirdiff.py:288
 #, python-format
 msgid "Hide %s"
 msgstr "%s elrejtése"
 
-#: ../dirdiff.py:364 ../dirdiff.py:373 ../vcview.py:213 ../vcview.py:241
+#: ../dirdiff.py:373 ../dirdiff.py:383 ../vcview.py:225 ../vcview.py:253
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] %s beolvasása"
 
-#: ../dirdiff.py:406
+#: ../dirdiff.py:416
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "„%s” rejtve „%s” által"
 
-#: ../dirdiff.py:412
+#: ../dirdiff.py:422
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
@@ -49,12 +123,12 @@ msgstr ""
 "fájlrendszeren. Néhány fájl nem látható:\n"
 "%s"
 
-#: ../dirdiff.py:482
+#: ../dirdiff.py:496
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Kész"
 
-#: ../dirdiff.py:528
+#: ../dirdiff.py:542
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -63,7 +137,7 @@ msgstr ""
 "„%s” létezik.\n"
 "Felülírja?"
 
-#: ../dirdiff.py:535
+#: ../dirdiff.py:549
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -74,7 +148,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:553 ../vcview.py:405
+#: ../dirdiff.py:567 ../vcview.py:417
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -83,7 +157,7 @@ msgstr ""
 "„%s” egy könyvtár.\n"
 "Eltávolítja rekurzívan?"
 
-#: ../dirdiff.py:560 ../vcview.py:410
+#: ../dirdiff.py:574 ../vcview.py:422
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -94,67 +168,103 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:571
+#: ../dirdiff.py:585
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i másodperc"
 msgstr[1] "%i másodperc"
 
-#: ../dirdiff.py:572
+#: ../dirdiff.py:586
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i perc"
 msgstr[1] "%i perc"
 
-#: ../dirdiff.py:573
+#: ../dirdiff.py:587
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i óra"
 msgstr[1] "%i óra"
 
-#: ../dirdiff.py:574
+#: ../dirdiff.py:588
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i nap"
 msgstr[1] "%i nap"
 
-#: ../dirdiff.py:575
+#: ../dirdiff.py:589
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i hét"
 msgstr[1] "%i hét"
 
-#: ../dirdiff.py:576
+#: ../dirdiff.py:590
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i hónap"
 msgstr[1] "%i hónap"
 
-#: ../dirdiff.py:577
+#: ../dirdiff.py:591
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
 msgstr[0] "%i év"
 msgstr[1] "%i év"
 
+#: ../filediff.py:130 ../meldapp.py:560
+msgid "Save the current file"
+msgstr "A jelenlegi fájl mentése"
+
+#: ../filediff.py:131
+msgid "Save the current file with a different name"
+msgstr "A jelenlegi fájl mentése más néven"
+
+#: ../filediff.py:132 ../meldapp.py:568
+msgid "Cut the selection"
+msgstr "A kijelölés kivágása"
+
+#: ../filediff.py:133 ../meldapp.py:569
+msgid "Copy the selection"
+msgstr "A kijelölés másolása"
+
+#: ../filediff.py:134 ../meldapp.py:570
+msgid "Paste the clipboard"
+msgstr "A vágólap tartalmának beillesztése"
+
+#: ../filediff.py:136 ../glade2/filediff.glade.h:4
+msgid "Create Patch"
+msgstr "Folt létrehozása"
+
+#: ../filediff.py:136
+msgid "Create a patch"
+msgstr "Folt létrehozása"
+
+#: ../filediff.py:137
+msgid "Copy all changes from right pane to left pane"
+msgstr "Minden változás másolása jobbról balra"
+
+#: ../filediff.py:138
+msgid "Copy all changes from left pane to right pane"
+msgstr "Minden változás másolása balról jobbra"
+
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:200
+#: ../filediff.py:187
 msgid "INS,OVR"
 msgstr "BESZ,ÁTÍR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:202
+#: ../filediff.py:189
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "%i. sor, %i. oszlop"
 
-#: ../filediff.py:260
+#: ../filediff.py:247
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -164,7 +274,7 @@ msgstr ""
 "összehasonlítás hibás lesz. További részletekért lásd a felhasználói "
 "kézikönyvet."
 
-#: ../filediff.py:508
+#: ../filediff.py:511
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -173,41 +283,41 @@ msgstr ""
 "Hibás szabályos kifejezés\n"
 "„%s”"
 
-#: ../filediff.py:520
+#: ../filediff.py:523
 #, python-format
 msgid "The regular expression '%s' was not found."
 msgstr "A(z) „%s” szabályos kifejezés nem található."
 
-#: ../filediff.py:522
+#: ../filediff.py:525
 #, python-format
 msgid "The text '%s' was not found."
 msgstr "A(z) „%s” szöveg nem található."
 
-#: ../filediff.py:574
+#: ../filediff.py:578
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Panelek számának beállítása"
 
-#: ../filediff.py:581
+#: ../filediff.py:585
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Fájlok megnyitása"
 
-#: ../filediff.py:598 ../filediff.py:612 ../filediff.py:628 ../filediff.py:635
+#: ../filediff.py:602 ../filediff.py:616 ../filediff.py:632 ../filediff.py:639
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Nem sikerült olvasni „%s” fájlból"
 
-#: ../filediff.py:599 ../filediff.py:636
+#: ../filediff.py:603 ../filediff.py:640
 msgid "The error was:"
 msgstr "A hiba:"
 
-#: ../filediff.py:604
+#: ../filediff.py:608
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Fájlok olvasása"
 
-#: ../filediff.py:613
+#: ../filediff.py:617
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -215,17 +325,17 @@ msgstr ""
 "Ascii null értékeket tartalmaz.\n"
 "Talán ez egy bináris fájl."
 
-#: ../filediff.py:629
+#: ../filediff.py:633
 #, python-format
 msgid "I tried encodings %s."
 msgstr "%s kódolásokat próbáltam."
 
-#: ../filediff.py:658
+#: ../filediff.py:662
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Eltérések számítása"
 
-#: ../filediff.py:763
+#: ../filediff.py:768
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -234,7 +344,7 @@ msgstr ""
 "„%s” létezik!\n"
 "Felülírja?"
 
-#: ../filediff.py:776
+#: ../filediff.py:781
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -245,12 +355,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:785
+#: ../filediff.py:790
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Válasszon nevet a(z) %i puffernek."
 
-#: ../filediff.py:798
+#: ../filediff.py:803
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -261,7 +371,7 @@ msgstr ""
 "\n"
 "Melyik formátumot szeretné használni?"
 
-#: ../filediff.py:814
+#: ../filediff.py:819
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -271,11 +381,11 @@ msgstr ""
 "Szeretné UTF-8 kódolással menteni?"
 
 #. save as
-#: ../filediff.py:865
+#: ../filediff.py:870
 msgid "Save patch as..."
-msgstr "Folt mentése másként..."
+msgstr "Folt mentése másként…"
 
-#: ../filediff.py:919
+#: ../filediff.py:929
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -288,87 +398,6 @@ msgstr ""
 "\n"
 "A művelet nem vonható vissza."
 
-#: ../glade2/dirdiff.glade.h:1
-msgid "Case"
-msgstr "Kis- és nagybetűk"
-
-#: ../glade2/dirdiff.glade.h:2
-msgid "Compare"
-msgstr "Összehasonlítás"
-
-#: ../glade2/dirdiff.glade.h:3 ../glade2/vcview.glade.h:6
-msgid "Compare selected"
-msgstr "Kijelöltek összehasonlítása"
-
-#: ../glade2/dirdiff.glade.h:4
-msgid "Copy To Left"
-msgstr "Másolás balra"
-
-#: ../glade2/dirdiff.glade.h:5
-msgid "Copy To Right"
-msgstr "Másolás jobbra"
-
-#: ../glade2/dirdiff.glade.h:6
-msgid "Delete selected"
-msgstr "Kijelölt törlése"
-
-#: ../glade2/dirdiff.glade.h:7 ../glade2/filediff.glade.h:7
-msgid "Edit"
-msgstr "Szerkesztés"
-
-#: ../glade2/dirdiff.glade.h:8
-msgid "Hide selected"
-msgstr "Kijelölt elrejtése"
-
-#: ../glade2/dirdiff.glade.h:9
-msgid "Hide..."
-msgstr "Elrejtés..."
-
-#: ../glade2/dirdiff.glade.h:10
-msgid "Ignore case of entries"
-msgstr "Kis- és nagybetűk egyenértékűek"
-
-#: ../glade2/dirdiff.glade.h:11
-msgid "Left"
-msgstr "Bal"
-
-#: ../glade2/dirdiff.glade.h:12
-msgid "Modified"
-msgstr "Módosítva"
-
-#: ../glade2/dirdiff.glade.h:13
-msgid "New"
-msgstr "Új"
-
-#: ../glade2/dirdiff.glade.h:14
-msgid "Right"
-msgstr "Jobb"
-
-#: ../glade2/dirdiff.glade.h:15
-msgid "Same"
-msgstr "Egyezik"
-
-#: ../glade2/dirdiff.glade.h:16
-msgid "Show identical"
-msgstr "Azonosak megjelenítése"
-
-#: ../glade2/dirdiff.glade.h:17 ../glade2/vcview.glade.h:20
-msgid "Show modified"
-msgstr "Módosítottak megjelenítése"
-
-#: ../glade2/dirdiff.glade.h:18
-msgid "Show new"
-msgstr "Újak megjelenítése"
-
-#: ../glade2/dirdiff.glade.h:19 ../glade2/meldapp.glade.h:89
-#: ../glade2/vcview.glade.h:28
-msgid "_Compare"
-msgstr "Össze_hasonlítás"
-
-#: ../glade2/dirdiff.glade.h:20
-msgid "_Delete Selected"
-msgstr "Kijelölt _törlése"
-
 #: ../glade2/filediff.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
@@ -378,46 +407,42 @@ msgstr ""
 "Melyeket szeretné menteni?</span>"
 
 #: ../glade2/filediff.glade.h:3
-msgid "Copy All To _Left"
-msgstr "Minden másolása ba_lra"
-
-#: ../glade2/filediff.glade.h:4
-msgid "Copy All To _Right"
-msgstr "Minden másolása jobb_ra"
-
-#: ../glade2/filediff.glade.h:5
 msgid "Copy to Clipboard"
 msgstr "Másolás a vágólapra"
 
-#: ../glade2/filediff.glade.h:6
-msgid "Create Patch"
-msgstr "Folt létrehozása"
-
-#: ../glade2/filediff.glade.h:8
+#: ../glade2/filediff.glade.h:5
 msgid "Find"
 msgstr "Keresés"
 
-#: ../glade2/filediff.glade.h:9
+#: ../glade2/filediff.glade.h:6
 msgid "Match _entire word only"
 msgstr "Csak t_eljes szavak"
 
-#: ../glade2/filediff.glade.h:10
+#: ../glade2/filediff.glade.h:7
 msgid "Regular e_xpression"
 msgstr "Szabályos ki_fejezés"
 
-#: ../glade2/filediff.glade.h:11
+#: ../glade2/filediff.glade.h:8
 msgid "Save modified files?"
 msgstr "Menti a módosított fájlokat?"
 
-#: ../glade2/filediff.glade.h:12
+#: ../glade2/filediff.glade.h:9
 msgid "Search for:"
 msgstr "Keresendő:"
 
-#: ../glade2/filediff.glade.h:13
+#: ../glade2/filediff.glade.h:10
+msgid "_Discard Changes"
+msgstr "_Változtatások eldobása"
+
+#: ../glade2/filediff.glade.h:11
 msgid "_Match case"
 msgstr "Kis- és _nagybetűk"
 
-#: ../glade2/filediff.glade.h:14
+#: ../glade2/filediff.glade.h:12
+msgid "_Save Selected"
+msgstr "_Kijelöltek mentése"
+
+#: ../glade2/filediff.glade.h:13
 msgid "_Wrap around"
 msgstr "Kö_rbe"
 
@@ -438,82 +463,58 @@ msgid "<b>Font</b>"
 msgstr "<b>Betűkészlet</b>"
 
 #: ../glade2/meldapp.glade.h:5
-msgid "<b>Global options</b>"
-msgstr "<b>Globális beállítások</b>"
-
-#: ../glade2/meldapp.glade.h:6
 msgid "<b>Loading</b>"
 msgstr "<b>Betöltés</b>"
 
-#: ../glade2/meldapp.glade.h:7
+#: ../glade2/meldapp.glade.h:6
 msgid "<b>Misc</b>"
 msgstr "<b>Egyebek</b>"
 
-#: ../glade2/meldapp.glade.h:8
+#: ../glade2/meldapp.glade.h:7
 msgid "<b>Saving</b>"
 msgstr "<b>Mentés</b>"
 
-#: ../glade2/meldapp.glade.h:9
+#: ../glade2/meldapp.glade.h:8
 msgid "<b>Toolbar Appearance</b>"
 msgstr "<b>Eszköztár megjelenése</b>"
 
-#: ../glade2/meldapp.glade.h:10
-msgid "<b>Update Options</b>"
-msgstr "<b>Frissítési beállítások</b>"
-
-#: ../glade2/meldapp.glade.h:11
+#: ../glade2/meldapp.glade.h:9
 msgid "<b>Whitespace</b>"
 msgstr "<b>Üreshely</b>"
 
-#: ../glade2/meldapp.glade.h:12
-msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-
-#: ../glade2/meldapp.glade.h:13
+#: ../glade2/meldapp.glade.h:10
 msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Összehasonlítás</span>"
 
-#: ../glade2/meldapp.glade.h:14
+#: ../glade2/meldapp.glade.h:11
 msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Megjelenítés</span>"
 
-#: ../glade2/meldapp.glade.h:15
+#: ../glade2/meldapp.glade.h:12
 msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Szerkesztő</span>"
 
-#: ../glade2/meldapp.glade.h:16
+#: ../glade2/meldapp.glade.h:13
 msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Kódolás</span>"
 
-#: ../glade2/meldapp.glade.h:17
+#: ../glade2/meldapp.glade.h:14
 msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Fájlszűrők</span>"
 
-#: ../glade2/meldapp.glade.h:18
+#: ../glade2/meldapp.glade.h:15
 msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
 msgstr "<span weight=\"bold\" size=\"x-large\">Szövegszűrők</span>"
 
-#: ../glade2/meldapp.glade.h:19
+#: ../glade2/meldapp.glade.h:16
 msgid "Automatically supply missing newline at end of file"
 msgstr "Hiányzó fájlvégi újsor automatikus hozzáadása"
 
-#: ../glade2/meldapp.glade.h:20
-msgid "CVS"
-msgstr "CVS"
-
-#: ../glade2/meldapp.glade.h:21
-msgid "CVS Directory"
-msgstr "CVS könyvtár"
-
-#: ../glade2/meldapp.glade.h:22
-msgid "CVS binary"
-msgstr "CVS bináris"
-
-#: ../glade2/meldapp.glade.h:23
+#: ../glade2/meldapp.glade.h:17
 msgid "Choose Files"
 msgstr "Válasszon fájlokat"
 
-#: ../glade2/meldapp.glade.h:24
+#: ../glade2/meldapp.glade.h:18
 msgid ""
 "Choose how the central bar of the diff viewer is drawn. You may wish to "
 "choose a simpler mode if you find scrolling is slow."
@@ -521,249 +522,185 @@ msgstr ""
 "Válassza ki az eltérésmegjelenítő középső sávjának kinézetét. Választhat egy "
 "egyszerűbb módot, ha a görgetést túl lassúnak találja."
 
-#: ../glade2/meldapp.glade.h:25
-msgid "Copyright (C) 2002-2006 Stephen Kennedy"
-msgstr "Copyright (C) 2002-2006 Stephen Kennedy"
+#: ../glade2/meldapp.glade.h:19
+msgid "Copyright © 2002-2008 Stephen Kennedy"
+msgstr "Copyright (C) 2002-2008 Stephen Kennedy"
 
-#: ../glade2/meldapp.glade.h:26
-msgid "Create missing directories (-d)"
-msgstr "Hiányzó könyvtárak létrehozása (-d)"
-
-#: ../glade2/meldapp.glade.h:27
+#: ../glade2/meldapp.glade.h:20
 msgid "Curved: Filled Curves"
 msgstr "Ívek: Kitöltött ívek"
 
-#: ../glade2/meldapp.glade.h:28
+#: ../glade2/meldapp.glade.h:21
 msgid "Custom command"
 msgstr "Egyéni parancs"
 
-#: ../glade2/meldapp.glade.h:29
+#: ../glade2/meldapp.glade.h:22
 msgid "Directory"
 msgstr "Könyvtár"
 
-#: ../glade2/meldapp.glade.h:30
+#: ../glade2/meldapp.glade.h:23
 msgid "Display"
 msgstr "Megjelenítés"
 
-#: ../glade2/meldapp.glade.h:31
+#: ../glade2/meldapp.glade.h:24
 msgid "Edit files with:"
 msgstr "Fájlok szerkesztése ezzel:"
 
-#: ../glade2/meldapp.glade.h:32
+#: ../glade2/meldapp.glade.h:25
 msgid "Editor"
 msgstr "Szerkesztő"
 
-#: ../glade2/meldapp.glade.h:33
+#: ../glade2/meldapp.glade.h:26
 msgid "Encoding"
 msgstr "Kódolás"
 
-#: ../glade2/meldapp.glade.h:34
+#: ../glade2/meldapp.glade.h:27
 msgid "File Filters"
 msgstr "Fájlszűrők"
 
-#: ../glade2/meldapp.glade.h:35
+#: ../glade2/meldapp.glade.h:28
 msgid "Gnome Default"
 msgstr "Gnome alapértelmezés"
 
-#: ../glade2/meldapp.glade.h:36
+#: ../glade2/meldapp.glade.h:29
 msgid "Gnome default editor"
 msgstr "Alapértelmezett Gnome szerkesztő"
 
-#: ../glade2/meldapp.glade.h:37
+#: ../glade2/meldapp.glade.h:30
 msgid "Icons Only"
 msgstr "Csak ikonok"
 
-#: ../glade2/meldapp.glade.h:38
-msgid "Ignore .cvsrc (-f)"
-msgstr ".cvsrc mellőzése (-f)"
-
-#: ../glade2/meldapp.glade.h:39
+#: ../glade2/meldapp.glade.h:31
 msgid "Ignore changes in amount of white space"
 msgstr "Üreshely-karakterek mennyiségváltozásának mellőzése"
 
-#: ../glade2/meldapp.glade.h:40
+#: ../glade2/meldapp.glade.h:32
 msgid "Ignore changes in case; consider upper and lower-case letters equivalent"
 msgstr "Kis- és nagybetűk egyenértékűnek tekintése"
 
-#: ../glade2/meldapp.glade.h:41
+#: ../glade2/meldapp.glade.h:33
 msgid "Ignore changes that just insert or delete blank lines"
 msgstr "Csak üres sorokat beszúró vagy törlő változások mellőzése"
 
-#: ../glade2/meldapp.glade.h:42
+#: ../glade2/meldapp.glade.h:34
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Üres sorokat beszúró vagy törlő változások mellőzése"
 
-#: ../glade2/meldapp.glade.h:43
+#: ../glade2/meldapp.glade.h:35
 msgid "Ignore symbolic links"
 msgstr "Szimbolikus linkek figyelmen kívül hagyása"
 
-#: ../glade2/meldapp.glade.h:44
+#: ../glade2/meldapp.glade.h:36
+msgid "Insert spaces instead of tabs"
+msgstr "Tabulátorok helyett szóközök beszúrása"
+
+#: ../glade2/meldapp.glade.h:37
 msgid "Internal editor"
 msgstr "Belső szerkesztő"
 
-#: ../glade2/meldapp.glade.h:45
+#: ../glade2/meldapp.glade.h:38
 msgid "Line Wrapping "
 msgstr "Sortörés "
 
-#: ../glade2/meldapp.glade.h:46
-msgid "Locate CVS binary : Meld"
-msgstr "CVS bináris megkeresése : Meld"
-
-#: ../glade2/meldapp.glade.h:47
-msgid "Mailing _List"
-msgstr "Le_velezőlista"
-
-#: ../glade2/meldapp.glade.h:48
+#: ../glade2/meldapp.glade.h:39
 msgid "Meld"
 msgstr "Meld"
 
-#: ../glade2/meldapp.glade.h:49
+#: ../glade2/meldapp.glade.h:40
 msgid "Mine"
 msgstr "Saját"
 
-#: ../glade2/meldapp.glade.h:50
-msgid "My Directory"
-msgstr "Saját könyvtár"
-
-#: ../glade2/meldapp.glade.h:51
-msgid "My File"
-msgstr "Saját fájl"
-
-#: ../glade2/meldapp.glade.h:52
+#: ../glade2/meldapp.glade.h:41
 msgid "Original"
 msgstr "Eredeti"
 
-#: ../glade2/meldapp.glade.h:53
-msgid "Original Directory"
-msgstr "Eredeti könyvtár"
-
-#: ../glade2/meldapp.glade.h:54
-msgid "Original File"
-msgstr "Eredeti fájl"
-
-#: ../glade2/meldapp.glade.h:55
+#: ../glade2/meldapp.glade.h:42
 msgid "Other"
 msgstr "Másik"
 
-#: ../glade2/meldapp.glade.h:56
-msgid "Other Directory"
-msgstr "Másik könyvtár"
-
-#: ../glade2/meldapp.glade.h:57
-msgid "Other File"
-msgstr "Másik fájl"
-
-#: ../glade2/meldapp.glade.h:58
+#: ../glade2/meldapp.glade.h:43
 msgid "Preferences : Meld"
 msgstr "Beállítások : Meld"
 
-#: ../glade2/meldapp.glade.h:59
-msgid "Prune empty directories (-P)"
-msgstr "Üres könyvtárak törlése (-P)"
-
-#: ../glade2/meldapp.glade.h:60
-msgid "Quiet mode (-q)"
-msgstr "Csendes mód (-q)"
-
-#: ../glade2/meldapp.glade.h:61
-msgid "Refresh"
-msgstr "Frissítés"
-
-#: ../glade2/meldapp.glade.h:62
-msgid "Reload"
-msgstr "Újratöltés"
-
-#: ../glade2/meldapp.glade.h:63
-msgid "Report _Bug"
-msgstr "Hi_babejelentés"
-
-#: ../glade2/meldapp.glade.h:64
-msgid "Save _As"
-msgstr "Men_tés másként"
-
-#: ../glade2/meldapp.glade.h:65
+#: ../glade2/meldapp.glade.h:44
 msgid "Save in UTF-8 encoding"
 msgstr "Mentés UTF-8 kódolással"
 
-#: ../glade2/meldapp.glade.h:66
+#: ../glade2/meldapp.glade.h:45
 msgid "Save in the files original encoding"
 msgstr "Mentés a fájl eredeti kódolásával"
 
-#: ../glade2/meldapp.glade.h:67
+#: ../glade2/meldapp.glade.h:46
 msgid "Show line numbers"
 msgstr "Sorszámok megjelenítése"
 
-#: ../glade2/meldapp.glade.h:68
+#: ../glade2/meldapp.glade.h:47
 msgid "Simple: Lines only"
 msgstr "Egyszerű: Csak vonalak"
 
-#: ../glade2/meldapp.glade.h:69
+#: ../glade2/meldapp.glade.h:48
 msgid "Solid: Filled Quadilaterals"
 msgstr "Tömör: Kitöltött négyszögek"
 
-#: ../glade2/meldapp.glade.h:70
+#: ../glade2/meldapp.glade.h:49
 msgid "Tab width"
 msgstr "Tabulátorszélesség"
 
-#: ../glade2/meldapp.glade.h:71
+#: ../glade2/meldapp.glade.h:50
 msgid "Text Beside Icons"
 msgstr "Szöveg az ikonok mellett"
 
-#: ../glade2/meldapp.glade.h:72
+#: ../glade2/meldapp.glade.h:51
 msgid "Text Filters"
 msgstr "Szövegszűrők"
 
-#: ../glade2/meldapp.glade.h:73
+#: ../glade2/meldapp.glade.h:52
 msgid "Text Only"
 msgstr "Csak szöveg"
 
-#: ../glade2/meldapp.glade.h:74
+#: ../glade2/meldapp.glade.h:53
 msgid "Text Under Icons"
 msgstr "Szöveg az ikonok alatt"
 
-#: ../glade2/meldapp.glade.h:75
+#: ../glade2/meldapp.glade.h:54
 msgid "Three way directory"
 msgstr "Háromutas könyvtár"
 
-#: ../glade2/meldapp.glade.h:76
+#: ../glade2/meldapp.glade.h:55
 msgid "Three way file"
 msgstr "Háromutas fájl"
 
-#: ../glade2/meldapp.glade.h:77
+#: ../glade2/meldapp.glade.h:56
 msgid "Two way directory"
 msgstr "Kétutas könyvtár"
 
-#: ../glade2/meldapp.glade.h:78
+#: ../glade2/meldapp.glade.h:57
 msgid "Two way file"
 msgstr "Kétutas fájl"
 
-#: ../glade2/meldapp.glade.h:79
-msgid "Use Compression (-z)"
-msgstr "Tömörítés használata (-z)"
-
-#: ../glade2/meldapp.glade.h:80
+#: ../glade2/meldapp.glade.h:58
 msgid "Use GNOME monospace font"
 msgstr "GNOME rögzített szélességű betűkészlet használata"
 
-#: ../glade2/meldapp.glade.h:81
+#: ../glade2/meldapp.glade.h:59
 msgid "Use custom font"
 msgstr "Egyéni betűkészlet használata"
 
-#: ../glade2/meldapp.glade.h:82
+#: ../glade2/meldapp.glade.h:60
 msgid "Use syntax highlighting"
 msgstr "Szintaxiskiemelés használata"
 
-#: ../glade2/meldapp.glade.h:83
+#: ../glade2/meldapp.glade.h:61
 msgid "Version control view"
 msgstr "Verziókövetés nézet"
 
-#: ../glade2/meldapp.glade.h:84
+#: ../glade2/meldapp.glade.h:62
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
 "Betöltéskor ezen kodekek ilyen sorrendben történő próbálása (például utf8, "
 "iso8859)"
 
-#: ../glade2/meldapp.glade.h:85
+#: ../glade2/meldapp.glade.h:63
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -773,7 +710,7 @@ msgstr ""
 "alapján. Minden minta egy shell-stílusú helyettesítőkarakter-lista "
 "szóközökkel elválasztva."
 
-#: ../glade2/meldapp.glade.h:86
+#: ../glade2/meldapp.glade.h:64
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -787,238 +724,132 @@ msgstr ""
 "csoportokat tartalmaz, csak a csoportok lesznek kicserélve. További "
 "részletekért lásd a felhasználói kézikönyvet."
 
-#: ../glade2/meldapp.glade.h:87
+#: ../glade2/meldapp.glade.h:65
 msgid "Whitespace is significant"
 msgstr "Az üreshely karakterek lényegesek"
 
-#: ../glade2/meldapp.glade.h:88
+#: ../glade2/meldapp.glade.h:66
 msgid "_Character"
 msgstr "_Karakter"
 
-#: ../glade2/meldapp.glade.h:90
-msgid "_Contents"
-msgstr "_Tartalom"
-
-#: ../glade2/meldapp.glade.h:91
+#: ../glade2/meldapp.glade.h:68
 msgid "_Directory Comparison"
 msgstr "_Könyvtár-összehasonlítás"
 
-#: ../glade2/meldapp.glade.h:92
-msgid "_Down"
-msgstr "_Le"
-
-#: ../glade2/meldapp.glade.h:93
+#: ../glade2/meldapp.glade.h:69
 msgid "_File Comparison"
 msgstr "_Fájl-összehasonlítás"
 
-#: ../glade2/meldapp.glade.h:94
+#: ../glade2/meldapp.glade.h:70
 msgid "_Logo"
 msgstr "_Logó"
 
-#: ../glade2/meldapp.glade.h:95
-msgid "_New..."
-msgstr "Ú_j..."
-
-#: ../glade2/meldapp.glade.h:96
+#: ../glade2/meldapp.glade.h:71
 msgid "_None"
 msgstr "_Nincs"
 
-#: ../glade2/meldapp.glade.h:97
-msgid "_Save"
-msgstr "Menté_s"
-
-#: ../glade2/meldapp.glade.h:98
+#: ../glade2/meldapp.glade.h:72
 msgid "_Three Way Compare"
 msgstr "_Háromutas összehasonlítás"
 
-#: ../glade2/meldapp.glade.h:99
-msgid "_Up"
-msgstr "_Fel"
-
-#: ../glade2/meldapp.glade.h:100
+#: ../glade2/meldapp.glade.h:73
 msgid "_Version Control Browser"
 msgstr "_Verziókövetés-böngésző"
 
-#: ../glade2/meldapp.glade.h:101
+#: ../glade2/meldapp.glade.h:74
 msgid "_Word"
 msgstr "_Szó"
 
 #: ../glade2/vcview.glade.h:1
-msgid "Add _Binary"
-msgstr "_Bináris hozzáadása"
-
-#: ../glade2/vcview.glade.h:2
-msgid "Add to VC"
-msgstr "Hozzáadás verziókövetéshez"
-
-#: ../glade2/vcview.glade.h:3
-msgid "Commit"
-msgstr "Véglegesítés"
-
-#: ../glade2/vcview.glade.h:4
 msgid "Commit Files"
 msgstr "Fájlok véglegesítése"
 
-#: ../glade2/vcview.glade.h:5
+#: ../glade2/vcview.glade.h:2
 msgid "Compare Options"
 msgstr "Összehasonlítás beállításai"
 
-#: ../glade2/vcview.glade.h:7
+#: ../glade2/vcview.glade.h:3
 msgid "Date"
 msgstr "Dátum"
 
-#: ../glade2/vcview.glade.h:8
-msgid "Delete locally"
-msgstr "Törlés helyben"
-
-#: ../glade2/vcview.glade.h:9
-msgid "Flatten directories"
-msgstr "Könyvtárak simítása"
-
-#: ../glade2/vcview.glade.h:10
-msgid "Ignored"
-msgstr "Mellőzve"
-
-#: ../glade2/vcview.glade.h:11
+#: ../glade2/vcview.glade.h:4
 msgid "Local copy against other remote revision"
 msgstr "Helyi másolat másik távoli verzióval szemben"
 
-#: ../glade2/vcview.glade.h:12
+#: ../glade2/vcview.glade.h:5
 msgid "Local copy against same remote revision"
 msgstr "Helyi másolat ugyanazon távoli verzióval szemben"
 
-#: ../glade2/vcview.glade.h:13
+#: ../glade2/vcview.glade.h:6
 msgid "Log Message"
 msgstr "Naplóüzenet"
 
-#: ../glade2/vcview.glade.h:14
-msgid "Non _VC"
-msgstr "Nem _verziókövetéses"
-
-#: ../glade2/vcview.glade.h:15
+#: ../glade2/vcview.glade.h:7
 msgid "Previous Logs"
 msgstr "Előző naplók"
 
-#: ../glade2/vcview.glade.h:16
-msgid "Remove _Locally"
-msgstr "Törlés he_lyben"
-
-#: ../glade2/vcview.glade.h:17
-msgid "Remove from VC"
-msgstr "Törlés a verziókövetésből"
-
-#: ../glade2/vcview.glade.h:18
-msgid "Revert to original"
-msgstr "Visszaállítás az eredetire"
-
-#: ../glade2/vcview.glade.h:19
-msgid "Show ignored files"
-msgstr "Figyelmen kívül hagyott fájlok megjelenítése"
-
-#: ../glade2/vcview.glade.h:21
-msgid "Show normal"
-msgstr "Normál megjelenítése"
-
-#: ../glade2/vcview.glade.h:22
-msgid "Show unversioned files"
-msgstr "Verzió nélküli fájlok megjelenítése"
-
-#: ../glade2/vcview.glade.h:23 ../vcview.py:173
+#: ../glade2/vcview.glade.h:8 ../vcview.py:184
 msgid "Tag"
 msgstr "Címke"
 
-#: ../glade2/vcview.glade.h:24
-msgid "Update"
-msgstr "Frissítés"
-
-#: ../glade2/vcview.glade.h:25
+#: ../glade2/vcview.glade.h:9
 msgid "VC Log"
 msgstr "Verziókövetési napló"
 
-#: ../glade2/vcview.glade.h:26
-msgid "_Add"
-msgstr "Hozzá_adás"
-
-#: ../glade2/vcview.glade.h:27
-msgid "_Commit"
-msgstr "_Véglegesítés"
-
-#: ../glade2/vcview.glade.h:29
-msgid "_Edit"
-msgstr "Sz_erkesztés"
-
-#: ../glade2/vcview.glade.h:30
-msgid "_Flatten"
-msgstr "_Simítás"
-
-#: ../glade2/vcview.glade.h:31
-msgid "_Modified"
-msgstr "Módosít_va"
-
-#: ../glade2/vcview.glade.h:32
-msgid "_Normal"
-msgstr "_Normál"
-
-#: ../glade2/vcview.glade.h:33
-msgid "_Remove"
-msgstr "_Eltávolítás"
-
-#: ../glade2/vcview.glade.h:34
-msgid "_Update"
-msgstr "_Frissítés"
-
-#: ../meld:60 ../meld:70 ../meld:80
+#: ../meld:47
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "A Meld futásához %s vagy újabb szükséges."
 
-#: ../meld:81
-msgid "Due to incompatible API changes some functions may not operate as expected."
-msgstr ""
-"Inkompatibilis API változások miatt lehetséges, hogy néhány funkció nem "
-"működik megfelelően."
-
 #: ../meld.desktop.in.h:1
-msgid "Compare and merge your files."
+msgid "Compare and merge your files"
 msgstr "Fájlok összehasonlítása és összefésülése"
 
 #: ../meld.desktop.in.h:2
 msgid "Meld Diff Viewer"
 msgstr "Meld eltérésmegjelenítő"
 
-#: ../meldapp.py:147
+#: ../meldapp.py:152
 msgid "label"
 msgstr "címke"
 
-#: ../meldapp.py:148
+#: ../meldapp.py:153
 msgid "pattern"
 msgstr "minta"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:249 ../meldapp.py:254 ../vcview.py:153
+#: ../meldapp.py:260 ../meldapp.py:265 ../vcview.py:164
 msgid "Name"
 msgstr "Név"
 
-#: ../meldapp.py:249 ../meldapp.py:254
+#: ../meldapp.py:260 ../meldapp.py:265
 msgid "Active"
 msgstr "Aktív"
 
-#: ../meldapp.py:249
+#: ../meldapp.py:260
 msgid "Pattern"
 msgstr "Minta"
 
-#: ../meldapp.py:254
+#: ../meldapp.py:265
 msgid "Regex"
 msgstr "reg.kif."
 
-#: ../meldapp.py:296
+#: ../meldapp.py:295
+msgid ""
+"Spaces instead of tab is only available if you have gnome-python-desktop "
+"installed."
+msgstr ""
+"A tabok helyett szóközök csak akkor érhető el, ha a gnome-python-desktop csomag "
+"telepítve van."
+
+#: ../meldapp.py:303
 msgid "Line numbers are only available if you have gnome-python-desktop installed."
 msgstr ""
 "A sorszámozás csak akkor érhető el, ha a gnome-python-desktop csomag "
 "telepítve van."
 
-#: ../meldapp.py:300
+#: ../meldapp.py:307
 msgid ""
 "Syntax highlighting is only available if you have gnome-python-desktop "
 "installed."
@@ -1026,57 +857,153 @@ msgstr ""
 "A szintaxis-kiemelés csak akkor érhető el, ha a gnome-python-desktop csomag "
 "telepítve van."
 
+#: ../meldapp.py:396
+msgid "Close tab"
+msgstr "Lap bezárása"
+
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:444
+#: ../meldapp.py:471
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Másolatok\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:446
+#: ../meldapp.py:473
 msgid "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 msgstr "Verziókövetés\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:448
+#: ../meldapp.py:475
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binárisok\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:450
+#: ../meldapp.py:477
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Média\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:452
+#: ../meldapp.py:479
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "CVS kulcsszavak\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:454
+#: ../meldapp.py:481
 msgid "C++ comment\t0\t//.*\n"
 msgstr "C++ megjegyzés\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:456
+#: ../meldapp.py:483
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "C megjegyzés\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:458
+#: ../meldapp.py:485
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Üreshely-karakterek\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:460
+#: ../meldapp.py:487
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Kezdő üreshelyek\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:462
+#: ../meldapp.py:489
 msgid "Script comment\t0\t#.*"
 msgstr "Parancsfájl-megjegyzés\t0\t#.*"
 
-#: ../meldapp.py:779
+#: ../meldapp.py:559
+msgid "_New..."
+msgstr "Ú_j…"
+
+#: ../meldapp.py:559
+msgid "Start a new comparison"
+msgstr "Új összehasonlítás indítása"
+
+#: ../meldapp.py:562
+msgid "Close the current file"
+msgstr "A jelenlegi fájl bezárása"
+
+#: ../meldapp.py:563
+msgid "Quit the program"
+msgstr "Kilépés a programból"
+
+#: ../meldapp.py:566
+msgid "Undo the last action"
+msgstr "Az utolsó művelet visszavonása"
+
+#: ../meldapp.py:567
+msgid "Redo the last undone action"
+msgstr "A visszavont művelet ismételt végrehajtása"
+
+#: ../meldapp.py:571
+msgid "Search for text"
+msgstr "Szöveg keresése"
+
+#: ../meldapp.py:572
+msgid "Find Ne_xt"
+msgstr "Kö_vetkező találat"
+
+#: ../meldapp.py:572
+msgid "Search forwards for the same text"
+msgstr "Keresés előre ugyanarra a szövegre"
+
+#: ../meldapp.py:573
+msgid "Go to the next difference"
+msgstr "Ugrás a következő eltérésre"
+
+#: ../meldapp.py:574
+msgid "Go to the previous difference"
+msgstr "Ugrás az előző eltérésre"
+
+#: ../meldapp.py:575
+msgid "Configure the application"
+msgstr "Az alkalmazás beállítása"
+
+#: ../meldapp.py:578
+msgid "Stop the current action"
+msgstr "Jelenlegi művelet leállítása"
+
+#: ../meldapp.py:579
+msgid "Refresh the view"
+msgstr "A nézet frissítése"
+
+#: ../meldapp.py:580
+msgid "Reload"
+msgstr "Újratöltés"
+
+#: ../meldapp.py:580
+msgid "Reload the comparison"
+msgstr "Összehasonlítás újratöltése"
+
+#: ../meldapp.py:583
+msgid "_Contents"
+msgstr "_Tartalom"
+
+#: ../meldapp.py:583
+msgid "Open the Meld manual"
+msgstr "A Meld kézikönyvének megnyitása"
+
+#: ../meldapp.py:584
+msgid "Report _Bug"
+msgstr "Hi_babejelentés"
+
+#: ../meldapp.py:584
+msgid "Report a bug in Meld"
+msgstr "A Meld hibájának jelentése"
+
+#: ../meldapp.py:585
+msgid "Mailing _List"
+msgstr "Le_velezőlista"
+
+#: ../meldapp.py:585
+msgid "Go to the Meld mailing list"
+msgstr "A Meld levelezőlistájának megnyitása"
+
+#: ../meldapp.py:586
+msgid "About this program"
+msgstr "A program névjegye"
+
+#: ../meldapp.py:851
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Fájlok és könyvtárak keveréke nem hasonlítható össze.\n"
 
@@ -1085,7 +1012,7 @@ msgstr "Fájlok és könyvtárak keveréke nem hasonlítható össze.\n"
 #. usage
 #.
 #. ###############################################################################
-#: ../meldapp.py:827
+#: ../meldapp.py:901
 #, python-format
 msgid ""
 "Meld %s\n"
@@ -1094,72 +1021,173 @@ msgstr ""
 "Meld %s\n"
 "Írta: Stephen Kennedy <stevek@gnome.org>"
 
-#: ../meldapp.py:856
+#: ../meldapp.py:931
 msgid "Set label to use instead of file name"
 msgstr "A fájlnevek helyett használandó címke beállítása"
 
-#: ../meldapp.py:857 ../meldapp.py:858 ../meldapp.py:859 ../meldapp.py:860
+#: ../meldapp.py:932
+msgid "Automatically compare all differing files on startup"
+msgstr "Minden eltérő fájl automatikus összehasonlítása indításkor"
+
+#: ../meldapp.py:933 ../meldapp.py:934 ../meldapp.py:935 ../meldapp.py:936
 msgid "Ignored for compatibility"
 msgstr "A kompatibilitás érdekében figyelmen kívül hagyva"
 
-#: ../meldapp.py:886
+#: ../meldapp.py:939
+msgid "Creates a diff tab for up to 3 supplied files."
+msgstr "Különbséglap létrehozása akár 3 megadott fájlhoz"
+
+#: ../meldapp.py:949
+msgid "Invalid number of arguments supplied for --diff."
+msgstr "Hibás számú paraméter a --diff kapcsolóhoz."
+
+#: ../meldapp.py:972
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Hibás számú paraméter (%i)"
 
-#: ../melddoc.py:45
+#: ../melddoc.py:46
 msgid "untitled"
 msgstr "névtelen"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:118
+#: ../misc.py:120
 msgid "[None]"
 msgstr "[Semmi]"
 
-#: ../vcview.py:170
+#: ../vcview.py:121
+msgid "_Commit"
+msgstr "_Véglegesítés"
+
+#: ../vcview.py:121
+msgid "Commit"
+msgstr "Véglegesítés"
+
+#. FIXME: popup used to use gtk.STOCK_GO_BACK
+#: ../vcview.py:122
+msgid "_Update"
+msgstr "_Frissítés"
+
+#: ../vcview.py:122
+msgid "Update"
+msgstr "Frissítés"
+
+#. FIXME: popup used to use gtk.STOCK_GO_FORWARD
+#: ../vcview.py:123
+msgid "_Add"
+msgstr "Hozzá_adás"
+
+#: ../vcview.py:123
+msgid "Add to VC"
+msgstr "Hozzáadás verziókövetéshez"
+
+#. FIXME: popup used to use gtk.STOCK_ADD
+#: ../vcview.py:124
+msgid "Add _Binary"
+msgstr "_Bináris hozzáadása"
+
+#: ../vcview.py:124
+msgid "Add binary to VC"
+msgstr "Bináris hozzáadása verziókövetéshez"
+
+#. FIXME: stock is inconsistent with other VC actions
+#: ../vcview.py:125
+msgid "_Remove"
+msgstr "_Eltávolítás"
+
+#: ../vcview.py:125
+msgid "Remove from VC"
+msgstr "Törlés a verziókövetésből"
+
+#. FIXME: popup used to use gtk.STOCK_REMOVE
+#: ../vcview.py:126
+msgid "Revert to original"
+msgstr "Visszaállítás az eredetire"
+
+#: ../vcview.py:127
+msgid "Delete locally"
+msgstr "Törlés helyben"
+
+#: ../vcview.py:131
+msgid "_Flatten"
+msgstr "_Simítás"
+
+#: ../vcview.py:131
+msgid "Flatten directories"
+msgstr "Könyvtárak simítása"
+
+#: ../vcview.py:132
+msgid "_Modified"
+msgstr "Módosít_va"
+
+#: ../vcview.py:133
+msgid "_Normal"
+msgstr "_Normál"
+
+#: ../vcview.py:133
+msgid "Show normal"
+msgstr "Normál megjelenítése"
+
+#: ../vcview.py:134
+msgid "Non _VC"
+msgstr "Nem _verziókövetéses"
+
+#: ../vcview.py:134
+msgid "Show unversioned files"
+msgstr "Verzió nélküli fájlok megjelenítése"
+
+#: ../vcview.py:135
+msgid "Ignored"
+msgstr "Mellőzve"
+
+#: ../vcview.py:135
+msgid "Show ignored files"
+msgstr "Figyelmen kívül hagyott fájlok megjelenítése"
+
+#: ../vcview.py:181
 msgid "Location"
 msgstr "Hely"
 
-#: ../vcview.py:171
+#: ../vcview.py:182
 msgid "Status"
 msgstr "Állapot"
 
-#: ../vcview.py:172
+#: ../vcview.py:183
 msgid "Rev"
 msgstr "Verzió"
 
-#: ../vcview.py:174
+#: ../vcview.py:185
 msgid "Options"
 msgstr "Beállítások"
 
-#: ../vcview.py:257
+#: ../vcview.py:269
 msgid "(Empty)"
 msgstr "(Üres)"
 
-#: ../vcview.py:294
+#: ../vcview.py:306
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Eltérések letöltése"
 
-#: ../vcview.py:301
+#: ../vcview.py:313
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Folt alkalmazása"
 
-#: ../vcview.py:305
+#: ../vcview.py:317
 msgid "No differences found."
 msgstr "Nincs eltérés."
 
-#: ../vcview.py:382
+#: ../vcview.py:394
 msgid "Select some files first."
 msgstr "Először válasszon ki néhány fájlt."
 
-#: ../vcview.py:446
+#: ../vcview.py:461
 msgid "Invoking patch failed, you need GNU patch."
 msgstr "A patch meghívása meghiúsult, a GNU patch szükséges."
 
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:39
+#: ../vc/_vc.py:40
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
@@ -1167,7 +1195,7 @@ msgstr ""
 "Mellőzve:Verzió nélkül:::Hiba::Újonnan hozzáadva:Módosítva:<b>Ütközés</b>:"
 "Eltávolítva:Hiányzik"
 
-#: ../vc/cvs.py:160
+#: ../vc/cvs.py:155
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
