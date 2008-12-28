@@ -1226,6 +1226,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 
                 if c[0] in ("insert", "delete"):
                     bg = gdk.color_parse(self.prefs.color_delete_bg)
+                elif c[0] == "conflict":
+                    bg = gdk.color_parse(self.prefs.color_conflict_bg)
                 else: #replace
                     bg = gdk.color_parse(self.prefs.color_replace_bg)
 
