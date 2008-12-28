@@ -153,36 +153,29 @@ class ListWidget(gnomeglade.Component):
         model.set_value(it, 2, _("pattern"))
         self._update_filter_string()
     def _get_selected(self):
-        selected = []
-        self.treeview.get_selection().selected_foreach(
-            lambda store, path, it: selected.append( path ) )
-        return selected
+        (model, iter) = self.treeview.get_selection().get_selected()
+        if iter:
+            path = model.get_path(iter)[0]
+        else:
+            path = None
+        return (model, iter, path)
     def on_item_delete_clicked(self, button):
-        model = self.treeview.get_model()
-        for s in self._get_selected():
-            model.remove( model.get_iter(s) )
+        (model, iter, path) = self._get_selected()
+        if not iter:
+            return
+        model.remove(iter)
         self._update_filter_string()
     def on_item_up_clicked(self, button):
-        model = self.treeview.get_model()
-        for s in self._get_selected():
-            if s[0] > 0: # XXX need model.swap
-                old = model.get_iter(s[0])
-                it = model.insert( s[0]-1 )
-                for i in range(3):
-                    model.set_value(it, i, model.get_value(old, i) )
-                model.remove(old)
-                self.treeview.get_selection().select_iter(it)
+        (model, iter, path) = self._get_selected()
+        if not iter or path <= 0:
+            return
+        model.swap(iter, model.get_iter(path - 1))
         self._update_filter_string()
     def on_item_down_clicked(self, button):
-        model = self.treeview.get_model()
-        for s in self._get_selected():
-            if s[0] < len(model)-1: # XXX need model.swap
-                old = model.get_iter(s[0])
-                it = model.insert( s[0]+2 )
-                for i in range(3):
-                    model.set_value(it, i, model.get_value(old, i) )
-                model.remove(old)
-                self.treeview.get_selection().select_iter(it)
+        (model, iter, path) = self._get_selected()
+        if not iter or path >= len(model) - 1:
+            return
+        model.swap(iter, model.get_iter(path + 1))
         self._update_filter_string()
     def on_items_revert_clicked(self, button):
         setattr( self.prefs, self.key, self.prefs.get_default(self.key) )
