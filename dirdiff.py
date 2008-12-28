@@ -666,15 +666,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_treeview_focus_in_event(self, tree, event):
         self.treeview_focussed = tree
         pane = self.treeview.index(tree)
-        if pane > 0:
-            self.actiongroup.get_action("DirCopyLeft").set_sensitive(True)
-        if pane+1 < self.num_panes:
-            self.actiongroup.get_action("DirCopyRight").set_sensitive(True)
+        self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
+        self.actiongroup.get_action("DirCopyRight").set_sensitive(pane+1 < self.num_panes)
         self.actiongroup.get_action("DirDelete").set_sensitive(True)
+        tree.emit("cursor-changed")
+
     def on_treeview_focus_out_event(self, tree, event):
         self.actiongroup.get_action("DirCopyLeft").set_sensitive(False)
         self.actiongroup.get_action("DirCopyRight").set_sensitive(False)
         self.actiongroup.get_action("DirDelete").set_sensitive(False)
+
         #
         # Toolbar handlers
         #
