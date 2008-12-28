@@ -138,7 +138,23 @@ class ListWidget(gnomeglade.Component):
                 addTextCol(c[0], i)
             elif c[1] == type(0):
                 addToggleCol( c[0], 1)
+        view.get_selection().connect('changed', self._update_sensitivity)
+        view.get_model().connect('row-inserted', self._update_sensitivity)
+        view.get_model().connect('rows-reordered', self._update_sensitivity)
+        self._update_sensitivity()
         self._update_filter_model()
+
+    def _update_sensitivity(self, *args):
+        (model, iter, path) = self._get_selected()
+        if not iter:
+            self.item_delete.set_sensitive(False)
+            self.item_up.set_sensitive(False)
+            self.item_down.set_sensitive(False)
+        else:
+            self.item_delete.set_sensitive(True)
+            self.item_up.set_sensitive(path > 0)
+            self.item_down.set_sensitive(path < len(model) - 1)
+
     def on_item_new_clicked(self, button):
         model = self.treeview.get_model()
         model.append([_("label"), 0, _("pattern")])
@@ -152,20 +168,14 @@ class ListWidget(gnomeglade.Component):
         return (model, iter, path)
     def on_item_delete_clicked(self, button):
         (model, iter, path) = self._get_selected()
-        if not iter:
-            return
         model.remove(iter)
         self._update_filter_string()
     def on_item_up_clicked(self, button):
         (model, iter, path) = self._get_selected()
-        if not iter or path <= 0:
-            return
         model.swap(iter, model.get_iter(path - 1))
         self._update_filter_string()
     def on_item_down_clicked(self, button):
         (model, iter, path) = self._get_selected()
-        if not iter or path >= len(model) - 1:
-            return
         model.swap(iter, model.get_iter(path + 1))
         self._update_filter_string()
     def on_items_revert_clicked(self, button):
