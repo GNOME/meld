@@ -114,43 +114,34 @@ class ListWidget(gnomeglade.Component):
         self.key = key
         self.treeview.set_model( gtk.ListStore( *[c[1] for c in columns] ) )
         view = self.treeview
-        def addTextCol(label, colnum, expand=0):
+        def addTextCol(label, colnum):
             model = view.get_model()
             rentext = gtk.CellRendererText()
             rentext.props.editable = 1
-            def change_text(ren, row, text):
-                it = model.get_iter( (int(row),))
-                model.set_value( it, colnum, text)
+            def change_text(ren, path, text):
+                model[path][colnum] = text
                 self._update_filter_string()
             rentext.connect("edited", change_text)
-            column = gtk.TreeViewColumn(label)
-            column.pack_start(rentext, expand=expand)
-            column.set_attributes(rentext, markup=colnum)
+            column = gtk.TreeViewColumn(label, rentext, text=colnum)
             view.append_column(column)
         def addToggleCol(label, colnum):
             model = view.get_model()
             rentoggle = gtk.CellRendererToggle()
-            def change_toggle(ren, row):
-                it = model.get_iter( (int(row),))
-                model.set_value( it, colnum, not ren.get_active() )
+            def change_toggle(ren, path):
+                model[path][colnum] = not ren.get_active()
                 self._update_filter_string()
             rentoggle.connect("toggled", change_toggle)
-            column = gtk.TreeViewColumn(label)
-            column.pack_start(rentoggle, expand=0)
-            column.set_attributes(rentoggle, active=colnum)
+            column = gtk.TreeViewColumn(label, rentoggle, active=colnum)
             view.append_column(column)
         for c,i in zip( columns, range(len(columns))):
             if c[1] == type(""):
-                e = (i == (len(columns)-1))
-                addTextCol( c[0], i, expand=e)
+                addTextCol(c[0], i)
             elif c[1] == type(0):
                 addToggleCol( c[0], 1)
         self._update_filter_model()
     def on_item_new_clicked(self, button):
         model = self.treeview.get_model()
-        it = model.append()
-        model.set_value(it, 0, _("label"))
-        model.set_value(it, 2, _("pattern"))
+        model.append([_("label"), 0, _("pattern")])
         self._update_filter_string()
     def _get_selected(self):
         (model, iter) = self.treeview.get_selection().get_selected()
@@ -191,10 +182,7 @@ class ListWidget(gnomeglade.Component):
         model.clear()
         for filtstring in getattr( self.prefs, self.key).split("\n"):
             filt = misc.ListItem(filtstring)
-            it = model.append()
-            model.set_value( it, 0, filt.name)
-            model.set_value( it, 1, filt.active)
-            model.set_value( it, 2, misc.escape(filt.value))
+            model.append([filt.name, filt.active, misc.escape(filt.value)])
    
 ################################################################################
 #
