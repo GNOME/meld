@@ -563,7 +563,7 @@ class MeldApp(gnomeglade.Component):
             ("FindNext", None,              _("Find Ne_xt"), "<control>G", _("Search forwards for the same text"), self.on_menu_find_next_activate),
             ("Down",    gtk.STOCK_GO_DOWN,  None, "<control>D", _("Go to the next difference"), self.on_menu_edit_down_activate),
             ("Up",      gtk.STOCK_GO_UP,    None, "<control>E", _("Go to the previous difference"), self.on_menu_edit_up_activate),
-            ("Preferences", gtk.STOCK_PREFERENCES, None, None, _("Configure the application"), self.on_menu_preferences_activate),
+            ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
 
             ("ViewMenu", None, "_View"),
             ("Stop",    gtk.STOCK_STOP,     None, "Escape", _("Stop the current action"), self.on_toolbar_stop_clicked),
