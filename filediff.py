@@ -1150,8 +1150,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         window = area.window
         # not mapped?
         if not window: return
-        if not hasattr(area, "meldgc"):
-            self._setup_gcs(area)
         gctext = area.get_style().bg_gc[gtk.STATE_ACTIVE]
 
         alloc = area.get_allocation()
@@ -1162,7 +1160,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         context = window.cairo_create()
         context.rectangle(0, 0, wtotal, htotal)
         context.clip()
-        context.set_line_width(0.5)
+        context.set_line_width(1.0)
 
         if self.keymask & MASK_SHIFT:
             pix0 = self.pixbuf_delete
@@ -1174,7 +1172,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pix0 = self.pixbuf_apply0
             pix1 = self.pixbuf_apply1
         draw_style = self.prefs.draw_style
-        gc = area.meldgc.get_gc
 
         which = self.linkmap.index(area)
         pix_start = [None] * self.num_panes
@@ -1185,6 +1182,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
         visible = [None] + bounds(which) + bounds(which+1)
 
+        # For bezier control points
+        x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
 
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             if self.prefs.ignore_blank_lines:
@@ -1204,25 +1203,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
             t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
 
-            if f0==f1: f0 -= 1; f1 += 1
-            if t0==t1: t0 -= 1; t1 += 1
+            if f0 == f1:
+                f0 -= 1
+            if t0 == t1:
+                t0 -= 1
             
             if draw_style == 2:
-                x_step = wtotal / 3.0 # bezier control point distance
-                
-                # thin antialiased lines in cairo look thicker than they are
-                # this is a workaround (works like a charm)
-                aa_adjustment = 0.2
-                
-                context.move_to(0, f0 - aa_adjustment)
-                context.curve_to(x_step, f0 - aa_adjustment,
-                                 x_step * 2, t0 - aa_adjustment,
-                                 wtotal + 1, t0 - aa_adjustment)
-
-                context.line_to(wtotal + 1, t1 + aa_adjustment)
-                context.curve_to(x_step * 2, t1 + aa_adjustment,
-                                 x_step, f1 + aa_adjustment,
-                                 0, f1 + aa_adjustment)
+                context.move_to(x_steps[0], f0 - 0.5)
+                context.curve_to(x_steps[1], f0 - 0.5,
+                                 x_steps[2], t0 - 0.5,
+                                 x_steps[3], t0 - 0.5)
+                context.line_to(x_steps[3], t1 + 0.5)
+                context.curve_to(x_steps[2], t1 + 0.5,
+                                 x_steps[1], f1 + 0.5,
+                                 x_steps[0], f1 + 0.5)
+                context.close_path()
                 
                 if c[0] in ("insert", "delete"):
                     bg = gdk.color_parse(self.prefs.color_delete_bg)
