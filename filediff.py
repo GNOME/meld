@@ -128,6 +128,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.create_tag("inline line",   background = self.prefs.color_inline_bg,
                                             foreground = self.prefs.color_inline_fg)
 
+        def parse_to_cairo(color_spec):
+            color = gdk.color_parse(color_spec)
+            return [x / 65535. for x in (color.red, color.green, color.blue)]
+
+        self.fill_colors = {"insert"   : parse_to_cairo(self.prefs.color_delete_bg),
+                            "delete"   : parse_to_cairo(self.prefs.color_delete_bg),
+                            "conflict" : parse_to_cairo(self.prefs.color_conflict_bg),
+                            "replace"  : parse_to_cairo(self.prefs.color_replace_bg)}
+
+        darken = lambda color: [x * 0.8 for x in color]
+        self.line_colors = {"insert"   : darken(self.fill_colors["insert"]),
+                            "delete"   : darken(self.fill_colors["delete"]),
+                            "conflict" : darken(self.fill_colors["conflict"]),
+                            "replace"  : darken(self.fill_colors["replace"])}
+
         actions = (
             ("FilePopupSave",     gtk.STOCK_SAVE,       None,            None, _("Save the current file"), self.save),
             ("FilePopupSaveAs",   gtk.STOCK_SAVE_AS,    None,            "<control><shift>S", _("Save the current file with a different name"), self.save_as),
@@ -1218,20 +1233,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                  x_steps[1], f1 + 0.5,
                                  x_steps[0], f1 + 0.5)
                 context.close_path()
-                
-                if c[0] in ("insert", "delete"):
-                    bg = gdk.color_parse(self.prefs.color_delete_bg)
-                elif c[0] == "conflict":
-                    bg = gdk.color_parse(self.prefs.color_conflict_bg)
-                else: #replace
-                    bg = gdk.color_parse(self.prefs.color_replace_bg)
 
-                context.set_source_rgb(bg.red / 65535.0, bg.green / 65535.0, bg.blue / 65535.0)
+                context.set_source_rgb(*self.fill_colors[c[0]])
                 context.fill_preserve()
 
-                context.set_source_rgb(bg.red / 65535.0 * 0.8,
-                                       bg.green / 65535.0 * 0.8,
-                                       bg.blue / 65535.0 * 0.8)
+                context.set_source_rgb(*self.line_colors[c[0]])
                 context.stroke()
             else:
                 w = wtotal
