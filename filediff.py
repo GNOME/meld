@@ -1136,19 +1136,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             want = misc.clamp(want, 0, a.upper-a.page_size)
             a.set_value( want )
 
-    def _setup_gcs(self, area):
-        assert area.window
-        gcd = area.window.new_gc()
-        gcd.set_rgb_fg_color( gdk.color_parse(self.prefs.color_delete_bg) )
-        gcc = area.window.new_gc()
-        gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_replace_bg) )
-        gce = area.window.new_gc()
-        gce.set_rgb_fg_color( gdk.color_parse(self.prefs.color_edited_bg) )
-        gcx = area.window.new_gc()
-        gcx.set_rgb_fg_color( gdk.color_parse(self.prefs.color_conflict_bg) )
-        area.meldgc = misc.struct(gc_delete=gcd, gc_insert=gcd, gc_replace=gcc, gc_conflict=gcx)
-        area.meldgc.get_gc = lambda p: getattr(area.meldgc, "gc_"+p)
-
     def _consume_blank_lines(self, txt):
         lo, hi = 0, 0
         for l in txt:
