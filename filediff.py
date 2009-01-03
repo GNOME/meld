@@ -166,7 +166,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.find_dialog = None
         self.last_search = None
         self.set_num_panes(num_panes)
-        gtk.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
+        gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
 
     def _update_regexes(self):
         self.regexes = []
@@ -999,7 +999,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             # the line to search for in the 'master' text
             master_y = adjustment.value + adjustment.page_size * syncpoint
-            it = self.textview[master].get_line_at_y(master_y)[0]
+            it = self.textview[master].get_line_at_y(int(master_y))[0]
             line_y, height = self.textview[master].get_line_yrange(it)
             line = it.get_line() + ((master_y-line_y)/height)
 
@@ -1021,7 +1021,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         obegin = c[3]
                 fraction = (line - mbegin) / ((mend - mbegin) or 1)
                 other_line = (obegin + fraction * (oend - obegin))
-                it = self.textview[i].get_buffer().get_iter_at_line(other_line)
+                it = self.textview[i].get_buffer().get_iter_at_line(int(other_line))
                 val, height = self.textview[i].get_line_yrange(it)
                 val -= (adj.page_size) * syncpoint
                 val += (other_line-int(other_line)) * height

@@ -57,7 +57,7 @@ class UndoSequence(gobject.GObject):
     def __init__(self):
         """Create an empty UndoSequence.
         """
-        self.__gobject_init__()
+        gobject.GObject.__init__(self)
         self.actions = []
         self.next_redo = 0
         self.group = None

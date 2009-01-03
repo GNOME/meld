@@ -36,7 +36,7 @@ class MeldDoc(gobject.GObject):
     }
 
     def __init__(self, prefs):
-        self.__gobject_init__()
+        gobject.GObject.__init__(self)
         self.undosequence = undo.UndoSequence()
         self.undosequence_busy = 0
         self.scheduler = task.FifoScheduler()
