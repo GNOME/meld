@@ -1200,6 +1200,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # For bezier control points
         x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
 
+        def paint_pixbuf_at(pixbuf, x, y):
+            context.translate(x, y)
+            context.set_source_pixbuf(pixbuf, 0, 0)
+            context.paint()
+            context.identity_matrix()
+
         for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
             if self.prefs.ignore_blank_lines:
                 c1,c2 = self._consume_blank_lines( self._get_texts()[which  ][c[1]:c[2]] )
@@ -1247,17 +1253,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
 
             x = wtotal-self.pixbuf_apply0.get_width()
-            if c[0]=="insert":
-                window.draw_pixbuf( gctext, pix1, 0,0, x, t0, -1,-1, 0,0,0)
-            elif c[0] == "delete":
-                window.draw_pixbuf( gctext, pix0, 0,0, 0, f0, -1,-1, 0,0,0)
-            else: #replace
-                window.draw_pixbuf( gctext, pix1, 0,0, x, t0, -1,-1, 0,0,0)
-                window.draw_pixbuf( gctext, pix0, 0,0, 0, f0, -1,-1, 0,0,0)
+            if c[0] in ("insert", "replace"):
+                paint_pixbuf_at(pix1, x, t0)
+            if c[0] in ("delete", "replace"):
+                paint_pixbuf_at(pix0, 0, f0)
 
         # allow for scrollbar at end of textview
-        mid = 0.5 * self.textview0.get_allocation().height
-        window.draw_line(gctext, int(.25*wtotal), int(mid), int(.75*wtotal), int(mid) )
+        mid = int(0.5 * self.textview[0].allocation.height) + 0.5
+        context.set_source_rgba(0., 0., 0., 0.5)
+        context.move_to(.35 * wtotal, mid)
+        context.line_to(.65 * wtotal, mid)
+        context.stroke()
         window.end_paint()
 
     def on_linkmap_scroll_event(self, area, event):
