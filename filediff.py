@@ -734,27 +734,32 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if event.window != textview.get_window(gtk.TEXT_WINDOW_TEXT) \
             and event.window != textview.get_window(gtk.TEXT_WINDOW_LEFT):
             return
-        if not hasattr(textview, "meldgc"):
-            self._setup_gcs(textview)
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
         start_line = self._pixel_to_line(pane, visible.y)
         end_line = 1+self._pixel_to_line(pane, visible.y+visible.height)
-        gc = lambda x : getattr(textview.meldgc, "gc_"+x)
-        #gcdark = textview.get_style().black_gc
-        gclight = textview.get_style().bg_gc[gtk.STATE_ACTIVE]
-        #curline = textview.get_buffer().get_iter_at_mark( textview.get_buffer().get_insert() ).get_line()
-               
+
+        width, height = textview.allocation.width, textview.allocation.height
+        context = event.window.cairo_create()
+        context.rectangle(0, 0, width, height)
+        context.clip()
+        context.set_line_width(1.0)
+
         def draw_change(change): # draw background and thin lines
             ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
-            width = event.window.get_size()[0]
-            #gcline = (gclight, gcdark)[change[1] <= curline and curline < change[2]]
-            gcline = gclight
-            event.window.draw_line(gcline, 0,ypos0-1, width,ypos0-1)
+            context.set_source_rgb(*self.line_colors[change[0]])
+            context.move_to(-0.5, ypos0 - 0.5)
+            context.rel_line_to(width + 1, 0)
+            context.stroke()
             if change[2] != change[1]:
                 ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
-                event.window.draw_line(gcline, 0,ypos1, width,ypos1)
-                event.window.draw_rectangle(gc(change[0]), 1, 0,ypos0, width,ypos1-ypos0)
+                context.move_to(-0.5, ypos1 + 0.5)
+                context.rel_line_to(width + 1, 0)
+                context.stroke()
+                context.set_source_rgb(*self.fill_colors[change[0]])
+                context.rectangle(0, ypos0, width, ypos1 - ypos0)
+                context.fill()
+
         last_change = None
         for change in self.linediffer.single_changes(pane, self._get_texts()):
             if change[2] < start_line: continue
