@@ -259,8 +259,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
-        self.map_widgets_into_lists( ["save_encoding"] )
-        self.save_encoding[self.prefs.save_encoding].set_active(1)
         self.treeview.set_cursor(0)
     #
     # treeview
@@ -323,9 +321,6 @@ class PreferencesDialog(gnomeglade.Component):
     #
     # encoding
     #
-    def on_save_encoding_toggled(self, radio):
-        if radio.get_active():
-            self.prefs.save_encoding = self.save_encoding.index(radio)
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
             self.prefs.text_codecs = self.entry_text_codecs.props.text
@@ -442,7 +437,6 @@ class MeldPreferences(prefs.Preferences):
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "supply_newline": prefs.Value(prefs.BOOL,1),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
-        "save_encoding": prefs.Value(prefs.INT, 0),
         "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
