@@ -300,10 +300,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.pixbuf_copy1  = load("button_copy1.xpm")
 
     def on_preference_changed(self, key, value):
-        if key == "draw_style":
-            for l in self.linkmap:
-                l.queue_draw()
-        elif key == "tab_size":
+        if key == "tab_size":
             tabs = pango.TabArray(10, 0)
             for i in range(10):
                 tabs.set_tab(i, pango.TAB_LEFT, i*value*self.pango_char_width)
@@ -1178,7 +1175,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         else: # self.keymask == 0:
             pix0 = self.pixbuf_apply0
             pix1 = self.pixbuf_apply1
-        draw_style = self.prefs.draw_style
 
         which = self.linkmap.index(area)
         pix_start = [None] * self.num_panes
@@ -1220,29 +1216,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 f0 -= 1
             if t0 == t1:
                 t0 -= 1
-            
-            if draw_style == 2:
-                context.move_to(x_steps[0], f0 - 0.5)
-                context.curve_to(x_steps[1], f0 - 0.5,
-                                 x_steps[2], t0 - 0.5,
-                                 x_steps[3], t0 - 0.5)
-                context.line_to(x_steps[3], t1 + 0.5)
-                context.curve_to(x_steps[2], t1 + 0.5,
-                                 x_steps[1], f1 + 0.5,
-                                 x_steps[0], f1 + 0.5)
-                context.close_path()
 
-                context.set_source_rgb(*self.fill_colors[c[0]])
-                context.fill_preserve()
+            context.move_to(x_steps[0], f0 - 0.5)
+            context.curve_to(x_steps[1], f0 - 0.5,
+                             x_steps[2], t0 - 0.5,
+                             x_steps[3], t0 - 0.5)
+            context.line_to(x_steps[3], t1 + 0.5)
+            context.curve_to(x_steps[2], t1 + 0.5,
+                             x_steps[1], f1 + 0.5,
+                             x_steps[0], f1 + 0.5)
+            context.close_path()
 
-                context.set_source_rgb(*self.line_colors[c[0]])
-                context.stroke()
-            else:
-                w = wtotal
-                p = self.pixbuf_apply0.get_width()
-                window.draw_polygon(gctext, 0, (( -1, f0), (  p, f0), (  p,f1), ( -1,f1)) )
-                window.draw_polygon(gctext, 0, ((w+1, t0), (w-p, t0), (w-p,t1), (w+1,t1)) )
-                window.draw_line( gctext, p, (f0+f1)/2, w-p, (t0+t1)/2 )
+            context.set_source_rgb(*self.fill_colors[c[0]])
+            context.fill_preserve()
+
+            context.set_source_rgb(*self.line_colors[c[0]])
+            context.stroke()
 
             x = wtotal-self.pixbuf_apply0.get_width()
             if c[0] in ("insert", "replace"):

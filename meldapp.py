@@ -243,9 +243,7 @@ class PreferencesDialog(gnomeglade.Component):
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
         # display
-        self.map_widgets_into_lists( ["draw_style"] )
         self.map_widgets_into_lists( ["toolbar_style"] )
-        self.draw_style[self.prefs.draw_style].set_active(1)
         self.toolbar_style[self.prefs.toolbar_style].set_active(1)
         # file filters
         cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Pattern"), type("")) ]
@@ -304,9 +302,6 @@ class PreferencesDialog(gnomeglade.Component):
     #
     # display
     #
-    def on_draw_style_toggled(self, radio):
-        if radio.get_active():
-            self.prefs.draw_style = self.draw_style.index(radio)
     def on_toolbar_style_toggled(self, radio):
         if radio.get_active():
             self.prefs.toolbar_style = self.toolbar_style.index(radio)
@@ -437,7 +432,6 @@ class MeldPreferences(prefs.Preferences):
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "supply_newline": prefs.Value(prefs.BOOL,1),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
-        "draw_style": prefs.Value(prefs.INT,2),
         "toolbar_style": prefs.Value(prefs.INT,0),
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
