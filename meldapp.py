@@ -242,9 +242,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.editor_command[ self.editor_radio_values.get(self.prefs.edit_command_type, "internal") ].set_active(1)
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
-        # display
-        self.map_widgets_into_lists( ["toolbar_style"] )
-        self.toolbar_style[self.prefs.toolbar_style].set_active(1)
         # file filters
         cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Pattern"), type("")) ]
         self.filefilter = ListWidget( cols, self.prefs, "filters")
@@ -299,12 +296,6 @@ class PreferencesDialog(gnomeglade.Component):
                 if v == idx:
                     self.prefs.edit_command_type = k
                     break
-    #
-    # display
-    #
-    def on_toolbar_style_toggled(self, radio):
-        if radio.get_active():
-            self.prefs.toolbar_style = self.toolbar_style.index(radio)
     #
     # filters
     #
@@ -432,7 +423,6 @@ class MeldPreferences(prefs.Preferences):
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "supply_newline": prefs.Value(prefs.BOOL,1),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
-        "toolbar_style": prefs.Value(prefs.INT,0),
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "color_delete_bg" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
@@ -479,16 +469,12 @@ class MeldPreferences(prefs.Preferences):
             return self._gconf.get_string('/desktop/gnome/interface/monospace_font_name') or "Monospace 10"
 
     def get_toolbar_style(self):
-        if self.toolbar_style == 0:
-            style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style') or "both"
-            style = style.replace("-","_")
-            style = {"both":gtk.TOOLBAR_BOTH, "text":gtk.TOOLBAR_TEXT,
-                     "icon":gtk.TOOLBAR_ICONS, "icons":gtk.TOOLBAR_ICONS,
-                     "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
-                     "both-horiz":gtk.TOOLBAR_BOTH_HORIZ
-                     }[style]
-        else:
-            style = self.toolbar_style - 1
+        style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style') or "both"
+        style = {"both":gtk.TOOLBAR_BOTH, "text":gtk.TOOLBAR_TEXT,
+                 "icon":gtk.TOOLBAR_ICONS, "icons":gtk.TOOLBAR_ICONS,
+                 "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
+                 "both-horiz":gtk.TOOLBAR_BOTH_HORIZ
+                 }[style]
         return style
 
     def get_gnome_editor_command(self, files):
