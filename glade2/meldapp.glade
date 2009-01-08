@@ -570,34 +570,6 @@ Adam Weinberger (en_CA)</property>
       <widget class="GtkVBox" id="dialog-vbox4">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkHBox" id="hbox8">
-            <property name="visible">True</property>
-            <property name="spacing">2</property>
-            <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow1">
-                <property name="width_request">150</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="has_default">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="shadow_type">GTK_SHADOW_IN</property>
-                <child>
-                  <widget class="GtkTreeView" id="treeview">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="can_default">True</property>
-                    <property name="has_default">True</property>
-                    <property name="headers_visible">False</property>
-                    <signal name="cursor_changed" handler="on_treeview_cursor_changed"/>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="padding">5</property>
-              </packing>
-            </child>
-            <child>
               <widget class="GtkNotebook" id="notebook">
                 <property name="visible">True</property>
                 <property name="show_border">False</property>
@@ -1515,12 +1487,6 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
               </widget>
-              <packing>
-                <property name="padding">6</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </widget>
           <packing>
             <property name="padding">5</property>
             <property name="position">1</property>

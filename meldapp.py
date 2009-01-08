@@ -207,19 +207,6 @@ class PreferencesDialog(gnomeglade.Component):
     def __init__(self, parentapp):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
-        self.notebook.set_show_tabs(0)
-        # tab selector
-        self.model = gtk.ListStore(type(""))
-        column = gtk.TreeViewColumn()
-        rentext = gtk.CellRendererText()
-        column.pack_start(rentext, expand=0)
-        column.set_attributes(rentext, text=0)
-        self.treeview.append_column(column)
-        self.treeview.set_model(self.model)
-        for c in self.notebook.get_children():
-            label = self.notebook.get_tab_label(c).get_text()
-            if not label.startswith("_"):
-                self.model.append( (label,) )
         self.prefs = parentapp.prefs
         # editor
         self.map_widgets_into_lists( ["editor_command"] )
@@ -254,13 +241,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
-        self.treeview.set_cursor(0)
-    #
-    # treeview
-    #
-    def on_treeview_cursor_changed(self, tree):
-        path, column = tree.get_cursor()
-        self.notebook.set_current_page(path[0])
     #
     # editor
     #
