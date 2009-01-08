@@ -565,6 +565,7 @@ Adam Weinberger (en_CA)</property>
     <property name="title" translatable="yes">Preferences : Meld</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
+    <property name="border-width">5</property>
     <signal name="response" handler="on_response"/>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox4">
@@ -573,55 +574,12 @@ Adam Weinberger (en_CA)</property>
               <widget class="GtkNotebook" id="notebook">
                 <property name="visible">True</property>
                 <property name="show_border">False</property>
+                <property name="border-width">5</property>
                 <child>
                   <widget class="GtkVBox" id="editor_tab">
                     <property name="visible">True</property>
                     <property name="spacing">12</property>
-                    <child>
-                      <widget class="GtkVBox" id="vbox19">
-                        <property name="visible">True</property>
-                        <child>
-                          <widget class="GtkHBox" id="hbox14">
-                            <property name="visible">True</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <widget class="GtkImage" id="image588">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-justify-fill</property>
-                                <property name="icon_size">3</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label31">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">&lt;span weight="bold" size="x-large"&gt;Editor&lt;/span&gt;</property>
-                                <property name="use_markup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkHSeparator" id="hseparator3">
-                            <property name="visible">True</property>
-                          </widget>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                      </packing>
-                    </child>
+                    <property name="border-width">12</property>
                     <child>
                       <widget class="GtkVBox" id="vbox20">
                         <property name="visible">True</property>
@@ -724,7 +682,7 @@ Adam Weinberger (en_CA)</property>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="position">1</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
@@ -938,7 +896,7 @@ Adam Weinberger (en_CA)</property>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="position">2</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
@@ -1091,7 +1049,7 @@ Adam Weinberger (en_CA)</property>
                         </child>
                       </widget>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </widget>
@@ -1109,70 +1067,24 @@ Adam Weinberger (en_CA)</property>
                 <child>
                   <widget class="GtkVBox" id="file_filters_tab">
                     <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkVBox" id="file_filters_box">
-                        <property name="visible">True</property>
-                        <child>
-                          <widget class="GtkHBox" id="hbox31">
-                            <property name="visible">True</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <widget class="GtkImage" id="image592">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-yes</property>
-                                <property name="icon_size">3</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label58">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">&lt;span weight="bold" size="x-large"&gt;File Filters&lt;/span&gt;</property>
-                                <property name="use_markup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkHSeparator" id="hseparator7">
-                            <property name="visible">True</property>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
+                    <property name="spacing">12</property>
+                    <property name="border-width">12</property>
                         <child>
                           <widget class="GtkLabel" id="label86">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
-                            <property name="xpad">15</property>
-                            <property name="ypad">15</property>
                             <property name="label" translatable="yes">When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces.</property>
                             <property name="wrap">True</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">2</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <widget class="GtkHBox" id="hbox40">
                             <property name="visible">True</property>
-                            <property name="border_width">7</property>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton_ignore_symlinks">
                                 <property name="visible">True</property>
@@ -1193,15 +1105,13 @@ Adam Weinberger (en_CA)</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">3</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
                           <placeholder/>
                         </child>
                       </widget>
-                    </child>
-                  </widget>
                   <packing>
                     <property name="position">2</property>
                     <property name="tab_fill">False</property>
@@ -1221,57 +1131,12 @@ Adam Weinberger (en_CA)</property>
                 <child>
                   <widget class="GtkVBox" id="text_filters_tab">
                     <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkVBox" id="text_filters_box">
-                        <property name="visible">True</property>
-                        <child>
-                          <widget class="GtkHBox" id="hbox32">
-                            <property name="visible">True</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <widget class="GtkImage" id="image615">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-no</property>
-                                <property name="icon_size">3</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label60">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">&lt;span weight="bold" size="x-large"&gt;Text Filters&lt;/span&gt;</property>
-                                <property name="use_markup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkHSeparator" id="hseparator8">
-                            <property name="visible">True</property>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
+                    <property name="spacing">12</property>
+                    <property name="border-width">12</property>
                         <child>
                           <widget class="GtkLabel" id="label87">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
-                            <property name="xpad">15</property>
-                            <property name="ypad">15</property>
                             <property name="label" translatable="yes">When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which replaces matching text with the empty string before comparison is performed. If the expression contains groups, only the groups are replaced. See the user manual for more details.</property>
                             <property name="use_markup">True</property>
                             <property name="justify">GTK_JUSTIFY_FILL</property>
@@ -1280,13 +1145,12 @@ Adam Weinberger (en_CA)</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">2</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <widget class="GtkHBox" id="hbox39">
                             <property name="visible">True</property>
-                            <property name="border_width">7</property>
                             <child>
                               <widget class="GtkCheckButton" id="checkbutton_ignore_blank_lines">
                                 <property name="visible">True</property>
@@ -1300,21 +1164,18 @@ Adam Weinberger (en_CA)</property>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="padding">5</property>
                               </packing>
                             </child>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">3</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
                           <placeholder/>
                         </child>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="position">3</property>
@@ -1335,56 +1196,7 @@ Adam Weinberger (en_CA)</property>
                   <widget class="GtkVBox" id="encoding_tab">
                     <property name="visible">True</property>
                     <property name="spacing">12</property>
-                    <child>
-                      <widget class="GtkVBox" id="vbox36">
-                        <property name="visible">True</property>
-                        <child>
-                          <widget class="GtkHBox" id="hbox26">
-                            <property name="visible">True</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <widget class="GtkImage" id="image591">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-spell-check</property>
-                                <property name="icon_size">3</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label49">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">&lt;span weight="bold" size="x-large"&gt;Encoding&lt;/span&gt;</property>
-                                <property name="use_markup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkHSeparator" id="hseparator6">
-                            <property name="visible">True</property>
-                          </widget>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                      </packing>
-                    </child>
+                    <property name="border-width">12</property>
                     <child>
                       <widget class="GtkVBox" id="vbox39">
                         <property name="visible">True</property>
@@ -1467,7 +1279,7 @@ Adam Weinberger (en_CA)</property>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="position">1</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                   </widget>
@@ -1488,7 +1300,6 @@ Adam Weinberger (en_CA)</property>
                 </child>
               </widget>
           <packing>
-            <property name="padding">5</property>
             <property name="position">1</property>
           </packing>
         </child>

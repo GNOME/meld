@@ -232,12 +232,12 @@ class PreferencesDialog(gnomeglade.Component):
         # file filters
         cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Pattern"), type("")) ]
         self.filefilter = ListWidget( cols, self.prefs, "filters")
-        self.file_filters_box.pack_start(self.filefilter.widget)
+        self.file_filters_tab.pack_start(self.filefilter.widget)
         self.checkbutton_ignore_symlinks.set_active( self.prefs.ignore_symlinks)
         # text filters
         cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Regex"), type("")) ]
         self.textfilter = ListWidget( cols, self.prefs, "regexes")
-        self.text_filters_box.pack_start(self.textfilter.widget)
+        self.text_filters_tab.pack_start(self.textfilter.widget)
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
