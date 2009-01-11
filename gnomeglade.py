@@ -20,6 +20,7 @@
 import gtk
 import gtk.glade
 import historyentry
+import re
 
 class Component(object):
     """Base class for all glade objects.
@@ -105,6 +106,36 @@ class Component(object):
         w = historyentry.HistoryEntry(history_id)
         return w
 
+# Regular expression to match handler method names patterns
+# on_widget__signal and after_widget__signal.  Note that we use two
+# underscores between the Glade widget name and the signal name.
+handler_re = re.compile(r'^(on|after)_(.*)__(.*)$')
+
+def connect_signal_handlers(obj):
+    for attr in dir(obj):
+        match = handler_re.match(attr)
+        if match:
+            when, widgetname, signal = match.groups()
+            method = getattr(obj, attr)
+            assert callable(method)
+            try:
+                widget = getattr(obj, widgetname)
+            except AttributeError:
+                print "Widget '%s' not found in %s" % (widgetname, obj)
+                continue
+            try:
+                if when == 'on':
+                    widget.connect(signal, method)
+                elif when == 'after':
+                    widget.connect_after(signal, method)
+            except TypeError, e:
+                print e, "in", obj, attr
+        elif attr.startswith('on_') or attr.startswith('after_'):
+            continue # don't warn until all old code updated
+            # Warn about some possible typos like separating
+            # widget and signal name with _ instead of __.
+            print ('Warning: attribute %r not connected'
+                   ' as a signal handler' % (attr,))
 
 def load_pixbuf(fname, size=0):
     """Load an image from a file as a pixbuf, with optional resizing.
