@@ -109,8 +109,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             w.get_vscrollbar().connect_after("expose-event", self.on_vscroll__expose_event)
         self._connect_buffer_handlers()
         self.linediffer = diffutil.Differ()
-        for l in self.linkmap: # glade bug workaround
-            l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK )
         self.bufferdata = []
         for text in self.textview:
             text.set_wrap_mode( self.prefs.edit_wrap_lines )
