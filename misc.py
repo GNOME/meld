@@ -119,21 +119,6 @@ def shorten_names(*names):
     # no common path. empty names get changed to "[None]"
     return map( lambda x: x or _("[None]"), basenames)
 
-def look(s, o):
-    """Return a list of attributes in 'o' which contain the string 's'
-    """
-    return filter(lambda x:x.find(s)!=-1, dir(o))
-
-def ilook(s, o):
-    """Return a list of attributes in 'o' which contain the string 's' ignoring case. 
-    """
-    return filter(lambda x:x.lower().find(s)!=-1, dir(o))
-
-def all(o):
-    """Return a list of all the attributes in 'o' along with their values
-    """
-    return "\n".join( ["%s\t%s" % (x,getattr(o,x)) for x in dir(o)] )
-
 def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     """Read the output of a shell command iteratively.
 
