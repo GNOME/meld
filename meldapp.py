@@ -19,12 +19,11 @@ import sys
 import os
 from gettext import gettext as _
 
-# gnome
+# gtk
 import gtk
 import gtk.glade
 import gobject
 import pango
-import gnome
 
 # project
 import paths
@@ -496,7 +495,8 @@ class MeldApp(gnomeglade.Component):
                      "}\n"
                      "widget \"*.meld-tab-close-button\" style \"meld-tab-close-button-style\"")
         gladefile = paths.share_dir("glade2/meldapp.glade")
-        self.program = gnome.program_init("meld", version)
+        gtk.window_set_default_icon_name("icon")
+        gobject.set_application_name("Meld")
         gnomeglade.Component.__init__(self, gladefile, "meldapp")
 
         actions = (
@@ -525,9 +525,8 @@ class MeldApp(gnomeglade.Component):
             ("Reload",  gtk.STOCK_REFRESH,  _("Reload"), "<control><shift>R", _("Reload the comparison"), self.on_menu_reload_activate),
 
             ("HelpMenu", None, "_Help"),
-            ("Help",        gtk.STOCK_HELP,  _("_Contents"), "F1", _("Open the Meld manual"), self.on_menu_users_manual_activate),
+            ("Help",        gtk.STOCK_HELP,  _("_Contents"), "F1", _("Open the Meld manual"), self.on_menu_help_activate),
             ("BugReport",   gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None, _("Report a bug in Meld"), self.on_menu_help_bug_activate),
-            ("MailingList", None,            _("Mailing _List"), None, _("Go to the Meld mailing list"), self.on_menu_about_activate),
             ("About",       gtk.STOCK_ABOUT, None, None, _("About this program"), self.on_menu_about_activate),
 
             ("Magic",       gtk.STOCK_YES,   None,     None, None, self.on_menu_magic_activate),
@@ -718,18 +717,28 @@ class MeldApp(gnomeglade.Component):
     #
     # Toolbar and menu items (help)
     #
-    def on_menu_meld_home_page_activate(self, button):
-        gnome.url_show("http://meld.sourceforge.net")
+    def _open_uri(self, uri, timestamp=0):
+        # TODO: should be 2.14 when released
+        if gtk.pygtk_version >= (2, 13, 0):
+            gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
+        else:
+            try:
+                import gnome
+                gnome.url_show(uri)
+            except ImportError:
+                pass
+
+    def on_menu_help_activate(self, button):
+        self._open_uri("ghelp:meld")
 
     def on_menu_help_bug_activate(self, button):
-        gnome.url_show("http://bugzilla.gnome.org/buglist.cgi?product=meld")
-
-    def on_menu_users_manual_activate(self, button):
-        gnome.url_show("ghelp:///"+os.path.abspath(paths.help_dir("C/meld.xml") ))
+        self._open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
 
     def on_menu_about_activate(self, *extra):
+        gtk.about_dialog_set_url_hook(lambda dialog, uri: self._open_uri(uri))
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
         about.props.version = version
+        about.set_transient_for(self.widget)
         about.run()
         about.hide()
 
