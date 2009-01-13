@@ -111,7 +111,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.linediffer = diffutil.Differ()
         for l in self.linkmap: # glade bug workaround
             l.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK )
-            l.set_double_buffered(0) # we call paint_begin ourselves
         self.bufferdata = []
         for text in self.textview:
             text.set_wrap_mode( self.prefs.edit_wrap_lines )
@@ -1029,8 +1028,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if master != 1:
                     line = other_line
                     master = 1
-            self.on_linkmap_expose_event(self.linkmap0, None)
-            self.on_linkmap_expose_event(self.linkmap1, None)
+            for lm in self.linkmap:
+                if lm.window:
+                    alloc = lm.get_allocation()
+                    rect = gdk.Rectangle(0, 0, alloc.width, alloc.height)
+                    lm.window.invalidate_rect(rect, True)
+                    lm.window.process_updates(True)
             self._sync_vscroll_lock = 0
 
         #
@@ -1150,19 +1153,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # linkmap drawing
         #
-    def on_linkmap_expose_event(self, area, event):
-        window = area.window
-        # not mapped?
-        if not window: return
-        gctext = area.get_style().bg_gc[gtk.STATE_ACTIVE]
-
-        alloc = area.get_allocation()
-        (wtotal,htotal) = alloc.width, alloc.height
-        window.begin_paint_rect( (0,0,wtotal,htotal) )
-        window.clear()
-
-        context = window.cairo_create()
-        context.rectangle(0, 0, wtotal, htotal)
+    def on_linkmap_expose_event(self, widget, event):
+        wtotal, htotal = widget.allocation.width, widget.allocation.height
+        context = widget.window.cairo_create()
+        context.rectangle(event.area.x, event.area.y, event.area.width, event.area.height)
         context.clip()
         context.set_line_width(1.0)
 
@@ -1176,7 +1170,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pix0 = self.pixbuf_apply0
             pix1 = self.pixbuf_apply1
 
-        which = self.linkmap.index(area)
+        which = self.linkmap.index(widget)
         pix_start = [None] * self.num_panes
         pix_start[which  ] = self.textview[which  ].get_visible_rect().y
         pix_start[which+1] = self.textview[which+1].get_visible_rect().y
@@ -1245,7 +1239,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         context.move_to(.35 * wtotal, mid)
         context.line_to(.65 * wtotal, mid)
         context.stroke()
-        window.end_paint()
 
     def on_linkmap_scroll_event(self, area, event):
         self.next_diff(event.direction)
