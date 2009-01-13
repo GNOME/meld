@@ -1292,20 +1292,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     break
             #print self.mouse_chunk
             return 1
-        elif event.button == 2:
-            self.linkmap_drag_coord = event.x
         return 0
-
-    def on_linkmap_motion_notify_event(self, area, event):
-        return
-        #dx = event.x - self.linkmap_drag_coord
-        #self.linkmap_drag_coord = event.x
-        #w,h = self.scrolledwindow0.size_request()
-        #w,h = size[2] - size[0], size[3] - size[1]
-        #self.scrolledwindow0.set_size_request(w+dx,h)
-        #print w+dx
-        #textview0.get_allocation(
-        #print misc.all(event)
 
     def on_linkmap_button_release_event(self, area, event):
         if event.button == 1:
@@ -1344,9 +1331,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.on_text_end_user_action()
             return 1
         return 0
-
-    def on_linkmap_drag_begin(self, *args):
-        print args
 
 ################################################################################
 #
