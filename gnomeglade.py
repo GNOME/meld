@@ -124,12 +124,17 @@ def connect_signal_handlers(obj):
                 print "Widget '%s' not found in %s" % (widgetname, obj)
                 continue
             try:
-                if when == 'on':
-                    widget.connect(signal, method)
-                elif when == 'after':
-                    widget.connect_after(signal, method)
-            except TypeError, e:
-                print e, "in", obj, attr
+                widget = list(widget)
+            except TypeError:
+                widget = [widget]
+            for w in widgets:
+                try:
+                    if when == 'on':
+                        w.connect(signal, method)
+                    elif when == 'after':
+                        w.connect_after(signal, method)
+                except TypeError, e:
+                    print e, "in", obj, attr
         elif attr.startswith('on_') or attr.startswith('after_'):
             continue # don't warn until all old code updated
             # Warn about some possible typos like separating
