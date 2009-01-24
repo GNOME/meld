@@ -29,6 +29,7 @@ import gtk
 import shutil
 import re
 import signal
+import errno
 
 whitespace_re = re.compile(r"\s")
 
@@ -229,6 +230,19 @@ def unescape(s):
         s = s.replace(e[1:], e[0])
     return s
 
+def copy2(src, dst):
+    """Like shutil.copy2 but ignores chmod errors.
+    See [Bug 568000] Copying to NTFS fails
+    """
+    if os.path.isdir(dst):
+        dst = os.path.join(dst, os.path.basename(src))
+        shutil.copyfile(src, dst)
+    try:
+        shutil.copystat(src, dst)
+    except OSError, e:
+        if e.errno != errno.EPERM:
+            raise
+
 def copytree(src, dst, symlinks=1):
     try:
         os.mkdir(dst)
@@ -245,7 +259,7 @@ def copytree(src, dst, symlinks=1):
         elif os.path.isdir(srcname):
             copytree(srcname, dstname, symlinks)
         else:
-            shutil.copy2(srcname, dstname)
+            copy2(srcname, dstname)
 
 def shell_to_regex(pat):
     """Translate a shell PATTERN to a regular expression.

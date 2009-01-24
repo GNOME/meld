@@ -535,7 +535,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         dstdir = os.path.dirname( dst )
                         if not os.path.exists( dstdir ):
                             os.makedirs( dstdir )
-                        shutil.copy2( src, dstdir )
+                        misc.copy2( src, dstdir )
                         self.file_created( path, dst_pane)
                     elif os.path.isdir(src):
                         if os.path.exists(dst):
