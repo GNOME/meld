@@ -480,20 +480,24 @@ class MeldPreferences(prefs.Preferences):
 # MeldApp
 #
 ################################################################################
+
+gtk.rc_parse_string(
+    """
+    style "meld-tab-close-button-style" {
+        GtkWidget::focus-padding = 0
+        GtkWidget::focus-line-width = 0
+        xthickness = 0
+        ythickness = 0
+    }
+    widget "*.meld-tab-close-button" style "meld-tab-close-button-style"
+    """)
+
 class MeldApp(gnomeglade.Component):
 
     #
     # init
     #
     def __init__(self):
-        gtk.rc_parse_string ("style \"meld-tab-close-button-style\"\n"
-                     "{\n"
-                         "GtkWidget::focus-padding = 0\n"
-                         "GtkWidget::focus-line-width = 0\n"
-                         "xthickness = 0\n"
-                         "ythickness = 0\n"
-                     "}\n"
-                     "widget \"*.meld-tab-close-button\" style \"meld-tab-close-button-style\"")
         gladefile = paths.share_dir("glade2/meldapp.glade")
         gtk.window_set_default_icon_name("icon")
         gobject.set_application_name("Meld")
