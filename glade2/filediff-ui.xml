@@ -1,14 +1,21 @@
 <ui>
+  <toolbar name="Toolbar">
+    <placeholder name="GeneralActions">
+      <toolitem action="Save"/>
+      <toolitem action="Undo"/>
+      <toolitem action="Redo"/>
+    </placeholder>
+  </toolbar>
 
-  <popup name="FilediffPopup">
-    <menuitem action="FilePopupSave" />
-    <menuitem action="FilePopupSaveAs" />
+  <popup name="Popup">
+    <menuitem action="Save" />
+    <menuitem action="SaveAs" />
     <separator/>
     <menuitem action="CreatePatch" />
     <separator/>
-    <menuitem action="FilePopupCut" />
-    <menuitem action="FilePopupCopy" />
-    <menuitem action="FilePopupPaste" />
+    <menuitem action="Cut" />
+    <menuitem action="Copy" />
+    <menuitem action="Paste" />
     <separator/>
     <menuitem action="CopyAllLeft" />
     <menuitem action="CopyAllRight" />

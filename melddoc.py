@@ -48,7 +48,7 @@ class MeldDoc(gobject.GObject):
     def save(self):
         pass
 
-    def save_file(self, pane, saveas=0):
+    def save_as(self):
         pass
 
     def stop(self):
@@ -112,8 +112,19 @@ class MeldDoc(gobject.GObject):
     def set_labels(self, lst):
         pass
 
-    def on_switch_event(self):
-        pass
+    def on_container_switch_in_event(self, uimanager):
+        """Called when the container app switches to this tab.
+        """
+        self.ui_merge_id = uimanager.add_ui_from_file(self.ui_file)
+        uimanager.insert_action_group(self.actiongroup)
+        self.popup_menu = uimanager.get_widget("/Popup")
+        uimanager.ensure_update()
+
+    def on_container_switch_out_event(self, uimanager):
+        """Called when the container app switches away from this tab.
+        """
+        uimanager.remove_action_group(self.actiongroup)
+        uimanager.remove_ui(self.ui_merge_id)
 
     def on_delete_event(self, appquit=0):
         """Called when the docs container is about to close.

@@ -1,22 +1,26 @@
 <ui>
-  <toolbar name="DirdiffToolbar">
-    <toolitem action="DirCompare" />
-    <separator/>
-    <toolitem action="DirCopyLeft" />
-    <toolitem action="DirCopyRight" />
-    <toolitem action="DirDelete" />
-    <separator/>
-    <toolitem action="Hide" />
-    <separator/>
-    <toolitem action="IgnoreCase" />
-    <separator/>
-    <toolitem action="ShowSame" />
-    <toolitem action="ShowNew" />
-    <toolitem action="ShowModified" />
-    <placeholder name="FilterButtons" />
+  <toolbar name="Toolbar">
+    <placeholder name="GeneralActions">
+      <toolitem action="DirCompare" />
+    </placeholder>
+    <placeholder name="SpecialActions">
+      <toolitem action="DirCopyLeft" />
+      <toolitem action="DirCopyRight" />
+      <toolitem action="DirDelete" />
+      <separator/>
+      <toolitem action="Hide" />
+      <toolitem action="IgnoreCase" />
+    </placeholder>
+    <placeholder name="FilterActions">
+      <toolitem action="ShowSame" />
+      <toolitem action="ShowNew" />
+      <toolitem action="ShowModified" />
+      <separator/>
+      <placeholder name="FilterButtons" />
+    </placeholder>
   </toolbar>
 
-  <popup name="DirdiffPopup">
+  <popup name="Popup">
     <menuitem action="DirCompare" />
     <separator/>
     <menuitem action="DirCopyLeft" />

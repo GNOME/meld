@@ -542,14 +542,13 @@ class MeldApp(gnomeglade.Component):
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file)
-        for menuitem in ("New", "Save", "Undo", "Redo"):
+        for menuitem in ("Save", "Undo"):
             self.actiongroup.get_action(menuitem).props.is_important = True
         self.widget.add_accel_group(self.ui.get_accel_group())
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
         self.appvbox.pack_start(self.menubar, expand=False)
         self.appvbox.pack_start(self.toolbar, expand=False)
-        self.map_widgets_into_lists( "settings_drawstyle".split() )
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
         self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
@@ -604,12 +603,16 @@ class MeldApp(gnomeglade.Component):
     def on_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject")
         newseq = newdoc.undosequence
+        oldidx = notebook.get_current_page()
+        if oldidx >= 0:
+            olddoc = notebook.get_nth_page(oldidx).get_data("pyobject")
+            olddoc.on_container_switch_out_event(self.ui)
         self.actiongroup.get_action("Undo").set_sensitive(newseq.can_undo())
         self.actiongroup.get_action("Redo").set_sensitive(newseq.can_redo())
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title(nbl.get_label_text() + " - Meld")
         self.statusbar.set_doc_status("")
-        newdoc.on_switch_event()
+        newdoc.on_container_switch_in_event(self.ui)
         self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook_label_changed(self, component, text):
@@ -638,9 +641,7 @@ class MeldApp(gnomeglade.Component):
         self.current_doc().save()
 
     def on_menu_save_as_activate(self, menuitem):
-        pane = self.current_doc()._get_focused_pane()
-        if pane >= 0:
-            self.current_doc().save_file(pane, 1)
+        self.current_doc().save_as()
 
     def on_menu_refresh_activate(self, *args):
         self.current_doc().refresh()
@@ -773,6 +774,9 @@ class MeldApp(gnomeglade.Component):
             self.scheduler.remove_scheduler( page.scheduler )
             i = self.notebook.page_num( page.widget )
             assert(i>=0)
+            # If the page we're removing is the current page, we need to trigger a switch out
+            if self.notebook.get_current_page() == i:
+                page.on_container_switch_out_event(self.ui)
             self.notebook.remove_page(i)
             if self.notebook.get_n_pages() == 0:
                 self.widget.set_title("Meld")

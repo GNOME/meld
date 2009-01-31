@@ -141,29 +141,25 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             "replace"  : darken(self.fill_colors["replace"])}
 
         actions = (
-            ("FilePopupSave",     gtk.STOCK_SAVE,       None,            None, _("Save the current file"), self.save),
-            ("FilePopupSaveAs",   gtk.STOCK_SAVE_AS,    None,            "<control><shift>S", _("Save the current file with a different name"), self.save_as),
-            ("FilePopupCut",      gtk.STOCK_CUT,        None,            None, _("Cut the selection"), self.on_cut_activate),
-            ("FilePopupCopy",     gtk.STOCK_COPY,       None,            None, _("Copy the selection"), self.on_copy_activate),
-            ("FilePopupPaste",    gtk.STOCK_PASTE,      None,            None, _("Paste the clipboard"), self.on_paste_activate),
             ("FileOpen",          gtk.STOCK_OPEN,       None,            None, _("Open selected"), self.on_open_activate),
             ("CreatePatch",       None,                 _("Create Patch"),  None, _("Create a patch"), self.make_patch),
             ("CopyAllLeft",       gtk.STOCK_GOTO_FIRST, _("Copy To Left"),  None, _("Copy all changes from right pane to left pane"), lambda x: self.copy_selected(-1)),
             ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
         )
 
-        ui_file = paths.share_dir("glade2/filediff-ui.xml")
+        self.ui_file = paths.share_dir("glade2/filediff-ui.xml")
         self.actiongroup = gtk.ActionGroup('FilediffPopupActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
-        self.ui = gtk.UIManager()
-        self.ui.insert_action_group(self.actiongroup, 0)
-        self.ui.add_ui_from_file(ui_file)
-        self.popup_menu = self.ui.get_widget('/FilediffPopup')
         self.find_dialog = None
         self.last_search = None
         self.set_num_panes(num_panes)
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
+
+    def on_container_switch_in_event(self, ui):
+        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+        if self.textview_focussed:
+            self.scheduler.add_task(self.textview_focussed.grab_focus)
 
     def _update_regexes(self):
         self.regexes = []
@@ -212,9 +208,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_textview_focus_in_event(self, view, event):
         self.textview_focussed = view
         self._update_cursor_status(view.get_buffer())
-    def on_switch_event(self):
-        if self.textview_focussed:
-            self.scheduler.add_task( self.textview_focussed.grab_focus )
 
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
@@ -464,21 +457,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._find_text(s.text, s.case, s.word, s.wrap, s.regex)
         else:
             self.on_find_activate()
-
-    def on_copy_activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("copy-clipboard") #XXX .get_buffer().copy_clipboard()
-
-    def on_cut_activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("cut-clipboard") #XXX get_buffer().cut_clipboard()
-
-    def on_paste_activate(self, *extra):
-        t = self._get_focused_textview()
-        if t:
-            t.emit("paste-clipboard") #XXX t.get_buffer().paste_clipboard(None, 1)
 
     def popup_in_pane(self, pane):
         self.actiongroup.get_action("CopyAllLeft").set_sensitive(pane > 0)

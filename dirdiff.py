@@ -187,12 +187,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         actions = (
             ("DirCompare",   gtk.STOCK_DIALOG_INFO,  _("_Compare"), None, _("Compare selected"), self.on_button_diff_clicked),
-            # FIXME: the glade files were inconsistent: GO_BACK vs GOTO_FIRST, "Left" vs "Copy To Left"
             ("DirCopyLeft",  gtk.STOCK_GO_BACK,      _("Left"),     None, _("Copy To Left"), self.on_button_copy_left_clicked),
-            # FIXME: the glade files were inconsistent: GO_FORWARD vs GOTO_LAST, "Right" vs "Copy To Right"
             ("DirCopyRight", gtk.STOCK_GO_FORWARD,   _("Right"),    None, _("Copy To Right"), self.on_button_copy_right_clicked),
             ("DirDelete",    gtk.STOCK_DELETE,        None,         None, _("Delete selected"), self.on_button_delete_clicked),
-            ("Hide",         gtk.STOCK_NO,           _("Hide..."),  None, _("Hide selected"), self.on_filter_hide_current_clicked),
+            ("Hide",         gtk.STOCK_NO,           _("Hide"),     None, _("Hide selected"), self.on_filter_hide_current_clicked),
 
             ("DirOpen",      gtk.STOCK_OPEN,          None,         None, _("Open selected"), self.on_button_open_clicked),
         )
@@ -203,25 +201,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("ShowNew",      gtk.STOCK_ADD,     _("New"),      None, _("Show new"), self.on_filter_state_new_toggled, True),
             ("ShowModified", gtk.STOCK_REMOVE,  _("Modified"), None, _("Show modified"), self.on_filter_state_modified_toggled, True),
         )
-        ui_file = paths.share_dir("glade2/dirdiff-ui.xml")
-        self.ui = gtk.UIManager()
+        self.ui_file = paths.share_dir("glade2/dirdiff-ui.xml")
         self.actiongroup = gtk.ActionGroup('DirdiffToolbarActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
-        self.ui.insert_action_group(self.actiongroup, 0)
-        self.ui.add_ui_from_file(ui_file)
         self.create_name_filters()
         for button in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                        "DirDelete", "Hide", "IgnoreCase", "ShowSame",
                        "ShowNew", "ShowModified"):
             self.actiongroup.get_action(button).props.is_important = True
-        self.toolbar = self.ui.get_widget('/DirdiffToolbar')
-        self.dirdiff.pack_start(self.toolbar, False, True, 0)
-        self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
-        self.popup_menu = self.ui.get_widget('/DirdiffPopup')
-        self.popup_menu.connect("deactivate", self.on_popup_deactivate_event)
         self.set_num_panes(num_panes)
         self.focus_in_events = []
         self.focus_out_events = []
@@ -264,6 +254,23 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     misc.run_dialog(
                         text=_("Error converting pattern '%s' to regular expression") % r.value )
 
+    def on_container_switch_in_event(self, ui):
+        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+        ui.insert_action_group(self.filter_actiongroup)
+        self.custom_merge_id = ui.new_merge_id()
+        for x in self.filter_ui:
+            ui.add_ui(self.custom_merge_id, *x)
+        self.popup_deactivate_id = self.popup_menu.connect("deactivate", self.on_popup_deactivate_event)
+        if self.treeview_focussed:
+            self.scheduler.add_task(self.treeview_focussed.grab_focus)
+            self.scheduler.add_task(self.on_treeview_cursor_changed)
+
+    def on_container_switch_out_event(self, ui):
+        self.popup_menu.disconnect(self.popup_deactivate_id)
+        ui.remove_ui(self.custom_merge_id)
+        ui.remove_action_group(self.filter_actiongroup)
+        melddoc.MeldDoc.on_container_switch_out_event(self, ui)
+
     def create_name_filters(self):
         self.name_filters_available = []
         for f in [misc.ListItem(s) for s in self.prefs.filters.split("\n") ]:
@@ -281,20 +288,21 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 func = lambda x, r=cregex : r.match(x) == None
                 self.name_filters_available.append( TypeFilter(f.name, f.active, func) )
-        self.name_filters = []
-        merge_id = self.ui.new_merge_id()
+        self.name_filters = [f for f in self.name_filters_available if f.active]
+
+        actions = []
+        self.filter_ui = []
         for i,f in enumerate(self.name_filters_available):
             name = "Hide%d" % i
-            entry = (name, gtk.STOCK_FIND, f.label, None, _("Hide %s") % f.label, lambda b,i=i : self._update_name_filter(b,i), f.active)
-            self.actiongroup.add_toggle_actions([entry])
-            if f.active:
-                self.name_filters.append(self.name_filters_available[i])
-            self.ui.add_ui(merge_id, "/DirdiffToolbar/FilterButtons", name, name, gtk.UI_MANAGER_TOOLITEM, False)
+            callback = lambda b, i=i: self._update_name_filter(b, i)
+            actions.append((name, gtk.STOCK_FIND, f.label, None, _("Hide %s") % f.label, callback, f.active))
+            self.filter_ui.append(["/Toolbar/FilterActions/FilterButtons" , name, name, gtk.UI_MANAGER_TOOLITEM, False])
+
+        self.filter_actiongroup = gtk.ActionGroup("DirdiffFilterActions")
+        self.filter_actiongroup.add_toggle_actions(actions)
 
     def on_preference_changed(self, key, value):
-        if key == "toolbar_style":
-            self.toolbar.set_style( self.prefs.get_toolbar_style() )
-        elif key == "regexes":
+        if key == "regexes":
             self.update_regexes()
 
     def _do_to_others(self, master, objects, methodname, args):
@@ -600,11 +608,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.emit("status-changed", "" )
             else:
                 self.emit("status-changed", "%s : %s" % (rwx(stat.st_mode), nice(time.time() - stat.st_mtime) ) )
-
-    def on_switch_event(self):
-        if self.treeview_focussed:
-            self.scheduler.add_task( self.treeview_focussed.grab_focus )
-            self.scheduler.add_task( self.on_treeview_cursor_changed )
 
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)

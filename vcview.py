@@ -135,14 +135,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             ("VcShowIgnored", "filter-ignored-24",   _("Ignored"),   None, _("Show ignored files"), self.on_button_filter_toggled, False),
         )
 
-        ui_file = paths.share_dir("glade2/vcview-ui.xml")
+        self.ui_file = paths.share_dir("glade2/vcview-ui.xml")
         self.actiongroup = gtk.ActionGroup('VcviewActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
-        self.ui = gtk.UIManager()
-        self.ui.insert_action_group(self.actiongroup, 0)
-        self.ui.add_ui_from_file(ui_file)
         for action in ("VcCompare", "VcFlatten", "VcShowModified",
                        "VcShowNormal", "VcShowNonVC", "VcShowIgnored"):
             self.actiongroup.get_action(action).props.is_important = True
@@ -151,11 +148,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                        "VcShowIgnored"):
             button = self.actiongroup.get_action(action)
             button.props.icon_name = button.props.stock_id
-        self.toolbar = self.ui.get_widget('/VcviewToolbar')
-        self.vcview.pack_start(self.toolbar, False, True, 0)
-        self.vcview.reorder_child(self.toolbar, 0)
-        self.toolbar.set_style( self.prefs.get_toolbar_style() )
-        self.popup_menu = self.ui.get_widget('/VcviewPopup')
         self.tempdirs = []
         self.model = VcTreeStore()
         self.treeview.set_model(self.model)
@@ -272,10 +264,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             else: # just the root
                 self.treeview.expand_row( (0,), 0)
         self.vc.uncache_inventory()
-
-    def on_preference_changed(self, key, value):
-        if key == "toolbar_style":
-            self.toolbar.set_style( self.prefs.get_toolbar_style() )
 
     def on_fileentry_activate(self, fileentry):
         path = fileentry.get_full_path(0)

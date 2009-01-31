@@ -1,23 +1,26 @@
 <ui>
-
-  <toolbar name="VcviewToolbar">
-    <toolitem action="VcCompare" />
-    <separator/>
-    <toolitem action="VcFlatten" />
-    <toolitem action="VcShowModified" />
-    <toolitem action="VcShowNormal" />
-    <toolitem action="VcShowNonVC" />
-    <toolitem action="VcShowIgnored" />
-    <separator/>
-    <toolitem action="VcCommit" />
-    <toolitem action="VcUpdate" />
-    <toolitem action="VcAdd" />
-    <toolitem action="VcRemove" />
-    <toolitem action="VcRevert" />
-    <toolitem action="VcDeleteLocally" />
+  <toolbar name="Toolbar">
+    <placeholder name="GeneralActions">
+      <toolitem action="VcCompare" />
+    </placeholder>
+    <placeholder name="SpecialActions">
+      <toolitem action="VcCommit" />
+      <toolitem action="VcUpdate" />
+      <toolitem action="VcAdd" />
+      <toolitem action="VcRemove" />
+      <toolitem action="VcRevert" />
+      <toolitem action="VcDeleteLocally" />
+    </placeholder>
+    <placeholder name="FilterActions">
+      <toolitem action="VcFlatten" />
+      <toolitem action="VcShowModified" />
+      <toolitem action="VcShowNormal" />
+      <toolitem action="VcShowNonVC" />
+      <toolitem action="VcShowIgnored" />
+    </placeholder>
   </toolbar>
 
-  <popup name="VcviewPopup">
+  <popup name="Popup">
     <menuitem action="VcCompare" />
     <menuitem action="VcUpdate" />
     <menuitem action="VcCommit" />
