@@ -223,6 +223,11 @@ class PreferencesDialog(gnomeglade.Component):
             self.checkbutton_spaces_instead_of_tabs.set_sensitive(False)
             self.checkbutton_show_line_numbers.set_sensitive(False)
             self.checkbutton_use_syntax_highlighting.set_sensitive(False)
+            if gtk.pygtk_version >= (2, 12, 0):
+                no_sourceview_text = _("Only available if you have gnome-python-desktop installed")
+                self.checkbutton_spaces_instead_of_tabs.set_tooltip_text(no_sourceview_text)
+                self.checkbutton_show_line_numbers.set_tooltip_text(no_sourceview_text)
+                self.checkbutton_use_syntax_highlighting.set_tooltip_text(no_sourceview_text)
         self.option_wrap_lines.set_history( self.prefs.edit_wrap_lines )
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
         self.editor_command[ self.editor_radio_values.get(self.prefs.edit_command_type, "internal") ].set_active(1)
@@ -254,20 +259,14 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs.tab_size = int(spin.get_value())
     def on_checkbutton_spaces_instead_of_tabs_toggled(self, check):
         self.prefs.spaces_instead_of_tabs = check.get_active()
-        if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Spaces instead of tab is only available if you have gnome-python-desktop installed.") )
     def on_option_wrap_lines_changed(self, option):
         self.prefs.edit_wrap_lines = option.get_history()
     def on_checkbutton_supply_newline_toggled(self, check):
         self.prefs.supply_newline = check.get_active()
     def on_checkbutton_show_line_numbers_toggled(self, check):
         self.prefs.show_line_numbers = check.get_active()
-        if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Line numbers are only available if you have gnome-python-desktop installed.") )
     def on_checkbutton_use_syntax_highlighting_toggled(self, check):
         self.prefs.use_syntax_highlighting = check.get_active()
-        if check.get_active() and not sourceview_available:
-            misc.run_dialog(_("Syntax highlighting is only available if you have gnome-python-desktop installed.") )
     def on_editor_command_toggled(self, radio):
         if radio.get_active():
             idx = self.editor_command.index(radio)
