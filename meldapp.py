@@ -770,25 +770,14 @@ class MeldApp(gnomeglade.Component):
     #
     # Toolbar and menu items (help)
     #
-    def _open_uri(self, uri, timestamp=0):
-        # TODO: should be 2.14 when released
-        if gtk.pygtk_version >= (2, 13, 0):
-            gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
-        else:
-            try:
-                import gnome
-                gnome.url_show(uri)
-            except ImportError:
-                pass
-
     def on_menu_help_activate(self, button):
-        self._open_uri("ghelp:///"+os.path.abspath(paths.help_dir("C/meld.xml")))
+        misc.open_uri("ghelp:///"+os.path.abspath(paths.help_dir("C/meld.xml")))
 
     def on_menu_help_bug_activate(self, button):
-        self._open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
+        misc.open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
 
     def on_menu_about_activate(self, *extra):
-        gtk.about_dialog_set_url_hook(lambda dialog, uri: self._open_uri(uri))
+        gtk.about_dialog_set_url_hook(lambda dialog, uri: misc.open_uri(uri))
         about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
         about.props.version = version
         about.set_transient_for(self.widget)

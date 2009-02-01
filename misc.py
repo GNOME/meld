@@ -63,6 +63,17 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
     d.destroy()
     return ret
 
+def open_uri(uri, timestamp=0):
+    # TODO: should be 2.14 when released
+    if gtk.pygtk_version >= (2, 13, 0):
+        gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
+    else:
+        try:
+            import gnome
+            gnome.url_show(uri)
+        except ImportError:
+            pass
+
 class struct(object):
     """Similar to a dictionary except that members may be accessed as s.member.
 
