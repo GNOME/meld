@@ -782,7 +782,7 @@ class MeldApp(gnomeglade.Component):
                 pass
 
     def on_menu_help_activate(self, button):
-        self._open_uri("ghelp:meld")
+        self._open_uri("ghelp:///"+os.path.abspath(paths.help_dir("C/meld.xml")))
 
     def on_menu_help_bug_activate(self, button):
         self._open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
