@@ -987,4 +987,3 @@ def main():
     app = MeldApp()
     app.parse_args(sys.argv[1:])
     gtk.main()
-
