@@ -17,6 +17,7 @@
 # system
 import sys
 import os
+import optparse
 from gettext import gettext as _
 
 # gtk
@@ -899,16 +900,60 @@ class MeldApp(gnomeglade.Component):
         if response == gtk.RESPONSE_CANCEL:
             sys.exit(0)
         
-        
-        
-################################################################################
-#
-# usage
-#
-################################################################################
+    def parse_args(self, rawargs):
+        parser = optparse.OptionParser(
+            option_class=misc.MeldOption,
+            usage="""
+            %prog                       Start with no windows open
+            %prog <dir>                 Start with VC browser in 'dir'
+            %prog <file>                Start with VC diff of 'file'
+            %prog <file> <file> [file]  Start with 2 or 3 way file comparison
+            %prog <dir>  <dir>  [dir]   Start with 2 or 3 way directory comparison""",
+            description="""Meld is a file and directory comparison tool.""",
+            version="%prog "+version)
+        parser.add_option("-L", "--label", action="append", default=[], help=_("Set label to use instead of file name"))
+        parser.add_option("-a", "--auto-compare", action="store_true", default=False, help=_("Automatically compare all differing files on startup"))
+        parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
+        parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
+        parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
+        parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
+        parser.add_option("", "--diff", action="diff_files", dest='diff',
+                          default=[],
+                          help=_("Creates a diff tab for up to 3 supplied files."))
+        options, args = parser.parse_args(rawargs)
+        for files in options.diff:
+            if len(files) not in (1, 2, 3):
+                self.usage(_("Invalid number of arguments supplied for --diff."))
+            self.append_diff(files)
+        tab = self.open_paths(args, options.auto_compare)
+        if tab:
+            tab.set_labels( options.label )
 
-version_string = _("""Meld %s
-Written by Stephen Kennedy <stevek@gnome.org>""") % version
+    def open_paths(self, paths, auto_compare=False):
+        tab = None
+        if len(paths) == 0:
+            pass
+
+        elif len(paths) == 1:
+            a = paths[0]
+            if os.path.isfile(a):
+                doc = vcview.VcView(self.prefs)
+                def cleanup():
+                    self.scheduler.remove_scheduler(doc.scheduler)
+                self.scheduler.add_task(cleanup)
+                self.scheduler.add_scheduler(doc.scheduler)
+                doc.set_location( os.path.dirname(a) )
+                doc.connect("create-diff", lambda obj,arg: self.append_diff(arg) )
+                doc.run_diff([a])
+            else:
+                tab = self.append_vcview([a], auto_compare)
+                    
+        elif len(paths) in (2,3):
+            tab = self.append_diff(paths, auto_compare)
+        else:
+            self.usage( _("Wrong number of arguments (Got %i)") % len(paths))
+        return tab
+
 
 ################################################################################
 #
@@ -916,7 +961,6 @@ Written by Stephen Kennedy <stevek@gnome.org>""") % version
 #
 ################################################################################
 def main():
-    import optparse
     class Unbuffered(object):
         def __init__(self, file):
             self.file = file
@@ -927,60 +971,8 @@ def main():
             return getattr(self.file, attr)
     sys.stdout = Unbuffered(sys.stdout)
 
-    parser = optparse.OptionParser(
-    option_class=misc.MeldOption,
-    usage="""
-    %prog                       Start with no windows open
-    %prog <dir>                 Start with VC browser in 'dir'
-    %prog <file>                Start with VC diff of 'file'
-    %prog <file> <file> [file]  Start with 2 or 3 way file comparison
-    %prog <dir>  <dir>  [dir]   Start with 2 or 3 way directory comparison""",
-    description="""Meld is a file and directory comparison tool.""",
-    version="%prog "+version)
-    parser.add_option("-L", "--label", action="append", default=[], help=_("Set label to use instead of file name"))
-    parser.add_option("-a", "--auto-compare", action="store_true", default=False, help=_("Automatically compare all differing files on startup"))
-    parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
-    parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
-    parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
-    parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
-    parser.add_option("", "--diff", action="diff_files", dest='diff',
-                      default=[],
-                      help=_("Creates a diff tab for up to 3 supplied files."))
-    options, args = parser.parse_args()
-
-    icon_theme = gtk.icon_theme_get_default()
-    icon_theme.append_search_path(paths.share_dir("glade2/pixmaps/"))
+    gtk.icon_theme_get_default().append_search_path(paths.share_dir("glade2/pixmaps/"))
     app = MeldApp()
-    tab = None
-
-    for files in options.diff:
-        if len(files) not in (1, 2, 3):
-            app.usage(_("Invalid number of arguments supplied for --diff."))
-        app.append_diff(files)
-
-    if len(args) == 0:
-        pass
-
-    elif len(args) == 1:
-        a = args[0]
-        if os.path.isfile(a):
-            doc = vcview.VcView(app.prefs)
-            def cleanup():
-                app.scheduler.remove_scheduler(doc.scheduler)
-            app.scheduler.add_task(cleanup)
-            app.scheduler.add_scheduler(doc.scheduler)
-            doc.set_location( os.path.dirname(a) )
-            doc.connect("create-diff", lambda obj,arg: app.append_diff(arg) )
-            doc.run_diff([a])
-        else:
-            tab = app.append_vcview([a], options.auto_compare)
-                
-    elif len(args) in (2,3):
-        tab = app.append_diff(args, options.auto_compare)
-    else:
-        app.usage( _("Wrong number of arguments (Got %i)") % len(args))
-
-    if tab:
-        tab.set_labels( options.label )
+    app.parse_args(sys.argv[1:])
     gtk.main()
 
