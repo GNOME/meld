@@ -1,4 +1,18 @@
 <ui>
+  <menubar name="Menubar">
+    <menu action="ViewMenu">
+      <placeholder name="ViewPlaceholder">
+        <menuitem action="VcFlatten" />
+      </placeholder>
+      <menu action="VcStatus">
+        <menuitem action="VcShowModified" />
+        <menuitem action="VcShowNormal" />
+        <menuitem action="VcShowNonVC" />
+        <menuitem action="VcShowIgnored" />
+      </menu>
+    </menu>
+  </menubar>
+
   <toolbar name="Toolbar">
     <placeholder name="GeneralActions">
       <toolitem action="VcCompare" />
