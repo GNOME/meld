@@ -525,6 +525,7 @@ class MeldApp(gnomeglade.Component):
             ("ViewMenu", None, "_View"),
             ("FileStatus",  None, "File status"),
             ("VcStatus",    None, "Version status"),
+            ("FileFilters",  None, "File filters"),
             ("Stop",    gtk.STOCK_STOP,     None, "Escape", _("Stop the current action"), self.on_toolbar_stop_clicked),
             ("Refresh", gtk.STOCK_REFRESH,  None, "<control>R", _("Refresh the view"), self.on_menu_refresh_activate),
             ("Reload",  gtk.STOCK_REFRESH,  _("Reload"), "<control><shift>R", _("Reload the comparison"), self.on_menu_reload_activate),

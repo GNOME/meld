@@ -295,8 +295,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i,f in enumerate(self.name_filters_available):
             name = "Hide%d" % i
             callback = lambda b, i=i: self._update_name_filter(b, i)
-            actions.append((name, gtk.STOCK_FIND, f.label, None, _("Hide %s") % f.label, callback, f.active))
+            actions.append((name, gtk.STOCK_FIND, f.label, "", _("Hide %s") % f.label, callback, f.active))
             self.filter_ui.append(["/Toolbar/FilterActions/FilterButtons" , name, name, gtk.UI_MANAGER_TOOLITEM, False])
+            self.filter_ui.append(["/Menubar/ViewMenu/FileFilters" , name, name, gtk.UI_MANAGER_MENUITEM, False])
 
         self.filter_actiongroup = gtk.ActionGroup("DirdiffFilterActions")
         self.filter_actiongroup.add_toggle_actions(actions)
