@@ -216,9 +216,9 @@ def _expand_filename(filename, default_dir):
     if expanded != filename:
         return expanded
     elif default_dir:
-        return os.path.expanduser(os.path.join([default_dir, filename]))
+        return os.path.expanduser(os.path.join(default_dir, filename))
     else:
-        return os.path.join([os.getcwd(), filename])
+        return os.path.join(os.getcwd(), filename)
 
 
 class HistoryFileEntry(gtk.VBox, gtk.Editable):
