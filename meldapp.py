@@ -523,6 +523,7 @@ class MeldApp(gnomeglade.Component):
             ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
 
             ("ViewMenu", None, "_View"),
+            ("FileStatus",  None, "File status"),
             ("VcStatus",    None, "Version status"),
             ("Stop",    gtk.STOCK_STOP,     None, "Escape", _("Stop the current action"), self.on_toolbar_stop_clicked),
             ("Refresh", gtk.STOCK_REFRESH,  None, "<control>R", _("Refresh the view"), self.on_menu_refresh_activate),

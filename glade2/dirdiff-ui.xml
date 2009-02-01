@@ -1,4 +1,17 @@
 <ui>
+  <menubar name="Menubar">
+    <menu action="ViewMenu">
+      <placeholder name="ViewPlaceholder">
+        <menuitem action="IgnoreCase" />
+      </placeholder>
+      <menu action="FileStatus">
+        <menuitem action="ShowSame" />
+        <menuitem action="ShowNew" />
+        <menuitem action="ShowModified" />
+      </menu>
+    </menu>
+  </menubar>
+
   <toolbar name="Toolbar">
     <placeholder name="GeneralActions">
       <toolitem action="DirCompare" />
