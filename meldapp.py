@@ -541,6 +541,9 @@ class MeldApp(gnomeglade.Component):
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file)
+        self.ui.connect("connect-proxy", self._on_uimanager_connect_proxy)
+        self.ui.connect("disconnect-proxy", self._on_uimanager_disconnect_proxy)
+
         for menuitem in ("Save", "Undo"):
             self.actiongroup.get_action(menuitem).props.is_important = True
         self.widget.add_accel_group(self.ui.get_accel_group())
@@ -548,6 +551,8 @@ class MeldApp(gnomeglade.Component):
         self.toolbar = self.ui.get_widget('/Toolbar')
         self.appvbox.pack_start(self.menubar, expand=False)
         self.appvbox.pack_start(self.toolbar, expand=False)
+        # TODO: should possibly use something other than doc_status
+        self._menu_context = self.doc_status.get_context_id("Tooltips")
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
         self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
@@ -563,6 +568,34 @@ class MeldApp(gnomeglade.Component):
         self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
         self.ui.ensure_update()
         self.widget.show()
+
+    def _on_uimanager_connect_proxy(self, ui, action, widget):
+        tooltip = action.props.tooltip
+        if not tooltip:
+            return
+        if isinstance(widget, gtk.MenuItem):
+            cid = widget.connect("select", self._on_action_item_select_enter, tooltip)
+            cid2 = widget.connect("deselect", self._on_action_item_deselect_leave)
+            widget.set_data("meldapp::proxy-signal-ids", (cid, cid2))
+        elif isinstance(widget, gtk.ToolButton):
+            cid = widget.child.connect("enter", self._on_action_item_select_enter, tooltip)
+            cid2 = widget.child.connect("leave", self._on_action_item_deselect_leave)
+            widget.set_data("meldapp::proxy-signal-ids", (cid, cid2))
+
+    def _on_uimanager_disconnect_proxy(self, ui, action, widget):
+        cids = widget.get_data("meldapp::proxy-signal-ids")
+        if not cids:
+            return
+        if isinstance(widget, gtk.ToolButton):
+            widget = widget.child
+        for cid in cids:
+            widget.disconnect(cid)
+
+    def _on_action_item_select_enter(self, item, tooltip):
+        self.statusbar.doc_status.push(self._menu_context, tooltip)
+
+    def _on_action_item_deselect_leave(self, item):
+        self.statusbar.doc_status.pop(self._menu_context)
 
     def on_idle(self):
         ret = self.scheduler.iteration()
