@@ -25,6 +25,7 @@ import gtk
 import gtk.glade
 import gobject
 import pango
+import gnomevfs
 
 # project
 import paths
@@ -564,6 +565,11 @@ class MeldApp(gnomeglade.Component):
         elif 1:
             def showPrefs(): PreferencesDialog(self)
             gobject.idle_add(showPrefs)
+        dnd_targets = self.widget.drag_dest_set(
+            gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
+            [ ('text/uri-list', 0, 0) ],
+            gtk.gdk.ACTION_COPY)
+        self.widget.connect('drag_data_received', self.on_widget_drag_data_received)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
@@ -572,6 +578,12 @@ class MeldApp(gnomeglade.Component):
         self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
         self.ui.ensure_update()
         self.widget.show()
+
+    def on_widget_drag_data_received(self, wid, context, x, y, selection_data, info, time):
+        if len(selection_data.get_uris()) != 0:
+            paths = [gnomevfs.get_local_path_from_uri(u) for u in selection_data.get_uris()]
+            self.open_paths(paths)
+            return True
 
     def _on_uimanager_connect_proxy(self, ui, action, widget):
         tooltip = action.props.tooltip
