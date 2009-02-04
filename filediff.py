@@ -744,6 +744,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 last_change = change
         if last_change:
             draw_change(last_change)
+
+        if textview.is_focus():
+            context.set_line_width(3)
+            curline = textview.get_buffer().get_iter_at_mark( textview.get_buffer().get_insert() ).get_line()
+            ypos, height = self._line_to_pixel_plus_height(pane, curline)
+            context.set_source_rgba(1,1,0,.25)
+            context.rectangle(0,ypos-visible.y, width, height)
+            context.fill()
         
     def _get_filename_for_saving(self, title ):
         dialog = gtk.FileChooserDialog(title,
@@ -1069,6 +1077,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _line_to_pixel(self, pane, line ):
         it = self.textbuffer[pane].get_iter_at_line(line)
         return self.textview[pane].get_iter_location( it ).y
+
+    def _line_to_pixel_plus_height(self, pane, line ):
+        it = self.textbuffer[pane].get_iter_at_line(line)
+        return self.textview[pane].get_line_yrange( it )
 
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
