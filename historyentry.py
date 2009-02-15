@@ -199,9 +199,7 @@ class HistoryEntry(gtk.ComboBoxEntry):
 try:
     import gconf
 except ImportError:
-    def do_nothing(self):
-        return
-
+    do_nothing = lambda *args: None
     for m in ('_save_history', '_load_history', '_get_gconf_client'):
         setattr(HistoryEntry, m, do_nothing)
 
@@ -474,8 +472,6 @@ class HistoryFileEntry(gtk.VBox, gtk.Editable):
 try:
     import gnomevfs
 except ImportError:
-    def do_nothing(self):
-        return
-
+    do_nothing = lambda *args: None
     setattr(HistoryFileEntry, '_setup_dnd', do_nothing)
 
