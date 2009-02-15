@@ -21,7 +21,7 @@ import glob
 import re
 
 # check for tabs
-for file in ["meld"] + glob.glob("*.py"):
+for file in ["meld"] + glob.glob("*.py") + glob.glob("vc/*.py"):
 	txt = open(file).read()
 	firsttab = txt.find('\t')
 	if firsttab != -1:
