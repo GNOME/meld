@@ -50,9 +50,9 @@ class Vc(_vc.Vc):
         if mtn:
             self.root = mtn
 
-	    self.interface_version = float(os.popen("mtn" + " automate interface_version").read())
-	    if self.interface_version > 6.0:
-		print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
+            self.interface_version = float(os.popen("mtn" + " automate interface_version").read())
+            if self.interface_version > 6.0:
+                print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
 
             return
 
@@ -97,71 +97,71 @@ class Vc(_vc.Vc):
                 if e.errno != errno.EAGAIN:
                     raise
 
-	if self.interface_version >= 6.0:
-	    # this version of monotone uses the new inventory format
+        if self.interface_version >= 6.0:
+            # this version of monotone uses the new inventory format
 
-	    statemap = {
-		'added known rename_source' : _vc.STATE_NEW,
-		'added known' : _vc.STATE_NEW,
-		'added missing' : _vc.STATE_EMPTY,
-		'dropped' : _vc.STATE_REMOVED,
-		'dropped unknown' : _vc.STATE_REMOVED,
-		'known' : _vc.STATE_NORMAL,
-		'known rename_target' : _vc.STATE_MODIFIED,
-		'missing' : _vc.STATE_MISSING,
-		'missing rename_target' : _vc.STATE_MISSING,
-		'ignored' : _vc.STATE_IGNORED,
-		'unknown' : _vc.STATE_NONE,
-		'rename_source' : _vc.STATE_NONE, # the rename target is what we now care about
-		'rename_source unknown' : _vc.STATE_NONE,
-		'known rename_target' : _vc.STATE_MODIFIED,
-		'known rename_source rename_target' : _vc.STATE_MODIFIED,
-	    }
+            statemap = {
+                'added known rename_source' : _vc.STATE_NEW,
+                'added known' : _vc.STATE_NEW,
+                'added missing' : _vc.STATE_EMPTY,
+                'dropped' : _vc.STATE_REMOVED,
+                'dropped unknown' : _vc.STATE_REMOVED,
+                'known' : _vc.STATE_NORMAL,
+                'known rename_target' : _vc.STATE_MODIFIED,
+                'missing' : _vc.STATE_MISSING,
+                'missing rename_target' : _vc.STATE_MISSING,
+                'ignored' : _vc.STATE_IGNORED,
+                'unknown' : _vc.STATE_NONE,
+                'rename_source' : _vc.STATE_NONE, # the rename target is what we now care about
+                'rename_source unknown' : _vc.STATE_NONE,
+                'known rename_target' : _vc.STATE_MODIFIED,
+                'known rename_source rename_target' : _vc.STATE_MODIFIED,
+            }
 
-	    # terminate the final stanza. basic io stanzas are blank line seperated with no
-	    # blank line at the beginning or end (and we need to loop below to act upon the
+            # terminate the final stanza. basic io stanzas are blank line seperated with no
+            # blank line at the beginning or end (and we need to loop below to act upon the
             # final stanza
-	    entries.append('')
+            entries.append('')
 
-	    tree_state = {}
-	    stanza = {}
-	    for entry in entries:
-		if entry != '':
-		    # this is part of a stanza and is structured '   word "value1" "value2"',
+            tree_state = {}
+            stanza = {}
+            for entry in entries:
+                if entry != '':
+                    # this is part of a stanza and is structured '   word "value1" "value2"',
                     # we convert this into a dictionary of lists: stanza['word'] = [ 'value1', 'value2' ]
-		    entry = entry.strip().split()
-		    tag = entry[0]
-		    values = [i.strip('"') for i in entry[1:]]
-		    stanza[tag] = values
+                    entry = entry.strip().split()
+                    tag = entry[0]
+                    values = [i.strip('"') for i in entry[1:]]
+                    stanza[tag] = values
                 else:
-		    # extract the filename (and append / if is is a directory)
-		    fname = stanza['path'][0]
-		    if stanza['fs_type'][0] == 'directory':
-			fname = fname + '/'
+                    # extract the filename (and append / if is is a directory)
+                    fname = stanza['path'][0]
+                    if stanza['fs_type'][0] == 'directory':
+                        fname = fname + '/'
 
-		    # sort the list and reduce it from a list to a space seperated string.
-		    mstate = stanza['status']
-		    mstate.sort()
-		    mstate = reduce(lambda s1, s2: s1 + ' ' + s2, mstate)
+                    # sort the list and reduce it from a list to a space seperated string.
+                    mstate = stanza['status']
+                    mstate.sort()
+                    mstate = reduce(lambda s1, s2: s1 + ' ' + s2, mstate)
 
-		    if mstate in statemap:
-		        if 'changes' in stanza:
-			    state = _vc.STATE_MODIFIED
-			else:
-			    state = statemap[mstate]
-			    if state == _vc.STATE_ERROR:
-			        print "WARNING: invalid state ('%s') reported by 'automate inventory' for %s" % (mstate, fname)
-		    else:
-			state = _vc.STATE_ERROR
-			print "WARNING: impossible state ('%s') reported by 'automate inventory' for %s (version skew?)" % (mstate, fname)
+                    if mstate in statemap:
+                        if 'changes' in stanza:
+                            state = _vc.STATE_MODIFIED
+                        else:
+                            state = statemap[mstate]
+                            if state == _vc.STATE_ERROR:
+                                print "WARNING: invalid state ('%s') reported by 'automate inventory' for %s" % (mstate, fname)
+                    else:
+                        state = _vc.STATE_ERROR
+                        print "WARNING: impossible state ('%s') reported by 'automate inventory' for %s (version skew?)" % (mstate, fname)
 
                     # insert the file into the summarized inventory
-		    tree_state[os.path.join(self.root, fname)] = state
+                    tree_state[os.path.join(self.root, fname)] = state
 
-		    # clear the stanza ready for next iteration
-		    stanza = {}
+                    # clear the stanza ready for next iteration
+                    stanza = {}
 
-	    return tree_state
+            return tree_state
 
         statemap = {
             '   ' : _vc.STATE_NORMAL,   # unchanged
@@ -170,10 +170,10 @@ class Vc(_vc.Vc):
             '  I' : _vc.STATE_IGNORED,  # ignored (exists on the filesystem but excluded by lua hook)
             '  M' : _vc.STATE_MISSING,  # missing (exists in the manifest but not on the filesystem)
 
-	    # Added files are not consistantly handled by all releases:
-	    #   0.28: although documented as invalid added files are tagged ' A '.
-	    #   0.26, 0.27: ???
-	    #   0.25: added files are tagged ' AP'.
+            # Added files are not consistantly handled by all releases:
+            #   0.28: although documented as invalid added files are tagged ' A '.
+            #   0.26, 0.27: ???
+            #   0.25: added files are tagged ' AP'.
             ' A ' : _vc.STATE_NEW,      # added (invalid, add should have associated patch)
             ' AP' : _vc.STATE_NEW,      # added and patched
             ' AU' : _vc.STATE_ERROR,    # added but unknown (invalid)
