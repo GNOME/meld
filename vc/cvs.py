@@ -157,7 +157,7 @@ class Vc(_vc.Vc):
                                   "The error was '%s'") % (",".join(ignored), e))
         else:
             class dummy(object):
-                def match(*args): return None
+                def match(self, *args): return None
             ignore_re = dummy()
 
         for f,path in files:
