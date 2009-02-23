@@ -78,7 +78,7 @@ class Vc(_vc.Vc):
         hgfiles = {}
         for statekey, name in [ (entry[0], entry[2:]) for entry in entries if entry.find("/")==-1 ]:
             path = os.path.join(directory, name)
-            rev, date, options, tag = "","","",""
+            rev, options, tag = "","",""
             state = statemap.get(statekey, _vc.STATE_NONE)
             retfiles.append( _vc.File(path, name, state, rev, tag, options) )
             hgfiles[name] = 1

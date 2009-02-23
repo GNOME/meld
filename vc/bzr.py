@@ -111,7 +111,7 @@ class Vc(_vc.Vc):
                 mydir, name = os.path.split(mydir)
             if mydir != directory:
                 continue
-            rev, date, options, tag = "","","",""
+            rev, options, tag = "","",""
             if path.endswith('/'):
                 retdirs.append( _vc.Dir(path[:-1], name, state))
             else:
