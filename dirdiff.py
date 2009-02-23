@@ -464,7 +464,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                             s = os.stat( join(root,e) )
                                         except OSError, err:
                                             print "ignoring dangling symlink", e
-                                            pass
                                         else:
                                             if stat.S_ISREG(s.st_mode):
                                                 files.append(e)
