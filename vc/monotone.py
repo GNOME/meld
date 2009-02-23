@@ -26,7 +26,7 @@ import os
 import re
 import time
 import _vc
-
+import errno
 
 class Vc(_vc.Vc):
     CMD = "mtn"
