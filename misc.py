@@ -347,7 +347,6 @@ def check_diff_files(option, opt, value):
 def diff_files_callback(option, opt_str, value, parser):
     """Gather arguments after option in a list and append to option.dest."""
     assert value is None
-    done = 0
     diff_files_args = []
     rargs = parser.rargs
     while rargs:
