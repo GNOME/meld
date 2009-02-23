@@ -235,7 +235,7 @@ class Vc(_vc.Vc):
                 state = _vc.STATE_ERROR
                 print "WARNING: impossible state ('%s') reported by 'automate inventory' (version skew?)" % mstate
 
-            tree_state[os.path.join(self.root, fname)] = state;
+            tree_state[os.path.join(self.root, fname)] = state
 
         return tree_state
 

@@ -329,7 +329,7 @@ class NotebookLabel(gtk.HBox):
         # FIXME: ideally, we would use custom ellipsization that ellipsized the
         # two paths separately, but that requires significant changes to label
         # generation in many different parts of the code
-        label.set_ellipsize(pango.ELLIPSIZE_MIDDLE);
+        label.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         label.set_single_line_mode(True)
         label.set_alignment(0.0, 0.5)
         label.set_padding(0, 0)
