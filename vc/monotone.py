@@ -224,7 +224,6 @@ class Vc(_vc.Vc):
         tree_state = {}
         for entry in entries:
             mstate = entry[0:3]
-            rename_tracking = entry[4:7] # unused
             fname = entry[8:]
 
             if mstate in statemap:
