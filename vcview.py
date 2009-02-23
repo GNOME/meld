@@ -177,15 +177,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         addCol(_("Options"), COL_OPTIONS)
 
         class ConsoleStream(object):
-            def __init__(this, textview):
-                this.textview = textview
+            def __init__(self, textview):
+                self.textview = textview
                 b = textview.get_buffer()
-                this.mark = b.create_mark("END", b.get_end_iter(), 0)
-            def write(this, s):
+                self.mark = b.create_mark("END", b.get_end_iter(), 0)
+            def write(self, s):
                 if s:
-                    b = this.textview.get_buffer()
+                    b = self.textview.get_buffer()
                     b.insert(b.get_end_iter(), s)
-                    this.textview.scroll_mark_onscreen( this.mark )
+                    self.textview.scroll_mark_onscreen( self.mark )
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
