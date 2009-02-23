@@ -791,7 +791,6 @@ class MeldApp(gnomeglade.Component):
         for i in range(8):
             self.append_filediff( ("ntest/file%ia"%i, "ntest/file%ib"%i) )
             #self.append_filediff( ("ntest/file9a", "ntest/file9b") )
-        pass
 
     def on_menu_edit_down_activate(self, *args):
         misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_DOWN )
