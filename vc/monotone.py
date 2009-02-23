@@ -23,8 +23,6 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
-import re
-import time
 import _vc
 import errno
 
