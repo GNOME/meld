@@ -29,7 +29,6 @@ import gtk
 import shutil
 import re
 import signal
-import errno
 
 whitespace_re = re.compile(r"\s")
 
