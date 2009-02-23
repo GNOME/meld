@@ -86,9 +86,6 @@ class Vc(object):
     def patch_command(self, workdir):
         return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
 
-    def lookup_files(self, cdirs, cfiles):
-        raise NotImplementedError()
-
     def get_working_directory(self, workdir):
         return workdir
 
