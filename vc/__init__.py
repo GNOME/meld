@@ -34,7 +34,11 @@ def load_plugins():
     return ret
 _plugins = load_plugins()
 
-def Vc(location):
+def default_plugin_order(vcs):
+    # Pick the Vc with the longest repo root
+    return max(vcs, key=lambda repo: len(repo.root))
+
+def Vc(location, ordering_func = default_plugin_order):
     vcs = []
     for plugin in _plugins:
         try:
@@ -43,7 +47,13 @@ def Vc(location):
             pass
 
     if not vcs:
-        return _null.Vc(location)
+        # No plugin recognized that location, fallback to _null
+        vc = _null.Vc(location)
+    elif len(vcs) == 1:
+        # No need to launch a potentially GUI/interactive chooser
+        vc = vcs[0]
+    else:
+        # User gets to pick one, eventually
+        vc = ordering_func(vcs)
 
-    #Pick the Vc with the longest repo root
-    return max(vcs, key=lambda repo: len(repo.root))
+    return vc
