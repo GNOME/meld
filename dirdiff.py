@@ -490,7 +490,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             else: # directory is empty, add a placeholder
                 self.model.add_empty(it)
             if differences[0]:
-                 expanded[path] = False
+                expanded[path] = False
         for path in sorted(expanded.keys()):
             start = path[:]
             while len(start) and not expanded.get(start,False):
