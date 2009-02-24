@@ -175,7 +175,7 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
             errorstream.write( childerr.read() )
             self.pipe = None
             if status:
-               errorstream.write("Exit code: %i\n" % status)
+                errorstream.write("Exit code: %i\n" % status)
             yield "".join(bits)
     return sentinel()()
 
