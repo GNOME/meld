@@ -691,9 +691,6 @@ class MeldApp(gnomeglade.Component):
     def on_menu_save_as_activate(self, menuitem):
         self.current_doc().save_as()
 
-    def on_menu_refresh_activate(self, *args):
-        self.current_doc().refresh()
-
     def on_menu_close_activate(self, *extra):
         i = self.notebook.get_current_page()
         if i >= 0:
