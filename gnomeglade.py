@@ -127,7 +127,7 @@ def connect_signal_handlers(obj):
                 widget = list(widget)
             except TypeError:
                 widget = [widget]
-            for w in widgets:
+            for w in widget:
                 try:
                     if when == 'on':
                         w.connect(signal, method)
