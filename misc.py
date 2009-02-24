@@ -218,7 +218,7 @@ def commonprefix(dirs):
     prefix = n[0]
     for item in n:
         for i in range(len(prefix)):
-            if prefix[:i+1] <> item[:i+1]:
+            if prefix[:i+1] != item[:i+1]:
                 prefix = prefix[:i]
                 if i == 0: return ''
                 break
