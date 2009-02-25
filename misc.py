@@ -73,6 +73,50 @@ def open_uri(uri, timestamp=0):
         except ImportError:
             pass
 
+# Taken from epiphany
+def position_menu_under_widget(menu, widget):
+    container = widget.get_ancestor(gtk.Container)
+
+    widget_width, widget_height = widget.size_request()
+    menu_width, menu_height = menu.size_request()
+
+    screen = menu.get_screen()
+    monitor_num = screen.get_monitor_at_window(widget.window)
+    if monitor_num < 0:
+        monitor_num = 0
+    monitor = screen.get_monitor_geometry(monitor_num)
+
+    x, y = widget.window.get_origin()
+    if widget.flags() & gtk.NO_WINDOW:
+        x += widget.allocation.x
+        y += widget.allocation.y
+
+    if container.get_direction() == gtk.TEXT_DIR_LTR:
+        x += widget.allocation.width - widget_width
+    else:
+        x += widget_width - menu_width
+
+    if (y + widget.allocation.height + menu_height) <= monitor.y + monitor.height:
+        y += widget.allocation.height
+    elif (y - menu_height) >= monitor.y:
+        y -= menu_height
+    elif monitor.y + monitor.height - (y + widget.allocation.height) > y:
+        y += widget.allocation.height
+    else:
+        y -= menu_height
+
+    return (x, y, False)
+
+def make_tool_button_widget(label):
+    """Make a GtkToolButton label-widget suggestive of a menu dropdown"""
+    arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_NONE)
+    label = gtk.Label(label)
+    hbox = gtk.HBox(spacing=3)
+    hbox.pack_end(arrow)
+    hbox.pack_end(label)
+    hbox.show_all()
+    return hbox
+
 class struct(object):
     """Similar to a dictionary except that members may be accessed as s.member.
 

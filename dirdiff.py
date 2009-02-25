@@ -200,6 +200,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("ShowSame",     gtk.STOCK_APPLY,   _("Same"),     None, _("Show identical"), self.on_filter_state_normal_toggled, True),
             ("ShowNew",      gtk.STOCK_ADD,     _("New"),      None, _("Show new"), self.on_filter_state_new_toggled, True),
             ("ShowModified", gtk.STOCK_REMOVE,  _("Modified"), None, _("Show modified"), self.on_filter_state_modified_toggled, True),
+
+            ("CustomFilterMenu", None, _("Filters"), None, _("Set active filters"), self.on_custom_filter_menu_toggled, False),
         )
         self.ui_file = paths.share_dir("glade2/dirdiff-ui.xml")
         self.actiongroup = gtk.ActionGroup('DirdiffToolbarActions')
@@ -209,7 +211,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.create_name_filters()
         for button in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                        "DirDelete", "Hide", "IgnoreCase", "ShowSame",
-                       "ShowNew", "ShowModified"):
+                       "ShowNew", "ShowModified", "CustomFilterMenu"):
             self.actiongroup.get_action(button).props.is_important = True
         self.map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
         self.set_num_panes(num_panes)
@@ -254,6 +256,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     misc.run_dialog(
                         text=_("Error converting pattern '%s' to regular expression") % r.value )
 
+    def _custom_popup_deactivated(self, popup):
+        self.filter_menu_button.set_active(False)
+
+    def on_custom_filter_menu_toggled(self, item):
+        if item.get_active():
+            self.custom_popup.connect("deactivate", self._custom_popup_deactivated)
+            self.custom_popup.popup(None, None, misc.position_menu_under_widget,
+                                    1, gtk.get_current_event_time(), self.filter_menu_button)
+
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
         ui.insert_action_group(self.filter_actiongroup)
@@ -261,6 +272,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for x in self.filter_ui:
             ui.add_ui(self.custom_merge_id, *x)
         self.popup_deactivate_id = self.popup_menu.connect("deactivate", self.on_popup_deactivate_event)
+        self.custom_popup = ui.get_widget("/CustomPopup")
+        self.filter_menu_button = ui.get_widget("/Toolbar/FilterActions/CustomFilterMenu")
+        label = misc.make_tool_button_widget(self.filter_menu_button.props.label)
+        self.filter_menu_button.set_label_widget(label)
+
         if self.treeview_focussed:
             self.scheduler.add_task(self.treeview_focussed.grab_focus)
             self.scheduler.add_task(self.on_treeview_cursor_changed)
@@ -295,8 +311,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i,f in enumerate(self.name_filters_available):
             name = "Hide%d" % i
             callback = lambda b, i=i: self._update_name_filter(b, i)
-            actions.append((name, gtk.STOCK_FIND, f.label, "", _("Hide %s") % f.label, callback, f.active))
-            self.filter_ui.append(["/Toolbar/FilterActions/FilterButtons" , name, name, gtk.UI_MANAGER_TOOLITEM, False])
+            actions.append((name, None, f.label, None, _("Hide %s") % f.label, callback, f.active))
+            self.filter_ui.append(["/CustomPopup" , name, name, gtk.UI_MANAGER_MENUITEM, False])
             self.filter_ui.append(["/Menubar/ViewMenu/FileFilters" , name, name, gtk.UI_MANAGER_MENUITEM, False])
 
         self.filter_actiongroup = gtk.ActionGroup("DirdiffFilterActions")
