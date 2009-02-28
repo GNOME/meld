@@ -109,6 +109,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
             w.get_vscrollbar().connect_after("expose-event", self.on_vscroll__expose_event)
         self._connect_buffer_handlers()
+        self._sync_vscroll_lock = False
+        self._sync_hscroll_lock = False
         self.linediffer = diffutil.Differ()
         for text in self.textview:
             text.set_wrap_mode( self.prefs.edit_wrap_lines )
@@ -946,23 +948,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # scrollbars
         #
     def _sync_hscroll(self, adjustment):
-        if not hasattr(self,"_sync_hscroll_lock"):
-            self._sync_hscroll_lock = 0
         if not self._sync_hscroll_lock:
-            self._sync_hscroll_lock = 1
+            self._sync_hscroll_lock = True
             adjs = map( lambda x: x.get_hadjustment(), self.scrolledwindow)
             adjs.remove(adjustment)
             val = adjustment.get_value()
             for a in adjs:
                 a.set_value(val)
-            self._sync_hscroll_lock = 0
+            self._sync_hscroll_lock = False
 
     def _sync_vscroll(self, adjustment):
         # only allow one scrollbar to be here at a time
-        if not hasattr(self,"_sync_vscroll_lock"):
-            self._sync_vscroll_lock = 0
         if (self.keymask & MASK_SHIFT)==0 and not self._sync_vscroll_lock:
-            self._sync_vscroll_lock = 1
+            self._sync_vscroll_lock = True
             syncpoint = 0.5
 
             adjustments = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
@@ -1015,7 +1013,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     rect = gdk.Rectangle(0, 0, alloc.width, alloc.height)
                     lm.window.invalidate_rect(rect, True)
                     lm.window.process_updates(True)
-            self._sync_vscroll_lock = 0
+            self._sync_vscroll_lock = False
 
         #
         # scrollbar drawing
