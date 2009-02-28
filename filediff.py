@@ -1235,8 +1235,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     break
             area.grab_focus()
             self.mouse_chunk = None
-            alloc = area.get_allocation()
-            (wtotal,htotal) = alloc.width, alloc.height
+            wtotal, htotal = area.allocation.width, area.allocation.height
             pix_width = self.pixbuf_apply0.get_width()
             pix_height = self.pixbuf_apply0.get_height()
             if self.keymask == MASK_CTRL: # hack
@@ -1252,11 +1251,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 side = 1
                 rect_x = wtotal - pix_width
             else:
-                return  1
+                return True
             src = which + side
             dst = which + 1 - side
             adj = self.scrolledwindow[src].get_vadjustment()
-            func = lambda c: self._line_to_pixel(src, c[1]) - adj.value
 
             for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
                 if self.prefs.ignore_blank_lines:
@@ -1267,7 +1265,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         continue
                 if c[0] == "insert":
                     continue
-                h = func(c)
+                h = self._line_to_pixel(src, c[1]) - adj.value
                 if h < 0: # find first visible chunk
                     continue
                 elif h > htotal: # we've gone past last visible
@@ -1276,8 +1274,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
                     break
             #print self.mouse_chunk
-            return 1
-        return 0
+            return True
+        return False
 
     def on_linkmap_button_release_event(self, area, event):
         if event.button == 1:
@@ -1286,14 +1284,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.focus_before_click = None
             if self.mouse_chunk:
                 (src,dst), rect, chunk = self.mouse_chunk
+                self.mouse_chunk = None
                 # check we're still in button
-                inrect = lambda p, r: ((r[0] < p.x) and (p.x < r[0]+r[2]) and (r[1] < p.y) and (p.y < r[1]+r[3]))
+                inrect = lambda p, r: (r[0] < p.x < r[0] + r[2]) and (r[1] < p.y < r[1] + r[3])
                 if inrect(event, rect):
                     # gtk tries to jump back to where the cursor was unless we move the cursor
                     self.textview[src].place_cursor_onscreen()
                     self.textview[dst].place_cursor_onscreen()
                     chunk = chunk[1:]
-                    self.mouse_chunk = None
 
                     b0 = self.textbuffer[src]
                     b1 = self.textbuffer[dst]
@@ -1311,8 +1309,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
                         b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
                         self.on_text_end_user_action()
-            return 1
-        return 0
+            return True
+        return False
 
 ################################################################################
 #
