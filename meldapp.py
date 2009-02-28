@@ -60,19 +60,16 @@ developer = 0
 ################################################################################
 
 class NewDocDialog(gnomeglade.Component):
-
-    TYPE = misc.struct(DIFF2=0, DIFF3=1, DIR2=2, DIR3=3, VC=4)
-         
-    def __init__(self, parentapp, type):
-        self.parentapp = parentapp
+    def __init__(self, parentapp):
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
-        self.map_widgets_into_lists( ("fileentry", "direntry", "vcentry", "three_way_compare", "tablabel") )
+        self.map_widgets_into_lists(["fileentry", "direntry", "vcentry", "three_way_compare"])
         self.entrylists = self.fileentry, self.direntry, self.vcentry
         self.widget.set_transient_for(parentapp.widget)
-        cur_page = type // 2
-        self.notebook.set_current_page( cur_page )
         self.fileentry[0].set_sensitive(self.three_way_compare[0].get_active())
         self.direntry[0].set_sensitive(self.three_way_compare[1].get_active())
+        self.diff_methods = (parentapp.append_filediff,
+                             parentapp.append_dirdiff,
+                             parentapp.append_vcview)
         self.widget.show_all()
 
     def on_entry_activate(self, entry):
@@ -90,17 +87,14 @@ class NewDocDialog(gnomeglade.Component):
         self.entrylists[page][ not button.get_active() ].gtk_entry.grab_focus()
 
     def on_response(self, dialog, arg):
-        if arg != gtk.RESPONSE_CANCEL:
+        if arg == gtk.RESPONSE_OK:
             page = self.notebook.get_current_page()
             paths = [ e.get_full_path(0) or "" for e in self.entrylists[page] ]
             if page < 2 and not self.three_way_compare[page].get_active():
                 paths.pop(0)
             for path in paths:
                 self.entrylists[page][0].gnome_entry.append_text(path)
-            methods = (self.parentapp.append_filediff,
-                       self.parentapp.append_dirdiff,
-                       self.parentapp.append_vcview )
-            methods[page](paths)
+            self.diff_methods[page](paths)
         self.widget.destroy()
 
 ################################################################################
@@ -683,7 +677,7 @@ class MeldApp(gnomeglade.Component):
     # Toolbar and menu items (file)
     #
     def on_menu_file_new_activate(self, menuitem):
-        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
+        NewDocDialog(self)
 
     def on_menu_save_activate(self, menuitem):
         self.current_doc().save()
@@ -794,9 +788,6 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_edit_up_activate(self, *args):
         misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_UP )
-
-    def on_toolbar_new_clicked(self, *args):
-        NewDocDialog(self, NewDocDialog.TYPE.DIFF2)
 
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()
