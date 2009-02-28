@@ -588,7 +588,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         os.remove(name)
                         self.file_deleted( path, pane)
                     elif os.path.isdir(name):
-                        if misc.run_dialog(_("'%s' is a directory.\nRemove recusively?") % os.path.basename(name),
+                        if misc.run_dialog(_("'%s' is a directory.\nRemove recursively?") % os.path.basename(name),
                                 parent = self,
                                 buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                             shutil.rmtree(name)

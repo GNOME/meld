@@ -425,7 +425,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 if os.path.isfile(name):
                     os.remove(name)
                 elif os.path.isdir(name):
-                    if misc.run_dialog(_("'%s' is a directory.\nRemove recusively?") % os.path.basename(name),
+                    if misc.run_dialog(_("'%s' is a directory.\nRemove recursively?") % os.path.basename(name),
                             parent = self,
                             buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                         shutil.rmtree(name)
