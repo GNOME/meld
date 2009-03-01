@@ -91,10 +91,13 @@ class Vc(object):
         return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
 
     def find_repo_root(self, start, subdir, raiseError = True):
-        while start != "/":
+        while True:
             if os.path.isdir(os.path.join(start, subdir)):
                 return start
-            start = os.path.dirname(start)
+            tmp = os.path.dirname(start)
+            if tmp == start:
+                break
+            start = tmp
         if raiseError:
             raise ValueError()
         return None
