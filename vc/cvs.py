@@ -36,7 +36,7 @@ class Vc(_vc.Vc):
     PATCH_INDEX_RE = "^Index:(.*)$"
 
     def __init__(self, location):
-        if not os.path.exists(os.path.join(location, self.VC_DIR)):
+        if not os.path.isdir(os.path.join(location, self.VC_DIR)):
             raise ValueError
         self.root = location
 
