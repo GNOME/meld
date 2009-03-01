@@ -30,10 +30,11 @@ class Vc(_vc.Vc):
 
     CMD = "svn"
     NAME = "Subversion"
+    VC_DIR = ".svn"
     PATCH_INDEX_RE = "^Index:(.*)$"
 
     def __init__(self, location):
-        if not os.path.exists("%s/.svn"%location):
+        if not os.path.exists(os.path.join(location, self.VC_DIR)):
             raise ValueError()
         self.root = location
 

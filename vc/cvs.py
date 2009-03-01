@@ -32,10 +32,11 @@ import _vc
 class Vc(_vc.Vc):
     CMD = "cvs"
     NAME = "CVS"
+    VC_DIR = "CVS"
     PATCH_INDEX_RE = "^Index:(.*)$"
 
     def __init__(self, location):
-        if not os.path.exists("%s/CVS"% location):
+        if not os.path.exists(os.path.join(location, self.VC_DIR)):
             raise ValueError
         self.root = location
 
