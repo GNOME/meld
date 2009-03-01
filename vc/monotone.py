@@ -36,15 +36,8 @@ class Vc(_vc.Vc):
         self._tree_cache = None
         location = os.path.normpath(location)
 
-        def find_folder(where, tofind):
-            while where != "/":
-                cur = os.path.join(where,tofind)
-                if os.path.isdir(cur):
-                    return where
-                where = os.path.dirname(where)
-
         # for monotone >= 0.26
-        mtn = find_folder(location,"_MTN")
+        mtn = self.find_repo_root(location, "_MTN", raiseError = False)
         if mtn:
             self.root = mtn
 
@@ -55,7 +48,7 @@ class Vc(_vc.Vc):
             return
 
         # for monotone <= 0.25 (different metadata directory, different executable)
-        mt = find_folder(location,"MT")
+        mt = self.find_repo_root(location, "MT", raiseError = False)
         if mt:
             self.root = mt
             self.CMD = "monotone"

@@ -30,17 +30,13 @@ class Vc(_vc.Vc):
 
     CMD = "bzr"
     NAME = "Bazaar-NG"
+    VC_DIR = ".bzr"
     PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^=== modified file '(.*)'$"
 
     def __init__(self, location):
         self._tree_cache = None
-        while location != "/":
-            if os.path.isdir( "%s/.bzr" % location):
-                self.root = location
-                return
-            location = os.path.dirname(location)
-        raise ValueError()
+        _vc.Vc.__init__(self, location)
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]

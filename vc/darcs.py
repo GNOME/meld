@@ -37,17 +37,13 @@ class Vc(_vc.Vc):
 
     CMD = "darcs"
     NAME = "Darcs"
+    VC_DIR = "_darcs"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "--- old.+?/(.+?)\\t+.*[0-9]{4}$"
 
     def __init__(self, location):
         self._cachetime = None
-        while location != "/":
-            if os.path.isdir( "%s/_darcs" % location):
-                self.root = location
-                return
-            location = os.path.dirname(location)
-        raise ValueError()
+        _vc.Vc.__init__(self, location)
 
     def commit_command(self, message):
         return [self.CMD, "record",

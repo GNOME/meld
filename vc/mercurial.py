@@ -29,16 +29,9 @@ class Vc(_vc.Vc):
 
     CMD = "hg"
     NAME = "Mercurial"
+    VC_DIR = ".hg"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "^diff -r \w+ (.*)$"
-
-    def __init__(self, location):
-        while location != "/":
-            if os.path.isdir( "%s/.hg" % location):
-                self.root = location
-                return
-            location = os.path.dirname(location)
-        raise ValueError()
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]

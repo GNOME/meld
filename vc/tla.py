@@ -61,18 +61,14 @@ class Vc(_vc.Vc):
 
     CMD = "tla"
     NAME = "Arch"
+    VC_DIR = "{arch}"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "--- orig/(.*)"
 
     def __init__(self, location):
         self._cachetime = None
         self._cached_statuses = None
-        while location != "/":
-            if os.path.isdir( "%s/{arch}" % location):
-                self.root = location
-                return
-            location = os.path.dirname(location)
-        raise ValueError()
+        _vc.Vc.__init__(self, location)
 
     def commit_command(self, message):
         return [self.CMD, "commit",

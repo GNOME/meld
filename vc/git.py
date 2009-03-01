@@ -35,21 +35,20 @@ class Vc(_vc.Vc):
 
     CMD = "git"
     NAME = "Git"
+    VC_DIR = ".git"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "^diff --git a/(.*) b/.*$"
 
     def __init__(self, location):
         self._tree_cache = None
-        while location != "/":
-            if os.path.isdir( "%s/.git" % location):
-                self.root = location
+        try:
+            _vc.Vc.__init__(self, location)
+        except ValueError:
+            gitdir = os.environ.get("GIT_DIR")
+            if gitdir and os.path.isdir(gitdir):
+                self.root = gitdir
                 return
-            location = os.path.dirname(location)
-        gitdir = os.environ.get("GIT_DIR")
-        if gitdir and os.path.isdir(gitdir):
-            self.root = gitdir
-            return
-        raise ValueError()
+            raise ValueError()
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
