@@ -1013,7 +1013,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             for component in changed:
                 child = model.iter_children( it )
                 while child:
-                    leading, name = os.path.split( model.value_path(child, pane) )
+                    name = os.path.basename(model.value_path(child, pane))
                     if component == name : # found it
                         it = child
                         break
