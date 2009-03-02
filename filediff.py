@@ -1047,7 +1047,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for c in self.linediffer.single_changes(scrollindex, self._get_texts()):
             assert c[0] != "equal"
             if self.prefs.ignore_blank_lines:
-                c1,c2 = self._consume_blank_lines( self._get_texts()[scrollindex][c[1]:c[2]] )
+                self._consume_blank_lines( self._get_texts()[scrollindex][c[1]:c[2]] )
             rect(context, ctab[c[0]], scale*c[1], scale*c[2])
 
     def _get_line_count(self, index):
