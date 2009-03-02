@@ -936,8 +936,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.set_files(files)
 
     def on_refresh_activate(self, *extra):
-        files = [None for b in self.bufferdata[:self.num_panes] ]
-        self.set_files(files)
+        self.set_files([None] * self.num_panes)
 
     def queue_draw(self, junk=None):
         for i in range(self.num_panes-1):
