@@ -36,25 +36,18 @@ class Vc(_vc.Vc):
         self._tree_cache = None
         location = os.path.normpath(location)
 
-        # for monotone >= 0.26
-        mtn = self.find_repo_root(location, "_MTN", raiseError = False)
-        if mtn:
-            self.root = mtn
-
+        try:
+            # for monotone >= 0.26
+            self.root = self.find_repo_root(location, "_MTN")
             self.interface_version = float(os.popen("mtn" + " automate interface_version").read())
             if self.interface_version > 6.0:
                 print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
-
             return
-
-        # for monotone <= 0.25 (different metadata directory, different executable)
-        mt = self.find_repo_root(location, "MT", raiseError = False)
-        if mt:
-            self.root = mt
+        except ValueError:
+            # for monotone <= 0.25 (different metadata directory, different executable)
+            self.root = self.find_repo_root(location, "MT")
             self.CMD = "monotone"
             return
-
-        raise ValueError
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
