@@ -290,7 +290,7 @@ def copy2(src, dst):
     """
     if os.path.isdir(dst):
         dst = os.path.join(dst, os.path.basename(src))
-        shutil.copyfile(src, dst)
+    shutil.copyfile(src, dst)
     try:
         shutil.copystat(src, dst)
     except OSError, e:
