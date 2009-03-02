@@ -439,8 +439,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._open_files(self._get_selected_files())
 
     def show_patch(self, prefix, patch):
-        if not patch: return
-
         tmpdir = tempfile.mkdtemp("-meld")
         self.tempdirs.append(tmpdir)
 
