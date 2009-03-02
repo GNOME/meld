@@ -314,7 +314,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif key == "regexes":
             self._update_regexes()
         elif key == "edit_wrap_lines":
-            [t.set_wrap_mode( self.prefs.edit_wrap_lines ) for t in self.textview]
+            for t in self.textview:
+                t.set_wrap_mode(self.prefs.edit_wrap_lines)
         elif key == "spaces_instead_of_tabs":
             if sourceview_available:
                 for t in self.textview:
