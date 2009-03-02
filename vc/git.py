@@ -138,7 +138,8 @@ class Vc(_vc.Vc):
         for path, state in tree.iteritems():
             # removed files are not in the filesystem, so must be added here
             if state is _vc.STATE_REMOVED:
-                if os.path.dirname(path) == directory:
+                dir, name = os.path.split(path)
+                if dir == directory:
                     retfiles.append( _vc.File(path, name, state) )
         return retdirs, retfiles
 
