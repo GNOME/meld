@@ -204,7 +204,7 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
                     if len(state[2]) == 0:
                         yield None
                     else:
-                        raise "Error reading pipe"
+                        raise Exception("Error reading pipe")
                 if childout in state[0]:
                     try:
                         bits.append( childout.read(4096) ) # get buffer size
