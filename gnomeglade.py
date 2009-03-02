@@ -36,10 +36,12 @@ class Component(object):
     object, which is sadly sometimes necessary.
     """
 
-    def __init__(self, filename, root, override={}):
+    def __init__(self, filename, root, override=None):
         """Load the widgets from the node 'root' in file 'filename'.
         """
         gtk.glade.set_custom_handler(self.get_custom_handler)
+        if override is None:
+            override = {}
         self.xml = gtk.glade.XML(filename, root, typedict=override)
         self.xml.signal_autoconnect(self)
         self.widget = getattr(self, root)
