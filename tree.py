@@ -36,8 +36,8 @@ pixbuf_file_new = load("tree-file-new.png")
 pixbuf_file_changed = load("tree-file-changed.png")
 
 class DiffTreeStore(gtk.TreeStore):
-    def __init__(self, ntree = 3):
-        types = [type("")] * COL_END * ntree
+    def __init__(self, ntree = 3, num_col = COL_END):
+        types = [type("")] * num_col * ntree
         types[COL_ICON*ntree:COL_ICON*ntree+ntree] = [type(pixbuf_file)] * ntree
         gtk.TreeStore.__init__(self, *types)
         self.ntree = ntree
