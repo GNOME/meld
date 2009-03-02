@@ -37,7 +37,7 @@ def shelljoin( command ):
         return ((whitespace_re.search(s) == None) and s or ('"%s"' % s))
     return " ".join( [ quote(x) for x in command ] )
 
-def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=[]):
+def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=()):
     """Run a dialog with text 'text'.
        Extra buttons are passed as tuples of (button label, response id).
     """
