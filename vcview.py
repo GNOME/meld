@@ -89,11 +89,7 @@ COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tr
 
 class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
-        types = [type("")] * COL_END
-        types[tree.COL_ICON] = type(tree.pixbuf_file)
-        gtk.TreeStore.__init__(self, *types)
-        self.ntree = 1
-        self._setup_default_styles()
+        tree.DiffTreeStore.__init__(self, 1)
         self.textstyle[tree.STATE_MISSING] = '<span foreground="#000088" strikethrough="true" weight="bold">%s</span>'
 
 ################################################################################
