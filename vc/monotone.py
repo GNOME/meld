@@ -63,8 +63,6 @@ class Vc(_vc.Vc):
         return [self.CMD,"drop"]
     def revert_command(self):
         return [self.CMD,"revert"]
-    def get_working_directory(self, workdir):
-        return self.root
 
     def cache_inventory(self, rootdir):
         self._tree_cache = self.lookup_tree()
