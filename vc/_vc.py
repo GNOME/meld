@@ -113,7 +113,6 @@ class Vc(object):
 
     def listdir(self, start):
         if start=="": start="."
-        if start[-1] != "/": start+="/"
         cfiles = []
         cdirs = []
         try:
@@ -122,7 +121,7 @@ class Vc(object):
         except OSError:
             entries = []
         for f in self.listdir_filter(entries):
-            fname = start + f
+            fname = os.path.join(start, f)
             lname = fname
             if os.path.isdir(fname):
                 cdirs.append( (f, lname) )
