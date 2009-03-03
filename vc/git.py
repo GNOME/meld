@@ -139,4 +139,4 @@ class Vc(_vc.Vc):
         return retdirs, retfiles
 
     def listdir_filter(self, entries):
-        return [f for f in entries if f!=".git"]
+        return [f for f in entries if f != self.VC_DIR]
