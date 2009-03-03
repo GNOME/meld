@@ -102,9 +102,6 @@ class Vc(object):
             raise ValueError()
         return None
 
-    def get_working_directory(self, workdir):
-        return workdir
-
     def cache_inventory(self, topdir):
         pass
 
