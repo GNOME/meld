@@ -114,7 +114,7 @@ class Preferences(object):
                 pass
 
     def _on_preference_changed(self, client, timestamp, entry, extra):
-        attr = entry.key[ entry.key.rindex("/")+1 : ]
+        attr = entry.key[entry.key.rfind("/") + 1:]
         try:
             valuestruct = self._prefs[attr]
         except KeyError: # unknown key, we don't care about it

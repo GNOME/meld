@@ -844,9 +844,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         texts[1] = [l+"\n" for l in texts[1]]
         names = [self._get_pane_label(i) for i in range(2)]
         prefix = os.path.commonprefix( names )
-        try: prefixslash = prefix.rindex("/") + 1
-        except ValueError: prefixslash = 0
-        names = [n[prefixslash:] for n in names]
+        names = [n[prefix.rfind("/") + 1:] for n in names]
         if sourceview_available:
             dialog.textview.set_buffer( gsv.SourceBuffer() )
         dialog.textview.modify_font(fontdesc)

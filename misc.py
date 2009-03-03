@@ -151,11 +151,8 @@ def shorten_names(*names):
     """Remove redunant parts of a list of names (e.g. /tmp/foo{1,2} -> foo{1,2}
     """
     prefix = os.path.commonprefix( names )
-    try:
-        prefixslash = prefix.rindex("/") + 1
-    except ValueError:
-        prefixslash = 0
-
+    prefixslash = prefix.rfind("/") + 1
+    
     names = map( lambda x: x[prefixslash:], names) # remove common prefix
     paths = map( lambda x: x.split("/"), names) # split on /
 
