@@ -195,7 +195,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def choose_vc(self, vcs):
         """Callback from vc.Vc to choose when there are multiple plugins able to handle one location"""
         d = gtk.Dialog(_('VC chooser'),
-            self.vcview.parent.parent.parent,
+            None,
             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
             (gtk.STOCK_OK, gtk.RESPONSE_OK))
         
