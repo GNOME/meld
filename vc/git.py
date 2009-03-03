@@ -62,11 +62,6 @@ class Vc(_vc.Vc):
         return [self.CMD,"rm"]
     def revert_command(self):
         return [self.CMD,"checkout"]
-    def get_working_directory(self, workdir):
-        if workdir.startswith("/"):
-            return self.root
-        else:
-            return ''
 
     def cache_inventory(self, topdir):
         self._tree_cache = self.lookup_tree()
