@@ -116,7 +116,7 @@ class MeldDoc(gobject.GObject):
         """Called when the container app switches to this tab.
         """
         self.ui_merge_id = uimanager.add_ui_from_file(self.ui_file)
-        uimanager.insert_action_group(self.actiongroup)
+        uimanager.insert_action_group(self.actiongroup, -1)
         self.popup_menu = uimanager.get_widget("/Popup")
         uimanager.ensure_update()
 

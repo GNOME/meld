@@ -267,7 +267,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
-        ui.insert_action_group(self.filter_actiongroup)
+        ui.insert_action_group(self.filter_actiongroup, -1)
         self.custom_merge_id = ui.new_merge_id()
         for x in self.filter_ui:
             ui.add_ui(self.custom_merge_id, *x)
