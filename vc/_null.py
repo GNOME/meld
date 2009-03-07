@@ -27,9 +27,7 @@ class Vc(_vc.Vc):
 
     CMD = "true"
     NAME = "Null"
-
-    def __init__(self, location):
-        self.root = location
+    VC_DIR = "." # Accept any directory
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
