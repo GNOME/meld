@@ -137,6 +137,3 @@ class Vc(_vc.Vc):
                 if dir == directory:
                     retfiles.append( _vc.File(path, name, state) )
         return retdirs, retfiles
-
-    def listdir_filter(self, entries):
-        return [f for f in entries if f != self.VC_DIR]
