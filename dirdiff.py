@@ -416,10 +416,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.items.extend(items)
                     def get(self):
                         self.items.sort()
-                        def repeat(s, n):
-                            for i in xrange(n):
-                                yield s
-                        return [ tuple(repeat(i,self.n)) for i in  uniq(self.items) ]
+                        return [(i,) * self.n for i in uniq(self.items)]
             else:
                 canonicalize = lambda x : x.lower()
                 class accum(object):
