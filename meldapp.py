@@ -279,7 +279,7 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs.ignore_blank_lines = check.get_active()
 
     #
-    # encoding
+    # Save text entry values into preferences
     #
     def on_response(self, dialog, arg):
         if arg==gtk.RESPONSE_CLOSE:
