@@ -33,7 +33,7 @@ sys.path += [ #LIBDIR#
 ]
 import paths
 import gettext
-from gettext import gettext as _
+_ = gettext.gettext
 
 gettext.bindtextdomain("meld", paths.locale_dir())
 gettext.textdomain("meld")
