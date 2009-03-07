@@ -109,7 +109,7 @@ class Vc(object):
         pass
 
     def listdir_filter(self, entries):
-        return [f for f in entries if f[0]!="." and f!="CVS"]
+        return [f for f in entries if f[0] != "." and f != self.VC_DIR]
 
     def listdir(self, start):
         if start=="": start="."
