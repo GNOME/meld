@@ -902,12 +902,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.bufferdata[pane].modified = yesno
         self.recompute_label()
 
-    def save(self, *extra):
+    def save(self):
         pane = self._get_focused_pane()
         if pane >= 0:
             self.save_file(pane)
 
-    def save_as(self, *extra):
+    def save_as(self):
         pane = self._get_focused_pane()
         if pane >= 0:
             self.save_file(pane, True)
