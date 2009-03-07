@@ -415,24 +415,44 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.bufferdata[pane].filename:
                 self._open_files([self.bufferdata[pane].filename])
 
+    def get_selected_text(self):
+        """Returns selected text of active pane"""
+        pane = self._get_focused_pane()
+        if pane != -1:
+            buf = self.textbuffer[self._get_focused_pane()]
+            bounds = buf.get_selection_bounds()
+            if bounds:
+                return buf.get_text(bounds[0], bounds[1])
+        return None
+
     def on_find_activate(self, *args):
         self.keymask = 0
         self.queue_draw()
         if self.find_dialog:
-            self.find_dialog.widget.present()
+            self.find_dialog.raise_and_focus()
         else:
             class FindDialog(gnomeglade.Component):
-                def __init__(self, app):
+                def __init__(self, app, text=None):
                     self.parent = app
-                    self.pane = -1
                     gladefile = paths.share_dir("glade2/filediff.glade")
                     gnomeglade.Component.__init__(self, gladefile, "finddialog")
                     self.widget.set_transient_for(app.widget.get_toplevel())
                     self.gnome_entry_search_for.child.connect("activate", self.on_entry_search_for_activate)
+                    if text:
+                        self.gnome_entry_search_for.get_entry().set_text(text)
                     self.widget.show_all()
+                    self.raise_and_focus()
+
+                def raise_and_focus(self):
+                    entry = self.gnome_entry_search_for.get_entry()
+                    entry.grab_focus()
+                    entry.select_region(0, -1)
+                    self.widget.present()
+
                 def on_destroy(self, *args):
                     self.parent.find_dialog = None
                     self.widget.destroy()
+
                 def on_entry_search_for_activate(self, *args):
                     search_text = self.gnome_entry_search_for.get_active_text()
                     self.gnome_entry_search_for.prepend_text(search_text)
@@ -442,7 +462,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.check_wrap.get_active(),
                         self.check_regex.get_active() )
                     return 1
-            self.find_dialog = FindDialog(self)
+            self.find_dialog = FindDialog(self, self.get_selected_text())
 
     def on_find_next_activate(self, *args):
         if self.last_search:
