@@ -27,10 +27,14 @@ defaults = {
 p = prefs.Preferences("/apps/myapp", defaults)
 # use variables as if they were normal attributes.
 draw(p.colour, p.size)
-# settings are persistent. (saved in gconf)
+# settings are persistent
 p.color = "blue"
 
 """
+
+import os
+import sys
+
 
 class Value(object):
     """Represents a settable preference.
@@ -48,9 +52,6 @@ class Value(object):
         self.default = d
         self.current = d
 
-# maybe fall back to ConfigParser if gconf is unavailable.
-import gconf
-
 # types of values allowed
 BOOL = "bool"
 INT = "int"
@@ -61,8 +62,8 @@ FLOAT = "float"
 
 ##
 
-class Preferences(object):
-    """Persistent preferences object.
+class GConfPreferences(object):
+    """Persistent preferences object that handles preferences via gconf.
 
     Example:
     import prefs
@@ -139,4 +140,105 @@ class Preferences(object):
         """
         for k,v in self._prefs.items():
             print k, v.type, v.current
+
+
+class ConfigParserPreferences(object):
+    """Persistent preferences object that handles preferences via ConfigParser.
+
+    This preferences implementation is provided as a fallback for gconf-less
+    platforms. The ConfigParser library is included in Python and should be
+    available everywhere. The biggest drawbacks to this backend are lack of
+    access to desktop-wide settings, and lack of external change notification.
+    """
+
+    def __init__(self, rootkey, initial):
+        """Create a preferences object.
+
+        Settings are initialised with 'initial' and then overriden
+        from values in the ConfigParser database if available.
+
+        rootkey : unused (retained for compatibility with existing gconf API)
+        initial : a dictionary of string to Value objects.
+        """
+        self.__dict__["_parser"] = ConfigParser.SafeConfigParser()
+        self.__dict__["_listeners"] = []
+        self.__dict__["_prefs"] = initial
+        self.__dict__["_type_mappings"] = {
+            BOOL   : self._parser.getboolean,
+            INT    : self._parser.getint,
+            STRING : self._parser.get,
+            FLOAT  : self._parser.getfloat
+        }
+
+        if sys.platform == "win32":
+            pref_dir = os.path.join(os.getenv("APPDATA"), "Meld")
+        else:
+            pref_dir = os.path.join(os.path.expanduser("~"), ".meld")
+
+        if not os.path.exists(pref_dir):
+            os.makedirs(pref_dir)
+
+        self.__dict__["_file_path"] = os.path.join(pref_dir, "meldrc.ini")
+
+        try:
+            config_file = open(self._file_path, "r")
+            try:
+                self._parser.readfp(config_file)
+            finally:
+                config_file.close()
+        except IOError:
+            pass
+
+        for key, value in self._prefs.items():
+            if self._parser.has_option("DEFAULT", key):
+                value.current = self._type_mappings[value.type]("DEFAULT", key)
+
+    def __getattr__(self, attr):
+        return self._prefs[attr].current
+
+    def get_default(self, attr):
+        return self._prefs[attr].default
+
+    def __setattr__(self, attr, val):
+        value = self._prefs[attr]
+        if value.current != val:
+            value.current = val
+            self._parser.set(None, attr, str(val))
+
+            try:
+                fp = open(self._file_path, "w")
+                try:
+                    self._parser.write(fp)
+                finally:
+                    fp.close()
+            except IOError:
+                pass
+
+            try:
+                for l in self._listeners:
+                    l(attr, val)
+            except StopIteration:
+                pass
+
+    def notify_add(self, callback):
+        """Register a callback to be called when a preference changes.
+
+        callback : a callable object which take two parameters, 'attr' the
+                   name of the attribute changed and 'val' the new value.
+        """
+        self._listeners.append(callback)
+
+    def dump(self):
+        """Print all preferences.
+        """
+        for k,v in self._prefs.items():
+            print k, v.type, v.current
+
+# Prefer gconf, falling back to ConfigParser
+try:
+    import gconf
+    Preferences = GConfPreferences
+except ImportError:
+    import ConfigParser
+    Preferences = ConfigParserPreferences
 

@@ -440,9 +440,13 @@ class MeldPreferences(prefs.Preferences):
         if self.use_custom_font:
             return self.custom_font
         else:
+            if not hasattr(self, "_gconf"):
+                return "Monospace 10"
             return self._gconf.get_string('/desktop/gnome/interface/monospace_font_name') or "Monospace 10"
 
     def get_toolbar_style(self):
+        if not hasattr(self, "_gconf"):
+            return gtk.TOOLBAR_BOTH
         style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style') or "both"
         style = {"both":gtk.TOOLBAR_BOTH, "text":gtk.TOOLBAR_TEXT,
                  "icon":gtk.TOOLBAR_ICONS, "icons":gtk.TOOLBAR_ICONS,
@@ -452,6 +456,8 @@ class MeldPreferences(prefs.Preferences):
         return style
 
     def get_gnome_editor_command(self, files):
+        if not hasattr(self, "_gconf"):
+            return []
         argv = []
         editor = self._gconf.get_string('/desktop/gnome/applications/editor/exec') or "gedit"
         if self._gconf.get_bool("/desktop/gnome/applications/editor/needs_term"):
