@@ -39,16 +39,6 @@ gdk = gtk.gdk
 #
 ################################################################################
 
-def uniq(l):
-    i = iter(l)
-    a = i.next()
-    yield a
-    while 1:
-        b = i.next()
-        if a != b:
-            yield b
-            a = b
-
 _cache = {}
 
 def _files_same(lof, regexes):
@@ -411,8 +401,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     def add(self, pane, items):
                         self.items.extend(items)
                     def get(self):
-                        self.items.sort()
-                        return [(i,) * self.n for i in uniq(self.items)]
+                        return [(i,) * self.n for i in sorted(list(set(self.items)))]
             else:
                 canonicalize = lambda x : x.lower()
                 class accum(object):
