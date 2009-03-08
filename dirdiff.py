@@ -401,7 +401,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     def add(self, pane, items):
                         self.items.extend(items)
                     def get(self):
-                        return [(i,) * self.n for i in sorted(list(set(self.items)))]
+                        return [(i,) * self.n for i in sorted(set(self.items))]
             else:
                 canonicalize = lambda x : x.lower()
                 class accum(object):
