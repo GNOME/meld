@@ -513,13 +513,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def _update_item_state(self, it, vcentry, location):
         e = vcentry
         self.model.set_state( it, 0, e.state, e.isdir )
-        def set(col, val):
-            self.model.set_value( it, self.model.column_index(col,0), val)
-        set( COL_LOCATION, location )
-        set( COL_STATUS, e.get_status())
-        set( COL_REVISION, e.rev)
-        set( COL_TAG, e.tag)
-        set( COL_OPTIONS, e.options)
+        def setcol(col, val):
+            self.model.set_value(it, self.model.column_index(col, 0), val)
+        setcol(COL_LOCATION, location)
+        setcol(COL_STATUS, e.get_status())
+        setcol(COL_REVISION, e.rev)
+        setcol(COL_TAG, e.tag)
+        setcol(COL_OPTIONS, e.options)
 
     def on_file_changed(self, filename):
         it = self.find_iter_by_name(filename)
