@@ -98,10 +98,6 @@ def _files_same(lof, regexes):
     _cache[ lof ] = misc.struct(sigs=sigs, result=result)
     return result
 
-def _not_none(l):
-    """Return list with Nones filtered out"""
-    return filter(lambda x: x!=None, l)
-
 join = os.path.join
 
 COL_EMBLEM = tree.COL_END + 1
@@ -644,27 +640,22 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return event.keyval in (gtk.keysyms.Left, gtk.keysyms.Right) #handled
 
     def on_treeview_row_activated(self, view, path, column):
-        it = self.model.get_iter(path)
-        files = []
-        for i in range(self.num_panes):
-            fname = self.model.value_path( it, i )
-            if os.path.exists(fname):
-                files.append(fname)
+        pane = self.treeview.index(view)
+        allrows = self.model.value_paths(self.model.get_iter(path))
+        # Click a file: compare; click a directory: expand; click a missing
+        # entry: check the next neighbouring entry
+        pane_ordering = ((0, 1, 2), (1, 2, 0), (2, 1, 0))
+        for p in pane_ordering[pane]:
+            if p < self.num_panes and os.path.exists(allrows[p]):
+                pane = p
+                break
+        if os.path.isfile(allrows[pane]):
+            self.emit("create-diff", [r for r in allrows if os.path.isfile(r)])
+        elif os.path.isdir(allrows[pane]):
+            if view.row_expanded(path):
+                view.collapse_row(path)
             else:
-                files.append(None)
-        if files.count(None) != self.num_panes:
-            # Its possible to have file 'foo' in one pane and dir 'foo' in another.
-            # We want to do the right thing depending on the one clicked.
-            clicked_pane = [ t.get_column(0) for t in self.treeview ].index(column)
-            while files[clicked_pane] == None: # clicked on missing entry?
-                clicked_pane = (clicked_pane+1) % self.num_panes
-            if os.path.isfile( files[clicked_pane] ):
-                self.emit("create-diff", filter(os.path.isfile, _not_none(files) ))
-            else:
-                if view.row_expanded(path):
-                    view.collapse_row(path)
-                else:
-                    view.expand_row(path,0)
+                view.expand_row(path, False)
 
     def on_treeview_row_expanded(self, view, it, path):
         self._do_to_others(view, self.treeview, "expand_row", (path,0) )
