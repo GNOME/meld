@@ -733,10 +733,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
     def _get_selected_paths(self, pane):
         assert pane != None
-        selected_paths = []
-        self.treeview[pane].get_selection().selected_foreach(
-            lambda store, path, it: selected_paths.append( path ) )
-        return selected_paths
+        return self.treeview[pane].get_selection().get_selected_rows()[1]
 
         #
         # Filtering
