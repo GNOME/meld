@@ -16,16 +16,6 @@
 
 import difflib
 
-def _null_or_space(s):
-    return len(s.strip()) == 0
-
-if 0:
-    def _not_equal(s):
-        return filter( lambda x: x[0]!="equal", s )
-else:
-    def _not_equal(s):
-        return s
-
 ################################################################################
 #
 # Differ
@@ -303,16 +293,3 @@ class Differ(object):
             self.seqlength[i] = len(s)
         yield 1
 
-def main():
-    pass
-#    t0 = open("test/lao").readlines()
-#    tc = open("test/tzu").readlines()
-#    t1 = open("test/tao").readlines()
-#
-#    thread0 = IncrementalSequenceMatcher(None, tc, t0).get_difference_opcodes()
-#    thread1 = IncrementalSequenceMatcher(None, tc, t1).get_difference_opcodes()
-#
-#    texts = (t0,tc,t1)
-
-if __name__=="__main__":
-    main()
