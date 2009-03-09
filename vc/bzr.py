@@ -58,10 +58,10 @@ class Vc(_vc.Vc):
         self._tree_cache = None
 
     def lookup_tree(self, rootdir):
-        branch_root = os.popen("bzr root %s" % rootdir).read().rstrip('\n')
+        branch_root = os.popen("%s root %s" % (self.CMD, rootdir)).read().rstrip('\n')
         while 1:
             try:
-                proc = os.popen("bzr status %s" % branch_root)
+                proc = os.popen("%s status %s" % (self.CMD, branch_root))
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
