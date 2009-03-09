@@ -33,7 +33,7 @@ STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
 STATE_MISSING, STATE_MAX = range(12)
 
-CAPABILITY_RESOLVE, CAPABILITY_OTHER = (1<<i for i in range(2))
+CAPABILITY_RESOLVE, CAPABILITY_OTHER = [1<<i for i in range(2)]
 
 class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.
