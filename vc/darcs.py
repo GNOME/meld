@@ -42,7 +42,7 @@ class Vc(_vc.Vc):
     PATCH_INDEX_RE = "--- old.+?/(.+?)\\t+.*[0-9]{4}$"
 
     def __init__(self, location):
-        self._cachetime = None
+        self._cached_statuses = None
         _vc.Vc.__init__(self, location)
 
     def commit_command(self, message):
