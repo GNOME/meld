@@ -50,7 +50,7 @@ class Vc(_vc.Vc):
 
         while 1:
             try:
-                entries = os.popen('cd "%s" && hg status -A .'%directory).read().split("\n")[:-1]
+                entries = os.popen('cd "%s" && %s status -A .' % (directory, self.CMD)).read().split("\n")[:-1]
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
@@ -85,5 +85,3 @@ class Vc(_vc.Vc):
                 retdirs.append( _vc.Dir(path, d, state) )
 
         return retdirs, retfiles
-
-
