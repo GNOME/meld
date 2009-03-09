@@ -66,7 +66,6 @@ class Vc(_vc.Vc):
     PATCH_INDEX_RE = "--- orig/(.*)"
 
     def __init__(self, location):
-        self._cachetime = None
         self._cached_statuses = None
         _vc.Vc.__init__(self, location)
 
