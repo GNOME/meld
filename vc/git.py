@@ -72,7 +72,7 @@ class Vc(_vc.Vc):
     def lookup_tree(self):
         while 1:
             try:
-                proc = os.popen("cd %s && git status --untracked-files" % self.root)
+                proc = os.popen("cd %s && %s status --untracked-files" % (self.root, self.CMD))
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
