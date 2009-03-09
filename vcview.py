@@ -463,7 +463,30 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             for d in diffs:
                 self.emit("create-diff", d)
         else:
-            misc.run_dialog( _("Invoking patch failed, you need GNU patch.")+ "\n'%s'"%" ".join(patchcmd), parent=self)
+            import meldapp
+            msg = _("""
+                    Invoking 'patch' failed.
+                    
+                    Maybe you don't have 'GNU patch' installed,
+                    or you use an untested version of %s.
+            
+                    Please send email bug report to:
+                    meld-list@gnome.org
+                    
+                    Containing the following information:
+                    
+                    - meld version: '%s'
+                    - source control software type: '%s'
+                    - source control software version: 'X.Y.Z'
+                    - the output of '%s somefile.txt'
+                    - patch command: '%s'
+                    """) % (self.vc.NAME,
+                            meldapp.version,
+                            self.vc.NAME,
+                            " ".join(self.vc.diff_command()),
+                            " ".join(patchcmd))
+            msg = '\n'.join([line.strip() for line in msg.split('\n')])
+            misc.run_dialog(msg, parent=self)
 
     def refresh(self):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
