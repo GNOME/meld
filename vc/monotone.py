@@ -38,14 +38,16 @@ class Vc(_vc.Vc):
 
         try:
             # for monotone >= 0.26
-            self.root = self.find_repo_root(location, "_MTN")
+            self.VC_DIR = "_MTN"
+            self.root = self.find_repo_root(location)
             self.interface_version = float(os.popen("mtn" + " automate interface_version").read())
             if self.interface_version > 6.0:
                 print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
             return
         except ValueError:
             # for monotone <= 0.25 (different metadata directory, different executable)
-            self.root = self.find_repo_root(location, "MT")
+            self.VC_DIR = "MT"
+            self.root = self.find_repo_root(location)
             self.CMD = "monotone"
             return
 

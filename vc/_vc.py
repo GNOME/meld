@@ -73,7 +73,7 @@ class Vc(object):
     VC_DIR = None
 
     def __init__(self, location):
-        self.root = self.find_repo_root(location, self.VC_DIR)
+        self.root = self.find_repo_root(location)
 
     def commit_command(self, message):
         raise NotImplementedError()
@@ -90,17 +90,15 @@ class Vc(object):
     def patch_command(self, workdir):
         return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
 
-    def find_repo_root(self, start, subdir, raiseError = True):
+    def find_repo_root(self, start):
         while True:
-            if os.path.isdir(os.path.join(start, subdir)):
+            if os.path.isdir(os.path.join(start, self.VC_DIR)):
                 return start
             tmp = os.path.dirname(start)
             if tmp == start:
                 break
             start = tmp
-        if raiseError:
-            raise ValueError()
-        return None
+        raise ValueError()
 
     def cache_inventory(self, topdir):
         pass
