@@ -23,7 +23,6 @@
 
 import os
 import errno
-import subprocess
 import _vc
 
 class Vc(_vc.Vc):
@@ -55,8 +54,7 @@ class Vc(_vc.Vc):
 
         while 1:
             try:
-                entries = subprocess.Popen(["svn","status","-Nv",directory],
-                    shell=False, stdout=subprocess.PIPE).stdout.read()
+                entries = os.popen("%s status -Nv %s" % (self.CMD, directory))
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
@@ -65,7 +63,8 @@ class Vc(_vc.Vc):
         retfiles = []
         retdirs = []
         matches = []
-        for line in entries.split("\n"):
+        for line in entries:
+            line = line.strip("\n")
             if len(line) > 40:
                 matches.append( (line[40:], line[0], line[17:26].strip()))
         matches.sort()
