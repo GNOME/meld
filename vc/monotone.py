@@ -41,7 +41,7 @@ class Vc(_vc.Vc):
             self.VC_DIR = "_MTN"
             self.root = self.find_repo_root(location)
             self.interface_version = float(os.popen("mtn" + " automate interface_version").read())
-            if self.interface_version > 6.0:
+            if self.interface_version > 9.0:
                 print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
             return
         except ValueError:
