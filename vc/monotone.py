@@ -75,7 +75,8 @@ class Vc(_vc.Vc):
     def lookup_tree(self):
         while 1:
             try:
-                entries = os.popen(self.CMD + " automate inventory").read().split("\n")[:-1]
+                entries = os.popen("cd %s && %s automate inventory" %
+                                   (self.root, self.CMD)).read().split("\n")[:-1]
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
