@@ -565,7 +565,7 @@ class MeldApp(gnomeglade.Component):
         elif 1:
             def showPrefs(): PreferencesDialog(self)
             gobject.idle_add(showPrefs)
-        dnd_targets = self.widget.drag_dest_set(
+        self.widget.drag_dest_set(
             gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
             [ ('text/uri-list', 0, 0) ],
             gtk.gdk.ACTION_COPY)
