@@ -127,7 +127,7 @@ class Vc(_vc.Vc):
                     # sort the list and reduce it from a list to a space seperated string.
                     mstate = stanza['status']
                     mstate.sort()
-                    mstate = reduce(lambda s1, s2: s1 + ' ' + s2, mstate)
+                    mstate = ' '.join(mstate)
 
                     if mstate in statemap:
                         if 'changes' in stanza:
