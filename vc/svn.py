@@ -31,6 +31,16 @@ class Vc(_vc.Vc):
     NAME = "Subversion"
     VC_DIR = ".svn"
     PATCH_INDEX_RE = "^Index:(.*)$"
+    state_map = {
+                 "?": _vc.STATE_NONE,
+                 "A": _vc.STATE_NEW,
+                 " ": _vc.STATE_NORMAL,
+                 "!": _vc.STATE_MISSING,
+                 "I": _vc.STATE_IGNORED,
+                 "M": _vc.STATE_MODIFIED,
+                 "D": _vc.STATE_REMOVED,
+                 "C": _vc.STATE_CONFLICT,
+                 }
 
     def __init__(self, location):
         if not os.path.isdir(os.path.join(location, self.VC_DIR)):
@@ -50,8 +60,9 @@ class Vc(_vc.Vc):
     def revert_command(self):
         return [self.CMD,"revert"]
 
-    def _get_dirsandfiles(self, directory, dirs, files):
-
+    def _get_matches(self, directory):
+        """return a list of tuples (file_path, status_code, revision)"""
+        
         while 1:
             try:
                 entries = os.popen("%s status -Nv %s" % (self.CMD, directory))
@@ -60,16 +71,19 @@ class Vc(_vc.Vc):
                 if e.errno != errno.EAGAIN:
                     raise
 
-        retfiles = []
-        retdirs = []
         matches = []
         for line in entries:
             line = line.strip("\n")
             if len(line) > 40:
                 matches.append( (line[40:], line[0], line[17:26].strip()))
         matches.sort()
+        return matches
 
-        for match in matches:
+    def _get_dirsandfiles(self, directory, dirs, files):
+        retfiles = []
+        retdirs = []
+
+        for match in self._get_matches(directory):
             name = match[0]
             isdir = os.path.isdir(name)
             path = os.path.join(directory, name)
@@ -84,14 +98,7 @@ class Vc(_vc.Vc):
                 if name != directory:
                     retdirs.append( _vc.Dir(path,name,state) )
             else:
-                state = { "?": _vc.STATE_NONE,
-                          "A": _vc.STATE_NEW,
-                          " ": _vc.STATE_NORMAL,
-                          "!": _vc.STATE_MISSING,
-                          "I": _vc.STATE_IGNORED,
-                          "M": _vc.STATE_MODIFIED,
-                          "D": _vc.STATE_REMOVED,
-                          "C": _vc.STATE_CONFLICT }.get(match[1], _vc.STATE_NONE)
+                state = self.state_map.get(match[1], _vc.STATE_NONE)
                 retfiles.append( _vc.File(path, name, state, rev, "", options) )
 
         return retdirs, retfiles
