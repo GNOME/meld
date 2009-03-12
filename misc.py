@@ -163,8 +163,10 @@ def shorten_names(*names):
     else:
         if all_equal(basenames):
             def firstpart(list):
-                if len(list) > 1: return "[%s] " % list[0]
-                else: return ""
+                if len(list) > 1:
+                    return "[%s] " % list[0]
+                else:
+                    return ""
             roots = map(firstpart, paths)
             base = basenames[0].strip()
             return [ r+base for r in roots ]
