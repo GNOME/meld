@@ -342,8 +342,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 l.queue_draw_area(a[2]-w, 0, w, a[3])
 
     def is_modified(self):
-        state = [b.modified for b in self.bufferdata]
-        return 1 in state
+        return 1 in [b.modified for b in self.bufferdata]
 
     def _get_pane_label(self, i):
         return self.bufferdata[i].label or "<unnamed>"
