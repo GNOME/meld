@@ -15,6 +15,7 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import os
+import glib
 import gtk
 import misc
 import gnomeglade
@@ -84,7 +85,7 @@ class DiffTreeStore(gtk.TreeStore):
         for i in range(self.ntree):
             self.set_value(child, self.column_index(COL_STATE,i), STATE_EMPTY)
             self.set_value(child, self.column_index(COL_PATH,i), self.pixstyle[STATE_EMPTY])
-            self.set_value(child, self.column_index(COL_TEXT,i), self.textstyle[STATE_EMPTY] % misc.escape(text) )
+            self.set_value(child, self.column_index(COL_TEXT, i), self.textstyle[STATE_EMPTY] % glib.markup_escape_text(text))
         return child
 
     def add_error(self, parent, msg, pane):
@@ -92,7 +93,7 @@ class DiffTreeStore(gtk.TreeStore):
         for i in range(self.ntree):
             self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR)
         self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
-        self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % misc.escape(msg) )
+        self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % glib.markup_escape_text(msg))
 
     def value_paths(self, iter):
         return [ self.value_path(iter, i) for i in range(self.ntree) ]
@@ -103,7 +104,7 @@ class DiffTreeStore(gtk.TreeStore):
 
     def set_state(self, iter, pane, state, isdir=0):
         fullname = self.get_value(iter, self.column_index(COL_PATH,pane))
-        name = misc.escape( os.path.basename(fullname) )
+        name = glib.markup_escape_text(os.path.basename(fullname))
         STATE = self.column_index(COL_STATE, pane)
         TEXT  = self.column_index(COL_TEXT,  pane)
         ICON  = self.column_index(COL_ICON,  pane)

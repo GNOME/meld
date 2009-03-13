@@ -267,22 +267,6 @@ def commonprefix(dirs):
                 break
     return os.sep.join(prefix)
 
-def escape(s):
-    """Replace special characters by SGML entities.
-    """
-    entities = ("&&amp;", "<&lt;", ">&gt;")
-    for e in entities:
-        s = s.replace(e[0], e[1:])
-    return s
-
-def unescape(s):
-    """Inverse of escape.
-    """
-    entities = (">&gt;", "<&lt;", "&&amp;")
-    for e in entities:
-        s = s.replace(e[1:], e[0])
-    return s
-
 def copy2(src, dst):
     """Like shutil.copy2 but ignores chmod errors.
     See [Bug 568000] Copying to NTFS fails
