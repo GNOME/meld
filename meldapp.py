@@ -180,14 +180,14 @@ class ListWidget(gnomeglade.Component):
         model = self.treeview.get_model()
         pref = []
         for row in model:
-            pref.append("%s\t%s\t%s" % (row[0], row[1], misc.unescape(row[2])))
+            pref.append("%s\t%s\t%s" % (row[0], row[1], row[2]))
         setattr( self.prefs, self.key, "\n".join(pref) )
     def _update_filter_model(self):
         model = self.treeview.get_model()
         model.clear()
         for filtstring in getattr( self.prefs, self.key).split("\n"):
             filt = misc.ListItem(filtstring)
-            model.append([filt.name, filt.active, misc.escape(filt.value)])
+            model.append([filt.name, filt.active, filt.value])
    
 ################################################################################
 #
