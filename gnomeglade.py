@@ -125,9 +125,7 @@ def connect_signal_handlers(obj):
             except AttributeError:
                 print "Widget '%s' not found in %s" % (widgetname, obj)
                 continue
-            try:
-                widget = list(widget)
-            except TypeError:
+            if not isinstance(widget,list):
                 widget = [widget]
             for w in widget:
                 try:
