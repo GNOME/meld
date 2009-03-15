@@ -17,7 +17,7 @@
         <child>
           <widget class="Custom" id="fileentry2">
             <property name="visible">True</property>
-            <property name="creation_function">create_fileentry</property>
+            <property name="creation_function">historyentry.create_fileentry</property>
             <property name="string1">fileentry</property>
             <signal name="activate" handler="on_fileentry_activate"/>
           </widget>
@@ -31,7 +31,7 @@
         <child>
           <widget class="Custom" id="fileentry1">
             <property name="visible">True</property>
-            <property name="creation_function">create_fileentry</property>
+            <property name="creation_function">historyentry.create_fileentry</property>
             <property name="string1">fileentry</property>
             <signal name="activate" handler="on_fileentry_activate"/>
           </widget>
@@ -46,7 +46,7 @@
           <widget class="Custom" id="fileentry0">
             <property name="visible">True</property>
             <property name="string1">fileentry</property>
-            <property name="creation_function">create_fileentry</property>
+            <property name="creation_function">historyentry.create_fileentry</property>
             <signal name="activate" handler="on_fileentry_activate"/>
           </widget>
           <packing>
@@ -445,7 +445,7 @@ Which ones would you like to save?&lt;/span&gt;</property>
               <widget class="Custom" id="gnome_entry_search_for">
                 <property name="visible">True</property>
                 <property name="string1">search_for</property>
-                <property name="creation_function">create_entry</property>
+                <property name="creation_function">historyentry.create_entry</property>
               </widget>
               <packing>
                 <property name="left_attach">1</property>

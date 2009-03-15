@@ -19,8 +19,12 @@
 
 import gtk
 import gtk.glade
-import historyentry
 import re
+
+def custom_handler( glade, module_function_name, widget_name, str1, str2, int1, int2):
+    assert module_function_name.find(".") != -1, "%s should contain a ." % module_function_name
+    module, function_name = module_function_name.rsplit(".",1)
+    return getattr(__import__(module), function_name)(str1, str2, int1, int2)
 
 class Component(object):
     """Base class for all glade objects.
@@ -39,7 +43,7 @@ class Component(object):
     def __init__(self, filename, root, override=None):
         """Load the widgets from the node 'root' in file 'filename'.
         """
-        gtk.glade.set_custom_handler(self.get_custom_handler)
+        gtk.glade.set_custom_handler(custom_handler)
         if override is None:
             override = {}
         self.xml = gtk.glade.XML(filename, root, typedict=override)
@@ -75,38 +79,6 @@ class Component(object):
                     break
                 lst.append(val)
                 i += 1
-
-    # Taken from the pygtk FAQ
-    def get_custom_handler(self, glade, function_name, widget_name,
-                           str1, str2, int1, int2):
-        """
-        Generic handler for creating custom widgets, used to
-        enable custom widgets.
-
-        The custom widgets have a creation function specified in design time.
-        Those creation functions are always called with str1,str2,int1,int2 as
-        arguments, that are values specified in design time.
-
-        This handler assumes that we have a method for every custom widget
-        creation function specified in glade.
-
-        If a custom widget has create_foo as creation function, then the
-        method named create_foo is called with str1,str2,int1,int2 as arguments.
-        """
-        if hasattr(self, function_name):
-            handler = getattr(self, function_name)
-            return handler(str1, str2, int1, int2)
-        else:
-            return None
-
-    def create_fileentry(self, history_id, dialog_title, is_directory_entry, int2):
-        w = historyentry.HistoryFileEntry(history_id, dialog_title)
-        w.directory_entry = is_directory_entry
-        return w
-
-    def create_entry(self, history_id, str2, int1, int2):
-        w = historyentry.HistoryEntry(history_id)
-        return w
 
 # Regular expression to match handler method names patterns
 # on_widget__signal and after_widget__signal.  Note that we use two

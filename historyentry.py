@@ -475,3 +475,12 @@ except ImportError:
     do_nothing = lambda *args: None
     setattr(HistoryFileEntry, '_setup_dnd', do_nothing)
 
+def create_fileentry( history_id, dialog_title, is_directory_entry, int2):
+    w = HistoryFileEntry(history_id, dialog_title)
+    w.directory_entry = is_directory_entry
+    return w
+
+def create_entry( history_id, str2, int1, int2):
+    w = HistoryEntry(history_id)
+    return w
+

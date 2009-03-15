@@ -33,7 +33,7 @@
 	  <child>
 	    <widget class="Custom" id="fileentry">
 	      <property name="visible">True</property>
-	      <property name="creation_function">create_fileentry</property>
+	      <property name="creation_function">historyentry.create_fileentry</property>
 	      <property name="string1">direntry</property>
 	      <property name="int1">1</property>
 	      <signal name="activate" handler="on_fileentry_activate"/>
@@ -479,7 +479,7 @@
 			  <property name="border_width">5</property>
               <property name="visible">True</property>
               <property name="string1">previousentry</property>
-              <property name="creation_function">create_entry</property>
+              <property name="creation_function">historyentry.create_entry</property>
               <signal name="changed" handler="on_previousentry_activate"/>
             </widget>
 			<packing>
