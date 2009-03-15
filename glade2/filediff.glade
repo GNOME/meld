@@ -7,244 +7,260 @@
     <property name="title" translatable="yes">window1</property>
     <signal name="destroy" handler="on_delete_event"/>
     <child>
-      <widget class="GtkTable" id="filediff">
+      <widget class="GtkVBox" id="filediff">
         <property name="visible">True</property>
-        <property name="n_rows">2</property>
-        <property name="n_columns">7</property>
         <child>
-          <placeholder/>
-        </child>
-        <child>
-          <widget class="Custom" id="fileentry2">
+          <widget class="GtkTable" id="table">
             <property name="visible">True</property>
-            <property name="creation_function">historyentry.create_fileentry</property>
-            <property name="string1">fileentry</property>
-            <signal name="activate" handler="on_fileentry_activate"/>
-          </widget>
-          <packing>
-            <property name="left_attach">5</property>
-            <property name="right_attach">6</property>
-            <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Custom" id="fileentry1">
-            <property name="visible">True</property>
-            <property name="creation_function">historyentry.create_fileentry</property>
-            <property name="string1">fileentry</property>
-            <signal name="activate" handler="on_fileentry_activate"/>
-          </widget>
-          <packing>
-            <property name="left_attach">3</property>
-            <property name="right_attach">4</property>
-            <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Custom" id="fileentry0">
-            <property name="visible">True</property>
-            <property name="string1">fileentry</property>
-            <property name="creation_function">historyentry.create_fileentry</property>
-            <signal name="activate" handler="on_fileentry_activate"/>
-          </widget>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkScrolledWindow" id="scrolledwindow0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="window_placement">GTK_CORNER_TOP_RIGHT</property>
-            <property name="window_placement_set">True</property>
+            <property name="n_rows">2</property>
+            <property name="n_columns">7</property>
             <child>
-              <widget class="GtkTextView" id="textview0">
+              <placeholder/>
+            </child>
+            <child>
+              <widget class="Custom" id="fileentry2">
+                <property name="visible">True</property>
+                <property name="creation_function">historyentry.create_fileentry</property>
+                <property name="string1">fileentry</property>
+                <signal name="activate" handler="on_fileentry_activate"/>
+              </widget>
+              <packing>
+                <property name="left_attach">5</property>
+                <property name="right_attach">6</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Custom" id="fileentry1">
+                <property name="visible">True</property>
+                <property name="creation_function">historyentry.create_fileentry</property>
+                <property name="string1">fileentry</property>
+                <signal name="activate" handler="on_fileentry_activate"/>
+              </widget>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="right_attach">4</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Custom" id="fileentry0">
+                <property name="visible">True</property>
+                <property name="creation_function">historyentry.create_fileentry</property>
+                <property name="string1">fileentry</property>
+                <signal name="activate" handler="on_fileentry_activate"/>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkScrolledWindow" id="scrolledwindow0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="window_placement">GTK_CORNER_TOP_RIGHT</property>
+                <property name="window_placement_set">True</property>
+                <child>
+                  <widget class="GtkTextView" id="textview0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="can_default">True</property>
+                    <property name="has_default">True</property>
+                    <signal name="button_press_event" handler="on_textview_button_press_event"/>
+                    <signal name="expose_event" handler="on_textview_expose_event"/>
+                    <signal name="move_cursor" handler="on_textview_move_cursor"/>
+                    <signal name="focus_in_event" handler="on_textview_focus_in_event"/>
+                    <signal name="key_press_event" handler="on_key_press_event"/>
+                    <signal name="key_release_event" handler="on_key_release_event"/>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkImage" id="statusimage2">
+                <property name="width_request">20</property>
+                <property name="visible">True</property>
+                <property name="xalign">1</property>
+                <property name="stock">gtk-missing-image</property>
+              </widget>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="right_attach">5</property>
+                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options">GTK_SHRINK | GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkImage" id="statusimage1">
+                <property name="visible">True</property>
+                <property name="xalign">1</property>
+                <property name="stock">gtk-missing-image</property>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options">GTK_SHRINK | GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkImage" id="statusimage0">
+                <property name="visible">True</property>
+                <property name="xalign">1</property>
+                <property name="stock">gtk-missing-image</property>
+              </widget>
+              <packing>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkScrolledWindow" id="scrolledwindow2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <widget class="GtkTextView" id="textview2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <signal name="button_press_event" handler="on_textview_button_press_event"/>
+                    <signal name="expose_event" handler="on_textview_expose_event"/>
+                    <signal name="move_cursor" handler="on_textview_move_cursor"/>
+                    <signal name="focus_in_event" handler="on_textview_focus_in_event"/>
+                    <signal name="key_press_event" handler="on_key_press_event"/>
+                    <signal name="key_release_event" handler="on_key_release_event"/>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="left_attach">5</property>
+                <property name="right_attach">6</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <widget class="GtkTextView" id="textview1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <signal name="button_press_event" handler="on_textview_button_press_event"/>
+                    <signal name="expose_event" handler="on_textview_expose_event"/>
+                    <signal name="move_cursor" handler="on_textview_move_cursor"/>
+                    <signal name="focus_in_event" handler="on_textview_focus_in_event"/>
+                    <signal name="key_press_event" handler="on_key_press_event"/>
+                    <signal name="key_release_event" handler="on_key_release_event"/>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkDrawingArea" id="diffmap1">
+                <property name="width_request">20</property>
+                <property name="visible">True</property>
+                <property name="events">GDK_BUTTON_PRESS_MASK</property>
+                <signal name="expose_event" handler="on_diffmap_expose_event"/>
+                <signal name="button_press_event" handler="on_diffmap_button_press_event"/>
+              </widget>
+              <packing>
+                <property name="left_attach">6</property>
+                <property name="right_attach">7</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkDrawingArea" id="linkmap0">
+                <property name="width_request">50</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <signal name="button_press_event" handler="on_textview_button_press_event"/>
-                <signal name="expose_event" handler="on_textview_expose_event"/>
-                <signal name="move_cursor" handler="on_textview_move_cursor"/>
-                <signal name="focus_in_event" handler="on_textview_focus_in_event"/>
+                <property name="has_focus">True</property>
+                <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK</property>
+                <signal name="expose_event" handler="on_linkmap_expose_event"/>
+                <signal name="button_press_event" handler="on_linkmap_button_press_event"/>
                 <signal name="key_press_event" handler="on_key_press_event"/>
+                <signal name="button_release_event" handler="on_linkmap_button_release_event"/>
                 <signal name="key_release_event" handler="on_key_release_event"/>
+                <signal name="scroll_event" handler="on_linkmap_scroll_event"/>
               </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
             </child>
-          </widget>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkImage" id="statusimage2">
-            <property name="width_request">20</property>
-            <property name="visible">True</property>
-            <property name="xalign">1</property>
-            <property name="stock">gtk-missing-image</property>
-          </widget>
-          <packing>
-            <property name="left_attach">4</property>
-            <property name="right_attach">5</property>
-            <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options">GTK_SHRINK | GTK_FILL</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkImage" id="statusimage1">
-            <property name="visible">True</property>
-            <property name="xalign">1</property>
-            <property name="stock">gtk-missing-image</property>
-          </widget>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
-            <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options">GTK_SHRINK | GTK_FILL</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkImage" id="statusimage0">
-            <property name="visible">True</property>
-            <property name="xalign">1</property>
-            <property name="stock">gtk-missing-image</property>
-          </widget>
-          <packing>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options">GTK_FILL</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkScrolledWindow" id="scrolledwindow2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
-              <widget class="GtkTextView" id="textview2">
+              <widget class="GtkDrawingArea" id="diffmap0">
+                <property name="width_request">20</property>
+                <property name="visible">True</property>
+                <property name="events">GDK_BUTTON_PRESS_MASK</property>
+                <signal name="expose_event" handler="on_diffmap_expose_event"/>
+                <signal name="button_press_event" handler="on_diffmap_button_press_event"/>
+              </widget>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkDrawingArea" id="linkmap1">
+                <property name="width_request">50</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="button_press_event" handler="on_textview_button_press_event"/>
-                <signal name="expose_event" handler="on_textview_expose_event"/>
-                <signal name="move_cursor" handler="on_textview_move_cursor"/>
-                <signal name="focus_in_event" handler="on_textview_focus_in_event"/>
+                <property name="has_focus">True</property>
+                <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK</property>
+                <signal name="expose_event" handler="on_linkmap_expose_event"/>
+                <signal name="button_press_event" handler="on_linkmap_button_press_event"/>
                 <signal name="key_press_event" handler="on_key_press_event"/>
+                <signal name="button_release_event" handler="on_linkmap_button_release_event"/>
                 <signal name="key_release_event" handler="on_key_release_event"/>
+                <signal name="scroll_event" handler="on_linkmap_scroll_event"/>
               </widget>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="right_attach">5</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
             </child>
           </widget>
-          <packing>
-            <property name="left_attach">5</property>
-            <property name="right_attach">6</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
         </child>
         <child>
-          <widget class="GtkScrolledWindow" id="scrolledwindow1">
+          <widget class="Custom" id="findbar">
+            <property name="height_request">12</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <widget class="GtkTextView" id="textview1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="button_press_event" handler="on_textview_button_press_event"/>
-                <signal name="expose_event" handler="on_textview_expose_event"/>
-                <signal name="move_cursor" handler="on_textview_move_cursor"/>
-                <signal name="focus_in_event" handler="on_textview_focus_in_event"/>
-                <signal name="key_press_event" handler="on_key_press_event"/>
-                <signal name="key_release_event" handler="on_key_release_event"/>
-              </widget>
-            </child>
+            <property name="creation_function">findbar.findbar_create</property>
           </widget>
           <packing>
-            <property name="left_attach">3</property>
-            <property name="right_attach">4</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkDrawingArea" id="diffmap1">
-            <property name="width_request">20</property>
-            <property name="visible">True</property>
-            <property name="events">GDK_BUTTON_PRESS_MASK</property>
-            <signal name="expose_event" handler="on_diffmap_expose_event"/>
-            <signal name="button_press_event" handler="on_diffmap_button_press_event"/>
-          </widget>
-          <packing>
-            <property name="left_attach">6</property>
-            <property name="right_attach">7</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options">GTK_FILL</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkDrawingArea" id="linkmap0">
-            <property name="width_request">50</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="has_focus">True</property>
-            <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK</property>
-            <signal name="expose_event" handler="on_linkmap_expose_event"/>
-            <signal name="button_press_event" handler="on_linkmap_button_press_event"/>
-            <signal name="key_press_event" handler="on_key_press_event"/>
-            <signal name="button_release_event" handler="on_linkmap_button_release_event"/>
-            <signal name="key_release_event" handler="on_key_release_event"/>
-            <signal name="scroll_event" handler="on_linkmap_scroll_event"/>
-          </widget>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options">GTK_FILL</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkDrawingArea" id="diffmap0">
-            <property name="width_request">20</property>
-            <property name="visible">True</property>
-            <property name="events">GDK_BUTTON_PRESS_MASK</property>
-            <signal name="expose_event" handler="on_diffmap_expose_event"/>
-            <signal name="button_press_event" handler="on_diffmap_button_press_event"/>
-          </widget>
-          <packing>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-            <property name="x_options">GTK_FILL</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkDrawingArea" id="linkmap1">
-            <property name="width_request">50</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="has_focus">True</property>
-            <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK</property>
-            <signal name="expose_event" handler="on_linkmap_expose_event"/>
-            <signal name="button_press_event" handler="on_linkmap_button_press_event"/>
-            <signal name="key_press_event" handler="on_key_press_event"/>
-            <signal name="button_release_event" handler="on_linkmap_button_release_event"/>
-            <signal name="key_release_event" handler="on_key_release_event"/>
-            <signal name="scroll_event" handler="on_linkmap_scroll_event"/>
-          </widget>
-          <packing>
-            <property name="left_attach">4</property>
-            <property name="right_attach">5</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options">GTK_FILL</property>
+            <property name="expand">False</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </widget>
@@ -410,177 +426,6 @@ Which ones would you like to save?&lt;/span&gt;</property>
               <packing>
                 <property name="position">2</property>
               </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
-          </packing>
-        </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="GtkDialog" id="finddialog">
-    <property name="visible">True</property>
-    <property name="title" translatable="yes">Find</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <property name="has_separator">False</property>
-    <signal name="delete_event" handler="on_destroy"/>
-    <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox2">
-        <property name="visible">True</property>
-        <child>
-          <widget class="GtkTable" id="table1">
-            <property name="visible">True</property>
-            <property name="n_rows">2</property>
-            <property name="n_columns">3</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <widget class="Custom" id="gnome_entry_search_for">
-                <property name="visible">True</property>
-                <property name="string1">search_for</property>
-                <property name="creation_function">historyentry.create_entry</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkVBox" id="vbox1">
-                <property name="visible">True</property>
-                <child>
-                  <widget class="GtkCheckButton" id="check_case">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">_Match case</property>
-                    <property name="use_underline">True</property>
-                    <property name="response_id">0</property>
-                    <property name="draw_indicator">True</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkCheckButton" id="check_word">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">Match _entire word only</property>
-                    <property name="use_underline">True</property>
-                    <property name="response_id">0</property>
-                    <property name="draw_indicator">True</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">5</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkCheckButton" id="check_wrap">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">_Wrap around</property>
-                    <property name="use_underline">True</property>
-                    <property name="response_id">0</property>
-                    <property name="active">True</property>
-                    <property name="draw_indicator">True</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">5</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkCheckButton" id="check_regex">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">Regular e_xpression</property>
-                    <property name="use_underline">True</property>
-                    <property name="response_id">0</property>
-                    <property name="draw_indicator">True</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">5</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="x_padding">15</property>
-                <property name="y_padding">5</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Search for:</property>
-              </widget>
-              <packing>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">5</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="button_find">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="label">gtk-find</property>
-                <property name="use_stock">True</property>
-                <property name="response_id">0</property>
-                <signal name="clicked" handler="on_entry_search_for_activate"/>
-              </widget>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">5</property>
-                <property name="y_padding">5</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="padding">5</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area2">
-            <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
-            <child>
-              <widget class="GtkButton" id="button_close">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="label">gtk-close</property>
-                <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
-                <signal name="clicked" handler="on_destroy"/>
-                <accelerator key="Escape" modifiers="" signal="clicked"/>
-              </widget>
             </child>
           </widget>
           <packing>

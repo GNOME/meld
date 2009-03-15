@@ -103,11 +103,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.bufferdata = [MeldBufferData() for b in self.textbuffer]
+        self.vscroll = [w.get_vscrollbar() for w in self.scrolledwindow]
         for i in range(3):
             w = self.scrolledwindow[i]
             w.get_vadjustment().connect("value-changed", self._sync_vscroll )
             w.get_hadjustment().connect("value-changed", self._sync_hscroll )
-            w.get_vscrollbar().connect_after("expose-event", self.on_vscroll__expose_event)
         self._connect_buffer_handlers()
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
@@ -152,10 +152,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup = gtk.ActionGroup('FilediffPopupActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
-        self.find_dialog = None
-        self.last_search = None
         self.set_num_panes(num_panes)
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
+        gnomeglade.connect_signal_handlers(self)
+        self.findbar = self.findbar.get_data("pyobject")
 
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
@@ -207,6 +207,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._update_cursor_status(buffer)
     def on_textview_focus_in_event(self, view, event):
         self.textview_focussed = view
+        self.findbar.textview = view
         self._update_cursor_status(view.get_buffer())
 
     def _after_text_modified(self, buffer, startline, sizechange):
@@ -330,6 +331,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 w = self.pixbuf_copy0.get_width()
                 l.queue_draw_area(0,      0, w, a[3])
                 l.queue_draw_area(a[2]-w, 0, w, a[3])
+        elif event.keyval == gtk.keysyms.Escape:
+            self.findbar.hide()
 
     def on_key_release_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -425,50 +428,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return None
 
     def on_find_activate(self, *args):
+        self.findbar.start_find( self.textview_focussed )
         self.keymask = 0
         self.queue_draw()
-        if self.find_dialog:
-            self.find_dialog.raise_and_focus()
-        else:
-            class FindDialog(gnomeglade.Component):
-                def __init__(self, app, text=None):
-                    self.parent = app
-                    gladefile = paths.share_dir("glade2/filediff.glade")
-                    gnomeglade.Component.__init__(self, gladefile, "finddialog")
-                    self.widget.set_transient_for(app.widget.get_toplevel())
-                    self.gnome_entry_search_for.child.connect("activate", self.on_entry_search_for_activate)
-                    if text:
-                        self.gnome_entry_search_for.get_entry().set_text(text)
-                    self.widget.show_all()
-                    self.raise_and_focus()
 
-                def raise_and_focus(self):
-                    entry = self.gnome_entry_search_for.get_entry()
-                    entry.grab_focus()
-                    entry.select_region(0, -1)
-                    self.widget.present()
-
-                def on_destroy(self, *args):
-                    self.parent.find_dialog = None
-                    self.widget.destroy()
-
-                def on_entry_search_for_activate(self, *args):
-                    search_text = self.gnome_entry_search_for.get_active_text()
-                    self.gnome_entry_search_for.prepend_text(search_text)
-                    self.parent._find_text(search_text,
-                        self.check_case.get_active(),
-                        self.check_word.get_active(),
-                        self.check_wrap.get_active(),
-                        self.check_regex.get_active() )
-                    return 1
-            self.find_dialog = FindDialog(self, self.get_selected_text())
+    def on_replace_activate(self, *args):
+        self.findbar.start_replace( self.textview_focussed )
+        self.keymask = 0
+        self.queue_draw()
 
     def on_find_next_activate(self, *args):
-        if self.last_search:
-            s = self.last_search
-            self._find_text(s.text, s.case, s.word, s.wrap, s.regex)
-        else:
-            self.on_find_activate()
+        self.findbar.start_find_next( self.textview_focussed )
+        self.keymask = 0
+        self.queue_draw()
+
+    def on_filediff__key_press_event(self, entry, event):
+        if event.keyval == gtk.keysyms.Escape:
+            self.findbar.hide()
 
     def popup_in_pane(self, pane):
         self.actiongroup.get_action("CopyAllLeft").set_sensitive(pane > 0)
@@ -492,40 +468,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self._update_cursor_status(view.get_buffer())
 
-        #
-        # find/replace buffer
-        #
-    def _find_text(self, tofind_utf8, match_case=0, entire_word=0, wrap=1, regex=0):
-        self.last_search = misc.struct(text=tofind_utf8, case=match_case, word=entire_word, wrap=wrap, regex=regex)
-        pane = self._get_focused_pane()
-        if pane == -1:
-            pane = 0
-        buf = self.textbuffer[pane]
-        insert = buf.get_iter_at_mark( buf.get_insert() )
-        tofind = tofind_utf8.decode("utf-8") # tofind is utf-8 encoded
-        text = buf.get_text(*buf.get_bounds() ).decode("utf-8") # as is buffer
-        if not regex:
-            tofind = re.escape(tofind)
-        if entire_word:
-            tofind = r'\b' + tofind + r'\b'
-        try:
-            pattern = re.compile( tofind, (match_case and re.M or (re.M|re.I)) )
-        except re.error, e:
-            misc.run_dialog( _("Regular expression error\n'%s'") % e, self, messagetype=gtk.MESSAGE_ERROR)
-        else:
-            match = pattern.search(text, insert.get_offset()+1)
-            if match == None and wrap:
-                match = pattern.search(text, 0)
-            if match:
-                it = buf.get_iter_at_offset( match.start() )
-                buf.place_cursor( it )
-                it.forward_chars( match.end() - match.start() )
-                buf.move_mark( buf.get_selection_bound(), it )
-                self.textview[pane].scroll_to_mark(buf.get_insert(), 0)
-            elif regex:
-                misc.run_dialog( _("The regular expression '%s' was not found.") % tofind_utf8, self, messagetype=gtk.MESSAGE_INFO)
-            else:
-                misc.run_dialog( _("The text '%s' was not found.") % tofind_utf8, self, messagetype=gtk.MESSAGE_INFO)
 
         #
         # text buffer loading/saving
@@ -927,6 +869,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.textview[i].is_focus():
                 return i
         return -1
+
+    def _get_focused_textview(self):
+        for i in range(self.num_panes):
+            if self.textview[i].is_focus():
+                return self.textview[i]
+        return self.textview[1] if len(self.textview)>1 else self.textview[0]
 
     def copy_selected(self, direction):
         assert direction in (-1,1)
