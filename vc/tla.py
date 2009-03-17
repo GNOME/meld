@@ -89,6 +89,9 @@ class Vc(_vc.Vc):
         # Will only work on later versions of tla
         return [self.CMD, "undo", "--"]
 
+    def get_working_directory(self, workdir):
+        return self.root
+ 
     def cache_inventory(self, rootdir):
         self._cached_statuses = self._calculate_statuses()
 

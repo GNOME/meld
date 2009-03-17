@@ -45,6 +45,8 @@ class Vc(_vc.Vc):
         return [self.CMD,"rm"]
     def revert_command(self):
         return [self.CMD,"revert"]
+    def get_working_directory(self, workdir):
+        return self.root
 
     def _get_dirsandfiles(self, directory, dirs, files):
 

@@ -71,6 +71,9 @@ class Vc(_vc.Vc):
         # will not work, since darcs needs interaction it seems
         return [self.CMD, "revert", "-a"]
 
+    def get_working_directory(self, workdir):
+        return self.root
+ 
     def cache_inventory(self, rootdir):
         self._cached_statuses = self._calculate_statuses()
 
