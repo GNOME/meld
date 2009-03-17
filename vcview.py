@@ -365,8 +365,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         msg = misc.shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg.replace("\n", u"\u21b2") )
         def relpath(pbase, p):
-            assert p.startswith(pbase)
-            kill = len(pbase) and (len(pbase)+1) or 0
+            kill = 0
+            if p.startswith(pbase):
+                kill = len(pbase) and (len(pbase)+1) or 0
             return p[kill:] or "."
         if len(files) == 1 and os.path.isdir(files[0]):
             workdir = self.vc.get_working_directory(files[0])
