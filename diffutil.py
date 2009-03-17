@@ -254,28 +254,16 @@ class Differ(object):
                 yield out0, out1
 
     def set_sequences_iter(self, *sequences):
-        if len(sequences)==0 or len(sequences)==1:
-            diffs = [[], []]
-        elif len(sequences)==2:
-            matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[0])
+        assert 0 <= len(sequences) <= 3
+        self.diffs = [[], []]
+        self.num_sequences = len(sequences)
+        self.seqlength = [len(s) for s in sequences]
+
+        for i in range(self.num_sequences - 1):
+            matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[i*2])
             work = matcher.initialise()
             while work.next() == None:
                 yield None
-            diffs = [matcher.get_difference_opcodes(), []]
-        elif len(sequences)==3:
-            diffs = [[], []]
-            for i in range(2):
-                matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[i*2])
-                work = matcher.initialise()
-                while work.next() == None:
-                    yield None
-                diffs[i] = matcher.get_difference_opcodes()
-        else:
-            raise Exception("Bad number of arguments to Differ constructor (%i)" % len(sequences))
-        self.diffs = diffs
-        self.num_sequences = len(sequences)
-        self.seqlength = [0,0,0]
-        for i,s in enumerate(sequences):
-            self.seqlength[i] = len(s)
+            self.diffs[i] = matcher.get_difference_opcodes()
         yield 1
 
