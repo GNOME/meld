@@ -35,6 +35,9 @@ class Vc(svn.Vc):
     PATCH_INDEX_RE = "^[+]{3} (.+)$"
     state_map = {"M": _vc.STATE_MODIFIED,}
 
+    def get_working_directory(self, workdir):
+        return self.root
+ 
     def _get_matches(self, directory):
         while True:
             try:
