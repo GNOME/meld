@@ -61,25 +61,11 @@ class Differ(object):
          "conflict":"conflict",
          "equal":"equal"}
 
-    def __init__(self, *sequences):
-        """Initialise with 1,2 or 3 sequences to compare"""
+    def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
-        self.num_sequences = len(sequences)
-        self.seqlength = [0,0,0]
-        for i,s in enumerate(sequences):
-            self.seqlength[i] = len(s)
-
-        if len(sequences)==0 or len(sequences)==1:
-            self.diffs = [[], []]
-        elif len(sequences)==2:
-            seq0 = IncrementalSequenceMatcher(None, sequences[1], sequences[0]).get_difference_opcodes()
-            self.diffs = [seq0, []]
-        elif len(sequences)==3:
-            seq0 = IncrementalSequenceMatcher(None, sequences[1], sequences[0]).get_difference_opcodes()
-            seq1 = IncrementalSequenceMatcher(None, sequences[1], sequences[2]).get_difference_opcodes()
-            self.diffs = seq0, seq1
-        else:
-            raise Exception("Bad number of arguments to Differ constructor (%i)" % len(sequences))
+        self.num_sequences = 0
+        self.seqlength = [0, 0, 0]
+        self.diffs = [[], []]
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0,1,2)
