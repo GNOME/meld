@@ -501,7 +501,8 @@ class MeldApp(gnomeglade.Component):
     def __init__(self):
         gladefile = paths.share_dir("glade2/meldapp.glade")
         gtk.window_set_default_icon_name("icon")
-        gobject.set_application_name("Meld")
+        if gobject.pygobject_version >= (2, 16, 0):
+            gobject.set_application_name("Meld")
         gnomeglade.Component.__init__(self, gladefile, "meldapp")
 
         actions = (
