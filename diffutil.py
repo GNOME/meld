@@ -47,6 +47,18 @@ class IncrementalSequenceMatcher(difflib.SequenceMatcher):
     def get_difference_opcodes(self):
         return filter(lambda x: x[0]!="equal", self.get_opcodes())
 
+
+opcode_reverse = {
+    "replace"  : "replace",
+    "insert"   : "delete",
+    "delete"   : "insert",
+    "conflict" : "conflict",
+    "equal"    : "equal"
+}
+
+def reverse_chunk(chunk):
+    return opcode_reverse[chunk[0]], chunk[3], chunk[4], chunk[1], chunk[2]
+
 ################################################################################
 #
 # Differ
@@ -54,13 +66,6 @@ class IncrementalSequenceMatcher(difflib.SequenceMatcher):
 ################################################################################
 class Differ(object):
     """Utility class to hold diff2 or diff3 chunks"""
-    reversemap = {
-        "replace":"replace",
-         "insert":"delete",
-         "delete":"insert",
-         "conflict":"conflict",
-         "equal":"equal"}
-
     def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
         self.num_sequences = 0
@@ -120,9 +125,6 @@ class Differ(object):
                                                 for c in self.diffs[which][hiidx:] ]
         self.diffs[which][loidx:hiidx] = newdiffs
 
-    def reverse(self, c):
-        return self.reversemap[c[0]], c[3],c[4], c[1],c[2]
-
     def all_changes(self, texts):
         for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts):
             yield c
@@ -139,7 +141,7 @@ class Differ(object):
             seq = fromindex/2
             for c in self.all_changes( texts ):
                 if c[seq]:
-                    yield self.reverse(c[seq])
+                    yield reverse_chunk(c[seq])
 
     def single_changes(self, textindex, texts):
         """Give changes for single file only. do not return 'equal' hunks.
@@ -149,7 +151,7 @@ class Differ(object):
             for cs in self.all_changes( texts ):
                 c = cs[seq]
                 if c:
-                    yield self.reversemap[c[0]], c[3], c[4], c[1], c[2], 1
+                    yield opcode_reverse[c[0]], c[3], c[4], c[1], c[2], 1
         else:
             for cs in self.all_changes( texts ):
                 if cs[0]:
