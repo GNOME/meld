@@ -237,7 +237,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         self.__is_modal = False
         self.directory_entry = False
 
-        self.set_spacing(4)
+        self.set_spacing(3)
 
         self.gtk_entry.connect("changed", self.__entry_changed_signal)
         self.gtk_entry.connect("activate", self.__entry_activate_signal)
