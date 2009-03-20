@@ -189,35 +189,41 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         size = self.fileentry.size_request()[1]
         if not self.prefs.vc_console_visible:
             self.on_console_view_toggle(self.console_hide_box)
+        self.vc = None
+        # VC ComboBox
+        self.combobox_vcs.lock = True
+        self.combobox_vcs.set_model(gtk.ListStore(str, object))
+        cell = gtk.CellRendererText()
+        self.combobox_vcs.pack_start(cell, False)
+        self.combobox_vcs.add_attribute(cell, 'text', 0)
+        self.combobox_vcs.lock = False
 
     def choose_vc(self, vcs):
-        """Callback from vc.Vc to choose when there are multiple plugins able to handle one location"""
-        d = gtk.Dialog(_('VC chooser'),
-            None,
-            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-            (gtk.STOCK_OK, gtk.RESPONSE_OK))
-        
-        indexMap = {}
-        cb = gtk.combo_box_new_text()
-        for i, avc in enumerate(vcs):
-            cb.append_text(avc.NAME)
-            indexMap[avc.NAME] = i
-        cb.set_active(0)
-        lb = gtk.Label(_('Pick one source control plugin'))
-        d.vbox.set_spacing(12)
-        d.vbox.pack_start(lb, True, True, 12)
-        d.vbox.pack_start(cb, False, False)
-        cb.show()
-        lb.show()
-        d.run()
-        d.destroy()
-        return vcs[indexMap[cb.get_active_text()]]
+        """Display VC plugin(s) that can handle the location"""
+        self.combobox_vcs.lock = True
+        self.combobox_vcs.get_model().clear()
+        tooltip_texts = [_("Choose one Version Control"),
+                         _("Only one Version Control in this directory")]
+        for avc in vcs:
+            self.combobox_vcs.get_model().append([avc.NAME, avc])
+        if gtk.pygtk_version >= (2, 12, 0):
+            self.combobox_vcs.set_tooltip_text(tooltip_texts[len(vcs) == 1])
+        self.combobox_vcs.set_sensitive(len(vcs) > 1)
+        self.combobox_vcs.lock = False
+        self.combobox_vcs.set_active(0)
   
+    def on_vc_change(self, cb):
+        if not cb.lock:
+            self.vc = cb.get_model()[cb.get_active_iter()][1]
+            self._set_location(self.vc.root)
+
     def set_location(self, location):
-        self.model.clear()
         self.location = location = os.path.abspath(location or ".")
+        self.choose_vc(vc.get_vcs(location))
+
+    def _set_location(self, location):
+        self.model.clear()
         self.fileentry.gtk_entry.set_text(location)
-        self.vc = vc.Vc(location, self.choose_vc)
         it = self.model.add_entries( None, [location] )
         self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
