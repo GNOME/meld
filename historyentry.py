@@ -219,7 +219,7 @@ def _expand_filename(filename, default_dir):
         return os.path.join(os.getcwd(), filename)
 
 
-class HistoryFileEntry(gtk.VBox, gtk.Editable):
+class HistoryFileEntry(gtk.HBox, gtk.Editable):
     __gsignals__ = {
         "browse_clicked" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
         "activate" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
@@ -239,22 +239,17 @@ class HistoryFileEntry(gtk.VBox, gtk.Editable):
 
         self.set_spacing(4)
 
-        # Allow for a preview thingie to be smacked on top of the file entry
-        hbox = gtk.HBox(False, 4)
-        hbox.show()
-        self.pack_end(hbox, False, False, 0)
-
         self.gtk_entry.connect("changed", self.__entry_changed_signal)
         self.gtk_entry.connect("activate", self.__entry_activate_signal)
 
         self._setup_dnd()
 
-        hbox.pack_start(self.__gentry, True, True, 0)
+        self.pack_start(self.__gentry, True, True, 0)
         self.__gentry.show()
 
         button = gtk.Button(_("_Browse..."))
         button.connect("clicked", self.__browse_clicked)
-        hbox.pack_start(button, False, False, 0)
+        self.pack_start(button, False, False, 0)
         button.show()
 
         access_entry = self.__gentry.get_accessible()
