@@ -191,12 +191,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.on_console_view_toggle(self.console_hide_box)
         self.vc = None
         # VC ComboBox
+        self.combobox_vcs = gtk.ComboBox()
         self.combobox_vcs.lock = True
         self.combobox_vcs.set_model(gtk.ListStore(str, object))
         cell = gtk.CellRendererText()
         self.combobox_vcs.pack_start(cell, False)
         self.combobox_vcs.add_attribute(cell, 'text', 0)
         self.combobox_vcs.lock = False
+        self.hbox2.pack_end(self.combobox_vcs, expand=False)
+        self.combobox_vcs.show()
+        self.combobox_vcs.connect("changed", self.on_vc_change)
 
     def choose_vc(self, vcs):
         """Display VC plugin(s) that can handle the location"""
