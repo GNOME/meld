@@ -52,8 +52,8 @@ class MeldDoc(gobject.GObject):
         pass
 
     def stop(self):
-        if len(self.scheduler.tasks):
-            del self.scheduler.tasks[0]
+        if self.scheduler.tasks_pending():
+            self.scheduler.remove_task(self.scheduler.get_current_task())
 
     def _open_files(self, selected):
         files = [f for f in selected if os.path.isfile(f)]
