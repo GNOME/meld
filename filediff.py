@@ -874,7 +874,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i in range(self.num_panes):
             if self.textview[i].is_focus():
                 return self.textview[i]
-        return self.textview[1] if len(self.textview)>1 else self.textview[0]
+        if len(self.textview) > 1:
+            return self.textview[1]
+        else:
+            return self.textview[0]
 
     def copy_selected(self, direction):
         assert direction in (-1,1)
