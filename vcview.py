@@ -187,8 +187,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         self.fileentry.show() #TODO: remove once bug 97503 is fixed
         size = self.fileentry.size_request()[1]
-        self.button_jump.set_size_request(size, size)
-        self.button_jump.hide()
         if not self.prefs.vc_console_visible:
             self.on_console_view_toggle(self.console_hide_box)
 
@@ -503,36 +501,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.scheduler.add_task( self._search_recursively_iter(newiter).next )
         else: # XXX fixme
             self.refresh()
-
-    def on_button_jump_press_event(self, button, event):
-        class MyMenu(gtk.Menu):
-            def __init__(self, parent, where, showup=1):
-                gtk.Menu.__init__(self)
-                self.vcview = parent
-                self.map_id = self.connect("map", lambda item: self.on_map(item,where,showup) )
-            def add_item(self, name, submenu, showup):
-                item = gtk.MenuItem(name)
-                if submenu:
-                    item.set_submenu( MyMenu(self.vcview, submenu, showup ) )
-                self.append( item )
-            def on_map(self, item, where, showup):
-                if showup:
-                    self.add_item("..", os.path.dirname(where), 1 )
-                self.populate( where, self.listdir(where) )
-                self.show_all()
-                self.disconnect(self.map_id)
-                del self.map_id
-            def listdir(self, d):
-                try:
-                    return [p for p in os.listdir(d) if os.path.isdir( os.path.join(d,p))]
-                except OSError:
-                    return []
-            def populate(self, where, children):
-                for child in children:
-                    cc = self.listdir( os.path.join(where, child) )
-                    self.add_item( child, len(cc) and os.path.join(where,child), 0 )
-        menu = MyMenu( self, os.path.abspath(self.location) )
-        menu.popup(None, None, None, event.button, event.time)
 
     def _update_item_state(self, it, vcentry, location):
         e = vcentry
