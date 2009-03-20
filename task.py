@@ -103,14 +103,14 @@ class SchedulerBase(object):
             r = self.iteration()
             if r:
                 return r
-        return len(self.tasks) != 0
+        return self.tasks_pending()
 
     def complete_tasks(self):
         """Run all currently added tasks to completion.
 
         Tasks added after the call to complete_tasks are not run.
         """
-        while len(self.tasks):
+        while self.tasks_pending():
             self.iteration()
         
     def tasks_pending(self):
