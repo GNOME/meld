@@ -986,7 +986,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # scrollbar drawing
         #
-    def on_vscroll__expose_event(self, scroll, event):
+    def after_vscroll__expose_event(self, scroll, event):
         def rect(ctx, color, y0,y1, xpad=2.5):
             ctx.set_source(color)
             context.rectangle(xpad, y0, alloc.width-2*xpad, max(2, y1-y0))
