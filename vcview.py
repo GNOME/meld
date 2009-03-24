@@ -222,10 +222,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._set_location(self.vc.root)
 
     def set_location(self, location):
-        self.location = location = os.path.abspath(location or ".")
-        self.choose_vc(vc.get_vcs(location))
+        self.choose_vc(vc.get_vcs(os.path.abspath(location or ".")))
 
     def _set_location(self, location):
+        self.location = location
         self.model.clear()
         self.fileentry.gtk_entry.set_text(location)
         it = self.model.add_entries( None, [location] )
