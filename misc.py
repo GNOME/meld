@@ -135,14 +135,14 @@ class struct(object):
     def __cmp__(self, other):
         return cmp(self.__dict__, other.__dict__)
 
-def all_equal(list):
+def all_equal(alist):
     """Return true if all members of the list are equal to the first.
 
     An empty list is considered to have all elements equal.
     """
-    if len(list):
-        first = list[0]
-        for n in list[1:]:
+    if len(alist):
+        first = alist[0]
+        for n in alist[1:]:
             if n != first:
                 return 0
     return 1
@@ -162,9 +162,9 @@ def shorten_names(*names):
         pass
     else:
         if all_equal(basenames):
-            def firstpart(list):
-                if len(list) > 1:
-                    return "[%s] " % list[0]
+            def firstpart(alist):
+                if len(alist) > 1:
+                    return "[%s] " % alist[0]
                 else:
                     return ""
             roots = map(firstpart, paths)
@@ -230,13 +230,13 @@ def write_pipe(command, text):
     pipe.tochild.close()
     return pipe.wait()
 
-def safe_apply(object, method, args):
-    """Call 'object.method(args)' if 'object' has an attribute named 'method'.
+def safe_apply(obj, method, args):
+    """Call 'obj.method(args)' if 'obj' has an attribute named 'method'.
 
-    If 'object' has no method 'method' this is a no-op.
+    If 'obj' has no method 'method' this is a no-op.
     """
     try:
-        m = getattr(object,method)
+        m = getattr(obj, method)
     except AttributeError:
         pass
     else:
