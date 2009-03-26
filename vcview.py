@@ -450,10 +450,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         tmpdir = tempfile.mkdtemp("-meld")
         self.tempdirs.append(tmpdir)
 
-        regex = re.compile(self.vc.PATCH_INDEX_RE, re.M)
-        files = [f.strip() for f in regex.findall(patch)]
         diffs = []
-        for fname in files:
+        for fname in self.vc.get_patch_files(patch):
             destfile = os.path.join(tmpdir,fname)
             destdir = os.path.dirname( destfile )
 

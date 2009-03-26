@@ -22,6 +22,7 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
+import re
 from gettext import gettext as _
 
 # ignored, new, normal, ignored changes,
@@ -68,6 +69,7 @@ class File(Entry):
 class Vc(object):
 
     PATCH_STRIP_NUM = 0
+    PATCH_INDEX_RE = ''
     VC_DIR = None
 
     def __init__(self, location):
@@ -106,6 +108,10 @@ class Vc(object):
 
     def uncache_inventory(self):
         pass
+
+    def get_patch_files(self, patch):
+        regex = re.compile(self.PATCH_INDEX_RE, re.M)
+        return [f.strip() for f in regex.findall(patch)]
 
     def listdir_filter(self, entries):
         return [f for f in entries if f != self.VC_DIR]
