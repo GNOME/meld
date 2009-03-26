@@ -87,12 +87,7 @@ class HistoryEntry(gtk.ComboBoxEntry):
         return key
 
     def __get_history_list(self):
-        store = self.__get_history_store()
-        if len(store):
-            hist_list = [row[0] for row in store]
-            return hist_list
-        else:
-            return []
+        return [row[0] for row in self.__get_history_store()]
 
     def _save_history(self):
         key = self.__get_history_key()
