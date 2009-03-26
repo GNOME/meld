@@ -227,7 +227,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def _set_location(self, location):
         self.location = location
         self.model.clear()
-        self.fileentry.gtk_entry.set_text(location)
+        self.fileentry.set_filename(location)
         it = self.model.add_entries( None, [location] )
         self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
