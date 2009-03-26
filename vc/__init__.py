@@ -35,10 +35,28 @@ def load_plugins():
 _plugins = load_plugins()
 
 def get_vcs(location):
+    """Pick only the Vcs with the longest repo root
+    
+       Some VC plugins search their repository root
+       by walking the filesystem upwards its root
+       and now that we display multiple VCs in the
+       same directory, we must filter those other
+       repositories that are located in the search
+       path towards "/" as they are not relevant
+       to the user.
+    """
+
     vcs = []
+    max_len = 0
     for plugin in _plugins:
         try:
-            vcs.append(plugin.Vc(location))
+            avc = plugin.Vc(location)
+            l = len(avc.root)
+            if l == max_len:
+                vcs.append(avc)
+            elif l > max_len:
+                max_len = l
+                vcs = [avc]
         except ValueError:
             pass
 
