@@ -199,7 +199,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             line_column = _("Ln %i, Col %i") % (it.get_line()+1, it.get_line_offset()+1)
             status = "%s : %s" % ( insert_overwrite, line_column )
             self.emit("status-changed", status  )
-            raise StopIteration; yield 0
+            raise StopIteration
+            # Unreachable code, used for the side-effect
+            # of making this function a generator
+            yield 0 # pylint: disable-msg=W0101
         self.scheduler.add_task( update().next )
 
     def on_textbuffer_mark_set(self, buffer, it, mark):
