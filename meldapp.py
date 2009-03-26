@@ -140,8 +140,8 @@ class ListWidget(gnomeglade.Component):
         self._update_filter_model()
 
     def _update_sensitivity(self, *args):
-        (model, iter, path) = self._get_selected()
-        if not iter:
+        (model, it, path) = self._get_selected()
+        if not it:
             self.item_delete.set_sensitive(False)
             self.item_up.set_sensitive(False)
             self.item_down.set_sensitive(False)
@@ -155,23 +155,23 @@ class ListWidget(gnomeglade.Component):
         model.append([_("label"), 0, _("pattern")])
         self._update_filter_string()
     def _get_selected(self):
-        (model, iter) = self.treeview.get_selection().get_selected()
-        if iter:
-            path = model.get_path(iter)[0]
+        (model, it) = self.treeview.get_selection().get_selected()
+        if it:
+            path = model.get_path(it)[0]
         else:
             path = None
-        return (model, iter, path)
+        return (model, it, path)
     def on_item_delete_clicked(self, button):
-        (model, iter, path) = self._get_selected()
-        model.remove(iter)
+        (model, it, path) = self._get_selected()
+        model.remove(it)
         self._update_filter_string()
     def on_item_up_clicked(self, button):
-        (model, iter, path) = self._get_selected()
-        model.swap(iter, model.get_iter(path - 1))
+        (model, it, path) = self._get_selected()
+        model.swap(it, model.get_iter(path - 1))
         self._update_filter_string()
     def on_item_down_clicked(self, button):
-        (model, iter, path) = self._get_selected()
-        model.swap(iter, model.get_iter(path + 1))
+        (model, it, path) = self._get_selected()
+        model.swap(it, model.get_iter(path + 1))
         self._update_filter_string()
     def on_items_revert_clicked(self, button):
         setattr( self.prefs, self.key, self.prefs.get_default(self.key) )
