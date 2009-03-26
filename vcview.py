@@ -408,21 +408,21 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         else:
             misc.run_dialog( _("Select some files first."), parent=self, messagetype=gtk.MESSAGE_INFO)
 
-    def on_button_update_clicked(self, object):
+    def on_button_update_clicked(self, obj):
         self._command_on_selected( self.vc.update_command() )
-    def on_button_commit_clicked(self, object):
+    def on_button_commit_clicked(self, obj):
         dialog = CommitDialog( self )
         dialog.run()
 
-    def on_button_add_clicked(self, object):
+    def on_button_add_clicked(self, obj):
         self._command_on_selected(self.vc.add_command() )
-    def on_button_add_binary_clicked(self, object):
+    def on_button_add_binary_clicked(self, obj):
         self._command_on_selected(self.vc.add_command(binary=1))
-    def on_button_remove_clicked(self, object):
+    def on_button_remove_clicked(self, obj):
         self._command_on_selected(self.vc.remove_command())
-    def on_button_revert_clicked(self, object):
+    def on_button_revert_clicked(self, obj):
         self._command_on_selected(self.vc.revert_command())
-    def on_button_delete_clicked(self, object):
+    def on_button_delete_clicked(self, obj):
         files = self._get_selected_files()
         for name in files:
             try:
@@ -438,12 +438,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
 
-    def on_button_diff_clicked(self, object):
+    def on_button_diff_clicked(self, obj):
         files = self._get_selected_files()
         if len(files):
             self.run_diff(files, empty_patch_ok=1)
 
-    def on_button_open_clicked(self, object):
+    def on_button_open_clicked(self, obj):
         self._open_files(self._get_selected_files())
 
     def show_patch(self, prefix, patch):
