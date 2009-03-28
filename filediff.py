@@ -1060,16 +1060,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if direction == gdk.SCROLL_DOWN:
             for c in self.linediffer.single_changes(1, self._get_texts()):
                 assert c[0] != "equal"
-                c1,c2 = self._consume_blank_lines( self._get_texts()[1][c[1]:c[2]] )
-                if c[1]+c1 == c[2]-c2:
-                    continue
-                if c[1] > curline + 1:
+                if self.prefs.ignore_blank_lines:
+                    c1, c2 = self._consume_blank_lines(self._get_texts()[1][c[1]:c[2]])
+                    if (c1 or c2) and c[1] + c1 == c[2] - c2:
+                        continue
+                if c[1] > curline:
                     break
         else: #direction == gdk.SCROLL_UP
             for chunk in self.linediffer.single_changes(1, self._get_texts()):
-                c1,c2 = self._consume_blank_lines( self._get_texts()[1][chunk[1]:chunk[2]] )
-                if chunk[1]+c1 == chunk[2]-c2:
-                    continue
+                if self.prefs.ignore_blank_lines:
+                    c1, c2 = self._consume_blank_lines(self._get_texts()[1][chunk[1]:chunk[2]])
+                    if (c1 or c2) and chunk[1] + c1 == chunk[2] - c2:
+                        continue
                 if chunk[2] < curline:
                     c = chunk
                 elif c:
