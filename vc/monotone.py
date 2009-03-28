@@ -47,8 +47,8 @@ class Vc(_vc.Vc):
         except ValueError:
             # for monotone <= 0.25 (different metadata directory, different executable)
             self.VC_DIR = "MT"
-            self.root = self.find_repo_root(location)
             self.CMD = "monotone"
+            self.root = self.find_repo_root(location)
             return
 
     def commit_command(self, message):
