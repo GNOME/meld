@@ -58,7 +58,7 @@ class Vc(_vc.Vc):
     def _get_dirsandfiles(self, directory, dirs, files):
 
         try:
-            entries = open( os.path.join(directory, "CVS/Entries")).read()
+            entries = open(os.path.join(directory, self.VC_DIR, "Entries")).read()
             # poor mans universal newline
             entries = entries.replace("\r","\n").replace("\n\n","\n")
         except IOError, e: # no cvs dir
@@ -67,7 +67,7 @@ class Vc(_vc.Vc):
             return d,f
 
         try:
-            logentries = open( os.path.join(directory, "CVS/Entries.Log")).read()
+            logentries = open(os.path.join(directory, self.VC_DIR, "Entries.Log")).read()
         except IOError, e:
             pass
         else:
