@@ -138,6 +138,6 @@ class Vc(_vc.Vc):
             if path in whatsnew:
                 state = whatsnew[path]
             vcfile = fstype(path, filename, state)
-            if filename != "{arch}":
+            if filename != self.VC_DIR:
                 rets.append(vcfile)
         return rets
