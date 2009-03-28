@@ -475,7 +475,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     
                     Maybe you don't have 'GNU patch' installed,
                     or you use an untested version of %s.
-            
+                    
                     Please send email bug report to:
                     meld-list@gnome.org
                     
