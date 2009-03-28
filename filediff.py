@@ -1096,7 +1096,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 lo += 1
             else:
                 break
-        for l in txt[lo:]:
+        for l in reversed(txt[lo:]):
             if len(l)==0:
                 hi += 1
             else:
