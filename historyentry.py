@@ -1,4 +1,4 @@
-# Copyright (C) 2008 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2008-2009 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -207,6 +207,22 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         "activate" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
     }
 
+    __gproperties__ = {
+        "default-path":    (str, "Default path",
+                            "Default path for file chooser",
+                            "~", gobject.PARAM_READWRITE),
+        "directory-entry": (bool, "File or directory entry",
+                            "Whether the created file chooser should select directories instead of files",
+                            False, gobject.PARAM_READWRITE),
+        "filename":        (str, "Filename",
+                            "Filename of the selected file",
+                            "", gobject.PARAM_READWRITE),
+        "modal":           (bool, "File chooser modality",
+                            "Whether the created file chooser is modal",
+                            False, gobject.PARAM_READWRITE),
+    }
+
+
     def __init__(self, history_id=None, browse_dialog_title=None, **kwargs):
         super(HistoryFileEntry, self).__init__(**kwargs)
 
@@ -214,8 +230,8 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         self.browse_dialog_title = browse_dialog_title
         self.__filechooser_action = gtk.FILE_CHOOSER_ACTION_OPEN
         self.__default_path = "~"
-        self.directory_entry = False
-        self.modal = False
+        self.__directory_entry = False
+        self.__modal = False
 
         self.set_spacing(3)
 
@@ -241,6 +257,33 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             access_button.set_description(_("Pop up a file selector to choose a file"))
             access_button.add_relationship(atk.RELATION_CONTROLLER_FOR, access_entry)
             access_entry.add_relationship(atk.RELATION_CONTROLLED_BY, access_button)
+
+    def do_get_property(self, pspec):
+        if pspec.name == "default-path":
+            return self.__default_path
+        elif pspec.name == "directory-entry":
+            return self.__directory_entry
+        elif pspec.name == "filename":
+            return self.get_full_path()
+        elif pspec.name == "modal":
+            return self.__modal
+        else:
+            raise AttributeError("Unknown property: %s" % pspec.name)
+
+    def do_set_property(self, pspec, value):
+        if pspec.name == "default-path":
+            if value:
+                self.__default_path = os.path.abspath(value)
+            else:
+                self.__default_path = None
+        elif pspec.name == "directory-entry":
+            self.__directory_entry = value
+        elif pspec.name == "filename":
+            self.set_filename(value)
+        elif pspec.name == "modal":
+            self.__modal = value
+        else:
+            raise AttributeError("Unknown property: %s" % pspec.name)
 
     def _setup_dnd(self):
         # we must get rid of gtk's drop site on the entry else weird stuff can happen
@@ -274,7 +317,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         return self.directory_entry
 
     def get_full_path(self):
-        text = self.__gentry.child.get_text()
+        text = self.__gentry.get_entry().get_text()
         if not text:
             return None
         sys_text = gobject.filename_from_utf8(text)
@@ -284,7 +327,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         return filename
 
     def set_filename(self, filename):
-        self.__gentry.child.set_text(filename)
+        self.__gentry.get_entry().set_text(filename)
 
     def __browse_dialog_ok(self, filewidget):
         locale_filename = filewidget.get_filename()
@@ -317,7 +360,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         if not filename:
             return self.__default_path + os.sep
 
-        if not filename.endswith(os.sep) and (self.directory_entry or os.path.isdir(filename)):
+        if not filename.endswith(os.sep) and (self.__directory_entry or os.path.isdir(filename)):
             filename += os.sep
         return filename
 
@@ -328,7 +371,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
                 self.fsw.window.raise_()
             return
 
-        if self.directory_entry:
+        if self.__directory_entry:
             action = gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER
             filefilter = gtk.FileFilter()
             filefilter.add_mime_type("x-directory/normal")
@@ -354,7 +397,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         if toplevel.flags() & gtk.TOPLEVEL:
             self.fsw.set_transient_for(toplevel)
             modal_fentry = toplevel.get_modal()
-        if self.modal or modal_fentry:
+        if self.__modal or modal_fentry:
             self.fsw.set_modal(True)
 
         self.fsw.show()
@@ -378,11 +421,6 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         context.finish(True, False, time)
         entry.activate()
 
-    default_path = gobject.property(lambda self: self.__default_path, set_default_path, type=str)
-    directory_entry = gobject.property(type=bool, default=False)
-    filename = gobject.property(get_full_path, set_filename, type=str)
-    modal = gobject.property(type=bool, default=False)
-
 try:
     import gnomevfs
 except ImportError:
@@ -391,7 +429,7 @@ except ImportError:
 
 def create_fileentry( history_id, dialog_title, is_directory_entry, int2):
     w = HistoryFileEntry(history_id, dialog_title)
-    w.directory_entry = is_directory_entry
+    w.props.directory_entry = is_directory_entry
     return w
 
 def create_entry( history_id, str2, int1, int2):
