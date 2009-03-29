@@ -147,13 +147,6 @@ class HistoryEntry(gtk.ComboBoxEntry):
     def get_history_length(self):
         return self.__history_length
 
-    def get_history_id(self):
-        return self.__history_id
-
-    def __set_history_id(self, history_id):
-        self.__history_id = history_id
-        self._load_history()
-
     def set_enable_completion(self, enable):
         if enable:
             if self.__completion is not None:
@@ -177,6 +170,9 @@ class HistoryEntry(gtk.ComboBoxEntry):
     def get_entry(self):
         return self.child
 
+    def focus_entry(self):
+        self.child.grab_focus()
+
     def set_escape_func(self, escape_func):
         cells = self.get_cells()
         # We only have one cell renderer
@@ -187,9 +183,6 @@ class HistoryEntry(gtk.ComboBoxEntry):
             self.set_cell_data_func(cells[0], _escape_cell_data_func, escape_func)
         else:
             self.set_cell_data_func(cells[0], None, None)
-
-    history_id = gobject.property(get_history_id, __set_history_id, type=str)
-    max_saved = gobject.property(get_history_length, set_history_length, type=int)
 
 try:
     import gconf
@@ -229,13 +222,14 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         self.__gentry = HistoryEntry(history_id, False)
         self.browse_dialog_title = browse_dialog_title
         self.__filechooser_action = gtk.FILE_CHOOSER_ACTION_OPEN
-        self.__is_modal = False
         self.directory_entry = False
+        self.modal = False
 
         self.set_spacing(3)
 
-        self.gtk_entry.connect("changed", self.__entry_changed_signal)
-        self.gtk_entry.connect("activate", self.__entry_activate_signal)
+        entry = self.__gentry.get_entry()
+        entry.connect("changed", self.__entry_changed_signal)
+        entry.connect("activate", self.__entry_activate_signal)
 
         self._setup_dnd()
 
@@ -258,7 +252,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
 
     def _setup_dnd(self):
         # we must get rid of gtk's drop site on the entry else weird stuff can happen
-        self.gtk_entry.drag_dest_unset()
+        self.__gentry.get_entry().drag_dest_unset()
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                            gtk.DEST_DEFAULT_HIGHLIGHT |
                            gtk.DEST_DEFAULT_DROP,
@@ -266,11 +260,14 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         self.drag_dest_add_uri_targets()
         self.connect("drag_data_received", self.history_entry_drag_data_received)
 
-    def gnome_entry(self):
-        return self.__gentry
+    def append_history(self, text):
+        self.__gentry.append_text(text)
 
-    def gtk_entry(self):
-        return self.__gentry.child
+    def prepend_history(self, text):
+        self.__gentry.prepend_text(text)
+
+    def focus_entry(self):
+        self.__gentry.focus_entry()
 
     def set_title(self, browse_dialog_title):
         self.browse_dialog_title = browse_dialog_title
@@ -316,12 +313,6 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
     def set_filename(self, filename):
         self.__gentry.child.set_text(filename)
 
-    def set_modal(self, is_modal):
-        self.__is_modal = is_modal
-
-    def get_modal(self):
-        return self.__is_modal
-
     def __browse_dialog_ok(self, filewidget):
         locale_filename = filewidget.get_filename()
         if not locale_filename:
@@ -331,9 +322,10 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         if encoding:
             # FIXME: This isn't tested.
             locale_filename = unicode(locale_filename, encoding)
-        self.gtk_entry.set_text(locale_filename)
-        self.gtk_entry.emit("changed")
-        self.gtk_entry.activate()
+        entry = self.__gentry.get_entry()
+        entry.set_text(locale_filename)
+        entry.emit("changed")
+        entry.activate()
         filewidget.hide()
 
     def __browse_dialog_response(self, widget, response):
@@ -348,7 +340,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         filechooser.set_filter(filefilter)
 
     def __build_filename(self):
-        text = self.gtk_entry.get_text()
+        text = self.__gentry.get_entry().get_text()
 
         if text is None or len(text) == 0:
             return self.__default_path + os.sep
@@ -413,7 +405,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             self.fsw.set_transient_for(toplevel)
             modal_fentry = toplevel.get_modal()
 
-        if self.__is_modal or modal_fentry:
+        if self.modal or modal_fentry:
             self.fsw.set_modal(True)
 
         self.fsw.show()
@@ -423,12 +415,6 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
 
     def __entry_activate_signal(self, widget, *data):
         self.emit("activate")
-
-    def __get_history_id(self):
-        self.__gentry.get_history_id()
-
-    def __set_history_id(self, newid):
-        self.__gentry.props.history_id = newid
 
     def history_entry_drag_data_received(self, widget, context, x, y, selection_data, info, time):
         uris = selection_data.data.split()
@@ -444,20 +430,15 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             context.finish(False, False, time)
             return
 
-        widget.gtk_entry.set_text(path)
-        widget.gtk_entry.emit("changed")
-        widget.gtk_entry.activate()
+        entry = self.__gentry.get_entry()
+        entry.set_text(path)
+        entry.emit("changed")
+        entry.activate()
 
-    browse_dialog_title = gobject.property(type=str)
     default_path = gobject.property(lambda self: self.__default_path, set_default_path, type=str)
     directory_entry = gobject.property(type=bool, default=False)
-    filechooser_action = gobject.property(type=gobject.GObject) # FIXME: gtk.FileChooserAction with newer pygobject
     filename = gobject.property(get_full_path, set_filename, type=str)
-    gnome_entry = gobject.property(gnome_entry, None, type=gobject.GObject) # FIXME: historyentry.Historyentry with newer pygobject
-    gtk_entry = gobject.property(gtk_entry, None, type=gobject.GObject) # FIXME: gtk.Entry with newer pygobject
-    history_id = gobject.property(__get_history_id, __set_history_id, type=str)
-    modal = gobject.property(set_modal, get_modal, type=bool, default=False)
-    use_filechooser = gobject.property(type=bool, default=True)
+    modal = gobject.property(type=bool, default=False)
 
 try:
     import gnomevfs

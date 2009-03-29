@@ -79,12 +79,12 @@ class NewDocDialog(gnomeglade.Component):
                 if i == len(el) - 1:
                     self.button_ok.grab_focus()
                 else:
-                    el[i+1].gtk_entry.grab_focus()
+                    el[i+1].focus_entry()
 
     def on_three_way_toggled(self, button):
         page = self.three_way_compare.index(button)
         self.entrylists[page][0].set_sensitive( button.get_active() )
-        self.entrylists[page][ not button.get_active() ].gtk_entry.grab_focus()
+        self.entrylists[page][not button.get_active()].focus_entry()
 
     def on_response(self, dialog, arg):
         if arg == gtk.RESPONSE_OK:
@@ -93,7 +93,7 @@ class NewDocDialog(gnomeglade.Component):
             if page < 2 and not self.three_way_compare[page].get_active():
                 paths.pop(0)
             for path in paths:
-                self.entrylists[page][0].gnome_entry.append_text(path)
+                self.entrylists[page][0].append_history(path)
             self.diff_methods[page](paths)
         self.widget.destroy()
 
