@@ -15,7 +15,6 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 """Module of commonly used helper classes and functions
-
 """
 
 import copy
@@ -50,7 +49,7 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
     if parent:
         d.set_transient_for(parent.widget.get_toplevel())
     for b,rid in extrabuttons:
-        d.add_button(b,rid)
+        d.add_button(b, rid)
     d.vbox.set_spacing(12)
     hbox = d.vbox.get_children()[0]
     hbox.set_spacing(12)
@@ -129,7 +128,7 @@ class struct(object):
     def __repr__(self):
         r = ["<"]
         for i in self.__dict__.keys():
-            r.append("%s=%s" % (i, getattr(self,i)))
+            r.append("%s=%s" % (i, getattr(self, i)))
         r.append(">\n")
         return " ".join(r)
     def __cmp__(self, other):
@@ -153,8 +152,8 @@ def shorten_names(*names):
     prefix = os.path.commonprefix( names )
     prefixslash = prefix.rfind("/") + 1
     
-    names = map( lambda x: x[prefixslash:], names) # remove common prefix
-    paths = map( lambda x: x.split("/"), names) # split on /
+    names = map(lambda x: x[prefixslash:], names) # remove common prefix
+    paths = map(lambda x: x.split("/"), names) # split on /
 
     try:
         basenames = map(lambda x: x[-1], paths)
@@ -171,7 +170,7 @@ def shorten_names(*names):
             base = basenames[0].strip()
             return [ r+base for r in roots ]
     # no common path. empty names get changed to "[None]"
-    return map( lambda x: x or _("[None]"), basenames)
+    return map(lambda x: x or _("[None]"), basenames)
 
 def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     """Read the output of a shell command iteratively.
@@ -249,7 +248,7 @@ def clamp(val, lower, upper):
     """Clamp 'val' to the inclusive range [lower,upper].
     """
     assert lower <= upper
-    return min( max(val, lower), upper)
+    return min(max(val, lower), upper)
 
 def commonprefix(dirs):
     """Given a list of pathnames, returns the longest common leading component.
@@ -263,7 +262,8 @@ def commonprefix(dirs):
         for i in range(len(prefix)):
             if prefix[:i+1] != item[:i+1]:
                 prefix = prefix[:i]
-                if i == 0: return ''
+                if i == 0:
+                    return ''
                 break
     return os.sep.join(prefix)
 
