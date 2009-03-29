@@ -75,9 +75,6 @@ class HistoryEntry(gtk.ComboBoxEntry):
     def _get_gconf_client(self):
         self.__gconf_client = gconf.client_get_default()
 
-    def __get_history_store(self):
-        return self.get_model()
-
     def __get_history_key(self):
         # We store data under /apps/gnome-settings/ like GnomeEntry did.
         if not self.__history_id:
@@ -86,21 +83,18 @@ class HistoryEntry(gtk.ComboBoxEntry):
                           gconf.escape_key(self.__history_id, -1)])
         return key
 
-    def __get_history_list(self):
-        return [row[0] for row in self.__get_history_store()]
-
     def _save_history(self):
         key = self.__get_history_key()
         if key is None:
             return
-        gconf_items = self.__get_history_list()
+        gconf_items = [row[0] for row in self.get_model()]
         self.__gconf_client.set_list(key, gconf.VALUE_STRING, gconf_items)
 
     def __insert_history_item(self, text, prepend):
         if len(text) <= MIN_ITEM_LEN:
             return
 
-        store = self.__get_history_store()
+        store = self.get_model()
         if not _remove_item(store, text):
             _clamp_list_store(store, self.__history_length - 1)
 
@@ -126,14 +120,14 @@ class HistoryEntry(gtk.ComboBoxEntry):
             return
         gconf_items = self.__gconf_client.get_list(key, gconf.VALUE_STRING)
 
-        store = self.__get_history_store()
+        store = self.get_model()
         store.clear()
 
         for item in gconf_items[:self.__history_length - 1]:
             store.append((item,))
 
     def clear(self):
-        store = self.__get_history_store()
+        store = self.get_model()
         store.clear()
         self._save_history()
 
@@ -141,7 +135,7 @@ class HistoryEntry(gtk.ComboBoxEntry):
         if max_saved <= 0:
             return
         self.__history_length = max_saved
-        if len(self.__get_history_store()) > max_saved:
+        if len(self.get_model()) > max_saved:
             self._load_history()
 
     def get_history_length(self):
@@ -152,7 +146,7 @@ class HistoryEntry(gtk.ComboBoxEntry):
             if self.__completion is not None:
                 return
             self.__completion = gtk.EntryCompletion()
-            self.__completion.set_model(self.__get_history_store())
+            self.__completion.set_model(self.get_model())
             self.__completion.set_text_column(0)
             self.__completion.set_minimum_key_length(MIN_ITEM_LEN)
             self.__completion.set_popup_completion(False)
@@ -217,22 +211,20 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         super(HistoryFileEntry, self).__init__(**kwargs)
 
         self.fsw = None
-        self.__default_path = "~"
-        # TODO: completion would be nice, but some quirks make it currently too irritating to turn on by default
-        self.__gentry = HistoryEntry(history_id, False)
         self.browse_dialog_title = browse_dialog_title
         self.__filechooser_action = gtk.FILE_CHOOSER_ACTION_OPEN
+        self.__default_path = "~"
         self.directory_entry = False
         self.modal = False
 
         self.set_spacing(3)
 
+        # TODO: completion would be nice, but some quirks make it currently too irritating to turn on by default
+        self.__gentry = HistoryEntry(history_id, False)
         entry = self.__gentry.get_entry()
-        entry.connect("changed", self.__entry_changed_signal)
-        entry.connect("activate", self.__entry_activate_signal)
-
+        entry.connect("changed", lambda *args: self.emit("changed"))
+        entry.connect("activate", lambda *args: self.emit("activate"))
         self._setup_dnd()
-
         self.pack_start(self.__gentry, True, True, 0)
         self.__gentry.show()
 
@@ -269,9 +261,6 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
     def focus_entry(self):
         self.__gentry.focus_entry()
 
-    def set_title(self, browse_dialog_title):
-        self.browse_dialog_title = browse_dialog_title
-
     def set_default_path(self, path):
         if path:
             self.__default_path = os.path.abspath(path)
@@ -284,31 +273,15 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
     def get_directory_entry(self):
         return self.directory_entry
 
-    def get_full_path(self, file_must_exist=False):
+    def get_full_path(self):
         text = self.__gentry.child.get_text()
         if not text:
             return None
-
         sys_text = gobject.filename_from_utf8(text)
         filename = _expand_filename(sys_text, self.__default_path)
         if not filename:
             return None
-
-        if file_must_exist:
-            if self.directory_entry:
-                if os.path.isdir(filename):
-                    return filename
-
-                d = os.path.dirname(filename)
-                if os.path.isdir(d):
-                    return d
-
-                return None
-            elif os.path.isfile(filename):
-                return filename
-            return None
-        else:
-            return filename
+        return filename
 
     def set_filename(self, filename):
         self.__gentry.child.set_text(filename)
@@ -324,38 +297,28 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             locale_filename = unicode(locale_filename, encoding)
         entry = self.__gentry.get_entry()
         entry.set_text(locale_filename)
-        entry.emit("changed")
         entry.activate()
-        filewidget.hide()
 
     def __browse_dialog_response(self, widget, response):
         if response == gtk.RESPONSE_ACCEPT:
             self.__browse_dialog_ok(widget)
-        else:
-            widget.hide()
-
-    def __setup_filter(self, filechooser, *args):
-        filefilter = gtk.FileFilter()
-        filefilter.add_mime_type("x-directory/normal")
-        filechooser.set_filter(filefilter)
+        widget.hide()
 
     def __build_filename(self):
         text = self.__gentry.get_entry().get_text()
-
-        if text is None or len(text) == 0:
+        if not text:
             return self.__default_path + os.sep
 
         locale_text = gobject.filename_from_utf8(text)
-        if locale_text is None:
+        if not locale_text:
             return self.__default_path + os.sep
 
         filename = _expand_filename(locale_text, self.__default_path)
         if not filename:
             return self.__default_path + os.sep
 
-        if len(filename) != 0 and not filename.endswith(os.sep) and (self.directory_entry or os.path.isdir(filename)):
-            return filename + os.sep
-
+        if not filename.endswith(os.sep) and (self.directory_entry or os.path.isdir(filename)):
+            filename += os.sep
         return filename
 
     def __browse_clicked(self, *args):
@@ -363,58 +326,38 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             self.fsw.show()
             if self.fsw.window:
                 self.fsw.window.raise_()
-
-            if self.directory_entry:
-                self.fsw.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
-            else:
-                self.fsw.set_action(gtk.FILE_CHOOSER_ACTION_OPEN)
-
-            p = self.__build_filename()
-            if p:
-                self.fsw.set_filename(p)
-
             return
 
         if self.directory_entry:
             action = gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER
+            filefilter = gtk.FileFilter()
+            filefilter.add_mime_type("x-directory/normal")
+            title = self.browse_dialog_title or _("Select directory")
         else:
             action = self.__filechooser_action
-
-        title = self.browse_dialog_title or _("Select file")
-        self.fsw = gtk.FileChooserDialog(title, None, action,
-                               (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL), None)
+            filefilter = None
+            title = self.browse_dialog_title or _("Select file")
 
         if action == gtk.FILE_CHOOSER_ACTION_SAVE:
-            self.fsw.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
+            buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
         else:
-            self.fsw.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_ACCEPT)
+            buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_ACCEPT)
 
-        if self.directory_entry:
-            self.fsw.connect("size-request", self.__setup_filter, self)
-
+        self.fsw = gtk.FileChooserDialog(title, None, action, buttons, None)
+        self.fsw.props.filter = filefilter
         self.fsw.set_default_response(gtk.RESPONSE_ACCEPT)
-
-        p = self.__build_filename()
-        if p:
-            self.fsw.set_filename(p)
-            self.fsw.connect("response", self.__browse_dialog_response)
+        self.fsw.set_filename(self.__build_filename())
+        self.fsw.connect("response", self.__browse_dialog_response)
 
         toplevel = self.get_toplevel()
         modal_fentry = False
         if toplevel.flags() & gtk.TOPLEVEL:
             self.fsw.set_transient_for(toplevel)
             modal_fentry = toplevel.get_modal()
-
         if self.modal or modal_fentry:
             self.fsw.set_modal(True)
 
         self.fsw.show()
-
-    def __entry_changed_signal(self, widget, *data):
-        self.emit("changed")
-
-    def __entry_activate_signal(self, widget, *data):
-        self.emit("activate")
 
     def history_entry_drag_data_received(self, widget, context, x, y, selection_data, info, time):
         uris = selection_data.data.split()
@@ -432,7 +375,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
 
         entry = self.__gentry.get_entry()
         entry.set_text(path)
-        entry.emit("changed")
+        context.finish(True, False, time)
         entry.activate()
 
     default_path = gobject.property(lambda self: self.__default_path, set_default_path, type=str)

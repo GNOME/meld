@@ -860,7 +860,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_fileentry_activate(self, entry):
         if self.on_delete_event() != gtk.RESPONSE_CANCEL:
-            files = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
+            files = [e.get_full_path() for e in self.fileentry[:self.num_panes]]
             self.set_files(files)
         return 1
 

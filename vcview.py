@@ -292,7 +292,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.vc.uncache_inventory()
 
     def on_fileentry_activate(self, fileentry):
-        path = fileentry.get_full_path(0)
+        path = fileentry.get_full_path()
         self.set_location(path)
 
     def on_quit_event(self):

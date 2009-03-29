@@ -352,7 +352,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._update_diffmaps()
 
     def on_fileentry_activate(self, entry):
-        locs = [ e.get_full_path(0) for e in self.fileentry[:self.num_panes] ]
+        locs = [e.get_full_path() for e in self.fileentry[:self.num_panes]]
         self.set_locations(locs)
 
     def set_locations(self, locations):
