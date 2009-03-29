@@ -361,6 +361,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.model.clear()
         for pane, loc in enumerate(locations):
             self.fileentry[pane].set_filename(loc)
+            self.fileentry[pane].prepend_history(loc)
         child = self.model.add_entries(None, locations)
         self.treeview0.grab_focus()
         self._update_item_state(child)

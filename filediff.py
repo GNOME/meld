@@ -510,6 +510,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.textbuffer[i].delete(*self.textbuffer[i].get_bounds())
                 absfile = os.path.abspath(f)
                 self.fileentry[i].set_filename(absfile)
+                self.fileentry[i].prepend_history(absfile)
                 bold, bnew = self.bufferdata[i], MeldBufferData(absfile)
                 if bold.filename == bnew.filename:
                     bnew.label = bold.label
@@ -756,6 +757,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if filename:
                 bufdata.filename = bufdata.label = os.path.abspath(filename)
                 self.fileentry[pane].set_filename( bufdata.filename)
+                self.fileentry[pane].prepend_history(bufdata.filename)
             else:
                 return melddoc.RESULT_ERROR
         text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)

@@ -93,7 +93,7 @@ class NewDocDialog(gnomeglade.Component):
             if page < 2 and not self.three_way_compare[page].get_active():
                 paths.pop(0)
             for path in paths:
-                self.entrylists[page][0].append_history(path)
+                self.entrylists[page][0].prepend_history(path)
             self.diff_methods[page](paths)
         self.widget.destroy()
 
