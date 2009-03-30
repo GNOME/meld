@@ -1,19 +1,21 @@
 # French translation of Meld.
-# Copyright (C) 2003-2008 Free Software Foundation, Inc.
+# Copyright (C) 2003-2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the meld package.
 #
 # Stephen Kennedy <steve9000@users.sourceforge.net>, 2003.
 # Jonathan Ernst <jonathan@ernstfamily.ch>, 2006.
 # Claude Paroz <claude@2xlibre.net>, 2006-2009.
 # Robert-André Mauchin <zebob.m@pengzone.org>, 2007.
+# Bruno Brouard <annoa.b@gmail.com>, 2009
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Meld HEAD\n"
-"Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2009-03-10 16:26+0100\n"
-"PO-Revision-Date: 2009-03-10 16:37+0100\n"
-"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=meld&component=general\n"
+"POT-Creation-Date: 2009-03-30 11:38+0000\n"
+"PO-Revision-Date: 2009-03-30 14:42+0200\n"
+"Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,17 +112,17 @@ msgstr "Erreur durant la conversion de « %s » en expression régulière."
 msgid "Hide %s"
 msgstr "Masquer %s"
 
-#: ../dirdiff.py:384 ../dirdiff.py:394 ../vcview.py:236 ../vcview.py:264
+#: ../dirdiff.py:385 ../dirdiff.py:395 ../vcview.py:244 ../vcview.py:272
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] En cours d'analyse de %s"
 
-#: ../dirdiff.py:423
+#: ../dirdiff.py:424
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "« %s » est masqué par « %s »"
 
-#: ../dirdiff.py:429
+#: ../dirdiff.py:430
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
@@ -131,12 +133,12 @@ msgstr ""
 "fichiers sensible à la casse. Des fichiers ne sont pas visibles :\n"
 "%s"
 
-#: ../dirdiff.py:502
+#: ../dirdiff.py:503
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Terminé"
 
-#: ../dirdiff.py:548
+#: ../dirdiff.py:549
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -145,7 +147,7 @@ msgstr ""
 "« %s » existe déjà.\n"
 "Écraser ?"
 
-#: ../dirdiff.py:555
+#: ../dirdiff.py:556
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -156,7 +158,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:573 ../vcview.py:424
+#: ../dirdiff.py:574 ../vcview.py:433
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -165,7 +167,7 @@ msgstr ""
 "« %s » est un répertoire.\n"
 "Supprimer récursivement ?"
 
-#: ../dirdiff.py:580 ../vcview.py:429
+#: ../dirdiff.py:581 ../vcview.py:438
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -176,49 +178,49 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:591
+#: ../dirdiff.py:592
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i seconde"
 msgstr[1] "%i secondes"
 
-#: ../dirdiff.py:592
+#: ../dirdiff.py:593
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i minute"
 msgstr[1] "%i minutes"
 
-#: ../dirdiff.py:593
+#: ../dirdiff.py:594
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i heure"
 msgstr[1] "%i heures"
 
-#: ../dirdiff.py:594
+#: ../dirdiff.py:595
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i jour"
 msgstr[1] "%i jours"
 
-#: ../dirdiff.py:595
+#: ../dirdiff.py:596
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i semaine"
 msgstr[1] "%i semaines"
 
-#: ../dirdiff.py:596
+#: ../dirdiff.py:597
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i mois"
 msgstr[1] "%i mois"
 
-#: ../dirdiff.py:597
+#: ../dirdiff.py:598
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -254,7 +256,7 @@ msgstr "INS,ÉCR"
 msgid "Ln %i, Col %i"
 msgstr "Ln %i, Col %i"
 
-#: ../filediff.py:253
+#: ../filediff.py:254
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -264,50 +266,31 @@ msgstr ""
 "comparaison ne sera plus correcte. Consultez le manuel d'utilisation pour "
 "plus de détails."
 
-#: ../filediff.py:515
-#, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
-msgstr ""
-"Erreur d'expression régulière\n"
-"« %s »"
-
-#: ../filediff.py:527
-#, python-format
-msgid "The regular expression '%s' was not found."
-msgstr "L'expression régulière « %s » n'a pas été trouvée."
-
-#: ../filediff.py:529
-#, python-format
-msgid "The text '%s' was not found."
-msgstr "Impossible de trouver « %s »."
-
-#: ../filediff.py:581
+#: ../filediff.py:523
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Régler le nombre de volets"
 
-#: ../filediff.py:587
+#: ../filediff.py:529
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Ouverture des fichiers"
 
-#: ../filediff.py:605 ../filediff.py:619 ../filediff.py:635 ../filediff.py:642
+#: ../filediff.py:547 ../filediff.py:561 ../filediff.py:577 ../filediff.py:584
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Impossible de lire « %s »"
 
-#: ../filediff.py:606 ../filediff.py:643
+#: ../filediff.py:548 ../filediff.py:585
 msgid "The error was:"
 msgstr "L'erreur était :"
 
-#: ../filediff.py:611
+#: ../filediff.py:553
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Lecture des fichiers"
 
-#: ../filediff.py:620
+#: ../filediff.py:562
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -315,17 +298,17 @@ msgstr ""
 "Il contient des caractères ASCII NULL.\n"
 "Il s'agit peut-être d'un fichier binaire."
 
-#: ../filediff.py:636
+#: ../filediff.py:578
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Les codages %s ont été essayés."
 
-#: ../filediff.py:665
+#: ../filediff.py:607
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Calcul des différences"
 
-#: ../filediff.py:792
+#: ../filediff.py:734
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -334,7 +317,7 @@ msgstr ""
 "« %s » existe déjà !\n"
 "Écraser ?"
 
-#: ../filediff.py:805
+#: ../filediff.py:747
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -345,12 +328,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:814
+#: ../filediff.py:756
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Choisissez un nom pour le tampon %i."
 
-#: ../filediff.py:827
+#: ../filediff.py:770
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -361,7 +344,7 @@ msgstr ""
 "\n"
 "Quel format voulez-vous utiliser ?"
 
-#: ../filediff.py:843
+#: ../filediff.py:786
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -371,11 +354,11 @@ msgstr ""
 "Voulez-vous enregistrer en UTF-8 ?"
 
 #. save as
-#: ../filediff.py:891
+#: ../filediff.py:834
 msgid "Save patch as..."
 msgstr "Enregistrer le patch sous..."
 
-#: ../filediff.py:949
+#: ../filediff.py:901
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -387,6 +370,25 @@ msgstr ""
 "%s\n"
 "\n"
 "Vous ne pouvez pas annuler cette opération."
+
+#: ../findbar.py:99
+#, python-format
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+"Erreur d'expression régulière\n"
+"« %s »"
+
+#: ../findbar.py:111
+#, python-format
+msgid "The regular expression '%s' was not found."
+msgstr "L'expression régulière « %s » n'a pas été trouvée."
+
+#: ../findbar.py:113
+#, python-format
+msgid "The text '%s' was not found."
+msgstr "Impossible de trouver « %s »."
 
 #: ../glade2/filediff.glade.h:1
 msgid ""
@@ -401,40 +403,52 @@ msgid "Copy to Clipboard"
 msgstr "Copier vers le presse-papiers"
 
 #: ../glade2/filediff.glade.h:5
-msgid "Find"
-msgstr "Rechercher"
-
-#: ../glade2/filediff.glade.h:6
-msgid "Match _entire word only"
-msgstr "Mot entier"
-
-#: ../glade2/filediff.glade.h:7
-msgid "Regular e_xpression"
-msgstr "E_xpression régulière"
-
-#: ../glade2/filediff.glade.h:8
 msgid "Save modified files?"
 msgstr "Enregistrer les fichiers modifiés ?"
 
-#: ../glade2/filediff.glade.h:9
-msgid "Search for:"
-msgstr "Rechercher :"
-
-#: ../glade2/filediff.glade.h:10
+#: ../glade2/filediff.glade.h:6
 msgid "_Discard Changes"
 msgstr "_Annuler les modifications"
 
-#: ../glade2/filediff.glade.h:11
-msgid "_Match case"
-msgstr "_Sensible à la casse"
-
-#: ../glade2/filediff.glade.h:12
+#: ../glade2/filediff.glade.h:7
 msgid "_Save Selected"
 msgstr "_Enregistrer la sélection"
 
-#: ../glade2/filediff.glade.h:13
-msgid "_Wrap around"
-msgstr "Recherche _circulaire"
+#: ../glade2/findbar.glade.h:1
+msgid "Regular E_xpression"
+msgstr "E_xpression régulière"
+
+#: ../glade2/findbar.glade.h:2
+msgid "Replace _All"
+msgstr "_Tout remplacer"
+
+#: ../glade2/findbar.glade.h:3
+msgid "Replace _With"
+msgstr "Remplacer _par"
+
+#: ../glade2/findbar.glade.h:4
+msgid "Who_le word"
+msgstr "_Mots entiers"
+
+#: ../glade2/findbar.glade.h:5
+msgid "_Match Case"
+msgstr "Res_pecter la casse"
+
+#: ../glade2/findbar.glade.h:6
+msgid "_Next"
+msgstr "_Suivant"
+
+#: ../glade2/findbar.glade.h:7
+msgid "_Previous"
+msgstr "_Précédent"
+
+#: ../glade2/findbar.glade.h:8 ../meldapp.py:524
+msgid "_Replace"
+msgstr "_Remplacer"
+
+#: ../glade2/findbar.glade.h:9
+msgid "_Search for"
+msgstr "_Rechercher"
 
 #: ../glade2/meldapp.glade.h:1
 msgid "<b>Edit Menu</b>"
@@ -672,6 +686,30 @@ msgstr "Étiquette"
 msgid "VC Log"
 msgstr "Journal du gestionnaire de versions"
 
+#: ../historyentry.py:247
+msgid "_Browse..."
+msgstr "_Parcourir..."
+
+#: ../historyentry.py:255
+msgid "Path"
+msgstr "Chemin"
+
+#: ../historyentry.py:256
+msgid "Path to file"
+msgstr "Chemin vers le fichier"
+
+#: ../historyentry.py:257
+msgid "Pop up a file selector to choose a file"
+msgstr "Affiche un sélecteur de fichiers pour choisir un fichier"
+
+#: ../historyentry.py:378
+msgid "Select directory"
+msgstr "Sélectionner le répertoire"
+
+#: ../historyentry.py:382
+msgid "Select file"
+msgstr "Sélectionner le fichier"
+
 #: ../meld:47
 #, c-format
 msgid "Meld requires %s or higher."
@@ -695,8 +733,7 @@ msgstr "motif"
 
 #: ../meldapp.py:223
 msgid "Only available if you have gnome-python-desktop installed"
-msgstr ""
-"Disponible uniquement si gnome-python-desktop est installé"
+msgstr "Disponible uniquement si gnome-python-desktop est installé"
 
 #. file filters
 #. text filters
@@ -773,135 +810,139 @@ msgstr "Caractère d'espacement en début de ligne\t0\t^[ \\t\\r\\f\\v]*\n"
 msgid "Script comment\t0\t#.*"
 msgstr "Commentaire de script\t0\t#.*"
 
-#: ../meldapp.py:509
+#: ../meldapp.py:510
 msgid "_New..."
 msgstr "_Nouveau..."
 
-#: ../meldapp.py:509
+#: ../meldapp.py:510
 msgid "Start a new comparison"
 msgstr "Lancer une nouvelle comparaison"
 
-#: ../meldapp.py:510
+#: ../meldapp.py:511
 msgid "Save the current file"
 msgstr "Enregistrer le fichier actuel"
 
-#: ../meldapp.py:512
+#: ../meldapp.py:513
 msgid "Close the current file"
 msgstr "Fermer le fichier actuel"
 
-#: ../meldapp.py:513
+#: ../meldapp.py:514
 msgid "Quit the program"
 msgstr "Quitter le programme"
 
-#: ../meldapp.py:516
+#: ../meldapp.py:517
 msgid "Undo the last action"
 msgstr "Annuler la dernière action"
 
-#: ../meldapp.py:517
+#: ../meldapp.py:518
 msgid "Redo the last undone action"
 msgstr "Rétablir la dernière action annulée"
 
-#: ../meldapp.py:518
+#: ../meldapp.py:519
 msgid "Cut the selection"
 msgstr "Couper la sélection"
 
-#: ../meldapp.py:519
+#: ../meldapp.py:520
 msgid "Copy the selection"
 msgstr "Copier la sélection"
 
-#: ../meldapp.py:520
+#: ../meldapp.py:521
 msgid "Paste the clipboard"
 msgstr "Coller le presse-papiers"
 
-#: ../meldapp.py:521
+#: ../meldapp.py:522
 msgid "Search for text"
 msgstr "Rechercher du texte"
 
-#: ../meldapp.py:522
+#: ../meldapp.py:523
 msgid "Find Ne_xt"
 msgstr "Rechercher le _suivant"
 
-#: ../meldapp.py:522
+#: ../meldapp.py:523
 msgid "Search forwards for the same text"
 msgstr "Recherche le même texte plus loin"
 
-#: ../meldapp.py:523
+#: ../meldapp.py:524
+msgid "Find and replace text"
+msgstr "Recherche un texte et le remplace"
+
+#: ../meldapp.py:525
 msgid "Go to the next difference"
 msgstr "Va jusqu'à la prochaine différence"
 
-#: ../meldapp.py:524
+#: ../meldapp.py:526
 msgid "Go to the previous difference"
 msgstr "Revient à la différence précédente"
 
-#: ../meldapp.py:525
+#: ../meldapp.py:527
 msgid "Prefere_nces"
 msgstr "_Préférences"
 
-#: ../meldapp.py:525
+#: ../meldapp.py:527
 msgid "Configure the application"
 msgstr "Configurer l'application"
 
-#: ../meldapp.py:531
+#: ../meldapp.py:533
 msgid "Stop the current action"
 msgstr "Arrête l'action en cours"
 
-#: ../meldapp.py:532
+#: ../meldapp.py:534
 msgid "Refresh the view"
 msgstr "Actualise l'affichage"
 
-#: ../meldapp.py:533
+#: ../meldapp.py:535
 msgid "Reload"
 msgstr "Recharger"
 
-#: ../meldapp.py:533
+#: ../meldapp.py:535
 msgid "Reload the comparison"
 msgstr "Recharge la comparaison"
 
-#: ../meldapp.py:536
+#: ../meldapp.py:538
 msgid "_Contents"
 msgstr "_Sommaire"
 
-#: ../meldapp.py:536
+#: ../meldapp.py:538
 msgid "Open the Meld manual"
 msgstr "Ouvre le manuel de Meld"
 
-#: ../meldapp.py:537
+#: ../meldapp.py:539
 msgid "Report _Bug"
 msgstr "Rapporter une _anomalie"
 
-#: ../meldapp.py:537
+#: ../meldapp.py:539
 msgid "Report a bug in Meld"
 msgstr "Rapporte une anomalie de Meld"
 
-#: ../meldapp.py:538
+#: ../meldapp.py:540
 msgid "About this program"
 msgstr "À propos de ce programme"
 
-#: ../meldapp.py:855
+#: ../meldapp.py:857
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Impossible de comparer des fichiers avec des répertoires.\n"
 
-#: ../meldapp.py:908
+#: ../meldapp.py:910
 msgid "Set label to use instead of file name"
 msgstr "Définit l'étiquette à utiliser au lieu du nom de fichier"
 
-#: ../meldapp.py:909
+#: ../meldapp.py:911
 msgid "Automatically compare all differing files on startup"
 msgstr "Compare automatiquement tous les fichiers différents au démarrage"
 
-#: ../meldapp.py:910 ../meldapp.py:911 ../meldapp.py:912 ../meldapp.py:913
+#: ../meldapp.py:912 ../meldapp.py:913 ../meldapp.py:914 ../meldapp.py:915
 msgid "Ignored for compatibility"
 msgstr "Ignorée pour compatibilité"
 
-#: ../meldapp.py:916
+#: ../meldapp.py:918
 msgid "Creates a diff tab for up to 3 supplied files."
 msgstr "Crée un onglet diff pour un maximum de 3 fichiers."
 
-#: ../meldapp.py:920
+#: ../meldapp.py:922
 msgid "Invalid number of arguments supplied for --diff."
 msgstr "Nombre de paramètres non valide pour --diff."
 
-#: ../meldapp.py:948
+#: ../meldapp.py:953
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Nombre de paramètres invalide (%i reçus)"
@@ -911,7 +952,7 @@ msgid "untitled"
 msgstr "sans-titre"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:172
+#: ../misc.py:173
 msgid "[None]"
 msgstr "[Aucun]"
 
@@ -1020,37 +1061,37 @@ msgstr "Révision"
 msgid "Options"
 msgstr "Options"
 
-#: ../vcview.py:197
-msgid "VC chooser"
-msgstr "Sélecteur de gestionnaire de versions"
-
 #: ../vcview.py:208
-msgid "Pick one source control plugin"
-msgstr "Choisissez un greffon de gestionnaire de versions"
+msgid "Choose one Version Control"
+msgstr "Choisir un système de gestion de versions"
 
-#: ../vcview.py:280
+#: ../vcview.py:209
+msgid "Only one Version Control in this directory"
+msgstr "Un seul système de gestion de versions dans ce répertoire"
+
+#: ../vcview.py:288
 msgid "(Empty)"
 msgstr "(vide)"
 
-#: ../vcview.py:313
+#: ../vcview.py:321
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Récupération des différences"
 
-#: ../vcview.py:320
+#: ../vcview.py:328
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Application du correctif"
 
-#: ../vcview.py:324
+#: ../vcview.py:332
 msgid "No differences found."
 msgstr "Aucune différence trouvée."
 
-#: ../vcview.py:401
+#: ../vcview.py:410
 msgid "Select some files first."
 msgstr "Sélectionnez d'abord des fichiers."
 
-#: ../vcview.py:467
+#: ../vcview.py:474
 #, python-format
 msgid ""
 "\n"
@@ -1058,7 +1099,7 @@ msgid ""
 "                    \n"
 "                    Maybe you don't have 'GNU patch' installed,\n"
 "                    or you use an untested version of %s.\n"
-"            \n"
+"                    \n"
 "                    Please send email bug report to:\n"
 "                    meld-list@gnome.org\n"
 "                    \n"
@@ -1090,7 +1131,7 @@ msgstr ""
 "                    "
 
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:40
+#: ../vc/_vc.py:39
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
