@@ -181,6 +181,8 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     If 'workdir' is specified the command is run from that directory.
     """
     class sentinel(object):
+        def __init__(self):
+            self.pipe = None
         def __del__(self):
             if self.pipe:
                 errorstream.write("killing '%s' with pid '%i'\n" % (command[0], self.pipe.pid))
