@@ -317,9 +317,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             path = self.model.value_path(it, 0)
             self.run_diff( [path] )
 
-    def run_diff_iter(self, paths, empty_patch_ok):
+    def run_diff_iter(self, path_list, empty_patch_ok):
         yield _("[%s] Fetching differences") % self.label_text
-        difffunc = self._command_iter(self.vc.diff_command(), paths, 0).next
+        difffunc = self._command_iter(self.vc.diff_command(), path_list, 0).next
         diff = None
         while type(diff) != type(()):
             diff = difffunc()
@@ -331,11 +331,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         elif empty_patch_ok:
             misc.run_dialog( _("No differences found."), parent=self, messagetype=gtk.MESSAGE_INFO)
         else:
-            for path in paths:
+            for path in path_list:
                 self.emit("create-diff", [path])
 
-    def run_diff(self, paths, empty_patch_ok=0):
-        self.scheduler.add_task( self.run_diff_iter(paths, empty_patch_ok).next, atfront=1 )
+    def run_diff(self, path_list, empty_patch_ok=0):
+        self.scheduler.add_task(self.run_diff_iter(path_list, empty_patch_ok).next, atfront=1)
 
     def on_button_press_event(self, text, event):
         if event.button==3:
