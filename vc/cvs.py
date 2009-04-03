@@ -140,8 +140,8 @@ class Vc(_vc.Vc):
         cvsfiles = map(lambda x: x[1], matches)
         # ignored
         try:
-            ignored = open( os.path.join(directory, "%s/.cvsignore" % os.environ["HOME"] )).read().split()
-        except (IOError,KeyError):
+            ignored = open(os.path.join(os.environ["HOME"], ".cvsignore")).read().split()
+        except (IOError, KeyError):
             ignored = []
         try:
             ignored += open( os.path.join(directory, ".cvsignore")).read().split()
