@@ -525,7 +525,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._disconnect_buffer_handlers()
         self.linediffer.diffs = [[],[]]
         self.queue_draw()
-        try_codecs = self.prefs.text_codecs.split()
+        try_codecs = self.prefs.text_codecs.split() or ['utf_8', 'utf_16']
         yield _("[%s] Opening files") % self.label_text
         panetext = ["\n"] * self.num_panes
         tasks = []
