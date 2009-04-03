@@ -108,7 +108,7 @@ test:
 .PHONY:changelog
 changelog:
 	# need to find the most recently tagged version automatically
-	svn2cl -r 1015:HEAD
+	svn2cl -r 1083:HEAD
 
 .PHONY:release
 release: check tag upload announce
