@@ -21,6 +21,10 @@ uninstall :
 clean :
 	rm -rf $(PO:.po=)
 
+.PHONY : meld.pot
+meld.pot:
+	intltool-update --pot
+
 $(DESTDIR)$(localedir)/%/LC_MESSAGES/meld.mo : %/LC_MESSAGES/meld.mo
 	mkdir -m 755 -p $(dir $@) && install -m 644 $< $@
 

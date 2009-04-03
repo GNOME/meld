@@ -895,18 +895,27 @@ class MeldApp(gnomeglade.Component):
             [(gtk.STOCK_QUIT, gtk.RESPONSE_CANCEL), (gtk.STOCK_OK, gtk.RESPONSE_OK)] )
         if response == gtk.RESPONSE_CANCEL:
             sys.exit(0)
-        
+
+    def usage_msg(self):
+        usage_file = "<%s>" % _("file")
+        usage_dir = "<%s>" % _("dir")
+        usage_3files = "%s %s [%s]" % ((usage_file,)*3)
+        usage_3dirs = "%s %s [%s]" % ((usage_dir,)*3)
+        pad_args_fmt = "%-" + str( max( len(usage_3files), len(usage_3dirs))) + "s %s"
+        usages = [
+                  ("", _("Start with no window open")),
+                  (usage_dir, _("Start with Version Control browser in '%s'")%_("dir")),
+                  (usage_file, _("Start with Version Control diff of '%s'")%_("file")),
+                  (usage_3files, _("Start with 2 or 3 way file comparison")),
+                  (usage_3dirs, _("Start with 2 or 3 way directory comparison"))]
+        return "\n" + "\n".join( ["%prog " + pad_args_fmt % u for u in usages] )
+
     def parse_args(self, rawargs):
         parser = optparse.OptionParser(
             option_class=misc.MeldOption,
-            usage="""
-            %prog                       Start with no windows open
-            %prog <dir>                 Start with VC browser in 'dir'
-            %prog <file>                Start with VC diff of 'file'
-            %prog <file> <file> [file]  Start with 2 or 3 way file comparison
-            %prog <dir>  <dir>  [dir]   Start with 2 or 3 way directory comparison""",
-            description="""Meld is a file and directory comparison tool.""",
-            version="%prog "+version)
+            usage=self.usage_msg(),
+            description=_("Meld is a file and directory comparison tool."),
+            version="%prog " + version)
         parser.add_option("-L", "--label", action="append", default=[], help=_("Set label to use instead of file name"))
         parser.add_option("-a", "--auto-compare", action="store_true", default=False, help=_("Automatically compare all differing files on startup"))
         parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
@@ -915,15 +924,18 @@ class MeldApp(gnomeglade.Component):
         parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
         parser.add_option("", "--diff", action="diff_files", dest='diff',
                           default=[],
-                          help=_("Creates a diff tab for up to 3 supplied files."))
+                          help=_("Creates a diff tab for up to 3 supplied files or directories."))
         options, args = parser.parse_args(rawargs)
         for files in options.diff:
             if len(files) not in (1, 2, 3):
                 self.usage(_("Invalid number of arguments supplied for --diff."))
             self.append_diff(files)
-        tab = self.open_paths(args, options.auto_compare)
-        if tab:
-            tab.set_labels( options.label )
+        if len(args) not in (1, 2, 3):
+            self.usage(_("Wrong number of arguments (Got %i)") % len(args))
+        else:
+            tab = self.open_paths(args, options.auto_compare)
+            if tab:
+                tab.set_labels(options.label)
 
     def _single_file_open(self, path):
         doc = vcview.VcView(self.prefs)
@@ -937,10 +949,7 @@ class MeldApp(gnomeglade.Component):
 
     def open_paths(self, paths, auto_compare=False):
         tab = None
-        if len(paths) == 0:
-            pass
-
-        elif len(paths) == 1:
+        if len(paths) == 1:
             a = paths[0]
             if os.path.isfile(a):
                 self._single_file_open(a)
@@ -949,8 +958,6 @@ class MeldApp(gnomeglade.Component):
                     
         elif len(paths) in (2,3):
             tab = self.append_diff(paths, auto_compare)
-        else:
-            self.usage( _("Wrong number of arguments (Got %i)") % len(paths))
         return tab
 
 
