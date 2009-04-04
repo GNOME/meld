@@ -932,7 +932,7 @@ class MeldApp(gnomeglade.Component):
             if len(files) not in (1, 2, 3):
                 self.usage(_("Invalid number of arguments supplied for --diff."))
             self.append_diff(files)
-        if len(args) not in (1, 2, 3):
+        if len(args) not in (0, 1, 2, 3):
             self.usage(_("Wrong number of arguments (Got %i)") % len(args))
         else:
             tab = self.open_paths(args, options.auto_compare)
