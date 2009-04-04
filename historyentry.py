@@ -50,8 +50,8 @@ def _clamp_list_store(liststore, max_items):
     while valid:
         valid = liststore.remove(it)
 
-def _escape_cell_data_func(col, renderer, model, iter, escape_func):
-    string = model.get(iter, 0)
+def _escape_cell_data_func(col, renderer, model, it, escape_func):
+    string = model.get(it, 0)
     escaped = escape_func(string)
     renderer.set("text", escaped)
 
