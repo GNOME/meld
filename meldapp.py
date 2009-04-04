@@ -792,10 +792,10 @@ class MeldApp(gnomeglade.Component):
             #self.append_filediff( ("ntest/file9a", "ntest/file9b") )
 
     def on_menu_edit_down_activate(self, *args):
-        misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_DOWN )
+        self.current_doc().next_diff(gtk.gdk.SCROLL_DOWN)
 
     def on_menu_edit_up_activate(self, *args):
-        misc.safe_apply( self.current_doc(), "next_diff", gtk.gdk.SCROLL_UP )
+        self.current_doc().next_diff(gtk.gdk.SCROLL_UP)
 
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()

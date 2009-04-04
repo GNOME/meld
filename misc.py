@@ -231,21 +231,6 @@ def write_pipe(command, text):
     pipe.tochild.close()
     return pipe.wait()
 
-def safe_apply(obj, method, args):
-    """Call 'obj.method(args)' if 'obj' has an attribute named 'method'.
-
-    If 'obj' has no method 'method' this is a no-op.
-    """
-    try:
-        m = getattr(obj, method)
-    except AttributeError:
-        pass
-    else:
-        # allow single arguments to be passed as is.
-        if type(args) != type(()):
-            args = (args,)
-        apply(m, args)
-
 def clamp(val, lower, upper):
     """Clamp 'val' to the inclusive range [lower,upper].
     """
