@@ -33,29 +33,7 @@ import melddoc
 import paths
 import cairo
 
-sourceview_available = 0
-
-for sourceview in "gtksourceview sourceview".split():
-    try:
-        gsv = __import__(sourceview)
-        sourceview_available = 1
-        break
-    except ImportError:
-        pass
-
-if sourceview_available:
-    def set_highlighting_enabled(buf, fname, enabled):
-        if enabled:
-            import gnomevfs
-            mime_type = gnomevfs.get_mime_type( 
-                    gnomevfs.make_uri_from_input(os.path.abspath(fname)) )
-            man = gsv.SourceLanguagesManager()
-            gsl = man.get_language_from_mime_type( mime_type )
-            if gsl:
-                buf.set_language(gsl)
-            else:
-                enabled = False
-        buf.set_highlight(enabled)
+from sourceviewer import srcviewer
 
 gdk = gtk.gdk
 
@@ -80,21 +58,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self, prefs)
-        override = {}
-        if sourceview_available:
-            override["GtkTextView"] = gsv.SourceView
-            override["GtkTextBuffer"] = gsv.SourceBuffer
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", override)
+        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", srcviewer.override)
         self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
         for d in self.diffmap: d.hide()
         self._update_regexes()
         self.warned_bad_comparison = False
-        if sourceview_available:
+        if srcviewer:
             for v in self.textview:
-                v.set_buffer( gsv.SourceBuffer() )
+                v.set_buffer(srcviewer.GtkTextBuffer())
                 v.set_show_line_numbers(self.prefs.show_line_numbers)
                 v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
-                v.set_tabs_width(self.prefs.tab_size)
+                srcviewer.set_tab_width(v, self.prefs.tab_size)
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -296,19 +270,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 tabs.set_tab(i, pango.TAB_LEFT, i*value*self.pango_char_width)
             for i in range(3):
                 self.textview[i].set_tabs(tabs)
-            if sourceview_available:
+            if srcviewer:
                 for t in self.textview:
-                    t.set_tabs_width(value)
+                    srcviewer.set_tab_width(t, value)
         elif key == "use_custom_font" or key == "custom_font":
             self.load_font()
         elif key == "show_line_numbers":
-            if sourceview_available:
+            if srcviewer:
                 for t in self.textview:
                     t.set_show_line_numbers( value )
         elif key == "use_syntax_highlighting":
-            if sourceview_available:
+            if srcviewer:
                 for i in range(self.num_panes):
-                    set_highlighting_enabled(
+                    srcviewer.set_highlighting_enabled_from_file(
                         self.textbuffer[i],
                         self.bufferdata[i].filename,
                         self.prefs.use_syntax_highlighting )
@@ -318,7 +292,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)
         elif key == "spaces_instead_of_tabs":
-            if sourceview_available:
+            if srcviewer:
                 for t in self.textview:
                     t.set_insert_spaces_instead_of_tabs(value)
 
@@ -615,10 +589,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         lenseq = [len(d) for d in self.linediffer.diffs]
         self.scheduler.add_task( self._update_highlighting( (0,lenseq[0]), (0,lenseq[1]) ).next )
         self._connect_buffer_handlers()
-        if sourceview_available:
+        if srcviewer:
             for i in range(len(files)):
                 if files[i]:
-                    set_highlighting_enabled(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
+                    srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
         yield 0
 
     def _update_highlighting(self, range0, range1):
@@ -796,11 +770,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def make_patch(self, *extra):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
-        override = {}
-        if sourceview_available:
-            override["GtkTextView"] = gsv.SourceView
-            override["GtkTextBuffer"] = gsv.SourceBuffer
-        dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "patchdialog", override)
+        dialog = gnomeglade.Component(paths.share_dir("glade2/filediff.glade"), "patchdialog", srcviewer.override)
         dialog.widget.set_transient_for( self.widget.get_toplevel() )
         texts = [b.get_text(*b.get_bounds()).split("\n") for b in self.textbuffer]
         texts[0] = [l+"\n" for l in texts[0]]
@@ -808,20 +778,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         names = [self._get_pane_label(i) for i in range(2)]
         prefix = os.path.commonprefix( names )
         names = [n[prefix.rfind("/") + 1:] for n in names]
-        if sourceview_available:
-            dialog.textview.set_buffer( gsv.SourceBuffer() )
+        if srcviewer:
+            dialog.textview.set_buffer(srcviewer.GtkTextBuffer())
         dialog.textview.modify_font(fontdesc)
         buf = dialog.textview.get_buffer()
         lines = []
         for line in difflib.unified_diff(texts[0], texts[1], names[0], names[1]):
             buf.insert( buf.get_end_iter(), line )
             lines.append(line)
-        if sourceview_available:
-            man = gsv.SourceLanguagesManager()
-            gsl = man.get_language_from_mime_type("text/x-diff")
-            if gsl:
-                buf.set_language(gsl)
-                buf.set_highlight(True)
+        if srcviewer:
+            srcviewer.set_highlighting_enabled_from_mimetype(buf, "text/x-diff", True)
         result = dialog.widget.run()
         dialog.widget.destroy()
         if result >= 0:
