@@ -916,8 +916,10 @@ class MeldApp(gnomeglade.Component):
             usage=self.usage_msg(),
             description=_("Meld is a file and directory comparison tool."),
             version="%prog " + version)
-        parser.add_option("-L", "--label", action="append", default=[], help=_("Set label to use instead of file name"))
-        parser.add_option("-a", "--auto-compare", action="store_true", default=False, help=_("Automatically compare all differing files on startup"))
+        parser.add_option("-L", "--label", action="append", default=[],
+            help=_("Set label to use instead of file name"))
+        parser.add_option("-a", "--auto-compare", action="store_true", default=False,
+            help=_("Automatically compare all differing files on startup"))
         parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
         parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
         parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
