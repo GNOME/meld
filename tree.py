@@ -94,26 +94,26 @@ class DiffTreeStore(gtk.TreeStore):
         self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
         self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % gobject.markup_escape_text(msg))
 
-    def value_paths(self, iter):
-        return [ self.value_path(iter, i) for i in range(self.ntree) ]
-    def value_path(self, iter, pane):
-        return self.get_value(iter, self.column_index(COL_PATH, pane) )
+    def value_paths(self, it):
+        return [self.value_path(it, i) for i in range(self.ntree)]
+    def value_path(self, it, pane):
+        return self.get_value(it, self.column_index(COL_PATH, pane))
     def column_index(self, col, pane):
         return self.ntree * col + pane
 
-    def set_state(self, iter, pane, state, isdir=0):
-        fullname = self.get_value(iter, self.column_index(COL_PATH,pane))
+    def set_state(self, it, pane, state, isdir=0):
+        fullname = self.get_value(it, self.column_index(COL_PATH,pane))
         name = gobject.markup_escape_text(os.path.basename(fullname))
         STATE = self.column_index(COL_STATE, pane)
         TEXT  = self.column_index(COL_TEXT,  pane)
         ICON  = self.column_index(COL_ICON,  pane)
-        self.set_value(iter, STATE, state)
-        self.set_value(iter, TEXT,  self.textstyle[state] % name)
-        self.set_value(iter, ICON,  self.pixstyle[state][isdir])
+        self.set_value(it, STATE, state)
+        self.set_value(it, TEXT,  self.textstyle[state] % name)
+        self.set_value(it, ICON,  self.pixstyle[state][isdir])
 
-    def get_state(self, iter, pane):
+    def get_state(self, it, pane):
         STATE = self.column_index(COL_STATE, pane)
-        return self.get_value(iter, STATE)
+        return self.get_value(it, STATE)
 
     def inorder_search_down(self, it):
         while it:
