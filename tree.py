@@ -17,7 +17,6 @@
 import os
 import gobject
 import gtk
-import misc
 import gnomeglade
 import paths
 
