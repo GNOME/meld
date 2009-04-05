@@ -88,8 +88,6 @@ def _files_same(lof, regexes):
     _cache[ lof ] = misc.struct(sigs=sigs, result=result)
     return result
 
-join = os.path.join
-
 COL_EMBLEM = tree.COL_END + 1
 pixbuf_newer = gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps/tree-file-newer.png"), 14)
 TYPE_PIXBUF = type(pixbuf_newer)
@@ -453,14 +451,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         files = []
                         dirs = []
                         for e in entries:
-                            s = os.lstat( join(root,e) )
+                            s = os.lstat(os.path.join(root, e))
                             if stat.S_ISLNK(s.st_mode):
                                 if not self.prefs.ignore_symlinks:
                                     key = (s.st_dev, s.st_ino)
                                     if symlinks_followed.get( key, 0 ) == 0:
                                         symlinks_followed[key] = 1
                                         try:
-                                            s = os.stat( join(root,e) )
+                                            s = os.stat(os.path.join(root, e))
                                         except OSError, err:
                                             print "ignoring dangling symlink", e
                                         else:
@@ -481,7 +479,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             # then directories and files
             if len(alldirs) + len(allfiles) != 0:
                 def add_entry(names):
-                    child = self.model.add_entries( it, [join(r,n) for r,n in zip(roots, names) ] )
+                    child = self.model.add_entries(it, [os.path.join(r, n) for r, n in zip(roots, names)])
                     differences[0] |= self._update_item_state(child)
                     return child
                 map(lambda x : todo.append( self.model.get_path(add_entry(x))), alldirs )
