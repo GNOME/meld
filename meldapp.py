@@ -421,7 +421,7 @@ class MeldPreferences(prefs.Preferences):
             _("Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("Script comment\t0\t#.*")),
-        "ignore_blank_lines" : prefs.Value(prefs.BOOL, 1)
+        "ignore_blank_lines" : prefs.Value(prefs.BOOL, False)
     }
 
     def __init__(self):
