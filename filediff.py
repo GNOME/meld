@@ -225,7 +225,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 txt = c.sub(killit,txt)
         except AssertionError:
             if not self.warned_bad_comparison:
-                misc.run_dialog(_("Regular expression '%s' changed the number of lines in the file. " \
+                misc.run_dialog(_("Regular expression '%s' changed the number of lines in the file. "
                     "Comparison will be incorrect. See the user manual for more details.") % r)
                 self.warned_bad_comparison = True
         return txt
