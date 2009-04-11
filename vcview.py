@@ -334,7 +334,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.emit("create-diff", [path])
 
     def run_diff(self, path_list, empty_patch_ok=0):
-        self.scheduler.add_task(self.run_diff_iter(path_list, empty_patch_ok).next, atfront=1)
+        for path in path_list:
+            self.scheduler.add_task(self.run_diff_iter([path], empty_patch_ok).next, atfront=1)
 
     def on_button_press_event(self, text, event):
         if event.button==3:
