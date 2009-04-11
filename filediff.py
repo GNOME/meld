@@ -1266,51 +1266,45 @@ class MeldBufferData(object):
 
 ################################################################################
 #
-# BufferInsertionAction
+# BufferAction
 #
 ################################################################################
-class BufferInsertionAction(object):
-    """A helper to undo/redo text insertion into a text buffer"""
-    def __init__(self, buffer, offset, text):
-        self.buffer = buffer
+class BufferAction(object):
+    """A helper to undo/redo text insertion/deletion into/from a text buffer"""
+    def __init__(self, buf, offset, text):
+        self.buffer = buf
         self.offset = offset
         self.text = text
-    def undo(self):
+    def delete(self):
         b = self.buffer
-        b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
-    def redo(self):
+        b.delete(b.get_iter_at_offset(self.offset), b.get_iter_at_offset(self.offset + len(self.text)))
+    def insert(self):
         b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text)
+        b.insert(b.get_iter_at_offset(self.offset), self.text)
 
-################################################################################
-#
-# BufferDeletionAction
-#
-################################################################################
-class BufferDeletionAction(object):
-    """A helper to undo/redo text deletion from a text buffer"""
-    def __init__(self, buffer, offset, text):
-        self.buffer = buffer
-        self.offset = offset
-        self.text = text
-    def undo(self):
-        b = self.buffer
-        b.insert( b.get_iter_at_offset( self.offset), self.text)
-    def redo(self):
-        b = self.buffer
-        b.delete( b.get_iter_at_offset( self.offset), b.get_iter_at_offset(self.offset + len(self.text)) )
+class BufferInsertionAction(BufferAction):
+    def __init__(self, buf, offset, text):
+        super(BufferInsertionAction, self).__init__(buf, offset, text)
+        self.undo = self.delete
+        self.redo = self.insert
+
+class BufferDeletionAction(BufferAction):
+    def __init__(self, buf, offset, text):
+        super(BufferDeletionAction, self).__init__(buf, offset, text)
+        self.undo = self.insert
+        self.redo = self.delete
+
 ################################################################################
 #
 # BufferModifiedAction
 #
 ################################################################################
 class BufferModifiedAction(object):
-    """A helper set modified flag on a text buffer"""
-    def __init__(self, buffer, app):
-        self.buffer, self.app = buffer, app
+    """A helper to set modified flag on a text buffer"""
+    def __init__(self, buf, app):
+        self.buffer, self.app = buf, app
         self.app.set_buffer_modified(self.buffer, 1)
     def undo(self):
         self.app.set_buffer_modified(self.buffer, 0)
     def redo(self):
         self.app.set_buffer_modified(self.buffer, 1)
-
