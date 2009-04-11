@@ -19,7 +19,7 @@
 
 import os
 
-class _srcviewer():
+class _srcviewer(object):
     srcviewer_module = None
 
     def __init__(self):
