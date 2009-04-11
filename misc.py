@@ -46,7 +46,7 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
         messagetype,
         buttonstype,
         '<span weight="bold" size="larger">%s</span>' % escaped)
-    if parent:
+    if parent and isinstance(parent, gtk.Window):
         d.set_transient_for(parent.widget.get_toplevel())
     for b,rid in extrabuttons:
         d.add_button(b, rid)
