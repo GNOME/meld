@@ -33,12 +33,8 @@ class Vc(_vc.Vc):
     CMD = "cvs"
     NAME = "CVS"
     VC_DIR = "CVS"
+    VC_ROOT_WALK = False
     PATCH_INDEX_RE = "^Index:(.*)$"
-
-    def __init__(self, location):
-        if not os.path.isdir(os.path.join(location, self.VC_DIR)):
-            raise ValueError
-        self.root = location
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]

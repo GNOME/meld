@@ -71,10 +71,14 @@ class Vc(object):
     PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = ''
     VC_DIR = None
+    VC_ROOT_WALK = True
     VC_METADATA = None
 
     def __init__(self, location):
-        self.root = self.find_repo_root(location)
+        if self.VC_ROOT_WALK:
+            self.root = self.find_repo_root(location)
+        else:
+            self.root = self.is_repo_root(location)
 
     def commit_command(self, message):
         raise NotImplementedError()
@@ -91,14 +95,19 @@ class Vc(object):
     def patch_command(self, workdir):
         return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
 
-    def find_repo_root(self, start):
+    def is_repo_root(self, location):
+        if not os.path.isdir(os.path.join(location, self.VC_DIR)):
+            raise ValueError
+        return location
+
+    def find_repo_root(self, location):
         while True:
-            if os.path.isdir(os.path.join(start, self.VC_DIR)):
-                return start
-            tmp = os.path.dirname(start)
-            if tmp == start:
+            if os.path.isdir(os.path.join(location, self.VC_DIR)):
+                return location
+            tmp = os.path.dirname(location)
+            if tmp == location:
                 break
-            start = tmp
+            location = tmp
         raise ValueError()
 
     def get_working_directory(self, workdir):

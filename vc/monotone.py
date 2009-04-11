@@ -27,7 +27,6 @@ import _vc
 import errno
 
 class Vc(_vc.Vc):
-    CMD = "mtn"
     NAME = "Monotone"
     VC_METADATA = ['MT', '_MTN']
     PATCH_STRIP_NUM = 0
@@ -35,22 +34,22 @@ class Vc(_vc.Vc):
 
     def __init__(self, location):
         self._tree_cache = None
-        location = os.path.normpath(location)
+        self.interface_version = 0.0
+        self.choose_monotone_version()
+        super(Vc, self).__init__(os.path.normpath(location))
 
+    def choose_monotone_version(self):
         try:
             # for monotone >= 0.26
             self.VC_DIR = "_MTN"
-            self.root = self.find_repo_root(location)
-            self.interface_version = float(os.popen("mtn" + " automate interface_version").read())
+            self.CMD = "mtn"
+            self.interface_version = float(os.popen(self.CMD + " automate interface_version").read())
             if self.interface_version > 9.0:
                 print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
-            return
         except ValueError:
-            # for monotone <= 0.25 (different metadata directory, different executable)
+            # for monotone <= 0.25
             self.VC_DIR = "MT"
             self.CMD = "monotone"
-            self.root = self.find_repo_root(location)
-            return
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]

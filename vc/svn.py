@@ -31,6 +31,7 @@ class Vc(_vc.Vc):
     CMD = "svn"
     NAME = "Subversion"
     VC_DIR = ".svn"
+    VC_ROOT_WALK = False
     PATCH_INDEX_RE = "^Index:(.*)$"
     state_map = {
                  "?": _vc.STATE_NONE,
@@ -42,11 +43,6 @@ class Vc(_vc.Vc):
                  "D": _vc.STATE_REMOVED,
                  "C": _vc.STATE_CONFLICT,
                  }
-
-    def __init__(self, location):
-        if not os.path.isdir(os.path.join(location, self.VC_DIR)):
-            raise ValueError()
-        self.root = location
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]

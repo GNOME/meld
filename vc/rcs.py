@@ -29,13 +29,9 @@ class Vc(_vc.Vc):
     CMD = "rcs"
     NAME = "RCS"
     VC_DIR = "RCS"
+    VC_ROOT_WALK = False
     PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^[+]{3} ([^\t]*)\t.*$"
-
-    def __init__(self, location):
-        if not os.path.isdir(os.path.join(location, self.VC_DIR)):
-            raise ValueError
-        self.root = location
 
     def commit_command(self, message):
         return ["ci", "-l", "-m", message]
