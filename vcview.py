@@ -105,6 +105,16 @@ entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 #
 ################################################################################
 class VcView(melddoc.MeldDoc, gnomeglade.Component):
+    # Map action names to VC commands and required arguments list
+    action_vc_cmds_map = {
+                         "VcCompare": ("diff_command", ()),
+                         "VcCommit": ("commit_command", ("",)),
+                         "VcUpdate": ("update_command", ()),
+                         "VcAdd": ("add_command", ()),
+                         "VcAddBinary": ("add_command", ()),
+                         "VcRemove": ("remove_command", ()),
+                         "VcRevert": ("revert_command", ()),
+                         }
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
@@ -200,6 +210,17 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.combobox_vcs.show()
         self.combobox_vcs.connect("changed", self.on_vc_change)
 
+    def update_actions_sensitivity(self):
+        """Disable actions that use not implemented VC plugin methods
+        """
+        for action_name, (meth_name, args) in self.action_vc_cmds_map.items():
+            action = self.actiongroup.get_action(action_name)
+            try:
+                getattr(self.vc, meth_name)(*args)
+                action.props.sensitive = True
+            except NotImplementedError:
+                action.props.sensitive = False
+
     def choose_vc(self, vcs):
         """Display VC plugin(s) that can handle the location"""
         self.combobox_vcs.lock = True
@@ -218,6 +239,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if not cb.lock:
             self.vc = cb.get_model()[cb.get_active_iter()][1]
             self._set_location(self.vc.root)
+            self.update_actions_sensitivity()
 
     def set_location(self, location):
         self.choose_vc(vc.get_vcs(os.path.abspath(location or ".")))
