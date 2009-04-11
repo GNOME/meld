@@ -62,6 +62,7 @@ class Vc(_vc.Vc):
     CMD = "tla"
     NAME = "Arch"
     VC_DIR = "{arch}"
+    VC_METADATA = ['.arch-ids', '.arch-inventory']
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "--- orig/(.*)"
 

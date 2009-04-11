@@ -71,6 +71,7 @@ class Vc(object):
     PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = ''
     VC_DIR = None
+    VC_METADATA = None
 
     def __init__(self, location):
         self.root = self.find_repo_root(location)

@@ -285,6 +285,11 @@ def copytree(src, dst, symlinks=1):
         else:
             copy2(srcname, dstname)
 
+def shell_escape(glob_pat):
+    # TODO: handle all cases
+    assert not re.compile(r"[][*?]").findall(glob_pat)
+    return glob_pat.replace('{', '[{]').replace('}', '[}]')
+
 def shell_to_regex(pat):
     """Translate a shell PATTERN to a regular expression.
 
