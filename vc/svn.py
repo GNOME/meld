@@ -22,6 +22,7 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
+import re
 import errno
 import _vc
 
@@ -72,10 +73,36 @@ class Vc(_vc.Vc):
                     raise
 
         matches = []
+
+        re_status_moved = re.compile(r'^(A) +[+] +- +([?]) +[?] +([^ ].*)$')
+        re_status_vc = re.compile(r'^(.) +\d+ +(\?|(?:\d+)) +[^ ]+ +([^ ].*)$')
+        re_status_non_vc = re.compile(r'^([?]) +([^ ].*)$')
+        re_status_tree_conflict = re.compile(r'^ +> +.*')
+
         for line in entries:
-            line = line.strip("\n")
-            if len(line) > 40:
-                matches.append( (line[40:], line[0], line[17:26].strip()))
+            # svn-1.6.x changed 'status' command output
+            # adding tree-conflict lines, c.f.:
+            # http://subversion.tigris.org/svn_1.6_releasenotes.html
+            m = re_status_tree_conflict.match(line)
+            if m:
+                # skip this line
+                continue
+            # A svn moved file
+            m = re_status_moved.match(line)
+            if m:
+                matches.append((m.group(3), m.group(1), m.group(2)))
+                continue
+            # A svn controlled file
+            m = re_status_vc.match(line)
+            if m:
+                matches.append((m.group(3), m.group(1), m.group(2)))
+                continue
+            # A new file, unknown to svn
+            m = re_status_non_vc.match(line)
+            if m:
+                matches.append((m.group(2), m.group(1), ""))
+                continue
+
         matches.sort()
         return matches
 
