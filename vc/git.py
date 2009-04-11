@@ -41,7 +41,7 @@ class Vc(_vc.Vc):
 
     def __init__(self, location):
         self._tree_cache = None
-        _vc.Vc.__init__(self, location)
+        super(Vc, self).__init__(location)
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
