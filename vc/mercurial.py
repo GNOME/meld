@@ -31,12 +31,17 @@ class Vc(_vc.Vc):
     NAME = "Mercurial"
     VC_DIR = ".hg"
     PATCH_STRIP_NUM = 1
-    PATCH_INDEX_RE = "^diff -r \w+ (.*)$"
+    # Mercurial diffs can be run in "git" mode
+    PATCH_INDEX_RE = "^diff (?:-r \w+ |--git a/.* b/)(.*)$"
+    DIFF_GIT_MODE = False
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        return [self.CMD,"diff"]
+        ret = [self.CMD,"diff"]
+        if self.DIFF_GIT_MODE:
+            ret.append("--git")
+        return ret
     def update_command(self):
         return [self.CMD,"update"]
     def add_command(self, binary=0):
