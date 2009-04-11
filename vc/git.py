@@ -41,14 +41,7 @@ class Vc(_vc.Vc):
 
     def __init__(self, location):
         self._tree_cache = None
-        try:
-            _vc.Vc.__init__(self, location)
-        except ValueError:
-            gitdir = os.environ.get("GIT_DIR")
-            if gitdir and os.path.isdir(gitdir):
-                self.root = gitdir
-                return
-            raise ValueError()
+        _vc.Vc.__init__(self, location)
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
