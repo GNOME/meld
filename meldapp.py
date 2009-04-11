@@ -426,7 +426,7 @@ class MeldPreferences(prefs.Preferences):
     }
 
     def __init__(self):
-        prefs.Preferences.__init__(self, "/apps/meld", self.defaults)
+        super(MeldPreferences, self).__init__("/apps/meld", self.defaults)
 
     def get_current_font(self):
         if self.use_custom_font:
