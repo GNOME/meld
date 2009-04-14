@@ -60,7 +60,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", srcviewer.override)
         self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
-        for d in self.diffmap: d.hide()
         self._update_regexes()
         self.warned_bad_comparison = False
         if srcviewer:
@@ -469,7 +468,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 stock = gtk.STOCK_NO
             if stock:
                 self.statusimage[i].show()
-                self.statusimage[i].set_from_stock(stock, gtk.ICON_SIZE_SMALL_TOOLBAR)
+                self.statusimage[i].set_from_stock(stock, gtk.ICON_SIZE_BUTTON)
+                self.statusimage[i].set_size_request(self.diffmap[0].size_request()[0],-1)
             else:
                 self.statusimage[i].hide()
         self.label_text = " : ".join(shortnames)
@@ -875,8 +875,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def queue_draw(self, junk=None):
         for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
-        for i in range(self.num_panes):
-            self.scrolledwindow[i].get_vscrollbar().queue_draw()
+        self.diffmap0.queue_draw()
+        self.diffmap1.queue_draw()
 
         #
         # scrollbars
@@ -952,25 +952,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # scrollbar drawing
         #
-    def after_vscroll__expose_event(self, scroll, event):
-        def rect(ctx, color, y0,y1, xpad=2.5):
+    def on_diffmap__expose_event(self, area, event):
+        def rect(ctx, color, y0,y1, xpad=2.5,width=area.get_allocation().width):
             ctx.set_source(color)
-            context.rectangle(xpad, y0, alloc.width-2*xpad, max(2, y1-y0))
+            context.rectangle(xpad, y0, width-2*xpad, max(2, y1-y0))
             ctx.fill_preserve()
             ctx.set_source_rgba(0, 0, 0, 1.0)
             ctx.stroke()
 
-        scrollindex = [s.get_vscrollbar() for s in self.scrolledwindow].index(scroll)
-        stepper_size = scroll.style_get_property("stepper-size") + 2
+        diffmapindex = self.diffmap.index(area)
+        textindex = (0, self.num_panes-1)[diffmapindex]
+        scroll = self.scrolledwindow[textindex].get_vscrollbar()
+        stepper_size = scroll.style_get_property("stepper-size")
 
-        alloc = scroll.get_allocation() # find drawable area
-        alloc.y += stepper_size
-        alloc.height -= 2*stepper_size
-        scale = float(alloc.height) / self.textbuffer[scrollindex].get_line_count()
+        context = area.window.cairo_create() # setup cairo
+        context.translate( 0, stepper_size )
+        scale = float(scroll.get_allocation().height - 2*stepper_size) / self.textbuffer[textindex].get_line_count()
 
-        context = scroll.window.cairo_create() # setup cairo
         context.set_line_width(0.5)
-        context.translate( alloc.x, alloc.y )
         solid_green = cairo.SolidPattern(.5, 1, .5, 0.25)
         solid_red = cairo.SolidPattern(1, .5, .5, 0.75)
         solid_blue = cairo.SolidPattern(.5, 1, 1, 0.25)
@@ -978,11 +977,25 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 "insert":solid_green,
                 "replace":solid_blue,
                 "delete":solid_green}
-        for c in self.linediffer.single_changes(scrollindex, self._get_texts()):
+        for c in self.linediffer.single_changes(textindex, self._get_texts()):
             assert c[0] != "equal"
             if self.prefs.ignore_blank_lines:
-                self._consume_blank_lines( self._get_texts()[scrollindex][c[1]:c[2]] )
+                self._consume_blank_lines( self._get_texts()[textindex][c[1]:c[2]] )
             rect(context, ctab[c[0]], scale*c[1], scale*c[2])
+
+    def on_diffmap_button_press_event(self, area, event):
+        if event.button == 1:
+            textindex = (0, self.num_panes-1)[self.diffmap.index(area)]
+            scroll = self.scrolledwindow[textindex].get_vscrollbar()
+            stepper_size = scroll.style_get_property("stepper-size")
+            alloc = scroll.get_allocation()
+            fraction = (event.y - (stepper_size + alloc.y) + area.get_allocation().y ) / (alloc.height - 2*stepper_size)
+            adj = self.scrolledwindow[textindex].get_vadjustment()
+            val = fraction * adj.upper - adj.page_size/2
+            upper = adj.upper - adj.page_size
+            adj.set_value( max( min(upper, val), 0) )
+            return 1
+        return 0
 
     def _get_line_count(self, index):
         """Return the number of lines in the buffer of textview 'text'"""
@@ -992,11 +1005,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if n != self.num_panes and n in (1,2,3):
             self.num_panes = n
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
-            toshow += self.linkmap[:n-1]
+            toshow += self.linkmap[:n-1] + self.diffmap[:n]
             map( lambda x: x.show(), toshow )
 
             tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
-            tohide += self.linkmap[n-1:]
+            tohide += self.linkmap[n-1:] + self.diffmap[n:]
             map( lambda x: x.hide(), tohide )
 
             for i in range(self.num_panes):
