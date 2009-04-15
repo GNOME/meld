@@ -71,7 +71,10 @@ class sourceview(_srcviewer):
     srcviewer_module = "sourceview"
 
     def version_check(self):
-        pass
+        # ImportError exceptions are caught, so we
+        # won't use 'sourceview' without gnomevfs
+        import gnomevfs
+        self.gvfs = gnomevfs
 
     def overrides(self):
         self.GtkTextView = self.gsv.SourceView
@@ -90,9 +93,8 @@ class sourceview(_srcviewer):
         return self.get_language_manager().get_language_from_mime_type(mime_type)
 
     def get_language_from_file(self, filename):
-        import gnomevfs
-        mime_type = gnomevfs.get_mime_type(
-                gnomevfs.make_uri_from_input(os.path.abspath(filename)))
+        mime_type = self.gvfs.get_mime_type(
+                self.gvfs.make_uri_from_input(os.path.abspath(filename)))
         return self.get_language_from_mime_type(mime_type)
 
 class gtksourceview(sourceview):
