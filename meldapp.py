@@ -25,7 +25,13 @@ import gtk
 import gtk.glade
 import gobject
 import pango
-import gnomevfs
+
+# Drag'N'Drop support needs gnomevfs
+try:
+    import gnomevfs
+    gnomevfs_available = True
+except ImportError:
+    gnomevfs_available = False
 
 # project
 import paths
@@ -563,7 +569,8 @@ class MeldApp(gnomeglade.Component):
             gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
             [ ('text/uri-list', 0, 0) ],
             gtk.gdk.ACTION_COPY)
-        self.widget.connect('drag_data_received', self.on_widget_drag_data_received)
+        if gnomevfs_available:
+            self.widget.connect('drag_data_received', self.on_widget_drag_data_received)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
