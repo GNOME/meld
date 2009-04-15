@@ -387,7 +387,7 @@ class MeldPreferences(prefs.Preferences):
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "edit_command_type" : prefs.Value(prefs.STRING, "internal"), #internal, gnome, custom
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
-        "supply_newline": prefs.Value(prefs.BOOL,1),
+        "supply_newline": prefs.Value(prefs.BOOL, False),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
