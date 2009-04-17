@@ -353,10 +353,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # text buffer undo/redo
         #
-    def on_text_begin_user_action(self, *buffer):
+    def on_textbuffer__begin_user_action(self, *buffer):
         self.undosequence.begin_group()
 
-    def on_text_end_user_action(self, *buffer):
+    def on_textbuffer__end_user_action(self, *buffer):
         self.undosequence.end_group()
 
     def on_text_insert_text(self, buffer, it, text, textlen):
@@ -851,9 +851,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dst_pane = src_pane + direction
         assert dst_pane in range(self.num_panes)
         text = self.textbuffer[src_pane].get_text(*self.textbuffer[src_pane].get_bounds())
-        self.on_text_begin_user_action()
+        self.on_textbuffer__begin_user_action()
         self.textbuffer[dst_pane].set_text(text)
-        self.on_text_end_user_action()
+        self.on_textbuffer__end_user_action()
         self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src_pane].get_vadjustment() ) and None )
 
         #
@@ -1254,10 +1254,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[3]), t0, "edited line")
                     else: # replace
                         t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
-                        self.on_text_begin_user_action()
+                        self.on_textbuffer__begin_user_action()
                         b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
                         b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
-                        self.on_text_end_user_action()
+                        self.on_textbuffer__end_user_action()
             return True
         return False
 
