@@ -43,7 +43,8 @@ class Vc(_vc.Vc):
             # for monotone >= 0.26
             self.VC_DIR = "_MTN"
             self.CMD = "mtn"
-            self.interface_version = float(os.popen(self.CMD + " automate interface_version").read())
+            cstdin, cstdout, cstderr = os.popen3(self.CMD + " automate interface_version")
+            self.interface_version = float(cstdout.read())
             if self.interface_version > 9.0:
                 print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
         except ValueError:
