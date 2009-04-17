@@ -198,9 +198,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.buf, self.textfilter = buf, textfilter
             def __getslice__(self, lo, hi):
                 b = self.buf
-                txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
-                txt = self.textfilter(txt)
-                return txt.split("\n")[:-1]
+                if hi >= b.get_line_count(): 
+                    txt = b.get_text(b.get_iter_at_line(lo), b.get_end_iter(), 0)
+                    return self.textfilter(txt).split("\n")
+                else:
+                    txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
+                    return self.textfilter(txt).split("\n")[:-1]
         class FakeTextArray(object):
             def __init__(self, bufs, textfilter):
                 self.texts = [FakeText(b, textfilter) for b in  bufs]
@@ -1020,6 +1023,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _line_to_pixel(self, pane, line ):
         it = self.textbuffer[pane].get_iter_at_line(line)
+        if line >= self.textbuffer[pane].get_line_count():
+            y, h = self.textview[pane].get_line_yrange( it )
+            return y + h - 1
         return self.textview[pane].get_iter_location( it ).y
 
     def _line_to_pixel_plus_height(self, pane, line ):
