@@ -46,7 +46,7 @@ import vc
 
 from sourceviewer import srcviewer
 
-version = "1.2.1-svn"
+version = "1.3.0"
 
 # magic developer switch, changes some behaviour
 developer = 0
