@@ -77,6 +77,7 @@ class Differ(object):
             changes[0] = self._change_sequence(         0, sequence, startidx, sizechange, texts)
             if self.num_sequences == 3:
                 changes[1] = self._change_sequence(     1, sequence, startidx, sizechange, texts)
+        self.seqlength[sequence] += sizechange
         return changes
 
     def _locate_chunk(self, whichdiffs, sequence, line):
@@ -126,7 +127,6 @@ class Differ(object):
                                            c[3] + lines_added[x], c[4] + lines_added[x])
                                                 for c in self.diffs[which][hiidx:] ]
         self.diffs[which][loidx:hiidx] = newdiffs
-        self.seqlength[sequence] += sizechange
         return loidx,hiidx
 
     def reverse(self, c):
