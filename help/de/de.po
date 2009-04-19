@@ -1,0 +1,778 @@
+# German translation of the meld manual.
+# Mario Blättermann <mariobl@gnome.org>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meld\n"
+"POT-Creation-Date: 2009-04-19 16:22+0200\n"
+"PO-Revision-Date: 2009-04-19 17:41+0100\n"
+"Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: C/meld.xml:5(title) C/meld.xml:8(title)
+msgid "Meld Users Manual"
+msgstr "Meld-Benutzerhandbuch"
+
+#: C/meld.xml:12(firstname)
+msgid "Stephen"
+msgstr "Stephen"
+
+#: C/meld.xml:14(surname)
+msgid "Kennedy"
+msgstr "Kennedy"
+
+#: C/meld.xml:16(email)
+msgid "stevek@gnome.org"
+msgstr "stevek@gnome.org"
+
+#: C/meld.xml:21(year)
+msgid "2004"
+msgstr "2004"
+
+#: C/meld.xml:23(holder)
+msgid "Stephen Kennedy"
+msgstr "Stephen Kennedy"
+
+#: C/meld.xml:26(releaseinfo)
+msgid "This is version 0.1 of the meld manual, describing meld 0.9.6"
+msgstr ""
+"Die vorliegende Version 0.1 des Meld-Handbuchs beschreibt die "
+"Anwendungsversion 0.9.6."
+
+#: C/meld.xml:30(title)
+msgid "Introduction"
+msgstr "Einführung"
+
+#: C/meld.xml:33(title)
+msgid "What is meld"
+msgstr "Was ist Meld?"
+
+#: C/meld.xml:35(para)
+msgid ""
+"Meld views differences between files and between directories. Meld makes it "
+"easy to isolate and merge these differences."
+msgstr ""
+"Meld zeigt Unterschiede zwischen Dateien und zwischen Ordnern an. Meld "
+"erleichtert Ihnen die Herauslösung oder Zusammenführung dieser Unterschiede."
+
+#: C/meld.xml:40(title)
+msgid "Starting meld"
+msgstr "Starten von Meld"
+
+#: C/meld.xml:43(title)
+msgid "Command line arguments"
+msgstr "Befehlszeilenargumente"
+
+#: C/meld.xml:47(userinput)
+#, no-wrap
+msgid "meld"
+msgstr "meld"
+
+#: C/meld.xml:50(para)
+msgid "start meld with the new document dialog"
+msgstr ""
+
+#: C/meld.xml:55(userinput)
+#, no-wrap
+msgid "meld &lt;file&gt; &lt;file&gt; [file]"
+msgstr ""
+
+#: C/meld.xml:58(para) C/meld.xml:67(para)
+msgid "start meld with either a two way or three way comparison"
+msgstr ""
+
+#: C/meld.xml:64(userinput)
+#, no-wrap
+msgid "meld &lt;dir&gt; &lt;dir&gt; [dir]"
+msgstr ""
+
+#: C/meld.xml:73(userinput)
+#, no-wrap
+msgid "meld &lt;dir|file&gt;"
+msgstr ""
+
+#: C/meld.xml:76(para)
+msgid "start meld with the source control browser"
+msgstr ""
+
+#: C/meld.xml:82(para)
+msgid ""
+"\"&lt;&gt;\" surround required arguments, \"[]\" surround optional arguments "
+"and \"|\" indicates a choice."
+msgstr ""
+
+#: C/meld.xml:87(para)
+msgid "Run <userinput>meld --help</userinput> for a complete list of options"
+msgstr ""
+"Um eine vollständige Liste von Optionen zu erhalten, rufen Sie "
+"<userinput>meld --help</userinput> auf."
+
+#: C/meld.xml:95(title)
+msgid "File Comparison"
+msgstr "Dateivergleich"
+
+#: C/meld.xml:98(title) C/meld.xml:208(title) C/meld.xml:322(title)
+msgid "Starting"
+msgstr "Starten"
+
+#: C/meld.xml:100(para)
+msgid ""
+"To compare files, choose <menuchoice><guimenu>File</guimenu><guimenuitem>New</"
+"guimenuitem></menuchoice> and select the <guilabel>File Comparison</guilabel> "
+"tab. You can compare two or three files."
+msgstr ""
+"Zum Vergleichen von Dateien wählen Sie <menuchoice><guimenu>Datei</"
+"guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
+"<guilabel>Dateien vergleichen</guilabel>. Sie können zwei oder drei Dateien "
+"miteinander vergleichen."
+
+#: C/meld.xml:103(para) C/meld.xml:213(para)
+msgid ""
+"For two way comparisons the original is shown in the left pane and the "
+"modified version in the right pane by convention."
+msgstr ""
+"Per Vorgabe wird bei Zweiwege-Vergleichen das Original in der linken Ansicht "
+"und die geänderte Version in der rechten Ansicht dargestellt."
+
+#: C/meld.xml:106(para) C/meld.xml:216(para)
+msgid ""
+"For three way comparisons, the original is shown in the centre pane and the "
+"left and right panes show the modified versions. By convention we put the "
+"locally modified file in the right pane."
+msgstr ""
+"Bei Dreiwege-Vergleichen wird das Original in der mittleren Ansicht und die "
+"geänderten Versionen in der linken und rechten Ansicht dargestellt. Per "
+"Vorgabe wird die lokal geänderte Version in der linken Ansicht dargestellt."
+
+#: C/meld.xml:112(title) C/meld.xml:222(title)
+msgid "Change Summary"
+msgstr "Änderungs-Zusammenfassung"
+
+#: C/meld.xml:114(para)
+msgid ""
+"The location of the changes is summarised in the window margins at the far "
+"left and right. By default green marks insertions and deletions and blue "
+"marks changes."
+msgstr ""
+"Die Orte der Änderungen werden an den linken und rechten Rändern des Fensters "
+"zusammengefasst. Einfügungen werden standardmäßig grün markiert, Löschungen "
+"dagegen blau."
+
+#: C/meld.xml:118(para) C/meld.xml:227(para)
+msgid ""
+"You can jump to an individual change by clicking in the margin or using the "
+"scrollbar."
+msgstr ""
+"Sie können zu einer bestimmten Änderung springen, indem Sie auf diese Ränder "
+"klicken oder die Bildlaufleiste bewegen."
+
+#: C/meld.xml:123(title) C/meld.xml:232(title)
+msgid "Detailed View"
+msgstr "Detailansicht"
+
+#: C/meld.xml:125(para)
+msgid ""
+"Detailed differences are shown in the text and central pane. Inserted text is "
+"shown with a solid background. Lines containing changes are marked with a "
+"light background with the individual changes highlighted with a stronger "
+"colour."
+msgstr ""
+
+#: C/meld.xml:130(para)
+msgid ""
+"The area between each file shows where each change occurs in the other file. "
+"You can scroll through the changes by rolling the mouse wheel over this area "
+"or with keyboard shortcuts <keycombo><keycap>Ctrl</keycap><keycap>D</keycap></"
+"keycombo>, <keycombo><keycap>Ctrl</keycap><keycap>E</keycap></keycombo>."
+msgstr ""
+
+#: C/meld.xml:137(title) C/meld.xml:251(title)
+msgid "Editing"
+msgstr "Bearbeiten"
+
+#: C/meld.xml:139(para)
+msgid ""
+"You can edit the files as you would in a normal text editor. The differences "
+"will update automatically. Use <keycombo><keycap>Ctrl</keycap><keycap>F</"
+"keycap></keycombo> to search and <keycombo><keycap>Ctrl</keycap><keycap>G</"
+"keycap></keycombo> to repeat the last search."
+msgstr ""
+
+#: C/meld.xml:143(para)
+msgid ""
+"You can also apply changes by clicking the merge buttons (\"<guiicon>-&gt;</"
+"guiicon>\" and \"<guiicon>&lt;-</guiicon>\"). Holding <keycap>Shift</keycap> "
+"allows blocks to be deleted. Holding <keycap>Control</keycap> allows the "
+"current change to be inserted before or after the other change."
+msgstr ""
+
+#: C/meld.xml:148(para)
+msgid ""
+"You can apply all the changes from a given file by right clicking a text pane "
+"and choosing <guimenuitem>Copy all left</guimenuitem> or <guimenuitem>Copy "
+"all right</guimenuitem>. You can also launch an external editor from this "
+"menu. Configure the external editor in <menuchoice><guimenu>Settings</"
+"guimenu><guimenuitem>Preferences</guimenuitem></menuchoice>."
+msgstr ""
+
+#: C/meld.xml:156(title) C/meld.xml:264(title) C/meld.xml:332(title)
+msgid "Filtering"
+msgstr "Filterung"
+
+#: C/meld.xml:158(para)
+msgid ""
+"You can ignore certain types of differences in order to locate important "
+"differences. All these settings are available in the Text Filters section of "
+"the <guilabel>Preferences</guilabel> dialog."
+msgstr ""
+
+#: C/meld.xml:162(title)
+msgid "Regular Expressions"
+msgstr "Reguläre Ausdrücke"
+
+#: C/meld.xml:166(para)
+msgid "See the python re module for more information on regular expressions"
+msgstr ""
+
+#: C/meld.xml:167(para)
+msgid ""
+"Differences are computed line-by-line so multiline regulare expressions will "
+"likely have unintended consequences."
+msgstr ""
+"Unterschiede werden zeilenweise erkannt, so dass sich über mehrere Zeilen "
+"erstreckende reguläre Ausdrücke vielleicht unerwartete Konsequenzen haben "
+"könnten."
+
+#: C/meld.xml:164(para)
+msgid ""
+"When comparing files, each selected regular expression is run in turn over "
+"each line of input. Anything matching the expression is removed from the "
+"input.<placeholder-1/><placeholder-2/>"
+msgstr ""
+
+#: C/meld.xml:173(title)
+msgid "Blank Lines"
+msgstr "Leerzeilen"
+
+#: C/meld.xml:175(para)
+msgid ""
+"Changes which insert or remove blank lines can be ignored. This option is "
+"most useful in conjunction with one or more regular expression filters."
+msgstr ""
+"Änderungen, die lediglich Leerzeilen einfügen oder löschen, werden ignoriert. "
+"Diese Option ist am nützlichsten in Verbindung mit einem oder mehreren "
+"Filtern für reguläre Ausdrücke."
+
+#: C/meld.xml:182(title)
+msgid "Saving"
+msgstr "speichern"
+
+#: C/meld.xml:184(para)
+msgid ""
+"When you have unsaved changes, a disk icon will appear beside the file name "
+"of the changed file. The tab label and window title also have an asterix "
+"after the file name."
+msgstr ""
+
+#: C/meld.xml:188(para)
+msgid ""
+"To save a file, choose <menuchoice><guimenu>File</guimenu><guimenuitem>Save</"
+"guimenuitem></menuchoice>, press <keycombo><keycap>Ctrl</keycap><keycap>S</"
+"keycap></keycombo>, or press the toolbar save button. All of these save the "
+"currently focussed file (the file containing the edit cursor)."
+msgstr ""
+"Um eine Datei zu speichern, wählen Sie <menuchoice><guimenu>Datei</"
+"guimenu><guimenuitem>Speichern</guimenuitem></menuchoice>, drücken "
+"<keycombo><keycap>Strg</keycap><keycap>S</keycap></keycombo>, oder klicken "
+"auf den Knopf <guilabel>Speichern</guilabel> in der Werkzeugleiste. Auf alle "
+"diese Arten speichern Sie die aktuelle ausgewählte Datei, also jene, die den "
+"Cursor enthält."
+
+#: C/meld.xml:197(title)
+msgid "Status Bar"
+msgstr "Statuszeile"
+
+#: C/meld.xml:199(para)
+msgid ""
+"The status bar shows the cursor location (line and column) and also progress "
+"messages as files are initially loaded and compared."
+msgstr ""
+"Die Statuszeile zeigt die aktuelle Position des Cursors an (Zeile und Spalte) "
+"sowie Fortschrittsmeldungen beim erstmaligen Laden von Dateien und "
+"Vergleichsvorgängen."
+
+#: C/meld.xml:205(title)
+msgid "Folder Comparison"
+msgstr "Ordnervergleich"
+
+#: C/meld.xml:210(para)
+msgid ""
+"To compare directories, choose <menuchoice><guimenu>File</"
+"guimenu><guimenuitem>New</guimenuitem></menuchoice> and select the "
+"<guilabel>Directory Comparison</guilabel> tab. You can compare two or three "
+"directories."
+msgstr ""
+"Zum Vergleichen von Ordnern wählen Sie <menuchoice><guimenu>Datei</"
+"guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
+"<guilabel>Ordner vergleichen</guilabel>. Sie können zwei oder drei Ordner "
+"miteinander vergleichen."
+
+#: C/meld.xml:224(para)
+msgid ""
+"Similarly to the file comparison, the window margins mark file deletions, "
+"creations and modifications."
+msgstr ""
+
+#: C/meld.xml:234(para)
+msgid ""
+"Modified files are highlighted with red, created files with green and deleted "
+"files with a strikethrough. See also <xref linkend=\"dir_content_filtering\"/>"
+msgstr ""
+"Geänderte Dateien werden rot hervorgehoben, erzeugte Dateien grün und "
+"gelöschte Dateien blau. Siehe auch <xref linkend=\"dir_content_filtering\"/>."
+
+#: C/meld.xml:238(para)
+msgid ""
+"The file or folder most recently modified has a red dot superimposed on its "
+"icon. More detailed information such as file permission and modification time "
+"can be seen in the status bar when a file is selected."
+msgstr ""
+
+#: C/meld.xml:243(para)
+msgid ""
+"Use the mouse or the the cursor keys <keycap>Up</keycap>, <keycap>Down</"
+"keycap>, <keycap>Left</keycap> and <keycap>Right</keycap> to navigate. "
+"Additionally <keycombo><keycap>Ctrl</keycap><keycap>D</keycap></keycombo> and "
+"<keycombo><keycap>Ctrl</keycap><keycap>E</keycap></keycombo> move to the next "
+"and previous modification respectively."
+msgstr ""
+
+#: C/meld.xml:253(para)
+msgid ""
+"Activate an item with double click or <keycap>Return</keycap> to start an "
+"individual file comparison."
+msgstr ""
+"Aktivieren Sie ein Objekt mittels Doppelklick oder durch Drücken der "
+"<keycap>Eingabetaste</keycap>, um einen individuellen Dateivergleich zu "
+"starten."
+
+#: C/meld.xml:256(para)
+msgid "Additional options are available from a right click context menu."
+msgstr ""
+"Zusätzliche Optionen sind über das Kontextmenü (durch Klick mit der rechten "
+"Maustaste) erreichbar."
+
+#: C/meld.xml:259(para)
+msgid "Use Shift+Click and Control+Click to select multiple items."
+msgstr ""
+"Halten Sie beim Anklicken die <keycap>Umschalttaste</keycap> oder die "
+"<keycap>Strg</keycap>-Taste gedrückt, um mehrere Dateien auszuwählen."
+
+#: C/meld.xml:266(para)
+msgid ""
+"Often the initial comparison will contain too much spurious information. You "
+"can use filters to isolate the differences which are important to you."
+msgstr ""
+"Oft enthält ein erstmaliger Vergleich zu viele unnötige Informationen. Sie "
+"können Filter verwenden, um nur die für Sie wichtigen Informationen anzeigen "
+"zu lassen."
+
+#: C/meld.xml:271(title)
+msgid "Explicit Hiding"
+msgstr "Ausdrückliches Verbergen"
+
+#: C/meld.xml:273(para)
+msgid ""
+"Use the toolbar button to hide an item (and all subitems for directories)."
+msgstr ""
+"Verwenden Sie den Knopf in der Werkzeugleiste, um ein Objekt (und alle in "
+"einem Ordner enthaltenen Objekte) zu verbergen."
+
+#: C/meld.xml:278(title)
+msgid "Case Sensitivity"
+msgstr "Groß-/Kleinschreibung"
+
+#: C/meld.xml:280(para)
+msgid ""
+"By default filename comparisons are case sensitive. Use the toolbar button to "
+"toggle case sensitivty of filenames."
+msgstr ""
+"Per Vorgabe wird bei Vergleichen auf die Groß- und Kleinschreibung von "
+"Dateinamen geachtet. Verwenden Sie den Knopf in der Werkzeugleiste, um dieses "
+"Verhalten an- oder abzuschalten."
+
+#: C/meld.xml:285(title)
+msgid "State Filtering"
+msgstr "Filterung nach Status"
+
+#: C/meld.xml:288(para)
+msgid ""
+"Modified (there is some content difference between files which are present)"
+msgstr ""
+"Geändert (Es gibt inhaltliche Unterschiede zwischen den vorhandenen Dateien)"
+
+#: C/meld.xml:289(para)
+msgid ""
+"New (there is no content difference between present files, but the file is "
+"missing from at least one directory)"
+msgstr ""
+"Neu (Es gibt keine inhaltlichen Unterschiede zwischen den vorhandenen "
+"Dateien, die Datei fehlt aber in mindestens einem Ordner)"
+
+#: C/meld.xml:291(para)
+msgid "Identical (all files have equal content and are all present)"
+msgstr "Identisch (Alle Dateien sind inhaltlich gleich und sind alle vorhanden)"
+
+#: C/meld.xml:287(para)
+msgid "All items have a state which is one of: <placeholder-1/>"
+msgstr "Der Status aller Objekte ist einer von diesen: <placeholder-1/>"
+
+#: C/meld.xml:295(para)
+msgid ""
+"In the current version, only files are filtered by state. Directories are "
+"always shown."
+msgstr ""
+"In der aktuellen Version werden nur Dateien nach deren Status gefiltert. "
+"Ordner werden immer angezeigt."
+
+#: C/meld.xml:294(para)
+msgid ""
+"Use the toolbar buttons to control which items are shown by their state."
+"<placeholder-1/>"
+msgstr ""
+"Verwenden Sie die Knöpfe in der Werkzeugleiste, um festzulegen, welche "
+"Objekte anhand deren Status angezeigt werden sollen.<placeholder-1/>"
+
+#: C/meld.xml:300(title)
+msgid "Name Filtering"
+msgstr "Filterung nach Namen"
+
+#: C/meld.xml:302(para)
+msgid ""
+"Meld can hide certain filename patterns from the comparison using the toolbar "
+"buttons. Customise the file patterns that are hidden in the File Filters "
+"section of the <guilabel>Preferences</guilabel> dialog."
+msgstr ""
+
+#: C/meld.xml:308(title)
+msgid "Content Filtering"
+msgstr "Filterung nach Inhalt"
+
+#: C/meld.xml:310(para)
+msgid ""
+"If differences between files exist, but all differences match the active "
+"regular expressions specified in Text Filters section of the "
+"<guilabel>Preferences</guilabel> dialog, then the filename is not highlighted "
+"in red, but is insted italicised in regular font."
+msgstr ""
+
+#: C/meld.xml:319(title)
+msgid "Source Control"
+msgstr ""
+
+#: C/meld.xml:324(para)
+msgid ""
+"To browse a working copy of a source control repository, choose "
+"<menuchoice><guimenu>File</guimenu><guimenuitem>New</guimenuitem></"
+"menuchoice> and select the <guilabel>Version Control Browser</guilabel> tab."
+msgstr ""
+"Um eine Arbeitskopie eines unter Versionskontrolle stehenden "
+"Softwarebestandes zu durchsuchen, wählen Sie <menuchoice><guimenu>Datei</"
+"guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
+"<guilabel>Versionskontrolle</guilabel>."
+
+#: C/meld.xml:327(para)
+msgid ""
+"The browser is used for examining and commiting or reverting local changes. "
+"It is not intended to be a complete source control client."
+msgstr ""
+
+#: C/meld.xml:334(para)
+msgid ""
+"The browser can filter on four states. To show or hide all files in a "
+"particular state, select or deselect the corresponding toggle button in the "
+"toolbar."
+msgstr ""
+
+#: C/meld.xml:337(guibutton)
+msgid "Normal"
+msgstr "Normal"
+
+#: C/meld.xml:338(para)
+msgid "The file has not changed since it was checked out or committed."
+msgstr ""
+"Die Datei wurde nicht geändert, seit sie zuletzt ausgecheckt oder eingespielt "
+"wurde."
+
+#: C/meld.xml:340(guibutton)
+msgid "Modified"
+msgstr "Geändert"
+
+#: C/meld.xml:341(para)
+msgid "The file has been locally changed, added, or removed."
+msgstr "Die Datei wurde lokal geändert, hinzugefügt oder entfernt."
+
+#: C/meld.xml:343(guibutton)
+msgid "Non VC"
+msgstr "Nicht-VC"
+
+#: C/meld.xml:344(para)
+msgid ""
+"The file is non-version controlled: it exists locally but was not checked out "
+"from a repository."
+msgstr ""
+"Die Datei steht nicht unter Versionskontrolle. Sie ist lokal vorhanden, wurde "
+"aber nicht aus einem Softwarebestand ausgecheckt."
+
+#: C/meld.xml:346(guibutton)
+msgid "Ignored"
+msgstr "Ignoriert"
+
+#: C/meld.xml:347(para)
+msgid ""
+"The file is explicitly ignored e.g. though a <filename>.cvsignore</filename> "
+"file."
+msgstr ""
+"Die Datei wird ausdrücklich ignoriert, z.B. in der Datei <filename>."
+"cvsignore</filename>."
+
+#: C/meld.xml:351(para)
+msgid ""
+"The <guibutton>Flatten</guibutton> toggle displays the directory listing as a "
+"plain list, showing all subdirectory contents together. This makes it easier "
+"to see several changes scattered in several directories or in a large tree. "
+"This is especially useful in conjunction with only the modified filter active."
+msgstr ""
+
+#: C/meld.xml:359(title)
+msgid "Viewing Differences"
+msgstr "Anzeigen von Unterschieden"
+
+#: C/meld.xml:361(para)
+msgid ""
+"Activating an unmodified file opens it in the file viewer. Activating a "
+"modified file opens up a two way diff to examine your changes."
+msgstr ""
+
+#: C/meld.xml:365(para)
+msgid ""
+"You can examine many changes at once using Shift+Click and Control+Click to "
+"select multiple items."
+msgstr ""
+
+#: C/meld.xml:371(title)
+msgid "Making Changes"
+msgstr ""
+
+#: C/meld.xml:373(para)
+msgid ""
+"The toolbar contains commands to perform the most common source control "
+"operations. These operations are also accessible through a context menu."
+msgstr ""
+
+#: C/meld.xml:379(title)
+msgid "Viewing Console"
+msgstr ""
+
+#: C/meld.xml:381(para)
+msgid ""
+"At the bottom of the source control window is an expander containing all the "
+"source control operations and their output. Click the expander bar to toggle "
+"between hiding and showing the console."
+msgstr ""
+
+#: C/meld.xml:388(title)
+msgid "Shortcut Keys"
+msgstr "Tastenkombination"
+
+#: C/meld.xml:390(para)
+msgid ""
+"For more on shortcut keys, see the <ulink type=\"help\" url=\"ghelp:user-"
+"guide?keyboard-skills\">Desktop User Guide</ulink>."
+msgstr ""
+"Weitere Informationen über Tastenkürzel finden Sie im <ulink type=\"help\" "
+"url=\"ghelp:user-guide?keyboard-skills\">Desktop-Benutzerhandbuch</ulink>."
+
+#: C/meld.xml:394(title)
+msgid "Shortcuts for working with files and comparisons"
+msgstr "Tastenkürzel zum Arbeiten mit Dateien und Vergleichen"
+
+#: C/meld.xml:401(para) C/meld.xml:460(para) C/meld.xml:551(para)
+#: C/meld.xml:594(para)
+msgid "Shortcut"
+msgstr "Tastenkürzel"
+
+#: C/meld.xml:403(para) C/meld.xml:462(para) C/meld.xml:553(para)
+#: C/meld.xml:596(para)
+msgid "Description"
+msgstr "Beschreibung"
+
+#: C/meld.xml:410(keycap) C/meld.xml:418(keycap) C/meld.xml:426(keycap)
+#: C/meld.xml:434(keycap) C/meld.xml:442(keycap) C/meld.xml:469(keycap)
+#: C/meld.xml:477(keycap) C/meld.xml:485(keycap) C/meld.xml:493(keycap)
+#: C/meld.xml:501(keycap) C/meld.xml:509(keycap) C/meld.xml:517(keycap)
+#: C/meld.xml:525(keycap) C/meld.xml:533(keycap) C/meld.xml:568(keycap)
+#: C/meld.xml:576(keycap)
+msgid "Ctrl"
+msgstr "Strg"
+
+#: C/meld.xml:410(keycap)
+msgid "N"
+msgstr "N"
+
+#: C/meld.xml:413(para)
+msgid "Start a new comparison."
+msgstr "Startet einen neuen Vergleich."
+
+#: C/meld.xml:418(keycap) C/meld.xml:426(keycap)
+msgid "S"
+msgstr "S"
+
+#: C/meld.xml:421(para)
+msgid "Save the current document to disk."
+msgstr "Speichert das aktuelle Dokument auf Festplatte."
+
+#: C/meld.xml:426(keycap) C/meld.xml:477(keycap) C/meld.xml:576(keycap)
+msgid "Shift"
+msgstr "Umschalt"
+
+#: C/meld.xml:429(para)
+msgid "Save the current document with a new filename."
+msgstr "Speichert das aktuelle Dokument unter einem neuen Namen."
+
+#: C/meld.xml:434(keycap)
+msgid "W"
+msgstr "W"
+
+#: C/meld.xml:437(para)
+msgid "Close the current comparison."
+msgstr "Schließt den aktuellen Vergleich"
+
+#: C/meld.xml:442(keycap)
+msgid "Q"
+msgstr "Q"
+
+#: C/meld.xml:445(para)
+msgid "Quit <application>Meld</application>."
+msgstr "Beendet <application>Meld</application>."
+
+#: C/meld.xml:453(title)
+msgid "Shortcuts for editing documents"
+msgstr "Tastenkürzel zum Bearbeiten von Dokumenten"
+
+#: C/meld.xml:469(keycap) C/meld.xml:477(keycap)
+msgid "Z"
+msgstr "Z"
+
+#: C/meld.xml:472(para)
+msgid "Undo the last action."
+msgstr "Macht die letzte Aktion rückgängig."
+
+#: C/meld.xml:480(para)
+msgid "Redo the last undone action."
+msgstr "Wiederholt die letzte rückgängig gemachte Aktion."
+
+#: C/meld.xml:485(keycap)
+msgid "X"
+msgstr "X"
+
+#: C/meld.xml:488(para)
+msgid "Cut the selected text or region and place it on the clipboard."
+msgstr ""
+"Schneidet den markierten Text oder den markierten Bereich aus und verschiebt "
+"ihn in die Zwischenablage."
+
+#: C/meld.xml:493(keycap)
+msgid "C"
+msgstr "C"
+
+#: C/meld.xml:496(para)
+msgid "Copy the selected text or region onto the clipboard."
+msgstr ""
+"Kopiert den markierten Text oder den markierten Bereich in die Zwischenablage."
+
+#: C/meld.xml:501(keycap)
+msgid "V"
+msgstr "V"
+
+#: C/meld.xml:504(para)
+msgid "Paste the contents of the clipboard."
+msgstr "Fügt den Inhalt der Zwischenablage ein."
+
+#: C/meld.xml:509(keycap)
+msgid "F"
+msgstr "F"
+
+#: C/meld.xml:512(para)
+msgid "Find a string."
+msgstr "Sucht nach einer Zeichenkette."
+
+#: C/meld.xml:517(keycap)
+msgid "G"
+msgstr "G"
+
+#: C/meld.xml:520(para)
+msgid "Find the next instance of the string."
+msgstr "Findet das nächste Vorkommen der Zeichenkette."
+
+#: C/meld.xml:525(keycap)
+msgid "D"
+msgstr "D"
+
+#: C/meld.xml:528(para)
+msgid "Go to the next difference."
+msgstr "Springt zum nächsten Unterschied."
+
+#: C/meld.xml:533(keycap)
+msgid "E"
+msgstr "E"
+
+#: C/meld.xml:536(para)
+msgid "Go to the previous difference."
+msgstr "Springt zum vorherigen Unterschied."
+
+#: C/meld.xml:544(title)
+msgid "Shortcuts for view settings"
+msgstr "Tastenkürzel für Anzeigeoptionen"
+
+#: C/meld.xml:560(keycap)
+msgid "Escape"
+msgstr "Esc"
+
+#: C/meld.xml:563(para)
+msgid "Stop the current comparison."
+msgstr "Stoppt den aktuellen Vergleich."
+
+#: C/meld.xml:568(keycap) C/meld.xml:576(keycap)
+msgid "R"
+msgstr "R"
+
+#: C/meld.xml:571(para)
+msgid "Refresh the current comparison."
+msgstr "Aktualisiert den aktuellen Vergleich."
+
+#: C/meld.xml:579(para)
+msgid "Reload the current comparison."
+msgstr "Lädt den aktuellen Vergleich neu."
+
+#: C/meld.xml:587(title)
+msgid "Shortcuts for help"
+msgstr "Tastenkürzel für Hilfe"
+
+#: C/meld.xml:603(keycap)
+msgid "F1"
+msgstr "F1"
+
+#: C/meld.xml:606(para)
+msgid "Open <application>Meld</application>'s user manual."
+msgstr "Öffnet das Benutzerhandbuch von <application>Meld</application>."
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#: C/meld.xml:0(None)
+msgid "translator-credits"
+msgstr "Mario Blättermann <mariobl@gnome.org>, 2009"
