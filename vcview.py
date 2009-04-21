@@ -227,13 +227,18 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.combobox_vcs.get_model().clear()
         tooltip_texts = [_("Choose one Version Control"),
                          _("Only one Version Control in this directory")]
-        for avc in vcs:
+        default_active = 0
+        # Try to keep the same VC plugin active on refresh()
+        for idx, avc in enumerate(vcs):
+            if (self.vc is not None and
+                self.vc.__class__ == avc.__class__):
+                default_active = idx
             self.combobox_vcs.get_model().append([avc.NAME, avc])
         if gtk.pygtk_version >= (2, 12, 0):
             self.combobox_vcs.set_tooltip_text(tooltip_texts[len(vcs) == 1])
         self.combobox_vcs.set_sensitive(len(vcs) > 1)
         self.combobox_vcs.lock = False
-        self.combobox_vcs.set_active(0)
+        self.combobox_vcs.set_active(default_active)
   
     def on_vc_change(self, cb):
         if not cb.lock:
