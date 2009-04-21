@@ -31,13 +31,12 @@ class Vc(svn.Vc):
     CMD = "cdv"
     NAME = "Codeville"
     VC_DIR = ".cdv"
-    PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^[+]{3} (.+)$"
     state_map = {"M": _vc.STATE_MODIFIED,}
 
     def get_working_directory(self, workdir):
         return self.root
- 
+
     def _get_matches(self, directory):
         entries = misc.cmdout([self.CMD, "status"], cwd=directory)[0]
         for line in entries.split("\n")[1:-1]:
