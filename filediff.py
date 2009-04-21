@@ -298,15 +298,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 for t in self.textview:
                     t.set_insert_spaces_instead_of_tabs(value)
 
+    def _update_linkmap_buttons(self):
+        for l in self.linkmap[:self.num_panes - 1]:
+            a = l.get_allocation()
+            w = self.pixbuf_copy0.get_width()
+            l.queue_draw_area(0,      0, w, a[3])
+            l.queue_draw_area(a[2]-w, 0, w, a[3])
+
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask | x != self.keymask:
             self.keymask |= x
-            for l in self.linkmap[:self.num_panes-1]:
-                a = l.get_allocation()
-                w = self.pixbuf_copy0.get_width()
-                l.queue_draw_area(0,      0, w, a[3])
-                l.queue_draw_area(a[2]-w, 0, w, a[3])
+            self._update_linkmap_buttons()
         elif event.keyval == gtk.keysyms.Escape:
             self.findbar.hide()
 
@@ -314,11 +317,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
-            for l in self.linkmap[:self.num_panes-1]:
-                a = l.get_allocation()
-                w = self.pixbuf_copy0.get_width()
-                l.queue_draw_area(0,      0, w, a[3])
-                l.queue_draw_area(a[2]-w, 0, w, a[3])
+            self._update_linkmap_buttons()
 
     def is_modified(self):
         return 1 in [b.modified for b in self.bufferdata]
