@@ -31,17 +31,13 @@ import os
 import errno
 import _vc
 
-class Vc(_vc.Vc):
+class Vc(_vc.CachedVc):
 
     CMD = "git"
     NAME = "Git"
     VC_DIR = ".git"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "^diff --git a/(.*) b/.*$"
-
-    def __init__(self, location):
-        self._tree_cache = None
-        super(Vc, self).__init__(location)
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
@@ -61,13 +57,7 @@ class Vc(_vc.Vc):
         else:
             return ''
 
-    def cache_inventory(self, topdir):
-        self._tree_cache = self.lookup_tree()
-
-    def uncache_inventory(self):
-        self._tree_cache = None
-
-    def lookup_tree(self):
+    def _lookup_tree_cache(self, rootdir):
         while 1:
             try:
                 proc = os.popen("cd %s && %s status --untracked-files" % (self.root, self.CMD))
@@ -110,15 +100,9 @@ class Vc(_vc.Vc):
                     tree_state[os.path.join(self.root, dst)] = _vc.STATE_NEW
         return tree_state
 
-    def get_tree(self):
-        if self._tree_cache is None:
-            return self.lookup_tree()
-        else:
-            return self._tree_cache
-
     def _get_dirsandfiles(self, directory, dirs, files):
 
-        tree = self.get_tree()
+        tree = self._get_tree_cache(directory)
 
         retfiles = []
         retdirs = []

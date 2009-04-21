@@ -33,17 +33,13 @@ STATES = {
     "R": _vc.STATE_REMOVED
 }
 
-class Vc(_vc.Vc):
+class Vc(_vc.CachedVc):
 
     CMD = "darcs"
     NAME = "Darcs"
     VC_DIR = "_darcs"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "--- old.+?/(.+?)\\t+.*[0-9]{4}$"
-
-    def __init__(self, location):
-        self._cached_statuses = None
-        super(Vc, self).__init__(location)
 
     def commit_command(self, message):
         return [self.CMD, "record",
@@ -73,25 +69,14 @@ class Vc(_vc.Vc):
 
     def get_working_directory(self, workdir):
         return self.root
- 
-    def cache_inventory(self, rootdir):
-        self._cached_statuses = self._calculate_statuses()
-
-    def uncache_inventory(self):
-        self._cached_statuses = None
 
     def _get_dirsandfiles(self, directory, dirs, files):
-        whatsnew = self._get_cached_statuses()
+        whatsnew = self._get_tree_cache(directory)
         retfiles, retdirs = (self._get_statuses(whatsnew, files, _vc.File),
                              self._get_statuses(whatsnew, dirs, _vc.Dir))
         return retfiles, retdirs
 
-    def _get_cached_statuses(self):
-        if self._cached_statuses is None:
-            self._cached_statuses = self._calculate_statuses()
-        return self._cached_statuses
-    
-    def _calculate_statuses(self):
+    def _lookup_tree_cache(self, rootdir):
         non_boring = self._get_whatsnew()
         boring = self._get_whatsnew(boring=True)
         for path in boring:

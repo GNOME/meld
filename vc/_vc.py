@@ -163,3 +163,24 @@ class Vc(object):
 
     def _get_dirsandfiles(self, directory, dirs, files):
         raise NotImplementedError()
+
+
+class CachedVc(Vc):
+
+    def __init__(self, location):
+        super(CachedVc, self).__init__(location)
+        self._tree_cache = None
+
+    def cache_inventory(self, directory):
+        self._tree_cache = self._lookup_tree_cache(directory)
+
+    def uncache_inventory(self):
+        self._tree_cache = None
+
+    def _lookup_tree_cache(self, directory):
+        raise NotImplementedError()
+
+    def _get_tree_cache(self, directory):
+        if self._tree_cache is None:
+            self.cache_inventory(directory)
+        return self._tree_cache

@@ -26,17 +26,13 @@ import os
 import errno
 import _vc
 
-class Vc(_vc.Vc):
+class Vc(_vc.CachedVc):
 
     CMD = "bzr"
     NAME = "Bazaar-NG"
     VC_DIR = ".bzr"
     PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^=== modified file '(.*)'$"
-
-    def __init__(self, location):
-        self._tree_cache = None
-        super(Vc, self).__init__(location)
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
@@ -53,13 +49,7 @@ class Vc(_vc.Vc):
     def get_working_directory(self, workdir):
         return self.root
 
-    def cache_inventory(self, rootdir):
-        self._tree_cache = self.lookup_tree(rootdir)
-
-    def uncache_inventory(self):
-        self._tree_cache = None
-
-    def lookup_tree(self, rootdir):
+    def _lookup_tree_cache(self, rootdir):
         branch_root = os.popen("%s root %s" % (self.CMD, rootdir)).read().rstrip('\n')
         while 1:
             try:
@@ -88,15 +78,8 @@ class Vc(_vc.Vc):
                     tree_state[os.path.join(rootdir, entry[2:])] = cur_state
         return tree_state
 
-    def get_tree(self, directory):
-        if self._tree_cache is None:
-            return self.lookup_tree(directory)
-        else:
-            return self._tree_cache
-        
     def _get_dirsandfiles(self, directory, dirs, files):
-
-        tree = self.get_tree(directory)
+        tree = self._get_tree_cache(directory)
 
         retfiles = []
         retdirs = []

@@ -57,7 +57,7 @@ STATES = {
     "-/": _vc.STATE_MODIFIED,
 }
 
-class Vc(_vc.Vc):
+class Vc(_vc.CachedVc):
 
     CMD = "tla"
     NAME = "Arch"
@@ -65,10 +65,6 @@ class Vc(_vc.Vc):
     VC_METADATA = ['.arch-ids', '.arch-inventory']
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "--- orig/(.*)"
-
-    def __init__(self, location):
-        self._cached_statuses = None
-        super(Vc, self).__init__(location)
 
     def commit_command(self, message):
         return [self.CMD, "commit",
@@ -92,25 +88,14 @@ class Vc(_vc.Vc):
 
     def get_working_directory(self, workdir):
         return self.root
- 
-    def cache_inventory(self, rootdir):
-        self._cached_statuses = self._calculate_statuses()
-
-    def uncache_inventory(self):
-        self._cached_statuses = None
 
     def _get_dirsandfiles(self, directory, dirs, files):
-        whatsnew = self._get_cached_statuses()
+        whatsnew = self._get_tree_cache(directory)
         retfiles, retdirs = (self._get_statuses(whatsnew, files, _vc.File),
                              self._get_statuses(whatsnew, dirs, _vc.Dir))
         return retfiles, retdirs
 
-    def _get_cached_statuses(self):
-        if self._cached_statuses is None:
-            self._cached_statuses = self._calculate_statuses()
-        return self._cached_statuses
-    
-    def _calculate_statuses(self):
+    def _lookup_tree_cache(self, rootdir):
         whatsnew = {}
         commandline = ('%s changes -d %s' % (self.CMD, self.root))
         while 1:
