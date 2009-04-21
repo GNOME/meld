@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -28,8 +29,25 @@ import gtk
 import shutil
 import re
 import signal
+import subprocess
 
 whitespace_re = re.compile(r"\s")
+NULL = open(os.devnull, "w+b")
+
+def cmdout(cmd, text=None, **kwargs):
+    stdin = NULL
+    if text is not None:
+        stdin = subprocess.PIPE
+    new_kwargs = {
+                  'stdin': stdin,
+                  'stdout': subprocess.PIPE,
+                  'stderr': NULL,
+                  }
+    new_kwargs.update(kwargs)
+    p = subprocess.Popen(cmd, **new_kwargs)
+    out = p.communicate(text)[0]
+    status = p.wait()
+    return out, status
 
 def shelljoin( command ):
     def quote(s):
