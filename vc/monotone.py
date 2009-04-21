@@ -31,6 +31,84 @@ class Vc(_vc.CachedVc):
     VC_METADATA = ['MT', '_MTN']
     PATCH_INDEX_RE = "^[+]{3,3} ([^  ]*)\t[0-9a-f]{40,40}$"
 
+    state_map_6 = {
+        'added known rename_source'         : _vc.STATE_NEW,
+        'added known'                       : _vc.STATE_NEW,
+        'added missing'                     : _vc.STATE_EMPTY,
+        'dropped'                           : _vc.STATE_REMOVED,
+        'dropped unknown'                   : _vc.STATE_REMOVED,
+        'known'                             : _vc.STATE_NORMAL,
+        'known rename_target'               : _vc.STATE_MODIFIED,
+        'missing'                           : _vc.STATE_MISSING,
+        'missing rename_target'             : _vc.STATE_MISSING,
+        'ignored'                           : _vc.STATE_IGNORED,
+        'unknown'                           : _vc.STATE_NONE,
+        'rename_source'                     : _vc.STATE_NONE, # the rename target is what we now care about
+        'rename_source unknown'             : _vc.STATE_NONE,
+        'known rename_target'               : _vc.STATE_MODIFIED,
+        'known rename_source rename_target' : _vc.STATE_MODIFIED,
+    }
+
+    state_map_old = {
+        '   ' : _vc.STATE_NORMAL,   # unchanged
+        '  P' : _vc.STATE_MODIFIED, # patched (contents changed)
+        '  U' : _vc.STATE_NONE,     # unknown (exists on the filesystem but not tracked)
+        '  I' : _vc.STATE_IGNORED,  # ignored (exists on the filesystem but excluded by lua hook)
+        '  M' : _vc.STATE_MISSING,  # missing (exists in the manifest but not on the filesystem)
+
+        # Added files are not consistantly handled by all releases:
+        #   0.28: although documented as invalid added files are tagged ' A '.
+        #   0.26, 0.27: ???
+        #   0.25: added files are tagged ' AP'.
+        ' A ' : _vc.STATE_NEW,      # added (invalid, add should have associated patch)
+        ' AP' : _vc.STATE_NEW,      # added and patched
+        ' AU' : _vc.STATE_ERROR,    # added but unknown (invalid)
+        ' AI' : _vc.STATE_ERROR,    # added but ignored (seems invalid, but may be possible)
+        ' AM' : _vc.STATE_EMPTY,    # added but missing from the filesystem
+
+        ' R ' : _vc.STATE_NORMAL,   # rename target
+        ' RP' : _vc.STATE_MODIFIED, # rename target and patched
+        ' RU' : _vc.STATE_ERROR,    # rename target but unknown (invalid)
+        ' RI' : _vc.STATE_ERROR,    # rename target but ignored (seems invalid, but may be possible?)
+        ' RM' : _vc.STATE_MISSING,  # rename target but missing from the filesystem
+
+        'D  ' : _vc.STATE_REMOVED,  # dropped
+        'D P' : _vc.STATE_ERROR,    # dropped and patched (invalid)
+        'D U' : _vc.STATE_REMOVED,  # dropped and unknown (still exists on the filesystem)
+        'D I' : _vc.STATE_ERROR,    # dropped and ignored (seems invalid, but may be possible?)
+        'D M' : _vc.STATE_ERROR,    # dropped and missing (invalid)
+
+        'DA ' : _vc.STATE_ERROR,    # dropped and added (invalid, add should have associated patch)
+        'DAP' : _vc.STATE_NEW,      # dropped and added and patched
+        'DAU' : _vc.STATE_ERROR,    # dropped and added but unknown (invalid)
+        'DAI' : _vc.STATE_ERROR,    # dropped and added but ignored (seems invalid, but may be possible?)
+        'DAM' : _vc.STATE_MISSING,  # dropped and added but missing from the filesystem
+
+        'DR ' : _vc.STATE_NORMAL,   # dropped and rename target
+        'DRP' : _vc.STATE_MODIFIED, # dropped and rename target and patched
+        'DRU' : _vc.STATE_ERROR,    # dropped and rename target but unknown (invalid)
+        'DRI' : _vc.STATE_ERROR,    # dropped and rename target but ignored (invalid)
+        'DRM' : _vc.STATE_MISSING,  # dropped and rename target but missing from the filesystem
+
+        'R  ' : _vc.STATE_REMOVED,  # rename source
+        'R P' : _vc.STATE_ERROR,    # rename source and patched (invalid)
+        'R U' : _vc.STATE_REMOVED,  # rename source and unknown (still exists on the filesystem)
+        'R I' : _vc.STATE_ERROR,    # rename source and ignored (seems invalid, but may be possible?)
+        'R M' : _vc.STATE_ERROR,    # rename source and missing (invalid)
+
+        'RA ' : _vc.STATE_ERROR,    # rename source and added (invalid, add should have associated patch)
+        'RAP' : _vc.STATE_NEW,      # rename source and added and patched
+        'RAU' : _vc.STATE_ERROR,    # rename source and added but unknown (invalid)
+        'RAI' : _vc.STATE_ERROR,    # rename source and added but ignored (seems invalid, but may be possible?)
+        'RAM' : _vc.STATE_MISSING,  # rename source and added but missing from the filesystem
+
+        'RR ' : _vc.STATE_NEW,      # rename source and target
+        'RRP' : _vc.STATE_MODIFIED, # rename source and target and target patched
+        'RRU' : _vc.STATE_ERROR,    # rename source and target and target unknown (invalid)
+        'RRI' : _vc.STATE_ERROR,    # rename source and target and target ignored (seems invalid, but may be possible?)
+        'RRM' : _vc.STATE_MISSING,  # rename source and target and target missing
+    }
+
     def __init__(self, location):
         self.interface_version = 0.0
         self.choose_monotone_version()
@@ -80,24 +158,6 @@ class Vc(_vc.CachedVc):
         if self.interface_version >= 6.0:
             # this version of monotone uses the new inventory format
 
-            statemap = {
-                'added known rename_source' : _vc.STATE_NEW,
-                'added known' : _vc.STATE_NEW,
-                'added missing' : _vc.STATE_EMPTY,
-                'dropped' : _vc.STATE_REMOVED,
-                'dropped unknown' : _vc.STATE_REMOVED,
-                'known' : _vc.STATE_NORMAL,
-                'known rename_target' : _vc.STATE_MODIFIED,
-                'missing' : _vc.STATE_MISSING,
-                'missing rename_target' : _vc.STATE_MISSING,
-                'ignored' : _vc.STATE_IGNORED,
-                'unknown' : _vc.STATE_NONE,
-                'rename_source' : _vc.STATE_NONE, # the rename target is what we now care about
-                'rename_source unknown' : _vc.STATE_NONE,
-                'known rename_target' : _vc.STATE_MODIFIED,
-                'known rename_source rename_target' : _vc.STATE_MODIFIED,
-            }
-
             # terminate the final stanza. basic io stanzas are blank line seperated with no
             # blank line at the beginning or end (and we need to loop below to act upon the
             # final stanza
@@ -124,11 +184,11 @@ class Vc(_vc.CachedVc):
                     mstate.sort()
                     mstate = ' '.join(mstate)
 
-                    if mstate in statemap:
+                    if mstate in self.state_map_6:
                         if 'changes' in stanza:
                             state = _vc.STATE_MODIFIED
                         else:
-                            state = statemap[mstate]
+                            state = self.state_map_6[mstate]
                             if state == _vc.STATE_ERROR:
                                 print "WARNING: invalid state ('%s') reported by 'automate inventory' for %s" % (mstate, fname)
                     else:
@@ -143,73 +203,13 @@ class Vc(_vc.CachedVc):
 
             return tree_state
 
-        statemap = {
-            '   ' : _vc.STATE_NORMAL,   # unchanged
-            '  P' : _vc.STATE_MODIFIED, # patched (contents changed)
-            '  U' : _vc.STATE_NONE,     # unknown (exists on the filesystem but not tracked)
-            '  I' : _vc.STATE_IGNORED,  # ignored (exists on the filesystem but excluded by lua hook)
-            '  M' : _vc.STATE_MISSING,  # missing (exists in the manifest but not on the filesystem)
-
-            # Added files are not consistantly handled by all releases:
-            #   0.28: although documented as invalid added files are tagged ' A '.
-            #   0.26, 0.27: ???
-            #   0.25: added files are tagged ' AP'.
-            ' A ' : _vc.STATE_NEW,      # added (invalid, add should have associated patch)
-            ' AP' : _vc.STATE_NEW,      # added and patched
-            ' AU' : _vc.STATE_ERROR,    # added but unknown (invalid)
-            ' AI' : _vc.STATE_ERROR,    # added but ignored (seems invalid, but may be possible)
-            ' AM' : _vc.STATE_EMPTY,    # added but missing from the filesystem
-
-            ' R ' : _vc.STATE_NORMAL,   # rename target
-            ' RP' : _vc.STATE_MODIFIED, # rename target and patched
-            ' RU' : _vc.STATE_ERROR,    # rename target but unknown (invalid)
-            ' RI' : _vc.STATE_ERROR,    # rename target but ignored (seems invalid, but may be possible?)
-            ' RM' : _vc.STATE_MISSING,  # rename target but missing from the filesystem
-
-            'D  ' : _vc.STATE_REMOVED,  # dropped
-            'D P' : _vc.STATE_ERROR,    # dropped and patched (invalid)
-            'D U' : _vc.STATE_REMOVED,  # dropped and unknown (still exists on the filesystem)
-            'D I' : _vc.STATE_ERROR,    # dropped and ignored (seems invalid, but may be possible?)
-            'D M' : _vc.STATE_ERROR,    # dropped and missing (invalid)
-
-            'DA ' : _vc.STATE_ERROR,    # dropped and added (invalid, add should have associated patch)
-            'DAP' : _vc.STATE_NEW,      # dropped and added and patched
-            'DAU' : _vc.STATE_ERROR,    # dropped and added but unknown (invalid)
-            'DAI' : _vc.STATE_ERROR,    # dropped and added but ignored (seems invalid, but may be possible?)
-            'DAM' : _vc.STATE_MISSING,  # dropped and added but missing from the filesystem
-
-            'DR ' : _vc.STATE_NORMAL,   # dropped and rename target
-            'DRP' : _vc.STATE_MODIFIED, # dropped and rename target and patched
-            'DRU' : _vc.STATE_ERROR,    # dropped and rename target but unknown (invalid)
-            'DRI' : _vc.STATE_ERROR,    # dropped and rename target but ignored (invalid)
-            'DRM' : _vc.STATE_MISSING,  # dropped and rename target but missing from the filesystem
-
-            'R  ' : _vc.STATE_REMOVED,  # rename source
-            'R P' : _vc.STATE_ERROR,    # rename source and patched (invalid)
-            'R U' : _vc.STATE_REMOVED,  # rename source and unknown (still exists on the filesystem)
-            'R I' : _vc.STATE_ERROR,    # rename source and ignored (seems invalid, but may be possible?)
-            'R M' : _vc.STATE_ERROR,    # rename source and missing (invalid)
-
-            'RA ' : _vc.STATE_ERROR,    # rename source and added (invalid, add should have associated patch)
-            'RAP' : _vc.STATE_NEW,      # rename source and added and patched
-            'RAU' : _vc.STATE_ERROR,    # rename source and added but unknown (invalid)
-            'RAI' : _vc.STATE_ERROR,    # rename source and added but ignored (seems invalid, but may be possible?)
-            'RAM' : _vc.STATE_MISSING,  # rename source and added but missing from the filesystem
-
-            'RR ' : _vc.STATE_NEW,      # rename source and target
-            'RRP' : _vc.STATE_MODIFIED, # rename source and target and target patched
-            'RRU' : _vc.STATE_ERROR,    # rename source and target and target unknown (invalid)
-            'RRI' : _vc.STATE_ERROR,    # rename source and target and target ignored (seems invalid, but may be possible?)
-            'RRM' : _vc.STATE_MISSING   # rename source and target and target missing
-        }
-
         tree_state = {}
         for entry in entries:
             mstate = entry[0:3]
             fname = entry[8:]
 
-            if mstate in statemap:
-                state = statemap[mstate]
+            if mstate in self.state_map_old:
+                state = self.state_map_old[mstate]
                 if state == _vc.STATE_ERROR:
                     print "WARNING: invalid state ('%s') reported by 'automate inventory'" % mstate
             else:

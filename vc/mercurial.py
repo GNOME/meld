@@ -34,6 +34,15 @@ class Vc(_vc.Vc):
     # Mercurial diffs can be run in "git" mode
     PATCH_INDEX_RE = "^diff (?:-r \w+ |--git a/.* b/)(.*)$"
     DIFF_GIT_MODE = False
+    state_map = {
+        "?": _vc.STATE_NONE,
+        "A": _vc.STATE_NEW,
+        "C": _vc.STATE_NORMAL,
+        "!": _vc.STATE_MISSING,
+        "I": _vc.STATE_IGNORED,
+        "M": _vc.STATE_MODIFIED,
+        "R": _vc.STATE_REMOVED,
+    }
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
@@ -65,19 +74,11 @@ class Vc(_vc.Vc):
 
         retfiles = []
         retdirs = []
-        statemap = {
-            "?": _vc.STATE_NONE,
-            "A": _vc.STATE_NEW,
-            "C": _vc.STATE_NORMAL,
-            "!": _vc.STATE_MISSING,
-            "I": _vc.STATE_IGNORED,
-            "M": _vc.STATE_MODIFIED,
-            "R": _vc.STATE_REMOVED }
         hgfiles = {}
         for statekey, name in [ (entry[0], entry[2:]) for entry in entries if entry.find("/")==-1 ]:
             path = os.path.join(directory, name)
             rev, options, tag = "","",""
-            state = statemap.get(statekey, _vc.STATE_NONE)
+            state = self.state_map.get(statekey, _vc.STATE_NONE)
             retfiles.append( _vc.File(path, name, state, rev, tag, options) )
             hgfiles[name] = 1
         for f,path in files:

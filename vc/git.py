@@ -38,6 +38,14 @@ class Vc(_vc.CachedVc):
     VC_DIR = ".git"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "^diff --git a/(.*) b/.*$"
+    state_map = {
+        "unknown":    _vc.STATE_NONE,
+        "new file":   _vc.STATE_NEW,
+        "deleted":    _vc.STATE_REMOVED,
+        "modified":   _vc.STATE_MODIFIED,
+        "typechange": _vc.STATE_NORMAL,
+        "unmerged":   _vc.STATE_CONFLICT,
+    }
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
@@ -66,13 +74,6 @@ class Vc(_vc.CachedVc):
             except OSError, e:
                 if e.errno != errno.EAGAIN:
                     raise
-        statemap = {
-            "unknown": _vc.STATE_NONE,
-            "new file": _vc.STATE_NEW,
-            "deleted": _vc.STATE_REMOVED,
-            "modified": _vc.STATE_MODIFIED,
-            "typechange": _vc.STATE_NORMAL,
-            "unmerged": _vc.STATE_CONFLICT }
         tree_state = {}
         for entry in entries:
             if not entry.startswith("#\t"):
@@ -91,7 +92,7 @@ class Vc(_vc.CachedVc):
                     src, dst = name.split(" -> ", 2)
                 except ValueError:
                     path = os.path.join(self.root, name.strip())
-                    state = statemap.get(statekey, _vc.STATE_NONE)
+                    state = self.state_map.get(statekey, _vc.STATE_NONE)
                     tree_state[path] = state
                 else:
                     # copied, renamed

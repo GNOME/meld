@@ -32,6 +32,15 @@ class Vc(_vc.CachedVc):
     NAME = "Bazaar-NG"
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)'$"
+    state_map = {
+        "unknown:":   _vc.STATE_NONE,
+        "added:":     _vc.STATE_NEW,
+        "unchanged:": _vc.STATE_NORMAL,
+        "removed:":   _vc.STATE_REMOVED,
+        "ignored:":   _vc.STATE_IGNORED,
+        "modified:":  _vc.STATE_MODIFIED,
+        "conflicts:": _vc.STATE_CONFLICT,
+    }
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
@@ -58,20 +67,12 @@ class Vc(_vc.CachedVc):
             except OSError, e:
                 if e.errno != errno.EAGAIN:
                     raise
-        statemap = {
-            "unknown:": _vc.STATE_NONE,
-            "added:": _vc.STATE_NEW,
-            "unchanged:": _vc.STATE_NORMAL,
-            "removed:": _vc.STATE_REMOVED,
-            "ignored:": _vc.STATE_IGNORED,
-            "modified:": _vc.STATE_MODIFIED,
-            "conflicts:": _vc.STATE_CONFLICT }
         tree_state = {}
         for entry in entries:
             if entry == "pending merges:":
                 break
-            if entry in statemap:
-                cur_state = statemap[entry]
+            if entry in self.state_map:
+                cur_state = self.state_map[entry]
             else:
                 if entry.startswith("  "):
                     tree_state[os.path.join(rootdir, entry[2:])] = cur_state

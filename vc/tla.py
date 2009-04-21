@@ -42,21 +42,6 @@ import _vc
 # lf   link replaced by file
 # ->   link target changed
 
-STATES = {
-    "a": _vc.STATE_NONE,
-    "A": _vc.STATE_NEW,
-    "M": _vc.STATE_MODIFIED,
-    "C": _vc.STATE_CONFLICT,
-    "D": _vc.STATE_REMOVED,
-    "--": _vc.STATE_MODIFIED,
-    "=>": _vc.STATE_REMOVED,
-    "->": _vc.STATE_MODIFIED,
-    "A/": _vc.STATE_NEW,
-    "D/": _vc.STATE_REMOVED,
-    "/>": _vc.STATE_REMOVED,
-    "-/": _vc.STATE_MODIFIED,
-}
-
 class Vc(_vc.CachedVc):
 
     CMD = "tla"
@@ -65,6 +50,20 @@ class Vc(_vc.CachedVc):
     VC_METADATA = ['.arch-ids', '.arch-inventory']
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "--- orig/(.*)"
+    state_map = {
+        "a":  _vc.STATE_NONE,
+        "A":  _vc.STATE_NEW,
+        "M":  _vc.STATE_MODIFIED,
+        "C":  _vc.STATE_CONFLICT,
+        "D":  _vc.STATE_REMOVED,
+        "--": _vc.STATE_MODIFIED,
+        "=>": _vc.STATE_REMOVED,
+        "->": _vc.STATE_MODIFIED,
+        "A/": _vc.STATE_NEW,
+        "D/": _vc.STATE_REMOVED,
+        "/>": _vc.STATE_REMOVED,
+        "-/": _vc.STATE_MODIFIED,
+    }
 
     def commit_command(self, message):
         return [self.CMD, "commit",
@@ -110,7 +109,7 @@ class Vc(_vc.CachedVc):
                 continue
             elements = line.split()
             if len(elements) > 1:
-                status = STATES[elements.pop(0)]
+                status = self.state_map[elements.pop(0)]
                 filename = elements.pop(0)
                 filepath = os.path.join(self.root,
                                     os.path.normpath(filename))

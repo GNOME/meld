@@ -34,15 +34,15 @@ class Vc(_vc.Vc):
     VC_ROOT_WALK = False
     PATCH_INDEX_RE = "^Index:(.*)$"
     state_map = {
-                 "?": _vc.STATE_NONE,
-                 "A": _vc.STATE_NEW,
-                 " ": _vc.STATE_NORMAL,
-                 "!": _vc.STATE_MISSING,
-                 "I": _vc.STATE_IGNORED,
-                 "M": _vc.STATE_MODIFIED,
-                 "D": _vc.STATE_REMOVED,
-                 "C": _vc.STATE_CONFLICT,
-                 }
+        "?": _vc.STATE_NONE,
+        "A": _vc.STATE_NEW,
+        " ": _vc.STATE_NORMAL,
+        "!": _vc.STATE_MISSING,
+        "I": _vc.STATE_IGNORED,
+        "M": _vc.STATE_MODIFIED,
+        "D": _vc.STATE_REMOVED,
+        "C": _vc.STATE_CONFLICT,
+    }
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]

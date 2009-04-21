@@ -25,14 +25,6 @@ import os
 import errno
 import _vc
 
-STATES = {
-    "a": _vc.STATE_NONE,
-    "A": _vc.STATE_NEW,
-    "M": _vc.STATE_MODIFIED,
-    "C": _vc.STATE_CONFLICT,
-    "R": _vc.STATE_REMOVED
-}
-
 class Vc(_vc.CachedVc):
 
     CMD = "darcs"
@@ -40,6 +32,13 @@ class Vc(_vc.CachedVc):
     VC_DIR = "_darcs"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "--- old.+?/(.+?)\\t+.*[0-9]{4}$"
+    state_map = {
+        "a": _vc.STATE_NONE,
+        "A": _vc.STATE_NEW,
+        "M": _vc.STATE_MODIFIED,
+        "C": _vc.STATE_CONFLICT,
+        "R": _vc.STATE_REMOVED,
+    }
 
     def commit_command(self, message):
         return [self.CMD, "record",
@@ -104,7 +103,7 @@ class Vc(_vc.CachedVc):
                     status = _vc.STATE_NEW
                     filename = elements.pop()
                 else:
-                    status = STATES[elements.pop(0)]
+                    status = self.state_map[elements.pop(0)]
                     filename = elements.pop(0)
                 filepath = os.path.join(self.root,
                                         os.path.normpath(filename))
