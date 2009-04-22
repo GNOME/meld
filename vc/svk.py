@@ -31,7 +31,10 @@ class Vc(svn.Vc):
     PATCH_INDEX_RE = "^=== (.*)$"
 
     def is_repo_root(self, location):
-        status = misc.cmdout([self.CMD, "info"], cwd=location, stdout=misc.NULL)[1]
+        try:
+            status = misc.cmdout([self.CMD, "info"], cwd=location, stdout=misc.NULL)[1]
+        except OSError:
+            raise ValueError()
         if status != 0:
             raise ValueError()
         return location
