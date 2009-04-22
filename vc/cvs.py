@@ -28,7 +28,6 @@ import time
 import misc
 import _vc
 
-
 class Vc(_vc.Vc):
     CMD = "cvs"
     NAME = "CVS"
@@ -149,8 +148,8 @@ class Vc(_vc.Vc):
                 regexes = [ misc.shell_to_regex(i)[:-1] for i in ignored ]
                 ignore_re = re.compile( "(" + "|".join(regexes) + ")" )
             except re.error, e:
-                misc.run_dialog(_("Error converting to a regular expression\n" \
-                                  "The pattern was '%s'\n" \
+                misc.run_dialog(_("Error converting to a regular expression\n"
+                                  "The pattern was '%s'\n"
                                   "The error was '%s'") % (",".join(ignored), e))
         else:
             class dummy(object):
@@ -167,4 +166,3 @@ class Vc(_vc.Vc):
                 retdirs.append( _vc.Dir(path, d, state) )
 
         return retdirs, retfiles
-

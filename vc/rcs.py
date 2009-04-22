@@ -30,7 +30,6 @@ class Vc(_vc.Vc):
     NAME = "RCS"
     VC_DIR = "RCS"
     VC_ROOT_WALK = False
-    PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^[+]{3} ([^\t]*)\t.*$"
 
     def commit_command(self, message):
@@ -44,7 +43,7 @@ class Vc(_vc.Vc):
 
     def _get_dirsandfiles(self, directory, dirs, files):
         "files is array of (name, path). Assume all files in same dir."
-        
+
         retfiles = []
         retdirs = [_vc.Dir(x[1], x[0], _vc.STATE_NONE) for x in dirs]
         rcscontents = os.listdir(os.path.join(directory, self.VC_DIR))

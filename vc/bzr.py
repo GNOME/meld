@@ -31,7 +31,6 @@ class Vc(_vc.CachedVc):
     CMD = "bzr"
     NAME = "Bazaar-NG"
     VC_DIR = ".bzr"
-    PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^=== modified file '(.*)'$"
 
     def commit_command(self, message):
@@ -107,4 +106,3 @@ class Vc(_vc.CachedVc):
                 state = _vc.STATE_NORMAL
                 retdirs.append( _vc.Dir(path, d, state) )
         return retdirs, retfiles
-

@@ -59,7 +59,7 @@ class Vc(_vc.Vc):
 
     def _get_matches(self, directory):
         """return a list of tuples (file_path, status_code, revision)"""
-        
+
         while 1:
             try:
                 entries = os.popen("%s status -Nv %s" % (self.CMD, directory))

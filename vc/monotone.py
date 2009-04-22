@@ -29,7 +29,6 @@ import errno
 class Vc(_vc.CachedVc):
     NAME = "Monotone"
     VC_METADATA = ['MT', '_MTN']
-    PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^[+]{3,3} ([^  ]*)\t[0-9a-f]{40,40}$"
 
     def __init__(self, location):

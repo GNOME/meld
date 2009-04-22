@@ -31,7 +31,7 @@ import _vc
 # D/   deleted directory
 # />   renamed directory
 # -/   directory permissions changed
- 
+
 # A    added file
 # D    deleted file
 # M    file modified
@@ -81,7 +81,7 @@ class Vc(_vc.CachedVc):
 
     def remove_command(self, force=0):
         return [self.CMD, "rm"]
- 
+
     def revert_command(self):
         # Will only work on later versions of tla
         return [self.CMD, "undo", "--"]
