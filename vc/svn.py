@@ -44,6 +44,11 @@ class Vc(_vc.Vc):
         "C": _vc.STATE_CONFLICT,
     }
 
+    re_status_moved = re.compile(r'^(A) +[+] +- +([?]) +[?] +([^ ].*)$')
+    re_status_vc = re.compile(r'^(.) +\d+ +(\?|(?:\d+)) +[^ ]+ +([^ ].*)$')
+    re_status_non_vc = re.compile(r'^([?]) +([^ ].*)$')
+    re_status_tree_conflict = re.compile(r'^ +> +.*')
+
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
     def diff_command(self):
@@ -70,31 +75,26 @@ class Vc(_vc.Vc):
 
         matches = []
 
-        re_status_moved = re.compile(r'^(A) +[+] +- +([?]) +[?] +([^ ].*)$')
-        re_status_vc = re.compile(r'^(.) +\d+ +(\?|(?:\d+)) +[^ ]+ +([^ ].*)$')
-        re_status_non_vc = re.compile(r'^([?]) +([^ ].*)$')
-        re_status_tree_conflict = re.compile(r'^ +> +.*')
-
         for line in entries:
             # svn-1.6.x changed 'status' command output
             # adding tree-conflict lines, c.f.:
             # http://subversion.tigris.org/svn_1.6_releasenotes.html
-            m = re_status_tree_conflict.match(line)
+            m = self.re_status_tree_conflict.match(line)
             if m:
                 # skip this line
                 continue
             # A svn moved file
-            m = re_status_moved.match(line)
+            m = self.re_status_moved.match(line)
             if m:
                 matches.append((m.group(3), m.group(1), m.group(2)))
                 continue
             # A svn controlled file
-            m = re_status_vc.match(line)
+            m = self.re_status_vc.match(line)
             if m:
                 matches.append((m.group(3), m.group(1), m.group(2)))
                 continue
             # A new file, unknown to svn
-            m = re_status_non_vc.match(line)
+            m = self.re_status_non_vc.match(line)
             if m:
                 matches.append((m.group(2), m.group(1), ""))
                 continue
