@@ -29,7 +29,7 @@ if "--pychecker" in sys.argv:
 #
 # i18n support
 #
-sys.path += [ #LIBDIR#
+sys.path[0:0] = [ #LIBDIR#
 ]
 import paths
 import gettext
