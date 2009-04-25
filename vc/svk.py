@@ -32,7 +32,13 @@ class Vc(svn.Vc):
 
     def is_repo_root(self, location):
         try:
-            status = misc.cmdout([self.CMD, "info"], cwd=location, stdout=misc.NULL)[1]
+            # `svk info` may be interactive. It can ask to create its repository, we
+            # don't want that to happen, so provide the right answer with `text="n"`
+            status = misc.cmdout([self.CMD, "info"], cwd=location, stdout=misc.NULL,
+                                 stderr=misc.NULL, text='n')[1]
+            # SVK does evil things to the real stdin, even when having its input
+            # stream redirected to a newly created pipe, restore sanity manually
+            misc.cmdout(['stty', 'sane'], stdout=misc.NULL, stderr=misc.NULL, stdin=None)
         except OSError:
             raise ValueError()
         if status != 0:
