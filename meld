@@ -53,11 +53,23 @@ if sys.version_info[:2] < pyver:
 try:
     import pygtk
     pygtk.require("2.0")
-    import gtk
-    import gtk.glade
 except ImportError, e:
     print e
     missing_reqs("pygtk", pygtkver)
+
+try:
+    import gtk
+except ImportError, e:
+    print e
+    print _("Cannot import: ") + "gtk"
+    sys.exit(1)
+
+try:
+    import gtk.glade
+except ImportError, e:
+    print e
+    print _("Cannot import: ") + "gtk.glade"
+    sys.exit(1)
 
 if gtk.pygtk_version < pygtkver:
     missing_reqs("pygtk", pygtkver)
