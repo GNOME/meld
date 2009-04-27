@@ -401,8 +401,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         yield "[%s] %s" % (self.label_text, msg.replace("\n", u"\u21b2") )
         def relpath(pbase, p):
             kill = 0
-            if p.startswith(pbase):
-                kill = len(pbase) and (len(pbase)+1) or 0
+            if len(pbase) and p.startswith(pbase):
+                kill = len(pbase) + 1
             return p[kill:] or "."
         if len(files) == 1 and os.path.isdir(files[0]):
             workdir = self.vc.get_working_directory(files[0])
