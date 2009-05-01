@@ -129,7 +129,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked), # FIXME: popup used to use gtk.STOCK_ADD
             ("VcAddBinary",     gtk.STOCK_ADD,              _("Add _Binary"),   None, _("Add binary to VC"), self.on_button_add_binary_clicked), # FIXME: stock is inconsistent with other VC actions
             ("VcRemove",        "vc-remove-24",             _("_Remove"),       None, _("Remove from VC"), self.on_button_remove_clicked), # FIXME: popup used to use gtk.STOCK_REMOVE
-            ("VcResolved",      gtk.STOCK_CLEAR,            _("_Resolved"),     None, _("Mark as resolved for VC"), self.on_button_resolved_clicked),
+            ("VcResolved",      "vc-resolve-24",            _("_Resolved"),     None, _("Mark as resolved for VC"), self.on_button_resolved_clicked),
             ("VcRevert",        gtk.STOCK_REVERT_TO_SAVED,  None,               None, _("Revert to original"), self.on_button_revert_clicked),
             ("VcDeleteLocally", gtk.STOCK_DELETE,           None,               None, _("Delete locally"), self.on_button_delete_clicked), # FIXME: popup label was "_Remove locally"
         )
