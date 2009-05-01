@@ -43,6 +43,8 @@ class Vc(_vc.Vc):
         return [self.CMD,"rm","-f"]
     def revert_command(self):
         return [self.CMD,"update","-C"]
+    def resolved_command(self):
+        return [self.CMD,"resolved"]
 
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"

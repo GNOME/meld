@@ -112,6 +112,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                          "VcUpdate": ("update_command", ()),
                          "VcAdd": ("add_command", ()),
                          "VcAddBinary": ("add_command", ()),
+                         "VcResolved": ("resolved_command", ()),
                          "VcRemove": ("remove_command", ()),
                          "VcRevert": ("revert_command", ()),
                          }
@@ -128,6 +129,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked), # FIXME: popup used to use gtk.STOCK_ADD
             ("VcAddBinary",     gtk.STOCK_ADD,              _("Add _Binary"),   None, _("Add binary to VC"), self.on_button_add_binary_clicked), # FIXME: stock is inconsistent with other VC actions
             ("VcRemove",        "vc-remove-24",             _("_Remove"),       None, _("Remove from VC"), self.on_button_remove_clicked), # FIXME: popup used to use gtk.STOCK_REMOVE
+            ("VcResolved",      gtk.STOCK_CLEAR,            _("_Resolved"),     None, _("Mark as resolved for VC"), self.on_button_resolved_clicked),
             ("VcRevert",        gtk.STOCK_REVERT_TO_SAVED,  None,               None, _("Revert to original"), self.on_button_revert_clicked),
             ("VcDeleteLocally", gtk.STOCK_DELETE,           None,               None, _("Delete locally"), self.on_button_delete_clicked), # FIXME: popup label was "_Remove locally"
         )
@@ -150,7 +152,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.actiongroup.get_action(action).props.is_important = True
         for action in ("VcCommit", "VcUpdate", "VcAdd", "VcRemove",
                        "VcShowModified", "VcShowNormal", "VcShowNonVC",
-                       "VcShowIgnored"):
+                       "VcShowIgnored", "VcResolved"):
             button = self.actiongroup.get_action(action)
             button.props.icon_name = button.props.stock_id
         self.tempdirs = []
@@ -448,6 +450,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._command_on_selected(self.vc.add_command(binary=1))
     def on_button_remove_clicked(self, obj):
         self._command_on_selected(self.vc.remove_command())
+    def on_button_resolved_clicked(self, obj):
+        self._command_on_selected(self.vc.resolved_command())
     def on_button_revert_clicked(self, obj):
         self._command_on_selected(self.vc.revert_command())
     def on_button_delete_clicked(self, obj):

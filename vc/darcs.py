@@ -66,6 +66,10 @@ class Vc(_vc.CachedVc):
         # will not work, since darcs needs interaction it seems
         return [self.CMD, "revert", "-a"]
 
+    def resolved_command(self):
+        # untested
+        return [self.CMD, "resolve"]
+
     def get_working_directory(self, workdir):
         return self.root
 

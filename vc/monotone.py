@@ -142,6 +142,8 @@ class Vc(_vc.CachedVc):
         return [self.CMD,"drop"]
     def revert_command(self):
         return [self.CMD,"revert"]
+    def resolved_command(self):
+        return [self.CMD,"resolved"]
     def get_working_directory(self, workdir):
         return self.root
 

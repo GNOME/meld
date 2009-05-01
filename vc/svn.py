@@ -61,6 +61,8 @@ class Vc(_vc.Vc):
         return [self.CMD,"rm","--force"]
     def revert_command(self):
         return [self.CMD,"revert"]
+    def resolved_command(self):
+        return [self.CMD,"resolved"]
 
     def _get_matches(self, directory):
         """return a list of tuples (file_path, status_code, revision)"""

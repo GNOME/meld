@@ -92,6 +92,8 @@ class Vc(object):
         raise NotImplementedError()
     def revert_command(self):
         raise NotImplementedError()
+    def resolved_command(self):
+        raise NotImplementedError()
     def patch_command(self, workdir):
         return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
 
