@@ -130,6 +130,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.connect_signal_handlers(self)
         self.findbar = self.findbar.get_data("pyobject")
 
+    def on_focus_change(self):
+        self.keymask = 0
+        self._update_linkmap_buttons()
+
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
         if self.textview_focussed:

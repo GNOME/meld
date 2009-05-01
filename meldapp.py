@@ -579,6 +579,16 @@ class MeldApp(gnomeglade.Component):
         self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
         self.ui.ensure_update()
         self.widget.show()
+        self.widget.connect('focus_in_event', self.on_focus_change)
+        self.widget.connect('focus_out_event', self.on_focus_change)
+
+    def on_focus_change(self, widget, event, callback_data = None):
+        for idx in range(self.notebook.get_n_pages()):
+            w = self.notebook.get_nth_page(idx)
+            if hasattr(w.get_data("pyobject"), 'on_focus_change'):
+                w.get_data("pyobject").on_focus_change()
+        # Let the rest of the stack know about this event
+        return False
 
     def on_widget_drag_data_received(self, wid, context, x, y, selection_data, info, time):
         if len(selection_data.get_uris()) != 0:
