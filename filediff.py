@@ -1076,6 +1076,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             want = 0.5 * ( self._line_to_pixel(aidx, l0) + self._line_to_pixel(aidx,l1) - a.page_size )
             want = misc.clamp(want, 0, a.upper-a.page_size)
             a.set_value( want )
+            # Warp the cursor at the start of the diff chunk we jumped to
+            buf = self._get_focused_textview().get_buffer()
+            buf.place_cursor(buf.get_iter_at_line(l0))
 
     def _consume_blank_lines(self, txt):
         lo, hi = 0, 0
