@@ -45,6 +45,11 @@ gdk = gtk.gdk
 
 MASK_SHIFT, MASK_CTRL = 1, 2
 
+def get_iter_at_line_or_eof(buffer, line):
+    if line >= buffer.get_line_count():
+        return buffer.get_end_iter()
+    return buffer.get_iter_at_line(line)
+
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
@@ -202,11 +207,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.buf, self.textfilter = buf, textfilter
             def __getslice__(self, lo, hi):
                 b = self.buf
+                txt = b.get_text(get_iter_at_line_or_eof(b, lo), get_iter_at_line_or_eof(b, hi), 0)
                 if hi >= b.get_line_count(): 
-                    txt = b.get_text(b.get_iter_at_line(lo), b.get_end_iter(), 0)
                     return self.textfilter(txt).split("\n")
                 else:
-                    txt = b.get_text(b.get_iter_at_line(lo), b.get_iter_at_line(hi), 0)
                     return self.textfilter(txt).split("\n")[:-1]
         class FakeTextArray(object):
             def __init__(self, bufs, textfilter):
@@ -1257,18 +1261,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     b0 = self.textbuffer[src]
                     b1 = self.textbuffer[dst]
                     if self.keymask & MASK_SHIFT: # delete
-                        b0.delete(b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]))
+                        b0.delete(get_iter_at_line_or_eof(b0, chunk[0]), get_iter_at_line_or_eof(b0, chunk[1]))
                     elif self.keymask & MASK_CTRL: # copy up or down
-                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
+                        t0 = b0.get_text( get_iter_at_line_or_eof(b0, chunk[0]), get_iter_at_line_or_eof(b0, chunk[1]), 0)
                         if event.y - rect[1] < 0.5 * rect[3]: # copy up
-                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
+                            b1.insert_with_tags_by_name(get_iter_at_line_or_eof(b1, chunk[2]), t0, "edited line")
                         else: # copy down
-                            b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[3]), t0, "edited line")
+                            b1.insert_with_tags_by_name(get_iter_at_line_or_eof(b1, chunk[3]), t0, "edited line")
                     else: # replace
-                        t0 = b0.get_text( b0.get_iter_at_line(chunk[0]), b0.get_iter_at_line(chunk[1]), 0)
+                        t0 = b0.get_text( get_iter_at_line_or_eof(b0, chunk[0]), get_iter_at_line_or_eof(b0, chunk[1]), 0)
                         self.on_textbuffer__begin_user_action()
-                        b1.delete(b1.get_iter_at_line(chunk[2]), b1.get_iter_at_line(chunk[3]))
-                        b1.insert_with_tags_by_name(b1.get_iter_at_line(chunk[2]), t0, "edited line")
+                        b1.delete(get_iter_at_line_or_eof(b1, chunk[2]), get_iter_at_line_or_eof(b1, chunk[3]))
+                        b1.insert_with_tags_by_name(get_iter_at_line_or_eof(b1, chunk[2]), t0, "edited line")
                         self.on_textbuffer__end_user_action()
             return True
         return False
