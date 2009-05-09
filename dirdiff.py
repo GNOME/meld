@@ -276,7 +276,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for f in [misc.ListItem(s) for s in self.prefs.filters.split("\n") ]:
             bits = f.value.split()
             if len(bits) > 1:
-                regex = "(%s)$" % ")|(".join( [misc.shell_to_regex(b)[:-1] for b in bits] )
+                regex = "(%s)$" % "|".join( [misc.shell_to_regex(b)[:-1] for b in bits] )
             elif len(bits):
                 regex = misc.shell_to_regex(bits[0])
             else: # an empty pattern would match anything, skip it
