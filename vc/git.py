@@ -43,7 +43,7 @@ class Vc(_vc.CachedVc):
         "new file":   _vc.STATE_NEW,
         "deleted":    _vc.STATE_REMOVED,
         "modified":   _vc.STATE_MODIFIED,
-        "typechange": _vc.STATE_NORMAL,
+        "typechange": _vc.STATE_MODIFIED,
         "unmerged":   _vc.STATE_CONFLICT,
     }
 
