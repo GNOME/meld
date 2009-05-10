@@ -428,7 +428,9 @@ class MeldPreferences(prefs.Preferences):
             _("Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("Script comment\t0\t#.*")),
-        "ignore_blank_lines" : prefs.Value(prefs.BOOL, False)
+        "ignore_blank_lines" : prefs.Value(prefs.BOOL, False),
+        "toolbar_visible" : prefs.Value(prefs.BOOL, True),
+        "statusbar_visible" : prefs.Value(prefs.BOOL, True)
     }
 
     def __init__(self):
@@ -539,10 +541,15 @@ class MeldApp(gnomeglade.Component):
 
             ("Magic",       gtk.STOCK_YES,   None,     None, None, self.on_menu_magic_activate),
         )
+        toggleactions = (
+            ("ToolbarVisible",   None, _("_Toolbar"),   None, _("Show or hide the toolbar"),   self.on_menu_toolbar_toggled,   True),
+            ("StatusbarVisible", None, _("_Statusbar"), None, _("Show or hide the statusbar"), self.on_menu_statusbar_toggled, True)
+        )
         ui_file = paths.share_dir("glade2/meldapp-ui.xml")
         self.actiongroup = gtk.ActionGroup('MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
+        self.actiongroup.add_toggle_actions(toggleactions)
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file)
@@ -581,6 +588,12 @@ class MeldApp(gnomeglade.Component):
         self.widget.show()
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
+        if not self.prefs.toolbar_visible:
+            self.ui.get_widget("/Menubar/ViewMenu/ToolbarVisible").set_active(False)
+            self.toolbar.hide()
+        if not self.prefs.statusbar_visible:
+            self.ui.get_widget("/Menubar/ViewMenu/StatusbarVisible").set_active(False)
+            self.status_box.hide()
 
     def on_focus_change(self, widget, event, callback_data = None):
         for idx in range(self.notebook.get_n_pages()):
@@ -774,6 +787,14 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_preferences_activate(self, item):
         PreferencesDialog(self)
+
+    def on_menu_toolbar_toggled(self, widget):
+        self.prefs.toolbar_visible = widget.get_active()
+        self.toolbar.props.visible = widget.get_active()
+
+    def on_menu_statusbar_toggled(self, widget):
+        self.prefs.statusbar_visible = widget.get_active()
+        self.status_box.props.visible = widget.get_active()
 
     #
     # Toolbar and menu items (help)
