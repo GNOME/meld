@@ -15,6 +15,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import os
+import sys
 
 import gtk
 import gobject
@@ -330,16 +331,15 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         self.__gentry.get_entry().set_text(filename)
 
     def __browse_dialog_ok(self, filewidget):
-        locale_filename = filewidget.get_filename()
-        if not locale_filename:
+        filename = filewidget.get_filename()
+        if not filename:
             return
 
-        encoding = os.getenv("G_FILENAME_ENCODING")
+        encoding = sys.getfilesystemencoding()
         if encoding:
-            # FIXME: This isn't tested.
-            locale_filename = unicode(locale_filename, encoding)
+            filename = unicode(filename, encoding)
         entry = self.__gentry.get_entry()
-        entry.set_text(locale_filename)
+        entry.set_text(filename)
         entry.activate()
 
     def __browse_dialog_response(self, widget, response):
