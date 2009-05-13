@@ -542,6 +542,7 @@ class MeldApp(gnomeglade.Component):
             ("Magic",       gtk.STOCK_YES,   None,     None, None, self.on_menu_magic_activate),
         )
         toggleactions = (
+            ("Fullscreen",       None, _("Full Screen"), "F11", _("View the comparison in full screen"), self.on_action_fullscreen_toggled, False),
             ("ToolbarVisible",   None, _("_Toolbar"),   None, _("Show or hide the toolbar"),   self.on_menu_toolbar_toggled,   True),
             ("StatusbarVisible", None, _("_Statusbar"), None, _("Show or hide the statusbar"), self.on_menu_statusbar_toggled, True)
         )
@@ -787,6 +788,13 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_preferences_activate(self, item):
         PreferencesDialog(self)
+
+    def on_action_fullscreen_toggled(self, widget):
+        is_full = self.widget.window.get_state() & gtk.gdk.WINDOW_STATE_FULLSCREEN
+        if widget.get_active() and not is_full:
+            self.widget.fullscreen()
+        elif is_full:
+            self.widget.unfullscreen()
 
     def on_menu_toolbar_toggled(self, widget):
         self.prefs.toolbar_visible = widget.get_active()
