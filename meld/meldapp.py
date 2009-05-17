@@ -824,20 +824,6 @@ class MeldApp(gnomeglade.Component):
     #
     # Usage
     #
-    def usage_msg(self):
-        usage_file = "<%s>" % _("file")
-        usage_dir = "<%s>" % _("dir")
-        usage_3files = "%s %s [%s]" % ((usage_file,)*3)
-        usage_3dirs = "%s %s [%s]" % ((usage_dir,)*3)
-        pad_args_fmt = "%-" + str( max( len(usage_3files), len(usage_3dirs))) + "s %s"
-        usages = [
-                  ("", _("Start with no window open")),
-                  (usage_dir, _("Start with Version Control browser in '%s'")%_("dir")),
-                  (usage_file, _("Start with Version Control diff of '%s'")%_("file")),
-                  (usage_3files, _("Start with 2 or 3 way file comparison")),
-                  (usage_3dirs, _("Start with 2 or 3 way directory comparison"))]
-        return "\n" + "\n".join( ["%prog " + pad_args_fmt % u for u in usages] )
-
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""
         assert value is None
@@ -858,8 +844,15 @@ class MeldApp(gnomeglade.Component):
         parser.values.diff.append(diff_files_args)
 
     def parse_args(self, rawargs):
+        usages = [("", _("Start with an empty window")),
+                  ("<%s|%s>" % (_("file"), _("dir")), _("Start a version control comparison")),
+                  ("<%s> <%s> [<%s>]" % ((_("file"),) * 3), _("Start a 2- or 3-way file comparison")),
+                  ("<%s> <%s> [<%s>]" % ((_("dir"),) * 3), _("Start a 2- or 3-way directory comparison"))]
+        pad_args_fmt = "%-" + str(max([len(s[0]) for s in usages])) + "s %s"
+        usage = "\n" + "\n".join(["  %prog " + pad_args_fmt % u for u in usages])
+
         parser = optparse.OptionParser(
-            usage=self.usage_msg(),
+            usage=usage,
             description=_("Meld is a file and directory comparison tool."),
             version="%prog " + version)
         parser.add_option("-L", "--label", action="append", default=[],
