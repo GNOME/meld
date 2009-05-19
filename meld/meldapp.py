@@ -847,9 +847,35 @@ class MeldApp(gnomeglade.Component):
                   (usage_3dirs, _("Start with 2 or 3 way directory comparison"))]
         return "\n" + "\n".join( ["%prog " + pad_args_fmt % u for u in usages] )
 
+    def diff_files_callback(self, option, opt_str, value, parser):
+        """Gather arguments after option in a list and append to option.dest."""
+        assert value is None
+        diff_files_args = []
+        rargs = parser.rargs
+        while rargs:
+            arg = rargs[0]
+
+            # Stop if we hit an arg like "--foo", "-a", "-fx", "--file=f",
+            # etc.  Note that this also stops on "-3" or "-3.0", so if
+            # your option takes numeric values, you will need to handle
+            # this.
+            if ((arg[:2] == "--" and len(arg) > 2) or
+                (arg[:1] == "-" and len(arg) > 1 and arg[1] != "-")):
+                break
+            else:
+                diff_files_args.append(arg)
+                del rargs[0]
+
+        if len(diff_files_args) not in (1, 2, 3):
+            raise optparse.OptionValueError(
+                "wrong number of arguments supplied to --diff")
+
+        value = getattr(parser.values, option.dest) or []
+        value.append(diff_files_args)
+        setattr(parser.values, option.dest, value)
+
     def parse_args(self, rawargs):
         parser = optparse.OptionParser(
-            option_class=misc.MeldOption,
             usage=self.usage_msg(),
             description=_("Meld is a file and directory comparison tool."),
             version="%prog " + version)
@@ -861,8 +887,8 @@ class MeldApp(gnomeglade.Component):
         parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
         parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
         parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
-        parser.add_option("", "--diff", action="diff_files", dest='diff',
-                          default=[],
+        parser.add_option("", "--diff", action="callback", callback=self.diff_files_callback,
+                          dest="diff", default=[],
                           help=_("Creates a diff tab for up to 3 supplied files or directories."))
         options, args = parser.parse_args(rawargs)
         for files in options.diff:
