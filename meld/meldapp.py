@@ -824,15 +824,6 @@ class MeldApp(gnomeglade.Component):
     #
     # Usage
     #
-    def usage(self, msg):
-        response = misc.run_dialog(msg,
-            self,
-            gtk.MESSAGE_ERROR,
-            gtk.BUTTONS_NONE,
-            [(gtk.STOCK_QUIT, gtk.RESPONSE_CANCEL), (gtk.STOCK_OK, gtk.RESPONSE_OK)] )
-        if response == gtk.RESPONSE_CANCEL:
-            sys.exit(0)
-
     def usage_msg(self):
         usage_file = "<%s>" % _("file")
         usage_dir = "<%s>" % _("dir")
@@ -883,16 +874,15 @@ class MeldApp(gnomeglade.Component):
                           dest="diff", default=[],
                           help=_("Creates a diff tab for up to 3 supplied files or directories."))
         options, args = parser.parse_args(rawargs)
+        if len(args) > 3:
+            parser.error(_("too many arguments (wanted 0-3, got %d)") % len(args))
+
         for files in options.diff:
-            if len(files) not in (1, 2, 3):
-                self.usage(_("Invalid number of arguments supplied for --diff."))
             self.append_diff(files)
-        if len(args) not in (0, 1, 2, 3):
-            self.usage(_("Wrong number of arguments (Got %i)") % len(args))
-        else:
-            tab = self.open_paths(args, options.auto_compare)
-            if tab:
-                tab.set_labels(options.label)
+
+        tab = self.open_paths(args, options.auto_compare)
+        if tab:
+            tab.set_labels(options.label)
 
     def _single_file_open(self, path):
         doc = vcview.VcView(self.prefs)
