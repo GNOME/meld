@@ -783,9 +783,6 @@ class MeldApp(gnomeglade.Component):
     #
     # Toolbar and menu items (settings)
     #
-    def on_menu_filter_activate(self, check):
-        print check, check.child.get_text()
-
     def on_menu_preferences_activate(self, item):
         PreferencesDialog(self)
 
