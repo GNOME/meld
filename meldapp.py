@@ -666,6 +666,10 @@ class MeldApp(gnomeglade.Component):
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
             self.toolbar.set_style( self.prefs.get_toolbar_style() )
+        elif key == "statusbar_visible":
+            self.status_box.props.visible = self.prefs.statusbar_visible
+        elif key == "toolbar_visible":
+            self.toolbar.props.visible = self.prefs.toolbar_visible
 
     #
     # General events and callbacks
@@ -795,11 +799,9 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_toolbar_toggled(self, widget):
         self.prefs.toolbar_visible = widget.get_active()
-        self.toolbar.props.visible = widget.get_active()
 
     def on_menu_statusbar_toggled(self, widget):
         self.prefs.statusbar_visible = widget.get_active()
-        self.status_box.props.visible = widget.get_active()
 
     #
     # Toolbar and menu items (help)
