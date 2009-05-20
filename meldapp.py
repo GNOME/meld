@@ -504,6 +504,7 @@ class MeldApp(gnomeglade.Component):
         if gobject.pygobject_version >= (2, 16, 0):
             gobject.set_application_name("Meld")
         gnomeglade.Component.__init__(self, gladefile, "meldapp")
+        self.prefs = MeldPreferences()
 
         actions = (
             ("FileMenu", None, "_File"),
@@ -543,8 +544,8 @@ class MeldApp(gnomeglade.Component):
         )
         toggleactions = (
             ("Fullscreen",       None, _("Full Screen"), "F11", _("View the comparison in full screen"), self.on_action_fullscreen_toggled, False),
-            ("ToolbarVisible",   None, _("_Toolbar"),   None, _("Show or hide the toolbar"),   self.on_menu_toolbar_toggled,   True),
-            ("StatusbarVisible", None, _("_Statusbar"), None, _("Show or hide the statusbar"), self.on_menu_statusbar_toggled, True)
+            ("ToolbarVisible",   None, _("_Toolbar"),   None, _("Show or hide the toolbar"),   self.on_menu_toolbar_toggled,   self.prefs.toolbar_visible),
+            ("StatusbarVisible", None, _("_Statusbar"), None, _("Show or hide the statusbar"), self.on_menu_statusbar_toggled, self.prefs.statusbar_visible)
         )
         ui_file = paths.share_dir("glade2/meldapp-ui.xml")
         self.actiongroup = gtk.ActionGroup('MainActions')
@@ -567,7 +568,6 @@ class MeldApp(gnomeglade.Component):
         # TODO: should possibly use something other than doc_status
         self._menu_context = self.doc_status.get_context_id("Tooltips")
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
-        self.prefs = MeldPreferences()
         if not developer:#hide magic testing button
             self.ui.get_widget("/Toolbar/Magic").hide()
         elif 1:
@@ -580,6 +580,8 @@ class MeldApp(gnomeglade.Component):
         if gnomevfs_available:
             self.widget.connect('drag_data_received', self.on_widget_drag_data_received)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
+        self.toolbar.props.visible = self.prefs.toolbar_visible
+        self.status_box.props.visible = self.prefs.statusbar_visible
         self.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
@@ -589,12 +591,6 @@ class MeldApp(gnomeglade.Component):
         self.widget.show()
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
-        if not self.prefs.toolbar_visible:
-            self.ui.get_widget("/Menubar/ViewMenu/ToolbarVisible").set_active(False)
-            self.toolbar.hide()
-        if not self.prefs.statusbar_visible:
-            self.ui.get_widget("/Menubar/ViewMenu/StatusbarVisible").set_active(False)
-            self.status_box.hide()
 
     def on_focus_change(self, widget, event, callback_data = None):
         for idx in range(self.notebook.get_n_pages()):
