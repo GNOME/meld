@@ -848,31 +848,23 @@ class MeldApp(gnomeglade.Component):
         return "\n" + "\n".join( ["%prog " + pad_args_fmt % u for u in usages] )
 
     def diff_files_callback(self, option, opt_str, value, parser):
-        """Gather arguments after option in a list and append to option.dest."""
+        """Gather --diff arguments and append to a list"""
         assert value is None
         diff_files_args = []
-        rargs = parser.rargs
-        while rargs:
-            arg = rargs[0]
-
-            # Stop if we hit an arg like "--foo", "-a", "-fx", "--file=f",
-            # etc.  Note that this also stops on "-3" or "-3.0", so if
-            # your option takes numeric values, you will need to handle
-            # this.
-            if ((arg[:2] == "--" and len(arg) > 2) or
-                (arg[:1] == "-" and len(arg) > 1 and arg[1] != "-")):
+        while parser.rargs:
+            # Stop if we find a short- or long-form arg, or a '--'
+            # Note that this doesn't handle negative numbers.
+            arg = parser.rargs[0]
+            if arg[:2] == "--" or (arg[:1] == "-" and len(arg) > 1):
                 break
             else:
                 diff_files_args.append(arg)
-                del rargs[0]
+                del parser.rargs[0]
 
         if len(diff_files_args) not in (1, 2, 3):
             raise optparse.OptionValueError(
-                "wrong number of arguments supplied to --diff")
-
-        value = getattr(parser.values, option.dest) or []
-        value.append(diff_files_args)
-        setattr(parser.values, option.dest, value)
+                _("wrong number of arguments supplied to --diff"))
+        parser.values.diff.append(diff_files_args)
 
     def parse_args(self, rawargs):
         parser = optparse.OptionParser(
