@@ -49,9 +49,6 @@ from sourceviewer import srcviewer
 
 version = "1.3.0"
 
-# magic developer switch, changes some behaviour
-developer = 0
-
 ################################################################################
 #
 # NewDocDialog
@@ -460,8 +457,6 @@ class MeldApp(gnomeglade.Component):
             ("Help",        gtk.STOCK_HELP,  _("_Contents"), "F1", _("Open the Meld manual"), self.on_menu_help_activate),
             ("BugReport",   gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None, _("Report a bug in Meld"), self.on_menu_help_bug_activate),
             ("About",       gtk.STOCK_ABOUT, None, None, _("About this program"), self.on_menu_about_activate),
-
-            ("Magic",       gtk.STOCK_YES,   None,     None, None, self.on_menu_magic_activate),
         )
         toggleactions = (
             ("Fullscreen",       None, _("Full Screen"), "F11", _("View the comparison in full screen"), self.on_action_fullscreen_toggled, False),
@@ -489,11 +484,6 @@ class MeldApp(gnomeglade.Component):
         # TODO: should possibly use something other than doc_status
         self._menu_context = self.doc_status.get_context_id("Tooltips")
         self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
-        if not developer:#hide magic testing button
-            self.ui.get_widget("/Toolbar/Magic").hide()
-        elif 1:
-            def showPrefs(): PreferencesDialog(self)
-            gobject.idle_add(showPrefs)
         self.widget.drag_dest_set(
             gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
             [ ('text/uri-list', 0, 0) ],
@@ -644,13 +634,12 @@ class MeldApp(gnomeglade.Component):
             self.try_remove_page(page)
 
     def on_menu_quit_activate(self, *extra):
-        if not developer:
-            for c in self.notebook.get_children():
-                response = c.get_data("pyobject").on_delete_event(appquit=1)
-                if response == gtk.RESPONSE_CANCEL:
-                    return gtk.RESPONSE_CANCEL
-                elif response == gtk.RESPONSE_CLOSE:
-                    break
+        for c in self.notebook.get_children():
+            response = c.get_data("pyobject").on_delete_event(appquit=1)
+            if response == gtk.RESPONSE_CANCEL:
+                return gtk.RESPONSE_CANCEL
+            elif response == gtk.RESPONSE_CLOSE:
+                break
         for c in self.notebook.get_children():
             c.get_data("pyobject").on_quit_event()
         gtk.main_quit()
@@ -740,11 +729,6 @@ class MeldApp(gnomeglade.Component):
     #
     # Toolbar and menu items (misc)
     #
-    def on_menu_magic_activate(self, *args):
-        for i in range(8):
-            self.append_filediff( ("ntest/file%ia"%i, "ntest/file%ib"%i) )
-            #self.append_filediff( ("ntest/file9a", "ntest/file9b") )
-
     def on_menu_edit_down_activate(self, *args):
         self.current_doc().next_diff(gtk.gdk.SCROLL_DOWN)
 
