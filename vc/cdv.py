@@ -21,8 +21,6 @@
 ### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import misc
 import _vc
 import svn
 
@@ -38,6 +36,6 @@ class Vc(svn.Vc):
         return self.root
 
     def _get_matches(self, directory):
-        entries = misc.cmdout([self.CMD, "status"], cwd=directory)[0]
+        entries = _vc.popen([self.CMD, "status"], cwd=directory).read()
         for line in entries.split("\n")[1:-1]:
             yield line[3:], line[0], ""

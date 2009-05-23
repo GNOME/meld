@@ -66,7 +66,7 @@ class Vc(_vc.Vc):
 
         while 1:
             try:
-                entries = os.popen('cd "%s" && %s status -A .' % (directory, self.CMD)).read().split("\n")[:-1]
+                entries = _vc.popen([self.CMD, "status", "-A", "."], cwd=directory).read().split("\n")[:-1]
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:

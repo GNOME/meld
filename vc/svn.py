@@ -69,7 +69,7 @@ class Vc(_vc.Vc):
 
         while 1:
             try:
-                entries = os.popen("%s status -Nv %s" % (self.CMD, directory))
+                entries = _vc.popen([self.CMD, "status", "-Nv", directory])
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:

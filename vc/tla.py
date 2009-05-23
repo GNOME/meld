@@ -96,10 +96,10 @@ class Vc(_vc.CachedVc):
 
     def _lookup_tree_cache(self, rootdir):
         whatsnew = {}
-        commandline = ('%s changes -d %s' % (self.CMD, self.root))
+        commandline = [self.CMD, "changes", "-d", self.root]
         while 1:
             try:
-                p = os.popen(commandline)
+                p = _vc.popen(commandline)
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:

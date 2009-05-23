@@ -23,6 +23,7 @@
 
 import os
 import re
+import subprocess
 from gettext import gettext as _
 
 # ignored, new, normal, ignored changes,
@@ -186,3 +187,7 @@ class CachedVc(Vc):
         if self._tree_cache is None:
             self.cache_inventory(directory)
         return self._tree_cache
+
+def popen(cmd, cwd=None):
+    return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
+

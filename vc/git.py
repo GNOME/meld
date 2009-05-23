@@ -68,7 +68,7 @@ class Vc(_vc.CachedVc):
     def _lookup_tree_cache(self, rootdir):
         while 1:
             try:
-                proc = os.popen("cd %s && %s status --untracked-files" % (self.root, self.CMD))
+                proc = _vc.popen([self.CMD, "status", "--untracked-files"], cwd=self.root)
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:

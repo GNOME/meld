@@ -75,9 +75,9 @@ if gtk.pygtk_version < pygtkver:
     missing_reqs("pygtk", pygtkver)
 
 # Ignore deprecation warnings from pygtk > 2.6
-if gtk.pygtk_version >= (2,8,0):
-    import warnings
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
+#if gtk.pygtk_version >= (2,8,0):
+#    import warnings
+#    warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 gtk.glade.bindtextdomain("meld", paths.locale_dir())
 gtk.glade.textdomain("meld")

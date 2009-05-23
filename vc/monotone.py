@@ -119,11 +119,10 @@ class Vc(_vc.CachedVc):
             # for monotone >= 0.26
             self.VC_DIR = "_MTN"
             self.CMD = "mtn"
-            cstdin, cstdout, cstderr = os.popen3(self.CMD + " automate interface_version")
-            self.interface_version = float(cstdout.read())
+            self.interface_version = float(_vc.popen([self.CMD, "automate", "interface_version"]).read())
             if self.interface_version > 9.0:
                 print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
-        except ValueError:
+        except (ValueError, OSError):
             # for monotone <= 0.25
             self.VC_DIR = "MT"
             self.CMD = "monotone"
@@ -150,8 +149,8 @@ class Vc(_vc.CachedVc):
     def _lookup_tree_cache(self, rootdir):
         while 1:
             try:
-                entries = os.popen("cd %s && %s automate inventory" %
-                                   (self.root, self.CMD)).read().split("\n")[:-1]
+                entries = _vc.popen([self.CMD, "automate", "inventory"],
+                                    cwd=self.root).read().split("\n")[:-1]
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
