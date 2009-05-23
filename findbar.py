@@ -19,8 +19,7 @@ import paths
 import misc
 import gtk
 import re
-
-def _(x): return x
+from gettext import gettext as _
 
 class FindBar(gnomeglade.Component):
     def __init__(self):
