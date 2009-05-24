@@ -331,7 +331,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return 1 in [b.modified for b in self.bufferdata]
 
     def _get_pane_label(self, i):
-        return self.bufferdata[i].label or "<unnamed>"
+        #TRANSLATORS: this is the name of a new file which has not yet been saved
+        return self.bufferdata[i].label or _("<unnamed>")
 
     def on_delete_event(self, appquit=0):
         response = gtk.RESPONSE_OK
