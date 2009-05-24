@@ -22,7 +22,6 @@ import copy
 import os
 from gettext import gettext as _
 import select
-import popen2
 import errno
 import gobject
 import gtk
@@ -200,21 +199,16 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     """
     class sentinel(object):
         def __init__(self):
-            self.pipe = None
+            self.proc = None
         def __del__(self):
-            if self.pipe:
-                errorstream.write("killing '%s' with pid '%i'\n" % (command[0], self.pipe.pid))
-                os.kill(self.pipe.pid, signal.SIGTERM)
-                errorstream.write("killed (status was '%i')\n" % self.pipe.wait())
+            if self.proc:
+                errorstream.write("killing '%s'\n" % command[0])
+                self.proc.terminate()
+                errorstream.write("killed (status was '%i')\n" % self.proc.wait())
         def __call__(self):
-            if workdir:
-                savepwd = os.getcwd()
-                os.chdir( workdir )
-            self.pipe = popen2.Popen3(command, capturestderr=1)
-            self.pipe.tochild.close()
-            childout, childerr = self.pipe.fromchild, self.pipe.childerr
-            if workdir:
-                os.chdir( savepwd )
+            self.proc = subprocess.Popen(command, cwd=workdir, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.proc.stdin.close()
+            childout, childerr = self.proc.stdout, self.proc.stderr
             bits = []
             while len(bits) == 0 or bits[-1] != "":
                 state = select.select([childout, childerr], [], [childout, childerr], yield_interval)
@@ -233,9 +227,9 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
                         errorstream.write( childerr.read(1) ) # how many chars?
                     except IOError:
                         break # ick need to fix
-            status = self.pipe.wait()
+            status = self.proc.wait()
             errorstream.write( childerr.read() )
-            self.pipe = None
+            self.proc = None
             if status:
                 errorstream.write("Exit code: %i\n" % status)
             yield "".join(bits)
@@ -244,10 +238,9 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
 def write_pipe(command, text):
     """Write 'text' into a shell command.
     """
-    pipe = popen2.Popen3(command, capturestderr=1)
-    pipe.tochild.write(text)
-    pipe.tochild.close()
-    return pipe.wait()
+    proc = subprocess.Popen(command, stdin=subprocess.PIPE)
+    proc.communicate(text)
+    return proc.wait()
 
 def clamp(val, lower, upper):
     """Clamp 'val' to the inclusive range [lower,upper].
