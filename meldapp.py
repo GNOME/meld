@@ -507,14 +507,14 @@ class MeldApp(gnomeglade.Component):
         self.prefs = MeldPreferences()
 
         actions = (
-            ("FileMenu", None, "_File"),
+            ("FileMenu", None, _("_File")),
             ("New",     gtk.STOCK_NEW,      _("_New..."), "<control>N", _("Start a new comparison"), self.on_menu_file_new_activate),
             ("Save",    gtk.STOCK_SAVE,     None, None, _("Save the current file"), self.on_menu_save_activate),
             ("SaveAs",  gtk.STOCK_SAVE_AS,  None, "<control><shift>S", "Save the current file with a different name", self.on_menu_save_as_activate),
             ("Close",   gtk.STOCK_CLOSE,    None, None, _("Close the current file"), self.on_menu_close_activate),
             ("Quit",    gtk.STOCK_QUIT,     None, None, _("Quit the program"), self.on_menu_quit_activate),
 
-            ("EditMenu", None, "_Edit"),
+            ("EditMenu", None, _("_Edit")),
             ("Undo",    gtk.STOCK_UNDO,     None, "<control>Z", _("Undo the last action"), self.on_menu_undo_activate),
             ("Redo",    gtk.STOCK_REDO,     None, "<control><shift>Z", _("Redo the last undone action"), self.on_menu_redo_activate),
             ("Cut",     gtk.STOCK_CUT,      None, None, _("Cut the selection"), self.on_menu_cut_activate),
@@ -527,15 +527,15 @@ class MeldApp(gnomeglade.Component):
             ("Up",      gtk.STOCK_GO_UP,    None, "<control>E", _("Go to the previous difference"), self.on_menu_edit_up_activate),
             ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
 
-            ("ViewMenu", None, "_View"),
-            ("FileStatus",  None, "File status"),
-            ("VcStatus",    None, "Version status"),
-            ("FileFilters",  None, "File filters"),
+            ("ViewMenu", None, _("_View")),
+            ("FileStatus",  None, _("File status")),
+            ("VcStatus",    None, _("Version status")),
+            ("FileFilters",  None, _("File filters")),
             ("Stop",    gtk.STOCK_STOP,     None, "Escape", _("Stop the current action"), self.on_toolbar_stop_clicked),
             ("Refresh", gtk.STOCK_REFRESH,  None, "<control>R", _("Refresh the view"), self.on_menu_refresh_activate),
             ("Reload",  gtk.STOCK_REFRESH,  _("Reload"), "<control><shift>R", _("Reload the comparison"), self.on_menu_reload_activate),
 
-            ("HelpMenu", None, "_Help"),
+            ("HelpMenu", None, _("_Help")),
             ("Help",        gtk.STOCK_HELP,  _("_Contents"), "F1", _("Open the Meld manual"), self.on_menu_help_activate),
             ("BugReport",   gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None, _("Report a bug in Meld"), self.on_menu_help_bug_activate),
             ("About",       gtk.STOCK_ABOUT, None, None, _("About this program"), self.on_menu_about_activate),
