@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld 0.9.6\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2009-05-14 21:08+0200\n"
-"PO-Revision-Date: 2009-05-14 21:09+0100\n"
+"POT-Creation-Date: 2009-05-28 21:41+0200\n"
+"PO-Revision-Date: 2009-05-28 21:42+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -262,31 +262,36 @@ msgstr ""
 "wird keine korrekten Ergebnisse liefern. Weitere Informationen sind im "
 "Benutzerhandbuch zu finden."
 
-#: ../filediff.py:507
+#. TRANSLATORS: this is the name of a new file which has not yet been saved
+#: ../filediff.py:335
+msgid "<unnamed>"
+msgstr "<unbenannt>"
+
+#: ../filediff.py:508
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Setzen der Spaltenanzahl"
 
-#: ../filediff.py:513
+#: ../filediff.py:514
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Dateien werden geöffnet"
 
-#: ../filediff.py:531 ../filediff.py:545 ../filediff.py:561 ../filediff.py:568
+#: ../filediff.py:532 ../filediff.py:546 ../filediff.py:562 ../filediff.py:569
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Aus »%s« konnte nicht gelesen werden."
 
-#: ../filediff.py:532 ../filediff.py:569
+#: ../filediff.py:533 ../filediff.py:570
 msgid "The error was:"
 msgstr "Der Fehler lautet:"
 
-#: ../filediff.py:537
+#: ../filediff.py:538
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Dateien werden gelesen"
 
-#: ../filediff.py:546
+#: ../filediff.py:547
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -294,17 +299,17 @@ msgstr ""
 "Die Datei enthält ASCII-Nullen.\n"
 "Möglicherweise handelt es sich um eine Binärdatei."
 
-#: ../filediff.py:562
+#: ../filediff.py:563
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Es wurden die Kodierungen %s versucht."
 
-#: ../filediff.py:589
+#: ../filediff.py:590
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
 
-#: ../filediff.py:716
+#: ../filediff.py:717
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -313,7 +318,7 @@ msgstr ""
 "»%s« ist vorhanden!\n"
 "Ersetzen?"
 
-#: ../filediff.py:729
+#: ../filediff.py:730
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -324,12 +329,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:738
+#: ../filediff.py:739
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Wählen Sie einen Namen für den Zwischenspeicher %i."
 
-#: ../filediff.py:752
+#: ../filediff.py:753
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -340,7 +345,7 @@ msgstr ""
 "\n"
 "Welches Format möchten Sie verwenden?"
 
-#: ../filediff.py:768
+#: ../filediff.py:769
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -350,11 +355,11 @@ msgstr ""
 "Möchten Sie im UTF-8-Format speichern?"
 
 #. save as
-#: ../filediff.py:808
+#: ../filediff.py:809
 msgid "Save patch as..."
 msgstr "Patch speichern unter …"
 
-#: ../filediff.py:875
+#: ../filediff.py:876
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -368,7 +373,7 @@ msgstr ""
 "\n"
 "Sie können diesen Vorgang nicht rückgängig machen."
 
-#: ../findbar.py:120
+#: ../findbar.py:119
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -429,7 +434,7 @@ msgstr "_Nächste"
 msgid "_Previous"
 msgstr "_Vorherige"
 
-#: ../glade2/findbar.glade.h:8 ../meldapp.py:524
+#: ../glade2/findbar.glade.h:8 ../meldapp.py:525
 msgid "_Replace"
 msgstr "E_rsetzen"
 
@@ -799,196 +804,224 @@ msgid "Script comment\t0\t#.*"
 msgstr "Skript-Kommentar\t0\t#.*"
 
 #: ../meldapp.py:510
+msgid "_File"
+msgstr "_Datei"
+
+#: ../meldapp.py:511
 msgid "_New..."
 msgstr "_Neu …"
 
-#: ../meldapp.py:510
+#: ../meldapp.py:511
 msgid "Start a new comparison"
 msgstr "Neuen Vergleich starten"
 
-#: ../meldapp.py:511
+#: ../meldapp.py:512
 msgid "Save the current file"
 msgstr "Aktuelle Datei speichern"
 
-#: ../meldapp.py:513
+#: ../meldapp.py:514
 msgid "Close the current file"
 msgstr "Aktuelle Datei schließen"
 
-#: ../meldapp.py:514
+#: ../meldapp.py:515
 msgid "Quit the program"
 msgstr "Anwendung beenden"
 
 #: ../meldapp.py:517
+msgid "_Edit"
+msgstr "_Bearbeiten"
+
+#: ../meldapp.py:518
 msgid "Undo the last action"
 msgstr "Letzte Aktion rückgängig machen"
 
-#: ../meldapp.py:518
+#: ../meldapp.py:519
 msgid "Redo the last undone action"
 msgstr "Letzte Aktion wiederholen"
 
-#: ../meldapp.py:519
+#: ../meldapp.py:520
 msgid "Cut the selection"
 msgstr "Auswahl ausschneiden"
 
-#: ../meldapp.py:520
+#: ../meldapp.py:521
 msgid "Copy the selection"
 msgstr "Auswahl kopieren"
 
-#: ../meldapp.py:521
+#: ../meldapp.py:522
 msgid "Paste the clipboard"
 msgstr "In die Zwischenablage kopieren"
 
-#: ../meldapp.py:522
+#: ../meldapp.py:523
 msgid "Search for text"
 msgstr "Nach Text suchen"
 
-#: ../meldapp.py:523
+#: ../meldapp.py:524
 msgid "Find Ne_xt"
 msgstr "Nä_chste"
 
-#: ../meldapp.py:523
+#: ../meldapp.py:524
 msgid "Search forwards for the same text"
 msgstr "Vorwärts nach dem gleichen Text suchen"
 
-#: ../meldapp.py:524
+#: ../meldapp.py:525
 msgid "Find and replace text"
 msgstr "Text suchen und ersetzen"
 
-#: ../meldapp.py:525
+#: ../meldapp.py:526
 msgid "Go to the next difference"
 msgstr "Zum nächsten Unterschied gehen"
 
-#: ../meldapp.py:526
+#: ../meldapp.py:527
 msgid "Go to the previous difference"
 msgstr "Zum vorherigen Unterschied gehen"
 
-#: ../meldapp.py:527
+#: ../meldapp.py:528
 msgid "Prefere_nces"
 msgstr "_Einstellungen"
 
-#: ../meldapp.py:527
+#: ../meldapp.py:528
 msgid "Configure the application"
 msgstr "Anwendung konfigurieren"
 
+#: ../meldapp.py:530
+msgid "_View"
+msgstr "_Ansicht"
+
+#: ../meldapp.py:531
+msgid "File status"
+msgstr "Dateistatus"
+
+#: ../meldapp.py:532
+msgid "Version status"
+msgstr "Versionsstatus"
+
 #: ../meldapp.py:533
+msgid "File filters"
+msgstr "Dateifilter"
+
+#: ../meldapp.py:534
 msgid "Stop the current action"
 msgstr "Aktuelle Aktion abbrechen"
 
-#: ../meldapp.py:534
+#: ../meldapp.py:535
 msgid "Refresh the view"
 msgstr "Ansicht aktualisieren"
 
-#: ../meldapp.py:535
+#: ../meldapp.py:536
 msgid "Reload"
 msgstr "Aktualisieren"
 
-#: ../meldapp.py:535
+#: ../meldapp.py:536
 msgid "Reload the comparison"
 msgstr "Vergleich aktualisieren"
 
 #: ../meldapp.py:538
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: ../meldapp.py:539
 msgid "_Contents"
 msgstr "I_nhalt"
 
-#: ../meldapp.py:538
+#: ../meldapp.py:539
 msgid "Open the Meld manual"
 msgstr "Handbuch öffnen"
 
-#: ../meldapp.py:539
+#: ../meldapp.py:540
 msgid "Report _Bug"
 msgstr "_Fehlerbericht erstellen"
 
-#: ../meldapp.py:539
+#: ../meldapp.py:540
 msgid "Report a bug in Meld"
 msgstr "Einen Fehler melden"
 
-#: ../meldapp.py:540
+#: ../meldapp.py:541
 msgid "About this program"
 msgstr "Über diese Anwendung"
 
-#: ../meldapp.py:545
+#: ../meldapp.py:546
 msgid "Full Screen"
 msgstr "Vollbild"
 
-#: ../meldapp.py:545
+#: ../meldapp.py:546
 msgid "View the comparison in full screen"
 msgstr "Vergleich im Vollbildmodus anzeigen"
 
-#: ../meldapp.py:546
+#: ../meldapp.py:547
 msgid "_Toolbar"
 msgstr "_Werkzeugleiste"
 
-#: ../meldapp.py:546
+#: ../meldapp.py:547
 msgid "Show or hide the toolbar"
 msgstr "Werkzeugleiste anzeigen oder verbergen"
 
-#: ../meldapp.py:547
+#: ../meldapp.py:548
 msgid "_Statusbar"
 msgstr "_Statusleiste"
 
-#: ../meldapp.py:547
+#: ../meldapp.py:548
 msgid "Show or hide the statusbar"
 msgstr "Statusleiste anzeigen oder verbergen"
 
-#: ../meldapp.py:895
+#: ../meldapp.py:890
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Es kann kein Mix aus Dateien und Ordnern verglichen werden.\n"
 
-#: ../meldapp.py:938 ../meldapp.py:946
+#: ../meldapp.py:933 ../meldapp.py:941
 msgid "file"
 msgstr "Datei"
 
-#: ../meldapp.py:939 ../meldapp.py:945
+#: ../meldapp.py:934 ../meldapp.py:940
 msgid "dir"
 msgstr "dir"
 
-#: ../meldapp.py:944
+#: ../meldapp.py:939
 msgid "Start with no window open"
 msgstr "Beim Start kein Fenster öffnen"
 
-#: ../meldapp.py:945
+#: ../meldapp.py:940
 #, python-format
 msgid "Start with Version Control browser in '%s'"
 msgstr "Ohne Versionskontroll-Browser in »%s« starten"
 
-#: ../meldapp.py:946
+#: ../meldapp.py:941
 #, python-format
 msgid "Start with Version Control diff of '%s'"
 msgstr "Ohne Versionskontroll-Diff von »%s« starten"
 
-#: ../meldapp.py:947
+#: ../meldapp.py:942
 msgid "Start with 2 or 3 way file comparison"
 msgstr "Im Zwei- oder Dreiwegevergleich starten"
 
-#: ../meldapp.py:948
+#: ../meldapp.py:943
 msgid "Start with 2 or 3 way directory comparison"
 msgstr "Im Zwei- oder Dreiwege-Ordnervergleich starten"
 
-#: ../meldapp.py:955
+#: ../meldapp.py:950
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld ist ein Werkzeug zum Vergleichen von Dateien und Ordnern."
 
-#: ../meldapp.py:958
+#: ../meldapp.py:953
 msgid "Set label to use instead of file name"
 msgstr "Zu verwendende Bezeichnung anstelle Dateinamen angeben"
 
-#: ../meldapp.py:960
+#: ../meldapp.py:955
 msgid "Automatically compare all differing files on startup"
 msgstr "Automatisch alle sich unterscheidenden Dateien beim Start vergleichen"
 
-#: ../meldapp.py:961 ../meldapp.py:962 ../meldapp.py:963 ../meldapp.py:964
+#: ../meldapp.py:956 ../meldapp.py:957 ../meldapp.py:958 ../meldapp.py:959
 msgid "Ignored for compatibility"
 msgstr "Aus Kompatibilitätsgründen ignoriert"
 
-#: ../meldapp.py:967
+#: ../meldapp.py:962
 msgid "Creates a diff tab for up to 3 supplied files or directories."
 msgstr "Erzeugt einen Diff-Reiter für bis zu drei Dateien oder Ordner."
 
-#: ../meldapp.py:971
+#: ../meldapp.py:966
 msgid "Invalid number of arguments supplied for --diff."
 msgstr "Falsche Anzahl an Argumenten für --diff."
 
-#: ../meldapp.py:974
+#: ../meldapp.py:969
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Falsche Anzahl an Argumenten (%i erhalten)"
@@ -998,7 +1031,7 @@ msgid "untitled"
 msgstr "unbenannt"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:191
+#: ../misc.py:190
 msgid "[None]"
 msgstr "[Nichts]"
 
@@ -1185,7 +1218,7 @@ msgstr ""
 "                    "
 
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:39
+#: ../vc/_vc.py:40
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
 "Missing"
@@ -1293,9 +1326,6 @@ msgstr ""
 #~ msgid "_Diff"
 #~ msgstr "_Unterschiede"
 
-#~ msgid "_Edit"
-#~ msgstr "_Bearbeiten"
-
 #~ msgid "Copy All _Left"
 #~ msgstr "Alles nach _links kopieren"
 
@@ -1376,9 +1406,6 @@ msgstr ""
 
 #~ msgid "CVS binary"
 #~ msgstr "CVS-Binär"
-
-#~ msgid "CVS view"
-#~ msgstr "CVS-Ansicht"
 
 #~ msgid ""
 #~ "Choose how the central bar of the diff viewer is drawn. You may wish to "
