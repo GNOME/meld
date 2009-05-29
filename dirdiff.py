@@ -788,6 +788,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             all_same = 0
             all_present_same = _files_same( lof, self.regexes )
         different = 1
+        one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
             if mod_times[j]:
                 isdir = os.path.isdir( files[j] )
@@ -804,8 +805,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.model.set_value(it,
                     self.model.column_index(COL_EMBLEM, j),
                     j == newest_index and pixbuf_newer or None)
-            else:
-                self.model.set_state(it, j,  tree.STATE_MISSING)
+                one_isdir[j] = isdir
+        for j in range(self.model.ntree):
+            if not mod_times[j]:
+                self.model.set_state(it, j, tree.STATE_MISSING, True in one_isdir)
         return different
 
     def popup_in_pane(self, pane):

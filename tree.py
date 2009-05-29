@@ -31,9 +31,11 @@ load = lambda x,s=14: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps",x
 pixbuf_folder = load("tree-folder-normal.png", 20)
 pixbuf_folder_new = load("tree-folder-new.png", 20)
 pixbuf_folder_changed = load("tree-folder-changed.png", 20)
+pixbuf_folder_missing = load("tree-folder-missing.png", 20)
 pixbuf_file = load("tree-file-normal.png")
 pixbuf_file_new = load("tree-file-new.png")
 pixbuf_file_changed = load("tree-file-changed.png")
+pixbuf_file_missing = load("tree-file-missing.png")
 
 class DiffTreeStore(gtk.TreeStore):
     def __init__(self, ntree = 3, num_col = COL_END):
@@ -69,7 +71,7 @@ class DiffTreeStore(gtk.TreeStore):
             (pixbuf_file_changed, pixbuf_folder_changed), # MODIFIED
             (pixbuf_file_changed, pixbuf_folder_changed), # CONFLICT
             (pixbuf_file_changed, pixbuf_folder_changed), # REMOVED
-            (None, None) # MISSING
+            (pixbuf_file_missing, pixbuf_folder_missing) # MISSING
         ]
         assert len(self.pixstyle) == STATE_MAX
 
