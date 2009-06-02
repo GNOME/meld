@@ -68,14 +68,11 @@ class Differ(object):
         self.diffs = [[], []]
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
-        assert sequence in (0,1,2)
-        if sequence != 1: #0 or 2
-            which = sequence / 2
-            self._change_sequence(which, sequence, startidx, sizechange, texts)
-        else: # sequence==1:
+        assert sequence in (0, 1, 2)
+        if sequence == 0 or sequence == 1:
             self._change_sequence(0, sequence, startidx, sizechange, texts)
-            if self.num_sequences == 3:
-                self._change_sequence(1, sequence, startidx, sizechange, texts)
+        if sequence == 2 or (sequence == 1 and self.num_sequences == 3):
+            self._change_sequence(1, sequence, startidx, sizechange, texts)
         self.seqlength[sequence] += sizechange
 
     def _locate_chunk(self, whichdiffs, sequence, line):
