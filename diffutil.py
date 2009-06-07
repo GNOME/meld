@@ -162,25 +162,17 @@ class Differ(object):
                     c = cs[1]
                     yield c[0], c[1], c[2], c[3], c[4], 2
 
-    def _merge_blocks(self, using, low_seq, high_seq, last_diff):
+    def _merge_blocks(self, using):
         LO, HI = 1,2
-        lowc  = using[low_seq][ 0][LO]
-        highc = using[low_seq][-1][HI]
-        if len(using[not low_seq]):
-            lowc  =  min(lowc,  using[not low_seq][ 0][LO])
-            highc =  max(highc, using[not low_seq][-1][HI])
+        lowc  =  min(using[0][ 0][LO], using[1][ 0][LO])
+        highc =  max(using[0][-1][HI], using[1][-1][HI])
         low = []
         high = []
         for i in (0,1):
-            if len(using[i]):
-                d = using[i][0]
-                low.append(  lowc  - d[LO] + d[2+LO] )
-                d = using[i][-1]
-                high.append( highc - d[HI] + d[2+HI] )
-            else:
-                d = last_diff
-                low.append(  lowc  - d[LO] + d[2+LO] )
-                high.append( highc - d[HI] + d[2+HI] )
+            d = using[i][0]
+            low.append(lowc - d[LO] + d[2+LO])
+            d = using[i][-1]
+            high.append(highc - d[HI] + d[2+HI])
         return low[0], high[0], lowc, highc, low[1], high[1]
 
     def _merge_diffs(self, seq0, seq1, texts):
@@ -221,8 +213,6 @@ class Differ(object):
                     high_diff = other_diff
                     high_mark = other_diff[HI]
 
-            block = self._merge_blocks( using, base_seq, high_seq, block)
-
             if len(using[0])==0:
                 assert len(using[1])==1
                 yield None, using[1][0]
@@ -230,7 +220,7 @@ class Differ(object):
                 assert len(using[0])==1
                 yield using[0][0], None
             else:
-                l0, h0, l1, h1, l2, h2 = block
+                l0, h0, l1, h1, l2, h2 = block = self._merge_blocks(using)
                 if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
                     if l1 != h1:
                         tag = "replace"
