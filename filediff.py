@@ -591,7 +591,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Computing differences") % self.label_text
         panetext = [self._filter_text(p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
-        step = self.linediffer.set_sequences_iter(*lines)
+        step = self.linediffer.set_sequences_iter(lines, self._get_texts())
         while step.next() == None:
             yield 1
 
@@ -628,7 +628,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for tagname in taglist:
                 tag = table.lookup(tagname)
                 b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
-        for chunk in self.linediffer.all_changes(self._get_texts()):
+        for chunk in self.linediffer.all_changes():
             for i,c in enumerate(chunk):
                 if c and c[0] == "replace":
                     bufs = self.textbuffer[1], self.textbuffer[i*2]
@@ -696,7 +696,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 context.rectangle(0, ypos0, width, ypos1 - ypos0)
                 context.fill()
 
-        for change in self.linediffer.single_changes(pane, self._get_texts()):
+        for change in self.linediffer.single_changes(pane):
             change, skip = self._consume_blank_lines(change, pane, change[5])
             if skip:
                 continue
@@ -938,7 +938,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for (i,adj) in others:
                 mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
                 # look for the chunk containing 'line'
-                for c in self.linediffer.pair_changes(master, i, self._get_texts()):
+                for c in self.linediffer.pair_changes(master, i):
                     c = c[1:]
                     if c[0] >= line:
                         mend = c[0]
@@ -1000,7 +1000,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 "insert":solid_green,
                 "replace":solid_blue,
                 "delete":solid_green}
-        for c in self.linediffer.single_changes(textindex, self._get_texts()):
+        for c in self.linediffer.single_changes(textindex):
             assert c[0] != "equal"
             c, skip = self._consume_blank_lines(c, textindex, c[5])
             if skip:
@@ -1066,7 +1066,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             curline = -1
         c = None
         if direction == gdk.SCROLL_DOWN:
-            for c in self.linediffer.single_changes(1, self._get_texts()):
+            for c in self.linediffer.single_changes(1):
                 assert c[0] != "equal"
                 c, skip = self._consume_blank_lines(c, 1, c[5])
                 if skip:
@@ -1074,7 +1074,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if c[1] > curline:
                     break
         else: #direction == gdk.SCROLL_UP
-            for chunk in self.linediffer.single_changes(1, self._get_texts()):
+            for chunk in self.linediffer.single_changes(1):
                 chunk, skip = self._consume_blank_lines(chunk, 1, chunk[5])
                 if skip:
                     continue
@@ -1161,7 +1161,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.paint()
             context.identity_matrix()
 
-        for c in self.linediffer.pair_changes(which, which+1, self._get_texts()):
+        for c in self.linediffer.pair_changes(which, which + 1):
             c, skip = self._consume_blank_lines(c, which, which + 1)
             if skip:
                 continue
@@ -1243,7 +1243,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             dst = which + 1 - side
             adj = self.scrolledwindow[src].get_vadjustment()
 
-            for c in self.linediffer.pair_changes(src, dst, self._get_texts()):
+            for c in self.linediffer.pair_changes(src, dst):
                 c, skip = self._consume_blank_lines(c, src, dst)
                 if skip:
                     continue

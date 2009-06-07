@@ -74,6 +74,10 @@ class Differ(object):
         self.num_sequences = 0
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]
+        self._merge_cache = []
+
+    def _update_merge_cache(self, texts):
+        self._merge_cache = [c for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts)]
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0, 1, 2)
@@ -82,6 +86,7 @@ class Differ(object):
         if sequence == 2 or (sequence == 1 and self.num_sequences == 3):
             self._change_sequence(1, sequence, startidx, sizechange, texts)
         self.seqlength[sequence] += sizechange
+        self._update_merge_cache(texts)
 
     def _locate_chunk(self, whichdiffs, sequence, line):
         """Find the index of the chunk which contains line."""
@@ -128,34 +133,33 @@ class Differ(object):
                                                 for c in self.diffs[which][hiidx:] ]
         self.diffs[which][loidx:hiidx] = newdiffs
 
-    def all_changes(self, texts):
-        for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts):
-            yield c
+    def all_changes(self):
+        return iter(self._merge_cache)
 
-    def pair_changes(self, fromindex, toindex, texts):
+    def pair_changes(self, fromindex, toindex):
         """Give all changes between file1 and either file0 or file2.
         """
         if fromindex == 1:
             seq = toindex/2
-            for c in self.all_changes( texts ):
+            for c in self._merge_cache:
                 if c[seq]:
                     yield c[seq]
         else:
             seq = fromindex/2
-            for c in self.all_changes( texts ):
+            for c in self._merge_cache:
                 if c[seq]:
                     yield reverse_chunk(c[seq])
 
-    def single_changes(self, textindex, texts):
+    def single_changes(self, textindex):
         """Give changes for single file only. do not return 'equal' hunks.
         """
         if textindex in (0,2):
             seq = textindex/2
-            for cs in self.all_changes( texts ):
+            for cs in self._merge_cache:
                 if cs[seq]:
                     yield reverse_chunk(cs[seq]) + (1,)
         else:
-            for cs in self.all_changes( texts ):
+            for cs in self._merge_cache:
                 if cs[0]:
                     yield cs[0] + (0,)
                 elif cs[1]:
@@ -241,7 +245,7 @@ class Differ(object):
                 for c in self._auto_merge(using, texts):
                     yield c
 
-    def set_sequences_iter(self, *sequences):
+    def set_sequences_iter(self, sequences, texts):
         assert 0 <= len(sequences) <= 3
         self.diffs = [[], []]
         self.num_sequences = len(sequences)
@@ -253,5 +257,6 @@ class Differ(object):
             while work.next() == None:
                 yield None
             self.diffs[i] = matcher.get_difference_opcodes()
+        self._update_merge_cache(texts)
         yield 1
 
