@@ -179,7 +179,6 @@ class Differ(object):
         seq0, seq1 = seq0[:], seq1[:]
         seq = seq0, seq1
         LO, HI = 1,2
-        block = [0,0,0,0,0,0]
         while len(seq0) or len(seq1):
             if len(seq0) == 0:
                 base_seq = 1
@@ -210,7 +209,6 @@ class Differ(object):
 
                 if high_mark < other_diff[HI]:
                     high_seq ^= 1
-                    high_diff = other_diff
                     high_mark = other_diff[HI]
 
             if len(using[0])==0:
@@ -220,7 +218,7 @@ class Differ(object):
                 assert len(using[0])==1
                 yield using[0][0], None
             else:
-                l0, h0, l1, h1, l2, h2 = block = self._merge_blocks(using)
+                l0, h0, l1, h1, l2, h2 = self._merge_blocks(using)
                 if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
                     if l1 != h1:
                         tag = "replace"
