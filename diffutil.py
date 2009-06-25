@@ -77,7 +77,10 @@ class Differ(object):
         self._merge_cache = []
 
     def _update_merge_cache(self, texts):
-        self._merge_cache = [c for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts)]
+        if self.num_sequences == 3:
+            self._merge_cache = [c for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts)]
+        else:
+            self._merge_cache = [(c, None) for c in self.diffs[0]]
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0, 1, 2)
