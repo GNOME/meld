@@ -451,7 +451,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         files = []
                         dirs = []
                         for e in entries:
-                            s = os.lstat(os.path.join(root, e))
+                            try: # Necessary for some broken symlink cases; see bgo#585895
+                                s = os.lstat(os.path.join(root, e))
+                            except OSError, err:
+                                print "Ignoring OS error: %s" % err
+                                continue
                             if stat.S_ISLNK(s.st_mode):
                                 if not self.prefs.ignore_symlinks:
                                     key = (s.st_dev, s.st_ino)
