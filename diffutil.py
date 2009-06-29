@@ -158,6 +158,9 @@ class Differ(object):
                 elif cs[1]:
                     yield cs[1] + (2,)
 
+    def sequences_identical(self):
+        return self.diffs == [[], []]
+
     def _merge_blocks(self, using):
         LO, HI = 1,2
         lowc  =  min(using[0][ 0][LO], using[1][ 0][LO])

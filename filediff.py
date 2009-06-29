@@ -30,6 +30,7 @@ import diffutil
 import gnomeglade
 import misc
 import melddoc
+import msgarea
 import paths
 import cairo
 
@@ -64,7 +65,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", srcviewer.override)
-        self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage"] )
+        self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr"] )
         self._update_regexes()
         self.warned_bad_comparison = False
         if srcviewer:
@@ -593,6 +594,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         step = self.linediffer.set_sequences_iter(*lines)
         while step.next() == None:
             yield 1
+
+        if self.num_panes > 1 and self.linediffer.sequences_identical():
+            for index, mgr in enumerate(self.msgarea_mgr):
+                msgarea = mgr.new_from_text_and_icon(gtk.STOCK_INFO,
+                                                     _("Files are identical"))
+                button = msgarea.add_stock_button_with_text(_("Hide"),
+                                                            gtk.STOCK_CLOSE,
+                                                            gtk.RESPONSE_CLOSE)
+                if index == 0:
+                    button.props.label = _("Hi_de")
+                msgarea.connect("response", self.on_msgarea_identical_response)
+                msgarea.show_all()
+
         self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN, jump_to_first=True), True )
         self.queue_draw()
         self.scheduler.add_task(self._update_highlighting().next)
@@ -602,6 +616,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if files[i]:
                     srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
         yield 0
+
+    def on_msgarea_identical_response(self, msgarea, respid):
+        for mgr in self.msgarea_mgr:
+            mgr.clear()
 
     def _update_highlighting(self):
         for b in self.textbuffer:
@@ -1019,10 +1037,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if n != self.num_panes and n in (1,2,3):
             self.num_panes = n
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
+            toshow += self.msgarea_mgr[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
             map( lambda x: x.show(), toshow )
 
             tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
+            tohide += self.msgarea_mgr[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
             map( lambda x: x.hide(), tohide )
 
