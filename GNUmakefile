@@ -42,7 +42,6 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir_)/glade2/pixmaps \
 		$(DESTDIR)$(docdir_) \
 		$(DESTDIR)$(sharedir)/applications \
-		$(DESTDIR)$(sharedir)/application-registry \
 		$(DESTDIR)$(sharedir)/pixmaps \
 		$(DESTDIR)$(helpdir_)
 	install -m 755 meld.install \
@@ -53,8 +52,6 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(libdir_)/vc
 	install -m 644 paths.py.install \
 		$(DESTDIR)$(libdir_)/paths.py
-	install -m 644 meld.applications \
-		$(DESTDIR)$(sharedir)/application-registry/meld.applications
 	install -m 644 meld.desktop \
 		$(DESTDIR)$(sharedir)/applications
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
