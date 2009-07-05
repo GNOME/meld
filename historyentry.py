@@ -345,7 +345,8 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
     def __browse_dialog_response(self, widget, response):
         if response == gtk.RESPONSE_ACCEPT:
             self.__browse_dialog_ok(widget)
-        widget.hide()
+        widget.destroy()
+        self.fsw = None
 
     def __build_filename(self):
         text = self.__gentry.get_entry().get_text()
