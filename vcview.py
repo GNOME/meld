@@ -57,7 +57,7 @@ def _commonprefix(files):
 ################################################################################
 class CommitDialog(gnomeglade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/vcview.glade"), "commitdialog")
+        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.glade"), "commitdialog")
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         selected = parent._get_selected_files()
@@ -119,7 +119,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/vcview.glade"), "vcview")
+        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.glade"), "vcview")
 
         actions = (
             ("VcCompare",       gtk.STOCK_DIALOG_INFO,      _("_Compare"),      None, _("Compare selected"), self.on_button_diff_clicked),
@@ -142,7 +142,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             ("VcShowIgnored", "filter-ignored-24",   _("Ignored"),   None, _("Show ignored files"), self.on_button_filter_toggled, False),
         )
 
-        self.ui_file = paths.share_dir("glade2/vcview-ui.xml")
+        self.ui_file = paths.ui_dir("vcview-ui.xml")
         self.actiongroup = gtk.ActionGroup('VcviewActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)

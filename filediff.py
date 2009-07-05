@@ -64,7 +64,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/filediff.glade"), "filediff", srcviewer.override)
+        gnomeglade.Component.__init__(self, paths.ui_dir("filediff.glade"), "filediff", srcviewer.override)
         self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr"] )
         self._update_regexes()
         self.warned_bad_comparison = False
@@ -127,7 +127,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
         )
 
-        self.ui_file = paths.share_dir("glade2/filediff-ui.xml")
+        self.ui_file = paths.ui_dir("filediff-ui.xml")
         self.actiongroup = gtk.ActionGroup('FilediffPopupActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
@@ -267,7 +267,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
-        load = lambda x: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps/"+x), self.pixels_per_line)
+        load = lambda x: gnomeglade.load_pixbuf(paths.icon_dir(x), self.pixels_per_line)
         self.pixbuf_apply0 = load("button_apply0.xpm")
         self.pixbuf_apply1 = load("button_apply1.xpm")
         self.pixbuf_delete = load("button_delete.xpm")
@@ -339,7 +339,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         response = gtk.RESPONSE_OK
         modified = [b.modified for b in self.bufferdata]
         if 1 in modified:
-            dialog = gnomeglade.Component( paths.share_dir("glade2/filediff.glade"), "closedialog")
+            dialog = gnomeglade.Component(paths.ui_dir("filediff.glade"), "closedialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             buttons = []
             for i in range(self.num_panes):
@@ -799,7 +799,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def make_patch(self, *extra):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
-        dialog = gnomeglade.Component(paths.share_dir("glade2/filediff.glade"), "patchdialog", srcviewer.override)
+        dialog = gnomeglade.Component(paths.ui_dir("filediff.glade"), "patchdialog", srcviewer.override)
         dialog.widget.set_transient_for( self.widget.get_toplevel() )
         texts = [b.get_text(*b.get_bounds()).split("\n") for b in self.textbuffer]
         texts[0] = [l+"\n" for l in texts[0]]

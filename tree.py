@@ -27,7 +27,7 @@ from vc._vc import STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
     STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
     STATE_MISSING, STATE_MAX
 
-load = lambda x,s=14: gnomeglade.load_pixbuf( paths.share_dir("glade2/pixmaps",x), s)
+load = lambda x,s=14: gnomeglade.load_pixbuf(paths.icon_dir(x), s)
 pixbuf_folder = load("tree-folder-normal.png", 20)
 pixbuf_folder_new = load("tree-folder-new.png", 20)
 pixbuf_folder_changed = load("tree-folder-changed.png", 20)

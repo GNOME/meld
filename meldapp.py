@@ -57,7 +57,7 @@ version = "1.3.0"
 
 class NewDocDialog(gnomeglade.Component):
     def __init__(self, parentapp):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "newdialog")
+        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.glade"), "newdialog")
         self.map_widgets_into_lists(["fileentry", "direntry", "vcentry", "three_way_compare"])
         self.entrylists = self.fileentry, self.direntry, self.vcentry
         self.widget.set_transient_for(parentapp.widget)
@@ -100,7 +100,7 @@ class NewDocDialog(gnomeglade.Component):
 ################################################################################
 class ListWidget(gnomeglade.Component):
     def __init__(self, columns, prefs, key):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "listwidget")
+        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.glade"), "listwidget")
         self.prefs = prefs
         self.key = key
         self.treeview.set_model( gtk.ListStore( *[c[1] for c in columns] ) )
@@ -196,7 +196,7 @@ class PreferencesDialog(gnomeglade.Component):
     editor_radio_values = {"internal":0, "gnome":1, "custom":2}
 
     def __init__(self, parentapp):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/meldapp.glade"), "preferencesdialog")
+        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
         self.prefs = parentapp.prefs
         # editor
@@ -417,7 +417,7 @@ class MeldApp(gnomeglade.Component):
     # init
     #
     def __init__(self):
-        gladefile = paths.share_dir("glade2/meldapp.glade")
+        gladefile = paths.ui_dir("meldapp.glade")
         gtk.window_set_default_icon_name("icon")
         if gobject.pygobject_version >= (2, 16, 0):
             gobject.set_application_name("Meld")
@@ -463,7 +463,7 @@ class MeldApp(gnomeglade.Component):
             ("ToolbarVisible",   None, _("_Toolbar"),   None, _("Show or hide the toolbar"),   self.on_menu_toolbar_toggled,   self.prefs.toolbar_visible),
             ("StatusbarVisible", None, _("_Statusbar"), None, _("Show or hide the statusbar"), self.on_menu_statusbar_toggled, self.prefs.statusbar_visible)
         )
-        ui_file = paths.share_dir("glade2/meldapp-ui.xml")
+        ui_file = paths.ui_dir("meldapp-ui.xml")
         self.actiongroup = gtk.ActionGroup('MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
@@ -720,7 +720,7 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_about_activate(self, *extra):
         gtk.about_dialog_set_url_hook(lambda dialog, uri: misc.open_uri(uri))
-        about = gtk.glade.XML(paths.share_dir("glade2/meldapp.glade"),"about").get_widget("about")
+        about = gtk.glade.XML(paths.ui_dir("meldapp.glade"), "about").get_widget("about")
         about.props.version = version
         about.set_transient_for(self.widget)
         about.run()
@@ -917,7 +917,7 @@ def main():
             return getattr(self.file, attr)
     sys.stdout = Unbuffered(sys.stdout)
 
-    gtk.icon_theme_get_default().append_search_path(paths.share_dir("glade2/pixmaps/"))
+    gtk.icon_theme_get_default().append_search_path(paths.icon_dir())
     app = MeldApp()
     app.parse_args(sys.argv[1:])
     gtk.main()

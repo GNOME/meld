@@ -23,7 +23,7 @@ from gettext import gettext as _
 
 class FindBar(gnomeglade.Component):
     def __init__(self):
-        gnomeglade.Component.__init__(self, paths.share_dir("glade2/findbar.glade"), "findbar")
+        gnomeglade.Component.__init__(self, paths.ui_dir("findbar.glade"), "findbar")
         gnomeglade.connect_signal_handlers(self)
         self.textview = None
         self.orig_base_color = self.find_entry.get_style().base[0]

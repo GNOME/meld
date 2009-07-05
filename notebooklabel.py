@@ -67,7 +67,7 @@ class NotebookLabel(gtk.HBox):
         button.connect("clicked", onclose)
 
         icon = gtk.Image()
-        icon.set_from_file(paths.share_dir("glade2/pixmaps/%s" % iconname))
+        icon.set_from_file(paths.icon_dir(iconname))
         icon.set_from_pixbuf(icon.get_pixbuf().scale_simple(16, 16, 2)) #TODO stock image
 
         label_box = gtk.EventBox()
