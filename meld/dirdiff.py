@@ -14,6 +14,7 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import filecmp
 import paths
 from ui import gnomeglade
 import gobject
@@ -78,7 +79,17 @@ def _files_same(lof, regexes):
         if cache.sigs == sigs: # up to date
             return cache.result
     # do it
-    contents = [ open(f, "r").read() for f in lof ]
+    try:
+        contents = [open(f, "r").read() for f in lof]
+    except (MemoryError, OverflowError): # Files are too large
+        # FIXME: Filters are not current applied in this case. If that was
+        # to be fixed, we could drop the all-at-once loading.
+        for i in range(len(lof) - 1):
+            same = filecmp.cmp(lof[i], lof[i + 1], False)
+            if not same:
+                return 0
+        return 1
+
     if all_same(contents):
         result = 1
     else:
