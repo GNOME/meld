@@ -29,7 +29,7 @@ all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 
 .PHONY:clean
 clean: 
-	-rm -f *.pyc vc/*.pyc *.install meld.desktop *.bak glade2/*.bak
+	-rm -f *.pyc vc/*.pyc *.install meld.desktop *.bak data/ui/*.bak
 	$(MAKE) -C po clean
 	$(MAKE) -C help clean
 
@@ -39,7 +39,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(bindir) \
 		$(DESTDIR)$(libdir_) \
 		$(DESTDIR)$(libdir_)/vc \
-		$(DESTDIR)$(sharedir_)/glade2/pixmaps \
+		$(DESTDIR)$(sharedir_)/ui \
+		$(DESTDIR)$(sharedir_)/icons \
 		$(DESTDIR)$(docdir_) \
 		$(DESTDIR)$(sharedir)/applications \
 		$(DESTDIR)$(sharedir)/pixmaps \
@@ -57,16 +58,16 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	$(PYTHON) -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	install -m 644 \
-		glade2/*.glade \
-		$(DESTDIR)$(sharedir_)/glade2
+		data/ui/*.glade \
+		$(DESTDIR)$(sharedir_)/ui
 	install -m 644 \
-		glade2/*.xml \
-		$(DESTDIR)$(sharedir_)/glade2
+		data/ui/*.xml \
+		$(DESTDIR)$(sharedir_)/ui
 	install -m 644 \
-		glade2/pixmaps/*.xpm \
-		glade2/pixmaps/*.png \
-		$(DESTDIR)$(sharedir_)/glade2/pixmaps
-	install -m 644 glade2/pixmaps/icon.png \
+		data/icons/*.xpm \
+		data/icons/*.png \
+		$(DESTDIR)$(sharedir_)/icons
+	install -m 644 data/icons/icon.png \
 		$(DESTDIR)$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po install
 	$(MAKE) -C help install

@@ -36,8 +36,14 @@ def help_dir(*args): # help
     return os.path.join(_help_dir, *args)
 
 def ui_dir(*args):
-    return os.path.join(_share_dir, "glade2", *args)
+    if os.path.exists(os.path.join(_share_dir, "data")):
+        return os.path.join(_share_dir, "data", "ui", *args)
+    else:
+        return os.path.join(_share_dir, "ui", *args)
 
 def icon_dir(*args):
-    return os.path.join(_share_dir, "glade2", "pixmaps", *args)
+    if os.path.exists(os.path.join(_share_dir, "data")):
+        return os.path.join(_share_dir, "data", "icons", *args)
+    else:
+        return os.path.join(_share_dir, "icons", *args)
 
