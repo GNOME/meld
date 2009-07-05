@@ -770,7 +770,7 @@ class MeldApp(gnomeglade.Component):
     def append_dirdiff(self, dirs, auto_compare=False):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
-        self._append_page(doc, "tree-folder-normal.png")
+        self._append_page(doc, "tree-folder-normal")
         doc.set_locations(dirs)
         # FIXME: This doesn't work, as dirdiff behaves differently to vcview
         if auto_compare:
@@ -784,7 +784,7 @@ class MeldApp(gnomeglade.Component):
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
         seq.connect("can-redo", self.on_can_redo)
-        self._append_page(doc, "tree-file-normal.png")
+        self._append_page(doc, "tree-file-normal")
         doc.set_files(files)
         return doc
 
@@ -804,7 +804,7 @@ class MeldApp(gnomeglade.Component):
         assert len(locations) in (1,)
         location = locations[0]
         doc = vcview.VcView(self.prefs)
-        self._append_page(doc, "vc-icon.png")
+        self._append_page(doc, "vc-icon")
         doc.set_location(location)
         if auto_compare:
             doc.on_button_diff_clicked(None)

@@ -21,8 +21,6 @@ from gettext import gettext as _
 import gtk
 import pango
 
-import paths
-
 gtk.rc_parse_string(
     """
     style "meld-tab-close-button-style" {
@@ -66,9 +64,7 @@ class NotebookLabel(gtk.HBox):
         button.set_size_request(w + 2, h + 2)
         button.connect("clicked", onclose)
 
-        icon = gtk.Image()
-        icon.set_from_file(paths.icon_dir(iconname))
-        icon.set_from_pixbuf(icon.get_pixbuf().scale_simple(16, 16, 2)) #TODO stock image
+        icon = gtk.image_new_from_icon_name(iconname, gtk.ICON_SIZE_MENU)
 
         label_box = gtk.EventBox()
         label_box.add_events(gtk.gdk.BUTTON_PRESS_MASK)
