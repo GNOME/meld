@@ -48,5 +48,5 @@ for file in glob.glob("glade2/*.glade"):
 		open(file,"w").write(newtxt)
 	
 version = re.search('^version\s*=\s*"([^"]+)"', open("meldapp.py").read(), re.M).group(1)
-if open("changelog").readline().find("meld-"+version) == -1:
-	print "No changelog entry for", version
+if open("NEWS").readline().find("meld-"+version) == -1:
+	print "No NEWS entry for", version
