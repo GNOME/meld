@@ -185,6 +185,11 @@ class Differ(object):
                 high_seq = 0
             else:
                 high_seq = int(seq0[0][LO] > seq1[0][LO])
+                if seq0[0][LO] == seq1[0][LO]:
+                    if seq0[0][0] == "insert":
+                        high_seq = 0
+                    elif seq1[0][0] == "insert":
+                        high_seq = 1
 
             high_diff = seq[high_seq].pop(0)
             high_mark = high_diff[HI]
@@ -196,6 +201,8 @@ class Differ(object):
             while seq[other_seq]:
                 other_diff = seq[other_seq][0]
                 if high_mark < other_diff[LO]:
+                    break
+                if high_mark == other_diff[LO] and not (high_diff[0] == other_diff[0] == "insert"):
                     break
 
                 using[other_seq].append(other_diff)

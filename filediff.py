@@ -696,21 +696,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 context.rectangle(0, ypos0, width, ypos1 - ypos0)
                 context.fill()
 
-        last_change = None
         for change in self.linediffer.single_changes(pane, self._get_texts()):
             change, skip = self._consume_blank_lines(change, pane, change[5])
             if skip:
                 continue
             if change[2] < start_line: continue
             if change[1] > end_line: break
-            if last_change and change[1] <= last_change[2]:
-                last_change = ("conflict", last_change[1], max(last_change[2],change[2]))
-            else:
-                if last_change:
-                    draw_change(last_change)
-                last_change = change
-        if last_change:
-            draw_change(last_change)
+            draw_change(change)
 
         if textview.is_focus():
             context.set_line_width(3)
