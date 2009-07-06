@@ -177,6 +177,22 @@ class Differ(object):
             high.append(highc - d[HI] + d[2+HI])
         return low[0], high[0], lowc, highc, low[1], high[1]
 
+    def _auto_merge(self, using, texts):
+        """Automatically merge two sequences of change blocks"""
+        l0, h0, l1, h1, l2, h2 = self._merge_blocks(using)
+        if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
+            if l1 != h1 and l0 == h0:
+                tag = "delete"
+            elif l1 != h1:
+                tag = "replace"
+            else:
+                tag = "insert"
+        else:
+            tag = "conflict"
+        out0 = (tag, l1, h1, l0, h0)
+        out1 = (tag, l1, h1, l2, h2)
+        yield out0, out1
+
     def _merge_diffs(self, seq0, seq1, texts):
         seq0, seq1 = seq0[:], seq1[:]
         seq = seq0, seq1
@@ -222,19 +238,8 @@ class Differ(object):
                 assert len(using[0])==1
                 yield using[0][0], None
             else:
-                l0, h0, l1, h1, l2, h2 = self._merge_blocks(using)
-                if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
-                    if l1 != h1 and l0 == h0:
-                        tag = "delete"
-                    elif l1 != h1:
-                        tag = "replace"
-                    else:
-                        tag = "insert"
-                else:
-                    tag = "conflict"
-                out0 = (tag, l1, h1, l0, h0)
-                out1 = (tag, l1, h1, l2, h2)
-                yield out0, out1
+                for c in self._auto_merge(using, texts):
+                    yield c
 
     def set_sequences_iter(self, *sequences):
         assert 0 <= len(sequences) <= 3
