@@ -221,7 +221,9 @@ class Differ(object):
             else:
                 l0, h0, l1, h1, l2, h2 = self._merge_blocks(using)
                 if h0-l0 == h2-l2 and texts[0][l0:h0] == texts[2][l2:h2]:
-                    if l1 != h1:
+                    if l1 != h1 and l0 == h0:
+                        tag = "delete"
+                    elif l1 != h1:
                         tag = "replace"
                     else:
                         tag = "insert"
