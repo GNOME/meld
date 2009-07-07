@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2009-04-20 17:01+0200\n"
-"PO-Revision-Date: 2009-04-20 17:05+0100\n"
+"POT-Creation-Date: 2009-07-07 12:48+0200\n"
+"PO-Revision-Date: 2009-07-07 21:51+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../dirdiff.py:173
-#: ../vcview.py:124
+#: ../vcview.py:125
 msgid "_Compare"
 msgstr "_Jämför"
 
 #: ../dirdiff.py:173
-#: ../vcview.py:124
+#: ../vcview.py:125
 msgid "Compare selected"
 msgstr "Jämför markerade"
 
@@ -31,7 +31,7 @@ msgid "Left"
 msgstr "Vänster"
 
 #: ../dirdiff.py:174
-#: ../filediff.py:120
+#: ../filediff.py:126
 msgid "Copy To Left"
 msgstr "Kopiera till vänster"
 
@@ -40,7 +40,7 @@ msgid "Right"
 msgstr "Höger"
 
 #: ../dirdiff.py:175
-#: ../filediff.py:121
+#: ../filediff.py:127
 msgid "Copy To Right"
 msgstr "Kopiera till höger"
 
@@ -49,6 +49,7 @@ msgid "Delete selected"
 msgstr "Ta bort markerade"
 
 #: ../dirdiff.py:177
+#: ../filediff.py:602
 msgid "Hide"
 msgstr "Dölj"
 
@@ -57,8 +58,8 @@ msgid "Hide selected"
 msgstr "Dölj markerade"
 
 #: ../dirdiff.py:179
-#: ../filediff.py:118
-#: ../vcview.py:125
+#: ../filediff.py:124
+#: ../vcview.py:126
 msgid "Open selected"
 msgstr "Öppna markerade"
 
@@ -91,7 +92,7 @@ msgid "Modified"
 msgstr "Ändrad"
 
 #: ../dirdiff.py:186
-#: ../vcview.py:137
+#: ../vcview.py:139
 msgid "Show modified"
 msgstr "Visa ändrade"
 
@@ -116,8 +117,8 @@ msgstr "Dölj %s"
 
 #: ../dirdiff.py:383
 #: ../dirdiff.py:393
-#: ../vcview.py:265
-#: ../vcview.py:293
+#: ../vcview.py:272
+#: ../vcview.py:300
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Genomsöker %s"
@@ -136,12 +137,12 @@ msgstr ""
 "Du gör en skiftlägesokänslig jämförelse på ett skiftlägeskänsligt filsystem. En del filer syns inte:\n"
 "%s"
 
-#: ../dirdiff.py:501
+#: ../dirdiff.py:505
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Klar"
 
-#: ../dirdiff.py:547
+#: ../dirdiff.py:551
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -150,7 +151,7 @@ msgstr ""
 "\"%s\" finns redan.\n"
 "Skriva över?"
 
-#: ../dirdiff.py:554
+#: ../dirdiff.py:558
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -161,8 +162,8 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:572
-#: ../vcview.py:455
+#: ../dirdiff.py:576
+#: ../vcview.py:464
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -171,8 +172,8 @@ msgstr ""
 "\"%s\" är en katalog.\n"
 "Ta bort rekursivt?"
 
-#: ../dirdiff.py:579
-#: ../vcview.py:460
+#: ../dirdiff.py:583
+#: ../vcview.py:469
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -183,117 +184,122 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:590
+#: ../dirdiff.py:594
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i sekund"
 msgstr[1] "%i sekunder"
 
-#: ../dirdiff.py:591
+#: ../dirdiff.py:595
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i minut"
 msgstr[1] "%i minuter"
 
-#: ../dirdiff.py:592
+#: ../dirdiff.py:596
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i timme"
 msgstr[1] "%i timmar"
 
-#: ../dirdiff.py:593
+#: ../dirdiff.py:597
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i dag"
 msgstr[1] "%i dagar"
 
-#: ../dirdiff.py:594
+#: ../dirdiff.py:598
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i vecka"
 msgstr[1] "%i veckor"
 
-#: ../dirdiff.py:595
+#: ../dirdiff.py:599
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i månad"
 msgstr[1] "%i månader"
 
-#: ../dirdiff.py:596
+#: ../dirdiff.py:600
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
 msgstr[0] "%i år"
 msgstr[1] "%i år"
 
-#: ../filediff.py:119
+#: ../filediff.py:125
 #: ../glade2/filediff.glade.h:4
 msgid "Create Patch"
 msgstr "Skapa programfix"
 
-#: ../filediff.py:119
+#: ../filediff.py:125
 msgid "Create a patch"
 msgstr "Skapa en programfix"
 
-#: ../filediff.py:120
+#: ../filediff.py:126
 msgid "Copy all changes from right pane to left pane"
 msgstr "Kopiera alla ändringar från högra till vänstra panelen"
 
-#: ../filediff.py:121
+#: ../filediff.py:127
 msgid "Copy all changes from left pane to right pane"
 msgstr "Kopiera alla ändringar från vänstra till högra panelen"
 
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:170
+#: ../filediff.py:180
 msgid "INS,OVR"
 msgstr "INF,ÖVR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:172
+#: ../filediff.py:182
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Rad %i, kolumn %i"
 
-#: ../filediff.py:230
+#: ../filediff.py:239
 #, python-format
 msgid "Regular expression '%s' changed the number of lines in the file. Comparison will be incorrect. See the user manual for more details."
 msgstr "Det reguljära uttrycket \"%s\" ändrade antalet rader i filen. Jämförelsen kommer att vara felaktig. Se användarhandboken för mer information."
 
-#: ../filediff.py:500
+#. TRANSLATORS: this is the name of a new file which has not yet been saved
+#: ../filediff.py:336
+msgid "<unnamed>"
+msgstr "<namnlös>"
+
+#: ../filediff.py:509
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Ställ in numrerade paneler"
 
-#: ../filediff.py:506
+#: ../filediff.py:515
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Öppnar filer"
 
-#: ../filediff.py:524
-#: ../filediff.py:538
-#: ../filediff.py:554
-#: ../filediff.py:561
+#: ../filediff.py:533
+#: ../filediff.py:547
+#: ../filediff.py:563
+#: ../filediff.py:570
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Kunde inte läsa från \"%s\""
 
-#: ../filediff.py:525
-#: ../filediff.py:562
+#: ../filediff.py:534
+#: ../filediff.py:571
 msgid "The error was:"
 msgstr "Felet var:"
 
-#: ../filediff.py:530
+#: ../filediff.py:539
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Läser filer"
 
-#: ../filediff.py:539
+#: ../filediff.py:548
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -301,17 +307,25 @@ msgstr ""
 "Den innehåller ascii-nulltecken.\n"
 "Den kanske är en binär fil."
 
-#: ../filediff.py:555
+#: ../filediff.py:564
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Jag provade med kodningar %s."
 
-#: ../filediff.py:582
+#: ../filediff.py:591
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Beräknar skillnader"
 
-#: ../filediff.py:709
+#: ../filediff.py:601
+msgid "Files are identical"
+msgstr "Filerna är identiska"
+
+#: ../filediff.py:606
+msgid "Hi_de"
+msgstr "_Dölj"
+
+#: ../filediff.py:729
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -320,7 +334,7 @@ msgstr ""
 "\"%s\" finns redan!\n"
 "Skriva över?"
 
-#: ../filediff.py:722
+#: ../filediff.py:742
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -331,12 +345,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:731
+#: ../filediff.py:751
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Välj ett namn för buffert %i."
 
-#: ../filediff.py:745
+#: ../filediff.py:765
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -347,7 +361,7 @@ msgstr ""
 "\n"
 "Vilket format vill du använda?"
 
-#: ../filediff.py:761
+#: ../filediff.py:781
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -357,11 +371,11 @@ msgstr ""
 "Vill du spara som UTF-8?"
 
 #. save as
-#: ../filediff.py:801
+#: ../filediff.py:821
 msgid "Save patch as..."
 msgstr "Spara programfix som..."
 
-#: ../filediff.py:868
+#: ../filediff.py:888
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -374,7 +388,7 @@ msgstr ""
 "\n"
 "Du kan inte ångra denna åtgärd."
 
-#: ../findbar.py:120
+#: ../findbar.py:119
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -436,7 +450,7 @@ msgid "_Previous"
 msgstr "_Föregående"
 
 #: ../glade2/findbar.glade.h:8
-#: ../meldapp.py:522
+#: ../meldapp.py:443
 msgid "_Replace"
 msgstr "_Ersätt"
 
@@ -653,7 +667,7 @@ msgid "Previous Logs"
 msgstr "Föregående loggar"
 
 #: ../glade2/vcview.glade.h:8
-#: ../vcview.py:181
+#: ../vcview.py:183
 msgid "Tag"
 msgstr "Tagg"
 
@@ -661,27 +675,27 @@ msgstr "Tagg"
 msgid "VC Log"
 msgstr "VK-logg"
 
-#: ../historyentry.py:247
+#: ../historyentry.py:248
 msgid "_Browse..."
 msgstr "_Bläddra..."
 
-#: ../historyentry.py:255
+#: ../historyentry.py:256
 msgid "Path"
 msgstr "Sökväg"
 
-#: ../historyentry.py:256
+#: ../historyentry.py:257
 msgid "Path to file"
 msgstr "Sökväg till fil"
 
-#: ../historyentry.py:257
+#: ../historyentry.py:258
 msgid "Pop up a file selector to choose a file"
 msgstr "Visa en filväljare för att välja en fil"
 
-#: ../historyentry.py:378
+#: ../historyentry.py:379
 msgid "Select directory"
 msgstr "Välj katalog"
 
-#: ../historyentry.py:382
+#: ../historyentry.py:383
 msgid "Select file"
 msgstr "Välj fil"
 
@@ -689,6 +703,11 @@ msgstr "Välj fil"
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld kräver %s eller högre."
+
+#: ../meld:64
+#: ../meld:71
+msgid "Cannot import: "
+msgstr "Kan inte importera: "
 
 #: ../meld.desktop.in.h:1
 msgid "Compare and merge your files"
@@ -698,66 +717,62 @@ msgstr "Jämför och slå samman dina filer"
 msgid "Meld Diff Viewer"
 msgstr "Diffvisaren Meld"
 
-#: ../meldapp.py:153
+#: ../meldapp.py:151
 msgid "label"
 msgstr "etikett"
 
-#: ../meldapp.py:153
+#: ../meldapp.py:151
 msgid "pattern"
 msgstr "mönster"
 
-#: ../meldapp.py:221
+#: ../meldapp.py:219
 msgid "Only available if you have gnome-python-desktop installed"
 msgstr "Endast tillgängligt om du har gnome-python-desktop installerat"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:231
-#: ../meldapp.py:236
-#: ../vcview.py:161
+#: ../meldapp.py:229
+#: ../meldapp.py:234
+#: ../vcview.py:163
 msgid "Name"
 msgstr "Namn"
 
-#: ../meldapp.py:231
-#: ../meldapp.py:236
+#: ../meldapp.py:229
+#: ../meldapp.py:234
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../meldapp.py:231
+#: ../meldapp.py:229
 msgid "Pattern"
 msgstr "Mönster"
 
-#: ../meldapp.py:236
+#: ../meldapp.py:234
 msgid "Regex"
 msgstr "Reguljärt uttryck"
 
-#: ../meldapp.py:340
-msgid "Close tab"
-msgstr "Stäng flik"
-
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:412
+#: ../meldapp.py:341
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Säkerhetskopior\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:414
+#: ../meldapp.py:343
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Versionskontroll\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:416
+#: ../meldapp.py:345
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binärer\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:418
+#: ../meldapp.py:347
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:420
+#: ../meldapp.py:349
 msgid ""
 "CVS keywords\t0\t\\$\\w+(:[^\\n"
 "$]+)?\\$\n"
@@ -766,202 +781,254 @@ msgstr ""
 "$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:422
+#: ../meldapp.py:351
 msgid "C++ comment\t0\t//.*\n"
 msgstr "C++-kommentar\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:424
+#: ../meldapp.py:353
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "C-kommentar\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:426
+#: ../meldapp.py:355
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Alla blanktecken\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:428
+#: ../meldapp.py:357
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Inledande blanktecken\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:430
+#: ../meldapp.py:359
 msgid "Script comment\t0\t#.*"
 msgstr "Skriptkommentar\t0\t#.*"
 
-#: ../meldapp.py:508
+#: ../meldapp.py:428
+msgid "_File"
+msgstr "_Arkiv"
+
+#: ../meldapp.py:429
 msgid "_New..."
 msgstr "_Ny..."
 
-#: ../meldapp.py:508
+#: ../meldapp.py:429
 msgid "Start a new comparison"
 msgstr "Starta en ny jämförelse"
 
-#: ../meldapp.py:509
+#: ../meldapp.py:430
 msgid "Save the current file"
 msgstr "Spara den aktuella filen"
 
-#: ../meldapp.py:511
+#: ../meldapp.py:432
 msgid "Close the current file"
 msgstr "Stäng den aktuella filen"
 
-#: ../meldapp.py:512
+#: ../meldapp.py:433
 msgid "Quit the program"
 msgstr "Avsluta programmet"
 
-#: ../meldapp.py:515
+#: ../meldapp.py:435
+msgid "_Edit"
+msgstr "_Redigera"
+
+#: ../meldapp.py:436
 msgid "Undo the last action"
 msgstr "Ångra den senaste åtgärden"
 
-#: ../meldapp.py:516
+#: ../meldapp.py:437
 msgid "Redo the last undone action"
 msgstr "Gör om senaste ångrade åtgärden"
 
-#: ../meldapp.py:517
+#: ../meldapp.py:438
 msgid "Cut the selection"
 msgstr "Klipp ut markering"
 
-#: ../meldapp.py:518
+#: ../meldapp.py:439
 msgid "Copy the selection"
 msgstr "Kopiera markering"
 
-#: ../meldapp.py:519
+#: ../meldapp.py:440
 msgid "Paste the clipboard"
 msgstr "Klistra in urklipp"
 
-#: ../meldapp.py:520
+#: ../meldapp.py:441
 msgid "Search for text"
 msgstr "Sök efter text"
 
-#: ../meldapp.py:521
+#: ../meldapp.py:442
 msgid "Find Ne_xt"
 msgstr "Sök _nästa"
 
-#: ../meldapp.py:521
+#: ../meldapp.py:442
 msgid "Search forwards for the same text"
 msgstr "Sök framåt efter samma text"
 
-#: ../meldapp.py:522
+#: ../meldapp.py:443
 msgid "Find and replace text"
 msgstr "Sök och ersätt text"
 
-#: ../meldapp.py:523
+#: ../meldapp.py:444
 msgid "Go to the next difference"
 msgstr "Gå till nästa skillnad"
 
-#: ../meldapp.py:524
+#: ../meldapp.py:445
 msgid "Go to the previous difference"
 msgstr "Gå till föregående skillnad"
 
-#: ../meldapp.py:525
+#: ../meldapp.py:446
 msgid "Prefere_nces"
 msgstr "Inställ_ningar"
 
-#: ../meldapp.py:525
+#: ../meldapp.py:446
 msgid "Configure the application"
 msgstr "Konfigurera programmet"
 
-#: ../meldapp.py:531
+#: ../meldapp.py:448
+msgid "_View"
+msgstr "_Visa"
+
+#: ../meldapp.py:449
+msgid "File status"
+msgstr "Filstatus"
+
+#: ../meldapp.py:450
+msgid "Version status"
+msgstr "Versionsstatus"
+
+#: ../meldapp.py:451
+msgid "File filters"
+msgstr "Filfilter"
+
+#: ../meldapp.py:452
 msgid "Stop the current action"
 msgstr "Stoppa den aktuella åtgärden"
 
-#: ../meldapp.py:532
+#: ../meldapp.py:453
 msgid "Refresh the view"
 msgstr "Uppdatera vyn"
 
-#: ../meldapp.py:533
+#: ../meldapp.py:454
 msgid "Reload"
 msgstr "Läs om"
 
-#: ../meldapp.py:533
+#: ../meldapp.py:454
 msgid "Reload the comparison"
 msgstr "Läs om jämförelsen"
 
-#: ../meldapp.py:536
+#: ../meldapp.py:456
+msgid "_Help"
+msgstr "_Hjälp"
+
+#: ../meldapp.py:457
 msgid "_Contents"
 msgstr "_Innehåll"
 
-#: ../meldapp.py:536
+#: ../meldapp.py:457
 msgid "Open the Meld manual"
 msgstr "Öppna handboken för Meld"
 
-#: ../meldapp.py:537
+#: ../meldapp.py:458
 msgid "Report _Bug"
 msgstr "Rapportera _fel"
 
-#: ../meldapp.py:537
+#: ../meldapp.py:458
 msgid "Report a bug in Meld"
 msgstr "Rapportera ett fel i Meld"
 
-#: ../meldapp.py:538
+#: ../meldapp.py:459
 msgid "About this program"
 msgstr "Om programmet"
 
-#: ../meldapp.py:856
+#: ../meldapp.py:462
+msgid "Full Screen"
+msgstr "Helskärm"
+
+#: ../meldapp.py:462
+msgid "View the comparison in full screen"
+msgstr "Visa jämförelsen i helskärmsläge"
+
+#: ../meldapp.py:463
+msgid "_Toolbar"
+msgstr "Ver_ktygsrad"
+
+#: ../meldapp.py:463
+msgid "Show or hide the toolbar"
+msgstr "Visa eller dölj verktygsraden"
+
+#: ../meldapp.py:464
+msgid "_Statusbar"
+msgstr "_Statusrad"
+
+#: ../meldapp.py:464
+msgid "Show or hide the statusbar"
+msgstr "Visa eller dölj statusraden"
+
+#: ../meldapp.py:795
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Kan inte jämföra en blandning av filer och kataloger.\n"
 
-#: ../meldapp.py:899
-#: ../meldapp.py:907
+#: ../meldapp.py:838
+#: ../meldapp.py:846
 msgid "file"
 msgstr "fil"
 
-#: ../meldapp.py:900
-#: ../meldapp.py:906
+#: ../meldapp.py:839
+#: ../meldapp.py:845
 msgid "dir"
 msgstr "katalog"
 
-#: ../meldapp.py:905
+#: ../meldapp.py:844
 msgid "Start with no window open"
 msgstr "Starta med inget fönster öppnat"
 
-#: ../meldapp.py:906
+#: ../meldapp.py:845
 #, python-format
 msgid "Start with Version Control browser in '%s'"
 msgstr "Starta med versionskontrollbläddrare i \"%s\""
 
-#: ../meldapp.py:907
+#: ../meldapp.py:846
 #, python-format
 msgid "Start with Version Control diff of '%s'"
 msgstr "Starta med diff för versionskontroll av \"%s\""
 
-#: ../meldapp.py:908
+#: ../meldapp.py:847
 msgid "Start with 2 or 3 way file comparison"
 msgstr "Starta med en 2 eller 3-vägs filjämförelse"
 
-#: ../meldapp.py:909
+#: ../meldapp.py:848
 msgid "Start with 2 or 3 way directory comparison"
 msgstr "Starta med en 2 eller 3-vägs katalogjämförelse"
 
-#: ../meldapp.py:916
+#: ../meldapp.py:855
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld är ett verktyg för jämförelser av filer och kataloger."
 
-#: ../meldapp.py:919
+#: ../meldapp.py:858
 msgid "Set label to use instead of file name"
 msgstr "Sätt etikett för att använda istället för filnamn"
 
-#: ../meldapp.py:921
+#: ../meldapp.py:860
 msgid "Automatically compare all differing files on startup"
 msgstr "Jämför automatiskt alla filer som skiljer sig vid uppstart"
 
-#: ../meldapp.py:922
-#: ../meldapp.py:923
-#: ../meldapp.py:924
-#: ../meldapp.py:925
+#: ../meldapp.py:861
+#: ../meldapp.py:862
+#: ../meldapp.py:863
+#: ../meldapp.py:864
 msgid "Ignored for compatibility"
 msgstr "Ignorerad för kompatibilitet"
 
-#: ../meldapp.py:928
+#: ../meldapp.py:867
 msgid "Creates a diff tab for up to 3 supplied files or directories."
 msgstr "Skapar en diff-tabell för upp till 3 angivna filer eller kataloger."
 
-#: ../meldapp.py:932
+#: ../meldapp.py:871
 msgid "Invalid number of arguments supplied for --diff."
 msgstr "Ogiltigt antal argument angavs för --diff."
 
-#: ../meldapp.py:935
+#: ../meldapp.py:874
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Felaktigt antal argument (fick %i)"
@@ -971,146 +1038,154 @@ msgid "untitled"
 msgstr "namnlös"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:173
+#: ../misc.py:190
 msgid "[None]"
 msgstr "[Ingen]"
 
-#: ../vcview.py:126
+#: ../vcview.py:127
 msgid "_Commit"
 msgstr "_Verkställ"
 
-#: ../vcview.py:126
+#: ../vcview.py:127
 msgid "Commit"
 msgstr "Verkställ"
 
 #. FIXME: popup used to use gtk.STOCK_GO_BACK
-#: ../vcview.py:127
+#: ../vcview.py:128
 msgid "_Update"
 msgstr "_Uppdatera"
 
-#: ../vcview.py:127
+#: ../vcview.py:128
 msgid "Update"
 msgstr "Uppdatera"
 
 #. FIXME: popup used to use gtk.STOCK_GO_FORWARD
-#: ../vcview.py:128
+#: ../vcview.py:129
 msgid "_Add"
 msgstr "_Lägg till"
 
-#: ../vcview.py:128
+#: ../vcview.py:129
 msgid "Add to VC"
 msgstr "Lägg till i VK"
 
 #. FIXME: popup used to use gtk.STOCK_ADD
-#: ../vcview.py:129
+#: ../vcview.py:130
 msgid "Add _Binary"
 msgstr "Lägg till _binär"
 
-#: ../vcview.py:129
+#: ../vcview.py:130
 msgid "Add binary to VC"
 msgstr "Lägg till binär till VK"
 
 #. FIXME: stock is inconsistent with other VC actions
-#: ../vcview.py:130
+#: ../vcview.py:131
 msgid "_Remove"
 msgstr "_Ta bort"
 
-#: ../vcview.py:130
+#: ../vcview.py:131
 msgid "Remove from VC"
 msgstr "Ta bort från VK"
 
 #. FIXME: popup used to use gtk.STOCK_REMOVE
-#: ../vcview.py:131
+#: ../vcview.py:132
+msgid "_Resolved"
+msgstr "_Löst"
+
+#: ../vcview.py:132
+msgid "Mark as resolved for VC"
+msgstr "Markera som löst för VC"
+
+#: ../vcview.py:133
 msgid "Revert to original"
 msgstr "Återgå till original"
 
-#: ../vcview.py:132
+#: ../vcview.py:134
 msgid "Delete locally"
 msgstr "Ta bort lokalt"
 
-#: ../vcview.py:136
+#: ../vcview.py:138
 msgid "_Flatten"
 msgstr "_Platta till"
 
-#: ../vcview.py:136
+#: ../vcview.py:138
 msgid "Flatten directories"
 msgstr "Platta till kataloger"
 
-#: ../vcview.py:137
+#: ../vcview.py:139
 msgid "_Modified"
 msgstr "_Ändrad"
 
-#: ../vcview.py:138
+#: ../vcview.py:140
 msgid "_Normal"
 msgstr "_Normal"
 
-#: ../vcview.py:138
+#: ../vcview.py:140
 msgid "Show normal"
 msgstr "Visa normal"
 
-#: ../vcview.py:139
+#: ../vcview.py:141
 msgid "Non _VC"
 msgstr "Icke-_VK"
 
-#: ../vcview.py:139
+#: ../vcview.py:141
 msgid "Show unversioned files"
 msgstr "Visa filer som inte versionskontrolleras"
 
-#: ../vcview.py:140
+#: ../vcview.py:142
 msgid "Ignored"
 msgstr "Ignorerad"
 
-#: ../vcview.py:140
+#: ../vcview.py:142
 msgid "Show ignored files"
 msgstr "Visa ignorerade filer"
 
-#: ../vcview.py:178
+#: ../vcview.py:180
 msgid "Location"
 msgstr "Plats"
 
-#: ../vcview.py:179
+#: ../vcview.py:181
 msgid "Status"
 msgstr "Status"
 
-#: ../vcview.py:180
+#: ../vcview.py:182
 msgid "Rev"
 msgstr "Rev"
 
-#: ../vcview.py:182
+#: ../vcview.py:184
 msgid "Options"
 msgstr "Alternativ"
 
-#: ../vcview.py:228
+#: ../vcview.py:230
 msgid "Choose one Version Control"
 msgstr "Välj en versionskontroll"
 
-#: ../vcview.py:229
+#: ../vcview.py:231
 msgid "Only one Version Control in this directory"
 msgstr "Endast en versionskontroll i denna katalog"
 
-#: ../vcview.py:309
+#: ../vcview.py:316
 msgid "(Empty)"
 msgstr "(Tom)"
 
-#: ../vcview.py:342
+#: ../vcview.py:349
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Hämtar skillnader"
 
-#: ../vcview.py:349
+#: ../vcview.py:356
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Verkställer programfix"
 
-#: ../vcview.py:353
+#: ../vcview.py:360
 msgid "No differences found."
 msgstr "Inga skillnader hittades."
 
-#: ../vcview.py:432
+#: ../vcview.py:439
 msgid "Select some files first."
 msgstr "Välj några filer först."
 
-#: ../vcview.py:496
+#: ../vcview.py:505
 #, python-format
 msgid ""
 "\n"
@@ -1150,11 +1225,11 @@ msgstr ""
 "                    "
 
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:39
+#: ../vc/_vc.py:40
 msgid "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
 msgstr "Ignorerad:Icke versionskontrollerad:::Fel::Nyligen tillagd:Ändrad:<b>Konflikt</b>:Borttagen:Saknas"
 
-#: ../vc/cvs.py:152
+#: ../vc/cvs.py:151
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1165,6 +1240,8 @@ msgstr ""
 "Mönstret var \"%s\"\n"
 "Felet var \"%s\""
 
+#~ msgid "Close tab"
+#~ msgstr "Stäng flik"
 #~ msgid ""
 #~ "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
 #~ msgstr ""
@@ -1281,8 +1358,6 @@ msgstr ""
 #~ msgstr "Redigera markerade"
 #~ msgid "Edit the selected file"
 #~ msgstr "Redigera markerad fil"
-#~ msgid "_Edit"
-#~ msgstr "_Redigera"
 #~ msgid "Edit files"
 #~ msgstr "Redigera filer"
 #~ msgid "Compare"
@@ -1309,18 +1384,12 @@ msgstr ""
 #~ msgstr "Ja"
 #~ msgid "_Down"
 #~ msgstr "_Ned"
-#~ msgid "_File"
-#~ msgstr "_Arkiv"
-#~ msgid "_Help"
-#~ msgstr "_Hjälp"
 #~ msgid "_Save"
 #~ msgstr "_Spara"
 #~ msgid "_Stop"
 #~ msgstr "_Stoppa"
 #~ msgid "_Up"
 #~ msgstr "_Upp"
-#~ msgid "_View"
-#~ msgstr "_Visa"
 #~ msgid "Remove _Locally"
 #~ msgstr "Ta bort _lokalt"
 #~ msgid ""
@@ -1539,10 +1608,6 @@ msgstr ""
 #~ msgstr "Mappjämförelse"
 #~ msgid "_Settings"
 #~ msgstr "_Inställningar"
-#~ msgid "Show Toolbar"
-#~ msgstr "Visa verktygsrad"
-#~ msgid "Show Statusbar"
-#~ msgstr "Visa statusrad"
 #~ msgid "Run meld --help for help"
 #~ msgstr "Kör meld --help för hjälp"
 #~ msgid "Usage: meld [options] [arguments]"
@@ -1636,8 +1701,6 @@ msgstr ""
 #~ msgstr "Hämtar skillnader"
 #~ msgid "Applying patch"
 #~ msgstr "Verkställer programfix"
-#~ msgid "Version"
-#~ msgstr "Version"
 #~ msgid "Normal"
 #~ msgstr "Normal"
 #~ msgid "Unknown"
