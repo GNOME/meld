@@ -63,7 +63,7 @@ class Vc(_vc.CachedVc):
         branch_root = _vc.popen([self.CMD, "root", rootdir]).read().rstrip('\n')
         while 1:
             try:
-                proc = _vc.popen([self.CMD, status, branch_root])
+                proc = _vc.popen([self.CMD, "status", branch_root])
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
