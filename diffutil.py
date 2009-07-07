@@ -66,6 +66,9 @@ def reverse_chunk(chunk):
 ################################################################################
 class Differ(object):
     """Utility class to hold diff2 or diff3 chunks"""
+
+    _matcher = IncrementalSequenceMatcher
+
     def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
         self.num_sequences = 0
@@ -116,7 +119,7 @@ class Differ(object):
         linesx = texts[x][rangex[0]:rangex[1]]
         lines1 = texts[1][range1[0]:range1[1]]
         #print "<<<\n%s\n===\n%s\n>>>" % ("\n".join(linesx),"\n".join(lines1))
-        newdiffs = IncrementalSequenceMatcher( None, lines1, linesx).get_difference_opcodes()
+        newdiffs = self._matcher(None, lines1, linesx).get_difference_opcodes()
         newdiffs = [ (c[0], c[1]+range1[0],c[2]+range1[0], c[3]+rangex[0],c[4]+rangex[0]) for c in newdiffs]
         if hiidx < len(self.diffs[which]):
             self.diffs[which][hiidx:] = [ (c[0],
@@ -240,7 +243,7 @@ class Differ(object):
         self.seqlength = [len(s) for s in sequences]
 
         for i in range(self.num_sequences - 1):
-            matcher = IncrementalSequenceMatcher(None, sequences[1], sequences[i*2])
+            matcher = self._matcher(None, sequences[1], sequences[i*2])
             work = matcher.initialise()
             while work.next() == None:
                 yield None
