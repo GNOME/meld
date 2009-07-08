@@ -17,6 +17,8 @@
 """Utility class for working with glade files.
 """
 
+import sys
+
 import gtk
 import gtk.glade
 import re
@@ -24,7 +26,8 @@ import re
 def custom_handler( glade, module_function_name, widget_name, str1, str2, int1, int2):
     assert module_function_name.find(".") != -1, "%s should contain a ." % module_function_name
     module, function_name = module_function_name.rsplit(".",1)
-    return getattr(__import__(module), function_name)(str1, str2, int1, int2)
+    __import__(module)
+    return getattr(sys.modules[module], function_name)(str1, str2, int1, int2)
 
 class Component(object):
     """Base class for all glade objects.
