@@ -49,37 +49,34 @@ gettext.textdomain("meld")
 pyver = (2,4)
 pygtkver = (2,8,0)
 
-def missing_reqs(mod, ver):
-    modver = mod + " " + ".".join(map(str, ver))
-    print _("Meld requires %s or higher.") % modver
+def missing_reqs(mod, ver, exception=None):
+    if isinstance(exception, ImportError):
+        print _("Cannot import: ") + mod + "\n" + e
+    else:
+        modver = mod + " " + ".".join(map(str, ver))
+        print _("Meld requires %s or higher.") % modver
     sys.exit(1)
 
 if sys.version_info[:2] < pyver:
     missing_reqs("Python", pyver)
 
+# gtk+ and related imports
 try:
     import pygtk
     pygtk.require("2.0")
-except ImportError, e:
-    print e
-    missing_reqs("pygtk", pygtkver)
+except (ImportError, AssertionError), e:
+    missing_reqs("pygtk", pygtkver, e)
 
 try:
     import gtk
-except ImportError, e:
-    print e
-    print _("Cannot import: ") + "gtk"
-    sys.exit(1)
+    assert gtk.pygtk_version >= pygtkver
+except (ImportError, AssertionError), e:
+    missing_reqs("pygtk", pygtkver, e)
 
 try:
     import gtk.glade
 except ImportError, e:
-    print e
-    print _("Cannot import: ") + "gtk.glade"
-    sys.exit(1)
-
-if gtk.pygtk_version < pygtkver:
-    missing_reqs("pygtk", pygtkver)
+    missing_reqs("gtk.glade", pygtkver, e)
 
 # Ignore deprecation warnings from pygtk > 2.6
 #if gtk.pygtk_version >= (2,8,0):
