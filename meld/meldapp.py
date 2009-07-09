@@ -899,24 +899,3 @@ class MeldApp(gnomeglade.Component):
             tab = self.append_diff(paths, auto_compare)
         return tab
 
-
-################################################################################
-#
-# Main
-#
-################################################################################
-def main():
-    class Unbuffered(object):
-        def __init__(self, file):
-            self.file = file
-        def write(self, arg):
-            self.file.write(arg)
-            self.file.flush()
-        def __getattr__(self, attr):
-            return getattr(self.file, attr)
-    sys.stdout = Unbuffered(sys.stdout)
-
-    gtk.icon_theme_get_default().append_search_path(paths.icon_dir())
-    app = MeldApp()
-    app.parse_args(sys.argv[1:])
-    gtk.main()

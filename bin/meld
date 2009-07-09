@@ -19,6 +19,17 @@
 import os
 import sys
 
+# Disable buffering of stdout
+class Unbuffered(object):
+    def __init__(self, file):
+        self.file = file
+    def write(self, arg):
+        self.file.write(arg)
+        self.file.flush()
+    def __getattr__(self, attr):
+        return getattr(self.file, attr)
+sys.stdout = Unbuffered(sys.stdout)
+
 # Use pychecker if requested
 if "--pychecker" in sys.argv:
     sys.argv.remove("--pychecker")
@@ -97,14 +108,16 @@ except ImportError, e:
 
 gtk.glade.bindtextdomain("meld", meld.paths.locale_dir())
 gtk.glade.textdomain("meld")
+gtk.icon_theme_get_default().append_search_path(meld.paths.icon_dir())
 
-#
-# main
-#
-import meld.meldapp
+def main():
+    import meld.meldapp
+    app = meld.meldapp.MeldApp()
+    app.parse_args(sys.argv[1:])
+    gtk.main()
 
 if profiling:
     import profile
-    profile.run("meld.meldapp.main()")
+    profile.run("main()")
 else:
-    meld.meldapp.main()
+    main()
