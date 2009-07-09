@@ -16,17 +16,30 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#
-# pychecker
-#
 import os
 import sys
+
+# Use pychecker if requested
 if "--pychecker" in sys.argv:
     sys.argv.remove("--pychecker")
-    import os
     os.environ['PYCHECKER'] = "--no-argsused --no-classattr --stdlib"
         #'--blacklist=gettext,locale,pygtk,gtk,gtk.keysyms,popen2,random,difflib,filecmp,tempfile'
     import pychecker.checker
+
+# Ignore session management
+for ignore in "--sm-config-prefix", "--sm-client-id":
+    try:
+        smprefix = sys.argv.index(ignore)
+        del sys.argv[smprefix:smprefix + 2]
+    except (ValueError, IndexError):
+        pass
+
+# Extract the profiling flag
+try:
+    sys.argv.remove("--profile")
+    profiling = True
+except ValueError:
+    profiling = False
 
 # Support running from an uninstalled version
 melddir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -37,7 +50,6 @@ else:
     ]
 
 # i18n support
-
 import meld.paths
 import gettext
 _ = gettext.gettext
@@ -90,18 +102,9 @@ gtk.glade.textdomain("meld")
 # main
 #
 import meld.meldapp
-for ignore in "--sm-config-prefix", "--sm-client-id":
-    try: # ignore session management
-        smprefix = sys.argv.index(ignore)
-        del sys.argv[smprefix]
-        del sys.argv[smprefix]
-    except (ValueError,IndexError):
-        pass
-try: # don't pass on the profiling flag
-    minusp = sys.argv.index("--profile")
-    del sys.argv[minusp]
+
+if profiling:
     import profile
     profile.run("meld.meldapp.main()")
-except ValueError:
+else:
     meld.meldapp.main()
-sys.exit(0)
