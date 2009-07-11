@@ -125,10 +125,10 @@ upload:
 
 .PHONY:announce
 announce:
-	$(BROWSER) http://freshmeat.net/add-release/29735/ &
+	$(BROWSER) http://freshmeat.net/projects/meld/releases/new
 	$(BROWSER) http://www.gnomefiles.org/devs/newversion.php?soft_id=203 &
-	$(BROWSER) http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
 	$(BROWSER) http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
+	#$(BROWSER) http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
 	
 .PHONY:update
 update:
