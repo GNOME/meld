@@ -104,7 +104,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("filediff.glade"), "filediff", srcviewer.override)
-        self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr"] )
+        self.map_widgets_into_lists(["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr", "vbox"])
         self._update_regexes()
         self.warned_bad_comparison = False
         for v in self.textview:
@@ -1085,12 +1085,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if n != self.num_panes and n in (1,2,3):
             self.num_panes = n
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
-            toshow += self.msgarea_mgr[:n]
+            toshow += self.vbox[:n] + self.msgarea_mgr[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
             map( lambda x: x.show(), toshow )
 
             tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
-            tohide += self.msgarea_mgr[n:]
+            tohide += self.vbox[n:] + self.msgarea_mgr[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
             map( lambda x: x.hide(), tohide )
 
