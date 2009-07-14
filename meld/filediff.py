@@ -479,6 +479,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("CopyAllRight").set_sensitive(pane+1 < self.num_panes)
         self.popup_menu.popup(None, None, None, 3, gtk.get_current_event_time())
 
+    def on_scrolledwindow__size_allocate(self, scrolledwindow, allocation):
+        index = self.scrolledwindow.index(scrolledwindow)
+        if index == 0 or index == 1:
+            self.linkmap[0].queue_draw()
+        if index == 1 or index == 2:
+            self.linkmap[1].queue_draw()
+
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
