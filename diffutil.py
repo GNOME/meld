@@ -248,7 +248,7 @@ class Differ(object):
                 for c in self._auto_merge(using, texts):
                     yield c
 
-    def set_sequences_iter(self, sequences, texts):
+    def set_sequences_iter(self, sequences):
         assert 0 <= len(sequences) <= 3
         self.diffs = [[], []]
         self.num_sequences = len(sequences)
@@ -260,6 +260,6 @@ class Differ(object):
             while work.next() == None:
                 yield None
             self.diffs[i] = matcher.get_difference_opcodes()
-        self._update_merge_cache(texts)
+        self._update_merge_cache(sequences)
         yield 1
 

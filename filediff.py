@@ -591,7 +591,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Computing differences") % self.label_text
         panetext = [self._filter_text(p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
-        step = self.linediffer.set_sequences_iter(lines, self._get_texts())
+        step = self.linediffer.set_sequences_iter(lines)
         while step.next() == None:
             yield 1
 
