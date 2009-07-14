@@ -1155,6 +1155,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
     def on_linkmap_expose_event(self, widget, event):
         wtotal, htotal = widget.allocation.width, widget.allocation.height
+        yoffset = widget.allocation.y
         context = widget.window.cairo_create()
         context.rectangle(event.area.x, event.area.y, event.area.width, event.area.height)
         context.clip()
@@ -1174,6 +1175,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         pix_start = [None] * self.num_panes
         pix_start[which  ] = self.textview[which  ].get_visible_rect().y
         pix_start[which+1] = self.textview[which+1].get_visible_rect().y
+
+        rel_offset = [None] * self.num_panes
+        rel_offset[which] = self.textview[which].allocation.y - yoffset
+        rel_offset[which + 1] = self.textview[which + 1].allocation.y - yoffset
 
         def bounds(idx):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
@@ -1196,8 +1201,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 break
 
             # f and t are short for "from" and "to"
-            f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
-            t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
+            f0, f1 = [self._line_to_pixel(which, l) - pix_start[which] + rel_offset[which] for l in c[1:3]]
+            t0, t1 = [self._line_to_pixel(which + 1, l) - pix_start[which + 1] + rel_offset[which + 1] for l in c[3:5]]
 
             context.move_to(x_steps[0], f0 - 0.5)
             context.curve_to(x_steps[1], f0 - 0.5,
