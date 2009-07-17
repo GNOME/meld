@@ -689,11 +689,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.stroke()
             if change[2] != change[1]:
                 ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
-                context.move_to(-0.5, ypos1 + 0.5)
+                context.move_to(-0.5, ypos1 - 0.5)
                 context.rel_line_to(width + 1, 0)
                 context.stroke()
                 context.set_source_rgb(*self.fill_colors[change[0]])
-                context.rectangle(0, ypos0, width, ypos1 - ypos0)
+                context.rectangle(0, ypos0, width, ypos1 - ypos0 - 1)
                 context.fill()
 
         for change in self.linediffer.single_changes(pane):
@@ -1176,19 +1176,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             f0,f1 = [self._line_to_pixel(which,   l) - pix_start[which  ] for l in c[1:3] ]
             t0,t1 = [self._line_to_pixel(which+1, l) - pix_start[which+1] for l in c[3:5] ]
 
-            if f0 == f1:
-                f0 -= 1
-            if t0 == t1:
-                t0 -= 1
-
             context.move_to(x_steps[0], f0 - 0.5)
             context.curve_to(x_steps[1], f0 - 0.5,
                              x_steps[2], t0 - 0.5,
                              x_steps[3], t0 - 0.5)
-            context.line_to(x_steps[3], t1 + 0.5)
-            context.curve_to(x_steps[2], t1 + 0.5,
-                             x_steps[1], f1 + 0.5,
-                             x_steps[0], f1 + 0.5)
+            context.line_to(x_steps[3], t1 - 0.5)
+            context.curve_to(x_steps[2], t1 - 0.5,
+                             x_steps[1], f1 - 0.5,
+                             x_steps[0], f1 - 0.5)
             context.close_path()
 
             context.set_source_rgb(*self.fill_colors[c[0]])
