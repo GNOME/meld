@@ -518,6 +518,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     - source control software version: 'X.Y.Z'
                     - the output of '%s somefile.txt'
                     - patch command: '%s'
+                    (no need to actually run it, just provide
+                    the command line) 
+                    
+                    Replace 'X.Y.Z' by the actual version for the
+                    source control software you use.
                     """) % (self.vc.NAME,
                             meldapp.version,
                             self.vc.NAME,
