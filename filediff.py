@@ -864,15 +864,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return i
         return -1
 
-    def _get_focused_textview(self):
-        for i in range(self.num_panes):
-            if self.textview[i].is_focus():
-                return self.textview[i]
-        if len(self.textview) > 1:
-            return self.textview[1]
-        else:
-            return self.textview[0]
-
     def copy_selected(self, direction):
         assert direction in (-1,1)
         src_pane = self._get_focused_pane()
@@ -1065,45 +1056,61 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
 
-    def next_diff(self, direction, jump_to_first=False):
-        adjs = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-        curline = self._pixel_to_line( 1, int(adjs[1].value + adjs[1].page_size/2) )
-        if jump_to_first:
-            # curline already has some positive value due to scrollbar size
-            curline = -1
+    def _find_next_chunk(self, direction, curline, pane):
         c = None
-        if direction == gdk.SCROLL_DOWN:
-            for c in self.linediffer.single_changes(1):
-                assert c[0] != "equal"
-                c, skip = self._consume_blank_lines(c, 1, c[5])
-                if skip:
-                    continue
-                if c[1] > curline:
+        for chunk in self.linediffer.single_changes(pane):
+            assert chunk[0] != "equal"
+            chunk, skip = self._consume_blank_lines(chunk, 1, chunk[5])
+            if skip:
+                continue
+            if direction == gdk.SCROLL_DOWN:
+                # Take the first chunk which is starting after curline
+                if chunk[1] > curline:
+                    c = chunk
                     break
-        else: #direction == gdk.SCROLL_UP
-            for chunk in self.linediffer.single_changes(1):
-                chunk, skip = self._consume_blank_lines(chunk, 1, chunk[5])
-                if skip:
+            else: # direction == gdk.SCROLL_UP
+                # Skip 'delete' blocks when we are at the warp position,
+                # i.e. on the line just after the block, because that may
+                # be where we ended up at the previous 'UP' button press
+                if chunk[2] == chunk[1] == curline:
                     continue
-                if chunk[2] < curline:
+                # Take the last chunk which is ending before curline
+                if chunk[2] - 1 < curline:
                     c = chunk
                 elif c:
                     break
-        if c:
-            if c[2] - c[1]: # no range, use other side
-                l0,l1 = c[1],c[2]
-                aidx = 1
-                a = adjs[aidx]
+        return c
+
+    def next_diff(self, direction, jump_to_first=False):
+        pane = self._get_focused_pane()
+        if pane == -1:
+            if len(self.textview) > 1:
+                pane = 1
             else:
-                l0,l1 = c[3],c[4]
-                aidx = c[5]
-                a = adjs[aidx]
-            want = 0.5 * ( self._line_to_pixel(aidx, l0) + self._line_to_pixel(aidx,l1) - a.page_size )
-            want = misc.clamp(want, 0, a.upper-a.page_size)
-            a.set_value( want )
-            # Warp the cursor at the start of the diff chunk we jumped to
-            buf = self._get_focused_textview().get_buffer()
-            buf.place_cursor(buf.get_iter_at_line(l0))
+                pane = 0
+        buf = self.textbuffer[pane]
+
+        if jump_to_first:
+            cursorline = -1
+        else:
+            cursorline = buf.get_iter_at_mark(buf.get_insert()).get_line()
+
+        c = self._find_next_chunk(direction, cursorline, pane)
+        if c:
+            # Warp focused scrolledwindow to show the first line of next chunk
+            a = self.scrolledwindow[pane].get_vadjustment()
+            want_line_pix = self._line_to_pixel(pane, c[1])
+            # But only if it is not already visible around center of current
+            # page to avoid useless scrolling
+            lo = a.value + a.page_size * 0.1
+            hi = a.value + a.page_size * 0.9
+            if not (lo < want_line_pix < hi):
+                want = want_line_pix - 0.5 * a.page_size
+                want = misc.clamp(want, 0, a.upper - a.page_size)
+                a.set_value(want)
+            # Warp the cursor to the first line of next chunk
+            if cursorline != c[1]:
+                buf.place_cursor(buf.get_iter_at_line(c[1]))
 
     def _consume_blank_lines(self, c, pane1, pane2):
         if not self.prefs.ignore_blank_lines:
