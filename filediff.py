@@ -20,6 +20,7 @@ from gettext import gettext as _
 import re
 import difflib
 import struct
+import time
 
 import pango
 import gobject
@@ -37,6 +38,40 @@ import cairo
 from sourceviewer import srcviewer
 
 gdk = gtk.gdk
+
+
+class CachedSequenceMatcher(object):
+    """Simple class for caching diff results, with LRU-based eviction
+
+    Results from the SequenceMatcher are cached and timestamped, and
+    subsequently evicted based on least-recent generation/usage. The LRU-based
+    eviction is overly simplistic, but is okay for our usage pattern.
+    """
+
+    def __init__(self):
+        self.cache = {}
+
+    def __call__(self, text1, textn):
+        try:
+            self.cache[(text1, textn)][1] = time.time()
+            return self.cache[(text1, textn)][0]
+        except KeyError:
+            matcher = difflib.SequenceMatcher(None, text1, textn)
+            opcodes = matcher.get_opcodes()
+            self.cache[(text1, textn)] = [opcodes, time.time()]
+            return opcodes
+
+    def clean(self, size_hint):
+        """Clean the cache if necessary
+
+        @param size_hint: the recommended minimum number of cache entries
+        """
+        if len(self.cache) < size_hint * 3:
+            return
+        items = self.cache.items()
+        items.sort(key=lambda it: it[1][1])
+        for item in items[:-size_hint * 2]:
+            del self.cache[item[0]]
 
 ################################################################################
 #
@@ -97,6 +132,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._sync_hscroll_lock = False
         self.linediffer = diffutil.Differ()
         self._inline_cache = set()
+        self._cached_match = CachedSequenceMatcher()
         for text in self.textview:
             text.set_wrap_mode( self.prefs.edit_wrap_lines )
         for buf in self.textbuffer:
@@ -666,10 +702,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             bufs[i].apply_tag(tags[i], starts[i], ends[i])
                         continue
 
-                    matcher = difflib.SequenceMatcher(None, text1, textn)
                     #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
                     back = (0,0)
-                    for o in matcher.get_opcodes():
+                    for o in self._cached_match(text1, textn):
                         if o[0] == "equal":
                             if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
                                 back = o[4]-o[3], o[2]-o[1]
@@ -686,6 +721,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for b, tag, start in zip(self.textbuffer, alltags, startlines):
             b.remove_tag(tag, start, b.get_end_iter())
         self._inline_cache = newcache
+        self._cached_match.clean(len(self._inline_cache))
 
     def on_textview_expose_event(self, textview, event):
         if self.num_panes == 1:
