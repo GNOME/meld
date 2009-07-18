@@ -633,7 +633,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if c and c[0] == "replace":
                     bufs = self.textbuffer[1], self.textbuffer[i*2]
                     #tags = [b.get_tag_table().lookup("replace line") for b in bufs]
-                    starts = [b.get_iter_at_line(l) for b,l in zip(bufs, (c[1],c[3])) ]
+                    starts = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[1], c[3]))]
                     text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] ).encode("utf16")
                     text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
                     textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] ).encode("utf16")
@@ -643,7 +643,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     # For very long sequences, bail rather than trying a very slow comparison
                     inline_limit = 8000 # arbitrary constant
                     if len(text1) > inline_limit and len(textn) > inline_limit:
-                        ends = [b.get_iter_at_line(l) for b, l in zip(bufs, (c[2], c[4]))]
+                        ends = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[2], c[4]))]
                         for i in range(2):
                             bufs[i].apply_tag(tags[i], starts[i], ends[i])
                         continue
