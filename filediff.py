@@ -96,6 +96,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
         self.linediffer = diffutil.Differ()
+        self._inline_cache = set()
         for text in self.textview:
             text.set_wrap_mode( self.prefs.edit_wrap_lines )
         for buf in self.textbuffer:
@@ -627,28 +628,40 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             mgr.clear()
 
     def _update_highlighting(self):
-        for b in self.textbuffer:
-            taglist = ["delete line", "conflict line", "replace line", "inline line"]
-            table = b.get_tag_table()
-            for tagname in taglist:
-                tag = table.lookup(tagname)
-                b.remove_tag(tag, b.get_start_iter(), b.get_end_iter() )
+        alltexts = [t for t in self._get_texts(raw=1)]
+        alltags = [b.get_tag_table().lookup("inline line") for b in self.textbuffer]
+        startlines = [b.get_start_iter() for b in self.textbuffer]
+        newcache = set()
         for chunk in self.linediffer.all_changes():
             for i,c in enumerate(chunk):
                 if c and c[0] == "replace":
                     bufs = self.textbuffer[1], self.textbuffer[i*2]
-                    #tags = [b.get_tag_table().lookup("replace line") for b in bufs]
+                    tags = alltags[1], alltags[i*2]
+                    cacheitem = (i, c, tuple(alltexts[1][c[1]:c[2]]), tuple(alltexts[i*2][c[3]:c[4]]))
+                    newcache.add(cacheitem)
+
+                    # Clean interim chunks
                     starts = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[1], c[3]))]
-                    text1 = "\n".join( self._get_texts(raw=1)[1  ][c[1]:c[2]] ).encode("utf16")
+                    bufs[0].remove_tag(tags[0], startlines[1], starts[0])
+                    bufs[1].remove_tag(tags[1], startlines[i*2], starts[1])
+                    startlines[1] = get_iter_at_line_or_eof(bufs[0], c[2])
+                    startlines[i*2] = get_iter_at_line_or_eof(bufs[1], c[4])
+
+                    if cacheitem in self._inline_cache:
+                        continue
+
+                    ends = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[2], c[4]))]
+                    bufs[0].remove_tag(tags[0], starts[0], ends[0])
+                    bufs[1].remove_tag(tags[1], starts[1], ends[1])
+
+                    text1 = "\n".join(alltexts[1][c[1]:c[2]] ).encode("utf16")
                     text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
-                    textn = "\n".join( self._get_texts(raw=1)[i*2][c[3]:c[4]] ).encode("utf16")
+                    textn = "\n".join(alltexts[i*2][c[3]:c[4]] ).encode("utf16")
                     textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
 
-                    tags = [b.get_tag_table().lookup("inline line") for b in bufs]
                     # For very long sequences, bail rather than trying a very slow comparison
                     inline_limit = 8000 # arbitrary constant
                     if len(text1) > inline_limit and len(textn) > inline_limit:
-                        ends = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[2], c[4]))]
                         for i in range(2):
                             bufs[i].apply_tag(tags[i], starts[i], ends[i])
                         continue
@@ -668,6 +681,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             bufs[i].apply_tag(tags[i], s, e)
                         back = (0,0)
                     yield 1
+
+        # Clean up trailing lines
+        for b, tag, start in zip(self.textbuffer, alltags, startlines):
+            b.remove_tag(tag, start, b.get_end_iter())
+        self._inline_cache = newcache
 
     def on_textview_expose_event(self, textview, event):
         if self.num_panes == 1:
