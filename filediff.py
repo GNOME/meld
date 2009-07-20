@@ -896,6 +896,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.set_files([None] * self.num_panes)
 
     def queue_draw(self, junk=None):
+        for t in self.textview:
+            t.queue_draw()
         for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
         self.diffmap0.queue_draw()
