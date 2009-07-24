@@ -47,6 +47,12 @@ class Vc(_vc.CachedVc):
         "unmerged":   _vc.STATE_CONFLICT,
     }
 
+    def check_repo_root(self, location):
+        # Check exists instead of isdir, since .git might be a git-file
+        if not os.path.exists(os.path.join(location, self.VC_DIR)):
+            raise ValueError
+        return location
+
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
     def diff_command(self):
