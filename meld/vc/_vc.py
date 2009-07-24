@@ -79,7 +79,7 @@ class Vc(object):
         if self.VC_ROOT_WALK:
             self.root = self.find_repo_root(location)
         else:
-            self.root = self.is_repo_root(location)
+            self.root = self.check_repo_root(location)
 
     def commit_command(self, message):
         raise NotImplementedError()
@@ -98,15 +98,17 @@ class Vc(object):
     def patch_command(self, workdir):
         return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
 
-    def is_repo_root(self, location):
+    def check_repo_root(self, location):
         if not os.path.isdir(os.path.join(location, self.VC_DIR)):
             raise ValueError
         return location
 
     def find_repo_root(self, location):
         while True:
-            if os.path.isdir(os.path.join(location, self.VC_DIR)):
-                return location
+            try:
+                return self.check_repo_root(location)
+            except ValueError:
+                pass
             tmp = os.path.dirname(location)
             if tmp == location:
                 break

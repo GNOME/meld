@@ -30,7 +30,7 @@ class Vc(svn.Vc):
     NAME = "SVK"
     PATCH_INDEX_RE = "^=== (.*)$"
 
-    def is_repo_root(self, location):
+    def check_repo_root(self, location):
         try:
             # `svk info` may be interactive. It can ask to create its repository, we
             # don't want that to happen, so provide the right answer with `text="n"`
