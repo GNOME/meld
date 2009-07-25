@@ -51,6 +51,11 @@ def get_iter_at_line_or_eof(buffer, line):
         return buffer.get_end_iter()
     return buffer.get_iter_at_line(line)
 
+def insert_with_tags_by_name(buffer, line, text, tag):
+    if line >= buffer.get_line_count():
+        text = "\n" + text
+    buffer.insert_with_tags_by_name(get_iter_at_line_or_eof(buffer, line), text, tag)
+
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
@@ -1281,14 +1286,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     elif self.keymask & MASK_CTRL: # copy up or down
                         t0 = b0.get_text( get_iter_at_line_or_eof(b0, chunk[0]), get_iter_at_line_or_eof(b0, chunk[1]), 0)
                         if event.y - rect[1] < 0.5 * rect[3]: # copy up
-                            b1.insert_with_tags_by_name(get_iter_at_line_or_eof(b1, chunk[2]), t0, "edited line")
+                            insert_with_tags_by_name(b1, chunk[2], t0, "edited line")
                         else: # copy down
-                            b1.insert_with_tags_by_name(get_iter_at_line_or_eof(b1, chunk[3]), t0, "edited line")
+                            insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
                     else: # replace
                         t0 = b0.get_text( get_iter_at_line_or_eof(b0, chunk[0]), get_iter_at_line_or_eof(b0, chunk[1]), 0)
                         self.on_textbuffer__begin_user_action()
                         b1.delete(get_iter_at_line_or_eof(b1, chunk[2]), get_iter_at_line_or_eof(b1, chunk[3]))
-                        b1.insert_with_tags_by_name(get_iter_at_line_or_eof(b1, chunk[2]), t0, "edited line")
+                        insert_with_tags_by_name(b1, chunk[2], t0, "edited line")
                         self.on_textbuffer__end_user_action()
             return True
         return False
