@@ -47,7 +47,7 @@ import vc
 
 from sourceviewer import srcviewer
 
-version = "1.3.0"
+version = "1.3.1"
 
 ################################################################################
 #
