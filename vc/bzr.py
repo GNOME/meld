@@ -29,6 +29,7 @@ import _vc
 class Vc(_vc.CachedVc):
 
     CMD = "bzr"
+    CMDARGS = ["--no-aliases", "--no-plugins"]
     NAME = "Bazaar-NG"
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)'$"
@@ -43,27 +44,27 @@ class Vc(_vc.CachedVc):
     }
 
     def commit_command(self, message):
-        return [self.CMD,"commit","-m",message]
+        return [self.CMD] + self.CMDARGS + ["commit", "-m", message]
     def diff_command(self):
-        return [self.CMD,"diff"]
+        return [self.CMD] + self.CMDARGS + ["diff"]
     def update_command(self):
-        return [self.CMD,"pull"]
+        return [self.CMD] + self.CMDARGS + ["pull"]
     def add_command(self, binary=0):
-        return [self.CMD,"add"]
+        return [self.CMD] + self.CMDARGS + ["add"]
     def remove_command(self, force=0):
-        return [self.CMD,"rm"]
+        return [self.CMD] + self.CMDARGS + ["rm"]
     def revert_command(self):
-        return [self.CMD,"revert"]
+        return [self.CMD] + self.CMDARGS + ["revert"]
     def resolved_command(self):
-        return [self.CMD,"resolve"]
+        return [self.CMD] + self.CMDARGS + ["resolve"]
     def get_working_directory(self, workdir):
         return self.root
 
     def _lookup_tree_cache(self, rootdir):
-        branch_root = _vc.popen([self.CMD, "root", rootdir]).read().rstrip('\n')
+        branch_root = _vc.popen([self.CMD] + self.CMDARGS + ["root", rootdir]).read().rstrip('\n')
         while 1:
             try:
-                proc = _vc.popen([self.CMD, "status", branch_root])
+                proc = _vc.popen([self.CMD] + self.CMDARGS + ["status", branch_root])
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
