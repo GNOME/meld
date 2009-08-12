@@ -962,7 +962,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 stock = gtk.STOCK_NO
             if stock:
                 self.statusimage[i].show()
-                self.statusimage[i].set_from_stock(stock, gtk.ICON_SIZE_BUTTON)
+                self.statusimage[i].set_from_stock(stock, gtk.ICON_SIZE_MENU)
                 self.statusimage[i].set_size_request(self.diffmap[0].size_request()[0],-1)
             else:
                 self.statusimage[i].hide()
