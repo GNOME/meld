@@ -20,10 +20,14 @@
 import os
 
 class _srcviewer(object):
+    # Module name to be imported for the sourceviewer class
     srcviewer_module = None
+    # instance of the imported sourceviewer module
+    gsv = None
 
     def __init__(self):
-        self.gsv = __import__(self.srcviewer_module)
+        if self.srcviewer_module is not None:
+            self.gsv = __import__(self.srcviewer_module)
         self.glm = None
         self.version_check()
         self.GtkTextView = None
@@ -154,20 +158,31 @@ class gtksourceview24(_gtksourceview2):
     def get_language_from_file(self, filename):
         return self.get_language_manager().guess_language(filename)
 
-class nullsourceview(object):
+class nullsourceview(_srcviewer):
     """Implement the sourceviewer API when no real one is available
     """
 
-    def __init__(self):
-        self.override = {}
+    get_language_from_file = lambda *args: None
+    set_highlight = lambda *args: None
+    set_tab_width = lambda *args: None
+    get_language_from_mime_type = lambda *args: None
+    set_tab_width = lambda *args: None
 
-    def __nonzero__(self):
-        # This is only defined so that we can use this module
-        # without needing a separate boolean, like the following:
-        # from sourceviewer import srcviewer
-        # if srcviewer:
-        #     srcviewer.set_tab_width(tab, self.prefs.tab_size)
-        return False
+    def overrides(self):
+        import gobject
+        import gtk
+
+        class NullTextView(gtk.TextView):
+            set_tab_width = lambda *args: None
+            set_show_line_numbers = lambda *args: None
+            set_insert_spaces_instead_of_tabs = lambda *args: None
+        gobject.type_register(NullTextView)
+
+        self.GtkTextView = NullTextView
+        self.GtkTextBuffer = gtk.TextBuffer
+
+    def version_check(self):
+        pass
 
 def _get_srcviewer():
     for srcv in (gtksourceview24, gtksourceview22, gtksourceview, sourceview):

@@ -108,12 +108,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.map_widgets_into_lists( ["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr"] )
         self._update_regexes()
         self.warned_bad_comparison = False
-        if srcviewer:
-            for v in self.textview:
-                v.set_buffer(srcviewer.GtkTextBuffer())
-                v.set_show_line_numbers(self.prefs.show_line_numbers)
-                v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
-                srcviewer.set_tab_width(v, self.prefs.tab_size)
+        for v in self.textview:
+            v.set_buffer(srcviewer.GtkTextBuffer())
+            v.set_show_line_numbers(self.prefs.show_line_numbers)
+            v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
+            srcviewer.set_tab_width(v, self.prefs.tab_size)
         self.keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -323,31 +322,27 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 tabs.set_tab(i, pango.TAB_LEFT, i*value*self.pango_char_width)
             for i in range(3):
                 self.textview[i].set_tabs(tabs)
-            if srcviewer:
-                for t in self.textview:
-                    srcviewer.set_tab_width(t, value)
+            for t in self.textview:
+                srcviewer.set_tab_width(t, value)
         elif key == "use_custom_font" or key == "custom_font":
             self.load_font()
         elif key == "show_line_numbers":
-            if srcviewer:
-                for t in self.textview:
-                    t.set_show_line_numbers( value )
+            for t in self.textview:
+                t.set_show_line_numbers( value )
         elif key == "use_syntax_highlighting":
-            if srcviewer:
-                for i in range(self.num_panes):
-                    srcviewer.set_highlighting_enabled_from_file(
-                        self.textbuffer[i],
-                        self.bufferdata[i].filename,
-                        self.prefs.use_syntax_highlighting )
+            for i in range(self.num_panes):
+                srcviewer.set_highlighting_enabled_from_file(
+                    self.textbuffer[i],
+                    self.bufferdata[i].filename,
+                    self.prefs.use_syntax_highlighting )
         elif key == "regexes":
             self._update_regexes()
         elif key == "edit_wrap_lines":
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)
         elif key == "spaces_instead_of_tabs":
-            if srcviewer:
-                for t in self.textview:
-                    t.set_insert_spaces_instead_of_tabs(value)
+            for t in self.textview:
+                t.set_insert_spaces_instead_of_tabs(value)
 
     def _update_linkmap_buttons(self):
         for l in self.linkmap[:self.num_panes - 1]:
@@ -650,10 +645,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.queue_draw()
         self.scheduler.add_task(self._update_highlighting().next)
         self._connect_buffer_handlers()
-        if srcviewer:
-            for i in range(len(files)):
-                if files[i]:
-                    srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
+        for i in range(len(files)):
+            if files[i]:
+                srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
         yield 0
 
     def on_msgarea_identical_response(self, msgarea, respid):
@@ -855,16 +849,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         names = [self._get_pane_label(i) for i in range(2)]
         prefix = os.path.commonprefix( names )
         names = [n[prefix.rfind("/") + 1:] for n in names]
-        if srcviewer:
-            dialog.textview.set_buffer(srcviewer.GtkTextBuffer())
+        dialog.textview.set_buffer(srcviewer.GtkTextBuffer())
         dialog.textview.modify_font(fontdesc)
         buf = dialog.textview.get_buffer()
         lines = []
         for line in difflib.unified_diff(texts[0], texts[1], names[0], names[1]):
             buf.insert( buf.get_end_iter(), line )
             lines.append(line)
-        if srcviewer:
-            srcviewer.set_highlighting_enabled_from_mimetype(buf, "text/x-diff", True)
+        srcviewer.set_highlighting_enabled_from_mimetype(buf, "text/x-diff", True)
         result = dialog.widget.run()
         dialog.widget.destroy()
         if result >= 0:
