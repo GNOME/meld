@@ -370,9 +370,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.keymask &= ~x
             self._update_linkmap_buttons()
 
-    def is_modified(self):
-        return 1 in [b.modified for b in self.bufferdata]
-
     def _get_pane_label(self, i):
         #TRANSLATORS: this is the name of a new file which has not yet been saved
         return self.bufferdata[i].label or _("<unnamed>")
