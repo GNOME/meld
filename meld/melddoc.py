@@ -40,7 +40,6 @@ class MeldDoc(gobject.GObject):
     def __init__(self, prefs):
         gobject.GObject.__init__(self)
         self.undosequence = undo.UndoSequence()
-        self.undosequence_busy = 0
         self.scheduler = task.FifoScheduler()
         self.prefs = prefs
         self.prefs.notify_add(self.on_preference_changed)
@@ -73,20 +72,11 @@ class MeldDoc(gobject.GObject):
 
     def on_undo_activate(self):
         if self.undosequence.can_undo():
-            self.undosequence_busy = 1
-            try:
-                self.undosequence.undo()
-            finally:
-                self.undosequence_busy = 0
+            self.undosequence.undo()
 
     def on_redo_activate(self):
         if self.undosequence.can_redo():
-            self.undosequence_busy = 1
-            try:
-                self.undosequence.redo()
-            finally:
-                self.undosequence_busy = 0
-            self.undosequence_busy = 0
+            self.undosequence.redo()
 
     def on_refresh_activate(self, *extra):
         self.on_reload_activate(self, *extra)

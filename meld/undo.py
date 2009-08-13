@@ -63,6 +63,7 @@ class UndoSequence(gobject.GObject):
         self.next_redo = 0
         self.checkpoints = {}
         self.group = None
+        self.busy = False
 
     def clear(self):
         """Remove all undo and redo actions from this sequence
@@ -102,6 +103,9 @@ class UndoSequence(gobject.GObject):
         action -- A class with two callable attributes: 'undo' and 'redo'
                   which are called by this sequence during an undo or redo.
         """
+        if self.busy:
+            return
+
         if self.group is None:
             if self.checkpointed(action.buffer):
                 self.checkpoints[action.buffer][1] = self.next_redo
@@ -130,12 +134,14 @@ class UndoSequence(gobject.GObject):
         Raises an AssertionError if the sequence is not undoable.
         """
         assert self.next_redo > 0
+        self.busy = True
         buf = self.actions[self.next_redo - 1].buffer
         if self.checkpointed(buf):
             self.emit('checkpointed', buf, False)
         could_redo = self.can_redo()
         self.next_redo -= 1
         self.actions[self.next_redo].undo()
+        self.busy = False
         if not self.can_undo():
             self.emit('can-undo', 0)
         if not could_redo:
@@ -149,6 +155,7 @@ class UndoSequence(gobject.GObject):
         Raises and AssertionError if the sequence is not undoable.
         """
         assert self.next_redo < len(self.actions)
+        self.busy = True
         buf = self.actions[self.next_redo].buffer
         if self.checkpointed(buf):
             self.emit('checkpointed', buf, False)
@@ -156,6 +163,7 @@ class UndoSequence(gobject.GObject):
         a = self.actions[self.next_redo]
         self.next_redo += 1
         a.redo()
+        self.busy = False
         if not could_undo:
             self.emit('can-undo', 1)
         if not self.can_redo():
@@ -192,6 +200,9 @@ class UndoSequence(gobject.GObject):
         implemented as a pair of 'delete' and 'create' actions, but
         undoing should undo both of them.
         """
+        if self.busy:
+            return
+
         if self.group:
             self.group.begin_group() 
         else:
@@ -203,6 +214,9 @@ class UndoSequence(gobject.GObject):
         Raises an AssertionError if there was not a matching call to
         begin_group().
         """
+        if self.busy:
+            return
+
         assert self.group is not None
         if self.group.group is not None:
             self.group.end_group()
@@ -219,6 +233,9 @@ class UndoSequence(gobject.GObject):
         
         Raises an AssertionError if there was no a matching call to begin_group().
         """
+        if self.busy:
+            return
+
         assert self.group is not None
         if self.group.group is not None:
             self.group.abort_group()

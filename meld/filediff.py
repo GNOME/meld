@@ -568,16 +568,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.end_group()
 
     def on_text_insert_text(self, buffer, it, text, textlen):
-        if not self.undosequence_busy:
-            self.undosequence.add_action( BufferInsertionAction(buffer, it.get_offset(), text) )
+        self.undosequence.add_action(
+            BufferInsertionAction(buffer, it.get_offset(), text))
 
     def on_text_delete_range(self, buffer, it0, it1):
         text = buffer.get_text(it0, it1, 0)
         pane = self.textbuffer.index(buffer)
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = text.count("\n")
-        if not self.undosequence_busy:
-            self.undosequence.add_action( BufferDeletionAction(buffer, it0.get_offset(), text) )
+        self.undosequence.add_action(
+            BufferDeletionAction(buffer, it0.get_offset(), text))
 
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
         self.set_buffer_modified(buf, not checkpointed)
