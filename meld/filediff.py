@@ -1474,32 +1474,30 @@ class MeldBufferData(object):
         self.encoding = None
         self.newlines = None
 
-################################################################################
-#
-# BufferAction
-#
-################################################################################
+
 class BufferAction(object):
     """A helper to undo/redo text insertion/deletion into/from a text buffer"""
+
     def __init__(self, buf, offset, text):
         self.buffer = buf
         self.offset = offset
         self.text = text
+
     def delete(self):
-        b = self.buffer
-        b.delete(b.get_iter_at_offset(self.offset), b.get_iter_at_offset(self.offset + len(self.text)))
+        start = self.buffer.get_iter_at_offset(self.offset)
+        end = self.buffer.get_iter_at_offset(self.offset + len(self.text))
+        self.buffer.delete(start, end)
+
     def insert(self):
-        b = self.buffer
-        b.insert(b.get_iter_at_offset(self.offset), self.text)
+        start = self.buffer.get_iter_at_offset(self.offset)
+        self.buffer.insert(start, self.text)
+
 
 class BufferInsertionAction(BufferAction):
-    def __init__(self, buf, offset, text):
-        super(BufferInsertionAction, self).__init__(buf, offset, text)
-        self.undo = self.delete
-        self.redo = self.insert
+    undo = BufferAction.delete
+    redo = BufferAction.insert
+
 
 class BufferDeletionAction(BufferAction):
-    def __init__(self, buf, offset, text):
-        super(BufferDeletionAction, self).__init__(buf, offset, text)
-        self.undo = self.insert
-        self.redo = self.delete
+    undo = BufferAction.insert
+    redo = BufferAction.delete
