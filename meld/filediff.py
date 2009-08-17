@@ -626,7 +626,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         panetext = [self._filter_text(p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
         step = self.linediffer.set_sequences_iter(lines)
-        while step.next() == None:
+        while step.next() is None:
             yield 1
 
         if self.num_panes > 1 and self.linediffer.sequences_identical():

@@ -393,7 +393,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         s = self.treeview.get_selection()
         s.selected_foreach(gather)
         # remove empty entries and remove trailing slashes
-        return [ x[-1]!="/" and x or x[:-1] for x in sel if x != None ]
+        return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
 
     def _command_iter(self, command, files, refresh):
         """Run 'command' on 'files'. Return a tuple of the directory the
@@ -415,7 +415,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.consolestream.write( misc.shelljoin(command+files) + " (in %s)\n" % workdir)
         readfunc = misc.read_pipe_iter(command + files, self.consolestream, workdir=workdir).next
         try:
-            while r == None:
+            while r is None:
                 r = readfunc()
                 self.consolestream.write(r)
                 yield 1

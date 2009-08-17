@@ -158,11 +158,11 @@ class Vc(_vc.Vc):
 
         for f,path in files:
             if f not in cvsfiles:
-                state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
+                state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 retfiles.append( _vc.File(path, f, state, "") )
         for d,path in dirs:
             if d not in cvsfiles:
-                state = ignore_re.match(d) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
+                state = ignore_re.match(d) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 retdirs.append( _vc.Dir(path, d, state) )
 
         return retdirs, retfiles

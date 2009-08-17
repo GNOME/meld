@@ -72,7 +72,7 @@ class UndoSequence(gobject.GObject):
         """
 
         if hasattr(self, "group"):
-            assert self.group == None
+            assert self.group is None
         if self.can_undo():
             self.emit('can-undo', 0)
         if self.can_redo():
@@ -99,7 +99,7 @@ class UndoSequence(gobject.GObject):
         action -- A class with two callable attributes: 'undo' and 'redo'
                   which are called by this sequence during an undo or redo.
         """
-        if self.group == None:
+        if self.group is None:
             could_undo = self.can_undo()
             could_redo = self.can_redo()
             self.actions[self.next_redo:] = []
@@ -161,8 +161,8 @@ class UndoSequence(gobject.GObject):
         Raises an AssertionError if there was not a matching call to
         begin_group().
         """
-        assert self.group != None
-        if self.group.group != None:
+        assert self.group is not None
+        if self.group.group is not None:
             self.group.end_group()
         else:
             group = self.group
@@ -177,8 +177,8 @@ class UndoSequence(gobject.GObject):
         
         Raises an AssertionError if there was no a matching call to begin_group().
         """
-        assert self.group != None
-        if self.group.group != None:
+        assert self.group is not None
+        if self.group.group is not None:
             self.group.abort_group()
         else:
             self.group = None

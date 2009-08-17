@@ -120,13 +120,13 @@ class FindBar(gnomeglade.Component):
         else:
             if backwards == False:
                 match = pattern.search(text, insert.get_offset() + start_offset)
-                if match == None and wrap:
+                if match is None and wrap:
                     match = pattern.search(text, 0)
             else:
                 match = None
                 for m in pattern.finditer(text, 0, insert.get_offset()):
                     match = m
-                if match == None and wrap:
+                if match is None and wrap:
                     for m in pattern.finditer(text, insert.get_offset()):
                         match = m
             if match:

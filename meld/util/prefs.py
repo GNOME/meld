@@ -93,7 +93,7 @@ class GConfPreferences(object):
         self._gconf.notify_add(rootkey, self._on_preference_changed)
         for key, value in self._prefs.items():
             gval = self._gconf.get_without_default("%s/%s" % (rootkey, key) )
-            if gval != None:
+            if gval is not None:
                 value.current = getattr( gval, "get_%s" % value.type )()
 
     def __getattr__(self, attr):
@@ -121,7 +121,7 @@ class GConfPreferences(object):
         except KeyError: # unknown key, we don't care about it
             pass
         else:
-            if entry.value != None: # value has changed
+            if entry.value is not None: # value has changed
                 newval = getattr(entry.value, "get_%s" % valuestruct.type)()
                 setattr( self, attr, newval)
             else: # value has been deleted

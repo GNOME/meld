@@ -83,12 +83,12 @@ class Vc(_vc.Vc):
             hgfiles[name] = 1
         for f,path in files:
             if f not in hgfiles:
-                #state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
+                #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 state = _vc.STATE_NORMAL
                 retfiles.append( _vc.File(path, f, state, "") )
         for d,path in dirs:
             if d not in hgfiles:
-                #state = ignore_re.match(f) == None and _vc.STATE_NONE or _vc.STATE_IGNORED
+                #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 state = _vc.STATE_NORMAL
                 retdirs.append( _vc.Dir(path, d, state) )
 

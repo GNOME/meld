@@ -286,7 +286,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             except re.error:
                 misc.run_dialog( _("Error converting pattern '%s' to regular expression") % f.value, self )
             else:
-                func = lambda x, r=cregex : r.match(x) == None
+                func = lambda x, r=cregex : r.match(x) is None
                 self.name_filters_available.append( TypeFilter(f.name, f.active, func) )
         self.name_filters = [f for f in self.name_filters_available if f.active]
 
@@ -414,7 +414,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         for i in items:
                             ci = canonicalize(i)
                             try:
-                                assert self.items[ ci ][pane] == None
+                                assert self.items[ci][pane] is None
                             except KeyError:
                                 self.items[ ci ] = self.default[:]
                                 self.items[ ci ][pane] = i
@@ -517,7 +517,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Launch comparisons on all selected elements.
         """
         pane = self._get_focused_pane()
-        if pane != None:
+        if pane is not None:
             selected = self._get_selected_paths(pane)
             get_iter = self.model.get_iter
             for s in selected:
@@ -526,16 +526,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def copy_selected(self, direction):
         assert direction in (-1,1)
         src_pane = self._get_focused_pane()
-        if src_pane != None:
+        if src_pane is not None:
             dst_pane = src_pane + direction
             assert dst_pane >= 0 and dst_pane < self.num_panes
             paths = self._get_selected_paths(src_pane)
             paths.reverse()
             model = self.model
-            for path in paths: #filter(lambda x: x.name!=None, sel):
+            for path in paths: #filter(lambda x: x.name is not None, sel):
                 it = model.get_iter(path)
                 name = model.value_path(it, src_pane)
-                if name == None:
+                if name is None:
                     continue
                 src = model.value_path(it, src_pane)
                 dst = model.value_path(it, dst_pane)
@@ -562,7 +562,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         # reverse so paths dont get changed
         pane = self._get_focused_pane()
-        if pane != None:
+        if pane is not None:
             paths = self._get_selected_paths(pane)
             paths.reverse()
             for path in paths:
@@ -584,7 +584,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
-        if pane == None: return
+        if pane is None:
+            return
         paths = self._get_selected_paths(pane)
         if len(paths) > 0:
             def rwx(mode):
@@ -619,7 +620,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif gtk.keysyms.Left == event.keyval:
             if pane-1 >= 0:
                 tree = self.treeview[pane-1]
-        if tree != None:
+        if tree is not None:
             paths = self._get_selected_paths(pane)
             view.get_selection().unselect_all()
             tree.grab_focus()
@@ -690,7 +691,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.delete_selected()
     def on_button_open_clicked(self, button):
         pane = self._get_focused_pane()
-        if pane != None:
+        if pane is not None:
             m = self.model
             files = [ m.value_path( m.get_iter(p), pane ) for p in self._get_selected_paths(pane) ]
             self._open_files(files)
@@ -725,7 +726,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_filter_hide_current_clicked(self, button):
         pane = self._get_focused_pane()
-        if pane != None:
+        if pane is not None:
             paths = self._get_selected_paths(pane)
             paths.reverse()
             for p in paths:
@@ -735,7 +736,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # Selection
         #
     def _get_selected_paths(self, pane):
-        assert pane != None
+        assert pane is not None
         return self.treeview[pane].get_selection().get_selected_rows()[1]
 
         #

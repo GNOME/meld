@@ -50,7 +50,7 @@ def cmdout(cmd, text=None, **kwargs):
 
 def shelljoin( command ):
     def quote(s):
-        return ((whitespace_re.search(s) == None) and s or ('"%s"' % s))
+        return ((whitespace_re.search(s) is None) and s or ('"%s"' % s))
     return " ".join( [ quote(x) for x in command ] )
 
 def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=()):
