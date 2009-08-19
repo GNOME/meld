@@ -15,8 +15,8 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import gnomeglade
-import paths
-import misc
+from meld import paths
+from meld import misc
 import gtk
 import re
 from gettext import gettext as _

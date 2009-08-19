@@ -15,7 +15,7 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import paths
-import gnomeglade
+from ui import gnomeglade
 import gobject
 import gtk
 import gtk.keysyms

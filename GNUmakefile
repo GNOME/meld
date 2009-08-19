@@ -5,12 +5,12 @@
 include INSTALL
 
 #
-VERSION := $(shell grep "^version" meldapp.py | cut -d \"  -f 2)
+VERSION := $(shell grep "^version" meld/meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
 MELD_CMD := ./meld #--profile
 TESTNUM := 1
 DEVELOPER := 0
-SPECIALS := bin/meld paths.py
+SPECIALS := bin/meld meld/paths.py
 BROWSER := firefox
 
 ifeq ($(DEVELOPER), 1)
@@ -29,7 +29,7 @@ all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 
 .PHONY:clean
 clean: 
-	-rm -f *.pyc vc/*.pyc *.install data/meld.desktop *.bak data/ui/*.bak
+	-rm -f meld/*.pyc meld/ui/*.pyc meld/util/*.pyc meld/vc/*.pyc *.install data/meld.desktop *.bak data/ui/*.bak
 	$(MAKE) -C po clean
 	$(MAKE) -C help clean
 
@@ -38,7 +38,10 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	mkdir -m 755 -p \
 		$(DESTDIR)$(bindir) \
 		$(DESTDIR)$(libdir_) \
-		$(DESTDIR)$(libdir_)/vc \
+		$(DESTDIR)$(libdir_)/meld \
+		$(DESTDIR)$(libdir_)/meld/ui \
+		$(DESTDIR)$(libdir_)/meld/util \
+		$(DESTDIR)$(libdir_)/meld/vc \
 		$(DESTDIR)$(sharedir_)/ui \
 		$(DESTDIR)$(sharedir_)/icons \
 		$(DESTDIR)$(docdir_) \
@@ -47,12 +50,16 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(helpdir_)
 	install -m 755 bin/meld.install \
 		$(DESTDIR)$(bindir)/meld
-	install -m 644 *.py \
-		$(DESTDIR)$(libdir_)
-	install -m 644 vc/*.py \
-		$(DESTDIR)$(libdir_)/vc
-	install -m 644 paths.py.install \
-		$(DESTDIR)$(libdir_)/paths.py
+	install -m 644 meld/*.py \
+		$(DESTDIR)$(libdir_)/meld
+	install -m 644 meld/ui/*.py \
+		$(DESTDIR)$(libdir_)/meld/ui
+	install -m 644 meld/util/*.py \
+		$(DESTDIR)$(libdir_)/meld/util
+	install -m 644 meld/vc/*.py \
+		$(DESTDIR)$(libdir_)/meld/vc
+	install -m 644 meld/paths.py.install \
+		$(DESTDIR)$(libdir_)/meld/paths.py
 	install -m 644 data/meld.desktop \
 		$(DESTDIR)$(sharedir)/applications
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'

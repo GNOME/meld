@@ -35,17 +35,17 @@ except ImportError:
 
 # project
 import paths
-import prefs
-import gnomeglade
+from util import prefs
+from ui import gnomeglade
 import misc
-import notebooklabel
+from ui import notebooklabel
 import filediff
 import vcview
 import dirdiff
 import task
 import vc
 
-from sourceviewer import srcviewer
+from util.sourceviewer import srcviewer
 
 version = "1.3.1"
 

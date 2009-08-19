@@ -22,7 +22,7 @@ from gettext import gettext as _
 
 import tree
 import misc
-import gnomeglade
+from ui import gnomeglade
 import melddoc
 import paths
 import vc

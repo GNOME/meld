@@ -28,14 +28,14 @@ import gtk
 import gtk.keysyms
 
 import diffutil
-import gnomeglade
+from ui import gnomeglade
 import misc
 import melddoc
-import msgarea
+from ui import msgarea
 import paths
 import cairo
 
-from sourceviewer import srcviewer
+from util.sourceviewer import srcviewer
 
 gdk = gtk.gdk
 

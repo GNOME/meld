@@ -17,7 +17,7 @@
 import os
 import gobject
 import gtk
-import gnomeglade
+from ui import gnomeglade
 import paths
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)

@@ -29,7 +29,7 @@ def load_plugins():
     _vcdir = os.path.dirname(os.path.abspath(__file__))
     ret = []
     for plugin in glob.glob(os.path.join(_vcdir, "[a-z]*.py")):
-        modname = "vc.%s" % os.path.basename(os.path.splitext(plugin)[0])
+        modname = "meld.vc.%s" % os.path.basename(os.path.splitext(plugin)[0])
         ret.append( __import__(modname, globals(), locals(), "*") )
     return ret
 _plugins = load_plugins()

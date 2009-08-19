@@ -25,7 +25,7 @@ import os
 from gettext import gettext as _
 import re
 import time
-import misc
+from meld import misc
 import _vc
 
 class Vc(_vc.Vc):

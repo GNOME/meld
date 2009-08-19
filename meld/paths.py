@@ -23,7 +23,7 @@ _help_dir = ( #HELPDIR#
 _share_dir = ( #SHAREDIR#
 )
 
-appdir = os.path.dirname(__file__)
+appdir = os.path.dirname(os.path.dirname(__file__))
 
 if not _locale_dir: _locale_dir = os.path.join(appdir,"po")
 if not _help_dir:    _help_dir  = os.path.join(appdir,"help")

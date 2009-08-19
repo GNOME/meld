@@ -38,11 +38,11 @@ else:
 
 # i18n support
 
-import paths
+import meld.paths
 import gettext
 _ = gettext.gettext
 
-gettext.bindtextdomain("meld", paths.locale_dir())
+gettext.bindtextdomain("meld", meld.paths.locale_dir())
 gettext.textdomain("meld")
 
 # Check requirements: Python 2.4, pygtk 2.8
@@ -86,13 +86,13 @@ if gtk.pygtk_version < pygtkver:
 #    import warnings
 #    warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-gtk.glade.bindtextdomain("meld", paths.locale_dir())
+gtk.glade.bindtextdomain("meld", meld.paths.locale_dir())
 gtk.glade.textdomain("meld")
 
 #
 # main
 #
-import meldapp
+import meld.meldapp
 for ignore in "--sm-config-prefix", "--sm-client-id":
     try: # ignore session management
         smprefix = sys.argv.index(ignore)
@@ -104,7 +104,7 @@ try: # don't pass on the profiling flag
     minusp = sys.argv.index("--profile")
     del sys.argv[minusp]
     import profile
-    profile.run("meldapp.main()")
+    profile.run("meld.meldapp.main()")
 except ValueError:
-    meldapp.main()
+    meld.meldapp.main()
 sys.exit(0)
