@@ -10,7 +10,7 @@ RELEASE := meld-$(VERSION)
 MELD_CMD := ./meld #--profile
 TESTNUM := 1
 DEVELOPER := 0
-SPECIALS := meld paths.py
+SPECIALS := bin/meld paths.py
 BROWSER := firefox
 
 ifeq ($(DEVELOPER), 1)
@@ -45,7 +45,7 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/applications \
 		$(DESTDIR)$(sharedir)/pixmaps \
 		$(DESTDIR)$(helpdir_)
-	install -m 755 meld.install \
+	install -m 755 bin/meld.install \
 		$(DESTDIR)$(bindir)/meld
 	install -m 644 *.py \
 		$(DESTDIR)$(libdir_)

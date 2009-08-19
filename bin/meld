@@ -19,6 +19,7 @@
 #
 # pychecker
 #
+import os
 import sys
 if "--pychecker" in sys.argv:
     sys.argv.remove("--pychecker")
@@ -26,11 +27,17 @@ if "--pychecker" in sys.argv:
     os.environ['PYCHECKER'] = "--no-argsused --no-classattr --stdlib"
         #'--blacklist=gettext,locale,pygtk,gtk,gtk.keysyms,popen2,random,difflib,filecmp,tempfile'
     import pychecker.checker
-#
+
+# Support running from an uninstalled version
+melddir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if os.path.exists(os.path.join(melddir, "meld.doap")):
+    sys.path[0:0] = [melddir]
+else:
+    sys.path[0:0] = [ #LIBDIR#
+    ]
+
 # i18n support
-#
-sys.path[0:0] = [ #LIBDIR#
-]
+
 import paths
 import gettext
 _ = gettext.gettext
