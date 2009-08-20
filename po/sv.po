@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2009-07-07 12:48+0200\n"
-"PO-Revision-Date: 2009-07-07 21:51+0100\n"
+"POT-Creation-Date: 2009-08-20 22:05+0200\n"
+"PO-Revision-Date: 2009-08-20 22:07+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgid "Left"
 msgstr "Vänster"
 
 #: ../dirdiff.py:174
-#: ../filediff.py:126
+#: ../filediff.py:168
 msgid "Copy To Left"
 msgstr "Kopiera till vänster"
 
@@ -40,7 +40,7 @@ msgid "Right"
 msgstr "Höger"
 
 #: ../dirdiff.py:175
-#: ../filediff.py:127
+#: ../filediff.py:169
 msgid "Copy To Right"
 msgstr "Kopiera till höger"
 
@@ -49,7 +49,7 @@ msgid "Delete selected"
 msgstr "Ta bort markerade"
 
 #: ../dirdiff.py:177
-#: ../filediff.py:602
+#: ../filediff.py:644
 msgid "Hide"
 msgstr "Dölj"
 
@@ -58,7 +58,7 @@ msgid "Hide selected"
 msgstr "Dölj markerade"
 
 #: ../dirdiff.py:179
-#: ../filediff.py:124
+#: ../filediff.py:166
 #: ../vcview.py:126
 msgid "Open selected"
 msgstr "Öppna markerade"
@@ -233,73 +233,73 @@ msgid_plural "%i years"
 msgstr[0] "%i år"
 msgstr[1] "%i år"
 
-#: ../filediff.py:125
+#: ../filediff.py:167
 #: ../glade2/filediff.glade.h:4
 msgid "Create Patch"
 msgstr "Skapa programfix"
 
-#: ../filediff.py:125
+#: ../filediff.py:167
 msgid "Create a patch"
 msgstr "Skapa en programfix"
 
-#: ../filediff.py:126
+#: ../filediff.py:168
 msgid "Copy all changes from right pane to left pane"
 msgstr "Kopiera alla ändringar från högra till vänstra panelen"
 
-#: ../filediff.py:127
+#: ../filediff.py:169
 msgid "Copy all changes from left pane to right pane"
 msgstr "Kopiera alla ändringar från vänstra till högra panelen"
 
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:180
+#: ../filediff.py:222
 msgid "INS,OVR"
 msgstr "INF,ÖVR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:182
+#: ../filediff.py:224
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Rad %i, kolumn %i"
 
-#: ../filediff.py:239
+#: ../filediff.py:281
 #, python-format
 msgid "Regular expression '%s' changed the number of lines in the file. Comparison will be incorrect. See the user manual for more details."
 msgstr "Det reguljära uttrycket \"%s\" ändrade antalet rader i filen. Jämförelsen kommer att vara felaktig. Se användarhandboken för mer information."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../filediff.py:336
+#: ../filediff.py:378
 msgid "<unnamed>"
 msgstr "<namnlös>"
 
-#: ../filediff.py:509
+#: ../filediff.py:551
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Ställ in numrerade paneler"
 
-#: ../filediff.py:515
+#: ../filediff.py:557
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Öppnar filer"
 
-#: ../filediff.py:533
-#: ../filediff.py:547
-#: ../filediff.py:563
-#: ../filediff.py:570
+#: ../filediff.py:575
+#: ../filediff.py:589
+#: ../filediff.py:605
+#: ../filediff.py:612
 #, python-format
 msgid "Could not read from '%s'"
 msgstr "Kunde inte läsa från \"%s\""
 
-#: ../filediff.py:534
-#: ../filediff.py:571
+#: ../filediff.py:576
+#: ../filediff.py:613
 msgid "The error was:"
 msgstr "Felet var:"
 
-#: ../filediff.py:539
+#: ../filediff.py:581
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Läser filer"
 
-#: ../filediff.py:548
+#: ../filediff.py:590
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -307,25 +307,25 @@ msgstr ""
 "Den innehåller ascii-nulltecken.\n"
 "Den kanske är en binär fil."
 
-#: ../filediff.py:564
+#: ../filediff.py:606
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Jag provade med kodningar %s."
 
-#: ../filediff.py:591
+#: ../filediff.py:633
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Beräknar skillnader"
 
-#: ../filediff.py:601
+#: ../filediff.py:643
 msgid "Files are identical"
 msgstr "Filerna är identiska"
 
-#: ../filediff.py:606
+#: ../filediff.py:648
 msgid "Hi_de"
 msgstr "_Dölj"
 
-#: ../filediff.py:729
+#: ../filediff.py:788
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -334,7 +334,7 @@ msgstr ""
 "\"%s\" finns redan!\n"
 "Skriva över?"
 
-#: ../filediff.py:742
+#: ../filediff.py:801
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -345,12 +345,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:751
+#: ../filediff.py:810
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Välj ett namn för buffert %i."
 
-#: ../filediff.py:765
+#: ../filediff.py:824
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -361,7 +361,7 @@ msgstr ""
 "\n"
 "Vilket format vill du använda?"
 
-#: ../filediff.py:781
+#: ../filediff.py:840
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -371,11 +371,11 @@ msgstr ""
 "Vill du spara som UTF-8?"
 
 #. save as
-#: ../filediff.py:821
+#: ../filediff.py:880
 msgid "Save patch as..."
 msgstr "Spara programfix som..."
 
-#: ../filediff.py:888
+#: ../filediff.py:938
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -1204,6 +1204,11 @@ msgid ""
 "                    - source control software version: 'X.Y.Z'\n"
 "                    - the output of '%s somefile.txt'\n"
 "                    - patch command: '%s'\n"
+"                    (no need to actually run it, just provide\n"
+"                    the command line) \n"
+"                    \n"
+"                    Replace 'X.Y.Z' by the actual version for the\n"
+"                    source control software you use.\n"
 "                    "
 msgstr ""
 "\n"
@@ -1222,6 +1227,11 @@ msgstr ""
 "                    - programversion för källkodskontroll: \"X.Y.Z\"\n"
 "                    - utdata från \"%s någonfil.txt\"\n"
 "                    - patch-kommandot: \"%s\"\n"
+"                    (du behöver inte faktiskt köra det, bara tillhanda-\n"
+"                    hålla kommandoraden) \n"
+"                    \n"
+"                    Ersätt \"X.Y.Z\" med den faktiska versionen för\n"
+"                    programvaran för källkodskontroll du använder.\n"
 "                    "
 
 #. These are the possible states of files. Be sure to get the colons correct.
