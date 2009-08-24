@@ -29,7 +29,7 @@ all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 
 .PHONY:clean
 clean: 
-	-rm -f *.pyc vc/*.pyc *.install meld.desktop *.bak data/ui/*.bak
+	-rm -f *.pyc vc/*.pyc *.install data/meld.desktop *.bak data/ui/*.bak
 	$(MAKE) -C po clean
 	$(MAKE) -C help clean
 
@@ -53,7 +53,7 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(libdir_)/vc
 	install -m 644 paths.py.install \
 		$(DESTDIR)$(libdir_)/paths.py
-	install -m 644 meld.desktop \
+	install -m 644 data/meld.desktop \
 		$(DESTDIR)$(sharedir)/applications
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	$(PYTHON) -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
@@ -72,8 +72,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	$(MAKE) -C po install
 	$(MAKE) -C help install
 
-meld.desktop: meld.desktop.in
-	intltool-merge -d po meld.desktop.in meld.desktop
+meld.desktop: data/meld.desktop.in
+	intltool-merge -d po data/meld.desktop.in data/meld.desktop
 
 %.install: %
 	$(PYTHON) tools/install_paths \
