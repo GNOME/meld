@@ -885,11 +885,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return None
 
     def on_find_activate(self, *args):
-        self.findbar.start_find( self.textview_focussed )
+        selected_text = self.get_selected_text()
+        self.findbar.start_find(self.textview_focussed, selected_text)
         self.keymask = 0
 
     def on_replace_activate(self, *args):
-        self.findbar.start_replace( self.textview_focussed )
+        selected_text = self.get_selected_text()
+        self.findbar.start_replace(self.textview_focussed, selected_text)
         self.keymask = 0
 
     def on_find_next_activate(self, *args):

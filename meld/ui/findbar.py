@@ -32,12 +32,14 @@ class FindBar(gnomeglade.Component):
         self.textview = None
         self.widget.hide()
 
-    def start_find(self, textview):
+    def start_find(self, textview, text=None):
         self.textview = textview
         self.replace_label.hide()
         self.replace_entry.hide()
         self.replace_button.hide()
         self.replace_all_button.hide()
+        if text:
+            self.find_entry.set_text(text)
         self.widget.show()
         self.find_entry.grab_focus()
 
@@ -48,15 +50,17 @@ class FindBar(gnomeglade.Component):
         else:
             self.start_find(self.textview)
 
-    def start_find_previous(self, textview):
+    def start_find_previous(self, textview, text=None):
         self.textview = textview
         if self.find_entry.get_text():
             self.find_previous_button.activate()
         else:
             self.start_find(self.textview)
 
-    def start_replace(self, textview):
+    def start_replace(self, textview, text=None):
         self.textview = textview
+        if text:
+            self.find_entry.set_text(text)
         self.widget.show_all()
         self.find_entry.grab_focus()
 
