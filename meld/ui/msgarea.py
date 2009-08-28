@@ -41,7 +41,7 @@ class MsgArea(gtk.HBox):
         self.__main_hbox.show()
         self.__main_hbox.set_border_width(8) # FIXME: use style properties
 
-        self.__action_area = gtk.HBox(True, 4); # FIXME: use style properties
+        self.__action_area = gtk.VBox(True, 4); # FIXME: use style properties
         self.__action_area.show()
         self.__main_hbox.pack_end (self.__action_area, False, True, 0)
 
