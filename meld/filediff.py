@@ -551,6 +551,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if bold.filename == bnew.filename:
                     bnew.label = bold.label
                 self.bufferdata[i] = bnew
+                self.msgarea_mgr[i].clear()
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
         self.scheduler.add_task( self._set_files_internal(files).next )
@@ -565,6 +566,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Opening files") % self.label_text
         panetext = ["\n"] * self.num_panes
         tasks = []
+
+        def add_dismissable_msg(pane, icon, primary, secondary):
+            msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
+                            icon, primary, secondary)
+            button = msgarea.add_stock_button_with_text(_("Hi_de"),
+                            gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+            msgarea.connect("response",
+                            lambda *args: self.msgarea_mgr[pane].clear())
+            msgarea.show_all()
+            return msgarea
+
         for i,f in enumerate(files):
             buf = self.textbuffer[i]
             if f:
@@ -592,12 +604,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 try:
                     nextbit = t.file.read(4096)
                     if nextbit.find("\x00") != -1:
-                        misc.run_dialog(
-                            "%s\n\n%s" % (
-                                _("Could not read from '%s'") % t.filename,
-                                _("It contains ascii nulls.\nPerhaps it is a binary file.") ),
-                                parent = self )
-                        t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
+                        t.buf.delete(*t.buf.get_bounds())
+                        add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
+                                        _("Could not read file"),
+                                        _("%s appears to be a binary file.") % t.filename)
                         tasks.remove(t)
                 except ValueError, err:
                     t.codec.pop(0)
