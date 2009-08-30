@@ -613,12 +613,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         t.text = []
                     else:
                         print "codec error fallback", err
-                        t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
-                        misc.run_dialog(
-                            "%s\n\n%s" % (
-                                _("Could not read from '%s'") % t.filename,
-                                _("I tried encodings %s.") % try_codecs ),
-                            parent = self)
+                        t.buf.delete(*t.buf.get_bounds())
+                        add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
+                                        _("Could not read file"),
+                                        _("%s is not in encodings: %s") %
+                                            (t.filename, try_codecs))
                         tasks.remove(t)
                 except IOError, ioerr:
                     misc.run_dialog(
