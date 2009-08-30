@@ -964,7 +964,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _sync_vscroll(self, adjustment):
         # only allow one scrollbar to be here at a time
-        if (self.keymask & MASK_SHIFT)==0 and not self._sync_vscroll_lock:
+        if self._sync_vscroll_lock:
+            return
+
+        if (self.keymask & MASK_SHIFT) == 0:
             self._sync_vscroll_lock = True
             syncpoint = 0.5
 
@@ -1012,11 +1015,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if master != 1:
                     line = other_line
                     master = 1
-            for lm in self.linkmap:
-                if lm.window:
-                    lm.window.invalidate_rect(None, True)
-                    lm.window.process_updates(True)
             self._sync_vscroll_lock = False
+
+        for lm in self.linkmap:
+            if lm.window:
+                lm.window.invalidate_rect(None, True)
+                lm.window.process_updates(True)
 
         #
         # scrollbar drawing
