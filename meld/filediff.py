@@ -620,12 +620,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                             (t.filename, try_codecs))
                         tasks.remove(t)
                 except IOError, ioerr:
-                    misc.run_dialog(
-                        "%s\n\n%s\n%s" % (
-                            _("Could not read from '%s'") % t.filename,
-                            _("The error was:"),
-                            str(ioerr)),
-                        parent = self)
+                    add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
+                                    _("Could not read file"), str(ioerr))
                     tasks.remove(t)
                 else:
                     if len(nextbit):
