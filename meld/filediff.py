@@ -589,13 +589,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                        pane = i)
                     tasks.append(task)
                 except (IOError, LookupError), e:
-                    buf.set_text("\n")
-                    misc.run_dialog(
-                        "%s\n\n%s\n%s" % (
-                            _("Could not read from '%s'") % f,
-                            _("The error was:"),
-                            str(e)),
-                        parent = self)
+                    buf.delete(*buf.get_bounds())
+                    add_dismissable_msg(i, gtk.STOCK_DIALOG_ERROR,
+                                        _("Could not read file"), str(e))
             else:
                 panetext[i] = buf.get_text(*buf.get_bounds())
         yield _("[%s] Reading files") % self.label_text
