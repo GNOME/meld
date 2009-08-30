@@ -21,6 +21,8 @@ import logging
 import gobject
 import gtk
 
+from wraplabel import WrapLabel
+
 _logger = logging.getLogger("hotwire.ui.MsgArea")
 
 # This file is a Python translation of gedit/gedit/gedit-message-area.c
@@ -192,7 +194,7 @@ class MsgArea(gtk.HBox):
         hbox_content.pack_start (vbox, True, True, 0)
 
         primary_markup = "<b>%s</b>" % (primary_text,)
-        primary_label = gtk.Label(primary_markup)
+        primary_label = WrapLabel(primary_markup)
         primary_label.show()
         vbox.pack_start(primary_label, True, True, 0)
         primary_label.set_use_markup(True)
@@ -203,7 +205,7 @@ class MsgArea(gtk.HBox):
 
         if secondary_text:
             secondary_markup = "<small>%s</small>" % (secondary_text,)
-            secondary_label = gtk.Label(secondary_markup)
+            secondary_label = WrapLabel(secondary_markup)
             secondary_label.show()
             vbox.pack_start(secondary_label, True, True, 0)
             secondary_label.set_flags(gtk.CAN_FOCUS)
