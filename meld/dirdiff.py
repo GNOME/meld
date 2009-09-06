@@ -1029,17 +1029,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             pane = 0
         start_iter = self.model.get_iter( (self._get_selected_paths(pane) or [(0,)])[-1] )
 
-        def goto_iter(it):
-            curpath = self.model.get_path(it)
-            for i in range(len(curpath)-1):
-                self.treeview[pane].expand_row( curpath[:i+1], 0)
-            self.treeview[pane].set_cursor(curpath)
-
-        search = {gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
+        search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
         for it in search( start_iter ):
             state = int(self.model.get_state( it, pane ))
             if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
-                goto_iter(it)
+                curpath = self.model.get_path(it)
+                self.treeview[pane].expand_to_path(curpath)
+                self.treeview[pane].set_cursor(curpath)
                 return
 
     def on_reload_activate(self, *extra):
