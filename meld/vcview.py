@@ -369,7 +369,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_press_event(self, text, event):
         if event.button==3:
             self.popup_menu.popup(None, None, None, 3, event.time)
-            return len(self._get_selected_treepaths()) != 1
+            return len(self._get_selected_paths()) != 1
         return 0
 
     def on_button_flatten_toggled(self, button):
@@ -378,13 +378,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_filter_toggled(self, button):
         self.refresh()
 
-    def _get_selected_treepaths(self):
-        sel = []
-        def gather(model, path, it):
-            sel.append( model.get_path(it) )
-        s = self.treeview.get_selection()
-        s.selected_foreach(gather)
-        return sel
+    def _get_selected_paths(self):
+        return self.treeview.get_selection().get_selected_rows()[1]
 
     def _get_selected_files(self):
         sel = []
@@ -612,7 +607,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         menu.insert( item, 1 )
 
     def next_diff(self, direction):
-        start_iter = self.model.get_iter( (self._get_selected_treepaths() or [(0,)])[-1] )
+        start_iter = self.model.get_iter((self._get_selected_paths() or [(0,)])[-1])
 
         def goto_iter(it):
             curpath = self.model.get_path(it)
