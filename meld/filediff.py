@@ -31,7 +31,6 @@ import diffutil
 from ui import gnomeglade
 import misc
 import melddoc
-from ui import msgarea
 import paths
 import cairo
 

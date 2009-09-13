@@ -27,7 +27,6 @@ import gobject
 import gtk
 import shutil
 import re
-import signal
 import subprocess
 
 whitespace_re = re.compile(r"\s")

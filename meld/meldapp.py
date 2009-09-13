@@ -24,7 +24,6 @@ from gettext import gettext as _
 import gtk
 import gtk.glade
 import gobject
-import pango
 
 # Drag'N'Drop support needs gnomevfs
 try:
