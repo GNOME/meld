@@ -238,8 +238,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.num_panes > 1:
             pane = self.textbuffer.index(buffer)
             self.linediffer.change_sequence(pane, startline, sizechange, self._get_texts())
-            for it in self._update_highlighting():
-                pass
+            self.scheduler.add_task(self._update_highlighting().next)
             self.queue_draw()
         self._update_cursor_status(buffer)
 
@@ -667,7 +666,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _update_highlighting(self):
         alltexts = [t for t in self._get_texts(raw=1)]
         alltags = [b.get_tag_table().lookup("inline line") for b in self.textbuffer]
-        startlines = [b.get_start_iter() for b in self.textbuffer]
+        progress = [b.create_mark("progress", b.get_start_iter()) for b in self.textbuffer]
         newcache = set()
         for chunk in self.linediffer.all_changes():
             for i,c in enumerate(chunk):
@@ -679,10 +678,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                     # Clean interim chunks
                     starts = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[1], c[3]))]
-                    bufs[0].remove_tag(tags[0], startlines[1], starts[0])
-                    bufs[1].remove_tag(tags[1], startlines[i*2], starts[1])
-                    startlines[1] = get_iter_at_line_or_eof(bufs[0], c[2])
-                    startlines[i*2] = get_iter_at_line_or_eof(bufs[1], c[4])
+                    prog_it0 = bufs[0].get_iter_at_mark(progress[1])
+                    prog_it1 = bufs[1].get_iter_at_mark(progress[i * 2])
+                    bufs[0].remove_tag(tags[0], prog_it0, starts[0])
+                    bufs[1].remove_tag(tags[1], prog_it1, starts[1])
+                    bufs[0].move_mark(progress[1], get_iter_at_line_or_eof(bufs[0], c[2]))
+                    bufs[1].move_mark(progress[i * 2], get_iter_at_line_or_eof(bufs[1], c[4]))
 
                     if cacheitem in self._inline_cache:
                         continue
@@ -719,7 +720,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     yield 1
 
         # Clean up trailing lines
-        for b, tag, start in zip(self.textbuffer, alltags, startlines):
+        prog_it = [b.get_iter_at_mark(p) for b, p in zip(self.textbuffer, progress)]
+        for b, tag, start in zip(self.textbuffer, alltags, prog_it):
             b.remove_tag(tag, start, b.get_end_iter())
         self._inline_cache = newcache
         self._cached_match.clean(len(self._inline_cache))
