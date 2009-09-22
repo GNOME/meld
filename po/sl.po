@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&component=general\n"
-"POT-Creation-Date: 2009-08-20 20:08+0000\n"
-"PO-Revision-Date: 2009-08-24 10:04+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"POT-Creation-Date: 2009-09-16 20:11+0000\n"
+"PO-Revision-Date: 2009-09-22 12:52+0100\n"
+"Last-Translator: Matej Urbančič <matej.urban@gmail.com>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,119 +19,420 @@ msgstr ""
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../dirdiff.py:173
-#: ../vcview.py:125
+#: ../bin/meld:54
+#, c-format
+msgid "Meld requires %s or higher."
+msgstr "Program Meld zahteva različico %s ali višjo."
+
+#: ../bin/meld:71
+#: ../bin/meld:78
+msgid "Cannot import: "
+msgstr "Ni mogoče uvoziti:"
+
+#: ../data/meld.desktop.in.h:1
+msgid "Compare and merge your files"
+msgstr "Primerjava in spajanje datotek"
+
+#: ../data/meld.desktop.in.h:2
+msgid "Meld Diff Viewer"
+msgstr "Meld pregledovalnik različic"
+
+#: ../data/ui/filediff.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
+"Which ones would you like to save?</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Nekatere datoteke so bile spremenjene.\n"
+"Katere datoteke naj bodo shranjene?</span>"
+
+#: ../data/ui/filediff.glade.h:3
+msgid "Copy to Clipboard"
+msgstr "Kopiraj v odložišče"
+
+#: ../data/ui/filediff.glade.h:4
+#: ../meld/filediff.py:165
+msgid "Create Patch"
+msgstr "Ustvari popravek"
+
+#: ../data/ui/filediff.glade.h:5
+msgid "Save modified files?"
+msgstr "Ali naj se spremenjene datoteke shranijo?"
+
+#: ../data/ui/filediff.glade.h:6
+msgid "_Discard Changes"
+msgstr "_Prezri spremembe"
+
+#: ../data/ui/filediff.glade.h:7
+msgid "_Save Selected"
+msgstr "_Shrani izbrano"
+
+#: ../data/ui/findbar.glade.h:1
+msgid "Regular E_xpression"
+msgstr "_Logični izraz"
+
+#: ../data/ui/findbar.glade.h:2
+msgid "Replace _All"
+msgstr "Zamenjaj _vse"
+
+#: ../data/ui/findbar.glade.h:3
+msgid "Replace _With"
+msgstr "Zamenjaj _z"
+
+#: ../data/ui/findbar.glade.h:4
+msgid "Who_le word"
+msgstr "Cele _besede"
+
+#: ../data/ui/findbar.glade.h:5
+msgid "_Match Case"
+msgstr "_Upoštevaj velikost črk"
+
+#: ../data/ui/findbar.glade.h:6
+msgid "_Next"
+msgstr "_Naslednji"
+
+#: ../data/ui/findbar.glade.h:7
+msgid "_Previous"
+msgstr "_Predhodni"
+
+#: ../data/ui/findbar.glade.h:8
+#: ../meld/meldapp.py:442
+msgid "_Replace"
+msgstr "_Zamenjaj"
+
+#: ../data/ui/findbar.glade.h:9
+msgid "_Search for"
+msgstr "_Poišči"
+
+#: ../data/ui/meldapp.glade.h:1
+msgid "<b>Edit Menu</b>"
+msgstr "<b>Uredi meni</b>"
+
+#: ../data/ui/meldapp.glade.h:2
+msgid "<b>Font</b>"
+msgstr "<b>Pisava</b>"
+
+#: ../data/ui/meldapp.glade.h:3
+msgid "<b>Loading</b>"
+msgstr "<b>Nalaganje</b>"
+
+#: ../data/ui/meldapp.glade.h:4
+msgid "<b>Misc</b>"
+msgstr "<b>Razno</b>"
+
+#: ../data/ui/meldapp.glade.h:5
+msgid "Automatically supply missing newline at end of file"
+msgstr "Samodejno vstavi manjkajočo novo vrstico na koncu datoteke"
+
+#: ../data/ui/meldapp.glade.h:6
+msgid "Choose Files"
+msgstr "Izbor datotek"
+
+#: ../data/ui/meldapp.glade.h:7
+msgid "Copyright © 2002-2009 Stephen Kennedy"
+msgstr "Avtorske pravice © 2002-2009 Stephen Kennedy"
+
+#: ../data/ui/meldapp.glade.h:8
+msgid "Custom command"
+msgstr "Ukaz po meri"
+
+#: ../data/ui/meldapp.glade.h:9
+msgid "Directory"
+msgstr "Mapa"
+
+#: ../data/ui/meldapp.glade.h:10
+msgid "Edit files with:"
+msgstr "Uredi datoteke z:"
+
+#: ../data/ui/meldapp.glade.h:11
+msgid "Editor"
+msgstr "Urejevalnik"
+
+#: ../data/ui/meldapp.glade.h:12
+msgid "Encoding"
+msgstr "Nabor znakov"
+
+#: ../data/ui/meldapp.glade.h:13
+msgid "File Filters"
+msgstr "Filtri datotek"
+
+#: ../data/ui/meldapp.glade.h:14
+msgid "Gnome default editor"
+msgstr "Privzeti urejevalnik Gnome"
+
+#: ../data/ui/meldapp.glade.h:15
+msgid "Ignore changes which insert or delete blank lines"
+msgstr "Prezri spremembe, s katerimi se vstavijo ali izbrišejo prazne vrstice"
+
+#: ../data/ui/meldapp.glade.h:16
+msgid "Ignore symbolic links"
+msgstr "Prezri simbolne povezave"
+
+#: ../data/ui/meldapp.glade.h:17
+msgid "Insert spaces instead of tabs"
+msgstr "Vstavi presledke namesto tabulatorjev"
+
+#: ../data/ui/meldapp.glade.h:18
+msgid "Internal editor"
+msgstr "Notranji urejevalnik"
+
+#: ../data/ui/meldapp.glade.h:19
+msgid "Line Wrapping "
+msgstr "Prelom vrstic"
+
+#: ../data/ui/meldapp.glade.h:20
+msgid "Meld"
+msgstr "Meld"
+
+#: ../data/ui/meldapp.glade.h:21
+msgid "Mine"
+msgstr "Lastno"
+
+#: ../data/ui/meldapp.glade.h:22
+msgid "Original"
+msgstr "Izvorno"
+
+#: ../data/ui/meldapp.glade.h:23
+msgid "Other"
+msgstr "Ostalo"
+
+#: ../data/ui/meldapp.glade.h:24
+msgid "Preferences : Meld"
+msgstr "Lastnosti : Meld"
+
+#: ../data/ui/meldapp.glade.h:25
+msgid "Show line numbers"
+msgstr "Prikaži številke vrstic"
+
+#: ../data/ui/meldapp.glade.h:26
+msgid "Tab width"
+msgstr "Širina tabulatorja"
+
+#: ../data/ui/meldapp.glade.h:27
+msgid "Text Filters"
+msgstr "Filtri besedila"
+
+#: ../data/ui/meldapp.glade.h:28
+msgid "Three way directory"
+msgstr "Trojni pogled map"
+
+#: ../data/ui/meldapp.glade.h:29
+msgid "Three way file"
+msgstr "Trojni pogled datotek"
+
+#: ../data/ui/meldapp.glade.h:30
+msgid "Two way directory"
+msgstr "Dvojni pogled map"
+
+#: ../data/ui/meldapp.glade.h:31
+msgid "Two way file"
+msgstr "Dvojni pogled datotek"
+
+#: ../data/ui/meldapp.glade.h:32
+msgid "Use GNOME monospace font"
+msgstr "Uporabi pisavo enotne širine"
+
+#: ../data/ui/meldapp.glade.h:33
+msgid "Use custom font"
+msgstr "Uporabi pisavo po meri"
+
+#: ../data/ui/meldapp.glade.h:34
+msgid "Use syntax highlighting"
+msgstr "Uporabi barvno poudarjanje skladnje"
+
+#: ../data/ui/meldapp.glade.h:35
+msgid "Version control view"
+msgstr "Pogled nadzora različic"
+
+#: ../data/ui/meldapp.glade.h:36
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr "Med nalaganjem naj bodo preverjeni nabori v vrsti (na primer: utf8, iso1250)"
+
+#: ../data/ui/meldapp.glade.h:37
+msgid "When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces."
+msgstr "Pri primerjavi map je mogoče filtrirati datoteke in mape po imenu. Vsak vzorec na seznamu je zapisan z nadomestnimi znaki (npr: * in ?), ločenimi s presledki."
+
+#: ../data/ui/meldapp.glade.h:38
+msgid "When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which replaces matching text with the empty string before comparison is performed. If the expression contains groups, only the groups are replaced. See the user manual for more details."
+msgstr "Pri primerjavi datotek je mogoče prezreti nekatere vrste sprememb. Vsak vzorec na seznamu je zapisan z logičnimi izrazi, s katerimi se zamenja želeno besedilo s praznim nizom, preden je primerjava izvede. V primeru, da izraz vključuje skupine, so zamenjane le te. Več podrobnosti je zapisanih v priročniku."
+
+#: ../data/ui/meldapp.glade.h:39
+msgid "_Character"
+msgstr "_Znak"
+
+#: ../data/ui/meldapp.glade.h:40
+msgid "_Directory Comparison"
+msgstr "_Primerjava vsebine map"
+
+#: ../data/ui/meldapp.glade.h:41
+msgid "_File Comparison"
+msgstr "_Primerjava datotek"
+
+#: ../data/ui/meldapp.glade.h:42
+msgid "_None"
+msgstr "_Brez"
+
+#: ../data/ui/meldapp.glade.h:43
+msgid "_Three Way Compare"
+msgstr "_Trojna primerjava"
+
+#: ../data/ui/meldapp.glade.h:44
+msgid "_Version Control Browser"
+msgstr "_Brskalnik po nadzoru različic"
+
+#: ../data/ui/meldapp.glade.h:45
+msgid "_Word"
+msgstr "_Beseda"
+
+#: ../data/ui/vcview.glade.h:1
+msgid "Commit Files"
+msgstr "Uveljavi datoteke"
+
+#: ../data/ui/vcview.glade.h:2
+msgid "Compare Options"
+msgstr "Možnosti primerjave"
+
+#: ../data/ui/vcview.glade.h:3
+msgid "Date"
+msgstr "Datum"
+
+#: ../data/ui/vcview.glade.h:4
+msgid "Local copy against other remote revision"
+msgstr "Krajevna različica napram drugi oddaljeni različici"
+
+#: ../data/ui/vcview.glade.h:5
+msgid "Local copy against same remote revision"
+msgstr "Krajevna različica napram enaki oddaljeni različici"
+
+#: ../data/ui/vcview.glade.h:6
+msgid "Log Message"
+msgstr "Sporočilo beleženja"
+
+#: ../data/ui/vcview.glade.h:7
+msgid "Previous Logs"
+msgstr "Predhodno beleženje"
+
+#: ../data/ui/vcview.glade.h:8
+#: ../meld/vcview.py:183
+msgid "Tag"
+msgstr "Značka"
+
+#: ../data/ui/vcview.glade.h:9
+msgid "VC Log"
+msgstr "VC dnevnik"
+
+#: ../meld/dirdiff.py:184
+#: ../meld/vcview.py:125
 msgid "_Compare"
 msgstr "_Primerjaj"
 
-#: ../dirdiff.py:173
-#: ../vcview.py:125
+#: ../meld/dirdiff.py:184
+#: ../meld/vcview.py:125
 msgid "Compare selected"
 msgstr "Primerjaj izbrano"
 
-#: ../dirdiff.py:174
+#: ../meld/dirdiff.py:185
 msgid "Left"
 msgstr "Levo"
 
-#: ../dirdiff.py:174
-#: ../filediff.py:168
+#: ../meld/dirdiff.py:185
+#: ../meld/filediff.py:166
 msgid "Copy To Left"
 msgstr "Kopiraj na levo"
 
-#: ../dirdiff.py:175
+#: ../meld/dirdiff.py:186
 msgid "Right"
 msgstr "Desno"
 
-#: ../dirdiff.py:175
-#: ../filediff.py:169
+#: ../meld/dirdiff.py:186
+#: ../meld/filediff.py:167
 msgid "Copy To Right"
 msgstr "Kopiraj na desno"
 
-#: ../dirdiff.py:176
+#: ../meld/dirdiff.py:187
 msgid "Delete selected"
 msgstr "Izbriši izbrano"
 
-#: ../dirdiff.py:177
-#: ../filediff.py:644
+#: ../meld/dirdiff.py:188
+#: ../meld/filediff.py:635
 msgid "Hide"
 msgstr "Skrij"
 
-#: ../dirdiff.py:177
+#: ../meld/dirdiff.py:188
 msgid "Hide selected"
 msgstr "Skrij izbrano"
 
-#: ../dirdiff.py:179
-#: ../filediff.py:166
-#: ../vcview.py:126
+#: ../meld/dirdiff.py:190
+#: ../meld/filediff.py:164
+#: ../meld/vcview.py:126
 msgid "Open selected"
 msgstr "Odpri izbrano"
 
-#: ../dirdiff.py:183
+#: ../meld/dirdiff.py:194
 msgid "Case"
 msgstr "Črke"
 
-#: ../dirdiff.py:183
+#: ../meld/dirdiff.py:194
 msgid "Ignore case of entries"
 msgstr "Prezri velikosti črk"
 
-#: ../dirdiff.py:184
+#: ../meld/dirdiff.py:195
 msgid "Same"
 msgstr "Enako"
 
-#: ../dirdiff.py:184
+#: ../meld/dirdiff.py:195
 msgid "Show identical"
 msgstr "Prikaži enako"
 
-#: ../dirdiff.py:185
+#: ../meld/dirdiff.py:196
 msgid "New"
 msgstr "Novo"
 
-#: ../dirdiff.py:185
+#: ../meld/dirdiff.py:196
 msgid "Show new"
 msgstr "Prikaži novejše"
 
-#: ../dirdiff.py:186
+#: ../meld/dirdiff.py:197
 msgid "Modified"
 msgstr "Spremenjeno"
 
-#: ../dirdiff.py:186
-#: ../vcview.py:139
+#: ../meld/dirdiff.py:197
+#: ../meld/vcview.py:139
 msgid "Show modified"
 msgstr "Prikaži spremenjeno"
 
-#: ../dirdiff.py:188
+#: ../meld/dirdiff.py:199
 msgid "Filters"
 msgstr "Filtri"
 
-#: ../dirdiff.py:188
+#: ../meld/dirdiff.py:199
 msgid "Set active filters"
 msgstr "Določi dejavne filtre"
 
-#: ../dirdiff.py:241
-#: ../dirdiff.py:287
+#: ../meld/dirdiff.py:252
+#: ../meld/dirdiff.py:298
 #, python-format
 msgid "Error converting pattern '%s' to regular expression"
 msgstr "Napaka med pretvarjanjem vzorca '%s' v logični izraz"
 
-#: ../dirdiff.py:298
+#: ../meld/dirdiff.py:309
 #, python-format
 msgid "Hide %s"
 msgstr "Skrij %s"
 
-#: ../dirdiff.py:383
-#: ../dirdiff.py:393
-#: ../vcview.py:272
-#: ../vcview.py:300
+#: ../meld/dirdiff.py:394
+#: ../meld/dirdiff.py:404
+#: ../meld/vcview.py:272
+#: ../meld/vcview.py:300
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Pregledovanje %s"
 
-#: ../dirdiff.py:422
+#: ../meld/dirdiff.py:433
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "'%s' je skrit; '%s'"
 
-#: ../dirdiff.py:428
+#: ../meld/dirdiff.py:439
 #, python-format
 msgid ""
 "You are running a case insensitive comparison on a case sensitive filesystem. Some files are not visible:\n"
@@ -140,12 +441,12 @@ msgstr ""
 "Zagnan je način primerjave brez upoštevanja velikosti črk na sistemu, ki razlike velikosti upošteva. Nekatere datoteke niso vidne:\n"
 "%s"
 
-#: ../dirdiff.py:505
+#: ../meld/dirdiff.py:516
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] končano"
 
-#: ../dirdiff.py:551
+#: ../meld/dirdiff.py:562
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -154,7 +455,7 @@ msgstr ""
 "'%s' že obstaja.\n"
 "Ali naj bo prepisana?"
 
-#: ../dirdiff.py:558
+#: ../meld/dirdiff.py:569
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -165,8 +466,8 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:576
-#: ../vcview.py:464
+#: ../meld/dirdiff.py:587
+#: ../meld/vcview.py:464
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -175,8 +476,8 @@ msgstr ""
 "'%s' je mapa.\n"
 "Ali naj bo odstranjena vsa vsebina?"
 
-#: ../dirdiff.py:583
-#: ../vcview.py:469
+#: ../meld/dirdiff.py:594
+#: ../meld/vcview.py:469
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -187,7 +488,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../dirdiff.py:594
+#: ../meld/dirdiff.py:606
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
@@ -196,7 +497,7 @@ msgstr[1] "%i sekunda"
 msgstr[2] "%i sekundi"
 msgstr[3] "%i sekunde"
 
-#: ../dirdiff.py:595
+#: ../meld/dirdiff.py:607
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
@@ -205,7 +506,7 @@ msgstr[1] "%i minuta"
 msgstr[2] "%i minuti"
 msgstr[3] "%i minute"
 
-#: ../dirdiff.py:596
+#: ../meld/dirdiff.py:608
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
@@ -214,7 +515,7 @@ msgstr[1] "%i ura"
 msgstr[2] "%i uri"
 msgstr[3] "%i ure"
 
-#: ../dirdiff.py:597
+#: ../meld/dirdiff.py:609
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
@@ -223,7 +524,7 @@ msgstr[1] "%i dan"
 msgstr[2] "%i dni"
 msgstr[3] "%i dni"
 
-#: ../dirdiff.py:598
+#: ../meld/dirdiff.py:610
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
@@ -232,7 +533,7 @@ msgstr[1] "%i teden"
 msgstr[2] "%i tedna"
 msgstr[3] "%i tedni"
 
-#: ../dirdiff.py:599
+#: ../meld/dirdiff.py:611
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
@@ -241,7 +542,7 @@ msgstr[1] "%i mesec"
 msgstr[2] "%i meseca"
 msgstr[3] "%i meseci"
 
-#: ../dirdiff.py:600
+#: ../meld/dirdiff.py:612
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -250,73 +551,68 @@ msgstr[1] "%i leto"
 msgstr[2] "%i leti"
 msgstr[3] "%i leta"
 
-#: ../filediff.py:167
-#: ../glade2/filediff.glade.h:4
-msgid "Create Patch"
-msgstr "Ustvari popravek"
-
-#: ../filediff.py:167
+#: ../meld/filediff.py:165
 msgid "Create a patch"
 msgstr "Ustvari programski popravek"
 
-#: ../filediff.py:168
+#: ../meld/filediff.py:166
 msgid "Copy all changes from right pane to left pane"
 msgstr "Kopiraj vse spremembe iz desne polovice na levo"
 
-#: ../filediff.py:169
+#: ../meld/filediff.py:167
 msgid "Copy all changes from left pane to right pane"
 msgstr "Kopiraj vse spremembe iz leve polovice na desno"
 
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:222
+#: ../meld/filediff.py:220
 msgid "INS,OVR"
 msgstr "VST,PRE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:224
+#: ../meld/filediff.py:222
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Vr. %i, St. %i"
 
-#: ../filediff.py:281
+#: ../meld/filediff.py:279
 #, python-format
 msgid "Regular expression '%s' changed the number of lines in the file. Comparison will be incorrect. See the user manual for more details."
 msgstr "Po dejanju logičnega izraza '%s' se je spremenilo število vrstic v datoteki, zato primerjava ne bo natančna. Za več podrobnosti si oglejte priročnik."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../filediff.py:378
+#: ../meld/filediff.py:369
 msgid "<unnamed>"
 msgstr "<neimenovano>"
 
-#: ../filediff.py:551
+#: ../meld/filediff.py:542
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Določi okna"
 
-#: ../filediff.py:557
+#: ../meld/filediff.py:548
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Odpiranje datotek"
 
-#: ../filediff.py:575
-#: ../filediff.py:589
-#: ../filediff.py:605
-#: ../filediff.py:612
+#: ../meld/filediff.py:566
+#: ../meld/filediff.py:580
+#: ../meld/filediff.py:596
+#: ../meld/filediff.py:603
 #, python-format
 msgid "Could not read from '%s'"
 msgstr " Ni mogoče brati iz '%s'"
 
-#: ../filediff.py:576
-#: ../filediff.py:613
+#: ../meld/filediff.py:567
+#: ../meld/filediff.py:604
 msgid "The error was:"
 msgstr "Napaka je bila:"
 
-#: ../filediff.py:581
+#: ../meld/filediff.py:572
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Branje datotek"
 
-#: ../filediff.py:590
+#: ../meld/filediff.py:581
 msgid ""
 "It contains ascii nulls.\n"
 "Perhaps it is a binary file."
@@ -324,25 +620,25 @@ msgstr ""
 "Vključene so tudi  ascii ničelni znaki.\n"
 "Morda je datoteka dvojiška."
 
-#: ../filediff.py:606
+#: ../meld/filediff.py:597
 #, python-format
 msgid "I tried encodings %s."
 msgstr "Preizkušeni so bili nabori %s."
 
-#: ../filediff.py:633
+#: ../meld/filediff.py:624
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Računanje razlik"
 
-#: ../filediff.py:643
+#: ../meld/filediff.py:634
 msgid "Files are identical"
 msgstr "Datoteki sta enaki"
 
-#: ../filediff.py:648
+#: ../meld/filediff.py:639
 msgid "Hi_de"
 msgstr "S_krij"
 
-#: ../filediff.py:788
+#: ../meld/filediff.py:778
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -351,7 +647,7 @@ msgstr ""
 "\"%s\" že obstaja!\n"
 "Ali naj bo datoteka prepisana?"
 
-#: ../filediff.py:801
+#: ../meld/filediff.py:791
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -362,12 +658,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../filediff.py:810
+#: ../meld/filediff.py:800
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Izbor imena za predpomnilnik %i."
 
-#: ../filediff.py:824
+#: ../meld/filediff.py:814
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -378,7 +674,7 @@ msgstr ""
 "\n"
 "Kateri zapis želite uporabiti?"
 
-#: ../filediff.py:840
+#: ../meld/filediff.py:830
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -388,11 +684,11 @@ msgstr ""
 "Ali naj se datoteka shrani v naboru UTF-8?"
 
 #. save as
-#: ../filediff.py:880
+#: ../meld/filediff.py:868
 msgid "Save patch as..."
 msgstr "Shrani popravke kot ..."
 
-#: ../filediff.py:938
+#: ../meld/filediff.py:926
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -405,391 +701,62 @@ msgstr ""
 "\n"
 "Dejanja ni mogoče povrniti."
 
-#: ../findbar.py:119
-#, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
-msgstr ""
-"Napaka v logičnem izrazu\n"
-"'%s'"
-
-#: ../glade2/filediff.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
-"Which ones would you like to save?</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Nekatere datoteke so bile spremenjene.\n"
-"Katere datoteke naj bodo shranjene?</span>"
-
-#: ../glade2/filediff.glade.h:3
-msgid "Copy to Clipboard"
-msgstr "Kopiraj v odložišče"
-
-#: ../glade2/filediff.glade.h:5
-msgid "Save modified files?"
-msgstr "Ali naj se spremenjene datoteke shranijo?"
-
-#: ../glade2/filediff.glade.h:6
-msgid "_Discard Changes"
-msgstr "_Prezri spremembe"
-
-#: ../glade2/filediff.glade.h:7
-msgid "_Save Selected"
-msgstr "_Shrani izbrano"
-
-#: ../glade2/findbar.glade.h:1
-msgid "Regular E_xpression"
-msgstr "_Logični izraz"
-
-#: ../glade2/findbar.glade.h:2
-msgid "Replace _All"
-msgstr "Zamenjaj _vse"
-
-#: ../glade2/findbar.glade.h:3
-msgid "Replace _With"
-msgstr "Zamenjaj _z"
-
-#: ../glade2/findbar.glade.h:4
-msgid "Who_le word"
-msgstr "Cele _besede"
-
-#: ../glade2/findbar.glade.h:5
-msgid "_Match Case"
-msgstr "_Upoštevaj velikost črk"
-
-#: ../glade2/findbar.glade.h:6
-msgid "_Next"
-msgstr "_Naslednji"
-
-#: ../glade2/findbar.glade.h:7
-msgid "_Previous"
-msgstr "_Predhodni"
-
-#: ../glade2/findbar.glade.h:8
-#: ../meldapp.py:443
-msgid "_Replace"
-msgstr "_Zamenjaj"
-
-#: ../glade2/findbar.glade.h:9
-msgid "_Search for"
-msgstr "_Poišči"
-
-#: ../glade2/meldapp.glade.h:1
-msgid "<b>Edit Menu</b>"
-msgstr "<b>Uredi meni</b>"
-
-#: ../glade2/meldapp.glade.h:2
-msgid "<b>Font</b>"
-msgstr "<b>Pisava</b>"
-
-#: ../glade2/meldapp.glade.h:3
-msgid "<b>Loading</b>"
-msgstr "<b>Nalaganje</b>"
-
-#: ../glade2/meldapp.glade.h:4
-msgid "<b>Misc</b>"
-msgstr "<b>Razno</b>"
-
-#: ../glade2/meldapp.glade.h:5
-msgid "Automatically supply missing newline at end of file"
-msgstr "Samodejno vstavi manjkajočo novo vrstico na koncu datoteke"
-
-#: ../glade2/meldapp.glade.h:6
-msgid "Choose Files"
-msgstr "Izbor datotek"
-
-#: ../glade2/meldapp.glade.h:7
-msgid "Copyright © 2002-2009 Stephen Kennedy"
-msgstr "Avtorske pravice © 2002-2009 Stephen Kennedy"
-
-#: ../glade2/meldapp.glade.h:8
-msgid "Custom command"
-msgstr "Ukaz po meri"
-
-#: ../glade2/meldapp.glade.h:9
-msgid "Directory"
-msgstr "Mapa"
-
-#: ../glade2/meldapp.glade.h:10
-msgid "Edit files with:"
-msgstr "Uredi datoteke z:"
-
-#: ../glade2/meldapp.glade.h:11
-msgid "Editor"
-msgstr "Urejevalnik"
-
-#: ../glade2/meldapp.glade.h:12
-msgid "Encoding"
-msgstr "Nabor znakov"
-
-#: ../glade2/meldapp.glade.h:13
-msgid "File Filters"
-msgstr "Filtri datotek"
-
-#: ../glade2/meldapp.glade.h:14
-msgid "Gnome default editor"
-msgstr "Privzeti urejevalnik Gnome"
-
-#: ../glade2/meldapp.glade.h:15
-msgid "Ignore changes which insert or delete blank lines"
-msgstr "Prezri spremembe, s katerimi se vstavijo ali izbrišejo prazne vrstice"
-
-#: ../glade2/meldapp.glade.h:16
-msgid "Ignore symbolic links"
-msgstr "Prezri simbolne povezave"
-
-#: ../glade2/meldapp.glade.h:17
-msgid "Insert spaces instead of tabs"
-msgstr "Vstavi presledke namesto tabulatorjev"
-
-#: ../glade2/meldapp.glade.h:18
-msgid "Internal editor"
-msgstr "Notranji urejevalnik"
-
-#: ../glade2/meldapp.glade.h:19
-msgid "Line Wrapping "
-msgstr "Prelom vrstic"
-
-#: ../glade2/meldapp.glade.h:20
-msgid "Meld"
-msgstr "Meld"
-
-#: ../glade2/meldapp.glade.h:21
-msgid "Mine"
-msgstr "Lastno"
-
-#: ../glade2/meldapp.glade.h:22
-msgid "Original"
-msgstr "Izvorno"
-
-#: ../glade2/meldapp.glade.h:23
-msgid "Other"
-msgstr "Ostalo"
-
-#: ../glade2/meldapp.glade.h:24
-msgid "Preferences : Meld"
-msgstr "Lastnosti : Meld"
-
-#: ../glade2/meldapp.glade.h:25
-msgid "Show line numbers"
-msgstr "Prikaži številke vrstic"
-
-#: ../glade2/meldapp.glade.h:26
-msgid "Tab width"
-msgstr "Širina tabulatorja"
-
-#: ../glade2/meldapp.glade.h:27
-msgid "Text Filters"
-msgstr "Filtri besedila"
-
-#: ../glade2/meldapp.glade.h:28
-msgid "Three way directory"
-msgstr "Trojni pogled map"
-
-#: ../glade2/meldapp.glade.h:29
-msgid "Three way file"
-msgstr "Trojni pogled datotek"
-
-#: ../glade2/meldapp.glade.h:30
-msgid "Two way directory"
-msgstr "Dvojni pogled map"
-
-#: ../glade2/meldapp.glade.h:31
-msgid "Two way file"
-msgstr "Dvojni pogled datotek"
-
-#: ../glade2/meldapp.glade.h:32
-msgid "Use GNOME monospace font"
-msgstr "Uporabi pisavo enotne širine"
-
-#: ../glade2/meldapp.glade.h:33
-msgid "Use custom font"
-msgstr "Uporabi pisavo po meri"
-
-#: ../glade2/meldapp.glade.h:34
-msgid "Use syntax highlighting"
-msgstr "Uporabi barvno označevanje skladnje"
-
-#: ../glade2/meldapp.glade.h:35
-msgid "Version control view"
-msgstr "Pogled nadzora različic"
-
-#: ../glade2/meldapp.glade.h:36
-msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-msgstr "Med nalaganjem naj bodo preverjeni nabori v vrsti (na primer: utf8, iso1250)"
-
-#: ../glade2/meldapp.glade.h:37
-msgid "When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces."
-msgstr "Pri primerjavi map je mogoče filtrirati datoteke in mape po imenu. Vsak vzorec na seznamu je zapisan z nadomestnimi znaki (npr: * in ?), ločenimi s presledki."
-
-#: ../glade2/meldapp.glade.h:38
-msgid "When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which replaces matching text with the empty string before comparison is performed. If the expression contains groups, only the groups are replaced. See the user manual for more details."
-msgstr "Pri primerjavi datotek je mogoče prezreti nekatere vrste sprememb. Vsak vzorec na seznamu je zapisan z logičnimi izrazi, s katerimi se zamenja želeno besedilo s praznim nizom, preden je primerjava izvede. V primeru, da izraz vključuje skupine, so zamenjane le te. Več podrobnosti je zapisanih v priročniku."
-
-#: ../glade2/meldapp.glade.h:39
-msgid "_Character"
-msgstr "_Znak"
-
-#: ../glade2/meldapp.glade.h:40
-msgid "_Directory Comparison"
-msgstr "_Primerjava vsebine map"
-
-#: ../glade2/meldapp.glade.h:41
-msgid "_File Comparison"
-msgstr "_Primerjava datotek"
-
-#: ../glade2/meldapp.glade.h:42
-msgid "_None"
-msgstr "_Brez"
-
-#: ../glade2/meldapp.glade.h:43
-msgid "_Three Way Compare"
-msgstr "_Trojna primerjava"
-
-#: ../glade2/meldapp.glade.h:44
-msgid "_Version Control Browser"
-msgstr "_Brskalnik po nadzoru različic"
-
-#: ../glade2/meldapp.glade.h:45
-msgid "_Word"
-msgstr "_Beseda"
-
-#: ../glade2/vcview.glade.h:1
-msgid "Commit Files"
-msgstr "Izročitev datotek"
-
-#: ../glade2/vcview.glade.h:2
-msgid "Compare Options"
-msgstr "Možnosti primerjave"
-
-#: ../glade2/vcview.glade.h:3
-msgid "Date"
-msgstr "Datum"
-
-#: ../glade2/vcview.glade.h:4
-msgid "Local copy against other remote revision"
-msgstr "Krajevna različica napram drugi oddaljeni različici"
-
-#: ../glade2/vcview.glade.h:5
-msgid "Local copy against same remote revision"
-msgstr "Krajevna različica napram enaki oddaljeni različici"
-
-#: ../glade2/vcview.glade.h:6
-msgid "Log Message"
-msgstr "Sporočilo beleženja"
-
-#: ../glade2/vcview.glade.h:7
-msgid "Previous Logs"
-msgstr "Predhodno beleženje"
-
-#: ../glade2/vcview.glade.h:8
-#: ../vcview.py:183
-msgid "Tag"
-msgstr "Značka"
-
-#: ../glade2/vcview.glade.h:9
-msgid "VC Log"
-msgstr "VC dnevnik"
-
-#: ../historyentry.py:248
-msgid "_Browse..."
-msgstr "_Prebrskaj ..."
-
-#: ../historyentry.py:256
-msgid "Path"
-msgstr "Pot"
-
-#: ../historyentry.py:257
-msgid "Path to file"
-msgstr "Pot do datoteke"
-
-#: ../historyentry.py:258
-msgid "Pop up a file selector to choose a file"
-msgstr "Pokaži pojavno okno za izbor datoteke"
-
-#: ../historyentry.py:379
-msgid "Select directory"
-msgstr "Izbor mape"
-
-#: ../historyentry.py:383
-msgid "Select file"
-msgstr "Izbor datoteke"
-
-#: ../meld:47
-#, c-format
-msgid "Meld requires %s or higher."
-msgstr "Program Meld zahteva različico %s ali višje."
-
-#: ../meld:64
-#: ../meld:71
-msgid "Cannot import: "
-msgstr "Ni mogoče uvoziti:"
-
-#: ../meld.desktop.in.h:1
-msgid "Compare and merge your files"
-msgstr "Primerjava in spajanje datotek"
-
-#: ../meld.desktop.in.h:2
-msgid "Meld Diff Viewer"
-msgstr "Meld pregledovalnik različic"
-
-#: ../meldapp.py:151
+#: ../meld/meldapp.py:150
 msgid "label"
 msgstr "oznaka"
 
-#: ../meldapp.py:151
+#: ../meld/meldapp.py:150
 msgid "pattern"
 msgstr "vzorec"
 
-#: ../meldapp.py:219
+#: ../meld/meldapp.py:218
 msgid "Only available if you have gnome-python-desktop installed"
 msgstr "Na voljo le, če je nameščen paket gnome-python-desktop"
 
 #. file filters
 #. text filters
-#: ../meldapp.py:229
-#: ../meldapp.py:234
-#: ../vcview.py:163
+#: ../meld/meldapp.py:228
+#: ../meld/meldapp.py:233
+#: ../meld/vcview.py:163
 msgid "Name"
 msgstr "Ime"
 
-#: ../meldapp.py:229
-#: ../meldapp.py:234
+#: ../meld/meldapp.py:228
+#: ../meld/meldapp.py:233
 msgid "Active"
 msgstr "Dejavno"
 
-#: ../meldapp.py:229
+#: ../meld/meldapp.py:228
 msgid "Pattern"
 msgstr "Vzorec"
 
-#: ../meldapp.py:234
+#: ../meld/meldapp.py:233
 msgid "Regex"
 msgstr "Logični izrazi"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:341
+#: ../meld/meldapp.py:340
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Varnostne kopije\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:343
+#: ../meld/meldapp.py:342
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Nadzor različic\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:345
+#: ../meld/meldapp.py:344
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binarne datoteke\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:347
+#: ../meld/meldapp.py:346
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Medijske datoteke\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:349
+#: ../meld/meldapp.py:348
 msgid ""
 "CVS keywords\t0\t\\$\\w+(:[^\\n"
 "$]+)?\\$\n"
@@ -798,411 +765,411 @@ msgstr ""
 "$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:351
+#: ../meld/meldapp.py:350
 msgid "C++ comment\t0\t//.*\n"
 msgstr "C++ opombe\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:353
+#: ../meld/meldapp.py:352
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "C opombe\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:355
+#: ../meld/meldapp.py:354
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Vse vrste preslednic\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:357
+#: ../meld/meldapp.py:356
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Začetne preslednice\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:359
+#: ../meld/meldapp.py:358
 msgid "Script comment\t0\t#.*"
 msgstr "Opomba skripta\t0\t#.*"
 
-#: ../meldapp.py:428
+#: ../meld/meldapp.py:427
 msgid "_File"
 msgstr "_Datoteka"
 
-#: ../meldapp.py:429
+#: ../meld/meldapp.py:428
 msgid "_New..."
 msgstr "_Novo ..."
 
-#: ../meldapp.py:429
+#: ../meld/meldapp.py:428
 msgid "Start a new comparison"
 msgstr "Nova primerjava"
 
-#: ../meldapp.py:430
+#: ../meld/meldapp.py:429
 msgid "Save the current file"
 msgstr "Shrani trenutno datoteko"
 
-#: ../meldapp.py:432
+#: ../meld/meldapp.py:431
 msgid "Close the current file"
 msgstr "Zapri trenutno datoteko"
 
-#: ../meldapp.py:433
+#: ../meld/meldapp.py:432
 msgid "Quit the program"
 msgstr "Zapusti program"
 
-#: ../meldapp.py:435
+#: ../meld/meldapp.py:434
 msgid "_Edit"
 msgstr "_Uredi"
 
-#: ../meldapp.py:436
+#: ../meld/meldapp.py:435
 msgid "Undo the last action"
 msgstr "Razveljavi zadnje dejanje"
 
-#: ../meldapp.py:437
+#: ../meld/meldapp.py:436
 msgid "Redo the last undone action"
 msgstr "Obnovi zadnjo razveljavljeno dejanje"
 
-#: ../meldapp.py:438
+#: ../meld/meldapp.py:437
 msgid "Cut the selection"
 msgstr "Izreži izbrano"
 
-#: ../meldapp.py:439
+#: ../meld/meldapp.py:438
 msgid "Copy the selection"
 msgstr "Kopiraj izbrano"
 
-#: ../meldapp.py:440
+#: ../meld/meldapp.py:439
 msgid "Paste the clipboard"
 msgstr "Prilepi v odložišče"
 
-#: ../meldapp.py:441
+#: ../meld/meldapp.py:440
 msgid "Search for text"
 msgstr "Iskanje besedila"
 
-#: ../meldapp.py:442
+#: ../meld/meldapp.py:441
 msgid "Find Ne_xt"
 msgstr "Poišči _naslednje"
 
-#: ../meldapp.py:442
+#: ../meld/meldapp.py:441
 msgid "Search forwards for the same text"
 msgstr "Išči enako besedilo naprej"
 
-#: ../meldapp.py:443
+#: ../meld/meldapp.py:442
 msgid "Find and replace text"
 msgstr "Poišči in zamenjaj besedilo"
 
-#: ../meldapp.py:444
+#: ../meld/meldapp.py:443
 msgid "Go to the next difference"
 msgstr "Skoči na naslednjo razliko v datoteki"
 
-#: ../meldapp.py:445
+#: ../meld/meldapp.py:444
 msgid "Go to the previous difference"
 msgstr "Skoči na predhodno razliko v datoteki"
 
-#: ../meldapp.py:446
+#: ../meld/meldapp.py:445
 msgid "Prefere_nces"
 msgstr "_Nastavitve"
 
-#: ../meldapp.py:446
+#: ../meld/meldapp.py:445
 msgid "Configure the application"
 msgstr "Nastavitve programa"
 
-#: ../meldapp.py:448
+#: ../meld/meldapp.py:447
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../meldapp.py:449
+#: ../meld/meldapp.py:448
 msgid "File status"
 msgstr "Stanje datoteke"
 
-#: ../meldapp.py:450
+#: ../meld/meldapp.py:449
 msgid "Version status"
 msgstr "Stanje različice"
 
-#: ../meldapp.py:451
+#: ../meld/meldapp.py:450
 msgid "File filters"
 msgstr "Filtri datotek"
 
-#: ../meldapp.py:452
+#: ../meld/meldapp.py:451
 msgid "Stop the current action"
 msgstr "Ustavi trenutno dejanje"
 
-#: ../meldapp.py:453
+#: ../meld/meldapp.py:452
 msgid "Refresh the view"
 msgstr "Osveži pogled"
 
-#: ../meldapp.py:454
+#: ../meld/meldapp.py:453
 msgid "Reload"
 msgstr "Ponovno naloži"
 
-#: ../meldapp.py:454
+#: ../meld/meldapp.py:453
 msgid "Reload the comparison"
 msgstr "Ponovno naloži primerjavo"
 
-#: ../meldapp.py:456
+#: ../meld/meldapp.py:455
 msgid "_Help"
 msgstr "_Pomoč"
 
-#: ../meldapp.py:457
+#: ../meld/meldapp.py:456
 msgid "_Contents"
 msgstr "_Vsebina"
 
-#: ../meldapp.py:457
+#: ../meld/meldapp.py:456
 msgid "Open the Meld manual"
 msgstr "Odpri priročnik Meld"
 
-#: ../meldapp.py:458
+#: ../meld/meldapp.py:457
 msgid "Report _Bug"
 msgstr "Pošlji poročilo o _hrošču"
 
-#: ../meldapp.py:458
+#: ../meld/meldapp.py:457
 msgid "Report a bug in Meld"
 msgstr "Poročilo o hrošču programa Meld"
 
-#: ../meldapp.py:459
+#: ../meld/meldapp.py:458
 msgid "About this program"
 msgstr "O programu"
 
-#: ../meldapp.py:462
+#: ../meld/meldapp.py:461
 msgid "Full Screen"
 msgstr "Celozaslonski način"
 
-#: ../meldapp.py:462
+#: ../meld/meldapp.py:461
 msgid "View the comparison in full screen"
 msgstr "Ogled primerjave v celozaslonskem načinu"
 
-#: ../meldapp.py:463
+#: ../meld/meldapp.py:462
 msgid "_Toolbar"
 msgstr "_Orodna vrstica"
 
-#: ../meldapp.py:463
+#: ../meld/meldapp.py:462
 msgid "Show or hide the toolbar"
 msgstr "Prikaži ali skrij orodno vrstico"
 
-#: ../meldapp.py:464
+#: ../meld/meldapp.py:463
 msgid "_Statusbar"
 msgstr "_Vrstica stanja"
 
-#: ../meldapp.py:464
+#: ../meld/meldapp.py:463
 msgid "Show or hide the statusbar"
 msgstr "Prikaži ali skrij vrstico stanja"
 
-#: ../meldapp.py:795
+#: ../meld/meldapp.py:794
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Ni mogoče primerjati mešanice datotek in map.\n"
 
-#: ../meldapp.py:838
-#: ../meldapp.py:846
+#: ../meld/meldapp.py:837
+#: ../meld/meldapp.py:845
 msgid "file"
 msgstr "datoteka"
 
-#: ../meldapp.py:839
-#: ../meldapp.py:845
+#: ../meld/meldapp.py:838
+#: ../meld/meldapp.py:844
 msgid "dir"
 msgstr "mapa"
 
-#: ../meldapp.py:844
+#: ../meld/meldapp.py:843
 msgid "Start with no window open"
 msgstr "Zagon brez odprtih oken"
 
-#: ../meldapp.py:845
+#: ../meld/meldapp.py:844
 #, python-format
 msgid "Start with Version Control browser in '%s'"
 msgstr "Zagon z brskalnikom nadzornika različic v '%s'"
 
-#: ../meldapp.py:846
+#: ../meld/meldapp.py:845
 #, python-format
 msgid "Start with Version Control diff of '%s'"
 msgstr "Zagon s primerjavo diff nadzornika različic '%s'"
 
-#: ../meldapp.py:847
+#: ../meld/meldapp.py:846
 msgid "Start with 2 or 3 way file comparison"
 msgstr "Zagon z dvojno ali trojno primerjavo datotek"
 
-#: ../meldapp.py:848
+#: ../meld/meldapp.py:847
 msgid "Start with 2 or 3 way directory comparison"
 msgstr "Zagon z dvojno ali trojno primerjavo map"
 
-#: ../meldapp.py:855
+#: ../meld/meldapp.py:854
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld je orodje za primerjavo vsebine datotek in map."
 
-#: ../meldapp.py:858
+#: ../meld/meldapp.py:857
 msgid "Set label to use instead of file name"
 msgstr "Določi naslov namesto imena datoteke"
 
-#: ../meldapp.py:860
+#: ../meld/meldapp.py:859
 msgid "Automatically compare all differing files on startup"
 msgstr "Ob zagonu samodejno primerjaj vse različne datoteke."
 
-#: ../meldapp.py:861
-#: ../meldapp.py:862
-#: ../meldapp.py:863
-#: ../meldapp.py:864
+#: ../meld/meldapp.py:860
+#: ../meld/meldapp.py:861
+#: ../meld/meldapp.py:862
+#: ../meld/meldapp.py:863
 msgid "Ignored for compatibility"
 msgstr "Prezrto zaradi skladnosti"
 
-#: ../meldapp.py:867
+#: ../meld/meldapp.py:866
 msgid "Creates a diff tab for up to 3 supplied files or directories."
 msgstr "Ustvari zavihke primerjav za do tri datoteke ali mape."
 
-#: ../meldapp.py:871
+#: ../meld/meldapp.py:870
 msgid "Invalid number of arguments supplied for --diff."
 msgstr "Neveljavno število argumentov pri ukazu --diff."
 
-#: ../meldapp.py:874
+#: ../meld/meldapp.py:873
 #, python-format
 msgid "Wrong number of arguments (Got %i)"
 msgstr "Neveljavno število argumentov (pridobljeno %i)"
 
-#: ../melddoc.py:46
+#: ../meld/melddoc.py:46
 msgid "untitled"
 msgstr "neimenovano"
 
 #. no common path. empty names get changed to "[None]"
-#: ../misc.py:190
+#: ../meld/misc.py:189
 msgid "[None]"
 msgstr "[noben]"
 
-#: ../vcview.py:127
+#: ../meld/vcview.py:127
 msgid "_Commit"
-msgstr "_Izročitev"
+msgstr "_Uveljavi"
 
-#: ../vcview.py:127
+#: ../meld/vcview.py:127
 msgid "Commit"
-msgstr "Izročitev"
+msgstr "Uveljavi spremembe"
 
 #. FIXME: popup used to use gtk.STOCK_GO_BACK
-#: ../vcview.py:128
+#: ../meld/vcview.py:128
 msgid "_Update"
 msgstr "_Posodobi"
 
-#: ../vcview.py:128
+#: ../meld/vcview.py:128
 msgid "Update"
 msgstr "Posodobi"
 
 #. FIXME: popup used to use gtk.STOCK_GO_FORWARD
-#: ../vcview.py:129
+#: ../meld/vcview.py:129
 msgid "_Add"
 msgstr "_Dodaj"
 
-#: ../vcview.py:129
+#: ../meld/vcview.py:129
 msgid "Add to VC"
 msgstr "Dodaj v VC"
 
 #. FIXME: popup used to use gtk.STOCK_ADD
-#: ../vcview.py:130
+#: ../meld/vcview.py:130
 msgid "Add _Binary"
 msgstr "Dodaj _dvojiško"
 
-#: ../vcview.py:130
+#: ../meld/vcview.py:130
 msgid "Add binary to VC"
 msgstr "Dodaj dvojiško datoteko v VC"
 
 #. FIXME: stock is inconsistent with other VC actions
-#: ../vcview.py:131
+#: ../meld/vcview.py:131
 msgid "_Remove"
 msgstr "_Odstrani"
 
-#: ../vcview.py:131
+#: ../meld/vcview.py:131
 msgid "Remove from VC"
 msgstr "Odstrani iz VC"
 
 #. FIXME: popup used to use gtk.STOCK_REMOVE
-#: ../vcview.py:132
+#: ../meld/vcview.py:132
 msgid "_Resolved"
 msgstr "_Razrešeno"
 
-#: ../vcview.py:132
+#: ../meld/vcview.py:132
 msgid "Mark as resolved for VC"
 msgstr "Označi kot razrešeno v VC"
 
-#: ../vcview.py:133
+#: ../meld/vcview.py:133
 msgid "Revert to original"
 msgstr "_Povrni na izvirne vrednosti"
 
-#: ../vcview.py:134
+#: ../meld/vcview.py:134
 msgid "Delete locally"
 msgstr "Izbriši krajevno"
 
-#: ../vcview.py:138
+#: ../meld/vcview.py:138
 msgid "_Flatten"
 msgstr "_Razpni"
 
-#: ../vcview.py:138
+#: ../meld/vcview.py:138
 msgid "Flatten directories"
 msgstr "_Razpni mape"
 
-#: ../vcview.py:139
+#: ../meld/vcview.py:139
 msgid "_Modified"
 msgstr "_Spremenjeno"
 
-#: ../vcview.py:140
+#: ../meld/vcview.py:140
 msgid "_Normal"
 msgstr "_Običajno"
 
-#: ../vcview.py:140
+#: ../meld/vcview.py:140
 msgid "Show normal"
 msgstr "Prikaži običajno"
 
-#: ../vcview.py:141
+#: ../meld/vcview.py:141
 msgid "Non _VC"
 msgstr "Ni _VC"
 
-#: ../vcview.py:141
+#: ../meld/vcview.py:141
 msgid "Show unversioned files"
 msgstr "Prikaži datoteke z nedoločenimi različicami"
 
-#: ../vcview.py:142
+#: ../meld/vcview.py:142
 msgid "Ignored"
 msgstr "Prezrto"
 
-#: ../vcview.py:142
+#: ../meld/vcview.py:142
 msgid "Show ignored files"
 msgstr "Prikaži prezrte datoteke"
 
-#: ../vcview.py:180
+#: ../meld/vcview.py:180
 msgid "Location"
 msgstr "Mesto"
 
-#: ../vcview.py:181
+#: ../meld/vcview.py:181
 msgid "Status"
 msgstr "Stanje"
 
-#: ../vcview.py:182
+#: ../meld/vcview.py:182
 msgid "Rev"
 msgstr "Rev"
 
-#: ../vcview.py:184
+#: ../meld/vcview.py:184
 msgid "Options"
 msgstr "Možnosti"
 
-#: ../vcview.py:230
+#: ../meld/vcview.py:230
 msgid "Choose one Version Control"
 msgstr "Izbor nadzora različic"
 
-#: ../vcview.py:231
+#: ../meld/vcview.py:231
 msgid "Only one Version Control in this directory"
 msgstr "V tej mapi je le en nadzornik različic"
 
-#: ../vcview.py:316
+#: ../meld/vcview.py:316
 msgid "(Empty)"
 msgstr "(Prazno)"
 
-#: ../vcview.py:349
+#: ../meld/vcview.py:349
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Iskanje razlik"
 
-#: ../vcview.py:356
+#: ../meld/vcview.py:356
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Pripenjanje popravka"
 
-#: ../vcview.py:360
+#: ../meld/vcview.py:360
 msgid "No differences found."
 msgstr "Ni razlik."
 
-#: ../vcview.py:439
+#: ../meld/vcview.py:439
 msgid "Select some files first."
 msgstr "Najprej je treba izbrati datoteke."
 
-#: ../vcview.py:505
+#: ../meld/vcview.py:505
 #, python-format
 msgid ""
 "\n"
@@ -1251,12 +1218,49 @@ msgstr ""
 "                    programske opreme za nadzor izvorne kode.\n"
 "                    "
 
+#: ../meld/ui/findbar.py:119
+#, python-format
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+"Napaka v logičnem izrazu\n"
+"'%s'"
+
+#: ../meld/ui/historyentry.py:248
+msgid "_Browse..."
+msgstr "_Prebrskaj ..."
+
+#: ../meld/ui/historyentry.py:256
+msgid "Path"
+msgstr "Pot"
+
+#: ../meld/ui/historyentry.py:257
+msgid "Path to file"
+msgstr "Pot do datoteke"
+
+#: ../meld/ui/historyentry.py:258
+msgid "Pop up a file selector to choose a file"
+msgstr "Pokaži pojavno okno za izbor datoteke"
+
+#: ../meld/ui/historyentry.py:379
+msgid "Select directory"
+msgstr "Izbor mape"
+
+#: ../meld/ui/historyentry.py:383
+msgid "Select file"
+msgstr "Izbor datoteke"
+
+#: ../meld/ui/notebooklabel.py:61
+msgid "Close tab"
+msgstr "Zapri zavihek"
+
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:40
+#: ../meld/vc/_vc.py:40
 msgid "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
 msgstr "Prezrto:Nedoločeno:::Napaka::Novo dodano:Spremenjeno:<b>V sporu</b>:Odstranjeno:Manjkajoče"
 
-#: ../vc/cvs.py:151
+#: ../meld/vc/cvs.py:151
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
