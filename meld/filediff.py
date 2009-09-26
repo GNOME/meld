@@ -1014,9 +1014,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     master = 1
             for lm in self.linkmap:
                 if lm.window:
-                    alloc = lm.get_allocation()
-                    rect = gdk.Rectangle(0, 0, alloc.width, alloc.height)
-                    lm.window.invalidate_rect(rect, True)
+                    lm.window.invalidate_rect(None, True)
                     lm.window.process_updates(True)
             self._sync_vscroll_lock = False
 
