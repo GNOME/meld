@@ -500,6 +500,7 @@ class MeldApp(gnomeglade.Component):
         self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
         self.ui.ensure_update()
         self.widget.show()
+        self.diff_handler = None
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
 
@@ -590,6 +591,7 @@ class MeldApp(gnomeglade.Component):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
             olddoc = notebook.get_nth_page(oldidx).get_data("pyobject")
+            olddoc.disconnect(self.diff_handler)
             olddoc.on_container_switch_out_event(self.ui)
         self.actiongroup.get_action("Undo").set_sensitive(newseq.can_undo())
         self.actiongroup.get_action("Redo").set_sensitive(newseq.can_redo())
@@ -597,6 +599,8 @@ class MeldApp(gnomeglade.Component):
         self.widget.set_title(nbl.get_label_text() + " - Meld")
         self.statusbar.set_doc_status("")
         newdoc.on_container_switch_in_event(self.ui)
+        self.diff_handler = newdoc.connect("next-diff-changed",
+                                           self.on_next_diff_changed)
         self.scheduler.add_task( newdoc.scheduler )
 
     def on_notebook_label_changed(self, component, text):
@@ -610,6 +614,10 @@ class MeldApp(gnomeglade.Component):
 
     def on_can_redo(self, undosequence, can):
         self.actiongroup.get_action("Redo").set_sensitive(can)
+
+    def on_next_diff_changed(self, doc, have_prev, have_next):
+        self.actiongroup.get_action("Up").set_sensitive(have_prev)
+        self.actiongroup.get_action("Down").set_sensitive(have_next)
 
     def on_size_allocate(self, window, rect):
         self.prefs.window_size_x = rect.width

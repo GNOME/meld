@@ -90,6 +90,14 @@ def insert_with_tags_by_name(buffer, line, text, tag):
         text = "\n" + text
     buffer.insert_with_tags_by_name(get_iter_at_line_or_eof(buffer, line), text, tag)
 
+class CursorDetails(object):
+    __slots__ = ("pane", "pos", "line", "offset", "chunk", "prev", "next")
+
+    def __init__(self):
+        for var in self.__slots__:
+            setattr(self, var, None)
+
+
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
@@ -181,6 +189,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
         gnomeglade.connect_signal_handlers(self)
         self.findbar = self.findbar.get_data("pyobject")
+        self.cursor = CursorDetails()
 
     def on_focus_change(self):
         self.keymask = 0
@@ -216,36 +225,48 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             id1 = buf.connect("delete-range", self.on_text_delete_range)
             id2 = buf.connect_after("insert-text", self.after_text_insert_text)
             id3 = buf.connect_after("delete-range", self.after_text_delete_range)
-            id4 = buf.connect("mark-set", self.on_textbuffer_mark_set)
+            id4 = buf.connect("notify::cursor-position",
+                              self.on_cursor_position_changed)
             buf.handlers = id0, id1, id2, id3, id4
 
-    def _update_cursor_status(self, buf):
-        def update():
-            it = buf.get_iter_at_mark( buf.get_insert() )
-            # Abbreviation for insert,overwrite so that it will fit in the status bar
-            insert_overwrite = _("INS,OVR").split(",")[ self.textview_overwrite ]
-            # Abbreviation for line, column so that it will fit in the status bar
-            line_column = _("Ln %i, Col %i") % (it.get_line()+1, it.get_line_offset()+1)
-            status = "%s : %s" % ( insert_overwrite, line_column )
-            self.emit("status-changed", status)
-            return False
-        self.scheduler.add_task(update)
+    def on_cursor_position_changed(self, buf, pspec, force=False):
+        pane = self.textbuffer.index(buf)
+        pos = buf.props.cursor_position
+        if pane == self.cursor.pane and pos == self.cursor.pos and not force:
+            return
+        self.cursor.pane, self.cursor.pos = pane, pos
 
-    def on_textbuffer_mark_set(self, buffer, it, mark):
-        if mark.get_name() == "insert":
-            self._update_cursor_status(buffer)
+        cursor_it = buf.get_iter_at_offset(pos)
+        offset = cursor_it.get_line_offset()
+        line = cursor_it.get_line()
+
+        # Abbreviations for insert and overwrite that fit in the status bar
+        insert_overwrite = (_("INS"), _("OVR"))[self.textview_overwrite]
+        # Abbreviation for line, column so that it will fit in the status bar
+        line_column = _("Ln %i, Col %i") % (line + 1, offset + 1)
+        status = "%s : %s" % (insert_overwrite, line_column)
+        self.emit("status-changed", status)
+
+        if line != self.cursor.line or force:
+            chunk, prev, next = self.linediffer.locate_chunk(pane, line)
+            if prev != self.cursor.prev or next != self.cursor.next:
+                self.emit("next-diff-changed", prev is not None,
+                          next is not None)
+            self.cursor.chunk, self.cursor.prev, self.cursor.next = chunk, prev, next
+        self.cursor.line, self.cursor.offset = line, offset
+
     def on_textview_focus_in_event(self, view, event):
         self.textview_focussed = view
         self.findbar.textview = view
-        self._update_cursor_status(view.get_buffer())
+        self.on_cursor_position_changed(view.get_buffer(), None, True)
 
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
             pane = self.textbuffer.index(buffer)
             self.linediffer.change_sequence(pane, startline, sizechange, self._get_texts())
+            self.on_cursor_position_changed(buffer, None, True)
             self.scheduler.add_task(self._update_highlighting().next)
             self.queue_draw()
-        self._update_cursor_status(buffer)
 
     def _get_texts(self, raw=0):
         class FakeText(object):
@@ -510,7 +531,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if v != view:
                 v.emit("toggle-overwrite")
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
-        self._update_cursor_status(view.get_buffer())
+        self.on_cursor_position_changed(view.get_buffer(), None, True)
 
 
         #
@@ -669,7 +690,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 msgarea.connect("response", self.on_msgarea_identical_response)
                 msgarea.show_all()
 
-        self.scheduler.add_task( lambda: self.next_diff(gdk.SCROLL_DOWN, jump_to_first=True), True )
+        chunk, prev, next = self.linediffer.locate_chunk(1, 0)
+        self.cursor.next = chunk
+        if self.cursor.next is None:
+            self.cursor.next = next
+        self.scheduler.add_task(lambda: self.next_diff(gdk.SCROLL_DOWN), True)
         self.queue_draw()
         self.scheduler.add_task(self._update_highlighting().next)
         self._connect_buffer_handlers()
@@ -1133,29 +1158,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
 
-    def _find_next_chunk(self, direction, curline, pane):
-        c = None
-        for chunk in self.linediffer.single_changes(pane):
-            assert chunk[0] != "equal"
-            if direction == gdk.SCROLL_DOWN:
-                # Take the first chunk which is starting after curline
-                if chunk[1] > curline:
-                    c = chunk
-                    break
-            else: # direction == gdk.SCROLL_UP
-                # Skip 'delete' blocks when we are at the warp position,
-                # i.e. on the line just after the block, because that may
-                # be where we ended up at the previous 'UP' button press
-                if chunk[2] == chunk[1] == curline:
-                    continue
-                # Take the last chunk which is ending before curline
-                if chunk[2] - 1 < curline:
-                    c = chunk
-                elif c:
-                    break
-        return c
+    def _find_next_chunk(self, direction, pane):
+        if direction == gtk.gdk.SCROLL_DOWN:
+            target = self.cursor.next
+        else: # direction == gtk.gdk.SCROLL_UP
+            target = self.cursor.prev
 
-    def next_diff(self, direction, jump_to_first=False):
+        if target is None:
+            return None
+        return self.linediffer.get_chunk(target, pane)
+
+    def next_diff(self, direction):
         pane = self._get_focused_pane()
         if pane == -1:
             if len(self.textview) > 1:
@@ -1164,15 +1177,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pane = 0
         buf = self.textbuffer[pane]
 
-        if jump_to_first:
-            cursorline = -1
-        else:
-            cursorline = buf.get_iter_at_mark(buf.get_insert()).get_line()
-
-        c = self._find_next_chunk(direction, cursorline, pane)
+        c = self._find_next_chunk(direction, pane)
         if c:
             # Warp the cursor to the first line of next chunk
-            if cursorline != c[1]:
+            if self.cursor.line != c[1]:
                 buf.place_cursor(buf.get_iter_at_line(c[1]))
             self.textview[pane].scroll_to_mark(buf.get_insert(), 0.1)
 

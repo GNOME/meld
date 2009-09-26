@@ -76,6 +76,7 @@ class Differ(object):
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]
         self._merge_cache = []
+        self._line_cache = [[], [], []]
         self.ignore_blanks = False
 
     def _update_merge_cache(self, texts):
@@ -91,6 +92,49 @@ class Differ(object):
                 self._merge_cache[i] = (self._consume_blank_lines(c[0], texts, 1, 0),
                                         self._consume_blank_lines(c[1], texts, 1, 2))
             self._merge_cache = [x for x in self._merge_cache if x != (None, None)]
+
+        self._update_line_cache()
+
+    def _update_line_cache(self):
+        for i, l in enumerate(self.seqlength):
+            self._line_cache[i] = [(None, None, None)] * l
+
+        last_chunk = len(self._merge_cache)
+        def find_next(diff, seq, current):
+            next_chunk = None
+            if seq == 1 and current + 1 < last_chunk:
+                next_chunk = current + 1
+            else:
+                for j in range(current + 1, last_chunk):
+                    if self._merge_cache[j][diff] is not None:
+                        next_chunk = j
+                        break
+            return next_chunk
+
+        prev = [None, None, None]
+        next = [find_next(0, 0, -1), find_next(0, 1, -1), find_next(1, 2, -1)]
+        old_end = [0, 0, 0]
+
+        for i, c in enumerate(self._merge_cache):
+            seq_params = ((0, 0, 3, 4), (0, 1, 1, 2), (1, 2, 3, 4))
+            for (diff, seq, lo, hi) in seq_params:
+                if c[diff] is None:
+                    if seq == 1:
+                        diff = 1
+                    else:
+                        continue
+
+                start, end, last = c[diff][lo], c[diff][hi], old_end[seq]
+                if (start > last):
+                    self._line_cache[seq][last:start] = [(None, prev[seq], next[seq])] * (start - last)
+
+                # For insert chunks, claim the subsequent line.
+                if start == end:
+                    end += 1
+
+                next[seq] = find_next(diff, seq, i)
+                self._line_cache[seq][start:end] = [(i, prev[seq], next[seq])] * (end - start)
+                prev[seq], old_end[seq] = i, end
 
     def _consume_blank_lines(self, c, texts, pane1, pane2):
         if c is None:
@@ -133,6 +177,33 @@ class Differ(object):
             if line < c[high_index]:
                 return i
         return len(self.diffs[whichdiffs])
+
+    def get_chunk(self, index, from_pane, to_pane=None):
+        """Return the index-th change in from_pane
+        
+        If to_pane is provided, then only changes between from_pane and to_pane
+        are considered, otherwise all changes starting at from_pane are used.
+        """
+        sequence = int(from_pane == 2 or to_pane == 2)
+        chunk = self._merge_cache[index][sequence]
+        if from_pane in (0, 2):
+            if chunk is None:
+                return None
+            return reverse_chunk(chunk)
+        else:
+            if to_pane is None and chunk is None:
+                chunk = self._merge_cache[index][1]
+            return chunk
+
+    def locate_chunk(self, pane, line):
+        """Find the index of the chunk which contains line."""
+        try:
+            return self._line_cache[pane][line]
+        except IndexError:
+            return (None, None, None)
+
+    def diff_count(self):
+        return len(self._merge_cache)
 
     def _change_sequence(self, which, sequence, startidx, sizechange, texts):
         diffs = self.diffs[which]
