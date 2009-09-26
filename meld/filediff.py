@@ -1143,20 +1143,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         c = self._find_next_chunk(direction, cursorline, pane)
         if c:
-            # Warp focused scrolledwindow to show the first line of next chunk
-            a = self.scrolledwindow[pane].get_vadjustment()
-            want_line_pix = self._line_to_pixel(pane, c[1])
-            # But only if it is not already visible around center of current
-            # page to avoid useless scrolling
-            lo = a.value + a.page_size * 0.1
-            hi = a.value + a.page_size * 0.9
-            if not (lo < want_line_pix < hi):
-                want = want_line_pix - 0.5 * a.page_size
-                want = misc.clamp(want, 0, a.upper - a.page_size)
-                a.set_value(want)
             # Warp the cursor to the first line of next chunk
             if cursorline != c[1]:
                 buf.place_cursor(buf.get_iter_at_line(c[1]))
+            self.textview[pane].scroll_to_mark(buf.get_insert(), 0.1)
 
         #
         # linkmap drawing
