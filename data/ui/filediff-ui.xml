@@ -5,7 +5,26 @@
       <toolitem action="Undo"/>
       <toolitem action="Redo"/>
     </placeholder>
+    <placeholder name="SpecialActions">
+      <toolitem action="PushLeft"/>
+      <toolitem action="PushRight"/>
+      <toolitem action="PullLeft"/>
+      <toolitem action="PullRight"/>
+      <toolitem action="Delete"/>
+    </placeholder>
   </toolbar>
+
+  <menubar name="Menubar">
+    <menu action="EditMenu">
+      <placeholder name="EditActionsPlaceholder">
+        <menuitem action="PushLeft"/>
+        <menuitem action="PushRight"/>
+        <menuitem action="PullLeft"/>
+        <menuitem action="PullRight"/>
+        <menuitem action="Delete"/>
+      </placeholder>
+    </menu>
+  </menubar>
 
   <popup name="Popup">
     <menuitem action="Save" />

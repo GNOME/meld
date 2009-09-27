@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2009-2010 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -177,6 +178,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         actions = (
             ("FileOpen",          gtk.STOCK_OPEN,       None,            None, _("Open selected"), self.on_open_activate),
             ("CreatePatch",       None,                 _("Create Patch"),  None, _("Create a patch"), self.make_patch),
+            ("PushLeft",  gtk.STOCK_GO_BACK,    _("Push to left"),    "<Alt>Left", _("Push current change to the left"), lambda x: self.push_change(-1)),
+            ("PushRight", gtk.STOCK_GO_FORWARD, _("Push to right"),   "<Alt>Right", _("Push current change to the right"), lambda x: self.push_change(1)),
+            # FIXME: using LAST and FIRST is terrible and unreliable icon abuse
+            ("PullLeft",  gtk.STOCK_GOTO_LAST,  _("Pull from left"),  "<Alt><Shift>Right", _("Pull change from the left"), lambda x: self.pull_change(-1)),
+            ("PullRight", gtk.STOCK_GOTO_FIRST, _("Pull from right"), "<Alt><Shift>Left", _("Pull change from the right"), lambda x: self.pull_change(1)),
+            ("Delete",    gtk.STOCK_DELETE,     _("Delete"),     "<Alt>Delete", _("Delete change"), self.delete_change),
             ("CopyAllLeft",       gtk.STOCK_GOTO_FIRST, _("Copy To Left"),  None, _("Copy all changes from right pane to left pane"), lambda x: self.copy_selected(-1)),
             ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
         )
@@ -190,6 +197,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.connect_signal_handlers(self)
         self.findbar = self.findbar.get_data("pyobject")
         self.cursor = CursorDetails()
+        self.connect("current-diff-changed", self.on_current_diff_changed)
+        for t in self.textview:
+            t.connect("focus-in-event", self.on_current_diff_changed)
+            t.connect("focus-out-event", self.on_current_diff_changed)
 
     def on_focus_change(self):
         self.keymask = 0
@@ -249,11 +260,70 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         if line != self.cursor.line or force:
             chunk, prev, next = self.linediffer.locate_chunk(pane, line)
+            if chunk != self.cursor.chunk:
+                self.cursor.chunk = chunk
+                self.emit("current-diff-changed")
             if prev != self.cursor.prev or next != self.cursor.next:
                 self.emit("next-diff-changed", prev is not None,
                           next is not None)
-            self.cursor.chunk, self.cursor.prev, self.cursor.next = chunk, prev, next
+            self.cursor.prev, self.cursor.next = prev, next
         self.cursor.line, self.cursor.offset = line, offset
+
+    def on_current_diff_changed(self, widget, *args):
+        pane = self.cursor.pane
+        chunk_id = self.cursor.chunk
+        push_left, push_right, pull_left, pull_right, delete = (True,) * 5
+        if pane == -1 or chunk_id is None:
+            push_left, push_right, pull_left, pull_right, delete = (False,) * 5
+        else:
+            # Copy* and Delete are sensitive as long as there is something to
+            # copy/delete (i.e., not an empty chunk), and the direction exists.
+            if pane == 0 or pane == 2:
+                chunk = self.linediffer.get_chunk(chunk_id, pane)
+                push_left = pane == 2 and not chunk[1] == chunk[2]
+                push_right = pane == 0 and not chunk[1] == chunk[2]
+                pull_left = pane == 2 and not chunk[3] == chunk[4]
+                pull_right = pane == 0 and not chunk[3] == chunk[4]
+            elif pane == 1:
+                chunk0 = self.linediffer.get_chunk(chunk_id, pane, 0)
+                chunk2 = None
+                if self.num_panes == 3:
+                    chunk2 = self.linediffer.get_chunk(chunk_id, pane, 2)
+                push_left = chunk0 is not None and chunk0[1] != chunk0[2]
+                push_right = chunk2 is not None and chunk2[1] != chunk2[2]
+                pull_left = chunk0 is not None and not chunk0[3] == chunk0[4]
+                pull_right = chunk2 is not None and not chunk2[3] == chunk2[4]
+            delete = push_left or push_right
+        self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
+        self.actiongroup.get_action("PushRight").set_sensitive(push_right)
+        self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
+        self.actiongroup.get_action("PullRight").set_sensitive(pull_right)
+        self.actiongroup.get_action("Delete").set_sensitive(delete)
+
+    def push_change(self, direction):
+        src = self._get_focused_pane()
+        dst = src + direction
+        chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
+        assert(src != -1 and self.cursor.chunk is not None)
+        assert(dst in (0, 1, 2))
+        assert(chunk is not None)
+        self.replace_chunk(src, dst, chunk)
+
+    def pull_change(self, direction):
+        dst = self._get_focused_pane()
+        src = dst + direction
+        chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
+        assert(dst != -1 and self.cursor.chunk is not None)
+        assert(src in (0, 1, 2))
+        assert(chunk is not None)
+        self.replace_chunk(src, dst, chunk)
+
+    def delete_change(self, widget):
+        pane = self._get_focused_pane()
+        chunk = self.linediffer.get_chunk(self.cursor.chunk, pane)
+        assert(pane != -1 and self.cursor.chunk is not None)
+        assert(chunk is not None)
+        self.delete_chunk(pane, chunk)
 
     def on_textview_focus_in_event(self, view, event):
         self.textview_focussed = view
@@ -264,7 +334,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.num_panes > 1:
             pane = self.textbuffer.index(buffer)
             self.linediffer.change_sequence(pane, startline, sizechange, self._get_texts())
-            self.on_cursor_position_changed(buffer, None, True)
+            # FIXME: diff-changed signal for the current buffer would be cleaner
+            focused_pane = self._get_focused_pane()
+            if focused_pane != -1:
+                self.on_cursor_position_changed(self.textbuffer[focused_pane],
+                                                None, True)
             self.scheduler.add_task(self._update_highlighting().next)
             self.queue_draw()
 
