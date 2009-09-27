@@ -890,9 +890,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             draw_change(change)
 
         if textview.is_focus():
-            context.set_line_width(3)
-            curline = textview.get_buffer().get_iter_at_mark( textview.get_buffer().get_insert() ).get_line()
-            ypos, height = self._line_to_pixel_plus_height(pane, curline)
+            ypos, height = self._line_to_pixel_plus_height(pane, self.cursor.line)
             context.set_source_rgba(1,1,0,.25)
             context.rectangle(0,ypos-visible.y, width, height)
             context.fill()
