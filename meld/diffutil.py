@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2009 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -75,12 +76,46 @@ class Differ(object):
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]
         self._merge_cache = []
+        self.ignore_blanks = False
 
     def _update_merge_cache(self, texts):
         if self.num_sequences == 3:
             self._merge_cache = [c for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts)]
         else:
             self._merge_cache = [(c, None) for c in self.diffs[0]]
+
+        if self.ignore_blanks:
+            # We don't handle altering the chunk-type of conflicts in three-way
+            # comparisons where e.g., pane 1 and 3 differ in blank lines
+            for i, c in enumerate(self._merge_cache):
+                self._merge_cache[i] = (self._consume_blank_lines(c[0], texts, 1, 0),
+                                        self._consume_blank_lines(c[1], texts, 1, 2))
+            self._merge_cache = [x for x in self._merge_cache if x != (None, None)]
+
+    def _consume_blank_lines(self, c, texts, pane1, pane2):
+        if c is None:
+            return None
+        c0 = c[0]
+        c1, c2 = self._find_blank_lines(texts[pane1], c[1], c[2])
+        c3, c4 = self._find_blank_lines(texts[pane2], c[3], c[4])
+        if c1 == c2 and c3 == c4:
+            return None
+        if c1 == c2 and c[0] == "replace":
+            c0 = "insert"
+        elif c3 == c4 and c[0] == "replace":
+            c0 = "delete"
+        return (c0, c1, c2, c3, c4)
+
+    def _find_blank_lines(self, txt, lo, hi):
+        for line in range(lo, hi):
+            if txt[line]:
+                break
+            lo += 1
+        for line in range(hi, lo, -1):
+            if txt[line - 1]:
+                break
+            hi -= 1
+        return lo, hi
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0, 1, 2)

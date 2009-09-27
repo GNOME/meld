@@ -129,6 +129,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
         self.linediffer = diffutil.Differ()
+        self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
         for text in self.textview:
@@ -253,6 +254,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     return self.textfilter(txt).split("\n")
                 else:
                     return self.textfilter(txt).split("\n")[:-1]
+            def __getitem__(self, i):
+                line_start = get_iter_at_line_or_eof(self.buf, i)
+                line_end = line_start.copy()
+                if not line_end.ends_line():
+                    line_end.forward_to_line_end()
+                return self.buf.get_text(line_start, line_end, False)
+
         class FakeTextArray(object):
             def __init__(self, bufs, textfilter):
                 self.texts = [FakeText(b, textfilter) for b in  bufs]
@@ -342,6 +350,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif key == "spaces_instead_of_tabs":
             for t in self.textview:
                 t.set_insert_spaces_instead_of_tabs(value)
+        elif key == "ignore_blank_lines":
+            self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
+            self.set_files([None] * self.num_panes) # Refresh
 
     def _update_linkmap_buttons(self):
         for l in self.linkmap[:self.num_panes - 1]:
@@ -746,9 +757,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 context.fill()
 
         for change in self.linediffer.single_changes(pane):
-            change, skip = self._consume_blank_lines(change, pane, change[5])
-            if skip:
-                continue
             if change[2] < start_line: continue
             if change[1] > end_line: break
             draw_change(change)
@@ -1042,9 +1050,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 "delete":solid_green}
         for c in self.linediffer.single_changes(textindex):
             assert c[0] != "equal"
-            c, skip = self._consume_blank_lines(c, textindex, c[5])
-            if skip:
-                continue
             rect(context, ctab[c[0]], scale*c[1], scale*c[2])
 
     def on_diffmap_button_press_event(self, area, event):
@@ -1102,9 +1107,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         c = None
         for chunk in self.linediffer.single_changes(pane):
             assert chunk[0] != "equal"
-            chunk, skip = self._consume_blank_lines(chunk, 1, chunk[5])
-            if skip:
-                continue
             if direction == gdk.SCROLL_DOWN:
                 # Take the first chunk which is starting after curline
                 if chunk[1] > curline:
@@ -1154,31 +1156,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if cursorline != c[1]:
                 buf.place_cursor(buf.get_iter_at_line(c[1]))
 
-    def _consume_blank_lines(self, c, pane1, pane2):
-        if not self.prefs.ignore_blank_lines:
-            return c, False
-        c1, c2 = self._find_blank_lines(self._get_texts()[pane1][c[1]:c[2]])
-        c3, c4 = self._find_blank_lines(self._get_texts()[pane2][c[3]:c[4]])
-        new_c = (c[0], c[1] + c1, c[2] - c2, c[3] + c3, c[4] - c4)
-        if len(c) == 6:
-            new_c += (c[5],)
-        nothing_left = new_c[1] == new_c[2] and new_c[3] == new_c[4]
-        return new_c, nothing_left
-
-    def _find_blank_lines(self, txt):
-        lo, hi = 0, 0
-        for l in txt:
-            if len(l)==0:
-                lo += 1
-            else:
-                break
-        for l in reversed(txt[lo:]):
-            if len(l)==0:
-                hi += 1
-            else:
-                break
-        return lo,hi
-
         #
         # linkmap drawing
         #
@@ -1218,10 +1195,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.identity_matrix()
 
         for c in self.linediffer.pair_changes(which, which + 1):
-            c, skip = self._consume_blank_lines(c, which, which + 1)
-            if skip:
-                continue
-
             assert c[0] != "equal"
             if c[2] < visible[1] and c[4] < visible[3]: # find first visible chunk
                 continue
@@ -1295,9 +1268,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             adj = self.scrolledwindow[src].get_vadjustment()
 
             for c in self.linediffer.pair_changes(src, dst):
-                c, skip = self._consume_blank_lines(c, src, dst)
-                if skip:
-                    continue
                 if c[0] == "insert":
                     continue
                 h = self._line_to_pixel(src, c[1]) - adj.value
