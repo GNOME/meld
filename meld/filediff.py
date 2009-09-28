@@ -1338,31 +1338,48 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     # gtk tries to jump back to where the cursor was unless we move the cursor
                     self.textview[src].place_cursor_onscreen()
                     self.textview[dst].place_cursor_onscreen()
-                    chunk = chunk[1:]
 
-                    b0 = self.textbuffer[src]
-                    b1 = self.textbuffer[dst]
                     if self.keymask & MASK_SHIFT: # delete
-                        it = get_iter_at_line_or_eof(b0, chunk[0])
-                        if chunk[1] >= b0.get_line_count():
-                            it.backward_char()
-                        b0.delete(it, get_iter_at_line_or_eof(b0, chunk[1]))
+                        self.delete_chunk(src, chunk)
                     elif self.keymask & MASK_CTRL: # copy up or down
-                        t0 = b0.get_text( get_iter_at_line_or_eof(b0, chunk[0]), get_iter_at_line_or_eof(b0, chunk[1]), 0)
-                        if event.y - rect[1] < 0.5 * rect[3]: # copy up
-                            if chunk[1] >= b0.get_line_count() and chunk[2] < b1.get_line_count():
-                                t0 = t0 + "\n"
-                            insert_with_tags_by_name(b1, chunk[2], t0, "edited line")
-                        else: # copy down
-                            insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
+                        copy_up = event.y - rect[1] < 0.5 * rect[3]
+                        self.copy_chunk(src, dst, chunk, copy_up)
                     else: # replace
-                        t0 = b0.get_text( get_iter_at_line_or_eof(b0, chunk[0]), get_iter_at_line_or_eof(b0, chunk[1]), 0)
-                        self.on_textbuffer__begin_user_action()
-                        b1.delete(get_iter_at_line_or_eof(b1, chunk[2]), get_iter_at_line_or_eof(b1, chunk[3]))
-                        insert_with_tags_by_name(b1, chunk[2], t0, "edited line")
-                        self.on_textbuffer__end_user_action()
+                        self.replace_chunk(src, dst, chunk)
             return True
         return False
+
+    def copy_chunk(self, src, dst, chunk, copy_up):
+        b0, b1 = self.textbuffer[src], self.textbuffer[dst]
+        start = get_iter_at_line_or_eof(b0, chunk[1])
+        end = get_iter_at_line_or_eof(b0, chunk[2])
+        t0 = b0.get_text(start, end, 0)
+        if copy_up:
+            if chunk[2] >= b0.get_line_count() and \
+               chunk[3] < b1.get_line_count():
+                t0 = t0 + "\n"
+            insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
+        else: # copy down
+            insert_with_tags_by_name(b1, chunk[4], t0, "edited line")
+
+    def replace_chunk(self, src, dst, chunk):
+        b0, b1 = self.textbuffer[src], self.textbuffer[dst]
+        src_start = get_iter_at_line_or_eof(b0, chunk[1])
+        src_end = get_iter_at_line_or_eof(b0, chunk[2])
+        dst_start = get_iter_at_line_or_eof(b1, chunk[3])
+        dst_end = get_iter_at_line_or_eof(b1, chunk[4])
+        t0 = b0.get_text(src_start, src_end, 0)
+        self.on_textbuffer__begin_user_action()
+        b1.delete(dst_start, dst_end)
+        insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
+        self.on_textbuffer__end_user_action()
+
+    def delete_chunk(self, src, chunk):
+        b0 = self.textbuffer[src]
+        it = get_iter_at_line_or_eof(b0, chunk[1])
+        if chunk[2] >= b0.get_line_count():
+            it.backward_char()
+        b0.delete(it, get_iter_at_line_or_eof(b0, chunk[2]))
 
 ################################################################################
 #
