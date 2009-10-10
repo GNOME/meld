@@ -145,7 +145,12 @@ class PreferencesDialog(gnomeglade.Component):
                 self.checkbutton_spaces_instead_of_tabs.set_tooltip_text(no_sourceview_text)
                 self.checkbutton_show_line_numbers.set_tooltip_text(no_sourceview_text)
                 self.checkbutton_use_syntax_highlighting.set_tooltip_text(no_sourceview_text)
-        self.option_wrap_lines.set_history( self.prefs.edit_wrap_lines )
+        # TODO: This doesn't restore the state of character wrapping when word
+        # wrapping is disabled, but this is hard with our existing gconf keys
+        if self.prefs.edit_wrap_lines != gtk.WRAP_NONE:
+            if self.prefs.edit_wrap_lines == gtk.WRAP_CHAR:
+                self.checkbutton_split_words.set_active(False)
+            self.checkbutton_wrap_text.set_active(True)
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
         self.editor_command[ self.editor_radio_values.get(self.prefs.edit_command_type, "internal") ].set_active(1)
         self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
@@ -176,8 +181,18 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs.tab_size = int(spin.get_value())
     def on_checkbutton_spaces_instead_of_tabs_toggled(self, check):
         self.prefs.spaces_instead_of_tabs = check.get_active()
-    def on_option_wrap_lines_changed(self, option):
-        self.prefs.edit_wrap_lines = option.get_history()
+
+    def on_checkbutton_wrap_text_toggled(self, button):
+        if not self.checkbutton_wrap_text.get_active():
+            self.prefs.edit_wrap_lines = 0
+            self.checkbutton_split_words.set_sensitive(False)
+        else:
+            self.checkbutton_split_words.set_sensitive(True)
+            if self.checkbutton_split_words.get_active():
+                self.prefs.edit_wrap_lines = 2
+            else:
+                self.prefs.edit_wrap_lines = 1
+
     def on_checkbutton_supply_newline_toggled(self, check):
         self.prefs.supply_newline = check.get_active()
     def on_checkbutton_show_line_numbers_toggled(self, check):

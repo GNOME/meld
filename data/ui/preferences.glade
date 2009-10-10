@@ -139,7 +139,7 @@
                       <widget class="GtkLabel" id="label34">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Misc&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Display&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
@@ -219,37 +219,39 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkHBox" id="hbox38">
+                              <widget class="GtkCheckButton" id="checkbutton_wrap_text">
+                                <property name="label" translatable="yes">Enable text _wrapping</property>
                                 <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="draw_indicator">True</property>
+                                <signal name="toggled" handler="on_checkbutton_wrap_text_toggled"/>
+                              </widget>
+                              <packing>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkAlignment" id="alignment1">
+                                <property name="visible">True</property>
+                                <property name="left_padding">18</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label85">
+                                  <widget class="GtkCheckButton" id="checkbutton_split_words">
+                                    <property name="label" translatable="yes">Do not _split words over two lines</property>
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Line Wrapping </property>
-                                  </widget>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="GtkOptionMenu" id="option_wrap_lines">
-                                    <property name="visible">True</property>
+                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <signal name="changed" handler="on_option_wrap_lines_changed"/>
+                                    <property name="use_underline">True</property>
+                                    <property name="active">True</property>
+                                    <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="on_checkbutton_wrap_text_toggled"/>
                                   </widget>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
                                 </child>
                               </widget>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
@@ -265,7 +267,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">3</property>
+                                <property name="position">4</property>
                               </packing>
                             </child>
                             <child>
@@ -281,7 +283,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">4</property>
+                                <property name="position">5</property>
                               </packing>
                             </child>
                             <child>
@@ -297,7 +299,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">5</property>
+                                <property name="position">6</property>
                               </packing>
                             </child>
                           </widget>
