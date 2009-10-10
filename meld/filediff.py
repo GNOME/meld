@@ -123,6 +123,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             v.set_buffer(srcviewer.GtkTextBuffer())
             v.set_show_line_numbers(self.prefs.show_line_numbers)
             v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
+            v.set_wrap_mode(self.prefs.edit_wrap_lines)
             srcviewer.set_tab_width(v, self.prefs.tab_size)
         self.keymask = 0
         self.load_font()
@@ -132,7 +133,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.bufferdata = [MeldBufferData() for b in self.textbuffer]
-        self.vscroll = [w.get_vscrollbar() for w in self.scrolledwindow]
         for (i, w) in enumerate(self.scrolledwindow):
             w.get_vadjustment().connect("value-changed", self._sync_vscroll, i)
             w.get_hadjustment().connect("value-changed", self._sync_hscroll)
@@ -143,8 +143,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
-        for text in self.textview:
-            text.set_wrap_mode( self.prefs.edit_wrap_lines )
         for buf in self.textbuffer:
             buf.create_tag("edited line",   background = self.prefs.color_edited_bg,
                                             foreground = self.prefs.color_edited_fg)
