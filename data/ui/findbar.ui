@@ -12,16 +12,18 @@
         <child>
           <placeholder/>
         </child>
+        <property name="column_spacing">6</property>
+        <property name="row_spacing">6</property>
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox2">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_START</property>
+            <property name="layout_style">start</property>
             <child>
               <object class="GtkButton" id="replace_button">
+                <property name="label" translatable="yes">_Replace</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label" translatable="yes">_Replace</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
               </object>
@@ -29,9 +31,9 @@
             <child>
               <object class="GtkButton" id="replace_all_button">
                 <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Replace _All</property>
                 <property name="visible">True</property>
                 <property name="receives_default">True</property>
-                <property name="label" translatable="yes">Replace _All</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
               </object>
@@ -52,23 +54,23 @@
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_START</property>
+            <property name="layout_style">start</property>
             <child>
               <object class="GtkButton" id="find_previous_button">
+                <property name="label" translatable="yes">_Previous</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label" translatable="yes">_Previous</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
               </object>
             </child>
             <child>
               <object class="GtkButton" id="find_next_button">
+                <property name="label" translatable="yes">_Next</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label" translatable="yes">_Next</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
               </object>
@@ -87,7 +89,8 @@
         <child>
           <object class="GtkLabel" id="find_label">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">_Search for</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Find:</property>
             <property name="use_underline">True</property>
             <property name="mnemonic_widget">find_entry</property>
           </object>
@@ -115,7 +118,8 @@
         <child>
           <object class="GtkLabel" id="replace_label">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Replace _With</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Replace _with:</property>
             <property name="use_underline">True</property>
             <property name="mnemonic_widget">replace_entry</property>
           </object>
@@ -149,21 +153,25 @@
             <property name="visible">True</property>
             <child>
               <object class="GtkCheckButton" id="match_case">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">_Match Case</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkCheckButton" id="whole_word">
+                <property name="label" translatable="yes">Who_le word</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Who_le word</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="draw_indicator">True</property>
@@ -175,9 +183,10 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="regex">
+                <property name="label" translatable="yes">Regular E_xpression</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Regular E_xpression</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="draw_indicator">True</property>
