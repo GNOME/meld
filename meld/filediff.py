@@ -1081,14 +1081,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # scrollbars
         #
     def _sync_hscroll(self, adjustment):
-        if not self._sync_hscroll_lock:
-            self._sync_hscroll_lock = True
-            adjs = map( lambda x: x.get_hadjustment(), self.scrolledwindow)
-            adjs.remove(adjustment)
-            val = adjustment.get_value()
-            for a in adjs:
-                a.set_value(val)
-            self._sync_hscroll_lock = False
+        if self._sync_hscroll_lock:
+            return
+
+        self._sync_hscroll_lock = True
+        val = adjustment.get_value()
+        for sw in self.scrolledwindow[:self.num_panes]:
+            adj = sw.get_hadjustment()
+            if adj is not adjustment:
+                adj.set_value(val)
+        self._sync_hscroll_lock = False
 
     def _sync_vscroll(self, adjustment, master):
         # only allow one scrollbar to be here at a time
