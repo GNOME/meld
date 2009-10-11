@@ -1115,7 +1115,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             line = it.get_line() + ((master_y-line_y)/height)
 
             for (i,adj) in others:
-                mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
+                mbegin, mend = 0, self.textbuffer[master].get_line_count()
+                obegin, oend = 0, self.textbuffer[i].get_line_count()
                 # look for the chunk containing 'line'
                 for c in self.linediffer.pair_changes(master, i):
                     if c[1] >= line:
@@ -1194,10 +1195,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             adj.set_value( max( min(upper, val), 0) )
             return 1
         return 0
-
-    def _get_line_count(self, index):
-        """Return the number of lines in the buffer of textview 'text'"""
-        return self.textbuffer[index].get_line_count()
 
     def set_num_panes(self, n):
         if n != self.num_panes and n in (1,2,3):
