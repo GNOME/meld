@@ -788,13 +788,28 @@ class MeldApp(gnomeglade.Component):
         return doc
 
     def append_diff(self, paths, auto_compare=False):
-        aredirs = [ os.path.isdir(p) for p in paths ]
-        arefiles = [ os.path.isfile(p) for p in paths ]
-        if (1 in aredirs) and (1 in arefiles):
-            misc.run_dialog( _("Cannot compare a mixture of files and directories.\n"),
-                    parent = self,
-                    buttonstype = gtk.BUTTONS_OK)
-        elif 1 in aredirs:
+        dirslist = [p for p in paths if os.path.isdir(p)]
+        fileslist = [p for p in paths if os.path.isfile(p)]
+        if dirslist and fileslist:
+            # build new file list appending previous found filename to dirs (like diff)
+            lastfilename = fileslist[0]
+            builtfilelist = []
+            for elem in paths:
+                if os.path.isdir(elem):
+                    builtfilename = os.path.join(elem, lastfilename)
+                    if os.path.isfile(builtfilename):
+                        elem = builtfilename
+                    else:
+                        # exit at first non found directory + file
+                        misc.run_dialog(_("Cannot compare a mixture of files and directories.\n"),
+                                          parent=self,
+                                          buttonstype=gtk.BUTTONS_OK)
+                        return
+                else:
+                     lastfilename = os.path.basename(elem)
+                builtfilelist.append(elem)
+            return self.append_filediff(builtfilelist)
+        elif dirslist:
             return self.append_dirdiff(paths, auto_compare)
         else:
             return self.append_filediff(paths)
@@ -847,7 +862,8 @@ class MeldApp(gnomeglade.Component):
         usages = [("", _("Start with an empty window")),
                   ("<%s|%s>" % (_("file"), _("dir")), _("Start a version control comparison")),
                   ("<%s> <%s> [<%s>]" % ((_("file"),) * 3), _("Start a 2- or 3-way file comparison")),
-                  ("<%s> <%s> [<%s>]" % ((_("dir"),) * 3), _("Start a 2- or 3-way directory comparison"))]
+                  ("<%s> <%s> [<%s>]" % ((_("dir"),) * 3), _("Start a 2- or 3-way directory comparison")),
+                  ("<%s> <%s>" % (_("file"), _("dir")), _("Start a comparison between file and dir/file"))]
         pad_args_fmt = "%-" + str(max([len(s[0]) for s in usages])) + "s %s"
         usage = "\n" + "\n".join(["  %prog " + pad_args_fmt % u for u in usages])
 
