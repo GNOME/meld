@@ -58,6 +58,7 @@ def _escape_cell_data_func(col, renderer, model, it, escape_func):
 
 
 class HistoryEntry(gtk.ComboBoxEntry):
+    __gtype_name__ = "HistoryEntry"
 
     __gproperties__ = {
         "history-id":      (str, "History ID",
@@ -226,6 +227,8 @@ def _expand_filename(filename, default_dir):
 
 
 class HistoryFileEntry(gtk.HBox, gtk.Editable):
+    __gtype_name__ = "HistoryFileEntry"
+
     __gsignals__ = {
         "browse_clicked" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
         "activate" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])

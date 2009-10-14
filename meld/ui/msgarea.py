@@ -28,6 +28,8 @@ _logger = logging.getLogger("hotwire.ui.MsgArea")
 # This file is a Python translation of gedit/gedit/gedit-message-area.c
 
 class MsgArea(gtk.HBox):
+    __gtype_name__ = "MsgArea"
+
     __gsignals__ = {
         "response" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (gobject.TYPE_INT,)),
         "close" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
@@ -217,6 +219,8 @@ class MsgArea(gtk.HBox):
         self.set_contents(hbox_content)
 
 class MsgAreaController(gtk.HBox):
+    __gtype_name__ = "MsgAreaController"
+
     def __init__(self):
         super(MsgAreaController, self).__init__()
 
