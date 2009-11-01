@@ -107,6 +107,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.map_widgets_into_lists(["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr", "vbox"])
         self._update_regexes()
         self.warned_bad_comparison = False
+        # Some sourceviews bind their own undo mechanism, which we replace
+        gtk.binding_entry_remove(srcviewer.GtkTextView, gtk.keysyms.z,
+                                 gtk.gdk.CONTROL_MASK)
+        gtk.binding_entry_remove(srcviewer.GtkTextView, gtk.keysyms.z,
+                                 gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)
         for v in self.textview:
             v.set_buffer(srcviewer.GtkTextBuffer())
             v.set_show_line_numbers(self.prefs.show_line_numbers)
