@@ -646,7 +646,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         while step.next() is None:
             yield 1
 
-        if self.num_panes > 1 and self.linediffer.sequences_identical():
+        error_message = True in [m.has_message() for m in self.msgarea_mgr]
+        if self.num_panes > 1 and self.linediffer.sequences_identical() and not error_message:
             for index, mgr in enumerate(self.msgarea_mgr):
                 msgarea = mgr.new_from_text_and_icon(gtk.STOCK_INFO,
                                                      _("Files are identical"))

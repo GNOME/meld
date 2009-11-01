@@ -222,6 +222,9 @@ class MsgAreaController(gtk.HBox):
 
         self.__msgarea = None
 
+    def has_message(self):
+        return self.__msgarea is not None
+
     def clear(self):
         if self.__msgarea is not None:
             self.remove(self.__msgarea)
