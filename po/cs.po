@@ -8,23 +8,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2009-09-30 21:37+0200\n"
-"PO-Revision-Date: 2009-09-30 21:35+0200\n"
+"POT-Creation-Date: 2009-11-05 17:57+0100\n"
+"PO-Revision-Date: 2009-11-05 17:56+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 1.0\n"
 
-#: ../bin/meld:54
+#: ../bin/meld:77
+msgid "Cannot import: "
+msgstr "Nelze importovat: "
+
+#: ../bin/meld:80
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld vyžaduje %s nebo vyšší."
-
-#: ../bin/meld:71 ../bin/meld:78
-msgid "Cannot import: "
-msgstr "Nelze importovat: "
 
 #: ../data/meld.desktop.in.h:1
 msgid "Compare and merge your files"
@@ -46,7 +47,7 @@ msgstr ""
 msgid "Copy to Clipboard"
 msgstr "Kopírovat do schránky"
 
-#: ../data/ui/filediff.glade.h:4 ../meld/filediff.py:165
+#: ../data/ui/filediff.glade.h:4 ../meld/filediff.py:171
 msgid "Create Patch"
 msgstr "Vytvořit patch"
 
@@ -341,7 +342,7 @@ msgstr "Porovnat vybrané"
 msgid "Left"
 msgstr "Levé"
 
-#: ../meld/dirdiff.py:185 ../meld/filediff.py:166
+#: ../meld/dirdiff.py:185 ../meld/filediff.py:172
 msgid "Copy To Left"
 msgstr "Kopírovat doleva"
 
@@ -349,7 +350,7 @@ msgstr "Kopírovat doleva"
 msgid "Right"
 msgstr "Pravé"
 
-#: ../meld/dirdiff.py:186 ../meld/filediff.py:167
+#: ../meld/dirdiff.py:186 ../meld/filediff.py:173
 msgid "Copy To Right"
 msgstr "Kopírovat doprava"
 
@@ -357,7 +358,7 @@ msgstr "Kopírovat doprava"
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
-#: ../meld/dirdiff.py:188 ../meld/filediff.py:635
+#: ../meld/dirdiff.py:188 ../meld/filediff.py:659
 msgid "Hide"
 msgstr "Skrýt"
 
@@ -365,7 +366,7 @@ msgstr "Skrýt"
 msgid "Hide selected"
 msgstr "Skrýt vybrané"
 
-#: ../meld/dirdiff.py:190 ../meld/filediff.py:164 ../meld/vcview.py:126
+#: ../meld/dirdiff.py:190 ../meld/filediff.py:170 ../meld/vcview.py:126
 msgid "Open selected"
 msgstr "Otevřít vybrané"
 
@@ -542,30 +543,30 @@ msgstr[0] "%i rok"
 msgstr[1] "%i roky"
 msgstr[2] "%i let"
 
-#: ../meld/filediff.py:165
+#: ../meld/filediff.py:171
 msgid "Create a patch"
 msgstr "Vytvořit patch"
 
-#: ../meld/filediff.py:166
+#: ../meld/filediff.py:172
 msgid "Copy all changes from right pane to left pane"
 msgstr "Kopírovat všechny změny z pravého panelu do levého"
 
-#: ../meld/filediff.py:167
+#: ../meld/filediff.py:173
 msgid "Copy all changes from left pane to right pane"
 msgstr "Kopírovat všechny změny z levého panelu do pravého"
 
 #. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../meld/filediff.py:220
+#: ../meld/filediff.py:226
 msgid "INS,OVR"
 msgstr "VKL,PŘE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:222
+#: ../meld/filediff.py:228
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Řád %i, sl %i"
 
-#: ../meld/filediff.py:279
+#: ../meld/filediff.py:291
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -575,62 +576,54 @@ msgstr ""
 "správné. Další podrobnosti viz příručka uživatele."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:369
+#: ../meld/filediff.py:384
 msgid "<unnamed>"
 msgstr "<bez názvu>"
 
-#: ../meld/filediff.py:542
+#: ../meld/filediff.py:565
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Nastaven počet panelů"
 
-#: ../meld/filediff.py:548
+#: ../meld/filediff.py:571
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Otevírají se soubory"
 
-#: ../meld/filediff.py:566 ../meld/filediff.py:580 ../meld/filediff.py:596
-#: ../meld/filediff.py:603
-#, python-format
-msgid "Could not read from '%s'"
-msgstr "Nelze číst z \"%s\""
+#: ../meld/filediff.py:578 ../meld/filediff.py:663
+msgid "Hi_de"
+msgstr "_Skrýt"
 
-#: ../meld/filediff.py:567 ../meld/filediff.py:604
-msgid "The error was:"
-msgstr "Chyba byla následující:"
+#: ../meld/filediff.py:599 ../meld/filediff.py:610 ../meld/filediff.py:623
+#: ../meld/filediff.py:629
+msgid "Could not read file"
+msgstr "Nelze přečíst soubor"
 
-#: ../meld/filediff.py:572
+#: ../meld/filediff.py:602
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Čtou se soubory"
 
-#: ../meld/filediff.py:581
-msgid ""
-"It contains ascii nulls.\n"
-"Perhaps it is a binary file."
-msgstr ""
-"Obsahuje nuly ascii.\n"
-"Možná jde o binární soubor."
-
-#: ../meld/filediff.py:597
+#: ../meld/filediff.py:611
 #, python-format
-msgid "I tried encodings %s."
-msgstr "Vyzkoušena kódování %s."
+msgid "%s appears to be a binary file."
+msgstr "%s je zřejmě binárním souborem."
 
 #: ../meld/filediff.py:624
+#, python-format
+msgid "%s is not in encodings: %s"
+msgstr "%s není v kódováních: %s"
+
+#: ../meld/filediff.py:647
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Počítají se rozdíly"
 
-#: ../meld/filediff.py:634
+#: ../meld/filediff.py:658
 msgid "Files are identical"
 msgstr "Soubory jsou stejné"
 
-#: ../meld/filediff.py:639
-msgid "Hi_de"
-msgstr "_Skrýt"
-
-#: ../meld/filediff.py:778
+#: ../meld/filediff.py:802
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -639,7 +632,7 @@ msgstr ""
 "\"%s\" existuje!\n"
 "Přepsat?"
 
-#: ../meld/filediff.py:791
+#: ../meld/filediff.py:815
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -650,12 +643,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:800
+#: ../meld/filediff.py:824
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Zvolte název vyrovnávací paměti %i."
 
-#: ../meld/filediff.py:814
+#: ../meld/filediff.py:838
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -666,7 +659,7 @@ msgstr ""
 "\n"
 "Jaký formát chcete používat?"
 
-#: ../meld/filediff.py:830
+#: ../meld/filediff.py:854
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -676,11 +669,11 @@ msgstr ""
 "Chcete uložit jako UTF-8?"
 
 #. save as
-#: ../meld/filediff.py:868
+#: ../meld/filediff.py:892
 msgid "Save patch as..."
 msgstr "Uložit patch jako..."
 
-#: ../meld/filediff.py:926
+#: ../meld/filediff.py:950
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -934,69 +927,68 @@ msgstr "_Stavová lišta"
 msgid "Show or hide the statusbar"
 msgstr "Zobrazit nebo skrýt stavovou lištu"
 
-#: ../meld/meldapp.py:794
+#. exit at first non found directory + file
+#: ../meld/meldapp.py:804
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Nelze porovnávat kombinaci souborů a adresářů.\n"
 
-#: ../meld/meldapp.py:837 ../meld/meldapp.py:845
+#: ../meld/meldapp.py:858
+msgid "wrong number of arguments supplied to --diff"
+msgstr "poskytnut nesprávný počet argumentů --diff"
+
+#: ../meld/meldapp.py:862
+msgid "Start with an empty window"
+msgstr "Spustit s prázdným oknem"
+
+#: ../meld/meldapp.py:863 ../meld/meldapp.py:864 ../meld/meldapp.py:866
 msgid "file"
 msgstr "soubor"
 
-#: ../meld/meldapp.py:838 ../meld/meldapp.py:844
+#: ../meld/meldapp.py:863 ../meld/meldapp.py:865 ../meld/meldapp.py:866
 msgid "dir"
 msgstr "adr"
 
-#: ../meld/meldapp.py:843
-msgid "Start with no window open"
-msgstr "Spustit bez otevírání okna"
+#: ../meld/meldapp.py:863
+msgid "Start a version control comparison"
+msgstr "Spustit nové porovnání správy verzí"
 
-#: ../meld/meldapp.py:844
-#, python-format
-msgid "Start with Version Control browser in '%s'"
-msgstr "Spustit s prohlížečem správy verzí v \"%s\""
+#: ../meld/meldapp.py:864
+msgid "Start a 2- or 3-way file comparison"
+msgstr "Spustit dvojcestné nebo trojcestné porovnání souborů"
 
-#: ../meld/meldapp.py:845
-#, python-format
-msgid "Start with Version Control diff of '%s'"
-msgstr "Spustit s rozdílem \"%s\" v rámci správy verzí"
+#: ../meld/meldapp.py:865
+msgid "Start a 2- or 3-way directory comparison"
+msgstr "Spustit dvojcestné nebo trojcestné porovnání adresářů"
 
-#: ../meld/meldapp.py:846
-msgid "Start with 2 or 3 way file comparison"
-msgstr "Spustit s dvojcestným nebo trojcestným porovnáním souborů"
+#: ../meld/meldapp.py:866
+msgid "Start a comparison between file and dir/file"
+msgstr "Spustit porovnání souboru a adresáře/souboru"
 
-#: ../meld/meldapp.py:847
-msgid "Start with 2 or 3 way directory comparison"
-msgstr "Spustit s dvojcestným nebo trojcestným porovnáním adresářů"
-
-#: ../meld/meldapp.py:854
+#: ../meld/meldapp.py:872
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld je nástroj porovnávající soubory a adresáře."
 
-#: ../meld/meldapp.py:857
+#: ../meld/meldapp.py:875
 msgid "Set label to use instead of file name"
 msgstr "Nastavit k použití popisek namísto názvu souboru"
 
-#: ../meld/meldapp.py:859
+#: ../meld/meldapp.py:877
 msgid "Automatically compare all differing files on startup"
 msgstr "Automaticky při spuštění porovnat všechny lišící se soubory"
 
-#: ../meld/meldapp.py:860 ../meld/meldapp.py:861 ../meld/meldapp.py:862
-#: ../meld/meldapp.py:863
+#: ../meld/meldapp.py:878 ../meld/meldapp.py:879 ../meld/meldapp.py:880
+#: ../meld/meldapp.py:881
 msgid "Ignored for compatibility"
 msgstr "Ignorováno z důvodu kompatibility"
 
-#: ../meld/meldapp.py:866
+#: ../meld/meldapp.py:884
 msgid "Creates a diff tab for up to 3 supplied files or directories."
 msgstr "Vytvoří kartu s rozdílem až pro tři poskytnuté soubory nebo adresáře."
 
-#: ../meld/meldapp.py:870
-msgid "Invalid number of arguments supplied for --diff."
-msgstr "Poskytnut nesprávný počet argumentů --diff."
-
-#: ../meld/meldapp.py:873
+#: ../meld/meldapp.py:887
 #, python-format
-msgid "Wrong number of arguments (Got %i)"
-msgstr "Nesprávný počet argumentů (obdrženo %i)"
+msgid "too many arguments (wanted 0-3, got %d)"
+msgstr "příliš mnoho argumentů (požadováno 0-3, obdrženo %d)"
 
 #: ../meld/melddoc.py:46
 msgid "untitled"
@@ -1255,6 +1247,25 @@ msgstr ""
 "Chyba při převodu na regulární výraz\n"
 "Vzorkem byl \"%s\"\n"
 "Chyba byla následující: \"%s\""
+
+#~ msgid "The error was:"
+#~ msgstr "Chyba byla následující:"
+
+#~ msgid ""
+#~ "It contains ascii nulls.\n"
+#~ "Perhaps it is a binary file."
+#~ msgstr ""
+#~ "Obsahuje nuly ascii.\n"
+#~ "Možná jde o binární soubor."
+
+#~ msgid "Start with Version Control browser in '%s'"
+#~ msgstr "Spustit s prohlížečem správy verzí v \"%s\""
+
+#~ msgid "Start with Version Control diff of '%s'"
+#~ msgstr "Spustit s rozdílem \"%s\" v rámci správy verzí"
+
+#~ msgid "Wrong number of arguments (Got %i)"
+#~ msgstr "Nesprávný počet argumentů (obdrženo %i)"
 
 #~ msgid "Save the current file with a different name"
 #~ msgstr "Uložit aktuální soubor pod jiným jménem"
