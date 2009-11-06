@@ -39,6 +39,7 @@ from ui import gnomeglade
 import misc
 from ui import notebooklabel
 import filediff
+import filemerge
 import vcview
 import dirdiff
 import task
@@ -777,8 +778,11 @@ class MeldApp(gnomeglade.Component):
         return doc
 
     def append_filediff(self, files):
-        assert len(files) in (1,2,3)
-        doc = filediff.FileDiff(self.prefs, len(files))
+        assert len(files) in (1, 2, 3, 4)
+        if len(files) == 4:
+            doc = filemerge.FileMerge(self.prefs, 3)
+        else:
+            doc = filediff.FileDiff(self.prefs, len(files))
         seq = doc.undosequence
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
@@ -853,7 +857,7 @@ class MeldApp(gnomeglade.Component):
                 diff_files_args.append(arg)
                 del parser.rargs[0]
 
-        if len(diff_files_args) not in (1, 2, 3):
+        if len(diff_files_args) not in (1, 2, 3, 4):
             raise optparse.OptionValueError(
                 _("wrong number of arguments supplied to --diff"))
         parser.values.diff.append(diff_files_args)
@@ -883,8 +887,8 @@ class MeldApp(gnomeglade.Component):
                           dest="diff", default=[],
                           help=_("Creates a diff tab for up to 3 supplied files or directories."))
         options, args = parser.parse_args(rawargs)
-        if len(args) > 3:
-            parser.error(_("too many arguments (wanted 0-3, got %d)") % len(args))
+        if len(args) > 4:
+            parser.error(_("too many arguments (wanted 0-4, got %d)") % len(args))
 
         for files in options.diff:
             self.append_diff(files)
@@ -912,7 +916,7 @@ class MeldApp(gnomeglade.Component):
             else:
                 tab = self.append_vcview([a], auto_compare)
                     
-        elif len(paths) in (2,3):
+        elif len(paths) in (2, 3, 4):
             tab = self.append_diff(paths, auto_compare)
         return tab
 
