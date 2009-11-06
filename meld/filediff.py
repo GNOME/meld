@@ -561,7 +561,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview[len(files) >= 2].grab_focus()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
-    def _set_files_internal(self, files):
+    def _load_files(self, files, textbuffers, panetext):
         yield _("[%s] Set num panes") % self.label_text
         self.set_num_panes( len(files) )
         self._disconnect_buffer_handlers()
@@ -569,7 +569,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.queue_draw()
         try_codecs = self.prefs.text_codecs.split() or ['utf_8', 'utf_16']
         yield _("[%s] Opening files") % self.label_text
-        panetext = ["\n"] * self.num_panes
         tasks = []
 
         def add_dismissable_msg(pane, icon, primary, secondary):
@@ -583,7 +582,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return msgarea
 
         for i,f in enumerate(files):
-            buf = self.textbuffer[i]
+            buf = textbuffers[i]
             if f:
                 try:
                     task = misc.struct(filename = f,
@@ -643,6 +642,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             t.text.append("\n")
                         panetext[t.pane] = "".join(t.text)
             yield 1
+
+    def _diff_files(self, files, panetext):
         self.undosequence.clear()
         yield _("[%s] Computing differences") % self.label_text
         panetext = [self._filter_text(p) for p in panetext]
@@ -672,6 +673,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if files[i]:
                 srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
         yield 0
+
+    def _set_files_internal(self, files):
+        panetext = ["\n"] * len(files)
+        for i in self._load_files(files, self.textbuffer, panetext):
+            yield i
+        for i in self._diff_files(files, panetext):
+            yield i
 
     def on_msgarea_identical_response(self, msgarea, respid):
         for mgr in self.msgarea_mgr:
