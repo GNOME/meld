@@ -1164,6 +1164,27 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 buf.place_cursor(buf.get_iter_at_line(c[1]))
             self.textview[pane].scroll_to_mark(buf.get_insert(), 0.1)
 
+    def paint_pixbuf_at(self, context, pixbuf, x, y):
+        context.translate(x, y)
+        context.set_source_pixbuf(pixbuf, 0, 0)
+        context.paint()
+        context.identity_matrix()
+
+    def _linkmap_draw_icon(self, context, which, change, x, f0, t0):
+        if self.keymask & MASK_SHIFT:
+            pix0 = self.pixbuf_delete
+            pix1 = self.pixbuf_delete
+        elif self.keymask & MASK_CTRL:
+            pix0 = self.pixbuf_copy0
+            pix1 = self.pixbuf_copy1
+        else: # self.keymask == 0:
+            pix0 = self.pixbuf_apply0
+            pix1 = self.pixbuf_apply1
+        if change in ("insert", "replace"):
+            self.paint_pixbuf_at(context, pix1, x, t0)
+        if change in ("delete", "replace"):
+            self.paint_pixbuf_at(context, pix0, 0, f0)
+
         #
         # linkmap drawing
         #
@@ -1174,16 +1195,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         context.rectangle(event.area.x, event.area.y, event.area.width, event.area.height)
         context.clip()
         context.set_line_width(1.0)
-
-        if self.keymask & MASK_SHIFT:
-            pix0 = self.pixbuf_delete
-            pix1 = self.pixbuf_delete
-        elif self.keymask & MASK_CTRL:
-            pix0 = self.pixbuf_copy0
-            pix1 = self.pixbuf_copy1
-        else: # self.keymask == 0:
-            pix0 = self.pixbuf_apply0
-            pix1 = self.pixbuf_apply1
 
         which = self.linkmap.index(widget)
         pix_start = [None] * self.num_panes
@@ -1200,12 +1211,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # For bezier control points
         x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
-
-        def paint_pixbuf_at(pixbuf, x, y):
-            context.translate(x, y)
-            context.set_source_pixbuf(pixbuf, 0, 0)
-            context.paint()
-            context.identity_matrix()
 
         for c in self.linediffer.pair_changes(which, which + 1):
             assert c[0] != "equal"
@@ -1235,10 +1240,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.stroke()
 
             x = wtotal-self.pixbuf_apply0.get_width()
-            if c[0] in ("insert", "replace"):
-                paint_pixbuf_at(pix1, x, t0)
-            if c[0] in ("delete", "replace"):
-                paint_pixbuf_at(pix0, 0, f0)
+            self._linkmap_draw_icon(context, which, c[0], x, f0, t0)
 
         # allow for scrollbar at end of textview
         mid = int(0.5 * self.textview[0].allocation.height) + 0.5
@@ -1249,6 +1251,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_linkmap_scroll_event(self, area, event):
         self.next_diff(event.direction)
+
+    def _linkmap_process_event(self, event, which, side, htotal, rect_x, pix_width, pix_height):
+        src = which + side
+        dst = which + 1 - side
+        adj = self.scrolledwindow[src].get_vadjustment()
+
+        for c in self.linediffer.pair_changes(src, dst):
+            if c[0] == "insert":
+                continue
+            h = self._line_to_pixel(src, c[1]) - adj.value
+            if h < 0: # find first visible chunk
+                continue
+            elif h > htotal: # we've gone past last visible
+                break
+            elif h < event.y and event.y < h + pix_height:
+                self.mouse_chunk = ((src, dst), (rect_x, h, pix_width, pix_height), c)
+                break
 
     def on_linkmap_button_press_event(self, area, event):
         if event.button == 1:
@@ -1276,21 +1295,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 rect_x = wtotal - pix_width
             else:
                 return True
-            src = which + side
-            dst = which + 1 - side
-            adj = self.scrolledwindow[src].get_vadjustment()
-
-            for c in self.linediffer.pair_changes(src, dst):
-                if c[0] == "insert":
-                    continue
-                h = self._line_to_pixel(src, c[1]) - adj.value
-                if h < 0: # find first visible chunk
-                    continue
-                elif h > htotal: # we've gone past last visible
-                    break
-                elif h < event.y and event.y < h + pix_height:
-                    self.mouse_chunk = ( (src,dst), (rect_x, h, pix_width, pix_height), c)
-                    break
+            self._linkmap_process_event(event, which, side, htotal, rect_x, pix_width, pix_height)
             #print self.mouse_chunk
             return True
         return False
