@@ -47,7 +47,7 @@ def _commonprefix(files):
     if len(files) != 1:
         workdir = misc.commonprefix(files)
     else:
-        workdir = os.path.dirname(files[0])
+        workdir = os.path.dirname(files[0]) or "."
     return workdir
 
 ################################################################################
