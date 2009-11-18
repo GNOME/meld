@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld 1.3.2\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&component=general\n"
-"POT-Creation-Date: 2009-10-17 06:09+0000\n"
-"PO-Revision-Date: 2009-10-17 17:06+0100\n"
+"POT-Creation-Date: 2009-11-01 20:40+0000\n"
+"PO-Revision-Date: 2009-11-18 16:12+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -364,7 +364,7 @@ msgstr "Nach rechts kopieren"
 msgid "Delete selected"
 msgstr "Auswahl löschen"
 
-#: ../meld/dirdiff.py:188 ../meld/filediff.py:652
+#: ../meld/dirdiff.py:188 ../meld/filediff.py:654
 msgid "Hide"
 msgstr "Verbergen"
 
@@ -581,58 +581,52 @@ msgstr ""
 msgid "<unnamed>"
 msgstr "<unbenannt>"
 
-#: ../meld/filediff.py:559
+#: ../meld/filediff.py:560
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Setzen der Spaltenanzahl"
 
-#: ../meld/filediff.py:565
+#: ../meld/filediff.py:566
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Dateien werden geöffnet"
 
-#: ../meld/filediff.py:583 ../meld/filediff.py:597 ../meld/filediff.py:613
-#: ../meld/filediff.py:620
-#, python-format
-msgid "Could not read from '%s'"
-msgstr "Aus »%s« konnte nicht gelesen werden."
+#: ../meld/filediff.py:573 ../meld/filediff.py:658
+msgid "Hi_de"
+msgstr "Ver_bergen"
 
-#: ../meld/filediff.py:584 ../meld/filediff.py:621
-msgid "The error was:"
-msgstr "Der Fehler lautet:"
+#: ../meld/filediff.py:594 ../meld/filediff.py:605 ../meld/filediff.py:618
+#: ../meld/filediff.py:624
+#| msgid "Could not read from '%s'"
+msgid "Could not read file"
+msgstr "Datei konnte nicht gelesen werden"
 
-#: ../meld/filediff.py:589
+#: ../meld/filediff.py:597
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Dateien werden gelesen"
 
-#: ../meld/filediff.py:598
-msgid ""
-"It contains ascii nulls.\n"
-"Perhaps it is a binary file."
-msgstr ""
-"Die Datei enthält ASCII-Nullen.\n"
-"Möglicherweise handelt es sich um eine Binärdatei."
-
-#: ../meld/filediff.py:614
+#: ../meld/filediff.py:606
 #, python-format
-msgid "I tried encodings %s."
-msgstr "Es wurden die Kodierungen %s versucht."
+msgid "%s appears to be a binary file."
+msgstr "%s scheint eine Binärdatei zu sein."
 
-#: ../meld/filediff.py:641
+#: ../meld/filediff.py:619
+#, python-format
+#| msgid "I tried encodings %s."
+msgid "%s is not in encodings: %s"
+msgstr "%s ist nicht in Kodierungen enthalten: %s"
+
+#: ../meld/filediff.py:642
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
 
-#: ../meld/filediff.py:651
+#: ../meld/filediff.py:653
 msgid "Files are identical"
 msgstr "Dateien sind identisch"
 
-#: ../meld/filediff.py:656
-msgid "Hi_de"
-msgstr "Ver_bergen"
-
-#: ../meld/filediff.py:795
+#: ../meld/filediff.py:797
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -641,7 +635,7 @@ msgstr ""
 "»%s« ist vorhanden!\n"
 "Ersetzen?"
 
-#: ../meld/filediff.py:808
+#: ../meld/filediff.py:810
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -652,12 +646,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:817
+#: ../meld/filediff.py:819
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Wählen Sie einen Namen für den Zwischenspeicher %i."
 
-#: ../meld/filediff.py:831
+#: ../meld/filediff.py:833
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -668,7 +662,7 @@ msgstr ""
 "\n"
 "Welches Format möchten Sie verwenden?"
 
-#: ../meld/filediff.py:847
+#: ../meld/filediff.py:849
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -678,11 +672,11 @@ msgstr ""
 "Möchten Sie im UTF-8-Format speichern?"
 
 #. save as
-#: ../meld/filediff.py:885
+#: ../meld/filediff.py:887
 msgid "Save patch as..."
 msgstr "Patch speichern unter …"
 
-#: ../meld/filediff.py:943
+#: ../meld/filediff.py:945
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -1257,6 +1251,16 @@ msgstr ""
 "Fehler beim Umwandeln in einen regulären Ausdruck\n"
 "Das Muster war »%s«\n"
 "Der Fehler lautet »%s«"
+
+#~ msgid "The error was:"
+#~ msgstr "Der Fehler lautet:"
+
+#~ msgid ""
+#~ "It contains ascii nulls.\n"
+#~ "Perhaps it is a binary file."
+#~ msgstr ""
+#~ "Die Datei enthält ASCII-Nullen.\n"
+#~ "Möglicherweise handelt es sich um eine Binärdatei."
 
 #~ msgid "Start with Version Control browser in '%s'"
 #~ msgstr "Ohne Versionskontroll-Browser in »%s« starten"
