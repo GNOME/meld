@@ -53,7 +53,7 @@ except ValueError:
     profiling = False
 
 # Support running from an uninstalled version
-melddir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+melddir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
 if os.path.exists(os.path.join(melddir, "meld.doap")):
     sys.path[0:0] = [melddir]
 else:
