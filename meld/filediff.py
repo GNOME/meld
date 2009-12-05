@@ -1117,10 +1117,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _line_to_pixel(self, pane, line ):
         it = self.textbuffer[pane].get_iter_at_line(line)
+        y, h = self.textview[pane].get_line_yrange(it)
         if line >= self.textbuffer[pane].get_line_count():
-            y, h = self.textview[pane].get_line_yrange( it )
             return y + h - 1
-        return self.textview[pane].get_iter_location( it ).y
+        return y
 
     def _line_to_pixel_plus_height(self, pane, line ):
         it = self.textbuffer[pane].get_iter_at_line(line)
