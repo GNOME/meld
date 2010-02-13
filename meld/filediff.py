@@ -1263,12 +1263,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _linkmap_process_event(self, event, which, side, htotal, rect_x, pix_width, pix_height):
         src = which + side
         dst = which + 1 - side
+        yoffset = self.linkmap[which].allocation.y
+        rel_offset = self.textview[src].allocation.y - yoffset
         adj = self.scrolledwindow[src].get_vadjustment()
 
         for c in self.linediffer.pair_changes(src, dst):
             if c[0] == "insert":
                 continue
-            h = self._line_to_pixel(src, c[1]) - adj.value
+            h = self._line_to_pixel(src, c[1]) - adj.value + rel_offset
             if h < 0: # find first visible chunk
                 continue
             elif h > htotal: # we've gone past last visible
