@@ -97,14 +97,14 @@ class FileMerge(filediff.FileDiff):
                 pix1 = self.pixbuf_apply0
 
         if which:
-            if change in ("delete"):
+            if change[0] in ("delete"):
                 self.paint_pixbuf_at(context, pix0, 0, f0)
-            if change in ("insert", "replace", "conflict"):
+            if change[0] in ("insert", "replace", "conflict"):
                 self.paint_pixbuf_at(context, pix1, x, t0)
         else:
-            if change in ("insert"):
+            if change[0] in ("insert"):
                 self.paint_pixbuf_at(context, pix0, x, t0)
-            if change in ("delete", "replace", "conflict"):
+            if change[0] in ("delete", "replace", "conflict"):
                 self.paint_pixbuf_at(context, pix1, 0, f0)
 
     def _linkmap_process_event(self, event, which, side, htotal, rect_x, pix_width, pix_height):

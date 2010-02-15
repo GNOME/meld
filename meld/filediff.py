@@ -1188,9 +1188,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         else: # self.keymask == 0:
             pix0 = self.pixbuf_apply0
             pix1 = self.pixbuf_apply1
-        if change in ("insert", "replace"):
+        if change[0] in ("insert", "replace") or (change[0] == "conflict" and
+                change[3] - change[4] != 0):
             self.paint_pixbuf_at(context, pix1, x, t0)
-        if change in ("delete", "replace"):
+        if change[0] in ("delete", "replace") or (change[0] == "conflict" and
+                change[1] - change[2] != 0):
             self.paint_pixbuf_at(context, pix0, 0, f0)
 
         #
@@ -1248,7 +1250,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.stroke()
 
             x = wtotal-self.pixbuf_apply0.get_width()
-            self._linkmap_draw_icon(context, which, c[0], x, f0, t0)
+            self._linkmap_draw_icon(context, which, c, x, f0, t0)
 
         # allow for scrollbar at end of textview
         mid = int(0.5 * self.textview[0].allocation.height) + 0.5
@@ -1268,7 +1270,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         adj = self.scrolledwindow[src].get_vadjustment()
 
         for c in self.linediffer.pair_changes(src, dst):
-            if c[0] == "insert":
+            if c[0] == "insert" or (c[0] == "conflict" and c[1] - c[2] == 0):
                 continue
             h = self._line_to_pixel(src, c[1]) - adj.value + rel_offset
             if h < 0: # find first visible chunk
