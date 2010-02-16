@@ -979,7 +979,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _save_text_to_filename(self, filename, text):
         try:
-            open(filename, "w").write(text)
+            open(filename, "wb").write(text)
         except IOError, e:
             misc.run_dialog(
                 _("Error writing to %s\n\n%s.") % (filename, e),
