@@ -55,9 +55,6 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         self.a = a
         self.b = b
         self.matching_blocks = self.opcodes = None
-        #perf optimization switches
-        self.discard_lines = True
-        self.find_prefix_suffix = True
         #fields needed by preprocessor so that preprocessing may shared by more than 1 LCS algorithm
         self.aindex = {}
         self.bindex = {}
@@ -87,23 +84,23 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         m = len(b)
         # remove common prefix and common suffix
         self.common_prefix = self.common_suffix = 0
-        if self.find_prefix_suffix:
-            self.common_prefix = find_common_prefix(a, b)
-            if self.common_prefix > 0:
-                a = a[self.common_prefix:]
-                b = b[self.common_prefix:]
-                n -= self.common_prefix
-                m -= self.common_prefix
+        self.common_prefix = find_common_prefix(a, b)
+        if self.common_prefix > 0:
+            a = a[self.common_prefix:]
+            b = b[self.common_prefix:]
+            n -= self.common_prefix
+            m -= self.common_prefix
 
-            if n > 0 and m > 0:
-                self.common_suffix = find_common_suffix(a, b)
-                if self.common_suffix > 0:
-                    a = a[:n - self.common_suffix]
-                    b = b[:m - self.common_suffix]
-                    n -= self.common_suffix
-                    m -= self.common_suffix
+        if n > 0 and m > 0:
+            self.common_suffix = find_common_suffix(a, b)
+            if self.common_suffix > 0:
+                a = a[:n - self.common_suffix]
+                b = b[:m - self.common_suffix]
+                n -= self.common_suffix
+                m -= self.common_suffix
+
         # discard lines that do not match any line from the other file
-        if self.discard_lines and n > 0 and m > 0:
+        if n > 0 and m > 0:
             a2 = []
             b2 = []
             j = 0
