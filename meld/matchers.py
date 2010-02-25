@@ -115,6 +115,8 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                     a2.append(a[i])
                     aindex[k] = i
                     k += 1
+            # We only use the optimised result if it's worthwhile. The constant
+            # represents a heuristic of how many lines constitute 'worthwhile'.
             self.lines_discarded = m - j > 10 or n - k > 10
             if self.lines_discarded:
                 a = a2
