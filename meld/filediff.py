@@ -378,6 +378,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
             self._update_linkmap_buttons()
+        # Ugly workaround for bgo#584342
+        elif event.keyval == gtk.keysyms.ISO_Prev_Group:
+            self.keymask = 0
+            self._update_linkmap_buttons()
 
     def _get_pane_label(self, i):
         #TRANSLATORS: this is the name of a new file which has not yet been saved
