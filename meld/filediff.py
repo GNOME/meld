@@ -873,18 +873,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         def draw_change(change): # draw background and thin lines
             ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
-            context.set_source_rgb(*self.line_colors[change[0]])
-            context.move_to(-0.5, ypos0 - 0.5)
-            context.rel_line_to(width + 1, 0)
-            context.stroke()
-            if change[2] != change[1]:
-                ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
-                context.move_to(-0.5, ypos1 - 0.5)
-                context.rel_line_to(width + 1, 0)
-                context.stroke()
+            ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
+
+            context.rectangle(-0.5, ypos0 - 0.5, width + 1, ypos1 - ypos0)
+            if change[1] != change[2]:
                 context.set_source_rgb(*self.fill_colors[change[0]])
-                context.rectangle(0, ypos0, width, ypos1 - ypos0 - 1)
-                context.fill()
+                context.fill_preserve()
+            context.set_source_rgb(*self.line_colors[change[0]])
+            context.stroke()
 
         for change in self.linediffer.single_changes(pane):
             if change[2] < start_line: continue
