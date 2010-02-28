@@ -39,12 +39,12 @@ class Vc(_vc.CachedVc):
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "^diff --git a/(.*) b/.*$"
     state_map = {
-        "unknown":    _vc.STATE_NONE,
-        "new file":   _vc.STATE_NEW,
-        "deleted":    _vc.STATE_REMOVED,
-        "modified":   _vc.STATE_MODIFIED,
-        "typechange": _vc.STATE_MODIFIED,
-        "unmerged":   _vc.STATE_CONFLICT,
+        "X": _vc.STATE_NONE,     # Unknown
+        "A": _vc.STATE_NEW,      # New
+        "D": _vc.STATE_REMOVED,  # Deleted
+        "M": _vc.STATE_MODIFIED, # Modified
+        "T": _vc.STATE_MODIFIED, # Type-changed
+        "U": _vc.STATE_CONFLICT, # Unmerged
     }
 
     def check_repo_root(self, location):
@@ -74,7 +74,7 @@ class Vc(_vc.CachedVc):
     def _lookup_tree_cache(self, rootdir):
         while 1:
             try:
-                proc = _vc.popen([self.CMD, "status", "--untracked-files"], cwd=self.root)
+                proc = _vc.popen([self.CMD, "diff-index", "--name-status", "HEAD", "./"], cwd=self.root)
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
@@ -82,29 +82,11 @@ class Vc(_vc.CachedVc):
                     raise
         tree_state = {}
         for entry in entries:
-            if not entry.startswith("#\t"):
-                continue
-            try:
-                statekey, name = entry[2:].split(":", 2)
-            except ValueError:
-                # untracked
-                name = entry[2:]
-                path = os.path.join(self.root, name.strip())
-                tree_state[path] = _vc.STATE_NONE
-            else:
-                statekey = statekey.strip()
-                name = name.strip()
-                try:
-                    src, dst = name.split(" -> ", 2)
-                except ValueError:
-                    path = os.path.join(self.root, name.strip())
-                    state = self.state_map.get(statekey, _vc.STATE_NONE)
-                    tree_state[path] = state
-                else:
-                    # copied, renamed
-                    if statekey == "renamed":
-                        tree_state[os.path.join(self.root, src)] = _vc.STATE_REMOVED
-                    tree_state[os.path.join(self.root, dst)] = _vc.STATE_NEW
+            statekey, name = entry.split("\t", 2)
+            path = os.path.join(self.root, name.strip())
+            state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
+            tree_state[path] = state
+
         return tree_state
 
     def _get_dirsandfiles(self, directory, dirs, files):
