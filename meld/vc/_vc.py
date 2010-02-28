@@ -76,6 +76,11 @@ class Vc(object):
     VC_METADATA = None
 
     def __init__(self, location):
+        # Save the requested diff directory.  It may be a sub-directory
+        # of the repository we are diffing and can be useful in limiting meld's
+        # output to the requested location.
+        self.location = location
+
         if self.VC_ROOT_WALK:
             self.root = self.find_repo_root(location)
         else:

@@ -74,7 +74,8 @@ class Vc(_vc.CachedVc):
     def _lookup_tree_cache(self, rootdir):
         while 1:
             try:
-                proc = _vc.popen([self.CMD, "diff-index", "--name-status", "HEAD", "./"], cwd=self.root)
+                proc = _vc.popen([self.CMD, "diff-index", "--name-status", \
+                    "HEAD", "./"], cwd=self.location)
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
