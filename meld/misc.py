@@ -243,12 +243,6 @@ def write_pipe(command, text):
     proc.communicate(text)
     return proc.wait()
 
-def clamp(val, lower, upper):
-    """Clamp 'val' to the inclusive range [lower,upper].
-    """
-    assert lower <= upper
-    return min(max(val, lower), upper)
-
 def commonprefix(dirs):
     """Given a list of pathnames, returns the longest common leading component.
     """

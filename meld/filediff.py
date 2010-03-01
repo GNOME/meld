@@ -1130,7 +1130,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 val, height = self.textview[i].get_line_yrange(it)
                 val -= (adj.page_size) * syncpoint
                 val += (other_line-int(other_line)) * height
-                val = misc.clamp(val, 0, adj.upper - adj.page_size)
+                val = min(max(val, adj.lower), adj.upper - adj.page_size)
                 adj.set_value( val )
 
                 # If we just changed the central bar, make it the master
