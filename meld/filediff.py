@@ -1118,18 +1118,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 mbegin,mend, obegin,oend = 0, self._get_line_count(master), 0, self._get_line_count(i)
                 # look for the chunk containing 'line'
                 for c in self.linediffer.pair_changes(master, i):
-                    c = c[1:]
-                    if c[0] >= line:
-                        mend = c[0]
-                        oend = c[2]
+                    if c[1] >= line:
+                        mend = c[1]
+                        oend = c[3]
                         break
-                    elif c[1] >= line:
-                        mbegin,mend = c[0],c[1]
-                        obegin,oend = c[2],c[3]
+                    elif c[2] >= line:
+                        mbegin, mend = c[1], c[2]
+                        obegin, oend = c[3], c[4]
                         break
                     else:
-                        mbegin = c[1]
-                        obegin = c[3]
+                        mbegin = c[2]
+                        obegin = c[4]
                 fraction = (line - mbegin) / ((mend - mbegin) or 1)
                 other_line = (obegin + fraction * (oend - obegin))
                 it = self.textbuffer[i].get_iter_at_line(int(other_line))
