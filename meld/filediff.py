@@ -133,10 +133,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.bufferdata = [MeldBufferData() for b in self.textbuffer]
         self.vscroll = [w.get_vscrollbar() for w in self.scrolledwindow]
-        for i in range(3):
-            w = self.scrolledwindow[i]
-            w.get_vadjustment().connect("value-changed", self._sync_vscroll )
-            w.get_hadjustment().connect("value-changed", self._sync_hscroll )
+        for (i, w) in enumerate(self.scrolledwindow):
+            w.get_vadjustment().connect("value-changed", self._sync_vscroll, i)
+            w.get_hadjustment().connect("value-changed", self._sync_hscroll)
         self._connect_buffer_handlers()
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
@@ -1090,7 +1089,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 a.set_value(val)
             self._sync_hscroll_lock = False
 
-    def _sync_vscroll(self, adjustment):
+    def _sync_vscroll(self, adjustment, master):
         # only allow one scrollbar to be here at a time
         if self._sync_vscroll_lock:
             return
@@ -1099,22 +1098,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._sync_vscroll_lock = True
             syncpoint = 0.5
 
-            adjustments = map( lambda x: x.get_vadjustment(), self.scrolledwindow)
-            adjustments = adjustments[:self.num_panes]
-            master = adjustments.index(adjustment)
-            # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-            others = zip( range(self.num_panes), adjustments)
-            del others[master]
-            if master == 2:
-                others.reverse()
-
             # the line to search for in the 'master' text
             master_y = adjustment.value + adjustment.page_size * syncpoint
             it = self.textview[master].get_line_at_y(int(master_y))[0]
             line_y, height = self.textview[master].get_line_yrange(it)
             line = it.get_line() + ((master_y-line_y)/height)
 
-            for (i,adj) in others:
+            # scrollbar influence 0->1->2 or 0<-1->2 or 0<-1<-2
+            scrollbar_influence = ((1, 2), (0, 2), (1, 0))
+
+            for i in scrollbar_influence[master][:self.num_panes - 1]:
+                adj = self.scrolledwindow[i].get_vadjustment()
                 mbegin, mend = 0, self.textbuffer[master].get_line_count()
                 obegin, oend = 0, self.textbuffer[i].get_line_count()
                 # look for the chunk containing 'line'
@@ -1139,10 +1133,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 val = misc.clamp(val, 0, adj.upper - adj.page_size)
                 adj.set_value( val )
 
-                # scrollbar influence 0->1->2 or 0<-1<-2 or 0<-1->2
-                if master != 1:
-                    line = other_line
-                    master = 1
+                # If we just changed the central bar, make it the master
+                if i == 1:
+                    master, line = 1, other_line
             self._sync_vscroll_lock = False
 
         for lm in self.linkmap:
