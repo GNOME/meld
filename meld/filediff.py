@@ -282,15 +282,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 chunk = self.linediffer.get_chunk(chunk_id, pane)
                 push_left = pane == 2 and not chunk[1] == chunk[2]
                 push_right = pane == 0 and not chunk[1] == chunk[2]
-                pull_left = pane == 2 and not chunk[3] == chunk[4]
-                pull_right = pane == 0 and not chunk[3] == chunk[4]
+                editable = self.textview[pane].get_editable()
+                pull_left = pane == 2 and not chunk[3] == chunk[4] and editable
+                pull_right = pane == 0 and not chunk[3] == chunk[4] and editable
             elif pane == 1:
                 chunk0 = self.linediffer.get_chunk(chunk_id, pane, 0)
                 chunk2 = None
                 if self.num_panes == 3:
                     chunk2 = self.linediffer.get_chunk(chunk_id, pane, 2)
-                push_left = chunk0 is not None and chunk0[1] != chunk0[2]
-                push_right = chunk2 is not None and chunk2[1] != chunk2[2]
+                push_left = chunk0 is not None and chunk0[1] != chunk0[2] and \
+                            self.textview[pane - 1].get_editable()
+                push_right = chunk2 is not None and chunk2[1] != chunk2[2] and \
+                             self.textview[pane + 1].get_editable()
                 pull_left = chunk0 is not None and not chunk0[3] == chunk0[4]
                 pull_right = chunk2 is not None and not chunk2[3] == chunk2[4]
             delete = push_left or push_right
