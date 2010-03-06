@@ -37,8 +37,6 @@ import cairo
 
 from util.sourceviewer import srcviewer
 
-gdk = gtk.gdk
-
 
 class CachedSequenceMatcher(object):
     """Simple class for caching diff results, with LRU-based eviction
@@ -161,7 +159,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                             foreground = self.prefs.color_inline_fg)
 
         def parse_to_cairo(color_spec):
-            color = gdk.color_parse(color_spec)
+            color = gtk.gdk.color_parse(color_spec)
             return [x / 65535. for x in (color.red, color.green, color.blue)]
 
         self.fill_colors = {"insert"   : parse_to_cairo(self.prefs.color_delete_bg),
@@ -771,7 +769,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.cursor.next = chunk
         if self.cursor.next is None:
             self.cursor.next = next
-        self.scheduler.add_task(lambda: self.next_diff(gdk.SCROLL_DOWN), True)
+        self.scheduler.add_task(lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
         self.queue_draw()
         self.scheduler.add_task(self._update_highlighting().next)
         self._connect_buffer_handlers()
