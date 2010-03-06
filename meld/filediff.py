@@ -267,6 +267,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_current_diff_changed(self, widget, *args):
         pane = self.cursor.pane
         chunk_id = self.cursor.chunk
+        # TODO: Handle editable states better; now it only works for auto-merge
         push_left, push_right, pull_left, pull_right, delete = (True,) * 5
         if pane == -1 or chunk_id is None:
             push_left, push_right, pull_left, pull_right, delete = (False,) * 5
@@ -280,6 +281,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 editable = self.textview[pane].get_editable()
                 pull_left = pane == 2 and not chunk[3] == chunk[4] and editable
                 pull_right = pane == 0 and not chunk[3] == chunk[4] and editable
+                delete = (push_left or push_right) and editable
             elif pane == 1:
                 chunk0 = self.linediffer.get_chunk(chunk_id, pane, 0)
                 chunk2 = None
@@ -291,7 +293,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                              self.textview[pane + 1].get_editable()
                 pull_left = chunk0 is not None and not chunk0[3] == chunk0[4]
                 pull_right = chunk2 is not None and not chunk2[3] == chunk2[4]
-            delete = push_left or push_right
+                delete = (chunk0 is not None and chunk0[1] != chunk0[2]) or \
+                         (chunk2 is not None and chunk2[1] != chunk2[2])
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
