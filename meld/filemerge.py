@@ -113,15 +113,19 @@ class FileMerge(filediff.FileDiff):
         dst = 1
         srcadj = self.scrolledwindow[src].get_vadjustment()
         dstadj = self.scrolledwindow[dst].get_vadjustment()
+        yoffset = self.linkmap[which].allocation.y
+        dst_offset = self.textview[dst].allocation.y - yoffset
+        src_offset = self.textview[src].allocation.y - yoffset
+
         for c in self.linediffer.pair_changes(src, dst):
             if c[0] == "insert":
                 if origsrc != 1:
                     continue
-                h = self._line_to_pixel(dst, c[3]) - dstadj.value
+                h = self._line_to_pixel(dst, c[3]) - dstadj.value + dst_offset
             else:
                 if origsrc == 1:
                     continue
-                h = self._line_to_pixel(src, c[1]) - srcadj.value
+                h = self._line_to_pixel(src, c[1]) - srcadj.value + src_offset
             if h < 0: # find first visible chunk
                 continue
             elif h > htotal: # we've gone past last visible
