@@ -29,7 +29,10 @@ all: $(addsuffix .install,$(SPECIALS)) meld.desktop
 
 .PHONY:clean
 clean: 
-	-rm -f meld/*.pyc meld/ui/*.pyc meld/util/*.pyc meld/vc/*.pyc *.install data/meld.desktop *.bak data/ui/*.bak
+	@find ./meld -type f \( -name '*.pyc' -o -name '*.install' \) -print0 |\
+		xargs -0 rm -f
+	@find ./bin -type f \( -name '*.install' \) -print0 | xargs -0 rm -f
+	@rm -f data/meld.desktop
 	$(MAKE) -C po clean
 	$(MAKE) -C help clean
 
