@@ -17,6 +17,8 @@
 
 import difflib
 
+import gobject
+
 ################################################################################
 #
 # Differ
@@ -65,19 +67,25 @@ def reverse_chunk(chunk):
 # Differ
 #
 ################################################################################
-class Differ(object):
+class Differ(gobject.GObject):
     """Utility class to hold diff2 or diff3 chunks"""
+
+    __gsignals__ = {
+        'diffs-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+    }
 
     _matcher = IncrementalSequenceMatcher
 
     def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
+        gobject.GObject.__init__(self)
         self.num_sequences = 0
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]
         self._merge_cache = []
         self._line_cache = [[], [], []]
         self.ignore_blanks = False
+        self._initialised = False
 
     def _update_merge_cache(self, texts):
         if self.num_sequences == 3:
@@ -94,6 +102,7 @@ class Differ(object):
             self._merge_cache = [x for x in self._merge_cache if x != (None, None)]
 
         self._update_line_cache()
+        self.emit("diffs-changed")
 
     def _update_line_cache(self):
         for i, l in enumerate(self.seqlength):
@@ -277,7 +286,8 @@ class Differ(object):
                 yield cs[0] or cs[1]
 
     def sequences_identical(self):
-        return self.diffs == [[], []]
+        # check so that we don't call an uninitialised comparison 'identical'
+        return self.diffs == [[], []] and self._initialised
 
     def _merge_blocks(self, using):
         LO, HI = 1,2
@@ -368,6 +378,7 @@ class Differ(object):
             while work.next() is None:
                 yield None
             self.diffs[i] = matcher.get_difference_opcodes()
+        self._initialised = True
         self._update_merge_cache(sequences)
         yield 1
 
@@ -375,4 +386,5 @@ class Differ(object):
         self.diffs = [[], []]
         self.seqlength = [0] * self.num_sequences
         texts = [""] * self.num_sequences
+        self._initialised = False
         self._update_merge_cache(texts)
