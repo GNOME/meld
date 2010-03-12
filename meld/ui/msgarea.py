@@ -221,15 +221,23 @@ class MsgAreaController(gtk.HBox):
         super(MsgAreaController, self).__init__()
 
         self.__msgarea = None
+        self.__msgid = None
 
     def has_message(self):
         return self.__msgarea is not None
+
+    def get_msg_id(self):
+        return self.__msgid
+
+    def set_msg_id(self, msgid):
+        self.__msgid = msgid
 
     def clear(self):
         if self.__msgarea is not None:
             self.remove(self.__msgarea)
             self.__msgarea.destroy()
             self.__msgarea = None
+        self.__msgid = None
 
     def new_from_text_and_icon(self, stockid, primary, secondary=None, buttons=[]):
         self.clear()

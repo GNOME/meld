@@ -107,6 +107,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                  gtk.keysyms.Shift_R : MASK_SHIFT,
                  gtk.keysyms.Control_R : MASK_CTRL}
 
+    # Identifiers for MsgArea messages
+    (MSG_SAME,) = range(1)
+
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
         """
@@ -197,6 +200,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for t in self.textview:
             t.connect("focus-in-event", self.on_current_diff_changed)
             t.connect("focus-out-event", self.on_current_diff_changed)
+        self.linediffer.connect("diffs-changed", self.on_diffs_changed)
 
     def on_focus_change(self):
         self.keymask = 0
@@ -753,19 +757,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         while step.next() is None:
             yield 1
 
-        error_message = True in [m.has_message() for m in self.msgarea_mgr]
-        if self.num_panes > 1 and self.linediffer.sequences_identical() and not error_message:
-            for index, mgr in enumerate(self.msgarea_mgr):
-                msgarea = mgr.new_from_text_and_icon(gtk.STOCK_INFO,
-                                                     _("Files are identical"))
-                button = msgarea.add_stock_button_with_text(_("Hide"),
-                                                            gtk.STOCK_CLOSE,
-                                                            gtk.RESPONSE_CLOSE)
-                if index == 0:
-                    button.props.label = _("Hi_de")
-                msgarea.connect("response", self.on_msgarea_identical_response)
-                msgarea.show_all()
-
         chunk, prev, next = self.linediffer.locate_chunk(1, 0)
         self.cursor.next = chunk
         if self.cursor.next is None:
@@ -785,6 +776,27 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield i
         for i in self._diff_files(files, panetext):
             yield i
+
+    def on_diffs_changed(self, linediffer):
+        if self.linediffer.sequences_identical():
+            error_message = True in [m.has_message() for m in self.msgarea_mgr]
+            if self.num_panes == 1 or error_message:
+                return
+            for index, mgr in enumerate(self.msgarea_mgr):
+                msgarea = mgr.new_from_text_and_icon(gtk.STOCK_INFO,
+                                                     _("Files are identical"))
+                mgr.set_msg_id(FileDiff.MSG_SAME)
+                button = msgarea.add_stock_button_with_text(_("Hide"),
+                                                            gtk.STOCK_CLOSE,
+                                                            gtk.RESPONSE_CLOSE)
+                if index == 0:
+                    button.props.label = _("Hi_de")
+                msgarea.connect("response", self.on_msgarea_identical_response)
+                msgarea.show_all()
+        else:
+            for m in self.msgarea_mgr:
+                if m.get_msg_id() == FileDiff.MSG_SAME:
+                    m.clear()
 
     def on_msgarea_identical_response(self, msgarea, respid):
         for mgr in self.msgarea_mgr:
