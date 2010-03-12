@@ -19,7 +19,7 @@ import matchers
 #from _patiencediff_py import PatienceSequenceMatcher_py as PatienceSequenceMatcher
 
 
-class Merger(diffutil.Differ):
+class AutoMergeDiffer(diffutil.Differ):
 
     _matcher = matchers.MyersSequenceMatcher
    # _matcher = PatienceSequenceMatcher
@@ -30,23 +30,10 @@ class Merger(diffutil.Differ):
         self.unresolved = []
 
     def _auto_merge(self, using, texts):
-        l0, h0, l1, h1, l2, h2 = self._merge_blocks(using)
-
-        if h0 - l0 == h2 - l2 and texts[0][l0:h0] == texts[2][l2:h2]:
-            # handle simple conflicts here (exact match)
-            if l1 != h1 and l0 == h0:
-                tag = "delete"
-            elif l1 != h1:
-                tag = "replace"
-            else:
-                tag = "insert"
-            out0 = (tag, l1, h1, l0, h0)
-            out1 = (tag, l1, h1, l2, h2)
-        else:
-            # here we will try to resolve more complex conflicts automatically... if possible
-            out0 = ('conflict', l1, h1, l0, h0)
-            out1 = ('conflict', l1, h1, l2, h2)
-            if self.auto_merge:
+        for out0, out1 in diffutil.Differ._auto_merge(self, using, texts):
+            if self.auto_merge and out0[0] == 'conflict':
+                # we will try to resolve more complex conflicts automatically here... if possible
+                l0, h0, l1, h1, l2, h2 = out0[3], out0[4], out0[1], out0[2], out1[3], out1[4]
                 len0 = h0 - l0
                 len1 = h1 - l1
                 len2 = h2 - l2
@@ -145,7 +132,7 @@ class Merger(diffutil.Differ):
                             out1 = ('conflict', i1, seq1[2], seq1[3], seq1[4])
                             yield out0, out1
                         return
-        yield out0, out1
+            yield out0, out1
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         if sequence == 1:
@@ -173,6 +160,21 @@ class Merger(diffutil.Differ):
     def get_unresolved_count(self):
         return len(self.unresolved)
 
+class Merger(diffutil.Differ):
+
+    def __init__(self, ):
+        self.differ = AutoMergeDiffer()
+        self.differ.auto_merge = True
+        self.differ.unresolved = []
+        self.texts = []
+
+    def initialize(self, sequences, texts):
+        step = self.differ.set_sequences_iter(sequences)
+        while step.next() == None:
+            yield None
+        self.texts = texts
+        yield 1
+
     def _apply_change(self, text, change, mergedtext):
         LO, HI = 1, 2
         if change[0] == 'insert':
@@ -186,15 +188,13 @@ class Merger(diffutil.Differ):
         else:
             return change[HI] - change[LO]
 
-    def merge_file(self, filteredtexts, texts):
+    def merge_3_files(self):
         LO, HI = 1, 2
-        self.auto_merge = True
-        self.unresolved = unresolved = []
-        diffs = self.diffs
+        self.unresolved = []
         lastline = 0
         mergedline = 0
         mergedtext = []
-        for change in self._merge_diffs(diffs[0], diffs[1], filteredtexts):
+        for change in self.differ.all_changes():
             yield None
             low_mark = lastline
             if change[0] != None:
@@ -203,32 +203,31 @@ class Merger(diffutil.Differ):
                 if change[1][LO] > low_mark:
                     low_mark = change[1][LO]
             for i in range(lastline, low_mark, 1):
-                mergedtext.append(texts[1][i])
+                mergedtext.append(self.texts[1][i])
             mergedline += low_mark - lastline
             lastline = low_mark
             if change[0] != None and change[1] != None and change[0][0] == 'conflict':
                 high_mark = max(change[0][HI], change[1][HI])
                 if low_mark < high_mark:
                     for i in range(low_mark, high_mark):
-                        mergedtext.append("(??)" + texts[1][i])
-                        unresolved.append(mergedline)
+                        mergedtext.append("(??)" + self.texts[1][i])
+                        self.unresolved.append(mergedline)
                         mergedline += 1
                 else:
                     #conflictsize = min(1, max(change[0][HI + 2] - change[0][LO + 2], change[1][HI + 2] - change[1][LO + 2]))
                     #for i in range(conflictsize):
                     mergedtext.append("(??)")
-                    unresolved.append(mergedline)
+                    self.unresolved.append(mergedline)
                     mergedline += 1
                 lastline = high_mark
             elif change[0] != None:
-                lastline += self._apply_change(texts[0], change[0], mergedtext)
+                lastline += self._apply_change(self.texts[0], change[0], mergedtext)
                 mergedline += change[0][HI + 2] - change[0][LO + 2]
             else:
-                lastline += self._apply_change(texts[2], change[1], mergedtext)
+                lastline += self._apply_change(self.texts[2], change[1], mergedtext)
                 mergedline += change[1][HI + 2] - change[1][LO + 2]
-        baselen = len(texts[1])
+        baselen = len(self.texts[1])
         for i in range(lastline, baselen, 1):
-            mergedtext.append(texts[1][i])
+            mergedtext.append(self.texts[1][i])
 
-        self.auto_merge = False
         yield "\n".join(mergedtext)

@@ -26,7 +26,7 @@ class FileMerge(filediff.FileDiff):
 
     def __init__(self, prefs, num_panes):
         filediff.FileDiff.__init__(self, prefs, num_panes)
-        self.linediffer = merge.Merger()
+        self.linediffer = merge.AutoMergeDiffer()
         self.hidden_textbuffer = gtk.TextBuffer()
 
     def _connect_buffer_handlers(self):
@@ -71,11 +71,11 @@ class FileMerge(filediff.FileDiff):
         filteredpanetext = [self._filter_text(p) for p in panetext]
         filteredlines = map(lambda x: x.split("\n"), filteredpanetext)
         merger = merge.Merger()
-        step = merger.set_sequences_iter(filteredlines)
+        step = merger.initialize(filteredlines, lines)
         while step.next() == None:
             yield 1
         yield _("[%s] Merging files") % self.label_text
-        for panetext[1] in merger.merge_file(filteredlines, lines):
+        for panetext[1] in merger.merge_3_files():
             yield 1
         self.linediffer.unresolved = merger.unresolved
         self.textbuffer[1].insert(self.textbuffer[1].get_end_iter(), panetext[1])
