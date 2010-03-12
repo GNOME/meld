@@ -369,3 +369,8 @@ class Differ(object):
         self._update_merge_cache(sequences)
         yield 1
 
+    def clear(self):
+        self.diffs = [[], []]
+        self.seqlength = [0] * self.num_sequences
+        texts = [""] * self.num_sequences
+        self._update_merge_cache(texts)
