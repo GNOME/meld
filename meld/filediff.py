@@ -651,6 +651,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Set num panes to len(files) and load each file given.
            If an element is None, the text of a pane is left as is.
         """
+        self._disconnect_buffer_handlers()
         for i,f in enumerate(files):
             if f:
                 self.textbuffer[i].delete(*self.textbuffer[i].get_bounds())
@@ -664,6 +665,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.msgarea_mgr[i].clear()
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
+        self._connect_buffer_handlers()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
     def _load_files(self, files, textbuffers, panetext):
