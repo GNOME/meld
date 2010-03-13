@@ -101,6 +101,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
 
+    differ = diffutil.Differ
+
     keylookup = {gtk.keysyms.Shift_L : MASK_SHIFT,
                  gtk.keysyms.Control_L : MASK_CTRL,
                  gtk.keysyms.Shift_R : MASK_SHIFT,
@@ -139,7 +141,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
-        self.linediffer = diffutil.Differ()
+        self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()

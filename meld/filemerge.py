@@ -24,9 +24,10 @@ MASK_SHIFT, MASK_CTRL = 1, 2
 
 class FileMerge(filediff.FileDiff):
 
+    differ = merge.AutoMergeDiffer
+
     def __init__(self, prefs, num_panes):
         filediff.FileDiff.__init__(self, prefs, num_panes)
-        self.linediffer = merge.AutoMergeDiffer()
         self.hidden_textbuffer = gtk.TextBuffer()
 
     def _connect_buffer_handlers(self):
