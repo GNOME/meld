@@ -891,7 +891,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if change[1] > end_line: break
             draw_change(change)
 
-        if textview.is_focus():
+        if textview.is_focus() and self.cursor.line is not None:
             ypos, height = self._line_to_pixel_plus_height(pane, self.cursor.line)
             context.set_source_rgba(1,1,0,.25)
             context.rectangle(0,ypos-visible.y, width, height)
