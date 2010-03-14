@@ -216,12 +216,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkDrawingArea" id="diffmap1">
-                <property name="width_request">20</property>
+              <widget class="Custom" id="diffmap1">
                 <property name="visible">True</property>
-                <property name="events">GDK_BUTTON_PRESS_MASK</property>
-                <signal name="expose_event" handler="on_diffmap_expose_event"/>
-                <signal name="button_press_event" handler="on_diffmap_button_press_event"/>
+                <property name="creation_function">meld.diffmap.create_diffmap</property>
               </widget>
               <packing>
                 <property name="left_attach">6</property>
@@ -256,12 +253,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkDrawingArea" id="diffmap0">
-                <property name="width_request">20</property>
+              <widget class="Custom" id="diffmap0">
                 <property name="visible">True</property>
-                <property name="events">GDK_BUTTON_PRESS_MASK</property>
-                <signal name="expose_event" handler="on_diffmap_expose_event"/>
-                <signal name="button_press_event" handler="on_diffmap_button_press_event"/>
+                <property name="creation_function">meld.diffmap.create_diffmap</property>
               </widget>
               <packing>
                 <property name="top_attach">1</property>
