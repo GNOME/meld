@@ -1051,7 +1051,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_textbuffer__begin_user_action()
         self.textbuffer[dst_pane].set_text(text)
         self.on_textbuffer__end_user_action()
-        self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src_pane].get_vadjustment() ) and None )
+        self.scheduler.add_task(lambda: self._sync_vscroll(self.scrolledwindow[src_pane].get_vadjustment(), src_pane) and None)
 
         #
         # refresh and reload
