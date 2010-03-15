@@ -136,6 +136,11 @@ class Differ(object):
                 self._line_cache[seq][start:end] = [(i, prev[seq], next[seq])] * (end - start)
                 prev[seq], old_end[seq] = i, end
 
+        for seq in range(3):
+            last, end = old_end[seq], len(self._line_cache[seq])
+            if (last < end):
+                self._line_cache[seq][last:end] = [(None, prev[seq], next[seq])] * (end - last)
+
     def _consume_blank_lines(self, c, texts, pane1, pane2):
         if c is None:
             return None
