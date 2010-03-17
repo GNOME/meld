@@ -33,6 +33,7 @@ from ui import findbar
 from ui import gnomeglade
 import matchers
 import misc
+import meldbuffer
 import melddoc
 import patchdialog
 import paths
@@ -98,8 +99,8 @@ class BufferLines(object):
     def __getslice__(self, lo, hi):
         # FIXME: If we ask for arbitrary slices past the end of the buffer,
         # this will return the last line.
-        start = get_iter_at_line_or_eof(self.buf, lo)
-        end = get_iter_at_line_or_eof(self.buf, hi)
+        start = self.buf.get_iter_at_line_or_eof(lo)
+        end = self.buf.get_iter_at_line_or_eof(hi)
         txt = unicode(self.buf.get_text(start, end, False), 'utf8')
 
         filter_txt = self.textfilter(txt)
@@ -138,7 +139,7 @@ class BufferLines(object):
     def __getitem__(self, i):
         if i >= len(self):
             raise IndexError
-        line_start = get_iter_at_line_or_eof(self.buf, i)
+        line_start = self.buf.get_iter_at_line_or_eof(i)
         line_end = line_start.copy()
         if not line_end.ends_line():
             line_end.forward_to_line_end()
@@ -158,20 +159,6 @@ class BufferLines(object):
 MASK_SHIFT, MASK_CTRL = 1, 2
 
 MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
-
-def get_iter_at_line_or_eof(buf, line):
-    if line >= buf.get_line_count():
-        return buf.get_end_iter()
-    return buf.get_iter_at_line(line)
-
-def buffer_insert(buf, line, text):
-    if line >= buf.get_line_count():
-        # TODO: We need to insert a linebreak here, but there is no
-        # way to be certain what kind of linebreak to use.
-        text = "\n" + text
-    it = get_iter_at_line_or_eof(buf, line)
-    buf.insert(it, text)
-    return it
 
 class CursorDetails(object):
     __slots__ = ("pane", "pos", "line", "offset", "chunk", "prev", "next",
@@ -235,7 +222,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gtk.binding_entry_remove(srcviewer.GtkTextView, gtk.keysyms.z,
                                  gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)
         for v in self.textview:
-            v.set_buffer(srcviewer.GtkTextBuffer())
+            v.set_buffer(meldbuffer.MeldBuffer())
             v.set_show_line_numbers(self.prefs.show_line_numbers)
             v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
             v.set_wrap_mode(self.prefs.edit_wrap_lines)
@@ -1206,18 +1193,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     newcache.add(cacheitem)
 
                     # Clean interim chunks
-                    starts = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[1], c[3]))]
+                    starts = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[1], c[3]))]
                     prog_it0 = bufs[0].get_iter_at_mark(progress[1])
                     prog_it1 = bufs[1].get_iter_at_mark(progress[i * 2])
                     bufs[0].remove_tag(tags[0], prog_it0, starts[0])
                     bufs[1].remove_tag(tags[1], prog_it1, starts[1])
-                    bufs[0].move_mark(progress[1], get_iter_at_line_or_eof(bufs[0], c[2]))
-                    bufs[1].move_mark(progress[i * 2], get_iter_at_line_or_eof(bufs[1], c[4]))
+                    bufs[0].move_mark(progress[1], bufs[0].get_iter_at_line_or_eof(c[2]))
+                    bufs[1].move_mark(progress[i * 2], bufs[1].get_iter_at_line_or_eof(c[4]))
 
                     if cacheitem in self._inline_cache:
                         continue
 
-                    ends = [get_iter_at_line_or_eof(b, l) for b, l in zip(bufs, (c[2], c[4]))]
+                    ends = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[2], c[4]))]
                     bufs[0].remove_tag(tags[0], starts[0], ends[0])
                     bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
@@ -1658,8 +1645,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
-        start = get_iter_at_line_or_eof(b0, chunk[1])
-        end = get_iter_at_line_or_eof(b0, chunk[2])
+        start = b0.get_iter_at_line_or_eof(chunk[1])
+        end = b0.get_iter_at_line_or_eof(chunk[2])
         t0 = unicode(b0.get_text(start, end, False), 'utf8')
 
         if copy_up:
@@ -1668,13 +1655,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # TODO: We need to insert a linebreak here, but there is no
                 # way to be certain what kind of linebreak to use.
                 t0 = t0 + "\n"
-            dst_start = get_iter_at_line_or_eof(b1, chunk[3])
+            dst_start = b1.get_iter_at_line_or_eof(chunk[3])
             mark0 = b1.create_mark(None, dst_start, True)
-            new_end = buffer_insert(b1, chunk[3], t0)
+            new_end = b1.insert_at_line(chunk[3], t0)
         else: # copy down
-            dst_start = get_iter_at_line_or_eof(b1, chunk[4])
+            dst_start = b1.get_iter_at_line_or_eof(chunk[4])
             mark0 = b1.create_mark(None, dst_start, True)
-            new_end = buffer_insert(b1, chunk[4], t0)
+            new_end = b1.insert_at_line(chunk[4], t0)
 
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
@@ -1686,15 +1673,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def replace_chunk(self, src, dst, chunk):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
-        src_start = get_iter_at_line_or_eof(b0, chunk[1])
-        src_end = get_iter_at_line_or_eof(b0, chunk[2])
-        dst_start = get_iter_at_line_or_eof(b1, chunk[3])
-        dst_end = get_iter_at_line_or_eof(b1, chunk[4])
+        src_start = b0.get_iter_at_line_or_eof(chunk[1])
+        src_end = b0.get_iter_at_line_or_eof(chunk[2])
+        dst_start = b1.get_iter_at_line_or_eof(chunk[3])
+        dst_end = b1.get_iter_at_line_or_eof(chunk[4])
         t0 = unicode(b0.get_text(src_start, src_end, False), 'utf8')
         mark0 = b1.create_mark(None, dst_start, True)
         self.on_textbuffer__begin_user_action()
         b1.delete(dst_start, dst_end)
-        new_end = buffer_insert(b1, chunk[3], t0)
+        new_end = b1.insert_at_line(chunk[3], t0)
         self.on_textbuffer__end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
@@ -1706,10 +1693,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def delete_chunk(self, src, chunk):
         b0 = self.textbuffer[src]
-        it = get_iter_at_line_or_eof(b0, chunk[1])
+        it = b0.get_iter_at_line_or_eof(chunk[1])
         if chunk[2] >= b0.get_line_count():
             it.backward_char()
-        b0.delete(it, get_iter_at_line_or_eof(b0, chunk[2]))
+        b0.delete(it, b0.get_iter_at_line_or_eof(chunk[2]))
         mark0 = b0.create_mark(None, it, True)
         mark1 = b0.create_mark(None, it, True)
         # TODO: Need a more specific colour here; conflict is wrong
