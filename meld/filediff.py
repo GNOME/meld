@@ -797,7 +797,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_delete_event(self, appquit=0):
         response = gtk.RESPONSE_OK
         modified = [b.data.modified for b in self.textbuffer]
-        if 1 in modified:
+        if True in modified:
             dialog = gnomeglade.Component(paths.ui_dir("filediff.ui"), "closedialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             buttons = []
@@ -940,7 +940,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         shortnames = misc.shorten_names(*filenames)
         for i in range(self.num_panes):
             stock = None
-            if self.textbuffer[i].data.modified == 1:
+            if self.textbuffer[i].data.modified:
                 shortnames[i] += "*"
                 if self.textbuffer[i].data.writable == 1:
                     stock = gtk.STOCK_SAVE

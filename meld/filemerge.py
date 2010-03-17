@@ -84,6 +84,6 @@ class FileMerge(filediff.FileDiff):
             yield 1
         self.linediffer.unresolved = merger.unresolved
         self.textbuffer[1].insert(self.textbuffer[1].get_end_iter(), panetext[1])
-        self.textbuffer[1].data.modified = 1
+        self.textbuffer[1].data.modified = True
         self.recompute_label()
         yield 1
