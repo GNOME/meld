@@ -22,6 +22,18 @@ class MeldBuffer(meld.util.sourceviewer.srcviewer.GtkTextBuffer):
 
     __gtype_name__ = "MeldBuffer"
 
+    def __init__(self, filename=None):
+        meld.util.sourceviewer.srcviewer.GtkTextBuffer.__init__(self)
+        self.data = MeldBufferData(filename)
+
+    def reset_buffer(self, filename):
+        self.delete(*self.get_bounds())
+
+        new_data = MeldBufferData(filename)
+        if self.data.filename == filename:
+            new_data.label = self.data.label
+        self.data = new_data
+
     def get_iter_at_line_or_eof(self, line):
         if line >= self.get_line_count():
             return self.get_end_iter()
@@ -35,4 +47,19 @@ class MeldBuffer(meld.util.sourceviewer.srcviewer.GtkTextBuffer):
         it = self.get_iter_at_line_or_eof(line)
         self.insert(it, text)
         return it
+
+
+class MeldBufferData(object):
+
+    __slots__ = ("modified", "writable", "filename", "savefile", "label",
+                 "encoding", "newlines")
+
+    def __init__(self, filename=None):
+        self.modified = False
+        self.writable = True
+        self.filename = filename
+        self.savefile = None
+        self.label = filename
+        self.encoding = None
+        self.newlines = None
 

@@ -236,7 +236,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview_focussed = None
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
-        self.bufferdata = [MeldBufferData() for b in self.textbuffer]
         self.buffer_texts = [BufferLines(b) for b in self.textbuffer]
         self.text_filters = []
         self.create_text_filters()
@@ -793,11 +792,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _get_pane_label(self, i):
         #TRANSLATORS: this is the name of a new file which has not yet been saved
-        return self.bufferdata[i].label or _("<unnamed>")
+        return self.textbuffer[i].data.label or _("<unnamed>")
 
     def on_delete_event(self, appquit=0):
         response = gtk.RESPONSE_OK
-        modified = [b.modified for b in self.bufferdata]
+        modified = [b.data.modified for b in self.textbuffer]
         if 1 in modified:
             dialog = gnomeglade.Component(paths.ui_dir("filediff.ui"), "closedialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
@@ -857,8 +856,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def open_external(self):
         pane = self._get_focused_pane()
         if pane >= 0:
-            if self.bufferdata[pane].filename:
-                self._open_files([self.bufferdata[pane].filename])
+            if self.textbuffer[pane].data.filename:
+                self._open_files([self.textbuffer[pane].data.filename])
 
     def get_selected_text(self):
         """Returns selected text of active pane"""
@@ -924,14 +923,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
 
     def set_labels(self, lst):
-        assert len(lst) <= len(self.bufferdata)
-        for l,d in zip(lst,self.bufferdata):
-            if len(l): d.label = l
+        assert len(lst) <= len(self.textbuffer)
+        for l, b in zip(lst, self.textbuffer):
+            if len(l):
+                b.data.label = l
 
     def set_merge_output_file(self, filename):
-        if len(self.bufferdata) < 2:
+        if len(self.textbuffer) < 2:
             return
-        self.bufferdata[1].savefile = os.path.abspath(filename)
+        self.textbuffer[1].data.savefile = os.path.abspath(filename)
 
     def recompute_label(self):
         filenames = []
@@ -940,13 +940,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         shortnames = misc.shorten_names(*filenames)
         for i in range(self.num_panes):
             stock = None
-            if self.bufferdata[i].modified == 1:
+            if self.textbuffer[i].data.modified == 1:
                 shortnames[i] += "*"
-                if self.bufferdata[i].writable == 1:
+                if self.textbuffer[i].data.writable == 1:
                     stock = gtk.STOCK_SAVE
                 else:
                     stock = gtk.STOCK_SAVE_AS
-            elif self.bufferdata[i].writable == 0:
+            elif self.textbuffer[i].data.writable == 0:
                 stock = gtk.STOCK_NO
             if stock:
                 self.statusimage[i].show()
@@ -966,14 +966,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._inline_cache = set()
         for i,f in enumerate(files):
             if f:
-                self.textbuffer[i].delete(*self.textbuffer[i].get_bounds())
                 absfile = os.path.abspath(f)
                 self.fileentry[i].set_filename(absfile)
                 self.fileentry[i].prepend_history(absfile)
-                bold, bnew = self.bufferdata[i], MeldBufferData(absfile)
-                if bold.filename == bnew.filename:
-                    bnew.label = bold.label
-                self.bufferdata[i] = bnew
+                self.textbuffer[i].reset_buffer(absfile)
                 self.msgarea_mgr[i].clear()
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
@@ -1055,9 +1051,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
                     else:
                         self.set_buffer_writable(t.buf, os.access(t.filename, os.W_OK))
-                        self.bufferdata[t.pane].encoding = t.codec[0]
+                        self.textbuffer[t.pane].data.encoding = t.codec[0]
                         if hasattr(t.file, "newlines"):
-                            self.bufferdata[t.pane].newlines = t.file.newlines
+                            self.textbuffer[t.pane].data.newlines = t.file.newlines
                         tasks.remove(t)
             yield 1
         for b in self.textbuffer:
@@ -1084,7 +1080,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         langs = []
         for i in range(self.num_panes):
-            filename = self.bufferdata[i].filename
+            filename = self.textbuffer[i].data.filename
             if filename:
                 langs.append(srcviewer.get_language_from_file(filename))
             else:
@@ -1367,7 +1363,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def save_file(self, pane, saveas=0):
         buf = self.textbuffer[pane]
-        bufdata = self.bufferdata[pane]
+        bufdata = buf.data
         if saveas or not bufdata.filename:
             filename = self._get_filename_for_saving( _("Choose a name for buffer %i.") % (pane+1) )
             if filename:
@@ -1417,13 +1413,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dialog.run()
 
     def set_buffer_writable(self, buf, yesno):
-        pane = self.textbuffer.index(buf)
-        self.bufferdata[pane].writable = yesno
+        buf.data.writable = yesno
         self.recompute_label()
 
     def set_buffer_modified(self, buf, yesno):
-        pane = self.textbuffer.index(buf)
-        self.bufferdata[pane].modified = yesno
+        buf.data.modified = yesno
         self.recompute_label()
 
     def save(self):
@@ -1438,7 +1432,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def save_all(self):
         for i in range(self.num_panes):
-            if self.bufferdata[i].modified:
+            if self.textbuffer[i].data.modified:
                 self.save_file(i)
 
     def on_fileentry_activate(self, entry):
@@ -1457,13 +1451,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # refresh and reload
         #
     def on_reload_activate(self, *extra):
-        modified = [os.path.basename(b.label) for b in self.bufferdata if b.modified]
+        modified = [os.path.basename(b.data.label) for b in self.textbuffer if b.data.modified]
         if len(modified):
             message = _("Reloading will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
             response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
             if response != gtk.RESPONSE_OK:
                 return
-        files = [b.filename for b in self.bufferdata[:self.num_panes] ]
+        files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
         self.set_files(files)
 
     def on_refresh_activate(self, *extra):
@@ -1614,7 +1608,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 w.associate(self, self.textview[i], self.textview[i + 1])
 
             for i in range(self.num_panes):
-                if self.bufferdata[i].modified:
+                if self.textbuffer[i].data.modified:
                     self.statusimage[i].show()
             self.queue_draw()
             self.recompute_label()
@@ -1706,23 +1700,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.animating_chunks[src].append(anim)
 
 
-################################################################################
-#
-# Local Functions
-#
-################################################################################
-
-class MeldBufferData(object):
-    __slots__ = ("modified", "writable", "filename", "savefile", "label",
-                 "encoding", "newlines")
-    def __init__(self, filename=None):
-        self.modified = 0
-        self.writable = 1
-        self.filename = filename
-        self.savefile = None
-        self.label = filename
-        self.encoding = None
-        self.newlines = None
 
 
 class BufferAction(object):
