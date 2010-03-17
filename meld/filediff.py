@@ -203,6 +203,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             t.connect("focus-in-event", self.on_current_diff_changed)
             t.connect("focus-out-event", self.on_current_diff_changed)
         self.linediffer.connect("diffs-changed", self.on_diffs_changed)
+        self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
 
     def on_focus_change(self):
         self.keymask = 0
@@ -568,12 +569,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_text_insert_text(self, buffer, it, text, textlen):
         if not self.undosequence_busy:
-            self.undosequence.begin_group()
-            pane = self.textbuffer.index(buffer)
-            if self.bufferdata[pane].modified != 1:
-                self.undosequence.add_action( BufferModifiedAction(buffer, self) )
             self.undosequence.add_action( BufferInsertionAction(buffer, it.get_offset(), text) )
-            self.undosequence.end_group()
 
     def on_text_delete_range(self, buffer, it0, it1):
         text = buffer.get_text(it0, it1, 0)
@@ -581,11 +577,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = text.count("\n")
         if not self.undosequence_busy:
-            self.undosequence.begin_group()
-            if self.bufferdata[pane].modified != 1:
-                self.undosequence.add_action( BufferModifiedAction(buffer, self) )
             self.undosequence.add_action( BufferDeletionAction(buffer, it0.get_offset(), text) )
-            self.undosequence.end_group()
+
+    def on_undo_checkpointed(self, undosequence, buf, checkpointed):
+        self.set_buffer_modified(buf, not checkpointed)
 
         #
         #
@@ -706,6 +701,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task( self._set_files_internal(files).next )
 
     def _load_files(self, files, textbuffers, panetext):
+        self.undosequence.clear()
         yield _("[%s] Set num panes") % self.label_text
         self.set_num_panes( len(files) )
         self._disconnect_buffer_handlers()
@@ -786,9 +782,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             t.text.append("\n")
                         panetext[t.pane] = "".join(t.text)
             yield 1
+        for b in self.textbuffer:
+            self.undosequence.checkpoint(b)
 
     def _diff_files(self, files, panetext):
-        self.undosequence.clear()
         yield _("[%s] Computing differences") % self.label_text
         panetext = [self._filter_text(p) for p in panetext]
         lines = map(lambda x: x.split("\n"), panetext)
@@ -1029,8 +1026,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     return melddoc.RESULT_ERROR
         if self._save_text_to_filename(bufdata.filename, text):
             self.emit("file-changed", bufdata.filename)
-            self.undosequence.clear()
-            self.set_buffer_modified(buf, 0)
+            self.undosequence.checkpoint(buf)
             return melddoc.RESULT_OK
         else:
             return melddoc.RESULT_ERROR
@@ -1498,18 +1494,3 @@ class BufferDeletionAction(BufferAction):
         super(BufferDeletionAction, self).__init__(buf, offset, text)
         self.undo = self.insert
         self.redo = self.delete
-
-################################################################################
-#
-# BufferModifiedAction
-#
-################################################################################
-class BufferModifiedAction(object):
-    """A helper to set modified flag on a text buffer"""
-    def __init__(self, buf, app):
-        self.buffer, self.app = buf, app
-        self.app.set_buffer_modified(self.buffer, 1)
-    def undo(self):
-        self.app.set_buffer_modified(self.buffer, 0)
-    def redo(self):
-        self.app.set_buffer_modified(self.buffer, 1)

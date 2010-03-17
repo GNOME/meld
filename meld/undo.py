@@ -51,7 +51,8 @@ class UndoSequence(gobject.GObject):
 
     __gsignals__ = {
         'can-undo': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
-        'can-redo': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,))
+        'can-redo': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
+        'checkpointed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_OBJECT, gobject.TYPE_BOOLEAN,)),
     }
 
     def __init__(self):
@@ -60,6 +61,7 @@ class UndoSequence(gobject.GObject):
         gobject.GObject.__init__(self)
         self.actions = []
         self.next_redo = 0
+        self.checkpoints = {}
         self.group = None
 
     def clear(self):
@@ -79,6 +81,7 @@ class UndoSequence(gobject.GObject):
             self.emit('can-redo', 0)
         self.actions = []
         self.next_redo = 0
+        self.checkpoints = {}
         self.group = None
 
     def can_undo(self):
@@ -100,6 +103,15 @@ class UndoSequence(gobject.GObject):
                   which are called by this sequence during an undo or redo.
         """
         if self.group is None:
+            if self.checkpointed(action.buffer):
+                self.checkpoints[action.buffer][1] = self.next_redo
+                self.emit('checkpointed', action.buffer, False)
+            else:
+                # If we go back in the undo stack before the checkpoint starts,
+                # and then modify the buffer, we lose the checkpoint altogether
+                start, end = self.checkpoints.get(action.buffer, (None, None))
+                if start is not None and start > self.next_redo:
+                    self.checkpoints[action.buffer] = (None, None)
             could_undo = self.can_undo()
             could_redo = self.can_redo()
             self.actions[self.next_redo:] = []
@@ -118,6 +130,9 @@ class UndoSequence(gobject.GObject):
         Raises an AssertionError if the sequence is not undoable.
         """
         assert self.next_redo > 0
+        buf = self.actions[self.next_redo - 1].buffer
+        if self.checkpointed(buf):
+            self.emit('checkpointed', buf, False)
         could_redo = self.can_redo()
         self.next_redo -= 1
         self.actions[self.next_redo].undo()
@@ -125,6 +140,8 @@ class UndoSequence(gobject.GObject):
             self.emit('can-undo', 0)
         if not could_redo:
             self.emit('can-redo', 1)
+        if self.checkpointed(buf):
+            self.emit('checkpointed', buf, True)
 
     def redo(self):
         """Redo an action.
@@ -132,6 +149,9 @@ class UndoSequence(gobject.GObject):
         Raises and AssertionError if the sequence is not undoable.
         """
         assert self.next_redo < len(self.actions)
+        buf = self.actions[self.next_redo].buffer
+        if self.checkpointed(buf):
+            self.emit('checkpointed', buf, False)
         could_undo = self.can_undo()
         a = self.actions[self.next_redo]
         self.next_redo += 1
@@ -140,6 +160,28 @@ class UndoSequence(gobject.GObject):
             self.emit('can-undo', 1)
         if not self.can_redo():
             self.emit('can-redo', 0)
+        if self.checkpointed(buf):
+            self.emit('checkpointed', buf, True)
+
+    def checkpoint(self, buf):
+        start = self.next_redo
+        while start > 0 and self.actions[start - 1].buffer != buf:
+            start -= 1
+        end = self.next_redo
+        while end < len(self.actions) and self.actions[end + 1].buffer != buf:
+            end += 1
+        if end == len(self.actions):
+            end = None
+        self.checkpoints[buf] = [start, end]
+        self.emit('checkpointed', buf, True)
+
+    def checkpointed(self, buf):
+        # While the main undo sequence should always have checkpoints
+        # recorded, grouped subsequences won't.
+        start, end = self.checkpoints.get(buf, (None, None))
+        if start is None:
+            return False
+        return start <= self.next_redo <= (end or len(self.actions))
 
     def begin_group(self):
         """Group several actions into a single logical action.
