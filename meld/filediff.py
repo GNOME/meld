@@ -942,11 +942,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             stock = None
             if self.textbuffer[i].data.modified:
                 shortnames[i] += "*"
-                if self.textbuffer[i].data.writable == 1:
+                if self.textbuffer[i].data.writable:
                     stock = gtk.STOCK_SAVE
                 else:
                     stock = gtk.STOCK_SAVE_AS
-            elif self.textbuffer[i].data.writable == 0:
+            elif not self.textbuffer[i].data.writable:
                 stock = gtk.STOCK_NO
             if stock:
                 self.statusimage[i].show()
