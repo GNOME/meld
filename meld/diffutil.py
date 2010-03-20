@@ -271,13 +271,10 @@ class Differ(object):
             seq = textindex/2
             for cs in self._merge_cache:
                 if cs[seq]:
-                    yield reverse_chunk(cs[seq]) + (1,)
+                    yield reverse_chunk(cs[seq])
         else:
             for cs in self._merge_cache:
-                if cs[0]:
-                    yield cs[0] + (0,)
-                elif cs[1]:
-                    yield cs[1] + (2,)
+                yield cs[0] or cs[1]
 
     def sequences_identical(self):
         return self.diffs == [[], []]
