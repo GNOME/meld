@@ -871,7 +871,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         context.clip()
         context.set_line_width(1.0)
 
-        def draw_change(change): # draw background and thin lines
+        for change in self.linediffer.single_changes(pane):
+            if change[2] < start_line:
+                continue
+            if change[1] > end_line:
+                break
+
             ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
             ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
 
@@ -881,11 +886,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 context.fill_preserve()
             context.set_source_rgb(*self.line_colors[change[0]])
             context.stroke()
-
-        for change in self.linediffer.single_changes(pane):
-            if change[2] < start_line: continue
-            if change[1] > end_line: break
-            draw_change(change)
 
         if textview.is_focus() and self.cursor.line is not None:
             ypos, height = self._line_to_pixel_plus_height(pane, self.cursor.line)
