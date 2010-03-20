@@ -932,8 +932,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
-        start_line = self._pixel_to_line(pane, visible.y)
-        end_line = 1+self._pixel_to_line(pane, visible.y+visible.height)
+        bounds = (self._pixel_to_line(pane, visible.y),
+                  self._pixel_to_line(pane, visible.y + visible.height + 1))
 
         width, height = textview.allocation.width, textview.allocation.height
         context = event.window.cairo_create()
@@ -941,12 +941,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         context.clip()
         context.set_line_width(1.0)
 
-        for change in self.linediffer.single_changes(pane):
-            if change[2] < start_line:
-                continue
-            if change[1] > end_line:
-                break
-
+        for change in self.linediffer.single_changes(pane, bounds):
             ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
             ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
 
@@ -1311,13 +1306,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # For bezier control points
         x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
 
-        for c in self.linediffer.pair_changes(which, which + 1):
-            assert c[0] != "equal"
-            if c[2] < visible[1] and c[4] < visible[3]: # find first visible chunk
-                continue
-            elif c[1] > visible[2] and c[3] > visible[4]: # we've gone past last visible
-                break
-
+        for c in self.linediffer.pair_changes(which, which + 1, visible[1:5]):
             # f and t are short for "from" and "to"
             f0, f1 = [self._line_to_pixel(which, l) - pix_start[which] + rel_offset[which] for l in c[1:3]]
             t0, t1 = [self._line_to_pixel(which + 1, l) - pix_start[which + 1] + rel_offset[which + 1] for l in c[3:5]]

@@ -115,7 +115,8 @@ class Differ(gobject.GObject):
 
     def _update_line_cache(self):
         for i, l in enumerate(self.seqlength):
-            self._line_cache[i] = [(None, None, None)] * l
+            # seqlength + 1 for after-last-line requests, which we do
+            self._line_cache[i] = [(None, None, None)] * (l + 1)
 
         last_chunk = len(self._merge_cache)
         def find_next(diff, seq, current):
@@ -276,33 +277,64 @@ class Differ(gobject.GObject):
                                                 for c in self.diffs[which][hiidx:] ]
         self.diffs[which][loidx:hiidx] = newdiffs
 
+    def _range_from_lines(self, textindex, lines):
+        lo_line, hi_line = lines
+        top_chunk = self.locate_chunk(textindex, lo_line)
+        start = top_chunk[0]
+        if start is None:
+            start = top_chunk[2]
+        bottom_chunk = self.locate_chunk(textindex, hi_line)
+        end = bottom_chunk[0]
+        if end is None:
+            end = bottom_chunk[1]
+        return start, end
+
     def all_changes(self):
         return iter(self._merge_cache)
 
-    def pair_changes(self, fromindex, toindex):
+    def pair_changes(self, fromindex, toindex, lines=(None, None, None, None)):
         """Give all changes between file1 and either file0 or file2.
         """
+        if None not in lines:
+            start1, end1 = self._range_from_lines(fromindex, lines[0:2])
+            start2, end2 = self._range_from_lines(toindex, lines[2:4])
+            if (start1 is None or end1 is None) and \
+               (start2 is None or end2 is None):
+                return
+            start = min([x for x in (start1, start2) if x is not None])
+            end = max([x for x in (end1, end2) if x is not None])
+            merge_cache = self._merge_cache[start:end + 1]
+        else:
+            merge_cache = self._merge_cache
+
         if fromindex == 1:
             seq = toindex/2
-            for c in self._merge_cache:
+            for c in merge_cache:
                 if c[seq]:
                     yield c[seq]
         else:
             seq = fromindex/2
-            for c in self._merge_cache:
+            for c in merge_cache:
                 if c[seq]:
                     yield reverse_chunk(c[seq])
 
-    def single_changes(self, textindex):
+    def single_changes(self, textindex, lines=(None, None)):
         """Give changes for single file only. do not return 'equal' hunks.
         """
+        if None not in lines:
+            start, end = self._range_from_lines(textindex, lines)
+            if start is None or end is None:
+                return
+            merge_cache = self._merge_cache[start:end + 1]
+        else:
+            merge_cache = self._merge_cache
         if textindex in (0,2):
             seq = textindex/2
-            for cs in self._merge_cache:
+            for cs in merge_cache:
                 if cs[seq]:
                     yield reverse_chunk(cs[seq])
         else:
-            for cs in self._merge_cache:
+            for cs in merge_cache:
                 yield cs[0] or cs[1]
 
     def sequences_identical(self):
