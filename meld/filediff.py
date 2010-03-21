@@ -1296,13 +1296,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         context.set_line_width(1.0)
 
         which = self.linkmap.index(widget)
-        pix_start = [None] * self.num_panes
-        pix_start[which  ] = self.textview[which  ].get_visible_rect().y
-        pix_start[which+1] = self.textview[which+1].get_visible_rect().y
-
-        rel_offset = [None] * self.num_panes
-        rel_offset[which] = self.textview[which].allocation.y - yoffset
-        rel_offset[which + 1] = self.textview[which + 1].allocation.y - yoffset
+        pix_start = [t.get_visible_rect().y for t in self.textview]
+        rel_offset = [t.allocation.y - yoffset for t in self.textview]
 
         def bounds(idx):
             return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
