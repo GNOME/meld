@@ -396,6 +396,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                               self.on_cursor_position_changed)
             buf.handlers = id0, id1, id2, id3, id4
 
+    # Abbreviations for insert and overwrite that fit in the status bar
+    _insert_overwrite_text = (_("INS"), _("OVR"))
+    # Abbreviation for line, column so that it will fit in the status bar
+    _line_column_text = _("Ln %i, Col %i")
+
     def on_cursor_position_changed(self, buf, pspec, force=False):
         pane = self.textbuffer.index(buf)
         pos = buf.props.cursor_position
@@ -407,10 +412,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         offset = cursor_it.get_line_offset()
         line = cursor_it.get_line()
 
-        # Abbreviations for insert and overwrite that fit in the status bar
-        insert_overwrite = (_("INS"), _("OVR"))[self.textview_overwrite]
-        # Abbreviation for line, column so that it will fit in the status bar
-        line_column = _("Ln %i, Col %i") % (line + 1, offset + 1)
+        insert_overwrite = self._insert_overwrite_text[self.textview_overwrite]
+        line_column = self._line_column_text % (line + 1, offset + 1)
         status = "%s : %s" % (insert_overwrite, line_column)
         self.emit("status-changed", status)
 
