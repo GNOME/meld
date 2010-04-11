@@ -74,6 +74,9 @@ class Vc(_vc.CachedVc):
     def _lookup_tree_cache(self, rootdir):
         while 1:
             try:
+                # Update the index before getting status, otherwise we could
+                # be reading stale status information
+                _vc.popen(["git", "update-index", "--refresh"])
                 proc = _vc.popen([self.CMD, "diff-index", "--name-status", \
                     "HEAD", "./"], cwd=self.location)
                 entries = proc.read().split("\n")[:-1]
