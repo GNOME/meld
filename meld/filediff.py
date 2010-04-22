@@ -513,6 +513,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if try_save[i]:
                         if self.save_file(i) != melddoc.RESULT_OK:
                             return gtk.RESPONSE_CANCEL
+            elif response == gtk.RESPONSE_DELETE_EVENT:
+                response = gtk.RESPONSE_CANCEL
         return response
 
         #
