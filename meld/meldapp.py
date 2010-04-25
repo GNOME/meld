@@ -642,12 +642,14 @@ class MeldApp(gnomeglade.Component):
             self.try_remove_page(page)
 
     def on_menu_quit_activate(self, *extra):
-        for c in self.notebook.get_children():
-            response = c.get_data("pyobject").on_delete_event(appquit=1)
+        # Delete pages from right-to-left.  This ensures that if a version
+        # control page is open in the far left page, it will be closed last.
+        for c in reversed(self.notebook.get_children()):
+            page = c.get_data("pyobject")
+            self.notebook.set_current_page(self.notebook.page_num(page.widget))
+            response = self.try_remove_page(page, appquit=1)
             if response == gtk.RESPONSE_CANCEL:
                 return gtk.RESPONSE_CANCEL
-            elif response == gtk.RESPONSE_CLOSE:
-                break
         for c in self.notebook.get_children():
             c.get_data("pyobject").on_quit_event()
         gtk.main_quit()
@@ -746,9 +748,10 @@ class MeldApp(gnomeglade.Component):
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()
 
-    def try_remove_page(self, page):
+    def try_remove_page(self, page, appquit=0):
         "See if a page will allow itself to be removed"
-        if page.on_delete_event() != gtk.RESPONSE_CANCEL:
+        response = page.on_delete_event(appquit)
+        if response != gtk.RESPONSE_CANCEL:
             self.scheduler.remove_scheduler( page.scheduler )
             i = self.notebook.page_num( page.widget )
             assert(i>=0)
@@ -758,6 +761,7 @@ class MeldApp(gnomeglade.Component):
             self.notebook.remove_page(i)
             if self.notebook.get_n_pages() == 0:
                 self.widget.set_title("Meld")
+        return response
 
     def on_file_changed(self, srcpage, filename):
         for c in self.notebook.get_children():
