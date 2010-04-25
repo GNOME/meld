@@ -262,7 +262,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.model.set_state(it, 0, tree.STATE_NORMAL, isdir=1)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
-        self.scheduler.add_task( self._search_recursively_iter(self.model.get_iter_root()).next )
+
+        # If the user is just diffing a file (ie not a directory), there's no
+        # need to scan the rest of the repository
+        if os.path.isdir(self.vc.location):
+            self.scheduler.add_task(self._search_recursively_iter(self.model.get_iter_root()).next)
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)

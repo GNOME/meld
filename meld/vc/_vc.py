@@ -76,15 +76,20 @@ class Vc(object):
     VC_METADATA = None
 
     def __init__(self, location):
-        # Save the requested diff directory.  It may be a sub-directory
+        # Save the requested diff directory/file.  It may be a sub-directory
         # of the repository we are diffing and can be useful in limiting meld's
-        # output to the requested location.
+        # output to the requested location.  It can also be used to determine
+        # if the user is requesting a single-file diff or a diretcory diff.
         self.location = location
 
-        if self.VC_ROOT_WALK:
-            self.root = self.find_repo_root(location)
+        if not os.path.isdir(location):
+            path = os.path.dirname(self.location)
         else:
-            self.root = self.check_repo_root(location)
+            path = location
+        if self.VC_ROOT_WALK:
+            self.root = self.find_repo_root(path)
+        else:
+            self.root = self.check_repo_root(path)
 
     def commit_command(self, message):
         raise NotImplementedError()

@@ -915,7 +915,7 @@ class MeldApp(gnomeglade.Component):
             self.scheduler.remove_scheduler(doc.scheduler)
         self.scheduler.add_task(cleanup)
         self.scheduler.add_scheduler(doc.scheduler)
-        doc.set_location(os.path.dirname(path))
+        doc.set_location(path)
         doc.connect("create-diff", lambda obj,arg: self.append_diff(arg))
         doc.run_diff([path])
 
