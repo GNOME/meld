@@ -30,7 +30,7 @@ from util.sourceviewer import srcviewer
 
 class ListWidget(gnomeglade.Component):
     def __init__(self, columns, prefs, key):
-        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.glade"), "listwidget")
+        gnomeglade.Component.__init__(self, paths.ui_dir("preferences.glade"), "listwidget")
         self.prefs = prefs
         self.key = key
         self.treeview.set_model( gtk.ListStore( *[c[1] for c in columns] ) )
@@ -121,7 +121,7 @@ class PreferencesDialog(gnomeglade.Component):
     editor_radio_values = {"internal":0, "gnome":1, "custom":2}
 
     def __init__(self, parentapp):
-        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.glade"), "preferencesdialog")
+        gnomeglade.Component.__init__(self, paths.ui_dir("preferences.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
         self.prefs = parentapp.prefs
         # editor
