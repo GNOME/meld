@@ -126,10 +126,13 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs = parentapp.prefs
         # editor
         self.map_widgets_into_lists( ["editor_command"] )
-        if self.prefs.use_custom_font:
-            self.radiobutton_custom_font.set_active(1)
+        if not self.prefs.use_custom_font:
+            self.checkbutton_default_font.set_active(True)
+            self.fontpicker.set_sensitive(False)
         else:
-            self.radiobutton_gnome_font.set_active(1)
+            self.checkbutton_default_font.set_active(False)
+            self.fontpicker.set_sensitive(True)
+            self.fontpicker.set_font_name(self.prefs.custom_font)
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
         if srcviewer:
@@ -172,11 +175,12 @@ class PreferencesDialog(gnomeglade.Component):
     #
     def on_fontpicker_font_set(self, picker):
         self.prefs.custom_font = picker.get_font_name()
-    def on_radiobutton_font_toggled(self, radio):
-        if radio.get_active():
-            custom = radio == self.radiobutton_custom_font
-            self.fontpicker.set_sensitive(custom)
-            self.prefs.use_custom_font = custom
+
+    def on_checkbutton_default_font_toggled(self, button):
+        use_custom = not button.get_active()
+        self.fontpicker.set_sensitive(use_custom)
+        self.prefs.use_custom_font = use_custom
+
     def on_spinbutton_tabsize_changed(self, spin):
         self.prefs.tab_size = int(spin.get_value())
     def on_checkbutton_spaces_instead_of_tabs_toggled(self, check):
