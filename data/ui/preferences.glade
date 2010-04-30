@@ -386,6 +386,8 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">*</property>
+                                    <signal name="focus_out_event" handler="on_custom_edit_command_entry_activate"/>
+                                    <signal name="activate" handler="on_custom_edit_command_entry_activate"/>
                                   </widget>
                                   <packing>
                                     <property name="padding">5</property>
@@ -619,6 +621,8 @@
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">*</property>
                                     <property name="text">utf8 iso8859</property>
+                                    <signal name="focus_out_event" handler="on_entry_text_codecs_activate"/>
+                                    <signal name="activate" handler="on_entry_text_codecs_activate"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>

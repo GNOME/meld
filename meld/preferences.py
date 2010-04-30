@@ -211,6 +211,10 @@ class PreferencesDialog(gnomeglade.Component):
         else:
             self.prefs.edit_command_type = "custom"
 
+    def on_custom_edit_command_entry_activate(self, entry, *args):
+        # Called on "activate" and "focus-out-event"
+        self.prefs.edit_command_custom = entry.props.text
+
     #
     # filters
     #
@@ -219,13 +223,11 @@ class PreferencesDialog(gnomeglade.Component):
     def on_checkbutton_ignore_blank_lines_toggled(self, check):
         self.prefs.ignore_blank_lines = check.get_active()
 
-    #
-    # Save text entry values into preferences
-    #
-    def on_response(self, dialog, arg):
-        if arg==gtk.RESPONSE_CLOSE:
-            self.prefs.text_codecs = self.entry_text_codecs.props.text
-            self.prefs.edit_command_custom = self.custom_edit_command_entry.props.text
+    def on_entry_text_codecs_activate(self, entry, *args):
+        # Called on "activate" and "focus-out-event"
+        self.prefs.text_codecs = entry.props.text
+
+    def on_response(self, dialog, response_id):
         self.widget.destroy()
 
 
