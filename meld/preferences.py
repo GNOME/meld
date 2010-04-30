@@ -151,6 +151,11 @@ class PreferencesDialog(gnomeglade.Component):
                 self.checkbutton_split_words.set_active(False)
             self.checkbutton_wrap_text.set_active(True)
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
+
+        size_group = gtk.SizeGroup(gtk.SIZE_GROUP_HORIZONTAL)
+        size_group.add_widget(self.label1)
+        size_group.add_widget(self.label2)
+        size_group.add_widget(self.label16)
         use_default = self.prefs.edit_command_type == "internal" or \
                       self.prefs.edit_command_type == "gnome"
         self.system_editor_checkbutton.set_active(use_default)
