@@ -118,14 +118,10 @@ class ListWidget(gnomeglade.Component):
 
 class PreferencesDialog(gnomeglade.Component):
 
-    editor_radio_values = {"internal":0, "gnome":1, "custom":2}
-
     def __init__(self, parentapp):
         gnomeglade.Component.__init__(self, paths.ui_dir("preferences.glade"), "preferencesdialog")
         self.widget.set_transient_for(parentapp.widget)
         self.prefs = parentapp.prefs
-        # editor
-        self.map_widgets_into_lists( ["editor_command"] )
         if not self.prefs.use_custom_font:
             self.checkbutton_default_font.set_active(True)
             self.fontpicker.set_sensitive(False)
@@ -155,9 +151,12 @@ class PreferencesDialog(gnomeglade.Component):
                 self.checkbutton_split_words.set_active(False)
             self.checkbutton_wrap_text.set_active(True)
         self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
-        self.editor_command[ self.editor_radio_values.get(self.prefs.edit_command_type, "internal") ].set_active(1)
-        self.gnome_default_editor_label.set_text( "(%s)" % " ".join(self.prefs.get_gnome_editor_command([])) )
+        use_default = self.prefs.edit_command_type == "internal" or \
+                      self.prefs.edit_command_type == "gnome"
+        self.system_editor_checkbutton.set_active(use_default)
+        self.custom_edit_command_entry.set_sensitive(not use_default)
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
+
         # file filters
         cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Pattern"), type("")) ]
         self.filefilter = ListWidget( cols, self.prefs, "filters")
@@ -203,13 +202,15 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs.show_line_numbers = check.get_active()
     def on_checkbutton_use_syntax_highlighting_toggled(self, check):
         self.prefs.use_syntax_highlighting = check.get_active()
-    def on_editor_command_toggled(self, radio):
-        if radio.get_active():
-            idx = self.editor_command.index(radio)
-            for k,v in self.editor_radio_values.items():
-                if v == idx:
-                    self.prefs.edit_command_type = k
-                    break
+
+    def on_system_editor_checkbutton_toggled(self, check):
+        use_default = check.get_active()
+        self.custom_edit_command_entry.set_sensitive(not use_default)
+        if use_default:
+            self.prefs.edit_command_type = "gnome"
+        else:
+            self.prefs.edit_command_type = "custom"
+
     #
     # filters
     #
@@ -239,7 +240,7 @@ class MeldPreferences(prefs.Preferences):
         "show_line_numbers": prefs.Value(prefs.BOOL, 0),
         "use_syntax_highlighting": prefs.Value(prefs.BOOL, 0),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
-        "edit_command_type" : prefs.Value(prefs.STRING, "internal"), #internal, gnome, custom
+        "edit_command_type" : prefs.Value(prefs.STRING, "gnome"), #gnome, custom
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "supply_newline": prefs.Value(prefs.BOOL, False),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),

@@ -324,7 +324,7 @@
                       <widget class="GtkLabel" id="label69">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Edit Menu&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;External editor&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
@@ -350,92 +350,34 @@
                         <child>
                           <widget class="GtkVBox" id="vbox43">
                             <property name="visible">True</property>
+                            <property name="spacing">6</property>
                             <child>
-                              <widget class="GtkLabel" id="label71">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="xpad">4</property>
-                                <property name="ypad">4</property>
-                                <property name="label" translatable="yes">Edit files with:</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkRadioButton" id="editor_command0">
-                                <property name="label" translatable="yes">Internal editor</property>
+                              <widget class="GtkCheckButton" id="system_editor_checkbutton">
+                                <property name="label" translatable="yes">Use _default system editor</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
                                 <property name="draw_indicator">True</property>
-                                <signal name="toggled" handler="on_editor_command_toggled"/>
+                                <signal name="toggled" handler="on_system_editor_checkbutton_toggled"/>
                               </widget>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <widget class="GtkHBox" id="hbox35">
                                 <property name="visible">True</property>
+                                <property name="spacing">6</property>
                                 <child>
-                                  <widget class="GtkRadioButton" id="editor_command1">
-                                    <property name="label" translatable="yes">Gnome default editor</property>
+                                  <widget class="GtkLabel" id="label2">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
+                                    <property name="label" translatable="yes">Edito_r command:</property>
                                     <property name="use_underline">True</property>
-                                    <property name="draw_indicator">True</property>
-                                    <property name="group">editor_command0</property>
-                                    <signal name="toggled" handler="on_editor_command_toggled"/>
+                                    <property name="mnemonic_widget">custom_edit_command_entry</property>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="GtkLabel" id="gnome_default_editor_label">
-                                    <property name="visible">True</property>
-                                    <property name="label">(gnome-default-editor)</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="padding">5</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkHBox" id="hbox36">
-                                <property name="visible">True</property>
-                                <child>
-                                  <widget class="GtkRadioButton" id="editor_command2">
-                                    <property name="label" translatable="yes">Custom command</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="draw_indicator">True</property>
-                                    <property name="group">editor_command0</property>
-                                    <signal name="toggled" handler="on_editor_command_toggled"/>
-                                  </widget>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
@@ -454,12 +396,11 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">3</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                           </widget>
                           <packing>
-                            <property name="expand">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>

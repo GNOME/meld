@@ -61,14 +61,11 @@ class MeldDoc(gobject.GObject):
         files = [f for f in selected if os.path.isfile(f)]
         dirs =  [d for d in selected if os.path.isdir(d)]
         if len(files):
-            if self.prefs.edit_command_type == "internal":
-                for f in files:
-                    self.emit("create-diff", (f,))
-            elif self.prefs.edit_command_type == "gnome":
-                cmd = self.prefs.get_gnome_editor_command(files)
-                os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
-            elif self.prefs.edit_command_type == "custom":
+            if self.prefs.edit_command_type == "custom":
                 cmd = self.prefs.get_custom_editor_command(files)
+                os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
+            else: # self.prefs.edit_command_type == "gnome" or "internal"
+                cmd = self.prefs.get_gnome_editor_command(files)
                 os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
         for d in dirs:
             cmd = ["xdg-open", d]
