@@ -788,9 +788,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         if hasattr(t.file, "newlines"):
                             self.bufferdata[t.pane].newlines = t.file.newlines
                         tasks.remove(t)
-                        if (self.prefs.supply_newline and t.text and not t.text[-1].endswith("\n")):
-                            t.buf.insert(t.buf.get_end_iter(), "\n")
-                            t.text.append("\n")
                         panetext[t.pane] = "".join(t.text)
             yield 1
         for b in self.textbuffer:

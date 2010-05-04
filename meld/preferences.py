@@ -150,7 +150,6 @@ class PreferencesDialog(gnomeglade.Component):
             if self.prefs.edit_wrap_lines == gtk.WRAP_CHAR:
                 self.checkbutton_split_words.set_active(False)
             self.checkbutton_wrap_text.set_active(True)
-        self.checkbutton_supply_newline.set_active( self.prefs.supply_newline )
 
         size_group = gtk.SizeGroup(gtk.SIZE_GROUP_HORIZONTAL)
         size_group.add_widget(self.label1)
@@ -201,8 +200,6 @@ class PreferencesDialog(gnomeglade.Component):
             else:
                 self.prefs.edit_wrap_lines = 1
 
-    def on_checkbutton_supply_newline_toggled(self, check):
-        self.prefs.supply_newline = check.get_active()
     def on_checkbutton_show_line_numbers_toggled(self, check):
         self.prefs.show_line_numbers = check.get_active()
     def on_checkbutton_use_syntax_highlighting_toggled(self, check):
@@ -249,7 +246,6 @@ class MeldPreferences(prefs.Preferences):
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "edit_command_type" : prefs.Value(prefs.STRING, "gnome"), #gnome, custom
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
-        "supply_newline": prefs.Value(prefs.BOOL, False),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
