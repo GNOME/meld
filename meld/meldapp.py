@@ -152,9 +152,11 @@ class MeldApp(gnomeglade.Component):
             ("Find",    gtk.STOCK_FIND,     None, None, _("Search for text"), self.on_menu_find_activate),
             ("FindNext", None,              _("Find Ne_xt"), "<control>G", _("Search forwards for the same text"), self.on_menu_find_next_activate),
             ("Replace", gtk.STOCK_FIND_AND_REPLACE, _("_Replace"), "<control>H", _("Find and replace text"), self.on_menu_replace_activate),
+            ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
+
+            ("ChangesMenu", None, _("_Changes")),
             ("Down",    gtk.STOCK_GO_DOWN,  None, "<control>D", _("Go to the next difference"), self.on_menu_edit_down_activate),
             ("Up",      gtk.STOCK_GO_UP,    None, "<control>E", _("Go to the previous difference"), self.on_menu_edit_up_activate),
-            ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
 
             ("ViewMenu", None, _("_View")),
             ("FileStatus",  None, _("File status")),

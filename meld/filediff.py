@@ -177,7 +177,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         actions = (
             ("FileOpen",          gtk.STOCK_OPEN,       None,            None, _("Open selected"), self.on_open_activate),
             ("CreatePatch",       None,                 _("Create Patch"),  None, _("Create a patch"), self.make_patch),
-            ("ChangesMenu", None, _("_Changes")),
             ("PushLeft",  gtk.STOCK_GO_BACK,    _("Push to left"),    "<Alt>Left", _("Push current change to the left"), lambda x: self.push_change(-1)),
             ("PushRight", gtk.STOCK_GO_FORWARD, _("Push to right"),   "<Alt>Right", _("Push current change to the right"), lambda x: self.push_change(1)),
             # FIXME: using LAST and FIRST is terrible and unreliable icon abuse
