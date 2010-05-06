@@ -155,8 +155,8 @@ class MeldApp(gnomeglade.Component):
             ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
 
             ("ChangesMenu", None, _("_Changes")),
-            ("Down",    gtk.STOCK_GO_DOWN,  None, "<control>D", _("Go to the next difference"), self.on_menu_edit_down_activate),
-            ("Up",      gtk.STOCK_GO_UP,    None, "<control>E", _("Go to the previous difference"), self.on_menu_edit_up_activate),
+            ("NextChange", gtk.STOCK_GO_DOWN, _("Next change"), "<control>D", _("Go to the next change"), self.on_menu_edit_down_activate),
+            ("PrevChange", gtk.STOCK_GO_UP,   _("Previous change"), "<control>E", _("Go to the previous change"), self.on_menu_edit_up_activate),
 
             ("ViewMenu", None, _("_View")),
             ("FileStatus",  None, _("File status")),
@@ -329,8 +329,8 @@ class MeldApp(gnomeglade.Component):
         self.actiongroup.get_action("Redo").set_sensitive(can)
 
     def on_next_diff_changed(self, doc, have_prev, have_next):
-        self.actiongroup.get_action("Up").set_sensitive(have_prev)
-        self.actiongroup.get_action("Down").set_sensitive(have_next)
+        self.actiongroup.get_action("PrevChange").set_sensitive(have_prev)
+        self.actiongroup.get_action("NextChange").set_sensitive(have_next)
 
     def on_size_allocate(self, window, rect):
         self.prefs.window_size_x = rect.width
