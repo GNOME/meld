@@ -154,8 +154,8 @@ class MeldApp(gnomeglade.Component):
             ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
 
             ("ChangesMenu", None, _("_Changes")),
-            ("NextChange", gtk.STOCK_GO_DOWN, _("Next change"), "<control>D", _("Go to the next change"), self.on_menu_edit_down_activate),
-            ("PrevChange", gtk.STOCK_GO_UP,   _("Previous change"), "<control>E", _("Go to the previous change"), self.on_menu_edit_up_activate),
+            ("NextChange", gtk.STOCK_GO_DOWN, _("Next change"), "<Alt>Down", _("Go to the next change"), self.on_menu_edit_down_activate),
+            ("PrevChange", gtk.STOCK_GO_UP,   _("Previous change"), "<Alt>Up", _("Go to the previous change"), self.on_menu_edit_up_activate),
 
             ("ViewMenu", None, _("_View")),
             ("FileStatus",  None, _("File status")),

@@ -19,6 +19,9 @@
 
 import os
 
+import gtk
+
+
 class _srcviewer(object):
     # Module name to be imported for the sourceviewer class
     srcviewer_module = None
@@ -152,8 +155,47 @@ class gtksourceview24(_gtksourceview2):
         if self.gsv.pygtksourceview2_version[1] < 4:
             raise ImportError
 
+    def overrides(self):
+        _gtksourceview2.overrides(self)
+        viewClass = self.gsv.View
+
+        class SourceView(viewClass):
+
+            __gsignals__ = {
+                'key-press-event': 'override'
+            }
+
+            def do_key_press_event(self, event):
+                if event.keyval in (gtk.keysyms.KP_Up, gtk.keysyms.KP_Down,
+                                    gtk.keysyms.Up, gtk.keysyms.Down) and \
+                   (event.state & gtk.gdk.MOD1_MASK) != 0 and \
+                   (event.state & gtk.gdk.SHIFT_MASK) == 0:
+                    return True
+                return viewClass.do_key_press_event(self, event)
+
+        self.GtkTextView = SourceView
+
     def get_language_from_file(self, filename):
         return self.get_language_manager().guess_language(filename)
+
+
+class gtksourceview210(gtksourceview24):
+
+    def version_check(self):
+        if self.gsv.pygtksourceview2_version[1] < 10:
+            raise ImportError
+
+    def overrides(self):
+        _gtksourceview2.overrides(self)
+        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.Up,
+                                 gtk.gdk.MOD1_MASK)
+        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.KP_Up,
+                                 gtk.gdk.MOD1_MASK)
+        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.Down,
+                                 gtk.gdk.MOD1_MASK)
+        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.KP_Down,
+                                 gtk.gdk.MOD1_MASK)
+
 
 class nullsourceview(_srcviewer):
     """Implement the sourceviewer API when no real one is available
@@ -181,7 +223,8 @@ class nullsourceview(_srcviewer):
         pass
 
 def _get_srcviewer():
-    for srcv in (gtksourceview24, gtksourceview22, gtksourceview, sourceview):
+    for srcv in (gtksourceview210, gtksourceview24, gtksourceview22,
+                 gtksourceview, sourceview):
         try:
             return srcv()
         except ImportError:
