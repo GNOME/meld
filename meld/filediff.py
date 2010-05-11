@@ -587,8 +587,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.findbar.hide()
 
     def popup_in_pane(self, pane):
-        self.actiongroup.get_action("CopyAllLeft").set_sensitive(pane > 0)
-        self.actiongroup.get_action("CopyAllRight").set_sensitive(pane+1 < self.num_panes)
+        self.actiongroup.get_action("CopyAllLeft").set_sensitive(pane > 0 and self.textview[pane - 1].get_editable())
+        self.actiongroup.get_action("CopyAllRight").set_sensitive(pane + 1 < self.num_panes and self.textview[pane + 1].get_editable())
         self.popup_menu.popup(None, None, None, 3, gtk.get_current_event_time())
 
     def on_scrolledwindow__size_allocate(self, scrolledwindow, allocation):
