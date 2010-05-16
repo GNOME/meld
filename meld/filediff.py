@@ -91,7 +91,8 @@ def insert_with_tags_by_name(buffer, line, text, tag):
     buffer.insert_with_tags_by_name(get_iter_at_line_or_eof(buffer, line), text, tag)
 
 class CursorDetails(object):
-    __slots__ = ("pane", "pos", "line", "offset", "chunk", "prev", "next")
+    __slots__ = ("pane", "pos", "line", "offset", "chunk", "prev", "next",
+                 "prev_conflict", "next_conflict")
 
     def __init__(self):
         for var in self.__slots__:
@@ -111,6 +112,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     # Identifiers for MsgArea messages
     (MSG_SAME,) = range(1)
+
+    __gsignals__ = {
+        'next-conflict-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (bool, bool)),
+    }
 
     def __init__(self, prefs, num_panes):
         """Start up an filediff with num_panes empty contents.
@@ -179,6 +184,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         actions = (
             ("FileOpen",          gtk.STOCK_OPEN,       None,            None, _("Open selected"), self.on_open_activate),
             ("CreatePatch",       None,                 _("Create Patch"),  None, _("Create a patch"), self.make_patch),
+            ("PrevConflict", None, _("Previous conflict"), "<Ctrl>I", _("Go to the previous conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_UP)),
+            ("NextConflict", None, _("Next conflict"), "<Ctrl>K", _("Go to the next conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_DOWN)),
             ("PushLeft",  gtk.STOCK_GO_BACK,    _("Push to left"),    "<Alt>Left", _("Push current change to the left"), lambda x: self.push_change(-1)),
             ("PushRight", gtk.STOCK_GO_FORWARD, _("Push to right"),   "<Alt>Right", _("Push current change to the right"), lambda x: self.push_change(1)),
             # FIXME: using LAST and FIRST is terrible and unreliable icon abuse
@@ -206,6 +213,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             t.connect("focus-out-event", self.on_current_diff_changed)
         self.linediffer.connect("diffs-changed", self.on_diffs_changed)
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
+        self.connect("next-conflict-changed", self.on_next_conflict_changed)
 
     def on_focus_change(self):
         self.keymask = 0
@@ -271,7 +279,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if prev != self.cursor.prev or next != self.cursor.next:
                 self.emit("next-diff-changed", prev is not None,
                           next is not None)
+
+            prev_conflict, next_conflict = None, None
+            for conflict in self.linediffer.conflicts:
+                if prev is not None and conflict <= prev:
+                    prev_conflict = conflict
+                if next is not None and conflict >= next:
+                    next_conflict = conflict
+                    break
+            if prev_conflict != self.cursor.prev_conflict or \
+               next_conflict != self.cursor.next_conflict:
+                self.emit("next-conflict-changed", prev_conflict is not None,
+                          next_conflict is not None)
+
             self.cursor.prev, self.cursor.next = prev, next
+            self.cursor.prev_conflict = prev_conflict
+            self.cursor.next_conflict = next_conflict
         self.cursor.line, self.cursor.offset = line, offset
 
     def on_current_diff_changed(self, widget, *args):
@@ -312,6 +335,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("Delete").set_sensitive(delete)
         # FIXME: don't queue_draw() on everything... just on what changed
         self.queue_draw()
+
+    def on_next_conflict_changed(self, doc, have_prev, have_next):
+        self.actiongroup.get_action("PrevConflict").set_sensitive(have_prev)
+        self.actiongroup.get_action("NextConflict").set_sensitive(have_next)
+
+    def on_next_conflict(self, direction):
+        if direction == gtk.gdk.SCROLL_DOWN:
+            target = self.cursor.next_conflict
+        else: # direction == gtk.gdk.SCROLL_UP
+            target = self.cursor.prev_conflict
+
+        if target is None:
+            return
+
+        buf = self.textbuffer[self.cursor.pane]
+        chunk = self.linediffer.get_chunk(target, self.cursor.pane)
+        buf.place_cursor(buf.get_iter_at_line(chunk[1]))
+        self.textview[self.cursor.pane].scroll_to_mark(buf.get_insert(), 0.1)
 
     def push_change(self, direction):
         src = self._get_focused_pane()

@@ -84,6 +84,7 @@ class Differ(gobject.GObject):
         self.num_sequences = 0
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]
+        self.conflicts = []
         self._merge_cache = []
         self._line_cache = [[], [], []]
         self.ignore_blanks = False
@@ -111,6 +112,14 @@ class Differ(gobject.GObject):
             if mergeable0 and mergeable1:
                 break
         self._has_mergeable_changes = (mergeable0, mergeable1)
+
+        # Conflicts can only occur when there are three panes, and will always
+        # involve the middle pane.
+        self.conflicts = []
+        for i, (c1, c2) in enumerate(self._merge_cache):
+            if (c1 is not None and c1[0] == 'conflict') or \
+               (c2 is not None and c2[0] == 'conflict'):
+                self.conflicts.append(i)
 
         self._update_line_cache()
         self.emit("diffs-changed")
