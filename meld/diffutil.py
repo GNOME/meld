@@ -86,6 +86,7 @@ class Differ(gobject.GObject):
         self._line_cache = [[], [], []]
         self.ignore_blanks = False
         self._initialised = False
+        self._has_mergeable_changes = (False, False)
 
     def _update_merge_cache(self, texts):
         if self.num_sequences == 3:
@@ -100,6 +101,14 @@ class Differ(gobject.GObject):
                 self._merge_cache[i] = (self._consume_blank_lines(c[0], texts, 1, 0),
                                         self._consume_blank_lines(c[1], texts, 1, 2))
             self._merge_cache = [x for x in self._merge_cache if x != (None, None)]
+
+        mergeable0, mergeable1 = False, False
+        for (c0, c1) in self._merge_cache:
+            mergeable0 = mergeable0 or (c0 and c0[0] != 'conflict')
+            mergeable1 = mergeable1 or (c1 and c1[0] != 'conflict')
+            if mergeable0 and mergeable1:
+                break
+        self._has_mergeable_changes = (mergeable0, mergeable1)
 
         self._update_line_cache()
         self.emit("diffs-changed")
@@ -218,6 +227,17 @@ class Differ(gobject.GObject):
 
     def diff_count(self):
         return len(self._merge_cache)
+
+    def has_mergeable_changes(self, which):
+        if which == 0:
+            return (False, self._has_mergeable_changes[0])
+        elif which == 1:
+            if self.num_sequences == 2:
+                return (self._has_mergeable_changes[0], False)
+            else:
+                return self._has_mergeable_changes
+        else: # which == 2
+            return (self._has_mergeable_changes[1], False)
 
     def _change_sequence(self, which, sequence, startidx, sizechange, texts):
         diffs = self.diffs[which]
