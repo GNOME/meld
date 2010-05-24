@@ -77,9 +77,25 @@ class Vc(_vc.CachedVc):
                 # Update the index before getting status, otherwise we could
                 # be reading stale status information
                 _vc.popen(["git", "update-index", "--refresh"])
+
+                # Get the status of files that are different in the "index" vs
+                # the HEAD of the git repository
                 proc = _vc.popen([self.CMD, "diff-index", "--name-status", \
-                    "HEAD", "./"], cwd=self.location)
+                    "--cached", "HEAD", "./"], cwd=self.location)
                 entries = proc.read().split("\n")[:-1]
+
+                # Get the status of files that are different in the "index" vs
+                # the files on disk
+                proc = _vc.popen([self.CMD, "diff-files", "--name-status", \
+                    "-0", "./"], cwd=self.location)
+                entries += (proc.read().split("\n")[:-1])
+
+                # An unmerged file or a file that has been modified, added to
+                # git's index, then modified again would result in the file
+                # showing up in both the output of "diff-files" and
+                # "diff-index".  The following command removes duplicate
+                # file entries.
+                entries = list(set(entries))
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
