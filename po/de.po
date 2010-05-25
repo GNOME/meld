@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&component=general\n"
-"POT-Creation-Date: 2010-05-21 22:48+0000\n"
-"PO-Revision-Date: 2010-05-24 17:21+0100\n"
+"POT-Creation-Date: 2010-05-25 11:41+0000\n"
+"PO-Revision-Date: 2010-05-25 17:36+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -168,6 +168,141 @@ msgstr "_Dreiwegevergleich"
 #: ../data/ui/meldapp.glade.h:16
 msgid "_Version Control Browser"
 msgstr "_Versionskontrolle"
+
+#: ../data/ui/preferences.glade.h:1
+#| msgid "<b>Misc</b>"
+msgid "<b>Display</b>"
+msgstr "<b>Anzeige</b>"
+
+#: ../data/ui/preferences.glade.h:2
+msgid "<b>Edit Menu</b>"
+msgstr "<b>Menü bearbeiten</b>"
+
+#: ../data/ui/preferences.glade.h:3
+msgid "<b>Font</b>"
+msgstr "<b>Schriftart</b>"
+
+#: ../data/ui/preferences.glade.h:4
+msgid "<b>Loading</b>"
+msgstr "<b>Laden</b>"
+
+#: ../data/ui/preferences.glade.h:5
+msgid "Custom command"
+msgstr "Benutzerdefinierte Aktion"
+
+#: ../data/ui/preferences.glade.h:6
+msgid "Do not _split words over two lines"
+msgstr "Nur am _Wortende umbrechen"
+
+#: ../data/ui/preferences.glade.h:7
+msgid "Edit files with:"
+msgstr "Dateien bearbeiten mit:"
+
+#: ../data/ui/preferences.glade.h:8
+msgid "Editor"
+msgstr "Editor"
+
+#: ../data/ui/preferences.glade.h:9
+msgid "Enable text _wrapping"
+msgstr "Zeilen_umbruch aktivieren"
+
+#: ../data/ui/preferences.glade.h:10
+msgid "Encoding"
+msgstr "Kodierung"
+
+#: ../data/ui/preferences.glade.h:11
+msgid "File Filters"
+msgstr "Dateifilter"
+
+#: ../data/ui/preferences.glade.h:12
+msgid "Gnome default editor"
+msgstr "GNOME Vorgabe-Editor"
+
+#: ../data/ui/preferences.glade.h:13
+msgid "Ignore changes which insert or delete blank lines"
+msgstr "Ignorieren von Änderungen durch hinzugefügte oder entfernte Leerzeilen"
+
+#: ../data/ui/preferences.glade.h:14
+msgid "Ignore symbolic links"
+msgstr "Symbolische Verknüpfungen ignorieren"
+
+#: ../data/ui/preferences.glade.h:15
+msgid "Internal editor"
+msgstr "Interner Editor"
+
+#: ../data/ui/preferences.glade.h:16
+#| msgid "Prefere_nces"
+msgid "Meld Preferences"
+msgstr "Meld - Einstellungen"
+
+#: ../data/ui/preferences.glade.h:17
+#| msgid "Show line numbers"
+msgid "Show _line numbers"
+msgstr "Zei_lennummern anzeigen"
+
+#: ../data/ui/preferences.glade.h:18
+msgid "Text Filters"
+msgstr "Textfilter"
+
+#: ../data/ui/preferences.glade.h:19
+#| msgid "Use syntax highlighting"
+msgid "Use s_yntax highlighting"
+msgstr "S_yntaxhervorhebung verwenden"
+
+#: ../data/ui/preferences.glade.h:20
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr ""
+"Beim Laden die folgenden Kodierungen nacheinander versuchen (z.B. utf8, "
+"iso8859)."
+
+#: ../data/ui/preferences.glade.h:21
+msgid ""
+"When performing directory comparisons, you may filter out files and "
+"directories by name. Each pattern is a list of shell style wildcards "
+"separated by spaces."
+msgstr ""
+"Wenn ein Ordnervergleich durchgeführt wird, haben Sie die Möglichkeit, "
+"Dateien und Ordner nach Namen herauszufiltern. Jedes Muster ist dabei eine "
+"durch Leerzeichen getrennte Liste von Befehlszeilenplatzhaltern."
+
+#: ../data/ui/preferences.glade.h:22
+msgid ""
+"When performing file comparisons, you may ignore certain types of changes. "
+"Each pattern here is a python regular expression which replaces matching text "
+"with the empty string before comparison is performed. If the expression "
+"contains groups, only the groups are replaced. See the user manual for more "
+"details."
+msgstr ""
+"Wenn ein Dateivergleich durchgeführt wird, haben Sie die Möglichkeit "
+"festzulegen, dass bestimmte Änderungen ignoriert werden. Jedes Muster ist "
+"dabei ein regulärer Ausdruck der Sprache Python, welcher zutreffenden Text "
+"durch eine leere Zeichenkette ersetzt, bevor ein Vergleich durchgeführt wird. "
+"Falls der Ausdruck Gruppen enthält, werden nur die Gruppen ersetzt. Weitere "
+"Informationen sind im Benutzerhandbuch zu finden."
+
+#: ../data/ui/preferences.glade.h:23
+#| msgid "Automatically supply missing newline at end of file"
+msgid "_Automatically supply missing newline at end of file"
+msgstr "_Automatisch fehlenden Zeilenumbruch am Dateiende einfügen"
+
+#: ../data/ui/preferences.glade.h:24
+#| msgid "Editor"
+msgid "_Editor font:"
+msgstr "Editor-_Schrift:"
+
+#: ../data/ui/preferences.glade.h:25
+#| msgid "Insert spaces instead of tabs"
+msgid "_Insert spaces instead of tabs"
+msgstr "Leerze_ichen anstelle von Tabulatoren verwenden"
+
+#: ../data/ui/preferences.glade.h:26
+#| msgid "Tab width"
+msgid "_Tab width:"
+msgstr "_Tabulatorbreite:"
+
+#: ../data/ui/preferences.glade.h:27
+msgid "_Use the system fixed width font"
+msgstr "Die dicktengleiche S_ystemschrift verwenden"
 
 #: ../data/ui/vcview.glade.h:1
 msgid "Commit Files"
@@ -529,7 +664,7 @@ msgstr "%s scheint eine Binärdatei zu sein."
 msgid "%s is not in encodings: %s"
 msgstr "%s ist nicht in Kodierungen enthalten: %s"
 
-#: ../meld/filediff.py:757
+#: ../meld/filediff.py:757 ../meld/filemerge.py:70
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
@@ -601,6 +736,12 @@ msgstr ""
 "verwerfen!\n"
 "\n"
 "Sie können diesen Vorgang nicht rückgängig machen."
+
+#: ../meld/filemerge.py:78
+#, python-format
+#| msgid "[%s] Opening files"
+msgid "[%s] Merging files"
+msgstr "[%s] Dateien werden zusammengeführt"
 
 #: ../meld/meldapp.py:139
 msgid "_File"
@@ -675,27 +816,22 @@ msgid "Configure the application"
 msgstr "Anwendung konfigurieren"
 
 #: ../meld/meldapp.py:157
-#| msgid "_Discard Changes"
 msgid "_Changes"
 msgstr "Än_derungen"
 
 #: ../meld/meldapp.py:158
-#| msgid "Delete change"
 msgid "Next change"
 msgstr "Nächste Änderung"
 
 #: ../meld/meldapp.py:158
-#| msgid "Go to the next difference"
 msgid "Go to the next change"
 msgstr "Zur nächsten Änderung gehen"
 
 #: ../meld/meldapp.py:159
-#| msgid "Previous Logs"
 msgid "Previous change"
 msgstr "Vorherige Änderung"
 
 #: ../meld/meldapp.py:159
-#| msgid "Go to the previous difference"
 msgid "Go to the previous change"
 msgstr "Zur vorherigen Änderung gehen"
 
@@ -851,6 +987,87 @@ msgstr "unbenannt"
 msgid "[None]"
 msgstr "[Nichts]"
 
+#: ../meld/preferences.py:81
+msgid "label"
+msgstr "Bezeichnung"
+
+#: ../meld/preferences.py:81
+msgid "pattern"
+msgstr "Muster"
+
+#: ../meld/preferences.py:147
+msgid "Only available if you have gnome-python-desktop installed"
+msgstr "Ist nur verfügbar, wenn Sie gnome-python-desktop installiert haben."
+
+#. file filters
+#. text filters
+#: ../meld/preferences.py:162 ../meld/preferences.py:167 ../meld/vcview.py:163
+msgid "Name"
+msgstr "Name"
+
+#: ../meld/preferences.py:162 ../meld/preferences.py:167
+msgid "Active"
+msgstr "Aktiv"
+
+#: ../meld/preferences.py:162
+msgid "Pattern"
+msgstr "Muster"
+
+#: ../meld/preferences.py:167
+msgid "Regex"
+msgstr "Regex"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:260
+msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
+msgstr "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:262
+#, python-format
+msgid "Version Control\t1\t%s\n"
+msgstr "Versionskontrolle\t1\t%s\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:264
+msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+msgstr "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:266
+msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+msgstr "Medien\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:268
+msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+msgstr "CVS-Schlüsselwörter\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:270
+msgid "C++ comment\t0\t//.*\n"
+msgstr "C++ Kommentar\t0\t//.*\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:272
+msgid "C comment\t0\t/\\*.*?\\*/\n"
+msgstr "C-Kommentar\t0\t/\\*.*?\\*/\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:274
+msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
+msgstr "Alle Leerzeichen\t0\t[ \\t\\r\\f\\v]*\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:276
+msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
+msgstr "Führende Leerzeichen\t0\t^[ \\t\\r\\f\\v]*\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:278
+msgid "Script comment\t0\t#.*"
+msgstr "Skript-Kommentar\t0\t#.*"
+
 #: ../meld/vcview.py:127
 msgid "_Commit"
 msgstr "_Senden"
@@ -947,10 +1164,6 @@ msgstr "Ignoriert"
 #: ../meld/vcview.py:142
 msgid "Show ignored files"
 msgstr "Ignorierte Dateien anzeigen"
-
-#: ../meld/vcview.py:163
-msgid "Name"
-msgstr "Name"
 
 #: ../meld/vcview.py:180
 msgid "Location"
@@ -1104,103 +1317,17 @@ msgstr ""
 "Das Muster war »%s«\n"
 "Der Fehler lautet »%s«"
 
-#~ msgid "<b>Edit Menu</b>"
-#~ msgstr "<b>Menü bearbeiten</b>"
-
-#~ msgid "<b>Font</b>"
-#~ msgstr "<b>Schriftart</b>"
-
-#~ msgid "<b>Loading</b>"
-#~ msgstr "<b>Laden</b>"
-
-#~ msgid "<b>Misc</b>"
-#~ msgstr "<b>Verschiedenes</b>"
-
-#~ msgid "Automatically supply missing newline at end of file"
-#~ msgstr "Automatisch fehlenden Zeilenumbruch am Dateiende einfügen"
-
-#~ msgid "Custom command"
-#~ msgstr "Benutzerdefinierte Aktion"
-
-#~ msgid "Edit files with:"
-#~ msgstr "Dateien bearbeiten mit:"
-
-#~ msgid "Editor"
-#~ msgstr "Editor"
-
-#~ msgid "Encoding"
-#~ msgstr "Kodierung"
-
-#~ msgid "File Filters"
-#~ msgstr "Dateifilter"
-
-#~ msgid "Gnome default editor"
-#~ msgstr "GNOME Vorgabe-Editor"
-
-#~ msgid "Ignore changes which insert or delete blank lines"
-#~ msgstr ""
-#~ "Ignorieren von Änderungen durch hinzugefügte oder entfernte Leerzeilen"
-
-#~ msgid "Ignore symbolic links"
-#~ msgstr "Symbolische Verknüpfungen ignorieren"
-
-#~ msgid "Insert spaces instead of tabs"
-#~ msgstr "Leerzeichen anstelle von Tabulatoren verwenden"
-
-#~ msgid "Internal editor"
-#~ msgstr "Interner Editor"
-
 #~ msgid "Line Wrapping "
 #~ msgstr "Zeilenumbruch "
 
 #~ msgid "Preferences : Meld"
 #~ msgstr "Einstellungen : Meld"
 
-#~ msgid "Show line numbers"
-#~ msgstr "Zeilennummer anzeigen"
-
-#~ msgid "Tab width"
-#~ msgstr "Tabulatorbreite"
-
-#~ msgid "Text Filters"
-#~ msgstr "Textfilter"
-
 #~ msgid "Use GNOME monospace font"
 #~ msgstr "Nichtproportionale Schrift von GNOME verwenden"
 
 #~ msgid "Use custom font"
 #~ msgstr "Benutzerdefinierte Schrift verwenden"
-
-#~ msgid "Use syntax highlighting"
-#~ msgstr "Syntaxhervorhebung verwenden"
-
-#~ msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-#~ msgstr ""
-#~ "Beim Laden die folgenden Kodierungen nacheinander versuchen (z.B. utf8, "
-#~ "iso8859)."
-
-#~ msgid ""
-#~ "When performing directory comparisons, you may filter out files and "
-#~ "directories by name. Each pattern is a list of shell style wildcards "
-#~ "separated by spaces."
-#~ msgstr ""
-#~ "Wenn ein Ordnervergleich durchgeführt wird, haben Sie die Möglichkeit, "
-#~ "Dateien und Ordner nach Namen herauszufiltern. Jedes Muster ist dabei eine "
-#~ "durch Leerzeichen getrennte Liste von Befehlszeilenplatzhaltern."
-
-#~ msgid ""
-#~ "When performing file comparisons, you may ignore certain types of changes. "
-#~ "Each pattern here is a python regular expression which replaces matching "
-#~ "text with the empty string before comparison is performed. If the "
-#~ "expression contains groups, only the groups are replaced. See the user "
-#~ "manual for more details."
-#~ msgstr ""
-#~ "Wenn ein Dateivergleich durchgeführt wird, haben Sie die Möglichkeit "
-#~ "festzulegen, dass bestimmte Änderungen ignoriert werden. Jedes Muster ist "
-#~ "dabei ein regulärer Ausdruck der Sprache Python, welcher zutreffenden Text "
-#~ "durch eine leere Zeichenkette ersetzt, bevor ein Vergleich durchgeführt "
-#~ "wird. Falls der Ausdruck Gruppen enthält, werden nur die Gruppen ersetzt. "
-#~ "Weitere Informationen sind im Benutzerhandbuch zu finden."
 
 #~ msgid "_Character"
 #~ msgstr "_Zeichen"
@@ -1210,54 +1337,6 @@ msgstr ""
 
 #~ msgid "_Word"
 #~ msgstr "_Wort"
-
-#~ msgid "label"
-#~ msgstr "Bezeichnung"
-
-#~ msgid "pattern"
-#~ msgstr "Muster"
-
-#~ msgid "Only available if you have gnome-python-desktop installed"
-#~ msgstr "Ist nur verfügbar, wenn Sie gnome-python-desktop installiert haben."
-
-#~ msgid "Active"
-#~ msgstr "Aktiv"
-
-#~ msgid "Pattern"
-#~ msgstr "Muster"
-
-#~ msgid "Regex"
-#~ msgstr "Regex"
-
-#~ msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-#~ msgstr "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-
-#~ msgid "Version Control\t1\t%s\n"
-#~ msgstr "Versionskontrolle\t1\t%s\n"
-
-#~ msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-#~ msgstr "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-
-#~ msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-#~ msgstr "Medien\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-
-#~ msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-#~ msgstr "CVS-Schlüsselwörter\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-
-#~ msgid "C++ comment\t0\t//.*\n"
-#~ msgstr "C++ Kommentar\t0\t//.*\n"
-
-#~ msgid "C comment\t0\t/\\*.*?\\*/\n"
-#~ msgstr "C-Kommentar\t0\t/\\*.*?\\*/\n"
-
-#~ msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
-#~ msgstr "Alle Leerzeichen\t0\t[ \\t\\r\\f\\v]*\n"
-
-#~ msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
-#~ msgstr "Führende Leerzeichen\t0\t^[ \\t\\r\\f\\v]*\n"
-
-#~ msgid "Script comment\t0\t#.*"
-#~ msgstr "Skript-Kommentar\t0\t#.*"
 
 #~ msgid "The error was:"
 #~ msgstr "Der Fehler lautet:"
