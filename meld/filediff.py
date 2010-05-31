@@ -731,7 +731,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                        buf = buf,
                                        codec = try_codecs[:],
                                        text = [],
-                                       pane = i)
+                                       pane = i,
+                                       was_cr = False)
                     tasks.append(task)
                 except (IOError, LookupError), e:
                     buf.delete(*buf.get_bounds())
@@ -769,7 +770,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                     _("Could not read file"), str(ioerr))
                     tasks.remove(t)
                 else:
+                    # The handling here avoids inserting split CR/LF pairs into
+                    # GtkTextBuffers; this is relevant only when universal
+                    # newline support is unavailable or broken.
+                    if t.was_cr:
+                        nextbit = "\r" + nextbit
+                        t.was_cr = False
                     if len(nextbit):
+                        if (nextbit[-1] == "\r"):
+                            t.was_cr = True
+                            nextbit = nextbit[0:-1]
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
                         t.text.append(nextbit)
                     else:
