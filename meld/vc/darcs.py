@@ -89,7 +89,7 @@ class Vc(_vc.CachedVc):
 
     def _get_whatsnew(self, boring=False):
         whatsnew = {}
-        commandline = [self.CMD, "whatsnew", "--summary", "-l" "--repodir="+self.root]
+        commandline = [self.CMD, "whatsnew", "--summary", "-l", "--repodir=" + self.root]
         if boring:
             commandline.append("--boring")
         while 1:
