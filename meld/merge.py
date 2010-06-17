@@ -188,7 +188,7 @@ class Merger(diffutil.Differ):
         else:
             return change[HI] - change[LO]
 
-    def merge_3_files(self):
+    def merge_3_files(self, mark_conflicts=True):
         LO, HI = 1, 2
         self.unresolved = []
         lastline = 0
@@ -208,18 +208,19 @@ class Merger(diffutil.Differ):
             lastline = low_mark
             if change[0] != None and change[1] != None and change[0][0] == 'conflict':
                 high_mark = max(change[0][HI], change[1][HI])
-                if low_mark < high_mark:
-                    for i in range(low_mark, high_mark):
-                        mergedtext.append("(??)" + self.texts[1][i])
+                if mark_conflicts:
+                    if low_mark < high_mark:
+                        for i in range(low_mark, high_mark):
+                            mergedtext.append("(??)" + self.texts[1][i])
+                            self.unresolved.append(mergedline)
+                            mergedline += 1
+                    else:
+                        #conflictsize = min(1, max(change[0][HI + 2] - change[0][LO + 2], change[1][HI + 2] - change[1][LO + 2]))
+                        #for i in range(conflictsize):
+                        mergedtext.append("(??)")
                         self.unresolved.append(mergedline)
                         mergedline += 1
-                else:
-                    #conflictsize = min(1, max(change[0][HI + 2] - change[0][LO + 2], change[1][HI + 2] - change[1][LO + 2]))
-                    #for i in range(conflictsize):
-                    mergedtext.append("(??)")
-                    self.unresolved.append(mergedline)
-                    mergedline += 1
-                lastline = high_mark
+                    lastline = high_mark
             elif change[0] != None:
                 lastline += self._apply_change(self.texts[0], change[0], mergedtext)
                 mergedline += change[0][HI + 2] - change[0][LO + 2]
@@ -229,5 +230,27 @@ class Merger(diffutil.Differ):
         baselen = len(self.texts[1])
         for i in range(lastline, baselen, 1):
             mergedtext.append(self.texts[1][i])
+
+        yield "\n".join(mergedtext)
+
+    def merge_2_files(self, fromindex, toindex):
+        LO, HI = 1, 2
+        self.unresolved = []
+        lastline = 0
+        mergedtext = []
+        for change in self.differ.pair_changes(toindex, fromindex):
+            yield None
+            if change[0] == 'conflict':
+                low_mark = change[HI]
+            else:
+                low_mark = change[LO]
+            for i in range(lastline, low_mark):
+                mergedtext.append(self.texts[toindex][i])
+            lastline = low_mark
+            if change[0] != 'conflict':
+                lastline += self._apply_change(self.texts[fromindex], change, mergedtext)
+        baselen = len(self.texts[toindex])
+        for i in range(lastline, baselen):
+            mergedtext.append(self.texts[toindex][i])
 
         yield "\n".join(mergedtext)

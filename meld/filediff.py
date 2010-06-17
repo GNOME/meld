@@ -33,6 +33,7 @@ from ui import gnomeglade
 import misc
 import melddoc
 import paths
+import merge
 
 from util.sourceviewer import srcviewer
 
@@ -185,6 +186,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("Delete",    gtk.STOCK_DELETE,     _("Delete"),     "<Alt>Delete", _("Delete change"), self.delete_change),
             ("CopyAllLeft",       gtk.STOCK_GOTO_FIRST, _("Copy To Left"),  None, _("Copy all changes from right pane to left pane"), lambda x: self.copy_selected(-1)),
             ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
+            ("PullNonConflictingLeft",   None, _("Pull all non-conflicting from left"),  None, _("Pull all non-conflicting changes from right pane to left pane"), lambda x: self.pull_all_non_conflicting_changes(-1)),
+            ("PullNonConflictingRight",  None,  _("Pull all non-conflicting from right"), None, _("Pull all non-conflicting changes from left pane to right pane"), lambda x: self.pull_all_non_conflicting_changes(1)),
+            ("MergeNonConflicting",      None,  _("Merge all non-conflicting"), None, _("Merge all non-conflicting changes from left and right pane"), lambda x: self.merge_all_non_conflicting_changes()),
         )
 
         self.ui_file = paths.ui_dir("filediff-ui.xml")
@@ -324,6 +328,33 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         assert(chunk is not None)
         self.replace_chunk(src, dst, chunk)
 
+    def pull_all_non_conflicting_changes(self, direction):
+        assert direction in (-1, 1)
+        dst = self._get_focused_pane()
+        src = dst + direction
+        assert src in range(self.num_panes)
+        merger = merge.Merger()
+        merger.differ = self.linediffer
+        merger.texts = [t for t in self._get_texts(raw=1)]
+        for mergedfile in merger.merge_2_files(src, dst):
+            pass
+        self.on_textbuffer__begin_user_action()
+        self.textbuffer[dst].set_text(mergedfile)
+        self.on_textbuffer__end_user_action()
+        self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src].get_vadjustment(), src ) and None )
+
+    def merge_all_non_conflicting_changes(self):
+        dst = 1
+        merger = merge.Merger()
+        merger.differ = self.linediffer
+        merger.texts = [t for t in self._get_texts(raw=1)]
+        for mergedfile in merger.merge_3_files(False):
+            pass
+        self.on_textbuffer__begin_user_action()
+        self.textbuffer[dst].set_text(mergedfile)
+        self.on_textbuffer__end_user_action()
+        self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[0].get_vadjustment(), 0 ) and None )
+
     def delete_change(self, widget):
         pane = self._get_focused_pane()
         chunk = self.linediffer.get_chunk(self.cursor.chunk, pane)
@@ -335,6 +366,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview_focussed = view
         self.findbar.textview = view
         self.on_cursor_position_changed(view.get_buffer(), None, True)
+        self._set_merge_action_sensitivity()
 
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
@@ -365,6 +397,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if not line_end.ends_line():
                     line_end.forward_to_line_end()
                 return self.buf.get_text(line_start, line_end, False)
+            def __len__(self):
+                return self.buf.get_line_count()
 
         class FakeTextArray(object):
             def __init__(self, bufs, textfilter):
@@ -769,6 +803,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.queue_draw()
         self.scheduler.add_task(self._update_highlighting().next)
         self._connect_buffer_handlers()
+        self._set_merge_action_sensitivity()
         for i in range(len(files)):
             if files[i]:
                 srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
@@ -781,7 +816,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i in self._diff_files(files, panetext):
             yield i
 
+    def _set_merge_action_sensitivity(self):
+        pane = self._get_focused_pane()
+        editable = self.textview[pane].get_editable()
+        mergeable = self.linediffer.has_mergeable_changes(pane)
+        self.actiongroup.get_action("PullNonConflictingLeft").set_sensitive(mergeable[0] and editable)
+        self.actiongroup.get_action("PullNonConflictingRight").set_sensitive(mergeable[1] and editable)
+        if self.num_panes == 3 and self.textview[1].get_editable():
+            mergeable = self.linediffer.has_mergeable_changes(1)
+        else:
+            mergeable = (False, False)
+        self.actiongroup.get_action("MergeNonConflicting").set_sensitive(mergeable[0] or mergeable[1])
+
     def on_diffs_changed(self, linediffer):
+        self._set_merge_action_sensitivity()
         if self.linediffer.sequences_identical():
             error_message = True in [m.has_message() for m in self.msgarea_mgr]
             if self.num_panes == 1 or error_message:
