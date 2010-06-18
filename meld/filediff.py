@@ -184,8 +184,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("PullLeft",  gtk.STOCK_GOTO_LAST,  _("Pull from left"),  "<Alt><Shift>Right", _("Pull change from the left"), lambda x: self.pull_change(-1)),
             ("PullRight", gtk.STOCK_GOTO_FIRST, _("Pull from right"), "<Alt><Shift>Left", _("Pull change from the right"), lambda x: self.pull_change(1)),
             ("Delete",    gtk.STOCK_DELETE,     _("Delete"),     "<Alt>Delete", _("Delete change"), self.delete_change),
-            ("CopyAllLeft",       gtk.STOCK_GOTO_FIRST, _("Copy To Left"),  None, _("Copy all changes from right pane to left pane"), lambda x: self.copy_selected(-1)),
-            ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
             ("MergeFromLeft",  None, _("Merge all changes from left"),  None, _("Merge all non-conflicting changes from the left"), lambda x: self.pull_all_non_conflicting_changes(-1)),
             ("MergeFromRight", None, _("Merge all changes from right"), None, _("Merge all non-conflicting changes from the right"), lambda x: self.pull_all_non_conflicting_changes(1)),
             ("MergeAll",       None, _("Merge all non-conflicting"),    None, _("Merge all non-conflicting changes from left and right panes"), lambda x: self.merge_all_non_conflicting_changes()),
@@ -628,11 +626,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if event.keyval == gtk.keysyms.Escape:
             self.findbar.hide()
 
-    def popup_in_pane(self, pane):
-        self.actiongroup.get_action("CopyAllLeft").set_sensitive(pane > 0 and self.textview[pane - 1].get_editable())
-        self.actiongroup.get_action("CopyAllRight").set_sensitive(pane + 1 < self.num_panes and self.textview[pane + 1].get_editable())
-        self.popup_menu.popup(None, None, None, 3, gtk.get_current_event_time())
-
     def on_scrolledwindow__size_allocate(self, scrolledwindow, allocation):
         index = self.scrolledwindow.index(scrolledwindow)
         if index == 0 or index == 1:
@@ -643,8 +636,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
-            pane = self.textview.index(textview)
-            self.popup_in_pane(pane)
+            self.popup_menu.popup(None, None, None, event.button,
+                                  gtk.get_current_event_time())
             return 1
         return 0
 
@@ -1108,17 +1101,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.textview[i].is_focus():
                 return i
         return -1
-
-    def copy_selected(self, direction):
-        assert direction in (-1,1)
-        src_pane = self._get_focused_pane()
-        dst_pane = src_pane + direction
-        assert dst_pane in range(self.num_panes)
-        text = self.textbuffer[src_pane].get_text(*self.textbuffer[src_pane].get_bounds())
-        self.on_textbuffer__begin_user_action()
-        self.textbuffer[dst_pane].set_text(text)
-        self.on_textbuffer__end_user_action()
-        self.scheduler.add_task(lambda: self._sync_vscroll(self.scrolledwindow[src_pane].get_vadjustment(), src_pane) and None)
 
         #
         # refresh and reload
