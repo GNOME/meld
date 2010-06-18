@@ -186,9 +186,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("Delete",    gtk.STOCK_DELETE,     _("Delete"),     "<Alt>Delete", _("Delete change"), self.delete_change),
             ("CopyAllLeft",       gtk.STOCK_GOTO_FIRST, _("Copy To Left"),  None, _("Copy all changes from right pane to left pane"), lambda x: self.copy_selected(-1)),
             ("CopyAllRight",      gtk.STOCK_GOTO_LAST,  _("Copy To Right"), None, _("Copy all changes from left pane to right pane"), lambda x: self.copy_selected(1)),
-            ("PullNonConflictingLeft",   None, _("Pull all non-conflicting from left"),  None, _("Pull all non-conflicting changes from right pane to left pane"), lambda x: self.pull_all_non_conflicting_changes(-1)),
-            ("PullNonConflictingRight",  None,  _("Pull all non-conflicting from right"), None, _("Pull all non-conflicting changes from left pane to right pane"), lambda x: self.pull_all_non_conflicting_changes(1)),
-            ("MergeNonConflicting",      None,  _("Merge all non-conflicting"), None, _("Merge all non-conflicting changes from left and right pane"), lambda x: self.merge_all_non_conflicting_changes()),
+            ("MergeFromLeft",  None, _("Merge all changes from left"),  None, _("Merge all non-conflicting changes from the left"), lambda x: self.pull_all_non_conflicting_changes(-1)),
+            ("MergeFromRight", None, _("Merge all changes from right"), None, _("Merge all non-conflicting changes from the right"), lambda x: self.pull_all_non_conflicting_changes(1)),
+            ("MergeAll",       None, _("Merge all non-conflicting"),    None, _("Merge all non-conflicting changes from left and right panes"), lambda x: self.merge_all_non_conflicting_changes()),
         )
 
         self.ui_file = paths.ui_dir("filediff-ui.xml")
@@ -820,13 +820,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         pane = self._get_focused_pane()
         editable = self.textview[pane].get_editable()
         mergeable = self.linediffer.has_mergeable_changes(pane)
-        self.actiongroup.get_action("PullNonConflictingLeft").set_sensitive(mergeable[0] and editable)
-        self.actiongroup.get_action("PullNonConflictingRight").set_sensitive(mergeable[1] and editable)
+        self.actiongroup.get_action("MergeFromLeft").set_sensitive(mergeable[0] and editable)
+        self.actiongroup.get_action("MergeFromRight").set_sensitive(mergeable[1] and editable)
         if self.num_panes == 3 and self.textview[1].get_editable():
             mergeable = self.linediffer.has_mergeable_changes(1)
         else:
             mergeable = (False, False)
-        self.actiongroup.get_action("MergeNonConflicting").set_sensitive(mergeable[0] or mergeable[1])
+        self.actiongroup.get_action("MergeAll").set_sensitive(mergeable[0] or mergeable[1])
 
     def on_diffs_changed(self, linediffer):
         self._set_merge_action_sensitivity()
