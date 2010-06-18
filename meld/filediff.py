@@ -338,10 +338,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         merger.texts = [t for t in self._get_texts(raw=1)]
         for mergedfile in merger.merge_2_files(src, dst):
             pass
+        self._sync_vscroll_lock = True
         self.on_textbuffer__begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
         self.on_textbuffer__end_user_action()
-        self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[src].get_vadjustment(), src ) and None )
+        def resync():
+            self._sync_vscroll_lock = False
+            self._sync_vscroll(self.scrolledwindow[src].get_vadjustment(), src)
+        self.scheduler.add_task(resync)
 
     def merge_all_non_conflicting_changes(self):
         dst = 1
@@ -350,10 +354,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         merger.texts = [t for t in self._get_texts(raw=1)]
         for mergedfile in merger.merge_3_files(False):
             pass
+        self._sync_vscroll_lock = True
         self.on_textbuffer__begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
         self.on_textbuffer__end_user_action()
-        self.scheduler.add_task( lambda : self._sync_vscroll( self.scrolledwindow[0].get_vadjustment(), 0 ) and None )
+        def resync():
+            self._sync_vscroll_lock = False
+            self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
+        self.scheduler.add_task(resync)
 
     def delete_change(self, widget):
         pane = self._get_focused_pane()
