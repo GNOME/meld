@@ -15,19 +15,16 @@ all $(OMF_NAME).install : $(OMF_NAME)
 
 .PHONY : install
 install : $(OMF_NAME).install
-	-mkdir -m 755 -p $(OMF_DIR_) $(XML_DIR_) $(XML_DIR_)/figures
+	-mkdir -m 755 -p $(OMF_DIR_) $(XML_DIR_)
 	install -m 644 meld.$(LANG).xml $(XML_DIR_)/meld.xml
-	install -m 644 figures/*.png $(XML_DIR_)/figures
 	-install -m 644 $< $(OMF_DIR_)/$(OMF_NAME)
 	-scrollkeeper-update -p $(OMF_STATE) -o $(OMF_DIR_)
 
 .PHONY : uninstall
 uninstall :
 	-rm -f $(OMF_DIR_)/$(OMF_NAME) \
-		$(XML_DIR_)/meld.xml \
-		$(XML_DIR_)/figures/*.png
-	-rmdir $(XML_DIR_)/figures \
-		$(XML_DIR_)
+		$(XML_DIR_)/meld.xml
+	-rmdir $(XML_DIR_)
 	-scrollkeeper-update -p $(OMF_STATE) -o $(OMF_DIR_)
 
 .PHONY : clean
