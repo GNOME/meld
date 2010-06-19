@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&component=general\n"
-"POT-Creation-Date: 2010-06-13 11:53+0000\n"
-"PO-Revision-Date: 2010-06-14 14:17+0100\n"
+"POT-Creation-Date: 2010-06-19 02:36+0000\n"
+"PO-Revision-Date: 2010-06-19 08:47+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgid "Copy to Clipboard"
 msgstr "Kopiraj v odložišče"
 
 #: ../data/ui/filediff.glade.h:4
-#: ../meld/filediff.py:179
+#: ../meld/filediff.py:180
 msgid "Create Patch"
 msgstr "Ustvari popravek"
 
@@ -324,7 +324,6 @@ msgid "Left"
 msgstr "Levo"
 
 #: ../meld/dirdiff.py:185
-#: ../meld/filediff.py:186
 msgid "Copy To Left"
 msgstr "Kopiraj na levo"
 
@@ -333,7 +332,6 @@ msgid "Right"
 msgstr "Desno"
 
 #: ../meld/dirdiff.py:186
-#: ../meld/filediff.py:187
 msgid "Copy To Right"
 msgstr "Kopiraj na desno"
 
@@ -342,7 +340,7 @@ msgid "Delete selected"
 msgstr "Izbriši izbor"
 
 #: ../meld/dirdiff.py:188
-#: ../meld/filediff.py:793
+#: ../meld/filediff.py:842
 msgid "Hide"
 msgstr "Skrij"
 
@@ -351,7 +349,7 @@ msgid "Hide selected"
 msgstr "Skrij izbrano"
 
 #: ../meld/dirdiff.py:190
-#: ../meld/filediff.py:178
+#: ../meld/filediff.py:179
 #: ../meld/vcview.py:126
 msgid "Open selected"
 msgstr "Odpri izbrano"
@@ -540,132 +538,148 @@ msgstr[1] "%i leto"
 msgstr[2] "%i leti"
 msgstr[3] "%i leta"
 
-#: ../meld/filediff.py:179
+#: ../meld/filediff.py:180
 msgid "Create a patch"
 msgstr "Ustvari programski popravek"
 
-#: ../meld/filediff.py:180
+#: ../meld/filediff.py:181
 msgid "Push to left"
 msgstr "Potisni levo"
 
-#: ../meld/filediff.py:180
+#: ../meld/filediff.py:181
 msgid "Push current change to the left"
 msgstr "Potisni trenutne spremembe na levo"
 
-#: ../meld/filediff.py:181
+#: ../meld/filediff.py:182
 msgid "Push to right"
 msgstr "Potisni desno"
 
-#: ../meld/filediff.py:181
+#: ../meld/filediff.py:182
 msgid "Push current change to the right"
 msgstr "Potisni trenutne spremembe na desno"
 
 #. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:183
+#: ../meld/filediff.py:184
 msgid "Pull from left"
 msgstr "Potegni z leve"
 
-#: ../meld/filediff.py:183
+#: ../meld/filediff.py:184
 msgid "Pull change from the left"
 msgstr "Potegni spremembe z leve"
 
-#: ../meld/filediff.py:184
+#: ../meld/filediff.py:185
 msgid "Pull from right"
 msgstr "Potegni z desne"
 
-#: ../meld/filediff.py:184
+#: ../meld/filediff.py:185
 msgid "Pull change from the right"
 msgstr "Potegni spremembe z desne"
 
-#: ../meld/filediff.py:185
+#: ../meld/filediff.py:186
 msgid "Delete"
 msgstr "Izbriši"
 
-#: ../meld/filediff.py:185
+#: ../meld/filediff.py:186
 msgid "Delete change"
 msgstr "Izbriši spremembo"
 
-#: ../meld/filediff.py:186
-msgid "Copy all changes from right pane to left pane"
-msgstr "Kopiraj vse spremembe iz desne polovice na levo"
+#: ../meld/filediff.py:187
+msgid "Merge all changes from left"
+msgstr "Združi vse spremembe z leve"
 
 #: ../meld/filediff.py:187
-msgid "Copy all changes from left pane to right pane"
-msgstr "Kopiraj vse spremembe iz leve polovice na desno"
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Združi vse spremembe brez sporov z leve"
+
+#: ../meld/filediff.py:188
+msgid "Merge all changes from right"
+msgstr "Združi vse spremembe z desne"
+
+#: ../meld/filediff.py:188
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Združi vse spremembe brez sporov z leve"
+
+#: ../meld/filediff.py:189
+msgid "Merge all non-conflicting"
+msgstr "Združi vse spremembe brez sporov"
+
+#: ../meld/filediff.py:189
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr "Združi vse spremembe brez sporov z leve in z desne"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:257
 msgid "INS"
 msgstr "VST"
 
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:257
 msgid "OVR"
 msgstr "PRE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:259
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Vr. %i, St. %i"
 
-#: ../meld/filediff.py:392
+#: ../meld/filediff.py:432
 #, python-format
 msgid "Regular expression '%s' changed the number of lines in the file. Comparison will be incorrect. See the user manual for more details."
 msgstr "Po dejanju logičnega izraza '%s' se je spremenilo število vrstic v datoteki, zato primerjava ne bo natančna. Za več podrobnosti si oglejte priročnik."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:489
+#: ../meld/filediff.py:529
 msgid "<unnamed>"
 msgstr "<neimenovano>"
 
-#: ../meld/filediff.py:674
+#: ../meld/filediff.py:709
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Določi okna"
 
-#: ../meld/filediff.py:680
+#: ../meld/filediff.py:715
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Odpiranje datotek"
 
-#: ../meld/filediff.py:686
-#: ../meld/filediff.py:797
+#: ../meld/filediff.py:721
+#: ../meld/filediff.py:846
 msgid "Hi_de"
 msgstr "S_krij"
 
-#: ../meld/filediff.py:707
-#: ../meld/filediff.py:718
-#: ../meld/filediff.py:731
-#: ../meld/filediff.py:737
+#: ../meld/filediff.py:742
+#: ../meld/filediff.py:753
+#: ../meld/filediff.py:766
+#: ../meld/filediff.py:772
 msgid "Could not read file"
 msgstr "Ni mogoče prebrati datoteke"
 
-#: ../meld/filediff.py:710
+#: ../meld/filediff.py:745
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Branje datotek"
 
-#: ../meld/filediff.py:719
+#: ../meld/filediff.py:754
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s je videti kot dvojiška datoteka."
 
-#: ../meld/filediff.py:732
+#: ../meld/filediff.py:767
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s ni zapisan v naboru: %s"
 
-#: ../meld/filediff.py:757
+#: ../meld/filediff.py:792
 #: ../meld/filemerge.py:70
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Računanje razlik"
 
-#: ../meld/filediff.py:791
+#: ../meld/filediff.py:840
 msgid "Files are identical"
 msgstr "Datoteki sta enaki"
 
-#: ../meld/filediff.py:925
+#: ../meld/filediff.py:974
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -674,7 +688,7 @@ msgstr ""
 "\"%s\" že obstaja!\n"
 "Ali naj bo datoteka prepisana?"
 
-#: ../meld/filediff.py:938
+#: ../meld/filediff.py:987
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -685,12 +699,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:947
+#: ../meld/filediff.py:996
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Izbor imena za medpomnilnik %i."
 
-#: ../meld/filediff.py:961
+#: ../meld/filediff.py:1010
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -701,7 +715,7 @@ msgstr ""
 "\n"
 "Kateri zapis želite uporabiti?"
 
-#: ../meld/filediff.py:977
+#: ../meld/filediff.py:1026
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -711,11 +725,11 @@ msgstr ""
 "Ali naj se datoteka shrani v naboru UTF-8?"
 
 #. save as
-#: ../meld/filediff.py:1015
+#: ../meld/filediff.py:1064
 msgid "Save patch as..."
 msgstr "Shrani popravke kot ..."
 
-#: ../meld/filediff.py:1073
+#: ../meld/filediff.py:1111
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -1316,6 +1330,8 @@ msgstr ""
 "Določen je bil vzorec '%s'\n"
 "Javljena napaka je '%s'"
 
+#~ msgid "Copy all changes from right pane to left pane"
+#~ msgstr "Kopiraj vse spremembe iz desne polovice na levo"
 #~ msgid "<b>Edit Menu</b>"
 #~ msgstr "<b>Uredi meni</b>"
 #~ msgid "Custom command"
