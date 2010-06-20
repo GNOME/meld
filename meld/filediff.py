@@ -186,11 +186,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                  gtk.gdk.CONTROL_MASK)
         gtk.binding_entry_remove(srcviewer.GtkTextView, gtk.keysyms.z,
                                  gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)
+        spaces_flag = srcviewer.gsv.DRAW_SPACES_ALL if self.prefs.show_whitespace else 0
         for v in self.textview:
             v.set_buffer(srcviewer.GtkTextBuffer())
             v.set_show_line_numbers(self.prefs.show_line_numbers)
             v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
             v.set_wrap_mode(self.prefs.edit_wrap_lines)
+            v.set_draw_spaces(spaces_flag)
             srcviewer.set_tab_width(v, self.prefs.tab_size)
         self.keymask = 0
         self.load_font()
@@ -567,6 +569,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif key == "show_line_numbers":
             for t in self.textview:
                 t.set_show_line_numbers( value )
+        elif key == "show_whitespace":
+            spaces_flag = srcviewer.gsv.DRAW_SPACES_ALL if self.prefs.show_whitespace else 0
+            for v in self.textview:
+                v.set_draw_spaces(spaces_flag)
         elif key == "use_syntax_highlighting":
             for i in range(self.num_panes):
                 srcviewer.set_highlighting_enabled_from_file(

@@ -135,13 +135,15 @@ class PreferencesDialog(gnomeglade.Component):
         if srcviewer.gsv is not None:
             self.checkbutton_spaces_instead_of_tabs.set_active( self.prefs.spaces_instead_of_tabs )
             self.checkbutton_show_line_numbers.set_active( self.prefs.show_line_numbers )
+            self.checkbutton_show_whitespace.set_active(self.prefs.show_whitespace)
             self.checkbutton_use_syntax_highlighting.set_active( self.prefs.use_syntax_highlighting )
         else:
             no_sourceview_text = \
                 _("Only available if you have gnome-python-desktop installed")
             for w in (self.checkbutton_spaces_instead_of_tabs,
                       self.checkbutton_show_line_numbers,
-                      self.checkbutton_use_syntax_highlighting):
+                      self.checkbutton_use_syntax_highlighting,
+                      self.checkbutton_show_whitespace):
                 w.set_sensitive(False)
                 w.set_tooltip_text(no_sourceview_text)
         # TODO: This doesn't restore the state of character wrapping when word
@@ -202,6 +204,8 @@ class PreferencesDialog(gnomeglade.Component):
 
     def on_checkbutton_show_line_numbers_toggled(self, check):
         self.prefs.show_line_numbers = check.get_active()
+    def on_checkbutton_show_whitespace_toggled(self, check):
+        self.prefs.show_whitespace = check.get_active()
     def on_checkbutton_use_syntax_highlighting_toggled(self, check):
         self.prefs.use_syntax_highlighting = check.get_active()
 
@@ -242,6 +246,7 @@ class MeldPreferences(prefs.Preferences):
         "tab_size": prefs.Value(prefs.INT, 4),
         "spaces_instead_of_tabs": prefs.Value(prefs.BOOL, False),
         "show_line_numbers": prefs.Value(prefs.BOOL, 0),
+        "show_whitespace": prefs.Value(prefs.BOOL, False),
         "use_syntax_highlighting": prefs.Value(prefs.BOOL, 0),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "edit_command_type" : prefs.Value(prefs.STRING, "gnome"), #gnome, custom
