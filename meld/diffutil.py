@@ -104,8 +104,8 @@ class Differ(gobject.GObject):
 
         mergeable0, mergeable1 = False, False
         for (c0, c1) in self._merge_cache:
-            mergeable0 = mergeable0 or (c0 and c0[0] != 'conflict')
-            mergeable1 = mergeable1 or (c1 and c1[0] != 'conflict')
+            mergeable0 = mergeable0 or (c0 is not None and c0[0] != 'conflict')
+            mergeable1 = mergeable1 or (c1 is not None and c1[0] != 'conflict')
             if mergeable0 and mergeable1:
                 break
         self._has_mergeable_changes = (mergeable0, mergeable1)
