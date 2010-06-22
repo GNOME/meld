@@ -5,6 +5,7 @@
 # Frank Arnold <frank@scirocco-5v-turbo.de>, 2005.
 # Hendrik Richter <hendrikr@gnome.org>, 2006.
 # Mario Blättermann <mariobl@gnome.org>, 2009, 2010.
+# Holger Wansing <linux@wansing-online.de>, 2010.
 #
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 
 #: ../bin/meld:77
 msgid "Cannot import: "
-msgstr "Import nicht möglich:"
+msgstr "Import nicht möglich: "
 
 #: ../bin/meld:80
 #, c-format
@@ -211,7 +212,7 @@ msgstr "Dateifilter"
 
 #: ../data/ui/preferences.glade.h:11
 msgid "Ignore changes which insert or delete blank lines"
-msgstr "Ignorieren von Änderungen durch hinzugefügte oder entfernte Leerzeilen"
+msgstr "Ignorieren von Änderungen, durch die Leerzeichen hinzugefügt oder entfernt werden"
 
 #: ../data/ui/preferences.glade.h:12
 msgid "Ignore symbolic links"
@@ -350,7 +351,7 @@ msgstr "Nach rechts kopieren"
 
 #: ../meld/dirdiff.py:187
 msgid "Delete selected"
-msgstr "Auswahl löschen"
+msgstr "Markiertes löschen"
 
 #: ../meld/dirdiff.py:188 ../meld/filediff.py:842
 msgid "Hide"
@@ -374,7 +375,7 @@ msgstr "Groß-/Kleinschreibung der Einträge ignorieren"
 
 #: ../meld/dirdiff.py:195
 msgid "Same"
-msgstr "Gleich"
+msgstr "Identisch"
 
 #: ../meld/dirdiff.py:195
 msgid "Show identical"
@@ -621,7 +622,7 @@ msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
 "will be incorrect. See the user manual for more details."
 msgstr ""
-"Der reguläre Ausdruck »%s« verändert die Zeilenanzahl der Datei. Ein Vergleich "
+"Der reguläre Ausdruck »%s« veränderte die Zeilenanzahl der Datei. Ein Vergleich "
 "wird keine korrekten Ergebnisse liefern. Weitere Informationen sind im "
 "Benutzerhandbuch zu finden."
 
@@ -788,7 +789,7 @@ msgstr "Auswahl kopieren"
 
 #: ../meld/meldapp.py:151
 msgid "Paste the clipboard"
-msgstr "In die Zwischenablage kopieren"
+msgstr "Aus der Zwischenablage einfügen"
 
 #: ../meld/meldapp.py:152
 msgid "Search for text"
@@ -933,7 +934,7 @@ msgstr "Datei"
 
 #: ../meld/meldapp.py:592 ../meld/meldapp.py:594 ../meld/meldapp.py:595
 msgid "dir"
-msgstr "dir"
+msgstr "Ordner"
 
 #: ../meld/meldapp.py:592
 msgid "Start a version control comparison"
@@ -1237,25 +1238,25 @@ msgid ""
 "                    "
 msgstr ""
 "\n"
-"                    Starten von 'patch' gescheitert.\n"
+"                    Starten von »patch« gescheitert.\n"
 "                    \n"
-"                    Vielleicht ist 'GNU patch' nicht installiert,\n"
+"                    Vielleicht ist »GNU patch« nicht installiert,\n"
 "                    oder Sie benutzen eine ungetestete Version von %s.\n"
 "                    \n"
 "                    Fehlermeldung bitte per E-Mail an:\n"
 "                    meld-list@gnome.org\n"
 "                    \n"
-"                    Folgende Information beifügen:\n"
+"                    Folgende Informationen beifügen:\n"
 "                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
+"                    - meld-Version: »%s«:\n"
+"                    - Software-Typ des Versionsverwaltungssystems: »%s«\n"
+"                    - Software-Version des Versionsverwaltungssystems: »X.Y.Z«\n"
+"                    - die Ausgabe von »%s eine-datei.txt«\n"
+"                    - Patch-Befehl: »%s«\n"
 "                   (direkte Ausführung ist nicht notwendig,\n"
 "                   fügen Sie einfach die Befehlszeile hinzu) \n"
 "                   \n"
-"                   Ersetzen Sie 'X.Y.Z' durch die verwendete\n"
+"                   Ersetzen Sie »X.Y.Z« durch die verwendete\n"
 "                   Version des Versionsverwaltungssystems.\n"
 "                 "
 
@@ -1282,7 +1283,7 @@ msgstr "Pfad zur Datei"
 
 #: ../meld/ui/historyentry.py:258
 msgid "Pop up a file selector to choose a file"
-msgstr "Dateiwähler öffnen"
+msgstr "Dateiauswahldialog öffnen"
 
 #: ../meld/ui/historyentry.py:379
 msgid "Select directory"
