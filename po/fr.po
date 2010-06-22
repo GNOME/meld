@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Meld HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&component=general\n"
-"POT-Creation-Date: 2010-05-25 11:41+0000\n"
+"POT-Creation-Date: 2010-06-19 02:36+0000\n"
 "PO-Revision-Date: 2010-05-25 14:01+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Copy to Clipboard"
 msgstr "Copier vers le presse-papiers"
 
-#: ../data/ui/filediff.glade.h:4 ../meld/filediff.py:179
+#: ../data/ui/filediff.glade.h:4 ../meld/filediff.py:180
 msgid "Create Patch"
 msgstr "Créer un patch"
 
@@ -176,8 +176,8 @@ msgid "<b>Display</b>"
 msgstr "<b>Affichage</b>"
 
 #: ../data/ui/preferences.glade.h:2
-msgid "<b>Edit Menu</b>"
-msgstr "<b>Menu d'édition</b>"
+msgid "<b>External editor</b>"
+msgstr "<b>Éditeur externe</b>"
 
 #: ../data/ui/preferences.glade.h:3
 msgid "<b>Font</b>"
@@ -188,73 +188,65 @@ msgid "<b>Loading</b>"
 msgstr "<b>Chargement</b>"
 
 #: ../data/ui/preferences.glade.h:5
-msgid "Custom command"
-msgstr "Commande personnalisée"
-
-#: ../data/ui/preferences.glade.h:6
 msgid "Do not _split words over two lines"
 msgstr "Ne pas _couper les mots par les sauts de ligne"
 
-#: ../data/ui/preferences.glade.h:7
-msgid "Edit files with:"
-msgstr "Éditer les fichiers avec :"
+#: ../data/ui/preferences.glade.h:6
+msgid "Edito_r command:"
+msgstr "Commande de l'éditeu_r :"
 
-#: ../data/ui/preferences.glade.h:8
+#: ../data/ui/preferences.glade.h:7
 msgid "Editor"
 msgstr "Éditeur"
 
-#: ../data/ui/preferences.glade.h:9
+#: ../data/ui/preferences.glade.h:8
 msgid "Enable text _wrapping"
-msgstr "Activer les sauts de ligne automatiques"
+msgstr "Acti_ver les sauts de ligne automatiques"
 
-#: ../data/ui/preferences.glade.h:10
+#: ../data/ui/preferences.glade.h:9
 msgid "Encoding"
 msgstr "Codage des caractères"
 
-#: ../data/ui/preferences.glade.h:11
+#: ../data/ui/preferences.glade.h:10
 msgid "File Filters"
 msgstr "Filtres de fichiers"
 
-#: ../data/ui/preferences.glade.h:12
-msgid "Gnome default editor"
-msgstr "Éditeur par défaut de GNOME"
-
-#: ../data/ui/preferences.glade.h:13
+#: ../data/ui/preferences.glade.h:11
 msgid "Ignore changes which insert or delete blank lines"
 msgstr ""
 "Ignorer les modifications qui concernent l'insertion ou l'effacement de "
 "lignes vides."
 
-#: ../data/ui/preferences.glade.h:14
+#: ../data/ui/preferences.glade.h:12
 msgid "Ignore symbolic links"
 msgstr "Ignorer les liens symboliques"
 
-#: ../data/ui/preferences.glade.h:15
-msgid "Internal editor"
-msgstr "Éditeur interne"
-
-#: ../data/ui/preferences.glade.h:16
+#: ../data/ui/preferences.glade.h:13
 msgid "Meld Preferences"
 msgstr "Préférences de Meld"
 
-#: ../data/ui/preferences.glade.h:17
+#: ../data/ui/preferences.glade.h:14
 msgid "Show _line numbers"
 msgstr "Afficher les numéros de _ligne"
 
-#: ../data/ui/preferences.glade.h:18
+#: ../data/ui/preferences.glade.h:15
 msgid "Text Filters"
 msgstr "Filtres de texte"
 
-#: ../data/ui/preferences.glade.h:19
+#: ../data/ui/preferences.glade.h:16
+msgid "Use _default system editor"
+msgstr "Utiliser l'éditeur par _défaut du système"
+
+#: ../data/ui/preferences.glade.h:17
 msgid "Use s_yntax highlighting"
 msgstr "Utiliser la _coloration syntaxique"
 
-#: ../data/ui/preferences.glade.h:20
+#: ../data/ui/preferences.glade.h:18
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
 "Lors du chargement, essayer ces codages dans l'ordre (ex : utf-8, iso8859)"
 
-#: ../data/ui/preferences.glade.h:21
+#: ../data/ui/preferences.glade.h:19
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -264,7 +256,7 @@ msgstr ""
 "des dossiers en fonction de leur nom. Chaque motif est une liste de jokers "
 "de type shell séparés par des espaces."
 
-#: ../data/ui/preferences.glade.h:22
+#: ../data/ui/preferences.glade.h:20
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -278,24 +270,24 @@ msgstr ""
 "comparaison. Si l'expression contient des groupes, seuls les groupes sont "
 "remplacés. Consultez le manuel d'utilisation pour plus de détails."
 
-#: ../data/ui/preferences.glade.h:23
+#: ../data/ui/preferences.glade.h:21
 msgid "_Automatically supply missing newline at end of file"
 msgstr ""
 "Ajouter _automatiquement le retour à la ligne manquant en fin de fichier"
 
-#: ../data/ui/preferences.glade.h:24
+#: ../data/ui/preferences.glade.h:22
 msgid "_Editor font:"
 msgstr "_Police de l'éditeur :"
 
-#: ../data/ui/preferences.glade.h:25
+#: ../data/ui/preferences.glade.h:23
 msgid "_Insert spaces instead of tabs"
 msgstr "Insérer des _espaces au lieu des tabulations"
 
-#: ../data/ui/preferences.glade.h:26
+#: ../data/ui/preferences.glade.h:24
 msgid "_Tab width:"
 msgstr "Largeur des _tabulations :"
 
-#: ../data/ui/preferences.glade.h:27
+#: ../data/ui/preferences.glade.h:25
 msgid "_Use the system fixed width font"
 msgstr "_Utiliser la police à chasse fixe du système"
 
@@ -347,7 +339,7 @@ msgstr "Comparer la sélection"
 msgid "Left"
 msgstr "Gauche"
 
-#: ../meld/dirdiff.py:185 ../meld/filediff.py:186
+#: ../meld/dirdiff.py:185
 msgid "Copy To Left"
 msgstr "Copier vers la gauche"
 
@@ -355,7 +347,7 @@ msgstr "Copier vers la gauche"
 msgid "Right"
 msgstr "Droite"
 
-#: ../meld/dirdiff.py:186 ../meld/filediff.py:187
+#: ../meld/dirdiff.py:186
 msgid "Copy To Right"
 msgstr "Copier vers la droite"
 
@@ -363,7 +355,7 @@ msgstr "Copier vers la droite"
 msgid "Delete selected"
 msgstr "Effacer la sélection"
 
-#: ../meld/dirdiff.py:188 ../meld/filediff.py:793
+#: ../meld/dirdiff.py:188 ../meld/filediff.py:842
 msgid "Hide"
 msgstr "Masquer"
 
@@ -371,7 +363,7 @@ msgstr "Masquer"
 msgid "Hide selected"
 msgstr "Masquer la sélection"
 
-#: ../meld/dirdiff.py:190 ../meld/filediff.py:178 ../meld/vcview.py:126
+#: ../meld/dirdiff.py:190 ../meld/filediff.py:179 ../meld/vcview.py:126
 msgid "Open selected"
 msgstr "Ouvrir la sélection"
 
@@ -541,77 +533,93 @@ msgid_plural "%i years"
 msgstr[0] "%i année"
 msgstr[1] "%i années"
 
-#: ../meld/filediff.py:179
+#: ../meld/filediff.py:180
 msgid "Create a patch"
 msgstr "Créer un patch"
 
-#: ../meld/filediff.py:180
+#: ../meld/filediff.py:181
 msgid "Push to left"
 msgstr "Envoyer à gauche"
 
-#: ../meld/filediff.py:180
+#: ../meld/filediff.py:181
 msgid "Push current change to the left"
 msgstr "Envoie la modification actuelle vers la gauche"
 
-#: ../meld/filediff.py:181
+#: ../meld/filediff.py:182
 msgid "Push to right"
 msgstr "Envoyer à droite"
 
-#: ../meld/filediff.py:181
+#: ../meld/filediff.py:182
 msgid "Push current change to the right"
 msgstr "Envoie la modification actuelle vers la droite"
 
 #. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:183
+#: ../meld/filediff.py:184
 msgid "Pull from left"
 msgstr "Récupérer de la gauche"
 
-#: ../meld/filediff.py:183
+#: ../meld/filediff.py:184
 msgid "Pull change from the left"
 msgstr "Récupère la modification de gauche"
 
-#: ../meld/filediff.py:184
+#: ../meld/filediff.py:185
 msgid "Pull from right"
 msgstr "Récupérer de la droite"
 
-#: ../meld/filediff.py:184
+#: ../meld/filediff.py:185
 msgid "Pull change from the right"
 msgstr "Récupère la modification de droite"
 
-#: ../meld/filediff.py:185
+#: ../meld/filediff.py:186
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ../meld/filediff.py:185
+#: ../meld/filediff.py:186
 msgid "Delete change"
 msgstr "Supprimer les modifications"
 
-#: ../meld/filediff.py:186
-msgid "Copy all changes from right pane to left pane"
-msgstr ""
-"Copier toutes les modifications du panneau de droite vers celui de gauche"
+#: ../meld/filediff.py:187
+msgid "Merge all changes from left"
+msgstr "Fusionne toutes les modifications de gauche"
 
 #: ../meld/filediff.py:187
-msgid "Copy all changes from left pane to right pane"
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Fusionne toutes les modifications non-conflictuelles de gauche"
+
+#: ../meld/filediff.py:188
+msgid "Merge all changes from right"
+msgstr "Fusionne toutes les modifications de droite"
+
+#: ../meld/filediff.py:188
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Fusionne toutes les modifications non-conflictuelles de droite"
+
+#: ../meld/filediff.py:189
+msgid "Merge all non-conflicting"
+msgstr "Fusionne toutes les modifications non-conflictuelles"
+
+#: ../meld/filediff.py:189
+msgid "Merge all non-conflicting changes from left and right panes"
 msgstr ""
-"Copier toutes les modifications du panneau de gauche vers celui de droite"
+"Fusionne toutes les modifications non-conflictuelles des panneaux de "
+"gauche et de droite"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:257
 msgid "INS"
 msgstr "INS"
 
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:257
 msgid "OVR"
 msgstr "ÉCR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:259
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Ln %i, Col %i"
 
-#: ../meld/filediff.py:392
+#: ../meld/filediff.py:432
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -622,54 +630,54 @@ msgstr ""
 "plus de détails."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:489
+#: ../meld/filediff.py:529
 msgid "<unnamed>"
 msgstr "<Document non enregistré>"
 
-#: ../meld/filediff.py:674
+#: ../meld/filediff.py:709
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Régler le nombre de volets"
 
-#: ../meld/filediff.py:680
+#: ../meld/filediff.py:715
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Ouverture des fichiers"
 
-#: ../meld/filediff.py:686 ../meld/filediff.py:797
+#: ../meld/filediff.py:721 ../meld/filediff.py:846
 msgid "Hi_de"
 msgstr "Mas_quer"
 
-#: ../meld/filediff.py:707 ../meld/filediff.py:718 ../meld/filediff.py:731
-#: ../meld/filediff.py:737
+#: ../meld/filediff.py:742 ../meld/filediff.py:753 ../meld/filediff.py:766
+#: ../meld/filediff.py:772
 msgid "Could not read file"
 msgstr "Impossible de lire le fichier"
 
-#: ../meld/filediff.py:710
+#: ../meld/filediff.py:745
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Lecture des fichiers"
 
-#: ../meld/filediff.py:719
+#: ../meld/filediff.py:754
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s semble être un fichier binaire."
 
-#: ../meld/filediff.py:732
+#: ../meld/filediff.py:767
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s n'est pas dans un des codages : %s"
 
-#: ../meld/filediff.py:757 ../meld/filemerge.py:70
+#: ../meld/filediff.py:792 ../meld/filemerge.py:70
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Calcul des différences"
 
-#: ../meld/filediff.py:791
+#: ../meld/filediff.py:840
 msgid "Files are identical"
 msgstr "Les fichiers sont identiques"
 
-#: ../meld/filediff.py:925
+#: ../meld/filediff.py:974
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -678,7 +686,7 @@ msgstr ""
 "« %s » existe déjà !\n"
 "Écraser ?"
 
-#: ../meld/filediff.py:938
+#: ../meld/filediff.py:987
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -689,12 +697,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:947
+#: ../meld/filediff.py:996
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Choisissez un nom pour le tampon %i."
 
-#: ../meld/filediff.py:961
+#: ../meld/filediff.py:1010
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -705,7 +713,7 @@ msgstr ""
 "\n"
 "Quel format voulez-vous utiliser ?"
 
-#: ../meld/filediff.py:977
+#: ../meld/filediff.py:1026
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -715,11 +723,11 @@ msgstr ""
 "Voulez-vous enregistrer en UTF-8 ?"
 
 #. save as
-#: ../meld/filediff.py:1015
+#: ../meld/filediff.py:1064
 msgid "Save patch as..."
 msgstr "Enregistrer le patch sous..."
 
-#: ../meld/filediff.py:1073
+#: ../meld/filediff.py:1111
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -989,76 +997,76 @@ msgstr "étiquette"
 msgid "pattern"
 msgstr "motif"
 
-#: ../meld/preferences.py:147
+#: ../meld/preferences.py:143
 msgid "Only available if you have gnome-python-desktop installed"
 msgstr "Disponible uniquement si gnome-python-desktop est installé"
 
 #. file filters
 #. text filters
-#: ../meld/preferences.py:162 ../meld/preferences.py:167 ../meld/vcview.py:163
+#: ../meld/preferences.py:166 ../meld/preferences.py:171 ../meld/vcview.py:163
 msgid "Name"
 msgstr "Nom"
 
-#: ../meld/preferences.py:162 ../meld/preferences.py:167
+#: ../meld/preferences.py:166 ../meld/preferences.py:171
 msgid "Active"
 msgstr "Actif"
 
-#: ../meld/preferences.py:162
+#: ../meld/preferences.py:166
 msgid "Pattern"
 msgstr "Motif"
 
-#: ../meld/preferences.py:167
+#: ../meld/preferences.py:171
 msgid "Regex"
 msgstr "Expression régulière"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:260
+#: ../meld/preferences.py:268
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Sauvegardes\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:262
+#: ../meld/preferences.py:270
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Gestionnaire de versions\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:264
+#: ../meld/preferences.py:272
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binaires\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:266
+#: ../meld/preferences.py:274
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Média\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:268
+#: ../meld/preferences.py:276
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "Mots-clés CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:270
+#: ../meld/preferences.py:278
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Commentaire C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:272
+#: ../meld/preferences.py:280
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Commentaire C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:274
+#: ../meld/preferences.py:282
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Tout caractère d'espacement\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:276
+#: ../meld/preferences.py:284
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Caractère d'espacement en début de ligne\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:278
+#: ../meld/preferences.py:286
 msgid "Script comment\t0\t#.*"
 msgstr "Commentaire de script\t0\t#.*"
 
@@ -1310,3 +1318,16 @@ msgstr ""
 "Erreur durant la conversion en expression régulière\n"
 "Le motif était « %s »\n"
 "L'erreur était « %s »"
+
+#~ msgid "<b>Edit Menu</b>"
+#~ msgstr "<b>Menu d'édition</b>"
+
+#~ msgid "Custom command"
+#~ msgstr "Commande personnalisée"
+
+#~ msgid "Edit files with:"
+#~ msgstr "Éditer les fichiers avec :"
+
+#~ msgid "Copy all changes from right pane to left pane"
+#~ msgstr ""
+#~ "Copier toutes les modifications du panneau de droite vers celui de gauche"
