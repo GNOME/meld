@@ -166,7 +166,6 @@ class nullsourceview(_srcviewer):
     set_highlight = lambda *args: None
     set_tab_width = lambda *args: None
     get_language_from_mime_type = lambda *args: None
-    set_tab_width = lambda *args: None
 
     def overrides(self):
         import gobject
