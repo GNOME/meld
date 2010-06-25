@@ -1267,7 +1267,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.keymask & MASK_SHIFT:
             pix0 = self.pixbuf_delete
             pix1 = self.pixbuf_delete
-        elif self.keymask & MASK_CTRL:
+        elif self.keymask & MASK_CTRL and \
+             change[0] not in ('insert', 'delete'):
             pix0 = self.pixbuf_copy0
             pix1 = self.pixbuf_copy1
         else: # self.keymask == 0:
