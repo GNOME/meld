@@ -45,6 +45,7 @@ class Vc(_vc.CachedVc):
         "M": _vc.STATE_MODIFIED, # Modified
         "T": _vc.STATE_MODIFIED, # Type-changed
         "U": _vc.STATE_CONFLICT, # Unmerged
+        "I": _vc.STATE_IGNORED,  # Ignored (made-up status letter)
     }
 
     def check_repo_root(self, location):
@@ -89,6 +90,10 @@ class Vc(_vc.CachedVc):
                 proc = _vc.popen([self.CMD, "diff-files", "--name-status", \
                     "-0", "./"], cwd=self.location)
                 entries += (proc.read().split("\n")[:-1])
+
+                proc = _vc.popen([self.CMD, "ls-files", "--others", \
+                    "--ignored", "--exclude-standard"], cwd=self.location)
+                entries += ("I\t%s" % f for f in proc.read().split("\n")[:-1])
 
                 # An unmerged file or a file that has been modified, added to
                 # git's index, then modified again would result in the file
