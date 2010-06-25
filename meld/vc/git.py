@@ -116,7 +116,7 @@ class Vc(_vc.CachedVc):
         retfiles = []
         retdirs = []
         for name,path in files:
-            state = tree.get(path, _vc.STATE_IGNORED)
+            state = tree.get(path, _vc.STATE_NORMAL)
             retfiles.append( _vc.File(path, name, state) )
         for name,path in dirs:
             # git does not operate on dirs, just files
