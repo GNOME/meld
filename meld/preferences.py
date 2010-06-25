@@ -131,7 +131,7 @@ class PreferencesDialog(gnomeglade.Component):
             self.fontpicker.set_font_name(self.prefs.custom_font)
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
-        if srcviewer:
+        if srcviewer.gsv is not None:
             self.checkbutton_spaces_instead_of_tabs.set_active( self.prefs.spaces_instead_of_tabs )
             self.checkbutton_show_line_numbers.set_active( self.prefs.show_line_numbers )
             self.checkbutton_use_syntax_highlighting.set_active( self.prefs.use_syntax_highlighting )
