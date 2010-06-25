@@ -25,6 +25,8 @@ import os
 import re
 import errno
 import _vc
+import xml.etree.ElementTree as ElementTree
+
 
 class Vc(_vc.Vc):
 
@@ -34,20 +36,15 @@ class Vc(_vc.Vc):
     VC_ROOT_WALK = False
     PATCH_INDEX_RE = "^Index:(.*)$"
     state_map = {
-        "?": _vc.STATE_NONE,
-        "A": _vc.STATE_NEW,
-        " ": _vc.STATE_NORMAL,
-        "!": _vc.STATE_MISSING,
-        "I": _vc.STATE_IGNORED,
-        "M": _vc.STATE_MODIFIED,
-        "D": _vc.STATE_REMOVED,
-        "C": _vc.STATE_CONFLICT,
+        "unversioned": _vc.STATE_NONE,
+        "added": _vc.STATE_NEW,
+        "normal": _vc.STATE_NORMAL,
+        "missing": _vc.STATE_MISSING,
+        "ignored": _vc.STATE_IGNORED,
+        "modified": _vc.STATE_MODIFIED,
+        "deleted": _vc.STATE_REMOVED,
+        "conflicted": _vc.STATE_CONFLICT,
     }
-
-    re_status_moved = re.compile(r'^(A) +[+] +- +([?]) +[?] +([^ ].*)$')
-    re_status_vc = re.compile(r'^(.) +\d+ +(\?|(?:\d+)) +[^ ]+ +([^ ].*)$')
-    re_status_non_vc = re.compile(r'^([?]) +([^ ].*)$')
-    re_status_tree_conflict = re.compile(r'^ +> +.*')
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
@@ -74,7 +71,8 @@ class Vc(_vc.Vc):
 
         while 1:
             try:
-                entries = _vc.popen([self.CMD, "status", "-Nv", directory])
+                status_cmd = [self.CMD, "status", "-Nv", "--xml", directory]
+                tree = ElementTree.parse(_vc.popen(status_cmd))
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
@@ -82,29 +80,20 @@ class Vc(_vc.Vc):
 
         matches = []
 
-        for line in entries:
-            # svn-1.6.x changed 'status' command output
-            # adding tree-conflict lines, c.f.:
-            # http://subversion.tigris.org/svn_1.6_releasenotes.html
-            m = self.re_status_tree_conflict.match(line)
-            if m:
-                # skip this line
-                continue
-            # A svn moved file
-            m = self.re_status_moved.match(line)
-            if m:
-                matches.append((m.group(3), m.group(1), m.group(2)))
-                continue
-            # A svn controlled file
-            m = self.re_status_vc.match(line)
-            if m:
-                matches.append((m.group(3), m.group(1), m.group(2)))
-                continue
-            # A new file, unknown to svn
-            m = self.re_status_non_vc.match(line)
-            if m:
-                matches.append((m.group(2), m.group(1), ""))
-                continue
+        for target in tree.findall("target"):
+            for entry in (t for t in target.getchildren() if t.tag == "entry"):
+                path = entry.attrib["path"]
+                if path == "":
+                    continue
+                for status in (e for e in entry.getchildren() \
+                               if e.tag == "wc-status"):
+                    item = status.attrib["item"]
+                    if item == "":
+                        continue
+                    rev = None
+                    if item != "unversioned":
+                        rev = status.attrib["revision"]
+                    matches.append((path, item, rev))
 
         matches.sort()
         return matches
