@@ -38,6 +38,9 @@ class GroupAction(object):
     """
     def __init__(self, seq):
         self.seq = seq
+        # TODO: If a GroupAction affects more than one sequence, our logic
+        # breaks. Currently, this isn't a problem.
+        self.buffer = seq.actions[0].buffer
     def undo(self):
         while self.seq.can_undo():
             self.seq.undo()
