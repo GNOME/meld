@@ -684,6 +684,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
            If an element is None, the text of a pane is left as is.
         """
         self._disconnect_buffer_handlers()
+        self._inline_cache = set()
         for i,f in enumerate(files):
             if f:
                 self.textbuffer[i].delete(*self.textbuffer[i].get_bounds())
