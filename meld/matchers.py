@@ -101,17 +101,23 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
 
         # discard lines that do not match any line from the other file
         if n > 0 and m > 0:
+            aset = set()
+            bset = set()
+            for newline in b:
+                bset.add(newline)
+            for newline in a:
+                aset.add(newline)
             a2 = []
             b2 = []
             j = 0
             for i, newline in enumerate(b):
-                if newline in a:
+                if newline in aset:
                     b2.append(newline)
                     bindex[j] = i
                     j += 1
             k = 0
             for i, origline in enumerate(a):
-                if origline in b:
+                if origline in bset:
                     a2.append(a[i])
                     aindex[k] = i
                     k += 1
