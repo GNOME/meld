@@ -74,7 +74,7 @@ pygtkver = (2,8,0)
 
 def missing_reqs(mod, ver, exception=None):
     if isinstance(exception, ImportError):
-        print _("Cannot import: ") + mod + "\n" + e
+        print _("Cannot import: ") + mod + "\n" + str(e)
     else:
         modver = mod + " " + ".".join(map(str, ver))
         print _("Meld requires %s or higher.") % modver
