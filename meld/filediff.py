@@ -308,6 +308,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
         self.actiongroup.get_action("PullRight").set_sensitive(pull_right)
         self.actiongroup.get_action("Delete").set_sensitive(delete)
+        # FIXME: don't queue_draw() on everything... just on what changed
+        self.queue_draw()
 
     def push_change(self, direction):
         src = self._get_focused_pane()
@@ -949,6 +951,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if change[1] != change[2]:
                 context.set_source_rgb(*self.fill_colors[change[0]])
                 context.fill_preserve()
+                if self.linediffer.locate_chunk(pane, change[1])[0] == self.cursor.chunk:
+                    context.set_source_rgba(1.0, 1.0, 1.0, 0.5)
+                    context.fill_preserve()
+
             context.set_source_rgb(*self.line_colors[change[0]])
             context.stroke()
 
@@ -1323,6 +1329,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             context.set_source_rgb(*self.fill_colors[c[0]])
             context.fill_preserve()
+
+            if self.linediffer.locate_chunk(which, c[1])[0] == self.cursor.chunk:
+                context.set_source_rgba(1.0, 1.0, 1.0, 0.5)
+                context.fill_preserve()
 
             context.set_source_rgb(*self.line_colors[c[0]])
             context.stroke()
