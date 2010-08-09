@@ -962,11 +962,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.stroke()
 
         if textview.is_focus() and self.cursor.line is not None:
-            ypos, height = self._line_to_pixel_plus_height(pane, self.cursor.line)
-            context.set_source_rgba(1,1,0,.25)
-            context.rectangle(0,ypos-visible.y, width, height)
+            it = self.textbuffer[pane].get_iter_at_line(self.cursor.line)
+            ypos, line_height = self.textview[pane].get_line_yrange(it)
+            context.set_source_rgba(1, 1, 0, .25)
+            context.rectangle(0, ypos - visible.y, width, line_height)
             context.fill()
-        
+
     def _get_filename_for_saving(self, title ):
         dialog = gtk.FileChooserDialog(title,
             parent=self.widget.get_toplevel(),
@@ -1235,10 +1236,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if line >= self.textbuffer[pane].get_line_count():
             return y + h - 1
         return y
-
-    def _line_to_pixel_plus_height(self, pane, line ):
-        it = self.textbuffer[pane].get_iter_at_line(line)
-        return self.textview[pane].get_line_yrange( it )
 
     def _pixel_to_line(self, pane, pixel ):
         return self.textview[pane].get_line_at_y( pixel )[0].get_line()
