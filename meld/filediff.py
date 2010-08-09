@@ -934,12 +934,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
-        bounds = (self._pixel_to_line(pane, visible.y),
-                  self._pixel_to_line(pane, visible.y + visible.height + 1))
+        area = event.area
+        x, y = textview.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET,
+                                                area.x, area.y)
+        bounds = (self._pixel_to_line(pane, x),
+                  self._pixel_to_line(pane, y + area.height + 1))
 
         width, height = textview.allocation.width, textview.allocation.height
         context = event.window.cairo_create()
-        context.rectangle(0, 0, width, height)
+        context.rectangle(area.x, area.y, area.width, area.height)
         context.clip()
         context.set_line_width(1.0)
 
