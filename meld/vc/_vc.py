@@ -200,6 +200,10 @@ class CachedVc(Vc):
             self.cache_inventory(directory)
         return self._tree_cache
 
+# Return the stdout output of a given command
 def popen(cmd, cwd=None):
     return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
 
+# Return the return value of a given command
+def call(cmd, cwd=None):
+    return subprocess.call(cmd, cwd=cwd, stdout=subprocess.PIPE)
