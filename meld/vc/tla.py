@@ -85,6 +85,12 @@ class Vc(_vc.CachedVc):
         # Will only work on later versions of tla
         return [self.CMD, "undo", "--"]
 
+    def valid_repo(self):
+        if _vc.call([self.CMD, "tree-version"]):
+            return False
+        else:
+            return True
+
     def get_working_directory(self, workdir):
         return self.root
 

@@ -49,6 +49,11 @@ class Vc(_vc.Vc):
         return [self.CMD,"rm","-f"]
     def revert_command(self):
         return [self.CMD,"update","-C"]
+    def valid_repo(self):
+        if _vc.call([self.CMD, "version"]):
+            return False
+        else:
+            return True
 
     def _get_dirsandfiles(self, directory, dirs, files):
 

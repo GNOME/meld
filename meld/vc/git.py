@@ -66,6 +66,11 @@ class Vc(_vc.CachedVc):
         return [self.CMD,"rm"]
     def revert_command(self):
         return [self.CMD,"checkout"]
+    def valid_repo(self):
+        if _vc.call([self.CMD, "branch"]):
+            return False
+        else:
+            return True
     def get_working_directory(self, workdir):
         if workdir.startswith("/"):
             return self.root

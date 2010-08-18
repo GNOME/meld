@@ -233,17 +233,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         default_active = 0
         # Try to keep the same VC plugin active on refresh()
         for idx, avc in enumerate(vcs):
-            if (self.vc is not None and
-                self.vc.__class__ == avc.__class__):
-                default_active = idx
-
-            # See if the necessary version control command exists.  If not,
-            # make the version control choice non-selectable.
+            # See if the necessary version control command exists.  If so,
+            # make sure what we're diffing is a valid respository.  If either
+            # check fails don't let the user select the that version control
+            # tool and display a basic error message in the drop-down menu.
             err_str = ""
             if vc._vc.call(["which", avc.CMD]):
                 # TRANSLATORS: this is an error message when a version control
                 # application isn't installed or can't be found
                 err_str = _("%s Not Installed" % avc.CMD)
+            elif not avc.valid_repo():
+                # TRANSLATORS: this is an error message when a version
+                # controlled repository is invalid or corrupted
+                err_str = _("Invalid Repository")
+            else:
+                if (self.vc is not None and
+                     self.vc.__class__ == avc.__class__):
+                     default_active = idx
 
             if err_str:
                 self.combobox_vcs.get_model().append( \

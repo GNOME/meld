@@ -141,6 +141,10 @@ class Vc(object):
     def listdir_filter(self, entries):
         return [f for f in entries if f != self.VC_DIR]
 
+    # Determine if a directory is a valid git/svn/hg/cvs/etc repository
+    def valid_repo(self):
+        return True
+
     def listdir(self, start):
         if start=="": start="."
         cfiles = []

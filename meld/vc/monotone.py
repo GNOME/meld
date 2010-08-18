@@ -143,6 +143,11 @@ class Vc(_vc.CachedVc):
         return [self.CMD,"revert"]
     def resolved_command(self):
         return [self.CMD,"resolved"]
+    def valid_repo(self):
+        if _vc.call([self.CMD, "list", "tags"]):
+            return False
+        else:
+            return True
     def get_working_directory(self, workdir):
         return self.root
 

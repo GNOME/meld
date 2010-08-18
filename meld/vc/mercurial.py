@@ -59,6 +59,11 @@ class Vc(_vc.Vc):
         return [self.CMD,"rm"]
     def revert_command(self):
         return [self.CMD,"revert"]
+    def valid_repo(self):
+        if _vc.call([self.CMD, "root"]):
+            return False
+        else:
+            return True
     def get_working_directory(self, workdir):
         return self.root
 
