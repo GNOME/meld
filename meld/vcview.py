@@ -203,10 +203,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # VC ComboBox
         self.combobox_vcs = gtk.ComboBox()
         self.combobox_vcs.lock = True
-        self.combobox_vcs.set_model(gtk.ListStore(str, object))
+        self.combobox_vcs.set_model(gtk.ListStore(str, object, bool))
         cell = gtk.CellRendererText()
         self.combobox_vcs.pack_start(cell, False)
         self.combobox_vcs.add_attribute(cell, 'text', 0)
+        self.combobox_vcs.add_attribute(cell, 'sensitive', 2)
         self.combobox_vcs.lock = False
         self.hbox2.pack_end(self.combobox_vcs, expand=False)
         self.combobox_vcs.show()
@@ -235,7 +236,21 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if (self.vc is not None and
                 self.vc.__class__ == avc.__class__):
                 default_active = idx
-            self.combobox_vcs.get_model().append([avc.NAME, avc])
+
+            # See if the necessary version control command exists.  If not,
+            # make the version control choice non-selectable.
+            err_str = ""
+            if vc._vc.call(["which", avc.CMD]):
+                # TRANSLATORS: this is an error message when a version control
+                # application isn't installed or can't be found
+                err_str = _("%s Not Installed" % avc.CMD)
+
+            if err_str:
+                self.combobox_vcs.get_model().append( \
+                        [_("%s (%s)") % (avc.NAME, err_str), avc, False])
+            else:
+                self.combobox_vcs.get_model().append([avc.NAME, avc, True])
+
         if gtk.pygtk_version >= (2, 12, 0):
             self.combobox_vcs.set_tooltip_text(tooltip_texts[len(vcs) == 1])
         self.combobox_vcs.set_sensitive(len(vcs) > 1)
