@@ -210,4 +210,5 @@ def popen(cmd, cwd=None):
 
 # Return the return value of a given command
 def call(cmd, cwd=None):
-    return subprocess.call(cmd, cwd=cwd, stdout=subprocess.PIPE)
+    return subprocess.call(cmd, cwd=cwd, stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT)
