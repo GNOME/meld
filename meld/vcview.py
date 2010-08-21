@@ -230,7 +230,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.combobox_vcs.get_model().clear()
         tooltip_texts = [_("Choose one Version Control"),
                          _("Only one Version Control in this directory")]
-        default_active = 0
+        default_active = -1
+        valid_vcs = []
         # Try to keep the same VC plugin active on refresh()
         for idx, avc in enumerate(vcs):
             # See if the necessary version control command exists.  If so,
@@ -247,6 +248,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 # controlled repository is invalid or corrupted
                 err_str = _("Invalid Repository")
             else:
+                valid_vcs.append(idx)
                 if (self.vc is not None and
                      self.vc.__class__ == avc.__class__):
                      default_active = idx
@@ -256,6 +258,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                         [_("%s (%s)") % (avc.NAME, err_str), avc, False])
             else:
                 self.combobox_vcs.get_model().append([avc.NAME, avc, True])
+
+        if valid_vcs and default_active == -1:
+            default_active = min(valid_vcs)
 
         if gtk.pygtk_version >= (2, 12, 0):
             self.combobox_vcs.set_tooltip_text(tooltip_texts[len(vcs) == 1])
