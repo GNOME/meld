@@ -14,6 +14,10 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
+import subprocess
+import sys
+
 import gobject
 import task
 import undo
@@ -67,8 +71,12 @@ class MeldDoc(gobject.GObject):
                 cmd = self.prefs.get_gnome_editor_command(files)
                 os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
         for d in dirs:
-            cmd = ["xdg-open", d]
-            os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
+            if sys.platform == "win32":
+                subprocess.Popen(["start", d], shell=True)
+            elif sys.platform == "darwin":
+                subprocess.Popen(["open", d])
+            else:
+                subprocess.Popen(["xdg-open", d])
 
     def on_undo_activate(self):
         if self.undosequence.can_undo():
