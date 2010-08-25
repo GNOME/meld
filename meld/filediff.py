@@ -937,7 +937,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         area = event.area
         x, y = textview.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET,
                                                 area.x, area.y)
-        bounds = (self._pixel_to_line(pane, x),
+        bounds = (self._pixel_to_line(pane, y),
                   self._pixel_to_line(pane, y + area.height + 1))
 
         width, height = textview.allocation.width, textview.allocation.height
