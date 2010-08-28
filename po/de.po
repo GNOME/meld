@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&component=general\n"
-"POT-Creation-Date: 2010-06-19 02:36+0000\n"
-"PO-Revision-Date: 2010-06-19 23:05+0100\n"
+"POT-Creation-Date: 2010-08-24 09:51+0000\n"
+"PO-Revision-Date: 2010-08-28 21:39+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -212,7 +212,9 @@ msgstr "Dateifilter"
 
 #: ../data/ui/preferences.glade.h:11
 msgid "Ignore changes which insert or delete blank lines"
-msgstr "Ignorieren von Änderungen, durch die Leerzeichen hinzugefügt oder entfernt werden"
+msgstr ""
+"Ignorieren von Änderungen, durch die Leerzeichen hinzugefügt oder entfernt "
+"werden"
 
 #: ../data/ui/preferences.glade.h:12
 msgid "Ignore symbolic links"
@@ -270,22 +272,18 @@ msgstr ""
 "Informationen sind im Benutzerhandbuch zu finden."
 
 #: ../data/ui/preferences.glade.h:21
-msgid "_Automatically supply missing newline at end of file"
-msgstr "_Automatisch fehlenden Zeilenumbruch am Dateiende einfügen"
-
-#: ../data/ui/preferences.glade.h:22
 msgid "_Editor font:"
 msgstr "Editor-_Schrift:"
 
-#: ../data/ui/preferences.glade.h:23
+#: ../data/ui/preferences.glade.h:22
 msgid "_Insert spaces instead of tabs"
 msgstr "Leerze_ichen anstelle von Tabulatoren verwenden"
 
-#: ../data/ui/preferences.glade.h:24
+#: ../data/ui/preferences.glade.h:23
 msgid "_Tab width:"
 msgstr "_Tabulatorbreite:"
 
-#: ../data/ui/preferences.glade.h:25
+#: ../data/ui/preferences.glade.h:24
 msgid "_Use the system fixed width font"
 msgstr "Die dicktengleiche S_ystemschrift verwenden"
 
@@ -353,7 +351,7 @@ msgstr "Nach rechts kopieren"
 msgid "Delete selected"
 msgstr "Markiertes löschen"
 
-#: ../meld/dirdiff.py:188 ../meld/filediff.py:842
+#: ../meld/dirdiff.py:188 ../meld/filediff.py:850
 msgid "Hide"
 msgstr "Verbergen"
 
@@ -415,8 +413,8 @@ msgstr "Fehler beim Umwandeln von Muster »%s« in einen regulären Ausdruck"
 msgid "Hide %s"
 msgstr "Verbergen von %s"
 
-#: ../meld/dirdiff.py:394 ../meld/dirdiff.py:404 ../meld/vcview.py:276
-#: ../meld/vcview.py:304
+#: ../meld/dirdiff.py:394 ../meld/dirdiff.py:404 ../meld/vcview.py:302
+#: ../meld/vcview.py:330
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] %s wird durchsucht"
@@ -463,7 +461,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:587 ../meld/vcview.py:463
+#: ../meld/dirdiff.py:587 ../meld/vcview.py:489
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -472,7 +470,7 @@ msgstr ""
 "»%s« ist ein Ordner.\n"
 "Diesen rekursiv löschen?"
 
-#: ../meld/dirdiff.py:594 ../meld/vcview.py:468
+#: ../meld/dirdiff.py:594 ../meld/vcview.py:494
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -602,46 +600,46 @@ msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "Alle konfliktlosen Änderungen von links nach rechts zusammenführen"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:258
 msgid "INS"
 msgstr "EINF"
 
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:258
 msgid "OVR"
 msgstr "ÜBR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:259
+#: ../meld/filediff.py:260
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Zeile %i, Spalte %i"
 
-#: ../meld/filediff.py:432
+#: ../meld/filediff.py:435
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
 "will be incorrect. See the user manual for more details."
 msgstr ""
-"Der reguläre Ausdruck »%s« veränderte die Zeilenanzahl der Datei. Ein Vergleich "
-"wird keine korrekten Ergebnisse liefern. Weitere Informationen sind im "
-"Benutzerhandbuch zu finden."
+"Der reguläre Ausdruck »%s« veränderte die Zeilenanzahl der Datei. Ein "
+"Vergleich wird keine korrekten Ergebnisse liefern. Weitere Informationen sind "
+"im Benutzerhandbuch zu finden."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:529
+#: ../meld/filediff.py:532
 msgid "<unnamed>"
 msgstr "<unbenannt>"
 
-#: ../meld/filediff.py:709
+#: ../meld/filediff.py:708
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Setzen der Spaltenanzahl"
 
-#: ../meld/filediff.py:715
+#: ../meld/filediff.py:714
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Dateien werden geöffnet"
 
-#: ../meld/filediff.py:721 ../meld/filediff.py:846
+#: ../meld/filediff.py:720 ../meld/filediff.py:854
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
@@ -665,16 +663,16 @@ msgstr "%s scheint eine Binärdatei zu sein."
 msgid "%s is not in encodings: %s"
 msgstr "%s ist nicht in Kodierungen enthalten: %s"
 
-#: ../meld/filediff.py:792 ../meld/filemerge.py:70
+#: ../meld/filediff.py:799 ../meld/filemerge.py:70
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
 
-#: ../meld/filediff.py:840
+#: ../meld/filediff.py:848
 msgid "Files are identical"
 msgstr "Dateien sind identisch"
 
-#: ../meld/filediff.py:974
+#: ../meld/filediff.py:985
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -683,7 +681,7 @@ msgstr ""
 "»%s« ist vorhanden!\n"
 "Ersetzen?"
 
-#: ../meld/filediff.py:987
+#: ../meld/filediff.py:998
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -694,12 +692,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:996
+#: ../meld/filediff.py:1007
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Wählen Sie einen Namen für den Zwischenspeicher %i."
 
-#: ../meld/filediff.py:1010
+#: ../meld/filediff.py:1021
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -710,7 +708,7 @@ msgstr ""
 "\n"
 "Welches Format möchten Sie verwenden?"
 
-#: ../meld/filediff.py:1026
+#: ../meld/filediff.py:1037
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -720,11 +718,11 @@ msgstr ""
 "Möchten Sie im UTF-8-Format speichern?"
 
 #. save as
-#: ../meld/filediff.py:1064
+#: ../meld/filediff.py:1074
 msgid "Save patch as..."
 msgstr "Patch speichern unter …"
 
-#: ../meld/filediff.py:1111
+#: ../meld/filediff.py:1121
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -978,7 +976,7 @@ msgstr "Erzeugt einen Diff-Reiter für bis zu drei Dateien oder Ordner."
 msgid "too many arguments (wanted 0-4, got %d)"
 msgstr "Zu viele Argumente (0-4 erforderlich, %d erhalten)"
 
-#: ../meld/melddoc.py:48
+#: ../meld/melddoc.py:47
 msgid "untitled"
 msgstr "unbenannt"
 
@@ -1001,70 +999,70 @@ msgstr "Ist nur verfügbar, wenn Sie gnome-python-desktop installiert haben."
 
 #. file filters
 #. text filters
-#: ../meld/preferences.py:166 ../meld/preferences.py:171 ../meld/vcview.py:163
+#: ../meld/preferences.py:165 ../meld/preferences.py:170 ../meld/vcview.py:163
 msgid "Name"
 msgstr "Name"
 
-#: ../meld/preferences.py:166 ../meld/preferences.py:171
+#: ../meld/preferences.py:165 ../meld/preferences.py:170
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../meld/preferences.py:166
+#: ../meld/preferences.py:165
 msgid "Pattern"
 msgstr "Muster"
 
-#: ../meld/preferences.py:171
+#: ../meld/preferences.py:170
 msgid "Regex"
 msgstr "Regex"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:268
+#: ../meld/preferences.py:264
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:270
+#: ../meld/preferences.py:266
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Versionskontrolle\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:272
+#: ../meld/preferences.py:268
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:274
+#: ../meld/preferences.py:270
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Medien\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:276
+#: ../meld/preferences.py:272
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "CVS-Schlüsselwörter\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:278
+#: ../meld/preferences.py:274
 msgid "C++ comment\t0\t//.*\n"
 msgstr "C++ Kommentar\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:280
+#: ../meld/preferences.py:276
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "C-Kommentar\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:282
+#: ../meld/preferences.py:278
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Alle Leerzeichen\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:284
+#: ../meld/preferences.py:280
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Führende Leerzeichen\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:286
+#: ../meld/preferences.py:282
 msgid "Script comment\t0\t#.*"
 msgstr "Skript-Kommentar\t0\t#.*"
 
@@ -1181,37 +1179,55 @@ msgstr "Revision"
 msgid "Options"
 msgstr "Optionen"
 
-#: ../meld/vcview.py:230
+#: ../meld/vcview.py:231
 msgid "Choose one Version Control"
 msgstr "Versionskontrollsystem auswählen"
 
-#: ../meld/vcview.py:231
+#: ../meld/vcview.py:232
 msgid "Only one Version Control in this directory"
 msgstr "Nur eine Versionskontrolle in diesem Ordner"
 
-#: ../meld/vcview.py:320
+#. TRANSLATORS: this is an error message when a version control
+#. application isn't installed or can't be found
+#: ../meld/vcview.py:245
+#, python-format
+msgid "%s Not Installed"
+msgstr "%s ist nicht installiert"
+
+#. TRANSLATORS: this is an error message when a version
+#. controlled repository is invalid or corrupted
+#: ../meld/vcview.py:249
+msgid "Invalid Repository"
+msgstr "Ungültiger Softwarebestand"
+
+#: ../meld/vcview.py:258
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../meld/vcview.py:346
 msgid "(Empty)"
 msgstr "(Leer)"
 
-#: ../meld/vcview.py:353
+#: ../meld/vcview.py:379
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Unterschiede werden abgerufen"
 
-#: ../meld/vcview.py:360
+#: ../meld/vcview.py:386
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Patch wird angewendet"
 
-#: ../meld/vcview.py:364
+#: ../meld/vcview.py:390
 msgid "No differences found."
 msgstr "Keine Unterschiede gefunden"
 
-#: ../meld/vcview.py:438
+#: ../meld/vcview.py:464
 msgid "Select some files first."
 msgstr "Wählen Sie zunächst einige Dateien aus."
 
-#: ../meld/vcview.py:504
+#: ../meld/vcview.py:530
 #, python-format
 msgid ""
 "\n"
@@ -1250,7 +1266,8 @@ msgstr ""
 "                    \n"
 "                    - meld-Version: »%s«:\n"
 "                    - Software-Typ des Versionsverwaltungssystems: »%s«\n"
-"                    - Software-Version des Versionsverwaltungssystems: »X.Y.Z«\n"
+"                    - Software-Version des Versionsverwaltungssystems: »X.Y."
+"Z«\n"
 "                    - die Ausgabe von »%s eine-datei.txt«\n"
 "                    - Patch-Befehl: »%s«\n"
 "                   (direkte Ausführung ist nicht notwendig,\n"
@@ -1306,7 +1323,7 @@ msgstr ""
 "Ignoriert:Kein VC:::Fehler::Neu hinzugefügt:Geändert:<b>Konflikt</b>:Entfernt:"
 "Fehlend"
 
-#: ../meld/vc/cvs.py:151
+#: ../meld/vc/cvs.py:156
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1316,6 +1333,9 @@ msgstr ""
 "Fehler beim Umwandeln in einen regulären Ausdruck\n"
 "Das Muster war »%s«\n"
 "Der Fehler lautet »%s«"
+
+#~ msgid "_Automatically supply missing newline at end of file"
+#~ msgstr "_Automatisch fehlenden Zeilenumbruch am Dateiende einfügen"
 
 #~ msgid "Copy all changes from right pane to left pane"
 #~ msgstr "Alle Änderungen von rechts nach links kopieren"
@@ -1413,7 +1433,8 @@ msgstr ""
 #~ "Aufruf:\n"
 #~ "\n"
 #~ "    meld                        Start ohne dass Fenster geöffnet werden\n"
-#~ "    meld <dir>                  Start mit CVS-Browser im Verzeichnis »dir«\n"
+#~ "    meld <dir>                  Start mit CVS-Browser im Verzeichnis "
+#~ "»dir«\n"
 #~ "    meld <file>                 Start mit CVS diff von Datei »file«\n"
 #~ "    meld <file> <file> [file]   Start mit 2- oder 3-Wege-Dateivergleich\n"
 #~ "    meld <dir>  <dir>  [dir]    Start mit 2- oder\n"
