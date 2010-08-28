@@ -33,14 +33,23 @@ class Vc(_vc.CachedVc):
     NAME = "Bazaar-NG"
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)'$"
-    state_map = {
-        "unknown:":   _vc.STATE_NONE,
-        "added:":     _vc.STATE_NEW,
-        "unchanged:": _vc.STATE_NORMAL,
-        "removed:":   _vc.STATE_REMOVED,
-        "ignored:":   _vc.STATE_IGNORED,
-        "modified:":  _vc.STATE_MODIFIED,
-        "conflicts:": _vc.STATE_CONFLICT,
+
+    # We use None here to indicate flags that we don't deal with or care about
+    state_1_map = {
+        "+": None,               # File versioned
+        "-": None,               # File unversioned
+        "R": None,               # File renamed
+        "?": _vc.STATE_NONE,     # File unknown
+        "X": None,               # File nonexistent (and unknown to bzr)
+        "C": _vc.STATE_CONFLICT, # File has conflicts
+        "P": None,               # Entry for a pending merge (not a file)
+    }
+
+    state_2_map = {
+        "N": _vc.STATE_NEW,      # File created
+        "D": _vc.STATE_REMOVED,  # File deleted
+        "K": None,               # File kind changed
+        "M": _vc.STATE_MODIFIED, # File modified
     }
 
     def commit_command(self, message):
@@ -69,7 +78,8 @@ class Vc(_vc.CachedVc):
         branch_root = _vc.popen([self.CMD] + self.CMDARGS + ["root", rootdir]).read().rstrip('\n')
         while 1:
             try:
-                proc = _vc.popen([self.CMD] + self.CMDARGS + ["status", branch_root])
+                proc = _vc.popen([self.CMD] + self.CMDARGS +
+                                 ["status", "-S", "--no-pending", branch_root])
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError, e:
@@ -77,13 +87,15 @@ class Vc(_vc.CachedVc):
                     raise
         tree_state = {}
         for entry in entries:
-            if entry == "pending merges:":
-                break
-            if entry in self.state_map:
-                cur_state = self.state_map[entry]
-            else:
-                if entry.startswith("  "):
-                    tree_state[os.path.join(rootdir, entry[2:])] = cur_state
+            state_string, name = entry[:3], entry[4:]
+
+            # TODO: We don't do anything with exec bit changes.
+            path = os.path.join(branch_root, name.strip())
+            state = self.state_1_map.get(state_string[0], None)
+            if state is None:
+                state = self.state_2_map.get(state_string[1], _vc.STATE_NORMAL)
+            tree_state[path] = state
+
         return tree_state
 
     def _get_dirsandfiles(self, directory, dirs, files):
