@@ -637,6 +637,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif key == "edit_wrap_lines":
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)
+            # FIXME: On changing wrap mode, we get one redraw using cached
+            # coordinates, followed by a second redraw (e.g., on refocus) with
+            # correct coordinates. Overly-aggressive textview lazy calculation?
+            self.diffmap0.queue_draw()
+            self.diffmap1.queue_draw()
         elif key == "spaces_instead_of_tabs":
             for t in self.textview:
                 t.set_insert_spaces_instead_of_tabs(value)
@@ -1375,11 +1380,27 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
 
-            def chunk_change_fn(i):
-                return lambda: self.linediffer.single_changes(i)
+            def coords_iter(i):
+                buf_index = 2 if i == 1 and self.num_panes == 3 else i
+                get_end_iter = self.textbuffer[buf_index].get_end_iter
+                get_iter_at_line = self.textbuffer[buf_index].get_iter_at_line
+                get_line_yrange = self.textview[buf_index].get_line_yrange
+
+                def coords_by_chunk():
+                    y, h = get_line_yrange(get_end_iter())
+                    max_y = float(y + h)
+                    for c in self.linediffer.single_changes(i):
+                        y0, _ = get_line_yrange(get_iter_at_line(c[1]))
+                        if c[1] == c[2]:
+                            y, h = y0, 0
+                        else:
+                            y, h = get_line_yrange(get_iter_at_line(c[2] - 1))
+                        yield c[0], y0 / max_y, (y + h) / max_y
+                return coords_by_chunk
+
             for (w, i) in zip(self.diffmap, (0, self.num_panes - 1)):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
-                w.setup(scroll, self.textbuffer[i], chunk_change_fn(i))
+                w.setup(scroll, coords_iter(i))
 
             for i in range(self.num_panes):
                 if self.bufferdata[i].modified:

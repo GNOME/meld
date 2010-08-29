@@ -39,25 +39,20 @@ class DiffMap(gtk.DrawingArea):
         self._h_offset = 0
         self._scroll_y = 0
         self._scroll_height = 0
-        self._num_lines = 0
 
-    def setup(self, scrollbar, textbuffer, change_chunk_fn):
+    def setup(self, scrollbar, change_chunk_fn):
         for (o, h) in self._handlers:
             o.disconnect(h)
 
         self._scrolladj = scrollbar.get_adjustment()
         self.on_scrollbar_style_set(scrollbar, None)
         self.on_scrollbar_size_allocate(scrollbar, scrollbar.allocation)
-        self.on_textbuffer_changed(textbuffer)
         scroll_style_hid = scrollbar.connect("style-set",
                                              self.on_scrollbar_style_set)
         scroll_size_hid = scrollbar.connect("size-allocate",
                                             self.on_scrollbar_size_allocate)
-        buffer_changed_hid = textbuffer.connect("changed",
-                                                self.on_textbuffer_changed)
         self._handlers = [(scrollbar, scroll_style_hid),
-                          (scrollbar, scroll_size_hid),
-                          (textbuffer, buffer_changed_hid)]
+                          (scrollbar, scroll_size_hid)]
         self._difffunc = change_chunk_fn
         self.queue_draw()
 
@@ -84,15 +79,8 @@ class DiffMap(gtk.DrawingArea):
         self._scroll_height = allocation.height
         self.queue_draw()
 
-    def on_textbuffer_changed(self, textbuffer):
-        num_lines = textbuffer.get_line_count()
-        if num_lines != self._num_lines:
-            self._num_lines = num_lines
-            self.queue_draw()
-
     def do_expose_event(self, event):
         height = self._scroll_height - self._h_offset - 1
-        scale = float(height) / self._num_lines
         y_start = self._scroll_y - self.allocation.y + self._y_offset + 1
         xpad = self.style_get_property('x-padding')
         x0 = xpad
@@ -110,10 +98,9 @@ class DiffMap(gtk.DrawingArea):
                 "delete": (0.75686274509803919, 1.0, 0.75686274509803919)}
         darken = lambda color: [x * 0.8 for x in color]
 
-        for c in self._difffunc():
-            color = ctab[c[0]]
-            y0 = round(scale * c[1]) - 0.5
-            y1 = round(scale * c[2]) - 0.5
+        for c, y0, y1 in self._difffunc():
+            color = ctab[c]
+            y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
             context.set_source_rgb(*color)
             context.rectangle(x0, y0, x1, int(y1 - y0))
             context.fill_preserve()
