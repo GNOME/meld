@@ -73,6 +73,42 @@ class CachedSequenceMatcher(object):
         for item in items[:-size_hint * 2]:
             del self.cache[item[0]]
 
+
+class FakeText(object):
+    """gtk.TextBuffer shim with line-based access and optional filtering
+
+    This class allows a gtk.TextBuffer to be treated as a list of lines of
+    possibly-filtered text. If no filter is given, the raw output from the
+    gtk.TextBuffer is used.
+    """
+    def __init__(self, buf, textfilter=None):
+        self.buf = buf
+        if textfilter is not None:
+            self.textfilter = textfilter
+        else:
+            self.textfilter = lambda x: x
+
+    def __getslice__(self, lo, hi):
+        start = get_iter_at_line_or_eof(self.buf, lo)
+        end = get_iter_at_line_or_eof(self.buf, hi)
+        txt = self.buf.get_text(start, end, False)
+        if hi >= self.buf.get_line_count():
+            return self.textfilter(txt).split("\n")
+        else:
+            return self.textfilter(txt).split("\n")[:-1]
+
+    def __getitem__(self, i):
+        line_start = get_iter_at_line_or_eof(self.buf, i)
+        line_end = line_start.copy()
+        if not line_end.ends_line():
+            line_end.forward_to_line_end()
+        # TODO: should this be filtered?
+        return self.buf.get_text(line_start, line_end, False)
+
+    def __len__(self):
+        return self.buf.get_line_count()
+
+
 ################################################################################
 #
 # FileDiff
@@ -434,31 +470,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.queue_draw()
 
     def _get_texts(self, raw=0):
-        class FakeText(object):
-            def __init__(self, buf, textfilter):
-                self.buf = buf
-                self.textfilter = textfilter
-
-            def __getslice__(self, lo, hi):
-                start = get_iter_at_line_or_eof(self.buf, lo)
-                end = get_iter_at_line_or_eof(self.buf, hi)
-                txt = self.buf.get_text(start, end, False)
-                if hi >= self.buf.get_line_count():
-                    return self.textfilter(txt).split("\n")
-                else:
-                    return self.textfilter(txt).split("\n")[:-1]
-
-            def __getitem__(self, i):
-                line_start = get_iter_at_line_or_eof(self.buf, i)
-                line_end = line_start.copy()
-                if not line_end.ends_line():
-                    line_end.forward_to_line_end()
-                # TODO: should this be filtered?
-                return self.buf.get_text(line_start, line_end, False)
-
-            def __len__(self):
-                return self.buf.get_line_count()
-
         textfilter = (self._filter_text, lambda x: x)[raw]
         return [FakeText(b, textfilter) for b in self.textbuffer]
 
