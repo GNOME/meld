@@ -74,7 +74,7 @@ class CachedSequenceMatcher(object):
             del self.cache[item[0]]
 
 
-class FakeText(object):
+class BufferLines(object):
     """gtk.TextBuffer shim with line-based access and optional filtering
 
     This class allows a gtk.TextBuffer to be treated as a list of lines of
@@ -181,6 +181,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.bufferdata = [MeldBufferData() for b in self.textbuffer]
+        self.buffer_texts = [BufferLines(b) for b in self.textbuffer]
+        self.buffer_filtered = [BufferLines(b, self._filter_text) for
+                                b in self.textbuffer]
         for (i, w) in enumerate(self.scrolledwindow):
             w.get_vadjustment().connect("value-changed", self._sync_vscroll, i)
             w.get_hadjustment().connect("value-changed", self._sync_hscroll)
@@ -416,7 +419,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         assert src in range(self.num_panes)
         merger = merge.Merger()
         merger.differ = self.linediffer
-        merger.texts = [t for t in self._get_texts(raw=1)]
+        merger.texts = self.buffer_texts
         for mergedfile in merger.merge_2_files(src, dst):
             pass
         self._sync_vscroll_lock = True
@@ -432,7 +435,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dst = 1
         merger = merge.Merger()
         merger.differ = self.linediffer
-        merger.texts = [t for t in self._get_texts(raw=1)]
+        merger.texts = self.buffer_texts
         for mergedfile in merger.merge_3_files(False):
             pass
         self._sync_vscroll_lock = True
@@ -460,7 +463,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
             pane = self.textbuffer.index(buffer)
-            self.linediffer.change_sequence(pane, startline, sizechange, self._get_texts())
+            self.linediffer.change_sequence(pane, startline, sizechange,
+                                            self.buffer_filtered)
             # FIXME: diff-changed signal for the current buffer would be cleaner
             focused_pane = self._get_focused_pane()
             if focused_pane != -1:
@@ -468,10 +472,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                                 None, True)
             self.scheduler.add_task(self._update_highlighting().next)
             self.queue_draw()
-
-    def _get_texts(self, raw=0):
-        textfilter = (self._filter_text, lambda x: x)[raw]
-        return [FakeText(b, textfilter) for b in self.textbuffer]
 
     def _filter_text(self, txt):
         def killit(m):
@@ -921,7 +921,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             mgr.clear()
 
     def _update_highlighting(self):
-        alltexts = [t for t in self._get_texts(raw=1)]
+        alltexts = self.buffer_texts
         alltags = [b.get_tag_table().lookup("inline line") for b in self.textbuffer]
         progress = [b.create_mark("progress", b.get_start_iter()) for b in self.textbuffer]
         newcache = set()
