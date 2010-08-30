@@ -436,29 +436,31 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _get_texts(self, raw=0):
         class FakeText(object):
             def __init__(self, buf, textfilter):
-                self.buf, self.textfilter = buf, textfilter
+                self.buf = buf
+                self.textfilter = textfilter
+
             def __getslice__(self, lo, hi):
-                b = self.buf
-                txt = b.get_text(get_iter_at_line_or_eof(b, lo), get_iter_at_line_or_eof(b, hi), 0)
-                if hi >= b.get_line_count(): 
+                start = get_iter_at_line_or_eof(self.buf, lo)
+                end = get_iter_at_line_or_eof(self.buf, hi)
+                txt = self.buf.get_text(start, end, False)
+                if hi >= self.buf.get_line_count():
                     return self.textfilter(txt).split("\n")
                 else:
                     return self.textfilter(txt).split("\n")[:-1]
+
             def __getitem__(self, i):
                 line_start = get_iter_at_line_or_eof(self.buf, i)
                 line_end = line_start.copy()
                 if not line_end.ends_line():
                     line_end.forward_to_line_end()
+                # TODO: should this be filtered?
                 return self.buf.get_text(line_start, line_end, False)
+
             def __len__(self):
                 return self.buf.get_line_count()
 
-        class FakeTextArray(object):
-            def __init__(self, bufs, textfilter):
-                self.texts = [FakeText(b, textfilter) for b in  bufs]
-            def __getitem__(self, i):
-                return self.texts[i]
-        return FakeTextArray(self.textbuffer, [self._filter_text, lambda x:x][raw])
+        textfilter = (self._filter_text, lambda x: x)[raw]
+        return [FakeText(b, textfilter) for b in self.textbuffer]
 
     def _filter_text(self, txt):
         def killit(m):
