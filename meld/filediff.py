@@ -296,6 +296,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.connect_signal_handlers(self)
         self.findbar = findbar.FindBar()
         self.filediff.pack_end(self.findbar.widget, False)
+        self.focus_before_click = None
         self.cursor = CursorDetails()
         self.connect("current-diff-changed", self.on_current_diff_changed)
         for t in self.textview:
