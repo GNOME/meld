@@ -70,7 +70,7 @@ class FileMerge(filediff.FileDiff):
         panetext = []
         for b in self.textbuffer[:self.num_panes]:
             start, end = b.get_bounds()
-            text = b.get_text(start, end, False)
+            text = unicode(b.get_text(start, end, False), 'utf8')
             panetext.append(text)
         lines = [x.split("\n") for x in panetext]
         filteredpanetext = [self._filter_text(p) for p in panetext]

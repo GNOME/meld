@@ -108,7 +108,8 @@ class FindBar(gnomeglade.Component):
         insert = buf.get_iter_at_mark( buf.get_insert() )
         tofind_utf8 = self.find_entry.get_text()
         tofind = tofind_utf8.decode("utf-8") # tofind is utf-8 encoded
-        text = buf.get_text(*buf.get_bounds() ).decode("utf-8") # as is buffer
+        start, end = buf.get_bounds()
+        text = buf.get_text(start, end, False).decode("utf-8") # as is buffer
         if not regex:
             tofind = re.escape(tofind)
         if whole_word:

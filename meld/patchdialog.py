@@ -80,7 +80,7 @@ class PatchDialog(gnomeglade.Component):
         texts = []
         for b in self.filediff.textbuffer:
             start, end = b.get_bounds()
-            text = b.get_text(start, end, False)
+            text = unicode(b.get_text(start, end, False), 'utf8')
             lines = text.splitlines(True)
             texts.append(lines)
 
@@ -103,7 +103,8 @@ class PatchDialog(gnomeglade.Component):
                 break
 
             buf = self.textview.get_buffer()
-            txt = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False)
+            start, end = buf.get_bounds()
+            txt = unicode(buf.get_text(start, end, False), 'utf8')
 
             # Copy patch to clipboard
             if result == 1:

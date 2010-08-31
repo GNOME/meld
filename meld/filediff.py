@@ -92,7 +92,7 @@ class BufferLines(object):
     def __getslice__(self, lo, hi):
         start = get_iter_at_line_or_eof(self.buf, lo)
         end = get_iter_at_line_or_eof(self.buf, hi)
-        txt = self.buf.get_text(start, end, False)
+        txt = unicode(self.buf.get_text(start, end, False), 'utf8')
         if hi >= self.buf.get_line_count():
             return self.textfilter(txt).split("\n")
         else:
@@ -104,7 +104,7 @@ class BufferLines(object):
         if not line_end.ends_line():
             line_end.forward_to_line_end()
         # TODO: should this be filtered?
-        return self.buf.get_text(line_start, line_end, False)
+        return unicode(self.buf.get_text(line_start, line_end, False), 'utf8')
 
     def __len__(self):
         return self.buf.get_line_count()
@@ -496,6 +496,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return txt
 
     def after_text_insert_text(self, buffer, it, newtext, textlen):
+        newtext = unicode(newtext, 'utf8')
         lines_added = newtext.count("\n")
         starting_at = it.get_line() - lines_added
         self._after_text_modified(buffer, starting_at, lines_added)
@@ -633,11 +634,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.end_group()
 
     def on_text_insert_text(self, buffer, it, text, textlen):
+        text = unicode(text, 'utf8')
         self.undosequence.add_action(
             BufferInsertionAction(buffer, it.get_offset(), text))
 
     def on_text_delete_range(self, buffer, it0, it1):
-        text = buffer.get_text(it0, it1, 0)
+        text = unicode(buffer.get_text(it0, it1, False), 'utf8')
         pane = self.textbuffer.index(buffer)
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = text.count("\n")
@@ -661,10 +663,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Returns selected text of active pane"""
         pane = self._get_focused_pane()
         if pane != -1:
-            buf = self.textbuffer[self._get_focused_pane()]
-            bounds = buf.get_selection_bounds()
-            if bounds:
-                return buf.get_text(bounds[0], bounds[1])
+            buf = self.textbuffer[pane]
+            sel = buf.get_selection_bounds()
+            if sel:
+                return unicode(buf.get_text(sel[0], sel[1], False), 'utf8')
         return None
 
     def on_find_activate(self, *args):
@@ -1070,7 +1072,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.fileentry[pane].prepend_history(bufdata.filename)
             else:
                 return melddoc.RESULT_ERROR
-        text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
+        start, end = buf.get_bounds()
+        text = unicode(buf.get_text(start, end, False), 'utf8')
         if bufdata.newlines:
             if type(bufdata.newlines) == type(""):
                 if(bufdata.newlines) != '\n':
@@ -1463,7 +1466,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
         start = get_iter_at_line_or_eof(b0, chunk[1])
         end = get_iter_at_line_or_eof(b0, chunk[2])
-        t0 = b0.get_text(start, end, 0)
+        t0 = unicode(b0.get_text(start, end, False), 'utf8')
         if copy_up:
             if chunk[2] >= b0.get_line_count() and \
                chunk[3] < b1.get_line_count():
@@ -1478,7 +1481,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         src_end = get_iter_at_line_or_eof(b0, chunk[2])
         dst_start = get_iter_at_line_or_eof(b1, chunk[3])
         dst_end = get_iter_at_line_or_eof(b1, chunk[4])
-        t0 = b0.get_text(src_start, src_end, 0)
+        t0 = unicode(b0.get_text(src_start, src_end, False), 'utf8')
         self.on_textbuffer__begin_user_action()
         b1.delete(dst_start, dst_end)
         insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
