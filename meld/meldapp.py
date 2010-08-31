@@ -497,6 +497,9 @@ class MeldApp(gnomeglade.Component):
         page.connect("create-diff", lambda obj,arg: self.append_diff(arg) )
         page.connect("status-changed", lambda junk,arg: self.statusbar.set_doc_status(arg) )
 
+        # Allow reordering of tabs
+        self.notebook.set_tab_reorderable(page.widget, True);
+
     def append_dirdiff(self, dirs, auto_compare=False):
         assert len(dirs) in (1,2,3)
         doc = dirdiff.DirDiff(self.prefs, len(dirs))
