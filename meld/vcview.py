@@ -532,6 +532,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         patchcmd = self.vc.patch_command( tmpdir )
         if misc.write_pipe(patchcmd, patch, error=misc.NULL) == 0:
             for d in diffs:
+                os.chmod(d[0], 0444)
                 self.emit("create-diff", d)
             return True
         elif not silent:
