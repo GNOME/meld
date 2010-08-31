@@ -842,6 +842,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         filenames = self.model.value_paths(root)
         shortnames = misc.shorten_names(*filenames)
         self.label_text = " : ".join(shortnames)
+        self.tooltip_text = self.label_text
         self.label_changed()
 
     def _update_diffmaps(self):

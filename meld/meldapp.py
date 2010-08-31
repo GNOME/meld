@@ -319,9 +319,10 @@ class MeldApp(gnomeglade.Component):
                                            self.on_next_diff_changed)
         self.scheduler.add_task( newdoc.scheduler )
 
-    def on_notebook_label_changed(self, component, text):
+    def on_notebook_label_changed(self, component, text, tooltip):
         nbl = self.notebook.get_tab_label( component.widget )
         nbl.set_label_text(text)
+        nbl.set_tooltip_text(tooltip)
         self.widget.set_title(text + " - Meld")
         self.notebook.child_set_property(component.widget, "menu-label", text)
 

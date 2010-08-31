@@ -33,7 +33,7 @@ class MeldDoc(gobject.GObject):
     """
 
     __gsignals__ = {
-        'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_STRING)),
         'file-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
         'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
         'status-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
@@ -49,6 +49,7 @@ class MeldDoc(gobject.GObject):
         self.prefs.notify_add(self.on_preference_changed)
         self.num_panes = 0
         self.label_text = _("untitled")
+        self.tooltip_text = _("untitled")
 
     def save(self):
         pass
@@ -104,7 +105,7 @@ class MeldDoc(gobject.GObject):
         pass
 
     def label_changed(self):
-        self.emit("label-changed", self.label_text)
+        self.emit("label-changed", self.label_text, self.tooltip_text)
 
     def set_labels(self, lst):
         pass

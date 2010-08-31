@@ -742,6 +742,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 self.statusimage[i].hide()
         self.label_text = " : ".join(shortnames)
+        self.tooltip_text = self.label_text
         self.label_changed()
 
     def set_files(self, files):

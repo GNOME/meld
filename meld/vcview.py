@@ -301,6 +301,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)
+        # TRANSLATORS: This is the location of the directory the user is diffing
+        self.tooltip_text = _("%s: %s") % (_("Location"), self.location)
         self.label_changed()
 
     def _search_recursively_iter(self, iterstart):
