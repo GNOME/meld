@@ -116,7 +116,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.ui_dir("filediff.ui"), "filediff", srcviewer.override)
+        gnomeglade.Component.__init__(self, paths.ui_dir("filediff.ui"), "filediff")
         self.map_widgets_into_lists(["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr", "vbox"])
         self._update_regexes()
         self.warned_bad_comparison = False
@@ -1048,7 +1048,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def make_patch(self, *extra):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
-        dialog = gnomeglade.Component(paths.ui_dir("filediff.ui"), "patchdialog", srcviewer.override)
+        dialog = gnomeglade.Component(paths.ui_dir("filediff.ui"), "patchdialog")
         dialog.widget.set_transient_for( self.widget.get_toplevel() )
         texts = [b.get_text(*b.get_bounds()).split("\n") for b in self.textbuffer]
         texts[0] = [l+"\n" for l in texts[0]]

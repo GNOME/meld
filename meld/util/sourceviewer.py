@@ -33,9 +33,6 @@ class _srcviewer(object):
         self.GtkTextView = None
         self.GtkTextBuffer = None
         self.overrides()
-        self.override = {}
-        self.override["GtkTextView"] = self.GtkTextView
-        self.override["GtkTextBuffer"] = self.GtkTextBuffer
 
     def version_check(self):
         raise NotImplementedError
@@ -192,3 +189,6 @@ def _get_srcviewer():
     return nullsourceview()
 
 srcviewer = _get_srcviewer()
+
+class MeldSourceView(srcviewer.GtkTextView):
+    __gtype_name__ = "MeldSourceView"

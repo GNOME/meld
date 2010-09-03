@@ -22,12 +22,6 @@ import sys
 import gtk
 import re
 
-def custom_handler( glade, module_function_name, widget_name, str1, str2, int1, int2):
-    assert module_function_name.find(".") != -1, "%s should contain a ." % module_function_name
-    module, function_name = module_function_name.rsplit(".",1)
-    __import__(module)
-    return getattr(sys.modules[module], function_name)(str1, str2, int1, int2)
-
 class Component(object):
     """Base class for all glade objects.
 
@@ -42,14 +36,11 @@ class Component(object):
     object, which is sadly sometimes necessary.
     """
 
-    def __init__(self, filename, root, override=None):
+    def __init__(self, filename, root):
         """Load the widgets from the node 'root' in file 'filename'.
         """
-        gtk.glade.set_custom_handler(custom_handler)
-        if override is None:
-            override = {}
         self.builder = gtk.Builder()
-        self.builder.add_objects_from_file(filename, [root]) # FIXME: override doesn't work
+        self.builder.add_objects_from_file(filename, [root])
         self.builder.connect_signals(self)
         self.widget = getattr(self, root)
         self.widget.set_data("pyobject", self)
