@@ -22,6 +22,11 @@ import sys
 import gtk
 import re
 
+
+# FIXME: duplicate defn in bin/meld
+locale_domain = "meld"
+
+
 class Component(object):
     """Base class for all glade objects.
 
@@ -40,6 +45,7 @@ class Component(object):
         """Load the widgets from the node 'root' in file 'filename'.
         """
         self.builder = gtk.Builder()
+        self.builder.set_translation_domain(locale_domain)
         self.builder.add_objects_from_file(filename, [root])
         self.builder.connect_signals(self)
         self.widget = getattr(self, root)

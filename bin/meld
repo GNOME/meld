@@ -16,6 +16,7 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import locale
 import os
 import sys
 
@@ -65,12 +66,29 @@ import meld.paths
 import gettext
 _ = gettext.gettext
 
-gettext.bindtextdomain("meld", meld.paths.locale_dir())
-gettext.textdomain("meld")
+# Locale setting in gtk.Builder appears somewhat broken under Python. See:
+#   https://bugzilla.gnome.org/show_bug.cgi?id=574520
+locale_domain = "meld"
+locale_dir = meld.paths.locale_dir()
+
+gettext.bindtextdomain(locale_domain, locale_dir)
+locale.setlocale(locale.LC_ALL,'')
+gettext.textdomain(locale_domain)
+gettext.install(locale_domain, localedir=locale_dir, unicode=True)
+
+try:
+    locale.bindtextdomain(locale_domain, locale_dir)
+except AttributeError:
+    # OS X doesn't appear to have bindtextdomain(). This will cause
+    # gtk.Builder translations to fail.
+    print "Couldn't bind the translation domain. Some translations won't work."
+except locale.Error:
+    print "Couldn't bind the translation domain. Some translations won't work."
+
 
 # Check requirements: Python 2.4, pygtk 2.8
 pyver = (2,4)
-pygtkver = (2,8,0)
+pygtkver = (2, 14, 0)
 
 def missing_reqs(mod, ver, exception=None):
     if isinstance(exception, ImportError):
@@ -96,18 +114,7 @@ try:
 except (ImportError, AssertionError), e:
     missing_reqs("pygtk", pygtkver, e)
 
-try:
-    import gtk.glade
-except ImportError, e:
-    missing_reqs("gtk.glade", pygtkver, e)
 
-# Ignore deprecation warnings from pygtk > 2.6
-#if gtk.pygtk_version >= (2,8,0):
-#    import warnings
-#    warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-gtk.glade.bindtextdomain("meld", meld.paths.locale_dir())
-gtk.glade.textdomain("meld")
 gtk.icon_theme_get_default().append_search_path(meld.paths.icon_dir())
 
 def main():
