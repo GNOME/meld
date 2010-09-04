@@ -27,11 +27,10 @@
             <property name="homogeneous">False</property>
             <property name="spacing">6</property>
             <child>
-              <object class="Custom" id="fileentry">
+              <object class="HistoryFileEntry" id="fileentry">
                 <property name="visible">True</property>
-                <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                <property name="string1">direntry</property>
-                <property name="int1">1</property>
+                <property name="history-id">direntry</property>
+                <property name="directory-entry">True</property>
                 <signal handler="on_fileentry_activate" name="activate"/>
               </object>
               <packing>
@@ -409,11 +408,10 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="Custom" id="previousentry">
+                          <object class="HistoryEntry" id="previousentry">
                             <property name="border_width">5</property>
                             <property name="visible">True</property>
-                            <property name="string1">previousentry</property>
-                            <property name="creation_function">meld.ui.historyentry.create_entry</property>
+                            <property name="history-id">previousentry</property>
                             <signal handler="on_previousentry_activate" name="changed"/>
                           </object>
                           <packing>

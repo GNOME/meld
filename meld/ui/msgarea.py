@@ -249,7 +249,3 @@ class MsgAreaController(gtk.HBox):
         msgarea.set_text_and_icon(stockid, primary, secondary)
         self.pack_start(msgarea, expand=True)
         return msgarea
-
-def msgarea_mgr_create(str1, str2, int1, int2):
-    return MsgAreaController()
-

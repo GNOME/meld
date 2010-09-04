@@ -29,6 +29,7 @@ import gtk
 import gtk.keysyms
 
 import diffutil
+from ui import findbar
 from ui import gnomeglade
 import misc
 import melddoc
@@ -196,7 +197,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.set_num_panes(num_panes)
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
         gnomeglade.connect_signal_handlers(self)
-        self.findbar = self.findbar.get_data("pyobject")
+        self.findbar = findbar.FindBar()
+        self.filediff.pack_end(self.findbar.widget, False)
         self.cursor = CursorDetails()
         self.connect("current-diff-changed", self.on_current_diff_changed)
         for t in self.textview:

@@ -137,11 +137,10 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="Custom" id="fileentry2">
+                  <object class="HistoryFileEntry" id="fileentry2">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                    <property name="string1">file_comparison</property>
-                    <property name="string2">My File</property>
+                    <property name="history-id">file_comparison</property>
+                    <property name="directory-entry">False</property>
                     <signal handler="on_entry_activate" name="activate"/>
                   </object>
                   <packing>
@@ -153,11 +152,10 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="Custom" id="fileentry1">
+                  <object class="HistoryFileEntry" id="fileentry1">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                    <property name="string1">file_comparison</property>
-                    <property name="string2">Original File</property>
+                    <property name="history-id">file_comparison</property>
+                    <property name="directory-entry">False</property>
                     <signal handler="on_entry_activate" name="activate"/>
                   </object>
                   <packing>
@@ -169,12 +167,11 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="Custom" id="fileentry0">
+                  <object class="HistoryFileEntry" id="fileentry0">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
-                    <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                    <property name="string1">file_comparison</property>
-                    <property name="string2">Other File</property>
+                    <property name="history-id">file_comparison</property>
+                    <property name="directory-entry">False</property>
                     <signal handler="on_entry_activate" name="activate"/>
                   </object>
                   <packing>
@@ -273,12 +270,10 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="Custom" id="direntry2">
+                  <object class="HistoryFileEntry" id="direntry2">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                    <property name="string1">dir_comparison</property>
-                    <property name="string2">My Directory</property>
-                    <property name="int1">1</property>
+                    <property name="history-id">dir_comparison</property>
+                    <property name="directory-entry">True</property>
                     <signal handler="on_entry_activate" name="activate"/>
                   </object>
                   <packing>
@@ -290,12 +285,10 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="Custom" id="direntry1">
+                  <object class="HistoryFileEntry" id="direntry1">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                    <property name="string1">dir_comparison</property>
-                    <property name="string2">Original Directory</property>
-                    <property name="int1">1</property>
+                    <property name="history-id">dir_comparison</property>
+                    <property name="directory-entry">True</property>
                     <signal handler="on_entry_activate" name="activate"/>
                   </object>
                   <packing>
@@ -307,13 +300,11 @@ Adam Weinberger (en_CA)</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="Custom" id="direntry0">
+                  <object class="HistoryFileEntry" id="direntry0">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
-                    <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                    <property name="string1">dir_comparison</property>
-                    <property name="string2">Other Directory</property>
-                    <property name="int1">1</property>
+                    <property name="history-id">dir_comparison</property>
+                    <property name="directory-entry">True</property>
                     <signal handler="on_entry_activate" name="activate"/>
                   </object>
                   <packing>
@@ -393,12 +384,11 @@ Adam Weinberger (en_CA)</property>
                 <property name="column_spacing">10</property>
                 <property name="row_spacing">10</property>
                 <child>
-                  <object class="Custom" id="vcentry0">
+                  <object class="HistoryFileEntry" id="vcentry0">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                    <property name="string1">vc_directory</property>
-                    <property name="string2">VC Directory</property>
-                    <property name="int1">1</property>
+                    <property name="history-id">vc_directory</property>
+                    <property name="dialog-title" translatable="yes">Select VC Directory</property>
+                    <property name="directory-entry">True</property>
                     <signal handler="on_entry_activate" name="activate"/>
                   </object>
                   <packing>

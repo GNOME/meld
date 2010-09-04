@@ -139,6 +139,3 @@ class FindBar(gnomeglade.Component):
             else:
                 buf.place_cursor( buf.get_iter_at_mark(buf.get_insert()) )
                 self.find_entry.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffdddd"))
-
-def findbar_create(str1, str2, int1, int2):
-    return FindBar().widget

@@ -17,10 +17,9 @@
               <placeholder/>
             </child>
             <child>
-              <object class="Custom" id="fileentry2">
+              <object class="HistoryFileEntry" id="fileentry2">
                 <property name="visible">True</property>
-                <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                <property name="string1">fileentry</property>
+                <property name="history-id">fileentry</property>
                 <signal handler="on_fileentry_activate" name="activate"/>
               </object>
               <packing>
@@ -31,10 +30,9 @@
               </packing>
             </child>
             <child>
-              <object class="Custom" id="fileentry1">
+              <object class="HistoryFileEntry" id="fileentry1">
                 <property name="visible">True</property>
-                <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                <property name="string1">fileentry</property>
+                <property name="history-id">fileentry</property>
                 <signal handler="on_fileentry_activate" name="activate"/>
               </object>
               <packing>
@@ -45,10 +43,9 @@
               </packing>
             </child>
             <child>
-              <object class="Custom" id="fileentry0">
+              <object class="HistoryFileEntry" id="fileentry0">
                 <property name="visible">True</property>
-                <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
-                <property name="string1">fileentry</property>
+                <property name="history-id">fileentry</property>
                 <signal handler="on_fileentry_activate" name="activate"/>
               </object>
               <packing>
@@ -62,9 +59,8 @@
               <object class="GtkVBox" id="vbox0">
                 <property name="visible">True</property>
                 <child>
-                  <object class="Custom" id="msgarea_mgr0">
+                  <object class="MsgAreaController" id="msgarea_mgr0">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.msgarea.msgarea_mgr_create</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -141,9 +137,8 @@
               <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
                 <child>
-                  <object class="Custom" id="msgarea_mgr2">
+                  <object class="MsgAreaController" id="msgarea_mgr2">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.msgarea.msgarea_mgr_create</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -178,9 +173,8 @@
               <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
                 <child>
-                  <object class="Custom" id="msgarea_mgr1">
+                  <object class="MsgAreaController" id="msgarea_mgr1">
                     <property name="visible">True</property>
-                    <property name="creation_function">meld.ui.msgarea.msgarea_mgr_create</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -212,9 +206,8 @@
               </packing>
             </child>
             <child>
-              <object class="Custom" id="diffmap1">
+              <object class="DiffMap" id="diffmap1">
                 <property name="visible">True</property>
-                <property name="creation_function">meld.diffmap.create_diffmap</property>
               </object>
               <packing>
                 <property name="left_attach">6</property>
@@ -249,9 +242,8 @@
               </packing>
             </child>
             <child>
-              <object class="Custom" id="diffmap0">
+              <object class="DiffMap" id="diffmap0">
                 <property name="visible">True</property>
-                <property name="creation_function">meld.diffmap.create_diffmap</property>
               </object>
               <packing>
                 <property name="top_attach">1</property>
@@ -283,17 +275,6 @@
               </packing>
             </child>
           </object>
-        </child>
-        <child>
-          <object class="Custom" id="findbar">
-            <property name="height_request">12</property>
-            <property name="visible">True</property>
-            <property name="creation_function">meld.ui.findbar.findbar_create</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
     </child>
