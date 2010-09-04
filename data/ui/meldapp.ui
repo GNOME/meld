@@ -1,116 +1,115 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<?xml version="1.0"?>
 <!--*- mode: xml -*-->
-<glade-interface>
-  <widget class="GtkWindow" id="meldapp">
+<interface>
+  <object class="GtkWindow" id="meldapp">
     <property name="height_request">400</property>
     <property name="title" translatable="yes">Meld</property>
     <property name="icon">../icons/icon.png</property>
-    <signal name="size_allocate" handler="on_size_allocate"/>
-    <signal name="delete_event" handler="on_delete_event"/>
+    <signal handler="on_size_allocate" name="size_allocate"/>
+    <signal handler="on_delete_event" name="delete_event"/>
+    <child>
+      <object class="GtkVBox" id="appvbox">
+        <property name="visible">True</property>
         <child>
-          <widget class="GtkVBox" id="appvbox">
+          <object class="GtkNotebook" id="notebook">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="scrollable">True</property>
+            <property name="enable_popup">True</property>
+            <signal handler="on_switch_page" name="switch_page"/>
+          </object>
+          <packing>
+            <property name="position">1</property>
+            <property name="pack_type">GTK_PACK_END</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="status_box">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkNotebook" id="notebook">
+              <object class="GtkProgressBar" id="task_progress">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="scrollable">True</property>
-                <property name="enable_popup">True</property>
-                <signal name="switch_page" handler="on_switch_page"/>
-              </widget>
+                <property name="pulse_step">0.109999999404</property>
+                <property name="text" translatable="yes"/>
+              </object>
               <packing>
-                <property name="position">1</property>
-                <property name="pack_type">GTK_PACK_END</property>
+                <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkHBox" id="status_box">
+              <object class="GtkStatusbar" id="task_status">
                 <property name="visible">True</property>
-                <child>
-                  <widget class="GtkProgressBar" id="task_progress">
-                    <property name="visible">True</property>
-                    <property name="pulse_step">0.109999999404</property>
-                    <property name="text" translatable="yes"></property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkStatusbar" id="task_status">
-                    <property name="visible">True</property>
-                    <property name="has_resize_grip">False</property>
-                  </widget>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkStatusbar" id="doc_status">
-                    <property name="width_request">175</property>
-                    <property name="visible">True</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-              </widget>
+                <property name="has_resize_grip">False</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStatusbar" id="doc_status">
+                <property name="width_request">175</property>
+                <property name="visible">True</property>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
-                <property name="pack_type">GTK_PACK_END</property>
+                <property name="position">2</property>
               </packing>
             </child>
-          </widget>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+            <property name="pack_type">GTK_PACK_END</property>
+          </packing>
         </child>
-  </widget>
-  <widget class="GtkAboutDialog" id="about">
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="about">
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon">../icons/icon.png</property>
     <property name="program-name">Meld</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <property name="copyright" translatable="yes">Copyright © 2002-2009 Stephen Kennedy</property>
+    <property name="copyright" translatable="yes">Copyright &#xA9; 2002-2009 Stephen Kennedy</property>
     <property name="website">http://meld.sourceforge.net/</property>
     <property name="authors">Stephen Kennedy &lt;meld-list@gnome.org&gt;
 
 With help from:
 See changelog for individual credits.
 </property>
-    <property name="translator-credits">Benoît Dejean (fr)
+    <property name="translator-credits">Beno&#xEE;t Dejean (fr)
 Takeshi Aihana (ja)
 Dongsu Jang (ko)
-Danilo Šegan (sr)
+Danilo &#x160;egan (sr)
 Duarte Loreto (pt)
 Miloslav Trmac (cs)
 Vincent van Adrighem (nl)
 Changwoo Ryu (ko)
-Benoît Dejean (fr)
+Beno&#xEE;t Dejean (fr)
 Gareth Owen (en_GB)
 Adam Weinberger (en_CA)</property>
     <property name="logo">../icons/icon.png</property>
-  </widget>
-  <widget class="GtkDialog" id="newdialog">
+  </object>
+  <object class="GtkDialog" id="newdialog">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Choose Files</property>
     <property name="default_width">600</property>
     <property name="icon">../icons/icon.png</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <signal name="response" handler="on_response"/>
+    <signal handler="on_response" name="response"/>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="vbox">
+      <object class="GtkVBox" id="vbox">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkNotebook" id="type_notebook">
+          <object class="GtkNotebook" id="type_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <widget class="GtkTable" id="table1">
+              <object class="GtkTable" id="table1">
                 <property name="visible">True</property>
                 <property name="border_width">10</property>
                 <property name="n_rows">3</property>
@@ -124,131 +123,129 @@ Adam Weinberger (en_CA)</property>
                   <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="three_way_compare0">
+                  <object class="GtkCheckButton" id="three_way_compare0">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="label" translatable="yes">_Three Way Compare</property>
                     <property name="use_underline">True</property>
-                    <property name="response_id">0</property>
                     <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="on_three_way_toggled"/>
-                  </widget>
+                    <signal handler="on_three_way_toggled" name="toggled"/>
+                  </object>
                   <packing>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Custom" id="fileentry2">
+                  <object class="Custom" id="fileentry2">
                     <property name="visible">True</property>
                     <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
                     <property name="string1">file_comparison</property>
                     <property name="string2">My File</property>
-                    <signal name="activate" handler="on_entry_activate"/>
-                  </widget>
+                    <signal handler="on_entry_activate" name="activate"/>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Custom" id="fileentry1">
+                  <object class="Custom" id="fileentry1">
                     <property name="visible">True</property>
                     <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
                     <property name="string1">file_comparison</property>
                     <property name="string2">Original File</property>
-                    <signal name="activate" handler="on_entry_activate"/>
-                  </widget>
+                    <signal handler="on_entry_activate" name="activate"/>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Custom" id="fileentry0">
+                  <object class="Custom" id="fileentry0">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
                     <property name="string1">file_comparison</property>
                     <property name="string2">Other File</property>
-                    <signal name="activate" handler="on_entry_activate"/>
-                  </widget>
+                    <signal handler="on_entry_activate" name="activate"/>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label77">
+                  <object class="GtkLabel" id="label77">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="xpad">5</property>
                     <property name="ypad">5</property>
                     <property name="label" translatable="yes">Mine</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label76">
+                  <object class="GtkLabel" id="label76">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="xpad">5</property>
                     <property name="ypad">5</property>
                     <property name="label" translatable="yes">Original</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label75">
+                  <object class="GtkLabel" id="label75">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="xpad">5</property>
                     <property name="ypad">5</property>
                     <property name="label" translatable="yes">Other</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
-              </widget>
+              </object>
             </child>
-            <child>
-              <widget class="GtkLabel" id="tablabel0">
+            <child type="tab">
+              <object class="GtkLabel" id="tablabel0">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_File Comparison</property>
                 <property name="use_underline">True</property>
-              </widget>
+              </object>
               <packing>
-                <property name="type">tab</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkTable" id="table2">
+              <object class="GtkTable" id="table2">
                 <property name="visible">True</property>
                 <property name="border_width">10</property>
                 <property name="n_rows">3</property>
@@ -262,138 +259,133 @@ Adam Weinberger (en_CA)</property>
                   <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="three_way_compare1">
+                  <object class="GtkCheckButton" id="three_way_compare1">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="label" translatable="yes">_Three Way Compare</property>
                     <property name="use_underline">True</property>
-                    <property name="response_id">0</property>
                     <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="on_three_way_toggled"/>
-                  </widget>
+                    <signal handler="on_three_way_toggled" name="toggled"/>
+                  </object>
                   <packing>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Custom" id="direntry2">
+                  <object class="Custom" id="direntry2">
                     <property name="visible">True</property>
                     <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
                     <property name="string1">dir_comparison</property>
                     <property name="string2">My Directory</property>
                     <property name="int1">1</property>
-                    <signal name="activate" handler="on_entry_activate"/>
-                  </widget>
+                    <signal handler="on_entry_activate" name="activate"/>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Custom" id="direntry1">
+                  <object class="Custom" id="direntry1">
                     <property name="visible">True</property>
                     <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
                     <property name="string1">dir_comparison</property>
                     <property name="string2">Original Directory</property>
                     <property name="int1">1</property>
-                    <signal name="activate" handler="on_entry_activate"/>
-                  </widget>
+                    <signal handler="on_entry_activate" name="activate"/>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Custom" id="direntry0">
+                  <object class="Custom" id="direntry0">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
                     <property name="string1">dir_comparison</property>
                     <property name="string2">Other Directory</property>
                     <property name="int1">1</property>
-                    <signal name="activate" handler="on_entry_activate"/>
-                  </widget>
+                    <signal handler="on_entry_activate" name="activate"/>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label80">
+                  <object class="GtkLabel" id="label80">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="xpad">5</property>
                     <property name="ypad">5</property>
                     <property name="label" translatable="yes">Mine</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label79">
+                  <object class="GtkLabel" id="label79">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="xpad">5</property>
                     <property name="ypad">5</property>
                     <property name="label" translatable="yes">Original</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label78">
+                  <object class="GtkLabel" id="label78">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="xpad">5</property>
                     <property name="ypad">5</property>
                     <property name="label" translatable="yes">Other</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
+              </object>
             </child>
-            <child>
-              <widget class="GtkLabel" id="tablabel1">
+            <child type="tab">
+              <object class="GtkLabel" id="tablabel1">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Directory Comparison</property>
                 <property name="use_underline">True</property>
-              </widget>
+              </object>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkTable" id="table3">
+              <object class="GtkTable" id="table3">
                 <property name="visible">True</property>
                 <property name="border_width">10</property>
                 <property name="n_rows">1</property>
@@ -401,71 +393,66 @@ Adam Weinberger (en_CA)</property>
                 <property name="column_spacing">10</property>
                 <property name="row_spacing">10</property>
                 <child>
-                  <widget class="Custom" id="vcentry0">
+                  <object class="Custom" id="vcentry0">
                     <property name="visible">True</property>
                     <property name="creation_function">meld.ui.historyentry.create_fileentry</property>
                     <property name="string1">vc_directory</property>
                     <property name="string2">VC Directory</property>
                     <property name="int1">1</property>
-                    <signal name="activate" handler="on_entry_activate"/>
-                  </widget>
+                    <signal handler="on_entry_activate" name="activate"/>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label81">
+                  <object class="GtkLabel" id="label81">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="xpad">5</property>
                     <property name="ypad">5</property>
                     <property name="label" translatable="yes">Directory</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
-              </widget>
-              <packing>
-                <property name="position">2</property>
-              </packing>
+              </object>
             </child>
-            <child>
-              <widget class="GtkLabel" id="tablabel2">
+            <child type="tab">
+              <object class="GtkLabel" id="tablabel2">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Version Control Browser</property>
                 <property name="use_underline">True</property>
-              </widget>
+              </object>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">2</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="hbuttonbox1">
+          <object class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
-              <widget class="GtkButton" id="button_cancel">
+              <object class="GtkButton" id="button_cancel">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="label">gtk-cancel</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-6</property>
-              </widget>
+              </object>
             </child>
             <child>
-              <widget class="GtkButton" id="button_ok">
+              <object class="GtkButton" id="button_ok">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
@@ -473,19 +460,24 @@ Adam Weinberger (en_CA)</property>
                 <property name="has_default">True</property>
                 <property name="label">gtk-ok</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-5</property>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">GTK_PACK_END</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+    <action-widgets>
+      <action-widget response="0">three_way_compare0</action-widget>
+      <action-widget response="0">three_way_compare1</action-widget>
+      <action-widget response="-6">button_cancel</action-widget>
+      <action-widget response="-5">button_ok</action-widget>
+    </action-widgets>
+  </object>
+</interface>

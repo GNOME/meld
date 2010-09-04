@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<?xml version="1.0"?>
 <!--Generated with glade3 3.4.5 on Sat Mar 21 15:56:10 2009 -->
-<glade-interface>
-  <widget class="GtkWindow" id="window1">
+<interface>
+  <object class="GtkWindow" id="window1">
     <child>
-      <widget class="GtkTable" id="findbar">
+      <object class="GtkTable" id="findbar">
         <property name="n_rows">2</property>
         <property name="n_columns">6</property>
         <child>
@@ -14,35 +13,33 @@
           <placeholder/>
         </child>
         <child>
-          <widget class="GtkHButtonBox" id="hbuttonbox2">
+          <object class="GtkHButtonBox" id="hbuttonbox2">
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_START</property>
             <child>
-              <widget class="GtkButton" id="replace_button">
+              <object class="GtkButton" id="replace_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="label" translatable="yes">_Replace</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="response_id">0</property>
-              </widget>
+              </object>
             </child>
             <child>
-              <widget class="GtkButton" id="replace_all_button">
+              <object class="GtkButton" id="replace_all_button">
                 <property name="can_focus">True</property>
                 <property name="visible">True</property>
                 <property name="receives_default">True</property>
                 <property name="label" translatable="yes">Replace _All</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="response_id">0</property>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="left_attach">3</property>
             <property name="right_attach">5</property>
@@ -53,35 +50,33 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkHButtonBox" id="hbuttonbox1">
+          <object class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_START</property>
             <child>
-              <widget class="GtkButton" id="find_previous_button">
+              <object class="GtkButton" id="find_previous_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="label" translatable="yes">_Previous</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="response_id">0</property>
-              </widget>
+              </object>
             </child>
             <child>
-              <widget class="GtkButton" id="find_next_button">
+              <object class="GtkButton" id="find_next_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="label" translatable="yes">_Next</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="response_id">0</property>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="left_attach">3</property>
             <property name="right_attach">5</property>
@@ -90,32 +85,31 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkButton" id="findbar_close">
+          <object class="GtkButton" id="findbar_close">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="focus_on_click">False</property>
-            <property name="response_id">0</property>
             <child>
-              <widget class="GtkImage" id="image2">
+              <object class="GtkImage" id="image2">
                 <property name="visible">True</property>
                 <property name="stock">gtk-cancel</property>
                 <property name="icon_size">1</property>
-              </widget>
+              </object>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="x_options">GTK_FILL</property>
             <property name="y_options">GTK_FILL</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkLabel" id="find_label">
+          <object class="GtkLabel" id="find_label">
             <property name="visible">True</property>
             <property name="label" translatable="yes">_Search for</property>
             <property name="use_underline">True</property>
             <property name="mnemonic_widget">find_entry</property>
-          </widget>
+          </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="right_attach">2</property>
@@ -125,11 +119,11 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkEntry" id="find_entry">
+          <object class="GtkEntry" id="find_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="width_chars">32</property>
-          </widget>
+          </object>
           <packing>
             <property name="left_attach">2</property>
             <property name="right_attach">3</property>
@@ -138,12 +132,12 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkLabel" id="replace_label">
+          <object class="GtkLabel" id="replace_label">
             <property name="visible">True</property>
             <property name="label" translatable="yes">Replace _With</property>
             <property name="use_underline">True</property>
             <property name="mnemonic_widget">replace_entry</property>
-          </widget>
+          </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="right_attach">2</property>
@@ -155,11 +149,11 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkEntry" id="replace_entry">
+          <object class="GtkEntry" id="replace_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="width_chars">32</property>
-          </widget>
+          </object>
           <packing>
             <property name="left_attach">2</property>
             <property name="right_attach">3</property>
@@ -170,52 +164,49 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="find_options">
+          <object class="GtkHBox" id="find_options">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkCheckButton" id="match_case">
+              <object class="GtkCheckButton" id="match_case">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Match Case</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="response_id">0</property>
                 <property name="draw_indicator">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="whole_word">
+              <object class="GtkCheckButton" id="whole_word">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Who_le word</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="response_id">0</property>
                 <property name="draw_indicator">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="regex">
+              <object class="GtkCheckButton" id="regex">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="label" translatable="yes">Regular E_xpression</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
-                <property name="response_id">0</property>
                 <property name="draw_indicator">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="left_attach">5</property>
             <property name="right_attach">6</property>
@@ -224,7 +215,7 @@
             <property name="x_padding">7</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

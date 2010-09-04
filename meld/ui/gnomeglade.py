@@ -20,7 +20,6 @@
 import sys
 
 import gtk
-import gtk.glade
 import re
 
 def custom_handler( glade, module_function_name, widget_name, str1, str2, int1, int2):
@@ -49,15 +48,16 @@ class Component(object):
         gtk.glade.set_custom_handler(custom_handler)
         if override is None:
             override = {}
-        self.xml = gtk.glade.XML(filename, root, typedict=override)
-        self.xml.signal_autoconnect(self)
+        self.builder = gtk.Builder()
+        self.builder.add_objects_from_file(filename, [root]) # FIXME: override doesn't work
+        self.builder.connect_signals(self)
         self.widget = getattr(self, root)
         self.widget.set_data("pyobject", self)
 
     def __getattr__(self, key):
         """Allow glade widgets to be accessed as self.widgetname.
         """
-        widget = self.xml.get_widget(key)
+        widget = self.builder.get_object(key)
         if widget: # cache lookups
             setattr(self, key, widget)
             return widget

@@ -22,7 +22,6 @@ from gettext import gettext as _
 
 # gtk
 import gtk
-import gtk.glade
 import gobject
 
 # Drag'N'Drop support needs gnomevfs
@@ -57,7 +56,7 @@ version = "1.4.0"
 
 class NewDocDialog(gnomeglade.Component):
     def __init__(self, parentapp):
-        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.glade"), "newdialog")
+        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.ui"), "newdialog")
         self.map_widgets_into_lists(["fileentry", "direntry", "vcentry", "three_way_compare"])
         self.entrylists = self.fileentry, self.direntry, self.vcentry
         self.widget.set_transient_for(parentapp.widget)
@@ -128,7 +127,7 @@ class MeldApp(gnomeglade.Component):
     # init
     #
     def __init__(self):
-        gladefile = paths.ui_dir("meldapp.glade")
+        gladefile = paths.ui_dir("meldapp.ui")
         gtk.window_set_default_icon_name("icon")
         if getattr(gobject, "pygobject_version", ()) >= (2, 16, 0):
             gobject.set_application_name("Meld")
@@ -443,7 +442,9 @@ class MeldApp(gnomeglade.Component):
 
     def on_menu_about_activate(self, *extra):
         gtk.about_dialog_set_url_hook(lambda dialog, uri: misc.open_uri(uri))
-        about = gtk.glade.XML(paths.ui_dir("meldapp.glade"), "about").get_widget("about")
+        builder = gtk.Builder()
+        builder.add_objects_from_file(paths.ui_dir("meldapp.ui"), ["about"])
+        about = builder.get_object("about")
         about.props.version = version
         about.set_transient_for(self.widget)
         about.run()

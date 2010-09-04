@@ -57,7 +57,7 @@ def _commonprefix(files):
 ################################################################################
 class CommitDialog(gnomeglade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.glade"), "commitdialog")
+        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"), "commitdialog")
         self.parent = parent
         self.widget.set_transient_for( parent.widget.get_toplevel() )
         selected = parent._get_selected_files()
@@ -119,7 +119,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.glade"), "vcview")
+        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"), "vcview")
 
         actions = (
             ("VcCompare",       gtk.STOCK_DIALOG_INFO,      _("_Compare"),      None, _("Compare selected"), self.on_button_diff_clicked),

@@ -178,7 +178,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.ui_dir("dirdiff.glade"), "dirdiff")
+        gnomeglade.Component.__init__(self, paths.ui_dir("dirdiff.ui"), "dirdiff")
 
         actions = (
             ("DirCompare",   gtk.STOCK_DIALOG_INFO,  _("_Compare"), None, _("Compare selected"), self.on_button_diff_clicked),
