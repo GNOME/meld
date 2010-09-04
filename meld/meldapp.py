@@ -84,7 +84,7 @@ class NewDocDialog(gnomeglade.Component):
 
     def on_response(self, dialog, arg):
         if arg == gtk.RESPONSE_OK:
-            page = self.notebook.get_current_page()
+            page = self.type_notebook.get_current_page()
             paths = [e.get_full_path() or "" for e in self.entrylists[page]]
             if page < 2 and not self.three_way_compare[page].get_active():
                 paths.pop(0)
