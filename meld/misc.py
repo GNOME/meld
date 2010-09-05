@@ -78,15 +78,7 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
     return ret
 
 def open_uri(uri, timestamp=0):
-    # TODO: should be 2.14 when released
-    if gtk.pygtk_version >= (2, 13, 0):
-        gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
-    else:
-        try:
-            import gnome
-            gnome.url_show(uri)
-        except ImportError:
-            pass
+    gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
 
 # Taken from epiphany
 def position_menu_under_widget(menu, widget):

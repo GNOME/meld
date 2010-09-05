@@ -262,8 +262,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if valid_vcs and default_active == -1:
             default_active = min(valid_vcs)
 
-        if gtk.pygtk_version >= (2, 12, 0):
-            self.combobox_vcs.set_tooltip_text(tooltip_texts[len(vcs) == 1])
+        self.combobox_vcs.set_tooltip_text(tooltip_texts[len(vcs) == 1])
         self.combobox_vcs.set_sensitive(len(vcs) > 1)
         self.combobox_vcs.lock = False
         self.combobox_vcs.set_active(default_active)

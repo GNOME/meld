@@ -136,14 +136,13 @@ class PreferencesDialog(gnomeglade.Component):
             self.checkbutton_show_line_numbers.set_active( self.prefs.show_line_numbers )
             self.checkbutton_use_syntax_highlighting.set_active( self.prefs.use_syntax_highlighting )
         else:
-            self.checkbutton_spaces_instead_of_tabs.set_sensitive(False)
-            self.checkbutton_show_line_numbers.set_sensitive(False)
-            self.checkbutton_use_syntax_highlighting.set_sensitive(False)
-            if gtk.pygtk_version >= (2, 12, 0):
-                no_sourceview_text = _("Only available if you have gnome-python-desktop installed")
-                self.checkbutton_spaces_instead_of_tabs.set_tooltip_text(no_sourceview_text)
-                self.checkbutton_show_line_numbers.set_tooltip_text(no_sourceview_text)
-                self.checkbutton_use_syntax_highlighting.set_tooltip_text(no_sourceview_text)
+            no_sourceview_text = \
+                _("Only available if you have gnome-python-desktop installed")
+            for w in (self.checkbutton_spaces_instead_of_tabs,
+                      self.checkbutton_show_line_numbers,
+                      self.checkbutton_use_syntax_highlighting):
+                w.set_sensitive(False)
+                w.set_tooltip_text(no_sourceview_text)
         # TODO: This doesn't restore the state of character wrapping when word
         # wrapping is disabled, but this is hard with our existing gconf keys
         if self.prefs.edit_wrap_lines != gtk.WRAP_NONE:
