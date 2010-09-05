@@ -82,17 +82,15 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		data/icons/*.xpm \
 		data/icons/*.png \
 		$(DESTDIR)$(sharedir_)/icons
-	install -m 644 data/icons/icon.png \
-		$(DESTDIR)$(sharedir)/pixmaps/meld.png
-	install -m 644 data/icons/16x16/meld.png \
+	install -m 644 data/icons/hicolor/16x16/apps/meld.png \
 		$(DESTDIR)$(sharedir)/icons/hicolor/16x16/apps/meld.png
-	install -m 644 data/icons/22x22/meld.png \
+	install -m 644 data/icons/hicolor/22x22/apps/meld.png \
 		$(DESTDIR)$(sharedir)/icons/hicolor/22x22/apps/meld.png
-	install -m 644 data/icons/32x32/meld.png \
+	install -m 644 data/icons/hicolor/32x32/apps/meld.png \
 		$(DESTDIR)$(sharedir)/icons/hicolor/32x32/apps/meld.png
-	install -m 644 data/icons/48x48/meld.png \
+	install -m 644 data/icons/hicolor/48x48/apps/meld.png \
 		$(DESTDIR)$(sharedir)/icons/hicolor/48x48/apps/meld.png
-	install -m 644 data/icons/48x48/meld.svg \
+	install -m 644 data/icons/hicolor/48x48/apps/meld.svg \
 		$(DESTDIR)$(sharedir)/icons/hicolor/scalable/apps/meld.svg
 	$(MAKE) -C po install
 	$(MAKE) -C help install

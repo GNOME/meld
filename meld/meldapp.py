@@ -132,6 +132,7 @@ class MeldApp(gnomeglade.Component):
         if getattr(gobject, "pygobject_version", ()) >= (2, 16, 0):
             gobject.set_application_name("Meld")
         gnomeglade.Component.__init__(self, gladefile, "meldapp")
+        gtk.window_set_default_icon_name("meld")
         self.prefs = preferences.MeldPreferences()
 
         actions = (

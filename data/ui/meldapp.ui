@@ -4,7 +4,7 @@
   <object class="GtkWindow" id="meldapp">
     <property name="height_request">400</property>
     <property name="title" translatable="yes">Meld</property>
-    <property name="icon">../icons/icon.png</property>
+    <property name="icon-name">meld</property>
     <signal handler="on_size_allocate" name="size_allocate"/>
     <signal handler="on_delete_event" name="delete_event"/>
     <child>
@@ -71,7 +71,7 @@
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="destroy_with_parent">True</property>
-    <property name="icon">../icons/icon.png</property>
+    <property name="logo-icon-name">meld</property>
     <property name="program-name">Meld</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="copyright" translatable="yes">Copyright &#xA9; 2002-2009 Stephen Kennedy</property>
@@ -92,13 +92,11 @@ Changwoo Ryu (ko)
 Beno&#xEE;t Dejean (fr)
 Gareth Owen (en_GB)
 Adam Weinberger (en_CA)</property>
-    <property name="logo">../icons/icon.png</property>
   </object>
   <object class="GtkDialog" id="newdialog">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Choose Files</property>
     <property name="default_width">600</property>
-    <property name="icon">../icons/icon.png</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <signal handler="on_response" name="response"/>
     <child internal-child="vbox">
