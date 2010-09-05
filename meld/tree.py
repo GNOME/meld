@@ -20,27 +20,17 @@ import gtk
 from ui import gnomeglade
 import paths
 
-COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_END = range(5)
+COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_END = range(6)
 
 from vc._vc import STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
     STATE_ERROR, STATE_EMPTY, STATE_NEW, \
     STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
     STATE_MISSING, STATE_MAX
 
-load = lambda x,s=14: gnomeglade.load_pixbuf(paths.icon_dir(x), s)
-pixbuf_folder = load("tree-folder-normal.png", 20)
-pixbuf_folder_new = load("tree-folder-new.png", 20)
-pixbuf_folder_changed = load("tree-folder-changed.png", 20)
-pixbuf_folder_missing = load("tree-folder-missing.png", 20)
-pixbuf_file = load("tree-file-normal.png")
-pixbuf_file_new = load("tree-file-new.png")
-pixbuf_file_changed = load("tree-file-changed.png")
-pixbuf_file_missing = load("tree-file-missing.png")
 
 class DiffTreeStore(gtk.TreeStore):
-    def __init__(self, ntree = 3, num_col = COL_END):
-        types = [type("")] * num_col * ntree
-        types[COL_ICON*ntree:COL_ICON*ntree+ntree] = [type(pixbuf_file)] * ntree
+
+    def __init__(self, ntree, types):
         gtk.TreeStore.__init__(self, *types)
         self.ntree = ntree
         self._setup_default_styles()
@@ -60,20 +50,36 @@ class DiffTreeStore(gtk.TreeStore):
             '<span foreground="#888888" strikethrough="true">%s</span>' # STATE_MISSING
         ]
         assert len(self.textstyle) == STATE_MAX
+
         self.pixstyle = [
-            (pixbuf_file, pixbuf_folder), # IGNORED
-            (pixbuf_file, pixbuf_folder), # NONE
-            (pixbuf_file, pixbuf_folder), # NORMAL
-            (pixbuf_file, pixbuf_folder), # NOCHANGE
-            (None, None), # ERROR
-            (None, None), # EMPTY
-            (pixbuf_file_new, pixbuf_folder_new), # NEW
-            (pixbuf_file_changed, pixbuf_folder_changed), # MODIFIED
-            (pixbuf_file_changed, pixbuf_folder_changed), # CONFLICT
-            (pixbuf_file_changed, pixbuf_folder_changed), # REMOVED
-            (pixbuf_file_missing, pixbuf_folder_missing) # MISSING
+            ("text-x-generic", "folder"), # IGNORED
+            ("text-x-generic", "folder"), # NONE
+            ("text-x-generic", "folder"), # NORMAL
+            ("text-x-generic", "folder"), # NOCHANGE
+            (None,             None),     # ERROR
+            (None,             None),     # EMPTY
+            ("text-x-generic", "folder"), # NEW
+            ("text-x-generic", "folder"), # MODIFIED
+            ("text-x-generic", "folder"), # CONFLICT
+            ("text-x-generic", "folder"), # REMOVED
+            ("text-x-generic", "folder"), # MISSING
         ]
-        assert len(self.pixstyle) == STATE_MAX
+
+        self.icon_tints = [
+            (None,      None),      # IGNORED
+            (None,      None),      # NONE
+            (None,      None),      # NORMAL
+            (None,      None),      # NOCHANGE
+            (None,      None),      # ERROR
+            (None,      None),      # EMPTY
+            ("#00ff00", None),      # NEW
+            ("#ff0000", None),      # MODIFIED
+            ("#ff0000", None),      # CONFLICT
+            ("#ff0000", None),      # REMOVED
+            ("#ffffff", "#ffffff"), # MISSING
+        ]
+
+        assert len(self.pixstyle) == len(self.icon_tints) == STATE_MAX
 
     def add_entries(self, parent, names):
         child = self.append(parent)
@@ -94,6 +100,8 @@ class DiffTreeStore(gtk.TreeStore):
         for i in range(self.ntree):
             self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR)
         self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
+        self.set_value(err, self.column_index(COL_TINT, pane),
+                       self.icon_tints[STATE_ERROR][0])
         self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % gobject.markup_escape_text(msg))
 
     def value_paths(self, it):
@@ -109,9 +117,11 @@ class DiffTreeStore(gtk.TreeStore):
         STATE = self.column_index(COL_STATE, pane)
         TEXT  = self.column_index(COL_TEXT,  pane)
         ICON  = self.column_index(COL_ICON,  pane)
+        TINT  = self.column_index(COL_TINT,  pane)
         self.set_value(it, STATE, state)
         self.set_value(it, TEXT,  self.textstyle[state] % name)
         self.set_value(it, ICON,  self.pixstyle[state][isdir])
+        self.set_value(it, TINT,  self.icon_tints[state][isdir])
 
     def get_state(self, it, pane):
         STATE = self.column_index(COL_STATE, pane)

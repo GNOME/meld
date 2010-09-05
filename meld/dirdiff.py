@@ -17,7 +17,6 @@
 import filecmp
 import paths
 from ui import gnomeglade
-import gobject
 import gtk
 import gtk.keysyms
 import math
@@ -31,6 +30,8 @@ import tree
 import re
 import stat
 import time
+
+import ui.emblemcellrenderer
 
 gdk = gtk.gdk
 
@@ -99,9 +100,7 @@ def _files_same(lof, regexes):
     _cache[ lof ] = misc.struct(sigs=sigs, result=result)
     return result
 
-COL_EMBLEM = tree.COL_END + 1
-pixbuf_newer = gnomeglade.load_pixbuf(paths.icon_dir("tree-file-newer.png"), 14)
-TYPE_PIXBUF = type(pixbuf_newer)
+COL_EMBLEM, COL_END = tree.COL_END, tree.COL_END + 1
 
 ################################################################################
 #
@@ -110,49 +109,8 @@ TYPE_PIXBUF = type(pixbuf_newer)
 ################################################################################
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        types = [type("")] * COL_EMBLEM * ntree
-        types[tree.COL_ICON*ntree:tree.COL_ICON*ntree+ntree] = [TYPE_PIXBUF] * ntree
-        types[COL_EMBLEM*ntree:COL_EMBLEM*ntree+ntree] = [TYPE_PIXBUF] * ntree
-        gtk.TreeStore.__init__(self, *types)
-        self.ntree = ntree
-        self._setup_default_styles()
-
-################################################################################
-#
-# EmblemCellRenderer
-#
-################################################################################
-class EmblemCellRenderer(gtk.GenericCellRenderer):
-    __gproperties__ = {
-        'pixbuf': (gtk.gdk.Pixbuf, 'pixmap property', 'the base pixmap', gobject.PARAM_READWRITE),
-        'emblem': (gtk.gdk.Pixbuf, 'emblem property', 'the emblem pixmap', gobject.PARAM_READWRITE),
-    }
-    def __init__(self):
-        self.__gobject_init__()
-        self.renderer = gtk.CellRendererPixbuf()
-        self.pixbuf = None
-        self.emblem = None
-
-    def do_set_property(self, pspec, value):
-        if not hasattr(self, pspec.name):
-            raise AttributeError, 'unknown property %s' % pspec.name
-        setattr(self, pspec.name, value)
-    def do_get_property(self, pspec):
-        return getattr(self, pspec.name)
-
-    def on_render(self, window, widget, background_area, cell_area, expose_area, flags):
-        r = self.renderer
-        r.props.pixbuf = self.pixbuf
-        r.render(window, widget, background_area, cell_area, expose_area, flags)
-        r.props.pixbuf = self.emblem
-        r.render(window, widget, background_area, cell_area, expose_area, flags)
-
-    def on_get_size(self, widget, cell_area):
-        if not hasattr(self, "size"):
-            r = self.renderer
-            r.props.pixbuf = self.pixbuf
-            self.size = r.get_size(widget, cell_area)
-        return self.size
+        types = [str] * COL_END * ntree
+        tree.DiffTreeStore.__init__(self, ntree, types)
 
 ################################################################################
 #
@@ -224,12 +182,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             column = gtk.TreeViewColumn()
             rentext = gtk.CellRendererText()
-            renicon = EmblemCellRenderer()
+            renicon = ui.emblemcellrenderer.EmblemCellRenderer()
             column.pack_start(renicon, expand=0)
             column.pack_start(rentext, expand=1)
-            column.set_attributes(renicon, pixbuf=self.model.column_index(tree.COL_ICON,i),
-                                           emblem=self.model.column_index(COL_EMBLEM,i))
-            column.set_attributes(rentext, markup=self.model.column_index(tree.COL_TEXT,i))
+            col_index = self.model.column_index
+            column.set_attributes(rentext, markup=col_index(tree.COL_TEXT,i))
+            column.set_attributes(renicon,
+                                  icon_name=col_index(tree.COL_ICON, i),
+                                  emblem_name=col_index(COL_EMBLEM, i),
+                                  icon_tint=col_index(tree.COL_TINT, i))
             self.treeview[i].append_column(column)
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
@@ -820,7 +781,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.model.set_state(it, j,  tree.STATE_MODIFIED, isdir)
                 self.model.set_value(it,
                     self.model.column_index(COL_EMBLEM, j),
-                    j == newest_index and pixbuf_newer or None)
+                    j == newest_index and "emblem-meld-newer-file" or None)
                 one_isdir[j] = isdir
         for j in range(self.model.ntree):
             if not mod_times[j]:

@@ -116,16 +116,5 @@ def connect_signal_handlers(obj):
             print ('Warning: attribute %r not connected'
                    ' as a signal handler' % (attr,))
 
-def load_pixbuf(fname, size=0):
-    """Load an image from a file as a pixbuf, with optional resizing.
-    """
-    image = gtk.Image()
-    image.set_from_file(fname)
-    image = image.get_pixbuf()
-    if size:
-        aspect = float(image.get_height()) / image.get_width()
-        image = image.scale_simple(size, int(aspect*size), 2)
-    return image
-
 
 import gladesupport

@@ -25,6 +25,7 @@ import misc
 from ui import gnomeglade
 import melddoc
 import paths
+import ui.emblemcellrenderer
 import vc
 
 ################################################################################
@@ -88,7 +89,9 @@ COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tr
 
 class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
-        tree.DiffTreeStore.__init__(self, 1, COL_END)
+        ntree = 1
+        types = [str] * COL_END * ntree
+        tree.DiffTreeStore.__init__(self, ntree, types)
         self.textstyle[tree.STATE_MISSING] = '<span foreground="#000088" strikethrough="true" weight="bold">%s</span>'
 
 ################################################################################
@@ -161,12 +164,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
         column = gtk.TreeViewColumn( _("Name") )
-        renpix = gtk.CellRendererPixbuf()
+        renicon = ui.emblemcellrenderer.EmblemCellRenderer()
         rentext = gtk.CellRendererText()
-        column.pack_start(renpix, expand=0)
+        column.pack_start(renicon, expand=0)
         column.pack_start(rentext, expand=1)
-        column.set_attributes(renpix, pixbuf=self.model.column_index(tree.COL_ICON, 0))
-        column.set_attributes(rentext, markup=self.model.column_index(tree.COL_TEXT, 0))
+        col_index = self.model.column_index
+        column.set_attributes(renicon,
+                              icon_name=col_index(tree.COL_ICON, 0),
+                              icon_tint=col_index(tree.COL_TINT, 0))
+        column.set_attributes(rentext, markup=col_index(tree.COL_TEXT, 0))
         self.treeview.append_column(column)
 
         def addCol(name, num):

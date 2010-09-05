@@ -521,12 +521,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
-        load = lambda x: gnomeglade.load_pixbuf(paths.icon_dir(x), self.pixels_per_line)
-        self.pixbuf_apply0 = load("button_apply0.xpm")
-        self.pixbuf_apply1 = load("button_apply1.xpm")
-        self.pixbuf_delete = load("button_delete.xpm")
-        self.pixbuf_copy0  = load("button_copy0.xpm")
-        self.pixbuf_copy1  = load("button_copy1.xpm")
+
+        icon_theme = gtk.icon_theme_get_default()
+        load = lambda x: icon_theme.load_icon(x, self.pixels_per_line, 0)
+        self.pixbuf_apply0 = load("button_apply0")
+        self.pixbuf_apply1 = load("button_apply1")
+        self.pixbuf_delete = load("button_delete")
+        # FIXME: this is a somewhat bizarre action to take, but our non-square
+        # icons really make this kind of handling difficult
+        load = lambda x: icon_theme.load_icon(x, self.pixels_per_line * 2, 0)
+        self.pixbuf_copy0  = load("button_copy0")
+        self.pixbuf_copy1  = load("button_copy1")
 
     def on_preference_changed(self, key, value):
         if key == "tab_size":
