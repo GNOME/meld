@@ -17,8 +17,13 @@
 import os
 import gobject
 import gtk
+import pango
 
-COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_END = range(6)
+COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_BG, COL_STYLE, \
+    COL_WEIGHT, COL_STRIKE, COL_END = range(11)
+
+COL_TYPES = (str, str, str, str, str, str, str, pango.Style, pango.Weight, bool)
+
 
 from meld.vc._vc import \
     STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
@@ -30,25 +35,31 @@ from meld.vc._vc import \
 class DiffTreeStore(gtk.TreeStore):
 
     def __init__(self, ntree, types):
-        gtk.TreeStore.__init__(self, *types)
+        full_types = []
+        for col_type in (COL_TYPES + tuple(types)):
+            full_types.extend([col_type] * ntree)
+        gtk.TreeStore.__init__(self, *full_types)
         self.ntree = ntree
         self._setup_default_styles()
 
     def _setup_default_styles(self):
-        self.textstyle = [
-            '<span foreground="#888888">%s</span>', # STATE_IGNORED
-            '<span foreground="#888888">%s</span>', # STATE_NONE
-            '%s', # STATE_NORMAL
-            '<span style="italic">%s</span>', # STATE_NOCHANGE
-            '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR
-            '<span foreground="#999999" style="italic">%s</span>', # STATE_EMPTY
-            '<span foreground="#008800" weight="bold">%s</span>', # STATE_NEW
-            '<span foreground="#880000" weight="bold">%s</span>', # STATE_MODIFIED
-            '<span foreground="#ff0000" background="#ffeeee" weight="bold">%s</span>', # STATE_CONFLICT
-            '<span foreground="#880000" strikethrough="true" weight="bold">%s</span>', # STATE_REMOVED
-            '<span foreground="#888888" strikethrough="true">%s</span>' # STATE_MISSING
+        roman, italic = pango.STYLE_NORMAL, pango.STYLE_ITALIC
+        normal, bold = pango.WEIGHT_NORMAL, pango.WEIGHT_BOLD
+
+        self.text_attributes = [
+            # foreground, background, style, weight, strikethrough
+            ("#888888", None,      roman,     normal, None), # STATE_IGNORED
+            ("#888888", None,      roman,     normal, None), # STATE_NONE
+            (None,      None,      roman,     normal, None), # STATE_NORMAL
+            (None,      None,      italic,    normal, None), # STATE_NOCHANGE
+            ("#ff0000", "yellow",  roman,     bold,   None), # STATE_ERROR
+            ("#999999", None,      italic,    normal, None), # STATE_EMPTY
+            ("#008800", None,      roman,     bold,   None), # STATE_NEW
+            ("#880000", None,      roman,     bold,   None), # STATE_MODIFIED
+            ("#ff0000", "#ffeeee", roman,     bold,   None), # STATE_CONFLICT
+            ("#880000", None,      roman,     bold,   True), # STATE_REMOVED
+            ("#888888", None,      roman,     normal, True), # STATE_MISSING
         ]
-        assert len(self.textstyle) == STATE_MAX
 
         self.pixstyle = [
             ("text-x-generic", "folder"), # IGNORED
@@ -78,50 +89,57 @@ class DiffTreeStore(gtk.TreeStore):
             ("#ffffff", "#ffffff"), # MISSING
         ]
 
-        assert len(self.pixstyle) == len(self.icon_tints) == STATE_MAX
-
-    def add_entries(self, parent, names):
-        child = self.append(parent)
-        for i,f in enumerate(names):
-            self.set_value( child, self.column_index(COL_PATH,i), f)
-        return child
-
-    def add_empty(self, parent, text="empty folder"):
-        child = self.append(parent)
-        for i in range(self.ntree):
-            self.set_value(child, self.column_index(COL_PATH, i), None)
-            self.set_value(child, self.column_index(COL_STATE, i), str(STATE_EMPTY))
-            self.set_value(child, self.column_index(COL_ICON, i), self.pixstyle[STATE_EMPTY][0])
-            self.set_value(child, self.column_index(COL_TEXT, i), self.textstyle[STATE_EMPTY] % gobject.markup_escape_text(text))
-        return child
-
-    def add_error(self, parent, msg, pane):
-        err = self.append(parent)
-        for i in range(self.ntree):
-            self.set_value(err, self.column_index(COL_STATE, i), str(STATE_ERROR))
-        self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
-        self.set_value(err, self.column_index(COL_TINT, pane),
-                       self.icon_tints[STATE_ERROR][0])
-        self.set_value(err, self.column_index(COL_TEXT, pane), self.textstyle[STATE_ERROR] % gobject.markup_escape_text(msg))
+        assert len(self.pixstyle) == len(self.icon_tints) == len(self.text_attributes) == STATE_MAX
 
     def value_paths(self, it):
         return [self.value_path(it, i) for i in range(self.ntree)]
+
     def value_path(self, it, pane):
         return self.get_value(it, self.column_index(COL_PATH, pane))
+
     def column_index(self, col, pane):
         return self.ntree * col + pane
 
-    def set_state(self, it, pane, state, isdir=0):
+    def add_entries(self, parent, names):
+        child = self.append(parent)
+        for pane, path in enumerate(names):
+            self.set_value(child, self.column_index(COL_PATH, pane), path)
+        return child
+
+    def add_empty(self, parent, text="empty folder"):
+        it = self.append(parent)
+        for pane in range(self.ntree):
+            self.set_value(it, self.column_index(COL_PATH, pane), None)
+            self.set_state(it, pane, STATE_EMPTY, text)
+
+    def add_error(self, parent, msg, pane):
+        it = self.append(parent)
+        for i in range(self.ntree):
+            self.set_value(it, self.column_index(COL_STATE, i),
+                           str(STATE_ERROR))
+        self.set_state(it, pane, STATE_ERROR, msg)
+
+    def set_path_state(self, it, pane, state, isdir=0):
         fullname = self.get_value(it, self.column_index(COL_PATH,pane))
         name = gobject.markup_escape_text(os.path.basename(fullname))
+        self.set_state(it, pane, state, name, isdir)
+
+    def set_state(self, it, pane, state, label, isdir=0):
         STATE = self.column_index(COL_STATE, pane)
         TEXT  = self.column_index(COL_TEXT,  pane)
         ICON  = self.column_index(COL_ICON,  pane)
         TINT  = self.column_index(COL_TINT,  pane)
         self.set_value(it, STATE, str(state))
-        self.set_value(it, TEXT,  self.textstyle[state] % name)
+        self.set_value(it, TEXT, gobject.markup_escape_text(label))
         self.set_value(it, ICON,  self.pixstyle[state][isdir])
         self.set_value(it, TINT,  self.icon_tints[state][isdir])
+
+        state_attr = self.text_attributes[state]
+        self.set_value(it, self.column_index(COL_FG, pane), state_attr[0])
+        self.set_value(it, self.column_index(COL_BG, pane), state_attr[1])
+        self.set_value(it, self.column_index(COL_STYLE, pane), state_attr[2])
+        self.set_value(it, self.column_index(COL_WEIGHT, pane), state_attr[3])
+        self.set_value(it, self.column_index(COL_STRIKE, pane), state_attr[4])
 
     def get_state(self, it, pane):
         STATE = self.column_index(COL_STATE, pane)

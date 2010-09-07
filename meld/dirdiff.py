@@ -165,8 +165,7 @@ COL_EMBLEM, COL_END = tree.COL_END, tree.COL_END + 1
 ################################################################################
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        types = [str] * COL_END * ntree
-        tree.DiffTreeStore.__init__(self, ntree, types)
+        tree.DiffTreeStore.__init__(self, ntree, [str])
 
 
 class CanonicalListing(object):
@@ -286,7 +285,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.pack_start(renicon, expand=0)
             column.pack_start(rentext, expand=1)
             col_index = self.model.column_index
-            column.set_attributes(rentext, markup=col_index(tree.COL_TEXT,i))
+            column.set_attributes(rentext, text=col_index(tree.COL_TEXT,i),
+                                  foreground=col_index(tree.COL_FG, i),
+                                  background=col_index(tree.COL_BG, i),
+                                  style=col_index(tree.COL_STYLE, i),
+                                  weight=col_index(tree.COL_WEIGHT, i),
+                                  strikethrough=col_index(tree.COL_STRIKE, i))
             column.set_attributes(renicon,
                                   icon_name=col_index(tree.COL_ICON, i),
                                   emblem_name=col_index(COL_EMBLEM, i),
@@ -1025,26 +1029,27 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 isdir = os.path.isdir( files[j] )
                 # TODO: Differentiate the DodgySame case
                 if all_same == Same or all_same == DodgySame:
-                    self.model.set_state(it, j,  tree.STATE_NORMAL, isdir)
+                    self.model.set_path_state(it, j, tree.STATE_NORMAL, isdir)
                     different = 0
                 elif all_same == SameFiltered:
-                    self.model.set_state(it, j,  tree.STATE_NOCHANGE, isdir)
+                    self.model.set_path_state(it, j, tree.STATE_NOCHANGE, isdir)
                     different = 0
                 # TODO: Differentiate the SameFiltered and DodgySame cases
                 elif all_present_same in (Same, SameFiltered, DodgySame):
-                    self.model.set_state(it, j,  tree.STATE_NEW, isdir)
+                    self.model.set_path_state(it, j, tree.STATE_NEW, isdir)
                 elif all_same == FileError or all_present_same == FileError:
-                    self.model.set_state(it, j,  tree.STATE_ERROR, isdir)
+                    self.model.set_path_state(it, j, tree.STATE_ERROR, isdir)
                 # Different and DodgyDifferent
                 else:
-                    self.model.set_state(it, j,  tree.STATE_MODIFIED, isdir)
+                    self.model.set_path_state(it, j, tree.STATE_MODIFIED, isdir)
                 self.model.set_value(it,
                     self.model.column_index(COL_EMBLEM, j),
                     j == newest_index and "emblem-meld-newer-file" or None)
                 one_isdir[j] = isdir
         for j in range(self.model.ntree):
             if not mod_times[j]:
-                self.model.set_state(it, j, tree.STATE_MISSING, True in one_isdir)
+                self.model.set_path_state(it, j, tree.STATE_MISSING,
+                                          True in one_isdir)
         return different
 
     def popup_in_pane(self, pane, event):

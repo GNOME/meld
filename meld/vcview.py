@@ -17,9 +17,11 @@
 
 import tempfile
 import shutil
-import gtk
 import os
 from gettext import gettext as _
+
+import gtk
+import pango
 
 import tree
 import misc
@@ -80,10 +82,9 @@ COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tr
 
 class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
-        ntree = 1
-        types = [str] * COL_END * ntree
-        tree.DiffTreeStore.__init__(self, ntree, types)
-        self.textstyle[tree.STATE_MISSING] = '<span foreground="#000088" strikethrough="true" weight="bold">%s</span>'
+        tree.DiffTreeStore.__init__(self, 1, [str] * 5)
+        self.text_attributes[tree.STATE_MISSING] = \
+                ("#000088", None, pango.STYLE_NORMAL, pango.WEIGHT_BOLD, True)
 
 ################################################################################
 # filters
@@ -172,7 +173,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         column.set_attributes(renicon,
                               icon_name=col_index(tree.COL_ICON, 0),
                               icon_tint=col_index(tree.COL_TINT, 0))
-        column.set_attributes(rentext, markup=col_index(tree.COL_TEXT, 0))
+        column.set_attributes(rentext,
+                    text=col_index(tree.COL_TEXT, 0),
+                    foreground=col_index(tree.COL_FG, 0),
+                    background=col_index(tree.COL_BG, 0),
+                    style=col_index(tree.COL_STYLE, 0),
+                    weight=col_index(tree.COL_WEIGHT, 0),
+                    strikethrough=col_index(tree.COL_STRIKE, 0))
+
         self.treeview.append_column(column)
 
         def addCol(name, num):
@@ -303,7 +311,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         it = self.model.add_entries( None, [location] )
         self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
-        self.model.set_state(it, 0, tree.STATE_NORMAL, isdir=1)
+        self.model.set_path_state(it, 0, tree.STATE_NORMAL, isdir=1)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
 
@@ -620,7 +628,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if it:
                 newiter = self.model.insert_after( None, it)
                 self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
-                self.model.set_state(newiter, 0, tree.STATE_NORMAL, isdir=1)
+                self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
                 self.model.remove(it)
                 self.scheduler.add_task( self._search_recursively_iter(newiter).next )
         else: # XXX fixme
@@ -628,7 +636,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def _update_item_state(self, it, vcentry, location):
         e = vcentry
-        self.model.set_state( it, 0, e.state, e.isdir )
+        self.model.set_path_state(it, 0, e.state, e.isdir)
         def setcol(col, val):
             self.model.set_value(it, self.model.column_index(col, 0), val)
         setcol(COL_LOCATION, location)
