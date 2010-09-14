@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2010-06-08 00:35+0200\n"
-"PO-Revision-Date: 2010-06-08 00:34+0200\n"
+"POT-Creation-Date: 2010-09-14 12:19+0200\n"
+"PO-Revision-Date: 2010-09-14 12:16+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Copy to Clipboard"
 msgstr "Másolás a vágólapra"
 
-#: ../data/ui/filediff.glade.h:4 ../meld/filediff.py:179
+#: ../data/ui/filediff.glade.h:4 ../meld/filediff.py:180
 msgid "Create Patch"
 msgstr "Folt létrehozása"
 
@@ -172,8 +172,8 @@ msgid "<b>Display</b>"
 msgstr "<b>Képernyő</b>"
 
 #: ../data/ui/preferences.glade.h:2
-msgid "<b>Edit Menu</b>"
-msgstr "<b>Szerkesztés menü</b>"
+msgid "<b>External editor</b>"
+msgstr "<b>Külső szerkesztő</b>"
 
 #: ../data/ui/preferences.glade.h:3
 msgid "<b>Font</b>"
@@ -184,72 +184,64 @@ msgid "<b>Loading</b>"
 msgstr "<b>Betöltés</b>"
 
 #: ../data/ui/preferences.glade.h:5
-msgid "Custom command"
-msgstr "Egyéni parancs"
-
-#: ../data/ui/preferences.glade.h:6
 msgid "Do not _split words over two lines"
 msgstr "Ne _törje a szavakat két sorba"
 
-#: ../data/ui/preferences.glade.h:7
-msgid "Edit files with:"
-msgstr "Fájlok szerkesztése ezzel:"
+#: ../data/ui/preferences.glade.h:6
+msgid "Edito_r command:"
+msgstr "Szerkesztő_parancs:"
 
-#: ../data/ui/preferences.glade.h:8
+#: ../data/ui/preferences.glade.h:7
 msgid "Editor"
 msgstr "Szerkesztő"
 
-#: ../data/ui/preferences.glade.h:9
+#: ../data/ui/preferences.glade.h:8
 msgid "Enable text _wrapping"
 msgstr "_Sortörés engedélyezése"
 
-#: ../data/ui/preferences.glade.h:10
+#: ../data/ui/preferences.glade.h:9
 msgid "Encoding"
 msgstr "Kódolás"
 
-#: ../data/ui/preferences.glade.h:11
+#: ../data/ui/preferences.glade.h:10
 msgid "File Filters"
 msgstr "Fájlszűrők"
 
-#: ../data/ui/preferences.glade.h:12
-msgid "Gnome default editor"
-msgstr "Alapértelmezett Gnome szerkesztő"
-
-#: ../data/ui/preferences.glade.h:13
+#: ../data/ui/preferences.glade.h:11
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Üres sorokat beszúró vagy törlő változások mellőzése"
 
-#: ../data/ui/preferences.glade.h:14
+#: ../data/ui/preferences.glade.h:12
 msgid "Ignore symbolic links"
 msgstr "Szimbolikus linkek figyelmen kívül hagyása"
 
-#: ../data/ui/preferences.glade.h:15
-msgid "Internal editor"
-msgstr "Belső szerkesztő"
-
-#: ../data/ui/preferences.glade.h:16
+#: ../data/ui/preferences.glade.h:13
 msgid "Meld Preferences"
 msgstr "A Meld beállításai"
 
-#: ../data/ui/preferences.glade.h:17
+#: ../data/ui/preferences.glade.h:14
 msgid "Show _line numbers"
 msgstr "S_orszámok megjelenítése"
 
-#: ../data/ui/preferences.glade.h:18
+#: ../data/ui/preferences.glade.h:15
 msgid "Text Filters"
 msgstr "Szövegszűrők"
 
-#: ../data/ui/preferences.glade.h:19
+#: ../data/ui/preferences.glade.h:16
+msgid "Use _default system editor"
+msgstr "Alapértelmezett _rendszerszerkesztő használata"
+
+#: ../data/ui/preferences.glade.h:17
 msgid "Use s_yntax highlighting"
 msgstr "S_zintaxiskiemelés használata"
 
-#: ../data/ui/preferences.glade.h:20
+#: ../data/ui/preferences.glade.h:18
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
 "Betöltéskor ezen kodekek ilyen sorrendben történő próbálása (például utf8, "
 "iso8859)"
 
-#: ../data/ui/preferences.glade.h:21
+#: ../data/ui/preferences.glade.h:19
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -259,7 +251,7 @@ msgstr ""
 "alapján. Minden minta egy shell-stílusú helyettesítőkarakter-lista "
 "szóközökkel elválasztva."
 
-#: ../data/ui/preferences.glade.h:22
+#: ../data/ui/preferences.glade.h:20
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -273,23 +265,19 @@ msgstr ""
 "csoportokat tartalmaz, csak a csoportok lesznek kicserélve. További "
 "részletekért lásd a felhasználói kézikönyvet."
 
-#: ../data/ui/preferences.glade.h:23
-msgid "_Automatically supply missing newline at end of file"
-msgstr "Hiányzó fájlvégi újsor _automatikus hozzáadása"
-
-#: ../data/ui/preferences.glade.h:24
+#: ../data/ui/preferences.glade.h:21
 msgid "_Editor font:"
 msgstr "Sz_erkesztő betűkészlete:"
 
-#: ../data/ui/preferences.glade.h:25
+#: ../data/ui/preferences.glade.h:22
 msgid "_Insert spaces instead of tabs"
 msgstr "Tabulátorok helyett s_zóközök beszúrása"
 
-#: ../data/ui/preferences.glade.h:26
+#: ../data/ui/preferences.glade.h:23
 msgid "_Tab width:"
 msgstr "_Tabulátorok szélessége:"
 
-#: ../data/ui/preferences.glade.h:27
+#: ../data/ui/preferences.glade.h:24
 msgid "_Use the system fixed width font"
 msgstr "A rendszer rögzített szélességű betűkészletének _használata"
 
@@ -341,7 +329,7 @@ msgstr "Kijelöltek összehasonlítása"
 msgid "Left"
 msgstr "Bal"
 
-#: ../meld/dirdiff.py:185 ../meld/filediff.py:186
+#: ../meld/dirdiff.py:185
 msgid "Copy To Left"
 msgstr "Másolás balra"
 
@@ -349,7 +337,7 @@ msgstr "Másolás balra"
 msgid "Right"
 msgstr "Jobb"
 
-#: ../meld/dirdiff.py:186 ../meld/filediff.py:187
+#: ../meld/dirdiff.py:186
 msgid "Copy To Right"
 msgstr "Másolás jobbra"
 
@@ -357,7 +345,7 @@ msgstr "Másolás jobbra"
 msgid "Delete selected"
 msgstr "Kijelölt törlése"
 
-#: ../meld/dirdiff.py:188 ../meld/filediff.py:793
+#: ../meld/dirdiff.py:188 ../meld/filediff.py:850
 msgid "Hide"
 msgstr "Elrejtés"
 
@@ -365,7 +353,7 @@ msgstr "Elrejtés"
 msgid "Hide selected"
 msgstr "Kijelölt elrejtése"
 
-#: ../meld/dirdiff.py:190 ../meld/filediff.py:178 ../meld/vcview.py:126
+#: ../meld/dirdiff.py:190 ../meld/filediff.py:179 ../meld/vcview.py:126
 msgid "Open selected"
 msgstr "Kijelölt megnyitása"
 
@@ -419,8 +407,8 @@ msgstr "Hiba „%s” minta szabályos kifejezéssé alakításakor"
 msgid "Hide %s"
 msgstr "%s elrejtése"
 
-#: ../meld/dirdiff.py:394 ../meld/dirdiff.py:404 ../meld/vcview.py:276
-#: ../meld/vcview.py:304
+#: ../meld/dirdiff.py:394 ../meld/dirdiff.py:404 ../meld/vcview.py:302
+#: ../meld/vcview.py:330
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] %s beolvasása"
@@ -466,7 +454,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:587 ../meld/vcview.py:463
+#: ../meld/dirdiff.py:587 ../meld/vcview.py:489
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -475,7 +463,7 @@ msgstr ""
 "„%s” egy könyvtár.\n"
 "Eltávolítja rekurzívan?"
 
-#: ../meld/dirdiff.py:594 ../meld/vcview.py:468
+#: ../meld/dirdiff.py:594 ../meld/vcview.py:494
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -535,75 +523,91 @@ msgid_plural "%i years"
 msgstr[0] "%i év"
 msgstr[1] "%i év"
 
-#: ../meld/filediff.py:179
+#: ../meld/filediff.py:180
 msgid "Create a patch"
 msgstr "Folt létrehozása"
 
-#: ../meld/filediff.py:180
+#: ../meld/filediff.py:181
 msgid "Push to left"
 msgstr "Balra küldés"
 
-#: ../meld/filediff.py:180
+#: ../meld/filediff.py:181
 msgid "Push current change to the left"
 msgstr "Jelenlegi változtatás balra küldése"
 
-#: ../meld/filediff.py:181
+#: ../meld/filediff.py:182
 msgid "Push to right"
 msgstr "Jobbra küldés"
 
-#: ../meld/filediff.py:181
+#: ../meld/filediff.py:182
 msgid "Push current change to the right"
 msgstr "Jelenlegi változtatás jobbra küldése"
 
 #. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:183
+#: ../meld/filediff.py:184
 msgid "Pull from left"
 msgstr "Áthúzás balról"
 
-#: ../meld/filediff.py:183
+#: ../meld/filediff.py:184
 msgid "Pull change from the left"
 msgstr "Változás áthúzása balról"
 
-#: ../meld/filediff.py:184
+#: ../meld/filediff.py:185
 msgid "Pull from right"
 msgstr "Áthúzás jobbról"
 
-#: ../meld/filediff.py:184
+#: ../meld/filediff.py:185
 msgid "Pull change from the right"
 msgstr "Változás áthúzása jobbról"
 
-#: ../meld/filediff.py:185
+#: ../meld/filediff.py:186
 msgid "Delete"
 msgstr "Törlés"
 
-#: ../meld/filediff.py:185
+#: ../meld/filediff.py:186
 msgid "Delete change"
 msgstr "Változtatás törlése"
 
-#: ../meld/filediff.py:186
-msgid "Copy all changes from right pane to left pane"
-msgstr "Minden változás másolása jobbról balra"
+#: ../meld/filediff.py:187
+msgid "Merge all changes from left"
+msgstr "Minden változás egyesítése balról"
 
 #: ../meld/filediff.py:187
-msgid "Copy all changes from left pane to right pane"
-msgstr "Minden változás másolása balról jobbra"
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Minden nem ütköző változás egyesítése balról"
+
+#: ../meld/filediff.py:188
+msgid "Merge all changes from right"
+msgstr "Minden változás egyesítése jobbról"
+
+#: ../meld/filediff.py:188
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Minden nem ütköző változás egyesítése jobbról"
+
+#: ../meld/filediff.py:189
+msgid "Merge all non-conflicting"
+msgstr "Minden nem ütköző egyesítése"
+
+#: ../meld/filediff.py:189
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr "Minden nem ütköző változás egyesítése a bal és jobb ablaktábláról"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:258
 msgid "INS"
 msgstr "BESZ"
 
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:258
 msgid "OVR"
 msgstr "ÁTÍR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:260
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "%i. sor, %i. oszlop"
 
-#: ../meld/filediff.py:392
+#: ../meld/filediff.py:435
 #, python-format
 msgid ""
 "Regular expression '%s' changed the number of lines in the file. Comparison "
@@ -614,54 +618,54 @@ msgstr ""
 "kézikönyvet."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:489
+#: ../meld/filediff.py:532
 msgid "<unnamed>"
 msgstr "<névtelen>"
 
-#: ../meld/filediff.py:674
+#: ../meld/filediff.py:708
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Panelek számának beállítása"
 
-#: ../meld/filediff.py:680
+#: ../meld/filediff.py:714
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Fájlok megnyitása"
 
-#: ../meld/filediff.py:686 ../meld/filediff.py:797
+#: ../meld/filediff.py:720 ../meld/filediff.py:854
 msgid "Hi_de"
 msgstr "_Elrejtés"
 
-#: ../meld/filediff.py:707 ../meld/filediff.py:718 ../meld/filediff.py:731
-#: ../meld/filediff.py:737
+#: ../meld/filediff.py:742 ../meld/filediff.py:753 ../meld/filediff.py:766
+#: ../meld/filediff.py:772
 msgid "Could not read file"
 msgstr "A fájl nem olvasható"
 
-#: ../meld/filediff.py:710
+#: ../meld/filediff.py:745
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Fájlok olvasása"
 
-#: ../meld/filediff.py:719
+#: ../meld/filediff.py:754
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s bináris fájlnak tűnik."
 
-#: ../meld/filediff.py:732
+#: ../meld/filediff.py:767
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s nincs a kódolások között: %s"
 
-#: ../meld/filediff.py:757 ../meld/filemerge.py:70
+#: ../meld/filediff.py:799 ../meld/filemerge.py:70
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Eltérések számítása"
 
-#: ../meld/filediff.py:791
+#: ../meld/filediff.py:848
 msgid "Files are identical"
 msgstr "A fájlok azonosak"
 
-#: ../meld/filediff.py:925
+#: ../meld/filediff.py:985
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -670,7 +674,7 @@ msgstr ""
 "„%s” létezik!\n"
 "Felülírja?"
 
-#: ../meld/filediff.py:938
+#: ../meld/filediff.py:998
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -681,12 +685,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:947
+#: ../meld/filediff.py:1007
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Válasszon nevet a(z) %i puffernek."
 
-#: ../meld/filediff.py:961
+#: ../meld/filediff.py:1021
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -697,7 +701,7 @@ msgstr ""
 "\n"
 "Melyik formátumot szeretné használni?"
 
-#: ../meld/filediff.py:977
+#: ../meld/filediff.py:1037
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -707,11 +711,11 @@ msgstr ""
 "Szeretné UTF-8 kódolással menteni?"
 
 #. save as
-#: ../meld/filediff.py:1015
+#: ../meld/filediff.py:1074
 msgid "Save patch as..."
 msgstr "Folt mentése másként…"
 
-#: ../meld/filediff.py:1073
+#: ../meld/filediff.py:1121
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -908,7 +912,7 @@ msgstr "Fájlok és könyvtárak keveréke nem hasonlítható össze.\n"
 
 #: ../meld/meldapp.py:587
 msgid "wrong number of arguments supplied to --diff"
-msgstr "Hibás számú paraméter a --diff kapcsolóhoz."
+msgstr "Hibás számú argumentum a --diff kapcsolóhoz"
 
 #: ../meld/meldapp.py:591
 msgid "Start with an empty window"
@@ -964,7 +968,7 @@ msgstr "Különbséglap létrehozása akár 3 megadott fájlhoz vagy könyvtárh
 msgid "too many arguments (wanted 0-4, got %d)"
 msgstr "túl sok paraméter (0-4 helyett %d érkezett)"
 
-#: ../meld/melddoc.py:48
+#: ../meld/melddoc.py:51
 msgid "untitled"
 msgstr "névtelen"
 
@@ -981,76 +985,76 @@ msgstr "címke"
 msgid "pattern"
 msgstr "minta"
 
-#: ../meld/preferences.py:147
+#: ../meld/preferences.py:143
 msgid "Only available if you have gnome-python-desktop installed"
 msgstr "Csak akkor érhető el, ha a gnome-python-desktop csomag telepítve van"
 
 #. file filters
 #. text filters
-#: ../meld/preferences.py:162 ../meld/preferences.py:167 ../meld/vcview.py:163
+#: ../meld/preferences.py:165 ../meld/preferences.py:170 ../meld/vcview.py:163
 msgid "Name"
 msgstr "Név"
 
-#: ../meld/preferences.py:162 ../meld/preferences.py:167
+#: ../meld/preferences.py:165 ../meld/preferences.py:170
 msgid "Active"
 msgstr "Aktív"
 
-#: ../meld/preferences.py:162
+#: ../meld/preferences.py:165
 msgid "Pattern"
 msgstr "Minta"
 
-#: ../meld/preferences.py:167
+#: ../meld/preferences.py:170
 msgid "Regex"
-msgstr "reg.kif."
+msgstr "Reg.kif."
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:260
+#: ../meld/preferences.py:264
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Másolatok\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:262
+#: ../meld/preferences.py:266
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Verziókövetés\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:264
+#: ../meld/preferences.py:268
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binárisok\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:266
+#: ../meld/preferences.py:270
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Média\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:268
+#: ../meld/preferences.py:272
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "CVS kulcsszavak\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:270
+#: ../meld/preferences.py:274
 msgid "C++ comment\t0\t//.*\n"
 msgstr "C++ megjegyzés\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:272
+#: ../meld/preferences.py:276
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "C megjegyzés\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:274
+#: ../meld/preferences.py:278
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Üreshely-karakterek\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:276
+#: ../meld/preferences.py:280
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Kezdő üreshelyek\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:278
+#: ../meld/preferences.py:282
 msgid "Script comment\t0\t#.*"
 msgstr "Parancsfájl-megjegyzés\t0\t#.*"
 
@@ -1167,37 +1171,55 @@ msgstr "Verzió"
 msgid "Options"
 msgstr "Beállítások"
 
-#: ../meld/vcview.py:230
+#: ../meld/vcview.py:231
 msgid "Choose one Version Control"
 msgstr "Válasszon egy verziókövetőt"
 
-#: ../meld/vcview.py:231
+#: ../meld/vcview.py:232
 msgid "Only one Version Control in this directory"
 msgstr "Csak egy verziókövető a könyvtárban"
 
-#: ../meld/vcview.py:320
+#. TRANSLATORS: this is an error message when a version control
+#. application isn't installed or can't be found
+#: ../meld/vcview.py:245
+#, python-format
+msgid "%s Not Installed"
+msgstr "A(z) %s nincs telepítve"
+
+#. TRANSLATORS: this is an error message when a version
+#. controlled repository is invalid or corrupted
+#: ../meld/vcview.py:249
+msgid "Invalid Repository"
+msgstr "Érvénytelen tároló"
+
+#: ../meld/vcview.py:258
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../meld/vcview.py:346
 msgid "(Empty)"
 msgstr "(Üres)"
 
-#: ../meld/vcview.py:353
+#: ../meld/vcview.py:379
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Eltérések letöltése"
 
-#: ../meld/vcview.py:360
+#: ../meld/vcview.py:386
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Folt alkalmazása"
 
-#: ../meld/vcview.py:364
+#: ../meld/vcview.py:390
 msgid "No differences found."
 msgstr "Nincs eltérés."
 
-#: ../meld/vcview.py:438
+#: ../meld/vcview.py:464
 msgid "Select some files first."
 msgstr "Először válasszon ki néhány fájlt."
 
-#: ../meld/vcview.py:504
+#: ../meld/vcview.py:530
 #, python-format
 msgid ""
 "\n"
@@ -1292,7 +1314,7 @@ msgstr ""
 "Mellőzve:Verzió nélkül:::Hiba::Újonnan hozzáadva:Módosítva:<b>Ütközés</b>:"
 "Eltávolítva:Hiányzik"
 
-#: ../meld/vc/cvs.py:151
+#: ../meld/vc/cvs.py:156
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
