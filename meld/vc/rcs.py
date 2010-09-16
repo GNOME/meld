@@ -33,7 +33,7 @@ class Vc(_vc.Vc):
     PATCH_INDEX_RE = "^[+]{3} ([^\t]*)\t.*$"
 
     def commit_command(self, message):
-        return ["ci", "-l", "-m", message]
+        return ["ci", "-l", "-m%s" % (message,)]
 
     def diff_command(self):
         return ["rcsdiff", "-u"]
