@@ -614,6 +614,9 @@ class MeldApp(gnomeglade.Component):
             help=_("Set label to use instead of file name"))
         parser.add_option("-a", "--auto-compare", action="store_true", default=False,
             help=_("Automatically compare all differing files on startup"))
+        parser.add_option("-o", "--output", action="store", type="string",
+            dest="outfile", default=None,
+            help=_("Set the target file for saving a merge result"))
         parser.add_option("", "--diff", action="callback", callback=self.diff_files_callback,
                           dest="diff", default=[],
                           help=_("Creates a diff tab for up to 3 supplied files or directories."))
@@ -627,6 +630,9 @@ class MeldApp(gnomeglade.Component):
         tab = self.open_paths(args, options.auto_compare)
         if tab:
             tab.set_labels(options.label)
+
+        if options.outfile and tab and isinstance(tab, filediff.FileDiff):
+            tab.set_merge_output_file(options.outfile)
 
     def _single_file_open(self, path):
         doc = vcview.VcView(self.prefs)

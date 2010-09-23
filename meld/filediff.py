@@ -771,6 +771,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for l,d in zip(lst,self.bufferdata):
             if len(l): d.label = l
 
+    def set_merge_output_file(self, filename):
+        if len(self.bufferdata) < 2:
+            return
+        self.bufferdata[1].savefile = os.path.abspath(filename)
+
     def recompute_label(self):
         filenames = []
         for i in range(self.num_panes):
@@ -1143,8 +1148,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.label, bufdata.encoding),
                     self, gtk.MESSAGE_ERROR, gtk.BUTTONS_YES_NO) != gtk.RESPONSE_YES:
                     return melddoc.RESULT_ERROR
-        if self._save_text_to_filename(bufdata.filename, text):
-            self.emit("file-changed", bufdata.filename)
+
+        save_to = bufdata.savefile or bufdata.filename
+        if self._save_text_to_filename(save_to, text):
+            self.emit("file-changed", save_to)
             self.undosequence.checkpoint(buf)
             return melddoc.RESULT_OK
         else:
@@ -1547,11 +1554,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 ################################################################################
 
 class MeldBufferData(object):
-    __slots__ = ("modified", "writable", "filename", "label", "encoding", "newlines")
+    __slots__ = ("modified", "writable", "filename", "savefile", "label",
+                 "encoding", "newlines")
     def __init__(self, filename=None):
         self.modified = 0
         self.writable = 1
         self.filename = filename
+        self.savefile = None
         self.label = filename
         self.encoding = None
         self.newlines = None
