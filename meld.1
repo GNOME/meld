@@ -1,0 +1,86 @@
+.TH MELD 1 "26 Sept 2010"
+.SH NAME
+\fBmeld\fP \- Visual diff and merge tool for the GNOME Desktop
+.SH SYNOPSIS
+\fBmeld\fR [options]
+.br
+\fBmeld\fR [options] FILE1
+.br
+\fBmeld\fR [options] DIR1
+.br
+\fBmeld\fR [options] FILE1 FILE2 [FILE3]
+.br
+\fBmeld\fR [options] DIR1 DIR2 [DIR3]
+.SH DESCRIPTION
+\fBMeld\fR is a graphical diff viewer and merge application for the Gnome
+desktop.  It supports 2 and 3-file diffs, recursive directory diffs, diffing
+of directories under version control (Arch, Bazaar, Codeville, CVS, Darcs,
+Git, Mercurial, Monotone, RCS), as well as the ability to manually and
+automatically merge file differences.
+.SH OPTIONS
+.TP
+\fB\-\-auto-compare, \-a\fR
+.br
+Automatically compare all differing files on startup.
+.TP
+\fB\-\-diff FILE1|DIR1 FILE2|DIR2 [FILE3|DIR3]\fR
+.br
+Create a diff tab for the given files or directories.
+Note that "\fBmeld\fR \-\-diff FILE1 FILE2" is functionally equivalent
+to "\fBmeld\fR FILE1 FILE2".  However, the \fB\-\-diff\fR argument can
+be given multiple times for one invocation of \fBmeld\fR which allows
+the user to automatically initiate multiple diffs when \fBmeld\fR starts.
+See examples below.
+.TP
+\fB\-\-help, \-h\fR
+.br
+Print application help and usage.
+.TP
+\fB\-\-LABEL=<label>, \-L <label>\fR
+.br
+Set application window title to <label>.
+.TP
+\fB\-\-version\fR
+.br
+Print application version and exit.
+.SH EXAMPLES
+.TP
+\fBmeld\fR
+.br
+Run \fBmeld\fR without initiating a diff.
+.TP
+\fBmeld\fR FILE1
+.br
+Initiate a diff between FILE1 and the version-controlled copy of FILE1.
+.TP
+\fBmeld\fR DIR1
+.br
+Initiate a recursive diff between DIR1 and the version-controlled copy of DIR1.
+.TP
+\fBmeld\fR FILE1 FILE2
+.br
+Initiate a diff between FILE1 and FILE2.
+.TP
+\fBmeld\fR FILE1 FILE2 FILE3
+.br
+Initiate a 3-way diff between FILE1, FILE2, and FILE3.
+.TP
+\fBmeld\fR DIR1 DIR2
+.br
+Initiate a recursive diff between directory DIR1 and DIR2.
+.TP
+\fBmeld\fR DIR1 DIR2 DIR3
+.br
+Initiate a recursive 3-way diff between directory DIR1, DIR2, and DIR3.
+.TP
+\fBmeld\fR --diff FILE1 FILE2 --diff FILE3 FILE4
+.br
+Initiate a diff between FILE1 and FILE2, and a separate diff between FILE3 and
+FILE4.
+.SH BUGS
+If you find a bug, please report it at
+https://bugzilla.gnome.org/buglist.cgi?product=meld or mail a description of
+the issue to meld-list@gnome.org.
+.SH AUTHORS
+See the AUTHORS text file in \fBmeld's\fR source code
+(http://git.gnome.org/browse/meld/tree/AUTHORS).
