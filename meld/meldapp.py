@@ -604,10 +604,6 @@ class MeldApp(gnomeglade.Component):
             help=_("Set label to use instead of file name"))
         parser.add_option("-a", "--auto-compare", action="store_true", default=False,
             help=_("Automatically compare all differing files on startup"))
-        parser.add_option("-u", "--unified", action="store_true", help=_("Ignored for compatibility"))
-        parser.add_option("-c", "--context", action="store_true", help=_("Ignored for compatibility"))
-        parser.add_option("-e", "--ed", action="store_true", help=_("Ignored for compatibility"))
-        parser.add_option("-r", "--recursive", action="store_true", help=_("Ignored for compatibility"))
         parser.add_option("", "--diff", action="callback", callback=self.diff_files_callback,
                           dest="diff", default=[],
                           help=_("Creates a diff tab for up to 3 supplied files or directories."))
