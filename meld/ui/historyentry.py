@@ -59,6 +59,12 @@ def _escape_cell_data_func(col, renderer, model, it, escape_func):
 
 class HistoryEntry(gtk.ComboBoxEntry):
 
+    __gproperties__ = {
+        "history-id":      (str, "History ID",
+                            "Identifier associated with entry's history store",
+                            None, gobject.PARAM_READWRITE),
+    }
+
     def __init__(self, history_id=None, enable_completion=False, **kwargs):
         super(HistoryEntry, self).__init__(**kwargs)
 
@@ -70,8 +76,25 @@ class HistoryEntry(gtk.ComboBoxEntry):
         self.set_model(gtk.ListStore(str))
         self.props.text_column = 0
 
-        self._load_history()
         self.set_enable_completion(enable_completion)
+
+
+    def do_get_property(self, pspec):
+        if pspec.name == "history-id":
+            return self.__history_id
+        else:
+            raise AttributeError("Unknown property: %s" % pspec.name)
+
+    def do_set_property(self, pspec, value):
+        if pspec.name == "history-id":
+            # FIXME: if we change history-id after our store is populated, odd
+            # things might happen
+            store = self.get_model()
+            store.clear()
+            self.__history_id = value
+            self._load_history()
+        else:
+            raise AttributeError("Unknown property: %s" % pspec.name)
 
     def _get_gconf_client(self):
         self.__gconf_client = gconf.client_get_default()
@@ -209,6 +232,9 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
     }
 
     __gproperties__ = {
+        "dialog-title":    (str, "Default path",
+                            "Default path for file chooser",
+                            "~", gobject.PARAM_READWRITE),
         "default-path":    (str, "Default path",
                             "Default path for file chooser",
                             "~", gobject.PARAM_READWRITE),
@@ -218,17 +244,20 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         "filename":        (str, "Filename",
                             "Filename of the selected file",
                             "", gobject.PARAM_READWRITE),
+        "history-id":      (str, "History ID",
+                            "Identifier associated with entry's history store",
+                            None, gobject.PARAM_READWRITE),
         "modal":           (bool, "File chooser modality",
                             "Whether the created file chooser is modal",
                             False, gobject.PARAM_READWRITE),
     }
 
 
-    def __init__(self, history_id=None, browse_dialog_title=None, **kwargs):
+    def __init__(self, **kwargs):
         super(HistoryFileEntry, self).__init__(**kwargs)
 
         self.fsw = None
-        self.browse_dialog_title = browse_dialog_title
+        self.__browse_dialog_title = None
         self.__filechooser_action = gtk.FILE_CHOOSER_ACTION_OPEN
         self.__default_path = "~"
         self.__directory_entry = False
@@ -237,7 +266,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         self.set_spacing(3)
 
         # TODO: completion would be nice, but some quirks make it currently too irritating to turn on by default
-        self.__gentry = HistoryEntry(history_id, False)
+        self.__gentry = HistoryEntry()
         entry = self.__gentry.get_entry()
         entry.connect("changed", lambda *args: self.emit("changed"))
         entry.connect("activate", lambda *args: self.emit("activate"))
@@ -260,19 +289,25 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             access_entry.add_relationship(atk.RELATION_CONTROLLED_BY, access_button)
 
     def do_get_property(self, pspec):
-        if pspec.name == "default-path":
+        if pspec.name == "dialog-title":
+            return self.__browse_dialog_title
+        elif pspec.name == "default-path":
             return self.__default_path
         elif pspec.name == "directory-entry":
             return self.__directory_entry
         elif pspec.name == "filename":
             return self.get_full_path()
+        elif pspec.name == "history-id":
+            return self.__gentry.props.history_id
         elif pspec.name == "modal":
             return self.__modal
         else:
             raise AttributeError("Unknown property: %s" % pspec.name)
 
     def do_set_property(self, pspec, value):
-        if pspec.name == "default-path":
+        if pspec.name == "dialog-title":
+            self.__browse_dialog_title = value
+        elif pspec.name == "default-path":
             if value:
                 self.__default_path = os.path.abspath(value)
             else:
@@ -281,6 +316,8 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             self.__directory_entry = value
         elif pspec.name == "filename":
             self.set_filename(value)
+        elif pspec.name == "history-id":
+            self.__gentry.props.history_id = value
         elif pspec.name == "modal":
             self.__modal = value
         else:
@@ -376,11 +413,11 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             action = gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER
             filefilter = gtk.FileFilter()
             filefilter.add_mime_type("x-directory/normal")
-            title = self.browse_dialog_title or _("Select directory")
+            title = self.__browse_dialog_title or _("Select directory")
         else:
             action = self.__filechooser_action
             filefilter = None
-            title = self.browse_dialog_title or _("Select file")
+            title = self.__browse_dialog_title or _("Select file")
 
         if action == gtk.FILE_CHOOSER_ACTION_SAVE:
             buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
