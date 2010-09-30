@@ -19,6 +19,8 @@ import difflib
 
 import gobject
 
+from matchers import MyersSequenceMatcher
+
 ################################################################################
 #
 # Differ
@@ -74,7 +76,7 @@ class Differ(gobject.GObject):
         'diffs-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
     }
 
-    _matcher = IncrementalSequenceMatcher
+    _matcher = MyersSequenceMatcher
 
     def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
