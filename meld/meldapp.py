@@ -613,7 +613,7 @@ class MeldApp(gnomeglade.Component):
             parser.error(_("too many arguments (wanted 0-4, got %d)") % len(args))
 
         for files in options.diff:
-            self.append_diff(files)
+            self.open_paths(files)
 
         tab = self.open_paths(args, options.auto_compare)
         if tab:
