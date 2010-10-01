@@ -191,6 +191,14 @@ class MeldApp(gnomeglade.Component):
         self.widget.add_accel_group(self.ui.get_accel_group())
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
+
+        # Add alternate keybindings for Prev/Next Change
+        accels = self.ui.get_accel_group()
+        (keyval, mask) = gtk.accelerator_parse("<Ctrl>D")
+        accels.connect_group(keyval, mask, 0, self.on_menu_edit_down_activate)
+        (keyval, mask) = gtk.accelerator_parse("<Ctrl>E")
+        accels.connect_group(keyval, mask, 0, self.on_menu_edit_up_activate)
+
         self.appvbox.pack_start(self.menubar, expand=False)
         self.appvbox.pack_start(self.toolbar, expand=False)
         # TODO: should possibly use something other than doc_status
