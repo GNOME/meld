@@ -136,14 +136,14 @@ gtk.widget_class_install_style_property(DiffMap,
                                         ('width', float,
                                          'Width',
                                          'Width of the bar',
-                                         0.0, 100.0, 20,
+                                         0.0, gobject.G_MAXFLOAT, 20,
                                          gobject.PARAM_READABLE))
 gtk.widget_class_install_style_property(DiffMap,
                                         ('x-padding', float,
                                          'Width-wise padding',
                                          'Padding to be left between left and '
                                          'right edges and change blocks',
-                                         0.0, 50.0, 2.5,
+                                         0.0, gobject.G_MAXFLOAT, 2.5,
                                          gobject.PARAM_READABLE))
 
 
