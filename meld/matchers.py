@@ -18,6 +18,8 @@ import difflib
 
 
 def find_common_prefix(a, b):
+    if not a or not b:
+        return 0
     if a[0] == b[0]:
         pointermax = min(len(a), len(b))
         pointermid = pointermax
@@ -33,6 +35,8 @@ def find_common_prefix(a, b):
 
 
 def find_common_suffix(a, b):
+    if not a or not b:
+        return 0
     if a[-1] == b[-1]:
         pointermax = min(len(a), len(b))
         pointermid = pointermax
