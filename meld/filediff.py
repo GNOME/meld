@@ -767,7 +767,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self.scheduler.add_task( self._set_files_internal(files).next )
 
-    def _load_files(self, files, textbuffers, panetext):
+    def _load_files(self, files, textbuffers):
         self.undosequence.clear()
         yield _("[%s] Set num panes") % self.label_text
         self.set_num_panes( len(files) )
@@ -796,7 +796,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                        file = codecs.open(f, "rU", try_codecs[0]),
                                        buf = buf,
                                        codec = try_codecs[:],
-                                       text = [],
                                        pane = i,
                                        was_cr = False)
                     tasks.append(task)
@@ -804,8 +803,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     buf.delete(*buf.get_bounds())
                     add_dismissable_msg(i, gtk.STOCK_DIALOG_ERROR,
                                         _("Could not read file"), str(e))
-            else:
-                panetext[i] = buf.get_text(*buf.get_bounds())
         yield _("[%s] Reading files") % self.label_text
         while len(tasks):
             for t in tasks[:]:
@@ -822,7 +819,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if len(t.codec):
                         t.file = codecs.open(t.filename, "rU", t.codec[0])
                         t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
-                        t.text = []
                     else:
                         print "codec error fallback", err
                         t.buf.delete(*t.buf.get_bounds())
@@ -847,21 +843,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             t.was_cr = True
                             nextbit = nextbit[0:-1]
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
-                        t.text.append(nextbit)
                     else:
                         self.set_buffer_writable(t.buf, os.access(t.filename, os.W_OK))
                         self.bufferdata[t.pane].encoding = t.codec[0]
                         if hasattr(t.file, "newlines"):
                             self.bufferdata[t.pane].newlines = t.file.newlines
                         tasks.remove(t)
-                        panetext[t.pane] = "".join(t.text)
             yield 1
         for b in self.textbuffer:
             self.undosequence.checkpoint(b)
 
-    def _diff_files(self, files, panetext):
+    def _diff_files(self, files):
         yield _("[%s] Computing differences") % self.label_text
-        panetext = [self._filter_text(p) for p in panetext]
+        panetext = []
+        for b in self.textbuffer[:self.num_panes]:
+            start, end = b.get_bounds()
+            text = b.get_text(start, end, False)
+            panetext.append(self._filter_text(text))
         lines = map(lambda x: x.split("\n"), panetext)
         step = self.linediffer.set_sequences_iter(lines)
         while step.next() is None:
@@ -883,10 +881,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield 0
 
     def _set_files_internal(self, files):
-        panetext = ["\n"] * len(files)
-        for i in self._load_files(files, self.textbuffer, panetext):
+        for i in self._load_files(files, self.textbuffer):
             yield i
-        for i in self._diff_files(files, panetext):
+        for i in self._diff_files(files):
             yield i
 
     def _set_merge_action_sensitivity(self):

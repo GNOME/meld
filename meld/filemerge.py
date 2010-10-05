@@ -44,15 +44,14 @@ class FileMerge(filediff.FileDiff):
         filediff.FileDiff.set_files(self, files)
 
     def _set_files_internal(self, files):
-        panetext = ["\n"] * len(files)
         textbuffers = self.textbuffer[:]
         textbuffers[1] = self.hidden_textbuffer
         files[1] = self.ancestor_file
-        for i in self._load_files(files, textbuffers, panetext):
+        for i in self._load_files(files, textbuffers):
             yield i
-        for i in self._merge_files(panetext):
+        for i in self._merge_files():
             yield i
-        for i in self._diff_files(files, panetext):
+        for i in self._diff_files(files):
             yield i
 
     def _get_custom_status_text(self):
@@ -66,11 +65,16 @@ class FileMerge(filediff.FileDiff):
         self.bufferdata[pane].writable = yesno
         self.recompute_label()
 
-    def _merge_files(self, panetext):
+    def _merge_files(self):
         yield _("[%s] Computing differences") % self.label_text
-        lines = map(lambda x: x.split("\n"), panetext)
+        panetext = []
+        for b in self.textbuffer[:self.num_panes]:
+            start, end = b.get_bounds()
+            text = b.get_text(start, end, False)
+            panetext.append(text)
+        lines = [x.split("\n") for x in panetext]
         filteredpanetext = [self._filter_text(p) for p in panetext]
-        filteredlines = map(lambda x: x.split("\n"), filteredpanetext)
+        filteredlines = [x.split("\n") for x in filteredpanetext]
         merger = merge.Merger()
         step = merger.initialize(filteredlines, lines)
         while step.next() == None:
