@@ -936,10 +936,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     bufs[0].remove_tag(tags[0], starts[0], ends[0])
                     bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
-                    text1 = "\n".join(alltexts[1][c[1]:c[2]] ).encode("utf16")
-                    text1 = struct.unpack("%iH"%(len(text1)/2), text1)[1:]
-                    textn = "\n".join(alltexts[i*2][c[3]:c[4]] ).encode("utf16")
-                    textn = struct.unpack("%iH"%(len(textn)/2), textn)[1:]
+                    text1 = "\n".join(alltexts[1][c[1]:c[2]])
+                    textn = "\n".join(alltexts[i * 2][c[3]:c[4]])
 
                     # For very long sequences, bail rather than trying a very slow comparison
                     inline_limit = 8000 # arbitrary constant
