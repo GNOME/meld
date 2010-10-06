@@ -37,8 +37,10 @@ STATE_MISSING, STATE_MAX = range(12)
 
 class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.
-    states = _("Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing").split(":")
+    states = _("Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing").split(":")
+    states[STATE_CONFLICT] = "<b>%s</b>" % states[STATE_CONFLICT]
     assert len(states)==STATE_MAX
+
     def __init__(self, path, name, state):
         self.path = path
         self.state = state
