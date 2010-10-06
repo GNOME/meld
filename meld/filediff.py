@@ -31,6 +31,7 @@ import gtk.keysyms
 import diffutil
 from ui import findbar
 from ui import gnomeglade
+import matchers
 import misc
 import melddoc
 import paths
@@ -55,7 +56,7 @@ class CachedSequenceMatcher(object):
             self.cache[(text1, textn)][1] = time.time()
             return self.cache[(text1, textn)][0]
         except KeyError:
-            matcher = difflib.SequenceMatcher(None, text1, textn)
+            matcher = matchers.MyersSequenceMatcher(None, text1, textn)
             opcodes = matcher.get_opcodes()
             self.cache[(text1, textn)] = [opcodes, time.time()]
             return opcodes
