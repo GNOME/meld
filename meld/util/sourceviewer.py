@@ -71,38 +71,6 @@ class _srcviewer(object):
     def set_highlighting_enabled_from_file(self, buf, fname, enabled):
         self.set_highlighting_enabled(buf, self.get_language_from_file(os.path.abspath(fname)), enabled)
 
-class sourceview(_srcviewer):
-    srcviewer_module = "sourceview"
-
-    def version_check(self):
-        # ImportError exceptions are caught, so we
-        # won't use 'sourceview' without gnomevfs
-        import gnomevfs
-        self.gvfs = gnomevfs
-
-    def overrides(self):
-        self.GtkTextView = self.gsv.SourceView
-        self.GtkTextBuffer = self.gsv.SourceBuffer
-
-    def GtkLanguageManager(self):
-        return self.gsv.SourceLanguagesManager()
-
-    def set_tab_width(self, tab, tab_size):
-        return tab.set_tabs_width(tab_size)
-
-    def set_highlight(self, buf, enabled):
-        return buf.set_highlight(enabled)
-
-    def get_language_from_mime_type(self, mime_type):
-        return self.get_language_manager().get_language_from_mime_type(mime_type)
-
-    def get_language_from_file(self, filename):
-        mime_type = self.gvfs.get_mime_type(
-                self.gvfs.make_uri_from_input(os.path.abspath(filename)))
-        return self.get_language_from_mime_type(mime_type)
-
-class gtksourceview(sourceview):
-    srcviewer_module = "gtksourceview"
 
 class _gtksourceview2(_srcviewer):
     srcviewer_module = "gtksourceview2"
@@ -223,8 +191,7 @@ class nullsourceview(_srcviewer):
         pass
 
 def _get_srcviewer():
-    for srcv in (gtksourceview210, gtksourceview24, gtksourceview22,
-                 gtksourceview, sourceview):
+    for srcv in (gtksourceview210, gtksourceview24, gtksourceview22):
         try:
             return srcv()
         except ImportError:
