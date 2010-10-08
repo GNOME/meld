@@ -1,4 +1,5 @@
 ### Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
+### Copyright (C) 2010-2011 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 
 import os
 
+import gio
 import gtk
 
 
@@ -41,16 +43,22 @@ class _srcviewer(object):
 
     def version_check(self):
         raise NotImplementedError
+
     def overrides(self):
         raise NotImplementedError
+
     def GtkLanguageManager(self):
         raise NotImplementedError
-    def get_language_from_file(self, filename):
+
+    def set_highlight_syntax(self, buf, enabled):
         raise NotImplementedError
-    def set_highlight(self, buf, enabled):
-        raise NotImplementedError
+
     def set_tab_width(self, tab, tab_size):
         raise NotImplementedError
+
+    def get_language_from_file(self, filename):
+        raise NotImplementedError
+
     def get_language_from_mime_type(self, mimetype):
         raise NotImplementedError
 
@@ -59,19 +67,8 @@ class _srcviewer(object):
             self.glm = self.GtkLanguageManager()
         return self.glm
 
-    def set_highlighting_enabled(self, buf, gsl, enabled):
-        if enabled:
-            if gsl:
-                buf.set_language(gsl)
-            else:
-                enabled = False
-        self.set_highlight(buf, enabled)
-
-    def set_highlighting_enabled_from_mimetype(self, buf, mimetype, enabled):
-        self.set_highlighting_enabled(buf, self.get_language_from_mime_type(mimetype), enabled)
-
-    def set_highlighting_enabled_from_file(self, buf, fname, enabled):
-        self.set_highlighting_enabled(buf, self.get_language_from_file(os.path.abspath(fname)), enabled)
+    def set_language(self, buf, lang):
+        raise NotImplementedError
 
 
 class _gtksourceview2(_srcviewer):
@@ -91,34 +88,19 @@ class _gtksourceview2(_srcviewer):
     def set_tab_width(self, tab, tab_size):
         return tab.set_tab_width(tab_size)
 
-    def set_highlight(self, buf, enabled):
+    def set_highlight_syntax(self, buf, enabled):
         return buf.set_highlight_syntax(enabled)
 
     def get_language_from_file(self, filename):
-        raise NotImplementedError
+        return self.get_language_manager().guess_language(filename)
 
     def get_language_from_mime_type(self, mime_type):
-        for idl in self.get_language_manager().get_language_ids():
-            lang = self.get_language_manager().get_language(idl)
-            for mimetype in lang.get_mime_types():
-                if mime_type == mimetype:
-                    return lang
-        return None
+        content_type = gio.content_type_from_mime_type(mime_type)
+        return self.get_language_manager().guess_language(None, content_type)
 
-class gtksourceview22(_gtksourceview2):
+    def set_language(self, buf, lang):
+        buf.set_language(lang)
 
-    def version_check(self):
-        if self.gsv.pygtksourceview2_version[1] > 2:
-            raise ImportError
-
-    def get_language_from_file(self, filename):
-        from fnmatch import fnmatch
-        for idl in self.get_language_manager().get_language_ids():
-            lang = self.get_language_manager().get_language(idl)
-            for aglob in lang.get_globs():
-                if fnmatch(filename, aglob):
-                    return lang
-        return None
 
 class gtksourceview24(_gtksourceview2):
 
@@ -146,11 +128,8 @@ class gtksourceview24(_gtksourceview2):
 
         self.GtkTextView = SourceView
 
-    def get_language_from_file(self, filename):
-        return self.get_language_manager().guess_language(filename)
 
-
-class gtksourceview210(gtksourceview24):
+class gtksourceview210(_gtksourceview2):
 
     def version_check(self):
         if self.gsv.pygtksourceview2_version[1] < 10:
@@ -173,7 +152,8 @@ class nullsourceview(_srcviewer):
     """
 
     get_language_from_file = lambda *args: None
-    set_highlight = lambda *args: None
+    set_highlight_syntax = lambda *args: None
+    set_language = lambda *args: None
     set_tab_width = lambda *args: None
     get_language_from_mime_type = lambda *args: None
 
@@ -195,7 +175,7 @@ class nullsourceview(_srcviewer):
         pass
 
 def _get_srcviewer():
-    for srcv in (gtksourceview210, gtksourceview24, gtksourceview22):
+    for srcv in (gtksourceview210, gtksourceview24):
         try:
             return srcv()
         except ImportError:

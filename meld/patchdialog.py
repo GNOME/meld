@@ -41,7 +41,10 @@ class PatchDialog(gnomeglade.Component):
 
         buf = srcviewer.GtkTextBuffer()
         self.textview.set_buffer(buf)
-        srcviewer.set_highlighting_enabled_from_mimetype(buf, "text/x-diff", True)
+        lang = srcviewer.get_language_from_mime_type("text/x-diff")
+        srcviewer.set_language(buf, lang)
+        srcviewer.set_highlight_syntax(buf, True)
+
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
         self.textview.modify_font(fontdesc)
         self.textview.set_editable(False)

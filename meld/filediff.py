@@ -631,10 +631,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 v.set_draw_spaces(spaces_flag)
         elif key == "use_syntax_highlighting":
             for i in range(self.num_panes):
-                srcviewer.set_highlighting_enabled_from_file(
-                    self.textbuffer[i],
-                    self.bufferdata[i].filename,
-                    self.prefs.use_syntax_highlighting )
+                srcviewer.set_highlight_syntax(self.textbuffer[i], value)
         elif key == "edit_wrap_lines":
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)
@@ -961,9 +958,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
         for i in range(self.num_panes):
-            srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i],
-                self.bufferdata[i].filename,
-                self.prefs.use_syntax_highlighting)
+            filename = self.bufferdata[i].filename
+            if filename:
+                lang = srcviewer.get_language_from_file(filename)
+                srcviewer.set_language(self.textbuffer[i], lang)
+            srcviewer.set_highlight_syntax(self.textbuffer[i],
+                                           self.prefs.use_syntax_highlighting)
         yield 0
 
     def _set_files_internal(self, files):
