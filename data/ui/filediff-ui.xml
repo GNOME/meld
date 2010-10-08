@@ -8,6 +8,11 @@
   </toolbar>
 
   <menubar name="Menubar">
+    <menu action="FileMenu">
+      <placeholder name="FileActionsPlaceholder">
+        <menuitem action="MakePatch"/>
+      </placeholder>
+    </menu>
     <menu action="ChangesMenu">
       <placeholder name="ChangesActions">
         <menuitem action="PrevConflict"/>
@@ -29,8 +34,6 @@
   <popup name="Popup">
     <menuitem action="Save" />
     <menuitem action="SaveAs" />
-    <separator/>
-    <menuitem action="CreatePatch" />
     <separator/>
     <menuitem action="Cut" />
     <menuitem action="Copy" />

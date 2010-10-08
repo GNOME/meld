@@ -109,6 +109,101 @@ class BufferLines(object):
         return self.buf.get_line_count()
 
 
+class PatchDialog(gnomeglade.Component):
+
+    def __init__(self, filediff):
+        ui_file = paths.ui_dir("patch-dialog.ui")
+        gnomeglade.Component.__init__(self, ui_file, "patchdialog")
+
+        self.widget.set_transient_for(filediff.widget.get_toplevel())
+        self.prefs = filediff.prefs
+        self.prefs.notify_add(self.on_preference_changed)
+        self.filediff = filediff
+
+        buf = srcviewer.GtkTextBuffer()
+        self.textview.set_buffer(buf)
+        srcviewer.set_highlighting_enabled_from_mimetype(buf, "text/x-diff", True)
+        fontdesc = pango.FontDescription(self.prefs.get_current_font())
+        self.textview.modify_font(fontdesc)
+        self.textview.set_editable(False)
+
+        self.index_map = {self.left_radiobutton: (0, 1),
+                          self.right_radiobutton: (1, 2)}
+        self.left_patch = True
+        self.reverse_patch = self.reverse_checkbutton.get_active()
+
+        if self.filediff.num_panes < 3:
+            self.label3.hide()
+            self.hbox2.hide()
+
+    def on_preference_changed(self, key, value):
+        if key == "use_custom_font" or key == "custom_font":
+            fontdesc = pango.FontDescription(self.prefs.get_current_font())
+            self.textview.modify_font(fontdesc)
+
+    def on_buffer_selection_changed(self, radiobutton):
+        if not radiobutton.get_active():
+            return
+        self.left_patch = radiobutton == self.left_radiobutton
+        self.update_patch()
+
+    def on_reverse_checkbutton_toggled(self, checkbutton):
+        self.reverse_patch = checkbutton.get_active()
+        self.update_patch()
+
+    def update_patch(self):
+        indices = (0, 1)
+        if not self.left_patch:
+            indices = (1, 2)
+        if self.reverse_patch:
+            indices = (indices[1], indices[0])
+
+        texts = []
+        for b in self.filediff.textbuffer:
+            start, end = b.get_bounds()
+            text = b.get_text(start, end, False)
+            lines = text.splitlines(True)
+            texts.append(lines)
+
+        names = [self.filediff._get_pane_label(i) for i in range(3)]
+        prefix = os.path.commonprefix(names)
+        names = [n[prefix.rfind("/") + 1:] for n in names]
+
+        buf = self.textview.get_buffer()
+        text0, text1 = texts[indices[0]], texts[indices[1]]
+        name0, name1 = names[indices[0]], names[indices[1]]
+        diff_text = "".join(difflib.unified_diff(text0, text1, name0, name1))
+        buf.set_text(diff_text)
+
+    def run(self):
+        self.update_patch()
+
+        while 1:
+            result = self.widget.run()
+            if result < 0:
+                break
+
+            buf = self.textview.get_buffer()
+            txt = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False)
+
+            # Copy patch to clipboard
+            if result == 1:
+                clip = gtk.clipboard_get()
+                clip.set_text(txt)
+                clip.store()
+                break
+            # Save patch as a file
+            else:
+                # FIXME: These filediff methods are actually general utility.
+                filename = self.filediff._get_filename_for_saving(
+                                                         _("Save Patch As..."))
+                if filename:
+                    self.filediff._save_text_to_filename(filename, txt)
+                    break
+
+        self.widget.hide()
+
+
 ################################################################################
 #
 # FileDiff
@@ -223,7 +318,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         actions = (
             ("FileOpen",          gtk.STOCK_OPEN,       None,            None, _("Open selected"), self.on_open_activate),
-            ("CreatePatch",       None,                 _("Create Patch"),  None, _("Create a patch"), self.make_patch),
+            ("MakePatch", None, _("Format as patch..."), None, _("Create a patch using differences between files"), self.make_patch),
             ("PrevConflict", None, _("Previous conflict"), "<Ctrl>I", _("Go to the previous conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_UP)),
             ("NextConflict", None, _("Next conflict"), "<Ctrl>K", _("Go to the next conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_DOWN)),
             ("PushLeft",  gtk.STOCK_GO_BACK,    _("Push to left"),    "<Alt>Left", _("Push current change to the left"), lambda x: self.push_change(-1)),
@@ -1100,35 +1195,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return melddoc.RESULT_ERROR
 
     def make_patch(self, *extra):
-        fontdesc = pango.FontDescription(self.prefs.get_current_font())
-        dialog = gnomeglade.Component(paths.ui_dir("filediff.ui"), "patchdialog")
-        dialog.widget.set_transient_for( self.widget.get_toplevel() )
-        texts = [b.get_text(*b.get_bounds()).split("\n") for b in self.textbuffer]
-        texts[0] = [l+"\n" for l in texts[0]]
-        texts[1] = [l+"\n" for l in texts[1]]
-        names = [self._get_pane_label(i) for i in range(2)]
-        prefix = os.path.commonprefix( names )
-        names = [n[prefix.rfind("/") + 1:] for n in names]
-        dialog.textview.set_buffer(srcviewer.GtkTextBuffer())
-        dialog.textview.modify_font(fontdesc)
-        buf = dialog.textview.get_buffer()
-        lines = []
-        for line in difflib.unified_diff(texts[0], texts[1], names[0], names[1]):
-            buf.insert( buf.get_end_iter(), line )
-            lines.append(line)
-        srcviewer.set_highlighting_enabled_from_mimetype(buf, "text/x-diff", True)
-        result = dialog.widget.run()
-        dialog.widget.destroy()
-        if result >= 0:
-            txt = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
-            if result == 1: # copy
-                clip = gtk.clipboard_get()
-                clip.set_text(txt)
-                clip.store()
-            else:# save as
-                filename = self._get_filename_for_saving( _("Save patch as...") )
-                if filename:
-                    self._save_text_to_filename(filename, txt)
+        dialog = PatchDialog(self)
+        dialog.run()
 
     def set_buffer_writable(self, buf, yesno):
         pane = self.textbuffer.index(buf)
@@ -1272,6 +1340,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             tohide += self.vbox[n:] + self.msgarea_mgr[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
             map( lambda x: x.hide(), tohide )
+
+            self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
 
             def chunk_change_fn(i):
                 return lambda: self.linediffer.single_changes(i)
