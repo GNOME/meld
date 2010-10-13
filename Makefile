@@ -73,7 +73,7 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	$(PYTHON) -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	install -m 644 \
-		data/ui/*.glade \
+		data/ui/*.ui \
 		$(DESTDIR)$(sharedir_)/ui
 	install -m 644 \
 		data/ui/*.xml \
