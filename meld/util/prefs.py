@@ -35,6 +35,8 @@ p.color = "blue"
 import os
 import sys
 
+import glib
+
 
 class Value(object):
     """Represents a settable preference.
@@ -173,7 +175,7 @@ class ConfigParserPreferences(object):
         if sys.platform == "win32":
             pref_dir = os.path.join(os.getenv("APPDATA"), "Meld")
         else:
-            pref_dir = os.path.join(os.path.expanduser("~"), ".meld")
+            pref_dir = os.path.join(glib.get_user_config_dir(), "meld")
 
         if not os.path.exists(pref_dir):
             os.makedirs(pref_dir)
@@ -187,7 +189,23 @@ class ConfigParserPreferences(object):
             finally:
                 config_file.close()
         except IOError:
-            pass
+            # One-way move of old preferences
+            old_path = os.path.join(os.path.expanduser("~"), ".meld")
+            old_file_path = os.path.join(old_path, "meldrc.ini")
+            if os.path.exists(old_file_path):
+                try:
+                    config_file = open(old_file_path, "r")
+                    try:
+                        self._parser.readfp(config_file)
+                    finally:
+                        config_file.close()
+                    new_config_file = open(self._file_path, "w")
+                    try:
+                        self._parser.write(new_config_file)
+                    finally:
+                        new_config_file.close()
+                except IOError:
+                    pass
 
         for key, value in self._prefs.items():
             if self._parser.has_option("DEFAULT", key):
