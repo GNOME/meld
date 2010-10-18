@@ -108,7 +108,7 @@ class Vc(object):
     def resolved_command(self):
         raise NotImplementedError()
     def patch_command(self, workdir):
-        return ["patch","--strip=%i"%self.PATCH_STRIP_NUM,"--reverse","--directory=%s" % workdir]
+        return ["patch", "-p%i" % self.PATCH_STRIP_NUM, "-R", "-d", workdir]
 
     def check_repo_root(self, location):
         if not os.path.isdir(os.path.join(location, self.VC_DIR)):
