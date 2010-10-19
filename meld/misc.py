@@ -23,11 +23,14 @@ import os
 from gettext import gettext as _
 import select
 import errno
-import gobject
-import gtk
 import shutil
 import re
 import subprocess
+
+import gio
+import gobject
+import gtk
+
 
 whitespace_re = re.compile(r"\s")
 NULL = open(os.devnull, "w+b")
@@ -78,7 +81,15 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
     return ret
 
 def open_uri(uri, timestamp=0):
-    gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
+    try:
+        gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
+    except gio.Error:
+        if uri.startswith("http://"):
+            import webbrowser
+            webbrowser.open_new_tab(uri)
+        else:
+            # Unhandled URI
+            pass
 
 # Taken from epiphany
 def position_menu_under_widget(menu, widget):

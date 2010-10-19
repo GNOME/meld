@@ -89,6 +89,7 @@ except locale.Error:
 # Check requirements: Python 2.5, pygtk 2.14
 pyver = (2, 5)
 pygtkver = (2, 14, 0)
+pygobjectver = (2, 16, 0)
 
 def missing_reqs(mod, ver, exception=None):
     if isinstance(exception, ImportError):
@@ -113,6 +114,12 @@ try:
     assert gtk.pygtk_version >= pygtkver
 except (ImportError, AssertionError), e:
     missing_reqs("pygtk", pygtkver, e)
+
+try:
+    import gobject
+    assert gobject.pygobject_version >= pygobjectver
+except (ImportError, AssertionError), e:
+    missing_reqs("pygobject", pygobjectver, e)
 
 
 gtk.icon_theme_get_default().append_search_path(meld.paths.icon_dir())
