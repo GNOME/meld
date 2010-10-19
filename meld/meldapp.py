@@ -20,16 +20,9 @@ import os
 import optparse
 from gettext import gettext as _
 
-# gtk
+import gio
 import gtk
 import gobject
-
-# Drag'N'Drop support needs gnomevfs
-try:
-    import gnomevfs
-    gnomevfs_available = True
-except ImportError:
-    gnomevfs_available = False
 
 # project
 import paths
@@ -209,8 +202,8 @@ class MeldApp(gnomeglade.Component):
             gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
             [ ('text/uri-list', 0, 0) ],
             gtk.gdk.ACTION_COPY)
-        if gnomevfs_available:
-            self.widget.connect('drag_data_received', self.on_widget_drag_data_received)
+        self.widget.connect("drag_data_received",
+                            self.on_widget_drag_data_received)
         self.toolbar.set_style( self.prefs.get_toolbar_style() )
         self.toolbar.props.visible = self.prefs.toolbar_visible
         self.status_box.props.visible = self.prefs.statusbar_visible
@@ -235,7 +228,9 @@ class MeldApp(gnomeglade.Component):
 
     def on_widget_drag_data_received(self, wid, context, x, y, selection_data, info, time):
         if len(selection_data.get_uris()) != 0:
-            paths = [gnomevfs.get_local_path_from_uri(u) for u in selection_data.get_uris()]
+            paths = []
+            for uri in selection_data.get_uris():
+                paths.append(gio.File(uri=uri).get_path())
             self.open_paths(paths)
             return True
 
