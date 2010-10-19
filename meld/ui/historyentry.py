@@ -17,11 +17,11 @@
 import os
 import sys
 
+import gio
 import gtk
 import gobject
 import atk
 # gconf is also imported; see end of HistoryEntry class for details
-# gnomevfs is also imported; see end of HistoryFileEntry class for details
 from gettext import gettext as _
 
 # This file is a Python translation of:
@@ -273,7 +273,17 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         entry = self.__gentry.get_entry()
         entry.connect("changed", lambda *args: self.emit("changed"))
         entry.connect("activate", lambda *args: self.emit("activate"))
-        self._setup_dnd()
+
+        # We need to get rid of the pre-existing drop site on the entry
+        self.__gentry.get_entry().drag_dest_unset()
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
+                           gtk.DEST_DEFAULT_HIGHLIGHT |
+                           gtk.DEST_DEFAULT_DROP,
+                           [], gtk.gdk.ACTION_COPY)
+        self.drag_dest_add_uri_targets()
+        self.connect("drag_data_received",
+                     self.history_entry_drag_data_received)
+
         self.pack_start(self.__gentry, True, True, 0)
         self.__gentry.show()
 
@@ -325,16 +335,6 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             self.__modal = value
         else:
             raise AttributeError("Unknown property: %s" % pspec.name)
-
-    def _setup_dnd(self):
-        # we must get rid of gtk's drop site on the entry else weird stuff can happen
-        self.__gentry.get_entry().drag_dest_unset()
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
-                           gtk.DEST_DEFAULT_HIGHLIGHT |
-                           gtk.DEST_DEFAULT_DROP,
-                           [], gtk.gdk.ACTION_COPY)
-        self.drag_dest_add_uri_targets()
-        self.connect("drag_data_received", self.history_entry_drag_data_received)
 
     def append_history(self, text):
         self.__gentry.append_text(text)
@@ -450,7 +450,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             return
 
         for uri in uris:
-            path = gnomevfs.get_local_path_from_uri(uri)
+            path = gio.File(uri=uri).get_path()
             if path:
                 break
         else:
@@ -461,9 +461,3 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         entry.set_text(path)
         context.finish(True, False, time)
         entry.activate()
-
-try:
-    import gnomevfs
-except ImportError:
-    do_nothing = lambda *args: None
-    setattr(HistoryFileEntry, '_setup_dnd', do_nothing)
