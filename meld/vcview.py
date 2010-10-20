@@ -34,16 +34,6 @@ import vc
 #
 ################################################################################
 
-def _expand_to_root( treeview, path ):
-    """Expand rows from path up to root"""
-    start = path[:]
-    while len(start) and not treeview.row_expanded(start):
-        start = start[:-1]
-    level = len(start)
-    while level < len(path):
-        level += 1
-        treeview.expand_row( path[:level], 0)
-
 def _commonprefix(files):
     if len(files) != 1:
         workdir = misc.commonprefix(files)
@@ -352,7 +342,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 if len(entries) == 0:
                     self.model.add_empty(it, _("(Empty)"))
                 if differences or len(path)==1:
-                    _expand_to_root( self.treeview, path )
+                    self.treeview.expand_to_path(path)
             else: # just the root
                 self.treeview.expand_row( (0,), 0)
         self.vc.uncache_inventory()
