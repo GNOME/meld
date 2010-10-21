@@ -372,7 +372,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             path = self.model.value_path(it, 0)
             self.run_diff( [path] )
 
-    def run_diff_iter(self, path_list, empty_patch_ok):
+    def run_diff_iter(self, path_list):
         silent_error = hasattr(self.vc, 'switch_to_external_diff')
         retry_diff = True
         while retry_diff:
@@ -393,16 +393,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     silent_error = False
                     self.vc.switch_to_external_diff()
                     retry_diff = True
-            elif empty_patch_ok:
-                misc.run_dialog(_("No differences found."), parent=self,
-                                messagetype=gtk.MESSAGE_INFO)
             else:
                 for path in path_list:
                     self.emit("create-diff", [path])
 
-    def run_diff(self, path_list, empty_patch_ok=0):
+    def run_diff(self, path_list):
         for path in path_list:
-            self.scheduler.add_task(self.run_diff_iter([path], empty_patch_ok).next, atfront=1)
+            self.scheduler.add_task(self.run_diff_iter([path]).next, atfront=1)
 
     def on_button_press_event(self, text, event):
         if event.button==3:
@@ -506,7 +503,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_diff_clicked(self, obj):
         files = self._get_selected_files()
         if len(files):
-            self.run_diff(files, empty_patch_ok=1)
+            self.run_diff(files)
 
     def on_button_open_clicked(self, obj):
         self._open_files(self._get_selected_files())
