@@ -51,7 +51,7 @@ class FileMerge(filediff.FileDiff):
             yield i
         for i in self._merge_files():
             yield i
-        for i in self._diff_files(files):
+        for i in self._diff_files():
             yield i
 
     def _get_custom_status_text(self):

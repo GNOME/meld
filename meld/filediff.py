@@ -909,7 +909,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for b in self.textbuffer:
             self.undosequence.checkpoint(b)
 
-    def _diff_files(self, files):
+    def _diff_files(self):
         yield _("[%s] Computing differences") % self.label_text
         texts = self.buffer_filtered[:self.num_panes]
         step = self.linediffer.set_sequences_iter(texts)
@@ -926,15 +926,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(self._update_highlighting().next)
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
-        for i in range(len(files)):
-            if files[i]:
-                srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i], files[i], self.prefs.use_syntax_highlighting)
+        for i in range(self.num_panes):
+            srcviewer.set_highlighting_enabled_from_file(self.textbuffer[i],
+                self.bufferdata[i].filename,
+                self.prefs.use_syntax_highlighting)
         yield 0
 
     def _set_files_internal(self, files):
         for i in self._load_files(files, self.textbuffer):
             yield i
-        for i in self._diff_files(files):
+        for i in self._diff_files():
             yield i
 
     def _set_merge_action_sensitivity(self):
