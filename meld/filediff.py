@@ -81,7 +81,12 @@ class BufferLines(object):
     This class allows a gtk.TextBuffer to be treated as a list of lines of
     possibly-filtered text. If no filter is given, the raw output from the
     gtk.TextBuffer is used.
+
+    The logic here (and in places in FileDiff) requires that Python's
+    unicode splitlines() implementation and gtk.TextBuffer agree on where
+    linebreaks occur. Happily, this is usually the case.
     """
+
     def __init__(self, buf, textfilter=None):
         self.buf = buf
         if textfilter is not None:
@@ -90,13 +95,24 @@ class BufferLines(object):
             self.textfilter = lambda x: x
 
     def __getslice__(self, lo, hi):
+        # FIXME: If we ask for arbitrary slices past the end of the buffer,
+        # this will return the last line.
         start = get_iter_at_line_or_eof(self.buf, lo)
         end = get_iter_at_line_or_eof(self.buf, hi)
         txt = unicode(self.buf.get_text(start, end, False), 'utf8')
-        if hi >= self.buf.get_line_count():
-            return self.textfilter(txt).split("\n")
-        else:
-            return self.textfilter(txt).split("\n")[:-1]
+
+        filter_txt = self.textfilter(txt)
+        lines = filter_txt.splitlines()
+        ends = filter_txt.splitlines(True)
+        # The last line in a gtk.TextBuffer is guaranteed never to end in a
+        # newline. As splitlines() discards an empty line at the end, we need
+        # to artificially add a line if the requested slice is past the end of
+        # the buffer, and the last line in the slice ended in a newline.
+        if hi >= self.buf.get_line_count() and \
+           (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
+            lines.append(u"")
+
+        return lines
 
     def __getitem__(self, i):
         line_start = get_iter_at_line_or_eof(self.buf, i)
@@ -125,6 +141,8 @@ def get_iter_at_line_or_eof(buffer, line):
 
 def insert_with_tags_by_name(buffer, line, text, tag):
     if line >= buffer.get_line_count():
+        # TODO: We need to insert a linebreak here, but there is no
+        # way to be certain what kind of linebreak to use.
         text = "\n" + text
     buffer.insert_with_tags_by_name(get_iter_at_line_or_eof(buffer, line), text, tag)
 
@@ -495,11 +513,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.warned_bad_comparison = True
         return txt
 
-    def after_text_insert_text(self, buffer, it, newtext, textlen):
-        newtext = unicode(newtext, 'utf8')
-        lines_added = newtext.count("\n")
-        starting_at = it.get_line() - lines_added
-        self._after_text_modified(buffer, starting_at, lines_added)
+    def after_text_insert_text(self, buf, it, newtext, textlen):
+        start_mark = buf.get_mark("insertion-start")
+        starting_at = buf.get_iter_at_mark(start_mark).get_line()
+        buf.delete_mark(start_mark)
+        lines_added = it.get_line() - starting_at
+        self._after_text_modified(buf, starting_at, lines_added)
 
     def after_text_delete_range(self, buffer, it0, it1):
         starting_at = it0.get_line()
@@ -633,18 +652,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_textbuffer__end_user_action(self, *buffer):
         self.undosequence.end_group()
 
-    def on_text_insert_text(self, buffer, it, text, textlen):
+    def on_text_insert_text(self, buf, it, text, textlen):
         text = unicode(text, 'utf8')
         self.undosequence.add_action(
-            BufferInsertionAction(buffer, it.get_offset(), text))
+            BufferInsertionAction(buf, it.get_offset(), text))
+        buf.create_mark("insertion-start", it, True)
 
-    def on_text_delete_range(self, buffer, it0, it1):
-        text = unicode(buffer.get_text(it0, it1, False), 'utf8')
-        pane = self.textbuffer.index(buffer)
+    def on_text_delete_range(self, buf, it0, it1):
+        text = unicode(buf.get_text(it0, it1, False), 'utf8')
         assert self.deleted_lines_pending == -1
-        self.deleted_lines_pending = text.count("\n")
+        self.deleted_lines_pending = it1.get_line() - it0.get_line()
         self.undosequence.add_action(
-            BufferDeletionAction(buffer, it0.get_offset(), text))
+            BufferDeletionAction(buf, it0.get_offset(), text))
 
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
         self.set_buffer_modified(buf, not checkpointed)
@@ -857,13 +876,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _diff_files(self, files):
         yield _("[%s] Computing differences") % self.label_text
-        panetext = []
-        for b in self.textbuffer[:self.num_panes]:
-            start, end = b.get_bounds()
-            text = b.get_text(start, end, False)
-            panetext.append(self._filter_text(text))
-        lines = map(lambda x: x.split("\n"), panetext)
-        step = self.linediffer.set_sequences_iter(lines)
+        texts = self.buffer_texts[:self.num_panes]
+        step = self.linediffer.set_sequences_iter(texts)
         while step.next() is None:
             yield 1
 
@@ -1470,6 +1484,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if copy_up:
             if chunk[2] >= b0.get_line_count() and \
                chunk[3] < b1.get_line_count():
+                # TODO: We need to insert a linebreak here, but there is no
+                # way to be certain what kind of linebreak to use.
                 t0 = t0 + "\n"
             insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
         else: # copy down
