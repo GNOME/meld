@@ -28,6 +28,8 @@ class _srcviewer(object):
     # instance of the imported sourceviewer module
     gsv = None
 
+    spaces_flag = 0
+
     def __init__(self):
         if self.srcviewer_module is not None:
             self.gsv = __import__(self.srcviewer_module)
@@ -81,6 +83,7 @@ class _gtksourceview2(_srcviewer):
     def overrides(self):
         self.GtkTextView = self.gsv.View
         self.GtkTextBuffer = self.gsv.Buffer
+        self.spaces_flag = self.gsv.DRAW_SPACES_ALL
 
     def GtkLanguageManager(self):
         return self.gsv.LanguageManager()
@@ -182,6 +185,7 @@ class nullsourceview(_srcviewer):
             set_tab_width = lambda *args: None
             set_show_line_numbers = lambda *args: None
             set_insert_spaces_instead_of_tabs = lambda *args: None
+            set_draw_spaces = lambda *args: None
         gobject.type_register(NullTextView)
 
         self.GtkTextView = NullTextView
