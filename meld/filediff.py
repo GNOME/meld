@@ -252,6 +252,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # FIXME: using LAST and FIRST is terrible and unreliable icon abuse
             ("PullLeft",  gtk.STOCK_GOTO_LAST,  _("Pull from left"),  "<Alt><Shift>Right", _("Pull change from the left"), lambda x: self.pull_change(-1)),
             ("PullRight", gtk.STOCK_GOTO_FIRST, _("Pull from right"), "<Alt><Shift>Left", _("Pull change from the right"), lambda x: self.pull_change(1)),
+            ("CopyLeftUp", None, _("Copy above left"), "<Alt>bracketleft", _("Copy change above the left chunk"), lambda x: self.copy_change(-1, -1)),
+            ("CopyLeftDown", None, _("Copy below left"), "<Alt>semicolon", _("Copy change below the left chunk"), lambda x: self.copy_change(-1, 1)),
+            ("CopyRightUp", None, _("Copy above right"), "<Alt>bracketright", _("Copy change above the right chunk"), lambda x: self.copy_change(1, -1)),
+            ("CopyRightDown", None, _("Copy below right"), "<Alt>quoteright", _("Copy change below the right chunk"), lambda x: self.copy_change(1, 1)),
             ("Delete",    gtk.STOCK_DELETE,     _("Delete"),     "<Alt>Delete", _("Delete change"), self.delete_change),
             ("MergeFromLeft",  None, _("Merge all changes from left"),  None, _("Merge all non-conflicting changes from the left"), lambda x: self.pull_all_non_conflicting_changes(-1)),
             ("MergeFromRight", None, _("Merge all changes from right"), None, _("Merge all non-conflicting changes from the right"), lambda x: self.pull_all_non_conflicting_changes(1)),
@@ -362,9 +366,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         pane = self.cursor.pane
         chunk_id = self.cursor.chunk
         # TODO: Handle editable states better; now it only works for auto-merge
-        push_left, push_right, pull_left, pull_right, delete = (True,) * 5
+        push_left, push_right, pull_left, pull_right, delete, \
+            copy_left, copy_right = (True,) * 7
         if pane == -1 or chunk_id is None:
-            push_left, push_right, pull_left, pull_right, delete = (False,) * 5
+            push_left, push_right, pull_left, pull_right, delete, \
+                copy_left, copy_right = (False,) * 7
         else:
             # Copy* and Delete are sensitive as long as there is something to
             # copy/delete (i.e., not an empty chunk), and the direction exists.
@@ -376,6 +382,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pull_left = pane == 2 and not chunk[3] == chunk[4] and editable
                 pull_right = pane == 0 and not chunk[3] == chunk[4] and editable
                 delete = (push_left or push_right) and editable
+                copy_left = push_left and not chunk[3] == chunk[4]
+                copy_right = push_right and not chunk[3] == chunk[4]
             elif pane == 1:
                 chunk0 = self.linediffer.get_chunk(chunk_id, pane, 0)
                 chunk2 = None
@@ -389,11 +397,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pull_right = chunk2 is not None and not chunk2[3] == chunk2[4]
                 delete = (chunk0 is not None and chunk0[1] != chunk0[2]) or \
                          (chunk2 is not None and chunk2[1] != chunk2[2])
+                copy_left = push_left and pull_left
+                copy_right = push_right and pull_right
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
         self.actiongroup.get_action("PullRight").set_sensitive(pull_right)
         self.actiongroup.get_action("Delete").set_sensitive(delete)
+        self.actiongroup.get_action("CopyLeftUp").set_sensitive(copy_left)
+        self.actiongroup.get_action("CopyLeftDown").set_sensitive(copy_left)
+        self.actiongroup.get_action("CopyRightUp").set_sensitive(copy_right)
+        self.actiongroup.get_action("CopyRightDown").set_sensitive(copy_right)
         # FIXME: don't queue_draw() on everything... just on what changed
         self.queue_draw()
 
@@ -432,6 +446,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         assert(src in (0, 1, 2))
         assert(chunk is not None)
         self.replace_chunk(src, dst, chunk)
+
+    def copy_change(self, direction, copy_direction):
+        src = self._get_focused_pane()
+        dst = src + direction
+        chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
+        assert(src != -1 and self.cursor.chunk is not None)
+        assert(dst in (0, 1, 2))
+        assert(chunk is not None)
+        copy_up = True if copy_direction < 0 else False
+        self.copy_chunk(src, dst, chunk, copy_up)
 
     def pull_all_non_conflicting_changes(self, direction):
         assert direction in (-1, 1)
