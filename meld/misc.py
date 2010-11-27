@@ -264,19 +264,34 @@ def commonprefix(dirs):
     return os.sep.join(prefix)
 
 def copy2(src, dst):
-    """Like shutil.copy2 but ignores chmod errors.
+    """Like shutil.copy2 but ignores chmod errors, and copies symlinks as links
     See [Bug 568000] Copying to NTFS fails
     """
     if os.path.isdir(dst):
         dst = os.path.join(dst, os.path.basename(src))
-    shutil.copyfile(src, dst)
+
+    if os.path.islink(src) and os.path.isfile(src):
+        os.symlink(os.readlink(src), dst)
+    elif os.path.isfile(src):
+        shutil.copyfile(src, dst)
+    else:
+        raise OSError("Not a file")
+
     try:
         shutil.copystat(src, dst)
     except OSError, e:
         if e.errno != errno.EPERM:
             raise
 
-def copytree(src, dst, symlinks=1):
+def copytree(src, dst):
+    """Similar to shutil.copytree, but always copies symlinks and doesn't
+    error out if the destination path already exists.
+    """
+    # If the source tree is a symlink, duplicate the link and we're done.
+    if os.path.islink(src):
+        os.symlink(os.readlink(src), dst)
+        return
+
     try:
         os.mkdir(dst)
     except OSError, e:
@@ -286,11 +301,10 @@ def copytree(src, dst, symlinks=1):
     for name in names:
         srcname = os.path.join(src, name)
         dstname = os.path.join(dst, name)
-        if symlinks and os.path.islink(srcname):
-            linkto = os.readlink(srcname)
-            os.symlink(linkto, dstname)
+        if os.path.islink(srcname):
+            os.symlink(os.readlink(srcname, dstname))
         elif os.path.isdir(srcname):
-            copytree(srcname, dstname, symlinks)
+            copytree(srcname, dstname)
         else:
             copy2(srcname, dstname)
 
