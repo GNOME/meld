@@ -308,6 +308,12 @@ def copytree(src, dst):
         else:
             copy2(srcname, dstname)
 
+    try:
+        shutil.copystat(src, dst)
+    except OSError, e:
+        if e.errno != errno.EPERM:
+            raise
+
 def shell_escape(glob_pat):
     # TODO: handle all cases
     assert not re.compile(r"[][*?]").findall(glob_pat)
