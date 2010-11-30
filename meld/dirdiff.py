@@ -365,7 +365,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             it = self.model.get_iter( path )
             roots = self.model.value_paths( it )
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
-            differences = [0]
+            differences = False
             if not self.actiongroup.get_action("IgnoreCase").get_active():
                 class accum(object):
                     def __init__(self, parent, roots):
@@ -418,7 +418,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         entries = os.listdir( root )
                     except OSError, err:
                         self.model.add_error( it, err.strerror, pane )
-                        differences = [1]
+                        differences = True
                     else:
                         for f in self.name_filters:
                             entries = filter(f.filter, entries)
@@ -456,15 +456,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             # then directories and files
             if len(alldirs) + len(allfiles) != 0:
-                def add_entry(names):
-                    child = self.model.add_entries(it, [os.path.join(r, n) for r, n in zip(roots, names)])
-                    differences[0] |= self._update_item_state(child)
-                    return child
-                map(lambda x : todo.append( self.model.get_path(add_entry(x))), alldirs )
-                map(add_entry, allfiles)
+                for names in alldirs:
+                    entries = [os.path.join(r, n) for r, n in zip(roots, names)]
+                    child = self.model.add_entries(it, entries)
+                    differences |= self._update_item_state(child)
+                    todo.append(self.model.get_path(child))
+                for names in allfiles:
+                    entries = [os.path.join(r, n) for r, n in zip(roots, names)]
+                    child = self.model.add_entries(it, entries)
+                    differences |= self._update_item_state(child)
             else: # directory is empty, add a placeholder
                 self.model.add_empty(it)
-            if differences[0]:
+            if differences:
                 expanded[path] = False
         for path in sorted(expanded.keys()):
             start = path[:]
