@@ -358,7 +358,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         symlinks_followed = {} # only follow symlinks once
         todo = [ rootpath ]
-        expanded = {}
+        expanded = set()
         while len(todo):
             todo.sort() # depth first
             path = todo.pop(0)
@@ -468,17 +468,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             else: # directory is empty, add a placeholder
                 self.model.add_empty(it)
             if differences:
-                expanded[path] = False
-        for path in sorted(expanded.keys()):
-            start = path[:]
-            while len(start) and not expanded.get(start,False):
-                start = start[:-1]
-            level = len(start)
-            while level < len(path):
-                level += 1
-                cur = path[:level]
-                expanded[cur] = True
-                self.treeview[0].expand_row( cur, 0)
+                expanded.add(path)
+        for path in sorted(expanded):
+            self.treeview[0].expand_to_path(path)
         yield _("[%s] Done") % self.label_text
         self.actiongroup.get_action("Hide").set_sensitive(True)
 
