@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2009-2010 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -14,7 +15,6 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import filecmp
 import paths
 from ui import gnomeglade
 import gtk
@@ -31,6 +31,8 @@ import re
 import stat
 import time
 
+from util.namedtuple import namedtuple
+
 import ui.emblemcellrenderer
 
 gdk = gtk.gdk
@@ -41,64 +43,116 @@ gdk = gtk.gdk
 #
 ################################################################################
 
+# For compatibility with Python 2.5, we use the Python 2.4 compatible version of
+# namedtuple. The class is included in the collections module as of Python 2.6.
+class StatItem(namedtuple('StatItem', 'mode size time')):
+    __slots__ = ()
+
+    @classmethod
+    def _make(cls, stat_result):
+        return StatItem(stat.S_IFMT(stat_result.st_mode),
+                        stat_result.st_size, stat_result.st_mtime)
+
+
+CacheResult = namedtuple('CacheResult', 'stats result')
+
+
 _cache = {}
+Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = range(6)
+# TODO: Get the block size from os.stat
+CHUNK_SIZE = 4096
 
-def _files_same(lof, regexes):
-    """Return 1 if all the files in 'lof' have the same contents.
-       If the files are the same after the regular expression substitution, return 2.
-       Finally, return 0 if the files still differ.
+
+def all_same(lst):
+    return not lst or lst.count(lst[0]) == len(lst)
+
+
+def _files_same(files, regexes):
+    """Determine whether a list of files are the same.
+
+    Possible results are:
+      Same: The files are the same
+      SameFiltered: The files are identical only after filtering with 'regexes'
+      DodgySame: The files are superficially the same (i.e., type, size, mtime)
+      DodgyDifferent: The files are superficially different
+      FileError: There was a problem reading one or more of the files
     """
-    # early out if only one file
-    if len(lof) <= 1:
-        return 1
-    # get sigs
-    lof = tuple(lof)
-    def sig(f):
-        s = os.stat(f)
-        return misc.struct(mode=stat.S_IFMT(s.st_mode), size=s.st_size, time=s.st_mtime)
-    def all_same(l):
-        for i in l[1:]:
-            if l[0] != i:
-                return 0
-        return 1
-    sigs = tuple( [ sig(f) for f in lof ] )
-    # check for directories
-    arefiles = [ stat.S_ISREG(s.mode) for s in sigs ]
-    if arefiles.count(0) == len(arefiles): # all dirs
-        return 1
-    elif arefiles.count(0): # mixture
-        return 0
-    # if no substitutions look for different sizes
-    if len(regexes) == 0 and all_same( [s.size for s in sigs] ) == 0:
-        return 0
-    # try cache
-    try:
-        cache = _cache[ lof ]
-    except KeyError:
-        pass
-    else:
-        if cache.sigs == sigs: # up to date
-            return cache.result
-    # do it
-    try:
-        contents = [open(f, "r").read() for f in lof]
-    except (MemoryError, OverflowError): # Files are too large
-        # FIXME: Filters are not current applied in this case. If that was
-        # to be fixed, we could drop the all-at-once loading.
-        for i in range(len(lof) - 1):
-            same = filecmp.cmp(lof[i], lof[i + 1], False)
-            if not same:
-                return 0
-        return 1
 
-    if all_same(contents):
-        result = 1
-    else:
+    # One file is the same as itself
+    if len(files) < 2:
+        return Same
+
+    files = tuple(files)
+    stats = tuple([StatItem._make(os.stat(f)) for f in files])
+
+    # If all entries are directories, they are considered to be the same
+    if all([stat.S_ISDIR(s.mode) for s in stats]):
+        return Same
+
+    # If any entries are not regular files, consider them different
+    if not all([stat.S_ISREG(s.mode) for s in stats]):
+        return Different
+
+    # If there are no text filters, unequal sizes imply a difference
+    if not regexes and not all_same([s.size for s in stats]):
+        return Different
+
+    # Check the cache before doing the expensive comparison
+    cache = _cache.get(files)
+    if cache and cache.stats == stats:
+        return cache.result
+
+    # Open files and compare bit-by-bit
+    contents = [[] for f in files]
+    result = None
+
+    try:
+        handles = [open(f, "rb") for f in files]
+        try:
+            data = [h.read(CHUNK_SIZE) for h in handles]
+
+            # Rough test to see whether files are binary. If files are guessed
+            # to be binary, we unset regexes for speed and space reasons.
+            if any(["\0" in d for d in data]):
+                regexes = []
+
+            while True:
+                if all_same(data):
+                    if not data[0]:
+                        break
+                else:
+                    result = Different
+                    if not regexes:
+                        break
+
+                if regexes:
+                    for i in range(len(data)):
+                        contents[i].append(data[i])
+
+                data = [h.read(CHUNK_SIZE) for h in handles]
+
+        # Files are too large; we can't apply filters
+        except (MemoryError, OverflowError):
+            result = DodgySame if all_same(stats) else DodgyDifferent
+        finally:
+            for h in handles:
+                h.close()
+    except IOError:
+        # Don't cache generic errors as results
+        return FileError
+
+    if result is None:
+        result = Same
+
+    if result == Different and regexes:
+        contents = ["".join(c) for c in contents]
         for r in regexes:
-            contents = [ re.sub(r, "", c) for c in contents ]
-        result = all_same(contents) and 2
-    _cache[ lof ] = misc.struct(sigs=sigs, result=result)
+            contents = [re.sub(r, "", c) for c in contents]
+        result = SameFiltered if all_same(contents) else Different
+
+    _cache[files] = CacheResult(stats, result)
     return result
+
 
 COL_EMBLEM, COL_END = tree.COL_END, tree.COL_END + 1
 
@@ -726,7 +780,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             is_present = [ os.path.exists( f ) for f in curfiles ]
             all_present = 0 not in is_present
             if all_present:
-                if _files_same( curfiles, self.regexes ):
+                if _files_same(curfiles, self.regexes) in (Same, SameFiltered):
                     state = tree.STATE_NORMAL
                 else:
                     state = tree.STATE_MODIFIED
@@ -759,21 +813,26 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             for j in range(len(mod_times)):
                 if mod_times[j]:
                     lof.append( files[j] )
-            all_same = 0
+            all_same = Different
             all_present_same = _files_same( lof, self.regexes )
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
             if mod_times[j]:
                 isdir = os.path.isdir( files[j] )
-                if all_same == 1:
+                # TODO: Differentiate the DodgySame case
+                if all_same == Same or all_same == DodgySame:
                     self.model.set_state(it, j,  tree.STATE_NORMAL, isdir)
                     different = 0
-                elif all_same == 2:
+                elif all_same == SameFiltered:
                     self.model.set_state(it, j,  tree.STATE_NOCHANGE, isdir)
                     different = 0
-                elif all_present_same:
+                # TODO: Differentiate the SameFiltered and DodgySame cases
+                elif all_present_same in (Same, SameFiltered, DodgySame):
                     self.model.set_state(it, j,  tree.STATE_NEW, isdir)
+                elif all_same == FileError or all_present_same == FileError:
+                    self.model.set_state(it, j,  tree.STATE_ERROR, isdir)
+                # Different and DodgyDifferent
                 else:
                     self.model.set_state(it, j,  tree.STATE_MODIFIED, isdir)
                 self.model.set_value(it,
