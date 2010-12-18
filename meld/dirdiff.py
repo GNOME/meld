@@ -485,19 +485,20 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 print "Ignoring OS error: %s" % err
                                 continue
                             if stat.S_ISLNK(s.st_mode):
-                                if not self.prefs.ignore_symlinks:
-                                    key = (s.st_dev, s.st_ino)
-                                    if key not in symlinks_followed:
-                                        symlinks_followed.add(key)
-                                        try:
-                                            s = os.stat(os.path.join(root, e))
-                                        except OSError, err:
-                                            print "ignoring dangling symlink", e
-                                        else:
-                                            if stat.S_ISREG(s.st_mode):
-                                                files.append(e)
-                                            elif stat.S_ISDIR(s.st_mode):
-                                                dirs.append(e)
+                                if self.prefs.ignore_symlinks:
+                                    continue
+                                key = (s.st_dev, s.st_ino)
+                                if key in symlinks_followed:
+                                    continue
+                                symlinks_followed.add(key)
+                                try:
+                                    s = os.stat(os.path.join(root, e))
+                                    if stat.S_ISREG(s.st_mode):
+                                        files.append(e)
+                                    elif stat.S_ISDIR(s.st_mode):
+                                        dirs.append(e)
+                                except OSError, err:
+                                    print "ignoring dangling symlink", e
                             elif stat.S_ISREG(s.st_mode):
                                 files.append(e)
                             elif stat.S_ISDIR(s.st_mode):
