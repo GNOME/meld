@@ -15,6 +15,7 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import errno
 import paths
 from ui import gnomeglade
 import gtk
@@ -484,10 +485,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 files = []
                 dirs = []
                 for e in entries:
-                    try: # Necessary for some broken symlink cases; see bgo#585895
+                    try:
                         s = os.lstat(os.path.join(root, e))
+                    # Covers certain unreadable symlink cases; see bgo#585895
                     except OSError, err:
-                        print "Ignoring OS error: %s" % err
+                        error_string = e + err.strerror
+                        self.model.add_error(it, error_string, pane)
                         continue
 
                     if stat.S_ISLNK(s.st_mode):
@@ -504,7 +507,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             elif stat.S_ISDIR(s.st_mode):
                                 dirs.append(e)
                         except OSError, err:
-                            print "ignoring dangling symlink", e
+                            if err.errno == errno.ENOENT:
+                                error_string = e + ": Dangling symlink"
+                            else:
+                                error_string = e + err.strerror
+                            self.model.add_error(it, error_string, pane)
+                            differences = True
                     elif stat.S_ISREG(s.st_mode):
                         files.append(e)
                     elif stat.S_ISDIR(s.st_mode):
@@ -639,6 +647,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             fname = self.model.value_path( self.model.get_iter(paths[0]), pane )
             try:
                 stat = os.stat(fname)
+            # TypeError for if fname is None
             except (OSError, TypeError):
                 self.emit("status-changed", "")
             else:
