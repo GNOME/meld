@@ -464,47 +464,56 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                     if s: return s
                             return tuple([t or first_nonempty(tuples) for t in tuples])
                         return [fixup(self.items[k]) for k in keys]
+
             accumdirs = accum(self, roots)
             accumfiles = accum(self, roots)
             for pane, root in enumerate(roots):
-                if os.path.isdir( root ):
-                    try:
-                        entries = os.listdir( root )
+                if not os.path.isdir(root):
+                    continue
+
+                try:
+                    entries = os.listdir(root)
+                except OSError, err:
+                    self.model.add_error(it, err.strerror, pane)
+                    differences = True
+                    continue
+
+                for f in self.name_filters:
+                    entries = filter(f.filter, entries)
+
+                files = []
+                dirs = []
+                for e in entries:
+                    try: # Necessary for some broken symlink cases; see bgo#585895
+                        s = os.lstat(os.path.join(root, e))
                     except OSError, err:
-                        self.model.add_error( it, err.strerror, pane )
-                        differences = True
-                    else:
-                        for f in self.name_filters:
-                            entries = filter(f.filter, entries)
-                        files = []
-                        dirs = []
-                        for e in entries:
-                            try: # Necessary for some broken symlink cases; see bgo#585895
-                                s = os.lstat(os.path.join(root, e))
-                            except OSError, err:
-                                print "Ignoring OS error: %s" % err
-                                continue
-                            if stat.S_ISLNK(s.st_mode):
-                                if self.prefs.ignore_symlinks:
-                                    continue
-                                key = (s.st_dev, s.st_ino)
-                                if key in symlinks_followed:
-                                    continue
-                                symlinks_followed.add(key)
-                                try:
-                                    s = os.stat(os.path.join(root, e))
-                                    if stat.S_ISREG(s.st_mode):
-                                        files.append(e)
-                                    elif stat.S_ISDIR(s.st_mode):
-                                        dirs.append(e)
-                                except OSError, err:
-                                    print "ignoring dangling symlink", e
-                            elif stat.S_ISREG(s.st_mode):
+                        print "Ignoring OS error: %s" % err
+                        continue
+
+                    if stat.S_ISLNK(s.st_mode):
+                        if self.prefs.ignore_symlinks:
+                            continue
+                        key = (s.st_dev, s.st_ino)
+                        if key in symlinks_followed:
+                            continue
+                        symlinks_followed.add(key)
+                        try:
+                            s = os.stat(os.path.join(root, e))
+                            if stat.S_ISREG(s.st_mode):
                                 files.append(e)
                             elif stat.S_ISDIR(s.st_mode):
                                 dirs.append(e)
-                        accumfiles.add( pane, files )
-                        accumdirs.add( pane, dirs )
+                        except OSError, err:
+                            print "ignoring dangling symlink", e
+                    elif stat.S_ISREG(s.st_mode):
+                        files.append(e)
+                    elif stat.S_ISDIR(s.st_mode):
+                        dirs.append(e)
+                    else:
+                        # FIXME: Unhandled stat type
+                        pass
+                accumfiles.add(pane, files)
+                accumdirs.add(pane, dirs)
 
             alldirs = accumdirs.get()
             allfiles = self._filter_on_state( roots, accumfiles.get() )
