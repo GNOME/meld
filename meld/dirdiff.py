@@ -356,7 +356,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("Hide").set_sensitive(False)
         yield _("[%s] Scanning %s") % (self.label_text, "")
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
-        symlinks_followed = {} # only follow symlinks once
+        symlinks_followed = set()
         todo = [ rootpath ]
         expanded = set()
         while len(todo):
@@ -433,8 +433,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             if stat.S_ISLNK(s.st_mode):
                                 if not self.prefs.ignore_symlinks:
                                     key = (s.st_dev, s.st_ino)
-                                    if symlinks_followed.get( key, 0 ) == 0:
-                                        symlinks_followed[key] = 1
+                                    if key not in symlinks_followed:
+                                        symlinks_followed.add(key)
                                         try:
                                             s = os.stat(os.path.join(root, e))
                                         except OSError, err:
