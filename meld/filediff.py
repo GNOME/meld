@@ -911,7 +911,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _diff_files(self, files):
         yield _("[%s] Computing differences") % self.label_text
-        texts = self.buffer_texts[:self.num_panes]
+        texts = self.buffer_filtered[:self.num_panes]
         step = self.linediffer.set_sequences_iter(texts)
         while step.next() is None:
             yield 1
