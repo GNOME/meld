@@ -119,8 +119,8 @@ class BufferLines(object):
         line_end = line_start.copy()
         if not line_end.ends_line():
             line_end.forward_to_line_end()
-        # TODO: should this be filtered?
-        return unicode(self.buf.get_text(line_start, line_end, False), 'utf8')
+        txt = self.buf.get_text(line_start, line_end, False)
+        return unicode(self.textfilter(txt), 'utf8')
 
     def __len__(self):
         return self.buf.get_line_count()
