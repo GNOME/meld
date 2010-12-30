@@ -49,7 +49,11 @@ class Vc(_vc.Vc):
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        return [self.CMD,"diff"]
+        if hasattr(self, "external_diff"):
+            return [self.CMD, "diff", "--diff-cmd", self.external_diff]
+        else:
+            return [self.CMD, "diff"]
+
     def update_command(self):
         return [self.CMD,"update"]
     def add_command(self, binary=0):
@@ -65,6 +69,9 @@ class Vc(_vc.Vc):
             return False
         else:
             return True
+
+    def switch_to_external_diff(self):
+        self.external_diff = "diff"
 
     def _get_matches(self, directory):
         """return a list of tuples (file_path, status_code, revision)"""

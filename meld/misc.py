@@ -239,10 +239,11 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
         workdir = None
     return sentinel()()
 
-def write_pipe(command, text):
+def write_pipe(command, text, error=None):
     """Write 'text' into a shell command and discard its stdout output.
     """
-    proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(command, stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE, stderr=error)
     proc.communicate(text)
     return proc.wait()
 

@@ -373,21 +373,32 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.run_diff( [path] )
 
     def run_diff_iter(self, path_list, empty_patch_ok):
-        yield _("[%s] Fetching differences") % self.label_text
-        difffunc = self._command_iter(self.vc.diff_command(), path_list, 0).next
-        diff = None
-        while type(diff) != type(()):
-            diff = difffunc()
-            yield 1
-        prefix, patch = diff[0], diff[1]
-        yield _("[%s] Applying patch") % self.label_text
-        if patch:
-            self.show_patch(prefix, patch)
-        elif empty_patch_ok:
-            misc.run_dialog( _("No differences found."), parent=self, messagetype=gtk.MESSAGE_INFO)
-        else:
-            for path in path_list:
-                self.emit("create-diff", [path])
+        silent_error = hasattr(self.vc, 'switch_to_external_diff')
+        retry_diff = True
+        while retry_diff:
+            retry_diff = False
+
+            yield _("[%s] Fetching differences") % self.label_text
+            difffunc = self._command_iter(self.vc.diff_command(),
+                                          path_list, 0).next
+            diff = None
+            while type(diff) != type(()):
+                diff = difffunc()
+                yield 1
+            prefix, patch = diff[0], diff[1]
+            yield _("[%s] Applying patch") % self.label_text
+            if patch:
+                applied = self.show_patch(prefix, patch, silent=silent_error)
+                if not applied and silent_error:
+                    silent_error = False
+                    self.vc.switch_to_external_diff()
+                    retry_diff = True
+            elif empty_patch_ok:
+                misc.run_dialog(_("No differences found."), parent=self,
+                                messagetype=gtk.MESSAGE_INFO)
+            else:
+                for path in path_list:
+                    self.emit("create-diff", [path])
 
     def run_diff(self, path_list, empty_patch_ok=0):
         for path in path_list:
@@ -500,7 +511,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_open_clicked(self, obj):
         self._open_files(self._get_selected_files())
 
-    def show_patch(self, prefix, patch):
+    def show_patch(self, prefix, patch, silent=False):
         tmpdir = tempfile.mkdtemp("-meld")
         self.tempdirs.append(tmpdir)
 
@@ -519,10 +530,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             diffs.append( (destfile, pathtofile) )
 
         patchcmd = self.vc.patch_command( tmpdir )
-        if misc.write_pipe(patchcmd, patch) == 0:
+        if misc.write_pipe(patchcmd, patch, error=misc.NULL) == 0:
             for d in diffs:
                 self.emit("create-diff", d)
-        else:
+            return True
+        elif not silent:
             import meldapp
             msg = _("""
                     Invoking 'patch' failed.
@@ -552,6 +564,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                             " ".join(patchcmd))
             msg = '\n'.join([line.strip() for line in msg.split('\n')])
             misc.run_dialog(msg, parent=self)
+        return False
 
     def refresh(self):
         self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
