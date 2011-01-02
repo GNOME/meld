@@ -91,21 +91,25 @@ class DiffMap(gtk.DrawingArea):
             self.queue_draw()
 
     def do_expose_event(self, event):
-        scale = float(self._scroll_height - self._h_offset) / self._num_lines
-        y_start = self._scroll_y - self.allocation.y + self._y_offset
+        height = self._scroll_height - self._h_offset - 1
+        scale = float(height) / self._num_lines
+        y_start = self._scroll_y - self.allocation.y + self._y_offset + 1
+        xpad = self.style_get_property('x-padding')
+        x0 = xpad
+        x1 = self.allocation.width - 2 * xpad
 
         context = self.window.cairo_create()
         context.translate(0, y_start)
         context.set_line_width(1)
+        context.rectangle(x0 - 1, -1, x1 + 2, height + 1)
+        context.clip()
+
         ctab = {"conflict": (1.0, 0.75294117647058822, 0.79607843137254897),
                 "insert": (0.75686274509803919, 1.0, 0.75686274509803919),
                 "replace": (0.8666666666666667, 0.93333333333333335, 1.0),
                 "delete": (0.75686274509803919, 1.0, 0.75686274509803919)}
         darken = lambda color: [x * 0.8 for x in color]
 
-        xpad = self.style_get_property('x-padding')
-        x0 = xpad
-        x1 = self.allocation.width - 2 * xpad
         for c in self._difffunc():
             color = ctab[c[0]]
             y0 = round(scale * c[1]) - 0.5
