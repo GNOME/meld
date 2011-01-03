@@ -28,7 +28,7 @@ import _vc
 import xml.etree.ElementTree as ElementTree
 
 
-class Vc(_vc.Vc):
+class Vc(_vc.CachedVc):
 
     CMD = "svn"
     NAME = "Subversion"
@@ -73,19 +73,17 @@ class Vc(_vc.Vc):
     def switch_to_external_diff(self):
         self.external_diff = "diff"
 
-    def _get_matches(self, directory):
-        """return a list of tuples (file_path, status_code, revision)"""
-
+    def _lookup_tree_cache(self, rootdir):
         while 1:
             try:
-                status_cmd = [self.CMD, "status", "-Nv", "--xml", directory]
+                status_cmd = [self.CMD, "status", "-v", "--xml", rootdir]
                 tree = ElementTree.parse(_vc.popen(status_cmd))
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
                     raise
 
-        matches = []
+        tree_state = {}
 
         for target in tree.findall("target"):
             for entry in (t for t in target.getchildren() if t.tag == "entry"):
@@ -100,20 +98,29 @@ class Vc(_vc.Vc):
                     rev = None
                     if item != "unversioned":
                         rev = status.attrib["revision"]
-                    matches.append((path, item, rev))
+                    mydir, name = os.path.split(path)
+                    if mydir not in tree_state:
+                        tree_state[mydir] = {}
+                    tree_state[mydir][name] = (item, rev)
 
-        matches.sort()
-        return matches
+        return tree_state
 
     def _get_dirsandfiles(self, directory, dirs, files):
+        tree = self._get_tree_cache(directory)
+
+        if not directory in tree:
+            return [], []
+
         retfiles = []
         retdirs = []
 
-        for match in self._get_matches(directory):
-            name = match[0]
-            isdir = os.path.isdir(name)
+        dirtree = tree[directory]
+
+        for name in sorted(dirtree.keys()):
+            svn_state, rev = dirtree[name]
             path = os.path.join(directory, name)
-            rev = match[2]
+
+            isdir = os.path.isdir(path)
             options = ""
             if isdir:
                 if os.path.exists(path):
@@ -124,7 +131,7 @@ class Vc(_vc.Vc):
                 if name != directory:
                     retdirs.append( _vc.Dir(path,name,state) )
             else:
-                state = self.state_map.get(match[1], _vc.STATE_NONE)
+                state = self.state_map.get(svn_state, _vc.STATE_NONE)
                 retfiles.append( _vc.File(path, name, state, rev, "", options) )
 
         return retdirs, retfiles
