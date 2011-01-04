@@ -115,6 +115,8 @@ class BufferLines(object):
         return lines
 
     def __getitem__(self, i):
+        if i > len(self):
+            raise IndexError
         line_start = get_iter_at_line_or_eof(self.buf, i)
         line_end = line_start.copy()
         if not line_end.ends_line():
