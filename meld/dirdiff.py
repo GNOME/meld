@@ -233,6 +233,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         label = misc.make_tool_button_widget(self.filter_menu_button.props.label)
         self.filter_menu_button.set_label_widget(label)
 
+        # FIXME: Add real sensitivity handling
+        self.emit("next-diff-changed", True, True)
         if self.treeview_focussed:
             self.scheduler.add_task(self.treeview_focussed.grab_focus)
             self.scheduler.add_task(self.on_treeview_cursor_changed)

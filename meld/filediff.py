@@ -286,6 +286,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+        # FIXME: If no focussed textview, action sensitivity will be unset
         if self.textview_focussed:
             self.scheduler.add_task(self.textview_focussed.grab_focus)
 
@@ -338,10 +339,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         if line != self.cursor.line or force:
             chunk, prev, next = self.linediffer.locate_chunk(pane, line)
-            if chunk != self.cursor.chunk:
+            if chunk != self.cursor.chunk or force:
                 self.cursor.chunk = chunk
                 self.emit("current-diff-changed")
-            if prev != self.cursor.prev or next != self.cursor.next:
+            if prev != self.cursor.prev or next != self.cursor.next or force:
                 self.emit("next-diff-changed", prev is not None,
                           next is not None)
 
@@ -353,7 +354,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     next_conflict = conflict
                     break
             if prev_conflict != self.cursor.prev_conflict or \
-               next_conflict != self.cursor.next_conflict:
+               next_conflict != self.cursor.next_conflict or force:
                 self.emit("next-conflict-changed", prev_conflict is not None,
                           next_conflict is not None)
 

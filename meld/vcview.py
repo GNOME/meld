@@ -209,6 +209,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.combobox_vcs.show()
         self.combobox_vcs.connect("changed", self.on_vc_change)
 
+    def on_container_switch_in_event(self, ui):
+        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+        # FIXME: Add real sensitivity handling
+        self.emit("next-diff-changed", True, True)
+
     def update_actions_sensitivity(self):
         """Disable actions that use not implemented VC plugin methods
         """
