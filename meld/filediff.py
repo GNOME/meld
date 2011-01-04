@@ -1006,8 +1006,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     bufs[0].remove_tag(tags[0], starts[0], ends[0])
                     bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
-                    text1 = "\n".join(alltexts[1][c[1]:c[2]])
-                    textn = "\n".join(alltexts[i * 2][c[3]:c[4]])
+                    # We don't use self.buffer_texts here, as removing line
+                    # breaks messes with inline highlighting in CRLF cases
+                    text1 = bufs[0].get_text(starts[0], ends[0], False)
+                    text1 = unicode(text1, 'utf8')
+                    textn = bufs[1].get_text(starts[1], ends[1], False)
+                    textn = unicode(textn, 'utf8')
 
                     # For very long sequences, bail rather than trying a very slow comparison
                     inline_limit = 8000 # arbitrary constant
