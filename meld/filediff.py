@@ -1017,7 +1017,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                     # For very long sequences, bail rather than trying a very slow comparison
                     inline_limit = 8000 # arbitrary constant
-                    if len(text1) > inline_limit and len(textn) > inline_limit:
+                    if len(text1) + len(textn) > inline_limit:
                         for i in range(2):
                             bufs[i].apply_tag(tags[i], starts[i], ends[i])
                         continue
