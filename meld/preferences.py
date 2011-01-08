@@ -20,6 +20,7 @@ from gettext import gettext as _
 import gtk
 
 from ui import gnomeglade
+from ui import listwidget
 import misc
 import paths
 from util import prefs
@@ -28,93 +29,38 @@ import vc
 from util.sourceviewer import srcviewer
 
 
-class ListWidget(gnomeglade.Component):
-    def __init__(self, columns, prefs, key):
-        gnomeglade.Component.__init__(self, paths.ui_dir("preferences.ui"), "listwidget")
+class FilterList(listwidget.ListWidget):
+
+    def __init__(self, prefs, key):
+        listwidget.ListWidget.__init__(self, [_("label"), 0, _("pattern")])
         self.prefs = prefs
         self.key = key
-        self.treeview.set_model( gtk.ListStore( *[c[1] for c in columns] ) )
-        view = self.treeview
-        def addTextCol(label, colnum):
-            model = view.get_model()
-            rentext = gtk.CellRendererText()
-            rentext.props.editable = 1
-            def change_text(ren, path, text):
-                model[path][colnum] = text
-                self._update_filter_string()
-            rentext.connect("edited", change_text)
-            column = gtk.TreeViewColumn(label, rentext, text=colnum)
-            view.append_column(column)
-        def addToggleCol(label, colnum):
-            model = view.get_model()
-            rentoggle = gtk.CellRendererToggle()
-            def change_toggle(ren, path):
-                model[path][colnum] = not ren.get_active()
-                self._update_filter_string()
-            rentoggle.connect("toggled", change_toggle)
-            column = gtk.TreeViewColumn(label, rentoggle, active=colnum)
-            view.append_column(column)
-        for c,i in zip( columns, range(len(columns))):
-            if c[1] == type(""):
-                addTextCol(c[0], i)
-            elif c[1] == type(0):
-                addToggleCol( c[0], 1)
-        view.get_selection().connect('changed', self._update_sensitivity)
-        view.get_model().connect('row-inserted', self._update_sensitivity)
-        view.get_model().connect('rows-reordered', self._update_sensitivity)
-        self._update_sensitivity()
-        self._update_filter_model()
 
-    def _update_sensitivity(self, *args):
-        (model, it, path) = self._get_selected()
-        if not it:
-            self.item_delete.set_sensitive(False)
-            self.item_up.set_sensitive(False)
-            self.item_down.set_sensitive(False)
-        else:
-            self.item_delete.set_sensitive(True)
-            self.item_up.set_sensitive(path > 0)
-            self.item_down.set_sensitive(path < len(model) - 1)
-
-    def on_item_new_clicked(self, button):
-        model = self.treeview.get_model()
-        model.append([_("label"), 0, _("pattern")])
-        self._update_filter_string()
-    def _get_selected(self):
-        (model, it) = self.treeview.get_selection().get_selected()
-        if it:
-            path = model.get_path(it)[0]
-        else:
-            path = None
-        return (model, it, path)
-    def on_item_delete_clicked(self, button):
-        (model, it, path) = self._get_selected()
-        model.remove(it)
-        self._update_filter_string()
-    def on_item_up_clicked(self, button):
-        (model, it, path) = self._get_selected()
-        model.swap(it, model.get_iter(path - 1))
-        self._update_filter_string()
-    def on_item_down_clicked(self, button):
-        (model, it, path) = self._get_selected()
-        model.swap(it, model.get_iter(path + 1))
-        self._update_filter_string()
-    def on_items_revert_clicked(self, button):
-        setattr( self.prefs, self.key, self.prefs.get_default(self.key) )
-        self._update_filter_model()
-    def _update_filter_string(self):
-        model = self.treeview.get_model()
-        pref = []
-        for row in model:
-            pref.append("%s\t%s\t%s" % (row[0], row[1], row[2]))
-        setattr( self.prefs, self.key, "\n".join(pref) )
-    def _update_filter_model(self):
-        model = self.treeview.get_model()
-        model.clear()
-        for filtstring in getattr( self.prefs, self.key).split("\n"):
+        for filtstring in getattr(self.prefs, self.key).split("\n"):
             filt = misc.ListItem(filtstring)
-            model.append([filt.name, filt.active, filt.value])
-   
+            self.model.append([filt.name, filt.active, filt.value])
+
+        for signal in ('row-changed', 'row-deleted', 'row-inserted',
+                       'rows-reordered'):
+            self.model.connect(signal, self._update_filter_string)
+
+        self._update_sensitivity()
+
+    def on_name_edited(self, ren, path, text):
+        self.model[path][0] = text
+
+    def on_cellrenderertoggle_toggled(self, ren, path):
+        self.model[path][1] = not ren.get_active()
+
+    def on_pattern_edited(self, ren, path, text):
+        self.model[path][2] = text
+
+    def _update_filter_string(self, *args):
+        pref = []
+        for row in self.model:
+            pref.append("%s\t%s\t%s" % (row[0], 1 if row[1] else 0, row[2]))
+        setattr(self.prefs, self.key, "\n".join(pref))
+
 
 class PreferencesDialog(gnomeglade.Component):
 
@@ -164,13 +110,12 @@ class PreferencesDialog(gnomeglade.Component):
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
 
         # file filters
-        cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Pattern"), type("")) ]
-        self.filefilter = ListWidget( cols, self.prefs, "filters")
+        self.filefilter = FilterList(self.prefs, "filters")
         self.file_filters_tab.pack_start(self.filefilter.widget)
         self.checkbutton_ignore_symlinks.set_active( self.prefs.ignore_symlinks)
+
         # text filters
-        cols = [ (_("Name"), type("")), (_("Active"), type(0)), (_("Regex"), type("")) ]
-        self.textfilter = ListWidget( cols, self.prefs, "regexes")
+        self.textfilter = FilterList(self.prefs, "regexes")
         self.text_filters_tab.pack_start(self.textfilter.widget)
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
