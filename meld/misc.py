@@ -135,24 +135,6 @@ def make_tool_button_widget(label):
     hbox.show_all()
     return hbox
 
-class struct(object):
-    """Similar to a dictionary except that members may be accessed as s.member.
-
-    Usage:
-    s = struct(a=10, b=20, d={"cat":"dog"} )
-    print s.a + s.b
-    """
-    def __init__(self, **args):
-        self.__dict__.update(args)
-    def __repr__(self):
-        r = ["<"]
-        for i in self.__dict__.keys():
-            r.append("%s=%s" % (i, getattr(self, i)))
-        r.append(">\n")
-        return " ".join(r)
-    def __cmp__(self, other):
-        return cmp(self.__dict__, other.__dict__)
-
 def all_equal(alist):
     """Return true if all members of the list are equal to the first.
 

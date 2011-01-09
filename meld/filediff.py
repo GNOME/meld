@@ -39,6 +39,7 @@ import paths
 import merge
 
 from util.sourceviewer import srcviewer
+from util.namedtuple import namedtuple
 
 
 class CachedSequenceMatcher(object):
@@ -863,20 +864,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             msgarea.show_all()
             return msgarea
 
-        for i,f in enumerate(files):
-            buf = textbuffers[i]
-            if f:
+        TaskEntry = namedtuple('TaskEntry',
+                               'filename file buf codec pane was_cr')
+        for pane, filename in enumerate(files):
+            buf = textbuffers[pane]
+            if filename:
                 try:
-                    task = misc.struct(filename = f,
-                                       file = codecs.open(f, "rU", try_codecs[0]),
-                                       buf = buf,
-                                       codec = try_codecs[:],
-                                       pane = i,
-                                       was_cr = False)
+                    handle = codecs.open(filename, "rU", try_codecs[0])
+                    task = TaskEntry(filename, handle, buf, try_codecs[:],
+                                     pane, False)
                     tasks.append(task)
                 except (IOError, LookupError), e:
                     buf.delete(*buf.get_bounds())
-                    add_dismissable_msg(i, gtk.STOCK_DIALOG_ERROR,
+                    add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR,
                                         _("Could not read file"), str(e))
         yield _("[%s] Reading files") % self.label_text
         while len(tasks):
