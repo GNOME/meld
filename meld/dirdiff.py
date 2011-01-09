@@ -84,6 +84,7 @@ def _files_same(files, regexes):
         return Same
 
     files = tuple(files)
+    regexes = tuple(regexes)
     stats = tuple([StatItem._make(os.stat(f)) for f in files])
 
     # If all entries are directories, they are considered to be the same
@@ -99,7 +100,7 @@ def _files_same(files, regexes):
         return Different
 
     # Check the cache before doing the expensive comparison
-    cache = _cache.get(files)
+    cache = _cache.get((files, regexes))
     if cache and cache.stats == stats:
         return cache.result
 
@@ -115,7 +116,7 @@ def _files_same(files, regexes):
             # Rough test to see whether files are binary. If files are guessed
             # to be binary, we unset regexes for speed and space reasons.
             if any(["\0" in d for d in data]):
-                regexes = []
+                regexes = tuple()
 
             while True:
                 if all_same(data):
@@ -151,7 +152,7 @@ def _files_same(files, regexes):
             contents = [re.sub(r, "", c) for c in contents]
         result = SameFiltered if all_same(contents) else Different
 
-    _cache[files] = CacheResult(stats, result)
+    _cache[(files, regexes)] = CacheResult(stats, result)
     return result
 
 
