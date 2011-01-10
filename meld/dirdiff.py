@@ -15,6 +15,7 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import collections
 import errno
 import paths
 from ui import gnomeglade
@@ -180,6 +181,33 @@ class TypeFilter(object):
         self.label = label
         self.active = active
         self.filter = filter
+
+
+class CanonicalListing(object):
+    """Multi-pane lists with canonicalised matching and error detection"""
+
+    def __init__(self, n, canonicalize=None):
+        self.items = collections.defaultdict(lambda: [None] * n)
+        self.errors = []
+        if canonicalize is not None:
+            self.canonicalize = canonicalize
+            self.add = self.add_canon
+
+    def add(self, pane, item):
+        self.items[item][pane] = item
+
+    def add_canon(self, pane, item):
+        ci = self.canonicalize(item)
+        if self.items[ci][pane] is None:
+            self.items[ci][pane] = item
+        else:
+            self.errors.append((pane, item, self.items[ci][pane]))
+
+    def get(self):
+        first = lambda seq: next(s for s in seq if s)
+        filled = lambda seq: tuple([s or first(seq) for s in seq])
+        return sorted([filled(v) for v in self.items.itervalues()])
+
 
 ################################################################################
 #
@@ -415,6 +443,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         symlinks_followed = set()
         todo = [ rootpath ]
         expanded = set()
+
+        shadowed_entries = []
         while len(todo):
             todo.sort() # depth first
             path = todo.pop(0)
@@ -422,53 +452,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             roots = self.model.value_paths( it )
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
             differences = False
-            if not self.actiongroup.get_action("IgnoreCase").get_active():
-                class accum(object):
-                    def __init__(self, parent, roots):
-                        self.items = []
-                        self.n = parent.num_panes
-                    def add(self, pane, items):
-                        self.items.extend(items)
-                    def get(self):
-                        return [(i,) * self.n for i in sorted(set(self.items))]
-            else:
-                canonicalize = lambda x : x.lower()
-                class accum(object):
-                    def __init__(self, parent, roots):
-                        self.items = {} # map canonical names to realnames
-                        self.bad = []
-                        self.parent = parent
-                        self.roots = roots
-                        self.default = [None] * self.parent.num_panes
-                    def add(self, pane, items):
-                        for i in items:
-                            ci = canonicalize(i)
-                            try:
-                                assert self.items[ci][pane] is None
-                            except KeyError:
-                                self.items[ ci ] = self.default[:]
-                                self.items[ ci ][pane] = i
-                            except AssertionError:
-                                self.bad.append( _("'%s' hidden by '%s'") %
-                                    ( os.path.join(self.roots[pane], i), self.items[ ci ][pane]) )
-                            else:
-                                self.items[ ci ][pane] = i
-                    def get(self):
-                        if len(self.bad):
-                            misc.run_dialog(_("You are running a case insensitive comparison on"
-                                " a case sensitive filesystem. Some files are not visible:\n%s")
-                                % "\n".join( self.bad ), self.parent )
-                        keys = self.items.keys()
-                        keys.sort()
-                        def fixup(tuples): # replace None with a usable label
-                            def first_nonempty(seq):
-                                for s in seq:
-                                    if s: return s
-                            return tuple([t or first_nonempty(tuples) for t in tuples])
-                        return [fixup(self.items[k]) for k in keys]
 
-            accumdirs = accum(self, roots)
-            accumfiles = accum(self, roots)
+            canonicalize = None
+            if self.actiongroup.get_action("IgnoreCase").get_active():
+                canonicalize = lambda x : x.lower()
+            dirs = CanonicalListing(self.num_panes, canonicalize)
+            files = CanonicalListing(self.num_panes, canonicalize)
+
             for pane, root in enumerate(roots):
                 if not os.path.isdir(root):
                     continue
@@ -483,8 +473,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 for f in self.name_filters:
                     entries = filter(f.filter, entries)
 
-                files = []
-                dirs = []
                 for e in entries:
                     try:
                         s = os.lstat(os.path.join(root, e))
@@ -504,9 +492,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         try:
                             s = os.stat(os.path.join(root, e))
                             if stat.S_ISREG(s.st_mode):
-                                files.append(e)
+                                files.add(pane, e)
                             elif stat.S_ISDIR(s.st_mode):
-                                dirs.append(e)
+                                dirs.add(pane, e)
                         except OSError, err:
                             if err.errno == errno.ENOENT:
                                 error_string = e + ": Dangling symlink"
@@ -515,17 +503,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             self.model.add_error(it, error_string, pane)
                             differences = True
                     elif stat.S_ISREG(s.st_mode):
-                        files.append(e)
+                        files.add(pane, e)
                     elif stat.S_ISDIR(s.st_mode):
-                        dirs.append(e)
+                        dirs.add(pane, e)
                     else:
                         # FIXME: Unhandled stat type
                         pass
-                accumfiles.add(pane, files)
-                accumdirs.add(pane, dirs)
 
-            alldirs = accumdirs.get()
-            allfiles = self._filter_on_state( roots, accumfiles.get() )
+            for pane, f1, f2 in dirs.errors + files.errors:
+                shadowed_entries.append((roots[pane], f1, f2))
+
+            alldirs = dirs.get()
+            allfiles = self._filter_on_state(roots, files.get())
 
             # then directories and files
             if len(alldirs) + len(allfiles) != 0:
@@ -542,6 +531,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.model.add_empty(it)
             if differences:
                 expanded.add(path)
+
+        if shadowed_entries:
+            formatted_entries = []
+            for root, f1, f2 in shadowed_entries:
+                paths = [os.path.join(root, f) for f in (f1, f2)]
+                formatted_entries.append("'%s' hidden by '%s'" % (paths[0], paths[1]))
+            misc.run_dialog(_("You are running a case insensitive comparison on"
+                " a case sensitive filesystem. Some files are not visible:\n%s")
+                % "\n".join(formatted_entries), self)
+
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(path)
         yield _("[%s] Done") % self.label_text
