@@ -136,6 +136,15 @@ class Vc(object):
     def uncache_inventory(self):
         pass
 
+    def update_file_state(self, path):
+        """ Update the state of a specific file.  For example after a file
+        has been modified and saved, its state may be out of date and require
+        updating.  This can be implemented for Vc plugins that cache file
+        states, eg 'git' an 'bzr' so that the top-level file status is always
+        accurate.
+        """
+        pass
+
     def get_patch_files(self, patch):
         regex = re.compile(self.PATCH_INDEX_RE, re.M)
         return [f.strip() for f in regex.findall(patch)]

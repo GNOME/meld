@@ -77,7 +77,8 @@ class Vc(_vc.CachedVc):
         else:
             return ''
 
-    def _lookup_tree_cache(self, rootdir):
+    def _update_tree_state_cache(self, path, tree_state):
+        """ Update the state of the file(s) at tree_state['path'] """
         while 1:
             try:
                 # Update the index before getting status, otherwise we could
@@ -87,17 +88,17 @@ class Vc(_vc.CachedVc):
                 # Get the status of files that are different in the "index" vs
                 # the HEAD of the git repository
                 proc = _vc.popen([self.CMD, "diff-index", "--name-status", \
-                    "--cached", "HEAD", "./"], cwd=self.location)
+                    "--cached", "HEAD", path], cwd=self.location)
                 entries = proc.read().split("\n")[:-1]
 
                 # Get the status of files that are different in the "index" vs
                 # the files on disk
                 proc = _vc.popen([self.CMD, "diff-files", "--name-status", \
-                    "-0", "./"], cwd=self.location)
+                    "-0", path], cwd=self.location)
                 entries += (proc.read().split("\n")[:-1])
 
                 proc = _vc.popen([self.CMD, "ls-files", "--others", \
-                    "--ignored", "--exclude-standard"], cwd=self.location)
+                    "--ignored", "--exclude-standard", path], cwd=self.location)
                 entries += ("I\t%s" % f for f in proc.read().split("\n")[:-1])
 
                 # An unmerged file or a file that has been modified, added to
@@ -110,14 +111,33 @@ class Vc(_vc.CachedVc):
             except OSError, e:
                 if e.errno != errno.EAGAIN:
                     raise
+
+        if len(entries) == 0 and os.path.isfile(path):
+            # If we're just updating a single file there's a chance that it
+            # was it was previously modified, and now has been edited
+            # so that it is un-modified.  This will result in an empty
+            # 'entries' list, and tree_state['path'] will still contain stale
+            # data.  When this corner case occurs we force tree_state['path']
+            # to STATE_NORMAL.
+            tree_state[path] = _vc.STATE_NORMAL
+        else:
+            # There are 1 or more modified files, parse their state
+            for entry in entries:
+                statekey, name = entry.split("\t", 2)
+                path = os.path.join(self.root, name.strip())
+                state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
+                tree_state[path] = state
+
+    def _lookup_tree_cache(self, rootdir):
+        # Get a list of all files in rootdir, as well as their status
         tree_state = {}
-        for entry in entries:
-            statekey, name = entry.split("\t", 2)
-            path = os.path.join(self.root, name.strip())
-            state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
-            tree_state[path] = state
+        self._update_tree_state_cache("./", tree_state)
 
         return tree_state
+
+    def update_file_state(self, path):
+        tree_state = self._get_tree_cache(os.path.dirname(path))
+        self._update_tree_state_cache(path, tree_state)
 
     def _get_dirsandfiles(self, directory, dirs, files):
 

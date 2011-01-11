@@ -599,6 +599,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         it = self.find_iter_by_name(filename)
         if it:
             path = self.model.value_path(it, 0)
+            self.vc.update_file_state(path)
             files = self.vc.lookup_files([], [(os.path.basename(path), path)])[1]
             for e in files:
                 if e.path == path:
