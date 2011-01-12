@@ -460,6 +460,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 canonicalize = lambda x : x.lower()
             dirs = CanonicalListing(self.num_panes, canonicalize)
             files = CanonicalListing(self.num_panes, canonicalize)
+            invalid_filenames = False
 
             for pane, root in enumerate(roots):
                 if not os.path.isdir(root):
@@ -476,6 +477,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     entries = filter(f.filter, entries)
 
                 for e in entries:
+                    try:
+                        e = e.decode('utf8')
+                    except UnicodeDecodeError, err:
+                        invalid_filenames = True
+                        continue
+
                     try:
                         s = os.lstat(os.path.join(root, e))
                     # Covers certain unreadable symlink cases; see bgo#585895
@@ -511,6 +518,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     else:
                         # FIXME: Unhandled stat type
                         pass
+
+            if invalid_filenames:
+                misc.run_dialog(_("Filenames with invalid encodings were found; these have been ignored"), self)
 
             for pane, f1, f2 in dirs.errors + files.errors:
                 shadowed_entries.append((pane, roots[pane], f1, f2))
