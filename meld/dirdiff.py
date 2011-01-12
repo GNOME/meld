@@ -513,7 +513,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         pass
 
             for pane, f1, f2 in dirs.errors + files.errors:
-                shadowed_entries.append((roots[pane], f1, f2))
+                shadowed_entries.append((pane, roots[pane], f1, f2))
 
             alldirs = dirs.get()
             allfiles = self._filter_on_state(roots, files.get())
@@ -534,19 +534,37 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if differences:
                 expanded.add(path)
 
+
         if shadowed_entries:
-            formatted_entries = []
-            for root, f1, f2 in shadowed_entries:
+            formatted_entries = [[] for i in range(self.num_panes)]
+            for pane, root, f1, f2 in shadowed_entries:
                 paths = [os.path.join(root, f) for f in (f1, f2)]
-                formatted_entries.append("'%s' hidden by '%s'" % (paths[0], paths[1]))
-            misc.run_dialog(_("You are running a case insensitive comparison on"
-                " a case sensitive filesystem. Some files are not visible:\n%s")
-                % "\n".join(formatted_entries), self)
+                entry_str = _("'%s' hidden by '%s'") % (paths[0], paths[1])
+                formatted_entries[pane].append(entry_str)
+            for pane, entries in enumerate(formatted_entries):
+                if entries:
+                    self.add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR,
+                            _("Files hidden by case insensitive comparison"),
+                            # TRANSLATORS: This is followed by a list of files
+                            _("You are running a case insensitive comparison "
+                              "on a case sensitive filesystem. The following "
+                              "files in this folder are hidden:\n%s")
+                              % "\n".join(entries))
 
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(path)
         yield _("[%s] Done") % self.label_text
         self.actiongroup.get_action("Hide").set_sensitive(True)
+
+    def add_dismissable_msg(self, pane, icon, primary, secondary):
+        msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
+                        icon, primary, secondary)
+        button = msgarea.add_stock_button_with_text(_("Hi_de"),
+                        gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        msgarea.connect("response",
+                        lambda *args: self.msgarea_mgr[pane].clear())
+        msgarea.show_all()
+        return msgarea
 
     def launch_comparison(self, it, pane, force=1):
         """Launch comparison at 'it'. 
