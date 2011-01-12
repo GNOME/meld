@@ -546,43 +546,53 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if differences:
                 expanded.add(path)
 
-        # FIXME: Because both of these errors can occur at the same place, we
-        # need different handling, otherwise the shadowed_entries will override
-        # the invalid_filenames if both exist in a pane
-        if invalid_filenames:
-            formatted_entries = [[] for i in range(self.num_panes)]
-            for pane, root, f in invalid_filenames:
-                path = os.path.join(root, f)
-                formatted_entries[pane].append(path)
-            for pane, entries in enumerate(formatted_entries):
-                if entries:
-                    self.add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR,
-                            _("Files with invalid encodings found"),
-                            # TRANSLATORS: This is followed by a list of files
-                            _("Some files were in an incorrect encoding. "
-                              "The names are something like:\n%s")
-                              % "\n".join(entries))
-
-        if shadowed_entries:
-            formatted_entries = [[] for i in range(self.num_panes)]
-            for pane, root, f1, f2 in shadowed_entries:
-                paths = [os.path.join(root, f) for f in (f1, f2)]
-                entry_str = _("'%s' hidden by '%s'") % (paths[0], paths[1])
-                formatted_entries[pane].append(entry_str)
-            for pane, entries in enumerate(formatted_entries):
-                if entries:
-                    self.add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR,
-                            _("Files hidden by case insensitive comparison"),
-                            # TRANSLATORS: This is followed by a list of files
-                            _("You are running a case insensitive comparison "
-                              "on a case sensitive filesystem. The following "
-                              "files in this folder are hidden:\n%s")
-                              % "\n".join(entries))
+        self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
 
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(path)
         yield _("[%s] Done") % self.label_text
         self.actiongroup.get_action("Hide").set_sensitive(True)
+
+    def _show_tree_wide_errors(self, invalid_filenames, shadowed_entries):
+        header = _("Multiple errors occurred while scanning this folder")
+        invalid_header = _("Files with invalid encodings found")
+        # TRANSLATORS: This is followed by a list of files
+        invalid_secondary = _("Some files were in an incorrect encoding. "
+                              "The names are something like:")
+        shadowed_header = _("Files hidden by case insensitive comparison")
+        # TRANSLATORS: This is followed by a list of files
+        shadowed_secondary = _("You are running a case insensitive comparison "
+                               "on a case sensitive filesystem. The following "
+                               "files in this folder are hidden:")
+
+        invalid_entries = [[] for i in range(self.num_panes)]
+        for pane, root, f in invalid_filenames:
+            invalid_entries[pane].append(os.path.join(root, f))
+
+        formatted_entries = [[] for i in range(self.num_panes)]
+        for pane, root, f1, f2 in shadowed_entries:
+            paths = [os.path.join(root, f) for f in (f1, f2)]
+            entry_str = _("'%s' hidden by '%s'") % (paths[0], paths[1])
+            formatted_entries[pane].append(entry_str)
+
+        if invalid_filenames or shadowed_entries:
+            for pane in range(self.num_panes):
+                invalid = "\n".join(invalid_entries[pane])
+                shadowed = "\n".join(formatted_entries[pane])
+                if invalid and shadowed:
+                    messages = (invalid_secondary, invalid, "",
+                                shadowed_secondary, shadowed)
+                elif invalid:
+                    header = invalid_header
+                    messages = (invalid_secondary, invalid)
+                elif shadowed:
+                    header = shadowed_header
+                    messages = (shadowed_secondary, shadowed)
+                else:
+                    continue
+                secondary = "\n".join(messages)
+                self.add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR, header,
+                                         secondary)
 
     def add_dismissable_msg(self, pane, icon, primary, secondary):
         msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
