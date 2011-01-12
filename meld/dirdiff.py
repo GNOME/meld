@@ -447,6 +447,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         expanded = set()
 
         shadowed_entries = []
+        invalid_filenames = []
         while len(todo):
             todo.sort() # depth first
             path = todo.pop(0)
@@ -454,13 +455,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             roots = self.model.value_paths( it )
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
             differences = False
+            encoding_errors = []
 
             canonicalize = None
             if self.actiongroup.get_action("IgnoreCase").get_active():
                 canonicalize = lambda x : x.lower()
             dirs = CanonicalListing(self.num_panes, canonicalize)
             files = CanonicalListing(self.num_panes, canonicalize)
-            invalid_filenames = False
 
             for pane, root in enumerate(roots):
                 if not os.path.isdir(root):
@@ -480,7 +481,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     try:
                         e = e.decode('utf8')
                     except UnicodeDecodeError, err:
-                        invalid_filenames = True
+                        approximate_name = e.decode('utf8', 'replace')
+                        encoding_errors.append((pane, approximate_name))
                         continue
 
                     try:
@@ -519,8 +521,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         # FIXME: Unhandled stat type
                         pass
 
-            if invalid_filenames:
-                misc.run_dialog(_("Filenames with invalid encodings were found; these have been ignored"), self)
+            for pane, f in encoding_errors:
+                invalid_filenames.append((pane, roots[pane], f))
 
             for pane, f1, f2 in dirs.errors + files.errors:
                 shadowed_entries.append((pane, roots[pane], f1, f2))
@@ -544,6 +546,22 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if differences:
                 expanded.add(path)
 
+        # FIXME: Because both of these errors can occur at the same place, we
+        # need different handling, otherwise the shadowed_entries will override
+        # the invalid_filenames if both exist in a pane
+        if invalid_filenames:
+            formatted_entries = [[] for i in range(self.num_panes)]
+            for pane, root, f in invalid_filenames:
+                path = os.path.join(root, f)
+                formatted_entries[pane].append(path)
+            for pane, entries in enumerate(formatted_entries):
+                if entries:
+                    self.add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR,
+                            _("Files with invalid encodings found"),
+                            # TRANSLATORS: This is followed by a list of files
+                            _("Some files were in an incorrect encoding. "
+                              "The names are something like:\n%s")
+                              % "\n".join(entries))
 
         if shadowed_entries:
             formatted_entries = [[] for i in range(self.num_panes)]
