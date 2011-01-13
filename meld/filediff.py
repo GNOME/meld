@@ -215,6 +215,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._sync_hscroll_lock = False
         self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
+        self.in_nested_action = False
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
         for buf in self.textbuffer:
@@ -518,7 +519,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if focused_pane != -1:
                 self.on_cursor_position_changed(self.textbuffer[focused_pane],
                                                 None, True)
-            self.scheduler.add_task(self._update_highlighting().next)
+            self.update_highlighting()
             self.queue_draw()
 
     def _filter_text(self, txt):
@@ -680,10 +681,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # text buffer undo/redo
         #
     def on_textbuffer__begin_user_action(self, *buffer):
+        self.in_nested_action = True
         self.undosequence.begin_group()
 
     def on_textbuffer__end_user_action(self, *buffer):
         self.undosequence.end_group()
+        self.in_nested_action = False
+        self.update_highlighting()
 
     def on_text_insert_text(self, buf, it, text, textlen):
         text = unicode(text, 'utf8')
@@ -926,7 +930,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textbuffer[1].place_cursor(self.textbuffer[1].get_start_iter())
         self.scheduler.add_task(lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
         self.queue_draw()
-        self.scheduler.add_task(self._update_highlighting().next)
+        self.update_highlighting()
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
         for i in range(self.num_panes):
@@ -978,6 +982,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_msgarea_identical_response(self, msgarea, respid):
         for mgr in self.msgarea_mgr:
             mgr.clear()
+
+    def update_highlighting(self):
+        if not self.in_nested_action:
+            self.scheduler.add_task(self._update_highlighting().next)
 
     def _update_highlighting(self):
         alltexts = self.buffer_texts
