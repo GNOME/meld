@@ -30,10 +30,17 @@ import _vc
 
 class Vc(_vc.Vc):
     CMD = "cvs"
+    # CVSNT is a drop-in replacement for CVS; if found, it is used instead
+    ALT_CMD = "cvsnt"
     NAME = "CVS"
     VC_DIR = "CVS"
     VC_ROOT_WALK = False
     PATCH_INDEX_RE = "^Index:(.*)$"
+
+    def __init__(self, location):
+        super(Vc, self).__init__(location)
+        if not _vc.call(["which", self.ALT_CMD]):
+            self.CMD = self.ALT_CMD
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
