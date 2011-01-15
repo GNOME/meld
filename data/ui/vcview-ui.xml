@@ -1,5 +1,20 @@
 <ui>
   <menubar name="Menubar">
+    <menu action="ChangesMenu">
+      <placeholder name="ChangesActions">
+        <separator/>
+        <menuitem action="VcCompare" />
+        <menuitem action="VcCommit" />
+        <menuitem action="VcUpdate" />
+        <separator/>
+        <menuitem action="VcAdd" />
+        <menuitem action="VcResolved" />
+        <menuitem action="VcRemove" />
+        <menuitem action="VcRevert" />
+        <separator/>
+        <menuitem action="VcDeleteLocally" />
+      </placeholder>
+    </menu>
     <menu action="ViewMenu">
       <placeholder name="ViewPlaceholder">
         <menuitem action="VcFlatten" />
