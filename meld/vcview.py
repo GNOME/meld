@@ -406,9 +406,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         for path in path_list:
             self.scheduler.add_task(self.run_diff_iter([path]).next, atfront=1)
 
+    def on_treeview_popup_menu(self, treeview):
+        time = gtk.get_current_event_time()
+        self.popup_menu.popup(None, None, None, 0, time)
+        return True
+
     def on_button_press_event(self, text, event):
-        if event.button==3:
-            self.popup_menu.popup(None, None, None, 3, event.time)
+        if event.button == 3:
+            self.popup_menu.popup(None, None, None, event.button, event.time)
             return len(self._get_selected_paths()) != 1
         return 0
 
