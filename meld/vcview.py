@@ -117,14 +117,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         actions = (
             ("VcCompare",       gtk.STOCK_DIALOG_INFO,      _("_Compare"),      None, _("Compare selected"), self.on_button_diff_clicked),
             ("VcOpen",          gtk.STOCK_OPEN,             None,               None, _("Open selected"), self.on_button_open_clicked),
-            ("VcCommit",        "vc-commit-24",             _("Co_mmit"),       None, _("Commit"), self.on_button_commit_clicked), # FIXME: popup used to use gtk.STOCK_GO_BACK
-            ("VcUpdate",        "vc-update-24",             _("_Update"),       None, _("Update"), self.on_button_update_clicked), # FIXME: popup used to use gtk.STOCK_GO_FORWARD
-            ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked), # FIXME: popup used to use gtk.STOCK_ADD
-            ("VcAddBinary",     gtk.STOCK_ADD,              _("Add _Binary"),   None, _("Add binary to VC"), self.on_button_add_binary_clicked), # FIXME: stock is inconsistent with other VC actions
-            ("VcRemove",        "vc-remove-24",             _("_Remove"),       None, _("Remove from VC"), self.on_button_remove_clicked), # FIXME: popup used to use gtk.STOCK_REMOVE
+            ("VcCommit",        "vc-commit-24",             _("Co_mmit"),       None, _("Commit"), self.on_button_commit_clicked),
+            ("VcUpdate",        "vc-update-24",             _("_Update"),       None, _("Update"), self.on_button_update_clicked),
+            ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked),
+            ("VcAddBinary",     None,                       _("Add _Binary"),   None, _("Add binary to VC"), self.on_button_add_binary_clicked),
+            ("VcRemove",        "vc-remove-24",             _("_Remove"),       None, _("Remove from VC"), self.on_button_remove_clicked),
             ("VcResolved",      "vc-resolve-24",            _("_Resolved"),     None, _("Mark as resolved for VC"), self.on_button_resolved_clicked),
             ("VcRevert",        gtk.STOCK_REVERT_TO_SAVED,  None,               None, _("Revert to original"), self.on_button_revert_clicked),
-            ("VcDeleteLocally", gtk.STOCK_DELETE,           None,               None, _("Delete locally"), self.on_button_delete_clicked), # FIXME: popup label was "_Remove locally"
+            ("VcDeleteLocally", gtk.STOCK_DELETE,           None,               None, _("Delete locally"), self.on_button_delete_clicked),
         )
 
         toggleactions = (
