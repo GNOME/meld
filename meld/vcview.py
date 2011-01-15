@@ -117,7 +117,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         actions = (
             ("VcCompare",       gtk.STOCK_DIALOG_INFO,      _("_Compare"),      None, _("Compare selected"), self.on_button_diff_clicked),
             ("VcOpen",          gtk.STOCK_OPEN,             None,               None, _("Open selected"), self.on_button_open_clicked),
-            ("VcCommit",        "vc-commit-24",             _("_Commit"),       None, _("Commit"), self.on_button_commit_clicked), # FIXME: popup used to use gtk.STOCK_GO_BACK
+            ("VcCommit",        "vc-commit-24",             _("Co_mmit"),       None, _("Commit"), self.on_button_commit_clicked), # FIXME: popup used to use gtk.STOCK_GO_BACK
             ("VcUpdate",        "vc-update-24",             _("_Update"),       None, _("Update"), self.on_button_update_clicked), # FIXME: popup used to use gtk.STOCK_GO_FORWARD
             ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked), # FIXME: popup used to use gtk.STOCK_ADD
             ("VcAddBinary",     gtk.STOCK_ADD,              _("Add _Binary"),   None, _("Add binary to VC"), self.on_button_add_binary_clicked), # FIXME: stock is inconsistent with other VC actions
