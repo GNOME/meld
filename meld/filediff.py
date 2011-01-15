@@ -751,13 +751,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if index == 1 or index == 2:
             self.linkmap[1].queue_draw()
 
+    def on_textview_popup_menu(self, textview):
+        self.popup_menu.popup(None, None, None, 0,
+                              gtk.get_current_event_time())
+        return True
+
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
-            self.popup_menu.popup(None, None, None, event.button,
-                                  gtk.get_current_event_time())
-            return 1
-        return 0
+            self.popup_menu.popup(None, None, None, event.button, event.time)
+            return True
+        return False
 
     def on_textview_toggle_overwrite(self, view):
         self.textview_overwrite = not self.textview_overwrite
