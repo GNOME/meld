@@ -140,8 +140,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         actions = (
             ("DirCompare",   gtk.STOCK_DIALOG_INFO,  _("_Compare"), None, _("Compare selected"), self.on_button_diff_clicked),
-            ("DirCopyLeft",  gtk.STOCK_GO_BACK,      _("Left"),     "<Alt>Left", _("Copy To Left"), self.on_button_copy_left_clicked),
-            ("DirCopyRight", gtk.STOCK_GO_FORWARD,   _("Right"),    "<Alt>Right", _("Copy To Right"), self.on_button_copy_right_clicked),
+            ("DirCopyLeft",  gtk.STOCK_GO_BACK,      _("Copy _Left"),     "<Alt>Left", _("Copy to left"), self.on_button_copy_left_clicked),
+            ("DirCopyRight", gtk.STOCK_GO_FORWARD,   _("Copy _Right"),    "<Alt>Right", _("Copy to right"), self.on_button_copy_right_clicked),
             ("DirDelete",    gtk.STOCK_DELETE,        None,         "Delete", _("Delete selected"), self.on_button_delete_clicked),
             ("Hide",         gtk.STOCK_NO,           _("Hide"),     None, _("Hide selected"), self.on_filter_hide_current_clicked),
 
