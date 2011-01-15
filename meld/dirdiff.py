@@ -790,13 +790,23 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.model.set_state(it, j, tree.STATE_MISSING, True in one_isdir)
         return different
 
-    def popup_in_pane(self, pane):
+    def popup_in_pane(self, pane, event):
         for (treeview, inid, outid) in zip(self.treeview, self.focus_in_events, self.focus_out_events):
             treeview.handler_block(inid)
             treeview.handler_block(outid)
         self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
         self.actiongroup.get_action("DirCopyRight").set_sensitive(pane+1 < self.num_panes)
-        self.popup_menu.popup(None, None, None, 3, gtk.get_current_event_time())
+        if event:
+            button = event.button
+            time = event.time
+        else:
+            button = 0
+            time = gtk.get_current_event_time()
+        self.popup_menu.popup(None, None, None, button, time)
+
+    def on_treeview_popup_menu(self, treeview):
+        self.popup_in_pane(self.treeview.index(treeview), None)
+        return True
 
     def on_treeview_button_press_event(self, treeview, event):
         # unselect other panes
@@ -812,7 +822,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 selected = self._get_selected_paths( self.treeview.index(treeview) )
                 if len(selected) <= 1 and event.state == 0:
                     treeview.set_cursor( path, col, 0)
-                self.popup_in_pane( self.treeview.index(treeview) )
+                self.popup_in_pane(self.treeview.index(treeview), event)
             return event.state==0
         return 0
 
