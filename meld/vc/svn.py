@@ -73,17 +73,15 @@ class Vc(_vc.CachedVc):
     def switch_to_external_diff(self):
         self.external_diff = "diff"
 
-    def _lookup_tree_cache(self, rootdir):
+    def _update_tree_state_cache(self, path, tree_state):
         while 1:
             try:
-                status_cmd = [self.CMD, "status", "-v", "--xml", rootdir]
+                status_cmd = [self.CMD, "status", "-v", "--xml", path]
                 tree = ElementTree.parse(_vc.popen(status_cmd))
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
                     raise
-
-        tree_state = {}
 
         for target in tree.findall("target"):
             for entry in (t for t in target.getchildren() if t.tag == "entry"):
@@ -103,7 +101,15 @@ class Vc(_vc.CachedVc):
                         tree_state[mydir] = {}
                     tree_state[mydir][name] = (item, rev)
 
+    def _lookup_tree_cache(self, rootdir):
+        # Get a list of all files in rootdir, as well as their status
+        tree_state = {}
+        self._update_tree_state_cache(rootdir, tree_state)
         return tree_state
+
+    def update_file_state(self, path):
+        tree_state = self._get_tree_cache(os.path.dirname(path))
+        self._update_tree_state_cache(path, tree_state)
 
     def _get_dirsandfiles(self, directory, dirs, files):
         tree = self._get_tree_cache(directory)
