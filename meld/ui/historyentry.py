@@ -226,6 +226,9 @@ def _expand_filename(filename, default_dir):
         return os.path.join(os.getcwd(), filename)
 
 
+last_open = {}
+
+
 class HistoryFileEntry(gtk.HBox, gtk.Editable):
     __gtype_name__ = "HistoryFileEntry"
 
@@ -336,6 +339,15 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         else:
             raise AttributeError("Unknown property: %s" % pspec.name)
 
+    def _get_last_open(self):
+        try:
+            return last_open[self.props.history_id]
+        except KeyError:
+            return None
+
+    def _set_last_open(self, path):
+        last_open[self.props.history_id] = path
+
     def append_history(self, text):
         self.__gentry.append_text(text)
 
@@ -357,12 +369,19 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
     def get_directory_entry(self):
         return self.directory_entry
 
+    def _get_default(self):
+        default = self.__default_path
+        last_path = self._get_last_open()
+        if last_path and os.path.exists(last_path):
+            default = last_path
+        return default
+
     def get_full_path(self):
         text = self.__gentry.get_entry().get_text()
         if not text:
             return None
         sys_text = gobject.filename_from_utf8(text)
-        filename = _expand_filename(sys_text, self.__default_path)
+        filename = _expand_filename(sys_text, self._get_default())
         if not filename:
             return None
         return filename
@@ -380,6 +399,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
             filename = unicode(filename, encoding)
         entry = self.__gentry.get_entry()
         entry.set_text(filename)
+        self._set_last_open(filename)
         entry.activate()
 
     def __browse_dialog_response(self, widget, response):
@@ -389,17 +409,19 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         self.fsw = None
 
     def __build_filename(self):
+        default = self._get_default()
+
         text = self.__gentry.get_entry().get_text()
         if not text:
-            return self.__default_path + os.sep
+            return default + os.sep
 
         locale_text = gobject.filename_from_utf8(text)
         if not locale_text:
-            return self.__default_path + os.sep
+            return default + os.sep
 
-        filename = _expand_filename(locale_text, self.__default_path)
+        filename = _expand_filename(locale_text, default)
         if not filename:
-            return self.__default_path + os.sep
+            return default + os.sep
 
         if not filename.endswith(os.sep) and (self.__directory_entry or os.path.isdir(filename)):
             filename += os.sep
@@ -460,4 +482,5 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         entry = self.__gentry.get_entry()
         entry.set_text(path)
         context.finish(True, False, time)
+        self._set_last_open(path)
         entry.activate()
