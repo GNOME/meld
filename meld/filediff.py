@@ -213,6 +213,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
+        self._scroll_lock = False
         self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
         self.in_nested_action = False
@@ -265,10 +266,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("MergeAll",       None, _("Merge all non-conflicting"),    None, _("Merge all non-conflicting changes from left and right panes"), lambda x: self.merge_all_non_conflicting_changes()),
         )
 
+        toggle_actions = (
+            ("LockScrolling", None, _("Lock scrolling"), None,
+             _("Lock scrolling of all panes"),
+             self.on_action_lock_scrolling_toggled, True),
+        )
+
         self.ui_file = paths.ui_dir("filediff-ui.xml")
         self.actiongroup = gtk.ActionGroup('FilediffPopupActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
+        self.actiongroup.add_toggle_actions(toggle_actions)
         self.set_num_panes(num_panes)
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
         gnomeglade.connect_signal_handlers(self)
@@ -1242,11 +1250,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.diffmap0.queue_draw()
         self.diffmap1.queue_draw()
 
+    def on_action_lock_scrolling_toggled(self, action):
+        self.toggle_scroll_lock(action.get_active())
+
+    def on_lock_button_toggled(self, button):
+        self.toggle_scroll_lock(not button.get_active())
+
+    def toggle_scroll_lock(self, locked):
+        icon_name = "meld-locked" if locked else "meld-unlocked"
+        self.lock_button_image.props.icon_name = icon_name
+        self.lock_button.set_active(not locked)
+        self.actiongroup.get_action("LockScrolling").set_active(locked)
+        self._scroll_lock = not locked
+
         #
         # scrollbars
         #
     def _sync_hscroll(self, adjustment):
-        if self._sync_hscroll_lock:
+        if self._sync_hscroll_lock or self._scroll_lock:
             return
 
         self._sync_hscroll_lock = True
@@ -1262,7 +1283,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self._sync_vscroll_lock:
             return
 
-        if (self.keymask & MASK_SHIFT) == 0:
+        if not self._scroll_lock and (self.keymask & MASK_SHIFT) == 0:
             self._sync_vscroll_lock = True
             syncpoint = 0.5
 

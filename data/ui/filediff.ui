@@ -215,6 +215,27 @@
                 <property name="right_attach">7</property>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
+                <property name="x_options">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="lock_button">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="relief">none</property>
+                <signal handler="on_lock_button_toggled" name="toggled"/>
+                <child>
+                      <object class="GtkImage" id="lock_button_image">
+                        <property name="visible">True</property>
+                        <property name="icon-name">meld-locked</property>
+                      </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">6</property>
+                <property name="right_attach">7</property>
+                <property name="top_attach">0</property>
+                <property name="bottom_attach">1</property>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options">GTK_FILL</property>
               </packing>
@@ -249,7 +270,7 @@
               <packing>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
+                <property name="x_options">0</property>
               </packing>
             </child>
             <child>
