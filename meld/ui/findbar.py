@@ -24,10 +24,13 @@ from gettext import gettext as _
 
 class FindBar(gnomeglade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.ui_dir("findbar.ui"), "findbar")
+        gnomeglade.Component.__init__(self, paths.ui_dir("findbar.ui"),
+                                      "findbar", ["arrow_left", "arrow_right"])
         gnomeglade.connect_signal_handlers(self)
         self.textview = None
         self.orig_base_color = self.find_entry.get_style().base[0]
+        self.arrow_left.show()
+        self.arrow_right.show()
         parent.connect('set-focus-child', self.on_focus_child)
 
     def on_focus_child(self, container, widget):
