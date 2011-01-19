@@ -1,22 +1,20 @@
-<?xml version="1.0"?>
-<!--Generated with glade3 3.4.5 on Sat Mar 21 15:56:10 2009 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <!-- interface-requires gtk+ 2.12 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
     <child>
       <object class="GtkTable" id="findbar">
+        <property name="can_focus">False</property>
         <property name="n_rows">2</property>
         <property name="n_columns">6</property>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
         <property name="column_spacing">6</property>
         <property name="row_spacing">6</property>
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox2">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">start</property>
             <child>
               <object class="GtkButton" id="replace_button">
@@ -24,20 +22,29 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_underline">True</property>
-                <property name="focus_on_click">False</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="replace_all_button">
-                <property name="can_focus">True</property>
-                <property name="label" translatable="yes">Replace _All</property>
-                <property name="visible">True</property>
-                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="replace_all_button">
+                <property name="label" translatable="yes">Replace _All</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="focus_on_click">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -54,6 +61,7 @@
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">start</property>
             <child>
               <object class="GtkButton" id="find_previous_button">
@@ -61,9 +69,15 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <object class="GtkButton" id="find_next_button">
@@ -71,10 +85,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -89,6 +106,7 @@
         <child>
           <object class="GtkLabel" id="find_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Find:</property>
             <property name="use_underline">True</property>
@@ -118,6 +136,7 @@
         <child>
           <object class="GtkLabel" id="replace_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Replace _with:</property>
             <property name="use_underline">True</property>
@@ -151,18 +170,21 @@
         <child>
           <object class="GtkHBox" id="find_options">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkCheckButton" id="match_case">
                 <property name="label" translatable="yes">_Match Case</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -172,12 +194,14 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -187,12 +211,14 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -204,6 +230,15 @@
             <property name="y_options">GTK_FILL</property>
             <property name="x_padding">7</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
