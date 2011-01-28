@@ -133,6 +133,28 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 b = b2
         return (a, b)
 
+    def postprocess(self):
+        mb = [self.matching_blocks[-1]]
+        i = len(self.matching_blocks) - 2
+        while i >= 0:
+            cur_a, cur_b, cur_len = self.matching_blocks[i]
+            i -= 1
+            while i >= 0:
+                prev_a, prev_b, prev_len = self.matching_blocks[i]
+                if prev_b + prev_len == cur_b or prev_a + prev_len == cur_a:
+                    prev_slice_a = self.a[cur_a - prev_len:cur_a]
+                    prev_slice_b = self.b[cur_b - prev_len:cur_b]
+                    if prev_slice_a == prev_slice_b:
+                        cur_b -= prev_len
+                        cur_a -= prev_len
+                        cur_len += prev_len
+                        i -= 1
+                        continue
+                break
+            mb.append((cur_a, cur_b, cur_len))
+        mb.reverse()
+        self.matching_blocks = mb
+
     def build_matching_blocks(self, lastsnake, snakes):
         """
         Build list of matching blocks based on snakes taking into consideration all preprocessing
@@ -263,4 +285,5 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                     lastsnake = node
                     break
         self.build_matching_blocks(lastsnake, snakes)
+        self.postprocess()
         yield 1
