@@ -90,15 +90,16 @@ class DiffTreeStore(gtk.TreeStore):
     def add_empty(self, parent, text="empty folder"):
         child = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(child, self.column_index(COL_STATE,i), STATE_EMPTY)
-            self.set_value(child, self.column_index(COL_PATH,i), self.pixstyle[STATE_EMPTY])
+            self.set_value(child, self.column_index(COL_PATH, i), None)
+            self.set_value(child, self.column_index(COL_STATE, i), str(STATE_EMPTY))
+            self.set_value(child, self.column_index(COL_ICON, i), self.pixstyle[STATE_EMPTY][0])
             self.set_value(child, self.column_index(COL_TEXT, i), self.textstyle[STATE_EMPTY] % gobject.markup_escape_text(text))
         return child
 
     def add_error(self, parent, msg, pane):
         err = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(err, self.column_index(COL_STATE,i), STATE_ERROR)
+            self.set_value(err, self.column_index(COL_STATE, i), str(STATE_ERROR))
         self.set_value(err, self.column_index(COL_ICON, pane), self.pixstyle[STATE_ERROR][0] )
         self.set_value(err, self.column_index(COL_TINT, pane),
                        self.icon_tints[STATE_ERROR][0])
@@ -118,7 +119,7 @@ class DiffTreeStore(gtk.TreeStore):
         TEXT  = self.column_index(COL_TEXT,  pane)
         ICON  = self.column_index(COL_ICON,  pane)
         TINT  = self.column_index(COL_TINT,  pane)
-        self.set_value(it, STATE, state)
+        self.set_value(it, STATE, str(state))
         self.set_value(it, TEXT,  self.textstyle[state] % name)
         self.set_value(it, ICON,  self.pixstyle[state][isdir])
         self.set_value(it, TINT,  self.icon_tints[state][isdir])

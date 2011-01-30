@@ -580,8 +580,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             fname = self.model.value_path( self.model.get_iter(paths[0]), pane )
             try:
                 stat = os.stat(fname)
-            except OSError:
-                self.emit("status-changed", "" )
+            except (OSError, TypeError):
+                self.emit("status-changed", "")
             else:
                 self.emit("status-changed", "%s : %s" % (rwx(stat.st_mode), nice(time.time() - stat.st_mtime) ) )
 
