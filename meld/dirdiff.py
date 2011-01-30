@@ -936,7 +936,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for c in chunks[1:]:
             end = start + c[0]
             s,e = [int(x) for x in (math.floor(scaleit(start)), math.ceil(scaleit(end))) ]
-            gc = area.meldgc[ int(c[1]) ]
+            gc = area.meldgc[c[1]]
             if gc:
                 window.draw_rectangle( gc, 1, x0, s, x1, e-s)
                 window.draw_rectangle( area.meldgc[-1], 0, x0, s, x1, e-s)
@@ -1005,7 +1005,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
         for it in search( start_iter ):
-            state = int(self.model.get_state( it, pane ))
+            state = self.model.get_state(it, pane)
             if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
                 curpath = self.model.get_path(it)
                 self.treeview[pane].expand_to_path(curpath)
