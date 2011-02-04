@@ -250,7 +250,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                        "DirDelete", "Hide", "IgnoreCase", "ShowSame",
                        "ShowNew", "ShowModified", "CustomFilterMenu"):
             self.actiongroup.get_action(button).props.is_important = True
-        self.map_widgets_into_lists( ["treeview", "fileentry", "diffmap", "scrolledwindow", "linkmap"] )
+        self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
+                                     "diffmap", "linkmap", "msgarea_mgr",
+                                     "vbox"])
         self.set_num_panes(num_panes)
         self.focus_in_events = []
         self.focus_out_events = []
@@ -906,9 +908,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.treeview[i].set_model(self.model)
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
+            toshow += self.vbox[:n] + self.msgarea_mgr[:n]
             map( lambda x: x.show(), toshow )
             tohide =  self.scrolledwindow[n:] + self.fileentry[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
+            tohide += self.vbox[n:] + self.msgarea_mgr[n:]
             map( lambda x: x.hide(), tohide )
             if self.num_panes != 0: # not first time through
                 self.num_panes = n

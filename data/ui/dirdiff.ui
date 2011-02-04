@@ -18,62 +18,6 @@
             <property name="n_rows">2</property>
             <property name="n_columns">7</property>
             <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="window_placement">top-right</property>
-                <property name="window_placement_set">True</property>
-                <child>
-                  <object class="GtkTreeView" id="treeview0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="headers_visible">False</property>
-                    <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
-                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
-                    <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
-                    <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
-                    <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
-                    <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
-                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkTreeView" id="treeview1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="headers_visible">False</property>
-                    <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
-                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
-                    <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
-                    <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
-                    <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
-                    <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
-                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="right_attach">4</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
               <object class="HistoryFileEntry" id="fileentry0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -178,33 +122,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkTreeView" id="treeview2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="headers_visible">False</property>
-                    <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
-                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
-                    <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
-                    <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
-                    <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
-                    <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
-                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">5</property>
-                <property name="right_attach">6</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkDrawingArea" id="linkmap0">
                 <property name="width_request">50</property>
                 <property name="visible">True</property>
@@ -255,6 +172,161 @@
                 <property name="right_attach">5</property>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="MsgAreaController" id="msgarea_mgr0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="window_placement">top-right</property>
+                    <property name="window_placement_set">True</property>
+                    <child>
+                      <object class="GtkTreeView" id="treeview0">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="headers_visible">False</property>
+                        <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
+                        <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
+                        <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
+                        <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
+                        <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
+                        <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
+                        <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="MsgAreaController" id="msgarea_mgr1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <child>
+                      <object class="GtkTreeView" id="treeview1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="headers_visible">False</property>
+                        <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
+                        <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
+                        <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
+                        <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
+                        <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
+                        <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
+                        <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="MsgAreaController" id="msgarea_mgr2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <child>
+                      <object class="GtkTreeView" id="treeview2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="headers_visible">False</property>
+                        <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
+                        <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
+                        <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
+                        <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
+                        <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
+                        <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
+                        <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">5</property>
+                <property name="right_attach">6</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
               </packing>
             </child>
           </object>
