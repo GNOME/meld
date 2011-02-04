@@ -683,24 +683,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         msgarea.show_all()
         return msgarea
 
-    def launch_comparison(self, it, pane, force=1):
-        """Launch comparison at 'it'. 
-           If it is a file we launch a diff.
-           If it is a folder we recursively open diffs for each non equal file.
-        """
-        paths = [p for p in self.model.value_paths(it) if os.path.exists(p)]
-        self.emit("create-diff", paths)
-
-    def launch_comparisons_on_selected(self):
-        """Launch comparisons on all selected elements.
-        """
-        pane = self._get_focused_pane()
-        if pane is not None:
-            selected = self._get_selected_paths(pane)
-            get_iter = self.model.get_iter
-            for s in selected:
-                self.launch_comparison( get_iter(s), pane )
-
     def copy_selected(self, direction):
         assert direction in (-1,1)
         src_pane = self._get_focused_pane()
@@ -949,12 +931,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("DirCopyRight").set_sensitive(False)
         self.actiongroup.get_action("DirDelete").set_sensitive(False)
 
-        #
-        # Toolbar handlers
-        #
-
     def on_button_diff_clicked(self, button):
-        self.launch_comparisons_on_selected()
+        pane = self._get_focused_pane()
+        if pane is None:
+            return
+
+        selected = self._get_selected_paths(pane)
+        for row in selected:
+            row_paths = self.model.value_paths(self.model.get_iter(row))
+            paths = [p for p in row_paths if os.path.exists(p)]
+            self.emit("create-diff", paths)
 
     def on_button_copy_left_clicked(self, button):
         self.copy_selected(-1)
