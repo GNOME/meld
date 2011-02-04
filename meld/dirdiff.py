@@ -273,6 +273,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.widget.connect("style-set", self.model.on_style_set)
 
+        self.do_to_others_lock = False
         self.focus_in_events = []
         self.focus_out_events = []
         for treeview in self.treeview:
@@ -435,22 +436,25 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return active_filters_changed
 
     def _do_to_others(self, master, objects, methodname, args):
-        if not hasattr(self, "do_to_others_lock"):
-            self.do_to_others_lock = 1
-            try:
-                for o in [x for x in objects[:self.num_panes] if x != master]:
-                    method = getattr(o, methodname)
-                    method(*args)
-            finally:
-                delattr(self, "do_to_others_lock")
+        if self.do_to_others_lock:
+            return
+
+        self.do_to_others_lock = True
+        try:
+            others = [o for o in objects[:self.num_panes] if o != master]
+            for o in others:
+                method = getattr(o, methodname)
+                method(*args)
+        finally:
+            self.do_to_others_lock = False
 
     def _sync_vscroll(self, adjustment):
         adjs = [sw.get_vadjustment() for sw in self.scrolledwindow]
-        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value,))
+        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value, ))
 
     def _sync_hscroll(self, adjustment):
         adjs = [sw.get_hadjustment() for sw in self.scrolledwindow]
-        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value,))
+        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value, ))
 
     def _get_focused_pane(self):
         focus = [ t.is_focus() for t in self.treeview ]
