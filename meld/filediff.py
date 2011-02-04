@@ -586,7 +586,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 return ""
         try:
-            for filt in app.text_filters:
+            for filt in self.text_filters:
                 if filt.active:
                     txt = filt.filter.sub(killit, txt)
         except AssertionError:
@@ -999,14 +999,31 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.num_panes == 1 or error_message:
                 return
             for index, mgr in enumerate(self.msgarea_mgr):
+                secondary_text = None
+                # TODO: Currently this only checks to see whether text filters
+                # are active, and may be altering the comparison. It would be
+                # better if we only showed this message if the filters *did*
+                # change the text in question.
+                if self.text_filters:
+                    secondary_text = _("Text filters are being used, and may "
+                                       "be masking differences between files. "
+                                       "Would you like to compare the "
+                                       "unfiltered files?")
+
                 msgarea = mgr.new_from_text_and_icon(gtk.STOCK_INFO,
-                                                     _("Files are identical"))
+                                                     _("Files are identical"),
+                                                     secondary_text)
                 mgr.set_msg_id(FileDiff.MSG_SAME)
                 button = msgarea.add_stock_button_with_text(_("Hide"),
                                                             gtk.STOCK_CLOSE,
                                                             gtk.RESPONSE_CLOSE)
                 if index == 0:
                     button.props.label = _("Hi_de")
+
+                if self.text_filters:
+                    msgarea.add_button(_("Show without filters"),
+                                       gtk.RESPONSE_OK)
+
                 msgarea.connect("response", self.on_msgarea_identical_response)
                 msgarea.show_all()
         else:
@@ -1017,6 +1034,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_msgarea_identical_response(self, msgarea, respid):
         for mgr in self.msgarea_mgr:
             mgr.clear()
+        if respid == gtk.RESPONSE_OK:
+            self.text_filters = []
+            # Refresh
+            self.set_files([None] * self.num_panes)
 
     def update_highlighting(self):
         if not self.in_nested_action:
