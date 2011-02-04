@@ -457,11 +457,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._do_to_others(adjustment, adjs, "set_value", (adjustment.value, ))
 
     def _get_focused_pane(self):
-        focus = [ t.is_focus() for t in self.treeview ]
-        try:
-            return focus.index(1)
-        except ValueError:
-            return None
+        for i, treeview in enumerate(self.treeview):
+            if treeview.is_focus():
+                return i
+        return None
 
     def file_deleted(self, path, pane):
         # is file still extant in other pane?
