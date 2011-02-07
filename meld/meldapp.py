@@ -29,10 +29,6 @@ import paths
 from ui import gnomeglade
 import misc
 from ui import notebooklabel
-import filediff
-import filemerge
-import vcview
-import dirdiff
 import preferences
 import task
 import vc
@@ -658,4 +654,12 @@ class MeldApp(gnomeglade.Component):
         elif len(paths) in (2, 3, 4):
             tab = self.append_diff(paths, auto_compare)
         return tab
+
+
+app = MeldApp()
+
+import filediff
+import filemerge
+import vcview
+import dirdiff
 
