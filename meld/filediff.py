@@ -38,6 +38,7 @@ import patchdialog
 import paths
 import merge
 
+from meldapp import app
 from util.sourceviewer import srcviewer
 from util.namedtuple import namedtuple
 
@@ -182,7 +183,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("filediff.ui"), "filediff")
         self.map_widgets_into_lists(["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr", "vbox"])
-        self._update_regexes()
         self.warned_bad_comparison = False
         # Some sourceviews bind their own undo mechanism, which we replace
         gtk.binding_entry_remove(srcviewer.GtkTextView, gtk.keysyms.z,
@@ -301,15 +301,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # FIXME: If no focussed textview, action sensitivity will be unset
         if self.textview_focussed:
             self.scheduler.add_task(self.textview_focussed.grab_focus)
-
-    def _update_regexes(self):
-        self.regexes = []
-        for r in [ misc.ListItem(i) for i in self.prefs.regexes.split("\n") ]:
-            if r.active:
-                try:
-                    self.regexes.append( (re.compile(r.value+"(?m)"), r.value) )
-                except re.error:
-                    pass
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
@@ -543,12 +534,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 return ""
         try:
-            for c,r in self.regexes:
-                txt = c.sub(killit,txt)
+            for filt in app.text_filters:
+                if filt.active:
+                    txt = filt.filter.sub(killit, txt)
         except AssertionError:
             if not self.warned_bad_comparison:
-                misc.run_dialog(_("Regular expression '%s' changed the number of lines in the file. "
-                    "Comparison will be incorrect. See the user manual for more details.") % r)
+                misc.run_dialog(_("Filter '%s' changed the number of lines in the file. "
+                    "Comparison will be incorrect. See the user manual for more details.") % filt.label)
                 self.warned_bad_comparison = True
         return txt
 
@@ -616,8 +608,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.textbuffer[i],
                     self.bufferdata[i].filename,
                     self.prefs.use_syntax_highlighting )
-        elif key == "regexes":
-            self._update_regexes()
         elif key == "edit_wrap_lines":
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)

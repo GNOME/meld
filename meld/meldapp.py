@@ -18,14 +18,32 @@
 
 import optparse
 import os
+import re
 from gettext import gettext as _
 
 import gobject
 import gtk
 
+import misc
 import preferences
 
 version = "1.5.0"
+
+
+class FilterEntry(object):
+
+    __slots__ = ("label", "active", "filter")
+
+    def __init__(self, label, active, filter):
+        self.label = label
+        self.active = active
+        self.filter = filter
+
+    def __copy__(self):
+        new = type(self)(self.label, self.active, None)
+        if self.filter is not None:
+            new.filter = re.compile(self.filter.pattern, self.filter.flags)
+        return new
 
 
 class MeldApp(object):
@@ -35,10 +53,59 @@ class MeldApp(object):
         gtk.window_set_default_icon_name("meld")
         self.version = version
         self.prefs = preferences.MeldPreferences()
+        self.prefs.notify_add(self.on_preference_changed)
+        self.file_filters = self._update_filters(self.prefs.filters)
+        self.text_filters = self._update_regexes(self.prefs.regexes)
 
     def create_window(self):
         self.window = meldwindow.MeldWindow()
         return self.window
+
+    def on_preference_changed(self, key, val):
+        if key == "filters":
+            self.file_filters = self._update_filters(val)
+            # FIXME: should emit a file-filters-changed signal here for
+            # DirDiff to respond to
+        elif key == "regexes":
+            self.text_filters = self._update_regexes(val)
+            # FIXME: should emit a text-filters-changed signal here for
+            # FileDiff and DirDiff to respond to
+
+    def _update_filters(self, filters_string):
+        filters = []
+        for filter_string in filters_string.split("\n"):
+            elements = filter_string.split("\t")
+            name, active = elements[0], bool(int(elements[1]))
+            bits = (" ".join(elements[2:])).split()
+            if len(bits) > 1:
+                regexes = [misc.shell_to_regex(b)[:-1] for b in bits]
+                regex = "(%s)$" % "|".join(regexes)
+            elif len(bits):
+                regex = misc.shell_to_regex(bits[0])
+            else: # an empty pattern would match anything, skip it
+                continue
+            try:
+                compiled = re.compile(regex)
+            except re.error:
+                active = False
+                compiled = None
+            filters.append(FilterEntry(name, active, compiled))
+        return filters
+
+    def _update_regexes(self, regexes_string):
+        regexes = []
+        for regex_string in regexes_string.split("\n"):
+            elements = regex_string.split("\t")
+            name, active = elements[0], bool(int(elements[1]))
+            regex = " ".join(elements[2:])
+            try:
+                compiled = re.compile(regex + "(?m)")
+            except re.error:
+                active = False
+                compiled = None
+            regexes.append(FilterEntry(name, active, compiled))
+        return regexes
+
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""

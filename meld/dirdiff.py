@@ -16,6 +16,7 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import collections
+import copy
 import errno
 import paths
 from ui import gnomeglade
@@ -33,9 +34,10 @@ import re
 import stat
 import time
 
-from util.namedtuple import namedtuple
-
 import ui.emblemcellrenderer
+
+from util.namedtuple import namedtuple
+from meldapp import app
 
 gdk = gtk.gdk
 
@@ -169,19 +171,6 @@ class DirDiffTreeStore(tree.DiffTreeStore):
         types = [str] * COL_END * ntree
         tree.DiffTreeStore.__init__(self, ntree, types)
 
-################################################################################
-#
-# TypeFilter
-#
-################################################################################
-
-class TypeFilter(object):
-    __slots__ = ("label", "filter", "active")
-    def __init__(self, label, active, filter):
-        self.label = label
-        self.active = active
-        self.filter = filter
-
 
 class CanonicalListing(object):
     """Multi-pane lists with canonicalised matching and error detection"""
@@ -286,17 +275,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             tree.STATE_MODIFIED,
             tree.STATE_NEW,
         ]
-        self.update_regexes()
-
-    def update_regexes(self):
-        self.regexes = []
-        for r in [ misc.ListItem(i) for i in self.prefs.regexes.split("\n") ]:
-            if r.active:
-                try:
-                    self.regexes.append( re.compile(r.value+"(?m)") )
-                except re.error:
-                    misc.run_dialog(
-                        text=_("Error converting pattern '%s' to regular expression") % r.value )
 
     def _custom_popup_deactivated(self, popup):
         self.filter_menu_button.set_active(False)
@@ -332,39 +310,23 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.on_container_switch_out_event(self, ui)
 
     def create_name_filters(self):
-        self.name_filters_available = []
-        for f in [misc.ListItem(s) for s in self.prefs.filters.split("\n") ]:
-            bits = f.value.split()
-            if len(bits) > 1:
-                regex = "(%s)$" % "|".join( [misc.shell_to_regex(b)[:-1] for b in bits] )
-            elif len(bits):
-                regex = misc.shell_to_regex(bits[0])
-            else: # an empty pattern would match anything, skip it
-                continue
-            try:
-                cregex = re.compile(regex)
-            except re.error:
-                misc.run_dialog( _("Error converting pattern '%s' to regular expression") % f.value, self )
-            else:
-                func = lambda x, r=cregex : r.match(x) is None
-                self.name_filters_available.append( TypeFilter(f.name, f.active, func) )
-        self.name_filters = [f for f in self.name_filters_available if f.active]
-
+        self.name_filters = [copy.copy(f) for f in app.file_filters]
         actions = []
+        disabled_actions = []
         self.filter_ui = []
-        for i,f in enumerate(self.name_filters_available):
+        for i, f in enumerate(self.name_filters):
             name = "Hide%d" % i
             callback = lambda b, i=i: self._update_name_filter(b, i)
             actions.append((name, None, f.label, None, _("Hide %s") % f.label, callback, f.active))
             self.filter_ui.append(["/CustomPopup" , name, name, gtk.UI_MANAGER_MENUITEM, False])
             self.filter_ui.append(["/Menubar/ViewMenu/FileFilters" , name, name, gtk.UI_MANAGER_MENUITEM, False])
+            if f.filter is None:
+                disabled_actions.append(name)
 
         self.filter_actiongroup = gtk.ActionGroup("DirdiffFilterActions")
         self.filter_actiongroup.add_toggle_actions(actions)
-
-    def on_preference_changed(self, key, value):
-        if key == "regexes":
-            self.update_regexes()
+        for name in disabled_actions:
+            self.filter_actiongroup.get_action(name).set_sensitive(False)
 
     def _do_to_others(self, master, objects, methodname, args):
         if not hasattr(self, "do_to_others_lock"):
@@ -475,7 +437,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     continue
 
                 for f in self.name_filters:
-                    entries = filter(f.filter, entries)
+                    if not f.active or f.filter is None:
+                        continue
+                    entries = [e for e in entries if f.filter.match(e) is None]
 
                 for e in entries:
                     try:
@@ -816,12 +780,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._update_state_filter( tree.STATE_MODIFIED, button.get_active() )
 
     def _update_name_filter(self, button, idx):
-        for i in range(len(self.name_filters)):
-            if self.name_filters[i] == self.name_filters_available[idx]:
-                self.name_filters.pop(i)
-                break
-        if button.get_active():
-            self.name_filters.append( self.name_filters_available[idx] )
+        self.name_filters[idx].active = button.get_active()
         self.refresh()
 
     def on_filter_hide_current_clicked(self, button):
@@ -852,12 +811,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         assert len(roots) == self.model.ntree
         ret = []
+        regexes = [f.filter for f in app.text_filters if f.active and f.filter]
         for files in fileslist:
             curfiles = [ os.path.join( r, f ) for r,f in zip(roots,files) ]
             is_present = [ os.path.exists( f ) for f in curfiles ]
             all_present = 0 not in is_present
             if all_present:
-                if _files_same(curfiles, self.regexes) in (Same, SameFiltered):
+                if _files_same(curfiles, regexes) in (Same, SameFiltered):
                     state = tree.STATE_NORMAL
                 else:
                     state = tree.STATE_MODIFIED
@@ -871,6 +831,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Update the state of the item at 'it'
         """
         files = self.model.value_paths(it)
+        regexes = [f.filter for f in app.text_filters if f.active and f.filter]
+
         def mtime(f):
             try:
                 return os.stat(f).st_mtime
@@ -883,7 +845,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             newest_index = -1 # all same
         all_present = 0 not in mod_times
         if all_present:
-            all_same = _files_same( files, self.regexes )
+            all_same = _files_same(files, regexes)
             all_present_same = all_same
         else:
             lof = []
@@ -891,7 +853,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if mod_times[j]:
                     lof.append( files[j] )
             all_same = Different
-            all_present_same = _files_same( lof, self.regexes )
+            all_present_same = _files_same(lof, regexes)
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
