@@ -414,7 +414,7 @@ class MeldWindow(gnomeglade.Component):
     # Toolbar and menu items (settings)
     #
     def on_menu_preferences_activate(self, item):
-        preferences.PreferencesDialog(self)
+        preferences.PreferencesDialog(self.widget, app.prefs)
 
     def on_action_fullscreen_toggled(self, widget):
         is_full = self.widget.window.get_state() & gtk.gdk.WINDOW_STATE_FULLSCREEN

@@ -118,11 +118,11 @@ class ListWidget(gnomeglade.Component):
 
 class PreferencesDialog(gnomeglade.Component):
 
-    def __init__(self, parentapp):
+    def __init__(self, parent, prefs):
         gnomeglade.Component.__init__(self, paths.ui_dir("preferences.ui"),
                                       "preferencesdialog", ["adjustment1"])
-        self.widget.set_transient_for(parentapp.widget)
-        self.prefs = parentapp.prefs
+        self.widget.set_transient_for(parent)
+        self.prefs = prefs
         if not self.prefs.use_custom_font:
             self.checkbutton_default_font.set_active(True)
             self.fontpicker.set_sensitive(False)
