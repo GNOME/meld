@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2009 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2010-2011 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -33,20 +34,31 @@ from util.sourceviewer import srcviewer
 class FilterList(listwidget.ListWidget):
 
     def __init__(self, prefs, key, filter_type):
-        default_entry = [_("label"), False, _("pattern")]
+        default_entry = [_("label"), False, _("pattern"), True]
         listwidget.ListWidget.__init__(self, default_entry)
         self.prefs = prefs
         self.key = key
+        self.filter_type = filter_type
+
+        self.pattern_column.set_cell_data_func(self.validity_renderer,
+                                               self.valid_icon_celldata)
 
         for filtstring in getattr(self.prefs, self.key).split("\n"):
             filt = meldapp.FilterEntry.parse(filtstring, filter_type)
-            self.model.append([filt.label, filt.active, filt.filter_string])
+            valid = filt.filter is not None
+            self.model.append([filt.label, filt.active,
+                               filt.filter_string, valid])
 
         for signal in ('row-changed', 'row-deleted', 'row-inserted',
                        'rows-reordered'):
             self.model.connect(signal, self._update_filter_string)
 
         self._update_sensitivity()
+
+    def valid_icon_celldata(self, col, cell, model, it, user_data=None):
+        is_valid = model.get_value(it, 3)
+        icon_name = "gtk-dialog-warning" if not is_valid else None
+        cell.set_property("stock-id", icon_name)
 
     def on_name_edited(self, ren, path, text):
         self.model[path][0] = text
@@ -55,7 +67,10 @@ class FilterList(listwidget.ListWidget):
         self.model[path][1] = not ren.get_active()
 
     def on_pattern_edited(self, ren, path, text):
+        filt = meldapp.FilterEntry.compile_filter(text, self.filter_type)
+        valid = filt is not None
         self.model[path][2] = text
+        self.model[path][3] = valid
 
     def _update_filter_string(self, *args):
         pref = []

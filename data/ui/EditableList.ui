@@ -10,6 +10,8 @@
       <column type="gboolean"/>
       <!-- column-name Pattern -->
       <column type="gchararray"/>
+      <!-- column-name ValidPattern -->
+      <column type="gboolean"/>
     </columns>
     <signal name="row-inserted" handler="_update_sensitivity" swapped="no"/>
     <signal name="rows-reordered" handler="_update_sensitivity" swapped="no"/>
@@ -48,7 +50,21 @@
                     <property name="rubber_banding">True</property>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn1">
-                        <property name="title">Name</property>
+                        <property name="title" translatable="yes">Active</property>
+                        <child>
+                          <object class="GtkCellRendererToggle" id="cellrenderertoggle1">
+                            <signal name="toggled" handler="on_cellrenderertoggle_toggled" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="activatable">3</attribute>
+                            <attribute name="active">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                        <property name="title" translatable="yes">Name</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext1">
                             <property name="editable">True</property>
@@ -61,21 +77,14 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-                        <property name="title" translatable="yes">Active</property>
-                        <child>
-                          <object class="GtkCellRendererToggle" id="cellrenderertoggle1">
-                            <signal name="toggled" handler="on_cellrenderertoggle_toggled" swapped="no"/>
-                          </object>
-                          <attributes>
-                            <attribute name="active">1</attribute>
-                          </attributes>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                      <object class="GtkTreeViewColumn" id="pattern_column">
                         <property name="title" translatable="yes">Pattern</property>
+                        <child>
+                          <object class="GtkCellRendererPixbuf" id="validity_renderer">
+                            <property name="width">16</property>
+                            <property name="height">16</property>
+                          </object>
+                        </child>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext2">
                             <property name="editable">True</property>
