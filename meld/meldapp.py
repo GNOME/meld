@@ -78,7 +78,10 @@ class NewDocDialog(gnomeglade.Component):
                 paths.pop(0)
             for path in paths:
                 self.entrylists[page][0].prepend_history(path)
-            self.diff_methods[page](paths)
+            if page == 2:
+                self.diff_methods[page](paths[0])
+            else:
+                self.diff_methods[page](paths)
         self.widget.destroy()
 
 
@@ -545,9 +548,7 @@ class MeldWindow(gnomeglade.Component):
         else:
             return self.append_filediff(paths)
 
-    def append_vcview(self, locations, auto_compare=False):
-        assert len(locations) in (1,)
-        location = locations[0]
+    def append_vcview(self, location, auto_compare=False):
         doc = vcview.VcView(app.prefs)
         # FIXME: need a good themed VC icon
         self._append_page(doc, "vc-icon")
@@ -650,7 +651,7 @@ class MeldApp(object):
             if os.path.isfile(a):
                 self.window._single_file_open(a)
             else:
-                tab = self.window.append_vcview([a], auto_compare)
+                tab = self.window.append_vcview(a, auto_compare)
                     
         elif len(paths) in (2, 3, 4):
             tab = self.window.append_diff(paths, auto_compare)
