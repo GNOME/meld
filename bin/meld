@@ -126,6 +126,7 @@ gtk.icon_theme_get_default().append_search_path(meld.paths.icon_dir())
 
 def main():
     from meld.meldapp import app
+    app.create_window()
     app.parse_args(sys.argv[1:])
     gtk.main()
 

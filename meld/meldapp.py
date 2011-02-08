@@ -118,7 +118,6 @@ class MeldWindow(gnomeglade.Component):
     def __init__(self):
         gladefile = paths.ui_dir("meldapp.ui")
         gnomeglade.Component.__init__(self, gladefile, "meldapp")
-        self.prefs = preferences.MeldPreferences()
 
         actions = (
             ("FileMenu", None, _("_File")),
@@ -158,8 +157,8 @@ class MeldWindow(gnomeglade.Component):
         )
         toggleactions = (
             ("Fullscreen",       None, _("Full Screen"), "F11", _("View the comparison in full screen"), self.on_action_fullscreen_toggled, False),
-            ("ToolbarVisible",   None, _("_Toolbar"),   None, _("Show or hide the toolbar"),   self.on_menu_toolbar_toggled,   self.prefs.toolbar_visible),
-            ("StatusbarVisible", None, _("_Statusbar"), None, _("Show or hide the statusbar"), self.on_menu_statusbar_toggled, self.prefs.statusbar_visible)
+            ("ToolbarVisible",   None, _("_Toolbar"),   None, _("Show or hide the toolbar"),   self.on_menu_toolbar_toggled,   app.prefs.toolbar_visible),
+            ("StatusbarVisible", None, _("_Statusbar"), None, _("Show or hide the statusbar"), self.on_menu_statusbar_toggled, app.prefs.statusbar_visible)
         )
         ui_file = paths.ui_dir("meldapp-ui.xml")
         self.actiongroup = gtk.ActionGroup('MainActions')
@@ -196,14 +195,14 @@ class MeldWindow(gnomeglade.Component):
             gtk.gdk.ACTION_COPY)
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
-        self.toolbar.set_style( self.prefs.get_toolbar_style() )
-        self.toolbar.props.visible = self.prefs.toolbar_visible
-        self.status_box.props.visible = self.prefs.statusbar_visible
-        self.prefs.notify_add(self.on_preference_changed)
+        self.toolbar.set_style(app.prefs.get_toolbar_style())
+        self.toolbar.props.visible = app.prefs.toolbar_visible
+        self.status_box.props.visible = app.prefs.statusbar_visible
+        app.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable )
-        self.widget.set_default_size(self.prefs.window_size_x, self.prefs.window_size_y)
+        self.widget.set_default_size(app.prefs.window_size_x, app.prefs.window_size_y)
         self.ui.ensure_update()
         self.widget.show()
         self.diff_handler = None
@@ -281,11 +280,11 @@ class MeldWindow(gnomeglade.Component):
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
-            self.toolbar.set_style( self.prefs.get_toolbar_style() )
+            self.toolbar.set_style(app.prefs.get_toolbar_style())
         elif key == "statusbar_visible":
-            self.status_box.props.visible = self.prefs.statusbar_visible
+            self.status_box.props.visible = app.prefs.statusbar_visible
         elif key == "toolbar_visible":
-            self.toolbar.props.visible = self.prefs.toolbar_visible
+            self.toolbar.props.visible = app.prefs.toolbar_visible
 
     #
     # General events and callbacks
@@ -329,8 +328,8 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("NextChange").set_sensitive(have_next)
 
     def on_size_allocate(self, window, rect):
-        self.prefs.window_size_x = rect.width
-        self.prefs.window_size_y = rect.height
+        app.prefs.window_size_x = rect.width
+        app.prefs.window_size_y = rect.height
 
     #
     # Toolbar and menu items (file)
@@ -423,10 +422,10 @@ class MeldWindow(gnomeglade.Component):
             self.widget.unfullscreen()
 
     def on_menu_toolbar_toggled(self, widget):
-        self.prefs.toolbar_visible = widget.get_active()
+        app.prefs.toolbar_visible = widget.get_active()
 
     def on_menu_statusbar_toggled(self, widget):
-        self.prefs.statusbar_visible = widget.get_active()
+        app.prefs.statusbar_visible = widget.get_active()
 
     #
     # Toolbar and menu items (help)
@@ -497,7 +496,7 @@ class MeldWindow(gnomeglade.Component):
 
     def append_dirdiff(self, dirs, auto_compare=False):
         assert len(dirs) in (1,2,3)
-        doc = dirdiff.DirDiff(self.prefs, len(dirs))
+        doc = dirdiff.DirDiff(app.prefs, len(dirs))
         self._append_page(doc, "folder")
         doc.set_locations(dirs)
         # FIXME: This doesn't work, as dirdiff behaves differently to vcview
@@ -508,9 +507,9 @@ class MeldWindow(gnomeglade.Component):
     def append_filediff(self, files):
         assert len(files) in (1, 2, 3, 4)
         if len(files) == 4:
-            doc = filemerge.FileMerge(self.prefs, 3)
+            doc = filemerge.FileMerge(app.prefs, 3)
         else:
-            doc = filediff.FileDiff(self.prefs, len(files))
+            doc = filediff.FileDiff(app.prefs, len(files))
         seq = doc.undosequence
         seq.clear()
         seq.connect("can-undo", self.on_can_undo)
@@ -549,7 +548,7 @@ class MeldWindow(gnomeglade.Component):
     def append_vcview(self, locations, auto_compare=False):
         assert len(locations) in (1,)
         location = locations[0]
-        doc = vcview.VcView(self.prefs)
+        doc = vcview.VcView(app.prefs)
         # FIXME: need a good themed VC icon
         self._append_page(doc, "vc-icon")
         doc.set_location(location)
@@ -558,7 +557,7 @@ class MeldWindow(gnomeglade.Component):
         return doc
 
     def _single_file_open(self, path):
-        doc = vcview.VcView(self.prefs)
+        doc = vcview.VcView(app.prefs)
         def cleanup():
             self.scheduler.remove_scheduler(doc.scheduler)
         self.scheduler.add_task(cleanup)
@@ -582,7 +581,11 @@ class MeldApp(object):
     def __init__(self):
         gobject.set_application_name("Meld")
         gtk.window_set_default_icon_name("meld")
+        self.prefs = preferences.MeldPreferences()
+
+    def create_window(self):
         self.window = MeldWindow()
+        return self.window
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""
