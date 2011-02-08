@@ -110,18 +110,14 @@ class MeldStatusBar(object):
 #
 ################################################################################
 
-class MeldApp(gnomeglade.Component):
+class MeldWindow(gnomeglade.Component):
 
     #
     # init
     #
     def __init__(self):
         gladefile = paths.ui_dir("meldapp.ui")
-        gtk.window_set_default_icon_name("icon")
-        if getattr(gobject, "pygobject_version", ()) >= (2, 16, 0):
-            gobject.set_application_name("Meld")
         gnomeglade.Component.__init__(self, gladefile, "meldapp")
-        gtk.window_set_default_icon_name("meld")
         self.prefs = preferences.MeldPreferences()
 
         actions = (
@@ -561,9 +557,16 @@ class MeldApp(gnomeglade.Component):
             doc.on_button_diff_clicked(None)
         return doc
 
-    #
-    # Current doc actions
-    #
+    def _single_file_open(self, path):
+        doc = vcview.VcView(self.prefs)
+        def cleanup():
+            self.scheduler.remove_scheduler(doc.scheduler)
+        self.scheduler.add_task(cleanup)
+        self.scheduler.add_scheduler(doc.scheduler)
+        doc.set_location(path)
+        doc.connect("create-diff", lambda obj,arg: self.append_diff(arg))
+        doc.run_diff([path])
+
     def current_doc(self):
         "Get the current doc or a dummy object if there is no current"
         index = self.notebook.get_current_page()
@@ -573,9 +576,14 @@ class MeldApp(gnomeglade.Component):
             def __getattr__(self, a): return lambda *x: None
         return DummyDoc()
 
-    #
-    # Usage
-    #
+
+class MeldApp(object):
+
+    def __init__(self):
+        gobject.set_application_name("Meld")
+        gtk.window_set_default_icon_name("meld")
+        self.window = MeldWindow()
+
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""
         assert value is None
@@ -632,27 +640,17 @@ class MeldApp(gnomeglade.Component):
         if options.outfile and tab and isinstance(tab, filediff.FileDiff):
             tab.set_merge_output_file(options.outfile)
 
-    def _single_file_open(self, path):
-        doc = vcview.VcView(self.prefs)
-        def cleanup():
-            self.scheduler.remove_scheduler(doc.scheduler)
-        self.scheduler.add_task(cleanup)
-        self.scheduler.add_scheduler(doc.scheduler)
-        doc.set_location(path)
-        doc.connect("create-diff", lambda obj,arg: self.append_diff(arg))
-        doc.run_diff([path])
-
     def open_paths(self, paths, auto_compare=False):
         tab = None
         if len(paths) == 1:
             a = paths[0]
             if os.path.isfile(a):
-                self._single_file_open(a)
+                self.window._single_file_open(a)
             else:
-                tab = self.append_vcview([a], auto_compare)
+                tab = self.window.append_vcview([a], auto_compare)
                     
         elif len(paths) in (2, 3, 4):
-            tab = self.append_diff(paths, auto_compare)
+            tab = self.window.append_diff(paths, auto_compare)
         return tab
 
 
