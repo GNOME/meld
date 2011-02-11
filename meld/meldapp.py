@@ -32,15 +32,65 @@ version = "1.5.0"
 
 class FilterEntry(object):
 
-    __slots__ = ("label", "active", "filter")
+    __slots__ = ("label", "active", "filter", "filter_string")
 
-    def __init__(self, label, active, filter):
+    REGEX, SHELL = 0, 1
+
+    def __init__(self, label, active, filter, filter_string):
         self.label = label
         self.active = active
         self.filter = filter
+        self.filter_string = filter_string
+
+    @classmethod
+    def _compile_regex(cls, regex):
+        try:
+            compiled = re.compile(regex + "(?m)")
+        except re.error:
+            compiled = None
+        return compiled
+
+    @classmethod
+    def _compile_shell_pattern(cls, pattern):
+        bits = pattern.split()
+        if len(bits) > 1:
+            regexes = [misc.shell_to_regex(b)[:-1] for b in bits]
+            regex = "(%s)$" % "|".join(regexes)
+        elif len(bits):
+            regex = misc.shell_to_regex(bits[0])
+        else:
+            # An empty pattern would match everything, so skip it
+            return None
+
+        try:
+            compiled = re.compile(regex)
+        except re.error:
+            compiled = None
+
+        return compiled
+
+    @classmethod
+    def parse(cls, string, filter_type):
+        elements = string.split("\t")
+        name, active = elements[0], bool(int(elements[1]))
+        filter_string = " ".join(elements[2:])
+        compiled = FilterEntry.compile_filter(filter_string, filter_type)
+        if compiled is None:
+            active = False
+        return FilterEntry(name, active, compiled, filter_string)
+
+    @classmethod
+    def compile_filter(cls, filter_string, filter_type):
+        if filter_type == FilterEntry.REGEX:
+            compiled = FilterEntry._compile_regex(filter_string)
+        elif filter_type == FilterEntry.SHELL:
+            compiled = FilterEntry._compile_shell_pattern(filter_string)
+        else:
+            raise ValueError, "Unknown filter type"
+        return compiled
 
     def __copy__(self):
-        new = type(self)(self.label, self.active, None)
+        new = type(self)(self.label, self.active, None, self.filter_string)
         if self.filter is not None:
             new.filter = re.compile(self.filter.pattern, self.filter.flags)
         return new
@@ -54,8 +104,10 @@ class MeldApp(object):
         self.version = version
         self.prefs = preferences.MeldPreferences()
         self.prefs.notify_add(self.on_preference_changed)
-        self.file_filters = self._update_filters(self.prefs.filters)
-        self.text_filters = self._update_regexes(self.prefs.regexes)
+        self.file_filters = self._parse_filters(self.prefs.filters,
+                                                FilterEntry.SHELL)
+        self.text_filters = self._parse_filters(self.prefs.regexes,
+                                                FilterEntry.REGEX)
 
     def create_window(self):
         self.window = meldwindow.MeldWindow()
@@ -63,49 +115,16 @@ class MeldApp(object):
 
     def on_preference_changed(self, key, val):
         if key == "filters":
-            self.file_filters = self._update_filters(val)
+            self.file_filters = self._parse_filters(val, FilterEntry.SHELL)
             # FIXME: should emit a file-filters-changed signal here for
             # DirDiff to respond to
         elif key == "regexes":
-            self.text_filters = self._update_regexes(val)
+            self.text_filters = self._parse_filters(val, FilterEntry.REGEX)
             # FIXME: should emit a text-filters-changed signal here for
             # FileDiff and DirDiff to respond to
 
-    def _update_filters(self, filters_string):
-        filters = []
-        for filter_string in filters_string.split("\n"):
-            elements = filter_string.split("\t")
-            name, active = elements[0], bool(int(elements[1]))
-            bits = (" ".join(elements[2:])).split()
-            if len(bits) > 1:
-                regexes = [misc.shell_to_regex(b)[:-1] for b in bits]
-                regex = "(%s)$" % "|".join(regexes)
-            elif len(bits):
-                regex = misc.shell_to_regex(bits[0])
-            else: # an empty pattern would match anything, skip it
-                continue
-            try:
-                compiled = re.compile(regex)
-            except re.error:
-                active = False
-                compiled = None
-            filters.append(FilterEntry(name, active, compiled))
-        return filters
-
-    def _update_regexes(self, regexes_string):
-        regexes = []
-        for regex_string in regexes_string.split("\n"):
-            elements = regex_string.split("\t")
-            name, active = elements[0], bool(int(elements[1]))
-            regex = " ".join(elements[2:])
-            try:
-                compiled = re.compile(regex + "(?m)")
-            except re.error:
-                active = False
-                compiled = None
-            regexes.append(FilterEntry(name, active, compiled))
-        return regexes
-
+    def _parse_filters(self, string, filt_type):
+        return [FilterEntry.parse(l, filt_type) for l in string.split("\n")]
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""

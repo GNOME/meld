@@ -21,6 +21,7 @@ import gtk
 
 from ui import gnomeglade
 from ui import listwidget
+import meldapp
 import misc
 import paths
 from util import prefs
@@ -31,14 +32,15 @@ from util.sourceviewer import srcviewer
 
 class FilterList(listwidget.ListWidget):
 
-    def __init__(self, prefs, key):
-        listwidget.ListWidget.__init__(self, [_("label"), 0, _("pattern")])
+    def __init__(self, prefs, key, filter_type):
+        default_entry = [_("label"), False, _("pattern")]
+        listwidget.ListWidget.__init__(self, default_entry)
         self.prefs = prefs
         self.key = key
 
         for filtstring in getattr(self.prefs, self.key).split("\n"):
-            filt = misc.ListItem(filtstring)
-            self.model.append([filt.name, filt.active, filt.value])
+            filt = meldapp.FilterEntry.parse(filtstring, filter_type)
+            self.model.append([filt.label, filt.active, filt.filter_string])
 
         for signal in ('row-changed', 'row-deleted', 'row-inserted',
                        'rows-reordered'):
@@ -110,12 +112,14 @@ class PreferencesDialog(gnomeglade.Component):
         self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
 
         # file filters
-        self.filefilter = FilterList(self.prefs, "filters")
+        self.filefilter = FilterList(self.prefs, "filters",
+                                     meldapp.FilterEntry.SHELL)
         self.file_filters_tab.pack_start(self.filefilter.widget)
         self.checkbutton_ignore_symlinks.set_active( self.prefs.ignore_symlinks)
 
         # text filters
-        self.textfilter = FilterList(self.prefs, "regexes")
+        self.textfilter = FilterList(self.prefs, "regexes",
+                                     meldapp.FilterEntry.REGEX)
         self.text_filters_tab.pack_start(self.textfilter.widget)
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding

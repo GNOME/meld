@@ -350,14 +350,3 @@ def shell_to_regex(pat):
         else:
             res += re.escape(c)
     return res + "$"
-
-class ListItem(object):
-    __slots__ = ("name", "active", "value")
-    def __init__(self, s):
-        a = s.split("\t")
-        self.name = a.pop(0)
-        self.active = int(a.pop(0))
-        self.value = " ".join(a)
-    def __str__(self):
-        return "<%s %s %i %s>" % ( self.__class__, self.name, self.active, self.value )
-
