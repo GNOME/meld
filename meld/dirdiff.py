@@ -235,6 +235,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
         self.create_name_filters()
+        # FIXME: also handle text-filters-changed
+        app.connect("file-filters-changed", self.on_file_filters_changed)
         for button in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                        "DirDelete", "Hide", "IgnoreCase", "ShowSame",
                        "ShowNew", "ShowModified", "CustomFilterMenu"):
@@ -285,8 +287,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.custom_popup.popup(None, None, misc.position_menu_under_widget,
                                     1, gtk.get_current_event_time(), self.filter_menu_button)
 
-    def on_container_switch_in_event(self, ui):
-        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+    def _cleanup_filter_menu_button(self, ui):
+        if self.popup_deactivate_id:
+            self.popup_menu.disconnect(self.popup_deactivate_id)
+        if self.custom_merge_id:
+            ui.remove_ui(self.custom_merge_id)
+        if self.filter_actiongroup in ui.get_action_groups():
+            ui.remove_action_group(self.filter_actiongroup)
+
+    def _create_filter_menu_button(self, ui):
         ui.insert_action_group(self.filter_actiongroup, -1)
         self.custom_merge_id = ui.new_merge_id()
         for x in self.filter_ui:
@@ -297,6 +306,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         label = misc.make_tool_button_widget(self.filter_menu_button.props.label)
         self.filter_menu_button.set_label_widget(label)
 
+    def on_container_switch_in_event(self, ui):
+        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+        self._create_filter_menu_button(ui)
+        self.ui_manager = ui
+
         # FIXME: Add real sensitivity handling
         self.emit("next-diff-changed", True, True)
         if self.treeview_focussed:
@@ -304,10 +318,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def on_container_switch_out_event(self, ui):
-        self.popup_menu.disconnect(self.popup_deactivate_id)
-        ui.remove_ui(self.custom_merge_id)
-        ui.remove_action_group(self.filter_actiongroup)
+        self._cleanup_filter_menu_button(ui)
         melddoc.MeldDoc.on_container_switch_out_event(self, ui)
+
+    def on_file_filters_changed(self, app):
+        self._cleanup_filter_menu_button(self.ui_manager)
+        self.create_name_filters()
+        self._create_filter_menu_button(self.ui_manager)
+        self.refresh()
 
     def create_name_filters(self):
         self.name_filters = [copy.copy(f) for f in app.file_filters]

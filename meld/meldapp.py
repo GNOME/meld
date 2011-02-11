@@ -96,9 +96,15 @@ class FilterEntry(object):
         return new
 
 
-class MeldApp(object):
+class MeldApp(gobject.GObject):
+
+    __gsignals__ = {
+        'file-filters-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'text-filters-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+    }
 
     def __init__(self):
+        gobject.GObject.__init__(self)
         gobject.set_application_name("Meld")
         gtk.window_set_default_icon_name("meld")
         self.version = version
@@ -116,12 +122,10 @@ class MeldApp(object):
     def on_preference_changed(self, key, val):
         if key == "filters":
             self.file_filters = self._parse_filters(val, FilterEntry.SHELL)
-            # FIXME: should emit a file-filters-changed signal here for
-            # DirDiff to respond to
+            self.emit('file-filters-changed')
         elif key == "regexes":
             self.text_filters = self._parse_filters(val, FilterEntry.REGEX)
-            # FIXME: should emit a text-filters-changed signal here for
-            # FileDiff and DirDiff to respond to
+            self.emit('text-filters-changed')
 
     def _parse_filters(self, string, filt_type):
         return [FilterEntry.parse(l, filt_type) for l in string.split("\n")]
