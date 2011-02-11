@@ -175,9 +175,8 @@ class PreferencesDialog(gnomeglade.Component):
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
-    #
-    # editor
-    #
+        self.widget.show()
+
     def on_fontpicker_font_set(self, picker):
         self.prefs.custom_font = picker.get_font_name()
 
