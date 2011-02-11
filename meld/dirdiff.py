@@ -234,6 +234,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
+        self.name_filters = []
         self.create_name_filters()
         # FIXME: also handle text-filters-changed
         app.connect("file-filters-changed", self.on_file_filters_changed)
@@ -323,11 +324,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_file_filters_changed(self, app):
         self._cleanup_filter_menu_button(self.ui_manager)
-        self.create_name_filters()
+        relevant_change = self.create_name_filters()
         self._create_filter_menu_button(self.ui_manager)
-        self.refresh()
+        if relevant_change:
+            self.refresh()
 
     def create_name_filters(self):
+        old_active = set([f.filter_string for f in self.name_filters if f.active])
+        new_active = set([f.filter_string for f in app.file_filters if f.active])
+        active_filters_changed = old_active != new_active
+
         self.name_filters = [copy.copy(f) for f in app.file_filters]
         actions = []
         disabled_actions = []
@@ -345,6 +351,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.filter_actiongroup.add_toggle_actions(actions)
         for name in disabled_actions:
             self.filter_actiongroup.get_action(name).set_sensitive(False)
+
+        return active_filters_changed
 
     def _do_to_others(self, master, objects, methodname, args):
         if not hasattr(self, "do_to_others_lock"):
