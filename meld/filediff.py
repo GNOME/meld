@@ -16,6 +16,7 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import codecs
+import copy
 import os
 from gettext import gettext as _
 import re
@@ -206,6 +207,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.bufferdata = [MeldBufferData() for b in self.textbuffer]
         self.buffer_texts = [BufferLines(b) for b in self.textbuffer]
+        self.text_filters = []
+        self.create_text_filters()
+        app.connect("text-filters-changed", self.on_text_filters_changed)
         self.buffer_filtered = [BufferLines(b, self._filter_text) for
                                 b in self.textbuffer]
         for (i, w) in enumerate(self.scrolledwindow):
@@ -301,6 +305,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # FIXME: If no focussed textview, action sensitivity will be unset
         if self.textview_focussed:
             self.scheduler.add_task(self.textview_focussed.grab_focus)
+
+    def on_text_filters_changed(self, app):
+        relevant_change = self.create_text_filters()
+        if relevant_change:
+            self.set_files([None] * self.num_panes) # Refresh
+
+    def create_text_filters(self):
+        # In contrast to file filters, ordering of text filters can matter
+        old_active = [f.filter_string for f in self.text_filters if f.active]
+        new_active = [f.filter_string for f in app.text_filters if f.active]
+        active_filters_changed = old_active != new_active
+
+        self.text_filters = [copy.copy(f) for f in app.text_filters]
+
+        return active_filters_changed
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
