@@ -236,8 +236,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.add_toggle_actions(toggleactions)
         self.name_filters = []
         self.create_name_filters()
-        # FIXME: also handle text-filters-changed
         app.connect("file-filters-changed", self.on_file_filters_changed)
+        self.text_filters = []
+        self.create_text_filters()
+        app.connect("text-filters-changed", self.on_text_filters_changed)
         for button in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                        "DirDelete", "Hide", "IgnoreCase", "ShowSame",
                        "ShowNew", "ShowModified", "CustomFilterMenu"):
@@ -330,6 +332,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.refresh()
 
     def create_name_filters(self):
+        # Ordering of name filters is irrelevant
         old_active = set([f.filter_string for f in self.name_filters if f.active])
         new_active = set([f.filter_string for f in app.file_filters if f.active])
         active_filters_changed = old_active != new_active
@@ -351,6 +354,21 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.filter_actiongroup.add_toggle_actions(actions)
         for name in disabled_actions:
             self.filter_actiongroup.get_action(name).set_sensitive(False)
+
+        return active_filters_changed
+
+    def on_text_filters_changed(self, app):
+        relevant_change = self.create_text_filters()
+        if relevant_change:
+            self.refresh()
+
+    def create_text_filters(self):
+        # In contrast to file filters, ordering of text filters can matter
+        old_active = [f.filter_string for f in self.text_filters if f.active]
+        new_active = [f.filter_string for f in app.text_filters if f.active]
+        active_filters_changed = old_active != new_active
+
+        self.text_filters = [copy.copy(f) for f in app.text_filters]
 
         return active_filters_changed
 
@@ -837,7 +855,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         assert len(roots) == self.model.ntree
         ret = []
-        regexes = [f.filter for f in app.text_filters if f.active and f.filter]
+        regexes = [f.filter for f in self.text_filters if f.active]
         for files in fileslist:
             curfiles = [ os.path.join( r, f ) for r,f in zip(roots,files) ]
             is_present = [ os.path.exists( f ) for f in curfiles ]
@@ -857,7 +875,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Update the state of the item at 'it'
         """
         files = self.model.value_paths(it)
-        regexes = [f.filter for f in app.text_filters if f.active and f.filter]
+        regexes = [f.filter for f in self.text_filters if f.active]
 
         def mtime(f):
             try:
