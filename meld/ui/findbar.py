@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2009 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -22,11 +23,18 @@ import re
 from gettext import gettext as _
 
 class FindBar(gnomeglade.Component):
-    def __init__(self):
+    def __init__(self, parent):
         gnomeglade.Component.__init__(self, paths.ui_dir("findbar.ui"), "findbar")
         gnomeglade.connect_signal_handlers(self)
         self.textview = None
         self.orig_base_color = self.find_entry.get_style().base[0]
+        parent.connect('set-focus-child', self.on_focus_child)
+
+    def on_focus_child(self, container, widget):
+        if widget is not None:
+            if widget is not self.widget and self.widget.get_visible():
+                self.hide()
+        return False
 
     def hide(self):
         self.textview = None
@@ -63,9 +71,6 @@ class FindBar(gnomeglade.Component):
             self.find_entry.set_text(text)
         self.widget.show_all()
         self.find_entry.grab_focus()
-
-    def on_findbar_close__clicked(self, button):
-        self.hide()
 
     def on_find_entry__activate(self, entry):
         self.find_next_button.activate()
