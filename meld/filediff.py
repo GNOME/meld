@@ -160,6 +160,14 @@ class CursorDetails(object):
             setattr(self, var, None)
 
 
+class TaskEntry(object):
+    __slots__ = ("filename", "file", "buf", "codec", "pane", "was_cr")
+
+    def __init__(self, *args):
+        for var, val in zip(self.__slots__, args):
+            setattr(self, var, val)
+
+
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of text files.
     """
@@ -873,8 +881,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             msgarea.show_all()
             return msgarea
 
-        TaskEntry = namedtuple('TaskEntry',
-                               'filename file buf codec pane was_cr')
         for pane, filename in enumerate(files):
             buf = textbuffers[pane]
             if filename:
