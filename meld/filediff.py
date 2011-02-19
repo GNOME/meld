@@ -230,6 +230,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
         self.in_nested_action = False
+        self.in_nested_textview_gutter_expose = False
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
         for buf in self.textbuffer:
@@ -1085,6 +1086,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if event.window != textview.get_window(gtk.TEXT_WINDOW_TEXT) \
             and event.window != textview.get_window(gtk.TEXT_WINDOW_LEFT):
             return
+
+        # Hack to redraw the line number gutter used by post-2.10 GtkSourceView
+        if event.window == textview.get_window(gtk.TEXT_WINDOW_LEFT) and \
+           self.in_nested_textview_gutter_expose:
+            self.in_nested_textview_gutter_expose = False
+            return
+
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
         area = event.area
@@ -1120,6 +1128,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.set_source_rgba(1, 1, 0, .25)
             context.rectangle(0, ypos - visible.y, width, line_height)
             context.fill()
+
+        if event.window == textview.get_window(gtk.TEXT_WINDOW_LEFT):
+            self.in_nested_textview_gutter_expose = True
+            textview.emit("expose-event", event)
 
     def _get_filename_for_saving(self, title ):
         dialog = gtk.FileChooserDialog(title,
