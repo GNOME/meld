@@ -105,12 +105,8 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
 
         # discard lines that do not match any line from the other file
         if n > 0 and m > 0:
-            aset = set()
-            bset = set()
-            for newline in b:
-                bset.add(newline)
-            for newline in a:
-                aset.add(newline)
+            aset = frozenset(a)
+            bset = frozenset(b)
             a2 = []
             b2 = []
             j = 0
@@ -204,7 +200,8 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
 
     def initialise(self):
         """
-        Optimized implementaion of the O(NP) algorithm described by Sun Wu, Udi Manber, Gene Myers, Webb Miller
+        Optimized implementation of the O(NP) algorithm described by Sun Wu,
+        Udi Manber, Gene Myers, Webb Miller
         ("An O(NP) Sequence Comparison Algorithm", 1989)
         http://research.janelia.org/myers/Papers/np_diff.pdf
         """
@@ -214,10 +211,9 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         n = len(b)
         middle = m + 1
         lastsnake = None
-        delta = n - m
-        dmin = min(0, delta)
-        dmax = max(0, delta)
-
+        delta = n - m + middle
+        dmin = min(middle, delta)
+        dmax = max(middle, delta)
         snakes = []
         if n > 0 and m > 0:
             size = n + m + 2
@@ -230,57 +226,53 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 # move along vertical edge
                 yv = -1
                 node = None
-                for k in range(dmin - p, delta, 1):
-                    km = k + middle
-                    if yv < fp[km + 1][0]:
-                        yv, node = fp[km + 1]
+                for km in range(dmin - p, delta, 1):
+                    t = fp[km + 1]
+                    if yv < t[0]:
+                        yv, node = t
                     else:
                         yv += 1
-                    x = yv - k
-                    snake = 0
+                    snake = x = yv - km + middle
                     while x < m and yv < n and a[x] == b[yv]:
                         x += 1
                         yv += 1
-                        snake += 1
-                    if snake:
+                    if x != snake:
+                        snake = x - snake
                         snakes.append((node, x - snake, yv - snake, snake))
                         node = len(snakes) - 1
                     fp[km] = (yv, node)
                 # move along horizontal edge
                 yh = -1
                 node = None
-                for k in range(dmax + p, delta, -1):
-                    km = k + middle
-                    if fp[km - 1][0] >= yh:
-                        yh, node = fp[km - 1]
+                for km in range(dmax + p, delta, -1):
+                    t = fp[km - 1]
+                    if yh <= t[0]:
+                        yh, node = t
                         yh += 1
-                    x = yh - k
-                    snake = 0
+                    snake = x = yh - km + middle
                     while x < m and yh < n and a[x] == b[yh]:
                         x += 1
                         yh += 1
-                        snake += 1
-                    if snake:
+                    if x != snake:
+                        snake = x - snake
                         snakes.append((node, x - snake, yh - snake, snake))
                         node = len(snakes) - 1
                     fp[km] = (yh, node)
                 # point on the diagonal that leads to the sink
-                km = delta + middle
                 if yv < yh:
-                    y, node = fp[km + 1]
+                    y, node = fp[delta + 1]
                 else:
-                    y, node = fp[km - 1]
+                    y, node = fp[delta - 1]
                     y += 1
-                x = y - delta
-                snake = 0
+                snake = x = y - delta + middle
                 while x < m and y < n and a[x] == b[y]:
                     x += 1
                     y += 1
-                    snake += 1
-                if snake:
+                if x != snake:
+                    snake = x - snake
                     snakes.append((node, x - snake, y - snake, snake))
                     node = len(snakes) - 1
-                fp[km] = (y, node)
+                fp[delta] = (y, node)
                 if y >= n:
                     lastsnake = node
                     break
