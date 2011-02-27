@@ -61,14 +61,14 @@ class FileMerge(filediff.FileDiff):
         if buf == self.hidden_textbuffer:
             buf = self.textbuffer[1]
             yesno = True
-        pane = self.textbuffer.index(buf)
-        self.bufferdata[pane].writable = yesno
-        self.recompute_label()
+        filediff.FileDiff.set_buffer_writable(self, buf, yesno)
 
     def _merge_files(self):
         yield _("[%s] Computing differences") % self.label_text
         panetext = []
-        for b in self.textbuffer[:self.num_panes]:
+        textbuffer = self.textbuffer[:]
+        textbuffer[1] = self.hidden_textbuffer
+        for b in textbuffer[:self.num_panes]:
             start, end = b.get_bounds()
             text = unicode(b.get_text(start, end, False), 'utf8')
             panetext.append(text)
