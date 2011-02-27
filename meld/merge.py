@@ -125,10 +125,10 @@ class AutoMergeDiffer(diffutil.Differ):
 
                         if seq0:
                             out0 = ('conflict', i0, seq0[2], seq0[3], seq0[4])
-                            out1 = ('conflict', i1, i1 + seq0[2] - i0, end1, end1 + seq0[2] - i0)
+                            out1 = ('conflict', i0, seq0[2], end1, end1 + seq0[2] - i0)
                             yield out0, out1
                         elif seq1:
-                            out0 = ('conflict', i0, i0 + seq1[2] - i1, end0, end0 + seq2[2] - i1)
+                            out0 = ('conflict', i1, seq1[2], end0, end0 + seq1[2] - i1)
                             out1 = ('conflict', i1, seq1[2], seq1[3], seq1[4])
                             yield out0, out1
                         return
