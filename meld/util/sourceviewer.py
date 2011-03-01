@@ -186,3 +186,14 @@ srcviewer = _get_srcviewer()
 
 class MeldSourceView(srcviewer.GtkTextView):
     __gtype_name__ = "MeldSourceView"
+
+    def get_y_for_line_num(self, line):
+        buf = self.get_buffer()
+        it = buf.get_iter_at_line(line)
+        y, h = self.get_line_yrange(it)
+        if line >= buf.get_line_count():
+            return y + h - 1
+        return y
+
+    def get_line_num_for_y(self, y):
+        return self.get_line_at_y(y)[0].get_line()

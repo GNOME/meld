@@ -139,6 +139,8 @@ class BufferLines(object):
 
 MASK_SHIFT, MASK_CTRL = 1, 2
 
+MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
+
 def get_iter_at_line_or_eof(buffer, line):
     if line >= buffer.get_line_count():
         return buffer.get_end_iter()
@@ -184,6 +186,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     __gsignals__ = {
         'next-conflict-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (bool, bool)),
+        'action-mode-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (int,)),
     }
 
     def __init__(self, prefs, num_panes):
@@ -206,7 +209,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.prefs.show_whitespace:
                 v.set_draw_spaces(srcviewer.spaces_flag)
             srcviewer.set_tab_width(v, self.prefs.tab_size)
-        self.keymask = 0
+        self._keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
         self.textview_overwrite = 0
@@ -296,7 +299,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.connect_signal_handlers(self)
         self.findbar = findbar.FindBar()
         self.filediff.pack_end(self.findbar.widget, False)
-        self.focus_before_click = None
         self.cursor = CursorDetails()
         self.connect("current-diff-changed", self.on_current_diff_changed)
         for t in self.textview:
@@ -306,9 +308,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
         self.connect("next-conflict-changed", self.on_next_conflict_changed)
 
+    def get_keymask(self):
+        return self._keymask
+    def set_keymask(self, value):
+        if value & MASK_SHIFT:
+            mode = MODE_DELETE
+        elif value & MASK_CTRL:
+            mode = MODE_INSERT
+        else:
+            mode = MODE_REPLACE
+        self._keymask = value
+        self.emit("action-mode-changed", mode)
+    keymask = property(get_keymask, set_keymask)
+
     def on_focus_change(self):
         self.keymask = 0
-        self._update_linkmap_buttons()
 
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
@@ -602,17 +616,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i in range(2):
             self.linkmap[i].queue_draw()
 
-        icon_theme = gtk.icon_theme_get_default()
-        load = lambda x: icon_theme.load_icon(x, self.pixels_per_line, 0)
-        self.pixbuf_apply0 = load("button_apply0")
-        self.pixbuf_apply1 = load("button_apply1")
-        self.pixbuf_delete = load("button_delete")
-        # FIXME: this is a somewhat bizarre action to take, but our non-square
-        # icons really make this kind of handling difficult
-        load = lambda x: icon_theme.load_icon(x, self.pixels_per_line * 2, 0)
-        self.pixbuf_copy0  = load("button_copy0")
-        self.pixbuf_copy1  = load("button_copy1")
-
     def on_preference_changed(self, key, value):
         if key == "tab_size":
             tabs = pango.TabArray(10, 0)
@@ -649,18 +652,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
             self.set_files([None] * self.num_panes) # Refresh
 
-    def _update_linkmap_buttons(self):
-        for l in self.linkmap[:self.num_panes - 1]:
-            a = l.get_allocation()
-            w = self.pixbuf_copy0.get_width()
-            l.queue_draw_area(0,      0, w, a[3])
-            l.queue_draw_area(a[2]-w, 0, w, a[3])
-
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask | x != self.keymask:
             self.keymask |= x
-            self._update_linkmap_buttons()
         elif event.keyval == gtk.keysyms.Escape:
             self.findbar.hide()
 
@@ -668,11 +663,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         x = self.keylookup.get(event.keyval, 0)
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
-            self._update_linkmap_buttons()
         # Ugly workaround for bgo#584342
         elif event.keyval == gtk.keysyms.ISO_Prev_Group:
             self.keymask = 0
-            self._update_linkmap_buttons()
 
     def _get_pane_label(self, i):
         #TRANSLATORS: this is the name of a new file which has not yet been saved
@@ -758,17 +751,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_find_activate(self, *args):
         self.findbar.start_find( self.textview_focussed )
         self.keymask = 0
-        self.queue_draw()
 
     def on_replace_activate(self, *args):
         self.findbar.start_replace( self.textview_focussed )
         self.keymask = 0
-        self.queue_draw()
 
     def on_find_next_activate(self, *args):
-        self.findbar.start_find_next( self.textview_focussed )
-        self.keymask = 0
-        self.queue_draw()
+        self.findbar.start_find_next(self.textview_focussed)
 
     def on_filediff__key_press_event(self, entry, event):
         if event.keyval == gtk.keysyms.Escape:
@@ -1409,6 +1398,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
                 w.setup(scroll, coords_iter(i), colour_map)
 
+            for (w, i) in zip(self.linkmap, (0, self.num_panes - 2)):
+                w.associate(self, self.textview[i], self.textview[i + 1])
+
             for i in range(self.num_panes):
                 if self.bufferdata[i].modified:
                     self.statusimage[i].show()
@@ -1450,165 +1442,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.cursor.line != c[1]:
                 buf.place_cursor(buf.get_iter_at_line(c[1]))
             self.textview[pane].scroll_to_mark(buf.get_insert(), 0.1)
-
-    def paint_pixbuf_at(self, context, pixbuf, x, y):
-        context.translate(x, y)
-        context.set_source_pixbuf(pixbuf, 0, 0)
-        context.paint()
-        context.identity_matrix()
-
-    def _linkmap_draw_icon(self, context, which, change, x, f0, t0):
-        if self.keymask & MASK_SHIFT:
-            pix0 = self.pixbuf_delete
-            pix1 = self.pixbuf_delete
-        elif self.keymask & MASK_CTRL and \
-             change[0] not in ('insert', 'delete'):
-            pix0 = self.pixbuf_copy0
-            pix1 = self.pixbuf_copy1
-        else: # self.keymask == 0:
-            pix0 = self.pixbuf_apply0
-            pix1 = self.pixbuf_apply1
-        if change[0] in ("insert", "replace") or (change[0] == "conflict" and
-                change[3] - change[4] != 0):
-            self.paint_pixbuf_at(context, pix1, x, t0)
-        if change[0] in ("delete", "replace") or (change[0] == "conflict" and
-                change[1] - change[2] != 0):
-            self.paint_pixbuf_at(context, pix0, 0, f0)
-
-        #
-        # linkmap drawing
-        #
-    def on_linkmap_expose_event(self, widget, event):
-        wtotal, htotal = widget.allocation.width, widget.allocation.height
-        yoffset = widget.allocation.y
-        context = widget.window.cairo_create()
-        context.rectangle(event.area.x, event.area.y, event.area.width, event.area.height)
-        context.clip()
-        context.set_line_width(1.0)
-
-        which = self.linkmap.index(widget)
-        pix_start = [t.get_visible_rect().y for t in self.textview]
-        rel_offset = [t.allocation.y - yoffset for t in self.textview]
-
-        def bounds(idx):
-            return [self._pixel_to_line(idx, pix_start[idx]), self._pixel_to_line(idx, pix_start[idx]+htotal)]
-        visible = [None] + bounds(which) + bounds(which+1)
-
-        # For bezier control points
-        x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
-
-        for c in self.linediffer.pair_changes(which, which + 1, visible[1:5]):
-            # f and t are short for "from" and "to"
-            f0, f1 = [self._line_to_pixel(which, l) - pix_start[which] + rel_offset[which] for l in c[1:3]]
-            t0, t1 = [self._line_to_pixel(which + 1, l) - pix_start[which + 1] + rel_offset[which + 1] for l in c[3:5]]
-
-            context.move_to(x_steps[0], f0 - 0.5)
-            context.curve_to(x_steps[1], f0 - 0.5,
-                             x_steps[2], t0 - 0.5,
-                             x_steps[3], t0 - 0.5)
-            context.line_to(x_steps[3], t1 - 0.5)
-            context.curve_to(x_steps[2], t1 - 0.5,
-                             x_steps[1], f1 - 0.5,
-                             x_steps[0], f1 - 0.5)
-            context.close_path()
-
-            context.set_source_rgb(*self.fill_colors[c[0]])
-            context.fill_preserve()
-
-            if self.linediffer.locate_chunk(which, c[1])[0] == self.cursor.chunk:
-                context.set_source_rgba(1.0, 1.0, 1.0, 0.5)
-                context.fill_preserve()
-
-            context.set_source_rgb(*self.line_colors[c[0]])
-            context.stroke()
-
-            x = wtotal-self.pixbuf_apply0.get_width()
-            self._linkmap_draw_icon(context, which, c, x, f0, t0)
-
-        # allow for scrollbar at end of textview
-        mid = int(0.5 * self.textview[0].allocation.height) + 0.5
-        context.set_source_rgba(0., 0., 0., 0.5)
-        context.move_to(.35 * wtotal, mid)
-        context.line_to(.65 * wtotal, mid)
-        context.stroke()
-
-    def on_linkmap_scroll_event(self, area, event):
-        self.next_diff(event.direction)
-
-    def _linkmap_process_event(self, event, which, side, htotal, rect_x, pix_width, pix_height):
-        src = which + side
-        dst = which + 1 - side
-        yoffset = self.linkmap[which].allocation.y
-        rel_offset = self.textview[src].allocation.y - yoffset
-        adj = self.scrolledwindow[src].get_vadjustment()
-
-        for c in self.linediffer.pair_changes(src, dst):
-            if c[0] == "insert" or (c[0] == "conflict" and c[1] - c[2] == 0):
-                continue
-            h = self._line_to_pixel(src, c[1]) - adj.value + rel_offset
-            if h < 0: # find first visible chunk
-                continue
-            elif h > htotal: # we've gone past last visible
-                break
-            elif h < event.y and event.y < h + pix_height:
-                self.mouse_chunk = ((src, dst), (rect_x, h, pix_width, pix_height), c)
-                break
-
-    def on_linkmap_button_press_event(self, area, event):
-        if event.button == 1:
-            self.focus_before_click = None
-            for t in self.textview:
-                if t.is_focus():
-                    self.focus_before_click = t
-                    break
-            area.grab_focus()
-            self.mouse_chunk = None
-            wtotal, htotal = area.allocation.width, area.allocation.height
-            pix_width = self.pixbuf_apply0.get_width()
-            pix_height = self.pixbuf_apply0.get_height()
-            if self.keymask == MASK_CTRL: # hack
-                pix_height *= 2
-
-            which = self.linkmap.index(area)
-
-            # quick reject are we near the gutter?
-            if event.x < pix_width:
-                side = 0
-                rect_x = 0
-            elif event.x > wtotal - pix_width:
-                side = 1
-                rect_x = wtotal - pix_width
-            else:
-                return True
-            self._linkmap_process_event(event, which, side, htotal, rect_x, pix_width, pix_height)
-            #print self.mouse_chunk
-            return True
-        return False
-
-    def on_linkmap_button_release_event(self, area, event):
-        if event.button == 1:
-            if self.focus_before_click:
-                self.focus_before_click.grab_focus()
-                self.focus_before_click = None
-            if self.mouse_chunk:
-                (src,dst), rect, chunk = self.mouse_chunk
-                self.mouse_chunk = None
-                # check we're still in button
-                inrect = lambda p, r: (r[0] < p.x < r[0] + r[2]) and (r[1] < p.y < r[1] + r[3])
-                if inrect(event, rect):
-                    # gtk tries to jump back to where the cursor was unless we move the cursor
-                    self.textview[src].place_cursor_onscreen()
-                    self.textview[dst].place_cursor_onscreen()
-
-                    if self.keymask & MASK_SHIFT: # delete
-                        self.delete_chunk(src, chunk)
-                    elif self.keymask & MASK_CTRL: # copy up or down
-                        copy_up = event.y - rect[1] < 0.5 * rect[3]
-                        self.copy_chunk(src, dst, chunk, copy_up)
-                    else: # replace
-                        self.replace_chunk(src, dst, chunk)
-            return True
-        return False
 
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
