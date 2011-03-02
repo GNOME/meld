@@ -412,7 +412,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_current_diff_changed(self, widget, *args):
         pane = self.cursor.pane
         chunk_id = self.cursor.chunk
-        # TODO: Handle editable states better; now it only works for auto-merge
         push_left, push_right, pull_left, pull_right, delete, \
             copy_left, copy_right = (True,) * 7
         if pane == -1 or chunk_id is None:
@@ -421,14 +420,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         else:
             # Copy* and Delete are sensitive as long as there is something to
             # copy/delete (i.e., not an empty chunk), and the direction exists.
+            editable = self.textview[pane].get_editable()
+            editable_left = pane > 0 and self.textview[pane - 1].get_editable()
+            editable_right = pane < self.num_panes - 1 and self.textview[pane + 1].get_editable()
             if pane == 0 or pane == 2:
                 chunk = self.linediffer.get_chunk(chunk_id, pane)
-                push_left = pane == 2 and not chunk[1] == chunk[2]
-                push_right = pane == 0 and not chunk[1] == chunk[2]
-                editable = self.textview[pane].get_editable()
-                pull_left = pane == 2 and not chunk[3] == chunk[4] and editable
-                pull_right = pane == 0 and not chunk[3] == chunk[4] and editable
-                delete = (push_left or push_right) and editable
+                push_left = editable_left and not chunk[1] == chunk[2]
+                push_right = editable_right and not chunk[1] == chunk[2]
+                pull_left = pane == 2 and editable and not chunk[3] == chunk[4]
+                pull_right = pane == 0 and editable and not chunk[3] == chunk[4]
+                delete = editable and not chunk[1] == chunk[2] 
                 copy_left = push_left and not chunk[3] == chunk[4]
                 copy_right = push_right and not chunk[3] == chunk[4]
             elif pane == 1:
@@ -436,16 +437,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 chunk2 = None
                 if self.num_panes == 3:
                     chunk2 = self.linediffer.get_chunk(chunk_id, pane, 2)
-                push_left = chunk0 is not None and chunk0[1] != chunk0[2] and \
-                            self.textview[pane - 1].get_editable()
-                push_right = chunk2 is not None and chunk2[1] != chunk2[2] and \
-                             self.textview[pane + 1].get_editable()
-                pull_left = chunk0 is not None and not chunk0[3] == chunk0[4]
-                pull_right = chunk2 is not None and not chunk2[3] == chunk2[4]
-                delete = (chunk0 is not None and chunk0[1] != chunk0[2]) or \
-                         (chunk2 is not None and chunk2[1] != chunk2[2])
-                copy_left = push_left and pull_left
-                copy_right = push_right and pull_right
+                push_left = editable_left and chunk0 is not None and chunk0[1] != chunk0[2]
+                push_right = editable_right and chunk2 is not None and chunk2[1] != chunk2[2] 
+                pull_left = editable and chunk0 is not None and not chunk0[3] == chunk0[4]
+                pull_right = editable and chunk2 is not None and not chunk2[3] == chunk2[4]
+                delete = editable and ((chunk0 is not None and chunk0[1] != chunk0[2]) or \
+                         (chunk2 is not None and chunk2[1] != chunk2[2]))
+                copy_left = push_left and chunk0 is not None and not chunk0[3] == chunk0[4]
+                copy_right = push_right and chunk2 is not None and not chunk2[3] == chunk2[4]
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
