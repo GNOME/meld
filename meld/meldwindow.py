@@ -152,6 +152,12 @@ class MeldWindow(gnomeglade.Component):
             ("Refresh", gtk.STOCK_REFRESH,  None, "<control>R", _("Refresh the view"), self.on_menu_refresh_activate),
             ("Reload",  gtk.STOCK_REFRESH,  _("Reload"), "<control><shift>R", _("Reload the comparison"), self.on_menu_reload_activate),
 
+            ("TabMenu", None, _("_Tabs")),
+            ("PrevTab",   None, _("_Previous Tab"), "<Ctrl><Alt>Page_Up", _("Activate previous tab"), self.on_prev_tab),
+            ("NextTab",   None, _("_Next Tab"), "<Ctrl><Alt>Page_Down", _("Activate next tab"), self.on_next_tab),
+            ("MoveTabPrev", None, _("Move Tab _Left"), "<Ctrl><Alt><Shift>Page_Up", _("Move current tab to left"), self.on_move_tab_prev),
+            ("MoveTabNext", None, _("Move Tab _Right"), "<Ctrl><Alt><Shift>Page_Down", _("Move current tab to right"), self.on_move_tab_next),
+
             ("HelpMenu", None, _("_Help")),
             ("Help",        gtk.STOCK_HELP,  _("_Contents"), "F1", _("Open the Meld manual"), self.on_menu_help_activate),
             ("BugReport",   gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None, _("Report a bug in Meld"), self.on_menu_help_bug_activate),
@@ -461,6 +467,23 @@ class MeldWindow(gnomeglade.Component):
 
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()
+
+    def on_prev_tab(self, *args):
+        self.notebook.prev_page()
+
+    def on_next_tab(self, *args):
+        self.notebook.next_page()
+
+    def on_move_tab_prev(self, *args):
+        page_num = self.notebook.get_current_page()
+        child = self.notebook.get_nth_page(page_num)
+        page_num = page_num - 1 if page_num > 0 else 0
+        self.notebook.reorder_child(child, page_num)
+
+    def on_move_tab_next(self, *args):
+        page_num = self.notebook.get_current_page()
+        child = self.notebook.get_nth_page(page_num)
+        self.notebook.reorder_child(child, page_num + 1)
 
     def try_remove_page(self, page, appquit=0):
         "See if a page will allow itself to be removed"
