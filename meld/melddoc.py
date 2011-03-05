@@ -64,20 +64,24 @@ class MeldDoc(gobject.GObject):
     def _open_files(self, selected):
         files = [f for f in selected if os.path.isfile(f)]
         dirs =  [d for d in selected if os.path.isdir(d)]
+
+        def os_open(paths):
+            for path in paths:
+                if sys.platform == "win32":
+                    subprocess.Popen(["start", path], shell=True)
+                elif sys.platform == "darwin":
+                    subprocess.Popen(["open", path])
+                else:
+                    subprocess.Popen(["xdg-open", path])
+
         if len(files):
-            if self.prefs.edit_command_type == "custom":
-                cmd = self.prefs.get_custom_editor_command(files)
+            cmd = self.prefs.get_editor_command(files)
+            if cmd:
                 os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
-            else: # self.prefs.edit_command_type == "gnome" or "internal"
-                cmd = self.prefs.get_gnome_editor_command(files)
-                os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
-        for d in dirs:
-            if sys.platform == "win32":
-                subprocess.Popen(["start", d], shell=True)
-            elif sys.platform == "darwin":
-                subprocess.Popen(["open", d])
             else:
-                subprocess.Popen(["xdg-open", d])
+                os_open(files)
+
+        os_open(dirs)
 
     def on_undo_activate(self):
         if self.undosequence.can_undo():

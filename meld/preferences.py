@@ -124,7 +124,8 @@ class PreferencesDialog(gnomeglade.Component):
                       self.prefs.edit_command_type == "gnome"
         self.system_editor_checkbutton.set_active(use_default)
         self.custom_edit_command_entry.set_sensitive(not use_default)
-        self.custom_edit_command_entry.set_text( " ".join(self.prefs.get_custom_editor_command([])) )
+        custom_command = " ".join(self.prefs.get_editor_command([], "custom"))
+        self.custom_edit_command_entry.set_text(custom_command)
 
         # file filters
         self.filefilter = FilterList(self.prefs, "filters",
@@ -275,23 +276,29 @@ class MeldPreferences(prefs.Preferences):
                  }[style]
         return style
 
-    def get_gnome_editor_command(self, files):
-        if not hasattr(self, "_gconf"):
-            return []
-        argv = []
-        editor = self._gconf.get_string('/desktop/gnome/applications/editor/exec') or "gedit"
-        if self._gconf.get_bool("/desktop/gnome/applications/editor/needs_term"):
-            texec = self._gconf.get_string("/desktop/gnome/applications/terminal/exec")
-            if texec:
-                argv.append(texec)
-                targ = self._gconf.get_string("/desktop/gnome/applications/terminal/exec_arg")
-                if targ:
-                    argv.append(targ)
-            argv.append( "%s %s" % (editor, " ".join( [f.replace(" ","\\ ") for f in files]) ) )
+    def get_editor_command(self, files, command_type=None):
+        if command_type is None:
+            command_type = self.edit_command_type
+
+        if command_type == "custom":
+            return self.edit_command_custom.split() + files
         else:
-            argv = [editor] + files
-        return argv
+            if not hasattr(self, "_gconf"):
+                return []
 
-    def get_custom_editor_command(self, files):
-        return self.edit_command_custom.split() + files
-
+            editor_path = "/desktop/gnome/applications/editor/"
+            terminal_path = "/desktop/gnome/applications/terminal/"
+            editor = self._gconf.get_string(editor_path + "exec") or "gedit"
+            if self._gconf.get_bool(editor_path + "needs_term"):
+                argv = []
+                texec = self._gconf.get_string(terminal_path + "exec")
+                if texec:
+                    argv.append(texec)
+                    targ = self._gconf.get_string(terminal_path + "exec_arg")
+                    if targ:
+                        argv.append(targ)
+                escaped_files = [f.replace(" ", "\\ ") for f in files]
+                argv.append("%s %s" % (editor, " ".join(escaped_files)))
+                return argv
+            else:
+                return [editor] + files
