@@ -302,6 +302,15 @@ class MeldWindow(gnomeglade.Component):
     def on_delete_event(self, *extra):
         return self.on_menu_quit_activate()
 
+    def _update_page_action_sensitivity(self):
+        current_page = self.notebook.get_current_page()
+        have_prev_tab = current_page > 0
+        have_next_tab = current_page < self.notebook.get_n_pages() - 1
+        self.actiongroup.get_action("PrevTab").set_sensitive(have_prev_tab)
+        self.actiongroup.get_action("NextTab").set_sensitive(have_next_tab)
+        self.actiongroup.get_action("MoveTabPrev").set_sensitive(have_prev_tab)
+        self.actiongroup.get_action("MoveTabNext").set_sensitive(have_next_tab)
+
     def on_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which).get_data("pyobject")
         newseq = newdoc.undosequence
@@ -321,10 +330,14 @@ class MeldWindow(gnomeglade.Component):
         self.scheduler.add_task( newdoc.scheduler )
 
     def after_switch_page(self, notebook, page, which):
+        self._update_page_action_sensitivity()
         actiongroup = self.tab_switch_actiongroup
         if actiongroup:
             action_name = "SwitchTab%d" % which
             actiongroup.get_action(action_name).set_active(True)
+
+    def after_page_reordered(self, notebook, page, page_num):
+        self._update_page_action_sensitivity()
 
     def on_notebook_label_changed(self, component, text, tooltip):
         page = component.widget
