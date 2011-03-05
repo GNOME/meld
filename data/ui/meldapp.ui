@@ -17,6 +17,10 @@
             <property name="scrollable">True</property>
             <property name="enable_popup">True</property>
             <signal handler="on_switch_page" name="switch_page"/>
+            <signal handler="after_switch_page" name="switch_page" after="True"/>
+            <signal handler="_update_notebook_menu" name="page-added"/>
+            <signal handler="_update_notebook_menu" name="page-removed"/>
+            <signal handler="_update_notebook_menu" name="page-reordered"/>
           </object>
           <packing>
             <property name="position">1</property>
