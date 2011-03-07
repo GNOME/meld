@@ -39,8 +39,9 @@ class DiffMap(gtk.DrawingArea):
         self._h_offset = 0
         self._scroll_y = 0
         self._scroll_height = 0
+        self.ctab = {}
 
-    def setup(self, scrollbar, change_chunk_fn):
+    def setup(self, scrollbar, change_chunk_fn, colour_map):
         for (o, h) in self._handlers:
             o.disconnect(h)
 
@@ -54,6 +55,7 @@ class DiffMap(gtk.DrawingArea):
         self._handlers = [(scrollbar, scroll_style_hid),
                           (scrollbar, scroll_size_hid)]
         self._difffunc = change_chunk_fn
+        self.ctab = colour_map
         self.queue_draw()
 
     def on_scrollbar_style_set(self, scrollbar, previous_style):
@@ -92,14 +94,10 @@ class DiffMap(gtk.DrawingArea):
         context.rectangle(x0 - 1, -1, x1 + 2, height + 1)
         context.clip()
 
-        ctab = {"conflict": (1.0, 0.75294117647058822, 0.79607843137254897),
-                "insert": (0.75686274509803919, 1.0, 0.75686274509803919),
-                "replace": (0.8666666666666667, 0.93333333333333335, 1.0),
-                "delete": (0.75686274509803919, 1.0, 0.75686274509803919)}
         darken = lambda color: [x * 0.8 for x in color]
 
         for c, y0, y1 in self._difffunc():
-            color = ctab[c]
+            color = self.ctab[c]
             y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
             context.set_source_rgb(*color)
             context.rectangle(x0, y0, x1, int(y1 - y0))

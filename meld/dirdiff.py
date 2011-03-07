@@ -207,6 +207,18 @@ class CanonicalListing(object):
 class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way diff of directories"""
 
+    """Dictionary mapping tree states to corresponding difflib-like terms"""
+    chunk_type_map = {
+        tree.STATE_NORMAL: None,
+        tree.STATE_NOCHANGE: None,
+        tree.STATE_NEW: "insert",
+        tree.STATE_ERROR: "error",
+        tree.STATE_EMPTY: None,
+        tree.STATE_MODIFIED: "replace",
+        tree.STATE_CONFLICT: "conflict",
+        tree.STATE_MISSING: "delete",
+    }
+
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("dirdiff.ui"), "dirdiff")
@@ -963,11 +975,48 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             return event.state==0
         return 0
 
+    def get_state_traversal(self, diffmapindex):
+        def tree_state_iter():
+            treeindex = (0, self.num_panes-1)[diffmapindex]
+            treeview = self.treeview[treeindex]
+            row_states = []
+            def recurse_tree_states(rowiter):
+                row_states.append(self.model.get_state(rowiter.iter, treeindex))
+                if treeview.row_expanded(rowiter.path):
+                    for row in rowiter.iterchildren():
+                        recurse_tree_states(row)
+            recurse_tree_states(iter(self.model).next())
+            row_states.append(None)
+
+            numlines = float(len(row_states) - 1)
+            chunkstart, laststate = 0, row_states[0]
+            for index, state in enumerate(row_states):
+                if state != laststate:
+                    action = self.chunk_type_map[laststate]
+                    if action is not None:
+                        yield (action, chunkstart / numlines, index / numlines)
+                    chunkstart, laststate = index, state
+        return tree_state_iter
+
     def set_num_panes(self, n):
         if n != self.num_panes and n in (1,2,3):
             self.model = DirDiffTreeStore(n)
             for i in range(n):
                 self.treeview[i].set_model(self.model)
+
+            colour_map = {
+                "conflict": (1.0, 0.75294117647058822, 0.79607843137254897),
+                "error": (0.9882352941176, 0.9137254901960, 0.30980392156862),
+                "insert": (0.75686274509803919, 1.0, 0.75686274509803919),
+                "replace": (0.8666666666666667, 0.93333333333333335, 1.0),
+                "delete": (1.0, 1.0, 1.0),
+            }
+
+            for (w, i) in zip(self.diffmap, (0, n - 1)):
+                scroll = self.scrolledwindow[i].get_vscrollbar()
+                idx = 1 if i else 0
+                w.setup(scroll, self.get_state_traversal(idx), colour_map)
+
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
             toshow += self.vbox[:n] + self.msgarea_mgr[:n]
@@ -999,102 +1048,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _update_diffmaps(self):
         self.diffmap[0].queue_draw()
         self.diffmap[1].queue_draw()
-
-    def on_diffmap_expose_event(self, area, event):
-        diffmapindex = self.diffmap.index(area)
-        treeindex = (0, self.num_panes-1)[diffmapindex]
-        treeview = self.treeview[treeindex]
-
-        def traverse_states(root):
-            todo = [root]
-            model = self.model
-            while len(todo):
-                it = todo.pop(0)
-                #print model.value_path(it, treeindex), model.get_state(it, treeindex)
-                yield model.get_state(it, treeindex)
-                path = model.get_path(it)
-                if treeview.row_expanded(path):
-                    children = []
-                    child = model.iter_children(it)
-                    while child:
-                        children.append(child)
-                        child = model.iter_next(child)
-                    todo = children + todo
-            yield None # end marker
-
-        chunks = []
-        laststate = None
-        lastlines = 0
-        numlines = -1
-        for state in traverse_states( self.model.get_iter_root() ):
-            if state != laststate:
-                chunks.append( (lastlines, laststate) )
-                laststate = state
-                lastlines = 1
-            else:
-                lastlines += 1
-            numlines += 1
-
-        if not hasattr(area, "meldgc"):
-            assert area.window
-            gcd = area.window.new_gc()
-            gcd.set_rgb_fg_color( gdk.color_parse(self.prefs.color_delete_bg) )
-            gcc = area.window.new_gc()
-            gcc.set_rgb_fg_color( gdk.color_parse(self.prefs.color_replace_bg) )
-            gce = area.window.new_gc()
-            gce.set_rgb_fg_color( gdk.color_parse("yellow") )
-            gcm = area.window.new_gc()
-            gcm.set_rgb_fg_color( gdk.color_parse("white") )
-            gcb = area.window.new_gc()
-            gcb.set_rgb_fg_color( gdk.color_parse("black") )
-            area.meldgc = [None, # ignore
-                           None, # none
-                           None, # normal
-                           None, # nochange
-                           gce,  # error
-                           None, # empty
-                           gcd,  # new
-                           gcc,  # modified
-                           gcc,  # conflict
-                           gcc,  # removed
-                           gcm,  # missing
-                           gcb ] # border
-            assert len(area.meldgc) - 1 == tree.STATE_MAX
-
-        #TODO need gutter of scrollbar - how do we get that?
-        size_of_arrow = 14
-        hperline = float( area.get_allocation().height - 3*size_of_arrow) / numlines
-        scaleit = lambda x,s=hperline,o=size_of_arrow: x*s+o
-        x0 = 4
-        x1 = area.get_allocation().width - 2*x0
-
-        window = area.window
-        window.clear()
-
-        start = 0
-        for c in chunks[1:]:
-            end = start + c[0]
-            s,e = [int(x) for x in (math.floor(scaleit(start)), math.ceil(scaleit(end))) ]
-            gc = area.meldgc[c[1]]
-            if gc:
-                window.draw_rectangle( gc, 1, x0, s, x1, e-s)
-                window.draw_rectangle( area.meldgc[-1], 0, x0, s, x1, e-s)
-            start = end
-
-    def on_diffmap_button_press_event(self, area, event):
-        #TODO need gutter of scrollbar - how do we get that?
-        if event.button == 1:
-            size_of_arrow = 14
-            diffmapindex = self.diffmap.index(area)
-            index = (0, self.num_panes-1)[diffmapindex]
-            height = area.get_allocation().height
-            fraction = (event.y - size_of_arrow) / (height - 3.75*size_of_arrow)
-            adj = self.scrolledwindow[index].get_vadjustment()
-            val = fraction * adj.upper - adj.page_size/2
-            upper = adj.upper - adj.page_size
-            adj.set_value( max( min(upper, val), 0) )
-            return 1
-        return 0
 
     def on_file_changed(self, changed_filename):
         """When a file has changed, try to find it in our tree

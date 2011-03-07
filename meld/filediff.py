@@ -1398,9 +1398,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         yield c[0], y0 / max_y, (y + h) / max_y
                 return coords_by_chunk
 
+            colour_map = {
+                "conflict": (1.0, 0.75294117647058822, 0.79607843137254897),
+                "insert": (0.75686274509803919, 1.0, 0.75686274509803919),
+                "replace": (0.8666666666666667, 0.93333333333333335, 1.0),
+                "delete": (0.75686274509803919, 1.0, 0.75686274509803919)
+            }
+
             for (w, i) in zip(self.diffmap, (0, self.num_panes - 1)):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
-                w.setup(scroll, coords_iter(i))
+                w.setup(scroll, coords_iter(i), colour_map)
 
             for i in range(self.num_panes):
                 if self.bufferdata[i].modified:
