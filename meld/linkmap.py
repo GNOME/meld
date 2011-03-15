@@ -42,6 +42,8 @@ class LinkMap(gtk.DrawingArea):
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
         self.views = [left_view, right_view]
+        if self.get_direction() == gtk.TEXT_DIR_RTL:
+            self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
         self.fill_colors = filediff.fill_colors
