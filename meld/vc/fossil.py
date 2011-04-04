@@ -32,12 +32,13 @@ class Vc(_vc.CachedVc):
 
     CMD = "fossil"
     NAME = "Fossil"
-    VC_METADATA = "_FOSSIL_"
+    VC_METADATA = ["_FOSSIL_", ".fos"]    # One or the other
     PATCH_INDEX_RE = "^--- (.*)$"
 
     state_map = {
         'ADDED'       : _vc.STATE_NEW,
         'DELETED'     : _vc.STATE_REMOVED,
+        'NOT_A_FILE'  : _vc.STATE_ERROR,
         'UNCHANGED'   : _vc.STATE_NORMAL,
         'EDITED'      : _vc.STATE_MODIFIED,
         'MISSING'     : _vc.STATE_MISSING,
@@ -69,9 +70,10 @@ class Vc(_vc.CachedVc):
 
     def check_repo_root(self, location):
         # Fossil uses a file -- not a directory
-        if not os.path.isfile(os.path.join(location, self.VC_METADATA)):
-            raise ValueError
-        return location
+        for metafile in self.VC_METADATA:
+            if not os.path.isfile(os.path.join(location, metafile)):
+                return location
+        raise ValueError
 
     def get_working_directory(self, workdir):
         return self.root
@@ -93,6 +95,13 @@ class Vc(_vc.CachedVc):
 
             if mstate in self.state_map:
                 state = self.state_map[mstate]
+
+                # Fossil's 'ls -l' doesn't detect if a newly added file has
+                # gone missing, so we handle this special case here.
+                if state == _vc.STATE_NEW and not os.path.exists(rootdir +
+                      os.sep + fname):
+                    state = _vc.STATE_MISSING
+
                 if state == _vc.STATE_ERROR:
                     print "WARNING: unknown state ('%s') reported by " \
                             "'ls -l'" % mstate
@@ -125,8 +134,9 @@ class Vc(_vc.CachedVc):
                 try:
                     entries = _vc.popen([self.CMD, "finfo", "-s", path],
                                         cwd=self.root).read().split(" ", 1)
-                    # ToDo: Add more relevant entry types
-                    if entries[0] in ['edited', 'deleted']:
+                    # Process entries which have revision numbers.
+                    if entries[0] in ['renamed', 'edited', 'deleted',
+                                      'unchanged']:
                         rev = entries[1].strip()
                     break
                 except OSError, e:
@@ -143,10 +153,17 @@ class Vc(_vc.CachedVc):
 
         for f, path in files:
             if f not in vcfiles:
-                ignorelist = ['_FOSSIL_', 'manifest', 'manifest.uuid']
+                # Ignore metadata files only if they are in the root of the
+                # repository checkout. We ignore the manifest files since they
+                # are typically automatically generated.
+                # In theory, we can call "fossil settings" and grep for
+                # manifest to determine if we should ignore the manifest files.
+                if self.location == path.rsplit(os.sep, 1)[0]:
+                    ignorelist = self.VC_METADATA + ['manifest',
+                                  'manifest.uuid']
 
-                if f not in ignorelist:
-                    print "WARNING: '%s' was not listed by 'ls -l'" % f
+                    if f not in ignorelist:
+                        print "WARNING: '%s' was not listed by 'ls -l'" % f
 
                 # If it ain't listed by the inventory it's not under version
                 # control
