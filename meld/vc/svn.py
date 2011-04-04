@@ -94,7 +94,7 @@ class Vc(_vc.CachedVc):
                     if item == "":
                         continue
                     rev = None
-                    if item != "unversioned":
+                    if "revision" in status.attrib:
                         rev = status.attrib["revision"]
                     mydir, name = os.path.split(path)
                     if mydir not in tree_state:
