@@ -121,11 +121,13 @@ class LinkMap(gtk.DrawingArea):
         left_act, right_act = None, None
         if change_type == "delete":
             left_act = MODE_REPLACE
-            if self.mode == MODE_DELETE and left_editable:
+            if (self.mode == MODE_DELETE or not right_editable) and \
+               left_editable:
                 left_act = MODE_DELETE
         elif change_type == "insert":
             right_act = MODE_REPLACE
-            if self.mode == MODE_DELETE and right_editable:
+            if (self.mode == MODE_DELETE or not left_editable) and \
+               right_editable:
                 right_act = MODE_DELETE
         elif change_type == "replace":
             if not left_editable:
