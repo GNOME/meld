@@ -444,6 +444,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.recompute_label()
         self.scheduler.remove_all_tasks()
         self.recursively_update( (0,) )
+        self._update_diffmaps()
 
     def recursively_update( self, path ):
         """Recursively update from tree path 'path'.
