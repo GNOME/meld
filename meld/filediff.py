@@ -418,33 +418,43 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             push_left, push_right, pull_left, pull_right, delete, \
                 copy_left, copy_right = (False,) * 7
         else:
-            # Copy* and Delete are sensitive as long as there is something to
-            # copy/delete (i.e., not an empty chunk), and the direction exists.
+            # Push and Delete are active if the current pane has something to
+            # act on, and the target pane exists and is editable. Pull is
+            # sensitive if the source pane has something to get, and the
+            # current pane is editable. Copy actions are sensitive if the
+            # conditions for push are met, *and* there is some content in the
+            # target pane.
             editable = self.textview[pane].get_editable()
             editable_left = pane > 0 and self.textview[pane - 1].get_editable()
-            editable_right = pane < self.num_panes - 1 and self.textview[pane + 1].get_editable()
+            editable_right = pane < self.num_panes - 1 and \
+                             self.textview[pane + 1].get_editable()
             if pane == 0 or pane == 2:
                 chunk = self.linediffer.get_chunk(chunk_id, pane)
-                push_left = editable_left and not chunk[1] == chunk[2]
-                push_right = editable_right and not chunk[1] == chunk[2]
-                pull_left = pane == 2 and editable and not chunk[3] == chunk[4]
-                pull_right = pane == 0 and editable and not chunk[3] == chunk[4]
-                delete = editable and not chunk[1] == chunk[2] 
-                copy_left = push_left and not chunk[3] == chunk[4]
-                copy_right = push_right and not chunk[3] == chunk[4]
+                insert_chunk = chunk[1] == chunk[2]
+                delete_chunk = chunk[3] == chunk[4]
+                push_left = editable_left and not insert_chunk
+                push_right = editable_right and not insert_chunk
+                pull_left = pane == 2 and editable and not delete_chunk
+                pull_right = pane == 0 and editable and not delete_chunk
+                delete = editable and not insert_chunk
+                copy_left = push_left and not delete_chunk
+                copy_right = push_right and not delete_chunk
             elif pane == 1:
-                chunk0 = self.linediffer.get_chunk(chunk_id, pane, 0)
+                chunk0 = self.linediffer.get_chunk(chunk_id, 1, 0)
                 chunk2 = None
                 if self.num_panes == 3:
-                    chunk2 = self.linediffer.get_chunk(chunk_id, pane, 2)
-                push_left = editable_left and chunk0 is not None and chunk0[1] != chunk0[2]
-                push_right = editable_right and chunk2 is not None and chunk2[1] != chunk2[2] 
-                pull_left = editable and chunk0 is not None and not chunk0[3] == chunk0[4]
-                pull_right = editable and chunk2 is not None and not chunk2[3] == chunk2[4]
-                delete = editable and ((chunk0 is not None and chunk0[1] != chunk0[2]) or \
-                         (chunk2 is not None and chunk2[1] != chunk2[2]))
-                copy_left = push_left and chunk0 is not None and not chunk0[3] == chunk0[4]
-                copy_right = push_right and chunk2 is not None and not chunk2[3] == chunk2[4]
+                    chunk2 = self.linediffer.get_chunk(chunk_id, 1, 2)
+                left_mid_exists = chunk0 is not None and chunk0[1] != chunk0[2]
+                left_exists = chunk0 is not None and chunk0[3] != chunk0[4]
+                right_mid_exists = chunk2 is not None and chunk2[1] != chunk2[2]
+                right_exists = chunk2 is not None and chunk2[3] != chunk2[4]
+                push_left = editable_left and left_mid_exists
+                push_right = editable_right and right_mid_exists
+                pull_left = editable and left_exists
+                pull_right = editable and right_exists
+                delete = editable and (left_mid_exists or right_mid_exists)
+                copy_left = push_left and left_exists
+                copy_right = push_right and right_exists
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
