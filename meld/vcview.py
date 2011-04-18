@@ -153,6 +153,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
+        self.treeview.set_search_equal_func(self.treeview_search_cb)
         column = gtk.TreeViewColumn( _("Name") )
         renicon = ui.emblemcellrenderer.EmblemCellRenderer()
         rentext = gtk.CellRendererText()
@@ -674,3 +675,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_reload_activate(self, *extra):
         self.on_fileentry_activate(self.fileentry)
+
+    def treeview_search_cb(self, model, column, key, it):
+        """Callback function for searching in VcView treeview"""
+        path = model.get_value(it, tree.COL_PATH)
+
+        # if query text contains slash, search in full path
+        if key.find('/') >= 0:
+            lineText = path
+        else:
+            lineText = os.path.basename(path)
+
+        # Perform case-insensitive matching if query text is all lower-case
+        if key.islower():
+            lineText = lineText.lower()
+
+        if lineText.find(key) >= 0:
+            # line matches
+            return False
+        else:
+            return True
