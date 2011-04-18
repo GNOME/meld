@@ -137,6 +137,7 @@ class MeldWindow(gnomeglade.Component):
             ("Paste",   gtk.STOCK_PASTE,    None, None, _("Paste the clipboard"), self.on_menu_paste_activate),
             ("Find",    gtk.STOCK_FIND,     None, None, _("Search for text"), self.on_menu_find_activate),
             ("FindNext", None,              _("Find Ne_xt"), "<control>G", _("Search forwards for the same text"), self.on_menu_find_next_activate),
+            ("FindPrevious", None,          _("Find _Previous"), "<control><shift>G", _("Search backwards for the same text"), self.on_menu_find_previous_activate),
             ("Replace", gtk.STOCK_FIND_AND_REPLACE, _("_Replace"), "<control>H", _("Find and replace text"), self.on_menu_replace_activate),
             ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None, _("Configure the application"), self.on_menu_preferences_activate),
 
@@ -419,6 +420,9 @@ class MeldWindow(gnomeglade.Component):
 
     def on_menu_find_next_activate(self, *extra):
         self.current_doc().on_find_next_activate()
+
+    def on_menu_find_previous_activate(self, *extra):
+        self.current_doc().on_find_previous_activate()
 
     def on_menu_replace_activate(self, *extra):
         self.current_doc().on_replace_activate()

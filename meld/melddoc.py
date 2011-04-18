@@ -99,6 +99,8 @@ class MeldDoc(gobject.GObject):
         pass
     def on_find_next_activate(self, *extra):
         pass
+    def on_find_previous_activate(self, *extra):
+        pass
     def on_replace_activate(self, *extra):
         pass
 
