@@ -959,7 +959,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.cursor.next = chunk
         if self.cursor.next is None:
             self.cursor.next = next
-        self.textbuffer[1].place_cursor(self.textbuffer[1].get_start_iter())
+        for buf in self.textbuffer:
+            buf.place_cursor(buf.get_start_iter())
         self.scheduler.add_task(lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
         self.queue_draw()
         self.update_highlighting()
