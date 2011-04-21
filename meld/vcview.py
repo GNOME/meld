@@ -676,6 +676,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_reload_activate(self, *extra):
         self.on_fileentry_activate(self.fileentry)
 
+    def on_find_activate(self, *extra):
+        self.treeview.emit("start-interactive-search")
+
     def treeview_search_cb(self, model, column, key, it):
         """Callback function for searching in VcView treeview"""
         path = model.get_value(it, tree.COL_PATH)
