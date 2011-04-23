@@ -166,6 +166,8 @@ class MeldApp(gobject.GObject):
             help=_("Set label to use instead of file name"))
         parser.add_option("-a", "--auto-compare", action="store_true", default=False,
             help=_("Automatically compare all differing files on startup"))
+        parser.add_option("-u", "--unified", action="store_true",
+                          help=_("Ignored for compatibility"))
         parser.add_option("-o", "--output", action="store", type="string",
             dest="outfile", default=None,
             help=_("Set the target file for saving a merge result"))
