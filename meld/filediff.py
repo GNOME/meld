@@ -281,6 +281,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("MergeFromLeft",  None, _("Merge all changes from left"),  None, _("Merge all non-conflicting changes from the left"), lambda x: self.pull_all_non_conflicting_changes(-1)),
             ("MergeFromRight", None, _("Merge all changes from right"), None, _("Merge all non-conflicting changes from the right"), lambda x: self.pull_all_non_conflicting_changes(1)),
             ("MergeAll",       None, _("Merge all non-conflicting"),    None, _("Merge all non-conflicting changes from left and right panes"), lambda x: self.merge_all_non_conflicting_changes()),
+            ("CycleDocuments", None, _("Cycle through documents"), "<control>Escape", _("Move keyboard focus to the next document in this comparison"), self.action_cycle_documents),
         )
 
         toggle_actions = (
@@ -554,6 +555,104 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         assert(pane != -1 and self.cursor.chunk is not None)
         assert(chunk is not None)
         self.delete_chunk(pane, chunk)
+
+    def _synth_chunk(self, pane0, pane1, line):
+        """Returns the Same chunk that would exist at
+           the given location if we didn't remove Same chunks"""
+
+        # This method is a hack around our existing diffutil data structures;
+        # getting rid of the Same chunk removal is difficult, as several places
+        # have baked in the assumption of only being given changed blocks.
+
+        buf0, buf1 = self.textbuffer[pane0], self.textbuffer[pane1]
+        start0, end0 = 0, buf0.get_line_count() - 1
+        start1, end1 = 0, buf1.get_line_count() - 1
+
+        # This hack is required when pane0's prev/next chunk doesn't exist
+        # (i.e., is Same) between pane0 and pane1.
+        prev_chunk0, prev_chunk1, next_chunk0, next_chunk1 = (None,) * 4
+        _, prev, next = self.linediffer.locate_chunk(pane0, line)
+        if prev is not None:
+            while prev >= 0:
+                prev_chunk0 = self.linediffer.get_chunk(prev, pane0, pane1)
+                prev_chunk1 = self.linediffer.get_chunk(prev, pane1, pane0)
+                if None not in (prev_chunk0, prev_chunk1):
+                    start0 = prev_chunk0[2]
+                    start1 = prev_chunk1[2]
+                    break
+                prev -= 1
+
+        if next is not None:
+            while next < self.linediffer.diff_count():
+                next_chunk0 = self.linediffer.get_chunk(next, pane0, pane1)
+                next_chunk1 = self.linediffer.get_chunk(next, pane1, pane0)
+                if None not in (next_chunk0, next_chunk1):
+                    end0 = next_chunk0[1]
+                    end1 = next_chunk1[1]
+                    break
+                next += 1
+
+        return "Same", start0, end0, start1, end1
+
+    def _corresponding_chunk_line(self, chunk, line, pane, new_pane):
+        """Approximates the corresponding line between panes"""
+
+        old_buf, new_buf = self.textbuffer[pane], self.textbuffer[new_pane]
+
+        # Special-case cross-pane jumps
+        if (pane == 0 and new_pane == 2) or (pane == 2 and new_pane == 0):
+            proxy = self._corresponding_chunk_line(chunk, line, pane, 1)
+            return self._corresponding_chunk_line(chunk, proxy, 1, new_pane)
+
+        # Either we are currently in a identifiable chunk, or we are in a Same
+        # chunk; if we establish the start/end of that chunk in both panes, we
+        # can figure out what our new offset should be.
+        cur_chunk = None
+        if chunk is not None:
+            cur_chunk = self.linediffer.get_chunk(chunk, pane, new_pane)
+
+        if cur_chunk is None:
+            cur_chunk = self._synth_chunk(pane, new_pane, line)
+        cur_start, cur_end, new_start, new_end = cur_chunk[1:5]
+
+        # If the new buffer's current cursor is already in the correct chunk,
+        # assume that we have in-progress editing, and don't move it.
+        cursor_it = new_buf.get_iter_at_mark(new_buf.get_insert())
+        cursor_line = cursor_it.get_line()
+
+        cursor_chunk, _, _ = self.linediffer.locate_chunk(new_pane, cursor_line)
+        if cursor_chunk is not None:
+            already_in_chunk = cursor_chunk == chunk
+        else:
+            cursor_chunk = self._synth_chunk(pane, new_pane, cursor_line)
+            already_in_chunk = cursor_chunk[3] == new_start and \
+                               cursor_chunk[4] == new_end
+
+        if already_in_chunk:
+            new_line = cursor_line
+        else:
+            # Guess where to put the cursor: in the same chunk, at about the
+            # same place within the chunk, calculated proportionally by line.
+            # Insert chunks and one-line chunks are placed at the top.
+            if cur_end == cur_start:
+                chunk_offset = 0.0
+            else:
+                chunk_offset = (line - cur_start) / float(cur_end - cur_start)
+            new_line = new_start + int(chunk_offset * (new_end - new_start))
+
+        return new_line
+
+    def action_cycle_documents(self, widget):
+        pane = self._get_focused_pane()
+        new_pane = (pane + 1) % self.num_panes
+        chunk, line = self.cursor.chunk, self.cursor.line
+
+        new_line = self._corresponding_chunk_line(chunk, line, pane, new_pane)
+
+        new_buf = self.textbuffer[new_pane]
+        self.textview[new_pane].grab_focus()
+        new_buf.place_cursor(new_buf.get_iter_at_line(new_line))
+        self.textview[new_pane].scroll_to_mark(new_buf.get_insert(), 0.1)
 
     def on_textview_focus_in_event(self, view, event):
         self.textview_focussed = view
@@ -1402,6 +1501,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             map( lambda x: x.hide(), tohide )
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
+            self.actiongroup.get_action("CycleDocuments").set_sensitive(n > 1)
 
             def coords_iter(i):
                 buf_index = 2 if i == 1 and self.num_panes == 3 else i
