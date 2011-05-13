@@ -71,7 +71,7 @@ class Vc(_vc.CachedVc):
     def check_repo_root(self, location):
         # Fossil uses a file -- not a directory
         for metafile in self.VC_METADATA:
-            if not os.path.isfile(os.path.join(location, metafile)):
+            if os.path.isfile(os.path.join(location, metafile)):
                 return location
         raise ValueError
 
