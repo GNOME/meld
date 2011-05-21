@@ -8,19 +8,8 @@ include INSTALL
 VERSION := $(shell grep "^version" meld/meldapp.py | cut -d \"  -f 2)
 RELEASE := meld-$(VERSION)
 MELD_CMD := ./meld #--profile
-TESTNUM := 1
-DEVELOPER := 0
 SPECIALS := bin/meld meld/paths.py
 BROWSER := firefox
-
-ifeq ($(DEVELOPER), 1)
-.PHONY:rundiff
-rundiff: check
-	echo $(prefix)
-	$(MELD_CMD) . ../meld #?.txt
-	#$(MELD_CMD) ntest/file$(TESTNUM)*
-	#./meld {.,../old/dev/meld}/meld
-endif
 
 .PHONY:all
 all: $(addsuffix .install,$(SPECIALS)) meld.desktop
@@ -118,13 +107,6 @@ uninstall:
 		$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po uninstall
 	$(MAKE) -C help uninstall
-
-.PHONY: test
-test:
-	$(MELD_CMD) ntest/file0{a,b}
-	$(MELD_CMD) ntest/file5{a,b,c}
-	$(MELD_CMD) ntest/{1,2}
-	$(MELD_CMD) ntest/{1,2,3}
 
 .PHONY:changelog
 changelog:
