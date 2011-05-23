@@ -177,8 +177,12 @@ class MeldApp(gobject.GObject):
         options, args = parser.parse_args(rawargs)
         if len(args) > 4:
             parser.error(_("too many arguments (wanted 0-4, got %d)") % len(args))
+        elif len(args) == 4 and any([os.path.isdir(f) for f in args]):
+            parser.error(_("can't compare more than three directories"))
 
         for files in options.diff:
+            if len(files) == 4 and any([os.path.isdir(f) for f in files]):
+                parser.error(_("can't compare more than three directories"))
             self.window.open_paths(files)
 
         tab = self.window.open_paths(args, options.auto_compare)
