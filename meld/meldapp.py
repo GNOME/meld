@@ -179,27 +179,14 @@ class MeldApp(gobject.GObject):
             parser.error(_("too many arguments (wanted 0-4, got %d)") % len(args))
 
         for files in options.diff:
-            self.open_paths(files)
+            self.window.open_paths(files)
 
-        tab = self.open_paths(args, options.auto_compare)
+        tab = self.window.open_paths(args, options.auto_compare)
         if tab:
             tab.set_labels(options.label)
 
         if options.outfile and tab and isinstance(tab, filediff.FileDiff):
             tab.set_merge_output_file(options.outfile)
-
-    def open_paths(self, paths, auto_compare=False):
-        tab = None
-        if len(paths) == 1:
-            a = paths[0]
-            if os.path.isfile(a):
-                self.window._single_file_open(a)
-            else:
-                tab = self.window.append_vcview(a, auto_compare)
-                    
-        elif len(paths) in (2, 3, 4):
-            tab = self.window.append_diff(paths, auto_compare)
-        return tab
 
 
 app = MeldApp()

@@ -655,6 +655,19 @@ class MeldWindow(gnomeglade.Component):
         doc.connect("create-diff", lambda obj,arg: self.append_diff(arg))
         doc.run_diff([path])
 
+    def open_paths(self, paths, auto_compare=False):
+        tab = None
+        if len(paths) == 1:
+            a = paths[0]
+            if os.path.isfile(a):
+                self._single_file_open(a)
+            else:
+                tab = self.append_vcview(a, auto_compare)
+
+        elif len(paths) in (2, 3, 4):
+            tab = self.append_diff(paths, auto_compare)
+        return tab
+
     def current_doc(self):
         "Get the current doc or a dummy object if there is no current"
         index = self.notebook.get_current_page()
