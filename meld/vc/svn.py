@@ -65,7 +65,7 @@ class Vc(_vc.CachedVc):
     def resolved_command(self):
         return [self.CMD,"resolved"]
     def valid_repo(self):
-        if _vc.call([self.CMD, "info"]):
+        if _vc.call([self.CMD, "info"], cwd=self.root):
             return False
         else:
             return True

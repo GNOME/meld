@@ -57,7 +57,7 @@ class Vc(_vc.Vc):
     def revert_command(self):
         return [self.CMD,"update","-C"]
     def valid_repo(self):
-        if _vc.call([self.CMD, "version"]):
+        if _vc.call([self.CMD, "version"], cwd=self.root):
             return False
         else:
             return True

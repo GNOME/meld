@@ -60,7 +60,7 @@ class Vc(_vc.Vc):
     def revert_command(self):
         return [self.CMD,"revert"]
     def valid_repo(self):
-        if _vc.call([self.CMD, "root"]):
+        if _vc.call([self.CMD, "root"], cwd=self.root):
             return False
         else:
             return True

@@ -86,7 +86,7 @@ class Vc(_vc.CachedVc):
         return [self.CMD, "undo", "--"]
 
     def valid_repo(self):
-        if _vc.call([self.CMD, "tree-version"]):
+        if _vc.call([self.CMD, "tree-version"], cwd=self.root):
             return False
         else:
             return True

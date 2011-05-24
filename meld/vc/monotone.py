@@ -144,7 +144,7 @@ class Vc(_vc.CachedVc):
     def resolved_command(self):
         return [self.CMD,"resolved"]
     def valid_repo(self):
-        if _vc.call([self.CMD, "list", "tags"]):
+        if _vc.call([self.CMD, "list", "tags"], cwd=self.root):
             return False
         else:
             return True

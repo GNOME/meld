@@ -67,7 +67,7 @@ class Vc(_vc.CachedVc):
     def revert_command(self):
         return [self.CMD,"checkout"]
     def valid_repo(self):
-        if _vc.call([self.CMD, "branch"]):
+        if _vc.call([self.CMD, "branch"], cwd=self.root):
             return False
         else:
             return True
@@ -83,7 +83,8 @@ class Vc(_vc.CachedVc):
             try:
                 # Update the index before getting status, otherwise we could
                 # be reading stale status information
-                _vc.popen(["git", "update-index", "--refresh"])
+                _vc.popen(["git", "update-index", "--refresh"],
+                          cwd=self.location)
 
                 # Get the status of files that are different in the "index" vs
                 # the HEAD of the git repository
