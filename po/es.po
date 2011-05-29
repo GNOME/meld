@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-21 22:09+0000\n"
+"POT-Creation-Date: 2011-05-29 02:18+0000\n"
 "PO-Revision-Date: 2011-04-22 12:30+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
@@ -207,7 +207,7 @@ msgstr "Examinador de control de _versión"
 msgid "translator-credits"
 msgstr ""
 "Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004-2006\n"
-"Jorge González <jorgegonz@svn.gnome.org>, 2004-2010"
+"Jorge González <jorgegonz@svn.gnome.org>, 2004-2011"
 
 #: ../data/ui/patch-dialog.ui.h:1
 msgid "Copy to Clipboard"
@@ -417,7 +417,7 @@ msgstr "Copiar a la derecha"
 msgid "Delete selected"
 msgstr "Borrar seleccionados"
 
-#: ../meld/dirdiff.py:231 ../meld/filediff.py:1017
+#: ../meld/dirdiff.py:231 ../meld/filediff.py:1117
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -519,7 +519,7 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "«%s» oculto por «%s»"
 
-#: ../meld/dirdiff.py:621 ../meld/filediff.py:882 ../meld/filediff.py:1021
+#: ../meld/dirdiff.py:621 ../meld/filediff.py:981 ../meld/filediff.py:1121
 msgid "Hi_de"
 msgstr "_Ocultar"
 
@@ -735,30 +735,38 @@ msgstr ""
 "Mezclar todos los cambios sin conflicto de los paneles de la izquierda y "
 "derecha"
 
-#: ../meld/filediff.py:287
+#: ../meld/filediff.py:284
+msgid "Cycle through documents"
+msgstr "Cambiar entre documentos"
+
+#: ../meld/filediff.py:284
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Mover el foco del teclado al siguiente documento de esta comparación"
+
+#: ../meld/filediff.py:288
 msgid "Lock scrolling"
 msgstr "Bloquear el desplazamiento"
 
-#: ../meld/filediff.py:288
+#: ../meld/filediff.py:289
 msgid "Lock scrolling of all panes"
 msgstr "Bloquear el desplazamiento de todos los paneles"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:380
+#: ../meld/filediff.py:381
 msgid "INS"
 msgstr "INS"
 
-#: ../meld/filediff.py:380
+#: ../meld/filediff.py:381
 msgid "OVR"
 msgstr "SOB"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:382
+#: ../meld/filediff.py:383
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Lín %i, Col %i"
 
-#: ../meld/filediff.py:594
+#: ../meld/filediff.py:693
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -768,46 +776,46 @@ msgstr ""
 "incorrecta. Vea el manual del usuario para más detalles."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:681
+#: ../meld/filediff.py:780
 msgid "<unnamed>"
 msgstr "<sin nombre>"
 
-#: ../meld/filediff.py:870
+#: ../meld/filediff.py:969
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Establezca el número de paneles"
 
-#: ../meld/filediff.py:876
+#: ../meld/filediff.py:975
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Abriendo archivos"
 
-#: ../meld/filediff.py:900 ../meld/filediff.py:909 ../meld/filediff.py:921
-#: ../meld/filediff.py:927
+#: ../meld/filediff.py:999 ../meld/filediff.py:1008 ../meld/filediff.py:1020
+#: ../meld/filediff.py:1026
 msgid "Could not read file"
 msgstr "No se pudo leer el archivo"
 
-#: ../meld/filediff.py:901
+#: ../meld/filediff.py:1000
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Leyendo archivos"
 
-#: ../meld/filediff.py:910
+#: ../meld/filediff.py:1009
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s parece ser un archivo binario."
 
-#: ../meld/filediff.py:922
+#: ../meld/filediff.py:1021
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s no está en codificación: %s"
 
-#: ../meld/filediff.py:952 ../meld/filemerge.py:67
+#: ../meld/filediff.py:1051 ../meld/filemerge.py:67
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Calculando las diferencias"
 
-#: ../meld/filediff.py:1008
+#: ../meld/filediff.py:1108
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -815,16 +823,15 @@ msgstr ""
 "Se están usando filtros de texto, y pueden estar ocultando diferencias entre "
 "archivos. ¿Quiere comprar los archivos no filtrados?"
 
-#: ../meld/filediff.py:1014
+#: ../meld/filediff.py:1114
 msgid "Files are identical"
 msgstr "Los campos son idénticos"
 
-#: ../meld/filediff.py:1024
-#| msgid "Show ignored files"
+#: ../meld/filediff.py:1124
 msgid "Show without filters"
 msgstr "Mostrar sin filtros"
 
-#: ../meld/filediff.py:1178
+#: ../meld/filediff.py:1278
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -833,7 +840,7 @@ msgstr ""
 "«%s» ya existe.\n"
 "¿Quiere sobreescribirlo?"
 
-#: ../meld/filediff.py:1191
+#: ../meld/filediff.py:1291
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -844,12 +851,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1200
+#: ../meld/filediff.py:1300
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Elija un nombre para el búfer %i."
 
-#: ../meld/filediff.py:1215
+#: ../meld/filediff.py:1315
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -860,7 +867,7 @@ msgstr ""
 "\n"
 "¿Qué formato quiere usar?"
 
-#: ../meld/filediff.py:1231
+#: ../meld/filediff.py:1331
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -869,7 +876,7 @@ msgstr ""
 "«%s» contiene caracteres no codificables con «%s»\n"
 "¿Quiere guardarlos como UTF-8?"
 
-#: ../meld/filediff.py:1290
+#: ../meld/filediff.py:1390
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -931,19 +938,28 @@ msgstr "Establecer etiqueta que usar en vez del nombre del archivo"
 msgid "Automatically compare all differing files on startup"
 msgstr "Comparar automáticamente al inicio todos los archivos que difieran"
 
-#: ../meld/meldapp.py:171
+#: ../meld/meldapp.py:170
+msgid "Ignored for compatibility"
+msgstr "Ignorado por compatibilidad"
+
+#: ../meld/meldapp.py:173
 msgid "Set the target file for saving a merge result"
 msgstr "Establecer el archivo de destino para guardar el resultado del cambio"
 
-#: ../meld/meldapp.py:174
+#: ../meld/meldapp.py:176
 msgid "Creates a diff tab for up to 3 supplied files or directories."
 msgstr ""
 "Crea una pestaña diff para hasta tres archivos o carpetas proporcionados."
 
-#: ../meld/meldapp.py:177
+#: ../meld/meldapp.py:179
 #, python-format
 msgid "too many arguments (wanted 0-4, got %d)"
 msgstr "demasiados argumentos (se esperaban 0-4, se obtuvieron %d)"
+
+#: ../meld/meldapp.py:181 ../meld/meldapp.py:185
+#| msgid "Cannot compare a mixture of files and directories.\n"
+msgid "can't compare more than three directories"
+msgstr "no se puede comparar una mezcla de archivos y directorios"
 
 #: ../meld/melddoc.py:51 ../meld/melddoc.py:52
 msgid "untitled"
@@ -1010,12 +1026,10 @@ msgid "Search forwards for the same text"
 msgstr "Buscar el mismo texto hacia adelante"
 
 #: ../meld/meldwindow.py:140
-#| msgid "_Previous"
 msgid "Find _Previous"
 msgstr "Buscar _anterior"
 
 #: ../meld/meldwindow.py:140
-#| msgid "Search forwards for the same text"
 msgid "Search backwards for the same text"
 msgstr "Buscar hacia atrás el mismo texto"
 
@@ -1545,9 +1559,6 @@ msgstr ""
 
 #~ msgid "_Automatically supply missing newline at end of file"
 #~ msgstr "Escribir _automáticamente una línea nueva al final del archivo"
-
-#~ msgid "Ignored for compatibility"
-#~ msgstr "Ignorado por compatibilidad"
 
 #~ msgid "Copy all changes from right pane to left pane"
 #~ msgstr "Copiar todos los cambios del panel derecho al panel izquierdo"
