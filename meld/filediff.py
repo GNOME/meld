@@ -1033,7 +1033,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         nextbit = "\r" + nextbit
                         t.was_cr = False
                     if len(nextbit):
-                        if (nextbit[-1] == "\r"):
+                        if nextbit[-1] == "\r" and len(nextbit) > 1:
                             t.was_cr = True
                             nextbit = nextbit[0:-1]
                         t.buf.insert( t.buf.get_end_iter(), nextbit )
