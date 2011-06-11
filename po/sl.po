@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-23 15:13+0000\n"
-"PO-Revision-Date: 2011-04-27 22:08+0100\n"
+"POT-Creation-Date: 2011-06-02 19:13+0000\n"
+"PO-Revision-Date: 2011-06-11 09:29+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -406,7 +406,7 @@ msgid "Delete selected"
 msgstr "Izbriši izbor"
 
 #: ../meld/dirdiff.py:231
-#: ../meld/filediff.py:1017
+#: ../meld/filediff.py:1117
 msgid "Hide"
 msgstr "Skrij"
 
@@ -509,8 +509,8 @@ msgid "'%s' hidden by '%s'"
 msgstr "'%s' je skrit; '%s'"
 
 #: ../meld/dirdiff.py:621
-#: ../meld/filediff.py:882
-#: ../meld/filediff.py:1021
+#: ../meld/filediff.py:981
+#: ../meld/filediff.py:1121
 msgid "Hi_de"
 msgstr "S_krij"
 
@@ -740,90 +740,98 @@ msgstr "Združi vse spremembe brez sporov"
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "Združi vse spremembe brez sporov z leve in z desne"
 
-#: ../meld/filediff.py:287
+#: ../meld/filediff.py:284
+msgid "Cycle through documents"
+msgstr "Preklopi med dokumenti"
+
+#: ../meld/filediff.py:284
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Premakni dejavnost tipkovnice na naslednji dokument primerjave"
+
+#: ../meld/filediff.py:288
 msgid "Lock scrolling"
 msgstr "Zakleni drsenje"
 
-#: ../meld/filediff.py:288
+#: ../meld/filediff.py:289
 msgid "Lock scrolling of all panes"
 msgstr "Zakleni drsenje vseh pladnjev"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:380
+#: ../meld/filediff.py:381
 msgid "INS"
 msgstr "VST"
 
-#: ../meld/filediff.py:380
+#: ../meld/filediff.py:381
 msgid "OVR"
 msgstr "PRE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:382
+#: ../meld/filediff.py:383
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Vr. %i, St. %i"
 
-#: ../meld/filediff.py:594
+#: ../meld/filediff.py:693
 #, python-format
 msgid "Filter '%s' changed the number of lines in the file. Comparison will be incorrect. See the user manual for more details."
 msgstr "Po uporabi filtra '%s' se je spremenilo število vrstic v datoteki, zato primerjava ne bo natančna. Za več podrobnosti si oglejte priročnik."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:681
+#: ../meld/filediff.py:780
 msgid "<unnamed>"
 msgstr "<neimenovano>"
 
-#: ../meld/filediff.py:870
+#: ../meld/filediff.py:969
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Določi okna"
 
-#: ../meld/filediff.py:876
+#: ../meld/filediff.py:975
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Odpiranje datotek"
 
-#: ../meld/filediff.py:900
-#: ../meld/filediff.py:909
-#: ../meld/filediff.py:921
-#: ../meld/filediff.py:927
+#: ../meld/filediff.py:999
+#: ../meld/filediff.py:1008
+#: ../meld/filediff.py:1020
+#: ../meld/filediff.py:1026
 msgid "Could not read file"
 msgstr "Ni mogoče prebrati datoteke"
 
-#: ../meld/filediff.py:901
+#: ../meld/filediff.py:1000
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Branje datotek"
 
-#: ../meld/filediff.py:910
+#: ../meld/filediff.py:1009
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s je videti kot dvojiška datoteka."
 
-#: ../meld/filediff.py:922
+#: ../meld/filediff.py:1021
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s ni zapisan v naboru: %s"
 
-#: ../meld/filediff.py:952
+#: ../meld/filediff.py:1051
 #: ../meld/filemerge.py:67
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Računanje razlik"
 
-#: ../meld/filediff.py:1008
+#: ../meld/filediff.py:1108
 msgid "Text filters are being used, and may be masking differences between files. Would you like to compare the unfiltered files?"
 msgstr "Uporabljani so filtri besedila, zato so lahko razlike med datotekami skrite. Ali naj se primerja vsebina brez dejavnih filtrov?"
 
-#: ../meld/filediff.py:1014
+#: ../meld/filediff.py:1114
 msgid "Files are identical"
 msgstr "Datoteki sta enaki"
 
-#: ../meld/filediff.py:1024
+#: ../meld/filediff.py:1124
 msgid "Show without filters"
 msgstr "Pokaži brez filtrov"
 
-#: ../meld/filediff.py:1178
+#: ../meld/filediff.py:1278
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -832,7 +840,7 @@ msgstr ""
 "\"%s\" že obstaja!\n"
 "Ali naj bo datoteka prepisana?"
 
-#: ../meld/filediff.py:1191
+#: ../meld/filediff.py:1291
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -843,12 +851,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1200
+#: ../meld/filediff.py:1300
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Izbor imena za medpomnilnik %i."
 
-#: ../meld/filediff.py:1215
+#: ../meld/filediff.py:1315
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -859,7 +867,7 @@ msgstr ""
 "\n"
 "Kateri zapis želite uporabiti?"
 
-#: ../meld/filediff.py:1231
+#: ../meld/filediff.py:1331
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -868,7 +876,7 @@ msgstr ""
 "'%s' vsebuje znake, ki jih ni mogoče kodirati v naboru '%s'\n"
 "Ali naj se datoteka shrani v naboru UTF-8?"
 
-#: ../meld/filediff.py:1290
+#: ../meld/filediff.py:1390
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -950,6 +958,11 @@ msgstr "Ustvari zavihke primerjav za do tri datoteke ali mape."
 #, python-format
 msgid "too many arguments (wanted 0-4, got %d)"
 msgstr "preveč argumentov (zahtevanih 0-4, prejetih %d)"
+
+#: ../meld/meldapp.py:181
+#: ../meld/meldapp.py:185
+msgid "can't compare more than three directories"
+msgstr "ni mogoče primerjati več kot treh map"
 
 #: ../meld/melddoc.py:51
 #: ../meld/melddoc.py:52
@@ -1377,7 +1390,7 @@ msgstr "%s paket ni nameščen"
 #. controlled repository is invalid or corrupted
 #: ../meld/vcview.py:251
 msgid "Invalid Repository"
-msgstr "Neveljavno odložišče"
+msgstr "Neveljavno skladišče"
 
 #: ../meld/vcview.py:260
 #, python-format
@@ -1512,62 +1525,88 @@ msgstr ""
 
 #~ msgid "Error converting pattern '%s' to regular expression"
 #~ msgstr "Napaka med pretvarjanjem vzorca '%s' v logični izraz"
+
 #~ msgid "Regex"
 #~ msgstr "Logični izraz"
+
 #~ msgid "Left"
 #~ msgstr "Levo"
+
 #~ msgid "Right"
 #~ msgstr "Desno"
+
 #~ msgid "_Commit"
 #~ msgstr "_Uveljavi"
+
 #~ msgid "No differences found."
 #~ msgstr "Ni razlik."
+
 #~ msgid "Three way directory"
 #~ msgstr "Trojni pogled map"
+
 #~ msgid "Three way file"
 #~ msgstr "Trojni pogled datotek"
+
 #~ msgid "Two way directory"
 #~ msgstr "Dvojni pogled map"
+
 #~ msgid "Two way file"
 #~ msgstr "Dvojni pogled datotek"
+
 #~ msgid "Version control view"
 #~ msgstr "Pogled nadzora različic"
+
 #~ msgid "<b>Font</b>"
 #~ msgstr "<b>Pisava</b>"
+
 #~ msgid "_Automatically supply missing newline at end of file"
 #~ msgstr "Samodejno vstavi manjkajočo _novo vrstico na koncu datoteke"
+
 #~ msgid "Copy all changes from right pane to left pane"
 #~ msgstr "Kopiraj vse spremembe iz desne polovice na levo"
+
 #~ msgid "<b>Edit Menu</b>"
 #~ msgstr "<b>Uredi meni</b>"
+
 #~ msgid "Custom command"
 #~ msgstr "Ukaz po meri"
+
 #~ msgid "Line Wrapping "
 #~ msgstr "Prelom vrstic"
+
 #~ msgid "Preferences : Meld"
 #~ msgstr "Možnosti : Meld"
+
 #~ msgid "Use GNOME monospace font"
 #~ msgstr "Uporabi pisavo enotne širine"
+
 #~ msgid "Use custom font"
 #~ msgstr "Uporabi pisavo po meri"
+
 #~ msgid "_Character"
 #~ msgstr "_Znak"
+
 #~ msgid "_None"
 #~ msgstr "_Brez"
+
 #~ msgid "_Word"
 #~ msgstr "_Beseda"
+
 #~ msgid "The error was:"
 #~ msgstr "Napaka je:"
+
 #~ msgid ""
 #~ "It contains ascii nulls.\n"
 #~ "Perhaps it is a binary file."
 #~ msgstr ""
 #~ "Vsebuje tudi ascii ničelne znake.\n"
 #~ "Morda je datoteka dvojiška."
+
 #~ msgid "Start with Version Control browser in '%s'"
 #~ msgstr "Zagon z brskalnikom nadzornika različic v '%s'"
+
 #~ msgid "Start with Version Control diff of '%s'"
 #~ msgstr "Zagon s primerjavo diff nadzornika različic '%s'"
+
 #~ msgid "Wrong number of arguments (Got %i)"
 #~ msgstr "Neveljavno število argumentov (pridobljeno %i)"
-
