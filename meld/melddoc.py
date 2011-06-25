@@ -149,6 +149,8 @@ class MeldDoc(gobject.GObject):
         uimanager.insert_action_group(self.actiongroup, -1)
         self.popup_menu = uimanager.get_widget("/Popup")
         uimanager.ensure_update()
+        if hasattr(self, "focus_pane") and self.focus_pane:
+            self.scheduler.add_task(self.focus_pane.grab_focus)
 
     def on_container_switch_out_event(self, uimanager):
         """Called when the container app switches away from this tab.

@@ -283,7 +283,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.focus_out_events.append(handler_id)
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.on_treeview_focus_out_event(None, None)
-        self.treeview_focussed = None
+        self.focus_pane = None
 
         lastchanged_label = gtk.Label()
         lastchanged_label.set_size_request(100, -1)
@@ -378,10 +378,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
         self._create_filter_menu_button(ui)
         self.ui_manager = ui
-
-        if self.treeview_focussed:
-            self.scheduler.add_task(self.treeview_focussed.grab_focus)
-            self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def on_container_switch_out_event(self, ui):
         self._cleanup_filter_menu_button(ui)
@@ -922,7 +918,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             treeview.handler_unblock(outid)
 
     def on_treeview_focus_in_event(self, tree, event):
-        self.treeview_focussed = tree
+        self.focus_pane = tree
         pane = self.treeview.index(tree)
         self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
         self.actiongroup.get_action("DirCopyRight").set_sensitive(pane+1 < self.num_panes)
@@ -1232,8 +1228,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._update_item_state( model.get_iter(path) )
 
     def next_diff(self, direction):
-        if self.treeview_focussed:
-            pane = self.treeview.index(self.treeview_focussed)
+        if self.focus_pane:
+            pane = self.treeview.index(self.focus_pane)
         else:
             pane = 0
         if direction == gtk.gdk.SCROLL_UP:

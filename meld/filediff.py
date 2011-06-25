@@ -176,7 +176,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.load_font()
         self.deleted_lines_pending = -1
         self.textview_overwrite = 0
-        self.textview_focussed = None
+        self.focus_pane = None
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.buffer_texts = [meldbuffer.BufferLines(b) for b in self.textbuffer]
@@ -313,8 +313,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
         # FIXME: If no focussed textview, action sensitivity will be unset
-        if self.textview_focussed:
-            self.scheduler.add_task(self.textview_focussed.grab_focus)
 
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()
@@ -647,7 +645,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview[new_pane].scroll_to_mark(new_buf.get_insert(), 0.1)
 
     def on_textview_focus_in_event(self, view, event):
-        self.textview_focussed = view
+        self.focus_pane = view
         self.findbar.textview = view
         self.on_cursor_position_changed(view.get_buffer(), None, True)
         self._set_merge_action_sensitivity()
@@ -865,19 +863,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_find_activate(self, *args):
         selected_text = self.get_selected_text()
-        self.findbar.start_find(self.textview_focussed, selected_text)
+        self.findbar.start_find(self.focus_pane, selected_text)
         self.keymask = 0
 
     def on_replace_activate(self, *args):
         selected_text = self.get_selected_text()
-        self.findbar.start_replace(self.textview_focussed, selected_text)
+        self.findbar.start_replace(self.focus_pane, selected_text)
         self.keymask = 0
 
     def on_find_next_activate(self, *args):
-        self.findbar.start_find_next(self.textview_focussed)
+        self.findbar.start_find_next(self.focus_pane)
 
     def on_find_previous_activate(self, *args):
-        self.findbar.start_find_previous(self.textview_focussed)
+        self.findbar.start_find_previous(self.focus_pane)
 
     def on_filediff__key_press_event(self, entry, event):
         if event.keyval == gtk.keysyms.Escape:
