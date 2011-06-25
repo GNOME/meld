@@ -290,14 +290,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             tree.STATE_NEW,
         ]
 
-    def _custom_popup_deactivated(self, popup):
-        self.filter_menu_button.set_active(False)
-
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
-            self.custom_popup.connect("deactivate", self._custom_popup_deactivated)
+            self.custom_popup.connect("deactivate",
+                                      lambda popup: item.set_active(False))
             self.custom_popup.popup(None, None, misc.position_menu_under_widget,
-                                    1, gtk.get_current_event_time(), self.filter_menu_button)
+                                    1, gtk.get_current_event_time(),
+                                    self.filter_menu_button)
 
     def _cleanup_filter_menu_button(self, ui):
         if self.popup_deactivate_id:
