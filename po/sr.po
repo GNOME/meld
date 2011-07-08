@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-07 22:45+0000\n"
-"PO-Revision-Date: 2011-05-15 18:32+0200\n"
+"POT-Creation-Date: 2011-06-11 15:41+0000\n"
+"PO-Revision-Date: 2011-06-26 23:07+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -415,7 +415,7 @@ msgstr "Умножите десно"
 msgid "Delete selected"
 msgstr "Обриши изабрано"
 
-#: ../meld/dirdiff.py:231 ../meld/filediff.py:1017
+#: ../meld/dirdiff.py:231 ../meld/filediff.py:1117
 msgid "Hide"
 msgstr "Сакриј"
 
@@ -514,7 +514,7 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ сакривено од стране „%s“"
 
-#: ../meld/dirdiff.py:621 ../meld/filediff.py:882 ../meld/filediff.py:1021
+#: ../meld/dirdiff.py:621 ../meld/filediff.py:981 ../meld/filediff.py:1121
 msgid "Hi_de"
 msgstr "_Сакриј"
 
@@ -742,30 +742,38 @@ msgstr "Обједини све несукобљавајуће"
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "Обједињује све несукобљавајуће измене с леве и десне површи"
 
-#: ../meld/filediff.py:287
+#: ../meld/filediff.py:284
+msgid "Cycle through documents"
+msgstr "Кружи кроз документе"
+
+#: ../meld/filediff.py:284
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Премешта фокус тастатуре на следећи документ у овом поређењу"
+
+#: ../meld/filediff.py:288
 msgid "Lock scrolling"
 msgstr "Закључај клизање"
 
-#: ../meld/filediff.py:288
+#: ../meld/filediff.py:289
 msgid "Lock scrolling of all panes"
 msgstr "Закључава клизање свих површи"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:380
+#: ../meld/filediff.py:381
 msgid "INS"
-msgstr "УМТ"
+msgstr "УМЕТ"
 
-#: ../meld/filediff.py:380
+#: ../meld/filediff.py:381
 msgid "OVR"
-msgstr "ПРП"
+msgstr "ПРЕП"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:382
+#: ../meld/filediff.py:383
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Ред %i, место %i"
 
-#: ../meld/filediff.py:594
+#: ../meld/filediff.py:693
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -775,46 +783,46 @@ msgstr ""
 "више детаља погледајте приручник за кориснике."
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:681
+#: ../meld/filediff.py:780
 msgid "<unnamed>"
 msgstr "<неименован>"
 
-#: ../meld/filediff.py:870
+#: ../meld/filediff.py:969
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Постави број плоча"
 
-#: ../meld/filediff.py:876
+#: ../meld/filediff.py:975
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Отварам датотеке"
 
-#: ../meld/filediff.py:900 ../meld/filediff.py:909 ../meld/filediff.py:921
-#: ../meld/filediff.py:927
+#: ../meld/filediff.py:999 ../meld/filediff.py:1008 ../meld/filediff.py:1020
+#: ../meld/filediff.py:1026
 msgid "Could not read file"
 msgstr "Не могу да прочитам датотеку"
 
-#: ../meld/filediff.py:901
+#: ../meld/filediff.py:1000
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Читам датотеке"
 
-#: ../meld/filediff.py:910
+#: ../meld/filediff.py:1009
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "„%s“ изгледа да је извршна датотека."
 
-#: ../meld/filediff.py:922
+#: ../meld/filediff.py:1021
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "„%s“ није у кодирањима: „%s“"
 
-#: ../meld/filediff.py:952 ../meld/filemerge.py:67
+#: ../meld/filediff.py:1051 ../meld/filemerge.py:67
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Срачунавам разлике"
 
-#: ../meld/filediff.py:1008
+#: ../meld/filediff.py:1108
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -822,15 +830,15 @@ msgstr ""
 "Коришћени су филтери текста, а могу постојати и замаскиране разлике између "
 "датотека. Да ли желите да поредите нефилтриране датотеке?"
 
-#: ../meld/filediff.py:1014
+#: ../meld/filediff.py:1114
 msgid "Files are identical"
 msgstr "Датотеке су истоветне"
 
-#: ../meld/filediff.py:1024
+#: ../meld/filediff.py:1124
 msgid "Show without filters"
 msgstr "Приказује без филтера"
 
-#: ../meld/filediff.py:1178
+#: ../meld/filediff.py:1278
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -839,7 +847,7 @@ msgstr ""
 "„%s“ постоји!\n"
 "Да преснимим?"
 
-#: ../meld/filediff.py:1191
+#: ../meld/filediff.py:1291
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -850,12 +858,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1200
+#: ../meld/filediff.py:1300
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Изаберите име за %i. бафер."
 
-#: ../meld/filediff.py:1215
+#: ../meld/filediff.py:1315
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -866,7 +874,7 @@ msgstr ""
 "\n"
 "Који облик желите да користите?"
 
-#: ../meld/filediff.py:1231
+#: ../meld/filediff.py:1331
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -875,7 +883,7 @@ msgstr ""
 "„%s“ садржи знакове који се не могу кодирати уз „%s“\n"
 "Да ли желите да сачувате као „UTF-8“?"
 
-#: ../meld/filediff.py:1290
+#: ../meld/filediff.py:1390
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -955,6 +963,10 @@ msgstr ""
 #, python-format
 msgid "too many arguments (wanted 0-4, got %d)"
 msgstr "превише аргумената (тражено је 0-4, добих %d)"
+
+#: ../meld/meldapp.py:181 ../meld/meldapp.py:185
+msgid "can't compare more than three directories"
+msgstr "не могу да поредим више од три директоријума"
 
 #: ../meld/melddoc.py:51 ../meld/melddoc.py:52
 msgid "untitled"
