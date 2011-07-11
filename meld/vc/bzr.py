@@ -67,7 +67,7 @@ class Vc(_vc.CachedVc):
     def resolved_command(self):
         return [self.CMD] + self.CMDARGS + ["resolve"]
     def valid_repo(self):
-        if _vc.call([self.CMD, "check", "--tree", "--branch"], cwd=self.root):
+        if _vc.call([self.CMD, "status"], cwd=self.root):
             return False
         else:
             return True
