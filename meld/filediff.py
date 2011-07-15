@@ -22,6 +22,7 @@ from gettext import gettext as _
 import re
 import difflib
 import struct
+import sys
 import time
 
 import pango
@@ -107,6 +108,7 @@ class BufferLines(object):
         filter_txt = self.textfilter(txt)
         lines = filter_txt.splitlines()
         ends = filter_txt.splitlines(True)
+
         # The last line in a gtk.TextBuffer is guaranteed never to end in a
         # newline. As splitlines() discards an empty line at the end, we need
         # to artificially add a line if the requested slice is past the end of
@@ -114,6 +116,22 @@ class BufferLines(object):
         if hi >= self.buf.get_line_count() and \
            (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
             lines.append(u"")
+            ends.append(u"")
+
+        hi = self.buf.get_line_count() if hi == sys.maxint else hi
+        if hi - lo != len(lines):
+            # Form feed character
+            FF = u'\x0c'
+            i = 0
+            while i < len(ends):
+                line, end = lines[i], ends[i]
+                # It's possible that the last line in a file would end in a
+                # FF character, which requires no joining.
+                if end and end[-1] == FF and line and line[-1] != FF:
+                    assert len(ends) >= i + 1
+                    lines[i:i + 2] = [line + FF + lines[i + 1]]
+                    ends[i:i + 2] = [end + ends[i + 1]]
+                i += 1
 
         return lines
 
