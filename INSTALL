@@ -1,22 +1,38 @@
 ## 
-## Install
-## *******
+## Running uninstalled
+## ===================
 ##
-## Meld can be installed in two ways:
+## Meld does not need to be installed in order to be used. You can run Meld
+## directly from the directory you downloaded and extracted it to. From the
+## extracted directory, run:
+##
+##   bin/meld
+##
+## In order to have translations work, you need to generate them first. Do
+## this by running (also from the extracted directory):
+##
+##   make
+##
+## If you want to be able to run Meld uninstalled just by typing 'meld' then
+## create a symbolic link somewhere in your path, pointing to the executable.
+## e.g.,
+##
+##   ln -s ~/Download/meld/bin/meld ~/.local/bin/meld
+##
+##
+##
+## Installing
+## ==========
+##
+## Install Meld by changing to the extracted directory and then running, e.g.,:
+##
+##   make prefix=/usr/local install
+##
+## which will install Meld under /usr/local; the Meld executable will end up
+## at /usr/local/bin/meld.
 ## 
-##   Run directly from untar directory:
-##   "make" to create translations
-##   Now run "bin/meld"
-##   You can create a symlink to the executable
-##   i.e. /usr/local/bin/meld -> <melddir>/bin/meld
+## If you need to, you can customise the install paths used here:
 ##
-##   OR
-##
-##   Install into (for instance) /usr/local
-##   "make prefix=/usr/local install"
-##   Now run "/usr/local/bin/meld"
-## 
-##   You can customise the install paths used here:
 PYTHON ?= python
 prefix := /usr/local
 bindir := $(prefix)/bin
