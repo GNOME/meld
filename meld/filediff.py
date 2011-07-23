@@ -120,16 +120,18 @@ class BufferLines(object):
 
         hi = self.buf.get_line_count() if hi == sys.maxint else hi
         if hi - lo != len(lines):
-            # Form feed character
-            FF = u'\x0c'
+            # These codepoints are considered line breaks by Python, but not
+            # by GtkTextStore.
+            additional_breaks = set((u'\x0c', u'\x85'))
             i = 0
             while i < len(ends):
                 line, end = lines[i], ends[i]
                 # It's possible that the last line in a file would end in a
-                # FF character, which requires no joining.
-                if end and end[-1] == FF and line and line[-1] != FF:
+                # line break character, which requires no joining.
+                if end and end[-1] in additional_breaks and \
+                   line and line[-1] not in additional_breaks:
                     assert len(ends) >= i + 1
-                    lines[i:i + 2] = [line + FF + lines[i + 1]]
+                    lines[i:i + 2] = [line + end[-1] + lines[i + 1]]
                     ends[i:i + 2] = [end + ends[i + 1]]
                 i += 1
 
