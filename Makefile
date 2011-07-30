@@ -108,39 +108,3 @@ uninstall:
 	$(MAKE) -C po uninstall
 	$(MAKE) -C help uninstall
 
-.PHONY:changelog
-changelog:
-	# need to find the most recently tagged version automatically
-	svn2cl -r 1083:HEAD
-
-.PHONY:release
-release: check tag upload announce
-
-.PHONY:check
-check:
-	@tools/check_release
-
-.PHONY:tag
-tag:
-	svn cp -m "Tagged." svn+ssh://stevek@svn.gnome.org/svn/meld/trunk svn+ssh://stevek@svn.gnome.org/svn/meld/tags/release-$(subst .,_,$(VERSION))
-
-.PHONY:upload
-upload:
-	scp tools/make_release stevek@master.gnome.org:
-	ssh stevek@master.gnome.org python make_release $(VERSION)
-
-.PHONY:announce
-announce:
-	$(BROWSER) http://freshmeat.net/projects/meld/releases/new
-	$(BROWSER) http://www.gnomefiles.org/devs/newversion.php?soft_id=203 &
-	$(BROWSER) http://sourceforge.net/project/admin/editpackages.php?group_id=53725 &
-	#$(BROWSER) http://www.gnome.org/project/admin/newrelease.php?group_id=506 &
-	
-.PHONY:update
-update:
-	svn update
-	
-.PHONY:backup
-backup:
-	tar cvfz ~/archive/meld-`date -I`.tgz --exclude='*.pyc' --exclude='*.bak' --exclude='*.swp' .
-	@echo Created ~/archive/meld-`date -I`.tgz
