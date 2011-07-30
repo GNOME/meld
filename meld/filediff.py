@@ -1124,7 +1124,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # are active, and may be altering the comparison. It would be
                 # better if we only showed this message if the filters *did*
                 # change the text in question.
-                if self.text_filters:
+                active_filters = any([f.active for f in self.text_filters])
+                if active_filters:
                     secondary_text = _("Text filters are being used, and may "
                                        "be masking differences between files. "
                                        "Would you like to compare the "
@@ -1140,7 +1141,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if index == 0:
                     button.props.label = _("Hi_de")
 
-                if self.text_filters:
+                if active_filters:
                     msgarea.add_button(_("Show without filters"),
                                        gtk.RESPONSE_OK)
 
