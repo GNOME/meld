@@ -129,7 +129,7 @@ class BufferLines(object):
                 # It's possible that the last line in a file would end in a
                 # line break character, which requires no joining.
                 if end and end[-1] in additional_breaks and \
-                   line and line[-1] not in additional_breaks:
+                   (not line or line[-1] not in additional_breaks):
                     assert len(ends) >= i + 1
                     lines[i:i + 2] = [line + end[-1] + lines[i + 1]]
                     ends[i:i + 2] = [end + ends[i + 1]]
