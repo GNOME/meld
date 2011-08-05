@@ -5,6 +5,7 @@
 ### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 ### Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
 ### Copyright (C) 2007 José Fonseca <j_r_fonseca@yahoo.co.uk>
+### Copyright (C) 2010-2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### Redistribution and use in source and binary forms, with or without
 ### modification, are permitted provided that the following conditions
@@ -28,6 +29,7 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
+import re
 import errno
 import _vc
 
@@ -38,6 +40,8 @@ class Vc(_vc.CachedVc):
     VC_DIR = ".git"
     PATCH_STRIP_NUM = 1
     PATCH_INDEX_RE = "^diff --git [ac]/(.*) [bw]/.*$"
+    GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([ADMU])\t(.*)"
+
     state_map = {
         "X": _vc.STATE_NONE,     # Unknown
         "A": _vc.STATE_NEW,      # New
@@ -45,9 +49,12 @@ class Vc(_vc.CachedVc):
         "M": _vc.STATE_MODIFIED, # Modified
         "T": _vc.STATE_MODIFIED, # Type-changed
         "U": _vc.STATE_CONFLICT, # Unmerged
-        "I": _vc.STATE_IGNORED,  # Ignored (made-up status letter)
-        "?": _vc.STATE_NONE,     # Unversioned
     }
+
+    def __init__(self, location):
+        super(Vc, self).__init__(location)
+        self.diff_re = re.compile(self.GIT_DIFF_FILES_RE)
+        self._tree_meta_cache = {}
 
     def check_repo_root(self, location):
         # Check exists instead of isdir, since .git might be a git-file
@@ -91,25 +98,25 @@ class Vc(_vc.CachedVc):
 
                 # Get the status of files that are different in the "index" vs
                 # the HEAD of the git repository
-                proc = _vc.popen([self.CMD, "diff-index", "--name-status", \
+                proc = _vc.popen([self.CMD, "diff-index", \
                     "--cached", "HEAD", path], cwd=self.location)
                 entries = proc.read().split("\n")[:-1]
 
                 # Get the status of files that are different in the "index" vs
                 # the files on disk
-                proc = _vc.popen([self.CMD, "diff-files", "--name-status", \
+                proc = _vc.popen([self.CMD, "diff-files", \
                     "-0", path], cwd=self.location)
                 entries += (proc.read().split("\n")[:-1])
 
                 # Identify ignored files
                 proc = _vc.popen([self.CMD, "ls-files", "--others", \
                     "--ignored", "--exclude-standard", path], cwd=self.location)
-                entries += ("I\t%s" % f for f in proc.read().split("\n")[:-1])
+                ignored_entries = proc.read().split("\n")[:-1]
 
                 # Identify unversioned files
                 proc = _vc.popen([self.CMD, "ls-files", "--others", \
                     "--exclude-standard", path], cwd=self.location)
-                entries += ("?\t%s" % f for f in proc.read().split("\n")[:-1])
+                unversioned_entries = proc.read().split("\n")[:-1]
 
                 # An unmerged file or a file that has been modified, added to
                 # git's index, then modified again would result in the file
@@ -133,13 +140,26 @@ class Vc(_vc.CachedVc):
         else:
             # There are 1 or more modified files, parse their state
             for entry in entries:
-                statekey, name = entry.split("\t", 2)
+                columns = self.diff_re.search(entry).groups()
+                old_mode, new_mode, statekey, name = columns
                 if os.name == 'nt':
                     # Git returns unix-style paths on Windows
                     name = os.path.normpath(name.strip())
                 path = os.path.join(self.root, name.strip())
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 tree_state[path] = state
+                if old_mode != new_mode:
+                    msg = _("Mode changed from %s to %s" % \
+                            (old_mode, new_mode))
+                    self._tree_meta_cache[path] = msg
+
+            for entry in ignored_entries:
+                path = os.path.join(self.root, entry.strip())
+                tree_state[path] = _vc.STATE_IGNORED
+
+            for entry in unversioned_entries:
+                path = os.path.join(self.root, entry.strip())
+                tree_state[path] = _vc.STATE_NONE
 
     def _lookup_tree_cache(self, rootdir):
         # Get a list of all files in rootdir, as well as their status
@@ -160,7 +180,8 @@ class Vc(_vc.CachedVc):
         retdirs = []
         for name,path in files:
             state = tree.get(path, _vc.STATE_NORMAL)
-            retfiles.append( _vc.File(path, name, state) )
+            meta = self._tree_meta_cache.get(path, "")
+            retfiles.append(_vc.File(path, name, state, options=meta))
         for name,path in dirs:
             # git does not operate on dirs, just files
             retdirs.append( _vc.Dir(path, name, _vc.STATE_NORMAL))
@@ -171,3 +192,26 @@ class Vc(_vc.CachedVc):
                 if folder == directory:
                     retfiles.append( _vc.File(path, name, state) )
         return retdirs, retfiles
+
+    def clean_patch(self, patch):
+        """Remove extended header lines from the provided patch
+        
+        This removes any of Git's extended header information, being lines
+        giving 'index', 'mode', 'new file' or 'deleted file' metadata. If
+        there is no patch content other than this header information (e.g., if
+        a file has had a mode change and nothing else) then an empty patch is
+        returned, to avoid a non-applyable patch. Anything that doesn't look
+        like a Git format patch is returned unchanged.
+        """
+        if not re.match(self.PATCH_INDEX_RE, patch, re.M):
+            return patch
+
+        patch_lines = patch.splitlines(True)
+        for i, line in enumerate(patch_lines):
+            # A bit loose, but this marks the start of a standard format patch
+            if line.startswith("--- "):
+                break
+        else:
+            return ""
+        return "".join([patch_lines[0]] + patch_lines[i:])
+
