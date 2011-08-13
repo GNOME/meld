@@ -26,6 +26,7 @@ import sys
 import time
 
 import pango
+import glib
 import gobject
 import gtk
 import gtk.keysyms
@@ -171,7 +172,9 @@ def buffer_insert(buf, line, text):
         # TODO: We need to insert a linebreak here, but there is no
         # way to be certain what kind of linebreak to use.
         text = "\n" + text
-    buf.insert(get_iter_at_line_or_eof(buf, line), text)
+    it = get_iter_at_line_or_eof(buf, line)
+    buf.insert(it, text)
+    return it
 
 class CursorDetails(object):
     __slots__ = ("pane", "pos", "line", "offset", "chunk", "prev", "next",
@@ -188,6 +191,19 @@ class TaskEntry(object):
     def __init__(self, *args):
         for var, val in zip(self.__slots__, args):
             setattr(self, var, val)
+
+
+class TextviewLineAnimation(object):
+    __slots__ = ("start_mark", "end_mark", "start_rgba", "end_rgba",
+                 "start_time", "duration")
+
+    def __init__(self, mark0, mark1, rgba0, rgba1, duration):
+        self.start_mark = mark0
+        self.end_mark = mark1
+        self.start_rgba = rgba0
+        self.end_rgba = rgba1
+        self.start_time = glib.get_current_time()
+        self.duration = duration
 
 
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
@@ -255,20 +271,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.in_nested_textview_gutter_expose = False
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
+        self.anim_source_id = []
+        self.animating_chunks = []
         for buf in self.textbuffer:
             buf.create_tag("inline", background=self.prefs.color_inline_bg,
                                      foreground=self.prefs.color_inline_fg)
+            self.anim_source_id.append(None)
+            self.animating_chunks.append([])
 
         def parse_to_cairo(color_spec):
-            color = gtk.gdk.color_parse(color_spec)
-            return [x / 65535. for x in (color.red, color.green, color.blue)]
+            c = gtk.gdk.color_parse(color_spec)
+            return tuple([x / 65535. for x in (c.red, c.green, c.blue)])
 
         self.fill_colors = {"insert"   : parse_to_cairo(self.prefs.color_delete_bg),
                             "delete"   : parse_to_cairo(self.prefs.color_delete_bg),
                             "conflict" : parse_to_cairo(self.prefs.color_conflict_bg),
                             "replace"  : parse_to_cairo(self.prefs.color_replace_bg)}
 
-        darken = lambda color: [x * 0.8 for x in color]
+        darken = lambda color: tuple([x * 0.8 for x in color])
         self.line_colors = {"insert"   : darken(self.fill_colors["insert"]),
                             "delete"   : darken(self.fill_colors["delete"]),
                             "conflict" : darken(self.fill_colors["conflict"]),
@@ -1267,6 +1287,42 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.rectangle(0, ypos - visible.y, width, line_height)
             context.fill()
 
+        current_time = glib.get_current_time()
+        new_anim_chunks = []
+        for c in self.animating_chunks[pane]:
+            percent = min(1.0, (current_time - c.start_time) / c.duration)
+            rgba_pairs = zip(c.start_rgba, c.end_rgba)
+            rgba = [s + (e - s) * percent for s, e in rgba_pairs]
+
+            it = self.textbuffer[pane].get_iter_at_mark(c.start_mark)
+            ystart, _ = self.textview[pane].get_line_yrange(it)
+            it = self.textbuffer[pane].get_iter_at_mark(c.end_mark)
+            yend, _ = self.textview[pane].get_line_yrange(it)
+            if ystart == yend:
+                ystart -= 1
+
+            context.set_source_rgba(*rgba)
+            context.rectangle(0, ystart - visible.y, width, yend - ystart)
+            context.fill()
+
+            if current_time <= c.start_time + c.duration:
+                new_anim_chunks.append(c)
+            else:
+                self.textbuffer[pane].delete_mark(c.start_mark)
+                self.textbuffer[pane].delete_mark(c.end_mark)
+        self.animating_chunks[pane] = new_anim_chunks
+
+        if self.animating_chunks[pane] and self.anim_source_id[pane] is None:
+            def anim_cb():
+                textview.queue_draw()
+                return True
+            # Using timeout_add interferes with recalculation of inline
+            # highlighting; this mechanism could be improved.
+            self.anim_source_id[pane] = gobject.idle_add(anim_cb)
+        elif not self.animating_chunks[pane] and self.anim_source_id[pane]:
+            gobject.source_remove(self.anim_source_id[pane])
+            self.anim_source_id[pane] = None
+
         if event.window == textview.get_window(gtk.TEXT_WINDOW_LEFT):
             self.in_nested_textview_gutter_expose = True
             textview.emit("expose-event", event)
@@ -1592,15 +1648,28 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         start = get_iter_at_line_or_eof(b0, chunk[1])
         end = get_iter_at_line_or_eof(b0, chunk[2])
         t0 = unicode(b0.get_text(start, end, False), 'utf8')
+
         if copy_up:
             if chunk[2] >= b0.get_line_count() and \
                chunk[3] < b1.get_line_count():
                 # TODO: We need to insert a linebreak here, but there is no
                 # way to be certain what kind of linebreak to use.
                 t0 = t0 + "\n"
-            buffer_insert(b1, chunk[3], t0)
+            dst_start = get_iter_at_line_or_eof(b1, chunk[3])
+            mark0 = b1.create_mark(None, dst_start, True)
+            new_end = buffer_insert(b1, chunk[3], t0)
         else: # copy down
-            buffer_insert(b1, chunk[4], t0)
+            dst_start = get_iter_at_line_or_eof(b1, chunk[4])
+            mark0 = b1.create_mark(None, dst_start, True)
+            new_end = buffer_insert(b1, chunk[4], t0)
+
+        mark1 = b1.create_mark(None, new_end, True)
+        # FIXME: If the inserted chunk ends up being an insert chunk, then
+        # this animation is not visible; this happens often in three-way diffs
+        rgba0 = self.fill_colors['insert'] + (1.0,)
+        rgba1 = self.fill_colors['insert'] + (0.0,)
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
+        self.animating_chunks[dst].append(anim)
 
     def replace_chunk(self, src, dst, chunk):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
@@ -1609,10 +1678,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dst_start = get_iter_at_line_or_eof(b1, chunk[3])
         dst_end = get_iter_at_line_or_eof(b1, chunk[4])
         t0 = unicode(b0.get_text(src_start, src_end, False), 'utf8')
+        mark0 = b1.create_mark(None, dst_start, True)
         self.on_textbuffer__begin_user_action()
         b1.delete(dst_start, dst_end)
-        buffer_insert(b1, chunk[3], t0)
+        new_end = buffer_insert(b1, chunk[3], t0)
         self.on_textbuffer__end_user_action()
+        mark1 = b1.create_mark(None, new_end, True)
+        # FIXME: If the inserted chunk ends up being an insert chunk, then
+        # this animation is not visible; this happens often in three-way diffs
+        rgba0 = self.fill_colors['insert'] + (1.0,)
+        rgba1 = self.fill_colors['insert'] + (0.0,)
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
+        self.animating_chunks[dst].append(anim)
 
     def delete_chunk(self, src, chunk):
         b0 = self.textbuffer[src]
@@ -1620,6 +1697,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if chunk[2] >= b0.get_line_count():
             it.backward_char()
         b0.delete(it, get_iter_at_line_or_eof(b0, chunk[2]))
+        mark0 = b0.create_mark(None, it, True)
+        mark1 = b0.create_mark(None, it, True)
+        # TODO: Need a more specific colour here; conflict is wrong
+        rgba0 = self.fill_colors['conflict'] + (1.0,)
+        rgba1 = self.fill_colors['conflict'] + (0.0,)
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
+        self.animating_chunks[src].append(anim)
+
 
 ################################################################################
 #
