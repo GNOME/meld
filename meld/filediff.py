@@ -161,17 +161,17 @@ MASK_SHIFT, MASK_CTRL = 1, 2
 
 MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
 
-def get_iter_at_line_or_eof(buffer, line):
-    if line >= buffer.get_line_count():
-        return buffer.get_end_iter()
-    return buffer.get_iter_at_line(line)
+def get_iter_at_line_or_eof(buf, line):
+    if line >= buf.get_line_count():
+        return buf.get_end_iter()
+    return buf.get_iter_at_line(line)
 
-def insert_with_tags_by_name(buffer, line, text, tag):
-    if line >= buffer.get_line_count():
+def buffer_insert(buf, line, text):
+    if line >= buf.get_line_count():
         # TODO: We need to insert a linebreak here, but there is no
         # way to be certain what kind of linebreak to use.
         text = "\n" + text
-    buffer.insert_with_tags_by_name(get_iter_at_line_or_eof(buffer, line), text, tag)
+    buf.insert(get_iter_at_line_or_eof(buf, line), text)
 
 class CursorDetails(object):
     __slots__ = ("pane", "pos", "line", "offset", "chunk", "prev", "next",
@@ -256,16 +256,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
         for buf in self.textbuffer:
-            buf.create_tag("edited line",   background = self.prefs.color_edited_bg,
-                                            foreground = self.prefs.color_edited_fg)
-            buf.create_tag("delete line",   background = self.prefs.color_delete_bg,
-                                            foreground = self.prefs.color_delete_fg)
-            buf.create_tag("replace line",  background = self.prefs.color_replace_bg,
-                                            foreground = self.prefs.color_replace_fg)
-            buf.create_tag("conflict line", background = self.prefs.color_conflict_bg,
-                                            foreground = self.prefs.color_conflict_fg)
-            buf.create_tag("inline line",   background = self.prefs.color_inline_bg,
-                                            foreground = self.prefs.color_inline_fg)
+            buf.create_tag("inline", background=self.prefs.color_inline_bg,
+                                     foreground=self.prefs.color_inline_fg)
 
         def parse_to_cairo(color_spec):
             color = gtk.gdk.color_parse(color_spec)
@@ -1163,7 +1155,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _update_highlighting(self):
         alltexts = self.buffer_texts
-        alltags = [b.get_tag_table().lookup("inline line") for b in self.textbuffer]
+        alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]
         progress = [b.create_mark("progress", b.get_start_iter()) for b in self.textbuffer]
         newcache = set()
         for chunk in self.linediffer.all_changes():
@@ -1606,9 +1598,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # TODO: We need to insert a linebreak here, but there is no
                 # way to be certain what kind of linebreak to use.
                 t0 = t0 + "\n"
-            insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
+            buffer_insert(b1, chunk[3], t0)
         else: # copy down
-            insert_with_tags_by_name(b1, chunk[4], t0, "edited line")
+            buffer_insert(b1, chunk[4], t0)
 
     def replace_chunk(self, src, dst, chunk):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
@@ -1619,7 +1611,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         t0 = unicode(b0.get_text(src_start, src_end, False), 'utf8')
         self.on_textbuffer__begin_user_action()
         b1.delete(dst_start, dst_end)
-        insert_with_tags_by_name(b1, chunk[3], t0, "edited line")
+        buffer_insert(b1, chunk[3], t0)
         self.on_textbuffer__end_user_action()
 
     def delete_chunk(self, src, chunk):
