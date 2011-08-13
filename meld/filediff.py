@@ -252,7 +252,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._scroll_lock = False
         self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
-        self.in_nested_action = False
         self.in_nested_textview_gutter_expose = False
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
@@ -832,12 +831,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # text buffer undo/redo
         #
     def on_textbuffer__begin_user_action(self, *buffer):
-        self.in_nested_action = True
         self.undosequence.begin_group()
 
     def on_textbuffer__end_user_action(self, *buffer):
         self.undosequence.end_group()
-        self.in_nested_action = False
         self.update_highlighting()
 
     def on_text_insert_text(self, buf, it, text, textlen):
@@ -1161,7 +1158,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.set_files([None] * self.num_panes)
 
     def update_highlighting(self):
-        if not self.in_nested_action:
+        if not self.undosequence.in_grouped_action():
             self.scheduler.add_task(self._update_highlighting().next)
 
     def _update_highlighting(self):

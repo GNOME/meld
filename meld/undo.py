@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2010-2011 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -76,9 +77,7 @@ class UndoSequence(gobject.GObject):
 
         Raises an AssertionError if a group is in progress.
         """
-
-        if hasattr(self, "group"):
-            assert self.group is None
+        assert self.group is None
         if self.can_undo():
             self.emit('can-undo', 0)
         if self.can_redo():
@@ -86,7 +85,6 @@ class UndoSequence(gobject.GObject):
         self.actions = []
         self.next_redo = 0
         self.checkpoints = {}
-        self.group = None
 
     def can_undo(self):
         """Return if an undo is possible.
@@ -200,7 +198,7 @@ class UndoSequence(gobject.GObject):
     def begin_group(self):
         """Group several actions into a single logical action.
 
-        Whey you Wrap several calls to add_action() inside begin_group()
+        When you wrap several calls to add_action() inside begin_group()
         and end_group(), all the intervening actions are considered
         one logical action. For instance a 'replace' action may be
         implemented as a pair of 'delete' and 'create' actions, but
@@ -247,4 +245,7 @@ class UndoSequence(gobject.GObject):
             self.group.abort_group()
         else:
             self.group = None
+
+    def in_grouped_action(self):
+        return self.group is not None
 
