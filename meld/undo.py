@@ -179,7 +179,8 @@ class UndoSequence(gobject.GObject):
         while start > 0 and self.actions[start - 1].buffer != buf:
             start -= 1
         end = self.next_redo
-        while end < len(self.actions) and self.actions[end + 1].buffer != buf:
+        while end < len(self.actions) - 1 and \
+              self.actions[end + 1].buffer != buf:
             end += 1
         if end == len(self.actions):
             end = None
