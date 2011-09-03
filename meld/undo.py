@@ -193,7 +193,9 @@ class UndoSequence(gobject.GObject):
         start, end = self.checkpoints.get(buf, (None, None))
         if start is None:
             return False
-        return start <= self.next_redo <= (end or len(self.actions))
+        if end is None:
+            end = len(self.actions)
+        return start <= self.next_redo <= end
 
     def begin_group(self):
         """Group several actions into a single logical action.
