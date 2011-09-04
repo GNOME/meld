@@ -156,6 +156,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             button = self.actiongroup.get_action(action)
             button.props.icon_name = button.props.stock_id
         self.tempdirs = []
+        self.temp_files = set()
         self.model = VcTreeStore()
         self.widget.connect("style-set", self.model.on_style_set)
         self.treeview.set_model(self.model)
@@ -381,6 +382,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         for f in self.tempdirs:
             if os.path.exists(f):
                 shutil.rmtree(f, ignore_errors=1)
+        for f in self.temp_files:
+            if os.path.exists(f):
+                os.remove(f)
 
     def on_delete_event(self, appquit=0):
         self.on_quit_event()
@@ -428,8 +432,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     self.emit("create-diff", [path])
 
     def run_diff(self, path_list):
-        for path in path_list:
-            self.scheduler.add_task(self.run_diff_iter([path]), atfront=1)
+        try:
+            for path in path_list:
+                comp_path = self.vc.get_repo_file_path(path)
+                self.temp_files.add(comp_path)
+                self.emit("create-diff", [comp_path, path])
+        except NotImplementedError:
+            for path in path_list:
+                self.scheduler.add_task(self.run_diff_iter([path]), atfront=1)
 
     def on_treeview_popup_menu(self, treeview):
         time = gtk.get_current_event_time()

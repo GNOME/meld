@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2011 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### Redistribution and use in source and binary forms, with or without
 ### modification, are permitted provided that the following conditions
@@ -24,6 +25,8 @@
 import errno
 import os
 import re
+import shutil
+import tempfile
 import xml.etree.ElementTree as ElementTree
 
 from . import _vc
@@ -65,6 +68,23 @@ class Vc(_vc.CachedVc):
         return [self.CMD,"revert"]
     def resolved_command(self):
         return [self.CMD,"resolved"]
+
+    def get_repo_file_path(self, path, commit=None):
+        if commit is not None:
+            raise NotImplementedError()
+
+        base, fname = os.path.split(path)
+        svn_path = os.path.join(base, ".svn", "text-base", fname + ".svn-base")
+
+        # TODO: In Python 2.6+, this could be done with NamedTemporaryFile
+        tmp_handle, tmp_path = tempfile.mkstemp(prefix='meld-tmp', text=True)
+        with open(svn_path, 'r') as vc_file:
+            tmp_file = os.fdopen(tmp_handle, 'w')
+            shutil.copyfileobj(vc_file, tmp_file)
+            tmp_file.close()
+
+        return tmp_path
+
     def valid_repo(self):
         if _vc.call([self.CMD, "info"], cwd=self.root):
             return False
