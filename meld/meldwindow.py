@@ -144,6 +144,7 @@ class MeldWindow(gnomeglade.Component):
             ("ChangesMenu", None, _("_Changes")),
             ("NextChange", gtk.STOCK_GO_DOWN, _("Next change"), "<Alt>Down", _("Go to the next change"), self.on_menu_edit_down_activate),
             ("PrevChange", gtk.STOCK_GO_UP,   _("Previous change"), "<Alt>Up", _("Go to the previous change"), self.on_menu_edit_up_activate),
+            ("OpenExternal", None, _("Open externally"), None, _("Open selected file or directory in the default external application"), self.on_open_external),
 
             ("ViewMenu", None, _("_View")),
             ("FileStatus",  None, _("File status")),
@@ -496,6 +497,9 @@ class MeldWindow(gnomeglade.Component):
 
     def on_menu_edit_up_activate(self, *args):
         self.current_doc().next_diff(gtk.gdk.SCROLL_UP)
+
+    def on_open_external(self, *args):
+        self.current_doc().open_external()
 
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()

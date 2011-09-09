@@ -229,8 +229,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("DirCopyRight", gtk.STOCK_GO_FORWARD,   _("Copy _Right"),    "<Alt>Right", _("Copy to right"), self.on_button_copy_right_clicked),
             ("DirDelete",    gtk.STOCK_DELETE,        None,         "Delete", _("Delete selected"), self.on_button_delete_clicked),
             ("Hide",         gtk.STOCK_NO,           _("Hide"),     None, _("Hide selected"), self.on_filter_hide_current_clicked),
-
-            ("DirOpen", None, _("Open externally"), None, _("Open selected file or directory in the default external application"), self.on_button_open_clicked),
         )
 
         toggleactions = (
@@ -810,7 +808,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.copy_selected(1)
     def on_button_delete_clicked(self, button):
         self.delete_selected()
-    def on_button_open_clicked(self, button):
+
+    def open_external(self):
         pane = self._get_focused_pane()
         if pane is not None:
             m = self.model

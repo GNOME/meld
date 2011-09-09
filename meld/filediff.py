@@ -295,7 +295,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             "replace"  : darken(self.fill_colors["replace"])}
 
         actions = (
-            ("FileOpen", None, _("Open externally"), None, _("Open selected file in the default external application"), self.on_open_activate),
             ("MakePatch", None, _("Format as patch..."), None, _("Create a patch using differences between files"), self.make_patch),
             ("PrevConflict", None, _("Previous conflict"), "<Ctrl>I", _("Go to the previous conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_UP)),
             ("NextConflict", None, _("Next conflict"), "<Ctrl>K", _("Go to the next conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_DOWN)),
@@ -869,7 +868,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         #
 
-    def on_open_activate(self, *args):
+    def open_external(self):
         pane = self._get_focused_pane()
         if pane >= 0:
             if self.bufferdata[pane].filename:

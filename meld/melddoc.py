@@ -83,6 +83,9 @@ class MeldDoc(gobject.GObject):
 
         os_open(dirs)
 
+    def open_external(self):
+        pass
+
     def on_undo_activate(self):
         if self.undosequence.can_undo():
             self.undosequence.undo()
