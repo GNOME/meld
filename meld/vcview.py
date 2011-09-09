@@ -116,7 +116,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         actions = (
             ("VcCompare",       gtk.STOCK_DIALOG_INFO,      _("_Compare"),      None, _("Compare selected"), self.on_button_diff_clicked),
-            ("VcOpen",          gtk.STOCK_OPEN,             None,               None, _("Open selected"), self.on_button_open_clicked),
+            ("VcOpen", None, _("Open externally"), None, _("Open selected file or directory in the default external application"), self.on_button_open_clicked),
             ("VcCommit",        "vc-commit-24",             _("Co_mmit"),       None, _("Commit"), self.on_button_commit_clicked),
             ("VcUpdate",        "vc-update-24",             _("_Update"),       None, _("Update"), self.on_button_update_clicked),
             ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked),

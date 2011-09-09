@@ -230,7 +230,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("DirDelete",    gtk.STOCK_DELETE,        None,         "Delete", _("Delete selected"), self.on_button_delete_clicked),
             ("Hide",         gtk.STOCK_NO,           _("Hide"),     None, _("Hide selected"), self.on_filter_hide_current_clicked),
 
-            ("DirOpen",      gtk.STOCK_OPEN,          None,         None, _("Open selected"), self.on_button_open_clicked),
+            ("DirOpen", None, _("Open externally"), None, _("Open selected file or directory in the default external application"), self.on_button_open_clicked),
         )
 
         toggleactions = (
