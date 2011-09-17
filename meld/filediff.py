@@ -1093,11 +1093,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.update_highlighting()
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
+
+        langs = []
         for i in range(self.num_panes):
             filename = self.bufferdata[i].filename
             if filename:
-                lang = srcviewer.get_language_from_file(filename)
-                srcviewer.set_language(self.textbuffer[i], lang)
+                langs.append(srcviewer.get_language_from_file(filename))
+
+        # If we have only one identified language then we assume that all of
+        # the files are actually of that type.
+        real_langs = [l for l in langs if l]
+        if real_langs and real_langs.count(real_langs[0]) == len(real_langs):
+            langs = (real_langs[0],) * len(langs)
+
+        for i in range(self.num_panes):
+            srcviewer.set_language(self.textbuffer[i], langs[i])
             srcviewer.set_highlight_syntax(self.textbuffer[i],
                                            self.prefs.use_syntax_highlighting)
         yield 0
