@@ -31,6 +31,8 @@
 import errno
 import os
 import re
+import shutil
+import tempfile
 
 from . import _vc
 
@@ -76,6 +78,28 @@ class Vc(_vc.CachedVc):
         return [self.CMD,"rm"]
     def revert_command(self):
         return [self.CMD,"checkout"]
+
+    def get_repo_file_path(self, path, commit=None):
+        if commit is None:
+            commit = "HEAD"
+        else:
+            raise NotImplementedError()
+
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
+        vc_file = _vc.popen(["git", "cat-file", "blob", commit + ":" + path],
+                            cwd=self.location)
+
+        # TODO: In Python 2.6+, this could be done with NamedTemporaryFile
+        tmp_handle, tmp_path = tempfile.mkstemp(prefix='meld-tmp', text=True)
+        tmp_file = os.fdopen(tmp_handle, 'w')
+        shutil.copyfileobj(vc_file, tmp_file)
+        tmp_file.close()
+
+        return tmp_path
+
     def valid_repo(self):
         # TODO: On Windows, this exit code is wrong under the normal shell; it
         # appears to be correct under the default git bash shell however.

@@ -234,6 +234,33 @@ class CachedVc(Vc):
             self.cache_inventory(directory)
         return self._tree_cache
 
+
+class InvalidVCPath(ValueError):
+    """Raised when a VC module is passed an invalid (or not present) path."""
+
+    def __init__(self, vc, path, err):
+        self.vc = vc
+        self.path = path
+        self.error = err
+
+    def __str__(self):
+        return "%s: Path %s is invalid or not present\nError: %s\n" % \
+              (self.vc.NAME, self.path, self.error)
+
+
+class InvalidVCRevision(ValueError):
+    """Raised when a VC module is passed a revision spec it can't handle."""
+
+    def __init__(self, vc, rev, err):
+        self.vc = vc
+        self.revision = rev
+        self.error = err
+
+    def __str__(self):
+        return "%s: Doesn't understand or have revision %s\nError: %s\n" % \
+              (self.vc.NAME, self.revision, self.error)
+
+
 # Return the stdout output of a given command
 def popen(cmd, cwd=None):
     return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
