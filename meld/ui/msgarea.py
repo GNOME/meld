@@ -186,7 +186,7 @@ class MsgArea(gtk.HBox):
         hbox_content.show()
 
         image = gtk.Image()
-        image.set_from_stock(stockid, gtk.ICON_SIZE_BUTTON)
+        image.set_from_stock(stockid, gtk.ICON_SIZE_DIALOG)
         image.show()
         hbox_content.pack_start(image, False, False, 0)
         image.set_alignment(0.5, 0.5)
