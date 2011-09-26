@@ -21,6 +21,9 @@ from __future__ import unicode_literals
 import sys
 from gettext import gettext as _
 
+from gi.repository import Gio
+from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import GtkSource
 
 from meld.util.compat import text_type
@@ -72,17 +75,28 @@ class MeldBuffer(GtkSource.Buffer):
         return it
 
 
-class MeldBufferData(object):
+class MeldBufferData(GObject.GObject):
+
+    __gsignals__ = {
+        str('file-changed'): (GObject.SignalFlags.RUN_FIRST, None, ()),
+    }
 
     def __init__(self, filename=None):
+        GObject.GObject.__init__(self)
         self.modified = False
         self.writable = True
         self.editable = True
+        self._monitor = None
+        self._mtime = None
+        self._disk_mtime = None
         self.filename = filename
         self.savefile = None
         self._label = filename
         self.encoding = None
         self.newlines = None
+
+    def __del__(self):
+        self._disconnect_monitor()
 
     def get_label(self):
         #TRANSLATORS: This is the label of a new, currently-unnamed file.
@@ -92,6 +106,55 @@ class MeldBufferData(object):
         self._label = value
 
     label = property(get_label, set_label)
+
+    def _connect_monitor(self):
+        if self._filename:
+            monitor = Gio.File.new_for_path(self._filename).monitor_file(
+                Gio.FileMonitorFlags.NONE, None)
+            handler_id = monitor.connect('changed', self._handle_file_change)
+            self._monitor = monitor, handler_id
+
+    def _disconnect_monitor(self):
+        if self._monitor:
+            monitor, handler_id = self._monitor
+            monitor.disconnect(handler_id)
+            monitor.cancel()
+
+    def _query_mtime(self, gfile):
+        try:
+            time_query = ",".join((Gio.FILE_ATTRIBUTE_TIME_MODIFIED,
+                                   Gio.FILE_ATTRIBUTE_TIME_MODIFIED_USEC))
+            info = gfile.query_info(time_query, 0, None)
+        except GLib.GError:
+            return None
+        mtime = info.get_modification_time()
+        return (mtime.tv_sec, mtime.tv_usec)
+
+    def _handle_file_change(self, monitor, f, other_file, event_type):
+        mtime = self._query_mtime(f)
+        if self._disk_mtime and mtime > self._disk_mtime:
+            self.emit('file-changed')
+        self._disk_mtime = mtime
+
+    @property
+    def filename(self):
+        return self._filename
+
+    @filename.setter
+    def filename(self, value):
+        self._disconnect_monitor()
+        self._filename = value
+        self.update_mtime()
+        self._connect_monitor()
+
+    def update_mtime(self):
+        if self._filename:
+            gfile = Gio.File.new_for_path(self._filename)
+            self._disk_mtime = self._query_mtime(gfile)
+            self._mtime = self._disk_mtime
+
+    def current_on_disk(self):
+        return self._mtime == self._disk_mtime
 
 
 class BufferLines(object):
