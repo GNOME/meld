@@ -218,6 +218,7 @@ class MeldWindow(gnomeglade.Component):
         self.ui.ensure_update()
         self.widget.show()
         self.diff_handler = None
+        self.undo_handlers = tuple()
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
 
@@ -314,15 +315,30 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("MoveTabNext").set_sensitive(have_next_tab)
 
     def on_switch_page(self, notebook, page, which):
-        newdoc = notebook.get_nth_page(which).get_data("pyobject")
-        newseq = newdoc.undosequence
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
             olddoc = notebook.get_nth_page(oldidx).get_data("pyobject")
             olddoc.disconnect(self.diff_handler)
             olddoc.on_container_switch_out_event(self.ui)
-        self.actiongroup.get_action("Undo").set_sensitive(newseq.can_undo())
-        self.actiongroup.get_action("Redo").set_sensitive(newseq.can_redo())
+            if self.undo_handlers:
+                undoseq = olddoc.undosequence
+                for handler in self.undo_handlers:
+                    undoseq.disconnect(handler)
+                self.undo_handlers = tuple()
+
+        newdoc = notebook.get_nth_page(which).get_data("pyobject")
+        try:
+            undoseq = newdoc.undosequence
+            can_undo = undoseq.can_undo()
+            can_redo = undoseq.can_redo()
+            undo_handler = undoseq.connect("can-undo", self.on_can_undo)
+            redo_handler = undoseq.connect("can-redo", self.on_can_redo)
+            self.undo_handlers = (undo_handler, redo_handler)
+        except AttributeError:
+            can_undo, can_redo = False, False
+        self.actiongroup.get_action("Undo").set_sensitive(can_undo)
+        self.actiongroup.get_action("Redo").set_sensitive(can_redo)
+
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title(nbl.get_label_text() + " - Meld")
         self.statusbar.set_doc_status("")
@@ -614,10 +630,6 @@ class MeldWindow(gnomeglade.Component):
             doc = filemerge.FileMerge(app.prefs, 3)
         else:
             doc = filediff.FileDiff(app.prefs, len(files))
-        seq = doc.undosequence
-        seq.clear()
-        seq.connect("can-undo", self.on_can_undo)
-        seq.connect("can-redo", self.on_can_redo)
         self._append_page(doc, "text-x-generic")
         doc.set_files(files)
         return doc

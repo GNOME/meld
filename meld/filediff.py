@@ -38,6 +38,7 @@ import melddoc
 import patchdialog
 import paths
 import merge
+import undo
 
 from meldapp import app
 from util.sourceviewer import srcviewer
@@ -158,6 +159,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.buffer_texts = [meldbuffer.BufferLines(b) for b in self.textbuffer]
+        self.undosequence = undo.UndoSequence()
         self.text_filters = []
         self.create_text_filters()
         app.connect("text-filters-changed", self.on_text_filters_changed)
@@ -743,6 +745,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         #
         # text buffer undo/redo
         #
+
+    def on_undo_activate(self):
+        if self.undosequence.can_undo():
+            self.undosequence.undo()
+
+    def on_redo_activate(self):
+        if self.undosequence.can_redo():
+            self.undosequence.redo()
+
     def on_textbuffer__begin_user_action(self, *buffer):
         self.undosequence.begin_group()
 

@@ -21,7 +21,6 @@ import sys
 
 import gobject
 import task
-import undo
 import gtk
 import os
 from gettext import gettext as _
@@ -48,7 +47,6 @@ class MeldDoc(gobject.GObject):
 
     def __init__(self, prefs):
         gobject.GObject.__init__(self)
-        self.undosequence = undo.UndoSequence()
         self.scheduler = task.FifoScheduler()
         self.prefs = prefs
         self.prefs.notify_add(self.on_preference_changed)
@@ -90,14 +88,6 @@ class MeldDoc(gobject.GObject):
 
     def open_external(self):
         pass
-
-    def on_undo_activate(self):
-        if self.undosequence.can_undo():
-            self.undosequence.undo()
-
-    def on_redo_activate(self):
-        if self.undosequence.can_redo():
-            self.undosequence.redo()
 
     def on_refresh_activate(self, *extra):
         self.on_reload_activate(self, *extra)
