@@ -839,11 +839,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # text buffer loading/saving
         #
 
-    def set_labels(self, lst):
-        assert len(lst) <= len(self.textbuffer)
-        for l, b in zip(lst, self.textbuffer):
-            if len(l):
-                b.data.label = l
+    def set_labels(self, labels):
+        labels = labels[:len(self.textbuffer)]
+        for label, buf in zip(labels, self.textbuffer):
+            if label:
+                buf.data.label = label
 
     def set_merge_output_file(self, filename):
         if len(self.textbuffer) < 2:
