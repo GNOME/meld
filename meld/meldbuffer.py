@@ -138,3 +138,30 @@ class BufferLines(object):
     def __len__(self):
         return self.buf.get_line_count()
 
+
+class BufferAction(object):
+    """A helper to undo/redo text insertion/deletion into/from a text buffer"""
+
+    def __init__(self, buf, offset, text):
+        self.buffer = buf
+        self.offset = offset
+        self.text = text
+
+    def delete(self):
+        start = self.buffer.get_iter_at_offset(self.offset)
+        end = self.buffer.get_iter_at_offset(self.offset + len(self.text))
+        self.buffer.delete(start, end)
+
+    def insert(self):
+        start = self.buffer.get_iter_at_offset(self.offset)
+        self.buffer.insert(start, self.text)
+
+
+class BufferInsertionAction(BufferAction):
+    undo = BufferAction.delete
+    redo = BufferAction.insert
+
+
+class BufferDeletionAction(BufferAction):
+    undo = BufferAction.insert
+    redo = BufferAction.delete

@@ -757,7 +757,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_text_insert_text(self, buf, it, text, textlen):
         text = unicode(text, 'utf8')
         self.undosequence.add_action(
-            BufferInsertionAction(buf, it.get_offset(), text))
+            meldbuffer.BufferInsertionAction(buf, it.get_offset(), text))
         buf.create_mark("insertion-start", it, True)
 
     def on_text_delete_range(self, buf, it0, it1):
@@ -765,7 +765,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = it1.get_line() - it0.get_line()
         self.undosequence.add_action(
-            BufferDeletionAction(buf, it0.get_offset(), text))
+            meldbuffer.BufferDeletionAction(buf, it0.get_offset(), text))
 
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
         self.set_buffer_modified(buf, not checkpointed)
@@ -1620,32 +1620,3 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[src].append(anim)
 
-
-
-
-class BufferAction(object):
-    """A helper to undo/redo text insertion/deletion into/from a text buffer"""
-
-    def __init__(self, buf, offset, text):
-        self.buffer = buf
-        self.offset = offset
-        self.text = text
-
-    def delete(self):
-        start = self.buffer.get_iter_at_offset(self.offset)
-        end = self.buffer.get_iter_at_offset(self.offset + len(self.text))
-        self.buffer.delete(start, end)
-
-    def insert(self):
-        start = self.buffer.get_iter_at_offset(self.offset)
-        self.buffer.insert(start, self.text)
-
-
-class BufferInsertionAction(BufferAction):
-    undo = BufferAction.delete
-    redo = BufferAction.insert
-
-
-class BufferDeletionAction(BufferAction):
-    undo = BufferAction.insert
-    redo = BufferAction.delete
