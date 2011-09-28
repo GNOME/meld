@@ -16,6 +16,7 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import sys
+from gettext import gettext as _
 
 import meld.util.sourceviewer
 
@@ -53,17 +54,23 @@ class MeldBuffer(meld.util.sourceviewer.srcviewer.GtkTextBuffer):
 
 class MeldBufferData(object):
 
-    __slots__ = ("modified", "writable", "filename", "savefile", "label",
-                 "encoding", "newlines")
-
     def __init__(self, filename=None):
         self.modified = False
         self.writable = True
         self.filename = filename
         self.savefile = None
-        self.label = filename
+        self._label = filename
         self.encoding = None
         self.newlines = None
+
+    def get_label(self):
+        #TRANSLATORS: This is the label of a new, currently-unnamed file.
+        return self._label or _("<unnamed>")
+
+    def set_label(self, value):
+        self._label = value
+
+    label = property(get_label, set_label)
 
 
 class BufferLines(object):

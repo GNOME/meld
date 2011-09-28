@@ -711,10 +711,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif event.keyval == gtk.keysyms.ISO_Prev_Group:
             self.keymask = 0
 
-    def _get_pane_label(self, i):
-        #TRANSLATORS: this is the name of a new file which has not yet been saved
-        return self.textbuffer[i].data.label or _("<unnamed>")
-
     def on_delete_event(self, appquit=0):
         response = gtk.RESPONSE_OK
         modified = [b.data.modified for b in self.textbuffer]
@@ -723,7 +719,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             buttons = []
             for i in range(self.num_panes):
-                b = gtk.CheckButton( self._get_pane_label(i) )
+                b = gtk.CheckButton(self.textbuffer[i].data.label)
                 b.set_use_underline(False)
                 buttons.append(b)
                 dialog.box.pack_start(b, 1, 1)
@@ -857,7 +853,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def recompute_label(self):
         filenames = []
         for i in range(self.num_panes):
-            filenames.append( self._get_pane_label(i) )
+            filenames.append(self.textbuffer[i].data.label)
         shortnames = misc.shorten_names(*filenames)
         for i in range(self.num_panes):
             stock = None

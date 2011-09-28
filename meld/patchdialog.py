@@ -87,7 +87,7 @@ class PatchDialog(gnomeglade.Component):
             lines = text.splitlines(True)
             texts.append(lines)
 
-        names = [self.filediff._get_pane_label(i) for i in range(3)]
+        names = [self.filediff.textbuffer[i].data.label for i in range(3)]
         prefix = os.path.commonprefix(names)
         names = [n[prefix.rfind("/") + 1:] for n in names]
 
