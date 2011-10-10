@@ -1,13 +1,13 @@
 # meld ja.po.
-# Copyright (C) 2003-2010 Free Software Foundation, Inc.
-# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2010.
+# Copyright (C) 2003-2011 Free Software Foundation, Inc.
+# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2010-12-31 00:37+0900\n"
-"PO-Revision-Date: 2010-12-31 00:37+0900\n"
+"POT-Creation-Date: 2011-10-10 20:14+0900\n"
+"PO-Revision-Date: 2011-10-10 20:14+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -26,21 +26,69 @@ msgstr "インポートできません:"
 msgid "Meld requires %s or higher."
 msgstr "Meld には %s 以上が必要です。"
 
-#: ../data/meld.desktop.in.h:1
-msgid "Compare and merge your files"
-msgstr "複数のファイルを比較したりマージします"
+#: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
+msgid "Meld"
+msgstr "Meld"
 
 #: ../data/meld.desktop.in.h:2
 msgid "Diff Viewer"
 msgstr "差分ビューア"
 
-#: ../data/meld.desktop.in.h:3 ../data/ui/meldapp.ui.h:5
-msgid "Meld"
-msgstr "Meld"
-
-#: ../data/meld.desktop.in.h:4
+#: ../data/meld.desktop.in.h:3
 msgid "Meld Diff Viewer"
 msgstr "Meld 差分ビューア"
+
+#: ../data/meld.desktop.in.h:4
+msgid "Compare and merge your files"
+msgstr "複数のファイルを比較したりマージします"
+
+#: ../data/ui/EditableList.ui.h:1
+msgid "Editable List"
+msgstr "編集可能なリスト"
+
+#: ../data/ui/EditableList.ui.h:2
+msgid "Active"
+msgstr "有効"
+
+#: ../data/ui/EditableList.ui.h:3 ../meld/vcview.py:156
+msgid "Name"
+msgstr "名前"
+
+#: ../data/ui/EditableList.ui.h:4
+msgid "Pattern"
+msgstr "パターン"
+
+#: ../data/ui/EditableList.ui.h:5
+msgid "Add new filter"
+msgstr "新しいフィルタを追加します"
+
+#: ../data/ui/EditableList.ui.h:6 ../meld/vcview.py:121
+msgid "_Add"
+msgstr "追加(_A)"
+
+#: ../data/ui/EditableList.ui.h:7
+msgid "Remove selected filter"
+msgstr "選択したフィルタを削除します"
+
+#: ../data/ui/EditableList.ui.h:8 ../meld/vcview.py:123
+msgid "_Remove"
+msgstr "削除(_R)"
+
+#: ../data/ui/EditableList.ui.h:9
+msgid "Move item up"
+msgstr "アイテムを上へ移動します"
+
+#: ../data/ui/EditableList.ui.h:10
+msgid "Move _Up"
+msgstr "上へ移動する(_U)"
+
+#: ../data/ui/EditableList.ui.h:11
+msgid "Move item down"
+msgstr "アイテムを下へ移動します"
+
+#: ../data/ui/EditableList.ui.h:12
+msgid "Move _Down"
+msgstr "下へ移動する(_D)"
 
 #: ../data/ui/filediff.ui.h:1
 msgid "Save modified files?"
@@ -62,45 +110,41 @@ msgstr "変更を取り消す(_D)"
 msgid "_Save Selected"
 msgstr "選択範囲を保存する(_S)"
 
-#: ../data/ui/findbar.ui.h:1
-msgid "Regular E_xpression"
-msgstr "正規表現(_X)"
+#: ../data/ui/findbar.ui.h:1 ../meld/meldwindow.py:141
+msgid "_Replace"
+msgstr "置換(_R)"
 
 #: ../data/ui/findbar.ui.h:2
 msgid "Replace _All"
 msgstr "全て置換(_A)"
 
 #: ../data/ui/findbar.ui.h:3
-msgid "Replace _With"
-msgstr "次で置き換える(_W):"
-
-#: ../data/ui/findbar.ui.h:4
-msgid "Who_le word"
-msgstr "単語全体(_L)"
-
-#: ../data/ui/findbar.ui.h:5
-msgid "_Match Case"
-msgstr "大/小文字を区別する(_M)"
-
-#: ../data/ui/findbar.ui.h:6
-msgid "_Next"
-msgstr "次の結果(_N)"
-
-#: ../data/ui/findbar.ui.h:7
 msgid "_Previous"
 msgstr "前の結果(_P)"
 
-#: ../data/ui/findbar.ui.h:8 ../meld/meldapp.py:147
-msgid "_Replace"
-msgstr "置換(_R)"
+#: ../data/ui/findbar.ui.h:4
+msgid "_Next"
+msgstr "次の結果(_N)"
 
-#: ../data/ui/findbar.ui.h:9
+#: ../data/ui/findbar.ui.h:5
 msgid "_Search for"
 msgstr "検索する文字列(_S):"
 
-#: ../data/ui/meldapp.ui.h:1
-msgid "Choose Files"
-msgstr "ファイルの選択"
+#: ../data/ui/findbar.ui.h:6
+msgid "Replace _With"
+msgstr "次で置き換える(_W):"
+
+#: ../data/ui/findbar.ui.h:7
+msgid "_Match Case"
+msgstr "大/小文字を区別する(_M)"
+
+#: ../data/ui/findbar.ui.h:8
+msgid "Who_le word"
+msgstr "単語全体(_L)"
+
+#: ../data/ui/findbar.ui.h:9
+msgid "Regular E_xpression"
+msgstr "正規表現(_X)"
 
 #: ../data/ui/meldapp.ui.h:2
 msgid ""
@@ -111,59 +155,63 @@ msgstr ""
 "Copyright &#xA9; 2009-2010 Kai Willadsen"
 
 #: ../data/ui/meldapp.ui.h:4
-msgid "Directory"
-msgstr "フォルダ"
+msgid "translator-credits"
+msgstr "相花 毅 <takeshi.aihana@gmail.com>"
+
+#: ../data/ui/meldapp.ui.h:5
+msgid "Choose Files"
+msgstr "ファイルの選択"
+
+#: ../data/ui/meldapp.ui.h:6
+msgid "_Three Way Compare"
+msgstr "３つの間で比較する(_T)"
 
 #. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:7
+#: ../data/ui/meldapp.ui.h:8
 msgid "Mine"
 msgstr "自分のもの"
 
 #. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:9
+#: ../data/ui/meldapp.ui.h:10
 msgid "Original"
 msgstr "オリジナル"
 
 #. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:11
+#: ../data/ui/meldapp.ui.h:12
 msgid "Other"
 msgstr "他のもの"
 
-#: ../data/ui/meldapp.ui.h:12
-msgid "Select VC Directory"
-msgstr "バージョン・コントロール・フォルダの選択"
-
 #: ../data/ui/meldapp.ui.h:13
-msgid "_Directory Comparison"
-msgstr "フォルダの比較(_D)"
-
-#: ../data/ui/meldapp.ui.h:14
 msgid "_File Comparison"
 msgstr "ファイルの比較(_F)"
 
+#: ../data/ui/meldapp.ui.h:14
+msgid "_Directory Comparison"
+msgstr "フォルダの比較(_D)"
+
 #: ../data/ui/meldapp.ui.h:15
-msgid "_Three Way Compare"
-msgstr "３つの間で比較する(_T)"
+msgid "Select VC Directory"
+msgstr "バージョン・コントロール・フォルダの選択"
 
 #: ../data/ui/meldapp.ui.h:16
+msgid "Directory"
+msgstr "フォルダ"
+
+#: ../data/ui/meldapp.ui.h:17
 msgid "_Version Control Browser"
 msgstr "バージョン・コントロール・ブラウザ(_V)"
 
-#: ../data/ui/meldapp.ui.h:17
-msgid "translator-credits"
-msgstr "相花 毅 <takeshi.aihana@gmail.com>"
-
 #: ../data/ui/patch-dialog.ui.h:1
-msgid "Copy to Clipboard"
-msgstr "クリップボードへコピー"
-
-#: ../data/ui/patch-dialog.ui.h:2
 msgid "Create Patch"
 msgstr "パッチの生成"
 
-#: ../data/ui/patch-dialog.ui.h:3
+#: ../data/ui/patch-dialog.ui.h:2
 msgid "Create a patch"
 msgstr "パッチの生成"
+
+#: ../data/ui/patch-dialog.ui.h:3
+msgid "Use differences between:"
+msgstr "次のペインの間の差分をパッチにする:"
 
 #: ../data/ui/patch-dialog.ui.h:4
 msgid "Left and middle panes"
@@ -174,92 +222,78 @@ msgid "Middle and right panes"
 msgstr "真ん中と右側のペイン"
 
 #: ../data/ui/patch-dialog.ui.h:6
-msgid "Use differences between:"
-msgstr "次のペインの間の差分をパッチにする:"
-
-#: ../data/ui/patch-dialog.ui.h:7
 msgid "_Reverse patch direction"
 msgstr "オリジナル・ファイルを逆にする(_R)"
 
+#: ../data/ui/patch-dialog.ui.h:7
+msgid "Copy to Clipboard"
+msgstr "クリップボードへコピー"
+
 #: ../data/ui/preferences.ui.h:1
-msgid "Display"
-msgstr "表示"
-
-#: ../data/ui/preferences.ui.h:2
-msgid "Do not _split words over two lines"
-msgstr "単語が二行にまたがないようにする(_S)"
-
-#: ../data/ui/preferences.ui.h:3
-msgid "Edito_r command:"
-msgstr "その他のエディタ(_R)"
-
-#: ../data/ui/preferences.ui.h:4
-msgid "Editor"
-msgstr "エディタ"
-
-#: ../data/ui/preferences.ui.h:5
-msgid "Enable text _wrapping"
-msgstr "文字列の折り返しを有効にする(_W)"
-
-#: ../data/ui/preferences.ui.h:6
-msgid "Encoding"
-msgstr "エンコーディング"
-
-#: ../data/ui/preferences.ui.h:7
-msgid "External editor"
-msgstr "外部エディタ"
-
-#: ../data/ui/preferences.ui.h:8
-msgid "File Filters"
-msgstr "ファイルのフィルタ"
-
-#: ../data/ui/preferences.ui.h:9
-msgid "Font"
-msgstr "フォント"
-
-#: ../data/ui/preferences.ui.h:10
-msgid "Ignore changes which insert or delete blank lines"
-msgstr "空行の挿入や削除を無視する"
-
-#: ../data/ui/preferences.ui.h:11
-msgid "Ignore symbolic links"
-msgstr "シンボリック・リンクを無視する"
-
-#: ../data/ui/preferences.ui.h:12
-msgid "Loading"
-msgstr "読み込み"
-
-#: ../data/ui/preferences.ui.h:13
 msgid "Meld Preferences"
 msgstr "Meld の設定"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:2
+msgid "Font"
+msgstr "フォント"
+
+#: ../data/ui/preferences.ui.h:3
+msgid "_Use the system fixed width font"
+msgstr "システムの固定フォントを使う(_U)"
+
+#: ../data/ui/preferences.ui.h:4
+msgid "_Editor font:"
+msgstr "エディタのフォント(_E):"
+
+#: ../data/ui/preferences.ui.h:5
+msgid "Display"
+msgstr "表示"
+
+#: ../data/ui/preferences.ui.h:6
+msgid "_Tab width:"
+msgstr "タブの幅(_T):"
+
+#: ../data/ui/preferences.ui.h:7
+msgid "_Insert spaces instead of tabs"
+msgstr "タブの代わりに空白を挿入する(_I)"
+
+#: ../data/ui/preferences.ui.h:8
+msgid "Enable text _wrapping"
+msgstr "文字列の折り返しを有効にする(_W)"
+
+#: ../data/ui/preferences.ui.h:9
+msgid "Do not _split words over two lines"
+msgstr "単語が二行にまたがないようにする(_S)"
+
+#: ../data/ui/preferences.ui.h:10
 msgid "Show _line numbers"
 msgstr "行番号を表示する(_L)"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:11
 msgid "Show w_hitespace"
 msgstr "空白や改行を表示する(_H)"
 
-#: ../data/ui/preferences.ui.h:16
-msgid "Text Filters"
-msgstr "文字列のフィルタ"
-
-#: ../data/ui/preferences.ui.h:17
-msgid "Use _default system editor"
-msgstr "システムでデフォルトのエディタを使用する(_D)"
-
-#: ../data/ui/preferences.ui.h:18
+#: ../data/ui/preferences.ui.h:12
 msgid "Use s_yntax highlighting"
 msgstr "文法を強調表示する(_Y)"
 
-#: ../data/ui/preferences.ui.h:19
-msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-msgstr ""
-"ファイルを読む込む際に、次の順番でエンコーディングを試行します (例: utf8 "
-"iso8859)"
+#: ../data/ui/preferences.ui.h:13
+msgid "External editor"
+msgstr "外部エディタ"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:14
+msgid "Use _default system editor"
+msgstr "システムでデフォルトのエディタを使用する(_D)"
+
+#: ../data/ui/preferences.ui.h:15
+msgid "Edito_r command:"
+msgstr "その他のエディタ(_R)"
+
+#: ../data/ui/preferences.ui.h:16
+msgid "Editor"
+msgstr "エディタ"
+
+#: ../data/ui/preferences.ui.h:17
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -269,7 +303,15 @@ msgstr ""
 "フィルタリングのパターンはそれぞれ、スペースで区切った SHELL 型式のワイルド"
 "カードの並びです。"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../data/ui/preferences.ui.h:18
+msgid "Ignore symbolic links"
+msgstr "シンボリック・リンクを無視する"
+
+#: ../data/ui/preferences.ui.h:19
+msgid "File Filters"
+msgstr "ファイルのフィルタ"
+
+#: ../data/ui/preferences.ui.h:20
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -283,176 +325,195 @@ msgstr ""
 "ら、該当するグループの文字列だけ置き換えます。詳細はユーザーズ・マニュアルを"
 "ご覧下さい。"
 
+#: ../data/ui/preferences.ui.h:21
+msgid "Ignore changes which insert or delete blank lines"
+msgstr "空行の挿入や削除を無視する"
+
 #: ../data/ui/preferences.ui.h:22
-msgid "_Editor font:"
-msgstr "エディタのフォント(_E):"
+msgid "Text Filters"
+msgstr "文字列のフィルタ"
 
 #: ../data/ui/preferences.ui.h:23
-msgid "_Insert spaces instead of tabs"
-msgstr "タブの代わりに空白を挿入する(_I)"
+msgid "Loading"
+msgstr "読み込み"
 
 #: ../data/ui/preferences.ui.h:24
-msgid "_Tab width:"
-msgstr "タブの幅(_T):"
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr ""
+"ファイルを読む込む際に、次の順番でエンコーディングを試行します (例: utf8 "
+"iso8859)"
 
 #: ../data/ui/preferences.ui.h:25
-msgid "_Use the system fixed width font"
-msgstr "システムの固定フォントを使う(_U)"
+msgid "Encoding"
+msgstr "エンコーディング"
 
 #: ../data/ui/vcview.ui.h:1
+msgid "VC Log"
+msgstr "バージョン・コントロールのログ"
+
+#: ../data/ui/vcview.ui.h:2
 msgid "Commit Files"
 msgstr "ファイルのコミット"
 
-#: ../data/ui/vcview.ui.h:2
-msgid "Compare Options"
-msgstr "比較のオプション"
-
 #: ../data/ui/vcview.ui.h:3
-msgid "Date"
-msgstr "日付"
+msgid "Previous Logs"
+msgstr "前のログ"
 
 #: ../data/ui/vcview.ui.h:4
-msgid "Local copy against other remote revision"
-msgstr "リモートの他のリビジョンをローカルへコピーする"
-
-#: ../data/ui/vcview.ui.h:5
-msgid "Local copy against same remote revision"
-msgstr "リモートの同じリビジョンをローカルへコピーする"
-
-#: ../data/ui/vcview.ui.h:6
 msgid "Log Message"
 msgstr "ログ・メッセージ"
 
+#: ../data/ui/vcview.ui.h:5
+msgid "Compare Options"
+msgstr "比較のオプション"
+
+#: ../data/ui/vcview.ui.h:6
+msgid "Local copy against same remote revision"
+msgstr "リモートの同じリビジョンをローカルへコピーする"
+
 #: ../data/ui/vcview.ui.h:7
-msgid "Previous Logs"
-msgstr "前のログ"
+msgid "Local copy against other remote revision"
+msgstr "リモートの他のリビジョンをローカルへコピーする"
 
 #: ../data/ui/vcview.ui.h:8 ../meld/vcview.py:179
 msgid "Tag"
 msgstr "タグ"
 
 #: ../data/ui/vcview.ui.h:9
-msgid "VC Log"
-msgstr "バージョン・コントロールのログ"
+msgid "Date"
+msgstr "日付"
 
-#: ../meld/dirdiff.py:142 ../meld/vcview.py:118
+#: ../meld/dirdiff.py:227 ../meld/vcview.py:118
 msgid "_Compare"
 msgstr "比較"
 
-#: ../meld/dirdiff.py:142 ../meld/vcview.py:118
+#: ../meld/dirdiff.py:227 ../meld/vcview.py:118
 msgid "Compare selected"
 msgstr "選択したファイルを比較します"
 
-#: ../meld/dirdiff.py:143
-msgid "Left"
-msgstr "左へコピー"
+#: ../meld/dirdiff.py:228
+msgid "Copy _Left"
+msgstr "左へコピーする(_L)"
 
-#: ../meld/dirdiff.py:143
-msgid "Copy To Left"
+#: ../meld/dirdiff.py:228
+msgid "Copy to left"
 msgstr "左へコピーします"
 
-#: ../meld/dirdiff.py:144
-msgid "Right"
-msgstr "右へコピー"
+#: ../meld/dirdiff.py:229
+msgid "Copy _Right"
+msgstr "右へコピーする(_R)"
 
-#: ../meld/dirdiff.py:144
-msgid "Copy To Right"
+#: ../meld/dirdiff.py:229
+msgid "Copy to right"
 msgstr "右へコピーします"
 
-#: ../meld/dirdiff.py:145
+#: ../meld/dirdiff.py:230
 msgid "Delete selected"
 msgstr "選択したファイルなどを削除します"
 
-#: ../meld/dirdiff.py:146 ../meld/filediff.py:963
+#: ../meld/dirdiff.py:231 ../meld/filediff.py:1146
 msgid "Hide"
 msgstr "隠す"
 
-#: ../meld/dirdiff.py:146
+#: ../meld/dirdiff.py:231
 msgid "Hide selected"
 msgstr "選択範囲を隠します"
 
-#: ../meld/dirdiff.py:148 ../meld/filediff.py:246 ../meld/vcview.py:119
-msgid "Open selected"
-msgstr "選択したファイルを開きます"
-
-#: ../meld/dirdiff.py:152
+#: ../meld/dirdiff.py:235
 msgid "Case"
 msgstr "大/小文字"
 
-#: ../meld/dirdiff.py:152
+#: ../meld/dirdiff.py:235
 msgid "Ignore case of entries"
 msgstr "大/小文字を無視します"
 
-#: ../meld/dirdiff.py:153
+#: ../meld/dirdiff.py:236
 msgid "Same"
 msgstr "同じ部分"
 
-#: ../meld/dirdiff.py:153
+#: ../meld/dirdiff.py:236
 msgid "Show identical"
 msgstr "一致する部分を表示します"
 
-#: ../meld/dirdiff.py:154
+#: ../meld/dirdiff.py:237
 msgid "New"
 msgstr "新しい部分"
 
-#: ../meld/dirdiff.py:154
+#: ../meld/dirdiff.py:237
 msgid "Show new"
 msgstr "新規の部分を表示します"
 
-#: ../meld/dirdiff.py:155
+#: ../meld/dirdiff.py:238
 msgid "Modified"
 msgstr "変更済"
 
-#: ../meld/dirdiff.py:155 ../meld/vcview.py:132
+#: ../meld/dirdiff.py:238 ../meld/vcview.py:131
 msgid "Show modified"
 msgstr "変更のあるファイルを表示します"
 
-#: ../meld/dirdiff.py:157
+#: ../meld/dirdiff.py:240
 msgid "Filters"
 msgstr "フィルタ"
 
-#: ../meld/dirdiff.py:157
+#: ../meld/dirdiff.py:240
 msgid "Set active filters"
 msgstr "フィルタを選択します"
 
-#: ../meld/dirdiff.py:213 ../meld/dirdiff.py:259
-#, python-format
-msgid "Error converting pattern '%s' to regular expression"
-msgstr "'%s' というパターンを正規表現に変換する際にエラーが発生しました"
-
-#: ../meld/dirdiff.py:270
+#: ../meld/dirdiff.py:357
 #, python-format
 msgid "Hide %s"
 msgstr "%sの表示を切り替えます"
 
-#: ../meld/dirdiff.py:355 ../meld/dirdiff.py:365 ../meld/vcview.py:299
-#: ../meld/vcview.py:327
+#: ../meld/dirdiff.py:460 ../meld/dirdiff.py:473 ../meld/vcview.py:304
+#: ../meld/vcview.py:332
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] %s のスキャン中"
 
-#: ../meld/dirdiff.py:394
-#, python-format
-msgid "'%s' hidden by '%s'"
-msgstr "'%s' は '%s' によって隠されています"
-
-#: ../meld/dirdiff.py:400
-#, python-format
-msgid ""
-"You are running a case insensitive comparison on a case sensitive "
-"filesystem. Some files are not visible:\n"
-"%s"
-msgstr ""
-"大/小文字を区別するファイルシステム上で大/小文字を無視した比較を行っていま"
-"す。いくつかのファイルは表示されません:\n"
-"%s"
-
-#: ../meld/dirdiff.py:477
+#: ../meld/dirdiff.py:572
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] 完了"
 
-#: ../meld/dirdiff.py:523
+#: ../meld/dirdiff.py:576
+msgid "Multiple errors occurred while scanning this folder"
+msgstr "このフォルダの走査中に複数回のエラーが発生しました"
+
+#: ../meld/dirdiff.py:577
+msgid "Files with invalid encodings found"
+msgstr "間違ったエンコーディングを持つファイルが見つかりました"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:579
+msgid "Some files were in an incorrect encoding. The names are something like:"
+msgstr ""
+"いくつかのファイルが間違ったエンコーディングを持っていました (次のようなファ"
+"イル名です):"
+
+#: ../meld/dirdiff.py:581
+msgid "Files hidden by case insensitive comparison"
+msgstr "大/小文字を区別せずに比較したファイルの一覧"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:583
+msgid ""
+"You are running a case insensitive comparison on a case sensitive "
+"filesystem. The following files in this folder are hidden:"
+msgstr ""
+"大/小文字を区別するファイルシステム上で大/小文字を無視した比較を行っていま"
+"す。このフォルダでは次のファイルは表示されません:\n"
+"%s"
+
+#: ../meld/dirdiff.py:594
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "'%s' は '%s' によって隠されています"
+
+#: ../meld/dirdiff.py:619 ../meld/filediff.py:1009 ../meld/filediff.py:1150
+msgid "Hi_de"
+msgstr "隠す(_D)"
+
+#: ../meld/dirdiff.py:669
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -461,7 +522,7 @@ msgstr ""
 "'%s' は存在します。\n"
 "上書きしますか？"
 
-#: ../meld/dirdiff.py:530
+#: ../meld/dirdiff.py:676
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -472,7 +533,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:548 ../meld/vcview.py:486
+#: ../meld/dirdiff.py:694 ../meld/vcview.py:504
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -481,7 +542,7 @@ msgstr ""
 "'%s' はフォルダです。\n"
 "再帰的に削除しますか？"
 
-#: ../meld/dirdiff.py:555 ../meld/vcview.py:491
+#: ../meld/dirdiff.py:701 ../meld/vcview.py:509
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -492,249 +553,273 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:567
+#: ../meld/dirdiff.py:713
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i秒"
 msgstr[1] "%i秒"
 
-#: ../meld/dirdiff.py:568
+#: ../meld/dirdiff.py:714
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i分"
 msgstr[1] "%i分"
 
-#: ../meld/dirdiff.py:569
+#: ../meld/dirdiff.py:715
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i時間"
 msgstr[1] "%i時間"
 
-#: ../meld/dirdiff.py:570
+#: ../meld/dirdiff.py:716
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i日"
 msgstr[1] "%i日"
 
-#: ../meld/dirdiff.py:571
+#: ../meld/dirdiff.py:717
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i週間"
 msgstr[1] "%i週間"
 
-#: ../meld/dirdiff.py:572
+#: ../meld/dirdiff.py:718
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%iヶ月"
 msgstr[1] "%iヶ月"
 
-#: ../meld/dirdiff.py:573
+#: ../meld/dirdiff.py:719
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
 msgstr[0] "%i年"
 msgstr[1] "%i年"
 
-#: ../meld/filediff.py:247
+#: ../meld/filediff.py:298
 msgid "Format as patch..."
 msgstr "パッチの生成..."
 
-#: ../meld/filediff.py:247
+#: ../meld/filediff.py:298
 msgid "Create a patch using differences between files"
 msgstr "ファイル間の差分からパッチを生成します"
 
-#: ../meld/filediff.py:248
+#: ../meld/filediff.py:299
 msgid "Previous conflict"
 msgstr "前の衝突箇所"
 
-#: ../meld/filediff.py:248
+#: ../meld/filediff.py:299
 msgid "Go to the previous conflict"
 msgstr "前の衝突箇所へジャンプします"
 
-#: ../meld/filediff.py:249
+#: ../meld/filediff.py:300
 msgid "Next conflict"
 msgstr "次の衝突箇所"
 
-#: ../meld/filediff.py:249
+#: ../meld/filediff.py:300
 msgid "Go to the next conflict"
 msgstr "次の衝突箇所へジャンプします"
 
-#: ../meld/filediff.py:250
+#: ../meld/filediff.py:301
 msgid "Push to left"
 msgstr "左側へ適用する"
 
-#: ../meld/filediff.py:250
+#: ../meld/filediff.py:301
 msgid "Push current change to the left"
 msgstr "現在の変更を左側へも適用します"
 
-#: ../meld/filediff.py:251
+#: ../meld/filediff.py:302
 msgid "Push to right"
 msgstr "右側へ適用する"
 
-#: ../meld/filediff.py:251
+#: ../meld/filediff.py:302
 msgid "Push current change to the right"
 msgstr "現在の変更を右側にも適用します"
 
 #. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:253
+#: ../meld/filediff.py:304
 msgid "Pull from left"
 msgstr "左側のキャンセル"
 
-#: ../meld/filediff.py:253
+#: ../meld/filediff.py:304
 msgid "Pull change from the left"
 msgstr "左側の変更点をキャンセルします"
 
-#: ../meld/filediff.py:254
+#: ../meld/filediff.py:305
 msgid "Pull from right"
 msgstr "右側のキャンセル"
 
-#: ../meld/filediff.py:254
+#: ../meld/filediff.py:305
 msgid "Pull change from the right"
 msgstr "右側の変更点をキャンセルします"
 
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:306
 msgid "Copy above left"
 msgstr "左の上にコピーする"
 
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:306
 msgid "Copy change above the left chunk"
 msgstr "左側にある変更点の上にコピーします"
 
-#: ../meld/filediff.py:256
+#: ../meld/filediff.py:307
 msgid "Copy below left"
 msgstr "左の下にコピーする"
 
-#: ../meld/filediff.py:256
+#: ../meld/filediff.py:307
 msgid "Copy change below the left chunk"
 msgstr "左側にある変更点の下にコピーします"
 
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:308
 msgid "Copy above right"
 msgstr "右の上にコピーする"
 
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:308
 msgid "Copy change above the right chunk"
 msgstr "右側にある変更点の上にコピーします"
 
-#: ../meld/filediff.py:258
+#: ../meld/filediff.py:309
 msgid "Copy below right"
 msgstr "右の下にコピーする"
 
-#: ../meld/filediff.py:258
+#: ../meld/filediff.py:309
 msgid "Copy change below the right chunk"
 msgstr "右側にある変更点の下にコピーします"
 
-#: ../meld/filediff.py:259
+#: ../meld/filediff.py:310
 msgid "Delete"
 msgstr "削除"
 
-#: ../meld/filediff.py:259
+#: ../meld/filediff.py:310
 msgid "Delete change"
 msgstr "変更点を削除します"
 
-#: ../meld/filediff.py:260
+#: ../meld/filediff.py:311
 msgid "Merge all changes from left"
-msgstr "左側の変更点のマージ"
+msgstr "左側の変更点をマージする"
 
-#: ../meld/filediff.py:260
+#: ../meld/filediff.py:311
 msgid "Merge all non-conflicting changes from the left"
 msgstr "左側にある (衝突することのない) 変更点を全てマージします"
 
-#: ../meld/filediff.py:261
+#: ../meld/filediff.py:312
 msgid "Merge all changes from right"
-msgstr "右側の変更点のマージ"
+msgstr "右側の変更点をマージする"
 
-#: ../meld/filediff.py:261
+#: ../meld/filediff.py:312
 msgid "Merge all non-conflicting changes from the right"
 msgstr "左側にある (衝突することのない) 変更点を全てマージします"
 
-#: ../meld/filediff.py:262
+#: ../meld/filediff.py:313
 msgid "Merge all non-conflicting"
-msgstr "全ての変更点のマージ"
+msgstr "全ての変更点をマージする"
 
-#: ../meld/filediff.py:262
+#: ../meld/filediff.py:313
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "左側と右側とで衝突することのない全ての変更点を全てマージします"
 
+#: ../meld/filediff.py:314
+msgid "Cycle through documents"
+msgstr "ドキュメント間で切替える"
+
+#: ../meld/filediff.py:314
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "この比較でキーボード・フォーカスを隣のドキュメントに移動します"
+
+#: ../meld/filediff.py:318
+msgid "Lock scrolling"
+msgstr "スクロールのロック"
+
+#: ../meld/filediff.py:319
+msgid "Lock scrolling of all panes"
+msgstr "全てのペインでスクロールを同期します"
+
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:333
+#: ../meld/filediff.py:411
 msgid "INS"
 msgstr "[挿入]"
 
-#: ../meld/filediff.py:333
+#: ../meld/filediff.py:411
 msgid "OVR"
 msgstr "[上書き]"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:335
+#: ../meld/filediff.py:413
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "(%i行、%i列)"
 
-#: ../meld/filediff.py:537
+#: ../meld/filediff.py:723
 #, python-format
 msgid ""
-"Regular expression '%s' changed the number of lines in the file. Comparison "
-"will be incorrect. See the user manual for more details."
+"Filter '%s' changed the number of lines in the file. Comparison will be "
+"incorrect. See the user manual for more details."
 msgstr ""
-"正規表現 '%s' でファイルの行数が変更されました。差分に不整合が発生します。詳"
+"フィルタ ('%s') でファイルの行数が変更されました。差分に不整合が生じます。詳"
 "細はユーザーズ・マニュアルをご覧下さい。"
 
 #. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:645
+#: ../meld/filediff.py:810
 msgid "<unnamed>"
 msgstr "<名前なし>"
 
-#: ../meld/filediff.py:828
+#: ../meld/filediff.py:997
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] 番号ペインのセット"
 
-#: ../meld/filediff.py:834
+#: ../meld/filediff.py:1003
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] ファイルのオープン中"
 
-#: ../meld/filediff.py:840 ../meld/filediff.py:967
-msgid "Hi_de"
-msgstr "隠す(_D)"
-
-#: ../meld/filediff.py:861 ../meld/filediff.py:870 ../meld/filediff.py:882
-#: ../meld/filediff.py:888
+#: ../meld/filediff.py:1027 ../meld/filediff.py:1036 ../meld/filediff.py:1048
+#: ../meld/filediff.py:1054
 msgid "Could not read file"
 msgstr "ファイルを読み込めませんでした"
 
-#: ../meld/filediff.py:862
+#: ../meld/filediff.py:1028
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] ファイルの読み込み中"
 
-#: ../meld/filediff.py:871
+#: ../meld/filediff.py:1037
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s はバイナリ・ファイルのようです"
 
-#: ../meld/filediff.py:883
+#: ../meld/filediff.py:1049
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s は次のエンコーディングではありません: %s"
 
-#: ../meld/filediff.py:913 ../meld/filemerge.py:69
+#: ../meld/filediff.py:1079 ../meld/filemerge.py:67
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] 差分の計算中"
 
-#: ../meld/filediff.py:961
+#: ../meld/filediff.py:1137
+msgid ""
+"Text filters are being used, and may be masking differences between files. "
+"Would you like to compare the unfiltered files?"
+msgstr ""
+"文字列のフィルタリングを行っているため、ファイルの間に違いが生じる場合があり"
+"ます。フィルタリングせずに比較してみますか？"
+
+#: ../meld/filediff.py:1143
 msgid "Files are identical"
 msgstr "同一のファイルです"
 
-#: ../meld/filediff.py:1096
+#: ../meld/filediff.py:1153
+msgid "Show without filters"
+msgstr "フィルタリング無しで表示する"
+
+#: ../meld/filediff.py:1343
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -743,7 +828,7 @@ msgstr ""
 "\"%s\" は存在しています！\n"
 "上書きしますか？"
 
-#: ../meld/filediff.py:1109
+#: ../meld/filediff.py:1356
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -754,12 +839,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/filediff.py:1118
+#: ../meld/filediff.py:1365
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "バッファ %i の名前の選択"
 
-#: ../meld/filediff.py:1133
+#: ../meld/filediff.py:1380
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -770,7 +855,7 @@ msgstr ""
 "\n"
 "どのフォーマットを使用しますか？"
 
-#: ../meld/filediff.py:1149
+#: ../meld/filediff.py:1396
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -779,7 +864,7 @@ msgstr ""
 "'%s' には '%s' でエンコードされていない文字が含まれています。\n"
 "UTF-8 エンコーディングとして保存してもよろしいですか？"
 
-#: ../meld/filediff.py:1208
+#: ../meld/filediff.py:1455
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -797,434 +882,467 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] ファイルのマージ中"
 
-#: ../meld/meldapp.py:132
-msgid "_File"
-msgstr "ファイル(_F)"
-
-#: ../meld/meldapp.py:133
-msgid "_New..."
-msgstr "新規(_N)..."
-
-#: ../meld/meldapp.py:133
-msgid "Start a new comparison"
-msgstr "新しい比較を開始します"
-
-#: ../meld/meldapp.py:134
-msgid "Save the current file"
-msgstr "このファイルを保存します"
-
-#: ../meld/meldapp.py:136
-msgid "Close the current file"
-msgstr "このファイルを閉じます"
-
-#: ../meld/meldapp.py:137
-msgid "Quit the program"
-msgstr "プログラムを終了します"
-
-#: ../meld/meldapp.py:139
-msgid "_Edit"
-msgstr "編集(_E)"
-
-#: ../meld/meldapp.py:140
-msgid "Undo the last action"
-msgstr "最後に適用したアクションに戻します"
-
-#: ../meld/meldapp.py:141
-msgid "Redo the last undone action"
-msgstr "最後に適用したアクションをやり直します"
-
-#: ../meld/meldapp.py:142
-msgid "Cut the selection"
-msgstr "選択範囲を切り取ります"
-
-#: ../meld/meldapp.py:143
-msgid "Copy the selection"
-msgstr "選択範囲をコピーします"
-
-#: ../meld/meldapp.py:144
-msgid "Paste the clipboard"
-msgstr "クリップボードの内容を貼り付けます"
-
-#: ../meld/meldapp.py:145
-msgid "Search for text"
-msgstr "検索する文字列:"
-
-#: ../meld/meldapp.py:146
-msgid "Find Ne_xt"
-msgstr "次の検索(_X)"
-
-#: ../meld/meldapp.py:146
-msgid "Search forwards for the same text"
-msgstr "前方を検索します"
-
-#: ../meld/meldapp.py:147
-msgid "Find and replace text"
-msgstr "文字列を検索して置換します"
-
-#: ../meld/meldapp.py:148
-msgid "Prefere_nces"
-msgstr "設定(_N)"
-
-#: ../meld/meldapp.py:148
-msgid "Configure the application"
-msgstr "Meld を設定します"
-
-#: ../meld/meldapp.py:150
-msgid "_Changes"
-msgstr "変更点(_C)"
-
-#: ../meld/meldapp.py:151
-msgid "Next change"
-msgstr "次の変更点"
-
-#: ../meld/meldapp.py:151
-msgid "Go to the next change"
-msgstr "次の変更点へジャンプします"
-
-#: ../meld/meldapp.py:152
-msgid "Previous change"
-msgstr "前の変更点"
-
-#: ../meld/meldapp.py:152
-msgid "Go to the previous change"
-msgstr "前の変更点へジャンプします"
-
-#: ../meld/meldapp.py:154
-msgid "_View"
-msgstr "表示(_V)"
-
-#: ../meld/meldapp.py:155
-msgid "File status"
-msgstr "ファイルの状態"
-
-#: ../meld/meldapp.py:156
-msgid "Version status"
-msgstr "バージョン"
-
-#: ../meld/meldapp.py:157
-msgid "File filters"
-msgstr "ファイルのフィルタ"
-
-#: ../meld/meldapp.py:158
-msgid "Stop the current action"
-msgstr "現在適用中のアクションを停止します"
-
-#: ../meld/meldapp.py:159
-msgid "Refresh the view"
-msgstr "表示を更新します"
-
-#: ../meld/meldapp.py:160
-msgid "Reload"
-msgstr "再読込み"
-
-#: ../meld/meldapp.py:160
-msgid "Reload the comparison"
-msgstr "比較内容を更新します"
-
-#: ../meld/meldapp.py:162
-msgid "_Help"
-msgstr "ヘルプ(_H)"
-
-#: ../meld/meldapp.py:163
-msgid "_Contents"
-msgstr "目次(_C)"
-
-#: ../meld/meldapp.py:163
-msgid "Open the Meld manual"
-msgstr "Meld マニュアル開きます"
-
-#: ../meld/meldapp.py:164
-msgid "Report _Bug"
-msgstr "バグの報告(_B)"
-
-#: ../meld/meldapp.py:164
-msgid "Report a bug in Meld"
-msgstr "Meld のバグを報告します"
-
-#: ../meld/meldapp.py:165
-msgid "About this program"
-msgstr "このプログラムについて"
-
-#: ../meld/meldapp.py:168
-msgid "Full Screen"
-msgstr "フルスクリーン表示"
-
-#: ../meld/meldapp.py:168
-msgid "View the comparison in full screen"
-msgstr "比較状況をフルスクリーンで表示します"
-
-#: ../meld/meldapp.py:169
-msgid "_Toolbar"
-msgstr "ツールバー(_T)"
-
-#: ../meld/meldapp.py:169
-msgid "Show or hide the toolbar"
-msgstr "ツールバーの表示を ON/OFF します"
-
-#: ../meld/meldapp.py:170
-msgid "_Statusbar"
-msgstr "ステータスバー(_S)"
-
-#: ../meld/meldapp.py:170
-msgid "Show or hide the statusbar"
-msgstr "ステータスバーの表示を ON/OFF します"
-
-#. exit at first non found directory + file
-#: ../meld/meldapp.py:544
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "ファイルとフォルダの間での比較はできません。\n"
-
-#: ../meld/meldapp.py:599
+#: ../meld/meldapp.py:149
 msgid "wrong number of arguments supplied to --diff"
 msgstr "--diff オプションに対する引数の数が間違っています"
 
-#: ../meld/meldapp.py:603
+#: ../meld/meldapp.py:153
 msgid "Start with an empty window"
 msgstr "何も開かずに Meld を起動する"
 
-#: ../meld/meldapp.py:604 ../meld/meldapp.py:605 ../meld/meldapp.py:607
+#: ../meld/meldapp.py:154 ../meld/meldapp.py:155 ../meld/meldapp.py:157
 msgid "file"
 msgstr "FILE"
 
-#: ../meld/meldapp.py:604 ../meld/meldapp.py:606 ../meld/meldapp.py:607
+#: ../meld/meldapp.py:154 ../meld/meldapp.py:156 ../meld/meldapp.py:157
 msgid "dir"
 msgstr "DIR"
 
-#: ../meld/meldapp.py:604
+#: ../meld/meldapp.py:154
 msgid "Start a version control comparison"
 msgstr "バージョン管理の比較モードで起動する"
 
-#: ../meld/meldapp.py:605
+#: ../meld/meldapp.py:155
 msgid "Start a 2- or 3-way file comparison"
 msgstr "２ないし３個のファイルを比較するモードで起動する"
 
-#: ../meld/meldapp.py:606
+#: ../meld/meldapp.py:156
 msgid "Start a 2- or 3-way directory comparison"
 msgstr "２ないし３個のフォルダを比較するモードで起動する"
 
-#: ../meld/meldapp.py:607
+#: ../meld/meldapp.py:157
 msgid "Start a comparison between file and dir/file"
 msgstr "ファイルとフォルダとを比較するモードで起動する"
 
-#: ../meld/meldapp.py:613
+#: ../meld/meldapp.py:163
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld はファイルとフォルダの内容を比較するツールです:"
 
-#: ../meld/meldapp.py:616
+#: ../meld/meldapp.py:166
 msgid "Set label to use instead of file name"
 msgstr "ファイル名の代わりに使用するラベルを指定する"
 
-#: ../meld/meldapp.py:618
+#: ../meld/meldapp.py:168
 msgid "Automatically compare all differing files on startup"
 msgstr "起動時にファイルの中にある全て差分を自動的に検出する"
 
-#: ../meld/meldapp.py:621
+#: ../meld/meldapp.py:170
+msgid "Ignored for compatibility"
+msgstr "互換性を無視する"
+
+#: ../meld/meldapp.py:173
 msgid "Set the target file for saving a merge result"
 msgstr "マージした結果を保存する際のファイル名を指定する"
 
-#: ../meld/meldapp.py:624
+#: ../meld/meldapp.py:176
 msgid "Creates a diff tab for up to 3 supplied files or directories."
 msgstr "指定した最大３つのファイルまたはフォルダに対する差分をタブで表示する"
 
-#: ../meld/meldapp.py:627
+#: ../meld/meldapp.py:179
 #, python-format
 msgid "too many arguments (wanted 0-4, got %d)"
 msgstr "引数が多すぎます (0〜4個を想定していたが実際は%d個)"
+
+#: ../meld/meldapp.py:181 ../meld/meldapp.py:185
+msgid "can't compare more than three directories"
+msgstr "３つ以上のフォルダの間での比較はできません"
 
 #: ../meld/melddoc.py:51 ../meld/melddoc.py:52
 msgid "untitled"
 msgstr "タイトルなし"
 
+#: ../meld/meldwindow.py:125
+msgid "_File"
+msgstr "ファイル(_F)"
+
+#: ../meld/meldwindow.py:126
+msgid "_New..."
+msgstr "新規(_N)..."
+
+#: ../meld/meldwindow.py:126
+msgid "Start a new comparison"
+msgstr "新しい比較を開始します"
+
+#: ../meld/meldwindow.py:127
+msgid "Save the current file"
+msgstr "このファイルを保存します"
+
+#: ../meld/meldwindow.py:129
+msgid "Close the current file"
+msgstr "このファイルを閉じます"
+
+#: ../meld/meldwindow.py:130
+msgid "Quit the program"
+msgstr "プログラムを終了します"
+
+#: ../meld/meldwindow.py:132
+msgid "_Edit"
+msgstr "編集(_E)"
+
+#: ../meld/meldwindow.py:133
+msgid "Undo the last action"
+msgstr "最後に適用したアクションに戻します"
+
+#: ../meld/meldwindow.py:134
+msgid "Redo the last undone action"
+msgstr "最後に適用したアクションをやり直します"
+
+#: ../meld/meldwindow.py:135
+msgid "Cut the selection"
+msgstr "選択範囲を切り取ります"
+
+#: ../meld/meldwindow.py:136
+msgid "Copy the selection"
+msgstr "選択範囲をコピーします"
+
+#: ../meld/meldwindow.py:137
+msgid "Paste the clipboard"
+msgstr "クリップボードの内容を貼り付けます"
+
+#: ../meld/meldwindow.py:138
+msgid "Search for text"
+msgstr "検索する文字列:"
+
+#: ../meld/meldwindow.py:139
+msgid "Find Ne_xt"
+msgstr "次を検索する(_X)"
+
+#: ../meld/meldwindow.py:139
+msgid "Search forwards for the same text"
+msgstr "同じ文字列を前方検索します"
+
+#: ../meld/meldwindow.py:140
+msgid "Find _Previous"
+msgstr "前を検索する(_P)"
+
+#: ../meld/meldwindow.py:140
+msgid "Search backwards for the same text"
+msgstr "同じ文字列を後方検索します"
+
+#: ../meld/meldwindow.py:141
+msgid "Find and replace text"
+msgstr "文字列を検索して置換します"
+
+#: ../meld/meldwindow.py:142
+msgid "Prefere_nces"
+msgstr "設定(_N)"
+
+#: ../meld/meldwindow.py:142
+msgid "Configure the application"
+msgstr "Meld を設定します"
+
+#: ../meld/meldwindow.py:144
+msgid "_Changes"
+msgstr "変更点(_C)"
+
+#: ../meld/meldwindow.py:145
+msgid "Next change"
+msgstr "次の変更点"
+
+#: ../meld/meldwindow.py:145
+msgid "Go to the next change"
+msgstr "次の変更点へジャンプします"
+
+#: ../meld/meldwindow.py:146
+msgid "Previous change"
+msgstr "前の変更点"
+
+#: ../meld/meldwindow.py:146
+msgid "Go to the previous change"
+msgstr "前の変更点へジャンプします"
+
+#: ../meld/meldwindow.py:147
+msgid "Open externally"
+msgstr "別のアプリで開く"
+
+#: ../meld/meldwindow.py:147
+msgid "Open selected file or directory in the default external application"
+msgstr "選択したファイルやフォルダをデフォルトのアプリケーションで開きます"
+
+#: ../meld/meldwindow.py:149
+msgid "_View"
+msgstr "表示(_V)"
+
+#: ../meld/meldwindow.py:150
+msgid "File status"
+msgstr "ファイルの状態"
+
+#: ../meld/meldwindow.py:151
+msgid "Version status"
+msgstr "バージョン"
+
+#: ../meld/meldwindow.py:152
+msgid "File filters"
+msgstr "ファイルのフィルタ"
+
+#: ../meld/meldwindow.py:153
+msgid "Stop the current action"
+msgstr "現在適用中のアクションを停止します"
+
+#: ../meld/meldwindow.py:154
+msgid "Refresh the view"
+msgstr "表示を更新します"
+
+#: ../meld/meldwindow.py:155
+msgid "Reload"
+msgstr "再読込み"
+
+#: ../meld/meldwindow.py:155
+msgid "Reload the comparison"
+msgstr "比較内容を更新します"
+
+#: ../meld/meldwindow.py:157
+msgid "_Tabs"
+msgstr "タブ(_T)"
+
+#: ../meld/meldwindow.py:158
+msgid "_Previous Tab"
+msgstr "前のタブ(_P)"
+
+#: ../meld/meldwindow.py:158
+msgid "Activate previous tab"
+msgstr "前のタブに切り替えます"
+
+#: ../meld/meldwindow.py:159
+msgid "_Next Tab"
+msgstr "次のタブ(_N)"
+
+#: ../meld/meldwindow.py:159
+msgid "Activate next tab"
+msgstr "次のタブに切り替えます"
+
+#: ../meld/meldwindow.py:160
+msgid "Move Tab _Left"
+msgstr "タブを左へ移動する(_L)"
+
+#: ../meld/meldwindow.py:160
+msgid "Move current tab to left"
+msgstr "このタブを左側へ移動します"
+
+#: ../meld/meldwindow.py:161
+msgid "Move Tab _Right"
+msgstr "タブを右へ移動する(_R)"
+
+#: ../meld/meldwindow.py:161
+msgid "Move current tab to right"
+msgstr "このタブを右側へ移動します"
+
+#: ../meld/meldwindow.py:163
+msgid "_Help"
+msgstr "ヘルプ(_H)"
+
+#: ../meld/meldwindow.py:164
+msgid "_Contents"
+msgstr "目次(_C)"
+
+#: ../meld/meldwindow.py:164
+msgid "Open the Meld manual"
+msgstr "Meld マニュアル開きます"
+
+#: ../meld/meldwindow.py:165
+msgid "Report _Bug"
+msgstr "バグの報告(_B)"
+
+#: ../meld/meldwindow.py:165
+msgid "Report a bug in Meld"
+msgstr "Meld のバグを報告します"
+
+#: ../meld/meldwindow.py:166
+msgid "About this program"
+msgstr "このプログラムについて"
+
+#: ../meld/meldwindow.py:169
+msgid "Full Screen"
+msgstr "フルスクリーン表示"
+
+#: ../meld/meldwindow.py:169
+msgid "View the comparison in full screen"
+msgstr "比較状況をフルスクリーンで表示します"
+
+#: ../meld/meldwindow.py:170
+msgid "_Toolbar"
+msgstr "ツールバー(_T)"
+
+#: ../meld/meldwindow.py:170
+msgid "Show or hide the toolbar"
+msgstr "ツールバーの表示を ON/OFF します"
+
+#: ../meld/meldwindow.py:171
+msgid "_Statusbar"
+msgstr "ステータスバー(_S)"
+
+#: ../meld/meldwindow.py:171
+msgid "Show or hide the statusbar"
+msgstr "ステータスバーの表示を ON/OFF します"
+
+#: ../meld/meldwindow.py:538
+msgid "Switch to this tab"
+msgstr "このタブに切り替えます"
+
+#. exit at first non found directory + file
+#: ../meld/meldwindow.py:629
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "ファイルとフォルダの間での比較はできません。\n"
+
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:192
+#: ../meld/misc.py:174
 msgid "[None]"
 msgstr "[なし]"
 
-#: ../meld/patchdialog.py:119
+#: ../meld/patchdialog.py:122
 msgid "Save Patch As..."
 msgstr "別名でパッチの保存..."
 
-#: ../meld/preferences.py:81
+#: ../meld/preferences.py:37
 msgid "label"
 msgstr "(新しい名前)"
 
-#: ../meld/preferences.py:81
+#: ../meld/preferences.py:37
 msgid "pattern"
 msgstr "(新しいパターン)"
 
-#: ../meld/preferences.py:142
+#: ../meld/preferences.py:105
 msgid "Only available if you have gnome-python-desktop installed"
 msgstr ""
 "'gnome-python-desktop' をインストールしている場合にのみ行番号を表示することが"
 "できます。"
 
-#. file filters
-#. text filters
-#: ../meld/preferences.py:167 ../meld/preferences.py:172 ../meld/vcview.py:156
-msgid "Name"
-msgstr "名前"
-
-#: ../meld/preferences.py:167 ../meld/preferences.py:172
-msgid "Active"
-msgstr "有効"
-
-#: ../meld/preferences.py:167
-msgid "Pattern"
-msgstr "パターン"
-
-#: ../meld/preferences.py:172
-msgid "Regex"
-msgstr "正規表現"
-
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:269
+#: ../meld/preferences.py:233
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "バックアップ\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:271
+#: ../meld/preferences.py:235
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Version Control\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:273
+#: ../meld/preferences.py:237
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "バイナリ\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:275
+#: ../meld/preferences.py:239
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "メディア\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:277
+#: ../meld/preferences.py:241
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "CVS のキーワード\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:279
+#: ../meld/preferences.py:243
 msgid "C++ comment\t0\t//.*\n"
 msgstr "C++ のコメント\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:281
+#: ../meld/preferences.py:245
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "C のコメント\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:283
+#: ../meld/preferences.py:247
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "空白文字\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:285
+#: ../meld/preferences.py:249
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "先頭の空白文字\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:287
+#: ../meld/preferences.py:251
 msgid "Script comment\t0\t#.*"
 msgstr "スクリプトのコメント\t0\t#.*"
 
-#: ../meld/vcview.py:120
-msgid "_Commit"
-msgstr "コミット(_C)"
+#: ../meld/vcview.py:119
+msgid "Co_mmit"
+msgstr "コミット(_M)"
 
-#: ../meld/vcview.py:120
+#: ../meld/vcview.py:119
 msgid "Commit"
 msgstr "コミットします"
 
-#. FIXME: popup used to use gtk.STOCK_GO_BACK
-#: ../meld/vcview.py:121
+#: ../meld/vcview.py:120
 msgid "_Update"
 msgstr "更新(_U)"
 
-#: ../meld/vcview.py:121
+#: ../meld/vcview.py:120
 msgid "Update"
 msgstr "更新します"
 
-#. FIXME: popup used to use gtk.STOCK_GO_FORWARD
-#: ../meld/vcview.py:122
-msgid "_Add"
-msgstr "追加(_A)"
-
-#: ../meld/vcview.py:122
+#: ../meld/vcview.py:121
 msgid "Add to VC"
 msgstr "バージョン・コントロールに追加します"
 
-#. FIXME: popup used to use gtk.STOCK_ADD
-#: ../meld/vcview.py:123
+#: ../meld/vcview.py:122
 msgid "Add _Binary"
 msgstr "バイナリの追加(_B)"
 
-#: ../meld/vcview.py:123
+#: ../meld/vcview.py:122
 msgid "Add binary to VC"
 msgstr "バイナリをバージョン・コントロールに追加します"
 
-#. FIXME: stock is inconsistent with other VC actions
-#: ../meld/vcview.py:124
-msgid "_Remove"
-msgstr "削除(_R)"
-
-#: ../meld/vcview.py:124
+#: ../meld/vcview.py:123
 msgid "Remove from VC"
 msgstr "バージョン・コントロールから削除します"
 
-#. FIXME: popup used to use gtk.STOCK_REMOVE
-#: ../meld/vcview.py:125
+#: ../meld/vcview.py:124
 msgid "_Resolved"
 msgstr "解決済(_R)"
 
-#: ../meld/vcview.py:125
+#: ../meld/vcview.py:124
 msgid "Mark as resolved for VC"
 msgstr "バージョン管理で解決済みであるとする"
 
-#: ../meld/vcview.py:126
+#: ../meld/vcview.py:125
 msgid "Revert to original"
 msgstr "元に戻します"
 
-#: ../meld/vcview.py:127
+#: ../meld/vcview.py:126
 msgid "Delete locally"
 msgstr "ローカル・ファイルを削除します"
 
-#: ../meld/vcview.py:131
+#: ../meld/vcview.py:130
 msgid "_Flatten"
 msgstr "一覧表示(_F)"
 
-#: ../meld/vcview.py:131
+#: ../meld/vcview.py:130
 msgid "Flatten directories"
 msgstr "配下のフォルダを無視します"
 
-#: ../meld/vcview.py:132
+#: ../meld/vcview.py:131
 msgid "_Modified"
 msgstr "変更済のもの(_M)"
 
-#: ../meld/vcview.py:133
+#: ../meld/vcview.py:132
 msgid "_Normal"
 msgstr "通常のもの(_N)"
 
-#: ../meld/vcview.py:133
+#: ../meld/vcview.py:132
 msgid "Show normal"
 msgstr "通常のファイルを表示します"
 
-#: ../meld/vcview.py:134
+#: ../meld/vcview.py:133
 msgid "Non _VC"
 msgstr "VC以外(_V)"
 
-#: ../meld/vcview.py:134
+#: ../meld/vcview.py:133
 msgid "Show unversioned files"
 msgstr "バージョン管理外のファイルを表示します"
 
-#: ../meld/vcview.py:135
+#: ../meld/vcview.py:134
 msgid "Ignored"
 msgstr "無視したもの"
 
-#: ../meld/vcview.py:135
+#: ../meld/vcview.py:134
 msgid "Show ignored files"
 msgstr "無視したファイルを表示します"
 
-#: ../meld/vcview.py:176 ../meld/vcview.py:295
+#: ../meld/vcview.py:176 ../meld/vcview.py:300
 msgid "Location"
 msgstr "場所"
 
@@ -1240,61 +1358,57 @@ msgstr "リビジョン"
 msgid "Options"
 msgstr "オプション"
 
-#: ../meld/vcview.py:227
+#: ../meld/vcview.py:232
 msgid "Choose one Version Control"
 msgstr "１バージョン・コントロールの選択"
 
-#: ../meld/vcview.py:228
+#: ../meld/vcview.py:233
 msgid "Only one Version Control in this directory"
 msgstr "このフォルダの１バージョン・コントロールだけ"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:241
+#: ../meld/vcview.py:246
 #, python-format
 msgid "%s Not Installed"
 msgstr "%s はインストールされていません"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:245
+#: ../meld/vcview.py:250
 msgid "Invalid Repository"
 msgstr "おかしなリポジトリです"
 
-#: ../meld/vcview.py:254
+#: ../meld/vcview.py:259
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:295
+#: ../meld/vcview.py:300
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:343
+#: ../meld/vcview.py:348
 msgid "(Empty)"
 msgstr "(空)"
 
-#: ../meld/vcview.py:376
+#: ../meld/vcview.py:386
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] 差分の取得中"
 
-#: ../meld/vcview.py:383
+#: ../meld/vcview.py:394
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] パッチの適用中"
 
-#: ../meld/vcview.py:387
-msgid "No differences found."
-msgstr "差分はありませんでした。"
-
-#: ../meld/vcview.py:461
+#: ../meld/vcview.py:479
 msgid "Select some files first."
 msgstr "まず最初にファイルを選択して下さい。"
 
-#: ../meld/vcview.py:527
+#: ../meld/vcview.py:552
 #, python-format
 msgid ""
 "\n"
@@ -1343,7 +1457,7 @@ msgstr ""
 "                    バージョンで置き換えて下さい\n"
 "                    "
 
-#: ../meld/ui/findbar.py:120
+#: ../meld/ui/findbar.py:127
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -1352,27 +1466,27 @@ msgstr ""
 "正規表現エラー\n"
 "'%s'"
 
-#: ../meld/ui/historyentry.py:290
+#: ../meld/ui/historyentry.py:293
 msgid "_Browse..."
 msgstr "参照(_B)..."
 
-#: ../meld/ui/historyentry.py:298
+#: ../meld/ui/historyentry.py:301
 msgid "Path"
 msgstr "パス"
 
-#: ../meld/ui/historyentry.py:299
+#: ../meld/ui/historyentry.py:302
 msgid "Path to file"
 msgstr "ファイルのパスです"
 
-#: ../meld/ui/historyentry.py:300
+#: ../meld/ui/historyentry.py:303
 msgid "Pop up a file selector to choose a file"
 msgstr "ファイルを選択します"
 
-#: ../meld/ui/historyentry.py:419
+#: ../meld/ui/historyentry.py:441
 msgid "Select directory"
 msgstr "フォルダの選択"
 
-#: ../meld/ui/historyentry.py:423
+#: ../meld/ui/historyentry.py:445
 msgid "Select file"
 msgstr "ファイルの選択"
 
@@ -1387,7 +1501,7 @@ msgid ""
 msgstr ""
 "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing"
 
-#: ../meld/vc/cvs.py:156
+#: ../meld/vc/cvs.py:163
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
