@@ -1099,6 +1099,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             filename = self.bufferdata[i].filename
             if filename:
                 langs.append(srcviewer.get_language_from_file(filename))
+            else:
+                langs.append(None)
 
         # If we have only one identified language then we assume that all of
         # the files are actually of that type.
