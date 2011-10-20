@@ -1270,8 +1270,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         area = event.area
         x, y = textview.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET,
                                                 area.x, area.y)
-        bounds = (self._pixel_to_line(pane, y),
-                  self._pixel_to_line(pane, y + area.height + 1))
+        bounds = (textview.get_line_num_for_y(y),
+                  textview.get_line_num_for_y(y + area.height + 1))
 
         width, height = textview.allocation.width, textview.allocation.height
         context = event.window.cairo_create()
@@ -1280,8 +1280,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         context.set_line_width(1.0)
 
         for change in self.linediffer.single_changes(pane, bounds):
-            ypos0 = self._line_to_pixel(pane, change[1]) - visible.y
-            ypos1 = self._line_to_pixel(pane, change[2]) - visible.y
+            ypos0 = textview.get_y_for_line_num(change[1]) - visible.y
+            ypos1 = textview.get_y_for_line_num(change[2]) - visible.y
 
             context.rectangle(-0.5, ypos0 - 0.5, width + 1, ypos1 - ypos0)
             if change[1] != change[2]:
@@ -1620,16 +1620,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.statusimage[i].show()
             self.queue_draw()
             self.recompute_label()
-
-    def _line_to_pixel(self, pane, line ):
-        it = self.textbuffer[pane].get_iter_at_line(line)
-        y, h = self.textview[pane].get_line_yrange(it)
-        if line >= self.textbuffer[pane].get_line_count():
-            return y + h - 1
-        return y
-
-    def _pixel_to_line(self, pane, pixel ):
-        return self.textview[pane].get_line_at_y( pixel )[0].get_line()
 
     def _find_next_chunk(self, direction, pane):
         if direction == gtk.gdk.SCROLL_DOWN:
