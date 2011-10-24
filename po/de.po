@@ -4,7 +4,7 @@
 # Hendrik Brandt <eru@gmx.li>, 2004.
 # Frank Arnold <frank@scirocco-5v-turbo.de>, 2005.
 # Hendrik Richter <hendrikr@gnome.org>, 2006.
-# Mario Blättermann <mariobl@freenet.de>, 2009-2011.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2009-2011.
 # Holger Wansing <linux@wansing-online.de>, 2010.
 #
 msgid ""
@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-17 03:48+0000\n"
-"PO-Revision-Date: 2011-09-19 21:41+0100\n"
-"Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
+"POT-Creation-Date: 2011-10-20 20:44+0000\n"
+"PO-Revision-Date: 2011-10-24 19:59+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -207,7 +207,7 @@ msgstr ""
 "Hendrik Brandt <eru@gmx.li>\n"
 "Frank Arnold <frank@scirocco-5v-turbo.de>\n"
 "Hendrik Richter <hendrikr@gnome.org>\n"
-"Mario Blättermann <mariobl@freenet.de>\n"
+"Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Holger Wansing <linux@wansing-online.de>"
 
 #: ../data/ui/patch-dialog.ui.h:1
@@ -423,7 +423,7 @@ msgstr "Nach rechts kopieren"
 msgid "Delete selected"
 msgstr "Markiertes löschen"
 
-#: ../meld/dirdiff.py:231 ../meld/filediff.py:1146
+#: ../meld/dirdiff.py:231 ../meld/filediff.py:1158
 msgid "Hide"
 msgstr "Verbergen"
 
@@ -521,7 +521,7 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "»%s« verborgen durch »%s«"
 
-#: ../meld/dirdiff.py:619 ../meld/filediff.py:1009 ../meld/filediff.py:1150
+#: ../meld/dirdiff.py:619 ../meld/filediff.py:1009 ../meld/filediff.py:1162
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
@@ -816,7 +816,7 @@ msgstr "%s ist nicht in Kodierungen enthalten: %s"
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
 
-#: ../meld/filediff.py:1137
+#: ../meld/filediff.py:1149
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -824,15 +824,15 @@ msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten. Wollen Sie die ungefilterten Dateien vergleichen?"
 
-#: ../meld/filediff.py:1143
+#: ../meld/filediff.py:1155
 msgid "Files are identical"
 msgstr "Dateien sind identisch"
 
-#: ../meld/filediff.py:1153
+#: ../meld/filediff.py:1165
 msgid "Show without filters"
 msgstr "Ungefiltert anzeigen"
 
-#: ../meld/filediff.py:1343
+#: ../meld/filediff.py:1355
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -841,7 +841,7 @@ msgstr ""
 "»%s« ist vorhanden!\n"
 "Ersetzen?"
 
-#: ../meld/filediff.py:1356
+#: ../meld/filediff.py:1368
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -852,12 +852,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1365
+#: ../meld/filediff.py:1377
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Wählen Sie einen Namen für den Zwischenspeicher %i."
 
-#: ../meld/filediff.py:1380
+#: ../meld/filediff.py:1392
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -868,7 +868,7 @@ msgstr ""
 "\n"
 "Welches Format möchten Sie verwenden?"
 
-#: ../meld/filediff.py:1396
+#: ../meld/filediff.py:1408
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -877,7 +877,7 @@ msgstr ""
 "»%s« enthält Zeichen, die mit »%s« nicht kodierbar sind.\n"
 "Möchten Sie im UTF-8-Format speichern?"
 
-#: ../meld/filediff.py:1455
+#: ../meld/filediff.py:1467
 #, python-format
 msgid ""
 "Reloading will discard changes in:\n"
@@ -1227,47 +1227,56 @@ msgstr "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
 #: ../meld/preferences.py:235
+msgid ""
+"OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
+"Desktop.ini\n"
+msgstr ""
+"Betriebssystemspezifische Metadaten\t0\t.DS_Store ._* .Spotlight-V100 ."
+"Trashes Thumbs.db Desktop.ini\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:237
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Versionskontrolle\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:237
+#: ../meld/preferences.py:239
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 msgstr "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:239
+#: ../meld/preferences.py:241
 msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 msgstr "Medien\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:241
+#: ../meld/preferences.py:243
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "CVS-Schlüsselwörter\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:243
+#: ../meld/preferences.py:245
 msgid "C++ comment\t0\t//.*\n"
 msgstr "C++ Kommentar\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:245
+#: ../meld/preferences.py:247
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "C-Kommentar\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:247
+#: ../meld/preferences.py:249
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Alle Leerzeichen\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:249
+#: ../meld/preferences.py:251
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Führende Leerzeichen\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:251
+#: ../meld/preferences.py:253
 msgid "Script comment\t0\t#.*"
 msgstr "Skript-Kommentar\t0\t#.*"
 
