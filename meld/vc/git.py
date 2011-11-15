@@ -37,7 +37,7 @@ class Vc(_vc.CachedVc):
     NAME = "Git"
     VC_DIR = ".git"
     PATCH_STRIP_NUM = 1
-    PATCH_INDEX_RE = "^diff --git a/(.*) b/.*$"
+    PATCH_INDEX_RE = "^diff --git [ac]/(.*) [bw]/.*$"
     state_map = {
         "X": _vc.STATE_NONE,     # Unknown
         "A": _vc.STATE_NEW,      # New
