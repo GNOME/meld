@@ -831,7 +831,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if response==gtk.RESPONSE_OK:
                 for i in range(self.num_panes):
                     if try_save[i]:
-                        if self.save_file(i) != melddoc.RESULT_OK:
+                        if not self.save_file(i):
                             return gtk.RESPONSE_CANCEL
             elif response == gtk.RESPONSE_DELETE_EVENT:
                 response = gtk.RESPONSE_CANCEL
@@ -1379,7 +1379,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.fileentry[pane].set_filename( bufdata.filename)
                 self.fileentry[pane].prepend_history(bufdata.filename)
             else:
-                return melddoc.RESULT_ERROR
+                return False
         start, end = buf.get_bounds()
         text = unicode(buf.get_text(start, end, False), 'utf8')
         if bufdata.newlines:
@@ -1406,15 +1406,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if misc.run_dialog(
                     _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.label, bufdata.encoding),
                     self, gtk.MESSAGE_ERROR, gtk.BUTTONS_YES_NO) != gtk.RESPONSE_YES:
-                    return melddoc.RESULT_ERROR
+                    return False
 
         save_to = bufdata.savefile or bufdata.filename
         if self._save_text_to_filename(save_to, text):
             self.emit("file-changed", save_to)
             self.undosequence.checkpoint(buf)
-            return melddoc.RESULT_OK
+            return True
         else:
-            return melddoc.RESULT_ERROR
+            return False
 
     def make_patch(self, *extra):
         dialog = patchdialog.PatchDialog(self)
