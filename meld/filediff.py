@@ -19,9 +19,6 @@ import codecs
 import copy
 import os
 from gettext import gettext as _
-import re
-import difflib
-import struct
 import sys
 import time
 
@@ -43,7 +40,6 @@ import merge
 
 from meldapp import app
 from util.sourceviewer import srcviewer
-from util.namedtuple import namedtuple
 
 
 class CachedSequenceMatcher(object):

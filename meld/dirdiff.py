@@ -22,7 +22,6 @@ import paths
 from ui import gnomeglade
 import gtk
 import gtk.keysyms
-import math
 import misc
 import os
 from gettext import gettext as _
