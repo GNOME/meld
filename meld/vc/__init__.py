@@ -45,6 +45,22 @@ def get_plugins_metadata():
             ret.extend(p.Vc.VC_METADATA)
     return ret
 
+vc_sort_order = (
+    "Git",
+    "Bazaar-NG",
+    "Mercurial",
+    "Fossil",
+    "Monotone",
+    "Darcs",
+    "Arch",
+    "Codeville",
+    "SVK",
+    "Subversion",
+    "Subversion 1.7",
+    "CVS",
+    "RCS",
+)
+
 def get_vcs(location):
     """Pick only the Vcs with the longest repo root
     
@@ -73,6 +89,15 @@ def get_vcs(location):
 
     if not vcs:
         # No plugin recognized that location, fallback to _null
-        vcs.append(_null.Vc(location))
+        return [_null.Vc(location)]
+
+    vc_comp = lambda a, b: cmp(vc_sort_order.index(a), vc_sort_order.index(b))
+    vc_name = lambda x: x.NAME
+    vcs.sort(cmp=vc_comp, key=vc_name)
+
+    # Simplistic hack so that we don't offer both 1.7 and <1.6 SVN
+    vc_names = [plugin.NAME for plugin in vcs]
+    if "Subversion" in vc_names and "Subversion 1.7" in vc_names:
+        vcs = [plugin for plugin in vcs if plugin.NAME != "Subversion 1.7"]
 
     return vcs
