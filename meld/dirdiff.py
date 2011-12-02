@@ -751,17 +751,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_treeview_row_activated(self, view, path, column):
         pane = self.treeview.index(view)
-        allrows = self.model.value_paths(self.model.get_iter(path))
+        rows = self.model.value_paths(self.model.get_iter(path))
         # Click a file: compare; click a directory: expand; click a missing
         # entry: check the next neighbouring entry
         pane_ordering = ((0, 1, 2), (1, 2, 0), (2, 1, 0))
         for p in pane_ordering[pane]:
-            if p < self.num_panes and os.path.exists(allrows[p]):
+            if p < self.num_panes and rows[p] and os.path.exists(rows[p]):
                 pane = p
                 break
-        if os.path.isfile(allrows[pane]):
-            self.emit("create-diff", [r for r in allrows if os.path.isfile(r)])
-        elif os.path.isdir(allrows[pane]):
+        if not rows[pane]:
+            return
+        if os.path.isfile(rows[pane]):
+            self.emit("create-diff", [r for r in rows if os.path.isfile(r)])
+        elif os.path.isdir(rows[pane]):
             if view.row_expanded(path):
                 view.collapse_row(path)
             else:
