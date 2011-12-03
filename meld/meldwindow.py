@@ -26,7 +26,9 @@ import gobject
 from . import dirdiff
 from . import filediff
 from . import filemerge
+from . import melddoc
 from . import misc
+from . import new_diff_dialog
 from . import paths
 from . import preferences
 from . import recent
@@ -38,62 +40,6 @@ from .ui import notebooklabel
 from .util.compat import string_types
 from .util.sourceviewer import srcviewer
 from .meldapp import app
-
-################################################################################
-#
-# NewDocDialog
-#
-################################################################################
-
-class NewDocDialog(gnomeglade.Component):
-    def __init__(self, parentapp):
-        gnomeglade.Component.__init__(self, paths.ui_dir("meldapp.ui"), "newdialog")
-        self.map_widgets_into_lists(["fileentry", "direntry", "vcentry", "three_way_compare"])
-        self.entrylists = self.fileentry, self.direntry, self.vcentry
-        self.widget.set_transient_for(parentapp.widget)
-        self.fileentry[0].set_sensitive(self.three_way_compare[0].get_active())
-        self.direntry[0].set_sensitive(self.three_way_compare[1].get_active())
-        self.diff_methods = (parentapp.append_filediff,
-                             parentapp.append_dirdiff,
-                             parentapp.append_vcview)
-        self.parentapp = parentapp
-        self.widget.show_all()
-
-    def on_entry_activate(self, entry):
-        for el in self.entrylists:
-            if entry in el:
-                i = el.index(entry)
-                if i == len(el) - 1:
-                    self.button_ok.grab_focus()
-                else:
-                    el[i+1].focus_entry()
-
-    def on_three_way_toggled(self, button):
-        page = self.three_way_compare.index(button)
-        self.entrylists[page][0].set_sensitive( button.get_active() )
-        self.entrylists[page][not button.get_active()].focus_entry()
-
-    def on_response(self, dialog, arg):
-        if arg == gtk.RESPONSE_OK:
-            page = self.type_notebook.get_current_page()
-            paths = [e.get_full_path() or "" for e in self.entrylists[page]]
-            if page < 2 and not self.three_way_compare[page].get_active():
-                paths.pop(0)
-            for path in paths:
-                self.entrylists[page][0].prepend_history(path)
-            if page == 2:
-                new_tab = self.diff_methods[page](paths[0])
-            else:
-                new_tab = self.diff_methods[page](paths)
-
-            # We just opened a new comparison, transfer focus to it
-            new_tab_idx = self.parentapp.notebook.page_num(new_tab.widget)
-            self.parentapp.notebook.set_current_page(new_tab_idx)
-
-            diff_type = recent.COMPARISON_TYPES[page]
-            app.recent_comparisons.add(new_tab)
-
-        self.widget.destroy()
 
 
 ################################################################################
@@ -322,7 +268,8 @@ class MeldWindow(gnomeglade.Component):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
             olddoc = notebook.get_nth_page(oldidx).get_data("pyobject")
-            olddoc.disconnect(self.diff_handler)
+            if self.diff_handler is not None:
+                olddoc.disconnect(self.diff_handler)
             olddoc.on_container_switch_out_event(self.ui)
             if self.undo_handlers:
                 undoseq = olddoc.undosequence
@@ -343,13 +290,18 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("Undo").set_sensitive(can_undo)
         self.actiongroup.get_action("Redo").set_sensitive(can_redo)
 
-        nbl = self.notebook.get_tab_label( newdoc.widget )
+        nbl = self.notebook.get_tab_label(newdoc.widget)
         self.widget.set_title(nbl.get_label_text() + " - Meld")
-        self.statusbar.set_info_box(newdoc.get_info_widgets())
-        self.diff_handler = newdoc.connect("next-diff-changed",
-                                           self.on_next_diff_changed)
+        try:
+            self.statusbar.set_info_box(newdoc.get_info_widgets())
+        except AttributeError:
+            pass
         newdoc.on_container_switch_in_event(self.ui)
-        self.scheduler.add_task( newdoc.scheduler )
+        if isinstance(page, melddoc.MeldDoc):
+            self.diff_handler = newdoc.connect("next-diff-changed",
+                                               self.on_next_diff_changed)
+        if hasattr(newdoc, 'scheduler'):
+            self.scheduler.add_task(newdoc.scheduler)
 
     def after_switch_page(self, notebook, page, which):
         self._update_page_action_sensitivity()
@@ -396,7 +348,7 @@ class MeldWindow(gnomeglade.Component):
     # Toolbar and menu items (file)
     #
     def on_menu_file_new_activate(self, menuitem):
-        NewDocDialog(self)
+        self.append_new_comparison()
 
     def on_menu_save_activate(self, menuitem):
         self.current_doc().save()
@@ -589,16 +541,19 @@ class MeldWindow(gnomeglade.Component):
         "See if a page will allow itself to be removed"
         response = page.on_delete_event(appquit)
         if response != gtk.RESPONSE_CANCEL:
-            self.scheduler.remove_scheduler(page.scheduler)
+            if hasattr(page, 'scheduler'):
+                self.scheduler.remove_scheduler(page.scheduler)
             page_num = self.notebook.page_num(page.widget)
             assert page_num >= 0
 
             # If the page we're removing is the current page, we need to
             # disconnect and clear undo handlers, and trigger a switch out
             if self.notebook.get_current_page() == page_num:
-                page.disconnect(self.diff_handler)
-                for handler in self.undo_handlers:
-                    page.undosequence.disconnect(handler)
+                if self.diff_handler is not None:
+                    page.disconnect(self.diff_handler)
+                if self.undo_handlers:
+                    for handler in self.undo_handlers:
+                        page.undosequence.disconnect(handler)
                 self.undo_handlers = tuple()
                 page.on_container_switch_out_event(self.ui)
 
@@ -625,13 +580,24 @@ class MeldWindow(gnomeglade.Component):
            isinstance(self.current_doc(), vcview.VcView):
             self.notebook.set_current_page(self.notebook.page_num(page.widget))
 
-        self.scheduler.add_scheduler(page.scheduler)
-        page.connect("label-changed", self.on_notebook_label_changed)
-        page.connect("file-changed", self.on_file_changed)
-        page.connect("create-diff", lambda obj,arg: self.append_diff(arg) )
+        if hasattr(page, 'scheduler'):
+            self.scheduler.add_scheduler(page.scheduler)
+        if isinstance(page, melddoc.MeldDoc):
+            page.connect("label-changed", self.on_notebook_label_changed)
+            page.connect("file-changed", self.on_file_changed)
+            page.connect("create-diff", lambda obj, arg: self.append_diff(arg))
+            page.connect("status-changed",
+                         lambda obj, arg: self.statusbar.set_doc_status(arg))
 
         # Allow reordering of tabs
         self.notebook.set_tab_reorderable(page.widget, True);
+
+    def append_new_comparison(self):
+        doc = new_diff_dialog.NewDiffTab(self)
+        self._append_page(doc, "document-new")
+        self.on_notebook_label_changed(doc, _("New comparison"), None)
+        doc.connect("diff-created", lambda x: self.try_remove_page(doc))
+        return doc
 
     def append_dirdiff(self, dirs, auto_compare=False):
         assert len(dirs) in (1,2,3)
@@ -690,6 +656,7 @@ class MeldWindow(gnomeglade.Component):
         doc = vcview.VcView(app.prefs)
         # FIXME: need a good themed VC icon
         self._append_page(doc, "vc-icon")
+        location = location[0] if isinstance(location, list) else location
         doc.set_location(location)
         if auto_compare:
             doc.on_button_diff_clicked(None)
@@ -739,7 +706,10 @@ class MeldWindow(gnomeglade.Component):
         "Get the current doc or a dummy object if there is no current"
         index = self.notebook.get_current_page()
         if index >= 0:
-            return self.notebook.get_nth_page(index).get_data("pyobject")
+            page = self.notebook.get_nth_page(index).get_data("pyobject")
+            if isinstance(page, melddoc.MeldDoc):
+                return page
+
         class DummyDoc(object):
             def __getattr__(self, a): return lambda *x: None
         return DummyDoc()
