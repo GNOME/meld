@@ -1,5 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2009-2010 Kai Willadsen <kai.willadsen@gmail.com>
+### Copyright (C) 2009-2011 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -264,6 +264,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.focus_in_events.append(handler_id)
             handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
             self.focus_out_events.append(handler_id)
+        self.prev_path, self.next_path = None, None
         self.on_treeview_focus_out_event(None, None)
         self.treeview_focussed = None
 
@@ -322,8 +323,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._create_filter_menu_button(ui)
         self.ui_manager = ui
 
-        # FIXME: Add real sensitivity handling
-        self.emit("next-diff-changed", True, True)
         if self.treeview_focussed:
             self.scheduler.add_task(self.treeview_focussed.grab_focus)
             self.scheduler.add_task(self.on_treeview_cursor_changed)
@@ -702,6 +701,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         pane = self._get_focused_pane()
         if pane is None:
             return
+
+        cursor_path, cursor_col = self.treeview[pane].get_cursor()
+        if not cursor_path:
+            self.emit("next-diff-changed", False, False)
+        else:
+            # TODO: Only recalculate when needed;
+            # not self.prev_path < cursor_path < self.next_path is a start,
+            # but fails when we move off a changed row.
+            prev_path, next_path = self.model._find_next_prev_diff(cursor_path)
+            self.prev_path, self.next_path = prev_path, next_path
+            have_next_diffs = (prev_path is not None, next_path is not None)
+            self.emit("next-diff-changed", *have_next_diffs)
+
         paths = self._get_selected_paths(pane)
         if len(paths) > 0:
             def rwx(mode):
@@ -1090,20 +1102,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def next_diff(self, direction):
         if self.treeview_focussed:
-            pane = self.treeview.index( self.treeview_focussed )
+            pane = self.treeview.index(self.treeview_focussed)
         else:
             pane = 0
-        start_iter = self.model.get_iter( (self._get_selected_paths(pane) or [(0,)])[-1] )
-
-        search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
-        for it in search( start_iter ):
-            state = self.model.get_state(it, pane)
-            if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
-                curpath = self.model.get_path(it)
-                self.treeview[pane].expand_to_path(curpath)
-                self.treeview[pane].set_cursor(curpath)
-                return
+        if direction == gtk.gdk.SCROLL_UP:
+            path = self.prev_path
+        else:
+            path = self.next_path
+        if path:
+            self.treeview[pane].expand_to_path(path)
+            self.treeview[pane].set_cursor(path)
 
     def on_reload_activate(self, *extra):
         self.on_fileentry_activate(None)
-

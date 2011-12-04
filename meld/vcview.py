@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2010-2011 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -153,6 +154,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
         self.treeview.set_search_equal_func(self.treeview_search_cb)
+        self.prev_path, self.next_path = None, None
         column = gtk.TreeViewColumn( _("Name") )
         renicon = ui.emblemcellrenderer.EmblemCellRenderer()
         rentext = gtk.CellRendererText()
@@ -211,8 +213,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
-        # FIXME: Add real sensitivity handling
-        self.emit("next-diff-changed", True, True)
+        self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def update_actions_sensitivity(self):
         """Disable actions that use not implemented VC plugin methods
@@ -293,6 +294,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # need to scan the rest of the repository
         if os.path.isdir(self.vc.location):
             self.scheduler.add_task(self._search_recursively_iter(self.model.get_iter_root()).next)
+            self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)
@@ -660,17 +662,25 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         item.show()
         menu.insert( item, 1 )
 
-    def next_diff(self, direction):
-        start_iter = self.model.get_iter((self._get_selected_paths() or [(0,)])[-1])
+    def on_treeview_cursor_changed(self, *args):
+        cursor_path, cursor_col = self.treeview.get_cursor()
+        if not cursor_path:
+            self.emit("next-diff-changed", False, False)
+        else:
+            # TODO: Only recalculate when needed; see DirDiff
+            prev_path, next_path = self.model._find_next_prev_diff(cursor_path)
+            self.prev_path, self.next_path = prev_path, next_path
+            have_next_diffs = (prev_path is not None, next_path is not None)
+            self.emit("next-diff-changed", *have_next_diffs)
 
-        search = {gtk.gdk.SCROLL_UP : self.model.inorder_search_up}.get(direction, self.model.inorder_search_down)
-        for it in search( start_iter ):
-            state = self.model.get_state(it, 0)
-            if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
-                curpath = self.model.get_path(it)
-                self.treeview.expand_to_path(curpath)
-                self.treeview.set_cursor(curpath)
-                return
+    def next_diff(self, direction):
+        if direction == gtk.gdk.SCROLL_UP:
+            path = self.prev_path
+        else:
+            path = self.next_path
+        if path:
+            self.treeview.expand_to_path(path)
+            self.treeview.set_cursor(path)
 
     def on_reload_activate(self, *extra):
         self.on_fileentry_activate(self.fileentry)

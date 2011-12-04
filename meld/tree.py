@@ -169,3 +169,20 @@ class DiffTreeStore(gtk.TreeStore):
                     raise StopIteration()
             yield it
 
+    def _find_next_prev_diff(self, start_path):
+        prev_path, next_path = None, None
+        start_iter = self.get_iter(start_path)
+
+        for it in self.inorder_search_up(start_iter):
+            state = self.get_state(it, 0)
+            if state not in (STATE_NORMAL, STATE_EMPTY):
+                prev_path = self.get_path(it)
+                break
+
+        for it in self.inorder_search_down(start_iter):
+            state = self.get_state(it, 0)
+            if state not in (STATE_NORMAL, STATE_EMPTY):
+                next_path = self.get_path(it)
+                break
+
+        return prev_path, next_path
