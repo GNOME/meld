@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2011 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -31,12 +32,18 @@ class MeldDoc(gobject.GObject):
     """
 
     __gsignals__ = {
-        'label-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_STRING)),
-        'file-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
-        'create-diff': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
-        'status-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
-        'current-diff-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        'next-diff-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (bool, bool)),
+        'label-changed':        (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                                 (gobject.TYPE_STRING, gobject.TYPE_STRING)),
+        'file-changed':         (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                                 (gobject.TYPE_STRING,)),
+        'create-diff':          (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                                 (gobject.TYPE_PYOBJECT,)),
+        'status-changed':       (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                                 (gobject.TYPE_PYOBJECT,)),
+        'current-diff-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                                 ()),
+        'next-diff-changed':    (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                                 (bool, bool)),
     }
 
     def __init__(self, prefs):
@@ -61,7 +68,7 @@ class MeldDoc(gobject.GObject):
 
     def _open_files(self, selected):
         files = [f for f in selected if os.path.isfile(f)]
-        dirs =  [d for d in selected if os.path.isdir(d)]
+        dirs = [d for d in selected if os.path.isdir(d)]
 
         def os_open(paths):
             for path in paths:
@@ -94,14 +101,19 @@ class MeldDoc(gobject.GObject):
 
     def on_refresh_activate(self, *extra):
         self.on_reload_activate(self, *extra)
+
     def on_reload_activate(self, *extra):
         pass
+
     def on_find_activate(self, *extra):
         pass
+
     def on_find_next_activate(self, *extra):
         pass
+
     def on_find_previous_activate(self, *extra):
         pass
+
     def on_replace_activate(self, *extra):
         pass
 
@@ -147,4 +159,3 @@ class MeldDoc(gobject.GObject):
            There is no way to interrupt the quit event.
         """
         pass
-
