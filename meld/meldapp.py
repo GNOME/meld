@@ -173,6 +173,9 @@ class MeldApp(gobject.GObject):
         if options.label and tab:
             tab.set_labels(options.label)
 
+        if not options.diff and not tab:
+            self.window.append_new_comparison()
+
         if options.outfile and tab and isinstance(tab, filediff.FileDiff):
             tab.set_merge_output_file(options.outfile)
 
