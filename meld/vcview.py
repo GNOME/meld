@@ -416,17 +416,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_press_event(self, text, event):
         if event.button == 3:
             self.popup_menu.popup(None, None, None, event.button, event.time)
-            return len(self._get_selected_paths()) != 1
-        return 0
+            return True
+        return False
 
     def on_button_flatten_toggled(self, button):
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         self.refresh()
     def on_button_filter_toggled(self, button):
         self.refresh()
-
-    def _get_selected_paths(self):
-        return self.treeview.get_selection().get_selected_rows()[1]
 
     def _get_selected_files(self):
         sel = []
