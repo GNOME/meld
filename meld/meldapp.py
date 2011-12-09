@@ -167,6 +167,8 @@ class MeldApp(gobject.GObject):
             version="%prog " + version)
         parser.add_option("-L", "--label", action="append", default=[],
             help=_("Set label to use instead of file name"))
+        parser.add_option("-n", "--newtab", action="store_true", default=False,
+            help=_("Open a new tab in an already running instance"))
         parser.add_option("-a", "--auto-compare", action="store_true", default=False,
             help=_("Automatically compare all differing files on startup"))
         parser.add_option("-u", "--unified", action="store_true",
@@ -183,17 +185,28 @@ class MeldApp(gobject.GObject):
         elif len(args) == 4 and any([os.path.isdir(f) for f in args]):
             parser.error(_("can't compare more than three directories"))
 
+        new_window = True
+        open_paths = self.window.open_paths
+        if options.newtab:
+            if not dbus_app:
+                print _("D-Bus error; comparisons will open in a new window.")
+            else:
+                open_paths = lambda f, x: dbus_app.OpenPaths(f, 0)
+                new_window = False
+
         for files in options.diff:
             if len(files) == 4 and any([os.path.isdir(f) for f in files]):
                 parser.error(_("can't compare more than three directories"))
-            self.window.open_paths(files)
+            open_paths(files)
 
-        tab = self.window.open_paths(args, options.auto_compare)
+        tab = open_paths(args, options.auto_compare)
         if options.label and tab:
             tab.set_labels(options.label)
 
         if options.outfile and tab and isinstance(tab, filediff.FileDiff):
             tab.set_merge_output_file(options.outfile)
+
+        return new_window
 
 
 app = MeldApp()

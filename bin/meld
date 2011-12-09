@@ -133,9 +133,17 @@ gtk.icon_theme_get_default().append_search_path(meld.paths.icon_dir())
 
 def main():
     from meld.meldapp import app
+    try:
+        import meld.dbus_service
+        already_running, dbus_app = meld.dbus_service.setup(app)
+    except ImportError:
+        already_running, dbus_app = False, None
+    meld.meldapp.dbus_app = dbus_app
+
     app.create_window()
-    app.parse_args(sys.argv[1:])
-    gtk.main()
+    new_window = app.parse_args(sys.argv[1:])
+    if new_window or not already_running:
+        gtk.main()
 
 if profiling:
     import profile
