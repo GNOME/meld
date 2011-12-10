@@ -16,6 +16,8 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+import math
+
 import gtk
 
 import diffutil
@@ -49,15 +51,15 @@ class LinkMap(gtk.DrawingArea):
         self.fill_colors = filediff.fill_colors
         self.line_colors = filediff.line_colors
 
-        pixels_per_line = filediff.pixels_per_line
+        self.line_height = filediff.pixels_per_line
         icon_theme = gtk.icon_theme_get_default()
-        load = lambda x: icon_theme.load_icon(x, pixels_per_line, 0)
+        load = lambda x: icon_theme.load_icon(x, self.line_height, 0)
         pixbuf_apply0 = load("button_apply0")
         pixbuf_apply1 = load("button_apply1")
         pixbuf_delete = load("button_delete")
         # FIXME: this is a somewhat bizarre action to take, but our non-square
         # icons really make this kind of handling difficult
-        load = lambda x: icon_theme.load_icon(x, pixels_per_line * 2, 0)
+        load = lambda x: icon_theme.load_icon(x, self.line_height * 2, 0)
         pixbuf_copy0  = load("button_copy0")
         pixbuf_copy1  = load("button_copy1")
 
@@ -147,15 +149,6 @@ class LinkMap(gtk.DrawingArea):
 
         return left_act, right_act
 
-    def _linkmap_draw_icon(self, context, change, x, f0, t0):
-        left_act, right_act = self._classify_change_actions(change)
-        if left_act is not None:
-            pix0 = self.action_map_left[left_act]
-            self.paint_pixbuf_at(context, pix0, 0, f0)
-        if right_act is not None:
-            pix1 = self.action_map_right[right_act]
-            self.paint_pixbuf_at(context, pix1, x, t0)
-
     def do_expose_event(self, event):
         context = self.window.cairo_create()
         context.rectangle(event.area.x, event.area.y, event.area.width, \
@@ -175,6 +168,9 @@ class LinkMap(gtk.DrawingArea):
         wtotal = self.allocation.width
         # For bezier control points
         x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
+        # Rounded rectangle corner radius for culled changes display
+        radius = self.line_height / 2
+        q_rad = math.pi / 2
 
         left, right = self.view_indices
         view_offset_line = lambda v, l: self.views[v].get_y_for_line_num(l) - \
@@ -184,15 +180,38 @@ class LinkMap(gtk.DrawingArea):
             f0, f1 = [view_offset_line(0, l) for l in c[1:3]]
             t0, t1 = [view_offset_line(1, l) for l in c[3:5]]
 
-            context.move_to(x_steps[0], f0 - 0.5)
-            context.curve_to(x_steps[1], f0 - 0.5,
-                             x_steps[2], t0 - 0.5,
-                             x_steps[3], t0 - 0.5)
-            context.line_to(x_steps[3], t1 - 0.5)
-            context.curve_to(x_steps[2], t1 - 0.5,
-                             x_steps[1], f1 - 0.5,
-                             x_steps[0], f1 - 0.5)
-            context.close_path()
+            culled = False
+            # If either endpoint is completely off-screen, we cull for clarity
+            if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height):
+                if f0 == f1:
+                    continue
+                context.move_to(x_steps[0], f0 - 0.5)
+                context.arc(x_steps[0], f0 - 0.5 + radius, radius, -q_rad, 0)
+                context.rel_line_to(0, f1 - f0 - radius * 2)
+                context.arc(x_steps[0], f1 - 0.5 - radius, radius, 0, q_rad)
+                context.close_path()
+                culled = True
+            elif (f0 < 0 and f1 < 0) or (f0 > height and f1 > height):
+                if t0 == t1:
+                    continue
+                context.move_to(x_steps[3], t0 - 0.5)
+                context.arc_negative(x_steps[3], t0 - 0.5 + radius, radius,
+                                     -q_rad, q_rad * 2)
+                context.rel_line_to(0, t1 - t0 - radius * 2)
+                context.arc_negative(x_steps[3], t1 - 0.5 - radius, radius,
+                                     q_rad * 2, q_rad)
+                context.close_path()
+                culled = True
+            else:
+                context.move_to(x_steps[0], f0 - 0.5)
+                context.curve_to(x_steps[1], f0 - 0.5,
+                                 x_steps[2], t0 - 0.5,
+                                 x_steps[3], t0 - 0.5)
+                context.line_to(x_steps[3], t1 - 0.5)
+                context.curve_to(x_steps[2], t1 - 0.5,
+                                 x_steps[1], f1 - 0.5,
+                                 x_steps[0], f1 - 0.5)
+                context.close_path()
 
             context.set_source_rgb(*self.fill_colors[c[0]])
             context.fill_preserve()
@@ -205,8 +224,17 @@ class LinkMap(gtk.DrawingArea):
             context.set_source_rgb(*self.line_colors[c[0]])
             context.stroke()
 
+            if culled:
+                continue
+
             x = wtotal - self.button_width
-            self._linkmap_draw_icon(context, c, x, f0, t0)
+            left_act, right_act = self._classify_change_actions(c)
+            if left_act is not None:
+                pix0 = self.action_map_left[left_act]
+                self.paint_pixbuf_at(context, pix0, 0, f0)
+            if right_act is not None:
+                pix1 = self.action_map_right[right_act]
+                self.paint_pixbuf_at(context, pix1, x, t0)
 
         # allow for scrollbar at end of textview
         mid = int(0.5 * self.views[0].allocation.height) + 0.5
@@ -223,8 +251,9 @@ class LinkMap(gtk.DrawingArea):
         src, dst = self.view_indices[src_idx], self.view_indices[dst_idx]
 
         yoffset = self.allocation.y
-        rel_offset = self.views[side].allocation.y - yoffset
-        vis_offset = self.views[side].get_visible_rect().y
+        vis_offset = [t.get_visible_rect().y for t in self.views]
+        rel_offset = [t.allocation.y - self.allocation.y for t in self.views]
+        height = self.allocation.height
 
         bounds = []
         for v in (self.views[src_idx], self.views[dst_idx]):
@@ -232,15 +261,24 @@ class LinkMap(gtk.DrawingArea):
             bounds.append(v.get_line_num_for_y(visible.y))
             bounds.append(v.get_line_num_for_y(visible.y + visible.height))
 
+        view_offset_line = lambda v, l: self.views[v].get_y_for_line_num(l) - \
+                                        vis_offset[v] + rel_offset[v]
         for c in self.filediff.linediffer.pair_changes(src, dst, bounds):
-            h = self.views[src_idx].get_y_for_line_num(c[1]) - \
-                vis_offset + rel_offset
-            if h < event.y < h + pix_height:
+            f0, f1 = [view_offset_line(src_idx, l) for l in c[1:3]]
+            t0, t1 = [view_offset_line(dst_idx, l) for l in c[3:5]]
+
+            f0 = view_offset_line(src_idx, c[1])
+
+            if f0 < event.y < f0 + pix_height:
+                if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height) or \
+                   (f0 < 0 and f1 < 0) or (f0 > height and f1 > height):
+                    break
+
                 # _classify_change_actions assumes changes are left->right
                 action_change = diffutil.reverse_chunk(c) if dst < src else c
                 actions = self._classify_change_actions(action_change)
                 if actions[side] is not None:
-                    rect = gtk.gdk.Rectangle(x, h, pix_width, pix_height)
+                    rect = gtk.gdk.Rectangle(x, f0, pix_width, pix_height)
                     self.mouse_chunk = ((src, dst), rect, c, actions[side])
                 break
 
