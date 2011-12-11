@@ -561,6 +561,19 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._open_files(self._get_selected_files())
 
     def show_patch(self, prefix, patch, silent=False):
+        if vc._vc.call(["which", "patch"]):
+            primary = _("Patch tool not found")
+            secondary = _("Meld needs the <i>patch</i> tool to be installed "
+                          "to perform comparisons in %s repositories. Please "
+                          "install <i>patch</i> and try again.") % self.vc.NAME
+
+            msgarea = self.msgarea_mgr.new_from_text_and_icon(
+                        gtk.STOCK_DIALOG_ERROR, primary, secondary)
+            msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
+            msgarea.connect("response", lambda *args: self.msgarea_mgr.clear())
+            msgarea.show_all()
+            return False
+
         tmpdir = tempfile.mkdtemp("-meld")
         self.tempdirs.append(tmpdir)
 
@@ -590,35 +603,28 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.emit("create-diff", d)
             return True
         elif not silent:
-            import meldapp
-            msg = _("""
-                    Invoking 'patch' failed.
-                    
-                    Maybe you don't have 'GNU patch' installed,
-                    or you use an untested version of %s.
-                    
-                    Please send email bug report to:
-                    meld-list@gnome.org
-                    
-                    Containing the following information:
-                    
-                    - meld version: '%s'
-                    - source control software type: '%s'
-                    - source control software version: 'X.Y.Z'
-                    - the output of '%s somefile.txt'
-                    - patch command: '%s'
-                    (no need to actually run it, just provide
-                    the command line) 
-                    
-                    Replace 'X.Y.Z' by the actual version for the
-                    source control software you use.
-                    """) % (self.vc.NAME,
-                            meldapp.version,
-                            self.vc.NAME,
-                            " ".join(self.vc.diff_command()),
-                            " ".join(patchcmd))
-            msg = '\n'.join([line.strip() for line in msg.split('\n')])
-            misc.run_dialog(msg, parent=self)
+            primary = _("Error fetching original comparison file")
+            secondary = _("Meld couldn't obtain the original version of your "
+                          "comparison file. If you are using the most recent "
+                          "version of Meld, please report a bug, including as "
+                          "many details as possible.")
+
+            msgarea = self.msgarea_mgr.new_from_text_and_icon(
+                        gtk.STOCK_DIALOG_ERROR, primary, secondary)
+            msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
+            msgarea.add_button(_("Report a bug"), gtk.RESPONSE_OK)
+
+            def patch_error_cb(msgarea, response):
+                if response == gtk.RESPONSE_OK:
+                    bug_url = "https://bugzilla.gnome.org/enter_bug.cgi?" + \
+                              "product=meld"
+                    misc.open_uri(bug_url)
+                else:
+                    self.msgarea_mgr.clear()
+
+            msgarea.connect("response", patch_error_cb)
+            msgarea.show_all()
+
         return False
 
     def refresh(self):
