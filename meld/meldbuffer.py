@@ -30,6 +30,7 @@ class MeldBuffer(meld.util.sourceviewer.srcviewer.GtkTextBuffer):
         self.data = MeldBufferData(filename)
 
     def reset_buffer(self, filename):
+        """Clear the contents of the buffer and reset its metadata"""
         self.delete(*self.get_bounds())
 
         new_data = MeldBufferData(filename)
@@ -38,11 +39,25 @@ class MeldBuffer(meld.util.sourceviewer.srcviewer.GtkTextBuffer):
         self.data = new_data
 
     def get_iter_at_line_or_eof(self, line):
+        """Return a gtk.TextIter at the given line, or the end of the buffer.
+
+        This method is like get_iter_at_line, but if asked for a position past
+        the end of the buffer, this returns the end of the buffer; the
+        get_iter_at_line behaviour is to return the start of the last line in
+        the buffer.
+        """
         if line >= self.get_line_count():
             return self.get_end_iter()
         return self.get_iter_at_line(line)
 
     def insert_at_line(self, line, text):
+        """Insert text at the given line, or the end of the buffer.
+
+        This method is like insert, but if asked to insert something past the
+        last line in the buffer, this will insert at the end, and will add a
+        linebreak before the inserted text. The last line in a gtk.TextBuffer
+        is guaranteed never to have a newline, so we need to handle this.
+        """
         if line >= self.get_line_count():
             # TODO: We need to insert a linebreak here, but there is no
             # way to be certain what kind of linebreak to use.
