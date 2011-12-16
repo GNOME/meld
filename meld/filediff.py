@@ -1617,16 +1617,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.queue_draw()
             self.recompute_label()
 
-    def _find_next_chunk(self, direction, pane):
-        if direction == gtk.gdk.SCROLL_DOWN:
-            target = self.cursor.next
-        else: # direction == gtk.gdk.SCROLL_UP
-            target = self.cursor.prev
-
-        if target is None:
-            return None
-        return self.linediffer.get_chunk(target, pane)
-
     def next_diff(self, direction):
         pane = self._get_focused_pane()
         if pane == -1:
@@ -1636,7 +1626,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pane = 0
         buf = self.textbuffer[pane]
 
-        c = self._find_next_chunk(direction, pane)
+        if direction == gtk.gdk.SCROLL_DOWN:
+            target = self.cursor.next
+        else: # direction == gtk.gdk.SCROLL_UP
+            target = self.cursor.prev
+
+        if target is None:
+            return
+
+        c = self.linediffer.get_chunk(target, pane)
         if c:
             # Warp the cursor to the first line of next chunk
             if self.cursor.line != c[1]:
