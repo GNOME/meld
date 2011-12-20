@@ -52,8 +52,14 @@ class DiffMap(gtk.DrawingArea):
                                              self.on_scrollbar_style_set)
         scroll_size_hid = scrollbar.connect("size-allocate",
                                             self.on_scrollbar_size_allocate)
+        adj_change_hid = self._scrolladj.connect("changed",
+                                                  lambda w: self.queue_draw())
+        adj_val_hid = self._scrolladj.connect("value-changed",
+                                              lambda w: self.queue_draw())
         self._handlers = [(scrollbar, scroll_style_hid),
-                          (scrollbar, scroll_size_hid)]
+                          (scrollbar, scroll_size_hid),
+                          (self._scrolladj, adj_change_hid),
+                          (self._scrolladj, adj_val_hid)]
         self._difffunc = change_chunk_fn
         self.ctab = colour_map
         self.queue_draw()
@@ -91,7 +97,7 @@ class DiffMap(gtk.DrawingArea):
         context = self.window.cairo_create()
         context.translate(0, y_start)
         context.set_line_width(1)
-        context.rectangle(x0 - 1, -1, x1 + 2, height + 1)
+        context.rectangle(x0 - 3, -1, x1 + 6, height + 1)
         context.clip()
 
         darken = lambda color: [x * 0.8 for x in color]
@@ -104,6 +110,17 @@ class DiffMap(gtk.DrawingArea):
             context.fill_preserve()
             context.set_source_rgb(*darken(color))
             context.stroke()
+
+        page_color = (0., 0., 0., 0.1)
+        page_outline_color = (0.0, 0.0, 0.0, 0.3)
+        adj = self._scrolladj
+        s = round(height * (adj.value / adj.upper)) - 0.5
+        e = round(height * (adj.page_size / adj.upper))
+        context.set_source_rgba(*page_color)
+        context.rectangle(x0 - 2, s, x1 + 4, e)
+        context.fill_preserve()
+        context.set_source_rgba(*page_outline_color)
+        context.stroke()
 
     def do_button_press_event(self, event):
         if event.button == 1:
@@ -132,7 +149,7 @@ gtk.widget_class_install_style_property(DiffMap,
                                          'Width-wise padding',
                                          'Padding to be left between left and '
                                          'right edges and change blocks',
-                                         0.0, gobject.G_MAXFLOAT, 2.5,
+                                         0.0, gobject.G_MAXFLOAT, 3.5,
                                          gobject.PARAM_READABLE))
 
 
