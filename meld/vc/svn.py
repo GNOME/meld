@@ -83,7 +83,7 @@ class Vc(_vc.CachedVc):
                 if e.errno != errno.EAGAIN:
                     raise
 
-        for target in tree.findall("target"):
+        for target in tree.findall("target") + tree.findall("changelist"):
             for entry in (t for t in target.getchildren() if t.tag == "entry"):
                 path = entry.attrib["path"]
                 if path == "":
