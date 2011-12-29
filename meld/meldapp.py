@@ -186,7 +186,7 @@ class MeldApp(gobject.GObject):
             self.window.open_paths(files)
 
         tab = self.window.open_paths(args, options.auto_compare)
-        if tab:
+        if options.label and tab:
             tab.set_labels(options.label)
 
         if options.outfile and tab and isinstance(tab, filediff.FileDiff):
