@@ -64,7 +64,7 @@ class Vc(_vc.CachedVc):
         return [self.CMD] + self.CMDARGS + ["diff"]
     def update_command(self):
         return [self.CMD] + self.CMDARGS + ["pull"]
-    def add_command(self, binary=0):
+    def add_command(self):
         return [self.CMD] + self.CMDARGS + ["add"]
     def remove_command(self, force=0):
         return [self.CMD] + self.CMDARGS + ["rm"]

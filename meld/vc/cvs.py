@@ -48,9 +48,7 @@ class Vc(_vc.Vc):
         return [self.CMD,"diff","-u"]
     def update_command(self):
         return [self.CMD,"update"]
-    def add_command(self, binary=0):
-        if binary:
-            return [self.CMD,"add","-kb"]
+    def add_command(self):
         return [self.CMD,"add"]
     def remove_command(self, force=0):
         return [self.CMD,"rm","-f"]

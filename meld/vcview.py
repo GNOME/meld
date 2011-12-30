@@ -104,7 +104,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                          "VcCommit": ("commit_command", ("",)),
                          "VcUpdate": ("update_command", ()),
                          "VcAdd": ("add_command", ()),
-                         "VcAddBinary": ("add_command", ()),
                          "VcResolved": ("resolved_command", ()),
                          "VcRemove": ("remove_command", ()),
                          "VcRevert": ("revert_command", ()),
@@ -127,7 +126,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             ("VcCommit",        "vc-commit-24",             _("Co_mmit"),       None, _("Commit"), self.on_button_commit_clicked),
             ("VcUpdate",        "vc-update-24",             _("_Update"),       None, _("Update"), self.on_button_update_clicked),
             ("VcAdd",           "vc-add-24",                _("_Add"),          None, _("Add to VC"), self.on_button_add_clicked),
-            ("VcAddBinary",     None,                       _("Add _Binary"),   None, _("Add binary to VC"), self.on_button_add_binary_clicked),
             ("VcRemove",        "vc-remove-24",             _("_Remove"),       None, _("Remove from VC"), self.on_button_remove_clicked),
             ("VcResolved",      "vc-resolve-24",            _("_Resolved"),     None, _("Mark as resolved for VC"), self.on_button_resolved_clicked),
             ("VcRevert",        gtk.STOCK_REVERT_TO_SAVED,  None,               None, _("Revert to original"), self.on_button_revert_clicked),
@@ -530,9 +528,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         dialog.run()
 
     def on_button_add_clicked(self, obj):
-        self._command_on_selected(self.vc.add_command() )
-    def on_button_add_binary_clicked(self, obj):
-        self._command_on_selected(self.vc.add_command(binary=1))
+        self._command_on_selected(self.vc.add_command())
+
     def on_button_remove_clicked(self, obj):
         self._command_on_selected(self.vc.remove_command())
     def on_button_resolved_clicked(self, obj):

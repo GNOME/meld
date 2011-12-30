@@ -56,7 +56,7 @@ class Vc(_vc.CachedVc):
         # This hack allows you to update in the root directory
         return [self.CMD, "pull", "-a", "-p"]
 
-    def add_command(self, binary=0):
+    def add_command(self):
         return [self.CMD, "add"]
 
     def remove_command(self, force=0):

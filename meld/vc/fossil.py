@@ -53,7 +53,7 @@ class Vc(_vc.CachedVc):
     def update_command(self):
         return [self.CMD, "update"]
 
-    def add_command(self, binary=0):
+    def add_command(self):
         return [self.CMD, "add"]
 
     def remove_command(self, force=0):

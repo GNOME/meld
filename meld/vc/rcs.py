@@ -38,7 +38,7 @@ class Vc(_vc.Vc):
     def diff_command(self):
         return ["rcsdiff", "-u"]
 
-    def add_command(self, binary=0):
+    def add_command(self):
         return ["ci", "-l", "-i", "-t-'some file'", "-m'first revision'"]
 
     def _get_dirsandfiles(self, directory, dirs, files):

@@ -99,7 +99,7 @@ class Vc(object):
         raise NotImplementedError()
     def update_command(self):
         raise NotImplementedError()
-    def add_command(self, binary=0):
+    def add_command(self):
         raise NotImplementedError()
     def remove_command(self, force=0):
         raise NotImplementedError()
