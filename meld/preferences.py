@@ -219,15 +219,10 @@ class MeldPreferences(prefs.Preferences):
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "color_delete_bg" : prefs.Value(prefs.STRING, "DarkSeaGreen1"),
-        "color_delete_fg" : prefs.Value(prefs.STRING, "Red"),
         "color_replace_bg" : prefs.Value(prefs.STRING, "#ddeeff"),
-        "color_replace_fg" : prefs.Value(prefs.STRING, "Black"),
         "color_conflict_bg" : prefs.Value(prefs.STRING, "Pink"),
-        "color_conflict_fg" : prefs.Value(prefs.STRING, "Black"),
         "color_inline_bg" : prefs.Value(prefs.STRING, "LightSteelBlue2"),
         "color_inline_fg" : prefs.Value(prefs.STRING, "Red"),
-        "color_edited_bg" : prefs.Value(prefs.STRING, "gray90"),
-        "color_edited_fg" : prefs.Value(prefs.STRING, "Black"),
         "filters" : prefs.Value(prefs.STRING,
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n") + \
