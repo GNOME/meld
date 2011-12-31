@@ -268,14 +268,17 @@ class MeldPreferences(prefs.Preferences):
 
     def get_toolbar_style(self):
         if not hasattr(self, "_gconf"):
-            return gtk.TOOLBAR_BOTH
-        style = self._gconf.get_string('/desktop/gnome/interface/toolbar_style') or "both"
-        style = {"both":gtk.TOOLBAR_BOTH, "text":gtk.TOOLBAR_TEXT,
-                 "icon":gtk.TOOLBAR_ICONS, "icons":gtk.TOOLBAR_ICONS,
-                 "both_horiz":gtk.TOOLBAR_BOTH_HORIZ,
-                 "both-horiz":gtk.TOOLBAR_BOTH_HORIZ
-                 }[style]
-        return style
+            style = "both-horiz"
+        else:
+            style = self._gconf.get_string(
+                      '/desktop/gnome/interface/toolbar_style') or "both-horiz"
+        toolbar_styles = {
+            "both": gtk.TOOLBAR_BOTH, "text": gtk.TOOLBAR_TEXT,
+            "icon": gtk.TOOLBAR_ICONS, "icons": gtk.TOOLBAR_ICONS,
+            "both_horiz": gtk.TOOLBAR_BOTH_HORIZ,
+            "both-horiz": gtk.TOOLBAR_BOTH_HORIZ
+        }
+        return toolbar_styles[style]
 
     def get_editor_command(self, files, command_type=None):
         if command_type is None:
