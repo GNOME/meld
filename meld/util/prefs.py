@@ -61,9 +61,7 @@ INT = "int"
 STRING = "string"
 FLOAT = "float"
 LIST = "list"
-# PAIR = "pair"
 
-##
 
 class GConfPreferences(object):
     """Persistent preferences object that handles preferences via gconf.
@@ -95,7 +93,7 @@ class GConfPreferences(object):
         self._gconf.add_dir(rootkey, gconf.CLIENT_PRELOAD_NONE)
         self._gconf.notify_add(rootkey, self._on_preference_changed)
         for key, value in self._prefs.items():
-            gval = self._gconf.get_without_default("%s/%s" % (rootkey, key) )
+            gval = self._gconf.get_without_default("%s/%s" % (rootkey, key))
             if gval is not None:
                 if value.type == LIST:
                     # We only use/support str lists at the moment
@@ -123,7 +121,7 @@ class GConfPreferences(object):
                 setfunc("%s/%s" % (self._rootkey, attr), val)
             try:
                 for l in self._listeners:
-                    l(attr,val)
+                    l(attr, val)
             except StopIteration:
                 pass
 
@@ -131,7 +129,8 @@ class GConfPreferences(object):
         attr = entry.key[entry.key.rfind("/") + 1:]
         try:
             value = self._prefs[attr]
-        except KeyError: # unknown key, we don't care about it
+        # Changes for unknown keys are ignored
+        except KeyError:
             pass
         else:
             if entry.value is not None:
@@ -155,7 +154,7 @@ class GConfPreferences(object):
     def dump(self):
         """Print all preferences.
         """
-        for k,v in self._prefs.items():
+        for k, v in self._prefs.items():
             print k, v.type, v.current
 
 
@@ -265,7 +264,7 @@ class ConfigParserPreferences(object):
     def dump(self):
         """Print all preferences.
         """
-        for k,v in self._prefs.items():
+        for k, v in self._prefs.items():
             print k, v.type, v.current
 
 # Prefer gconf, falling back to ConfigParser
@@ -275,4 +274,3 @@ try:
 except ImportError:
     import ConfigParser
     Preferences = ConfigParserPreferences
-
