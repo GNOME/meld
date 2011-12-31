@@ -218,6 +218,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         tree.STATE_MISSING: "delete",
     }
 
+    state_actions = {
+        tree.STATE_NORMAL: ("normal", "ShowSame"),
+        tree.STATE_NEW: ("new", "ShowNew"),
+        tree.STATE_MODIFIED: ("modified", "ShowModified"),
+    }
+
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("dirdiff.ui"), "dirdiff")
@@ -232,9 +238,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         toggleactions = (
             ("IgnoreCase",   gtk.STOCK_ITALIC,  _("Case"),     None, _("Ignore case of entries"), self.on_button_ignore_case_toggled, False),
-            ("ShowSame",     gtk.STOCK_APPLY,   _("Same"),     None, _("Show identical"), self.on_filter_state_normal_toggled, True),
-            ("ShowNew",      gtk.STOCK_ADD,     _("New"),      None, _("Show new"), self.on_filter_state_new_toggled, True),
-            ("ShowModified", gtk.STOCK_REMOVE,  _("Modified"), None, _("Show modified"), self.on_filter_state_modified_toggled, True),
+            ("ShowSame",     gtk.STOCK_APPLY,   _("Same"),     None, _("Show identical"), self.on_filter_state_toggled, False),
+            ("ShowNew",      gtk.STOCK_ADD,     _("New"),      None, _("Show new"), self.on_filter_state_toggled, False),
+            ("ShowModified", gtk.STOCK_REMOVE,  _("Modified"), None, _("Show modified"), self.on_filter_state_toggled, False),
 
             ("CustomFilterMenu", None, _("Filters"), None, _("Set active filters"), self.on_custom_filter_menu_toggled, False),
         )
@@ -285,11 +291,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
         self.linediffs = [[], []]
-        self.state_filters = [
-            tree.STATE_NORMAL,
-            tree.STATE_MODIFIED,
-            tree.STATE_NEW,
-        ]
+
+        self.state_filters = []
+        for s in self.state_actions:
+            if self.state_actions[s][0] in self.prefs.dir_status_filters:
+                self.state_filters.append(s)
+                action_name = self.state_actions[s][1]
+                self.actiongroup.get_action(action_name).set_active(True)
 
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
@@ -831,21 +839,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_ignore_case_toggled(self, button):
         self.refresh()
 
-    def _update_state_filter(self, state, active):
-        assert state in (tree.STATE_NEW, tree.STATE_MODIFIED, tree.STATE_NORMAL)
-        try:
-            self.state_filters.remove( state )
-        except ValueError:
-            pass
-        if active:
-            self.state_filters.append( state )
+    def on_filter_state_toggled(self, button):
+        active_action = lambda a: self.actiongroup.get_action(a).get_active()
+        active_filters = [a for a in self.state_actions if \
+                          active_action(self.state_actions[a][1])]
+
+        if set(active_filters) == set(self.state_filters):
+            return
+
+        state_strs = [self.state_actions[s][0] for s in active_filters]
+        self.state_filters = active_filters
+        self.prefs.dir_status_filters = state_strs
         self.refresh()
-    def on_filter_state_normal_toggled(self, button):
-        self._update_state_filter( tree.STATE_NORMAL, button.get_active() )
-    def on_filter_state_new_toggled(self, button):
-        self._update_state_filter( tree.STATE_NEW, button.get_active() )
-    def on_filter_state_modified_toggled(self, button):
-        self._update_state_filter( tree.STATE_MODIFIED, button.get_active() )
 
     def _update_name_filter(self, button, idx):
         self.name_filters[idx].active = button.get_active()

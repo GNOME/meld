@@ -1,4 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2011-2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -59,7 +60,7 @@ BOOL = "bool"
 INT = "int"
 STRING = "string"
 FLOAT = "float"
-# LIST = "list"
+LIST = "list"
 # PAIR = "pair"
 
 ##
@@ -96,7 +97,12 @@ class GConfPreferences(object):
         for key, value in self._prefs.items():
             gval = self._gconf.get_without_default("%s/%s" % (rootkey, key) )
             if gval is not None:
-                value.current = getattr( gval, "get_%s" % value.type )()
+                if value.type == LIST:
+                    # We only use/support str lists at the moment
+                    val_tuple = getattr(gval, "get_%s" % value.type)()
+                    value.current = [v.get_string() for v in val_tuple]
+                else:
+                    value.current = getattr(gval, "get_%s" % value.type)()
 
     def __getattr__(self, attr):
         return self._prefs[attr].current
@@ -109,7 +115,12 @@ class GConfPreferences(object):
         if value.current != val:
             value.current = val
             setfunc = getattr(self._gconf, "set_%s" % value.type)
-            setfunc("%s/%s" % (self._rootkey, attr), val)
+            if value.type == LIST:
+                # We only use/support str lists at the moment
+                setfunc("%s/%s" % (self._rootkey, attr), gconf.VALUE_STRING,
+                        val)
+            else:
+                setfunc("%s/%s" % (self._rootkey, attr), val)
             try:
                 for l in self._listeners:
                     l(attr,val)
@@ -119,15 +130,19 @@ class GConfPreferences(object):
     def _on_preference_changed(self, client, timestamp, entry, extra):
         attr = entry.key[entry.key.rfind("/") + 1:]
         try:
-            valuestruct = self._prefs[attr]
+            value = self._prefs[attr]
         except KeyError: # unknown key, we don't care about it
             pass
         else:
-            if entry.value is not None: # value has changed
-                newval = getattr(entry.value, "get_%s" % valuestruct.type)()
-                setattr( self, attr, newval)
-            else: # value has been deleted
-                setattr( self, attr, valuestruct.default )
+            if entry.value is not None:
+                val = getattr(entry.value, "get_%s" % value.type)()
+                if value.type == LIST:
+                    # We only use/support str lists at the moment
+                    val = [v.get_string() for v in val]
+                setattr(self, attr, val)
+            # Setting a value to None deletes it and uses the default value
+            else:
+                setattr(self, attr, value.default)
 
     def notify_add(self, callback):
         """Register a callback to be called when a preference changes.
@@ -166,10 +181,11 @@ class ConfigParserPreferences(object):
         self.__dict__["_listeners"] = []
         self.__dict__["_prefs"] = initial
         self.__dict__["_type_mappings"] = {
-            BOOL   : self._parser.getboolean,
-            INT    : self._parser.getint,
-            STRING : self._parser.get,
-            FLOAT  : self._parser.getfloat
+            BOOL: self._parser.getboolean,
+            INT: self._parser.getint,
+            STRING: self._parser.get,
+            FLOAT: self._parser.getfloat,
+            LIST: self._parser.get,
         }
 
         if sys.platform == "win32":

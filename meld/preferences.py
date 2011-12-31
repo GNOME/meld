@@ -248,7 +248,9 @@ class MeldPreferences(prefs.Preferences):
             _("Script comment\t0\t#.*")),
         "ignore_blank_lines" : prefs.Value(prefs.BOOL, False),
         "toolbar_visible" : prefs.Value(prefs.BOOL, True),
-        "statusbar_visible" : prefs.Value(prefs.BOOL, True)
+        "statusbar_visible" : prefs.Value(prefs.BOOL, True),
+        "dir_status_filters": prefs.Value(prefs.LIST,
+                                          ['normal', 'modified', 'new']),
     }
 
     def __init__(self):
