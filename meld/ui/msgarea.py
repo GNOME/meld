@@ -39,6 +39,7 @@ class MsgArea(gtk.HBox):
         super(MsgArea, self).__init__(**kwargs)
 
         self.__contents = None
+        self.__labels = []
         self.__changing_style = False
 
         self.__main_hbox = gtk.HBox(False, 16) # FIXME: use style properties
@@ -109,6 +110,8 @@ class MsgArea(gtk.HBox):
 
         self.__changing_style = True
         self.set_style(style)
+        for label in self.__labels:
+            label.set_style(style)
         self.__changing_style = False
 
         window.destroy()
@@ -195,6 +198,8 @@ class MsgArea(gtk.HBox):
         vbox.show()
         hbox_content.pack_start (vbox, True, True, 0)
 
+        self.__labels = []
+
         primary_markup = "<b>%s</b>" % (primary_text,)
         primary_label = WrapLabel(primary_markup)
         primary_label.show()
@@ -204,6 +209,7 @@ class MsgArea(gtk.HBox):
         primary_label.set_alignment(0, 0.5)
         primary_label.set_flags(gtk.CAN_FOCUS)
         primary_label.set_selectable(True)
+        self.__labels.append(primary_label)
 
         if secondary_text:
             secondary_markup = "<small>%s</small>" % (secondary_text,)
@@ -215,6 +221,7 @@ class MsgArea(gtk.HBox):
             secondary_label.set_line_wrap(True)
             secondary_label.set_selectable(True)
             secondary_label.set_alignment(0, 0.5)
+            self.__labels.append(secondary_label)
 
         self.set_contents(hbox_content)
 
