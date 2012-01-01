@@ -39,8 +39,8 @@ class DiffTreeStore(gtk.TreeStore):
         self.textstyle = [
             '<span foreground="#888888">%s</span>', # STATE_IGNORED
             '<span foreground="#888888">%s</span>', # STATE_NONE
-            '<span foreground="black">%s</span>', # STATE_NORMAL
-            '<span foreground="black" style="italic">%s</span>', # STATE_NOCHANGE
+            '%s', # STATE_NORMAL
+            '<span style="italic">%s</span>', # STATE_NOCHANGE
             '<span foreground="#ff0000" background="yellow" weight="bold">%s</span>', # STATE_ERROR
             '<span foreground="#999999" style="italic">%s</span>', # STATE_EMPTY
             '<span foreground="#008800" weight="bold">%s</span>', # STATE_NEW
