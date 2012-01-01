@@ -251,6 +251,8 @@ class MeldPreferences(prefs.Preferences):
         "statusbar_visible" : prefs.Value(prefs.BOOL, True),
         "dir_status_filters": prefs.Value(prefs.LIST,
                                           ['normal', 'modified', 'new']),
+        "vc_status_filters": prefs.Value(prefs.LIST,
+                                         ['flatten', 'modified']),
     }
 
     def __init__(self):

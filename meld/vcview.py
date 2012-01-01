@@ -1,5 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2010-2011 Kai Willadsen <kai.willadsen@gmail.com>
+### Copyright (C) 2010-2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -111,6 +111,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                          "VcRevert": ("revert_command", ()),
                          }
 
+    state_actions = {
+        "flatten": ("VcFlatten", None),
+        "modified": ("VcShowModified", entry_modified),
+        "normal": ("VcShowNormal", entry_normal),
+        "unknown": ("VcShowNonVC", entry_nonvc),
+        "ignored": ("VcShowIgnored", entry_ignored),
+    }
+
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"), "vcview")
@@ -128,11 +136,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         )
 
         toggleactions = (
-            ("VcFlatten",     gtk.STOCK_GOTO_BOTTOM, _("_Flatten"),  None, _("Flatten directories"), self.on_button_flatten_toggled, True),
-            ("VcShowModified","filter-modified-24",  _("_Modified"), None, _("Show modified"), self.on_button_filter_toggled, True),
-            ("VcShowNormal",  "filter-normal-24",    _("_Normal"),   None, _("Show normal"), self.on_button_filter_toggled, False),
-            ("VcShowNonVC",   "filter-nonvc-24",     _("Non _VC"),   None, _("Show unversioned files"), self.on_button_filter_toggled, False),
-            ("VcShowIgnored", "filter-ignored-24",   _("Ignored"),   None, _("Show ignored files"), self.on_button_filter_toggled, False),
+            ("VcFlatten",     gtk.STOCK_GOTO_BOTTOM, _("_Flatten"),  None, _("Flatten directories"), self.on_button_flatten_toggled, False),
+            ("VcShowModified","filter-modified-24",  _("_Modified"), None, _("Show modified"), self.on_filter_state_toggled, False),
+            ("VcShowNormal",  "filter-normal-24",    _("_Normal"),   None, _("Show normal"), self.on_filter_state_toggled, False),
+            ("VcShowNonVC",   "filter-nonvc-24",     _("Non _VC"),   None, _("Show unversioned files"), self.on_filter_state_toggled, False),
+            ("VcShowIgnored", "filter-ignored-24",   _("Ignored"),   None, _("Show ignored files"), self.on_filter_state_toggled, False),
         )
 
         self.ui_file = paths.ui_dir("vcview-ui.xml")
@@ -180,6 +188,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         addCol(_("Rev"), COL_REVISION)
         addCol(_("Tag"), COL_TAG)
         addCol(_("Options"), COL_OPTIONS)
+
+
+        self.state_filters = []
+        for s in self.state_actions:
+            if s in self.prefs.vc_status_filters:
+                action_name = self.state_actions[s][0]
+                self.state_filters.append(s)
+                self.actiongroup.get_action(action_name).set_active(True)
 
         class ConsoleStream(object):
             def __init__(self, textview):
@@ -308,15 +324,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         rootname = self.model.value_path( self.model.get_iter(rootpath), 0 )
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
         todo = [ (rootpath, rootname) ]
-        filters = []
-        if self.actiongroup.get_action("VcShowModified").get_active():
-            filters.append( entry_modified )
-        if self.actiongroup.get_action("VcShowNormal").get_active():
-            filters.append( entry_normal )
-        if self.actiongroup.get_action("VcShowNonVC").get_active():
-            filters.append( entry_nonvc )
-        if self.actiongroup.get_action("VcShowIgnored").get_active():
-            filters.append( entry_ignored )
+
+        active_action = lambda a: self.actiongroup.get_action(a).get_active()
+        filters = [a[1] for a in self.state_actions.values() if \
+                   active_action(a[0]) and a[1]]
+
         def showable(entry):
             for f in filters:
                 if f(entry): return 1
@@ -420,9 +432,20 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return False
 
     def on_button_flatten_toggled(self, button):
-        self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
-        self.refresh()
-    def on_button_filter_toggled(self, button):
+        action = self.actiongroup.get_action("VcFlatten")
+        self.treeview_column_location.set_visible(action.get_active())
+        self.on_filter_state_toggled(button)
+
+    def on_filter_state_toggled(self, button):
+        active_action = lambda a: self.actiongroup.get_action(a).get_active()
+        active_filters = [a for a in self.state_actions if \
+                          active_action(self.state_actions[a][0])]
+
+        if set(active_filters) == set(self.state_filters):
+            return
+
+        self.state_filters = active_filters
+        self.prefs.vc_status_filters = active_filters
         self.refresh()
 
     def _get_selected_files(self):
