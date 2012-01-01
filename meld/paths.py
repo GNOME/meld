@@ -35,6 +35,12 @@ def locale_dir(*args): # i18n files
 def help_dir(*args): # help
     return os.path.join(_help_dir, *args)
 
+def share_dir(*args):
+    if os.path.exists(os.path.join(_share_dir, "data")):
+        return os.path.join(_share_dir, "data", *args)
+    else:
+        return os.path.join(_share_dir, *args)
+
 def ui_dir(*args):
     if os.path.exists(os.path.join(_share_dir, "data")):
         return os.path.join(_share_dir, "data", "ui", *args)

@@ -213,7 +213,7 @@ class LinkMap(gtk.DrawingArea):
                                  x_steps[0], f1 - 0.5)
                 context.close_path()
 
-            context.set_source_rgb(*self.fill_colors[c[0]])
+            context.set_source_color(self.fill_colors[c[0]])
             context.fill_preserve()
 
             chunk_idx = self.filediff.linediffer.locate_chunk(left, c[1])[0]
@@ -221,7 +221,7 @@ class LinkMap(gtk.DrawingArea):
                 context.set_source_rgba(1.0, 1.0, 1.0, 0.5)
                 context.fill_preserve()
 
-            context.set_source_rgb(*self.line_colors[c[0]])
+            context.set_source_color(self.line_colors[c[0]])
             context.stroke()
 
             if culled:

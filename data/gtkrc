@@ -1,0 +1,18 @@
+
+style "meld-color-scheme"
+{
+    color["insert-bg"] = "DarkSeaGreen1"
+    color["insert-outline"] = shade(0.8, @insert-bg)
+    color["delete-bg"] = "White"
+    color["delete-outline"] = shade(0.8, @delete-bg)
+    color["replace-bg"] = "#ddeeff"
+    color["replace-outline"] = shade(0.8, @replace-bg)
+    color["conflict-bg"] = "Pink"
+    color["conflict-outline"] = shade(0.8, @conflict-bg)
+    color["error-bg"] = "#fce94f"
+    color["error-outline"] = shade(0.8, @error-bg)
+    color["inline-bg"] = "LightSteelBlue2"
+    color["inline-fg"] = "Red"
+    color["current-line-highlight"] = "#ffff00"
+}
+widget "meldapp.*" style : lowest "meld-color-scheme"

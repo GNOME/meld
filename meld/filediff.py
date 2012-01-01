@@ -178,28 +178,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.in_nested_textview_gutter_expose = False
         self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
-        self.anim_source_id = []
-        self.animating_chunks = []
+        self.anim_source_id = [None for buf in self.textbuffer]
+        self.animating_chunks = [[] for buf in self.textbuffer]
         for buf in self.textbuffer:
-            buf.create_tag("inline", background=self.prefs.color_inline_bg,
-                                     foreground=self.prefs.color_inline_fg)
-            self.anim_source_id.append(None)
-            self.animating_chunks.append([])
-
-        def parse_to_cairo(color_spec):
-            c = gtk.gdk.color_parse(color_spec)
-            return tuple([x / 65535. for x in (c.red, c.green, c.blue)])
-
-        self.fill_colors = {"insert"   : parse_to_cairo(self.prefs.color_delete_bg),
-                            "delete"   : parse_to_cairo(self.prefs.color_delete_bg),
-                            "conflict" : parse_to_cairo(self.prefs.color_conflict_bg),
-                            "replace"  : parse_to_cairo(self.prefs.color_replace_bg)}
-
-        darken = lambda color: tuple([x * 0.8 for x in color])
-        self.line_colors = {"insert"   : darken(self.fill_colors["insert"]),
-                            "delete"   : darken(self.fill_colors["delete"]),
-                            "conflict" : darken(self.fill_colors["conflict"]),
-                            "replace"  : darken(self.fill_colors["replace"])}
+            buf.create_tag("inline")
 
         actions = (
             ("MakePatch", None, _("Format as patch..."), None, _("Create a patch using differences between files"), self.make_patch),
@@ -233,6 +215,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggle_actions)
         self.findbar = findbar.FindBar(self.table)
+
+        self.widget.connect("style-set", self.on_style_set)
+        self.widget.ensure_style()
+
         self.set_num_panes(num_panes)
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
         gnomeglade.connect_signal_handlers(self)
@@ -257,6 +243,33 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._keymask = value
         self.emit("action-mode-changed", mode)
     keymask = property(get_keymask, set_keymask)
+
+    def on_style_set(self, widget, prev_style):
+        style = widget.get_style()
+
+        lookup = lambda color_id, default: style.lookup_color(color_id) or \
+                                           gtk.gdk.color_parse(default)
+
+        for buf in self.textbuffer:
+            tag = buf.get_tag_table().lookup("inline")
+            tag.props.background = lookup("inline-bg", "LightSteelBlue2")
+            tag.props.foreground = lookup("inline-fg", "Red")
+
+        self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
+                            "delete"  : lookup("insert-bg", "DarkSeaGreen1"),
+                            "conflict": lookup("conflict-bg", "Pink"),
+                            "replace" : lookup("replace-bg", "#ddeeff")}
+        self.line_colors = {"insert"  : lookup("insert-outline", "#77f077"),
+                            "delete"  : lookup("insert-outline", "#77f077"),
+                            "conflict": lookup("conflict-outline", "#f0768b"),
+                            "replace" : lookup("replace-outline", "#8bbff3")}
+
+        for diffmap in self.diffmap:
+            diffmap.set_color_scheme([self.fill_colors, self.line_colors])
+
+        self.highlight_color = lookup("highlight-bg", "#ffff00")
+
+        self.queue_draw()
 
     def on_focus_change(self):
         self.keymask = 0
@@ -1212,21 +1225,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             context.rectangle(-0.5, ypos0 - 0.5, width + 1, ypos1 - ypos0)
             if change[1] != change[2]:
-                context.set_source_rgb(*self.fill_colors[change[0]])
+                context.set_source_color(self.fill_colors[change[0]])
                 context.fill_preserve()
                 if self.linediffer.locate_chunk(pane, change[1])[0] == self.cursor.chunk:
                     context.set_source_rgba(1.0, 1.0, 1.0, 0.5)
                     context.fill_preserve()
 
-            context.set_source_rgb(*self.line_colors[change[0]])
+            context.set_source_color(self.line_colors[change[0]])
             context.stroke()
 
         if textview.is_focus() and self.cursor.line is not None:
             it = self.textbuffer[pane].get_iter_at_line(self.cursor.line)
             ypos, line_height = self.textview[pane].get_line_yrange(it)
-            context.set_source_rgba(1, 1, 0, .25)
             context.rectangle(0, ypos - visible.y, width, line_height)
-            context.fill()
+            context.clip()
+            context.set_source_color(self.highlight_color)
+            context.paint_with_alpha(0.25)
 
         current_time = glib.get_current_time()
         new_anim_chunks = []
@@ -1532,16 +1546,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         yield c[0], y0 / max_y, (y + h) / max_y
                 return coords_by_chunk
 
-            colour_map = {
-                "conflict": (1.0, 0.75294117647058822, 0.79607843137254897),
-                "insert": (0.75686274509803919, 1.0, 0.75686274509803919),
-                "replace": (0.8666666666666667, 0.93333333333333335, 1.0),
-                "delete": (0.75686274509803919, 1.0, 0.75686274509803919)
-            }
-
             for (w, i) in zip(self.diffmap, (0, self.num_panes - 1)):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
-                w.setup(scroll, coords_iter(i), colour_map)
+                w.setup(scroll, coords_iter(i), [self.fill_colors, self.line_colors])
 
             for (w, i) in zip(self.linkmap, (0, self.num_panes - 2)):
                 w.associate(self, self.textview[i], self.textview[i + 1])
@@ -1599,8 +1606,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
         # this animation is not visible; this happens often in three-way diffs
-        rgba0 = self.fill_colors['insert'] + (1.0,)
-        rgba1 = self.fill_colors['insert'] + (0.0,)
+        rgba0 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (1.0,)
+        rgba1 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (0.0,)
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[dst].append(anim)
 
@@ -1619,8 +1626,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
         # this animation is not visible; this happens often in three-way diffs
-        rgba0 = self.fill_colors['insert'] + (1.0,)
-        rgba1 = self.fill_colors['insert'] + (0.0,)
+        rgba0 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (1.0,)
+        rgba1 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (0.0,)
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[dst].append(anim)
 
@@ -1633,8 +1640,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark0 = b0.create_mark(None, it, True)
         mark1 = b0.create_mark(None, it, True)
         # TODO: Need a more specific colour here; conflict is wrong
-        rgba0 = self.fill_colors['conflict'] + (1.0,)
-        rgba1 = self.fill_colors['conflict'] + (0.0,)
+        rgba0 = misc.gdk_to_cairo_color(self.fill_colors['conflict']) + (1.0,)
+        rgba1 = misc.gdk_to_cairo_color(self.fill_colors['conflict']) + (0.0,)
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[src].append(anim)
 

@@ -212,7 +212,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         tree.STATE_ERROR: "error",
         tree.STATE_EMPTY: None,
         tree.STATE_MODIFIED: "replace",
-        tree.STATE_CONFLICT: "conflict",
         tree.STATE_MISSING: "delete",
     }
 
@@ -263,6 +262,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
                                      "diffmap", "linkmap", "msgarea_mgr",
                                      "vbox"])
+
+        self.widget.connect("style-set", self.on_style_set)
+        self.widget.ensure_style()
+
         self.set_num_panes(num_panes)
         self.focus_in_events = []
         self.focus_out_events = []
@@ -299,6 +302,31 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.state_filters.append(s)
                 action_name = self.state_actions[s][1]
                 self.actiongroup.get_action(action_name).set_active(True)
+
+    def on_style_set(self, widget, prev_style):
+        style = widget.get_style()
+
+        lookup = lambda color_id, default: style.lookup_color(color_id) or \
+                                           gtk.gdk.color_parse(default)
+
+        self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
+                            "delete"  : lookup("delete-bg", "White"),
+                            "replace" : lookup("replace-bg", "#ddeeff"),
+                            "error"   : lookup("error-bg", "#fce94f")}
+        self.line_colors = {"insert"  : lookup("insert-outline", "#77f077"),
+                            "delete"  : lookup("delete-outline", "Grey"),
+                            "replace" : lookup("replace-outline", "#8bbff3"),
+                            "error"   : lookup("error-outline", "#edd400")}
+
+        for diffmap in self.diffmap:
+            diffmap.set_color_scheme([self.fill_colors, self.line_colors])
+        self.queue_draw()
+
+    def queue_draw(self):
+        for treeview in self.treeview:
+            treeview.queue_draw()
+        for diffmap in self.diffmap:
+            diffmap.queue_draw()
 
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
@@ -1087,18 +1115,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.treeview[i].set_model(self.model)
             self.model.connect("row-deleted", self.on_treemodel_row_deleted)
 
-            colour_map = {
-                "conflict": (1.0, 0.75294117647058822, 0.79607843137254897),
-                "error": (0.9882352941176, 0.9137254901960, 0.30980392156862),
-                "insert": (0.75686274509803919, 1.0, 0.75686274509803919),
-                "replace": (0.8666666666666667, 0.93333333333333335, 1.0),
-                "delete": (1.0, 1.0, 1.0),
-            }
-
             for (w, i) in zip(self.diffmap, (0, n - 1)):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
                 idx = 1 if i else 0
-                w.setup(scroll, self.get_state_traversal(idx), colour_map)
+                w.setup(scroll, self.get_state_traversal(idx), [self.fill_colors, self.line_colors])
 
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]

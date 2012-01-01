@@ -61,6 +61,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/applications
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	$(PYTHON) -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
+	install -m 644 data/gtkrc \
+		$(DESTDIR)$(sharedir_)
 	install -m 644 \
 		data/ui/*.ui \
 		$(DESTDIR)$(sharedir_)/ui

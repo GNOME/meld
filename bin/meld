@@ -130,6 +130,7 @@ except (ImportError, AssertionError) as e:
 
 
 gtk.icon_theme_get_default().append_search_path(meld.paths.icon_dir())
+gtk.rc_parse(meld.paths.share_dir("gtkrc"))
 
 def main():
     import meld.meldapp

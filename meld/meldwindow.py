@@ -126,6 +126,7 @@ class MeldWindow(gnomeglade.Component):
     def __init__(self):
         gladefile = paths.ui_dir("meldapp.ui")
         gnomeglade.Component.__init__(self, gladefile, "meldapp")
+        self.widget.set_name("meldapp")
 
         actions = (
             ("FileMenu", None, _("_File")),

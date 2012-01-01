@@ -135,6 +135,9 @@ def make_tool_button_widget(label):
     hbox.show_all()
     return hbox
 
+def gdk_to_cairo_color(color):
+    return (color.red / 65535., color.green / 65535., color.blue / 65535.)
+
 def all_equal(alist):
     """Return true if all members of the list are equal to the first.
 
