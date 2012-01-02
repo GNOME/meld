@@ -53,7 +53,7 @@ class DiffTreeStore(gtk.TreeStore):
             (None,      None,      roman,     normal, None), # STATE_NORMAL
             (None,      None,      italic,    normal, None), # STATE_NOCHANGE
             ("#ff0000", "yellow",  roman,     bold,   None), # STATE_ERROR
-            ("#999999", None,      italic,    normal, None), # STATE_EMPTY
+            ("#888888", None,      italic,    normal, None), # STATE_EMPTY
             ("#008800", None,      roman,     bold,   None), # STATE_NEW
             ("#880000", None,      roman,     bold,   None), # STATE_MODIFIED
             ("#ff0000", "#ffeeee", roman,     bold,   None), # STATE_CONFLICT
@@ -69,11 +69,11 @@ class DiffTreeStore(gtk.TreeStore):
             ("text-x-generic", "folder", None,      None),      # NOCHANGE
             (None,             None    , None,      None),      # ERROR
             (None,             None    , None,      None),      # EMPTY
-            ("text-x-generic", "folder", "#00ff00", None),      # NEW
-            ("text-x-generic", "folder", "#ff0000", None),      # MODIFIED
-            ("text-x-generic", "folder", "#ff0000", None),      # CONFLICT
-            ("text-x-generic", "folder", "#ff0000", None),      # REMOVED
-            ("text-x-generic", "folder", "#ffffff", "#ffffff"), # MISSING
+            ("text-x-generic", "folder", "#008800", None),      # NEW
+            ("text-x-generic", "folder", "#880000", None),      # MODIFIED
+            ("text-x-generic", "folder", "#880000", None),      # CONFLICT
+            ("text-x-generic", "folder", "#880000", None),      # REMOVED
+            ("text-x-generic", "folder", "#888888", "#888888"), # MISSING
         ]
 
         assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
