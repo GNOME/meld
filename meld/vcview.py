@@ -159,6 +159,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             button.props.icon_name = button.props.stock_id
         self.tempdirs = []
         self.model = VcTreeStore()
+        self.widget.connect("style-set", self.model.on_style_set)
         self.treeview.set_model(self.model)
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
@@ -175,8 +176,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                               icon_tint=col_index(tree.COL_TINT, 0))
         column.set_attributes(rentext,
                     text=col_index(tree.COL_TEXT, 0),
-                    foreground=col_index(tree.COL_FG, 0),
-                    background=col_index(tree.COL_BG, 0),
+                    foreground_gdk=col_index(tree.COL_FG, 0),
+                    background_gdk=col_index(tree.COL_BG, 0),
                     style=col_index(tree.COL_STYLE, 0),
                     weight=col_index(tree.COL_WEIGHT, 0),
                     strikethrough=col_index(tree.COL_STRIKE, 0))

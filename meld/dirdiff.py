@@ -266,6 +266,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.widget.ensure_style()
 
         self.set_num_panes(num_panes)
+
+        self.widget.connect("style-set", self.model.on_style_set)
+
         self.focus_in_events = []
         self.focus_out_events = []
         for treeview in self.treeview:
@@ -286,8 +289,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.pack_start(rentext, expand=1)
             col_index = self.model.column_index
             column.set_attributes(rentext, text=col_index(tree.COL_TEXT,i),
-                                  foreground=col_index(tree.COL_FG, i),
-                                  background=col_index(tree.COL_BG, i),
+                                  foreground_gdk=col_index(tree.COL_FG, i),
+                                  background_gdk=col_index(tree.COL_BG, i),
                                   style=col_index(tree.COL_STYLE, i),
                                   weight=col_index(tree.COL_WEIGHT, i),
                                   strikethrough=col_index(tree.COL_STRIKE, i))

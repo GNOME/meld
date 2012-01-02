@@ -22,7 +22,8 @@ import pango
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_BG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = range(11)
 
-COL_TYPES = (str, str, str, str, str, str, str, pango.Style, pango.Weight, bool)
+COL_TYPES = (str, str, str, str, str, gtk.gdk.Color, gtk.gdk.Color,
+             pango.Style, pango.Weight, bool)
 
 
 from meld.vc._vc import \
@@ -42,38 +43,56 @@ class DiffTreeStore(gtk.TreeStore):
         self.ntree = ntree
         self._setup_default_styles()
 
-    def _setup_default_styles(self):
+    def on_style_set(self, widget, prev_style):
+        style = widget.get_style()
+        self._setup_default_styles(style)
+
+    def _setup_default_styles(self, style=None):
         roman, italic = pango.STYLE_NORMAL, pango.STYLE_ITALIC
         normal, bold = pango.WEIGHT_NORMAL, pango.WEIGHT_BOLD
 
+        if style:
+            lookup = lambda color_id, default: style.lookup_color(color_id)
+        else:
+            lookup = lambda color_id, default: gtk.gdk.color_parse(default)
+
+        unk_fg = lookup("unknown-text", "#888888")
+        new_fg = lookup("insert-text", "#008800")
+        mod_fg = lookup("replace-text", "#0044dd")
+        del_fg = lookup("delete-text", "#880000")
+        err_fg = lookup("error-text", "#ff0000")
+        err_bg = lookup("error-bg", "#ffff00")
+        con_fg = lookup("conflict-text", "#ff0000")
+        con_bg = lookup("conflict-bg", "#ffdddd")
+
         self.text_attributes = [
             # foreground, background, style, weight, strikethrough
-            ("#888888", None,      roman,     normal, None), # STATE_IGNORED
-            ("#888888", None,      roman,     normal, None), # STATE_NONE
-            (None,      None,      roman,     normal, None), # STATE_NORMAL
-            (None,      None,      italic,    normal, None), # STATE_NOCHANGE
-            ("#ff0000", "yellow",  roman,     bold,   None), # STATE_ERROR
-            ("#888888", None,      italic,    normal, None), # STATE_EMPTY
-            ("#008800", None,      roman,     bold,   None), # STATE_NEW
-            ("#880000", None,      roman,     bold,   None), # STATE_MODIFIED
-            ("#ff0000", "#ffeeee", roman,     bold,   None), # STATE_CONFLICT
-            ("#880000", None,      roman,     bold,   True), # STATE_REMOVED
-            ("#888888", None,      roman,     normal, True), # STATE_MISSING
+            (unk_fg, None,   roman,  normal, None),  # STATE_IGNORED
+            (unk_fg, None,   roman,  normal, None),  # STATE_NONE
+            (None,   None,   roman,  normal, None),  # STATE_NORMAL
+            (None,   None,   italic, normal, None),  # STATE_NOCHANGE
+            (err_fg, err_bg, roman,  bold,   None),  # STATE_ERROR
+            (unk_fg, None,   italic, normal, None),  # STATE_EMPTY
+            (new_fg, None,   roman,  bold,   None),  # STATE_NEW
+            (mod_fg, None,   roman,  bold,   None),  # STATE_MODIFIED
+            (con_fg, con_bg, roman,  bold,   None),  # STATE_CONFLICT
+            (del_fg, None,   roman,  bold,   True),  # STATE_REMOVED
+            (unk_fg, None,   roman,  normal, True),  # STATE_MISSING
         ]
 
         self.icon_details = [
             # file-icon, folder-icon, file-tint, folder-tint
-            ("text-x-generic", "folder", None,      None),      # IGNORED
-            ("text-x-generic", "folder", None,      None),      # NONE
-            ("text-x-generic", "folder", None,      None),      # NORMAL
-            ("text-x-generic", "folder", None,      None),      # NOCHANGE
-            (None,             None    , None,      None),      # ERROR
-            (None,             None    , None,      None),      # EMPTY
-            ("text-x-generic", "folder", "#008800", None),      # NEW
-            ("text-x-generic", "folder", "#880000", None),      # MODIFIED
-            ("text-x-generic", "folder", "#880000", None),      # CONFLICT
-            ("text-x-generic", "folder", "#880000", None),      # REMOVED
-            ("text-x-generic", "folder", "#888888", "#888888"), # MISSING
+            ("text-x-generic", "folder", None,   None),    # IGNORED
+            ("text-x-generic", "folder", None,   None),    # NONE
+            ("text-x-generic", "folder", None,   None),    # NORMAL
+            ("text-x-generic", "folder", None,   None),    # NOCHANGE
+            (None,             None    , None,   None),    # ERROR
+            (None,             None    , None,   None),    # EMPTY
+            ("text-x-generic", "folder", new_fg, None),    # NEW
+            ("text-x-generic", "folder", mod_fg, None),    # MODIFIED
+            ("text-x-generic", "folder", con_fg, None),    # CONFLICT
+            ("text-x-generic", "folder", del_fg, None),    # REMOVED
+            ("text-x-generic", "folder", unk_fg, unk_fg),  # MISSING
         ]
 
         assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
