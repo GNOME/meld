@@ -61,35 +61,22 @@ class DiffTreeStore(gtk.TreeStore):
             ("#888888", None,      roman,     normal, True), # STATE_MISSING
         ]
 
-        self.pixstyle = [
-            ("text-x-generic", "folder"), # IGNORED
-            ("text-x-generic", "folder"), # NONE
-            ("text-x-generic", "folder"), # NORMAL
-            ("text-x-generic", "folder"), # NOCHANGE
-            (None,             None),     # ERROR
-            (None,             None),     # EMPTY
-            ("text-x-generic", "folder"), # NEW
-            ("text-x-generic", "folder"), # MODIFIED
-            ("text-x-generic", "folder"), # CONFLICT
-            ("text-x-generic", "folder"), # REMOVED
-            ("text-x-generic", "folder"), # MISSING
+        self.icon_details = [
+            # file-icon, folder-icon, file-tint, folder-tint
+            ("text-x-generic", "folder", None,      None),      # IGNORED
+            ("text-x-generic", "folder", None,      None),      # NONE
+            ("text-x-generic", "folder", None,      None),      # NORMAL
+            ("text-x-generic", "folder", None,      None),      # NOCHANGE
+            (None,             None    , None,      None),      # ERROR
+            (None,             None    , None,      None),      # EMPTY
+            ("text-x-generic", "folder", "#00ff00", None),      # NEW
+            ("text-x-generic", "folder", "#ff0000", None),      # MODIFIED
+            ("text-x-generic", "folder", "#ff0000", None),      # CONFLICT
+            ("text-x-generic", "folder", "#ff0000", None),      # REMOVED
+            ("text-x-generic", "folder", "#ffffff", "#ffffff"), # MISSING
         ]
 
-        self.icon_tints = [
-            (None,      None),      # IGNORED
-            (None,      None),      # NONE
-            (None,      None),      # NORMAL
-            (None,      None),      # NOCHANGE
-            (None,      None),      # ERROR
-            (None,      None),      # EMPTY
-            ("#00ff00", None),      # NEW
-            ("#ff0000", None),      # MODIFIED
-            ("#ff0000", None),      # CONFLICT
-            ("#ff0000", None),      # REMOVED
-            ("#ffffff", "#ffffff"), # MISSING
-        ]
-
-        assert len(self.pixstyle) == len(self.icon_tints) == len(self.text_attributes) == STATE_MAX
+        assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
 
     def value_paths(self, it):
         return [self.value_path(it, i) for i in range(self.ntree)]
@@ -131,8 +118,8 @@ class DiffTreeStore(gtk.TreeStore):
         TINT  = self.column_index(COL_TINT,  pane)
         self.set_value(it, STATE, str(state))
         self.set_value(it, TEXT, gobject.markup_escape_text(label))
-        self.set_value(it, ICON,  self.pixstyle[state][isdir])
-        self.set_value(it, TINT,  self.icon_tints[state][isdir])
+        self.set_value(it, ICON,  self.icon_details[state][1 if isdir else 0])
+        self.set_value(it, TINT,  self.icon_details[state][3 if isdir else 2])
 
         state_attr = self.text_attributes[state]
         self.set_value(it, self.column_index(COL_FG, pane), state_attr[0])
