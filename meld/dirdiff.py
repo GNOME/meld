@@ -290,7 +290,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             col_index = self.model.column_index
             column.set_attributes(rentext, text=col_index(tree.COL_TEXT,i),
                                   foreground_gdk=col_index(tree.COL_FG, i),
-                                  background_gdk=col_index(tree.COL_BG, i),
                                   style=col_index(tree.COL_STYLE, i),
                                   weight=col_index(tree.COL_WEIGHT, i),
                                   strikethrough=col_index(tree.COL_STRIKE, i))

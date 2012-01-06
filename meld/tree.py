@@ -19,11 +19,11 @@ import gobject
 import gtk
 import pango
 
-COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_BG, COL_STYLE, \
-    COL_WEIGHT, COL_STRIKE, COL_END = range(11)
+COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
+    COL_WEIGHT, COL_STRIKE, COL_END = range(10)
 
-COL_TYPES = (str, str, str, str, str, gtk.gdk.Color, gtk.gdk.Color,
-             pango.Style, pango.Weight, bool)
+COL_TYPES = (str, str, str, str, str, gtk.gdk.Color, pango.Style,
+             pango.Weight, bool)
 
 
 from meld.vc._vc import \
@@ -60,24 +60,22 @@ class DiffTreeStore(gtk.TreeStore):
         new_fg = lookup("insert-text", "#008800")
         mod_fg = lookup("replace-text", "#0044dd")
         del_fg = lookup("delete-text", "#880000")
-        err_fg = lookup("error-text", "#ff0000")
-        err_bg = lookup("error-bg", "#ffff00")
+        err_fg = lookup("error-text", "#ffff00")
         con_fg = lookup("conflict-text", "#ff0000")
-        con_bg = lookup("conflict-bg", "#ffdddd")
 
         self.text_attributes = [
-            # foreground, background, style, weight, strikethrough
-            (unk_fg, None,   roman,  normal, None),  # STATE_IGNORED
-            (unk_fg, None,   roman,  normal, None),  # STATE_NONE
-            (None,   None,   roman,  normal, None),  # STATE_NORMAL
-            (None,   None,   italic, normal, None),  # STATE_NOCHANGE
-            (err_fg, err_bg, roman,  bold,   None),  # STATE_ERROR
-            (unk_fg, None,   italic, normal, None),  # STATE_EMPTY
-            (new_fg, None,   roman,  bold,   None),  # STATE_NEW
-            (mod_fg, None,   roman,  bold,   None),  # STATE_MODIFIED
-            (con_fg, con_bg, roman,  bold,   None),  # STATE_CONFLICT
-            (del_fg, None,   roman,  bold,   True),  # STATE_REMOVED
-            (unk_fg, None,   roman,  normal, True),  # STATE_MISSING
+            # foreground, style, weight, strikethrough
+            (unk_fg, roman,  normal, None),  # STATE_IGNORED
+            (unk_fg, roman,  normal, None),  # STATE_NONE
+            (None,   roman,  normal, None),  # STATE_NORMAL
+            (None,   italic, normal, None),  # STATE_NOCHANGE
+            (err_fg, roman,  bold,   None),  # STATE_ERROR
+            (unk_fg, italic, normal, None),  # STATE_EMPTY
+            (new_fg, roman,  bold,   None),  # STATE_NEW
+            (mod_fg, roman,  bold,   None),  # STATE_MODIFIED
+            (con_fg, roman,  bold,   None),  # STATE_CONFLICT
+            (del_fg, roman,  bold,   True),  # STATE_REMOVED
+            (unk_fg, roman,  normal, True),  # STATE_MISSING
         ]
 
         self.icon_details = [
@@ -86,7 +84,7 @@ class DiffTreeStore(gtk.TreeStore):
             ("text-x-generic", "folder", None,   None),    # NONE
             ("text-x-generic", "folder", None,   None),    # NORMAL
             ("text-x-generic", "folder", None,   None),    # NOCHANGE
-            (None,             None    , None,   None),    # ERROR
+            ("dialog-warning", None    , None,   None),    # ERROR
             (None,             None    , None,   None),    # EMPTY
             ("text-x-generic", "folder", new_fg, None),    # NEW
             ("text-x-generic", "folder", mod_fg, None),    # MODIFIED
@@ -142,10 +140,9 @@ class DiffTreeStore(gtk.TreeStore):
 
         state_attr = self.text_attributes[state]
         self.set_value(it, self.column_index(COL_FG, pane), state_attr[0])
-        self.set_value(it, self.column_index(COL_BG, pane), state_attr[1])
-        self.set_value(it, self.column_index(COL_STYLE, pane), state_attr[2])
-        self.set_value(it, self.column_index(COL_WEIGHT, pane), state_attr[3])
-        self.set_value(it, self.column_index(COL_STRIKE, pane), state_attr[4])
+        self.set_value(it, self.column_index(COL_STYLE, pane), state_attr[1])
+        self.set_value(it, self.column_index(COL_WEIGHT, pane), state_attr[2])
+        self.set_value(it, self.column_index(COL_STRIKE, pane), state_attr[3])
 
     def get_state(self, it, pane):
         STATE = self.column_index(COL_STATE, pane)

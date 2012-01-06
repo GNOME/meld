@@ -84,7 +84,7 @@ class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
         tree.DiffTreeStore.__init__(self, 1, [str] * 5)
         self.text_attributes[tree.STATE_MISSING] = \
-                ("#000088", None, pango.STYLE_NORMAL, pango.WEIGHT_BOLD, True)
+                ("#000088", pango.STYLE_NORMAL, pango.WEIGHT_BOLD, True)
 
 ################################################################################
 # filters
@@ -177,7 +177,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         column.set_attributes(rentext,
                     text=col_index(tree.COL_TEXT, 0),
                     foreground_gdk=col_index(tree.COL_FG, 0),
-                    background_gdk=col_index(tree.COL_BG, 0),
                     style=col_index(tree.COL_STYLE, 0),
                     weight=col_index(tree.COL_WEIGHT, 0),
                     strikethrough=col_index(tree.COL_STRIKE, 0))
