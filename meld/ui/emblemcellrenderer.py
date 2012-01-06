@@ -91,7 +91,14 @@ class EmblemCellRenderer(gtk.GenericCellRenderer):
 
             if self._tint_color:
                 c = self._tint_color
-                context.set_source_rgba(c.red, c.green, c.blue, 0.2)
+                r, g, b = [x / 65535. for x in (c.red, c.green, c.blue)]
+                # Figure out the difference between our tint colour and an
+                # empirically determined (i.e., guessed) satisfying luma and
+                # adjust the base colours accordingly
+                luma = (r + r + b + g + g + g) / 6.
+                extra_luma = (1.2 - luma) / 3.
+                r, g, b = [min(x + extra_luma, 1.) for x in r, g, b]
+                context.set_source_rgba(r, g, b, 0.4)
                 context.set_operator(cairo.OPERATOR_ATOP)
                 context.paint()
 
