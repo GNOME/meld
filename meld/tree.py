@@ -131,20 +131,19 @@ class DiffTreeStore(gtk.TreeStore):
         self.set_state(it, pane, state, name, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
-        STATE = self.column_index(COL_STATE, pane)
-        TEXT  = self.column_index(COL_TEXT,  pane)
-        ICON  = self.column_index(COL_ICON,  pane)
-        TINT  = self.column_index(COL_TINT,  pane)
-        self.set_value(it, STATE, str(state))
-        self.set_value(it, TEXT, gobject.markup_escape_text(label))
-        self.set_value(it, ICON,  self.icon_details[state][1 if isdir else 0])
-        self.set_value(it, TINT,  self.icon_details[state][3 if isdir else 2])
+        col_idx = self.column_index
+        icon = self.icon_details[state][1 if isdir else 0]
+        tint = self.icon_details[state][3 if isdir else 2]
+        self.set_value(it, col_idx(COL_STATE, pane), str(state))
+        self.set_value(it, col_idx(COL_TEXT,  pane), label)
+        self.set_value(it, col_idx(COL_ICON,  pane), icon)
+        self.set_value(it, col_idx(COL_TINT,  pane), tint)
 
-        state_attr = self.text_attributes[state]
-        self.set_value(it, self.column_index(COL_FG, pane), state_attr[0])
-        self.set_value(it, self.column_index(COL_STYLE, pane), state_attr[1])
-        self.set_value(it, self.column_index(COL_WEIGHT, pane), state_attr[2])
-        self.set_value(it, self.column_index(COL_STRIKE, pane), state_attr[3])
+        fg, style, weight, strike = self.text_attributes[state]
+        self.set_value(it, col_idx(COL_FG, pane), fg)
+        self.set_value(it, col_idx(COL_STYLE, pane), style)
+        self.set_value(it, col_idx(COL_WEIGHT, pane), weight)
+        self.set_value(it, col_idx(COL_STRIKE, pane), strike)
 
     def get_state(self, it, pane):
         STATE = self.column_index(COL_STATE, pane)
