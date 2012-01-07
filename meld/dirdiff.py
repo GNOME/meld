@@ -212,6 +212,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         tree.STATE_EMPTY: None,
         tree.STATE_MODIFIED: "replace",
         tree.STATE_MISSING: "delete",
+        tree.STATE_NONEXIST: "delete",
     }
 
     state_actions = {
@@ -1050,7 +1051,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 one_isdir[j] = isdir
         for j in range(self.model.ntree):
             if not mod_times[j]:
-                self.model.set_path_state(it, j, tree.STATE_MISSING,
+                self.model.set_path_state(it, j, tree.STATE_NONEXIST,
                                           True in one_isdir)
         return different
 

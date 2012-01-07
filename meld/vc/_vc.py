@@ -33,11 +33,11 @@ from gettext import gettext as _
 STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
 STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
-STATE_MISSING, STATE_MAX = range(12)
+STATE_MISSING, STATE_NONEXIST, STATE_MAX = range(13)
 
 class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.
-    states = _("Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing").split(":")
+    states = _("Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:Not present").split(":")
     states[STATE_CONFLICT] = "<b>%s</b>" % states[STATE_CONFLICT]
     assert len(states)==STATE_MAX
 

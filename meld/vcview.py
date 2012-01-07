@@ -83,8 +83,6 @@ COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tr
 class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
         tree.DiffTreeStore.__init__(self, 1, [str] * 5)
-        self.text_attributes[tree.STATE_MISSING] = \
-                ("#000088", pango.STYLE_NORMAL, pango.WEIGHT_BOLD, True)
 
 ################################################################################
 # filters

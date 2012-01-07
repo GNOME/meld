@@ -30,7 +30,7 @@ from meld.vc._vc import \
     STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
     STATE_ERROR, STATE_EMPTY, STATE_NEW, \
     STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
-    STATE_MISSING, STATE_MAX
+    STATE_MISSING, STATE_NONEXIST, STATE_MAX
 
 
 class DiffTreeStore(gtk.TreeStore):
@@ -75,7 +75,8 @@ class DiffTreeStore(gtk.TreeStore):
             (mod_fg, roman,  bold,   None),  # STATE_MODIFIED
             (con_fg, roman,  bold,   None),  # STATE_CONFLICT
             (del_fg, roman,  bold,   True),  # STATE_REMOVED
-            (unk_fg, roman,  normal, True),  # STATE_MISSING
+            (del_fg, roman,  bold,   True),  # STATE_MISSING
+            (unk_fg, roman,  normal, True),  # STATE_NONEXIST
         ]
 
         self.icon_details = [
@@ -91,6 +92,7 @@ class DiffTreeStore(gtk.TreeStore):
             ("text-x-generic", "folder", con_fg, None),    # CONFLICT
             ("text-x-generic", "folder", del_fg, None),    # REMOVED
             ("text-x-generic", "folder", unk_fg, unk_fg),  # MISSING
+            ("text-x-generic", "folder", unk_fg, unk_fg),  # NONEXIST
         ]
 
         assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
