@@ -72,6 +72,8 @@ class FilterEntry(object):
     @classmethod
     def parse(cls, string, filter_type):
         elements = string.split("\t")
+        if len(elements) < 3:
+            return None
         name, active = elements[0], bool(int(elements[1]))
         filter_string = " ".join(elements[2:])
         compiled = FilterEntry.compile_filter(filter_string, filter_type)
@@ -128,7 +130,8 @@ class MeldApp(gobject.GObject):
             self.emit('text-filters-changed')
 
     def _parse_filters(self, string, filt_type):
-        return [FilterEntry.parse(l, filt_type) for l in string.split("\n")]
+        filt = [FilterEntry.parse(l, filt_type) for l in string.split("\n")]
+        return [f for f in filt if f is not None]
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""

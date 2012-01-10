@@ -45,6 +45,8 @@ class FilterList(listwidget.ListWidget):
 
         for filtstring in getattr(self.prefs, self.key).split("\n"):
             filt = meldapp.FilterEntry.parse(filtstring, filter_type)
+            if filt is None:
+                continue
             valid = filt.filter is not None
             self.model.append([filt.label, filt.active,
                                filt.filter_string, valid])
@@ -75,7 +77,11 @@ class FilterList(listwidget.ListWidget):
     def _update_filter_string(self, *args):
         pref = []
         for row in self.model:
-            pref.append("%s\t%s\t%s" % (row[0], 1 if row[1] else 0, row[2]))
+            pattern = row[2]
+            if pattern:
+                pattern = pattern.replace('\r', '')
+                pattern = pattern.replace('\n', '')
+            pref.append("%s\t%s\t%s" % (row[0], 1 if row[1] else 0, pattern))
         setattr(self.prefs, self.key, "\n".join(pref))
 
 
