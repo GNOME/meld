@@ -47,7 +47,7 @@ class MeldApp(gobject.GObject):
         gobject.GObject.__init__(self)
         gobject.set_application_name("Meld")
         gtk.window_set_default_icon_name("meld")
-        self.version = conf.VERSION
+        self.version = conf.__version__
         self.prefs = preferences.MeldPreferences()
         self.prefs.notify_add(self.on_preference_changed)
         self.file_filters = self._parse_filters(self.prefs.filters,
@@ -111,7 +111,7 @@ class MeldApp(gobject.GObject):
         parser = optparse.OptionParser(
             usage=usage,
             description=_("Meld is a file and directory comparison tool."),
-            version="%prog " + conf.VERSION)
+            version="%prog " + conf.__version__)
         parser.add_option("-L", "--label", action="append", default=[],
             help=_("Set label to use instead of file name"))
         parser.add_option("-n", "--newtab", action="store_true", default=False,

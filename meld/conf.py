@@ -1,19 +1,17 @@
 
 import os
 
-PACKAGE = "meld" # "@PACKAGE"
-VERSION = "1.7.3" # "@VERSION"
-SHAREDIR = ( #SHAREDIR#
-)
-HELPDIR = ( #HELPDIR#
-)
-LOCALEDIR = ( #LOCALEDIR#
-)
+__package__ = "meld"
+__version__ = "1.7.5"
 
-melddir = os.path.abspath(os.path.join(
-              os.path.dirname(os.path.realpath(__file__)), ".."))
+DATADIR = None
+LOCALEDIR = None
 
-DATADIR = SHAREDIR or os.path.join(melddir, "data")
-HELPDIR = HELPDIR or os.path.join(melddir, "help")
-LOCALEDIR = LOCALEDIR or os.path.join(melddir, "po")
 
+def uninstalled():
+    global DATADIR, LOCALEDIR
+    melddir = os.path.abspath(os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), ".."))
+
+    DATADIR = DATADIR or os.path.join(melddir, "data")
+    LOCALEDIR = LOCALEDIR or os.path.join(melddir, "build", "mo")

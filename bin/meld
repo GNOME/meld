@@ -66,25 +66,24 @@ except ValueError:
 # Support running from an uninstalled version
 if os.path.basename(__file__) == "meld":
     self_path = os.path.realpath(__file__)
-else:
-    # Hack around an issue with some modules s.a. runpy/trace in Python <2.7
-    self_path = os.path.realpath(sys.argv[0])
 melddir = os.path.abspath(os.path.join(os.path.dirname(self_path), ".."))
 
+uninstalled = False
 if os.path.exists(os.path.join(melddir, "meld.doap")):
     sys.path[0:0] = [melddir]
-else:
-    sys.path[0:0] = [ #LIBDIR#
-    ]
+    uninstalled = True
+
+import meld.conf
+
+if uninstalled:
+    meld.conf.uninstalled()
 
 # i18n support
-import meld.conf
 import gettext
 _ = gettext.gettext
-
 # Locale setting in gtk.Builder appears somewhat broken under Python. See:
 #   https://bugzilla.gnome.org/show_bug.cgi?id=574520
-locale_domain = meld.conf.PACKAGE
+locale_domain = meld.conf.__package__
 locale_dir = meld.conf.LOCALEDIR
 
 gettext.bindtextdomain(locale_domain, locale_dir)

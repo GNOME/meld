@@ -530,13 +530,9 @@ class MeldWindow(gnomeglade.Component):
     def on_menu_statusbar_toggled(self, widget):
         app.prefs.statusbar_visible = widget.get_active()
 
-    #
-    # Toolbar and menu items (help)
-    #
     def on_menu_help_activate(self, button):
-        # FIXME: This is why our current localised help isn't used.
-        help_dir = "/".join((conf.HELPDIR, "C", "meld.xml"))
-        misc.open_uri("ghelp:///" + os.path.abspath(help_dir))
+        help_path = "/".join(["help", "meld"])
+        misc.open_uri(help_path)
 
     def on_menu_help_bug_activate(self, button):
         misc.open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
