@@ -17,12 +17,11 @@
 import os
 import gobject
 import gtk
-from ui import gnomeglade
-import paths
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_END = range(6)
 
-from vc._vc import STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
+from meld.vc._vc import \
+    STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
     STATE_ERROR, STATE_EMPTY, STATE_NEW, \
     STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
     STATE_MISSING, STATE_MAX
