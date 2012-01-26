@@ -16,13 +16,20 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
+import os
+
 import gtk
+
+import meld.paths
 
 # Import support module to get all builder-constructed widgets in the namespace
 from meld.ui import gladesupport
 
 # FIXME: duplicate defn in bin/meld
 locale_domain = "meld"
+
+def ui_file(filename):
+    return os.path.join(meld.paths._share_dir, "ui", filename)
 
 
 class Component(object):
@@ -41,6 +48,7 @@ class Component(object):
         self.builder = gtk.Builder()
         self.builder.set_translation_domain(locale_domain)
         objects = [root] + extra if extra else [root]
+        filename = ui_file(filename)
         self.builder.add_objects_from_file(filename, objects)
         self.builder.connect_signals(self)
         self.widget = getattr(self, root)

@@ -26,7 +26,6 @@ import gtk
 import pango
 
 from meld import misc
-from meld import paths
 from . import gnomeglade
 
 
@@ -42,8 +41,7 @@ def _commonprefix(files):
 class CommitDialog(gnomeglade.Component):
 
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"),
-                                      "commitdialog")
+        gnomeglade.Component.__init__(self, "vcview.ui", "commitdialog")
         self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
         selected = parent._get_selected_files()
@@ -111,8 +109,7 @@ class CommitDialog(gnomeglade.Component):
 class PushDialog(gnomeglade.Component):
 
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"),
-                                      "pushdialog")
+        gnomeglade.Component.__init__(self, "vcview.ui", "pushdialog")
         self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
         self.widget.show_all()

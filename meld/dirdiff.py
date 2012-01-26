@@ -35,7 +35,6 @@ import gtk.keysyms
 from . import melddoc
 from . import tree
 from . import misc
-from . import paths
 from . import recent
 from .ui import gnomeglade
 from .ui import emblemcellrenderer
@@ -265,10 +264,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs, num_panes):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.ui_dir("dirdiff.ui"),
-                                      "dirdiff", ["DirdiffActions"])
+        gnomeglade.Component.__init__(self, "dirdiff.ui", "dirdiff",
+                                      ["DirdiffActions"])
 
-        self.ui_file = paths.ui_dir("dirdiff-ui.xml")
+        self.ui_file = gnomeglade.ui_file("dirdiff-ui.xml")
         self.actiongroup = self.DirdiffActions
         self.actiongroup.set_translation_domain("meld")
         self.main_actiongroup = None

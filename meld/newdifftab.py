@@ -20,7 +20,6 @@ import os
 import gobject
 import gtk
 
-from . import paths
 from .ui import gnomeglade
 
 from .meldapp import app
@@ -37,7 +36,7 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
 
     def __init__(self, parentapp):
         gobject.GObject.__init__(self)
-        gnomeglade.Component.__init__(self, paths.ui_dir("tab-placeholder.ui"),
+        gnomeglade.Component.__init__(self, "tab-placeholder.ui",
                                       "new_comparison_tab")
         self.map_widgets_into_lists(["file_chooser", "dir_chooser",
                                      "vc_chooser"])

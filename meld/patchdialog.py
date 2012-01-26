@@ -23,7 +23,6 @@ import os
 import gtk
 import pango
 
-from . import paths
 from .ui import gnomeglade
 
 from .util.compat import text_type
@@ -33,8 +32,7 @@ from .util.sourceviewer import srcviewer
 class PatchDialog(gnomeglade.Component):
 
     def __init__(self, filediff):
-        ui_file = paths.ui_dir("patch-dialog.ui")
-        gnomeglade.Component.__init__(self, ui_file, "patchdialog")
+        gnomeglade.Component.__init__(self, "patch-dialog.ui", "patchdialog")
 
         self.widget.set_transient_for(filediff.widget.get_toplevel())
         self.prefs = filediff.prefs

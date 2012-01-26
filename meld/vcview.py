@@ -32,7 +32,6 @@ import pango
 
 from . import melddoc
 from . import misc
-from . import paths
 from . import recent
 from . import tree
 from . import vc
@@ -154,10 +153,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"),
-                                      "vcview", ["VcviewActions", 'liststore_vcs'])
+        gnomeglade.Component.__init__(self, "vcview.ui", "vcview",
+                                      ["VcviewActions", 'liststore_vcs'])
 
-        self.ui_file = paths.ui_dir("vcview-ui.xml")
+        self.ui_file = gnomeglade.ui_file("vcview-ui.xml")
         self.actiongroup = self.VcviewActions
         self.actiongroup.set_translation_domain("meld")
         self.model = VcTreeStore()

@@ -29,7 +29,6 @@ from . import filemerge
 from . import melddoc
 from . import misc
 from . import newdifftab
-from . import paths
 from . import preferences
 from . import recent
 from . import task
@@ -53,8 +52,7 @@ class MeldWindow(gnomeglade.Component):
     # init
     #
     def __init__(self):
-        gladefile = paths.ui_dir("meldapp.ui")
-        gnomeglade.Component.__init__(self, gladefile, "meldapp")
+        gnomeglade.Component.__init__(self, "meldapp.ui", "meldapp")
         self.widget.set_name("meldapp")
 
         actions = (
@@ -164,7 +162,7 @@ class MeldWindow(gnomeglade.Component):
                 _("Show or hide the statusbar"),
                 self.on_menu_statusbar_toggled, app.prefs.statusbar_visible)
         )
-        ui_file = paths.ui_dir("meldapp-ui.xml")
+        ui_file = gnomeglade.ui_file("meldapp-ui.xml")
         self.actiongroup = gtk.ActionGroup('MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
@@ -545,7 +543,8 @@ class MeldWindow(gnomeglade.Component):
         builder = gtk.Builder()
         # FIXME: domain literal duplicated from bin/meld
         builder.set_translation_domain("meld")
-        builder.add_objects_from_file(paths.ui_dir("meldapp.ui"), ["about"])
+        ui_file = gnomeglade.ui_file("meldapp.ui")
+        builder.add_objects_from_file(ui_file, ["about"])
         about = builder.get_object("about")
         about.props.version = app.version
         about.set_transient_for(self.widget)

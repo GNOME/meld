@@ -40,7 +40,6 @@ from . import melddoc
 from . import merge
 from . import misc
 from . import patchdialog
-from . import paths
 from . import recent
 from . import undo
 from .ui import findbar
@@ -157,7 +156,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self, prefs)
-        gnomeglade.Component.__init__(self, paths.ui_dir("filediff.ui"), "filediff")
+        gnomeglade.Component.__init__(self, "filediff.ui", "filediff")
         self.map_widgets_into_lists(["textview", "fileentry", "diffmap",
                                      "scrolledwindow", "linkmap",
                                      "statusimage", "msgarea_mgr", "vbox",
@@ -300,7 +299,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
              self.on_action_lock_scrolling_toggled, True),
         )
 
-        self.ui_file = paths.ui_dir("filediff-ui.xml")
+        self.ui_file = gnomeglade.ui_file("filediff-ui.xml")
         self.actiongroup = gtk.ActionGroup('FilediffPopupActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
@@ -847,8 +846,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         response = gtk.RESPONSE_OK
         modified = [b.data.modified for b in self.textbuffer]
         if True in modified:
-            ui_path = paths.ui_dir("filediff.ui")
-            dialog = gnomeglade.Component(ui_path, "check_save_dialog")
+            dialog = gnomeglade.Component("filediff.ui", "check_save_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             if label:
                 dialog.widget.props.text = label
@@ -1680,8 +1678,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         response = gtk.RESPONSE_OK
         unsaved = [b.data.label for b in self.textbuffer if b.data.modified]
         if unsaved:
-            ui_path = paths.ui_dir("filediff.ui")
-            dialog = gnomeglade.Component(ui_path, "revert_dialog")
+            dialog = gnomeglade.Component("filediff.ui", "revert_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             # FIXME: Should be packed into dialog.widget.get_message_area(),
             # but this is unbound on currently required PyGTK.

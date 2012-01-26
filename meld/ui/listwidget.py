@@ -17,14 +17,13 @@
 ### USA.
 
 
-from meld import paths
 from . import gnomeglade
 
 
 class ListWidget(gnomeglade.Component):
 
     def __init__(self, ui_file, widget, store, treeview, new_row_data=None):
-        gnomeglade.Component.__init__(self, paths.ui_dir(ui_file),
+        gnomeglade.Component.__init__(self, ui_file,
                                       widget, store)
         self.new_row_data = new_row_data
         self.list = getattr(self, treeview)

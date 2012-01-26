@@ -26,7 +26,6 @@ import gtk
 
 from . import filters
 from . import misc
-from . import paths
 from . import vc
 from .ui import gnomeglade
 from .ui import listwidget
@@ -142,7 +141,7 @@ class ColumnList(listwidget.ListWidget):
 class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parent, prefs):
-        gnomeglade.Component.__init__(self, paths.ui_dir("preferences.ui"),
+        gnomeglade.Component.__init__(self, "preferences.ui",
                                       "preferencesdialog",
                                       ["adjustment1", "adjustment2", "fileorderstore"])
         self.widget.set_transient_for(parent)

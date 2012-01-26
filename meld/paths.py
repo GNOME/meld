@@ -28,25 +28,13 @@ appdir = os.path.dirname(os.path.dirname(__file__))
 
 if not _locale_dir: _locale_dir = os.path.join(appdir,"po")
 if not _help_dir:    _help_dir  = os.path.join(appdir,"help")
-if not _share_dir:  _share_dir  = appdir
+if not _share_dir:  _share_dir  = os.path.join(appdir, "data")
 
 def locale_dir(*args): # i18n files
     return os.path.join(_locale_dir, *args)
 
 def help_dir(*args): # help
     return os.path.join(_help_dir, *args)
-
-def share_dir(*args):
-    if os.path.exists(os.path.join(_share_dir, "data")):
-        return os.path.join(_share_dir, "data", *args)
-    else:
-        return os.path.join(_share_dir, *args)
-
-def ui_dir(*args):
-    if os.path.exists(os.path.join(_share_dir, "data")):
-        return os.path.join(_share_dir, "data", "ui", *args)
-    else:
-        return os.path.join(_share_dir, "ui", *args)
 
 def icon_dir(*args):
     if os.path.exists(os.path.join(_share_dir, "data")):
