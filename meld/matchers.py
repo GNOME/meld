@@ -232,11 +232,14 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                         yv, node = t
                     else:
                         yv += 1
-                    snake = x = yv - km + middle
-                    while x < m and yv < n and a[x] == b[yv]:
+                    x = yv - km + middle
+                    if x < m and yv < n and a[x] == b[yv]:
+                        snake = x
                         x += 1
                         yv += 1
-                    if x != snake:
+                        while x < m and yv < n and a[x] == b[yv]:
+                            x += 1
+                            yv += 1
                         snake = x - snake
                         snakes.append((node, x - snake, yv - snake, snake))
                         node = len(snakes) - 1
@@ -249,11 +252,14 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                     if yh <= t[0]:
                         yh, node = t
                         yh += 1
-                    snake = x = yh - km + middle
-                    while x < m and yh < n and a[x] == b[yh]:
+                    x = yh - km + middle
+                    if x < m and yh < n and a[x] == b[yh]:
+                        snake = x
                         x += 1
                         yh += 1
-                    if x != snake:
+                        while x < m and yh < n and a[x] == b[yh]:
+                            x += 1
+                            yh += 1
                         snake = x - snake
                         snakes.append((node, x - snake, yh - snake, snake))
                         node = len(snakes) - 1
@@ -264,11 +270,14 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 else:
                     y, node = fp[delta - 1]
                     y += 1
-                snake = x = y - delta + middle
-                while x < m and y < n and a[x] == b[y]:
+                x = y - delta + middle
+                if x < m and y < n and a[x] == b[y]:
+                    snake = x
                     x += 1
                     y += 1
-                if x != snake:
+                    while x < m and y < n and a[x] == b[y]:
+                        x += 1
+                        y += 1
                     snake = x - snake
                     snakes.append((node, x - snake, y - snake, snake))
                     node = len(snakes) - 1
