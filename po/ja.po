@@ -1,15 +1,16 @@
 # meld ja.po.
-# Copyright (C) 2003-2011 Free Software Foundation, Inc.
+# Copyright (C) 2003-2012 Free Software Foundation, Inc.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2011.
+# Toshiharu Kudoh <toshi.kd2@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-10 20:26+0000\n"
-"PO-Revision-Date: 2012-01-01 19:55+0900\n"
-"Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
+"POT-Creation-Date: 2012-02-04 12:15+0000\n"
+"PO-Revision-Date: 2012-02-05 00:23+0900\n"
+"Last-Translator: Toshiharu Kudoh <toshi.kd2@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,11 +19,11 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../bin/meld:96
+#: ../bin/meld:97
 msgid "Cannot import: "
 msgstr "インポートできません:"
 
-#: ../bin/meld:99
+#: ../bin/meld:100
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld には %s 以上が必要です。"
@@ -152,16 +153,12 @@ msgid "Choose Files"
 msgstr "ファイルの選択"
 
 #: ../data/ui/meldapp.ui.h:2
-#, fuzzy
-#| msgid ""
-#| "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-#| "Copyright &#xA9; 2009-2010 Kai Willadsen"
 msgid ""
 "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
 "Copyright &#xA9; 2009-2011 Kai Willadsen"
 msgstr ""
 "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-"Copyright &#xA9; 2009-2010 Kai Willadsen"
+"Copyright &#xA9; 2009-2011 Kai Willadsen"
 
 #: ../data/ui/meldapp.ui.h:4
 msgid "Directory"
@@ -196,7 +193,7 @@ msgstr "ファイルの比較(_F)"
 
 #: ../data/ui/meldapp.ui.h:15
 msgid "_Three Way Compare"
-msgstr "３つの間で比較する(_T)"
+msgstr "3つの間で比較する(_T)"
 
 #: ../data/ui/meldapp.ui.h:16
 msgid "_Version Control Browser"
@@ -240,11 +237,11 @@ msgstr "表示"
 
 #: ../data/ui/preferences.ui.h:2
 msgid "Do not _split words over two lines"
-msgstr "単語が二行にまたがないようにする(_S)"
+msgstr "単語が二行にまたがらないようにする(_S)"
 
 #: ../data/ui/preferences.ui.h:3
 msgid "Edito_r command:"
-msgstr "その他のエディター(_R)"
+msgstr "エディターをコマンドで指定する(_R):"
 
 #: ../data/ui/preferences.ui.h:4
 msgid "Editor"
@@ -304,12 +301,12 @@ msgstr "システムでデフォルトのエディターを使用する(_D)"
 
 #: ../data/ui/preferences.ui.h:18
 msgid "Use s_yntax highlighting"
-msgstr "文法を強調表示する(_Y)"
+msgstr "シンタックスハイライトを有効にする(_Y)"
 
 #: ../data/ui/preferences.ui.h:19
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
-"ファイルを読む込む際に、次の順番でエンコーディングを試行します (例: utf8 "
+"ファイルを読み込む際に、次の順番でエンコーディングを試行します (例: utf8, "
 "iso8859)"
 
 #: ../data/ui/preferences.ui.h:20
@@ -447,7 +444,7 @@ msgstr "フィルターを選択します"
 #: ../meld/dirdiff.py:362
 #, python-format
 msgid "Hide %s"
-msgstr "%sの表示を切り替えます"
+msgstr "%s の表示を切り替えます"
 
 #: ../meld/dirdiff.py:465 ../meld/dirdiff.py:478 ../meld/vcview.py:322
 #: ../meld/vcview.py:346
@@ -486,8 +483,7 @@ msgid ""
 "filesystem. The following files in this folder are hidden:"
 msgstr ""
 "大/小文字を区別するファイルシステム上で大/小文字を無視した比較を行っていま"
-"す。このフォルダーでは次のファイルは表示されません:\n"
-"%s"
+"す。このフォルダーでは次のファイルは表示されません:"
 
 #: ../meld/dirdiff.py:599
 #, python-format
@@ -889,11 +885,11 @@ msgstr "バージョン管理の比較モードで起動する"
 
 #: ../meld/meldapp.py:158
 msgid "Start a 2- or 3-way file comparison"
-msgstr "２ないし３個のファイルを比較するモードで起動する"
+msgstr "2ないし3個のファイルを比較するモードで起動する"
 
 #: ../meld/meldapp.py:159
 msgid "Start a 2- or 3-way directory comparison"
-msgstr "２ないし３個のフォルダーを比較するモードで起動する"
+msgstr "2ないし3個のフォルダーを比較するモードで起動する"
 
 #: ../meld/meldapp.py:160
 msgid "Start a comparison between file and dir/file"
@@ -921,7 +917,7 @@ msgstr "マージした結果を保存する際のファイル名を指定する
 
 #: ../meld/meldapp.py:179
 msgid "Creates a diff tab for up to 3 supplied files or directories."
-msgstr "指定した最大３つのファイルまたはフォルダーに対する差分をタブで表示する"
+msgstr "指定した最大3つのファイルまたはフォルダーに対する差分をタブで表示する"
 
 #: ../meld/meldapp.py:182
 #, python-format
@@ -930,7 +926,7 @@ msgstr "引数が多すぎます (0〜4個を想定していたが実際は%d個
 
 #: ../meld/meldapp.py:184 ../meld/meldapp.py:188
 msgid "can't compare more than three directories"
-msgstr "３つ以上のフォルダーの間での比較はできません"
+msgstr "3つ以上のフォルダーの間での比較はできません"
 
 #: ../meld/melddoc.py:56 ../meld/melddoc.py:57
 msgid "untitled"
@@ -1122,7 +1118,7 @@ msgstr "目次(_C)"
 
 #: ../meld/meldwindow.py:164
 msgid "Open the Meld manual"
-msgstr "Meld マニュアル開きます"
+msgstr "Meld のマニュアルを開きます"
 
 #: ../meld/meldwindow.py:165
 msgid "Report _Bug"
@@ -1203,6 +1199,8 @@ msgid ""
 "OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
 "Desktop.ini\n"
 msgstr ""
+"OS 特有のメタデータ\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
+"Desktop.ini\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
 #: ../meld/preferences.py:238
@@ -1356,11 +1354,11 @@ msgstr "オプション"
 
 #: ../meld/vcview.py:249
 msgid "Choose one Version Control"
-msgstr "１バージョン・コントロールの選択"
+msgstr "1バージョン・コントロールの選択"
 
 #: ../meld/vcview.py:250
 msgid "Only one Version Control in this directory"
-msgstr "このフォルダーの１バージョン・コントロールだけ"
+msgstr "このフォルダーの1バージョン・コントロールだけ"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
