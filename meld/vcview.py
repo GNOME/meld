@@ -425,8 +425,17 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.popup_menu.popup(None, None, None, 0, time)
         return True
 
-    def on_button_press_event(self, text, event):
+    def on_button_press_event(self, treeview, event):
         if event.button == 3:
+            path = treeview.get_path_at_pos(int(event.x), int(event.y))
+            selection = treeview.get_selection()
+            model, rows = selection.get_selected_rows()
+
+            if path[0] not in rows:
+                selection.unselect_all()
+                selection.select_path(path[0])
+                treeview.set_cursor(path[0])
+
             self.popup_menu.popup(None, None, None, event.button, event.time)
             return True
         return False

@@ -975,22 +975,24 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return True
 
     def on_treeview_button_press_event(self, treeview, event):
-        # unselect other panes
-        for t in filter(lambda x:x!=treeview, self.treeview[:self.num_panes]):
+        # Unselect any selected files in other panes
+        for t in [v for v in self.treeview[:self.num_panes] if v != treeview]:
             t.get_selection().unselect_all()
+
         if event.button == 3:
-            try:
-                path, col, cellx, celly = treeview.get_path_at_pos( int(event.x), int(event.y) )
-            except TypeError:
-                pass # clicked outside tree
-            else:
-                treeview.grab_focus()
-                selected = self._get_selected_paths( self.treeview.index(treeview) )
-                if len(selected) <= 1 and event.state == 0:
-                    treeview.set_cursor( path, col, 0)
-                self.popup_in_pane(self.treeview.index(treeview), event)
-            return event.state==0
-        return 0
+            treeview.grab_focus()
+            path = treeview.get_path_at_pos(int(event.x), int(event.y))
+            selection = treeview.get_selection()
+            model, rows = selection.get_selected_rows()
+
+            if path[0] not in rows:
+                selection.unselect_all()
+                selection.select_path(path[0])
+                treeview.set_cursor(path[0])
+
+            self.popup_in_pane(self.treeview.index(treeview), event)
+            return True
+        return False
 
     def get_state_traversal(self, diffmapindex):
         def tree_state_iter():
