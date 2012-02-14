@@ -360,7 +360,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()
         if relevant_change:
-            self.set_files([None] * self.num_panes) # Refresh
+            self.refresh_comparison()
 
     def create_text_filters(self):
         # In contrast to file filters, ordering of text filters can matter
@@ -787,7 +787,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 t.set_insert_spaces_instead_of_tabs(value)
         elif key == "ignore_blank_lines":
             self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
-            self.set_files([None] * self.num_panes) # Refresh
+            self.refresh_comparison()
 
     def on_key_press_event(self, object, event):
         x = self.keylookup.get(event.keyval, 0)
@@ -1119,6 +1119,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i in self._diff_files():
             yield i
 
+    def refresh_comparison(self):
+        """Refresh the view by clearing and redoing all comparisons"""
+        self._disconnect_buffer_handlers()
+        self._inline_cache = set()
+        self.linediffer.clear()
+        self.queue_draw()
+        self.scheduler.add_task(self._diff_files().next)
+
     def _set_merge_action_sensitivity(self):
         pane = self._get_focused_pane()
         editable = self.textview[pane].get_editable()
@@ -1176,8 +1184,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             mgr.clear()
         if respid == gtk.RESPONSE_OK:
             self.text_filters = []
-            # Refresh
-            self.set_files([None] * self.num_panes)
+            self.refresh_comparison()
 
     def update_highlighting(self):
         if not self.undosequence.in_grouped_action():
@@ -1471,7 +1478,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.set_files(files)
 
     def on_refresh_activate(self, *extra):
-        self.set_files([None] * self.num_panes)
+        self.refresh_comparison()
 
     def queue_draw(self, junk=None):
         for t in self.textview:
