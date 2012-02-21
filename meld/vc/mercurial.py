@@ -3,7 +3,7 @@
 ### Redistribution and use in source and binary forms, with or without
 ### modification, are permitted provided that the following conditions
 ### are met:
-### 
+###
 ### 1. Redistributions of source code must retain the above copyright
 ###    notice, this list of conditions and the following disclaimer.
 ### 2. Redistributions in binary form must reproduce the above copyright
@@ -25,7 +25,8 @@ import os
 import errno
 import _vc
 
-class Vc(_vc.Vc):
+
+class Vc(_vc.CachedVc):
 
     CMD = "hg"
     NAME = "Mercurial"
@@ -65,36 +66,72 @@ class Vc(_vc.Vc):
         else:
             return True
     def get_working_directory(self, workdir):
-        return self.root
+        if workdir.startswith("/"):
+            return self.root
+        else:
+            return ''
 
-    def _get_dirsandfiles(self, directory, dirs, files):
-
+    def _update_tree_state_cache(self, path, tree_state):
+        """ Update the state of the file(s) at tree_state['path'] """
         while 1:
             try:
-                entries = _vc.popen([self.CMD, "status", "-A", "."], cwd=directory).read().split("\n")[:-1]
+                # Get the status of modified files
+                proc = _vc.popen([self.CMD, "status", '-A', path],
+                    cwd=self.location)
+                entries = proc.read().split("\n")[:-1]
+
+                # The following command removes duplicate file entries.
+                # Just in case.
+                entries = list(set(entries))
                 break
             except OSError, e:
                 if e.errno != errno.EAGAIN:
                     raise
 
+        if len(entries) == 0 and os.path.isfile(path):
+            # If we're just updating a single file there's a chance that it
+            # was it was previously modified, and now has been edited
+            # so that it is un-modified.  This will result in an empty
+            # 'entries' list, and tree_state['path'] will still contain stale
+            # data.  When this corner case occurs we force tree_state['path']
+            # to STATE_NORMAL.
+            tree_state[path] = _vc.STATE_NORMAL
+        else:
+            # There are 1 or more modified files, parse their state
+            for entry in entries:
+                # we might have a space in file name, it should be ignored
+                statekey, name = entry.split(" ", 1)
+                path = os.path.join(self.root, name.strip())
+                state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
+                tree_state[path] = state
+
+    def _lookup_tree_cache(self, rootdir):
+        # Get a list of all files in rootdir, as well as their status
+        tree_state = {}
+        self._update_tree_state_cache("./", tree_state)
+
+        return tree_state
+
+    def update_file_state(self, path):
+        tree_state = self._get_tree_cache(os.path.dirname(path))
+        self._update_tree_state_cache(path, tree_state)
+
+    def _get_dirsandfiles(self, directory, dirs, files):
+
+        tree = self._get_tree_cache(directory)
+
         retfiles = []
         retdirs = []
-        hgfiles = {}
-        for statekey, name in [ (entry[0], entry[2:]) for entry in entries if entry.find("/")==-1 ]:
-            path = os.path.join(directory, name)
-            rev, options, tag = "","",""
-            state = self.state_map.get(statekey, _vc.STATE_NONE)
-            retfiles.append( _vc.File(path, name, state, rev, tag, options) )
-            hgfiles[name] = 1
-        for f,path in files:
-            if f not in hgfiles:
-                #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
-                state = _vc.STATE_NORMAL
-                retfiles.append( _vc.File(path, f, state, "") )
-        for d,path in dirs:
-            if d not in hgfiles:
-                #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
-                state = _vc.STATE_NORMAL
-                retdirs.append( _vc.Dir(path, d, state) )
-
+        for name, path in files:
+            state = tree.get(path, _vc.STATE_NORMAL)
+            retfiles.append(_vc.File(path, name, state))
+        for name, path in dirs:
+            # mercurial does not operate on dirs, just files
+            retdirs.append(_vc.Dir(path, name, _vc.STATE_NORMAL))
+        for path, state in tree.iteritems():
+            # removed files are not in the filesystem, so must be added here
+            if state is _vc.STATE_REMOVED:
+                folder, name = os.path.split(path)
+                if folder == directory:
+                    retfiles.append(_vc.File(path, name, state))
         return retdirs, retfiles
