@@ -270,7 +270,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.focus_in_events.append(handler_id)
             handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
             self.focus_out_events.append(handler_id)
-        self.prev_path, self.next_path = None, None
+        self.current_path, self.prev_path, self.next_path = None, None, None
         self.on_treeview_focus_out_event(None, None)
         self.treeview_focussed = None
 
@@ -714,13 +714,22 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         if not cursor_path:
             self.emit("next-diff-changed", False, False)
         else:
-            # TODO: Only recalculate when needed;
-            # not self.prev_path < cursor_path < self.next_path is a start,
-            # but fails when we move off a changed row.
-            prev_path, next_path = self.model._find_next_prev_diff(cursor_path)
-            self.prev_path, self.next_path = prev_path, next_path
-            have_next_diffs = (prev_path is not None, next_path is not None)
-            self.emit("next-diff-changed", *have_next_diffs)
+            if self.current_path:
+                old_cursor = self.model.get_iter(self.current_path)
+                state = self.model.get_state(old_cursor, 0)
+                # We can skip recalculation if the new cursor is between the
+                # previous/next bounds, and we weren't on a changed row
+                skip = state in (tree.STATE_NORMAL, tree.STATE_EMPTY) and \
+                       self.prev_path < cursor_path < self.next_path
+            else:
+                skip = False
+
+            if not skip:
+                prev, next = self.model._find_next_prev_diff(cursor_path)
+                self.prev_path, self.next_path = prev, next
+                have_next_diffs = (prev is not None, next is not None)
+                self.emit("next-diff-changed", *have_next_diffs)
+        self.current_path = cursor_path
 
         paths = self._get_selected_paths(pane)
         if len(paths) > 0:

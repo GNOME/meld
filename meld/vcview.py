@@ -162,7 +162,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self.treeview.set_headers_visible(1)
         self.treeview.set_search_equal_func(self.treeview_search_cb)
-        self.prev_path, self.next_path = None, None
+        self.current_path, self.prev_path, self.next_path = None, None, None
         column = gtk.TreeViewColumn( _("Name") )
         renicon = ui.emblemcellrenderer.EmblemCellRenderer()
         rentext = gtk.CellRendererText()
@@ -696,11 +696,22 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if not cursor_path:
             self.emit("next-diff-changed", False, False)
         else:
-            # TODO: Only recalculate when needed; see DirDiff
-            prev_path, next_path = self.model._find_next_prev_diff(cursor_path)
-            self.prev_path, self.next_path = prev_path, next_path
-            have_next_diffs = (prev_path is not None, next_path is not None)
-            self.emit("next-diff-changed", *have_next_diffs)
+            if self.current_path:
+                old_cursor = self.model.get_iter(self.current_path)
+                state = self.model.get_state(old_cursor, 0)
+                # We can skip recalculation if the new cursor is between the
+                # previous/next bounds, and we weren't on a changed row
+                skip = state in (tree.STATE_NORMAL, tree.STATE_EMPTY) and \
+                       self.prev_path < cursor_path < self.next_path
+            else:
+                skip = False
+
+            if not skip:
+                prev, next = self.model._find_next_prev_diff(cursor_path)
+                self.prev_path, self.next_path = prev, next
+                have_next_diffs = (prev is not None, next is not None)
+                self.emit("next-diff-changed", *have_next_diffs)
+        self.current_path = cursor_path
 
     def next_diff(self, direction):
         if direction == gtk.gdk.SCROLL_UP:
