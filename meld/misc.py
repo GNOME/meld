@@ -219,6 +219,7 @@ def get_common_theme():
         "conflict": lookup("meld:conflict", "background"),
         "replace": lookup("meld:replace", "background"),
         "error": lookup("meld:error", "background"),
+        "focus-highlight": lookup("meld:current-line-highlight", "foreground"),
         "current-chunk-highlight": lookup(
             "meld:current-chunk-highlight", "background")
     }

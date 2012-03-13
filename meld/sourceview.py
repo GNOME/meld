@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from enum import Enum
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -70,17 +71,23 @@ class LanguageManager(object):
         return cls.manager.guess_language(None, content_type)
 
 
+class TextviewLineAnimationType(Enum):
+    fill = 'fill'
+    stroke = 'stroke'
+
+
 class TextviewLineAnimation(object):
     __slots__ = ("start_mark", "end_mark", "start_rgba", "end_rgba",
-                 "start_time", "duration")
+                 "start_time", "duration", "anim_type")
 
-    def __init__(self, mark0, mark1, rgba0, rgba1, duration):
+    def __init__(self, mark0, mark1, rgba0, rgba1, duration, anim_type):
         self.start_mark = mark0
         self.end_mark = mark1
         self.start_rgba = rgba0
         self.end_rgba = rgba1
         self.start_time = GLib.get_monotonic_time()
         self.duration = duration
+        self.anim_type = anim_type
 
 
 class MeldSourceView(GtkSource.View):
@@ -164,12 +171,15 @@ class MeldSourceView(GtkSource.View):
     def get_line_num_for_y(self, y):
         return self.get_line_at_y(y)[0].get_line()
 
-    def add_fading_highlight(self, mark0, mark1, colour_name, duration):
+    def add_fading_highlight(
+            self, mark0, mark1, colour_name, duration,
+            anim_type=TextviewLineAnimationType.fill, starting_alpha=1.0):
         rgba0 = self.fill_colors[colour_name].copy()
         rgba1 = self.fill_colors[colour_name].copy()
-        rgba0.alpha = 1.0
+        rgba0.alpha = starting_alpha
         rgba1.alpha = 0.0
-        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, duration)
+        anim = TextviewLineAnimation(
+            mark0, mark1, rgba0, rgba1, duration, anim_type)
         self.animating_chunks.append(anim)
 
     def on_setting_changed(self, settings, key):
@@ -274,7 +284,10 @@ class MeldSourceView(GtkSource.View):
 
             context.set_source_rgba(*rgba)
             context.rectangle(x, ystart - visible.y, width, yend - ystart)
-            context.fill()
+            if c.anim_type == TextviewLineAnimationType.stroke:
+                context.stroke()
+            else:
+                context.fill()
 
             if current_time <= c.start_time + c.duration:
                 new_anim_chunks.append(c)

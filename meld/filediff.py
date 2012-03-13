@@ -40,7 +40,8 @@ from meld.matchers.merge import Merger
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
-from meld.sourceview import LanguageManager, get_custom_encoding_candidates
+from meld.sourceview import (
+    LanguageManager, TextviewLineAnimationType, get_custom_encoding_candidates)
 from meld.ui.findbar import FindBar
 
 
@@ -497,6 +498,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scroll_to_chunk_index(target, tolerance)
         self.textview[pane].scroll_to_mark(
             buf.get_insert(), tolerance, True, 0.5, 0.5)
+
+        # If we've moved to a valid chunk (or stayed in the first/last chunk)
+        # then briefly highlight the chunk for better visual orientation.
+        chunk_start = buf.get_iter_at_line_or_eof(chunk[1])
+        chunk_end = buf.get_iter_at_line_or_eof(chunk[2])
+        mark0 = buf.create_mark(None, chunk_start, True)
+        mark1 = buf.create_mark(None, chunk_end, True)
+        self.textview[pane].add_fading_highlight(
+            mark0, mark1, 'focus-highlight', 400000, starting_alpha=0.3,
+            anim_type=TextviewLineAnimationType.stroke)
 
     def on_linkmap_scroll_event(self, linkmap, event):
         self.next_diff(event.direction)
