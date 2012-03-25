@@ -322,11 +322,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggle_actions)
+        self.findbar = findbar.FindBar(self.table)
         self.set_num_panes(num_panes)
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
         gnomeglade.connect_signal_handlers(self)
-        self.findbar = findbar.FindBar(self.filediff)
-        self.filediff.pack_end(self.findbar.widget, False)
         self.cursor = CursorDetails()
         self.connect("current-diff-changed", self.on_current_diff_changed)
         for t in self.textview:
@@ -1585,6 +1584,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             tohide += self.vbox[n:] + self.msgarea_mgr[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
             map( lambda x: x.hide(), tohide )
+
+            right_attach = 2 * n
+            if self.findbar.widget in self.table:
+                self.table.remove(self.findbar.widget)
+            self.table.attach(self.findbar.widget, 1, right_attach, 2, 3,
+                              gtk.FILL, gtk.FILL)
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
             self.actiongroup.get_action("CycleDocuments").set_sensitive(n > 1)
