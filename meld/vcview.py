@@ -296,6 +296,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def _set_location(self, location):
         self.location = location
+        self.current_path = None
         self.model.clear()
         self.fileentry.set_filename(location)
         self.fileentry.prepend_history(location)

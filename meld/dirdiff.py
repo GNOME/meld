@@ -437,6 +437,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def set_locations(self, locations):
         self.set_num_panes(len(locations))
         locations = [os.path.abspath(l or ".") for l in locations]
+        self.current_path = None
         self.model.clear()
         for pane, loc in enumerate(locations):
             self.fileentry[pane].set_filename(loc)
