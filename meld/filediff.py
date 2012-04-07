@@ -111,6 +111,7 @@ class BufferLines(object):
         # to artificially add a line if the requested slice is past the end of
         # the buffer, and the last line in the slice ended in a newline.
         if hi >= self.buf.get_line_count() and \
+           lo < self.buf.get_line_count() and \
            (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
             lines.append(u"")
             ends.append(u"")
@@ -135,7 +136,7 @@ class BufferLines(object):
         return lines
 
     def __getitem__(self, i):
-        if i > len(self):
+        if i >= len(self):
             raise IndexError
         line_start = get_iter_at_line_or_eof(self.buf, i)
         line_end = line_start.copy()
