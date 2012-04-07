@@ -48,8 +48,7 @@ class LinkMap(gtk.DrawingArea):
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
-        self.fill_colors = filediff.fill_colors
-        self.line_colors = filediff.line_colors
+        self.set_color_scheme((filediff.fill_colors, filediff.line_colors))
 
         self.line_height = filediff.pixels_per_line
         icon_theme = gtk.icon_theme_get_default()
@@ -79,6 +78,10 @@ class LinkMap(gtk.DrawingArea):
         self.button_height = pixbuf_apply0.get_height()
 
         filediff.connect("action-mode-changed", self.on_container_mode_changed)
+
+    def set_color_scheme(self, color_map):
+        self.fill_colors, self.line_colors = color_map
+        self.queue_draw()
 
     def on_container_mode_changed(self, container, mode):
         # On mode change, set our local copy of the mode, and cancel any mouse
