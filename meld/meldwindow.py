@@ -346,7 +346,10 @@ class MeldWindow(gnomeglade.Component):
         nbl = self.notebook.get_tab_label(page)
         nbl.set_label_text(text)
         nbl.set_tooltip_text(tooltip)
-        self.widget.set_title(text + " - Meld")
+
+        # Only update the window title if the current page is active
+        if self.notebook.get_current_page() == self.notebook.page_num(page):
+            self.widget.set_title(text + " - Meld")
         self.notebook.child_set_property(page, "menu-label", text)
 
         actiongroup = self.tab_switch_actiongroup
