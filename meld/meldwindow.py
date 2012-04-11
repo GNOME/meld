@@ -578,7 +578,14 @@ class MeldWindow(gnomeglade.Component):
     def _append_page(self, page, icon):
         nbl = notebooklabel.NotebookLabel(icon, "", lambda b: self.try_remove_page(page))
         self.notebook.append_page( page.widget, nbl)
-        self.notebook.set_current_page( self.notebook.page_num(page.widget) )
+
+        # Change focus to the newly created page only if the user is on a
+        # DirDiff or VcView page.  This prevents cycling through X pages
+        # when X diffs are initiated.
+        if isinstance(self.current_doc(), dirdiff.DirDiff) or \
+           isinstance(self.current_doc(), vcview.VcView):
+            self.notebook.set_current_page(self.notebook.page_num(page.widget))
+
         self.scheduler.add_scheduler(page.scheduler)
         page.connect("label-changed", self.on_notebook_label_changed)
         page.connect("file-changed", self.on_file_changed)
