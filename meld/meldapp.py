@@ -27,7 +27,7 @@ import gtk
 import misc
 import preferences
 
-version = "1.5.4"
+version = "1.6.0"
 
 
 class FilterEntry(object):
