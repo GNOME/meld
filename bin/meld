@@ -54,7 +54,13 @@ except ValueError:
     profiling = False
 
 # Support running from an uninstalled version
-melddir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
+if os.path.basename(__file__) == "meld":
+    self_path = os.path.realpath(__file__)
+else:
+    # Hack around an issue with some modules s.a. runpy/trace in Python <2.7
+    self_path = os.path.realpath(sys.argv[0])
+melddir = os.path.abspath(os.path.join(os.path.dirname(self_path), ".."))
+
 if os.path.exists(os.path.join(melddir, "meld.doap")):
     sys.path[0:0] = [melddir]
 else:
