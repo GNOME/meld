@@ -53,6 +53,7 @@ class NewDocDialog(gnomeglade.Component):
         self.diff_methods = (parentapp.append_filediff,
                              parentapp.append_dirdiff,
                              parentapp.append_vcview)
+        self.parentapp = parentapp
         self.widget.show_all()
 
     def on_entry_activate(self, entry):
@@ -78,9 +79,14 @@ class NewDocDialog(gnomeglade.Component):
             for path in paths:
                 self.entrylists[page][0].prepend_history(path)
             if page == 2:
-                self.diff_methods[page](paths[0])
+                new_tab = self.diff_methods[page](paths[0])
             else:
-                self.diff_methods[page](paths)
+                new_tab = self.diff_methods[page](paths)
+
+            # We just opened a new comparison, transfer focus to it
+            new_tab_idx = self.parentapp.notebook.page_num(new_tab.widget)
+            self.parentapp.notebook.set_current_page(new_tab_idx)
+
         self.widget.destroy()
 
 
