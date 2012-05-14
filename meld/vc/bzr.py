@@ -25,6 +25,7 @@
 import os
 import errno
 import _vc
+import re
 
 class Vc(_vc.CachedVc):
 
@@ -36,6 +37,7 @@ class Vc(_vc.CachedVc):
 
     # We use None here to indicate flags that we don't deal with or care about
     state_1_map = {
+        " ": None,               # First status column empty
         "+": None,               # File versioned
         "-": None,               # File unversioned
         "R": None,               # File renamed
@@ -46,11 +48,14 @@ class Vc(_vc.CachedVc):
     }
 
     state_2_map = {
+        " ": _vc.STATE_NORMAL,   # Second status column empty
         "N": _vc.STATE_NEW,      # File created
         "D": _vc.STATE_REMOVED,  # File deleted
         "K": None,               # File kind changed
         "M": _vc.STATE_MODIFIED, # File modified
     }
+    
+    valid_status_re = r'[%s][%s]\*?\s+' % (''.join(state_1_map.keys()), ''.join(state_2_map.keys()))
 
     def commit_command(self, message):
         return [self.CMD] + self.CMDARGS + ["commit", "-m", message]
@@ -88,7 +93,8 @@ class Vc(_vc.CachedVc):
         tree_state = {}
         for entry in entries:
             state_string, name = entry[:3], entry[4:]
-
+            if not re.match(self.valid_status_re, state_string):
+                continue
             # TODO: We don't do anything with exec bit changes.
             path = os.path.join(branch_root, name.strip())
             state = self.state_1_map.get(state_string[0], None)
