@@ -74,36 +74,27 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
     def get_difference_opcodes(self):
         return filter(lambda x: x[0] != "equal", self.get_opcodes())
 
-    def preprocess(self):
-        """
-        Pre-processing optimizations:
-        1) remove common prefix and common suffix
-        2) remove lines that do not match
-        """
-        a = self.a
-        b = self.b
-        aindex = self.aindex = {}
-        bindex = self.bindex = {}
-        n = len(a)
-        m = len(b)
+    def preprocess_remove_prefix_suffix(self, a, b):
         # remove common prefix and common suffix
         self.common_prefix = self.common_suffix = 0
         self.common_prefix = find_common_prefix(a, b)
         if self.common_prefix > 0:
             a = a[self.common_prefix:]
             b = b[self.common_prefix:]
-            n -= self.common_prefix
-            m -= self.common_prefix
 
-        if n > 0 and m > 0:
+        if len(a) > 0 and len(b) > 0:
             self.common_suffix = find_common_suffix(a, b)
             if self.common_suffix > 0:
-                a = a[:n - self.common_suffix]
-                b = b[:m - self.common_suffix]
-                n -= self.common_suffix
-                m -= self.common_suffix
-
+                a = a[:len(a) - self.common_suffix]
+                b = b[:len(b) - self.common_suffix]
+        return (a, b)
+    
+    def preprocess_discard_nonmatching_lines(self, a, b):
         # discard lines that do not match any line from the other file
+        aindex = self.aindex = {}
+        bindex = self.bindex = {}
+        n = len(a)
+        m = len(b)
         if n > 0 and m > 0:
             aset = frozenset(a)
             bset = frozenset(b)
@@ -128,6 +119,15 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 a = a2
                 b = b2
         return (a, b)
+
+    def preprocess(self):
+        """
+        Pre-processing optimizations:
+        1) remove common prefix and common suffix
+        2) remove lines that do not match
+        """
+        a, b = self.preprocess_remove_prefix_suffix(self.a, self.b)
+        return self.preprocess_discard_nonmatching_lines(a, b)
 
     def postprocess(self):
         mb = [self.matching_blocks[-1]]
