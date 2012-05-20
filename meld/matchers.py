@@ -288,3 +288,76 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         self.build_matching_blocks(lastsnake, snakes)
         self.postprocess()
         yield 1
+
+class InlineMyersSequenceMatcher(MyersSequenceMatcher):
+    
+    def preprocess_discard_nonmatching_lines(self, a, b):
+        aindex = self.aindex = {}
+        bindex = self.bindex = {}
+        n = len(a)
+        m = len(b)
+        if m > 2 and n > 2:
+            a2 = []
+            b2 = []
+            aset = set()
+            bset = set()
+            for i in range(n - 2):
+                aset.add((a[i], a[i+1], a[i+2]))
+            for i in range(m - 2):
+                bset.add((b[i], b[i+1], b[i+2]))
+            j = 0
+            c_2 = None
+            c_1 = None
+            matched_2 = False
+            matched_1 = False
+            for i, c in enumerate(b):
+                if (c_2, c_1, c) in aset:
+                    if not matched_2:
+                        b2.append(c_2)
+                        bindex[j] = i - 2
+                        j += 1
+                    if not matched_1:
+                        b2.append(c_1)
+                        bindex[j] = i - 1
+                        j += 1
+                    b2.append(c)
+                    bindex[j] = i
+                    j += 1
+                    matched_2 = matched_1 = True
+                else:
+                    matched_2 = matched_1
+                    matched_1 = False
+                c_2 = c_1
+                c_1 = c
+
+            k = 0
+            c_2 = None
+            c_1 = None
+            matched_2 = False
+            matched_1 = False
+            for i, c in enumerate(a):
+                if (c_2, c_1, c) in bset:
+                    if not matched_2:
+                        a2.append(c_2)
+                        aindex[k] = i - 2
+                        k += 1
+                    if not matched_1:
+                        a2.append(c_1)
+                        aindex[k] = i - 1
+                        k += 1
+                    a2.append(c)
+                    aindex[k] = i
+                    k += 1
+                    matched_2 = matched_1 = True
+                else:
+                    matched_2 = matched_1
+                    matched_1 = False
+                c_2 = c_1
+                c_1 = c
+            # We only use the optimised result if it's worthwhile. The constant
+            # represents a heuristic of how many lines constitute 'worthwhile'.
+            self.lines_discarded = m - j > 10 or n - k > 10
+            if self.lines_discarded:
+                a = a2
+                b = b2
+        return (a, b)

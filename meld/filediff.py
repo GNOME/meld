@@ -60,7 +60,7 @@ class CachedSequenceMatcher(object):
             self.cache[(text1, textn)][1] = time.time()
             return self.cache[(text1, textn)][0]
         except KeyError:
-            matcher = matchers.MyersSequenceMatcher(None, text1, textn)
+            matcher = matchers.InlineMyersSequenceMatcher(None, text1, textn)
             opcodes = matcher.get_opcodes()
             self.cache[(text1, textn)] = [opcodes, time.time()]
             return opcodes
