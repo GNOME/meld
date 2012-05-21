@@ -91,33 +91,30 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
     
     def preprocess_discard_nonmatching_lines(self, a, b):
         # discard lines that do not match any line from the other file
-        aindex = self.aindex = {}
-        bindex = self.bindex = {}
-        n = len(a)
-        m = len(b)
-        if n > 0 and m > 0:
+        if len(a) == 0 or len(b) == 0:
+            self.aindex = []
+            self.bindex = []
+            return (a, b)
+        
+        def index_matching(a, b):
             aset = frozenset(a)
-            bset = frozenset(b)
-            a2 = []
-            b2 = []
-            j = 0
-            for i, newline in enumerate(b):
-                if newline in aset:
-                    b2.append(newline)
-                    bindex[j] = i
-                    j += 1
-            k = 0
-            for i, origline in enumerate(a):
-                if origline in bset:
-                    a2.append(a[i])
-                    aindex[k] = i
-                    k += 1
-            # We only use the optimised result if it's worthwhile. The constant
-            # represents a heuristic of how many lines constitute 'worthwhile'.
-            self.lines_discarded = m - j > 10 or n - k > 10
-            if self.lines_discarded:
-                a = a2
-                b = b2
+            matches, index = [], []
+            for i, line in enumerate(b):
+                if line in aset:
+                    matches.append(line)
+                    index.append(i)
+            return matches, index
+                
+        indexed_b, self.bindex = index_matching(a, b)
+        indexed_a, self.aindex = index_matching(b, a)
+
+        # We only use the optimised result if it's worthwhile. The constant
+        # represents a heuristic of how many lines constitute 'worthwhile'.
+        self.lines_discarded = len(b) - len(indexed_b) > 10 or \
+                               len(a) - len(indexed_a) > 10
+        if self.lines_discarded:
+            a = indexed_a
+            b = indexed_b
         return (a, b)
 
     def preprocess(self):
