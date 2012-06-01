@@ -841,9 +841,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def open_external(self):
         pane = self._get_focused_pane()
-        if pane is not None:
-            m = self.model
-            files = [ m.value_path( m.get_iter(p), pane ) for p in self._get_selected_paths(pane) ]
+        if pane is None:
+            return
+        path = lambda p: self.model.value_path(self.model.get_iter(p), pane)
+        files = [path(p) for p in self._get_selected_paths(pane)]
+        files = [f for f in files if f]
+        if files:
             self._open_files(files)
 
     def on_button_ignore_case_toggled(self, button):
