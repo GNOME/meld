@@ -16,13 +16,16 @@
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
+import os
 import subprocess
 import sys
 
 import gobject
-import task
+import gio
 import gtk
-import os
+
+import task
+
 from gettext import gettext as _
 
 
@@ -65,26 +68,41 @@ class MeldDoc(gobject.GObject):
             self.scheduler.remove_task(self.scheduler.get_current_task())
 
     def _open_files(self, selected):
-        files = [f for f in selected if os.path.isfile(f)]
-        dirs = [d for d in selected if os.path.isdir(d)]
+        query_attrs = ",".join((gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+                                gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
 
-        def os_open(paths):
-            for path in paths:
-                if sys.platform == "win32":
-                    subprocess.Popen(["start", path], shell=True)
-                elif sys.platform == "darwin":
-                    subprocess.Popen(["open", path])
-                else:
-                    subprocess.Popen(["xdg-open", path])
-
-        if len(files):
-            cmd = self.prefs.get_editor_command(files)
-            if cmd:
-                os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
+        def os_open(path):
+            if not path:
+                return
+            if sys.platform == "win32":
+                subprocess.Popen(["start", path], shell=True)
+            elif sys.platform == "darwin":
+                subprocess.Popen(["open", path])
             else:
-                os_open(files)
+                subprocess.Popen(["xdg-open", path])
 
-        os_open(dirs)
+        def open_cb(source, result, *data):
+            info = source.query_info_finish(result)
+            file_type = info.get_file_type()
+            if file_type == gio.FILE_TYPE_DIRECTORY:
+                os_open(source.get_path())
+            elif file_type == gio.FILE_TYPE_REGULAR:
+                content_type = info.get_content_type()
+                path = source.get_path()
+                if gio.content_type_is_a(content_type, "text/plain"):
+                    editor = self.prefs.get_editor_command([path])
+                    if editor:
+                        subprocess.Popen(editor)
+                    else:
+                        os_open(path)
+                else:
+                    os_open(path)
+            else:
+                # TODO: Add some kind of 'failed to open' notification
+                pass
+
+        for f in [gio.File(s) for s in selected]:
+            f.query_info_async(query_attrs, open_cb)
 
     def open_external(self):
         pass
