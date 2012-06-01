@@ -130,8 +130,7 @@ class PreferencesDialog(gnomeglade.Component):
                       self.prefs.edit_command_type == "gnome"
         self.system_editor_checkbutton.set_active(use_default)
         self.custom_edit_command_entry.set_sensitive(not use_default)
-        custom_command = " ".join(self.prefs.get_editor_command([], "custom"))
-        self.custom_edit_command_entry.set_text(custom_command)
+        self.custom_edit_command_entry.set_text(self.prefs.edit_command_custom)
 
         # file filters
         self.filefilter = FilterList(self.prefs, "filters",
@@ -286,11 +285,8 @@ class MeldPreferences(prefs.Preferences):
         }
         return toolbar_styles[style]
 
-    def get_editor_command(self, files, command_type=None):
-        if command_type is None:
-            command_type = self.edit_command_type
-
-        if command_type == "custom":
+    def get_editor_command(self, files):
+        if self.edit_command_type == "custom":
             return self.edit_command_custom.split() + files
         else:
             if not hasattr(self, "_gconf"):
