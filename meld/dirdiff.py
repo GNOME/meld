@@ -254,7 +254,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.create_text_filters()
         app.connect("text-filters-changed", self.on_text_filters_changed)
         for button in ("DirCompare", "DirCopyLeft", "DirCopyRight",
-                       "DirDelete", "Hide", "IgnoreCase", "ShowSame",
+                       "DirDelete", "ShowSame",
                        "ShowNew", "ShowModified", "CustomFilterMenu"):
             self.actiongroup.get_action(button).props.is_important = True
         self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
