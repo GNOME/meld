@@ -8,14 +8,74 @@
 <title>Filtering out files</title>
 
 <p>
+When you compare folders, you may want to be able to ignore some files.
+For example, you may wish to only see files that are present and different
+in both folders, ignoring those that are the same or only exist in one
+folder. Alternatively, you might want to ignore all the files in your
+<file>.git</file> directory, or ignore all images.
+</p>
 
-Meld will update the file comparison on the fly.
+<p>
+<app>Meld</app> has several different ways of controlling which files
+and what kind of differences you see. You can filter based on
+<link xref="file-state-filter">differences between a file across
+folders</link> or <link xref="file-name-filter">file and folder
+names</link>. You can also tell <app>Meld</app> to treat file names
+as being <link xref="file-case-filter">case insensitive</link>.
+Finally, you can use <link xref="text-filters">text filters</link> to
+change what both folder and file comparisons see.
 </p>
 
 <note style="important">
   <p>
-  Any <link xref="text-filters">text filters</link> you've defined also apply when comparing folders. Files that are identical after all of the text filters are applied are not highlighted as being different, but are shown in italics.
+  Any <link xref="text-filters">text filters</link> you've defined
+  <em>automatically apply</em> when comparing folders. Files that are
+  identical after all of the text filters are applied are not
+  highlighted as being different, but are shown in italics.
   </p>
 </note>
 
+
+
+<section id="file-state-filter">
+<title>File differences filtering</title>
+
+<p>
+</p>
+</section>
+
+
+
+<section id="file-name-filter">
+<title>File name filtering</title>
+
+<p>
+</p>
+</section>
+
+
+
+<section id="file-case-filter">
+<title>Case insensitive file names</title>
+
+<p>
+Files are compared across directories according to their name. This
+comparison is case sensitive by default; that is, the files
+<file>README</file>, <file>readme</file> and <file>ReadMe</file> would
+all be seen as different files.
+</p>
+
+<p>
+When comparing folders on some filesystems (e.g., HFS+ or FAT) you may
+wish to make <app>Meld</app> treat file names as case insensitive. You
+can do this by selecting
+<guiseq><gui style="menu">View</gui><gui style="menuitem">Ignore filename case</gui></guiseq>
+from the menus.
+</p>
+</section>
+
+
+
 </page>
+
+
