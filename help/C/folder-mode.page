@@ -1,0 +1,218 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="folder-mode">
+<info>
+  <title type="sort">1</title>
+  <link type="guide" xref="index#folder-mode"/>
+</info>
+
+<title>Getting started comparing folders</title>
+
+<p>
+<app>Meld</app> lets you compare two or three folders side-by-side. You can
+start a new folder comparison by selecting the
+<guiseq><gui style="menu">File</gui><gui style="menuitem">New...</gui></guiseq>
+menu item, and clicking on the <gui style="tab">Directory Comparison</gui>
+tab.
+</p>
+
+<p>
+Your selected folders will be shown as side-by-side trees, with
+differences between files in each folder highlighted. You can copy
+or delete files from either folder, or compare individual text files
+in more detail.
+</p>
+
+
+
+<section>
+<title><app>Meld</app>'s folder comparisons</title>
+
+<p>
+The main parts of a folder comparison are the trees showing the folders
+you're comparing. You can easily <link xref="#folder-navigation">move
+around</link> these comparisons to find changes that you're interested
+in. When you select a file or folder, more detailed information is
+given in the status bar at the bottom of the window. Pressing
+<key>Enter</key> on a selected file, or double-clicking any file in the
+tree will open a side-by-side <link xref="file-mode">file
+comparison</link> of the files in a new tab, but this will only work
+properly if they're text files!
+</p>
+
+<p>
+There are bars on the left and right-hand sides of the window that show
+you a simple coloured summary of the comparison results. Each file or
+folder in the comparison corresponds to a small section of these bars,
+though <app>Meld</app> doesn't show <em>Same</em> files so that it's
+easier to see any actually important differences. You can click anywhere
+on this bar to jump straight to that place in the comparison.
+</p>
+</section>
+
+
+
+<section id="folder-navigation">
+<title>Navigating folder comparisons</title>
+
+<p>
+You can move between changed files (that is, any files/folders that
+are <em>not</em> classified as being identical) with the
+<guiseq><gui style="menu">Changes</gui><gui style="menuitem">Previous change</gui></guiseq>
+and
+<guiseq><gui style="menu">Changes</gui><gui style="menuitem">Next change</gui></guiseq>
+menu items, or using the corresponding buttons on the toolbar.
+</p>
+<p>
+You can use the <key>Left</key> and <key>Right</key> arrow keys to move
+between the folders you're comparing. This is useful so that you can
+select an individual file for copying or deletion.
+</p>
+</section>
+
+
+
+<section>
+<title>States in folder comparisons</title>
+
+<p>
+Each file or folder in a tree has its own <em>state</em>, telling you
+how it differed from its corresponding files/folders. The possible
+states are:
+</p>
+
+<comment>
+  <cite date="2012-06-03" href="mailto:kai.willadsen@gmail.com">Kai</cite>
+  <p>
+  The following table would be much more effective if we could style
+  entries in the Appearance column to show what they would actually
+  look like.
+  </p>
+  <p>
+  Ideally we would pull these colours and other details from the
+  theme/gtkrc, but even an illustration of the default would help a lot.
+  </p>
+</comment>
+
+
+<table frame="top bottom">
+  <title>Folder comparison states</title>
+
+  <thead>
+    <tr>
+      <td><p>State</p></td>
+      <td><p>Appearance</p></td>
+      <td><p>Meaning</p></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><p>Same</p></td>
+      <td>
+        <p>
+        Normal font
+<!--        <file>file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        The file/folder is the same across all compared folders.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Same when filtered</p></td>
+      <td>
+        <p>
+        Italics
+<!--        <file style="font-style: italic">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        These files are different across folders, but once
+        <link xref="text-filters">text filters</link> are applied, these
+        files become identical.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Modified</p></td>
+      <td>
+        <p>
+        Green and bold
+<!--        <file style="color: #008800; font-weight: bold">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>New</p></td>
+      <td>
+        <p>
+        Red and bold
+<!--        <file style="color: #880000; font-weight: bold">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Missing</p></td>
+      <td>
+        <p>
+        Greyed out text with a line through the middle
+<!--        <file style="color: #888888; text-decoration: line-through;">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Error</p></td>
+      <td>
+        <p>
+        Bright red with a yellow background and bold
+<!--        <file style="color: #ff0000; background-color: yellow; font-weight: bold">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        When comparing this file, an error occurred. The most common
+        error causes are file permissions (i.e., <app>Meld</app> was not
+        allowed to open the file) and filename encoding errors.
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<comment>
+  <cite date="2012-06-04" href="mailto:kai.willadsen@gmail.com">Kai</cite>
+  <p>
+  The emblem attached is entirely theme-dependant...
+  </p>
+</comment>
+
+<p>
+You can filter out files based on these states, for example, to show only
+files that have are <em>Modified</em>. You can read more about this in
+<link xref="file-filters#file-state-filter"/>.
+</p>
+
+<p>
+Finally, the most recently modified file/folder has an emblem
+attached to it.
+</p>
+</section>
+
+</page>
