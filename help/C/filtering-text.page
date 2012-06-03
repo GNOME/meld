@@ -64,28 +64,34 @@ It's easy to get text filtering wrong, and Meld's support for filtering isn't
 complete. In particular, a text filter can't change the number of lines in a
 file. For example, if we had the built-in <gui>Script comment</gui> filter
 enabled, and compared the following files:
+</p>
 <table>
   <tbody>
     <tr>
       <td>
-      <code>
+        <listing>
+          <title><file>comment1.txt</file></title>
+          <code><![CDATA[
 a
 b#comment
 c
-d
-      </code>
+d]]></code>
+        </listing>
       </td>
       <td>
-      <code>
+        <listing>
+          <title><file>comment2.txt</file></title>
+          <code><![CDATA[
 a
 b
 c
-#comment
-      </code>
+#comment]]></code>
+        </listing>
       </td>
     </tr>
   </tbody>
 </table>
+<p>
 then the lines starting with <code>b</code> would be shown as identical (the
 comment is stripped out) but the <code>d</code> line would be shown as
 different to the comment line on the right. This happens because the
