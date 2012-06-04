@@ -1,0 +1,121 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="text-filters">
+<info>
+  <title type="sort">2</title>
+  <link type="guide" xref="index#file-mode"/>
+  <link type="seealso" xref="file-filters"/>
+</info>
+
+<title>Filtering out text</title>
+
+<p>
+When comparing several files, you may have sections of text where differences
+aren't really important. For example, you may want to focus on changed sections
+of code, and ignore any changes in comment lines. With text filters you can
+tell <app>Meld</app> to ignore text that matches a pattern (i.e., a regular
+expression) when showing differences between files.
+</p>
+
+<note style="important">
+  <p>
+  Text filters don't just affect file comparisons, but also folder comparisons.
+  Check the <link xref="file-filters">file filtering notes</link> for more
+  details.
+  </p>
+</note>
+
+
+<section id="text-filter-creation">
+<title>Adding and using text filters</title>
+
+<p>
+You can turn text filters on or off from the the <gui>Text Filters</gui> tab in
+<gui>Preferences</gui> dialog. <app>Meld</app> comes with a few simple filters
+that you might find useful, but you can add your own as well.
+</p>
+
+<p>
+In <app>Meld</app>, text filters are regular expressions that are matched
+against the text of files you're comparing. Any text that is matched is ignored
+during the comparsion; you'll still see this text in the comparison view, but
+it won't be taken into account when finding differences. Text filters are
+applied in order, so it's possible for the first filter to remove text that now
+makes the second filter match, and so on.
+</p>
+
+<note style="tip">
+  <p>
+  If you're not familiar with regular expressions, you might want to check out
+  the Python <link href="http://docs.python.org/howto/regex.html">Regular
+  Expression HOWTO</link>.
+  </p>
+</note>
+
+</section>
+
+
+
+<section id="text-filter-problems">
+<title>Getting text filters right</title>
+
+<p>
+It's easy to get text filtering wrong, and Meld's support for filtering isn't
+complete. In particular, a text filter can't change the number of lines in a
+file. For example, if we had the built-in <gui>Script comment</gui> filter
+enabled, and compared the following files:
+<table>
+  <tbody>
+    <tr>
+      <td>
+      <code>
+a
+b#comment
+c
+d
+      </code>
+      </td>
+      <td>
+      <code>
+a
+b
+c
+#comment
+      </code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+then the lines starting with <code>b</code> would be shown as identical (the
+comment is stripped out) but the <code>d</code> line would be shown as
+different to the comment line on the right. This happens because the
+<code>#comment</code> is removed from the right-hand side, but the line itself
+can not be removed; <app>Meld</app> will show the <code>d</code> line as being
+different to what it sees as a blank line on the other side.
+</p>
+
+</section>
+
+
+<section id="text-filter-blank-lines">
+<title>Blank lines and filters</title>
+
+<p>
+The <gui>Ignore changes which insert or delete blank lines</gui> preference
+in the <gui>Text Filters</gui> tab requires special explanation. If this
+special filter is enabled, then any change consisting only of blank lines is
+completely ignored. This may occur because there was an actual whitespace
+change in the text, but it may also arise if your active text filters have
+removed all of the other content from a change, leaving only blank lines.
+</p>
+
+<p>
+You can use this option to get around some of the
+<link xref="#text-filter-problems">problems and limitations</link> resulting
+from filters not being able to remove whole lines, but it can also be useful
+in and of itself.
+</p>
+
+</section>
+
+</page>

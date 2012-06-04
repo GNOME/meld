@@ -1,0 +1,38 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="command-line">
+<info>
+  <title type="sort">2</title>
+  <link type="guide" xref="index#advanced"/>
+</info>
+<title>Command line usage</title>
+
+<p>
+If you start <app>Meld</app> from the command line, you can tell it what to do when it starts.
+</p>
+<p>
+For a two- or three-way <link xref="file-mode">file comparison</link>, start <app>Meld</app> with
+<cmd>meld <var>file1</var> <var>file2</var></cmd> or
+<cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> respectively.
+</p>
+
+<p>
+For a two- or three-way <link xref="directory-mode">directory comparison</link>, start <app>Meld</app> with
+<cmd>meld <var>dir1</var> <var>dir2</var></cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>.
+</p>
+
+<p>
+You can start a <link xref="vc-mode">version control</link> comparison by just
+giving a single argument; if that file or directory is managed by a
+<link xref="vc-supported">recognized version control system</link>, it will
+start a version control comparison on that argument. For example,
+<cmd>meld .</cmd> would start a version control view of the current directory.
+</p>
+
+<note>
+<p>
+Run <cmd>meld --help</cmd> for a list of all command line options.
+</p>
+</note>
+
+</page>

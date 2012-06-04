@@ -1,0 +1,29 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="resolving-conflicts">
+<info>
+  <title type="sort">0</title>
+  <link type="guide" xref="index#vc-mode"/>
+</info>
+<title>Resolving merge conflicts</title>
+
+<p>
+One of the best uses of <app>Meld</app> is to resolve conflicts that occur
+while merging different branches.
+</p>
+
+<p>
+For example, when using <app>Git</app>, <cmd>git mergetool</cmd> will start
+a 'merge helper'; <app>Meld</app> is one such helper. If you want to make
+<app>git mergetool</app> use <app>Meld</app> by default, you can add
+</p>
+<code>
+[merge]
+    tool = meld
+</code>
+<p>
+to <file>.git/gitconfig</file>. See the <app>git mergetool</app> manual for
+details.
+</p>
+
+</page>
