@@ -1,0 +1,236 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="vc-mode">
+<info>
+  <title type="sort">0</title>
+  <link type="guide" xref="index#vc-mode"/>
+</info>
+
+<title>Viewing version-controlled files</title>
+
+<p>
+<app>Meld</app> integrates with <link xref="vc-supported">many version
+control systems</link> to let you review local changes and perform
+simple version control tasks. You can start a new version control
+comparison by selecting the
+<guiseq><gui style="menu">File</gui><gui style="menuitem">New...</gui></guiseq>
+menu item, and clicking on the <gui style="tab">Version Control</gui>
+tab.
+</p>
+
+
+<section>
+<title>Version control comparisons</title>
+
+<p>
+Version control comparisons show the differences between the contents
+of your folder and the current repository version. Each file in your
+local copy has a <link xref="#vc-state">state</link> that indicates
+how it differs from the repository copy.
+</p>
+
+<comment>
+  <cite date="2012-06-04" href="mailto:kai.willadsen@gmail.com">Kai</cite>
+  <p>
+  Interacting with VC systems should have its own page.
+  </p>
+</comment>
+
+<p>
+If you want to look at a particular file's differences, you can select
+it and press <key>Enter</key>, or double-click the file to start a
+<link xref="file-mode">file comparison</link>. You can also interact
+with your version control system using the
+<gui style="menu">Changes</gui> menu.
+</p>
+</section>
+
+<section id="vc-state">
+<title>Version control states</title>
+
+<p>
+Each file or folder in a version control comparison has a <em>state</em>,
+obtained from the version control system itself. <app>Meld</app> maps
+these different states into a standard set of very similar concepts.
+As such, <app>Meld</app> might use slightly different names for states
+than your version control system does. The possible states are:
+</p>
+
+<comment>
+  <cite date="2012-06-04" href="mailto:kai.willadsen@gmail.com">Kai</cite>
+  <p>
+  The following table would be much more effective if we could style
+  entries in the Appearance column to show what they would actually
+  look like.
+  </p>
+  <p>
+  Ideally we would pull these colours and other details from the
+  theme/gtkrc, but even an illustration of the default would help a lot.
+  </p>
+</comment>
+
+
+<table frame="top bottom">
+  <title>Version control states</title>
+
+  <thead>
+    <tr>
+      <td><p>State</p></td>
+      <td><p>Appearance</p></td>
+      <td><p>Meaning</p></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><p>Same</p></td>
+      <td>
+        <p>
+        Normal font
+<!--        <file>file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        The file/folder is the same as the repository version.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Modified</p></td>
+      <td>
+        <p>
+        Red and bold
+<!--        <file style="color: #880000; font-weight: bold">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        This file is different to the repository version.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>New</p></td>
+      <td>
+        <p>
+        Green and bold
+<!--        <file style="color: #008800; font-weight: bold">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        This file/folder is new, and is scheduled to be added to
+        the repository.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Removed</p></td>
+      <td>
+        <p>
+        Red bold text with a line through the middle
+<!--        <file style="color: #880000; text-decoration: line-through;">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        This file/folder existed, but is scheduled to be removed from
+        the repository.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Conflict</p></td>
+      <td>
+        <p>
+        Bright red bold text
+<!--        <file style="color: #ff0000; text-weight: bold;">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        When trying to merge with the repository, the differences between
+        the local file and the repository could not be resolved, and the
+        file is now in conflict with the repository contents
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Missing</p></td>
+      <td>
+        <p>
+        Blue bold text with a line through the middle
+<!--        <file style="color: #000088; text-weight: bold; text-decoration: line-through;">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        This file/folder should be present, but isn't.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Ignored</p></td>
+      <td>
+        <p>
+        Greyed out text
+<!--        <file style="color: #888888;">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        This file/folder has been explicitly ignored (e.g., by an entry
+        in <file>.gitignore</file>) and is not being tracked by version
+        control.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Non VC</p></td>
+      <td>
+        <p>
+        Greyed out text
+<!--        <file style="color: #888888;">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        This file is not in the version control system; it is only in
+        the local copy.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Error</p></td>
+      <td>
+        <p>
+        Bright red with a yellow background and bold
+<!--        <file style="color: #ff0000; background-color: yellow; font-weight: bold">file.txt</file>-->
+        </p>
+      </td>
+      <td>
+        <p>
+        The version control system has reported a problem with this file.
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</section>
+
+<section id="vc-state-filtering">
+<title>Version control state filtering</title>
+
+<p>
+Most often, you will only want to see files that are identified as being
+in some way different; this is the default setting in <app>Meld</app>.
+You can change which file states you see by using the
+<guiseq><gui style="menu">View</gui><gui style="menuitem">Version Status</gui></guiseq>
+menu, or by clicking the corresponding <gui style="button">Modified</gui>,
+<gui style="button">Normal</gui>, <gui style="button">Non VC</gui> and
+<gui style="button">Ignored</gui> buttons on the toolbar.
+</p>
+</section>
+
+</page>
