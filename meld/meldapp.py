@@ -88,7 +88,7 @@ class FilterEntry(object):
         elif filter_type == FilterEntry.SHELL:
             compiled = FilterEntry._compile_shell_pattern(filter_string)
         else:
-            raise ValueError, "Unknown filter type"
+            raise ValueError("Unknown filter type")
         return compiled
 
     def __copy__(self):
