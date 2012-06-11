@@ -35,7 +35,7 @@ import time
 
 import ui.emblemcellrenderer
 
-from util.namedtuple import namedtuple
+from collections import namedtuple
 from meldapp import app
 
 gdk = gtk.gdk
@@ -46,8 +46,6 @@ gdk = gtk.gdk
 #
 ################################################################################
 
-# For compatibility with Python 2.5, we use the Python 2.4 compatible version of
-# namedtuple. The class is included in the collections module as of Python 2.6.
 class StatItem(namedtuple('StatItem', 'mode size time')):
     __slots__ = ()
 
