@@ -136,7 +136,7 @@ class FindBar(gnomeglade.Component):
             tofind = r'\b' + tofind + r'\b'
         try:
             pattern = re.compile( tofind, (match_case and re.M or (re.M|re.I)) )
-        except re.error, e:
+        except re.error as e:
             misc.run_dialog( _("Regular expression error\n'%s'") % e, self, messagetype=gtk.MESSAGE_ERROR)
         else:
             if backwards == False:

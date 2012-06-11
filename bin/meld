@@ -113,19 +113,19 @@ if sys.version_info[:2] < pyver:
 try:
     import pygtk
     pygtk.require("2.0")
-except (ImportError, AssertionError), e:
+except (ImportError, AssertionError) as e:
     missing_reqs("pygtk", pygtkver, e)
 
 try:
     import gtk
     assert gtk.pygtk_version >= pygtkver
-except (ImportError, AssertionError), e:
+except (ImportError, AssertionError) as e:
     missing_reqs("pygtk", pygtkver, e)
 
 try:
     import gobject
     assert gobject.pygobject_version >= pygobjectver
-except (ImportError, AssertionError), e:
+except (ImportError, AssertionError) as e:
     missing_reqs("pygobject", pygobjectver, e)
 
 

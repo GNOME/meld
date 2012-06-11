@@ -84,7 +84,7 @@ class Vc(_vc.CachedVc):
                 entries = _vc.popen([self.CMD, "ls", "-l"],
                                     cwd=self.root).read().split("\n")[:-1]
                 break
-            except OSError, e:
+            except OSError as e:
                 if e.errno != errno.EAGAIN:
                     raise
 
@@ -139,7 +139,7 @@ class Vc(_vc.CachedVc):
                                       'unchanged']:
                         rev = entries[1].strip()
                     break
-                except OSError, e:
+                except OSError as e:
                     if e.errno != errno.EAGAIN:
                         raise
 

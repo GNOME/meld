@@ -87,7 +87,7 @@ class Vc(_vc.CachedVc):
                                  ["status", "-S", "--no-pending", branch_root])
                 entries = proc.read().split("\n")[:-1]
                 break
-            except OSError, e:
+            except OSError as e:
                 if e.errno != errno.EAGAIN:
                     raise
         tree_state = {}

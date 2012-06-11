@@ -157,7 +157,7 @@ class Vc(_vc.CachedVc):
                 entries = _vc.popen([self.CMD, "automate", "inventory"],
                                     cwd=self.root).read().split("\n")[:-1]
                 break
-            except OSError, e:
+            except OSError as e:
                 if e.errno != errno.EAGAIN:
                     raise
 

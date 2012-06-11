@@ -79,7 +79,7 @@ class Vc(_vc.CachedVc):
                 status_cmd = [self.CMD, "status", "-v", "--xml", path]
                 tree = ElementTree.parse(_vc.popen(status_cmd))
                 break
-            except OSError, e:
+            except OSError as e:
                 if e.errno != errno.EAGAIN:
                     raise
 

@@ -68,14 +68,14 @@ class Vc(_vc.Vc):
             entries = open(os.path.join(directory, self.VC_DIR, "Entries")).read()
             # poor mans universal newline
             entries = entries.replace("\r","\n").replace("\n\n","\n")
-        except IOError, e: # no cvs dir
+        except IOError as e: # no cvs dir
             d = map(lambda x: _vc.Dir(x[1],x[0], _vc.STATE_NONE), dirs)
             f = map(lambda x: _vc.File(x[1],x[0], _vc.STATE_NONE, None), files)
             return d,f
 
         try:
             logentries = open(os.path.join(directory, self.VC_DIR, "Entries.Log")).read()
-        except IOError, e:
+        except IOError as e:
             pass
         else:
             matches = re.findall("^([AR])\s*(.+)$(?m)", logentries)
@@ -159,7 +159,7 @@ class Vc(_vc.Vc):
             try:
                 regexes = [ misc.shell_to_regex(i)[:-1] for i in ignored ]
                 ignore_re = re.compile( "(" + "|".join(regexes) + ")" )
-            except re.error, e:
+            except re.error as e:
                 misc.run_dialog(_("Error converting to a regular expression\n"
                                   "The pattern was '%s'\n"
                                   "The error was '%s'") % (",".join(ignored), e))

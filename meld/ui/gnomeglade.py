@@ -103,7 +103,7 @@ def connect_signal_handlers(obj):
                         w.connect(signal, method)
                     elif when == 'after':
                         w.connect_after(signal, method)
-                except TypeError, e:
+                except TypeError as e:
                     print e, "in", obj, attr
         elif attr.startswith('on_') or attr.startswith('after_'):
             continue # don't warn until all old code updated

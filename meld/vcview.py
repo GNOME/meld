@@ -491,7 +491,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 r = readfunc()
                 self.consolestream.write(r)
                 yield 1
-        except IOError, e:
+        except IOError as e:
             misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % ( misc.shelljoin(command), e),
                 parent=self, messagetype=gtk.MESSAGE_ERROR)
         if refresh:
@@ -537,7 +537,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                             parent = self,
                             buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                         shutil.rmtree(name)
-            except OSError, e:
+            except OSError as e:
                 misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)

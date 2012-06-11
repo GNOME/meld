@@ -84,7 +84,7 @@ class Vc(_vc.CachedVc):
                 # Just in case.
                 entries = list(set(entries))
                 break
-            except OSError, e:
+            except OSError as e:
                 if e.errno != errno.EAGAIN:
                     raise
 

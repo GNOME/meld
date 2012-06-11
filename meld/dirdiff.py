@@ -492,7 +492,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                 try:
                     entries = os.listdir(root)
-                except OSError, err:
+                except OSError as err:
                     self.model.add_error(it, err.strerror, pane)
                     differences = True
                     continue
@@ -505,7 +505,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 for e in entries:
                     try:
                         e = e.decode('utf8')
-                    except UnicodeDecodeError, err:
+                    except UnicodeDecodeError:
                         approximate_name = e.decode('utf8', 'replace')
                         encoding_errors.append((pane, approximate_name))
                         continue
@@ -513,7 +513,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     try:
                         s = os.lstat(os.path.join(root, e))
                     # Covers certain unreadable symlink cases; see bgo#585895
-                    except OSError, err:
+                    except OSError as err:
                         error_string = e + err.strerror
                         self.model.add_error(it, error_string, pane)
                         continue
@@ -531,7 +531,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 files.add(pane, e)
                             elif stat.S_ISDIR(s.st_mode):
                                 dirs.add(pane, e)
-                        except OSError, err:
+                        except OSError as err:
                             if err.errno == errno.ENOENT:
                                 error_string = e + ": Dangling symlink"
                             else:
@@ -678,7 +678,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 continue
                         misc.copytree(src, dst)
                         self.recursively_update( path )
-                except (OSError,IOError), e:
+                except (OSError, IOError) as e:
                     misc.run_dialog(_("Error copying '%s' to '%s'\n\n%s.") % (src, dst,e), self)
 
     def delete_selected(self):
@@ -703,7 +703,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             shutil.rmtree(name)
                             self.recursively_update( path )
                         self.file_deleted( path, pane)
-                except OSError, e:
+                except OSError as e:
                     misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
 
     def on_treeview_cursor_changed(self, *args):

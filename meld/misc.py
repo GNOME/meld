@@ -262,7 +262,7 @@ def copy2(src, dst):
 
     try:
         shutil.copystat(src, dst)
-    except OSError, e:
+    except OSError as e:
         if e.errno != errno.EPERM:
             raise
 
@@ -277,7 +277,7 @@ def copytree(src, dst):
 
     try:
         os.mkdir(dst)
-    except OSError, e:
+    except OSError as e:
         if e.errno != errno.EEXIST:
             raise
     names = os.listdir(src)
@@ -293,7 +293,7 @@ def copytree(src, dst):
 
     try:
         shutil.copystat(src, dst)
-    except OSError, e:
+    except OSError as e:
         if e.errno != errno.EPERM:
             raise
 

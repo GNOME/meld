@@ -107,7 +107,7 @@ class Vc(_vc.CachedVc):
             try:
                 p = _vc.popen(commandline)
                 break
-            except OSError, e:
+            except OSError as e:
                 if e.errno != errno.EAGAIN:
                     raise
         for line in p:

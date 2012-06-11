@@ -933,7 +933,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     task = TaskEntry(filename, handle, buf, try_codecs[:],
                                      pane, False)
                     tasks.append(task)
-                except (IOError, LookupError), e:
+                except (IOError, LookupError) as e:
                     buf.delete(*buf.get_bounds())
                     add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR,
                                         _("Could not read file"), str(e))
@@ -948,7 +948,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                         _("Could not read file"),
                                         _("%s appears to be a binary file.") % t.filename)
                         tasks.remove(t)
-                except ValueError, err:
+                except ValueError as err:
                     t.codec.pop(0)
                     if len(t.codec):
                         t.file = codecs.open(t.filename, "rU", t.codec[0])
@@ -961,7 +961,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                         _("%s is not in encodings: %s") %
                                             (t.filename, try_codecs))
                         tasks.remove(t)
-                except IOError, ioerr:
+                except IOError as ioerr:
                     add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
                                     _("Could not read file"), str(ioerr))
                     tasks.remove(t)
@@ -1282,7 +1282,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _save_text_to_filename(self, filename, text):
         try:
             open(filename, "wb").write(text)
-        except IOError, e:
+        except IOError as e:
             misc.run_dialog(
                 _("Error writing to %s\n\n%s.") % (filename, e),
                 self, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
