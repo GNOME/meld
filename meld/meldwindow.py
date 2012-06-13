@@ -583,13 +583,20 @@ class MeldWindow(gnomeglade.Component):
         "See if a page will allow itself to be removed"
         response = page.on_delete_event(appquit)
         if response != gtk.RESPONSE_CANCEL:
-            self.scheduler.remove_scheduler( page.scheduler )
-            i = self.notebook.page_num( page.widget )
-            assert(i>=0)
-            # If the page we're removing is the current page, we need to trigger a switch out
-            if self.notebook.get_current_page() == i:
+            self.scheduler.remove_scheduler(page.scheduler)
+            page_num = self.notebook.page_num(page.widget)
+            assert page_num >= 0
+
+            # If the page we're removing is the current page, we need to
+            # disconnect and clear undo handlers, and trigger a switch out
+            if self.notebook.get_current_page() == page_num:
+                page.disconnect(self.diff_handler)
+                for handler in self.undo_handlers:
+                    page.undosequence.disconnect(handler)
+                self.undo_handlers = tuple()
                 page.on_container_switch_out_event(self.ui)
-            self.notebook.remove_page(i)
+
+            self.notebook.remove_page(page_num)
             if self.notebook.get_n_pages() == 0:
                 self.widget.set_title("Meld")
         return response
