@@ -176,9 +176,17 @@ class Differ(gobject.GObject):
         if c is None:
             return None
 
+        def _find_blank_lines(txt, lo, hi):
+            while not txt[lo] and lo < hi:
+                lo += 1
+            while not txt[hi - 1] and lo < hi:
+                hi -= 1
+            return lo, hi
+
         tag = c.tag
-        c1, c2 = self._find_blank_lines(texts[pane1], c[1], c[2])
-        c3, c4 = self._find_blank_lines(texts[pane2], c[3], c[4])
+        c1, c2 = _find_blank_lines(texts[pane1], c[1], c[2])
+        c3, c4 = _find_blank_lines(texts[pane2], c[3], c[4])
+
         if c1 == c2 and c3 == c4:
             return None
         if c1 == c2 and tag == "replace":
@@ -186,17 +194,6 @@ class Differ(gobject.GObject):
         elif c3 == c4 and tag == "replace":
             c0 = "delete"
         return DiffChunk._make((tag, c1, c2, c3, c4))
-
-    def _find_blank_lines(self, txt, lo, hi):
-        for line in range(lo, hi):
-            if txt[line]:
-                break
-            lo += 1
-        for line in range(hi, lo, -1):
-            if txt[line - 1]:
-                break
-            hi -= 1
-        return lo, hi
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0, 1, 2)
