@@ -14,6 +14,7 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from collections import namedtuple
 import difflib
 
 
@@ -51,6 +52,9 @@ def find_common_suffix(a, b):
     return 0
 
 
+DiffChunk = namedtuple('DiffChunk', 'tag, start_a, end_a, start_b, end_b')
+
+
 class MyersSequenceMatcher(difflib.SequenceMatcher):
 
     def __init__(self, isjunk=None, a="", b=""):
@@ -71,8 +75,12 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 pass
         return self.matching_blocks
 
+    def get_opcodes(self):
+        opcodes = difflib.SequenceMatcher.get_opcodes(self)
+        return [DiffChunk._make(chunk) for chunk in opcodes]
+
     def get_difference_opcodes(self):
-        return filter(lambda x: x[0] != "equal", self.get_opcodes())
+        return [chunk for chunk in self.get_opcodes() if chunk.tag != "equal"]
 
     def preprocess_remove_prefix_suffix(self, a, b):
         # remove common prefix and common suffix

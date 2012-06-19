@@ -19,7 +19,7 @@ import difflib
 
 import gobject
 
-from matchers import MyersSequenceMatcher
+from matchers import DiffChunk, MyersSequenceMatcher
 
 ################################################################################
 #
@@ -62,7 +62,8 @@ opcode_reverse = {
 }
 
 def reverse_chunk(chunk):
-    return opcode_reverse[chunk[0]], chunk[3], chunk[4], chunk[1], chunk[2]
+    tag = opcode_reverse[chunk[0]]
+    return DiffChunk._make((tag, chunk[3], chunk[4], chunk[1], chunk[2]))
 
 ################################################################################
 #
@@ -174,16 +175,17 @@ class Differ(gobject.GObject):
     def _consume_blank_lines(self, c, texts, pane1, pane2):
         if c is None:
             return None
-        c0 = c[0]
+
+        tag = c.tag
         c1, c2 = self._find_blank_lines(texts[pane1], c[1], c[2])
         c3, c4 = self._find_blank_lines(texts[pane2], c[3], c[4])
         if c1 == c2 and c3 == c4:
             return None
-        if c1 == c2 and c[0] == "replace":
+        if c1 == c2 and tag == "replace":
             c0 = "insert"
-        elif c3 == c4 and c[0] == "replace":
+        elif c3 == c4 and tag == "replace":
             c0 = "delete"
-        return (c0, c1, c2, c3, c4)
+        return DiffChunk._make((tag, c1, c2, c3, c4))
 
     def _find_blank_lines(self, txt, lo, hi):
         for line in range(lo, hi):
