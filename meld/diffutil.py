@@ -21,37 +21,6 @@ import gobject
 
 from matchers import DiffChunk, MyersSequenceMatcher
 
-################################################################################
-#
-# Differ
-#
-################################################################################
-class IncrementalSequenceMatcher(difflib.SequenceMatcher):
-    def __init__(self, isjunk=None, a="", b=""):
-        difflib.SequenceMatcher.__init__(self, isjunk, a, b)
-
-    def initialise(self):
-        la, lb = len(self.a), len(self.b)
-        todo = [(0, la, 0, lb)]
-        done = []
-        while len(todo):
-            alo, ahi, blo, bhi = todo.pop(0)
-            i, j, k = x = self.find_longest_match(alo, ahi, blo, bhi)
-            if k:
-                yield None
-                done.append( (i,x) )
-                if alo < i and blo < j:
-                    todo.append( (alo, i, blo, j) )
-                if i+k < ahi and j+k < bhi:
-                    todo.append( (i+k, ahi, j+k, bhi) )
-        done.append( (la, (la, lb, 0)) )
-        done.sort()
-        self.matching_blocks = [x[1] for x in done]
-        yield 1
-
-    def get_difference_opcodes(self):
-        return filter(lambda x: x[0]!="equal", self.get_opcodes())
-
 
 opcode_reverse = {
     "replace"  : "replace",
