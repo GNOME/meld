@@ -65,6 +65,29 @@ def reverse_chunk(chunk):
     tag = opcode_reverse[chunk[0]]
     return DiffChunk._make((tag, chunk[3], chunk[4], chunk[1], chunk[2]))
 
+def consume_blank_lines(chunk, texts, pane1, pane2):
+    if chunk is None:
+        return None
+
+    def _find_blank_lines(txt, lo, hi):
+        while not txt[lo] and lo < hi:
+            lo += 1
+        while not txt[hi - 1] and lo < hi:
+            hi -= 1
+        return lo, hi
+
+    tag = chunk.tag
+    c1, c2 = _find_blank_lines(texts[pane1], chunk[1], chunk[2])
+    c3, c4 = _find_blank_lines(texts[pane2], chunk[3], chunk[4])
+
+    if c1 == c2 and c3 == c4:
+        return None
+    if c1 == c2 and tag == "replace":
+        c0 = "insert"
+    elif c3 == c4 and tag == "replace":
+        c0 = "delete"
+    return DiffChunk._make((tag, c1, c2, c3, c4))
+
 ################################################################################
 #
 # Differ
@@ -102,8 +125,8 @@ class Differ(gobject.GObject):
             # We don't handle altering the chunk-type of conflicts in three-way
             # comparisons where e.g., pane 1 and 3 differ in blank lines
             for i, c in enumerate(self._merge_cache):
-                self._merge_cache[i] = (self._consume_blank_lines(c[0], texts, 1, 0),
-                                        self._consume_blank_lines(c[1], texts, 1, 2))
+                self._merge_cache[i] = (consume_blank_lines(c[0], texts, 1, 0),
+                                        consume_blank_lines(c[1], texts, 1, 2))
             self._merge_cache = [x for x in self._merge_cache if x != (None, None)]
 
         mergeable0, mergeable1 = False, False
@@ -171,29 +194,6 @@ class Differ(gobject.GObject):
             last, end = old_end[seq], len(self._line_cache[seq])
             if (last < end):
                 self._line_cache[seq][last:end] = [(None, prev[seq], next[seq])] * (end - last)
-
-    def _consume_blank_lines(self, c, texts, pane1, pane2):
-        if c is None:
-            return None
-
-        def _find_blank_lines(txt, lo, hi):
-            while not txt[lo] and lo < hi:
-                lo += 1
-            while not txt[hi - 1] and lo < hi:
-                hi -= 1
-            return lo, hi
-
-        tag = c.tag
-        c1, c2 = _find_blank_lines(texts[pane1], c[1], c[2])
-        c3, c4 = _find_blank_lines(texts[pane2], c[3], c[4])
-
-        if c1 == c2 and c3 == c4:
-            return None
-        if c1 == c2 and tag == "replace":
-            c0 = "insert"
-        elif c3 == c4 and tag == "replace":
-            c0 = "delete"
-        return DiffChunk._make((tag, c1, c2, c3, c4))
 
     def change_sequence(self, sequence, startidx, sizechange, texts):
         assert sequence in (0, 1, 2)
