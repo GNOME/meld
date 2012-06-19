@@ -30,9 +30,11 @@ opcode_reverse = {
     "equal"    : "equal"
 }
 
+
 def reverse_chunk(chunk):
     tag = opcode_reverse[chunk[0]]
     return DiffChunk._make((tag, chunk[3], chunk[4], chunk[1], chunk[2]))
+
 
 def consume_blank_lines(chunk, texts, pane1, pane2):
     if chunk is None:
@@ -57,11 +59,7 @@ def consume_blank_lines(chunk, texts, pane1, pane2):
         c0 = "delete"
     return DiffChunk._make((tag, c1, c2, c3, c4))
 
-################################################################################
-#
-# Differ
-#
-################################################################################
+
 class Differ(gobject.GObject):
     """Utility class to hold diff2 or diff3 chunks"""
 
@@ -123,6 +121,7 @@ class Differ(gobject.GObject):
             self._line_cache[i] = [(None, None, None)] * (l + 1)
 
         last_chunk = len(self._merge_cache)
+
         def find_next(diff, seq, current):
             next_chunk = None
             if seq == 1 and current + 1 < last_chunk:
@@ -183,7 +182,7 @@ class Differ(gobject.GObject):
 
     def get_chunk(self, index, from_pane, to_pane=None):
         """Return the index-th change in from_pane
-        
+
         If to_pane is provided, then only changes between from_pane and to_pane
         are considered, otherwise all changes starting at from_pane are used.
         """
@@ -408,6 +407,5 @@ class Differ(gobject.GObject):
     def clear(self):
         self.diffs = [[], []]
         self.seqlength = [0] * self.num_sequences
-        texts = [""] * self.num_sequences
         self._initialised = False
-        self._update_merge_cache(texts)
+        self._update_merge_cache([""] * self.num_sequences)
