@@ -64,7 +64,8 @@ class Differ(gobject.GObject):
     """Utility class to hold diff2 or diff3 chunks"""
 
     __gsignals__ = {
-        'diffs-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'diffs-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                                                    (object,)),
     }
 
     _matcher = MyersSequenceMatcher
@@ -76,6 +77,8 @@ class Differ(gobject.GObject):
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]
         self.conflicts = []
+        self._old_merge_cache = set()
+        self._changed_chunks = tuple()
         self._merge_cache = []
         self._line_cache = [[], [], []]
         self.ignore_blanks = False
@@ -96,6 +99,18 @@ class Differ(gobject.GObject):
                                         consume_blank_lines(c[1], texts, 1, 2))
             self._merge_cache = [x for x in self._merge_cache if x != (None, None)]
 
+        # Calculate chunks that were added (in the new but not the old merge
+        # cache), removed (in the old but not the new merge cache) and changed
+        # (where the edit actually occurred, *and* the chunk is still around).
+        # This information is used by the inline highlighting mechanism to
+        # avoid re-highlighting existing chunks.
+        removed_chunks = self._old_merge_cache - set(self._merge_cache)
+        added_chunks = set(self._merge_cache) - self._old_merge_cache
+        modified_chunks = self._changed_chunks
+        if modified_chunks in removed_chunks:
+            modified_chunks = tuple()
+        chunk_changes = (removed_chunks, added_chunks, modified_chunks)
+
         mergeable0, mergeable1 = False, False
         for (c0, c1) in self._merge_cache:
             mergeable0 = mergeable0 or (c0 is not None and c0[0] != 'conflict')
@@ -113,7 +128,7 @@ class Differ(gobject.GObject):
                 self.conflicts.append(i)
 
         self._update_line_cache()
-        self.emit("diffs-changed")
+        self.emit("diffs-changed", chunk_changes)
 
     def _update_line_cache(self):
         for i, l in enumerate(self.seqlength):
@@ -170,6 +185,42 @@ class Differ(gobject.GObject):
         if sequence == 2 or (sequence == 1 and self.num_sequences == 3):
             self._change_sequence(1, sequence, startidx, sizechange, texts)
         self.seqlength[sequence] += sizechange
+
+        def offset(c, start, o1, o2):
+            """Offset a chunk by o1/o2 if it's after the inserted lines"""
+            start_a = c.start_a + (o1 if c.start_a > start else 0)
+            end_a = c.end_a + (o1 if c.end_a > start else 0)
+            start_b = c.start_b + (o2 if c.start_b > start else 0)
+            end_b = c.end_b + (o2 if c.end_b > start else 0)
+            return DiffChunk._make((c.tag, start_a, end_a, start_b, end_b))
+
+        # Calculate the expected differences in the chunk set if no cascading
+        # changes occur, making sure to not include the changed chunk itself
+        self._old_merge_cache = set()
+        self._changed_chunks = tuple()
+        chunk_changed = False
+        for (c1, c2) in self._merge_cache:
+            print c1, c2
+            if sequence == 0:
+                if c1.start_b <= startidx < c1.end_b:
+                    chunk_changed = True
+                c1 = offset(c1, startidx, 0, sizechange)
+            elif sequence == 2:
+                if c2.start_b <= startidx < c2.end_b:
+                    chunk_changed = True
+                c2 = offset(c2, startidx, 0, sizechange)
+            else:  # sequence == 1
+                if c1.start_a <= startidx < c1.end_a:
+                    chunk_changed = True
+                c1 = offset(c1, startidx, sizechange, 0)
+                if self.num_sequences == 3:
+                    c2 = offset(c2, startidx, sizechange, 0)
+            if chunk_changed:
+                assert not self._changed_chunks
+                self._changed_chunks = (c1, c2)
+                chunk_changed = False
+            self._old_merge_cache.add((c1, c2))
+
         self._update_merge_cache(texts)
 
     def _locate_chunk(self, whichdiffs, sequence, line):

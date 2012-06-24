@@ -176,7 +176,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
         self.in_nested_textview_gutter_expose = False
-        self._inline_cache = set()
         self._cached_match = CachedSequenceMatcher()
         self.anim_source_id = [None for buf in self.textbuffer]
         self.animating_chunks = [[] for buf in self.textbuffer]
@@ -633,7 +632,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if focused_pane != -1:
                 self.on_cursor_position_changed(self.textbuffer[focused_pane],
                                                 None, True)
-            self.update_highlighting()
             self.queue_draw()
 
     def _filter_text(self, txt):
@@ -790,7 +788,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_textbuffer__end_user_action(self, *buffer):
         self.undosequence.end_group()
-        self.update_highlighting()
 
     def on_text_insert_text(self, buf, it, text, textlen):
         text = unicode(text, 'utf8')
@@ -925,7 +922,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
            If an element is None, the text of a pane is left as is.
         """
         self._disconnect_buffer_handlers()
-        self._inline_cache = set()
         for i,f in enumerate(files):
             if f:
                 absfile = os.path.abspath(f)
@@ -1039,7 +1035,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.place_cursor(buf.get_start_iter())
         self.scheduler.add_task(lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
         self.queue_draw()
-        self.update_highlighting()
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
 
@@ -1071,7 +1066,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def refresh_comparison(self):
         """Refresh the view by clearing and redoing all comparisons"""
         self._disconnect_buffer_handlers()
-        self._inline_cache = set()
         self.linediffer.clear()
         self.queue_draw()
         self.scheduler.add_task(self._diff_files().next)
@@ -1092,7 +1086,88 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             mergeable = (False, False)
         self.actiongroup.get_action("MergeAll").set_sensitive(mergeable[0] or mergeable[1])
 
-    def on_diffs_changed(self, linediffer):
+    def on_diffs_changed(self, linediffer, chunk_changes):
+        removed_chunks, added_chunks, modified_chunks = chunk_changes
+
+        # We need to clear removed and modified chunks, and need to
+        # re-highlight added and modified chunks.
+        need_clearing = sorted(list(removed_chunks))
+        need_highlighting = sorted(list(added_chunks) + [modified_chunks])
+
+        alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]
+
+        for chunk in need_clearing:
+            for i, c in enumerate(chunk):
+                if not c or c[0] != "replace":
+                    continue
+                to_idx = 2 if i == 1 else 0
+                bufs = self.textbuffer[1], self.textbuffer[to_idx]
+                tags = alltags[1], alltags[to_idx]
+
+                starts = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[1], c[3]))]
+                ends = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[2], c[4]))]
+                bufs[0].remove_tag(tags[0], starts[0], ends[0])
+                bufs[1].remove_tag(tags[1], starts[1], ends[1])
+
+        for chunk in need_highlighting:
+            clear = chunk == modified_chunks
+            for i, c in enumerate(chunk):
+                if not c or c[0] != "replace":
+                    continue
+                to_idx = 2 if i == 1 else 0
+                bufs = self.textbuffer[1], self.textbuffer[to_idx]
+                tags = alltags[1], alltags[to_idx]
+
+                starts = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[1], c[3]))]
+                ends = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[2], c[4]))]
+
+                # We don't use self.buffer_texts here, as removing line
+                # breaks messes with inline highlighting in CRLF cases
+                text1 = bufs[0].get_text(starts[0], ends[0], False)
+                text1 = unicode(text1, 'utf8')
+                textn = bufs[1].get_text(starts[1], ends[1], False)
+                textn = unicode(textn, 'utf8')
+
+                # For very long sequences, bail rather than trying a very slow comparison
+                inline_limit = 8000 # arbitrary constant
+                if len(text1) + len(textn) > inline_limit:
+                    for i in range(2):
+                        bufs[i].apply_tag(tags[i], starts[i], ends[i])
+                    continue
+
+                def apply_highlight(bufs, tags, starts, matches):
+                    # Remove equal matches of size greater than 3; highlight
+                    # the remainder.
+                    matches = [m for m in matches if m.tag != "equal" or
+                        (m.end_a - m.start_a < 3) or (m.end_b - m.start_b < 3)]
+
+                    # FIXME: At this point, there's no guarantee that the
+                    # gtk.TextIters are valid. Any rapid typing and they're
+                    # not... Should used marks instead, and also probably keep
+                    # a list of being-highlighted blocks, and ensure that
+                    # there's only ever one callback per block, cancelling the
+                    # old one and restarting it on each change.
+
+                    for i in range(2):
+                        start, end = starts[i].copy(), starts[i].copy()
+                        offset = start.get_offset()
+                        for o in matches:
+                            start.set_offset(offset + o[1 + 2 * i])
+                            end.set_offset(offset + o[2 + 2 * i])
+                            bufs[i].apply_tag(tags[i], start, end)
+
+                def highlight_cb(bufs, tags, starts, ends, text1, textn, clear):
+                    matches = self._cached_match(text1, textn)
+                    if clear:
+                        bufs[0].remove_tag(tags[0], starts[0], ends[0])
+                        bufs[1].remove_tag(tags[1], starts[1], ends[1])
+                    apply_highlight(bufs, tags, starts, matches)
+                    return False
+                gobject.idle_add(highlight_cb, bufs, tags, starts, ends, text1, textn, clear)
+
+
+        self._cached_match.clean(self.linediffer.diff_count())
+
         self._set_merge_action_sensitivity()
         if self.linediffer.sequences_identical():
             error_message = True in [m.has_message() for m in self.msgarea_mgr]
@@ -1138,75 +1213,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if respid == gtk.RESPONSE_OK:
             self.text_filters = []
             self.refresh_comparison()
-
-    def update_highlighting(self):
-        if not self.undosequence.in_grouped_action():
-            self.scheduler.add_task(self._update_highlighting().next)
-
-    def _update_highlighting(self):
-        alltexts = self.buffer_texts
-        alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]
-        progress = [b.create_mark("progress", b.get_start_iter()) for b in self.textbuffer]
-        newcache = set()
-        for chunk in self.linediffer.all_changes():
-            for i,c in enumerate(chunk):
-                if c and c[0] == "replace":
-                    bufs = self.textbuffer[1], self.textbuffer[i*2]
-                    tags = alltags[1], alltags[i*2]
-                    cacheitem = (i, c, tuple(alltexts[1][c[1]:c[2]]), tuple(alltexts[i*2][c[3]:c[4]]))
-                    newcache.add(cacheitem)
-
-                    # Clean interim chunks
-                    starts = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[1], c[3]))]
-                    prog_it0 = bufs[0].get_iter_at_mark(progress[1])
-                    prog_it1 = bufs[1].get_iter_at_mark(progress[i * 2])
-                    bufs[0].remove_tag(tags[0], prog_it0, starts[0])
-                    bufs[1].remove_tag(tags[1], prog_it1, starts[1])
-                    bufs[0].move_mark(progress[1], bufs[0].get_iter_at_line_or_eof(c[2]))
-                    bufs[1].move_mark(progress[i * 2], bufs[1].get_iter_at_line_or_eof(c[4]))
-
-                    if cacheitem in self._inline_cache:
-                        continue
-
-                    ends = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[2], c[4]))]
-                    bufs[0].remove_tag(tags[0], starts[0], ends[0])
-                    bufs[1].remove_tag(tags[1], starts[1], ends[1])
-
-                    # We don't use self.buffer_texts here, as removing line
-                    # breaks messes with inline highlighting in CRLF cases
-                    text1 = bufs[0].get_text(starts[0], ends[0], False)
-                    text1 = unicode(text1, 'utf8')
-                    textn = bufs[1].get_text(starts[1], ends[1], False)
-                    textn = unicode(textn, 'utf8')
-
-                    # For very long sequences, bail rather than trying a very slow comparison
-                    inline_limit = 8000 # arbitrary constant
-                    if len(text1) + len(textn) > inline_limit:
-                        for i in range(2):
-                            bufs[i].apply_tag(tags[i], starts[i], ends[i])
-                        continue
-
-                    #print "<<<\n%s\n---\n%s\n>>>" % (text1, textn)
-                    back = (0,0)
-                    for o in self._cached_match(text1, textn):
-                        if o[0] == "equal":
-                            if (o[2]-o[1] < 3) or (o[4]-o[3] < 3):
-                                back = o[4]-o[3], o[2]-o[1]
-                            continue
-                        for i in range(2):
-                            s,e = starts[i].copy(), starts[i].copy()
-                            s.forward_chars( o[1+2*i] - back[i] )
-                            e.forward_chars( o[2+2*i] )
-                            bufs[i].apply_tag(tags[i], s, e)
-                        back = (0,0)
-                    yield 1
-
-        # Clean up trailing lines
-        prog_it = [b.get_iter_at_mark(p) for b, p in zip(self.textbuffer, progress)]
-        for b, tag, start in zip(self.textbuffer, alltags, prog_it):
-            b.remove_tag(tag, start, b.get_end_iter())
-        self._inline_cache = newcache
-        self._cached_match.clean(len(self._inline_cache))
 
     def on_textview_expose_event(self, textview, event):
         if self.num_panes == 1:
