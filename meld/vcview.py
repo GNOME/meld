@@ -862,7 +862,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         patchcmd = self.vc.patch_command(tmpdir)
         try:
-            result = misc.write_pipe(patchcmd, patch, error=misc.NULL)
+            with open(os.devnull, "w") as NULL:
+                result = misc.write_pipe(patchcmd, patch, error=NULL)
         except OSError:
             result = 1
 

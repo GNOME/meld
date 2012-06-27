@@ -21,8 +21,28 @@
 ### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from meld import misc
+import os
+import subprocess
+
 from . import svn
+
+NULL = open(os.devnull, "w+b")
+
+
+def cmdout(cmd, text=None, **kwargs):
+    stdin = NULL
+    if text is not None:
+        stdin = subprocess.PIPE
+    new_kwargs = {
+                  'stdin': stdin,
+                  'stdout': subprocess.PIPE,
+                  'stderr': NULL,
+                  }
+    new_kwargs.update(kwargs)
+    p = subprocess.Popen(cmd, **new_kwargs)
+    out = p.communicate(text)[0]
+    status = p.wait()
+    return out, status
 
 
 class Vc(svn.Vc):
@@ -35,11 +55,11 @@ class Vc(svn.Vc):
         try:
             # `svk info` may be interactive. It can ask to create its repository, we
             # don't want that to happen, so provide the right answer with `text="n"`
-            status = misc.cmdout([self.CMD, "info"], cwd=location, stdout=misc.NULL,
-                                 stderr=misc.NULL, text='n')[1]
+            status = cmdout([self.CMD, "info"], cwd=location, stdout=NULL,
+                                 stderr=NULL, text='n')[1]
             # SVK does evil things to the real stdin, even when having its input
             # stream redirected to a newly created pipe, restore sanity manually
-            misc.cmdout(['stty', 'sane'], stdout=misc.NULL, stderr=misc.NULL, stdin=None)
+            cmdout(['stty', 'sane'], stdout=NULL, stderr=NULL, stdin=None)
         except OSError:
             raise ValueError()
         if status != 0:

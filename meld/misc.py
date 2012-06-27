@@ -34,7 +34,6 @@ import gtk
 
 
 whitespace_re = re.compile(r"\s")
-NULL = open(os.devnull, "w+b")
 
 if os.name != "nt":
     from select import select
@@ -45,21 +44,6 @@ else:
         time.sleep(timeout)
         return rlist, wlist, xlist
 
-
-def cmdout(cmd, text=None, **kwargs):
-    stdin = NULL
-    if text is not None:
-        stdin = subprocess.PIPE
-    new_kwargs = {
-                  'stdin': stdin,
-                  'stdout': subprocess.PIPE,
-                  'stderr': NULL,
-                  }
-    new_kwargs.update(kwargs)
-    p = subprocess.Popen(cmd, **new_kwargs)
-    out = p.communicate(text)[0]
-    status = p.wait()
-    return out, status
 
 def shelljoin( command ):
     def quote(s):
