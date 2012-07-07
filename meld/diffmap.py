@@ -15,6 +15,8 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import collections
+
 import gobject
 import gtk
 
@@ -102,11 +104,16 @@ class DiffMap(gtk.DrawingArea):
 
         darken = lambda color: [x * 0.8 for x in color]
 
+        tagged_diffs = collections.defaultdict(list)
         for c, y0, y1 in self._difffunc():
-            color = self.ctab[c]
-            y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
+            tagged_diffs[c].append((y0, y1))
+
+        for tag, diffs in tagged_diffs.iteritems():
+            color = self.ctab[tag]
             context.set_source_rgb(*color)
-            context.rectangle(x0, y0, x1, int(y1 - y0))
+            for y0, y1 in diffs:
+                y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
+                context.rectangle(x0, y0, x1, y1 - y0)
             context.fill_preserve()
             context.set_source_rgb(*darken(color))
             context.stroke()
