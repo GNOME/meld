@@ -68,6 +68,8 @@ class Vc(_vc.CachedVc):
     def revert_command(self):
         return [self.CMD,"checkout"]
     def valid_repo(self):
+        # TODO: On Windows, this exit code is wrong under the normal shell; it
+        # appears to be correct under the default git bash shell however.
         if _vc.call([self.CMD, "branch"], cwd=self.root):
             return False
         else:
@@ -132,6 +134,9 @@ class Vc(_vc.CachedVc):
             # There are 1 or more modified files, parse their state
             for entry in entries:
                 statekey, name = entry.split("\t", 2)
+                if os.name == 'nt':
+                    # Git returns unix-style paths on Windows
+                    name = os.path.normpath(name.strip())
                 path = os.path.join(self.root, name.strip())
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 tree_state[path] = state
