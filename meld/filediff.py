@@ -948,6 +948,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                         _("Could not read file"),
                                         _("%s appears to be a binary file.") % t.filename)
                         tasks.remove(t)
+                        continue
                 except ValueError as err:
                     t.codec.pop(0)
                     if len(t.codec):
