@@ -945,17 +945,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if nextbit.find("\x00") != -1:
                         t.buf.delete(*t.buf.get_bounds())
                         add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
-                                        _("Could not read file"),
-                                        _("%s appears to be a binary file.") % t.filename)
+                            _("Could not read file"),
+                            _("%s appears to be a binary file.") % t.filename)
                         tasks.remove(t)
                         continue
                 except ValueError as err:
                     t.codec.pop(0)
                     if len(t.codec):
+                        t.buf.delete(*t.buf.get_bounds())
                         t.file = codecs.open(t.filename, "rU", t.codec[0])
-                        t.buf.delete( t.buf.get_start_iter(), t.buf.get_end_iter() )
                     else:
-                        print "codec error fallback", err
                         t.buf.delete(*t.buf.get_bounds())
                         add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
                                         _("Could not read file"),
@@ -977,12 +976,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         if nextbit[-1] == "\r" and len(nextbit) > 1:
                             t.was_cr = True
                             nextbit = nextbit[0:-1]
-                        t.buf.insert( t.buf.get_end_iter(), nextbit )
+                        t.buf.insert(t.buf.get_end_iter(), nextbit)
                     else:
-                        self.set_buffer_writable(t.buf, os.access(t.filename, os.W_OK))
-                        self.textbuffer[t.pane].data.encoding = t.codec[0]
+                        writable = os.access(t.filename, os.W_OK)
+                        self.set_buffer_writable(t.buf, writable)
+                        t.buf.data.encoding = t.codec[0]
                         if hasattr(t.file, "newlines"):
-                            self.textbuffer[t.pane].data.newlines = t.file.newlines
+                            t.buf.data.newlines = t.file.newlines
                         tasks.remove(t)
             yield 1
         for b in self.textbuffer:
