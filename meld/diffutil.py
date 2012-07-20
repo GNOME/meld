@@ -188,6 +188,8 @@ class Differ(gobject.GObject):
 
         def offset(c, start, o1, o2):
             """Offset a chunk by o1/o2 if it's after the inserted lines"""
+            if c is None:
+                return None
             start_a = c.start_a + (o1 if c.start_a > start else 0)
             end_a = c.end_a + (o1 if c.end_a > start else 0)
             start_b = c.start_b + (o2 if c.start_b > start else 0)
@@ -200,17 +202,17 @@ class Differ(gobject.GObject):
         self._changed_chunks = tuple()
         chunk_changed = False
         for (c1, c2) in self._merge_cache:
-            print c1, c2
             if sequence == 0:
-                if c1.start_b <= startidx < c1.end_b:
+                if c1 and c1.start_b <= startidx < c1.end_b:
                     chunk_changed = True
                 c1 = offset(c1, startidx, 0, sizechange)
             elif sequence == 2:
-                if c2.start_b <= startidx < c2.end_b:
+                if c2 and c2.start_b <= startidx < c2.end_b:
                     chunk_changed = True
                 c2 = offset(c2, startidx, 0, sizechange)
-            else:  # sequence == 1
-                if c1.start_a <= startidx < c1.end_a:
+            else:
+                # Middle sequence changes alter both chunks
+                if c1 and c1.start_a <= startidx < c1.end_a:
                     chunk_changed = True
                 c1 = offset(c1, startidx, sizechange, 0)
                 if self.num_sequences == 3:
