@@ -399,40 +399,40 @@ class Differ(gobject.GObject):
     def _merge_diffs(self, seq0, seq1, texts):
         seq0, seq1 = seq0[:], seq1[:]
         seq = seq0, seq1
-        LO, HI = 1,2
         while len(seq0) or len(seq1):
-            if len(seq0) == 0:
+            if not seq0:
                 high_seq = 1
-            elif len(seq1) == 0:
+            elif not seq1:
                 high_seq = 0
             else:
-                high_seq = int(seq0[0][LO] > seq1[0][LO])
-                if seq0[0][LO] == seq1[0][LO]:
-                    if seq0[0][0] == "insert":
+                high_seq = int(seq0[0].start_a > seq1[0].start_a)
+                if seq0[0].start_a == seq1[0].start_a:
+                    if seq0[0].tag == "insert":
                         high_seq = 0
-                    elif seq1[0][0] == "insert":
+                    elif seq1[0].tag == "insert":
                         high_seq = 1
 
             high_diff = seq[high_seq].pop(0)
-            high_mark = high_diff[HI]
-            other_seq = high_seq ^ 1
+            high_mark = high_diff.end_a
+            other_seq = 0 if high_seq == 1 else 1
 
             using = [[], []]
             using[high_seq].append(high_diff)
 
             while seq[other_seq]:
                 other_diff = seq[other_seq][0]
-                if high_mark < other_diff[LO]:
+                if high_mark < other_diff.start_a:
                     break
-                if high_mark == other_diff[LO] and not (high_diff[0] == other_diff[0] == "insert"):
+                if high_mark == other_diff.start_a and \
+                   not (high_diff.tag == other_diff.tag == "insert"):
                     break
 
                 using[other_seq].append(other_diff)
                 seq[other_seq].pop(0)
 
-                if high_mark < other_diff[HI]:
-                    (high_seq, other_seq) = (other_seq, high_seq)
-                    high_mark = other_diff[HI]
+                if high_mark < other_diff.end_a:
+                    high_seq, other_seq = other_seq, high_seq
+                    high_mark = other_diff.end_a
 
             if len(using[0])==0:
                 assert len(using[1])==1
