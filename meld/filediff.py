@@ -1049,8 +1049,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _set_merge_action_sensitivity(self):
         pane = self._get_focused_pane()
-        editable = self.textview[pane].get_editable()
-        mergeable = self.linediffer.has_mergeable_changes(pane)
+        if pane != -1:
+            editable = self.textview[pane].get_editable()
+            mergeable = self.linediffer.has_mergeable_changes(pane)
+        else:
+            editable = False
+            mergeable = (False, False)
         self.actiongroup.get_action("MergeFromLeft").set_sensitive(mergeable[0] and editable)
         self.actiongroup.get_action("MergeFromRight").set_sensitive(mergeable[1] and editable)
         if self.num_panes == 3 and self.textview[1].get_editable():
