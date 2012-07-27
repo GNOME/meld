@@ -704,6 +704,55 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 except OSError as e:
                     misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
 
+    def on_treemodel_row_deleted(self, model, path):
+
+        # TODO: Move this and path tools to new tree helper module
+        def refocus_deleted_path(model, path):
+            # Since the passed path has been deleted, either the path is now a
+            # valid successor, or there are no successors. If valid, return it.
+            # If not, and the path has a predecessor sibling (immediate or
+            # otherwise), then return that. If there are no siblings, traverse
+            # parents until we get a valid path, and return that.
+
+            def tree_path_prev(path):
+                if not path or path[-1] == 0:
+                    return None
+                return path[:-1] + (path[-1] - 1,)
+
+            def tree_path_up(path):
+                if not path:
+                    return None
+                return path[:-1]
+
+            def valid_path(model, path):
+                try:
+                    model.get_iter(path)
+                    return True
+                except ValueError:
+                    return False
+
+            if valid_path(model, path):
+                return path
+
+            new_path = tree_path_prev(path)
+            while new_path:
+                if valid_path(model, new_path):
+                    return new_path
+                new_path = tree_path_prev(new_path)
+
+            new_path = tree_path_up(path)
+            while new_path:
+                if valid_path(model, new_path):
+                    return new_path
+                new_path = tree_path_up(new_path)
+
+            return None
+
+        if self.current_path == path:
+            self.current_path = refocus_deleted_path(model, path)
+            if self.current_path and self.treeview_focussed:
+                self.treeview_focussed.set_cursor(self.current_path)
+
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1033,6 +1082,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.model = DirDiffTreeStore(n)
             for i in range(n):
                 self.treeview[i].set_model(self.model)
+            self.model.connect("row-deleted", self.on_treemodel_row_deleted)
 
             colour_map = {
                 "conflict": (1.0, 0.75294117647058822, 0.79607843137254897),
