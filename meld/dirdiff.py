@@ -192,7 +192,10 @@ class CanonicalListing(object):
             self.errors.append((pane, item, self.items[ci][pane]))
 
     def get(self):
-        first = lambda seq: next(s for s in seq if s)
+        def first_nonempty(seq):
+            for s in seq:
+                if s:
+                    return s
         filled = lambda seq: tuple([s or first(seq) for s in seq])
         return sorted([filled(v) for v in self.items.itervalues()])
 
