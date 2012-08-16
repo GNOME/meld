@@ -695,8 +695,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         shadowed_entries = []
         invalid_filenames = []
         while len(todo):
-            todo.sort() # depth first
-            path = todo.pop(0)
+            # depth first: use todo as stack (LIFO) with pop() and append(path)
+            path = todo.pop()
             it = self.model.get_iter( path )
             roots = self.model.value_paths( it )
 
@@ -782,7 +782,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             for pane, f1, f2 in dirs.errors + files.errors:
                 shadowed_entries.append((pane, roots[pane], f1, f2))
 
-            alldirs = dirs.get()
+            # If STATE_NORMAL not in state_filters: dirs that exist and are a dir in all panes
+            # are also added to all_dirs, so they can be compared. They may be removed later.
+            alldirs = self._filter_on_state(roots, dirs.get())
             allfiles = self._filter_on_state(roots, files.get())
 
             # then directories and files
@@ -792,12 +794,54 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
                     todo.append(self.model.get_path(child))
+                # depth first: put dirs alphabetically on stack, with the a's on top
+                if len(alldirs) > 0: todo[-len(alldirs):] = reversed(todo[-len(alldirs):])
                 for names in allfiles:
                     entries = [os.path.join(r, n) for r, n in zip(roots, names)]
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
-            else: # directory is empty, add a placeholder
-                self.model.add_empty(it)
+            else:
+                all_present = False not in [ os.path.exists(f) for f in roots ]
+                all_dir = False not in [ os.path.isdir(f) for f in roots ]
+                if (not all_present) or (not all_dir) or (tree.STATE_NORMAL in self.state_filters):
+                    self.model.add_empty(it)
+                    if self.model.iter_parent(it) == None:
+                        expanded.add(rootpath)    # expand rootpath to show entire tree is empty
+                else:
+                    # assert ( roots all_present and all_dir and all_empty, STATE_NORMAL not in state_filters )
+
+                    # roots (and all their ancestors to top of tree) were let through in _filter_on_state()
+                    # although STATE_NORMAL is disabled, so that their contents could be compared; as roots
+                    # turned out empty their (and every empty ancestor's) branch in the tree can be removed
+
+                    assert (it != None) and (not self.model.iter_has_child(it))
+                    while not self.model.iter_has_child(it):
+                        if self.model.iter_next(it) == None:
+                            # all siblings of it have been processed, none are left on the todo stack
+                            parent = self.model.iter_parent(it)
+                            if parent == None:             # don't remove top of the tree
+                                self.model.add_empty(it)
+                                expanded.add(rootpath)     # expand roothpath to show entire tree is empty
+                                break
+                            self.model.remove(it)
+                            it = parent
+                            # if parent has more children: state of these children is in state_filters;
+                            # parent may not be removed in this case : stop while loop
+                        else:
+                            self.model.remove(it)   # all paths of sibling dirs still on the stack are now invalid!
+                            index = 0
+                            # siblings that are on the stack, all occupy the top positions (in reverse order)
+                            while it != None:
+                                one_dir = True in [ os.path.isdir(f) for f in self.model.value_paths(it) ]
+                                if one_dir:
+                                    index += 1
+                                    todo[-index] = self.model.get_path(it)   # correct the path for this sibling
+                                else:
+                                    # stop while loop: it == sibling files and sibling dirs come first in tree
+                                    break
+                                it = self.model.iter_next(it)
+                            break   # parent of current level in tree has children : stop while loop
+
             if differences:
                 expanded.add(path)
 
@@ -1233,7 +1277,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     state = tree.STATE_MODIFIED
             else:
                 state = tree.STATE_NEW
-            if state in self.state_filters:
+            all_dir = False not in [ os.path.isdir(f) for f in curfiles ]
+            # curfiles == all dirs: add them, even if STATE_NORMAL is not
+            # in state_filters; their branch in the tree may still be
+            # removed later in _search_recursively_iter()
+            if state in self.state_filters or (all_present and all_dir):
                 ret.append( files )
         return ret
 
