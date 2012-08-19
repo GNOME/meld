@@ -236,9 +236,9 @@ class MeldPreferences(prefs.Preferences):
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
             _("Version Control\t1\t%s\n") % misc.shell_escape(' '.join(vc.get_plugins_metadata())) + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n") + \
+            _("Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}")),
+            _("Media\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}")),
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
         "regexes" : prefs.Value(prefs.STRING, _("CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n") + \
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
