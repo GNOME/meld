@@ -248,11 +248,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
         self.name_filters = []
-        self.create_name_filters()
-        app.connect("file-filters-changed", self.on_file_filters_changed)
         self.text_filters = []
+        self.create_name_filters()
         self.create_text_filters()
-        app.connect("text-filters-changed", self.on_text_filters_changed)
+        self.app_handlers = [app.connect("file-filters-changed",
+                                         self.on_file_filters_changed),
+                             app.connect("text-filters-changed",
+                                         self.on_text_filters_changed)]
+
         for button in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                        "DirDelete", "ShowSame",
                        "ShowNew", "ShowModified", "CustomFilterMenu"):
@@ -1183,3 +1186,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_reload_activate(self, *extra):
         self.on_fileentry_activate(None)
+
+    def on_delete_event(self, appquit=0):
+        for h in self.app_handlers:
+            app.disconnect(h)
+
+        return gtk.RESPONSE_OK

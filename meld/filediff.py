@@ -162,7 +162,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence = undo.UndoSequence()
         self.text_filters = []
         self.create_text_filters()
-        app.connect("text-filters-changed", self.on_text_filters_changed)
+        self.app_handlers = [app.connect("text-filters-changed",
+                             self.on_text_filters_changed)]
         self.buffer_filtered = [meldbuffer.BufferLines(b, self._filter_text)
                                 for b in self.textbuffer]
         for (i, w) in enumerate(self.scrolledwindow):
@@ -740,6 +741,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             return gtk.RESPONSE_CANCEL
             elif response == gtk.RESPONSE_DELETE_EVENT:
                 response = gtk.RESPONSE_CANCEL
+        if response == gtk.RESPONSE_OK:
+            for h in self.app_handlers:
+                app.disconnect(h)
         return response
 
         #
