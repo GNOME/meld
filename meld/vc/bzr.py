@@ -55,7 +55,8 @@ class Vc(_vc.CachedVc):
         "M": _vc.STATE_MODIFIED, # File modified
     }
     
-    valid_status_re = r'[%s][%s]\*?\s+' % (''.join(state_1_map.keys()), ''.join(state_2_map.keys()))
+    valid_status_re = r'[%s][%s][\*\s]\s*' % (''.join(state_1_map.keys()),
+                                              ''.join(state_2_map.keys()))
 
     def commit_command(self, message):
         return [self.CMD] + self.CMDARGS + ["commit", "-m", message]
