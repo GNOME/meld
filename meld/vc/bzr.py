@@ -33,7 +33,7 @@ class Vc(_vc.CachedVc):
     CMDARGS = ["--no-aliases", "--no-plugins"]
     NAME = "Bazaar-NG"
     VC_DIR = ".bzr"
-    PATCH_INDEX_RE = "^=== modified file '(.*)'$"
+    PATCH_INDEX_RE = "^=== modified file '(.*)'.*$"
 
     # We use None here to indicate flags that we don't deal with or care about
     state_1_map = {
