@@ -948,9 +948,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     nextbit = t.file.read(4096)
                     if nextbit.find("\x00") != -1:
                         t.buf.delete(*t.buf.get_bounds())
+                        filename = gobject.markup_escape_text(t.filename)
                         add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
                             _("Could not read file"),
-                            _("%s appears to be a binary file.") % t.filename)
+                            _("%s appears to be a binary file.") % filename)
                         tasks.remove(t)
                         continue
                 except ValueError as err:
@@ -960,10 +961,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         t.file = codecs.open(t.filename, "rU", t.codec[0])
                     else:
                         t.buf.delete(*t.buf.get_bounds())
+                        filename = gobject.markup_escape_text(t.filename)
                         add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
                                         _("Could not read file"),
                                         _("%s is not in encodings: %s") %
-                                            (t.filename, try_codecs))
+                                            (filename, try_codecs))
                         tasks.remove(t)
                 except IOError as ioerr:
                     add_dismissable_msg(t.pane, gtk.STOCK_DIALOG_ERROR,
