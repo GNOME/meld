@@ -257,6 +257,8 @@ def copy2(src, dst):
         dst = os.path.join(dst, os.path.basename(src))
 
     if os.path.islink(src) and os.path.isfile(src):
+        if os.path.lexists(dst):
+            os.unlink(dst)
         os.symlink(os.readlink(src), dst)
     elif os.path.isfile(src):
         shutil.copyfile(src, dst)
