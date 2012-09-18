@@ -32,7 +32,7 @@ class Vc(_vc.CachedVc):
 
     CMD = "fossil"
     NAME = "Fossil"
-    VC_METADATA = ["_FOSSIL_", ".fos"]    # One or the other
+    VC_METADATA = [".fslckout", "_FOSSIL_", ".fos"]    # One or the other
     PATCH_INDEX_RE = "^--- (.*)$"
 
     state_map = {
