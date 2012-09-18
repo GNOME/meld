@@ -294,7 +294,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_vc_change(self, cb):
         if not cb.lock:
             self.vc = cb.get_model()[cb.get_active_iter()][1]
-            self._set_location(self.vc.root)
+            self._set_location(self.vc.location)
             self.update_actions_sensitivity()
 
     def set_location(self, location):
