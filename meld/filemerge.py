@@ -17,7 +17,9 @@
 import filediff
 from gettext import gettext as _
 import gtk
+import meldbuffer
 import merge
+import os
 
 MASK_SHIFT, MASK_CTRL = 1, 2
 
@@ -28,40 +30,32 @@ class FileMerge(filediff.FileDiff):
 
     def __init__(self, prefs, num_panes):
         filediff.FileDiff.__init__(self, prefs, num_panes)
-        self.hidden_textbuffer = gtk.TextBuffer()
+        self.hidden_textbuffer = meldbuffer.MeldBuffer()
 
     def _connect_buffer_handlers(self):
         filediff.FileDiff._connect_buffer_handlers(self)
         self.textview[0].set_editable(0)
         self.textview[2].set_editable(0)
 
-    def set_files(self, files):
-        if len(files) == 4:
-            self.ancestor_file = files[1]
-            self.merge_file = files[3]
-            files[1] = files[3]
-            files = files[:3]
-        filediff.FileDiff.set_files(self, files)
+    def set_merge_output_file(self, filename):
+        filediff.FileDiff.set_merge_output_file(self, filename)
+        self.textbuffer[1].data.set_label(filename)
+        self.fileentry[1].set_filename(os.path.abspath(filename))
+        self.recompute_label()
 
     def _set_files_internal(self, files):
         textbuffers = self.textbuffer[:]
         textbuffers[1] = self.hidden_textbuffer
-        files[1] = self.ancestor_file
         for i in self._load_files(files, textbuffers):
             yield i
         for i in self._merge_files():
             yield i
         for i in self._diff_files():
             yield i
+        filediff.FileDiff.set_buffer_writable(self, self.textbuffer[1], True)
 
     def _get_custom_status_text(self):
         return "   Conflicts: %i" % (self.linediffer.get_unresolved_count())
-
-    def set_buffer_writable(self, buf, yesno):
-        if buf == self.hidden_textbuffer:
-            buf = self.textbuffer[1]
-            yesno = True
-        filediff.FileDiff.set_buffer_writable(self, buf, yesno)
 
     def _merge_files(self):
         yield _("[%s] Computing differences") % self.label_text
@@ -87,3 +81,4 @@ class FileMerge(filediff.FileDiff):
         self.textbuffer[1].data.modified = True
         self.recompute_label()
         yield 1
+

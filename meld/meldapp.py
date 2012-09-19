@@ -147,7 +147,7 @@ class MeldApp(gobject.GObject):
                 diff_files_args.append(arg)
                 del parser.rargs[0]
 
-        if len(diff_files_args) not in (1, 2, 3, 4):
+        if len(diff_files_args) not in (1, 2, 3):
             raise optparse.OptionValueError(
                 _("wrong number of arguments supplied to --diff"))
         parser.values.diff.append(diff_files_args)
@@ -176,14 +176,18 @@ class MeldApp(gobject.GObject):
         parser.add_option("-o", "--output", action="store", type="string",
             dest="outfile", default=None,
             help=_("Set the target file for saving a merge result"))
+        parser.add_option("--auto-merge", None, action="store_true", default=False,
+            help=_("Automatically merge files"))
         parser.add_option("", "--diff", action="callback", callback=self.diff_files_callback,
                           dest="diff", default=[],
                           help=_("Creates a diff tab for up to 3 supplied files or directories."))
         options, args = parser.parse_args(rawargs)
-        if len(args) > 4:
-            parser.error(_("too many arguments (wanted 0-4, got %d)") % len(args))
-        elif len(args) == 4 and any([os.path.isdir(f) for f in args]):
-            parser.error(_("can't compare more than three directories"))
+        if len(args) > 3:
+            parser.error(_("too many arguments (wanted 0-3, got %d)") % len(args))
+        elif options.auto_merge and len(args) < 3:
+            parser.error(_("can't auto-merge less than 3 files"))
+        elif options.auto_merge and any([os.path.isdir(f) for f in args]):
+            parser.error(_("can't auto-merge directories"))
 
         new_window = True
         open_paths = self.window.open_paths
@@ -195,11 +199,9 @@ class MeldApp(gobject.GObject):
                 new_window = False
 
         for files in options.diff:
-            if len(files) == 4 and any([os.path.isdir(f) for f in files]):
-                parser.error(_("can't compare more than three directories"))
             open_paths(files)
 
-        tab = open_paths(args, options.auto_compare)
+        tab = open_paths(args, options.auto_compare, options.auto_merge)
         if options.label and tab:
             tab.set_labels(options.label)
 

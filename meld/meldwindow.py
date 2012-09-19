@@ -639,16 +639,20 @@ class MeldWindow(gnomeglade.Component):
         return doc
 
     def append_filediff(self, files):
-        assert len(files) in (1, 2, 3, 4)
-        if len(files) == 4:
-            doc = filemerge.FileMerge(app.prefs, 3)
-        else:
-            doc = filediff.FileDiff(app.prefs, len(files))
+        assert len(files) in (1, 2, 3)
+        doc = filediff.FileDiff(app.prefs, len(files))
         self._append_page(doc, "text-x-generic")
         doc.set_files(files)
         return doc
 
-    def append_diff(self, paths, auto_compare=False):
+    def append_filemerge(self, files):
+        assert len(files) == 3
+        doc = filemerge.FileMerge(app.prefs, len(files))
+        self._append_page(doc, "text-x-generic")
+        doc.set_files(files)
+        return doc
+
+    def append_diff(self, paths, auto_compare=False, auto_merge=False):
         dirslist = [p for p in paths if os.path.isdir(p)]
         fileslist = [p for p in paths if os.path.isfile(p)]
         if dirslist and fileslist:
@@ -672,6 +676,8 @@ class MeldWindow(gnomeglade.Component):
             return self.append_filediff(builtfilelist)
         elif dirslist:
             return self.append_dirdiff(paths, auto_compare)
+        elif auto_merge:
+            return self.append_filemerge(paths)
         else:
             return self.append_filediff(paths)
 
@@ -695,7 +701,7 @@ class MeldWindow(gnomeglade.Component):
         doc.connect("create-diff", lambda obj,arg: self.append_diff(arg))
         doc.run_diff([path])
 
-    def open_paths(self, paths, auto_compare=False):
+    def open_paths(self, paths, auto_compare=False, auto_merge=False):
         tab = None
         if len(paths) == 1:
             a = paths[0]
@@ -704,8 +710,8 @@ class MeldWindow(gnomeglade.Component):
             else:
                 tab = self.append_vcview(a, auto_compare)
 
-        elif len(paths) in (2, 3, 4):
-            tab = self.append_diff(paths, auto_compare)
+        elif len(paths) in (2, 3):
+            tab = self.append_diff(paths, auto_compare, auto_merge)
         return tab
 
     def current_doc(self):
