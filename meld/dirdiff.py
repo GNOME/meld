@@ -512,6 +512,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             path = todo.pop(0)
             it = self.model.get_iter( path )
             roots = self.model.value_paths( it )
+
+            # Buggy ordering when deleting rows means that we sometimes try to
+            # recursively update files; this fix seems the least invasive.
+            if not any(os.path.isdir(root) for root in roots):
+                continue
+
             yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
             differences = False
             encoding_errors = []
@@ -737,8 +743,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 parent = self,
                                 buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                             shutil.rmtree(name)
-                            self.recursively_update( path )
-                        self.file_deleted( path, pane)
+                            self.recursively_update(path)
+                            self.file_deleted(path, pane)
                 except OSError as e:
                     misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
 
