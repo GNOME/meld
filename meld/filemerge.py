@@ -37,12 +37,6 @@ class FileMerge(filediff.FileDiff):
         self.textview[0].set_editable(0)
         self.textview[2].set_editable(0)
 
-    def set_merge_output_file(self, filename):
-        filediff.FileDiff.set_merge_output_file(self, filename)
-        self.textbuffer[1].data.set_label(filename)
-        self.fileentry[1].set_filename(os.path.abspath(filename))
-        self.recompute_label()
-
     def _set_files_internal(self, files):
         textbuffers = self.textbuffer[:]
         textbuffers[1] = self.hidden_textbuffer

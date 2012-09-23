@@ -876,6 +876,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if len(self.textbuffer) < 2:
             return
         self.textbuffer[1].data.savefile = os.path.abspath(filename)
+        self.textbuffer[1].data.set_label(filename)
+        self.fileentry[1].set_filename(os.path.abspath(filename))
+        self.recompute_label()
 
     def recompute_label(self):
         filenames = []
