@@ -14,23 +14,17 @@
 ### along with this program; if not, write to the Free Software
 ### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import filediff
 from gettext import gettext as _
-import gtk
-import meldbuffer
-import merge
-import os
 
-MASK_SHIFT, MASK_CTRL = 1, 2
+import gtk
+
+import filediff
+import merge
 
 
 class FileMerge(filediff.FileDiff):
 
     differ = merge.AutoMergeDiffer
-
-    def __init__(self, prefs, num_panes):
-        filediff.FileDiff.__init__(self, prefs, num_panes)
-        self.hidden_textbuffer = meldbuffer.MeldBuffer()
 
     def _connect_buffer_handlers(self):
         filediff.FileDiff._connect_buffer_handlers(self)
@@ -38,9 +32,7 @@ class FileMerge(filediff.FileDiff):
         self.textview[2].set_editable(0)
 
     def _set_files_internal(self, files):
-        textbuffers = self.textbuffer[:]
-        textbuffers[1] = self.hidden_textbuffer
-        for i in self._load_files(files, textbuffers):
+        for i in self._load_files(files, self.textbuffer):
             yield i
         for i in self._merge_files():
             yield i
@@ -48,15 +40,10 @@ class FileMerge(filediff.FileDiff):
             yield i
         filediff.FileDiff.set_buffer_writable(self, self.textbuffer[1], True)
 
-    def _get_custom_status_text(self):
-        return "   Conflicts: %i" % (self.linediffer.get_unresolved_count())
-
     def _merge_files(self):
         yield _("[%s] Computing differences") % self.label_text
         panetext = []
-        textbuffer = self.textbuffer[:]
-        textbuffer[1] = self.hidden_textbuffer
-        for b in textbuffer[:self.num_panes]:
+        for b in self.textbuffer[:self.num_panes]:
             start, end = b.get_bounds()
             text = unicode(b.get_text(start, end, False), 'utf8')
             panetext.append(text)
@@ -65,13 +52,13 @@ class FileMerge(filediff.FileDiff):
         filteredlines = [x.split("\n") for x in filteredpanetext]
         merger = merge.Merger()
         step = merger.initialize(filteredlines, lines)
-        while step.next() == None:
+        while step.next() is None:
             yield 1
         yield _("[%s] Merging files") % self.label_text
         for panetext[1] in merger.merge_3_files():
             yield 1
         self.linediffer.unresolved = merger.unresolved
-        self.textbuffer[1].insert(self.textbuffer[1].get_end_iter(), panetext[1])
+        self.textbuffer[1].set_text(panetext[1])
         self.textbuffer[1].data.modified = True
         self.recompute_label()
         yield 1
