@@ -19,6 +19,7 @@ from gettext import gettext as _
 import gtk
 
 import filediff
+import meldbuffer
 import merge
 
 
@@ -32,10 +33,12 @@ class FileMerge(filediff.FileDiff):
         self.textview[2].set_editable(0)
 
     def _set_files_internal(self, files):
+        self.textview[1].set_buffer(meldbuffer.MeldBuffer())
         for i in self._load_files(files, self.textbuffer):
             yield i
         for i in self._merge_files():
             yield i
+        self.textview[1].set_buffer(self.textbuffer[1])
         for i in self._diff_files():
             yield i
         filediff.FileDiff.set_buffer_writable(self, self.textbuffer[1], True)

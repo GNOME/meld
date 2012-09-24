@@ -1209,6 +1209,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
+        textbuffer = textview.get_buffer()
         area = event.area
         x, y = textview.window_to_buffer_coords(gtk.TEXT_WINDOW_WIDGET,
                                                 area.x, area.y)
@@ -1237,8 +1238,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.stroke()
 
         if textview.is_focus() and self.cursor.line is not None:
-            it = self.textbuffer[pane].get_iter_at_line(self.cursor.line)
-            ypos, line_height = self.textview[pane].get_line_yrange(it)
+            it = textbuffer.get_iter_at_line(self.cursor.line)
+            ypos, line_height = textview.get_line_yrange(it)
             context.save()
             context.rectangle(0, ypos - visible.y, width, line_height)
             context.clip()
@@ -1253,10 +1254,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             rgba_pairs = zip(c.start_rgba, c.end_rgba)
             rgba = [s + (e - s) * percent for s, e in rgba_pairs]
 
-            it = self.textbuffer[pane].get_iter_at_mark(c.start_mark)
-            ystart, _ = self.textview[pane].get_line_yrange(it)
-            it = self.textbuffer[pane].get_iter_at_mark(c.end_mark)
-            yend, _ = self.textview[pane].get_line_yrange(it)
+            it = textbuffer.get_iter_at_mark(c.start_mark)
+            ystart, _ = textview.get_line_yrange(it)
+            it = textbuffer.get_iter_at_mark(c.end_mark)
+            yend, _ = textview.get_line_yrange(it)
             if ystart == yend:
                 ystart -= 1
 
@@ -1267,8 +1268,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if current_time <= c.start_time + c.duration:
                 new_anim_chunks.append(c)
             else:
-                self.textbuffer[pane].delete_mark(c.start_mark)
-                self.textbuffer[pane].delete_mark(c.end_mark)
+                textbuffer.delete_mark(c.start_mark)
+                textbuffer.delete_mark(c.end_mark)
         self.animating_chunks[pane] = new_anim_chunks
 
         if self.animating_chunks[pane] and self.anim_source_id[pane] is None:
