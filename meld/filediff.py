@@ -1236,10 +1236,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if textview.is_focus() and self.cursor.line is not None:
             it = self.textbuffer[pane].get_iter_at_line(self.cursor.line)
             ypos, line_height = self.textview[pane].get_line_yrange(it)
+            context.save()
             context.rectangle(0, ypos - visible.y, width, line_height)
             context.clip()
             context.set_source_color(self.highlight_color)
             context.paint_with_alpha(0.25)
+            context.restore()
 
         current_time = glib.get_current_time()
         new_anim_chunks = []
