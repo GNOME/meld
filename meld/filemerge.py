@@ -45,23 +45,15 @@ class FileMerge(filediff.FileDiff):
 
     def _merge_files(self):
         yield _("[%s] Computing differences") % self.label_text
-        panetext = []
-        for b in self.textbuffer[:self.num_panes]:
-            start, end = b.get_bounds()
-            text = unicode(b.get_text(start, end, False), 'utf8')
-            panetext.append(text)
-        lines = [x.split("\n") for x in panetext]
-        filteredpanetext = [self._filter_text(p) for p in panetext]
-        filteredlines = [x.split("\n") for x in filteredpanetext]
         merger = merge.Merger()
-        step = merger.initialize(filteredlines, lines)
+        step = merger.initialize(self.buffer_filtered, self.buffer_texts)
         while step.next() is None:
             yield 1
         yield _("[%s] Merging files") % self.label_text
-        for panetext[1] in merger.merge_3_files():
+        for merged_text in merger.merge_3_files():
             yield 1
         self.linediffer.unresolved = merger.unresolved
-        self.textbuffer[1].set_text(panetext[1])
+        self.textbuffer[1].set_text(merged_text)
         self.textbuffer[1].data.modified = True
         self.recompute_label()
         yield 1

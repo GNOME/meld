@@ -231,6 +231,8 @@ class Merger(diffutil.Differ):
         for i in range(lastline, baselen, 1):
             mergedtext.append(self.texts[1][i])
 
+        # FIXME: We need to obtain the original line endings from the lines
+        # that were merged and use those here instead of assuming '\n'.
         yield "\n".join(mergedtext)
 
     def merge_2_files(self, fromindex, toindex):
@@ -253,4 +255,6 @@ class Merger(diffutil.Differ):
         for i in range(lastline, baselen):
             mergedtext.append(self.texts[toindex][i])
 
+        # FIXME: We need to obtain the original line endings from the lines
+        # that were merged and use those here instead of assuming '\n'.
         yield "\n".join(mergedtext)
