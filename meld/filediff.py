@@ -1046,7 +1046,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             srcviewer.set_language(self.textbuffer[i], langs[i])
             srcviewer.set_highlight_syntax(self.textbuffer[i],
                                            self.prefs.use_syntax_highlighting)
-        yield 0
 
     def _set_files_internal(self, files):
         for i in self._load_files(files, self.textbuffer):

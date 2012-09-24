@@ -41,20 +41,17 @@ class FileMerge(filediff.FileDiff):
         self.textview[1].set_buffer(self.textbuffer[1])
         for i in self._diff_files():
             yield i
-        filediff.FileDiff.set_buffer_writable(self, self.textbuffer[1], True)
 
     def _merge_files(self):
-        yield _("[%s] Computing differences") % self.label_text
+        yield _("[%s] Merging files") % self.label_text
         merger = merge.Merger()
         step = merger.initialize(self.buffer_filtered, self.buffer_texts)
         while step.next() is None:
             yield 1
-        yield _("[%s] Merging files") % self.label_text
         for merged_text in merger.merge_3_files():
             yield 1
         self.linediffer.unresolved = merger.unresolved
         self.textbuffer[1].set_text(merged_text)
         self.textbuffer[1].data.modified = True
         self.recompute_label()
-        yield 1
 
