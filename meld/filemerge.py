@@ -1,4 +1,5 @@
-### Copyright (C) 2009 Piotr Piastucki <the_leech@users.berlios.de>
+### Copyright (C) 2009, 2012 Piotr Piastucki <the_leech@users.berlios.de>
+### Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
