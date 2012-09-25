@@ -195,7 +195,9 @@ class MeldApp(gobject.GObject):
             if not dbus_app:
                 print _("D-Bus error; comparisons will open in a new window.")
             else:
-                open_paths = lambda f, x: dbus_app.OpenPaths(f, 0)
+                # Note that we deliberately discard auto-compare and -merge
+                # options here; these are not supported via dbus yet.
+                open_paths = lambda f, *x: dbus_app.OpenPaths(f, 0)
                 new_window = False
 
         for files in options.diff:
