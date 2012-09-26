@@ -712,19 +712,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.refresh_comparison()
 
     def on_key_press_event(self, object, event):
-        x = self.keylookup.get(event.keyval, 0)
+        keymap = gtk.gdk.keymap_get_default()
+        x = self.keylookup.get(keymap.translate_keyboard_state(
+                               event.hardware_keycode, 0, event.group)[0], 0)
         if self.keymask | x != self.keymask:
             self.keymask |= x
         elif event.keyval == gtk.keysyms.Escape:
             self.findbar.hide()
 
     def on_key_release_event(self, object, event):
-        x = self.keylookup.get(event.keyval, 0)
+        keymap = gtk.gdk.keymap_get_default()
+        x = self.keylookup.get(keymap.translate_keyboard_state(
+                               event.hardware_keycode, 0, event.group)[0], 0)
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
-        # Ugly workaround for bgo#584342
-        elif event.keyval == gtk.keysyms.ISO_Prev_Group:
-            self.keymask = 0
 
     def on_delete_event(self, appquit=0):
         response = gtk.RESPONSE_OK
