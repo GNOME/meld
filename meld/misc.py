@@ -285,7 +285,7 @@ def copytree(src, dst):
         srcname = os.path.join(src, name)
         dstname = os.path.join(dst, name)
         if os.path.islink(srcname):
-            os.symlink(os.readlink(srcname, dstname))
+            os.symlink(os.readlink(srcname), dstname)
         elif os.path.isdir(srcname):
             copytree(srcname, dstname)
         else:
