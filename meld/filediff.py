@@ -712,6 +712,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.refresh_comparison()
 
     def on_key_press_event(self, object, event):
+        # The correct way to handle these modifiers would be to use
+        # gdk_keymap_get_modifier_state method, available from GDK 3.4.
         keymap = gtk.gdk.keymap_get_default()
         x = self.keylookup.get(keymap.translate_keyboard_state(
                                event.hardware_keycode, 0, event.group)[0], 0)
