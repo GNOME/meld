@@ -18,6 +18,22 @@ import gobject
 import gtk
 import pango
 
+
+gtk.rc_parse_string(
+    """
+    style "meld-statusbar-style" {
+        GtkStatusbar::shadow-type = GTK_SHADOW_NONE
+    }
+    class "MeldStatusBar" style "meld-statusbar-style"
+
+    style "meld-progressbar-style" {
+        GtkProgressBar::yspacing = 0
+        GtkProgressBar::min-horizontal-bar-height = 14
+    }
+    widget "*.MeldStatusBar.*.GtkProgressBar" style "meld-progressbar-style"
+    """)
+
+
 class MeldStatusBar(gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
@@ -36,7 +52,6 @@ class MeldStatusBar(gtk.Statusbar):
 
         label = hbox.get_children()[0]
         label.props.ellipsize = pango.ELLIPSIZE_NONE
-        hbox.remove(label)
 
         self.progress = gtk.ProgressBar()
         self.progress.props.pulse_step = 0.02
@@ -47,6 +62,8 @@ class MeldStatusBar(gtk.Statusbar):
         self.progress.modify_font(progress_font)
         hbox.pack_start(self.progress, expand=False)
         self.progress.show()
+
+        hbox.remove(label)
         hbox.pack_start(label)
 
         alignment = gtk.Alignment(xalign=1.0)
