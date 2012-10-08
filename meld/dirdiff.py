@@ -281,6 +281,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_treeview_focus_out_event(None, None)
         self.treeview_focussed = None
 
+        lastchanged_label = gtk.Label()
+        lastchanged_label.set_size_request(100, -1)
+        lastchanged_label.show()
+        permissions_label = gtk.Label()
+        permissions_label.set_size_request(100, -1)
+        permissions_label.show()
+        self.status_info_labels = [lastchanged_label, permissions_label]
+
         for i in range(3):
             self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             column = gtk.TreeViewColumn()
@@ -845,9 +853,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 stat = os.stat(fname)
             # TypeError for if fname is None
             except (OSError, TypeError):
-                self.emit("status-changed", "")
+                self.status_info_labels[0].set_text("")
+                self.status_info_labels[1].set_markup("")
             else:
-                self.emit("status-changed", "%s : %s" % (rwx(stat.st_mode), nice(time.time() - stat.st_mtime) ) )
+                mode_text = "<tt>%s</tt>" % rwx(stat.st_mode)
+                last_changed_text = str(nice(time.time() - stat.st_mtime))
+                self.status_info_labels[0].set_text(last_changed_text)
+                self.status_info_labels[1].set_markup(mode_text)
 
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)

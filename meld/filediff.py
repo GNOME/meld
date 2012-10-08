@@ -231,6 +231,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
         self.connect("next-conflict-changed", self.on_next_conflict_changed)
 
+        overwrite_label = gtk.Label()
+        overwrite_label.set_size_request(50, -1)
+        overwrite_label.show()
+        cursor_label = gtk.Label()
+        cursor_label.set_size_request(150, -1)
+        cursor_label.show()
+        self.status_info_labels = [overwrite_label, cursor_label]
+
     def get_keymask(self):
         return self._keymask
     def set_keymask(self, value):
@@ -333,7 +341,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         insert_overwrite = self._insert_overwrite_text[self.textview_overwrite]
         line_column = self._line_column_text % (line + 1, offset + 1)
         status = "%s : %s" % (insert_overwrite, line_column)
-        self.emit("status-changed", status)
+        # FIXME: Think this status-changed is wrong...
+        # self.emit("status-changed", status)
+
+        self.status_info_labels[0].set_text(insert_overwrite)
+        self.status_info_labels[1].set_text(line_column)
 
         if line != self.cursor.line or force:
             chunk, prev, next = self.linediffer.locate_chunk(pane, line)

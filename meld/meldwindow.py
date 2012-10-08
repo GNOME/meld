@@ -92,28 +92,6 @@ class NewDocDialog(gnomeglade.Component):
 
 ################################################################################
 #
-# MeldStatusBar
-#
-################################################################################
-
-class MeldStatusBar(object):
-
-    def __init__(self, task_progress, task_status, doc_status):
-        self.task_progress = task_progress
-        self.task_status = task_status
-        self.doc_status = doc_status
-
-    def set_task_status(self, status):
-        self.task_status.pop(1)
-        self.task_status.push(1, status)
-
-    def set_doc_status(self, status):
-        self.doc_status.pop(1)
-        self.doc_status.push(1, status)
-
-
-################################################################################
-#
 # MeldApp
 #
 ################################################################################
@@ -205,9 +183,7 @@ class MeldWindow(gnomeglade.Component):
 
         self.appvbox.pack_start(self.menubar, expand=False)
         self.appvbox.pack_start(self.toolbar, expand=False)
-        # TODO: should possibly use something other than doc_status
-        self._menu_context = self.doc_status.get_context_id("Tooltips")
-        self.statusbar = MeldStatusBar(self.task_progress, self.task_status, self.doc_status)
+        self._menu_context = self.statusbar.get_context_id("Tooltips")
         self.widget.drag_dest_set(
             gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
             [ ('text/uri-list', 0, 0) ],
@@ -216,7 +192,7 @@ class MeldWindow(gnomeglade.Component):
                             self.on_widget_drag_data_received)
         self.toolbar.set_style(app.prefs.get_toolbar_style())
         self.toolbar.props.visible = app.prefs.toolbar_visible
-        self.status_box.props.visible = app.prefs.statusbar_visible
+        self.statusbar.props.visible = app.prefs.statusbar_visible
         app.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
@@ -268,41 +244,35 @@ class MeldWindow(gnomeglade.Component):
             widget.disconnect(cid)
 
     def _on_action_item_select_enter(self, item, tooltip):
-        self.statusbar.doc_status.push(self._menu_context, tooltip)
+        self.statusbar.push(self._menu_context, tooltip)
 
     def _on_action_item_deselect_leave(self, item):
-        self.statusbar.doc_status.pop(self._menu_context)
+        self.statusbar.pop(self._menu_context)
 
     def on_idle(self):
         ret = self.scheduler.iteration()
-        if ret:
-            if type(ret) in (type(""), type(u"")):
-                self.statusbar.set_task_status(ret)
-            elif type(ret) == type(0.0):
-                self.statusbar.task_progress.set_fraction(ret)
-            else:
-                self.statusbar.task_progress.pulse()
-        else:
-            self.statusbar.task_progress.set_fraction(0)
-        if self.scheduler.tasks_pending():
-            self.actiongroup.get_action("Stop").set_sensitive(True)
-            return 1
-        else:
+        if ret and isinstance(ret, basestring):
+            self.statusbar.set_task_status(ret)
+
+        pending = self.scheduler.tasks_pending()
+        if not pending:
+            self.statusbar.stop_pulse()
             self.statusbar.set_task_status("")
-            self.idle_hooked = 0
+            self.idle_hooked = None
             self.actiongroup.get_action("Stop").set_sensitive(False)
-            return 0
+        return pending
 
     def on_scheduler_runnable(self, sched):
         if not self.idle_hooked:
-            self.idle_hooked = 1
-            gobject.idle_add( self.on_idle )
+            self.statusbar.start_pulse()
+            self.actiongroup.get_action("Stop").set_sensitive(True)
+            self.idle_hooked = gobject.idle_add(self.on_idle)
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
             self.toolbar.set_style(app.prefs.get_toolbar_style())
         elif key == "statusbar_visible":
-            self.status_box.props.visible = app.prefs.statusbar_visible
+            self.statusbar.props.visible = app.prefs.statusbar_visible
         elif key == "toolbar_visible":
             self.toolbar.props.visible = app.prefs.toolbar_visible
 
@@ -348,7 +318,7 @@ class MeldWindow(gnomeglade.Component):
 
         nbl = self.notebook.get_tab_label( newdoc.widget )
         self.widget.set_title(nbl.get_label_text() + " - Meld")
-        self.statusbar.set_doc_status("")
+        self.statusbar.set_info_box(newdoc.get_info_widgets())
         self.diff_handler = newdoc.connect("next-diff-changed",
                                            self.on_next_diff_changed)
         newdoc.on_container_switch_in_event(self.ui)
@@ -623,7 +593,6 @@ class MeldWindow(gnomeglade.Component):
         page.connect("label-changed", self.on_notebook_label_changed)
         page.connect("file-changed", self.on_file_changed)
         page.connect("create-diff", lambda obj,arg: self.append_diff(arg) )
-        page.connect("status-changed", lambda junk,arg: self.statusbar.set_doc_status(arg) )
 
         # Allow reordering of tabs
         self.notebook.set_tab_reorderable(page.widget, True);

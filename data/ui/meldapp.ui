@@ -29,42 +29,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="status_box">
+          <object class="MeldStatusBar" id="statusbar">
             <property name="visible">True</property>
-            <child>
-              <object class="GtkProgressBar" id="task_progress">
-                <property name="visible">True</property>
-                <property name="pulse_step">0.109999999404</property>
-                <property name="text" translatable="yes"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkStatusbar" id="task_status">
-                <property name="visible">True</property>
-                <property name="has_resize_grip">False</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkStatusbar" id="doc_status">
-                <property name="width_request">175</property>
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
             <property name="pack_type">GTK_PACK_END</property>
           </packing>
