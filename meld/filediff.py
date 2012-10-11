@@ -1,5 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2009-2010 Kai Willadsen <kai.willadsen@gmail.com>
+### Copyright (C) 2009-2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 import codecs
 import copy
+import functools
+import multiprocessing
 import os
 from gettext import gettext as _
 import sys
@@ -44,6 +46,13 @@ from meldapp import app
 from util.sourceviewer import srcviewer
 
 
+def matcher_worker(text1, textn):
+    matcher = matchers.InlineMyersSequenceMatcher(None, text1, textn)
+    return matcher.get_opcodes()
+
+process_pool = multiprocessing.Pool()
+
+
 class CachedSequenceMatcher(object):
     """Simple class for caching diff results, with LRU-based eviction
 
@@ -55,15 +64,16 @@ class CachedSequenceMatcher(object):
     def __init__(self):
         self.cache = {}
 
-    def __call__(self, text1, textn):
+    def match(self, text1, textn, cb):
         try:
             self.cache[(text1, textn)][1] = time.time()
-            return self.cache[(text1, textn)][0]
+            cb(self.cache[(text1, textn)][0])
         except KeyError:
-            matcher = matchers.InlineMyersSequenceMatcher(None, text1, textn)
-            opcodes = matcher.get_opcodes()
-            self.cache[(text1, textn)] = [opcodes, time.time()]
-            return opcodes
+            def inline_cb(opcodes):
+                self.cache[(text1, textn)] = [opcodes, time.time()]
+                cb(opcodes)
+            process_pool.apply_async(matcher_worker, (text1, textn),
+                                          callback=inline_cb)
 
     def clean(self, size_hint):
         """Clean the cache if necessary
@@ -1156,15 +1166,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             end.set_offset(offset + o[2 + 2 * i])
                             bufs[i].apply_tag(tags[i], start, end)
 
-                def highlight_cb(bufs, tags, starts, ends, text1, textn, clear):
-                    matches = self._cached_match(text1, textn)
-                    if clear:
-                        bufs[0].remove_tag(tags[0], starts[0], ends[0])
-                        bufs[1].remove_tag(tags[1], starts[1], ends[1])
-                    apply_highlight(bufs, tags, starts, matches)
-                    return False
-                gobject.idle_add(highlight_cb, bufs, tags, starts, ends, text1, textn, clear)
+                if clear:
+                    bufs[0].remove_tag(tags[0], starts[0], ends[0])
+                    bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
+                match_cb = functools.partial(apply_highlight,
+                                             bufs, tags, starts)
+                matches = self._cached_match.match(text1, textn, match_cb)
 
         self._cached_match.clean(self.linediffer.diff_count())
 
