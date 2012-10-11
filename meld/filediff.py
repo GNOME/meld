@@ -192,6 +192,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for buf in self.textbuffer:
             buf.create_tag("inline")
 
+        # We need to keep track of gtk.TextIter validity, but this isn't
+        # exposed anywhere. Instead, we keep our own counter for changes
+        # across all of our buffers.
+        self._buffer_changed_stamp = 0
+        def buffer_change(buf):
+            self._buffer_changed_stamp += 1
+        for buf in self.textbuffer:
+            buf.connect("changed", buffer_change)
+
         actions = (
             ("MakePatch", None, _("Format as patch..."), None, _("Create a patch using differences between files"), self.make_patch),
             ("PrevConflict", None, _("Previous conflict"), "<Ctrl>I", _("Go to the previous conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_UP)),
@@ -1145,18 +1154,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         bufs[i].apply_tag(tags[i], starts[i], ends[i])
                     continue
 
-                def apply_highlight(bufs, tags, starts, matches):
+                def apply_highlight(bufs, tags, starts, change_stamp, matches):
+                    if change_stamp != self._buffer_changed_stamp:
+                        return
+
                     # Remove equal matches of size greater than 3; highlight
                     # the remainder.
                     matches = [m for m in matches if m.tag != "equal" or
                         (m.end_a - m.start_a < 3) or (m.end_b - m.start_b < 3)]
-
-                    # FIXME: At this point, there's no guarantee that the
-                    # gtk.TextIters are valid. Any rapid typing and they're
-                    # not... Should used marks instead, and also probably keep
-                    # a list of being-highlighted blocks, and ensure that
-                    # there's only ever one callback per block, cancelling the
-                    # old one and restarting it on each change.
 
                     for i in range(2):
                         start, end = starts[i].copy(), starts[i].copy()
@@ -1171,7 +1176,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
                 match_cb = functools.partial(apply_highlight,
-                                             bufs, tags, starts)
+                                             bufs, tags, starts,
+                                             self._buffer_changed_stamp)
                 matches = self._cached_match.match(text1, textn, match_cb)
 
         self._cached_match.clean(self.linediffer.diff_count())
