@@ -196,7 +196,7 @@ class CanonicalListing(object):
             for s in seq:
                 if s:
                     return s
-        filled = lambda seq: tuple([s or first(seq) for s in seq])
+        filled = lambda seq: tuple([s or first_nonempty(seq) for s in seq])
         return sorted([filled(v) for v in self.items.itervalues()])
 
 
