@@ -1099,6 +1099,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         if event.button == 3:
             treeview.grab_focus()
             path = treeview.get_path_at_pos(int(event.x), int(event.y))
+            if path is None:
+                return False
             selection = treeview.get_selection()
             model, rows = selection.get_selected_rows()
 

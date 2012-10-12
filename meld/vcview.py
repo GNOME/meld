@@ -435,6 +435,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_press_event(self, treeview, event):
         if event.button == 3:
             path = treeview.get_path_at_pos(int(event.x), int(event.y))
+            if path is None:
+                return False
             selection = treeview.get_selection()
             model, rows = selection.get_selected_rows()
 
