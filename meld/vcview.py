@@ -699,15 +699,17 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if not cursor_path:
             self.emit("next-diff-changed", False, False)
         else:
-            if self.current_path:
+            try:
                 old_cursor = self.model.get_iter(self.current_path)
+            except (ValueError, TypeError):
+                # An invalid path gives ValueError; None gives a TypeError
+                skip = False
+            else:
                 state = self.model.get_state(old_cursor, 0)
                 # We can skip recalculation if the new cursor is between the
                 # previous/next bounds, and we weren't on a changed row
                 skip = state in (tree.STATE_NORMAL, tree.STATE_EMPTY) and \
                        self.prev_path < cursor_path < self.next_path
-            else:
-                skip = False
 
             if not skip:
                 prev, next = self.model._find_next_prev_diff(cursor_path)
