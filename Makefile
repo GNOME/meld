@@ -12,7 +12,7 @@ SPECIALS := bin/meld meld/paths.py
 BROWSER := firefox
 
 .PHONY:all
-all: $(addsuffix .install,$(SPECIALS)) meld.desktop
+all: $(addsuffix .install,$(SPECIALS)) meld.desktop meld.xml
 	$(MAKE) -C po
 	$(MAKE) -C help
 
@@ -22,6 +22,7 @@ clean:
 		xargs -0 rm -f
 	@find ./bin -type f \( -name '*.install' \) -print0 | xargs -0 rm -f
 	@rm -f data/meld.desktop
+	@rm -f data/mime/meld.xml
 	$(MAKE) -C po clean
 	$(MAKE) -C help clean
 
@@ -60,6 +61,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(libdir_)/meld/paths.py
 	install -m 644 data/meld.desktop \
 		$(DESTDIR)$(sharedir)/applications
+	install -m 644 data/mime/meld.xml \
+		$(DESTDIR)$(sharedir)/mime/packages/
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	$(PYTHON) -O -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
 	install -m 644 data/gtkrc \
@@ -88,9 +91,13 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/icons/HighContrast/scalable/apps/meld.svg
 	$(MAKE) -C po install
 	$(MAKE) -C help install
+    update-mime-database $(DESTDIR)$(sharedir)/mime
 
 meld.desktop: data/meld.desktop.in
 	intltool-merge -d po data/meld.desktop.in data/meld.desktop
+
+meld.xml: data/meld.xml.in
+	intltool-merge -d po data/mime/meld.xml.in data/mime/meld.xml
 
 %.install: %
 	$(PYTHON) tools/install_paths \
@@ -109,7 +116,9 @@ uninstall:
 		$(libdir_) \
 		$(bindir)/meld \
 		$(sharedir)/applications/meld.desktop \
+		$(sharedir)/mime/packages/meld.xml \
 		$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po uninstall
 	$(MAKE) -C help uninstall
+    update-mime-database $(DESTDIR)$(sharedir)/mime
 

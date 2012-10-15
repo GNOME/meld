@@ -21,13 +21,16 @@ from __future__ import print_function
 import logging
 import optparse
 import os
+import sys
 from gettext import gettext as _
 
+import gio
 import gobject
 import gtk
 
 from . import filters
 from . import preferences
+from . import recent
 
 version = "1.7.0"
 
@@ -50,6 +53,7 @@ class MeldApp(gobject.GObject):
                                                 filters.FilterEntry.SHELL)
         self.text_filters = self._parse_filters(self.prefs.regexes,
                                                 filters.FilterEntry.REGEX)
+        self.recent_comparisons = recent.RecentFiles(sys.argv[0])
 
     def create_window(self):
         self.window = meldwindow.MeldWindow()
@@ -115,6 +119,9 @@ class MeldApp(gobject.GObject):
             help=_("Set the target file for saving a merge result"))
         parser.add_option("--auto-merge", None, action="store_true", default=False,
             help=_("Automatically merge files"))
+        parser.add_option("", "--comparison-file", action="store",
+            type="string", dest="comparison_file", default=None,
+            help=_("Load a saved comparison from a Meld comparison file"))
         parser.add_option("", "--diff", action="callback", callback=self.diff_files_callback,
                           dest="diff", default=[],
                           help=_("Creates a diff tab for up to 3 supplied files or directories."))
@@ -140,7 +147,16 @@ class MeldApp(gobject.GObject):
         for files in options.diff:
             open_paths(files)
 
-        tab = open_paths(args, options.auto_compare, options.auto_merge)
+        if options.comparison_file:
+            comparison_file_path = os.path.expanduser(options.comparison_file)
+            gio_file = gio.File(path=comparison_file_path)
+            try:
+                tab = self.window.append_recent(gio_file.get_uri())
+            except (IOError, ValueError):
+                parser.error(_("Error reading saved comparison file"))
+        elif args:
+            tab = open_paths(args, options.auto_compare, options.auto_merge)
+
         if options.label and tab:
             tab.set_labels(options.label)
 

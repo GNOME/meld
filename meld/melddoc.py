@@ -62,6 +62,10 @@ class MeldDoc(gobject.GObject):
     def get_info_widgets(self):
         return self.status_info_labels
 
+    def get_comparison(self):
+        """Get the comparison type and path(s) being compared"""
+        pass
+
     def save(self):
         pass
 

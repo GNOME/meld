@@ -23,6 +23,7 @@ import gtk
 from . import filediff
 from . import meldbuffer
 from . import merge
+from . import recent
 
 
 class FileMerge(filediff.FileDiff):
@@ -33,6 +34,10 @@ class FileMerge(filediff.FileDiff):
         filediff.FileDiff._connect_buffer_handlers(self)
         self.textview[0].set_editable(0)
         self.textview[2].set_editable(0)
+
+    def get_comparison(self):
+        comp = filediff.FileDiff.get_comparison(self)
+        return recent.TYPE_MERGE, comp[1]
 
     def _set_files_internal(self, files):
         self.textview[1].set_buffer(meldbuffer.MeldBuffer())

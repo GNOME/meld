@@ -40,6 +40,7 @@ from . import merge
 from . import misc
 from . import patchdialog
 from . import paths
+from . import recent
 from . import undo
 from .ui import findbar
 from .ui import gnomeglade
@@ -979,6 +980,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview[len(files) >= 2].grab_focus()
         self._connect_buffer_handlers()
         self.scheduler.add_task(self._set_files_internal(files))
+
+    def get_comparison(self):
+        files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
+        return recent.TYPE_FILE, files
 
     def _load_files(self, files, textbuffers):
         self.undosequence.clear()

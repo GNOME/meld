@@ -32,6 +32,7 @@ from . import melddoc
 from . import tree
 from . import misc
 from . import paths
+from . import recent
 from .ui import gnomeglade
 from .ui import emblemcellrenderer
 
@@ -495,6 +496,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.remove_all_tasks()
         self.recursively_update( (0,) )
         self._update_diffmaps()
+
+    def get_comparison(self):
+        root = self.model.get_iter_root()
+        if root:
+            folders = self.model.value_paths(root)
+        else:
+            folders = []
+        return recent.TYPE_FOLDER, folders
 
     def recursively_update( self, path ):
         """Recursively update from tree path 'path'.

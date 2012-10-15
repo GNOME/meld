@@ -29,6 +29,7 @@ from . import filemerge
 from . import misc
 from . import paths
 from . import preferences
+from . import recent
 from . import task
 from . import vcview
 from .ui import gnomeglade
@@ -88,6 +89,9 @@ class NewDocDialog(gnomeglade.Component):
             # We just opened a new comparison, transfer focus to it
             new_tab_idx = self.parentapp.notebook.page_num(new_tab.widget)
             self.parentapp.notebook.set_current_page(new_tab_idx)
+
+            diff_type = recent.COMPARISON_TYPES[page]
+            app.recent_comparisons.add(new_tab)
 
         self.widget.destroy()
 
@@ -162,6 +166,15 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
+
+        recent_action = gtk.RecentAction("Recent",  _("Open Recent"),
+                                         _("Open recent files"), None)
+        recent_action.set_show_private(True)
+        recent_action.set_filter(app.recent_comparisons.recent_filter)
+        recent_action.set_sort_type(gtk.RECENT_SORT_MRU)
+        recent_action.connect("item-activated", self.on_action_recent)
+        self.actiongroup.add_action(recent_action)
+
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file)
@@ -390,6 +403,16 @@ class MeldWindow(gnomeglade.Component):
 
     def on_menu_save_as_activate(self, menuitem):
         self.current_doc().save_as()
+
+    def on_action_recent(self, action):
+        uri = action.get_current_uri()
+        if not uri:
+            return
+        try:
+            self.append_recent(uri)
+        except (IOError, ValueError):
+            # FIXME: Need error handling, but no sensible display location
+            pass
 
     def on_menu_close_activate(self, *extra):
         i = self.notebook.get_current_page()
@@ -672,6 +695,19 @@ class MeldWindow(gnomeglade.Component):
             doc.on_button_diff_clicked(None)
         return doc
 
+    def append_recent(self, uri):
+        comparison_type, files, flags = app.recent_comparisons.read(uri)
+        if comparison_type == recent.TYPE_MERGE:
+            tab = self.append_filemerge(files)
+        elif comparison_type == recent.TYPE_FOLDER:
+            tab = self.append_dirdiff(files)
+        elif comparison_type == recent.TYPE_VC:
+            tab = self.append_vcview(files)
+        else:  # comparison_type == recent.TYPE_FILE:
+            tab = self.append_filediff(files)
+        app.recent_comparisons.add(tab)
+        return tab
+
     def _single_file_open(self, path):
         doc = vcview.VcView(app.prefs)
         def cleanup():
@@ -694,6 +730,7 @@ class MeldWindow(gnomeglade.Component):
 
         elif len(paths) in (2, 3):
             tab = self.append_diff(paths, auto_compare, auto_merge)
+        app.recent_comparisons.add(tab)
         return tab
 
     def current_doc(self):

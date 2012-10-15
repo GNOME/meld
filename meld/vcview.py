@@ -31,6 +31,7 @@ import pango
 from . import melddoc
 from . import misc
 from . import paths
+from . import recent
 from . import tree
 from . import vc
 from .ui import emblemcellrenderer
@@ -355,6 +356,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             root = self.model.get_iter_root()
             self.scheduler.add_task(self._search_recursively_iter(root))
             self.scheduler.add_task(self.on_treeview_cursor_changed)
+
+    def get_comparison(self):
+        return recent.TYPE_VC, [self.location]
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)
