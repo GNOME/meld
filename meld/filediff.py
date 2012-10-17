@@ -21,6 +21,7 @@ import functools
 import multiprocessing
 import os
 from gettext import gettext as _
+import signal
 import sys
 import time
 
@@ -46,11 +47,15 @@ from meldapp import app
 from util.sourceviewer import srcviewer
 
 
+def init_worker():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+
 def matcher_worker(text1, textn):
     matcher = matchers.InlineMyersSequenceMatcher(None, text1, textn)
     return matcher.get_opcodes()
 
-process_pool = multiprocessing.Pool()
+process_pool = multiprocessing.Pool(None, init_worker)
 
 
 class CachedSequenceMatcher(object):
