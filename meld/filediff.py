@@ -418,7 +418,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for buf in self.textbuffer:
             tag = buf.get_tag_table().lookup("inline")
             tag.props.background_rgba = lookup("inline-bg", "LightSteelBlue2")
-            tag.props.foreground_rgba = lookup("inline-fg", "Red")
 
         self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
                             "delete"  : lookup("insert-bg", "DarkSeaGreen1"),
