@@ -55,7 +55,11 @@ def matcher_worker(text1, textn):
     matcher = matchers.InlineMyersSequenceMatcher(None, text1, textn)
     return matcher.get_opcodes()
 
-process_pool = multiprocessing.Pool(None, init_worker)
+# maxtasksperchild is new in Python 2.7; for 2.6 compat we do this
+try:
+    process_pool = multiprocessing.Pool(None, init_worker, maxtasksperchild=1)
+except TypeError:
+    process_pool = multiprocessing.Pool(None, init_worker)
 
 
 class CachedSequenceMatcher(object):
