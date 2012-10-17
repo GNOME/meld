@@ -82,7 +82,7 @@ class CachedSequenceMatcher(object):
                 self.cache[(text1, textn)] = [opcodes, time.time()]
                 cb(opcodes)
             process_pool.apply_async(matcher_worker, (text1, textn),
-                                          callback=inline_cb)
+                                     callback=inline_cb)
 
     def clean(self, size_hint):
         """Clean the cache if necessary
