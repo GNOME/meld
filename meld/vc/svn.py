@@ -1,5 +1,5 @@
 ### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2011 Kai Willadsen <kai.willadsen@gmail.com>
+### Copyright (C) 2011-2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### Redistribution and use in source and binary forms, with or without
 ### modification, are permitted provided that the following conditions
@@ -85,11 +85,26 @@ class Vc(_vc.CachedVc):
 
         return tmp_path
 
+    def _repo_version_support(self, version):
+        return version < 12
+
     def valid_repo(self):
         if _vc.call([self.CMD, "info"], cwd=self.root):
             return False
+
+        # Check for repository version, trusting format file then entries file
+        format_path = os.path.join(self.root, self.VC_DIR, "format")
+        entries_path = os.path.join(self.root, self.VC_DIR, "entries")
+        if os.path.exists(format_path):
+            version_file = format_path
+        elif os.path.exists(entries_path):
+            version_file = entries_path
         else:
-            return True
+            return False
+
+        with open(version_file) as f:
+            content = f.readline().strip()
+        return self._repo_version_support(int(content))
 
     def switch_to_external_diff(self):
         self.external_diff = "diff"

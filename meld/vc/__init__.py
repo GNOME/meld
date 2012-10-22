@@ -94,9 +94,4 @@ def get_vcs(location):
     vc_sort_key = lambda v: vc_sort_order.index(v.NAME)
     vcs.sort(key=vc_sort_key)
 
-    # Simplistic hack so that we don't offer both 1.7 and <1.6 SVN
-    vc_names = [plugin.NAME for plugin in vcs]
-    if "Subversion" in vc_names and "Subversion 1.7" in vc_names:
-        vcs = [plugin for plugin in vcs if plugin.NAME != "Subversion 1.7"]
-
     return vcs
