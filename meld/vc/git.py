@@ -92,13 +92,9 @@ class Vc(_vc.CachedVc):
         vc_file = _vc.popen(["git", "cat-file", "blob", commit + ":" + path],
                             cwd=self.location)
 
-        # TODO: In Python 2.6+, this could be done with NamedTemporaryFile
-        tmp_handle, tmp_path = tempfile.mkstemp(prefix='meld-tmp', text=True)
-        tmp_file = os.fdopen(tmp_handle, 'w')
-        shutil.copyfileobj(vc_file, tmp_file)
-        tmp_file.close()
-
-        return tmp_path
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            shutil.copyfileobj(vc_file, f)
+        return f.name
 
     def valid_repo(self):
         # TODO: On Windows, this exit code is wrong under the normal shell; it
