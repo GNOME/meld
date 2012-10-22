@@ -1,9 +1,9 @@
-### Copyright (C) 2011 Kai Willadsen <kai.willadsen@gmail.com>
+### Copyright (C) 2011-2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### Redistribution and use in source and binary forms, with or without
 ### modification, are permitted provided that the following conditions
 ### are met:
-### 
+###
 ### 1. Redistributions of source code must retain the above copyright
 ###    notice, this list of conditions and the following disclaimer.
 ### 2. Redistributions in binary form must reproduce the above copyright
@@ -21,6 +21,11 @@
 ### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import os
+import shutil
+import tempfile
+
+from . import _vc
 from . import svn
 
 
@@ -31,3 +36,20 @@ class Vc(svn.Vc):
 
     def _repo_version_support(self, version):
         return version >= 12
+
+    def get_repo_file_path(self, path, commit=None):
+        if commit is None:
+            commit = "BASE"
+        else:
+            raise NotImplementedError()
+
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
+        vc_file = _vc.popen([self.CMD, "cat", "-r", commit, path],
+                            cwd=self.location)
+
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            shutil.copyfileobj(vc_file, f)
+        return f.name
