@@ -16,87 +16,17 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-
 import optparse
 import os
-import re
 from gettext import gettext as _
 
 import gobject
 import gtk
 
-import misc
-import preferences
+from . import filters
+from . import preferences
 
 version = "1.7.0"
-
-
-class FilterEntry(object):
-
-    __slots__ = ("label", "active", "filter", "filter_string")
-
-    REGEX, SHELL = 0, 1
-
-    def __init__(self, label, active, filter, filter_string):
-        self.label = label
-        self.active = active
-        self.filter = filter
-        self.filter_string = filter_string
-
-    @classmethod
-    def _compile_regex(cls, regex):
-        try:
-            compiled = re.compile(regex + "(?m)")
-        except re.error:
-            compiled = None
-        return compiled
-
-    @classmethod
-    def _compile_shell_pattern(cls, pattern):
-        bits = pattern.split()
-        if len(bits) > 1:
-            regexes = [misc.shell_to_regex(b)[:-1] for b in bits]
-            regex = "(%s)$" % "|".join(regexes)
-        elif len(bits):
-            regex = misc.shell_to_regex(bits[0])
-        else:
-            # An empty pattern would match everything, so skip it
-            return None
-
-        try:
-            compiled = re.compile(regex)
-        except re.error:
-            compiled = None
-
-        return compiled
-
-    @classmethod
-    def parse(cls, string, filter_type):
-        elements = string.split("\t")
-        if len(elements) < 3:
-            return None
-        name, active = elements[0], bool(int(elements[1]))
-        filter_string = " ".join(elements[2:])
-        compiled = FilterEntry.compile_filter(filter_string, filter_type)
-        if compiled is None:
-            active = False
-        return FilterEntry(name, active, compiled, filter_string)
-
-    @classmethod
-    def compile_filter(cls, filter_string, filter_type):
-        if filter_type == FilterEntry.REGEX:
-            compiled = FilterEntry._compile_regex(filter_string)
-        elif filter_type == FilterEntry.SHELL:
-            compiled = FilterEntry._compile_shell_pattern(filter_string)
-        else:
-            raise ValueError("Unknown filter type")
-        return compiled
-
-    def __copy__(self):
-        new = type(self)(self.label, self.active, None, self.filter_string)
-        if self.filter is not None:
-            new.filter = re.compile(self.filter.pattern, self.filter.flags)
-        return new
 
 
 class MeldApp(gobject.GObject):
@@ -114,9 +44,9 @@ class MeldApp(gobject.GObject):
         self.prefs = preferences.MeldPreferences()
         self.prefs.notify_add(self.on_preference_changed)
         self.file_filters = self._parse_filters(self.prefs.filters,
-                                                FilterEntry.SHELL)
+                                                filters.FilterEntry.SHELL)
         self.text_filters = self._parse_filters(self.prefs.regexes,
-                                                FilterEntry.REGEX)
+                                                filters.FilterEntry.REGEX)
 
     def create_window(self):
         self.window = meldwindow.MeldWindow()
@@ -124,14 +54,17 @@ class MeldApp(gobject.GObject):
 
     def on_preference_changed(self, key, val):
         if key == "filters":
-            self.file_filters = self._parse_filters(val, FilterEntry.SHELL)
+            self.file_filters = self._parse_filters(val,
+                                                    filters.FilterEntry.SHELL)
             self.emit('file-filters-changed')
         elif key == "regexes":
-            self.text_filters = self._parse_filters(val, FilterEntry.REGEX)
+            self.text_filters = self._parse_filters(val,
+                                                    filters.FilterEntry.REGEX)
             self.emit('text-filters-changed')
 
     def _parse_filters(self, string, filt_type):
-        filt = [FilterEntry.parse(l, filt_type) for l in string.split("\n")]
+        filt = [filters.FilterEntry.parse(l, filt_type) for l
+                in string.split("\n")]
         return [f for f in filt if f is not None]
 
     def diff_files_callback(self, option, opt_str, value, parser):

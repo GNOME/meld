@@ -23,7 +23,7 @@ import gtk
 
 from ui import gnomeglade
 from ui import listwidget
-import meldapp
+import filters
 import misc
 import paths
 from util import prefs
@@ -45,7 +45,7 @@ class FilterList(listwidget.ListWidget):
                                                self.valid_icon_celldata)
 
         for filtstring in getattr(self.prefs, self.key).split("\n"):
-            filt = meldapp.FilterEntry.parse(filtstring, filter_type)
+            filt = filters.FilterEntry.parse(filtstring, filter_type)
             if filt is None:
                 continue
             valid = filt.filter is not None
@@ -70,7 +70,7 @@ class FilterList(listwidget.ListWidget):
         self.model[path][1] = not ren.get_active()
 
     def on_pattern_edited(self, ren, path, text):
-        filt = meldapp.FilterEntry.compile_filter(text, self.filter_type)
+        filt = filters.FilterEntry.compile_filter(text, self.filter_type)
         valid = filt is not None
         self.model[path][2] = text
         self.model[path][3] = valid
@@ -135,13 +135,13 @@ class PreferencesDialog(gnomeglade.Component):
 
         # file filters
         self.filefilter = FilterList(self.prefs, "filters",
-                                     meldapp.FilterEntry.SHELL)
+                                     filters.FilterEntry.SHELL)
         self.file_filters_tab.pack_start(self.filefilter.widget)
         self.checkbutton_ignore_symlinks.set_active( self.prefs.ignore_symlinks)
 
         # text filters
         self.textfilter = FilterList(self.prefs, "regexes",
-                                     meldapp.FilterEntry.REGEX)
+                                     filters.FilterEntry.REGEX)
         self.text_filters_tab.pack_start(self.textfilter.widget)
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
