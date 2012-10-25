@@ -376,19 +376,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.status_info_labels[1].set_text(line_column)
 
         if line != self.cursor.line or force:
-            chunk, prev, next = self.linediffer.locate_chunk(pane, line)
+            chunk, prev, next_ = self.linediffer.locate_chunk(pane, line)
             if chunk != self.cursor.chunk or force:
                 self.cursor.chunk = chunk
                 self.emit("current-diff-changed")
-            if prev != self.cursor.prev or next != self.cursor.next or force:
+            if prev != self.cursor.prev or next_ != self.cursor.next or force:
                 self.emit("next-diff-changed", prev is not None,
-                          next is not None)
+                          next_ is not None)
 
             prev_conflict, next_conflict = None, None
             for conflict in self.linediffer.conflicts:
                 if prev is not None and conflict <= prev:
                     prev_conflict = conflict
-                if next is not None and conflict >= next:
+                if next_ is not None and conflict >= next_:
                     next_conflict = conflict
                     break
             if prev_conflict != self.cursor.prev_conflict or \
@@ -396,7 +396,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.emit("next-conflict-changed", prev_conflict is not None,
                           next_conflict is not None)
 
-            self.cursor.prev, self.cursor.next = prev, next
+            self.cursor.prev, self.cursor.next = prev, next_
             self.cursor.prev_conflict = prev_conflict
             self.cursor.next_conflict = next_conflict
         self.cursor.line, self.cursor.offset = line, offset
@@ -562,7 +562,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # This hack is required when pane0's prev/next chunk doesn't exist
         # (i.e., is Same) between pane0 and pane1.
         prev_chunk0, prev_chunk1, next_chunk0, next_chunk1 = (None,) * 4
-        _, prev, next = self.linediffer.locate_chunk(pane0, line)
+        _, prev, next_ = self.linediffer.locate_chunk(pane0, line)
         if prev is not None:
             while prev >= 0:
                 prev_chunk0 = self.linediffer.get_chunk(prev, pane0, pane1)
@@ -573,15 +573,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     break
                 prev -= 1
 
-        if next is not None:
-            while next < self.linediffer.diff_count():
-                next_chunk0 = self.linediffer.get_chunk(next, pane0, pane1)
-                next_chunk1 = self.linediffer.get_chunk(next, pane1, pane0)
+        if next_ is not None:
+            while next_ < self.linediffer.diff_count():
+                next_chunk0 = self.linediffer.get_chunk(next_, pane0, pane1)
+                next_chunk1 = self.linediffer.get_chunk(next_, pane1, pane0)
                 if None not in (next_chunk0, next_chunk1):
                     end0 = next_chunk0[1]
                     end1 = next_chunk1[1]
                     break
-                next += 1
+                next_ += 1
 
         return "Same", start0, end0, start1, end1
 
@@ -1057,13 +1057,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Computing differences") % self.label_text
         texts = self.buffer_filtered[:self.num_panes]
         step = self.linediffer.set_sequences_iter(texts)
-        while step.next() is None:
+        while next(step) is None:
             yield 1
 
-        chunk, prev, next = self.linediffer.locate_chunk(1, 0)
+        chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
         self.cursor.next = chunk
         if self.cursor.next is None:
-            self.cursor.next = next
+            self.cursor.next = next_
         for buf in self.textbuffer:
             buf.place_cursor(buf.get_start_iter())
         self.scheduler.add_task(lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)

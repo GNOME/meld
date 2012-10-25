@@ -1127,7 +1127,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if treeview.row_expanded(rowiter.path):
                     for row in rowiter.iterchildren():
                         recurse_tree_states(row)
-            recurse_tree_states(iter(self.model).next())
+            recurse_tree_states(next(iter(self.model)))
             row_states.append(None)
 
             numlines = float(len(row_states) - 1)

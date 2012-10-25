@@ -48,7 +48,7 @@ class FileMerge(filediff.FileDiff):
         yield _("[%s] Merging files") % self.label_text
         merger = merge.Merger()
         step = merger.initialize(self.buffer_filtered, self.buffer_texts)
-        while step.next() is None:
+        while next(step) is None:
             yield 1
         for merged_text in merger.merge_3_files():
             yield 1

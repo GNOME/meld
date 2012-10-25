@@ -170,7 +170,7 @@ class Merger(diffutil.Differ):
 
     def initialize(self, sequences, texts):
         step = self.differ.set_sequences_iter(sequences)
-        while step.next() == None:
+        while next(step) is None:
             yield None
         self.texts = texts
         yield 1
