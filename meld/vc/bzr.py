@@ -31,7 +31,7 @@ class Vc(_vc.CachedVc):
 
     CMD = "bzr"
     CMDARGS = ["--no-aliases", "--no-plugins"]
-    NAME = "Bazaar-NG"
+    NAME = "Bazaar"
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)'.*$"
 

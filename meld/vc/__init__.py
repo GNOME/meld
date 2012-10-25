@@ -47,7 +47,7 @@ def get_plugins_metadata():
 
 vc_sort_order = (
     "Git",
-    "Bazaar-NG",
+    "Bazaar",
     "Mercurial",
     "Fossil",
     "Monotone",
