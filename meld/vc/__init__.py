@@ -1,9 +1,10 @@
 ### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+### Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### Redistribution and use in source and binary forms, with or without
 ### modification, are permitted provided that the following conditions
 ### are met:
-### 
+###
 ### 1. Redistributions of source code must retain the above copyright
 ###    notice, this list of conditions and the following disclaimer.
 ### 2. Redistributions in binary form must reproduce the above copyright
@@ -21,20 +22,28 @@
 ### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import glob
+import importlib
 from . import _null
 from ._vc import DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS
 
 
-def load_plugins():
-    _vcdir = os.path.dirname(os.path.abspath(__file__))
-    ret = []
-    for plugin in glob.glob(os.path.join(_vcdir, "[a-z]*.py")):
-        modname = "meld.vc.%s" % os.path.basename(os.path.splitext(plugin)[0])
-        ret.append( __import__(modname, globals(), locals(), "*") )
-    return ret
-_plugins = load_plugins()
+# Tuple with module name and vc.NAME field, ordered according to best-guess
+# as to which VC a user is likely to want by default in a multiple-VC situation
+vc_names = (
+    "git",
+    "mercurial",
+    "bzr",
+    "fossil",
+    "monotone",
+    "darcs",
+    "svk",
+    "svn",
+    "svn_17",
+    "cvs",
+)
+
+_plugins = [importlib.import_module("." + vc, __package__) for vc in vc_names]
+
 
 def get_plugins_metadata():
     ret = []
@@ -47,22 +56,10 @@ def get_plugins_metadata():
             ret.extend(p.Vc.VC_METADATA)
     return ret
 
-vc_sort_order = (
-    "Git",
-    "Bazaar",
-    "Mercurial",
-    "Fossil",
-    "Monotone",
-    "Darcs",
-    "SVK",
-    "Subversion",
-    "Subversion 1.7",
-    "CVS",
-)
 
 def get_vcs(location):
     """Pick only the Vcs with the longest repo root
-    
+
        Some VC plugins search their repository root
        by walking the filesystem upwards its root
        and now that we display multiple VCs in the
@@ -92,4 +89,4 @@ def get_vcs(location):
         # No plugin recognized that location, fallback to _null
         return [_null.Vc]
 
-    return sorted(vcs, key=lambda v: vc_sort_order.index(v.NAME))
+    return vcs
