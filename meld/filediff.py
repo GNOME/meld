@@ -32,20 +32,20 @@ import gobject
 import gtk
 import gtk.keysyms
 
-import diffutil
-from ui import findbar
-from ui import gnomeglade
-import matchers
-import misc
-import meldbuffer
-import melddoc
-import patchdialog
-import paths
-import merge
-import undo
+from . import diffutil
+from . import matchers
+from . import meldbuffer
+from . import melddoc
+from . import merge
+from . import misc
+from . import patchdialog
+from . import paths
+from . import undo
+from .ui import findbar
+from .ui import gnomeglade
 
-from meldapp import app
-from util.sourceviewer import srcviewer
+from .meldapp import app
+from .util.sourceviewer import srcviewer
 
 
 def init_worker():

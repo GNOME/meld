@@ -25,8 +25,9 @@ import os
 from gettext import gettext as _
 import re
 import time
+
 from meld import misc
-import _vc
+from . import _vc
 
 class Vc(_vc.Vc):
     CMD = "cvs"

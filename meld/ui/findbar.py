@@ -16,11 +16,13 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import gnomeglade
-from meld import paths
-from meld import misc
 import gtk
 import re
+
+from meld import misc
+from meld import paths
+from . import gnomeglade
+
 from gettext import gettext as _
 
 class FindBar(gnomeglade.Component):

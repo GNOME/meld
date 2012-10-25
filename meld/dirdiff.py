@@ -19,25 +19,26 @@
 import collections
 import copy
 import errno
-import paths
-from ui import gnomeglade
-import gtk
-import gtk.keysyms
-import misc
 import os
-from gettext import gettext as _
-from gettext import ngettext
-import shutil
-import melddoc
-import tree
 import re
+import shutil
 import stat
 import time
 
-import ui.emblemcellrenderer
+import gtk
+import gtk.keysyms
+
+from . import melddoc
+from . import tree
+from . import misc
+from . import paths
+from .ui import gnomeglade
+from .ui import emblemcellrenderer
 
 from collections import namedtuple
-from meldapp import app
+from gettext import gettext as _
+from gettext import ngettext
+from .meldapp import app
 
 gdk = gtk.gdk
 
@@ -294,7 +295,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             column = gtk.TreeViewColumn()
             rentext = gtk.CellRendererText()
-            renicon = ui.emblemcellrenderer.EmblemCellRenderer()
+            renicon = emblemcellrenderer.EmblemCellRenderer()
             column.pack_start(renicon, expand=0)
             column.pack_start(rentext, expand=1)
             col_index = self.model.column_index

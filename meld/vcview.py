@@ -24,13 +24,13 @@ from gettext import gettext as _
 import gtk
 import pango
 
-import tree
-import misc
-from ui import gnomeglade
-import melddoc
-import paths
-import ui.emblemcellrenderer
-import vc
+from . import melddoc
+from . import misc
+from . import paths
+from . import tree
+from . import vc
+from .ui import emblemcellrenderer
+from .ui import gnomeglade
 
 ################################################################################
 #
@@ -163,7 +163,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview.set_search_equal_func(self.treeview_search_cb)
         self.current_path, self.prev_path, self.next_path = None, None, None
         column = gtk.TreeViewColumn( _("Name") )
-        renicon = ui.emblemcellrenderer.EmblemCellRenderer()
+        renicon = emblemcellrenderer.EmblemCellRenderer()
         rentext = gtk.CellRendererText()
         column.pack_start(renicon, expand=0)
         column.pack_start(rentext, expand=1)

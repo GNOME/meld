@@ -20,9 +20,9 @@ from gettext import gettext as _
 
 import gtk
 
-import filediff
-import meldbuffer
-import merge
+from . import filediff
+from . import meldbuffer
+from . import merge
 
 
 class FileMerge(filediff.FileDiff):

@@ -23,7 +23,7 @@
 
 import os
 import glob
-import _null
+from . import _null
 
 def load_plugins():
     _vcdir = os.path.dirname(os.path.abspath(__file__))

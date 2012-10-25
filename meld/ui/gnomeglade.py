@@ -114,4 +114,4 @@ def connect_signal_handlers(obj):
                    ' as a signal handler' % (attr,))
 
 
-import gladesupport
+from . import gladesupport

@@ -23,10 +23,10 @@ import os
 import gtk
 import pango
 
-from ui import gnomeglade
-import paths
+from . import paths
+from .ui import gnomeglade
 
-from util.sourceviewer import srcviewer
+from .util.sourceviewer import srcviewer
 
 
 class PatchDialog(gnomeglade.Component):

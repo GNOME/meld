@@ -149,6 +149,6 @@ class MeldApp(gobject.GObject):
 
 app = MeldApp()
 
-import filediff
-import meldwindow
+from . import filediff
+from . import meldwindow
 

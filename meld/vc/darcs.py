@@ -23,7 +23,8 @@
 
 import os
 import errno
-import _vc
+from . import _vc
+
 
 class Vc(_vc.CachedVc):
 

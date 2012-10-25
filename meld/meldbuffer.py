@@ -19,15 +19,15 @@
 import sys
 from gettext import gettext as _
 
-import meld.util.sourceviewer
+from .util import sourceviewer
 
 
-class MeldBuffer(meld.util.sourceviewer.srcviewer.GtkTextBuffer):
+class MeldBuffer(sourceviewer.srcviewer.GtkTextBuffer):
 
     __gtype_name__ = "MeldBuffer"
 
     def __init__(self, filename=None):
-        meld.util.sourceviewer.srcviewer.GtkTextBuffer.__init__(self)
+        sourceviewer.srcviewer.GtkTextBuffer.__init__(self)
         self.data = MeldBufferData(filename)
 
     def reset_buffer(self, filename):

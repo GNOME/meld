@@ -20,7 +20,7 @@ import difflib
 
 import gobject
 
-from matchers import DiffChunk, MyersSequenceMatcher
+from .matchers import DiffChunk, MyersSequenceMatcher
 
 
 opcode_reverse = {

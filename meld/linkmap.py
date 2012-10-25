@@ -21,7 +21,7 @@ import math
 
 import gtk
 
-import diffutil
+from . import diffutil
 
 
 # FIXME: import order issues

@@ -17,8 +17,8 @@
 ### USA.
 
 
-import gnomeglade
 from meld import paths
+from . import gnomeglade
 
 
 class ListWidget(gnomeglade.Component):

@@ -21,9 +21,11 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-import os
 import errno
-import _vc
+import os
+
+from . import _vc
+
 
 # From the Arch manual (kept here for reference)
 

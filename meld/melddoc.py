@@ -25,7 +25,7 @@ import gobject
 import gio
 import gtk
 
-import task
+from . import task
 
 from gettext import gettext as _
 

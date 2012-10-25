@@ -22,7 +22,8 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from meld import misc
-import svn
+from . import svn
+
 
 class Vc(svn.Vc):
 

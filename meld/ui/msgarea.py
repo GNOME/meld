@@ -22,7 +22,7 @@ import logging
 import gobject
 import gtk
 
-from wraplabel import WrapLabel
+from .wraplabel import WrapLabel
 
 _logger = logging.getLogger("hotwire.ui.MsgArea")
 

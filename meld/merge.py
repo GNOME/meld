@@ -15,9 +15,8 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import diffutil
-import matchers
-#from _patiencediff_py import PatienceSequenceMatcher_py as PatienceSequenceMatcher
+from . import diffutil
+from . import matchers
 
 
 class AutoMergeDiffer(diffutil.Differ):

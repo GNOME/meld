@@ -21,15 +21,15 @@ from gettext import gettext as _
 
 import gtk
 
-from ui import gnomeglade
-from ui import listwidget
-import filters
-import misc
-import paths
-from util import prefs
-import vc
+from . import filters
+from . import misc
+from . import paths
+from . import vc
+from .ui import gnomeglade
+from .ui import listwidget
+from .util import prefs
 
-from util.sourceviewer import srcviewer
+from .util.sourceviewer import srcviewer
 
 
 class FilterList(listwidget.ListWidget):

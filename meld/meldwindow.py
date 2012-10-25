@@ -23,19 +23,19 @@ import gio
 import gtk
 import gobject
 
-import dirdiff
-import filediff
-import filemerge
-import paths
-from ui import gnomeglade
-import misc
-from ui import notebooklabel
-import preferences
-import task
-import vcview
+from . import dirdiff
+from . import filediff
+from . import filemerge
+from . import misc
+from . import paths
+from . import preferences
+from . import task
+from . import vcview
+from .ui import gnomeglade
+from .ui import notebooklabel
 
-from util.sourceviewer import srcviewer
-from meldapp import app
+from .util.sourceviewer import srcviewer
+from .meldapp import app
 
 ################################################################################
 #
