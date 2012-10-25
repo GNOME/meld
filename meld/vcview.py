@@ -314,7 +314,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # If the user is just diffing a file (ie not a directory), there's no
         # need to scan the rest of the repository
         if os.path.isdir(self.vc.location):
-            self.scheduler.add_task(self._search_recursively_iter(self.model.get_iter_root()).next)
+            root = self.model.get_iter_root()
+            self.scheduler.add_task(self._search_recursively_iter(root))
             self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def recompute_label(self):
@@ -403,11 +404,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             retry_diff = False
 
             yield _("[%s] Fetching differences") % self.label_text
-            difffunc = self._command_iter(self.vc.diff_command(),
-                                          path_list, 0).next
+            diffiter = self._command_iter(self.vc.diff_command(), path_list, 0)
             diff = None
             while type(diff) != type(()):
-                diff = difffunc()
+                diff = next(diffiter)
                 yield 1
             prefix, patch = diff[0], diff[1]
 
@@ -429,7 +429,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def run_diff(self, path_list):
         for path in path_list:
-            self.scheduler.add_task(self.run_diff_iter([path]).next, atfront=1)
+            self.scheduler.add_task(self.run_diff_iter([path]), atfront=1)
 
     def on_treeview_popup_menu(self, treeview):
         time = gtk.get_current_event_time()
@@ -497,10 +497,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         files = [ relpath(workdir, f) for f in files ]
         r = None
         self.consolestream.write( misc.shelljoin(command+files) + " (in %s)\n" % workdir)
-        readfunc = misc.read_pipe_iter(command + files, self.consolestream, workdir=workdir).next
+        readiter = misc.read_pipe_iter(command + files, self.consolestream,
+                                       workdir=workdir)
         try:
             while r is None:
-                r = readfunc()
+                r = next(readiter)
                 self.consolestream.write(r)
                 yield 1
         except IOError as e:
@@ -513,7 +514,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def _command(self, command, files, refresh=1):
         """Run 'command' on 'files'.
         """
-        self.scheduler.add_task( self._command_iter(command, files, refresh).next )
+        self.scheduler.add_task(self._command_iter(command, files, refresh))
         
     def _command_on_selected(self, command, refresh=1):
         files = self._get_selected_files()
@@ -639,7 +640,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
                 self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
                 self.model.remove(it)
-                self.scheduler.add_task( self._search_recursively_iter(newiter).next )
+                self.scheduler.add_task(self._search_recursively_iter(newiter))
         else: # XXX fixme
             self.refresh()
 

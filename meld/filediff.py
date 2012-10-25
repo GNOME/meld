@@ -965,7 +965,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
         self._connect_buffer_handlers()
-        self.scheduler.add_task( self._set_files_internal(files).next )
+        self.scheduler.add_task(self._set_files_internal(files))
 
     def _load_files(self, files, textbuffers):
         self.undosequence.clear()
@@ -1101,7 +1101,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._disconnect_buffer_handlers()
         self.linediffer.clear()
         self.queue_draw()
-        self.scheduler.add_task(self._diff_files().next)
+        self.scheduler.add_task(self._diff_files())
 
     def _set_merge_action_sensitivity(self):
         pane = self._get_focused_pane()

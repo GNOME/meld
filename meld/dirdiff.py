@@ -505,7 +505,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.model.remove(child)
             child = self.model.iter_children( it )
         self._update_item_state(it)
-        self.scheduler.add_task( self._search_recursively_iter( path ).next )
+        self.scheduler.add_task(self._search_recursively_iter(path))
 
     def _search_recursively_iter(self, rootpath):
         self.actiongroup.get_action("Hide").set_sensitive(False)

@@ -128,7 +128,10 @@ class SchedulerBase(object):
         except StopIteration:
             return 0
         try:
-            ret = task()
+            if hasattr(task, "__iter__"):
+                ret = next(task)
+            else:
+                ret = task()
         except StopIteration:
             pass
         except Exception:
@@ -177,47 +180,30 @@ class RoundRobinScheduler(SchedulerBase):
             raise StopIteration
 
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     import time
     import random
     m = LifoScheduler()
+
     def timetask(t):
         while time.time() - t < 1:
             print "***"
             time.sleep(0.1)
         print "!!!"
+
     def sayhello(x):
-        for i in range(random.randint(2,8)):
+        for i in range(random.randint(2, 8)):
             print "hello", x
             time.sleep(0.1)
             yield 1
         print "end", x
+
     s = RoundRobinScheduler()
     m.add_task(s)
-    h = sayhello(10).next
-    #m.add_task(h)
-    #m.add_task(h)
-    s.add_task( sayhello(10).next )
-    s.add_task( sayhello(20).next )
-    s.add_task( sayhello(30).next )
-    #s.add_task( sayhello(40).next )
-    #s.add_task( sayhello(50).next )
-    #s.add_task( sayhello(60).next )
-    #m.add_task( s )
-    #time.sleep(.71)
-    #m.add_task( s )#sayhello(2).next )
-    #m.add_task( sayhello(3).next )
-    #m.add_task( lambda t=time.time() : timetask(t) )
-    #m.add_task( sayhello(4).next )
-    #m.add_task( sayhello(5).next )
-    #m.mainloop()
-    while s.tasks_pending(): s.iteration()
+    s.add_task(sayhello(10))
+    s.add_task(sayhello(20))
+    s.add_task(sayhello(30))
+    while s.tasks_pending():
+        s.iteration()
     time.sleep(2)
     print "***"
-    #print "***"
-    #m.add_task( sayhello(20).next )
-    #m.add_task( s )
-    #s.complete_tasks()
-    #time.sleep(3)
-
