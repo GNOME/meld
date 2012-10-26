@@ -16,6 +16,8 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
+from __future__ import print_function
+
 import optparse
 import os
 from gettext import gettext as _
@@ -127,7 +129,7 @@ class MeldApp(gobject.GObject):
         open_paths = self.window.open_paths
         if options.newtab:
             if not dbus_app:
-                print _("D-Bus error; comparisons will open in a new window.")
+                print(_("D-Bus error; comparisons will open in a new window."))
             else:
                 # Note that we deliberately discard auto-compare and -merge
                 # options here; these are not supported via dbus yet.

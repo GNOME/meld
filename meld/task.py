@@ -15,10 +15,12 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-"""Classes to implement scheduling for cooperative threads.
-"""
+"""Classes to implement scheduling for cooperative threads."""
+
+from __future__ import print_function
 
 import traceback
+
 
 class SchedulerBase(object):
     """Base class with common functionality for schedulers.
@@ -187,16 +189,16 @@ if __name__ == "__main__":
 
     def timetask(t):
         while time.time() - t < 1:
-            print "***"
+            print("***")
             time.sleep(0.1)
-        print "!!!"
+        print("!!!")
 
     def sayhello(x):
         for i in range(random.randint(2, 8)):
-            print "hello", x
+            print("hello", x)
             time.sleep(0.1)
             yield 1
-        print "end", x
+        print("end", x)
 
     s = RoundRobinScheduler()
     m.add_task(s)
@@ -206,4 +208,4 @@ if __name__ == "__main__":
     while s.tasks_pending():
         s.iteration()
     time.sleep(2)
-    print "***"
+    print("***")
