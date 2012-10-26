@@ -351,9 +351,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 it = self.model.get_iter_root()
                 root = name
             yield _("[%s] Scanning %s") % (self.label_text, root[prefixlen:])
-            #import time; time.sleep(1.0)
-            
-            entries = filter(showable, self.vc.listdir(root))
+
+            entries = [f for f in self.vc.listdir(root) if showable(f)]
             differences = 0
             for e in entries:
                 differences |= (e.state != tree.STATE_NORMAL)

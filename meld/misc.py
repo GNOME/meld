@@ -1,5 +1,6 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 ### Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
+### Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -154,14 +155,15 @@ def all_equal(alist):
 def shorten_names(*names):
     """Remove redunant parts of a list of names (e.g. /tmp/foo{1,2} -> foo{1,2}
     """
-    prefix = os.path.commonprefix( names )
+    # TODO: Update for different path separators
+    prefix = os.path.commonprefix(names)
     prefixslash = prefix.rfind("/") + 1
-    
-    names = map(lambda x: x[prefixslash:], names) # remove common prefix
-    paths = map(lambda x: x.split("/"), names) # split on /
+
+    names = [n[prefixslash:] for n in names]
+    paths = [n.split("/") for n in names]
 
     try:
-        basenames = map(lambda x: x[-1], paths)
+        basenames = [p[-1] for p in paths]
     except IndexError:
         pass
     else:
@@ -171,11 +173,11 @@ def shorten_names(*names):
                     return "[%s] " % alist[0]
                 else:
                     return ""
-            roots = map(firstpart, paths)
+            roots = [firstpart(p) for p in paths]
             base = basenames[0].strip()
-            return [ r+base for r in roots ]
+            return [r + base for r in roots]
     # no common path. empty names get changed to "[None]"
-    return map(lambda x: x or _("[None]"), basenames)
+    return [name or _("[None]") for name in basenames]
 
 def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     """Read the output of a shell command iteratively.

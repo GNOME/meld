@@ -23,6 +23,7 @@
 
 from . import _vc
 
+
 class Vc(_vc.Vc):
 
     CMD = "true"
@@ -46,9 +47,6 @@ class Vc(_vc.Vc):
 
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"
-        if len(files) == 0 and len(dirs) == 0:
-            return [],[]
-
-        d = map(lambda x: _vc.Dir(x[1],x[0], _vc.STATE_NONE), dirs)
-        f = map(lambda x: _vc.File(x[1],x[0], _vc.STATE_NONE, None), files)
-        return d,f
+        d = [_vc.Dir(x[1], x[0], _vc.STATE_NONE) for x in dirs]
+        f = [_vc.File(x[1], x[0], _vc.STATE_NONE, None) for x in files]
+        return d, f

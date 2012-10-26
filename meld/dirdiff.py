@@ -1,5 +1,5 @@
 ### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2009-2011 Kai Willadsen <kai.willadsen@gmail.com>
+### Copyright (C) 2009-2012 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -438,19 +438,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         if not hasattr(self, "do_to_others_lock"):
             self.do_to_others_lock = 1
             try:
-                for o in filter(lambda x:x!=master, objects[:self.num_panes]):
-                    method = getattr(o,methodname)
+                for o in [x for x in objects[:self.num_panes] if x != master]:
+                    method = getattr(o, methodname)
                     method(*args)
             finally:
                 delattr(self, "do_to_others_lock")
 
     def _sync_vscroll(self, adjustment):
-        adjs = map(lambda x: x.get_vadjustment(), self.scrolledwindow)
-        self._do_to_others( adjustment, adjs, "set_value", (adjustment.value,) )
+        adjs = [sw.get_vadjustment() for sw in self.scrolledwindow]
+        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value,))
 
     def _sync_hscroll(self, adjustment):
-        adjs = map(lambda x: x.get_hadjustment(), self.scrolledwindow)
-        self._do_to_others( adjustment, adjs, "set_value", (adjustment.value,) )
+        adjs = [sw.get_hadjustment() for sw in self.scrolledwindow]
+        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value,))
 
     def _get_focused_pane(self):
         focus = [ t.is_focus() for t in self.treeview ]
@@ -687,7 +687,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
            If it is a file we launch a diff.
            If it is a folder we recursively open diffs for each non equal file.
         """
-        paths = filter(os.path.exists, self.model.value_paths(it))
+        paths = [p for p in self.model.value_paths(it) if os.path.exists(p)]
         self.emit("create-diff", paths)
 
     def launch_comparisons_on_selected(self):
@@ -1156,11 +1156,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
             toshow += self.vbox[:n] + self.msgarea_mgr[:n]
-            map( lambda x: x.show(), toshow )
+            for widget in toshow:
+                widget.show()
             tohide =  self.scrolledwindow[n:] + self.fileentry[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
             tohide += self.vbox[n:] + self.msgarea_mgr[n:]
-            map( lambda x: x.hide(), tohide )
+            for widget in tohide:
+                widget.hide()
             if self.num_panes != 0: # not first time through
                 self.num_panes = n
                 self.on_fileentry_activate(None)

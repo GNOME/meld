@@ -1566,12 +1566,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.vbox[:n] + self.msgarea_mgr[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
-            map( lambda x: x.show(), toshow )
+            for widget in toshow:
+                widget.show()
 
             tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
             tohide += self.vbox[n:] + self.msgarea_mgr[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
-            map( lambda x: x.hide(), tohide )
+            for widget in tohide:
+                widget.hide()
 
             right_attach = 2 * n
             if self.findbar.widget in self.table:

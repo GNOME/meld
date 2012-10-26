@@ -29,6 +29,7 @@ import time
 from meld import misc
 from . import _vc
 
+
 class Vc(_vc.Vc):
     CMD = "cvs"
     # CVSNT is a drop-in replacement for CVS; if found, it is used instead
@@ -68,9 +69,9 @@ class Vc(_vc.Vc):
             # poor mans universal newline
             entries = entries.replace("\r","\n").replace("\n\n","\n")
         except IOError as e: # no cvs dir
-            d = map(lambda x: _vc.Dir(x[1],x[0], _vc.STATE_NONE), dirs)
-            f = map(lambda x: _vc.File(x[1],x[0], _vc.STATE_NONE, None), files)
-            return d,f
+            d = [_vc.Dir(x[1], x[0], _vc.STATE_NONE) for x in dirs]
+            f = [_vc.File(x[1], x[0], _vc.STATE_NONE, None) for x in files]
+            return d, f
 
         try:
             logentries = open(os.path.join(directory, self.VC_DIR, "Entries.Log")).read()
@@ -143,7 +144,7 @@ class Vc(_vc.Vc):
                                 state = _vc.STATE_MODIFIED
                 retfiles.append( _vc.File(path, name, state, rev, tag, options) )
         # known
-        cvsfiles = map(lambda x: x[1], matches)
+        cvsfiles = [x[1] for x in matches]
         # ignored
         try:
             ignored = open(os.path.join(os.environ["HOME"], ".cvsignore")).read().split()
