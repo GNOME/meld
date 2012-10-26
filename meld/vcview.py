@@ -601,7 +601,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         if result == 0:
             for d in diffs:
-                os.chmod(d[0], 0444)
+                os.chmod(d[0], 0o444)
                 self.emit("create-diff", d)
             return True
         elif not silent:
