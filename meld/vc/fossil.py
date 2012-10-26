@@ -123,7 +123,7 @@ class Vc(_vc.CachedVc):
         retdirs = []
         vcfiles = {}
 
-        for path, state in tree.iteritems():
+        for path, state in tree.items():
             mydir, name = os.path.split(path)
             if path.endswith('/'):
                 mydir, name = os.path.split(mydir)
@@ -164,7 +164,7 @@ class Vc(_vc.CachedVc):
                                   'manifest.uuid']
 
                     if f not in ignorelist:
-                        print "WARNING: '%s' was not listed by 'ls -l'" % f
+                        print("WARNING: '%s' was not listed by 'ls -l'" % f)
 
                 # If it ain't listed by the inventory it's not under version
                 # control

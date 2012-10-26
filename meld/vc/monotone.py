@@ -234,7 +234,7 @@ class Vc(_vc.CachedVc):
         retdirs = []
         vcfiles = {}
 
-        for path,state in tree.iteritems():
+        for path, state in tree.items():
             mydir, name = os.path.split(path)
             if path.endswith('/'):
                 mydir, name = os.path.split(mydir)

@@ -194,7 +194,7 @@ class CanonicalListing(object):
     def get(self):
         first = lambda seq: next(s for s in seq if s)
         filled = lambda seq: tuple([s or first(seq) for s in seq])
-        return sorted([filled(v) for v in self.items.itervalues()])
+        return sorted(filled(v) for v in self.items.values())
 
 
 ################################################################################

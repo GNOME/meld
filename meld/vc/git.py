@@ -187,7 +187,7 @@ class Vc(_vc.CachedVc):
         for name,path in dirs:
             # git does not operate on dirs, just files
             retdirs.append( _vc.Dir(path, name, _vc.STATE_NORMAL))
-        for path, state in tree.iteritems():
+        for path, state in tree.items():
             # removed files are not in the filesystem, so must be added here
             if state is _vc.STATE_REMOVED:
                 folder, name = os.path.split(path)

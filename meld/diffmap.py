@@ -110,7 +110,7 @@ class DiffMap(gtk.DrawingArea):
         for c, y0, y1 in self._difffunc():
             tagged_diffs[c].append((y0, y1))
 
-        for tag, diffs in tagged_diffs.iteritems():
+        for tag, diffs in tagged_diffs.items():
             context.set_source_color(self.fill_colors[tag])
             for y0, y1 in diffs:
                 y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
