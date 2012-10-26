@@ -152,11 +152,11 @@ class GConfPreferences(object):
         """
         self._listeners.append(callback)
 
-    def dump(self):
-        """Print all preferences.
-        """
+    def __str__(self):
+        prefs_entries = []
         for k, v in self._prefs.items():
-            print k, v.type, v.current
+            prefs_entries.append("%s %s %s" % (k, v.type, str(v.current)))
+        return "\n".join(prefs_entries)
 
 
 class ConfigParserPreferences(object):
@@ -262,11 +262,12 @@ class ConfigParserPreferences(object):
         """
         self._listeners.append(callback)
 
-    def dump(self):
-        """Print all preferences.
-        """
+    def __str__(self):
+        prefs_entries = []
         for k, v in self._prefs.items():
-            print k, v.type, v.current
+            prefs_entries.append("%s %s %s" % (k, v.type, str(v.current)))
+        return "\n".join(prefs_entries)
+
 
 # Prefer gconf, falling back to ConfigParser
 try:
