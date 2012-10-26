@@ -240,11 +240,10 @@ class Vc(_vc.CachedVc):
                 mydir, name = os.path.split(mydir)
             if mydir != directory:
                 continue
-            rev, options, tag = "","",""
             if path.endswith('/'):
-                retdirs.append( _vc.Dir(path[:-1], name, state))
+                retdirs.append(_vc.Dir(path[:-1], name, state))
             else:
-                retfiles.append( _vc.File(path, name, state, rev, tag, options) )
+                retfiles.append(_vc.File(path, name, state))
             vcfiles[name] = 1
         for f,path in files:
             if f not in vcfiles:
@@ -257,7 +256,7 @@ class Vc(_vc.CachedVc):
                 # if it ain't listed by the inventory it's not under version
                 # control
                 state = _vc.STATE_NONE
-                retfiles.append( _vc.File(path, f, state, "") )
+                retfiles.append(_vc.File(path, f, state))
         for d,path in dirs:
             if d not in vcfiles:
                 # if the ignore MT filter is not enabled these will crop up

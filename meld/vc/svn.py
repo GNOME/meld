@@ -128,7 +128,6 @@ class Vc(_vc.CachedVc):
             path = os.path.join(directory, name)
 
             isdir = os.path.isdir(path)
-            options = ""
             if isdir:
                 if os.path.exists(path):
                     state = _vc.STATE_NORMAL
@@ -139,6 +138,6 @@ class Vc(_vc.CachedVc):
                     retdirs.append( _vc.Dir(path,name,state) )
             else:
                 state = self.state_map.get(svn_state, _vc.STATE_NONE)
-                retfiles.append( _vc.File(path, name, state, rev, "", options) )
+                retfiles.append(_vc.File(path, name, state, rev))
 
         return retdirs, retfiles

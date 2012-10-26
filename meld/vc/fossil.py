@@ -144,12 +144,10 @@ class Vc(_vc.CachedVc):
                     if e.errno != errno.EAGAIN:
                         raise
 
-            options, tag = "", ""
             if path.endswith('/'):
                 retdirs.append(_vc.Dir(path[:-1], name, state))
             else:
-                retfiles.append(_vc.File(path, name, state, rev, tag,
-                        options))
+                retfiles.append(_vc.File(path, name, state, rev))
             vcfiles[name] = 1
 
         for f, path in files:
@@ -169,7 +167,7 @@ class Vc(_vc.CachedVc):
                 # If it ain't listed by the inventory it's not under version
                 # control
                 state = _vc.STATE_NONE
-                retfiles.append(_vc.File(path, f, state, ""))
+                retfiles.append(_vc.File(path, f, state))
 
         for d, path in dirs:
             if d not in vcfiles:

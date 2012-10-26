@@ -48,5 +48,5 @@ class Vc(_vc.Vc):
     def lookup_files(self, dirs, files):
         "files is array of (name, path). assume all files in same dir"
         d = [_vc.Dir(x[1], x[0], _vc.STATE_NONE) for x in dirs]
-        f = [_vc.File(x[1], x[0], _vc.STATE_NONE, None) for x in files]
+        f = [_vc.File(x[1], x[0], _vc.STATE_NONE) for x in files]
         return d, f

@@ -72,6 +72,6 @@ class Vc(_vc.Vc):
                     print "Error getting state of file %s: %d" % (path, result)
                     state = _vc.STATE_ERROR
 
-            retfiles.append(_vc.File(path, name, state, "", "", ""))
+            retfiles.append(_vc.File(path, name, state))
 
         return retdirs, retfiles

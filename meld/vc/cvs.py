@@ -70,7 +70,7 @@ class Vc(_vc.Vc):
             entries = entries.replace("\r","\n").replace("\n\n","\n")
         except IOError as e: # no cvs dir
             d = [_vc.Dir(x[1], x[0], _vc.STATE_NONE) for x in dirs]
-            f = [_vc.File(x[1], x[0], _vc.STATE_NONE, None) for x in files]
+            f = [_vc.File(x[1], x[0], _vc.STATE_NONE) for x in files]
             return d, f
 
         try:
@@ -142,7 +142,7 @@ class Vc(_vc.Vc):
                                 state = _vc.STATE_NORMAL
                             else:
                                 state = _vc.STATE_MODIFIED
-                retfiles.append( _vc.File(path, name, state, rev, tag, options) )
+                retfiles.append(_vc.File(path, name, state, rev, tag, options))
         # known
         cvsfiles = [x[1] for x in matches]
         # ignored
@@ -171,7 +171,7 @@ class Vc(_vc.Vc):
         for f,path in files:
             if f not in cvsfiles:
                 state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
-                retfiles.append( _vc.File(path, f, state, "") )
+                retfiles.append(_vc.File(path, f, state))
         for d,path in dirs:
             if d not in cvsfiles:
                 state = ignore_re.match(d) is None and _vc.STATE_NONE or _vc.STATE_IGNORED

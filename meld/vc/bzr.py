@@ -119,17 +119,16 @@ class Vc(_vc.CachedVc):
                 mydir, name = os.path.split(mydir)
             if mydir != directory:
                 continue
-            rev, options, tag = "","",""
             if path.endswith('/'):
-                retdirs.append( _vc.Dir(path[:-1], name, state))
+                retdirs.append(_vc.Dir(path[:-1], name, state))
             else:
-                retfiles.append( _vc.File(path, name, state, rev, tag, options) )
+                retfiles.append(_vc.File(path, name, state))
             bzrfiles[name] = 1
         for f,path in files:
             if f not in bzrfiles:
                 #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 state = _vc.STATE_NORMAL
-                retfiles.append( _vc.File(path, f, state, "") )
+                retfiles.append(_vc.File(path, f, state))
         for d,path in dirs:
             if d not in bzrfiles:
                 #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
