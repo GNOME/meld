@@ -33,7 +33,7 @@ from gettext import gettext as _
 STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
 STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
-STATE_MISSING, STATE_NONEXIST, STATE_MAX = range(13)
+STATE_MISSING, STATE_NONEXIST, STATE_MAX = list(range(13))
 
 class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.

@@ -144,7 +144,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                  gtk.keysyms.Control_R : MASK_CTRL}
 
     # Identifiers for MsgArea messages
-    (MSG_SAME,) = range(1)
+    (MSG_SAME,) = list(range(1))
 
     __gsignals__ = {
         'next-conflict-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (bool, bool)),

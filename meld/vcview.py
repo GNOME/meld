@@ -79,7 +79,8 @@ class CommitDialog(gnomeglade.Component):
         buf = self.textview.get_buffer()
         buf.set_text( gentry.child.get_text() )
 
-COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = range(tree.COL_END, tree.COL_END+6)
+COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = \
+    list(range(tree.COL_END, tree.COL_END+6))
 
 class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):

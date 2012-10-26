@@ -61,7 +61,8 @@ CacheResult = namedtuple('CacheResult', 'stats result')
 
 
 _cache = {}
-Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = range(6)
+Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
+    list(range(6))
 # TODO: Get the block size from os.stat
 CHUNK_SIZE = 4096
 

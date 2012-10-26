@@ -21,7 +21,7 @@ import gtk
 import pango
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
-    COL_WEIGHT, COL_STRIKE, COL_END = range(10)
+    COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
 
 COL_TYPES = (str, str, str, str, str, gtk.gdk.Color, pango.Style,
              pango.Weight, bool)
