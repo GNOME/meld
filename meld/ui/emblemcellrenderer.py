@@ -98,7 +98,7 @@ class EmblemCellRenderer(gtk.GenericCellRenderer):
                 # adjust the base colours accordingly
                 luma = (r + r + b + g + g + g) / 6.
                 extra_luma = (1.2 - luma) / 3.
-                r, g, b = [min(x + extra_luma, 1.) for x in r, g, b]
+                r, g, b = [min(x + extra_luma, 1.) for x in (r, g, b)]
                 context.set_source_rgba(r, g, b, 0.4)
                 context.set_operator(cairo.OPERATOR_ATOP)
                 context.paint()
