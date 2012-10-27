@@ -34,6 +34,7 @@ from . import vcview
 from .ui import gnomeglade
 from .ui import notebooklabel
 
+from .util.compat import string_types
 from .util.sourceviewer import srcviewer
 from .meldapp import app
 
@@ -256,7 +257,7 @@ class MeldWindow(gnomeglade.Component):
 
     def on_idle(self):
         ret = self.scheduler.iteration()
-        if ret and isinstance(ret, basestring):
+        if ret and isinstance(ret, string_types):
             self.statusbar.set_task_status(ret)
 
         pending = self.scheduler.tasks_pending()

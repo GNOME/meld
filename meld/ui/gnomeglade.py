@@ -93,7 +93,7 @@ def connect_signal_handlers(obj):
         if match:
             when, widgetname, signal = match.groups()
             method = getattr(obj, attr)
-            assert callable(method)
+            assert hasattr(method, '__call__')
             try:
                 widget = getattr(obj, widgetname)
             except AttributeError:

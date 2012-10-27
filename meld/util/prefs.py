@@ -177,7 +177,7 @@ class ConfigParserPreferences(object):
         rootkey : unused (retained for compatibility with existing gconf API)
         initial : a dictionary of string to Value objects.
         """
-        self.__dict__["_parser"] = ConfigParser.SafeConfigParser()
+        self.__dict__["_parser"] = configparser.SafeConfigParser()
         self.__dict__["_listeners"] = []
         self.__dict__["_prefs"] = initial
         self.__dict__["_type_mappings"] = {
@@ -269,10 +269,13 @@ class ConfigParserPreferences(object):
         return "\n".join(prefs_entries)
 
 
-# Prefer gconf, falling back to ConfigParser
+# Prefer gconf, falling back to configparser
 try:
     import gconf
     Preferences = GConfPreferences
 except ImportError:
-    import ConfigParser
+    try:
+        import configparser
+    except ImportError:
+        import ConfigParser as configparser
     Preferences = ConfigParserPreferences

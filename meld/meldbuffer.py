@@ -133,7 +133,7 @@ class BufferLines(object):
             lines.append("")
             ends.append("")
 
-        hi = self.buf.get_line_count() if hi == sys.maxint else hi
+        hi = self.buf.get_line_count() if hi == sys.maxsize else hi
         if hi - lo != len(lines):
             # These codepoints are considered line breaks by Python, but not
             # by GtkTextStore.
