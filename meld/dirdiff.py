@@ -18,6 +18,7 @@
 
 import collections
 import copy
+import datetime
 import errno
 import os
 import re
@@ -160,7 +161,7 @@ def _files_same(files, regexes):
     return result
 
 
-COL_EMBLEM, COL_END = tree.COL_END, tree.COL_END + 1
+COL_EMBLEM, COL_SIZE, COL_TIME, COL_END = range(tree.COL_END, tree.COL_END + 4)
 
 ################################################################################
 #
@@ -169,7 +170,7 @@ COL_EMBLEM, COL_END = tree.COL_END, tree.COL_END + 1
 ################################################################################
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(self, ntree, [str])
+        tree.DiffTreeStore.__init__(self, ntree, [str, str, str])
 
 
 class CanonicalListing(object):
@@ -295,7 +296,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.status_info_labels = [lastchanged_label, permissions_label]
 
         for i in range(3):
-            self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+            # Create icon and filename CellRenderer
             column = gtk.TreeViewColumn()
             rentext = gtk.CellRendererText()
             renicon = emblemcellrenderer.EmblemCellRenderer()
@@ -312,6 +313,22 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                   emblem_name=col_index(COL_EMBLEM, i),
                                   icon_tint=col_index(tree.COL_TINT, i))
             self.treeview[i].append_column(column)
+
+            # Create file size CellRenderer
+            column = gtk.TreeViewColumn()
+            rentext = gtk.CellRendererText()
+            column.pack_start(rentext, expand=1)
+            column.set_attributes(rentext, markup=col_index(COL_SIZE, i))
+            self.treeview[i].append_column(column)
+
+            # Create date-time CellRenderer
+            column = gtk.TreeViewColumn()
+            rentext = gtk.CellRendererText()
+            column.pack_start(rentext, expand=1)
+            column.set_attributes(rentext, markup=col_index(COL_TIME, i))
+            self.treeview[i].append_column(column)
+
+            self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
             self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
         self.linediffs = [[], []]
@@ -1037,13 +1054,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         files = self.model.value_paths(it)
         regexes = [f.filter for f in self.text_filters if f.active]
 
-        def mtime(f):
+        def stat(f):
             try:
-                return os.stat(f).st_mtime
+                return os.stat(f)
             except OSError:
-                return 0
+                return None
+        stats = [stat(f) for f in files[:self.num_panes]]
+        sizes = [s.st_size if s else 0 for s in stats]
         # find the newest file, checking also that they differ
-        mod_times = [ mtime(f) for f in files[:self.num_panes] ]
+        mod_times = [s.st_mtime if s else 0 for s in stats]
         newest_index = mod_times.index( max(mod_times) )
         if mod_times.count( max(mod_times) ) == len(mod_times):
             newest_index = -1 # all same
@@ -1082,6 +1101,28 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.model.column_index(COL_EMBLEM, j),
                     j == newest_index and "emblem-meld-newer-file" or None)
                 one_isdir[j] = isdir
+
+                # A DateCellRenderer would be nicer, but potentially very slow
+                TIME = self.model.column_index(COL_TIME, j)
+                mod_datetime = datetime.datetime.fromtimestamp(mod_times[j])
+                time_str = mod_datetime.strftime("%a %d %b %Y %H:%M:%S")
+                self.model.set_value(it, TIME, time_str)
+
+                def natural_size(bytes):
+                    suffixes = ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
+                    size = float(bytes)
+                    unit = 0
+                    while size > 1000 and unit < len(suffixes) - 1:
+                        size /= 1000
+                        unit += 1
+                    format_str = "%.1f %s" if unit > 0 else "%d %s"
+                    return format_str % (size, suffixes[unit])
+
+                # A SizeCellRenderer would be nicer, but potentially very slow
+                SIZE = self.model.column_index(COL_SIZE, j)
+                size_str = natural_size(sizes[j])
+                self.model.set_value(it, SIZE, size_str)
+
         for j in range(self.model.ntree):
             if not mod_times[j]:
                 self.model.set_path_state(it, j, tree.STATE_NONEXIST,
