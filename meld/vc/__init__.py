@@ -91,9 +91,8 @@ def get_vcs(location):
         # No plugin recognized that location, fallback to _null
         return [_null.Vc(location)]
 
-    vc_comp = lambda a, b: cmp(vc_sort_order.index(a), vc_sort_order.index(b))
-    vc_name = lambda x: x.NAME
-    vcs.sort(cmp=vc_comp, key=vc_name)
+    vc_sort_key = lambda v: vc_sort_order.index(v.NAME)
+    vcs.sort(key=vc_sort_key)
 
     # Simplistic hack so that we don't offer both 1.7 and <1.6 SVN
     vc_names = [plugin.NAME for plugin in vcs]
