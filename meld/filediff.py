@@ -45,6 +45,7 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from .meldapp import app
+from .util.compat import text_type
 from .util.sourceviewer import srcviewer
 
 
@@ -823,13 +824,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.end_group()
 
     def on_text_insert_text(self, buf, it, text, textlen):
-        text = unicode(text, 'utf8')
+        text = text_type(text, 'utf8')
         self.undosequence.add_action(
             meldbuffer.BufferInsertionAction(buf, it.get_offset(), text))
         buf.create_mark("insertion-start", it, True)
 
     def on_text_delete_range(self, buf, it0, it1):
-        text = unicode(buf.get_text(it0, it1, False), 'utf8')
+        text = text_type(buf.get_text(it0, it1, False), 'utf8')
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = it1.get_line() - it0.get_line()
         self.undosequence.add_action(
@@ -855,7 +856,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf = self.textbuffer[pane]
             sel = buf.get_selection_bounds()
             if sel:
-                return unicode(buf.get_text(sel[0], sel[1], False), 'utf8')
+                return text_type(buf.get_text(sel[0], sel[1], False), 'utf8')
         return None
 
     def on_find_activate(self, *args):
@@ -1157,9 +1158,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # We don't use self.buffer_texts here, as removing line
                 # breaks messes with inline highlighting in CRLF cases
                 text1 = bufs[0].get_text(starts[0], ends[0], False)
-                text1 = unicode(text1, 'utf8')
+                text1 = text_type(text1, 'utf8')
                 textn = bufs[1].get_text(starts[1], ends[1], False)
-                textn = unicode(textn, 'utf8')
+                textn = text_type(textn, 'utf8')
 
                 # For very long sequences, bail rather than trying a very slow comparison
                 inline_limit = 8000 # arbitrary constant
@@ -1379,7 +1380,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 return False
         start, end = buf.get_bounds()
-        text = unicode(buf.get_text(start, end, False), 'utf8')
+        text = text_type(buf.get_text(start, end, False), 'utf8')
         if bufdata.newlines:
             if type(bufdata.newlines) == type(""):
                 if(bufdata.newlines) != '\n':
@@ -1643,7 +1644,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
         start = b0.get_iter_at_line_or_eof(chunk[1])
         end = b0.get_iter_at_line_or_eof(chunk[2])
-        t0 = unicode(b0.get_text(start, end, False), 'utf8')
+        t0 = text_type(b0.get_text(start, end, False), 'utf8')
 
         if copy_up:
             if chunk[2] >= b0.get_line_count() and \
@@ -1673,7 +1674,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         src_end = b0.get_iter_at_line_or_eof(chunk[2])
         dst_start = b1.get_iter_at_line_or_eof(chunk[3])
         dst_end = b1.get_iter_at_line_or_eof(chunk[4])
-        t0 = unicode(b0.get_text(src_start, src_end, False), 'utf8')
+        t0 = text_type(b0.get_text(src_start, src_end, False), 'utf8')
         mark0 = b1.create_mark(None, dst_start, True)
         self.on_textbuffer__begin_user_action()
         b1.delete(dst_start, dst_end)

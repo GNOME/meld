@@ -25,6 +25,8 @@ import atk
 # gconf is also imported; see end of HistoryEntry class for details
 from gettext import gettext as _
 
+from ..util.compat import text_type
+
 # This file is a Python translation of:
 #  * gedit/gedit/gedit-history-entry.c
 #  * libgnomeui/libgnomeui/gnome-file-entry.c
@@ -397,7 +399,7 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
 
         encoding = sys.getfilesystemencoding()
         if encoding:
-            filename = unicode(filename, encoding)
+            filename = text_type(filename, encoding)
         entry = self.__gentry.get_entry()
         entry.set_text(filename)
         self._set_last_open(filename)

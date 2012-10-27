@@ -23,6 +23,8 @@ from gettext import gettext as _
 
 from .util import sourceviewer
 
+from .util.compat import text_type
+
 
 class MeldBuffer(sourceviewer.srcviewer.GtkTextBuffer):
 
@@ -115,7 +117,7 @@ class BufferLines(object):
         # this will return the last line.
         start = self.buf.get_iter_at_line_or_eof(lo)
         end = self.buf.get_iter_at_line_or_eof(hi)
-        txt = unicode(self.buf.get_text(start, end, False), 'utf8')
+        txt = text_type(self.buf.get_text(start, end, False), 'utf8')
 
         filter_txt = self.textfilter(txt)
         lines = filter_txt.splitlines()
@@ -158,7 +160,7 @@ class BufferLines(object):
         if not line_end.ends_line():
             line_end.forward_to_line_end()
         txt = self.buf.get_text(line_start, line_end, False)
-        return unicode(self.textfilter(txt), 'utf8')
+        return text_type(self.textfilter(txt), 'utf8')
 
     def __len__(self):
         return self.buf.get_line_count()
