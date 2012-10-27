@@ -31,7 +31,7 @@ def find_common_prefix(a, b):
                 pointermin = pointermid
             else:
                 pointermax = pointermid
-            pointermid = int((pointermax - pointermin) / 2 + pointermin)
+            pointermid = int((pointermax - pointermin) // 2 + pointermin)
         return pointermid
     return 0
 
@@ -48,7 +48,7 @@ def find_common_suffix(a, b):
                 pointermin = pointermid
             else:
                 pointermax = pointermid
-            pointermid = int((pointermax - pointermin) / 2 + pointermin)
+            pointermid = int((pointermax - pointermin) // 2 + pointermin)
         return pointermid
     return 0
 

@@ -173,7 +173,7 @@ class LinkMap(gtk.DrawingArea):
         # For bezier control points
         x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
         # Rounded rectangle corner radius for culled changes display
-        radius = self.line_height / 2
+        radius = self.line_height // 2
         q_rad = math.pi / 2
 
         left, right = self.view_indices

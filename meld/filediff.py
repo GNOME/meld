@@ -703,7 +703,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         fontdesc = pango.FontDescription(self.prefs.get_current_font())
         context = self.textview0.get_pango_context()
         metrics = context.get_metrics( fontdesc, context.get_language() )
-        self.pixels_per_line = (metrics.get_ascent() + metrics.get_descent()) / 1024
+        line_height_points = metrics.get_ascent() + metrics.get_descent()
+        self.pixels_per_line = line_height_points // 1024
         self.pango_char_width = metrics.get_approximate_char_width()
         tabs = pango.TabArray(10, 0)
         tab_size = self.prefs.tab_size

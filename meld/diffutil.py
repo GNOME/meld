@@ -337,12 +337,12 @@ class Differ(gobject.GObject):
             merge_cache = self._merge_cache
 
         if fromindex == 1:
-            seq = toindex/2
+            seq = toindex // 2
             for c in merge_cache:
                 if c[seq]:
                     yield c[seq]
         else:
-            seq = fromindex/2
+            seq = fromindex // 2
             for c in merge_cache:
                 if c[seq]:
                     yield reverse_chunk(c[seq])
@@ -358,7 +358,7 @@ class Differ(gobject.GObject):
         else:
             merge_cache = self._merge_cache
         if textindex in (0,2):
-            seq = textindex/2
+            seq = textindex // 2
             for cs in merge_cache:
                 if cs[seq]:
                     yield reverse_chunk(cs[seq])
