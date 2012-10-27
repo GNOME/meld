@@ -714,6 +714,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         cursor_path, cursor_col = self.treeview.get_cursor()
         if not cursor_path:
             self.emit("next-diff-changed", False, False)
+            self.current_path = cursor_path
+            return
+
+        # If invoked directly rather than through a callback, we always check
+        if not args:
+            skip = False
         else:
             try:
                 old_cursor = self.model.get_iter(self.current_path)
@@ -721,17 +727,26 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 # An invalid path gives ValueError; None gives a TypeError
                 skip = False
             else:
+                # We can skip recalculation if the new cursor is between
+                # the previous/next bounds, and we weren't on a changed row
                 state = self.model.get_state(old_cursor, 0)
-                # We can skip recalculation if the new cursor is between the
-                # previous/next bounds, and we weren't on a changed row
-                skip = state in (tree.STATE_NORMAL, tree.STATE_EMPTY) and \
-                       self.prev_path < cursor_path < self.next_path
+                if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
+                    skip = False
+                else:
+                    if self.prev_path is None and self.next_path is None:
+                        skip = True
+                    elif self.prev_path is None:
+                        skip = cursor_path < self.next_path
+                    elif self.next_path is None:
+                        skip = self.prev_path < cursor_path
+                    else:
+                        skip = self.prev_path < cursor_path < self.next_path
 
-            if not skip:
-                prev, next = self.model._find_next_prev_diff(cursor_path)
-                self.prev_path, self.next_path = prev, next
-                have_next_diffs = (prev is not None, next is not None)
-                self.emit("next-diff-changed", *have_next_diffs)
+        if not skip:
+            prev, next = self.model._find_next_prev_diff(cursor_path)
+            self.prev_path, self.next_path = prev, next
+            have_next_diffs = (prev is not None, next is not None)
+            self.emit("next-diff-changed", *have_next_diffs)
         self.current_path = cursor_path
 
     def next_diff(self, direction):
