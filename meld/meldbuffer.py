@@ -112,55 +112,58 @@ class BufferLines(object):
         else:
             self.textfilter = lambda x: x
 
-    def __getslice__(self, lo, hi):
-        # FIXME: If we ask for arbitrary slices past the end of the buffer,
-        # this will return the last line.
-        start = self.buf.get_iter_at_line_or_eof(lo)
-        end = self.buf.get_iter_at_line_or_eof(hi)
-        txt = text_type(self.buf.get_text(start, end, False), 'utf8')
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            lo, hi, _ = key.indices(self.buf.get_line_count())
 
-        filter_txt = self.textfilter(txt)
-        lines = filter_txt.splitlines()
-        ends = filter_txt.splitlines(True)
+            # FIXME: If we ask for arbitrary slices past the end of the buffer,
+            # this will return the last line.
+            start = self.buf.get_iter_at_line_or_eof(lo)
+            end = self.buf.get_iter_at_line_or_eof(hi)
+            txt = text_type(self.buf.get_text(start, end, False), 'utf8')
 
-        # The last line in a gtk.TextBuffer is guaranteed never to end in a
-        # newline. As splitlines() discards an empty line at the end, we need
-        # to artificially add a line if the requested slice is past the end of
-        # the buffer, and the last line in the slice ended in a newline.
-        if hi >= self.buf.get_line_count() and \
-           lo < self.buf.get_line_count() and \
-           (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
-            lines.append("")
-            ends.append("")
+            filter_txt = self.textfilter(txt)
+            lines = filter_txt.splitlines()
+            ends = filter_txt.splitlines(True)
 
-        hi = self.buf.get_line_count() if hi == sys.maxsize else hi
-        if hi - lo != len(lines):
-            # These codepoints are considered line breaks by Python, but not
-            # by GtkTextStore.
-            additional_breaks = set(('\x0c', '\x85'))
-            i = 0
-            while i < len(ends):
-                line, end = lines[i], ends[i]
-                # It's possible that the last line in a file would end in a
-                # line break character, which requires no joining.
-                if end and end[-1] in additional_breaks and \
-                   (not line or line[-1] not in additional_breaks):
-                    assert len(ends) >= i + 1
-                    lines[i:i + 2] = [line + end[-1] + lines[i + 1]]
-                    ends[i:i + 2] = [end + ends[i + 1]]
-                i += 1
+            # The last line in a gtk.TextBuffer is guaranteed never to end in a
+            # newline. As splitlines() discards an empty line at the end, we need
+            # to artificially add a line if the requested slice is past the end of
+            # the buffer, and the last line in the slice ended in a newline.
+            if hi >= self.buf.get_line_count() and \
+               lo < self.buf.get_line_count() and \
+               (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
+                lines.append("")
+                ends.append("")
 
-        return lines
+            hi = self.buf.get_line_count() if hi == sys.maxsize else hi
+            if hi - lo != len(lines):
+                # These codepoints are considered line breaks by Python, but not
+                # by GtkTextStore.
+                additional_breaks = set(('\x0c', '\x85'))
+                i = 0
+                while i < len(ends):
+                    line, end = lines[i], ends[i]
+                    # It's possible that the last line in a file would end in a
+                    # line break character, which requires no joining.
+                    if end and end[-1] in additional_breaks and \
+                       (not line or line[-1] not in additional_breaks):
+                        assert len(ends) >= i + 1
+                        lines[i:i + 2] = [line + end[-1] + lines[i + 1]]
+                        ends[i:i + 2] = [end + ends[i + 1]]
+                    i += 1
 
-    def __getitem__(self, i):
-        if i >= len(self):
-            raise IndexError
-        line_start = self.buf.get_iter_at_line_or_eof(i)
-        line_end = line_start.copy()
-        if not line_end.ends_line():
-            line_end.forward_to_line_end()
-        txt = self.buf.get_text(line_start, line_end, False)
-        return text_type(self.textfilter(txt), 'utf8')
+            return lines
+
+        elif isinstance(key, int) :
+            if key >= len(self):
+                raise IndexError
+            line_start = self.buf.get_iter_at_line_or_eof(key)
+            line_end = line_start.copy()
+            if not line_end.ends_line():
+                line_end.forward_to_line_end()
+            txt = self.buf.get_text(line_start, line_end, False)
+            return text_type(self.textfilter(txt), 'utf8')
 
     def __len__(self):
         return self.buf.get_line_count()
