@@ -16,8 +16,10 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import gtk
+import logging
 import re
+
+import gtk
 
 
 # FIXME: duplicate defn in bin/meld
@@ -85,6 +87,7 @@ class Component(object):
 handler_re = re.compile(r'^(on|after)_(.*)__(.*)$')
 
 def connect_signal_handlers(obj):
+    log = logging.getLogger(__name__)
     for attr in dir(obj):
         match = handler_re.match(attr)
         if match:
@@ -94,7 +97,7 @@ def connect_signal_handlers(obj):
             try:
                 widget = getattr(obj, widgetname)
             except AttributeError:
-                print "Widget '%s' not found in %s" % (widgetname, obj)
+                log.warning("Widget '%s' not found in %s", widgetname, obj)
                 continue
             if not isinstance(widget,list):
                 widget = [widget]
@@ -105,13 +108,13 @@ def connect_signal_handlers(obj):
                     elif when == 'after':
                         w.connect_after(signal, method)
                 except TypeError as e:
-                    print e, "in", obj, attr
+                    log.warning("%s in %s %s", e, obj, attr)
         elif attr.startswith('on_') or attr.startswith('after_'):
             continue # don't warn until all old code updated
             # Warn about some possible typos like separating
             # widget and signal name with _ instead of __.
-            print ('Warning: attribute %r not connected'
-                   ' as a signal handler' % (attr,))
+            log.warning("Warning: attribute %r not connected as a signal "
+                        "handler", attr)
 
 
 from . import gladesupport
