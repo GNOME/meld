@@ -23,6 +23,7 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import errno
+import logging
 import os
 
 from . import _vc
@@ -117,13 +118,16 @@ class Vc(_vc.CachedVc):
         super(Vc, self).__init__(os.path.normpath(location))
 
     def choose_monotone_version(self):
+        log = logging.getLogger(__name__)
+
         try:
             # for monotone >= 0.26
             self.VC_DIR = "_MTN"
             self.CMD = "mtn"
             self.interface_version = float(_vc.popen([self.CMD, "automate", "interface_version"]).read())
             if self.interface_version > 9.0:
-                print "WARNING: Unsupported interface version (please report any problems to the meld mailing list)"
+                log.error("Unsupported monotone interface version; please "
+                          "report any problems to the Meld mailing list.")
         except (ValueError, OSError):
             # for monotone <= 0.25
             self.VC_DIR = "MT"
@@ -152,6 +156,8 @@ class Vc(_vc.CachedVc):
         return self.root
 
     def _lookup_tree_cache(self, rootdir):
+        log = logging.getLogger(__name__)
+
         while 1:
             try:
                 entries = _vc.popen([self.CMD, "automate", "inventory"],
@@ -196,10 +202,12 @@ class Vc(_vc.CachedVc):
                         else:
                             state = self.state_map_6[mstate]
                             if state == _vc.STATE_ERROR:
-                                print "WARNING: invalid state ('%s') reported by 'automate inventory' for %s" % (mstate, fname)
+                                log.warning("Invalid state '%s' reported for "
+                                            "%s", mstate, fname)
                     else:
                         state = _vc.STATE_ERROR
-                        print "WARNING: impossible state ('%s') reported by 'automate inventory' for %s (version skew?)" % (mstate, fname)
+                        log.warning("Invalid state '%s' reported for %s "
+                                    "(version skew?)", mstate, fname)
 
                     # insert the file into the summarized inventory
                     tree_state[os.path.join(self.root, fname)] = state
@@ -217,16 +225,18 @@ class Vc(_vc.CachedVc):
             if mstate in self.state_map_old:
                 state = self.state_map_old[mstate]
                 if state == _vc.STATE_ERROR:
-                    print "WARNING: invalid state ('%s') reported by 'automate inventory'" % mstate
+                    log.warning("Invalid state '%s' reported", mstate)
             else:
                 state = _vc.STATE_ERROR
-                print "WARNING: impossible state ('%s') reported by 'automate inventory' (version skew?)" % mstate
+                log.warning("Invalid state '%s' reported (version skew?)",
+                            mstate)
 
             tree_state[os.path.join(self.root, fname)] = state
 
         return tree_state
 
     def _get_dirsandfiles(self, directory, dirs, files):
+        log = logging.getLogger(__name__)
 
         tree = self._get_tree_cache(directory)
 
@@ -251,7 +261,7 @@ class Vc(_vc.CachedVc):
                 ignorelist = [ 'format', 'log', 'options', 'revision', 'work', 'debug', 'inodeprints' ]
 
                 if f not in ignorelist:
-                    print "WARNING: '%s' was not listed by 'automate inventory'" % f
+                    log.warning("'%s' was not listed", f)
 
                 # if it ain't listed by the inventory it's not under version
                 # control

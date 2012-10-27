@@ -24,6 +24,7 @@
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import errno
+import logging
 import os
 
 from . import _vc
@@ -80,6 +81,8 @@ class Vc(_vc.CachedVc):
         return self.root
 
     def _lookup_tree_cache(self, rootdir):
+        log = logging.getLogger(__name__)
+
         while 1:
             try:
                 entries = _vc.popen([self.CMD, "ls", "-l"],
@@ -103,19 +106,16 @@ class Vc(_vc.CachedVc):
                       os.sep + fname):
                     state = _vc.STATE_MISSING
 
-                if state == _vc.STATE_ERROR:
-                    print "WARNING: unknown state ('%s') reported by " \
-                            "'ls -l'" % mstate
             else:
                 state = _vc.STATE_ERROR
-                print "WARNING: unknown state ('%s') reported by 'ls -l' " \
-                        "(version skew?)" % mstate
+                log.warning("Unknown state '%s'", mstate)
 
             tree_state[os.path.join(self.root, fname)] = state
 
         return tree_state
 
     def _get_dirsandfiles(self, directory, dirs, files):
+        log = logging.getLogger(__name__)
 
         tree = self._get_tree_cache(directory)
 
@@ -162,7 +162,7 @@ class Vc(_vc.CachedVc):
                                   'manifest.uuid']
 
                     if f not in ignorelist:
-                        print("WARNING: '%s' was not listed by 'ls -l'" % f)
+                        log.warning("'%s' was not listed", f)
 
                 # If it ain't listed by the inventory it's not under version
                 # control

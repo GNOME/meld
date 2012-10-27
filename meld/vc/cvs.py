@@ -21,6 +21,7 @@
 ### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import logging
 import os
 from gettext import gettext as _
 import re
@@ -63,6 +64,7 @@ class Vc(_vc.Vc):
             return True
 
     def _get_dirsandfiles(self, directory, dirs, files):
+        log = logging.getLogger(__name__)
 
         try:
             entries = open(os.path.join(directory, self.VC_DIR, "Entries")).read()
@@ -89,7 +91,7 @@ class Vc(_vc.Vc):
                     except ValueError:
                         pass
                 else:
-                    print "Unknown Entries.Log line '%s'" % match[0]
+                    log.warning("Unknown Entries.Log line '%s'", match[0])
             entries += "\n".join(toadd)
 
         retfiles = []
@@ -117,7 +119,7 @@ class Vc(_vc.Vc):
                     if rev[0] == "0":
                         state = _vc.STATE_NEW
                     else:
-                        print "Revision '%s' not understood" % rev
+                        state = _vc.STATE_ERROR
                 elif date=="dummy timestamp from new-entry":
                     state = _vc.STATE_MODIFIED
                 else:

@@ -62,14 +62,12 @@ class Vc(_vc.Vc):
                 sysresult = (result & 0x00FF)
                 cmdresult = (result & 0xFF00) >> 8
                 if sysresult != 0:
-                    print "Error getting state of file %s (exec error %d)" % (path, sysresult)
                     state = _vc.STATE_ERROR
                 elif cmdresult == 0:
                     state = _vc.STATE_NORMAL
                 elif cmdresult == 1:
                     state = _vc.STATE_MODIFIED
                 else:
-                    print "Error getting state of file %s: %d" % (path, result)
                     state = _vc.STATE_ERROR
 
             retfiles.append(_vc.File(path, name, state))
