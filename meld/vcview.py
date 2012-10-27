@@ -484,7 +484,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
            command was executed in and the output of the command.
         """
         msg = misc.shelljoin(command)
-        yield "[%s] %s" % (self.label_text, msg.replace("\n", u"\u21b2") )
+        yield "[%s] %s" % (self.label_text, msg.replace("\n", "\t"))
         def relpath(pbase, p):
             kill = 0
             if len(pbase) and p.startswith(pbase):

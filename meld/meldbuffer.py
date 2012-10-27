@@ -16,6 +16,8 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
+from __future__ import unicode_literals
+
 import sys
 from gettext import gettext as _
 
@@ -126,14 +128,14 @@ class BufferLines(object):
         if hi >= self.buf.get_line_count() and \
            lo < self.buf.get_line_count() and \
            (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
-            lines.append(u"")
-            ends.append(u"")
+            lines.append("")
+            ends.append("")
 
         hi = self.buf.get_line_count() if hi == sys.maxint else hi
         if hi - lo != len(lines):
             # These codepoints are considered line breaks by Python, but not
             # by GtkTextStore.
-            additional_breaks = set((u'\x0c', u'\x85'))
+            additional_breaks = set(('\x0c', '\x85'))
             i = 0
             while i < len(ends):
                 line, end = lines[i], ends[i]
