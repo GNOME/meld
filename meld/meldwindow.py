@@ -181,6 +181,10 @@ class MeldWindow(gnomeglade.Component):
         (keyval, mask) = gtk.accelerator_parse("<Ctrl>E")
         accels.connect_group(keyval, mask, 0, self.on_menu_edit_up_activate)
 
+        # Initialise sensitivity for important actions
+        self.actiongroup.get_action("Stop").set_sensitive(False)
+        self._update_page_action_sensitivity()
+
         self.appvbox.pack_start(self.menubar, expand=False)
         self.appvbox.pack_start(self.toolbar, expand=False)
         self._menu_context = self.statusbar.get_context_id("Tooltips")
@@ -290,6 +294,14 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("NextTab").set_sensitive(have_next_tab)
         self.actiongroup.get_action("MoveTabPrev").set_sensitive(have_prev_tab)
         self.actiongroup.get_action("MoveTabNext").set_sensitive(have_next_tab)
+
+        have_focus = current_page != -1
+        self.actiongroup.get_action("Close").set_sensitive(have_focus)
+        self.actiongroup.get_action("Refresh").set_sensitive(have_focus)
+        self.actiongroup.get_action("Reload").set_sensitive(have_focus)
+        if not have_focus:
+            self.actiongroup.get_action("PrevChange").set_sensitive(False)
+            self.actiongroup.get_action("NextChange").set_sensitive(False)
 
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
@@ -570,6 +582,7 @@ class MeldWindow(gnomeglade.Component):
             self.notebook.remove_page(page_num)
             if self.notebook.get_n_pages() == 0:
                 self.widget.set_title("Meld")
+                self._update_page_action_sensitivity()
         return response
 
     def on_file_changed(self, srcpage, filename):
