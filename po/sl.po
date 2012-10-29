@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-20 17:05+0000\n"
-"PO-Revision-Date: 2012-10-21 19:47+0100\n"
+"POT-Creation-Date: 2012-10-29 12:08+0000\n"
+"PO-Revision-Date: 2012-10-29 22:24+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -56,7 +56,7 @@ msgid "Active"
 msgstr "Dejavno"
 
 #: ../data/ui/EditableList.ui.h:3
-#: ../meld/vcview.py:166
+#: ../meld/vcview.py:164
 msgid "Name"
 msgstr "Ime"
 
@@ -69,7 +69,7 @@ msgid "Add new filter"
 msgstr "Dodaj nov filter"
 
 #: ../data/ui/EditableList.ui.h:6
-#: ../meld/vcview.py:129
+#: ../meld/vcview.py:128
 msgid "_Add"
 msgstr "_Dodaj"
 
@@ -78,7 +78,7 @@ msgid "Remove selected filter"
 msgstr "Odstrani izbrani filter"
 
 #: ../data/ui/EditableList.ui.h:8
-#: ../meld/vcview.py:131
+#: ../meld/vcview.py:129
 msgid "_Remove"
 msgstr "_Odstrani"
 
@@ -369,12 +369,12 @@ msgid "Log Message"
 msgstr "Sporočilo beleženja"
 
 #: ../meld/dirdiff.py:229
-#: ../meld/vcview.py:126
+#: ../meld/vcview.py:125
 msgid "_Compare"
 msgstr "_Primerjava"
 
 #: ../meld/dirdiff.py:229
-#: ../meld/vcview.py:126
+#: ../meld/vcview.py:125
 msgid "Compare selected"
 msgstr "Primerjaj izbrano"
 
@@ -436,7 +436,7 @@ msgid "Modified"
 msgstr "Spremenjeno"
 
 #: ../meld/dirdiff.py:240
-#: ../meld/vcview.py:139
+#: ../meld/vcview.py:137
 msgid "Show modified"
 msgstr "Pokaži spremenjeno"
 
@@ -455,8 +455,8 @@ msgstr "Skrij %s"
 
 #: ../meld/dirdiff.py:510
 #: ../meld/dirdiff.py:529
-#: ../meld/vcview.py:329
-#: ../meld/vcview.py:353
+#: ../meld/vcview.py:326
+#: ../meld/vcview.py:350
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Preiskovanje %s"
@@ -498,6 +498,8 @@ msgstr "'%s' je skrit; '%s'"
 #: ../meld/dirdiff.py:675
 #: ../meld/filediff.py:979
 #: ../meld/filediff.py:1220
+#: ../meld/vcview.py:572
+#: ../meld/vcview.py:614
 msgid "Hi_de"
 msgstr "S_krij"
 
@@ -522,7 +524,7 @@ msgstr ""
 "%s."
 
 #: ../meld/dirdiff.py:750
-#: ../meld/vcview.py:550
+#: ../meld/vcview.py:546
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -532,7 +534,7 @@ msgstr ""
 "Ali naj bo odstranjena vsa vsebina?"
 
 #: ../meld/dirdiff.py:757
-#: ../meld/vcview.py:555
+#: ../meld/vcview.py:551
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -1284,209 +1286,173 @@ msgstr "Začetni presledni znaki\t0\t^[ \\t\\r\\f\\v]*\n"
 msgid "Script comment\t0\t#.*"
 msgstr "Opomba skripta\t0\t#.*"
 
-#: ../meld/vcview.py:127
+#: ../meld/vcview.py:126
 msgid "Co_mmit"
 msgstr "_Uveljavi"
 
-#: ../meld/vcview.py:127
+#: ../meld/vcview.py:126
 msgid "Commit"
 msgstr "Uveljavi"
 
-#: ../meld/vcview.py:128
+#: ../meld/vcview.py:127
 msgid "_Update"
 msgstr "_Posodobi"
 
-#: ../meld/vcview.py:128
+#: ../meld/vcview.py:127
 msgid "Update"
 msgstr "Posodobi"
 
-#: ../meld/vcview.py:129
+#: ../meld/vcview.py:128
 msgid "Add to VC"
 msgstr "Dodaj v VC"
 
-#: ../meld/vcview.py:130
-msgid "Add _Binary"
-msgstr "Dodaj _dvojiško"
-
-#: ../meld/vcview.py:130
-msgid "Add binary to VC"
-msgstr "Dodaj dvojiško datoteko v VC"
-
-#: ../meld/vcview.py:131
+#: ../meld/vcview.py:129
 msgid "Remove from VC"
 msgstr "Odstrani iz VC"
 
-#: ../meld/vcview.py:132
+#: ../meld/vcview.py:130
 msgid "_Resolved"
 msgstr "_Razrešeno"
 
-#: ../meld/vcview.py:132
+#: ../meld/vcview.py:130
 msgid "Mark as resolved for VC"
 msgstr "Označi kot razrešeno v VC"
 
-#: ../meld/vcview.py:133
+#: ../meld/vcview.py:131
 msgid "Revert to original"
 msgstr "_Povrni na izvirne vrednosti"
 
-#: ../meld/vcview.py:134
+#: ../meld/vcview.py:132
 msgid "Delete locally"
 msgstr "Izbriši krajevno"
 
-#: ../meld/vcview.py:138
+#: ../meld/vcview.py:136
 msgid "_Flatten"
 msgstr "_Razpni"
 
-#: ../meld/vcview.py:138
+#: ../meld/vcview.py:136
 msgid "Flatten directories"
 msgstr "_Razpni mape"
 
-#: ../meld/vcview.py:139
+#: ../meld/vcview.py:137
 msgid "_Modified"
 msgstr "_Spremenjeno"
 
-#: ../meld/vcview.py:140
+#: ../meld/vcview.py:138
 msgid "_Normal"
 msgstr "_Običajno"
 
-#: ../meld/vcview.py:140
+#: ../meld/vcview.py:138
 msgid "Show normal"
 msgstr "Pokaži običajno"
 
-#: ../meld/vcview.py:141
+#: ../meld/vcview.py:139
 msgid "Non _VC"
 msgstr "Ni _VC"
 
-#: ../meld/vcview.py:141
+#: ../meld/vcview.py:139
 msgid "Show unversioned files"
 msgstr "Pokaži datoteke z nedoločenimi različicami"
 
-#: ../meld/vcview.py:142
+#: ../meld/vcview.py:140
 msgid "Ignored"
 msgstr "Prezrto"
 
-#: ../meld/vcview.py:142
+#: ../meld/vcview.py:140
 msgid "Show ignored files"
 msgstr "Pokaži prezrte datoteke"
 
-#: ../meld/vcview.py:192
-#: ../meld/vcview.py:325
+#: ../meld/vcview.py:190
+#: ../meld/vcview.py:322
 msgid "Location"
 msgstr "Mesto"
 
-#: ../meld/vcview.py:193
+#: ../meld/vcview.py:191
 msgid "Status"
 msgstr "Stanje"
 
-#: ../meld/vcview.py:194
+#: ../meld/vcview.py:192
 msgid "Rev"
 msgstr "Rev"
 
-#: ../meld/vcview.py:195
+#: ../meld/vcview.py:193
 msgid "Tag"
 msgstr "Oznaka"
 
-#: ../meld/vcview.py:196
+#: ../meld/vcview.py:194
 msgid "Options"
 msgstr "Možnosti"
 
-#: ../meld/vcview.py:255
+#: ../meld/vcview.py:252
 msgid "Choose one Version Control"
 msgstr "Izbor nadzora različic"
 
-#: ../meld/vcview.py:256
+#: ../meld/vcview.py:253
 msgid "Only one Version Control in this directory"
 msgstr "V tej mapi je le en nadzornik različic"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:269
+#: ../meld/vcview.py:266
 #, python-format
 msgid "%s Not Installed"
 msgstr "%s paket ni nameščen"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:273
+#: ../meld/vcview.py:270
 msgid "Invalid Repository"
 msgstr "Neveljavno skladišče"
 
-#: ../meld/vcview.py:282
+#: ../meld/vcview.py:279
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:325
+#: ../meld/vcview.py:322
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:369
+#: ../meld/vcview.py:366
 msgid "(Empty)"
 msgstr "(Prazno)"
 
-#: ../meld/vcview.py:407
+#: ../meld/vcview.py:404
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Iskanje razlik"
 
-#: ../meld/vcview.py:421
+#: ../meld/vcview.py:418
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Pripenjanje popravka"
 
-#: ../meld/vcview.py:525
+#: ../meld/vcview.py:522
 msgid "Select some files first."
 msgstr "Najprej je treba izbrati datoteke."
 
-#: ../meld/vcview.py:598
+#: ../meld/vcview.py:565
+msgid "Patch tool not found"
+msgstr "Orodja za uveljavljanje popravkov ni mogoče najti"
+
+#: ../meld/vcview.py:566
 #, python-format
-msgid ""
-"\n"
-"                    Invoking 'patch' failed.\n"
-"                    \n"
-"                    Maybe you don't have 'GNU patch' installed,\n"
-"                    or you use an untested version of %s.\n"
-"                    \n"
-"                    Please send email bug report to:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Containing the following information:\n"
-"                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
-"                    (no need to actually run it, just provide\n"
-"                    the command line) \n"
-"                    \n"
-"                    Replace 'X.Y.Z' by the actual version for the\n"
-"                    source control software you use.\n"
-"                    "
-msgstr ""
-"\n"
-"                    Priklic popravka ni uspel.\n"
-"                    \n"
-"                    Najverjetneje ni nameščenega paketa 'GNU patch' ,\n"
-"                    ali pa je nameščena nepreverjena različica %s.\n"
-"                    \n"
-"                    Pošljite poročilo o hrošču na:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Podani bodo podatki:\n"
-"                    \n"
-"                    - različica meld: '%s'\n"
-"                    - vrsta programskega nadzora: '%s'\n"
-"                    - različica programa nadzora: 'X.Y.Z'\n"
-"                    - izpis '%s datoteka.txt'\n"
-"                    - ukaz patch : '%s'\n"
-"                    (ukaza ni treba zagnati; zahtevan podatek je\n"
-"                    ukazna vrstica) \n"
-"                    \n"
-"                    Zamenjajte 'X.Y.Z' s pravo različico\n"
-"                    programske opreme za nadzor izvorne kode.\n"
-"                    "
+msgid "Meld needs the <i>patch</i> tool to be installed to perform comparisons in %s repositories. Please install <i>patch</i> and try again."
+msgstr "Program Meld zahteva namestitev orodja <i>patch</i> za uveljavljanje popravkov pri izvajanju primerjav v skladiščih %s. Namestite orodje <i>patch</i> in poskusite znova."
+
+#: ../meld/vcview.py:606
+msgid "Error fetching original comparison file"
+msgstr "Napaka pridobivanja izvorne datoteke za primerjavo"
+
+#: ../meld/vcview.py:607
+msgid "Meld couldn't obtain the original version of your comparison file. If you are using the most recent version of Meld, please report a bug, including as many details as possible."
+msgstr "Ni mogoče pridobiti izvorne različice datoteke za primerjavo. V primeru, da uporabljate najnovejšo različico programa, pošljite poročilo o hrošču s čim več podrobnostmi."
+
+#: ../meld/vcview.py:615
+msgid "Report a bug"
+msgstr "Pošlji poročilo o hrošču"
 
 #: ../meld/ui/findbar.py:140
 #, python-format
@@ -1530,7 +1496,7 @@ msgstr "Zapri zavihek"
 msgid "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:Not present"
 msgstr "Prezrto:Nedoločeno:::Napaka::Novo dodano:Spremenjeno:V sporu:Odstranjeno:Manjkajoče:Nedostopno"
 
-#: ../meld/vc/cvs.py:163
+#: ../meld/vc/cvs.py:161
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1545,6 +1511,59 @@ msgstr ""
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Način je spremenjen iz %s v %s"
+
+#~ msgid "Add _Binary"
+#~ msgstr "Dodaj _dvojiško"
+
+#~ msgid "Add binary to VC"
+#~ msgstr "Dodaj dvojiško datoteko v VC"
+
+#~ msgid ""
+#~ "\n"
+#~ "                    Invoking 'patch' failed.\n"
+#~ "                    \n"
+#~ "                    Maybe you don't have 'GNU patch' installed,\n"
+#~ "                    or you use an untested version of %s.\n"
+#~ "                    \n"
+#~ "                    Please send email bug report to:\n"
+#~ "                    meld-list@gnome.org\n"
+#~ "                    \n"
+#~ "                    Containing the following information:\n"
+#~ "                    \n"
+#~ "                    - meld version: '%s'\n"
+#~ "                    - source control software type: '%s'\n"
+#~ "                    - source control software version: 'X.Y.Z'\n"
+#~ "                    - the output of '%s somefile.txt'\n"
+#~ "                    - patch command: '%s'\n"
+#~ "                    (no need to actually run it, just provide\n"
+#~ "                    the command line) \n"
+#~ "                    \n"
+#~ "                    Replace 'X.Y.Z' by the actual version for the\n"
+#~ "                    source control software you use.\n"
+#~ "                    "
+#~ msgstr ""
+#~ "\n"
+#~ "                    Priklic popravka ni uspel.\n"
+#~ "                    \n"
+#~ "                    Najverjetneje ni nameščenega paketa 'GNU patch' ,\n"
+#~ "                    ali pa je nameščena nepreverjena različica %s.\n"
+#~ "                    \n"
+#~ "                    Pošljite poročilo o hrošču na:\n"
+#~ "                    meld-list@gnome.org\n"
+#~ "                    \n"
+#~ "                    Podani bodo podatki:\n"
+#~ "                    \n"
+#~ "                    - različica meld: '%s'\n"
+#~ "                    - vrsta programskega nadzora: '%s'\n"
+#~ "                    - različica programa nadzora: 'X.Y.Z'\n"
+#~ "                    - izpis '%s datoteka.txt'\n"
+#~ "                    - ukaz patch : '%s'\n"
+#~ "                    (ukaza ni treba zagnati; zahtevan podatek je\n"
+#~ "                    ukazna vrstica) \n"
+#~ "                    \n"
+#~ "                    Zamenjajte 'X.Y.Z' s pravo različico\n"
+#~ "                    programske opreme za nadzor izvorne kode.\n"
+#~ "                    "
 
 #~ msgid "can't compare more than three directories"
 #~ msgstr "ni mogoče primerjati več kot treh map"
