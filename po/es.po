@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-20 17:03+0000\n"
-"PO-Revision-Date: 2012-10-22 10:26+0200\n"
+"POT-Creation-Date: 2012-10-28 20:54+0000\n"
+"PO-Revision-Date: 2012-10-29 11:57+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -57,7 +57,7 @@ msgstr "Lista editable"
 msgid "Active"
 msgstr "Activar"
 
-#: ../data/ui/EditableList.ui.h:3 ../meld/vcview.py:166
+#: ../data/ui/EditableList.ui.h:3 ../meld/vcview.py:164
 msgid "Name"
 msgstr "Nombre"
 
@@ -69,7 +69,7 @@ msgstr "Patrón"
 msgid "Add new filter"
 msgstr "Añadir filtro nuevo"
 
-#: ../data/ui/EditableList.ui.h:6 ../meld/vcview.py:129
+#: ../data/ui/EditableList.ui.h:6 ../meld/vcview.py:128
 msgid "_Add"
 msgstr "_Añadir"
 
@@ -77,7 +77,7 @@ msgstr "_Añadir"
 msgid "Remove selected filter"
 msgstr "Quitar el filtro seleccionado"
 
-#: ../data/ui/EditableList.ui.h:8 ../meld/vcview.py:131
+#: ../data/ui/EditableList.ui.h:8 ../meld/vcview.py:129
 msgid "_Remove"
 msgstr "_Eliminar"
 
@@ -398,11 +398,11 @@ msgstr "Registros anteriores"
 msgid "Log Message"
 msgstr "Mensaje de registro"
 
-#: ../meld/dirdiff.py:229 ../meld/vcview.py:126
+#: ../meld/dirdiff.py:229 ../meld/vcview.py:125
 msgid "_Compare"
 msgstr "_Comparar"
 
-#: ../meld/dirdiff.py:229 ../meld/vcview.py:126
+#: ../meld/dirdiff.py:229 ../meld/vcview.py:125
 msgid "Compare selected"
 msgstr "Comparar lo seleccionado"
 
@@ -466,7 +466,7 @@ msgstr "Mostrar nuevos"
 msgid "Modified"
 msgstr "Modificado"
 
-#: ../meld/dirdiff.py:240 ../meld/vcview.py:139
+#: ../meld/dirdiff.py:240 ../meld/vcview.py:137
 msgid "Show modified"
 msgstr "Mostrar modificados"
 
@@ -483,8 +483,8 @@ msgstr "Establecer filtros activos"
 msgid "Hide %s"
 msgstr "Ocultar %s"
 
-#: ../meld/dirdiff.py:510 ../meld/dirdiff.py:529 ../meld/vcview.py:329
-#: ../meld/vcview.py:353
+#: ../meld/dirdiff.py:510 ../meld/dirdiff.py:529 ../meld/vcview.py:326
+#: ../meld/vcview.py:350
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Buscando %s"
@@ -529,6 +529,7 @@ msgid "'%s' hidden by '%s'"
 msgstr "«%s» oculto por «%s»"
 
 #: ../meld/dirdiff.py:675 ../meld/filediff.py:979 ../meld/filediff.py:1220
+#: ../meld/vcview.py:572 ../meld/vcview.py:614
 msgid "Hi_de"
 msgstr "_Ocultar"
 
@@ -552,7 +553,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:750 ../meld/vcview.py:550
+#: ../meld/dirdiff.py:750 ../meld/vcview.py:546
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -561,7 +562,7 @@ msgstr ""
 "«%s» es un directorio.\n"
 "¿Eliminarlo recursivamente?"
 
-#: ../meld/dirdiff.py:757 ../meld/vcview.py:555
+#: ../meld/dirdiff.py:757 ../meld/vcview.py:551
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -1305,209 +1306,183 @@ msgstr "Espacio en blanco al inicio\t0\t^[ \\t\\r\\f\\v]*\n"
 msgid "Script comment\t0\t#.*"
 msgstr "Comentario de script\t0\t#.*"
 
-#: ../meld/vcview.py:127
+#: ../meld/vcview.py:126
 msgid "Co_mmit"
 msgstr "E_fectuar"
 
-#: ../meld/vcview.py:127
+#: ../meld/vcview.py:126
 msgid "Commit"
 msgstr "Efectuar"
 
-#: ../meld/vcview.py:128
+#: ../meld/vcview.py:127
 msgid "_Update"
 msgstr "_Actualizar"
 
-#: ../meld/vcview.py:128
+#: ../meld/vcview.py:127
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../meld/vcview.py:129
+#: ../meld/vcview.py:128
 msgid "Add to VC"
 msgstr "Añadir a CV"
 
-#: ../meld/vcview.py:130
-msgid "Add _Binary"
-msgstr "Añadir _binario"
-
-#: ../meld/vcview.py:130
-msgid "Add binary to VC"
-msgstr "Añadir binario a CV"
-
-#: ../meld/vcview.py:131
+#: ../meld/vcview.py:129
 msgid "Remove from VC"
 msgstr "Quitar de CV"
 
-#: ../meld/vcview.py:132
+#: ../meld/vcview.py:130
 msgid "_Resolved"
 msgstr "_Resuelto"
 
-#: ../meld/vcview.py:132
+#: ../meld/vcview.py:130
 msgid "Mark as resolved for VC"
 msgstr "Marcar como resuelto para el CV"
 
-#: ../meld/vcview.py:133
+#: ../meld/vcview.py:131
 msgid "Revert to original"
 msgstr "Revertir al original"
 
-#: ../meld/vcview.py:134
+#: ../meld/vcview.py:132
 msgid "Delete locally"
 msgstr "Borrar localmente"
 
-#: ../meld/vcview.py:138
+#: ../meld/vcview.py:136
 msgid "_Flatten"
 msgstr "_Aplanar"
 
-#: ../meld/vcview.py:138
+#: ../meld/vcview.py:136
 msgid "Flatten directories"
 msgstr "Aplanar directorios"
 
-#: ../meld/vcview.py:139
+#: ../meld/vcview.py:137
 msgid "_Modified"
 msgstr "_Modificados"
 
-#: ../meld/vcview.py:140
+#: ../meld/vcview.py:138
 msgid "_Normal"
 msgstr "_Normal"
 
-#: ../meld/vcview.py:140
+#: ../meld/vcview.py:138
 msgid "Show normal"
 msgstr "Mostrar normales"
 
-#: ../meld/vcview.py:141
+#: ../meld/vcview.py:139
 msgid "Non _VC"
 msgstr "Sin _CV"
 
-#: ../meld/vcview.py:141
+#: ../meld/vcview.py:139
 msgid "Show unversioned files"
 msgstr "Mostrar archivos sin versión"
 
-#: ../meld/vcview.py:142
+#: ../meld/vcview.py:140
 msgid "Ignored"
 msgstr "Ignorado"
 
-#: ../meld/vcview.py:142
+#: ../meld/vcview.py:140
 msgid "Show ignored files"
 msgstr "Mostrar archivos ignorados"
 
-#: ../meld/vcview.py:192 ../meld/vcview.py:325
+#: ../meld/vcview.py:190 ../meld/vcview.py:322
 msgid "Location"
 msgstr "Lugar"
 
-#: ../meld/vcview.py:193
+#: ../meld/vcview.py:191
 msgid "Status"
 msgstr "Estado"
 
-#: ../meld/vcview.py:194
+#: ../meld/vcview.py:192
 msgid "Rev"
 msgstr "Rev"
 
-#: ../meld/vcview.py:195
+#: ../meld/vcview.py:193
 msgid "Tag"
 msgstr "Etiqueta"
 
-#: ../meld/vcview.py:196
+#: ../meld/vcview.py:194
 msgid "Options"
 msgstr "Opciones"
 
-#: ../meld/vcview.py:255
+#: ../meld/vcview.py:252
 msgid "Choose one Version Control"
 msgstr "Elegir un control de versiones"
 
-#: ../meld/vcview.py:256
+#: ../meld/vcview.py:253
 msgid "Only one Version Control in this directory"
 msgstr "Sólo el control de versiones en este directorio"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:269
+#: ../meld/vcview.py:266
 #, python-format
 msgid "%s Not Installed"
 msgstr "%s no está instalado"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:273
+#: ../meld/vcview.py:270
 msgid "Invalid Repository"
 msgstr "El repositorio no es válido"
 
-#: ../meld/vcview.py:282
+#: ../meld/vcview.py:279
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:325
+#: ../meld/vcview.py:322
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:369
+#: ../meld/vcview.py:366
 msgid "(Empty)"
 msgstr "(Vacío)"
 
-#: ../meld/vcview.py:407
+#: ../meld/vcview.py:404
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Calculando diferencias"
 
-#: ../meld/vcview.py:421
+#: ../meld/vcview.py:418
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Aplicando parche"
 
-#: ../meld/vcview.py:525
+#: ../meld/vcview.py:522
 msgid "Select some files first."
 msgstr "Seleccione algunos archivos primero."
 
-#: ../meld/vcview.py:598
+#: ../meld/vcview.py:565
+msgid "Patch tool not found"
+msgstr "Herramienta «patch» no encontrada"
+
+#: ../meld/vcview.py:566
 #, python-format
 msgid ""
-"\n"
-"                    Invoking 'patch' failed.\n"
-"                    \n"
-"                    Maybe you don't have 'GNU patch' installed,\n"
-"                    or you use an untested version of %s.\n"
-"                    \n"
-"                    Please send email bug report to:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Containing the following information:\n"
-"                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
-"                    (no need to actually run it, just provide\n"
-"                    the command line) \n"
-"                    \n"
-"                    Replace 'X.Y.Z' by the actual version for the\n"
-"                    source control software you use.\n"
-"                    "
+"Meld needs the <i>patch</i> tool to be installed to perform comparisons in %"
+"s repositories. Please install <i>patch</i> and try again."
 msgstr ""
-"\n"
-"                    Falló al invocar «patch».\n"
-"                    \n"
-"                    Quizá no tiene «GNU patch» instalado,\n"
-"                    o está usando una versión sin probar de %s.\n"
-"                    \n"
-"                    Envíe un informe de error a:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Con la siguiente información:\n"
-"                    \n"
-"                    - versión de meld: «%s»\n"
-"                    - tipo de software de control de fuentes: «%s»\n"
-"                    - versión del tipo de software de control de fuentes: «X."
-"Y.Z»\n"
-"                    - la salida de «%s algún-archivo.txt»\n"
-"                    - comando de patch: «%s»\n"
-"                    (no hay necesidad de ejecutarlo, simplemente\n"
-"                    proporcione la línea del comando) \n"
-"                    \n"
-"                    Reemplace «X.Y.Z» por la versión actual\n"
-"                    del software de control de fuentes que use.\n"
-"                    "
+"Meld necesita que la herramienta <i>patch</i> esté instalada para realizar "
+"comparaciones en repositorios %s. Instale <i>patch</i> e inténtelo de nuevo."
+
+#: ../meld/vcview.py:606
+msgid "Error fetching original comparison file"
+msgstr "Error al obtener el archivo original para comparar"
+
+#: ../meld/vcview.py:607
+msgid ""
+"Meld couldn't obtain the original version of your comparison file. If you "
+"are using the most recent version of Meld, please report a bug, including as "
+"many details as possible."
+msgstr ""
+"Meld no pudo obtener la versión original del archivo que comparar. Si está "
+"usando la versión más reciente de Meld, informe de un error, incluyendo "
+"todos los detalles que pueda."
+
+#: ../meld/vcview.py:615
+#| msgid "Report _Bug"
+msgid "Report a bug"
+msgstr "Informar de un error"
 
 #: ../meld/ui/findbar.py:140
 #, python-format
@@ -1555,7 +1530,7 @@ msgstr ""
 "Ignorado:Sin versión:::Error::Añadidos nuevos:Modificado:Conflicto:Eliminado:"
 "Faltante:No presente"
 
-#: ../meld/vc/cvs.py:163
+#: ../meld/vc/cvs.py:161
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1568,9 +1543,62 @@ msgstr ""
 
 #: ../meld/vc/git.py:152
 #, python-format
-#| msgid "Merge all changes from left"
 msgid "Mode changed from %s to %s"
 msgstr "Modo cambiado de %s a %s"
+
+#~ msgid "Add _Binary"
+#~ msgstr "Añadir _binario"
+
+#~ msgid "Add binary to VC"
+#~ msgstr "Añadir binario a CV"
+
+#~ msgid ""
+#~ "\n"
+#~ "                    Invoking 'patch' failed.\n"
+#~ "                    \n"
+#~ "                    Maybe you don't have 'GNU patch' installed,\n"
+#~ "                    or you use an untested version of %s.\n"
+#~ "                    \n"
+#~ "                    Please send email bug report to:\n"
+#~ "                    meld-list@gnome.org\n"
+#~ "                    \n"
+#~ "                    Containing the following information:\n"
+#~ "                    \n"
+#~ "                    - meld version: '%s'\n"
+#~ "                    - source control software type: '%s'\n"
+#~ "                    - source control software version: 'X.Y.Z'\n"
+#~ "                    - the output of '%s somefile.txt'\n"
+#~ "                    - patch command: '%s'\n"
+#~ "                    (no need to actually run it, just provide\n"
+#~ "                    the command line) \n"
+#~ "                    \n"
+#~ "                    Replace 'X.Y.Z' by the actual version for the\n"
+#~ "                    source control software you use.\n"
+#~ "                    "
+#~ msgstr ""
+#~ "\n"
+#~ "                    Falló al invocar «patch».\n"
+#~ "                    \n"
+#~ "                    Quizá no tiene «GNU patch» instalado,\n"
+#~ "                    o está usando una versión sin probar de %s.\n"
+#~ "                    \n"
+#~ "                    Envíe un informe de error a:\n"
+#~ "                    meld-list@gnome.org\n"
+#~ "                    \n"
+#~ "                    Con la siguiente información:\n"
+#~ "                    \n"
+#~ "                    - versión de meld: «%s»\n"
+#~ "                    - tipo de software de control de fuentes: «%s»\n"
+#~ "                    - versión del tipo de software de control de fuentes: "
+#~ "«X.Y.Z»\n"
+#~ "                    - la salida de «%s algún-archivo.txt»\n"
+#~ "                    - comando de patch: «%s»\n"
+#~ "                    (no hay necesidad de ejecutarlo, simplemente\n"
+#~ "                    proporcione la línea del comando) \n"
+#~ "                    \n"
+#~ "                    Reemplace «X.Y.Z» por la versión actual\n"
+#~ "                    del software de control de fuentes que use.\n"
+#~ "                    "
 
 #~ msgid "can't compare more than three directories"
 #~ msgstr "no se puede comparar una mezcla de archivos y directorios"
