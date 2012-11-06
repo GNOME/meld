@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-20 17:03+0000\n"
-"PO-Revision-Date: 2012-10-27 20:50+0200\n"
+"POT-Creation-Date: 2012-11-05 19:37+0000\n"
+"PO-Revision-Date: 2012-11-06 12:04+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -56,7 +56,7 @@ msgstr "Upravitelný seznam"
 msgid "Active"
 msgstr "Aktivní"
 
-#: ../data/ui/EditableList.ui.h:3 ../meld/vcview.py:166
+#: ../data/ui/EditableList.ui.h:3 ../meld/vcview.py:164
 msgid "Name"
 msgstr "Název"
 
@@ -68,7 +68,7 @@ msgstr "Vzorek"
 msgid "Add new filter"
 msgstr "Přidat nový filtr"
 
-#: ../data/ui/EditableList.ui.h:6 ../meld/vcview.py:129
+#: ../data/ui/EditableList.ui.h:6 ../meld/vcview.py:128
 msgid "_Add"
 msgstr "_Přidat"
 
@@ -76,7 +76,7 @@ msgstr "_Přidat"
 msgid "Remove selected filter"
 msgstr "Odstranit vybraný filtr"
 
-#: ../data/ui/EditableList.ui.h:8 ../meld/vcview.py:131
+#: ../data/ui/EditableList.ui.h:8 ../meld/vcview.py:129
 msgid "_Remove"
 msgstr "_Odstranit"
 
@@ -151,6 +151,10 @@ msgstr "Ce_lé slovo"
 #: ../data/ui/findbar.ui.h:9
 msgid "Regular E_xpression"
 msgstr "Re_gulární výraz"
+
+#: ../data/ui/findbar.ui.h:10
+msgid "Wrapped"
+msgstr "Prošlo přes okraj"
 
 #: ../data/ui/meldapp.ui.h:2
 msgid ""
@@ -398,11 +402,11 @@ msgstr "Předchozí záznamy"
 msgid "Log Message"
 msgstr "Zpráva záznamu"
 
-#: ../meld/dirdiff.py:229 ../meld/vcview.py:126
+#: ../meld/dirdiff.py:229 ../meld/vcview.py:125
 msgid "_Compare"
 msgstr "_Porovnat"
 
-#: ../meld/dirdiff.py:229 ../meld/vcview.py:126
+#: ../meld/dirdiff.py:229 ../meld/vcview.py:125
 msgid "Compare selected"
 msgstr "Porovnat vybrané"
 
@@ -466,7 +470,7 @@ msgstr "Zobrazovat nové"
 msgid "Modified"
 msgstr "Změněné"
 
-#: ../meld/dirdiff.py:240 ../meld/vcview.py:139
+#: ../meld/dirdiff.py:240 ../meld/vcview.py:137
 msgid "Show modified"
 msgstr "Zobrazovat změněné"
 
@@ -483,8 +487,8 @@ msgstr "Nastavte aktivní filtry"
 msgid "Hide %s"
 msgstr "Skrýt %s"
 
-#: ../meld/dirdiff.py:510 ../meld/dirdiff.py:529 ../meld/vcview.py:329
-#: ../meld/vcview.py:353
+#: ../meld/dirdiff.py:510 ../meld/dirdiff.py:529 ../meld/vcview.py:326
+#: ../meld/vcview.py:350
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Prochází se %s"
@@ -527,6 +531,7 @@ msgid "'%s' hidden by '%s'"
 msgstr "„%s“ skryto v „%s“"
 
 #: ../meld/dirdiff.py:675 ../meld/filediff.py:979 ../meld/filediff.py:1220
+#: ../meld/vcview.py:572 ../meld/vcview.py:614
 msgid "Hi_de"
 msgstr "_Skrýt"
 
@@ -550,7 +555,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:750 ../meld/vcview.py:550
+#: ../meld/dirdiff.py:750 ../meld/vcview.py:546
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -559,7 +564,7 @@ msgstr ""
 "„%s“ je složkou.\n"
 "Odstranit rekurzivně?"
 
-#: ../meld/dirdiff.py:757 ../meld/vcview.py:555
+#: ../meld/dirdiff.py:757 ../meld/vcview.py:551
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -1305,210 +1310,184 @@ msgstr "Počáteční mezery\t0\t^[ \\t\\r\\f\\v]*\n"
 msgid "Script comment\t0\t#.*"
 msgstr "Komentář skriptu\t0\t#.*"
 
-#: ../meld/vcview.py:127
+#: ../meld/vcview.py:126
 msgid "Co_mmit"
 msgstr "Co_mmit"
 
-#: ../meld/vcview.py:127
+#: ../meld/vcview.py:126
 msgid "Commit"
 msgstr "Commit"
 
-#: ../meld/vcview.py:128
+#: ../meld/vcview.py:127
 msgid "_Update"
 msgstr "_Update"
 
-#: ../meld/vcview.py:128
+#: ../meld/vcview.py:127
 msgid "Update"
 msgstr "Update"
 
-#: ../meld/vcview.py:129
+#: ../meld/vcview.py:128
 msgid "Add to VC"
 msgstr "Přidat do správy verzí"
 
-#: ../meld/vcview.py:130
-msgid "Add _Binary"
-msgstr "Přidat _binární"
-
-#: ../meld/vcview.py:130
-msgid "Add binary to VC"
-msgstr "Přidat binární soubor do správy verzí"
-
-#: ../meld/vcview.py:131
+#: ../meld/vcview.py:129
 msgid "Remove from VC"
 msgstr "Odstranit ze správy verzí"
 
-#: ../meld/vcview.py:132
+#: ../meld/vcview.py:130
 msgid "_Resolved"
 msgstr "_Vyřešeno"
 
-#: ../meld/vcview.py:132
+#: ../meld/vcview.py:130
 msgid "Mark as resolved for VC"
 msgstr "Označit jako vyřešené ve vztahu ke správě verzí"
 
-#: ../meld/vcview.py:133
+#: ../meld/vcview.py:131
 msgid "Revert to original"
 msgstr "Vrátit zpět na původní"
 
-#: ../meld/vcview.py:134
+#: ../meld/vcview.py:132
 msgid "Delete locally"
 msgstr "Odstranit místně"
 
-#: ../meld/vcview.py:138
+#: ../meld/vcview.py:136
 msgid "_Flatten"
 msgstr "Z_ploštit"
 
-#: ../meld/vcview.py:138
+#: ../meld/vcview.py:136
 msgid "Flatten directories"
 msgstr "Zploštit složky"
 
-#: ../meld/vcview.py:139
+#: ../meld/vcview.py:137
 msgid "_Modified"
 msgstr "_Změněné"
 
-#: ../meld/vcview.py:140
+#: ../meld/vcview.py:138
 msgid "_Normal"
 msgstr "_Normální"
 
-#: ../meld/vcview.py:140
+#: ../meld/vcview.py:138
 msgid "Show normal"
 msgstr "Zobrazovat běžné"
 
-#: ../meld/vcview.py:141
+#: ../meld/vcview.py:139
 msgid "Non _VC"
 msgstr "Ni_koliv ve správě verzí"
 
-#: ../meld/vcview.py:141
+#: ../meld/vcview.py:139
 msgid "Show unversioned files"
 msgstr "Zobrazovat soubory bez verzí"
 
-#: ../meld/vcview.py:142
+#: ../meld/vcview.py:140
 msgid "Ignored"
 msgstr "Ignorované"
 
-#: ../meld/vcview.py:142
+#: ../meld/vcview.py:140
 msgid "Show ignored files"
 msgstr "Zobrazovat ignorované soubory"
 
-#: ../meld/vcview.py:192 ../meld/vcview.py:325
+#: ../meld/vcview.py:190 ../meld/vcview.py:322
 msgid "Location"
 msgstr "Umístění"
 
-#: ../meld/vcview.py:193
+#: ../meld/vcview.py:191
 msgid "Status"
 msgstr "Stav"
 
-#: ../meld/vcview.py:194
+#: ../meld/vcview.py:192
 msgid "Rev"
 msgstr "Rev"
 
-#: ../meld/vcview.py:195
+#: ../meld/vcview.py:193
 msgid "Tag"
 msgstr "Tag"
 
-#: ../meld/vcview.py:196
+#: ../meld/vcview.py:194
 msgid "Options"
 msgstr "Možnosti"
 
-#: ../meld/vcview.py:255
+#: ../meld/vcview.py:252
 msgid "Choose one Version Control"
 msgstr "Vyberte jednu správu verzí"
 
-#: ../meld/vcview.py:256
+#: ../meld/vcview.py:253
 msgid "Only one Version Control in this directory"
 msgstr "V této složce pouze jedna správa verzí"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:269
+#: ../meld/vcview.py:266
 #, python-format
 msgid "%s Not Installed"
 msgstr "%s není nainstalováno"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:273
+#: ../meld/vcview.py:270
 msgid "Invalid Repository"
 msgstr "Neplatné úložiště"
 
-#: ../meld/vcview.py:282
+#: ../meld/vcview.py:279
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:325
+#: ../meld/vcview.py:322
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:369
+#: ../meld/vcview.py:366
 msgid "(Empty)"
 msgstr "(Prázdný)"
 
-#: ../meld/vcview.py:407
+#: ../meld/vcview.py:404
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Stahují se rozdíly"
 
-#: ../meld/vcview.py:421
+#: ../meld/vcview.py:418
 #, python-format
 msgid "[%s] Applying patch"
-msgstr "[%s] Použití záplaty"
+msgstr "[%s] Aplikuje se záplata"
 
-#: ../meld/vcview.py:525
+#: ../meld/vcview.py:522
 msgid "Select some files first."
 msgstr "Nejdříve je nutné vybrat soubory."
 
-#: ../meld/vcview.py:598
+#: ../meld/vcview.py:565
+msgid "Patch tool not found"
+msgstr "Nástroj pro záplaty nenalezen"
+
+#: ../meld/vcview.py:566
 #, python-format
 msgid ""
-"\n"
-"                    Invoking 'patch' failed.\n"
-"                    \n"
-"                    Maybe you don't have 'GNU patch' installed,\n"
-"                    or you use an untested version of %s.\n"
-"                    \n"
-"                    Please send email bug report to:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Containing the following information:\n"
-"                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
-"                    (no need to actually run it, just provide\n"
-"                    the command line) \n"
-"                    \n"
-"                    Replace 'X.Y.Z' by the actual version for the\n"
-"                    source control software you use.\n"
-"                    "
+"Meld needs the <i>patch</i> tool to be installed to perform comparisons in "
+"%s repositories. Please install <i>patch</i> and try again."
 msgstr ""
-"\n"
-"                    Spuštění „patch“ se nezdařilo.\n"
-"                    \n"
-"                    Možná nemáte nainstalován „GNU patch“,\n"
-"                    nebo používáte netestovanou verzi %s.\n"
-"                    \n"
-"                    Zašlete prosím e-mail s hlášením o chybě na:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    A sice s uvedením následujících informací:\n"
-"                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
-"                    (spouštět ho není třeba, stačí uvést\n"
-"                    daný příkazový řádek) \n"
-"                    \n"
-"                    'X.Y.Z' nahraďte skutečnou verzí použitého\n"
-"                    softwaru ke správě zdrojových kódů.\n"
-"                    "
+"Aby bylo možné provádět porovnání v repozitářích %s, potřebuje mít Meld "
+"nainstalovaný nástroj <i>patch</i>."
 
-#: ../meld/ui/findbar.py:140
+#: ../meld/vcview.py:606
+msgid "Error fetching original comparison file"
+msgstr "Chyba při získávání původního porovnávaného souboru"
+
+#: ../meld/vcview.py:607
+msgid ""
+"Meld couldn't obtain the original version of your comparison file. If you "
+"are using the most recent version of Meld, please report a bug, including as "
+"many details as possible."
+msgstr ""
+"Meld nemůže získat původní verzi vašeho porovnávaného souboru. Pokud "
+"používáte nejnovější verzi aplikace Meld, nahlaste prosím chybu a to včetně "
+"co nejvíce podrobností."
+
+#: ../meld/vcview.py:615
+msgid "Report a bug"
+msgstr "Ohlásit _chybu"
+
+#: ../meld/ui/findbar.py:142
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -1554,7 +1533,7 @@ msgstr ""
 "Ignorováno:Bez verze:::Chyba::Nově přidáno:Změněno:Konflikt:Odstraněno:Chybí:"
 "Nevyskytuje se"
 
-#: ../meld/vc/cvs.py:163
+#: ../meld/vc/cvs.py:161
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
