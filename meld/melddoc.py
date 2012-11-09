@@ -166,9 +166,3 @@ class MeldDoc(gobject.GObject):
            more callbacks.
         """
         return gtk.RESPONSE_OK
-
-    def on_quit_event(self):
-        """Called when the docs container is about to close.
-           There is no way to interrupt the quit event.
-        """
-        pass

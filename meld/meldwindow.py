@@ -406,8 +406,6 @@ class MeldWindow(gnomeglade.Component):
             response = self.try_remove_page(page, appquit=1)
             if response == gtk.RESPONSE_CANCEL:
                 return gtk.RESPONSE_CANCEL
-        for c in self.notebook.get_children():
-            c.get_data("pyobject").on_quit_event()
         gtk.main_quit()
         return gtk.RESPONSE_CLOSE
 
