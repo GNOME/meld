@@ -16,9 +16,13 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
+from __future__ import print_function
+
+import atexit
 import tempfile
 import shutil
 import os
+import sys
 from gettext import gettext as _
 
 import gtk
@@ -44,6 +48,34 @@ def _commonprefix(files):
     else:
         workdir = os.path.dirname(files[0]) or "."
     return workdir
+
+
+def cleanup_temp():
+    temp_location = tempfile.gettempdir()
+    # The strings below will probably end up as debug log, and are deliberately
+    # not marked for translation.
+    for f in _temp_files:
+        try:
+            assert os.path.exists(f) and os.path.isabs(f) and \
+                   os.path.dirname(f) == temp_location
+            os.remove(f)
+        except:
+            except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
+            print("File \"{0}\" not removed due to".format(f), except_str,
+                  file=sys.stderr)
+    for f in _temp_dirs:
+        try:
+            assert os.path.exists(f) and os.path.isabs(f) and \
+                   os.path.dirname(f) == temp_location
+            shutil.rmtree(f, ignore_errors=1)
+        except:
+            except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
+            print("Directory \"{0}\" not removed due to".format(f), except_str,
+                  file=sys.stderr)
+
+_temp_dirs, _temp_files = [], []
+atexit.register(cleanup_temp)
+
 
 ################################################################################
 #
@@ -155,8 +187,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                        "VcShowIgnored", "VcResolved"):
             button = self.actiongroup.get_action(action)
             button.props.icon_name = button.props.stock_id
-        self.tempdirs = []
-        self.temp_files = set()
         self.model = VcTreeStore()
         self.widget.connect("style-set", self.model.on_style_set)
         self.treeview.set_model(self.model)
@@ -377,17 +407,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         path = fileentry.get_full_path()
         self.set_location(path)
 
-    def on_quit_event(self):
-        self.scheduler.remove_all_tasks()
-        for f in self.tempdirs:
-            if os.path.exists(f):
-                shutil.rmtree(f, ignore_errors=1)
-        for f in self.temp_files:
-            if os.path.exists(f):
-                os.remove(f)
-
     def on_delete_event(self, appquit=0):
-        self.on_quit_event()
+        self.scheduler.remove_all_tasks()
         return gtk.RESPONSE_OK
 
     def on_row_activated(self, treeview, path, tvc):
@@ -435,7 +456,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         try:
             for path in path_list:
                 comp_path = self.vc.get_repo_file_path(path)
-                self.temp_files.add(comp_path)
+                _temp_files.append(comp_path)
                 self.emit("create-diff", [comp_path, path])
         except NotImplementedError:
             for path in path_list:
@@ -587,7 +608,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return False
 
         tmpdir = tempfile.mkdtemp("-meld")
-        self.tempdirs.append(tmpdir)
+        _temp_dirs.append(tmpdir)
 
         diffs = []
         for fname in self.vc.get_patch_files(patch):
