@@ -158,11 +158,8 @@ class MeldDoc(gobject.GObject):
 
     def on_delete_event(self, appquit=0):
         """Called when the docs container is about to close.
-           A doc normally returns gtk.RESPONSE_OK but may return
-           gtk.RESPONSE_CANCEL which requests the container
-           to not delete it. In the special case when the
-           app is about to quit, gtk.RESPONSE_CLOSE may be returned
-           which instructs the container to quit without any
-           more callbacks.
+
+        A doc normally returns gtk.RESPONSE_OK, but may instead return
+        gtk.RESPONSE_CANCEL to request that the container not delete it.
         """
         return gtk.RESPONSE_OK
