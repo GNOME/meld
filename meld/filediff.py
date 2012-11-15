@@ -768,7 +768,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
 
-    def on_delete_event(self, appquit=0):
+    def check_save_modified(self):
         response = gtk.RESPONSE_OK
         modified = [b.data.modified for b in self.textbuffer]
         if True in modified:
@@ -795,6 +795,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             return gtk.RESPONSE_CANCEL
             elif response == gtk.RESPONSE_DELETE_EVENT:
                 response = gtk.RESPONSE_CANCEL
+        return response
+
+    def on_delete_event(self, appquit=0):
+        response = self.check_save_modified()
         if response == gtk.RESPONSE_OK:
             for h in self.app_handlers:
                 app.disconnect(h)
@@ -1438,10 +1442,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.save_file(i)
 
     def on_fileentry_activate(self, entry):
-        if self.on_delete_event() != gtk.RESPONSE_CANCEL:
-            files = [e.get_full_path() for e in self.fileentry[:self.num_panes]]
-            self.set_files(files)
-        return 1
+        if self.check_save_modified() != gtk.RESPONSE_CANCEL:
+            entries = self.fileentry[:self.num_panes]
+            paths = [e.get_full_path() for e in entries]
+            self.set_files(paths)
+        return True
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):
