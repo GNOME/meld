@@ -21,6 +21,15 @@ import locale
 import os
 import sys
 
+# On Windows, pythonw.exe (which doesn't display a console window) supplies
+# dummy stdout and stderr streams that silently throw away any output. However,
+# these streams seem to have issues with flush() so we just redirect stdout and
+# stderr to actual dummy files (the equivalent of /dev/null).
+# Regarding pythonw.exe stdout, see also http://bugs.python.org/issue706263
+if sys.executable.endswith("pythonw.exe"):
+    devnull = open(os.devnull, "w")
+    sys.stdout = sys.stderr = devnull
+
 # Disable buffering of stdout
 class Unbuffered(object):
     def __init__(self, file):
