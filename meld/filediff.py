@@ -770,13 +770,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.keymask & ~x != self.keymask:
             self.keymask &= ~x
 
-    def check_save_modified(self):
+    def check_save_modified(self, label=None):
         response = gtk.RESPONSE_OK
         modified = [b.data.modified for b in self.textbuffer]
         if True in modified:
             ui_path = paths.ui_dir("filediff.ui")
             dialog = gnomeglade.Component(ui_path, "check_save_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
+            if label:
+                dialog.widget.props.text = label
+            # FIXME: Should be packed into dialog.widget.get_message_area(),
+            # but this is unbound on currently required PyGTK.
             buttons = []
             for i in range(self.num_panes):
                 button = gtk.CheckButton(self.textbuffer[i].data.label)
@@ -1455,18 +1459,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return i
         return -1
 
-        #
-        # refresh and reload
-        #
     def on_reload_activate(self, *extra):
-        modified = [os.path.basename(b.data.label) for b in self.textbuffer if b.data.modified]
-        if len(modified):
-            message = _("Reloading will discard changes in:\n%s\n\nYou cannot undo this operation.") % "\n".join(modified)
-            response = misc.run_dialog( message, parent=self, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK_CANCEL)
-            if response != gtk.RESPONSE_OK:
-                return
-        files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
-        self.set_files(files)
+        primary = _("Save changes to documents before reloading?")
+        if self.check_save_modified(primary) != gtk.RESPONSE_CANCEL:
+            files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
+            self.set_files(files)
 
     def on_refresh_activate(self, *extra):
         self.refresh_comparison()
