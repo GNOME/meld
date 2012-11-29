@@ -774,23 +774,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         response = gtk.RESPONSE_OK
         modified = [b.data.modified for b in self.textbuffer]
         if True in modified:
-            dialog = gnomeglade.Component(paths.ui_dir("filediff.ui"), "closedialog")
+            ui_path = paths.ui_dir("filediff.ui")
+            dialog = gnomeglade.Component(ui_path, "check_save_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             buttons = []
             for i in range(self.num_panes):
-                b = gtk.CheckButton(self.textbuffer[i].data.label)
-                b.set_use_underline(False)
-                buttons.append(b)
-                dialog.box.pack_start(b, 1, 1)
-                if not modified[i]:
-                    b.set_sensitive(0)
-                else:
-                    b.set_active(1)
-            dialog.box.show_all()
+                button = gtk.CheckButton(self.textbuffer[i].data.label)
+                button.set_use_underline(False)
+                button.set_sensitive(modified[i])
+                button.set_active(modified[i])
+                dialog.extra_vbox.pack_start(button, expand=True, fill=True)
+                buttons.append(button)
+            dialog.extra_vbox.show_all()
             response = dialog.widget.run()
-            try_save = [ b.get_active() for b in buttons]
+            try_save = [b.get_active() for b in buttons]
             dialog.widget.destroy()
-            if response==gtk.RESPONSE_OK:
+            if response == gtk.RESPONSE_OK:
                 for i in range(self.num_panes):
                     if try_save[i]:
                         if not self.save_file(i):
