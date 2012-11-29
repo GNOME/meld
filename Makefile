@@ -44,6 +44,7 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/icons/hicolor/32x32/apps \
 		$(DESTDIR)$(sharedir)/icons/hicolor/48x48/apps \
 		$(DESTDIR)$(sharedir)/icons/hicolor/scalable/apps \
+		$(DESTDIR)$(sharedir)/icons/HighContrast/scalable/apps \
 		$(DESTDIR)$(helpdir_)
 	install -m 755 bin/meld.install \
 		$(DESTDIR)$(bindir)/meld
@@ -83,6 +84,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/icons/hicolor/48x48/apps/meld.png
 	install -m 644 data/icons/hicolor/scalable/apps/meld.svg \
 		$(DESTDIR)$(sharedir)/icons/hicolor/scalable/apps/meld.svg
+	install -m 644 data/icons/HighContrast/scalable/apps/meld.svg \
+		$(DESTDIR)$(sharedir)/icons/HighContrast/scalable/apps/meld.svg
 	$(MAKE) -C po install
 	$(MAKE) -C help install
 
