@@ -69,7 +69,7 @@ class Vc(_vc.CachedVc):
     def resolved_command(self):
         return [self.CMD,"resolved"]
 
-    def get_repo_file_path(self, path, commit=None):
+    def get_path_for_repo_file(self, path, commit=None):
         if commit is not None:
             raise NotImplementedError()
 

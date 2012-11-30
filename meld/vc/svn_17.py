@@ -37,7 +37,7 @@ class Vc(svn.Vc):
     def _repo_version_support(self, version):
         return version >= 12
 
-    def get_repo_file_path(self, path, commit=None):
+    def get_path_for_repo_file(self, path, commit=None):
         if commit is None:
             commit = "BASE"
         else:

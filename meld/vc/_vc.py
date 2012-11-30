@@ -110,23 +110,18 @@ class Vc(object):
     def patch_command(self, workdir):
         return ["patch", "-p%i" % self.PATCH_STRIP_NUM, "-R", "-d", workdir]
 
-    def get_repo_file_path(self, path, commit=None):
-        """Requests a file path for the repository copy of the given path.
+    def get_path_for_repo_file(self, path, commit=None):
+        """Returns a file path for the repository path at commit
 
-        Regardless of whether the VCS in question maintains an on-disk copy of
-        the given path, to avoid destructive editing, a temp file with the
-        given content must be created and its path returned. The VCS plugin
+        If *commit* is given, the path returned will point to a copy of
+        the file at *path* at the given commit, as interpreted by the
+        VCS. If *commit* is **None**, the current revision is used.
+
+        Even if the VCS maintains an on-disk copy of the given path, a
+        temp file with file-at-commit content must be created and its
+        path returned, to avoid destructive editing. The VCS plugin
         must **not** delete temp files it creates.
-
-        If *commit* is given, then the path returned will point to a copy of
-        the file at path at the given commit, as interpreted by the VCS in
-        question. If *commit* is **None**, then the current tip is used.
         """
-
-        # TODO: This method is required to return a path because of how
-        # FileDiff currently operates. In the future, allowing for blob
-        # returns would be desirable.
-
         raise NotImplementedError()
 
     def check_repo_root(self, location):

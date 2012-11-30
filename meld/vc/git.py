@@ -79,7 +79,7 @@ class Vc(_vc.CachedVc):
     def revert_command(self):
         return [self.CMD,"checkout"]
 
-    def get_repo_file_path(self, path, commit=None):
+    def get_path_for_repo_file(self, path, commit=None):
         if commit is None:
             commit = "HEAD"
         else:

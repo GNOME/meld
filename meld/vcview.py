@@ -455,7 +455,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def run_diff(self, path_list):
         try:
             for path in path_list:
-                comp_path = self.vc.get_repo_file_path(path)
+                comp_path = self.vc.get_path_for_repo_file(path)
+                os.chmod(comp_path, 0o444)
                 _temp_files.append(comp_path)
                 self.emit("create-diff", [comp_path, path])
         except NotImplementedError:
