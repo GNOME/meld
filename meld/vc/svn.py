@@ -73,17 +73,25 @@ class Vc(_vc.CachedVc):
         if commit is not None:
             raise NotImplementedError()
 
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
         base, fname = os.path.split(path)
         svn_path = os.path.join(base, ".svn", "text-base", fname + ".svn-base")
 
-        # TODO: In Python 2.6+, this could be done with NamedTemporaryFile
-        tmp_handle, tmp_path = tempfile.mkstemp(prefix='meld-tmp', text=True)
-        with open(svn_path, 'r') as vc_file:
-            tmp_file = os.fdopen(tmp_handle, 'w')
-            shutil.copyfileobj(vc_file, tmp_file)
-            tmp_file.close()
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            try:
+                with open(svn_path, 'r') as vc_file:
+                    shutil.copyfileobj(vc_file, f)
+            except IOError as err:
+                if err.errno != errno.ENOENT:
+                    raise
+                # If the repository path doesn't exist, we either have an
+                # invalid path (difficult to check) or a new file. Either way,
+                # we just return an empty file
 
-        return tmp_path
+        return f.name
 
     def _repo_version_support(self, version):
         return version < 12
