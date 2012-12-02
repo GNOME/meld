@@ -32,6 +32,7 @@ import errno
 import os
 import re
 import shutil
+import subprocess
 import tempfile
 
 from . import _vc
@@ -89,8 +90,14 @@ class Vc(_vc.CachedVc):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
         path = path[len(self.root) + 1:]
 
-        vc_file = _vc.popen(["git", "cat-file", "blob", commit + ":" + path],
-                            cwd=self.location)
+        obj = commit + ":" + path
+        process = subprocess.Popen(["git", "cat-file", "blob", obj],
+                                   cwd=self.location, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        vc_file = process.stdout
+
+        # Error handling here involves doing nothing; in most cases, the only
+        # sane response is to return an empty temp file.
 
         with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
             shutil.copyfileobj(vc_file, f)
