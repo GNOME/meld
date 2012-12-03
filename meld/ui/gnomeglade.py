@@ -45,9 +45,8 @@ class Component(object):
         """
         self.builder = gtk.Builder()
         self.builder.set_translation_domain(locale_domain)
-        if extra:
-            self.builder.add_objects_from_file(filename, extra)
-        self.builder.add_objects_from_file(filename, [root])
+        objects = [root] + extra if extra else [root]
+        self.builder.add_objects_from_file(filename, objects)
         self.builder.connect_signals(self)
         self.widget = getattr(self, root)
         self.widget.set_data("pyobject", self)
