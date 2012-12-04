@@ -117,10 +117,20 @@
               <placeholder/>
             </child>
             <child>
-              <object class="HistoryFileEntry" id="fileentry2">
+              <object class="GtkHBox" id="selector_hbox2">
                 <property name="visible">True</property>
-                <property name="history-id">fileentry</property>
-                <signal handler="on_fileentry_activate" name="activate"/>
+                <property name="can_focus">False</property>
+                <child>
+                <object class="HistoryFileEntry" id="fileentry2">
+                  <property name="visible">True</property>
+                  <property name="history-id">fileentry</property>
+                  <signal handler="on_fileentry_activate" name="activate"/>
+                </object>
+                <packing>
+                  <property name="expand">True</property>
+                  <property name="fill">True</property>
+                </packing>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">5</property>
@@ -130,10 +140,20 @@
               </packing>
             </child>
             <child>
-              <object class="HistoryFileEntry" id="fileentry1">
+              <object class="GtkHBox" id="selector_hbox1">
                 <property name="visible">True</property>
-                <property name="history-id">fileentry</property>
-                <signal handler="on_fileentry_activate" name="activate"/>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="HistoryFileEntry" id="fileentry1">
+                    <property name="visible">True</property>
+                    <property name="history-id">fileentry</property>
+                    <signal handler="on_fileentry_activate" name="activate"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">3</property>
@@ -143,10 +163,20 @@
               </packing>
             </child>
             <child>
-              <object class="HistoryFileEntry" id="fileentry0">
+              <object class="GtkHBox" id="selector_hbox0">
                 <property name="visible">True</property>
-                <property name="history-id">fileentry</property>
-                <signal handler="on_fileentry_activate" name="activate"/>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="HistoryFileEntry" id="fileentry0">
+                    <property name="visible">True</property>
+                    <property name="history-id">fileentry</property>
+                    <signal handler="on_fileentry_activate" name="activate"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>

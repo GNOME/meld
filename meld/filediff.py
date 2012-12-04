@@ -158,7 +158,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("filediff.ui"), "filediff")
-        self.map_widgets_into_lists(["textview", "fileentry", "diffmap", "scrolledwindow", "linkmap", "statusimage", "msgarea_mgr", "vbox"])
+        self.map_widgets_into_lists(["textview", "fileentry", "diffmap",
+                                     "scrolledwindow", "linkmap",
+                                     "statusimage", "msgarea_mgr", "vbox",
+                                     "selector_hbox"])
+
+        # This SizeGroup isn't actually necessary for FileDiff; it's for
+        # handling non-homogenous selectors in FileComp. It's also fragile.
+        column_sizes = gtk.SizeGroup(gtk.SIZE_GROUP_HORIZONTAL)
+        column_sizes.set_ignore_hidden(True)
+        for widget in self.selector_hbox:
+            column_sizes.add_widget(widget)
+
         self.warned_bad_comparison = False
         # Some sourceviews bind their own undo mechanism, which we replace
         gtk.binding_entry_remove(srcviewer.GtkTextView, gtk.keysyms.z,
@@ -1576,12 +1587,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.vbox[:n] + self.msgarea_mgr[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
+            toshow += self.selector_hbox[:n]
             for widget in toshow:
                 widget.show()
 
             tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
             tohide += self.vbox[n:] + self.msgarea_mgr[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
+            tohide += self.selector_hbox[n:]
             for widget in tohide:
                 widget.hide()
 
