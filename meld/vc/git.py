@@ -207,19 +207,19 @@ class Vc(_vc.CachedVc):
 
         retfiles = []
         retdirs = []
-        for name,path in files:
+        for name, path in files:
             state = tree.get(path, _vc.STATE_NORMAL)
             meta = self._tree_meta_cache.get(path, "")
             retfiles.append(_vc.File(path, name, state, options=meta))
-        for name,path in dirs:
+        for name, path in dirs:
             # git does not operate on dirs, just files
-            retdirs.append( _vc.Dir(path, name, _vc.STATE_NORMAL))
+            retdirs.append(_vc.Dir(path, name, _vc.STATE_NORMAL))
         for path, state in tree.items():
             # removed files are not in the filesystem, so must be added here
-            if state is _vc.STATE_REMOVED:
+            if state in (_vc.STATE_REMOVED, _vc.STATE_MISSING):
                 folder, name = os.path.split(path)
                 if folder == directory:
-                    retfiles.append( _vc.File(path, name, state) )
+                    retfiles.append(_vc.File(path, name, state))
         return retdirs, retfiles
 
     def clean_patch(self, patch):

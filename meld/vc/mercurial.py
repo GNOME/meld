@@ -131,7 +131,7 @@ class Vc(_vc.CachedVc):
             retdirs.append(_vc.Dir(path, name, _vc.STATE_NORMAL))
         for path, state in tree.items():
             # removed files are not in the filesystem, so must be added here
-            if state is _vc.STATE_REMOVED:
+            if state in (_vc.STATE_REMOVED, _vc.STATE_MISSING):
                 folder, name = os.path.split(path)
                 if folder == directory:
                     retfiles.append(_vc.File(path, name, state))
