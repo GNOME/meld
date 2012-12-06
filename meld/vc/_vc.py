@@ -171,7 +171,7 @@ class Vc(object):
         return True
 
     def listdir(self, start):
-        if start=="": start="."
+        start = start or "."
         cfiles = []
         cdirs = []
         try:
@@ -183,27 +183,20 @@ class Vc(object):
             fname = os.path.join(start, f)
             lname = fname
             if os.path.isdir(fname):
-                cdirs.append( (f, lname) )
+                cdirs.append((f, lname))
             else:
-                cfiles.append( (f, lname) )
-        dirs, files = self.lookup_files(cdirs, cfiles)
-        return dirs+files
+                cfiles.append((f, lname))
+        dirs, files = self.lookup_files(cdirs, cfiles, start)
+        return dirs + files
 
-    def lookup_files(self, dirs, files):
-        "Assume all files are in the same dir, files is an array of (name, path) tuples."
-        directory = self._get_directoryname(files, dirs)
-        if directory is None:
-            return [], []
-        else:
-            return self._get_dirsandfiles(directory, dirs, files)
-
-    def _get_directoryname(self, dirs, files):
-        directory = None
-        if len(files):
-            directory = os.path.dirname(files[0][1])
-        elif len(dirs):
+    def lookup_files(self, dirs, files, directory=None):
+        # Assumes that all files are in the same directory. files is an array
+        # of (name, path) tuples.
+        if len(dirs):
             directory = os.path.dirname(dirs[0][1])
-        return directory
+        elif len(files):
+            directory = os.path.dirname(files[0][1])
+        return self._get_dirsandfiles(directory, dirs, files)
 
     def _get_dirsandfiles(self, directory, dirs, files):
         raise NotImplementedError()
