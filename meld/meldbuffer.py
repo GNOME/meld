@@ -127,9 +127,10 @@ class BufferLines(object):
             ends = filter_txt.splitlines(True)
 
             # The last line in a gtk.TextBuffer is guaranteed never to end in a
-            # newline. As splitlines() discards an empty line at the end, we need
-            # to artificially add a line if the requested slice is past the end of
-            # the buffer, and the last line in the slice ended in a newline.
+            # newline. As splitlines() discards an empty line at the end, we
+            # need to artificially add a line if the requested slice is past
+            # the end of the buffer, and the last line in the slice ended in a
+            # newline.
             if hi >= self.buf.get_line_count() and \
                lo < self.buf.get_line_count() and \
                (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
@@ -138,8 +139,8 @@ class BufferLines(object):
 
             hi = self.buf.get_line_count() if hi == sys.maxsize else hi
             if hi - lo != len(lines):
-                # These codepoints are considered line breaks by Python, but not
-                # by GtkTextStore.
+                # These codepoints are considered line breaks by Python, but
+                # not by GtkTextStore.
                 additional_breaks = set(('\x0c', '\x85'))
                 i = 0
                 while i < len(ends):
@@ -155,7 +156,7 @@ class BufferLines(object):
 
             return lines
 
-        elif isinstance(key, int) :
+        elif isinstance(key, int):
             if key >= len(self):
                 raise IndexError
             line_start = self.buf.get_iter_at_line_or_eof(key)
