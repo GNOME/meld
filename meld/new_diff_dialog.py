@@ -28,7 +28,8 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
-        'diff-created': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'diff-created': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                         (object,)),
     }
 
     def __init__(self, parentapp):
@@ -93,15 +94,16 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
             path = gfile.get_path() if gfile else ""
             compare_paths.append(path)
 
-        self.diff_methods[self.diff_type](compare_paths)
-        self.emit('diff-created')
+        tab = self.diff_methods[self.diff_type](compare_paths)
+        self.emit('diff-created', tab)
 
     def on_button_new_blank_clicked(self, *args):
         # TODO: This doesn't work the way I'd like for DirDiff and VCView.
         # It should do something similar to FileDiff; give a tab with empty
         # file entries and no comparison done.
         compare_paths = [""] * self._get_num_paths()
-        self.diff_methods[self.diff_type](compare_paths)
+        tab = self.diff_methods[self.diff_type](compare_paths)
+        self.emit('diff-created', tab)
 
     def on_container_switch_in_event(self, *args):
         pass

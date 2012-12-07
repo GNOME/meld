@@ -570,14 +570,16 @@ class MeldWindow(gnomeglade.Component):
                 page.on_file_changed(filename)
 
     def _append_page(self, page, icon):
-        nbl = notebooklabel.NotebookLabel(icon, "", lambda b: self.try_remove_page(page))
-        self.notebook.append_page( page.widget, nbl)
+        nbl = notebooklabel.NotebookLabel(icon, "",
+                                          lambda b: self.try_remove_page(page))
+        self.notebook.append_page(page.widget, nbl)
 
         # Change focus to the newly created page only if the user is on a
-        # DirDiff or VcView page.  This prevents cycling through X pages
-        # when X diffs are initiated.
+        # DirDiff or VcView page, or if it's a new tab page. This prevents
+        # cycling through X pages when X diffs are initiated.
         if isinstance(self.current_doc(), dirdiff.DirDiff) or \
-           isinstance(self.current_doc(), vcview.VcView):
+           isinstance(self.current_doc(), vcview.VcView) or \
+           isinstance(page, new_diff_dialog.NewDiffTab):
             self.notebook.set_current_page(self.notebook.page_num(page.widget))
 
         if hasattr(page, 'scheduler'):
@@ -589,14 +591,19 @@ class MeldWindow(gnomeglade.Component):
             page.connect("status-changed",
                          lambda obj, arg: self.statusbar.set_doc_status(arg))
 
-        # Allow reordering of tabs
-        self.notebook.set_tab_reorderable(page.widget, True);
+        self.notebook.set_tab_reorderable(page.widget, True)
 
     def append_new_comparison(self):
         doc = new_diff_dialog.NewDiffTab(self)
         self._append_page(doc, "document-new")
         self.on_notebook_label_changed(doc, _("New comparison"), None)
-        doc.connect("diff-created", lambda x: self.try_remove_page(doc))
+
+        def diff_created_cb(doc, newdoc):
+            self.try_remove_page(doc)
+            idx = self.notebook.page_num(newdoc.widget)
+            self.notebook.set_current_page(idx)
+
+        doc.connect("diff-created", diff_created_cb)
         return doc
 
     def append_dirdiff(self, dirs, auto_compare=False):
