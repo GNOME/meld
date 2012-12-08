@@ -190,7 +190,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.model = VcTreeStore()
         self.widget.connect("style-set", self.model.on_style_set)
         self.treeview.set_model(self.model)
-        self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        selection = self.treeview.get_selection()
+        selection.set_mode(gtk.SELECTION_MULTIPLE)
+        selection.connect("changed", self.on_treeview_selection_changed)
         self.treeview.set_headers_visible(1)
         self.treeview.set_search_equal_func(self.treeview_search_cb)
         self.current_path, self.prev_path, self.next_path = None, None, None
@@ -250,6 +252,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if not self.prefs.vc_console_visible:
             self.on_console_view_toggle(self.console_hide_box)
         self.vc = None
+        self.valid_vc_actions = tuple()
         # VC ComboBox
         self.combobox_vcs = gtk.ComboBox()
         self.combobox_vcs.lock = True
@@ -270,13 +273,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def update_actions_sensitivity(self):
         """Disable actions that use not implemented VC plugin methods
         """
+        valid_vc_actions = ["VcDeleteLocally"]
         for action_name, (meth_name, args) in self.action_vc_cmds_map.items():
             action = self.actiongroup.get_action(action_name)
             try:
                 getattr(self.vc, meth_name)(*args)
                 action.props.sensitive = True
+                valid_vc_actions.append(action_name)
             except NotImplementedError:
                 action.props.sensitive = False
+        self.valid_vc_actions = tuple(valid_vc_actions)
 
     def choose_vc(self, vcs):
         """Display VC plugin(s) that can handle the location"""
@@ -502,6 +508,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.prefs.vc_status_filters = active_filters
         self.refresh()
 
+    def on_treeview_selection_changed(self, selection):
+        model, rows = selection.get_selected_rows()
+        have_selection = bool(rows)
+        for action in self.valid_vc_actions:
+            self.actiongroup.get_action(action).set_sensitive(have_selection)
+
     def _get_selected_files(self):
         sel = []
         def gather(model, path, it):
@@ -547,13 +559,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         """Run 'command' on 'files'.
         """
         self.scheduler.add_task(self._command_iter(command, files, refresh))
-        
+
     def _command_on_selected(self, command, refresh=1):
         files = self._get_selected_files()
         if len(files):
             self._command(command, files, refresh)
-        else:
-            misc.run_dialog( _("Select some files first."), parent=self, messagetype=gtk.MESSAGE_INFO)
 
     def on_button_update_clicked(self, obj):
         self._command_on_selected( self.vc.update_command() )
