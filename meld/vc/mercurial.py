@@ -102,7 +102,7 @@ class Vc(_vc.CachedVc):
             for entry in entries:
                 # we might have a space in file name, it should be ignored
                 statekey, name = entry.split(" ", 1)
-                path = os.path.join(self.root, name.strip())
+                path = os.path.join(self.location, name.strip())
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 tree_state[path] = state
 
