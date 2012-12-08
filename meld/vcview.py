@@ -515,12 +515,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.actiongroup.get_action(action).set_sensitive(have_selection)
 
     def _get_selected_files(self):
-        sel = []
-        def gather(model, path, it):
-            sel.append( model.value_path(it,0) )
-        s = self.treeview.get_selection()
-        s.selected_foreach(gather)
-        # remove empty entries and remove trailing slashes
+        model, rows = self.treeview.get_selection().get_selected_rows()
+        sel = [self.model.value_path(self.model.get_iter(r), 0) for r in rows]
+        # Remove empty entries and trailing slashes
         return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
 
     def _command_iter(self, command, files, refresh):
