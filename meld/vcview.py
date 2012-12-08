@@ -563,20 +563,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command(command, files, refresh)
 
     def on_button_update_clicked(self, obj):
-        self._command_on_selected( self.vc.update_command() )
+        self._command_on_selected(self.vc.update_command())
+
     def on_button_commit_clicked(self, obj):
-        dialog = CommitDialog( self )
-        dialog.run()
+        CommitDialog(self).run()
 
     def on_button_add_clicked(self, obj):
         self._command_on_selected(self.vc.add_command())
 
     def on_button_remove_clicked(self, obj):
         self._command_on_selected(self.vc.remove_command())
+
     def on_button_resolved_clicked(self, obj):
         self._command_on_selected(self.vc.resolved_command())
+
     def on_button_revert_clicked(self, obj):
         self._command_on_selected(self.vc.revert_command())
+
     def on_button_delete_clicked(self, obj):
         files = self._get_selected_files()
         for name in files:
