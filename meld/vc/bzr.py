@@ -36,6 +36,7 @@ class Vc(_vc.CachedVc):
     NAME = "Bazaar"
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)'.*$"
+    CONFLICT_RE = "conflict in (.*)$"
 
     # We use None here to indicate flags that we don't deal with or care about
     state_1_map = {
@@ -95,14 +96,20 @@ class Vc(_vc.CachedVc):
                     raise
         tree_state = {}
         for entry in entries:
-            state_string, name = entry[:3], entry[4:]
+            state_string, name = entry[:3], entry[4:].strip()
             if not re.match(self.valid_status_re, state_string):
                 continue
             # TODO: We don't do anything with exec bit changes.
-            path = os.path.join(branch_root, name.strip())
             state = self.state_1_map.get(state_string[0], None)
             if state is None:
                 state = self.state_2_map.get(state_string[1], _vc.STATE_NORMAL)
+            elif state == _vc.STATE_CONFLICT:
+                real_path_match = re.search(self.CONFLICT_RE, name)
+                if real_path_match is None:
+                    continue
+                name = real_path_match.group(1)
+
+            path = os.path.join(branch_root, name)
             tree_state[path] = state
 
         return tree_state
