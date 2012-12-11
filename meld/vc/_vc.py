@@ -253,7 +253,8 @@ class InvalidVCRevision(ValueError):
 def popen(cmd, cwd=None):
     return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
 
+
 # Return the return value of a given command
 def call(cmd, cwd=None):
-    return subprocess.call(cmd, cwd=cwd, stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT)
+    NULL = open(os.devnull, "wb")
+    return subprocess.call(cmd, cwd=cwd, stdout=NULL, stderr=NULL)
