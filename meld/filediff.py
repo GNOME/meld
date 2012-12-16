@@ -161,7 +161,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.map_widgets_into_lists(["textview", "fileentry", "diffmap",
                                      "scrolledwindow", "linkmap",
                                      "statusimage", "msgarea_mgr", "vbox",
-                                     "selector_hbox"])
+                                     "selector_hbox", "readonlytoggle"])
 
         # This SizeGroup isn't actually necessary for FileDiff; it's for
         # handling non-homogenous selectors in FileComp. It's also fragile.
@@ -350,8 +350,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 buf.disconnect(h)
 
     def _connect_buffer_handlers(self):
-        for textview in self.textview:
-            textview.set_editable(1)
+        for textview, buf in zip(self.textview, self.textbuffer):
+            textview.set_editable(buf.data.editable)
         for buf in self.textbuffer:
             id0 = buf.connect("insert-text", self.on_text_insert_text)
             id1 = buf.connect("delete-range", self.on_text_delete_range)
@@ -962,8 +962,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     stock = gtk.STOCK_SAVE
                 else:
                     stock = gtk.STOCK_SAVE_AS
-            elif not self.textbuffer[i].data.writable:
-                stock = gtk.STOCK_NO
             if stock:
                 self.statusimage[i].show()
                 self.statusimage[i].set_from_stock(stock, gtk.ICON_SIZE_MENU)
@@ -1446,13 +1444,25 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dialog = patchdialog.PatchDialog(self)
         dialog.run()
 
-    def set_buffer_writable(self, buf, yesno):
-        buf.data.writable = yesno
+    def set_buffer_writable(self, buf, writable):
+        buf.data.writable = writable
         self.recompute_label()
+        index = self.textbuffer.index(buf)
+        self.readonlytoggle[index].set_visible(not writable)
+        self.set_buffer_editable(buf, writable)
 
     def set_buffer_modified(self, buf, yesno):
         buf.data.modified = yesno
         self.recompute_label()
+
+    def set_buffer_editable(self, buf, editable):
+        buf.data.editable = editable
+        index = self.textbuffer.index(buf)
+        self.readonlytoggle[index].set_active(not editable)
+        self.textview[index].set_editable(editable)
+        self.on_current_diff_changed(self)
+        for linkmap in self.linkmap:
+            linkmap.queue_draw()
 
     def save(self):
         pane = self._get_focused_pane()
@@ -1511,6 +1521,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.lock_button.set_active(not locked)
         self.actiongroup.get_action("LockScrolling").set_active(locked)
         self._scroll_lock = not locked
+
+    def on_readonly_button_toggled(self, button):
+        index = self.readonlytoggle.index(button)
+        buf = self.textbuffer[index]
+        self.set_buffer_editable(buf, not button.get_active())
 
         #
         # scrollbars

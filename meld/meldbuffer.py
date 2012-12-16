@@ -77,6 +77,7 @@ class MeldBufferData(object):
     def __init__(self, filename=None):
         self.modified = False
         self.writable = True
+        self.editable = True
         self.filename = filename
         self.savefile = None
         self._label = filename
