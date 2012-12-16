@@ -730,7 +730,8 @@ class MeldWindow(gnomeglade.Component):
 
         elif len(paths) in (2, 3):
             tab = self.append_diff(paths, auto_compare, auto_merge)
-        app.recent_comparisons.add(tab)
+        if tab:
+            app.recent_comparisons.add(tab)
         return tab
 
     def current_doc(self):
