@@ -39,6 +39,7 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir_)/icons \
 		$(DESTDIR)$(docdir_) \
 		$(DESTDIR)$(sharedir)/applications \
+		$(DESTDIR)$(sharedir)/mime/packages \
 		$(DESTDIR)$(sharedir)/pixmaps \
 		$(DESTDIR)$(sharedir)/icons/hicolor/16x16/apps \
 		$(DESTDIR)$(sharedir)/icons/hicolor/22x22/apps \
@@ -91,12 +92,13 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/icons/HighContrast/scalable/apps/meld.svg
 	$(MAKE) -C po install
 	$(MAKE) -C help install
-    update-mime-database $(DESTDIR)$(sharedir)/mime
+	update-mime-database $(DESTDIR)$(sharedir)/mime
+	update-desktop-database $(DESTDIR)$(sharedir)/applications
 
 meld.desktop: data/meld.desktop.in
 	intltool-merge -d po data/meld.desktop.in data/meld.desktop
 
-meld.xml: data/meld.xml.in
+meld.xml: data/mime/meld.xml.in
 	intltool-merge -d po data/mime/meld.xml.in data/mime/meld.xml
 
 %.install: %
@@ -120,5 +122,6 @@ uninstall:
 		$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po uninstall
 	$(MAKE) -C help uninstall
-    update-mime-database $(DESTDIR)$(sharedir)/mime
+	update-mime-database $(DESTDIR)$(sharedir)/mime
+	update-desktop-database $(DESTDIR)$(sharedir)/applications
 
