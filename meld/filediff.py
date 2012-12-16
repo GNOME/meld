@@ -401,14 +401,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.cursor.line, self.cursor.offset = line, offset
 
     def on_current_diff_changed(self, widget, *args):
-        pane = self.cursor.pane
-        chunk_id = self.cursor.chunk
-        push_left, push_right, pull_left, pull_right, delete, \
-            copy_left, copy_right = (True,) * 7
+        pane = self._get_focused_pane()
+        if pane != -1:
+            # While this *should* be redundant, it's possible for focus pane
+            # and cursor pane to be different in several situations.
+            pane = self.cursor.pane
+            chunk_id = self.cursor.chunk
+
         if pane == -1 or chunk_id is None:
             push_left, push_right, pull_left, pull_right, delete, \
                 copy_left, copy_right = (False,) * 7
         else:
+            push_left, push_right, pull_left, pull_right, delete, \
+                copy_left, copy_right = (True,) * 7
+
             # Push and Delete are active if the current pane has something to
             # act on, and the target pane exists and is editable. Pull is
             # sensitive if the source pane has something to get, and the
@@ -648,6 +654,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.focus_pane = view
         self.findbar.textview = view
         self.on_cursor_position_changed(view.get_buffer(), None, True)
+        self._set_merge_action_sensitivity()
+
+    def on_textview_focus_out_event(self, view, event):
+        self.focus_pane = None
         self._set_merge_action_sensitivity()
 
     def _after_text_modified(self, buffer, startline, sizechange):
