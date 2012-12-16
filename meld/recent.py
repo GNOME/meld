@@ -101,8 +101,8 @@ class RecentFiles(object):
             "mime_type": "application/x-meld-comparison",
             "app_name": self.app_name,
             "app_exec": "%s --comparison-file %%u" % self.app_exec,
-            "display_name": display_name,
-            "description": description,
+            "display_name": display_name.encode('utf8'),
+            "description": description.encode('utf8'),
             "is_private": True,
         }
         self.recent_manager.add_full(gio_file.get_uri(), recent_metadata)
