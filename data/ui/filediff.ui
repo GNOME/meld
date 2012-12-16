@@ -121,15 +121,33 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                <object class="HistoryFileEntry" id="fileentry2">
-                  <property name="visible">True</property>
-                  <property name="history-id">fileentry</property>
-                  <signal handler="on_fileentry_activate" name="activate"/>
-                </object>
-                <packing>
-                  <property name="expand">True</property>
-                  <property name="fill">True</property>
-                </packing>
+                  <object class="GtkToggleButton" id="readonlytoggle2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="relief">none</property>
+                    <signal handler="on_readonly_button_toggled" name="toggled"/>
+                    <child>
+                      <object class="GtkImage" id="readonly_image2">
+                        <property name="visible">True</property>
+                        <property name="icon-name">emblem-readonly</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="HistoryFileEntry" id="fileentry2">
+                    <property name="visible">True</property>
+                    <property name="history-id">fileentry</property>
+                    <signal handler="on_fileentry_activate" name="activate"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -143,6 +161,24 @@
               <object class="GtkHBox" id="selector_hbox1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkToggleButton" id="readonlytoggle1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="relief">none</property>
+                    <signal handler="on_readonly_button_toggled" name="toggled"/>
+                    <child>
+                      <object class="GtkImage" id="readonly_image1">
+                        <property name="visible">True</property>
+                        <property name="icon-name">emblem-readonly</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="HistoryFileEntry" id="fileentry1">
                     <property name="visible">True</property>
@@ -166,6 +202,24 @@
               <object class="GtkHBox" id="selector_hbox0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkToggleButton" id="readonlytoggle0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="relief">none</property>
+                    <signal handler="on_readonly_button_toggled" name="toggled"/>
+                    <child>
+                      <object class="GtkImage" id="readonly_image0">
+                        <property name="visible">True</property>
+                        <property name="icon-name">emblem-readonly</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="HistoryFileEntry" id="fileentry0">
                     <property name="visible">True</property>
