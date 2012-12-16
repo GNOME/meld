@@ -702,7 +702,8 @@ class MeldWindow(gnomeglade.Component):
         elif comparison_type == recent.TYPE_FOLDER:
             tab = self.append_dirdiff(files)
         elif comparison_type == recent.TYPE_VC:
-            tab = self.append_vcview(files)
+            # Files should be a single-element iterable
+            tab = self.append_vcview(files[0])
         else:  # comparison_type == recent.TYPE_FILE:
             tab = self.append_filediff(files)
         app.recent_comparisons.add(tab)
