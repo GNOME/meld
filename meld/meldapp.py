@@ -147,8 +147,10 @@ class MeldApp(gobject.GObject):
         for files in options.diff:
             open_paths(files)
 
-        if options.comparison_file:
-            comparison_file_path = os.path.expanduser(options.comparison_file)
+        if options.comparison_file or (len(args) == 1 and
+                                       args[0].endswith(".meldcmp")):
+            path = options.comparison_file or args[0]
+            comparison_file_path = os.path.expanduser(path)
             gio_file = gio.File(path=comparison_file_path)
             try:
                 tab = self.window.append_recent(gio_file.get_uri())
