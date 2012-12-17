@@ -65,8 +65,8 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         self.b = b
         self.matching_blocks = self.opcodes = None
         #fields needed by preprocessor so that preprocessing may shared by more than 1 LCS algorithm
-        self.aindex = {}
-        self.bindex = {}
+        self.aindex = []
+        self.bindex = []
         self.common_prefix = self.common_suffix = 0
         self.lines_discarded = False
 
@@ -136,6 +136,12 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         return self.preprocess_discard_nonmatching_lines(a, b)
 
     def postprocess(self):
+        """
+        Perform some post-processing cleanup to reduce 'chaff' and make
+        the result more human-readable. Since Myers diff is a greedy
+        algorithm backward scanning of matching chunks might reveal
+        some smaller chunks that can be combined together.
+        """
         mb = [self.matching_blocks[-1]]
         i = len(self.matching_blocks) - 2
         while i >= 0:
@@ -157,7 +163,7 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         mb.reverse()
         self.matching_blocks = mb
 
-    def build_matching_blocks(self, lastsnake, snakes):
+    def build_matching_blocks(self, lastsnake):
         """
         Build list of matching blocks based on snakes taking into consideration all preprocessing
         optimizations:
@@ -171,7 +177,7 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         aindex = self.aindex
         bindex = self.bindex
         while lastsnake != None:
-            lastsnake, x, y, snake = snakes[lastsnake]
+            lastsnake, x, y, snake = lastsnake
             if self.lines_discarded:
                 # split snakes if needed because of discarded lines
                 x += snake - 1
@@ -220,7 +226,6 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         delta = n - m + middle
         dmin = min(middle, delta)
         dmax = max(middle, delta)
-        snakes = []
         if n > 0 and m > 0:
             size = n + m + 2
             fp = [(-1, None)] * size
@@ -247,8 +252,7 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                             x += 1
                             yv += 1
                         snake = x - snake
-                        snakes.append((node, x - snake, yv - snake, snake))
-                        node = len(snakes) - 1
+                        node = (node, x - snake, yv - snake, snake)
                     fp[km] = (yv, node)
                 # move along horizontal edge
                 yh = -1
@@ -267,8 +271,7 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                             x += 1
                             yh += 1
                         snake = x - snake
-                        snakes.append((node, x - snake, yh - snake, snake))
-                        node = len(snakes) - 1
+                        node = (node, x - snake, yh - snake, snake)
                     fp[km] = (yh, node)
                 # point on the diagonal that leads to the sink
                 if yv < yh:
@@ -285,13 +288,12 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                         x += 1
                         y += 1
                     snake = x - snake
-                    snakes.append((node, x - snake, y - snake, snake))
-                    node = len(snakes) - 1
+                    node = (node, x - snake, y - snake, snake)
                 fp[delta] = (y, node)
                 if y >= n:
                     lastsnake = node
                     break
-        self.build_matching_blocks(lastsnake, snakes)
+        self.build_matching_blocks(lastsnake)
         self.postprocess()
         yield 1
 
