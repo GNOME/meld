@@ -188,7 +188,7 @@ class RecentFiles(object):
                    gtk.RECENT_FILTER_DISPLAY_NAME: "display_name",
                    gtk.RECENT_FILTER_MIME_TYPE: "mime_type",
                    gtk.RECENT_FILTER_APPLICATION: "applications",
-                   gtk.RECENT_FILTER_GROUP: "group",
+                   gtk.RECENT_FILTER_GROUP: "groups",
                    gtk.RECENT_FILTER_AGE: "age"}
         needed = recent_filter.get_needed()
         attrs = [v for k, v in getters.iteritems() if needed & k]
