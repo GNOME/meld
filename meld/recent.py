@@ -118,12 +118,13 @@ class RecentFiles(object):
         if not gio_file.query_exists() or not path:
             raise IOError("File does not exist")
 
-        config = ConfigParser.RawConfigParser()
-        config.read(path)
-
-        if not (config.has_section("Comparison") and
-                config.has_option("Comparison", "type") and
-                config.has_option("Comparison", "paths")):
+        try:
+            config = ConfigParser.RawConfigParser()
+            config.read(path)
+            assert (config.has_section("Comparison") and
+                    config.has_option("Comparison", "type") and
+                    config.has_option("Comparison", "paths"))
+        except (ConfigParser.Error, AssertionError):
             raise ValueError("Invalid recent comparison file")
 
         comp_type = config.get("Comparison", "type")
