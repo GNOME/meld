@@ -658,7 +658,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._set_merge_action_sensitivity()
 
     def on_textview_focus_out_event(self, view, event):
-        self.focus_pane = None
         self._set_merge_action_sensitivity()
 
     def _after_text_modified(self, buffer, startline, sizechange):
