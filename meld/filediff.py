@@ -1396,11 +1396,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def save_file(self, pane, saveas=0):
         buf = self.textbuffer[pane]
         bufdata = buf.data
-        if saveas or not bufdata.filename:
-            filename = self._get_filename_for_saving( _("Choose a name for buffer %i.") % (pane+1) )
+        if saveas or not bufdata.filename or not bufdata.writable:
+            prompt = _("Choose a name for buffer %i.") % (pane + 1)
+            filename = self._get_filename_for_saving(prompt)
             if filename:
                 bufdata.filename = bufdata.label = os.path.abspath(filename)
-                self.fileentry[pane].set_filename( bufdata.filename)
+                self.fileentry[pane].set_filename(bufdata.filename)
                 self.fileentry[pane].prepend_history(bufdata.filename)
             else:
                 return False
