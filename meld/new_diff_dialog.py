@@ -19,8 +19,10 @@ import os
 import gobject
 import gtk
 
-import paths
-from ui import gnomeglade
+from . import paths
+from .ui import gnomeglade
+
+from .meldapp import app
 
 
 class NewDiffTab(gobject.GObject, gnomeglade.Component):
@@ -95,6 +97,7 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
             compare_paths.append(path)
 
         tab = self.diff_methods[self.diff_type](compare_paths)
+        app.recent_comparisons.add(tab)
         self.emit('diff-created', tab)
 
     def on_button_new_blank_clicked(self, *args):
