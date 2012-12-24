@@ -167,6 +167,8 @@ class MeldApp(gobject.GObject):
                 parser.error(_("Error reading saved comparison file"))
         elif args:
             tab = open_paths(args, options.auto_compare, options.auto_merge)
+        else:
+            tab = None
 
         if options.label and tab:
             tab.set_labels(options.label)
