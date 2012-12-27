@@ -46,7 +46,7 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
                              parentapp.append_dirdiff,
                              parentapp.append_vcview)
         self.diff_type = -1
-        self.widget.show_all()
+        self.widget.show()
 
     def on_button_type_toggled(self, button, *args):
         if not button.get_active():
