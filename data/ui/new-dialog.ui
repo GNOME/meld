@@ -303,12 +303,13 @@
                             <property name="n_columns">3</property>
                             <property name="column_spacing">12</property>
                             <property name="row_spacing">6</property>
+                            <property name="homogeneous">True</property>
                             <child>
                               <object class="GtkFileChooserButton" id="dir_chooser0">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="action">select-folder</property>
                                 <property name="create_folders">False</property>
+                                <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select First Folder</property>
                               </object>
                             </child>
@@ -316,8 +317,8 @@
                               <object class="GtkFileChooserButton" id="dir_chooser1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="action">select-folder</property>
                                 <property name="create_folders">False</property>
+                                <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select Second Folder</property>
                               </object>
                               <packing>
@@ -330,8 +331,8 @@
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">False</property>
-                                <property name="action">select-folder</property>
                                 <property name="create_folders">False</property>
+                                <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select Third Folder</property>
                               </object>
                               <packing>
@@ -372,44 +373,43 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox6">
+                          <object class="GtkTable" id="table3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="spacing">12</property>
+                            <property name="n_rows">2</property>
+                            <property name="n_columns">3</property>
+                            <property name="column_spacing">12</property>
+                            <property name="row_spacing">6</property>
                             <property name="homogeneous">True</property>
                             <child>
                               <object class="GtkFileChooserButton" id="vc_chooser0">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="action">select-folder</property>
                                 <property name="create_folders">False</property>
+                                <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select A Version-Controlled Folder</property>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
+                                <property name="left_attach">0</property>
+                                <property name="right_attach">3</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </object>
                           <packing>
                             <property name="position">3</property>
                           </packing>
-                        </child>
-                        <child type="tab">
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child type="tab">
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child type="tab">
-                          <placeholder/>
                         </child>
                       </object>
                       <packing>
