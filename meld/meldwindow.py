@@ -28,7 +28,7 @@ from . import filediff
 from . import filemerge
 from . import melddoc
 from . import misc
-from . import new_diff_dialog
+from . import newdifftab
 from . import paths
 from . import preferences
 from . import recent
@@ -579,7 +579,7 @@ class MeldWindow(gnomeglade.Component):
         # cycling through X pages when X diffs are initiated.
         if isinstance(self.current_doc(), dirdiff.DirDiff) or \
            isinstance(self.current_doc(), vcview.VcView) or \
-           isinstance(page, new_diff_dialog.NewDiffTab):
+           isinstance(page, newdifftab.NewDiffTab):
             self.notebook.set_current_page(self.notebook.page_num(page.widget))
 
         if hasattr(page, 'scheduler'):
@@ -594,7 +594,7 @@ class MeldWindow(gnomeglade.Component):
         self.notebook.set_tab_reorderable(page.widget, True)
 
     def append_new_comparison(self):
-        doc = new_diff_dialog.NewDiffTab(self)
+        doc = newdifftab.NewDiffTab(self)
         self._append_page(doc, "document-new")
         self.on_notebook_label_changed(doc, _("New comparison"), None)
 
