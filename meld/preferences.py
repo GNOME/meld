@@ -146,7 +146,49 @@ class PreferencesDialog(gnomeglade.Component):
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
+
+        # columns
+        column_model = gtk.ListStore(bool, str)
+        self.columns_treeview.set_model(column_model)
+        for column in self.prefs.dirdiff_columns:
+            column_name, visibility = column.rsplit(" ", 1)
+            visibility = bool(int(visibility))
+            column_model.append([visibility, _(column_name.capitalize())])
+        self.cr_active.set_property("activatable", True)
+        self.active_column.add_attribute(self.cr_active, "active", 0)
+        self.name_column.add_attribute(self.cr_name, "text", 1)
+        self.cr_active.connect("toggled",
+                self.on_cr_active_toggled, column_model)
+        self.column_up.connect("clicked", self.on_column_up_clicked)
+        self.column_down.connect("clicked", self.on_column_down_clicked)
         self.widget.show()
+
+    def _get_column_selected(self):
+        (model, it) = self.columns_treeview.get_selection().get_selected()
+        if it:
+            path = model.get_path(it)[0]
+        else:
+            path = None
+        return (model, it, path)
+
+    def on_column_up_clicked(self, button):
+        (model, it, path) = self._get_column_selected()
+        model.swap(it, model.get_iter(path - 1))
+        self.update_columns(model)
+
+    def on_column_down_clicked(self, button):
+        (model, it, path) = self._get_column_selected()
+        model.swap(it, model.get_iter(path + 1))
+        self.update_columns(model)
+
+    def on_cr_active_toggled(self, cell, path, model):
+        model[path][0] = not model[path][0]
+        self.update_columns(model)
+
+    def update_columns(self, model):
+        self.prefs.dirdiff_columns = [
+                "%s %d" % (column[1].lower(), int(column[0])) for column in model
+                ]
 
     def on_fontpicker_font_set(self, picker):
         self.prefs.custom_font = picker.get_font_name()
@@ -254,6 +296,11 @@ class MeldPreferences(prefs.Preferences):
                                           ['normal', 'modified', 'new']),
         "vc_status_filters": prefs.Value(prefs.LIST,
                                          ['flatten', 'modified']),
+        # Currently, we're using a quite simple format to store the columns:
+        # each line contains a column name followed by a 1 or a 0
+        # depending on whether the column is visible or not.
+        "dirdiff_columns": prefs.Value(prefs.LIST,
+                                         ["size 1", "modification time 1"]),
     }
 
     def __init__(self):
