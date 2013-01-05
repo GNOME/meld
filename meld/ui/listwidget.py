@@ -23,12 +23,13 @@ from . import gnomeglade
 
 class ListWidget(gnomeglade.Component):
 
-    def __init__(self, new_row_data=None):
-        gnomeglade.Component.__init__(self, paths.ui_dir("EditableList.ui"),
-                                      "list_alignment", ["EditableListStore"])
+    def __init__(self, ui_file, widget, store, treeview, new_row_data=None):
+        gnomeglade.Component.__init__(self, paths.ui_dir(ui_file),
+                                      widget, store)
         self.new_row_data = new_row_data
-        self.model = self.EditableList.get_model()
-        selection = self.EditableList.get_selection()
+        self.list = getattr(self, treeview)
+        self.model = self.list.get_model()
+        selection = self.list.get_selection()
         selection.connect("changed", self._update_sensitivity)
 
     def _update_sensitivity(self, *args):
@@ -43,7 +44,7 @@ class ListWidget(gnomeglade.Component):
             self.move_down.set_sensitive(path < len(model) - 1)
 
     def _get_selected(self):
-        (model, it) = self.EditableList.get_selection().get_selected()
+        (model, it) = self.list.get_selection().get_selected()
         if it:
             path = model.get_path(it)[0]
         else:
@@ -64,4 +65,3 @@ class ListWidget(gnomeglade.Component):
     def on_move_down_clicked(self, button):
         (model, it, path) = self._get_selected()
         model.swap(it, model.get_iter(path + 1))
-

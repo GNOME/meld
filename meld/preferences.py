@@ -36,7 +36,9 @@ class FilterList(listwidget.ListWidget):
 
     def __init__(self, prefs, key, filter_type):
         default_entry = [_("label"), False, _("pattern"), True]
-        listwidget.ListWidget.__init__(self, default_entry)
+        listwidget.ListWidget.__init__(self, "EditableList.ui",
+                                       "list_alignment", ["EditableListStore"],
+                                       "EditableList", default_entry)
         self.prefs = prefs
         self.key = key
         self.filter_type = filter_type
@@ -84,6 +86,34 @@ class FilterList(listwidget.ListWidget):
                 pattern = pattern.replace('\n', '')
             pref.append("%s\t%s\t%s" % (row[0], 1 if row[1] else 0, pattern))
         setattr(self.prefs, self.key, "\n".join(pref))
+
+
+class ColumnList(listwidget.ListWidget):
+
+    def __init__(self, prefs, key):
+        listwidget.ListWidget.__init__(self, "EditableList.ui",
+                               "columns_ta", ["ColumnsListStore"],
+                               "columns_treeview")
+        self.prefs = prefs
+        self.key = key
+
+        for column in getattr(self.prefs, self.key):
+            column_name, visibility = column.rsplit(" ", 1)
+            visibility = bool(int(visibility))
+            self.model.append([visibility, _(column_name.capitalize())])
+
+        for signal in ('row-changed', 'row-deleted', 'row-inserted',
+                       'rows-reordered'):
+            self.model.connect(signal, self._update_columns)
+
+        self._update_sensitivity()
+
+    def on_cellrenderertoggle_toggled(self, ren, path):
+        self.model[path][0] = not ren.get_active()
+
+    def _update_columns(self, *args):
+        columns = ["%s %d" % (c[1].lower(), int(c[0])) for c in self.model]
+        setattr(self.prefs, self.key, columns)
 
 
 class PreferencesDialog(gnomeglade.Component):
@@ -147,48 +177,10 @@ class PreferencesDialog(gnomeglade.Component):
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
 
-        # columns
-        column_model = gtk.ListStore(bool, str)
-        self.columns_treeview.set_model(column_model)
-        for column in self.prefs.dirdiff_columns:
-            column_name, visibility = column.rsplit(" ", 1)
-            visibility = bool(int(visibility))
-            column_model.append([visibility, _(column_name.capitalize())])
-        self.cr_active.set_property("activatable", True)
-        self.active_column.add_attribute(self.cr_active, "active", 0)
-        self.name_column.add_attribute(self.cr_name, "text", 1)
-        self.cr_active.connect("toggled",
-                self.on_cr_active_toggled, column_model)
-        self.column_up.connect("clicked", self.on_column_up_clicked)
-        self.column_down.connect("clicked", self.on_column_down_clicked)
+        columnlist = ColumnList(self.prefs, "dirdiff_columns")
+        self.column_list_vbox.pack_start(columnlist.widget)
+
         self.widget.show()
-
-    def _get_column_selected(self):
-        (model, it) = self.columns_treeview.get_selection().get_selected()
-        if it:
-            path = model.get_path(it)[0]
-        else:
-            path = None
-        return (model, it, path)
-
-    def on_column_up_clicked(self, button):
-        (model, it, path) = self._get_column_selected()
-        model.swap(it, model.get_iter(path - 1))
-        self.update_columns(model)
-
-    def on_column_down_clicked(self, button):
-        (model, it, path) = self._get_column_selected()
-        model.swap(it, model.get_iter(path + 1))
-        self.update_columns(model)
-
-    def on_cr_active_toggled(self, cell, path, model):
-        model[path][0] = not model[path][0]
-        self.update_columns(model)
-
-    def update_columns(self, model):
-        self.prefs.dirdiff_columns = [
-                "%s %d" % (column[1].lower(), int(column[0])) for column in model
-                ]
 
     def on_fontpicker_font_set(self, picker):
         self.prefs.custom_font = picker.get_font_name()

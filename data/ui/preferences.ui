@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.8 -->
+  <requires lib="gtk+" version="2.18"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAdjustment" id="adjustment1">
     <property name="lower">1</property>
@@ -8,28 +8,6 @@
     <property name="value">4</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name active -->
-      <column type="gboolean"/>
-      <!-- column-name column_name -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">False</col>
-        <col id="1" translatable="yes">Name</col>
-      </row>
-      <row>
-        <col id="0">False</col>
-        <col id="1" translatable="yes">Modification date</col>
-      </row>
-      <row>
-        <col id="0">False</col>
-        <col id="1" translatable="yes">Size</col>
-      </row>
-    </data>
   </object>
   <object class="GtkDialog" id="preferencesdialog">
     <property name="can_focus">False</property>
@@ -836,102 +814,76 @@
               </packing>
             </child>
             <child>
-              <object class="GtkAlignment" id="columns_ta">
+              <object class="GtkVBox" id="columns_tab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="top_padding">12</property>
-                <property name="bottom_padding">12</property>
-                <property name="left_padding">12</property>
-                <property name="right_padding">12</property>
+                <property name="border_width">12</property>
+                <property name="spacing">12</property>
                 <child>
-                  <object class="GtkVBox" id="columns_tab">
+                  <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="spacing">6</property>
                     <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow1">
+                      <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
+                        <property name="can_focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Visible columns</property>
+                        <property name="use_markup">True</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHBox" id="hbox1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkTreeView" id="columns_treeview">
-                            <property name="height_request">150</property>
+                          <object class="GtkLabel" id="label4">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="headers_clickable">False</property>
-                            <property name="search_column">0</property>
+                            <property name="can_focus">False</property>
+                            <property name="xpad">12</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="column_list_vbox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkTreeViewColumn" id="active_column">
-                                <property name="title" translatable="yes">Active</property>
-                                <child>
-                                  <object class="GtkCellRendererToggle" id="cr_active"/>
-                                  <attributes>
-                                    <attribute name="active">0</attribute>
-                                  </attributes>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkTreeViewColumn" id="name_column">
-                                <property name="title" translatable="yes">Column name</property>
-                                <child>
-                                  <object class="GtkCellRendererText" id="cr_name"/>
-                                  <attributes>
-                                    <attribute name="text">1</attribute>
-                                  </attributes>
-                                </child>
-                              </object>
+                              <placeholder/>
                             </child>
                           </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolbar" id="columns_toolbar">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkToolButton" id="column_up">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_action_appearance">False</property>
-                            <property name="label" translatable="yes">Move up</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-go-up</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="column_down">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="use_action_appearance">False</property>
-                            <property name="label" translatable="yes">Move down</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">gtk-go-down</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
               </object>
               <packing>
