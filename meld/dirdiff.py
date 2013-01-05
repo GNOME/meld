@@ -295,8 +295,43 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         permissions_label.show()
         self.status_info_labels = [lastchanged_label, permissions_label]
 
-        self.columns_dict = [{}, {}, {}]  # one column-dict for each treeview
-        self.create_treeview_columns(self.prefs.dirdiff_columns)
+        # One column-dict for each treeview, for changing visibility and order
+        self.columns_dict = [{}, {}, {}]
+        for i in range(3):
+            col_index = self.model.column_index
+            # Create icon and filename CellRenderer
+            column = gtk.TreeViewColumn(_("Name"))
+            rentext = gtk.CellRendererText()
+            renicon = emblemcellrenderer.EmblemCellRenderer()
+            column.pack_start(renicon, expand=0)
+            column.pack_start(rentext, expand=1)
+            column.set_attributes(rentext, text=col_index(tree.COL_TEXT, i),
+                                  foreground_gdk=col_index(tree.COL_FG, i),
+                                  style=col_index(tree.COL_STYLE, i),
+                                  weight=col_index(tree.COL_WEIGHT, i),
+                                  strikethrough=col_index(tree.COL_STRIKE, i))
+            column.set_attributes(renicon,
+                                  icon_name=col_index(tree.COL_ICON, i),
+                                  emblem_name=col_index(COL_EMBLEM, i),
+                                  icon_tint=col_index(tree.COL_TINT, i))
+            self.treeview[i].append_column(column)
+            self.columns_dict[i]["name"] = column
+            # Create file size CellRenderer
+            column = gtk.TreeViewColumn(_("Size"))
+            rentext = gtk.CellRendererText()
+            column.pack_start(rentext, expand=1)
+            column.set_attributes(rentext, markup=col_index(COL_SIZE, i))
+            self.treeview[i].append_column(column)
+            self.columns_dict[i]["size"] = column
+            # Create date-time CellRenderer
+            column = gtk.TreeViewColumn(_("Modification time"))
+            rentext = gtk.CellRendererText()
+            column.pack_start(rentext, expand=1)
+            column.set_attributes(rentext, markup=col_index(COL_TIME, i))
+            self.treeview[i].append_column(column)
+            self.columns_dict[i]["modification time"] = column
+        self.update_treeview_columns(self.prefs.dirdiff_columns)
+
         for i in range(3):
             self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
             self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
@@ -1285,44 +1320,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.treeview[i].move_column_after(current_column, last_column)
                 last_column = current_column
             self.treeview[i].set_headers_visible(extra_cols)
-
-    def create_treeview_columns(self, columns):
-        """Creates the columns properly, second argument is a string
-        describing visiblity and order of columns."""
-        for i in range(3):
-            col_index = self.model.column_index
-            # Create icon and filename CellRenderer
-            column = gtk.TreeViewColumn(_("Name"))
-            rentext = gtk.CellRendererText()
-            renicon = emblemcellrenderer.EmblemCellRenderer()
-            column.pack_start(renicon, expand=0)
-            column.pack_start(rentext, expand=1)
-            column.set_attributes(rentext, text=col_index(tree.COL_TEXT, i),
-                                  foreground_gdk=col_index(tree.COL_FG, i),
-                                  style=col_index(tree.COL_STYLE, i),
-                                  weight=col_index(tree.COL_WEIGHT, i),
-                                  strikethrough=col_index(tree.COL_STRIKE, i))
-            column.set_attributes(renicon,
-                                  icon_name=col_index(tree.COL_ICON, i),
-                                  emblem_name=col_index(COL_EMBLEM, i),
-                                  icon_tint=col_index(tree.COL_TINT, i))
-            self.treeview[i].append_column(column)
-            self.columns_dict[i]["name"] = column
-            # Create file size CellRenderer
-            column = gtk.TreeViewColumn(_("Size"))
-            rentext = gtk.CellRendererText()
-            column.pack_start(rentext, expand=1)
-            column.set_attributes(rentext, markup=col_index(COL_SIZE, i))
-            self.treeview[i].append_column(column)
-            self.columns_dict[i]["size"] = column
-            # Create date-time CellRenderer
-            column = gtk.TreeViewColumn(_("Modification time"))
-            rentext = gtk.CellRendererText()
-            column.pack_start(rentext, expand=1)
-            column.set_attributes(rentext, markup=col_index(COL_TIME, i))
-            self.treeview[i].append_column(column)
-            self.columns_dict[i]["modification time"] = column
-        self.update_treeview_columns(columns)
 
     def on_preference_changed(self, key, value):
         if key == "dirdiff_columns":
