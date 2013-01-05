@@ -370,6 +370,25 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for diffmap in self.diffmap:
             diffmap.queue_draw()
 
+    def on_preference_changed(self, key, value):
+        if key == "dirdiff_columns":
+            self.update_treeview_columns(value)
+
+    def update_treeview_columns(self, columns):
+        """Update the visibility and order of columns"""
+        for i in range(3):
+            extra_cols = False
+            last_column = self.treeview[i].get_column(0)
+            for line in columns:
+                column_name, visible = line.rsplit(" ", 1)
+                visible = bool(int(visible))
+                extra_cols = extra_cols or visible
+                current_column = self.columns_dict[i][column_name]
+                current_column.set_visible(visible)
+                self.treeview[i].move_column_after(current_column, last_column)
+                last_column = current_column
+            self.treeview[i].set_headers_visible(extra_cols)
+
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
             self.custom_popup.connect("deactivate",
@@ -1305,22 +1324,3 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             app.disconnect(h)
 
         return gtk.RESPONSE_OK
-
-    def update_treeview_columns(self, columns):
-        """Update the visibility and order of columns"""
-        for i in range(3):
-            extra_cols = False
-            last_column = self.treeview[i].get_column(0)
-            for line in columns:
-                column_name, visible = line.rsplit(" ", 1)
-                visible = bool(int(visible))
-                extra_cols = extra_cols or visible
-                current_column = self.columns_dict[i][column_name]
-                current_column.set_visible(visible)
-                self.treeview[i].move_column_after(current_column, last_column)
-                last_column = current_column
-            self.treeview[i].set_headers_visible(extra_cols)
-
-    def on_preference_changed(self, key, value):
-        if key == "dirdiff_columns":
-            self.update_treeview_columns(value)
