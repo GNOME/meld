@@ -1271,7 +1271,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         return gtk.RESPONSE_OK
 
-    def update_treeview_columns(self, columns, showheaders=None):
+    def update_treeview_columns(self, columns):
         """Adjusts visibility and order or columns, second arg
         as in create_treeview_columns"""
         for i in range(3):
@@ -1287,11 +1287,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 last_column = current_column
             self.treeview[i].set_headers_visible(num_visible_cols != 1)
 
-    def create_treeview_columns(self, columns, showheaders=None):
+    def create_treeview_columns(self, columns):
         """Creates the columns properly, second argument is a string
         describing visiblity and order of columns."""
         for i in range(3):
-            last_column = None
             col_index = self.model.column_index
             # Create icon and filename CellRenderer
             column = gtk.TreeViewColumn(_("Name"))
@@ -1324,7 +1323,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.set_attributes(rentext, markup=col_index(COL_TIME, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["modification time"] = column
-        self.update_treeview_columns(columns, showheaders)
+        self.update_treeview_columns(columns)
 
     def on_preference_changed(self, key, value):
         if key == "dirdiff_columns":
