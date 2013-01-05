@@ -1272,20 +1272,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return gtk.RESPONSE_OK
 
     def update_treeview_columns(self, columns):
-        """Adjusts visibility and order or columns, second arg
-        as in create_treeview_columns"""
+        """Update the visibility and order of columns"""
         for i in range(3):
-            num_visible_cols = 1
+            extra_cols = False
             last_column = self.treeview[i].get_column(0)
             for line in columns:
-                column_name, column_visibility = line.rsplit(" ", 1)
-                column_visibility = bool(int(column_visibility))
-                num_visible_cols = num_visible_cols + int(column_visibility)
+                column_name, visible = line.rsplit(" ", 1)
+                visible = bool(int(visible))
+                extra_cols = extra_cols or visible
                 current_column = self.columns_dict[i][column_name]
-                current_column.set_visible(column_visibility)
+                current_column.set_visible(visible)
                 self.treeview[i].move_column_after(current_column, last_column)
                 last_column = current_column
-            self.treeview[i].set_headers_visible(num_visible_cols != 1)
+            self.treeview[i].set_headers_visible(extra_cols)
 
     def create_treeview_columns(self, columns):
         """Creates the columns properly, second argument is a string
