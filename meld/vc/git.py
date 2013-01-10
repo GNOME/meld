@@ -91,7 +91,7 @@ class Vc(_vc.CachedVc):
         path = path[len(self.root) + 1:]
 
         obj = commit + ":" + path
-        process = subprocess.Popen(["git", "cat-file", "blob", obj],
+        process = subprocess.Popen([self.CMD, "cat-file", "blob", obj],
                                    cwd=self.location, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         vc_file = process.stdout
@@ -122,7 +122,7 @@ class Vc(_vc.CachedVc):
             try:
                 # Update the index before getting status, otherwise we could
                 # be reading stale status information
-                _vc.popen(["git", "update-index", "--refresh"],
+                _vc.popen([self.CMD, "update-index", "--refresh"],
                           cwd=self.location)
 
                 # Get the status of files that are different in the "index" vs
