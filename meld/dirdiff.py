@@ -161,16 +161,13 @@ def _files_same(files, regexes):
     return result
 
 
-COL_EMBLEM, COL_SIZE, COL_TIME, COL_END = range(tree.COL_END, tree.COL_END + 4)
+COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
+        range(tree.COL_END, tree.COL_END + 5)
 
-################################################################################
-#
-# DirDiffTreeStore
-#
-################################################################################
+
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(self, ntree, [str, str, str])
+        tree.DiffTreeStore.__init__(self, ntree, [str, str, str, str])
 
 
 class CanonicalListing(object):
@@ -330,6 +327,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.set_attributes(rentext, markup=col_index(COL_TIME, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["modification time"] = column
+            # Create permissions CellRenderer
+            column = gtk.TreeViewColumn(_("Permissions"))
+            rentext = gtk.CellRendererText()
+            column.pack_start(rentext, expand=0)
+            column.set_attributes(rentext, markup=col_index(COL_PERMS, i))
+            self.treeview[i].append_column(column)
+            self.columns_dict[i]["permissions"] = column
         self.update_treeview_columns(self.prefs.dirdiff_columns)
 
         for i in range(3):
@@ -1085,6 +1089,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return None
         stats = [stat(f) for f in files[:self.num_panes]]
         sizes = [s.st_size if s else 0 for s in stats]
+        perms = [s.st_mode if s else 0 for s in stats]
+
         # find the newest file, checking also that they differ
         mod_times = [s.st_mtime if s else 0 for s in stats]
         newest_index = mod_times.index( max(mod_times) )
@@ -1148,6 +1154,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 SIZE = self.model.column_index(COL_SIZE, j)
                 size_str = natural_size(sizes[j])
                 self.model.set_value(it, SIZE, size_str)
+
+                def format_mode(mode):
+                    perms = []
+                    rwx = ((4, 'r'), (2, 'w'), (1, 'x'))
+                    for group_index in (6, 3, 0):
+                        group = mode >> group_index & 7
+                        perms.extend([p if group & i else '-' for i, p in rwx])
+                    return "".join(perms)
+
+                PERMS = self.model.column_index(COL_PERMS, j)
+                perm_str = format_mode(perms[j])
+                self.model.set_value(it, PERMS, perm_str)
 
         for j in range(self.model.ntree):
             if not mod_times[j]:

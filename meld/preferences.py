@@ -93,6 +93,7 @@ class ColumnList(listwidget.ListWidget):
     available_columns = set((
         "size",
         "modification time",
+        "permissions",
     ))
 
     def __init__(self, prefs, key):
@@ -303,7 +304,8 @@ class MeldPreferences(prefs.Preferences):
         # each line contains a column name followed by a 1 or a 0
         # depending on whether the column is visible or not.
         "dirdiff_columns": prefs.Value(prefs.LIST,
-                                         ["size 1", "modification time 1"]),
+                                         ["size 1", "modification time 1",
+                                          "permissions 0"]),
     }
 
     def __init__(self):
