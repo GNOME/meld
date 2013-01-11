@@ -90,6 +90,11 @@ class FilterList(listwidget.ListWidget):
 
 class ColumnList(listwidget.ListWidget):
 
+    available_columns = set((
+        "size",
+        "modification time",
+    ))
+
     def __init__(self, prefs, key):
         listwidget.ListWidget.__init__(self, "EditableList.ui",
                                "columns_ta", ["ColumnsListStore"],
@@ -97,9 +102,15 @@ class ColumnList(listwidget.ListWidget):
         self.prefs = prefs
         self.key = key
 
+        prefs_columns = []
         for column in getattr(self.prefs, self.key):
             column_name, visibility = column.rsplit(" ", 1)
             visibility = bool(int(visibility))
+            prefs_columns.append((column_name, visibility))
+
+        missing = self.available_columns - set([c[0] for c in prefs_columns])
+        prefs_columns.extend([(m, False) for m in missing])
+        for column_name, visibility in prefs_columns:
             self.model.append([visibility, _(column_name.capitalize())])
 
         for signal in ('row-changed', 'row-deleted', 'row-inserted',
