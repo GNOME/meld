@@ -1461,7 +1461,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].set_active(not editable)
         self.textview[index].set_editable(editable)
-        self.on_current_diff_changed(self)
+        self.on_cursor_position_changed(buf, None, True)
         for linkmap in self.linkmap:
             linkmap.queue_draw()
 
