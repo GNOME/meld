@@ -42,9 +42,9 @@ def consume_blank_lines(chunk, texts, pane1, pane2):
         return None
 
     def _find_blank_lines(txt, lo, hi):
-        while not txt[lo] and lo < hi:
+        while lo < hi and not txt[lo]:
             lo += 1
-        while not txt[hi - 1] and lo < hi:
+        while lo < hi and not txt[hi - 1]:
             hi -= 1
         return lo, hi
 
