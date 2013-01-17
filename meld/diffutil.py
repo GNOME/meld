@@ -55,9 +55,9 @@ def consume_blank_lines(chunk, texts, pane1, pane2):
     if c1 == c2 and c3 == c4:
         return None
     if c1 == c2 and tag == "replace":
-        c0 = "insert"
+        tag = "insert"
     elif c3 == c4 and tag == "replace":
-        c0 = "delete"
+        tag = "delete"
     return DiffChunk._make((tag, c1, c2, c3, c4))
 
 
