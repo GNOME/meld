@@ -297,7 +297,7 @@ class MeldWindow(gnomeglade.Component):
         except AttributeError:
             pass
         newdoc.on_container_switch_in_event(self.ui)
-        if isinstance(page, melddoc.MeldDoc):
+        if isinstance(newdoc, melddoc.MeldDoc):
             self.diff_handler = newdoc.connect("next-diff-changed",
                                                self.on_next_diff_changed)
         if hasattr(newdoc, 'scheduler'):
