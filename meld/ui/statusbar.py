@@ -48,10 +48,18 @@ class MeldStatusBar(gtk.Statusbar):
         else:
             frame = self.get_children()[0]
             self.set_child_packing(frame, False, False, 0, gtk.PACK_START)
-            hbox = frame.get_child()
+            child = frame.get_child()
+            # Internal GTK widgetry changed when get_message_area was added.
+            if not isinstance(child, gtk.HBox):
+                hbox = gtk.HBox(False, 4)
+                child.reparent(hbox)
+                frame.add(hbox)
+                hbox.show()
+                label = child
+            else:
+                hbox = child
+                label = hbox.get_children()[0]
         hbox.props.spacing = 6
-
-        label = hbox.get_children()[0]
         label.props.ellipsize = pango.ELLIPSIZE_NONE
 
         self.progress = gtk.ProgressBar()

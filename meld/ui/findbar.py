@@ -38,7 +38,12 @@ class FindBar(gnomeglade.Component):
 
     def on_focus_child(self, container, widget):
         if widget is not None:
-            if widget is not self.widget and self.widget.get_visible():
+            # TODO: Not in PyGtk 2.16; remove this check later
+            if hasattr(self.widget, "get_visible"):
+                visible = self.widget.get_visible()
+            else:
+                visible = self.widget.props.visible
+            if widget is not self.widget and visible:
                 self.hide()
         return False
 
