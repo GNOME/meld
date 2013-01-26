@@ -300,6 +300,8 @@ class MeldWindow(gnomeglade.Component):
         if isinstance(newdoc, melddoc.MeldDoc):
             self.diff_handler = newdoc.connect("next-diff-changed",
                                                self.on_next_diff_changed)
+        else:
+            self.diff_handler = None
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
