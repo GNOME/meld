@@ -32,6 +32,12 @@ from .util import prefs
 from .util.sourceviewer import srcviewer
 
 
+TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
+                                ('100ns (NTFS)', 100),
+                                ('1s (ext2/ext3)', 1000000000),
+                                ('2s (VFAT)', 2000000000)]
+
+
 class FilterList(listwidget.ListWidget):
 
     def __init__(self, prefs, key, filter_type):
@@ -192,6 +198,22 @@ class PreferencesDialog(gnomeglade.Component):
         columnlist = ColumnList(self.prefs, "dirdiff_columns")
         self.column_list_vbox.pack_start(columnlist.widget)
 
+        self.checkbutton_shallow_compare.set_active(self.prefs.dirdiff_shallow_comparison)
+
+        self.combo_timestamp.lock = True
+        model = gtk.ListStore(str, int)
+        active_idx = 0
+        for i, entry in enumerate(TIMESTAMP_RESOLUTION_PRESETS):
+            model.append(entry)
+            if entry[1] == self.prefs.dirdiff_time_resolution_ns:
+                active_idx = i
+        self.combo_timestamp.set_model(model)
+        cell = gtk.CellRendererText()
+        self.combo_timestamp.pack_start(cell, False)
+        self.combo_timestamp.add_attribute(cell, 'text', 0)
+        self.combo_timestamp.set_active(active_idx)
+        self.combo_timestamp.lock = False
+
         self.widget.show()
 
     def on_fontpicker_font_set(self, picker):
@@ -249,6 +271,13 @@ class PreferencesDialog(gnomeglade.Component):
         # Called on "activate" and "focus-out-event"
         self.prefs.text_codecs = entry.props.text
 
+    def on_checkbutton_shallow_compare_toggled(self, check):
+        self.prefs.dirdiff_shallow_comparison = check.get_active()
+    
+    def on_combo_timestamp_changed(self, combo):
+        if not combo.lock:
+            self.prefs.dirdiff_time_resolution_ns = combo.get_model()[combo.get_active_iter()][1]
+    
     def on_response(self, dialog, response_id):
         self.widget.destroy()
 
@@ -306,6 +335,8 @@ class MeldPreferences(prefs.Preferences):
         "dirdiff_columns": prefs.Value(prefs.LIST,
                                          ["size 1", "modification time 1",
                                           "permissions 0"]),
+        "dirdiff_shallow_comparison" : prefs.Value(prefs.BOOL, False),
+        "dirdiff_time_resolution_ns" : prefs.Value(prefs.INT, 100),
     }
 
     def __init__(self):

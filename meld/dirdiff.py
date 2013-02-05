@@ -29,6 +29,8 @@ import time
 import gtk
 import gtk.keysyms
 
+from decimal import Decimal
+
 from . import melddoc
 from . import tree
 from . import misc
@@ -58,6 +60,15 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         return StatItem(stat.S_IFMT(stat_result.st_mode),
                         stat_result.st_size, stat_result.st_mtime)
 
+    def shallow_equal(self, other, prefs):
+        if self.size != other.size:
+            return False
+
+        mtime1 = Decimal(self.time).scaleb(9).quantize(1) // prefs.dirdiff_time_resolution_ns
+        mtime2 = Decimal(other.time).scaleb(9).quantize(1) // prefs.dirdiff_time_resolution_ns
+
+        return mtime1 == mtime2
+
 
 CacheResult = namedtuple('CacheResult', 'stats result')
 
@@ -73,7 +84,7 @@ def all_same(lst):
     return not lst or lst.count(lst[0]) == len(lst)
 
 
-def _files_same(files, regexes):
+def _files_same(files, regexes, prefs):
     """Determine whether a list of files are the same.
 
     Possible results are:
@@ -103,6 +114,13 @@ def _files_same(files, regexes):
     # If there are no text filters, unequal sizes imply a difference
     if not regexes and not all_same([s.size for s in stats]):
         return Different
+
+    # Compare files superficially if the options tells us to
+    if prefs.dirdiff_shallow_comparison:
+        if all(s.shallow_equal(stats[0], prefs) for s in stats):
+            return DodgySame
+        else:
+            return Different
 
     # Check the cache before doing the expensive comparison
     cache = _cache.get((files, regexes))
@@ -378,6 +396,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_preference_changed(self, key, value):
         if key == "dirdiff_columns":
             self.update_treeview_columns(value)
+        elif key == "dirdiff_shallow_comparison":
+            self.refresh()
+        elif key == "dirdiff_time_resolution_ns":
+            self.refresh()
 
     def update_treeview_columns(self, columns):
         """Update the visibility and order of columns"""
@@ -1067,7 +1089,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             is_present = [ os.path.exists( f ) for f in curfiles ]
             all_present = 0 not in is_present
             if all_present:
-                if _files_same(curfiles, regexes) in (Same, SameFiltered):
+                if _files_same(curfiles, regexes, self.prefs) in (Same, SameFiltered):
                     state = tree.STATE_NORMAL
                 else:
                     state = tree.STATE_MODIFIED
@@ -1099,7 +1121,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             newest_index = -1 # all same
         all_present = 0 not in mod_times
         if all_present:
-            all_same = _files_same(files, regexes)
+            all_same = _files_same(files, regexes, self.prefs)
             all_present_same = all_same
         else:
             lof = []
@@ -1107,7 +1129,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if mod_times[j]:
                     lof.append( files[j] )
             all_same = Different
-            all_present_same = _files_same(lof, regexes)
+            all_present_same = _files_same(lof, regexes, self.prefs)
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
