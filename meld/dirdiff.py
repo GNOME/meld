@@ -268,6 +268,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.widget.connect("style-set", self.on_style_set)
         self.widget.ensure_style()
 
+        self.custom_labels = []
         self.set_num_panes(num_panes)
 
         self.widget.connect("style-set", self.model.on_style_set)
@@ -1273,10 +1274,22 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def recompute_label(self):
         root = self.model.get_iter_root()
         filenames = self.model.value_paths(root)
-        shortnames = misc.shorten_names(*filenames)
+        if self.custom_labels:
+            label_options = zip(self.custom_labels, filenames)
+            shortnames = [l[0] or l[1] for l in label_options]
+        else:
+            shortnames = misc.shorten_names(*filenames)
         self.label_text = " : ".join(shortnames)
         self.tooltip_text = self.label_text
         self.label_changed()
+
+    def set_labels(self, labels):
+        labels = labels[:self.num_panes]
+        extra = self.num_panes - len(labels)
+        if extra:
+            labels.extend([""] * extra)
+        self.custom_labels = labels
+        self.recompute_label()
 
     def _update_diffmaps(self):
         self.diffmap[0].queue_draw()
