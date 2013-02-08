@@ -92,7 +92,7 @@ class Vc(_vc.CachedVc):
 
         obj = commit + ":" + path
         process = subprocess.Popen([self.CMD, "cat-file", "blob", obj],
-                                   cwd=self.location, stdout=subprocess.PIPE,
+                                   cwd=self.root, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         vc_file = process.stdout
 

@@ -49,7 +49,7 @@ class Vc(svn.Vc):
         path = path[len(self.root) + 1:]
 
         process = subprocess.Popen([self.CMD, "cat", "-r", commit, path],
-                                   cwd=self.location, stdout=subprocess.PIPE,
+                                   cwd=self.root, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         vc_file = process.stdout
 
