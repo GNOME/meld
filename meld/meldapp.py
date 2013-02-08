@@ -173,7 +173,7 @@ class MeldApp(gobject.GObject):
         if options.label and tab:
             tab.set_labels(options.label)
 
-        if not options.diff and not tab:
+        if not self.window.has_pages():
             self.window.append_new_comparison()
 
         if options.outfile and tab and isinstance(tab, filediff.FileDiff):

@@ -247,6 +247,9 @@ class MeldWindow(gnomeglade.Component):
     def on_delete_event(self, *extra):
         return self.on_menu_quit_activate()
 
+    def has_pages(self):
+        return self.notebook.get_n_pages() > 0
+
     def _update_page_action_sensitivity(self):
         current_page = self.notebook.get_current_page()
         have_prev_tab = current_page > 0
