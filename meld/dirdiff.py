@@ -64,6 +64,11 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         if self.size != other.size:
             return False
 
+        # Shortcut to avoid expensive Decimal calculations. 2 seconds is our
+        # current accuracy threshold (for VFAT), so should be safe for now.
+        if abs(self.time - other.time) > 2:
+            return False
+
         dectime1 = Decimal(str(self.time)).scaleb(Decimal(9)).quantize(1)
         dectime2 = Decimal(str(other.time)).scaleb(Decimal(9)).quantize(1)
         mtime1 = dectime1 // prefs.dirdiff_time_resolution_ns
