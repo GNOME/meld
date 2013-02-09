@@ -118,16 +118,16 @@ def _files_same(files, regexes, prefs):
     if not all([stat.S_ISREG(s.mode) for s in stats]):
         return Different
 
-    # If there are no text filters, unequal sizes imply a difference
-    if not regexes and not all_same([s.size for s in stats]):
-        return Different
-
     # Compare files superficially if the options tells us to
     if prefs.dirdiff_shallow_comparison:
         if all(s.shallow_equal(stats[0], prefs) for s in stats[1:]):
             return DodgySame
         else:
             return Different
+
+    # If there are no text filters, unequal sizes imply a difference
+    if not regexes and not all_same([s.size for s in stats]):
+        return Different
 
     # Check the cache before doing the expensive comparison
     cache = _cache.get((files, regexes))
