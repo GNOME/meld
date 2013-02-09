@@ -198,7 +198,8 @@ class PreferencesDialog(gnomeglade.Component):
         columnlist = ColumnList(self.prefs, "dirdiff_columns")
         self.column_list_vbox.pack_start(columnlist.widget)
 
-        self.checkbutton_shallow_compare.set_active(self.prefs.dirdiff_shallow_comparison)
+        self.checkbutton_shallow_compare.set_active(
+                self.prefs.dirdiff_shallow_comparison)
 
         self.combo_timestamp.lock = True
         model = gtk.ListStore(str, int)
@@ -273,11 +274,12 @@ class PreferencesDialog(gnomeglade.Component):
 
     def on_checkbutton_shallow_compare_toggled(self, check):
         self.prefs.dirdiff_shallow_comparison = check.get_active()
-    
+
     def on_combo_timestamp_changed(self, combo):
         if not combo.lock:
-            self.prefs.dirdiff_time_resolution_ns = combo.get_model()[combo.get_active_iter()][1]
-    
+            resolution = combo.get_model()[combo.get_active_iter()][1]
+            self.prefs.dirdiff_time_resolution_ns = resolution
+
     def on_response(self, dialog, response_id):
         self.widget.destroy()
 

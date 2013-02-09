@@ -29,8 +29,6 @@ import time
 import gtk
 import gtk.keysyms
 
-from decimal import Decimal
-
 from . import melddoc
 from . import tree
 from . import misc
@@ -40,6 +38,7 @@ from .ui import gnomeglade
 from .ui import emblemcellrenderer
 
 from collections import namedtuple
+from decimal import Decimal
 from gettext import gettext as _
 from gettext import ngettext
 from .meldapp import app
