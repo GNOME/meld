@@ -64,8 +64,10 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         if self.size != other.size:
             return False
 
-        mtime1 = Decimal(self.time).scaleb(9).quantize(1) // prefs.dirdiff_time_resolution_ns
-        mtime2 = Decimal(other.time).scaleb(9).quantize(1) // prefs.dirdiff_time_resolution_ns
+        dectime1 = Decimal(str(self.time)).scaleb(Decimal(9)).quantize(1)
+        dectime2 = Decimal(str(other.time)).scaleb(Decimal(9)).quantize(1)
+        mtime1 = dectime1 // prefs.dirdiff_time_resolution_ns
+        mtime2 = dectime2 // prefs.dirdiff_time_resolution_ns
 
         return mtime1 == mtime2
 
