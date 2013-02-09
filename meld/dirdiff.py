@@ -119,7 +119,7 @@ def _files_same(files, regexes, prefs):
 
     # Compare files superficially if the options tells us to
     if prefs.dirdiff_shallow_comparison:
-        if all(s.shallow_equal(stats[0], prefs) for s in stats):
+        if all(s.shallow_equal(stats[0], prefs) for s in stats[1:]):
             return DodgySame
         else:
             return Different
