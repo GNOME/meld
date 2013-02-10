@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2013-01-12 18:30+0100\n"
-"PO-Revision-Date: 2013-01-12 18:33+0100\n"
+"POT-Creation-Date: 2013-02-10 12:27+0100\n"
+"PO-Revision-Date: 2013-02-10 12:28+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -86,7 +86,7 @@ msgid "Move _Down"
 msgstr "Przesuń w _dół"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:300
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:325
 #: ../meld/vcview.py:200
 msgid "Name"
 msgstr "Nazwa"
@@ -310,22 +310,34 @@ msgid "Editor"
 msgstr "Edytor"
 
 #: ../data/ui/preferences.ui.h:17
+msgid "Shallow comparison"
+msgstr "Płytkie porównanie"
+
+#: ../data/ui/preferences.ui.h:18
+msgid "C_ompare files based only on size and timestamp"
+msgstr "P_orównywanie plików w oparciu tylko o rozmiar i czas modyfikacji"
+
+#: ../data/ui/preferences.ui.h:19
+msgid "_Timestamp resolution:"
+msgstr "Rozwiązywanie _czasu modyfikacji:"
+
+#: ../data/ui/preferences.ui.h:20
 msgid "Symbolic links"
 msgstr "Dowiązania symboliczne"
 
-#: ../data/ui/preferences.ui.h:18
+#: ../data/ui/preferences.ui.h:21
 msgid "Ignore symbolic links"
 msgstr "Ignorowanie dowiązań symbolicznych"
 
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:22
 msgid "Visible columns"
 msgstr "Widoczne kolumny"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:23
 msgid "Folder comparisons"
 msgstr "Porównywanie katalogów"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../data/ui/preferences.ui.h:24
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -335,11 +347,11 @@ msgstr ""
 "podstawie nazwy. Każdy wzorzec jest listą symboli wieloznacznych powłoki "
 "rozdzieloną spacjami."
 
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:25
 msgid "File Filters"
 msgstr "Filtry plików"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../data/ui/preferences.ui.h:26
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -353,29 +365,29 @@ msgstr ""
 "zawiera grupy, tylko grupy są zamieniane. Więcej informacji dostępne jest w "
 "podręczniku użytkownika."
 
-#: ../data/ui/preferences.ui.h:24
+#: ../data/ui/preferences.ui.h:27
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Ignorowanie zmian, które dodają lub usuwają puste wiersze"
 
-#: ../data/ui/preferences.ui.h:25
+#: ../data/ui/preferences.ui.h:28
 msgid "Text Filters"
 msgstr "Filtry plików tekstowych"
 
-#: ../data/ui/preferences.ui.h:26
+#: ../data/ui/preferences.ui.h:29
 msgid "Loading"
 msgstr "Wczytywanie"
 
-#: ../data/ui/preferences.ui.h:27
+#: ../data/ui/preferences.ui.h:30
 msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
 msgstr ""
 "Wczytując plik, próbuje użyć kodowanie w podanej kolejności (np.: utf8, "
 "iso8859)"
 
-#: ../data/ui/preferences.ui.h:28
+#: ../data/ui/preferences.ui.h:31
 msgid "Encoding"
 msgstr "Kodowanie znaków"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:599
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:604
 msgid "New comparison"
 msgstr "Nowe porównanie"
 
@@ -447,135 +459,135 @@ msgstr "Wcześniejsze zmiany"
 msgid "Log Message"
 msgstr "Opis zmiany"
 
-#: ../meld/dirdiff.py:231 ../meld/vcview.py:160
+#: ../meld/dirdiff.py:255 ../meld/vcview.py:160
 msgid "_Compare"
 msgstr "P_orównaj"
 
-#: ../meld/dirdiff.py:231 ../meld/vcview.py:160
+#: ../meld/dirdiff.py:255 ../meld/vcview.py:160
 msgid "Compare selected"
 msgstr "Porównuje wybrane elementy"
 
-#: ../meld/dirdiff.py:232
+#: ../meld/dirdiff.py:256
 msgid "Copy _Left"
 msgstr "Kopiuj w _lewo"
 
-#: ../meld/dirdiff.py:232
+#: ../meld/dirdiff.py:256
 msgid "Copy to left"
 msgstr "Kopiuje element na lewo"
 
-#: ../meld/dirdiff.py:233
+#: ../meld/dirdiff.py:257
 msgid "Copy _Right"
 msgstr "Kopiuj w p_rawo"
 
-#: ../meld/dirdiff.py:233
+#: ../meld/dirdiff.py:257
 msgid "Copy to right"
 msgstr "Kopiuje element na prawo"
 
-#: ../meld/dirdiff.py:234
+#: ../meld/dirdiff.py:258
 msgid "Delete selected"
 msgstr "Usuwa zaznaczone"
 
-#: ../meld/dirdiff.py:235 ../meld/filediff.py:1247
+#: ../meld/dirdiff.py:259 ../meld/filediff.py:1247
 msgid "Hide"
 msgstr "Ukryj"
 
-#: ../meld/dirdiff.py:235
+#: ../meld/dirdiff.py:259
 msgid "Hide selected"
 msgstr "Ukrywa zaznaczone"
 
-#: ../meld/dirdiff.py:239
+#: ../meld/dirdiff.py:263
 msgid "Ignore filename case"
 msgstr "Ignorowanie wielkości liter w nazwach plików"
 
-#: ../meld/dirdiff.py:239
+#: ../meld/dirdiff.py:263
 msgid ""
 "Consider differently-cased filenames that are otherwise-identical to be the "
 "same"
 msgstr "Traktuje nazwy plików z literami różnej wielkości jako takie same"
 
-#: ../meld/dirdiff.py:240
+#: ../meld/dirdiff.py:264
 msgid "Same"
 msgstr "Takie same"
 
-#: ../meld/dirdiff.py:240
+#: ../meld/dirdiff.py:264
 msgid "Show identical"
 msgstr "Wyświetla identyczne"
 
-#: ../meld/dirdiff.py:241
+#: ../meld/dirdiff.py:265
 msgid "New"
 msgstr "Nowe"
 
-#: ../meld/dirdiff.py:241
+#: ../meld/dirdiff.py:265
 msgid "Show new"
 msgstr "Wyświetla nowe"
 
-#: ../meld/dirdiff.py:242
+#: ../meld/dirdiff.py:266
 msgid "Modified"
 msgstr "Zmodyfikowane"
 
-#: ../meld/dirdiff.py:242 ../meld/vcview.py:172
+#: ../meld/dirdiff.py:266 ../meld/vcview.py:172
 msgid "Show modified"
 msgstr "Wyświetla zmodyfikowane"
 
-#: ../meld/dirdiff.py:244
+#: ../meld/dirdiff.py:268
 msgid "Filters"
 msgstr "Filtry"
 
-#: ../meld/dirdiff.py:244
+#: ../meld/dirdiff.py:268
 msgid "Set active filters"
 msgstr "Pozwala wybrać aktywne filtry"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:317
+#: ../meld/dirdiff.py:342
 msgid "Size"
 msgstr "Rozmiar"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:324
+#: ../meld/dirdiff.py:349
 msgid "Modification time"
 msgstr "Czas modyfikacji"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:331
+#: ../meld/dirdiff.py:356
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: ../meld/dirdiff.py:452
+#: ../meld/dirdiff.py:481
 #, python-format
 msgid "Hide %s"
 msgstr "Ukryj %s"
 
-#: ../meld/dirdiff.py:566 ../meld/dirdiff.py:585 ../meld/vcview.py:370
+#: ../meld/dirdiff.py:595 ../meld/dirdiff.py:614 ../meld/vcview.py:370
 #: ../meld/vcview.py:394
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Skanowanie %s"
 
-#: ../meld/dirdiff.py:684
+#: ../meld/dirdiff.py:713
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Ukończono"
 
-#: ../meld/dirdiff.py:689
+#: ../meld/dirdiff.py:718
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Wystąpiło wiele błędów podczas skanowania tego katalogu"
 
-#: ../meld/dirdiff.py:690
+#: ../meld/dirdiff.py:719
 msgid "Files with invalid encodings found"
 msgstr "Odnaleziono pliki z nieprawidłowym kodowaniem znaków"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:692
+#: ../meld/dirdiff.py:721
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Niektóre pliki mają nieprawidłowe kodowanie znaków. Nazwy tych plików to:"
 
-#: ../meld/dirdiff.py:694
+#: ../meld/dirdiff.py:723
 msgid "Files hidden by case insensitive comparison"
 msgstr "Pliku ukryte przez porównywanie bez uwzględniania wielkości liter"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:696
+#: ../meld/dirdiff.py:725
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -584,17 +596,17 @@ msgstr ""
 "systemie plików, który rozróżnia wielkość liter. Następujące pliki w tym "
 "katalogu zostały ukryte:"
 
-#: ../meld/dirdiff.py:707
+#: ../meld/dirdiff.py:736
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "\"%s\" ukryty przez \"%s\""
 
-#: ../meld/dirdiff.py:732 ../meld/filediff.py:1010 ../meld/filediff.py:1251
+#: ../meld/dirdiff.py:761 ../meld/filediff.py:1010 ../meld/filediff.py:1251
 #: ../meld/vcview.py:620 ../meld/vcview.py:662
 msgid "Hi_de"
 msgstr "_Ukryj"
 
-#: ../meld/dirdiff.py:764
+#: ../meld/dirdiff.py:793
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -603,7 +615,7 @@ msgstr ""
 "\"%s\" istnieje.\n"
 "Zastąpić ten plik?"
 
-#: ../meld/dirdiff.py:771
+#: ../meld/dirdiff.py:800
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -614,7 +626,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:789 ../meld/vcview.py:594
+#: ../meld/dirdiff.py:818 ../meld/vcview.py:594
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -623,7 +635,7 @@ msgstr ""
 "\"%s\" jest katalogiem.\n"
 "Usunąć łącznie z katalogami podrzędnymi?"
 
-#: ../meld/dirdiff.py:796 ../meld/vcview.py:599
+#: ../meld/dirdiff.py:825 ../meld/vcview.py:599
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -634,7 +646,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:896
+#: ../meld/dirdiff.py:925
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
@@ -642,7 +654,7 @@ msgstr[0] "%i sekunda"
 msgstr[1] "%i sekundy"
 msgstr[2] "%i sekund"
 
-#: ../meld/dirdiff.py:897
+#: ../meld/dirdiff.py:926
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
@@ -650,7 +662,7 @@ msgstr[0] "%i minuta"
 msgstr[1] "%i minuty"
 msgstr[2] "%i minut"
 
-#: ../meld/dirdiff.py:898
+#: ../meld/dirdiff.py:927
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
@@ -658,7 +670,7 @@ msgstr[0] "%i godzina"
 msgstr[1] "%i godziny"
 msgstr[2] "%i godzin"
 
-#: ../meld/dirdiff.py:899
+#: ../meld/dirdiff.py:928
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
@@ -666,7 +678,7 @@ msgstr[0] "%i dzień"
 msgstr[1] "%i dni"
 msgstr[2] "%i dni"
 
-#: ../meld/dirdiff.py:900
+#: ../meld/dirdiff.py:929
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
@@ -674,7 +686,7 @@ msgstr[0] "%i tydzień"
 msgstr[1] "%i tygodnie"
 msgstr[2] "%i tygodni"
 
-#: ../meld/dirdiff.py:901
+#: ../meld/dirdiff.py:930
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
@@ -682,7 +694,7 @@ msgstr[0] "%i miesiąc"
 msgstr[1] "%i miesiące"
 msgstr[2] "%i miesięcy"
 
-#: ../meld/dirdiff.py:902
+#: ../meld/dirdiff.py:931
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -1287,12 +1299,12 @@ msgstr "Otwórz ostatnie"
 msgid "Open recent files"
 msgstr "Otwiera ostatnie pliki"
 
-#: ../meld/meldwindow.py:521
+#: ../meld/meldwindow.py:526
 msgid "Switch to this tab"
 msgstr "Przechodzi do tej karty"
 
 #. exit at first non found directory + file
-#: ../meld/meldwindow.py:647
+#: ../meld/meldwindow.py:652
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Jednoczesne porównanie plików i katalogów nie jest możliwe.\n"
 
@@ -1305,25 +1317,25 @@ msgstr "[Brak]"
 msgid "Save Patch As..."
 msgstr "Zapisz poprawkę jako..."
 
-#: ../meld/preferences.py:38
+#: ../meld/preferences.py:44
 msgid "label"
 msgstr "etykieta"
 
-#: ../meld/preferences.py:38
+#: ../meld/preferences.py:44
 msgid "pattern"
 msgstr "wzorzec"
 
-#: ../meld/preferences.py:154
+#: ../meld/preferences.py:160
 msgid "Only available if you have gnome-python-desktop installed"
 msgstr "Dostępne jedynie, gdy pakiet gnome-python-desktop jest zainstalowany"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:275
+#: ../meld/preferences.py:306
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Kopie zapasowe\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:277
+#: ../meld/preferences.py:308
 msgid ""
 "OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
 "Desktop.ini\n"
@@ -1332,48 +1344,48 @@ msgstr ""
 "V100 .Trashes Thumbs.db Desktop.ini\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:279
+#: ../meld/preferences.py:310
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Kontrola wersji\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:281
+#: ../meld/preferences.py:312
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
 msgstr "Pliki binarne\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:283
+#: ../meld/preferences.py:314
 msgid "Media\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
 msgstr "Multimedia\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:285
+#: ../meld/preferences.py:316
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "Słowa kluczowe CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:287
+#: ../meld/preferences.py:318
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Komentarze języka C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:289
+#: ../meld/preferences.py:320
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Komentarze języka C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:291
+#: ../meld/preferences.py:322
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Wszystkie białe znaki\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:293
+#: ../meld/preferences.py:324
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Początkowe białe znaki\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:295
+#: ../meld/preferences.py:326
 msgid "Script comment\t0\t#.*"
 msgstr "Komentarze w skryptach\t0\t#.*"
 
