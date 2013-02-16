@@ -45,6 +45,7 @@ class MeldStatusBar(gtk.Statusbar):
         if hasattr(self, "get_message_area"):
             # FIXME: added in 2.20, but not in the corresponding pygtk. Use this if available
             hbox = self.get_message_area()
+            label = hbox.get_children()[0]
         else:
             frame = self.get_children()[0]
             self.set_child_packing(frame, False, False, 0, gtk.PACK_START)
