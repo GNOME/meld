@@ -870,8 +870,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         if self.current_path == path:
             self.current_path = refocus_deleted_path(model, path)
-            if self.current_path and self.treeview_focussed:
-                self.treeview_focussed.set_cursor(self.current_path)
+            if self.current_path and self.focus_pane:
+                self.focus_pane.set_cursor(self.current_path)
 
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
