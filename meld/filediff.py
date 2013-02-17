@@ -83,7 +83,7 @@ class CachedSequenceMatcher(object):
         except KeyError:
             def inline_cb(opcodes):
                 self.cache[(text1, textn)] = [opcodes, time.time()]
-                cb(opcodes)
+                gobject.idle_add(lambda: cb(opcodes))
             process_pool.apply_async(matcher_worker, (text1, textn),
                                      callback=inline_cb)
 
@@ -214,15 +214,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.animating_chunks = [[] for buf in self.textbuffer]
         for buf in self.textbuffer:
             buf.create_tag("inline")
-
-        # We need to keep track of gtk.TextIter validity, but this isn't
-        # exposed anywhere. Instead, we keep our own counter for changes
-        # across all of our buffers.
-        self._buffer_changed_stamp = 0
-        def buffer_change(buf):
-            self._buffer_changed_stamp += 1
-        for buf in self.textbuffer:
-            buf.connect("changed", buffer_change)
 
         actions = (
             ("MakePatch", None, _("Format as patch..."), None, _("Create a patch using differences between files"), self.make_patch),
@@ -1188,14 +1179,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 textn = text_type(textn, 'utf8')
 
                 # For very long sequences, bail rather than trying a very slow comparison
-                inline_limit = 8000 # arbitrary constant
+                inline_limit = 8000
                 if len(text1) + len(textn) > inline_limit:
                     for i in range(2):
                         bufs[i].apply_tag(tags[i], starts[i], ends[i])
                     continue
 
-                def apply_highlight(bufs, tags, starts, change_stamp, matches):
-                    if change_stamp != self._buffer_changed_stamp:
+                def apply_highlight(bufs, tags, starts, ends, texts, matches):
+                    starts = [bufs[0].get_iter_at_mark(starts[0]),
+                              bufs[1].get_iter_at_mark(starts[1])]
+                    ends = [bufs[0].get_iter_at_mark(ends[0]),
+                            bufs[1].get_iter_at_mark(ends[1])]
+                    text1 = bufs[0].get_text(starts[0], ends[0], False)
+                    text1 = text_type(text1, 'utf8')
+                    textn = bufs[1].get_text(starts[1], ends[1], False)
+                    textn = text_type(textn, 'utf8')
+
+                    if texts != (text1, textn):
                         return
 
                     # Remove equal matches of size greater than 3; highlight
@@ -1215,10 +1215,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     bufs[0].remove_tag(tags[0], starts[0], ends[0])
                     bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
-                match_cb = functools.partial(apply_highlight,
-                                             bufs, tags, starts,
-                                             self._buffer_changed_stamp)
-                matches = self._cached_match.match(text1, textn, match_cb)
+                starts = [bufs[0].create_mark(None, starts[0], True),
+                          bufs[1].create_mark(None, starts[1], True)]
+                ends = [bufs[0].create_mark(None, ends[0], True),
+                        bufs[1].create_mark(None, ends[1], True)]
+                match_cb = functools.partial(apply_highlight, bufs, tags,
+                                             starts, ends, (text1, textn))
+                self._cached_match.match(text1, textn, match_cb)
 
         self._cached_match.clean(self.linediffer.diff_count())
 
