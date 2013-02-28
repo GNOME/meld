@@ -45,7 +45,7 @@ class Vc(_vc.Vc):
     def resolved_command(self):
         return [self.CMD,"resolved"]
 
-    def lookup_files(self, dirs, files):
+    def lookup_files(self, dirs, files, directory=None):
         "files is array of (name, path). assume all files in same dir"
         d = [_vc.Dir(x[1], x[0], _vc.STATE_NONE) for x in dirs]
         f = [_vc.File(x[1], x[0], _vc.STATE_NONE) for x in files]
