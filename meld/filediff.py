@@ -1452,7 +1452,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf.data.writable = writable
         self.recompute_label()
         index = self.textbuffer.index(buf)
-        self.readonlytoggle[index].set_visible(not writable)
+        self.readonlytoggle[index].props.visible = not writable
         self.set_buffer_editable(buf, writable)
 
     def set_buffer_modified(self, buf, yesno):
