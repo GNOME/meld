@@ -38,7 +38,6 @@ from .ui import gnomeglade
 from .ui import notebooklabel
 
 from .util.compat import string_types
-from .util.sourceviewer import srcviewer
 from .meldapp import app
 
 
@@ -151,7 +150,7 @@ class MeldWindow(gnomeglade.Component):
         self._menu_context = self.statusbar.get_context_id("Tooltips")
         self.widget.drag_dest_set(
             gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
-            [ ('text/uri-list', 0, 0) ],
+            [('text/uri-list', 0, 0)],
             gtk.gdk.ACTION_COPY)
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
@@ -161,7 +160,7 @@ class MeldWindow(gnomeglade.Component):
         app.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
-        self.scheduler.connect("runnable", self.on_scheduler_runnable )
+        self.scheduler.connect("runnable", self.on_scheduler_runnable)
         self.widget.set_default_size(app.prefs.window_size_x, app.prefs.window_size_y)
         self.ui.ensure_update()
         self.widget.show()
@@ -170,7 +169,7 @@ class MeldWindow(gnomeglade.Component):
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
 
-    def on_focus_change(self, widget, event, callback_data = None):
+    def on_focus_change(self, widget, event, callback_data=None):
         for idx in range(self.notebook.get_n_pages()):
             w = self.notebook.get_nth_page(idx)
             if hasattr(w.get_data("pyobject"), 'on_focus_change'):
@@ -410,7 +409,7 @@ class MeldWindow(gnomeglade.Component):
 
     def on_menu_reload_activate(self, *extra):
         self.current_doc().on_reload_activate()
-  
+
     def on_menu_find_activate(self, *extra):
         self.current_doc().on_find_activate()
 
@@ -536,6 +535,7 @@ class MeldWindow(gnomeglade.Component):
             if group is None:
                 group = action
             action.set_active(current_page == i)
+
             def current_tab_changed_cb(action, current):
                 if action == current:
                     self.notebook.set_current_page(action.get_current_value())
@@ -620,7 +620,7 @@ class MeldWindow(gnomeglade.Component):
         return doc
 
     def append_dirdiff(self, dirs, auto_compare=False):
-        assert len(dirs) in (1,2,3)
+        assert len(dirs) in (1, 2, 3)
         doc = dirdiff.DirDiff(app.prefs, len(dirs))
         self._append_page(doc, "folder")
         doc.set_locations(dirs)
@@ -663,11 +663,10 @@ class MeldWindow(gnomeglade.Component):
                     else:
                         # exit at first non found directory + file
                         misc.run_dialog(_("Cannot compare a mixture of files and directories.\n"),
-                                          parent=self,
-                                          buttonstype=gtk.BUTTONS_OK)
+                                        parent=self, buttonstype=gtk.BUTTONS_OK)
                         return
                 else:
-                     lastfilename = os.path.basename(elem)
+                    lastfilename = os.path.basename(elem)
                 builtfilelist.append(elem)
             return self.append_filediff(builtfilelist)
         elif dirslist:
@@ -703,6 +702,7 @@ class MeldWindow(gnomeglade.Component):
 
     def _single_file_open(self, path):
         doc = vcview.VcView(app.prefs)
+
         def cleanup():
             self.scheduler.remove_scheduler(doc.scheduler)
         self.scheduler.add_task(cleanup)
@@ -737,6 +737,6 @@ class MeldWindow(gnomeglade.Component):
                 return page
 
         class DummyDoc(object):
-            def __getattr__(self, a): return lambda *x: None
+            def __getattr__(self, a):
+                return lambda *x: None
         return DummyDoc()
-
