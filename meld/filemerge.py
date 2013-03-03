@@ -18,8 +18,6 @@
 
 from gettext import gettext as _
 
-import gtk
-
 from . import filediff
 from . import meldbuffer
 from . import merge
@@ -61,4 +59,3 @@ class FileMerge(filediff.FileDiff):
         self.textbuffer[1].set_text(merged_text)
         self.textbuffer[1].data.modified = True
         self.recompute_label()
-
