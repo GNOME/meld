@@ -42,6 +42,7 @@ class DiffMap(gtk.DrawingArea):
         self._h_offset = 0
         self._scroll_y = 0
         self._scroll_height = 0
+        self._setup = False
 
     def setup(self, scrollbar, change_chunk_fn, color_map):
         for (o, h) in self._handlers:
@@ -50,6 +51,7 @@ class DiffMap(gtk.DrawingArea):
         self._scrolladj = scrollbar.get_adjustment()
         self.on_scrollbar_style_set(scrollbar, None)
         self.on_scrollbar_size_allocate(scrollbar, scrollbar.allocation)
+        scrollbar.ensure_style()
         scroll_style_hid = scrollbar.connect("style-set",
                                              self.on_scrollbar_style_set)
         scroll_size_hid = scrollbar.connect("size-allocate",
@@ -64,6 +66,7 @@ class DiffMap(gtk.DrawingArea):
                           (self._scrolladj, adj_val_hid)]
         self._difffunc = change_chunk_fn
         self.set_color_scheme(color_map)
+        self._setup = True
         self.queue_draw()
 
     def set_color_scheme(self, color_map):
@@ -94,6 +97,8 @@ class DiffMap(gtk.DrawingArea):
         self.queue_draw()
 
     def do_expose_event(self, event):
+        if not self._setup:
+            return
         height = self._scroll_height - self._h_offset - 1
         y_start = self._scroll_y - self.allocation.y + self._y_offset + 1
         xpad = self.style_get_property('x-padding')

@@ -289,8 +289,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                      "diffmap", "linkmap", "msgarea_mgr",
                                      "vbox"])
 
-        self.widget.connect("style-set", self.on_style_set)
         self.widget.ensure_style()
+        self.on_style_set(self.widget, None)
+        self.widget.connect("style-set", self.on_style_set)
 
         self.custom_labels = []
         self.set_num_panes(num_panes)

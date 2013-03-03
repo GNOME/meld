@@ -248,8 +248,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.add_toggle_actions(toggle_actions)
         self.findbar = findbar.FindBar(self.table)
 
-        self.widget.connect("style-set", self.on_style_set)
         self.widget.ensure_style()
+        self.on_style_set(self.widget, None)
+        self.widget.connect("style-set", self.on_style_set)
 
         self.set_num_panes(num_panes)
         gobject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730

@@ -61,6 +61,7 @@ class MsgArea(gtk.HBox):
         # widgets, not on the message area itself, since gtk does
         # not deliver any further style-set signals for a widget on
         # which the style has been forced with gtk_widget_set_style()
+        self.__main_hbox.ensure_style()
         self.__main_hbox.connect("style-set", self.__on_style_set)
 
         self.add_buttons(buttons)
