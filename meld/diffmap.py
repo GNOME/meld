@@ -57,7 +57,7 @@ class DiffMap(gtk.DrawingArea):
         scroll_size_hid = scrollbar.connect("size-allocate",
                                             self.on_scrollbar_size_allocate)
         adj_change_hid = self._scrolladj.connect("changed",
-                                                  lambda w: self.queue_draw())
+                                                 lambda w: self.queue_draw())
         adj_val_hid = self._scrolladj.connect("value-changed",
                                               lambda w: self.queue_draw())
         self._handlers = [(scrollbar, scroll_style_hid),
@@ -164,7 +164,3 @@ gtk.widget_class_install_style_property(DiffMap,
                                          'right edges and change blocks',
                                          0.0, gobject.G_MAXFLOAT, 3.5,
                                          gobject.PARAM_READABLE))
-
-
-def create_diffmap(str1, str2, int1, int2):
-    return DiffMap()
