@@ -1,19 +1,20 @@
-### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
 
-### This program is free software; you can redistribute it and/or modify
-### it under the terms of the GNU General Public License as published by
-### the Free Software Foundation; either version 2 of the License, or
-### (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 
-### This program is distributed in the hope that it will be useful,
-### but WITHOUT ANY WARRANTY; without even the implied warranty of
-### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-### GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 
-### You should have received a copy of the GNU General Public License
-### along with this program; if not, write to the Free Software
-### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
-### USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
 
 """Classes to implement scheduling for cooperative threads."""
 
@@ -23,14 +24,12 @@ import traceback
 
 
 class SchedulerBase(object):
-    """Base class with common functionality for schedulers.
+    """Base class with common functionality for schedulers
 
-    Derived classes should implement the 'get_current_task' method.
+    Derived classes must implement get_current_task.
     """
 
     def __init__(self):
-        """Create a scheduler with no current tasks.
-        """
         self.tasks = []
         self.callbacks = []
 
@@ -39,22 +38,17 @@ class SchedulerBase(object):
 
     def connect(self, signal, action):
         assert signal == "runnable"
-        try:
-            self.callbacks.index(action)
-        except ValueError:
-            self.callbacks.append( action )
+        if action not in self.callbacks:
+            self.callbacks.append(action)
 
-    def add_task(self, task, atfront=0):
-        """Add 'task' to the task list.
+    def add_task(self, task, atfront=False):
+        """Add a task to the scheduler's task list
 
-        'task' may be a function, generator or scheduler.
-        The task is deemed to be finished when either it returns a
-        false value or raises StopIteration.
+        The task may be a function, generator or scheduler, and is
+        deemed to have finished when it returns a false value or raises
+        StopIteration.
         """
-        try:
-            self.tasks.remove(task)
-        except ValueError:
-            pass
+        self.remove_task(task)
 
         if atfront:
             self.tasks.insert(0, task)
@@ -65,26 +59,22 @@ class SchedulerBase(object):
             callback(self)
 
     def remove_task(self, task):
-        """Remove 'task'.
-        """
+        """Remove a single task from the scheduler"""
         try:
             self.tasks.remove(task)
         except ValueError:
             pass
 
     def remove_all_tasks(self):
-        """Remove all tasks.
-        """
+        """Remove all tasks from the scheduler"""
         self.tasks = []
 
     def add_scheduler(self, sched):
-        """Calls add_task and listens for 'sched' to emit 'runnable'.
-        """
-        sched.connect("runnable", lambda t : self.add_task(t))
+        """Adds a subscheduler as a child task of this scheduler"""
+        sched.connect("runnable", lambda t: self.add_task(t))
 
     def remove_scheduler(self, sched):
-        """Remove 'task'.
-        """
+        """Remove a sub-scheduler from this scheduler"""
         self.remove_task(sched)
         try:
             self.callbacks.remove(sched)
@@ -92,16 +82,11 @@ class SchedulerBase(object):
             pass
 
     def get_current_task(self):
-        """Function overridden by derived classes.
-
-        The usual implementation will be to call self._iteration(task) where
-        'task' is one of self.tasks.
-        """
-        raise NotImplementedError("This method must be overridden by subclasses.")
+        """Overridden function returning the next task to run"""
+        raise NotImplementedError
 
     def __call__(self):
-        """Check for pending tasks and run an iteration of the current task.
-        """
+        """Run an iteration of the current task"""
         if len(self.tasks):
             r = self.iteration()
             if r:
@@ -109,22 +94,15 @@ class SchedulerBase(object):
         return self.tasks_pending()
 
     def complete_tasks(self):
-        """Run all currently added tasks to completion.
-
-        Tasks added after the call to complete_tasks are not run.
-        """
+        """Run all of the scheduler's current tasks to completion"""
         while self.tasks_pending():
             self.iteration()
-        
+
     def tasks_pending(self):
         return len(self.tasks) != 0
 
     def iteration(self):
-        """Perform one iteration of the current task..
-
-        Calls self.get_current_task() to find the current task.
-        Remove task from self.tasks if it is complete.
-        """
+        """Perform one iteration of the current task"""
         try:
             task = self.get_current_task()
         except StopIteration:
@@ -146,10 +124,8 @@ class SchedulerBase(object):
 
 
 class LifoScheduler(SchedulerBase):
-    """Most recently added tasks are called first.
-    """
-    def __init__(self):
-        SchedulerBase.__init__(self)
+    """Scheduler calling most recently added tasks first"""
+
     def get_current_task(self):
         try:
             return self.tasks[-1]
@@ -158,10 +134,8 @@ class LifoScheduler(SchedulerBase):
 
 
 class FifoScheduler(SchedulerBase):
-    """Subtasks are called in the order they were added.
-    """
-    def __init__(self):
-        SchedulerBase.__init__(self)
+    """Scheduler calling tasks in the order they were added"""
+
     def get_current_task(self):
         try:
             return self.tasks[0]
@@ -170,10 +144,8 @@ class FifoScheduler(SchedulerBase):
 
 
 class RoundRobinScheduler(SchedulerBase):
-    """Each subtask is called in turn.
-    """
-    def __init__(self):
-        SchedulerBase.__init__(self)
+    """Scheduler repeatedly calling tasks in turn"""
+
     def get_current_task(self):
         try:
             self.tasks.append(self.tasks.pop(0))
