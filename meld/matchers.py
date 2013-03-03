@@ -15,7 +15,7 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-from collections import namedtuple
+import collections
 import difflib
 import os
 import signal
@@ -63,7 +63,9 @@ def find_common_suffix(a, b):
         pointermid = pointermax
         pointermin = 0
         while pointermin < pointermid:
-            if (a[-pointermid:len(a) - pointermin] == b[-pointermid:len(b) - pointermin]):
+            a_tail = a[-pointermid:len(a) - pointermin]
+            b_tail = b[-pointermid:len(b) - pointermin]
+            if a_tail == b_tail:
                 pointermin = pointermid
             else:
                 pointermax = pointermid
@@ -72,7 +74,8 @@ def find_common_suffix(a, b):
     return 0
 
 
-DiffChunk = namedtuple('DiffChunk', 'tag, start_a, end_a, start_b, end_b')
+DiffChunk = collections.namedtuple('DiffChunk',
+                                   'tag, start_a, end_a, start_b, end_b')
 
 
 class MyersSequenceMatcher(difflib.SequenceMatcher):
@@ -83,7 +86,6 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         self.a = a
         self.b = b
         self.matching_blocks = self.opcodes = None
-        #fields needed by preprocessor so that preprocessing may shared by more than 1 LCS algorithm
         self.aindex = []
         self.bindex = []
         self.common_prefix = self.common_suffix = 0
@@ -116,14 +118,14 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 a = a[:len(a) - self.common_suffix]
                 b = b[:len(b) - self.common_suffix]
         return (a, b)
-    
+
     def preprocess_discard_nonmatching_lines(self, a, b):
         # discard lines that do not match any line from the other file
         if len(a) == 0 or len(b) == 0:
             self.aindex = []
             self.bindex = []
             return (a, b)
-        
+
         def index_matching(a, b):
             aset = frozenset(a)
             matches, index = [], []
@@ -132,14 +134,14 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                     matches.append(line)
                     index.append(i)
             return matches, index
-                
+
         indexed_b, self.bindex = index_matching(a, b)
         indexed_a, self.aindex = index_matching(b, a)
 
         # We only use the optimised result if it's worthwhile. The constant
         # represents a heuristic of how many lines constitute 'worthwhile'.
-        self.lines_discarded = len(b) - len(indexed_b) > 10 or \
-                               len(a) - len(indexed_a) > 10
+        self.lines_discarded = (len(b) - len(indexed_b) > 10 or
+                                len(a) - len(indexed_a) > 10)
         if self.lines_discarded:
             a = indexed_a
             b = indexed_b
@@ -183,11 +185,13 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         self.matching_blocks = mb
 
     def build_matching_blocks(self, lastsnake):
-        """
-        Build list of matching blocks based on snakes taking into consideration all preprocessing
+        """Build list of matching blocks based on snakes
+
+        The resulting blocks take into consideration multiple preprocessing
         optimizations:
-        1) add separate blocks for common prefix and common suffix
-        2) shift positions and split blocks based on the list of discarded non-matching lines
+         * add separate blocks for common prefix and suffix
+         * shift positions and split blocks based on the list of discarded
+           non-matching lines
         """
         self.matching_blocks = matching_blocks = []
 
@@ -195,7 +199,7 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         common_suffix = self.common_suffix
         aindex = self.aindex
         bindex = self.bindex
-        while lastsnake != None:
+        while lastsnake is not None:
             lastsnake, x, y, snake = lastsnake
             if self.lines_discarded:
                 # split snakes if needed because of discarded lines
@@ -220,11 +224,14 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 else:
                     matching_blocks.insert(0, (xprev, yprev, snake))
             else:
-                matching_blocks.insert(0, (x + common_prefix, y + common_prefix, snake))
+                matching_blocks.insert(0, (x + common_prefix,
+                                           y + common_prefix, snake))
         if common_prefix:
             matching_blocks.insert(0, (0, 0, common_prefix))
         if common_suffix:
-            matching_blocks.append((len(self.a) - common_suffix, len(self.b) - common_suffix, common_suffix))
+            matching_blocks.append((len(self.a) - common_suffix,
+                                    len(self.b) - common_suffix,
+                                    common_suffix))
         matching_blocks.append((len(self.a), len(self.b), 0))
         # clean-up to free memory
         self.aindex = self.bindex = None
@@ -316,8 +323,9 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         self.postprocess()
         yield 1
 
+
 class InlineMyersSequenceMatcher(MyersSequenceMatcher):
-    
+
     def preprocess_discard_nonmatching_lines(self, a, b):
 
         if len(a) <= 2 and len(b) <= 2:
@@ -326,7 +334,7 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
             return (a, b)
 
         def index_matching_kmers(a, b):
-            aset = set([a[i:i+3] for i in range(len(a) - 2)])
+            aset = set([a[i:i + 3] for i in range(len(a) - 2)])
             matches, index = [], []
             next_poss_match = 0
             # Start from where we can get a valid triple
@@ -345,8 +353,8 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
 
         # We only use the optimised result if it's worthwhile. The constant
         # represents a heuristic of how many lines constitute 'worthwhile'.
-        self.lines_discarded = len(b) - len(indexed_b) > 10 or \
-                               len(a) - len(indexed_a) > 10
+        self.lines_discarded = (len(b) - len(indexed_b) > 10 or
+                                len(a) - len(indexed_a) > 10)
         if self.lines_discarded:
             a = indexed_a
             b = indexed_b
