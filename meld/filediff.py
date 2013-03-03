@@ -19,12 +19,13 @@
 import codecs
 import copy
 import functools
-import multiprocessing
 import os
 from gettext import gettext as _
-import signal
-import sys
 import time
+
+from multiprocessing import Pool
+from multiprocessing.pool import ThreadPool
+
 
 import pango
 import glib
@@ -50,21 +51,6 @@ from .util.compat import text_type
 from .util.sourceviewer import srcviewer
 
 
-def init_worker():
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
-
-
-def matcher_worker(text1, textn):
-    matcher = matchers.InlineMyersSequenceMatcher(None, text1, textn)
-    return matcher.get_opcodes()
-
-# maxtasksperchild is new in Python 2.7; for 2.6 compat we do this
-try:
-    process_pool = multiprocessing.Pool(None, init_worker, maxtasksperchild=1)
-except TypeError:
-    process_pool = multiprocessing.Pool(None, init_worker)
-
-
 class CachedSequenceMatcher(object):
     """Simple class for caching diff results, with LRU-based eviction
 
@@ -73,7 +59,20 @@ class CachedSequenceMatcher(object):
     eviction is overly simplistic, but is okay for our usage pattern.
     """
 
+    process_pool = None
+
     def __init__(self):
+        if self.process_pool is None:
+            if os.name == "nt":
+                CachedSequenceMatcher.process_pool = ThreadPool(None)
+            else:
+                # maxtasksperchild is new in Python 2.7; this is for 2.6 compat
+                try:
+                    CachedSequenceMatcher.process_pool = Pool(
+                        None, matchers.init_worker, maxtasksperchild=1)
+                except TypeError:
+                    CachedSequenceMatcher.process_pool = Pool(
+                        None, matchers.init_worker)
         self.cache = {}
 
     def match(self, text1, textn, cb):
@@ -84,8 +83,9 @@ class CachedSequenceMatcher(object):
             def inline_cb(opcodes):
                 self.cache[(text1, textn)] = [opcodes, time.time()]
                 gobject.idle_add(lambda: cb(opcodes))
-            process_pool.apply_async(matcher_worker, (text1, textn),
-                                     callback=inline_cb)
+            self.process_pool.apply_async(matchers.matcher_worker,
+                                          (text1, textn),
+                                          callback=inline_cb)
 
     def clean(self, size_hint):
         """Clean the cache if necessary
