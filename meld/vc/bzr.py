@@ -38,6 +38,13 @@ class Vc(_vc.CachedVc):
     PATCH_INDEX_RE = "^=== modified file '(.*)'.*$"
     CONFLICT_RE = "conflict in (.*)$"
 
+    conflict_map = {
+        _vc.CONFLICT_BASE: '.BASE',
+        _vc.CONFLICT_OTHER: '.OTHER',
+        _vc.CONFLICT_THIS: '.THIS',
+        _vc.CONFLICT_MERGED: '',
+    }
+
     # We use None here to indicate flags that we don't deal with or care about
     state_1_map = {
         " ": None,               # First status column empty
@@ -144,3 +151,9 @@ class Vc(_vc.CachedVc):
                 state = _vc.STATE_NORMAL
                 retdirs.append( _vc.Dir(path, d, state) )
         return retdirs, retfiles
+
+    def get_path_for_conflict(self, path, conflict):
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        
+        return "%s%s" % (path, self.conflict_map[conflict])

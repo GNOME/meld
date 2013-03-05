@@ -80,6 +80,26 @@ class Vc(_vc.CachedVc):
     def revert_command(self):
         return [self.CMD,"checkout"]
 
+    def get_path_for_conflict(self, path, conflict):
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
+        args = ["git", "show", ":%s:%s" % (conflict, path)]
+        process = subprocess.Popen(args,
+                                   cwd=self.location, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        vc_file = process.stdout
+
+        # Error handling here involves doing nothing; in most cases, the only
+        # sane response is to return an empty temp file.
+
+        with tempfile.NamedTemporaryFile(
+                                prefix='meld-tmp-%s-' % _vc.conflicts[conflict],
+                                delete=False) as f:
+            shutil.copyfileobj(vc_file, f)
+        return f.name
+
     def get_path_for_repo_file(self, path, commit=None):
         if commit is None:
             commit = "HEAD"

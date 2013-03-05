@@ -35,6 +35,16 @@ STATE_ERROR, STATE_EMPTY, STATE_NEW, \
 STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
 STATE_MISSING, STATE_NONEXIST, STATE_MAX = list(range(13))
 
+# VC conflict types
+CONFLICT_MERGED, CONFLICT_BASE, CONFLICT_LOCAL, \
+CONFLICT_REMOTE, CONFLICT_MAX = list(range(5))
+# These names are used by BZR, and are logically identical.
+CONFLICT_OTHER = CONFLICT_REMOTE
+CONFLICT_THIS = CONFLICT_LOCAL
+
+conflicts = ["Merged", "Base", "Local", "Remote"]
+assert len(conflicts) == CONFLICT_MAX
+
 class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.
     states = _("Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:Not present").split(":")
