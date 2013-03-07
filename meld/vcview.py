@@ -460,7 +460,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     retry_diff = True
             else:
                 for path in path_list:
-                    self.emit("create-diff", [path])
+                    self.emit("create-diff", [path], {})
 
     def run_diff(self, path_list):
         try:
@@ -468,7 +468,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 comp_path = self.vc.get_path_for_repo_file(path)
                 os.chmod(comp_path, 0o444)
                 _temp_files.append(comp_path)
-                self.emit("create-diff", [comp_path, path])
+                self.emit("create-diff", [comp_path, path], {})
         except NotImplementedError:
             for path in path_list:
                 self.scheduler.add_task(self.run_diff_iter([path]), atfront=1)
@@ -648,7 +648,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if result == 0:
             for d in diffs:
                 os.chmod(d[0], 0o444)
-                self.emit("create-diff", d)
+                self.emit("create-diff", d, {})
             return True
         elif not silent:
             primary = _("Error fetching original comparison file")

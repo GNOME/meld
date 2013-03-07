@@ -981,7 +981,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         if not rows[pane]:
             return
         if os.path.isfile(rows[pane]):
-            self.emit("create-diff", [r for r in rows if os.path.isfile(r)])
+            self.emit("create-diff", [r for r in rows if os.path.isfile(r)],
+                      {})
         elif os.path.isdir(rows[pane]):
             if view.row_expanded(path):
                 view.collapse_row(path)
@@ -1023,7 +1024,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for row in selected:
             row_paths = self.model.value_paths(self.model.get_iter(row))
             paths = [p for p in row_paths if os.path.exists(p)]
-            self.emit("create-diff", paths)
+            self.emit("create-diff", paths, {})
 
     def on_button_copy_left_clicked(self, button):
         self.copy_selected(-1)

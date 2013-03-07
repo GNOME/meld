@@ -592,7 +592,8 @@ class MeldWindow(gnomeglade.Component):
         if isinstance(page, melddoc.MeldDoc):
             page.connect("label-changed", self.on_notebook_label_changed)
             page.connect("file-changed", self.on_file_changed)
-            page.connect("create-diff", lambda obj, arg: self.append_diff(arg))
+            page.connect("create-diff", lambda obj, arg, kwargs:
+                         self.append_diff(arg, **kwargs))
             page.connect("status-changed",
                          lambda obj, arg: self.statusbar.set_doc_status(arg))
 
@@ -628,14 +629,17 @@ class MeldWindow(gnomeglade.Component):
         doc.set_files(files)
         return doc
 
-    def append_filemerge(self, files):
+    def append_filemerge(self, files, merge_output=None):
         assert len(files) == 3
         doc = filemerge.FileMerge(app.prefs, len(files))
         self._append_page(doc, "text-x-generic")
         doc.set_files(files)
+        if merge_output is not None:
+            doc.set_merge_output_file(merge_output)
         return doc
 
-    def append_diff(self, paths, auto_compare=False, auto_merge=False):
+    def append_diff(self, paths, auto_compare=False, auto_merge=False,
+                    merge_output=None):
         dirslist = [p for p in paths if os.path.isdir(p)]
         fileslist = [p for p in paths if os.path.isfile(p)]
         if dirslist and fileslist:
@@ -660,7 +664,7 @@ class MeldWindow(gnomeglade.Component):
         elif dirslist:
             return self.append_dirdiff(paths, auto_compare)
         elif auto_merge:
-            return self.append_filemerge(paths)
+            return self.append_filemerge(paths, merge_output=merge_output)
         else:
             return self.append_filediff(paths)
 
@@ -696,7 +700,8 @@ class MeldWindow(gnomeglade.Component):
         self.scheduler.add_scheduler(doc.scheduler)
         path = os.path.abspath(path)
         doc.set_location(path)
-        doc.connect("create-diff", lambda obj,arg: self.append_diff(arg))
+        doc.connect("create-diff", lambda obj, arg, kwargs:
+                    self.append_diff(arg, **kwargs))
         doc.run_diff([path])
 
     def open_paths(self, paths, auto_compare=False, auto_merge=False):
