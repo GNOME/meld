@@ -25,6 +25,9 @@
 import errno
 import os
 import re
+import shutil
+import subprocess
+import tempfile
 
 from . import _vc
 
@@ -152,8 +155,29 @@ class Vc(_vc.CachedVc):
                 retdirs.append( _vc.Dir(path, d, state) )
         return retdirs, retfiles
 
+    def get_path_for_repo_file(self, path, commit=None):
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+
+        path = path[len(self.root) + 1:]
+
+        args = [self.CMD, "cat", path]
+        if commit:
+            args.append("-r%s" % commit)
+        process = subprocess.Popen(args,
+                                   cwd=self.location, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        vc_file = process.stdout
+
+        # Error handling here involves doing nothing; in most cases, the only
+        # sane response is to return an empty temp file.
+
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            shutil.copyfileobj(vc_file, f)
+        return f.name
+
     def get_path_for_conflict(self, path, conflict):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
-        
+
         return "%s%s" % (path, self.conflict_map[conflict])
