@@ -42,8 +42,9 @@ CONFLICT_REMOTE, CONFLICT_MAX = list(range(5))
 CONFLICT_OTHER = CONFLICT_REMOTE
 CONFLICT_THIS = CONFLICT_LOCAL
 
-conflicts = ["Merged", "Base", "Local", "Remote"]
+conflicts = [_("Merged"), _("Base"), _("Local"), _("Remote")]
 assert len(conflicts) == CONFLICT_MAX
+
 
 class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.
