@@ -471,29 +471,25 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     # We use auto merge, so we create a new temp file
                     # for other, base and this, then set the output to
                     # the current file.
-                    file1 = self.vc.get_path_for_conflict(
-                                path, conflict=tree.CONFLICT_OTHER)
-                    file2 = self.vc.get_path_for_conflict(
-                                path, conflict=tree.CONFLICT_BASE)
-                    file3 = self.vc.get_path_for_conflict(
-                                path, conflict=tree.CONFLICT_THIS)
-                    os.chmod(file1, 0o444)
-                    os.chmod(file2, 0o444)
-                    os.chmod(file3, 0o444)
-                    _temp_files.append(file1)
-                    _temp_files.append(file2)
-                    _temp_files.append(file3)
 
-                    diffs = [file1, file2, file3]
+                    conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_BASE,
+                                 tree.CONFLICT_THIS)
+                    diffs = [self.vc.get_path_for_conflict(path, conflict=c)
+                             for c in conflicts]
+
+                    for conflict_path in diffs:
+                        os.chmod(conflict_path, 0o444)
+                        _temp_files.append(conflict_path)
+
                     # If we want to use auto-merge or use the merged
                     # output given by the VCS
                     kwargs['auto_merge'] = False
                     kwargs['merge_output'] = path
                 else:
-                    file1 = self.vc.get_path_for_repo_file(path)
-                    os.chmod(file1, 0o444)
-                    _temp_files.append(file1)
-                    diffs = [file1, path]
+                    comp_path = self.vc.get_path_for_repo_file(path)
+                    os.chmod(comp_path, 0o444)
+                    _temp_files.append(comp_path)
+                    diffs = [comp_path, path]
                 self.emit("create-diff", diffs, kwargs)
         except NotImplementedError:
             for path in path_list:
