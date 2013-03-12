@@ -622,11 +622,13 @@ class MeldWindow(gnomeglade.Component):
             doc.on_button_diff_clicked(None)
         return doc
 
-    def append_filediff(self, files):
+    def append_filediff(self, files,  merge_output=None):
         assert len(files) in (1, 2, 3)
         doc = filediff.FileDiff(app.prefs, len(files))
         self._append_page(doc, "text-x-generic")
         doc.set_files(files)
+        if merge_output is not None:
+            doc.set_merge_output_file(merge_output)
         return doc
 
     def append_filemerge(self, files, merge_output=None):
@@ -666,7 +668,7 @@ class MeldWindow(gnomeglade.Component):
         elif auto_merge:
             return self.append_filemerge(paths, merge_output=merge_output)
         else:
-            return self.append_filediff(paths)
+            return self.append_filediff(paths, merge_output=merge_output)
 
     def append_vcview(self, location, auto_compare=False):
         doc = vcview.VcView(app.prefs)

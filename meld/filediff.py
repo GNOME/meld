@@ -936,8 +936,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def set_merge_output_file(self, filename):
         if len(self.textbuffer) < 2:
             return
-        self.textbuffer[1].data.savefile = os.path.abspath(filename)
-        self.textbuffer[1].data.set_label(filename)
+        buf = self.textbuffer[1]
+        buf.data.savefile = os.path.abspath(filename)
+        buf.data.set_label(filename)
+        self.set_buffer_writable(buf, os.access(buf.data.savefile, os.W_OK))
         self.fileentry[1].set_filename(os.path.abspath(filename))
         self.recompute_label()
 
@@ -1061,7 +1063,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             nextbit = nextbit[0:-1]
                         t.buf.insert(t.buf.get_end_iter(), nextbit)
                     else:
-                        writable = os.access(t.filename, os.W_OK)
+                        if t.buf.data.savefile:
+                            writable = os.access(t.buf.data.savefile, os.W_OK)
+                        else:
+                            writable = os.access(t.filename, os.W_OK)
                         self.set_buffer_writable(t.buf, writable)
                         t.buf.data.encoding = t.codec[0]
                         if hasattr(t.file, "newlines"):
