@@ -465,6 +465,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def run_diff(self, path_list):
         try:
             for path in path_list:
+                if os.path.isdir(path):
+                    self.emit("create-diff", [path], {})
+                    continue
+
                 kwargs = {}
                 status = self.vc._get_tree_cache(path).get(path, None)
                 if status == tree.STATE_CONFLICT:
