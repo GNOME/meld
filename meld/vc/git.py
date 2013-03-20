@@ -47,6 +47,14 @@ class Vc(_vc.CachedVc):
     PATCH_INDEX_RE = "^diff --git [ac]/(.*) [bw]/.*$"
     GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([ADMU])\t(.*)"
 
+    conflict_map = {
+        # These are the arguments for git-show
+        # CONFLICT_MERGED has no git-show argument unfortunately.
+        _vc.CONFLICT_BASE: 1,
+        _vc.CONFLICT_LOCAL: 2,
+        _vc.CONFLICT_REMOTE: 3,
+    }
+
     state_map = {
         "X": _vc.STATE_NONE,     # Unknown
         "A": _vc.STATE_NEW,      # New
@@ -83,9 +91,13 @@ class Vc(_vc.CachedVc):
     def get_path_for_conflict(self, path, conflict):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
+
+        if conflict == _vc.CONFLICT_MERGED:
+            # Special case: no way to get merged result from git directly
+            return path
         path = path[len(self.root) + 1:]
 
-        args = ["git", "show", ":%s:%s" % (conflict, path)]
+        args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], path)]
         process = subprocess.Popen(args,
                                    cwd=self.location, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
