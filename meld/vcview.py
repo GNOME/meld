@@ -476,14 +476,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     # for other, base and this, then set the output to
                     # the current file.
 
-                    conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_BASE,
+                    conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
                                  tree.CONFLICT_THIS)
                     diffs = [self.vc.get_path_for_conflict(path, conflict=c)
                              for c in conflicts]
 
                     for conflict_path in diffs:
-                        os.chmod(conflict_path, 0o444)
-                        _temp_files.append(conflict_path)
+                        # If this is the actual file, don't touch it.
+                        if conflict_path != path:
+                            os.chmod(conflict_path, 0o444)
+                            _temp_files.append(conflict_path)
 
                     # If we want to use auto-merge or use the merged
                     # output given by the VCS
