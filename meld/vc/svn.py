@@ -30,6 +30,7 @@ import tempfile
 import xml.etree.ElementTree as ElementTree
 
 from . import _vc
+from glob import glob
 
 
 class Vc(_vc.CachedVc):
@@ -95,6 +96,60 @@ class Vc(_vc.CachedVc):
                 # we just return an empty file
 
         return f.name
+
+    def get_path_for_conflict(self, path, conflict=None):
+        """
+        SVN has two types of conflicts:
+        Merge conflicts, which give 3 files:
+           .left.r* (THIS)
+           .working (BASE... although this is a bit debateable)
+           .right.r* (OTHER)
+        Update conflicts which give 3 files:
+           .mine (THIS)
+           .r* (lower - BASE)
+           .r* (higher - OTHER)
+        """
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+
+        # If this is merged, we just return the merged output
+        if conflict == _vc.CONFLICT_MERGED:
+            return path, False
+
+        CONFLICT_TYPE_MERGE = 1
+        CONFLICT_TYPE_UPDATE = 2
+
+        # First fine what type of conflict this is by looking at the base
+        # we can possibly return straight away!
+        conflict_type = None
+        base = glob('%s.working' % path)
+        if len(base) == 1:
+            # We have a merge conflict
+            conflict_type = CONFLICT_TYPE_MERGE
+        else:
+            base = glob('%s.mine' % path)
+            if len(base) == 1:
+                # We have an update conflict
+                conflict_type = CONFLICT_TYPE_UPDATE
+
+        if conflict_type is None:
+            raise _vc.InvalidVCPath(
+                    "We don't know what type of conflict this is.")
+
+        if conflict == _vc.CONFLICT_BASE:
+            return base[0], False
+        elif conflict == _vc.CONFLICT_THIS:
+            if conflict_type == CONFLICT_TYPE_MERGE:
+                return glob('%s.merge-left.r*' % path)[0], False
+            else:
+                return glob('%s.r*' % path)[0], False
+        elif conflict == _vc.CONFLICT_OTHER:
+            if conflict_type == CONFLICT_TYPE_MERGE:
+                return glob('%s.merge-right.r*' % path)[0], False
+            else:
+                return glob('%s.r*' % path)[-1], False
+        
+        raise KeyError("Conflict file does not exist")
 
     def _repo_version_support(self, version):
         return version < 12
