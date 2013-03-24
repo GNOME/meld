@@ -208,6 +208,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._scroll_lock = False
         self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
+        self.syncpoints = []
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher()
         self.anim_source_id = [None for buf in self.textbuffer]
@@ -217,6 +218,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         actions = (
             ("MakePatch", None, _("Format as patch..."), None, _("Create a patch using differences between files"), self.make_patch),
+            ("SplitDiff", None, _("Add change synchronization point"), None,
+                _("Add a manual point for synchronization of changes between "
+                  "files"),
+                self.add_sync_point),
             ("PrevConflict", None, _("Previous conflict"), "<Ctrl>I", _("Go to the previous conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_UP)),
             ("NextConflict", None, _("Next conflict"), "<Ctrl>K", _("Go to the next conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_DOWN)),
             ("PushLeft",  gtk.STOCK_GO_BACK,    _("Push to left"),    "<Alt>Left", _("Push current change to the left"), lambda x: self.push_change(-1)),
@@ -1761,3 +1766,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[src].append(anim)
 
+    def add_sync_point(self, action):
+        syncpoints = []
+        cursor_it = self.textbuffer[1].get_iter_at_mark(
+            self.textbuffer[1].get_insert())
+        middle_line = cursor_it.get_line()
+
+        others = (0, 2) if self.num_panes == 3 else (0,)
+        for i in others:
+            buf = self.textbuffer[i]
+            cursor_it = buf.get_iter_at_mark(buf.get_insert())
+            cursor_line = cursor_it.get_line()
+            syncpoints.append([middle_line, cursor_line])
+
+        self.linediffer.syncpoints = [syncpoints]
+        self.refresh_comparison()

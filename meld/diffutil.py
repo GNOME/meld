@@ -16,11 +16,10 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import difflib
-
 import gobject
 
-from .matchers import DiffChunk, MyersSequenceMatcher
+from .matchers import DiffChunk, MyersSequenceMatcher, \
+    SyncPointMyersSequenceMatcher
 
 
 opcode_reverse = {
@@ -70,6 +69,7 @@ class Differ(gobject.GObject):
     }
 
     _matcher = MyersSequenceMatcher
+    _sync_matcher = SyncPointMyersSequenceMatcher
 
     def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
@@ -77,6 +77,7 @@ class Differ(gobject.GObject):
         self.num_sequences = 0
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]
+        self.syncpoints = []
         self.conflicts = []
         self._old_merge_cache = set()
         self._changed_chunks = tuple()
@@ -454,7 +455,12 @@ class Differ(gobject.GObject):
         self.seqlength = [len(s) for s in sequences]
 
         for i in range(self.num_sequences - 1):
-            matcher = self._matcher(None, sequences[1], sequences[i*2])
+            if self.syncpoints:
+                matcher = self._sync_matcher(None,
+                                             sequences[1], sequences[i * 2],
+                                             syncpoints=self.syncpoints[i])
+            else:
+                matcher = self._matcher(None, sequences[1], sequences[i * 2])
             work = matcher.initialise()
             while next(work) is None:
                 yield None

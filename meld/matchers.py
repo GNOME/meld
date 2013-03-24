@@ -381,14 +381,13 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                 ai = aj
                 bi = bj
             if ai < len(self.a) or bi < len(self.b):
-                chunks.append((ai, bi,
-                               self.a[ai:len(self.a)],
-                               self.b[bi:len(self.b)]))
+                chunks.append((ai, bi, self.a[ai:], self.b[bi:]))
+
             self.matching_blocks = []
             for ai, bi, a, b in chunks:
                 matcher = MyersSequenceMatcher(self.isjunk, a, b)
                 for i in matcher.initialise():
-                    yield i
+                    yield None
                 blocks = matcher.get_matching_blocks()
                 l = len(self.matching_blocks) - 1
                 if l >= 0 and len(blocks) > 1:
@@ -402,3 +401,4 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                 for x, y, l in blocks[:-1]:
                     self.matching_blocks.append((ai + x, bi + y, l))
             self.matching_blocks.append((len(self.a), len(self.b), 0))
+            yield 1
