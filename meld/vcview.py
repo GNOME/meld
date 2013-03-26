@@ -481,9 +481,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     diffs = [self.vc.get_path_for_conflict(path, conflict=c)
                              for c in conflicts]
 
-                    for conflict_path in diffs:
+                    for conflict_path, is_temp in diffs:
                         # If this is the actual file, don't touch it.
-                        if conflict_path != path:
+                        if conflict_path != path and is_temp:
                             os.chmod(conflict_path, 0o444)
                             _temp_files.append(conflict_path)
 

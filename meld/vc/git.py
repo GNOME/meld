@@ -94,7 +94,8 @@ class Vc(_vc.CachedVc):
 
         if conflict == _vc.CONFLICT_MERGED:
             # Special case: no way to get merged result from git directly
-            return path
+            return path, False
+
         path = path[len(self.root) + 1:]
 
         args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], path)]
@@ -110,7 +111,7 @@ class Vc(_vc.CachedVc):
                                 prefix='meld-tmp-%s-' % _vc.conflicts[conflict],
                                 delete=False) as f:
             shutil.copyfileobj(vc_file, f)
-        return f.name
+        return f.name, True
 
     def get_path_for_repo_file(self, path, commit=None):
         if commit is None:

@@ -180,4 +180,5 @@ class Vc(_vc.CachedVc):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
 
-        return "%s%s" % (path, self.conflict_map[conflict])
+        # bzr paths are all temporary files
+        return "%s%s" % (path, self.conflict_map[conflict]), False
