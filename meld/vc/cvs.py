@@ -1,4 +1,5 @@
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -64,10 +65,11 @@ class Vc(_vc.Vc):
         return [self.CMD, "update", "-C"]
 
     def valid_repo(self):
-        if _vc.call([self.CMD, "version"], cwd=self.root):
-            return False
-        else:
+        entry_path = os.path.join(self.root, self.VC_DIR, "Entries")
+        if os.path.exists(entry_path):
             return True
+        else:
+            return False
 
     def _get_dirsandfiles(self, directory, dirs, files):
         log = logging.getLogger(__name__)
