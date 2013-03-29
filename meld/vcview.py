@@ -553,7 +553,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # Remove empty entries and trailing slashes
         return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
 
-    def _command_iter(self, command, files, refresh):
+    def _command_iter(self, command, files, refresh, working_dir=None):
         """Run 'command' on 'files'. Return a tuple of the directory the
            command was executed in and the output of the command.
         """
@@ -564,7 +564,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if len(pbase) and p.startswith(pbase):
                 kill = len(pbase) + 1
             return p[kill:] or "."
-        if len(files) == 1 and os.path.isdir(files[0]):
+        if working_dir:
+            workdir = self.vc.get_working_directory(working_dir)
+        elif len(files) == 1 and os.path.isdir(files[0]):
             workdir = self.vc.get_working_directory(files[0])
         else:
             workdir = self.vc.get_working_directory( _commonprefix(files) )
@@ -585,10 +587,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.refresh_partial(workdir)
         yield workdir, r
 
-    def _command(self, command, files, refresh=1):
+    def _command(self, command, files, refresh=1, working_dir=None):
         """Run 'command' on 'files'.
         """
-        self.scheduler.add_task(self._command_iter(command, files, refresh))
+        self.scheduler.add_task(self._command_iter(command, files, refresh,
+                                                   working_dir))
 
     def _command_on_selected(self, command, refresh=1):
         files = self._get_selected_files()
@@ -602,7 +605,19 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         CommitDialog(self).run()
 
     def on_button_add_clicked(self, obj):
-        self._command_on_selected(self.vc.add_command())
+        # This is an evil hack to let CVS and SVN < 1.7 deal with the
+        # requirement of adding folders from their immediate parent.
+        if self.vc.NAME in ("CVS", "Subversion"):
+            selected = self._get_selected_files()
+            dirs = [s for s in selected if os.path.isdir(s)]
+            files = [s for s in selected if os.path.isfile(s)]
+            for path in dirs:
+                self._command(self.vc.add_command(), [path],
+                              working_dir=os.path.dirname(path))
+            if files:
+                self._command(self.vc.add_command(), files)
+        else:
+            self._command_on_selected(self.vc.add_command())
 
     def on_button_remove_clicked(self, obj):
         self._command_on_selected(self.vc.remove_command())
