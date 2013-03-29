@@ -246,6 +246,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggle_actions)
+        self.main_actiongroup = None
+
         self.findbar = findbar.FindBar(self.table)
 
         self.widget.ensure_style()
@@ -315,6 +317,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.keymask = 0
 
     def on_container_switch_in_event(self, ui):
+        self.main_actiongroup = [a for a in ui.get_action_groups()
+                                 if a.get_name() == "MainActions"][0]
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
         # FIXME: If no focussed textview, action sensitivity will be unset
 
@@ -658,6 +662,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.focus_pane = view
         self.findbar.textview = view
         self.on_cursor_position_changed(view.get_buffer(), None, True)
+        self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
 
     def on_textview_focus_out_event(self, view, event):
@@ -943,7 +948,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.fileentry[1].set_filename(os.path.abspath(filename))
         self.recompute_label()
 
+    def _set_save_action_sensitivity(self):
+        pane = self._get_focused_pane()
+        modified = False if pane == -1 else self.textbuffer[pane].data.modified
+        if self.main_actiongroup:
+            self.main_actiongroup.get_action("Save").set_sensitive(modified)
+
     def recompute_label(self):
+        self._set_save_action_sensitivity()
         filenames = []
         for i in range(self.num_panes):
             filenames.append(self.textbuffer[i].data.label)

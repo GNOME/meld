@@ -293,6 +293,13 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("Undo").set_sensitive(can_undo)
         self.actiongroup.get_action("Redo").set_sensitive(can_redo)
 
+        # FileDiff handles save sensitivity; it makes no sense for other modes
+        if not isinstance(newdoc, filediff.FileDiff):
+            self.actiongroup.get_action("Save").set_sensitive(False)
+            self.actiongroup.get_action("SaveAs").set_sensitive(False)
+        else:
+            self.actiongroup.get_action("SaveAs").set_sensitive(True)
+
         nbl = self.notebook.get_tab_label(newdoc.widget)
         self.widget.set_title(nbl.get_label_text() + " - Meld")
         try:
