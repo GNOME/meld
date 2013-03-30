@@ -90,6 +90,14 @@ def all_same(lst):
     return not lst or lst.count(lst[0]) == len(lst)
 
 
+def remove_blank_lines(text):
+    splits = text.splitlines()
+    lines = text.splitlines(True)
+    blanks = set([i for i, l in enumerate(splits) if not l])
+    lines = [l for i, l in enumerate(lines) if i not in blanks]
+    return ''.join(lines)
+
+
 def _files_same(files, regexes, prefs):
     """Determine whether a list of files are the same.
 
@@ -109,6 +117,8 @@ def _files_same(files, regexes, prefs):
     regexes = tuple(regexes)
     stats = tuple([StatItem._make(os.stat(f)) for f in files])
 
+    need_contents = regexes or prefs.ignore_blank_lines
+
     # If all entries are directories, they are considered to be the same
     if all([stat.S_ISDIR(s.mode) for s in stats]):
         return Same
@@ -125,11 +135,12 @@ def _files_same(files, regexes, prefs):
             return Different
 
     # If there are no text filters, unequal sizes imply a difference
-    if not regexes and not all_same([s.size for s in stats]):
+    if not need_contents and not all_same([s.size for s in stats]):
         return Different
 
     # Check the cache before doing the expensive comparison
-    cache = _cache.get((files, regexes))
+    cache_key = (files, regexes, prefs.ignore_blank_lines)
+    cache = _cache.get(cache_key)
     if cache and cache.stats == stats:
         return cache.result
 
@@ -143,9 +154,9 @@ def _files_same(files, regexes, prefs):
             data = [h.read(CHUNK_SIZE) for h in handles]
 
             # Rough test to see whether files are binary. If files are guessed
-            # to be binary, we unset regexes for speed and space reasons.
+            # to be binary, we don't examine contents for speed and space.
             if any(["\0" in d for d in data]):
-                regexes = tuple()
+                need_contents = False
 
             while True:
                 if all_same(data):
@@ -153,10 +164,10 @@ def _files_same(files, regexes, prefs):
                         break
                 else:
                     result = Different
-                    if not regexes:
+                    if not need_contents:
                         break
 
-                if regexes:
+                if need_contents:
                     for i in range(len(data)):
                         contents[i].append(data[i])
 
@@ -175,13 +186,15 @@ def _files_same(files, regexes, prefs):
     if result is None:
         result = Same
 
-    if result == Different and regexes:
+    if result == Different and need_contents:
         contents = ["".join(c) for c in contents]
         for r in regexes:
             contents = [re.sub(r, "", c) for c in contents]
+        if prefs.ignore_blank_lines:
+            contents = [remove_blank_lines(c) for c in contents]
         result = SameFiltered if all_same(contents) else Different
 
-    _cache[(files, regexes)] = CacheResult(stats, result)
+    _cache[cache_key] = CacheResult(stats, result)
     return result
 
 
@@ -406,6 +419,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif key == "dirdiff_shallow_comparison":
             self.refresh()
         elif key == "dirdiff_time_resolution_ns":
+            self.refresh()
+        elif key == "ignore_blank_lines":
             self.refresh()
 
     def update_treeview_columns(self, columns):
