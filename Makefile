@@ -92,8 +92,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop
 		$(DESTDIR)$(sharedir)/icons/HighContrast/scalable/apps/meld.svg
 	$(MAKE) -C po install
 	$(MAKE) -C help install
-	update-mime-database $(DESTDIR)$(sharedir)/mime
-	update-desktop-database $(DESTDIR)$(sharedir)/applications
+	$(update_mime_database)
+	$(update_desktop_database)
 
 meld.desktop: data/meld.desktop.in
 	intltool-merge -d po data/meld.desktop.in data/meld.desktop
@@ -122,6 +122,25 @@ uninstall:
 		$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po uninstall
 	$(MAKE) -C help uninstall
-	update-mime-database $(DESTDIR)$(sharedir)/mime
-	update-desktop-database $(DESTDIR)$(sharedir)/applications
+	$(update_mime_database)
+	$(update_desktop_database)
 
+update_mime_database_cmd = update-mime-database $(sharedir)/mime
+update_mime_database = \
+	@-if test -z "$(DESTDIR)"; then \
+		echo "Updating MIME database."; \
+		$(update_mime_database_cmd); \
+	else \
+		echo "*** MIME database not updated.  After (un)install, run this:"; \
+		echo "***   $(update_mime_database_cmd)"; \
+	fi
+
+update_desktop_database_cmd = update-desktop-database $(sharedir)/applications
+update_desktop_database = \
+	@-if test -z "$(DESTDIR)"; then \
+		echo "Updating desktop database."; \
+		$(update_desktop_database_cmd); \
+	else \
+		echo "*** Desktop database not updated.  After (un)install, run this:"; \
+		echo "***   $(update_desktop_database_cmd)"; \
+	fi
