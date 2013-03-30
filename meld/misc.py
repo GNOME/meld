@@ -23,11 +23,11 @@
 import copy
 import os
 from gettext import gettext as _
-import select
 import errno
 import shutil
 import re
 import subprocess
+import sys
 
 import gio
 import gobject
@@ -36,6 +36,16 @@ import gtk
 
 whitespace_re = re.compile(r"\s")
 NULL = open(os.devnull, "w+b")
+
+if sys.platform == "win32":
+    from select import select
+else:
+    import time
+
+    def select(rlist, wlist, xlist, timeout):
+        time.sleep(timeout)
+        return rlist, wlist, xlist
+
 
 def cmdout(cmd, text=None, **kwargs):
     stdin = NULL
@@ -201,7 +211,8 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
             childout, childerr = self.proc.stdout, self.proc.stderr
             bits = []
             while len(bits) == 0 or bits[-1] != "":
-                state = select.select([childout, childerr], [], [childout, childerr], yield_interval)
+                state = select([childout, childerr], [], [childout, childerr],
+                               yield_interval)
                 if len(state[0]) == 0:
                     if len(state[2]) == 0:
                         yield None
