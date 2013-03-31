@@ -97,6 +97,8 @@ class Vc(_vc.CachedVc):
             return path, False
 
         path = path[len(self.root) + 1:]
+        if os.name == "nt":
+            path = path.replace("\\", "/")
 
         args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], path)]
         process = subprocess.Popen(args,
@@ -122,6 +124,8 @@ class Vc(_vc.CachedVc):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
         path = path[len(self.root) + 1:]
+        if os.name == "nt":
+            path = path.replace("\\", "/")
 
         obj = commit + ":" + path
         process = subprocess.Popen([self.CMD, "cat-file", "blob", obj],
