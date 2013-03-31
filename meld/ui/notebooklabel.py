@@ -34,6 +34,8 @@ gtk.rc_parse_string(
     """)
 
 class NotebookLabel(gtk.HBox):
+    __gtype_name__ = "NotebookLabel"
+
     tab_width_in_chars = 30
 
     def __init__(self, iconname, text, onclose):
