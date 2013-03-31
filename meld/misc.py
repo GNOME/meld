@@ -27,7 +27,6 @@ import errno
 import shutil
 import re
 import subprocess
-import sys
 
 import gio
 import gobject
@@ -37,7 +36,7 @@ import gtk
 whitespace_re = re.compile(r"\s")
 NULL = open(os.devnull, "w+b")
 
-if sys.platform == "win32":
+if os.name != "nt":
     from select import select
 else:
     import time
