@@ -22,6 +22,7 @@ import atexit
 import tempfile
 import shutil
 import os
+import stat
 import sys
 from gettext import gettext as _
 
@@ -59,6 +60,9 @@ def cleanup_temp():
         try:
             assert os.path.exists(f) and os.path.isabs(f) and \
                    os.path.dirname(f) == temp_location
+            # Windows throws permissions errors if we remove read-only files
+            if os.name == "nt":
+                os.chmod(f, stat.S_IWRITE)
             os.remove(f)
         except:
             except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
