@@ -905,17 +905,22 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         have_selection = bool(selection.count_selected_rows())
         get_action = self.actiongroup.get_action
         get_main_action = self.main_actiongroup.get_action
-        # TODO: Setup valid correctly for missing or error rows
-        is_valid = True
+
         if have_selection:
+            is_valid = True
+            for path in selection.get_selected_rows()[1]:
+                state = self.model.get_state(self.model.get_iter(path), pane)
+                if state in (tree.STATE_ERROR, tree.STATE_NONEXIST):
+                    is_valid = False
+                    break
+
             get_action("DirCompare").set_sensitive(True)
             get_action("Hide").set_sensitive(True)
-            if is_valid:
-                get_action("DirDelete").set_sensitive(True)
-                get_action("DirCopyLeft").set_sensitive(pane > 0)
-                get_action("DirCopyRight").set_sensitive(
-                    pane + 1 < self.num_panes)
-                get_main_action("OpenExternal").set_sensitive(True)
+            get_action("DirDelete").set_sensitive(is_valid)
+            get_action("DirCopyLeft").set_sensitive(is_valid and pane > 0)
+            get_action("DirCopyRight").set_sensitive(
+                is_valid and pane + 1 < self.num_panes)
+            get_main_action("OpenExternal").set_sensitive(is_valid)
         else:
             for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                            "DirDelete", "Hide"):
