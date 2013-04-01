@@ -376,9 +376,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.update_treeview_columns(self.prefs.dirdiff_columns)
 
         for i in range(3):
-            self.treeview[i].get_selection().set_mode(gtk.SELECTION_MULTIPLE)
-            self.scrolledwindow[i].get_vadjustment().connect("value-changed", self._sync_vscroll )
-            self.scrolledwindow[i].get_hadjustment().connect("value-changed", self._sync_hscroll )
+            selection = self.treeview[i].get_selection()
+            selection.set_mode(gtk.SELECTION_MULTIPLE)
+            selection.connect('changed', self.on_treeview_selection_changed, i)
+            self.scrolledwindow[i].get_vadjustment().connect(
+                "value-changed", self._sync_vscroll)
+            self.scrolledwindow[i].get_hadjustment().connect(
+                "value-changed", self._sync_hscroll)
         self.linediffs = [[], []]
 
         self.state_filters = []
@@ -466,6 +470,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.filter_menu_button.set_label_widget(label)
 
     def on_container_switch_in_event(self, ui):
+        self.main_actiongroup = [a for a in ui.get_action_groups()
+                                 if a.get_name() == "MainActions"][0]
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
         self._create_filter_menu_button(ui)
         self.ui_manager = ui
@@ -607,7 +613,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(self._search_recursively_iter(path))
 
     def _search_recursively_iter(self, rootpath):
-        self.actiongroup.get_action("Hide").set_sensitive(False)
+        for t in self.treeview:
+            sel = t.get_selection()
+            sel.unselect_all()
+
         yield _("[%s] Scanning %s") % (self.label_text, "")
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         symlinks_followed = set()
@@ -727,8 +736,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(path)
         yield _("[%s] Done") % self.label_text
-        self.actiongroup.get_action("Hide").set_sensitive(True)
+
         self.scheduler.add_task(self.on_treeview_cursor_changed)
+        self.treeview[0].get_selection().select_path((0,))
 
     def _show_tree_wide_errors(self, invalid_filenames, shadowed_entries):
         header = _("Multiple errors occurred while scanning this folder")
@@ -889,6 +899,29 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.current_path and self.focus_pane:
                 self.focus_pane.set_cursor(self.current_path)
 
+    def on_treeview_selection_changed(self, selection, pane):
+        if not self.treeview[pane].is_focus():
+            return
+        have_selection = bool(selection.count_selected_rows())
+        get_action = self.actiongroup.get_action
+        get_main_action = self.main_actiongroup.get_action
+        # TODO: Setup valid correctly for missing or error rows
+        is_valid = True
+        if have_selection:
+            get_action("DirCompare").set_sensitive(True)
+            get_action("Hide").set_sensitive(True)
+            if is_valid:
+                get_action("DirDelete").set_sensitive(True)
+                get_action("DirCopyLeft").set_sensitive(pane > 0)
+                get_action("DirCopyRight").set_sensitive(
+                    pane + 1 < self.num_panes)
+                get_main_action("OpenExternal").set_sensitive(True)
+        else:
+            for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
+                           "DirDelete", "Hide"):
+                get_action(action).set_sensitive(False)
+            get_main_action("OpenExternal").set_sensitive(False)
+
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1020,15 +1053,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_treeview_focus_in_event(self, tree, event):
         self.focus_pane = tree
         pane = self.treeview.index(tree)
-        self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
-        self.actiongroup.get_action("DirCopyRight").set_sensitive(pane+1 < self.num_panes)
-        self.actiongroup.get_action("DirDelete").set_sensitive(True)
+        self.on_treeview_selection_changed(tree.get_selection(), pane)
         tree.emit("cursor-changed")
 
     def on_treeview_focus_out_event(self, tree, event):
-        self.actiongroup.get_action("DirCopyLeft").set_sensitive(False)
-        self.actiongroup.get_action("DirCopyRight").set_sensitive(False)
-        self.actiongroup.get_action("DirDelete").set_sensitive(False)
+        for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
+                       "DirDelete", "Hide"):
+            self.actiongroup.get_action(action).set_sensitive(False)
+        try:
+            self.main_actiongroup.get_action("OpenExternal").set_sensitive(
+                False)
+        except AttributeError:
+            pass
 
     def on_button_diff_clicked(self, button):
         pane = self._get_focused_pane()
