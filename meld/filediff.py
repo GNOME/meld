@@ -218,10 +218,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         actions = (
             ("MakePatch", None, _("Format as patch..."), None, _("Create a patch using differences between files"), self.make_patch),
-            ("SplitDiff", None, _("Add change synchronization point"), None,
+            ("SplitAdd", None, _("Add synchronization point"), None,
                 _("Add a manual point for synchronization of changes between "
                   "files"),
                 self.add_sync_point),
+            ("SplitClear", None, _("Clear synchronization points"), None,
+                _("Clear manual change sychronization points"),
+                self.clear_sync_points),
             ("PrevConflict", None, _("Previous conflict"), "<Ctrl>I", _("Go to the previous conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_UP)),
             ("NextConflict", None, _("Next conflict"), "<Ctrl>K", _("Go to the next conflict"), lambda x: self.on_next_conflict(gtk.gdk.SCROLL_DOWN)),
             ("PushLeft",  gtk.STOCK_GO_BACK,    _("Push to left"),    "<Alt>Left", _("Push current change to the left"), lambda x: self.push_change(-1)),
@@ -1767,17 +1770,30 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.animating_chunks[src].append(anim)
 
     def add_sync_point(self, action):
-        syncpoints = []
-        cursor_it = self.textbuffer[1].get_iter_at_mark(
-            self.textbuffer[1].get_insert())
-        middle_line = cursor_it.get_line()
+        pane = self._get_focused_pane()
+        if pane == -1:
+            return
 
-        others = (0, 2) if self.num_panes == 3 else (0,)
-        for i in others:
-            buf = self.textbuffer[i]
-            cursor_it = buf.get_iter_at_mark(buf.get_insert())
-            cursor_line = cursor_it.get_line()
-            syncpoints.append([middle_line, cursor_line])
+        # Find a non-complete syncpoint, or create a new one
+        if self.syncpoints and None in self.syncpoints[-1]:
+            syncpoint = self.syncpoints.pop()
+        else:
+            syncpoint = [None] * self.num_panes
+        cursor_it = self.textbuffer[pane].get_iter_at_mark(
+            self.textbuffer[pane].get_insert())
+        syncpoint[pane] = cursor_it.get_line()
+        self.syncpoints.append(syncpoint)
 
-        self.linediffer.syncpoints = [syncpoints]
+        valid_points = [p for p in self.syncpoints if all(p)]
+        if valid_points and self.num_panes == 2:
+            self.linediffer.syncpoints = [
+                ((p[1], p[0]), ) for p in valid_points]
+        elif valid_points and self.num_panes == 3:
+            self.linediffer.syncpoints = [
+                ((p[1], p[0]), (p[1], p[2])) for p in valid_points]
+        self.refresh_comparison()
+
+    def clear_sync_points(self, action):
+        self.syncpoints = []
+        self.linediffer.syncpoints = []
         self.refresh_comparison()
