@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-09 22:18+0000\n"
-"PO-Revision-Date: 2013-02-20 20:39+0200\n"
+"POT-Creation-Date: 2013-03-30 14:08+0000\n"
+"PO-Revision-Date: 2013-04-02 09:31+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -20,11 +20,11 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../bin/meld:113
+#: ../bin/meld:121
 msgid "Cannot import: "
 msgstr "Не могу да увезем: "
 
-#: ../bin/meld:116
+#: ../bin/meld:124
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Мелд захтева %s или новији."
@@ -82,7 +82,7 @@ msgid "Move _Down"
 msgstr "Премести _доле"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:325
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:326
 #: ../meld/vcview.py:200
 msgid "Name"
 msgstr "Назив"
@@ -305,7 +305,6 @@ msgid "Editor"
 msgstr "Уређивач"
 
 #: ../data/ui/preferences.ui.h:17
-#| msgid "Start a new comparison"
 msgid "Shallow comparison"
 msgstr "Површно поређење"
 
@@ -381,73 +380,59 @@ msgstr "При учитавању, пробај ова кодирања редо
 msgid "Encoding"
 msgstr "Кодирање"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:604
-#| msgid "Folder comparisons"
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:612
 msgid "New comparison"
 msgstr "Ново поређење"
 
 #: ../data/ui/tab-placeholder.ui.h:2
-#| msgid "_File Comparison"
 msgid "File comparison"
 msgstr "Поређење датотека"
 
 #: ../data/ui/tab-placeholder.ui.h:3
-#| msgid "_Directory Comparison"
 msgid "Directory comparison"
 msgstr "Поређење фасцикли"
 
 #: ../data/ui/tab-placeholder.ui.h:4
-#| msgid "_Version Control Browser"
 msgid "Version control view"
 msgstr "Преглед управљања издањима"
 
 #: ../data/ui/tab-placeholder.ui.h:5
-#| msgid "_File Comparison"
 msgid "_3-way comparison"
 msgstr "Упореди _3-елемента"
 
 #: ../data/ui/tab-placeholder.ui.h:6
-#| msgid "Select file"
 msgid "Select Third File"
 msgstr "Изаберите трећу датотеку"
 
 #: ../data/ui/tab-placeholder.ui.h:7
-#| msgid "Select file"
 msgid "Select Second File"
 msgstr "Изаберите другу датотеку"
 
 #: ../data/ui/tab-placeholder.ui.h:8
-#| msgid "Select file"
 msgid "Select First File"
 msgstr "Изаберите прву датотеку"
 
 #: ../data/ui/tab-placeholder.ui.h:9
-#| msgid "Select directory"
 msgid "Select First Folder"
 msgstr "Изаберите прву фасциклу"
 
 #: ../data/ui/tab-placeholder.ui.h:10
-#| msgid "Select directory"
 msgid "Select Second Folder"
 msgstr "Изаберите другу фасциклу"
 
 #: ../data/ui/tab-placeholder.ui.h:11
-#| msgid "Select file"
 msgid "Select Third Folder"
 msgstr "Изаберите трећу фасциклу"
 
 #: ../data/ui/tab-placeholder.ui.h:12
-#| msgid "_Version Control Browser"
 msgid "Select A Version-Controlled Folder"
 msgstr "Изаберите фасциклу управљања издањем"
 
 #: ../data/ui/tab-placeholder.ui.h:13
-#| msgid "_File Comparison"
 msgid "_Blank comparison"
 msgstr "_Празно поређење"
 
 #: ../data/ui/tab-placeholder.ui.h:14
-#| msgid "_Compare"
 msgid "C_ompare"
 msgstr "_Упореди"
 
@@ -495,7 +480,7 @@ msgstr "Умножите десно"
 msgid "Delete selected"
 msgstr "Обриши изабрано"
 
-#: ../meld/dirdiff.py:259 ../meld/filediff.py:1247
+#: ../meld/dirdiff.py:259 ../meld/filediff.py:1268
 msgid "Hide"
 msgstr "Сакриј"
 
@@ -548,55 +533,55 @@ msgid "Set active filters"
 msgstr "Подесите активне филтере"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:342
+#: ../meld/dirdiff.py:343
 msgid "Size"
 msgstr "Величина"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:349
+#: ../meld/dirdiff.py:350
 msgid "Modification time"
 msgstr "Време измене"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:356
+#: ../meld/dirdiff.py:357
 msgid "Permissions"
 msgstr "Овлашћења"
 
-#: ../meld/dirdiff.py:481
+#: ../meld/dirdiff.py:482
 #, python-format
 msgid "Hide %s"
 msgstr "Сакриј „%s“"
 
-#: ../meld/dirdiff.py:595 ../meld/dirdiff.py:614 ../meld/vcview.py:370
+#: ../meld/dirdiff.py:596 ../meld/dirdiff.py:615 ../meld/vcview.py:370
 #: ../meld/vcview.py:394
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] прегледам „%s“"
 
-#: ../meld/dirdiff.py:713
+#: ../meld/dirdiff.py:714
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Готово"
 
-#: ../meld/dirdiff.py:718
+#: ../meld/dirdiff.py:719
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Дошло је до више грешака за време претраживања ове фасцикле"
 
-#: ../meld/dirdiff.py:719
+#: ../meld/dirdiff.py:720
 msgid "Files with invalid encodings found"
 msgstr "Пронађене су датотеке са неисправним кодирањем"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:721
+#: ../meld/dirdiff.py:722
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Неке датотеке бејаху у неисправном кодирању. Називи су нешто као:"
 
-#: ../meld/dirdiff.py:723
+#: ../meld/dirdiff.py:724
 msgid "Files hidden by case insensitive comparison"
 msgstr "Датотеке скривене поређењем неосетљивим на величину слова"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:725
+#: ../meld/dirdiff.py:726
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -604,17 +589,17 @@ msgstr ""
 "Покренули сте поређење независно од величине слова на систему датотека где "
 "је она битна. Неке датотеке нису видљиве:"
 
-#: ../meld/dirdiff.py:736
+#: ../meld/dirdiff.py:737
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ сакривено од стране „%s“"
 
-#: ../meld/dirdiff.py:761 ../meld/filediff.py:1010 ../meld/filediff.py:1251
-#: ../meld/vcview.py:620 ../meld/vcview.py:662
+#: ../meld/dirdiff.py:762 ../meld/filediff.py:1016 ../meld/filediff.py:1272
+#: ../meld/vcview.py:664 ../meld/vcview.py:706
 msgid "Hi_de"
 msgstr "_Сакриј"
 
-#: ../meld/dirdiff.py:793
+#: ../meld/dirdiff.py:794
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -623,7 +608,7 @@ msgstr ""
 "„%s“ постоји.\n"
 "Да преснимим?"
 
-#: ../meld/dirdiff.py:800
+#: ../meld/dirdiff.py:801
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
@@ -634,7 +619,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:818 ../meld/vcview.py:594
+#: ../meld/dirdiff.py:819 ../meld/vcview.py:638
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -643,7 +628,7 @@ msgstr ""
 "„%s“ је фасцикла.\n"
 "Да уклоним рекурзивно?"
 
-#: ../meld/dirdiff.py:825 ../meld/vcview.py:599
+#: ../meld/dirdiff.py:826 ../meld/vcview.py:643
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -654,7 +639,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:925
+#: ../meld/dirdiff.py:926
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
@@ -663,7 +648,7 @@ msgstr[1] "%i секунде"
 msgstr[2] "%i секунде"
 msgstr[3] "%i секунда"
 
-#: ../meld/dirdiff.py:926
+#: ../meld/dirdiff.py:927
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
@@ -672,7 +657,7 @@ msgstr[1] "%i минута"
 msgstr[2] "%i минута"
 msgstr[3] "%i минут"
 
-#: ../meld/dirdiff.py:927
+#: ../meld/dirdiff.py:928
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
@@ -681,7 +666,7 @@ msgstr[1] "%i сата"
 msgstr[2] "%i сати"
 msgstr[3] "%i сат"
 
-#: ../meld/dirdiff.py:928
+#: ../meld/dirdiff.py:929
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
@@ -690,7 +675,7 @@ msgstr[1] "%i дана"
 msgstr[2] "%i дана"
 msgstr[3] "%i дан"
 
-#: ../meld/dirdiff.py:929
+#: ../meld/dirdiff.py:930
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
@@ -699,7 +684,7 @@ msgstr[1] "%i недеље"
 msgstr[2] "%i недеља"
 msgstr[3] "%i недеља"
 
-#: ../meld/dirdiff.py:930
+#: ../meld/dirdiff.py:931
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
@@ -708,7 +693,7 @@ msgstr[1] "%i месеца"
 msgstr[2] "%i месеци"
 msgstr[3] "%i месец"
 
-#: ../meld/dirdiff.py:931
+#: ../meld/dirdiff.py:932
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -717,159 +702,159 @@ msgstr[1] "%i године"
 msgstr[2] "%i година"
 msgstr[3] "%i година"
 
-#: ../meld/filediff.py:228
+#: ../meld/filediff.py:219
 msgid "Format as patch..."
 msgstr "Форматирај као исправку..."
 
-#: ../meld/filediff.py:228
+#: ../meld/filediff.py:219
 msgid "Create a patch using differences between files"
 msgstr "Направите исправку користећи разлике између датотека"
 
-#: ../meld/filediff.py:229
+#: ../meld/filediff.py:220
 msgid "Previous conflict"
 msgstr "Претходни сукоб"
 
-#: ../meld/filediff.py:229
+#: ../meld/filediff.py:220
 msgid "Go to the previous conflict"
 msgstr "Идите на претходни сукоб"
 
-#: ../meld/filediff.py:230
+#: ../meld/filediff.py:221
 msgid "Next conflict"
 msgstr "Следећи сукоб"
 
-#: ../meld/filediff.py:230
+#: ../meld/filediff.py:221
 msgid "Go to the next conflict"
 msgstr "Идите на следећи сукоб"
 
-#: ../meld/filediff.py:231
+#: ../meld/filediff.py:222
 msgid "Push to left"
 msgstr "Гурни улево"
 
-#: ../meld/filediff.py:231
+#: ../meld/filediff.py:222
 msgid "Push current change to the left"
 msgstr "Гурните текућу измену улево"
 
-#: ../meld/filediff.py:232
+#: ../meld/filediff.py:223
 msgid "Push to right"
 msgstr "Гурни удесно"
 
-#: ../meld/filediff.py:232
+#: ../meld/filediff.py:223
 msgid "Push current change to the right"
 msgstr "Гурните текућу измену удесно"
 
 #. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:234
+#: ../meld/filediff.py:225
 msgid "Pull from left"
 msgstr "Убаци с лева"
 
-#: ../meld/filediff.py:234
+#: ../meld/filediff.py:225
 msgid "Pull change from the left"
 msgstr "Убаците измену с лева"
 
-#: ../meld/filediff.py:235
+#: ../meld/filediff.py:226
 msgid "Pull from right"
 msgstr "Убаци с десна"
 
-#: ../meld/filediff.py:235
+#: ../meld/filediff.py:226
 msgid "Pull change from the right"
 msgstr "Убаците измену с десна"
 
-#: ../meld/filediff.py:236
+#: ../meld/filediff.py:227
 msgid "Copy above left"
 msgstr "Умножи изнад улево"
 
-#: ../meld/filediff.py:236
+#: ../meld/filediff.py:227
 msgid "Copy change above the left chunk"
 msgstr "Умножите измену изнад комада улево"
 
-#: ../meld/filediff.py:237
+#: ../meld/filediff.py:228
 msgid "Copy below left"
 msgstr "Умножи испод улево"
 
-#: ../meld/filediff.py:237
+#: ../meld/filediff.py:228
 msgid "Copy change below the left chunk"
 msgstr "Умножите измену испод комада улево"
 
-#: ../meld/filediff.py:238
+#: ../meld/filediff.py:229
 msgid "Copy above right"
 msgstr "Умножи изнад удесно"
 
-#: ../meld/filediff.py:238
+#: ../meld/filediff.py:229
 msgid "Copy change above the right chunk"
 msgstr "Умножите измену изнад комада удесно"
 
-#: ../meld/filediff.py:239
+#: ../meld/filediff.py:230
 msgid "Copy below right"
 msgstr "Умножи испод удесно"
 
-#: ../meld/filediff.py:239
+#: ../meld/filediff.py:230
 msgid "Copy change below the right chunk"
 msgstr "Умножите измену испод комада удесно"
 
-#: ../meld/filediff.py:240
+#: ../meld/filediff.py:231
 msgid "Delete"
 msgstr "Обриши"
 
-#: ../meld/filediff.py:240
+#: ../meld/filediff.py:231
 msgid "Delete change"
 msgstr "Обришите измену"
 
-#: ../meld/filediff.py:241
+#: ../meld/filediff.py:232
 msgid "Merge all changes from left"
 msgstr "Обједини све измене с лева"
 
-#: ../meld/filediff.py:241
+#: ../meld/filediff.py:232
 msgid "Merge all non-conflicting changes from the left"
 msgstr "Обједините све несукобљавајуће измене с лева"
 
-#: ../meld/filediff.py:242
+#: ../meld/filediff.py:233
 msgid "Merge all changes from right"
 msgstr "Обједини све измене с десна"
 
-#: ../meld/filediff.py:242
+#: ../meld/filediff.py:233
 msgid "Merge all non-conflicting changes from the right"
 msgstr "Обједините све несукобљавајуће измене с десна"
 
-#: ../meld/filediff.py:243
+#: ../meld/filediff.py:234
 msgid "Merge all non-conflicting"
 msgstr "Обједини све несукобљавајуће"
 
-#: ../meld/filediff.py:243
+#: ../meld/filediff.py:234
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "Обједините све несукобљавајуће измене с леве и десне површи"
 
-#: ../meld/filediff.py:244
+#: ../meld/filediff.py:235
 msgid "Cycle through documents"
 msgstr "Кружи кроз документе"
 
-#: ../meld/filediff.py:244
+#: ../meld/filediff.py:235
 msgid "Move keyboard focus to the next document in this comparison"
 msgstr "Преместите фокус тастатуре на следећи документ у овом поређењу"
 
-#: ../meld/filediff.py:248
+#: ../meld/filediff.py:239
 msgid "Lock scrolling"
 msgstr "Закључај клизање"
 
-#: ../meld/filediff.py:249
+#: ../meld/filediff.py:240
 msgid "Lock scrolling of all panes"
 msgstr "Закључајте клизање свих површи"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:365
+#: ../meld/filediff.py:361
 msgid "INS"
 msgstr "УМЕТ"
 
-#: ../meld/filediff.py:365
+#: ../meld/filediff.py:361
 msgid "OVR"
 msgstr "ПРЕП"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:367
+#: ../meld/filediff.py:363
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Ред %i, место %i"
 
-#: ../meld/filediff.py:703
+#: ../meld/filediff.py:700
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -878,42 +863,42 @@ msgstr ""
 "Филтер „%s“ је изменио број редова у датотеци. Поређење неће бити тачно. За "
 "више детаља погледајте приручник за кориснике."
 
-#: ../meld/filediff.py:998
+#: ../meld/filediff.py:1004
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Постави број плоча"
 
-#: ../meld/filediff.py:1004
+#: ../meld/filediff.py:1010
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Отварам датотеке"
 
-#: ../meld/filediff.py:1028 ../meld/filediff.py:1038 ../meld/filediff.py:1051
-#: ../meld/filediff.py:1057
+#: ../meld/filediff.py:1034 ../meld/filediff.py:1044 ../meld/filediff.py:1057
+#: ../meld/filediff.py:1063
 msgid "Could not read file"
 msgstr "Не могу да прочитам датотеку"
 
-#: ../meld/filediff.py:1029
+#: ../meld/filediff.py:1035
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Читам датотеке"
 
-#: ../meld/filediff.py:1039
+#: ../meld/filediff.py:1045
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "„%s“ изгледа да је извршна датотека."
 
-#: ../meld/filediff.py:1052
+#: ../meld/filediff.py:1058
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "„%s“ није у кодирањима: „%s“"
 
-#: ../meld/filediff.py:1083
+#: ../meld/filediff.py:1092
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Срачунавам разлике"
 
-#: ../meld/filediff.py:1238
+#: ../meld/filediff.py:1259
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -921,15 +906,15 @@ msgstr ""
 "Коришћени су филтери текста, а могу постојати и замаскиране разлике између "
 "датотека. Да ли желите да поредите нефилтриране датотеке?"
 
-#: ../meld/filediff.py:1244
+#: ../meld/filediff.py:1265
 msgid "Files are identical"
 msgstr "Датотеке су истоветне"
 
-#: ../meld/filediff.py:1254
+#: ../meld/filediff.py:1275
 msgid "Show without filters"
 msgstr "Приказује без филтера"
 
-#: ../meld/filediff.py:1378
+#: ../meld/filediff.py:1399
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -938,7 +923,7 @@ msgstr ""
 "„%s“ постоји!\n"
 "Да преснимим?"
 
-#: ../meld/filediff.py:1391
+#: ../meld/filediff.py:1412
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -949,12 +934,12 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1400
+#: ../meld/filediff.py:1421
 #, python-format
 msgid "Choose a name for buffer %i."
 msgstr "Изаберите назив за %i. бафер."
 
-#: ../meld/filediff.py:1416
+#: ../meld/filediff.py:1437
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -965,7 +950,7 @@ msgstr ""
 "\n"
 "Који облик желите да користите?"
 
-#: ../meld/filediff.py:1432
+#: ../meld/filediff.py:1453
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -974,7 +959,7 @@ msgstr ""
 "„%s“ садржи знакове који се не могу кодирати уз „%s“\n"
 "Да ли желите да сачувате као УТФ-8?"
 
-#: ../meld/filediff.py:1497
+#: ../meld/filediff.py:1518
 msgid "Save changes to documents before reloading?"
 msgstr "Да сачувам измене у документу пре поновног учитавања?"
 
@@ -1078,7 +1063,7 @@ msgstr "Грешка читања сачуване датотеке поређе
 msgid "<unnamed>"
 msgstr "<неименован>"
 
-#: ../meld/melddoc.py:58 ../meld/melddoc.py:59
+#: ../meld/melddoc.py:59 ../meld/melddoc.py:60
 msgid "untitled"
 msgstr "безимени"
 
@@ -1087,7 +1072,6 @@ msgid "_File"
 msgstr "_Датотека"
 
 #: ../meld/meldwindow.py:63
-#| msgid "_File Comparison"
 msgid "_New comparison"
 msgstr "_Ново поређење"
 
@@ -1315,12 +1299,12 @@ msgstr "Отвори скорашње"
 msgid "Open recent files"
 msgstr "Отворите скорашње датотеке"
 
-#: ../meld/meldwindow.py:526
+#: ../meld/meldwindow.py:533
 msgid "Switch to this tab"
 msgstr "Пребаците се на овај језичак"
 
 #. exit at first non found directory + file
-#: ../meld/meldwindow.py:652
+#: ../meld/meldwindow.py:665
 msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Не могу да поредим мешавину датотека и фасцикли.\n"
 
@@ -1547,11 +1531,11 @@ msgstr "[%s] Прибављам разлике"
 msgid "[%s] Applying patch"
 msgstr "[%s] Примењујем закрпу"
 
-#: ../meld/vcview.py:613
+#: ../meld/vcview.py:657
 msgid "Patch tool not found"
 msgstr "Нисам пронашао алат закрпе"
 
-#: ../meld/vcview.py:614
+#: ../meld/vcview.py:658
 #, python-format
 msgid ""
 "Meld needs the <i>patch</i> tool to be installed to perform comparisons in "
@@ -1560,11 +1544,11 @@ msgstr ""
 "Мелд захтева инсталацију алата за <i>закрпе</i> да би обавио поређења у %s "
 "ризнице. Молим инсталирајте <i>закрпу</i> и покушајте опет."
 
-#: ../meld/vcview.py:654
+#: ../meld/vcview.py:698
 msgid "Error fetching original comparison file"
 msgstr "Грешка приликом довлачења изворне датотеке поређења"
 
-#: ../meld/vcview.py:655
+#: ../meld/vcview.py:699
 msgid ""
 "Meld couldn't obtain the original version of your comparison file. If you "
 "are using the most recent version of Meld, please report a bug, including as "
@@ -1574,11 +1558,11 @@ msgstr ""
 "најновије издање Мелда, пријавите грешку, укључујући што је могуће више "
 "детаља."
 
-#: ../meld/vcview.py:663
+#: ../meld/vcview.py:707
 msgid "Report a bug"
 msgstr "Пријавите грешку"
 
-#: ../meld/ui/findbar.py:145
+#: ../meld/ui/findbar.py:150
 #, python-format
 msgid ""
 "Regular expression error\n"
@@ -1615,16 +1599,34 @@ msgstr "Изаберите датотеку"
 msgid "Close tab"
 msgstr "Затворите језичак"
 
+#: ../meld/vc/_vc.py:45
+msgid "Merged"
+msgstr "Стопљено"
+
+#: ../meld/vc/_vc.py:45
+msgid "Base"
+msgstr "Основа"
+
+#: ../meld/vc/_vc.py:45
+#| msgid "Location"
+msgid "Local"
+msgstr "Месно"
+
+#: ../meld/vc/_vc.py:45
+#| msgid "_Remove"
+msgid "Remote"
+msgstr "Удаљено"
+
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:40
+#: ../meld/vc/_vc.py:51
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
 "Not present"
 msgstr ""
-"Занемарено:Неверзионирано:::Грешка::Ново додато:Измењено:Сукоб:Уклоњено:"
-"Недостајуће:Није присутно"
+"Занемарено:Неверзионирано:::Грешка::Ново "
+"додато:Измењено:Сукоб:Уклоњено:Недостајуће:Није присутно"
 
-#: ../meld/vc/cvs.py:165
+#: ../meld/vc/cvs.py:181
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1635,7 +1637,7 @@ msgstr ""
 "Образац је био „%s“\n"
 "Грешка је била „%s“"
 
-#: ../meld/vc/git.py:181
+#: ../meld/vc/git.py:214
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Режим је измењен из „%s“ у „%s“"
