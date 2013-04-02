@@ -1143,6 +1143,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Refresh the view by clearing and redoing all comparisons"""
         self._disconnect_buffer_handlers()
         self.linediffer.clear()
+
+        for buf in self.textbuffer:
+            tag = buf.get_tag_table().lookup("inline")
+            buf.remove_tag(tag, buf.get_start_iter(), buf.get_end_iter())
+
         self.queue_draw()
         self.scheduler.add_task(self._diff_files())
 
