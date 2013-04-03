@@ -315,6 +315,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             "conflict": lookup("conflict-outline", "#f0768b"),
                             "replace" : lookup("replace-outline", "#8bbff3")}
         self.highlight_color = lookup("highlight-bg", "#ffff00")
+        self.syncpoint_color = lookup("syncpoint-outline", "#555555")
 
         for associated in self.diffmap + self.linkmap:
             associated.set_color_scheme([self.fill_colors, self.line_colors])
@@ -1354,6 +1355,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.set_source_color(self.highlight_color)
             context.paint_with_alpha(0.25)
             context.restore()
+
+        for syncpoint in [p[pane] for p in self.syncpoints]:
+            if bounds[0] <= syncpoint <= bounds[1]:
+                ypos = textview.get_y_for_line_num(syncpoint) - visible.y
+                context.rectangle(-0.5, ypos - 0.5, width + 1, 1)
+                context.set_source_color(self.syncpoint_color)
+                context.stroke()
 
         current_time = glib.get_current_time()
         new_anim_chunks = []
