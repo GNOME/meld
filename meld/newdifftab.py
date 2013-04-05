@@ -47,6 +47,11 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
                              parentapp.append_dirdiff,
                              parentapp.append_vcview)
         self.diff_type = -1
+
+        default_path = os.path.expanduser("~")
+        for chooser in self.file_chooser:
+            chooser.set_current_folder(default_path)
+
         self.widget.show()
 
     def on_button_type_toggled(self, button, *args):
@@ -71,12 +76,20 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
         else:  # button is self.dir_three_way_checkbutton
             self.dir_chooser2.set_sensitive(button.get_active())
 
-    # TODO: This is not even hooked up. We could do checks here to prevent
-    # errors: check to see if we've got binary files; check for null file
-    # selections; sniff text encodings; check file permissions.
     def on_file_set(self, button, *args):
         filename = button.get_filename()
-        assert os.path.isfile(filename)
+        if not filename:
+            return
+
+        parent = os.path.dirname(filename)
+        if os.path.isdir(parent):
+            for chooser in self.file_chooser:
+                if not chooser.get_filename():
+                    chooser.set_current_folder(parent)
+
+        # TODO: We could do checks here to prevent errors: check to see if
+        # we've got binary files; check for null file selections; sniff text
+        # encodings; check file permissions.
 
     def _get_num_paths(self):
         if self.diff_type in (0, 1):
