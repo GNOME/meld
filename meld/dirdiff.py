@@ -285,6 +285,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
+        self.main_actiongroup = None
+
         self.name_filters = []
         self.text_filters = []
         self.create_name_filters()
@@ -904,7 +906,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
         have_selection = bool(selection.count_selected_rows())
         get_action = self.actiongroup.get_action
-        get_main_action = self.main_actiongroup.get_action
 
         if have_selection:
             is_valid = True
@@ -920,12 +921,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             get_action("DirCopyLeft").set_sensitive(is_valid and pane > 0)
             get_action("DirCopyRight").set_sensitive(
                 is_valid and pane + 1 < self.num_panes)
-            get_main_action("OpenExternal").set_sensitive(is_valid)
+            if self.main_actiongroup:
+                act = self.main_actiongroup.get_action("OpenExternal")
+                act.set_sensitive(is_valid)
         else:
             for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                            "DirDelete", "Hide"):
                 get_action(action).set_sensitive(False)
-            get_main_action("OpenExternal").set_sensitive(False)
+            if self.main_actiongroup:
+                act = self.main_actiongroup.get_action("OpenExternal")
+                act.set_sensitive(False)
 
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
