@@ -104,7 +104,10 @@ class DiffTreeStore(gtk.TreeStore):
         return [self.value_path(it, i) for i in range(self.ntree)]
 
     def value_path(self, it, pane):
-        return self.get_value(it, self.column_index(COL_PATH, pane))
+        path = self.get_value(it, self.column_index(COL_PATH, pane))
+        if path is not None:
+            path = path.decode('utf8')
+        return path
 
     def column_index(self, col, pane):
         return self.ntree * col + pane

@@ -868,7 +868,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def treeview_search_cb(self, model, column, key, it):
         """Callback function for searching in VcView treeview"""
-        path = model.get_value(it, tree.COL_PATH)
+        path = model.value_path(it, 0)
 
         # if query text contains slash, search in full path
         if key.find('/') >= 0:

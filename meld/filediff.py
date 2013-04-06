@@ -992,13 +992,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
            If an element is None, the text of a pane is left as is.
         """
         self._disconnect_buffer_handlers()
-        for i,f in enumerate(files):
-            if f:
-                absfile = os.path.abspath(f)
-                self.fileentry[i].set_filename(absfile)
-                self.fileentry[i].prepend_history(absfile)
-                self.textbuffer[i].reset_buffer(absfile)
-                self.msgarea_mgr[i].clear()
+        for i, f in enumerate(files):
+            if not f:
+                continue
+            if not isinstance(f, unicode):
+                files[i] = f = f.decode('utf8')
+            absfile = os.path.abspath(f)
+            self.fileentry[i].set_filename(absfile)
+            self.fileentry[i].prepend_history(absfile)
+            self.textbuffer[i].reset_buffer(absfile)
+            self.msgarea_mgr[i].clear()
+
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
         self._connect_buffer_handlers()
@@ -1526,6 +1530,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.check_save_modified() != gtk.RESPONSE_CANCEL:
             entries = self.fileentry[:self.num_panes]
             paths = [e.get_full_path() for e in entries]
+            paths = [p.decode('utf8') for p in paths]
             self.set_files(paths)
         return True
 

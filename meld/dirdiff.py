@@ -24,6 +24,7 @@ import os
 import re
 import shutil
 import stat
+import sys
 import time
 
 import gtk
@@ -577,10 +578,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_fileentry_activate(self, entry):
         locs = [e.get_full_path() for e in self.fileentry[:self.num_panes]]
+        locs = [l.decode('utf8') for l in locs]
         self.set_locations(locs)
 
     def set_locations(self, locations):
         self.set_num_panes(len(locations))
+        # This is difficult to trigger, and to test. Most of the time here we
+        # will actually have had UTF-8 from GTK, which has been unicode-ed by
+        # the time we get this far. This is a fallback, and may be wrong!
+        for i, l in enumerate(locations):
+            if not isinstance(l, unicode):
+                locations[i] = l.decode(sys.getfilesystemencoding())
+        # TODO: Support for blank folder comparisons should probably look here
         locations = [os.path.abspath(l or ".") for l in locations]
         self.current_path = None
         self.model.clear()
@@ -666,7 +675,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                 for e in entries:
                     try:
-                        e = e.decode('utf8')
+                        if not isinstance(e, unicode):
+                            e = e.decode('utf8')
                     except UnicodeDecodeError:
                         approximate_name = e.decode('utf8', 'replace')
                         encoding_errors.append((pane, approximate_name))

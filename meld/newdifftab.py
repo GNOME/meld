@@ -109,6 +109,7 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
         for chooser in type_choosers[self.diff_type][:num_paths]:
             gfile = chooser.get_file()
             path = gfile.get_path() if gfile else ""
+            path = path.decode('utf8')
             compare_paths.append(path)
 
         tab = self.diff_methods[self.diff_type](compare_paths)
