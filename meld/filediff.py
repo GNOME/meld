@@ -16,9 +16,9 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import codecs
 import copy
 import functools
+import io
 import os
 from gettext import gettext as _
 import time
@@ -1037,7 +1037,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf = textbuffers[pane]
             if filename:
                 try:
-                    handle = codecs.open(filename, "rU", try_codecs[0])
+                    handle = io.open(filename, "r", encoding=try_codecs[0])
                     task = TaskEntry(filename, handle, buf, try_codecs[:],
                                      pane, False)
                     tasks.append(task)
@@ -1062,7 +1062,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     t.codec.pop(0)
                     if len(t.codec):
                         t.buf.delete(*t.buf.get_bounds())
-                        t.file = codecs.open(t.filename, "rU", t.codec[0])
+                        t.file = io.open(t.filename, "r", encoding=t.codec[0])
                     else:
                         t.buf.delete(*t.buf.get_bounds())
                         filename = gobject.markup_escape_text(t.filename)
@@ -1454,11 +1454,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
         if bufdata.newlines:
-            if type(bufdata.newlines) == type(""):
-                if(bufdata.newlines) != '\n':
+            if isinstance(bufdata.newlines, basestring):
+                if bufdata.newlines != '\n':
                     text = text.replace("\n", bufdata.newlines)
-            elif type(bufdata.newlines) == type(()):
-                buttons = {'\n':("UNIX (LF)",0), '\r\n':("DOS (CR-LF)", 1), '\r':("MAC (CR)",2) }
+            else:
+                buttons = {
+                    '\n': ("UNIX (LF)", 0),
+                    '\r\n': ("DOS/Windows (CR-LF)", 1),
+                    '\r': ("Mac OS (CR)", 2),
+                }
                 newline = misc.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.label,
                     self, gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_CANCEL,
                     extrabuttons=[ buttons[b] for b in bufdata.newlines ] )
