@@ -77,7 +77,7 @@ class MeldDoc(gobject.GObject):
         if self.scheduler.tasks_pending():
             self.scheduler.remove_task(self.scheduler.get_current_task())
 
-    def _open_files(self, selected):
+    def _open_files(self, selected, line=0):
         query_attrs = ",".join((gio.FILE_ATTRIBUTE_STANDARD_TYPE,
                                 gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
 
@@ -99,8 +99,9 @@ class MeldDoc(gobject.GObject):
             elif file_type == gio.FILE_TYPE_REGULAR:
                 content_type = info.get_content_type()
                 path = source.get_path()
-                if gio.content_type_is_a(content_type, "text/plain"):
-                    editor = self.prefs.get_editor_command([path])
+                # content_type_is_a does not seem to work on windows
+                if gio.content_type_is_a(content_type, "text/plain") or sys.platform == "win32":
+                    editor = self.prefs.get_editor_command([path], line)
                     if editor:
                         subprocess.Popen(editor)
                     else:

@@ -20,6 +20,7 @@
 from gettext import gettext as _
 
 import gtk
+import re
 
 from . import filters
 from . import misc
@@ -366,9 +367,19 @@ class MeldPreferences(prefs.Preferences):
         }
         return toolbar_styles[style]
 
-    def get_editor_command(self, files):
+    def get_editor_command(self, files, line=0):
         if self.edit_command_type == "custom":
-            return self.edit_command_custom.split() + files
+            custom_command = self.edit_command_custom
+            matches = re.search('(?P<editor>.+)(?:\s+)(?P<param>.*)', custom_command)
+            if matches:
+                # first part is the editor itself
+                custom_command = matches.group('editor')
+                # second part may contain optional parameters
+                # if it contains "{file}" than process it and modify files array
+                if matches.group('param').count('{file}') > 0:
+                    files[0] = matches.group('param').replace("{file}", files[0])
+                    files[0] = files[0].replace("{line}", str(line))
+            return [custom_command] + files
         else:
             if not hasattr(self, "_gconf"):
                 return []

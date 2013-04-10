@@ -870,7 +870,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         pane = self._get_focused_pane()
         if pane >= 0:
             if self.textbuffer[pane].data.filename:
-                self._open_files([self.textbuffer[pane].data.filename])
+                pos = self.textbuffer[pane].props.cursor_position
+                cursor_it = self.textbuffer[pane].get_iter_at_offset(pos)
+                line = cursor_it.get_line() + 1
+                self._open_files([self.textbuffer[pane].data.filename], line)
 
     def get_selected_text(self):
         """Returns selected text of active pane"""
