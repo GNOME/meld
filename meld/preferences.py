@@ -16,11 +16,13 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
+import logging
+import shlex
+import string
 
 from gettext import gettext as _
 
 import gtk
-import re
 
 from . import filters
 from . import misc
@@ -37,6 +39,8 @@ TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
                                 ('100ns (NTFS)', 100),
                                 ('1s (ext2/ext3)', 1000000000),
                                 ('2s (VFAT)', 2000000000)]
+
+log = logging.getLogger(__name__)
 
 
 class FilterList(listwidget.ListWidget):
@@ -367,19 +371,20 @@ class MeldPreferences(prefs.Preferences):
         }
         return toolbar_styles[style]
 
-    def get_editor_command(self, files, line=0):
+    def get_editor_command(self, path, line=0):
         if self.edit_command_type == "custom":
             custom_command = self.edit_command_custom
-            matches = re.search('(?P<editor>.+)(?:\s+)(?P<param>.*)', custom_command)
-            if matches:
-                # first part is the editor itself
-                custom_command = matches.group('editor')
-                # second part may contain optional parameters
-                # if it contains "{file}" than process it and modify files array
-                if matches.group('param').count('{file}') > 0:
-                    files[0] = matches.group('param').replace("{file}", files[0])
-                    files[0] = files[0].replace("{line}", str(line))
-            return [custom_command] + files
+            fmt = string.Formatter()
+            replacements = [tok[1] for tok in fmt.parse(custom_command)]
+
+            if not any(replacements):
+                cmd = " ".join([custom_command, path])
+            elif not all(r in (None, 'file', 'line') for r in replacements):
+                cmd = " ".join([custom_command, path])
+                log.error("Unsupported fields found", )
+            else:
+                cmd = custom_command.format(file=path, line=line)
+            return shlex.split(cmd)
         else:
             if not hasattr(self, "_gconf"):
                 return []
@@ -395,8 +400,8 @@ class MeldPreferences(prefs.Preferences):
                     targ = self._gconf.get_string(terminal_path + "exec_arg")
                     if targ:
                         argv.append(targ)
-                escaped_files = [f.replace(" ", "\\ ") for f in files]
-                argv.append("%s %s" % (editor, " ".join(escaped_files)))
+                escaped_path = path.replace(" ", "\\ ")
+                argv.append("%s %s" % (editor, escaped_path))
                 return argv
             else:
-                return [editor] + files
+                return [editor, path]

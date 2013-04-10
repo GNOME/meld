@@ -101,7 +101,7 @@ class MeldDoc(gobject.GObject):
                 path = source.get_path()
                 # content_type_is_a does not seem to work on windows
                 if gio.content_type_is_a(content_type, "text/plain") or sys.platform == "win32":
-                    editor = self.prefs.get_editor_command([path], line)
+                    editor = self.prefs.get_editor_command(path, line)
                     if editor:
                         subprocess.Popen(editor)
                     else:
