@@ -27,7 +27,7 @@ clean:
 	$(MAKE) -C help clean
 
 .PHONY:install
-install: $(addsuffix .install,$(SPECIALS)) meld.desktop
+install: $(addsuffix .install,$(SPECIALS)) meld.desktop meld.xml
 	mkdir -m 755 -p \
 		$(DESTDIR)$(bindir) \
 		$(DESTDIR)$(libdir_) \
