@@ -473,4 +473,5 @@ class Differ(gobject.GObject):
         self.diffs = [[], []]
         self.seqlength = [0] * self.num_sequences
         self._initialised = False
+        self._old_merge_cache = set()
         self._update_merge_cache([""] * self.num_sequences)
