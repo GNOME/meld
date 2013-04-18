@@ -99,8 +99,9 @@ class MeldDoc(gobject.GObject):
             elif file_type == gio.FILE_TYPE_REGULAR:
                 content_type = info.get_content_type()
                 path = source.get_path()
-                # content_type_is_a does not seem to work on windows
-                if gio.content_type_is_a(content_type, "text/plain") or sys.platform == "win32":
+                # FIXME: Content types are broken on Windows with current gio
+                if gio.content_type_is_a(content_type, "text/plain") or \
+                        sys.platform == "win32":
                     editor = self.prefs.get_editor_command(path, line)
                     if editor:
                         subprocess.Popen(editor)
