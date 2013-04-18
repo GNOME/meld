@@ -1,0 +1,31 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="preferences">
+<info>
+  <title type="sort">1</title>
+  <link type="guide" xref="index#advanced"/>
+  <revision docversion="1.7" status="draft"/>
+  <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
+  <credit type="author copyright">
+    <name>Kai Willadsen</name>
+    <email>kai.willadsen@gmail.com</email>
+    <years>2013</years>
+  </credit>
+</info>
+<title>Meld's preferences</title>
+
+<terms>
+  <title>Editor preferences</title>
+  <item>
+    <title>Editor command</title>
+    <p>The name of the command to run to open text files in an external editor.
+       This may be just the command (e.g., <cmd>gedit</cmd>) in which case the
+       file to be opened will be passed as the last argument. Alternatively,
+       you can add <code>{file}</code> and <code>{line}</code> elements to the
+       command, in which case <app>Meld</app> will substitute the file path and
+       current line number respectively (e.g., <cmd>gedit {file}:{line}</cmd>).
+    </p>
+  </item>
+</terms>
+
+</page>
