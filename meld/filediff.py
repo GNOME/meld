@@ -275,10 +275,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.connect("next-conflict-changed", self.on_next_conflict_changed)
 
         overwrite_label = gtk.Label()
-        overwrite_label.set_size_request(50, -1)
         overwrite_label.show()
         cursor_label = gtk.Label()
-        cursor_label.set_size_request(150, -1)
         cursor_label.show()
         self.status_info_labels = [overwrite_label, cursor_label]
 
@@ -384,10 +382,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         insert_overwrite = self._insert_overwrite_text[self.textview_overwrite]
         line_column = self._line_column_text % (line + 1, offset + 1)
-        status = "%s : %s" % (insert_overwrite, line_column)
-        # FIXME: Think this status-changed is wrong...
-        # self.emit("status-changed", status)
-
         self.status_info_labels[0].set_text(insert_overwrite)
         self.status_info_labels[1].set_text(line_column)
 
