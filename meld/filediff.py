@@ -146,7 +146,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                  gtk.keysyms.Control_R : MASK_CTRL}
 
     # Identifiers for MsgArea messages
-    (MSG_SAME,) = list(range(1))
+    (MSG_SAME, MSG_SLOW_HIGHLIGHT) = list(range(2))
 
     __gsignals__ = {
         'next-conflict-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (bool, bool)),
@@ -208,6 +208,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._scroll_lock = False
         self.linediffer = self.differ()
         self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
+        self.force_highlight = False
         self.syncpoints = []
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher()
@@ -1187,8 +1188,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 bufs = self.textbuffer[1], self.textbuffer[to_idx]
                 tags = alltags[1], alltags[to_idx]
 
-                starts = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[1], c[3]))]
-                ends = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[2], c[4]))]
+                starts = [b.get_iter_at_line_or_eof(l) for b, l in
+                          zip(bufs, (c[1], c[3]))]
+                ends = [b.get_iter_at_line_or_eof(l) for b, l in
+                        zip(bufs, (c[2], c[4]))]
                 bufs[0].remove_tag(tags[0], starts[0], ends[0])
                 bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
@@ -1201,8 +1204,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 bufs = self.textbuffer[1], self.textbuffer[to_idx]
                 tags = alltags[1], alltags[to_idx]
 
-                starts = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[1], c[3]))]
-                ends = [b.get_iter_at_line_or_eof(l) for b, l in zip(bufs, (c[2], c[4]))]
+                starts = [b.get_iter_at_line_or_eof(l) for b, l in
+                          zip(bufs, (c[1], c[3]))]
+                ends = [b.get_iter_at_line_or_eof(l) for b, l in
+                        zip(bufs, (c[2], c[4]))]
 
                 # We don't use self.buffer_texts here, as removing line
                 # breaks messes with inline highlighting in CRLF cases
@@ -1211,11 +1216,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 textn = bufs[1].get_text(starts[1], ends[1], False)
                 textn = text_type(textn, 'utf8')
 
-                # For very long sequences, bail rather than trying a very slow comparison
+                # Bail on long sequences, rather than try a slow comparison
                 inline_limit = 8000
-                if len(text1) + len(textn) > inline_limit:
+                if len(text1) + len(textn) > inline_limit and \
+                        not self.force_highlight:
                     for i in range(2):
                         bufs[i].apply_tag(tags[i], starts[i], ends[i])
+                    self._prompt_long_highlighting()
                     continue
 
                 def apply_highlight(bufs, tags, starts, ends, texts, matches):
@@ -1231,10 +1238,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if texts != (text1, textn):
                         return
 
-                    # Remove equal matches of size greater than 3; highlight
+                    # Remove equal matches of size less than 3; highlight
                     # the remainder.
                     matches = [m for m in matches if m.tag != "equal" or
-                        (m.end_a - m.start_a < 3) or (m.end_b - m.start_b < 3)]
+                               (m.end_a - m.start_a < 3) or
+                               (m.end_b - m.start_b < 3)]
 
                     for i in range(2):
                         start, end = starts[i].copy(), starts[i].copy()
@@ -1296,6 +1304,35 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for m in self.msgarea_mgr:
                 if m.get_msg_id() == FileDiff.MSG_SAME:
                     m.clear()
+
+    def _prompt_long_highlighting(self):
+
+        def on_msgarea_highlighting_response(msgarea, respid):
+            for mgr in self.msgarea_mgr:
+                mgr.clear()
+            if respid == gtk.RESPONSE_OK:
+                self.force_highlight = True
+                self.refresh_comparison()
+
+        for index, mgr in enumerate(self.msgarea_mgr):
+            msgarea = mgr.new_from_text_and_icon(
+                gtk.STOCK_INFO,
+                _("Change highlighting incomplete"),
+                _("Some changes were not highlighted because they were too "
+                  "large. You can force Meld to take longer to highlight "
+                  "larger changes, though this may be slow."))
+            mgr.set_msg_id(FileDiff.MSG_SLOW_HIGHLIGHT)
+            button = msgarea.add_stock_button_with_text(
+                _("Hide"), gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+            if index == 0:
+                button.props.label = _("Hi_de")
+            button = msgarea.add_button(
+                _("Keep highlighting"), gtk.RESPONSE_OK)
+            if index == 0:
+                button.props.label = _("_Keep highlighting")
+            msgarea.connect("response",
+                            on_msgarea_highlighting_response)
+            msgarea.show_all()
 
     def on_msgarea_identical_response(self, msgarea, respid):
         for mgr in self.msgarea_mgr:
