@@ -274,7 +274,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         )
 
         toggleactions = (
-            ("IgnoreCase",   gtk.STOCK_ITALIC,  _("Ignore filename case"),     None, _("Consider differently-cased filenames that are otherwise-identical to be the same"), self.on_button_ignore_case_toggled, False),
+            ("IgnoreCase",   gtk.STOCK_ITALIC,  _("Ignore Filename Case"), None, _("Consider differently-cased filenames that are otherwise-identical to be the same"), self.on_button_ignore_case_toggled, False),
             ("ShowSame",     gtk.STOCK_APPLY,   _("Same"),     None, _("Show identical"), self.on_filter_state_toggled, False),
             ("ShowNew",      gtk.STOCK_ADD,     _("New"),      None, _("Show new"), self.on_filter_state_toggled, False),
             ("ShowModified", gtk.STOCK_REMOVE,  _("Modified"), None, _("Show modified"), self.on_filter_state_toggled, False),
