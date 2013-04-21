@@ -35,6 +35,7 @@ from ..util.compat import text_type
 MIN_ITEM_LEN = 3
 HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT = 10
 
+
 def _remove_item(store, text):
     if text is None:
         return False
@@ -45,14 +46,17 @@ def _remove_item(store, text):
             return True
     return False
 
+
 def _clamp_list_store(liststore, max_items):
     try:
-        it = liststore.get_iter(max_items - 1) # -1 because TreePath counts from 0
+        # -1 because TreePath counts from 0
+        it = liststore.get_iter(max_items - 1)
     except ValueError:
         return
     valid = True
     while valid:
         valid = liststore.remove(it)
+
 
 def _escape_cell_data_func(col, renderer, model, it, escape_func):
     string = model.get(it, 0)
@@ -60,28 +64,16 @@ def _escape_cell_data_func(col, renderer, model, it, escape_func):
     renderer.set("text", escaped)
 
 
-class HistoryEntry(gtk.ComboBoxEntry):
-    __gtype_name__ = "HistoryEntry"
-
-    __gproperties__ = {
-        "history-id":      (str, "History ID",
-                            "Identifier associated with entry's history store",
-                            None, gobject.PARAM_READWRITE),
-    }
+class HistoryWidget(object):
 
     def __init__(self, history_id=None, enable_completion=False, **kwargs):
-        super(HistoryEntry, self).__init__(**kwargs)
-
         self.__history_id = history_id
         self.__history_length = HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT
         self.__completion = None
         self._get_gconf_client()
 
         self.set_model(gtk.ListStore(str))
-        self.props.text_column = 0
-
         self.set_enable_completion(enable_completion)
-
 
     def do_get_property(self, pspec):
         if pspec.name == "history-id":
@@ -107,8 +99,8 @@ class HistoryEntry(gtk.ComboBoxEntry):
         # We store data under /apps/gnome-settings/ like GnomeEntry did.
         if not self.__history_id:
             return None
-        key = ''.join(["/apps/gnome-settings/","meld","/history-",
-                          gconf.escape_key(self.__history_id, -1)])
+        key = ''.join(["/apps/gnome-settings/", "meld", "/history-",
+                       gconf.escape_key(self.__history_id, -1)])
         return key
 
     def _save_history(self):
@@ -132,12 +124,12 @@ class HistoryEntry(gtk.ComboBoxEntry):
             store.append((text,))
         self._save_history()
 
-    def prepend_text(self, text):
+    def prepend_history(self, text):
         if not text:
             return
         self.__insert_history_item(text, True)
 
-    def append_text(self, text):
+    def append_history(self, text):
         if not text:
             return
         self.__insert_history_item(text, False)
@@ -205,6 +197,39 @@ class HistoryEntry(gtk.ComboBoxEntry):
             self.set_cell_data_func(cells[0], _escape_cell_data_func, escape_func)
         else:
             self.set_cell_data_func(cells[0], None, None)
+
+
+class HistoryCombo(gtk.ComboBox, HistoryWidget):
+    __gtype_name__ = "HistoryCombo"
+
+    __gproperties__ = {
+        "history-id": (str, "History ID",
+                       "Identifier associated with entry's history store",
+                       None, gobject.PARAM_READWRITE),
+    }
+
+    def __init__(self, history_id=None, **kwargs):
+        super(HistoryCombo, self).__init__(**kwargs)
+        HistoryWidget.__init__(self, history_id)
+        rentext = gtk.CellRendererText()
+        self.pack_start(rentext, True)
+        self.set_attributes(rentext, text=0)
+
+
+class HistoryEntry(gtk.ComboBoxEntry, HistoryWidget):
+    __gtype_name__ = "HistoryEntry"
+
+    __gproperties__ = {
+        "history-id": (str, "History ID",
+                       "Identifier associated with entry's history store",
+                       None, gobject.PARAM_READWRITE),
+    }
+
+    def __init__(self, history_id=None, enable_completion=False, **kwargs):
+        super(HistoryEntry, self).__init__(**kwargs)
+        HistoryWidget.__init__(self, history_id, enable_completion)
+        self.props.text_column = 0
+
 
 try:
     import gconf
@@ -352,10 +377,10 @@ class HistoryFileEntry(gtk.HBox, gtk.Editable):
         last_open[self.props.history_id] = path
 
     def append_history(self, text):
-        self.__gentry.append_text(text)
+        self.__gentry.append_history(text)
 
     def prepend_history(self, text):
-        self.__gentry.prepend_text(text)
+        self.__gentry.prepend_history(text)
 
     def focus_entry(self):
         self.__gentry.focus_entry()

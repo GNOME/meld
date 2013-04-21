@@ -82,42 +82,40 @@ _temp_dirs, _temp_files = [], []
 atexit.register(cleanup_temp)
 
 
-################################################################################
-#
-# CommitDialog
-#
-################################################################################
 class CommitDialog(gnomeglade.Component):
+
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"), "commitdialog")
+        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"),
+                                      "commitdialog")
         self.parent = parent
-        self.widget.set_transient_for( parent.widget.get_toplevel() )
+        self.widget.set_transient_for(parent.widget.get_toplevel())
         selected = parent._get_selected_files()
         topdir = _commonprefix(selected)
-        selected = [ s[len(topdir):] for s in selected ]
-        self.changedfiles.set_text( ("(in %s) "%topdir) + " ".join(selected) )
+        selected = [s[len(topdir):] for s in selected]
+        self.changedfiles.set_text("(in %s) %s" % (topdir, " ".join(selected)))
         self.widget.show_all()
 
     def run(self):
-        self.previousentry.child.set_editable(False)
-        self.previousentry.set_active(0)
+        self.previousentry.set_active(-1)
         self.textview.grab_focus()
-        buf = self.textview.get_buffer()
-        buf.place_cursor( buf.get_start_iter() )
-        buf.move_mark( buf.get_selection_bound(), buf.get_end_iter() )
         response = self.widget.run()
-        msg = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), 0)
         if response == gtk.RESPONSE_OK:
-            self.parent._command_on_selected( self.parent.vc.commit_command(msg) )
-        if len(msg.strip()):
-            self.previousentry.prepend_text(msg)
+            buf = self.textview.get_buffer()
+            msg = buf.get_text(*buf.get_bounds(), include_hidden_chars=False)
+            self.parent._command_on_selected(
+                self.parent.vc.commit_command(msg))
+            if msg.strip():
+                self.previousentry.prepend_history(msg)
         self.widget.destroy()
+
     def on_previousentry_activate(self, gentry):
         buf = self.textview.get_buffer()
-        buf.set_text( gentry.child.get_text() )
+        buf.set_text(gentry.get_active_text())
+
 
 COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = \
     list(range(tree.COL_END, tree.COL_END+6))
+
 
 class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
