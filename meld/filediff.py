@@ -1255,7 +1255,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 textn = text_type(textn, 'utf8')
 
                 # Bail on long sequences, rather than try a slow comparison
-                inline_limit = 8000
+                inline_limit = 10000
                 if len(text1) + len(textn) > inline_limit and \
                         not self.force_highlight:
                     for i in range(2):
