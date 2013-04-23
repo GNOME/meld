@@ -498,7 +498,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                             os.chmod(conflict_path, 0o444)
                             _temp_files.append(conflict_path)
                     # create-diff expects only the paths
-                    diffs = [path for path, is_temp in diffs]
+                    diffs = [p for p, is_temp in diffs]
 
                     # If we want to use auto-merge or use the merged
                     # output given by the VCS
