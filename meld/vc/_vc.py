@@ -45,6 +45,8 @@ CONFLICT_THIS = CONFLICT_LOCAL
 conflicts = [_("Merged"), _("Base"), _("Local"), _("Remote")]
 assert len(conflicts) == CONFLICT_MAX
 
+DATA_NAME, DATA_STATE, DATA_REVISION, DATA_TAG, DATA_OPTIONS = list(range(5))
+
 
 class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.
@@ -87,6 +89,8 @@ class Vc(object):
     VC_DIR = None
     VC_ROOT_WALK = True
     VC_METADATA = None
+
+    VC_COLUMNS = (DATA_NAME, DATA_STATE)
 
     def __init__(self, location):
         # Save the requested comparison location. The location may be a

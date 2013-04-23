@@ -47,6 +47,8 @@ class Vc(_vc.CachedVc):
     PATCH_INDEX_RE = "^diff --git [ac]/(.*) [bw]/.*$"
     GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([ADMU])\t(.*)"
 
+    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
+
     conflict_map = {
         # These are the arguments for git-show
         # CONFLICT_MERGED has no git-show argument unfortunately.

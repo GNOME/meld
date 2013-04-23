@@ -24,6 +24,8 @@
 import os
 import glob
 from . import _null
+from ._vc import DATA_NAME, DATA_STATE, DATA_REVISION, DATA_TAG, DATA_OPTIONS
+
 
 def load_plugins():
     _vcdir = os.path.dirname(os.path.abspath(__file__))

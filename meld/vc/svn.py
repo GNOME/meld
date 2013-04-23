@@ -39,6 +39,9 @@ class Vc(_vc.CachedVc):
     VC_DIR = ".svn"
     VC_ROOT_WALK = False
     PATCH_INDEX_RE = "^Index:(.*)$"
+
+    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION)
+
     state_map = {
         "unversioned": _vc.STATE_NONE,
         "added": _vc.STATE_NEW,

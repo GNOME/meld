@@ -41,6 +41,9 @@ class Vc(_vc.Vc):
     VC_ROOT_WALK = False
     PATCH_INDEX_RE = "^Index:(.*)$"
 
+    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION,
+                  _vc.DATA_TAG, _vc.DATA_OPTIONS)
+
     def __init__(self, location):
         super(Vc, self).__init__(location)
         if not _vc.call(["which", self.ALT_CMD]):

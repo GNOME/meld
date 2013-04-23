@@ -37,6 +37,8 @@ class Vc(_vc.CachedVc):
     VC_METADATA = [".fslckout", "_FOSSIL_", ".fos"]    # One or the other
     PATCH_INDEX_RE = "^--- (.*)$"
 
+    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION)
+
     state_map = {
         'ADDED'       : _vc.STATE_NEW,
         'DELETED'     : _vc.STATE_REMOVED,
