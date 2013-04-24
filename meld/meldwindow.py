@@ -65,7 +65,7 @@ class MeldWindow(gnomeglade.Component):
             ("Save", gtk.STOCK_SAVE, None, None,
                 _("Save the current file"),
                 self.on_menu_save_activate),
-            ("SaveAs", gtk.STOCK_SAVE_AS,  None, "<control><shift>S",
+            ("SaveAs", gtk.STOCK_SAVE_AS, _("Save As..."), "<control><shift>S",
                 _("Save the current file with a different name"),
                 self.on_menu_save_as_activate),
             ("Close", gtk.STOCK_CLOSE, None, None,
