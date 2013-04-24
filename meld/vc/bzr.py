@@ -164,8 +164,9 @@ class Vc(_vc.CachedVc):
         args = [self.CMD, "cat", path]
         if commit:
             args.append("-r%s" % commit)
+
         process = subprocess.Popen(args,
-                                   cwd=self.location, stdout=subprocess.PIPE,
+                                   cwd=self.root, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         vc_file = process.stdout
 
