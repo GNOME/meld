@@ -91,8 +91,9 @@ class CommitDialog(gnomeglade.Component):
         self.widget.set_transient_for(parent.widget.get_toplevel())
         selected = parent._get_selected_files()
         topdir = _commonprefix(selected)
-        selected = [s[len(topdir):] for s in selected]
-        self.changedfiles.set_text("(in %s) %s" % (topdir, " ".join(selected)))
+        selected = ["\t" + s[len(topdir) + 1:] for s in selected]
+        self.changedfiles.set_text("(in %s)\n%s" %
+                                   (topdir, "\n".join(selected)))
         self.widget.show_all()
 
     def run(self):
