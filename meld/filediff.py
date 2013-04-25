@@ -1028,6 +1028,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
            If an element is None, the text of a pane is left as is.
         """
         self._disconnect_buffer_handlers()
+        files = list(files)
         for i, f in enumerate(files):
             if not f:
                 continue
