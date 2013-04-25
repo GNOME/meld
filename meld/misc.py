@@ -248,10 +248,9 @@ def write_pipe(command, text, error=None):
 def commonprefix(dirs):
     """Given a list of pathnames, returns the longest common leading component.
     """
-    if not dirs: return ''
-    n = copy.copy(dirs)
-    for i in range(len(n)):
-        n[i] = n[i].split(os.sep)
+    if not dirs:
+        return ''
+    n = [d.split(os.sep) for d in dirs]
     prefix = n[0]
     for item in n:
         for i in range(len(prefix)):
