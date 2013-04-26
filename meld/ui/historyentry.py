@@ -21,6 +21,7 @@ import sys
 import gio
 import gtk
 import gobject
+import pango
 import atk
 # gconf is also imported; see end of HistoryEntry class for details
 from gettext import gettext as _
@@ -213,6 +214,8 @@ class HistoryCombo(gtk.ComboBox, HistoryWidget):
         HistoryWidget.__init__(self, history_id)
         self.set_model(gtk.ListStore(str, str))
         rentext = gtk.CellRendererText()
+        rentext.props.width_chars = 60
+        rentext.props.ellipsize = pango.ELLIPSIZE_END
         self.pack_start(rentext, True)
         self.set_attributes(rentext, text=0)
 

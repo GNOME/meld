@@ -94,6 +94,16 @@ class CommitDialog(gnomeglade.Component):
         selected = ["\t" + s[len(topdir) + 1:] for s in selected]
         self.changedfiles.set_text("(in %s)\n%s" %
                                    (topdir, "\n".join(selected)))
+        fontdesc = pango.FontDescription(self.parent.prefs.get_current_font())
+        self.textview.modify_font(fontdesc)
+
+        # Try and make the textview wide enough for a standard 80-character
+        # commit message.
+        context = self.textview.get_pango_context()
+        metrics = context.get_metrics(fontdesc, context.get_language())
+        char_width = metrics.get_approximate_char_width()
+        self.textview.set_size_request(80 * pango.PIXELS(char_width), -1)
+
         self.widget.show_all()
 
     def run(self):
