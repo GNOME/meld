@@ -67,9 +67,9 @@ def _escape_cell_data_func(col, renderer, model, it, escape_func):
 class HistoryWidget(object):
 
     def __init__(self, history_id=None, enable_completion=False, **kwargs):
-        self.__history_id = history_id
-        self.__history_length = HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT
-        self.__completion = None
+        self._history_id = history_id
+        self._history_length = HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT
+        self._completion = None
         self._get_gconf_client()
 
         self.set_model(gtk.ListStore(str))
@@ -77,7 +77,7 @@ class HistoryWidget(object):
 
     def do_get_property(self, pspec):
         if pspec.name == "history-id":
-            return self.__history_id
+            return self._history_id
         else:
             raise AttributeError("Unknown property: %s" % pspec.name)
 
@@ -87,36 +87,36 @@ class HistoryWidget(object):
             # things might happen
             store = self.get_model()
             store.clear()
-            self.__history_id = value
+            self._history_id = value
             self._load_history()
         else:
             raise AttributeError("Unknown property: %s" % pspec.name)
 
     def _get_gconf_client(self):
-        self.__gconf_client = gconf.client_get_default()
+        self._gconf_client = gconf.client_get_default()
 
-    def __get_history_key(self):
+    def _get_history_key(self):
         # We store data under /apps/gnome-settings/ like GnomeEntry did.
-        if not self.__history_id:
+        if not self._history_id:
             return None
         key = ''.join(["/apps/gnome-settings/", "meld", "/history-",
-                       gconf.escape_key(self.__history_id, -1)])
+                       gconf.escape_key(self._history_id, -1)])
         return key
 
     def _save_history(self):
-        key = self.__get_history_key()
+        key = self._get_history_key()
         if key is None:
             return
         gconf_items = [row[0] for row in self.get_model()]
-        self.__gconf_client.set_list(key, gconf.VALUE_STRING, gconf_items)
+        self._gconf_client.set_list(key, gconf.VALUE_STRING, gconf_items)
 
-    def __insert_history_item(self, text, prepend):
+    def _insert_history_item(self, text, prepend):
         if len(text) <= MIN_ITEM_LEN:
             return
 
         store = self.get_model()
         if not _remove_item(store, text):
-            _clamp_list_store(store, self.__history_length - 1)
+            _clamp_list_store(store, self._history_length - 1)
 
         if (prepend):
             store.insert(0, (text,))
@@ -127,23 +127,23 @@ class HistoryWidget(object):
     def prepend_history(self, text):
         if not text:
             return
-        self.__insert_history_item(text, True)
+        self._insert_history_item(text, True)
 
     def append_history(self, text):
         if not text:
             return
-        self.__insert_history_item(text, False)
+        self._insert_history_item(text, False)
 
     def _load_history(self):
-        key = self.__get_history_key()
+        key = self._get_history_key()
         if key is None:
             return
-        gconf_items = self.__gconf_client.get_list(key, gconf.VALUE_STRING)
+        gconf_items = self._gconf_client.get_list(key, gconf.VALUE_STRING)
 
         store = self.get_model()
         store.clear()
 
-        for item in gconf_items[:self.__history_length - 1]:
+        for item in gconf_items[:self._history_length - 1]:
             store.append((item,))
 
     def clear(self):
@@ -154,32 +154,32 @@ class HistoryWidget(object):
     def set_history_length(self, max_saved):
         if max_saved <= 0:
             return
-        self.__history_length = max_saved
+        self._history_length = max_saved
         if len(self.get_model()) > max_saved:
             self._load_history()
 
     def get_history_length(self):
-        return self.__history_length
+        return self._history_length
 
     def set_enable_completion(self, enable):
         if enable:
-            if self.__completion is not None:
+            if self._completion is not None:
                 return
-            self.__completion = gtk.EntryCompletion()
-            self.__completion.set_model(self.get_model())
-            self.__completion.set_text_column(0)
-            self.__completion.set_minimum_key_length(MIN_ITEM_LEN)
-            self.__completion.set_popup_completion(False)
-            self.__completion.set_inline_completion(True)
-            self.child.set_completion(self.__completion)
+            self._completion = gtk.EntryCompletion()
+            self._completion.set_model(self.get_model())
+            self._completion.set_text_column(0)
+            self._completion.set_minimum_key_length(MIN_ITEM_LEN)
+            self._completion.set_popup_completion(False)
+            self._completion.set_inline_completion(True)
+            self.child.set_completion(self._completion)
         else:
-            if self.__completion is None:
+            if self._completion is None:
                 return
             self.get_entry().set_completion(None)
-            self.__completion = None
+            self._completion = None
 
     def get_enable_completion(self):
-        return self.__completion is not None
+        return self._completion is not None
 
     def get_entry(self):
         return self.child
@@ -211,9 +211,41 @@ class HistoryCombo(gtk.ComboBox, HistoryWidget):
     def __init__(self, history_id=None, **kwargs):
         super(HistoryCombo, self).__init__(**kwargs)
         HistoryWidget.__init__(self, history_id)
+        self.set_model(gtk.ListStore(str, str))
         rentext = gtk.CellRendererText()
         self.pack_start(rentext, True)
         self.set_attributes(rentext, text=0)
+
+    def _insert_history_item(self, text, prepend):
+        if len(text) <= MIN_ITEM_LEN:
+            return
+
+        store = self.get_model()
+        if not _remove_item(store, text):
+            _clamp_list_store(store, self._history_length - 1)
+
+        row = (text.splitlines()[0], text)
+
+        if (prepend):
+            store.insert(0, row)
+        else:
+            store.append(row)
+        self._save_history()
+
+    def _load_history(self):
+        key = self._get_history_key()
+        if key is None:
+            return
+        gconf_items = self._gconf_client.get_list(key, gconf.VALUE_STRING)
+
+        store = self.get_model()
+        store.clear()
+
+        # This override is here to handle multi-line commit messages, and is
+        # specific to HistoryCombo use in VcView.
+        for item in gconf_items[:self._history_length - 1]:
+            firstline = item.splitlines()[0]
+            store.append((firstline, item))
 
 
 class HistoryEntry(gtk.ComboBoxEntry, HistoryWidget):

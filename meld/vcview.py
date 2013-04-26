@@ -114,7 +114,7 @@ class CommitDialog(gnomeglade.Component):
         if idx != -1:
             model = gentry.get_model()
             buf = self.textview.get_buffer()
-            buf.set_text(model[idx][0])
+            buf.set_text(model[idx][1])
 
 
 COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = \
