@@ -110,8 +110,11 @@ class CommitDialog(gnomeglade.Component):
         self.widget.destroy()
 
     def on_previousentry_activate(self, gentry):
-        buf = self.textview.get_buffer()
-        buf.set_text(gentry.get_active_text())
+        idx = gentry.get_active()
+        if idx != -1:
+            model = gentry.get_model()
+            buf = self.textview.get_buffer()
+            buf.set_text(model[idx][0])
 
 
 COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = \
