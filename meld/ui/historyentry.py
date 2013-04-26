@@ -219,6 +219,13 @@ class HistoryCombo(gtk.ComboBox, HistoryWidget):
         self.pack_start(rentext, True)
         self.set_attributes(rentext, text=0)
 
+    def _save_history(self):
+        key = self._get_history_key()
+        if key is None:
+            return
+        gconf_items = [row[1] for row in self.get_model()]
+        self._gconf_client.set_list(key, gconf.VALUE_STRING, gconf_items)
+
     def _insert_history_item(self, text, prepend):
         if len(text) <= MIN_ITEM_LEN:
             return
