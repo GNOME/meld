@@ -127,6 +127,37 @@ class CommitDialog(gnomeglade.Component):
             buf.set_text(model[idx][1])
 
 
+class ConsoleStream(object):
+
+    def __init__(self, textview):
+        self.textview = textview
+        buf = textview.get_buffer()
+        self.command_tag = buf.create_tag("command")
+        self.command_tag.props.weight = pango.WEIGHT_BOLD
+        self.output_tag = buf.create_tag("output")
+        self.error_tag = buf.create_tag("error")
+        # FIXME: Need to add this to the gtkrc?
+        self.error_tag.props.foreground = "#cc0000"
+        self.end_mark = buf.create_mark(None, buf.get_end_iter(),
+                                        left_gravity=False)
+
+    def command(self, message):
+        self.write(message, self.command_tag)
+
+    def output(self, message):
+        self.write(message, self.output_tag)
+
+    def error(self, message):
+        self.write(message, self.error_tag)
+
+    def write(self, message, tag):
+        if not message:
+            return
+        buf = self.textview.get_buffer()
+        buf.insert_with_tags(buf.get_end_iter(), message, tag)
+        self.textview.scroll_mark_onscreen(self.end_mark)
+
+
 COL_LOCATION, COL_STATUS, COL_REVISION, COL_TAG, COL_OPTIONS, COL_END = \
     list(range(tree.COL_END, tree.COL_END+6))
 
@@ -284,16 +315,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.state_filters.append(s)
                 self.actiongroup.get_action(action_name).set_active(True)
 
-        class ConsoleStream(object):
-            def __init__(self, textview):
-                self.textview = textview
-                b = textview.get_buffer()
-                self.mark = b.create_mark("END", b.get_end_iter(), 0)
-            def write(self, s):
-                if s:
-                    b = self.textview.get_buffer()
-                    b.insert(b.get_end_iter(), s)
-                    self.textview.scroll_mark_onscreen( self.mark )
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
@@ -633,17 +654,18 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             workdir = self.vc.get_working_directory( _commonprefix(files) )
         files = [ relpath(workdir, f) for f in files ]
         r = None
-        self.consolestream.write( misc.shelljoin(command+files) + " (in %s)\n" % workdir)
+        self.consolestream.command(misc.shelljoin(command + files) + " (in %s)\n" % workdir)
         readiter = misc.read_pipe_iter(command + files, self.consolestream,
                                        workdir=workdir)
         try:
             while r is None:
                 r = next(readiter)
-                self.consolestream.write(r)
+                self.consolestream.output(r)
                 yield 1
         except IOError as e:
             misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % ( misc.shelljoin(command), e),
                 parent=self, messagetype=gtk.MESSAGE_ERROR)
+        self.consolestream.output("\n")
         if refresh:
             self.refresh_partial(workdir)
         yield workdir, r

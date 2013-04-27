@@ -188,6 +188,7 @@ def shorten_names(*names):
     # no common path. empty names get changed to "[None]"
     return [name or _("[None]") for name in basenames]
 
+
 def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     """Read the output of a shell command iteratively.
 
@@ -199,13 +200,19 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
     class sentinel(object):
         def __init__(self):
             self.proc = None
+
         def __del__(self):
             if self.proc:
-                errorstream.write("killing '%s'\n" % command[0])
+                errorstream.error("killing '%s'\n" % command[0])
                 self.proc.terminate()
-                errorstream.write("killed (status was '%i')\n" % self.proc.wait())
+                errorstream.error("killed (status was '%i')\n" %
+                                  self.proc.wait())
+
         def __call__(self):
-            self.proc = subprocess.Popen(command, cwd=workdir, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.proc = subprocess.Popen(command, cwd=workdir,
+                                         stdin=subprocess.PIPE,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
             self.proc.stdin.close()
             childout, childerr = self.proc.stdout, self.proc.stderr
             bits = []
@@ -219,23 +226,28 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
                         raise Exception("Error reading pipe")
                 if childout in state[0]:
                     try:
-                        bits.append( childout.read(4096) ) # get buffer size
+                        # get buffer size
+                        bits.append(childout.read(4096))
                     except IOError:
-                        break # ick need to fix
+                        # FIXME: ick need to fix
+                        break
                 if childerr in state[0]:
                     try:
-                        errorstream.write( childerr.read(1) ) # how many chars?
+                        # how many chars?
+                        errorstream.error(childerr.read(1))
                     except IOError:
-                        break # ick need to fix
+                        # FIXME: ick need to fix
+                        break
             status = self.proc.wait()
-            errorstream.write( childerr.read() )
+            errorstream.error(childerr.read())
             self.proc = None
             if status:
-                errorstream.write("Exit code: %i\n" % status)
+                errorstream.error("Exit code: %i\n" % status)
             yield "".join(bits)
     if workdir == "":
         workdir = None
     return sentinel()()
+
 
 def write_pipe(command, text, error=None):
     """Write 'text' into a shell command and discard its stdout output.
