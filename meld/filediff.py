@@ -1515,12 +1515,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return False
         return True
 
-    def save_file(self, pane, saveas=0):
+    def save_file(self, pane, saveas=False):
         buf = self.textbuffer[pane]
         bufdata = buf.data
         if saveas or not (bufdata.filename or bufdata.savefile) \
                 or not bufdata.writable:
-            prompt = _("Choose a name for buffer %i.") % (pane + 1)
+            if pane == 0:
+                prompt = _("Save Left Pane As")
+            elif pane == 1 and self.num_panes == 3:
+                prompt = _("Save Middle Pane As")
+            else:
+                prompt = _("Save Right Pane As")
             filename = self._get_filename_for_saving(prompt)
             if filename:
                 bufdata.filename = bufdata.label = os.path.abspath(filename)
