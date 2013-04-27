@@ -758,6 +758,7 @@ class MeldWindow(gnomeglade.Component):
             tab = self.append_vcview(files[0])
         else:  # comparison_type == recent.TYPE_FILE:
             tab = self.append_filediff(files)
+        self.notebook.set_current_page(self.notebook.page_num(tab.widget))
         app.recent_comparisons.add(tab)
         return tab
 
