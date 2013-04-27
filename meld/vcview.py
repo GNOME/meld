@@ -682,7 +682,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command(command, files, refresh)
 
     def on_button_update_clicked(self, obj):
-        self._command_on_selected(self.vc.update_command())
+        try:
+            self.vc.update(self._command, self._get_selected_files())
+        except AttributeError:
+            self._command_on_selected(self.vc.update_command())
 
     def on_button_commit_clicked(self, obj):
         CommitDialog(self).run()

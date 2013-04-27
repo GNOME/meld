@@ -90,6 +90,12 @@ class Vc(_vc.CachedVc):
     def revert_command(self):
         return [self.CMD,"checkout"]
 
+    # Prototyping VC interface version 2
+
+    def update(self, runner, files):
+        command = [self.CMD, 'pull']
+        runner(command, [], refresh=True, working_dir=self.root)
+
     def get_path_for_conflict(self, path, conflict):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
