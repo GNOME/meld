@@ -231,10 +231,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 _("Flatten directories"),
                 self.on_button_flatten_toggled, False),
             ("VcShowModified", "filter-modified-24", _("_Modified"), None,
-                _("Show modified"),
+                _("Show modified files"),
                 self.on_filter_state_toggled, False),
             ("VcShowNormal", "filter-normal-24", _("_Normal"), None,
-                _("Show normal"),
+                _("Show normal files"),
                 self.on_filter_state_toggled, False),
             ("VcShowNonVC", "filter-nonvc-24", _("Un_versioned"), None,
                 _("Show unversioned files"),
@@ -357,8 +357,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         """Display VC plugin(s) that can handle the location"""
         self.combobox_vcs.lock = True
         self.combobox_vcs.get_model().clear()
-        tooltip_texts = [_("Choose one Version Control"),
-                         _("Only one Version Control in this directory")]
         default_active = -1
         valid_vcs = []
         # Try to keep the same VC plugin active on refresh()
@@ -379,27 +377,35 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if not vc_installed(avc.CMD):
                 # TRANSLATORS: this is an error message when a version control
                 # application isn't installed or can't be found
-                err_str = _("%s Not Installed" % avc.CMD)
+                err_str = _("%s not installed" % avc.CMD)
             elif not avc.valid_repo():
                 # TRANSLATORS: this is an error message when a version
                 # controlled repository is invalid or corrupted
-                err_str = _("Invalid Repository")
+                err_str = _("Invalid repository")
             else:
                 valid_vcs.append(idx)
                 if (self.vc is not None and
-                     self.vc.__class__ == avc.__class__):
-                     default_active = idx
+                        self.vc.__class__ == avc.__class__):
+                    default_active = idx
 
             if err_str:
-                self.combobox_vcs.get_model().append( \
-                        [_("%s (%s)") % (avc.NAME, err_str), avc, False])
+                self.combobox_vcs.get_model().append(
+                    [_("%s (%s)") % (avc.NAME, err_str), avc, False])
             else:
                 self.combobox_vcs.get_model().append([avc.NAME, avc, True])
 
         if valid_vcs and default_active == -1:
             default_active = min(valid_vcs)
 
-        self.combobox_vcs.set_tooltip_text(tooltip_texts[len(vcs) == 1])
+        # If we only have the null VC, give a better error message.
+        if len(vcs) == 1 and vcs[0].CMD == "true":
+            tooltip = _("No valid version control system found in this folder")
+        elif len(vcs) == 1:
+            tooltip = _("Only one version control system found in this folder")
+        else:
+            tooltip = _("Choose which version control system to use")
+
+        self.combobox_vcs.set_tooltip_text(tooltip)
         self.combobox_vcs.set_sensitive(len(vcs) > 1)
         self.combobox_vcs.lock = False
         self.combobox_vcs.set_active(default_active)

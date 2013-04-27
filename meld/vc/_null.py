@@ -3,7 +3,7 @@
 ### Redistribution and use in source and binary forms, with or without
 ### modification, are permitted provided that the following conditions
 ### are met:
-### 
+###
 ### 1. Redistributions of source code must retain the above copyright
 ###    notice, this list of conditions and the following disclaimer.
 ### 2. Redistributions in binary form must reproduce the above copyright
@@ -21,29 +21,38 @@
 ### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from gettext import gettext as _
+
 from . import _vc
 
 
 class Vc(_vc.Vc):
 
     CMD = "true"
-    NAME = "Null"
-    VC_DIR = "." # Accept any directory
+    NAME = _("None")
+    # Accept any directory
+    VC_DIR = "."
 
     def commit_command(self, message):
-        return [self.CMD,"commit","-m",message]
+        return [self.CMD, "commit", "-m", message]
+
     def diff_command(self):
-        return [self.CMD,"diff","-u"]
+        return [self.CMD, "diff", "-u"]
+
     def update_command(self):
-        return [self.CMD,"update"]
+        return [self.CMD, "update"]
+
     def add_command(self):
-        return [self.CMD,"add"]
+        return [self.CMD, "add"]
+
     def remove_command(self, force=0):
-        return [self.CMD,"rm","-f"]
+        return [self.CMD, "rm", "-f"]
+
     def revert_command(self):
-        return [self.CMD,"update","-C"]
+        return [self.CMD, "update", "-C"]
+
     def resolved_command(self):
-        return [self.CMD,"resolved"]
+        return [self.CMD, "resolved"]
 
     def lookup_files(self, dirs, files, directory=None):
         "files is array of (name, path). assume all files in same dir"
