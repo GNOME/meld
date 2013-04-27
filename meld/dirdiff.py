@@ -586,6 +586,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # This is difficult to trigger, and to test. Most of the time here we
         # will actually have had UTF-8 from GTK, which has been unicode-ed by
         # the time we get this far. This is a fallback, and may be wrong!
+        locations = list(locations)
         for i, l in enumerate(locations):
             if not isinstance(l, unicode):
                 locations[i] = l.decode(sys.getfilesystemencoding())
