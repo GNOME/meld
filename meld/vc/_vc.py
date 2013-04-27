@@ -110,20 +110,32 @@ class Vc(object):
 
     def commit_command(self, message):
         raise NotImplementedError()
+
     def diff_command(self):
         raise NotImplementedError()
+
     def update_command(self):
         raise NotImplementedError()
+
     def add_command(self):
         raise NotImplementedError()
+
     def remove_command(self, force=0):
         raise NotImplementedError()
+
     def revert_command(self):
         raise NotImplementedError()
+
     def resolved_command(self):
         raise NotImplementedError()
+
     def patch_command(self, workdir):
         return ["patch", "-p%i" % self.PATCH_STRIP_NUM, "-R", "-d", workdir]
+
+    # Prototyping VC interface version 2
+
+    def push(self, runner):
+        raise NotImplementedError()
 
     def get_path_for_repo_file(self, path, commit=None):
         """Returns a file path for the repository path at commit

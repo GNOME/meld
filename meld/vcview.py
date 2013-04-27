@@ -177,14 +177,15 @@ entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 class VcView(melddoc.MeldDoc, gnomeglade.Component):
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
-                         "VcCompare": ("diff_command", ()),
-                         "VcCommit": ("commit_command", ("",)),
-                         "VcUpdate": ("update_command", ()),
-                         "VcAdd": ("add_command", ()),
-                         "VcResolved": ("resolved_command", ()),
-                         "VcRemove": ("remove_command", ()),
-                         "VcRevert": ("revert_command", ()),
-                         }
+        "VcCompare": ("diff_command", ()),
+        "VcCommit": ("commit_command", ("",)),
+        "VcUpdate": ("update_command", ()),
+        "VcPush": ("push", (lambda *args, **kwargs: None, )),
+        "VcAdd": ("add_command", ()),
+        "VcResolved": ("resolved_command", ()),
+        "VcRemove": ("remove_command", ()),
+        "VcRevert": ("revert_command", ()),
+    }
 
     state_actions = {
         "flatten": ("VcFlatten", None),
@@ -209,6 +210,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             ("VcUpdate", "vc-update-24", _("_Update"), None,
                 _("Update working copy from version control"),
                 self.on_button_update_clicked),
+            ("VcPush", "vc-push-24", _("_Push"), None,
+                _("Push local changes to remote"),
+                self.on_button_push_clicked),
             ("VcAdd", "vc-add-24", _("_Add"), None,
                 _("Add to version control"),
                 self.on_button_add_clicked),
@@ -252,7 +256,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         for action in ("VcCompare", "VcFlatten", "VcShowModified",
                        "VcShowNormal", "VcShowNonVC", "VcShowIgnored"):
             self.actiongroup.get_action(action).props.is_important = True
-        for action in ("VcCommit", "VcUpdate", "VcAdd", "VcRemove",
+        for action in ("VcCommit", "VcUpdate", "VcPush", "VcAdd", "VcRemove",
                        "VcShowModified", "VcShowNormal", "VcShowNonVC",
                        "VcShowIgnored", "VcResolved"):
             button = self.actiongroup.get_action(action)
@@ -687,6 +691,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.vc.update(self._command, self._get_selected_files())
         except AttributeError:
             self._command_on_selected(self.vc.update_command())
+
+    def on_button_push_clicked(self, obj):
+        self.vc.push(self._command)
 
     def on_button_commit_clicked(self, obj):
         CommitDialog(self).run()
