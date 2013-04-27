@@ -102,8 +102,8 @@ try:
         locale.bindtextdomain(locale_domain, locale_dir)
         locale.bind_textdomain_codeset(locale_domain, 'UTF-8')
 except AttributeError as e:
-    # OS X doesn't appear to have bindtextdomain(). This will cause
-    # gtk.Builder translations to fail.
+    # Python builds linked without libintl doesn't have bindtextdomain(), which
+    # causes gtk.Builder translations to fail.
     print "Couldn't bind the translation domain. Some translations won't work."
     print e
 except locale.Error as e:
