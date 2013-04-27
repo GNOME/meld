@@ -30,6 +30,8 @@ import ConfigParser
 import os
 import tempfile
 
+from gettext import gettext as _
+
 import gio
 import glib
 import gtk
@@ -94,7 +96,13 @@ class RecentFiles(object):
         if len(paths) > 1:
             display_name = " vs. ".join(misc.shorten_names(*paths))
         else:
-            display_name = "Comparison " + paths[0]
+            display_path = paths[0]
+            userhome = os.path.expanduser("~")
+            if display_path.startswith(userhome):
+                # FIXME: What should we show on Windows?
+                display_path = "~" + display_path[len(userhome):]
+            display_name = _("Version control:") + " " + display_path
+        # FIXME: Should this be translatable? It's not actually used anywhere.
         description = "%s comparison\n%s" % (comp_type, ", ".join(paths))
 
         recent_metadata = {
