@@ -38,11 +38,6 @@ from . import vc
 from .ui import emblemcellrenderer
 from .ui import gnomeglade
 
-################################################################################
-#
-# Local Functions
-#
-################################################################################
 
 def _commonprefix(files):
     if len(files) != 1:
@@ -58,8 +53,8 @@ def cleanup_temp():
     # not marked for translation.
     for f in _temp_files:
         try:
-            assert os.path.exists(f) and os.path.isabs(f) and \
-                   os.path.dirname(f) == temp_location
+            assert (os.path.exists(f) and os.path.isabs(f) and
+                    os.path.dirname(f) == temp_location)
             # Windows throws permissions errors if we remove read-only files
             if os.name == "nt":
                 os.chmod(f, stat.S_IWRITE)
@@ -70,8 +65,8 @@ def cleanup_temp():
                   file=sys.stderr)
     for f in _temp_dirs:
         try:
-            assert os.path.exists(f) and os.path.isabs(f) and \
-                   os.path.dirname(f) == temp_location
+            assert (os.path.exists(f) and os.path.isabs(f) and
+                    os.path.dirname(f) == temp_location)
             shutil.rmtree(f, ignore_errors=1)
         except:
             except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
