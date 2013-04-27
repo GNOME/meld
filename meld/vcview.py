@@ -712,7 +712,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._command_on_selected(self.vc.resolved_command())
 
     def on_button_revert_clicked(self, obj):
-        self._command_on_selected(self.vc.revert_command())
+        try:
+            self.vc.revert(self._command, self._get_selected_files())
+        except AttributeError:
+            self._command_on_selected(self.vc.revert_command())
 
     def on_button_delete_clicked(self, obj):
         files = self._get_selected_files()

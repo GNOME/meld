@@ -96,6 +96,16 @@ class Vc(_vc.CachedVc):
         command = [self.CMD, 'pull']
         runner(command, [], refresh=True, working_dir=self.root)
 
+    def revert(self, runner, files):
+        exists = [f for f in files if os.path.exists(f)]
+        missing = [f for f in files if not os.path.exists(f)]
+        if exists:
+            command = [self.CMD, 'checkout']
+            runner(command, files, refresh=True, working_dir=self.root)
+        if missing:
+            command = [self.CMD, 'checkout', 'HEAD']
+            runner(command, files, refresh=True, working_dir=self.root)
+
     def get_path_for_conflict(self, path, conflict):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
