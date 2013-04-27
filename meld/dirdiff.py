@@ -1449,7 +1449,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview[pane].expand_to_path(path)
             self.treeview[pane].set_cursor(path)
 
-    def on_reload_activate(self, *extra):
+    def on_refresh_activate(self, *extra):
         self.on_fileentry_activate(None)
 
     def on_delete_event(self, appquit=0):

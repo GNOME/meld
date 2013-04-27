@@ -126,9 +126,6 @@ class MeldWindow(gnomeglade.Component):
             ("Refresh", gtk.STOCK_REFRESH, None, "<control>R",
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
-            ("Reload", gtk.STOCK_REFRESH, _("Reload"), "<control><shift>R",
-                _("Reload the comparison"),
-                self.on_menu_reload_activate),
 
             ("TabMenu", None, _("_Tabs")),
             ("PrevTab",   None, _("_Previous Tab"), "<Ctrl><Alt>Page_Up",
@@ -322,7 +319,6 @@ class MeldWindow(gnomeglade.Component):
         have_focus = current_page != -1
         self.actiongroup.get_action("Close").set_sensitive(have_focus)
         self.actiongroup.get_action("Refresh").set_sensitive(have_focus)
-        self.actiongroup.get_action("Reload").set_sensitive(have_focus)
         if not have_focus:
             self.actiongroup.get_action("PrevChange").set_sensitive(False)
             self.actiongroup.get_action("NextChange").set_sensitive(False)
@@ -467,9 +463,6 @@ class MeldWindow(gnomeglade.Component):
 
     def on_menu_refresh_activate(self, *extra):
         self.current_doc().on_refresh_activate()
-
-    def on_menu_reload_activate(self, *extra):
-        self.current_doc().on_reload_activate()
 
     def on_menu_find_activate(self, *extra):
         self.current_doc().on_find_activate()

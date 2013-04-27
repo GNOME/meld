@@ -221,6 +221,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("MakePatch", None, _("Format as Patch..."), None,
                 _("Create a patch using differences between files"),
                 self.make_patch),
+            ("Revert", gtk.STOCK_REVERT_TO_SAVED, None, None,
+                _("Revert files to their saved versions"),
+                self.on_reload_activate),
             ("SplitAdd", None, _("Add Synchronization Point"), None,
                 _("Add a manual point for synchronization of changes between "
                   "files"),

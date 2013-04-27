@@ -938,7 +938,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview.expand_to_path(path)
             self.treeview.set_cursor(path)
 
-    def on_reload_activate(self, *extra):
+    def on_refresh_activate(self, *extra):
         self.on_fileentry_activate(self.fileentry)
 
     def on_find_activate(self, *extra):

@@ -119,9 +119,6 @@ class MeldDoc(gobject.GObject):
         pass
 
     def on_refresh_activate(self, *extra):
-        self.on_reload_activate(self, *extra)
-
-    def on_reload_activate(self, *extra):
         pass
 
     def on_find_activate(self, *extra):
