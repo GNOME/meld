@@ -94,7 +94,7 @@ class RecentFiles(object):
             gio_file = gio.File(path=recent_path)
 
         if len(paths) > 1:
-            display_name = " vs. ".join(misc.shorten_names(*paths))
+            display_name = " : ".join(misc.shorten_names(*paths))
         else:
             display_path = paths[0]
             userhome = os.path.expanduser("~")
