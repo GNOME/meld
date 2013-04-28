@@ -1631,7 +1631,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         response = gtk.RESPONSE_OK
         unsaved = [b.data.label for b in self.textbuffer if b.data.modified]
         if unsaved:
-            ui_path = paths.ui_dir("revert.ui")
+            ui_path = paths.ui_dir("filediff.ui")
             dialog = gnomeglade.Component(ui_path, "revert_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             # FIXME: Should be packed into dialog.widget.get_message_area(),
