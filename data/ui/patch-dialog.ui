@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="patchdialog">
     <property name="visible">True</property>
     <property name="border_width">12</property>
-    <property name="title" translatable="yes">Create Patch</property>
+    <property name="title" translatable="yes">Format as Patch</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
@@ -18,7 +18,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Format as Patch</property>
+            <property name="label" translatable="yes">Create a Patch</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -176,7 +176,7 @@
                 <property name="label" translatable="yes">Copy to Clipboard</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can_default">True</property>
                 <property name="use_action_appearance">False</property>
               </object>
               <packing>
@@ -203,12 +203,12 @@
             </child>
             <child>
               <object class="GtkButton" id="button7">
-                <property name="label">gtk-save-as</property>
+                <property name="label" translatable="yes">Save Patch</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="receives_default">False</property>
-                <property name="use_stock">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>

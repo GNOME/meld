@@ -121,10 +121,9 @@ class PatchDialog(gnomeglade.Component):
             else:
                 # FIXME: These filediff methods are actually general utility.
                 filename = self.filediff._get_filename_for_saving(
-                                                         _("Save Patch As..."))
+                    _("Save Patch"))
                 if filename:
                     self.filediff._save_text_to_filename(filename, txt)
                     break
 
         self.widget.hide()
-
