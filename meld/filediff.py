@@ -1623,8 +1623,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return -1
 
     def on_reload_activate(self, *extra):
-        primary = _("Save changes to documents before reloading?")
-        if self.check_save_modified(primary) != gtk.RESPONSE_CANCEL:
+        response = gtk.RESPONSE_OK
+        unsaved = [b.data.label for b in self.textbuffer if b.data.modified]
+        if unsaved:
+            ui_path = paths.ui_dir("revert.ui")
+            dialog = gnomeglade.Component(ui_path, "revert_dialog")
+            dialog.widget.set_transient_for(self.widget.get_toplevel())
+            # FIXME: Should be packed into dialog.widget.get_message_area(),
+            # but this is unbound on currently required PyGTK.
+            filelist = "\n".join(["\t" + f for f in unsaved])
+            dialog.widget.props.secondary_text += filelist
+            response = dialog.widget.run()
+            dialog.widget.destroy()
+
+        if response == gtk.RESPONSE_OK:
             files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
             self.set_files(files)
 
