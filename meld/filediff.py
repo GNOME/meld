@@ -223,7 +223,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.make_patch),
             ("Revert", gtk.STOCK_REVERT_TO_SAVED, None, None,
                 _("Revert files to their saved versions"),
-                self.on_reload_activate),
+                self.on_revert_activate),
             ("SplitAdd", None, _("Add Synchronization Point"), None,
                 _("Add a manual point for synchronization of changes between "
                   "files"),
@@ -1622,7 +1622,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return i
         return -1
 
-    def on_reload_activate(self, *extra):
+    def on_revert_activate(self, *extra):
         response = gtk.RESPONSE_OK
         unsaved = [b.data.label for b in self.textbuffer if b.data.modified]
         if unsaved:
