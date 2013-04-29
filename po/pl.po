@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2013-04-28 19:17+0200\n"
-"PO-Revision-Date: 2013-04-28 19:18+0200\n"
+"POT-Creation-Date: 2013-04-29 21:20+0200\n"
+"PO-Revision-Date: 2013-04-29 21:21+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -145,6 +145,10 @@ msgstr ""
 "Do tego pliku nie można zapisać. Można kliknąć tutaj, aby go odblokować i "
 "wprowadzić zmiany mimo to, ale muszę być one zapisane do nowego pliku."
 
+#: ../data/ui/filediff.ui.h:10 ../meld/filediff.py:290
+msgid "Lock scrolling of all panes"
+msgstr "Synchronizuje przewijanie wszystkich paneli"
+
 #: ../data/ui/findbar.ui.h:1
 msgid "_Replace"
 msgstr "Z_amień"
@@ -231,32 +235,32 @@ msgstr ""
 "Aviary.pl <gnomepl@aviary.pl>, 2011-2013"
 
 #: ../data/ui/patch-dialog.ui.h:1
-msgid "Create Patch"
-msgstr "Nowa poprawka"
-
-#: ../data/ui/patch-dialog.ui.h:2
 msgid "Format as Patch"
 msgstr "Sformatowanie jako poprawka"
 
-#: ../data/ui/patch-dialog.ui.h:3
+#: ../data/ui/patch-dialog.ui.h:2
 msgid "Use differences between:"
 msgstr "Użycie różnic między:"
 
-#: ../data/ui/patch-dialog.ui.h:4
+#: ../data/ui/patch-dialog.ui.h:3
 msgid "Left and middle panes"
 msgstr "Lewym i środkowym panelem"
 
-#: ../data/ui/patch-dialog.ui.h:5
+#: ../data/ui/patch-dialog.ui.h:4
 msgid "Middle and right panes"
 msgstr "Środkowym i prawym panelem"
 
-#: ../data/ui/patch-dialog.ui.h:6
+#: ../data/ui/patch-dialog.ui.h:5
 msgid "_Reverse patch direction"
 msgstr "Przeciwny kie_runek porównania"
 
-#: ../data/ui/patch-dialog.ui.h:7
+#: ../data/ui/patch-dialog.ui.h:6
 msgid "Copy to Clipboard"
 msgstr "Skopiuj do schowka"
+
+#: ../data/ui/patch-dialog.ui.h:7 ../meld/patchdialog.py:124
+msgid "Save Patch"
+msgstr "Zapisz poprawkę"
 
 #: ../data/ui/preferences.ui.h:1
 msgid "Meld Preferences"
@@ -871,10 +875,6 @@ msgstr "Przechodzi do następnego dokumentu w porównywanym zestawie"
 msgid "Lock Scrolling"
 msgstr "Synchronizuj przewijanie"
 
-#: ../meld/filediff.py:290
-msgid "Lock scrolling of all panes"
-msgstr "Synchronizuje przewijanie wszystkich paneli"
-
 #. Abbreviations for insert and overwrite that fit in the status bar
 #: ../meld/filediff.py:410
 msgid "INS"
@@ -1375,10 +1375,6 @@ msgstr "Jednoczesne porównanie plików i katalogów nie jest możliwe.\n"
 #: ../meld/misc.py:189
 msgid "[None]"
 msgstr "[Brak]"
-
-#: ../meld/patchdialog.py:124
-msgid "Save Patch As..."
-msgstr "Zapisz poprawkę jako..."
 
 #: ../meld/preferences.py:49
 msgid "label"
