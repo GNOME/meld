@@ -273,6 +273,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         self.column_name_map = {}
         column = gtk.TreeViewColumn(_("Name"))
+        column.set_resizable(True)
         renicon = emblemcellrenderer.EmblemCellRenderer()
         rentext = gtk.CellRendererText()
         column.pack_start(renicon, expand=0)
@@ -292,6 +293,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         def addCol(name, num, data_name=None):
             column = gtk.TreeViewColumn(name)
+            column.set_resizable(True)
             rentext = gtk.CellRendererText()
             column.pack_start(rentext, expand=0)
             column.set_attributes(rentext,
