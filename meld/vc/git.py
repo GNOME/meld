@@ -78,22 +78,31 @@ class Vc(_vc.CachedVc):
         return location
 
     def commit_command(self, message):
-        return [self.CMD,"commit","-m",message]
+        return [self.CMD, "commit", "-m", message]
+
     def diff_command(self):
         return [self.CMD, "diff", "--relative", "HEAD"]
+
     def update_command(self):
-        return [self.CMD,"pull"]
+        return [self.CMD, "pull"]
+
     def add_command(self):
-        return [self.CMD,"add"]
+        return [self.CMD, "add"]
+
     def remove_command(self, force=0):
-        return [self.CMD,"rm"]
+        return [self.CMD, "rm"]
+
     def revert_command(self):
-        return [self.CMD,"checkout"]
+        return [self.CMD, "checkout"]
 
     # Prototyping VC interface version 2
 
     def update(self, runner, files):
         command = [self.CMD, 'pull']
+        runner(command, [], refresh=True, working_dir=self.root)
+
+    def push(self, runner):
+        command = [self.CMD, 'push']
         runner(command, [], refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
