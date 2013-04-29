@@ -13,16 +13,16 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-28 03:05+0000\n"
-"PO-Revision-Date: 2013-04-28 20:55+0200\n"
+"POT-Creation-Date: 2013-04-28 20:54+0000\n"
+"PO-Revision-Date: 2013-04-29 10:59+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Gtranslator 2.91.5\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../bin/meld:121
 msgid "Cannot import: "
@@ -62,7 +62,6 @@ msgid "Active"
 msgstr "Activar"
 
 #: ../data/ui/EditableList.ui.h:3
-#| msgid "Column name"
 msgid "Column Name"
 msgstr "Nombre de la columna"
 
@@ -117,7 +116,6 @@ msgid "If you don't save, changes will be permanently lost."
 msgstr "Los cambios se perderán permanentemente si no los guarda."
 
 #: ../data/ui/filediff.ui.h:3
-#| msgid "Close _without saving"
 msgid "Close _without Saving"
 msgstr "Cerrar _sin guardar"
 
@@ -130,7 +128,6 @@ msgid "_Save"
 msgstr "_Guardar"
 
 #: ../data/ui/filediff.ui.h:6
-#| msgid "Save changes to documents before closing?"
 msgid "Revert unsaved changes to documents?"
 msgstr "¿Quiere revertir los cambios no guardados a los documentos?"
 
@@ -148,6 +145,10 @@ msgstr ""
 "No se puede escribir el archivo. Debe pulsar aquí para desbloquear este "
 "archivo y realizar los cambios, pero estos cambios se deben guardar en un "
 "archivo nuevo."
+
+#: ../data/ui/filediff.ui.h:10 ../meld/filediff.py:290
+msgid "Lock scrolling of all panes"
+msgstr "Bloquear el desplazamiento de todos los paneles"
 
 #: ../data/ui/findbar.ui.h:1
 msgid "_Replace"
@@ -233,33 +234,33 @@ msgstr ""
 "Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004-2006"
 
 #: ../data/ui/patch-dialog.ui.h:1
-msgid "Create Patch"
-msgstr "Crear parche"
-
-#: ../data/ui/patch-dialog.ui.h:2
-#| msgid "Format as Patch..."
 msgid "Format as Patch"
 msgstr "Formatear como parche"
 
-#: ../data/ui/patch-dialog.ui.h:3
+#: ../data/ui/patch-dialog.ui.h:2
 msgid "Use differences between:"
 msgstr "Usar las diferencias entre:"
 
-#: ../data/ui/patch-dialog.ui.h:4
+#: ../data/ui/patch-dialog.ui.h:3
 msgid "Left and middle panes"
 msgstr "Paneles izquierdo y del medio"
 
-#: ../data/ui/patch-dialog.ui.h:5
+#: ../data/ui/patch-dialog.ui.h:4
 msgid "Middle and right panes"
 msgstr "Paneles derecho y del medio"
 
-#: ../data/ui/patch-dialog.ui.h:6
+#: ../data/ui/patch-dialog.ui.h:5
 msgid "_Reverse patch direction"
 msgstr "Dirección in_versa del parche"
 
-#: ../data/ui/patch-dialog.ui.h:7
+#: ../data/ui/patch-dialog.ui.h:6
 msgid "Copy to Clipboard"
 msgstr "Copiar al portapapeles"
+
+#: ../data/ui/patch-dialog.ui.h:7 ../meld/patchdialog.py:124
+#| msgid "Save Patch As..."
+msgid "Save Patch"
+msgstr "Guardar parche"
 
 #: ../data/ui/preferences.ui.h:1
 msgid "Meld Preferences"
@@ -310,7 +311,6 @@ msgid "Use s_yntax highlighting"
 msgstr "Usar resaltado de _sintaxis"
 
 #: ../data/ui/preferences.ui.h:13
-#| msgid "External editor"
 msgid "External Editor"
 msgstr "Editor externo"
 
@@ -327,7 +327,6 @@ msgid "Editor"
 msgstr "Editor"
 
 #: ../data/ui/preferences.ui.h:17
-#| msgid "Shallow comparison"
 msgid "Shallow Comparison"
 msgstr "Comparación superficial"
 
@@ -340,7 +339,6 @@ msgid "_Timestamp resolution:"
 msgstr "_Resolución de marca de _tiempo:"
 
 #: ../data/ui/preferences.ui.h:20
-#| msgid "Symbolic links"
 msgid "Symbolic Links"
 msgstr "Enlaces simbólicos"
 
@@ -349,12 +347,10 @@ msgid "Ignore symbolic links"
 msgstr "Ignorar enlaces simbólicos"
 
 #: ../data/ui/preferences.ui.h:22
-#| msgid "Visible columns"
 msgid "Visible Columns"
 msgstr "Columnas visibles"
 
 #: ../data/ui/preferences.ui.h:23
-#| msgid "Folder comparisons"
 msgid "Folder Comparisons"
 msgstr "Comparación de carpetas"
 
@@ -875,10 +871,6 @@ msgstr "Mover el foco del teclado al siguiente documento de esta comparación"
 msgid "Lock Scrolling"
 msgstr "Bloquear el desplazamiento"
 
-#: ../meld/filediff.py:290
-msgid "Lock scrolling of all panes"
-msgstr "Bloquear el desplazamiento de todos los paneles"
-
 #. Abbreviations for insert and overwrite that fit in the status bar
 #: ../meld/filediff.py:410
 msgid "INS"
@@ -996,12 +988,10 @@ msgstr ""
 "%s."
 
 #: ../meld/filediff.py:1524
-#| msgid "Save Patch As..."
 msgid "Save Left Pane As"
 msgstr "Guardar panel izquierdo como"
 
 #: ../meld/filediff.py:1526
-#| msgid "Left and middle panes"
 msgid "Save Middle Pane As"
 msgstr "Guardar el panel central como"
 
@@ -1386,10 +1376,6 @@ msgstr "No se puede comparar una mezcla de archivos y carpetas.\n"
 msgid "[None]"
 msgstr "[Ninguno]"
 
-#: ../meld/patchdialog.py:124
-msgid "Save Patch As..."
-msgstr "Guardar el parche como…"
-
 #: ../meld/preferences.py:49
 msgid "label"
 msgstr "etiqueta"
@@ -1463,7 +1449,6 @@ msgid "Script comment\t0\t#.*"
 msgstr "Comentario de script\t0\t#.*"
 
 #: ../meld/recent.py:104
-#| msgid "Version control view"
 msgid "Version control:"
 msgstr "Control de versión:"
 
@@ -1524,7 +1509,6 @@ msgid "_Modified"
 msgstr "_Modificados"
 
 #: ../meld/vcview.py:234
-#| msgid "Save modified files?"
 msgid "Show modified files"
 msgstr "Mostrar los archivos modificados"
 
@@ -1533,7 +1517,6 @@ msgid "_Normal"
 msgstr "_Normal"
 
 #: ../meld/vcview.py:237
-#| msgid "Show ignored files"
 msgid "Show normal files"
 msgstr "Mostrar los archivos normales"
 
@@ -1577,14 +1560,12 @@ msgstr "Opciones"
 #. application isn't installed or can't be found
 #: ../meld/vcview.py:380
 #, python-format
-#| msgid "%s Not Installed"
 msgid "%s not installed"
 msgstr "%s no está instalado"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
 #: ../meld/vcview.py:384
-#| msgid "Invalid Repository"
 msgid "Invalid repository"
 msgstr "Repositorio no válido"
 
@@ -1599,13 +1580,11 @@ msgstr ""
 "No se ha encontrado un sistema de control de versiones válido en esta carpeta"
 
 #: ../meld/vcview.py:404
-#| msgid "Only one Version Control in this directory"
 msgid "Only one version control system found in this folder"
 msgstr ""
 "Sólo se ha encontrado un sistema de control de versiones en esta carpeta"
 
 #: ../meld/vcview.py:406
-#| msgid "Choose one Version Control"
 msgid "Choose which version control system to use"
 msgstr "Elegir qué sistema de control de versiones usar"
 
@@ -1636,8 +1615,8 @@ msgstr "Herramienta «patch» no encontrada"
 #: ../meld/vcview.py:748
 #, python-format
 msgid ""
-"Meld needs the <i>patch</i> tool to be installed to perform comparisons in "
-"%s repositories. Please install <i>patch</i> and try again."
+"Meld needs the <i>patch</i> tool to be installed to perform comparisons in %"
+"s repositories. Please install <i>patch</i> and try again."
 msgstr ""
 "Meld necesita que la herramienta <i>patch</i> esté instalada para realizar "
 "comparaciones en repositorios %s. Instale <i>patch</i> e inténtelo de nuevo."
@@ -1723,7 +1702,6 @@ msgstr ""
 "Faltante:No presente"
 
 #: ../meld/vc/_null.py:32
-#| msgid "_None"
 msgid "None"
 msgstr "Ninguno"
 
@@ -1742,6 +1720,9 @@ msgstr ""
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Modo cambiado de %s a %s"
+
+#~ msgid "Create Patch"
+#~ msgstr "Crear parche"
 
 #~ msgid "Create a patch"
 #~ msgstr "Crear un parche"
