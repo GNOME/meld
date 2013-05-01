@@ -340,6 +340,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             col_index = self.model.column_index
             # Create icon and filename CellRenderer
             column = gtk.TreeViewColumn(_("Name"))
+            column.set_resizable(True)
             rentext = gtk.CellRendererText()
             renicon = emblemcellrenderer.EmblemCellRenderer()
             column.pack_start(renicon, expand=0)
@@ -357,6 +358,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.columns_dict[i]["name"] = column
             # Create file size CellRenderer
             column = gtk.TreeViewColumn(_("Size"))
+            column.set_resizable(True)
             rentext = gtk.CellRendererText()
             column.pack_start(rentext, expand=1)
             column.set_attributes(rentext, markup=col_index(COL_SIZE, i))
@@ -364,6 +366,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.columns_dict[i]["size"] = column
             # Create date-time CellRenderer
             column = gtk.TreeViewColumn(_("Modification time"))
+            column.set_resizable(True)
             rentext = gtk.CellRendererText()
             column.pack_start(rentext, expand=1)
             column.set_attributes(rentext, markup=col_index(COL_TIME, i))
@@ -371,6 +374,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.columns_dict[i]["modification time"] = column
             # Create permissions CellRenderer
             column = gtk.TreeViewColumn(_("Permissions"))
+            column.set_resizable(True)
             rentext = gtk.CellRendererText()
             column.pack_start(rentext, expand=0)
             column.set_attributes(rentext, markup=col_index(COL_PERMS, i))
