@@ -134,6 +134,9 @@ class Vc(object):
 
     # Prototyping VC interface version 2
 
+    def get_files_to_commit(self, paths):
+        raise NotImplementedError()
+
     def get_commit_message_prefill(self):
         return None
 

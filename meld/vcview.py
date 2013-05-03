@@ -85,10 +85,16 @@ class CommitDialog(gnomeglade.Component):
         self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
         selected = parent._get_selected_files()
-        topdir = _commonprefix(selected)
-        selected = ["\t" + s[len(topdir) + 1:] for s in selected]
+
+        try:
+            to_commit = parent.vc.get_files_to_commit(selected)
+            topdir = parent.vc.root
+            to_commit = ["\t" + s for s in to_commit]
+        except NotImplementedError:
+            topdir = _commonprefix(selected)
+            to_commit = ["\t" + s[len(topdir) + 1:] for s in selected]
         self.changedfiles.set_text("(in %s)\n%s" %
-                                   (topdir, "\n".join(selected)))
+                                   (topdir, "\n".join(to_commit)))
 
         fontdesc = pango.FontDescription(self.parent.prefs.get_current_font())
         self.textview.modify_font(fontdesc)

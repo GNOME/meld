@@ -97,6 +97,17 @@ class Vc(_vc.CachedVc):
 
     # Prototyping VC interface version 2
 
+    def get_files_to_commit(self, paths):
+        files = []
+        for p in paths:
+            if os.path.isdir(p):
+                entries = self._get_modified_files(p)
+                names = [self.diff_re.search(e).groups()[3] for e in entries]
+                files.extend(names)
+            else:
+                files.append(os.path.relpath(p, self.root))
+        return sorted(list(set(files)))
+
     def get_commit_message_prefill(self):
         """This will be inserted into the commit dialog when commit is run"""
         commit_path = os.path.join(self.root, ".git", "MERGE_MSG")
@@ -192,26 +203,38 @@ class Vc(_vc.CachedVc):
         else:
             return ''
 
+    def _get_modified_files(self, path):
+        # Update the index before getting status, otherwise we could
+        # be reading stale status information
+        _vc.popen([self.CMD, "update-index", "--refresh"],
+                  cwd=self.location)
+
+        # Get the status of files that are different in the "index" vs
+        # the HEAD of the git repository
+        proc = _vc.popen([self.CMD, "diff-index",
+                          "--cached", "HEAD", path], cwd=self.location)
+        entries = proc.read().split("\n")[:-1]
+
+        # Get the status of files that are different in the "index" vs
+        # the files on disk
+        proc = _vc.popen([self.CMD, "diff-files",
+                          "-0", path], cwd=self.location)
+        entries += (proc.read().split("\n")[:-1])
+
+        # An unmerged file or a file that has been modified, added to
+        # git's index, then modified again would result in the file
+        # showing up in both the output of "diff-files" and
+        # "diff-index".  The following command removes duplicate
+        # file entries.
+        entries = list(set(entries))
+
+        return entries
+
     def _update_tree_state_cache(self, path, tree_state):
         """ Update the state of the file(s) at tree_state['path'] """
         while 1:
             try:
-                # Update the index before getting status, otherwise we could
-                # be reading stale status information
-                _vc.popen([self.CMD, "update-index", "--refresh"],
-                          cwd=self.location)
-
-                # Get the status of files that are different in the "index" vs
-                # the HEAD of the git repository
-                proc = _vc.popen([self.CMD, "diff-index", \
-                    "--cached", "HEAD", path], cwd=self.location)
-                entries = proc.read().split("\n")[:-1]
-
-                # Get the status of files that are different in the "index" vs
-                # the files on disk
-                proc = _vc.popen([self.CMD, "diff-files", \
-                    "-0", path], cwd=self.location)
-                entries += (proc.read().split("\n")[:-1])
+                entries = self._get_modified_files(path)
 
                 # Identify ignored files
                 proc = _vc.popen([self.CMD, "ls-files", "--others", \
@@ -223,12 +246,6 @@ class Vc(_vc.CachedVc):
                     "--exclude-standard", path], cwd=self.location)
                 unversioned_entries = proc.read().split("\n")[:-1]
 
-                # An unmerged file or a file that has been modified, added to
-                # git's index, then modified again would result in the file
-                # showing up in both the output of "diff-files" and
-                # "diff-index".  The following command removes duplicate
-                # file entries.
-                entries = list(set(entries))
                 break
             except OSError as e:
                 if e.errno != errno.EAGAIN:
