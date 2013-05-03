@@ -259,11 +259,11 @@ class Vc(_vc.CachedVc):
                     self._tree_meta_cache[path] = msg
 
             for entry in ignored_entries:
-                path = os.path.join(self.root, entry.strip())
+                path = os.path.join(self.location, entry.strip())
                 tree_state[path] = _vc.STATE_IGNORED
 
             for entry in unversioned_entries:
-                path = os.path.join(self.root, entry.strip())
+                path = os.path.join(self.location, entry.strip())
                 tree_state[path] = _vc.STATE_NONE
 
     def _lookup_tree_cache(self, rootdir):
