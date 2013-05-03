@@ -97,6 +97,18 @@ class Vc(_vc.CachedVc):
 
     # Prototyping VC interface version 2
 
+    def get_commit_message_prefill(self):
+        """This will be inserted into the commit dialog when commit is run"""
+        commit_path = os.path.join(self.root, ".git", "MERGE_MSG")
+        if os.path.exists(commit_path):
+            # If I have to deal with non-ascii, non-UTF8 pregenerated commit
+            # messages, I'm taking up pig farming.
+            with open(commit_path) as f:
+                message = f.read().decode('utf8')
+            return "\n".join(
+                (l for l in message.splitlines() if not l.startswith("#")))
+        return None
+
     def update(self, runner, files):
         command = [self.CMD, 'pull']
         runner(command, [], refresh=True, working_dir=self.root)
