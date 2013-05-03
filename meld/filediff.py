@@ -221,6 +221,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             ("MakePatch", None, _("Format as Patch..."), None,
                 _("Create a patch using differences between files"),
                 self.make_patch),
+            ("SaveAll", None, _("Save A_ll"), "<Ctrl><Shift>L",
+                _("Save all files in the current comparison"),
+                self.on_save_all_activate),
             ("Revert", gtk.STOCK_REVERT_TO_SAVED, None, None,
                 _("Revert files to their saved versions"),
                 self.on_revert_activate),
@@ -1001,6 +1004,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         modified = False if pane == -1 else self.textbuffer[pane].data.modified
         if self.main_actiongroup:
             self.main_actiongroup.get_action("Save").set_sensitive(modified)
+        any_modified = any(b.data.modified for b in self.textbuffer)
+        self.actiongroup.get_action("SaveAll").set_sensitive(any_modified)
 
     def recompute_label(self):
         self._set_save_action_sensitivity()
@@ -1608,7 +1613,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if pane >= 0:
             self.save_file(pane, True)
 
-    def save_all(self):
+    def on_save_all_activate(self, action):
         for i in range(self.num_panes):
             if self.textbuffer[i].data.modified:
                 self.save_file(i)
