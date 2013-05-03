@@ -137,7 +137,13 @@ class Vc(object):
     def get_commit_message_prefill(self):
         return None
 
+    def update(self, runner, files):
+        raise NotImplementedError()
+
     def push(self, runner):
+        raise NotImplementedError()
+
+    def revert(self, runner, files):
         raise NotImplementedError()
 
     def get_path_for_repo_file(self, path, commit=None):
