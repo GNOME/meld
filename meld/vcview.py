@@ -89,7 +89,10 @@ class CommitDialog(gnomeglade.Component):
         try:
             to_commit = parent.vc.get_files_to_commit(selected)
             topdir = parent.vc.root
-            to_commit = ["\t" + s for s in to_commit]
+            if to_commit:
+                to_commit = ["\t" + s for s in to_commit]
+            else:
+                to_commit = ["\t" + _("No files will be committed")]
         except NotImplementedError:
             topdir = _commonprefix(selected)
             to_commit = ["\t" + s[len(topdir) + 1:] for s in selected]
