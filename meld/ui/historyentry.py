@@ -230,6 +230,17 @@ class HistoryCombo(gtk.ComboBox, HistoryWidget):
         if len(text) <= MIN_ITEM_LEN:
             return
 
+        # Redefining here to key off the full text, not the first line
+        def _remove_item(store, text):
+            if text is None:
+                return False
+
+            for row in store:
+                if row[1] == text:
+                    store.remove(row.iter)
+                    return True
+            return False
+
         store = self.get_model()
         if not _remove_item(store, text):
             _clamp_list_store(store, self._history_length - 1)
