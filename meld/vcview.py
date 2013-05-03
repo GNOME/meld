@@ -703,7 +703,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_update_clicked(self, obj):
         try:
             self.vc.update(self._command, self._get_selected_files())
-        except AttributeError:
+        except NotImplementedError:
             self._command_on_selected(self.vc.update_command())
 
     def on_button_push_clicked(self, obj):
@@ -736,7 +736,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_revert_clicked(self, obj):
         try:
             self.vc.revert(self._command, self._get_selected_files())
-        except AttributeError:
+        except NotImplementedError:
             self._command_on_selected(self.vc.revert_command())
 
     def on_button_delete_clicked(self, obj):
