@@ -19,8 +19,6 @@
 '''Abstraction from sourceview version API incompatibilities
 '''
 
-import os
-
 import gio
 import gtk
 
@@ -93,7 +91,11 @@ class _gtksourceview2(_srcviewer):
         return buf.set_highlight_syntax(enabled)
 
     def get_language_from_file(self, filename):
-        return self.get_language_manager().guess_language(filename)
+        f = gio.File(filename)
+        info = f.query_info(gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+        content_type = info.get_content_type()
+        return self.get_language_manager().guess_language(filename,
+                                                          content_type)
 
     def get_language_from_mime_type(self, mime_type):
         content_type = gio.content_type_from_mime_type(mime_type)
