@@ -1159,7 +1159,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.cursor.next = next_
         for buf in self.textbuffer:
             buf.place_cursor(buf.get_start_iter())
-        self.scheduler.add_task(lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
+
+        if self.cursor.next is not None:
+            self.scheduler.add_task(
+                lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
+        else:
+            buf = self.textbuffer[1 if self.num_panes > 1 else 0]
+            self.on_cursor_position_changed(buf, None, True)
+
         self.queue_draw()
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
