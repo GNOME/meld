@@ -1163,7 +1163,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             if self.cursor.next is not None:
                 self.scheduler.add_task(
-                    lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
+                    lambda: self.next_diff(gtk.gdk.SCROLL_DOWN, True), True)
             else:
                 buf = self.textbuffer[1 if self.num_panes > 1 else 0]
                 self.on_cursor_position_changed(buf, None, True)
@@ -1813,7 +1813,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.queue_draw()
             self.recompute_label()
 
-    def next_diff(self, direction):
+    def next_diff(self, direction, centered=False):
         pane = self._get_focused_pane()
         if pane == -1:
             if len(self.textview) > 1:
@@ -1835,7 +1835,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # Warp the cursor to the first line of next chunk
             if self.cursor.line != c[1]:
                 buf.place_cursor(buf.get_iter_at_line(c[1]))
-            self.textview[pane].scroll_to_mark(buf.get_insert(), 0.1)
+            if centered:
+                self.textview[pane].scroll_to_mark(buf.get_insert(), 0.0,
+                                                   True)
+            else:
+                self.textview[pane].scroll_to_mark(buf.get_insert(), 0.2)
 
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
