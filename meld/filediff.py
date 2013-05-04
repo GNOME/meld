@@ -1146,26 +1146,27 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for b in self.textbuffer:
             self.undosequence.checkpoint(b)
 
-    def _diff_files(self):
+    def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
         texts = self.buffer_filtered[:self.num_panes]
         step = self.linediffer.set_sequences_iter(texts)
         while next(step) is None:
             yield 1
 
-        chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
-        self.cursor.next = chunk
-        if self.cursor.next is None:
-            self.cursor.next = next_
-        for buf in self.textbuffer:
-            buf.place_cursor(buf.get_start_iter())
+        if not refresh:
+            chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
+            self.cursor.next = chunk
+            if self.cursor.next is None:
+                self.cursor.next = next_
+            for buf in self.textbuffer:
+                buf.place_cursor(buf.get_start_iter())
 
-        if self.cursor.next is not None:
-            self.scheduler.add_task(
-                lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
-        else:
-            buf = self.textbuffer[1 if self.num_panes > 1 else 0]
-            self.on_cursor_position_changed(buf, None, True)
+            if self.cursor.next is not None:
+                self.scheduler.add_task(
+                    lambda: self.next_diff(gtk.gdk.SCROLL_DOWN), True)
+            else:
+                buf = self.textbuffer[1 if self.num_panes > 1 else 0]
+                self.on_cursor_position_changed(buf, None, True)
 
         self.queue_draw()
         self._connect_buffer_handlers()
@@ -1206,7 +1207,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.remove_tag(tag, buf.get_start_iter(), buf.get_end_iter())
 
         self.queue_draw()
-        self.scheduler.add_task(self._diff_files())
+        self.scheduler.add_task(self._diff_files(refresh=True))
 
     def _set_merge_action_sensitivity(self):
         pane = self._get_focused_pane()
