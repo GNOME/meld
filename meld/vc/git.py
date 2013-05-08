@@ -35,6 +35,8 @@ import shutil
 import subprocess
 import tempfile
 
+from gettext import ngettext
+
 from . import _vc
 
 
@@ -99,11 +101,13 @@ class Vc(_vc.CachedVc):
 
     def get_commits_to_push_summary(self):
         branch_refs = self.get_commits_to_push()
-        unpushed_branches = len(branch_refs.keys())
+        unpushed_branches = len([v for v in branch_refs.values() if v])
         unpushed_commits = sum(len(v) for v in branch_refs.values())
         if unpushed_commits:
-            label = _("%d unpushed commits in %d branches") % (
-                unpushed_commits, unpushed_branches)
+            label = ngettext(
+                "Unpushed commits found: %d in %d branch",
+                "Unpushed commits found: %d in %d branches",
+                unpushed_branches) % (unpushed_commits, unpushed_branches)
         else:
             label = _("No unpushed commits found")
         return label
