@@ -97,6 +97,17 @@ class Vc(_vc.CachedVc):
 
     # Prototyping VC interface version 2
 
+    def get_commits_to_push_summary(self):
+        branch_refs = self.get_commits_to_push()
+        unpushed_branches = len(branch_refs.keys())
+        unpushed_commits = sum(len(v) for v in branch_refs.values())
+        if unpushed_commits:
+            label = _("%d unpushed commits in %d branches") % (
+                unpushed_commits, unpushed_branches)
+        else:
+            label = _("No unpushed commits found")
+        return label
+
     def get_commits_to_push(self):
         proc = _vc.popen([self.CMD, "for-each-ref",
                           "--format=%(refname:short) %(upstream:short)",

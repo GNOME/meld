@@ -458,6 +458,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # need to scan the rest of the repository
         if os.path.isdir(self.vc.location):
             root = self.model.get_iter_root()
+
+            try:
+                col = self.model.column_index(COL_OPTIONS, 0)
+                self.model.set_value(root, col,
+                                     self.vc.get_commits_to_push_summary())
+            except AttributeError:
+                pass
+
             self.scheduler.add_task(self._search_recursively_iter(root))
             self.scheduler.add_task(self.on_treeview_cursor_changed)
 
