@@ -97,6 +97,25 @@ class Vc(_vc.CachedVc):
 
     # Prototyping VC interface version 2
 
+    def get_commits_to_push(self):
+        proc = _vc.popen([self.CMD, "for-each-ref",
+                          "--format=%(refname:short) %(upstream:short)",
+                          "refs/heads"], cwd=self.location)
+        branch_remotes = proc.read().split("\n")[:-1]
+
+        branch_revisions = {}
+        for line in branch_remotes:
+            try:
+                branch, remote = line.split()
+            except ValueError:
+                continue
+
+            proc = _vc.popen([self.CMD, "rev-list", branch, "^" + remote],
+                             cwd=self.location)
+            revisions = proc.read().split("\n")[:-1]
+            branch_revisions[branch] = revisions
+        return branch_revisions
+
     def get_files_to_commit(self, paths):
         files = []
         for p in paths:
