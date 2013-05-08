@@ -154,8 +154,8 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_about_activate),
         )
         toggleactions = (
-            ("Fullscreen", None, _("Full Screen"), "F11",
-                _("View the comparison in full screen"),
+            ("Fullscreen", None, _("Fullscreen"), "F11",
+                _("View the comparison in fullscreen"),
                 self.on_action_fullscreen_toggled, False),
             ("ToolbarVisible", None, _("_Toolbar"), None,
                 _("Show or hide the toolbar"),
