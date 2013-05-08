@@ -198,6 +198,8 @@ class MeldWindow(gnomeglade.Component):
         accels.connect_group(keyval, mask, 0, self.on_menu_edit_down_activate)
         (keyval, mask) = gtk.accelerator_parse("<Ctrl>E")
         accels.connect_group(keyval, mask, 0, self.on_menu_edit_up_activate)
+        (keyval, mask) = gtk.accelerator_parse("F5")
+        accels.connect_group(keyval, mask, 0, self.on_menu_refresh_activate)
 
         # Initialise sensitivity for important actions
         self.actiongroup.get_action("Stop").set_sensitive(False)
