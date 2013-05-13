@@ -104,12 +104,14 @@ class Vc(_vc.CachedVc):
         unpushed_branches = len([v for v in branch_refs.values() if v])
         unpushed_commits = sum(len(v) for v in branch_refs.values())
         if unpushed_commits:
-            label = ngettext(
-                "Unpushed commits found: %d in %d branch",
-                "Unpushed commits found: %d in %d branches",
-                unpushed_branches) % (unpushed_commits, unpushed_branches)
+            if unpushed_branches > 1:
+                label = _("%d unpushed commits in %d branches") % \
+                    (unpushed_commits, unpushed_branches)
+            else:
+                label = ngettext("%d unpushed commit", "%d unpushed commits",
+                                 unpushed_commits) % (unpushed_commits)
         else:
-            label = _("No unpushed commits found")
+            label = ""
         return label
 
     def get_commits_to_push(self):
