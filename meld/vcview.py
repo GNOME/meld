@@ -137,6 +137,25 @@ class CommitDialog(gnomeglade.Component):
             buf.set_text(model[idx][1])
 
 
+class PushDialog(gnomeglade.Component):
+
+    def __init__(self, parent):
+        gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"),
+                                      "pushdialog")
+        self.parent = parent
+        self.widget.set_transient_for(parent.widget.get_toplevel())
+        self.widget.show_all()
+
+    def run(self):
+        # TODO: Ask the VC for a more informative label for what will happen.
+        # In git, this is probably the parsed output of push --dry-run.
+
+        response = self.widget.run()
+        if response == gtk.RESPONSE_OK:
+            self.parent.vc.push(self.parent._command)
+        self.widget.destroy()
+
+
 class ConsoleStream(object):
 
     def __init__(self, textview):
@@ -718,7 +737,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command_on_selected(self.vc.update_command())
 
     def on_button_push_clicked(self, obj):
-        self.vc.push(self._command)
+        PushDialog(self).run()
 
     def on_button_commit_clicked(self, obj):
         CommitDialog(self).run()
