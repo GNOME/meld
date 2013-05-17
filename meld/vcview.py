@@ -601,8 +601,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     continue
 
                 kwargs = {}
-                status = self.vc._get_tree_cache(path).get(path, None)
-                if status == tree.STATE_CONFLICT:
+                vc_file = self.vc.lookup_files(
+                    [], [(os.path.basename(path), path)])[1][0]
+                if vc_file.state == tree.STATE_CONFLICT:
                     # We use auto merge, so we create a new temp file
                     # for other, base and this, then set the output to
                     # the current file.
