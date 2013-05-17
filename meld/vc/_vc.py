@@ -163,6 +163,14 @@ class Vc(object):
         """
         raise NotImplementedError()
 
+    def get_path_for_conflict(self, path, conflict):
+        """Returns a file path for the conflicted repository path
+
+        *conflict* is the side of the conflict to be retrieved, and
+        must be one of the CONFLICT_* constants.
+        """
+        raise NotImplementedError()
+
     def check_repo_root(self, location):
         if not os.path.isdir(os.path.join(location, self.VC_DIR)):
             raise ValueError
