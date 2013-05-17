@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-13 20:36+0000\n"
-"PO-Revision-Date: 2013-05-14 14:28+0200\n"
+"POT-Creation-Date: 2013-05-16 21:14+0000\n"
+"PO-Revision-Date: 2013-05-17 10:29+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -39,11 +39,11 @@ msgstr "Meld"
 
 #: ../data/meld.desktop.in.h:2
 msgid "Diff Viewer"
-msgstr "Visor de Diff"
+msgstr "Visor de diferencias"
 
 #: ../data/meld.desktop.in.h:3
 msgid "Meld Diff Viewer"
-msgstr "Visor de Diff Meld"
+msgstr "Visor de diferencias Meld"
 
 #: ../data/meld.desktop.in.h:4
 msgid "Compare and merge your files"
@@ -65,11 +65,11 @@ msgstr "Activar"
 msgid "Column Name"
 msgstr "Nombre de la columna"
 
-#: ../data/ui/EditableList.ui.h:4 ../meld/vcview.py:231
+#: ../data/ui/EditableList.ui.h:4 ../meld/vcview.py:250
 msgid "_Add"
 msgstr "_Añadir"
 
-#: ../data/ui/EditableList.ui.h:5 ../meld/vcview.py:234
+#: ../data/ui/EditableList.ui.h:5 ../meld/vcview.py:253
 msgid "_Remove"
 msgstr "_Eliminar"
 
@@ -91,7 +91,7 @@ msgstr "_Bajar"
 
 #. Create icon and filename CellRenderer
 #: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:342
-#: ../meld/vcview.py:290
+#: ../meld/vcview.py:309
 msgid "Name"
 msgstr "Nombre"
 
@@ -283,7 +283,7 @@ msgstr "Visor"
 
 #: ../data/ui/preferences.ui.h:6
 msgid "_Tab width:"
-msgstr "Ancho del _tabulador:"
+msgstr "Anchura del _tabulador:"
 
 #: ../data/ui/preferences.ui.h:7
 msgid "_Insert spaces instead of tabs"
@@ -477,7 +477,23 @@ msgstr "Registros anteriores:"
 msgid "Co_mmit"
 msgstr "E_fectuar"
 
-#: ../meld/dirdiff.py:269 ../meld/vcview.py:219
+#: ../data/ui/vcview.ui.h:6
+#| msgid "Push local changes to remote"
+msgid "Push local commits to remote?"
+msgstr "¿Empujar los cambios locales al equipo remoto?"
+
+#: ../data/ui/vcview.ui.h:7
+msgid "The commits to be pushed are determined by your version control system."
+msgstr ""
+"Los cambios que empujar los determina su sistema de control de versiones."
+
+#: ../data/ui/vcview.ui.h:8
+#| msgid "%d unpushed commit"
+#| msgid_plural "%d unpushed commits"
+msgid "_Push commits"
+msgstr "_Empujar cambios"
+
+#: ../meld/dirdiff.py:269 ../meld/vcview.py:238
 msgid "_Compare"
 msgstr "_Comparar"
 
@@ -577,8 +593,8 @@ msgstr "Permisos"
 msgid "Hide %s"
 msgstr "Ocultar %s"
 
-#: ../meld/dirdiff.py:636 ../meld/dirdiff.py:655 ../meld/vcview.py:482
-#: ../meld/vcview.py:506
+#: ../meld/dirdiff.py:636 ../meld/dirdiff.py:655 ../meld/vcview.py:501
+#: ../meld/vcview.py:525
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Buscando %s"
@@ -623,7 +639,7 @@ msgid "'%s' hidden by '%s'"
 msgstr "«%s» oculto por «%s»"
 
 #: ../meld/dirdiff.py:804 ../meld/filediff.py:1074 ../meld/filediff.py:1350
-#: ../meld/filediff.py:1383 ../meld/vcview.py:786 ../meld/vcview.py:828
+#: ../meld/filediff.py:1383 ../meld/vcview.py:805 ../meld/vcview.py:847
 msgid "Hi_de"
 msgstr "_Ocultar"
 
@@ -647,7 +663,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:861 ../meld/vcview.py:760
+#: ../meld/dirdiff.py:861 ../meld/vcview.py:779
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -656,7 +672,7 @@ msgstr ""
 "«%s» es una carpeta.\n"
 "¿Eliminarla recursivamente?"
 
-#: ../meld/dirdiff.py:868 ../meld/vcview.py:765
+#: ../meld/dirdiff.py:868 ../meld/vcview.py:784
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -1463,179 +1479,179 @@ msgstr "Control de versión:"
 msgid "No files will be committed"
 msgstr "No se efectuarán cambios en archivos"
 
-#: ../meld/vcview.py:220
+#: ../meld/vcview.py:239
 msgid "Compare selected files"
 msgstr "Comparar los archivos seleccionados"
 
-#: ../meld/vcview.py:222
+#: ../meld/vcview.py:241
 msgid "Co_mmit..."
 msgstr "E_fectuar…"
 
-#: ../meld/vcview.py:223
+#: ../meld/vcview.py:242
 msgid "Commit changes to version control"
 msgstr "Efectuar cambios en el control de versiones"
 
-#: ../meld/vcview.py:225
+#: ../meld/vcview.py:244
 msgid "_Update"
 msgstr "_Actualizar"
 
-#: ../meld/vcview.py:226
+#: ../meld/vcview.py:245
 msgid "Update working copy from version control"
 msgstr "Actualizar la copia de trabajo desde el control de versiones"
 
-#: ../meld/vcview.py:228
+#: ../meld/vcview.py:247
 msgid "_Push"
 msgstr "_Empujar"
 
-#: ../meld/vcview.py:229
+#: ../meld/vcview.py:248
 msgid "Push local changes to remote"
 msgstr "Empujar los cambios locales al equipo remoto"
 
-#: ../meld/vcview.py:232
+#: ../meld/vcview.py:251
 msgid "Add to version control"
 msgstr "Añadir al control de versiones"
 
-#: ../meld/vcview.py:235
+#: ../meld/vcview.py:254
 msgid "Remove from version control"
 msgstr "Quitar del control de versiones"
 
-#: ../meld/vcview.py:237
+#: ../meld/vcview.py:256
 msgid "Mar_k as Resolved"
 msgstr "Mar_car como resuelto"
 
-#: ../meld/vcview.py:238
+#: ../meld/vcview.py:257
 msgid "Mark as resolved in version control"
 msgstr "Marcar como resuelto en el control de versiones"
 
-#: ../meld/vcview.py:240
+#: ../meld/vcview.py:259
 msgid "Re_vert"
 msgstr "Re_vertir"
 
-#: ../meld/vcview.py:241
+#: ../meld/vcview.py:260
 msgid "Revert working copy to original state"
 msgstr "Revertir la copia de trabajo al estado original"
 
-#: ../meld/vcview.py:244
+#: ../meld/vcview.py:263
 msgid "Delete from working copy"
 msgstr "Eliminar de la copia de trabajo"
 
-#: ../meld/vcview.py:249
+#: ../meld/vcview.py:268
 msgid "_Flatten"
 msgstr "_Aplanar"
 
-#: ../meld/vcview.py:250
+#: ../meld/vcview.py:269
 msgid "Flatten directories"
 msgstr "Aplanar carpetas"
 
-#: ../meld/vcview.py:252
+#: ../meld/vcview.py:271
 msgid "_Modified"
 msgstr "_Modificados"
 
-#: ../meld/vcview.py:253
+#: ../meld/vcview.py:272
 msgid "Show modified files"
 msgstr "Mostrar los archivos modificados"
 
-#: ../meld/vcview.py:255
+#: ../meld/vcview.py:274
 msgid "_Normal"
 msgstr "_Normal"
 
-#: ../meld/vcview.py:256
+#: ../meld/vcview.py:275
 msgid "Show normal files"
 msgstr "Mostrar los archivos normales"
 
-#: ../meld/vcview.py:258
+#: ../meld/vcview.py:277
 msgid "Un_versioned"
 msgstr "Sin _versión"
 
-#: ../meld/vcview.py:259
+#: ../meld/vcview.py:278
 msgid "Show unversioned files"
 msgstr "Mostrar archivos sin versión"
 
-#: ../meld/vcview.py:261
+#: ../meld/vcview.py:280
 msgid "Ignored"
 msgstr "Ignorado"
 
-#: ../meld/vcview.py:262
+#: ../meld/vcview.py:281
 msgid "Show ignored files"
 msgstr "Mostrar archivos ignorados"
 
-#: ../meld/vcview.py:321 ../meld/vcview.py:478
+#: ../meld/vcview.py:340 ../meld/vcview.py:497
 msgid "Location"
 msgstr "Lugar"
 
-#: ../meld/vcview.py:322
+#: ../meld/vcview.py:341
 msgid "Status"
 msgstr "Estado"
 
-#: ../meld/vcview.py:323
+#: ../meld/vcview.py:342
 msgid "Revision"
 msgstr "Revisión"
 
-#: ../meld/vcview.py:324
+#: ../meld/vcview.py:343
 msgid "Tag"
 msgstr "Etiqueta"
 
-#: ../meld/vcview.py:325
+#: ../meld/vcview.py:344
 msgid "Options"
 msgstr "Opciones"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:401
+#: ../meld/vcview.py:420
 #, python-format
 msgid "%s not installed"
 msgstr "%s no está instalado"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:405
+#: ../meld/vcview.py:424
 msgid "Invalid repository"
 msgstr "Repositorio no válido"
 
-#: ../meld/vcview.py:414
+#: ../meld/vcview.py:433
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: ../meld/vcview.py:423
+#: ../meld/vcview.py:442
 msgid "No valid version control system found in this folder"
 msgstr ""
 "No se ha encontrado un sistema de control de versiones válido en esta carpeta"
 
-#: ../meld/vcview.py:425
+#: ../meld/vcview.py:444
 msgid "Only one version control system found in this folder"
 msgstr ""
 "Sólo se ha encontrado un sistema de control de versiones en esta carpeta"
 
-#: ../meld/vcview.py:427
+#: ../meld/vcview.py:446
 msgid "Choose which version control system to use"
 msgstr "Elegir qué sistema de control de versiones usar"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:478
+#: ../meld/vcview.py:497
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:521
+#: ../meld/vcview.py:540
 msgid "(Empty)"
 msgstr "(Vacío)"
 
-#: ../meld/vcview.py:553
+#: ../meld/vcview.py:572
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Calculando diferencias"
 
-#: ../meld/vcview.py:566
+#: ../meld/vcview.py:585
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Aplicando parche"
 
-#: ../meld/vcview.py:779
+#: ../meld/vcview.py:798
 msgid "Patch tool not found"
 msgstr "Herramienta «patch» no encontrada"
 
-#: ../meld/vcview.py:780
+#: ../meld/vcview.py:799
 #, python-format
 msgid ""
 "Meld needs the <i>patch</i> tool to be installed to perform comparisons in %"
@@ -1644,11 +1660,11 @@ msgstr ""
 "Meld necesita que la herramienta <i>patch</i> esté instalada para realizar "
 "comparaciones en repositorios %s. Instale <i>patch</i> e inténtelo de nuevo."
 
-#: ../meld/vcview.py:820
+#: ../meld/vcview.py:839
 msgid "Error fetching original comparison file"
 msgstr "Error al obtener el archivo original para comparar"
 
-#: ../meld/vcview.py:821
+#: ../meld/vcview.py:840
 msgid ""
 "Meld couldn't obtain the original version of your comparison file. If you "
 "are using the most recent version of Meld, please report a bug, including as "
@@ -1658,7 +1674,7 @@ msgstr ""
 "usando la versión más reciente de Meld, informe de un error, incluyendo "
 "todos los detalles que pueda."
 
-#: ../meld/vcview.py:829
+#: ../meld/vcview.py:848
 msgid "Report a bug"
 msgstr "Informar de un error"
 
@@ -1741,14 +1757,11 @@ msgstr ""
 
 #: ../meld/vc/git.py:108
 #, python-format
-#| msgid "Unpushed commits found: %d in %d branch"
-#| msgid_plural "Unpushed commits found: %d in %d branches"
 msgid "%d unpushed commits in %d branches"
 msgstr "%d cambios sin empujar en %d ramas"
 
 #: ../meld/vc/git.py:111
 #, python-format
-#| msgid "No unpushed commits found"
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d cambio sin empujar"
