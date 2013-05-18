@@ -68,6 +68,7 @@ class Vc(_vc.CachedVc):
     def __init__(self, location):
         super(Vc, self).__init__(location)
         self.diff_re = re.compile(self.GIT_DIFF_FILES_RE)
+        self._tree_cache = {}
         self._tree_meta_cache = {}
 
     def check_repo_root(self, location):
@@ -95,6 +96,32 @@ class Vc(_vc.CachedVc):
         return [self.CMD, "checkout"]
 
     # Prototyping VC interface version 2
+
+    def update_actions_for_paths(self, path_states, actions):
+        states = path_states.values()
+
+        actions["VcCompare"] = bool(path_states)
+        # TODO: We can't disable this for NORMAL, because folders don't
+        # inherit any state from their children, but committing a folder with
+        # modified children is expected behaviour.
+        actions["VcCommit"] = all(s not in (
+            _vc.STATE_NONE, _vc.STATE_IGNORED) for s in states)
+
+        actions["VcUpdate"] = True
+        # TODO: We can't do this; this shells out for each selection change...
+        # actions["VcPush"] = bool(self.get_commits_to_push())
+        actions["VcPush"] = True
+
+        actions["VcAdd"] = all(s not in (
+            _vc.STATE_NORMAL, _vc.STATE_REMOVED) for s in states)
+        actions["VcResolved"] = all(s == _vc.STATE_CONFLICT for s in states)
+        actions["VcRemove"] = (all(s not in (
+            _vc.STATE_NONE, _vc.STATE_IGNORED,
+            _vc.STATE_REMOVED) for s in states) and
+            self.root not in path_states.keys())
+        actions["VcRevert"] = all(s not in (
+            _vc.STATE_NONE, _vc.STATE_NORMAL,
+            _vc.STATE_IGNORED) for s in states)
 
     def get_commits_to_push_summary(self):
         branch_refs = self.get_commits_to_push()
@@ -322,7 +349,6 @@ class Vc(_vc.CachedVc):
         # Get a list of all files in rootdir, as well as their status
         tree_state = {}
         self._update_tree_state_cache("./", tree_state)
-
         return tree_state
 
     def update_file_state(self, path):

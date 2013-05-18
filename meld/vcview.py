@@ -485,6 +485,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 pass
 
             self.scheduler.add_task(self._search_recursively_iter(root))
+            self.scheduler.add_task(self.on_treeview_selection_changed)
             self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def get_comparison(self):
@@ -667,11 +668,36 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.prefs.vc_status_filters = active_filters
         self.refresh()
 
-    def on_treeview_selection_changed(self, selection):
+    def on_treeview_selection_changed(self, selection=None):
+
+        def set_sensitive(action, sensitive):
+            self.actiongroup.get_action(action).set_sensitive(sensitive)
+
+        if selection is None:
+            selection = self.treeview.get_selection()
         model, rows = selection.get_selected_rows()
-        have_selection = bool(rows)
-        for action in self.valid_vc_actions:
-            self.actiongroup.get_action(action).set_sensitive(have_selection)
+        if hasattr(self.vc, 'update_actions_for_paths'):
+            paths = [self.model.value_path(model.get_iter(r), 0) for r in rows]
+            states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
+            action_sensitivity = {
+                "VcCompare": False,
+                "VcCommit": False,
+                "VcUpdate": False,
+                "VcPush": False,
+                "VcAdd": False,
+                "VcResolved": False,
+                "VcRemove": False,
+                "VcRevert": False,
+                "VcDeleteLocally": bool(paths) and self.vc.root not in paths,
+            }
+            path_states = dict(zip(paths, states))
+            self.vc.update_actions_for_paths(path_states, action_sensitivity)
+            for action, sensitivity in action_sensitivity.items():
+                set_sensitive(action, sensitivity)
+        else:
+            have_selection = bool(rows)
+            for action in self.valid_vc_actions:
+                set_sensitive(action, have_selection)
 
     def _get_selected_files(self):
         model, rows = self.treeview.get_selection().get_selected_rows()
@@ -869,6 +895,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.treeview.grab_focus()
                 self.treeview.get_selection().select_iter(newiter)
                 self.scheduler.add_task(self._search_recursively_iter(newiter))
+                self.scheduler.add_task(self.on_treeview_selection_changed)
                 self.scheduler.add_task(self.on_treeview_cursor_changed)
         else: # XXX fixme
             self.refresh()
