@@ -1,32 +1,29 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
+# Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
+# Copyright (C) 2007 José Fonseca <j_r_fonseca@yahoo.co.uk>
+# Copyright (C) 2010-2013 Kai Willadsen <kai.willadsen@gmail.com>
 
-# vim:set shiftwidth=4 tabstop=4 expandtab textwidth=79:
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
 
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
-### Copyright (C) 2007 José Fonseca <j_r_fonseca@yahoo.co.uk>
-### Copyright (C) 2010-2012 Kai Willadsen <kai.willadsen@gmail.com>
-
-### Redistribution and use in source and binary forms, with or without
-### modification, are permitted provided that the following conditions
-### are met:
-### 
-### 1. Redistributions of source code must retain the above copyright
-###    notice, this list of conditions and the following disclaimer.
-### 2. Redistributions in binary form must reproduce the above copyright
-###    notice, this list of conditions and the following disclaimer in the
-###    documentation and/or other materials provided with the distribution.
-
-### THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-### IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-### OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-### IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-### INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-### NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-### DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-### THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import errno
 import os
@@ -35,7 +32,7 @@ import shutil
 import subprocess
 import tempfile
 
-from gettext import ngettext
+from gettext import gettext as _, ngettext
 
 from . import _vc
 
@@ -60,12 +57,12 @@ class Vc(_vc.CachedVc):
     }
 
     state_map = {
-        "X": _vc.STATE_NONE,     # Unknown
-        "A": _vc.STATE_NEW,      # New
-        "D": _vc.STATE_REMOVED,  # Deleted
-        "M": _vc.STATE_MODIFIED, # Modified
-        "T": _vc.STATE_MODIFIED, # Type-changed
-        "U": _vc.STATE_CONFLICT, # Unmerged
+        "X": _vc.STATE_NONE,      # Unknown
+        "A": _vc.STATE_NEW,       # New
+        "D": _vc.STATE_REMOVED,   # Deleted
+        "M": _vc.STATE_MODIFIED,  # Modified
+        "T": _vc.STATE_MODIFIED,  # Type-changed
+        "U": _vc.STATE_CONFLICT,  # Unmerged
     }
 
     def __init__(self, location):
@@ -195,9 +192,8 @@ class Vc(_vc.CachedVc):
         # Error handling here involves doing nothing; in most cases, the only
         # sane response is to return an empty temp file.
 
-        with tempfile.NamedTemporaryFile(
-                                prefix='meld-tmp-%s-' % _vc.conflicts[conflict],
-                                delete=False) as f:
+        prefix = 'meld-tmp-%s-' % _vc.conflicts[conflict]
+        with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
             shutil.copyfileobj(vc_file, f)
         return f.name, True
 
@@ -233,6 +229,7 @@ class Vc(_vc.CachedVc):
             return False
         else:
             return True
+
     def get_working_directory(self, workdir):
         if workdir.startswith("/"):
             return self.root
@@ -273,13 +270,15 @@ class Vc(_vc.CachedVc):
                 entries = self._get_modified_files(path)
 
                 # Identify ignored files
-                proc = _vc.popen([self.CMD, "ls-files", "--others", \
-                    "--ignored", "--exclude-standard", path], cwd=self.location)
+                proc = _vc.popen([self.CMD, "ls-files", "--others",
+                                  "--ignored", "--exclude-standard", path],
+                                 cwd=self.location)
                 ignored_entries = proc.read().split("\n")[:-1]
 
                 # Identify unversioned files
-                proc = _vc.popen([self.CMD, "ls-files", "--others", \
-                    "--exclude-standard", path], cwd=self.location)
+                proc = _vc.popen([self.CMD, "ls-files", "--others",
+                                  "--exclude-standard", path],
+                                 cwd=self.location)
                 unversioned_entries = proc.read().split("\n")[:-1]
 
                 break
@@ -307,7 +306,7 @@ class Vc(_vc.CachedVc):
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 tree_state[path] = state
                 if old_mode != new_mode:
-                    msg = _("Mode changed from %s to %s" % \
+                    msg = _("Mode changed from %s to %s" %
                             (old_mode, new_mode))
                     self._tree_meta_cache[path] = msg
 
