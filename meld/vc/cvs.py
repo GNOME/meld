@@ -42,7 +42,7 @@ class Vc(_vc.Vc):
     PATCH_INDEX_RE = "^Index:(.*)$"
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION,
-                  _vc.DATA_TAG, _vc.DATA_OPTIONS)
+                  _vc.DATA_OPTIONS)
 
     def __init__(self, location):
         super(Vc, self).__init__(location)
@@ -120,8 +120,6 @@ class Vc(_vc.Vc):
             name = match[1]
             path = os.path.join(directory, name)
             rev, date, options, tag = match[2].split("/")
-            if tag:
-                tag = tag[1:]
             if isdir:
                 if os.path.exists(path):
                     state = _vc.STATE_NORMAL
@@ -161,7 +159,7 @@ class Vc(_vc.Vc):
                                 state = _vc.STATE_NORMAL
                             else:
                                 state = _vc.STATE_MODIFIED
-                retfiles.append(_vc.File(path, name, state, rev, tag, options))
+                retfiles.append(_vc.File(path, name, state, rev, options))
         # known
         cvsfiles = [x[1] for x in matches]
         # ignored

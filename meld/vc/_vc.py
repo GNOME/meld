@@ -46,7 +46,7 @@ CONFLICT_THIS = CONFLICT_LOCAL
 conflicts = [_("Merged"), _("Base"), _("Local"), _("Remote")]
 assert len(conflicts) == CONFLICT_MAX
 
-DATA_NAME, DATA_STATE, DATA_REVISION, DATA_TAG, DATA_OPTIONS = list(range(5))
+DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS = list(range(4))
 
 
 class Entry(object):
@@ -77,17 +77,15 @@ class Dir(Entry):
         Entry.__init__(self, path, name, state)
         self.isdir = 1
         self.rev = ""
-        self.tag = ""
         self.options = ""
 
 
 class File(Entry):
-    def __init__(self, path, name, state, rev="", tag="", options=""):
+    def __init__(self, path, name, state, rev="", options=""):
         assert path[-1] != "/"
         Entry.__init__(self, path, name, state)
         self.isdir = 0
         self.rev = rev
-        self.tag = tag
         self.options = options
 
 

@@ -24,7 +24,7 @@
 import os
 import glob
 from . import _null
-from ._vc import DATA_NAME, DATA_STATE, DATA_REVISION, DATA_TAG, DATA_OPTIONS
+from ._vc import DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS
 
 
 def load_plugins():
