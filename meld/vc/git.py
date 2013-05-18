@@ -350,26 +350,3 @@ class Vc(_vc.CachedVc):
                 if folder == directory:
                     retfiles.append(_vc.File(path, name, state))
         return retdirs, retfiles
-
-    def clean_patch(self, patch):
-        """Remove extended header lines from the provided patch
-        
-        This removes any of Git's extended header information, being lines
-        giving 'index', 'mode', 'new file' or 'deleted file' metadata. If
-        there is no patch content other than this header information (e.g., if
-        a file has had a mode change and nothing else) then an empty patch is
-        returned, to avoid a non-applyable patch. Anything that doesn't look
-        like a Git format patch is returned unchanged.
-        """
-        if not re.match(self.PATCH_INDEX_RE, patch, re.M):
-            return patch
-
-        patch_lines = patch.splitlines(True)
-        for i, line in enumerate(patch_lines):
-            # A bit loose, but this marks the start of a standard format patch
-            if line.startswith("--- "):
-                break
-        else:
-            return ""
-        return "".join([patch_lines[0]] + patch_lines[i:])
-

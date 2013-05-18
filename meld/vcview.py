@@ -577,11 +577,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 yield 1
             prefix, patch = diff[0], diff[1]
 
-            try:
-                patch = self.vc.clean_patch(patch)
-            except AttributeError:
-                pass
-
             yield _("[%s] Applying patch") % self.label_text
             if patch:
                 applied = self.show_patch(prefix, patch, silent=silent_error)
