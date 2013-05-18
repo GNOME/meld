@@ -52,18 +52,24 @@ class Entry(object):
     # These are the possible states of files. Be sure to get the colons correct.
     states = _("Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:Not present").split(":")
     states[STATE_CONFLICT] = "<b>%s</b>" % states[STATE_CONFLICT]
-    assert len(states)==STATE_MAX
+    assert len(states) == STATE_MAX
 
     def __init__(self, path, name, state):
         self.path = path
         self.state = state
         self.parent, self.name = os.path.split(path.rstrip("/"))
+
     def __str__(self):
-        return "<%s:%s %s>\n" % (self.__class__, self.name, (self.path, self.state))
+        return "<%s:%s %s>" % (self.__class__.__name__, self.path,
+                               self.get_status() or "Normal")
+
     def __repr__(self):
-        return "%s %s\n" % (self.name, (self.path, self.state))
+        return "%s(%r, %r, %r)" % (self.__class__.__name__, self.name,
+                                   self.path, self.state)
+
     def get_status(self):
         return self.states[self.state]
+
 
 class Dir(Entry):
     def __init__(self, path, name, state):
@@ -73,6 +79,7 @@ class Dir(Entry):
         self.tag = ""
         self.options = ""
 
+
 class File(Entry):
     def __init__(self, path, name, state, rev="", tag="", options=""):
         assert path[-1] != "/"
@@ -81,6 +88,7 @@ class File(Entry):
         self.rev = rev
         self.tag = tag
         self.options = options
+
 
 class Vc(object):
 
