@@ -32,14 +32,14 @@ from gettext import gettext as _
 # error, placeholder, vc added
 # vc modified, vc conflict, vc removed
 # locally removed, end
-STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
-STATE_ERROR, STATE_EMPTY, STATE_NEW, \
-STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED, \
-STATE_MISSING, STATE_NONEXIST, STATE_MAX = list(range(13))
+(STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE,
+    STATE_ERROR, STATE_EMPTY, STATE_NEW,
+    STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED,
+    STATE_MISSING, STATE_NONEXIST, STATE_MAX) = list(range(13))
 
 # VC conflict types
-CONFLICT_MERGED, CONFLICT_BASE, CONFLICT_LOCAL, \
-CONFLICT_REMOTE, CONFLICT_MAX = list(range(5))
+(CONFLICT_MERGED, CONFLICT_BASE, CONFLICT_LOCAL,
+    CONFLICT_REMOTE, CONFLICT_MAX) = list(range(5))
 # These names are used by BZR, and are logically identical.
 CONFLICT_OTHER = CONFLICT_REMOTE
 CONFLICT_THIS = CONFLICT_LOCAL
@@ -283,7 +283,7 @@ class InvalidVCPath(ValueError):
 
     def __str__(self):
         return "%s: Path %s is invalid or not present\nError: %s\n" % \
-              (self.vc.NAME, self.path, self.error)
+            (self.vc.NAME, self.path, self.error)
 
 
 class InvalidVCRevision(ValueError):
@@ -296,7 +296,7 @@ class InvalidVCRevision(ValueError):
 
     def __str__(self):
         return "%s: Doesn't understand or have revision %s\nError: %s\n" % \
-              (self.vc.NAME, self.revision, self.error)
+            (self.vc.NAME, self.revision, self.error)
 
 
 # Return the stdout output of a given command
