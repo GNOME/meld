@@ -22,6 +22,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import itertools
 import os
 import re
 import subprocess
@@ -47,6 +48,13 @@ conflicts = [_("Merged"), _("Base"), _("Local"), _("Remote")]
 assert len(conflicts) == CONFLICT_MAX
 
 DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS = list(range(4))
+
+
+# Lifted from the itertools recipes section
+def partition(pred, iterable):
+    t1, t2 = itertools.tee(iterable)
+    return (list(itertools.ifilterfalse(pred, t1)),
+            list(itertools.ifilter(pred, t2)))
 
 
 class Entry(object):
@@ -217,30 +225,18 @@ class Vc(object):
         regex = re.compile(self.PATCH_INDEX_RE, re.M)
         return [f.strip() for f in regex.findall(patch)]
 
-    def listdir_filter(self, entries):
-        return [f for f in entries if f != self.VC_DIR]
-
     # Determine if a directory is a valid git/svn/hg/cvs/etc repository
     def valid_repo(self):
         return True
 
-    def listdir(self, start):
-        start = start or "."
-        cfiles = []
-        cdirs = []
+    def listdir(self, path="."):
         try:
-            entries = os.listdir(start)
-            entries.sort()
+            entries = sorted(e for e in os.listdir(path) if e != self.VC_DIR)
         except OSError:
             entries = []
-        for f in self.listdir_filter(entries):
-            fname = os.path.join(start, f)
-            lname = fname
-            if os.path.isdir(fname):
-                cdirs.append((f, lname))
-            else:
-                cfiles.append((f, lname))
-        dirs, files = self.lookup_files(cdirs, cfiles, start)
+        full_entries = [(f, os.path.join(path, f)) for f in entries]
+        cfiles, cdirs = partition(lambda e: os.path.isdir(e[1]), full_entries)
+        dirs, files = self.lookup_files(cdirs, cfiles, path)
         return dirs + files
 
     def lookup_files(self, dirs, files, directory=None):
