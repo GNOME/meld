@@ -54,8 +54,6 @@ vc_sort_order = (
     "Fossil",
     "Monotone",
     "Darcs",
-    "Arch",
-    "Codeville",
     "SVK",
     "Subversion",
     "Subversion 1.7",
