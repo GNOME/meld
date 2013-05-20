@@ -33,27 +33,6 @@ class Vc(_vc.Vc):
     # Accept any directory
     VC_DIR = "."
 
-    def commit_command(self, message):
-        return [self.CMD, "commit", "-m", message]
-
-    def diff_command(self):
-        return [self.CMD, "diff", "-u"]
-
-    def update_command(self):
-        return [self.CMD, "update"]
-
-    def add_command(self):
-        return [self.CMD, "add"]
-
-    def remove_command(self, force=0):
-        return [self.CMD, "rm", "-f"]
-
-    def revert_command(self):
-        return [self.CMD, "update", "-C"]
-
-    def resolved_command(self):
-        return [self.CMD, "resolved"]
-
     def lookup_files(self, dirs, files, directory=None):
         "files is array of (name, path). assume all files in same dir"
         d = [_vc.Dir(x[1], x[0], _vc.STATE_NONE) for x in dirs]
