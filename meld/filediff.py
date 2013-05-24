@@ -357,7 +357,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             "delete"  : lookup("insert-outline", "#77f077"),
                             "conflict": lookup("conflict-outline", "#f0768b"),
                             "replace" : lookup("replace-outline", "#8bbff3")}
-        self.highlight_color = lookup("highlight-bg", "#ffff00")
+        self.highlight_color = lookup("current-line-highlight", "#ffff00")
         self.syncpoint_color = lookup("syncpoint-outline", "#555555")
 
         for associated in self.diffmap + self.linkmap:
