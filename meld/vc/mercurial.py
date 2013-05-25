@@ -1,25 +1,25 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 
-### Redistribution and use in source and binary forms, with or without
-### modification, are permitted provided that the following conditions
-### are met:
-###
-### 1. Redistributions of source code must retain the above copyright
-###    notice, this list of conditions and the following disclaimer.
-### 2. Redistributions in binary form must reproduce the above copyright
-###    notice, this list of conditions and the following disclaimer in the
-###    documentation and/or other materials provided with the distribution.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
 
-### THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-### IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-### OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-### IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-### INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-### NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-### DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-### THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import errno
 import os
@@ -47,25 +47,32 @@ class Vc(_vc.CachedVc):
     }
 
     def commit_command(self, message):
-        return [self.CMD,"commit","-m",message]
+        return [self.CMD, "commit", "-m", message]
+
     def diff_command(self):
-        ret = [self.CMD,"diff"]
+        ret = [self.CMD, "diff"]
         if self.DIFF_GIT_MODE:
             ret.append("--git")
         return ret
+
     def update_command(self):
-        return [self.CMD,"update"]
+        return [self.CMD, "update"]
+
     def add_command(self):
-        return [self.CMD,"add"]
+        return [self.CMD, "add"]
+
     def remove_command(self, force=0):
-        return [self.CMD,"rm"]
+        return [self.CMD, "rm"]
+
     def revert_command(self):
-        return [self.CMD,"revert"]
+        return [self.CMD, "revert"]
+
     def valid_repo(self):
         if _vc.call([self.CMD, "root"], cwd=self.root):
             return False
         else:
             return True
+
     def get_working_directory(self, workdir):
         if workdir.startswith("/"):
             return self.root
@@ -78,7 +85,7 @@ class Vc(_vc.CachedVc):
             try:
                 # Get the status of modified files
                 proc = _vc.popen([self.CMD, "status", '-A', path],
-                    cwd=self.location)
+                                 cwd=self.location)
                 entries = proc.read().split("\n")[:-1]
 
                 # The following command removes duplicate file entries.
