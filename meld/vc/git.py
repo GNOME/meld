@@ -42,8 +42,6 @@ class Vc(_vc.CachedVc):
     CMD = "git"
     NAME = "Git"
     VC_DIR = ".git"
-    PATCH_STRIP_NUM = 1
-    PATCH_INDEX_RE = "^diff --git [ac]/(.*) [bw]/.*$"
     GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([ADMU])\t(.*)"
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
