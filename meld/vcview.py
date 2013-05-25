@@ -408,6 +408,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             err_str = ""
 
             def vc_installed(cmd):
+                if not cmd:
+                    return True
                 try:
                     return not vc._vc.call(["which", cmd])
                 except OSError:
@@ -432,14 +434,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.combobox_vcs.get_model().append(
                     [_("%s (%s)") % (avc.NAME, err_str), avc, False])
             else:
-                self.combobox_vcs.get_model().append([avc.NAME, avc, True])
+                name = avc.NAME or _("None")
+                self.combobox_vcs.get_model().append([name, avc, True])
 
         if not valid_vcs:
             # If we didn't get any valid vcs then fallback to null
             null_vcs = _null.Vc(vcs[0].location)
             vcs.append(null_vcs)
             self.combobox_vcs.get_model().insert(
-                0, [null_vcs.NAME, null_vcs, True])
+                0, [_("None"), null_vcs, True])
             default_active = 0
 
         if default_active == -1:
@@ -449,7 +452,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 default_active = 0
 
         # If we only have the null VC, give a better error message.
-        if (len(vcs) == 1 and vcs[0].CMD == "true") or (len(valid_vcs) == 0):
+        if (len(vcs) == 1 and not vcs[0].CMD) or (len(valid_vcs) == 0):
             tooltip = _("No valid version control system found in this folder")
         elif len(vcs) == 1:
             tooltip = _("Only one version control system found in this folder")
