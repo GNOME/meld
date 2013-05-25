@@ -193,10 +193,10 @@ class Vc(_vc.CachedVc):
         missing = [f for f in files if not os.path.exists(f)]
         if exists:
             command = [self.CMD, 'checkout']
-            runner(command, files, refresh=True, working_dir=self.root)
+            runner(command, exists, refresh=True, working_dir=self.root)
         if missing:
             command = [self.CMD, 'checkout', 'HEAD']
-            runner(command, files, refresh=True, working_dir=self.root)
+            runner(command, missing, refresh=True, working_dir=self.root)
 
     def get_path_for_conflict(self, path, conflict):
         if not path.startswith(self.root + os.path.sep):
