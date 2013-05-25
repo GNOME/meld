@@ -25,6 +25,7 @@
 
 import itertools
 import os
+import re
 import subprocess
 
 from gi.repository import Gio
@@ -342,3 +343,14 @@ def popen(cmd, cwd=None):
 def call(cmd, cwd=None):
     NULL = open(os.devnull, "wb")
     return subprocess.call(cmd, cwd=cwd, stdout=NULL, stderr=NULL)
+
+
+base_re = re.compile(
+    r"^<{7}.*?$\r?\n(?P<local>.*?)"
+    r"^\|{7}.*?$\r?\n(?P<base>.*?)"
+    r"^={7}.*?$\r?\n(?P<remote>.*?)"
+    r"^>{7}.*?$\r?\n", flags=re.DOTALL | re.MULTILINE)
+
+
+def base_from_diff3(merged):
+    return base_re.sub(r"==== BASE ====\n\g<base>==== BASE ====\n", merged)

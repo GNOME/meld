@@ -29,8 +29,10 @@ import errno
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
+import StringIO
 import tempfile
 from collections import defaultdict
 
@@ -189,7 +191,31 @@ class Vc(_vc.Vc):
 
         if conflict == _vc.CONFLICT_MERGED:
             # Special case: no way to get merged result from git directly
-            return path, False
+            local, _ = self.get_path_for_conflict(path, _vc.CONFLICT_LOCAL)
+            base, _ = self.get_path_for_conflict(path, _vc.CONFLICT_BASE)
+            remote, _ = self.get_path_for_conflict(path, _vc.CONFLICT_REMOTE)
+
+            if not (local and base and remote):
+                raise _vc.InvalidVCPath(self, path,
+                                        "Couldn't access conflict parents")
+
+            args = [self.CMD, "merge-file", "-p", "--diff3", local, base,
+                    remote]
+            process = subprocess.Popen(args, cwd=self.location,
+                                       stdout=subprocess.PIPE)
+            vc_file = StringIO.StringIO(
+                _vc.base_from_diff3(process.stdout.read()))
+
+            prefix = 'meld-tmp-%s-' % _vc.conflicts[conflict]
+            with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
+                shutil.copyfileobj(vc_file, f)
+
+            for temp_file in (local, base, remote):
+                if os.name == "nt":
+                    os.chmod(temp_file, stat.S_IWRITE)
+                os.remove(temp_file)
+
+            return f.name, True
 
         path = path[len(self.root) + 1:]
         if os.name == "nt":
