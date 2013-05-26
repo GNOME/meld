@@ -23,6 +23,9 @@
 
 import errno
 import os
+import shutil
+import subprocess
+import tempfile
 
 from . import _vc
 
@@ -32,10 +35,7 @@ class Vc(_vc.CachedVc):
     CMD = "hg"
     NAME = "Mercurial"
     VC_DIR = ".hg"
-    PATCH_STRIP_NUM = 1
-    # Mercurial diffs can be run in "git" mode
-    PATCH_INDEX_RE = "^diff (?:-r \w+ |--git a/.* b/)(.*)$"
-    DIFF_GIT_MODE = False
+
     state_map = {
         "?": _vc.STATE_NONE,
         "A": _vc.STATE_NEW,
@@ -48,12 +48,6 @@ class Vc(_vc.CachedVc):
 
     def commit_command(self, message):
         return [self.CMD, "commit", "-m", message]
-
-    def diff_command(self):
-        ret = [self.CMD, "diff"]
-        if self.DIFF_GIT_MODE:
-            ret.append("--git")
-        return ret
 
     def update_command(self):
         return [self.CMD, "update"]
@@ -78,6 +72,22 @@ class Vc(_vc.CachedVc):
             return self.root
         else:
             return ''
+
+    def get_path_for_repo_file(self, path, commit=None):
+        if commit is not None:
+            raise NotImplementedError()
+
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
+        process = subprocess.Popen([self.CMD, "cat", path], cwd=self.root,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            shutil.copyfileobj(process.stdout, f)
+        return f.name
 
     def _update_tree_state_cache(self, path, tree_state):
         """ Update the state of the file(s) at tree_state['path'] """
