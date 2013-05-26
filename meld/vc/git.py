@@ -78,20 +78,11 @@ class Vc(_vc.CachedVc):
     def commit_command(self, message):
         return [self.CMD, "commit", "-m", message]
 
-    def diff_command(self):
-        return [self.CMD, "diff", "--relative", "HEAD"]
-
-    def update_command(self):
-        return [self.CMD, "pull"]
-
     def add_command(self):
         return [self.CMD, "add"]
 
     def remove_command(self, force=0):
         return [self.CMD, "rm"]
-
-    def revert_command(self):
-        return [self.CMD, "checkout"]
 
     # Prototyping VC interface version 2
 
