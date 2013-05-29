@@ -164,6 +164,12 @@ class Vc(object):
     def revert(self, runner, files):
         raise NotImplementedError()
 
+    def remove(self, runner, files):
+        raise NotImplementedError()
+
+    def resolve(self, runner, files):
+        raise NotImplementedError()
+
     def get_path_for_repo_file(self, path, commit=None):
         """Returns a file path for the repository path at commit
 

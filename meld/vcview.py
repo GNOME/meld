@@ -794,10 +794,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command_on_selected(self.vc.add_command())
 
     def on_button_remove_clicked(self, obj):
-        self._command_on_selected(self.vc.remove_command())
+        try:
+            self.vc.remove(self._command, self._get_selected_files())
+        except NotImplementedError:
+            self._command_on_selected(self.vc.remove_command())
 
     def on_button_resolved_clicked(self, obj):
-        self._command_on_selected(self.vc.resolved_command())
+        try:
+            self.vc.resolve(self._command, self._get_selected_files())
+        except NotImplementedError:
+            self._command_on_selected(self.vc.resolved_command())
 
     def on_button_revert_clicked(self, obj):
         try:
