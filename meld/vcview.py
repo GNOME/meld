@@ -37,6 +37,7 @@ from . import tree
 from . import vc
 from .ui import emblemcellrenderer
 from .ui import gnomeglade
+from meld.vc import _null
 
 
 def _commonprefix(files):
@@ -433,11 +434,22 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 self.combobox_vcs.get_model().append([avc.NAME, avc, True])
 
-        if valid_vcs and default_active == -1:
-            default_active = min(valid_vcs)
+        if not valid_vcs:
+            # If we didn't get any valid vcs then fallback to null
+            null_vcs = _null.Vc(vcs[0].location)
+            vcs.append(null_vcs)
+            self.combobox_vcs.get_model().insert(
+                0, [null_vcs.NAME, null_vcs, True])
+            default_active = 0
+
+        if default_active == -1:
+            if valid_vcs:
+                default_active = min(valid_vcs)
+            else:
+                default_active = 0
 
         # If we only have the null VC, give a better error message.
-        if len(vcs) == 1 and vcs[0].CMD == "true":
+        if (len(vcs) == 1 and vcs[0].CMD == "true") or (len(valid_vcs) == 0):
             tooltip = _("No valid version control system found in this folder")
         elif len(vcs) == 1:
             tooltip = _("Only one version control system found in this folder")
