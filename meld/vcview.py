@@ -380,8 +380,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             col.set_visible(data_id in self.vc.VC_COLUMNS)
 
     def update_actions_sensitivity(self):
-        """Disable actions that use not implemented VC plugin methods
-        """
+        """Disable actions that use not implemented VC plugin methods"""
         valid_vc_actions = ["VcDeleteLocally"]
         for action_name, (meth_name, args) in self.action_vc_cmds_map.items():
             action = self.actiongroup.get_action(action_name)
@@ -480,7 +479,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.model.clear()
         self.fileentry.set_filename(location)
         self.fileentry.prepend_history(location)
-        it = self.model.add_entries( None, [location] )
+        it = self.model.add_entries(None, [location])
         self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
         self.model.set_path_state(it, 0, tree.STATE_NORMAL, isdir=1)
@@ -513,27 +512,29 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.label_changed()
 
     def _search_recursively_iter(self, iterstart):
-        yield _("[%s] Scanning %s") % (self.label_text,"")
-        rootpath = self.model.get_path( iterstart  )
-        rootname = self.model.value_path( self.model.get_iter(rootpath), 0 )
-        prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
-        todo = [ (rootpath, rootname) ]
+        yield _("[%s] Scanning %s") % (self.label_text, "")
+        rootpath = self.model.get_path(iterstart)
+        rootname = self.model.value_path(self.model.get_iter(rootpath), 0)
+        prefixlen = 1 + len(self.model.value_path(self.model.get_iter_root(), 0))
+        todo = [(rootpath, rootname)]
 
         active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        filters = [a[1] for a in self.state_actions.values() if \
+        filters = [a[1] for a in self.state_actions.values() if
                    active_action(a[0]) and a[1]]
 
         def showable(entry):
             for f in filters:
-                if f(entry): return 1
+                if f(entry):
+                    return 1
         recursive = self.actiongroup.get_action("VcFlatten").get_active()
         self.vc.cache_inventory(rootname)
         while len(todo):
-            todo.sort() # depth first
+            # depth first
+            todo.sort()
             path, name = todo.pop(0)
             if path:
-                it = self.model.get_iter( path )
-                root = self.model.value_path( it, 0 )
+                it = self.model.get_iter(path)
+                root = self.model.value_path(it, 0)
             else:
                 it = self.model.get_iter_root()
                 root = name
@@ -544,19 +545,22 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             for e in entries:
                 differences |= (e.state != tree.STATE_NORMAL)
                 if e.isdir and recursive:
-                    todo.append( (None, e.path) )
+                    todo.append((None, e.path))
                     continue
                 child = self.model.add_entries(it, [e.path])
-                self._update_item_state( child, e, root[prefixlen:] )
+                self._update_item_state(child, e, root[prefixlen:])
                 if e.isdir:
-                    todo.append( (self.model.get_path(child), None) )
-            if not recursive: # expand parents
+                    todo.append((self.model.get_path(child), None))
+
+            if not recursive:
+                # expand parents
                 if len(entries) == 0:
                     self.model.add_empty(it, _("(Empty)"))
-                if differences or len(path)==1:
+                if differences or len(path) == 1:
                     self.treeview.expand_to_path(path)
-            else: # just the root
-                self.treeview.expand_row( (0,), 0)
+            else:
+                # just the root
+                self.treeview.expand_row((0,), 0)
         self.vc.uncache_inventory()
 
     def on_fileentry_activate(self, fileentry):
@@ -573,10 +577,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if self.treeview.row_expanded(path):
                 self.treeview.collapse_row(path)
             else:
-                self.treeview.expand_row(path,0)
+                self.treeview.expand_row(path, 0)
         else:
             path = self.model.value_path(it, 0)
-            self.run_diff( [path] )
+            self.run_diff([path])
 
     def run_diff_iter(self, path_list):
         silent_error = hasattr(self.vc, 'switch_to_external_diff')
@@ -673,7 +677,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_filter_state_toggled(self, button):
         active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        active_filters = [a for a in self.state_actions if \
+        active_filters = [a for a in self.state_actions if
                           active_action(self.state_actions[a][0])]
 
         if set(active_filters) == set(self.state_filters):
@@ -736,8 +740,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         elif len(files) == 1 and os.path.isdir(files[0]):
             workdir = self.vc.get_working_directory(files[0])
         else:
-            workdir = self.vc.get_working_directory( _commonprefix(files) )
-        files = [ relpath(workdir, f) for f in files ]
+            workdir = self.vc.get_working_directory(_commonprefix(files))
+        files = [relpath(workdir, f) for f in files]
         r = None
         self.consolestream.command(misc.shelljoin(command + files) + " (in %s)\n" % workdir)
         readiter = misc.read_pipe_iter(command + files, self.consolestream,
@@ -823,7 +827,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                             buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
                         shutil.rmtree(name)
             except OSError as e:
-                misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
+                misc.run_dialog(_("Error removing %s\n\n%s.") % (name, e),
+                                parent=self)
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
 
@@ -843,7 +848,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                           "install <i>patch</i> and try again.") % self.vc.NAME
 
             msgarea = self.msgarea_mgr.new_from_text_and_icon(
-                        gtk.STOCK_DIALOG_ERROR, primary, secondary)
+                gtk.STOCK_DIALOG_ERROR, primary, secondary)
             msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
             msgarea.connect("response", lambda *args: self.msgarea_mgr.clear())
             msgarea.show_all()
@@ -854,17 +859,18 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         diffs = []
         for fname in self.vc.get_patch_files(patch):
-            destfile = os.path.join(tmpdir,fname)
-            destdir = os.path.dirname( destfile )
+            destfile = os.path.join(tmpdir, fname)
+            destdir = os.path.dirname(destfile)
 
             if not os.path.exists(destdir):
                 os.makedirs(destdir)
             pathtofile = os.path.join(prefix, fname)
             try:
-                shutil.copyfile( pathtofile, destfile)
-            except IOError: # it is missing, create empty file
-                open(destfile,"w").close()
-            diffs.append( (destfile, pathtofile) )
+                shutil.copyfile(pathtofile, destfile)
+            except IOError:
+                # it is missing, create empty file
+                open(destfile, "w").close()
+            diffs.append((destfile, pathtofile))
 
         patchcmd = self.vc.patch_command(tmpdir)
         try:
@@ -886,7 +892,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                           "many details as possible.")
 
             msgarea = self.msgarea_mgr.new_from_text_and_icon(
-                        gtk.STOCK_DIALOG_ERROR, primary, secondary)
+                gtk.STOCK_DIALOG_ERROR, primary, secondary)
             msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
             msgarea.add_button(_("Report a bug"), gtk.RESPONSE_OK)
 
@@ -904,14 +910,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return False
 
     def refresh(self):
-        self.set_location( self.model.value_path( self.model.get_iter_root(), 0 ) )
+        self.set_location(self.model.value_path(self.model.get_iter_root(), 0))
 
     def refresh_partial(self, where):
         if not self.actiongroup.get_action("VcFlatten").get_active():
-            it = self.find_iter_by_name( where )
+            it = self.find_iter_by_name(where)
             if it:
-                newiter = self.model.insert_after( None, it)
-                self.model.set_value(newiter, self.model.column_index( tree.COL_PATH, 0), where)
+                newiter = self.model.insert_after(None, it)
+                self.model.set_value(
+                    newiter, self.model.column_index(tree.COL_PATH, 0), where)
                 self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
                 self.model.remove(it)
                 self.treeview.grab_focus()
@@ -919,12 +926,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 self.scheduler.add_task(self._search_recursively_iter(newiter))
                 self.scheduler.add_task(self.on_treeview_selection_changed)
                 self.scheduler.add_task(self.on_treeview_cursor_changed)
-        else: # XXX fixme
+        else:
+            # XXX fixme
             self.refresh()
 
     def _update_item_state(self, it, vcentry, location):
         e = vcentry
         self.model.set_path_state(it, 0, e.state, e.isdir)
+
         def setcol(col, val):
             self.model.set_value(it, self.model.column_index(col, 0), val)
         setcol(COL_LOCATION, location)
