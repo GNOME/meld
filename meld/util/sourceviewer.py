@@ -92,7 +92,10 @@ class _gtksourceview2(_srcviewer):
 
     def get_language_from_file(self, filename):
         f = gio.File(filename)
-        info = f.query_info(gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+        try:
+            info = f.query_info(gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+        except gio.Error:
+            return None
         content_type = info.get_content_type()
         return self.get_language_manager().guess_language(filename,
                                                           content_type)
