@@ -352,7 +352,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
                             "delete"  : lookup("insert-bg", "DarkSeaGreen1"),
                             "conflict": lookup("conflict-bg", "Pink"),
-                            "replace" : lookup("replace-bg", "#ddeeff")}
+                            "replace" : lookup("replace-bg", "#ddeeff"),
+                            "current-chunk-highlight":
+                                lookup("current-chunk-highlight", '#ffffff')}
         self.line_colors = {"insert"  : lookup("insert-outline", "#77f077"),
                             "delete"  : lookup("insert-outline", "#77f077"),
                             "conflict": lookup("conflict-outline", "#f0768b"),
@@ -1433,7 +1435,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 context.set_source_color(self.fill_colors[change[0]])
                 context.fill_preserve()
                 if self.linediffer.locate_chunk(pane, change[1])[0] == self.cursor.chunk:
-                    context.set_source_rgba(1.0, 1.0, 1.0, 0.5)
+                    h = self.fill_colors['current-chunk-highlight']
+                    context.set_source_rgba(
+                        h.red_float, h.green_float, h.blue_float, 0.5)
                     context.fill_preserve()
 
             context.set_source_color(self.line_colors[change[0]])

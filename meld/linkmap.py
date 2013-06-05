@@ -222,7 +222,9 @@ class LinkMap(gtk.DrawingArea):
 
             chunk_idx = self.filediff.linediffer.locate_chunk(left, c[1])[0]
             if chunk_idx == self.filediff.cursor.chunk:
-                context.set_source_rgba(1.0, 1.0, 1.0, 0.5)
+                h = self.fill_colors['current-chunk-highlight']
+                context.set_source_rgba(
+                    h.red_float, h.green_float, h.blue_float, 0.5)
                 context.fill_preserve()
 
             context.set_source_color(self.line_colors[c[0]])
