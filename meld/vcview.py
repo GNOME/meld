@@ -561,7 +561,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 # just the root
                 self.treeview.expand_row((0,), 0)
-        self.vc.uncache_inventory()
 
     def on_fileentry_activate(self, fileentry):
         path = fileentry.get_full_path()
