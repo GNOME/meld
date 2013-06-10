@@ -1,233 +1,1060 @@
 # translation of meld.HEAD.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# keratea <dmtrs32@gmail.com>, 2013.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
-"Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2008-02-22 03:44+0000\n"
-"PO-Revision-Date: 2008-04-08 01:35+0200\n"
-"Last-Translator: nikosCharonitakis <nikosx@gmail.com>\n"
-"Language-Team: Greek <team@gnome.gr>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&k"
+"eywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-05-20 21:29+0000\n"
+"PO-Revision-Date: 2013-06-10 08:07+0300\n"
+"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
+"Language-Team: team@gnome.gr\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
 
-#: ../dirdiff.py:252
-#: ../dirdiff.py:267
-#, python-format
-msgid "Error converting pattern '%s' to regular expression"
-msgstr "Σφάλμα μετατροπής μοτίβου '%s' σε κανονική έκφραση"
+#: ../bin/meld:121
+msgid "Cannot import: "
+msgstr "Αδύνατη η εισαγωγή: "
 
-#: ../dirdiff.py:283
+#: ../bin/meld:124
+#, c-format
+msgid "Meld requires %s or higher."
+msgstr "Το Meld απαιτεί %s ή μεγαλύτερο."
+
+#: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
+msgid "Meld"
+msgstr "Meld"
+
+#: ../data/meld.desktop.in.h:2
+#| msgid "Meld Diff Viewer"
+msgid "Diff Viewer"
+msgstr "Προβολή διαφορών"
+
+#: ../data/meld.desktop.in.h:3
+msgid "Meld Diff Viewer"
+msgstr "Προβολή διαφορών Meld"
+
+#: ../data/meld.desktop.in.h:4
+#| msgid "Compare and merge your files."
+msgid "Compare and merge your files"
+msgstr "Σύγκριση και συγχώνευση των αρχείων σας"
+
+#: ../data/mime/meld.xml.in.h:1
+msgid "Meld comparison description"
+msgstr "Περιγραφή σύγκρισης Meld"
+
+#: ../data/ui/EditableList.ui.h:1
+#| msgid "Edit files with:"
+msgid "Editable List"
+msgstr "Επεξεργάσιμη λίστα"
+
+#: ../data/ui/EditableList.ui.h:2
+msgid "Active"
+msgstr "Ενεργό"
+
+#: ../data/ui/EditableList.ui.h:3
+msgid "Column Name"
+msgstr "Όνομα στήλης"
+
+#: ../data/ui/EditableList.ui.h:4 ../meld/vcview.py:250
+msgid "_Add"
+msgstr "_Προσθήκη"
+
+#: ../data/ui/EditableList.ui.h:5 ../meld/vcview.py:253
+msgid "_Remove"
+msgstr "_Απομάκρυνση"
+
+#: ../data/ui/EditableList.ui.h:6
+msgid "Move item up"
+msgstr "Μετακίνηση στοιχείου προς τα πάνω"
+
+#: ../data/ui/EditableList.ui.h:7
+msgid "Move _Up"
+msgstr "Μετακίνηση προς τα _πάνω"
+
+#: ../data/ui/EditableList.ui.h:8
+msgid "Move item down"
+msgstr "Μετακίνηση στοιχείου προς τα κάτω"
+
+#: ../data/ui/EditableList.ui.h:9
+#| msgid "_Down"
+msgid "Move _Down"
+msgstr "Μετακίνηση προς τα _κάτω"
+
+#. Create icon and filename CellRenderer
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:342
+#: ../meld/vcview.py:309
+msgid "Name"
+msgstr "Όνομα"
+
+#: ../data/ui/EditableList.ui.h:11
+msgid "Pattern"
+msgstr "Μοτίβο"
+
+#: ../data/ui/EditableList.ui.h:12
+msgid "Add new filter"
+msgstr "Προσθήκη νέου φίλτρου"
+
+#: ../data/ui/EditableList.ui.h:13
+msgid "Remove selected filter"
+msgstr "Αφαίρεση επιλεγμένου φίλτρου"
+
+#: ../data/ui/filediff.ui.h:1
+msgid "Save changes to documents before closing?"
+msgstr "Αποθήκευση αλλαγών στα έγγραφα πριν το κλείσιμο;"
+
+#: ../data/ui/filediff.ui.h:2
+msgid "If you don't save, changes will be permanently lost."
+msgstr "Αν δεν αποθηκεύσετε, οι αλλαγές θα χαθούν μόνιμα."
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Close _without Saving"
+msgstr "Κλείσιμο _χωρίς αποθήκευση"
+
+#: ../data/ui/filediff.ui.h:4
+msgid "_Cancel"
+msgstr "_Aκύρωση"
+
+#: ../data/ui/filediff.ui.h:5
+msgid "_Save"
+msgstr "Α_ποθήκευση"
+
+#: ../data/ui/filediff.ui.h:6
+msgid "Revert unsaved changes to documents?"
+msgstr "Επαναφορά μη αποθηκευμένων αλλαγών στα έγγραφα;"
+
+#: ../data/ui/filediff.ui.h:7
+msgid "Changes made to the following documents will be permanently lost:\n"
+msgstr "Οι αλλαγές που έγιναν στα παρακάτω έγγραφα θα χαθούν μόνιμα:\n"
+
+#: ../data/ui/filediff.ui.h:9
+msgid ""
+"This file can not be written to. You may click here to unlock this file and "
+"make changes anyway, but these changes must be saved to a new file."
+msgstr ""
+"Αυτό το αρχείο δεν μπορεί να γραφτεί. Μπορείτε να πατήσετε εδώ για να "
+"ξεκλειδώσετε αυτό το αρχείο και να κάνετε τις αλλαγές οπωσδήποτε, αλλά αυτές "
+"οι αλλαγές πρέπει να αποθηκευτούν σε ένα νέο αρχείο."
+
+#: ../data/ui/filediff.ui.h:10 ../meld/filediff.py:293
+msgid "Lock scrolling of all panes"
+msgstr "Κλείδωμα κύλισης όλων των παραθύρων"
+
+#: ../data/ui/findbar.ui.h:1
+msgid "_Replace"
+msgstr "_Αντικατάσταση"
+
+#: ../data/ui/findbar.ui.h:2
+msgid "Replace _All"
+msgstr "Αντικατάσταση ό_λων"
+
+#: ../data/ui/findbar.ui.h:3
+#| msgid "Previous Logs"
+msgid "_Previous"
+msgstr "_Προηγούμενο"
+
+#: ../data/ui/findbar.ui.h:4
+msgid "_Next"
+msgstr "_Επόμενο"
+
+#: ../data/ui/findbar.ui.h:5
+#| msgid "Find"
+msgid "Find:"
+msgstr "Εύρεση:"
+
+#: ../data/ui/findbar.ui.h:6
+msgid "Replace _with:"
+msgstr "Αντικατάσταση _με:"
+
+#: ../data/ui/findbar.ui.h:7
+msgid "_Match case"
+msgstr "_Ταίριασμα πεζών/κεφαλαίων"
+
+#: ../data/ui/findbar.ui.h:8
+msgid "Who_le word"
+msgstr "Π_λήρης λέξη"
+
+#: ../data/ui/findbar.ui.h:9
+msgid "Regular e_xpression"
+msgstr "Κανονική έκ_φραση"
+
+#: ../data/ui/findbar.ui.h:10
+msgid "Wrapped"
+msgstr "Αναδιπλωμένο"
+
+#: ../data/ui/meldapp.ui.h:2
+msgid ""
+"Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
+"Copyright &#xA9; 2009-2012 Kai Willadsen"
+msgstr ""
+"Πνευματικά δικαιώματα &#xA9; 2002-2009 Stephen Kennedy\n"
+"Πνευματικά δικαιώματα &#xA9; 2009-2012 Kai Willadsen"
+
+#: ../data/ui/meldapp.ui.h:4
+msgid ""
+"Meld is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 2 of the License, or (at your option) any later "
+"version.\n"
+"\n"
+"Meld is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details. \n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Το Meld είναι ελεύθερο λογισμικό: μπορείτε να το αναδιανείμετε και/ή να το "
+"τροποποιήσετε κάτω από τους όρους της γενικής δημόσιας άδειας GNU όπως "
+"δημοσιεύτηκε από το Ίδρυμα ελεύθερου λογισμικού, είτε έκδοσης 2 της άδειας, "
+"ή (κατ' επιλογή) από οποιαδήποτε μεταγενέστερη έκδοση.\n"
+"\n"
+"Το Meld διανέμεται με την ελπίδα ότι θα είναι χρήσιμο, αλλά ΧΩΡΙΣ ΚΑΜΙΑ "
+"ΕΓΓΥΗΣΗ· χωρίς ακόμα και την υπονοούμενη εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ Η "
+"ΠΡΟΣΑΡΜΟΓΗΣ ΓΙΑ ΕΝΑΝ ΕΙΔΙΚΟ ΣΚΟΠΟ. Δείτε την γενική δημόσια άδεια GNU για "
+"περισσότερες λεπτομέρειες.\n"
+"\n"
+"Θα πρέπει να έχετε λάβει ένα αντίγραφο της γενικής δημόσιας άδειας GNU μαζί "
+"με αυτό το πρόγραμμα. Αν όχι, δείτε <http://www.gnu.org/licenses/>."
+
+#: ../data/ui/meldapp.ui.h:9
+msgid "translator-credits"
+msgstr ""
+"Ελληνική μεταφραστική ομάδα GNOME\n"
+" Δημήτρης Σπίγγος <dmtrs32@gmail.com>\n"
+"Για περισσότερα δείτε: http://gnome.gr"
+
+#: ../data/ui/patch-dialog.ui.h:1
+#| msgid "Create Patch"
+msgid "Format as Patch"
+msgstr "Μορφή ως διόρθωσης"
+
+#: ../data/ui/patch-dialog.ui.h:2
+#| msgid "No differences found."
+msgid "Use differences between:"
+msgstr "Χρήση διαφορών μεταξύ:"
+
+#: ../data/ui/patch-dialog.ui.h:3
+msgid "Left and middle panes"
+msgstr "Αριστερό και μεσαίο παράθυρο"
+
+#: ../data/ui/patch-dialog.ui.h:4
+msgid "Middle and right panes"
+msgstr "Μεσαίο και δεξιό παράθυρο"
+
+#: ../data/ui/patch-dialog.ui.h:5
+msgid "_Reverse patch direction"
+msgstr "_Αντιστροφή κατεύθυνσης μπαλώματος"
+
+#: ../data/ui/patch-dialog.ui.h:6
+msgid "Copy to Clipboard"
+msgstr "Αντιγραφή στο πρόχειρο"
+
+#: ../data/ui/patch-dialog.ui.h:7 ../meld/patchdialog.py:124
+#| msgid "Create Patch"
+msgid "Save Patch"
+msgstr "Αποθήκευση μπαλώματος"
+
+#: ../data/ui/preferences.ui.h:1
+#| msgid "Preferences : Meld"
+msgid "Meld Preferences"
+msgstr "Προτιμήσεις Meld"
+
+#: ../data/ui/preferences.ui.h:2
+msgid "Font"
+msgstr "Γραμματοσειρά"
+
+#: ../data/ui/preferences.ui.h:3
+msgid "_Use the system fixed width font"
+msgstr "_Χρήση της γραμματοσειράς σταθερού πλάτους του συστήματος"
+
+#: ../data/ui/preferences.ui.h:4
+#| msgid "Editor"
+msgid "_Editor font:"
+msgstr "Γραμματοσειρά _επεξεργαστή:"
+
+#: ../data/ui/preferences.ui.h:5
+msgid "Display"
+msgstr "Εμφάνιση"
+
+#: ../data/ui/preferences.ui.h:6
+#| msgid "Tab width"
+msgid "_Tab width:"
+msgstr "Πλάτος _στηλοθέτη:"
+
+#: ../data/ui/preferences.ui.h:7
+msgid "_Insert spaces instead of tabs"
+msgstr "Ε_ισαγωγή κενών αντί για στηλοθέτες"
+
+#: ../data/ui/preferences.ui.h:8
+msgid "Enable text _wrapping"
+msgstr "Ενεργοποίηση ανα_δίπλωσης κειμένου"
+
+#: ../data/ui/preferences.ui.h:9
+msgid "Do not _split words over two lines"
+msgstr "Να μην _χωρίζονται οι λέξεις σε πάνω από δύο γραμμές"
+
+#: ../data/ui/preferences.ui.h:10
+#| msgid "Show line numbers"
+msgid "Show _line numbers"
+msgstr "Εμφάνιση αριθμών _γραμμής"
+
+#: ../data/ui/preferences.ui.h:11
+msgid "Show w_hitespace"
+msgstr "Να εμφανίζεται ο κ_ενός χαρακτήρας"
+
+#: ../data/ui/preferences.ui.h:12
+#| msgid "Use syntax highlighting"
+msgid "Use s_yntax highlighting"
+msgstr "Χρήση επισήμανσης σύ_νταξης"
+
+#: ../data/ui/preferences.ui.h:13
+#| msgid "Internal editor"
+msgid "External Editor"
+msgstr "Εξωτερικός επεξεργαστής"
+
+#: ../data/ui/preferences.ui.h:14
+#| msgid "Gnome default editor"
+msgid "Use _default system editor"
+msgstr "Χρήση _προεπιλεγμένου επεξεργαστή συστήματος"
+
+#: ../data/ui/preferences.ui.h:15
+#| msgid "Custom command"
+msgid "Edito_r command:"
+msgstr "Εντολή ε_πεξεργαστή:"
+
+#: ../data/ui/preferences.ui.h:16
+msgid "Editor"
+msgstr "Επεξεργαστής"
+
+#: ../data/ui/preferences.ui.h:17
+#| msgid "_File Comparison"
+msgid "Shallow Comparison"
+msgstr "Ρηχή σύγκριση"
+
+#: ../data/ui/preferences.ui.h:18
+msgid "C_ompare files based only on size and timestamp"
+msgstr "_Σύγκριση αρχείων με βάση μόνο το μέγεθος και τη σφραγίδα χρόνου"
+
+#: ../data/ui/preferences.ui.h:19
+msgid "_Timestamp resolution:"
+msgstr "Ανάλυση σφραγίδας _χρόνου:"
+
+#: ../data/ui/preferences.ui.h:20
+#| msgid "Ignore symbolic links"
+msgid "Symbolic Links"
+msgstr "Συμβολικοί σύνδεσμοι"
+
+#: ../data/ui/preferences.ui.h:21
+msgid "Ignore symbolic links"
+msgstr "Παράβλεψη συμβολικών δεσμών"
+
+#: ../data/ui/preferences.ui.h:22
+msgid "Visible Columns"
+msgstr "Ορατές Στήλες"
+
+#: ../data/ui/preferences.ui.h:23
+#| msgid "_File Comparison"
+msgid "Folder Comparisons"
+msgstr "Συγκρίσεις φακέλων"
+
+#: ../data/ui/preferences.ui.h:24
+msgid ""
+"When performing directory comparisons, you may filter out files and "
+"directories by name. Each pattern is a list of shell style wildcards "
+"separated by spaces."
+msgstr ""
+"Όταν κάνετε συγκρίσεις καταλόγων, μπορείτε να φιλτράρετε τα αρχεία και τους "
+"καταλόγους κατά όνομα. Κάθε μοτίβο είναι μία λίστα από σύμβολα υποκατάστασης "
+"τεχνοτροπίας κελύφους που χωρίζονται με διαστήματα."
+
+#: ../data/ui/preferences.ui.h:25 ../meld/meldwindow.py:122
+msgid "File Filters"
+msgstr "Φίλτρα αρχείων"
+
+#: ../data/ui/preferences.ui.h:26
+msgid ""
+"When performing file comparisons, you may ignore certain types of changes. "
+"Each pattern here is a python regular expression which replaces matching "
+"text with the empty string before comparison is performed. If the expression "
+"contains groups, only the groups are replaced. See the user manual for more "
+"details."
+msgstr ""
+"Όταν κάνετε συγκρίσεις αρχείων, μπορείτε να αγνοήσετε συγκεκριμένους τύπους "
+"αλλαγών. Κάθε μοτίβο εδώ είναι μία κανονική έκφραση python που αντικαθιστά "
+"κείμενο που ταιριάζει με τη κενή συμβολοσειρά πριν γίνει η σύγκριση. Αν η "
+"έκφραση περιλαμβάνει ομάδες, αντικαθίστανται μόνο οι ομάδες. Για "
+"περισσότερες λεπτομέρειες δείτε το εγχειρίδιο χρήστη."
+
+#: ../data/ui/preferences.ui.h:27
+msgid "Ignore changes which insert or delete blank lines"
+msgstr "Παράβλεψη αλλαγών που εισάγουν ή διαγράφουν κενές γραμμές"
+
+#: ../data/ui/preferences.ui.h:28
+msgid "Text Filters"
+msgstr "Φίλτρα κειμένων"
+
+#: ../data/ui/preferences.ui.h:29
+#| msgid "<b>Loading</b>"
+msgid "Loading"
+msgstr "Γίνεται φόρτωση"
+
+#: ../data/ui/preferences.ui.h:30
+msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+msgstr ""
+"Κατά την φόρτωση, δοκιμάστε αυτούς τους κωδικοποιητές-αποκωδικοποιητές σε "
+"σειρά. (π.χ. utf8, iso8859)"
+
+#: ../data/ui/preferences.ui.h:31
+msgid "Encoding"
+msgstr "Κωδικοποίηση"
+
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:668
+#| msgid "_File Comparison"
+msgid "New comparison"
+msgstr "Νέα σύγκριση"
+
+#: ../data/ui/tab-placeholder.ui.h:2
+#| msgid "_File Comparison"
+msgid "File comparison"
+msgstr "Σύγκριση αρχείων"
+
+#: ../data/ui/tab-placeholder.ui.h:3
+#| msgid "_Directory Comparison"
+msgid "Directory comparison"
+msgstr "Σύγκριση κατάλόγων"
+
+#: ../data/ui/tab-placeholder.ui.h:4
+msgid "Version control view"
+msgstr "Προβολή ελέγχου εκδόσεων"
+
+#: ../data/ui/tab-placeholder.ui.h:5
+#| msgid "_File Comparison"
+msgid "_3-way comparison"
+msgstr "_3πλή σύγκριση"
+
+#: ../data/ui/tab-placeholder.ui.h:6
+msgid "Select Third File"
+msgstr "Επιλογή τρίτου αρχείου"
+
+#: ../data/ui/tab-placeholder.ui.h:7
+msgid "Select Second File"
+msgstr "Επιλογή δεύτερου αρχείου"
+
+#: ../data/ui/tab-placeholder.ui.h:8
+msgid "Select First File"
+msgstr "Επιλογή πρώτου αρχείου"
+
+#: ../data/ui/tab-placeholder.ui.h:9
+msgid "Select First Folder"
+msgstr "Επιλογή πρώτου φακέλου"
+
+#: ../data/ui/tab-placeholder.ui.h:10
+msgid "Select Second Folder"
+msgstr "Επιλογή δεύτερου φακέλου"
+
+#: ../data/ui/tab-placeholder.ui.h:11
+msgid "Select Third Folder"
+msgstr "Επιλογή τρίτου φακέλου"
+
+#: ../data/ui/tab-placeholder.ui.h:12
+#| msgid "_Version Control Browser"
+msgid "Select A Version-Controlled Folder"
+msgstr "Επιλογή φακέλου με ελεγχόμενη έκδοση"
+
+#: ../data/ui/tab-placeholder.ui.h:13
+#| msgid "_File Comparison"
+msgid "_Blank comparison"
+msgstr "Σύγκριση _κενών"
+
+#: ../data/ui/tab-placeholder.ui.h:14
+#| msgid "Compare"
+msgid "C_ompare"
+msgstr "_Σύγκριση"
+
+#: ../data/ui/vcview.ui.h:1
+msgid "Commit"
+msgstr "Καταχώρηση"
+
+#: ../data/ui/vcview.ui.h:2
+msgid "Commit Files"
+msgstr "Καταχώρηση αρχείων"
+
+#: ../data/ui/vcview.ui.h:3
+msgid "Log Message"
+msgstr "Μήνυμα καταγραφής"
+
+#: ../data/ui/vcview.ui.h:4
+#| msgid "Previous Logs"
+msgid "Previous logs:"
+msgstr "Προηγούμενες καταγραφές:"
+
+#: ../data/ui/vcview.ui.h:5
+#| msgid "Commit"
+msgid "Co_mmit"
+msgstr "_Καταχώριση"
+
+#: ../data/ui/vcview.ui.h:6
+msgid "Push local commits to remote?"
+msgstr "Προώθηση τοπικών υποβολών σε απομακρυσμένο;"
+
+#: ../data/ui/vcview.ui.h:7
+msgid "The commits to be pushed are determined by your version control system."
+msgstr ""
+"Οι υποβολές που πρόκειται να προωθηθούν προσδιορίζονται από το σύστημα "
+"ελέγχου εκδόσεων."
+
+#: ../data/ui/vcview.ui.h:8
+#| msgid "_Commit"
+msgid "_Push commits"
+msgstr "_Προώθηση υποβολών"
+
+#: ../meld/dirdiff.py:269 ../meld/vcview.py:238
+msgid "_Compare"
+msgstr "_Σύγκριση"
+
+#: ../meld/dirdiff.py:269
+msgid "Compare selected"
+msgstr "Σύγκριση επιλεγμένου"
+
+#: ../meld/dirdiff.py:270
+#| msgid "Copy To Left"
+msgid "Copy _Left"
+msgstr "Αντιγραφή _αριστερά"
+
+#: ../meld/dirdiff.py:270
+#| msgid "Copy To Left"
+msgid "Copy to left"
+msgstr "Αντιγραφή προς τα αριστερά"
+
+#: ../meld/dirdiff.py:271
+#| msgid "Copy To Right"
+msgid "Copy _Right"
+msgstr "Αντιγραφή _δεξιά"
+
+#: ../meld/dirdiff.py:271
+#| msgid "Copy To Right"
+msgid "Copy to right"
+msgstr "Αντιγραφή προς τα δεξιά"
+
+#: ../meld/dirdiff.py:272
+msgid "Delete selected"
+msgstr "Διαγραφή επιλεγμένου"
+
+#: ../meld/dirdiff.py:273 ../meld/filediff.py:1346 ../meld/filediff.py:1381
+#| msgid "Hide %s"
+msgid "Hide"
+msgstr "Απόκρυψη"
+
+#: ../meld/dirdiff.py:273
+msgid "Hide selected"
+msgstr "Απόκρυψη επιλεγμένου"
+
+#: ../meld/dirdiff.py:277
+msgid "Ignore Filename Case"
+msgstr "Παράβλεψη πεζών-κεφαλαίων ονόματος αρχείου"
+
+#: ../meld/dirdiff.py:277
+msgid ""
+"Consider differently-cased filenames that are otherwise-identical to be the "
+"same"
+msgstr ""
+"Να εξετάσετε αν ονόματα αρχείων με διαφορετικά πεζά-κεφαλαία που είναι κατά "
+"τα άλλα ταυτόσημα αν είναι τα ίδια"
+
+#: ../meld/dirdiff.py:278
+msgid "Same"
+msgstr "Ίδιο"
+
+#: ../meld/dirdiff.py:278
+msgid "Show identical"
+msgstr "Εμφάνιση ταυτόσημου"
+
+#: ../meld/dirdiff.py:279
+msgid "New"
+msgstr "Νέο"
+
+#: ../meld/dirdiff.py:279
+msgid "Show new"
+msgstr "Εμφάνιση νέου"
+
+#: ../meld/dirdiff.py:280
+msgid "Modified"
+msgstr "Τροποποιήθηκε"
+
+#: ../meld/dirdiff.py:280
+msgid "Show modified"
+msgstr "Εμφάνιση τροποποιημένου"
+
+#: ../meld/dirdiff.py:282
+#| msgid "File Filters"
+msgid "Filters"
+msgstr "Φίλτρα"
+
+#: ../meld/dirdiff.py:282
+#| msgid "File Filters"
+msgid "Set active filters"
+msgstr "Ορισμός ενεργών φίλτρων"
+
+#. Create file size CellRenderer
+#: ../meld/dirdiff.py:360
+msgid "Size"
+msgstr "Μέγεθος"
+
+#. Create date-time CellRenderer
+#: ../meld/dirdiff.py:368
+msgid "Modification time"
+msgstr "Χρόνος τροποποίησης"
+
+#. Create permissions CellRenderer
+#: ../meld/dirdiff.py:376
+msgid "Permissions"
+msgstr "Δικαιώματα"
+
+#: ../meld/dirdiff.py:510
 #, python-format
 msgid "Hide %s"
 msgstr "Απόκρυψη %s"
 
-#: ../dirdiff.py:364
-#: ../dirdiff.py:373
-#: ../vcview.py:213
-#: ../vcview.py:241
+#: ../meld/dirdiff.py:636 ../meld/dirdiff.py:655 ../meld/vcview.py:501
+#: ../meld/vcview.py:525
 #, python-format
 msgid "[%s] Scanning %s"
-msgstr "%s Αναζήτηση %s"
+msgstr "[%s] Αναζήτηση %s"
 
-#: ../dirdiff.py:406
-#, python-format
-msgid "'%s' hidden by '%s'"
-msgstr "'%s' κρυφό από '%s'"
-
-#: ../dirdiff.py:412
-#, python-format
-msgid ""
-"You are running a case insensitive comparison on a case sensitive filesystem. Some files are not visible:\n"
-"%s"
-msgstr ""
-"Τρέχετε μία σύγκριση με διάκριση πεζών-κεφαλαίων σε ένα σύστημα αρχείων που κάνει διάκριση πεζών-κεφαλαίων. Κάποια αρχεία δεν είναι ορατά:\n"
-"%s"
-
-#: ../dirdiff.py:482
+#: ../meld/dirdiff.py:755
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Έγινε"
 
-#: ../dirdiff.py:528
+#: ../meld/dirdiff.py:761
+msgid "Multiple errors occurred while scanning this folder"
+msgstr "Πολλαπλά σφάλματα προέκυψαν κατά τη σάρωση αυτού του φακέλου"
+
+#: ../meld/dirdiff.py:762
+msgid "Files with invalid encodings found"
+msgstr "Βρέθηκαν αρχεία με άκυρη κωδικοποίηση"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:764
+msgid "Some files were in an incorrect encoding. The names are something like:"
+msgstr ""
+"Μερικά αρχεία ήταν με εσφαλμένη κωδικοποίηση. Τα ονόματα είναι κάτι όπως:"
+
+#: ../meld/dirdiff.py:766
+msgid "Files hidden by case insensitive comparison"
+msgstr "Κρυφά αρχεία με σύγκριση ανεξάρτητη των πεζών/κεφαλαίων"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:768
+#| msgid ""
+#| "You are running a case insensitive comparison on a case sensitive "
+#| "filesystem. Some files are not visible:\n"
+#| "%s"
+msgid ""
+"You are running a case insensitive comparison on a case sensitive "
+"filesystem. The following files in this folder are hidden:"
+msgstr ""
+"Εκτελείτε μία σύγκριση ανεξάρτητα από πεζά-κεφαλαία σε ένα σύστημα αρχείων "
+"που κάνει διάκριση πεζών-κεφαλαίων. Τα παρακάτω αρχεία σε αυτόν τον φάκελο "
+"είναι κρυφά:"
+
+#: ../meld/dirdiff.py:779
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "Το '%s' κρύβεται από το '%s'"
+
+#: ../meld/dirdiff.py:804 ../meld/filediff.py:1074 ../meld/filediff.py:1350
+#: ../meld/filediff.py:1383 ../meld/vcview.py:826 ../meld/vcview.py:868
+msgid "Hi_de"
+msgstr "Από_κρυψη"
+
+#: ../meld/dirdiff.py:836
 #, python-format
 msgid ""
 "'%s' exists.\n"
 "Overwrite?"
 msgstr ""
-"'%s' υπάρχει.\n"
+"Το '%s' υπάρχει.\n"
 "Να επικαλυφθεί;"
 
-#: ../dirdiff.py:535
+#: ../meld/dirdiff.py:843
 #, python-format
 msgid ""
 "Error copying '%s' to '%s'\n"
 "\n"
 "%s."
 msgstr ""
-"Σφάλμα αντιγραφής '%s' στο '%s'\n"
+"Σφάλμα κατά την αντιγραφή του '%s' στο '%s'\n"
 "\n"
 "%s."
 
-#: ../dirdiff.py:553
-#: ../vcview.py:405
+#: ../meld/dirdiff.py:861 ../meld/vcview.py:800
 #, python-format
+#| msgid ""
+#| "'%s' is a directory.\n"
+#| "Remove recusively?"
 msgid ""
 "'%s' is a directory.\n"
-"Remove recusively?"
+"Remove recursively?"
 msgstr ""
 "Το %s είναι κατάλογος.\n"
 "Να σβηστεί αναδρομικά;"
 
-#: ../dirdiff.py:560
-#: ../vcview.py:410
+#: ../meld/dirdiff.py:868 ../meld/vcview.py:805
 #, python-format
 msgid ""
 "Error removing %s\n"
 "\n"
 "%s."
 msgstr ""
-"Σφάλμα απομάκρυνσης %s\n"
+"Σφάλμα κατά την απομάκρυνση %s\n"
 "\n"
 "%s."
 
-#: ../dirdiff.py:571
+#: ../meld/dirdiff.py:999
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i δευτερόλεπτο"
 msgstr[1] "%i δευτερόλεπτα"
 
-#: ../dirdiff.py:572
+#: ../meld/dirdiff.py:1000
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i λεπτό"
-msgstr[1] " %i λεπτά"
+msgstr[1] "%i λεπτά"
 
-#: ../dirdiff.py:573
+#: ../meld/dirdiff.py:1001
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i ώρα"
 msgstr[1] "%i ώρες"
 
-#: ../dirdiff.py:574
+#: ../meld/dirdiff.py:1002
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i ημέρα"
 msgstr[1] "%i ημέρες"
 
-#: ../dirdiff.py:575
+#: ../meld/dirdiff.py:1003
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i εβδομάδα"
 msgstr[1] "%i εβδομάδες"
 
-#: ../dirdiff.py:576
+#: ../meld/dirdiff.py:1004
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i μήνας"
 msgstr[1] "%i μήνες"
 
-#: ../dirdiff.py:577
+#: ../meld/dirdiff.py:1005
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
 msgstr[0] "%i έτος"
 msgstr[1] "%i έτη"
 
-#. Abbreviation for insert,overwrite so that it will fit in the status bar
-#: ../filediff.py:200
-msgid "INS,OVR"
-msgstr "INS,OVR"
+#: ../meld/filediff.py:221
+#| msgid "Create Patch"
+msgid "Format as Patch..."
+msgstr "Μορφοποίηση ως μπάλωμα..."
+
+#: ../meld/filediff.py:222
+msgid "Create a patch using differences between files"
+msgstr "Δημιουργία μπαλώματος χρησιμοποιώντας διαφορές μεταξύ αρχείων"
+
+#: ../meld/filediff.py:224
+#| msgid "Save _As"
+msgid "Save A_ll"
+msgstr "Αποθήκευση ό_λων"
+
+#: ../meld/filediff.py:225
+msgid "Save all files in the current comparison"
+msgstr "Αποθήκευση όλων των αρχείων στην τρέχουσα σύγκριση"
+
+#: ../meld/filediff.py:228
+msgid "Revert files to their saved versions"
+msgstr "Επαναφορά αρχείων στις αποθηκευμένες εκδόσεις τους"
+
+#: ../meld/filediff.py:230
+msgid "Add Synchronization Point"
+msgstr "Προσθήκη σημείου συγχρονισμού"
+
+#: ../meld/filediff.py:231
+msgid "Add a manual point for synchronization of changes between files"
+msgstr "Προσθέστε χειροκίνητο σημείο για συγχρονισμό των αλλαγών μεταξύ αρχείων"
+
+#: ../meld/filediff.py:234
+msgid "Clear Synchronization Points"
+msgstr "Καθαρισμός σημείων συγχρονισμού"
+
+#: ../meld/filediff.py:235
+msgid "Clear manual change sychronization points"
+msgstr "Καθαρίστε τις χειροκίνητες αλλαγές των σημείων συγχρονισμού"
+
+#: ../meld/filediff.py:237
+#| msgid "Previous Logs"
+msgid "Previous Conflict"
+msgstr "Προηγούμενη διένεξη"
+
+#: ../meld/filediff.py:238
+msgid "Go to the previous conflict"
+msgstr "Μετάβαση στην προηγούμενη διένεξη"
+
+#: ../meld/filediff.py:240
+msgid "Next Conflict"
+msgstr "Επόμενη διένεξη"
+
+#: ../meld/filediff.py:241
+msgid "Go to the next conflict"
+msgstr "Μετάβαση στην επόμενη διένεξη"
+
+#: ../meld/filediff.py:243
+msgid "Push to Left"
+msgstr "Προώθηση στα αριστερά"
+
+#: ../meld/filediff.py:244
+msgid "Push current change to the left"
+msgstr "Προώθηση τρέχουσας αλλαγής στα αριστερά"
+
+#: ../meld/filediff.py:247
+#| msgid "Copy To Right"
+msgid "Push to Right"
+msgstr "Προώθηση προς τα δεξιά"
+
+#: ../meld/filediff.py:248
+msgid "Push current change to the right"
+msgstr "Προώθηση τρέχουσας αλλαγής στα δεξιά"
+
+#: ../meld/filediff.py:252
+msgid "Pull from Left"
+msgstr "Ανάκτηση από τα αριστερά"
+
+#: ../meld/filediff.py:253
+msgid "Pull change from the left"
+msgstr "Ανάκτηση αλλαγής από τα αριστερά"
+
+#: ../meld/filediff.py:256
+#| msgid "Copy All To _Right"
+msgid "Pull from Right"
+msgstr "Ανάκτηση από τα δεξιά"
+
+#: ../meld/filediff.py:257
+msgid "Pull change from the right"
+msgstr "Ανάκτηση αλλαγής από τα δεξιά"
+
+#: ../meld/filediff.py:259
+#| msgid "Copy To Left"
+msgid "Copy Above Left"
+msgstr "Αντιγραφή πάνω από τα αριστερά"
+
+#: ../meld/filediff.py:260
+msgid "Copy change above the left chunk"
+msgstr "Αντιγραφή αλλαγής πάνω από το αριστερό τμήμα"
+
+#: ../meld/filediff.py:262
+#| msgid "Copy To Left"
+msgid "Copy Below Left"
+msgstr "Αντιγραφή κάτω από τα αριστερά"
+
+#: ../meld/filediff.py:263
+msgid "Copy change below the left chunk"
+msgstr "Αντιγραφή αλλαγής κάτω από το αριστερό τμήμα"
+
+#: ../meld/filediff.py:265
+#| msgid "Copy To Right"
+msgid "Copy Above Right"
+msgstr "Αντιγραφή πάνω από τα δεξιά"
+
+#: ../meld/filediff.py:266
+msgid "Copy change above the right chunk"
+msgstr "Αντιγραφή αλλαγής πάνω από το δεξιό τμήμα"
+
+#: ../meld/filediff.py:268
+#| msgid "Copy To Right"
+msgid "Copy Below Right"
+msgstr "Αντιγραφή κάτω από τα δεξιά"
+
+#: ../meld/filediff.py:269
+msgid "Copy change below the right chunk"
+msgstr "Αντιγραφή αλλαγής κάτω από το δεξιό τμήμα"
+
+#: ../meld/filediff.py:271
+#| msgid "Delete locally"
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: ../meld/filediff.py:272
+#| msgid "Delete locally"
+msgid "Delete change"
+msgstr "Διαγραφή αλλαγής"
+
+#: ../meld/filediff.py:274
+#| msgid "Copy All To _Left"
+msgid "Merge All from Left"
+msgstr "Συγχώνευση όλων από τα αριστερά"
+
+#: ../meld/filediff.py:275
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Συγχωνεύστε όλες τις μη συγκρουόμενες αλλαγές από τα αριστερά"
+
+#: ../meld/filediff.py:277
+#| msgid "Copy All To _Right"
+msgid "Merge All from Right"
+msgstr "Συγχώνευση όλων από τα δεξιά"
+
+#: ../meld/filediff.py:278
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Συγχωνεύστε όλες τις μη συγκρουόμενες αλλαγές από τα δεξιά"
+
+#: ../meld/filediff.py:280
+msgid "Merge All"
+msgstr "Συγχώνευση όλων"
+
+#: ../meld/filediff.py:281
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr ""
+"Συγχωνεύστε όλες τις μη συγκρουόμενες αλλαγές από το αριστερό και δεξιό "
+"παράθυρο"
+
+#: ../meld/filediff.py:285
+msgid "Cycle Through Documents"
+msgstr "Περιήγηση μέσα από τα έγγραφα"
+
+#: ../meld/filediff.py:286
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr ""
+"Μετακίνηση της εστίασης πληκτρολογίου στο επόμενο έγγραφο σε αυτήν τη "
+"σύγκριση"
+
+#: ../meld/filediff.py:292
+msgid "Lock Scrolling"
+msgstr "Κλείδωμα κύλισης"
+
+#. Abbreviations for insert and overwrite that fit in the status bar
+#: ../meld/filediff.py:413
+#| msgid "INS,OVR"
+msgid "INS"
+msgstr "INS"
+
+#: ../meld/filediff.py:413
+#| msgid "INS,OVR"
+msgid "OVR"
+msgstr "OVR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../filediff.py:202
+#: ../meld/filediff.py:415
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Γραμμή %i, Στήλη %i"
 
-#: ../filediff.py:260
+#: ../meld/filediff.py:748
 #, python-format
-msgid "Regular expression '%s' changed the number of lines in the file. Comparison will be incorrect. See the user manual for more details."
-msgstr "Κανονική έκφραση '%s' άλλαξε τον αριθμό γραμμών στο αρχείο. Η σύγκριση θα είναι λάθος. Βλέπετε το εγχειρίδιο χρήσης  για περισσότερες λεπτομέρειες."
-
-#: ../filediff.py:508
-#, python-format
+#| msgid ""
+#| "Regular expression '%s' changed the number of lines in the file. "
+#| "Comparison will be incorrect. See the user manual for more details."
 msgid ""
-"Regular expression error\n"
-"'%s'"
+"Filter '%s' changed the number of lines in the file. Comparison will be "
+"incorrect. See the user manual for more details."
 msgstr ""
-"Λάθος κανονικής έκφρασης\n"
-"'%s'"
+"Το φίλτρο '%s' άλλαξε τον αριθμό γραμμών στο αρχείο. Η σύγκριση θα είναι "
+"εσφαλμένη. Δείτε το εγχειρίδιο χρήσης για περισσότερες λεπτομέρειες."
 
-#: ../filediff.py:520
-#, python-format
-msgid "The regular expression '%s' was not found."
-msgstr "Η κανονική έκφραση '%s' δεν βρέθηκε."
-
-#: ../filediff.py:522
-#, python-format
-msgid "The text '%s' was not found."
-msgstr "Το κείμενο '%s' δεν βρέθηκε."
-
-#: ../filediff.py:574
+#: ../meld/filediff.py:1062
 #, python-format
 msgid "[%s] Set num panes"
-msgstr ""
+msgstr "[%s] Ορισμός παραθύρων αριθμών"
 
-#: ../filediff.py:581
+#: ../meld/filediff.py:1068
 #, python-format
 msgid "[%s] Opening files"
-msgstr "[%s] άνοιγμα αρχείων"
+msgstr "[%s] Άνοιγμα αρχείων"
 
-#: ../filediff.py:598
-#: ../filediff.py:612
-#: ../filediff.py:628
-#: ../filediff.py:635
-#, python-format
-msgid "Could not read from '%s'"
-msgstr "Δεν μπορεί να γίνει ανάγνωση από '%s'"
+#: ../meld/filediff.py:1092 ../meld/filediff.py:1102 ../meld/filediff.py:1115
+#: ../meld/filediff.py:1121
+#| msgid "Could not read from '%s'"
+msgid "Could not read file"
+msgstr "Αδύνατη η ανάγνωση αρχείου"
 
-#: ../filediff.py:599
-#: ../filediff.py:636
-msgid "The error was:"
-msgstr "Το λάθος ήταν:"
-
-#: ../filediff.py:604
+#: ../meld/filediff.py:1093
 #, python-format
 msgid "[%s] Reading files"
-msgstr "[%s] διάβασμα αρχείων"
+msgstr "[%s] Ανάγνωση αρχείων"
 
-#: ../filediff.py:613
-msgid ""
-"It contains ascii nulls.\n"
-"Perhaps it is a binary file."
-msgstr ""
-"Περιέχει μηδενικά ascii.\n"
-"Ίσως είναι δυαδικό αρχείο."
-
-#: ../filediff.py:629
+#: ../meld/filediff.py:1103
 #, python-format
-msgid "I tried encodings %s."
-msgstr "Έγινε προσπάθεια για κωδικοποιήσεις %s."
+msgid "%s appears to be a binary file."
+msgstr "το %s φαίνεται να είναι δυαδικό αρχείο."
 
-#: ../filediff.py:658
+#: ../meld/filediff.py:1116
+#, python-format
+#| msgid "I tried encodings %s."
+msgid "%s is not in encodings: %s"
+msgstr "το %s δεν είναι στις κωδικοποιήσεις: %s"
+
+#: ../meld/filediff.py:1150
 #, python-format
 msgid "[%s] Computing differences"
-msgstr "[%s] υπολογισμός διαφορών"
+msgstr "[%s] Υπολογισμός διαφορών"
 
-#: ../filediff.py:763
+#: ../meld/filediff.py:1337
+msgid ""
+"Text filters are being used, and may be masking differences between files. "
+"Would you like to compare the unfiltered files?"
+msgstr ""
+"Χρησιμοποιούνται φίλτρα κειμένου και μπορεί να καλύπτουν διαφορές μεταξύ "
+"αρχείων. Θα θέλατε να συγκρίνετε τα αφιλτράριστα αρχεία;"
+
+#: ../meld/filediff.py:1343
+#| msgid "Show identical"
+msgid "Files are identical"
+msgstr "Τα αρχεία είναι ταυτόσημα"
+
+#: ../meld/filediff.py:1353
+#| msgid "Show ignored files"
+msgid "Show without filters"
+msgstr "Εμφάνιση χωρίς φίλτρα"
+
+#: ../meld/filediff.py:1375
+msgid "Change highlighting incomplete"
+msgstr "Ατελής αλλαγή επισήμανσης"
+
+#: ../meld/filediff.py:1376
+msgid ""
+"Some changes were not highlighted because they were too large. You can force "
+"Meld to take longer to highlight larger changes, though this may be slow."
+msgstr ""
+"Μερικές αλλαγές δεν επισημάνθηκαν επειδή ήταν υπερβολικά μεγάλες. Μπορείτε "
+"να εξαναγκάσετε το Meld να δώσει περισσότερο χρόνο για να επισημάνει "
+"μεγαλύτερες αλλαγές, αν και αυτό μπορεί να είναι αργό."
+
+#: ../meld/filediff.py:1385
+#| msgid "Use syntax highlighting"
+msgid "Keep highlighting"
+msgstr "Διατήρηση επισήμανσης"
+
+#: ../meld/filediff.py:1387
+#| msgid "Use syntax highlighting"
+msgid "_Keep highlighting"
+msgstr "_Διατήρηση επισήμανσης"
+
+#: ../meld/filediff.py:1513
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -236,923 +1063,789 @@ msgstr ""
 "Το \"%s\" υπάρχει!\n"
 "Να αντικατασταθεί;"
 
-#: ../filediff.py:776
+#: ../meld/filediff.py:1526
 #, python-format
 msgid ""
 "Error writing to %s\n"
 "\n"
 "%s."
 msgstr ""
-"Σφάλμα γραφής στο %s\n"
+"Σφάλμα κατά την εγγραφή στο %s\n"
 "\n"
 "%s."
 
-#: ../filediff.py:785
-#, python-format
-msgid "Choose a name for buffer %i."
-msgstr "Επιλογή ονόματος για ενδιάμεση μνήμη %i"
+#: ../meld/filediff.py:1537
+msgid "Save Left Pane As"
+msgstr "Αποθήκευση του αριστερού παραθύρου ως"
 
-#: ../filediff.py:798
+#: ../meld/filediff.py:1539
+msgid "Save Middle Pane As"
+msgstr "Αποθήκευση του μεσαίου παραθύρου ως"
+
+#: ../meld/filediff.py:1541
+msgid "Save Right Pane As"
+msgstr "Αποθήκευση του δεξιού παραθύρου ως"
+
+#: ../meld/filediff.py:1562
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
 "\n"
 "Which format would you like to use?"
 msgstr ""
-"Το αρχείο '%s' περιέχει ένα μείγμα από τέλη γραμμών.\n"
+"Το αρχείο '%s' περιέχει ένα μείγμα από πέρατα γραμμών.\n"
 "\n"
-"Ποιά μορφή να χρησιμοποιηθεί;"
+"Ποια μορφή θα θέλατε να χρησιμοποιηθεί;"
 
-#: ../filediff.py:814
+#: ../meld/filediff.py:1578
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
 "Would you like to save as UTF-8?"
 msgstr ""
-"'%s' περιέχει χαρακτήρες που δεν κωδικοποιούνται με '%s'\n"
+"Το '%s' περιέχει χαρακτήρες που δεν κωδικοποιούνται με '%s'\n"
 "Να αποθηκευθεί ως UTF-8;"
 
-#. save as
-#: ../filediff.py:865
-msgid "Save patch as..."
-msgstr "Αποθήκευση επιδιoρθωτικού πακέτου ως...."
-
-#: ../filediff.py:919
+#: ../meld/filemerge.py:51
 #, python-format
-msgid ""
-"Reloading will discard changes in:\n"
-"%s\n"
-"\n"
-"You cannot undo this operation."
+#| msgid "[%s] Opening files"
+msgid "[%s] Merging files"
+msgstr "[%s] Συγχώνευση αρχείων"
+
+#: ../meld/meldapp.py:95
+#| msgid "Wrong number of arguments (Got %i)"
+msgid "wrong number of arguments supplied to --diff"
+msgstr "λανθασμένος αριθμός από ορίσματα δόθηκαν στο --diff"
+
+#: ../meld/meldapp.py:99
+msgid "Start with an empty window"
+msgstr "Έναρξη με κενό παράθυρο"
+
+#: ../meld/meldapp.py:100 ../meld/meldapp.py:102 ../meld/meldapp.py:106
+msgid "file"
+msgstr "αρχείο"
+
+#: ../meld/meldapp.py:100 ../meld/meldapp.py:104 ../meld/meldapp.py:106
+#| msgid "Editor"
+msgid "dir"
+msgstr "κατάλογος"
+
+#: ../meld/meldapp.py:101
+msgid "Start a version control comparison"
+msgstr "Έναρξη σύγκρισης ελέγχου εκδόσεων"
+
+#: ../meld/meldapp.py:103
+msgid "Start a 2- or 3-way file comparison"
+msgstr "Έναρξη μιας 2- ή 3-πλής σύγκρισης αρχείων"
+
+#: ../meld/meldapp.py:105
+msgid "Start a 2- or 3-way directory comparison"
+msgstr "Έναρξη μιας 2- ή 3-πλής σύγκρισης καταλόγων"
+
+#: ../meld/meldapp.py:107
+msgid "Start a comparison between file and dir/file"
+msgstr "Έναρξη μιας σύγκρισης μεταξύ αρχείου και καταλόγου/αρχείου"
+
+#: ../meld/meldapp.py:114
+msgid "Meld is a file and directory comparison tool."
+msgstr "Το Meld είναι ένα εργαλείο σύγκρισης αρχείων και καταλόγων."
+
+#: ../meld/meldapp.py:117
+msgid "Set label to use instead of file name"
+msgstr "Ορισμός ετικέτας για να χρησιμοποιηθεί αντί για όνομα αρχείου"
+
+#: ../meld/meldapp.py:119
+msgid "Open a new tab in an already running instance"
+msgstr "Ανοίξτε μια νέα καρτέλα σε ένα ήδη εκτελούμενο στιγμιότυπο"
+
+#: ../meld/meldapp.py:122
+msgid "Automatically compare all differing files on startup"
+msgstr "Αυτόματη σύγκριση όλων των αρχείων διαφοροποίησης στην εκκίνηση"
+
+#: ../meld/meldapp.py:124
+msgid "Ignored for compatibility"
+msgstr "Αγνοημένο για συμβατότητα"
+
+#: ../meld/meldapp.py:127
+msgid "Set the target file for saving a merge result"
 msgstr ""
-"Επαναφόρτωση θα προκαλέσει απόρριψη αλλαγών στο:\n"
-"%s\n"
-"\n"
-".Η διαδικασία αυτή δεν μπορεί να αναιρεθεί."
-
-#: ../glade2/dirdiff.glade.h:1
-msgid "Case"
-msgstr "Πεζά/κεφαλαία"
-
-#: ../glade2/dirdiff.glade.h:2
-msgid "Compare"
-msgstr "Σύγκριση"
-
-#: ../glade2/dirdiff.glade.h:3
-#: ../glade2/vcview.glade.h:6
-msgid "Compare selected"
-msgstr "Σύγκριση επιλεγμένου"
-
-#: ../glade2/dirdiff.glade.h:4
-msgid "Copy To Left"
-msgstr "Αντιγραφή προς αριστερά"
-
-#: ../glade2/dirdiff.glade.h:5
-msgid "Copy To Right"
-msgstr "Αντιγραφή προς δεξιά"
-
-#: ../glade2/dirdiff.glade.h:6
-msgid "Delete selected"
-msgstr "Διαγραφή επιλεγμένου"
-
-#: ../glade2/dirdiff.glade.h:7
-#: ../glade2/filediff.glade.h:7
-msgid "Edit"
-msgstr "Επεξεργασία"
-
-#: ../glade2/dirdiff.glade.h:8
-msgid "Hide selected"
-msgstr "Απόκρυψη επιλεγμένου"
-
-#: ../glade2/dirdiff.glade.h:9
-msgid "Hide..."
-msgstr "Απόκρυψη..."
-
-#: ../glade2/dirdiff.glade.h:10
-msgid "Ignore case of entries"
-msgstr "Αγνόηση πεζά-κεφαλαία των καταχωρήσεων"
-
-#: ../glade2/dirdiff.glade.h:11
-msgid "Left"
-msgstr "Αριστερά"
-
-#: ../glade2/dirdiff.glade.h:12
-msgid "Modified"
-msgstr "Τροποποιήθηκε"
-
-#: ../glade2/dirdiff.glade.h:13
-msgid "New"
-msgstr "Νέο"
-
-#: ../glade2/dirdiff.glade.h:14
-msgid "Right"
-msgstr "Δεξιά"
-
-#: ../glade2/dirdiff.glade.h:15
-msgid "Same"
-msgstr "Ίδιο"
-
-#: ../glade2/dirdiff.glade.h:16
-msgid "Show identical"
-msgstr "Εμφάνιση πανομοιότυπου"
-
-#: ../glade2/dirdiff.glade.h:17
-#: ../glade2/vcview.glade.h:20
-msgid "Show modified"
-msgstr "Εμφάνιση τροποποιημένου"
-
-#: ../glade2/dirdiff.glade.h:18
-msgid "Show new"
-msgstr "Εμφάνιση νέου"
-
-#: ../glade2/dirdiff.glade.h:19
-#: ../glade2/meldapp.glade.h:89
-#: ../glade2/vcview.glade.h:28
-msgid "_Compare"
-msgstr "_Σύγκριση"
-
-#: ../glade2/dirdiff.glade.h:20
-msgid "_Delete Selected"
-msgstr "_Διαγραφή επιλεγμένου"
-
-#: ../glade2/filediff.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
-"Which ones would you like to save?</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\"> Κάποια αρχεία έχουν τροποποιηθεί.\n"
-"Ποιά να αποθηκευθούν;</span>"
-
-#: ../glade2/filediff.glade.h:3
-msgid "Copy All To _Left"
-msgstr "Αντιγραφή όλα προς αρι_στερά"
-
-#: ../glade2/filediff.glade.h:4
-msgid "Copy All To _Right"
-msgstr "Αντιγραφή όλα προς _δεξιά"
-
-#: ../glade2/filediff.glade.h:5
-msgid "Copy to Clipboard"
-msgstr "Αντιγραφή στο πρόχειρο"
-
-#: ../glade2/filediff.glade.h:6
-msgid "Create Patch"
-msgstr "Δημιουργία επιδιορθωτικού πακέτου"
-
-#: ../glade2/filediff.glade.h:8
-msgid "Find"
-msgstr "Εύρεση"
-
-#: ../glade2/filediff.glade.h:9
-msgid "Match _entire word only"
-msgstr "Ταίριασμα μόνο ολό_κληρης λέξης"
-
-#: ../glade2/filediff.glade.h:10
-msgid "Regular e_xpression"
-msgstr "Κανονική έκ_φραση"
-
-#: ../glade2/filediff.glade.h:11
-msgid "Save modified files?"
-msgstr "Αποθήκευση τροποποιημένων αρχείων;"
-
-#: ../glade2/filediff.glade.h:12
-msgid "Search for:"
-msgstr "Αναζήτηση για:"
-
-#: ../glade2/filediff.glade.h:13
-msgid "_Match case"
-msgstr "_Ταίριασμα πεζών/κεφαλαίων"
-
-#: ../glade2/filediff.glade.h:14
-msgid "_Wrap around"
-msgstr "_Αναδίπλωση γύρω"
-
-#: ../glade2/meldapp.glade.h:1
-msgid "(gnome-default-editor)"
-msgstr "(προεπιλεγμένος συντάκτης κειμένου για το gnome)"
-
-#: ../glade2/meldapp.glade.h:2
-msgid "<b>Drawing Style</b>"
-msgstr "<b> Σχεδιαστικό Στυλ</b>"
-
-#: ../glade2/meldapp.glade.h:3
-msgid "<b>Edit Menu</b>"
-msgstr "<b> Επεξεργασία μενού</b>"
-
-#: ../glade2/meldapp.glade.h:4
-msgid "<b>Font</b>"
-msgstr "<b>Γραμματοσειρά</b>"
-
-#: ../glade2/meldapp.glade.h:5
-msgid "<b>Global options</b>"
-msgstr "<b> Καθολικές επιλογές</b>"
-
-#: ../glade2/meldapp.glade.h:6
-msgid "<b>Loading</b>"
-msgstr "<b>Φόρτωση</b>"
-
-#: ../glade2/meldapp.glade.h:7
-msgid "<b>Misc</b>"
-msgstr "<b>Διάφορα</b>"
-
-#: ../glade2/meldapp.glade.h:8
-msgid "<b>Saving</b>"
-msgstr "<b>Αποθήκευση</b>"
-
-#: ../glade2/meldapp.glade.h:9
-msgid "<b>Toolbar Appearance</b>"
-msgstr "<b>Εμφάνιση γραμμής εργαλείων</b>"
-
-#: ../glade2/meldapp.glade.h:10
-msgid "<b>Update Options</b>"
-msgstr "<b> Ενημέρωση επιλογών</b>"
-
-#: ../glade2/meldapp.glade.h:11
-msgid "<b>Whitespace</b>"
-msgstr "<b>Λευκό διάστημα</b>"
-
-#: ../glade2/meldapp.glade.h:12
-msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\"> CVS</span>"
-
-#: ../glade2/meldapp.glade.h:13
-msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\">Σύγκριση</span>"
-
-#: ../glade2/meldapp.glade.h:14
-msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\"> Εμφάνιση</span>"
-
-#: ../glade2/meldapp.glade.h:15
-msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\"> Συντάκτης</span>"
-
-#: ../glade2/meldapp.glade.h:16
-msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\"> Κωδικοποίηση</span>"
-
-#: ../glade2/meldapp.glade.h:17
-msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\"> Φίλτρα αρχείων</span>"
-
-#: ../glade2/meldapp.glade.h:18
-msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
-msgstr "<span weight=\"bold\" size=\"x-large\"> Φίλτρα κειμένων</span>"
-
-#: ../glade2/meldapp.glade.h:19
-msgid "Automatically supply missing newline at end of file"
-msgstr "Αυτόματα παρέχεται μία νέα γραμμή στο τέλος του αρχείου αν δεν υπάρχει"
-
-#: ../glade2/meldapp.glade.h:20
-msgid "CVS"
-msgstr "CVS"
-
-#: ../glade2/meldapp.glade.h:21
-msgid "CVS Directory"
-msgstr "Κατάλογος CVS"
-
-#: ../glade2/meldapp.glade.h:22
-msgid "CVS binary"
-msgstr "Δυαδικό CVS"
-
-#: ../glade2/meldapp.glade.h:23
-msgid "Choose Files"
-msgstr "Επιλογή αρχείων"
-
-#: ../glade2/meldapp.glade.h:24
-msgid "Choose how the central bar of the diff viewer is drawn. You may wish to choose a simpler mode if you find scrolling is slow."
-msgstr "Επιλογή του πως σχεδιάζεται η κεντρική μπάρα της προβολής διαφορών. Ίσως να θέλετε να επιλεγεί ένας απλούστερος τρόπος αν δείτε ότι η κύλιση είναι αργή."
-
-#: ../glade2/meldapp.glade.h:25
-msgid "Copyright (C) 2002-2006 Stephen Kennedy"
-msgstr "Πνευματικά δικαιώματα (C) 2002-2006 Stephen Kennedy"
-
-#: ../glade2/meldapp.glade.h:26
-msgid "Create missing directories (-d)"
-msgstr "Δημιουργία καταλόγων που λείπουν (-d)"
-
-#: ../glade2/meldapp.glade.h:27
-msgid "Curved: Filled Curves"
-msgstr "Καμπύλες: Γέμισμα καμπυλών"
-
-#: ../glade2/meldapp.glade.h:28
-msgid "Custom command"
-msgstr "Προσαρμοσμένη εντολή"
-
-#: ../glade2/meldapp.glade.h:29
-msgid "Directory"
-msgstr "Κατάλογος"
-
-#: ../glade2/meldapp.glade.h:30
-msgid "Display"
-msgstr "Εμφάνιση"
-
-#: ../glade2/meldapp.glade.h:31
-msgid "Edit files with:"
-msgstr "Επεξεργασία αρχείων με:"
-
-#: ../glade2/meldapp.glade.h:32
-msgid "Editor"
-msgstr "Συντάκτης"
-
-#: ../glade2/meldapp.glade.h:33
-msgid "Encoding"
-msgstr "Κωδικοποίηση"
-
-#: ../glade2/meldapp.glade.h:34
-msgid "File Filters"
-msgstr "Φίλτρα αρχείων"
-
-#: ../glade2/meldapp.glade.h:35
-msgid "Gnome Default"
-msgstr "Προεπιλογή Gnome"
-
-#: ../glade2/meldapp.glade.h:36
-msgid "Gnome default editor"
-msgstr "Προεπιλεγμένος συντάκτης Gnome"
-
-#: ../glade2/meldapp.glade.h:37
-msgid "Icons Only"
-msgstr "Μόνο εικονίδια"
-
-#: ../glade2/meldapp.glade.h:38
-msgid "Ignore .cvsrc (-f)"
-msgstr "Αγνόηση .cvsrc (-f)"
-
-#: ../glade2/meldapp.glade.h:39
-msgid "Ignore changes in amount of white space"
-msgstr "Αγνόηση αλλαγών σε ποσότητα λευκού διαστήματος"
-
-#: ../glade2/meldapp.glade.h:40
-msgid "Ignore changes in case; consider upper and lower-case letters equivalent"
-msgstr "Αγνόηση αλλαγών σε πεζά/κεφαλαία. Θεώρηση κεφαλαίων και πεζών γραμμάτων ως ισοδύναμα"
-
-#: ../glade2/meldapp.glade.h:41
-msgid "Ignore changes that just insert or delete blank lines"
-msgstr "Αγνόηση αλλαγών που απλώς εισάγουν ή διαγράφουν κενές γραμμές"
-
-#: ../glade2/meldapp.glade.h:42
-msgid "Ignore changes which insert or delete blank lines"
-msgstr "Αγνόηση αλλαγών που εισάγουν ή διαγράφουν κενές γραμμές"
-
-#: ../glade2/meldapp.glade.h:43
-msgid "Ignore symbolic links"
-msgstr "Αγνόηση συμβολικών δεσμών"
-
-#: ../glade2/meldapp.glade.h:44
-msgid "Internal editor"
-msgstr "Εσωτερικός συντάκτης"
-
-#: ../glade2/meldapp.glade.h:45
-msgid "Line Wrapping "
-msgstr "Αναδίπλωση γραμμών "
-
-#: ../glade2/meldapp.glade.h:46
-msgid "Locate CVS binary : Meld"
-msgstr "Εντοπισμός CVS binary: Meld"
-
-#: ../glade2/meldapp.glade.h:47
-msgid "Mailing _List"
-msgstr "Λί_στα ταχυδρομείου"
-
-#: ../glade2/meldapp.glade.h:48
-msgid "Meld"
-msgstr "Meld"
-
-#: ../glade2/meldapp.glade.h:49
-msgid "Mine"
-msgstr "Δικό μου"
-
-#: ../glade2/meldapp.glade.h:50
-msgid "My Directory"
-msgstr "Ο προσωπικός μου κατάλογος"
-
-#: ../glade2/meldapp.glade.h:51
-msgid "My File"
-msgstr "Τα αρχεία μου"
-
-#: ../glade2/meldapp.glade.h:52
-msgid "Original"
-msgstr "Αρχικό"
-
-#: ../glade2/meldapp.glade.h:53
-msgid "Original Directory"
-msgstr "Αρχικός Κατάλογος"
-
-#: ../glade2/meldapp.glade.h:54
-msgid "Original File"
-msgstr "Αρχικό αρχείο"
-
-#: ../glade2/meldapp.glade.h:55
-msgid "Other"
-msgstr "Άλλο"
-
-#: ../glade2/meldapp.glade.h:56
-msgid "Other Directory"
-msgstr "Άλλος κατάλογος"
-
-#: ../glade2/meldapp.glade.h:57
-msgid "Other File"
-msgstr "Άλλο αρχείο"
-
-#: ../glade2/meldapp.glade.h:58
-msgid "Preferences : Meld"
-msgstr "Προτιμήσεις : Meld"
-
-#: ../glade2/meldapp.glade.h:59
-msgid "Prune empty directories (-P)"
-msgstr "Καθαρισμός κενών καταλόγων (-P)"
-
-#: ../glade2/meldapp.glade.h:60
-msgid "Quiet mode (-q)"
-msgstr "Σιωπηλή λειτουργία (-q)"
-
-#: ../glade2/meldapp.glade.h:61
-msgid "Refresh"
-msgstr "Ανανέωση"
-
-#: ../glade2/meldapp.glade.h:62
-msgid "Reload"
-msgstr "Επαναφόρτωση"
-
-#: ../glade2/meldapp.glade.h:63
-msgid "Report _Bug"
-msgstr "Αναφορά _σφάλματος"
-
-#: ../glade2/meldapp.glade.h:64
-msgid "Save _As"
-msgstr "Α_ποθήκευση ως"
-
-#: ../glade2/meldapp.glade.h:65
-msgid "Save in UTF-8 encoding"
-msgstr "Αποθήκευση σε κωδικοποίηση UTF-8"
-
-#: ../glade2/meldapp.glade.h:66
-msgid "Save in the files original encoding"
-msgstr "Αποθήκευση σε αυτόματη κωδικοποίηση αρχείων"
-
-#: ../glade2/meldapp.glade.h:67
-msgid "Show line numbers"
-msgstr "Εμφάνιση αριθμών γραμμής"
-
-#: ../glade2/meldapp.glade.h:68
-msgid "Simple: Lines only"
-msgstr "Απλό: Μόνο γραμμές"
-
-#: ../glade2/meldapp.glade.h:69
-msgid "Solid: Filled Quadilaterals"
-msgstr ""
-
-#: ../glade2/meldapp.glade.h:70
-msgid "Tab width"
-msgstr "Πλάτος tab"
-
-#: ../glade2/meldapp.glade.h:71
-msgid "Text Beside Icons"
-msgstr "Κείμενο δίπλα στα εικονίδια"
-
-#: ../glade2/meldapp.glade.h:72
-msgid "Text Filters"
-msgstr "Φίλτρα κειμένων"
-
-#: ../glade2/meldapp.glade.h:73
-msgid "Text Only"
-msgstr "Μόνο κείμενο"
-
-#: ../glade2/meldapp.glade.h:74
-msgid "Text Under Icons"
-msgstr "Κείμενο κάτω από τα εικονίδια"
-
-#: ../glade2/meldapp.glade.h:75
-msgid "Three way directory"
-msgstr "Κατάλογος τριών δρόμων"
-
-#: ../glade2/meldapp.glade.h:76
-msgid "Three way file"
-msgstr "Αρχείο τριών δρόμων"
-
-#: ../glade2/meldapp.glade.h:77
-msgid "Two way directory"
-msgstr "Κατάλογος δύο δρόμων"
-
-#: ../glade2/meldapp.glade.h:78
-msgid "Two way file"
-msgstr "Αρχείο δύο δρόμων"
-
-#: ../glade2/meldapp.glade.h:79
-msgid "Use Compression (-z)"
-msgstr "Χρήση συμπίεσης (-z)"
-
-#: ../glade2/meldapp.glade.h:80
-msgid "Use GNOME monospace font"
-msgstr "Χρήση γραμματοσειράς monospace GNOME"
-
-#: ../glade2/meldapp.glade.h:81
-msgid "Use custom font"
-msgstr "Χρήση προσαρμοσμένης γραμματοσειράς"
-
-#: ../glade2/meldapp.glade.h:82
-msgid "Use syntax highlighting"
-msgstr "Χρήση επισήμανσης σύνταξης"
-
-#: ../glade2/meldapp.glade.h:83
-msgid "Version control view"
-msgstr "Προβολή εκδόσεως ελέγχου"
-
-#: ../glade2/meldapp.glade.h:84
-msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-msgstr "Κατά την φόρτωση, γίνεται δοκιμή των κωδικοποιητών αυτών σε σειρά (π.χ. utf8, iso8859)"
-
-#: ../glade2/meldapp.glade.h:85
-msgid "When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces."
-msgstr "Όταν κάνετε συγκρίσεις καταλόγων, μπορείτε να φιλτράρετε τα αρχεία και τους καταλόγους κατά όνομα. Κάθε μοτίβο είναι μία λίστα από shell wildcards χωριζόμενων από διαστήματα."
-
-#: ../glade2/meldapp.glade.h:86
-msgid "When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which replaces matching text with the empty string before comparison is performed. If the expression contains groups, only the groups are replaced. See the user manual for more details."
-msgstr "Όταν κάνετε συγκρίσεις αρχείων, μπορείτε να αγνοήσετε συγκεκριμένους τύπους αλλαγών. Κάθε μοτίβο εδώ είναι μία κανονική έκφραση python που αντικαθιστά κείμενο με τη κενή συμβολοσειρά πριν γίνει η σύγκριση. Αν η έκφραση συμπεριλαμβάνει ομάδες, αντικαθίστανται μόνο οι ομάδες. Για περισσότερες λεπτομέρειες δείτε το εγχειρίδιο χρήστη."
-
-#: ../glade2/meldapp.glade.h:87
-msgid "Whitespace is significant"
-msgstr "Το λευκό διάστημα είναι σημαντικό"
-
-#: ../glade2/meldapp.glade.h:88
-msgid "_Character"
-msgstr "_Χαρακτήρας"
-
-#: ../glade2/meldapp.glade.h:90
-msgid "_Contents"
-msgstr "_Περιεχόμενα"
-
-#: ../glade2/meldapp.glade.h:91
-msgid "_Directory Comparison"
-msgstr "Σύγκριση _κατάλόγων"
-
-#: ../glade2/meldapp.glade.h:92
-msgid "_Down"
-msgstr "_Κάτω"
-
-#: ../glade2/meldapp.glade.h:93
-msgid "_File Comparison"
-msgstr "Σύγκριση _αρχείων"
-
-#: ../glade2/meldapp.glade.h:94
-msgid "_Logo"
-msgstr "_Λογότυπο"
-
-#: ../glade2/meldapp.glade.h:95
-msgid "_New..."
-msgstr "_Νέο..."
-
-#: ../glade2/meldapp.glade.h:96
-msgid "_None"
-msgstr "_Κανένα"
-
-#: ../glade2/meldapp.glade.h:97
-msgid "_Save"
-msgstr "Α_ποθήκευση"
-
-#: ../glade2/meldapp.glade.h:98
-msgid "_Three Way Compare"
-msgstr "Σύγκριση _τριών δρόμων"
-
-#: ../glade2/meldapp.glade.h:99
-msgid "_Up"
-msgstr "_Πάνω"
-
-#: ../glade2/meldapp.glade.h:100
-msgid "_Version Control Browser"
-msgstr "Περιηγητής ελέγχου έ_κδοσης"
-
-#: ../glade2/meldapp.glade.h:101
-msgid "_Word"
-msgstr "_Λέξη"
-
-#: ../glade2/vcview.glade.h:1
-msgid "Add _Binary"
-msgstr "Προσθήκη _δυαδικού"
-
-#: ../glade2/vcview.glade.h:2
-msgid "Add to VC"
-msgstr "Προσθήκη στο VC"
-
-#: ../glade2/vcview.glade.h:3
-msgid "Commit"
-msgstr "Καταχώρηση"
-
-#: ../glade2/vcview.glade.h:4
-msgid "Commit Files"
-msgstr "Καταχώρηση αρχείων"
-
-#: ../glade2/vcview.glade.h:5
-msgid "Compare Options"
-msgstr "Καταχώρηση επιλογών"
-
-#: ../glade2/vcview.glade.h:7
-msgid "Date"
-msgstr "Ημερομηνία"
-
-#: ../glade2/vcview.glade.h:8
-msgid "Delete locally"
-msgstr "Τοπική διαγραφή"
-
-#: ../glade2/vcview.glade.h:9
-msgid "Flatten directories"
-msgstr "Εξομάλυνση καταλόγων"
-
-#: ../glade2/vcview.glade.h:10
-msgid "Ignored"
-msgstr "Αγνοημένο"
-
-#: ../glade2/vcview.glade.h:11
-msgid "Local copy against other remote revision"
-msgstr "Τοπική αντιγραφή ενάντια σε κάθε απομακρυσμένη αναθεώρηση"
-
-#: ../glade2/vcview.glade.h:12
-msgid "Local copy against same remote revision"
-msgstr "Τοπική αντιγραφή ενάντια σε ίδια απομακρυσμένη αναθεώρηση"
-
-#: ../glade2/vcview.glade.h:13
-msgid "Log Message"
-msgstr "Μήνυμα καταγραφής"
-
-#: ../glade2/vcview.glade.h:14
-msgid "Non _VC"
-msgstr "Όχι _VC"
-
-#: ../glade2/vcview.glade.h:15
-msgid "Previous Logs"
-msgstr "Προηγούμενες καταγραφές"
-
-#: ../glade2/vcview.glade.h:16
-msgid "Remove _Locally"
-msgstr "_Τοπική αφαίρεση"
-
-#: ../glade2/vcview.glade.h:17
-msgid "Remove from VC"
-msgstr "Αφαίρεση από το VC"
-
-#: ../glade2/vcview.glade.h:18
-msgid "Revert to original"
-msgstr "Επαναφορά αρχικού"
-
-#: ../glade2/vcview.glade.h:19
-msgid "Show ignored files"
-msgstr "Εμφάνιση αγνοημένων αρχείων"
-
-#: ../glade2/vcview.glade.h:21
-msgid "Show normal"
-msgstr "Εμφάνιση κανονικού"
-
-#: ../glade2/vcview.glade.h:22
-msgid "Show unversioned files"
-msgstr "Εμφάνιση αρχείων που δεν έχουν αναθεωρηθεί"
-
-#: ../glade2/vcview.glade.h:23
-#: ../vcview.py:173
-msgid "Tag"
-msgstr "Ετικέτα"
-
-#: ../glade2/vcview.glade.h:24
-msgid "Update"
-msgstr "Ενημέρωση"
-
-#: ../glade2/vcview.glade.h:25
-msgid "VC Log"
-msgstr "Καταγραφή VC"
-
-#: ../glade2/vcview.glade.h:26
-msgid "_Add"
-msgstr "_Προσθήκη"
-
-#: ../glade2/vcview.glade.h:27
-msgid "_Commit"
-msgstr "_Ενσωμάτωση"
-
-#: ../glade2/vcview.glade.h:29
+"Ορισμός του αρχείου στόχου για αποθήκευση ενός αποτελέσματος συγχώνευσης"
+
+#: ../meld/meldapp.py:129
+msgid "Automatically merge files"
+msgstr "Αυτόματη συγχώνευση αρχείων"
+
+#: ../meld/meldapp.py:132
+msgid "Load a saved comparison from a Meld comparison file"
+msgstr "Φόρτωση μιας αποθηκευμένης σύγκρισης από ένα αρχείο σύγκρισης Meld"
+
+#: ../meld/meldapp.py:135
+msgid "Create a diff tab for the supplied files or folders"
+msgstr "Δημιουργία μιας καρτέλας διαφορών για τα παρεχόμενα αρχεία ή φακέλους"
+
+#: ../meld/meldapp.py:138
+#, python-format
+msgid "too many arguments (wanted 0-3, got %d)"
+msgstr "υπερβολικά πολλά ορίσματα (επιθυμητά 0-3, ελήφθησαν %d)"
+
+#: ../meld/meldapp.py:141
+msgid "can't auto-merge less than 3 files"
+msgstr "αδύνατη η αυτόματη συγχώνευση λιγότερων από 3 αρχείων"
+
+#: ../meld/meldapp.py:143
+#| msgid "Flatten directories"
+msgid "can't auto-merge directories"
+msgstr "αδύνατη η αυτόματη συγχώνευση καταλόγων"
+
+#: ../meld/meldapp.py:149
+msgid "D-Bus error; comparisons will open in a new window."
+msgstr "Σφάλμα δίαυλου D· οι συγκρίσεις θα ανοίξουν σε ένα νέο παράθυρο."
+
+#: ../meld/meldapp.py:167
+msgid "Error reading saved comparison file"
+msgstr "Σφάλμα ανάγνωσης αποθηκευμένου αρχείου σύγκρισης"
+
+#. TRANSLATORS: This is the label of a new, currently-unnamed file.
+#: ../meld/meldbuffer.py:89
+msgid "<unnamed>"
+msgstr "<ανώνυμο>"
+
+#: ../meld/melddoc.py:58 ../meld/melddoc.py:59
+msgid "untitled"
+msgstr "Χωρίς τίτλο"
+
+#: ../meld/meldwindow.py:61
+#| msgid "My File"
+msgid "_File"
+msgstr "_Αρχείο"
+
+#: ../meld/meldwindow.py:62
+#| msgid "_File Comparison"
+msgid "_New Comparison..."
+msgstr "_Νέα σύγκριση..."
+
+#: ../meld/meldwindow.py:63
+msgid "Start a new comparison"
+msgstr "Έναρξη μιας νέας σύγκρισης"
+
+#: ../meld/meldwindow.py:66
+msgid "Save the current file"
+msgstr "Αποθήκευση του τρέχοντος αρχείου"
+
+#: ../meld/meldwindow.py:68
+#| msgid "Save _As"
+msgid "Save As..."
+msgstr "Αποθήκευση ως..."
+
+#: ../meld/meldwindow.py:69
+msgid "Save the current file with a different name"
+msgstr "Αποθήκευση του τρέχοντος αρχείου με διαφορετικό όνομα"
+
+#: ../meld/meldwindow.py:72
+msgid "Close the current file"
+msgstr "Κλείσιμο του τρέχοντος αρχείου"
+
+#: ../meld/meldwindow.py:75
+msgid "Quit the program"
+msgstr "Έξοδος από το πρόγραμμα"
+
+#: ../meld/meldwindow.py:78
 msgid "_Edit"
 msgstr "Ε_πεξεργασία"
 
-#: ../glade2/vcview.glade.h:30
-msgid "_Flatten"
-msgstr "Ε_ξομάλυνση"
+#: ../meld/meldwindow.py:80
+msgid "Undo the last action"
+msgstr "Αναίρεση της τελευταίας ενέργειας"
 
-#: ../glade2/vcview.glade.h:31
-msgid "_Modified"
-msgstr "_Τροποποιήθηκε"
+#: ../meld/meldwindow.py:83
+msgid "Redo the last undone action"
+msgstr "Επανάληψη της τελευταίας ακυρωμένης ενέργειας"
 
-#: ../glade2/vcview.glade.h:32
-msgid "_Normal"
-msgstr "Κα_νονικό"
+#: ../meld/meldwindow.py:85
+msgid "Cut the selection"
+msgstr "Αποκοπή της επιλογής"
 
-#: ../glade2/vcview.glade.h:33
-msgid "_Remove"
-msgstr "_Απομάκρυνση"
+#: ../meld/meldwindow.py:87
+#| msgid "Compare selected"
+msgid "Copy the selection"
+msgstr "Αντιγραφή της επιλογής"
 
-#: ../glade2/vcview.glade.h:34
-msgid "_Update"
-msgstr "Ενη_μέρωση"
+#: ../meld/meldwindow.py:89
+#| msgid "Copy to Clipboard"
+msgid "Paste the clipboard"
+msgstr "Επικόλληση του προχείρου"
 
-#: ../meld:60
-#: ../meld:70
-#: ../meld:80
-#, c-format
-msgid "Meld requires %s or higher."
-msgstr "Το Meld απαιτεί %s ή υψηλότερο"
+#: ../meld/meldwindow.py:91
+#| msgid "Find"
+msgid "Find..."
+msgstr "Εύρεση..."
 
-#: ../meld:81
-msgid "Due to incompatible API changes some functions may not operate as expected."
-msgstr "Εξαιτίας ασύμβατων αλλαγών API κάποιες πράξεις μπορεί να μην λειτουργήσουν όπως αναμενόταν."
+#: ../meld/meldwindow.py:91
+#| msgid "Search for:"
+msgid "Search for text"
+msgstr "Αναζήτηση για κείμενο"
 
-#: ../meld.desktop.in.h:1
-msgid "Compare and merge your files."
-msgstr "Σύγκριση και συγχώνευση των αρχείων σας."
+#: ../meld/meldwindow.py:93
+msgid "Find Ne_xt"
+msgstr "Εύρεση ε_πομένου"
 
-#: ../meld.desktop.in.h:2
-msgid "Meld Diff Viewer"
-msgstr "Προβολή διαφορών Meld"
+#: ../meld/meldwindow.py:94
+msgid "Search forwards for the same text"
+msgstr "Αναζήτηση προς τα μπροστά για το ίδιο κείμενο"
 
-#: ../meldapp.py:147
+#: ../meld/meldwindow.py:96
+msgid "Find _Previous"
+msgstr "Εύρεση _προηγούμενου"
+
+#: ../meld/meldwindow.py:97
+msgid "Search backwards for the same text"
+msgstr "Αναζήτηση προς τα πίσω για το ίδιο κείμενο"
+
+#: ../meld/meldwindow.py:100
+msgid "_Replace..."
+msgstr "_Αντικατάσταση..."
+
+#: ../meld/meldwindow.py:101
+msgid "Find and replace text"
+msgstr "Εύρεση και αντικατάσταση κειμένου"
+
+#: ../meld/meldwindow.py:103
+#| msgid "Preferences : Meld"
+msgid "Prefere_nces"
+msgstr "Προτι_μήσεις"
+
+#: ../meld/meldwindow.py:104
+msgid "Configure the application"
+msgstr "Ρύθμιση της εφαρμογής"
+
+#: ../meld/meldwindow.py:107
+msgid "_Changes"
+msgstr "_Αλλαγές"
+
+#: ../meld/meldwindow.py:108
+msgid "Next Change"
+msgstr "Επόμενη αλλαγή"
+
+#: ../meld/meldwindow.py:109
+msgid "Go to the next change"
+msgstr "Μετάβαση στην επόμενη αλλαγή"
+
+#: ../meld/meldwindow.py:111
+#| msgid "Previous Logs"
+msgid "Previous Change"
+msgstr "Προηγούμενη αλλαγή"
+
+#: ../meld/meldwindow.py:112
+msgid "Go to the previous change"
+msgstr "Μετάβαση στην προηγούμενη αλλαγή"
+
+#: ../meld/meldwindow.py:114
+msgid "Open Externally"
+msgstr "Άνοιγμα εξωτερικά"
+
+#: ../meld/meldwindow.py:115
+msgid "Open selected file or directory in the default external application"
+msgstr ""
+"Ανοίξτε το επιλεγμένο αρχείο ή κατάλογο στην προεπιλεγμένη εξωτερική "
+"εφαρμογή"
+
+#: ../meld/meldwindow.py:119
+msgid "_View"
+msgstr "_Προβολή"
+
+#: ../meld/meldwindow.py:120
+#| msgid "Status"
+msgid "File Status"
+msgstr "Κατάσταση αρχείου"
+
+#: ../meld/meldwindow.py:121
+#| msgid "Status"
+msgid "Version Status"
+msgstr "Κατάσταση έκδοσης"
+
+#: ../meld/meldwindow.py:124
+msgid "Stop the current action"
+msgstr "Διακοπή τρέχουσας ενέργειας"
+
+#: ../meld/meldwindow.py:127
+#| msgid "Refresh"
+msgid "Refresh the view"
+msgstr "Ανανέωση της προβολής"
+
+#: ../meld/meldwindow.py:130
+msgid "_Tabs"
+msgstr "_Καρτέλες"
+
+#: ../meld/meldwindow.py:131
+#| msgid "Previous Logs"
+msgid "_Previous Tab"
+msgstr "_Προηγούμενη καρτέλα"
+
+#: ../meld/meldwindow.py:132
+msgid "Activate previous tab"
+msgstr "Ενεργοποίηση προηγούμενης καρτέλας"
+
+#: ../meld/meldwindow.py:134
+msgid "_Next Tab"
+msgstr "_Επόμενη καρτέλα"
+
+#: ../meld/meldwindow.py:135
+msgid "Activate next tab"
+msgstr "Ενεργοποίηση επόμενης καρτέλας"
+
+#: ../meld/meldwindow.py:138
+#| msgid "Copy To Left"
+msgid "Move Tab _Left"
+msgstr "Μετακίνηση καρτέλας _αριστερά"
+
+#: ../meld/meldwindow.py:139
+msgid "Move current tab to left"
+msgstr "Μετακίνηση της τρέχουσας καρτέλας στα αριστερά"
+
+#: ../meld/meldwindow.py:142
+#| msgid "Copy To Right"
+msgid "Move Tab _Right"
+msgstr "Μετακίνηση καρτέλας _δεξιά"
+
+#: ../meld/meldwindow.py:143
+msgid "Move current tab to right"
+msgstr "Μετακίνηση της τρέχουσας καρτέλας στα δεξιά"
+
+#: ../meld/meldwindow.py:146
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#: ../meld/meldwindow.py:147
+msgid "_Contents"
+msgstr "_Περιεχόμενα"
+
+#: ../meld/meldwindow.py:148
+msgid "Open the Meld manual"
+msgstr "Άνοιγμα του εγχειριδίου του Meld"
+
+#: ../meld/meldwindow.py:149
+msgid "Report _Bug"
+msgstr "Αναφορά _σφάλματος"
+
+#: ../meld/meldwindow.py:150
+msgid "Report a bug in Meld"
+msgstr "Αναφορά ενός σφάλματος στο Meld"
+
+#: ../meld/meldwindow.py:153
+msgid "About this program"
+msgstr "Περί αυτού του προγράμματος"
+
+#: ../meld/meldwindow.py:157
+msgid "Fullscreen"
+msgstr "Πλήρης οθόνη"
+
+#: ../meld/meldwindow.py:158
+msgid "View the comparison in fullscreen"
+msgstr "Προβολή της σύγκρισης σε πλήρη οθόνη"
+
+#: ../meld/meldwindow.py:160
+msgid "_Toolbar"
+msgstr "_Εργαλειοθήκη"
+
+#: ../meld/meldwindow.py:161
+msgid "Show or hide the toolbar"
+msgstr "Εμφάνιση ή απόκρυψη της εργαλειοθήκης"
+
+#: ../meld/meldwindow.py:163
+#| msgid "Status"
+msgid "_Statusbar"
+msgstr "_Γραμμή κατάστασης"
+
+#: ../meld/meldwindow.py:164
+msgid "Show or hide the statusbar"
+msgstr "Εμφάνιση ή απόκρυψη της γραμμής κατάστασης"
+
+#: ../meld/meldwindow.py:173
+msgid "Open Recent"
+msgstr "Άνοιγμα πρόσφατων"
+
+#: ../meld/meldwindow.py:174
+#| msgid "[%s] Opening files"
+msgid "Open recent files"
+msgstr "Άνοιγμα πρόσφατων αρχείων"
+
+#: ../meld/meldwindow.py:588
+msgid "Switch to this tab"
+msgstr "Μετάβαση σε αυτήν την καρτέλα"
+
+#. exit at first non found directory + file
+#: ../meld/meldwindow.py:721
+msgid "Cannot compare a mixture of files and directories.\n"
+msgstr "Αδύνατη η σύγκριση ενός μίγματος από αρχεία και καταλόγους.\n"
+
+#. no common path. empty names get changed to "[None]"
+#: ../meld/misc.py:189
+msgid "[None]"
+msgstr "[Κανένα]"
+
+#: ../meld/preferences.py:49
 msgid "label"
 msgstr "ετικέτα"
 
-#: ../meldapp.py:148
+#: ../meld/preferences.py:49
 msgid "pattern"
-msgstr "Μοτίβο"
+msgstr "υπόδειγμα"
 
-#. file filters
-#. text filters
-#: ../meldapp.py:249
-#: ../meldapp.py:254
-#: ../vcview.py:153
-msgid "Name"
-msgstr "Όνομα"
-
-#: ../meldapp.py:249
-#: ../meldapp.py:254
-msgid "Active"
-msgstr "Ενεργό"
-
-#: ../meldapp.py:249
-msgid "Pattern"
-msgstr "Μοτίβο"
-
-#: ../meldapp.py:254
-msgid "Regex"
-msgstr "Κανονική έκφραση"
-
-#: ../meldapp.py:296
-msgid "Line numbers are only available if you have gnome-python-desktop installed."
-msgstr "Αριθμοί γραμμών διατίθενται μόνο αν υπάρχει εγκατεστημένο το gnome-python-desktop."
-
-#: ../meldapp.py:300
-msgid "Syntax highlighting is only available if you have gnome-python-desktop installed."
-msgstr "Επισήμανση σύνταξης διατίθεται μόνο αν υπάρχει εγκατεστημένο το gnome-python-desktop."
+#: ../meld/preferences.py:165
+#| msgid ""
+#| "Line numbers are only available if you have gnome-python-desktop "
+#| "installed."
+msgid "Only available if you have gnome-python-desktop installed"
+msgstr "Διαθέσιμο μόνο αν έχετε εγκατεστημένο το gnome-python-desktop"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:444
+#: ../meld/preferences.py:311
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Αντίγραφα ασφαλείας\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:446
-msgid "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
-msgstr "Έλεγχος εκδόσεως\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:448
-msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-msgstr "Δυαδικά\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:450
-msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-msgstr "Πολυμέσα\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:452
+#: ../meld/preferences.py:313
 msgid ""
-"CVS keywords\t0\t\\$\\w+(:[^\\n"
-"$]+)?\\$\n"
-msgstr ""
-"Λέξεις κλειδιά CVS\t0\t\\$\\w+(:[^\\n"
-"$]+)?\\$\n"
+"OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
+"Desktop.ini\n"
+msgstr "OS-ειδικά μεταδεδομένα\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
+"Desktop.ini\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:454
+#: ../meld/preferences.py:315
+#, python-format
+#| msgid "_Version Control Browser"
+msgid "Version Control\t1\t%s\n"
+msgstr "Έλεγχος εκδόσεων\t1\t%s\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:317
+#| msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
+msgstr "Δυαδικά  \t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:319
+#| msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+msgid "Media\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
+msgstr "Μέσα\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:321
+msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+msgstr "Λέξεις κλειδιά CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+
+#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
+#: ../meld/preferences.py:323
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Εντολές C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:456
+#: ../meld/preferences.py:325
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Σχόλιο C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:458
+#: ../meld/preferences.py:327
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
-msgstr "Όλα τα λευκά διαστήματα\t0\t[ \\t\\r\\f\\v]*\n"
+msgstr "Όλα τα κενά διαστήματα\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:460
+#: ../meld/preferences.py:329
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
-msgstr "Κυρίαρχο λευκό διάστημα\t0\t^[ \\t\\r\\f\\v]*\n"
+msgstr "Αρχικό κενό διάστημα\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meldapp.py:462
+#: ../meld/preferences.py:331
 msgid "Script comment\t0\t#.*"
-msgstr "Σχόλιο δέσμης ενεργειών\t0\t#.*"
+msgstr "Σχόλιο σεναρίου\t0\t#.*"
 
-#: ../meldapp.py:779
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "Δεν μπορεί να γίνει σύγκριση ενός μίγματος από αρχεία και καταλόγους.\n"
+#: ../meld/recent.py:104
+#| msgid "Version control view"
+msgid "Version control:"
+msgstr "Έλεγχος εκδόσεων:"
 
-#. ###############################################################################
-#.
-#. usage
-#.
-#. ###############################################################################
-#: ../meldapp.py:827
-#, python-format
-msgid ""
-"Meld %s\n"
-"Written by Stephen Kennedy <stevek@gnome.org>"
-msgstr ""
-"Meld %s\n"
-"Γραμμένο από Stephen Kennedy <stevek@gnome.org>"
+#: ../meld/vcview.py:95
+msgid "No files will be committed"
+msgstr "Δεν θα υποβληθεί κανένα αρχείο"
 
-#: ../meldapp.py:856
-msgid "Set label to use instead of file name"
-msgstr "Ορισμός ετικέτας για να χρησιμοποιηθεί αντί για όνομα αρχείου"
+#: ../meld/vcview.py:239
+#| msgid "Compare selected"
+msgid "Compare selected files"
+msgstr "Σύγκριση επιλεγμένων αρχείων"
 
-#: ../meldapp.py:857
-#: ../meldapp.py:858
-#: ../meldapp.py:859
-#: ../meldapp.py:860
-msgid "Ignored for compatibility"
-msgstr "Αγνοημένο για συμβατότητα"
+#: ../meld/vcview.py:241
+#| msgid "Commit"
+msgid "Co_mmit..."
+msgstr "_Υποβολή..."
 
-#: ../meldapp.py:886
-#, python-format
-msgid "Wrong number of arguments (Got %i)"
-msgstr "Λανθασμένος αριθμός από ορίσματα (Λήφθηκαν %i)"
+#: ../meld/vcview.py:242
+msgid "Commit changes to version control"
+msgstr "Υποβολή αλλαγών στον έλεγχο εκδόσεων"
 
-#: ../melddoc.py:45
-msgid "untitled"
-msgstr "Χωρίς τίτλο"
+#: ../meld/vcview.py:244
+msgid "_Update"
+msgstr "Ενη_μέρωση"
 
-#. no common path. empty names get changed to "[None]"
-#: ../misc.py:118
-msgid "[None]"
-msgstr "[Κανένα]"
+#: ../meld/vcview.py:245
+msgid "Update working copy from version control"
+msgstr "Ενημέρωση του αντιγράφου εργασίας από τον έλεγχο εκδόσεων"
 
-#: ../vcview.py:170
+#: ../meld/vcview.py:247
+msgid "_Push"
+msgstr "_Προώθηση"
+
+#: ../meld/vcview.py:248
+msgid "Push local changes to remote"
+msgstr "Προώθηση των τοπικών αλλαγών στο απομακρυσμένο"
+
+#: ../meld/vcview.py:251
+#| msgid "Version control view"
+msgid "Add to version control"
+msgstr "Προσθήκη στον έλεγχο εκδόσεων"
+
+#: ../meld/vcview.py:254
+msgid "Remove from version control"
+msgstr "Αφαίρεση από τον έλεγχο εκδόσεων"
+
+#: ../meld/vcview.py:256
+msgid "Mar_k as Resolved"
+msgstr "_Σήμανση ως λυμένο"
+
+#: ../meld/vcview.py:257
+msgid "Mark as resolved in version control"
+msgstr "Σήμανση ως λυμένο στον έλεγχο εκδόσεων"
+
+#: ../meld/vcview.py:259
+msgid "Re_vert"
+msgstr "Επανα_φορά"
+
+#: ../meld/vcview.py:260
+#| msgid "Revert to original"
+msgid "Revert working copy to original state"
+msgstr "Επαναφορά αντιγράφου εργασίας στην αρχική κατάσταση"
+
+#: ../meld/vcview.py:263
+msgid "Delete from working copy"
+msgstr "Διαγραφή από το αντίγραφο εργασίας"
+
+#: ../meld/vcview.py:268
+msgid "_Flatten"
+msgstr "_Ισοπέδωση"
+
+#: ../meld/vcview.py:269
+msgid "Flatten directories"
+msgstr "Ισοπέδωση καταλόγων"
+
+#: ../meld/vcview.py:271
+msgid "_Modified"
+msgstr "_Τροποποιήθηκε"
+
+#: ../meld/vcview.py:272
+#| msgid "Save modified files?"
+msgid "Show modified files"
+msgstr "Εμφάνιση τροποποιημένων αρχείων"
+
+#: ../meld/vcview.py:274
+msgid "_Normal"
+msgstr "Κα_νονικό"
+
+#: ../meld/vcview.py:275
+#| msgid "Show ignored files"
+msgid "Show normal files"
+msgstr "Εμφάνιση κανονικών αρχείων"
+
+#: ../meld/vcview.py:277
+msgid "Un_versioned"
+msgstr "_Χωρίς έκδοση"
+
+#: ../meld/vcview.py:278
+msgid "Show unversioned files"
+msgstr "Εμφάνιση αρχείων χωρίς έκδοση"
+
+#: ../meld/vcview.py:280
+msgid "Ignored"
+msgstr "Αγνοημένο"
+
+#: ../meld/vcview.py:281
+msgid "Show ignored files"
+msgstr "Εμφάνιση αγνοημένων αρχείων"
+
+#: ../meld/vcview.py:340 ../meld/vcview.py:497
 msgid "Location"
 msgstr "Τοποθεσία"
 
-#: ../vcview.py:171
+#: ../meld/vcview.py:341
 msgid "Status"
 msgstr "Κατάσταση"
 
-#: ../vcview.py:172
-msgid "Rev"
+#: ../meld/vcview.py:342
+msgid "Revision"
 msgstr "Αναθεώρηση"
 
-#: ../vcview.py:174
+#: ../meld/vcview.py:343
 msgid "Options"
 msgstr "Επιλογές"
 
-#: ../vcview.py:257
-msgid "(Empty)"
-msgstr "(Άδειο)"
+#. TRANSLATORS: this is an error message when a version control
+#. application isn't installed or can't be found
+#: ../meld/vcview.py:419
+#, python-format
+msgid "%s not installed"
+msgstr "το %s δεν είναι εγκατεστημένο"
 
-#: ../vcview.py:294
+#. TRANSLATORS: this is an error message when a version
+#. controlled repository is invalid or corrupted
+#: ../meld/vcview.py:423
+#| msgid "Internal editor"
+msgid "Invalid repository"
+msgstr "Άκυρο αποθετήριο"
+
+#: ../meld/vcview.py:432
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../meld/vcview.py:441
+msgid "No valid version control system found in this folder"
+msgstr "Δεν βρέθηκε σύστημα ελέγχου έγκυρων εκδόσεων σε αυτόν τον φάκελο"
+
+#: ../meld/vcview.py:443
+msgid "Only one version control system found in this folder"
+msgstr "Βρέθηκε μόνο ένα σύστημα ελέγχου εκδόσεων σε αυτόν τον φάκελο"
+
+#: ../meld/vcview.py:445
+msgid "Choose which version control system to use"
+msgstr "Επιλέξτε ποιο σύστημα έλεγχου εκδόσεων θα χρησιμοποιηθεί"
+
+#. TRANSLATORS: This is the location of the directory the user is diffing
+#: ../meld/vcview.py:497
+#, python-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: ../meld/vcview.py:540
+msgid "(Empty)"
+msgstr "(Κενό)"
+
+#: ../meld/vcview.py:572
 #, python-format
 msgid "[%s] Fetching differences"
-msgstr "[%s] ανάκτηση διαφορών"
+msgstr "[%s] Προσκόμιση διαφορών"
 
-#: ../vcview.py:301
+#: ../meld/vcview.py:580
 #, python-format
 msgid "[%s] Applying patch"
-msgstr "[%s] εφαρμογή διορθωτικού πακέτου"
+msgstr "[%s] Εφαρμογή μπαλώματος"
 
-#: ../vcview.py:305
-msgid "No differences found."
-msgstr "Δεν βρέθηκαν διαφορές."
+#: ../meld/vcview.py:819
+msgid "Patch tool not found"
+msgstr "Δεν βρέθηκε το εργαλείο μπαλώματος"
 
-#: ../vcview.py:382
-msgid "Select some files first."
-msgstr "Επιλογή πρώτα κάποιων αρχείων."
+#: ../meld/vcview.py:820
+#, python-format
+msgid ""
+"Meld needs the <i>patch</i> tool to be installed to perform comparisons in "
+"%s repositories. Please install <i>patch</i> and try again."
+msgstr ""
+"Το Meld χρειάζεται το εργαλείο <i>μπαλώματος</i> να εγκατασταθεί για να "
+"εκτελέσει συγκρίσεις σε %s αποθετήρια. Παρακαλούμε εγκαταστήστε το "
+"<i>μπάλωμα</i> και δοκιμάστε ξανά."
 
-#: ../vcview.py:446
-msgid "Invoking patch failed, you need GNU patch."
-msgstr "Σφάλμα κατά την κλήση του διορθωτικού πακέτου, χρειάζεται το GNU Patch."
+#: ../meld/vcview.py:860
+msgid "Error fetching original comparison file"
+msgstr "Σφάλμα προσκόμισης του αρχικού αρχείου σύγκρισης"
+
+#: ../meld/vcview.py:861
+msgid ""
+"Meld couldn't obtain the original version of your comparison file. If you "
+"are using the most recent version of Meld, please report a bug, including as "
+"many details as possible."
+msgstr ""
+"Το Meld δεν μπόρεσε να λάβει την αρχική έκδοση του αρχείου σύγκρισης. Αν "
+"χρησιμοποιείτε την πιο πρόσφατη έκδοση του Meld, παρακαλούμε αναφέρτε ένα "
+"σφάλμα, συμπεριλαμβάνοντας όσες περισσότερες λεπτομέρειες είναι δυνατό."
+
+#: ../meld/vcview.py:869
+#| msgid "Report _Bug"
+msgid "Report a bug"
+msgstr "Αναφορά σφάλματος"
+
+#: ../meld/ui/findbar.py:150
+#, python-format
+msgid ""
+"Regular expression error\n"
+"'%s'"
+msgstr ""
+"Λάθος κανονικής έκφρασης\n"
+"'%s'"
+
+#: ../meld/ui/historyentry.py:374
+msgid "_Browse..."
+msgstr "_Περιήγηση..."
+
+#: ../meld/ui/historyentry.py:382
+msgid "Path"
+msgstr "Διαδρομή"
+
+#: ../meld/ui/historyentry.py:383
+msgid "Path to file"
+msgstr "Διαδρομή στο αρχείο"
+
+#: ../meld/ui/historyentry.py:384
+msgid "Pop up a file selector to choose a file"
+msgstr "Ανάδυση ενός επιλογέα αρχείου για την επιλογή αρχείου"
+
+#: ../meld/ui/historyentry.py:522
+#| msgid "CVS Directory"
+msgid "Select directory"
+msgstr "Επιλογή καταλόγου"
+
+#: ../meld/ui/historyentry.py:526
+#| msgid "Select some files first."
+msgid "Select file"
+msgstr "Επιλογή αρχείου"
+
+#: ../meld/ui/notebooklabel.py:63
+msgid "Close tab"
+msgstr "Κλείσιμο καρτέλας"
+
+#: ../meld/vc/_vc.py:47
+msgid "Merged"
+msgstr "Συγχωνευμένο"
+
+#: ../meld/vc/_vc.py:47
+msgid "Base"
+msgstr "Βάση"
+
+#: ../meld/vc/_vc.py:47
+#| msgid "Location"
+msgid "Local"
+msgstr "Τοπικό"
+
+#: ../meld/vc/_vc.py:47
+#| msgid "_Remove"
+msgid "Remote"
+msgstr "Απομακρυσμένο"
 
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../vc/_vc.py:39
-msgid "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:Missing"
-msgstr "Αγνοημένο:Δεν αναθεωρήθηκε:::Σφάλμα::Προστέθηκε πρόσφατα:Τροποποιήθηκε:<b>Σύγκρουση</b>:Αφαιρέθηκε:Απουσιάζει"
+#: ../meld/vc/_vc.py:62
+#| msgid ""
+#| "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
+#| "Missing"
+msgid ""
+"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
+"Not present"
+msgstr ""
+"Αγνοημένο:Χωρίς έκδοση:::Σφάλμα::Πρόσφατα "
+"προστέθηκε:Τροποποιήθηκε:Διένεξη:Αφαιρέθηκε:Απουσιάζει:Απόν"
 
-#: ../vc/cvs.py:160
+#: ../meld/vc/_null.py:32
+#| msgid "_None"
+msgid "None"
+msgstr "Κανένα"
+
+#: ../meld/vc/cvs.py:182
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1163,3 +1856,372 @@ msgstr ""
 "Το μοτίβο ήταν '%s'\n"
 "Το σφάλμα ήταν '%s'"
 
+#: ../meld/vc/git.py:132
+#, python-format
+msgid "%d unpushed commits in %d branches"
+msgstr "%d μη προωθημένες υποβολές σε %d κλάδους"
+
+#: ../meld/vc/git.py:135
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] "%d μη προωθημένη υποβολή"
+msgstr[1] "%d μη προωθημένες υποβολές"
+
+#: ../meld/vc/git.py:336
+#, python-format
+msgid "Mode changed from %s to %s"
+msgstr "Η κατάσταση άλλαξε από %s σε %s"
+
+#~ msgid "Error converting pattern '%s' to regular expression"
+#~ msgstr "Σφάλμα μετατροπής μοτίβου '%s' σε κανονική έκφραση"
+
+#~ msgid "The regular expression '%s' was not found."
+#~ msgstr "Η κανονική έκφραση '%s' δεν βρέθηκε."
+
+#~ msgid "The text '%s' was not found."
+#~ msgstr "Το κείμενο '%s' δεν βρέθηκε."
+
+#~ msgid "The error was:"
+#~ msgstr "Το λάθος ήταν:"
+
+#~ msgid ""
+#~ "It contains ascii nulls.\n"
+#~ "Perhaps it is a binary file."
+#~ msgstr ""
+#~ "Περιέχει μηδενικά ascii.\n"
+#~ "Ίσως είναι δυαδικό αρχείο."
+
+#~ msgid "Choose a name for buffer %i."
+#~ msgstr "Επιλογή ονόματος για ενδιάμεση μνήμη %i"
+
+#~ msgid "Save patch as..."
+#~ msgstr "Αποθήκευση επιδιoρθωτικού πακέτου ως...."
+
+#~ msgid ""
+#~ "Reloading will discard changes in:\n"
+#~ "%s\n"
+#~ "\n"
+#~ "You cannot undo this operation."
+#~ msgstr ""
+#~ "Επαναφόρτωση θα προκαλέσει απόρριψη αλλαγών στο:\n"
+#~ "%s\n"
+#~ "\n"
+#~ ".Η διαδικασία αυτή δεν μπορεί να αναιρεθεί."
+
+#~ msgid "Case"
+#~ msgstr "Πεζά/κεφαλαία"
+
+#~ msgid "Edit"
+#~ msgstr "Επεξεργασία"
+
+#~ msgid "Hide..."
+#~ msgstr "Απόκρυψη..."
+
+#~ msgid "Ignore case of entries"
+#~ msgstr "Αγνόηση πεζά-κεφαλαία των καταχωρήσεων"
+
+#~ msgid "Left"
+#~ msgstr "Αριστερά"
+
+#~ msgid "Right"
+#~ msgstr "Δεξιά"
+
+#~ msgid "_Delete Selected"
+#~ msgstr "_Διαγραφή επιλεγμένου"
+
+#~ msgid ""
+#~ "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
+#~ "Which ones would you like to save?</span>"
+#~ msgstr ""
+#~ "<span weight=\"bold\" size=\"larger\"> Κάποια αρχεία έχουν τροποποιηθεί.\n"
+#~ "Ποιά να αποθηκευθούν;</span>"
+
+#~ msgid "Match _entire word only"
+#~ msgstr "Ταίριασμα μόνο ολό_κληρης λέξης"
+
+#~ msgid "_Wrap around"
+#~ msgstr "_Αναδίπλωση γύρω"
+
+#~ msgid "(gnome-default-editor)"
+#~ msgstr "(προεπιλεγμένος συντάκτης κειμένου για το gnome)"
+
+#~ msgid "<b>Drawing Style</b>"
+#~ msgstr "<b> Σχεδιαστικό Στυλ</b>"
+
+#~ msgid "<b>Edit Menu</b>"
+#~ msgstr "<b> Επεξεργασία μενού</b>"
+
+#~ msgid "<b>Font</b>"
+#~ msgstr "<b>Γραμματοσειρά</b>"
+
+#~ msgid "<b>Global options</b>"
+#~ msgstr "<b> Καθολικές επιλογές</b>"
+
+#~ msgid "<b>Misc</b>"
+#~ msgstr "<b>Διάφορα</b>"
+
+#~ msgid "<b>Saving</b>"
+#~ msgstr "<b>Αποθήκευση</b>"
+
+#~ msgid "<b>Toolbar Appearance</b>"
+#~ msgstr "<b>Εμφάνιση γραμμής εργαλείων</b>"
+
+#~ msgid "<b>Update Options</b>"
+#~ msgstr "<b> Ενημέρωση επιλογών</b>"
+
+#~ msgid "<b>Whitespace</b>"
+#~ msgstr "<b>Λευκό διάστημα</b>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\"> CVS</span>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\">Σύγκριση</span>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\"> Εμφάνιση</span>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\"> Συντάκτης</span>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\"> Κωδικοποίηση</span>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\"> Φίλτρα αρχείων</span>"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\"> Φίλτρα κειμένων</span>"
+
+#~ msgid "Automatically supply missing newline at end of file"
+#~ msgstr ""
+#~ "Αυτόματα παρέχεται μία νέα γραμμή στο τέλος του αρχείου αν δεν υπάρχει"
+
+#~ msgid "CVS"
+#~ msgstr "CVS"
+
+#~ msgid "CVS binary"
+#~ msgstr "Δυαδικό CVS"
+
+#~ msgid "Choose Files"
+#~ msgstr "Επιλογή αρχείων"
+
+#~ msgid ""
+#~ "Choose how the central bar of the diff viewer is drawn. You may wish to "
+#~ "choose a simpler mode if you find scrolling is slow."
+#~ msgstr ""
+#~ "Επιλογή του πως σχεδιάζεται η κεντρική μπάρα της προβολής διαφορών. Ίσως "
+#~ "να θέλετε να επιλεγεί ένας απλούστερος τρόπος αν δείτε ότι η κύλιση είναι "
+#~ "αργή."
+
+#~ msgid "Copyright (C) 2002-2006 Stephen Kennedy"
+#~ msgstr "Πνευματικά δικαιώματα (C) 2002-2006 Stephen Kennedy"
+
+#~ msgid "Create missing directories (-d)"
+#~ msgstr "Δημιουργία καταλόγων που λείπουν (-d)"
+
+#~ msgid "Curved: Filled Curves"
+#~ msgstr "Καμπύλες: Γέμισμα καμπυλών"
+
+#~ msgid "Directory"
+#~ msgstr "Κατάλογος"
+
+#~ msgid "Gnome Default"
+#~ msgstr "Προεπιλογή Gnome"
+
+#~ msgid "Icons Only"
+#~ msgstr "Μόνο εικονίδια"
+
+#~ msgid "Ignore .cvsrc (-f)"
+#~ msgstr "Αγνόηση .cvsrc (-f)"
+
+#~ msgid "Ignore changes in amount of white space"
+#~ msgstr "Αγνόηση αλλαγών σε ποσότητα λευκού διαστήματος"
+
+#~ msgid ""
+#~ "Ignore changes in case; consider upper and lower-case letters equivalent"
+#~ msgstr ""
+#~ "Αγνόηση αλλαγών σε πεζά/κεφαλαία. Θεώρηση κεφαλαίων και πεζών γραμμάτων "
+#~ "ως ισοδύναμα"
+
+#~ msgid "Ignore changes that just insert or delete blank lines"
+#~ msgstr "Αγνόηση αλλαγών που απλώς εισάγουν ή διαγράφουν κενές γραμμές"
+
+#~ msgid "Line Wrapping "
+#~ msgstr "Αναδίπλωση γραμμών "
+
+#~ msgid "Locate CVS binary : Meld"
+#~ msgstr "Εντοπισμός CVS binary: Meld"
+
+#~ msgid "Mailing _List"
+#~ msgstr "Λί_στα ταχυδρομείου"
+
+#~ msgid "Mine"
+#~ msgstr "Δικό μου"
+
+#~ msgid "My Directory"
+#~ msgstr "Ο προσωπικός μου κατάλογος"
+
+#~ msgid "Original"
+#~ msgstr "Αρχικό"
+
+#~ msgid "Original Directory"
+#~ msgstr "Αρχικός Κατάλογος"
+
+#~ msgid "Original File"
+#~ msgstr "Αρχικό αρχείο"
+
+#~ msgid "Other"
+#~ msgstr "Άλλο"
+
+#~ msgid "Other Directory"
+#~ msgstr "Άλλος κατάλογος"
+
+#~ msgid "Other File"
+#~ msgstr "Άλλο αρχείο"
+
+#~ msgid "Prune empty directories (-P)"
+#~ msgstr "Καθαρισμός κενών καταλόγων (-P)"
+
+#~ msgid "Quiet mode (-q)"
+#~ msgstr "Σιωπηλή λειτουργία (-q)"
+
+#~ msgid "Reload"
+#~ msgstr "Επαναφόρτωση"
+
+#~ msgid "Save in UTF-8 encoding"
+#~ msgstr "Αποθήκευση σε κωδικοποίηση UTF-8"
+
+#~ msgid "Save in the files original encoding"
+#~ msgstr "Αποθήκευση σε αυτόματη κωδικοποίηση αρχείων"
+
+#~ msgid "Simple: Lines only"
+#~ msgstr "Απλό: Μόνο γραμμές"
+
+#~ msgid "Text Beside Icons"
+#~ msgstr "Κείμενο δίπλα στα εικονίδια"
+
+#~ msgid "Text Only"
+#~ msgstr "Μόνο κείμενο"
+
+#~ msgid "Text Under Icons"
+#~ msgstr "Κείμενο κάτω από τα εικονίδια"
+
+#~ msgid "Three way directory"
+#~ msgstr "Κατάλογος τριών δρόμων"
+
+#~ msgid "Three way file"
+#~ msgstr "Αρχείο τριών δρόμων"
+
+#~ msgid "Two way directory"
+#~ msgstr "Κατάλογος δύο δρόμων"
+
+#~ msgid "Two way file"
+#~ msgstr "Αρχείο δύο δρόμων"
+
+#~ msgid "Use Compression (-z)"
+#~ msgstr "Χρήση συμπίεσης (-z)"
+
+#~ msgid "Use GNOME monospace font"
+#~ msgstr "Χρήση γραμματοσειράς monospace GNOME"
+
+#~ msgid "Use custom font"
+#~ msgstr "Χρήση προσαρμοσμένης γραμματοσειράς"
+
+#~ msgid "Whitespace is significant"
+#~ msgstr "Το λευκό διάστημα είναι σημαντικό"
+
+#~ msgid "_Character"
+#~ msgstr "_Χαρακτήρας"
+
+#~ msgid "_Logo"
+#~ msgstr "_Λογότυπο"
+
+#~ msgid "_New..."
+#~ msgstr "_Νέο..."
+
+#~ msgid "_Three Way Compare"
+#~ msgstr "Σύγκριση _τριών δρόμων"
+
+#~ msgid "_Up"
+#~ msgstr "_Πάνω"
+
+#~ msgid "_Word"
+#~ msgstr "_Λέξη"
+
+#~ msgid "Add _Binary"
+#~ msgstr "Προσθήκη _δυαδικού"
+
+#~ msgid "Add to VC"
+#~ msgstr "Προσθήκη στο VC"
+
+#~ msgid "Compare Options"
+#~ msgstr "Καταχώρηση επιλογών"
+
+#~ msgid "Date"
+#~ msgstr "Ημερομηνία"
+
+#~ msgid "Local copy against other remote revision"
+#~ msgstr "Τοπική αντιγραφή ενάντια σε κάθε απομακρυσμένη αναθεώρηση"
+
+#~ msgid "Local copy against same remote revision"
+#~ msgstr "Τοπική αντιγραφή ενάντια σε ίδια απομακρυσμένη αναθεώρηση"
+
+#~ msgid "Non _VC"
+#~ msgstr "Όχι _VC"
+
+#~ msgid "Remove _Locally"
+#~ msgstr "_Τοπική αφαίρεση"
+
+#~ msgid "Remove from VC"
+#~ msgstr "Αφαίρεση από το VC"
+
+#~ msgid "Show normal"
+#~ msgstr "Εμφάνιση κανονικού"
+
+#~ msgid "Tag"
+#~ msgstr "Ετικέτα"
+
+#~ msgid "Update"
+#~ msgstr "Ενημέρωση"
+
+#~ msgid "VC Log"
+#~ msgstr "Καταγραφή VC"
+
+#~ msgid ""
+#~ "Due to incompatible API changes some functions may not operate as "
+#~ "expected."
+#~ msgstr ""
+#~ "Εξαιτίας ασύμβατων αλλαγών API κάποιες πράξεις μπορεί να μην "
+#~ "λειτουργήσουν όπως αναμενόταν."
+
+#~ msgid "Regex"
+#~ msgstr "Κανονική έκφραση"
+
+#~ msgid ""
+#~ "Syntax highlighting is only available if you have gnome-python-desktop "
+#~ "installed."
+#~ msgstr ""
+#~ "Επισήμανση σύνταξης διατίθεται μόνο αν υπάρχει εγκατεστημένο το gnome-"
+#~ "python-desktop."
+
+#~ msgid ""
+#~ "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
+#~ msgstr ""
+#~ "Έλεγχος εκδόσεως\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory "
+#~ "RCS\n"
+
+#~ msgid ""
+#~ "Meld %s\n"
+#~ "Written by Stephen Kennedy <stevek@gnome.org>"
+#~ msgstr ""
+#~ "Meld %s\n"
+#~ "Γραμμένο από Stephen Kennedy <stevek@gnome.org>"
+
+#~ msgid "Rev"
+#~ msgstr "Αναθεώρηση"
+
+#~ msgid "Invoking patch failed, you need GNU patch."
+#~ msgstr ""
+#~ "Σφάλμα κατά την κλήση του διορθωτικού πακέτου, χρειάζεται το GNU Patch."
