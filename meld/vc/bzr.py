@@ -50,39 +50,45 @@ class Vc(_vc.CachedVc):
 
     # We use None here to indicate flags that we don't deal with or care about
     state_1_map = {
-        " ": None,               # First status column empty
-        "+": None,               # File versioned
-        "-": None,               # File unversioned
-        "R": None,               # File renamed
-        "?": _vc.STATE_NONE,     # File unknown
-        "X": None,               # File nonexistent (and unknown to bzr)
-        "C": _vc.STATE_CONFLICT, # File has conflicts
-        "P": None,               # Entry for a pending merge (not a file)
+        " ": None,                # First status column empty
+        "+": None,                # File versioned
+        "-": None,                # File unversioned
+        "R": None,                # File renamed
+        "?": _vc.STATE_NONE,      # File unknown
+        "X": None,                # File nonexistent (and unknown to bzr)
+        "C": _vc.STATE_CONFLICT,  # File has conflicts
+        "P": None,                # Entry for a pending merge (not a file)
     }
 
     state_2_map = {
-        " ": _vc.STATE_NORMAL,   # Second status column empty
-        "N": _vc.STATE_NEW,      # File created
-        "D": _vc.STATE_REMOVED,  # File deleted
-        "K": None,               # File kind changed
-        "M": _vc.STATE_MODIFIED, # File modified
+        " ": _vc.STATE_NORMAL,    # Second status column empty
+        "N": _vc.STATE_NEW,       # File created
+        "D": _vc.STATE_REMOVED,   # File deleted
+        "K": None,                # File kind changed
+        "M": _vc.STATE_MODIFIED,  # File modified
     }
-    
+
     valid_status_re = r'[%s][%s][\*\s]\s*' % (''.join(state_1_map.keys()),
                                               ''.join(state_2_map.keys()))
 
     def commit_command(self, message):
         return [self.CMD] + self.CMDARGS + ["commit", "-m", message]
+
     def diff_command(self):
         return [self.CMD] + self.CMDARGS + ["diff"]
+
     def update_command(self):
         return [self.CMD] + self.CMDARGS + ["pull"]
+
     def add_command(self):
         return [self.CMD] + self.CMDARGS + ["add"]
+
     def remove_command(self, force=0):
         return [self.CMD] + self.CMDARGS + ["rm"]
+
     def revert_command(self):
         return [self.CMD] + self.CMDARGS + ["revert"]
+
     def resolved_command(self):
         return [self.CMD] + self.CMDARGS + ["resolve"]
 
@@ -96,7 +102,8 @@ class Vc(_vc.CachedVc):
         return self.root
 
     def _lookup_tree_cache(self, rootdir):
-        branch_root = _vc.popen([self.CMD] + self.CMDARGS + ["root", rootdir]).read().rstrip('\n')
+        branch_root = _vc.popen(
+            [self.CMD] + self.CMDARGS + ["root", rootdir]).read().rstrip('\n')
         while 1:
             try:
                 proc = _vc.popen([self.CMD] + self.CMDARGS +
@@ -106,6 +113,7 @@ class Vc(_vc.CachedVc):
             except OSError as e:
                 if e.errno != errno.EAGAIN:
                     raise
+
         tree_state = {}
         for entry in entries:
             state_string, name = entry[:3], entry[4:].strip()
@@ -143,16 +151,14 @@ class Vc(_vc.CachedVc):
             else:
                 retfiles.append(_vc.File(path, name, state))
             bzrfiles[name] = 1
-        for f,path in files:
+        for f, path in files:
             if f not in bzrfiles:
-                #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 state = _vc.STATE_NORMAL
                 retfiles.append(_vc.File(path, f, state))
-        for d,path in dirs:
+        for d, path in dirs:
             if d not in bzrfiles:
-                #state = ignore_re.match(f) is None and _vc.STATE_NONE or _vc.STATE_IGNORED
                 state = _vc.STATE_NORMAL
-                retdirs.append( _vc.Dir(path, d, state) )
+                retdirs.append(_vc.Dir(path, d, state))
         return retdirs, retfiles
 
     def get_path_for_repo_file(self, path, commit=None):
