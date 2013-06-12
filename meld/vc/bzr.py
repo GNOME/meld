@@ -41,6 +41,10 @@ class Vc(_vc.CachedVc):
     PATCH_INDEX_RE = "^=== modified file '(.*)'.*$"
     CONFLICT_RE = "conflict in (.*)$"
 
+    commit_statuses = (
+        _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED
+    )
+
     conflict_map = {
         _vc.CONFLICT_BASE: '.BASE',
         _vc.CONFLICT_OTHER: '.OTHER',
@@ -77,20 +81,36 @@ class Vc(_vc.CachedVc):
     def diff_command(self):
         return [self.CMD] + self.CMDARGS + ["diff"]
 
-    def update_command(self):
-        return [self.CMD] + self.CMDARGS + ["pull"]
-
     def add_command(self):
         return [self.CMD] + self.CMDARGS + ["add"]
 
-    def remove_command(self, force=0):
-        return [self.CMD] + self.CMDARGS + ["rm"]
+    def revert(self, runner, files):
+        runner(
+            [self.CMD] + self.CMDARGS + ["revert"] + files, [], refresh=True,
+            working_dir=self.root)
 
-    def revert_command(self):
-        return [self.CMD] + self.CMDARGS + ["revert"]
+    def push(self, runner):
+        runner(
+            [self.CMD] + self.CMDARGS + ["push"], [], refresh=True,
+            working_dir=self.root)
 
-    def resolved_command(self):
-        return [self.CMD] + self.CMDARGS + ["resolve"]
+    def update(self, runner, files):
+        # TODO: Handle checkouts/bound branches by calling
+        # update instead of pull. For now we've replicated existing
+        # functionality, as update will not work for unbound branches.
+        runner(
+            [self.CMD] + self.CMDARGS + ["pull"], [], refresh=True,
+            working_dir=self.root)
+
+    def resolve(self, runner, files):
+        runner(
+            [self.CMD] + self.CMDARGS + ["resolve"] + files, [], refresh=True,
+            working_dir=self.root)
+
+    def remove(self, runner, files):
+        runner(
+            [self.CMD] + self.CMDARGS + ["rm"] + files, [], refresh=True,
+            working_dir=self.root)
 
     def valid_repo(self):
         if _vc.call([self.CMD, "root"], cwd=self.root):
@@ -100,6 +120,18 @@ class Vc(_vc.CachedVc):
 
     def get_working_directory(self, workdir):
         return self.root
+
+    def get_files_to_commit(self, paths):
+        files = []
+        for p in paths:
+            if os.path.isdir(p):
+                entries = self._lookup_tree_cache(p)
+                names = [
+                    x for x, y in entries.items() if y in self.commit_statuses]
+                files.extend(names)
+            else:
+                files.append(os.path.relpath(p, self.root))
+        return sorted(list(set(files)))
 
     def _lookup_tree_cache(self, rootdir):
         branch_root = _vc.popen(
@@ -189,3 +221,30 @@ class Vc(_vc.CachedVc):
 
         # bzr paths are all temporary files
         return "%s%s" % (path, self.conflict_map[conflict]), False
+
+    # Sensitivity button mappings.
+    def update_actions_for_paths(self, path_states, actions):
+        states = path_states.values()
+
+        actions["VcCompare"] = bool(path_states)
+        # TODO: We can't disable this for NORMAL, because folders don't
+        # inherit any state from their children, but committing a folder with
+        # modified children is expected behaviour.
+        actions["VcCommit"] = all(s not in (
+            _vc.STATE_NONE, _vc.STATE_IGNORED) for s in states)
+
+        actions["VcUpdate"] = True
+        # TODO: We can't do this; this shells out for each selection change...
+        # actions["VcPush"] = bool(self.get_commits_to_push())
+        actions["VcPush"] = True
+
+        actions["VcAdd"] = all(s not in (
+            _vc.STATE_NORMAL, _vc.STATE_REMOVED) for s in states)
+        actions["VcResolved"] = all(s == _vc.STATE_CONFLICT for s in states)
+        actions["VcRemove"] = (all(s not in (
+            _vc.STATE_NONE, _vc.STATE_IGNORED,
+            _vc.STATE_REMOVED) for s in states) and
+            self.root not in path_states.keys())
+        actions["VcRevert"] = all(s not in (
+            _vc.STATE_NONE, _vc.STATE_NORMAL,
+            _vc.STATE_IGNORED) for s in states)
