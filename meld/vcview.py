@@ -495,7 +495,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 col = self.model.column_index(COL_OPTIONS, 0)
                 self.model.set_value(root, col,
                                      self.vc.get_commits_to_push_summary())
-            except AttributeError:
+            except NotImplementedError:
                 pass
 
             self.scheduler.add_task(self._search_recursively_iter(root))
