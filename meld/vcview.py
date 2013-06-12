@@ -498,9 +498,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 continue
 
             kwargs = {}
-            vc_file = self.vc.lookup_files(
-                [], [(os.path.basename(path), path)])[1][0]
-            if vc_file.state == tree.STATE_CONFLICT and \
+            # Horrible workaround here - lookup_files is not guaranteed
+            # to *only* contain the path in question.
+            vc_files = [
+                x for x in
+                self.vc.lookup_files(
+                    [], [(os.path.basename(path), path)])[1]
+                if x.path == path
+            ]
+            if vc_files and vc_files[0].state == tree.STATE_CONFLICT and \
                     hasattr(self.vc, 'get_path_for_conflict'):
                 # We use auto merge, so we create a new temp file
                 # for other, base and this, then set the output to
