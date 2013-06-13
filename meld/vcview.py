@@ -512,55 +512,44 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.label_changed()
 
     def _search_recursively_iter(self, iterstart):
-        yield _("[%s] Scanning %s") % (self.label_text, "")
-        rootpath = self.model.get_path(iterstart)
-        rootname = self.model.value_path(self.model.get_iter(rootpath), 0)
-        prefixlen = 1 + len(self.model.value_path(self.model.get_iter_root(), 0))
-        todo = [(rootpath, rootname)]
+        rootname = self.model.value_path(iterstart, 0)
+        prefixlen = len(self.location) + 1
+        todo = [(self.model.get_path(iterstart), rootname)]
 
+        flattened = self.actiongroup.get_action("VcFlatten").get_active()
         active_action = lambda a: self.actiongroup.get_action(a).get_active()
         filters = [a[1] for a in self.state_actions.values() if
                    active_action(a[0]) and a[1]]
 
-        def showable(entry):
-            for f in filters:
-                if f(entry):
-                    return 1
-        recursive = self.actiongroup.get_action("VcFlatten").get_active()
+        yield _("Scanning %s") % rootname
         self.vc.cache_inventory(rootname)
-        while len(todo):
-            # depth first
+        while todo:
+            # This needs to happen sorted and depth-first in order for our row
+            # references to remain valid while we traverse.
             todo.sort()
-            path, name = todo.pop(0)
-            if path:
-                it = self.model.get_iter(path)
-                root = self.model.value_path(it, 0)
-            else:
-                it = self.model.get_iter_root()
-                root = name
-            yield _("[%s] Scanning %s") % (self.label_text, root[prefixlen:])
+            treepath, path = todo.pop(0)
+            it = self.model.get_iter(treepath)
+            yield _("Scanning %s") % path[prefixlen:]
 
-            entries = [f for f in self.vc.listdir(root) if showable(f)]
-            differences = 0
+            entries = self.vc.listdir(path)
+            entries = [e for e in entries if any(f(e) for f in filters)]
             for e in entries:
-                differences |= (e.state != tree.STATE_NORMAL)
-                if e.isdir and recursive:
-                    todo.append((None, e.path))
+                if e.isdir and flattened:
+                    todo.append(((0,), e.path))
                     continue
-                child = self.model.add_entries(it, [e.path])
-                self._update_item_state(child, e, root[prefixlen:])
-                if e.isdir:
-                    todo.append((self.model.get_path(child), None))
 
-            if not recursive:
-                # expand parents
-                if len(entries) == 0:
-                    self.model.add_empty(it, _("(Empty)"))
-                if differences or len(path) == 1:
-                    self.treeview.expand_to_path(path)
-            else:
-                # just the root
+                child = self.model.add_entries(it, [e.path])
+                self._update_item_state(child, e, path[prefixlen:])
+                if e.isdir:
+                    todo.append((self.model.get_path(child), e.path))
+
+            if flattened:
                 self.treeview.expand_row((0,), 0)
+            else:
+                if not entries:
+                    self.model.add_empty(it, _("(Empty)"))
+                if any(e.state != tree.STATE_NORMAL for e in entries):
+                    self.treeview.expand_to_path(treepath)
 
     def on_fileentry_activate(self, fileentry):
         path = fileentry.get_full_path()
