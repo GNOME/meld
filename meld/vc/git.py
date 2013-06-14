@@ -118,8 +118,13 @@ class Vc(_vc.CachedVc):
         unpushed_commits = sum(len(v) for v in branch_refs.values())
         if unpushed_commits:
             if unpushed_branches > 1:
-                label = _("%d unpushed commits in %d branches") % \
-                    (unpushed_commits, unpushed_branches)
+                # Translators: First %s is replaced by translated "%d unpushed
+                # commits", second %s is replaced by translated "%d branches"
+                label = _("%s in %s") % (
+                    ngettext("%d unpushed commit", "%d unpushed commits",
+                             unpushed_commits) % unpushed_commits,
+                    ngettext("%d branch", "%d branches",
+                             unpushed_branches) % unpushed_branches)
             else:
                 label = ngettext("%d unpushed commit", "%d unpushed commits",
                                  unpushed_commits) % (unpushed_commits)
