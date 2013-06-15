@@ -42,7 +42,7 @@ class Vc(_vc.CachedVc):
     CONFLICT_RE = "conflict in (.*)$"
 
     commit_statuses = (
-        _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED
+        _vc.STATE_MODIFIED, _vc.STATE_NEW, _vc.STATE_REMOVED
     )
 
     conflict_map = {
