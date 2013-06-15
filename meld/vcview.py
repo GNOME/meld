@@ -155,69 +155,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"),
-                                      "vcview", ['liststore_vcs'])
-
-        actions = (
-            ("VcCompare", gtk.STOCK_DIALOG_INFO, _("_Compare"), None,
-                _("Compare selected files"),
-                self.on_button_diff_clicked),
-            ("VcCommit", "vc-commit-24", _("Co_mmit..."), "<Ctrl>M",
-                _("Commit changes to version control"),
-                self.on_button_commit_clicked),
-            ("VcUpdate", "vc-update-24", _("_Update"), None,
-                _("Update working copy from version control"),
-                self.on_button_update_clicked),
-            ("VcPush", "vc-push-24", _("_Push"), None,
-                _("Push local changes to remote"),
-                self.on_button_push_clicked),
-            ("VcAdd", "vc-add-24", _("_Add"), None,
-                _("Add to version control"),
-                self.on_button_add_clicked),
-            ("VcRemove", "vc-remove-24", _("_Remove"), None,
-                _("Remove from version control"),
-                self.on_button_remove_clicked),
-            ("VcResolved", "vc-resolve-24", _("Mar_k as Resolved"), None,
-                _("Mark as resolved in version control"),
-                self.on_button_resolved_clicked),
-            ("VcRevert", gtk.STOCK_REVERT_TO_SAVED, _("Re_vert"), None,
-                _("Revert working copy to original state"),
-                self.on_button_revert_clicked),
-            ("VcDeleteLocally", gtk.STOCK_DELETE, None, None,
-                _("Delete from working copy"),
-                self.on_button_delete_clicked),
-        )
-
-        toggleactions = (
-            ("VcFlatten", gtk.STOCK_GOTO_BOTTOM, _("_Flatten"),  None,
-                _("Flatten directories"),
-                self.on_button_flatten_toggled, False),
-            ("VcShowModified", "filter-modified-24", _("_Modified"), None,
-                _("Show modified files"),
-                self.on_filter_state_toggled, False),
-            ("VcShowNormal", "filter-normal-24", _("_Normal"), None,
-                _("Show normal files"),
-                self.on_filter_state_toggled, False),
-            ("VcShowNonVC", "filter-nonvc-24", _("Un_versioned"), None,
-                _("Show unversioned files"),
-                self.on_filter_state_toggled, False),
-            ("VcShowIgnored", "filter-ignored-24", _("Ignored"), None,
-                _("Show ignored files"),
-                self.on_filter_state_toggled, False),
-        )
+                                      "vcview", ["VcviewActions", 'liststore_vcs'])
 
         self.ui_file = paths.ui_dir("vcview-ui.xml")
-        self.actiongroup = gtk.ActionGroup('VcviewActions')
+        self.actiongroup = self.VcviewActions
         self.actiongroup.set_translation_domain("meld")
-        self.actiongroup.add_actions(actions)
-        self.actiongroup.add_toggle_actions(toggleactions)
-        for action in ("VcCompare", "VcFlatten", "VcShowModified",
-                       "VcShowNormal", "VcShowNonVC", "VcShowIgnored"):
-            self.actiongroup.get_action(action).props.is_important = True
-        for action in ("VcCommit", "VcUpdate", "VcPush", "VcAdd", "VcRemove",
-                       "VcShowModified", "VcShowNormal", "VcShowNonVC",
-                       "VcShowIgnored", "VcResolved"):
-            button = self.actiongroup.get_action(action)
-            button.props.icon_name = button.props.stock_id
         self.model = VcTreeStore()
         self.widget.connect("style-set", self.model.on_style_set)
         self.treeview.set_model(self.model)
