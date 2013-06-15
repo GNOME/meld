@@ -570,71 +570,43 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             path = self.model.value_path(it, 0)
             self.run_diff([path])
 
-    def run_diff_iter(self, path_list):
-        silent_error = hasattr(self.vc, 'switch_to_external_diff')
-        retry_diff = True
-        while retry_diff:
-            retry_diff = False
-
-            yield _("[%s] Fetching differences") % self.label_text
-            diffiter = self._command_iter(self.vc.diff_command(), path_list, 0)
-            diff = None
-            while type(diff) != type(()):
-                diff = next(diffiter)
-                yield 1
-            prefix, patch = diff[0], diff[1]
-
-            yield _("[%s] Applying patch") % self.label_text
-            if patch:
-                applied = self.show_patch(prefix, patch, silent=silent_error)
-                if not applied and silent_error:
-                    silent_error = False
-                    self.vc.switch_to_external_diff()
-                    retry_diff = True
-            else:
-                for path in path_list:
-                    self.emit("create-diff", [path], {})
-
     def run_diff(self, path_list):
-        try:
-            for path in path_list:
-                if os.path.isdir(path):
-                    self.emit("create-diff", [path], {})
-                    continue
+        for path in path_list:
+            if os.path.isdir(path):
+                self.emit("create-diff", [path], {})
+                continue
 
-                kwargs = {}
-                vc_file = self.vc.lookup_files(
-                    [], [(os.path.basename(path), path)])[1][0]
-                if vc_file.state == tree.STATE_CONFLICT:
-                    # We use auto merge, so we create a new temp file
-                    # for other, base and this, then set the output to
-                    # the current file.
+            kwargs = {}
+            vc_file = self.vc.lookup_files(
+                [], [(os.path.basename(path), path)])[1][0]
+            if vc_file.state == tree.STATE_CONFLICT and \
+                    hasattr(self.vc, 'get_path_for_conflict'):
+                # We use auto merge, so we create a new temp file
+                # for other, base and this, then set the output to
+                # the current file.
 
-                    conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
-                                 tree.CONFLICT_THIS)
-                    diffs = [self.vc.get_path_for_conflict(path, conflict=c)
-                             for c in conflicts]
-                    for conflict_path, is_temp in diffs:
-                        # If this is the actual file, don't touch it.
-                        if conflict_path != path and is_temp:
-                            os.chmod(conflict_path, 0o444)
-                            _temp_files.append(conflict_path)
-                    # create-diff expects only the paths
-                    diffs = [p for p, is_temp in diffs]
+                conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
+                             tree.CONFLICT_THIS)
+                diffs = [self.vc.get_path_for_conflict(path, conflict=c)
+                         for c in conflicts]
+                for conflict_path, is_temp in diffs:
+                    # If this is the actual file, don't touch it.
+                    if conflict_path != path and is_temp:
+                        os.chmod(conflict_path, 0o444)
+                        _temp_files.append(conflict_path)
+                # create-diff expects only the paths
+                diffs = [p for p, is_temp in diffs]
 
-                    # If we want to use auto-merge or use the merged
-                    # output given by the VCS
-                    kwargs['auto_merge'] = False
-                    kwargs['merge_output'] = path
-                else:
-                    comp_path = self.vc.get_path_for_repo_file(path)
-                    os.chmod(comp_path, 0o444)
-                    _temp_files.append(comp_path)
-                    diffs = [comp_path, path]
-                self.emit("create-diff", diffs, kwargs)
-        except NotImplementedError:
-            for path in path_list:
-                self.scheduler.add_task(self.run_diff_iter([path]), atfront=1)
+                # If we want to use auto-merge or use the merged
+                # output given by the VCS
+                kwargs['auto_merge'] = False
+                kwargs['merge_output'] = path
+            else:
+                comp_path = self.vc.get_path_for_repo_file(path)
+                os.chmod(comp_path, 0o444)
+                _temp_files.append(comp_path)
+                diffs = [comp_path, path]
+            self.emit("create-diff", diffs, kwargs)
 
     def on_treeview_popup_menu(self, treeview):
         time = gtk.get_current_event_time()
@@ -827,75 +799,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def open_external(self):
         self._open_files(self._get_selected_files())
-
-    def show_patch(self, prefix, patch, silent=False):
-        if vc._vc.call(["which", "patch"]):
-            primary = _("Patch tool not found")
-            secondary = _("Meld needs the <i>patch</i> tool to be installed "
-                          "to perform comparisons in %s repositories. Please "
-                          "install <i>patch</i> and try again.") % self.vc.NAME
-
-            msgarea = self.msgarea_mgr.new_from_text_and_icon(
-                gtk.STOCK_DIALOG_ERROR, primary, secondary)
-            msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
-            msgarea.connect("response", lambda *args: self.msgarea_mgr.clear())
-            msgarea.show_all()
-            return False
-
-        tmpdir = tempfile.mkdtemp("-meld")
-        _temp_dirs.append(tmpdir)
-
-        diffs = []
-        for fname in self.vc.get_patch_files(patch):
-            destfile = os.path.join(tmpdir, fname)
-            destdir = os.path.dirname(destfile)
-
-            if not os.path.exists(destdir):
-                os.makedirs(destdir)
-            pathtofile = os.path.join(prefix, fname)
-            try:
-                shutil.copyfile(pathtofile, destfile)
-            except IOError:
-                # it is missing, create empty file
-                open(destfile, "w").close()
-            diffs.append((destfile, pathtofile))
-
-        patchcmd = self.vc.patch_command(tmpdir)
-        try:
-            with open(os.devnull, "w") as NULL:
-                result = misc.write_pipe(patchcmd, patch, error=NULL)
-        except OSError:
-            result = 1
-
-        if result == 0:
-            for d in diffs:
-                os.chmod(d[0], 0o444)
-                self.emit("create-diff", d, {})
-            return True
-        elif not silent:
-            primary = _("Error fetching original comparison file")
-            secondary = _("Meld couldn't obtain the original version of your "
-                          "comparison file. If you are using the most recent "
-                          "version of Meld, please report a bug, including as "
-                          "many details as possible.")
-
-            msgarea = self.msgarea_mgr.new_from_text_and_icon(
-                gtk.STOCK_DIALOG_ERROR, primary, secondary)
-            msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
-            msgarea.add_button(_("Report a bug"), gtk.RESPONSE_OK)
-
-            def patch_error_cb(msgarea, response):
-                if response == gtk.RESPONSE_OK:
-                    bug_url = "https://bugzilla.gnome.org/enter_bug.cgi?" + \
-                              "product=meld"
-                    misc.open_uri(bug_url)
-                else:
-                    self.msgarea_mgr.clear()
-
-            msgarea.connect("response", patch_error_cb)
-            msgarea.show_all()
-
-        return False
 
     def refresh(self):
         self.set_location(self.model.value_path(self.model.get_iter_root(), 0))

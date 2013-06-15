@@ -35,8 +35,6 @@ class Vc(_vc.CachedVc):
     CMD = "darcs"
     NAME = "Darcs"
     VC_DIR = "_darcs"
-    PATCH_STRIP_NUM = 1
-    PATCH_INDEX_RE = "--- old.+?/(.+?)\\t+.*[0-9]{4}$"
     state_map = {
         "a": _vc.STATE_NONE,
         "A": _vc.STATE_NEW,

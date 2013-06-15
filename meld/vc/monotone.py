@@ -36,7 +36,6 @@ class Vc(_vc.CachedVc):
     CMD = "mtn"
     NAME = "Monotone"
     VC_DIR = "_MTN"
-    PATCH_INDEX_RE = "^[+]{3,3} ([^  ]*)\t[0-9a-f]{40,40}$"
 
     state_map_6 = {
         'added known rename_source'         : _vc.STATE_NEW,

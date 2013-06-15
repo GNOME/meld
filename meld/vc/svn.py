@@ -38,7 +38,6 @@ class Vc(_vc.CachedVc):
     NAME = "Subversion"
     VC_DIR = ".svn"
     VC_ROOT_WALK = False
-    PATCH_INDEX_RE = "^Index:(.*)$"
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION)
 
@@ -56,10 +55,7 @@ class Vc(_vc.CachedVc):
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
     def diff_command(self):
-        if hasattr(self, "external_diff"):
-            return [self.CMD, "diff", "--diff-cmd", self.external_diff]
-        else:
-            return [self.CMD, "diff"]
+        return [self.CMD, "diff"]
 
     def update_command(self):
         return [self.CMD,"update"]
@@ -169,9 +165,6 @@ class Vc(_vc.CachedVc):
         with open(version_file) as f:
             content = f.readline().strip()
         return self._repo_version_support(int(content))
-
-    def switch_to_external_diff(self):
-        self.external_diff = "diff"
 
     def _update_tree_state_cache(self, path, tree_state):
         while 1:

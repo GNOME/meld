@@ -99,8 +99,6 @@ class File(Entry):
 
 class Vc(object):
 
-    PATCH_STRIP_NUM = 0
-    PATCH_INDEX_RE = ''
     VC_DIR = None
     VC_ROOT_WALK = True
     VC_METADATA = None
@@ -143,9 +141,6 @@ class Vc(object):
 
     def resolved_command(self):
         raise NotImplementedError()
-
-    def patch_command(self, workdir):
-        return ["patch", "-p%i" % self.PATCH_STRIP_NUM, "-R", "-d", workdir]
 
     # Prototyping VC interface version 2
 
@@ -229,10 +224,6 @@ class Vc(object):
         accurate.
         """
         pass
-
-    def get_patch_files(self, patch):
-        regex = re.compile(self.PATCH_INDEX_RE, re.M)
-        return [f.strip() for f in regex.findall(patch)]
 
     # Determine if a directory is a valid git/svn/hg/cvs/etc repository
     def valid_repo(self):

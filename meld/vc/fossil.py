@@ -38,7 +38,6 @@ class Vc(_vc.CachedVc):
     CMD = "fossil"
     NAME = "Fossil"
     VC_METADATA = [".fslckout", "_FOSSIL_", ".fos"]    # One or the other
-    PATCH_INDEX_RE = "^--- (.*)$"
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION)
 

@@ -26,10 +26,17 @@ import logging
 import os
 from gettext import gettext as _
 import re
+import shutil
+import tempfile
 import time
 
 from meld import misc
 from . import _vc
+
+
+class FakeErrorStream(object):
+    def error(self, error):
+        pass
 
 
 class Vc(_vc.Vc):
@@ -39,6 +46,7 @@ class Vc(_vc.Vc):
     NAME = "CVS"
     VC_DIR = "CVS"
     VC_ROOT_WALK = False
+    PATCH_STRIP_NUM = 0
     PATCH_INDEX_RE = "^Index:(.*)$"
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION,
@@ -73,6 +81,49 @@ class Vc(_vc.Vc):
             return True
         else:
             return False
+
+    def get_path_for_repo_file(self, path, commit=None):
+        if commit is not None:
+            raise NotImplementedError
+
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
+        diffiter = misc.read_pipe_iter(self.diff_command() + [path],
+                                       FakeErrorStream(), workdir=self.root)
+        patch = None
+        while patch is None:
+            patch = next(diffiter)
+
+        tmpdir = tempfile.mkdtemp("-meld")
+        destfile = os.path.join(tmpdir, os.path.basename(path))
+
+        try:
+            shutil.copyfile(os.path.join(self.root, path), destfile)
+        except IOError:
+            # For missing files, create a new empty file
+            open(destfile, "w").close()
+
+        patchcmd = ["patch", "-R", "-d", tmpdir]
+        try:
+            with open(os.devnull, "w") as NULL:
+                result = misc.write_pipe(patchcmd, patch, error=NULL)
+                assert result == 0
+
+            with open(destfile) as patched_file:
+                with tempfile.NamedTemporaryFile(prefix='meld-tmp',
+                                                 delete=False) as temp_file:
+                    shutil.copyfileobj(patched_file, temp_file)
+
+            return temp_file.name
+        except (OSError, AssertionError):
+            return
+        finally:
+            if os.path.exists(destfile):
+                os.remove(destfile)
+            if os.path.exists(destfile):
+                os.rmdir(tmpdir)
 
     def _get_dirsandfiles(self, directory, dirs, files):
         log = logging.getLogger(__name__)

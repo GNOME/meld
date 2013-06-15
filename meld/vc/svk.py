@@ -49,7 +49,6 @@ class Vc(svn.Vc):
 
     CMD = "svk"
     NAME = "SVK"
-    PATCH_INDEX_RE = "^=== (.*)$"
 
     def check_repo_root(self, location):
         try:

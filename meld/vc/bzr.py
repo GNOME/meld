@@ -38,7 +38,6 @@ class Vc(_vc.CachedVc):
     CMDARGS = ["--no-aliases", "--no-plugins"]
     NAME = "Bazaar"
     VC_DIR = ".bzr"
-    PATCH_INDEX_RE = "^=== modified file '(.*)'.*$"
     CONFLICT_RE = "conflict in (.*)$"
 
     commit_statuses = (
