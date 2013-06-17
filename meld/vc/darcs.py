@@ -21,8 +21,12 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-import os
 import errno
+import os
+import shutil
+import subprocess
+import tempfile
+
 from . import _vc
 
 
@@ -79,6 +83,27 @@ class Vc(_vc.CachedVc):
 
     def get_working_directory(self, workdir):
         return self.root
+
+    def get_path_for_repo_file(self, path, commit=None):
+        if commit is not None:
+            raise NotImplementedError()
+
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
+        process = subprocess.Popen([self.CMD, "show", "contents",
+                                    "--repodir=" + self.root, path],
+                                   cwd=self.root, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        vc_file = process.stdout
+
+        # Error handling here involves doing nothing; in most cases, the only
+        # sane response is to return an empty temp file.
+
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            shutil.copyfileobj(vc_file, f)
+        return f.name
 
     def _get_dirsandfiles(self, directory, dirs, files):
         whatsnew = self._get_tree_cache(directory)
