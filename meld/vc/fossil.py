@@ -26,6 +26,9 @@
 import errno
 import logging
 import os
+import shutil
+import subprocess
+import tempfile
 
 from . import _vc
 
@@ -81,6 +84,27 @@ class Vc(_vc.CachedVc):
 
     def get_working_directory(self, workdir):
         return self.root
+
+    def get_path_for_repo_file(self, path, commit=None):
+        if commit is None:
+            commit = ""
+
+        if not path.startswith(self.root + os.path.sep):
+            raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
+
+        command = [self.CMD, "finfo", "-p", path]
+        if commit:
+            command.extend(["-r", commit])
+
+        process = subprocess.Popen(command,
+                                   cwd=self.root, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        vc_file = process.stdout
+
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            shutil.copyfileobj(vc_file, f)
+        return f.name
 
     def _lookup_tree_cache(self, rootdir):
         log = logging.getLogger(__name__)
