@@ -320,10 +320,15 @@ class MeldWindow(gnomeglade.Component):
 
         have_focus = current_page != -1
         self.actiongroup.get_action("Close").set_sensitive(have_focus)
-        self.actiongroup.get_action("Refresh").set_sensitive(have_focus)
-        if not have_focus:
-            self.actiongroup.get_action("PrevChange").set_sensitive(False)
-            self.actiongroup.get_action("NextChange").set_sensitive(False)
+
+        have_comparison_page = have_focus and isinstance(
+            self.notebook.get_nth_page(current_page).get_data("pyobject"),
+            melddoc.MeldDoc)
+        if not have_comparison_page:
+            for action in ("PrevChange", "NextChange", "Cut", "Copy", "Paste",
+                           "Find", "FindNext", "FindPrevious", "Replace",
+                           "Refresh"):
+                self.actiongroup.get_action(action).set_sensitive(False)
 
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
