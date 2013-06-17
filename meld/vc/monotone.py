@@ -33,8 +33,9 @@ from . import _vc
 
 
 class Vc(_vc.CachedVc):
+    CMD = "mtn"
     NAME = "Monotone"
-    VC_METADATA = ['MT', '_MTN']
+    VC_DIR = "_MTN"
     PATCH_INDEX_RE = "^[+]{3,3} ([^  ]*)\t[0-9a-f]{40,40}$"
 
     state_map_6 = {
@@ -117,24 +118,15 @@ class Vc(_vc.CachedVc):
 
     def __init__(self, location):
         self.interface_version = 0.0
-        self.choose_monotone_version()
-        super(Vc, self).__init__(os.path.normpath(location))
-
-    def choose_monotone_version(self):
         log = logging.getLogger(__name__)
 
-        try:
-            # for monotone >= 0.26
-            self.VC_DIR = "_MTN"
-            self.CMD = "mtn"
-            self.interface_version = float(_vc.popen([self.CMD, "automate", "interface_version"]).read())
-            if self.interface_version > 9.0:
-                log.error("Unsupported monotone interface version; please "
-                          "report any problems to the Meld mailing list.")
-        except (ValueError, OSError):
-            # for monotone <= 0.25
-            self.VC_DIR = "MT"
-            self.CMD = "monotone"
+        self.interface_version = float(
+            _vc.popen([self.CMD, "automate", "interface_version"]).read())
+        if self.interface_version > 9.0:
+            log.error("Unsupported monotone interface version; please "
+                      "report any problems to the Meld mailing list.")
+
+        super(Vc, self).__init__(os.path.normpath(location))
 
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
