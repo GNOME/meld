@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-16 21:14+0000\n"
-"PO-Revision-Date: 2013-05-17 10:29+0200\n"
+"POT-Creation-Date: 2013-06-14 23:09+0000\n"
+"PO-Revision-Date: 2013-06-18 11:09+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -65,11 +65,11 @@ msgstr "Activar"
 msgid "Column Name"
 msgstr "Nombre de la columna"
 
-#: ../data/ui/EditableList.ui.h:4 ../meld/vcview.py:250
+#: ../data/ui/EditableList.ui.h:4 ../meld/vcview.py:251
 msgid "_Add"
 msgstr "_Añadir"
 
-#: ../data/ui/EditableList.ui.h:5 ../meld/vcview.py:253
+#: ../data/ui/EditableList.ui.h:5 ../meld/vcview.py:254
 msgid "_Remove"
 msgstr "_Eliminar"
 
@@ -91,7 +91,7 @@ msgstr "_Bajar"
 
 #. Create icon and filename CellRenderer
 #: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:342
-#: ../meld/vcview.py:309
+#: ../meld/vcview.py:310
 msgid "Name"
 msgstr "Nombre"
 
@@ -478,7 +478,6 @@ msgid "Co_mmit"
 msgstr "E_fectuar"
 
 #: ../data/ui/vcview.ui.h:6
-#| msgid "Push local changes to remote"
 msgid "Push local commits to remote?"
 msgstr "¿Empujar los cambios locales al equipo remoto?"
 
@@ -488,12 +487,10 @@ msgstr ""
 "Los cambios que empujar los determina su sistema de control de versiones."
 
 #: ../data/ui/vcview.ui.h:8
-#| msgid "%d unpushed commit"
-#| msgid_plural "%d unpushed commits"
 msgid "_Push commits"
 msgstr "_Empujar cambios"
 
-#: ../meld/dirdiff.py:269 ../meld/vcview.py:238
+#: ../meld/dirdiff.py:269 ../meld/vcview.py:239
 msgid "_Compare"
 msgstr "_Comparar"
 
@@ -521,7 +518,7 @@ msgstr "Copiar a la derecha"
 msgid "Delete selected"
 msgstr "Eliminar seleccionados"
 
-#: ../meld/dirdiff.py:273 ../meld/filediff.py:1346 ../meld/filediff.py:1381
+#: ../meld/dirdiff.py:273 ../meld/filediff.py:1348 ../meld/filediff.py:1383
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -593,8 +590,7 @@ msgstr "Permisos"
 msgid "Hide %s"
 msgstr "Ocultar %s"
 
-#: ../meld/dirdiff.py:636 ../meld/dirdiff.py:655 ../meld/vcview.py:501
-#: ../meld/vcview.py:525
+#: ../meld/dirdiff.py:636 ../meld/dirdiff.py:655
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Buscando %s"
@@ -638,8 +634,8 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "«%s» oculto por «%s»"
 
-#: ../meld/dirdiff.py:804 ../meld/filediff.py:1074 ../meld/filediff.py:1350
-#: ../meld/filediff.py:1383 ../meld/vcview.py:805 ../meld/vcview.py:847
+#: ../meld/dirdiff.py:804 ../meld/filediff.py:1076 ../meld/filediff.py:1352
+#: ../meld/filediff.py:1385 ../meld/vcview.py:840 ../meld/vcview.py:884
 msgid "Hi_de"
 msgstr "_Ocultar"
 
@@ -663,7 +659,7 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:861 ../meld/vcview.py:779
+#: ../meld/dirdiff.py:861 ../meld/vcview.py:813
 #, python-format
 msgid ""
 "'%s' is a directory.\n"
@@ -672,7 +668,7 @@ msgstr ""
 "«%s» es una carpeta.\n"
 "¿Eliminarla recursivamente?"
 
-#: ../meld/dirdiff.py:868 ../meld/vcview.py:784
+#: ../meld/dirdiff.py:868 ../meld/vcview.py:818
 #, python-format
 msgid ""
 "Error removing %s\n"
@@ -895,21 +891,21 @@ msgid "Lock Scrolling"
 msgstr "Bloquear el desplazamiento"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:413
+#: ../meld/filediff.py:415
 msgid "INS"
 msgstr "INS"
 
-#: ../meld/filediff.py:413
+#: ../meld/filediff.py:415
 msgid "OVR"
 msgstr "SOB"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:415
+#: ../meld/filediff.py:417
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Lín %i, Col %i"
 
-#: ../meld/filediff.py:748
+#: ../meld/filediff.py:750
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -918,42 +914,42 @@ msgstr ""
 "El filtro «%s» cambió el número de líneas en el archivo. La comparación será "
 "incorrecta. Vea el manual del usuario para más detalles."
 
-#: ../meld/filediff.py:1062
+#: ../meld/filediff.py:1064
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Establezca el número de paneles"
 
-#: ../meld/filediff.py:1068
+#: ../meld/filediff.py:1070
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Abriendo archivos"
 
-#: ../meld/filediff.py:1092 ../meld/filediff.py:1102 ../meld/filediff.py:1115
-#: ../meld/filediff.py:1121
+#: ../meld/filediff.py:1094 ../meld/filediff.py:1104 ../meld/filediff.py:1117
+#: ../meld/filediff.py:1123
 msgid "Could not read file"
 msgstr "No se pudo leer el archivo"
 
-#: ../meld/filediff.py:1093
+#: ../meld/filediff.py:1095
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Leyendo archivos"
 
-#: ../meld/filediff.py:1103
+#: ../meld/filediff.py:1105
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s parece ser un archivo binario."
 
-#: ../meld/filediff.py:1116
+#: ../meld/filediff.py:1118
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s no está en codificación: %s"
 
-#: ../meld/filediff.py:1150
+#: ../meld/filediff.py:1152
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Calculando las diferencias"
 
-#: ../meld/filediff.py:1337
+#: ../meld/filediff.py:1339
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -961,19 +957,19 @@ msgstr ""
 "Se están usando filtros de texto, y pueden estar ocultando diferencias entre "
 "archivos. ¿Quiere comprar los archivos no filtrados?"
 
-#: ../meld/filediff.py:1343
+#: ../meld/filediff.py:1345
 msgid "Files are identical"
 msgstr "Los campos son idénticos"
 
-#: ../meld/filediff.py:1353
+#: ../meld/filediff.py:1355
 msgid "Show without filters"
 msgstr "Mostrar sin filtros"
 
-#: ../meld/filediff.py:1375
+#: ../meld/filediff.py:1377
 msgid "Change highlighting incomplete"
 msgstr "Cambiar el resaltado incompleto"
 
-#: ../meld/filediff.py:1376
+#: ../meld/filediff.py:1378
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -982,15 +978,15 @@ msgstr ""
 "forzar a Meld para que resalte los cambios largos, aunque esto haga que sea "
 "más lento."
 
-#: ../meld/filediff.py:1385
+#: ../meld/filediff.py:1387
 msgid "Keep highlighting"
 msgstr "Mantener el resaltado"
 
-#: ../meld/filediff.py:1387
+#: ../meld/filediff.py:1389
 msgid "_Keep highlighting"
 msgstr "_Mantener el resaltado"
 
-#: ../meld/filediff.py:1513
+#: ../meld/filediff.py:1517
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -999,7 +995,7 @@ msgstr ""
 "«%s» ya existe.\n"
 "¿Quiere sobreescribirlo?"
 
-#: ../meld/filediff.py:1526
+#: ../meld/filediff.py:1530
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -1010,19 +1006,19 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1537
+#: ../meld/filediff.py:1541
 msgid "Save Left Pane As"
 msgstr "Guardar panel izquierdo como"
 
-#: ../meld/filediff.py:1539
+#: ../meld/filediff.py:1543
 msgid "Save Middle Pane As"
 msgstr "Guardar el panel central como"
 
-#: ../meld/filediff.py:1541
+#: ../meld/filediff.py:1545
 msgid "Save Right Pane As"
 msgstr "Guardar el panel derecho como"
 
-#: ../meld/filediff.py:1562
+#: ../meld/filediff.py:1566
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -1033,7 +1029,7 @@ msgstr ""
 "\n"
 "¿Qué formato quiere usar?"
 
-#: ../meld/filediff.py:1578
+#: ../meld/filediff.py:1582
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -1395,7 +1391,7 @@ msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "No se puede comparar una mezcla de archivos y carpetas.\n"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:189
+#: ../meld/misc.py:173
 msgid "[None]"
 msgstr "[Ninguno]"
 
@@ -1475,121 +1471,117 @@ msgstr "Comentario de script\t0\t#.*"
 msgid "Version control:"
 msgstr "Control de versión:"
 
-#: ../meld/vcview.py:95
+#: ../meld/vcview.py:96
 msgid "No files will be committed"
 msgstr "No se efectuarán cambios en archivos"
 
-#: ../meld/vcview.py:239
+#: ../meld/vcview.py:240
 msgid "Compare selected files"
 msgstr "Comparar los archivos seleccionados"
 
-#: ../meld/vcview.py:241
+#: ../meld/vcview.py:242
 msgid "Co_mmit..."
 msgstr "E_fectuar…"
 
-#: ../meld/vcview.py:242
+#: ../meld/vcview.py:243
 msgid "Commit changes to version control"
 msgstr "Efectuar cambios en el control de versiones"
 
-#: ../meld/vcview.py:244
+#: ../meld/vcview.py:245
 msgid "_Update"
 msgstr "_Actualizar"
 
-#: ../meld/vcview.py:245
+#: ../meld/vcview.py:246
 msgid "Update working copy from version control"
 msgstr "Actualizar la copia de trabajo desde el control de versiones"
 
-#: ../meld/vcview.py:247
+#: ../meld/vcview.py:248
 msgid "_Push"
 msgstr "_Empujar"
 
-#: ../meld/vcview.py:248
+#: ../meld/vcview.py:249
 msgid "Push local changes to remote"
 msgstr "Empujar los cambios locales al equipo remoto"
 
-#: ../meld/vcview.py:251
+#: ../meld/vcview.py:252
 msgid "Add to version control"
 msgstr "Añadir al control de versiones"
 
-#: ../meld/vcview.py:254
+#: ../meld/vcview.py:255
 msgid "Remove from version control"
 msgstr "Quitar del control de versiones"
 
-#: ../meld/vcview.py:256
+#: ../meld/vcview.py:257
 msgid "Mar_k as Resolved"
 msgstr "Mar_car como resuelto"
 
-#: ../meld/vcview.py:257
+#: ../meld/vcview.py:258
 msgid "Mark as resolved in version control"
 msgstr "Marcar como resuelto en el control de versiones"
 
-#: ../meld/vcview.py:259
+#: ../meld/vcview.py:260
 msgid "Re_vert"
 msgstr "Re_vertir"
 
-#: ../meld/vcview.py:260
+#: ../meld/vcview.py:261
 msgid "Revert working copy to original state"
 msgstr "Revertir la copia de trabajo al estado original"
 
-#: ../meld/vcview.py:263
+#: ../meld/vcview.py:264
 msgid "Delete from working copy"
 msgstr "Eliminar de la copia de trabajo"
 
-#: ../meld/vcview.py:268
+#: ../meld/vcview.py:269
 msgid "_Flatten"
 msgstr "_Aplanar"
 
-#: ../meld/vcview.py:269
+#: ../meld/vcview.py:270
 msgid "Flatten directories"
 msgstr "Aplanar carpetas"
 
-#: ../meld/vcview.py:271
+#: ../meld/vcview.py:272
 msgid "_Modified"
 msgstr "_Modificados"
 
-#: ../meld/vcview.py:272
+#: ../meld/vcview.py:273
 msgid "Show modified files"
 msgstr "Mostrar los archivos modificados"
 
-#: ../meld/vcview.py:274
+#: ../meld/vcview.py:275
 msgid "_Normal"
 msgstr "_Normal"
 
-#: ../meld/vcview.py:275
+#: ../meld/vcview.py:276
 msgid "Show normal files"
 msgstr "Mostrar los archivos normales"
 
-#: ../meld/vcview.py:277
+#: ../meld/vcview.py:278
 msgid "Un_versioned"
 msgstr "Sin _versión"
 
-#: ../meld/vcview.py:278
+#: ../meld/vcview.py:279
 msgid "Show unversioned files"
 msgstr "Mostrar archivos sin versión"
 
-#: ../meld/vcview.py:280
+#: ../meld/vcview.py:281
 msgid "Ignored"
 msgstr "Ignorado"
 
-#: ../meld/vcview.py:281
+#: ../meld/vcview.py:282
 msgid "Show ignored files"
 msgstr "Mostrar archivos ignorados"
 
-#: ../meld/vcview.py:340 ../meld/vcview.py:497
+#: ../meld/vcview.py:341 ../meld/vcview.py:511
 msgid "Location"
 msgstr "Lugar"
 
-#: ../meld/vcview.py:341
+#: ../meld/vcview.py:342
 msgid "Status"
 msgstr "Estado"
 
-#: ../meld/vcview.py:342
+#: ../meld/vcview.py:343
 msgid "Revision"
 msgstr "Revisión"
-
-#: ../meld/vcview.py:343
-msgid "Tag"
-msgstr "Etiqueta"
 
 #: ../meld/vcview.py:344
 msgid "Options"
@@ -1597,61 +1589,71 @@ msgstr "Opciones"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:420
+#: ../meld/vcview.py:421
 #, python-format
 msgid "%s not installed"
 msgstr "%s no está instalado"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:424
+#: ../meld/vcview.py:425
 msgid "Invalid repository"
 msgstr "Repositorio no válido"
 
-#: ../meld/vcview.py:433
+#: ../meld/vcview.py:434
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: ../meld/vcview.py:442
+#: ../meld/vcview.py:436 ../meld/vcview.py:444
+msgid "None"
+msgstr "Ninguno"
+
+#: ../meld/vcview.py:455
 msgid "No valid version control system found in this folder"
 msgstr ""
 "No se ha encontrado un sistema de control de versiones válido en esta carpeta"
 
-#: ../meld/vcview.py:444
+#: ../meld/vcview.py:457
 msgid "Only one version control system found in this folder"
 msgstr ""
 "Sólo se ha encontrado un sistema de control de versiones en esta carpeta"
 
-#: ../meld/vcview.py:446
+#: ../meld/vcview.py:459
 msgid "Choose which version control system to use"
 msgstr "Elegir qué sistema de control de versiones usar"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:497
+#: ../meld/vcview.py:511
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:540
+#: ../meld/vcview.py:524 ../meld/vcview.py:532
+#, python-format
+#| msgid "[%s] Scanning %s"
+msgid "Scanning %s"
+msgstr "Analizando %s"
+
+#: ../meld/vcview.py:550
 msgid "(Empty)"
 msgstr "(Vacío)"
 
-#: ../meld/vcview.py:572
+#: ../meld/vcview.py:579
 #, python-format
 msgid "[%s] Fetching differences"
 msgstr "[%s] Calculando diferencias"
 
-#: ../meld/vcview.py:585
+#: ../meld/vcview.py:587
 #, python-format
 msgid "[%s] Applying patch"
 msgstr "[%s] Aplicando parche"
 
-#: ../meld/vcview.py:798
+#: ../meld/vcview.py:833
 msgid "Patch tool not found"
 msgstr "Herramienta «patch» no encontrada"
 
-#: ../meld/vcview.py:799
+#: ../meld/vcview.py:834
 #, python-format
 msgid ""
 "Meld needs the <i>patch</i> tool to be installed to perform comparisons in %"
@@ -1660,11 +1662,11 @@ msgstr ""
 "Meld necesita que la herramienta <i>patch</i> esté instalada para realizar "
 "comparaciones en repositorios %s. Instale <i>patch</i> e inténtelo de nuevo."
 
-#: ../meld/vcview.py:839
+#: ../meld/vcview.py:876
 msgid "Error fetching original comparison file"
 msgstr "Error al obtener el archivo original para comparar"
 
-#: ../meld/vcview.py:840
+#: ../meld/vcview.py:877
 msgid ""
 "Meld couldn't obtain the original version of your comparison file. If you "
 "are using the most recent version of Meld, please report a bug, including as "
@@ -1674,7 +1676,7 @@ msgstr ""
 "usando la versión más reciente de Meld, informe de un error, incluyendo "
 "todos los detalles que pueda."
 
-#: ../meld/vcview.py:848
+#: ../meld/vcview.py:885
 msgid "Report a bug"
 msgstr "Informar de un error"
 
@@ -1715,24 +1717,24 @@ msgstr "Seleccionar archivo"
 msgid "Close tab"
 msgstr "Cerrar pestaña"
 
-#: ../meld/vc/_vc.py:45
+#: ../meld/vc/_vc.py:47
 msgid "Merged"
 msgstr "Mezclados"
 
-#: ../meld/vc/_vc.py:45
+#: ../meld/vc/_vc.py:47
 msgid "Base"
 msgstr "Base"
 
-#: ../meld/vc/_vc.py:45
+#: ../meld/vc/_vc.py:47
 msgid "Local"
 msgstr "Local"
 
-#: ../meld/vc/_vc.py:45
+#: ../meld/vc/_vc.py:47
 msgid "Remote"
 msgstr "Remoto"
 
 #. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:53
+#: ../meld/vc/_vc.py:62
 msgid ""
 "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
 "Not present"
@@ -1740,11 +1742,7 @@ msgstr ""
 "Ignorado:Sin versión:::Error::Añadidos nuevos:Modificado:Conflicto:Eliminado:"
 "Faltante:No presente"
 
-#: ../meld/vc/_null.py:32
-msgid "None"
-msgstr "Ninguno"
-
-#: ../meld/vc/cvs.py:184
+#: ../meld/vc/cvs.py:182
 #, python-format
 msgid ""
 "Error converting to a regular expression\n"
@@ -1755,22 +1753,37 @@ msgstr ""
 "El patrón era «%s»\n"
 "El error fue «%s»"
 
-#: ../meld/vc/git.py:108
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:123
 #, python-format
-msgid "%d unpushed commits in %d branches"
-msgstr "%d cambios sin empujar en %d ramas"
+msgid "%s in %s"
+msgstr "%s en %s"
 
-#: ../meld/vc/git.py:111
+#: ../meld/vc/git.py:124 ../meld/vc/git.py:129
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d cambio sin empujar"
 msgstr[1] "%d cambios sin empujar"
 
-#: ../meld/vc/git.py:310
+#: ../meld/vc/git.py:126
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] "%d rama"
+msgstr[1] "%d ramas"
+
+#: ../meld/vc/git.py:330
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Modo cambiado de %s a %s"
+
+#~ msgid "Tag"
+#~ msgstr "Etiqueta"
+
+#~ msgid "%d unpushed commits in %d branches"
+#~ msgstr "%d cambios sin empujar en %d ramas"
 
 #~ msgid "Merge All Non-conflicting"
 #~ msgstr "Mezclar todos los no conflictivos"
