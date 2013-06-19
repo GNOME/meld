@@ -77,9 +77,6 @@ class Vc(_vc.CachedVc):
     def commit_command(self, message):
         return [self.CMD] + self.CMDARGS + ["commit", "-m", message]
 
-    def diff_command(self):
-        return [self.CMD] + self.CMDARGS + ["diff"]
-
     def add_command(self):
         return [self.CMD] + self.CMDARGS + ["add"]
 

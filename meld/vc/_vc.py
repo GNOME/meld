@@ -124,9 +124,6 @@ class Vc(object):
     def commit_command(self, message):
         raise NotImplementedError()
 
-    def diff_command(self):
-        raise NotImplementedError()
-
     def update_command(self):
         raise NotImplementedError()
 

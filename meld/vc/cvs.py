@@ -60,9 +60,6 @@ class Vc(_vc.Vc):
     def commit_command(self, message):
         return [self.CMD, "commit", "-m", message]
 
-    def diff_command(self):
-        return [self.CMD, "diff", "-u"]
-
     def update_command(self):
         return [self.CMD, "update"]
 
@@ -90,7 +87,7 @@ class Vc(_vc.Vc):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
         path = path[len(self.root) + 1:]
 
-        diffiter = misc.read_pipe_iter(self.diff_command() + [path],
+        diffiter = misc.read_pipe_iter([self.CMD, "diff", "-u", path],
                                        FakeErrorStream(), workdir=self.root)
         patch = None
         while patch is None:

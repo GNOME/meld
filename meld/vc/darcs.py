@@ -50,10 +50,6 @@ class Vc(_vc.CachedVc):
                 "-a",
                 "-m", message]
 
-    def diff_command(self):
-        return [self.CMD, "diff", "-u",
-                "--repodir=%s" % self.root]
-
     def update_command(self):
         # This will not work while passing the files parameter after it
         # This hack allows you to update in the root directory

@@ -212,7 +212,6 @@ entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 class VcView(melddoc.MeldDoc, gnomeglade.Component):
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
-        "VcCompare": ("diff_command", ()),
         "VcCommit": ("commit_command", ("",)),
         "VcUpdate": ("update_command", ()),
         "VcPush": ("push", (lambda *args, **kwargs: None, )),
