@@ -58,7 +58,6 @@ vc_sort_order = (
     "Subversion",
     "Subversion 1.7",
     "CVS",
-    "RCS",
 )
 
 def get_vcs(location):
