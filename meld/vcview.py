@@ -874,17 +874,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.console_hbox.show()
             self.console_show_box.hide()
 
-    def on_consoleview_populate_popup(self, text, menu):
-        item = gtk.ImageMenuItem(gtk.STOCK_CLEAR)
-        def activate(*args):
-            buf = text.get_buffer()
-            buf.delete( buf.get_start_iter(), buf.get_end_iter() )
-        item.connect("activate", activate)
-        item.show()
-        menu.insert( item, 0 )
-        item = gtk.SeparatorMenuItem()
-        item.show()
-        menu.insert( item, 1 )
+    def on_consoleview_populate_popup(self, textview, menu):
+        buf = textview.get_buffer()
+        clear_cb = lambda *args: buf.delete(*buf.get_bounds())
+        clear_action = gtk.ImageMenuItem(gtk.STOCK_CLEAR)
+        clear_action.connect("activate", clear_cb)
+        menu.insert(clear_action, 0)
+        menu.insert(gtk.SeparatorMenuItem(), 1)
+        menu.show_all()
 
     def on_treeview_cursor_changed(self, *args):
         cursor_path, cursor_col = self.treeview.get_cursor()
