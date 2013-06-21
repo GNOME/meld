@@ -248,6 +248,22 @@ class Vc(object):
     def _get_dirsandfiles(self, directory, dirs, files):
         raise NotImplementedError()
 
+    def get_entry(self, path):
+        """Return the entry associated with the given path in this VC
+
+        If the given path does not correspond to any entry in the VC, this
+        method returns return None.
+        """
+        vc_files = [
+            x for x in
+            self.lookup_files(
+                [], [(os.path.basename(path), path)])[1]
+            if x.path == path
+        ]
+        if not vc_files:
+            return None
+        return vc_files[0]
+
 
 class CachedVc(Vc):
 
