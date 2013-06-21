@@ -768,7 +768,7 @@ class MeldWindow(gnomeglade.Component):
         doc.set_location(path)
         doc.connect("create-diff", lambda obj, arg, kwargs:
                     self.append_diff(arg, **kwargs))
-        doc.run_diff([path])
+        doc.run_diff(path)
 
     def open_paths(self, paths, auto_compare=False, auto_merge=False):
         tab = None
