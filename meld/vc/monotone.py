@@ -115,18 +115,6 @@ class Vc(_vc.CachedVc):
         'RRM' : _vc.STATE_MISSING,  # rename source and target and target missing
     }
 
-    def __init__(self, location):
-        self.interface_version = 0.0
-        log = logging.getLogger(__name__)
-
-        self.interface_version = float(
-            _vc.popen([self.CMD, "automate", "interface_version"]).read())
-        if self.interface_version > 9.0:
-            log.error("Unsupported monotone interface version; please "
-                      "report any problems to the Meld mailing list.")
-
-        super(Vc, self).__init__(os.path.normpath(location))
-
     def commit_command(self, message):
         return [self.CMD,"commit","-m",message]
     def update_command(self):
@@ -180,71 +168,57 @@ class Vc(_vc.CachedVc):
                 if e.errno != errno.EAGAIN:
                     raise
 
-        if self.interface_version >= 6.0:
-            # this version of monotone uses the new inventory format
+        # This handles interface versions from 6.0 to 9.0
+        interface_version = float(
+            _vc.popen([self.CMD, "automate", "interface_version"]).read())
+        if interface_version < 6.0 or interface_version > 9.0:
+            log.error("Unsupported monotone interface version; please "
+                      "report any problems to the Meld mailing list.")
 
-            # terminate the final stanza. basic io stanzas are blank line seperated with no
-            # blank line at the beginning or end (and we need to loop below to act upon the
-            # final stanza
-            entries.append('')
-
-            tree_state = {}
-            stanza = {}
-            for entry in entries:
-                if entry != '':
-                    # this is part of a stanza and is structured '   word "value1" "value2"',
-                    # we convert this into a dictionary of lists: stanza['word'] = [ 'value1', 'value2' ]
-                    entry = entry.strip().split()
-                    tag = entry[0]
-                    values = [i.strip('"') for i in entry[1:]]
-                    stanza[tag] = values
-                else:
-                    # extract the filename (and append / if is is a directory)
-                    fname = stanza['path'][0]
-                    if stanza['fs_type'][0] == 'directory':
-                        fname = fname + '/'
-
-                    # sort the list and reduce it from a list to a space seperated string.
-                    mstate = stanza['status']
-                    mstate.sort()
-                    mstate = ' '.join(mstate)
-
-                    if mstate in self.state_map_6:
-                        if 'changes' in stanza:
-                            state = _vc.STATE_MODIFIED
-                        else:
-                            state = self.state_map_6[mstate]
-                            if state == _vc.STATE_ERROR:
-                                log.warning("Invalid state '%s' reported for "
-                                            "%s", mstate, fname)
-                    else:
-                        state = _vc.STATE_ERROR
-                        log.warning("Invalid state '%s' reported for %s "
-                                    "(version skew?)", mstate, fname)
-
-                    # insert the file into the summarized inventory
-                    tree_state[os.path.join(self.root, fname)] = state
-
-                    # clear the stanza ready for next iteration
-                    stanza = {}
-
-            return tree_state
+        # terminate the final stanza. basic io stanzas are blank line seperated with no
+        # blank line at the beginning or end (and we need to loop below to act upon the
+        # final stanza
+        entries.append('')
 
         tree_state = {}
+        stanza = {}
         for entry in entries:
-            mstate = entry[0:3]
-            fname = entry[8:]
-
-            if mstate in self.state_map_old:
-                state = self.state_map_old[mstate]
-                if state == _vc.STATE_ERROR:
-                    log.warning("Invalid state '%s' reported", mstate)
+            if entry != '':
+                # this is part of a stanza and is structured '   word "value1" "value2"',
+                # we convert this into a dictionary of lists: stanza['word'] = [ 'value1', 'value2' ]
+                entry = entry.strip().split()
+                tag = entry[0]
+                values = [i.strip('"') for i in entry[1:]]
+                stanza[tag] = values
             else:
-                state = _vc.STATE_ERROR
-                log.warning("Invalid state '%s' reported (version skew?)",
-                            mstate)
+                # extract the filename (and append / if is is a directory)
+                fname = stanza['path'][0]
+                if stanza['fs_type'][0] == 'directory':
+                    fname = fname + '/'
 
-            tree_state[os.path.join(self.root, fname)] = state
+                # sort the list and reduce it from a list to a space seperated string.
+                mstate = stanza['status']
+                mstate.sort()
+                mstate = ' '.join(mstate)
+
+                if mstate in self.state_map_6:
+                    if 'changes' in stanza:
+                        state = _vc.STATE_MODIFIED
+                    else:
+                        state = self.state_map_6[mstate]
+                        if state == _vc.STATE_ERROR:
+                            log.warning("Invalid state '%s' reported for "
+                                        "%s", mstate, fname)
+                else:
+                    state = _vc.STATE_ERROR
+                    log.warning("Invalid state '%s' reported for %s "
+                                "(version skew?)", mstate, fname)
+
+                # insert the file into the summarized inventory
+                tree_state[os.path.join(self.root, fname)] = state
+
+                # clear the stanza ready for next iteration
+                stanza = {}
 
         return tree_state
 
