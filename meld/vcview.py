@@ -496,34 +496,30 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("create-diff", [path], {})
             return
 
-        kwargs = {}
         if self.vc.get_entry(path).state == tree.STATE_CONFLICT and \
                 hasattr(self.vc, 'get_path_for_conflict'):
-            # We use auto merge, so we create a new temp file
-            # for other, base and this, then set the output to
-            # the current file.
-
+            # We create new temp files for other, base and this, and
+            # then set the output to the current file.
             conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
                          tree.CONFLICT_THIS)
             diffs = [self.vc.get_path_for_conflict(path, conflict=c)
                      for c in conflicts]
-            for conflict_path, is_temp in diffs:
-                # If this is the actual file, don't touch it.
-                if conflict_path != path and is_temp:
-                    os.chmod(conflict_path, 0o444)
-                    _temp_files.append(conflict_path)
-            # create-diff expects only the paths
+            temps = [p for p, is_temp in diffs if is_temp]
             diffs = [p for p, is_temp in diffs]
-
-            # If we want to use auto-merge or use the merged
-            # output given by the VCS
-            kwargs['auto_merge'] = False
-            kwargs['merge_output'] = path
+            kwargs = {
+                'auto_merge': False,
+                'merge_output': path,
+            }
         else:
             comp_path = self.vc.get_path_for_repo_file(path)
-            os.chmod(comp_path, 0o444)
-            _temp_files.append(comp_path)
+            temps = [comp_path]
             diffs = [comp_path, path]
+            kwargs = {}
+
+        for temp_file in temps:
+            os.chmod(temp_file, 0o444)
+            _temp_files.append(temp_file)
+
         self.emit("create-diff", diffs, kwargs)
 
     def on_treeview_popup_menu(self, treeview):
