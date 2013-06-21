@@ -1,26 +1,26 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2005 Daniel Thompson <daniel@redfelineninja.org.uk>
+# Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2005 Daniel Thompson <daniel@redfelineninja.org.uk>
 
-### Redistribution and use in source and binary forms, with or without
-### modification, are permitted provided that the following conditions
-### are met:
-###
-### 1. Redistributions of source code must retain the above copyright
-###    notice, this list of conditions and the following disclaimer.
-### 2. Redistributions in binary form must reproduce the above copyright
-###    notice, this list of conditions and the following disclaimer in the
-###    documentation and/or other materials provided with the distribution.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
 
-### THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-### IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-### OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-### IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-### INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-### NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-### DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-### THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import errno
 import logging
@@ -116,22 +116,29 @@ class Vc(_vc.CachedVc):
     }
 
     def commit_command(self, message):
-        return [self.CMD,"commit","-m",message]
+        return [self.CMD, "commit", "-m", message]
+
     def update_command(self):
-        return [self.CMD,"update"]
+        return [self.CMD, "update"]
+
     def add_command(self):
-        return [self.CMD,"add"]
+        return [self.CMD, "add"]
+
     def remove_command(self, force=0):
-        return [self.CMD,"drop"]
+        return [self.CMD, "drop"]
+
     def revert_command(self):
-        return [self.CMD,"revert"]
+        return [self.CMD, "revert"]
+
     def resolved_command(self):
-        return [self.CMD,"resolved"]
+        return [self.CMD, "resolved"]
+
     def valid_repo(self):
         if _vc.call([self.CMD, "list", "tags"], cwd=self.root):
             return False
         else:
             return True
+
     def get_working_directory(self, workdir):
         return self.root
 
@@ -175,32 +182,28 @@ class Vc(_vc.CachedVc):
             log.error("Unsupported monotone interface version; please "
                       "report any problems to the Meld mailing list.")
 
-        # terminate the final stanza. basic io stanzas are blank line seperated with no
-        # blank line at the beginning or end (and we need to loop below to act upon the
-        # final stanza
+        # Terminate the final stanza, since basic stanzas are blank line
+        # seperated with no blank line at the beginning or end.
         entries.append('')
 
         tree_state = {}
         stanza = {}
         for entry in entries:
             if entry != '':
-                # this is part of a stanza and is structured '   word "value1" "value2"',
-                # we convert this into a dictionary of lists: stanza['word'] = [ 'value1', 'value2' ]
+                # This is part of a stanza and is structured:
+                #     '   word "value1" "value2"'
+                # We convert this into a dictionary of lists:
+                #     stanza['word'] = [ 'value1', 'value2' ]
                 entry = entry.strip().split()
                 tag = entry[0]
                 values = [i.strip('"') for i in entry[1:]]
                 stanza[tag] = values
             else:
-                # extract the filename (and append / if is is a directory)
                 fname = stanza['path'][0]
                 if stanza['fs_type'][0] == 'directory':
                     fname = fname + '/'
 
-                # sort the list and reduce it from a list to a space seperated string.
-                mstate = stanza['status']
-                mstate.sort()
-                mstate = ' '.join(mstate)
-
+                mstate = ' '.join(sorted(stanza['status']))
                 if mstate in self.state_map_6:
                     if 'changes' in stanza:
                         state = _vc.STATE_MODIFIED
@@ -214,10 +217,9 @@ class Vc(_vc.CachedVc):
                     log.warning("Invalid state '%s' reported for %s "
                                 "(version skew?)", mstate, fname)
 
-                # insert the file into the summarized inventory
                 tree_state[os.path.join(self.root, fname)] = state
 
-                # clear the stanza ready for next iteration
+                # Clear the stanza ready for next iteration
                 stanza = {}
 
         return tree_state
@@ -242,27 +244,27 @@ class Vc(_vc.CachedVc):
             else:
                 retfiles.append(_vc.File(path, name, state))
             vcfiles[name] = 1
-        for f,path in files:
+        for f, path in files:
             if f not in vcfiles:
                 # if the ignore MT filter is not enabled these will crop up
-                ignorelist = [ 'format', 'log', 'options', 'revision', 'work', 'debug', 'inodeprints' ]
+                ignorelist = ['format', 'log', 'options', 'revision', 'work',
+                              'debug', 'inodeprints']
 
                 if f not in ignorelist:
                     log.warning("'%s' was not listed", f)
 
-                # if it ain't listed by the inventory it's not under version
-                # control
+                # If not in the inventory it's not under version control.
                 state = _vc.STATE_NONE
                 retfiles.append(_vc.File(path, f, state))
-        for d,path in dirs:
+        for d, path in dirs:
             if d not in vcfiles:
                 # if the ignore MT filter is not enabled these will crop up
-                ignorelist = [ 'MT' ]
+                ignorelist = ['MT']
                 if d in ignorelist:
                     state = _vc.STATE_NONE
                 else:
                     # monotone does not version (or inventory) directories
                     # so these are always normal
                     state = _vc.STATE_NORMAL
-                retdirs.append( _vc.Dir(path, d, state) )
+                retdirs.append(_vc.Dir(path, d, state))
         return retdirs, retfiles
