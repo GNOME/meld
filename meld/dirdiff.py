@@ -322,6 +322,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.focus_in_events.append(handler_id)
             handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
             self.focus_out_events.append(handler_id)
+            treeview.set_search_equal_func(self.model.treeview_search_cb)
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.on_treeview_focus_out_event(None, None)
         self.focus_pane = None
@@ -1461,3 +1462,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             app.disconnect(h)
 
         return gtk.RESPONSE_OK
+
+    def on_find_activate(self, *extra):
+        self.focus_pane.emit("start-interactive-search")

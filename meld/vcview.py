@@ -224,7 +224,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         selection.set_mode(gtk.SELECTION_MULTIPLE)
         selection.connect("changed", self.on_treeview_selection_changed)
         self.treeview.set_headers_visible(1)
-        self.treeview.set_search_equal_func(self.treeview_search_cb)
+        self.treeview.set_search_equal_func(self.model.treeview_search_cb)
         self.current_path, self.prev_path, self.next_path = None, None, None
 
         self.column_name_map = {}
@@ -851,23 +851,3 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_find_activate(self, *extra):
         self.treeview.emit("start-interactive-search")
-
-    def treeview_search_cb(self, model, column, key, it):
-        """Callback function for searching in VcView treeview"""
-        path = model.value_path(it, 0)
-
-        # if query text contains slash, search in full path
-        if key.find('/') >= 0:
-            lineText = path
-        else:
-            lineText = os.path.basename(path)
-
-        # Perform case-insensitive matching if query text is all lower-case
-        if key.islower():
-            lineText = lineText.lower()
-
-        if lineText.find(key) >= 0:
-            # line matches
-            return False
-        else:
-            return True

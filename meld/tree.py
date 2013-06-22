@@ -216,3 +216,19 @@ class DiffTreeStore(gtk.TreeStore):
                 break
 
         return prev_path, next_path
+
+    def treeview_search_cb(self, model, column, key, it):
+        # If the key contains a path separator, search the whole path,
+        # otherwise just use the filename. If the key is all lower-case, do a
+        # case-insensitive match.
+        abs_search = key.find('/') >= 0
+        lower_key = key.islower()
+
+        for path in model.value_paths(it):
+            if not path:
+                continue
+            lineText = path if abs_search else os.path.basename(path)
+            lineText = lineText.lower() if lower_key else lineText
+            if lineText.find(key) != -1:
+                return False
+        return True
