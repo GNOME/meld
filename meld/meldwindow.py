@@ -318,17 +318,25 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("MoveTabPrev").set_sensitive(have_prev_tab)
         self.actiongroup.get_action("MoveTabNext").set_sensitive(have_next_tab)
 
-        have_focus = current_page != -1
-        self.actiongroup.get_action("Close").set_sensitive(have_focus)
+        if current_page != -1:
+            page = self.notebook.get_nth_page(
+                current_page).get_data("pyobject")
+        else:
+            page = None
 
-        have_comparison_page = have_focus and isinstance(
-            self.notebook.get_nth_page(current_page).get_data("pyobject"),
-            melddoc.MeldDoc)
-        if not have_comparison_page:
+        self.actiongroup.get_action("Close").set_sensitive(bool(page))
+        if not isinstance(page, melddoc.MeldDoc):
             for action in ("PrevChange", "NextChange", "Cut", "Copy", "Paste",
                            "Find", "FindNext", "FindPrevious", "Replace",
                            "Refresh"):
                 self.actiongroup.get_action(action).set_sensitive(False)
+        else:
+            for action in ("Find", "Refresh"):
+                self.actiongroup.get_action(action).set_sensitive(True)
+            is_filediff = isinstance(page, filediff.FileDiff)
+            for action in ("Cut", "Copy", "Paste", "FindNext", "FindPrevious",
+                           "Replace"):
+                self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
