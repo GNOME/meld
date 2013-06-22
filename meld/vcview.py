@@ -672,6 +672,25 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command_on_selected(self.vc.add_command())
 
     def on_button_remove_clicked(self, obj):
+        selected = self._get_selected_files()
+        if any(os.path.isdir(p) for p in selected):
+            # TODO: Improve and reuse this dialog for the non-VC delete action
+            dialog = gtk.MessageDialog(
+                parent=self.widget.get_toplevel(),
+                flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                type=gtk.MESSAGE_WARNING,
+                message_format=_("Remove folder and all its files?"))
+            dialog.format_secondary_text(
+                _("This will remove all selected files and folders, and all "
+                  "files within any selected folders, from version control."))
+
+            dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+            dialog.add_button(_("_Remove"), gtk.RESPONSE_OK)
+            response = dialog.run()
+            dialog.destroy()
+            if response != gtk.RESPONSE_OK:
+                return
+
         try:
             self.vc.remove(self._command, self._get_selected_files())
         except NotImplementedError:

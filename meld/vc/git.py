@@ -81,9 +81,6 @@ class Vc(_vc.CachedVc):
     def add_command(self):
         return [self.CMD, "add"]
 
-    def remove_command(self, force=0):
-        return [self.CMD, "rm"]
-
     # Prototyping VC interface version 2
 
     def update_actions_for_paths(self, path_states, actions):
@@ -183,6 +180,10 @@ class Vc(_vc.CachedVc):
     def push(self, runner):
         command = [self.CMD, 'push']
         runner(command, [], refresh=True, working_dir=self.root)
+
+    def remove(self, runner, files):
+        command = [self.CMD, 'rm', '-r']
+        runner(command, files, refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
         exists = [f for f in files if os.path.exists(f)]
