@@ -216,6 +216,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.animating_chunks = [[] for buf in self.textbuffer]
         for buf in self.textbuffer:
             buf.create_tag("inline")
+            buf.connect("notify::has-selection",
+                        self.update_text_actions_sensitivity)
 
         actions = (
             ("MakePatch", None, _("Format as Patch..."), None,
@@ -714,6 +716,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_cursor_position_changed(view.get_buffer(), None, True)
         self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
+        self.update_text_actions_sensitivity()
 
     def on_textview_focus_out_event(self, view, event):
         self._set_merge_action_sensitivity()
@@ -921,6 +924,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 cursor_it = self.textbuffer[pane].get_iter_at_offset(pos)
                 line = cursor_it.get_line() + 1
                 self._open_files([self.textbuffer[pane].data.filename], line)
+
+    def update_text_actions_sensitivity(self, *args):
+        widget = self.focus_pane
+        if not widget:
+            cut, copy, paste = False, False, False
+        else:
+            cut = copy = widget.get_buffer().get_has_selection()
+            # Ideally, this would check whether the clipboard included
+            # something pasteable. However, there is no changed signal.
+            # widget.get_clipboard(
+            #    gtk.gdk.SELECTION_CLIPBOARD).wait_is_text_available()
+            paste = widget.get_editable()
+        for action, sens in zip(("Cut", "Copy", "Paste"), (cut, copy, paste)):
+            self.main_actiongroup.get_action(action).set_sensitive(sens)
 
     def get_selected_text(self):
         """Returns selected text of active pane"""
