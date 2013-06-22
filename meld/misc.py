@@ -20,7 +20,6 @@
 """Module of commonly used helper classes and functions
 """
 
-import copy
 import os
 from gettext import gettext as _
 import errno
