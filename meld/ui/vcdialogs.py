@@ -19,6 +19,7 @@
 from __future__ import print_function
 
 import os
+import textwrap
 from gettext import gettext as _
 
 import gtk
@@ -78,12 +79,21 @@ class CommitDialog(gnomeglade.Component):
         self.widget.show_all()
 
     def run(self):
+        margin = self.parent.prefs.vc_commit_margin
+        self.textview.set_right_margin_position(
+            margin)
+        self.textview.set_show_right_margin(
+            self.parent.prefs.vc_show_commit_margin)
+
         self.previousentry.set_active(-1)
         self.textview.grab_focus()
         response = self.widget.run()
         if response == gtk.RESPONSE_OK:
             buf = self.textview.get_buffer()
             msg = buf.get_text(*buf.get_bounds(), include_hidden_chars=False)
+            if self.parent.prefs.vc_break_commit_message:
+                paragraphs = msg.split("\n\n")
+                msg = "\n\n".join(textwrap.fill(p, margin) for p in paragraphs)
             self.parent._command_on_selected(
                 self.parent.vc.commit_command(msg))
             if msg.strip():

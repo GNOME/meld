@@ -172,6 +172,8 @@ class nullsourceview(_srcviewer):
             set_show_line_numbers = lambda *args: None
             set_insert_spaces_instead_of_tabs = lambda *args: None
             set_draw_spaces = lambda *args: None
+            set_right_margin_position = lambda *args: None
+            set_show_right_margin = lambda *args: None
         gobject.type_register(NullTextView)
 
         self.GtkTextView = NullTextView

@@ -143,7 +143,8 @@ class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parent, prefs):
         gnomeglade.Component.__init__(self, paths.ui_dir("preferences.ui"),
-                                      "preferencesdialog", ["adjustment1"])
+                                      "preferencesdialog",
+                                      ["adjustment1", "adjustment2"])
         self.widget.set_transient_for(parent)
         self.prefs = prefs
         if not self.prefs.use_custom_font:
@@ -220,6 +221,15 @@ class PreferencesDialog(gnomeglade.Component):
         self.combo_timestamp.set_active(active_idx)
         self.combo_timestamp.lock = False
 
+        self.checkbutton_show_commit_margin.set_active(
+            self.prefs.vc_show_commit_margin)
+        self.spinbutton_commit_margin.set_value(
+            self.prefs.vc_commit_margin)
+        self.checkbutton_break_commit_lines.set_sensitive(
+            self.prefs.vc_show_commit_margin)
+        self.checkbutton_break_commit_lines.set_active(
+            self.prefs.vc_break_commit_message)
+
         self.widget.show()
 
     def on_fontpicker_font_set(self, picker):
@@ -264,6 +274,20 @@ class PreferencesDialog(gnomeglade.Component):
     def on_custom_edit_command_entry_activate(self, entry, *args):
         # Called on "activate" and "focus-out-event"
         self.prefs.edit_command_custom = entry.props.text
+
+    def on_checkbutton_show_line_numbers_toggled(self, check):
+        self.prefs.show_line_numbers = check.get_active()
+
+    def on_checkbutton_show_commit_margin_toggled(self, check):
+        show_margin = check.get_active()
+        self.prefs.vc_show_commit_margin = show_margin
+        self.checkbutton_break_commit_lines.set_sensitive(show_margin)
+
+    def on_spinbutton_commit_margin_value_changed(self, spin):
+        self.prefs.vc_commit_margin = int(spin.get_value())
+
+    def on_checkbutton_break_commit_lines_toggled(self, check):
+        self.prefs.vc_break_commit_message = check.get_active()
 
     #
     # filters
@@ -344,6 +368,10 @@ class MeldPreferences(prefs.Preferences):
                                           "permissions 0"]),
         "dirdiff_shallow_comparison" : prefs.Value(prefs.BOOL, False),
         "dirdiff_time_resolution_ns" : prefs.Value(prefs.INT, 100),
+
+        "vc_show_commit_margin": prefs.Value(prefs.BOOL, True),
+        "vc_commit_margin": prefs.Value(prefs.INT, 72),
+        "vc_break_commit_message": prefs.Value(prefs.BOOL, False),
     }
 
     def __init__(self):
