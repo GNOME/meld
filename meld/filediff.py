@@ -1471,8 +1471,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.restore()
 
         for syncpoint in [p[pane] for p in self.syncpoints]:
-            if bounds[0] <= syncpoint <= bounds[1]:
-                ypos = textview.get_y_for_line_num(syncpoint) - visible.y
+            if not syncpoint:
+                continue
+            syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
+            if bounds[0] <= syncline <= bounds[1]:
+                ypos = textview.get_y_for_line_num(syncline) - visible.y
                 context.rectangle(-0.5, ypos - 0.5, width + 1, 1)
                 context.set_source_color(self.syncpoint_color)
                 context.stroke()
@@ -1936,16 +1939,29 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             syncpoint = [None] * self.num_panes
         cursor_it = self.textbuffer[pane].get_iter_at_mark(
             self.textbuffer[pane].get_insert())
-        syncpoint[pane] = cursor_it.get_line()
+        syncpoint[pane] = self.textbuffer[pane].create_mark(None, cursor_it)
         self.syncpoints.append(syncpoint)
+
+        def make_line_retriever(pane, marks):
+            buf = self.textbuffer[pane]
+            mark = marks[pane]
+
+            def get_line_for_mark():
+                return buf.get_iter_at_mark(mark).get_line()
+            return get_line_for_mark
 
         valid_points = [p for p in self.syncpoints if all(p)]
         if valid_points and self.num_panes == 2:
             self.linediffer.syncpoints = [
-                ((p[1], p[0]), ) for p in valid_points]
+                ((make_line_retriever(1, p), make_line_retriever(0, p)), )
+                for p in valid_points
+            ]
         elif valid_points and self.num_panes == 3:
             self.linediffer.syncpoints = [
-                ((p[1], p[0]), (p[1], p[2])) for p in valid_points]
+                ((make_line_retriever(1, p), make_line_retriever(0, p)),
+                 (make_line_retriever(1, p), make_line_retriever(2, p)))
+                for p in valid_points
+            ]
         self.refresh_comparison()
 
     def clear_sync_points(self, action):
