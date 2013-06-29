@@ -79,11 +79,10 @@ class CommitDialog(gnomeglade.Component):
         self.widget.show_all()
 
     def run(self):
-        margin = self.parent.prefs.vc_commit_margin
-        self.textview.set_right_margin_position(
-            margin)
-        self.textview.set_show_right_margin(
-            self.parent.prefs.vc_show_commit_margin)
+        prefs = self.parent.prefs
+        margin = prefs.vc_commit_margin
+        self.textview.set_right_margin_position(margin)
+        self.textview.set_show_right_margin(prefs.vc_show_commit_margin)
 
         self.previousentry.set_active(-1)
         self.textview.grab_focus()
@@ -91,7 +90,8 @@ class CommitDialog(gnomeglade.Component):
         if response == gtk.RESPONSE_OK:
             buf = self.textview.get_buffer()
             msg = buf.get_text(*buf.get_bounds(), include_hidden_chars=False)
-            if self.parent.prefs.vc_break_commit_message:
+            # This is a dependent option because of the margin column
+            if prefs.set_show_right_margin and prefs.vc_break_commit_message:
                 paragraphs = msg.split("\n\n")
                 msg = "\n\n".join(textwrap.fill(p, margin) for p in paragraphs)
             self.parent._command_on_selected(

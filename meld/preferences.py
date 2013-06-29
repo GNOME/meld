@@ -163,7 +163,7 @@ class PreferencesDialog(gnomeglade.Component):
             self.checkbutton_use_syntax_highlighting.set_active( self.prefs.use_syntax_highlighting )
         else:
             no_sourceview_text = \
-                _("Only available if you have gnome-python-desktop installed")
+                _("Only available if you have PyGtkSourceView 2 installed")
             for w in (self.checkbutton_spaces_instead_of_tabs,
                       self.checkbutton_show_line_numbers,
                       self.checkbutton_use_syntax_highlighting,
@@ -221,14 +221,23 @@ class PreferencesDialog(gnomeglade.Component):
         self.combo_timestamp.set_active(active_idx)
         self.combo_timestamp.lock = False
 
-        self.checkbutton_show_commit_margin.set_active(
-            self.prefs.vc_show_commit_margin)
-        self.spinbutton_commit_margin.set_value(
-            self.prefs.vc_commit_margin)
-        self.checkbutton_break_commit_lines.set_sensitive(
-            self.prefs.vc_show_commit_margin)
-        self.checkbutton_break_commit_lines.set_active(
-            self.prefs.vc_break_commit_message)
+        if srcviewer.gsv is not None:
+            self.checkbutton_show_commit_margin.set_active(
+                self.prefs.vc_show_commit_margin)
+            self.spinbutton_commit_margin.set_value(
+                self.prefs.vc_commit_margin)
+            self.checkbutton_break_commit_lines.set_sensitive(
+                self.prefs.vc_show_commit_margin)
+            self.checkbutton_break_commit_lines.set_active(
+                self.prefs.vc_break_commit_message)
+        else:
+            no_sourceview_text = \
+                _("Only available if you have PyGtkSourceView 2 installed")
+            for w in (self.checkbutton_show_commit_margin,
+                      self.spinbutton_commit_margin,
+                      self.checkbutton_break_commit_lines):
+                w.set_sensitive(False)
+                w.set_tooltip_text(no_sourceview_text)
 
         self.widget.show()
 
