@@ -146,7 +146,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                  gtk.keysyms.Control_R : MASK_CTRL}
 
     # Identifiers for MsgArea messages
-    (MSG_SAME, MSG_SLOW_HIGHLIGHT) = list(range(2))
+    (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
 
     __gsignals__ = {
         'next-conflict-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (bool, bool)),
@@ -724,8 +724,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
             pane = self.textbuffer.index(buffer)
-            self.linediffer.change_sequence(pane, startline, sizechange,
-                                            self.buffer_filtered)
+            if not self.syncpoints:
+                self.linediffer.change_sequence(pane, startline, sizechange,
+                                                self.buffer_filtered)
             # FIXME: diff-changed signal for the current buffer would be cleaner
             focused_pane = self._get_focused_pane()
             if focused_pane != -1:
@@ -1962,9 +1963,25 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                  (make_line_retriever(1, p), make_line_retriever(2, p)))
                 for p in valid_points
             ]
+
+        if valid_points:
+            for mgr in self.msgarea_mgr:
+                msgarea = mgr.new_from_text_and_icon(
+                    gtk.STOCK_DIALOG_INFO,
+                    _("Live comparison updating disabled"),
+                    _("Live updating of comparisons is disabled when "
+                      "synchronization points are active. You can still "
+                      "manually refresh the comparison, and live updates will "
+                      "resume when synchronization points are cleared."))
+                mgr.set_msg_id(FileDiff.MSG_SYNCPOINTS)
+                msgarea.show_all()
+
         self.refresh_comparison()
 
     def clear_sync_points(self, action):
         self.syncpoints = []
         self.linediffer.syncpoints = []
+        for mgr in self.msgarea_mgr:
+            if mgr.get_msg_id() == FileDiff.MSG_SYNCPOINTS:
+                mgr.clear()
         self.refresh_comparison()
