@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-23 01:37+0000\n"
+"POT-Creation-Date: 2013-06-29 21:40+0000\n"
 "PO-Revision-Date: 2013-06-24 11:00+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -359,8 +359,8 @@ msgid "Show _right margin at:"
 msgstr "Zobrazit p_ravý okraj na:"
 
 #: ../data/ui/preferences.ui.h:26
-msgid "Automatically _break lines at right margin"
-msgstr "Automaticky za_lamovat řádky na pravém okraji"
+msgid "Automatically _break lines at right margin on commit"
+msgstr "Při zařazování automaticky za_lamovat řádky na pravém okraji"
 
 #: ../data/ui/preferences.ui.h:27
 msgid "Version Control"
@@ -1414,17 +1414,17 @@ msgstr "popisek"
 msgid "pattern"
 msgstr "vzorek"
 
-#: ../meld/preferences.py:166
-msgid "Only available if you have gnome-python-desktop installed"
-msgstr "K dispozici jen pokud je nainstalován gnome-python-desktop"
+#: ../meld/preferences.py:166 ../meld/preferences.py:235
+msgid "Only available if you have PyGtkSourceView 2 installed"
+msgstr "K dispozici jen pokud je nainstalován PyGtkSourceView 2"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:335
+#: ../meld/preferences.py:344
 msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 msgstr "Zálohy\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:337
+#: ../meld/preferences.py:346
 msgid ""
 "OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
 "Desktop.ini\n"
@@ -1433,48 +1433,48 @@ msgstr ""
 "Desktop.ini\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:339
+#: ../meld/preferences.py:348
 #, python-format
 msgid "Version Control\t1\t%s\n"
 msgstr "Správa verzí\t1\t%s\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:341
+#: ../meld/preferences.py:350
 msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
 msgstr "Binární soubory\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:343
+#: ../meld/preferences.py:352
 msgid "Media\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
 msgstr "Multimédia\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:345
+#: ../meld/preferences.py:354
 msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 msgstr "Klíčová slova CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:347
+#: ../meld/preferences.py:356
 msgid "C++ comment\t0\t//.*\n"
 msgstr "Komentář C++\t0\t//.*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:349
+#: ../meld/preferences.py:358
 msgid "C comment\t0\t/\\*.*?\\*/\n"
 msgstr "Komentář C\t0\t/\\*.*?\\*/\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:351
+#: ../meld/preferences.py:360
 msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
 msgstr "Všechny mezery\t0\t[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:353
+#: ../meld/preferences.py:362
 msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
 msgstr "Počáteční mezery\t0\t^[ \\t\\r\\f\\v]*\n"
 
 #. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:355
+#: ../meld/preferences.py:364
 msgid "Script comment\t0\t#.*"
 msgstr "Komentář skriptu\t0\t#.*"
 
