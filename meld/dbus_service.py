@@ -41,11 +41,13 @@ class DBusProvider(dbus.service.Object):
 
         If a valid timestamp is not available, pass 0.
         """
-        self.app.window.open_paths(args)
+        tab = self.app.window.open_paths(args)
         if timestamp > 0:
             self.app.window.widget.present_with_time(timestamp)
         else:
             self.app.window.widget.present()
+        self.app.window.notebook.set_current_page(
+            self.app.window.notebook.page_num(tab.widget))
 
 
 def setup(app):
