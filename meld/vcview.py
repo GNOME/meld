@@ -496,12 +496,18 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("create-diff", [path], {})
             return
 
+        left_is_local = self.prefs.vc_left_is_local
+
         if self.vc.get_entry(path).state == tree.STATE_CONFLICT and \
                 hasattr(self.vc, 'get_path_for_conflict'):
             # We create new temp files for other, base and this, and
             # then set the output to the current file.
-            conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
-                         tree.CONFLICT_THIS)
+            if left_is_local:
+                conflicts = (tree.CONFLICT_THIS, tree.CONFLICT_MERGED,
+                             tree.CONFLICT_OTHER)
+            else:
+                conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
+                             tree.CONFLICT_THIS)
             diffs = [self.vc.get_path_for_conflict(path, conflict=c)
                      for c in conflicts]
             temps = [p for p, is_temp in diffs if is_temp]
@@ -513,7 +519,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         else:
             comp_path = self.vc.get_path_for_repo_file(path)
             temps = [comp_path]
-            diffs = [comp_path, path]
+            diffs = [path, comp_path] if left_is_local else [comp_path, path]
             kwargs = {}
 
         for temp_file in temps:

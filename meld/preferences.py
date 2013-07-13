@@ -144,7 +144,7 @@ class PreferencesDialog(gnomeglade.Component):
     def __init__(self, parent, prefs):
         gnomeglade.Component.__init__(self, paths.ui_dir("preferences.ui"),
                                       "preferencesdialog",
-                                      ["adjustment1", "adjustment2"])
+                                      ["adjustment1", "adjustment2", "fileorderstore"])
         self.widget.set_transient_for(parent)
         self.prefs = prefs
         if not self.prefs.use_custom_font:
@@ -220,6 +220,9 @@ class PreferencesDialog(gnomeglade.Component):
         self.combo_timestamp.add_attribute(cell, 'text', 0)
         self.combo_timestamp.set_active(active_idx)
         self.combo_timestamp.lock = False
+
+        self.combo_file_order.set_active(
+            1 if self.prefs.vc_left_is_local else 0)
 
         if srcviewer.gsv is not None:
             self.checkbutton_show_commit_margin.set_active(
@@ -318,6 +321,10 @@ class PreferencesDialog(gnomeglade.Component):
             resolution = combo.get_model()[combo.get_active_iter()][1]
             self.prefs.dirdiff_time_resolution_ns = resolution
 
+    def on_combo_file_order_changed(self, combo):
+        file_order = combo.get_model()[combo.get_active_iter()][0]
+        self.prefs.vc_left_is_local = True if file_order else False
+
     def on_response(self, dialog, response_id):
         self.widget.destroy()
 
@@ -381,6 +388,8 @@ class MeldPreferences(prefs.Preferences):
         "vc_show_commit_margin": prefs.Value(prefs.BOOL, True),
         "vc_commit_margin": prefs.Value(prefs.INT, 72),
         "vc_break_commit_message": prefs.Value(prefs.BOOL, False),
+
+        "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
 
     def __init__(self):
