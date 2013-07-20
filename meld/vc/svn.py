@@ -153,16 +153,22 @@ class Vc(_vc.CachedVc):
         # Check for repository version, trusting format file then entries file
         format_path = os.path.join(self.root, self.VC_DIR, "format")
         entries_path = os.path.join(self.root, self.VC_DIR, "entries")
-        if os.path.exists(format_path):
-            version_file = format_path
-        elif os.path.exists(entries_path):
-            version_file = entries_path
+        wcdb_path = os.path.join(self.root, self.VC_DIR, "wc.db")
+        format_exists = os.path.exists(format_path)
+        entries_exists = os.path.exists(entries_path)
+        wcdb_exists = os.path.exists(wcdb_path)
+        if format_exists:
+            with open(format_path) as f:
+                repo_version = int(f.readline().strip())
+        elif entries_exists:
+            with open(entries_path) as f:
+                repo_version = int(f.readline().strip())
+        elif wcdb_exists:
+            repo_version = 12
         else:
             return False
 
-        with open(version_file) as f:
-            content = f.readline().strip()
-        return self._repo_version_support(int(content))
+        return self._repo_version_support(repo_version)
 
     def _update_tree_state_cache(self, path, tree_state):
         while 1:
@@ -177,8 +183,12 @@ class Vc(_vc.CachedVc):
         for target in tree.findall("target") + tree.findall("changelist"):
             for entry in (t for t in target.getchildren() if t.tag == "entry"):
                 path = entry.attrib["path"]
+                if path == ".":
+                    path = os.getcwd()
                 if path == "":
                     continue
+                if not os.path.isabs(path):
+                    path = os.path.abspath(path)
                 for status in (e for e in entry.getchildren() \
                                if e.tag == "wc-status"):
                     item = status.attrib["item"]
