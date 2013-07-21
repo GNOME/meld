@@ -458,7 +458,7 @@ class Differ(gobject.GObject):
 
         for i in range(self.num_sequences - 1):
             if self.syncpoints:
-                syncpoints = [(s[0](), s[1]()) for s in self.syncpoints[i]]
+                syncpoints = [(s[i][0](), s[i][1]()) for s in self.syncpoints]
                 matcher = self._sync_matcher(None,
                                              sequences[1], sequences[i * 2],
                                              syncpoints=syncpoints)
