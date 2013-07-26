@@ -95,6 +95,17 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop meld.xml
 	$(update_mime_database)
 	$(update_desktop_database)
 
+.PHONY:install-glade-support
+install-glade-support:
+	install -m 644 meld/ui/gladesupport.py \
+		$(DESTDIR)$(libdir)/glade3/modules/meld.py
+	install -m 644 meld/ui/catalog.xml \
+		$(DESTDIR)$(sharedir)/glade3/catalogs/meld.xml
+
+.PHONY:glade
+glade:
+	PYTHONPATH="${PYTHONPATH}:/usr/lib/glade3/modules/" glade-3
+
 meld.desktop: data/meld.desktop.in
 	intltool-merge -d po data/meld.desktop.in data/meld.desktop
 
