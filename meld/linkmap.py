@@ -41,6 +41,7 @@ class LinkMap(gtk.DrawingArea):
 
     def __init__(self):
         self.mode = MODE_REPLACE
+        self._setup = False
 
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
@@ -79,6 +80,7 @@ class LinkMap(gtk.DrawingArea):
         self.button_height = pixbuf_apply0.get_height()
 
         filediff.connect("action-mode-changed", self.on_container_mode_changed)
+        self._setup = True
 
     def set_color_scheme(self, color_map):
         self.fill_colors, self.line_colors = color_map
@@ -154,6 +156,9 @@ class LinkMap(gtk.DrawingArea):
         return left_act, right_act
 
     def do_expose_event(self, event):
+        if not self._setup:
+            return
+
         context = self.window.cairo_create()
         context.rectangle(event.area.x, event.area.y, event.area.width, \
                           event.area.height)
