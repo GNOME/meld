@@ -61,8 +61,8 @@ class LinkMap(gtk.DrawingArea):
         # FIXME: this is a somewhat bizarre action to take, but our non-square
         # icons really make this kind of handling difficult
         load = lambda x: icon_theme.load_icon(x, self.line_height * 2, 0)
-        pixbuf_copy0  = load("button_copy0")
-        pixbuf_copy1  = load("button_copy1")
+        pixbuf_copy0 = load("button_copy0")
+        pixbuf_copy1 = load("button_copy1")
 
         self.action_map_left = {
             MODE_REPLACE: pixbuf_apply0,
@@ -160,7 +160,7 @@ class LinkMap(gtk.DrawingArea):
             return
 
         context = self.window.cairo_create()
-        context.rectangle(event.area.x, event.area.y, event.area.width, \
+        context.rectangle(event.area.x, event.area.y, event.area.width,
                           event.area.height)
         context.clip()
         context.set_line_width(1.0)
@@ -182,8 +182,8 @@ class LinkMap(gtk.DrawingArea):
         q_rad = math.pi / 2
 
         left, right = self.view_indices
-        view_offset_line = lambda v, l: self.views[v].get_y_for_line_num(l) - \
-                                        pix_start[v] + rel_offset[v]
+        view_offset_line = lambda v, l: (self.views[v].get_y_for_line_num(l) -
+                                         pix_start[v] + rel_offset[v])
         for c in self.filediff.linediffer.pair_changes(left, right, visible):
             # f and t are short for "from" and "to"
             f0, f1 = [view_offset_line(0, l) for l in c[1:3]]
@@ -261,7 +261,6 @@ class LinkMap(gtk.DrawingArea):
         src_idx, dst_idx = side, 1 if side == 0 else 0
         src, dst = self.view_indices[src_idx], self.view_indices[dst_idx]
 
-        yoffset = self.allocation.y
         vis_offset = [t.get_visible_rect().y for t in self.views]
         rel_offset = [t.allocation.y - self.allocation.y for t in self.views]
         height = self.allocation.height
@@ -272,8 +271,8 @@ class LinkMap(gtk.DrawingArea):
             bounds.append(v.get_line_num_for_y(visible.y))
             bounds.append(v.get_line_num_for_y(visible.y + visible.height))
 
-        view_offset_line = lambda v, l: self.views[v].get_y_for_line_num(l) - \
-                                        vis_offset[v] + rel_offset[v]
+        view_offset_line = lambda v, l: (self.views[v].get_y_for_line_num(l) -
+                                         vis_offset[v] + rel_offset[v])
         for c in self.filediff.linediffer.pair_changes(src, dst, bounds):
             f0, f1 = [view_offset_line(src_idx, l) for l in c[1:3]]
             t0, t1 = [view_offset_line(dst_idx, l) for l in c[3:5]]
@@ -336,4 +335,3 @@ class LinkMap(gtk.DrawingArea):
                         self.filediff.replace_chunk(src, dst, chunk)
             return True
         return False
-
