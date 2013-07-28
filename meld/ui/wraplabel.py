@@ -21,22 +21,21 @@
 # Python translation from wrapLabel.{cc|h} by Gian Mario Tagliaretti
 
 import gtk
-import gobject
 import pango
 
 
 class WrapLabel(gtk.Label):
     __gtype_name__ = 'WrapLabel'
 
-    def __init__(self, str=None):
+    def __init__(self, text=None):
         gtk.Label.__init__(self)
 
         self.__wrap_width = 0
         self.layout = self.get_layout()
         self.layout.set_wrap(pango.WRAP_WORD_CHAR)
 
-        if str != None:
-            self.set_text(str)
+        if text is not None:
+            self.set_text(text)
 
         self.set_alignment(0.0, 0.0)
 
@@ -50,12 +49,12 @@ class WrapLabel(gtk.Label):
         gtk.Label.do_size_allocate(self, allocation)
         self.__set_wrap_width(allocation.width)
 
-    def set_text(self, str):
-        gtk.Label.set_text(self, str)
+    def set_text(self, text):
+        gtk.Label.set_text(self, text)
         self.__set_wrap_width(self.__wrap_width)
 
-    def set_markup(self, str):
-        gtk.Label.set_markup(self, str)
+    def set_markup(self, text):
+        gtk.Label.set_markup(self, text)
         self.__set_wrap_width(self.__wrap_width)
 
     def __set_wrap_width(self, width):
