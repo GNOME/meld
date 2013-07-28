@@ -58,7 +58,7 @@ class EmblemCellRenderer(gtk.GenericCellRenderer):
             else:
                 self._tint_color = None
         else:
-            raise AttributeError("unknown property %s" % name)
+            raise AttributeError("unknown property %s" % pspec.name)
 
     def do_get_property(self, pspec):
         if pspec.name == "icon-name":
@@ -68,7 +68,7 @@ class EmblemCellRenderer(gtk.GenericCellRenderer):
         elif pspec.name == "icon-tint":
             return self._icon_tint
         else:
-            raise AttributeError("unknown property %s" % name)
+            raise AttributeError("unknown property %s" % pspec.name)
 
     def on_render(self, window, widget, background_area, cell_area,
                   expose_area, flags):
