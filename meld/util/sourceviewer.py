@@ -182,6 +182,7 @@ class nullsourceview(_srcviewer):
     def version_check(self):
         pass
 
+
 def _get_srcviewer():
     for srcv in (gtksourceview210, gtksourceview24):
         try:
@@ -190,7 +191,9 @@ def _get_srcviewer():
             pass
     return nullsourceview()
 
+
 srcviewer = _get_srcviewer()
+
 
 class MeldSourceView(srcviewer.GtkTextView):
     __gtype_name__ = "MeldSourceView"
