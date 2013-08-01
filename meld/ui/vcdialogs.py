@@ -91,7 +91,7 @@ class CommitDialog(gnomeglade.Component):
             buf = self.textview.get_buffer()
             msg = buf.get_text(*buf.get_bounds(), include_hidden_chars=False)
             # This is a dependent option because of the margin column
-            if prefs.set_show_right_margin and prefs.vc_break_commit_message:
+            if prefs.vc_show_commit_margin and prefs.vc_break_commit_message:
                 paragraphs = msg.split("\n\n")
                 msg = "\n\n".join(textwrap.fill(p, margin) for p in paragraphs)
             self.parent._command_on_selected(
