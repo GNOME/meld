@@ -1461,7 +1461,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.set_source_color(self.line_colors[change[0]])
             context.stroke()
 
-        if textview.is_focus() and self.cursor.line is not None:
+        if (self.prefs.highlight_current_line and textview.is_focus() and
+                self.cursor.line is not None):
             it = textbuffer.get_iter_at_line(self.cursor.line)
             ypos, line_height = textview.get_line_yrange(it)
             context.save()

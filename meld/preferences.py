@@ -156,6 +156,8 @@ class PreferencesDialog(gnomeglade.Component):
             self.fontpicker.set_font_name(self.prefs.custom_font)
         self.fontpicker.set_font_name( self.prefs.custom_font )
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
+        self.checkbutton_highlight_current_line.set_active(
+            self.prefs.highlight_current_line)
         if srcviewer.gsv is not None:
             self.checkbutton_spaces_instead_of_tabs.set_active( self.prefs.spaces_instead_of_tabs )
             self.checkbutton_show_line_numbers.set_active( self.prefs.show_line_numbers )
@@ -268,10 +270,15 @@ class PreferencesDialog(gnomeglade.Component):
             else:
                 self.prefs.edit_wrap_lines = 1
 
+    def on_checkbutton_highlight_current_line_toggled(self, check):
+        self.prefs.highlight_current_line = check.get_active()
+
     def on_checkbutton_show_line_numbers_toggled(self, check):
         self.prefs.show_line_numbers = check.get_active()
+
     def on_checkbutton_show_whitespace_toggled(self, check):
         self.prefs.show_whitespace = check.get_active()
+
     def on_checkbutton_use_syntax_highlighting_toggled(self, check):
         self.prefs.use_syntax_highlighting = check.get_active()
 
@@ -286,9 +293,6 @@ class PreferencesDialog(gnomeglade.Component):
     def on_custom_edit_command_entry_activate(self, entry, *args):
         # Called on "activate" and "focus-out-event"
         self.prefs.edit_command_custom = entry.props.text
-
-    def on_checkbutton_show_line_numbers_toggled(self, check):
-        self.prefs.show_line_numbers = check.get_active()
 
     def on_checkbutton_show_commit_margin_toggled(self, check):
         show_margin = check.get_active()
@@ -337,6 +341,7 @@ class MeldPreferences(prefs.Preferences):
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "tab_size": prefs.Value(prefs.INT, 4),
         "spaces_instead_of_tabs": prefs.Value(prefs.BOOL, False),
+        "highlight_current_line": prefs.Value(prefs.BOOL, False),
         "show_line_numbers": prefs.Value(prefs.BOOL, 0),
         "show_whitespace": prefs.Value(prefs.BOOL, False),
         "use_syntax_highlighting": prefs.Value(prefs.BOOL, 0),
