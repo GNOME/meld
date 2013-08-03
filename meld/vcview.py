@@ -160,7 +160,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             ("VcCompare", gtk.STOCK_DIALOG_INFO, _("_Compare"), None,
                 _("Compare selected files"),
                 self.on_button_diff_clicked),
-            ("VcCommit", "vc-commit-24", _("Co_mmit..."), None,
+            ("VcCommit", "vc-commit-24", _("Co_mmit..."), "<Ctrl>M",
                 _("Commit changes to version control"),
                 self.on_button_commit_clicked),
             ("VcUpdate", "vc-update-24", _("_Update"), None,
