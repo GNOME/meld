@@ -435,6 +435,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def _search_recursively_iter(self, iterstart):
         rootname = self.model.value_path(iterstart, 0)
         prefixlen = len(self.location) + 1
+        symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
 
         flattened = self.actiongroup.get_action("VcFlatten").get_active()
@@ -455,9 +456,24 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             entries = self.vc.listdir(path)
             entries = [e for e in entries if any(f(e) for f in filters)]
             for e in entries:
-                if e.isdir and flattened:
-                    todo.append(((0,), e.path))
-                    continue
+                if e.isdir:
+                    try:
+                        st = os.lstat(e.path)
+                    # Covers certain unreadable symlink cases; see bgo#585895
+                    except OSError as err:
+                        error_string = "%s: %s" % (e.path, err.strerror)
+                        self.model.add_error(it, error_string, 0)
+                        continue
+
+                    if stat.S_ISLNK(st.st_mode):
+                        key = (st.st_dev, st.st_ino)
+                        if key in symlinks_followed:
+                            continue
+                        symlinks_followed.add(key)
+
+                    if flattened:
+                        todo.append(((0,), e.path))
+                        continue
 
                 child = self.model.add_entries(it, [e.path])
                 self._update_item_state(child, e, path[prefixlen:])
