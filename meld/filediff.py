@@ -1063,7 +1063,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 files[i] = f = f.decode('utf8')
             absfile = os.path.abspath(f)
             self.fileentry[i].set_filename(absfile)
-            self.fileentry[i].prepend_history(absfile)
             self.textbuffer[i].reset_buffer(absfile)
             self.msgarea_mgr[i].clear()
 
@@ -1578,7 +1577,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 bufdata.filename = bufdata.label = os.path.abspath(filename)
                 bufdata.savefile = None
                 self.fileentry[pane].set_filename(bufdata.filename)
-                self.fileentry[pane].prepend_history(bufdata.filename)
             else:
                 return False
         start, end = buf.get_bounds()
@@ -1660,11 +1658,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.textbuffer[i].data.modified:
                 self.save_file(i)
 
-    def on_fileentry_activate(self, entry):
+    def on_fileentry_file_set(self, entry):
         if self.check_save_modified() != gtk.RESPONSE_CANCEL:
             entries = self.fileentry[:self.num_panes]
-            paths = [e.get_full_path() for e in entries]
-            paths = [p.decode('utf8') for p in paths]
+            files = [e.get_file() for e in entries]
+            paths = [f.get_path() for f in files]
             self.set_files(paths)
         return True
 

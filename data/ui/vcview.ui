@@ -154,11 +154,10 @@
             <property name="homogeneous">False</property>
             <property name="spacing">6</property>
             <child>
-              <object class="HistoryFileEntry" id="fileentry">
+              <object class="GtkFileChooserButton" id="fileentry">
                 <property name="visible">True</property>
-                <property name="history-id">vc_directory</property>
-                <property name="directory-entry">True</property>
-                <signal handler="on_fileentry_activate" name="activate"/>
+                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                <signal handler="on_fileentry_file_set" name="file-set"/>
               </object>
               <packing>
                 <property name="padding">0</property>

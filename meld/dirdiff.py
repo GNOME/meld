@@ -561,10 +561,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             it = self.model.iter_parent(it)
         self._update_diffmaps()
 
-    def on_fileentry_activate(self, entry):
-        locs = [e.get_full_path() for e in self.fileentry[:self.num_panes]]
-        locs = [l.decode('utf8') for l in locs]
-        self.set_locations(locs)
+    def on_fileentry_file_set(self, entry):
+        files = [e.get_file() for e in self.fileentry[:self.num_panes]]
+        paths = [f.get_path() for f in files]
+        self.set_locations(paths)
 
     def set_locations(self, locations):
         self.set_num_panes(len(locations))
@@ -581,7 +581,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.model.clear()
         for pane, loc in enumerate(locations):
             self.fileentry[pane].set_filename(loc)
-            self.fileentry[pane].prepend_history(loc)
         child = self.model.add_entries(None, locations)
         self.treeview0.grab_focus()
         self._update_item_state(child)
@@ -1347,7 +1346,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 widget.hide()
             if self.num_panes != 0: # not first time through
                 self.num_panes = n
-                self.on_fileentry_activate(None)
+                self.on_fileentry_file_set(None)
             else:
                 self.num_panes = n
 
@@ -1434,7 +1433,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview[pane].set_cursor(path)
 
     def on_refresh_activate(self, *extra):
-        self.on_fileentry_activate(None)
+        self.on_fileentry_file_set(None)
 
     def on_delete_event(self, appquit=0):
         for h in self.app_handlers:

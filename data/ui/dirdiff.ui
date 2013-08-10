@@ -110,12 +110,11 @@
             <property name="n_rows">2</property>
             <property name="n_columns">7</property>
             <child>
-              <object class="HistoryFileEntry" id="fileentry0">
+              <object class="GtkFileChooserButton" id="fileentry0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="history_id">direntry</property>
-                <property name="directory_entry">True</property>
-                <signal name="activate" handler="on_fileentry_activate" swapped="no"/>
+                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -124,12 +123,11 @@
               </packing>
             </child>
             <child>
-              <object class="HistoryFileEntry" id="fileentry1">
+              <object class="GtkFileChooserButton" id="fileentry1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="history_id">direntry</property>
-                <property name="directory_entry">True</property>
-                <signal name="activate" handler="on_fileentry_activate" swapped="no"/>
+                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">3</property>
@@ -138,12 +136,11 @@
               </packing>
             </child>
             <child>
-              <object class="HistoryFileEntry" id="fileentry2">
+              <object class="GtkFileChooserButton" id="fileentry2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="history_id">direntry</property>
-                <property name="directory_entry">True</property>
-                <signal name="activate" handler="on_fileentry_activate" swapped="no"/>
+                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">5</property>

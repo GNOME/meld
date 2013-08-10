@@ -329,7 +329,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.current_path = None
         self.model.clear()
         self.fileentry.set_filename(location)
-        self.fileentry.prepend_history(location)
         it = self.model.add_entries(None, [location])
         self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
@@ -418,8 +417,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 if any(e.state != tree.STATE_NORMAL for e in entries):
                     self.treeview.expand_to_path(treepath)
 
-    def on_fileentry_activate(self, fileentry):
-        path = fileentry.get_full_path()
+    # TODO: This doesn't fire when the user selects a shortcut folder
+    def on_fileentry_file_set(self, fileentry):
+        directory = fileentry.get_file()
+        path = directory.get_path()
         self.set_location(path)
 
     def on_delete_event(self, appquit=0):
@@ -821,7 +822,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview.set_cursor(path)
 
     def on_refresh_activate(self, *extra):
-        self.on_fileentry_activate(self.fileentry)
+        self.on_fileentry_file_set(self.fileentry)
 
     def on_find_activate(self, *extra):
         self.treeview.emit("start-interactive-search")
