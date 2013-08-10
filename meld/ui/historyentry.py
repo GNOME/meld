@@ -289,7 +289,8 @@ try:
 except ImportError:
     do_nothing = lambda *args: None
     for m in ('_save_history', '_load_history', '_get_gconf_client'):
-        setattr(HistoryEntry, m, do_nothing)
+        setattr(HistoryWidget, m, do_nothing)
+        setattr(HistoryCombo, m, do_nothing)
 
 
 
