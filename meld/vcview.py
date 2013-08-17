@@ -26,6 +26,7 @@ import stat
 import sys
 from gettext import gettext as _
 
+import gio
 import gtk
 import pango
 
@@ -739,14 +740,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         files = self._get_selected_files()
         for name in files:
             try:
-                if os.path.isfile(name):
-                    os.remove(name)
-                elif os.path.isdir(name):
-                    if misc.run_dialog(_("'%s' is a directory.\nRemove recursively?") % os.path.basename(name),
-                            parent = self,
-                            buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
-                        shutil.rmtree(name)
-            except OSError as e:
+                gfile = gio.File(name)
+                gfile.trash()
+            except gio.Error as e:
                 misc.run_dialog(_("Error removing %s\n\n%s.") % (name, e),
                                 parent=self)
         workdir = _commonprefix(files)
