@@ -648,9 +648,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 r = next(readiter)
                 self.consolestream.output(r)
                 yield 1
-        except IOError as e:
-            misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % ( misc.shelljoin(command), e),
-                parent=self, messagetype=gtk.MESSAGE_ERROR)
+        except IOError as err:
+            misc.error_dialog(
+                "Error running command",
+                "While running '%s'\nError: %s" % (msg, err))
         self.consolestream.output("\n")
 
         returncode = next(readiter)
