@@ -27,6 +27,7 @@ import stat
 import sys
 import time
 
+import gobject
 import gtk
 import gtk.keysyms
 
@@ -840,8 +841,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                 continue
                         misc.copytree(src, dst)
                         self.recursively_update( path )
-                except (OSError, IOError) as e:
-                    misc.run_dialog(_("Error copying '%s' to '%s'\n\n%s.") % (src, dst,e), self)
+                except (OSError, IOError, shutil.Error) as err:
+                    misc.error_dialog(
+                        _("Error copying file"),
+                        _("Couldn't copy %s\nto %s.\n\n%s") % (
+                            gobject.markup_escape_text(src),
+                            gobject.markup_escape_text(dst),
+                            gobject.markup_escape_text(str(err)),
+                        )
+                    )
 
     def delete_selected(self):
         """Delete all selected files/folders recursively.
