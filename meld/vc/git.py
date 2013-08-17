@@ -42,9 +42,11 @@ class Vc(_vc.CachedVc):
     CMD = "git"
     NAME = "Git"
     VC_DIR = ".git"
-    GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([ADMU])\t(.*)"
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
+
+    GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([ADMU])\t(.*)"
+    DIFF_RE = re.compile(GIT_DIFF_FILES_RE)
 
     conflict_map = {
         # These are the arguments for git-show
@@ -65,7 +67,6 @@ class Vc(_vc.CachedVc):
 
     def __init__(self, location):
         super(Vc, self).__init__(location)
-        self.diff_re = re.compile(self.GIT_DIFF_FILES_RE)
         self._tree_cache = {}
         self._tree_meta_cache = {}
 
@@ -164,7 +165,7 @@ class Vc(_vc.CachedVc):
         for p in paths:
             if os.path.isdir(p):
                 entries = self._get_modified_files(p)
-                names = [self.diff_re.search(e).groups()[3] for e in entries]
+                names = [self.DIFF_RE.search(e).groups()[3] for e in entries]
                 files.extend(names)
             else:
                 files.append(os.path.relpath(p, self.root))
@@ -330,7 +331,7 @@ class Vc(_vc.CachedVc):
         else:
             # There are 1 or more modified files, parse their state
             for entry in entries:
-                columns = self.diff_re.search(entry).groups()
+                columns = self.DIFF_RE.search(entry).groups()
                 old_mode, new_mode, statekey, name = columns
                 if os.name == 'nt':
                     # Git returns unix-style paths on Windows
