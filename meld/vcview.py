@@ -41,7 +41,6 @@ from .ui import gnomeglade
 from .ui import vcdialogs
 from meld.vc import _null
 
-from meld.meldapp import app
 
 def _commonprefix(files):
     if len(files) != 1:
@@ -744,8 +743,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 gfile = gio.File(name)
                 gfile.trash()
             except gio.Error as e:
-                misc.error_dialog(_("Error removing %s") % name, str(e),
-                                  parent=app.window.widget)
+                misc.error_dialog(_("Error removing %s") % name, str(e))
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
 

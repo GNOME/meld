@@ -50,7 +50,7 @@ def shelljoin( command ):
     return " ".join( [ quote(x) for x in command ] )
 
 
-def error_dialog(primary, secondary, parent, messagetype=gtk.MESSAGE_ERROR):
+def error_dialog(primary, secondary, parent=None, messagetype=gtk.MESSAGE_ERROR):
     """A common error dialog handler for Meld
 
     This should only ever be used as a last resort, and for errors that
@@ -59,6 +59,10 @@ def error_dialog(primary, secondary, parent, messagetype=gtk.MESSAGE_ERROR):
 
     Primary must be plain text. Secondary must be valid markup.
     """
+    if not parent:
+        from meld.meldapp import app
+        parent = app.window.widget
+
     dialog = gtk.MessageDialog(
         parent=parent,
         flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
