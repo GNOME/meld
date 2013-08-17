@@ -50,6 +50,7 @@ class Vc(svn.Vc):
     CMD = "svk"
     NAME = "SVK"
 
+    @classmethod
     def check_repo_root(self, location):
         try:
             # `svk info` may be interactive. It can ask to create its repository, we
@@ -60,7 +61,5 @@ class Vc(svn.Vc):
             # stream redirected to a newly created pipe, restore sanity manually
             cmdout(['stty', 'sane'], stdout=NULL, stderr=NULL, stdin=None)
         except OSError:
-            raise ValueError()
-        if status != 0:
-            raise ValueError()
-        return location
+            return False
+        return status == 0

@@ -79,11 +79,10 @@ class Vc(_vc.CachedVc):
         except:
             return False
 
+    @classmethod
     def check_repo_root(self, location):
         # Check exists instead of isdir, since .git might be a git-file
-        if not os.path.exists(os.path.join(location, self.VC_DIR)):
-            raise ValueError
-        return location
+        return os.path.exists(os.path.join(location, self.VC_DIR))
 
     def commit_command(self, message):
         return [self.CMD, "commit", "-m", message]

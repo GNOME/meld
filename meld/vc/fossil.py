@@ -71,12 +71,11 @@ class Vc(_vc.CachedVc):
         else:
             return True
 
+    @classmethod
     def check_repo_root(self, location):
         # Fossil uses a file -- not a directory
-        for metafile in self.VC_METADATA:
-            if os.path.isfile(os.path.join(location, metafile)):
-                return location
-        raise ValueError
+        return any(os.path.isfile(os.path.join(location, m))
+                   for m in self.VC_METADATA)
 
     def get_working_directory(self, workdir):
         return self.root
