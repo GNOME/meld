@@ -24,7 +24,6 @@
 
 import logging
 import os
-from gettext import gettext as _
 import re
 import shutil
 import tempfile
@@ -32,6 +31,8 @@ import time
 
 from meld import misc
 from . import _vc
+
+log = logging.getLogger(__name__)
 
 
 class FakeErrorStream(object):
@@ -124,8 +125,6 @@ class Vc(_vc.Vc):
                 os.rmdir(tmpdir)
 
     def _get_dirsandfiles(self, directory, dirs, files):
-        log = logging.getLogger(__name__)
-
         vc_path = os.path.join(directory, self.VC_DIR)
 
         try:
@@ -227,10 +226,10 @@ class Vc(_vc.Vc):
             try:
                 regexes = [misc.shell_to_regex(i)[:-1] for i in ignored]
                 ignore_re = re.compile("(" + "|".join(regexes) + ")")
-            except re.error as e:
-                misc.run_dialog(_("Error converting to a regular expression\n"
-                                  "The pattern was '%s'\nThe error was '%s'") %
-                                (",".join(ignored), e))
+            except re.error as err:
+                log.warning(
+                    "Error converting %s to a regular expression: %s'" %
+                    (",".join(ignored), err))
         else:
             class dummy(object):
                 def match(self, *args):
