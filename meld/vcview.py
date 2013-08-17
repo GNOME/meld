@@ -314,12 +314,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 action.props.sensitive = False
         self.valid_vc_actions = tuple(valid_vc_actions)
 
-    def choose_vc(self, vcs):
+    def choose_vc(self, location):
         """Display VC plugin(s) that can handle the location"""
         self.combobox_vcs.lock = True
-        self.combobox_vcs.get_model().clear()
+        vcs_model = self.combobox_vcs.get_model()
+        vcs_model.clear()
         default_active = -1
         valid_vcs = []
+        vcs = vc.get_vcs(os.path.abspath(location or "."))
         # Try to keep the same VC plugin active on refresh()
         for idx, avc in enumerate(vcs):
             # See if the necessary version control command exists.  If so,
@@ -343,17 +345,17 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     default_active = idx
 
             if err_str:
-                self.combobox_vcs.get_model().append(
+                vcs_model.append(
                     [_("%s (%s)") % (avc.NAME, err_str), avc, False])
             else:
                 name = avc.NAME or _("None")
-                self.combobox_vcs.get_model().append([name, avc, True])
+                vcs_model.append([name, avc, True])
 
         if not valid_vcs:
             # If we didn't get any valid vcs then fallback to null
-            null_vcs = _null.Vc(vcs[0].location)
+            null_vcs = _null.Vc(location)
             vcs.append(null_vcs)
-            self.combobox_vcs.get_model().insert(
+            vcs_model.insert(
                 0, [_("None"), null_vcs, True])
             default_active = 0
 
@@ -384,7 +386,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.update_visible_columns()
 
     def set_location(self, location):
-        self.choose_vc(vc.get_vcs(os.path.abspath(location or ".")))
+        self.choose_vc(location)
 
     def _set_location(self, location):
         self.location = location
