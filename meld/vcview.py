@@ -625,7 +625,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         """Run 'command' on 'files'. Return a tuple of the directory the
            command was executed in and the output of the command.
         """
-        msg = misc.shelljoin(command)
+
+        def shelljoin(command):
+            def quote(s):
+                return '"%s"' % s if len(s.split()) > 1 else s
+            return " ".join(quote(tok) for tok in command)
+
+        msg = shelljoin(command)
         yield "[%s] %s" % (self.label_text, msg.replace("\n", "\t"))
         def relpath(pbase, p):
             kill = 0
@@ -640,7 +646,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             workdir = self.vc.get_working_directory(_commonprefix(files))
         files = [relpath(workdir, f) for f in files]
         r = None
-        self.consolestream.command(misc.shelljoin(command + files) + " (in %s)\n" % workdir)
+        self.consolestream.command(shelljoin(command + files) + " (in %s)\n" % workdir)
         readiter = misc.read_pipe_iter(command + files, self.consolestream,
                                        workdir=workdir)
         try:

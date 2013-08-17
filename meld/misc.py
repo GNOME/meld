@@ -32,8 +32,6 @@ import gobject
 import gtk
 
 
-whitespace_re = re.compile(r"\s")
-
 if os.name != "nt":
     from select import select
 else:
@@ -42,12 +40,6 @@ else:
     def select(rlist, wlist, xlist, timeout):
         time.sleep(timeout)
         return rlist, wlist, xlist
-
-
-def shelljoin( command ):
-    def quote(s):
-        return ((whitespace_re.search(s) is None) and s or ('"%s"' % s))
-    return " ".join( [ quote(x) for x in command ] )
 
 
 def error_dialog(primary, secondary, parent=None, messagetype=gtk.MESSAGE_ERROR):
