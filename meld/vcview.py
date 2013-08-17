@@ -328,16 +328,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             # tool and display a basic error message in the drop-down menu.
             err_str = ""
 
-            def vc_installed(cmd):
-                if not cmd:
-                    return True
-                try:
-                    return not vc._vc.call(["which", cmd])
-                except OSError:
-                    if os.name == 'nt':
-                        return not vc._vc.call(["where", cmd])
-
-            if not vc_installed(avc.CMD):
+            if not avc.is_installed():
                 # TRANSLATORS: this is an error message when a version control
                 # application isn't installed or can't be found
                 err_str = _("%s not installed" % avc.CMD)

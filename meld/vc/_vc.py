@@ -264,6 +264,14 @@ class Vc(object):
             return None
         return vc_files[0]
 
+    @classmethod
+    def is_installed(cls):
+        try:
+            popen([cls.CMD])
+            return True
+        except:
+            return False
+
 
 class CachedVc(Vc):
 

@@ -69,6 +69,15 @@ class Vc(_vc.CachedVc):
         self._tree_cache = {}
         self._tree_meta_cache = {}
 
+    @classmethod
+    def is_installed(cls):
+        try:
+            proc = _vc.popen([cls.CMD, '--version'])
+            assert proc.read().startswith('git version')
+            return True
+        except:
+            return False
+
     def check_repo_root(self, location):
         # Check exists instead of isdir, since .git might be a git-file
         if not os.path.exists(os.path.join(location, self.VC_DIR)):
