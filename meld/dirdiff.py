@@ -27,6 +27,7 @@ import stat
 import sys
 import time
 
+import gio
 import gobject
 import gtk
 import gtk.keysyms
@@ -863,18 +864,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 it = self.model.get_iter(path)
                 name = self.model.value_path(it, pane)
                 try:
-                    if os.path.isfile(name):
-                        os.remove(name)
-                        self.file_deleted( path, pane)
-                    elif os.path.isdir(name):
-                        if misc.run_dialog(_("'%s' is a directory.\nRemove recursively?") % os.path.basename(name),
-                                parent = self,
-                                buttonstype=gtk.BUTTONS_OK_CANCEL) == gtk.RESPONSE_OK:
-                            shutil.rmtree(name)
-                            self.recursively_update(path)
-                            self.file_deleted(path, pane)
-                except OSError as e:
-                    misc.run_dialog(_("Error removing %s\n\n%s.") % (name,e), parent = self)
+                    gfile = gio.File(name)
+                    gfile.trash()
+                    self.file_deleted(path, pane)
+                except gio.Error as e:
+                    misc.error_dialog(_("Error deleting %s") % name, str(e))
 
     def on_treemodel_row_deleted(self, model, path):
 
