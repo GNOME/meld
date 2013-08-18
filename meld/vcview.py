@@ -155,7 +155,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def __init__(self, prefs):
         melddoc.MeldDoc.__init__(self, prefs)
         gnomeglade.Component.__init__(self, paths.ui_dir("vcview.ui"),
-                                      "vcview")
+                                      "vcview", ['liststore_vcs'])
 
         actions = (
             ("VcCompare", gtk.STOCK_DIALOG_INFO, _("_Compare"), None,
@@ -279,18 +279,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.on_console_view_toggle(self.console_hide_box)
         self.vc = None
         self.valid_vc_actions = tuple()
-        # VC ComboBox
-        self.combobox_vcs = gtk.ComboBox()
-        self.combobox_vcs.lock = True
-        self.combobox_vcs.set_model(gtk.ListStore(str, object, bool))
+
         cell = gtk.CellRendererText()
         self.combobox_vcs.pack_start(cell, False)
         self.combobox_vcs.add_attribute(cell, 'text', 0)
         self.combobox_vcs.add_attribute(cell, 'sensitive', 2)
         self.combobox_vcs.lock = False
-        self.hbox2.pack_end(self.combobox_vcs, expand=False)
-        self.combobox_vcs.show()
-        self.combobox_vcs.connect("changed", self.on_vc_change)
 
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)

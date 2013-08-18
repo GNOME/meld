@@ -37,6 +37,20 @@
                 <property name="padding">0</property>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="combobox_vcs">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">liststore_vcs</property>
+                <signal name="changed" handler="on_vc_change" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
@@ -223,6 +237,16 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore_vcs">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gpointer1 -->
+      <column type="PyObject"/>
+      <!-- column-name gboolean1 -->
+      <column type="gboolean"/>
+    </columns>
   </object>
   <object class="GtkDialog" id="commitdialog">
     <property name="default_width">450</property>
