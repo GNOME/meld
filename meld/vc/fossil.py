@@ -66,10 +66,7 @@ class Vc(_vc.CachedVc):
         return [self.CMD, "revert"]
 
     def valid_repo(self):
-        if _vc.call([self.CMD, "info"], cwd=self.root):
-            return False
-        else:
-            return True
+        return not _vc.call([self.CMD, "info"], cwd=self.root)
 
     @classmethod
     def check_repo_root(self, location):

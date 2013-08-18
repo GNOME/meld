@@ -70,10 +70,7 @@ class Vc(_vc.CachedVc):
         return [self.CMD, "resolve"]
 
     def valid_repo(self):
-        if _vc.call([self.CMD, "query", "tags"], cwd=self.root):
-            return False
-        else:
-            return True
+        return not _vc.call([self.CMD, "query", "tags"], cwd=self.root)
 
     def get_working_directory(self, workdir):
         return self.root

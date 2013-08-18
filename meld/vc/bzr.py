@@ -109,10 +109,7 @@ class Vc(_vc.CachedVc):
             working_dir=self.root)
 
     def valid_repo(self):
-        if _vc.call([self.CMD, "root"], cwd=self.root):
-            return False
-        else:
-            return True
+        return not _vc.call([self.CMD, "root"], cwd=self.root)
 
     def get_working_directory(self, workdir):
         return self.root

@@ -75,10 +75,7 @@ class Vc(_vc.Vc):
 
     def valid_repo(self):
         entry_path = os.path.join(self.root, self.VC_DIR, "Entries")
-        if os.path.exists(entry_path):
-            return True
-        else:
-            return False
+        return os.path.exists(entry_path)
 
     def get_path_for_repo_file(self, path, commit=None):
         if commit is not None:

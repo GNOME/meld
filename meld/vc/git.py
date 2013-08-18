@@ -258,10 +258,7 @@ class Vc(_vc.CachedVc):
     def valid_repo(self):
         # TODO: On Windows, this exit code is wrong under the normal shell; it
         # appears to be correct under the default git bash shell however.
-        if _vc.call([self.CMD, "branch"], cwd=self.root):
-            return False
-        else:
-            return True
+        return not _vc.call([self.CMD, "branch"], cwd=self.root)
 
     def get_working_directory(self, workdir):
         if workdir.startswith("/"):
