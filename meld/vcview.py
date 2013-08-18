@@ -715,7 +715,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 return
 
         try:
-            self.vc.remove(self._command, self._get_selected_files())
+            self.vc.remove(self._command, selected)
         except NotImplementedError:
             self._command_on_selected(self.vc.remove_command())
 
