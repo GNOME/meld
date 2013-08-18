@@ -73,9 +73,9 @@ class Vc(_vc.Vc):
     def revert_command(self):
         return [self.CMD, "update", "-C"]
 
-    def valid_repo(self):
-        entry_path = os.path.join(self.root, self.VC_DIR, "Entries")
-        return os.path.exists(entry_path)
+    @classmethod
+    def valid_repo(cls, path):
+        return os.path.exists(os.path.join(path, cls.VC_DIR, "Entries"))
 
     def get_path_for_repo_file(self, path, commit=None):
         if commit is not None:

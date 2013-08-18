@@ -321,7 +321,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         vcs_model.clear()
         default_active = -1
         valid_vcs = []
-        vcs = vc.get_vcs(os.path.abspath(location or "."))
+        location = os.path.abspath(location or ".")
+        vcs = vc.get_vcs(location)
         # Try to keep the same VC plugin active on refresh()
         for idx, avc in enumerate(vcs):
             # See if the necessary version control command exists.  If so,
@@ -334,7 +335,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 # TRANSLATORS: this is an error message when a version control
                 # application isn't installed or can't be found
                 err_str = _("%s not installed" % avc.CMD)
-            elif not avc.valid_repo():
+            elif not avc.valid_repo(location):
                 # TRANSLATORS: this is an error message when a version
                 # controlled repository is invalid or corrupted
                 err_str = _("Invalid repository")
@@ -349,7 +350,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     [_("%s (%s)") % (avc.NAME, err_str), avc, False])
             else:
                 name = avc.NAME or _("None")
-                vcs_model.append([name, avc, True])
+                vcs_model.append([name, avc(location), True])
 
         if not valid_vcs:
             # If we didn't get any valid vcs then fallback to null

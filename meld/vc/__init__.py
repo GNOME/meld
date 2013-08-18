@@ -75,25 +75,21 @@ def get_vcs(location):
     vcs = []
     max_depth = 0
     for plugin in _plugins:
-        try:
-            vc = plugin.Vc(location)
-        except ValueError:
+        root, location = plugin.Vc.is_in_repo(location)
+        if not root:
             continue
 
         # Choose the deepest root we find, unless it's from a VC that
         # doesn't walk; these can be spurious as the real root may be
         # much higher up in the tree.
-        depth = len(vc.root)
-        if depth > max_depth and vc.VC_ROOT_WALK:
+        depth = len(root)
+        if depth > max_depth and plugin.Vc.VC_ROOT_WALK:
             vcs, max_depth = [], depth
         if depth >= max_depth:
-            vcs.append(vc)
+            vcs.append(plugin.Vc)
 
     if not vcs:
         # No plugin recognized that location, fallback to _null
-        return [_null.Vc(location)]
+        return [_null]
 
-    vc_sort_key = lambda v: vc_sort_order.index(v.NAME)
-    vcs.sort(key=vc_sort_key)
-
-    return vcs
+    return sorted(vcs, key=lambda v: vc_sort_order.index(v.NAME))

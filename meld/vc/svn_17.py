@@ -35,7 +35,8 @@ class Vc(svn.Vc):
     NAME = "Subversion 1.7"
     VC_ROOT_WALK = True
 
-    def _repo_version_support(self, version):
+    @classmethod
+    def _repo_version_support(cls, version):
         return version >= 12
 
     def get_path_for_repo_file(self, path, commit=None):

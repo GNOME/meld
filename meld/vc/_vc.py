@@ -200,10 +200,6 @@ class Vc(object):
         """
         pass
 
-    # Determine if a directory is a valid git/svn/hg/cvs/etc repository
-    def valid_repo(self):
-        return True
-
     def listdir(self, path="."):
         try:
             entries = sorted(e for e in os.listdir(path) if e != self.VC_DIR)
@@ -274,6 +270,11 @@ class Vc(object):
             location, old = os.path.dirname(location), location
             if location == old:
                 break
+
+    @classmethod
+    def valid_repo(cls, path):
+        """Determine if a directory is a valid repository for this class"""
+        raise NotImplementedError
 
 
 class CachedVc(Vc):

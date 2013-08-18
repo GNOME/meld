@@ -108,8 +108,9 @@ class Vc(_vc.CachedVc):
             [self.CMD] + self.CMDARGS + ["rm"] + files, [], refresh=True,
             working_dir=self.root)
 
-    def valid_repo(self):
-        return not _vc.call([self.CMD, "root"], cwd=self.root)
+    @classmethod
+    def valid_repo(cls, path):
+        return not _vc.call([cls.CMD, "root"], cwd=path)
 
     def get_working_directory(self, workdir):
         return self.root

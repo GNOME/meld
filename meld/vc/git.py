@@ -255,10 +255,11 @@ class Vc(_vc.CachedVc):
             shutil.copyfileobj(vc_file, f)
         return f.name
 
-    def valid_repo(self):
+    @classmethod
+    def valid_repo(cls, path):
         # TODO: On Windows, this exit code is wrong under the normal shell; it
         # appears to be correct under the default git bash shell however.
-        return not _vc.call([self.CMD, "branch"], cwd=self.root)
+        return not _vc.call([cls.CMD, "branch"], cwd=path)
 
     def get_working_directory(self, workdir):
         if workdir.startswith("/"):

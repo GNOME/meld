@@ -143,17 +143,20 @@ class Vc(_vc.CachedVc):
 
         raise KeyError("Conflict file does not exist")
 
-    def _repo_version_support(self, version):
+
+    @classmethod
+    def _repo_version_support(cls, version):
         return version < 12
 
-    def valid_repo(self):
-        if _vc.call([self.CMD, "info"], cwd=self.root):
+    @classmethod
+    def valid_repo(cls, path):
+        if _vc.call([cls.CMD, "info"], cwd=path):
             return False
 
         # Check for repository version, trusting format file then entries file
-        format_path = os.path.join(self.root, self.VC_DIR, "format")
-        entries_path = os.path.join(self.root, self.VC_DIR, "entries")
-        wcdb_path = os.path.join(self.root, self.VC_DIR, "wc.db")
+        format_path = os.path.join(path, cls.VC_DIR, "format")
+        entries_path = os.path.join(path, cls.VC_DIR, "entries")
+        wcdb_path = os.path.join(path, cls.VC_DIR, "wc.db")
         format_exists = os.path.exists(format_path)
         entries_exists = os.path.exists(entries_path)
         wcdb_exists = os.path.exists(wcdb_path)
@@ -168,7 +171,7 @@ class Vc(_vc.CachedVc):
         else:
             return False
 
-        return self._repo_version_support(repo_version)
+        return cls._repo_version_support(repo_version)
 
     def _update_tree_state_cache(self, path, tree_state):
         while 1:
