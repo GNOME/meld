@@ -92,6 +92,7 @@ class Vc(_vc.Vc):
         patch = None
         while patch is None:
             patch = next(diffiter)
+        status = next(diffiter)
 
         tmpdir = tempfile.mkdtemp("-meld")
         destfile = os.path.join(tmpdir, os.path.basename(path))

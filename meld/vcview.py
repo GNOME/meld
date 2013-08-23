@@ -651,6 +651,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             misc.run_dialog("Error running command.\n'%s'\n\nThe error was:\n%s" % ( misc.shelljoin(command), e),
                 parent=self, messagetype=gtk.MESSAGE_ERROR)
         self.consolestream.output("\n")
+
+        returncode = next(readiter)
+        if returncode:
+            self.set_console_view_visible(True)
+
         if refresh:
             self.refresh_partial(workdir)
         yield workdir, r
@@ -822,6 +827,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_console_view_toggle(self, box, event=None):
         if box == self.console_hide_box:
+            self.set_console_view_visible(False)
+        else:
+            self.set_console_view_visible(True)
+
+    def set_console_view_visible(self, visible):
+        if not visible:
             self.prefs.vc_console_visible = 0
             self.console_hbox.hide()
             self.console_show_box.show()
