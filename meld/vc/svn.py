@@ -57,8 +57,7 @@ class Vc(_vc.CachedVc):
 
     def update_command(self):
         return [self.CMD,"update"]
-    def add_command(self):
-        return [self.CMD,"add"]
+
     def remove_command(self, force=0):
         return [self.CMD,"rm","--force"]
     def revert_command(self):
@@ -143,6 +142,16 @@ class Vc(_vc.CachedVc):
 
         raise KeyError("Conflict file does not exist")
 
+    def add(self, runner, files):
+        # SVN < 1.7 needs to add folders from their immediate parent
+        dirs = [s for s in files if os.path.isdir(s)]
+        files = [s for s in files if os.path.isfile(s)]
+        command = [self.CMD, 'add']
+        for path in dirs:
+            runner(command, [path], refresh=True,
+                   working_dir=os.path.dirname(path))
+        if files:
+            runner(command, files, refresh=True)
 
     @classmethod
     def _repo_version_support(cls, version):

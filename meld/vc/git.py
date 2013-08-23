@@ -87,9 +87,6 @@ class Vc(_vc.CachedVc):
     def commit_command(self, message):
         return [self.CMD, "commit", "-m", message]
 
-    def add_command(self):
-        return [self.CMD, "add"]
-
     # Prototyping VC interface version 2
 
     def update_actions_for_paths(self, path_states, actions):
@@ -189,6 +186,10 @@ class Vc(_vc.CachedVc):
     def push(self, runner):
         command = [self.CMD, 'push']
         runner(command, [], refresh=True, working_dir=self.root)
+
+    def add(self, runner, files):
+        command = [self.CMD, 'add']
+        runner(command, files, refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
         command = [self.CMD, 'rm', '-r']

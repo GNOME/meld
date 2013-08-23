@@ -680,18 +680,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         vcdialogs.CommitDialog(self).run()
 
     def on_button_add_clicked(self, obj):
-        # This is an evil hack to let CVS and SVN < 1.7 deal with the
-        # requirement of adding folders from their immediate parent.
-        if self.vc.NAME in ("CVS", "Subversion"):
-            selected = self._get_selected_files()
-            dirs = [s for s in selected if os.path.isdir(s)]
-            files = [s for s in selected if os.path.isfile(s)]
-            for path in dirs:
-                self._command(self.vc.add_command(), [path],
-                              working_dir=os.path.dirname(path))
-            if files:
-                self._command(self.vc.add_command(), files)
-        else:
+        try:
+            self.vc.add(self._command, self._get_selected_files())
+        except NotImplementedError:
             self._command_on_selected(self.vc.add_command())
 
     def on_button_remove_clicked(self, obj):

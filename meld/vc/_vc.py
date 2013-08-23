@@ -154,6 +154,9 @@ class Vc(object):
     def get_commits_to_push_summary(self):
         raise NotImplementedError()
 
+    def add(self, runner, files):
+        raise NotImplementedError()
+
     def remove(self, runner, files):
         raise NotImplementedError()
 

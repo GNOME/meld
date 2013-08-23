@@ -64,9 +64,6 @@ class Vc(_vc.Vc):
     def update_command(self):
         return [self.CMD, "update"]
 
-    def add_command(self):
-        return [self.CMD, "add"]
-
     def remove_command(self, force=0):
         return [self.CMD, "rm", "-f"]
 
@@ -120,6 +117,17 @@ class Vc(_vc.Vc):
                 os.remove(destfile)
             if os.path.exists(destfile):
                 os.rmdir(tmpdir)
+
+    def add(self, runner, files):
+        # CVS needs to add folders from their immediate parent
+        dirs = [s for s in files if os.path.isdir(s)]
+        files = [s for s in files if os.path.isfile(s)]
+        command = [self.CMD, 'add']
+        for path in dirs:
+            runner(command, [path], refresh=True,
+                   working_dir=os.path.dirname(path))
+        if files:
+            runner(command, files, refresh=True)
 
     def _get_dirsandfiles(self, directory, dirs, files):
         vc_path = os.path.join(directory, self.VC_DIR)
