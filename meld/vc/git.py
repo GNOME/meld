@@ -263,8 +263,8 @@ class Vc(_vc.CachedVc):
     def _get_modified_files(self, path):
         # Update the index before getting status, otherwise we could
         # be reading stale status information
-        _vc.popen([self.CMD, "update-index", "--refresh"],
-                  cwd=self.location)
+        _vc.call([self.CMD, "update-index", "--refresh"],
+                 cwd=self.location)
 
         # Get the status of files that are different in the "index" vs
         # the HEAD of the git repository
