@@ -269,22 +269,21 @@ class ConfigParserPreferences(object):
         return "\n".join(prefs_entries)
 
 
+force_ini = os.path.exists(
+    os.path.join(glib.get_user_config_dir(), 'meld', 'use-rc-prefs'))
+skip_gconf = sys.platform == 'win32' or force_ini
 # Prefer gconf, falling back to configparser
-Preferences = None
-
-if sys.platform != 'win32' and not os.path.exists(os.path.join(glib.get_user_config_dir(), 'meld', 'use-rc-prefs')):
-    try:
-        import gconf
-        # Verify that gconf is actually working (bgo#666136)
-        client = gconf.client_get_default()
-        key = '/apps/meld/gconf-test'
-        client.set_int(key, os.getpid())
-        client.unset(key)
-        Preferences = GConfPreferences
-    except (ImportError, glib.GError):
-        pass
-
-if Preferences == None:
+try:
+    if skip_gconf:
+        raise ImportError
+    import gconf
+    # Verify that gconf is actually working (bgo#666136)
+    client = gconf.client_get_default()
+    key = '/apps/meld/gconf-test'
+    client.set_int(key, os.getpid())
+    client.unset(key)
+    Preferences = GConfPreferences
+except (ImportError, glib.GError):
     try:
         import configparser
     except ImportError:
