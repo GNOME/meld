@@ -18,6 +18,7 @@
 import os
 import sys
 
+import glib
 import gio
 import gtk
 import gobject
@@ -286,7 +287,12 @@ class HistoryEntry(gtk.ComboBoxEntry, HistoryWidget):
 
 try:
     import gconf
-except ImportError:
+    # Verify that gconf is actually working (bgo#666136)
+    client = gconf.client_get_default()
+    key = '/apps/meld/gconf-test'
+    client.set_int(key, os.getpid())
+    client.unset(key)
+except (ImportError, glib.GError):
     do_nothing = lambda *args: None
     for m in ('_save_history', '_load_history', '_get_gconf_client'):
         setattr(HistoryWidget, m, do_nothing)
