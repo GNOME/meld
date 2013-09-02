@@ -3,6 +3,98 @@
   <!-- interface-requires gtk+ 2.12 -->
   <!-- interface-requires meld.ui.gladesupport 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkActionGroup" id="DirdiffActions">
+    <child>
+      <object class="GtkAction" id="DirCompare">
+        <property name="label" translatable="yes">_Compare</property>
+        <property name="tooltip" translatable="yes">Compare selected files</property>
+        <property name="stock_id">gtk-dialog-info</property>
+        <property name="is_important">True</property>
+        <signal name="activate" handler="on_button_diff_clicked" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkAction" id="DirCopyLeft">
+        <property name="label" translatable="yes">Copy _Left</property>
+        <property name="tooltip" translatable="yes">Copy to left</property>
+        <property name="stock_id">gtk-go-back</property>
+        <property name="is_important">True</property>
+        <signal name="activate" handler="on_button_copy_left_clicked" swapped="no"/>
+      </object>
+      <accelerator key="Left" modifiers="GDK_MOD1_MASK"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="DirCopyRight">
+        <property name="label" translatable="yes">Copy _Right</property>
+        <property name="tooltip" translatable="yes">Copy to right</property>
+        <property name="stock_id">gtk-go-forward</property>
+        <property name="is_important">True</property>
+        <signal name="activate" handler="on_button_copy_right_clicked" swapped="no"/>
+      </object>
+      <accelerator key="Right" modifiers="GDK_MOD1_MASK"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="DirDelete">
+        <property name="tooltip" translatable="yes">Delete selected</property>
+        <property name="stock_id">gtk-delete</property>
+        <property name="is_important">True</property>
+        <signal name="activate" handler="on_button_delete_clicked" swapped="no"/>
+      </object>
+      <accelerator key="Delete"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="Hide">
+        <property name="label" translatable="yes">Hide</property>
+        <property name="tooltip" translatable="yes">Hide selected</property>
+        <property name="stock_id">gtk-no</property>
+        <signal name="activate" handler="on_filter_hide_current_clicked" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToggleAction" id="IgnoreCase">
+        <property name="label" translatable="yes">Ignore Filename Case</property>
+        <property name="tooltip" translatable="yes">Consider differently-cased filenames that are otherwise-identical to be the same</property>
+        <property name="stock_id">gtk-italic</property>
+        <signal name="toggled" handler="on_button_ignore_case_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToggleAction" id="ShowSame">
+        <property name="label" translatable="yes">Same</property>
+        <property name="tooltip" translatable="yes">Show identical</property>
+        <property name="stock_id">gtk-apply</property>
+        <property name="is_important">True</property>
+        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkToggleAction" id="ShowNew">
+        <property name="label" translatable="yes">New</property>
+        <property name="tooltip" translatable="yes">Show new</property>
+        <property name="stock_id">gtk-add</property>
+        <property name="is_important">True</property>
+        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToggleAction" id="ShowModified">
+        <property name="label" translatable="yes">Modified</property>
+        <property name="tooltip" translatable="yes">Show modified</property>
+        <property name="stock_id">gtk-remove</property>
+        <property name="is_important">True</property>
+        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkToggleAction" id="CustomFilterMenu">
+        <property name="label" translatable="yes">Filters</property>
+        <property name="tooltip" translatable="yes">Set active filters</property>
+        <property name="is_important">True</property>
+        <signal name="toggled" handler="on_custom_filter_menu_toggled" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="container">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
