@@ -937,8 +937,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # widget.get_clipboard(
             #    gtk.gdk.SELECTION_CLIPBOARD).wait_is_text_available()
             paste = widget.get_editable()
-        for action, sens in zip(("Cut", "Copy", "Paste"), (cut, copy, paste)):
-            self.main_actiongroup.get_action(action).set_sensitive(sens)
+        if self.main_actiongroup:
+            for action, sens in zip(
+                    ("Cut", "Copy", "Paste"), (cut, copy, paste)):
+                self.main_actiongroup.get_action(action).set_sensitive(sens)
 
     def get_selected_text(self):
         """Returns selected text of active pane"""
