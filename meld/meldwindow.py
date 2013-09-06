@@ -539,8 +539,7 @@ class MeldWindow(gnomeglade.Component):
     def on_menu_about_activate(self, *extra):
         gtk.about_dialog_set_url_hook(lambda dialog, uri: misc.open_uri(uri))
         builder = gtk.Builder()
-        # FIXME: domain literal duplicated from bin/meld
-        builder.set_translation_domain("meld")
+        builder.set_translation_domain(conf.__package__)
         ui_file = gnomeglade.ui_file("meldapp.ui")
         builder.add_objects_from_file(ui_file, ["about"])
         about = builder.get_object("about")
