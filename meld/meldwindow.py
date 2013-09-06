@@ -531,8 +531,7 @@ class MeldWindow(gnomeglade.Component):
         app.prefs.statusbar_visible = widget.get_active()
 
     def on_menu_help_activate(self, button):
-        help_path = "/".join(["help", "meld"])
-        misc.open_uri(help_path)
+        misc.open_uri("help:meld")
 
     def on_menu_help_bug_activate(self, button):
         misc.open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
