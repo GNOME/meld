@@ -188,6 +188,7 @@
     <child>
       <object class="GtkVBox" id="filediff">
         <property name="visible">True</property>
+        <signal handler="on_key_press_event" name="key_press_event"/>
         <child>
           <object class="GtkTable" id="table">
             <property name="visible">True</property>
@@ -339,6 +340,7 @@
                     <property name="can_focus">False</property>
                     <property name="window_placement">GTK_CORNER_TOP_RIGHT</property>
                     <property name="window_placement_set">True</property>
+                    <signal handler="on_scrolledwindow_size_allocate" name="size-allocate"/>
                     <child>
                       <object class="MeldSourceView" id="textview0">
                         <property name="visible">True</property>
@@ -415,6 +417,7 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <signal handler="on_scrolledwindow_size_allocate" name="size-allocate"/>
                     <child>
                       <object class="MeldSourceView" id="textview2">
                         <property name="visible">True</property>
@@ -453,6 +456,7 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <signal handler="on_scrolledwindow_size_allocate" name="size-allocate"/>
                     <child>
                       <object class="MeldSourceView" id="textview1">
                         <property name="visible">True</property>

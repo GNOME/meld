@@ -177,7 +177,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gtk.binding_entry_remove(srcviewer.GtkTextView, gtk.keysyms.z,
                                  gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)
         for v in self.textview:
-            v.set_buffer(meldbuffer.MeldBuffer())
+            buf = meldbuffer.MeldBuffer()
+            buf.connect('begin_user_action',
+                        self.on_textbuffer_begin_user_action)
+            buf.connect('end_user_action', self.on_textbuffer_end_user_action)
+            v.set_buffer(buf)
             v.set_show_line_numbers(self.prefs.show_line_numbers)
             v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
             v.set_wrap_mode(self.prefs.edit_wrap_lines)
@@ -581,9 +585,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for mergedfile in merger.merge_2_files(src, dst):
             pass
         self._sync_vscroll_lock = True
-        self.on_textbuffer__begin_user_action()
+        self.on_textbuffer_begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
-        self.on_textbuffer__end_user_action()
+        self.on_textbuffer_end_user_action()
         def resync():
             self._sync_vscroll_lock = False
             self._sync_vscroll(self.scrolledwindow[src].get_vadjustment(), src)
@@ -597,9 +601,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for mergedfile in merger.merge_3_files(False):
             pass
         self._sync_vscroll_lock = True
-        self.on_textbuffer__begin_user_action()
+        self.on_textbuffer_begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
-        self.on_textbuffer__end_user_action()
+        self.on_textbuffer_end_user_action()
         def resync():
             self._sync_vscroll_lock = False
             self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
@@ -891,10 +895,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.undosequence.can_redo():
             self.undosequence.redo()
 
-    def on_textbuffer__begin_user_action(self, *buffer):
+    def on_textbuffer_begin_user_action(self, *buffer):
         self.undosequence.begin_group()
 
-    def on_textbuffer__end_user_action(self, *buffer):
+    def on_textbuffer_end_user_action(self, *buffer):
         self.undosequence.end_group()
 
     def on_text_insert_text(self, buf, it, text, textlen):
@@ -968,11 +972,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_find_previous_activate(self, *args):
         self.findbar.start_find_previous(self.focus_pane)
 
-    def on_filediff__key_press_event(self, entry, event):
-        if event.keyval == gtk.keysyms.Escape:
-            self.findbar.hide()
-
-    def on_scrolledwindow__size_allocate(self, scrolledwindow, allocation):
+    def on_scrolledwindow_size_allocate(self, scrolledwindow, allocation):
         index = self.scrolledwindow.index(scrolledwindow)
         if index == 0 or index == 1:
             self.linkmap[0].queue_draw()
@@ -1905,10 +1905,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dst_end = b1.get_iter_at_line_or_eof(chunk[4])
         t0 = text_type(b0.get_text(src_start, src_end, False), 'utf8')
         mark0 = b1.create_mark(None, dst_start, True)
-        self.on_textbuffer__begin_user_action()
+        self.on_textbuffer_begin_user_action()
         b1.delete(dst_start, dst_end)
         new_end = b1.insert_at_line(chunk[3], t0)
-        self.on_textbuffer__end_user_action()
+        self.on_textbuffer_end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
         # this animation is not visible; this happens often in three-way diffs
