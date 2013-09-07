@@ -17,164 +17,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 # USA.
 
-import logging
+# Additional modifications made for use in Meld and adaptations for newer
+# GTK+.
+# Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
 
-import gobject
 import gtk
 
-from .wraplabel import WrapLabel
+from meld.ui.wraplabel import WrapLabel
 
-_logger = logging.getLogger("hotwire.ui.MsgArea")
 
-# This file is a Python translation of gedit/gedit/gedit-message-area.c
-
-class MsgArea(gtk.HBox):
+class MsgArea(gtk.InfoBar):
     __gtype_name__ = "MsgArea"
-
-    __gsignals__ = {
-        "response" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (gobject.TYPE_INT,)),
-        "close" : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
-    }
-
-    def __init__(self, buttons, **kwargs):
-        super(MsgArea, self).__init__(**kwargs)
-
-        self.__contents = None
-        self.__labels = []
-        self.__changing_style = False
-
-        self.__main_hbox = gtk.HBox(False, 16) # FIXME: use style properties
-        self.__main_hbox.show()
-        self.__main_hbox.set_border_width(8) # FIXME: use style properties
-
-        self.__action_area = gtk.VBox(True, 4); # FIXME: use style properties
-        self.__action_area.show()
-        self.__main_hbox.pack_end (self.__action_area, False, True, 0)
-
-        self.pack_start(self.__main_hbox, True, True, 0)
-
-        self.set_app_paintable(True)
-
-        self.connect("expose-event", self.__paint)
-
-        # Note that we connect to style-set on one of the internal
-        # widgets, not on the message area itself, since gtk does
-        # not deliver any further style-set signals for a widget on
-        # which the style has been forced with gtk_widget_set_style()
-        self.__main_hbox.ensure_style()
-        self.__main_hbox.connect("style-set", self.__on_style_set)
-
-        self.add_buttons(buttons)
-
-    def __get_response_data(self, w, create):
-        d = w.get_data('hotwire-msg-area-data')
-        if (d is None) and create:
-            d = {'respid': None}
-            w.set_data('hotwire-msg-area-data', d)
-        return d
-
-    def __find_button(self, respid):
-        children = self.__actionarea.get_children()
-        for child in children:
-            rd = self.__get_response_data(child, False)
-            if rd is not None and rd['respid'] == respid:
-                return child
-
-    def __close(self):
-        cancel = self.__find_button(gtk.RESPONSE_CANCEL)
-        if cancel is None:
-            return
-        self.response(gtk.RESPONSE_CANCEL)
-
-    def __paint(self, w, event):
-        gtk.Style.paint_flat_box(w.style,
-                                 w.window,
-                                 gtk.STATE_NORMAL,
-                                 gtk.SHADOW_OUT,
-                                 None,
-                                 w,
-                                 "tooltip",
-                                 w.allocation.x + 1,
-                                 w.allocation.y + 1,
-                                 w.allocation.width - 2,
-                                 w.allocation.height - 2)
-
-        return False
-
-    def __on_style_set(self, w, style):
-        if self.__changing_style:
-            return
-        # This is a hack needed to use the tooltip background color
-        window = gtk.Window(gtk.WINDOW_POPUP);
-        window.set_name("gtk-tooltip")
-        window.ensure_style()
-        style = window.get_style()
-
-        self.__changing_style = True
-        self.set_style(style)
-        for label in self.__labels:
-            label.set_style(style)
-        self.__changing_style = False
-
-        window.destroy()
-
-        self.queue_draw()
-
-    def __get_response_for_widget(self, w):
-        rd = self.__get_response_data(w, False)
-        if rd is None:
-            return gtk.RESPONSE_NONE
-        return rd['respid']
-
-    def __on_action_widget_activated(self, w):
-        response_id = self.__get_response_for_widget(w)
-        self.response(response_id)
-
-    def add_action_widget(self, child, respid):
-        rd = self.__get_response_data(child, True)
-        rd['respid'] = respid
-        if not isinstance(child, gtk.Button):
-            raise ValueError("Can only pack buttons as action widgets")
-        child.connect('clicked', self.__on_action_widget_activated)
-        if respid != gtk.RESPONSE_HELP:
-            self.__action_area.pack_start(child, False, False, 0)
-        else:
-            self.__action_area.pack_end(child, False, False, 0)
-
-    def set_contents(self, contents):
-        self.__contents = contents
-        self.__main_hbox.pack_start(contents, True, True, 0)
-
-
-    def add_button(self, btext, respid):
-        button = gtk.Button(stock=btext)
-        button.set_focus_on_click(False)
-        button.set_flags(gtk.CAN_DEFAULT)
-        button.show()
-        self.add_action_widget(button, respid)
-        return button
-
-    def add_buttons(self, args):
-        _logger.debug("init buttons: %r", args)
-        for (btext, respid) in args:
-            self.add_button(btext, respid)
-
-    def set_response_sensitive(self, respid, setting):
-        for child in self.__action_area.get_children():
-            rd = self.__get_response_data(child, False)
-            if rd is not None and rd['respid'] == respid:
-                child.set_sensitive(setting)
-                break
-
-    def set_default_response(self, respid):
-        for child in self.__action_area.get_children():
-            rd = self.__get_response_data(child, False)
-            if rd is not None and rd['respid'] == respid:
-                child.grab_default()
-                break
-
-    def response(self, respid):
-        self.emit('response', respid)
 
     def add_stock_button_with_text(self, text, stockid, respid):
         b = gtk.Button(label=text)
@@ -198,9 +51,7 @@ class MsgArea(gtk.HBox):
 
         vbox = gtk.VBox(False, 6)
         vbox.show()
-        hbox_content.pack_start (vbox, True, True, 0)
-
-        self.__labels = []
+        hbox_content.pack_start(vbox, True, True, 0)
 
         primary_markup = "<b>%s</b>" % (primary_text,)
         primary_label = WrapLabel(primary_markup)
@@ -211,7 +62,6 @@ class MsgArea(gtk.HBox):
         primary_label.set_alignment(0, 0.5)
         primary_label.set_flags(gtk.CAN_FOCUS)
         primary_label.set_selectable(True)
-        self.__labels.append(primary_label)
 
         if secondary_text:
             secondary_markup = "<small>%s</small>" % (secondary_text,)
@@ -223,9 +73,11 @@ class MsgArea(gtk.HBox):
             secondary_label.set_line_wrap(True)
             secondary_label.set_selectable(True)
             secondary_label.set_alignment(0, 0.5)
-            self.__labels.append(secondary_label)
 
-        self.set_contents(hbox_content)
+        content_area = self.get_content_area()
+        content_area.foreach(content_area.remove)
+        content_area.add(hbox_content)
+
 
 class MsgAreaController(gtk.HBox):
     __gtype_name__ = "MsgAreaController"
@@ -254,7 +106,11 @@ class MsgAreaController(gtk.HBox):
 
     def new_from_text_and_icon(self, stockid, primary, secondary=None, buttons=[]):
         self.clear()
-        msgarea = self.__msgarea = MsgArea(buttons)
+        msgarea = self.__msgarea = MsgArea()
+
+        for (text, respid) in buttons:
+            self.add_button(text, respid)
+
         msgarea.set_text_and_icon(stockid, primary, secondary)
         self.pack_start(msgarea, expand=True)
         return msgarea
