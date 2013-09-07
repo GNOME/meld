@@ -1,5 +1,5 @@
 ### Copyright (C) 2002-2009 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
+### Copyright (C) 2012-2013 Kai Willadsen <kai.willadsen@gmail.com>
 
 ### This program is free software; you can redistribute it and/or modify
 ### it under the terms of the GNU General Public License as published by
@@ -140,8 +140,7 @@ class FindBar(gnomeglade.Component):
             flags = re.M if match_case else re.M | re.I
             pattern = re.compile(tofind, flags)
         except re.error as e:
-            misc.run_dialog(_("Regular expression error\n'%s'") % e, self,
-                            messagetype=gtk.MESSAGE_ERROR)
+            misc.error_dialog(_("Regular expression error"), str(e))
         else:
             self.wrap_box.set_visible(False)
             if not backwards:
