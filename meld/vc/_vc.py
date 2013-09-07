@@ -244,7 +244,7 @@ class Vc(object):
     @classmethod
     def is_installed(cls):
         try:
-            popen([cls.CMD])
+            call([cls.CMD])
             return True
         except:
             return False
