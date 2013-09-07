@@ -783,8 +783,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def add_dismissable_msg(self, pane, icon, primary, secondary):
         msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                         icon, primary, secondary)
-        button = msgarea.add_stock_button_with_text(_("Hi_de"),
-                        gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
         msgarea.connect("response",
                         lambda *args: self.msgarea_mgr[pane].clear())
         msgarea.show_all()

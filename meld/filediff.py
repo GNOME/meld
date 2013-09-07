@@ -1092,8 +1092,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         def add_dismissable_msg(pane, icon, primary, secondary):
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                             icon, primary, secondary)
-            button = msgarea.add_stock_button_with_text(_("Hi_de"),
-                            gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+            msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
             msgarea.connect("response",
                             lambda *args: self.msgarea_mgr[pane].clear())
             msgarea.show_all()
@@ -1364,9 +1363,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                                      _("Files are identical"),
                                                      secondary_text)
                 mgr.set_msg_id(FileDiff.MSG_SAME)
-                button = msgarea.add_stock_button_with_text(_("Hide"),
-                                                            gtk.STOCK_CLOSE,
-                                                            gtk.RESPONSE_CLOSE)
+                button = msgarea.add_button(_("Hide"), gtk.RESPONSE_CLOSE)
                 if index == 0:
                     button.props.label = _("Hi_de")
 
@@ -1398,8 +1395,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                   "large. You can force Meld to take longer to highlight "
                   "larger changes, though this may be slow."))
             mgr.set_msg_id(FileDiff.MSG_SLOW_HIGHLIGHT)
-            button = msgarea.add_stock_button_with_text(
-                _("Hide"), gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+            button = msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
             if index == 0:
                 button.props.label = _("Hi_de")
             button = msgarea.add_button(

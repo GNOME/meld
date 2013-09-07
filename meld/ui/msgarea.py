@@ -29,16 +29,6 @@ from meld.ui.wraplabel import WrapLabel
 class MsgArea(gtk.InfoBar):
     __gtype_name__ = "MsgArea"
 
-    def add_stock_button_with_text(self, text, stockid, respid):
-        b = gtk.Button(label=text)
-        b.set_focus_on_click(False)
-        img = gtk.Image()
-        img.set_from_stock(stockid, gtk.ICON_SIZE_BUTTON)
-        b.set_image(img)
-        b.show_all()
-        self.add_action_widget(b, respid)
-        return b
-
     def set_text_and_icon(self, stockid, primary_text, secondary_text=None):
         hbox_content = gtk.HBox(False, 8)
         hbox_content.show()
