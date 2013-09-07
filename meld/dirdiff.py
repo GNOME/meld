@@ -348,14 +348,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_treeview_focus_out_event(None, None)
         self.focus_pane = None
 
-        lastchanged_label = Gtk.Label()
-        lastchanged_label.set_size_request(100, -1)
-        lastchanged_label.show()
-        permissions_label = Gtk.Label()
-        permissions_label.set_size_request(100, -1)
-        permissions_label.show()
-        self.status_info_labels = [lastchanged_label, permissions_label]
-
         # One column-dict for each treeview, for changing visibility and order
         self.columns_dict = [{}, {}, {}]
         for i in range(3):
@@ -1071,36 +1063,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             have_next_diffs = (prev is not None, next is not None)
             self.emit("next-diff-changed", *have_next_diffs)
         self.current_path = cursor_path
-
-        paths = self._get_selected_paths(pane)
-        if len(paths) > 0:
-            def rwx(mode):
-                return "".join( [ ((mode& (1<<i)) and "xwr"[i%3] or "-") for i in range(8,-1,-1) ] )
-            def nice(deltat):
-                times = (
-                    (60, lambda n: ngettext("%i second","%i seconds",n)),
-                    (60, lambda n: ngettext("%i minute","%i minutes",n)),
-                    (24, lambda n: ngettext("%i hour","%i hours",n)),
-                    ( 7, lambda n: ngettext("%i day","%i days",n)),
-                    ( 4, lambda n: ngettext("%i week","%i weeks",n)),
-                    (12, lambda n: ngettext("%i month","%i months",n)),
-                    (100,lambda n: ngettext("%i year","%i years",n)) )
-                for units, msg in times:
-                    if abs(int(deltat)) < 5 * units:
-                        return msg(int(deltat)) % int(deltat)
-                    deltat /= units
-            fname = self.model.value_path( self.model.get_iter(paths[0]), pane )
-            try:
-                stat = os.stat(fname)
-            # TypeError for if fname is None
-            except (OSError, TypeError):
-                self.status_info_labels[0].set_text("")
-                self.status_info_labels[1].set_markup("")
-            else:
-                mode_text = "<tt>%s</tt>" % rwx(stat.st_mode)
-                last_changed_text = str(nice(time.time() - stat.st_mtime))
-                self.status_info_labels[0].set_text(last_changed_text)
-                self.status_info_labels[1].set_markup(mode_text)
 
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)

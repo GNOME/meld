@@ -196,8 +196,21 @@ class MeldWindow(gnomeglade.Component):
 
         self.appvbox.pack_start(self.menubar, False, True, 0)
         self.toolbar_holder.pack_start(self.toolbar, True, True, 0)
+
+        # Double toolbars to work around UIManager integration issues
         self.secondary_toolbar = Gtk.Toolbar()
-        self.toolbar_holder.pack_end(self.secondary_toolbar, True, True, 0)
+        self.secondary_toolbar.get_style_context().add_class(
+            Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
+        self.toolbar_holder.pack_end(self.secondary_toolbar, False, True, 0)
+
+        toolbutton = Gtk.ToolItem()
+        self.spinner = Gtk.Spinner()
+        toolbutton.add(self.spinner)
+        self.secondary_toolbar.insert(toolbutton, -1)
+        # Set a minimum size because the spinner requests nothing
+        self.secondary_toolbar.set_size_request(30, -1)
+        self.secondary_toolbar.show_all()
+
         self._menu_context = self.statusbar.get_context_id("Tooltips")
         self.widget.drag_dest_set(
             Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
@@ -270,19 +283,21 @@ class MeldWindow(gnomeglade.Component):
     def on_idle(self):
         ret = self.scheduler.iteration()
         if ret and isinstance(ret, string_types):
-            self.statusbar.set_task_status(ret)
+            self.spinner.set_tooltip_text(ret)
 
         pending = self.scheduler.tasks_pending()
         if not pending:
-            self.statusbar.stop_pulse()
-            self.statusbar.set_task_status("")
+            self.spinner.stop()
+            self.spinner.hide()
+            self.spinner.set_tooltip_text("")
             self.idle_hooked = None
             self.actiongroup.get_action("Stop").set_sensitive(False)
         return pending
 
     def on_scheduler_runnable(self, sched):
         if not self.idle_hooked:
-            self.statusbar.start_pulse()
+            self.spinner.show()
+            self.spinner.start()
             self.actiongroup.get_action("Stop").set_sensitive(True)
             self.idle_hooked = GObject.idle_add(self.on_idle)
 
