@@ -26,47 +26,42 @@ import gtk
 from meld.ui.wraplabel import WrapLabel
 
 
-class MsgArea(gtk.InfoBar):
-    __gtype_name__ = "MsgArea"
+def layout_text_and_icon(stockid, primary_text, secondary_text=None):
+    hbox_content = gtk.HBox(False, 8)
+    hbox_content.show()
 
-    def set_text_and_icon(self, stockid, primary_text, secondary_text=None):
-        hbox_content = gtk.HBox(False, 8)
-        hbox_content.show()
+    image = gtk.Image()
+    image.set_from_stock(stockid, gtk.ICON_SIZE_DIALOG)
+    image.show()
+    hbox_content.pack_start(image, False, False, 0)
+    image.set_alignment(0.5, 0.5)
 
-        image = gtk.Image()
-        image.set_from_stock(stockid, gtk.ICON_SIZE_DIALOG)
-        image.show()
-        hbox_content.pack_start(image, False, False, 0)
-        image.set_alignment(0.5, 0.5)
+    vbox = gtk.VBox(False, 6)
+    vbox.show()
+    hbox_content.pack_start(vbox, True, True, 0)
 
-        vbox = gtk.VBox(False, 6)
-        vbox.show()
-        hbox_content.pack_start(vbox, True, True, 0)
+    primary_markup = "<b>%s</b>" % (primary_text,)
+    primary_label = WrapLabel(primary_markup)
+    primary_label.show()
+    vbox.pack_start(primary_label, True, True, 0)
+    primary_label.set_use_markup(True)
+    primary_label.set_line_wrap(True)
+    primary_label.set_alignment(0, 0.5)
+    primary_label.set_flags(gtk.CAN_FOCUS)
+    primary_label.set_selectable(True)
 
-        primary_markup = "<b>%s</b>" % (primary_text,)
-        primary_label = WrapLabel(primary_markup)
-        primary_label.show()
-        vbox.pack_start(primary_label, True, True, 0)
-        primary_label.set_use_markup(True)
-        primary_label.set_line_wrap(True)
-        primary_label.set_alignment(0, 0.5)
-        primary_label.set_flags(gtk.CAN_FOCUS)
-        primary_label.set_selectable(True)
+    if secondary_text:
+        secondary_markup = "<small>%s</small>" % (secondary_text,)
+        secondary_label = WrapLabel(secondary_markup)
+        secondary_label.show()
+        vbox.pack_start(secondary_label, True, True, 0)
+        secondary_label.set_flags(gtk.CAN_FOCUS)
+        secondary_label.set_use_markup(True)
+        secondary_label.set_line_wrap(True)
+        secondary_label.set_selectable(True)
+        secondary_label.set_alignment(0, 0.5)
 
-        if secondary_text:
-            secondary_markup = "<small>%s</small>" % (secondary_text,)
-            secondary_label = WrapLabel(secondary_markup)
-            secondary_label.show()
-            vbox.pack_start(secondary_label, True, True, 0)
-            secondary_label.set_flags(gtk.CAN_FOCUS)
-            secondary_label.set_use_markup(True)
-            secondary_label.set_line_wrap(True)
-            secondary_label.set_selectable(True)
-            secondary_label.set_alignment(0, 0.5)
-
-        content_area = self.get_content_area()
-        content_area.foreach(content_area.remove)
-        content_area.add(hbox_content)
+    return hbox_content
 
 
 class MsgAreaController(gtk.HBox):
@@ -96,11 +91,16 @@ class MsgAreaController(gtk.HBox):
 
     def new_from_text_and_icon(self, stockid, primary, secondary=None, buttons=[]):
         self.clear()
-        msgarea = self.__msgarea = MsgArea()
+        msgarea = self.__msgarea = gtk.InfoBar()
 
         for (text, respid) in buttons:
             self.add_button(text, respid)
 
-        msgarea.set_text_and_icon(stockid, primary, secondary)
+        content = layout_text_and_icon(stockid, primary, secondary)
+
+        content_area = msgarea.get_content_area()
+        content_area.foreach(content_area.remove)
+        content_area.add(content)
+
         self.pack_start(msgarea, expand=True)
         return msgarea
