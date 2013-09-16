@@ -62,6 +62,8 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop meld.xml
 		$(DESTDIR)$(libdir_)/meld/paths.py
 	install -m 644 data/meld.desktop \
 		$(DESTDIR)$(sharedir)/applications
+	install -m 644 data/meld.appdata.xml \
+		$(DESTDIR)$(sharedir)/appdata/
 	install -m 644 data/mime/meld.xml \
 		$(DESTDIR)$(sharedir)/mime/packages/
 	$(PYTHON)    -c 'import compileall; compileall.compile_dir("$(DESTDIR)$(libdir_)",10,"$(libdir_)")'
@@ -129,6 +131,7 @@ uninstall:
 		$(libdir_) \
 		$(bindir)/meld \
 		$(sharedir)/applications/meld.desktop \
+		$(sharedir)/appdata/meld.appdata.xml \
 		$(sharedir)/mime/packages/meld.xml \
 		$(sharedir)/pixmaps/meld.png
 	$(MAKE) -C po uninstall
