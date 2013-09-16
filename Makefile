@@ -38,6 +38,7 @@ install: $(addsuffix .install,$(SPECIALS)) meld.desktop meld.xml
 		$(DESTDIR)$(sharedir_)/ui \
 		$(DESTDIR)$(sharedir_)/icons \
 		$(DESTDIR)$(docdir_) \
+		$(DESTDIR)$(sharedir)/appdata \
 		$(DESTDIR)$(sharedir)/applications \
 		$(DESTDIR)$(sharedir)/mime/packages \
 		$(DESTDIR)$(sharedir)/pixmaps \
