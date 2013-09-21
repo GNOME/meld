@@ -346,7 +346,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             renicon = emblemcellrenderer.EmblemCellRenderer()
             column.pack_start(renicon, expand=0)
             column.pack_start(rentext, expand=1)
-            column.set_attributes(rentext, text=col_index(tree.COL_TEXT, i),
+            column.set_attributes(rentext, markup=col_index(tree.COL_TEXT, i),
                                   foreground_gdk=col_index(tree.COL_FG, i),
                                   style=col_index(tree.COL_STYLE, i),
                                   weight=col_index(tree.COL_WEIGHT, i),
