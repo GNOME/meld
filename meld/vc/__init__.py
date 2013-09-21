@@ -73,18 +73,21 @@ def get_vcs(location):
     """
 
     vcs = []
-    max_len = 0
+    max_depth = 0
     for plugin in _plugins:
         try:
-            avc = plugin.Vc(location)
-            l = len(avc.root)
-            if l == max_len:
-                vcs.append(avc)
-            elif l > max_len:
-                max_len = l
-                vcs = [avc]
+            vc = plugin.Vc(location)
         except ValueError:
-            pass
+            continue
+
+        # Choose the deepest root we find, unless it's from a VC that
+        # doesn't walk; these can be spurious as the real root may be
+        # much higher up in the tree.
+        depth = len(vc.root)
+        if depth > max_depth and vc.VC_ROOT_WALK:
+            vcs, max_depth = [], depth
+        if depth >= max_depth:
+            vcs.append(vc)
 
     if not vcs:
         # No plugin recognized that location, fallback to _null
