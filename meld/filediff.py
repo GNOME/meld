@@ -1313,11 +1313,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if texts != (text1, textn):
                         return
 
-                    # Remove equal matches of size less than 3; highlight
-                    # the remainder.
-                    matches = [m for m in matches if m.tag != "equal" or
-                               (m.end_a - m.start_a < 3) or
-                               (m.end_b - m.start_b < 3)]
+                    offsets = [ends[0].get_offset() - starts[0].get_offset(),
+                               ends[1].get_offset() - starts[1].get_offset()]
+
+                    def process_matches(match):
+                        if match.tag != "equal":
+                            return True
+                        # Always keep matches occurring at the start or end
+                        start_or_end = (
+                            (match.start_a == 0 and match.start_b == 0) or
+                            (match.end_a == offsets[0] and match.end_b == offsets[1]))
+                        if start_or_end:
+                            return False
+                       # Remove equal matches of size less than 3
+                        too_short = ((match.end_a - match.start_a < 3) or
+                                     (match.end_b - match.start_b < 3))
+                        return too_short
+
+                    matches = [m for m in matches if process_matches(m)]
 
                     for i in range(2):
                         start, end = starts[i].copy(), starts[i].copy()
