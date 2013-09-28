@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires meld.ui.gladesupport 0.0 -->
   <object class="GtkMessageDialog" id="check_save_dialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -11,12 +11,13 @@
     <property name="text" translatable="yes">Save changes to documents before closing?</property>
     <property name="secondary_text" translatable="yes">If you don't save, changes will be permanently lost.</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
@@ -26,7 +27,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>
@@ -41,7 +41,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>
@@ -56,7 +55,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>
@@ -101,6 +99,457 @@
       <action-widget response="-5">save_button</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkWindow" id="container">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">window1</property>
+    <signal name="destroy" handler="on_delete_event" swapped="no"/>
+    <child>
+      <object class="GtkVBox" id="filediff">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+        <child>
+          <object class="GtkTable" id="table">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="n_rows">3</property>
+            <property name="n_columns">7</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkHBox" id="selector_hbox2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkToggleButton" id="readonlytoggle2">
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
+                    <property name="relief">none</property>
+                    <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="readonly_image2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">emblem-readonly</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFileChooserButton" id="fileentry2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">5</property>
+                <property name="right_attach">6</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="selector_hbox1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkToggleButton" id="readonlytoggle1">
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
+                    <property name="relief">none</property>
+                    <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="readonly_image1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">emblem-readonly</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFileChooserButton" id="fileentry1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="right_attach">4</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="selector_hbox0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkToggleButton" id="readonlytoggle0">
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
+                    <property name="relief">none</property>
+                    <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="readonly_image0">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">emblem-readonly</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFileChooserButton" id="fileentry0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="MsgAreaController" id="msgarea_mgr0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="vscrollbar_policy">always</property>
+                    <property name="window_placement">top-right</property>
+                    <property name="window_placement_set">True</property>
+                    <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
+                    <child>
+                      <object class="MeldSourceView" id="textview0">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
+                        <signal name="draw" handler="on_textview_draw" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+                        <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
+                        <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="statusimage2">
+                <property name="width_request">20</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="stock">gtk-missing-image</property>
+              </object>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="right_attach">5</property>
+                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options">GTK_SHRINK | GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="statusimage1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="stock">gtk-missing-image</property>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options">GTK_SHRINK | GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="statusimage0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">1</property>
+                <property name="stock">gtk-missing-image</property>
+              </object>
+              <packing>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="MsgAreaController" id="msgarea_mgr2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="vscrollbar_policy">always</property>
+                    <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
+                    <child>
+                      <object class="MeldSourceView" id="textview2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
+                        <signal name="draw" handler="on_textview_draw" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+                        <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
+                        <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">5</property>
+                <property name="right_attach">6</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="MsgAreaController" id="msgarea_mgr1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="vscrollbar_policy">always</property>
+                    <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
+                    <child>
+                      <object class="MeldSourceView" id="textview1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
+                        <signal name="draw" handler="on_textview_draw" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+                        <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
+                        <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="DiffMap" id="diffmap1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">6</property>
+                <property name="right_attach">7</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="lock_button">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes">Lock scrolling of all panes</property>
+                <property name="relief">none</property>
+                <signal name="toggled" handler="on_lock_button_toggled" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="lock_button_image">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">meld-locked</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">6</property>
+                <property name="right_attach">7</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <object class="LinkMap" id="linkmap0">
+                <property name="width_request">50</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_SCROLL_MASK</property>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <object class="DiffMap" id="diffmap0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="LinkMap" id="linkmap1">
+                <property name="width_request">50</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_SCROLL_MASK</property>
+              </object>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="right_attach">5</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkMessageDialog" id="revert_dialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -111,22 +560,22 @@
     <property name="secondary_text" translatable="yes">Changes made to the following documents will be permanently lost:
 </property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkBox" id="dialog-vbox2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="cancel_button">
+              <object class="GtkButton" id="cancel_button1">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
               </object>
@@ -142,7 +591,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
               </object>
@@ -161,8 +609,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="extra_vbox">
-            <property name="visible">False</property>
+          <object class="GtkVBox" id="extra_vbox1">
             <property name="can_focus">False</property>
             <child>
               <placeholder/>
@@ -177,388 +624,8 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="-6">cancel_button</action-widget>
+      <action-widget response="-6">cancel_button1</action-widget>
       <action-widget response="-5">revert_button</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkWindow" id="container">
-    <property name="visible">True</property>
-    <property name="title" translatable="yes">window1</property>
-    <signal handler="on_delete_event" name="destroy"/>
-    <child>
-      <object class="GtkVBox" id="filediff">
-        <property name="visible">True</property>
-        <signal handler="on_key_press_event" name="key_press_event"/>
-        <child>
-          <object class="GtkTable" id="table">
-            <property name="visible">True</property>
-            <property name="n_rows">3</property>
-            <property name="n_columns">7</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <object class="GtkHBox" id="selector_hbox2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkToggleButton" id="readonlytoggle2">
-                    <property name="visible">False</property>
-                    <property name="can_focus">False</property>
-                    <property name="relief">none</property>
-                    <property name="tooltip-text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <signal handler="on_readonly_button_toggled" name="toggled"/>
-                    <child>
-                      <object class="GtkImage" id="readonly_image2">
-                        <property name="visible">True</property>
-                        <property name="icon-name">emblem-readonly</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry2">
-                    <property name="visible">True</property>
-                    <signal handler="on_fileentry_file_set" name="file-set"/>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">5</property>
-                <property name="right_attach">6</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"/>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkHBox" id="selector_hbox1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkToggleButton" id="readonlytoggle1">
-                    <property name="visible">False</property>
-                    <property name="can_focus">False</property>
-                    <property name="relief">none</property>
-                    <property name="tooltip-text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <signal handler="on_readonly_button_toggled" name="toggled"/>
-                    <child>
-                      <object class="GtkImage" id="readonly_image1">
-                        <property name="visible">True</property>
-                        <property name="icon-name">emblem-readonly</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry1">
-                    <property name="visible">True</property>
-                    <signal handler="on_fileentry_file_set" name="file-set"/>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="right_attach">4</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"/>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkHBox" id="selector_hbox0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkToggleButton" id="readonlytoggle0">
-                    <property name="visible">False</property>
-                    <property name="can_focus">False</property>
-                    <property name="relief">none</property>
-                    <property name="tooltip-text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <signal handler="on_readonly_button_toggled" name="toggled"/>
-                    <child>
-                      <object class="GtkImage" id="readonly_image0">
-                        <property name="visible">True</property>
-                        <property name="icon-name">emblem-readonly</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry0">
-                    <property name="visible">True</property>
-                    <signal handler="on_fileentry_file_set" name="file-set"/>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"/>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkVBox" id="vbox0">
-                <property name="visible">True</property>
-                <child>
-                  <object class="MsgAreaController" id="msgarea_mgr0">
-                    <property name="visible">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="window_placement">GTK_CORNER_TOP_RIGHT</property>
-                    <property name="window_placement_set">True</property>
-                    <signal handler="on_scrolledwindow_size_allocate" name="size-allocate"/>
-                    <child>
-                      <object class="MeldSourceView" id="textview0">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <signal handler="on_textview_button_press_event" name="button_press_event"/>
-                        <signal handler="on_textview_expose_event" name="expose_event"/>
-                        <signal handler="on_textview_focus_in_event" name="focus_in_event"/>
-                        <signal handler="on_textview_focus_out_event" name="focus_out_event"/>
-                        <signal handler="on_key_press_event" name="key_press_event"/>
-                        <signal handler="on_key_release_event" name="key_release_event"/>
-                        <signal handler="on_textview_popup_menu" name="popup-menu"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="statusimage2">
-                <property name="width_request">20</property>
-                <property name="visible">True</property>
-                <property name="xalign">1</property>
-                <property name="stock">gtk-missing-image</property>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
-                <property name="right_attach">5</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options">GTK_SHRINK | GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="statusimage1">
-                <property name="visible">True</property>
-                <property name="xalign">1</property>
-                <property name="stock">gtk-missing-image</property>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options">GTK_SHRINK | GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="statusimage0">
-                <property name="visible">True</property>
-                <property name="xalign">1</property>
-                <property name="stock">gtk-missing-image</property>
-              </object>
-              <packing>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkVBox" id="vbox2">
-                <property name="visible">True</property>
-                <child>
-                  <object class="MsgAreaController" id="msgarea_mgr2">
-                    <property name="visible">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal handler="on_scrolledwindow_size_allocate" name="size-allocate"/>
-                    <child>
-                      <object class="MeldSourceView" id="textview2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <signal handler="on_textview_button_press_event" name="button_press_event"/>
-                        <signal handler="on_textview_expose_event" name="expose_event"/>
-                        <signal handler="on_textview_focus_in_event" name="focus_in_event"/>
-                        <signal handler="on_textview_focus_out_event" name="focus_out_event"/>
-                        <signal handler="on_key_press_event" name="key_press_event"/>
-                        <signal handler="on_key_release_event" name="key_release_event"/>
-                        <signal handler="on_textview_popup_menu" name="popup-menu"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">5</property>
-                <property name="right_attach">6</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkVBox" id="vbox1">
-                <property name="visible">True</property>
-                <child>
-                  <object class="MsgAreaController" id="msgarea_mgr1">
-                    <property name="visible">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal handler="on_scrolledwindow_size_allocate" name="size-allocate"/>
-                    <child>
-                      <object class="MeldSourceView" id="textview1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <signal handler="on_textview_button_press_event" name="button_press_event"/>
-                        <signal handler="on_textview_expose_event" name="expose_event"/>
-                        <signal handler="on_textview_focus_in_event" name="focus_in_event"/>
-                        <signal handler="on_textview_focus_out_event" name="focus_out_event"/>
-                        <signal handler="on_key_press_event" name="key_press_event"/>
-                        <signal handler="on_key_release_event" name="key_release_event"/>
-                        <signal handler="on_textview_popup_menu" name="popup-menu"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="right_attach">4</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="DiffMap" id="diffmap1">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">6</property>
-                <property name="right_attach">7</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="lock_button">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="relief">none</property>
-                <signal handler="on_lock_button_toggled" name="toggled"/>
-                <property name="tooltip-text" translatable="yes">Lock scrolling of all panes</property>
-                <child>
-                      <object class="GtkImage" id="lock_button_image">
-                        <property name="visible">True</property>
-                        <property name="icon-name">meld-locked</property>
-                      </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">6</property>
-                <property name="right_attach">7</property>
-                <property name="top_attach">0</property>
-                <property name="bottom_attach">1</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <object class="LinkMap" id="linkmap0">
-                <property name="width_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="has_focus">False</property>
-                <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK</property>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <object class="DiffMap" id="diffmap0">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="LinkMap" id="linkmap1">
-                <property name="width_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="has_focus">False</property>
-                <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK</property>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
-                <property name="right_attach">5</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>

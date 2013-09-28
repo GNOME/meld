@@ -21,22 +21,22 @@
 # GTK+.
 # Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
 
-import gtk
+from gi.repository import Gtk
 
 from meld.ui.wraplabel import WrapLabel
 
 
 def layout_text_and_icon(stockid, primary_text, secondary_text=None):
-    hbox_content = gtk.HBox(False, 8)
+    hbox_content = Gtk.HBox(False, 8)
     hbox_content.show()
 
-    image = gtk.Image()
-    image.set_from_stock(stockid, gtk.ICON_SIZE_DIALOG)
+    image = Gtk.Image()
+    image.set_from_stock(stockid, Gtk.IconSize.DIALOG)
     image.show()
     hbox_content.pack_start(image, False, False, 0)
     image.set_alignment(0.5, 0.5)
 
-    vbox = gtk.VBox(False, 6)
+    vbox = Gtk.VBox(False, 6)
     vbox.show()
     hbox_content.pack_start(vbox, True, True, 0)
 
@@ -47,7 +47,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     primary_label.set_use_markup(True)
     primary_label.set_line_wrap(True)
     primary_label.set_alignment(0, 0.5)
-    primary_label.set_flags(gtk.CAN_FOCUS)
+    primary_label.set_can_focus(True)
     primary_label.set_selectable(True)
 
     if secondary_text:
@@ -55,7 +55,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
         secondary_label = WrapLabel(secondary_markup)
         secondary_label.show()
         vbox.pack_start(secondary_label, True, True, 0)
-        secondary_label.set_flags(gtk.CAN_FOCUS)
+        secondary_label.set_can_focus(True)
         secondary_label.set_use_markup(True)
         secondary_label.set_line_wrap(True)
         secondary_label.set_selectable(True)
@@ -64,7 +64,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     return hbox_content
 
 
-class MsgAreaController(gtk.HBox):
+class MsgAreaController(Gtk.HBox):
     __gtype_name__ = "MsgAreaController"
 
     def __init__(self):
@@ -89,9 +89,10 @@ class MsgAreaController(gtk.HBox):
             self.__msgarea = None
         self.__msgid = None
 
-    def new_from_text_and_icon(self, stockid, primary, secondary=None, buttons=[]):
+    def new_from_text_and_icon(self, stockid, primary, secondary=None,
+                               buttons=[]):
         self.clear()
-        msgarea = self.__msgarea = gtk.InfoBar()
+        msgarea = self.__msgarea = Gtk.InfoBar()
 
         for (text, respid) in buttons:
             self.add_button(text, respid)
@@ -99,8 +100,8 @@ class MsgAreaController(gtk.HBox):
         content = layout_text_and_icon(stockid, primary, secondary)
 
         content_area = msgarea.get_content_area()
-        content_area.foreach(content_area.remove)
+        content_area.foreach(content_area.remove, None)
         content_area.add(content)
 
-        self.pack_start(msgarea, expand=True)
+        self.pack_start(msgarea, True, True, 0)
         return msgarea

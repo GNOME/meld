@@ -20,37 +20,38 @@
 import subprocess
 import sys
 
-import gobject
-import gio
-import gtk
+from gi.repository import GLib
+from gi.repository import GObject
+from gi.repository import Gio
+from gi.repository import Gtk
 
 from . import task
 
 from gettext import gettext as _
 
 
-class MeldDoc(gobject.GObject):
+class MeldDoc(GObject.GObject):
     """Base class for documents in the meld application.
     """
 
     __gsignals__ = {
-        'label-changed':        (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
-                                 (gobject.TYPE_STRING, gobject.TYPE_STRING)),
-        'file-changed':         (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
-                                 (gobject.TYPE_STRING,)),
-        'create-diff':          (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
-                                 (gobject.TYPE_PYOBJECT,
-                                  gobject.TYPE_PYOBJECT)),
-        'status-changed':       (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
-                                 (gobject.TYPE_PYOBJECT,)),
-        'current-diff-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+        'label-changed':        (GObject.SignalFlags.RUN_FIRST, None,
+                                 (GObject.TYPE_STRING, GObject.TYPE_STRING)),
+        'file-changed':         (GObject.SignalFlags.RUN_FIRST, None,
+                                 (GObject.TYPE_STRING,)),
+        'create-diff':          (GObject.SignalFlags.RUN_FIRST, None,
+                                 (GObject.TYPE_PYOBJECT,
+                                  GObject.TYPE_PYOBJECT)),
+        'status-changed':       (GObject.SignalFlags.RUN_FIRST, None,
+                                 (GObject.TYPE_PYOBJECT,)),
+        'current-diff-changed': (GObject.SignalFlags.RUN_FIRST, None,
                                  ()),
-        'next-diff-changed':    (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+        'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
     }
 
     def __init__(self, prefs):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.scheduler = task.FifoScheduler()
         self.prefs = prefs
         self.prefs.notify_add(self.on_preference_changed)
@@ -77,8 +78,8 @@ class MeldDoc(gobject.GObject):
             self.scheduler.remove_task(self.scheduler.get_current_task())
 
     def _open_files(self, selected, line=0):
-        query_attrs = ",".join((gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-                                gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
+        query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+                                Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
 
         def os_open(path):
             if not path:
@@ -93,15 +94,16 @@ class MeldDoc(gobject.GObject):
         def open_cb(source, result, *data):
             info = source.query_info_finish(result)
             file_type = info.get_file_type()
-            if file_type == gio.FILE_TYPE_DIRECTORY:
+            if file_type == Gio.FileType.DIRECTORY:
                 os_open(source.get_path())
-            elif file_type == gio.FILE_TYPE_REGULAR:
+            elif file_type == Gio.FileType.REGULAR:
                 content_type = info.get_content_type()
                 path = source.get_path()
                 # FIXME: Content types are broken on Windows with current gio
-                if gio.content_type_is_a(content_type, "text/plain") or \
+                if Gio.content_type_is_a(content_type, "text/plain") or \
                         sys.platform == "win32":
                     editor = self.prefs.get_editor_command(path, line)
+                    # TODO: If the editor is badly set up, this fails silently
                     if editor:
                         subprocess.Popen(editor)
                     else:
@@ -112,8 +114,9 @@ class MeldDoc(gobject.GObject):
                 # TODO: Add some kind of 'failed to open' notification
                 pass
 
-        for f in [gio.File(s) for s in selected]:
-            f.query_info_async(query_attrs, open_cb)
+        for f in [Gio.File.new_for_path(s) for s in selected]:
+            f.query_info_async(query_attrs, 0, GLib.PRIORITY_LOW, None,
+                               open_cb, None)
 
     def open_external(self):
         pass
@@ -164,7 +167,7 @@ class MeldDoc(gobject.GObject):
     def on_delete_event(self, appquit=0):
         """Called when the docs container is about to close.
 
-        A doc normally returns gtk.RESPONSE_OK, but may instead return
-        gtk.RESPONSE_CANCEL to request that the container not delete it.
+        A doc normally returns Gtk.ResponseType.OK, but may instead return
+        Gtk.ResponseType.CANCEL to request that the container not delete it.
         """
-        return gtk.RESPONSE_OK
+        return Gtk.ResponseType.OK

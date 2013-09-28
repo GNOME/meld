@@ -16,7 +16,7 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import gobject
+from gi.repository import GObject
 
 from .matchers import DiffChunk, MyersSequenceMatcher, \
     SyncPointMyersSequenceMatcher
@@ -60,11 +60,11 @@ def consume_blank_lines(chunk, texts, pane1, pane2):
     return DiffChunk._make((tag, c1, c2, c3, c4))
 
 
-class Differ(gobject.GObject):
+class Differ(GObject.GObject):
     """Utility class to hold diff2 or diff3 chunks"""
 
     __gsignals__ = {
-        'diffs-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+        'diffs-changed': (GObject.SignalFlags.RUN_FIRST, None,
                                                     (object,)),
     }
 
@@ -73,7 +73,7 @@ class Differ(gobject.GObject):
 
     def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.num_sequences = 0
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]

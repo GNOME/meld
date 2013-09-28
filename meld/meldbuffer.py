@@ -44,7 +44,7 @@ class MeldBuffer(sourceviewer.srcviewer.GtkTextBuffer):
         self.data = new_data
 
     def get_iter_at_line_or_eof(self, line):
-        """Return a gtk.TextIter at the given line, or the end of the buffer.
+        """Return a Gtk.TextIter at the given line, or the end of the buffer.
 
         This method is like get_iter_at_line, but if asked for a position past
         the end of the buffer, this returns the end of the buffer; the
@@ -60,7 +60,7 @@ class MeldBuffer(sourceviewer.srcviewer.GtkTextBuffer):
 
         This method is like insert, but if asked to insert something past the
         last line in the buffer, this will insert at the end, and will add a
-        linebreak before the inserted text. The last line in a gtk.TextBuffer
+        linebreak before the inserted text. The last line in a Gtk.TextBuffer
         is guaranteed never to have a newline, so we need to handle this.
         """
         if line >= self.get_line_count():
@@ -95,14 +95,14 @@ class MeldBufferData(object):
 
 
 class BufferLines(object):
-    """gtk.TextBuffer shim with line-based access and optional filtering
+    """Gtk.TextBuffer shim with line-based access and optional filtering
 
-    This class allows a gtk.TextBuffer to be treated as a list of lines of
+    This class allows a Gtk.TextBuffer to be treated as a list of lines of
     possibly-filtered text. If no filter is given, the raw output from the
-    gtk.TextBuffer is used.
+    Gtk.TextBuffer is used.
 
     The logic here (and in places in FileDiff) requires that Python's
-    unicode splitlines() implementation and gtk.TextBuffer agree on where
+    unicode splitlines() implementation and Gtk.TextBuffer agree on where
     linebreaks occur. Happily, this is usually the case.
     """
 
@@ -127,7 +127,7 @@ class BufferLines(object):
             lines = filter_txt.splitlines()
             ends = filter_txt.splitlines(True)
 
-            # The last line in a gtk.TextBuffer is guaranteed never to end in a
+            # The last line in a Gtk.TextBuffer is guaranteed never to end in a
             # newline. As splitlines() discards an empty line at the end, we
             # need to artificially add a line if the requested slice is past
             # the end of the buffer, and the last line in the slice ended in a

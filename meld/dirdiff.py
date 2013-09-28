@@ -27,10 +27,11 @@ import stat
 import sys
 import time
 
-import gio
-import gobject
-import gtk
-import gtk.keysyms
+from gi.repository import GLib
+from gi.repository import Gio
+from gi.repository import GObject
+from gi.repository import Gdk
+from gi.repository import Gtk
 
 from . import melddoc
 from . import tree
@@ -45,7 +46,6 @@ from gettext import gettext as _
 from gettext import ngettext
 from .meldapp import app
 
-gdk = gtk.gdk
 
 ################################################################################
 #
@@ -302,15 +302,15 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.focus_in_events.append(handler_id)
             handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
             self.focus_out_events.append(handler_id)
-            treeview.set_search_equal_func(self.model.treeview_search_cb)
+            treeview.set_search_equal_func(self.model.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.on_treeview_focus_out_event(None, None)
         self.focus_pane = None
 
-        lastchanged_label = gtk.Label()
+        lastchanged_label = Gtk.Label()
         lastchanged_label.set_size_request(100, -1)
         lastchanged_label.show()
-        permissions_label = gtk.Label()
+        permissions_label = Gtk.Label()
         permissions_label.set_size_request(100, -1)
         permissions_label.show()
         self.status_info_labels = [lastchanged_label, permissions_label]
@@ -320,12 +320,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i in range(3):
             col_index = self.model.column_index
             # Create icon and filename CellRenderer
-            column = gtk.TreeViewColumn(_("Name"))
+            column = Gtk.TreeViewColumn(_("Name"))
             column.set_resizable(True)
-            rentext = gtk.CellRendererText()
+            rentext = Gtk.CellRendererText()
             renicon = emblemcellrenderer.EmblemCellRenderer()
-            column.pack_start(renicon, expand=0)
-            column.pack_start(rentext, expand=1)
+            column.pack_start(renicon, False)
+            column.pack_start(rentext, True)
             column.set_attributes(rentext, markup=col_index(tree.COL_TEXT, i),
                                   foreground_gdk=col_index(tree.COL_FG, i),
                                   style=col_index(tree.COL_STYLE, i),
@@ -338,26 +338,26 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview[i].append_column(column)
             self.columns_dict[i]["name"] = column
             # Create file size CellRenderer
-            column = gtk.TreeViewColumn(_("Size"))
+            column = Gtk.TreeViewColumn(_("Size"))
             column.set_resizable(True)
-            rentext = gtk.CellRendererText()
-            column.pack_start(rentext, expand=1)
+            rentext = Gtk.CellRendererText()
+            column.pack_start(rentext, True)
             column.set_attributes(rentext, markup=col_index(COL_SIZE, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["size"] = column
             # Create date-time CellRenderer
-            column = gtk.TreeViewColumn(_("Modification time"))
+            column = Gtk.TreeViewColumn(_("Modification time"))
             column.set_resizable(True)
-            rentext = gtk.CellRendererText()
-            column.pack_start(rentext, expand=1)
+            rentext = Gtk.CellRendererText()
+            column.pack_start(rentext, True)
             column.set_attributes(rentext, markup=col_index(COL_TIME, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["modification time"] = column
             # Create permissions CellRenderer
-            column = gtk.TreeViewColumn(_("Permissions"))
+            column = Gtk.TreeViewColumn(_("Permissions"))
             column.set_resizable(True)
-            rentext = gtk.CellRendererText()
-            column.pack_start(rentext, expand=0)
+            rentext = Gtk.CellRendererText()
+            column.pack_start(rentext, False)
             column.set_attributes(rentext, markup=col_index(COL_PERMS, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["permissions"] = column
@@ -365,7 +365,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for i in range(3):
             selection = self.treeview[i].get_selection()
-            selection.set_mode(gtk.SELECTION_MULTIPLE)
+            selection.set_mode(Gtk.SelectionMode.MULTIPLE)
             selection.connect('changed', self.on_treeview_selection_changed, i)
             self.scrolledwindow[i].get_vadjustment().connect(
                 "value-changed", self._sync_vscroll)
@@ -381,10 +381,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.actiongroup.get_action(action_name).set_active(True)
 
     def on_style_set(self, widget, prev_style):
-        style = widget.get_style()
+        style = widget.get_style_context()
 
-        lookup = lambda color_id, default: style.lookup_color(color_id) or \
-                                           gtk.gdk.color_parse(default)
+        def lookup(name, default):
+            found, colour = style.lookup_color(name)
+            if not found:
+                colour = Gdk.RGBA()
+                colour.parse(default)
+            return colour
 
         self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
                             "delete"  : lookup("delete-bg", "White"),
@@ -434,9 +438,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         if item.get_active():
             self.custom_popup.connect("deactivate",
                                       lambda popup: item.set_active(False))
-            self.custom_popup.popup(None, None, misc.position_menu_under_widget,
-                                    1, gtk.get_current_event_time(),
-                                    self.filter_menu_button)
+            self.custom_popup.popup(None, None,
+                                    misc.position_menu_under_widget,
+                                    self.filter_menu_button, 1,
+                                    Gtk.get_current_event_time())
 
     def _cleanup_filter_menu_button(self, ui):
         if self.popup_deactivate_id:
@@ -489,12 +494,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             name = "Hide%d" % i
             callback = lambda b, i=i: self._update_name_filter(b, i)
             actions.append((name, None, f.label, None, _("Hide %s") % f.label, callback, f.active))
-            self.filter_ui.append(["/CustomPopup" , name, name, gtk.UI_MANAGER_MENUITEM, False])
-            self.filter_ui.append(["/Menubar/ViewMenu/FileFilters" , name, name, gtk.UI_MANAGER_MENUITEM, False])
+            self.filter_ui.append(["/CustomPopup" , name, name, Gtk.UIManagerItemType.MENUITEM, False])
+            self.filter_ui.append(["/Menubar/ViewMenu/FileFilters" , name, name, Gtk.UIManagerItemType.MENUITEM, False])
             if f.filter is None:
                 disabled_actions.append(name)
 
-        self.filter_actiongroup = gtk.ActionGroup("DirdiffFilterActions")
+        self.filter_actiongroup = Gtk.ActionGroup("DirdiffFilterActions")
         self.filter_actiongroup.add_toggle_actions(actions)
         for name in disabled_actions:
             self.filter_actiongroup.get_action(name).set_sensitive(False)
@@ -531,11 +536,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _sync_vscroll(self, adjustment):
         adjs = [sw.get_vadjustment() for sw in self.scrolledwindow]
-        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value, ))
+        self._do_to_others(adjustment, adjs, "set_value",
+                           (adjustment.get_value(), ))
 
     def _sync_hscroll(self, adjustment):
         adjs = [sw.get_hadjustment() for sw in self.scrolledwindow]
-        self._do_to_others(adjustment, adjs, "set_value", (adjustment.value, ))
+        self._do_to_others(adjustment, adjs, "set_value",
+                           (adjustment.get_value(), ))
 
     def _get_focused_pane(self):
         for i, treeview in enumerate(self.treeview):
@@ -590,7 +597,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._update_diffmaps()
 
     def get_comparison(self):
-        root = self.model.get_iter_root()
+        root = self.model.get_iter_first()
         if root:
             folders = self.model.value_paths(root)
         else:
@@ -616,7 +623,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Scanning %s") % (self.label_text, "")
         prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
         symlinks_followed = set()
-        todo = [ rootpath ]
+        # TODO: This is horrible.
+        if isinstance(rootpath, tuple):
+            rootpath = Gtk.TreePath(rootpath)
+        todo = [rootpath]
         expanded = set()
 
         shadowed_entries = []
@@ -775,13 +785,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 else:
                     continue
                 secondary = "\n".join(messages)
-                self.add_dismissable_msg(pane, gtk.STOCK_DIALOG_ERROR, header,
+                self.add_dismissable_msg(pane, Gtk.STOCK_DIALOG_ERROR, header,
                                          secondary)
 
     def add_dismissable_msg(self, pane, icon, primary, secondary):
         msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                         icon, primary, secondary)
-        msgarea.add_button(_("Hi_de"), gtk.RESPONSE_CLOSE)
+        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
         msgarea.connect("response",
                         lambda *args: self.msgarea_mgr[pane].clear())
         msgarea.show_all()
@@ -814,7 +824,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         if os.path.exists(dst):
                             if misc.run_dialog( _("'%s' exists.\nOverwrite?") % os.path.basename(dst),
                                     parent = self,
-                                    buttonstype = gtk.BUTTONS_OK_CANCEL) != gtk.RESPONSE_OK:
+                                    buttonstype = Gtk.ButtonsType.OK_CANCEL) != Gtk.ResponseType.OK:
                                 continue
                         misc.copytree(src, dst)
                         self.recursively_update( path )
@@ -822,9 +832,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     misc.error_dialog(
                         _("Error copying file"),
                         _("Couldn't copy %s\nto %s.\n\n%s") % (
-                            gobject.markup_escape_text(src),
-                            gobject.markup_escape_text(dst),
-                            gobject.markup_escape_text(str(err)),
+                            GObject.markup_escape_text(src),
+                            GObject.markup_escape_text(dst),
+                            GObject.markup_escape_text(str(err)),
                         )
                     )
 
@@ -840,10 +850,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 it = self.model.get_iter(path)
                 name = self.model.value_path(it, pane)
                 try:
-                    gfile = gio.File(name)
-                    gfile.trash()
+                    gfile = Gio.File.new_for_path(name)
+                    gfile.trash(None)
                     self.file_deleted(path, pane)
-                except gio.Error as e:
+                except GLib.GError as e:
                     misc.error_dialog(_("Error deleting %s") % name, str(e))
 
     def on_treemodel_row_deleted(self, model, path):
@@ -1002,10 +1012,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)
         tree = None
-        if gtk.keysyms.Right == event.keyval:
+        if Gdk.KEY_Right == event.keyval:
             if pane+1 < self.num_panes:
                 tree = self.treeview[pane+1]
-        elif gtk.keysyms.Left == event.keyval:
+        elif Gdk.KEY_Left == event.keyval:
             if pane-1 >= 0:
                 tree = self.treeview[pane-1]
         if tree is not None:
@@ -1018,7 +1028,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 for p in paths:
                     tree.get_selection().select_path(p)
             tree.emit("cursor-changed")
-        return event.keyval in (gtk.keysyms.Left, gtk.keysyms.Right) #handled
+        return event.keyval in (Gdk.KEY_Left, Gdk.KEY_Right) #handled
 
     def on_treeview_row_activated(self, view, path, column):
         pane = self.treeview.index(view)
@@ -1270,8 +1280,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             time = event.time
         else:
             button = 0
-            time = gtk.get_current_event_time()
-        self.popup_menu.popup(None, None, None, button, time)
+            time = Gtk.get_current_event_time()
+        self.popup_menu.popup(None, None, None, None, button, time)
 
     def on_treeview_popup_menu(self, treeview):
         self.popup_in_pane(self.treeview.index(treeview), None)
@@ -1351,13 +1361,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.num_panes = n
 
     def refresh(self):
-        root = self.model.get_iter_root()
+        root = self.model.get_iter_first()
         if root:
             roots = self.model.value_paths(root)
             self.set_locations( roots )
 
     def recompute_label(self):
-        root = self.model.get_iter_root()
+        root = self.model.get_iter_first()
         filenames = self.model.value_paths(root)
         if self.custom_labels:
             label_options = zip(self.custom_labels, filenames)
@@ -1388,7 +1398,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         changed_paths = []
         # search each panes tree for changed_filename
         for pane in range(self.num_panes):
-            it = model.get_iter_root()
+            it = model.get_iter_first()
             current = model.value_path(it, pane).split(os.sep)
             changed = changed_filename.split(os.sep)
             # early exit. does filename begin with root?
@@ -1424,7 +1434,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             pane = self.treeview.index(self.focus_pane)
         else:
             pane = 0
-        if direction == gtk.gdk.SCROLL_UP:
+        if direction == Gdk.ScrollDirection.UP:
             path = self.prev_path
         else:
             path = self.next_path
@@ -1439,7 +1449,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for h in self.app_handlers:
             app.disconnect(h)
 
-        return gtk.RESPONSE_OK
+        return Gtk.ResponseType.OK
 
     def on_find_activate(self, *extra):
         self.focus_pane.emit("start-interactive-search")

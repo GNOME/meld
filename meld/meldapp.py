@@ -24,9 +24,9 @@ import os
 import sys
 from gettext import gettext as _
 
-import gio
-import gobject
-import gtk
+from gi.repository import Gio
+from gi.repository import GObject
+from gi.repository import Gtk
 
 from . import conf
 from . import filters
@@ -34,19 +34,19 @@ from . import preferences
 from . import recent
 
 
-class MeldApp(gobject.GObject):
+class MeldApp(GObject.GObject):
 
     __gsignals__ = {
-        'file-filters-changed': (gobject.SIGNAL_RUN_FIRST,
-                                 gobject.TYPE_NONE, ()),
-        'text-filters-changed': (gobject.SIGNAL_RUN_FIRST,
-                                 gobject.TYPE_NONE, ()),
+        'file-filters-changed': (GObject.SignalFlags.RUN_FIRST,
+                                 None, ()),
+        'text-filters-changed': (GObject.SignalFlags.RUN_FIRST,
+                                 None, ()),
     }
 
     def __init__(self):
-        gobject.GObject.__init__(self)
-        gobject.set_application_name("Meld")
-        gtk.window_set_default_icon_name("meld")
+        GObject.GObject.__init__(self)
+        GObject.set_application_name("Meld")
+        Gtk.Window.set_default_icon_name("meld")
         self.version = conf.__version__
         self.prefs = preferences.MeldPreferences()
         self.prefs.notify_add(self.on_preference_changed)
@@ -159,7 +159,7 @@ class MeldApp(gobject.GObject):
                                        args[0].endswith(".meldcmp")):
             path = options.comparison_file or args[0]
             comparison_file_path = os.path.expanduser(path)
-            gio_file = gio.File(path=comparison_file_path)
+            gio_file = Gio.File.new_for_path(comparison_file_path)
             try:
                 tab = self.window.append_recent(gio_file.get_uri())
             except (IOError, ValueError):

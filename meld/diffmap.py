@@ -18,23 +18,18 @@
 
 import collections
 
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gdk
+from gi.repository import Gtk
 
 
-class DiffMap(gtk.DrawingArea):
+class DiffMap(Gtk.DrawingArea):
 
     __gtype_name__ = "DiffMap"
 
-    __gsignals__ = {
-        'expose-event': 'override',
-        'button-press-event': 'override',
-        'size-request': 'override',
-    }
-
     def __init__(self):
-        gtk.DrawingArea.__init__(self)
-        self.add_events(gtk.gdk.BUTTON_PRESS_MASK)
+        GObject.GObject.__init__(self)
+        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self._scrolladj = None
         self._difffunc = lambda: None
         self._handlers = []
@@ -50,7 +45,7 @@ class DiffMap(gtk.DrawingArea):
 
         self._scrolladj = scrollbar.get_adjustment()
         self.on_scrollbar_style_set(scrollbar, None)
-        self.on_scrollbar_size_allocate(scrollbar, scrollbar.allocation)
+        self.on_scrollbar_size_allocate(scrollbar, scrollbar.get_allocation())
         scrollbar.ensure_style()
         scroll_style_hid = scrollbar.connect("style-set",
                                              self.on_scrollbar_style_set)
@@ -74,11 +69,22 @@ class DiffMap(gtk.DrawingArea):
         self.queue_draw()
 
     def on_scrollbar_style_set(self, scrollbar, previous_style):
-        stepper_size = scrollbar.style_get_property("stepper-size")
-        steppers = [scrollbar.style_get_property(x) for x in
-                    ("has-backward-stepper", "has-secondary-forward-stepper",
-                     "has-secondary-backward-stepper", "has-forward-stepper")]
-        stepper_spacing = scrollbar.style_get_property("stepper-spacing")
+        value = GObject.Value(int)
+        scrollbar.style_get_property("stepper-size", value)
+        stepper_size = value.get_int()
+        scrollbar.style_get_property("stepper-spacing", value)
+        stepper_spacing = value.get_int()
+
+        bool_value = GObject.Value(bool)
+        scrollbar.style_get_property("has-backward-stepper", bool_value)
+        has_backward = bool_value.get_boolean()
+        scrollbar.style_get_property("has-secondary-forward-stepper", bool_value)
+        has_secondary_forward = bool_value.get_boolean()
+        scrollbar.style_get_property("has-secondary-backward-stepper", bool_value)
+        has_secondary_backward = bool_value.get_boolean()
+        scrollbar.style_get_property("has-forward-stepper", bool_value)
+        has_foreward = bool_value.get_boolean()
+        steppers = [has_backward, has_secondary_forward, has_secondary_backward, has_foreward]
 
         offset = stepper_size * steppers[0:2].count(True)
         shorter = stepper_size * steppers.count(True)
@@ -96,16 +102,16 @@ class DiffMap(gtk.DrawingArea):
         self._scroll_height = allocation.height
         self.queue_draw()
 
-    def do_expose_event(self, event):
+    def do_draw(self, context):
         if not self._setup:
             return
         height = self._scroll_height - self._h_offset - 1
-        y_start = self._scroll_y - self.allocation.y + self._y_offset + 1
-        xpad = self.style_get_property('x-padding')
+        y_start = self._scroll_y - self.get_allocation().y - self._y_offset + 1
+        width = self.get_allocated_width()
+        xpad = 2.5
         x0 = xpad
-        x1 = self.allocation.width - 2 * xpad
+        x1 = width - 2 * xpad
 
-        context = self.window.cairo_create()
         context.translate(0, y_start)
         context.set_line_width(1)
         context.rectangle(x0 - 3, -1, x1 + 6, height + 1)
@@ -116,19 +122,19 @@ class DiffMap(gtk.DrawingArea):
             tagged_diffs[c].append((y0, y1))
 
         for tag, diffs in tagged_diffs.items():
-            context.set_source_color(self.fill_colors[tag])
+            context.set_source_rgba(*self.fill_colors[tag])
             for y0, y1 in diffs:
                 y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
                 context.rectangle(x0, y0, x1, y1 - y0)
             context.fill_preserve()
-            context.set_source_color(self.line_colors[tag])
+            context.set_source_rgba(*self.line_colors[tag])
             context.stroke()
 
         page_color = (0., 0., 0., 0.1)
         page_outline_color = (0.0, 0.0, 0.0, 0.3)
         adj = self._scrolladj
-        s = round(height * (adj.value / adj.upper)) - 0.5
-        e = round(height * (adj.page_size / adj.upper))
+        s = round(height * (adj.get_value() / adj.get_upper())) - 0.5
+        e = round(height * (adj.get_page_size() / adj.get_upper()))
         context.set_source_rgba(*page_color)
         context.rectangle(x0 - 2, s, x1 + 4, e)
         context.fill_preserve()
@@ -137,30 +143,16 @@ class DiffMap(gtk.DrawingArea):
 
     def do_button_press_event(self, event):
         if event.button == 1:
-            y_start = self.allocation.y - self._scroll_y - self._y_offset
+            y_start = self.get_allocation().y - self._scroll_y - self._y_offset
             total_height = self._scroll_height - self._h_offset
             fraction = (event.y + y_start) / total_height
 
             adj = self._scrolladj
-            val = fraction * adj.upper - adj.page_size / 2
-            upper = adj.upper - adj.page_size
-            adj.set_value(max(min(upper, val), adj.lower))
+            val = fraction * adj.get_upper() - adj.get_page_size() / 2
+            upper = adj.get_upper() - adj.get_page_size()
+            adj.set_value(max(min(upper, val), adj.get_lower()))
             return True
         return False
 
-    def do_size_request(self, request):
-        request.width = self.style_get_property('width')
-
-gtk.widget_class_install_style_property(DiffMap,
-                                        ('width', float,
-                                         'Width',
-                                         'Width of the bar',
-                                         0.0, gobject.G_MAXFLOAT, 20,
-                                         gobject.PARAM_READABLE))
-gtk.widget_class_install_style_property(DiffMap,
-                                        ('x-padding', float,
-                                         'Width-wise padding',
-                                         'Padding to be left between left and '
-                                         'right edges and change blocks',
-                                         0.0, gobject.G_MAXFLOAT, 3.5,
-                                         gobject.PARAM_READABLE))
+    def do_get_preferred_width(self):
+        return 20, 20

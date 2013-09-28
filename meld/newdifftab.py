@@ -17,25 +17,25 @@
 
 import os
 
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gtk
 
 from .ui import gnomeglade
 
 from .meldapp import app
 
 
-class NewDiffTab(gobject.GObject, gnomeglade.Component):
+class NewDiffTab(GObject.GObject, gnomeglade.Component):
 
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
-        'diff-created': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+        'diff-created': (GObject.SignalFlags.RUN_FIRST, None,
                          (object,)),
     }
 
     def __init__(self, parentapp):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         gnomeglade.Component.__init__(self, "tab-placeholder.ui",
                                       "new_comparison_tab")
         self.map_widgets_into_lists(["file_chooser", "dir_chooser",
@@ -130,4 +130,4 @@ class NewDiffTab(gobject.GObject, gnomeglade.Component):
         pass
 
     def on_delete_event(self, *args):
-        return gtk.RESPONSE_OK
+        return Gtk.ResponseType.OK

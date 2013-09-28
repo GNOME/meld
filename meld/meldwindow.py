@@ -19,9 +19,10 @@
 import os
 from gettext import gettext as _
 
-import gio
-import gtk
-import gobject
+from gi.repository import Gio
+from gi.repository import Gdk
+from gi.repository import Gtk
+from gi.repository import GObject
 
 from . import conf
 from . import dirdiff
@@ -58,36 +59,36 @@ class MeldWindow(gnomeglade.Component):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("New", gtk.STOCK_NEW, _("_New Comparison..."), "<control>N",
+            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), "<control>N",
                 _("Start a new comparison"),
                 self.on_menu_file_new_activate),
-            ("Save", gtk.STOCK_SAVE, None, None,
+            ("Save", Gtk.STOCK_SAVE, None, None,
                 _("Save the current file"),
                 self.on_menu_save_activate),
-            ("SaveAs", gtk.STOCK_SAVE_AS, _("Save As..."), "<control><shift>S",
+            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), "<control><shift>S",
                 _("Save the current file with a different name"),
                 self.on_menu_save_as_activate),
-            ("Close", gtk.STOCK_CLOSE, None, None,
+            ("Close", Gtk.STOCK_CLOSE, None, None,
                 _("Close the current file"),
                 self.on_menu_close_activate),
-            ("Quit", gtk.STOCK_QUIT, None, None,
+            ("Quit", Gtk.STOCK_QUIT, None, None,
                 _("Quit the program"),
                 self.on_menu_quit_activate),
 
             ("EditMenu", None, _("_Edit")),
-            ("Undo", gtk.STOCK_UNDO, None, "<control>Z",
+            ("Undo", Gtk.STOCK_UNDO, None, "<control>Z",
                 _("Undo the last action"),
                 self.on_menu_undo_activate),
-            ("Redo", gtk.STOCK_REDO, None, "<control><shift>Z",
+            ("Redo", Gtk.STOCK_REDO, None, "<control><shift>Z",
                 _("Redo the last undone action"),
                 self.on_menu_redo_activate),
-            ("Cut", gtk.STOCK_CUT, None, None, _("Cut the selection"),
+            ("Cut", Gtk.STOCK_CUT, None, None, _("Cut the selection"),
                 self.on_menu_cut_activate),
-            ("Copy", gtk.STOCK_COPY, None, None, _("Copy the selection"),
+            ("Copy", Gtk.STOCK_COPY, None, None, _("Copy the selection"),
                 self.on_menu_copy_activate),
-            ("Paste", gtk.STOCK_PASTE, None, None, _("Paste the clipboard"),
+            ("Paste", Gtk.STOCK_PASTE, None, None, _("Paste the clipboard"),
                 self.on_menu_paste_activate),
-            ("Find", gtk.STOCK_FIND, _("Find..."), None, _("Search for text"),
+            ("Find", Gtk.STOCK_FIND, _("Find..."), None, _("Search for text"),
                 self.on_menu_find_activate),
             ("FindNext", None, _("Find Ne_xt"), "<control>G",
                 _("Search forwards for the same text"),
@@ -95,19 +96,19 @@ class MeldWindow(gnomeglade.Component):
             ("FindPrevious", None, _("Find _Previous"), "<control><shift>G",
                 _("Search backwards for the same text"),
                 self.on_menu_find_previous_activate),
-            ("Replace", gtk.STOCK_FIND_AND_REPLACE,
+            ("Replace", Gtk.STOCK_FIND_AND_REPLACE,
                 _("_Replace..."), "<control>H",
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
-            ("Preferences", gtk.STOCK_PREFERENCES, _("Prefere_nces"), None,
+            ("Preferences", Gtk.STOCK_PREFERENCES, _("Prefere_nces"), None,
                 _("Configure the application"),
                 self.on_menu_preferences_activate),
 
             ("ChangesMenu", None, _("_Changes")),
-            ("NextChange", gtk.STOCK_GO_DOWN, _("Next Change"), "<Alt>Down",
+            ("NextChange", Gtk.STOCK_GO_DOWN, _("Next Change"), "<Alt>Down",
                 _("Go to the next change"),
                 self.on_menu_edit_down_activate),
-            ("PrevChange", gtk.STOCK_GO_UP, _("Previous Change"), "<Alt>Up",
+            ("PrevChange", Gtk.STOCK_GO_UP, _("Previous Change"), "<Alt>Up",
                 _("Go to the previous change"),
                 self.on_menu_edit_up_activate),
             ("OpenExternal", None, _("Open Externally"), None,
@@ -119,10 +120,10 @@ class MeldWindow(gnomeglade.Component):
             ("FileStatus", None, _("File Status")),
             ("VcStatus", None, _("Version Status")),
             ("FileFilters", None, _("File Filters")),
-            ("Stop", gtk.STOCK_STOP, None, "Escape",
+            ("Stop", Gtk.STOCK_STOP, None, "Escape",
                 _("Stop the current action"),
                 self.on_toolbar_stop_clicked),
-            ("Refresh", gtk.STOCK_REFRESH, None, "<control>R",
+            ("Refresh", Gtk.STOCK_REFRESH, None, "<control>R",
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
 
@@ -143,12 +144,12 @@ class MeldWindow(gnomeglade.Component):
                 self.on_move_tab_next),
 
             ("HelpMenu", None, _("_Help")),
-            ("Help", gtk.STOCK_HELP, _("_Contents"), "F1",
+            ("Help", Gtk.STOCK_HELP, _("_Contents"), "F1",
                 _("Open the Meld manual"), self.on_menu_help_activate),
-            ("BugReport", gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None,
+            ("BugReport", Gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None,
                 _("Report a bug in Meld"),
                 self.on_menu_help_bug_activate),
-            ("About", gtk.STOCK_ABOUT, None, None,
+            ("About", Gtk.STOCK_ABOUT, None, None,
                 _("About this program"),
                 self.on_menu_about_activate),
         )
@@ -164,20 +165,20 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_statusbar_toggled, app.prefs.statusbar_visible)
         )
         ui_file = gnomeglade.ui_file("meldapp-ui.xml")
-        self.actiongroup = gtk.ActionGroup('MainActions')
+        self.actiongroup = Gtk.ActionGroup('MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
 
-        recent_action = gtk.RecentAction("Recent",  _("Open Recent"),
+        recent_action = Gtk.RecentAction("Recent",  _("Open Recent"),
                                          _("Open recent files"), None)
         recent_action.set_show_private(True)
         recent_action.set_filter(app.recent_comparisons.recent_filter)
-        recent_action.set_sort_type(gtk.RECENT_SORT_MRU)
+        recent_action.set_sort_type(Gtk.RecentSortType.MRU)
         recent_action.connect("item-activated", self.on_action_recent)
         self.actiongroup.add_action(recent_action)
 
-        self.ui = gtk.UIManager()
+        self.ui = Gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file)
         self.ui.connect("connect-proxy", self._on_uimanager_connect_proxy)
@@ -193,24 +194,24 @@ class MeldWindow(gnomeglade.Component):
 
         # Add alternate keybindings for Prev/Next Change
         accels = self.ui.get_accel_group()
-        (keyval, mask) = gtk.accelerator_parse("<Ctrl>D")
-        accels.connect_group(keyval, mask, 0, self.on_menu_edit_down_activate)
-        (keyval, mask) = gtk.accelerator_parse("<Ctrl>E")
-        accels.connect_group(keyval, mask, 0, self.on_menu_edit_up_activate)
-        (keyval, mask) = gtk.accelerator_parse("F5")
-        accels.connect_group(keyval, mask, 0, self.on_menu_refresh_activate)
+        (keyval, mask) = Gtk.accelerator_parse("<Ctrl>D")
+        accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
+        (keyval, mask) = Gtk.accelerator_parse("<Ctrl>E")
+        accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
+        (keyval, mask) = Gtk.accelerator_parse("F5")
+        accels.connect(keyval, mask, 0, self.on_menu_refresh_activate)
 
         # Initialise sensitivity for important actions
         self.actiongroup.get_action("Stop").set_sensitive(False)
         self._update_page_action_sensitivity()
 
-        self.appvbox.pack_start(self.menubar, expand=False)
-        self.appvbox.pack_start(self.toolbar, expand=False)
+        self.appvbox.pack_start(self.menubar, False, True, 0)
+        self.appvbox.pack_start(self.toolbar, False, True, 0)
         self._menu_context = self.statusbar.get_context_id("Tooltips")
         self.widget.drag_dest_set(
-            gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
-            [('text/uri-list', 0, 0)],
-            gtk.gdk.ACTION_COPY)
+            Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT | Gtk.DestDefaults.DROP,
+            None, Gdk.DragAction.COPY)
+        self.widget.drag_dest_add_uri_targets()
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
         self.toolbar.set_style(app.prefs.get_toolbar_style())
@@ -231,8 +232,8 @@ class MeldWindow(gnomeglade.Component):
     def on_focus_change(self, widget, event, callback_data=None):
         for idx in range(self.notebook.get_n_pages()):
             w = self.notebook.get_nth_page(idx)
-            if hasattr(w.get_data("pyobject"), 'on_focus_change'):
-                w.get_data("pyobject").on_focus_change()
+            if hasattr(w.pyobject, 'on_focus_change'):
+                w.pyobject.on_focus_change()
         # Let the rest of the stack know about this event
         return False
 
@@ -240,7 +241,7 @@ class MeldWindow(gnomeglade.Component):
         if len(selection_data.get_uris()) != 0:
             paths = []
             for uri in selection_data.get_uris():
-                paths.append(gio.File(uri=uri).get_path())
+                paths.append(Gio.File.new_for_uri(uri).get_path())
             self.open_paths(paths)
             return True
 
@@ -248,21 +249,22 @@ class MeldWindow(gnomeglade.Component):
         tooltip = action.props.tooltip
         if not tooltip:
             return
-        if isinstance(widget, gtk.MenuItem):
+        if isinstance(widget, Gtk.MenuItem):
             cid = widget.connect("select", self._on_action_item_select_enter, tooltip)
             cid2 = widget.connect("deselect", self._on_action_item_deselect_leave)
-            widget.set_data("meldapp::proxy-signal-ids", (cid, cid2))
-        elif isinstance(widget, gtk.ToolButton):
-            cid = widget.child.connect("enter", self._on_action_item_select_enter, tooltip)
-            cid2 = widget.child.connect("leave", self._on_action_item_deselect_leave)
-            widget.set_data("meldapp::proxy-signal-ids", (cid, cid2))
+            widget.proxy_signal_ids = (cid, cid2)
+        elif isinstance(widget, Gtk.ToolButton):
+            cid = widget.get_child().connect("enter", self._on_action_item_select_enter, tooltip)
+            cid2 = widget.get_child().connect("leave", self._on_action_item_deselect_leave)
+            widget.proxy_signal_ids = (cid, cid2)
 
     def _on_uimanager_disconnect_proxy(self, ui, action, widget):
-        cids = widget.get_data("meldapp::proxy-signal-ids")
-        if not cids:
+        try:
+            cids = widget.proxy_signal_ids
+        except AttributeError:
             return
-        if isinstance(widget, gtk.ToolButton):
-            widget = widget.child
+        if isinstance(widget, Gtk.ToolButton):
+            widget = widget.get_child()
         for cid in cids:
             widget.disconnect(cid)
 
@@ -289,7 +291,7 @@ class MeldWindow(gnomeglade.Component):
         if not self.idle_hooked:
             self.statusbar.start_pulse()
             self.actiongroup.get_action("Stop").set_sensitive(True)
-            self.idle_hooked = gobject.idle_add(self.on_idle)
+            self.idle_hooked = GObject.idle_add(self.on_idle)
 
     def on_preference_changed(self, key, value):
         if key == "toolbar_style":
@@ -318,8 +320,7 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("MoveTabNext").set_sensitive(have_next_tab)
 
         if current_page != -1:
-            page = self.notebook.get_nth_page(
-                current_page).get_data("pyobject")
+            page = self.notebook.get_nth_page(current_page).pyobject
         else:
             page = None
 
@@ -340,7 +341,7 @@ class MeldWindow(gnomeglade.Component):
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
-            olddoc = notebook.get_nth_page(oldidx).get_data("pyobject")
+            olddoc = notebook.get_nth_page(oldidx).pyobject
             if self.diff_handler is not None:
                 olddoc.disconnect(self.diff_handler)
             olddoc.on_container_switch_out_event(self.ui)
@@ -350,7 +351,7 @@ class MeldWindow(gnomeglade.Component):
                     undoseq.disconnect(handler)
                 self.undo_handlers = tuple()
 
-        newdoc = notebook.get_nth_page(which).get_data("pyobject")
+        newdoc = notebook.get_nth_page(which).pyobject
         try:
             undoseq = newdoc.undosequence
             can_undo = undoseq.can_undo()
@@ -408,7 +409,7 @@ class MeldWindow(gnomeglade.Component):
 
         actiongroup = self.tab_switch_actiongroup
         if actiongroup:
-            idx = self.notebook.child_get_property(page, "position")
+            idx = self.notebook.page_num(page)
             action_name = "SwitchTab%d" % idx
             actiongroup.get_action(action_name).set_label(text)
 
@@ -451,20 +452,20 @@ class MeldWindow(gnomeglade.Component):
     def on_menu_close_activate(self, *extra):
         i = self.notebook.get_current_page()
         if i >= 0:
-            page = self.notebook.get_nth_page(i).get_data("pyobject")
+            page = self.notebook.get_nth_page(i).pyobject
             self.try_remove_page(page)
 
     def on_menu_quit_activate(self, *extra):
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
         for c in reversed(self.notebook.get_children()):
-            page = c.get_data("pyobject")
+            page = c.pyobject
             self.notebook.set_current_page(self.notebook.page_num(page.widget))
             response = self.try_remove_page(page, appquit=1)
-            if response == gtk.RESPONSE_CANCEL:
-                return gtk.RESPONSE_CANCEL
-        gtk.main_quit()
-        return gtk.RESPONSE_CLOSE
+            if response == Gtk.ResponseType.CANCEL:
+                return Gtk.ResponseType.CANCEL
+        Gtk.main_quit()
+        return Gtk.ResponseType.CLOSE
 
     #
     # Toolbar and menu items (edit)
@@ -492,23 +493,23 @@ class MeldWindow(gnomeglade.Component):
 
     def on_menu_copy_activate(self, *extra):
         widget = self.widget.get_focus()
-        if isinstance(widget, gtk.Editable):
+        if isinstance(widget, Gtk.Editable):
             widget.copy_clipboard()
-        elif isinstance(widget, gtk.TextView):
+        elif isinstance(widget, Gtk.TextView):
             widget.emit("copy-clipboard")
 
     def on_menu_cut_activate(self, *extra):
         widget = self.widget.get_focus()
-        if isinstance(widget, gtk.Editable):
+        if isinstance(widget, Gtk.Editable):
             widget.cut_clipboard()
-        elif isinstance(widget, gtk.TextView):
+        elif isinstance(widget, Gtk.TextView):
             widget.emit("cut-clipboard")
 
     def on_menu_paste_activate(self, *extra):
         widget = self.widget.get_focus()
-        if isinstance(widget, gtk.Editable):
+        if isinstance(widget, Gtk.Editable):
             widget.paste_clipboard()
-        elif isinstance(widget, gtk.TextView):
+        elif isinstance(widget, Gtk.TextView):
             widget.emit("paste-clipboard")
 
     #
@@ -518,7 +519,7 @@ class MeldWindow(gnomeglade.Component):
         preferences.PreferencesDialog(self.widget, app.prefs)
 
     def on_action_fullscreen_toggled(self, widget):
-        is_full = self.widget.window.get_state() & gtk.gdk.WINDOW_STATE_FULLSCREEN
+        is_full = self.widget.get_window().get_state() & Gdk.WindowState.FULLSCREEN
         if widget.get_active() and not is_full:
             self.widget.fullscreen()
         elif is_full:
@@ -537,8 +538,7 @@ class MeldWindow(gnomeglade.Component):
         misc.open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
 
     def on_menu_about_activate(self, *extra):
-        gtk.about_dialog_set_url_hook(lambda dialog, uri: misc.open_uri(uri))
-        builder = gtk.Builder()
+        builder = Gtk.Builder()
         builder.set_translation_domain(conf.__package__)
         ui_file = gnomeglade.ui_file("meldapp.ui")
         builder.add_objects_from_file(ui_file, ["about"])
@@ -552,10 +552,10 @@ class MeldWindow(gnomeglade.Component):
     # Toolbar and menu items (misc)
     #
     def on_menu_edit_down_activate(self, *args):
-        self.current_doc().next_diff(gtk.gdk.SCROLL_DOWN)
+        self.current_doc().next_diff(Gdk.ScrollDirection.DOWN)
 
     def on_menu_edit_up_activate(self, *args):
-        self.current_doc().next_diff(gtk.gdk.SCROLL_UP)
+        self.current_doc().next_diff(Gdk.ScrollDirection.UP)
 
     def on_open_external(self, *args):
         self.current_doc().open_external()
@@ -586,7 +586,7 @@ class MeldWindow(gnomeglade.Component):
             self.ui.remove_action_group(self.tab_switch_actiongroup)
 
         self.tab_switch_merge_id = self.ui.new_merge_id()
-        self.tab_switch_actiongroup = gtk.ActionGroup("TabSwitchActions")
+        self.tab_switch_actiongroup = Gtk.ActionGroup("TabSwitchActions")
         self.ui.insert_action_group(self.tab_switch_actiongroup)
         group = None
         current_page = self.notebook.get_current_page()
@@ -595,10 +595,9 @@ class MeldWindow(gnomeglade.Component):
             label = self.notebook.get_menu_label_text(page) or ""
             name = "SwitchTab%d" % i
             tooltip = _("Switch to this tab")
-            action = gtk.RadioAction(name, label, tooltip, None, i)
-            action.set_group(group)
-            if group is None:
-                group = action
+            action = Gtk.RadioAction(name, label, tooltip, None, i)
+            action.join_group(group)
+            group = action
             action.set_active(current_page == i)
 
             def current_tab_changed_cb(action, current):
@@ -612,12 +611,12 @@ class MeldWindow(gnomeglade.Component):
             self.tab_switch_actiongroup.add_action_with_accel(action, accel)
             self.ui.add_ui(self.tab_switch_merge_id,
                            "/Menubar/TabMenu/TabPlaceholder",
-                           name, name, gtk.UI_MANAGER_MENUITEM, False)
+                           name, name, Gtk.UIManagerItemType.MENUITEM, False)
 
     def try_remove_page(self, page, appquit=0):
         "See if a page will allow itself to be removed"
         response = page.on_delete_event(appquit)
-        if response != gtk.RESPONSE_CANCEL:
+        if response != Gtk.ResponseType.CANCEL:
             if hasattr(page, 'scheduler'):
                 self.scheduler.remove_scheduler(page.scheduler)
             page_num = self.notebook.page_num(page.widget)
@@ -642,7 +641,7 @@ class MeldWindow(gnomeglade.Component):
 
     def on_file_changed(self, srcpage, filename):
         for c in self.notebook.get_children():
-            page = c.get_data("pyobject")
+            page = c.pyobject
             if page != srcpage:
                 page.on_file_changed(filename)
 
@@ -728,7 +727,7 @@ class MeldWindow(gnomeglade.Component):
                     else:
                         # exit at first non found directory + file
                         misc.run_dialog(_("Cannot compare a mixture of files and directories.\n"),
-                                        parent=self, buttonstype=gtk.BUTTONS_OK)
+                                        parent=self, buttonstype=Gtk.ButtonsType.OK)
                         return
                 else:
                     lastfilename = os.path.basename(elem)
@@ -798,7 +797,7 @@ class MeldWindow(gnomeglade.Component):
         "Get the current doc or a dummy object if there is no current"
         index = self.notebook.get_current_page()
         if index >= 0:
-            page = self.notebook.get_nth_page(index).get_data("pyobject")
+            page = self.notebook.get_nth_page(index).pyobject
             if isinstance(page, melddoc.MeldDoc):
                 return page
 

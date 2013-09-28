@@ -65,7 +65,7 @@ LIST = "list"
 
 
 class GConfPreferences(object):
-    """Persistent preferences object that handles preferences via gconf.
+    """Persistent preferences object that handles preferences via GConf.
 
     Example:
     import prefs
@@ -87,12 +87,12 @@ class GConfPreferences(object):
         rootkey : the root gconf key where the values will be stored
         initial : a dictionary of string to Value objects.
         """
-        self.__dict__["_gconf"] = gconf.client_get_default()
+        self.__dict__["_gconf"] = GConf.Client.get_default()
         self.__dict__["_listeners"] = []
         self.__dict__["_rootkey"] = rootkey
         self.__dict__["_prefs"] = initial
-        self._gconf.add_dir(rootkey, gconf.CLIENT_PRELOAD_NONE)
-        self._gconf.notify_add(rootkey, self._on_preference_changed)
+        self._gconf.add_dir(rootkey, GConf.ClientPreloadType.PRELOAD_NONE)
+        self._gconf.notify_add(rootkey, self._on_preference_changed, None)
         for key, value in self._prefs.items():
             gval = self._gconf.get_without_default("%s/%s" % (rootkey, key))
             if gval is not None:
@@ -116,7 +116,7 @@ class GConfPreferences(object):
             setfunc = getattr(self._gconf, "set_%s" % value.type)
             if value.type == LIST:
                 # We only use/support str lists at the moment
-                setfunc("%s/%s" % (self._rootkey, attr), gconf.VALUE_STRING,
+                setfunc("%s/%s" % (self._rootkey, attr), GConf.ValueType.STRING,
                         val)
             else:
                 setfunc("%s/%s" % (self._rootkey, attr), val)
@@ -276,9 +276,9 @@ skip_gconf = sys.platform == 'win32' or force_ini
 try:
     if skip_gconf:
         raise ImportError
-    import gconf
+    from gi.repository import GConf
     # Verify that gconf is actually working (bgo#666136)
-    client = gconf.client_get_default()
+    client = GConf.Client.get_default()
     key = '/apps/meld/gconf-test'
     client.set_int(key, os.getpid())
     client.unset(key)

@@ -27,9 +27,9 @@ import shutil
 import re
 import subprocess
 
-import gio
-import gobject
-import gtk
+from gi.repository import Gio
+from gi.repository import GObject
+from gi.repository import Gtk
 
 
 if os.name != "nt":
@@ -42,7 +42,7 @@ else:
         return rlist, wlist, xlist
 
 
-def error_dialog(primary, secondary, parent=None, messagetype=gtk.MESSAGE_ERROR):
+def error_dialog(primary, secondary, parent=None, messagetype=Gtk.MessageType.ERROR):
     """A common error dialog handler for Meld
 
     This should only ever be used as a last resort, and for errors that
@@ -55,28 +55,28 @@ def error_dialog(primary, secondary, parent=None, messagetype=gtk.MESSAGE_ERROR)
         from meld.meldapp import app
         parent = app.window.widget
 
-    dialog = gtk.MessageDialog(
+    dialog = Gtk.MessageDialog(
         parent=parent,
-        flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+        flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
         type=messagetype,
-        buttons=gtk.BUTTONS_CLOSE,
+        buttons=Gtk.ButtonsType.CLOSE,
         message_format=primary)
     dialog.format_secondary_markup(secondary)
     dialog.run()
     dialog.destroy()
 
 
-def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=gtk.BUTTONS_OK, extrabuttons=()):
+def run_dialog( text, parent=None, messagetype=Gtk.MessageType.WARNING, buttonstype=Gtk.ButtonsType.OK, extrabuttons=()):
     """Run a dialog with text 'text'.
        Extra buttons are passed as tuples of (button label, response id).
     """
-    escaped = gobject.markup_escape_text(text)
-    d = gtk.MessageDialog(None,
-        gtk.DIALOG_DESTROY_WITH_PARENT,
+    escaped = GObject.markup_escape_text(text)
+    d = Gtk.MessageDialog(None,
+        Gtk.DialogFlags.DESTROY_WITH_PARENT,
         messagetype,
         buttonstype,
         '<span weight="bold" size="larger">%s</span>' % escaped)
-    if parent and isinstance(parent, gtk.Window):
+    if parent and isinstance(parent, Gtk.Window):
         d.set_transient_for(parent.widget.get_toplevel())
     for b,rid in extrabuttons:
         d.add_button(b, rid)
@@ -93,8 +93,8 @@ def run_dialog( text, parent=None, messagetype=gtk.MESSAGE_WARNING, buttonstype=
 
 def open_uri(uri, timestamp=0):
     try:
-        gtk.show_uri(gtk.gdk.screen_get_default(), uri, timestamp)
-    except gio.Error:
+        Gtk.show_uri(Gdk.Screen.get_default(), uri, timestamp)
+    except Gio.Error:
         if uri.startswith("http://"):
             import webbrowser
             webbrowser.open_new_tab(uri)
@@ -104,33 +104,35 @@ def open_uri(uri, timestamp=0):
 
 # Taken from epiphany
 def position_menu_under_widget(menu, widget):
-    container = widget.get_ancestor(gtk.Container)
+    container = widget.get_ancestor(Gtk.Container)
 
-    widget_width, widget_height = widget.size_request()
-    menu_width, menu_height = menu.size_request()
+    widget_width = widget.get_allocation().width
+    menu_width = menu.get_allocation().width
+    menu_height = menu.get_allocation().height
 
     screen = menu.get_screen()
-    monitor_num = screen.get_monitor_at_window(widget.window)
+    monitor_num = screen.get_monitor_at_window(widget.get_window())
     if monitor_num < 0:
         monitor_num = 0
     monitor = screen.get_monitor_geometry(monitor_num)
 
-    x, y = widget.window.get_origin()
-    if widget.flags() & gtk.NO_WINDOW:
-        x += widget.allocation.x
-        y += widget.allocation.y
+    unused, x, y = widget.get_window().get_origin()
+    allocation = widget.get_allocation()
+    if not widget.get_has_window():
+        x += allocation.x
+        y += allocation.y
 
-    if container.get_direction() == gtk.TEXT_DIR_LTR:
-        x += widget.allocation.width - widget_width
+    if container.get_direction() == Gtk.TextDirection.LTR:
+        x += allocation.width - widget_width
     else:
         x += widget_width - menu_width
 
-    if (y + widget.allocation.height + menu_height) <= monitor.y + monitor.height:
-        y += widget.allocation.height
+    if (y + allocation.height + menu_height) <= monitor.y + monitor.height:
+        y += allocation.height
     elif (y - menu_height) >= monitor.y:
         y -= menu_height
-    elif monitor.y + monitor.height - (y + widget.allocation.height) > y:
-        y += widget.allocation.height
+    elif monitor.y + monitor.height - (y + allocation.height) > y:
+        y += allocation.height
     else:
         y -= menu_height
 
@@ -138,11 +140,11 @@ def position_menu_under_widget(menu, widget):
 
 def make_tool_button_widget(label):
     """Make a GtkToolButton label-widget suggestive of a menu dropdown"""
-    arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_NONE)
-    label = gtk.Label(label)
-    hbox = gtk.HBox(spacing=3)
-    hbox.pack_end(arrow)
-    hbox.pack_end(label)
+    arrow = Gtk.Arrow(Gtk.ArrowType.DOWN, Gtk.ShadowType.NONE)
+    label = Gtk.Label(label=label)
+    hbox = Gtk.HBox(spacing=3)
+    hbox.pack_end(arrow, True, True, 0)
+    hbox.pack_end(label, True, True, 0)
     hbox.show_all()
     return hbox
 

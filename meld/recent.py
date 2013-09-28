@@ -32,9 +32,9 @@ import tempfile
 
 from gettext import gettext as _
 
-import gio
+from gi.repository import Gio
 import glib
-import gtk
+from gi.repository import Gtk
 
 from . import misc
 
@@ -56,8 +56,8 @@ class RecentFiles(object):
     app_exec = "meld"
 
     def __init__(self, exec_path=None):
-        self.recent_manager = gtk.recent_manager_get_default()
-        self.recent_filter = gtk.RecentFilter()
+        self.recent_manager = Gtk.RecentManager.get_default()
+        self.recent_filter = Gtk.RecentFilter()
         self.recent_filter.add_application(self.app_name)
         self._stored_comparisons = []
         # Should be argv[0] to support roundtripping in uninstalled use
@@ -88,10 +88,10 @@ class RecentFiles(object):
         # the corresponding comparison file
         comparison_key = (comp_type, tuple(paths))
         if comparison_key in self._stored_comparisons:
-            gio_file = gio.File(uri=self._stored_comparisons[comparison_key])
+            gio_file = Gio.File.new_for_uri(self._stored_comparisons[comparison_key])
         else:
             recent_path = self._write_recent_file(comp_type, paths)
-            gio_file = gio.File(path=recent_path)
+            gio_file = Gio.File.new_for_path(recent_path)
 
         if len(paths) > 1:
             display_name = " : ".join(misc.shorten_names(*paths))
@@ -105,14 +105,13 @@ class RecentFiles(object):
         # FIXME: Should this be translatable? It's not actually used anywhere.
         description = "%s comparison\n%s" % (comp_type, ", ".join(paths))
 
-        recent_metadata = {
-            "mime_type": "application/x-meld-comparison",
-            "app_name": self.app_name,
-            "app_exec": "%s --comparison-file %%u" % self.app_exec,
-            "display_name": display_name.encode('utf8'),
-            "description": description.encode('utf8'),
-            "is_private": True,
-        }
+        recent_metadata = Gtk.RecentData()
+        recent_metadata.mime_type = "application/x-meld-comparison"
+        recent_metadata.app_name = self.app_name
+        recent_metadata.app_exec = "%s --comparison-file %%u" % self.app_exec
+        recent_metadata.display_name = display_name.encode('utf8')
+        recent_metadata.description = description.encode('utf8')
+        recent_metadata.is_private = True
         self.recent_manager.add_full(gio_file.get_uri(), recent_metadata)
 
     def read(self, uri):
@@ -121,7 +120,7 @@ class RecentFiles(object):
         Returns the comparison type, the paths involved and the comparison
         flags.
         """
-        gio_file = gio.File(uri=uri)
+        gio_file = Gio.File.new_for_uri(uri)
         path = gio_file.get_path()
         if not gio_file.query_exists() or not path:
             raise IOError("File does not exist")
@@ -145,7 +144,7 @@ class RecentFiles(object):
         return comp_type, paths, flags
 
     def _write_recent_file(self, comp_type, paths):
-        # TODO: Use GKeyFile instead, and return a gio.File. This is why we're
+        # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're
         # using ';' to join comparison paths.
         with tempfile.NamedTemporaryFile(prefix='recent-',
                                          suffix=self.recent_suffix,
@@ -171,7 +170,7 @@ class RecentFiles(object):
 
         # Remove any comparison files that are not listed by RecentManager
         item_uris = [item.get_uri() for item in meld_items]
-        item_paths = [gio.File(uri=uri).get_path() for uri in item_uris]
+        item_paths = [Gio.File.new_for_uri(uri).get_path() for uri in item_uris]
         stored = [p for p in os.listdir(self.recent_path)
                   if p.endswith(self.recent_suffix)]
         for path in stored:
@@ -193,20 +192,26 @@ class RecentFiles(object):
             self._stored_comparisons[comp[:2]] = uri
 
     def _filter_items(self, recent_filter, items):
-        getters = {gtk.RECENT_FILTER_URI: "uri",
-                   gtk.RECENT_FILTER_DISPLAY_NAME: "display_name",
-                   gtk.RECENT_FILTER_MIME_TYPE: "mime_type",
-                   gtk.RECENT_FILTER_APPLICATION: "applications",
-                   gtk.RECENT_FILTER_GROUP: "groups",
-                   gtk.RECENT_FILTER_AGE: "age"}
+        getters = {Gtk.RecentFilterFlags.URI: "uri",
+                   Gtk.RecentFilterFlags.DISPLAY_NAME: "display_name",
+                   Gtk.RecentFilterFlags.MIME_TYPE: "mime_type",
+                   Gtk.RecentFilterFlags.APPLICATION: "applications",
+                   Gtk.RecentFilterFlags.GROUP: "groups",
+                   Gtk.RecentFilterFlags.AGE: "age"}
         needed = recent_filter.get_needed()
         attrs = [v for k, v in getters.iteritems() if needed & k]
 
         filtered_items = []
         for i in items:
-            filter_info = {}
+            filter_data = {}
             for attr in attrs:
-                filter_info[attr] = getattr(i, "get_" + attr)()
+                filter_data[attr] = getattr(i, "get_" + attr)()
+            filter_info = Gtk.RecentFilterInfo()
+            for f, v in filter_data.iteritems():
+                # https://bugzilla.gnome.org/show_bug.cgi?id=695970
+                if isinstance(v, list):
+                    continue
+                setattr(filter_info, f, v)
             if recent_filter.filter(filter_info):
                 filtered_items.append(i)
         return filtered_items

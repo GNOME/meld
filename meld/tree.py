@@ -16,15 +16,16 @@
 ### USA.
 
 import os
-import gobject
-import gtk
-import pango
+from gi.repository import GObject
+from gi.repository import Gdk
+from gi.repository import Gtk
+from gi.repository import Pango
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
 
-COL_TYPES = (str, str, str, str, str, gtk.gdk.Color, pango.Style,
-             pango.Weight, bool)
+COL_TYPES = (str, str, str, str, str, Gdk.Color, Pango.Style,
+             Pango.Weight, bool)
 
 
 from meld.vc._vc import \
@@ -36,13 +37,13 @@ from meld.vc._vc import \
     CONFLICT_MERGED, CONFLICT_OTHER, CONFLICT_THIS
 
 
-class DiffTreeStore(gtk.TreeStore):
+class DiffTreeStore(Gtk.TreeStore):
 
     def __init__(self, ntree, types):
         full_types = []
         for col_type in (COL_TYPES + tuple(types)):
             full_types.extend([col_type] * ntree)
-        gtk.TreeStore.__init__(self, *full_types)
+        Gtk.TreeStore.__init__(self, *full_types)
         self.ntree = ntree
         self._setup_default_styles()
 
@@ -51,13 +52,13 @@ class DiffTreeStore(gtk.TreeStore):
         self._setup_default_styles(style)
 
     def _setup_default_styles(self, style=None):
-        roman, italic = pango.STYLE_NORMAL, pango.STYLE_ITALIC
-        normal, bold = pango.WEIGHT_NORMAL, pango.WEIGHT_BOLD
+        roman, italic = Pango.Style.NORMAL, Pango.Style.ITALIC
+        normal, bold = Pango.Weight.NORMAL, Pango.Weight.BOLD
 
         if style:
-            lookup = lambda color_id, default: style.lookup_color(color_id)
+            lookup = lambda color_id, default: style.lookup_color(color_id)[1]
         else:
-            lookup = lambda color_id, default: gtk.gdk.color_parse(default)
+            lookup = lambda color_id, default: Gdk.color_parse(default)
 
         unk_fg = lookup("unknown-text", "#888888")
         new_fg = lookup("insert-text", "#008800")
@@ -133,7 +134,7 @@ class DiffTreeStore(gtk.TreeStore):
 
     def set_path_state(self, it, pane, state, isdir=0):
         fullname = self.get_value(it, self.column_index(COL_PATH,pane))
-        name = gobject.markup_escape_text(os.path.basename(fullname))
+        name = GObject.markup_escape_text(os.path.basename(fullname))
         self.set_state(it, pane, state, name, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
@@ -143,7 +144,10 @@ class DiffTreeStore(gtk.TreeStore):
         self.set_value(it, col_idx(COL_STATE, pane), str(state))
         self.set_value(it, col_idx(COL_TEXT,  pane), label)
         self.set_value(it, col_idx(COL_ICON,  pane), icon)
-        self.set_value(it, col_idx(COL_TINT,  pane), tint)
+        # FIXME: This is horrible, but EmblemCellRenderer crashes
+        # if you try to give it a Gdk.Color property
+        tint_str = tint.to_string() if tint else "#fff"
+        self.set_value(it, col_idx(COL_TINT,  pane), tint_str)
 
         fg, style, weight, strike = self.text_attributes[state]
         self.set_value(it, col_idx(COL_FG, pane), fg)
@@ -183,7 +187,7 @@ class DiffTreeStore(gtk.TreeStore):
         while it:
             path = self.get_path(it)
             if path[-1]:
-                path = path[:-1] + (path[-1]-1,)
+                path = path[:-1] + [path[-1] - 1]
                 it = self.get_iter(path)
                 while 1:
                     nc = self.iter_n_children(it)

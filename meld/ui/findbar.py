@@ -16,7 +16,8 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import re
 
 from meld import misc
@@ -30,7 +31,8 @@ class FindBar(gnomeglade.Component):
         gnomeglade.Component.__init__(self, "findbar.ui", "findbar",
                                       ["arrow_left", "arrow_right"])
         self.textview = None
-        self.orig_base_color = self.find_entry.get_style().base[0]
+        context = self.find_entry.get_style_context()
+        self.orig_base_color = context.get_background_color(Gtk.StateFlags.NORMAL)
         self.arrow_left.show()
         self.arrow_right.show()
         parent.connect('set-focus-child', self.on_focus_child)
@@ -115,11 +117,9 @@ class FindBar(gnomeglade.Component):
             self.textview.scroll_to_mark(buf.get_insert(), 0.25)
 
     def on_find_entry_changed(self, entry):
-        entry.modify_base(gtk.STATE_NORMAL, self.orig_base_color)
+        entry.override_background_color(Gtk.StateType.NORMAL,
+                                        self.orig_base_color)
 
-        #
-        # find/replace buffer
-        #
     def _find_text(self, start_offset=1, backwards=False, wrap=True):
         match_case = self.match_case.get_active()
         whole_word = self.whole_word.get_active()
@@ -165,6 +165,11 @@ class FindBar(gnomeglade.Component):
                 return True
             else:
                 buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
-                self.find_entry.modify_base(gtk.STATE_NORMAL,
-                                            gtk.gdk.color_parse("#ffdddd"))
+                # FIXME: Even though docs suggest this should work, it does
+                # not. It just sets the selection colour on the text, without
+                # affecting the entry colour at all.
+                color = Gdk.RGBA()
+                color.parse("#ffdddd")
+                self.find_entry.override_background_color(
+                    Gtk.StateType.NORMAL, color)
                 self.wrap_box.set_visible(False)

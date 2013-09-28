@@ -22,8 +22,8 @@ import os
 import textwrap
 from gettext import gettext as _
 
-import gtk
-import pango
+from gi.repository import Gtk
+from gi.repository import Pango
 
 from meld import misc
 from . import gnomeglade
@@ -59,7 +59,7 @@ class CommitDialog(gnomeglade.Component):
         self.changedfiles.set_text("(in %s)\n%s" %
                                    (topdir, "\n".join(to_commit)))
 
-        fontdesc = pango.FontDescription(self.parent.prefs.get_current_font())
+        fontdesc = Pango.FontDescription(self.parent.prefs.get_current_font())
         self.textview.modify_font(fontdesc)
         commit_prefill = self.parent.vc.get_commit_message_prefill()
         if commit_prefill:
@@ -72,7 +72,7 @@ class CommitDialog(gnomeglade.Component):
         context = self.textview.get_pango_context()
         metrics = context.get_metrics(fontdesc, context.get_language())
         char_width = metrics.get_approximate_char_width()
-        self.textview.set_size_request(80 * pango.PIXELS(char_width), -1)
+        self.textview.set_size_request(80 * Pango.PIXELS(char_width), -1)
 
         self.widget.show_all()
 
@@ -85,7 +85,7 @@ class CommitDialog(gnomeglade.Component):
         self.previousentry.set_active(-1)
         self.textview.grab_focus()
         response = self.widget.run()
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             buf = self.textview.get_buffer()
             msg = buf.get_text(*buf.get_bounds(), include_hidden_chars=False)
             # This is a dependent option because of the margin column
@@ -119,6 +119,6 @@ class PushDialog(gnomeglade.Component):
         # In git, this is probably the parsed output of push --dry-run.
 
         response = self.widget.run()
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             self.parent.vc.push(self.parent._command)
         self.widget.destroy()

@@ -15,12 +15,12 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import gobject
-import gtk
-import pango
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Pango
 
 
-gtk.rc_parse_string(
+Gtk.rc_parse_string(
     """
     style "meld-statusbar-style" {
         GtkStatusbar::shadow-type = GTK_SHADOW_NONE
@@ -35,24 +35,24 @@ gtk.rc_parse_string(
     """)
 
 
-class MeldStatusBar(gtk.Statusbar):
+class MeldStatusBar(Gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
     def __init__(self):
-        gtk.Statusbar.__init__(self)
+        GObject.GObject.__init__(self)
         self.props.spacing = 6
 
         if hasattr(self, "get_message_area"):
-            # FIXME: added in 2.20, but not in the corresponding pygtk. Use this if available
+            # FIXME: added in 2.20, but not in the corresponding pyGtk. Use this if available
             hbox = self.get_message_area()
             label = hbox.get_children()[0]
         else:
             frame = self.get_children()[0]
-            self.set_child_packing(frame, False, False, 0, gtk.PACK_START)
+            self.set_child_packing(frame, False, False, 0, Gtk.PACK_START)
             child = frame.get_child()
             # Internal GTK widgetry changed when get_message_area was added.
-            if not isinstance(child, gtk.HBox):
-                hbox = gtk.HBox(False, 4)
+            if not isinstance(child, Gtk.HBox):
+                hbox = Gtk.HBox(False, 4)
                 child.reparent(hbox)
                 frame.add(hbox)
                 hbox.show()
@@ -61,26 +61,26 @@ class MeldStatusBar(gtk.Statusbar):
                 hbox = child
                 label = hbox.get_children()[0]
         hbox.props.spacing = 6
-        label.props.ellipsize = pango.ELLIPSIZE_NONE
+        label.props.ellipsize = Pango.EllipsizeMode.NONE
 
-        self.progress = gtk.ProgressBar()
+        self.progress = Gtk.ProgressBar()
         self.progress.props.pulse_step = 0.02
-        self.progress.props.ellipsize = pango.ELLIPSIZE_END
+        self.progress.props.ellipsize = Pango.EllipsizeMode.END
         self.progress.set_size_request(200, -1)
         progress_font = self.progress.get_style().font_desc
-        progress_font.set_size(progress_font.get_size() - 2 * pango.SCALE)
+        progress_font.set_size(progress_font.get_size() - 2 * Pango.SCALE)
         self.progress.modify_font(progress_font)
-        hbox.pack_start(self.progress, expand=False)
+        hbox.pack_start(self.progress, False, True, 0)
         self.progress.show()
 
         hbox.remove(label)
-        hbox.pack_start(label)
+        hbox.pack_start(label, True, True, 0)
 
-        alignment = gtk.Alignment(xalign=1.0)
-        self.info_box = gtk.HBox(False, 6)
+        alignment = Gtk.Alignment.new(xalign=1.0, yalign=0.5, xscale=1.0, yscale=1.0)
+        self.info_box = Gtk.HBox(False, 6)
         self.info_box.show()
         alignment.add(self.info_box)
-        self.pack_start(alignment, expand=True)
+        self.pack_start(alignment, True, True, 0)
         alignment.show()
 
         self.timeout_source = None
@@ -91,11 +91,11 @@ class MeldStatusBar(gtk.Statusbar):
             def pulse():
                 self.progress.pulse()
                 return True
-            self.timeout_source = gobject.timeout_add(50, pulse)
+            self.timeout_source = GObject.timeout_add(50, pulse)
 
     def stop_pulse(self):
         if self.timeout_source is not None:
-            gobject.source_remove(self.timeout_source)
+            GObject.source_remove(self.timeout_source)
             self.timeout_source = None
         self.progress.set_fraction(0)
         self.progress.hide()
@@ -107,4 +107,4 @@ class MeldStatusBar(gtk.Statusbar):
         for child in self.info_box.get_children():
             self.info_box.remove(child)
         for widget in widgets:
-            self.info_box.pack_end(widget)
+            self.info_box.pack_end(widget, True, True, 0)

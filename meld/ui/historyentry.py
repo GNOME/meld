@@ -20,9 +20,9 @@ import os
 import sys
 
 import glib
-import gobject
-import gtk
-import pango
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Pango
 
 # This file started off as a Python translation of:
 #  * gedit/gedit/gedit-history-entry.c
@@ -55,18 +55,18 @@ def _clamp_list_store(liststore, max_items):
         valid = liststore.remove(it)
 
 
-class HistoryCombo(gtk.ComboBox):
+class HistoryCombo(Gtk.ComboBox):
     __gtype_name__ = "HistoryCombo"
 
     __gproperties__ = {
         "history-id": (str, "History ID",
                        "Identifier associated with entry's history store",
                        None,
-                       gobject.PARAM_CONSTRUCT_ONLY | gobject.PARAM_READWRITE),
+                       GObject.PARAM_CONSTRUCT_ONLY | GObject.PARAM_READWRITE),
         "history-length": (int, "History length",
                            "Number of history items to display in the combo",
                            1, 20, HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT,
-                           gobject.PARAM_READWRITE),
+                           GObject.PARAM_READWRITE),
     }
 
     def __init__(self, **kwargs):
@@ -88,10 +88,10 @@ class HistoryCombo(gtk.ComboBox):
         self._history_id = None
         self._history_length = HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT
 
-        self.set_model(gtk.ListStore(str, str))
-        rentext = gtk.CellRendererText()
+        self.set_model(Gtk.ListStore(str, str))
+        rentext = Gtk.CellRendererText()
         rentext.props.width_chars = 60
-        rentext.props.ellipsize = pango.ELLIPSIZE_END
+        rentext.props.ellipsize = Pango.EllipsizeMode.END
         self.pack_start(rentext, True)
         self.set_attributes(rentext, text=0)
 

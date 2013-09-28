@@ -33,7 +33,7 @@ def on_undo_button_pressed():
     s.undo()
 """
 
-import gobject
+from gi.repository import GObject
 
 class GroupAction(object):
     """A group action combines several actions into one logical action.
@@ -50,20 +50,20 @@ class GroupAction(object):
         while self.seq.can_redo():
             self.seq.redo()
 
-class UndoSequence(gobject.GObject):
+class UndoSequence(GObject.GObject):
     """A manager class for operations which can be undone/redone.
     """
 
     __gsignals__ = {
-        'can-undo': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
-        'can-redo': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
-        'checkpointed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_OBJECT, gobject.TYPE_BOOLEAN,)),
+        'can-undo': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
+        'can-redo': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
+        'checkpointed': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN,)),
     }
 
     def __init__(self):
         """Create an empty UndoSequence.
         """
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.actions = []
         self.next_redo = 0
         self.checkpoints = {}

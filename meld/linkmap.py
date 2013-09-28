@@ -19,7 +19,8 @@
 
 import math
 
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 
 from . import diffutil
 
@@ -28,16 +29,9 @@ from . import diffutil
 MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
 
 
-class LinkMap(gtk.DrawingArea):
+class LinkMap(Gtk.DrawingArea):
 
     __gtype_name__ = "LinkMap"
-
-    __gsignals__ = {
-        'expose-event': 'override',
-        'scroll-event': 'override',
-        'button-press-event': 'override',
-        'button-release-event': 'override',
-    }
 
     def __init__(self):
         self.mode = MODE_REPLACE
@@ -46,14 +40,14 @@ class LinkMap(gtk.DrawingArea):
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
         self.views = [left_view, right_view]
-        if self.get_direction() == gtk.TEXT_DIR_RTL:
+        if self.get_direction() == Gtk.TextDirection.RTL:
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
         self.set_color_scheme((filediff.fill_colors, filediff.line_colors))
 
         self.line_height = filediff.pixels_per_line
-        icon_theme = gtk.icon_theme_get_default()
+        icon_theme = Gtk.IconTheme.get_default()
         load = lambda x: icon_theme.load_icon(x, self.line_height, 0)
         pixbuf_apply0 = load("button_apply0")
         pixbuf_apply1 = load("button_apply1")
@@ -92,14 +86,15 @@ class LinkMap(gtk.DrawingArea):
         # Shift, then releases the button... what do we do?
         self.mode = mode
         self.mouse_chunk = None
-        x, y, width, height = self.allocation
+        allocation = self.get_allocation()
         pixbuf_width = self.button_width
-        self.queue_draw_area(0, 0, pixbuf_width, height)
-        self.queue_draw_area(width - pixbuf_width, 0, pixbuf_width, height)
+        self.queue_draw_area(0, 0, pixbuf_width, allocation.height)
+        self.queue_draw_area(allocation.width - pixbuf_width, 0,
+                             pixbuf_width, allocation.height)
 
     def paint_pixbuf_at(self, context, pixbuf, x, y):
         context.translate(x, y)
-        context.set_source_pixbuf(pixbuf, 0, 0)
+        Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, 0)
         context.paint()
         context.identity_matrix()
 
@@ -155,26 +150,24 @@ class LinkMap(gtk.DrawingArea):
 
         return left_act, right_act
 
-    def do_expose_event(self, event):
+    def do_draw(self, context):
         if not self._setup:
             return
 
-        context = self.window.cairo_create()
-        context.rectangle(event.area.x, event.area.y, event.area.width,
-                          event.area.height)
-        context.clip()
         context.set_line_width(1.0)
+        allocation = self.get_allocation()
 
         pix_start = [t.get_visible_rect().y for t in self.views]
-        rel_offset = [t.allocation.y - self.allocation.y for t in self.views]
+        # FIXME: If the linkmap has a different vertical offset to its
+        # associated textviews, things will now be misaligned.
 
-        height = self.allocation.height
+        height = allocation.height
         visible = [self.views[0].get_line_num_for_y(pix_start[0]),
                    self.views[0].get_line_num_for_y(pix_start[0] + height),
                    self.views[1].get_line_num_for_y(pix_start[1]),
                    self.views[1].get_line_num_for_y(pix_start[1] + height)]
 
-        wtotal = self.allocation.width
+        wtotal = allocation.width
         # For bezier control points
         x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
         # Rounded rectangle corner radius for culled changes display
@@ -183,7 +176,7 @@ class LinkMap(gtk.DrawingArea):
 
         left, right = self.view_indices
         view_offset_line = lambda v, l: (self.views[v].get_y_for_line_num(l) -
-                                         pix_start[v] + rel_offset[v])
+                                         pix_start[v])
         for c in self.filediff.linediffer.pair_changes(left, right, visible):
             # f and t are short for "from" and "to"
             f0, f1 = [view_offset_line(0, l) for l in c[1:3]]
@@ -222,17 +215,17 @@ class LinkMap(gtk.DrawingArea):
                                  x_steps[0], f1 - 0.5)
                 context.close_path()
 
-            context.set_source_color(self.fill_colors[c[0]])
+            context.set_source_rgba(*self.fill_colors[c[0]])
             context.fill_preserve()
 
             chunk_idx = self.filediff.linediffer.locate_chunk(left, c[1])[0]
             if chunk_idx == self.filediff.cursor.chunk:
                 h = self.fill_colors['current-chunk-highlight']
                 context.set_source_rgba(
-                    h.red_float, h.green_float, h.blue_float, 0.5)
+                    h.red, h.green, h.blue, 0.5)
                 context.fill_preserve()
 
-            context.set_source_color(self.line_colors[c[0]])
+            context.set_source_rgba(*self.line_colors[c[0]])
             context.stroke()
 
             if culled:
@@ -248,7 +241,7 @@ class LinkMap(gtk.DrawingArea):
                 self.paint_pixbuf_at(context, pix1, x, t0)
 
         # allow for scrollbar at end of textview
-        mid = int(0.5 * self.views[0].allocation.height) + 0.5
+        mid = int(0.5 * self.views[0].get_allocation().height) + 0.5
         context.set_source_rgba(0., 0., 0., 0.5)
         context.move_to(.35 * wtotal, mid)
         context.line_to(.65 * wtotal, mid)
@@ -261,9 +254,9 @@ class LinkMap(gtk.DrawingArea):
         src_idx, dst_idx = side, 1 if side == 0 else 0
         src, dst = self.view_indices[src_idx], self.view_indices[dst_idx]
 
+        allocation = self.get_allocation()
         vis_offset = [t.get_visible_rect().y for t in self.views]
-        rel_offset = [t.allocation.y - self.allocation.y for t in self.views]
-        height = self.allocation.height
+        height = allocation.height
 
         bounds = []
         for v in (self.views[src_idx], self.views[dst_idx]):
@@ -271,8 +264,10 @@ class LinkMap(gtk.DrawingArea):
             bounds.append(v.get_line_num_for_y(visible.y))
             bounds.append(v.get_line_num_for_y(visible.y + visible.height))
 
+        # FIXME: As above, with relative offset gone we'd better be at the same
+        # y position as our textview.
         view_offset_line = lambda v, l: (self.views[v].get_y_for_line_num(l) -
-                                         vis_offset[v] + rel_offset[v])
+                                         vis_offset[v])
         for c in self.filediff.linediffer.pair_changes(src, dst, bounds):
             f0, f1 = [view_offset_line(src_idx, l) for l in c[1:3]]
             t0, t1 = [view_offset_line(dst_idx, l) for l in c[3:5]]
@@ -288,7 +283,11 @@ class LinkMap(gtk.DrawingArea):
                 action_change = diffutil.reverse_chunk(c) if dst < src else c
                 actions = self._classify_change_actions(action_change)
                 if actions[side] is not None:
-                    rect = gtk.gdk.Rectangle(x, f0, pix_width, pix_height)
+                    rect = Gdk.Rectangle()
+                    rect.x = x
+                    rect.y = f0
+                    rect.width = pix_width
+                    rect.height = pix_height
                     self.mouse_chunk = ((src, dst), rect, c, actions[side])
                 break
 
@@ -302,7 +301,7 @@ class LinkMap(gtk.DrawingArea):
                 pix_height *= 2
 
             # Quick reject if not in the area used to draw our buttons
-            right_gutter_x = self.allocation.width - pix_width
+            right_gutter_x = self.get_allocation().width - pix_width
             if event.x >= pix_width and event.x <= right_gutter_x:
                 return True
 

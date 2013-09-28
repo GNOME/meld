@@ -20,8 +20,8 @@ import difflib
 from gettext import gettext as _
 import os
 
-import gtk
-import pango
+from gi.repository import Gtk
+from gi.repository import Pango
 
 from .ui import gnomeglade
 
@@ -45,7 +45,7 @@ class PatchDialog(gnomeglade.Component):
         srcviewer.set_language(buf, lang)
         srcviewer.set_highlight_syntax(buf, True)
 
-        fontdesc = pango.FontDescription(self.prefs.get_current_font())
+        fontdesc = Pango.FontDescription(self.prefs.get_current_font())
         self.textview.modify_font(fontdesc)
         self.textview.set_editable(False)
 
@@ -60,7 +60,7 @@ class PatchDialog(gnomeglade.Component):
 
     def on_preference_changed(self, key, value):
         if key == "use_custom_font" or key == "custom_font":
-            fontdesc = pango.FontDescription(self.prefs.get_current_font())
+            fontdesc = Pango.FontDescription(self.prefs.get_current_font())
             self.textview.modify_font(fontdesc)
 
     def on_buffer_selection_changed(self, radiobutton):
@@ -111,7 +111,7 @@ class PatchDialog(gnomeglade.Component):
 
             # Copy patch to clipboard
             if result == 1:
-                clip = gtk.clipboard_get()
+                clip = Gtk.clipboard_get()
                 clip.set_text(txt)
                 clip.store()
                 break

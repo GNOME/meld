@@ -19,8 +19,8 @@
 '''Abstraction from sourceview version API incompatibilities
 '''
 
-import gio
-import gtk
+from gi.repository import Gio
+from gi.repository import Gtk
 
 
 class _srcviewer(object):
@@ -77,12 +77,12 @@ class _gtksourceview2(_srcviewer):
         raise NotImplementedError
 
     def overrides(self):
-        self.GtkTextView = self.gsv.View
-        self.GtkTextBuffer = self.gsv.Buffer
-        self.spaces_flag = self.gsv.DRAW_SPACES_ALL
+        self.GtkTextView = self.GtkSource.View
+        self.GtkTextBuffer = self.GtkSource.Buffer
+        self.spaces_flag = self.GtkSource.DrawSpacesFlags.ALL
 
     def GtkLanguageManager(self):
-        return self.gsv.LanguageManager()
+        return self.GtkSource.LanguageManager()
 
     def set_tab_width(self, tab, tab_size):
         return tab.set_tab_width(tab_size)
@@ -91,17 +91,17 @@ class _gtksourceview2(_srcviewer):
         return buf.set_highlight_syntax(enabled)
 
     def get_language_from_file(self, filename):
-        f = gio.File(filename)
+        f = Gio.File(filename)
         try:
-            info = f.query_info(gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
-        except gio.Error:
+            info = f.query_info(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
+        except Gio.Error:
             return None
         content_type = info.get_content_type()
         return self.get_language_manager().guess_language(filename,
                                                           content_type)
 
     def get_language_from_mime_type(self, mime_type):
-        content_type = gio.content_type_from_mime_type(mime_type)
+        content_type = Gio.content_type_from_mime_type(mime_type)
         return self.get_language_manager().guess_language(None, content_type)
 
     def set_language(self, buf, lang):
@@ -111,12 +111,12 @@ class _gtksourceview2(_srcviewer):
 class gtksourceview24(_gtksourceview2):
 
     def version_check(self):
-        if self.gsv.pygtksourceview2_version[1] < 4:
+        if self.GtkSource.pygtksourceview2_version[1] < 4:
             raise ImportError
 
     def overrides(self):
-        _gtksourceview2.overrides(self)
-        viewClass = self.gsv.View
+        _GtkSource.overrides(self)
+        viewClass = self.GtkSource.View
 
         class SourceView(viewClass):
 
@@ -125,10 +125,10 @@ class gtksourceview24(_gtksourceview2):
             }
 
             def do_key_press_event(self, event):
-                if event.keyval in (gtk.keysyms.KP_Up, gtk.keysyms.KP_Down,
-                                    gtk.keysyms.Up, gtk.keysyms.Down) and \
-                   (event.state & gtk.gdk.MOD1_MASK) != 0 and \
-                   (event.state & gtk.gdk.SHIFT_MASK) == 0:
+                if event.keyval in (Gdk.KEY_KP_Up, Gdk.KEY_KP_Down,
+                                    Gdk.KEY_Up, Gdk.KEY_Down) and \
+                   (event.get_state() & Gdk.ModifierType.MOD1_MASK) != 0 and \
+                   (event.get_state() & Gdk.ModifierType.SHIFT_MASK) == 0:
                     return True
                 return viewClass.do_key_press_event(self, event)
 
@@ -138,19 +138,19 @@ class gtksourceview24(_gtksourceview2):
 class gtksourceview210(_gtksourceview2):
 
     def version_check(self):
-        if self.gsv.pygtksourceview2_version[1] < 10:
+        if self.GtkSource.pygtksourceview2_version[1] < 10:
             raise ImportError
 
     def overrides(self):
-        _gtksourceview2.overrides(self)
-        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.Up,
-                                 gtk.gdk.MOD1_MASK)
-        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.KP_Up,
-                                 gtk.gdk.MOD1_MASK)
-        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.Down,
-                                 gtk.gdk.MOD1_MASK)
-        gtk.binding_entry_remove(self.GtkTextView, gtk.keysyms.KP_Down,
-                                 gtk.gdk.MOD1_MASK)
+        _GtkSource.overrides(self)
+        Gtk.binding_entry_remove(self.GtkTextView, Gdk.KEY_Up,
+                                 Gdk.ModifierType.MOD1_MASK)
+        Gtk.binding_entry_remove(self.GtkTextView, Gdk.KEY_KP_Up,
+                                 Gdk.ModifierType.MOD1_MASK)
+        Gtk.binding_entry_remove(self.GtkTextView, Gdk.KEY_Down,
+                                 Gdk.ModifierType.MOD1_MASK)
+        Gtk.binding_entry_remove(self.GtkTextView, Gdk.KEY_KP_Down,
+                                 Gdk.ModifierType.MOD1_MASK)
 
 
 class nullsourceview(_srcviewer):
@@ -164,31 +164,31 @@ class nullsourceview(_srcviewer):
     get_language_from_mime_type = lambda *args: None
 
     def overrides(self):
-        import gobject
-        import gtk
+        from gi.repository import GObject
+        from gi.repository import Gtk
 
-        class NullTextView(gtk.TextView):
+        class NullTextView(Gtk.TextView):
             set_tab_width = lambda *args: None
             set_show_line_numbers = lambda *args: None
             set_insert_spaces_instead_of_tabs = lambda *args: None
             set_draw_spaces = lambda *args: None
             set_right_margin_position = lambda *args: None
             set_show_right_margin = lambda *args: None
-        gobject.type_register(NullTextView)
+        GObject.type_register(NullTextView)
 
         self.GtkTextView = NullTextView
-        self.GtkTextBuffer = gtk.TextBuffer
+        self.GtkTextBuffer = Gtk.TextBuffer
 
     def version_check(self):
         pass
 
 
 def _get_srcviewer():
-    for srcv in (gtksourceview210, gtksourceview24):
-        try:
-            return srcv()
-        except ImportError:
-            pass
+    # for srcv in (gtksourceview210, gtksourceview24):
+    #     try:
+    #         return srcv()
+    #     except ImportError:
+    #         pass
     return nullsourceview()
 
 

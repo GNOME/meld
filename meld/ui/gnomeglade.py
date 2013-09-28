@@ -18,7 +18,7 @@
 
 import os
 
-import gtk
+from gi.repository import Gtk
 
 import meld.conf
 
@@ -31,26 +31,26 @@ def ui_file(filename):
 
 
 class Component(object):
-    """Base class for all gtk.Builder created objects
+    """Base class for all Gtk.Builder created objects
 
     This class loads the UI file, autoconnects signals, and makes
     widgets available as attributes. The toplevel widget is stored as
     'self.widget'.
 
     The python object can be accessed from the widget itself via
-    widget.get_data("pygobject"), which is sadly sometimes necessary.
+    widget.pygobject, which is sadly sometimes necessary.
     """
 
     def __init__(self, filename, root, extra=None):
         """Load the widgets from the node 'root' in file 'filename'"""
-        self.builder = gtk.Builder()
+        self.builder = Gtk.Builder()
         self.builder.set_translation_domain(meld.conf.__package__)
         objects = [root] + extra if extra else [root]
         filename = ui_file(filename)
         self.builder.add_objects_from_file(filename, objects)
         self.builder.connect_signals(self)
         self.widget = getattr(self, root)
-        self.widget.set_data("pyobject", self)
+        self.widget.pyobject = self
 
     def __getattr__(self, key):
         """Allow UI builder widgets to be accessed as self.widgetname"""

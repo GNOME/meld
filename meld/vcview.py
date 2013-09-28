@@ -26,9 +26,10 @@ import stat
 import sys
 from gettext import gettext as _
 
-import gio
-import gtk
-import pango
+from gi.repository import GLib
+from gi.repository import Gio
+from gi.repository import Gtk
+from gi.repository import Pango
 
 from . import melddoc
 from . import misc
@@ -85,7 +86,7 @@ class ConsoleStream(object):
         self.textview = textview
         buf = textview.get_buffer()
         self.command_tag = buf.create_tag("command")
-        self.command_tag.props.weight = pango.WEIGHT_BOLD
+        self.command_tag.props.weight = Pango.Weight.BOLD
         self.output_tag = buf.create_tag("output")
         self.error_tag = buf.create_tag("error")
         # FIXME: Need to add this to the gtkrc?
@@ -163,37 +164,38 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.widget.connect("style-set", self.model.on_style_set)
         self.treeview.set_model(self.model)
         selection = self.treeview.get_selection()
-        selection.set_mode(gtk.SELECTION_MULTIPLE)
+        selection.set_mode(Gtk.SelectionMode.MULTIPLE)
         selection.connect("changed", self.on_treeview_selection_changed)
         self.treeview.set_headers_visible(1)
-        self.treeview.set_search_equal_func(self.model.treeview_search_cb)
+        self.treeview.set_search_equal_func(
+            self.model.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
 
         self.column_name_map = {}
-        column = gtk.TreeViewColumn(_("Name"))
+        col_index = self.model.column_index
+        column = Gtk.TreeViewColumn(_("Name"))
         column.set_resizable(True)
         renicon = emblemcellrenderer.EmblemCellRenderer()
-        rentext = gtk.CellRendererText()
-        column.pack_start(renicon, expand=0)
-        column.pack_start(rentext, expand=1)
-        col_index = self.model.column_index
+        column.pack_start(renicon, False)
         column.set_attributes(renicon,
                               icon_name=col_index(tree.COL_ICON, 0),
                               icon_tint=col_index(tree.COL_TINT, 0))
+        rentext = Gtk.CellRendererText()
+        column.pack_start(rentext, True)
         column.set_attributes(rentext,
-                    text=col_index(tree.COL_TEXT, 0),
-                    foreground_gdk=col_index(tree.COL_FG, 0),
-                    style=col_index(tree.COL_STYLE, 0),
-                    weight=col_index(tree.COL_WEIGHT, 0),
-                    strikethrough=col_index(tree.COL_STRIKE, 0))
+                              text=col_index(tree.COL_TEXT, 0),
+                              foreground_gdk=col_index(tree.COL_FG, 0),
+                              style=col_index(tree.COL_STYLE, 0),
+                              weight=col_index(tree.COL_WEIGHT, 0),
+                              strikethrough=col_index(tree.COL_STRIKE, 0))
         column_index = self.treeview.append_column(column) - 1
         self.column_name_map[vc.DATA_NAME] = column_index
 
         def addCol(name, num, data_name=None):
-            column = gtk.TreeViewColumn(name)
+            column = Gtk.TreeViewColumn(name)
             column.set_resizable(True)
-            rentext = gtk.CellRendererText()
-            column.pack_start(rentext, expand=0)
+            rentext = Gtk.CellRendererText()
+            column.pack_start(rentext, True)
             column.set_attributes(rentext,
                                   markup=self.model.column_index(num, 0))
             column_index = self.treeview.append_column(column) - 1
@@ -221,7 +223,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.vc = None
         self.valid_vc_actions = tuple()
 
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         self.combobox_vcs.pack_start(cell, False)
         self.combobox_vcs.add_attribute(cell, 'text', 0)
         self.combobox_vcs.add_attribute(cell, 'sensitive', 2)
@@ -339,7 +341,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # If the user is just diffing a file (ie not a directory), there's no
         # need to scan the rest of the repository
         if os.path.isdir(self.vc.location):
-            root = self.model.get_iter_root()
+            root = self.model.get_iter_first()
 
             try:
                 col = self.model.column_index(COL_OPTIONS, 0)
@@ -410,7 +412,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     todo.append((self.model.get_path(child), e.path))
 
             if flattened:
-                self.treeview.expand_row((0,), 0)
+                self.treeview.expand_row(Gtk.TreePath((0,)), False)
             else:
                 if not entries:
                     self.model.add_empty(it, _("(Empty)"))
@@ -425,7 +427,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_delete_event(self, appquit=0):
         self.scheduler.remove_all_tasks()
-        return gtk.RESPONSE_OK
+        return Gtk.ResponseType.OK
 
     def on_row_activated(self, treeview, path, tvc):
         it = self.model.get_iter(path)
@@ -433,7 +435,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if self.treeview.row_expanded(path):
                 self.treeview.collapse_row(path)
             else:
-                self.treeview.expand_row(path, 0)
+                self.treeview.expand_row(path, False)
         else:
             path = self.model.value_path(it, 0)
             self.run_diff(path)
@@ -476,8 +478,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.emit("create-diff", diffs, kwargs)
 
     def on_treeview_popup_menu(self, treeview):
-        time = gtk.get_current_event_time()
-        self.popup_menu.popup(None, None, None, 0, time)
+        time = Gtk.get_current_event_time()
+        self.popup_menu.popup(None, None, None, None, 0, time)
         return True
 
     def on_button_press_event(self, treeview, event):
@@ -493,7 +495,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 selection.select_path(path[0])
                 treeview.set_cursor(path[0])
 
-            self.popup_menu.popup(None, None, None, event.button, event.time)
+            self.popup_menu.popup(None, None, None, None, event.button,
+                                  event.time)
             return True
         return False
 
@@ -631,20 +634,20 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         selected = self._get_selected_files()
         if any(os.path.isdir(p) for p in selected):
             # TODO: Improve and reuse this dialog for the non-VC delete action
-            dialog = gtk.MessageDialog(
+            dialog = Gtk.MessageDialog(
                 parent=self.widget.get_toplevel(),
-                flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                type=gtk.MESSAGE_WARNING,
+                flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                type=Gtk.MessageType.WARNING,
                 message_format=_("Remove folder and all its files?"))
             dialog.format_secondary_text(
                 _("This will remove all selected files and folders, and all "
                   "files within any selected folders, from version control."))
 
-            dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-            dialog.add_button(_("_Remove"), gtk.RESPONSE_OK)
+            dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+            dialog.add_button(_("_Remove"), Gtk.ResponseType.OK)
             response = dialog.run()
             dialog.destroy()
-            if response != gtk.RESPONSE_OK:
+            if response != Gtk.ResponseType.OK:
                 return
 
         try:
@@ -668,9 +671,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         files = self._get_selected_files()
         for name in files:
             try:
-                gfile = gio.File(name)
-                gfile.trash()
-            except gio.Error as e:
+                gfile = Gio.File.new_for_path(name)
+                gfile.trash(None)
+            except GLib.GError as e:
                 misc.error_dialog(_("Error removing %s") % name, str(e))
         workdir = _commonprefix(files)
         self.refresh_partial(workdir)
@@ -684,7 +687,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._open_files(self._get_selected_files())
 
     def refresh(self):
-        self.set_location(self.model.value_path(self.model.get_iter_root(), 0))
+        self.set_location(self.model.value_path(self.model.get_iter_first(), 0))
 
     def refresh_partial(self, where):
         if not self.actiongroup.get_action("VcFlatten").get_active():
@@ -723,12 +726,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             files = self.vc.lookup_files([], [(os.path.basename(path), path)])[1]
             for e in files:
                 if e.path == path:
-                    prefixlen = 1 + len( self.model.value_path( self.model.get_iter_root(), 0 ) )
+                    prefixlen = 1 + len( self.model.value_path( self.model.get_iter_first(), 0 ) )
                     self._update_item_state( it, e, e.parent[prefixlen:])
                     return
 
     def find_iter_by_name(self, name):
-        it = self.model.get_iter_root()
+        it = self.model.get_iter_first()
         path = self.model.value_path(it, 0)
         while it:
             if name == path:
@@ -767,10 +770,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_consoleview_populate_popup(self, textview, menu):
         buf = textview.get_buffer()
         clear_cb = lambda *args: buf.delete(*buf.get_bounds())
-        clear_action = gtk.ImageMenuItem(gtk.STOCK_CLEAR)
+        clear_action = Gtk.ImageMenuItem(Gtk.STOCK_CLEAR)
         clear_action.connect("activate", clear_cb)
         menu.insert(clear_action, 0)
-        menu.insert(gtk.SeparatorMenuItem(), 1)
+        menu.insert(Gtk.SeparatorMenuItem(), 1)
         menu.show_all()
 
     def on_treeview_cursor_changed(self, *args):
@@ -813,7 +816,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.current_path = cursor_path
 
     def next_diff(self, direction):
-        if direction == gtk.gdk.SCROLL_UP:
+        if direction == Gdk.ScrollDirection.UP:
             path = self.prev_path
         else:
             path = self.next_path

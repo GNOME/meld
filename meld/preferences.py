@@ -22,7 +22,7 @@ import string
 
 from gettext import gettext as _
 
-import gtk
+from gi.repository import Gtk
 
 from . import filters
 from . import misc
@@ -173,12 +173,12 @@ class PreferencesDialog(gnomeglade.Component):
                 w.set_tooltip_text(no_sourceview_text)
         # TODO: This doesn't restore the state of character wrapping when word
         # wrapping is disabled, but this is hard with our existing gconf keys
-        if self.prefs.edit_wrap_lines != gtk.WRAP_NONE:
-            if self.prefs.edit_wrap_lines == gtk.WRAP_CHAR:
+        if self.prefs.edit_wrap_lines != Gtk.WrapMode.NONE:
+            if self.prefs.edit_wrap_lines == Gtk.WrapMode.CHAR:
                 self.checkbutton_split_words.set_active(False)
             self.checkbutton_wrap_text.set_active(True)
 
-        size_group = gtk.SizeGroup(gtk.SIZE_GROUP_HORIZONTAL)
+        size_group = Gtk.SizeGroup(Gtk.SizeGroupMode.HORIZONTAL)
         size_group.add_widget(self.label1)
         size_group.add_widget(self.label2)
         size_group.add_widget(self.label16)
@@ -191,32 +191,32 @@ class PreferencesDialog(gnomeglade.Component):
         # file filters
         self.filefilter = FilterList(self.prefs, "filters",
                                      filters.FilterEntry.SHELL)
-        self.file_filters_tab.pack_start(self.filefilter.widget)
+        self.file_filters_tab.pack_start(self.filefilter.widget, True, True, 0)
         self.checkbutton_ignore_symlinks.set_active( self.prefs.ignore_symlinks)
 
         # text filters
         self.textfilter = FilterList(self.prefs, "regexes",
                                      filters.FilterEntry.REGEX)
-        self.text_filters_tab.pack_start(self.textfilter.widget)
+        self.text_filters_tab.pack_start(self.textfilter.widget, True, True, 0)
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
 
         columnlist = ColumnList(self.prefs, "dirdiff_columns")
-        self.column_list_vbox.pack_start(columnlist.widget)
+        self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
 
         self.checkbutton_shallow_compare.set_active(
                 self.prefs.dirdiff_shallow_comparison)
 
         self.combo_timestamp.lock = True
-        model = gtk.ListStore(str, int)
+        model = Gtk.ListStore(str, int)
         active_idx = 0
         for i, entry in enumerate(TIMESTAMP_RESOLUTION_PRESETS):
             model.append(entry)
             if entry[1] == self.prefs.dirdiff_time_resolution_ns:
                 active_idx = i
         self.combo_timestamp.set_model(model)
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         self.combo_timestamp.pack_start(cell, False)
         self.combo_timestamp.add_attribute(cell, 'text', 0)
         self.combo_timestamp.set_active(active_idx)
@@ -414,10 +414,10 @@ class MeldPreferences(prefs.Preferences):
             style = self._gconf.get_string(
                       '/desktop/gnome/interface/toolbar_style') or "both-horiz"
         toolbar_styles = {
-            "both": gtk.TOOLBAR_BOTH, "text": gtk.TOOLBAR_TEXT,
-            "icon": gtk.TOOLBAR_ICONS, "icons": gtk.TOOLBAR_ICONS,
-            "both_horiz": gtk.TOOLBAR_BOTH_HORIZ,
-            "both-horiz": gtk.TOOLBAR_BOTH_HORIZ
+            "both": Gtk.ToolbarStyle.BOTH, "text": Gtk.ToolbarStyle.TEXT,
+            "icon": Gtk.ToolbarStyle.ICONS, "icons": Gtk.ToolbarStyle.ICONS,
+            "both_horiz": Gtk.ToolbarStyle.BOTH_HORIZ,
+            "both-horiz": Gtk.ToolbarStyle.BOTH_HORIZ
         }
         return toolbar_styles[style]
 
