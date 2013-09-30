@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-14 21:58+0000\n"
-"PO-Revision-Date: 2013-09-16 13:24+0200\n"
+"POT-Creation-Date: 2013-09-27 22:04+0000\n"
+"PO-Revision-Date: 2013-09-30 11:58+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -53,6 +53,86 @@ msgstr "Compare y combine sus archivos"
 msgid "Meld comparison description"
 msgstr "Descripción de la comparación de Meld"
 
+#: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
+msgid "_Compare"
+msgstr "_Comparar"
+
+#: ../data/ui/dirdiff.ui.h:2 ../data/ui/vcview.ui.h:2
+msgid "Compare selected files"
+msgstr "Comparar los archivos seleccionados"
+
+#: ../data/ui/dirdiff.ui.h:3
+msgid "Copy _Left"
+msgstr "Copiar a _la izquierda"
+
+#: ../data/ui/dirdiff.ui.h:4
+msgid "Copy to left"
+msgstr "Copiar a la izquierda"
+
+#: ../data/ui/dirdiff.ui.h:5
+msgid "Copy _Right"
+msgstr "Copiar a la de_recha"
+
+#: ../data/ui/dirdiff.ui.h:6
+msgid "Copy to right"
+msgstr "Copiar a la derecha"
+
+#: ../data/ui/dirdiff.ui.h:7
+msgid "Delete selected"
+msgstr "Eliminar seleccionados"
+
+#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1366
+msgid "Hide"
+msgstr "Ocultar"
+
+#: ../data/ui/dirdiff.ui.h:9
+msgid "Hide selected"
+msgstr "Ocultar lo seleccionado"
+
+#: ../data/ui/dirdiff.ui.h:10
+msgid "Ignore Filename Case"
+msgstr "Ignorar capitalización en nombres de archivos"
+
+#: ../data/ui/dirdiff.ui.h:11
+msgid ""
+"Consider differently-cased filenames that are otherwise-identical to be the "
+"same"
+msgstr ""
+"Considerar casos diferentes los nombres de archivo que de otro modo serían "
+"idénticos"
+
+#: ../data/ui/dirdiff.ui.h:12
+msgid "Same"
+msgstr "Iguales"
+
+#: ../data/ui/dirdiff.ui.h:13
+msgid "Show identical"
+msgstr "Mostrar idénticos"
+
+#: ../data/ui/dirdiff.ui.h:14
+msgid "New"
+msgstr "Nuevo"
+
+#: ../data/ui/dirdiff.ui.h:15
+msgid "Show new"
+msgstr "Mostrar nuevos"
+
+#: ../data/ui/dirdiff.ui.h:16
+msgid "Modified"
+msgstr "Modificado"
+
+#: ../data/ui/dirdiff.ui.h:17
+msgid "Show modified"
+msgstr "Mostrar modificados"
+
+#: ../data/ui/dirdiff.ui.h:18
+msgid "Filters"
+msgstr "Filtros"
+
+#: ../data/ui/dirdiff.ui.h:19
+msgid "Set active filters"
+msgstr "Establecer filtros activos"
+
 #: ../data/ui/EditableList.ui.h:1
 msgid "Editable List"
 msgstr "Lista editable"
@@ -65,11 +145,12 @@ msgstr "Activar"
 msgid "Column Name"
 msgstr "Nombre de la columna"
 
-#: ../data/ui/EditableList.ui.h:4 ../meld/vcview.py:172
+#: ../data/ui/EditableList.ui.h:4 ../data/ui/vcview.ui.h:9
 msgid "_Add"
 msgstr "_Añadir"
 
-#: ../data/ui/EditableList.ui.h:5 ../meld/vcview.py:175 ../meld/vcview.py:715
+#: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
+#: ../meld/vcview.py:644
 msgid "_Remove"
 msgstr "_Eliminar"
 
@@ -90,8 +171,8 @@ msgid "Move _Down"
 msgstr "_Bajar"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:343
-#: ../meld/vcview.py:231
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:324
+#: ../meld/vcview.py:174
 msgid "Name"
 msgstr "Nombre"
 
@@ -146,7 +227,7 @@ msgstr ""
 "archivo y realizar los cambios, pero estos cambios se deben guardar en un "
 "archivo nuevo."
 
-#: ../data/ui/filediff.ui.h:10 ../meld/filediff.py:295
+#: ../data/ui/filediff.ui.h:10 ../meld/filediff.py:299
 msgid "Lock scrolling of all panes"
 msgstr "Bloquear el desplazamiento de todos los paneles"
 
@@ -191,9 +272,6 @@ msgid "Wrapped"
 msgstr "Ajustada"
 
 #: ../data/ui/meldapp.ui.h:2
-#| msgid ""
-#| "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-#| "Copyright &#xA9; 2009-2012 Kai Willadsen"
 msgid ""
 "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
 "Copyright &#xA9; 2009-2013 Kai Willadsen"
@@ -496,170 +574,182 @@ msgstr "_Limpiar comparación"
 msgid "C_ompare"
 msgstr "_Comparar"
 
-#: ../data/ui/vcview.ui.h:1
+#: ../data/ui/vcview.ui.h:3
+msgid "Co_mmit..."
+msgstr "E_fectuar…"
+
+#: ../data/ui/vcview.ui.h:4
+msgid "Commit changes to version control"
+msgstr "Efectuar cambios en el control de versiones"
+
+#: ../data/ui/vcview.ui.h:5
+msgid "_Update"
+msgstr "_Actualizar"
+
+#: ../data/ui/vcview.ui.h:6
+msgid "Update working copy from version control"
+msgstr "Actualizar la copia de trabajo desde el control de versiones"
+
+#: ../data/ui/vcview.ui.h:7
+msgid "_Push"
+msgstr "_Empujar"
+
+#: ../data/ui/vcview.ui.h:8
+msgid "Push local changes to remote"
+msgstr "Empujar los cambios locales al equipo remoto"
+
+#: ../data/ui/vcview.ui.h:10
+msgid "Add to version control"
+msgstr "Añadir al control de versiones"
+
+#: ../data/ui/vcview.ui.h:12
+msgid "Remove from version control"
+msgstr "Quitar del control de versiones"
+
+#: ../data/ui/vcview.ui.h:13
+msgid "Mar_k as Resolved"
+msgstr "Mar_car como resuelto"
+
+#: ../data/ui/vcview.ui.h:14
+msgid "Mark as resolved in version control"
+msgstr "Marcar como resuelto en el control de versiones"
+
+#: ../data/ui/vcview.ui.h:15
+msgid "Re_vert"
+msgstr "Re_vertir"
+
+#: ../data/ui/vcview.ui.h:16
+msgid "Revert working copy to original state"
+msgstr "Revertir la copia de trabajo al estado original"
+
+#: ../data/ui/vcview.ui.h:17
+msgid "Delete from working copy"
+msgstr "Eliminar de la copia de trabajo"
+
+#: ../data/ui/vcview.ui.h:18
+msgid "_Flatten"
+msgstr "_Aplanar"
+
+#: ../data/ui/vcview.ui.h:19
+msgid "Flatten directories"
+msgstr "Aplanar carpetas"
+
+#: ../data/ui/vcview.ui.h:20
+msgid "_Modified"
+msgstr "_Modificados"
+
+#: ../data/ui/vcview.ui.h:21
+msgid "Show modified files"
+msgstr "Mostrar los archivos modificados"
+
+#: ../data/ui/vcview.ui.h:22
+msgid "_Normal"
+msgstr "_Normal"
+
+#: ../data/ui/vcview.ui.h:23
+msgid "Show normal files"
+msgstr "Mostrar los archivos normales"
+
+#: ../data/ui/vcview.ui.h:24
+msgid "Un_versioned"
+msgstr "Sin _versión"
+
+#: ../data/ui/vcview.ui.h:25
+msgid "Show unversioned files"
+msgstr "Mostrar archivos sin versión"
+
+#: ../data/ui/vcview.ui.h:26
+msgid "Ignored"
+msgstr "Ignorado"
+
+#: ../data/ui/vcview.ui.h:27
+msgid "Show ignored files"
+msgstr "Mostrar archivos ignorados"
+
+#: ../data/ui/vcview.ui.h:28
 msgid "Commit"
 msgstr "Efectuar"
 
-#: ../data/ui/vcview.ui.h:2
+#: ../data/ui/vcview.ui.h:29
 msgid "Commit Files"
 msgstr "Efectuar a los archivos"
 
-#: ../data/ui/vcview.ui.h:3
+#: ../data/ui/vcview.ui.h:30
 msgid "Log Message"
 msgstr "Mensaje de registro"
 
-#: ../data/ui/vcview.ui.h:4
+#: ../data/ui/vcview.ui.h:31
 msgid "Previous logs:"
 msgstr "Registros anteriores:"
 
-#: ../data/ui/vcview.ui.h:5
+#: ../data/ui/vcview.ui.h:32
 msgid "Co_mmit"
 msgstr "E_fectuar"
 
-#: ../data/ui/vcview.ui.h:6
+#: ../data/ui/vcview.ui.h:33
 msgid "Push local commits to remote?"
 msgstr "¿Empujar los cambios locales al equipo remoto?"
 
-#: ../data/ui/vcview.ui.h:7
+#: ../data/ui/vcview.ui.h:34
 msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
 "Los cambios que empujar los determina su sistema de control de versiones."
 
-#: ../data/ui/vcview.ui.h:8
+#: ../data/ui/vcview.ui.h:35
 msgid "_Push commits"
 msgstr "_Empujar cambios"
 
-#: ../meld/dirdiff.py:269 ../meld/vcview.py:160
-msgid "_Compare"
-msgstr "_Comparar"
-
-#: ../meld/dirdiff.py:269
-msgid "Compare selected"
-msgstr "Comparar lo seleccionado"
-
-#: ../meld/dirdiff.py:270
-msgid "Copy _Left"
-msgstr "Copiar a _la izquierda"
-
-#: ../meld/dirdiff.py:270
-msgid "Copy to left"
-msgstr "Copiar a la izquierda"
-
-#: ../meld/dirdiff.py:271
-msgid "Copy _Right"
-msgstr "Copiar a la de_recha"
-
-#: ../meld/dirdiff.py:271
-msgid "Copy to right"
-msgstr "Copiar a la derecha"
-
-#: ../meld/dirdiff.py:272
-msgid "Delete selected"
-msgstr "Eliminar seleccionados"
-
-#: ../meld/dirdiff.py:273 ../meld/filediff.py:1368 ../meld/filediff.py:1403
-msgid "Hide"
-msgstr "Ocultar"
-
-#: ../meld/dirdiff.py:273
-msgid "Hide selected"
-msgstr "Ocultar lo seleccionado"
-
-#: ../meld/dirdiff.py:277
-msgid "Ignore Filename Case"
-msgstr "Ignorar capitalización en nombres de archivos"
-
-#: ../meld/dirdiff.py:277
-msgid ""
-"Consider differently-cased filenames that are otherwise-identical to be the "
-"same"
-msgstr ""
-"Considerar casos diferentes los nombres de archivo que de otro modo serían "
-"idénticos"
-
-#: ../meld/dirdiff.py:278
-msgid "Same"
-msgstr "Iguales"
-
-#: ../meld/dirdiff.py:278
-msgid "Show identical"
-msgstr "Mostrar idénticos"
-
-#: ../meld/dirdiff.py:279
-msgid "New"
-msgstr "Nuevo"
-
-#: ../meld/dirdiff.py:279
-msgid "Show new"
-msgstr "Mostrar nuevos"
-
-#: ../meld/dirdiff.py:280
-msgid "Modified"
-msgstr "Modificado"
-
-#: ../meld/dirdiff.py:280
-msgid "Show modified"
-msgstr "Mostrar modificados"
-
-#: ../meld/dirdiff.py:282
-msgid "Filters"
-msgstr "Filtros"
-
-#: ../meld/dirdiff.py:282
-msgid "Set active filters"
-msgstr "Establecer filtros activos"
-
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:361
+#: ../meld/dirdiff.py:342
 msgid "Size"
 msgstr "Tamaño"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:369
+#: ../meld/dirdiff.py:350
 msgid "Modification time"
 msgstr "Hora de modificación"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:377
+#: ../meld/dirdiff.py:358
 msgid "Permissions"
 msgstr "Permisos"
 
-#: ../meld/dirdiff.py:511
+#: ../meld/dirdiff.py:492
 #, python-format
 msgid "Hide %s"
 msgstr "Ocultar %s"
 
-#: ../meld/dirdiff.py:637 ../meld/dirdiff.py:656
+#: ../meld/dirdiff.py:618 ../meld/dirdiff.py:637
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Buscando %s"
 
-#: ../meld/dirdiff.py:756
+#: ../meld/dirdiff.py:737
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Hecho"
 
-#: ../meld/dirdiff.py:762
+#: ../meld/dirdiff.py:743
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Ocurrieron varios errores al escanear esta carpeta"
 
-#: ../meld/dirdiff.py:763
+#: ../meld/dirdiff.py:744
 msgid "Files with invalid encodings found"
 msgstr "Se encontraron archivos con codificaciones no válidas"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:765
+#: ../meld/dirdiff.py:746
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Algunos archivos tienen una codificación incorrecta. Los nombres son como "
 "esto:"
 
-#: ../meld/dirdiff.py:767
+#: ../meld/dirdiff.py:748
 msgid "Files hidden by case insensitive comparison"
 msgstr "Archivos ocultos por una comparación no sensible a capitalización"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:769
+#: ../meld/dirdiff.py:750
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -668,17 +758,17 @@ msgstr ""
 "sensible a capitalización. Los siguientes archivos de esta carpeta archivos "
 "están ocultos:"
 
-#: ../meld/dirdiff.py:780
+#: ../meld/dirdiff.py:761
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "«%s» oculto por «%s»"
 
-#: ../meld/dirdiff.py:805 ../meld/filediff.py:1096 ../meld/filediff.py:1372
-#: ../meld/filediff.py:1405
+#: ../meld/dirdiff.py:786 ../meld/filediff.py:1095 ../meld/filediff.py:1368
+#: ../meld/filediff.py:1398 ../meld/filediff.py:1400
 msgid "Hi_de"
 msgstr "_Ocultar"
 
-#: ../meld/dirdiff.py:837
+#: ../meld/dirdiff.py:817
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -687,264 +777,264 @@ msgstr ""
 "«%s» ya existe.\n"
 "¿Quiere sobreescribirlo?"
 
-#: ../meld/dirdiff.py:844
-#, python-format
-msgid ""
-"Error copying '%s' to '%s'\n"
-"\n"
-"%s."
-msgstr ""
-"Error al copiar «%s» a «%s»\n"
-"\n"
-"%s."
+#: ../meld/dirdiff.py:825
+#| msgid "Error reading saved comparison file"
+msgid "Error copying file"
+msgstr "Error al copiar el archivo"
 
-#: ../meld/dirdiff.py:862 ../meld/vcview.py:745
+#: ../meld/dirdiff.py:826
 #, python-format
+#| msgid ""
+#| "Error copying '%s' to '%s'\n"
+#| "\n"
+#| "%s."
 msgid ""
-"'%s' is a directory.\n"
-"Remove recursively?"
+"Couldn't copy %s\n"
+"to %s.\n"
+"\n"
+"%s"
 msgstr ""
-"«%s» es una carpeta.\n"
-"¿Eliminarla recursivamente?"
+"No se pudo copiar %s\n"
+"a %s.\n"
+"\n"
+"%s"
 
-#: ../meld/dirdiff.py:869 ../meld/vcview.py:750
+#: ../meld/dirdiff.py:849
 #, python-format
-msgid ""
-"Error removing %s\n"
-"\n"
-"%s."
-msgstr ""
-"Error al eliminar %s\n"
-"\n"
-"%s."
+#| msgid ""
+#| "Error removing %s\n"
+#| "\n"
+#| "%s."
+msgid "Error deleting %s"
+msgstr "Error al eliminar %s"
 
-#: ../meld/dirdiff.py:1000
+#: ../meld/dirdiff.py:980
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i segundo"
 msgstr[1] "%i segundos"
 
-#: ../meld/dirdiff.py:1001
+#: ../meld/dirdiff.py:981
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i minuto"
 msgstr[1] "%i minutos"
 
-#: ../meld/dirdiff.py:1002
+#: ../meld/dirdiff.py:982
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i hora"
 msgstr[1] "%i horas"
 
-#: ../meld/dirdiff.py:1003
+#: ../meld/dirdiff.py:983
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i día"
 msgstr[1] "%i días"
 
-#: ../meld/dirdiff.py:1004
+#: ../meld/dirdiff.py:984
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i semana"
 msgstr[1] "%i semanas"
 
-#: ../meld/dirdiff.py:1005
+#: ../meld/dirdiff.py:985
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i mes"
 msgstr[1] "%i meses"
 
-#: ../meld/dirdiff.py:1006
+#: ../meld/dirdiff.py:986
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
 msgstr[0] "%i año"
 msgstr[1] "%i años"
 
-#: ../meld/filediff.py:223
+#: ../meld/filediff.py:227
 msgid "Format as Patch..."
 msgstr "Formatear el parche como…"
 
-#: ../meld/filediff.py:224
+#: ../meld/filediff.py:228
 msgid "Create a patch using differences between files"
 msgstr "Crear un parche usando las diferencias entre los archivos"
 
-#: ../meld/filediff.py:226
+#: ../meld/filediff.py:230
 msgid "Save A_ll"
 msgstr "Guardar _todo"
 
-#: ../meld/filediff.py:227
+#: ../meld/filediff.py:231
 msgid "Save all files in the current comparison"
 msgstr "Guardar todos los archivos en la comparación actual"
 
-#: ../meld/filediff.py:230
+#: ../meld/filediff.py:234
 msgid "Revert files to their saved versions"
 msgstr "Revertir los archivos a sus versiones guardadas"
 
-#: ../meld/filediff.py:232
+#: ../meld/filediff.py:236
 msgid "Add Synchronization Point"
 msgstr "Añadir punto de sincronización"
 
-#: ../meld/filediff.py:233
+#: ../meld/filediff.py:237
 msgid "Add a manual point for synchronization of changes between files"
 msgstr "Añadir un punto manual para sincronización de cambios entre archivos"
 
-#: ../meld/filediff.py:236
+#: ../meld/filediff.py:240
 msgid "Clear Synchronization Points"
 msgstr "Limpiar puntos de sincronización"
 
-#: ../meld/filediff.py:237
+#: ../meld/filediff.py:241
 msgid "Clear manual change sychronization points"
 msgstr "Limpiar los cambios manuales de los puntos de sincronización"
 
-#: ../meld/filediff.py:239
+#: ../meld/filediff.py:243
 msgid "Previous Conflict"
 msgstr "Conflicto anterior"
 
-#: ../meld/filediff.py:240
+#: ../meld/filediff.py:244
 msgid "Go to the previous conflict"
 msgstr "Ir al conflicto anterior"
 
-#: ../meld/filediff.py:242
+#: ../meld/filediff.py:246
 msgid "Next Conflict"
 msgstr "Siguiente conflicto"
 
-#: ../meld/filediff.py:243
+#: ../meld/filediff.py:247
 msgid "Go to the next conflict"
 msgstr "Ir al siguiente conflicto"
 
-#: ../meld/filediff.py:245
+#: ../meld/filediff.py:249
 msgid "Push to Left"
 msgstr "Pasar a la izquierda"
 
-#: ../meld/filediff.py:246
+#: ../meld/filediff.py:250
 msgid "Push current change to the left"
 msgstr "Pasar el cambio actual a la izquierda"
 
-#: ../meld/filediff.py:249
+#: ../meld/filediff.py:253
 msgid "Push to Right"
 msgstr "Pasar a la derecha"
 
-#: ../meld/filediff.py:250
+#: ../meld/filediff.py:254
 msgid "Push current change to the right"
 msgstr "Pasar el cambio actual a la derecha"
 
-#: ../meld/filediff.py:254
+#: ../meld/filediff.py:258
 msgid "Pull from Left"
 msgstr "Traer desde la izquierda"
 
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:259
 msgid "Pull change from the left"
 msgstr "Traer el cambio actual desde la izquierda"
 
-#: ../meld/filediff.py:258
+#: ../meld/filediff.py:262
 msgid "Pull from Right"
 msgstr "Traer desde la derecha"
 
-#: ../meld/filediff.py:259
+#: ../meld/filediff.py:263
 msgid "Pull change from the right"
 msgstr "Traer el cambio actual desde la derecha"
 
-#: ../meld/filediff.py:261
+#: ../meld/filediff.py:265
 msgid "Copy Above Left"
 msgstr "Copiar por encima de la izquierda"
 
-#: ../meld/filediff.py:262
+#: ../meld/filediff.py:266
 msgid "Copy change above the left chunk"
 msgstr "Copiar el cambio por encima de la parte izquierda"
 
-#: ../meld/filediff.py:264
+#: ../meld/filediff.py:268
 msgid "Copy Below Left"
 msgstr "Copiar por debajo de la izquierda"
 
-#: ../meld/filediff.py:265
+#: ../meld/filediff.py:269
 msgid "Copy change below the left chunk"
 msgstr "Copiar el cambio por debajo de la parte izquierda"
 
-#: ../meld/filediff.py:267
+#: ../meld/filediff.py:271
 msgid "Copy Above Right"
 msgstr "Copiar por encima de la derecha"
 
-#: ../meld/filediff.py:268
+#: ../meld/filediff.py:272
 msgid "Copy change above the right chunk"
 msgstr "Copiar el cambio por encima de la parte derecha"
 
-#: ../meld/filediff.py:270
+#: ../meld/filediff.py:274
 msgid "Copy Below Right"
 msgstr "Copiar por debajo de la derecha"
 
-#: ../meld/filediff.py:271
+#: ../meld/filediff.py:275
 msgid "Copy change below the right chunk"
 msgstr "Copiar el cambio por debajo de la parte derecha"
 
-#: ../meld/filediff.py:273
+#: ../meld/filediff.py:277
 msgid "Delete"
 msgstr "Eliminar"
 
-#: ../meld/filediff.py:274
+#: ../meld/filediff.py:278
 msgid "Delete change"
 msgstr "Eliminar el cambio"
 
-#: ../meld/filediff.py:276
+#: ../meld/filediff.py:280
 msgid "Merge All from Left"
 msgstr "Mezclar desde la izquierda"
 
-#: ../meld/filediff.py:277
+#: ../meld/filediff.py:281
 msgid "Merge all non-conflicting changes from the left"
 msgstr "Mezclar todos los cambios sin conflicto de la izquierda"
 
-#: ../meld/filediff.py:279
+#: ../meld/filediff.py:283
 msgid "Merge All from Right"
 msgstr "Mezclar desde la derecha"
 
-#: ../meld/filediff.py:280
+#: ../meld/filediff.py:284
 msgid "Merge all non-conflicting changes from the right"
 msgstr "Mezclar todos los cambios sin conflicto de la derecha"
 
-#: ../meld/filediff.py:282
+#: ../meld/filediff.py:286
 msgid "Merge All"
 msgstr "Mezclar todo"
 
-#: ../meld/filediff.py:283
+#: ../meld/filediff.py:287
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr ""
 "Mezclar todos los cambios sin conflicto de los paneles de la izquierda y "
 "derecha"
 
-#: ../meld/filediff.py:287
+#: ../meld/filediff.py:291
 msgid "Cycle Through Documents"
 msgstr "Cambiar entre documentos"
 
-#: ../meld/filediff.py:288
+#: ../meld/filediff.py:292
 msgid "Move keyboard focus to the next document in this comparison"
 msgstr "Mover el foco del teclado al siguiente documento de esta comparación"
 
-#: ../meld/filediff.py:294
+#: ../meld/filediff.py:298
 msgid "Lock Scrolling"
 msgstr "Bloquear el desplazamiento"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:417
+#: ../meld/filediff.py:420
 msgid "INS"
 msgstr "INS"
 
-#: ../meld/filediff.py:417
+#: ../meld/filediff.py:420
 msgid "OVR"
 msgstr "SOB"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:419
+#: ../meld/filediff.py:422
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Lín %i, Col %i"
 
-#: ../meld/filediff.py:754
+#: ../meld/filediff.py:757
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -953,42 +1043,42 @@ msgstr ""
 "El filtro «%s» cambió el número de líneas en el archivo. La comparación será "
 "incorrecta. Vea el manual del usuario para más detalles."
 
-#: ../meld/filediff.py:1084
+#: ../meld/filediff.py:1083
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Establezca el número de paneles"
 
-#: ../meld/filediff.py:1090
+#: ../meld/filediff.py:1089
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Abriendo archivos"
 
-#: ../meld/filediff.py:1114 ../meld/filediff.py:1124 ../meld/filediff.py:1137
-#: ../meld/filediff.py:1143
+#: ../meld/filediff.py:1112 ../meld/filediff.py:1122 ../meld/filediff.py:1135
+#: ../meld/filediff.py:1141
 msgid "Could not read file"
 msgstr "No se pudo leer el archivo"
 
-#: ../meld/filediff.py:1115
+#: ../meld/filediff.py:1113
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Leyendo archivos"
 
-#: ../meld/filediff.py:1125
+#: ../meld/filediff.py:1123
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s parece ser un archivo binario."
 
-#: ../meld/filediff.py:1138
+#: ../meld/filediff.py:1136
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s no está en codificación: %s"
 
-#: ../meld/filediff.py:1172
+#: ../meld/filediff.py:1170
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Calculando las diferencias"
 
-#: ../meld/filediff.py:1359
+#: ../meld/filediff.py:1357
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -996,19 +1086,19 @@ msgstr ""
 "Se están usando filtros de texto, y pueden estar ocultando diferencias entre "
 "archivos. ¿Quiere comprar los archivos no filtrados?"
 
-#: ../meld/filediff.py:1365
+#: ../meld/filediff.py:1363
 msgid "Files are identical"
 msgstr "Los campos son idénticos"
 
-#: ../meld/filediff.py:1375
+#: ../meld/filediff.py:1371
 msgid "Show without filters"
 msgstr "Mostrar sin filtros"
 
-#: ../meld/filediff.py:1397
+#: ../meld/filediff.py:1393
 msgid "Change highlighting incomplete"
 msgstr "Cambiar el resaltado incompleto"
 
-#: ../meld/filediff.py:1398
+#: ../meld/filediff.py:1394
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1017,15 +1107,15 @@ msgstr ""
 "forzar a Meld para que resalte los cambios largos, aunque esto haga que sea "
 "más lento."
 
-#: ../meld/filediff.py:1407
+#: ../meld/filediff.py:1402
 msgid "Keep highlighting"
 msgstr "Mantener el resaltado"
 
-#: ../meld/filediff.py:1409
+#: ../meld/filediff.py:1404
 msgid "_Keep highlighting"
 msgstr "_Mantener el resaltado"
 
-#: ../meld/filediff.py:1541
+#: ../meld/filediff.py:1536
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -1034,7 +1124,7 @@ msgstr ""
 "«%s» ya existe.\n"
 "¿Quiere sobreescribirlo?"
 
-#: ../meld/filediff.py:1554
+#: ../meld/filediff.py:1549
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -1045,19 +1135,19 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1565
+#: ../meld/filediff.py:1560
 msgid "Save Left Pane As"
 msgstr "Guardar panel izquierdo como"
 
-#: ../meld/filediff.py:1567
+#: ../meld/filediff.py:1562
 msgid "Save Middle Pane As"
 msgstr "Guardar el panel central como"
 
-#: ../meld/filediff.py:1569
+#: ../meld/filediff.py:1564
 msgid "Save Right Pane As"
 msgstr "Guardar el panel derecho como"
 
-#: ../meld/filediff.py:1590
+#: ../meld/filediff.py:1585
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -1068,7 +1158,7 @@ msgstr ""
 "\n"
 "¿Qué formato quiere usar?"
 
-#: ../meld/filediff.py:1606
+#: ../meld/filediff.py:1601
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -1077,11 +1167,11 @@ msgstr ""
 "«%s» contiene caracteres no codificables con «%s»\n"
 "¿Quiere guardarlos como UTF-8?"
 
-#: ../meld/filediff.py:1974
+#: ../meld/filediff.py:1969
 msgid "Live comparison updating disabled"
 msgstr "Actualización de la comparación en directo desactivada"
 
-#: ../meld/filediff.py:1975
+#: ../meld/filediff.py:1970
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1445,7 +1535,7 @@ msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "No se puede comparar una mezcla de archivos y carpetas.\n"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:172
+#: ../meld/misc.py:189
 msgid "[None]"
 msgstr "[Ninguno]"
 
@@ -1525,174 +1615,78 @@ msgstr "Comentario de script\t0\t#.*"
 msgid "Version control:"
 msgstr "Control de versión:"
 
-#: ../meld/vcview.py:161
-msgid "Compare selected files"
-msgstr "Comparar los archivos seleccionados"
-
-#: ../meld/vcview.py:163
-msgid "Co_mmit..."
-msgstr "E_fectuar…"
-
-#: ../meld/vcview.py:164
-msgid "Commit changes to version control"
-msgstr "Efectuar cambios en el control de versiones"
-
-#: ../meld/vcview.py:166
-msgid "_Update"
-msgstr "_Actualizar"
-
-#: ../meld/vcview.py:167
-msgid "Update working copy from version control"
-msgstr "Actualizar la copia de trabajo desde el control de versiones"
-
-#: ../meld/vcview.py:169
-msgid "_Push"
-msgstr "_Empujar"
-
-#: ../meld/vcview.py:170
-msgid "Push local changes to remote"
-msgstr "Empujar los cambios locales al equipo remoto"
-
-#: ../meld/vcview.py:173
-msgid "Add to version control"
-msgstr "Añadir al control de versiones"
-
-#: ../meld/vcview.py:176
-msgid "Remove from version control"
-msgstr "Quitar del control de versiones"
-
-#: ../meld/vcview.py:178
-msgid "Mar_k as Resolved"
-msgstr "Mar_car como resuelto"
-
-#: ../meld/vcview.py:179
-msgid "Mark as resolved in version control"
-msgstr "Marcar como resuelto en el control de versiones"
-
-#: ../meld/vcview.py:181
-msgid "Re_vert"
-msgstr "Re_vertir"
-
-#: ../meld/vcview.py:182
-msgid "Revert working copy to original state"
-msgstr "Revertir la copia de trabajo al estado original"
-
-#: ../meld/vcview.py:185
-msgid "Delete from working copy"
-msgstr "Eliminar de la copia de trabajo"
-
-#: ../meld/vcview.py:190
-msgid "_Flatten"
-msgstr "_Aplanar"
-
-#: ../meld/vcview.py:191
-msgid "Flatten directories"
-msgstr "Aplanar carpetas"
-
-#: ../meld/vcview.py:193
-msgid "_Modified"
-msgstr "_Modificados"
-
-#: ../meld/vcview.py:194
-msgid "Show modified files"
-msgstr "Mostrar los archivos modificados"
-
-#: ../meld/vcview.py:196
-msgid "_Normal"
-msgstr "_Normal"
-
-#: ../meld/vcview.py:197
-msgid "Show normal files"
-msgstr "Mostrar los archivos normales"
-
-#: ../meld/vcview.py:199
-msgid "Un_versioned"
-msgstr "Sin _versión"
-
-#: ../meld/vcview.py:200
-msgid "Show unversioned files"
-msgstr "Mostrar archivos sin versión"
-
-#: ../meld/vcview.py:202
-msgid "Ignored"
-msgstr "Ignorado"
-
-#: ../meld/vcview.py:203
-msgid "Show ignored files"
-msgstr "Mostrar archivos ignorados"
-
-#: ../meld/vcview.py:262 ../meld/vcview.py:432
+#: ../meld/vcview.py:205 ../meld/vcview.py:363
 msgid "Location"
 msgstr "Lugar"
 
-#: ../meld/vcview.py:263
+#: ../meld/vcview.py:206
 msgid "Status"
 msgstr "Estado"
 
-#: ../meld/vcview.py:264
+#: ../meld/vcview.py:207
 msgid "Revision"
 msgstr "Revisión"
 
-#: ../meld/vcview.py:265
+#: ../meld/vcview.py:208
 msgid "Options"
 msgstr "Opciones"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:342
+#: ../meld/vcview.py:273
 #, python-format
 msgid "%s not installed"
 msgstr "%s no está instalado"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:346
+#: ../meld/vcview.py:277
 msgid "Invalid repository"
 msgstr "Repositorio no válido"
 
-#: ../meld/vcview.py:355
+#: ../meld/vcview.py:286
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: ../meld/vcview.py:357 ../meld/vcview.py:365
+#: ../meld/vcview.py:288 ../meld/vcview.py:296
 msgid "None"
 msgstr "Ninguno"
 
-#: ../meld/vcview.py:376
+#: ../meld/vcview.py:307
 msgid "No valid version control system found in this folder"
 msgstr ""
 "No se ha encontrado un sistema de control de versiones válido en esta carpeta"
 
-#: ../meld/vcview.py:378
+#: ../meld/vcview.py:309
 msgid "Only one version control system found in this folder"
 msgstr ""
 "Sólo se ha encontrado un sistema de control de versiones en esta carpeta"
 
-#: ../meld/vcview.py:380
+#: ../meld/vcview.py:311
 msgid "Choose which version control system to use"
 msgstr "Elegir qué sistema de control de versiones usar"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:432
+#: ../meld/vcview.py:363
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:446 ../meld/vcview.py:454
+#: ../meld/vcview.py:377 ../meld/vcview.py:385
 #, python-format
 msgid "Scanning %s"
 msgstr "Analizando %s"
 
-#: ../meld/vcview.py:487
+#: ../meld/vcview.py:418
 msgid "(Empty)"
 msgstr "(Vacío)"
 
-#: ../meld/vcview.py:709
+#: ../meld/vcview.py:638
 msgid "Remove folder and all its files?"
 msgstr "¿Quitar la carpeta y todos sus archivos?"
 
-#: ../meld/vcview.py:711
+#: ../meld/vcview.py:640
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -1700,14 +1694,21 @@ msgstr ""
 "Esto quitará todos los archivos y carpetas seleccionadas, y todos los "
 "archivos de las carpetas seleccionadas, del control de versiones."
 
-#: ../meld/ui/findbar.py:150
+#: ../meld/vcview.py:674
 #, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
-msgstr ""
-"Error en la expresión regular\n"
-"«%s»"
+#| msgid ""
+#| "Error removing %s\n"
+#| "\n"
+#| "%s."
+msgid "Error removing %s"
+msgstr "Error al quitar %s"
+
+#: ../meld/ui/findbar.py:143
+#| msgid ""
+#| "Regular expression error\n"
+#| "'%s'"
+msgid "Regular expression error"
+msgstr "Error en la expresión regular"
 
 #: ../meld/ui/historyentry.py:381
 msgid "_Browse..."
@@ -1766,44 +1767,52 @@ msgstr ""
 "Ignorado:Sin versión:::Error::Añadidos nuevos:Modificado:Conflicto:Eliminado:"
 "Faltante:No presente"
 
-#: ../meld/vc/cvs.py:231
-#, python-format
-msgid ""
-"Error converting to a regular expression\n"
-"The pattern was '%s'\n"
-"The error was '%s'"
-msgstr ""
-"Error al convertir a una expresión regular\n"
-"El patrón era «%s»\n"
-"El error fue «%s»"
-
 #. Translators: First %s is replaced by translated "%d unpushed
 #. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:120
+#: ../meld/vc/git.py:126
 #, python-format
 msgid "%s in %s"
 msgstr "%s en %s"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:121 ../meld/vc/git.py:128
+#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d cambio sin empujar"
 msgstr[1] "%d cambios sin empujar"
 
-#: ../meld/vc/git.py:123
+#: ../meld/vc/git.py:129
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d rama"
 msgstr[1] "%d ramas"
 
-#: ../meld/vc/git.py:333
+#: ../meld/vc/git.py:341
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Modo cambiado de %s a %s"
+
+#~ msgid "Compare selected"
+#~ msgstr "Comparar lo seleccionado"
+
+#~ msgid ""
+#~ "'%s' is a directory.\n"
+#~ "Remove recursively?"
+#~ msgstr ""
+#~ "«%s» es una carpeta.\n"
+#~ "¿Eliminarla recursivamente?"
+
+#~ msgid ""
+#~ "Error converting to a regular expression\n"
+#~ "The pattern was '%s'\n"
+#~ "The error was '%s'"
+#~ msgstr ""
+#~ "Error al convertir a una expresión regular\n"
+#~ "El patrón era «%s»\n"
+#~ "El error fue «%s»"
 
 #~ msgid "[%s] Fetching differences"
 #~ msgstr "[%s] Calculando diferencias"
