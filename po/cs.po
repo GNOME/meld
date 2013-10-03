@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-14 21:58+0000\n"
-"PO-Revision-Date: 2013-09-16 19:08+0200\n"
+"POT-Creation-Date: 2013-09-27 22:04+0000\n"
+"PO-Revision-Date: 2013-10-03 07:28+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -51,6 +51,86 @@ msgstr "Porovnává a slučuje soubory"
 msgid "Meld comparison description"
 msgstr "Definice porovnávání Meld"
 
+#: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
+msgid "_Compare"
+msgstr "_Porovnat"
+
+#: ../data/ui/dirdiff.ui.h:2 ../data/ui/vcview.ui.h:2
+msgid "Compare selected files"
+msgstr "Porovnat vybrané soubory"
+
+#: ../data/ui/dirdiff.ui.h:3
+msgid "Copy _Left"
+msgstr "Kopírovat na_levo"
+
+#: ../data/ui/dirdiff.ui.h:4
+msgid "Copy to left"
+msgstr "Kopírovat doleva"
+
+#: ../data/ui/dirdiff.ui.h:5
+msgid "Copy _Right"
+msgstr "Kopí_rovat napravo"
+
+#: ../data/ui/dirdiff.ui.h:6
+msgid "Copy to right"
+msgstr "Kopírovat doprava"
+
+#: ../data/ui/dirdiff.ui.h:7
+msgid "Delete selected"
+msgstr "Odstranit vybrané"
+
+#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1366
+msgid "Hide"
+msgstr "Skrýt"
+
+#: ../data/ui/dirdiff.ui.h:9
+msgid "Hide selected"
+msgstr "Skrýt vybrané"
+
+#: ../data/ui/dirdiff.ui.h:10
+msgid "Ignore Filename Case"
+msgstr "Ignorovat velikost písmen v názvu souboru"
+
+#: ../data/ui/dirdiff.ui.h:11
+msgid ""
+"Consider differently-cased filenames that are otherwise-identical to be the "
+"same"
+msgstr ""
+"Považovat názvy souborů, které se odlišují velikostí písmen, ale jinak jsou "
+"stejné, za shodné"
+
+#: ../data/ui/dirdiff.ui.h:12
+msgid "Same"
+msgstr "Stejné"
+
+#: ../data/ui/dirdiff.ui.h:13
+msgid "Show identical"
+msgstr "Zobrazovat stejné"
+
+#: ../data/ui/dirdiff.ui.h:14
+msgid "New"
+msgstr "Nové"
+
+#: ../data/ui/dirdiff.ui.h:15
+msgid "Show new"
+msgstr "Zobrazovat nové"
+
+#: ../data/ui/dirdiff.ui.h:16
+msgid "Modified"
+msgstr "Změněné"
+
+#: ../data/ui/dirdiff.ui.h:17
+msgid "Show modified"
+msgstr "Zobrazovat změněné"
+
+#: ../data/ui/dirdiff.ui.h:18
+msgid "Filters"
+msgstr "Filtry"
+
+#: ../data/ui/dirdiff.ui.h:19
+msgid "Set active filters"
+msgstr "Nastavte aktivní filtry"
+
 #: ../data/ui/EditableList.ui.h:1
 msgid "Editable List"
 msgstr "Upravitelný seznam"
@@ -63,11 +143,12 @@ msgstr "Aktivní"
 msgid "Column Name"
 msgstr "Název sloupce"
 
-#: ../data/ui/EditableList.ui.h:4 ../meld/vcview.py:172
+#: ../data/ui/EditableList.ui.h:4 ../data/ui/vcview.ui.h:9
 msgid "_Add"
 msgstr "_Přidat"
 
-#: ../data/ui/EditableList.ui.h:5 ../meld/vcview.py:175 ../meld/vcview.py:715
+#: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
+#: ../meld/vcview.py:644
 msgid "_Remove"
 msgstr "_Odstranit"
 
@@ -88,8 +169,8 @@ msgid "Move _Down"
 msgstr "Přesunout _dolů"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:343
-#: ../meld/vcview.py:231
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:324
+#: ../meld/vcview.py:174
 msgid "Name"
 msgstr "Název"
 
@@ -142,7 +223,7 @@ msgstr ""
 "odemknout a změny v něm provést, ale tyto změny budou muset být uloženy v "
 "novém souboru."
 
-#: ../data/ui/filediff.ui.h:10 ../meld/filediff.py:295
+#: ../data/ui/filediff.ui.h:10 ../meld/filediff.py:299
 msgid "Lock scrolling of all panes"
 msgstr "Uzamknout posouvání všech panelů"
 
@@ -489,169 +570,181 @@ msgstr "_Prázdné porovnávání"
 msgid "C_ompare"
 msgstr "P_orovnat"
 
-#: ../data/ui/vcview.ui.h:1
+#: ../data/ui/vcview.ui.h:3
+msgid "Co_mmit..."
+msgstr "Zařa_dit…"
+
+#: ../data/ui/vcview.ui.h:4
+msgid "Commit changes to version control"
+msgstr "Zařadit změny do správy verzí"
+
+#: ../data/ui/vcview.ui.h:5
+msgid "_Update"
+msgstr "Akt_ualizovat"
+
+#: ../data/ui/vcview.ui.h:6
+msgid "Update working copy from version control"
+msgstr "Aktualizovat pracovní kopii ze správy verzí"
+
+#: ../data/ui/vcview.ui.h:7
+msgid "_Push"
+msgstr "_Odeslat"
+
+#: ../data/ui/vcview.ui.h:8
+msgid "Push local changes to remote"
+msgstr "Odeslat místní změny na server"
+
+#: ../data/ui/vcview.ui.h:10
+msgid "Add to version control"
+msgstr "Přidat do správy verzí"
+
+#: ../data/ui/vcview.ui.h:12
+msgid "Remove from version control"
+msgstr "Odebrat ze správy verzí"
+
+#: ../data/ui/vcview.ui.h:13
+msgid "Mar_k as Resolved"
+msgstr "Označi_t jako vyřešené"
+
+#: ../data/ui/vcview.ui.h:14
+msgid "Mark as resolved in version control"
+msgstr "Označit jako vyřešené ve vztahu ke správě verzí"
+
+#: ../data/ui/vcview.ui.h:15
+msgid "Re_vert"
+msgstr "_Vrátit zpět"
+
+#: ../data/ui/vcview.ui.h:16
+msgid "Revert working copy to original state"
+msgstr "Vrátit pracovní kopii do původního stavu"
+
+#: ../data/ui/vcview.ui.h:17
+msgid "Delete from working copy"
+msgstr "Smazat z pracovní kopie"
+
+#: ../data/ui/vcview.ui.h:18
+msgid "_Flatten"
+msgstr "Z_ploštit"
+
+#: ../data/ui/vcview.ui.h:19
+msgid "Flatten directories"
+msgstr "Zploštit složky"
+
+#: ../data/ui/vcview.ui.h:20
+msgid "_Modified"
+msgstr "_Změněné"
+
+#: ../data/ui/vcview.ui.h:21
+msgid "Show modified files"
+msgstr "Zobrazovat změněné soubory"
+
+#: ../data/ui/vcview.ui.h:22
+msgid "_Normal"
+msgstr "_Normální"
+
+#: ../data/ui/vcview.ui.h:23
+msgid "Show normal files"
+msgstr "Zobrazovat normální soubory"
+
+#: ../data/ui/vcview.ui.h:24
+msgid "Un_versioned"
+msgstr "Ne_verzované"
+
+#: ../data/ui/vcview.ui.h:25
+msgid "Show unversioned files"
+msgstr "Zobrazovat soubory bez verzí"
+
+#: ../data/ui/vcview.ui.h:26
+msgid "Ignored"
+msgstr "Ignorované"
+
+#: ../data/ui/vcview.ui.h:27
+msgid "Show ignored files"
+msgstr "Zobrazovat ignorované soubory"
+
+#: ../data/ui/vcview.ui.h:28
 msgid "Commit"
 msgstr "Commit"
 
-#: ../data/ui/vcview.ui.h:2
+#: ../data/ui/vcview.ui.h:29
 msgid "Commit Files"
 msgstr "Commit souborů"
 
-#: ../data/ui/vcview.ui.h:3
+#: ../data/ui/vcview.ui.h:30
 msgid "Log Message"
 msgstr "Zpráva záznamu"
 
-#: ../data/ui/vcview.ui.h:4
+#: ../data/ui/vcview.ui.h:31
 msgid "Previous logs:"
 msgstr "Předchozí záznamy:"
 
-#: ../data/ui/vcview.ui.h:5
+#: ../data/ui/vcview.ui.h:32
 msgid "Co_mmit"
 msgstr "Co_mmit"
 
-#: ../data/ui/vcview.ui.h:6
+#: ../data/ui/vcview.ui.h:33
 msgid "Push local commits to remote?"
 msgstr "Odeslat místně zařazené na server?"
 
-#: ../data/ui/vcview.ui.h:7
+#: ../data/ui/vcview.ui.h:34
 msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
 "Zařazené změny, které se mají odeslat jsou dány vaším systém správy verzí."
 
-#: ../data/ui/vcview.ui.h:8
+#: ../data/ui/vcview.ui.h:35
 msgid "_Push commits"
 msgstr "_Odeslat zařazené"
 
-#: ../meld/dirdiff.py:269 ../meld/vcview.py:160
-msgid "_Compare"
-msgstr "_Porovnat"
-
-#: ../meld/dirdiff.py:269
-msgid "Compare selected"
-msgstr "Porovnat vybrané"
-
-#: ../meld/dirdiff.py:270
-msgid "Copy _Left"
-msgstr "Kopírovat na_levo"
-
-#: ../meld/dirdiff.py:270
-msgid "Copy to left"
-msgstr "Kopírovat doleva"
-
-#: ../meld/dirdiff.py:271
-msgid "Copy _Right"
-msgstr "Kopí_rovat napravo"
-
-#: ../meld/dirdiff.py:271
-msgid "Copy to right"
-msgstr "Kopírovat doprava"
-
-#: ../meld/dirdiff.py:272
-msgid "Delete selected"
-msgstr "Odstranit vybrané"
-
-#: ../meld/dirdiff.py:273 ../meld/filediff.py:1368 ../meld/filediff.py:1403
-msgid "Hide"
-msgstr "Skrýt"
-
-#: ../meld/dirdiff.py:273
-msgid "Hide selected"
-msgstr "Skrýt vybrané"
-
-#: ../meld/dirdiff.py:277
-msgid "Ignore Filename Case"
-msgstr "Ignorovat velikost písmen v názvu souboru"
-
-#: ../meld/dirdiff.py:277
-msgid ""
-"Consider differently-cased filenames that are otherwise-identical to be the "
-"same"
-msgstr ""
-"Považovat názvy souborů, které se odlišují velikostí písmen, ale jinak jsou "
-"stejné, za shodné"
-
-#: ../meld/dirdiff.py:278
-msgid "Same"
-msgstr "Stejné"
-
-#: ../meld/dirdiff.py:278
-msgid "Show identical"
-msgstr "Zobrazovat stejné"
-
-#: ../meld/dirdiff.py:279
-msgid "New"
-msgstr "Nové"
-
-#: ../meld/dirdiff.py:279
-msgid "Show new"
-msgstr "Zobrazovat nové"
-
-#: ../meld/dirdiff.py:280
-msgid "Modified"
-msgstr "Změněné"
-
-#: ../meld/dirdiff.py:280
-msgid "Show modified"
-msgstr "Zobrazovat změněné"
-
-#: ../meld/dirdiff.py:282
-msgid "Filters"
-msgstr "Filtry"
-
-#: ../meld/dirdiff.py:282
-msgid "Set active filters"
-msgstr "Nastavte aktivní filtry"
-
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:361
+#: ../meld/dirdiff.py:342
 msgid "Size"
 msgstr "Velikost"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:369
+#: ../meld/dirdiff.py:350
 msgid "Modification time"
 msgstr "Čas změny"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:377
+#: ../meld/dirdiff.py:358
 msgid "Permissions"
 msgstr "Oprávnění"
 
-#: ../meld/dirdiff.py:511
+#: ../meld/dirdiff.py:492
 #, python-format
 msgid "Hide %s"
 msgstr "Skrýt %s"
 
-#: ../meld/dirdiff.py:637 ../meld/dirdiff.py:656
+#: ../meld/dirdiff.py:618 ../meld/dirdiff.py:637
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Prochází se %s"
 
-#: ../meld/dirdiff.py:756
+#: ../meld/dirdiff.py:737
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Hotovo"
 
-#: ../meld/dirdiff.py:762
+#: ../meld/dirdiff.py:743
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Při skenování této složky došlo k několika chybám"
 
-#: ../meld/dirdiff.py:763
+#: ../meld/dirdiff.py:744
 msgid "Files with invalid encodings found"
 msgstr "Nalezeny soubory s neplatným kódováním"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:765
+#: ../meld/dirdiff.py:746
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Některé soubory měly neplatné kódování. Názvy jsou přibližně následující:"
 
-#: ../meld/dirdiff.py:767
+#: ../meld/dirdiff.py:748
 msgid "Files hidden by case insensitive comparison"
 msgstr "Soubory skryty porovnáním nerozlišujícím velikost písmen"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:769
+#: ../meld/dirdiff.py:750
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -659,17 +752,17 @@ msgstr ""
 "Provádí se porovnání nerozlišující velikost písmen na systému souborů "
 "rozlišujícím velikost písmen. Některé soubory v této složce jsou skryté:"
 
-#: ../meld/dirdiff.py:780
+#: ../meld/dirdiff.py:761
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ skryto v „%s“"
 
-#: ../meld/dirdiff.py:805 ../meld/filediff.py:1096 ../meld/filediff.py:1372
-#: ../meld/filediff.py:1405
+#: ../meld/dirdiff.py:786 ../meld/filediff.py:1095 ../meld/filediff.py:1368
+#: ../meld/filediff.py:1398 ../meld/filediff.py:1400
 msgid "Hi_de"
 msgstr "_Skrýt"
 
-#: ../meld/dirdiff.py:837
+#: ../meld/dirdiff.py:817
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -678,38 +771,29 @@ msgstr ""
 "„%s“ existuje.\n"
 "Přepsat?"
 
-#: ../meld/dirdiff.py:844
+#: ../meld/dirdiff.py:825
+msgid "Error copying file"
+msgstr "Chyba při kopírování souboru"
+
+#: ../meld/dirdiff.py:826
 #, python-format
 msgid ""
-"Error copying '%s' to '%s'\n"
+"Couldn't copy %s\n"
+"to %s.\n"
 "\n"
-"%s."
+"%s"
 msgstr ""
-"Chyba při kopírování „%s“ do „%s“\n"
+"Nelze zkopírovat %s\n"
+"do %s.\n"
 "\n"
-"%s."
+"%s"
 
-#: ../meld/dirdiff.py:862 ../meld/vcview.py:745
+#: ../meld/dirdiff.py:849
 #, python-format
-msgid ""
-"'%s' is a directory.\n"
-"Remove recursively?"
-msgstr ""
-"„%s“ je složkou.\n"
-"Odstranit rekurzivně?"
+msgid "Error deleting %s"
+msgstr "Chyba při mazání %s"
 
-#: ../meld/dirdiff.py:869 ../meld/vcview.py:750
-#, python-format
-msgid ""
-"Error removing %s\n"
-"\n"
-"%s."
-msgstr ""
-"Chyba při odstraňování %s\n"
-"\n"
-"%s."
-
-#: ../meld/dirdiff.py:1000
+#: ../meld/dirdiff.py:980
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
@@ -717,7 +801,7 @@ msgstr[0] "%i sekunda"
 msgstr[1] "%i sekundy"
 msgstr[2] "%i sekund"
 
-#: ../meld/dirdiff.py:1001
+#: ../meld/dirdiff.py:981
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
@@ -725,7 +809,7 @@ msgstr[0] "%i minuta"
 msgstr[1] "%i minuty"
 msgstr[2] "%i minut"
 
-#: ../meld/dirdiff.py:1002
+#: ../meld/dirdiff.py:982
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
@@ -733,7 +817,7 @@ msgstr[0] "%i hodina"
 msgstr[1] "%i hodiny"
 msgstr[2] "%i hodin"
 
-#: ../meld/dirdiff.py:1003
+#: ../meld/dirdiff.py:983
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
@@ -741,7 +825,7 @@ msgstr[0] "%i den"
 msgstr[1] "%i dny"
 msgstr[2] "%i dnů"
 
-#: ../meld/dirdiff.py:1004
+#: ../meld/dirdiff.py:984
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
@@ -749,7 +833,7 @@ msgstr[0] "%i týden"
 msgstr[1] "%i týdny"
 msgstr[2] "%i týdnů"
 
-#: ../meld/dirdiff.py:1005
+#: ../meld/dirdiff.py:985
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
@@ -757,7 +841,7 @@ msgstr[0] "%i měsíc"
 msgstr[1] "%i měsíce"
 msgstr[2] "%i měsíců"
 
-#: ../meld/dirdiff.py:1006
+#: ../meld/dirdiff.py:986
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -765,182 +849,182 @@ msgstr[0] "%i rok"
 msgstr[1] "%i roky"
 msgstr[2] "%i let"
 
-#: ../meld/filediff.py:223
+#: ../meld/filediff.py:227
 msgid "Format as Patch..."
 msgstr "Formátovat jako záplatu…"
 
-#: ../meld/filediff.py:224
+#: ../meld/filediff.py:228
 msgid "Create a patch using differences between files"
 msgstr "Vytvořit záplatu použitím rozdílů mezi soubory"
 
-#: ../meld/filediff.py:226
+#: ../meld/filediff.py:230
 msgid "Save A_ll"
 msgstr "Uložit _vše"
 
-#: ../meld/filediff.py:227
+#: ../meld/filediff.py:231
 msgid "Save all files in the current comparison"
 msgstr "Uložit všechny soubory v aktuálním porovnávání"
 
-#: ../meld/filediff.py:230
+#: ../meld/filediff.py:234
 msgid "Revert files to their saved versions"
 msgstr "Vrátit soubory k jejich uloženým verzím"
 
-#: ../meld/filediff.py:232
+#: ../meld/filediff.py:236
 msgid "Add Synchronization Point"
 msgstr "Přidat synchronizační bod"
 
-#: ../meld/filediff.py:233
+#: ../meld/filediff.py:237
 msgid "Add a manual point for synchronization of changes between files"
 msgstr "Ručně přidat bod pro synchronizaci změn mezi soubory"
 
-#: ../meld/filediff.py:236
+#: ../meld/filediff.py:240
 msgid "Clear Synchronization Points"
 msgstr "Vymazat synchronizační body"
 
-#: ../meld/filediff.py:237
+#: ../meld/filediff.py:241
 msgid "Clear manual change sychronization points"
 msgstr "Vymazat ručně přidané synchronizační body"
 
-#: ../meld/filediff.py:239
+#: ../meld/filediff.py:243
 msgid "Previous Conflict"
 msgstr "Předchozí konflikt"
 
-#: ../meld/filediff.py:240
+#: ../meld/filediff.py:244
 msgid "Go to the previous conflict"
 msgstr "Přejít na předchozí konflikt"
 
-#: ../meld/filediff.py:242
+#: ../meld/filediff.py:246
 msgid "Next Conflict"
 msgstr "Následující konflikt"
 
-#: ../meld/filediff.py:243
+#: ../meld/filediff.py:247
 msgid "Go to the next conflict"
 msgstr "Přejít na následující konflikt"
 
-#: ../meld/filediff.py:245
+#: ../meld/filediff.py:249
 msgid "Push to Left"
 msgstr "Zatlačit doleva"
 
-#: ../meld/filediff.py:246
+#: ../meld/filediff.py:250
 msgid "Push current change to the left"
 msgstr "Zatlačit aktuální změnu doleva"
 
-#: ../meld/filediff.py:249
+#: ../meld/filediff.py:253
 msgid "Push to Right"
 msgstr "Zatlačit doprava"
 
-#: ../meld/filediff.py:250
+#: ../meld/filediff.py:254
 msgid "Push current change to the right"
 msgstr "Zatlačit aktuální změnu doprava"
 
-#: ../meld/filediff.py:254
+#: ../meld/filediff.py:258
 msgid "Pull from Left"
 msgstr "Vytáhnout zleva"
 
-#: ../meld/filediff.py:255
+#: ../meld/filediff.py:259
 msgid "Pull change from the left"
 msgstr "Vytáhnout změnu zleva"
 
-#: ../meld/filediff.py:258
+#: ../meld/filediff.py:262
 msgid "Pull from Right"
 msgstr "Vytáhnout zprava"
 
-#: ../meld/filediff.py:259
+#: ../meld/filediff.py:263
 msgid "Pull change from the right"
 msgstr "Vytáhnout změnu zprava"
 
-#: ../meld/filediff.py:261
+#: ../meld/filediff.py:265
 msgid "Copy Above Left"
 msgstr "Kopírovat z levé vrchní části"
 
-#: ../meld/filediff.py:262
+#: ../meld/filediff.py:266
 msgid "Copy change above the left chunk"
 msgstr "Kopírovat změnu nad levým blokem"
 
-#: ../meld/filediff.py:264
+#: ../meld/filediff.py:268
 msgid "Copy Below Left"
 msgstr "Kopírovat z levé spodní části"
 
-#: ../meld/filediff.py:265
+#: ../meld/filediff.py:269
 msgid "Copy change below the left chunk"
 msgstr "Kopírovat změnu pod levým blokem"
 
-#: ../meld/filediff.py:267
+#: ../meld/filediff.py:271
 msgid "Copy Above Right"
 msgstr "Kopírovat z pravé vrchní části"
 
-#: ../meld/filediff.py:268
+#: ../meld/filediff.py:272
 msgid "Copy change above the right chunk"
 msgstr "Kopírovat změnu nad pravým blokem"
 
-#: ../meld/filediff.py:270
+#: ../meld/filediff.py:274
 msgid "Copy Below Right"
 msgstr "Kopírovat z pravé spodní části"
 
-#: ../meld/filediff.py:271
+#: ../meld/filediff.py:275
 msgid "Copy change below the right chunk"
 msgstr "Kopírovat změnu pod pravým blokem"
 
-#: ../meld/filediff.py:273
+#: ../meld/filediff.py:277
 msgid "Delete"
 msgstr "Smazat"
 
-#: ../meld/filediff.py:274
+#: ../meld/filediff.py:278
 msgid "Delete change"
 msgstr "Smazat změnu"
 
-#: ../meld/filediff.py:276
+#: ../meld/filediff.py:280
 msgid "Merge All from Left"
 msgstr "Sloučit vše zleva"
 
-#: ../meld/filediff.py:277
+#: ../meld/filediff.py:281
 msgid "Merge all non-conflicting changes from the left"
 msgstr "Sloučit veškeré změny bez konfliktů zleva"
 
-#: ../meld/filediff.py:279
+#: ../meld/filediff.py:283
 msgid "Merge All from Right"
 msgstr "Sloučit vše zprava"
 
-#: ../meld/filediff.py:280
+#: ../meld/filediff.py:284
 msgid "Merge all non-conflicting changes from the right"
 msgstr "Sloučit veškeré změny bez konfliktů zprava"
 
-#: ../meld/filediff.py:282
+#: ../meld/filediff.py:286
 msgid "Merge All"
 msgstr "Sloučit vše"
 
-#: ../meld/filediff.py:283
+#: ../meld/filediff.py:287
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "Sloučit veškeré změny bez konfliktů z levého a pravého panelu"
 
-#: ../meld/filediff.py:287
+#: ../meld/filediff.py:291
 msgid "Cycle Through Documents"
 msgstr "Přepnout mezi dokumenty"
 
-#: ../meld/filediff.py:288
+#: ../meld/filediff.py:292
 msgid "Move keyboard focus to the next document in this comparison"
 msgstr "Přepnout se s klávesnicí na další dokument v tomto porovnání"
 
-#: ../meld/filediff.py:294
+#: ../meld/filediff.py:298
 msgid "Lock Scrolling"
 msgstr "Uzamknout posouvání"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:417
+#: ../meld/filediff.py:420
 msgid "INS"
 msgstr "VKL"
 
-#: ../meld/filediff.py:417
+#: ../meld/filediff.py:420
 msgid "OVR"
 msgstr "PŘE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:419
+#: ../meld/filediff.py:422
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Řád %i, sl %i"
 
-#: ../meld/filediff.py:754
+#: ../meld/filediff.py:757
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -949,42 +1033,42 @@ msgstr ""
 "Filtr „%s“ změnil počet řádků v souboru. Porovnání nebude správné. Další "
 "podrobnosti viz příručka uživatele."
 
-#: ../meld/filediff.py:1084
+#: ../meld/filediff.py:1083
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Nastaven počet panelů"
 
-#: ../meld/filediff.py:1090
+#: ../meld/filediff.py:1089
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Otevírají se soubory"
 
-#: ../meld/filediff.py:1114 ../meld/filediff.py:1124 ../meld/filediff.py:1137
-#: ../meld/filediff.py:1143
+#: ../meld/filediff.py:1112 ../meld/filediff.py:1122 ../meld/filediff.py:1135
+#: ../meld/filediff.py:1141
 msgid "Could not read file"
 msgstr "Nelze přečíst soubor"
 
-#: ../meld/filediff.py:1115
+#: ../meld/filediff.py:1113
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Čtou se soubory"
 
-#: ../meld/filediff.py:1125
+#: ../meld/filediff.py:1123
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s je zřejmě binárním souborem."
 
-#: ../meld/filediff.py:1138
+#: ../meld/filediff.py:1136
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s není v kódováních: %s"
 
-#: ../meld/filediff.py:1172
+#: ../meld/filediff.py:1170
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Počítají se rozdíly"
 
-#: ../meld/filediff.py:1359
+#: ../meld/filediff.py:1357
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -992,19 +1076,19 @@ msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory. Chcete porovnat nefiltrované soubory?"
 
-#: ../meld/filediff.py:1365
+#: ../meld/filediff.py:1363
 msgid "Files are identical"
 msgstr "Soubory jsou stejné"
 
-#: ../meld/filediff.py:1375
+#: ../meld/filediff.py:1371
 msgid "Show without filters"
 msgstr "Zobrazit bez filtrů"
 
-#: ../meld/filediff.py:1397
+#: ../meld/filediff.py:1393
 msgid "Change highlighting incomplete"
 msgstr "Změnit zvýraznění neúplných"
 
-#: ../meld/filediff.py:1398
+#: ../meld/filediff.py:1394
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1013,15 +1097,15 @@ msgstr ""
 "přimět k používání větší délky, aby se zvýraznily i rozsáhlé změny, ale může "
 "to pak být pomalé."
 
-#: ../meld/filediff.py:1407
+#: ../meld/filediff.py:1402
 msgid "Keep highlighting"
 msgstr "Zachovat zvýrazňování"
 
-#: ../meld/filediff.py:1409
+#: ../meld/filediff.py:1404
 msgid "_Keep highlighting"
 msgstr "Z_achovat zvýrazňování"
 
-#: ../meld/filediff.py:1541
+#: ../meld/filediff.py:1536
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -1030,7 +1114,7 @@ msgstr ""
 "„%s“ existuje!\n"
 "Přepsat?"
 
-#: ../meld/filediff.py:1554
+#: ../meld/filediff.py:1549
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -1041,19 +1125,19 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1565
+#: ../meld/filediff.py:1560
 msgid "Save Left Pane As"
 msgstr "Uložení levého panelu jako"
 
-#: ../meld/filediff.py:1567
+#: ../meld/filediff.py:1562
 msgid "Save Middle Pane As"
 msgstr "Uložení prostředního panelu jako"
 
-#: ../meld/filediff.py:1569
+#: ../meld/filediff.py:1564
 msgid "Save Right Pane As"
 msgstr "Uložení pravého panelu jako"
 
-#: ../meld/filediff.py:1590
+#: ../meld/filediff.py:1585
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -1064,7 +1148,7 @@ msgstr ""
 "\n"
 "Jaký formát chcete používat?"
 
-#: ../meld/filediff.py:1606
+#: ../meld/filediff.py:1601
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -1073,11 +1157,11 @@ msgstr ""
 "„%s“ obsahuje znaky, které nelze kódovat v „%s“\n"
 "Chcete uložit jako UTF-8?"
 
-#: ../meld/filediff.py:1974
+#: ../meld/filediff.py:1969
 msgid "Live comparison updating disabled"
 msgstr "Živá aktualizace porovnání zakázána"
 
-#: ../meld/filediff.py:1975
+#: ../meld/filediff.py:1970
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1436,7 +1520,7 @@ msgid "Cannot compare a mixture of files and directories.\n"
 msgstr "Nelze porovnávat kombinaci souborů a složek.\n"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:172
+#: ../meld/misc.py:189
 msgid "[None]"
 msgstr "[Žádný]"
 
@@ -1516,172 +1600,76 @@ msgstr "Komentář skriptu\t0\t#.*"
 msgid "Version control:"
 msgstr "Správa verzí:"
 
-#: ../meld/vcview.py:161
-msgid "Compare selected files"
-msgstr "Porovnat vybrané soubory"
-
-#: ../meld/vcview.py:163
-msgid "Co_mmit..."
-msgstr "Zařa_dit…"
-
-#: ../meld/vcview.py:164
-msgid "Commit changes to version control"
-msgstr "Zařadit změny do správy verzí"
-
-#: ../meld/vcview.py:166
-msgid "_Update"
-msgstr "Akt_ualizovat"
-
-#: ../meld/vcview.py:167
-msgid "Update working copy from version control"
-msgstr "Aktualizovat pracovní kopii ze správy verzí"
-
-#: ../meld/vcview.py:169
-msgid "_Push"
-msgstr "_Odeslat"
-
-#: ../meld/vcview.py:170
-msgid "Push local changes to remote"
-msgstr "Odeslat místní změny na server"
-
-#: ../meld/vcview.py:173
-msgid "Add to version control"
-msgstr "Přidat do správy verzí"
-
-#: ../meld/vcview.py:176
-msgid "Remove from version control"
-msgstr "Odebrat ze správy verzí"
-
-#: ../meld/vcview.py:178
-msgid "Mar_k as Resolved"
-msgstr "Označi_t jako vyřešené"
-
-#: ../meld/vcview.py:179
-msgid "Mark as resolved in version control"
-msgstr "Označit jako vyřešené ve vztahu ke správě verzí"
-
-#: ../meld/vcview.py:181
-msgid "Re_vert"
-msgstr "_Vrátit zpět"
-
-#: ../meld/vcview.py:182
-msgid "Revert working copy to original state"
-msgstr "Vrátit pracovní kopii do původního stavu"
-
-#: ../meld/vcview.py:185
-msgid "Delete from working copy"
-msgstr "Smazat z pracovní kopie"
-
-#: ../meld/vcview.py:190
-msgid "_Flatten"
-msgstr "Z_ploštit"
-
-#: ../meld/vcview.py:191
-msgid "Flatten directories"
-msgstr "Zploštit složky"
-
-#: ../meld/vcview.py:193
-msgid "_Modified"
-msgstr "_Změněné"
-
-#: ../meld/vcview.py:194
-msgid "Show modified files"
-msgstr "Zobrazovat změněné soubory"
-
-#: ../meld/vcview.py:196
-msgid "_Normal"
-msgstr "_Normální"
-
-#: ../meld/vcview.py:197
-msgid "Show normal files"
-msgstr "Zobrazovat normální soubory"
-
-#: ../meld/vcview.py:199
-msgid "Un_versioned"
-msgstr "Ne_verzované"
-
-#: ../meld/vcview.py:200
-msgid "Show unversioned files"
-msgstr "Zobrazovat soubory bez verzí"
-
-#: ../meld/vcview.py:202
-msgid "Ignored"
-msgstr "Ignorované"
-
-#: ../meld/vcview.py:203
-msgid "Show ignored files"
-msgstr "Zobrazovat ignorované soubory"
-
-#: ../meld/vcview.py:262 ../meld/vcview.py:432
+#: ../meld/vcview.py:205 ../meld/vcview.py:363
 msgid "Location"
 msgstr "Umístění"
 
-#: ../meld/vcview.py:263
+#: ../meld/vcview.py:206
 msgid "Status"
 msgstr "Stav"
 
-#: ../meld/vcview.py:264
+#: ../meld/vcview.py:207
 msgid "Revision"
 msgstr "Revize"
 
-#: ../meld/vcview.py:265
+#: ../meld/vcview.py:208
 msgid "Options"
 msgstr "Možnosti"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:342
+#: ../meld/vcview.py:273
 #, python-format
 msgid "%s not installed"
 msgstr "%s není nainstalováno"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:346
+#: ../meld/vcview.py:277
 msgid "Invalid repository"
 msgstr "Neplatné úložiště"
 
-#: ../meld/vcview.py:355
+#: ../meld/vcview.py:286
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: ../meld/vcview.py:357 ../meld/vcview.py:365
+#: ../meld/vcview.py:288 ../meld/vcview.py:296
 msgid "None"
 msgstr "Žádný"
 
-#: ../meld/vcview.py:376
+#: ../meld/vcview.py:307
 msgid "No valid version control system found in this folder"
 msgstr "V této složce nebyl nalezen žádný platný systém správy verzí"
 
-#: ../meld/vcview.py:378
+#: ../meld/vcview.py:309
 msgid "Only one version control system found in this folder"
 msgstr "V této složce byl nalezen jen jeden systém správy verzí"
 
-#: ../meld/vcview.py:380
+#: ../meld/vcview.py:311
 msgid "Choose which version control system to use"
 msgstr "Vyberte, který systém správy verzí se má použít"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:432
+#: ../meld/vcview.py:363
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:446 ../meld/vcview.py:454
+#: ../meld/vcview.py:377 ../meld/vcview.py:385
 #, python-format
 msgid "Scanning %s"
 msgstr "Prochází se %s"
 
-#: ../meld/vcview.py:487
+#: ../meld/vcview.py:418
 msgid "(Empty)"
 msgstr "(Prázdný)"
 
-#: ../meld/vcview.py:709
+#: ../meld/vcview.py:638
 msgid "Remove folder and all its files?"
 msgstr "Odstranit složku a všechny soubory v ní?"
 
-#: ../meld/vcview.py:711
+#: ../meld/vcview.py:640
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -1689,14 +1677,14 @@ msgstr ""
 "Tímto se ze správy verzí odstraní všechny vybrané soubory a složky (a "
 "všechny soubory v těchto složkách)."
 
-#: ../meld/ui/findbar.py:150
+#: ../meld/vcview.py:674
 #, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
-msgstr ""
-"Chyba v regulárním výrazu\n"
-"„%s“"
+msgid "Error removing %s"
+msgstr "Chyba při odstraňování %s"
+
+#: ../meld/ui/findbar.py:143
+msgid "Regular expression error"
+msgstr "Chyba v regulárním výrazu"
 
 #: ../meld/ui/historyentry.py:381
 msgid "_Browse..."
@@ -1755,27 +1743,16 @@ msgstr ""
 "Ignorováno:Bez verze:::Chyba::Nově přidáno:Změněno:Konflikt:Odstraněno:Chybí:"
 "Nevyskytuje se"
 
-#: ../meld/vc/cvs.py:231
-#, python-format
-msgid ""
-"Error converting to a regular expression\n"
-"The pattern was '%s'\n"
-"The error was '%s'"
-msgstr ""
-"Chyba při převodu na regulární výraz\n"
-"Vzorkem byl „%s“\n"
-"Chyba byla následující: „%s“"
-
 #. Translators: First %s is replaced by translated "%d unpushed
 #. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:120
+#: ../meld/vc/git.py:126
 #, python-format
 msgid "%s in %s"
 msgstr "%s v %s"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:121 ../meld/vc/git.py:128
+#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
@@ -1783,7 +1760,7 @@ msgstr[0] "%d zařazená neodeslaná"
 msgstr[1] "%d zařazené neodeslané"
 msgstr[2] "%d zařazených neodeslaných"
 
-#: ../meld/vc/git.py:123
+#: ../meld/vc/git.py:129
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
@@ -1791,7 +1768,7 @@ msgstr[0] "%d větvi"
 msgstr[1] "%d větvích"
 msgstr[2] "%d větvích"
 
-#: ../meld/vc/git.py:333
+#: ../meld/vc/git.py:341
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Režim změněn z %s na %s"
