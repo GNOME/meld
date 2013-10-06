@@ -30,16 +30,23 @@ if sys.executable.endswith("pythonw.exe"):
     devnull = open(os.devnull, "w")
     sys.stdout = sys.stderr = devnull
 
-# Disable buffering of stdout
-class Unbuffered(object):
-    def __init__(self, file):
-        self.file = file
-    def write(self, arg):
-        self.file.write(arg)
-        self.file.flush()
-    def __getattr__(self, attr):
-        return getattr(self.file, attr)
-sys.stdout = Unbuffered(sys.stdout)
+
+def disable_stdout_buffering():
+
+    class Unbuffered(object):
+
+        def __init__(self, file):
+            self.file = file
+
+        def write(self, arg):
+            self.file.write(arg)
+            self.file.flush()
+
+        def __getattr__(self, attr):
+            return getattr(self.file, attr)
+
+    sys.stdout = Unbuffered(sys.stdout)
+
 
 # Support running from an uninstalled version
 if os.path.basename(__file__) == "meld":
@@ -87,47 +94,57 @@ except locale.Error as e:
     print e
 
 
-pyver = (2, 7)
-gtk_requirement = (3, 8)
-glib_requirement = (2, 36, 0)
+def check_requirements():
+
+    pyver = (2, 7)
+    gtk_requirement = (3, 8)
+    glib_requirement = (2, 36, 0)
+
+    def missing_reqs(mod, ver, exception=None):
+        if isinstance(exception, ImportError):
+            print _("Cannot import: ") + mod + "\n" + str(e)
+        else:
+            modver = mod + " " + ".".join(map(str, ver))
+            print _("Meld requires %s or higher.") % modver
+        sys.exit(1)
+
+    if sys.version_info[:2] < pyver:
+        missing_reqs("Python", pyver)
+
+    # gtk+ and related imports
+    try:
+        # FIXME: Extra clause for gi
+        import gi
+        from gi.repository import Gtk
+        gi.require_version("Gtk", "3.0")
+        version = (Gtk.get_major_version(), Gtk.get_minor_version())
+        assert version >= gtk_requirement
+    except (ImportError, AssertionError) as e:
+        missing_reqs("GTK+", gtk_requirement, e)
+
+    try:
+        from gi.repository import GObject
+        assert GObject.glib_version >= glib_requirement
+    except (ImportError, AssertionError) as e:
+        missing_reqs("GLib", glib_requirement, e)
 
 
-def missing_reqs(mod, ver, exception=None):
-    if isinstance(exception, ImportError):
-        print _("Cannot import: ") + mod + "\n" + str(e)
-    else:
-        modver = mod + " " + ".".join(map(str, ver))
-        print _("Meld requires %s or higher.") % modver
-    sys.exit(1)
-
-if sys.version_info[:2] < pyver:
-    missing_reqs("Python", pyver)
-
-# gtk+ and related imports
-try:
-    # FIXME: Extra clause for gi
-    import gi
-    from gi.repository import Gtk
-    gi.require_version("Gtk", "3.0")
-    version = (Gtk.get_major_version(), Gtk.get_minor_version())
-    assert version >= gtk_requirement
-except (ImportError, AssertionError) as e:
-    missing_reqs("GTK+", gtk_requirement, e)
-
-try:
+def setup_resources():
     from gi.repository import GObject
-    assert GObject.glib_version >= glib_requirement
-except (ImportError, AssertionError) as e:
-    missing_reqs("GLib", glib_requirement, e)
+    from gi.repository import Gtk
 
-GObject.threads_init()
-icon_dir = os.path.join(meld.conf.DATADIR, "icons")
-Gtk.IconTheme.get_default().append_search_path(icon_dir)
-rc_file = os.path.join(meld.conf.DATADIR, "gtkrc")
-Gtk.rc_parse(rc_file)
+    GObject.threads_init()
+    icon_dir = os.path.join(meld.conf.DATADIR, "icons")
+    Gtk.IconTheme.get_default().append_search_path(icon_dir)
+    rc_file = os.path.join(meld.conf.DATADIR, "gtkrc")
+    Gtk.rc_parse(rc_file)
 
 
-def main():
+if __name__ == '__main__':
+    disable_stdout_buffering()
+    check_requirements()
+    setup_resources()
+
     import meld.meldapp
     app = meld.meldapp.app
     try:
@@ -139,5 +156,3 @@ def main():
 
     status = app.run(sys.argv)
     sys.exit(status)
-
-main()
