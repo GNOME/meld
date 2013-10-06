@@ -41,21 +41,6 @@ class Unbuffered(object):
         return getattr(self.file, attr)
 sys.stdout = Unbuffered(sys.stdout)
 
-# Ignore session management
-for ignore in "--sm-config-prefix", "--sm-client-id":
-    try:
-        smprefix = sys.argv.index(ignore)
-        del sys.argv[smprefix:smprefix + 2]
-    except (ValueError, IndexError):
-        pass
-
-# Extract the profiling flag
-try:
-    sys.argv.remove("--profile")
-    profiling = True
-except ValueError:
-    profiling = False
-
 # Support running from an uninstalled version
 if os.path.basename(__file__) == "meld":
     self_path = os.path.realpath(__file__)
@@ -155,8 +140,4 @@ def main():
     status = app.run(sys.argv)
     sys.exit(status)
 
-if profiling:
-    import profile
-    profile.run("main()")
-else:
-    main()
+main()
