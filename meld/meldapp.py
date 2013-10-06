@@ -34,7 +34,7 @@ from . import preferences
 from . import recent
 
 
-class MeldApp(GObject.GObject):
+class MeldApp(Gtk.Application):
 
     __gsignals__ = {
         'file-filters-changed': (GObject.SignalFlags.RUN_FIRST,
@@ -44,7 +44,7 @@ class MeldApp(GObject.GObject):
     }
 
     def __init__(self):
-        GObject.GObject.__init__(self)
+        Gtk.Application.__init__(self)
         GObject.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
         self.version = conf.__version__
@@ -56,9 +56,14 @@ class MeldApp(GObject.GObject):
                                                 filters.FilterEntry.REGEX)
         self.recent_comparisons = recent.RecentFiles(sys.argv[0])
 
-    def create_window(self):
+    def do_startup(self):
+        Gtk.Application.do_startup(self)
+
+    def do_activate(self):
+        # Should be meldwindow.MeldWindow(self), and rely on the Application
+        # to keep track
         self.window = meldwindow.MeldWindow()
-        return self.window
+        self.add_window(self.window.widget)
 
     def on_preference_changed(self, key, val):
         if key == "filters":

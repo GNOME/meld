@@ -152,10 +152,8 @@ def main():
         already_running, dbus_app = False, None
     meld.meldapp.dbus_app = dbus_app
 
-    app.create_window()
-    new_window = app.parse_args(sys.argv[1:])
-    if new_window or not already_running:
-        Gtk.main()
+    status = app.run(sys.argv)
+    sys.exit(status)
 
 if profiling:
     import profile
