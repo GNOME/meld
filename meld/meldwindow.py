@@ -24,14 +24,12 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GObject
 
-from . import conf
 from . import dirdiff
 from . import filediff
 from . import filemerge
 from . import melddoc
 from . import misc
 from . import newdifftab
-from . import preferences
 from . import recent
 from . import task
 from . import vcview
@@ -71,9 +69,6 @@ class MeldWindow(gnomeglade.Component):
             ("Close", Gtk.STOCK_CLOSE, None, None,
                 _("Close the current file"),
                 self.on_menu_close_activate),
-            ("Quit", Gtk.STOCK_QUIT, None, None,
-                _("Quit the program"),
-                self.on_menu_quit_activate),
 
             ("EditMenu", None, _("_Edit")),
             ("Undo", Gtk.STOCK_UNDO, None, "<control>Z",
@@ -100,9 +95,6 @@ class MeldWindow(gnomeglade.Component):
                 _("_Replace..."), "<control>H",
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
-            ("Preferences", Gtk.STOCK_PREFERENCES, _("Prefere_nces"), None,
-                _("Configure the application"),
-                self.on_menu_preferences_activate),
 
             ("ChangesMenu", None, _("_Changes")),
             ("NextChange", Gtk.STOCK_GO_DOWN, _("Next Change"), "<Alt>Down",
@@ -142,16 +134,6 @@ class MeldWindow(gnomeglade.Component):
                 _("Move Tab _Right"), "<Ctrl><Alt><Shift>Page_Down",
                 _("Move current tab to right"),
                 self.on_move_tab_next),
-
-            ("HelpMenu", None, _("_Help")),
-            ("Help", Gtk.STOCK_HELP, _("_Contents"), "F1",
-                _("Open the Meld manual"), self.on_menu_help_activate),
-            ("BugReport", Gtk.STOCK_DIALOG_WARNING, _("Report _Bug"), None,
-                _("Report a bug in Meld"),
-                self.on_menu_help_bug_activate),
-            ("About", Gtk.STOCK_ABOUT, None, None,
-                _("About this program"),
-                self.on_menu_about_activate),
         )
         toggleactions = (
             ("Fullscreen", None, _("Fullscreen"), "F11",
@@ -223,7 +205,6 @@ class MeldWindow(gnomeglade.Component):
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
         self.widget.set_default_size(app.prefs.window_size_x, app.prefs.window_size_y)
         self.ui.ensure_update()
-        self.widget.show()
         self.diff_handler = None
         self.undo_handlers = tuple()
         self.widget.connect('focus_in_event', self.on_focus_change)
@@ -305,7 +286,14 @@ class MeldWindow(gnomeglade.Component):
     # General events and callbacks
     #
     def on_delete_event(self, *extra):
-        return self.on_menu_quit_activate()
+        # Delete pages from right-to-left.  This ensures that if a version
+        # control page is open in the far left page, it will be closed last.
+        for c in reversed(self.notebook.get_children()):
+            page = c.pyobject
+            self.notebook.set_current_page(self.notebook.page_num(page.widget))
+            response = self.try_remove_page(page, appquit=1)
+            if response == Gtk.ResponseType.CANCEL:
+                return True
 
     def has_pages(self):
         return self.notebook.get_n_pages() > 0
@@ -455,18 +443,6 @@ class MeldWindow(gnomeglade.Component):
             page = self.notebook.get_nth_page(i).pyobject
             self.try_remove_page(page)
 
-    def on_menu_quit_activate(self, *extra):
-        # Delete pages from right-to-left.  This ensures that if a version
-        # control page is open in the far left page, it will be closed last.
-        for c in reversed(self.notebook.get_children()):
-            page = c.pyobject
-            self.notebook.set_current_page(self.notebook.page_num(page.widget))
-            response = self.try_remove_page(page, appquit=1)
-            if response == Gtk.ResponseType.CANCEL:
-                return Gtk.ResponseType.CANCEL
-        Gtk.main_quit()
-        return Gtk.ResponseType.CLOSE
-
     #
     # Toolbar and menu items (edit)
     #
@@ -512,12 +488,6 @@ class MeldWindow(gnomeglade.Component):
         elif isinstance(widget, Gtk.TextView):
             widget.emit("paste-clipboard")
 
-    #
-    # Toolbar and menu items (settings)
-    #
-    def on_menu_preferences_activate(self, item):
-        preferences.PreferencesDialog(self.widget, app.prefs)
-
     def on_action_fullscreen_toggled(self, widget):
         is_full = self.widget.get_window().get_state() & Gdk.WindowState.FULLSCREEN
         if widget.get_active() and not is_full:
@@ -531,26 +501,6 @@ class MeldWindow(gnomeglade.Component):
     def on_menu_statusbar_toggled(self, widget):
         app.prefs.statusbar_visible = widget.get_active()
 
-    def on_menu_help_activate(self, button):
-        misc.open_uri("help:meld")
-
-    def on_menu_help_bug_activate(self, button):
-        misc.open_uri("http://bugzilla.gnome.org/buglist.cgi?query=product%3Ameld")
-
-    def on_menu_about_activate(self, *extra):
-        builder = Gtk.Builder()
-        builder.set_translation_domain(conf.__package__)
-        ui_file = gnomeglade.ui_file("meldapp.ui")
-        builder.add_objects_from_file(ui_file, ["about"])
-        about = builder.get_object("about")
-        about.props.version = app.version
-        about.set_transient_for(self.widget)
-        about.run()
-        about.hide()
-
-    #
-    # Toolbar and menu items (misc)
-    #
     def on_menu_edit_down_activate(self, *args):
         self.current_doc().next_diff(Gdk.ScrollDirection.DOWN)
 

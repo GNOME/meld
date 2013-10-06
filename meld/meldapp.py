@@ -26,8 +26,12 @@ from gettext import gettext as _
 
 from gi.repository import Gio
 from gi.repository import GObject
+from gi.repository import Gdk
 from gi.repository import Gtk
 
+import meld.conf
+import meld.preferences
+import meld.ui.util
 from . import conf
 from . import filters
 from . import preferences
@@ -59,11 +63,55 @@ class MeldApp(Gtk.Application):
     def do_startup(self):
         Gtk.Application.do_startup(self)
 
+        prefs_action = Gio.SimpleAction.new("preferences", None)
+        prefs_action.connect("activate", self.preferences_callback)
+        self.add_action(prefs_action)
+        help_action = Gio.SimpleAction.new("help", None)
+        help_action.connect("activate", self.help_callback)
+        self.add_action(help_action)
+        about_action = Gio.SimpleAction.new("about", None)
+        about_action.connect("activate", self.about_callback)
+        self.add_action(about_action)
+        quit_action = Gio.SimpleAction.new("quit", None)
+        quit_action.connect("activate", self.quit_callback)
+        self.add_action(quit_action)
+
+        # TODO: Should not be necessary but Builder doesn't understand Menus
+        builder = meld.ui.util.get_builder("application.ui")
+        menu = builder.get_object("app-menu")
+        self.set_app_menu(menu)
+        # self.set_menubar()
+
     def do_activate(self):
         # Should be meldwindow.MeldWindow(self), and rely on the Application
         # to keep track
         self.window = meldwindow.MeldWindow()
         self.add_window(self.window.widget)
+        self.window.widget.show()
+
+    def preferences_callback(self, action, parameter):
+        meld.preferences.PreferencesDialog(self.get_active_window(),
+                                           self.prefs)
+
+    def help_callback(self, action, parameter):
+        Gtk.show_uri(Gdk.Screen.get_default(), "help:meld",
+                     Gtk.get_current_event_time())
+
+    def about_callback(self, action, parameter):
+        about = meld.ui.util.get_widget("application.ui", "aboutdialog")
+        about.set_version(meld.conf.__version__)
+        about.set_transient_for(self.get_active_window())
+        about.run()
+        about.destroy()
+
+    def quit_callback(self, action, parameter):
+        for window in self.get_windows():
+            cancelled = window.emit("delete-event",
+                                    Gdk.Event(Gdk.EventType.DELETE))
+            if cancelled:
+                return
+            window.destroy()
+        sys.exit(0)
 
     def on_preference_changed(self, key, val):
         if key == "filters":

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!--*- mode: xml -*-->
+<interface>
+  <!-- interface-requires gtk+ 3.6 -->
+  <object class="GtkAboutDialog" id="aboutdialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">About Meld</property>
+    <property name="icon_name">meld</property>
+    <property name="type_hint">dialog</property>
+    <property name="program_name">Meld</property>
+    <property name="copyright" translatable="yes">Copyright © 2002-2009 Stephen Kennedy
+Copyright © 2009-2013 Kai Willadsen</property>
+    <property name="website" translatable="yes">http://meldmerge.org/</property>
+    <property name="website_label" translatable="yes">Website</property>
+    <property name="authors">Stephen Kennedy
+Kai Willadsen
+Vincent Legoll</property>
+    <property name="translator_credits" translatable="yes">translator-credits</property>
+    <property name="artists">GNOME Project
+Josef Vybíral</property>
+    <property name="logo_icon_name">meld</property>
+    <property name="license_type">gpl-2-0</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="aboutdialog-vbox1">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="aboutdialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <menu id='app-menu'>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Preferences</attribute>
+        <attribute name='action'>app.preferences</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Help</attribute>
+        <attribute name='action'>app.help</attribute>
+        <attribute name='accel'>F1</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_About Meld</attribute>
+        <attribute name='action'>app.about</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Quit</attribute>
+        <attribute name='action'>app.quit</attribute>
+        <attribute name='accel'>&lt;Primary&gt;q</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
