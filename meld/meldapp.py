@@ -30,12 +30,10 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 
 import meld.conf
+import meld.filters
 import meld.preferences
 import meld.ui.util
-from . import conf
-from . import filters
-from . import preferences
-from . import recent
+import meld.recent
 
 
 class MeldApp(Gtk.Application):
@@ -51,14 +49,13 @@ class MeldApp(Gtk.Application):
         Gtk.Application.__init__(self)
         GObject.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
-        self.version = conf.__version__
-        self.prefs = preferences.MeldPreferences()
+        self.prefs = meld.preferences.MeldPreferences()
         self.prefs.notify_add(self.on_preference_changed)
         self.file_filters = self._parse_filters(self.prefs.filters,
-                                                filters.FilterEntry.SHELL)
+                                                meld.filters.FilterEntry.SHELL)
         self.text_filters = self._parse_filters(self.prefs.regexes,
-                                                filters.FilterEntry.REGEX)
-        self.recent_comparisons = recent.RecentFiles(sys.argv[0])
+                                                meld.filters.FilterEntry.REGEX)
+        self.recent_comparisons = meld.recent.RecentFiles(sys.argv[0])
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -115,16 +112,16 @@ class MeldApp(Gtk.Application):
 
     def on_preference_changed(self, key, val):
         if key == "filters":
-            self.file_filters = self._parse_filters(val,
-                                                    filters.FilterEntry.SHELL)
+            self.file_filters = self._parse_filters(
+                val, meld.filters.FilterEntry.SHELL)
             self.emit('file-filters-changed')
         elif key == "regexes":
-            self.text_filters = self._parse_filters(val,
-                                                    filters.FilterEntry.REGEX)
+            self.text_filters = self._parse_filters(
+                val, meld.filters.FilterEntry.REGEX)
             self.emit('text-filters-changed')
 
     def _parse_filters(self, string, filt_type):
-        filt = [filters.FilterEntry.parse(l, filt_type) for l
+        filt = [meld.filters.FilterEntry.parse(l, filt_type) for l
                 in string.split("\n")]
         return [f for f in filt if f is not None]
 
@@ -164,7 +161,7 @@ class MeldApp(Gtk.Application):
         parser = optparse.OptionParser(
             usage=usage,
             description=_("Meld is a file and directory comparison tool."),
-            version="%prog " + conf.__version__)
+            version="%prog " + meld.conf.__version__)
         parser.add_option("-L", "--label", action="append", default=[],
             help=_("Set label to use instead of file name"))
         parser.add_option("-n", "--newtab", action="store_true", default=False,
