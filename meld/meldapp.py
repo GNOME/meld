@@ -46,6 +46,7 @@ class MeldApp(Gtk.Application):
 
     def __init__(self):
         Gtk.Application.__init__(self)
+        self.set_application_id("org.gnome.meld")
         GObject.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
         self.prefs = meld.preferences.MeldPreferences()
@@ -55,6 +56,7 @@ class MeldApp(Gtk.Application):
         self.text_filters = self._parse_filters(self.prefs.regexes,
                                                 meld.filters.FilterEntry.REGEX)
         self.recent_comparisons = meld.recent.RecentFiles(sys.argv[0])
+        self.window = None
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -79,11 +81,12 @@ class MeldApp(Gtk.Application):
         # self.set_menubar()
 
     def do_activate(self):
-        # Should be meldwindow.MeldWindow(self), and rely on the Application
-        # to keep track
-        self.window = meldwindow.MeldWindow()
-        self.add_window(self.window.widget)
-        self.window.widget.show()
+        if not self.window:
+            self.window = meldwindow.MeldWindow()
+            self.add_window(self.window.widget)
+            self.window.widget.show()
+        else:
+            self.window.widget.present()
 
     def preferences_callback(self, action, parameter):
         meld.preferences.PreferencesDialog(self.get_active_window(),
