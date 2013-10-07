@@ -27,7 +27,6 @@ import shutil
 import re
 import subprocess
 
-from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import Gtk
 
@@ -91,16 +90,6 @@ def run_dialog( text, parent=None, messagetype=Gtk.MessageType.WARNING, buttonst
     d.destroy()
     return ret
 
-def open_uri(uri, timestamp=0):
-    try:
-        Gtk.show_uri(Gdk.Screen.get_default(), uri, timestamp)
-    except Gio.Error:
-        if uri.startswith("http://"):
-            import webbrowser
-            webbrowser.open_new_tab(uri)
-        else:
-            # Unhandled URI
-            pass
 
 # Taken from epiphany
 def position_menu_under_widget(menu, widget):
