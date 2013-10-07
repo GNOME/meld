@@ -31,8 +31,6 @@ from .ui import gnomeglade
 from .ui import listwidget
 from .util import prefs
 
-from .util.sourceviewer import srcviewer
-
 
 TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
                                 ('100ns (NTFS)', 100),
@@ -157,20 +155,14 @@ class PreferencesDialog(gnomeglade.Component):
         self.spinbutton_tabsize.set_value( self.prefs.tab_size )
         self.checkbutton_highlight_current_line.set_active(
             self.prefs.highlight_current_line)
-        if srcviewer.gsv is not None:
-            self.checkbutton_spaces_instead_of_tabs.set_active( self.prefs.spaces_instead_of_tabs )
-            self.checkbutton_show_line_numbers.set_active( self.prefs.show_line_numbers )
-            self.checkbutton_show_whitespace.set_active(self.prefs.show_whitespace)
-            self.checkbutton_use_syntax_highlighting.set_active( self.prefs.use_syntax_highlighting )
-        else:
-            no_sourceview_text = \
-                _("Only available if you have PyGtkSourceView 2 installed")
-            for w in (self.checkbutton_spaces_instead_of_tabs,
-                      self.checkbutton_show_line_numbers,
-                      self.checkbutton_use_syntax_highlighting,
-                      self.checkbutton_show_whitespace):
-                w.set_sensitive(False)
-                w.set_tooltip_text(no_sourceview_text)
+        self.checkbutton_spaces_instead_of_tabs.set_active(
+            self.prefs.spaces_instead_of_tabs)
+        self.checkbutton_show_line_numbers.set_active(
+            self.prefs.show_line_numbers)
+        self.checkbutton_show_whitespace.set_active(
+            self.prefs.show_whitespace)
+        self.checkbutton_use_syntax_highlighting.set_active(
+            self.prefs.use_syntax_highlighting)
         # TODO: This doesn't restore the state of character wrapping when word
         # wrapping is disabled, but this is hard with our existing gconf keys
         if self.prefs.edit_wrap_lines != Gtk.WrapMode.NONE:
@@ -225,23 +217,14 @@ class PreferencesDialog(gnomeglade.Component):
         self.combo_file_order.set_active(
             1 if self.prefs.vc_left_is_local else 0)
 
-        if srcviewer.gsv is not None:
-            self.checkbutton_show_commit_margin.set_active(
-                self.prefs.vc_show_commit_margin)
-            self.spinbutton_commit_margin.set_value(
-                self.prefs.vc_commit_margin)
-            self.checkbutton_break_commit_lines.set_sensitive(
-                self.prefs.vc_show_commit_margin)
-            self.checkbutton_break_commit_lines.set_active(
-                self.prefs.vc_break_commit_message)
-        else:
-            no_sourceview_text = \
-                _("Only available if you have PyGtkSourceView 2 installed")
-            for w in (self.checkbutton_show_commit_margin,
-                      self.spinbutton_commit_margin,
-                      self.checkbutton_break_commit_lines):
-                w.set_sensitive(False)
-                w.set_tooltip_text(no_sourceview_text)
+        self.checkbutton_show_commit_margin.set_active(
+            self.prefs.vc_show_commit_margin)
+        self.spinbutton_commit_margin.set_value(
+            self.prefs.vc_commit_margin)
+        self.checkbutton_break_commit_lines.set_sensitive(
+            self.prefs.vc_show_commit_margin)
+        self.checkbutton_break_commit_lines.set_active(
+            self.prefs.vc_break_commit_message)
 
         self.widget.show()
 

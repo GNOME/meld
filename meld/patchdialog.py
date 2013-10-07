@@ -22,11 +22,12 @@ import os
 
 from gi.repository import Gtk
 from gi.repository import Pango
+from gi.repository import GtkSource
 
 from .ui import gnomeglade
 
 from .util.compat import text_type
-from .util.sourceviewer import srcviewer
+from .util.sourceviewer import LanguageManager
 
 
 class PatchDialog(gnomeglade.Component):
@@ -39,11 +40,11 @@ class PatchDialog(gnomeglade.Component):
         self.prefs.notify_add(self.on_preference_changed)
         self.filediff = filediff
 
-        buf = srcviewer.GtkTextBuffer()
+        buf = GtkSource.Buffer()
         self.textview.set_buffer(buf)
-        lang = srcviewer.get_language_from_mime_type("text/x-diff")
-        srcviewer.set_language(buf, lang)
-        srcviewer.set_highlight_syntax(buf, True)
+        lang = LanguageManager.get_language_from_mime_type("text/x-diff")
+        buf.set_language(lang)
+        buf.set_highlight_syntax(True)
 
         fontdesc = Pango.FontDescription(self.prefs.get_current_font())
         self.textview.modify_font(fontdesc)

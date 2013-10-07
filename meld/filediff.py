@@ -47,7 +47,7 @@ from .ui import gnomeglade
 
 from .meldapp import app
 from .util.compat import text_type
-from .util.sourceviewer import srcviewer
+from .util.sourceviewer import LanguageManager
 
 
 class CachedSequenceMatcher(object):
@@ -172,11 +172,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             column_sizes.add_widget(widget)
 
         self.warned_bad_comparison = False
-        # Some sourceviews bind their own undo mechanism, which we replace
-        # Gtk.binding_entry_remove(srcviewer.GtkTextView, Gdk.KEY_z,
-        #                          Gdk.ModifierType.CONTROL_MASK)
-        # Gtk.binding_entry_remove(srcviewer.GtkTextView, Gdk.KEY_z,
-        #                          Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
         for v in self.textview:
             buf = meldbuffer.MeldBuffer()
             buf.connect('begin_user_action',
@@ -186,9 +181,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             v.set_show_line_numbers(self.prefs.show_line_numbers)
             v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
             v.set_wrap_mode(self.prefs.edit_wrap_lines)
-            if self.prefs.show_whitespace:
-                v.set_draw_spaces(srcviewer.spaces_flag)
-            srcviewer.set_tab_width(v, self.prefs.tab_size)
+            v.set_draw_spaces(self.prefs.show_whitespace)
+            v.set_tab_width(self.prefs.tab_size)
         self._keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -804,19 +798,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for i in range(3):
                 self.textview[i].set_tabs(tabs)
             for t in self.textview:
-                srcviewer.set_tab_width(t, value)
+                t.set_tab_width(value)
         elif key == "use_custom_font" or key == "custom_font":
             self.load_font()
         elif key == "show_line_numbers":
             for t in self.textview:
                 t.set_show_line_numbers( value )
         elif key == "show_whitespace":
-            spaces_flag = srcviewer.spaces_flag if value else 0
             for v in self.textview:
-                v.set_draw_spaces(spaces_flag)
+                v.set_draw_spaces(value)
         elif key == "use_syntax_highlighting":
             for i in range(self.num_panes):
-                srcviewer.set_highlight_syntax(self.textbuffer[i], value)
+                self.textbuffer[i].set_highlight_syntax(value)
         elif key == "edit_wrap_lines":
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)
@@ -1203,7 +1196,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i in range(self.num_panes):
             filename = self.textbuffer[i].data.filename
             if filename:
-                langs.append(srcviewer.get_language_from_file(filename))
+                langs.append(LanguageManager.get_language_from_file(filename))
             else:
                 langs.append(None)
 
@@ -1214,9 +1207,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             langs = (real_langs[0],) * len(langs)
 
         for i in range(self.num_panes):
-            srcviewer.set_language(self.textbuffer[i], langs[i])
-            srcviewer.set_highlight_syntax(self.textbuffer[i],
-                                           self.prefs.use_syntax_highlighting)
+            self.textbuffer[i].set_language(langs[i])
+            self.textbuffer[i].set_highlight_syntax(
+                self.prefs.use_syntax_highlighting)
 
     def _set_files_internal(self, files):
         for i in self._load_files(files, self.textbuffer):

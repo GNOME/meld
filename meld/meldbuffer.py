@@ -21,17 +21,17 @@ from __future__ import unicode_literals
 import sys
 from gettext import gettext as _
 
-from .util import sourceviewer
+from gi.repository import GtkSource
 
-from .util.compat import text_type
+from meld.util.compat import text_type
 
 
-class MeldBuffer(sourceviewer.srcviewer.GtkTextBuffer):
+class MeldBuffer(GtkSource.Buffer):
 
     __gtype_name__ = "MeldBuffer"
 
     def __init__(self, filename=None):
-        sourceviewer.srcviewer.GtkTextBuffer.__init__(self)
+        GtkSource.Buffer.__init__(self)
         self.data = MeldBufferData(filename)
 
     def reset_buffer(self, filename):
