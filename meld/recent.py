@@ -33,10 +33,10 @@ import tempfile
 from gettext import gettext as _
 
 from gi.repository import Gio
-import glib
+from gi.repository import GLib
 from gi.repository import Gtk
 
-from . import misc
+import meld.misc
 
 
 TYPE_FILE = "File"
@@ -48,7 +48,7 @@ COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
 
 class RecentFiles(object):
 
-    recent_path = os.path.join(glib.get_user_data_dir(), "meld")
+    recent_path = os.path.join(GLib.get_user_data_dir(), "meld")
     recent_suffix = ".meldcmp"
 
     # Recent data
@@ -94,7 +94,7 @@ class RecentFiles(object):
             gio_file = Gio.File.new_for_path(recent_path)
 
         if len(paths) > 1:
-            display_name = " : ".join(misc.shorten_names(*paths))
+            display_name = " : ".join(meld.misc.shorten_names(*paths))
         else:
             display_path = paths[0]
             userhome = os.path.expanduser("~")
