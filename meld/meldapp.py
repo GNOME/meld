@@ -170,15 +170,15 @@ class MeldApp(Gtk.Application):
         parser.values.diff.append(diff_files_args)
 
     def parse_args(self, rawargs):
-        usages = [("", _("Start with an empty window")),
-                  ("<%s|%s>" % (_("file"), _("dir")),
-                   _("Start a version control comparison")),
-                  ("<%s> <%s> [<%s>]" % ((_("file"),) * 3),
-                   _("Start a 2- or 3-way file comparison")),
-                  ("<%s> <%s> [<%s>]" % ((_("dir"),) * 3),
-                   _("Start a 2- or 3-way directory comparison")),
-                  ("<%s> <%s>" % (_("file"), _("dir")),
-                   _("Start a comparison between file and dir/file"))]
+        usages = [
+            ("", _("Start with an empty window")),
+            ("<%s|%s>" % (_("file"), _("dir")),
+             _("Start a version control comparison")),
+            ("<%s> <%s> [<%s>]" % ((_("file"),) * 3),
+             _("Start a 2- or 3-way file comparison")),
+            ("<%s> <%s> [<%s>]" % ((_("dir"),) * 3),
+             _("Start a 2- or 3-way directory comparison")),
+        ]
         pad_args_fmt = "%-" + str(max([len(s[0]) for s in usages])) + "s %s"
         usage_lines = ["  %prog " + pad_args_fmt % u for u in usages]
         usage = "\n" + "\n".join(usage_lines)
@@ -216,9 +216,6 @@ class MeldApp(Gtk.Application):
         elif options.auto_merge and any([os.path.isdir(f) for f in args]):
             parser.error(_("can't auto-merge directories"))
 
-        for files in options.diff:
-            self.open_paths(files, new_tab=options.newtab)
-
         if options.comparison_file or (len(args) == 1 and
                                        args[0].endswith(".meldcmp")):
             path = options.comparison_file or args[0]
@@ -228,18 +225,31 @@ class MeldApp(Gtk.Application):
                 tab = self.window.append_recent(gio_file.get_uri())
             except (IOError, ValueError):
                 parser.error(_("Error reading saved comparison file"))
-        elif args:
-            tab = self.open_paths(
-                args, auto_compare=options.auto_compare,
-                auto_merge=options.auto_merge, new_tab=options.newtab)
-        else:
-            tab = None
+            return tab
 
-        if options.label and tab:
-            tab.set_labels(options.label)
+        error = None
+        comparisons = options.diff + [args]
+        for paths in comparisons:
+            try:
+                tab = self.open_paths(
+                    paths, auto_compare=options.auto_compare,
+                    auto_merge=options.auto_merge, new_tab=options.newtab)
+            except ValueError as err:
+                error = err
 
-        if options.outfile and tab and isinstance(tab, filediff.FileDiff):
-            tab.set_merge_output_file(options.outfile)
+            if options.label:
+                tab.set_labels(options.label)
+
+            if options.outfile and isinstance(tab, filediff.FileDiff):
+                tab.set_merge_output_file(options.outfile)
+
+        if error:
+            if not self.window.has_pages():
+                parser.error(error)
+            else:
+                print(error)
+
+
 
 app = MeldApp()
 

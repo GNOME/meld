@@ -656,25 +656,8 @@ class MeldWindow(gnomeglade.Component):
         dirslist = [p for p in paths if os.path.isdir(p)]
         fileslist = [p for p in paths if os.path.isfile(p)]
         if dirslist and fileslist:
-            # Build the file list by appending filenames to directories,
-            # reproducing a feature of diff. This should be reconsidered.
-            lastfilename = fileslist[0]
-            builtfilelist = []
-            for elem in paths:
-                if os.path.isdir(elem):
-                    builtfilename = os.path.join(elem, lastfilename)
-                    if os.path.isfile(builtfilename):
-                        elem = builtfilename
-                    else:
-                        misc.run_dialog(
-                            _("Cannot compare a mixture of files and "
-                              "directories.\n"),
-                            parent=self, buttonstype=Gtk.ButtonsType.OK)
-                        return
-                else:
-                    lastfilename = os.path.basename(elem)
-                builtfilelist.append(elem)
-            return self.append_filediff(builtfilelist)
+            raise ValueError(
+                _("Cannot compare a mixture of files and directories"))
         elif dirslist:
             return self.append_dirdiff(paths, auto_compare)
         elif auto_merge:
