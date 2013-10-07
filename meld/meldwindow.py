@@ -1,20 +1,19 @@
-### Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2010-2011 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2010-2013 Kai Willadsen <kai.willadsen@gmail.com>
 
-### This program is free software; you can redistribute it and/or modify
-### it under the terms of the GNU General Public License as published by
-### the Free Software Foundation; either version 2 of the License, or
-### (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option)
+# any later version.
 
-### This program is distributed in the hope that it will be useful,
-### but WITHOUT ANY WARRANTY; without even the implied warranty of
-### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-### GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
 
-### You should have received a copy of the GNU General Public License
-### along with this program; if not, write to the Free Software
-### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
-### USA.
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import os
 from gettext import gettext as _
@@ -40,17 +39,8 @@ from .util.compat import string_types
 from .meldapp import app
 
 
-################################################################################
-#
-# MeldApp
-#
-################################################################################
-
 class MeldWindow(gnomeglade.Component):
 
-    #
-    # init
-    #
     def __init__(self):
         gnomeglade.Component.__init__(self, "meldapp.ui", "meldapp")
         self.widget.set_name("meldapp")
@@ -164,7 +154,8 @@ class MeldWindow(gnomeglade.Component):
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file)
         self.ui.connect("connect-proxy", self._on_uimanager_connect_proxy)
-        self.ui.connect("disconnect-proxy", self._on_uimanager_disconnect_proxy)
+        self.ui.connect("disconnect-proxy",
+                        self._on_uimanager_disconnect_proxy)
         self.tab_switch_actiongroup = None
         self.tab_switch_merge_id = None
 
@@ -191,7 +182,8 @@ class MeldWindow(gnomeglade.Component):
         self.appvbox.pack_start(self.toolbar, False, True, 0)
         self._menu_context = self.statusbar.get_context_id("Tooltips")
         self.widget.drag_dest_set(
-            Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT | Gtk.DestDefaults.DROP,
+            Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
+            Gtk.DestDefaults.DROP,
             None, Gdk.DragAction.COPY)
         self.widget.drag_dest_add_uri_targets()
         self.widget.connect("drag_data_received",
@@ -203,7 +195,8 @@ class MeldWindow(gnomeglade.Component):
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
-        self.widget.set_default_size(app.prefs.window_size_x, app.prefs.window_size_y)
+        self.widget.set_default_size(app.prefs.window_size_x,
+                                     app.prefs.window_size_y)
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
@@ -218,7 +211,8 @@ class MeldWindow(gnomeglade.Component):
         # Let the rest of the stack know about this event
         return False
 
-    def on_widget_drag_data_received(self, wid, context, x, y, selection_data, info, time):
+    def on_widget_drag_data_received(self, wid, context, x, y, selection_data,
+                                     info, time):
         if len(selection_data.get_uris()) != 0:
             paths = []
             for uri in selection_data.get_uris():
@@ -231,12 +225,16 @@ class MeldWindow(gnomeglade.Component):
         if not tooltip:
             return
         if isinstance(widget, Gtk.MenuItem):
-            cid = widget.connect("select", self._on_action_item_select_enter, tooltip)
-            cid2 = widget.connect("deselect", self._on_action_item_deselect_leave)
+            cid = widget.connect(
+                "select", self._on_action_item_select_enter, tooltip)
+            cid2 = widget.connect(
+                "deselect", self._on_action_item_deselect_leave)
             widget.proxy_signal_ids = (cid, cid2)
         elif isinstance(widget, Gtk.ToolButton):
-            cid = widget.get_child().connect("enter", self._on_action_item_select_enter, tooltip)
-            cid2 = widget.get_child().connect("leave", self._on_action_item_deselect_leave)
+            cid = widget.get_child().connect(
+                "enter", self._on_action_item_select_enter, tooltip)
+            cid2 = widget.get_child().connect(
+                "leave", self._on_action_item_deselect_leave)
             widget.proxy_signal_ids = (cid, cid2)
 
     def _on_uimanager_disconnect_proxy(self, ui, action, widget):
@@ -282,9 +280,6 @@ class MeldWindow(gnomeglade.Component):
         elif key == "toolbar_visible":
             self.toolbar.props.visible = app.prefs.toolbar_visible
 
-    #
-    # General events and callbacks
-    #
     def on_delete_event(self, *extra):
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
@@ -415,9 +410,6 @@ class MeldWindow(gnomeglade.Component):
         app.prefs.window_size_x = rect.width
         app.prefs.window_size_y = rect.height
 
-    #
-    # Toolbar and menu items (file)
-    #
     def on_menu_file_new_activate(self, menuitem):
         self.append_new_comparison()
 
@@ -443,9 +435,6 @@ class MeldWindow(gnomeglade.Component):
             page = self.notebook.get_nth_page(i).pyobject
             self.try_remove_page(page)
 
-    #
-    # Toolbar and menu items (edit)
-    #
     def on_menu_undo_activate(self, *extra):
         self.current_doc().on_undo_activate()
 
@@ -489,7 +478,8 @@ class MeldWindow(gnomeglade.Component):
             widget.emit("paste-clipboard")
 
     def on_action_fullscreen_toggled(self, widget):
-        is_full = self.widget.get_window().get_state() & Gdk.WindowState.FULLSCREEN
+        window_state = self.widget.get_window().get_state()
+        is_full = window_state & Gdk.WindowState.FULLSCREEN
         if widget.get_active() and not is_full:
             self.widget.fullscreen()
         elif is_full:
@@ -666,7 +656,8 @@ class MeldWindow(gnomeglade.Component):
         dirslist = [p for p in paths if os.path.isdir(p)]
         fileslist = [p for p in paths if os.path.isfile(p)]
         if dirslist and fileslist:
-            # build new file list appending previous found filename to dirs (like diff)
+            # Build the file list by appending filenames to directories,
+            # reproducing a feature of diff. This should be reconsidered.
             lastfilename = fileslist[0]
             builtfilelist = []
             for elem in paths:
@@ -675,9 +666,10 @@ class MeldWindow(gnomeglade.Component):
                     if os.path.isfile(builtfilename):
                         elem = builtfilename
                     else:
-                        # exit at first non found directory + file
-                        misc.run_dialog(_("Cannot compare a mixture of files and directories.\n"),
-                                        parent=self, buttonstype=Gtk.ButtonsType.OK)
+                        misc.run_dialog(
+                            _("Cannot compare a mixture of files and "
+                              "directories.\n"),
+                            parent=self, buttonstype=Gtk.ButtonsType.OK)
                         return
                 else:
                     lastfilename = os.path.basename(elem)
