@@ -1,5 +1,5 @@
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2010-2012 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2013 Kai Willadsen <kai.willadsen@gmail.com>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ class MeldApp(Gtk.Application):
 
     def __init__(self):
         Gtk.Application.__init__(self)
+        self.set_flags(Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.set_application_id("org.gnome.meld")
         GObject.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
@@ -88,6 +89,20 @@ class MeldApp(Gtk.Application):
         else:
             self.window.widget.present()
 
+    def do_command_line(self, command_line):
+        # FIXME: Command line handling is backwards
+        self.register(None)
+        self.activate()
+        self.parse_args(command_line.get_arguments()[1:])
+        if not self.window.has_pages():
+            self.window.append_new_comparison()
+        return 0
+
+    # def do_local_command_line(self, command_line):
+    #     response = Gtk.Application.do_local_command_line(self, command_line)
+    #     print(response)
+    #     return response
+
     def preferences_callback(self, action, parameter):
         meld.preferences.PreferencesDialog(self.get_active_window(),
                                            self.prefs)
@@ -111,6 +126,14 @@ class MeldApp(Gtk.Application):
                 return
             window.destroy()
         sys.exit(0)
+
+    def open_paths(self, paths, **kwargs):
+        new_tab = kwargs.pop('new_tab')
+        if not new_tab:
+            # FIXME: Multi window handling
+            print('Not implemented')
+
+        return self.window.open_paths(paths, **kwargs)
 
     def on_preference_changed(self, key, val):
         if key == "filters":
@@ -193,19 +216,8 @@ class MeldApp(Gtk.Application):
         elif options.auto_merge and any([os.path.isdir(f) for f in args]):
             parser.error(_("can't auto-merge directories"))
 
-        new_window = True
-        open_paths = self.window.open_paths
-        if options.newtab:
-            if not dbus_app:
-                print(_("D-Bus error; comparisons will open in a new window."))
-            else:
-                # Note that we deliberately discard auto-compare and -merge
-                # options here; these are not supported via dbus yet.
-                open_paths = lambda f, *x: dbus_app.OpenPaths(f, 0)
-                new_window = False
-
         for files in options.diff:
-            open_paths(files)
+            self.open_paths(files, new_tab=options.newtab)
 
         if options.comparison_file or (len(args) == 1 and
                                        args[0].endswith(".meldcmp")):
@@ -217,23 +229,19 @@ class MeldApp(Gtk.Application):
             except (IOError, ValueError):
                 parser.error(_("Error reading saved comparison file"))
         elif args:
-            tab = open_paths(args, options.auto_compare, options.auto_merge)
+            tab = self.open_paths(
+                args, auto_compare=options.auto_compare,
+                auto_merge=options.auto_merge, new_tab=options.newtab)
         else:
             tab = None
 
         if options.label and tab:
             tab.set_labels(options.label)
 
-        if not self.window.has_pages():
-            self.window.append_new_comparison()
-
         if options.outfile and tab and isinstance(tab, filediff.FileDiff):
             tab.set_merge_output_file(options.outfile)
 
-        return new_window
-
 app = MeldApp()
-dbus_app = None
 
 from . import filediff
 from . import meldwindow

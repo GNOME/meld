@@ -165,13 +165,5 @@ if __name__ == '__main__':
     setup_resources()
 
     import meld.meldapp
-    app = meld.meldapp.app
-    try:
-        import meld.dbus_service
-        already_running, dbus_app = meld.dbus_service.setup(app)
-    except ImportError:
-        already_running, dbus_app = False, None
-    meld.meldapp.dbus_app = dbus_app
-
-    status = app.run(sys.argv)
+    status = meld.meldapp.app.run(sys.argv)
     sys.exit(status)
