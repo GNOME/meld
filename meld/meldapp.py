@@ -18,7 +18,6 @@
 
 from __future__ import print_function
 
-import logging
 import optparse
 import os
 import sys
@@ -229,23 +228,6 @@ class MeldApp(Gtk.Application):
             tab.set_merge_output_file(options.outfile)
 
         return new_window
-
-
-log = logging.getLogger("meld")
-
-# If we're running uninstalled and from Git, turn up the logging level
-top_level = os.path.dirname(os.path.dirname(__file__))
-if os.path.exists(os.path.join(top_level, "meld.doap")) and \
-   os.path.exists(os.path.join(top_level, ".git")):
-    log.setLevel(logging.WARNING)
-else:
-    log.setLevel(logging.CRITICAL)
-
-handler = logging.StreamHandler()
-formatter = logging.Formatter("%(asctime)s %(levelname)s "
-                              "%(name)s: %(message)s")
-handler.setFormatter(formatter)
-log.addHandler(handler)
 
 app = MeldApp()
 dbus_app = None

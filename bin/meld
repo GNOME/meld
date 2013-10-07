@@ -18,6 +18,7 @@
 ### USA.
 
 import locale
+import logging
 import os
 import sys
 
@@ -57,6 +58,7 @@ uninstalled = False
 if os.path.exists(os.path.join(melddir, "meld.doap")):
     sys.path[0:0] = [melddir]
     uninstalled = True
+devel = os.path.exists(os.path.join(melddir, ".git"))
 
 import meld.conf
 
@@ -140,7 +142,24 @@ def setup_resources():
     Gtk.rc_parse(rc_file)
 
 
+def setup_logging():
+    log = logging.getLogger()
+
+    # If we're running uninstalled and from Git, turn up the logging level
+    if uninstalled and devel:
+        log.setLevel(logging.INFO)
+    else:
+        log.setLevel(logging.CRITICAL)
+
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter("%(asctime)s %(levelname)s "
+                                  "%(name)s: %(message)s")
+    handler.setFormatter(formatter)
+    log.addHandler(handler)
+
+
 if __name__ == '__main__':
+    setup_logging()
     disable_stdout_buffering()
     check_requirements()
     setup_resources()
