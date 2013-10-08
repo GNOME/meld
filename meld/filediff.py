@@ -309,7 +309,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.widget.connect("style-set", self.on_style_set)
 
         self.set_num_panes(num_panes)
-        GObject.idle_add( lambda *args: self.load_font()) # hack around Bug 316730
         self.cursor = CursorDetails()
         self.connect("current-diff-changed", self.on_current_diff_changed)
         for t in self.textview:
@@ -776,27 +775,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def load_font(self):
         fontdesc = Pango.FontDescription(self.prefs.get_current_font())
         context = self.textview0.get_pango_context()
-        metrics = context.get_metrics( fontdesc, context.get_language() )
+        metrics = context.get_metrics(fontdesc, context.get_language())
         line_height_points = metrics.get_ascent() + metrics.get_descent()
         self.pixels_per_line = line_height_points // 1024
-        self.pango_char_width = metrics.get_approximate_char_width()
-        tabs = Pango.TabArray.new(10, 0)
-        tab_size = self.prefs.tab_size
-        for i in range(10):
-            tabs.set_tab(i, Pango.TabAlign.LEFT, i*tab_size*self.pango_char_width)
         for i in range(3):
             self.textview[i].modify_font(fontdesc)
-            self.textview[i].set_tabs(tabs)
         for i in range(2):
             self.linkmap[i].queue_draw()
 
     def on_preference_changed(self, key, value):
         if key == "tab_size":
-            tabs = Pango.TabArray.new(10, 0)
-            for i in range(10):
-                tabs.set_tab(i, Pango.TabAlign.LEFT, i*value*self.pango_char_width)
-            for i in range(3):
-                self.textview[i].set_tabs(tabs)
             for t in self.textview:
                 t.set_tab_width(value)
         elif key == "use_custom_font" or key == "custom_font":
