@@ -46,6 +46,7 @@ from . import undo
 from .ui import findbar
 from .ui import gnomeglade
 
+from meld.settings import settings
 from .meldapp import app
 from .util.compat import text_type
 from .util.sourceviewer import LanguageManager
@@ -135,8 +136,11 @@ class TextviewLineAnimation(object):
 
 
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
-    """Two or three way diff of text files.
-    """
+    """Two or three way comparison of text files"""
+
+    __gtype_name__ = "FileDiff"
+
+    highlight_current_line = GObject.property(type=bool, default=False)
 
     differ = diffutil.Differ
 
@@ -179,11 +183,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.on_textbuffer_begin_user_action)
             buf.connect('end_user_action', self.on_textbuffer_end_user_action)
             v.set_buffer(buf)
-            v.set_show_line_numbers(self.prefs.show_line_numbers)
-            v.set_insert_spaces_instead_of_tabs(self.prefs.spaces_instead_of_tabs)
             v.set_wrap_mode(self.prefs.edit_wrap_lines)
             v.set_draw_spaces(self.prefs.show_whitespace)
-            v.set_tab_width(self.prefs.tab_size)
             buf.data.connect('file-changed', self.notify_file_changed)
         self._keymask = 0
         self.load_font()
@@ -345,6 +346,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, 10)
 
+        # GSettings bindings
+        for view in self.textview:
+            settings.bind('indent-width', view, 'indent-width',
+                          Gio.SettingsBindFlags.DEFAULT)
+            settings.bind('insert-spaces-instead-of-tabs', view,
+                          'insert-spaces-instead-of-tabs',
+                          Gio.SettingsBindFlags.DEFAULT)
+            settings.bind('show-line-numbers', view, 'show-line-numbers',
+                          Gio.SettingsBindFlags.DEFAULT)
+        for buf in self.textbuffer:
+            settings.bind('highlight-syntax', buf, 'highlight-syntax',
+                          Gio.SettingsBindFlags.DEFAULT)
+
+        settings.bind('highlight-current-line', self, 'highlight-current-line',
+                      Gio.SettingsBindFlags.DEFAULT)
 
     def get_keymask(self):
         return self._keymask
@@ -806,20 +822,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.linkmap[i].queue_draw()
 
     def on_preference_changed(self, key, value):
-        if key == "tab_size":
-            for t in self.textview:
-                t.set_tab_width(value)
-        elif key == "use_custom_font" or key == "custom_font":
+        if key == "use_custom_font" or key == "custom_font":
             self.load_font()
-        elif key == "show_line_numbers":
-            for t in self.textview:
-                t.set_show_line_numbers( value )
         elif key == "show_whitespace":
             for v in self.textview:
                 v.set_draw_spaces(value)
-        elif key == "use_syntax_highlighting":
-            for i in range(self.num_panes):
-                self.textbuffer[i].set_highlight_syntax(value)
         elif key == "edit_wrap_lines":
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)
@@ -828,9 +835,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # correct coordinates. Overly-aggressive textview lazy calculation?
             self.diffmap0.queue_draw()
             self.diffmap1.queue_draw()
-        elif key == "spaces_instead_of_tabs":
-            for t in self.textview:
-                t.set_insert_spaces_instead_of_tabs(value)
         elif key == "ignore_blank_lines":
             self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
             self.refresh_comparison()
@@ -1219,8 +1223,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for i in range(self.num_panes):
             self.textbuffer[i].set_language(langs[i])
-            self.textbuffer[i].set_highlight_syntax(
-                self.prefs.use_syntax_highlighting)
 
     def _set_files_internal(self, files):
         for i in self._load_files(files, self.textbuffer):
@@ -1504,7 +1506,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             context.set_source_rgba(*self.line_colors[change[0]])
             context.stroke()
 
-        if (self.prefs.highlight_current_line and textview.is_focus() and
+        if (self.props.highlight_current_line and textview.is_focus() and
                 self.cursor.line is not None):
             it = textbuffer.get_iter_at_line(self.cursor.line)
             ypos, line_height = textview.get_line_yrange(it)

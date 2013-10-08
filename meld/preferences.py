@@ -22,6 +22,7 @@ import string
 
 from gettext import gettext as _
 
+from gi.repository import Gio
 from gi.repository import Gtk
 
 from . import filters
@@ -30,6 +31,8 @@ from . import vc
 from .ui import gnomeglade
 from .ui import listwidget
 from .util import prefs
+
+from meld.settings import settings
 
 
 TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
@@ -144,6 +147,19 @@ class PreferencesDialog(gnomeglade.Component):
                                       ["adjustment1", "adjustment2", "fileorderstore"])
         self.widget.set_transient_for(parent)
         self.prefs = prefs
+
+        bindings = [
+            ('indent-width', self.spinbutton_tabsize, 'value'),
+            ('insert-spaces-instead-of-tabs', self.checkbutton_spaces_instead_of_tabs, 'active'),
+            ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),
+            ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),
+            ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),
+        ]
+
+        for key, obj, attribute in bindings:
+            settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
+
+
         if not self.prefs.use_custom_font:
             self.checkbutton_default_font.set_active(True)
             self.fontpicker.set_sensitive(False)
@@ -152,17 +168,8 @@ class PreferencesDialog(gnomeglade.Component):
             self.fontpicker.set_sensitive(True)
             self.fontpicker.set_font_name(self.prefs.custom_font)
         self.fontpicker.set_font_name( self.prefs.custom_font )
-        self.spinbutton_tabsize.set_value( self.prefs.tab_size )
-        self.checkbutton_highlight_current_line.set_active(
-            self.prefs.highlight_current_line)
-        self.checkbutton_spaces_instead_of_tabs.set_active(
-            self.prefs.spaces_instead_of_tabs)
-        self.checkbutton_show_line_numbers.set_active(
-            self.prefs.show_line_numbers)
         self.checkbutton_show_whitespace.set_active(
             self.prefs.show_whitespace)
-        self.checkbutton_use_syntax_highlighting.set_active(
-            self.prefs.use_syntax_highlighting)
         # TODO: This doesn't restore the state of character wrapping when word
         # wrapping is disabled, but this is hard with our existing gconf keys
         if self.prefs.edit_wrap_lines != Gtk.WrapMode.NONE:
@@ -236,11 +243,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.fontpicker.set_sensitive(use_custom)
         self.prefs.use_custom_font = use_custom
 
-    def on_spinbutton_tabsize_changed(self, spin):
-        self.prefs.tab_size = int(spin.get_value())
-    def on_checkbutton_spaces_instead_of_tabs_toggled(self, check):
-        self.prefs.spaces_instead_of_tabs = check.get_active()
-
     def on_checkbutton_wrap_text_toggled(self, button):
         if not self.checkbutton_wrap_text.get_active():
             self.prefs.edit_wrap_lines = 0
@@ -252,17 +254,8 @@ class PreferencesDialog(gnomeglade.Component):
             else:
                 self.prefs.edit_wrap_lines = 1
 
-    def on_checkbutton_highlight_current_line_toggled(self, check):
-        self.prefs.highlight_current_line = check.get_active()
-
-    def on_checkbutton_show_line_numbers_toggled(self, check):
-        self.prefs.show_line_numbers = check.get_active()
-
     def on_checkbutton_show_whitespace_toggled(self, check):
         self.prefs.show_whitespace = check.get_active()
-
-    def on_checkbutton_use_syntax_highlighting_toggled(self, check):
-        self.prefs.use_syntax_highlighting = check.get_active()
 
     def on_system_editor_checkbutton_toggled(self, check):
         use_default = check.get_active()
@@ -321,12 +314,7 @@ class MeldPreferences(prefs.Preferences):
         "window_size_y": prefs.Value(prefs.INT, 600),
         "use_custom_font": prefs.Value(prefs.BOOL,0),
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
-        "tab_size": prefs.Value(prefs.INT, 4),
-        "spaces_instead_of_tabs": prefs.Value(prefs.BOOL, False),
-        "highlight_current_line": prefs.Value(prefs.BOOL, False),
-        "show_line_numbers": prefs.Value(prefs.BOOL, 0),
         "show_whitespace": prefs.Value(prefs.BOOL, False),
-        "use_syntax_highlighting": prefs.Value(prefs.BOOL, 0),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "edit_command_type" : prefs.Value(prefs.STRING, "gnome"), #gnome, custom
         "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),

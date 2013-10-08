@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+
+  <flags id="org.gnome.meld.spacesflags">
+    <value nick="space" value="1"/>
+    <value nick="tab" value="2"/>
+    <value nick="newline" value="4"/>
+    <value nick="nbsp" value="8"/>
+  </flags>
+
+  <schema id="org.gnome.meld" path="/org/gnome/meld/">
+      <!-- Settings corresponding directly to GtkSourceView properties -->
+      <key name="indent-width" type="i">
+          <default>8</default>
+          <summary>Width of an indentation step</summary>
+          <description>The number of spaces to use for a single indent step</description>
+      </key>
+      <key name="insert-spaces-instead-of-tabs" type="b">
+          <default>false</default>
+          <summary>Whether to indent using spaces or tabs</summary>
+          <description>If true, any new indentation will use spaces instead of tabs.</description>
+      </key>
+      <key name="show-line-numbers" type="b">
+          <default>false</default>
+          <summary>Show line numbers</summary>
+          <description>If true, line numbers will be shown in the gutter of file comparisons.</description>
+      </key>
+      <key name="highlight-syntax" type='b'>
+          <default>false</default>
+          <summary>Highlight syntax</summary>
+          <description>Whether to highlight syntax in comparisons. Because of Meld's own color highlighting, this is off by default.</description>
+      </key>
+
+
+      <key name="show-whitespace" flags='org.gnome.meld.spacesflags'>
+          <default>["space", "tab"]</default>
+          <summary>Displayed whitespace</summary>
+          <description>Selector for individual whitespace character types to be shown. Possible values are 'space', 'tab', 'newline' and 'nbsp'.</description>
+      </key>
+
+
+      <!-- Non-GtkSourceView editor properties -->
+      <key name="highlight-current-line" type="b">
+          <default>false</default>
+          <summary>Highlight current line</summary>
+          <description>If true, the line containing the cursor will be highlighted in file comparisons.</description>
+      </key>
+  </schema>
+</schemalist>
