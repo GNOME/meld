@@ -324,6 +324,26 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         cursor_label.show()
         self.status_info_labels = [overwrite_label, cursor_label]
 
+        # Prototype implementation
+
+        from gutterrendererchunk import GutterRendererChunkAction
+
+        for pane, t in enumerate(self.textview):
+            # FIXME: set_num_panes will break this good
+            if pane == 0 or (pane == 1 and self.num_panes == 3):
+                window = Gtk.TextWindowType.RIGHT
+                views = [self.textview[pane], self.textview[pane + 1]]
+                renderer = GutterRendererChunkAction(pane, pane + 1, views, self, self.linediffer)
+                gutter = t.get_gutter(window)
+                gutter.insert(renderer, 10)
+            if pane in (1, 2):
+                window = Gtk.TextWindowType.LEFT
+                views = [self.textview[pane], self.textview[pane - 1]]
+                renderer = GutterRendererChunkAction(pane, pane - 1, views, self, self.linediffer)
+                gutter = t.get_gutter(window)
+                gutter.insert(renderer, 10)
+
+
     def get_keymask(self):
         return self._keymask
     def set_keymask(self, value):
