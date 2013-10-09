@@ -121,12 +121,6 @@ class LinkMap(Gtk.DrawingArea):
             context.set_source_rgba(*self.line_colors[c[0]])
             context.stroke()
 
-        # allow for scrollbar at end of textview
-        mid = int(0.5 * self.views[0].get_allocation().height) + 0.5
-        context.set_source_rgba(0., 0., 0., 0.5)
-        context.move_to(.35 * wtotal, mid)
-        context.line_to(.65 * wtotal, mid)
-        context.stroke()
 
     def do_scroll_event(self, event):
         self.filediff.next_diff(event.direction)
