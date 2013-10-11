@@ -37,7 +37,7 @@ p.color = "blue"
 import os
 import sys
 
-import glib
+from gi.repository import GLib
 
 
 class Value(object):
@@ -189,9 +189,10 @@ class ConfigParserPreferences(object):
         }
 
         if sys.platform == "win32":
-            pref_dir = os.path.join(os.getenv("APPDATA"), "Meld")
+            config_dir = GLib.get_user_config_dir().decode('utf8')
+            pref_dir = os.path.join(config_dir, "Meld")
         else:
-            pref_dir = os.path.join(glib.get_user_config_dir(), "meld")
+            pref_dir = os.path.join(GLib.get_user_config_dir(), "meld")
 
         if not os.path.exists(pref_dir):
             os.makedirs(pref_dir)
@@ -270,7 +271,7 @@ class ConfigParserPreferences(object):
 
 
 force_ini = os.path.exists(
-    os.path.join(glib.get_user_config_dir(), 'meld', 'use-rc-prefs'))
+    os.path.join(GLib.get_user_config_dir(), 'meld', 'use-rc-prefs'))
 skip_gconf = sys.platform == 'win32' or force_ini
 # Prefer gconf, falling back to configparser
 try:
@@ -283,7 +284,7 @@ try:
     client.set_int(key, os.getpid())
     client.unset(key)
     Preferences = GConfPreferences
-except (ImportError, glib.GError):
+except (ImportError, GLib.GError):
     try:
         import configparser
     except ImportError:

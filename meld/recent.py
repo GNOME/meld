@@ -49,6 +49,7 @@ COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
 class RecentFiles(object):
 
     recent_path = os.path.join(GLib.get_user_data_dir(), "meld")
+    recent_path = recent_path.decode('utf8')
     recent_suffix = ".meldcmp"
 
     # Recent data
