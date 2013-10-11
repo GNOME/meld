@@ -189,7 +189,8 @@ class ConfigParserPreferences(object):
         }
 
         if sys.platform == "win32":
-            pref_dir = os.path.join(os.getenv("APPDATA"), "Meld")
+            config_dir = glib.get_user_config_dir().decode('utf8')
+            pref_dir = os.path.join(config_dir, "Meld")
         else:
             pref_dir = os.path.join(glib.get_user_config_dir(), "meld")
 
