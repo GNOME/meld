@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-14 21:08+0000\n"
-"PO-Revision-Date: 2013-10-15 22:43+0200\n"
+"POT-Creation-Date: 2013-10-15 22:39+0000\n"
+"PO-Revision-Date: 2013-10-16 20:27+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -48,6 +48,33 @@ msgstr "Upoređujte i spajajte vaše datoteke"
 #: ../data/mime/meld.xml.in.h:1
 msgid "Meld comparison description"
 msgstr "Opis Meldovog poređenja"
+
+#: ../data/ui/application.ui.h:1
+msgid "About Meld"
+msgstr "O Meldu"
+
+#: ../data/ui/application.ui.h:2
+msgid ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+msgstr ""
+"Autorska prava © 2002-2009 Stefen Kenedi\n"
+"Autorska prava © 2009-2013 Kaj Viladsen"
+
+#: ../data/ui/application.ui.h:4
+msgid "http://meldmerge.org/"
+msgstr "http://meldmerge.org/"
+
+#: ../data/ui/application.ui.h:5
+msgid "Website"
+msgstr "Veb stranica"
+
+#: ../data/ui/application.ui.h:6
+msgid "translator-credits"
+msgstr ""
+"  Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
+"\n"
+"http://prevod.org — prevod na srpski jezik"
 
 #: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
 msgid "_Compare"
@@ -398,7 +425,6 @@ msgid "Folder Comparisons"
 msgstr "Poređenje fascikli"
 
 #: ../data/ui/preferences.ui.h:27
-#| msgid "Folder Comparisons"
 msgid "Version Comparisons"
 msgstr "Poređenje izdanja"
 
@@ -407,7 +433,6 @@ msgid "_When comparing file revisions:"
 msgstr "_Prilikom poređenja pregleda datoteke:"
 
 #: ../data/ui/preferences.ui.h:29
-#| msgid "Log Message"
 msgid "Commit Messages"
 msgstr "Poruke predaje"
 
@@ -420,7 +445,6 @@ msgid "Automatically _break lines at right margin on commit"
 msgstr "Sam _prelamaj redove na desnoj margini pri predaji"
 
 #: ../data/ui/preferences.ui.h:32
-#| msgid "Version control:"
 msgid "Version Control"
 msgstr "Upravljanje izdanjem"
 
@@ -641,7 +665,6 @@ msgid "Co_mmit"
 msgstr "U_gradi"
 
 #: ../data/ui/vcview.ui.h:33
-#| msgid "Push local changes to remote"
 msgid "Push local commits to remote?"
 msgstr "Da poguram mesne predaje u udaljene?"
 
@@ -651,8 +674,6 @@ msgstr ""
 "Predaje koje će biti pogurane se određuju vašim sistemom upravljanja izdanjem"
 
 #: ../data/ui/vcview.ui.h:35
-#| msgid "%d unpushed commit"
-#| msgid_plural "%d unpushed commits"
 msgid "_Push commits"
 msgstr "_Poguraj predaje"
 
@@ -732,16 +753,11 @@ msgstr ""
 "Da presnimim?"
 
 #: ../meld/dirdiff.py:833
-#| msgid "Error reading saved comparison file"
 msgid "Error copying file"
 msgstr "Greška umnožavanja datoteke"
 
 #: ../meld/dirdiff.py:834
 #, python-format
-#| msgid ""
-#| "Error copying '%s' to '%s'\n"
-#| "\n"
-#| "%s."
 msgid ""
 "Couldn't copy %s\n"
 "to %s.\n"
@@ -755,10 +771,6 @@ msgstr ""
 
 #: ../meld/dirdiff.py:857
 #, python-format
-#| msgid ""
-#| "Error removing %s\n"
-#| "\n"
-#| "%s."
 msgid "Error deleting %s"
 msgstr "Greška brisanja „%s“"
 
@@ -1151,6 +1163,16 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Objedinjujem datoteke"
 
+#: ../meld/gutterrendererchunk.py:92
+#| msgid "Copy _Left"
+msgid "Copy _up"
+msgstr "Umnoži _gore"
+
+#: ../meld/gutterrendererchunk.py:93
+#| msgid "Copy _Left"
+msgid "Copy _down"
+msgstr "Umnoži _dole"
+
 #: ../meld/meldapp.py:169
 msgid "wrong number of arguments supplied to --diff"
 msgstr "pogrešan broj argumenata pridodat uz „--diff“"
@@ -1447,7 +1469,6 @@ msgid "Switch to this tab"
 msgstr "Prebacite se na ovaj jezičak"
 
 #: ../meld/meldwindow.py:660
-#| msgid "Cannot compare a mixture of files and directories.\n"
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Ne mogu da poredim mešavinu datoteka i fascikli"
 
@@ -1528,6 +1549,75 @@ msgstr "Komentar skripte\t0\t#.*"
 msgid "Version control:"
 msgstr "Upravljanje izdanjem:"
 
+#: ../meld/ui/findbar.py:142
+msgid "Regular expression error"
+msgstr "Greška regularnog izraza"
+
+#: ../meld/ui/notebooklabel.py:65
+msgid "Close tab"
+msgstr "Zatvorite jezičak"
+
+#: ../meld/ui/vcdialogs.py:55
+msgid "No files will be committed"
+msgstr "Nijedna datoteka neće biti ugrađena"
+
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:126
+#, python-format
+msgid "%s in %s"
+msgstr "%s u %s"
+
+#. Translators: These messages cover the case where there is
+#. only one branch, and are not part of another message.
+#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] "%d nepogurana predaja"
+msgstr[1] "%d nepogurane predaje"
+msgstr[2] "%d nepoguranih predaja"
+msgstr[3] "%d nepogurana predaja"
+
+#: ../meld/vc/git.py:129
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] "%d grani"
+msgstr[1] "%d grane"
+msgstr[2] "%d grana"
+msgstr[3] "%d grani"
+
+#: ../meld/vc/git.py:341
+#, python-format
+msgid "Mode changed from %s to %s"
+msgstr "Režim je izmenjen iz „%s“ u „%s“"
+
+#: ../meld/vc/_vc.py:47
+msgid "Merged"
+msgstr "Stopljeno"
+
+#: ../meld/vc/_vc.py:47
+msgid "Base"
+msgstr "Osnova"
+
+#: ../meld/vc/_vc.py:47
+msgid "Local"
+msgstr "Mesno"
+
+#: ../meld/vc/_vc.py:47
+msgid "Remote"
+msgstr "Udaljeno"
+
+#. These are the possible states of files. Be sure to get the colons correct.
+#: ../meld/vc/_vc.py:62
+msgid ""
+"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
+"Not present"
+msgstr ""
+"Zanemareno:Neverzionirano:::Greška::Novo dodato:Izmenjeno:Sukob:Uklonjeno:"
+"Nedostajuće:Nije prisutno"
+
 #: ../meld/vcview.py:206 ../meld/vcview.py:363
 msgid "Location"
 msgstr "Putanja"
@@ -1586,7 +1676,6 @@ msgstr "%s: %s"
 
 #: ../meld/vcview.py:377 ../meld/vcview.py:385
 #, python-format
-#| msgid "[%s] Scanning %s"
 msgid "Scanning %s"
 msgstr "Pregledam „%s“"
 
@@ -1608,81 +1697,5 @@ msgstr ""
 
 #: ../meld/vcview.py:677
 #, python-format
-#| msgid ""
-#| "Error removing %s\n"
-#| "\n"
-#| "%s."
 msgid "Error removing %s"
 msgstr "Greška pri uklanjanju „%s“"
-
-#: ../meld/ui/findbar.py:142
-#| msgid ""
-#| "Regular expression error\n"
-#| "'%s'"
-msgid "Regular expression error"
-msgstr "Greška regularnog izraza"
-
-#: ../meld/ui/notebooklabel.py:65
-msgid "Close tab"
-msgstr "Zatvorite jezičak"
-
-#: ../meld/ui/vcdialogs.py:55
-msgid "No files will be committed"
-msgstr "Nijedna datoteka neće biti ugrađena"
-
-#: ../meld/vc/_vc.py:47
-msgid "Merged"
-msgstr "Stopljeno"
-
-#: ../meld/vc/_vc.py:47
-msgid "Base"
-msgstr "Osnova"
-
-#: ../meld/vc/_vc.py:47
-msgid "Local"
-msgstr "Mesno"
-
-#: ../meld/vc/_vc.py:47
-msgid "Remote"
-msgstr "Udaljeno"
-
-#. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:62
-msgid ""
-"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
-"Not present"
-msgstr ""
-"Zanemareno:Neverzionirano:::Greška::Novo dodato:Izmenjeno:Sukob:Uklonjeno:"
-"Nedostajuće:Nije prisutno"
-
-#. Translators: First %s is replaced by translated "%d unpushed
-#. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:126
-#, python-format
-msgid "%s in %s"
-msgstr "%s u %s"
-
-#. Translators: These messages cover the case where there is
-#. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
-#, python-format
-msgid "%d unpushed commit"
-msgid_plural "%d unpushed commits"
-msgstr[0] "%d nepogurana predaja"
-msgstr[1] "%d nepogurane predaje"
-msgstr[2] "%d nepoguranih predaja"
-msgstr[3] "%d nepogurana predaja"
-
-#: ../meld/vc/git.py:129
-#, python-format
-msgid "%d branch"
-msgid_plural "%d branches"
-msgstr[0] "%d grani"
-msgstr[1] "%d grane"
-msgstr[2] "%d grana"
-msgstr[3] "%d grani"
-
-#: ../meld/vc/git.py:341
-#, python-format
-msgid "Mode changed from %s to %s"
-msgstr "Režim je izmenjen iz „%s“ u „%s“"
