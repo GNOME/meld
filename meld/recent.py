@@ -28,6 +28,7 @@ infrastructure that that's actually what we opened.
 
 import ConfigParser
 import os
+import sys
 import tempfile
 
 from gettext import gettext as _
@@ -48,7 +49,8 @@ COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
 
 class RecentFiles(object):
 
-    recent_path = os.path.join(glib.get_user_data_dir(), "meld")
+    recent_dirname = "Meld" if sys.platform == "win32" else "meld"
+    recent_path = os.path.join(glib.get_user_data_dir(), recent_dirname)
     recent_path = recent_path.decode('utf8')
     recent_suffix = ".meldcmp"
 
