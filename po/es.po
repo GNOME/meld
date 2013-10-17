@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-14 21:08+0000\n"
-"PO-Revision-Date: 2013-10-15 17:06+0200\n"
+"POT-Creation-Date: 2013-10-15 22:39+0000\n"
+"PO-Revision-Date: 2013-10-17 16:45+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -52,6 +52,36 @@ msgstr "Compare y combine sus archivos"
 #: ../data/mime/meld.xml.in.h:1
 msgid "Meld comparison description"
 msgstr "Descripción de la comparación de Meld"
+
+#: ../data/ui/application.ui.h:1
+msgid "About Meld"
+msgstr "Acerca de Meld"
+
+#: ../data/ui/application.ui.h:2
+#| msgid ""
+#| "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
+#| "Copyright &#xA9; 2009-2013 Kai Willadsen"
+msgid ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+msgstr ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+
+#: ../data/ui/application.ui.h:4
+msgid "http://meldmerge.org/"
+msgstr "http://meldmerge.org/"
+
+#: ../data/ui/application.ui.h:5
+msgid "Website"
+msgstr "Página web"
+
+#: ../data/ui/application.ui.h:6
+msgid "translator-credits"
+msgstr ""
+"Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2013\n"
+"Jorge González <jorgegonz@svn.gnome.org>, 2004-2011\n"
+"Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004-2006"
 
 #: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
 msgid "_Compare"
@@ -1135,6 +1165,16 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Mezclando archivos"
 
+#: ../meld/gutterrendererchunk.py:92
+#| msgid "Copy _Left"
+msgid "Copy _up"
+msgstr "Copiar hacia _arriba"
+
+#: ../meld/gutterrendererchunk.py:93
+#| msgid "Copy _Left"
+msgid "Copy _down"
+msgstr "Copiar hacia a_bajo"
+
 #: ../meld/meldapp.py:169
 msgid "wrong number of arguments supplied to --diff"
 msgstr "el número de argumentos proporcionados para --diff es erróneo"
@@ -1434,7 +1474,6 @@ msgid "Switch to this tab"
 msgstr "Cambiar a esta pestaña"
 
 #: ../meld/meldwindow.py:660
-#| msgid "Cannot compare a mixture of files and directories.\n"
 msgid "Cannot compare a mixture of files and directories"
 msgstr "No se puede comparar una mezcla de archivos y carpetas"
 
@@ -1514,6 +1553,71 @@ msgstr "Comentario de script\t0\t#.*"
 #: ../meld/recent.py:105
 msgid "Version control:"
 msgstr "Control de versión:"
+
+#: ../meld/ui/findbar.py:142
+msgid "Regular expression error"
+msgstr "Error en la expresión regular"
+
+#: ../meld/ui/notebooklabel.py:65
+msgid "Close tab"
+msgstr "Cerrar pestaña"
+
+#: ../meld/ui/vcdialogs.py:55
+msgid "No files will be committed"
+msgstr "No se efectuarán cambios en archivos"
+
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:126
+#, python-format
+msgid "%s in %s"
+msgstr "%s en %s"
+
+#. Translators: These messages cover the case where there is
+#. only one branch, and are not part of another message.
+#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] "%d cambio sin empujar"
+msgstr[1] "%d cambios sin empujar"
+
+#: ../meld/vc/git.py:129
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] "%d rama"
+msgstr[1] "%d ramas"
+
+#: ../meld/vc/git.py:341
+#, python-format
+msgid "Mode changed from %s to %s"
+msgstr "Modo cambiado de %s a %s"
+
+#: ../meld/vc/_vc.py:47
+msgid "Merged"
+msgstr "Mezclados"
+
+#: ../meld/vc/_vc.py:47
+msgid "Base"
+msgstr "Base"
+
+#: ../meld/vc/_vc.py:47
+msgid "Local"
+msgstr "Local"
+
+#: ../meld/vc/_vc.py:47
+msgid "Remote"
+msgstr "Remoto"
+
+#. These are the possible states of files. Be sure to get the colons correct.
+#: ../meld/vc/_vc.py:62
+msgid ""
+"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
+"Not present"
+msgstr ""
+"Ignorado:Sin versión:::Error::Añadidos nuevos:Modificado:Conflicto:Eliminado:"
+"Faltante:No presente"
 
 #: ../meld/vcview.py:206 ../meld/vcview.py:363
 msgid "Location"
@@ -1599,78 +1703,6 @@ msgstr ""
 msgid "Error removing %s"
 msgstr "Error al quitar %s"
 
-#: ../meld/ui/findbar.py:142
-msgid "Regular expression error"
-msgstr "Error en la expresión regular"
-
-#: ../meld/ui/notebooklabel.py:65
-msgid "Close tab"
-msgstr "Cerrar pestaña"
-
-#: ../meld/ui/vcdialogs.py:55
-msgid "No files will be committed"
-msgstr "No se efectuarán cambios en archivos"
-
-#: ../meld/vc/_vc.py:47
-msgid "Merged"
-msgstr "Mezclados"
-
-#: ../meld/vc/_vc.py:47
-msgid "Base"
-msgstr "Base"
-
-#: ../meld/vc/_vc.py:47
-msgid "Local"
-msgstr "Local"
-
-#: ../meld/vc/_vc.py:47
-msgid "Remote"
-msgstr "Remoto"
-
-#. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:62
-msgid ""
-"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
-"Not present"
-msgstr ""
-"Ignorado:Sin versión:::Error::Añadidos nuevos:Modificado:Conflicto:Eliminado:"
-"Faltante:No presente"
-
-#. Translators: First %s is replaced by translated "%d unpushed
-#. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:126
-#, python-format
-msgid "%s in %s"
-msgstr "%s en %s"
-
-#. Translators: These messages cover the case where there is
-#. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
-#, python-format
-msgid "%d unpushed commit"
-msgid_plural "%d unpushed commits"
-msgstr[0] "%d cambio sin empujar"
-msgstr[1] "%d cambios sin empujar"
-
-#: ../meld/vc/git.py:129
-#, python-format
-msgid "%d branch"
-msgid_plural "%d branches"
-msgstr[0] "%d rama"
-msgstr[1] "%d ramas"
-
-#: ../meld/vc/git.py:341
-#, python-format
-msgid "Mode changed from %s to %s"
-msgstr "Modo cambiado de %s a %s"
-
-#~ msgid ""
-#~ "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-#~ "Copyright &#xA9; 2009-2013 Kai Willadsen"
-#~ msgstr ""
-#~ "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-#~ "Copyright &#xA9; 2009-2013 Kai Willadsen"
-
 #~ msgid ""
 #~ "Meld is free software: you can redistribute it and/or modify it under the "
 #~ "terms of the GNU General Public License as published by the Free Software "
@@ -1698,12 +1730,6 @@ msgstr "Modo cambiado de %s a %s"
 #~ "Debería haber recibido una copia de la Licencia Pública General GNU junto "
 #~ "a este programa. En caso contrario, consulte <http://www.gnu.org/licenses/"
 #~ ">."
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012\n"
-#~ "Jorge González <jorgegonz@svn.gnome.org>, 2004-2011\n"
-#~ "Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004-2006"
 
 #~ msgid "Start a comparison between file and dir/file"
 #~ msgstr "Iniciar una comparación entre archivo y carpeta/archivo"
