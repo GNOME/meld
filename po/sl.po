@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-14 21:08+0000\n"
-"PO-Revision-Date: 2013-10-14 23:24+0100\n"
+"POT-Creation-Date: 2013-10-19 17:49+0000\n"
+"PO-Revision-Date: 2013-10-20 18:25+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -50,6 +50,30 @@ msgstr "Primerjava in združevanje datotek"
 #: ../data/mime/meld.xml.in.h:1
 msgid "Meld comparison description"
 msgstr "Opis primerjave Meld"
+
+#: ../data/ui/application.ui.h:1
+msgid "About Meld"
+msgstr "O programu"
+
+#: ../data/ui/application.ui.h:2
+msgid ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+msgstr ""
+"Avtorske pravice © 2002-2009 Stephen Kennedy\n"
+"Avtorske pravice © 2009-2011 Kai Willadsen"
+
+#: ../data/ui/application.ui.h:4
+msgid "http://meldmerge.org/"
+msgstr "http://meldmerge.org/"
+
+#: ../data/ui/application.ui.h:5
+msgid "Website"
+msgstr "Spletišče"
+
+#: ../data/ui/application.ui.h:6
+msgid "translator-credits"
+msgstr "Matej Urbančič <mateju@svn.gnome.org>"
 
 #: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
 msgid "_Compare"
@@ -1140,6 +1164,14 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Združevanje datotek"
 
+#: ../meld/gutterrendererchunk.py:92
+msgid "Copy _up"
+msgstr "Kopiraj _navzgor"
+
+#: ../meld/gutterrendererchunk.py:93
+msgid "Copy _down"
+msgstr "Kopiraj _navzdol"
+
 #: ../meld/meldapp.py:169
 msgid "wrong number of arguments supplied to --diff"
 msgstr "Neveljavno število argumentov pri ukazu --diff."
@@ -1516,6 +1548,75 @@ msgstr "Opomba skripta\t0\t#.*"
 msgid "Version control:"
 msgstr "Nadzor različic:"
 
+#: ../meld/ui/findbar.py:142
+msgid "Regular expression error"
+msgstr "Napaka v logičnem izrazu"
+
+#: ../meld/ui/notebooklabel.py:65
+msgid "Close tab"
+msgstr "Zapri zavihek"
+
+#: ../meld/ui/vcdialogs.py:55
+msgid "No files will be committed"
+msgstr "Ni pripravljenih datotek za uveljavitev"
+
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:126
+#, python-format
+msgid "%s in %s"
+msgstr "%s v %s"
+
+#. Translators: These messages cover the case where there is
+#. only one branch, and are not part of another message.
+#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] "%d neobjavljenih uveljavitev"
+msgstr[1] "%d neobjavljena uveljavitev"
+msgstr[2] "%d neobjavljeni uveljavitvi"
+msgstr[3] "%d neobjavljene uveljavitve"
+
+#: ../meld/vc/git.py:129
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] "%d vej"
+msgstr[1] "%d veja"
+msgstr[2] "%d veji"
+msgstr[3] "%d veje"
+
+#: ../meld/vc/git.py:341
+#, python-format
+msgid "Mode changed from %s to %s"
+msgstr "Način je spremenjen iz %s v %s"
+
+#: ../meld/vc/_vc.py:47
+msgid "Merged"
+msgstr "Združeno"
+
+#: ../meld/vc/_vc.py:47
+msgid "Base"
+msgstr "Osnova"
+
+#: ../meld/vc/_vc.py:47
+msgid "Local"
+msgstr "Krajevno"
+
+#: ../meld/vc/_vc.py:47
+msgid "Remote"
+msgstr "Oddaljeno"
+
+#. These are the possible states of files. Be sure to get the colons correct.
+#: ../meld/vc/_vc.py:62
+msgid ""
+"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
+"Not present"
+msgstr ""
+"Prezrto:Nedoločeno:::Napaka::Novo dodano:Spremenjeno:V sporu:Odstranjeno:"
+"Manjkajoče:Nedostopno"
+
 #: ../meld/vcview.py:206 ../meld/vcview.py:363
 msgid "Location"
 msgstr "Mesto"
@@ -1598,82 +1699,6 @@ msgstr ""
 msgid "Error removing %s"
 msgstr "Napaka med odstranjevanjem %s"
 
-#: ../meld/ui/findbar.py:142
-msgid "Regular expression error"
-msgstr "Napaka v logičnem izrazu"
-
-#: ../meld/ui/notebooklabel.py:65
-msgid "Close tab"
-msgstr "Zapri zavihek"
-
-#: ../meld/ui/vcdialogs.py:55
-msgid "No files will be committed"
-msgstr "Ni pripravljenih datotek za uveljavitev"
-
-#: ../meld/vc/_vc.py:47
-msgid "Merged"
-msgstr "Združeno"
-
-#: ../meld/vc/_vc.py:47
-msgid "Base"
-msgstr "Osnova"
-
-#: ../meld/vc/_vc.py:47
-msgid "Local"
-msgstr "Krajevno"
-
-#: ../meld/vc/_vc.py:47
-msgid "Remote"
-msgstr "Oddaljeno"
-
-#. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:62
-msgid ""
-"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:"
-"Not present"
-msgstr ""
-"Prezrto:Nedoločeno:::Napaka::Novo dodano:Spremenjeno:V sporu:Odstranjeno:"
-"Manjkajoče:Nedostopno"
-
-#. Translators: First %s is replaced by translated "%d unpushed
-#. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:126
-#, python-format
-msgid "%s in %s"
-msgstr "%s v %s"
-
-#. Translators: These messages cover the case where there is
-#. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
-#, python-format
-msgid "%d unpushed commit"
-msgid_plural "%d unpushed commits"
-msgstr[0] "%d neobjavljenih uveljavitev"
-msgstr[1] "%d neobjavljena uveljavitev"
-msgstr[2] "%d neobjavljeni uveljavitvi"
-msgstr[3] "%d neobjavljene uveljavitve"
-
-#: ../meld/vc/git.py:129
-#, python-format
-msgid "%d branch"
-msgid_plural "%d branches"
-msgstr[0] "%d vej"
-msgstr[1] "%d veja"
-msgstr[2] "%d veji"
-msgstr[3] "%d veje"
-
-#: ../meld/vc/git.py:341
-#, python-format
-msgid "Mode changed from %s to %s"
-msgstr "Način je spremenjen iz %s v %s"
-
-#~ msgid ""
-#~ "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-#~ "Copyright &#xA9; 2009-2013 Kai Willadsen"
-#~ msgstr ""
-#~ "Avtorske pravice &#xA9; 2002-2009 Stephen Kennedy\n"
-#~ "Avtorske pravice &#xA9; 2009-2013 Kai Willadsen"
-
 #~ msgid ""
 #~ "Meld is free software: you can redistribute it and/or modify it under the "
 #~ "terms of the GNU General Public License as published by the Free Software "
@@ -1700,9 +1725,6 @@ msgstr "Način je spremenjen iz %s v %s"
 #~ "Skupaj s programom bi morali prejeti izvod splošnega javnega dovoljenja "
 #~ "GNU (GNU General Public License); če ga niste si oglejte spletno stran "
 #~ "<http://www.gnu.org/licenses/>."
-
-#~ msgid "translator-credits"
-#~ msgstr "Matej Urbančič <mateju@svn.gnome.org>"
 
 #~ msgid "Start a comparison between file and dir/file"
 #~ msgstr "Zagon primerjave med datoteko in mapo/datoteko"
