@@ -71,7 +71,6 @@ class Vc(_vc.CachedVc):
 
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
-        path = path[len(self.root) + 1:]
 
         base, fname = os.path.split(path)
         svn_path = os.path.join(base, ".svn", "text-base", fname + ".svn-base")
