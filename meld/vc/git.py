@@ -42,7 +42,7 @@ class Vc(_vc.CachedVc):
     CMD = "git"
     NAME = "Git"
     VC_DIR = ".git"
-    GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([ADMU])\t(.*)"
+    GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([XADMTU])\t(.*)"
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
 
