@@ -54,8 +54,7 @@ class LinkMap(Gtk.DrawingArea):
         allocation = self.get_allocation()
 
         pix_start = [t.get_visible_rect().y for t in self.views]
-        # FIXME: If the linkmap has a different vertical offset to its
-        # associated textviews, things will now be misaligned.
+        y_offset = [t.translate_coordinates(self, 0, 0)[1] for t in self.views]
 
         height = allocation.height
         visible = [self.views[0].get_line_num_for_y(pix_start[0]),
@@ -72,7 +71,7 @@ class LinkMap(Gtk.DrawingArea):
 
         left, right = self.view_indices
         view_offset_line = lambda v, l: (self.views[v].get_y_for_line_num(l) -
-                                         pix_start[v])
+                                         pix_start[v] + y_offset[v])
         for c in self.filediff.linediffer.pair_changes(left, right, visible):
             # f and t are short for "from" and "to"
             f0, f1 = [view_offset_line(0, l) for l in c[1:3]]
