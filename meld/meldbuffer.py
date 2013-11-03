@@ -40,11 +40,10 @@ class MeldBuffer(GtkSource.Buffer):
     def reset_buffer(self, filename):
         """Clear the contents of the buffer and reset its metadata"""
         self.delete(*self.get_bounds())
-
-        new_data = MeldBufferData(filename)
-        if self.data.filename == filename:
-            new_data.label = self.data.label
-        self.data = new_data
+        label = self.data.label if self.data.filename == filename else None
+        self.data.reset()
+        self.data.filename = filename
+        self.data.label = label
 
     def get_iter_at_line_or_eof(self, line):
         """Return a Gtk.TextIter at the given line, or the end of the buffer.
@@ -83,15 +82,19 @@ class MeldBufferData(GObject.GObject):
 
     def __init__(self, filename=None):
         GObject.GObject.__init__(self)
+        self.reset()
+        self._label = self.filename = filename
+
+    def reset(self):
         self.modified = False
         self.writable = True
         self.editable = True
         self._monitor = None
         self._mtime = None
         self._disk_mtime = None
-        self.filename = filename
+        self.filename = None
         self.savefile = None
-        self._label = filename
+        self._label = None
         self.encoding = None
         self.newlines = None
 
