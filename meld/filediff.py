@@ -184,6 +184,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             v.set_wrap_mode(self.prefs.edit_wrap_lines)
             v.set_draw_spaces(self.prefs.show_whitespace)
             v.set_tab_width(self.prefs.tab_size)
+            buf.data.connect('file-changed', self.notify_file_changed)
         self._keymask = 0
         self.load_font()
         self.deleted_lines_pending = -1
@@ -1175,9 +1176,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for b in self.textbuffer:
             self.undosequence.checkpoint(b)
             b.data.update_mtime()
-            # FIXME: Keep signal ID and disconnect... sometime
-            b.data.connect('file-changed', self.notify_file_changed)
-
 
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
