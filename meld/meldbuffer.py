@@ -98,14 +98,14 @@ class MeldBufferData(GObject.GObject):
     def __del__(self):
         self._disconnect_monitor()
 
-    def get_label(self):
+    @property
+    def label(self):
         #TRANSLATORS: This is the label of a new, currently-unnamed file.
         return self._label or _("<unnamed>")
 
-    def set_label(self, value):
+    @label.setter
+    def label(self, value):
         self._label = value
-
-    label = property(get_label, set_label)
 
     def _connect_monitor(self):
         if self._filename:
