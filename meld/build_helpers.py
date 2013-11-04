@@ -1,11 +1,40 @@
 # Created by Sebastian Heinlein
 # Modified by Kai Willadsen
 
-import distutils
+import distutils.cmd
 import glob
-import os
 import os.path
-import distutils.command.build
+
+
+class build_help(distutils.cmd.Command):
+
+    help_dir = 'help'
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def get_data_files(self):
+        data_files = []
+        name = self.distribution.metadata.name
+
+        for path in glob.glob(os.path.join(self.help_dir, '*')):
+            lang = os.path.basename(path)
+            path_help = os.path.join('share/help', lang, name)
+            path_figures = os.path.join('share/help', lang, name, 'figures')
+            
+            xml_files = glob.glob('%s/*.xml' % path)
+            mallard_files = glob.glob('%s/*.page' % path)
+            data_files.append((path_help, xml_files + mallard_files))
+            data_files.append((path_figures, glob.glob('%s/figures/*.png' % path)))
+
+        return data_files
+    
+    def run(self):
+        data_files = self.distribution.data_files
+        data_files.extend(self.get_data_files())
 
 
 class build_icons(distutils.cmd.Command):
