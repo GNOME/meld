@@ -4,9 +4,11 @@ from distutils.core import setup
 import glob
 
 from DistUtilsExtra.command import (
-    build_extra, build_i18n, build_help, build_icons)
+    build_extra, build_i18n, build_help)
 
 import meld.conf
+
+from meld.build_helpers import build_icons
 
 
 setup(
@@ -46,6 +48,6 @@ setup(
         "build": build_extra.build_extra,
         "build_i18n": build_i18n.build_i18n,
         "build_help": build_help.build_help,
-        "build_icons": build_icons.build_icons,
+        "build_icons": build_icons,
     }
 )
