@@ -2,7 +2,7 @@
 import os
 
 __package__ = "meld"
-__version__ = "1.7.5"
+__version__ = "3.11.0"
 
 DATADIR = None
 LOCALEDIR = None
