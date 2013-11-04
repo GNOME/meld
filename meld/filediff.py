@@ -1236,7 +1236,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
         gfile = Gio.File.new_for_path(data.filename)
 
-        primary = _("File %s changed on disk") % gfile.get_parse_name()
+        primary = _("File %s has changed on disk") % gfile.get_parse_name()
         secondary = _("Do you want to reload the file?")
         msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                         Gtk.STOCK_DIALOG_WARNING, primary, secondary)
@@ -1247,10 +1247,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.msgarea_mgr[pane].clear()
             if response_id == Gtk.ResponseType.ACCEPT:
                 self.on_revert_activate()
-            else:
-                # TODO: Set a flag to indicate that the file has been changed
-                # but not reloaded, so that we can prompt for overwrite on save
-                pass
 
         msgarea.connect("response", on_file_changed_response)
         msgarea.show_all()
@@ -1601,7 +1597,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return False
         return True
 
-    def save_file(self, pane, saveas=False):
+    def save_file(self, pane, saveas=False, force_overwrite=False):
         buf = self.textbuffer[pane]
         bufdata = buf.data
         if saveas or not (bufdata.filename or bufdata.savefile) \
@@ -1620,9 +1616,25 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 return False
 
-        if not bufdata.current_on_disk():
-            # TODO: The file has changed since we loaded, so require confirmation.
-            pass
+        if not force_overwrite and not bufdata.current_on_disk():
+            gfile = Gio.File.new_for_path(bufdata.filename)
+            primary = _("File %s has changed on disk since it was opened") % \
+                      gfile.get_parse_name()
+            secondary = _("If you save it, any external changes will be lost.")
+            msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
+                            Gtk.STOCK_DIALOG_WARNING, primary, secondary)
+            msgarea.add_button(_("Save Anyway"), Gtk.ResponseType.ACCEPT)
+            msgarea.add_button(_("Don't Save"), Gtk.ResponseType.CLOSE)
+
+            def on_file_changed_response(msgarea, response_id, *args):
+                self.msgarea_mgr[pane].clear()
+                if response_id == Gtk.ResponseType.ACCEPT:
+                    self.save_file(pane, saveas, force_overwrite=True)
+
+            msgarea.connect("response", on_file_changed_response)
+            msgarea.show_all()
+            return
+
 
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
