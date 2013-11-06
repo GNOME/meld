@@ -99,8 +99,8 @@ except locale.Error as e:
 def check_requirements():
 
     pyver = (2, 7)
-    gtk_requirement = (3, 8)
-    glib_requirement = (2, 36, 0)
+    gtk_requirement = (3, 6)
+    glib_requirement = (2, 34, 0)
 
     def missing_reqs(mod, ver, exception=None):
         if isinstance(exception, ImportError):
