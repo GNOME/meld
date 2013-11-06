@@ -108,44 +108,32 @@ class build_icons(distutils.cmd.Command):
 
 class build_i18n(distutils.cmd.Command):
 
-    description = "integrate the gettext framework"
-
     user_options = [('desktop-files=', None, '.desktop.in files that '
                                              'should be merged'),
                     ('xml-files=', None, '.xml.in files that should be '
                                          'merged'),
                     ('schemas-files=', None, '.schemas.in files that '
                                              'should be merged'),
-                    ('ba-files=', None, 'bonobo-activation files that '
-                                        'should be merged'),
-                    ('rfc822deb-files=', None, 'RFC822 files that should '
-                                               'be merged'),
                     ('key-files=', None, '.key.in files that should be '
                                          'merged'),
-                    ('domain=', 'd', 'gettext domain'),
                     ('merge-po', 'm', 'merge po files against template'),
-                    ('po-dir=', 'p', 'directory that holds the i18n files'),
                     ('bug-contact=', None, 'contact address for msgid bugs')]
 
     boolean_options = ['merge-po']
+
+    domain = "meld"
+    po_dir = "po"
 
     def initialize_options(self):
         self.desktop_files = []
         self.xml_files = []
         self.key_files = []
         self.schemas_files = []
-        self.ba_files = []
-        self.rfc822deb_files = []
-        self.domain = None
         self.merge_po = False
         self.bug_contact = None
-        self.po_dir = None
 
     def finalize_options(self):
-        if self.domain is None:
-            self.domain = self.distribution.metadata.name
-        if self.po_dir is None:
-            self.po_dir = "po"
+        pass
 
     def run(self):
         """
@@ -163,15 +151,6 @@ class build_i18n(distutils.cmd.Command):
         if self.bug_contact is not None:
             os.environ["XGETTEXT_ARGS"] = "--msgid-bugs-address=%s " % \
                                           self.bug_contact
-
-        # Print a warning if there is a Makefile that would overwrite our
-        # values
-        if os.path.exists("%s/Makefile" % self.po_dir):
-            self.announce("""
-WARNING: Intltool will use the values specified from the
-         existing po/Makefile in favor of the vaules
-         from setup.cfg.
-         Remove the Makefile to avoid problems.""")
 
         # If there is a po/LINGUAS file, or the LINGUAS environment variable
         # is set, only compile the languages listed there.
@@ -213,8 +192,6 @@ WARNING: Intltool will use the values specified from the
         for (option, switch) in ((self.xml_files, "-x"),
                                  (self.desktop_files, "-d"),
                                  (self.schemas_files, "-s"),
-                                 (self.rfc822deb_files, "-r"),
-                                 (self.ba_files, "-b"),
                                  (self.key_files, "-k"),):
             try:
                 file_set = eval(option)
