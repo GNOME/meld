@@ -3,12 +3,8 @@
 from distutils.core import setup
 import glob
 
-from DistUtilsExtra.command import (
-    build_i18n)
-
+import meld.build_helpers
 import meld.conf
-
-from meld.build_helpers import build_extra, build_help, build_icons
 
 
 setup(
@@ -45,9 +41,9 @@ setup(
          ),
     ],
     cmdclass={
-        "build": build_extra,
-        "build_i18n": build_i18n.build_i18n,
-        "build_help": build_help,
-        "build_icons": build_icons,
+        "build": meld.build_helpers.build_extra,
+        "build_i18n": meld.build_helpers.build_i18n,
+        "build_help": meld.build_helpers.build_help,
+        "build_icons": meld.build_helpers.build_icons,
     }
 )
