@@ -26,7 +26,11 @@ single-file registers for multi-file comparisons, and tell the recent files
 infrastructure that that's actually what we opened.
 """
 
-import ConfigParser
+try:
+    # py3k
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 import os
 import tempfile
 
@@ -127,12 +131,12 @@ class RecentFiles(object):
             raise IOError("File does not exist")
 
         try:
-            config = ConfigParser.RawConfigParser()
+            config = configparser.RawConfigParser()
             config.read(path)
             assert (config.has_section("Comparison") and
                     config.has_option("Comparison", "type") and
                     config.has_option("Comparison", "paths"))
-        except (ConfigParser.Error, AssertionError):
+        except (configparser.Error, AssertionError):
             raise ValueError("Invalid recent comparison file")
 
         comp_type = config.get("Comparison", "type")
@@ -151,7 +155,7 @@ class RecentFiles(object):
                                          suffix=self.recent_suffix,
                                          dir=self.recent_path,
                                          delete=False) as f:
-            config = ConfigParser.RawConfigParser()
+            config = configparser.RawConfigParser()
             config.add_section("Comparison")
             config.set("Comparison", "type", comp_type)
             config.set("Comparison", "paths", ";".join(paths))
@@ -228,4 +232,4 @@ class RecentFiles(object):
 
 if __name__ == "__main__":
     recent = RecentFiles()
-    print recent
+    print(recent)

@@ -17,6 +17,8 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
+from __future__ import print_function
+
 import locale
 import logging
 import os
@@ -74,7 +76,11 @@ locale_dir = meld.conf.LOCALEDIR
 gettext.bindtextdomain(locale_domain, locale_dir)
 locale.setlocale(locale.LC_ALL, '')
 gettext.textdomain(locale_domain)
-gettext.install(locale_domain, localedir=locale_dir, unicode=True)
+try:
+    gettext.install(locale_domain, localedir=locale_dir, unicode=True)
+except TypeError:
+    # py3k
+    gettext.install(locale_domain, localedir=locale_dir)
 
 try:
     if os.name == 'nt':
@@ -89,11 +95,11 @@ try:
 except AttributeError as e:
     # Python builds linked without libintl (i.e., OSX) don't have
     # bindtextdomain(), which causes Gtk.Builder translations to fail.
-    print "Couldn't bind the translation domain. Some translations won't work."
-    print e
+    print("Couldn't bind the translation domain. Some translations won't work.")
+    print(e)
 except locale.Error as e:
-    print "Couldn't bind the translation domain. Some translations won't work."
-    print e
+    print("Couldn't bind the translation domain. Some translations won't work.")
+    print(e)
 
 
 def check_requirements():
@@ -104,10 +110,10 @@ def check_requirements():
 
     def missing_reqs(mod, ver, exception=None):
         if isinstance(exception, ImportError):
-            print _("Cannot import: ") + mod + "\n" + str(e)
+            print(_("Cannot import: ") + mod + "\n" + str(e))
         else:
             modver = mod + " " + ".".join(map(str, ver))
-            print _("Meld requires %s or higher.") % modver
+            print(_("Meld requires %s or higher.") % modver)
         sys.exit(1)
 
     if sys.version_info[:2] < pyver:

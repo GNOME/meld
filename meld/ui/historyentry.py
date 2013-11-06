@@ -15,11 +15,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 # USA.
 
-import ConfigParser
+try:
+    # py3k
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 import os
 import sys
 
-import glib
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
@@ -75,13 +79,13 @@ class HistoryCombo(Gtk.ComboBox):
         if sys.platform == "win32":
             pref_dir = os.path.join(os.getenv("APPDATA"), "Meld")
         else:
-            pref_dir = os.path.join(glib.get_user_config_dir(), "meld")
+            pref_dir = os.path.join(GLib.get_user_config_dir(), "meld")
 
         if not os.path.exists(pref_dir):
             os.makedirs(pref_dir)
 
         self.history_file = os.path.join(pref_dir, "history.ini")
-        self.config = ConfigParser.SafeConfigParser()
+        self.config = configparser.SafeConfigParser()
         if os.path.exists(self.history_file):
             self.config.read(self.history_file)
 
