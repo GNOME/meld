@@ -2,8 +2,28 @@
 # Modified by Kai Willadsen
 
 import distutils.cmd
+import distutils.command.build
 import glob
 import os.path
+
+
+class build_extra(distutils.command.build.build):
+
+    def __init__(self, dist):
+        distutils.command.build.build.__init__(self, dist)
+
+        def has_help(command):
+            return "build_help" in self.distribution.cmdclass
+
+        def has_icons(command):
+            return "build_icons" in self.distribution.cmdclass
+
+        def has_i18n(command):
+            return "build_i18n" in self.distribution.cmdclass
+
+        self.sub_commands.append(("build_i18n", has_i18n))
+        self.sub_commands.append(("build_icons", has_icons))
+        self.sub_commands.append(("build_help", has_help))
 
 
 class build_help(distutils.cmd.Command):
