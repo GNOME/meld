@@ -107,6 +107,7 @@ def check_requirements():
     pyver = (2, 7)
     gtk_requirement = (3, 6)
     glib_requirement = (2, 34, 0)
+    gtksourceview_requirement = (3, 6, 0)
 
     def missing_reqs(mod, ver, exception=None):
         if isinstance(exception, ImportError):
@@ -135,6 +136,12 @@ def check_requirements():
         assert GObject.glib_version >= glib_requirement
     except (ImportError, AssertionError) as e:
         missing_reqs("GLib", glib_requirement, e)
+
+    try:
+        from gi.repository import GtkSource
+        # TODO: There is no way to get at GtkSourceView's actual version
+    except (ImportError, AssertionError) as e:
+        missing_reqs("GtkSourceView", gtksourceview_requirement, e)
 
 
 def setup_resources():
