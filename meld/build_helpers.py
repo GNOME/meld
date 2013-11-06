@@ -135,31 +135,15 @@ class build_i18n(distutils.cmd.Command):
     def finalize_options(self):
         pass
 
-    def run(self):
-        """
-        Update the language files, generate mo files and add them
-        to the to be installed files
-        """
-        if not os.path.isdir(self.po_dir):
-            return
-
-        data_files = self.distribution.data_files
-        if data_files is None:
-            # in case not data_files are defined in setup.py
-            self.distribution.data_files = data_files = []
-
-        if self.bug_contact is not None:
-            os.environ["XGETTEXT_ARGS"] = "--msgid-bugs-address=%s " % \
-                                          self.bug_contact
-
+    def _rebuild_po(self):
         # If there is a po/LINGUAS file, or the LINGUAS environment variable
         # is set, only compile the languages listed there.
         selected_languages = None
         linguas_file = os.path.join(self.po_dir, "LINGUAS")
-        if os.path.isfile(linguas_file):
-            selected_languages = open(linguas_file).read().split()
         if "LINGUAS" in os.environ:
             selected_languages = os.environ["LINGUAS"].split()
+        elif os.path.isfile(linguas_file):
+            selected_languages = open(linguas_file).read().split()
 
         # Update po(t) files and print a report
         # We have to change the working dir to the po dir for intltool
@@ -186,7 +170,15 @@ class build_i18n(distutils.cmd.Command):
                 self.spawn(cmd)
 
             targetpath = os.path.join("share/locale", lang, "LC_MESSAGES")
-            data_files.append((targetpath, (mo_file,)))
+            self.distribution.data_files.append((targetpath, (mo_file,)))
+        self.max_po_mtime = max_po_mtime
+
+    def run(self):
+        if self.bug_contact is not None:
+            os.environ["XGETTEXT_ARGS"] = "--msgid-bugs-address=%s " % \
+                                          self.bug_contact
+
+        self._rebuild_po()
 
         # merge .in with translation
         for (option, switch) in ((self.xml_files, "-x"),
@@ -203,18 +195,17 @@ class build_i18n(distutils.cmd.Command):
                     os.makedirs(build_target)
                 files_merged = []
                 for file in files:
-                    if file.endswith(".in"):
-                        file_merged = os.path.basename(file[:-3])
-                    else:
-                        file_merged = os.path.basename(file)
+                    file_merged = os.path.basename(file)
+                    if file_merged.endswith(".in"):
+                        file_merged = file_merged[:-3]
                     file_merged = os.path.join(build_target, file_merged)
                     cmd = ["intltool-merge", switch, self.po_dir, file, 
                            file_merged]
                     mtime_merged = os.path.exists(file_merged) and \
                                    os.path.getmtime(file_merged) or 0
                     mtime_file = os.path.getmtime(file)
-                    if mtime_merged < max_po_mtime or mtime_merged < mtime_file:
+                    if mtime_merged < self.max_po_mtime or mtime_merged < mtime_file:
                         # Only build if output is older than input (.po,.in) 
                         self.spawn(cmd)
                     files_merged.append(file_merged)
-                data_files.append((target, files_merged))
+                self.distribution.data_files.append((target, files_merged))
