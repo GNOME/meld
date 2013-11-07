@@ -124,9 +124,10 @@ class build_i18n(distutils.cmd.Command):
     domain = "meld"
     po_dir = "po"
 
+    desktop_files = [('share/applications', glob.glob("data/*.desktop.in"))]
+    xml_files = [('share/appdata', glob.glob("data/*.appdata.xml.in"))]
+
     def initialize_options(self):
-        self.desktop_files = []
-        self.xml_files = []
         self.key_files = []
         self.schemas_files = []
         self.merge_po = False
@@ -180,16 +181,15 @@ class build_i18n(distutils.cmd.Command):
 
         self._rebuild_po()
 
-        # merge .in with translation
-        for (option, switch) in ((self.xml_files, "-x"),
-                                 (self.desktop_files, "-d"),
-                                 (self.schemas_files, "-s"),
-                                 (self.key_files, "-k"),):
-            try:
-                file_set = eval(option)
-            except:
-                continue
-            for (target, files) in file_set:
+        intltool_switches = [
+            (self.xml_files, "-x"),
+            (self.desktop_files, "-d"),
+            (self.schemas_files, "-s"),
+            (self.key_files, "-k"),
+        ]
+
+        for file_set, switch in intltool_switches:
+            for target, files in file_set:
                 build_target = os.path.join("build", target)
                 if not os.path.exists(build_target): 
                     os.makedirs(build_target)
