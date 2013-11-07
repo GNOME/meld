@@ -93,10 +93,9 @@ class build_icons(distutils.cmd.Command):
         for theme in glob.glob(os.path.join(self.icon_dir, "*")):
             for size in glob.glob(os.path.join(theme, "*")):
                 for category in glob.glob(os.path.join(size, "*")):
-                    icons = []
-                    for icon in glob.glob(os.path.join(category,"*")):
-                        if not os.path.islink(icon):
-                            icons.append(icon)
+                    icons = (glob.glob(os.path.join(category, "*.png")) +
+                             glob.glob(os.path.join(category, "*.svg")))
+                    icons = [icon for icon in icons if not os.path.islink(icon)]
                     if not icons:
                         continue
                     data_files.append(("share/icons/%s/%s/%s" %
