@@ -108,30 +108,23 @@ class build_icons(distutils.cmd.Command):
 
 class build_i18n(distutils.cmd.Command):
 
-    user_options = [('desktop-files=', None, '.desktop.in files that '
-                                             'should be merged'),
-                    ('xml-files=', None, '.xml.in files that should be '
-                                         'merged'),
-                    ('schemas-files=', None, '.schemas.in files that '
-                                             'should be merged'),
-                    ('key-files=', None, '.key.in files that should be '
-                                         'merged'),
-                    ('merge-po', 'm', 'merge po files against template'),
-                    ('bug-contact=', None, 'contact address for msgid bugs')]
-
-    boolean_options = ['merge-po']
-
+    bug_contact = None
     domain = "meld"
     po_dir = "po"
+    merge_po = False
 
+    # FIXME: It's ridiculous to specify these here, but I know of no other
+    # way except magically extracting them from self.distribution.data_files
     desktop_files = [('share/applications', glob.glob("data/*.desktop.in"))]
-    xml_files = [('share/appdata', glob.glob("data/*.appdata.xml.in"))]
+    xml_files = [
+        ('share/appdata', glob.glob("data/*.appdata.xml.in")),
+        ('share/mime/packages', glob.glob("data/mime/*.xml.in"))
+    ]
+    schemas_files = []
+    key_files = []
 
     def initialize_options(self):
-        self.key_files = []
-        self.schemas_files = []
-        self.merge_po = False
-        self.bug_contact = None
+        pass
 
     def finalize_options(self):
         pass
