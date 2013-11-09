@@ -90,6 +90,6 @@ def get_vcs(location):
 
     if not vcs:
         # No plugin recognized that location, fallback to _null
-        return [_null]
+        return [_null.Vc]
 
     return sorted(vcs, key=lambda v: vc_sort_order.index(v.NAME))
