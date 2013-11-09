@@ -28,7 +28,7 @@ setup(
         ('share/man/man1',
          ['meld.1']
          ),
-        ('share/doc/meld',
+        ('share/doc/meld-' + meld.conf.__version__,
          ['COPYING', 'NEWS']
          ),
         ('share/meld/icons',
