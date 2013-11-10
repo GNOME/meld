@@ -63,4 +63,6 @@ class MatchersTests(unittest.TestCase):
         self.assertEqual(len(blocks), len(r))
         self.assertEqual(blocks[0], r[0])
         self.assertEqual(blocks[1], r[1])
-        
+
+if __name__ == '__main__':
+    unittest.main()
