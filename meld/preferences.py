@@ -144,7 +144,8 @@ class PreferencesDialog(gnomeglade.Component):
     def __init__(self, parent, prefs):
         gnomeglade.Component.__init__(self, "preferences.ui",
                                       "preferencesdialog",
-                                      ["adjustment1", "adjustment2", "fileorderstore"])
+                                      ["adjustment1", "adjustment2", "fileorderstore",
+                                       "sizegroup_editor"])
         self.widget.set_transient_for(parent)
         self.prefs = prefs
 
@@ -177,10 +178,6 @@ class PreferencesDialog(gnomeglade.Component):
                 self.checkbutton_split_words.set_active(False)
             self.checkbutton_wrap_text.set_active(True)
 
-        size_group = Gtk.SizeGroup(Gtk.SizeGroupMode.HORIZONTAL)
-        size_group.add_widget(self.label1)
-        size_group.add_widget(self.label2)
-        size_group.add_widget(self.label16)
         use_default = self.prefs.edit_command_type == "internal" or \
                       self.prefs.edit_command_type == "gnome"
         self.system_editor_checkbutton.set_active(use_default)
