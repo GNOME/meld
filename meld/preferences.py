@@ -32,7 +32,7 @@ from .ui import gnomeglade
 from .ui import listwidget
 from .util import prefs
 
-from meld.settings import settings
+from meld.settings import settings, interface_settings
 
 
 TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
@@ -373,10 +373,7 @@ class MeldPreferences(prefs.Preferences):
     def get_current_font(self):
         if self.use_custom_font:
             return self.custom_font
-        else:
-            if not hasattr(self, "_gconf"):
-                return "Monospace 10"
-            return self._gconf.get_string('/desktop/gnome/interface/monospace_font_name') or "Monospace 10"
+        return interface_settings.get_string('monospace-font-name')
 
     def get_toolbar_style(self):
         if not hasattr(self, "_gconf"):

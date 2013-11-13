@@ -26,3 +26,5 @@ schema_source = Gio.SettingsSchemaSource.new_from_directory(
 )
 schema = schema_source.lookup('org.gnome.meld', False)
 settings = Gio.Settings.new_full(schema, None, None)
+
+interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
