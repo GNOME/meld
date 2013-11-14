@@ -45,5 +45,23 @@
           <summary>Highlight current line</summary>
           <description>If true, the line containing the cursor will be highlighted in file comparisons.</description>
       </key>
+
+
+      <!-- Folder comparsion properties -->
+      <key name="folder-columns" type="a(sb)">
+          <default>[("size", true), ("modification time", true), ("permissions", false)]</default>
+          <summary>Columns to display</summary>
+          <description>List of column names in folder comparison and whether they should be displayed.</description>
+      </key>
+      <key name="folder-shallow-comparison" type="b">
+          <default>false</default>
+          <summary>Use shallow comparison</summary>
+          <description>If true, folder comparisons compare files based solely on size and mtime, considering files to be identical if their size and mtime match, and different otherwise.</description>
+      </key>
+      <key name="folder-time-resolution" type="i">
+          <default>100</default>
+          <summary>File timestamp resolution</summary>
+          <description>When comparing based on mtime, this is the minimum difference in nanoseconds between two files before they're considered to have different mtimes. This is useful when comparing files between filesystems with different timestamp resolution.</description>
+      </key>
   </schema>
 </schemalist>

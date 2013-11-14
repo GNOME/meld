@@ -20,6 +20,7 @@ import collections
 import copy
 import datetime
 import errno
+import functools
 import os
 import re
 import shutil
@@ -46,6 +47,8 @@ from gettext import gettext as _
 from gettext import ngettext
 from .meldapp import app
 
+from meld.settings import settings
+
 
 ################################################################################
 #
@@ -61,7 +64,7 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         return StatItem(stat.S_IFMT(stat_result.st_mode),
                         stat_result.st_size, stat_result.st_mtime)
 
-    def shallow_equal(self, other, prefs):
+    def shallow_equal(self, other, time_resolution_ns):
         if self.size != other.size:
             return False
 
@@ -72,8 +75,8 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
 
         dectime1 = Decimal(str(self.time)).scaleb(Decimal(9)).quantize(1)
         dectime2 = Decimal(str(other.time)).scaleb(Decimal(9)).quantize(1)
-        mtime1 = dectime1 // prefs.dirdiff_time_resolution_ns
-        mtime2 = dectime2 // prefs.dirdiff_time_resolution_ns
+        mtime1 = dectime1 // time_resolution_ns
+        mtime2 = dectime2 // time_resolution_ns
 
         return mtime1 == mtime2
 
@@ -100,7 +103,7 @@ def remove_blank_lines(text):
     return ''.join(lines)
 
 
-def _files_same(files, regexes, prefs):
+def _files_same(files, regexes, comparison_args):
     """Determine whether a list of files are the same.
 
     Possible results are:
@@ -119,7 +122,11 @@ def _files_same(files, regexes, prefs):
     regexes = tuple(regexes)
     stats = tuple([StatItem._make(os.stat(f)) for f in files])
 
-    need_contents = regexes or prefs.ignore_blank_lines
+    shallow_comparison = comparison_args['shallow-comparison']
+    time_resolution_ns = comparison_args['time-resolution']
+    ignore_blank_lines = comparison_args['ignore_blank_lines']
+
+    need_contents = regexes or ignore_blank_lines
 
     # If all entries are directories, they are considered to be the same
     if all([stat.S_ISDIR(s.mode) for s in stats]):
@@ -130,8 +137,8 @@ def _files_same(files, regexes, prefs):
         return Different
 
     # Compare files superficially if the options tells us to
-    if prefs.dirdiff_shallow_comparison:
-        if all(s.shallow_equal(stats[0], prefs) for s in stats[1:]):
+    if shallow_comparison:
+        if all(s.shallow_equal(stats[0], time_resolution_ns) for s in stats[1:]):
             return DodgySame
         else:
             return Different
@@ -141,7 +148,7 @@ def _files_same(files, regexes, prefs):
         return Different
 
     # Check the cache before doing the expensive comparison
-    cache_key = (files, regexes, prefs.ignore_blank_lines)
+    cache_key = (files, regexes, ignore_blank_lines)
     cache = _cache.get(cache_key)
     if cache and cache.stats == stats:
         return cache.result
@@ -192,7 +199,7 @@ def _files_same(files, regexes, prefs):
         contents = ["".join(c) for c in contents]
         for r in regexes:
             contents = [re.sub(r, "", c) for c in contents]
-        if prefs.ignore_blank_lines:
+        if ignore_blank_lines:
             contents = [remove_blank_lines(c) for c in contents]
         result = SameFiltered if all_same(contents) else Different
 
@@ -242,7 +249,29 @@ class CanonicalListing(object):
 ################################################################################
 
 class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
-    """Two or three way diff of directories"""
+    """Two or three way folder comparison"""
+
+    __gtype_name__ = "DirDiff"
+
+    columns = GObject.property(
+        type=GObject.TYPE_PYOBJECT,
+        nick="Columns to display",
+        blurb="List of columns to display in folder comparison",
+    )
+    shallow_comparison = GObject.property(
+        type=bool,
+        nick="Use shallow comparison",
+        blurb="Whether to compare files based solely on size and mtime",
+        default=False,
+    )
+    time_resolution = GObject.property(
+        type=int,
+        nick="Time resolution",
+        blurb="When comparing based on mtime, the minimum difference in "
+              "nanoseconds between two files before they're considered to "
+              "have different mtimes.",
+        default=100,
+    )
 
     """Dictionary mapping tree states to corresponding difflib-like terms"""
     chunk_type_map = {
@@ -380,6 +409,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 action_name = self.state_actions[s][1]
                 self.actiongroup.get_action(action_name).set_active(True)
 
+        settings.bind('folder-shallow-comparison', self, 'shallow-comparison',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('folder-time-resolution', self, 'time-resolution',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('folder-columns', self, 'columns',
+                      Gio.SettingsBindFlags.DEFAULT)
+
+        self.update_comparator()
+        self.connect("notify::shallow-comparison", self.update_comparator)
+        self.connect("notify::time-resolution", self.update_comparator)
+
     def on_style_set(self, widget, prev_style):
         style = widget.get_style_context()
 
@@ -412,12 +452,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_preference_changed(self, key, value):
         if key == "dirdiff_columns":
             self.update_treeview_columns(value)
-        elif key == "dirdiff_shallow_comparison":
-            self.refresh()
-        elif key == "dirdiff_time_resolution_ns":
-            self.refresh()
         elif key == "ignore_blank_lines":
-            self.refresh()
+            self.update_comparator()
+
+    def update_comparator(self, *args):
+        comparison_args = {
+            'shallow-comparison': self.props.shallow_comparison,
+            'time-resolution': self.props.time_resolution,
+            'ignore_blank_lines': self.prefs.ignore_blank_lines,
+        }
+        self.file_compare = functools.partial(
+            _files_same, comparison_args=comparison_args)
+        self.refresh()
 
     def update_treeview_columns(self, columns):
         """Update the visibility and order of columns"""
@@ -1162,7 +1208,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             is_present = [ os.path.exists( f ) for f in curfiles ]
             all_present = 0 not in is_present
             if all_present:
-                if _files_same(curfiles, regexes, self.prefs) in (Same, SameFiltered):
+                if self.file_compare(curfiles, regexes) in (Same, SameFiltered):
                     state = tree.STATE_NORMAL
                 else:
                     state = tree.STATE_MODIFIED
@@ -1194,7 +1240,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             newest_index = -1 # all same
         all_present = 0 not in mod_times
         if all_present:
-            all_same = _files_same(files, regexes, self.prefs)
+            all_same = self.file_compare(files, regexes)
             all_present_same = all_same
         else:
             lof = []
@@ -1202,7 +1248,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if mod_times[j]:
                     lof.append( files[j] )
             all_same = Different
-            all_present_same = _files_same(lof, regexes, self.prefs)
+            all_present_same = self.file_compare(lof, regexes)
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
