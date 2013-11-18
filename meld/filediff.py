@@ -817,7 +817,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         line_height_points = metrics.get_ascent() + metrics.get_descent()
         self.pixels_per_line = line_height_points // 1024
         for i in range(3):
-            self.textview[i].modify_font(fontdesc)
+            self.textview[i].override_font(fontdesc)
         for i in range(2):
             self.linkmap[i].queue_draw()
 
