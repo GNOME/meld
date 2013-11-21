@@ -642,7 +642,6 @@
                                 <property name="use_underline">True</property>
                                 <property name="xalign">0</property>
                                 <property name="draw_indicator">True</property>
-                                <signal name="toggled" handler="on_checkbutton_shallow_compare_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -671,10 +670,9 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="combo_timestamp">
+                                  <object class="GSettingsIntComboBox" id="combo_timestamp">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <signal name="changed" handler="on_combo_timestamp_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>

@@ -23,6 +23,7 @@ import string
 from gettext import gettext as _
 
 from gi.repository import Gio
+from gi.repository import GObject
 from gi.repository import Gtk
 
 from . import filters
@@ -139,6 +140,45 @@ class ColumnList(listwidget.ListWidget):
         setattr(self.prefs, self.key, columns)
 
 
+class GSettingsComboBox(Gtk.ComboBox):
+
+    def __init__(self):
+        Gtk.ComboBox.__init__(self)
+        self.connect('notify::gsettings-value', self._setting_changed)
+        self.connect('notify::active', self._active_changed)
+
+    def bind_to(self, key):
+        settings.bind(
+            key, self, 'gsettings-value', Gio.SettingsBindFlags.DEFAULT)
+
+    def _setting_changed(self, obj, val):
+        column = self.get_property('gsettings-column')
+        value = self.get_property('gsettings-value')
+
+        for row in self.get_model():
+            if value == row[column]:
+                idx = row.path[0]
+                break
+        else:
+            idx = 0
+
+        if self.get_property('active') != idx:
+            self.set_property('active', idx)
+
+    def _active_changed(self, obj, val):
+        column = self.get_property('gsettings-column')
+        value = self.get_model()[self.get_active_iter()][column]
+        self.set_property('gsettings-value', value)
+
+
+class GSettingsIntComboBox(GSettingsComboBox):
+
+    __gtype_name__ = "GSettingsIntComboBox"
+
+    gsettings_column = GObject.property(type=int, default=1)
+    gsettings_value = GObject.property(type=int)
+
+
 class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parent, prefs):
@@ -155,8 +195,8 @@ class PreferencesDialog(gnomeglade.Component):
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),
+            ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),
         ]
-
         for key, obj, attribute in bindings:
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
 
@@ -201,22 +241,15 @@ class PreferencesDialog(gnomeglade.Component):
         columnlist = ColumnList(self.prefs, "dirdiff_columns")
         self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
 
-        self.checkbutton_shallow_compare.set_active(
-                self.prefs.dirdiff_shallow_comparison)
-
-        self.combo_timestamp.lock = True
         model = Gtk.ListStore(str, int)
-        active_idx = 0
         for i, entry in enumerate(TIMESTAMP_RESOLUTION_PRESETS):
             model.append(entry)
-            if entry[1] == self.prefs.dirdiff_time_resolution_ns:
-                active_idx = i
+        # FIXME: This should all be in the glade
         self.combo_timestamp.set_model(model)
         cell = Gtk.CellRendererText()
         self.combo_timestamp.pack_start(cell, False)
         self.combo_timestamp.add_attribute(cell, 'text', 0)
-        self.combo_timestamp.set_active(active_idx)
-        self.combo_timestamp.lock = False
+        self.combo_timestamp.bind_to('folder-time-resolution')
 
         self.combo_file_order.set_active(
             1 if self.prefs.vc_left_is_local else 0)
@@ -289,14 +322,6 @@ class PreferencesDialog(gnomeglade.Component):
         # Called on "activate" and "focus-out-event"
         self.prefs.text_codecs = entry.props.text
 
-    def on_checkbutton_shallow_compare_toggled(self, check):
-        self.prefs.dirdiff_shallow_comparison = check.get_active()
-
-    def on_combo_timestamp_changed(self, combo):
-        if not combo.lock:
-            resolution = combo.get_model()[combo.get_active_iter()][1]
-            self.prefs.dirdiff_time_resolution_ns = resolution
-
     def on_combo_file_order_changed(self, combo):
         file_order = combo.get_model()[combo.get_active_iter()][0]
         self.prefs.vc_left_is_local = True if file_order else False
@@ -354,8 +379,6 @@ class MeldPreferences(prefs.Preferences):
         "dirdiff_columns": prefs.Value(prefs.LIST,
                                          ["size 1", "modification time 1",
                                           "permissions 0"]),
-        "dirdiff_shallow_comparison" : prefs.Value(prefs.BOOL, False),
-        "dirdiff_time_resolution_ns" : prefs.Value(prefs.INT, 100),
 
         "vc_show_commit_margin": prefs.Value(prefs.BOOL, True),
         "vc_commit_margin": prefs.Value(prefs.INT, 72),
