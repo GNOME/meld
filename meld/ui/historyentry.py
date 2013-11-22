@@ -62,16 +62,21 @@ def _clamp_list_store(liststore, max_items):
 class HistoryCombo(Gtk.ComboBox):
     __gtype_name__ = "HistoryCombo"
 
-    __gproperties__ = {
-        "history-id": (str, "History ID",
-                       "Identifier associated with entry's history store",
-                       None,
-                       GObject.PARAM_CONSTRUCT_ONLY | GObject.PARAM_READWRITE),
-        "history-length": (int, "History length",
-                           "Number of history items to display in the combo",
-                           1, 20, HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT,
-                           GObject.PARAM_READWRITE),
-    }
+    history_id = GObject.property(
+        type=str,
+        nick="History ID",
+        blurb="Identifier associated with entry's history store",
+        default=None,
+        flags=GObject.PARAM_READWRITE,
+    )
+
+    history_length = GObject.property(
+        type=int,
+        nick="History length",
+        blurb="Number of history items to display in the combo",
+        minimum=1, maximum=20,
+        default=HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT,
+    )
 
     def __init__(self, **kwargs):
         super(HistoryCombo, self).__init__(**kwargs)
@@ -89,36 +94,17 @@ class HistoryCombo(Gtk.ComboBox):
         if os.path.exists(self.history_file):
             self.config.read(self.history_file)
 
-        self._history_id = None
-        self._history_length = HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT
-
         self.set_model(Gtk.ListStore(str, str))
         rentext = Gtk.CellRendererText()
         rentext.props.width_chars = 60
         rentext.props.ellipsize = Pango.EllipsizeMode.END
         self.pack_start(rentext, True)
-        self.set_attributes(rentext, text=0)
+        self.add_attribute(rentext, 'text', 0)
 
-    def do_get_property(self, pspec):
-        if pspec.name == "history-id":
-            return self._history_id
-        elif pspec.name == "history-length":
-            return self._history_length
-        else:
-            raise AttributeError("Unknown property: %s" % pspec.name)
-
-    def do_set_property(self, pspec, value):
-        if pspec.name == "history-id":
-            self._history_id = value
-            self._load_history()
-        elif pspec.name == "history-length":
-            if value <= 0:
-                raise ValueError("History length cannot be less than one")
-            self._history_length = value
-            if len(self.get_model()) > self._history_length:
-                self._load_history()
-        else:
-            raise AttributeError("Unknown property: %s" % pspec.name)
+        self.connect('notify::history-id',
+                     lambda *args: self._load_history())
+        self.connect('notify::history-length',
+                     lambda *args: self._load_history())
 
     def prepend_history(self, text):
         self._insert_history_item(text, True)
@@ -136,7 +122,7 @@ class HistoryCombo(Gtk.ComboBox):
 
         store = self.get_model()
         if not _remove_item(store, text):
-            _clamp_list_store(store, self._history_length - 1)
+            _clamp_list_store(store, self.props.history_length - 1)
 
         row = (text.splitlines()[0], text)
 
@@ -147,20 +133,20 @@ class HistoryCombo(Gtk.ComboBox):
         self._save_history()
 
     def _load_history(self):
-        section_key = self._history_id
+        section_key = self.props.history_id
         if section_key is None or not self.config.has_section(section_key):
             return
 
         store = self.get_model()
         store.clear()
         paths = sorted(self.config.items(section_key))
-        for key, path in paths[:self._history_length - 1]:
+        for key, path in paths[:self.props.history_length - 1]:
             path = path.decode("string-escape")
             firstline = path.splitlines()[0]
             store.append((firstline, path))
 
     def _save_history(self):
-        section_key = self._history_id
+        section_key = self.props.history_id
         if section_key is None:
             return
 
