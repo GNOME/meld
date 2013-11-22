@@ -25,23 +25,23 @@ from gettext import gettext as _
 from gi.repository import Gtk
 from gi.repository import Pango
 
-from meld import misc
-from . import gnomeglade
+from meld.misc import commonprefix
+from meld.ui.gnomeglade import Component
 
 
 # FIXME: Duplication from vcview
 def _commonprefix(files):
     if len(files) != 1:
-        workdir = misc.commonprefix(files)
+        workdir = commonprefix(files)
     else:
         workdir = os.path.dirname(files[0]) or "."
     return workdir
 
 
-class CommitDialog(gnomeglade.Component):
+class CommitDialog(Component):
 
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, "vcview.ui", "commitdialog")
+        Component.__init__(self, "vcview.ui", "commitdialog")
         self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
         selected = parent._get_selected_files()
@@ -106,10 +106,10 @@ class CommitDialog(gnomeglade.Component):
             buf.set_text(model[idx][1])
 
 
-class PushDialog(gnomeglade.Component):
+class PushDialog(Component):
 
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, "vcview.ui", "pushdialog")
+        Component.__init__(self, "vcview.ui", "pushdialog")
         self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
         self.widget.show_all()
