@@ -80,8 +80,7 @@ class CommitDialog(GObject.GObject, Component):
         context = self.textview.get_pango_context()
         metrics = context.get_metrics(fontdesc, context.get_language())
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
-        # FIXME: Apparently broken
-        self.textview.set_size_request(80 * char_width, -1)
+        self.scrolledwindow1.set_size_request(80 * char_width, -1)
 
         settings.bind('vc-show-commit-margin', self.textview,
                       'show-right-margin', Gio.SettingsBindFlags.DEFAULT)
