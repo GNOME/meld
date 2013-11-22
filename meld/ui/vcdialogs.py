@@ -22,10 +22,13 @@ import os
 import textwrap
 from gettext import gettext as _
 
+from gi.repository import Gio
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.misc import commonprefix
+from meld.settings import settings
 from meld.ui.gnomeglade import Component
 
 
@@ -38,9 +41,14 @@ def _commonprefix(files):
     return workdir
 
 
-class CommitDialog(Component):
+class CommitDialog(GObject.GObject, Component):
+
+    __gtype_name__ = "CommitDialog"
+
+    break_commit_message = GObject.property(type=bool, default=False)
 
     def __init__(self, parent):
+        GObject.GObject.__init__(self)
         Component.__init__(self, "vcview.ui", "commitdialog")
         self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
@@ -71,25 +79,29 @@ class CommitDialog(Component):
         # commit message.
         context = self.textview.get_pango_context()
         metrics = context.get_metrics(fontdesc, context.get_language())
-        char_width = metrics.get_approximate_char_width()
-        self.textview.set_size_request(80 * Pango.PIXELS(char_width), -1)
+        char_width = metrics.get_approximate_char_width() / Pango.SCALE
+        # FIXME: Apparently broken
+        self.textview.set_size_request(80 * char_width, -1)
 
+        settings.bind('vc-show-commit-margin', self.textview,
+                      'show-right-margin', Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('vc-commit-margin', self.textview,
+                      'right-margin-position', Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('vc-break-commit-message', self,
+                      'break-commit-message', Gio.SettingsBindFlags.DEFAULT)
         self.widget.show_all()
 
     def run(self):
-        prefs = self.parent.prefs
-        margin = prefs.vc_commit_margin
-        self.textview.set_right_margin_position(margin)
-        self.textview.set_show_right_margin(prefs.vc_show_commit_margin)
-
         self.previousentry.set_active(-1)
         self.textview.grab_focus()
         response = self.widget.run()
         if response == Gtk.ResponseType.OK:
+            show_margin = self.textview.get_show_right_margin()
+            margin = self.textview.get_right_margin_position()
             buf = self.textview.get_buffer()
             msg = buf.get_text(*buf.get_bounds(), include_hidden_chars=False)
             # This is a dependent option because of the margin column
-            if prefs.vc_show_commit_margin and prefs.vc_break_commit_message:
+            if show_margin and self.props.break_commit_message:
                 paragraphs = msg.split("\n\n")
                 msg = "\n\n".join(textwrap.fill(p, margin) for p in paragraphs)
             self.parent._command_on_selected(

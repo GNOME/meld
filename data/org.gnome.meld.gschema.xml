@@ -63,5 +63,22 @@
           <summary>File timestamp resolution</summary>
           <description>When comparing based on mtime, this is the minimum difference in nanoseconds between two files before they're considered to have different mtimes. This is useful when comparing files between filesystems with different timestamp resolution.</description>
       </key>
+
+      <!-- Version control properties -->
+      <key name="vc-show-commit-margin" type="b">
+          <default>true</default>
+          <summary>Show margin in commit message editor</summary>
+          <description>If true, a guide will be displayed to show what column the margin is at in the version control commit message editor.</description>
+      </key>
+      <key name="vc-commit-margin" type="i">
+          <default>72</default>
+          <summary>Margin column in commit message editor</summary>
+          <description>The column of the margin is at in the version control commit message editor.</description>
+      </key>
+      <key name="vc-break-commit-message" type="b">
+          <default>false</default>
+          <summary>Automatically hard-wrap commit messages</summary>
+          <description>If true, the version control commit message editor will hard-wrap (i.e., insert line breaks) at the defined commit margin before commit.</description>
+      </key>
   </schema>
 </schemalist>

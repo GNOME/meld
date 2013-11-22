@@ -196,6 +196,13 @@ class PreferencesDialog(gnomeglade.Component):
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),
+            ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),
+            ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
+            ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),
+            # Sensitivity bindings must come after value bindings, or the key
+            # writability in gsettings overrides manual sensitivity setting.
+            ('vc-show-commit-margin', self.spinbutton_commit_margin, 'sensitive'),
+            ('vc-show-commit-margin', self.checkbutton_break_commit_lines, 'sensitive'),
         ]
         for key, obj, attribute in bindings:
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
@@ -254,14 +261,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.combo_file_order.set_active(
             1 if self.prefs.vc_left_is_local else 0)
 
-        self.checkbutton_show_commit_margin.set_active(
-            self.prefs.vc_show_commit_margin)
-        self.spinbutton_commit_margin.set_value(
-            self.prefs.vc_commit_margin)
-        self.checkbutton_break_commit_lines.set_sensitive(
-            self.prefs.vc_show_commit_margin)
-        self.checkbutton_break_commit_lines.set_active(
-            self.prefs.vc_break_commit_message)
 
         self.widget.show()
 
@@ -298,17 +297,6 @@ class PreferencesDialog(gnomeglade.Component):
     def on_custom_edit_command_entry_activate(self, entry, *args):
         # Called on "activate" and "focus-out-event"
         self.prefs.edit_command_custom = entry.props.text
-
-    def on_checkbutton_show_commit_margin_toggled(self, check):
-        show_margin = check.get_active()
-        self.prefs.vc_show_commit_margin = show_margin
-        self.checkbutton_break_commit_lines.set_sensitive(show_margin)
-
-    def on_spinbutton_commit_margin_value_changed(self, spin):
-        self.prefs.vc_commit_margin = int(spin.get_value())
-
-    def on_checkbutton_break_commit_lines_toggled(self, check):
-        self.prefs.vc_break_commit_message = check.get_active()
 
     #
     # filters
@@ -379,10 +367,6 @@ class MeldPreferences(prefs.Preferences):
         "dirdiff_columns": prefs.Value(prefs.LIST,
                                          ["size 1", "modification time 1",
                                           "permissions 0"]),
-
-        "vc_show_commit_margin": prefs.Value(prefs.BOOL, True),
-        "vc_commit_margin": prefs.Value(prefs.INT, 72),
-        "vc_break_commit_message": prefs.Value(prefs.BOOL, False),
 
         "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
