@@ -330,8 +330,6 @@ class MeldPreferences(prefs.Preferences):
         "ignore_blank_lines" : prefs.Value(prefs.BOOL, False),
         "toolbar_visible" : prefs.Value(prefs.BOOL, True),
         "statusbar_visible" : prefs.Value(prefs.BOOL, True),
-        "vc_status_filters": prefs.Value(prefs.LIST,
-                                         ['flatten', 'modified']),
         # Currently, we're using a quite simple format to store the columns:
         # each line contains a column name followed by a 1 or a 0
         # depending on whether the column is visible or not.

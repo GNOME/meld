@@ -28,6 +28,7 @@ from gettext import gettext as _
 
 from gi.repository import GLib
 from gi.repository import Gio
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
 
@@ -39,6 +40,8 @@ from . import vc
 from .ui import emblemcellrenderer
 from .ui import gnomeglade
 from .ui import vcdialogs
+
+from meld.settings import settings
 from meld.vc import _null
 
 
@@ -127,12 +130,17 @@ entry_normal   = lambda x: (x.state == tree.STATE_NORMAL)
 entry_nonvc    = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
 entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 
-################################################################################
-#
-# VcView
-#
-################################################################################
+
 class VcView(melddoc.MeldDoc, gnomeglade.Component):
+
+    __gtype_name__ = "VcView"
+
+    status_filters = GObject.property(
+        type=GObject.TYPE_STRV,
+        nick="File status filters",
+        blurb="Files with these statuses will be shown by the comparison.",
+    )
+
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
         "VcCommit": ("commit_command", ("",)),
@@ -208,13 +216,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         addCol(_("Revision"), COL_REVISION, vc.DATA_REVISION)
         addCol(_("Options"), COL_OPTIONS, vc.DATA_OPTIONS)
 
-        self.state_filters = []
-        for s in self.state_actions:
-            if s in self.prefs.vc_status_filters:
-                action_name = self.state_actions[s][0]
-                self.state_filters.append(s)
-                self.actiongroup.get_action(action_name).set_active(True)
-
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
@@ -228,6 +229,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.combobox_vcs.add_attribute(cell, 'text', 0)
         self.combobox_vcs.add_attribute(cell, 'sensitive', 2)
         self.combobox_vcs.lock = False
+
+        settings.bind('vc-status-filters', self, 'status-filters',
+                      Gio.SettingsBindFlags.DEFAULT)
+
+        self.state_filters = []
+        for s in self.state_actions:
+            if s in self.props.status_filters:
+                action_name = self.state_actions[s][0]
+                self.state_filters.append(s)
+                self.actiongroup.get_action(action_name).set_active(True)
 
     def on_container_switch_in_event(self, ui):
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
@@ -514,7 +525,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         self.state_filters = active_filters
-        self.prefs.vc_status_filters = active_filters
+        self.props.status_filters = active_filters
         self.refresh()
 
     def on_treeview_selection_changed(self, selection=None):
