@@ -40,7 +40,7 @@ class MeldBuffer(GtkSource.Buffer):
     def reset_buffer(self, filename):
         """Clear the contents of the buffer and reset its metadata"""
         self.delete(*self.get_bounds())
-        label = self.data.label if self.data.filename == filename else None
+        label = self.data.label if self.data.filename == filename else filename
         self.data.reset()
         self.data.filename = filename
         self.data.label = label
