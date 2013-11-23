@@ -16,7 +16,9 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-
+import logging
+import shlex
+import string
 import subprocess
 import sys
 
@@ -28,6 +30,24 @@ from gi.repository import Gtk
 from . import task
 
 from gettext import gettext as _
+from meld.settings import settings
+
+log = logging.getLogger(__name__)
+
+
+def make_custom_editor_command(path, line=0):
+    custom_command = settings.get_string('custom-editor-command')
+    fmt = string.Formatter()
+    replacements = [tok[1] for tok in fmt.parse(custom_command)]
+
+    if not any(replacements):
+        cmd = " ".join([custom_command, path])
+    elif not all(r in (None, 'file', 'line') for r in replacements):
+        cmd = " ".join([custom_command, path])
+        log.error("Unsupported fields found", )
+    else:
+        cmd = custom_command.format(file=path, line=line)
+    return shlex.split(cmd)
 
 
 class MeldDoc(GObject.GObject):
@@ -102,12 +122,18 @@ class MeldDoc(GObject.GObject):
                 # FIXME: Content types are broken on Windows with current gio
                 if Gio.content_type_is_a(content_type, "text/plain") or \
                         sys.platform == "win32":
-                    editor = self.prefs.get_editor_command(path, line)
-                    # TODO: If the editor is badly set up, this fails silently
-                    if editor:
-                        subprocess.Popen(editor)
+                    if settings.get_boolean('use-system-editor'):
+                        gfile = Gio.File.new_for_path(path)
+                        Gio.AppInfo.launch_default_for_uri(
+                            gfile.get_uri(), None)
                     else:
-                        os_open(path)
+                        editor = make_custom_editor_command(path, line)
+                        if editor:
+                            # TODO: If the editor is badly set up, this fails
+                            # silently
+                            subprocess.Popen(editor)
+                        else:
+                            os_open(path)
                 else:
                     os_open(path)
             else:

@@ -16,10 +16,6 @@
 ### Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 ### USA.
 
-import logging
-import shlex
-import string
-
 from gettext import gettext as _
 
 from gi.repository import Gio
@@ -40,8 +36,6 @@ TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
                                 ('100ns (NTFS)', 100),
                                 ('1s (ext2/ext3)', 1000000000),
                                 ('2s (VFAT)', 2000000000)]
-
-log = logging.getLogger(__name__)
 
 
 class FilterList(listwidget.ListWidget):
@@ -363,39 +357,3 @@ class MeldPreferences(prefs.Preferences):
         if self.use_custom_font:
             return self.custom_font
         return interface_settings.get_string('monospace-font-name')
-
-    def get_editor_command(self, path, line=0):
-        system_editor = settings.get_boolean('use-system-editor')
-        if not system_editor:
-            custom_command = settings.get_string('custom-editor-command')
-            fmt = string.Formatter()
-            replacements = [tok[1] for tok in fmt.parse(custom_command)]
-
-            if not any(replacements):
-                cmd = " ".join([custom_command, path])
-            elif not all(r in (None, 'file', 'line') for r in replacements):
-                cmd = " ".join([custom_command, path])
-                log.error("Unsupported fields found", )
-            else:
-                cmd = custom_command.format(file=path, line=line)
-            return shlex.split(cmd)
-        else:
-            if not hasattr(self, "_gconf"):
-                return []
-
-            editor_path = "/desktop/gnome/applications/editor/"
-            terminal_path = "/desktop/gnome/applications/terminal/"
-            editor = self._gconf.get_string(editor_path + "exec") or "gedit"
-            if self._gconf.get_bool(editor_path + "needs_term"):
-                argv = []
-                texec = self._gconf.get_string(terminal_path + "exec")
-                if texec:
-                    argv.append(texec)
-                    targ = self._gconf.get_string(terminal_path + "exec_arg")
-                    if targ:
-                        argv.append(targ)
-                escaped_path = path.replace(" ", "\\ ")
-                argv.append("%s %s" % (editor, escaped_path))
-                return argv
-            else:
-                return [editor, path]
