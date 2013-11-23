@@ -270,6 +270,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         blurb="Whether to compare files based solely on size and mtime",
         default=False,
     )
+    status_filters = GObject.property(
+        type=GObject.TYPE_STRV,
+        nick="File status filters",
+        blurb="Files with these statuses will be shown by the comparison.",
+    )
     time_resolution = GObject.property(
         type=int,
         nick="Time resolution",
@@ -408,13 +413,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 "value-changed", self._sync_hscroll)
         self.linediffs = [[], []]
 
-        self.state_filters = []
-        for s in self.state_actions:
-            if self.state_actions[s][0] in self.prefs.dir_status_filters:
-                self.state_filters.append(s)
-                action_name = self.state_actions[s][1]
-                self.actiongroup.get_action(action_name).set_active(True)
-
         settings.bind('folder-columns', self, 'columns',
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('folder-ignore-symlinks', self, 'ignore-symlinks',
@@ -423,10 +421,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('folder-time-resolution', self, 'time-resolution',
                       Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('folder-status-filters', self, 'status-filters',
+                      Gio.SettingsBindFlags.DEFAULT)
 
         self.update_comparator()
         self.connect("notify::shallow-comparison", self.update_comparator)
         self.connect("notify::time-resolution", self.update_comparator)
+
+        self.state_filters = []
+        for s in self.state_actions:
+            if self.state_actions[s][0] in self.props.status_filters:
+                self.state_filters.append(s)
+                action_name = self.state_actions[s][1]
+                self.actiongroup.get_action(action_name).set_active(True)
 
     def on_style_set(self, widget, prev_style):
         style = widget.get_style_context()
@@ -1175,7 +1182,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         state_strs = [self.state_actions[s][0] for s in active_filters]
         self.state_filters = active_filters
-        self.prefs.dir_status_filters = state_strs
+        # TODO: Updating the property won't have any effect on its own
+        self.props.status_filters = state_strs
         self.refresh()
 
     def _update_name_filter(self, button, idx):

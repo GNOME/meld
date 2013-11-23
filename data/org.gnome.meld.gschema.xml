@@ -79,6 +79,11 @@
           <summary>File timestamp resolution</summary>
           <description>When comparing based on mtime, this is the minimum difference in nanoseconds between two files before they're considered to have different mtimes. This is useful when comparing files between filesystems with different timestamp resolution.</description>
       </key>
+      <key name="folder-status-filters" type="as">
+          <default>['normal', 'modified', 'new']</default>
+          <summary>File status filters</summary>
+          <description>List of statuses used to filter visible files in folder comparison.</description>
+      </key>
 
       <!-- Version control properties -->
       <key name="vc-show-commit-margin" type="b">
