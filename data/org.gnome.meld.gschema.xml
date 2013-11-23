@@ -106,5 +106,34 @@
           <summary>Version control status filters</summary>
           <description>List of statuses used to filter visible files in version control comparison.</description>
       </key>
+
+      <!-- Filters -->
+      <key name="filename-filters" type="a(sbs)">
+          <default>
+            [
+              ("Backups", true, "#*# .#* ~* *~ *.{orig,bak,swp}"),
+              ("OS-specific metadata", true, ".DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini"),
+              ("Version Control", true, "_MTN .bzr .svn .svn .hg .fslckout _FOSSIL_ .fos CVS _darcs .git .svn"),
+              ("Binaries", true, "*.{pyc,a,obj,o,so,la,lib,dll,exe}"),
+              ("Media", false, "*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}")
+            ]
+          </default>
+          <summary>Filename-based filters</summary>
+          <description>List of predefined filename-based filters that, if active, will remove matching files from a folder comparison.</description>
+      </key>
+      <key name="text-filters" type="a(sbs)">
+          <default>
+            [
+              ("CVS keywords", false, "\$\\w+(:[^\\n$]+)?\$"),
+              ("C++ comment", false, "//.*"),
+              ("C comment", false, "/\\*.*?\\*/"),
+              ("All whitespace", false, "[ \\t\\r\\f\\v]*"),
+              ("Leading whitespace", false, "^[ \\t\\r\\f\\v]*"),
+              ("Script comment", false, "#.*")
+            ]
+          </default>
+          <summary>Text-based filters</summary>
+          <description>List of predefined text-based regex filters that, if active, will remove text from being used in a file comparison. The text will still be displayed, but won't contribute to the comparison itself.</description>
+      </key>
   </schema>
 </schemalist>

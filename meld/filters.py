@@ -71,6 +71,14 @@ class FilterEntry(object):
         return FilterEntry(name, active, compiled, filter_string)
 
     @classmethod
+    def new_from_gsetting(cls, elements, filter_type):
+        name, active, filter_string = elements
+        compiled = FilterEntry.compile_filter(filter_string, filter_type)
+        if compiled is None:
+            active = False
+        return FilterEntry(name, active, compiled, filter_string)
+
+    @classmethod
     def compile_filter(cls, filter_string, filter_type):
         if filter_type == FilterEntry.REGEX:
             compiled = FilterEntry._compile_regex(filter_string)

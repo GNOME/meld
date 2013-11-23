@@ -47,7 +47,7 @@ from gettext import gettext as _
 from gettext import ngettext
 from .meldapp import app
 
-from meld.settings import settings
+from meld.settings import meldsettings, settings
 
 
 ################################################################################
@@ -316,10 +316,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.text_filters = []
         self.create_name_filters()
         self.create_text_filters()
-        self.app_handlers = [app.connect("file-filters-changed",
-                                         self.on_file_filters_changed),
-                             app.connect("text-filters-changed",
-                                         self.on_text_filters_changed)]
+        self.settings_handlers = [
+            meldsettings.connect("file-filters-changed",
+                                 self.on_file_filters_changed),
+            meldsettings.connect("text-filters-changed",
+                                 self.on_text_filters_changed)
+        ]
 
         self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
                                      "diffmap", "linkmap", "msgarea_mgr",
@@ -543,11 +545,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def create_name_filters(self):
         # Ordering of name filters is irrelevant
-        old_active = set([f.filter_string for f in self.name_filters if f.active])
-        new_active = set([f.filter_string for f in app.file_filters if f.active])
+        old_active = set([f.filter_string for f in self.name_filters
+                          if f.active])
+        new_active = set([f.filter_string for f in meldsettings.file_filters
+                          if f.active])
         active_filters_changed = old_active != new_active
 
-        self.name_filters = [copy.copy(f) for f in app.file_filters]
+        self.name_filters = [copy.copy(f) for f in meldsettings.file_filters]
         actions = []
         disabled_actions = []
         self.filter_ui = []
@@ -575,10 +579,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def create_text_filters(self):
         # In contrast to file filters, ordering of text filters can matter
         old_active = [f.filter_string for f in self.text_filters if f.active]
-        new_active = [f.filter_string for f in app.text_filters if f.active]
+        new_active = [f.filter_string for f in meldsettings.text_filters
+                      if f.active]
         active_filters_changed = old_active != new_active
 
-        self.text_filters = [copy.copy(f) for f in app.text_filters]
+        self.text_filters = [copy.copy(f) for f in meldsettings.text_filters]
 
         return active_filters_changed
 
@@ -1508,8 +1513,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_fileentry_file_set(None)
 
     def on_delete_event(self, appquit=0):
-        for h in self.app_handlers:
-            app.disconnect(h)
+        for h in self.settings_handlers:
+            meldsettings.disconnect(h)
 
         return Gtk.ResponseType.OK
 

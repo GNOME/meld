@@ -19,12 +19,11 @@
 from gettext import gettext as _
 
 from gi.repository import Gio
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 
 from . import filters
-from . import misc
-from . import vc
 from .ui import gnomeglade
 from .ui import listwidget
 from .util import prefs
@@ -40,20 +39,19 @@ TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
 
 class FilterList(listwidget.ListWidget):
 
-    def __init__(self, prefs, key, filter_type):
+    def __init__(self, key, filter_type):
         default_entry = [_("label"), False, _("pattern"), True]
         listwidget.ListWidget.__init__(self, "EditableList.ui",
                                        "list_alignment", ["EditableListStore"],
                                        "EditableList", default_entry)
-        self.prefs = prefs
         self.key = key
         self.filter_type = filter_type
 
         self.pattern_column.set_cell_data_func(self.validity_renderer,
                                                self.valid_icon_celldata)
 
-        for filtstring in getattr(self.prefs, self.key).split("\n"):
-            filt = filters.FilterEntry.parse(filtstring, filter_type)
+        for filter_params in settings.get_value(self.key):
+            filt = filters.FilterEntry.new_from_gsetting(filter_params, filter_type)
             if filt is None:
                 continue
             valid = filt.filter is not None
@@ -84,14 +82,8 @@ class FilterList(listwidget.ListWidget):
         self.model[path][3] = valid
 
     def _update_filter_string(self, *args):
-        pref = []
-        for row in self.model:
-            pattern = row[2]
-            if pattern:
-                pattern = pattern.replace('\r', '')
-                pattern = pattern.replace('\n', '')
-            pref.append("%s\t%s\t%s" % (row[0], 1 if row[1] else 0, pattern))
-        setattr(self.prefs, self.key, "\n".join(pref))
+        value = [(row[0], row[1], row[2]) for row in self.model]
+        settings.set_value(self.key, GLib.Variant('a(sbs)', value))
 
 
 class ColumnList(listwidget.ListWidget):
@@ -226,13 +218,11 @@ class PreferencesDialog(gnomeglade.Component):
             self.checkbutton_wrap_text.set_active(True)
 
         # file filters
-        self.filefilter = FilterList(self.prefs, "filters",
-                                     filters.FilterEntry.SHELL)
+        self.filefilter = FilterList("filename-filters", filters.FilterEntry.SHELL)
         self.file_filters_tab.pack_start(self.filefilter.widget, True, True, 0)
 
         # text filters
-        self.textfilter = FilterList(self.prefs, "regexes",
-                                     filters.FilterEntry.REGEX)
+        self.textfilter = FilterList("text-filters", filters.FilterEntry.REGEX)
         self.text_filters_tab.pack_start(self.textfilter.widget, True, True, 0)
         self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
         # encoding
@@ -304,29 +294,6 @@ class MeldPreferences(prefs.Preferences):
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
-        "filters" : prefs.Value(prefs.STRING,
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Version Control\t1\t%s\n") % misc.shell_escape(' '.join(vc.get_plugins_metadata())) + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Media\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}")),
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-        "regexes" : prefs.Value(prefs.STRING, _("CVS keywords\t0\t\$\\w+(:[^\\n$]+)?\$\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("C++ comment\t0\t//.*\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("C comment\t0\t/\*.*?\*/\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("All whitespace\t0\t[ \\t\\r\\f\\v]*\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n") + \
-            #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-            _("Script comment\t0\t#.*")),
         "ignore_blank_lines" : prefs.Value(prefs.BOOL, False),
         "toolbar_visible" : prefs.Value(prefs.BOOL, True),
         "statusbar_visible" : prefs.Value(prefs.BOOL, True),
@@ -336,7 +303,6 @@ class MeldPreferences(prefs.Preferences):
         "dirdiff_columns": prefs.Value(prefs.LIST,
                                          ["size 1", "modification time 1",
                                           "permissions 0"]),
-
         "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
 

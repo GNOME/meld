@@ -46,7 +46,7 @@ from . import undo
 from .ui import findbar
 from .ui import gnomeglade
 
-from meld.settings import settings
+from meld.settings import meldsettings, settings
 from .meldapp import app
 from .util.compat import text_type
 from .util.sourceviewer import LanguageManager
@@ -197,8 +197,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence = undo.UndoSequence()
         self.text_filters = []
         self.create_text_filters()
-        self.app_handlers = [app.connect("text-filters-changed",
-                             self.on_text_filters_changed)]
+        self.settings_handlers = [
+            meldsettings.connect("text-filters-changed",
+                                 self.on_text_filters_changed)
+        ]
         self.buffer_filtered = [meldbuffer.BufferLines(b, self._filter_text)
                                 for b in self.textbuffer]
         for (i, w) in enumerate(self.scrolledwindow):
@@ -425,10 +427,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def create_text_filters(self):
         # In contrast to file filters, ordering of text filters can matter
         old_active = [f.filter_string for f in self.text_filters if f.active]
-        new_active = [f.filter_string for f in app.text_filters if f.active]
+        new_active = [f.filter_string for f in meldsettings.text_filters
+                      if f.active]
         active_filters_changed = old_active != new_active
 
-        self.text_filters = [copy.copy(f) for f in app.text_filters]
+        self.text_filters = [copy.copy(f) for f in meldsettings.text_filters]
 
         return active_filters_changed
 
@@ -892,8 +895,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_delete_event(self, appquit=0):
         response = self.check_save_modified()
         if response == Gtk.ResponseType.OK:
-            for h in self.app_handlers:
-                app.disconnect(h)
+            for h in self.settings_handlers:
+                meldsettings.disconnect(h)
         return response
 
         #

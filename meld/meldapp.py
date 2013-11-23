@@ -37,13 +37,6 @@ import meld.recent
 
 class MeldApp(Gtk.Application):
 
-    __gsignals__ = {
-        'file-filters-changed': (GObject.SignalFlags.RUN_FIRST,
-                                 None, ()),
-        'text-filters-changed': (GObject.SignalFlags.RUN_FIRST,
-                                 None, ()),
-    }
-
     def __init__(self):
         Gtk.Application.__init__(self)
         self.set_flags(Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
@@ -51,11 +44,6 @@ class MeldApp(Gtk.Application):
         GObject.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
         self.prefs = meld.preferences.MeldPreferences()
-        self.prefs.notify_add(self.on_preference_changed)
-        self.file_filters = self._parse_filters(self.prefs.filters,
-                                                meld.filters.FilterEntry.SHELL)
-        self.text_filters = self._parse_filters(self.prefs.regexes,
-                                                meld.filters.FilterEntry.REGEX)
         self.recent_comparisons = meld.recent.RecentFiles(sys.argv[0])
         self.window = None
 
@@ -132,21 +120,6 @@ class MeldApp(Gtk.Application):
             print('Not implemented')
 
         return self.window.open_paths(paths, **kwargs)
-
-    def on_preference_changed(self, key, val):
-        if key == "filters":
-            self.file_filters = self._parse_filters(
-                val, meld.filters.FilterEntry.SHELL)
-            self.emit('file-filters-changed')
-        elif key == "regexes":
-            self.text_filters = self._parse_filters(
-                val, meld.filters.FilterEntry.REGEX)
-            self.emit('text-filters-changed')
-
-    def _parse_filters(self, string, filt_type):
-        filt = [meld.filters.FilterEntry.parse(l, filt_type) for l
-                in string.split("\n")]
-        return [f for f in filt if f is not None]
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""
