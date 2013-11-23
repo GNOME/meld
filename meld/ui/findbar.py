@@ -114,7 +114,8 @@ class FindBar(gnomeglade.Component):
         buf.end_user_action()
         if not saved_insert.get_deleted():
             buf.place_cursor(buf.get_iter_at_mark(saved_insert))
-            self.textview.scroll_to_mark(buf.get_insert(), 0.25)
+            self.textview.scroll_to_mark(
+                buf.get_insert(), 0.25, True, 0.5, 0.5)
 
     def on_find_entry_changed(self, entry):
         entry.override_background_color(Gtk.StateType.NORMAL,
@@ -161,7 +162,8 @@ class FindBar(gnomeglade.Component):
                 buf.place_cursor(it)
                 it.forward_chars(match.end() - match.start())
                 buf.move_mark(buf.get_selection_bound(), it)
-                self.textview.scroll_to_mark(buf.get_insert(), 0.25)
+                self.textview.scroll_to_mark(
+                    buf.get_insert(), 0.25, True, 0.5, 0.5)
                 return True
             else:
                 buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
