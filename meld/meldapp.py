@@ -62,18 +62,16 @@ class MeldApp(Gtk.Application):
     def do_startup(self):
         Gtk.Application.do_startup(self)
 
-        prefs_action = Gio.SimpleAction.new("preferences", None)
-        prefs_action.connect("activate", self.preferences_callback)
-        self.add_action(prefs_action)
-        help_action = Gio.SimpleAction.new("help", None)
-        help_action.connect("activate", self.help_callback)
-        self.add_action(help_action)
-        about_action = Gio.SimpleAction.new("about", None)
-        about_action.connect("activate", self.about_callback)
-        self.add_action(about_action)
-        quit_action = Gio.SimpleAction.new("quit", None)
-        quit_action.connect("activate", self.quit_callback)
-        self.add_action(quit_action)
+        actions = (
+            ("preferences", self.preferences_callback),
+            ("help", self.help_callback),
+            ("about", self.about_callback),
+            ("quit", self.quit_callback),
+        )
+        for (name, callback) in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.add_action(action)
 
         # TODO: Should not be necessary but Builder doesn't understand Menus
         builder = meld.ui.util.get_builder("application.ui")
