@@ -38,6 +38,8 @@ from .ui import notebooklabel
 from .util.compat import string_types
 from .meldapp import app
 
+from meld.settings import interface_settings
+
 
 class MeldWindow(gnomeglade.Component):
 
@@ -165,6 +167,9 @@ class MeldWindow(gnomeglade.Component):
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
 
+        interface_settings.bind('toolbar-style', self.toolbar, 'toolbar-style',
+                                Gio.SettingsBindFlags.DEFAULT)
+
         # Add alternate keybindings for Prev/Next Change
         accels = self.ui.get_accel_group()
         (keyval, mask) = Gtk.accelerator_parse("<Ctrl>D")
@@ -188,7 +193,6 @@ class MeldWindow(gnomeglade.Component):
         self.widget.drag_dest_add_uri_targets()
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
-        self.toolbar.set_style(app.prefs.get_toolbar_style())
         self.toolbar.props.visible = app.prefs.toolbar_visible
         self.statusbar.props.visible = app.prefs.statusbar_visible
         app.prefs.notify_add(self.on_preference_changed)

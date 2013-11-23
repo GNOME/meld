@@ -379,20 +379,6 @@ class MeldPreferences(prefs.Preferences):
             return self.custom_font
         return interface_settings.get_string('monospace-font-name')
 
-    def get_toolbar_style(self):
-        if not hasattr(self, "_gconf"):
-            style = "both-horiz"
-        else:
-            style = self._gconf.get_string(
-                      '/desktop/gnome/interface/toolbar_style') or "both-horiz"
-        toolbar_styles = {
-            "both": Gtk.ToolbarStyle.BOTH, "text": Gtk.ToolbarStyle.TEXT,
-            "icon": Gtk.ToolbarStyle.ICONS, "icons": Gtk.ToolbarStyle.ICONS,
-            "both_horiz": Gtk.ToolbarStyle.BOTH_HORIZ,
-            "both-horiz": Gtk.ToolbarStyle.BOTH_HORIZ
-        }
-        return toolbar_styles[style]
-
     def get_editor_command(self, path, line=0):
         if self.edit_command_type == "custom":
             custom_command = self.edit_command_custom
