@@ -195,6 +195,8 @@ class PreferencesDialog(gnomeglade.Component):
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),
+            ('use-system-editor', self.system_editor_checkbutton, 'active'),
+            ('custom-editor-command', self.custom_edit_command_entry, 'text'),
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
@@ -207,6 +209,9 @@ class PreferencesDialog(gnomeglade.Component):
         for key, obj, attribute in bindings:
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
 
+        settings.bind(
+            'use-system-editor', self.custom_edit_command_entry, 'sensitive',
+            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
         if not self.prefs.use_custom_font:
             self.checkbutton_default_font.set_active(True)
@@ -224,12 +229,6 @@ class PreferencesDialog(gnomeglade.Component):
             if self.prefs.edit_wrap_lines == Gtk.WrapMode.CHAR:
                 self.checkbutton_split_words.set_active(False)
             self.checkbutton_wrap_text.set_active(True)
-
-        use_default = self.prefs.edit_command_type == "internal" or \
-                      self.prefs.edit_command_type == "gnome"
-        self.system_editor_checkbutton.set_active(use_default)
-        self.custom_edit_command_entry.set_sensitive(not use_default)
-        self.custom_edit_command_entry.set_text(self.prefs.edit_command_custom)
 
         # file filters
         self.filefilter = FilterList(self.prefs, "filters",
@@ -286,18 +285,6 @@ class PreferencesDialog(gnomeglade.Component):
     def on_checkbutton_show_whitespace_toggled(self, check):
         self.prefs.show_whitespace = check.get_active()
 
-    def on_system_editor_checkbutton_toggled(self, check):
-        use_default = check.get_active()
-        self.custom_edit_command_entry.set_sensitive(not use_default)
-        if use_default:
-            self.prefs.edit_command_type = "gnome"
-        else:
-            self.prefs.edit_command_type = "custom"
-
-    def on_custom_edit_command_entry_activate(self, entry, *args):
-        # Called on "activate" and "focus-out-event"
-        self.prefs.edit_command_custom = entry.props.text
-
     #
     # filters
     #
@@ -326,8 +313,6 @@ class MeldPreferences(prefs.Preferences):
         "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "show_whitespace": prefs.Value(prefs.BOOL, False),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
-        "edit_command_type" : prefs.Value(prefs.STRING, "gnome"), #gnome, custom
-        "edit_command_custom" : prefs.Value(prefs.STRING, "gedit"),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
         "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
@@ -380,8 +365,9 @@ class MeldPreferences(prefs.Preferences):
         return interface_settings.get_string('monospace-font-name')
 
     def get_editor_command(self, path, line=0):
-        if self.edit_command_type == "custom":
-            custom_command = self.edit_command_custom
+        system_editor = settings.get_boolean('use-system-editor')
+        if not system_editor:
+            custom_command = settings.get_string('custom-editor-command')
             fmt = string.Formatter()
             replacements = [tok[1] for tok in fmt.parse(custom_command)]
 

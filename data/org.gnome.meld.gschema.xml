@@ -46,6 +46,17 @@
           <description>If true, the line containing the cursor will be highlighted in file comparisons.</description>
       </key>
 
+      <!-- External helper properties -->
+      <key name="use-system-editor" type="b">
+          <default>true</default>
+          <summary>Use the system default editor</summary>
+          <description>If false, the defined custom editor will be used instead of the system editor when opening files externally.</description>
+      </key>
+      <key name="custom-editor-command" type="s">
+          <default>""</default>
+          <summary>The custom editor launch command</summary>
+          <description>The command used to launch a custom editor. Some limited templating is supported here; at the moment '{file}' and '{line}' are recognised tokens.</description>
+      </key>
 
       <!-- Folder comparsion properties -->
       <key name="folder-columns" type="a(sb)">
