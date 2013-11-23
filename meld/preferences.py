@@ -192,6 +192,7 @@ class PreferencesDialog(gnomeglade.Component):
             ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),
+            ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
             ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),
@@ -228,7 +229,6 @@ class PreferencesDialog(gnomeglade.Component):
         self.filefilter = FilterList(self.prefs, "filters",
                                      filters.FilterEntry.SHELL)
         self.file_filters_tab.pack_start(self.filefilter.widget, True, True, 0)
-        self.checkbutton_ignore_symlinks.set_active( self.prefs.ignore_symlinks)
 
         # text filters
         self.textfilter = FilterList(self.prefs, "regexes",
@@ -279,11 +279,6 @@ class PreferencesDialog(gnomeglade.Component):
     def on_checkbutton_show_whitespace_toggled(self, check):
         self.prefs.show_whitespace = check.get_active()
 
-    #
-    # filters
-    #
-    def on_checkbutton_ignore_symlinks_toggled(self, check):
-        self.prefs.ignore_symlinks = check.get_active()
     def on_checkbutton_ignore_blank_lines_toggled(self, check):
         self.prefs.ignore_blank_lines = check.get_active()
 
@@ -308,7 +303,6 @@ class MeldPreferences(prefs.Preferences):
         "show_whitespace": prefs.Value(prefs.BOOL, False),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
-        "ignore_symlinks": prefs.Value(prefs.BOOL,0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "filters" : prefs.Value(prefs.STRING,
             #TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact

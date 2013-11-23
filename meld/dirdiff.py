@@ -258,6 +258,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         nick="Columns to display",
         blurb="List of columns to display in folder comparison",
     )
+    ignore_symlinks = GObject.property(
+        type=bool,
+        nick="Ignore symbolic links",
+        blurb="Whether to follow symbolic links when comparing folders",
+        default=False,
+    )
     shallow_comparison = GObject.property(
         type=bool,
         nick="Use shallow comparison",
@@ -409,11 +415,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 action_name = self.state_actions[s][1]
                 self.actiongroup.get_action(action_name).set_active(True)
 
+        settings.bind('folder-columns', self, 'columns',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('folder-ignore-symlinks', self, 'ignore-symlinks',
+                      Gio.SettingsBindFlags.DEFAULT)
         settings.bind('folder-shallow-comparison', self, 'shallow-comparison',
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('folder-time-resolution', self, 'time-resolution',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('folder-columns', self, 'columns',
                       Gio.SettingsBindFlags.DEFAULT)
 
         self.update_comparator()
@@ -732,7 +740,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         continue
 
                     if stat.S_ISLNK(s.st_mode):
-                        if self.prefs.ignore_symlinks:
+                        if self.props.ignore_symlinks:
                             continue
                         key = (s.st_dev, s.st_ino)
                         if key in symlinks_followed:
