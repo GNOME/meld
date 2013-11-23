@@ -221,7 +221,7 @@ class DiffTreeStore(Gtk.TreeStore):
 
         return prev_path, next_path
 
-    def treeview_search_cb(self, model, column, key, it):
+    def treeview_search_cb(self, model, column, key, it, data):
         # If the key contains a path separator, search the whole path,
         # otherwise just use the filename. If the key is all lower-case, do a
         # case-insensitive match.
