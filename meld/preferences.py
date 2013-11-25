@@ -94,19 +94,14 @@ class ColumnList(listwidget.ListWidget):
         "permissions",
     ))
 
-    def __init__(self, prefs, key):
+    def __init__(self, key):
         listwidget.ListWidget.__init__(self, "EditableList.ui",
-                               "columns_ta", ["ColumnsListStore"],
-                               "columns_treeview")
-        self.prefs = prefs
+                                       "columns_ta", ["ColumnsListStore"],
+                                       "columns_treeview")
         self.key = key
 
-        prefs_columns = []
-        for column in getattr(self.prefs, self.key):
-            column_name, visibility = column.rsplit(" ", 1)
-            visibility = bool(int(visibility))
-            prefs_columns.append((column_name, visibility))
-
+        # Unwrap the variant
+        prefs_columns = [(k, v) for k, v in settings.get_value(self.key)]
         missing = self.available_columns - set([c[0] for c in prefs_columns])
         prefs_columns.extend([(m, False) for m in missing])
         for column_name, visibility in prefs_columns:
@@ -122,8 +117,8 @@ class ColumnList(listwidget.ListWidget):
         self.model[path][0] = not ren.get_active()
 
     def _update_columns(self, *args):
-        columns = ["%s %d" % (c[1].lower(), int(c[0])) for c in self.model]
-        setattr(self.prefs, self.key, columns)
+        value = [(c[1].lower(), c[0]) for c in self.model]
+        settings.set_value(self.key, GLib.Variant('a(sb)', value))
 
 
 class GSettingsComboBox(Gtk.ComboBox):
@@ -228,7 +223,7 @@ class PreferencesDialog(gnomeglade.Component):
         # encoding
         self.entry_text_codecs.set_text( self.prefs.text_codecs )
 
-        columnlist = ColumnList(self.prefs, "dirdiff_columns")
+        columnlist = ColumnList("folder-columns")
         self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
 
         model = Gtk.ListStore(str, int)
@@ -300,9 +295,6 @@ class MeldPreferences(prefs.Preferences):
         # Currently, we're using a quite simple format to store the columns:
         # each line contains a column name followed by a 1 or a 0
         # depending on whether the column is visible or not.
-        "dirdiff_columns": prefs.Value(prefs.LIST,
-                                         ["size 1", "modification time 1",
-                                          "permissions 0"]),
         "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
 

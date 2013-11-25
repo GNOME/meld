@@ -45,7 +45,6 @@ from collections import namedtuple
 from decimal import Decimal
 from gettext import gettext as _
 from gettext import ngettext
-from .meldapp import app
 
 from meld.settings import meldsettings, settings
 
@@ -253,11 +252,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     __gtype_name__ = "DirDiff"
 
-    columns = GObject.property(
-        type=GObject.TYPE_PYOBJECT,
-        nick="Columns to display",
-        blurb="List of columns to display in folder comparison",
-    )
     ignore_symlinks = GObject.property(
         type=bool,
         nick="Ignore symbolic links",
@@ -403,7 +397,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.set_attributes(rentext, markup=col_index(COL_PERMS, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["permissions"] = column
-        self.update_treeview_columns(self.prefs.dirdiff_columns)
 
         for i in range(3):
             selection = self.treeview[i].get_selection()
@@ -415,8 +408,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 "value-changed", self._sync_hscroll)
         self.linediffs = [[], []]
 
-        settings.bind('folder-columns', self, 'columns',
-                      Gio.SettingsBindFlags.DEFAULT)
+        self.update_treeview_columns(settings, 'folder-columns')
+        settings.connect('changed::folder-columns',
+                         self.update_treeview_columns)
+
         settings.bind('folder-ignore-symlinks', self, 'ignore-symlinks',
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('folder-shallow-comparison', self, 'shallow-comparison',
@@ -467,9 +462,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             diffmap.queue_draw()
 
     def on_preference_changed(self, key, value):
-        if key == "dirdiff_columns":
-            self.update_treeview_columns(value)
-        elif key == "ignore_blank_lines":
+        if key == "ignore_blank_lines":
             self.update_comparator()
 
     def update_comparator(self, *args):
@@ -482,20 +475,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             _files_same, comparison_args=comparison_args)
         self.refresh()
 
-    def update_treeview_columns(self, columns):
+    def update_treeview_columns(self, settings, key):
         """Update the visibility and order of columns"""
-        for i in range(3):
+        columns = settings.get_value(key)
+        for i, treeview in enumerate(self.treeview):
             extra_cols = False
-            last_column = self.treeview[i].get_column(0)
-            for line in columns:
-                column_name, visible = line.rsplit(" ", 1)
-                visible = bool(int(visible))
+            last_column = treeview.get_column(0)
+            for column_name, visible in columns:
                 extra_cols = extra_cols or visible
                 current_column = self.columns_dict[i][column_name]
                 current_column.set_visible(visible)
-                self.treeview[i].move_column_after(current_column, last_column)
+                treeview.move_column_after(current_column, last_column)
                 last_column = current_column
-            self.treeview[i].set_headers_visible(extra_cols)
+            treeview.set_headers_visible(extra_cols)
 
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
