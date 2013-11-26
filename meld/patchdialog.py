@@ -21,11 +21,11 @@ from gettext import gettext as _
 import os
 
 from gi.repository import Gtk
-from gi.repository import Pango
 from gi.repository import GtkSource
 
 from .ui import gnomeglade
 
+from meld.settings import meldsettings
 from .util.compat import text_type
 from .util.sourceviewer import LanguageManager
 
@@ -36,8 +36,6 @@ class PatchDialog(gnomeglade.Component):
         gnomeglade.Component.__init__(self, "patch-dialog.ui", "patchdialog")
 
         self.widget.set_transient_for(filediff.widget.get_toplevel())
-        self.prefs = filediff.prefs
-        self.prefs.notify_add(self.on_preference_changed)
         self.filediff = filediff
 
         buf = GtkSource.Buffer()
@@ -46,8 +44,7 @@ class PatchDialog(gnomeglade.Component):
         buf.set_language(lang)
         buf.set_highlight_syntax(True)
 
-        fontdesc = Pango.FontDescription(self.prefs.get_current_font())
-        self.textview.modify_font(fontdesc)
+        self.textview.modify_font(meldsettings.font)
         self.textview.set_editable(False)
 
         self.index_map = {self.left_radiobutton: (0, 1),
@@ -59,10 +56,11 @@ class PatchDialog(gnomeglade.Component):
             self.label3.hide()
             self.hbox2.hide()
 
-    def on_preference_changed(self, key, value):
-        if key == "use_custom_font" or key == "custom_font":
-            fontdesc = Pango.FontDescription(self.prefs.get_current_font())
-            self.textview.modify_font(fontdesc)
+        meldsettings.connect('changed', self.on_setting_changed)
+
+    def on_setting_changed(self, setting, key):
+        if key == "font":
+            self.textview.modify_font(meldsettings.font)
 
     def on_buffer_selection_changed(self, radiobutton):
         if not radiobutton.get_active():

@@ -16,6 +16,7 @@
 
 from gi.repository import Gio
 from gi.repository import GObject
+from gi.repository import Pango
 
 import meld.conf
 import meld.filters
@@ -35,16 +36,16 @@ class MeldSettings(GObject.GObject):
     """Handler for settings that can't easily be bound to object properties"""
 
     __gsignals__ = {
-        'file-filters-changed': (GObject.SignalFlags.RUN_FIRST,
-                                 None, ()),
-        'text-filters-changed': (GObject.SignalFlags.RUN_FIRST,
-                                 None, ()),
+        'file-filters-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'text-filters-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'changed': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
     }
 
     def __init__(self):
         GObject.GObject.__init__(self)
         self.on_setting_changed(settings, 'filename-filters')
         self.on_setting_changed(settings, 'text-filters')
+        self.on_setting_changed(settings, 'use-system-font')
         settings.connect('changed', self.on_setting_changed)
 
     def on_setting_changed(self, settings, key):
@@ -56,6 +57,9 @@ class MeldSettings(GObject.GObject):
             self.text_filters = self._filters_from_gsetting(
                 'text-filters', meld.filters.FilterEntry.REGEX)
             self.emit('text-filters-changed')
+        elif key in ('use-system-font', 'custom-font'):
+            self.font = self._current_font_from_gsetting()
+            self.emit('changed', 'font')
 
     def _filters_from_gsetting(self, key, filt_type):
         filter_params = settings.get_value(key)
@@ -64,5 +68,13 @@ class MeldSettings(GObject.GObject):
             for params in filter_params
         ]
         return filters
+
+    def _current_font_from_gsetting(self, *args):
+        if settings.get_boolean('use-system-font'):
+            font_string = interface_settings.get_string('monospace-font-name')
+        else:
+            font_string = settings.get_string('custom-font')
+        return Pango.FontDescription(font_string)
+
 
 meldsettings = MeldSettings()

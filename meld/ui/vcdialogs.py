@@ -28,7 +28,7 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.misc import commonprefix
-from meld.settings import settings
+from meld.settings import meldsettings, settings
 from meld.ui.gnomeglade import Component
 
 
@@ -67,8 +67,7 @@ class CommitDialog(GObject.GObject, Component):
         self.changedfiles.set_text("(in %s)\n%s" %
                                    (topdir, "\n".join(to_commit)))
 
-        fontdesc = Pango.FontDescription(self.parent.prefs.get_current_font())
-        self.textview.modify_font(fontdesc)
+        self.textview.modify_font(meldsettings.font)
         commit_prefill = self.parent.vc.get_commit_message_prefill()
         if commit_prefill:
             buf = self.textview.get_buffer()
@@ -78,7 +77,8 @@ class CommitDialog(GObject.GObject, Component):
         # Try and make the textview wide enough for a standard 80-character
         # commit message.
         context = self.textview.get_pango_context()
-        metrics = context.get_metrics(fontdesc, context.get_language())
+        metrics = context.get_metrics(meldsettings.font,
+                                      context.get_language())
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
         self.scrolledwindow1.set_size_request(80 * char_width, -1)
 

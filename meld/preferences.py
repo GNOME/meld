@@ -28,7 +28,7 @@ from .ui import gnomeglade
 from .ui import listwidget
 from .util import prefs
 
-from meld.settings import settings, interface_settings
+from meld.settings import settings
 
 
 TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
@@ -171,6 +171,8 @@ class PreferencesDialog(gnomeglade.Component):
         self.prefs = prefs
 
         bindings = [
+            ('use-system-font', self.checkbutton_default_font, 'active'),
+            ('custom-font', self.fontpicker, 'font'),
             ('indent-width', self.spinbutton_tabsize, 'value'),
             ('insert-spaces-instead-of-tabs', self.checkbutton_spaces_instead_of_tabs, 'active'),
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),
@@ -194,15 +196,10 @@ class PreferencesDialog(gnomeglade.Component):
         settings.bind(
             'use-system-editor', self.custom_edit_command_entry, 'sensitive',
             Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN)
+        settings.bind(
+            'use-system-font', self.fontpicker, 'sensitive',
+            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
-        if not self.prefs.use_custom_font:
-            self.checkbutton_default_font.set_active(True)
-            self.fontpicker.set_sensitive(False)
-        else:
-            self.checkbutton_default_font.set_active(False)
-            self.fontpicker.set_sensitive(True)
-            self.fontpicker.set_font_name(self.prefs.custom_font)
-        self.fontpicker.set_font_name( self.prefs.custom_font )
         self.checkbutton_show_whitespace.set_active(
             self.prefs.show_whitespace)
         # TODO: This doesn't restore the state of character wrapping when word
@@ -242,14 +239,6 @@ class PreferencesDialog(gnomeglade.Component):
 
         self.widget.show()
 
-    def on_fontpicker_font_set(self, picker):
-        self.prefs.custom_font = picker.get_font_name()
-
-    def on_checkbutton_default_font_toggled(self, button):
-        use_custom = not button.get_active()
-        self.fontpicker.set_sensitive(use_custom)
-        self.prefs.use_custom_font = use_custom
-
     def on_checkbutton_wrap_text_toggled(self, button):
         if not self.checkbutton_wrap_text.get_active():
             self.prefs.edit_wrap_lines = 0
@@ -283,8 +272,6 @@ class MeldPreferences(prefs.Preferences):
     defaults = {
         "window_size_x": prefs.Value(prefs.INT, 600),
         "window_size_y": prefs.Value(prefs.INT, 600),
-        "use_custom_font": prefs.Value(prefs.BOOL,0),
-        "custom_font": prefs.Value(prefs.STRING,"monospace, 14"),
         "show_whitespace": prefs.Value(prefs.BOOL, False),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
@@ -300,8 +287,3 @@ class MeldPreferences(prefs.Preferences):
 
     def __init__(self):
         super(MeldPreferences, self).__init__("/apps/meld", self.defaults)
-
-    def get_current_font(self):
-        if self.use_custom_font:
-            return self.custom_font
-        return interface_settings.get_string('monospace-font-name')

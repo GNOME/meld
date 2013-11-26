@@ -47,7 +47,6 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from meld.settings import meldsettings, settings
-from .meldapp import app
 from .util.compat import text_type
 from .util.sourceviewer import LanguageManager
 
@@ -363,6 +362,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         settings.bind('highlight-current-line', self, 'highlight-current-line',
                       Gio.SettingsBindFlags.DEFAULT)
+
+        meldsettings.connect('changed', self.on_setting_changed)
 
     def get_keymask(self):
         return self._keymask
@@ -814,20 +815,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.deleted_lines_pending = -1
 
     def load_font(self):
-        fontdesc = Pango.FontDescription(self.prefs.get_current_font())
         context = self.textview0.get_pango_context()
-        metrics = context.get_metrics(fontdesc, context.get_language())
+        metrics = context.get_metrics(meldsettings.font,
+                                      context.get_language())
         line_height_points = metrics.get_ascent() + metrics.get_descent()
         self.pixels_per_line = line_height_points // 1024
         for i in range(3):
-            self.textview[i].override_font(fontdesc)
+            self.textview[i].override_font(meldsettings.font)
         for i in range(2):
             self.linkmap[i].queue_draw()
 
-    def on_preference_changed(self, key, value):
-        if key == "use_custom_font" or key == "custom_font":
+    def on_setting_changed(self, settings, key):
+        if key == 'font':
             self.load_font()
-        elif key == "show_whitespace":
+
+    def on_preference_changed(self, key, value):
+        if key == "show_whitespace":
             for v in self.textview:
                 v.set_draw_spaces(value)
         elif key == "edit_wrap_lines":
