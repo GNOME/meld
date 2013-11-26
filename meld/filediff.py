@@ -183,7 +183,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.connect('end_user_action', self.on_textbuffer_end_user_action)
             v.set_buffer(buf)
             v.set_wrap_mode(self.prefs.edit_wrap_lines)
-            v.set_draw_spaces(self.prefs.show_whitespace)
             buf.data.connect('file-changed', self.notify_file_changed)
         self._keymask = 0
         self.load_font()
@@ -355,6 +354,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                           'insert-spaces-instead-of-tabs',
                           Gio.SettingsBindFlags.DEFAULT)
             settings.bind('show-line-numbers', view, 'show-line-numbers',
+                          Gio.SettingsBindFlags.DEFAULT)
+            settings.bind('draw-spaces', view, 'draw-spaces',
                           Gio.SettingsBindFlags.DEFAULT)
         for buf in self.textbuffer:
             settings.bind('highlight-syntax', buf, 'highlight-syntax',
@@ -830,10 +831,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.load_font()
 
     def on_preference_changed(self, key, value):
-        if key == "show_whitespace":
-            for v in self.textview:
-                v.set_draw_spaces(value)
-        elif key == "edit_wrap_lines":
+        if key == "edit_wrap_lines":
             for t in self.textview:
                 t.set_wrap_mode(self.prefs.edit_wrap_lines)
             # FIXME: On changing wrap mode, we get one redraw using cached

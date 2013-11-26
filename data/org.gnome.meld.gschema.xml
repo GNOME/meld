@@ -6,6 +6,9 @@
     <value nick="tab" value="2"/>
     <value nick="newline" value="4"/>
     <value nick="nbsp" value="8"/>
+    <value nick="leading" value="16"/>
+    <value nick="text" value="32"/>
+    <value nick="trailing" value="64"/>
   </flags>
 
   <schema id="org.gnome.meld" path="/org/gnome/meld/">
@@ -43,10 +46,8 @@
           <summary>Highlight syntax</summary>
           <description>Whether to highlight syntax in comparisons. Because of Meld's own color highlighting, this is off by default.</description>
       </key>
-
-
-      <key name="show-whitespace" flags='org.gnome.meld.spacesflags'>
-          <default>["space", "tab"]</default>
+      <key name="draw-spaces" flags='org.gnome.meld.spacesflags'>
+          <default>[]</default>
           <summary>Displayed whitespace</summary>
           <description>Selector for individual whitespace character types to be shown. Possible values are 'space', 'tab', 'newline' and 'nbsp'.</description>
       </key>

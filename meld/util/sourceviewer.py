@@ -72,7 +72,3 @@ class MeldSourceView(GtkSource.View):
 
     def get_line_num_for_y(self, y):
         return self.get_line_at_y(y)[0].get_line()
-
-    def set_draw_spaces(self, draw):
-        spaces_flag = GtkSource.DrawSpacesFlags.ALL if draw else 0
-        super(MeldSourceView, self).set_draw_spaces(spaces_flag)

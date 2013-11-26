@@ -22,6 +22,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
+from gi.repository import GtkSource
 
 from . import filters
 from .ui import gnomeglade
@@ -200,8 +201,9 @@ class PreferencesDialog(gnomeglade.Component):
             'use-system-font', self.fontpicker, 'sensitive',
             Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
+        # TODO: Fix once bind_with_mapping is available
         self.checkbutton_show_whitespace.set_active(
-            self.prefs.show_whitespace)
+            bool(settings.get_flags('draw-spaces')))
         # TODO: This doesn't restore the state of character wrapping when word
         # wrapping is disabled, but this is hard with our existing gconf keys
         if self.prefs.edit_wrap_lines != Gtk.WrapMode.NONE:
@@ -250,8 +252,9 @@ class PreferencesDialog(gnomeglade.Component):
             else:
                 self.prefs.edit_wrap_lines = 1
 
-    def on_checkbutton_show_whitespace_toggled(self, check):
-        self.prefs.show_whitespace = check.get_active()
+    def on_checkbutton_show_whitespace_toggled(self, widget):
+        value = GtkSource.DrawSpacesFlags.ALL if widget.get_active() else 0
+        settings.set_flags('draw-spaces', value)
 
     def on_checkbutton_ignore_blank_lines_toggled(self, check):
         self.prefs.ignore_blank_lines = check.get_active()
@@ -272,7 +275,6 @@ class MeldPreferences(prefs.Preferences):
     defaults = {
         "window_size_x": prefs.Value(prefs.INT, 600),
         "window_size_y": prefs.Value(prefs.INT, 600),
-        "show_whitespace": prefs.Value(prefs.BOOL, False),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
