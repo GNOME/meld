@@ -27,7 +27,6 @@ from . import dirdiff
 from . import filediff
 from . import filemerge
 from . import melddoc
-from . import misc
 from . import newdifftab
 from . import recent
 from . import task
@@ -38,7 +37,7 @@ from .ui import notebooklabel
 from .util.compat import string_types
 from .meldapp import app
 
-from meld.settings import interface_settings
+from meld.settings import interface_settings, settings
 
 
 class MeldWindow(gnomeglade.Component):
@@ -133,10 +132,10 @@ class MeldWindow(gnomeglade.Component):
                 self.on_action_fullscreen_toggled, False),
             ("ToolbarVisible", None, _("_Toolbar"), None,
                 _("Show or hide the toolbar"),
-                self.on_menu_toolbar_toggled, app.prefs.toolbar_visible),
+                None, True),
             ("StatusbarVisible", None, _("_Statusbar"), None,
                 _("Show or hide the statusbar"),
-                self.on_menu_statusbar_toggled, app.prefs.statusbar_visible)
+                None, True),
         )
         ui_file = gnomeglade.ui_file("meldapp-ui.xml")
         self.actiongroup = Gtk.ActionGroup('MainActions')
@@ -167,6 +166,16 @@ class MeldWindow(gnomeglade.Component):
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
 
+        settings.bind('toolbar-visible',
+                      self.actiongroup.get_action('ToolbarVisible'), 'active',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('statusbar-visible',
+                      self.actiongroup.get_action('StatusbarVisible'), 'active',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('toolbar-visible', self.toolbar, 'visible',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('statusbar-visible', self.statusbar, 'visible',
+                      Gio.SettingsBindFlags.DEFAULT)
         interface_settings.bind('toolbar-style', self.toolbar, 'toolbar-style',
                                 Gio.SettingsBindFlags.DEFAULT)
 
@@ -193,9 +202,6 @@ class MeldWindow(gnomeglade.Component):
         self.widget.drag_dest_add_uri_targets()
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
-        self.toolbar.props.visible = app.prefs.toolbar_visible
-        self.statusbar.props.visible = app.prefs.statusbar_visible
-        app.prefs.notify_add(self.on_preference_changed)
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
@@ -275,14 +281,6 @@ class MeldWindow(gnomeglade.Component):
             self.statusbar.start_pulse()
             self.actiongroup.get_action("Stop").set_sensitive(True)
             self.idle_hooked = GObject.idle_add(self.on_idle)
-
-    def on_preference_changed(self, key, value):
-        if key == "toolbar_style":
-            self.toolbar.set_style(app.prefs.get_toolbar_style())
-        elif key == "statusbar_visible":
-            self.statusbar.props.visible = app.prefs.statusbar_visible
-        elif key == "toolbar_visible":
-            self.toolbar.props.visible = app.prefs.toolbar_visible
 
     def on_delete_event(self, *extra):
         # Delete pages from right-to-left.  This ensures that if a version
@@ -488,12 +486,6 @@ class MeldWindow(gnomeglade.Component):
             self.widget.fullscreen()
         elif is_full:
             self.widget.unfullscreen()
-
-    def on_menu_toolbar_toggled(self, widget):
-        app.prefs.toolbar_visible = widget.get_active()
-
-    def on_menu_statusbar_toggled(self, widget):
-        app.prefs.statusbar_visible = widget.get_active()
 
     def on_menu_edit_down_activate(self, *args):
         self.current_doc().next_diff(Gdk.ScrollDirection.DOWN)

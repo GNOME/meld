@@ -277,11 +277,6 @@ class MeldPreferences(prefs.Preferences):
         "text_codecs": prefs.Value(prefs.STRING, "utf8 latin1"),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "ignore_blank_lines" : prefs.Value(prefs.BOOL, False),
-        "toolbar_visible" : prefs.Value(prefs.BOOL, True),
-        "statusbar_visible" : prefs.Value(prefs.BOOL, True),
-        # Currently, we're using a quite simple format to store the columns:
-        # each line contains a column name followed by a 1 or a 0
-        # depending on whether the column is visible or not.
         "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
 
