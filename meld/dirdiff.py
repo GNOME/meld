@@ -252,6 +252,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     __gtype_name__ = "DirDiff"
 
+    ignore_blank_lines = GObject.property(
+        type=bool,
+        nick="Ignore blank lines",
+        blurb="Whether to ignore blank lines when comparing file contents",
+        default=False,
+    )
     ignore_symlinks = GObject.property(
         type=bool,
         nick="Ignore symbolic links",
@@ -420,10 +426,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('folder-status-filters', self, 'status-filters',
                       Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('ignore-blank-lines', self, 'ignore-blank-lines',
+                      Gio.SettingsBindFlags.DEFAULT)
 
         self.update_comparator()
         self.connect("notify::shallow-comparison", self.update_comparator)
         self.connect("notify::time-resolution", self.update_comparator)
+        self.connect("notify::ignore-blank-lines", self.update_comparator)
 
         self.state_filters = []
         for s in self.state_actions:
@@ -461,15 +470,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for diffmap in self.diffmap:
             diffmap.queue_draw()
 
-    def on_preference_changed(self, key, value):
-        if key == "ignore_blank_lines":
-            self.update_comparator()
-
     def update_comparator(self, *args):
         comparison_args = {
             'shallow-comparison': self.props.shallow_comparison,
             'time-resolution': self.props.time_resolution,
-            'ignore_blank_lines': self.prefs.ignore_blank_lines,
+            'ignore_blank_lines': self.props.ignore_blank_lines,
         }
         self.file_compare = functools.partial(
             _files_same, comparison_args=comparison_args)

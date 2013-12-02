@@ -186,6 +186,7 @@ class PreferencesDialog(gnomeglade.Component):
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
             ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),
+            ('ignore-blank-lines', self.checkbutton_ignore_blank_lines, 'active'),
             # Sensitivity bindings must come after value bindings, or the key
             # writability in gsettings overrides manual sensitivity setting.
             ('vc-show-commit-margin', self.spinbutton_commit_margin, 'sensitive'),
@@ -218,7 +219,6 @@ class PreferencesDialog(gnomeglade.Component):
         # text filters
         self.textfilter = FilterList("text-filters", filters.FilterEntry.REGEX)
         self.text_filters_tab.pack_start(self.textfilter.widget, True, True, 0)
-        self.checkbutton_ignore_blank_lines.set_active( self.prefs.ignore_blank_lines )
 
         columnlist = ColumnList("folder-columns")
         self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
@@ -254,9 +254,6 @@ class PreferencesDialog(gnomeglade.Component):
         value = GtkSource.DrawSpacesFlags.ALL if widget.get_active() else 0
         settings.set_flags('draw-spaces', value)
 
-    def on_checkbutton_ignore_blank_lines_toggled(self, check):
-        self.prefs.ignore_blank_lines = check.get_active()
-
     def on_combo_file_order_changed(self, combo):
         file_order = combo.get_model()[combo.get_active_iter()][0]
         self.prefs.vc_left_is_local = True if file_order else False
@@ -271,7 +268,6 @@ class MeldPreferences(prefs.Preferences):
         "window_size_y": prefs.Value(prefs.INT, 600),
         "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
-        "ignore_blank_lines" : prefs.Value(prefs.BOOL, False),
         "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
 

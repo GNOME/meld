@@ -140,6 +140,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     __gtype_name__ = "FileDiff"
 
     highlight_current_line = GObject.property(type=bool, default=False)
+    ignore_blank_lines = GObject.property(
+        type=bool,
+        nick="Ignore blank lines",
+        blurb="Whether to ignore blank lines when comparing file contents",
+        default=False,
+    )
 
     differ = diffutil.Differ
 
@@ -209,7 +215,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._sync_hscroll_lock = False
         self._scroll_lock = False
         self.linediffer = self.differ()
-        self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
         self.force_highlight = False
         self.syncpoints = []
         self.in_nested_textview_gutter_expose = False
@@ -363,6 +368,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         settings.bind('highlight-current-line', self, 'highlight-current-line',
                       Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('ignore-blank-lines', self, 'ignore-blank-lines',
+                      Gio.SettingsBindFlags.DEFAULT)
+
+        self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 
         meldsettings.connect('changed', self.on_setting_changed)
 
@@ -839,9 +848,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # correct coordinates. Overly-aggressive textview lazy calculation?
             self.diffmap0.queue_draw()
             self.diffmap1.queue_draw()
-        elif key == "ignore_blank_lines":
-            self.linediffer.ignore_blanks = self.prefs.ignore_blank_lines
-            self.refresh_comparison()
 
     def on_key_press_event(self, object, event):
         keymap = Gdk.Keymap.get_default()
@@ -1188,6 +1194,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
         texts = self.buffer_filtered[:self.num_panes]
+        self.linediffer.ignore_blanks = self.props.ignore_blank_lines
         step = self.linediffer.set_sequences_iter(texts)
         while next(step) is None:
             yield 1
@@ -1257,7 +1264,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         msgarea.connect("response", on_file_changed_response)
         msgarea.show_all()
 
-    def refresh_comparison(self):
+    def refresh_comparison(self, *args):
         """Refresh the view by clearing and redoing all comparisons"""
         self._disconnect_buffer_handlers()
         self.linediffer.clear()
