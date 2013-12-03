@@ -188,7 +188,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         self.on_textbuffer_begin_user_action)
             buf.connect('end_user_action', self.on_textbuffer_end_user_action)
             v.set_buffer(buf)
-            v.set_wrap_mode(self.prefs.edit_wrap_lines)
             buf.data.connect('file-changed', self.notify_file_changed)
         self._keymask = 0
         self.load_font()
@@ -362,6 +361,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                           Gio.SettingsBindFlags.DEFAULT)
             settings.bind('draw-spaces', view, 'draw-spaces',
                           Gio.SettingsBindFlags.DEFAULT)
+            settings.bind('wrap-mode', view, 'wrap-mode',
+                          Gio.SettingsBindFlags.DEFAULT)
+
         for buf in self.textbuffer:
             settings.bind('highlight-syntax', buf, 'highlight-syntax',
                           Gio.SettingsBindFlags.DEFAULT)
@@ -838,16 +840,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_setting_changed(self, settings, key):
         if key == 'font':
             self.load_font()
-
-    def on_preference_changed(self, key, value):
-        if key == "edit_wrap_lines":
-            for t in self.textview:
-                t.set_wrap_mode(self.prefs.edit_wrap_lines)
-            # FIXME: On changing wrap mode, we get one redraw using cached
-            # coordinates, followed by a second redraw (e.g., on refocus) with
-            # correct coordinates. Overly-aggressive textview lazy calculation?
-            self.diffmap0.queue_draw()
-            self.diffmap1.queue_draw()
 
     def on_key_press_event(self, object, event):
         keymap = Gdk.Keymap.get_default()

@@ -202,15 +202,17 @@ class PreferencesDialog(gnomeglade.Component):
             'use-system-font', self.fontpicker, 'sensitive',
             Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
+        self.checkbutton_wrap_text.bind_property(
+            'active', self.checkbutton_wrap_word, 'sensitive',
+            GObject.BindingFlags.DEFAULT)
+
         # TODO: Fix once bind_with_mapping is available
         self.checkbutton_show_whitespace.set_active(
             bool(settings.get_flags('draw-spaces')))
-        # TODO: This doesn't restore the state of character wrapping when word
-        # wrapping is disabled, but this is hard with our existing gconf keys
-        if self.prefs.edit_wrap_lines != Gtk.WrapMode.NONE:
-            if self.prefs.edit_wrap_lines == Gtk.WrapMode.CHAR:
-                self.checkbutton_split_words.set_active(False)
-            self.checkbutton_wrap_text.set_active(True)
+
+        wrap_mode = settings.get_enum('wrap-mode')
+        self.checkbutton_wrap_text.set_active(wrap_mode != Gtk.WrapMode.NONE)
+        self.checkbutton_wrap_word.set_active(wrap_mode == Gtk.WrapMode.WORD)
 
         # file filters
         self.filefilter = FilterList("filename-filters", filters.FilterEntry.SHELL)
@@ -241,14 +243,12 @@ class PreferencesDialog(gnomeglade.Component):
 
     def on_checkbutton_wrap_text_toggled(self, button):
         if not self.checkbutton_wrap_text.get_active():
-            self.prefs.edit_wrap_lines = 0
-            self.checkbutton_split_words.set_sensitive(False)
+            wrap_mode = Gtk.WrapMode.NONE
+        elif self.checkbutton_wrap_word.get_active():
+            wrap_mode = Gtk.WrapMode.WORD
         else:
-            self.checkbutton_split_words.set_sensitive(True)
-            if self.checkbutton_split_words.get_active():
-                self.prefs.edit_wrap_lines = 2
-            else:
-                self.prefs.edit_wrap_lines = 1
+            wrap_mode = Gtk.WrapMode.CHAR
+        settings.set_enum('wrap-mode', wrap_mode)
 
     def on_checkbutton_show_whitespace_toggled(self, widget):
         value = GtkSource.DrawSpacesFlags.ALL if widget.get_active() else 0
@@ -266,7 +266,6 @@ class MeldPreferences(prefs.Preferences):
     defaults = {
         "window_size_x": prefs.Value(prefs.INT, 600),
         "window_size_y": prefs.Value(prefs.INT, 600),
-        "edit_wrap_lines" : prefs.Value(prefs.INT, 0),
         "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }

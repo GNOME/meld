@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
 
+  <enum id="org.gnome.meld.wrapmode">
+    <value nick="none" value="0"/>
+    <value nick="char" value="1"/>
+    <value nick="word" value="2"/>
+    <value nick="word-char" value="3"/>
+  </enum>
+
   <flags id="org.gnome.meld.spacesflags">
     <value nick="space" value="1"/>
     <value nick="tab" value="2"/>
@@ -33,7 +40,7 @@
       </key>
 
 
-      <!-- Settings corresponding directly to GtkSourceView properties -->
+      <!-- Settings corresponding directly to GtkTextView/GtkSourceView properties -->
       <key name="indent-width" type="i">
           <default>8</default>
           <summary>Width of an indentation step</summary>
@@ -58,6 +65,16 @@
           <default>[]</default>
           <summary>Displayed whitespace</summary>
           <description>Selector for individual whitespace character types to be shown. Possible values are 'space', 'tab', 'newline' and 'nbsp'.</description>
+      </key>
+      <key name="wrap-mode" enum='org.gnome.meld.wrapmode'>
+          <aliases>
+            <alias value='GTK_WRAP_NONE' target='none'/>
+            <alias value='GTK_WRAP_CHAR' target='char'/>
+            <alias value='GTK_WRAP_WORD' target='word'/>
+          </aliases>
+          <default>'none'</default>
+          <summary>Wrap mode</summary>
+          <description>Lines in file comparisons will be wrapped according to this setting, either not at all ('none'), at any character ('char') or only at the end of words ('word').</description>
       </key>
 
 
