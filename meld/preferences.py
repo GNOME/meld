@@ -266,7 +266,6 @@ class MeldPreferences(prefs.Preferences):
     defaults = {
         "window_size_x": prefs.Value(prefs.INT, 600),
         "window_size_y": prefs.Value(prefs.INT, 600),
-        "vc_console_visible": prefs.Value(prefs.BOOL, 0),
         "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
 

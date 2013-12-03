@@ -140,6 +140,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         nick="File status filters",
         blurb="Files with these statuses will be shown by the comparison.",
     )
+    console_visible = GObject.property(type=bool, default=False)
 
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
@@ -219,8 +220,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
-        if not self.prefs.vc_console_visible:
-            self.on_console_view_toggle(self.console_hide_box)
         self.vc = None
         self.valid_vc_actions = tuple()
 
@@ -232,6 +231,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         settings.bind('vc-status-filters', self, 'status-filters',
                       Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('vc-console-visible', self, 'console-visible',
+                      Gio.SettingsBindFlags.DEFAULT)
+
+        self.bind_property(
+            'console-visible', self.console_hbox, 'visible',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.DEFAULT)
+        self.bind_property(
+            'console-visible', self.console_show_box, 'visible',
+            GObject.BindingFlags.SYNC_CREATE |
+            GObject.BindingFlags.INVERT_BOOLEAN)
 
         self.state_filters = []
         for s in self.state_actions:
@@ -606,7 +615,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         returncode = next(readiter)
         if returncode:
-            self.set_console_view_visible(True)
+            self.props.console_visible = True
 
         if refresh:
             self.refresh_partial(workdir)
@@ -763,20 +772,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return None
 
     def on_console_view_toggle(self, box, event=None):
-        if box == self.console_hide_box:
-            self.set_console_view_visible(False)
-        else:
-            self.set_console_view_visible(True)
-
-    def set_console_view_visible(self, visible):
-        if not visible:
-            self.prefs.vc_console_visible = 0
-            self.console_hbox.hide()
-            self.console_show_box.show()
-        else:
-            self.prefs.vc_console_visible = 1
-            self.console_hbox.show()
-            self.console_show_box.hide()
+        self.props.console_visible = box != self.console_hide_box
 
     def on_consoleview_populate_popup(self, textview, menu):
         buf = textview.get_buffer()
