@@ -24,7 +24,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from . import filters
+from meld.filters import FilterEntry
 from .ui import gnomeglade
 from .ui import listwidget
 from .util import prefs
@@ -46,7 +46,7 @@ class FilterList(listwidget.ListWidget):
                                                self.valid_icon_celldata)
 
         for filter_params in settings.get_value(self.key):
-            filt = filters.FilterEntry.new_from_gsetting(filter_params, filter_type)
+            filt = FilterEntry.new_from_gsetting(filter_params, filter_type)
             if filt is None:
                 continue
             valid = filt.filter is not None
@@ -71,7 +71,7 @@ class FilterList(listwidget.ListWidget):
         self.model[path][1] = not ren.get_active()
 
     def on_pattern_edited(self, ren, path, text):
-        filt = filters.FilterEntry.compile_filter(text, self.filter_type)
+        filt = FilterEntry.compile_filter(text, self.filter_type)
         valid = filt is not None
         self.model[path][2] = text
         self.model[path][3] = valid
@@ -216,13 +216,11 @@ class PreferencesDialog(gnomeglade.Component):
         self.checkbutton_wrap_text.set_active(wrap_mode != Gtk.WrapMode.NONE)
         self.checkbutton_wrap_word.set_active(wrap_mode == Gtk.WrapMode.WORD)
 
-        # file filters
-        self.filefilter = FilterList("filename-filters", filters.FilterEntry.SHELL)
-        self.file_filters_tab.pack_start(self.filefilter.widget, True, True, 0)
+        filefilter = FilterList("filename-filters", FilterEntry.SHELL)
+        self.file_filters_tab.pack_start(filefilter.widget, True, True, 0)
 
-        # text filters
-        self.textfilter = FilterList("text-filters", filters.FilterEntry.REGEX)
-        self.text_filters_tab.pack_start(self.textfilter.widget, True, True, 0)
+        textfilter = FilterList("text-filters", FilterEntry.REGEX)
+        self.text_filters_tab.pack_start(textfilter.widget, True, True, 0)
 
         columnlist = ColumnList("folder-columns")
         self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
