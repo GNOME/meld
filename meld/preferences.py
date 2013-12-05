@@ -25,20 +25,20 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.filters import FilterEntry
-from .ui import gnomeglade
-from .ui import listwidget
+from meld.ui.gnomeglade import Component
+from meld.ui.listwidget import ListWidget
 from .util import prefs
 
 from meld.settings import settings
 
 
-class FilterList(listwidget.ListWidget):
+class FilterList(ListWidget):
 
     def __init__(self, key, filter_type):
         default_entry = [_("label"), False, _("pattern"), True]
-        listwidget.ListWidget.__init__(self, "EditableList.ui",
-                                       "list_alignment", ["EditableListStore"],
-                                       "EditableList", default_entry)
+        ListWidget.__init__(self, "EditableList.ui",
+                            "list_alignment", ["EditableListStore"],
+                            "EditableList", default_entry)
         self.key = key
         self.filter_type = filter_type
 
@@ -81,7 +81,7 @@ class FilterList(listwidget.ListWidget):
         settings.set_value(self.key, GLib.Variant('a(sbs)', value))
 
 
-class ColumnList(listwidget.ListWidget):
+class ColumnList(ListWidget):
 
     available_columns = set((
         "size",
@@ -90,9 +90,9 @@ class ColumnList(listwidget.ListWidget):
     ))
 
     def __init__(self, key):
-        listwidget.ListWidget.__init__(self, "EditableList.ui",
-                                       "columns_ta", ["ColumnsListStore"],
-                                       "columns_treeview")
+        ListWidget.__init__(self, "EditableList.ui",
+                            "columns_ta", ["ColumnsListStore"],
+                            "columns_treeview")
         self.key = key
 
         # Unwrap the variant
@@ -163,13 +163,12 @@ class GSettingsBoolComboBox(GSettingsComboBox):
     gsettings_value = GObject.property(type=bool, default=False)
 
 
-class PreferencesDialog(gnomeglade.Component):
+class PreferencesDialog(Component):
 
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, "preferences.ui",
-                                      "preferencesdialog",
-                                      ["adjustment1", "adjustment2", "fileorderstore",
-                                       "sizegroup_editor", "timestampstore"])
+        Component.__init__(self, "preferences.ui", "preferencesdialog",
+                           ["adjustment1", "adjustment2", "fileorderstore",
+                            "sizegroup_editor", "timestampstore"])
         self.widget.set_transient_for(parent)
 
         bindings = [
