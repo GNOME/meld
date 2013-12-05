@@ -90,8 +90,7 @@ class MeldApp(Gtk.Application):
     #     return response
 
     def preferences_callback(self, action, parameter):
-        meld.preferences.PreferencesDialog(self.get_active_window(),
-                                           self.prefs)
+        meld.preferences.PreferencesDialog(self.get_active_window())
 
     def help_callback(self, action, parameter):
         Gtk.show_uri(Gdk.Screen.get_default(), "help:meld",

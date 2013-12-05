@@ -165,13 +165,12 @@ class GSettingsBoolComboBox(GSettingsComboBox):
 
 class PreferencesDialog(gnomeglade.Component):
 
-    def __init__(self, parent, prefs):
+    def __init__(self, parent):
         gnomeglade.Component.__init__(self, "preferences.ui",
                                       "preferencesdialog",
                                       ["adjustment1", "adjustment2", "fileorderstore",
                                        "sizegroup_editor", "timestampstore"])
         self.widget.set_transient_for(parent)
-        self.prefs = prefs
 
         bindings = [
             ('use-system-font', self.checkbutton_default_font, 'active'),
