@@ -32,12 +32,6 @@ from .util import prefs
 from meld.settings import settings
 
 
-TIMESTAMP_RESOLUTION_PRESETS = [('1ns (ext4)', 1),
-                                ('100ns (NTFS)', 100),
-                                ('1s (ext2/ext3)', 1000000000),
-                                ('2s (VFAT)', 2000000000)]
-
-
 class FilterList(listwidget.ListWidget):
 
     def __init__(self, key, filter_type):
@@ -157,7 +151,7 @@ class GSettingsIntComboBox(GSettingsComboBox):
 
     __gtype_name__ = "GSettingsIntComboBox"
 
-    gsettings_column = GObject.property(type=int, default=1)
+    gsettings_column = GObject.property(type=int, default=0)
     gsettings_value = GObject.property(type=int)
 
 
@@ -165,7 +159,7 @@ class GSettingsBoolComboBox(GSettingsComboBox):
 
     __gtype_name__ = "GSettingsBoolComboBox"
 
-    gsettings_column = GObject.property(type=int, default=1)
+    gsettings_column = GObject.property(type=int, default=0)
     gsettings_value = GObject.property(type=bool, default=False)
 
 
@@ -175,7 +169,7 @@ class PreferencesDialog(gnomeglade.Component):
         gnomeglade.Component.__init__(self, "preferences.ui",
                                       "preferencesdialog",
                                       ["adjustment1", "adjustment2", "fileorderstore",
-                                       "sizegroup_editor"])
+                                       "sizegroup_editor", "timestampstore"])
         self.widget.set_transient_for(parent)
         self.prefs = prefs
 
@@ -233,16 +227,7 @@ class PreferencesDialog(gnomeglade.Component):
         columnlist = ColumnList("folder-columns")
         self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
 
-        model = Gtk.ListStore(str, int)
-        for i, entry in enumerate(TIMESTAMP_RESOLUTION_PRESETS):
-            model.append(entry)
-        # FIXME: This should all be in the glade
-        self.combo_timestamp.set_model(model)
-        cell = Gtk.CellRendererText()
-        self.combo_timestamp.pack_start(cell, False)
-        self.combo_timestamp.add_attribute(cell, 'text', 0)
         self.combo_timestamp.bind_to('folder-time-resolution')
-
         self.combo_file_order.bind_to('vc-left-is-local')
 
         self.widget.show()
