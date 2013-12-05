@@ -18,17 +18,17 @@
   <object class="GtkListStore" id="fileorderstore">
     <columns>
       <!-- column-name id -->
-      <column type="gint"/>
+      <column type="gboolean"/>
       <!-- column-name label -->
       <column type="gchararray"/>
     </columns>
     <data>
       <row>
-        <col id="0">0</col>
+        <col id="0">False</col>
         <col id="1" translatable="yes">Left is remote, right is local</col>
       </row>
       <row>
-        <col id="0">1</col>
+        <col id="0">True</col>
         <col id="1" translatable="yes">Left is local, right is remote</col>
       </row>
     </data>
@@ -924,12 +924,12 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="combo_file_order">
+                                  <object class="GSettingsBoolComboBox" id="combo_file_order">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="model">fileorderstore</property>
                                     <property name="active">0</property>
-                                    <signal name="changed" handler="on_combo_file_order_changed" swapped="no"/>
+                                    <property name="gsettings-column">0</property>
                                     <child>
                                       <object class="GtkCellRendererText" id="file_order_renderer"/>
                                       <attributes>

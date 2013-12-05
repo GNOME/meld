@@ -161,6 +161,14 @@ class GSettingsIntComboBox(GSettingsComboBox):
     gsettings_value = GObject.property(type=int)
 
 
+class GSettingsBoolComboBox(GSettingsComboBox):
+
+    __gtype_name__ = "GSettingsBoolComboBox"
+
+    gsettings_column = GObject.property(type=int, default=1)
+    gsettings_value = GObject.property(type=bool, default=False)
+
+
 class PreferencesDialog(gnomeglade.Component):
 
     def __init__(self, parent, prefs):
@@ -235,9 +243,7 @@ class PreferencesDialog(gnomeglade.Component):
         self.combo_timestamp.add_attribute(cell, 'text', 0)
         self.combo_timestamp.bind_to('folder-time-resolution')
 
-        self.combo_file_order.set_active(
-            1 if self.prefs.vc_left_is_local else 0)
-
+        self.combo_file_order.bind_to('vc-left-is-local')
 
         self.widget.show()
 
@@ -254,10 +260,6 @@ class PreferencesDialog(gnomeglade.Component):
         value = GtkSource.DrawSpacesFlags.ALL if widget.get_active() else 0
         settings.set_flags('draw-spaces', value)
 
-    def on_combo_file_order_changed(self, combo):
-        file_order = combo.get_model()[combo.get_active_iter()][0]
-        self.prefs.vc_left_is_local = True if file_order else False
-
     def on_response(self, dialog, response_id):
         self.widget.destroy()
 
@@ -266,7 +268,6 @@ class MeldPreferences(prefs.Preferences):
     defaults = {
         "window_size_x": prefs.Value(prefs.INT, 600),
         "window_size_y": prefs.Value(prefs.INT, 600),
-        "vc_left_is_local": prefs.Value(prefs.BOOL, False),
     }
 
     def __init__(self):

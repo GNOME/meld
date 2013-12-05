@@ -141,6 +141,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         blurb="Files with these statuses will be shown by the comparison.",
     )
     console_visible = GObject.property(type=bool, default=False)
+    left_is_local = GObject.property(type=bool, default=False)
 
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
@@ -232,6 +233,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         settings.bind('vc-status-filters', self, 'status-filters',
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-console-visible', self, 'console-visible',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('vc-left-is-local', self, 'left-is-local',
                       Gio.SettingsBindFlags.DEFAULT)
 
         self.bind_property(
@@ -465,7 +468,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("create-diff", [path], {})
             return
 
-        left_is_local = self.prefs.vc_left_is_local
+        left_is_local = self.props.left_is_local
 
         if self.vc.get_entry(path).state == tree.STATE_CONFLICT and \
                 hasattr(self.vc, 'get_path_for_conflict'):
