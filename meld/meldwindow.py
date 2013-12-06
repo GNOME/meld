@@ -18,8 +18,9 @@
 import os
 from gettext import gettext as _
 
-from gi.repository import Gio
 from gi.repository import Gdk
+from gi.repository import Gio
+from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import GObject
 
@@ -205,8 +206,8 @@ class MeldWindow(gnomeglade.Component):
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
-        self.widget.set_default_size(app.prefs.window_size_x,
-                                     app.prefs.window_size_y)
+        window_size = settings.get_value('window-size')
+        self.widget.set_default_size(window_size[0], window_size[1])
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
@@ -408,9 +409,12 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("PrevChange").set_sensitive(have_prev)
         self.actiongroup.get_action("NextChange").set_sensitive(have_next)
 
-    def on_size_allocate(self, window, rect):
-        app.prefs.window_size_x = rect.width
-        app.prefs.window_size_y = rect.height
+    def on_configure_event(self, window, event):
+        state = event.window.get_state()
+        nosave = Gdk.WindowState.FULLSCREEN | Gdk.WindowState.MAXIMIZED
+        if not (state & nosave):
+            variant = GLib.Variant('(ii)', (event.width, event.height))
+            settings.set_value('window-size', variant)
 
     def on_menu_file_new_activate(self, menuitem):
         self.append_new_comparison()
