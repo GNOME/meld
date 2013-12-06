@@ -88,14 +88,14 @@ class build_help(distutils.cmd.Command):
             lang = os.path.basename(path)
             path_help = os.path.join('share/help', lang, name)
             path_figures = os.path.join('share/help', lang, name, 'figures')
-            
+
             xml_files = glob.glob('%s/*.xml' % path)
             mallard_files = glob.glob('%s/*.page' % path)
             data_files.append((path_help, xml_files + mallard_files))
             data_files.append((path_figures, glob.glob('%s/figures/*.png' % path)))
 
         return data_files
-    
+
     def run(self):
         data_files = self.distribution.data_files
         data_files.extend(self.get_data_files())
@@ -103,7 +103,7 @@ class build_help(distutils.cmd.Command):
 
 class build_icons(distutils.cmd.Command):
 
-    icon_dir = os.path.join("data","icons")
+    icon_dir = os.path.join("data", "icons")
 
     def initialize_options(self):
         pass
@@ -126,7 +126,7 @@ class build_icons(distutils.cmd.Command):
                                        (os.path.basename(theme),
                                         os.path.basename(size),
                                         os.path.basename(category)),
-                                        icons))
+                                       icons))
 
 
 class build_i18n(distutils.cmd.Command):
@@ -174,7 +174,7 @@ class build_i18n(distutils.cmd.Command):
             lang = os.path.basename(po_file[:-3])
             if selected_languages and not lang in selected_languages:
                 continue
-            mo_dir =  os.path.join("build", "mo", lang, "LC_MESSAGES")
+            mo_dir = os.path.join("build", "mo", lang, "LC_MESSAGES")
             mo_file = os.path.join(mo_dir, "%s.mo" % self.domain)
             if not os.path.exists(mo_dir):
                 os.makedirs(mo_dir)
@@ -207,7 +207,7 @@ class build_i18n(distutils.cmd.Command):
         for file_set, switch in intltool_switches:
             for target, files in file_set:
                 build_target = os.path.join("build", target)
-                if not os.path.exists(build_target): 
+                if not os.path.exists(build_target):
                     os.makedirs(build_target)
                 files_merged = []
                 for file in files:
@@ -215,13 +215,13 @@ class build_i18n(distutils.cmd.Command):
                     if file_merged.endswith(".in"):
                         file_merged = file_merged[:-3]
                     file_merged = os.path.join(build_target, file_merged)
-                    cmd = ["intltool-merge", switch, self.po_dir, file, 
+                    cmd = ["intltool-merge", switch, self.po_dir, file,
                            file_merged]
-                    mtime_merged = os.path.exists(file_merged) and \
-                                   os.path.getmtime(file_merged) or 0
+                    mtime_merged = (os.path.exists(file_merged) and
+                                    os.path.getmtime(file_merged) or 0)
                     mtime_file = os.path.getmtime(file)
                     if mtime_merged < self.max_po_mtime or mtime_merged < mtime_file:
-                        # Only build if output is older than input (.po,.in) 
+                        # Only build if output is older than input (.po,.in)
                         self.spawn(cmd)
                     files_merged.append(file_merged)
                 self.distribution.data_files.append((target, files_merged))
