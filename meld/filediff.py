@@ -333,7 +333,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # Prototype implementation
 
-        from gutterrendererchunk import GutterRendererChunkAction
+        from meld.gutterrendererchunk import GutterRendererChunkAction
 
         for pane, t in enumerate(self.textview):
             # FIXME: set_num_panes will break this good
