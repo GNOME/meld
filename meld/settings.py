@@ -14,12 +14,16 @@
 # this program; if not, write to the Free Software Foundation, Inc., 51
 # Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import os
+
 from gi.repository import Gio
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Pango
 
 import meld.conf
 import meld.filters
+
 
 schema_source = Gio.SettingsSchemaSource.new_from_directory(
     meld.conf.DATADIR,
@@ -27,7 +31,15 @@ schema_source = Gio.SettingsSchemaSource.new_from_directory(
     False,
 )
 schema = schema_source.lookup('org.gnome.meld', False)
-settings = Gio.Settings.new_full(schema, None, None)
+backend = None
+
+force_ini = os.path.exists(
+    os.path.join(GLib.get_user_config_dir(), 'meld', 'use-rc-prefs'))
+if force_ini:
+    # TODO: Use GKeyfileSettingsBackend once available (see bgo#682702)
+    print("Using a flat-file settings backend is not yet supported")
+    backend = None
+settings = Gio.Settings.new_full(schema, backend, None)
 
 interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
 
