@@ -41,9 +41,33 @@ class build_extra(distutils.command.build.build):
         def has_i18n(command):
             return "build_i18n" in self.distribution.cmdclass
 
+        def has_data(command):
+            return "build_data" in self.distribution.cmdclass
+
         self.sub_commands.append(("build_i18n", has_i18n))
         self.sub_commands.append(("build_icons", has_icons))
         self.sub_commands.append(("build_help", has_help))
+        self.sub_commands.append(("build_data", has_data))
+
+
+class build_data(distutils.cmd.Command):
+
+    gschemas = [
+        ('share/glib-2.0/schemas/', ['data/org.gnome.meld.gschema.xml'])
+    ]
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def get_data_files(self):
+        return self.gschemas
+
+    def run(self):
+        data_files = self.distribution.data_files
+        data_files.extend(self.get_data_files())
 
 
 class build_help(distutils.cmd.Command):
