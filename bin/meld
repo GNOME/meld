@@ -22,6 +22,7 @@ from __future__ import print_function
 import locale
 import logging
 import os
+import subprocess
 import sys
 
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
@@ -155,6 +156,16 @@ def setup_resources():
     Gtk.rc_parse(rc_file)
 
 
+def setup_settings():
+    if not uninstalled:
+        return
+
+    if os.path.exists(os.path.join(meld.conf.DATADIR, "gschemas.compiled")):
+        return
+
+    subprocess.call(["glib-compile-schemas", meld.conf.DATADIR], cwd=melddir)
+
+
 def setup_logging():
     log = logging.getLogger()
 
@@ -175,6 +186,7 @@ if __name__ == '__main__':
     setup_logging()
     disable_stdout_buffering()
     check_requirements()
+    setup_settings()
     setup_resources()
 
     import meld.meldapp
