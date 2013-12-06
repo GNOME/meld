@@ -162,8 +162,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "ignored": ("VcShowIgnored", entry_ignored),
     }
 
-    def __init__(self, prefs):
-        melddoc.MeldDoc.__init__(self, prefs)
+    def __init__(self):
+        melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "vcview.ui", "vcview",
                                       ["VcviewActions", 'liststore_vcs'])
 

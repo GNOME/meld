@@ -25,11 +25,9 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.filters import FilterEntry
+from meld.settings import settings
 from meld.ui.gnomeglade import Component
 from meld.ui.listwidget import ListWidget
-from .util import prefs
-
-from meld.settings import settings
 
 
 class FilterList(ListWidget):
@@ -243,13 +241,3 @@ class PreferencesDialog(Component):
 
     def on_response(self, dialog, response_id):
         self.widget.destroy()
-
-
-class MeldPreferences(prefs.Preferences):
-    defaults = {
-        "window_size_x": prefs.Value(prefs.INT, 600),
-        "window_size_y": prefs.Value(prefs.INT, 600),
-    }
-
-    def __init__(self):
-        super(MeldPreferences, self).__init__("/apps/meld", self.defaults)

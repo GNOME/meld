@@ -625,7 +625,7 @@ class MeldWindow(gnomeglade.Component):
 
     def append_dirdiff(self, dirs, auto_compare=False):
         assert len(dirs) in (1, 2, 3)
-        doc = dirdiff.DirDiff(app.prefs, len(dirs))
+        doc = dirdiff.DirDiff(len(dirs))
         self._append_page(doc, "folder")
         doc.set_locations(dirs)
         # FIXME: This doesn't work, as dirdiff behaves differently to vcview
@@ -635,7 +635,7 @@ class MeldWindow(gnomeglade.Component):
 
     def append_filediff(self, files,  merge_output=None):
         assert len(files) in (1, 2, 3)
-        doc = filediff.FileDiff(app.prefs, len(files))
+        doc = filediff.FileDiff(len(files))
         self._append_page(doc, "text-x-generic")
         doc.set_files(files)
         if merge_output is not None:
@@ -644,7 +644,7 @@ class MeldWindow(gnomeglade.Component):
 
     def append_filemerge(self, files, merge_output=None):
         assert len(files) == 3
-        doc = filemerge.FileMerge(app.prefs, len(files))
+        doc = filemerge.FileMerge(len(files))
         self._append_page(doc, "text-x-generic")
         doc.set_files(files)
         if merge_output is not None:
@@ -666,7 +666,7 @@ class MeldWindow(gnomeglade.Component):
             return self.append_filediff(paths, merge_output=merge_output)
 
     def append_vcview(self, location, auto_compare=False):
-        doc = vcview.VcView(app.prefs)
+        doc = vcview.VcView()
         # FIXME: need a good themed VC icon
         self._append_page(doc, "vc-icon")
         location = location[0] if isinstance(location, list) else location
@@ -691,7 +691,7 @@ class MeldWindow(gnomeglade.Component):
         return tab
 
     def _single_file_open(self, path):
-        doc = vcview.VcView(app.prefs)
+        doc = vcview.VcView()
 
         def cleanup():
             self.scheduler.remove_scheduler(doc.scheduler)

@@ -302,8 +302,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         tree.STATE_MODIFIED: ("modified", "ShowModified"),
     }
 
-    def __init__(self, prefs, num_panes):
-        melddoc.MeldDoc.__init__(self, prefs)
+    def __init__(self, num_panes):
+        melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "dirdiff.ui", "dirdiff",
                                       ["DirdiffActions"])
 

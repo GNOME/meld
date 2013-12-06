@@ -70,11 +70,9 @@ class MeldDoc(GObject.GObject):
                                  (bool, bool)),
     }
 
-    def __init__(self, prefs):
+    def __init__(self):
         GObject.GObject.__init__(self)
         self.scheduler = task.FifoScheduler()
-        self.prefs = prefs
-        self.prefs.notify_add(self.on_preference_changed)
         self.num_panes = 0
         self.label_text = _("untitled")
         self.tooltip_text = _("untitled")
@@ -160,9 +158,6 @@ class MeldDoc(GObject.GObject):
         pass
 
     def on_replace_activate(self, *extra):
-        pass
-
-    def on_preference_changed(self, key, value):
         pass
 
     def on_file_changed(self, filename):

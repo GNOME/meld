@@ -164,10 +164,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         'action-mode-changed': (GObject.SignalFlags.RUN_FIRST, None, (int,)),
     }
 
-    def __init__(self, prefs, num_panes):
+    def __init__(self, num_panes):
         """Start up an filediff with num_panes empty contents.
         """
-        melddoc.MeldDoc.__init__(self, prefs)
+        melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "filediff.ui", "filediff")
         self.map_widgets_into_lists(["textview", "fileentry", "diffmap",
                                      "scrolledwindow", "linkmap",
