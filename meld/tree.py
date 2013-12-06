@@ -102,10 +102,7 @@ class DiffTreeStore(Gtk.TreeStore):
         return [self.value_path(it, i) for i in range(self.ntree)]
 
     def value_path(self, it, pane):
-        path = self.get_value(it, self.column_index(COL_PATH, pane))
-        if path is not None:
-            path = path.decode('utf8')
-        return path
+        return self.get_value(it, self.column_index(COL_PATH, pane))
 
     def is_folder(self, it, pane, path):
         # A folder may no longer exist, and is only tracked by VC.
