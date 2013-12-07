@@ -17,14 +17,13 @@
 
 import os
 from gi.repository import GObject
-from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
 
-COL_TYPES = (str, str, str, str, str, Gdk.Color, Pango.Style,
+COL_TYPES = (str, str, str, str, str, str, Pango.Style,
              Pango.Weight, bool)
 
 
@@ -55,10 +54,16 @@ class DiffTreeStore(Gtk.TreeStore):
         roman, italic = Pango.Style.NORMAL, Pango.Style.ITALIC
         normal, bold = Pango.Weight.NORMAL, Pango.Weight.BOLD
 
-        if style:
-            lookup = lambda color_id, default: style.lookup_color(color_id)[1]
-        else:
-            lookup = lambda color_id, default: Gdk.color_parse(default)
+        def lookup(name, default):
+            try:
+                found, colour = style.lookup_color(name)
+                if found:
+                    colour = colour.to_string()
+                else:
+                    colour = default
+            except AttributeError:
+                colour = default
+            return colour
 
         unk_fg = lookup("unknown-text", "#888888")
         new_fg = lookup("insert-text", "#008800")
@@ -146,8 +151,7 @@ class DiffTreeStore(Gtk.TreeStore):
         self.set_value(it, col_idx(COL_ICON,  pane), icon)
         # FIXME: This is horrible, but EmblemCellRenderer crashes
         # if you try to give it a Gdk.Color property
-        tint_str = tint.to_string() if tint else "#fff"
-        self.set_value(it, col_idx(COL_TINT,  pane), tint_str)
+        self.set_value(it, col_idx(COL_TINT,  pane), tint)
 
         fg, style, weight, strike = self.text_attributes[state]
         self.set_value(it, col_idx(COL_FG, pane), fg)

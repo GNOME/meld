@@ -194,7 +194,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         column.pack_start(rentext, True)
         column.set_attributes(rentext,
                               text=col_index(tree.COL_TEXT, 0),
-                              foreground_gdk=col_index(tree.COL_FG, 0),
+                              foreground=col_index(tree.COL_FG, 0),
                               style=col_index(tree.COL_STYLE, 0),
                               weight=col_index(tree.COL_WEIGHT, 0),
                               strikethrough=col_index(tree.COL_STRIKE, 0))

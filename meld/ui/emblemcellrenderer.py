@@ -59,7 +59,8 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         elif pspec.name == "icon-tint":
             self._icon_tint = value
             if self._icon_tint:
-                self._tint_color = Gdk.color_parse(value)
+                self._tint_color = Gdk.RGBA()
+                self._tint_color.parse(value)
             else:
                 self._tint_color = None
         else:
@@ -101,7 +102,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
 
             if self._tint_color:
                 c = self._tint_color
-                r, g, b = [x / 65535. for x in (c.red, c.green, c.blue)]
+                r, g, b = c.red, c.green, c.blue
                 # Figure out the difference between our tint colour and an
                 # empirically determined (i.e., guessed) satisfying luma and
                 # adjust the base colours accordingly
