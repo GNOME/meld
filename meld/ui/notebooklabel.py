@@ -20,23 +20,24 @@
 from gettext import gettext as _
 
 from gi.repository import Gdk
+from gi.repository import Gio
 from gi.repository import Gtk
 from gi.repository import Pango
 
-Gtk.rc_parse_string(
-    """
-    style "meld-tab-close-button-style" {
-        GtkWidget::focus-padding = 0
-        GtkWidget::focus-line-width = 0
-        xthickness = 0
-        ythickness = 0
-    }
-    widget "*.meld-tab-close-button" style "meld-tab-close-button-style"
-    """)
 
 class NotebookLabel(Gtk.HBox):
     __gtype_name__ = "NotebookLabel"
 
+    css = """
+    * {
+        -GtkButton-default-border : 0;
+        -GtkButton-default-outside-border : 0;
+        -GtkButton-inner-border: 0;
+        -GtkWidget-focus-line-width : 0;
+        -GtkWidget-focus-padding : 0;
+        padding : 0;
+    }
+    """
     tab_width_in_chars = 30
 
     def __init__(self, iconname, text, onclose):
@@ -61,12 +62,17 @@ class NotebookLabel(Gtk.HBox):
         button = Gtk.Button()
         button.set_relief(Gtk.ReliefStyle.NONE)
         button.set_focus_on_click(False)
-        image = Gtk.Image.new_from_stock(Gtk.STOCK_CLOSE, Gtk.IconSize.MENU)
+        icon = Gio.ThemedIcon.new_with_default_fallbacks('window-close-symbolic')
+        image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.MENU)
         image.set_tooltip_text(_("Close tab"))
         button.add(image)
         button.set_name("meld-tab-close-button")
-        button.set_size_request(w + 2, h + 2)
         button.connect("clicked", onclose)
+
+        context = button.get_style_context()
+        provider = Gtk.CssProvider()
+        provider.load_from_data(self.css)
+        context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         icon = Gtk.Image.new_from_icon_name(iconname, Gtk.IconSize.MENU)
 
@@ -95,4 +101,3 @@ class NotebookLabel(Gtk.HBox):
     def set_label_text(self, text):
         self.__label.set_text(text)
         self.set_tooltip_text(text)
-
