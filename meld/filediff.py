@@ -1961,8 +1961,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
         # this animation is not visible; this happens often in three-way diffs
-        rgba0 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (1.0,)
-        rgba1 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (0.0,)
+        rgba0 = self.fill_colors['insert'].copy()
+        rgba1 = self.fill_colors['insert'].copy()
+        rgba0.alpha = 1.0
+        rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[dst].append(anim)
 
@@ -1981,8 +1983,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
         # this animation is not visible; this happens often in three-way diffs
-        rgba0 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (1.0,)
-        rgba1 = misc.gdk_to_cairo_color(self.fill_colors['insert']) + (0.0,)
+        rgba0 = self.fill_colors['insert'].copy()
+        rgba1 = self.fill_colors['insert'].copy()
+        rgba0.alpha = 1.0
+        rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[dst].append(anim)
 
@@ -1995,8 +1999,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark0 = b0.create_mark(None, it, True)
         mark1 = b0.create_mark(None, it, True)
         # TODO: Need a more specific colour here; conflict is wrong
-        rgba0 = misc.gdk_to_cairo_color(self.fill_colors['conflict']) + (1.0,)
-        rgba1 = misc.gdk_to_cairo_color(self.fill_colors['conflict']) + (0.0,)
+        rgba0 = self.fill_colors['conflict'].copy()
+        rgba1 = self.fill_colors['conflict'].copy()
+        rgba0.alpha = 1.0
+        rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
         self.animating_chunks[src].append(anim)
 
