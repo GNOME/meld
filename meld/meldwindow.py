@@ -166,6 +166,8 @@ class MeldWindow(gnomeglade.Component):
         self.widget.add_accel_group(self.ui.get_accel_group())
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
+        self.toolbar.get_style_context().add_class(
+            Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
 
         settings.bind('toolbar-visible',
                       self.actiongroup.get_action('ToolbarVisible'), 'active',
