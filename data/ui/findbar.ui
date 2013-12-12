@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkArrow" id="arrow_left">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -33,7 +32,6 @@
             <child>
               <object class="GtkButton" id="replace_button">
                 <property name="label" translatable="yes">_Replace</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -51,7 +49,6 @@
             <child>
               <object class="GtkButton" id="replace_all_button">
                 <property name="label" translatable="yes">Replace _All</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -84,7 +81,6 @@
             <child>
               <object class="GtkButton" id="find_previous_button">
                 <property name="label" translatable="yes">_Previous</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -103,7 +99,6 @@
             <child>
               <object class="GtkButton" id="find_next_button">
                 <property name="label" translatable="yes">_Next</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -148,8 +143,6 @@
             <property name="width_chars">32</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="changed" handler="on_find_entry_changed" swapped="no"/>
             <signal name="activate" handler="on_find_next_button_clicked" swapped="no"/>
           </object>
@@ -183,8 +176,6 @@
             <property name="width_chars">32</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="activate" handler="on_replace_button_clicked" swapped="no"/>
           </object>
           <packing>
@@ -204,12 +195,12 @@
             <child>
               <object class="GtkCheckButton" id="match_case">
                 <property name="label" translatable="yes">_Match case</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
@@ -221,12 +212,12 @@
             <child>
               <object class="GtkCheckButton" id="whole_word">
                 <property name="label" translatable="yes">Who_le word</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
@@ -238,12 +229,12 @@
             <child>
               <object class="GtkCheckButton" id="regex">
                 <property name="label" translatable="yes">Regular e_xpression</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
                 <property name="focus_on_click">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
@@ -295,7 +286,7 @@
           <packing>
             <property name="left_attach">5</property>
             <property name="right_attach">6</property>
-            <property name="x_options"></property>
+            <property name="x_options"/>
             <property name="x_padding">6</property>
           </packing>
         </child>
