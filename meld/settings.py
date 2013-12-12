@@ -25,23 +25,7 @@ import meld.conf
 import meld.filters
 
 
-schema_source = Gio.SettingsSchemaSource.new_from_directory(
-    meld.conf.DATADIR,
-    Gio.SettingsSchemaSource.get_default(),
-    False,
-)
-schema = schema_source.lookup('org.gnome.meld', False)
-backend = None
-
-force_ini = os.path.exists(
-    os.path.join(GLib.get_user_config_dir(), 'meld', 'use-rc-prefs'))
-if force_ini:
-    # TODO: Use GKeyfileSettingsBackend once available (see bgo#682702)
-    print("Using a flat-file settings backend is not yet supported")
-    backend = None
-settings = Gio.Settings.new_full(schema, backend, None)
-
-interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
+MELD_SCHEMA = 'org.gnome.meld'
 
 
 class MeldSettings(GObject.GObject):
@@ -89,4 +73,41 @@ class MeldSettings(GObject.GObject):
         return Pango.FontDescription(font_string)
 
 
-meldsettings = MeldSettings()
+def find_schema():
+    schema_source = Gio.SettingsSchemaSource.new_from_directory(
+        meld.conf.DATADIR,
+        Gio.SettingsSchemaSource.get_default(),
+        False,
+    )
+    return schema_source.lookup(MELD_SCHEMA, False)
+
+
+def check_backend():
+    force_ini = os.path.exists(
+        os.path.join(GLib.get_user_config_dir(), 'meld', 'use-rc-prefs'))
+    if force_ini:
+        # TODO: Use GKeyfileSettingsBackend once available (see bgo#682702)
+        print("Using a flat-file settings backend is not yet supported")
+        return None
+    return None
+
+
+def create_settings(uninstalled=False):
+    global settings, interface_settings, meldsettings
+
+    backend = check_backend()
+    if uninstalled:
+        schema = find_schema()
+        settings = Gio.Settings.new_full(schema, backend, None)
+    elif backend:
+        settings = Gio.Settings.new_with_backend(MELD_SCHEMA, backend)
+    else:
+        settings = Gio.Settings.new(MELD_SCHEMA)
+
+    interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
+    meldsettings = MeldSettings()
+
+
+settings = None
+interface_settings = None
+meldsettings = None

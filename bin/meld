@@ -64,9 +64,11 @@ if os.path.exists(os.path.join(melddir, "meld.doap")):
 devel = os.path.exists(os.path.join(melddir, ".git"))
 
 import meld.conf
+import meld.settings
 
 if uninstalled:
     meld.conf.uninstalled()
+meld.settings.create_settings(uninstalled=uninstalled)
 
 # TODO: Possibly move to elib.intl
 import gettext
