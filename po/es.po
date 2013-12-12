@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-07 09:21+0000\n"
-"PO-Revision-Date: 2013-12-10 17:05+0100\n"
+"POT-Creation-Date: 2013-12-10 17:11+0000\n"
+"PO-Revision-Date: 2013-12-12 13:06+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -79,7 +79,6 @@ msgid "Default window size"
 msgstr "Tamaño de predeterminado de la ventana"
 
 #: ../data/org.gnome.meld.gschema.xml.h:2
-#| msgid "Show or hide the toolbar"
 msgid "Show toolbar"
 msgstr "Mostrar la barra de herramientas"
 
@@ -88,7 +87,6 @@ msgid "If true, the window toolbar is visible."
 msgstr "Si es cierto, la barra de herramientas es visible."
 
 #: ../data/org.gnome.meld.gschema.xml.h:4
-#| msgid "_Statusbar"
 msgid "Show statusbar"
 msgstr "Mostrar la barra de estado"
 
@@ -97,7 +95,6 @@ msgid "If true, the window statusbar is visible."
 msgstr "Si es cierto, la barra de estado es visible."
 
 #: ../data/org.gnome.meld.gschema.xml.h:6
-#| msgid "Automatically merge files"
 msgid "Automatically detected text encodings"
 msgstr "Detectar automáticamente la codificación del texto"
 
@@ -157,9 +154,10 @@ msgid ""
 "Selector for individual whitespace character types to be shown. Possible "
 "values are 'space', 'tab', 'newline' and 'nbsp'."
 msgstr ""
+"Selector para tipos de caracteres de espacios en blanco individuales que "
+"mostrar. Los valores posibles son «space», «tab», «newline» y «nbsp»."
 
 #: ../data/org.gnome.meld.gschema.xml.h:18
-#| msgid "_Wrap around"
 msgid "Wrap mode"
 msgstr "Volver al principio"
 
@@ -169,6 +167,9 @@ msgid ""
 "not at all ('none'), at any character ('char') or only at the end of words "
 "('word')."
 msgstr ""
+"Las líneas en las comparaciones de archivos se ajustarán de acuerdo a esta "
+"configuración: ninguna («none»), en cualquier carácter («char») o sólo al "
+"final de las palabras («word»)."
 
 #: ../data/org.gnome.meld.gschema.xml.h:20
 msgid "Highlight current line"
@@ -183,7 +184,6 @@ msgstr ""
 "comparaciones de archivos."
 
 #: ../data/org.gnome.meld.gschema.xml.h:22
-#| msgid "Use the system default editor"
 msgid "Use the system default monospace font"
 msgstr "Usar la tipografía monoespaciada predeterminada del sistema"
 
@@ -196,7 +196,6 @@ msgstr ""
 "la tipografía monoespaciada del sistema."
 
 #: ../data/org.gnome.meld.gschema.xml.h:24
-#| msgid "Use custom font"
 msgid "Custom font"
 msgstr "Tipografía personalizada"
 
@@ -278,9 +277,11 @@ msgid ""
 "considering files to be identical if their size and mtime match, and "
 "different otherwise."
 msgstr ""
+"Si es cierto, la comparación de carpetas se hará sólo basándose en el tamaño "
+"y la hora de modificación, considerando que los archivos son idénticos si el "
+"tamaño y la hora de modificación coinciden, y diferentes si no es así."
 
 #: ../data/org.gnome.meld.gschema.xml.h:38
-#| msgid "_Timestamp resolution:"
 msgid "File timestamp resolution"
 msgstr "Resolución de marca de tiempo del archivo"
 
@@ -291,9 +292,12 @@ msgid ""
 "is useful when comparing files between filesystems with different timestamp "
 "resolution."
 msgstr ""
+"Al comparar basándose en la hora de modificación, esta es la diferencia "
+"mínima en nanosegundos entre dos archivos antes de considerar que tienen "
+"diferentes horas de modificación. Esto es útil para comparar archivos entre "
+"sistemas de archivos con diferente resolución de marca de tiempo."
 
 #: ../data/org.gnome.meld.gschema.xml.h:40
-#| msgid "File filters"
 msgid "File status filters"
 msgstr "Filtros del estado del archivo"
 
@@ -304,7 +308,6 @@ msgstr ""
 "de carpetas."
 
 #: ../data/org.gnome.meld.gschema.xml.h:42
-#| msgid "Choose which version control system to use"
 msgid "Show the version control console output"
 msgstr "Mostrar la salida de la consola del control de versiones"
 
@@ -320,6 +323,7 @@ msgstr ""
 #: ../data/org.gnome.meld.gschema.xml.h:44
 msgid "Present version comparisons as left-local/right-remote"
 msgstr ""
+"Presentar la comparación de versiones como izquierda-local/derecha-remoto"
 
 #: ../data/org.gnome.meld.gschema.xml.h:45
 msgid ""
@@ -327,6 +331,10 @@ msgid ""
 "remote scheme to determine what order to present files in panes. Otherwise, "
 "a left-is-theirs, right-is-mine scheme is used."
 msgstr ""
+"Si es cierto, las comparaciones del control de versiones usarán un esquema "
+"«izquierda es local», «derecha es remoto» para determinar el orden en que "
+"presentar los archivos en los paneles. De otro modo, se usará el esquema "
+"«izquierda es el otro», «derecha es el mío»."
 
 #: ../data/org.gnome.meld.gschema.xml.h:46
 msgid "Show margin in commit message editor"
@@ -365,7 +373,6 @@ msgstr ""
 "antes de aplicar."
 
 #: ../data/org.gnome.meld.gschema.xml.h:52
-#| msgid "Version control view"
 msgid "Version control status filters"
 msgstr "Filtros del estado del control de versiones"
 
@@ -377,7 +384,6 @@ msgstr ""
 "del control de versiones."
 
 #: ../data/org.gnome.meld.gschema.xml.h:54
-#| msgid "File filters"
 msgid "Filename-based filters"
 msgstr "Filtros basados en el nombre del archivo"
 
@@ -386,9 +392,10 @@ msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
 msgstr ""
+"Lista de filtros de expresiones basadas en nombres de archivos que, si está "
+"activa, eliminará los archivos coincidentes en una comparación de carpetas."
 
 #: ../data/org.gnome.meld.gschema.xml.h:56
-#| msgid "Text Filters"
 msgid "Text-based filters"
 msgstr "Filtros basados en texto"
 
@@ -398,6 +405,9 @@ msgid ""
 "text from being used in a file comparison. The text will still be displayed, "
 "but won't contribute to the comparison itself."
 msgstr ""
+"Lista de filtros de expresiones basadas en texto que, si está activa, "
+"eliminará texto al usarlo en una comparación de archivos. El texto se "
+"seguirá mostrando, pero no contribuirá a la comparación en si."
 
 #: ../data/ui/application.ui.h:1
 msgid "About Meld"
@@ -860,7 +870,7 @@ msgstr "Ignorar los cambios que introducen o eliminan líneas en blanco"
 msgid "Text Filters"
 msgstr "Filtros de texto"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:616
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:618
 msgid "New comparison"
 msgstr "Nueva comparación"
 
@@ -1530,11 +1540,11 @@ msgstr ""
 "«%s» contiene caracteres no codificables con «%s»\n"
 "¿Quiere guardarlos como UTF-8?"
 
-#: ../meld/filediff.py:2043
+#: ../meld/filediff.py:2049
 msgid "Live comparison updating disabled"
 msgstr "Actualización de la comparación en directo desactivada"
 
-#: ../meld/filediff.py:2044
+#: ../meld/filediff.py:2050
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1852,11 +1862,11 @@ msgstr "Abrir recientes"
 msgid "Open recent files"
 msgstr "Abrir archivos recientes"
 
-#: ../meld/meldwindow.py:537
+#: ../meld/meldwindow.py:539
 msgid "Switch to this tab"
 msgstr "Cambiar a esta pestaña"
 
-#: ../meld/meldwindow.py:660
+#: ../meld/meldwindow.py:662
 msgid "Cannot compare a mixture of files and directories"
 msgstr "No se puede comparar una mezcla de archivos y carpetas"
 
@@ -1881,7 +1891,7 @@ msgstr "Control de versión:"
 msgid "Regular expression error"
 msgstr "Error en la expresión regular"
 
-#: ../meld/ui/notebooklabel.py:65
+#: ../meld/ui/notebooklabel.py:67
 msgid "Close tab"
 msgstr "Cerrar pestaña"
 
