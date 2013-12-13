@@ -5,4 +5,4 @@ from . import statusbar
 import meld.linkmap
 import meld.diffmap
 import meld.preferences
-import meld.util.sourceviewer
+import meld.sourceview

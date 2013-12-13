@@ -48,7 +48,7 @@ from .ui import gnomeglade
 
 from meld.settings import meldsettings, settings
 from .util.compat import text_type
-from .util.sourceviewer import LanguageManager
+from meld.sourceview import LanguageManager
 
 
 class CachedSequenceMatcher(object):
