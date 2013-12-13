@@ -724,7 +724,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
             pane = self.textbuffer.index(buffer)
-            if not self.syncpoints:
+            if not self.linediffer.syncpoints:
                 self.linediffer.change_sequence(pane, startline, sizechange,
                                                 self.buffer_filtered)
             # FIXME: diff-changed signal for the current buffer would be cleaner
