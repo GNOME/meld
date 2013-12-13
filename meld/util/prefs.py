@@ -34,6 +34,7 @@ p.color = "blue"
 
 """
 
+import ast
 import os
 import sys
 
@@ -226,7 +227,11 @@ class ConfigParserPreferences(object):
 
         for key, value in self._prefs.items():
             if self._parser.has_option("DEFAULT", key):
-                value.current = self._type_mappings[value.type]("DEFAULT", key)
+                val = self._type_mappings[value.type]("DEFAULT", key)
+                if value.type == "list":
+                    value.current = ast.literal_eval(val)
+                else:
+                    value.current = val
 
     def __getattr__(self, attr):
         return self._prefs[attr].current
