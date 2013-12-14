@@ -309,7 +309,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.add_toggle_actions(toggle_actions)
         self.main_actiongroup = None
 
-        self.findbar = findbar.FindBar(self.table)
+        self.findbar = findbar.FindBar(self.grid)
 
         self.widget.ensure_style()
         self.on_style_set(self.widget, None)
@@ -1870,10 +1870,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 widget.hide()
 
             right_attach = 2 * n
-            if self.findbar.widget in self.table:
-                self.table.remove(self.findbar.widget)
-            self.table.attach(self.findbar.widget, 1, right_attach, 2, 3,
-                              Gtk.AttachOptions.FILL, Gtk.AttachOptions.FILL)
+            if self.findbar.widget in self.grid:
+                self.grid.remove(self.findbar.widget)
+            self.grid.attach(self.findbar.widget, 1, 2, right_attach - 1, 1)
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
             self.actiongroup.get_action("CycleDocuments").set_sensitive(n > 1)
