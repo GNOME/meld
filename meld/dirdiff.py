@@ -626,7 +626,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def file_created(self, path, pane):
         it = self.model.get_iter(path)
-        while it and self.model.get_path(it) != (0,):
+        root = Gtk.TreePath.new_first()
+        while it and self.model.get_path(it) != root:
             self._update_item_state( it )
             it = self.model.iter_parent(it)
         self._update_diffmaps()
@@ -656,7 +657,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
-        self.recursively_update( (0,) )
+        self.recursively_update(Gtk.TreePath.new_first())
         self._update_diffmaps()
 
     def get_comparison(self):
@@ -808,7 +809,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Done") % self.label_text
 
         self.scheduler.add_task(self.on_treeview_cursor_changed)
-        self.treeview[0].get_selection().select_path((0,))
+        self.treeview[0].get_selection().select_path(Gtk.TreePath.new_first())
 
     def _show_tree_wide_errors(self, invalid_filenames, shadowed_entries):
         header = _("Multiple errors occurred while scanning this folder")

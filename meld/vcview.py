@@ -26,6 +26,7 @@ import stat
 import sys
 from gettext import gettext as _
 
+from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gio
 from gi.repository import GObject
@@ -431,7 +432,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                         symlinks_followed.add(key)
 
                     if flattened:
-                        todo.append(((0,), e.path))
+                        todo.append((Gtk.TreePath.new_first(), e.path))
                         continue
 
                 child = self.model.add_entries(it, [e.path])
@@ -440,7 +441,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     todo.append((self.model.get_path(child), e.path))
 
             if flattened:
-                self.treeview.expand_row(Gtk.TreePath((0,)), False)
+                root = Gtk.TreePath.new_first()
+                self.treeview.expand_row(Gtk.TreePath(root), False)
             else:
                 if not entries:
                     self.model.add_empty(it, _("(Empty)"))
