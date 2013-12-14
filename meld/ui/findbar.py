@@ -56,7 +56,7 @@ class FindBar(gnomeglade.Component):
         self.hbuttonbox2.hide()
         if text:
             self.find_entry.set_text(text)
-        self.widget.set_row_spacings(0)
+        self.widget.set_row_spacing(0)
         self.widget.show()
         self.find_entry.grab_focus()
 
@@ -78,7 +78,7 @@ class FindBar(gnomeglade.Component):
         self.textview = textview
         if text:
             self.find_entry.set_text(text)
-        self.widget.set_row_spacings(6)
+        self.widget.set_row_spacing(6)
         self.widget.show_all()
         self.find_entry.grab_focus()
         self.wrap_box.set_visible(False)
