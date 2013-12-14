@@ -282,6 +282,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         default_active = -1
         valid_vcs = []
         location = os.path.abspath(location or ".")
+
+        # VC systems work at the directory level, so make sure we're checking
+        # for VC support there instead of on a specific file.
+        if os.path.isfile(location):
+            location = os.path.dirname(location)
         vcs = vc.get_vcs(location)
         # Try to keep the same VC plugin active on refresh()
         for idx, avc in enumerate(vcs):
