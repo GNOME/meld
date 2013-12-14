@@ -223,14 +223,12 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <object class="GtkTable" id="table1">
+                          <object class="GtkGrid" id="grid1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="n_rows">2</property>
-                            <property name="n_columns">3</property>
-                            <property name="column_spacing">12</property>
                             <property name="row_spacing">6</property>
-                            <property name="homogeneous">True</property>
+                            <property name="column_spacing">12</property>
+                            <property name="column_homogeneous">True</property>
                             <child>
                               <object class="GtkCheckButton" id="file_three_way_checkbutton">
                                 <property name="label" translatable="yes">_3-way comparison</property>
@@ -244,9 +242,9 @@
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -260,7 +258,9 @@
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -273,7 +273,9 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -284,6 +286,12 @@
                                 <property name="title" translatable="yes">Select First File</property>
                                 <signal name="file-set" handler="on_file_set" swapped="no"/>
                               </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
                             </child>
                             <child>
                               <placeholder/>
@@ -300,14 +308,12 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <object class="GtkTable" id="table2">
+                          <object class="GtkGrid" id="grid2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="n_rows">2</property>
-                            <property name="n_columns">3</property>
-                            <property name="column_spacing">12</property>
                             <property name="row_spacing">6</property>
-                            <property name="homogeneous">True</property>
+                            <property name="column_spacing">12</property>
+                            <property name="column_homogeneous">True</property>
                             <child>
                               <object class="GtkFileChooserButton" id="dir_chooser0">
                                 <property name="visible">True</property>
@@ -316,6 +322,12 @@
                                 <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select First Folder</property>
                               </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
                             </child>
                             <child>
                               <object class="GtkFileChooserButton" id="dir_chooser1">
@@ -327,7 +339,9 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -341,7 +355,9 @@
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -357,9 +373,9 @@
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -377,14 +393,12 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <object class="GtkTable" id="table3">
+                          <object class="GtkGrid" id="grid3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="n_rows">2</property>
-                            <property name="n_columns">3</property>
-                            <property name="column_spacing">12</property>
                             <property name="row_spacing">6</property>
-                            <property name="homogeneous">True</property>
+                            <property name="column_spacing">12</property>
+                            <property name="column_homogeneous">True</property>
                             <child>
                               <object class="GtkFileChooserButton" id="vc_chooser0">
                                 <property name="visible">True</property>
@@ -395,20 +409,10 @@
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
-                                <property name="right_attach">3</property>
+                                <property name="top_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
                               </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
                             </child>
                           </object>
                           <packing>
