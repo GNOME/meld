@@ -195,7 +195,9 @@ class MeldWindow(gnomeglade.Component):
         self._update_page_action_sensitivity()
 
         self.appvbox.pack_start(self.menubar, False, True, 0)
-        self.appvbox.pack_start(self.toolbar, False, True, 0)
+        self.toolbar_holder.pack_start(self.toolbar, True, True, 0)
+        self.secondary_toolbar = Gtk.Toolbar()
+        self.toolbar_holder.pack_end(self.secondary_toolbar, True, True, 0)
         self._menu_context = self.statusbar.get_context_id("Tooltips")
         self.widget.drag_dest_set(
             Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
