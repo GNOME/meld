@@ -58,10 +58,22 @@ def partition(pred, iterable):
 
 
 class Entry(object):
-    # These are the possible states of files. Be sure to get the colons correct.
-    states = _("Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing:Not present").split(":")
-    states[STATE_CONFLICT] = "<b>%s</b>" % states[STATE_CONFLICT]
-    assert len(states) == STATE_MAX
+    # These are labels for possible states of version controlled files;
+    # not all states have a label to avoid visual clutter.
+    state_names = {
+        STATE_IGNORED: _("Ignored"),
+        STATE_NONE: _("Unversioned"),
+        STATE_NORMAL: _(""),
+        STATE_NOCHANGE: _(""),
+        STATE_ERROR: _("Error"),
+        STATE_EMPTY: _(""),
+        STATE_NEW: _("Newly added"),
+        STATE_MODIFIED: _("Modified"),
+        STATE_CONFLICT: "<b>%s</b>" % _("Conflict"),
+        STATE_REMOVED: _("Removed"),
+        STATE_MISSING: _("Missing"),
+        STATE_NONEXIST: _("Not present"),
+    }
 
     def __init__(self, path, name, state):
         self.path = path
@@ -77,7 +89,7 @@ class Entry(object):
                                    self.path, self.state)
 
     def get_status(self):
-        return self.states[self.state]
+        return self.state_names[self.state]
 
 
 class Dir(Entry):
