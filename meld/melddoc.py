@@ -74,10 +74,6 @@ class MeldDoc(GObject.GObject):
         self.num_panes = 0
         self.label_text = _("untitled")
         self.tooltip_text = _("untitled")
-        self.status_info_labels = []
-
-    def get_info_widgets(self):
-        return self.status_info_labels
 
     def get_comparison(self):
         """Get the comparison type and path(s) being compared"""

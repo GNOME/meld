@@ -133,9 +133,6 @@ class MeldWindow(gnomeglade.Component):
             ("ToolbarVisible", None, _("_Toolbar"), None,
                 _("Show or hide the toolbar"),
                 None, True),
-            ("StatusbarVisible", None, _("_Statusbar"), None,
-                _("Show or hide the statusbar"),
-                None, True),
         )
         ui_file = gnomeglade.ui_file("meldapp-ui.xml")
         self.actiongroup = Gtk.ActionGroup('MainActions')
@@ -154,9 +151,6 @@ class MeldWindow(gnomeglade.Component):
         self.ui = Gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file)
-        self.ui.connect("connect-proxy", self._on_uimanager_connect_proxy)
-        self.ui.connect("disconnect-proxy",
-                        self._on_uimanager_disconnect_proxy)
         self.tab_switch_actiongroup = None
         self.tab_switch_merge_id = None
 
@@ -171,12 +165,7 @@ class MeldWindow(gnomeglade.Component):
         settings.bind('toolbar-visible',
                       self.actiongroup.get_action('ToolbarVisible'), 'active',
                       Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('statusbar-visible',
-                      self.actiongroup.get_action('StatusbarVisible'), 'active',
-                      Gio.SettingsBindFlags.DEFAULT)
         settings.bind('toolbar-visible', self.toolbar, 'visible',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('statusbar-visible', self.statusbar, 'visible',
                       Gio.SettingsBindFlags.DEFAULT)
         interface_settings.bind('toolbar-style', self.toolbar, 'toolbar-style',
                                 Gio.SettingsBindFlags.DEFAULT)
@@ -211,7 +200,6 @@ class MeldWindow(gnomeglade.Component):
         self.secondary_toolbar.set_size_request(30, -1)
         self.secondary_toolbar.show_all()
 
-        self._menu_context = self.statusbar.get_context_id("Tooltips")
         self.widget.drag_dest_set(
             Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
             Gtk.DestDefaults.DROP,
@@ -246,39 +234,6 @@ class MeldWindow(gnomeglade.Component):
                 paths.append(Gio.File.new_for_uri(uri).get_path())
             self.open_paths(paths)
             return True
-
-    def _on_uimanager_connect_proxy(self, ui, action, widget):
-        tooltip = action.props.tooltip
-        if not tooltip:
-            return
-        if isinstance(widget, Gtk.MenuItem):
-            cid = widget.connect(
-                "select", self._on_action_item_select_enter, tooltip)
-            cid2 = widget.connect(
-                "deselect", self._on_action_item_deselect_leave)
-            widget.proxy_signal_ids = (cid, cid2)
-        elif isinstance(widget, Gtk.ToolButton):
-            cid = widget.get_child().connect(
-                "enter", self._on_action_item_select_enter, tooltip)
-            cid2 = widget.get_child().connect(
-                "leave", self._on_action_item_deselect_leave)
-            widget.proxy_signal_ids = (cid, cid2)
-
-    def _on_uimanager_disconnect_proxy(self, ui, action, widget):
-        try:
-            cids = widget.proxy_signal_ids
-        except AttributeError:
-            return
-        if isinstance(widget, Gtk.ToolButton):
-            widget = widget.get_child()
-        for cid in cids:
-            widget.disconnect(cid)
-
-    def _on_action_item_select_enter(self, item, tooltip):
-        self.statusbar.push(self._menu_context, tooltip)
-
-    def _on_action_item_deselect_leave(self, item):
-        self.statusbar.pop(self._menu_context)
 
     def on_idle(self):
         ret = self.scheduler.iteration()
@@ -377,10 +332,6 @@ class MeldWindow(gnomeglade.Component):
 
         nbl = self.notebook.get_tab_label(newdoc.widget)
         self.widget.set_title(nbl.get_label_text() + " - Meld")
-        try:
-            self.statusbar.set_info_box(newdoc.get_info_widgets())
-        except AttributeError:
-            pass
         newdoc.on_container_switch_in_event(self.ui)
         if isinstance(newdoc, melddoc.MeldDoc):
             self.diff_handler = newdoc.connect("next-diff-changed",
@@ -623,8 +574,6 @@ class MeldWindow(gnomeglade.Component):
             page.connect("file-changed", self.on_file_changed)
             page.connect("create-diff", lambda obj, arg, kwargs:
                          self.append_diff(arg, **kwargs))
-            page.connect("status-changed",
-                         lambda obj, arg: self.statusbar.set_doc_status(arg))
 
         self.notebook.set_tab_reorderable(page.widget, True)
 

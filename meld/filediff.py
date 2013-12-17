@@ -332,6 +332,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         cursor_label = Gtk.Label()
         cursor_label.show()
         self.status_info_labels = [overwrite_label, cursor_label]
+        self.statusbar.set_info_box(self.status_info_labels)
 
         # Prototype implementation
 
