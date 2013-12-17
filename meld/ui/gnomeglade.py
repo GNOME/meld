@@ -22,9 +22,6 @@ from gi.repository import Gtk
 
 import meld.conf
 
-# Import support module to get all builder-constructed widgets in the namespace
-from meld.ui import gladesupport
-
 
 def ui_file(filename):
     return os.path.join(meld.conf.DATADIR, "ui", filename)

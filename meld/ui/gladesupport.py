@@ -1,8 +1,8 @@
 
-from . import historyentry
-from . import msgarea
-from . import statusbar
-import meld.linkmap
-import meld.diffmap
-import meld.preferences
-import meld.sourceview
+from meld import diffmap
+from meld import linkmap
+from meld import preferences
+from meld import sourceview
+from meld.ui import historyentry
+from meld.ui import msgarea
+from meld.ui import statusbar
