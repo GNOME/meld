@@ -127,7 +127,7 @@ class RecentFiles(object):
         """
         gio_file = Gio.File.new_for_uri(uri)
         path = gio_file.get_path()
-        if not gio_file.query_exists() or not path:
+        if not gio_file.query_exists(None) or not path:
             raise IOError("File does not exist")
 
         try:
