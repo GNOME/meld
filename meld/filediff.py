@@ -1766,13 +1766,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_action_lock_scrolling_toggled(self, action):
         self.toggle_scroll_lock(action.get_active())
 
-    def on_lock_button_toggled(self, button):
-        self.toggle_scroll_lock(not button.get_active())
-
     def toggle_scroll_lock(self, locked):
-        icon_name = "meld-locked" if locked else "meld-unlocked"
-        self.lock_button_image.props.icon_name = icon_name
-        self.lock_button.set_active(not locked)
         self.actiongroup.get_action("LockScrolling").set_active(locked)
         self._scroll_lock = not locked
 
