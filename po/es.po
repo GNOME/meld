@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-10 17:11+0000\n"
-"PO-Revision-Date: 2013-12-12 13:06+0100\n"
+"POT-Creation-Date: 2013-12-14 21:59+0000\n"
+"PO-Revision-Date: 2013-12-17 10:25+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -24,11 +24,11 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.5\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../bin/meld:115
+#: ../bin/meld:117
 msgid "Cannot import: "
 msgstr "No se pudo importar: "
 
-#: ../bin/meld:118
+#: ../bin/meld:120
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld requiere %s o superior."
@@ -441,8 +441,9 @@ msgid "_Help"
 msgstr "Ay_uda"
 
 #: ../data/ui/application.ui.h:8
-msgid "_About Meld"
-msgstr "_Acerca de Meld"
+#| msgid "_About Meld"
+msgid "_About"
+msgstr "_Acerca de"
 
 #: ../data/ui/application.ui.h:9
 msgid "_Quit"
@@ -545,7 +546,7 @@ msgid "_Add"
 msgstr "_Añadir"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:670
+#: ../meld/vcview.py:677
 msgid "_Remove"
 msgstr "_Eliminar"
 
@@ -567,7 +568,7 @@ msgstr "_Bajar"
 
 #. Create icon and filename CellRenderer
 #: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:365
-#: ../meld/vcview.py:186
+#: ../meld/vcview.py:187
 msgid "Name"
 msgstr "Nombre"
 
@@ -1071,37 +1072,37 @@ msgstr "Permisos"
 msgid "Hide %s"
 msgstr "Ocultar %s"
 
-#: ../meld/dirdiff.py:686 ../meld/dirdiff.py:708
+#: ../meld/dirdiff.py:687 ../meld/dirdiff.py:709
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Buscando %s"
 
-#: ../meld/dirdiff.py:808
+#: ../meld/dirdiff.py:809
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Hecho"
 
-#: ../meld/dirdiff.py:814
+#: ../meld/dirdiff.py:815
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Ocurrieron varios errores al escanear esta carpeta"
 
-#: ../meld/dirdiff.py:815
+#: ../meld/dirdiff.py:816
 msgid "Files with invalid encodings found"
 msgstr "Se encontraron archivos con codificaciones no válidas"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:817
+#: ../meld/dirdiff.py:818
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Algunos archivos tienen una codificación incorrecta. Los nombres son como "
 "esto:"
 
-#: ../meld/dirdiff.py:819
+#: ../meld/dirdiff.py:820
 msgid "Files hidden by case insensitive comparison"
 msgstr "Archivos ocultos por una comparación no sensible a capitalización"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:821
+#: ../meld/dirdiff.py:822
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1110,17 +1111,17 @@ msgstr ""
 "sensible a capitalización. Los siguientes archivos de esta carpeta archivos "
 "están ocultos:"
 
-#: ../meld/dirdiff.py:832
+#: ../meld/dirdiff.py:833
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "«%s» oculto por «%s»"
 
-#: ../meld/dirdiff.py:857 ../meld/filediff.py:1111 ../meld/filediff.py:1249
+#: ../meld/dirdiff.py:858 ../meld/filediff.py:1111 ../meld/filediff.py:1249
 #: ../meld/filediff.py:1420 ../meld/filediff.py:1450 ../meld/filediff.py:1452
 msgid "Hi_de"
 msgstr "_Ocultar"
 
-#: ../meld/dirdiff.py:888
+#: ../meld/dirdiff.py:889
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -1129,11 +1130,11 @@ msgstr ""
 "«%s» ya existe.\n"
 "¿Quiere sobreescribirlo?"
 
-#: ../meld/dirdiff.py:896
+#: ../meld/dirdiff.py:897
 msgid "Error copying file"
 msgstr "Error al copiar el archivo"
 
-#: ../meld/dirdiff.py:897
+#: ../meld/dirdiff.py:898
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1146,54 +1147,54 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:920
+#: ../meld/dirdiff.py:921
 #, python-format
 msgid "Error deleting %s"
 msgstr "Error al eliminar %s"
 
-#: ../meld/dirdiff.py:1051
+#: ../meld/dirdiff.py:1052
 #, python-format
 msgid "%i second"
 msgid_plural "%i seconds"
 msgstr[0] "%i segundo"
 msgstr[1] "%i segundos"
 
-#: ../meld/dirdiff.py:1052
+#: ../meld/dirdiff.py:1053
 #, python-format
 msgid "%i minute"
 msgid_plural "%i minutes"
 msgstr[0] "%i minuto"
 msgstr[1] "%i minutos"
 
-#: ../meld/dirdiff.py:1053
+#: ../meld/dirdiff.py:1054
 #, python-format
 msgid "%i hour"
 msgid_plural "%i hours"
 msgstr[0] "%i hora"
 msgstr[1] "%i horas"
 
-#: ../meld/dirdiff.py:1054
+#: ../meld/dirdiff.py:1055
 #, python-format
 msgid "%i day"
 msgid_plural "%i days"
 msgstr[0] "%i día"
 msgstr[1] "%i días"
 
-#: ../meld/dirdiff.py:1055
+#: ../meld/dirdiff.py:1056
 #, python-format
 msgid "%i week"
 msgid_plural "%i weeks"
 msgstr[0] "%i semana"
 msgstr[1] "%i semanas"
 
-#: ../meld/dirdiff.py:1056
+#: ../meld/dirdiff.py:1057
 #, python-format
 msgid "%i month"
 msgid_plural "%i months"
 msgstr[0] "%i mes"
 msgstr[1] "%i meses"
 
-#: ../meld/dirdiff.py:1057
+#: ../meld/dirdiff.py:1058
 #, python-format
 msgid "%i year"
 msgid_plural "%i years"
@@ -1540,11 +1541,11 @@ msgstr ""
 "«%s» contiene caracteres no codificables con «%s»\n"
 "¿Quiere guardarlos como UTF-8?"
 
-#: ../meld/filediff.py:2049
+#: ../meld/filediff.py:2048
 msgid "Live comparison updating disabled"
 msgstr "Actualización de la comparación en directo desactivada"
 
-#: ../meld/filediff.py:2050
+#: ../meld/filediff.py:2049
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1952,78 +1953,78 @@ msgstr ""
 "Ignorado:Sin versión:::Error::Añadidos nuevos:Modificado:Conflicto:Eliminado:"
 "Faltante:No presente"
 
-#: ../meld/vcview.py:216 ../meld/vcview.py:386
+#: ../meld/vcview.py:217 ../meld/vcview.py:392
 msgid "Location"
 msgstr "Lugar"
 
-#: ../meld/vcview.py:217
+#: ../meld/vcview.py:218
 msgid "Status"
 msgstr "Estado"
 
-#: ../meld/vcview.py:218
+#: ../meld/vcview.py:219
 msgid "Revision"
 msgstr "Revisión"
 
-#: ../meld/vcview.py:219
+#: ../meld/vcview.py:220
 msgid "Options"
 msgstr "Opciones"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:297
+#: ../meld/vcview.py:303
 #, python-format
 msgid "%s not installed"
 msgstr "%s no está instalado"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:301
+#: ../meld/vcview.py:307
 msgid "Invalid repository"
 msgstr "Repositorio no válido"
 
-#: ../meld/vcview.py:310
+#: ../meld/vcview.py:316
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: ../meld/vcview.py:312 ../meld/vcview.py:320
+#: ../meld/vcview.py:318 ../meld/vcview.py:326
 msgid "None"
 msgstr "Ninguno"
 
-#: ../meld/vcview.py:331
+#: ../meld/vcview.py:337
 msgid "No valid version control system found in this folder"
 msgstr ""
 "No se ha encontrado un sistema de control de versiones válido en esta carpeta"
 
-#: ../meld/vcview.py:333
+#: ../meld/vcview.py:339
 msgid "Only one version control system found in this folder"
 msgstr ""
 "Sólo se ha encontrado un sistema de control de versiones en esta carpeta"
 
-#: ../meld/vcview.py:335
+#: ../meld/vcview.py:341
 msgid "Choose which version control system to use"
 msgstr "Elegir qué sistema de control de versiones usar"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:386
+#: ../meld/vcview.py:392
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:400 ../meld/vcview.py:408
+#: ../meld/vcview.py:406 ../meld/vcview.py:414
 #, python-format
 msgid "Scanning %s"
 msgstr "Analizando %s"
 
-#: ../meld/vcview.py:441
+#: ../meld/vcview.py:448
 msgid "(Empty)"
 msgstr "(Vacío)"
 
-#: ../meld/vcview.py:664
+#: ../meld/vcview.py:671
 msgid "Remove folder and all its files?"
 msgstr "¿Quitar la carpeta y todos sus archivos?"
 
-#: ../meld/vcview.py:666
+#: ../meld/vcview.py:673
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2031,7 +2032,7 @@ msgstr ""
 "Esto quitará todos los archivos y carpetas seleccionadas, y todos los "
 "archivos de las carpetas seleccionadas, del control de versiones."
 
-#: ../meld/vcview.py:700
+#: ../meld/vcview.py:707
 #, python-format
 msgid "Error removing %s"
 msgstr "Error al quitar %s"
