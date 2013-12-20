@@ -393,6 +393,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.emit("action-mode-changed", mode)
     keymask = property(get_keymask, set_keymask)
 
+    def on_key_event(self, object, event):
+        keymap = Gdk.Keymap.get_default()
+        ok, keyval, group, lvl, consumed = keymap.translate_keyboard_state(
+            event.hardware_keycode, 0, event.group)
+        mod_key = self.keylookup.get(keyval, 0)
+        if event.type == Gdk.EventType.KEY_PRESS:
+            self.keymask |= mod_key
+            if event.keyval == Gdk.KEY_Escape:
+                self.findbar.hide()
+        elif event.type == Gdk.EventType.KEY_RELEASE:
+            self.keymask &= ~mod_key
+
     def on_style_set(self, widget, prev_style):
         style = widget.get_style()
 
@@ -843,24 +855,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_setting_changed(self, settings, key):
         if key == 'font':
             self.load_font()
-
-    def on_key_press_event(self, object, event):
-        keymap = Gdk.Keymap.get_default()
-        ok, keyval, group, lvl, consumed = keymap.translate_keyboard_state(
-            event.hardware_keycode, 0, event.group)
-        mod_key = self.keylookup.get(keyval, 0)
-        if self.keymask | mod_key != self.keymask:
-            self.keymask |= mod_key
-        elif event.keyval == Gdk.KEY_Escape:
-            self.findbar.hide()
-
-    def on_key_release_event(self, object, event):
-        keymap = Gdk.Keymap.get_default()
-        ok, keyval, group, level, consumed = keymap.translate_keyboard_state(
-            event.hardware_keycode, 0, event.group)
-        mod_key = self.keylookup.get(keyval, 0)
-        if self.keymask & ~mod_key != self.keymask:
-            self.keymask &= ~mod_key
 
     def check_save_modified(self, label=None):
         response = Gtk.ResponseType.OK

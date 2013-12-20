@@ -108,7 +108,8 @@
       <object class="GtkVBox" id="filediff">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+        <signal name="key-press-event" handler="on_key_event" swapped="no"/>
+        <signal name="key-release-event" handler="on_key_event" swapped="no"/>
         <child>
           <object class="GtkGrid" id="grid">
             <property name="visible">True</property>
@@ -295,8 +296,8 @@
                         <property name="can_focus">True</property>
                         <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
                         <signal name="draw" handler="on_textview_draw" swapped="no"/>
-                        <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
-                        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
                         <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
                         <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
@@ -381,8 +382,8 @@
                         <property name="can_focus">True</property>
                         <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
                         <signal name="draw" handler="on_textview_draw" swapped="no"/>
-                        <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
-                        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
                         <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
                         <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
@@ -428,8 +429,8 @@
                         <property name="can_focus">True</property>
                         <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
                         <signal name="draw" handler="on_textview_draw" swapped="no"/>
-                        <signal name="key-release-event" handler="on_key_release_event" swapped="no"/>
-                        <signal name="key-press-event" handler="on_key_press_event" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
                         <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
                         <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
