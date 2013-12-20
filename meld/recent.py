@@ -32,6 +32,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 import os
+import sys
 import tempfile
 
 from gettext import gettext as _
@@ -58,16 +59,13 @@ class RecentFiles(object):
 
     # Recent data
     app_name = "Meld"
-    app_exec = "meld"
 
-    def __init__(self, exec_path=None):
+    def __init__(self):
         self.recent_manager = Gtk.RecentManager.get_default()
         self.recent_filter = Gtk.RecentFilter()
         self.recent_filter.add_application(self.app_name)
         self._stored_comparisons = []
-        # Should be argv[0] to support roundtripping in uninstalled use
-        if exec_path:
-            self.app_exec = os.path.abspath(exec_path)
+        self.app_exec = os.path.abspath(sys.argv[0])
 
         if not os.path.exists(self.recent_path):
             os.makedirs(self.recent_path)

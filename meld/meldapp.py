@@ -43,7 +43,7 @@ class MeldApp(Gtk.Application):
         self.set_application_id("org.gnome.meld")
         GObject.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
-        self.recent_comparisons = meld.recent.RecentFiles(sys.argv[0])
+        self.recent_comparisons = meld.recent.RecentFiles()
         self.window = None
 
     def do_startup(self):
