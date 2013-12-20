@@ -1904,33 +1904,29 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.recompute_label()
 
     def next_diff(self, direction, centered=False):
+        target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
+                  else self.cursor.prev)
+        if target is None:
+            return
+
         pane = self._get_focused_pane()
         if pane == -1:
             if len(self.textview) > 1:
                 pane = 1
             else:
                 pane = 0
-        buf = self.textbuffer[pane]
 
-        if direction == Gdk.ScrollDirection.DOWN:
-            target = self.cursor.next
-        else: # direction == Gdk.ScrollDirection.UP
-            target = self.cursor.prev
-
-        if target is None:
+        chunk = self.linediffer.get_chunk(target, pane)
+        if not chunk:
             return
 
-        c = self.linediffer.get_chunk(target, pane)
-        if c:
-            # Warp the cursor to the first line of next chunk
-            if self.cursor.line != c[1]:
-                buf.place_cursor(buf.get_iter_at_line(c[1]))
-            if centered:
-                self.textview[pane].scroll_to_mark(
-                    buf.get_insert(), 0.0, True, 0.5, 0.5)
-            else:
-                self.textview[pane].scroll_to_mark(
-                    buf.get_insert(), 0.2, True, 0.5, 0.5)
+        # Warp the cursor to the first line of next chunk
+        buf = self.textbuffer[pane]
+        if self.cursor.line != chunk[1]:
+            buf.place_cursor(buf.get_iter_at_line(chunk[1]))
+        tolerance = 0.0 if centered else 0.2
+        self.textview[pane].scroll_to_mark(
+            buf.get_insert(), tolerance, True, 0.5, 0.5)
 
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
