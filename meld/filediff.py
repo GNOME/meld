@@ -325,6 +325,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
         self.connect("next-conflict-changed", self.on_next_conflict_changed)
 
+        for diffmap in self.diffmap:
+            self.linediffer.connect('diffs-changed', diffmap.on_diffs_changed)
+
         overwrite_label = Gtk.Label()
         overwrite_label.show()
         cursor_label = Gtk.Label()

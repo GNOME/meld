@@ -18,6 +18,8 @@
 
 import collections
 
+import cairo
+
 from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
@@ -63,7 +65,11 @@ class DiffMap(Gtk.DrawingArea):
         self._difffunc = change_chunk_fn
         self.set_color_scheme(color_map)
         self._setup = True
+        self._cached_map = None
         self.queue_draw()
+
+    def on_diffs_changed(self, *args):
+        self._cached_map = None
 
     def set_color_scheme(self, color_map):
         self.fill_colors, self.line_colors = color_map
@@ -119,18 +125,29 @@ class DiffMap(Gtk.DrawingArea):
         context.rectangle(x0 - 3, -1, x1 + 6, height + 1)
         context.clip()
 
-        tagged_diffs = collections.defaultdict(list)
-        for c, y0, y1 in self._difffunc():
-            tagged_diffs[c].append((y0, y1))
+        if self._cached_map is None:
+            surface = cairo.Surface.create_similar(
+                context.get_target(), cairo.CONTENT_COLOR_ALPHA,
+                width, height)
+            cache_ctx = cairo.Context(surface)
+            cache_ctx.set_line_width(1)
 
-        for tag, diffs in tagged_diffs.items():
-            context.set_source_rgba(*self.fill_colors[tag])
-            for y0, y1 in diffs:
-                y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
-                context.rectangle(x0, y0, x1, y1 - y0)
-            context.fill_preserve()
-            context.set_source_rgba(*self.line_colors[tag])
-            context.stroke()
+            tagged_diffs = collections.defaultdict(list)
+            for c, y0, y1 in self._difffunc():
+                tagged_diffs[c].append((y0, y1))
+
+            for tag, diffs in tagged_diffs.items():
+                cache_ctx.set_source_rgba(*self.fill_colors[tag])
+                for y0, y1 in diffs:
+                    y0, y1 = round(y0 * height) - 0.5, round(y1 * height) - 0.5
+                    cache_ctx.rectangle(x0, y0, x1, y1 - y0)
+                cache_ctx.fill_preserve()
+                cache_ctx.set_source_rgba(*self.line_colors[tag])
+                cache_ctx.stroke()
+            self._cached_map = surface
+
+        context.set_source_surface(self._cached_map, 0., 0.)
+        context.paint()
 
         page_color = (0., 0., 0., 0.1)
         page_outline_color = (0.0, 0.0, 0.0, 0.3)
