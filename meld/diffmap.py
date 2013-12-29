@@ -38,6 +38,7 @@ class DiffMap(Gtk.DrawingArea):
         self._scroll_y = 0
         self._scroll_height = 0
         self._setup = False
+        self._width = 10
 
     def setup(self, scrollbar, change_chunk_fn, color_map):
         for (o, h) in self._handlers:
@@ -100,7 +101,8 @@ class DiffMap(Gtk.DrawingArea):
     def on_scrollbar_size_allocate(self, scrollbar, allocation):
         self._scroll_y = allocation.y
         self._scroll_height = allocation.height
-        self.queue_draw()
+        self._width = allocation.width
+        self.queue_resize()
 
     def do_draw(self, context):
         if not self._setup:
@@ -155,4 +157,4 @@ class DiffMap(Gtk.DrawingArea):
         return False
 
     def do_get_preferred_width(self):
-        return 20, 20
+        return self._width, self._width
