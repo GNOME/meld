@@ -1845,9 +1845,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._sync_vscroll_lock = False
 
         for lm in self.linkmap:
-            if lm.get_window():
-                lm.get_window().invalidate_rect(None, True)
-                lm.get_window().process_updates(True)
+            lm.queue_draw()
 
     def set_num_panes(self, n):
         if n != self.num_panes and n in (1,2,3):
