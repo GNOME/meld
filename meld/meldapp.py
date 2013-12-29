@@ -109,7 +109,7 @@ class MeldApp(Gtk.Application):
             if cancelled:
                 return
             window.destroy()
-        sys.exit(0)
+        self.quit()
 
     def open_paths(self, paths, **kwargs):
         new_tab = kwargs.pop('new_tab')
