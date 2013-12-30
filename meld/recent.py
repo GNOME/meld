@@ -228,6 +228,4 @@ class RecentFiles(object):
         return "\n".join(descriptions)
 
 
-if __name__ == "__main__":
-    recent = RecentFiles()
-    print(recent)
+recent_comparisons = RecentFiles()

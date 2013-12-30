@@ -36,7 +36,7 @@ from .ui import gnomeglade
 from .ui import notebooklabel
 
 from .util.compat import string_types
-from .meldapp import app
+from meld.recent import recent_comparisons
 
 from meld.settings import interface_settings, settings
 
@@ -147,7 +147,7 @@ class MeldWindow(gnomeglade.Component):
         recent_action = Gtk.RecentAction("Recent",  _("Open Recent"),
                                          _("Open recent files"), None)
         recent_action.set_show_private(True)
-        recent_action.set_filter(app.recent_comparisons.recent_filter)
+        recent_action.set_filter(recent_comparisons.recent_filter)
         recent_action.set_sort_type(Gtk.RecentSortType.MRU)
         recent_action.connect("item-activated", self.on_action_recent)
         self.actiongroup.add_action(recent_action)
@@ -678,7 +678,7 @@ class MeldWindow(gnomeglade.Component):
         return doc
 
     def append_recent(self, uri):
-        comparison_type, files, flags = app.recent_comparisons.read(uri)
+        comparison_type, files, flags = recent_comparisons.read(uri)
         if comparison_type == recent.TYPE_MERGE:
             tab = self.append_filemerge(files)
         elif comparison_type == recent.TYPE_FOLDER:
@@ -689,7 +689,7 @@ class MeldWindow(gnomeglade.Component):
         else:  # comparison_type == recent.TYPE_FILE:
             tab = self.append_filediff(files)
         self.notebook.set_current_page(self.notebook.page_num(tab.widget))
-        app.recent_comparisons.add(tab)
+        recent_comparisons.add(tab)
         return tab
 
     def _single_file_open(self, path):
@@ -717,7 +717,7 @@ class MeldWindow(gnomeglade.Component):
         elif len(paths) in (2, 3):
             tab = self.append_diff(paths, auto_compare, auto_merge)
         if tab:
-            app.recent_comparisons.add(tab)
+            recent_comparisons.add(tab)
         return tab
 
     def current_doc(self):

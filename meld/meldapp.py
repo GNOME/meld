@@ -20,7 +20,6 @@ from __future__ import print_function
 
 import optparse
 import os
-import sys
 from gettext import gettext as _
 
 from gi.repository import Gio
@@ -29,10 +28,8 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 
 import meld.conf
-import meld.filters
 import meld.preferences
 import meld.ui.util
-import meld.recent
 
 
 class MeldApp(Gtk.Application):
@@ -43,7 +40,6 @@ class MeldApp(Gtk.Application):
         self.set_application_id("org.gnome.meld")
         GObject.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
-        self.recent_comparisons = meld.recent.RecentFiles()
         self.window = None
 
     def do_startup(self):
