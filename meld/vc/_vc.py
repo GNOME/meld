@@ -63,10 +63,10 @@ class Entry(object):
     state_names = {
         STATE_IGNORED: _("Ignored"),
         STATE_NONE: _("Unversioned"),
-        STATE_NORMAL: _(""),
-        STATE_NOCHANGE: _(""),
+        STATE_NORMAL: "",
+        STATE_NOCHANGE: "",
         STATE_ERROR: _("Error"),
-        STATE_EMPTY: _(""),
+        STATE_EMPTY: "",
         STATE_NEW: _("Newly added"),
         STATE_MODIFIED: _("Modified"),
         STATE_CONFLICT: "<b>%s</b>" % _("Conflict"),
