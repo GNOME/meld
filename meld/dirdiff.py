@@ -328,13 +328,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                      "vbox"])
 
         self.widget.ensure_style()
-        self.on_style_set(self.widget, None)
-        self.widget.connect("style-set", self.on_style_set)
+        self.on_style_updated(self.widget)
+        self.widget.connect("style-updated", self.on_style_updated)
 
         self.custom_labels = []
         self.set_num_panes(num_panes)
 
-        self.widget.connect("style-set", self.model.on_style_set)
+        self.widget.connect("style-updated", self.model.on_style_updated)
+        self.model.on_style_updated(self.widget)
 
         self.do_to_others_lock = False
         self.focus_in_events = []
@@ -441,7 +442,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 action_name = self.state_actions[s][1]
                 self.actiongroup.get_action(action_name).set_active(True)
 
-    def on_style_set(self, widget, prev_style):
+    def on_style_updated(self, widget):
         style = widget.get_style_context()
 
         def lookup(name, default):

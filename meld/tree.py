@@ -46,8 +46,8 @@ class DiffTreeStore(Gtk.TreeStore):
         self.ntree = ntree
         self._setup_default_styles()
 
-    def on_style_set(self, widget, prev_style):
-        style = widget.get_style()
+    def on_style_updated(self, widget):
+        style = widget.get_style_context()
         self._setup_default_styles(style)
 
     def _setup_default_styles(self, style=None):

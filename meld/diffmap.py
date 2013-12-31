@@ -47,11 +47,11 @@ class DiffMap(Gtk.DrawingArea):
             o.disconnect(h)
 
         self._scrolladj = scrollbar.get_adjustment()
-        self.on_scrollbar_style_set(scrollbar, None)
+        self.on_scrollbar_style_updated(scrollbar)
         self.on_scrollbar_size_allocate(scrollbar, scrollbar.get_allocation())
         scrollbar.ensure_style()
-        scroll_style_hid = scrollbar.connect("style-set",
-                                             self.on_scrollbar_style_set)
+        scroll_style_hid = scrollbar.connect("style-updated",
+                                             self.on_scrollbar_style_updated)
         scroll_size_hid = scrollbar.connect("size-allocate",
                                             self.on_scrollbar_size_allocate)
         adj_change_hid = self._scrolladj.connect("changed",
@@ -75,7 +75,7 @@ class DiffMap(Gtk.DrawingArea):
         self.fill_colors, self.line_colors = color_map
         self.queue_draw()
 
-    def on_scrollbar_style_set(self, scrollbar, previous_style):
+    def on_scrollbar_style_updated(self, scrollbar):
         value = GObject.Value(int)
         scrollbar.style_get_property("stepper-size", value)
         stepper_size = value.get_int()

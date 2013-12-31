@@ -172,7 +172,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup = self.VcviewActions
         self.actiongroup.set_translation_domain("meld")
         self.model = VcTreeStore()
-        self.widget.connect("style-set", self.model.on_style_set)
+        self.widget.connect("style-updated", self.model.on_style_updated)
+        self.model.on_style_updated(self.widget)
         self.treeview.set_model(self.model)
         selection = self.treeview.get_selection()
         selection.set_mode(Gtk.SelectionMode.MULTIPLE)

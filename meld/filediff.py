@@ -312,8 +312,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.findbar = findbar.FindBar(self.grid)
 
         self.widget.ensure_style()
-        self.on_style_set(self.widget, None)
-        self.widget.connect("style-set", self.on_style_set)
+        self.on_style_updated(self.widget)
+        self.widget.connect("style-updated", self.on_style_updated)
 
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
@@ -405,8 +405,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif event.type == Gdk.EventType.KEY_RELEASE:
             self.keymask &= ~mod_key
 
-    def on_style_set(self, widget, prev_style):
-        style = widget.get_style()
+    def on_style_updated(self, widget):
+        style = widget.get_style_context()
 
         def lookup(name, default):
             found, colour = style.lookup_color(name)
