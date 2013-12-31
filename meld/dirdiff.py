@@ -810,6 +810,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.scheduler.add_task(self.on_treeview_cursor_changed)
         self.treeview[0].get_selection().select_path(Gtk.TreePath.new_first())
+        self._update_diffmaps()
 
     def _show_tree_wide_errors(self, invalid_filenames, shadowed_entries):
         header = _("Multiple errors occurred while scanning this folder")
@@ -1452,8 +1453,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.recompute_label()
 
     def _update_diffmaps(self):
-        self.diffmap[0].queue_draw()
-        self.diffmap[1].queue_draw()
+        for diffmap in self.diffmap:
+            diffmap.on_diffs_changed()
+            diffmap.queue_draw()
 
     def on_file_changed(self, changed_filename):
         """When a file has changed, try to find it in our tree

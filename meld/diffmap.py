@@ -107,7 +107,7 @@ class DiffMap(Gtk.DrawingArea):
     def on_scrollbar_size_allocate(self, scrollbar, allocation):
         self._scroll_y = allocation.y
         self._scroll_height = allocation.height
-        self._width = allocation.width
+        self._width = max(allocation.width, 10)
         self.queue_resize()
 
     def do_draw(self, context):
