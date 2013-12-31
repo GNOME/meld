@@ -53,7 +53,8 @@ class NotebookLabel(Gtk.HBox):
         label.set_padding(0, 0)
 
         context = self.get_pango_context()
-        metrics = context.get_metrics(self.get_style().font_desc, context.get_language())
+        font_desc = self.get_style_context().get_font(Gtk.StateFlags.NORMAL)
+        metrics = context.get_metrics(font_desc, context.get_language())
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
         valid, w, h = Gtk.icon_size_lookup_for_settings(self.get_settings(), Gtk.IconSize.MENU)
         # FIXME: PIXELS replacement

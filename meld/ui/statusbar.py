@@ -67,7 +67,8 @@ class MeldStatusBar(Gtk.Statusbar):
         self.progress.props.pulse_step = 0.02
         self.progress.props.ellipsize = Pango.EllipsizeMode.END
         self.progress.set_size_request(200, -1)
-        progress_font = self.progress.get_style().font_desc
+        progress_font = self.get_style_context().get_font(
+            Gtk.StateFlags.NORMAL)
         progress_font.set_size(progress_font.get_size() - 2 * Pango.SCALE)
         self.progress.modify_font(progress_font)
         hbox.pack_start(self.progress, False, True, 0)
