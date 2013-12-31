@@ -64,11 +64,9 @@ if os.path.exists(os.path.join(melddir, "meld.doap")):
 devel = os.path.exists(os.path.join(melddir, ".git"))
 
 import meld.conf
-import meld.settings
 
 if uninstalled:
     meld.conf.uninstalled()
-meld.settings.create_settings(uninstalled=uninstalled)
 
 # TODO: Possibly move to elib.intl
 import gettext
@@ -164,13 +162,15 @@ def setup_resources():
 
 
 def setup_settings():
-    if not uninstalled:
-        return
+    import meld.conf
 
-    if os.path.exists(os.path.join(meld.conf.DATADIR, "gschemas.compiled")):
-        return
+    schema_path = os.path.join(meld.conf.DATADIR, "gschemas.compiled")
+    if uninstalled and not os.path.exists(schema_path):
+        subprocess.call(["glib-compile-schemas", meld.conf.DATADIR],
+                        cwd=melddir)
 
-    subprocess.call(["glib-compile-schemas", meld.conf.DATADIR], cwd=melddir)
+    import meld.settings
+    meld.settings.create_settings(uninstalled=uninstalled)
 
 
 def setup_logging():
