@@ -24,10 +24,10 @@ from gi.repository import GtkSource
 line_height = 16
 icon_theme = Gtk.IconTheme.get_default()
 load = lambda x: icon_theme.load_icon(x, line_height, 0)
-pixbuf_apply0 = load("button_apply0")
-pixbuf_apply1 = load("button_apply1")
-pixbuf_delete = load("button_delete")
-pixbuf_copy = load("button_copy")
+pixbuf_apply0 = load("meld-change-apply-right")
+pixbuf_apply1 = load("meld-change-apply-left")
+pixbuf_delete = load("meld-change-delete")
+pixbuf_copy = load("meld-change-copy")
 
 # FIXME: import order issues
 MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
