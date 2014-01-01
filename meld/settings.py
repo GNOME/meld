@@ -107,6 +107,14 @@ def create_settings(uninstalled=False):
     meldsettings = MeldSettings()
 
 
+def bind_settings(obj):
+    global settings
+    for binding in getattr(obj, '__gsettings_bindings__', ()):
+        settings_id, property_id = binding
+        settings.bind(
+            settings_id, obj, property_id, Gio.SettingsBindFlags.DEFAULT)
+
+
 settings = None
 interface_settings = None
 meldsettings = None

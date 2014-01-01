@@ -24,6 +24,7 @@ from gi.repository import GObject
 from gi.repository import GtkSource
 
 from meld.conf import _
+from meld.settings import bind_settings
 from meld.util.compat import text_type
 
 
@@ -31,8 +32,13 @@ class MeldBuffer(GtkSource.Buffer):
 
     __gtype_name__ = "MeldBuffer"
 
+    __gsettings_bindings__ = (
+        ('highlight-syntax', 'highlight-syntax'),
+    )
+
     def __init__(self, filename=None):
         GtkSource.Buffer.__init__(self)
+        bind_settings(self)
         self.data = MeldBufferData(filename)
         self.user_action_count = 0
 

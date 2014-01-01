@@ -46,7 +46,7 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
-from meld.settings import meldsettings, settings
+from meld.settings import bind_settings, meldsettings, settings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager
 
@@ -141,6 +141,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     __gtype_name__ = "FileDiff"
 
+    __gsettings_bindings__ = (
+        ('highlight-current-line', 'highlight-current-line'),
+        ('ignore-blank-lines', 'ignore-blank-lines'),
+    )
+
     highlight_current_line = GObject.property(type=bool, default=False)
     ignore_blank_lines = GObject.property(
         type=bool,
@@ -171,6 +176,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "filediff.ui", "filediff")
+        bind_settings(self)
+
         widget_lists = [
             "diffmap", "file_save_button", "file_toolbar", "fileentry",
             "linkmap", "msgarea_mgr", "readonlytoggle",
@@ -361,29 +368,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 renderer = GutterRendererChunkAction(pane, pane - 1, views, self, self.linediffer)
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, 10)
-
-        # GSettings bindings
-        for view in self.textview:
-            settings.bind('indent-width', view, 'indent-width',
-                          Gio.SettingsBindFlags.DEFAULT)
-            settings.bind('insert-spaces-instead-of-tabs', view,
-                          'insert-spaces-instead-of-tabs',
-                          Gio.SettingsBindFlags.DEFAULT)
-            settings.bind('show-line-numbers', view, 'show-line-numbers',
-                          Gio.SettingsBindFlags.DEFAULT)
-            settings.bind('draw-spaces', view, 'draw-spaces',
-                          Gio.SettingsBindFlags.DEFAULT)
-            settings.bind('wrap-mode', view, 'wrap-mode',
-                          Gio.SettingsBindFlags.DEFAULT)
-
-        for buf in self.textbuffer:
-            settings.bind('highlight-syntax', buf, 'highlight-syntax',
-                          Gio.SettingsBindFlags.DEFAULT)
-
-        settings.bind('highlight-current-line', self, 'highlight-current-line',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('ignore-blank-lines', self, 'ignore-blank-lines',
-                      Gio.SettingsBindFlags.DEFAULT)
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 

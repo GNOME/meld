@@ -42,7 +42,7 @@ from collections import namedtuple
 from decimal import Decimal
 
 from meld.conf import _
-from meld.settings import meldsettings, settings
+from meld.settings import bind_settings, meldsettings, settings
 
 
 ################################################################################
@@ -248,6 +248,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     __gtype_name__ = "DirDiff"
 
+    __gsettings_bindings__ = (
+        ('folder-ignore-symlinks', 'ignore-symlinks'),
+        ('folder-shallow-comparison', 'shallow-comparison'),
+        ('folder-time-resolution', 'time-resolution'),
+        ('folder-status-filters', 'status-filters'),
+        ('ignore-blank-lines', 'ignore-blank-lines'),
+    )
+
     ignore_blank_lines = GObject.property(
         type=bool,
         nick="Ignore blank lines",
@@ -302,6 +310,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "dirdiff.ui", "dirdiff",
                                       ["DirdiffActions"])
+        bind_settings(self)
 
         self.ui_file = gnomeglade.ui_file("dirdiff-ui.xml")
         self.actiongroup = self.DirdiffActions
@@ -407,17 +416,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.update_treeview_columns(settings, 'folder-columns')
         settings.connect('changed::folder-columns',
                          self.update_treeview_columns)
-
-        settings.bind('folder-ignore-symlinks', self, 'ignore-symlinks',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('folder-shallow-comparison', self, 'shallow-comparison',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('folder-time-resolution', self, 'time-resolution',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('folder-status-filters', self, 'status-filters',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('ignore-blank-lines', self, 'ignore-blank-lines',
-                      Gio.SettingsBindFlags.DEFAULT)
 
         self.update_comparator()
         self.connect("notify::shallow-comparison", self.update_comparator)

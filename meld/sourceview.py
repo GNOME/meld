@@ -20,6 +20,8 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
+from meld.settings import bind_settings
+
 
 class LanguageManager(object):
 
@@ -46,6 +48,14 @@ class MeldSourceView(GtkSource.View):
 
     __gtype_name__ = "MeldSourceView"
 
+    __gsettings_bindings__ = (
+        ('indent-width', 'indent-width'),
+        ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
+        ('show-line-numbers', 'show-line-numbers'),
+        ('draw-spaces', 'draw-spaces'),
+        ('wrap-mode', 'wrap-mode'),
+    )
+
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
         (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
@@ -61,6 +71,7 @@ class MeldSourceView(GtkSource.View):
 
     def __init__(self, *args, **kwargs):
         super(MeldSourceView, self).__init__(*args, **kwargs)
+        bind_settings(self)
 
         binding_set = Gtk.binding_set_find('GtkSourceView')
         for key, modifiers in self.replaced_entries:

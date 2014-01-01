@@ -43,7 +43,7 @@ from .ui import gnomeglade
 from .ui import vcdialogs
 
 from meld.conf import _
-from meld.settings import settings
+from meld.settings import settings, bind_settings
 from meld.vc import _null
 
 log = logging.getLogger(__name__)
@@ -139,6 +139,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     __gtype_name__ = "VcView"
 
+    __gsettings_bindings__ = (
+        ('vc-status-filters', 'status-filters'),
+        ('vc-left-is-local', 'left-is-local'),
+        ('vc-merge-file-order', 'merge-file-order'),
+    )
+
     status_filters = GObject.property(
         type=GObject.TYPE_STRV,
         nick="File status filters",
@@ -175,6 +181,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "vcview.ui", "vcview",
                                       ["VcviewActions", 'liststore_vcs'])
+        bind_settings(self)
 
         self.ui_file = gnomeglade.ui_file("vcview-ui.xml")
         self.actiongroup = self.VcviewActions
@@ -240,12 +247,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.combobox_vcs.add_attribute(cell, 'sensitive', 2)
         self.combobox_vcs.lock = False
 
-        settings.bind('vc-status-filters', self, 'status-filters',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('vc-left-is-local', self, 'left-is-local',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('vc-merge-file-order', self, 'merge-file-order',
-                      Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-console-visible',
                       self.actiongroup.get_action('VcConsoleVisible'),
                       'active', Gio.SettingsBindFlags.DEFAULT)
