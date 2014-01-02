@@ -22,7 +22,7 @@ from gi.repository import Gtk
 
 from .ui import gnomeglade
 
-from .meldapp import app
+from meld.recent import recent_comparisons
 
 
 class NewDiffTab(GObject.GObject, gnomeglade.Component):
@@ -112,7 +112,7 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
             compare_paths.append(path)
 
         tab = self.diff_methods[self.diff_type](compare_paths)
-        app.recent_comparisons.add(tab)
+        recent_comparisons.add(tab)
         self.emit('diff-created', tab)
 
     def on_button_new_blank_clicked(self, *args):
