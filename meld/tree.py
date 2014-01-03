@@ -206,7 +206,11 @@ class DiffTreeStore(Gtk.TreeStore):
 
     def _find_next_prev_diff(self, start_path):
         prev_path, next_path = None, None
-        start_iter = self.get_iter(start_path)
+        try:
+            start_iter = self.get_iter(start_path)
+        except ValueError:
+            # Invalid tree path
+            return None, None
 
         for it in self.inorder_search_up(start_iter):
             state = self.get_state(it, 0)
