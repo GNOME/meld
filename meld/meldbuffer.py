@@ -239,7 +239,7 @@ class BufferLines(object):
             # this will return the last line.
             start = self.buf.get_iter_at_line_or_eof(lo)
             end = self.buf.get_iter_at_line_or_eof(hi)
-            txt = text_type(self.buf.get_text(start, end, False), 'utf8')
+            txt = self.buf.get_text(start, end, False)
 
             filter_txt = self.textfilter(txt, self.buf, start, end)
             lines = filter_txt.splitlines()
