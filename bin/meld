@@ -101,6 +101,11 @@ except AttributeError as e:
 except locale.Error as e:
     print("Couldn't bind the translation domain. Some translations won't work.")
     print(e)
+except WindowsError as e:
+    # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
+    # Let's just continue, as translations are non-essential.
+    print("Couldn't bind the translation domain. Some translations won't work.")
+    print(e)
 
 
 def check_requirements():
