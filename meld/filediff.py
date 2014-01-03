@@ -308,6 +308,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.main_actiongroup = None
 
         self.findbar = findbar.FindBar(self.grid)
+        self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
 
         self.widget.ensure_style()
         self.on_style_updated(self.widget)
@@ -1854,11 +1855,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             tohide += self.selector_hbox[n:]
             for widget in tohide:
                 widget.hide()
-
-            right_attach = 2 * n
-            if self.findbar.widget in self.grid:
-                self.grid.remove(self.findbar.widget)
-            self.grid.attach(self.findbar.widget, 1, 2, right_attach - 1, 1)
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
             self.actiongroup.get_action("CycleDocuments").set_sensitive(n > 1)
