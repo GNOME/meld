@@ -668,8 +668,7 @@ class MeldWindow(gnomeglade.Component):
 
     def append_vcview(self, location, auto_compare=False):
         doc = vcview.VcView()
-        # FIXME: need a good themed VC icon
-        self._append_page(doc, "vc-icon")
+        self._append_page(doc, "meld-version-control")
         location = location[0] if isinstance(location, list) else location
         doc.set_location(location)
         if auto_compare:
