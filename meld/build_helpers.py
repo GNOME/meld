@@ -23,6 +23,7 @@
 
 import distutils.cmd
 import distutils.command.build
+import distutils.dir_util
 import glob
 import os.path
 
@@ -84,21 +85,63 @@ class build_help(distutils.cmd.Command):
         data_files = []
         name = self.distribution.metadata.name
 
-        for path in glob.glob(os.path.join(self.help_dir, '*')):
-            lang = os.path.basename(path)
-            path_help = os.path.join('share/help', lang, name)
-            path_figures = os.path.join('share/help', lang, name, 'figures')
+        if "LINGUAS" in os.environ:
+            self.selected_languages = os.environ["LINGUAS"].split()
+        else:
+            self.selected_languages = os.listdir(self.help_dir)
 
-            xml_files = glob.glob('%s/*.xml' % path)
-            mallard_files = glob.glob('%s/*.page' % path)
+        self.C_PAGES = glob.glob(os.path.join(self.help_dir, 'C', '*.page'))
+        self.C_EXTRA = glob.glob(os.path.join(self.help_dir, 'C', '*.xml'))
+
+        for lang in self.selected_languages:
+            source_path = os.path.join(self.help_dir, lang)
+            build_path = os.path.join('build', self.help_dir, lang)
+            if not os.path.exists(build_path):
+                os.makedirs(build_path)
+
+            if lang != 'C':
+                po_file = os.path.join(source_path, lang + '.po')
+                mo_file = os.path.join(build_path, lang + '.mo')
+
+                msgfmt = ['msgfmt', po_file, '-o', mo_file]
+                self.spawn(msgfmt)
+                for page in self.C_PAGES:
+                    itstool = ['itstool', '-m', mo_file, '-o', build_path, page]
+                    self.spawn(itstool)
+                for extra in self.C_EXTRA:
+                    extra_path = os.path.join(build_path, os.path.basename(extra))
+                    if os.path.exists(extra_path):
+                        os.unlink(extra_path)
+                    os.symlink(os.path.relpath(extra, source_path), extra_path)
+            else:
+                distutils.dir_util.copy_tree(source_path, build_path)
+
+            xml_files = glob.glob('%s/*.xml' % build_path)
+            mallard_files = glob.glob('%s/*.page' % build_path)
+            path_help = os.path.join('share', 'help', lang, name)
+            path_figures = os.path.join(path_help, 'figures')
             data_files.append((path_help, xml_files + mallard_files))
-            data_files.append((path_figures, glob.glob('%s/figures/*.png' % path)))
+            data_files.append((path_figures, glob.glob('%s/figures/*.png' % build_path)))
 
         return data_files
 
     def run(self):
         data_files = self.distribution.data_files
         data_files.extend(self.get_data_files())
+        self.check_help()
+
+    def check_help(self):
+        for lang in self.selected_languages:
+            build_path = os.path.join('build', self.help_dir, lang)
+            pages = [os.path.basename(p) for p in self.C_PAGES]
+            for page in pages:
+                page_path = os.path.join(build_path, page)
+                if not os.path.exists(page_path):
+                    print "Skipping missing file", page_path
+                    continue
+                lint = ['xmllint', '--noout', '--noent', '--path', build_path,
+                        '--xinclude', page_path]
+                self.spawn(lint)
 
 
 class build_icons(distutils.cmd.Command):
