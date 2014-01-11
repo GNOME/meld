@@ -16,7 +16,7 @@
 # Copyright Canonical Ltd.
 
 # Modified by Kai Willadsen for the Meld project
-# Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2013-2014 Kai Willadsen <kai.willadsen@gmail.com>
 
 
 import distutils.cmd
