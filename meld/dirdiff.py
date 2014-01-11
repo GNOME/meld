@@ -827,19 +827,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             # if parent has more children: state of these children is in state_filters;
                             # parent may not be removed in this case : stop while loop
                         else:
-                            self.model.remove(it)   # all paths of sibling dirs still on the stack are now invalid!
-                            index = 0
-                            # siblings that are on the stack, all occupy the top positions (in reverse order)
-                            while it is not None:
-                                one_dir = any(os.path.isdir(f) for f in self.model.value_paths(it))
-                                if one_dir:
-                                    index += 1
-                                    todo[-index] = self.model.get_path(it)   # correct the path for this sibling
-                                else:
-                                    # stop while loop: it == sibling files and sibling dirs come first in tree
-                                    break
-                                it = self.model.iter_next(it)
-                            break   # parent of current level in tree has children : stop while loop
+                            # Remove the current row, and then revalidate all
+                            # sibling paths on the stack by removing and
+                            # readding them
+                            deleted_path = self.model.get_path(it)
+                            self.model.remove(it)
+                            for path in todo:
+                                if tree.path_is_sibling(path, deleted_path):
+                                    path.prev()
+                            # parent of current level in tree has children : stop while loop
+                            break
 
             if differences:
                 expanded.add(path)
