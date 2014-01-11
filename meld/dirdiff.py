@@ -1002,7 +1002,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
-        if pane is None:
+        if pane is None or len(self.model) == 0:
             return
 
         cursor_path, cursor_col = self.treeview[pane].get_cursor()
