@@ -788,7 +788,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             allfiles = self._filter_on_state(roots, files.get())
 
             # then directories and files
-            if len(alldirs) + len(allfiles) != 0:
+            if alldirs or allfiles:
                 for names in alldirs:
                     entries = [os.path.join(r, n) for r, n in zip(roots, names)]
                     child = self.model.add_entries(it, entries)
@@ -802,7 +802,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     differences |= self._update_item_state(child)
             else:
                 all_dir = all(os.path.isdir(f) for f in roots)
-                if (not all_dir) or (tree.STATE_NORMAL in self.state_filters):
+                if not all_dir or tree.STATE_NORMAL in self.state_filters:
                     self.model.add_empty(it)
                     if self.model.iter_parent(it) is None:
                         expanded.add(rootpath)    # expand rootpath to show entire tree is empty
@@ -813,7 +813,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     # although STATE_NORMAL is disabled, so that their contents could be compared; as roots
                     # turned out empty their (and every empty ancestor's) branch in the tree can be removed
 
-                    assert (it is not None) and (not self.model.iter_has_child(it))
+                    assert it and not self.model.iter_has_child(it)
                     while not self.model.iter_has_child(it):
                         if self.model.iter_next(it) is None:
                             # all siblings of it have been processed, none are left on the todo stack
