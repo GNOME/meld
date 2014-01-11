@@ -815,15 +815,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                     assert it and not self.model.iter_has_child(it)
                     while not self.model.iter_has_child(it):
+                        parent = self.model.iter_parent(it)
                         if self.model.iter_next(it) is None:
                             # all siblings of it have been processed, none are left on the todo stack
-                            parent = self.model.iter_parent(it)
                             if parent is None:             # don't remove top of the tree
                                 self.model.add_empty(it)
                                 expanded.add(rootpath)     # expand roothpath to show entire tree is empty
                                 break
                             self.model.remove(it)
-                            it = parent
                             # if parent has more children: state of these children is in state_filters;
                             # parent may not be removed in this case : stop while loop
                         else:
@@ -835,8 +834,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             for path in todo:
                                 if tree.path_is_sibling(path, deleted_path):
                                     path.prev()
-                            # parent of current level in tree has children : stop while loop
-                            break
+                        it = parent
 
             if differences:
                 expanded.add(path)
