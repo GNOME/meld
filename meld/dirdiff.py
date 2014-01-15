@@ -807,13 +807,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if self.model.iter_parent(it) is None:
                         expanded.add(rootpath)    # expand rootpath to show entire tree is empty
                 else:
-                    # assert ( roots all_dir and all_empty, STATE_NORMAL not in state_filters )
-
-                    # roots (and all their ancestors to top of tree) were let through in _filter_on_state()
-                    # although STATE_NORMAL is disabled, so that their contents could be compared; as roots
-                    # turned out empty their (and every empty ancestor's) branch in the tree can be removed
-
-                    assert it and not self.model.iter_has_child(it)
+                    # At this point, we have an empty folder tree node; we can
+                    # prune this and any ancestors that then end up empty.
                     while not self.model.iter_has_child(it):
                         parent = self.model.iter_parent(it)
 
