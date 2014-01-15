@@ -35,11 +35,6 @@ from meld.vc._vc import \
     CONFLICT_MERGED, CONFLICT_OTHER, CONFLICT_THIS
 
 
-def path_is_sibling(path1, path2):
-    return (len(path1) == len(path2) and
-            path1.get_indices()[:-1] == path2.get_indices()[:-1])
-
-
 class DiffTreeStore(Gtk.TreeStore):
 
     def __init__(self, ntree, types):

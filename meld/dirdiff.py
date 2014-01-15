@@ -816,24 +816,24 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     assert it and not self.model.iter_has_child(it)
                     while not self.model.iter_has_child(it):
                         parent = self.model.iter_parent(it)
-                        if self.model.iter_next(it) is None:
-                            # all siblings of it have been processed, none are left on the todo stack
-                            if parent is None:             # don't remove top of the tree
-                                self.model.add_empty(it)
-                                expanded.add(rootpath)     # expand roothpath to show entire tree is empty
-                                break
-                            self.model.remove(it)
-                            # if parent has more children: state of these children is in state_filters;
-                            # parent may not be removed in this case : stop while loop
-                        else:
-                            # Remove the current row, and then revalidate all
-                            # sibling paths on the stack by removing and
-                            # readding them
-                            deleted_path = self.model.get_path(it)
-                            self.model.remove(it)
+
+                        # In our tree, there is always a top-level parent with
+                        # no siblings. If we're here, we have an empty tree.
+                        if parent is None:
+                            self.model.add_empty(it)
+                            expanded.add(rootpath)
+                            break
+
+                        # Remove the current row, and then revalidate all
+                        # sibling paths on the stack by removing and
+                        # readding them.
+                        had_siblings = self.model.remove(it)
+                        if had_siblings:
+                            parent_path = self.model.get_path(parent)
                             for path in todo:
-                                if tree.path_is_sibling(path, deleted_path):
+                                if parent_path.is_ancestor(path):
                                     path.prev()
+
                         it = parent
 
             if differences:
