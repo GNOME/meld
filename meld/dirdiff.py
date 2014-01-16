@@ -782,12 +782,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             for pane, f1, f2 in dirs.errors + files.errors:
                 shadowed_entries.append((pane, roots[pane], f1, f2))
 
-            # If STATE_NORMAL not in state_filters: dirs that exist and are a dir in all panes
-            # are also added to all_dirs, so they can be compared. They may be removed later.
             alldirs = self._filter_on_state(roots, dirs.get())
             allfiles = self._filter_on_state(roots, files.get())
 
-            # then directories and files
             if alldirs or allfiles:
                 for names in alldirs:
                     entries = [os.path.join(r, n) for r, n in zip(roots, names)]
@@ -801,6 +798,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
             else:
+                # Our subtree is empty, or has been filtered to be empty
                 all_dir = all(os.path.isdir(f) for f in roots)
                 if not all_dir or tree.STATE_NORMAL in self.state_filters:
                     self.model.add_empty(it)
@@ -1266,11 +1264,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     state = tree.STATE_MODIFIED
             else:
                 state = tree.STATE_NEW
-            all_dir = False not in [ os.path.isdir(f) for f in curfiles ]
-            # curfiles == all dirs: add them, even if STATE_NORMAL is not
-            # in state_filters; their branch in the tree may still be
-            # removed later in _search_recursively_iter()
-            if state in self.state_filters or (all_present and all_dir):
+            # Always retain NORMAL folders for comparison; we remove these
+            # later if they have no children.
+            if (state in self.state_filters or
+                    all(os.path.isdir(f) for f in curfiles)):
                 ret.append( files )
         return ret
 
