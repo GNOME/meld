@@ -695,8 +695,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         shadowed_entries = []
         invalid_filenames = []
         while len(todo):
-            # depth first: use todo as stack (LIFO) with pop() and append(path)
-            path = todo.pop()
+            todo.sort() # depth first
+            path = todo.pop(0)
             it = self.model.get_iter( path )
             roots = self.model.value_paths( it )
 
@@ -791,19 +791,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
                     todo.append(self.model.get_path(child))
-                # depth first: put dirs alphabetically on stack, with the a's on top
-                if len(alldirs) > 0: todo[-len(alldirs):] = reversed(todo[-len(alldirs):])
                 for names in allfiles:
                     entries = [os.path.join(r, n) for r, n in zip(roots, names)]
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
             else:
                 # Our subtree is empty, or has been filtered to be empty
-                all_dir = all(os.path.isdir(f) for f in roots)
-                if not all_dir or tree.STATE_NORMAL in self.state_filters:
+                if (tree.STATE_NORMAL in self.state_filters or
+                        not all(os.path.isdir(f) for f in roots)):
                     self.model.add_empty(it)
                     if self.model.iter_parent(it) is None:
-                        expanded.add(rootpath)    # expand rootpath to show entire tree is empty
+                        expanded.add(rootpath)
                 else:
                     # At this point, we have an empty folder tree node; we can
                     # prune this and any ancestors that then end up empty.
