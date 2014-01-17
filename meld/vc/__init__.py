@@ -83,7 +83,8 @@ def get_vcs(location):
     # Choose the deepest root we find, unless it's from a VC that
     # doesn't walk; these can be spurious as the real root may be
     # much higher up in the tree.
-    max_depth = max(len(vc.root) for vc in vcs if vc.VC_ROOT_WALK)
+    root_walk_lengths = [len(vc.root) for vc in vcs if vc.VC_ROOT_WALK]
+    max_depth = max(root_walk_lengths or [0])
     vcs = [vc for vc in vcs if not vc.VC_ROOT_WALK or
            (len(vc.root) == max_depth and vc.VC_ROOT_WALK)]
 
