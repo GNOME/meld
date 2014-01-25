@@ -50,9 +50,15 @@ class LinkMap(Gtk.DrawingArea):
 
         context.set_line_width(1.0)
         allocation = self.get_allocation()
+        style = self.get_style_context()
 
         pix_start = [t.get_visible_rect().y for t in self.views]
         y_offset = [t.translate_coordinates(self, 0, 0)[1] for t in self.views]
+
+        clip_height = max(t.get_visible_rect().height for t in self.views) + 2
+        Gtk.render_frame(style, context, 0, 0, allocation.width, clip_height)
+        context.rectangle(0, -1, allocation.width, clip_height)
+        context.clip()
 
         height = allocation.height
         visible = [self.views[0].get_line_num_for_y(pix_start[0]),
@@ -117,7 +123,6 @@ class LinkMap(Gtk.DrawingArea):
 
             context.set_source_rgba(*self.line_colors[c[0]])
             context.stroke()
-
 
     def do_scroll_event(self, event):
         self.filediff.next_diff(event.direction)
