@@ -114,6 +114,8 @@
           <object class="GtkGrid" id="grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">0</property>
+            <property name="row_spacing">0</property>
             <child>
               <placeholder/>
             </child>
@@ -136,41 +138,46 @@
               <placeholder/>
             </child>
             <child>
-              <object class="GtkHBox" id="selector_hbox2">
+              <object class="GtkToolbar" id="file_toolbar2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="show-arrow">False</property>
+                <property name="icon-size">1</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
                 <child>
-                  <object class="GtkToggleButton" id="readonlytoggle2">
+                  <object class="GtkToggleToolButton" id="readonlytoggle2">
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <property name="relief">none</property>
+                    <property name="icon_name">emblem-readonly</property>
                     <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="file_save_button2">
+                    <property name="stock-id">gtk-save</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_underline">True</property>
+                    <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
                     <child>
-                      <object class="GtkImage" id="readonly_image2">
+                      <object class="GtkFileChooserButton" id="fileentry2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="icon_name">emblem-readonly</property>
+                        <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
                       </object>
                     </child>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
               <packing>
@@ -180,41 +187,46 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="selector_hbox1">
+              <object class="GtkToolbar" id="file_toolbar1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="show-arrow">False</property>
+                <property name="icon-size">1</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
                 <child>
-                  <object class="GtkToggleButton" id="readonlytoggle1">
+                  <object class="GtkToggleToolButton" id="readonlytoggle1">
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <property name="relief">none</property>
+                    <property name="icon_name">emblem-readonly</property>
                     <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="file_save_button1">
+                    <property name="stock-id">gtk-save</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_underline">True</property>
+                    <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
                     <child>
-                      <object class="GtkImage" id="readonly_image1">
+                      <object class="GtkFileChooserButton" id="fileentry1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="icon_name">emblem-readonly</property>
+                        <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
                       </object>
                     </child>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
               <packing>
@@ -224,41 +236,46 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="selector_hbox0">
+              <object class="GtkToolbar" id="file_toolbar0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="show-arrow">False</property>
+                <property name="icon-size">1</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
                 <child>
-                  <object class="GtkToggleButton" id="readonlytoggle0">
+                  <object class="GtkToggleToolButton" id="readonlytoggle0">
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <property name="relief">none</property>
+                    <property name="icon_name">emblem-readonly</property>
                     <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="file_save_button0">
+                    <property name="stock-id">gtk-save</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_underline">True</property>
+                    <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
                     <child>
-                      <object class="GtkImage" id="readonly_image0">
+                      <object class="GtkFileChooserButton" id="fileentry0">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="icon_name">emblem-readonly</property>
+                        <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
                       </object>
                     </child>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
               <packing>
@@ -316,45 +333,6 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="statusimage2">
-                <property name="width_request">20</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="stock">gtk-missing-image</property>
-              </object>
-              <packing>
-                <property name="left_attach">4</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="statusimage1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="stock">gtk-missing-image</property>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="statusimage0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">1</property>
-                <property name="stock">gtk-missing-image</property>
-              </object>
-              <packing>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -456,6 +434,21 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolbar" id="dummy_toolbar_diffmap1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">6</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="DiffMap" id="diffmap1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -463,6 +456,21 @@
               <packing>
                 <property name="left_attach">6</property>
                 <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolbar" id="dummy_toolbar_linkmap0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">0</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
@@ -482,6 +490,21 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolbar" id="dummy_toolbar_diffmap0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="DiffMap" id="diffmap0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -489,6 +512,21 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolbar" id="dummy_toolbar_linkmap1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="top_attach">0</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>

@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2009-2013 Kai Willadsen <kai.willadsen@gmail.com>
 #
@@ -169,8 +171,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.Component.__init__(self, "filediff.ui", "filediff")
         self.map_widgets_into_lists(["textview", "fileentry", "diffmap",
                                      "scrolledwindow", "linkmap",
-                                     "statusimage", "msgarea_mgr", "vbox",
-                                     "selector_hbox", "readonlytoggle"])
+                                     "msgarea_mgr", "vbox",
+                                     "selector_hbox", "readonlytoggle",
+                                     "file_toolbar", "file_save_button",
+                                     "fileentry_toolitem"])
 
         # This SizeGroup isn't actually necessary for FileDiff; it's for
         # handling non-homogenous selectors in FileComp. It's also fragile.
@@ -222,6 +226,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.create_tag("inline")
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
+
+        for toolitem in self.fileentry_toolitem:
+            toolitem.set_expand(True)
 
         actions = (
             ("MakePatch", None, _("Format as Patch..."), None,
@@ -1042,26 +1049,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def recompute_label(self):
         self._set_save_action_sensitivity()
-        filenames = []
-        for i in range(self.num_panes):
-            filenames.append(self.textbuffer[i].data.label)
+        filenames = [b.data.label for b in self.textbuffer[:self.num_panes]]
         shortnames = misc.shorten_names(*filenames)
-        for i in range(self.num_panes):
-            stock = None
-            if self.textbuffer[i].data.modified:
+
+        for i, buf in enumerate(self.textbuffer[:self.num_panes]):
+            if buf.data.modified:
                 shortnames[i] += "*"
-                if self.textbuffer[i].data.writable:
-                    stock = Gtk.STOCK_SAVE
-                else:
-                    stock = Gtk.STOCK_SAVE_AS
-            if stock:
-                self.statusimage[i].show()
-                self.statusimage[i].set_from_stock(stock, Gtk.IconSize.MENU)
-                width = self.diffmap[0].size_request().width
-                self.statusimage[i].set_size_request(width, -1)
-            else:
-                self.statusimage[i].hide()
-        self.label_text = " : ".join(shortnames)
+            self.file_save_button[i].set_sensitive(buf.data.modified)
+            self.file_save_button[i].props.stock_id = (
+                Gtk.STOCK_SAVE if buf.data.writable else Gtk.STOCK_SAVE_AS)
+
+        self.label_text = (" — ").decode('utf8').join(shortnames)
         self.tooltip_text = self.label_text
         self.label_changed()
 
@@ -1717,6 +1715,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.textbuffer[i].data.modified:
                 self.save_file(i)
 
+    def on_file_save_button_clicked(self, button):
+        idx = self.file_save_button.index(button)
+        self.save_file(idx)
+
     def on_fileentry_file_set(self, entry):
         if self.check_save_modified() != Gtk.ResponseType.CANCEL:
             entries = self.fileentry[:self.num_panes]
@@ -1846,14 +1848,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
             toshow += self.vbox[:n] + self.msgarea_mgr[:n]
             toshow += self.linkmap[:n-1] + self.diffmap[:n]
-            toshow += self.selector_hbox[:n]
+            toshow += self.selector_hbox[:n] + self.file_toolbar[:n]
             for widget in toshow:
                 widget.show()
 
-            tohide =  self.statusimage + self.scrolledwindow[n:] + self.fileentry[n:]
+            tohide = self.scrolledwindow[n:] + self.fileentry[n:]
             tohide += self.vbox[n:] + self.msgarea_mgr[n:]
             tohide += self.linkmap[n-1:] + self.diffmap[n:]
-            tohide += self.selector_hbox[n:]
+            tohide += self.selector_hbox[n:] + self.file_toolbar[n:]
             for widget in tohide:
                 widget.hide()
 
@@ -1886,8 +1888,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 w.associate(self, self.textview[i], self.textview[i + 1])
 
             for i in range(self.num_panes):
-                if self.textbuffer[i].data.modified:
-                    self.statusimage[i].show()
+                self.file_save_button[i].set_sensitive(
+                    self.textbuffer[i].data.modified)
             self.queue_draw()
             self.recompute_label()
 
