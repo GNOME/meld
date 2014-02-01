@@ -169,12 +169,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "filediff.ui", "filediff")
-        self.map_widgets_into_lists(["textview", "fileentry", "diffmap",
-                                     "scrolledwindow", "linkmap",
-                                     "msgarea_mgr", "vbox",
-                                     "selector_hbox", "readonlytoggle",
-                                     "file_toolbar", "file_save_button",
-                                     "fileentry_toolitem"])
+        widget_lists = [
+            "diffmap", "file_save_button", "file_toolbar", "fileentry",
+            "fileentry_toolitem", "linkmap", "msgarea_mgr", "readonlytoggle",
+            "scrolledwindow", "selector_hbox", "textview", "vbox",
+        ]
+        self.map_widgets_into_lists(widget_lists)
 
         # This SizeGroup isn't actually necessary for FileDiff; it's for
         # handling non-homogenous selectors in FileComp. It's also fragile.
