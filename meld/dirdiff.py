@@ -925,9 +925,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     misc.error_dialog(
                         _("Error copying file"),
                         _("Couldn't copy %s\nto %s.\n\n%s") % (
-                            GObject.markup_escape_text(src),
-                            GObject.markup_escape_text(dst),
-                            GObject.markup_escape_text(str(err)),
+                            GLib.markup_escape_text(src),
+                            GLib.markup_escape_text(dst),
+                            GLib.markup_escape_text(str(err)),
                         )
                     )
 

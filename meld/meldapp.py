@@ -21,7 +21,7 @@ import os
 from gettext import gettext as _
 
 from gi.repository import Gio
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 
@@ -36,7 +36,7 @@ class MeldApp(Gtk.Application):
         Gtk.Application.__init__(self)
         self.set_flags(Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.set_application_id("org.gnome.meld")
-        GObject.set_application_name("Meld")
+        GLib.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
         self.window = None
 

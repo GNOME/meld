@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Pango
 
@@ -138,7 +138,7 @@ class DiffTreeStore(Gtk.TreeStore):
 
     def set_path_state(self, it, pane, state, isdir=0):
         fullname = self.get_value(it, self.column_index(COL_PATH,pane))
-        name = GObject.markup_escape_text(os.path.basename(fullname))
+        name = GLib.markup_escape_text(os.path.basename(fullname))
         self.set_state(it, pane, state, name, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
