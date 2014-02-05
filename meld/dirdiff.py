@@ -323,7 +323,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
                                      "diffmap", "linkmap", "msgarea_mgr",
-                                     "vbox"])
+                                     "vbox", "dummy_toolbar_linkmap",
+                                     "file_toolbar", "fileentry_toolitem"])
+
+        for toolitem in self.fileentry_toolitem:
+            toolitem.set_expand(True)
 
         self.widget.ensure_style()
         self.on_style_updated(self.widget)
@@ -1403,16 +1407,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 idx = 1 if i else 0
                 w.setup(scroll, self.get_state_traversal(idx), [self.fill_colors, self.line_colors])
 
-            toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
-            toshow += self.linkmap[:n-1] + self.diffmap[:n]
-            toshow += self.vbox[:n] + self.msgarea_mgr[:n]
-            for widget in toshow:
+            for widget in (
+                    self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
+                    self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1]):
                 widget.show()
-            tohide =  self.scrolledwindow[n:] + self.fileentry[n:]
-            tohide += self.linkmap[n-1:] + self.diffmap[n:]
-            tohide += self.vbox[n:] + self.msgarea_mgr[n:]
-            for widget in tohide:
+
+            for widget in (
+                    self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
+                    self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:]):
                 widget.hide()
+
             if self.num_panes != 0: # not first time through
                 self.num_panes = n
                 self.on_fileentry_file_set(None)

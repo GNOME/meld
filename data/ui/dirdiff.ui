@@ -106,12 +106,30 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkFileChooserButton" id="fileentry0">
+              <object class="GtkToolbar" id="file_toolbar0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="action">select-folder</property>
-                <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                <property name="show-arrow">False</property>
+                <property name="icon-size">1</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+                <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <child>
+                      <object class="GtkFileChooserButton" id="fileentry0">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="action">select-folder</property>
+                        <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -121,12 +139,30 @@
               </packing>
             </child>
             <child>
-              <object class="GtkFileChooserButton" id="fileentry1">
+              <object class="GtkToolbar" id="file_toolbar1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="action">select-folder</property>
-                <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                <property name="show-arrow">False</property>
+                <property name="icon-size">1</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+                <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <child>
+                      <object class="GtkFileChooserButton" id="fileentry1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="action">select-folder</property>
+                        <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">3</property>
@@ -136,15 +172,48 @@
               </packing>
             </child>
             <child>
-              <object class="GtkFileChooserButton" id="fileentry2">
+              <object class="GtkToolbar" id="file_toolbar2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="action">select-folder</property>
-                <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                <property name="show-arrow">False</property>
+                <property name="icon-size">1</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+                <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">False</property>
+                    <child>
+                      <object class="GtkFileChooserButton" id="fileentry2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="action">select-folder</property>
+                        <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">5</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolbar" id="dummy_toolbar_diffmap1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">6</property>
                 <property name="top_attach">0</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
@@ -159,6 +228,21 @@
               <packing>
                 <property name="left_attach">6</property>
                 <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolbar" id="dummy_toolbar_linkmap1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">4</property>
+                <property name="top_attach">0</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
@@ -179,6 +263,21 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolbar" id="dummy_toolbar_diffmap0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="DiffMap" id="diffmap0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -187,6 +286,21 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolbar" id="dummy_toolbar_linkmap0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">0</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
