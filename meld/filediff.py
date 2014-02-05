@@ -173,6 +173,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             "diffmap", "file_save_button", "file_toolbar", "fileentry",
             "fileentry_toolitem", "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "selector_hbox", "textview", "vbox",
+            "dummy_toolbar_linkmap"
         ]
         self.map_widgets_into_lists(widget_lists)
 
@@ -1843,20 +1844,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             lm.queue_draw()
 
     def set_num_panes(self, n):
-        if n != self.num_panes and n in (1,2,3):
+        if n != self.num_panes and n in (1, 2, 3):
             self.num_panes = n
-            toshow =  self.scrolledwindow[:n] + self.fileentry[:n]
-            toshow += self.vbox[:n] + self.msgarea_mgr[:n]
-            toshow += self.linkmap[:n-1] + self.diffmap[:n]
-            toshow += self.selector_hbox[:n] + self.file_toolbar[:n]
-            for widget in toshow:
+            for widget in (
+                    self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
+                    self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1]):
                 widget.show()
 
-            tohide = self.scrolledwindow[n:] + self.fileentry[n:]
-            tohide += self.vbox[n:] + self.msgarea_mgr[n:]
-            tohide += self.linkmap[n-1:] + self.diffmap[n:]
-            tohide += self.selector_hbox[n:] + self.file_toolbar[n:]
-            for widget in tohide:
+            for widget in (
+                    self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
+                    self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:]):
                 widget.hide()
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
