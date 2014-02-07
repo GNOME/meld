@@ -139,7 +139,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         nick="File status filters",
         blurb="Files with these statuses will be shown by the comparison.",
     )
-    console_visible = GObject.property(type=bool, default=False)
     left_is_local = GObject.property(type=bool, default=False)
 
     # Map action names to VC commands and required arguments list
@@ -232,18 +231,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         settings.bind('vc-status-filters', self, 'status-filters',
                       Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('vc-console-visible', self, 'console-visible',
-                      Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-left-is-local', self, 'left-is-local',
                       Gio.SettingsBindFlags.DEFAULT)
-
-        self.bind_property(
-            'console-visible', self.console_hbox, 'visible',
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.DEFAULT)
-        self.bind_property(
-            'console-visible', self.console_show_box, 'visible',
-            GObject.BindingFlags.SYNC_CREATE |
-            GObject.BindingFlags.INVERT_BOOLEAN)
+        settings.bind('vc-console-visible',
+                      self.actiongroup.get_action('VcConsoleVisible'),
+                      'active', Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('vc-console-visible', self.console_vbox, 'visible',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('vc-console-pane-position', self.vc_console_vpaned,
+                      'position', Gio.SettingsBindFlags.DEFAULT)
 
         self.state_filters = []
         for s in self.state_actions:
@@ -624,7 +620,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         returncode = next(readiter)
         if returncode:
-            self.props.console_visible = True
+            self.console_vbox.show()
 
         if refresh:
             self.refresh_partial(workdir)
@@ -779,9 +775,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 break
         return None
-
-    def on_console_view_toggle(self, box, event=None):
-        self.props.console_visible = box != self.console_hide_box
 
     def on_consoleview_populate_popup(self, textview, menu):
         buf = textview.get_buffer()

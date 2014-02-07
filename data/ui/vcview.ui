@@ -77,6 +77,13 @@
       </object>
     </child>
     <child>
+      <object class="GtkToggleAction" id="VcConsoleVisible">
+        <property name="label" translatable="yes">Console</property>
+        <property name="tooltip" translatable="yes">Show or hide the version control console output pane</property>
+      </object>
+      <accelerator key="F9"/>
+    </child>
+    <child>
       <object class="GtkToggleAction" id="VcFlatten">
         <property name="label" translatable="yes">_Flatten</property>
         <property name="tooltip" translatable="yes">Flatten directories</property>
@@ -462,48 +469,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEventBox" id="console_show_box">
-            <property name="can_focus">False</property>
-            <signal name="button-press-event" handler="on_console_view_toggle" swapped="no"/>
-            <child>
-              <object class="GtkHBox" id="hbox3">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkArrow" id="console_arrow_right">
-                    <property name="width_request">14</property>
-                    <property name="height_request">14</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkHSeparator" id="hseparator1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
           <object class="MsgAreaController" id="msgarea_mgr">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -515,10 +480,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVPaned" id="vpaned">
+          <object class="GtkVPaned" id="vc_console_vpaned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="position">250</property>
+            <style>
+              <class name="meld-vc-console-pane"/>
+            </style>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow">
                 <property name="visible">True</property>
@@ -543,37 +511,17 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="console_hbox">
-                <property name="height_request">70</property>
+              <object class="GtkBox" id="console_vbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkEventBox" id="console_hide_box">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal name="button-press-event" handler="on_console_view_toggle" swapped="no"/>
-                    <child>
-                      <object class="GtkArrow" id="console_arrow_down">
-                        <property name="width_request">14</property>
-                        <property name="height_request">14</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="yalign">0</property>
-                        <property name="arrow_type">down</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
                   <object class="GtkScrolledWindow" id="console_scrolledwindow">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTextView" id="consoleview">
                         <property name="visible">True</property>
@@ -601,7 +549,7 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="pack_type">end</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
