@@ -324,10 +324,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
                                      "diffmap", "linkmap", "msgarea_mgr",
                                      "vbox", "dummy_toolbar_linkmap",
-                                     "file_toolbar", "fileentry_toolitem"])
-
-        for toolitem in self.fileentry_toolitem:
-            toolitem.set_expand(True)
+                                     "file_toolbar"])
 
         self.widget.ensure_style()
         self.on_style_updated(self.widget)

@@ -171,7 +171,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gnomeglade.Component.__init__(self, "filediff.ui", "filediff")
         widget_lists = [
             "diffmap", "file_save_button", "file_toolbar", "fileentry",
-            "fileentry_toolitem", "linkmap", "msgarea_mgr", "readonlytoggle",
+            "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "selector_hbox", "textview", "vbox",
             "dummy_toolbar_linkmap"
         ]
@@ -227,9 +227,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.create_tag("inline")
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
-
-        for toolitem in self.fileentry_toolitem:
-            toolitem.set_expand(True)
 
         actions = (
             ("MakePatch", None, _("Format as Patch..."), None,
