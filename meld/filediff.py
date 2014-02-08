@@ -82,7 +82,7 @@ class CachedSequenceMatcher(object):
         except KeyError:
             def inline_cb(opcodes):
                 self.cache[(text1, textn)] = [opcodes, time.time()]
-                GObject.idle_add(lambda: cb(opcodes))
+                GLib.idle_add(lambda: cb(opcodes))
             self.process_pool.apply_async(matchers.matcher_worker,
                                           (text1, textn),
                                           callback=inline_cb)
@@ -130,7 +130,7 @@ class TextviewLineAnimation(object):
         self.end_mark = mark1
         self.start_rgba = rgba0
         self.end_rgba = rgba1
-        self.start_time = GLib.get_current_time()
+        self.start_time = GLib.get_monotonic_time()
         self.duration = duration
 
 
@@ -1522,10 +1522,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 context.set_source_rgba(*self.syncpoint_color)
                 context.stroke()
 
-        current_time = GLib.get_current_time()
         new_anim_chunks = []
         for c in self.animating_chunks[pane]:
-            percent = min(1.0, (current_time - c.start_time) / c.duration)
+            current_time = GLib.get_monotonic_time()
+            percent = min(1.0, (current_time - c.start_time) / float(c.duration))
             rgba_pairs = zip(c.start_rgba, c.end_rgba)
             rgba = [s + (e - s) * percent for s, e in rgba_pairs]
 
@@ -1553,9 +1553,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return True
             # Using timeout_add interferes with recalculation of inline
             # highlighting; this mechanism could be improved.
-            self.anim_source_id[pane] = GObject.idle_add(anim_cb)
+            self.anim_source_id[pane] = GLib.idle_add(anim_cb)
         elif not self.animating_chunks[pane] and self.anim_source_id[pane]:
-            GObject.source_remove(self.anim_source_id[pane])
+            GLib.source_remove(self.anim_source_id[pane])
             self.anim_source_id[pane] = None
 
         # if event.window == textview.get_window(Gtk.TextWindowType.LEFT):
@@ -1939,7 +1939,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         rgba1 = self.fill_colors['insert'].copy()
         rgba0.alpha = 1.0
         rgba1.alpha = 0.0
-        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 500000)
         self.animating_chunks[dst].append(anim)
 
     def replace_chunk(self, src, dst, chunk):
@@ -1961,7 +1961,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         rgba1 = self.fill_colors['insert'].copy()
         rgba0.alpha = 1.0
         rgba1.alpha = 0.0
-        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 500000)
         self.animating_chunks[dst].append(anim)
 
     def delete_chunk(self, src, chunk):
@@ -1977,7 +1977,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         rgba1 = self.fill_colors['conflict'].copy()
         rgba0.alpha = 1.0
         rgba1.alpha = 0.0
-        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 0.5)
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 500000)
         self.animating_chunks[src].append(anim)
 
     def add_sync_point(self, action):

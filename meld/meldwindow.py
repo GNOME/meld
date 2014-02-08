@@ -21,7 +21,6 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
-from gi.repository import GObject
 
 from . import dirdiff
 from . import filediff
@@ -254,7 +253,7 @@ class MeldWindow(gnomeglade.Component):
             self.spinner.show()
             self.spinner.start()
             self.actiongroup.get_action("Stop").set_sensitive(True)
-            self.idle_hooked = GObject.idle_add(self.on_idle)
+            self.idle_hooked = GLib.idle_add(self.on_idle)
 
     def on_delete_event(self, *extra):
         # Delete pages from right-to-left.  This ensures that if a version
