@@ -28,7 +28,6 @@ from multiprocessing.pool import ThreadPool
 
 
 from gi.repository import GLib
-from gi.repository import Pango
 from gi.repository import GObject
 from gi.repository import Gio
 from gi.repository import Gdk

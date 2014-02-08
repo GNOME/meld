@@ -24,7 +24,6 @@ import re
 import shutil
 import stat
 import sys
-import time
 
 from gi.repository import GLib
 from gi.repository import Gio
@@ -42,7 +41,6 @@ from .ui import emblemcellrenderer
 from collections import namedtuple
 from decimal import Decimal
 from gettext import gettext as _
-from gettext import ngettext
 
 from meld.settings import meldsettings, settings
 
