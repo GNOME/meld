@@ -34,6 +34,26 @@ class MeldBuffer(GtkSource.Buffer):
     def __init__(self, filename=None):
         GtkSource.Buffer.__init__(self)
         self.data = MeldBufferData(filename)
+        self.user_action_count = 0
+
+    def do_begin_user_action(self, *args):
+        self.user_action_count += 1
+
+    def do_end_user_action(self, *args):
+        self.user_action_count -= 1
+
+    def do_apply_tag(self, tag, start, end):
+        # Filthy, evil, horrible hack. What we're doing here is trying to
+        # figure out if a tag apply has come from a paste action, in which
+        # case GtkTextBuffer will 'helpfully' apply the existing tags in the
+        # copied selection. There appears to be no way to override this
+        # behaviour, or to hook in to the necessary paste mechanics to just
+        # request that we only get plain text or something. We're abusing the
+        # user_action notion here, because we only apply the tags we actually
+        # want in a callback.
+        if tag.props.name == 'inline' and self.user_action_count > 0:
+            return
+        return GtkSource.Buffer.do_apply_tag(self, tag, start, end)
 
     def reset_buffer(self, filename):
         """Clear the contents of the buffer and reset its metadata"""
