@@ -21,6 +21,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import shutil
+import tempfile
+
 from meld.vc import _vc
 
 
@@ -34,3 +37,9 @@ class Vc(_vc.Vc):
         dirs = [_vc.Dir(d[1], d[0], _vc.STATE_NONE) for d in dirs]
         files = [_vc.File(f[1], f[0], _vc.STATE_NONE) for f in files]
         return dirs, files
+
+    def get_path_for_repo_file(self, path, commit=None):
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+            with open(path, 'r') as vc_file:
+                shutil.copyfileobj(vc_file, f)
+        return f.name
