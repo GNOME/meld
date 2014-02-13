@@ -77,10 +77,12 @@ class MeldApp(Gtk.Application):
             self.window.append_new_comparison()
         return 0
 
+    # We can't override do_local_command_line because it has no introspection
+    # annotations: https://bugzilla.gnome.org/show_bug.cgi?id=687912
+    # Uniqueness handling is instead hackily done in the launcher script.
+
     # def do_local_command_line(self, command_line):
-    #     response = Gtk.Application.do_local_command_line(self, command_line)
-    #     print(response)
-    #     return response
+    #     return False
 
     def preferences_callback(self, action, parameter):
         meld.preferences.PreferencesDialog(self.get_active_window())
@@ -135,12 +137,12 @@ class MeldApp(Gtk.Application):
     def parse_args(self, rawargs):
         usages = [
             ("", _("Start with an empty window")),
-            ("<%s|%s>" % (_("file"), _("dir")),
+            ("<%s|%s>" % (_("file"), _("folder")),
              _("Start a version control comparison")),
             ("<%s> <%s> [<%s>]" % ((_("file"),) * 3),
              _("Start a 2- or 3-way file comparison")),
-            ("<%s> <%s> [<%s>]" % ((_("dir"),) * 3),
-             _("Start a 2- or 3-way directory comparison")),
+            ("<%s> <%s> [<%s>]" % ((_("folder"),) * 3),
+             _("Start a 2- or 3-way folder comparison")),
         ]
         pad_args_fmt = "%-" + str(max([len(s[0]) for s in usages])) + "s %s"
         usage_lines = ["  %prog " + pad_args_fmt % u for u in usages]
@@ -211,7 +213,6 @@ class MeldApp(Gtk.Application):
                 parser.error(error)
             else:
                 print(error)
-
 
 
 app = MeldApp()

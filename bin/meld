@@ -200,6 +200,12 @@ if __name__ == '__main__':
     setup_settings()
     setup_resources()
 
-    import meld.meldapp
-    status = meld.meldapp.app.run(sys.argv)
+    from gi.repository import Gio
+    from meld.meldapp import app
+
+    if not ("-n" in sys.argv or "--newtab" in sys.argv):
+        app.set_flags(Gio.ApplicationFlags.HANDLES_COMMAND_LINE |
+                      Gio.ApplicationFlags.NON_UNIQUE)
+
+    status = app.run(sys.argv)
     sys.exit(status)
