@@ -38,7 +38,6 @@ class MeldApp(Gtk.Application):
         self.set_application_id("org.gnome.meld")
         GLib.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
-        self.window = None
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -59,19 +58,16 @@ class MeldApp(Gtk.Application):
         menu = builder.get_object("app-menu")
         self.set_app_menu(menu)
         # self.set_menubar()
+        self.new_window()
 
     def do_activate(self):
-        if not self.window:
-            self.window = meldwindow.MeldWindow()
-            self.add_window(self.window.widget)
-            self.window.widget.show()
-        else:
-            self.window.widget.present()
+        self.get_active_window().present()
 
     def do_command_line(self, command_line):
         self.register(None)
         self.activate()
-        tab = self.parse_args(command_line.get_arguments()[1:])
+        tab = self.parse_args(command_line.get_arguments()[1:],
+                              is_first=not command_line.get_is_remote())
         if tab:
             def done(tab, status):
                 self.release()
@@ -81,9 +77,14 @@ class MeldApp(Gtk.Application):
             self.hold()
             tab.command_line = command_line
             tab.connect('close', done)
-        elif not self.window.has_pages():
-            self.window.append_new_comparison()
+        window = self.get_active_window().meldwindow
+        if not window.has_pages():
+            window.append_new_comparison()
         return 0
+
+    def do_window_removed(self, widget):
+        widget.meldwindow = None
+        Gtk.Application.do_window_removed(self, widget)
 
     # We can't override do_local_command_line because it has no introspection
     # annotations: https://bugzilla.gnome.org/show_bug.cgi?id=687912
@@ -115,13 +116,20 @@ class MeldApp(Gtk.Application):
             window.destroy()
         self.quit()
 
+    def new_window(self):
+        window = meldwindow.MeldWindow()
+        self.add_window(window.widget)
+        window.widget.meldwindow = window
+        window.widget.show()
+        return window
+
     def open_paths(self, paths, **kwargs):
         new_tab = kwargs.pop('new_tab')
-        if not new_tab:
-            # FIXME: Multi window handling
-            print('Not implemented')
-
-        return self.window.open_paths(paths, **kwargs)
+        if new_tab:
+            window = self.get_active_window().meldwindow
+        else:
+            window = self.new_window()
+        return window.open_paths(paths, **kwargs)
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""
@@ -142,7 +150,7 @@ class MeldApp(Gtk.Application):
                 _("wrong number of arguments supplied to --diff"))
         parser.values.diff.append(diff_files_args)
 
-    def parse_args(self, rawargs):
+    def parse_args(self, rawargs, is_first=True):
         usages = [
             ("", _("Start with an empty window")),
             ("<%s|%s>" % (_("file"), _("folder")),
@@ -202,6 +210,7 @@ class MeldApp(Gtk.Application):
 
         error = None
         comparisons = options.diff + [args]
+        options.newtab = options.newtab or is_first
         for paths in comparisons:
             try:
                 tab = self.open_paths(
