@@ -69,11 +69,19 @@ class MeldApp(Gtk.Application):
             self.window.widget.present()
 
     def do_command_line(self, command_line):
-        # FIXME: Command line handling is backwards
         self.register(None)
         self.activate()
-        self.parse_args(command_line.get_arguments()[1:])
-        if not self.window.has_pages():
+        tab = self.parse_args(command_line.get_arguments()[1:])
+        if tab:
+            def done(tab, status):
+                self.release()
+                tab.command_line.set_exit_status(status)
+                tab.command_line = None
+
+            self.hold()
+            tab.command_line = command_line
+            tab.connect('close', done)
+        elif not self.window.has_pages():
             self.window.append_new_comparison()
         return 0
 
@@ -213,6 +221,8 @@ class MeldApp(Gtk.Application):
                 parser.error(error)
             else:
                 print(error)
+
+        return tab if len(comparisons) == 1 else None
 
 
 app = MeldApp()

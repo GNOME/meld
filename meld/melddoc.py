@@ -66,6 +66,7 @@ class MeldDoc(GObject.GObject):
                                  ()),
         'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
+        'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
     }
 
     def __init__(self):

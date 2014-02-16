@@ -1507,7 +1507,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_delete_event(self, appquit=0):
         for h in self.settings_handlers:
             meldsettings.disconnect(h)
-
+        self.emit('close', 0)
         return Gtk.ResponseType.OK
 
     def on_find_activate(self, *extra):

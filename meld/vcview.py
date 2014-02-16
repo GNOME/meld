@@ -452,6 +452,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_delete_event(self, appquit=0):
         self.scheduler.remove_all_tasks()
+        self.emit('close', 0)
         return Gtk.ResponseType.OK
 
     def on_row_activated(self, treeview, path, tvc):
