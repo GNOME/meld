@@ -211,11 +211,12 @@ class MeldApp(Gtk.Application):
         error = None
         comparisons = options.diff + [args]
         options.newtab = options.newtab or is_first
-        for paths in comparisons:
+        for i, paths in enumerate(comparisons):
             try:
                 tab = self.open_paths(
                     paths, auto_compare=options.auto_compare,
-                    auto_merge=options.auto_merge, new_tab=options.newtab)
+                    auto_merge=options.auto_merge, new_tab=options.newtab,
+                    focus=i == 0)
             except ValueError as err:
                 error = err
 

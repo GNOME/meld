@@ -668,7 +668,8 @@ class MeldWindow(gnomeglade.Component):
                     self.append_diff(arg, **kwargs))
         doc.run_diff(path)
 
-    def open_paths(self, paths, auto_compare=False, auto_merge=False):
+    def open_paths(self, paths, auto_compare=False, auto_merge=False,
+                   focus=False):
         tab = None
         if len(paths) == 1:
             a = paths[0]
@@ -681,6 +682,10 @@ class MeldWindow(gnomeglade.Component):
             tab = self.append_diff(paths, auto_compare, auto_merge)
         if tab:
             recent_comparisons.add(tab)
+            if focus:
+                self.notebook.set_current_page(
+                    self.notebook.page_num(tab.widget))
+
         return tab
 
     def current_doc(self):
