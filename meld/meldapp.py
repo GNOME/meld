@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import optparse
 import os
+import StringIO
 from gettext import gettext as _
 
 from gi.repository import Gio
@@ -64,11 +65,12 @@ class MeldApp(Gtk.Application):
         self.get_active_window().present()
 
     def do_command_line(self, command_line):
-        self.register(None)
         self.activate()
-        tab = self.parse_args(command_line.get_arguments()[1:],
-                              is_first=not command_line.get_is_remote())
-        if tab:
+        tab = self.parse_args(command_line)
+
+        if isinstance(tab, int):
+            return tab
+        elif tab:
             def done(tab, status):
                 self.release()
                 tab.command_line.set_exit_status(status)
@@ -77,9 +79,11 @@ class MeldApp(Gtk.Application):
             self.hold()
             tab.command_line = command_line
             tab.connect('close', done)
+
         window = self.get_active_window().meldwindow
         if not window.has_pages():
             window.append_new_comparison()
+        window.widget.show()
         return 0
 
     def do_window_removed(self, widget):
@@ -120,7 +124,6 @@ class MeldApp(Gtk.Application):
         window = meldwindow.MeldWindow()
         self.add_window(window.widget)
         window.widget.meldwindow = window
-        window.widget.show()
         return window
 
     def open_paths(self, paths, **kwargs):
@@ -150,7 +153,7 @@ class MeldApp(Gtk.Application):
                 _("wrong number of arguments supplied to --diff"))
         parser.values.diff.append(diff_files_args)
 
-    def parse_args(self, rawargs, is_first=True):
+    def parse_args(self, command_line):
         usages = [
             ("", _("Start with an empty window")),
             ("<%s|%s>" % (_("file"), _("folder")),
@@ -164,7 +167,33 @@ class MeldApp(Gtk.Application):
         usage_lines = ["  %prog " + pad_args_fmt % u for u in usages]
         usage = "\n" + "\n".join(usage_lines)
 
-        parser = optparse.OptionParser(
+        class GLibFriendlyOptionParser(optparse.OptionParser):
+
+            def __init__(self, command_line, *args, **kwargs):
+                self.command_line = command_line
+                self.should_exit = False
+                self.output = StringIO.StringIO()
+                optparse.OptionParser.__init__(self, *args, **kwargs)
+
+            def exit(self, *args):
+                self.should_exit = True
+                # FIXME: This is... let's say... an unsupported method
+                self.command_line.do_print_literal(
+                    self.command_line, self.output.getvalue())
+
+            def print_usage(self, file=None):
+                if self.usage:
+                    print(self.get_usage(), file=self.output)
+
+            def print_version(self, file=None):
+                if self.version:
+                    print(self.get_version(), file=self.output)
+
+            def print_help(self, file=None):
+                print(self.format_help(), file=self.output)
+
+        parser = GLibFriendlyOptionParser(
+            command_line=command_line,
             usage=usage,
             description=_("Meld is a file and directory comparison tool."),
             version="%prog " + meld.conf.__version__)
@@ -188,7 +217,16 @@ class MeldApp(Gtk.Application):
         parser.add_option("", "--diff", action="callback",
             callback=self.diff_files_callback, dest="diff", default=[],
             help=_("Create a diff tab for the supplied files or folders"))
+
+        rawargs = command_line.get_arguments()[1:]
         options, args = parser.parse_args(rawargs)
+        parser.command_line = None
+        if parser.should_exit:
+            if command_line.get_is_remote():
+                return 0
+            else:
+                self.quit()
+
         if len(args) > 3:
             parser.error(_("too many arguments (wanted 0-3, got %d)") % \
                          len(args))
@@ -210,7 +248,7 @@ class MeldApp(Gtk.Application):
 
         error = None
         comparisons = options.diff + [args]
-        options.newtab = options.newtab or is_first
+        options.newtab = options.newtab or not command_line.get_is_remote()
         for i, paths in enumerate(comparisons):
             try:
                 tab = self.open_paths(
