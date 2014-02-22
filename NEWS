@@ -1,3 +1,75 @@
+
+2014-2-23 meld 3.11.0
+=====================
+
+  Features:
+
+   * Supporting hiding empty filtered folders in folder comparison (Gianni Trovisi, Kai Willadsen)
+   * Notify user when files change externally in file comparison (Kai Willadsen)
+   * Use standard GIO file trash handling when deleting files (Kai Willadsen)
+   * Newly written Mallard-based help (Kai Willadsen)
+
+
+  User interface updates:
+
+   * Support GNOME 3-style application menu (Kai Willadsen)
+   * Visual improvements to several icons (Kai Willadsen)
+   * Update Meld's colour scheme (Kai Willadsen)
+   * Many visual styling updates, layout tweaks and UI polish (Kai Willadsen)
+
+
+  Internal changes:
+
+   * Port to GObject introspection, GTK+ 3, GApplication, GSettings and other
+     new things starting with 'G' (Kai Willadsen)
+   * Port to distutils, based on python-distutils-extra (Kai Willadsen)
+   * Move to using CSS for styling and colour definitions (Kai Willadsen)
+   * Update to use more modern GTK widgets (Peter Tyser, Kai Willadsen)
+   * Move a lot of extra UI construction into glade/UI files (Kai Willadsen)
+   * Make several custom icons themeable (Kai Willadsen)
+   * Make Meld a single-instance application, and add support for multiple
+     windows (Kai Willadsen)
+
+
+  Fixes:
+
+   * Improved rendering speed in file comparisons (Kai Willadsen)
+   * Translation fixes (Piotr Drąg)
+   * Copy and paste within a buffer no longer causes occasional incorrect
+     change highlighting (Kai Willadsen)
+   * Fixes for version control support (Ben Ross, Louis des Landes, Peter
+     Tyser, Tom Scytale)
+   * Windows crash fixes (Bartosz Dziewoński)
+   * Sundry bug fixes (Daniel Pantea, Peter Tyser, Kai Willadsen)
+
+  New dependencies:
+
+   * GTK+ 3.6
+   * GLib 2.34
+   * PyGObject 3.8
+   * GtkSourceView 3.6; GtkSourceView is also no longer optional
+
+  Translations:
+
+   * Marek Černocký (cs)
+   * Benjamin Steinwender (de)
+   * Dimitris Spingos (el)
+   * Daniel Mustieles (es)
+   * Jiri Grönroos (fi)
+   * Fran Diéguez (gl)
+   * Gabor Kelemen (hu)
+   * Andika Triwidada (id)
+   * Milo Casagrande (it)
+   * Piotr Drąg (pl)
+   * Enrico Nicoletto(pt_BR)
+   * Rafael Ferreira (pt_BR)
+   * Matej Urbančič (sl)
+   * Мирослав Николић (sr, sr@latin)
+   * Özgür Sarıer (tr)
+   * zodiac111 (zh_CN)
+
+
+
 2013-9-22 meld 1.8.1
 ====================
 
