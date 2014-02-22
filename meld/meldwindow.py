@@ -134,13 +134,13 @@ class MeldWindow(gnomeglade.Component):
                 None, True),
         )
         ui_file = gnomeglade.ui_file("meldapp-ui.xml")
-        self.actiongroup = Gtk.ActionGroup('MainActions')
+        self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
 
-        recent_action = Gtk.RecentAction("Recent",  _("Open Recent"),
-                                         _("Open recent files"), None)
+        recent_action = Gtk.RecentAction(name="Recent",  label=_("Open Recent"),
+                                         tooltip=_("Open recent files"), stock_id=None)
         recent_action.set_show_private(True)
         recent_action.set_filter(recent_comparisons.recent_filter)
         recent_action.set_sort_type(Gtk.RecentSortType.MRU)
@@ -494,7 +494,7 @@ class MeldWindow(gnomeglade.Component):
             self.ui.remove_action_group(self.tab_switch_actiongroup)
 
         self.tab_switch_merge_id = self.ui.new_merge_id()
-        self.tab_switch_actiongroup = Gtk.ActionGroup("TabSwitchActions")
+        self.tab_switch_actiongroup = Gtk.ActionGroup(name="TabSwitchActions")
         self.ui.insert_action_group(self.tab_switch_actiongroup)
         group = None
         current_page = self.notebook.get_current_page()
@@ -503,7 +503,7 @@ class MeldWindow(gnomeglade.Component):
             label = self.notebook.get_menu_label_text(page) or ""
             name = "SwitchTab%d" % i
             tooltip = _("Switch to this tab")
-            action = Gtk.RadioAction(name, label, tooltip, None, i)
+            action = Gtk.RadioAction(name=name, label=label, tooltip=tooltip, stock_id=None, value=i)
             action.join_group(group)
             group = action
             action.set_active(current_page == i)
