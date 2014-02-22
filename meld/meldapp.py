@@ -176,9 +176,13 @@ class MeldApp(Gtk.Application):
 
             def exit(self, *args):
                 self.should_exit = True
-                # FIXME: This is... let's say... an unsupported method
-                self.command_line.do_print_literal(
-                    self.command_line, self.output.getvalue())
+                # FIXME: This is... let's say... an unsupported method. Let's
+                # be circumspect about the likelihood of this working.
+                try:
+                    self.command_line.do_print_literal(
+                        self.command_line, self.output.getvalue())
+                except:
+                    print(self.output.getvalue())
 
             def print_usage(self, file=None):
                 if self.usage:
