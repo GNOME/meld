@@ -200,25 +200,32 @@ class MeldApp(Gtk.Application):
             usage=usage,
             description=_("Meld is a file and directory comparison tool."),
             version="%prog " + meld.conf.__version__)
-        parser.add_option("-L", "--label", action="append", default=[],
+        parser.add_option(
+            "-L", "--label", action="append", default=[],
             help=_("Set label to use instead of file name"))
-        parser.add_option("-n", "--newtab", action="store_true", default=False,
+        parser.add_option(
+            "-n", "--newtab", action="store_true", default=False,
             help=_("Open a new tab in an already running instance"))
-        parser.add_option("-a", "--auto-compare", action="store_true",
-            default=False,
+        parser.add_option(
+            "-a", "--auto-compare", action="store_true", default=False,
             help=_("Automatically compare all differing files on startup"))
-        parser.add_option("-u", "--unified", action="store_true",
-                          help=_("Ignored for compatibility"))
-        parser.add_option("-o", "--output", action="store", type="string",
+        parser.add_option(
+            "-u", "--unified", action="store_true",
+            help=_("Ignored for compatibility"))
+        parser.add_option(
+            "-o", "--output", action="store", type="string",
             dest="outfile", default=None,
             help=_("Set the target file for saving a merge result"))
-        parser.add_option("--auto-merge", None, action="store_true",
-            default=False, help=_("Automatically merge files"))
-        parser.add_option("", "--comparison-file", action="store",
-            type="string", dest="comparison_file", default=None,
+        parser.add_option(
+            "--auto-merge", None, action="store_true", default=False,
+            help=_("Automatically merge files"))
+        parser.add_option(
+            "", "--comparison-file", action="store", type="string",
+            dest="comparison_file", default=None,
             help=_("Load a saved comparison from a Meld comparison file"))
-        parser.add_option("", "--diff", action="callback",
-            callback=self.diff_files_callback, dest="diff", default=[],
+        parser.add_option(
+            "", "--diff", action="callback", callback=self.diff_files_callback,
+            dest="diff", default=[],
             help=_("Create a diff tab for the supplied files or folders"))
 
         rawargs = command_line.get_arguments()[1:]
@@ -231,7 +238,7 @@ class MeldApp(Gtk.Application):
                 self.quit()
 
         if len(args) > 3:
-            parser.error(_("too many arguments (wanted 0-3, got %d)") % \
+            parser.error(_("too many arguments (wanted 0-3, got %d)") %
                          len(args))
         elif options.auto_merge and len(args) < 3:
             parser.error(_("can't auto-merge less than 3 files"))
