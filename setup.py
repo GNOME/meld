@@ -14,6 +14,17 @@ setup(
     author='Kai Willadsen',
     author_email='kai.willadsen@gmail.com',
     url='http://meldmerge.org',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: X11 Applications :: GTK',
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
+        'Programming Language :: Python',
+        'Topic :: Desktop Environment :: Gnome',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Version Control',
+    ],
     packages=[
         'meld',
         'meld.ui',
