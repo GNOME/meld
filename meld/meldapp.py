@@ -92,7 +92,6 @@ class MeldApp(Gtk.Application):
 
     # We can't override do_local_command_line because it has no introspection
     # annotations: https://bugzilla.gnome.org/show_bug.cgi?id=687912
-    # Uniqueness handling is instead hackily done in the launcher script.
 
     # def do_local_command_line(self, command_line):
     #     return False
