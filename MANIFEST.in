@@ -5,10 +5,13 @@ recursive-include data/icons/hicolor/scalable *.svg
 recursive-include data/icons/HighContrast *.png
 recursive-include data/icons/HighContrast/scalable *.svg
 
-recursive-include help *.page *.xml
+recursive-include help *.page *.xml *.po
 
-include data/gtkrc
+include MANIFEST.in
+include meld.doap
 include data/meld.appdata.xml.in
+include data/meld.css
 include data/meld.desktop.in
 include data/mime/meld.xml.in
 include data/org.gnome.meld.gschema.xml
+include meld/ui/catalog.xml
