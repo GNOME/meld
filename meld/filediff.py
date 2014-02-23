@@ -1033,7 +1033,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
         buf = self.textbuffer[1]
         buf.data.savefile = os.path.abspath(filename)
-        buf.data.set_label(filename)
+        buf.data.label = filename
         self.set_buffer_writable(buf, os.access(buf.data.savefile, os.W_OK))
         self.fileentry[1].set_filename(os.path.abspath(filename))
         self.recompute_label()
