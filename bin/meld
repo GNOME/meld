@@ -122,6 +122,10 @@ def check_requirements():
             print(_("Meld requires %s or higher.") % modver)
         sys.exit(1)
 
+    if sys.version_info[0] == 3:
+        print(_("Meld does not support Python 3."))
+        sys.exit(1)
+
     if sys.version_info[:2] < pyver:
         missing_reqs("Python", pyver)
 
