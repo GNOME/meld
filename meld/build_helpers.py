@@ -18,6 +18,7 @@
 # Modified by Kai Willadsen for the Meld project
 # Copyright (C) 2013-2014 Kai Willadsen <kai.willadsen@gmail.com>
 
+from __future__ import print_function
 
 import distutils.cmd
 import distutils.command.build
@@ -135,7 +136,7 @@ class build_help(distutils.cmd.Command):
             for page in pages:
                 page_path = os.path.join(build_path, page)
                 if not os.path.exists(page_path):
-                    print "Skipping missing file", page_path
+                    print("Skipping missing file", page_path)
                     continue
                 lint = ['xmllint', '--noout', '--noent', '--path', build_path,
                         '--xinclude', page_path]
