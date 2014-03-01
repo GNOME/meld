@@ -178,7 +178,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # This SizeGroup isn't actually necessary for FileDiff; it's for
         # handling non-homogenous selectors in FileComp. It's also fragile.
-        column_sizes = Gtk.SizeGroup(Gtk.SizeGroupMode.HORIZONTAL)
+        column_sizes = Gtk.SizeGroup(mode=Gtk.SizeGroupMode.HORIZONTAL)
         column_sizes.set_ignore_hidden(True)
         for widget in self.selector_hbox:
             column_sizes.add_widget(widget)
@@ -305,7 +305,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         )
 
         self.ui_file = gnomeglade.ui_file("filediff-ui.xml")
-        self.actiongroup = Gtk.ActionGroup('FilediffPopupActions')
+        self.actiongroup = Gtk.ActionGroup(name="FilediffPopupActions")
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggle_actions)

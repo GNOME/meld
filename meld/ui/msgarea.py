@@ -25,7 +25,7 @@ from meld.ui.wraplabel import WrapLabel
 
 
 def layout_text_and_icon(stockid, primary_text, secondary_text=None):
-    hbox_content = Gtk.HBox(False, 8)
+    hbox_content = Gtk.HBox(homogeneous=False, spacing=8)
     hbox_content.show()
 
     image = Gtk.Image()
@@ -34,7 +34,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     hbox_content.pack_start(image, False, False, 0)
     image.set_alignment(0.5, 0.5)
 
-    vbox = Gtk.VBox(False, 6)
+    vbox = Gtk.VBox(homogeneous=False, spacing=6)
     vbox.show()
     hbox_content.pack_start(vbox, True, True, 0)
 
