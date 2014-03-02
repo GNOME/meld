@@ -94,6 +94,9 @@ class build_help(distutils.cmd.Command):
 
         for lang in self.selected_languages:
             source_path = os.path.join(self.help_dir, lang)
+            if not os.path.exists(source_path):
+                continue
+
             build_path = os.path.join('build', self.help_dir, lang)
             if not os.path.exists(build_path):
                 os.makedirs(build_path)
@@ -132,6 +135,9 @@ class build_help(distutils.cmd.Command):
     def check_help(self):
         for lang in self.selected_languages:
             build_path = os.path.join('build', self.help_dir, lang)
+            if not os.path.exists(build_path):
+                continue
+
             pages = [os.path.basename(p) for p in self.C_PAGES]
             for page in pages:
                 page_path = os.path.join(build_path, page)
