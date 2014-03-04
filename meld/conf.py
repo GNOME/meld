@@ -3,7 +3,7 @@ import os
 import sys
 
 __package__ = "meld"
-__version__ = "3.11.0"
+__version__ = "3.11.1"
 
 DATADIR = os.path.join(sys.prefix, "share", "meld")
 LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
