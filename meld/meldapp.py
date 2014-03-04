@@ -100,7 +100,11 @@ class MeldApp(Gtk.Application):
         meld.preferences.PreferencesDialog(self.get_active_window())
 
     def help_callback(self, action, parameter):
-        Gtk.show_uri(Gdk.Screen.get_default(), "help:meld",
+        if meld.conf.UNINSTALLED:
+            uri = "http://meldmerge.org/help/"
+        else:
+            uri = "help:meld"
+        Gtk.show_uri(Gdk.Screen.get_default(), uri,
                      Gtk.get_current_event_time())
 
     def about_callback(self, action, parameter):
