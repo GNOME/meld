@@ -40,6 +40,19 @@ distribution, and can be installed on OSX using MacPorts/Fink/etc. See the wiki
 for options for getting Meld working on Windows.
 
 
+Building
+--------
+
+Meld uses standard distutils for building. It supports anything that distutils
+supports, and little else.
+
+Additional hacks are added to make life easier for packagers where required,
+such as:
+
+* The NO_COMPILE_SCHEMAS schemas environment variable will, if set to 1, stop
+  Meld from compiling gsettings schemas post-install.
+
+
 Contacting
 ----------
 

@@ -22,6 +22,7 @@ from __future__ import print_function
 
 import distutils.cmd
 import distutils.command.build
+import distutils.command.install_data
 import distutils.dir_util
 import glob
 import os.path
@@ -273,3 +274,28 @@ class build_i18n(distutils.cmd.Command):
                         self.spawn(cmd)
                     files_merged.append(file_merged)
                 self.distribution.data_files.append((target, files_merged))
+
+
+class install_data(distutils.command.install_data.install_data):
+
+    user_options = [
+        ("no-compile-schemas", None,
+         "Don't compile gsettings schemas post-install"),
+    ]
+    boolean_options = ["no-compile-schemas"]
+
+    def initialize_options(self):
+        distutils.command.install_data.install_data.initialize_options(self)
+        self.no_compile_schemas = None
+
+    def finalize_options(self):
+        distutils.command.install_data.install_data.finalize_options(self)
+        if self.no_compile_schemas is None:
+            self.no_compile_schemas = bool(os.environ['NO_COMPILE_SCHEMAS'])
+
+    def run(self):
+        distutils.command.install_data.install_data.run(self)
+        if not self.no_compile_schemas:
+            gschema_path = build_data.gschemas[0][0]
+            gschema_install = os.path.join(self.install_dir, gschema_path)
+            self.spawn(["glib-compile-schemas", gschema_install])

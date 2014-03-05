@@ -59,5 +59,6 @@ setup(
         "build_help": meld.build_helpers.build_help,
         "build_icons": meld.build_helpers.build_icons,
         "build_data": meld.build_helpers.build_data,
+        "install_data": meld.build_helpers.install_data,
     }
 )
