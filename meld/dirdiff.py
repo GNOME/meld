@@ -158,7 +158,7 @@ def _files_same(files, regexes, comparison_args):
 
             # Rough test to see whether files are binary. If files are guessed
             # to be binary, we don't examine contents for speed and space.
-            if any(["\0" in d for d in data]):
+            if any(b"\0" in d for d in data):
                 need_contents = False
 
             while True:
