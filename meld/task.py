@@ -16,8 +16,6 @@
 
 """Classes to implement scheduling for cooperative threads."""
 
-from __future__ import print_function
-
 import traceback
 
 
