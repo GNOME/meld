@@ -134,10 +134,10 @@ except WindowsError as e:
 
 def check_requirements():
 
-    pyver = (2, 7)
-    gtk_requirement = (3, 14)
-    glib_requirement = (2, 36, 0)
-    gtksourceview_requirement = (3, 14, 0)
+    pyver = (3, 3)
+    gtk_requirement = (3, 6)
+    glib_requirement = (2, 34, 0)
+    gtksourceview_requirement = (3, 6, 0)
 
     def missing_reqs(mod, ver, exception=None):
         if isinstance(exception, ImportError):
@@ -145,10 +145,6 @@ def check_requirements():
         else:
             modver = mod + " " + ".".join(map(str, ver))
             print(_("Meld requires %s or higher.") % modver)
-        sys.exit(1)
-
-    if sys.version_info[0] == 3:
-        print(_("Meld does not support Python 3."))
         sys.exit(1)
 
     if sys.version_info[:2] < pyver:
