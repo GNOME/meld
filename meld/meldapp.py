@@ -16,10 +16,10 @@
 
 from __future__ import print_function
 
+import io
 import logging
 import optparse
 import os
-import StringIO
 
 from gi.repository import Gio
 from gi.repository import GLib
@@ -196,7 +196,7 @@ class MeldApp(Gtk.Application):
             def __init__(self, command_line, *args, **kwargs):
                 self.command_line = command_line
                 self.should_exit = False
-                self.output = StringIO.StringIO()
+                self.output = io.StringIO()
                 self.exit_status = 0
                 optparse.OptionParser.__init__(self, *args, **kwargs)
 
