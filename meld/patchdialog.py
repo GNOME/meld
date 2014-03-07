@@ -28,7 +28,6 @@ from .ui import gnomeglade
 from meld.conf import _
 from meld.misc import error_dialog
 from meld.settings import meldsettings
-from .util.compat import text_type
 from meld.sourceview import LanguageManager
 
 
@@ -84,7 +83,7 @@ class PatchDialog(gnomeglade.Component):
         texts = []
         for b in self.filediff.textbuffer:
             start, end = b.get_bounds()
-            text = text_type(b.get_text(start, end, False), 'utf8')
+            text = b.get_text(start, end, False)
             lines = text.splitlines(True)
             texts.append(lines)
 
