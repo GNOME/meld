@@ -1332,15 +1332,20 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self._prompt_long_highlighting()
                     continue
 
-                def apply_highlight(bufs, tags, starts, ends, texts, matches):
-                    starts = [bufs[0].get_iter_at_mark(starts[0]),
-                              bufs[1].get_iter_at_mark(starts[1])]
-                    ends = [bufs[0].get_iter_at_mark(ends[0]),
-                            bufs[1].get_iter_at_mark(ends[1])]
+                def apply_highlight(bufs, tags, start_marks, end_marks, texts, matches):
+                    starts = [bufs[0].get_iter_at_mark(start_marks[0]),
+                              bufs[1].get_iter_at_mark(start_marks[1])]
+                    ends = [bufs[0].get_iter_at_mark(end_marks[0]),
+                            bufs[1].get_iter_at_mark(end_marks[1])]
                     text1 = bufs[0].get_text(starts[0], ends[0], False)
                     text1 = text_type(text1, 'utf8')
                     textn = bufs[1].get_text(starts[1], ends[1], False)
                     textn = text_type(textn, 'utf8')
+
+                    bufs[0].delete_mark(start_marks[0])
+                    bufs[0].delete_mark(end_marks[0])
+                    bufs[1].delete_mark(start_marks[1])
+                    bufs[1].delete_mark(end_marks[1])
 
                     if texts != (text1, textn):
                         return
