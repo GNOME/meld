@@ -291,7 +291,8 @@ class install_data(distutils.command.install_data.install_data):
     def finalize_options(self):
         distutils.command.install_data.install_data.finalize_options(self)
         if self.no_compile_schemas is None:
-            self.no_compile_schemas = bool(os.environ['NO_COMPILE_SCHEMAS'])
+            self.no_compile_schemas = bool(
+                os.environ.get('NO_COMPILE_SCHEMAS', None))
 
     def run(self):
         distutils.command.install_data.install_data.run(self)
