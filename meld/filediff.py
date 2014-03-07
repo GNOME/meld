@@ -1019,7 +1019,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if label:
             self.label_text = label
         else:
-            self.label_text = (" — ").decode('utf8').join(shortnames)
+            self.label_text = " — ".join(shortnames)
         self.tooltip_text = self.label_text
         self.label_changed()
 
