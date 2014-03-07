@@ -283,10 +283,10 @@ def read_pipe_iter(command, workdir, errorstream, yield_interval=0.1):
                                   self.proc.wait())
 
         def __call__(self):
-            self.proc = subprocess.Popen(command, cwd=workdir,
-                                         stdin=subprocess.PIPE,
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.PIPE)
+            self.proc = subprocess.Popen(
+                command, cwd=workdir, stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True)
             self.proc.stdin.close()
             childout, childerr = self.proc.stdout, self.proc.stderr
             bits = []
