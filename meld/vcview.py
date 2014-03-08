@@ -427,13 +427,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                         symlinks_followed.add(key)
 
                     if flattened:
-                        todo.append((Gtk.TreePath.new_first(), e.path))
+                        if e.state != tree.STATE_IGNORED:
+                            todo.append((Gtk.TreePath.new_first(), e.path))
                         continue
 
                 child = self.model.add_entries(it, [e.path])
-                self._update_item_state(child, e, path[prefixlen:])
-                if e.isdir:
+                if e.isdir and e.state != tree.STATE_IGNORED:
                     todo.append((self.model.get_path(child), e.path))
+                self._update_item_state(child, e, path[prefixlen:])
 
             if flattened:
                 root = Gtk.TreePath.new_first()

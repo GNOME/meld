@@ -301,9 +301,10 @@ class Vc(_vc.CachedVc):
             try:
                 entries = self._get_modified_files(path)
 
-                # Identify ignored files
+                # Identify ignored files and folders
                 proc = _vc.popen([self.CMD, "ls-files", "--others",
-                                  "--ignored", "--exclude-standard", path],
+                                  "--ignored", "--exclude-standard",
+                                  "--directory", path],
                                  cwd=self.location)
                 ignored_entries = proc.read().split("\n")[:-1]
 
@@ -325,6 +326,7 @@ class Vc(_vc.CachedVc):
             # 'entries' list, and tree_state['path'] will still contain stale
             # data.  When this corner case occurs we force tree_state['path']
             # to STATE_NORMAL.
+            path = os.path.abspath(path)
             tree_state[path] = _vc.STATE_NORMAL
         else:
             # There are 1 or more modified files, parse their state
@@ -335,6 +337,7 @@ class Vc(_vc.CachedVc):
                     # Git returns unix-style paths on Windows
                     name = os.path.normpath(name.strip())
                 path = os.path.join(self.root, name.strip())
+                path = os.path.abspath(path)
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 tree_state[path] = state
                 if old_mode != new_mode:
@@ -344,10 +347,12 @@ class Vc(_vc.CachedVc):
 
             for entry in ignored_entries:
                 path = os.path.join(self.location, entry.strip())
+                path = os.path.abspath(path)
                 tree_state[path] = _vc.STATE_IGNORED
 
             for entry in unversioned_entries:
                 path = os.path.join(self.location, entry.strip())
+                path = os.path.abspath(path)
                 tree_state[path] = _vc.STATE_NONE
 
     def _lookup_tree_cache(self, rootdir):
@@ -371,8 +376,8 @@ class Vc(_vc.CachedVc):
             meta = self._tree_meta_cache.get(path, "")
             retfiles.append(_vc.File(path, name, state, options=meta))
         for name, path in dirs:
-            # git does not operate on dirs, just files
-            retdirs.append(_vc.Dir(path, name, _vc.STATE_NORMAL))
+            state = tree.get(path, _vc.STATE_NORMAL)
+            retdirs.append(_vc.Dir(path, name, state))
         for path, state in tree.items():
             # removed files are not in the filesystem, so must be added here
             if state in (_vc.STATE_REMOVED, _vc.STATE_MISSING):
