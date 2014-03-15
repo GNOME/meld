@@ -18,13 +18,13 @@ from __future__ import print_function
 
 import os
 import textwrap
-from gettext import gettext as _
 
 from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
 
+from meld.conf import _
 from meld.misc import commonprefix
 from meld.settings import meldsettings, settings
 from meld.ui.gnomeglade import Component

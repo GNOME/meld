@@ -20,7 +20,6 @@ import copy
 import functools
 import io
 import os
-from gettext import gettext as _
 import time
 
 from multiprocessing import Pool
@@ -33,6 +32,7 @@ from gi.repository import Gio
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from meld.conf import _
 from . import diffutil
 from . import matchers
 from . import meldbuffer

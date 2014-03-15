@@ -69,18 +69,20 @@ if uninstalled:
 
 # TODO: Possibly move to elib.intl
 import gettext
-_ = gettext.gettext
 locale_domain = meld.conf.__package__
 locale_dir = meld.conf.LOCALEDIR
 
 gettext.bindtextdomain(locale_domain, locale_dir)
 locale.setlocale(locale.LC_ALL, '')
 gettext.textdomain(locale_domain)
+trans = gettext.translation(locale_domain, localedir=locale_dir, fallback=True)
 try:
-    gettext.install(locale_domain, localedir=locale_dir, unicode=True)
-except TypeError:
+    _ = meld.conf._ = trans.ugettext
+    meld.conf.ngettext = trans.ungettext
+except AttributeError:
     # py3k
-    gettext.install(locale_domain, localedir=locale_dir)
+    _ = meld.conf._ = trans.gettext
+    meld.conf.ngettext = trans.ngettext
 
 try:
     if os.name == 'nt':

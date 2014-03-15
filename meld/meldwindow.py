@@ -15,7 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from gettext import gettext as _
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -34,8 +33,8 @@ from .ui import gnomeglade
 from .ui import notebooklabel
 
 from .util.compat import string_types
+from meld.conf import _
 from meld.recent import recent_comparisons
-
 from meld.settings import interface_settings, settings
 
 

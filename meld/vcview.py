@@ -22,7 +22,6 @@ import shutil
 import os
 import stat
 import sys
-from gettext import gettext as _
 
 from gi.repository import Gdk
 from gi.repository import GLib
@@ -40,6 +39,7 @@ from .ui import emblemcellrenderer
 from .ui import gnomeglade
 from .ui import vcdialogs
 
+from meld.conf import _
 from meld.settings import settings
 from meld.vc import _null
 

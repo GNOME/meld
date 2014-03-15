@@ -19,7 +19,6 @@ from __future__ import print_function
 import optparse
 import os
 import StringIO
-from gettext import gettext as _
 
 from gi.repository import Gio
 from gi.repository import GLib
@@ -29,6 +28,8 @@ from gi.repository import Gtk
 import meld.conf
 import meld.preferences
 import meld.ui.util
+
+from meld.conf import _
 
 
 class MeldApp(Gtk.Application):

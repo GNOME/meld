@@ -24,9 +24,9 @@
 
 import itertools
 import os
-import re
 import subprocess
-from gettext import gettext as _
+
+from meld.conf import _
 
 # ignored, new, normal, ignored changes,
 # error, placeholder, vc added

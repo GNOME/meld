@@ -15,7 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import difflib
-from gettext import gettext as _
 import os
 
 from gi.repository import Gtk
@@ -23,6 +22,7 @@ from gi.repository import GtkSource
 
 from .ui import gnomeglade
 
+from meld.conf import _
 from meld.settings import meldsettings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager

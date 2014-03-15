@@ -9,6 +9,10 @@ DATADIR = os.path.join(sys.prefix, "share", "meld")
 LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
 UNINSTALLED = False
 
+# Installed from main script
+_ = None
+ngettext = None
+
 
 def uninstalled():
     global DATADIR, LOCALEDIR, UNINSTALLED

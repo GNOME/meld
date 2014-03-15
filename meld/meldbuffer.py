@@ -17,13 +17,13 @@
 from __future__ import unicode_literals
 
 import sys
-from gettext import gettext as _
 
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import GtkSource
 
+from meld.conf import _
 from meld.util.compat import text_type
 
 

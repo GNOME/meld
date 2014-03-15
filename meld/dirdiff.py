@@ -40,8 +40,8 @@ from .ui import emblemcellrenderer
 
 from collections import namedtuple
 from decimal import Decimal
-from gettext import gettext as _
 
+from meld.conf import _
 from meld.settings import meldsettings, settings
 
 

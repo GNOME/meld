@@ -19,7 +19,6 @@
 """
 
 import os
-from gettext import gettext as _
 import errno
 import shutil
 import re
@@ -27,6 +26,8 @@ import subprocess
 
 from gi.repository import GObject
 from gi.repository import Gtk
+
+from meld.conf import _
 
 
 if os.name != "nt":

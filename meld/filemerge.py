@@ -14,8 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gettext import gettext as _
-
+from meld.conf import _
 from . import filediff
 from . import meldbuffer
 from . import merge

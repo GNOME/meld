@@ -32,7 +32,7 @@ import shutil
 import subprocess
 import tempfile
 
-from gettext import gettext as _, ngettext
+from meld.conf import _, ngettext
 
 from . import _vc
 

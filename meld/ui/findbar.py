@@ -21,7 +21,7 @@ import re
 from meld import misc
 from . import gnomeglade
 
-from gettext import gettext as _
+from meld.conf import _
 
 
 class FindBar(gnomeglade.Component):

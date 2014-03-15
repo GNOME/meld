@@ -27,7 +27,7 @@ from gi.repository import Gtk
 
 from . import task
 
-from gettext import gettext as _
+from meld.conf import _
 from meld.settings import settings
 
 log = logging.getLogger(__name__)

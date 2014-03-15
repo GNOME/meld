@@ -33,14 +33,13 @@ import os
 import sys
 import tempfile
 
-from gettext import gettext as _
-
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
 
 import meld.misc
 
+from meld.conf import _
 
 TYPE_FILE = "File"
 TYPE_FOLDER = "Folder"
