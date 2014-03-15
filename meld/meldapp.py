@@ -129,10 +129,13 @@ class MeldApp(Gtk.Application):
         window.widget.meldwindow = window
         return window
 
+    def get_meld_window(self):
+        return self.get_active_window().meldwindow
+
     def open_paths(self, paths, **kwargs):
         new_tab = kwargs.pop('new_tab')
         if new_tab:
-            window = self.get_active_window().meldwindow
+            window = self.get_meld_window()
         else:
             window = self.new_window()
         return window.open_paths(paths, **kwargs)
@@ -255,7 +258,7 @@ class MeldApp(Gtk.Application):
             comparison_file_path = os.path.expanduser(path)
             gio_file = Gio.File.new_for_path(comparison_file_path)
             try:
-                tab = self.window.append_recent(gio_file.get_uri())
+                tab = self.get_meld_window().append_recent(gio_file.get_uri())
             except (IOError, ValueError):
                 parser.error(_("Error reading saved comparison file"))
             return tab
@@ -279,7 +282,7 @@ class MeldApp(Gtk.Application):
                 tab.set_merge_output_file(options.outfile)
 
         if error:
-            if not self.window.has_pages():
+            if not self.get_meld_window().has_pages():
                 parser.error(error)
             else:
                 print(error)
