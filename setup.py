@@ -32,7 +32,7 @@ setup(
         'meld.vc',
     ],
     package_data={
-        'meld.vc': ['README', 'COPYING', 'NEWS']
+        'meld': ['README', 'COPYING', 'NEWS']
     },
     scripts=['bin/meld'],
     data_files=[
