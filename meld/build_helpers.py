@@ -54,7 +54,7 @@ class build_extra(distutils.command.build.build):
 class build_data(distutils.cmd.Command):
 
     gschemas = [
-        ('share/glib-2.0/schemas/', ['data/org.gnome.meld.gschema.xml'])
+        ('share/glib-2.0/schemas', ['data/org.gnome.meld.gschema.xml'])
     ]
 
     def initialize_options(self):
