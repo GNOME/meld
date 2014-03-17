@@ -14,6 +14,21 @@ _ = None
 ngettext = None
 
 
+def frozen():
+    global DATADIR, LOCALEDIR
+
+    melddir = os.path.dirname(sys.executable)
+
+    DATADIR = os.path.join(melddir, "share", "meld")
+    LOCALEDIR = os.path.join(melddir, "share", "mo")
+
+    # This first bit should be unnecessary, but some things (GTK icon theme
+    # location, GSettings schema location) don't fall back correctly.
+    data_dir = os.environ.get('XDG_DATA_DIRS', "/usr/local/share/:/usr/share/")
+    data_dir = ":".join((melddir, data_dir))
+    os.environ['XDG_DATA_DIRS'] = data_dir
+
+
 def uninstalled():
     global DATADIR, LOCALEDIR, UNINSTALLED
     melddir = os.path.abspath(os.path.join(
