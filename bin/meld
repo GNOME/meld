@@ -95,7 +95,10 @@ except AttributeError:
 try:
     if os.name == 'nt':
         from ctypes import cdll
-        libintl = cdll.intl
+        if frozen:
+            libintl = cdll['libintl-8']
+        else:
+            libintl = cdll.intl
         libintl.bindtextdomain(locale_domain, locale_dir)
         libintl.bind_textdomain_codeset(locale_domain, 'UTF-8')
         del libintl
