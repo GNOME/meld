@@ -193,7 +193,7 @@ def setup_settings():
                         cwd=melddir)
 
     import meld.settings
-    meld.settings.create_settings(uninstalled=uninstalled)
+    meld.settings.create_settings(uninstalled=uninstalled or frozen)
 
 
 def setup_logging():
