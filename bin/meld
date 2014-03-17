@@ -51,10 +51,18 @@ def disable_stdout_buffering():
     sys.stdout = Unbuffered(sys.stdout)
 
 
-# Support running from an uninstalled version
-if os.path.basename(__file__) == "meld":
-    self_path = os.path.realpath(__file__)
-melddir = os.path.abspath(os.path.join(os.path.dirname(self_path), ".."))
+def get_meld_dir():
+    global frozen
+    if frozen:
+        return os.path.dirname(sys.executable)
+
+    # Support running from an uninstalled version
+    if os.path.basename(__file__) == "meld":
+        self_path = os.path.realpath(__file__)
+    return os.path.abspath(os.path.join(os.path.dirname(self_path), ".."))
+
+frozen = getattr(sys, 'frozen', False)
+melddir = get_meld_dir()
 
 uninstalled = False
 if os.path.exists(os.path.join(melddir, "meld.doap")):
