@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
-"POT-Creation-Date: 2014-03-03 10:42+0000\n"
-"PO-Revision-Date: 2014-03-06 18:13+0100\n"
+"POT-Creation-Date: 2014-03-16 10:44+0000\n"
+"PO-Revision-Date: 2014-03-19 12:06+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -205,6 +205,9 @@ msgid ""
 "is classified as being either <em>Modifed</em>, <em>New</em> or <em>Same</"
 "em>:"
 msgstr ""
+"Cuando se comparan carpetas, cada línea contiene un solo archivo o carpeta "
+"que exista en al menos una de las carpetas comparadas. Cada una de esas "
+"líneas se clasifica como <em>Modificada</em>, <em>Nueva</em> o <em>Igual</em>"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
@@ -719,11 +722,11 @@ msgid ""
 msgstr ""
 "El nombre del comando que ejecutar para abrir archivos de texto en un editor "
 "externo. Este puede ser simplemente el comando (por ejemplo: <cmd>gedit</"
-"cmd>) en cuyo caso el archivo que abrir se pasará como el último "
-"argumento. De otra manera, puede agregar los elementos <code>{archivo}</"
-"code> y <code>{linea}</code> al comando, en cuyo caso <app>Meld</app> "
-"sustituirá la ruta al archivo y el número de línea respectivamente (por "
-"ejemplo: <cmd>gedit {archivo}:{línea}</cmd>)."
+"cmd>) en cuyo caso el archivo que abrir se pasará como el último argumento. "
+"De otra manera, puede agregar los elementos <code>{archivo}</code> y <code>"
+"{línea}</code> al comando, en cuyo caso <app>Meld</app> sustituirá la ruta "
+"al archivo y el número de línea respectivamente (por ejemplo: <cmd>gedit "
+"{archivo}:{línea}</code>)."
 
 #. (itstool) path: page/title
 #: C/file-changes.page:16
@@ -913,6 +916,8 @@ msgid ""
 "Once you've finished editing your files, you need to save each file you've "
 "changed."
 msgstr ""
+"Cuando haya terminado de editar los archivos, deberá guardar cada archivo "
+"que se haya modificado."
 
 #. (itstool) path: section/p
 #: C/file-mode.page:68
@@ -922,6 +927,10 @@ msgid ""
 "notebook label will show an asterisk (<code>*</code>) after any file that "
 "hasn't been saved."
 msgstr ""
+"Es posible decir si sus archivos se han grabado desde el último cambio por "
+"el icono de guardar que aparece junto al nombre sobre cada archivo. También "
+"la etiqueta del bloc de notas mostrará un asterisco (<code>*</code>) cuando "
+"el archivo no se haya grabado."
 
 #. (itstool) path: section/p
 #: C/file-mode.page:74
@@ -930,6 +939,9 @@ msgid ""
 "\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu item, or using "
 "the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard shortcut."
 msgstr ""
+"Puede guardar el archivo actual seleccionando en el menú <guiseq><gui style="
+"\"menu\">Archivo</gui><gui style=\"menuitem\">Guardar</gui></guiseq>, o "
+"utilizando el atajo <keyseq><key>Ctrl</key><key>S</key></keyseq>."
 
 #. (itstool) path: note/p
 #: C/file-mode.page:81
@@ -938,11 +950,15 @@ msgid ""
 "containing the cursor. If you can't tell which file is focussed, you can "
 "click on the file to focus it before saving."
 msgstr ""
+"Guardar solo guarda el archivo <em>que tiene el foco actualmente</em>, que "
+"es la página que contiene el cursor. Si no puede decir cual es el archivo "
+"que tiene el foco, puede pulsar en el archivo para darle el foco antes de "
+"guardarlo."
 
 #. (itstool) path: page/title
 #: C/flattened-view.page:15
 msgid "Flattened view"
-msgstr ""
+msgstr "Vista aplanada"
 
 #. (itstool) path: page/p
 #: C/flattened-view.page:17
@@ -954,6 +970,13 @@ msgid ""
 "shown, and the folder heirarchy is stripped away, with file paths shown in "
 "the <em>Location</em> column."
 msgstr ""
+"Cuando esté viendo carpetas grandes, puede estar interesado solo en unos "
+"pocos archivos entre los miles que estén en la carpeta. Por esta razón, "
+"<app>Meld</app> incluye la <em>vista aplanada</em> de una carpeta; solo se "
+"muestra los archivos que no se hayan filtrado (por ejemplo, mediante <link "
+"xref=\"vc-mode#vc-state-filtering\"/>), y la jerarquía de la carpeta se "
+"elimina, con las direcciones de los archivos mostrados en la columna "
+"<em>Ubicación</em>."
 
 #. (itstool) path: page/p
 #: C/flattened-view.page:27
@@ -963,6 +986,10 @@ msgid ""
 "item, or by clicking the corresponding <gui style=\"button\">Flatten</gui> "
 "button on the toolbar."
 msgstr ""
+"Se puede activar o desactivar esta vista aplanada seleccionando el menú "
+"<guiseq><gui style=\"menu\">Vista</gui><gui style=\"menuitem\">Aplanar</"
+"gui></guiseq>, o pulsando en el botón <gui style=\"button\">Aplanar</gui> en "
+"la barra de herramientas."
 
 #. (itstool) path: page/title
 #: C/index.page:14
@@ -1015,11 +1042,17 @@ msgid ""
 "\">New...</gui></guiseq> menu item, and clicking on the <gui style=\"tab"
 "\">Version Control</gui> tab."
 msgstr ""
+"<app>Meld</app> se integra con <link xref=\"vc-supported\">varios sistemas "
+"de control de versiones</link> para permitir revisar los cambios locales y "
+"ejecutar tareas simples de control de versiones. Puede empezar una nueva "
+"comparación de control de versiones eligiendo en el menú <guiseq><gui style="
+"\"menu\">Archivo</gui><gui style=\"menuitem\">Nuevo...</gui></guiseq>, y "
+"pulsando en la pestaña <gui style=\"tab\">Control de Versiones</gui>."
 
 #. (itstool) path: section/title
 #: C/vc-mode.page:30
 msgid "Version control comparisons"
-msgstr ""
+msgstr "Comparaciones entre controles de versiones"
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:32
@@ -1029,6 +1062,10 @@ msgid ""
 "has a <link xref=\"#vc-state\">state</link> that indicates how it differs "
 "from the repository copy."
 msgstr ""
+"Las comparaciones en sistemas de control de versiones muestra las "
+"diferencias entre los contenidos de su carpeta y la versión del repositorio "
+"actual. Cada archivo en su copia local tienen un <link xref=\"#vc-"
+"state>estado</link> que indica en qué difiere de la copia en el repositorio."
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:46
@@ -1038,6 +1075,11 @@ msgid ""
 "\"file-mode\">file comparison</link>. You can also interact with your "
 "version control system using the <gui style=\"menu\">Changes</gui> menu."
 msgstr ""
+"Si quiere mirar unas diferencias de archivos en particular, puede elegirlo y "
+"pulsar <key>Intro</key>, o pulsar dos veces en el archivo para empezar una "
+"<link xref=\"file-mode\">comparación de archivos</link>. También puede "
+"interactuar con su sistema de control de versiones usando el menú <gui style="
+"\"menu\">Cambios</gui>."
 
 #. (itstool) path: section/title
 #. (itstool) path: table/title
@@ -1054,6 +1096,12 @@ msgid ""
 "<app>Meld</app> might use slightly different names for states than your "
 "version control system does. The possible states are:"
 msgstr ""
+"Cada archivo o carpeta en una comparación de control de versiones tiene un "
+"<em>estado</em>, obtenido por el propio sistema de control de versiones. "
+"<app>Meld</app> mapea estos diferentes estados en un conjunto estándar de "
+"conceptos muy similares. De este modo, <app>Meld</app> puede utilizar "
+"nombres ligeramente diferentes para los estados de los que emplea su sistema "
+"de control de versiones. Los estados posibles son:"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:85 C/folder-mode.page:110
