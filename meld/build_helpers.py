@@ -219,6 +219,13 @@ class build_i18n(distutils.cmd.Command):
         elif os.path.isfile(linguas_file):
             selected_languages = open(linguas_file).read().split()
 
+        # If we're on Windows, assume we're building frozen and make a bunch
+        # of insane assumptions.
+        if os.name == 'nt':
+            msgfmt = "C:\\Python27\\Tools\\i18n\\msgfmt"
+        else:
+            msgfmt = "msgfmt"
+
         # Update po(t) files and print a report
         # We have to change the working dir to the po dir for intltool
         cmd = ["intltool-update", (self.merge_po and "-r" or "-p"), "-g", self.domain]
@@ -235,7 +242,7 @@ class build_i18n(distutils.cmd.Command):
             mo_file = os.path.join(mo_dir, "%s.mo" % self.domain)
             if not os.path.exists(mo_dir):
                 os.makedirs(mo_dir)
-            cmd = ["msgfmt", po_file, "-o", mo_file]
+            cmd = [msgfmt, po_file, "-o", mo_file]
             po_mtime = os.path.getmtime(po_file)
             mo_mtime = os.path.exists(mo_file) and os.path.getmtime(mo_file) or 0
             if po_mtime > max_po_mtime:
