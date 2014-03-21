@@ -54,7 +54,6 @@ setup(
          ),
     ],
     cmdclass={
-        "build": meld.build_helpers.build_extra,
         "build_i18n": meld.build_helpers.build_i18n,
         "build_help": meld.build_helpers.build_help,
         "build_icons": meld.build_helpers.build_icons,
