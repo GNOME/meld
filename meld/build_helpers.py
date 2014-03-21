@@ -58,6 +58,10 @@ class build_data(distutils.cmd.Command):
         ('share/glib-2.0/schemas', ['data/org.gnome.meld.gschema.xml'])
     ]
 
+    frozen_gschemas = [
+        ('share/meld', ['data/gschemas.compiled']),
+    ]
+
     def initialize_options(self):
         pass
 
@@ -65,7 +69,10 @@ class build_data(distutils.cmd.Command):
         pass
 
     def get_data_files(self):
-        return self.gschemas
+        if os.name == 'nt':
+            return self.frozen_gschemas
+        else:
+            return self.gschemas
 
     def run(self):
         data_files = self.distribution.data_files
