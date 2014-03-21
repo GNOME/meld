@@ -161,6 +161,8 @@ class build_help(distutils.cmd.Command):
 class build_icons(distutils.cmd.Command):
 
     icon_dir = os.path.join("data", "icons")
+    target = "share/icons/"
+    frozen_target = "share/meld/icons"
 
     def initialize_options(self):
         pass
@@ -169,6 +171,7 @@ class build_icons(distutils.cmd.Command):
         pass
 
     def run(self):
+        target_dir = self.frozen_target if os.name == 'nt' else self.target
         data_files = self.distribution.data_files
 
         for theme in glob.glob(os.path.join(self.icon_dir, "*")):
@@ -179,8 +182,9 @@ class build_icons(distutils.cmd.Command):
                     icons = [icon for icon in icons if not os.path.islink(icon)]
                     if not icons:
                         continue
-                    data_files.append(("share/icons/%s/%s/%s" %
-                                       (os.path.basename(theme),
+                    data_files.append(("%s/%s/%s/%s" %
+                                       (target_dir,
+                                        os.path.basename(theme),
                                         os.path.basename(size),
                                         os.path.basename(category)),
                                        icons))
