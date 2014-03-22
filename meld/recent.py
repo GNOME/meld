@@ -50,6 +50,7 @@ COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
 
 class RecentFiles(object):
 
+    mime_type = "application/x-meld-comparison"
     recent_path = os.path.join(GLib.get_user_data_dir(), "meld")
     recent_path = recent_path.decode('utf8')
     recent_suffix = ".meldcmp"
@@ -60,7 +61,7 @@ class RecentFiles(object):
     def __init__(self):
         self.recent_manager = Gtk.RecentManager.get_default()
         self.recent_filter = Gtk.RecentFilter()
-        self.recent_filter.add_application(self.app_name)
+        self.recent_filter.add_mime_type(self.mime_type)
         self._stored_comparisons = []
         self.app_exec = os.path.abspath(sys.argv[0])
 
@@ -106,7 +107,7 @@ class RecentFiles(object):
         description = "%s comparison\n%s" % (comp_type, ", ".join(paths))
 
         recent_metadata = Gtk.RecentData()
-        recent_metadata.mime_type = "application/x-meld-comparison"
+        recent_metadata.mime_type = self.mime_type
         recent_metadata.app_name = self.app_name
         recent_metadata.app_exec = "%s --comparison-file %%u" % self.app_exec
         recent_metadata.display_name = display_name.encode('utf8')
