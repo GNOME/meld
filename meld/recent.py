@@ -208,6 +208,7 @@ class RecentFiles(object):
             for attr in attrs:
                 filter_data[attr] = getattr(i, "get_" + attr)()
             filter_info = Gtk.RecentFilterInfo()
+            filter_info.contains = recent_filter.get_needed()
             for f, v in filter_data.iteritems():
                 # https://bugzilla.gnome.org/show_bug.cgi?id=695970
                 if isinstance(v, list):
