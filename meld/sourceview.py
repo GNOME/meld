@@ -1,5 +1,5 @@
 # Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
-# Copyright (C) 2010-2011, 2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2011, 2013-2014 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,8 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import Gtk
 from gi.repository import GtkSource
 
 
@@ -44,22 +46,25 @@ class MeldSourceView(GtkSource.View):
 
     __gtype_name__ = "MeldSourceView"
 
-    # TODO: Figure out what bindings we need to add and remove for 3
+    replaced_entries = (
+        # We replace the default GtkSourceView undo mechanism
+        (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK |
+            Gdk.ModifierType.SHIFT_MASK),
 
-        # Some sourceviews bind their own undo mechanism, which we replace
-        # Gtk.binding_entry_remove(GtkSource.View, Gdk.KEY_z,
-        #                          Gdk.ModifierType.CONTROL_MASK)
-        # Gtk.binding_entry_remove(GtkSource.View, Gdk.KEY_z,
-        #                          Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
+        # We replace the default line movement behaviour of Alt+Up/Down
+        (Gdk.KEY_Up, Gdk.ModifierType.MOD1_MASK),
+        (Gdk.KEY_KP_Up, Gdk.ModifierType.MOD1_MASK),
+        (Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK),
+        (Gdk.KEY_KP_Down, Gdk.ModifierType.MOD1_MASK),
+    )
 
-        # Gtk.binding_entry_remove(GtkSource.View, Gdk.KEY_Up,
-        #                          Gdk.ModifierType.MOD1_MASK)
-        # Gtk.binding_entry_remove(GtkSource.View, Gdk.KEY_KP_Up,
-        #                          Gdk.ModifierType.MOD1_MASK)
-        # Gtk.binding_entry_remove(GtkSource.View, Gdk.KEY_Down,
-        #                          Gdk.ModifierType.MOD1_MASK)
-        # Gtk.binding_entry_remove(GtkSource.View, Gdk.KEY_KP_Down,
-        #                          Gdk.ModifierType.MOD1_MASK)
+    def __init__(self, *args, **kwargs):
+        super(MeldSourceView, self).__init__(*args, **kwargs)
+
+        binding_set = Gtk.binding_set_find('GtkSourceView')
+        for key, modifiers in self.replaced_entries:
+            Gtk.binding_entry_remove(binding_set, key, modifiers)
 
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()
