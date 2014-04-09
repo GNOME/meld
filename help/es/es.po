@@ -2,13 +2,14 @@
 # Copyright (C) 2014 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
 # Facundo Dario Illanes <fdillanes@gmail.com>, 2014.
+# Facundo Dario Illanes <fdillanes@gmail.com>, 2014.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
-"POT-Creation-Date: 2014-04-03 10:27+0000\n"
-"PO-Revision-Date: 2014-04-04 16:41+0200\n"
+"POT-Creation-Date: 2014-04-09 10:27+0000\n"
+"PO-Revision-Date: 2014-04-09 16:44+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -206,7 +207,7 @@ msgid ""
 msgstr ""
 "Cuando se comparan carpetas, cada línea contiene un solo archivo o carpeta "
 "que exista en al menos una de las carpetas comparadas. Cada una de esas "
-"lineas se clasifica como <em>Modificada</em>, <em>Nueva</em> o <em>Igual</em>"
+"líneas se clasifica como <em>Modificada</em>, <em>Nueva</em> o <em>Igual</em>"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
@@ -595,7 +596,7 @@ msgstr ""
 "idénticas (los comentarios se eliminan) pero la línea <code>d</code> se "
 "mostraría como diferente a la línea de comentario de la derecha. Esto ocurre "
 "porque el <code>#comentario</code> se quita de la parte derecho, pero la "
-"linea en sí misma no se puede quitar; <app>Meld</app> mostrará la línea "
+"línea en sí misma no se puede quitar; <app>Meld</app> mostrará la línea "
 "<code>d</code> como diferente de lo que ve como una línea en blanco en el "
 "otro lado."
 
@@ -614,7 +615,7 @@ msgid ""
 "change in the text, but it may also arise if your active text filters have "
 "removed all of the other content from a change, leaving only blank lines."
 msgstr ""
-"La preferencia <gui>Ignorar cambios con lineas vacías insertadas o "
+"La preferencia <gui>Ignorar cambios con líneas vacías insertadas o "
 "eliminadas</gui> en la pestaña <gui>Filtros de texto</gui> requiere una "
 "explicación más detallada. Si este filtro especial está activado, entonces "
 "cualquier cambio que consista solamente en líneas en blanco, se ignora por "
@@ -723,7 +724,7 @@ msgstr ""
 "externo. Este puede ser simplemente el comando (por ejemplo: <cmd>gedit</"
 "cmd>) en cuyo caso el archivo que abrir se pasará como el último argumento. "
 "De otra manera, puede agregar los elementos <code>{archivo}</code> y <code>"
-"{linea}</code> al comando, en cuyo caso <app>Meld</app> sustituirá la ruta "
+"{línea}</code> al comando, en cuyo caso <app>Meld</app> sustituirá la ruta "
 "al archivo y el número de línea respectivamente (por ejemplo: <cmd>gedit "
 "{archivo}:{línea}</cmd>)."
 
@@ -1658,7 +1659,7 @@ msgstr "Igual cuando se filtró"
 #. (itstool) path: td/p
 #: C/folder-mode.page:134
 msgid "Italics"
-msgstr ""
+msgstr "Cursivas"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:140
@@ -1666,27 +1667,30 @@ msgid ""
 "These files are different across folders, but once <link xref=\"text-filters"
 "\">text filters</link> are applied, these files become identical."
 msgstr ""
+"Estos archivos son diferentes en las carpetas, pero una vez aplicados los "
+"<link xref=\"text-filters\">filtros de texto</link>, se han vuelto idénticos."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:156
 msgid "These files differ between the folders being compared."
-msgstr ""
+msgstr "Estos archivos difieren entre las carpetas comparadas."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:170
 msgid "This file/folder exists in this folder, but not in the others."
-msgstr ""
+msgstr "Este archivo/carpeta existe en esta carpeta, pero no en las otras."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:178
 msgid "Greyed out text with a line through the middle"
-msgstr ""
+msgstr "El texto en gris y tachado"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:184
 msgid ""
 "This file/folder doesn't exist in this folder, but does in one of the others."
 msgstr ""
+"Este archivo/carpeta no existe en esta carpeta, pero se encuentra en otra."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:199
@@ -1695,6 +1699,9 @@ msgid ""
 "are file permissions (i.e., <app>Meld</app> was not allowed to open the "
 "file) and filename encoding errors."
 msgstr ""
+"Hubo un error al comparar este archivo. La causa de error más común son los "
+"permisos (esto es, <app>Meld</app> no pudo abrir el archivo) y los errores "
+"en la codificación del nombre de archivo."
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:217
@@ -1703,18 +1710,24 @@ msgid ""
 "files that have are <em>Modified</em>. You can read more about this in <link "
 "xref=\"file-filters#file-state-filter\"/>."
 msgstr ""
+"Es posible filtrar archivos en base a sus estados, por ejemplo, mostrar solo "
+"los archivos <em>Modificados</em>. Puede leer más sobre esto en la <link "
+"xref=\"file-filters#file-state-filter\"/>."
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:223
 msgid ""
 "Finally, the most recently modified file/folder has an emblem attached to it."
 msgstr ""
+"Por último, el archivo/carpeta modificado más recientemente lleva una marca "
+"adjunta."
 
 #. (itstool) path: page/title
 #: C/missing-functionality.page:15
 msgid "Things that <app>Meld</app> doesn't do"
-msgstr ""
+msgstr "Cosas que <app>Meld</app> no hace"
 
+#
 #. (itstool) path: page/p
 #: C/missing-functionality.page:17
 msgid ""
@@ -1722,6 +1735,8 @@ msgid ""
 "out how to do something, thinking that <em>surely</em> there must be an "
 "option for this?"
 msgstr ""
+"¿Nunca ha perdido media hora investigando una aplicación intentando ver cómo "
+"hacer algo, pensando que <em>seguramente</em> debe haber una opción para eso?"
 
 #. (itstool) path: page/p
 #: C/missing-functionality.page:23
@@ -1730,11 +1745,13 @@ msgid ""
 "<em>doesn't</em> do, either as a deliberate choice, or because we just "
 "haven't had time."
 msgstr ""
+"Esta sección lista unas pocas cosas comunes que <app>Meld</app> <em>no</em> "
+"hace, ya sea por una decisión deliberada, o porque nos faltó tiempo."
 
 #. (itstool) path: section/title
 #: C/missing-functionality.page:30
 msgid "Aligning changes by adding lines"
-msgstr ""
+msgstr "Alinear los cambios al agregar líneas"
 
 #. (itstool) path: section/p
 #: C/missing-functionality.page:31
@@ -1744,11 +1761,15 @@ msgid ""
 "additional lines so that the left and right sides of a particular change are "
 "the same size. There is no option to do this."
 msgstr ""
+"Cuando <app>Meld</app> muestra diferencias entre archivos, muestra ambos de "
+"la manera en que aparecerían en un editor de textos normal. <em>No</em> "
+"inserta líneas adicionales de manera que los lados derecho e izquierdo de un "
+"cambio en particular sean del mismo tamaño. No existe una opción para esto."
 
 #. (itstool) path: page/title
 #: C/command-line.page:15
 msgid "Command line usage"
-msgstr ""
+msgstr "Uso de línea de comandos"
 
 #. (itstool) path: page/p
 #: C/command-line.page:17
@@ -1756,6 +1777,8 @@ msgid ""
 "If you start <app>Meld</app> from the command line, you can tell it what to "
 "do when it starts."
 msgstr ""
+"Si ejecuta <app>Meld</app> desde la línea de comandos, puede decirle que "
+"hacer cuando arranca."
 
 #. (itstool) path: page/p
 #: C/command-line.page:20
@@ -1765,6 +1788,10 @@ msgid ""
 "or <cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> "
 "respectively."
 msgstr ""
+"Para una <link xref=\"file-mode\">comparación de archivos</link> de dos o "
+"tres vías, ejecute <app>Meld</app> con <cmd>meld <var>archivo1</var> "
+"<var>archivo2</var></cmd> o <cmd>meld <var>archivo1</var> <var>archivo2</"
+"var> <var>archivo3</var></cmd> respectivamente."
 
 #. (itstool) path: page/p
 #: C/command-line.page:26
@@ -1773,6 +1800,10 @@ msgid ""
 "link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
 "cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
 msgstr ""
+"Para una <link xref=\"folder-mode\">comparación de carpetas</link>de dos o "
+"tres vías, ejecute <app>Meld</app> con <cmd>meld <var>carpeta1</var> "
+"<var>carpeta2</var></cmd>  <cmd>meld <var>carpeta1</var> <var>carpeta2</var> "
+"<var>carpeta3</var></cmd>"
 
 #. (itstool) path: page/p
 #: C/command-line.page:31
@@ -1784,8 +1815,16 @@ msgid ""
 "<cmd>meld .</cmd> would start a version control view of the current "
 "directory."
 msgstr ""
+"Puede empezar una comparación de <link xref=\"vc-mode\">control de "
+"versiones</link> agregando un solo argumento; si es un archivo o carpeta "
+"manejado por un  <link xref=\"vc-supported\">sistema de control de versiones "
+"reconocido</link>, ejecutará la comparación de control de versiones con ese "
+"argumento. Por ejemplo, <cmd>meld .</cmd> ejecutaría una vista de control de "
+"versiones de la carpeta actual."
 
 #. (itstool) path: note/p
 #: C/command-line.page:40
 msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
 msgstr ""
+"Ejecute <cmd>meld --help</cmd> para una lista de todas las opciones de línea "
+"de comandos."
