@@ -69,22 +69,22 @@ def run_dialog( text, parent=None, messagetype=Gtk.MessageType.WARNING, buttonst
        Extra buttons are passed as tuples of (button label, response id).
     """
     escaped = GObject.markup_escape_text(text)
-    d = Gtk.MessageDialog(None,
+    d = Gtk.MessageDialog(
+        None,
         Gtk.DialogFlags.DESTROY_WITH_PARENT,
         messagetype,
-        buttonstype,
-        '<span weight="bold" size="larger">%s</span>' % escaped)
+        buttonstype)
+    markup = '<span weight="bold" size="larger">%s</span>' % escaped
+    d.set_markup(markup)
     if parent and isinstance(parent, Gtk.Window):
         d.set_transient_for(parent.widget.get_toplevel())
-    for b,rid in extrabuttons:
+    for b, rid in extrabuttons:
         d.add_button(b, rid)
     d.vbox.set_spacing(12)
     hbox = d.vbox.get_children()[0]
     hbox.set_spacing(12)
-    d.image.set_alignment(0.5, 0)
-    d.image.set_padding(12, 12)
-    d.label.set_use_markup(1)
-    d.label.set_padding(12, 12)
+    d.props.image.set_alignment(0.5, 0)
+    d.props.image.set_padding(12, 12)
     ret = d.run()
     d.destroy()
     return ret
