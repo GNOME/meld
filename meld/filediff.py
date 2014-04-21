@@ -196,6 +196,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.data.connect('file-changed', self.notify_file_changed)
         self._keymask = 0
         self.load_font()
+        self.meta = {}
         self.deleted_lines_pending = -1
         self.textview_overwrite = 0
         self.focus_pane = None
@@ -1228,6 +1229,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield i
         for i in self._diff_files():
             yield i
+
+    def set_meta(self, meta):
+        self.meta = meta
 
     def notify_file_changed(self, data):
         try:
