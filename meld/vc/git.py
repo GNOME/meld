@@ -205,6 +205,10 @@ class Vc(_vc.CachedVc):
             command = [self.CMD, 'checkout', 'HEAD']
             runner(command, missing, refresh=True, working_dir=self.root)
 
+    def resolve(self, runner, files):
+        command = [self.CMD, 'add']
+        runner(command, files, refresh=True, working_dir=self.root)
+
     def get_path_for_conflict(self, path, conflict):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
