@@ -17,6 +17,7 @@
 from __future__ import print_function
 
 import atexit
+import logging
 import tempfile
 import shutil
 import os
@@ -42,6 +43,8 @@ from .ui import vcdialogs
 from meld.conf import _
 from meld.settings import settings
 from meld.vc import _null
+
+log = logging.getLogger(__name__)
 
 
 def _commonprefix(files):
@@ -150,6 +153,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "VcResolved": ("resolved_command", ()),
         "VcRemove": ("remove_command", ()),
         "VcRevert": ("revert_command", ()),
+    }
+
+    # Map for inter-tab command() calls
+    command_map = {
+        'resolve': 'resolve',
     }
 
     state_actions = {
@@ -627,6 +635,19 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if refresh:
             self.refresh_partial(workdir)
         yield workdir, r
+
+    def has_command(self, command):
+        return command in self.command_map
+
+    def command(self, command, files):
+        if not self.has_command(command):
+            log.error("Couldn't understand command %s", command)
+
+        if not isinstance(files, list):
+            log.error("Invalid files argument to '%s': %r", command, files)
+
+        command = getattr(self.vc, self.command_map[command])
+        command(self._command, files)
 
     def _command(self, command, files, refresh=1, working_dir=None):
         """Run 'command' on 'files'.
