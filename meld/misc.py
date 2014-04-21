@@ -40,7 +40,8 @@ else:
         return rlist, wlist, xlist
 
 
-def error_dialog(primary, secondary, parent=None, messagetype=Gtk.MessageType.ERROR):
+def error_dialog(
+        primary, secondary, parent=None, messagetype=Gtk.MessageType.ERROR):
     """A common error dialog handler for Meld
 
     This should only ever be used as a last resort, and for errors that
@@ -62,6 +63,39 @@ def error_dialog(primary, secondary, parent=None, messagetype=Gtk.MessageType.ER
     dialog.format_secondary_markup(secondary)
     dialog.run()
     dialog.destroy()
+
+
+def modal_dialog(
+        primary, secondary, buttons, parent=None,
+        messagetype=Gtk.MessageType.WARNING):
+    """A common message dialog handler for Meld
+
+    This should only ever be used for interactions that must be resolved
+    before the application flow can continue.
+
+    Primary must be plain text. Secondary must be valid markup.
+    """
+
+    if not parent:
+        from meld.meldapp import app
+        parent = app.window.widget
+    elif not isinstance(parent, Gtk.Window):
+        parent = parent.get_toplevel()
+
+    dialog = Gtk.MessageDialog(
+        parent=parent,
+        flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+        type=messagetype,
+        buttons=Gtk.ButtonsType.NONE,
+        message_format=primary)
+    dialog.format_secondary_markup(secondary)
+
+    for label, response_id in buttons:
+        dialog.add_button(label, response_id)
+
+    response = dialog.run()
+    dialog.destroy()
+    return response
 
 
 def run_dialog( text, parent=None, messagetype=Gtk.MessageType.WARNING, buttonstype=Gtk.ButtonsType.OK, extrabuttons=()):
