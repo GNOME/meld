@@ -496,9 +496,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                      for c in conflicts]
             temps = [p for p, is_temp in diffs if is_temp]
             diffs = [p for p, is_temp in diffs]
+            meta = {
+                'parent': self,
+                'prompt_resolve': True,
+            }
             kwargs = {
                 'auto_merge': False,
                 'merge_output': path,
+                'meta': meta,
             }
         else:
             comp_path = self.vc.get_path_for_repo_file(path)

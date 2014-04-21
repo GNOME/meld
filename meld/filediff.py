@@ -893,6 +893,26 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             return Gtk.ResponseType.CANCEL
             elif response == Gtk.ResponseType.DELETE_EVENT:
                 response = Gtk.ResponseType.CANCEL
+
+        if response == Gtk.ResponseType.OK and self.meta:
+            parent = self.meta.get('parent', None)
+            saved = self.meta.get('middle_saved', False)
+            prompt_resolve = self.meta.get('prompt_resolve', False)
+            if prompt_resolve and saved and parent.has_command('resolve'):
+                primary = _("Mark conflict as resolved?")
+                secondary = _(
+                    "If the conflict was resolved successfully, you may mark "
+                    "it as resolved now.")
+                buttons = ((_("Cancel"), Gtk.ResponseType.CANCEL),
+                           (_("Mark _Resolved"), Gtk.ResponseType.OK))
+                resolve_response = misc.modal_dialog(
+                    primary, secondary, buttons, parent=self.widget,
+                    messagetype=Gtk.MessageType.QUESTION)
+
+                if resolve_response == Gtk.ResponseType.OK:
+                    conflict_file = self.textbuffer[1].data.filename
+                    parent.command('resolve', [conflict_file])
+
         return response
 
     def on_delete_event(self, appquit=0):
@@ -1683,6 +1703,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("file-changed", save_to)
             self.undosequence.checkpoint(buf)
             bufdata.update_mtime()
+            if pane == 1 and self.num_panes == 3:
+                self.meta['middle_saved'] = True
             return True
         else:
             return False
