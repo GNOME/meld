@@ -489,7 +489,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 hasattr(self.vc, 'get_path_for_conflict'):
             # We create new temp files for other, base and this, and
             # then set the output to the current file.
-            if left_is_local:
+            if self.props.merge_file_order == "local-merge-remote":
                 conflicts = (tree.CONFLICT_THIS, tree.CONFLICT_MERGED,
                              tree.CONFLICT_OTHER)
             else:
