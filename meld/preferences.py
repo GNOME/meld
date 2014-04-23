@@ -172,7 +172,8 @@ class PreferencesDialog(Component):
         Component.__init__(self, "preferences.ui", "preferencesdialog",
                            ["adjustment1", "adjustment2", "fileorderstore",
                             "sizegroup_editor", "timestampstore",
-                            "mergeorderstore"])
+                            "mergeorderstore", "sizegroup_file_order_labels",
+                            "sizegroup_file_order_combos"])
         self.widget.set_transient_for(parent)
 
         bindings = [
