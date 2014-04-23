@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2010-2013 Kai Willadsen <kai.willadsen@gmail.com>
 #
@@ -484,6 +486,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         left_is_local = self.props.left_is_local
+        basename = os.path.basename(path)
+        meta = {
+            'parent': self,
+            'prompt_resolve': False,
+        }
 
         if self.vc.get_entry(path).state == tree.STATE_CONFLICT and \
                 hasattr(self.vc, 'get_path_for_conflict'):
@@ -499,20 +506,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                      for c in conflicts]
             temps = [p for p, is_temp in diffs if is_temp]
             diffs = [p for p, is_temp in diffs]
-            meta = {
-                'parent': self,
-                'prompt_resolve': True,
-            }
             kwargs = {
                 'auto_merge': False,
                 'merge_output': path,
-                'meta': meta,
             }
+            meta['prompt_resolve'] = True
+            meta['labels'] = (
+                _(u"%s — local") % basename, None,
+                _(u"%s — remote") % basename
+            )
         else:
             comp_path = self.vc.get_path_for_repo_file(path)
             temps = [comp_path]
             diffs = [path, comp_path] if left_is_local else [comp_path, path]
             kwargs = {}
+            meta['labels'] = (
+                _(u"%s — local") % basename, None)
+        kwargs['meta'] = meta
 
         for temp_file in temps:
             os.chmod(temp_file, 0o444)
