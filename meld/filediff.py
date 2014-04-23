@@ -175,7 +175,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             "diffmap", "file_save_button", "file_toolbar", "fileentry",
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "selector_hbox", "textview", "vbox",
-            "dummy_toolbar_linkmap"
+            "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
+            "fileentry_toolitem",
         ]
         self.map_widgets_into_lists(widget_lists)
 
@@ -1082,6 +1083,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.file_save_button[i].props.stock_id = (
                 Gtk.STOCK_SAVE if buf.data.writable else Gtk.STOCK_SAVE_AS)
 
+        # FIXME: Account for meta label information
+
         self.label_text = (" — ").decode('utf8').join(shortnames)
         self.tooltip_text = self.label_text
         self.label_changed()
@@ -1252,6 +1255,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def set_meta(self, meta):
         self.meta = meta
+        labels = meta.get('labels', ())
+        if labels:
+            for i, l in enumerate(labels):
+                if l:
+                    self.filelabel[i].set_text(l)
+                    self.filelabel_toolitem[i].set_visible(True)
+                    self.fileentry_toolitem[i].set_visible(False)
 
     def notify_file_changed(self, data):
         try:
