@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
 
+  <enum id="org.gnome.meld.mergefileorder">
+    <value nick="local-merge-remote" value="0"/>
+    <value nick="remote-merge-local" value="1"/>
+  </enum>
+
   <enum id="org.gnome.meld.wrapmode">
     <value nick="none" value="0"/>
     <value nick="char" value="1"/>
@@ -162,6 +167,11 @@
           <default>false</default>
           <summary>Present version comparisons as left-local/right-remote</summary>
           <description>If true, version control comparisons will use a left-is-local, right-is-remote scheme to determine what order to present files in panes. Otherwise, a left-is-theirs, right-is-mine scheme is used.</description>
+      </key>
+      <key name="vc-merge-file-order" enum="org.gnome.meld.mergefileorder">
+          <default>"remote-merge-local"</default>
+          <summary>Order for files in three-way version control merge comparisons</summary>
+          <description>Choices for file order are remote/merge/local and local/merged/remote. This preference only affects three-way comparisons launched from the version control view, so is used solely for merges/conflict resolution within Meld.</description>
       </key>
       <key name="vc-show-commit-margin" type="b">
           <default>true</default>

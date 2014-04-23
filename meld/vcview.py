@@ -143,6 +143,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         blurb="Files with these statuses will be shown by the comparison.",
     )
     left_is_local = GObject.property(type=bool, default=False)
+    merge_file_order = GObject.property(type=str, default="local-merge-remote")
 
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
@@ -240,6 +241,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         settings.bind('vc-status-filters', self, 'status-filters',
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-left-is-local', self, 'left-is-local',
+                      Gio.SettingsBindFlags.DEFAULT)
+        settings.bind('vc-merge-file-order', self, 'merge-file-order',
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-console-visible',
                       self.actiongroup.get_action('VcConsoleVisible'),

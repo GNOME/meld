@@ -158,12 +158,21 @@ class GSettingsBoolComboBox(GSettingsComboBox):
     gsettings_value = GObject.property(type=bool, default=False)
 
 
+class GSettingsStringComboBox(GSettingsComboBox):
+
+    __gtype_name__ = "GSettingsStringComboBox"
+
+    gsettings_column = GObject.property(type=int, default=0)
+    gsettings_value = GObject.property(type=str, default="")
+
+
 class PreferencesDialog(Component):
 
     def __init__(self, parent):
         Component.__init__(self, "preferences.ui", "preferencesdialog",
                            ["adjustment1", "adjustment2", "fileorderstore",
-                            "sizegroup_editor", "timestampstore"])
+                            "sizegroup_editor", "timestampstore",
+                            "mergeorderstore"])
         self.widget.set_transient_for(parent)
 
         bindings = [
@@ -220,6 +229,7 @@ class PreferencesDialog(Component):
 
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
+        self.combo_merge_order.bind_to('vc-merge-file-order')
 
         self.widget.show()
 
