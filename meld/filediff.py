@@ -1653,6 +1653,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 bufdata.filename = bufdata.label = os.path.abspath(filename)
                 bufdata.savefile = None
                 self.fileentry[pane].set_filename(bufdata.filename)
+                self.filelabel_toolitem[pane].set_visible(False)
+                self.fileentry_toolitem[pane].set_visible(True)
             else:
                 return False
 
