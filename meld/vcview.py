@@ -494,14 +494,21 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         if self.vc.get_entry(path).state == tree.STATE_CONFLICT and \
                 hasattr(self.vc, 'get_path_for_conflict'):
+            local_label = _(u"%s — local") % basename
+            remote_label = _(u"%s — remote") % basename
+
             # We create new temp files for other, base and this, and
             # then set the output to the current file.
             if self.props.merge_file_order == "local-merge-remote":
                 conflicts = (tree.CONFLICT_THIS, tree.CONFLICT_MERGED,
                              tree.CONFLICT_OTHER)
+                meta['labels'] = (local_label, None, remote_label)
+                meta['tablabel'] = _(u"%s (local, merge, remote)") % basename
             else:
                 conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
                              tree.CONFLICT_THIS)
+                meta['labels'] = (remote_label, None, local_label)
+                meta['tablabel'] = _(u"%s (remote, merge, local)") % basename
             diffs = [self.vc.get_path_for_conflict(path, conflict=c)
                      for c in conflicts]
             temps = [p for p, is_temp in diffs if is_temp]
@@ -511,17 +518,19 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 'merge_output': path,
             }
             meta['prompt_resolve'] = True
-            meta['labels'] = (
-                _(u"%s — local") % basename, None,
-                _(u"%s — remote") % basename
-            )
         else:
+            remote_label = _(u"%s — repository") % basename
             comp_path = self.vc.get_path_for_repo_file(path)
             temps = [comp_path]
-            diffs = [path, comp_path] if left_is_local else [comp_path, path]
+            if left_is_local:
+                diffs = [path, comp_path]
+                meta['labels'] = (None, remote_label)
+                meta['tablabel'] = _(u"%s (working, repository)") % basename
+            else:
+                diffs = [comp_path, path]
+                meta['labels'] = (remote_label, None)
+                meta['tablabel'] = _(u"%s (repository, working)") % basename
             kwargs = {}
-            meta['labels'] = (
-                _(u"%s — local") % basename, None)
         kwargs['meta'] = meta
 
         for temp_file in temps:

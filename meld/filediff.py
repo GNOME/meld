@@ -1083,9 +1083,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.file_save_button[i].props.stock_id = (
                 Gtk.STOCK_SAVE if buf.data.writable else Gtk.STOCK_SAVE_AS)
 
-        # FIXME: Account for meta label information
-
-        self.label_text = (" — ").decode('utf8').join(shortnames)
+        label = self.meta.get("tablabel", "")
+        if label:
+            self.label_text = label
+        else:
+            self.label_text = (" — ").decode('utf8').join(shortnames)
         self.tooltip_text = self.label_text
         self.label_changed()
 
