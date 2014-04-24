@@ -30,22 +30,23 @@ pixbuf_copy = load("meld-change-copy")
 
 # FIXME: import order issues
 MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
-ACTION_MAP = {
-    'LTR': {
-        MODE_REPLACE: pixbuf_apply0,
-        MODE_DELETE: pixbuf_delete,
-        MODE_INSERT: pixbuf_copy,
-    },
-    'RTL': {
-        MODE_REPLACE: pixbuf_apply1,
-        MODE_DELETE: pixbuf_delete,
-        MODE_INSERT: pixbuf_copy,
-    }
-}
 
 
 class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
     __gtype_name__ = "GutterRendererChunkAction"
+
+    ACTION_MAP = {
+        'LTR': {
+            MODE_REPLACE: pixbuf_apply0,
+            MODE_DELETE: pixbuf_delete,
+            MODE_INSERT: pixbuf_copy,
+        },
+        'RTL': {
+            MODE_REPLACE: pixbuf_apply1,
+            MODE_DELETE: pixbuf_delete,
+            MODE_INSERT: pixbuf_copy,
+        }
+    }
 
     def __init__(self, from_pane, to_pane, views, filediff, linediffer):
         super(GutterRendererChunkAction, self).__init__()
@@ -59,7 +60,7 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         self.mode = MODE_REPLACE
         self.set_size(line_height)
         direction = 'LTR' if from_pane < to_pane else 'RTL'
-        self.action_map = ACTION_MAP[direction]
+        self.action_map = self.ACTION_MAP[direction]
         self.filediff = filediff
         self.filediff.connect("action-mode-changed",
                               self.on_container_mode_changed)
