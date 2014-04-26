@@ -45,6 +45,7 @@ from . import undo
 from .ui import findbar
 from .ui import gnomeglade
 
+from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
 from meld.settings import meldsettings, settings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager
@@ -103,7 +104,6 @@ class CachedSequenceMatcher(object):
 
 
 MASK_SHIFT, MASK_CTRL = 1, 2
-MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
 
 
 class CursorDetails(object):

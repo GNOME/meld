@@ -1,4 +1,4 @@
-# Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2013-2014 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,19 +17,17 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.conf import _
+from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
+
+# Fixed size of the renderer. Ideally this would be font-dependent and
+# would adjust to other textview attributes, but that's both quite difficult
+# and not necessarily desirable.
+LINE_HEIGHT = 16
 
 
-# FIXME: This is obviously beyond horrible
-line_height = 16
-icon_theme = Gtk.IconTheme.get_default()
-load = lambda x: icon_theme.load_icon(x, line_height, 0)
-pixbuf_apply0 = load("meld-change-apply-right")
-pixbuf_apply1 = load("meld-change-apply-left")
-pixbuf_delete = load("meld-change-delete")
-pixbuf_copy = load("meld-change-copy")
-
-# FIXME: import order issues
-MODE_REPLACE, MODE_DELETE, MODE_INSERT = 0, 1, 2
+def load(icon_name):
+    icon_theme = Gtk.IconTheme.get_default()
+    return icon_theme.load_icon(icon_name, LINE_HEIGHT, 0)
 
 
 class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
@@ -37,14 +35,14 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
 
     ACTION_MAP = {
         'LTR': {
-            MODE_REPLACE: pixbuf_apply0,
-            MODE_DELETE: pixbuf_delete,
-            MODE_INSERT: pixbuf_copy,
+            MODE_REPLACE: load("meld-change-apply-right"),
+            MODE_DELETE: load("meld-change-delete"),
+            MODE_INSERT: load("meld-change-copy"),
         },
         'RTL': {
-            MODE_REPLACE: pixbuf_apply1,
-            MODE_DELETE: pixbuf_delete,
-            MODE_INSERT: pixbuf_copy,
+            MODE_REPLACE: load("meld-change-apply-left"),
+            MODE_DELETE: load("meld-change-delete"),
+            MODE_INSERT: load("meld-change-copy"),
         }
     }
 
@@ -58,7 +56,7 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         # FIXME: Don't pass in the linediffer; pass a generator like elsewhere
         self.linediffer = linediffer
         self.mode = MODE_REPLACE
-        self.set_size(line_height)
+        self.set_size(LINE_HEIGHT)
         direction = 'LTR' if from_pane < to_pane else 'RTL'
         self.action_map = self.ACTION_MAP[direction]
         self.filediff = filediff
