@@ -29,19 +29,19 @@ import os.path
 
 
 def has_help(self):
-	return "build_help" in self.distribution.cmdclass and os.name != 'nt'
+    return "build_help" in self.distribution.cmdclass and os.name != 'nt'
 
 
 def has_icons(self):
-	return "build_icons" in self.distribution.cmdclass
+    return "build_icons" in self.distribution.cmdclass
 
 
 def has_i18n(self):
-	return "build_i18n" in self.distribution.cmdclass and os.name != 'nt'
+    return "build_i18n" in self.distribution.cmdclass and os.name != 'nt'
 
 
 def has_data(self):
-	return "build_data" in self.distribution.cmdclass
+    return "build_data" in self.distribution.cmdclass
 
 
 distutils.command.build.build.sub_commands.extend([
