@@ -75,6 +75,7 @@ class MeldDoc(GObject.GObject):
         self.num_panes = 0
         self.label_text = _("untitled")
         self.tooltip_text = _("untitled")
+        self.main_actiongroup = None
 
     def get_comparison(self):
         """Get the comparison type and path(s) being compared"""
@@ -170,6 +171,9 @@ class MeldDoc(GObject.GObject):
         self.ui_merge_id = uimanager.add_ui_from_file(self.ui_file)
         uimanager.insert_action_group(self.actiongroup, -1)
         self.popup_menu = uimanager.get_widget("/Popup")
+        action_groups = uimanager.get_action_groups()
+        self.main_actiongroup = [
+            a for a in action_groups if a.get_name() == "MainActions"][0]
         uimanager.ensure_update()
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
@@ -179,6 +183,7 @@ class MeldDoc(GObject.GObject):
         """
         uimanager.remove_action_group(self.actiongroup)
         uimanager.remove_ui(self.ui_merge_id)
+        self.main_actiongroup = None
 
     def on_delete_event(self, appquit=0):
         """Called when the docs container is about to close.

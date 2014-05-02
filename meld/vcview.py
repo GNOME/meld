@@ -186,7 +186,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.ui_file = gnomeglade.ui_file("vcview-ui.xml")
         self.actiongroup = self.VcviewActions
         self.actiongroup.set_translation_domain("meld")
-        self.main_actiongroup = None
         self.model = VcTreeStore()
         self.widget.connect("style-updated", self.model.on_style_updated)
         self.model.on_style_updated(self.widget)
@@ -271,8 +270,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             pass
 
     def on_container_switch_in_event(self, ui):
-        self.main_actiongroup = [a for a in ui.get_action_groups()
-                                 if a.get_name() == "MainActions"][0]
         super(VcView, self).on_container_switch_in_event(ui)
         self._set_external_action_sensitivity(True)
         self.scheduler.add_task(self.on_treeview_cursor_changed)

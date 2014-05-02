@@ -315,7 +315,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.ui_file = gnomeglade.ui_file("dirdiff-ui.xml")
         self.actiongroup = self.DirdiffActions
         self.actiongroup.set_translation_domain("meld")
-        self.main_actiongroup = None
 
         self.name_filters = []
         self.text_filters = []
@@ -511,8 +510,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.filter_menu_button.set_label_widget(label)
 
     def on_container_switch_in_event(self, ui):
-        self.main_actiongroup = [a for a in ui.get_action_groups()
-                                 if a.get_name() == "MainActions"][0]
         melddoc.MeldDoc.on_container_switch_in_event(self, ui)
         self._create_filter_menu_button(ui)
         self.ui_manager = ui

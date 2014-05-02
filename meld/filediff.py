@@ -321,7 +321,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggle_actions)
-        self.main_actiongroup = None
 
         self.findbar = findbar.FindBar(self.grid)
         self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
@@ -432,12 +431,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_focus_change(self):
         self.keymask = 0
-
-    def on_container_switch_in_event(self, ui):
-        self.main_actiongroup = [a for a in ui.get_action_groups()
-                                 if a.get_name() == "MainActions"][0]
-        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
-        # FIXME: If no focussed textview, action sensitivity will be unset
 
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()
