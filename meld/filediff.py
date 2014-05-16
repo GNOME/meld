@@ -1046,8 +1046,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textbuffer[1]
         buf.data.savefile = os.path.abspath(filename)
         buf.data.label = filename
-        self.set_buffer_writable(buf, os.access(buf.data.savefile, os.W_OK))
-        self.fileentry[1].set_filename(os.path.abspath(filename))
+        writable = True
+        if os.path.exists(buf.data.savefile):
+            writable = os.access(buf.data.savefile, os.W_OK)
+        self.set_buffer_writable(buf, writable)
+        self.fileentry[1].set_filename(buf.data.savefile)
         self.recompute_label()
 
     def _set_save_action_sensitivity(self):
@@ -1179,7 +1182,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         t.buf.insert(t.buf.get_end_iter(), nextbit)
                     else:
                         if t.buf.data.savefile:
-                            writable = os.access(t.buf.data.savefile, os.W_OK)
+                            writable = True
+                            if os.path.exists(t.buf.data.savefile):
+                                writable = os.access(
+                                    t.buf.data.savefile, os.W_OK)
                         else:
                             writable = os.access(t.filename, os.W_OK)
                         self.set_buffer_writable(t.buf, writable)
