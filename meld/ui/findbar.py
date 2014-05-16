@@ -49,7 +49,7 @@ class FindBar(gnomeglade.Component):
 
     def hide(self):
         self.textview = None
-        self.wrap_box.set_visible(False)
+        self.wrap_box.hide()
         self.widget.hide()
 
     def start_find(self, textview, text=None):
@@ -84,7 +84,7 @@ class FindBar(gnomeglade.Component):
         self.widget.set_row_spacings(6)
         self.widget.show_all()
         self.find_entry.grab_focus()
-        self.wrap_box.set_visible(False)
+        self.wrap_box.hide()
 
     def on_find_entry__activate(self, entry):
         self.find_next_button.activate()
@@ -149,18 +149,18 @@ class FindBar(gnomeglade.Component):
         except re.error as e:
             misc.run_dialog( _("Regular expression error\n'%s'") % e, self, messagetype=gtk.MESSAGE_ERROR)
         else:
-            self.wrap_box.set_visible(False)
+            self.wrap_box.hide()
             if backwards == False:
                 match = pattern.search(text, insert.get_offset() + start_offset)
                 if match is None and wrap:
-                    self.wrap_box.set_visible(True)
+                    self.wrap_box.show()
                     match = pattern.search(text, 0)
             else:
                 match = None
                 for m in pattern.finditer(text, 0, insert.get_offset()):
                     match = m
                 if match is None and wrap:
-                    self.wrap_box.set_visible(True)
+                    self.wrap_box.show()
                     for m in pattern.finditer(text, insert.get_offset()):
                         match = m
             if match:
@@ -173,4 +173,4 @@ class FindBar(gnomeglade.Component):
             else:
                 buf.place_cursor( buf.get_iter_at_mark(buf.get_insert()) )
                 self.find_entry.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffdddd"))
-                self.wrap_box.set_visible(False)
+                self.wrap_box.hide()
