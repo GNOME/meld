@@ -23,6 +23,7 @@ from __future__ import print_function
 import distutils.cmd
 import distutils.command.build
 import distutils.command.install_data
+import distutils.dist
 import distutils.dir_util
 import glob
 import os.path
@@ -52,6 +53,16 @@ distutils.command.build.build.sub_commands.extend([
     ("build_help", has_help),
     ("build_data", has_data),
 ])
+
+
+class MeldDistribution(distutils.dist.Distribution):
+    global_options = distutils.dist.Distribution.global_options + [
+        ("no-update-icon-cache", None, "Don't run gtk-update-icon-cache"),
+    ]
+
+    def __init__(self, *args, **kwargs):
+        self.no_update_icon_cache = False
+        distutils.dist.Distribution.__init__(self, *args, **kwargs)
 
 
 class build_data(distutils.cmd.Command):
@@ -317,6 +328,13 @@ class install_data(distutils.command.install_data.install_data):
 
     def run(self):
         distutils.command.install_data.install_data.run(self)
+
+        if not self.distribution.no_update_icon_cache:
+            # TODO: Generalise to non-hicolor icon themes
+            info("running gtk-update-icon-cache")
+            icon_path = os.path.join(self.install_dir, "share/icons/hicolor")
+            self.spawn(["gtk-update-icon-cache", "-q", "-t", icon_path])
+
         if not self.no_compile_schemas:
             gschema_path = build_data.gschemas[0][0]
             gschema_install = os.path.join(self.install_dir, gschema_path)
