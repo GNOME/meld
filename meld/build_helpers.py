@@ -27,6 +27,8 @@ import distutils.dir_util
 import glob
 import os.path
 
+from distutils.log import info
+
 
 def has_help(self):
     return "build_help" in self.distribution.cmdclass and os.name != 'nt'
@@ -151,7 +153,7 @@ class build_help(distutils.cmd.Command):
             for page in pages:
                 page_path = os.path.join(build_path, page)
                 if not os.path.exists(page_path):
-                    print("Skipping missing file", page_path)
+                    info("skipping missing file %s", page_path)
                     continue
                 lint = ['xmllint', '--noout', '--noent', '--path', build_path,
                         '--xinclude', page_path]
