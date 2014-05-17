@@ -58,10 +58,12 @@ distutils.command.build.build.sub_commands.extend([
 class MeldDistribution(distutils.dist.Distribution):
     global_options = distutils.dist.Distribution.global_options + [
         ("no-update-icon-cache", None, "Don't run gtk-update-icon-cache"),
+        ("no-compile-schemas", None, "Don't compile gsettings schemas"),
     ]
 
     def __init__(self, *args, **kwargs):
         self.no_update_icon_cache = False
+        self.no_compile_schemas = False
         distutils.dist.Distribution.__init__(self, *args, **kwargs)
 
 
@@ -310,22 +312,6 @@ class build_i18n(distutils.cmd.Command):
 
 class install_data(distutils.command.install_data.install_data):
 
-    user_options = [
-        ("no-compile-schemas", None,
-         "Don't compile gsettings schemas post-install"),
-    ]
-    boolean_options = ["no-compile-schemas"]
-
-    def initialize_options(self):
-        distutils.command.install_data.install_data.initialize_options(self)
-        self.no_compile_schemas = None
-
-    def finalize_options(self):
-        distutils.command.install_data.install_data.finalize_options(self)
-        if self.no_compile_schemas is None:
-            self.no_compile_schemas = bool(
-                os.environ.get('NO_COMPILE_SCHEMAS', None))
-
     def run(self):
         distutils.command.install_data.install_data.run(self)
 
@@ -335,7 +321,8 @@ class install_data(distutils.command.install_data.install_data):
             icon_path = os.path.join(self.install_dir, "share/icons/hicolor")
             self.spawn(["gtk-update-icon-cache", "-q", "-t", icon_path])
 
-        if not self.no_compile_schemas:
+        if not self.distribution.no_compile_schemas:
+            info("compiling gsettings schemas")
             gschema_path = build_data.gschemas[0][0]
             gschema_install = os.path.join(self.install_dir, gschema_path)
             self.spawn(["glib-compile-schemas", gschema_install])

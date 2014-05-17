@@ -49,8 +49,19 @@ supports, and little else.
 Additional hacks are added to make life easier for packagers where required,
 such as:
 
-* The NO_COMPILE_SCHEMAS schemas environment variable will, if set to 1, stop
-  Meld from compiling gsettings schemas post-install.
+* Passing `--no-update-icon-cache` will stop Meld from running
+  `gtk-update-icon-cache` post-install
+* Passing `--no-compile-schemas` will stop Meld from trying to compile
+  gsettings schemas post-install
+
+These arguments need to be passed to `setup.py` itself, *not* to the install
+command. In other words, do this:
+
+    python setup.py --no-compile-schemas install
+
+**not** this:
+
+    python setup.py install --no-compile-schemas
 
 
 Contacting
