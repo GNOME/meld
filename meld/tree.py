@@ -116,6 +116,12 @@ class DiffTreeStore(Gtk.TreeStore):
             path = path.decode('utf8')
         return path
 
+    def is_folder(self, it, pane, path):
+        # A folder may no longer exist, and is only tracked by VC.
+        # Therefore, check the icon instead, as the pane already knows.
+        icon = self.get_value(it, self.column_index(COL_ICON, pane))
+        return icon == "folder" or os.path.isdir(path)
+
     def column_index(self, col, pane):
         return self.ntree * col + pane
 
