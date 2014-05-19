@@ -106,7 +106,10 @@ class FindBar(gnomeglade.Component):
         saved_insert = buf.create_mark(
             None, buf.get_iter_at_mark(buf.get_insert()), True)
         buf.begin_user_action()
-        while self._find_text(0):
+        # Seek to the start
+        buf.place_cursor(buf.get_start_iter())
+        # Can't wrap or end up looping.
+        while self._find_text(start_offset=0, wrap=False):
             buf.delete_selection(False, False)
             buf.insert_at_cursor(self.replace_entry.get_text())
         buf.end_user_action()
