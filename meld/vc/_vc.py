@@ -30,12 +30,12 @@ from meld.conf import _
 
 # ignored, new, normal, ignored changes,
 # error, placeholder, vc added
-# vc modified, vc conflict, vc removed
+# vc modified, vc renamed, vc conflict, vc removed
 # locally removed, end
 (STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE,
     STATE_ERROR, STATE_EMPTY, STATE_NEW,
-    STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED,
-    STATE_MISSING, STATE_NONEXIST, STATE_MAX) = list(range(13))
+    STATE_MODIFIED, STATE_RENAMED, STATE_CONFLICT, STATE_REMOVED,
+    STATE_MISSING, STATE_NONEXIST, STATE_MAX) = list(range(14))
 
 # VC conflict types
 (CONFLICT_MERGED, CONFLICT_BASE, CONFLICT_LOCAL,
@@ -69,6 +69,7 @@ class Entry(object):
         STATE_EMPTY: "",
         STATE_NEW: _("Newly added"),
         STATE_MODIFIED: _("Modified"),
+        STATE_RENAMED: _("Renamed"),
         STATE_CONFLICT: "<b>%s</b>" % _("Conflict"),
         STATE_REMOVED: _("Removed"),
         STATE_MISSING: _("Missing"),
@@ -93,11 +94,11 @@ class Entry(object):
 
 
 class Dir(Entry):
-    def __init__(self, path, name, state):
+    def __init__(self, path, name, state, options=None):
         Entry.__init__(self, path, name, state)
         self.isdir = 1
         self.rev = ""
-        self.options = ""
+        self.options = options
 
 
 class File(Entry):
