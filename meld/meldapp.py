@@ -180,9 +180,10 @@ class MeldApp(Gtk.Application):
                 self.command_line = command_line
                 self.should_exit = False
                 self.output = StringIO.StringIO()
+                self.exit_status = 0
                 optparse.OptionParser.__init__(self, *args, **kwargs)
 
-            def exit(self, *args):
+            def exit(self, status=0, msg=None):
                 self.should_exit = True
                 # FIXME: This is... let's say... an unsupported method. Let's
                 # be circumspect about the likelihood of this working.
@@ -191,6 +192,7 @@ class MeldApp(Gtk.Application):
                         self.command_line, self.output.getvalue())
                 except:
                     print(self.output.getvalue())
+                self.exit_status = status
 
             def print_usage(self, file=None):
                 if self.usage:
@@ -202,6 +204,16 @@ class MeldApp(Gtk.Application):
 
             def print_help(self, file=None):
                 print(self.format_help(), file=self.output)
+
+            def error(self, msg):
+                self.local_error(msg)
+                raise ValueError()
+
+            def local_error(self, msg):
+                self.print_usage()
+                error_string = _("Error: %s\n") % msg
+                print(error_string, file=self.output)
+                self.exit(2)
 
         parser = GLibFriendlyOptionParser(
             command_line=command_line,
@@ -236,22 +248,34 @@ class MeldApp(Gtk.Application):
             dest="diff", default=[],
             help=_("Create a diff tab for the supplied files or folders"))
 
-        rawargs = command_line.get_arguments()[1:]
-        options, args = parser.parse_args(rawargs)
-        parser.command_line = None
-        if parser.should_exit:
-            if command_line.get_is_remote():
-                return 0
-            else:
+        def cleanup():
+            if not command_line.get_is_remote():
                 self.quit()
+            parser.command_line = None
+
+        rawargs = command_line.get_arguments()[1:]
+        try:
+            options, args = parser.parse_args(rawargs)
+        except ValueError:
+            # Thrown to avert further parsing when we've hit an error, because
+            # of our weird when-to-exit issues.
+            pass
+
+        if parser.should_exit:
+            cleanup()
+            return parser.exit_status
 
         if len(args) > 3:
-            parser.error(_("too many arguments (wanted 0-3, got %d)") %
-                         len(args))
+            parser.local_error(_("too many arguments (wanted 0-3, got %d)") %
+                               len(args))
         elif options.auto_merge and len(args) < 3:
-            parser.error(_("can't auto-merge less than 3 files"))
+            parser.local_error(_("can't auto-merge less than 3 files"))
         elif options.auto_merge and any([os.path.isdir(f) for f in args]):
-            parser.error(_("can't auto-merge directories"))
+            parser.local_error(_("can't auto-merge directories"))
+
+        if parser.should_exit:
+            cleanup()
+            return parser.exit_status
 
         if options.comparison_file or (len(args) == 1 and
                                        args[0].endswith(".meldcmp")):
@@ -261,7 +285,10 @@ class MeldApp(Gtk.Application):
             try:
                 tab = self.get_meld_window().append_recent(gio_file.get_uri())
             except (IOError, ValueError):
-                parser.error(_("Error reading saved comparison file"))
+                parser.local_error(_("Error reading saved comparison file"))
+            if parser.should_exit:
+                cleanup()
+                return parser.exit_status
             return tab
 
         error = None
@@ -284,10 +311,15 @@ class MeldApp(Gtk.Application):
 
         if error:
             if not self.get_meld_window().has_pages():
-                parser.error(error)
+                parser.local_error(error)
             else:
                 print(error)
 
+        if parser.should_exit:
+            cleanup()
+            return parser.exit_status
+
+        parser.command_line = None
         return tab if len(comparisons) == 1 else None
 
 
