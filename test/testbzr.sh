@@ -10,6 +10,7 @@ echo "modified" > modified.txt
 echo "deleted" > deleted.txt
 echo "exec" > exec.txt
 echo "conflict" > conflict.txt
+echo "conflict2" > conflict2.txt
 
 mkdir normal-dir
 mkdir renamed-dir
@@ -29,11 +30,13 @@ bzr branch bzrtest1 bzrtest2
 # Make a change back in the original branch so we get a conflict
 cd bzrtest1
 echo "parent change" >> conflict.txt
+echo "parent change" >> conflict2.txt
 bzr commit -m "Parent change"
 
 # CD back to the new branch and make a change
 cd ../bzrtest2
 echo "child change" >> conflict.txt
+echo "child change" >> conflict2.txt
 bzr commit -m "Child change"
 bzr merge
 
@@ -69,3 +72,4 @@ chmod +x ./exec.txt
 # Can't check this... if we -x on owner bzr can't status it anyway.
 chmod g-x ./exec-dir
 
+bzr mv ./conflict2.txt ./conflict2-moved.txt

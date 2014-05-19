@@ -1,3 +1,4 @@
+# coding=utf-8
 ### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 ### Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
 
@@ -21,6 +22,7 @@
 ### THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 ### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+from collections import defaultdict
 
 import errno
 import os
@@ -38,11 +40,17 @@ class Vc(_vc.CachedVc):
     CMDARGS = ["--no-aliases", "--no-plugins"]
     NAME = "Bazaar"
     VC_DIR = ".bzr"
+    PATCH_INDEX_RE = "^=== modified file '(.*)' (.*)$"
     CONFLICT_RE = "conflict in (.*)$"
+    #RENAMED_RE = u"^(.*) ⇒ (.*)$"
+    RENAMED_RE = u"^(.*) => (.*)$"
+
 
     commit_statuses = (
-        _vc.STATE_MODIFIED, _vc.STATE_NEW, _vc.STATE_REMOVED
+        _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED
     )
+
+    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
 
     conflict_map = {
         _vc.CONFLICT_BASE: '.BASE',
@@ -56,7 +64,7 @@ class Vc(_vc.CachedVc):
         " ": None,                # First status column empty
         "+": None,                # File versioned
         "-": None,                # File unversioned
-        "R": None,                # File renamed
+        "R": _vc.STATE_RENAMED,   # File renamed
         "?": _vc.STATE_NONE,      # File unknown
         "X": None,                # File nonexistent (and unknown to bzr)
         "C": _vc.STATE_CONFLICT,  # File has conflicts
@@ -71,8 +79,21 @@ class Vc(_vc.CachedVc):
         "M": _vc.STATE_MODIFIED,  # File modified
     }
 
-    valid_status_re = r'[%s][%s][\*\s]\s*' % (''.join(state_1_map.keys()),
-                                              ''.join(state_2_map.keys()))
+    state_3_map = {
+        " ": None,
+        "*": _vc.STATE_MODIFIED,
+        "/": _vc.STATE_MODIFIED,
+        "@": _vc.STATE_MODIFIED,
+    }
+
+    valid_status_re = r'[%s][%s][%s]\s*' % (''.join(state_1_map.keys()),
+                                            ''.join(state_2_map.keys()),
+                                            ''.join(state_3_map.keys()),)
+
+    def __init__(self, location):
+        super(Vc, self).__init__(location)
+        self._tree_cache = {}
+        self._tree_meta_cache = {}
 
     def commit_command(self, message):
         return [self.CMD] + self.CMDARGS + ["commit", "-m", message]
@@ -130,6 +151,7 @@ class Vc(_vc.CachedVc):
     def _lookup_tree_cache(self, rootdir):
         branch_root = _vc.popen(
             [self.CMD] + self.CMDARGS + ["root", rootdir]).read().rstrip('\n')
+        entries = []
         while 1:
             try:
                 proc = _vc.popen([self.CMD] + self.CMDARGS +
@@ -140,25 +162,65 @@ class Vc(_vc.CachedVc):
                 if e.errno != errno.EAGAIN:
                     raise
 
-        tree_state = {}
+        self._tree_cache = tree_cache = defaultdict(set)
+        self._tree_meta_cache = tree_meta_cache = defaultdict(list)
+        self._rename_cache = rename_cache = {}
+        self._reverse_rename_cache = {}
+        # Files can appear twice in the list if they conflict and were renamed
+        # at once.
         for entry in entries:
+            meta = []
+            old_name = None
             state_string, name = entry[:3], entry[4:].strip()
             if not re.match(self.valid_status_re, state_string):
                 continue
-            # TODO: We don't do anything with exec bit changes.
-            state = self.state_1_map.get(state_string[0], None)
-            if state is None:
-                state = self.state_2_map.get(state_string[1], _vc.STATE_NORMAL)
-            elif state == _vc.STATE_CONFLICT:
+
+            state1 = self.state_1_map.get(state_string[0])
+            state2 = self.state_2_map.get(state_string[1])
+            state3 = self.state_3_map.get(state_string[2])
+
+            states = {state1, state2, state3}
+
+            if _vc.STATE_CONFLICT in states:
                 real_path_match = re.search(self.CONFLICT_RE, name)
-                if real_path_match is None:
-                    continue
-                name = real_path_match.group(1)
+                if real_path_match is not None:
+                    name = real_path_match.group(1)
+
+            if _vc.STATE_RENAMED in states:
+                real_path_match = re.search(self.RENAMED_RE, name)
+                if real_path_match is not None:
+                    meta.append(name)
+                    old_name = real_path_match.group(1)
+                    name = real_path_match.group(2)
 
             path = os.path.join(branch_root, name)
-            tree_state[path] = state
+            if old_name:
+                old_path = os.path.join(branch_root, old_name)
+                rename_cache[old_path] = path
 
-        return tree_state
+            if state3 and state3 is _vc.STATE_MODIFIED:
+                # line = _vc.popen(self.diff_command() + [path]).readline()
+                line = _vc.popen(['bzr', 'diff', path]).readline()
+                executable_match = re.search(self.PATCH_INDEX_RE, line)
+                if executable_match:
+                    meta.append(executable_match.group(2))
+
+
+
+            tree_cache[path].update(states)
+            tree_meta_cache[path].extend(meta)
+
+        # Handle any renames now
+        for old, new in rename_cache.items():
+            if old in tree_cache:
+                tree_cache[new].update(tree_cache[old])
+                tree_meta_cache[new].extend(tree_meta_cache[old])
+                del tree_cache[old]
+                del tree_meta_cache[old]
+            self._reverse_rename_cache[new] = old
+
+        tree_cache = dict((x, max(y)) for x,y in tree_cache.items())
+        return tree_cache
 
     def _get_dirsandfiles(self, directory, dirs, files):
         tree = self._get_tree_cache(directory)
@@ -172,19 +234,22 @@ class Vc(_vc.CachedVc):
                 mydir, name = os.path.split(mydir)
             if mydir != directory:
                 continue
+            meta = ','.join(self._tree_meta_cache.get(path, []))
             if path.endswith('/'):
-                retdirs.append(_vc.Dir(path[:-1], name, state))
+                retdirs.append(_vc.Dir(path[:-1], name, state, options=meta))
             else:
-                retfiles.append(_vc.File(path, name, state))
+                retfiles.append(_vc.File(path, name, state, options=meta))
             bzrfiles[name] = 1
         for f, path in files:
             if f not in bzrfiles:
                 state = _vc.STATE_NORMAL
-                retfiles.append(_vc.File(path, f, state))
+                meta = ','.join(self._tree_meta_cache.get(path, []))
+                retfiles.append(_vc.File(path, f, state, options=meta))
         for d, path in dirs:
             if d not in bzrfiles:
                 state = _vc.STATE_NORMAL
-                retdirs.append(_vc.Dir(path, d, state))
+                meta = ','.join(self._tree_meta_cache.get(path, []))
+                retdirs.append(_vc.Dir(path, d, state, options=meta))
         return retdirs, retfiles
 
     def get_path_for_repo_file(self, path, commit=None):
@@ -210,6 +275,9 @@ class Vc(_vc.CachedVc):
         return f.name
 
     def get_path_for_conflict(self, path, conflict):
+        if path in self._reverse_rename_cache and not \
+                conflict == _vc.CONFLICT_MERGED:
+            path = self._reverse_rename_cache[path]
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
 
