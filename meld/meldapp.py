@@ -16,6 +16,7 @@
 
 from __future__ import print_function
 
+import logging
 import optparse
 import os
 import StringIO
@@ -30,6 +31,8 @@ import meld.preferences
 import meld.ui.util
 
 from meld.conf import _
+
+log = logging.getLogger(__name__)
 
 
 class MeldApp(Gtk.Application):
@@ -139,6 +142,7 @@ class MeldApp(Gtk.Application):
             window = self.get_meld_window()
         else:
             window = self.new_window()
+
         return window.open_paths(paths, **kwargs)
 
     def diff_files_callback(self, option, opt_str, value, parser):
@@ -291,6 +295,7 @@ class MeldApp(Gtk.Application):
                 return parser.exit_status
             return tab
 
+        tab = None
         error = None
         comparisons = options.diff + [args]
         options.newtab = options.newtab or not command_line.get_is_remote()
@@ -310,7 +315,8 @@ class MeldApp(Gtk.Application):
                 tab.set_merge_output_file(options.outfile)
 
         if error:
-            if not self.get_meld_window().has_pages():
+            log.debug("Couldn't open comparison: %s", error)
+            if not tab:
                 parser.local_error(error)
             else:
                 print(error)
