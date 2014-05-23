@@ -220,7 +220,7 @@ class PreferencesDialog(Component):
         self.checkbutton_wrap_word.set_active(wrap_mode == Gtk.WrapMode.WORD)
 
         filefilter = FilterList("filename-filters", FilterEntry.SHELL)
-        self.file_filters_tab.pack_start(filefilter.widget, True, True, 0)
+        self.file_filters_vbox.pack_start(filefilter.widget, True, True, 0)
 
         textfilter = FilterList("text-filters", FilterEntry.REGEX)
         self.text_filters_tab.pack_start(textfilter.widget, True, True, 0)
