@@ -1212,7 +1212,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             is_present = [ os.path.exists( f ) for f in curfiles ]
             all_present = 0 not in is_present
             if all_present:
-                if self.file_compare(curfiles, regexes) in (Same, SameFiltered):
+                if self.file_compare(curfiles, regexes) in (
+                        Same, SameFiltered, DodgySame):
                     state = tree.STATE_NORMAL
                 else:
                     state = tree.STATE_MODIFIED
