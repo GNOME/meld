@@ -32,7 +32,7 @@ class FilterList(ListWidget):
     def __init__(self, key, filter_type):
         default_entry = [_("label"), False, _("pattern"), True]
         ListWidget.__init__(self, "EditableList.ui",
-                            "list_alignment", ["EditableListStore"],
+                            "list_vbox", ["EditableListStore"],
                             "EditableList", default_entry)
         self.key = key
         self.filter_type = filter_type
