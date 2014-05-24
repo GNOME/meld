@@ -2,10 +2,16 @@
 
 from distutils.core import setup
 import glob
+import platform
+import sys
 
 import meld.build_helpers
 import meld.conf
 
+
+if (platform.system() == 'Linux' and
+        platform.linux_distribution()[0] == 'Ubuntu'):
+    sys.argv.append('--install-layout=deb')
 
 setup(
     name=meld.conf.__package__,
