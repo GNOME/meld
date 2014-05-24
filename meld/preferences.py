@@ -223,7 +223,7 @@ class PreferencesDialog(Component):
         self.file_filters_vbox.pack_start(filefilter.widget, True, True, 0)
 
         textfilter = FilterList("text-filters", FilterEntry.REGEX)
-        self.text_filters_tab.pack_start(textfilter.widget, True, True, 0)
+        self.text_filters_vbox.pack_start(textfilter.widget, True, True, 0)
 
         columnlist = ColumnList("folder-columns")
         self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
