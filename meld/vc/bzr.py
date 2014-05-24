@@ -42,7 +42,6 @@ class Vc(_vc.CachedVc):
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)' (.*)$"
     CONFLICT_RE = "conflict in (.*)$"
-    #RENAMED_RE = u"^(.*) ⇒ (.*)$"
     RENAMED_RE = u"^(.*) => (.*)$"
 
 
@@ -189,9 +188,9 @@ class Vc(_vc.CachedVc):
             if _vc.STATE_RENAMED in states:
                 real_path_match = re.search(self.RENAMED_RE, name)
                 if real_path_match is not None:
-                    meta.append(name)
                     old_name = real_path_match.group(1)
                     name = real_path_match.group(2)
+                    meta.append("%s ➡ %s" % (old_name, name))
 
             path = os.path.join(branch_root, name)
             if old_name:
