@@ -10,8 +10,8 @@ LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
 UNINSTALLED = False
 
 # Installed from main script
-_ = None
-ngettext = None
+_ = lambda x: x
+ngettext = lambda x, *args: x
 
 
 def frozen():
