@@ -1,35 +1,36 @@
-# Finnish messages for meld 
+# Finnish messages for meld
 # Copyright (C) 2006-2008 Free Software Foundation Inc.
 # This file is distributed under the same license as the meld package.
+#
 # Ilkka Tuohela <hile@iki.fi>, 2006-2008.
 # Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2013, 2014.
-#
+# Lasse Liehu <lasse.liehu@gmail.com>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-05 10:44+0000\n"
-"PO-Revision-Date: 2014-03-05 22:07+0200\n"
-"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
-"Language-Team: suomi <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=meld&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-05-03 09:33+0000\n"
+"PO-Revision-Date: 2014-05-04 04:09+0300\n"
+"Last-Translator: Lasse Liehu <lasse.liehu@gmail.com>\n"
+"Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Lokalize 1.5\n"
 
-#: ../bin/meld:119
+#: ../bin/meld:134
 msgid "Cannot import: "
 msgstr "Tuonti ei onnistu: "
 
-#: ../bin/meld:122
+#: ../bin/meld:137
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld vaatii version %s tai uudemman."
 
-#: ../bin/meld:126
+#: ../bin/meld:141
 msgid "Meld does not support Python 3."
 msgstr "Meld ei tue Python 3:a."
 
@@ -180,7 +181,7 @@ msgstr ""
 
 #: ../data/org.gnome.meld.gschema.xml.h:24
 msgid "Custom font"
-msgstr "Omavalintainen kirjasin"
+msgstr "Omavalintainen fontti"
 
 #: ../data/org.gnome.meld.gschema.xml.h:25
 msgid ""
@@ -227,7 +228,7 @@ msgid ""
 "displayed."
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:34 ../data/ui/preferences.ui.h:28
+#: ../data/org.gnome.meld.gschema.xml.h:34 ../data/ui/preferences.ui.h:30
 msgid "Ignore symbolic links"
 msgstr "Älä huomioi symbolisia linkkejä"
 
@@ -306,62 +307,73 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.meld.gschema.xml.h:48
+#, fuzzy
+#| msgid "Start a version control comparison"
+msgid "Order for files in three-way version control merge comparisons"
+msgstr "Aloita versionhallinnan vertailu"
+
+#: ../data/org.gnome.meld.gschema.xml.h:49
+msgid ""
+"Choices for file order are remote/merge/local and local/merged/remote. This "
+"preference only affects three-way comparisons launched from the version "
+"control view, so is used solely for merges/conflict resolution within Meld."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:50
 msgid "Show margin in commit message editor"
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:49
+#: ../data/org.gnome.meld.gschema.xml.h:51
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:50
+#: ../data/org.gnome.meld.gschema.xml.h:52
 msgid "Margin column in commit message editor"
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:51
+#: ../data/org.gnome.meld.gschema.xml.h:53
 msgid ""
 "The column of the margin is at in the version control commit message editor."
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:52
+#: ../data/org.gnome.meld.gschema.xml.h:54
 msgid "Automatically hard-wrap commit messages"
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:53
+#: ../data/org.gnome.meld.gschema.xml.h:55
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the defined commit margin before commit."
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:54
+#: ../data/org.gnome.meld.gschema.xml.h:56
 #, fuzzy
 #| msgid "Version control view"
 msgid "Version control status filters"
 msgstr "Versionhallintanäkymä"
 
-#: ../data/org.gnome.meld.gschema.xml.h:55
+#: ../data/org.gnome.meld.gschema.xml.h:57
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:56
-#| msgid "File Filters"
+#: ../data/org.gnome.meld.gschema.xml.h:58
 msgid "Filename-based filters"
 msgstr "Tiedostonimeen pohjautuvat suodattimet"
 
-#: ../data/org.gnome.meld.gschema.xml.h:57
+#: ../data/org.gnome.meld.gschema.xml.h:59
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
 msgstr ""
 
-#: ../data/org.gnome.meld.gschema.xml.h:58
-#| msgid "Text Filters"
+#: ../data/org.gnome.meld.gschema.xml.h:60
 msgid "Text-based filters"
 msgstr "Tekstipohjaiset suodattimet"
 
-#: ../data/org.gnome.meld.gschema.xml.h:59
+#: ../data/org.gnome.meld.gschema.xml.h:61
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -397,7 +409,6 @@ msgid "_Help"
 msgstr "_Ohje"
 
 #: ../data/ui/application.ui.h:8
-#| msgid "_About Meld"
 msgid "_About"
 msgstr "_Tietoja"
 
@@ -433,7 +444,7 @@ msgstr "Kopioi oikealle"
 msgid "Delete selected"
 msgstr "Poista valittu"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1411
+#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1439
 msgid "Hide"
 msgstr "Piilota"
 
@@ -502,7 +513,7 @@ msgid "_Add"
 msgstr "_Lisää"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:673
+#: ../meld/vcview.py:723
 msgid "_Remove"
 msgstr "_Poista"
 
@@ -523,8 +534,7 @@ msgid "Move _Down"
 msgstr "Siirrä _alas"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:355
-#: ../meld/vcview.py:185
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:364 ../meld/vcview.py:203
 msgid "Name"
 msgstr "Nimi"
 
@@ -567,10 +577,28 @@ msgid ""
 msgstr ""
 
 #: ../data/ui/filediff.ui.h:7
+#, fuzzy
+#| msgid "_File"
+msgid "File 3"
+msgstr "_Tiedosto"
+
+#: ../data/ui/filediff.ui.h:8
+#, fuzzy
+#| msgid "_File"
+msgid "File 2"
+msgstr "_Tiedosto"
+
+#: ../data/ui/filediff.ui.h:9
+#, fuzzy
+#| msgid "_File"
+msgid "File 1"
+msgstr "_Tiedosto"
+
+#: ../data/ui/filediff.ui.h:10
 msgid "Revert unsaved changes to documents?"
 msgstr ""
 
-#: ../data/ui/filediff.ui.h:8
+#: ../data/ui/filediff.ui.h:11
 msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr "Seuraaviin asiakirjoihin tehdyt muutokset häviävät pysyvästi:\n"
 
@@ -653,144 +681,160 @@ msgid "Left is local, right is remote"
 msgstr "Vasemmalla on paikallinen, oikealla on etä"
 
 #: ../data/ui/preferences.ui.h:3
+#, fuzzy
+#| msgid "Left is remote, right is local"
+msgid "Remote, merge, local"
+msgstr "Vasemmalla on etä, oikealla on paikallinen"
+
+#: ../data/ui/preferences.ui.h:4
+#, fuzzy
+#| msgid "Left is local, right is remote"
+msgid "Local, merge, remote"
+msgstr "Vasemmalla on paikallinen, oikealla on etä"
+
+#: ../data/ui/preferences.ui.h:5
 msgid "1ns (ext4)"
 msgstr "1ns (ext4)"
 
-#: ../data/ui/preferences.ui.h:4
+#: ../data/ui/preferences.ui.h:6
 msgid "100ns (NTFS)"
 msgstr "100ns (NTFS)"
 
-#: ../data/ui/preferences.ui.h:5
+#: ../data/ui/preferences.ui.h:7
 msgid "1s (ext2/ext3)"
 msgstr "1s (ext2/ext3)"
 
-#: ../data/ui/preferences.ui.h:6
+#: ../data/ui/preferences.ui.h:8
 msgid "2s (VFAT)"
 msgstr "2s (VFAT)"
 
-#: ../data/ui/preferences.ui.h:7
+#: ../data/ui/preferences.ui.h:9
 msgid "Meld Preferences"
 msgstr "Meldin asetukset"
 
-#: ../data/ui/preferences.ui.h:8
-msgid "Font"
-msgstr "Kirjasin"
-
-#: ../data/ui/preferences.ui.h:9
-msgid "_Use the system fixed width font"
-msgstr "_Käytä järjestelmän tasalevyistä kirjasinta"
-
 #: ../data/ui/preferences.ui.h:10
-msgid "_Editor font:"
-msgstr "_Muokkaimen kirjasin:"
+msgid "Font"
+msgstr "Fontti"
 
 #: ../data/ui/preferences.ui.h:11
+msgid "_Use the system fixed width font"
+msgstr "_Käytä järjestelmän tasalevyistä fonttia"
+
+#: ../data/ui/preferences.ui.h:12
+msgid "_Editor font:"
+msgstr "_Muokkaimen fontti:"
+
+#: ../data/ui/preferences.ui.h:13
 msgid "Display"
 msgstr "Näytä"
 
-#: ../data/ui/preferences.ui.h:12
+#: ../data/ui/preferences.ui.h:14
 msgid "_Tab width:"
 msgstr "_Sarkaimen leveys:"
 
-#: ../data/ui/preferences.ui.h:13
+#: ../data/ui/preferences.ui.h:15
 msgid "_Insert spaces instead of tabs"
 msgstr "Lis_ää välilyöntejä sarkainten sijaan"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:16
 msgid "Enable text _wrapping"
 msgstr "Käytä te_kstin rivitystä"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:17
 msgid "Do not _split words over two lines"
 msgstr "Älä jaa sano_ja kahdelle riville"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../data/ui/preferences.ui.h:18
 msgid "Highlight _current line"
 msgstr "Ko_rosta nykyinen rivi"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../data/ui/preferences.ui.h:19
 msgid "Show _line numbers"
 msgstr "Näytä _rivinumerot"
 
-#: ../data/ui/preferences.ui.h:18
+#: ../data/ui/preferences.ui.h:20
 msgid "Show w_hitespace"
 msgstr "Näytä _tyhjätila"
 
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:21
 msgid "Use s_yntax highlighting"
 msgstr "Käytä s_yntaksin korostusta"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:22
 msgid "External Editor"
 msgstr "Ulkoinen muokkain"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../data/ui/preferences.ui.h:23
 msgid "Use _default system editor"
 msgstr "Käytä _järjestelmän oletusmuokkainta"
 
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:24
 msgid "Edito_r command:"
 msgstr "Muokkaimen kom_ento:"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../data/ui/preferences.ui.h:25
 msgid "Editor"
 msgstr "Muokkain"
 
-#: ../data/ui/preferences.ui.h:24
+#: ../data/ui/preferences.ui.h:26
 msgid "Shallow Comparison"
 msgstr "Pinnallinen vertailu"
 
-#: ../data/ui/preferences.ui.h:25
+#: ../data/ui/preferences.ui.h:27
 msgid "C_ompare files based only on size and timestamp"
 msgstr ""
 
-#: ../data/ui/preferences.ui.h:26
+#: ../data/ui/preferences.ui.h:28
 msgid "_Timestamp resolution:"
 msgstr ""
 
-#: ../data/ui/preferences.ui.h:27
+#: ../data/ui/preferences.ui.h:29
 msgid "Symbolic Links"
 msgstr "Symboliset linkit"
 
-#: ../data/ui/preferences.ui.h:29
+#: ../data/ui/preferences.ui.h:31
 msgid "Visible Columns"
 msgstr "Näkyvät sarakkeet"
 
-#: ../data/ui/preferences.ui.h:30
+#: ../data/ui/preferences.ui.h:32
 #, fuzzy
 #| msgid "_File Comparison"
 msgid "Folder Comparisons"
 msgstr "_Tiedostojen vertailu"
 
-#: ../data/ui/preferences.ui.h:31
+#: ../data/ui/preferences.ui.h:33
 #, fuzzy
 #| msgid "_File Comparison"
 msgid "Version Comparisons"
 msgstr "_Tiedostojen vertailu"
 
-#: ../data/ui/preferences.ui.h:32
-msgid "_When comparing file revisions:"
+#: ../data/ui/preferences.ui.h:34
+msgid "_Order when comparing file revisions:"
 msgstr ""
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:35
+msgid "Order when _merging files:"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:36
 #, fuzzy
 #| msgid "Log Message"
 msgid "Commit Messages"
 msgstr "Lokiviesti"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:37
 msgid "Show _right margin at:"
 msgstr ""
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:38
 msgid "Automatically _break lines at right margin on commit"
 msgstr ""
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:39
 msgid "Version Control"
 msgstr "Versionhallinta"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:40
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -800,11 +844,11 @@ msgstr ""
 "suoritettaessa hakemistojen vertailuja. Kukin malli on lista komentorivin "
 "tapaisia jokerimerkkejä erotettuna välilyönneillä."
 
-#: ../data/ui/preferences.ui.h:38 ../meld/meldwindow.py:104
+#: ../data/ui/preferences.ui.h:41 ../meld/meldwindow.py:103
 msgid "File Filters"
 msgstr "Tiedostosuodattimet"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:42
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -818,15 +862,15 @@ msgstr ""
 "vertailua. Jos lauseke sisältää ryhmiä, vain ryhmät korvataan. Katso "
 "lisätietoja käyttöohjeesta."
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:43
 msgid "Ignore changes which insert or delete blank lines"
 msgstr "Älä huomioi muutoksia, jotka lisäävät tai poistavat tyhjiä rivejä"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../data/ui/preferences.ui.h:44
 msgid "Text Filters"
 msgstr "Tekstisuodattimet"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:582
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:583
 msgid "New comparison"
 msgstr "Uusi vertalu"
 
@@ -885,7 +929,6 @@ msgid "C_ompare"
 msgstr "_Vertaa"
 
 #: ../data/ui/vcview.ui.h:3
-#| msgid "Commit"
 msgid "Co_mmit..."
 msgstr "Tee p_ysyvä muutos..."
 
@@ -970,7 +1013,6 @@ msgid "_Normal"
 msgstr "_Normaali"
 
 #: ../data/ui/vcview.ui.h:25
-#| msgid "Show ignored files"
 msgid "Show normal files"
 msgstr "Näytä normaalit tiedostot"
 
@@ -1007,7 +1049,6 @@ msgid "Previous logs:"
 msgstr "Edelliset lokit:"
 
 #: ../data/ui/vcview.ui.h:34
-#| msgid "Commit"
 msgid "Co_mmit"
 msgstr "Tee p_ysyvä muutos"
 
@@ -1030,55 +1071,55 @@ msgid "_Push commits"
 msgstr "_Toteuta"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:373
+#: ../meld/dirdiff.py:382
 msgid "Size"
 msgstr "Koko"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:381
+#: ../meld/dirdiff.py:390
 msgid "Modification time"
 msgstr "Muokkausaika"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:389
+#: ../meld/dirdiff.py:398
 msgid "Permissions"
 msgstr "Oikeudet"
 
-#: ../meld/dirdiff.py:548
+#: ../meld/dirdiff.py:546
 #, python-format
 msgid "Hide %s"
 msgstr "Piilota %s"
 
-#: ../meld/dirdiff.py:677 ../meld/dirdiff.py:699
+#: ../meld/dirdiff.py:675 ../meld/dirdiff.py:697
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Tutkitaan %s"
 
-#: ../meld/dirdiff.py:828
+#: ../meld/dirdiff.py:826
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Valmis"
 
-#: ../meld/dirdiff.py:835
+#: ../meld/dirdiff.py:833
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Tätä kansiota tutkittaessa tapahtui lukuisia virheitä"
 
-#: ../meld/dirdiff.py:836
+#: ../meld/dirdiff.py:834
 msgid "Files with invalid encodings found"
 msgstr "Virheellisellä merkistökoodauksella varustettuja tiedostoja löytyi"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:838
+#: ../meld/dirdiff.py:836
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Joillain tiedostoilla on virheellinen merkistö. Nimet ovat jotain tällaisia:"
 
-#: ../meld/dirdiff.py:840
+#: ../meld/dirdiff.py:838
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:842
+#: ../meld/dirdiff.py:840
 #, fuzzy
 #| msgid ""
 #| "You are running a case insensitive comparison on a case sensitive "
@@ -1092,17 +1133,17 @@ msgstr ""
 "tue kirjainkokoja. Jotkut tiedostot eivät näy:\n"
 "%s"
 
-#: ../meld/dirdiff.py:853
+#: ../meld/dirdiff.py:851
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "\"%s\" piilottanut \"%s\""
 
-#: ../meld/dirdiff.py:878 ../meld/filediff.py:1104 ../meld/filediff.py:1242
-#: ../meld/filediff.py:1413 ../meld/filediff.py:1443 ../meld/filediff.py:1445
+#: ../meld/dirdiff.py:876 ../meld/filediff.py:1117 ../meld/filediff.py:1265
+#: ../meld/filediff.py:1441 ../meld/filediff.py:1471 ../meld/filediff.py:1473
 msgid "Hi_de"
 msgstr "_Piilota"
 
-#: ../meld/dirdiff.py:909
+#: ../meld/dirdiff.py:907
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -1111,11 +1152,11 @@ msgstr ""
 "\"%s\" on olemassa.\n"
 "Korvataanko se?"
 
-#: ../meld/dirdiff.py:917
+#: ../meld/dirdiff.py:915
 msgid "Error copying file"
 msgstr "Virhe tiedostoa kopioitaessa"
 
-#: ../meld/dirdiff.py:918
+#: ../meld/dirdiff.py:916
 #, fuzzy, python-format
 #| msgid ""
 #| "Error copying '%s' to '%s'\n"
@@ -1131,221 +1172,217 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:941
+#: ../meld/dirdiff.py:939
 #, python-format
-#| msgid ""
-#| "Error removing %s\n"
-#| "\n"
-#| "%s."
 msgid "Error deleting %s"
 msgstr "Virhe poistettaessa %s"
 
-#: ../meld/filediff.py:231
+#: ../meld/filediff.py:243
 msgid "Format as Patch..."
 msgstr "Muotoile paikkatiedosto..."
 
-#: ../meld/filediff.py:232
+#: ../meld/filediff.py:244
 msgid "Create a patch using differences between files"
 msgstr "Luo paikkatiedosto käyttäen tiedostojen välisiä eroja"
 
-#: ../meld/filediff.py:234
+#: ../meld/filediff.py:246
 msgid "Save A_ll"
 msgstr "Tallenna _kaikki"
 
-#: ../meld/filediff.py:235
+#: ../meld/filediff.py:247
 msgid "Save all files in the current comparison"
 msgstr ""
 
-#: ../meld/filediff.py:238
+#: ../meld/filediff.py:250
 msgid "Revert files to their saved versions"
 msgstr ""
 
-#: ../meld/filediff.py:240
+#: ../meld/filediff.py:252
 msgid "Add Synchronization Point"
 msgstr "Lisää synkronointipiste"
 
-#: ../meld/filediff.py:241
+#: ../meld/filediff.py:253
 msgid "Add a manual point for synchronization of changes between files"
 msgstr ""
 
-#: ../meld/filediff.py:244
+#: ../meld/filediff.py:256
 msgid "Clear Synchronization Points"
 msgstr "Tyhjennä synkronointipisteet"
 
-#: ../meld/filediff.py:245
+#: ../meld/filediff.py:257
 msgid "Clear manual change sychronization points"
 msgstr ""
 
-#: ../meld/filediff.py:247
+#: ../meld/filediff.py:259
 msgid "Previous Conflict"
 msgstr "Edellinen ristiriita"
 
-#: ../meld/filediff.py:248
+#: ../meld/filediff.py:260
 msgid "Go to the previous conflict"
 msgstr "Siirry edelliseen ristiriitaan"
 
-#: ../meld/filediff.py:250
+#: ../meld/filediff.py:262
 msgid "Next Conflict"
 msgstr "Seuraava ristiriita"
 
-#: ../meld/filediff.py:251
+#: ../meld/filediff.py:263
 msgid "Go to the next conflict"
 msgstr "Siirry seuraavaan ristiriitaan"
 
-#: ../meld/filediff.py:253
+#: ../meld/filediff.py:265
 msgid "Push to Left"
 msgstr ""
 
-#: ../meld/filediff.py:254
+#: ../meld/filediff.py:266
 msgid "Push current change to the left"
 msgstr ""
 
-#: ../meld/filediff.py:257
+#: ../meld/filediff.py:269
 #, fuzzy
 #| msgid "Copy To Right"
 msgid "Push to Right"
 msgstr "Kopioi oikealle"
 
-#: ../meld/filediff.py:258
+#: ../meld/filediff.py:270
 msgid "Push current change to the right"
 msgstr ""
 
-#: ../meld/filediff.py:262
+#: ../meld/filediff.py:274
 msgid "Pull from Left"
 msgstr ""
 
-#: ../meld/filediff.py:263
+#: ../meld/filediff.py:275
 #, fuzzy
 #| msgid "Copy all changes from right pane to left pane"
 msgid "Pull change from the left"
 msgstr "Kopioi kaikki muutokset oikeasta paneelista vasempaan"
 
-#: ../meld/filediff.py:266
+#: ../meld/filediff.py:278
 #, fuzzy
 #| msgid "Copy All To _Right"
 msgid "Pull from Right"
 msgstr "Kopioi kaikki _Oikealle"
 
-#: ../meld/filediff.py:267
+#: ../meld/filediff.py:279
 #, fuzzy
 #| msgid "Copy all changes from left pane to right pane"
 msgid "Pull change from the right"
 msgstr "Kopioi kaikki muutokset vasemmasta paneelista oikeaan"
 
-#: ../meld/filediff.py:269
+#: ../meld/filediff.py:281
 #, fuzzy
 #| msgid "Copy To Left"
 msgid "Copy Above Left"
 msgstr "Kopioi vasemmalle"
 
-#: ../meld/filediff.py:270
+#: ../meld/filediff.py:282
 msgid "Copy change above the left chunk"
 msgstr ""
 
-#: ../meld/filediff.py:272
+#: ../meld/filediff.py:284
 #, fuzzy
 #| msgid "Copy To Left"
 msgid "Copy Below Left"
 msgstr "Kopioi vasemmalle"
 
-#: ../meld/filediff.py:273
+#: ../meld/filediff.py:285
 msgid "Copy change below the left chunk"
 msgstr ""
 
-#: ../meld/filediff.py:275
+#: ../meld/filediff.py:287
 #, fuzzy
 #| msgid "Copy To Right"
 msgid "Copy Above Right"
 msgstr "Kopioi oikealle"
 
-#: ../meld/filediff.py:276
+#: ../meld/filediff.py:288
 #, fuzzy
 #| msgid "Copy all changes from left pane to right pane"
 msgid "Copy change above the right chunk"
 msgstr "Kopioi kaikki muutokset vasemmasta paneelista oikeaan"
 
-#: ../meld/filediff.py:278
+#: ../meld/filediff.py:290
 #, fuzzy
 #| msgid "Copy To Right"
 msgid "Copy Below Right"
 msgstr "Kopioi oikealle"
 
-#: ../meld/filediff.py:279
+#: ../meld/filediff.py:291
 #, fuzzy
 #| msgid "Copy all changes from left pane to right pane"
 msgid "Copy change below the right chunk"
 msgstr "Kopioi kaikki muutokset vasemmasta paneelista oikeaan"
 
-#: ../meld/filediff.py:281
+#: ../meld/filediff.py:293
 msgid "Delete"
 msgstr "Poista"
 
-#: ../meld/filediff.py:282
+#: ../meld/filediff.py:294
 msgid "Delete change"
 msgstr "Poista muutos"
 
-#: ../meld/filediff.py:284
+#: ../meld/filediff.py:296
 msgid "Merge All from Left"
 msgstr "Yhdistä kaikki vasemmalta"
 
-#: ../meld/filediff.py:285
+#: ../meld/filediff.py:297
 msgid "Merge all non-conflicting changes from the left"
 msgstr ""
 
-#: ../meld/filediff.py:287
+#: ../meld/filediff.py:299
 msgid "Merge All from Right"
 msgstr "Yhdistä kaikki oikealta"
 
-#: ../meld/filediff.py:288
+#: ../meld/filediff.py:300
 msgid "Merge all non-conflicting changes from the right"
 msgstr ""
 
-#: ../meld/filediff.py:290
+#: ../meld/filediff.py:302
 msgid "Merge All"
 msgstr "Yhdistä kaikki"
 
-#: ../meld/filediff.py:291
+#: ../meld/filediff.py:303
 #, fuzzy
 #| msgid "Copy all changes from left pane to right pane"
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "Kopioi kaikki muutokset vasemmasta paneelista oikeaan"
 
-#: ../meld/filediff.py:295
+#: ../meld/filediff.py:307
 msgid "Cycle Through Documents"
 msgstr "Vaihda asiakirjojen välillä"
 
-#: ../meld/filediff.py:296
+#: ../meld/filediff.py:308
 msgid "Move keyboard focus to the next document in this comparison"
 msgstr "Siirrä näppäimistön kohdistus seuraavaan vertailun asiakirjaan"
 
-#: ../meld/filediff.py:302
+#: ../meld/filediff.py:314
 msgid "Lock Scrolling"
 msgstr "Lukitse vieritys"
 
-#: ../meld/filediff.py:303
+#: ../meld/filediff.py:315
 msgid "Lock scrolling of all panes"
 msgstr ""
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:490
+#: ../meld/filediff.py:479
 #, fuzzy
 #| msgid "INS,OVR"
 msgid "INS"
 msgstr "INS, OVR"
 
-#: ../meld/filediff.py:490
+#: ../meld/filediff.py:479
 #, fuzzy
 #| msgid "INS,OVR"
 msgid "OVR"
 msgstr "INS, OVR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:492
+#: ../meld/filediff.py:481
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Rv %i, sar %i"
 
-#: ../meld/filediff.py:829
+#: ../meld/filediff.py:818
 #, fuzzy, python-format
 #| msgid ""
 #| "Regular expression '%s' changed the number of lines in the file. "
@@ -1357,88 +1394,107 @@ msgstr ""
 "Säännöllinen lauseke \"%s\" muutti tiedoston rivien määrää, joten vertailu "
 "on nyt virheellinen. Katso opaskirjasta lisätietoja."
 
-#: ../meld/filediff.py:1092
+#: ../meld/filediff.py:887
+msgid "Mark conflict as resolved?"
+msgstr ""
+
+#: ../meld/filediff.py:889
+msgid ""
+"If the conflict was resolved successfully, you may mark it as resolved now."
+msgstr ""
+
+#: ../meld/filediff.py:891
+#, fuzzy
+#| msgid "_Cancel"
+msgid "Cancel"
+msgstr "_Peru"
+
+#: ../meld/filediff.py:892
+msgid "Mark _Resolved"
+msgstr ""
+
+#: ../meld/filediff.py:1105
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s} aseta paneelien lukumäärä"
 
-#: ../meld/filediff.py:1098
+#: ../meld/filediff.py:1111
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] avataan tiedostoja"
 
-#: ../meld/filediff.py:1121 ../meld/filediff.py:1131 ../meld/filediff.py:1144
-#: ../meld/filediff.py:1150
+#: ../meld/filediff.py:1134 ../meld/filediff.py:1144 ../meld/filediff.py:1157
+#: ../meld/filediff.py:1163
 msgid "Could not read file"
 msgstr "Tiedoston lukeminen epäonnistui"
 
-#: ../meld/filediff.py:1122
+#: ../meld/filediff.py:1135
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] luetaan tiedostoja"
 
-#: ../meld/filediff.py:1132
+#: ../meld/filediff.py:1145
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s vaikuttaa binääritiedostolta."
 
-#: ../meld/filediff.py:1145
+#: ../meld/filediff.py:1158
 #, fuzzy, python-format
 #| msgid "I tried encodings %s."
 msgid "%s is not in encodings: %s"
 msgstr "Yritettiin merkistöjä %s."
 
-#: ../meld/filediff.py:1180
+#: ../meld/filediff.py:1193
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] lasketaan eroja"
 
-#: ../meld/filediff.py:1237
+#: ../meld/filediff.py:1260
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Tiedosto %s on muuttunut levyllä"
 
-#: ../meld/filediff.py:1238
+#: ../meld/filediff.py:1261
 msgid "Do you want to reload the file?"
 msgstr "Haluatko ladata tiedoston uudelleen?"
 
-#: ../meld/filediff.py:1241
+#: ../meld/filediff.py:1264
 msgid "_Reload"
 msgstr "_Lataa uudestaan"
 
-#: ../meld/filediff.py:1402
+#: ../meld/filediff.py:1430
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr ""
 
-#: ../meld/filediff.py:1408
+#: ../meld/filediff.py:1436
 msgid "Files are identical"
 msgstr "Tiedostot ovat identtiset"
 
-#: ../meld/filediff.py:1416
+#: ../meld/filediff.py:1444
 msgid "Show without filters"
 msgstr "Näytä ilman suodattimia"
 
-#: ../meld/filediff.py:1438
+#: ../meld/filediff.py:1466
 msgid "Change highlighting incomplete"
 msgstr ""
 
-#: ../meld/filediff.py:1439
+#: ../meld/filediff.py:1467
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
 msgstr ""
 
-#: ../meld/filediff.py:1447
+#: ../meld/filediff.py:1475
 msgid "Keep highlighting"
 msgstr "Säilytä korostus"
 
-#: ../meld/filediff.py:1449
+#: ../meld/filediff.py:1477
 msgid "_Keep highlighting"
 msgstr "_Säilytä korostus"
 
-#: ../meld/filediff.py:1580
+#: ../meld/filediff.py:1608
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -1447,7 +1503,7 @@ msgstr ""
 "\"%s\" on olemassa\n"
 "Korvataanko se?"
 
-#: ../meld/filediff.py:1593
+#: ../meld/filediff.py:1621
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -1458,36 +1514,36 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1604
+#: ../meld/filediff.py:1632
 msgid "Save Left Pane As"
 msgstr ""
 
-#: ../meld/filediff.py:1606
+#: ../meld/filediff.py:1634
 msgid "Save Middle Pane As"
 msgstr ""
 
-#: ../meld/filediff.py:1608
+#: ../meld/filediff.py:1636
 msgid "Save Right Pane As"
 msgstr ""
 
-#: ../meld/filediff.py:1619
+#: ../meld/filediff.py:1649
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Tiedosto %s on muuttunut levyllä sen avaamisen jälkeen"
 
-#: ../meld/filediff.py:1621
+#: ../meld/filediff.py:1651
 msgid "If you save it, any external changes will be lost."
 msgstr "Jos tallennat sen, kaikki ulkoiset muutokset häviävät pysyvästi."
 
-#: ../meld/filediff.py:1624
+#: ../meld/filediff.py:1654
 msgid "Save Anyway"
 msgstr "Tallenna silti"
 
-#: ../meld/filediff.py:1625
+#: ../meld/filediff.py:1655
 msgid "Don't Save"
 msgstr "Älä tallenna"
 
-#: ../meld/filediff.py:1649
+#: ../meld/filediff.py:1679
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -1498,7 +1554,7 @@ msgstr ""
 "\n"
 "Mitä muotoa haluat käyttää?"
 
-#: ../meld/filediff.py:1665
+#: ../meld/filediff.py:1695
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -1507,124 +1563,124 @@ msgstr ""
 "\"%s\" sisältää merkkejä, joita ei voi esittää merkistössä \"%s\".\n"
 "Haluatko tallentaa UTF-8 -muodossa?"
 
-#: ../meld/filediff.py:2024
+#: ../meld/filediff.py:2056
 msgid "Live comparison updating disabled"
 msgstr ""
 
-#: ../meld/filediff.py:2025
+#: ../meld/filediff.py:2057
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
 "resume when synchronization points are cleared."
 msgstr ""
 
-#: ../meld/filemerge.py:49
+#: ../meld/filemerge.py:48
 #, fuzzy, python-format
 #| msgid "[%s] Opening files"
 msgid "[%s] Merging files"
 msgstr "[%s] avataan tiedostoja"
 
-#: ../meld/gutterrendererchunk.py:91
+#: ../meld/gutterrendererchunk.py:90
 #, fuzzy
 #| msgid "Copy _Left"
 msgid "Copy _up"
 msgstr "Kopioi _vasemmalle"
 
-#: ../meld/gutterrendererchunk.py:92
+#: ../meld/gutterrendererchunk.py:91
 #, fuzzy
 #| msgid "Copy _Left"
 msgid "Copy _down"
 msgstr "Kopioi _vasemmalle"
 
-#: ../meld/meldapp.py:156
+#: ../meld/meldapp.py:160
 #, fuzzy
 #| msgid "Wrong number of arguments (Got %i)"
 msgid "wrong number of arguments supplied to --diff"
 msgstr "Virheellinen määrä argumentteja (saatiin %i)"
 
-#: ../meld/meldapp.py:161
+#: ../meld/meldapp.py:165
 msgid "Start with an empty window"
 msgstr "Aloita tyhjällä ikkunalla"
 
-#: ../meld/meldapp.py:162 ../meld/meldapp.py:164
+#: ../meld/meldapp.py:166 ../meld/meldapp.py:168
 msgid "file"
 msgstr "tiedosto"
 
-#: ../meld/meldapp.py:162 ../meld/meldapp.py:166
+#: ../meld/meldapp.py:166 ../meld/meldapp.py:170
 msgid "folder"
 msgstr "kansio"
 
-#: ../meld/meldapp.py:163
+#: ../meld/meldapp.py:167
 msgid "Start a version control comparison"
 msgstr "Aloita versionhallinnan vertailu"
 
-#: ../meld/meldapp.py:165
+#: ../meld/meldapp.py:169
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Aloita 2- tai 3-osainen tiedostovertailu"
 
-#: ../meld/meldapp.py:167
+#: ../meld/meldapp.py:171
 #, fuzzy
 #| msgid "Start a 2- or 3-way file comparison"
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Aloita 2- tai 3-osainen tiedostovertailu"
 
-#: ../meld/meldapp.py:205
+#: ../meld/meldapp.py:209
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld on työkalu tiedostojen ja kansioiden vertailuun."
 
-#: ../meld/meldapp.py:209
+#: ../meld/meldapp.py:213
 msgid "Set label to use instead of file name"
 msgstr "Aseta käytettävä otsikko tiedostonimen sijasta"
 
-#: ../meld/meldapp.py:212
+#: ../meld/meldapp.py:216
 msgid "Open a new tab in an already running instance"
 msgstr "Avaa uusi välilehti jo avoinna olevassa ikkunassa"
 
-#: ../meld/meldapp.py:215
+#: ../meld/meldapp.py:219
 msgid "Automatically compare all differing files on startup"
 msgstr ""
 
-#: ../meld/meldapp.py:218
+#: ../meld/meldapp.py:222
 msgid "Ignored for compatibility"
 msgstr "Jätetty huomioimatta yhteensopivuuden takaamiseksi"
 
-#: ../meld/meldapp.py:222
+#: ../meld/meldapp.py:226
 msgid "Set the target file for saving a merge result"
 msgstr ""
 
-#: ../meld/meldapp.py:225
+#: ../meld/meldapp.py:229
 msgid "Automatically merge files"
 msgstr ""
 
-#: ../meld/meldapp.py:229
+#: ../meld/meldapp.py:233
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr ""
 
-#: ../meld/meldapp.py:233
+#: ../meld/meldapp.py:237
 msgid "Create a diff tab for the supplied files or folders"
 msgstr ""
 
-#: ../meld/meldapp.py:245
+#: ../meld/meldapp.py:249
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr ""
 
-#: ../meld/meldapp.py:248
+#: ../meld/meldapp.py:252
 msgid "can't auto-merge less than 3 files"
 msgstr ""
 
-#: ../meld/meldapp.py:250
+#: ../meld/meldapp.py:254
 #, fuzzy
 #| msgid "Flatten directories"
 msgid "can't auto-merge directories"
 msgstr "Litistä kansiot"
 
-#: ../meld/meldapp.py:260
+#: ../meld/meldapp.py:264
 msgid "Error reading saved comparison file"
 msgstr ""
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:125
+#: ../meld/meldbuffer.py:131
 msgid "<unnamed>"
 msgstr "<nimetön>"
 
@@ -1632,220 +1688,218 @@ msgstr "<nimetön>"
 msgid "untitled"
 msgstr "nimeämätön"
 
-#: ../meld/meldwindow.py:49
+#: ../meld/meldwindow.py:48
 msgid "_File"
 msgstr "_Tiedosto"
 
-#: ../meld/meldwindow.py:50
+#: ../meld/meldwindow.py:49
 msgid "_New Comparison..."
 msgstr "_Uusi vertailu..."
 
-#: ../meld/meldwindow.py:51
+#: ../meld/meldwindow.py:50
 msgid "Start a new comparison"
 msgstr "Aloita uusi vertailu"
 
-#: ../meld/meldwindow.py:54
+#: ../meld/meldwindow.py:53
 msgid "Save the current file"
 msgstr "Tallenna nykyinen tiedosto"
 
-#: ../meld/meldwindow.py:56
+#: ../meld/meldwindow.py:55
 msgid "Save As..."
 msgstr "Tallenna _nimellä..."
 
-#: ../meld/meldwindow.py:57
+#: ../meld/meldwindow.py:56
 msgid "Save the current file with a different name"
 msgstr "Tallenna nykyinen tiedosto toisella nimellä"
 
-#: ../meld/meldwindow.py:60
+#: ../meld/meldwindow.py:59
 msgid "Close the current file"
 msgstr "Sulje nykyinen tiedosto"
 
-#: ../meld/meldwindow.py:63
+#: ../meld/meldwindow.py:62
 msgid "_Edit"
 msgstr "_Muokkaa"
 
-#: ../meld/meldwindow.py:65
+#: ../meld/meldwindow.py:64
 msgid "Undo the last action"
 msgstr "Peru viimeisin toiminto"
 
-#: ../meld/meldwindow.py:68
+#: ../meld/meldwindow.py:67
 msgid "Redo the last undone action"
 msgstr "Tee viimeisin peruttu toiminto uudestaan"
 
-#: ../meld/meldwindow.py:70
+#: ../meld/meldwindow.py:69
 msgid "Cut the selection"
 msgstr "Leikkaa valinta"
 
-#: ../meld/meldwindow.py:72
+#: ../meld/meldwindow.py:71
 msgid "Copy the selection"
 msgstr "Kopioi valinta"
 
-#: ../meld/meldwindow.py:74
+#: ../meld/meldwindow.py:73
 msgid "Paste the clipboard"
 msgstr "Liitä leikepöydältä"
 
-#: ../meld/meldwindow.py:76
+#: ../meld/meldwindow.py:75
 msgid "Find..."
 msgstr "Etsi..."
 
-#: ../meld/meldwindow.py:76
+#: ../meld/meldwindow.py:75
 msgid "Search for text"
 msgstr "Etsi tekstiä"
 
-#: ../meld/meldwindow.py:78
+#: ../meld/meldwindow.py:77
 msgid "Find Ne_xt"
 msgstr "Etsi _seuraava"
 
-#: ../meld/meldwindow.py:79
+#: ../meld/meldwindow.py:78
 msgid "Search forwards for the same text"
 msgstr "Etsi samaa tekstiä eteenpäin"
 
-#: ../meld/meldwindow.py:81
+#: ../meld/meldwindow.py:80
 msgid "Find _Previous"
 msgstr "Etsi e_dellinen"
 
-#: ../meld/meldwindow.py:82
+#: ../meld/meldwindow.py:81
 msgid "Search backwards for the same text"
 msgstr "Etsi samaa tekstiä taaksepäin"
 
-#: ../meld/meldwindow.py:85
+#: ../meld/meldwindow.py:84
 msgid "_Replace..."
 msgstr "_Korvaa..."
 
-#: ../meld/meldwindow.py:86
+#: ../meld/meldwindow.py:85
 msgid "Find and replace text"
 msgstr "Etsi ja korvaa tekstiä"
 
-#: ../meld/meldwindow.py:89
+#: ../meld/meldwindow.py:88
 msgid "_Changes"
 msgstr "_Muutokset"
 
-#: ../meld/meldwindow.py:90
+#: ../meld/meldwindow.py:89
 msgid "Next Change"
 msgstr "Seuraava muutos"
 
-#: ../meld/meldwindow.py:91
+#: ../meld/meldwindow.py:90
 msgid "Go to the next change"
 msgstr "Siirry seuraavaan muutokseen"
 
-#: ../meld/meldwindow.py:93
+#: ../meld/meldwindow.py:92
 msgid "Previous Change"
 msgstr "Edellinen muutos"
 
-#: ../meld/meldwindow.py:94
+#: ../meld/meldwindow.py:93
 msgid "Go to the previous change"
 msgstr "Siirry edelliseen muutokseen"
 
-#: ../meld/meldwindow.py:96
+#: ../meld/meldwindow.py:95
 msgid "Open Externally"
 msgstr "Avaa ulkoisesti"
 
-#: ../meld/meldwindow.py:97
+#: ../meld/meldwindow.py:96
 msgid "Open selected file or directory in the default external application"
 msgstr "Avaa valittu tiedosto tai kansio ulkoisessa oletussovelluksessa"
 
-#: ../meld/meldwindow.py:101
+#: ../meld/meldwindow.py:100
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../meld/meldwindow.py:102
-#| msgid "Status"
+#: ../meld/meldwindow.py:101
 msgid "File Status"
 msgstr "Tiedoston tila"
 
-#: ../meld/meldwindow.py:103
-#| msgid "Status"
+#: ../meld/meldwindow.py:102
 msgid "Version Status"
 msgstr "Version tila"
 
-#: ../meld/meldwindow.py:106
+#: ../meld/meldwindow.py:105
 msgid "Stop the current action"
 msgstr "Pysäytä nykyinen toiminto"
 
-#: ../meld/meldwindow.py:109
+#: ../meld/meldwindow.py:108
 msgid "Refresh the view"
 msgstr "Päivitä näkymä"
 
-#: ../meld/meldwindow.py:112
+#: ../meld/meldwindow.py:111
 msgid "_Tabs"
 msgstr "_Välilehdet"
 
-#: ../meld/meldwindow.py:113
+#: ../meld/meldwindow.py:112
 msgid "_Previous Tab"
 msgstr "_Edellinen välilehti"
 
-#: ../meld/meldwindow.py:114
+#: ../meld/meldwindow.py:113
 msgid "Activate previous tab"
 msgstr "Vaihda edelliseen välilehteen"
 
-#: ../meld/meldwindow.py:116
+#: ../meld/meldwindow.py:115
 msgid "_Next Tab"
 msgstr "_Seuraava välilehti"
 
-#: ../meld/meldwindow.py:117
+#: ../meld/meldwindow.py:116
 msgid "Activate next tab"
 msgstr "Vaihda seuraavaan välilehteen"
 
-#: ../meld/meldwindow.py:120
+#: ../meld/meldwindow.py:119
 msgid "Move Tab _Left"
 msgstr "Sii_rrä välilehti vasemmalle"
 
-#: ../meld/meldwindow.py:121
+#: ../meld/meldwindow.py:120
 msgid "Move current tab to left"
 msgstr "Siirrä nykyinen välilehti vasemmalle"
 
-#: ../meld/meldwindow.py:124
+#: ../meld/meldwindow.py:123
 msgid "Move Tab _Right"
 msgstr "Siirrä välilehti _oikealle"
 
-#: ../meld/meldwindow.py:125
+#: ../meld/meldwindow.py:124
 msgid "Move current tab to right"
 msgstr "Siirrä nykyinen välilehti oikealle"
 
-#: ../meld/meldwindow.py:129
+#: ../meld/meldwindow.py:128
 msgid "Fullscreen"
 msgstr "Koko näyttö"
 
-#: ../meld/meldwindow.py:130
+#: ../meld/meldwindow.py:129
 msgid "View the comparison in fullscreen"
 msgstr "Näytä vertailu koko näytön tilassa"
 
-#: ../meld/meldwindow.py:132
+#: ../meld/meldwindow.py:131
 msgid "_Toolbar"
 msgstr "_Työkalupalkki"
 
-#: ../meld/meldwindow.py:133
+#: ../meld/meldwindow.py:132
 msgid "Show or hide the toolbar"
 msgstr "Näytä tai piilota työkalupalkki"
 
-#: ../meld/meldwindow.py:142
+#: ../meld/meldwindow.py:141
 msgid "Open Recent"
 msgstr "Avaa viimeisimpiä"
 
-#: ../meld/meldwindow.py:143
+#: ../meld/meldwindow.py:142
 msgid "Open recent files"
 msgstr "Avaa viimeisimpiä tiedostoja"
 
-#: ../meld/meldwindow.py:505
+#: ../meld/meldwindow.py:506
 msgid "Switch to this tab"
 msgstr "Vaihda tähän välilehteen"
 
-#: ../meld/meldwindow.py:626
+#: ../meld/meldwindow.py:629
 #, fuzzy
 #| msgid "Cannot compare a mixture of files and directories.\n"
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Hakemistoja ja tiedostoja ei voi verrata samanaikaisesti.\n"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:178
+#: ../meld/misc.py:213
 msgid "[None]"
 msgstr "[Ei mitään]"
 
-#: ../meld/preferences.py:34
+#: ../meld/preferences.py:33
 msgid "label"
 msgstr "otsikko"
 
-#: ../meld/preferences.py:34
+#: ../meld/preferences.py:33
 msgid "pattern"
 msgstr "malli"
 
@@ -1888,7 +1942,7 @@ msgid_plural "%d branches"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../meld/vc/git.py:341
+#: ../meld/vc/git.py:348
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr ""
@@ -1910,7 +1964,6 @@ msgid "Remote"
 msgstr "Etä"
 
 #: ../meld/vc/_vc.py:65
-#| msgid "Show unversioned files"
 msgid "Unversioned"
 msgstr "Versioimaton"
 
@@ -1923,12 +1976,10 @@ msgid "Newly added"
 msgstr ""
 
 #: ../meld/vc/_vc.py:72
-#| msgid "Next Conflict"
 msgid "Conflict"
 msgstr "Ristiriita"
 
 #: ../meld/vc/_vc.py:73
-#| msgid "_Remove"
 msgid "Removed"
 msgstr "Poistettu"
 
@@ -1940,665 +1991,120 @@ msgstr ""
 msgid "Not present"
 msgstr ""
 
-#: ../meld/vcview.py:215 ../meld/vcview.py:387
+#: ../meld/vcview.py:233 ../meld/vcview.py:401
 msgid "Location"
 msgstr "Sijainti"
 
-#: ../meld/vcview.py:216
+#: ../meld/vcview.py:234
 msgid "Status"
 msgstr "Tila"
 
-#: ../meld/vcview.py:217
+#: ../meld/vcview.py:235
 msgid "Revision"
 msgstr ""
 
-#: ../meld/vcview.py:218
+#: ../meld/vcview.py:236
 msgid "Options"
 msgstr "Vaihtoehdot"
 
 #. TRANSLATORS: this is an error message when a version control
 #. application isn't installed or can't be found
-#: ../meld/vcview.py:298
+#: ../meld/vcview.py:312
 #, python-format
 msgid "%s not installed"
 msgstr "%s ei ole asennettu"
 
 #. TRANSLATORS: this is an error message when a version
 #. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:302
+#: ../meld/vcview.py:316
 msgid "Invalid repository"
 msgstr "Virheellinen tietovarasto"
 
-#: ../meld/vcview.py:311
+#: ../meld/vcview.py:325
 #, python-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: ../meld/vcview.py:313 ../meld/vcview.py:321
+#: ../meld/vcview.py:327 ../meld/vcview.py:335
 msgid "None"
 msgstr "Ei mitään"
 
-#: ../meld/vcview.py:332
+#: ../meld/vcview.py:346
 msgid "No valid version control system found in this folder"
 msgstr "Tästä kansiosta ei löytynyt kelvollista versionhallintajärjestelmää"
 
-#: ../meld/vcview.py:334
+#: ../meld/vcview.py:348
 msgid "Only one version control system found in this folder"
 msgstr "Tästä kansiosta löytyi vain yksi versionhallintajärjestelmä"
 
-#: ../meld/vcview.py:336
+#: ../meld/vcview.py:350
 msgid "Choose which version control system to use"
 msgstr "Valitse käytettävä versionhallinta"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:387
+#: ../meld/vcview.py:401
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:401 ../meld/vcview.py:409
+#: ../meld/vcview.py:415 ../meld/vcview.py:423
 #, python-format
 msgid "Scanning %s"
 msgstr "Tutkitaan %s"
 
-#: ../meld/vcview.py:443
+#: ../meld/vcview.py:458
 msgid "(Empty)"
 msgstr "(tyhjä)"
 
-#: ../meld/vcview.py:667
+#: ../meld/vcview.py:498
+#, python-format
+msgid "%s — local"
+msgstr ""
+
+#: ../meld/vcview.py:499
+#, python-format
+msgid "%s — remote"
+msgstr ""
+
+#: ../meld/vcview.py:507
+#, fuzzy, python-format
+#| msgid "Left is local, right is remote"
+msgid "%s (local, merge, remote)"
+msgstr "Vasemmalla on paikallinen, oikealla on etä"
+
+#: ../meld/vcview.py:512
+#, fuzzy, python-format
+#| msgid "Left is remote, right is local"
+msgid "%s (remote, merge, local)"
+msgstr "Vasemmalla on etä, oikealla on paikallinen"
+
+#: ../meld/vcview.py:523
+#, fuzzy, python-format
+#| msgid "Invalid repository"
+msgid "%s — repository"
+msgstr "Virheellinen tietovarasto"
+
+#: ../meld/vcview.py:529
+#, python-format
+msgid "%s (working, repository)"
+msgstr ""
+
+#: ../meld/vcview.py:533
+#, python-format
+msgid "%s (repository, working)"
+msgstr ""
+
+#: ../meld/vcview.py:717
 msgid "Remove folder and all its files?"
 msgstr "Poistetaanko kansio ja kaikki sen tiedostot?"
 
-#: ../meld/vcview.py:669
+#: ../meld/vcview.py:719
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
 msgstr ""
 
-#: ../meld/vcview.py:703
+#: ../meld/vcview.py:753
 #, python-format
 msgid "Error removing %s"
 msgstr "Virhe kohdetta %s poistaessa"
-
-#~ msgid "%i second"
-#~ msgid_plural "%i seconds"
-#~ msgstr[0] "%i sekunti"
-#~ msgstr[1] "%i sekuntia"
-
-#~ msgid "%i minute"
-#~ msgid_plural "%i minutes"
-#~ msgstr[0] "%i minuutti"
-#~ msgstr[1] "%i minuuttia"
-
-#~ msgid "%i hour"
-#~ msgid_plural "%i hours"
-#~ msgstr[0] "%i tunti"
-#~ msgstr[1] "%i tuntia"
-
-#~ msgid "%i day"
-#~ msgid_plural "%i days"
-#~ msgstr[0] "%i päivä"
-#~ msgstr[1] "%i päivää"
-
-#~ msgid "%i week"
-#~ msgid_plural "%i weeks"
-#~ msgstr[0] "%i viikko"
-#~ msgstr[1] "%i viikkoa"
-
-#~ msgid "%i month"
-#~ msgid_plural "%i months"
-#~ msgstr[0] "%i kuukausi"
-#~ msgstr[1] "%i kuukautta"
-
-#~ msgid "%i year"
-#~ msgid_plural "%i years"
-#~ msgstr[0] "%i vuosi"
-#~ msgstr[1] "%i vuotta"
-
-#~ msgid "dir"
-#~ msgstr "kansio"
-
-#~ msgid "Start a 2- or 3-way directory comparison"
-#~ msgstr "Aloita 2- tai 3-osainen kansiovertailu"
-
-#~ msgid "_Statusbar"
-#~ msgstr "T_ilapalkki"
-
-#~ msgid "Show or hide the statusbar"
-#~ msgstr "Näytä tai piilota tilapalkki"
-
-#, fuzzy
-#~| msgid ""
-#~| "Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:"
-#~| "Removed:Missing"
-#~ msgid ""
-#~ "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:"
-#~ "Missing:Not present"
-#~ msgstr ""
-#~ "Ei huomioitu:Ei versiohallinnassa:::Virhe::Lisätty:Muokattu:"
-#~ "<b>Ristiriita</b>:Poistettu:"
-
-#~ msgid "Loading"
-#~ msgstr "Lataaminen"
-
-#~ msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-#~ msgstr "Kokeile ladattaessa näitä merkistökoodauksiä järjestyksessä."
-
-#~ msgid "Encoding"
-#~ msgstr "Merkistö"
-
-#~ msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-#~ msgstr "Varmuuuskopiot\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-
-#, fuzzy
-#~| msgid "_Version Control Browser"
-#~ msgid "Version Control\t1\t%s\n"
-#~ msgstr "_Versinhallinnan selain"
-
-#, fuzzy
-#~| msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-#~ msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
-#~ msgstr "Binäärit\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-
-#, fuzzy
-#~| msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-#~ msgid "Media\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
-#~ msgstr "Mediatiedostot\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm"
-
-#~ msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-#~ msgstr "CVS-avainsanat\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-
-#~ msgid "C++ comment\t0\t//.*\n"
-#~ msgstr "C++-kommentti\t0\t//.*\n"
-
-#~ msgid "C comment\t0\t/\\*.*?\\*/\n"
-#~ msgstr "C-kommentti\t0\t/\\*.*?\\*/\n"
-
-#~ msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
-#~ msgstr "Kaikki tyhjät merkit\t0\t[ \\t\\r\\f\\v]*\n"
-
-#~ msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
-#~ msgstr "Alun tyhjät merkit\t0\t^[ \\t\\r\\f\\v]*\n"
-
-#~ msgid "Script comment\t0\t#.*"
-#~ msgstr "Skriptin kommentti\t0\t#.*"
-
-#~ msgid "D-Bus error; comparisons will open in a new window."
-#~ msgstr "D-Bus-virhe; vertailut avataan uuteen ikkunaan."
-
-#~ msgid "Quit the program"
-#~ msgstr "Lopeta ohjelma"
-
-#~ msgid "Configure the application"
-#~ msgstr "Muuta ohjelman asetuksia"
-
-#~ msgid "_Contents"
-#~ msgstr "_Sisältö"
-
-#~ msgid "Open the Meld manual"
-#~ msgstr "Avaa Meldin ohje"
-
-#~ msgid "Report _Bug"
-#~ msgstr "Raportoi _virhe"
-
-#~ msgid "Report a bug in Meld"
-#~ msgstr "Raportoi vika meldissä"
-
-#~ msgid "About this program"
-#~ msgstr "Tietoja ohjelmasta"
-
-#~| msgid ""
-#~| "Line numbers are only available if you have gnome-python-desktop "
-#~| "installed."
-#~ msgid "Only available if you have PyGtkSourceView 2 installed"
-#~ msgstr "Käytettävissä vain jos PyGtkSourceView 2 on asennettu"
-
-#~ msgid "_Browse..."
-#~ msgstr "_Selaa..."
-
-#~ msgid "Path"
-#~ msgstr "Polku"
-
-#~| msgid "Save the current file"
-#~ msgid "Path to file"
-#~ msgstr "Tiedoston polku"
-
-#~ msgid "Pop up a file selector to choose a file"
-#~ msgstr "Avaa tiedostovalitsin valitaksesi tiedoston"
-
-#~| msgid "CVS Directory"
-#~ msgid "Select directory"
-#~ msgstr "Valitse kansio"
-
-#~| msgid "Select some files first."
-#~ msgid "Select file"
-#~ msgstr "Valitse tiedosto"
-
-#~ msgid "Left"
-#~ msgstr "Vasen"
-
-#~ msgid "Right"
-#~ msgstr "Oikea"
-
-#~ msgid "Case"
-#~ msgstr "Kirjainkoko"
-
-#~ msgid "Ignore case of entries"
-#~ msgstr "Älä huomioi syötteiden kirjainten kokoa"
-
-#~ msgid "Error converting pattern '%s' to regular expression"
-#~ msgstr "Virhe muunnettaessa mallia \"%s\" säännölliseksi lausekkeeksi"
-
-#~ msgid ""
-#~ "'%s' is a directory.\n"
-#~ "Remove recusively?"
-#~ msgstr ""
-#~ "\"%s\" on kansio.\n"
-#~ "Poistetaanko rekursiivisesti?"
-
-#~ msgid "The regular expression '%s' was not found."
-#~ msgstr "Säännöllistä lauseketta \"%s\" ei löytynyt."
-
-#~ msgid "The text '%s' was not found."
-#~ msgstr "Tekstiä \"%s\" ei löytynyt."
-
-#~ msgid "The error was:"
-#~ msgstr "Virhe oli:"
-
-#~ msgid ""
-#~ "It contains ascii nulls.\n"
-#~ "Perhaps it is a binary file."
-#~ msgstr ""
-#~ "Sisältää ASCII-NULL -merkkejä.\n"
-#~ "Tiedosto saattaa olla binääritiedosto."
-
-#~ msgid "Choose a name for buffer %i."
-#~ msgstr "Valitse nimi puskurille %i."
-
-#~ msgid "Save patch as..."
-#~ msgstr "Tallenna paikkatiedosto nimellä..."
-
-#~ msgid ""
-#~ "Reloading will discard changes in:\n"
-#~ "%s\n"
-#~ "\n"
-#~ "You cannot undo this operation."
-#~ msgstr ""
-#~ "Uudelleenlataus hukkaa muutokset tiedostossa:\n"
-#~ "%s\n"
-#~ "\n"
-#~ "Suoritettua toimintoa ei voi perua."
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
-#~ "Which ones would you like to save?</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Joitain tiedostoja on muokattu.\n"
-#~ "Mitkä haluat tallentaa?</span>"
-
-#~ msgid "Match _entire word only"
-#~ msgstr "Täsmää vain _koko sanoihin"
-
-#~ msgid "Search for:"
-#~ msgstr "Etsi:"
-
-#~ msgid "_Save Selected"
-#~ msgstr "_Tallenna valittu"
-
-#~ msgid "(gnome-default-editor)"
-#~ msgstr "(gnomen-oletusmuokkain)"
-
-#~ msgid "<b>Drawing Style</b>"
-#~ msgstr "<b>Piirtotyyli</b>"
-
-#~ msgid "<b>Edit Menu</b>"
-#~ msgstr "<b>Muokkausvalikko</b>"
-
-#~ msgid "<b>Font</b>"
-#~ msgstr "<b>Kirjasin</b>"
-
-#~ msgid "<b>Misc</b>"
-#~ msgstr "<b>Lisäasetukset</b>"
-
-#~ msgid "<b>Saving</b>"
-#~ msgstr "<b>Tallentaminen</b>"
-
-#~ msgid "<b>Toolbar Appearance</b>"
-#~ msgstr "<b>Työkalupalkin ulkoasu</b>"
-
-#~ msgid "<b>Whitespace</b>"
-#~ msgstr "<b>Tyhjä teksti</b>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Vertaa</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Näytä</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Muokkain</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Merkistö</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Tiedostosuodattimet</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Tekstisuodattimet</span>"
-
-#~ msgid "Automatically supply missing newline at end of file"
-#~ msgstr "Lisää puuttuva rivinvaihto automattisesti tiedoston loppuun"
-
-#~ msgid "Choose Files"
-#~ msgstr "Valitse tiedostot"
-
-#~ msgid ""
-#~ "Choose how the central bar of the diff viewer is drawn. You may wish to "
-#~ "choose a simpler mode if you find scrolling is slow."
-#~ msgstr ""
-#~ "Valitse, kuinka vertailunäkymän keskipalkki piirretään. Voi olla että "
-#~ "haluat käyttää yksinkertaisempaa mallia, jos vieritys tuntuu hitaalta."
-
-#~ msgid "Copyright (C) 2002-2006 Stephen Kennedy"
-#~ msgstr "Copyright (©) 2002-2006 Stephen Kennedy"
-
-#~ msgid "Curved: Filled Curves"
-#~ msgstr "Kaaret: täytettyjä kaaria"
-
-#~ msgid "Directory"
-#~ msgstr "Kansio"
-
-#~ msgid "Gnome Default"
-#~ msgstr "Gnomen oletus"
-
-#~ msgid "Icons Only"
-#~ msgstr "Vain kuvakkeet"
-
-#~ msgid "Ignore changes in amount of white space"
-#~ msgstr "Älä huomioi muutoksia välilyöntien määrään"
-
-#~ msgid ""
-#~ "Ignore changes in case; consider upper and lower-case letters equivalent"
-#~ msgstr ""
-#~ "Älä huomioi muutoksia kirjainkoossa: pienet ja suuret kirjaimet ovat sama "
-#~ "asia."
-
-#~ msgid "Ignore changes that just insert or delete blank lines"
-#~ msgstr ""
-#~ "Älä huomioi muutoksia, jotka vain lisäävät tai poistavat tyhjiä rivejä"
-
-#~ msgid "Line Wrapping "
-#~ msgstr "Rivitys "
-
-#~ msgid "Mine"
-#~ msgstr "Oma"
-
-#~ msgid "Original"
-#~ msgstr "Alkuperäinen"
-
-#~ msgid "Other"
-#~ msgstr "Muu"
-
-#~ msgid "Save in UTF-8 encoding"
-#~ msgstr "Tallenna UTF-8 -koodauksella"
-
-#~ msgid "Save in the files original encoding"
-#~ msgstr "Tallenna käyttäen tiedoston alkuperäistä merkistökoodausta"
-
-#~ msgid "Simple: Lines only"
-#~ msgstr "Yksinkertainen - vain rivit"
-
-#~ msgid "Solid: Filled Quadilaterals"
-#~ msgstr "Kiinteä - täytetyt nelikulmiot"
-
-#~ msgid "Text Beside Icons"
-#~ msgstr "Teksti kuvakkeiden vierellä"
-
-#~ msgid "Text Only"
-#~ msgstr "Vain teksti"
-
-#~ msgid "Text Under Icons"
-#~ msgstr "Teksti kuvakkeiden alla"
-
-#~ msgid "Three way directory"
-#~ msgstr "Kolmiosainen kansio"
-
-#~ msgid "Three way file"
-#~ msgstr "Kolmiosainen tiedosto"
-
-#~ msgid "Two way directory"
-#~ msgstr "Kaksiosainen kansio"
-
-#~ msgid "Two way file"
-#~ msgstr "Kaksiosainen tiedosto"
-
-#~ msgid "Use GNOME monospace font"
-#~ msgstr "Käytä Gnomen tasalevyistä kirjasinta"
-
-#~ msgid "Whitespace is significant"
-#~ msgstr "Välilyönnit huomioidaan"
-
-#~ msgid "_Logo"
-#~ msgstr "_Logo"
-
-#~ msgid "_Three Way Compare"
-#~ msgstr "_Kolmiosainen vertailu"
-
-#~ msgid "Compare Options"
-#~ msgstr "Vertailun asetukset"
-
-#~ msgid "Date"
-#~ msgstr "Päiväys"
-
-#~ msgid "Local copy against other remote revision"
-#~ msgstr "Paikallinen kopio toista etäversiota vastaan"
-
-#~ msgid "Local copy against same remote revision"
-#~ msgstr "Paikallinen kopio samaa etäversiota vastaan"
-
-#~ msgid "Tag"
-#~ msgstr "Merkintä"
-
-#~ msgid "VC Log"
-#~ msgstr "Versionhallinnan loki"
-
-#~ msgid "Regex"
-#~ msgstr "Regexp"
-
-#~ msgid ""
-#~ "Syntax highlighting is only available if you have gnome-python-desktop "
-#~ "installed."
-#~ msgstr ""
-#~ "Syntaksin korostus on käytettävissä vain  jos gnome-python-desktop on "
-#~ "asennettu."
-
-#~ msgid ""
-#~ "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
-#~ msgstr ""
-#~ "Versionhallinta\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
-
-#~ msgid "_New..."
-#~ msgstr "_Uusi..."
-
-#~ msgid "Reload the comparison"
-#~ msgstr "Lataa vertailu uudestaan"
-
-#~ msgid "Mailing _List"
-#~ msgstr "Sähköposti_lista"
-
-#~ msgid "Go to the Meld mailing list"
-#~ msgstr "Siirry meldin sähköpostilistalle"
-
-#~ msgid ""
-#~ "Meld %s\n"
-#~ "Written by Stephen Kennedy <stevek@gnome.org>"
-#~ msgstr ""
-#~ "Meld %s\n"
-#~ "Ohjelmoinut Stephen Kennedy <stevek@gnome.org>"
-
-#~ msgid "Update"
-#~ msgstr "Päivitä"
-
-#~ msgid "Add to VC"
-#~ msgstr "Lisää versionhallintaan"
-
-#~ msgid "Add _Binary"
-#~ msgstr "Lisää _binääri"
-
-#~ msgid "Add binary to VC"
-#~ msgstr "Lisää binääritiedosto versiohallintaan"
-
-#~ msgid "Remove from VC"
-#~ msgstr "Poista versiohallinnasta"
-
-#~ msgid "Show normal"
-#~ msgstr "Näytä tavallinen"
-
-#~ msgid "Non _VC"
-#~ msgstr "Ei _versiohallinnassa"
-
-#~ msgid "Rev"
-#~ msgstr "Versio"
-
-#~ msgid "[%s] Fetching differences"
-#~ msgstr "[%s] Noudetaan eroja"
-
-#~ msgid "[%s] Applying patch"
-#~ msgstr "[%s] Toteutetaan paikka"
-
-#~ msgid "Invoking patch failed, you need GNU patch."
-#~ msgstr "Komentoa patch ei voitu käynnistää, tarvitset GNU patchin."
-
-#~ msgid ""
-#~ "Error converting to a regular expression\n"
-#~ "The pattern was '%s'\n"
-#~ "The error was '%s'"
-#~ msgstr ""
-#~ "Virhe muunnettaessa säännöllistä lauseketta\n"
-#~ "Malli oli \"%s\"\n"
-#~ "Virhe oli \"%s\""
-
-#~ msgid "Edit"
-#~ msgstr "Muokkaa"
-
-#~ msgid "Edit selected"
-#~ msgstr "Muokkaa valittua"
-
-#~ msgid "Edit files"
-#~ msgstr "Muokkaa tiedostoja"
-
-#~ msgid "<b>Global options</b>"
-#~ msgstr "<b>Yleiset asetukset</b>"
-
-#~ msgid "<b>Update Options</b>"
-#~ msgstr "<b>Päivitysten valinnat</b>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-
-#~ msgid "CVS"
-#~ msgstr "CVS"
-
-#~ msgid "CVS binary"
-#~ msgstr "CVS-binääri"
-
-#~ msgid "Create missing directories (-d)"
-#~ msgstr "Luo puuttuvat kansiot(-d)"
-
-#~ msgid "Ignore .cvsrc (-f)"
-#~ msgstr "Älä huomioi .cvsrc-tiedostoa (-f)"
-
-#~ msgid "Locate CVS binary : Meld"
-#~ msgstr "Etsi CVS-binääri: Meld"
-
-#~ msgid "My Directory"
-#~ msgstr "Oma kansio"
-
-#~ msgid "Original Directory"
-#~ msgstr "Alkuperäinen kansio"
-
-#~ msgid "Original File"
-#~ msgstr "Alkuperäinen tiedosto"
-
-#~ msgid "Other Directory"
-#~ msgstr "Muu kansio"
-
-#~ msgid "Other File"
-#~ msgstr "Muu tiedosto"
-
-#~ msgid "Prune empty directories (-P)"
-#~ msgstr "Poista tyhjät hakemistot (-P)"
-
-#~ msgid "Quiet mode (-q)"
-#~ msgstr "Hiljainen tila (-q)"
-
-#~ msgid "Use Compression (-z)"
-#~ msgstr "Käytä pakkausta (-z)"
-
-#~ msgid "_Character"
-#~ msgstr "_Merkki"
-
-#~ msgid "_Up"
-#~ msgstr "_Ylös"
-
-#~ msgid "_Word"
-#~ msgstr "_Sana"
-
-#~ msgid "Remove _Locally"
-#~ msgstr "Poista _paikallinen"
-
-#~ msgid ""
-#~ "Due to incompatible API changes some functions may not operate as "
-#~ "expected."
-#~ msgstr ""
-#~ "Epäyhteensopivista API-muutoksista johtuen jotkut funktiot eivät toimi "
-#~ "kuten voisi olettaa."
-
-#~ msgid "Edit menu popup invokes"
-#~ msgstr "Ponnahdusikkunasta tuleva muokkausvalikko"
-
-#~ msgid "New..."
-#~ msgstr "Uusi..."
-
-#~ msgid "CVS\t1\tCVS\n"
-#~ msgstr "CVS\t1\tCVS\n"
-
-#~ msgid "SVN\t1\t.svn\n"
-#~ msgstr "SVN\t1\t.svn\n"
-
-#~ msgid "Monotone\t1\tMT\n"
-#~ msgstr "Monotone\t1\tMT\n"
-
-#~ msgid ""
-#~ "Meld is a file and directory comparison tool. Usage:\n"
-#~ "\n"
-#~ "    meld                        Start with no windows open\n"
-#~ "    meld <dir>                  Start with VC browser in 'dir'\n"
-#~ "    meld <file>                 Start with VC diff of 'file'\n"
-#~ "    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
-#~ "    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory "
-#~ "comparison\n"
-#~ "\n"
-#~ "Options:\n"
-#~ "    -h, --help                  Show this help text and exit\n"
-#~ "    -v, --version               Display the version and exit\n"
-#~ "\n"
-#~ "For more information choose help -> contents.\n"
-#~ "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-#~ "Discuss meld at http://mail.gnome.org/mailman/listinfo/meld-list\n"
-#~ msgstr ""
-#~ "Meld on tiedostojen ja hakemistojen vertailutyökalu. Käyttö:\n"
-#~ "\n"
-#~ "    meld                      Käynnistä ilman avoimia vertailuja\n"
-#~ "    meld <hakemisto>          Käynnistä versionhallintaselain\n"
-#~ "    meld <file>               Käynnistä versionhallinnan vertailu\n"
-#~ "    meld <file> <file> [file] Käynnistä 2- tai 3-osainen "
-#~ "tiedostovertailu\n"
-#~ "    meld <dir>  <dir>  [dir]  Käynnistä 2- tai 3-osainen "
-#~ "hakemistovertailu\n"
-#~ "\n"
-#~ "Lisätietoja saat valitsemalla Ohje -> Sisältö.\n"
-#~ "Ilmoita virheistä osoitteessa\n"
-#~ "    http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-#~ "Keskustele meldistä: http://mail.gnome.org/mailman/listinfo/meld-list\n"
