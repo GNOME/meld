@@ -65,6 +65,7 @@ setup(
         "build_help": meld.build_helpers.build_help,
         "build_icons": meld.build_helpers.build_icons,
         "build_data": meld.build_helpers.build_data,
+        "build_py": meld.build_helpers.build_py,
         "install_data": meld.build_helpers.install_data,
     },
     distclass=meld.build_helpers.MeldDistribution,

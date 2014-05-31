@@ -5,8 +5,10 @@ import sys
 __package__ = "meld"
 __version__ = "3.11.2"
 
+# START; these paths are clobbered on install by meld.build_helpers
 DATADIR = os.path.join(sys.prefix, "share", "meld")
 LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
+# END
 UNINSTALLED = False
 
 # Installed from main script

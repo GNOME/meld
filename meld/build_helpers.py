@@ -22,11 +22,13 @@ from __future__ import print_function
 
 import distutils.cmd
 import distutils.command.build
+import distutils.command.build_py
 import distutils.command.install_data
 import distutils.dist
 import distutils.dir_util
 import glob
 import os.path
+import sys
 
 from distutils.log import info
 
@@ -308,6 +310,54 @@ class build_i18n(distutils.cmd.Command):
                         self.spawn(cmd)
                     files_merged.append(file_merged)
                 self.distribution.data_files.append((target, files_merged))
+
+
+class build_py(distutils.command.build_py.build_py):
+    """Insert real package installation locations into conf module
+
+    Adapted from gottengeography
+    """
+
+    data_line = 'DATADIR = "%s"'
+    locale_line = 'LOCALEDIR = "%s"'
+
+    def build_module(self, module, module_file, package):
+
+        if module_file == 'meld/conf.py':
+            with open(module_file) as f:
+                contents = f.read()
+
+            try:
+                iobj = self.distribution.command_obj['install']
+                prefix = iobj.prefix
+            except KeyError as e:
+                print (e)
+                prefix = sys.prefix
+
+            datadir = os.path.join(prefix, 'share', 'meld')
+            localedir = os.path.join(prefix, 'share', 'locale')
+
+            start, end = 0, 0
+            lines = contents.splitlines()
+            for i, line in enumerate(lines):
+                if line.startswith('# START'):
+                    start = i
+                elif line.startswith('# END'):
+                    end = i
+
+            if start and end:
+                lines[start:end + 1] = [
+                    self.data_line % datadir,
+                    self.locale_line % localedir,
+                ]
+
+            module_file = module_file + "-installed"
+            contents = "\n".join(lines)
+            with open(module_file, 'w') as f:
+                f.write(contents)
+
+        distutils.command.build_py.build_py.build_module(
+            self, module, module_file, package)
 
 
 class install_data(distutils.command.install_data.install_data):
