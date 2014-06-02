@@ -122,3 +122,20 @@ class LinkMap(Gtk.DrawingArea):
 
     def do_scroll_event(self, event):
         self.filediff.next_diff(event.direction)
+
+
+class ScrollLinkMap(Gtk.DrawingArea):
+
+    __gtype_name__ = "ScrollLinkMap"
+
+    def __init__(self):
+        self._setup = False
+
+    def associate(self, melddoc):
+        self.melddoc = melddoc
+        self._setup = True
+
+    def do_scroll_event(self, event):
+        if not self._setup:
+            return
+        self.melddoc.next_diff(event.direction)

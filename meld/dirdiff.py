@@ -1398,6 +1398,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 idx = 1 if i else 0
                 w.setup(scroll, self.get_state_traversal(idx), [self.fill_colors, self.line_colors])
 
+            for w in self.linkmap:
+                w.associate(self)
+
             for widget in (
                     self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
                     self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1]):
