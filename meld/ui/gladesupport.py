@@ -1,4 +1,5 @@
 
+from meld import diffgrid
 from meld import diffmap
 from meld import linkmap
 from meld import preferences
