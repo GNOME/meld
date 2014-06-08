@@ -48,6 +48,14 @@ TYPE_MERGE = "Merge"
 COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
 
 
+def unicodeify(s):
+    if s is None:
+        return None
+    if isinstance(s, str):
+        return s.decode(sys.getfilesystemencoding(), 'replace')
+    return s
+
+
 class RecentFiles(object):
 
     mime_type = "application/x-meld-comparison"
@@ -85,6 +93,7 @@ class RecentFiles(object):
         if None in paths:
             return
 
+        paths = [unicodeify(p) for p in paths]
         # If a (type, paths) comparison is already registered, then re-add
         # the corresponding comparison file
         comparison_key = (comp_type, tuple(paths))
@@ -145,6 +154,7 @@ class RecentFiles(object):
         return comp_type, paths, flags
 
     def _write_recent_file(self, comp_type, paths):
+        paths = [p.encode(sys.getfilesystemencoding()) for p in paths]
         # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're
         # using ';' to join comparison paths.
         with tempfile.NamedTemporaryFile(prefix='recent-',
