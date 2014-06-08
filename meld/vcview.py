@@ -207,6 +207,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.ui_file = paths.ui_dir("vcview-ui.xml")
         self.actiongroup = gtk.ActionGroup('VcviewActions')
         self.actiongroup.set_translation_domain("meld")
+        self.main_actiongroup = None
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
         for action in ("VcCompare", "VcFlatten", "VcShowModified",
@@ -291,9 +292,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.combobox_vcs.show()
         self.combobox_vcs.connect("changed", self.on_vc_change)
 
+    def _set_external_action_sensitivity(self, focused):
+        try:
+            self.main_actiongroup.get_action("OpenExternal").set_sensitive(
+                focused)
+        except AttributeError:
+            pass
+
     def on_container_switch_in_event(self, ui):
-        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+        self.main_actiongroup = [a for a in ui.get_action_groups()
+                                 if a.get_name() == "MainActions"][0]
+        super(VcView, self).on_container_switch_in_event(ui)
+        self._set_external_action_sensitivity(True)
         self.scheduler.add_task(self.on_treeview_cursor_changed)
+
+    def on_container_switch_out_event(self, ui):
+        self._set_external_action_sensitivity(False)
+        super(VcView, self).on_container_switch_out_event(ui)
 
     def update_visible_columns(self):
         for data_id in self.column_name_map:

@@ -710,16 +710,26 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         new_buf.place_cursor(new_buf.get_iter_at_line(new_line))
         self.textview[new_pane].scroll_to_mark(new_buf.get_insert(), 0.1)
 
+    def _set_external_action_sensitivity(self):
+        have_file = self.focus_pane is not None
+        try:
+            self.main_actiongroup.get_action("OpenExternal").set_sensitive(
+                have_file)
+        except AttributeError:
+            pass
+
     def on_textview_focus_in_event(self, view, event):
         self.focus_pane = view
         self.findbar.textview = view
         self.on_cursor_position_changed(view.get_buffer(), None, True)
         self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
+        self._set_external_action_sensitivity()
         self.update_text_actions_sensitivity()
 
     def on_textview_focus_out_event(self, view, event):
         self._set_merge_action_sensitivity()
+        self._set_external_action_sensitivity()
 
     def _after_text_modified(self, buffer, startline, sizechange):
         if self.num_panes > 1:
