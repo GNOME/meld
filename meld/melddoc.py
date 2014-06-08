@@ -20,6 +20,7 @@ import string
 import subprocess
 import sys
 
+from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gio
@@ -95,7 +96,7 @@ class MeldDoc(GObject.GObject):
         query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
                                 Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
 
-        def os_open(path):
+        def os_open(path, uri):
             if not path:
                 return
             if sys.platform == "win32":
@@ -103,16 +104,17 @@ class MeldDoc(GObject.GObject):
             elif sys.platform == "darwin":
                 subprocess.Popen(["open", path])
             else:
-                subprocess.Popen(["xdg-open", path])
+                Gtk.show_uri(Gdk.Screen.get_default(), uri,
+                             Gtk.get_current_event_time())
 
         def open_cb(source, result, *data):
             info = source.query_info_finish(result)
             file_type = info.get_file_type()
+            path, uri = source.get_path(), source.get_uri()
             if file_type == Gio.FileType.DIRECTORY:
-                os_open(source.get_path())
+                os_open(path, uri)
             elif file_type == Gio.FileType.REGULAR:
                 content_type = info.get_content_type()
-                path = source.get_path()
                 # FIXME: Content types are broken on Windows with current gio
                 if Gio.content_type_is_a(content_type, "text/plain") or \
                         sys.platform == "win32":
@@ -127,9 +129,9 @@ class MeldDoc(GObject.GObject):
                             # silently
                             subprocess.Popen(editor)
                         else:
-                            os_open(path)
+                            os_open(path, uri)
                 else:
-                    os_open(path)
+                    os_open(path, uri)
             else:
                 # TODO: Add some kind of 'failed to open' notification
                 pass
