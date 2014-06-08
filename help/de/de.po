@@ -1,778 +1,1915 @@
 # German translation of the meld manual.
 # Mario Blättermann <mariobl@gnome.org>, 2009.
+# Benjamin Steinwender <b@stbe.at>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
-"POT-Creation-Date: 2009-04-19 16:22+0200\n"
-"PO-Revision-Date: 2009-04-19 17:41+0100\n"
-"Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
+"POT-Creation-Date: 2014-06-01 09:37+0000\n"
+"PO-Revision-Date: 2014-06-08 17:53+0100\n"
+"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
+"X-Generator: Poedit 1.6.5\n"
 
-#: C/meld.xml:5(title) C/meld.xml:8(title)
-msgid "Meld Users Manual"
-msgstr "Meld-Benutzerhandbuch"
-
-#: C/meld.xml:12(firstname)
-msgid "Stephen"
-msgstr "Stephen"
-
-#: C/meld.xml:14(surname)
-msgid "Kennedy"
-msgstr "Kennedy"
-
-#: C/meld.xml:16(email)
-msgid "stevek@gnome.org"
-msgstr "stevek@gnome.org"
-
-#: C/meld.xml:21(year)
-msgid "2004"
-msgstr "2004"
-
-#: C/meld.xml:23(holder)
-msgid "Stephen Kennedy"
-msgstr "Stephen Kennedy"
-
-#: C/meld.xml:26(releaseinfo)
-msgid "This is version 0.1 of the meld manual, describing meld 0.9.6"
+#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
+msgctxt "_"
+msgid "translator-credits"
 msgstr ""
-"Die vorliegende Version 0.1 des Meld-Handbuchs beschreibt die "
-"Anwendungsversion 0.9.6."
+"Mario Blättermann <mariobl@gnome.org>, 2009\n"
+"Benjamin Steinwender <b@stbe.at>, 2014\n"
+"Christian Kirbach <christian.kirbach@gmail.com>, 2014"
 
-#: C/meld.xml:30(title)
-msgid "Introduction"
-msgstr "Einführung"
+#. (itstool) path: info/title
+#: C/vc-supported.page:5
+msgctxt "sort"
+msgid "3"
+msgstr "3"
 
-#: C/meld.xml:33(title)
-msgid "What is meld"
-msgstr "Was ist Meld?"
+#. (itstool) path: credit/name
+#: C/vc-supported.page:10 C/file-filters.page:10 C/text-filters.page:11
+#: C/resolving-conflicts.page:10 C/preferences.page:10 C/file-changes.page:10
+#: C/file-mode.page:11 C/flattened-view.page:10 C/index.page:8
+#: C/vc-mode.page:10 C/keyboard-shortcuts.page:10 C/introduction.page:10
+#: C/folder-mode.page:10 C/missing-functionality.page:10
+#: C/command-line.page:10
+msgid "Kai Willadsen"
+msgstr "Kai Willadsen"
 
-#: C/meld.xml:35(para)
+#. (itstool) path: credit/years
+#: C/vc-supported.page:12 C/file-filters.page:12 C/text-filters.page:13
+#: C/resolving-conflicts.page:12 C/file-changes.page:12 C/file-mode.page:13
+#: C/flattened-view.page:12 C/index.page:10 C/vc-mode.page:12
+#: C/keyboard-shortcuts.page:12 C/introduction.page:12 C/folder-mode.page:12
+#: C/missing-functionality.page:12 C/command-line.page:12
+msgid "2012"
+msgstr "2012"
+
+#. (itstool) path: page/title
+#: C/vc-supported.page:15
+msgid "Supported version control systems"
+msgstr "Unterstützte Versionskontrollsysteme"
+
+#. (itstool) path: page/p
+#: C/vc-supported.page:17
+msgid "<app>Meld</app> supports a wide range of version control systems:"
+msgstr ""
+"<app>Meld</app> unterstützt eine große Anzahl von Versionskontrollsystemen:"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:22
+msgid "Arch"
+msgstr "Arch"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:23
+msgid "Bazaar"
+msgstr "Bazaar"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:24
+msgid "Codeville"
+msgstr "Codeville"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:25
+msgid "CVS"
+msgstr "CVS"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:26
+msgid "Fossil"
+msgstr "Fossil"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:27
+msgid "Git"
+msgstr "Git"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:28
+msgid "Mercurial"
+msgstr "Mercurial"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:29
+msgid "Monotone"
+msgstr "Monotone"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:30
+msgid "RCS"
+msgstr "RCS"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:31
+msgid "SVK"
+msgstr "SVK"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:32
+msgid "SVN"
+msgstr "SVN"
+
+#. (itstool) path: page/p
+#: C/vc-supported.page:35
 msgid ""
-"Meld views differences between files and between directories. Meld makes it "
-"easy to isolate and merge these differences."
+"Less common version control systems or unusual configurations may not be "
+"properly tested; please report any version control support bugs to <link "
+"href=\"https://bugzilla.gnome.org/\">GNOME bugzilla</link>."
 msgstr ""
-"Meld zeigt Unterschiede zwischen Dateien und zwischen Ordnern an. Meld "
-"erleichtert Ihnen die Herauslösung oder Zusammenführung dieser Unterschiede."
+"Weniger gebräuchliche Versionskontrollsysteme oder unübliche Einstellungen "
+"sind eventuelle nicht ausgiebig getestet. Bitte berichten Sie Fehler in der "
+"Unterstützung der Versionskontrollsysteme im <link href=\"https://bugzilla."
+"gnome.org/\"> Bugzilla-Fehlererfassungssystem von GNOME </link>."
 
-#: C/meld.xml:40(title)
-msgid "Starting meld"
-msgstr "Starten von Meld"
+#. (itstool) path: info/title
+#: C/file-filters.page:5 C/text-filters.page:5 C/resolving-conflicts.page:5
+#: C/file-changes.page:5 C/flattened-view.page:5 C/keyboard-shortcuts.page:5
+#: C/command-line.page:5
+msgctxt "sort"
+msgid "2"
+msgstr "2"
 
-#: C/meld.xml:43(title)
-msgid "Command line arguments"
-msgstr "Befehlszeilenargumente"
-
-#: C/meld.xml:47(userinput)
-#, no-wrap
-msgid "meld"
-msgstr "meld"
-
-#: C/meld.xml:50(para)
-msgid "start meld with the new document dialog"
-msgstr ""
-
-#: C/meld.xml:55(userinput)
-#, no-wrap
-msgid "meld &lt;file&gt; &lt;file&gt; [file]"
+#. (itstool) path: page/title
+#: C/file-filters.page:15
+msgid "Filtering out files"
 msgstr ""
 
-#: C/meld.xml:58(para) C/meld.xml:67(para)
-msgid "start meld with either a two way or three way comparison"
-msgstr ""
-
-#: C/meld.xml:64(userinput)
-#, no-wrap
-msgid "meld &lt;dir&gt; &lt;dir&gt; [dir]"
-msgstr ""
-
-#: C/meld.xml:73(userinput)
-#, no-wrap
-msgid "meld &lt;dir|file&gt;"
-msgstr ""
-
-#: C/meld.xml:76(para)
-msgid "start meld with the source control browser"
-msgstr ""
-
-#: C/meld.xml:82(para)
+#. (itstool) path: page/p
+#: C/file-filters.page:17
 msgid ""
-"\"&lt;&gt;\" surround required arguments, \"[]\" surround optional arguments "
-"and \"|\" indicates a choice."
+"When you compare folders, you may want to be able to ignore some files. For "
+"example, you may wish to only see files that are present and different in "
+"both folders, ignoring those that are the same or only exist in one folder. "
+"Alternatively, you might want to ignore all the files in your <file>.git</"
+"file> directory, or ignore all images."
 msgstr ""
+"Wenn Sie Ordner vergleichen, möchten Sie eventuell einige Dateien "
+"ignorieren. Zum Beispiel möchten Sie nur Dateien sehen, die in beiden "
+"Ordnern unterschiedlich sind und jede Dateien ignorieren, die gleich sind "
+"oder sich nur in einem Ordner befinden. Alternativ können Sie alle Dateien "
+"in Ihrem <file>.git</file>-Ordner ignorieren oder alle Bilder."
 
-#: C/meld.xml:87(para)
-msgid "Run <userinput>meld --help</userinput> for a complete list of options"
-msgstr ""
-"Um eine vollständige Liste von Optionen zu erhalten, rufen Sie "
-"<userinput>meld --help</userinput> auf."
-
-#: C/meld.xml:95(title)
-msgid "File Comparison"
-msgstr "Dateivergleich"
-
-#: C/meld.xml:98(title) C/meld.xml:208(title) C/meld.xml:322(title)
-msgid "Starting"
-msgstr "Starten"
-
-#: C/meld.xml:100(para)
+#. (itstool) path: page/p
+#: C/file-filters.page:25
+#, fuzzy
 msgid ""
-"To compare files, choose <menuchoice><guimenu>File</guimenu><guimenuitem>New</"
-"guimenuitem></menuchoice> and select the <guilabel>File Comparison</guilabel> "
-"tab. You can compare two or three files."
+"<app>Meld</app> has several different ways of controlling which files and "
+"what kind of differences you see. You can filter based on <link xref=\"#file-"
+"state-filter\">differences between a file across folders</link> or <link "
+"xref=\"#file-name-filter\">file and folder names</link>. You can also tell "
+"<app>Meld</app> to treat filenames as being <link xref=\"#file-case-filter"
+"\">case insensitive</link>. Finally, you can use <link xref=\"text-filters"
+"\">text filters</link> to change what both folder and file comparisons see."
 msgstr ""
-"Zum Vergleichen von Dateien wählen Sie <menuchoice><guimenu>Datei</"
-"guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
-"<guilabel>Dateien vergleichen</guilabel>. Sie können zwei oder drei Dateien "
-"miteinander vergleichen."
+"<app>Meld</app> besitzt verschiedene Einstellungsmöglichkeiten, um "
+"festzulegen, welche Dateien und Unterschiede angezeigt werden sollen. Sie "
+"können Filter basierend auf <link xref=\"#file-state-filter\">Unterschiede "
+"einer Datei in verschiedenen Ordnern</link> oder <link xref=\"#file-name-"
+"filter\">Datei- und Ordnernamen</link> anwenden. Sie können <app>Meld</app> "
+"auch befehlen, bei Dateinamen die <link xref=\"#file-case-filter\">Groß-/"
+"Kleinschreibung zu ignorieren</link>. Zuletzt können Sie <link xref=\"text-"
+"filters\">Text-Filter</link> verwenden, um festzulegen welche Ordner und "
+"Dateien der Vergleich sieht."
 
-#: C/meld.xml:103(para) C/meld.xml:213(para)
+#. (itstool) path: note/p
+#: C/file-filters.page:37
 msgid ""
-"For two way comparisons the original is shown in the left pane and the "
-"modified version in the right pane by convention."
+"Any <link xref=\"text-filters\">text filters</link> you've defined "
+"<em>automatically apply</em> when comparing folders. Files that are "
+"identical after all of the text filters are applied are not highlighted as "
+"being different, but are shown in italics."
 msgstr ""
-"Per Vorgabe wird bei Zweiwege-Vergleichen das Original in der linken Ansicht "
-"und die geänderte Version in der rechten Ansicht dargestellt."
 
-#: C/meld.xml:106(para) C/meld.xml:216(para)
+#. (itstool) path: section/title
+#: C/file-filters.page:48
+msgid "File differences filtering"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-filters.page:50
 msgid ""
-"For three way comparisons, the original is shown in the centre pane and the "
-"left and right panes show the modified versions. By convention we put the "
-"locally modified file in the right pane."
-msgstr ""
-"Bei Dreiwege-Vergleichen wird das Original in der mittleren Ansicht und die "
-"geänderten Versionen in der linken und rechten Ansicht dargestellt. Per "
-"Vorgabe wird die lokal geänderte Version in der linken Ansicht dargestellt."
-
-#: C/meld.xml:112(title) C/meld.xml:222(title)
-msgid "Change Summary"
-msgstr "Änderungs-Zusammenfassung"
-
-#: C/meld.xml:114(para)
-msgid ""
-"The location of the changes is summarised in the window margins at the far "
-"left and right. By default green marks insertions and deletions and blue "
-"marks changes."
-msgstr ""
-"Die Orte der Änderungen werden an den linken und rechten Rändern des Fensters "
-"zusammengefasst. Einfügungen werden standardmäßig grün markiert, Löschungen "
-"dagegen blau."
-
-#: C/meld.xml:118(para) C/meld.xml:227(para)
-msgid ""
-"You can jump to an individual change by clicking in the margin or using the "
-"scrollbar."
-msgstr ""
-"Sie können zu einer bestimmten Änderung springen, indem Sie auf diese Ränder "
-"klicken oder die Bildlaufleiste bewegen."
-
-#: C/meld.xml:123(title) C/meld.xml:232(title)
-msgid "Detailed View"
-msgstr "Detailansicht"
-
-#: C/meld.xml:125(para)
-msgid ""
-"Detailed differences are shown in the text and central pane. Inserted text is "
-"shown with a solid background. Lines containing changes are marked with a "
-"light background with the individual changes highlighted with a stronger "
-"colour."
+"In a folder comparison, each line contains a single file or folder that is "
+"present in at least one of the folders being compared. Each of these lines "
+"is classified as being either <em>Modifed</em>, <em>New</em> or <em>Same</"
+"em>:"
 msgstr ""
 
-#: C/meld.xml:130(para)
-msgid ""
-"The area between each file shows where each change occurs in the other file. "
-"You can scroll through the changes by rolling the mouse wheel over this area "
-"or with keyboard shortcuts <keycombo><keycap>Ctrl</keycap><keycap>D</keycap></"
-"keycombo>, <keycombo><keycap>Ctrl</keycap><keycap>E</keycap></keycombo>."
-msgstr ""
-
-#: C/meld.xml:137(title) C/meld.xml:251(title)
-msgid "Editing"
-msgstr "Bearbeiten"
-
-#: C/meld.xml:139(para)
-msgid ""
-"You can edit the files as you would in a normal text editor. The differences "
-"will update automatically. Use <keycombo><keycap>Ctrl</keycap><keycap>F</"
-"keycap></keycombo> to search and <keycombo><keycap>Ctrl</keycap><keycap>G</"
-"keycap></keycombo> to repeat the last search."
-msgstr ""
-
-#: C/meld.xml:143(para)
-msgid ""
-"You can also apply changes by clicking the merge buttons (\"<guiicon>-&gt;</"
-"guiicon>\" and \"<guiicon>&lt;-</guiicon>\"). Holding <keycap>Shift</keycap> "
-"allows blocks to be deleted. Holding <keycap>Control</keycap> allows the "
-"current change to be inserted before or after the other change."
-msgstr ""
-
-#: C/meld.xml:148(para)
-msgid ""
-"You can apply all the changes from a given file by right clicking a text pane "
-"and choosing <guimenuitem>Copy all left</guimenuitem> or <guimenuitem>Copy "
-"all right</guimenuitem>. You can also launch an external editor from this "
-"menu. Configure the external editor in <menuchoice><guimenu>Settings</"
-"guimenu><guimenuitem>Preferences</guimenuitem></menuchoice>."
-msgstr ""
-
-#: C/meld.xml:156(title) C/meld.xml:264(title) C/meld.xml:332(title)
-msgid "Filtering"
-msgstr "Filterung"
-
-#: C/meld.xml:158(para)
-msgid ""
-"You can ignore certain types of differences in order to locate important "
-"differences. All these settings are available in the Text Filters section of "
-"the <guilabel>Preferences</guilabel> dialog."
-msgstr ""
-
-#: C/meld.xml:162(title)
-msgid "Regular Expressions"
-msgstr "Reguläre Ausdrücke"
-
-#: C/meld.xml:166(para)
-msgid "See the python re module for more information on regular expressions"
-msgstr ""
-
-#: C/meld.xml:167(para)
-msgid ""
-"Differences are computed line-by-line so multiline regulare expressions will "
-"likely have unintended consequences."
-msgstr ""
-"Unterschiede werden zeilenweise erkannt, so dass sich über mehrere Zeilen "
-"erstreckende reguläre Ausdrücke vielleicht unerwartete Konsequenzen haben "
-"könnten."
-
-#: C/meld.xml:164(para)
-msgid ""
-"When comparing files, each selected regular expression is run in turn over "
-"each line of input. Anything matching the expression is removed from the "
-"input.<placeholder-1/><placeholder-2/>"
-msgstr ""
-
-#: C/meld.xml:173(title)
-msgid "Blank Lines"
-msgstr "Leerzeilen"
-
-#: C/meld.xml:175(para)
-msgid ""
-"Changes which insert or remove blank lines can be ignored. This option is "
-"most useful in conjunction with one or more regular expression filters."
-msgstr ""
-"Änderungen, die lediglich Leerzeilen einfügen oder löschen, werden ignoriert. "
-"Diese Option ist am nützlichsten in Verbindung mit einem oder mehreren "
-"Filtern für reguläre Ausdrücke."
-
-#: C/meld.xml:182(title)
-msgid "Saving"
-msgstr "speichern"
-
-#: C/meld.xml:184(para)
-msgid ""
-"When you have unsaved changes, a disk icon will appear beside the file name "
-"of the changed file. The tab label and window title also have an asterix "
-"after the file name."
-msgstr ""
-
-#: C/meld.xml:188(para)
-msgid ""
-"To save a file, choose <menuchoice><guimenu>File</guimenu><guimenuitem>Save</"
-"guimenuitem></menuchoice>, press <keycombo><keycap>Ctrl</keycap><keycap>S</"
-"keycap></keycombo>, or press the toolbar save button. All of these save the "
-"currently focussed file (the file containing the edit cursor)."
-msgstr ""
-"Um eine Datei zu speichern, wählen Sie <menuchoice><guimenu>Datei</"
-"guimenu><guimenuitem>Speichern</guimenuitem></menuchoice>, drücken "
-"<keycombo><keycap>Strg</keycap><keycap>S</keycap></keycombo>, oder klicken "
-"auf den Knopf <guilabel>Speichern</guilabel> in der Werkzeugleiste. Auf alle "
-"diese Arten speichern Sie die aktuelle ausgewählte Datei, also jene, die den "
-"Cursor enthält."
-
-#: C/meld.xml:197(title)
-msgid "Status Bar"
-msgstr "Statuszeile"
-
-#: C/meld.xml:199(para)
-msgid ""
-"The status bar shows the cursor location (line and column) and also progress "
-"messages as files are initially loaded and compared."
-msgstr ""
-"Die Statuszeile zeigt die aktuelle Position des Cursors an (Zeile und Spalte) "
-"sowie Fortschrittsmeldungen beim erstmaligen Laden von Dateien und "
-"Vergleichsvorgängen."
-
-#: C/meld.xml:205(title)
-msgid "Folder Comparison"
-msgstr "Ordnervergleich"
-
-#: C/meld.xml:210(para)
-msgid ""
-"To compare directories, choose <menuchoice><guimenu>File</"
-"guimenu><guimenuitem>New</guimenuitem></menuchoice> and select the "
-"<guilabel>Directory Comparison</guilabel> tab. You can compare two or three "
-"directories."
-msgstr ""
-"Zum Vergleichen von Ordnern wählen Sie <menuchoice><guimenu>Datei</"
-"guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
-"<guilabel>Ordner vergleichen</guilabel>. Sie können zwei oder drei Ordner "
-"miteinander vergleichen."
-
-#: C/meld.xml:224(para)
-msgid ""
-"Similarly to the file comparison, the window margins mark file deletions, "
-"creations and modifications."
-msgstr ""
-
-#: C/meld.xml:234(para)
-msgid ""
-"Modified files are highlighted with red, created files with green and deleted "
-"files with a strikethrough. See also <xref linkend=\"dir_content_filtering\"/>"
-msgstr ""
-"Geänderte Dateien werden rot hervorgehoben, erzeugte Dateien grün und "
-"gelöschte Dateien blau. Siehe auch <xref linkend=\"dir_content_filtering\"/>."
-
-#: C/meld.xml:238(para)
-msgid ""
-"The file or folder most recently modified has a red dot superimposed on its "
-"icon. More detailed information such as file permission and modification time "
-"can be seen in the status bar when a file is selected."
-msgstr ""
-
-#: C/meld.xml:243(para)
-msgid ""
-"Use the mouse or the the cursor keys <keycap>Up</keycap>, <keycap>Down</"
-"keycap>, <keycap>Left</keycap> and <keycap>Right</keycap> to navigate. "
-"Additionally <keycombo><keycap>Ctrl</keycap><keycap>D</keycap></keycombo> and "
-"<keycombo><keycap>Ctrl</keycap><keycap>E</keycap></keycombo> move to the next "
-"and previous modification respectively."
-msgstr ""
-
-#: C/meld.xml:253(para)
-msgid ""
-"Activate an item with double click or <keycap>Return</keycap> to start an "
-"individual file comparison."
-msgstr ""
-"Aktivieren Sie ein Objekt mittels Doppelklick oder durch Drücken der "
-"<keycap>Eingabetaste</keycap>, um einen individuellen Dateivergleich zu "
-"starten."
-
-#: C/meld.xml:256(para)
-msgid "Additional options are available from a right click context menu."
-msgstr ""
-"Zusätzliche Optionen sind über das Kontextmenü (durch Klick mit der rechten "
-"Maustaste) erreichbar."
-
-#: C/meld.xml:259(para)
-msgid "Use Shift+Click and Control+Click to select multiple items."
-msgstr ""
-"Halten Sie beim Anklicken die <keycap>Umschalttaste</keycap> oder die "
-"<keycap>Strg</keycap>-Taste gedrückt, um mehrere Dateien auszuwählen."
-
-#: C/meld.xml:266(para)
-msgid ""
-"Often the initial comparison will contain too much spurious information. You "
-"can use filters to isolate the differences which are important to you."
-msgstr ""
-"Oft enthält ein erstmaliger Vergleich zu viele unnötige Informationen. Sie "
-"können Filter verwenden, um nur die für Sie wichtigen Informationen anzeigen "
-"zu lassen."
-
-#: C/meld.xml:271(title)
-msgid "Explicit Hiding"
-msgstr "Ausdrückliches Verbergen"
-
-#: C/meld.xml:273(para)
-msgid ""
-"Use the toolbar button to hide an item (and all subitems for directories)."
-msgstr ""
-"Verwenden Sie den Knopf in der Werkzeugleiste, um ein Objekt (und alle in "
-"einem Ordner enthaltenen Objekte) zu verbergen."
-
-#: C/meld.xml:278(title)
-msgid "Case Sensitivity"
-msgstr "Groß-/Kleinschreibung"
-
-#: C/meld.xml:280(para)
-msgid ""
-"By default filename comparisons are case sensitive. Use the toolbar button to "
-"toggle case sensitivty of filenames."
-msgstr ""
-"Per Vorgabe wird bei Vergleichen auf die Groß- und Kleinschreibung von "
-"Dateinamen geachtet. Verwenden Sie den Knopf in der Werkzeugleiste, um dieses "
-"Verhalten an- oder abzuschalten."
-
-#: C/meld.xml:285(title)
-msgid "State Filtering"
-msgstr "Filterung nach Status"
-
-#: C/meld.xml:288(para)
-msgid ""
-"Modified (there is some content difference between files which are present)"
-msgstr ""
-"Geändert (Es gibt inhaltliche Unterschiede zwischen den vorhandenen Dateien)"
-
-#: C/meld.xml:289(para)
-msgid ""
-"New (there is no content difference between present files, but the file is "
-"missing from at least one directory)"
-msgstr ""
-"Neu (Es gibt keine inhaltlichen Unterschiede zwischen den vorhandenen "
-"Dateien, die Datei fehlt aber in mindestens einem Ordner)"
-
-#: C/meld.xml:291(para)
-msgid "Identical (all files have equal content and are all present)"
-msgstr "Identisch (Alle Dateien sind inhaltlich gleich und sind alle vorhanden)"
-
-#: C/meld.xml:287(para)
-msgid "All items have a state which is one of: <placeholder-1/>"
-msgstr "Der Status aller Objekte ist einer von diesen: <placeholder-1/>"
-
-#: C/meld.xml:295(para)
-msgid ""
-"In the current version, only files are filtered by state. Directories are "
-"always shown."
-msgstr ""
-"In der aktuellen Version werden nur Dateien nach deren Status gefiltert. "
-"Ordner werden immer angezeigt."
-
-#: C/meld.xml:294(para)
-msgid ""
-"Use the toolbar buttons to control which items are shown by their state."
-"<placeholder-1/>"
-msgstr ""
-"Verwenden Sie die Knöpfe in der Werkzeugleiste, um festzulegen, welche "
-"Objekte anhand deren Status angezeigt werden sollen.<placeholder-1/>"
-
-#: C/meld.xml:300(title)
-msgid "Name Filtering"
-msgstr "Filterung nach Namen"
-
-#: C/meld.xml:302(para)
-msgid ""
-"Meld can hide certain filename patterns from the comparison using the toolbar "
-"buttons. Customise the file patterns that are hidden in the File Filters "
-"section of the <guilabel>Preferences</guilabel> dialog."
-msgstr ""
-
-#: C/meld.xml:308(title)
-msgid "Content Filtering"
-msgstr "Filterung nach Inhalt"
-
-#: C/meld.xml:310(para)
-msgid ""
-"If differences between files exist, but all differences match the active "
-"regular expressions specified in Text Filters section of the "
-"<guilabel>Preferences</guilabel> dialog, then the filename is not highlighted "
-"in red, but is insted italicised in regular font."
-msgstr ""
-
-#: C/meld.xml:319(title)
-msgid "Source Control"
-msgstr ""
-
-#: C/meld.xml:324(para)
-msgid ""
-"To browse a working copy of a source control repository, choose "
-"<menuchoice><guimenu>File</guimenu><guimenuitem>New</guimenuitem></"
-"menuchoice> and select the <guilabel>Version Control Browser</guilabel> tab."
-msgstr ""
-"Um eine Arbeitskopie eines unter Versionskontrolle stehenden "
-"Softwarebestandes zu durchsuchen, wählen Sie <menuchoice><guimenu>Datei</"
-"guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
-"<guilabel>Versionskontrolle</guilabel>."
-
-#: C/meld.xml:327(para)
-msgid ""
-"The browser is used for examining and commiting or reverting local changes. "
-"It is not intended to be a complete source control client."
-msgstr ""
-
-#: C/meld.xml:334(para)
-msgid ""
-"The browser can filter on four states. To show or hide all files in a "
-"particular state, select or deselect the corresponding toggle button in the "
-"toolbar."
-msgstr ""
-
-#: C/meld.xml:337(guibutton)
-msgid "Normal"
-msgstr "Normal"
-
-#: C/meld.xml:338(para)
-msgid "The file has not changed since it was checked out or committed."
-msgstr ""
-"Die Datei wurde nicht geändert, seit sie zuletzt ausgecheckt oder eingespielt "
-"wurde."
-
-#: C/meld.xml:340(guibutton)
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:58 C/vc-mode.page:107 C/folder-mode.page:148
 msgid "Modified"
 msgstr "Geändert"
 
-#: C/meld.xml:341(para)
-msgid "The file has been locally changed, added, or removed."
-msgstr "Die Datei wurde lokal geändert, hinzugefügt oder entfernt."
-
-#: C/meld.xml:343(guibutton)
-msgid "Non VC"
-msgstr "Nicht-VC"
-
-#: C/meld.xml:344(para)
-msgid ""
-"The file is non-version controlled: it exists locally but was not checked out "
-"from a repository."
+#. (itstool) path: item/p
+#: C/file-filters.page:59
+msgid "The file exists in multiple folders, but the files are different"
 msgstr ""
-"Die Datei steht nicht unter Versionskontrolle. Sie ist lokal vorhanden, wurde "
-"aber nicht aus einem Softwarebestand ausgecheckt."
+"Die Datei existiert in mehreren Ordnern, aber die Dateien sind "
+"unterschiedlich"
 
-#: C/meld.xml:346(guibutton)
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:62 C/vc-mode.page:121 C/folder-mode.page:162
+msgid "New"
+msgstr "Neu"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:63
+msgid "The file exists in one folder but not in the others"
+msgstr "Die Datei existiert in einem Ordnern, jedoch nicht in den anderen"
+
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:66 C/vc-mode.page:93 C/folder-mode.page:118
+msgid "Same"
+msgstr "Identisch"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:67
+msgid "The file exists in all folders, and is the same everywhere"
+msgstr "Die Datei existiert in allen Ordnern und ist überall identisch"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:70
+msgid ""
+"You can change which types of differences you see in your current comparison "
+"by using the <gui style=\"button\">Same</gui>, <gui style=\"button\">New</"
+"gui> and <gui style=\"button\">Modified</gui> buttons on the toolbar or the "
+"<guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">File Status</"
+"gui></guiseq> menu."
+msgstr ""
+
+#. (itstool) path: note/p
+#: C/file-filters.page:80
+msgid ""
+"Currently, you can only filter files based on their state; folders can't be "
+"filtered in this way. For example, you can't tell <app>Meld</app> to ignore "
+"all folders that contain only new files. A folder containing only \"New\" "
+"files would show up as empty, but still present."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/file-filters.page:94
+msgid "Filename filtering"
+msgstr "Filterung nach Dateinamen"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:96
+msgid ""
+"<app>Meld</app> comes with a useful set of filename filters that let you "
+"ignore uninteresting files and folders like common backup files and the "
+"metadata folders of version control systems. Each filename filter can be "
+"separately activated or deactivated from the <gui style=\"button\">Filters</"
+"gui> button on the toolbar or the <guiseq><gui style=\"menu\">View</gui><gui "
+"style=\"menuitem\">File Filters</gui></guiseq> menu."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-filters.page:106
+msgid ""
+"You can add, remove or change filename filters from the <gui style=\"tab"
+"\">File Filters</gui> section of the <gui>Preferences</gui> dialog. Filename "
+"filters specify patterns of filenames that will <em>not</em> be looked at "
+"when performing a folder comparison. Any file that matches an active filter "
+"won't even show up in the tree comparison. Filename filters match both files "
+"and folders; if a folder matches a filter, it and all of its contents are "
+"ignored."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-filters.page:116
+msgid ""
+"Filename filters match according to shell glob patterns. For example, "
+"<code>*.jpg</code> will match all filenames ending in <code>.jpg</code>. The "
+"following table lists all of the shell glob characters that <app>Meld</app> "
+"recognises."
+msgstr ""
+
+#. (itstool) path: table/title
+#: C/file-filters.page:124
+msgid "Shell glob patterns"
+msgstr ""
+
+#. (itstool) path: td/p
+#: C/file-filters.page:128
+msgid "Wildcard"
+msgstr "Platzhalter"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:128
+msgid "Matches"
+msgstr "Entspricht"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:134
+msgid "<code>*</code>"
+msgstr "<code>*</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:135
+msgid "anything (i.e., zero or more characters)"
+msgstr "alles (z.B. kein oder mehr Zeichen)"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:138
+msgid "<code>?</code>"
+msgstr "<code>?</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:139
+msgid "exactly one character"
+msgstr "genau ein Zeichen"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:142
+msgid "<code>[abc]</code>"
+msgstr "<code>[abc]</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:143
+msgid "any one of the listed characters"
+msgstr "ein beliebiges der aufgelisteten Zeichen"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:146
+msgid "<code>[!abc]</code>"
+msgstr "<code>[!abc]</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:147
+msgid "anything <em>except</em> one of the listed characters"
+msgstr "ein beliebiges, jedoch <em>keines</em> der aufgelisteten, Zeichen"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:150
+msgid "<code>{cat,dog}</code>"
+msgstr "<code>{Katze,Hund}</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:151
+msgid "either \"cat\" or \"dog\""
+msgstr "entweder »Katze« oder »Hund«"
+
+#. (itstool) path: note/p
+#: C/file-filters.page:157
+msgid ""
+"Changing a filter's <gui>Active</gui> setting in the <gui>Preferences</gui> "
+"dialog changes whether that filter is active <em>by default</em>."
+msgstr ""
+
+#. (itstool) path: note/p
+#: C/file-filters.page:163
+msgid ""
+"Activating a filter from the menu or the toolbar turns the filter on or off "
+"for <em>this comparison only</em>."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/file-filters.page:174
+#| msgid "Case Sensitivity"
+msgid "Case insensitive filenames"
+msgstr "Dateinamen mit beliebiger Groß-/Kleinschreibung"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:176
+msgid ""
+"Files are compared across directories according to their name. This "
+"comparison is case sensitive by default; that is, the files <file>README</"
+"file>, <file>readme</file> and <file>ReadMe</file> would all be seen as "
+"different files."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-filters.page:183
+msgid ""
+"When comparing folders on some filesystems (e.g., HFS+ or FAT) you may wish "
+"to make <app>Meld</app> treat filenames as case insensitive. You can do this "
+"by selecting <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem"
+"\">Ignore filename case</gui></guiseq> from the menus."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/text-filters.page:17
+#, fuzzy
+#| msgid "Filtering"
+msgid "Filtering out text"
+msgstr "Filterung"
+
+#. (itstool) path: page/p
+#: C/text-filters.page:19
+msgid ""
+"When comparing several files, you may have sections of text where "
+"differences aren't really important. For example, you may want to focus on "
+"changed sections of code, and ignore any changes in comment lines. With text "
+"filters you can tell <app>Meld</app> to ignore text that matches a pattern "
+"(i.e., a regular expression) when showing differences between files."
+msgstr ""
+
+#. (itstool) path: note/p
+#: C/text-filters.page:28
+msgid ""
+"Text filters don't just affect file comparisons, but also folder "
+"comparisons. Check the <link xref=\"file-filters\">file filtering notes</"
+"link> for more details."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/text-filters.page:37
+msgid "Adding and using text filters"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/text-filters.page:39
+msgid ""
+"You can turn text filters on or off from the the <gui>Text Filters</gui> tab "
+"in <gui>Preferences</gui> dialog. <app>Meld</app> comes with a few simple "
+"filters that you might find useful, but you can add your own as well."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/text-filters.page:45
+msgid ""
+"In <app>Meld</app>, text filters are regular expressions that are matched "
+"against the text of files you're comparing. Any text that is matched is "
+"ignored during the comparsion; you'll still see this text in the comparison "
+"view, but it won't be taken into account when finding differences. Text "
+"filters are applied in order, so it's possible for the first filter to "
+"remove text that now makes the second filter match, and so on."
+msgstr ""
+
+#. (itstool) path: note/p
+#: C/text-filters.page:55
+msgid ""
+"If you're not familiar with regular expressions, you might want to check out "
+"the Python <link href=\"http://docs.python.org/howto/regex.html\">Regular "
+"Expression HOWTO</link>."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/text-filters.page:67
+msgid "Getting text filters right"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/text-filters.page:69
+msgid ""
+"It's easy to get text filtering wrong, and Meld's support for filtering "
+"isn't complete. In particular, a text filter can't change the number of "
+"lines in a file. For example, if we had the built-in <gui>Script comment</"
+"gui> filter enabled, and compared the following files:"
+msgstr ""
+
+#. (itstool) path: listing/title
+#: C/text-filters.page:80
+msgid "<file>comment1.txt</file>"
+msgstr "<file>Kommentar1.txt</file>"
+
+#. (itstool) path: listing/code
+#: C/text-filters.page:81
+#, no-wrap
+msgid ""
+"\n"
+"a\n"
+"b#comment\n"
+"c\n"
+"d"
+msgstr ""
+
+#. (itstool) path: listing/title
+#: C/text-filters.page:90
+msgid "<file>comment2.txt</file>"
+msgstr "<file>Kommentar2.txt</file>"
+
+#. (itstool) path: listing/code
+#: C/text-filters.page:91
+#, no-wrap
+msgid ""
+"\n"
+"a\n"
+"b\n"
+"c\n"
+"#comment"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/text-filters.page:101
+msgid ""
+"then the lines starting with <code>b</code> would be shown as identical (the "
+"comment is stripped out) but the <code>d</code> line would be shown as "
+"different to the comment line on the right. This happens because the "
+"<code>#comment</code> is removed from the right-hand side, but the line "
+"itself can not be removed; <app>Meld</app> will show the <code>d</code> line "
+"as being different to what it sees as a blank line on the other side."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/text-filters.page:114
+msgid "Blank lines and filters"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/text-filters.page:116
+msgid ""
+"The <gui>Ignore changes which insert or delete blank lines</gui> preference "
+"in the <gui>Text Filters</gui> tab requires special explanation. If this "
+"special filter is enabled, then any change consisting only of blank lines is "
+"completely ignored. This may occur because there was an actual whitespace "
+"change in the text, but it may also arise if your active text filters have "
+"removed all of the other content from a change, leaving only blank lines."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/text-filters.page:125
+msgid ""
+"You can use this option to get around some of the <link xref=\"#text-filter-"
+"problems\">problems and limitations</link> resulting from filters not being "
+"able to remove whole lines, but it can also be useful in and of itself."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/resolving-conflicts.page:15
+msgid "Resolving merge conflicts"
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:17
+msgid ""
+"One of the best uses of <app>Meld</app> is to resolve conflicts that occur "
+"while merging different branches."
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:22
+msgid ""
+"For example, when using <app>Git</app>, <cmd>git mergetool</cmd> will start "
+"a 'merge helper'; <app>Meld</app> is one such helper. If you want to make "
+"<app>git mergetool</app> use <app>Meld</app> by default, you can add"
+msgstr ""
+
+#. (itstool) path: page/code
+#: C/resolving-conflicts.page:27
+#, no-wrap
+msgid ""
+"\n"
+"[merge]\n"
+"    tool = meld\n"
+msgstr ""
+"\n"
+"[merge]\n"
+"    tool = meld\n"
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:31
+msgid ""
+"to <file>.git/gitconfig</file>. See the <app>git mergetool</app> manual for "
+"details."
+msgstr ""
+
+#. (itstool) path: info/title
+#: C/preferences.page:5 C/file-mode.page:5 C/introduction.page:5
+#: C/folder-mode.page:5 C/missing-functionality.page:5
+msgctxt "sort"
+msgid "1"
+msgstr "1"
+
+#. (itstool) path: credit/years
+#: C/preferences.page:12
+msgid "2013"
+msgstr "2013"
+
+#. (itstool) path: page/title
+#: C/preferences.page:15
+msgid "Meld's preferences"
+msgstr ""
+
+#. (itstool) path: terms/title
+#: C/preferences.page:18
+msgid "Editor preferences"
+msgstr ""
+
+#. (itstool) path: item/title
+#: C/preferences.page:20
+msgid "Editor command"
+msgstr ""
+
+#. (itstool) path: item/p
+#: C/preferences.page:21
+msgid ""
+"The name of the command to run to open text files in an external editor. "
+"This may be just the command (e.g., <cmd>gedit</cmd>) in which case the file "
+"to be opened will be passed as the last argument. Alternatively, you can add "
+"<code>{file}</code> and <code>{line}</code> elements to the command, in "
+"which case <app>Meld</app> will substitute the file path and current line "
+"number respectively (e.g., <cmd>gedit {file}:{line}</cmd>)."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/file-changes.page:16
+msgid "Dealing with changes"
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/file-changes.page:18
+msgid ""
+"<app>Meld</app> deals with differences between files as a list of <em>change "
+"blocks</em> or more simply <em>changes</em>. Each change is a group of lines "
+"which correspond between files. Since these changes are what you're usually "
+"interested in, <app>Meld</app> gives you specific tools to navigate between "
+"these changes and to edit them. You can find these tools in the <gui style="
+"\"menu\">Changes</gui> menu."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/file-changes.page:30
+msgid "Navigating between changes"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-changes.page:32
+msgid ""
+"You can navigate between changes with the <guiseq><gui style=\"menu"
+"\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> and "
+"<guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next "
+"change</gui></guiseq> menu items. You can also use your mouse's scroll wheel "
+"to move between changes, by scrolling on the central change bar."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/file-changes.page:46
+msgid "Changing changes"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-changes.page:48
+msgid ""
+"In addition to directly editing text files, <app>Meld</app> gives you tools "
+"to move, copy or delete individual differences between files. The bar "
+"between two files not only shows you what parts of the two files correspond, "
+"but also lets you selectively merge or delete differing changes by clicking "
+"the arrow or cross icons next to the start of each change."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-changes.page:52
+msgid ""
+"The default action is <em>replace</em>. This action replaces the contents of "
+"the corresponding change with the current change."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-changes.page:59
+msgid ""
+"Hold down the <key>Shift</key> key to change the current action to "
+"<em>delete</em>. This action deletes the current change."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-changes.page:62
+msgid ""
+"Hold down the <key>Ctrl</key> key to change the current action to "
+"<em>insert</em>. This action inserts the current change above or below (as "
+"selected) the corresponding change."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/file-mode.page:17
+msgid "Getting started comparing files"
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/file-mode.page:19
+msgid ""
+"<app>Meld</app> lets you compare two or three text files side-by-side. You "
+"can start a new file comparison by selecting the <guiseq><gui style=\"menu"
+"\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item."
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/file-mode.page:26
+msgid ""
+"Once you've selected your files, <app>Meld</app> will show them side-by-"
+"side. Differences between the files will be highlighted to make individual "
+"changes easier to see. Editing the files will cause the comparison to update "
+"on-the-fly. For details on navigating between individual changes, and on how "
+"to use change-based editing, see <link xref=\"file-changes\"/>."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/file-mode.page:35
+msgid "<app>Meld</app>'s file comparisons"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-mode.page:37
+msgid ""
+"There are several different parts to a file comparison. The most important "
+"parts are the editors where your files appear. In addition to these editors, "
+"the areas around and between your files give you a visual overview and "
+"actions to help you handle changes between the files."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-mode.page:43
+msgid ""
+"On the left and right-hand sides of the window, there are two small vertical "
+"bars showing various coloured blocks. These bars are designed to give you an "
+"overview of all of the differences between your two files. Each coloured "
+"block represents a section that is inserted, deleted, changed or in conflict "
+"between your files, depending on the block's colour used."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-mode.page:50
+msgid ""
+"In between each pair of files is a segment that shows how the changed "
+"sections between your files correspond to each other. You can click on the "
+"arrows in a segment to replace sections in one file with sections from the "
+"other. You can also delete, copy or merge changes. For details on what you "
+"can do with individual change segments, see <link xref=\"file-changes#change-"
+"actions\"/>."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/file-mode.page:62
+msgid "Saving your changes"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-mode.page:64
+msgid ""
+"Once you've finished editing your files, you need to save each file you've "
+"changed."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-mode.page:68
+msgid ""
+"You can tell whether your files have been saved since they last changed by "
+"the save icon that appears next to the file name above each file. Also, the "
+"notebook label will show an asterisk (<code>*</code>) after any file that "
+"hasn't been saved."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/file-mode.page:74
+msgid ""
+"You can save the current file by selecting the <guiseq><gui style=\"menu"
+"\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu item, or using "
+"the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard shortcut."
+msgstr ""
+
+#. (itstool) path: note/p
+#: C/file-mode.page:81
+msgid ""
+"Saving only saves the <em>currently focussed</em> file, which is the file "
+"containing the cursor. If you can't tell which file is focussed, you can "
+"click on the file to focus it before saving."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/flattened-view.page:15
+msgid "Flattened view"
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/flattened-view.page:17
+msgid ""
+"When viewing large folders, you may be interested in only a few files among "
+"the thousands in the folder itself. For this reason, <app>Meld</app> "
+"includes a <em>flattened view</em> of a folder; only files that have not "
+"been filtered out (e.g., by <link xref=\"vc-mode#vc-state-filtering\"/>) are "
+"shown, and the folder heirarchy is stripped away, with file paths shown in "
+"the <em>Location</em> column."
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/flattened-view.page:27
+msgid ""
+"You can turn this flattened view on or off by unchecking the <guiseq><gui "
+"style=\"menu\">View</gui><gui style=\"menuitem\">Flatten</gui></guiseq> menu "
+"item, or by clicking the corresponding <gui style=\"button\">Flatten</gui> "
+"button on the toolbar."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/index.page:14
+msgid "Meld Help"
+msgstr "Handbuch zu Meld"
+
+#. (itstool) path: section/title
+#: C/index.page:17
+msgid "Introduction"
+msgstr "Einführung"
+
+#. (itstool) path: section/title
+#: C/index.page:21
+msgid "Comparing Files"
+msgstr "Dateien vergleichen"
+
+#. (itstool) path: section/title
+#: C/index.page:25
+msgid "Comparing Folders"
+msgstr "Ordner vergleichen"
+
+#. (itstool) path: section/title
+#: C/index.page:29
+msgid "Using Meld with Version Control"
+msgstr "Meld für Versionskontrolle verwenden"
+
+#. (itstool) path: section/title
+#: C/index.page:33
+msgid "Advanced Usage"
+msgstr "Fortgeschrittene Verwendung"
+
+#. (itstool) path: info/title
+#: C/vc-mode.page:5
+msgctxt "sort"
+msgid "0"
+msgstr "0"
+
+#. (itstool) path: page/title
+#: C/vc-mode.page:16
+msgid "Viewing version-controlled files"
+msgstr "Betrachten von Dateien unter Versionskontrolle"
+
+#. (itstool) path: page/p
+#: C/vc-mode.page:18
+msgid ""
+"<app>Meld</app> integrates with <link xref=\"vc-supported\">many version "
+"control systems</link> to let you review local changes and perform simple "
+"version control tasks. You can start a new version control comparison by "
+"selecting the <guiseq><gui style=\"menu\">File</gui><gui style=\"menuitem"
+"\">New...</gui></guiseq> menu item, and clicking on the <gui style=\"tab"
+"\">Version Control</gui> tab."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/vc-mode.page:30
+msgid "Version control comparisons"
+msgstr "Versionskontroll-Vergleiche"
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:32
+msgid ""
+"Version control comparisons show the differences between the contents of "
+"your folder and the current repository version. Each file in your local copy "
+"has a <link xref=\"#vc-state\">state</link> that indicates how it differs "
+"from the repository copy."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:46
+msgid ""
+"If you want to look at a particular file's differences, you can select it "
+"and press <key>Enter</key>, or double-click the file to start a <link xref="
+"\"file-mode\">file comparison</link>. You can also interact with your "
+"version control system using the <gui style=\"menu\">Changes</gui> menu."
+msgstr ""
+
+#. (itstool) path: section/title
+#. (itstool) path: table/title
+#: C/vc-mode.page:56 C/vc-mode.page:81
+msgid "Version control states"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:58
+msgid ""
+"Each file or folder in a version control comparison has a <em>state</em>, "
+"obtained from the version control system itself. <app>Meld</app> maps these "
+"different states into a standard set of very similar concepts. As such, "
+"<app>Meld</app> might use slightly different names for states than your "
+"version control system does. The possible states are:"
+msgstr ""
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:85 C/folder-mode.page:110
+msgid "State"
+msgstr ""
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:86 C/folder-mode.page:111
+msgid "Appearance"
+msgstr "Erscheinungsbild"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:87 C/folder-mode.page:112
+msgid "Meaning"
+msgstr "Bedeutung"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:95 C/folder-mode.page:120
+msgid "Normal font"
+msgstr "Normale Schriftart"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:101
+msgid "The file/folder is the same as the repository version."
+msgstr ""
+"Die Datei/der Ordner ist identisch mit der Version aus dem Softwarebestand."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:109 C/folder-mode.page:150
+msgid "Red and bold"
+msgstr "Rot und fett"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:115
+msgid "This file is different to the repository version."
+msgstr "Die Datei ist unterschiedlich zu der Version im Softwarebestand."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:123 C/folder-mode.page:164
+msgid "Green and bold"
+msgstr "Grün und fett"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:129
+msgid ""
+"This file/folder is new, and is scheduled to be added to the repository."
+msgstr ""
+"Die Datei/der Ordner ist neu und bereits zum Hinzufügen zum Softwarebestand "
+"markiert."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:136
+msgid "Removed"
+msgstr "Entfernt"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:138
+msgid "Red bold text with a line through the middle"
+msgstr "Roter, fetter, durchgestrichener Text"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:144
+msgid ""
+"This file/folder existed, but is scheduled to be removed from the repository."
+msgstr ""
+"Diese Datei/dieser Ordner existiert, ist jedoch zum Entfernen aus dem "
+"Softwarebestand markiert."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:151
+msgid "Conflict"
+msgstr "Konflikt"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:153
+msgid "Bright red bold text"
+msgstr "Heller, roter, fetter Text"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:159
+msgid ""
+"When trying to merge with the repository, the differences between the local "
+"file and the repository could not be resolved, and the file is now in "
+"conflict with the repository contents"
+msgstr ""
+"Die Unterschiede zwischen der lokalen Datei und dem Softwarebestand konnten "
+"beim Zusammenzuführen nicht gelöst werden. Die Datei ist nun im Konflikt mit "
+"den Inhalten des Softwarebestandes."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:167 C/folder-mode.page:176
+msgid "Missing"
+msgstr "Fehlt"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:169
+msgid "Blue bold text with a line through the middle"
+msgstr "Blauer, fetter, durchgestrichener Text"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:175
+msgid "This file/folder should be present, but isn't."
+msgstr "Diese Datei/dieser Ordner sollte vorhanden sein, ist es jedoch nicht."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:181
 msgid "Ignored"
 msgstr "Ignoriert"
 
-#: C/meld.xml:347(para)
+#. (itstool) path: td/p
+#: C/vc-mode.page:183 C/vc-mode.page:199
+msgid "Greyed out text"
+msgstr "Ausgegrauter Text"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:189
 msgid ""
-"The file is explicitly ignored e.g. though a <filename>.cvsignore</filename> "
-"file."
+"This file/folder has been explicitly ignored (e.g., by an entry in <file>."
+"gitignore</file>) and is not being tracked by version control."
 msgstr ""
-"Die Datei wird ausdrücklich ignoriert, z.B. in der Datei <filename>."
-"cvsignore</filename>."
+"Diese Datei/dieser Ordner wurde ausdrücklich ignoriert (z.B. durch einen "
+"Eintrag in <file>.gitignore</file>) und wird nicht durch die "
+"Versionskontrolle überwacht."
 
-#: C/meld.xml:351(para)
+#. (itstool) path: td/p
+#: C/vc-mode.page:197
+msgid "Non VC"
+msgstr "Nicht-VC"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:205
 msgid ""
-"The <guibutton>Flatten</guibutton> toggle displays the directory listing as a "
-"plain list, showing all subdirectory contents together. This makes it easier "
-"to see several changes scattered in several directories or in a large tree. "
-"This is especially useful in conjunction with only the modified filter active."
+"This file is not in the version control system; it is only in the local copy."
+msgstr ""
+"Die Datei steht nicht unter Versionskontrolle. Sie ist nur lokal vorhanden."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:212 C/folder-mode.page:191
+msgid "Error"
+msgstr "Fehler"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:214 C/folder-mode.page:193
+msgid "Bright red with a yellow background and bold"
+msgstr "Helles Rot mit einem gelben Hintergrund"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:220
+msgid "The version control system has reported a problem with this file."
+msgstr "Das Versionskontrollsystem hat ein Problem zu dieser Datei gemeldet."
+
+#. (itstool) path: section/title
+#: C/vc-mode.page:230
+msgid "Version control state filtering"
 msgstr ""
 
-#: C/meld.xml:359(title)
-msgid "Viewing Differences"
-msgstr "Anzeigen von Unterschieden"
-
-#: C/meld.xml:361(para)
+#. (itstool) path: section/p
+#: C/vc-mode.page:232
 msgid ""
-"Activating an unmodified file opens it in the file viewer. Activating a "
-"modified file opens up a two way diff to examine your changes."
+"Most often, you will only want to see files that are identified as being in "
+"some way different; this is the default setting in <app>Meld</app>. You can "
+"change which file states you see by using the <guiseq><gui style=\"menu"
+"\">View</gui><gui style=\"menuitem\">Version Status</gui></guiseq> menu, or "
+"by clicking the corresponding <gui style=\"button\">Modified</gui>, <gui "
+"style=\"button\">Normal</gui>, <gui style=\"button\">Non VC</gui> and <gui "
+"style=\"button\">Ignored</gui> buttons on the toolbar."
 msgstr ""
 
-#: C/meld.xml:365(para)
-msgid ""
-"You can examine many changes at once using Shift+Click and Control+Click to "
-"select multiple items."
-msgstr ""
+#. (itstool) path: page/title
+#: C/keyboard-shortcuts.page:15
+msgid "Keyboard shortcuts"
+msgstr "Tastenkürzel"
 
-#: C/meld.xml:371(title)
-msgid "Making Changes"
-msgstr ""
-
-#: C/meld.xml:373(para)
-msgid ""
-"The toolbar contains commands to perform the most common source control "
-"operations. These operations are also accessible through a context menu."
-msgstr ""
-
-#: C/meld.xml:379(title)
-msgid "Viewing Console"
-msgstr ""
-
-#: C/meld.xml:381(para)
-msgid ""
-"At the bottom of the source control window is an expander containing all the "
-"source control operations and their output. Click the expander bar to toggle "
-"between hiding and showing the console."
-msgstr ""
-
-#: C/meld.xml:388(title)
-msgid "Shortcut Keys"
-msgstr "Tastenkombination"
-
-#: C/meld.xml:390(para)
-msgid ""
-"For more on shortcut keys, see the <ulink type=\"help\" url=\"ghelp:user-"
-"guide?keyboard-skills\">Desktop User Guide</ulink>."
-msgstr ""
-"Weitere Informationen über Tastenkürzel finden Sie im <ulink type=\"help\" "
-"url=\"ghelp:user-guide?keyboard-skills\">Desktop-Benutzerhandbuch</ulink>."
-
-#: C/meld.xml:394(title)
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:18
 msgid "Shortcuts for working with files and comparisons"
 msgstr "Tastenkürzel zum Arbeiten mit Dateien und Vergleichen"
 
-#: C/meld.xml:401(para) C/meld.xml:460(para) C/meld.xml:551(para)
-#: C/meld.xml:594(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
+#: C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131
 msgid "Shortcut"
 msgstr "Tastenkürzel"
 
-#: C/meld.xml:403(para) C/meld.xml:462(para) C/meld.xml:553(para)
-#: C/meld.xml:596(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
+#: C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131
 msgid "Description"
 msgstr "Beschreibung"
 
-#: C/meld.xml:410(keycap) C/meld.xml:418(keycap) C/meld.xml:426(keycap)
-#: C/meld.xml:434(keycap) C/meld.xml:442(keycap) C/meld.xml:469(keycap)
-#: C/meld.xml:477(keycap) C/meld.xml:485(keycap) C/meld.xml:493(keycap)
-#: C/meld.xml:501(keycap) C/meld.xml:509(keycap) C/meld.xml:517(keycap)
-#: C/meld.xml:525(keycap) C/meld.xml:533(keycap) C/meld.xml:568(keycap)
-#: C/meld.xml:576(keycap)
-msgid "Ctrl"
-msgstr "Strg"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:29
+msgid "<keyseq><key>Ctrl</key><key>N</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>N</key></keyseq>"
 
-#: C/meld.xml:410(keycap)
-msgid "N"
-msgstr "N"
-
-#: C/meld.xml:413(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:30
 msgid "Start a new comparison."
 msgstr "Startet einen neuen Vergleich."
 
-#: C/meld.xml:418(keycap) C/meld.xml:426(keycap)
-msgid "S"
-msgstr "S"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:33
+msgid "<keyseq><key>Ctrl</key><key>S</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>S</key></keyseq>"
 
-#: C/meld.xml:421(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:34
 msgid "Save the current document to disk."
 msgstr "Speichert das aktuelle Dokument auf Festplatte."
 
-#: C/meld.xml:426(keycap) C/meld.xml:477(keycap) C/meld.xml:576(keycap)
-msgid "Shift"
-msgstr "Umschalt"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:37
+msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>S</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>Umschalt</key><key>S</key></keyseq>"
 
-#: C/meld.xml:429(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:38
 msgid "Save the current document with a new filename."
 msgstr "Speichert das aktuelle Dokument unter einem neuen Namen."
 
-#: C/meld.xml:434(keycap)
-msgid "W"
-msgstr "W"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:41
+msgid "<keyseq><key>Ctrl</key><key>W</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>W</key></keyseq>"
 
-#: C/meld.xml:437(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:42
 msgid "Close the current comparison."
 msgstr "Schließt den aktuellen Vergleich"
 
-#: C/meld.xml:442(keycap)
-msgid "Q"
-msgstr "Q"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:45
+msgid "<keyseq><key>Ctrl</key><key>Q</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>Q</key></keyseq>"
 
-#: C/meld.xml:445(para)
-msgid "Quit <application>Meld</application>."
-msgstr "Beendet <application>Meld</application>."
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:46
+msgid "Quit <app>Meld</app>."
+msgstr "<app>Meld</app> beenden."
 
-#: C/meld.xml:453(title)
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:52
 msgid "Shortcuts for editing documents"
 msgstr "Tastenkürzel zum Bearbeiten von Dokumenten"
 
-#: C/meld.xml:469(keycap) C/meld.xml:477(keycap)
-msgid "Z"
-msgstr "Z"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:62
+msgid "<keyseq><key>Ctrl</key><key>Z</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>Z</key></keyseq>"
 
-#: C/meld.xml:472(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:63
 msgid "Undo the last action."
 msgstr "Macht die letzte Aktion rückgängig."
 
-#: C/meld.xml:480(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:66
+msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>Z</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>Umschalt</key><key>Z</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:67
 msgid "Redo the last undone action."
 msgstr "Wiederholt die letzte rückgängig gemachte Aktion."
 
-#: C/meld.xml:485(keycap)
-msgid "X"
-msgstr "X"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:70
+msgid "<keyseq><key>Ctrl</key><key>X</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>X</key></keyseq>"
 
-#: C/meld.xml:488(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:71
 msgid "Cut the selected text or region and place it on the clipboard."
 msgstr ""
 "Schneidet den markierten Text oder den markierten Bereich aus und verschiebt "
 "ihn in die Zwischenablage."
 
-#: C/meld.xml:493(keycap)
-msgid "C"
-msgstr "C"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:74
+msgid "<keyseq><key>Ctrl</key><key>C</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>C</key></keyseq>"
 
-#: C/meld.xml:496(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:75
 msgid "Copy the selected text or region onto the clipboard."
 msgstr ""
-"Kopiert den markierten Text oder den markierten Bereich in die Zwischenablage."
+"Kopiert den markierten Text oder den markierten Bereich in die "
+"Zwischenablage."
 
-#: C/meld.xml:501(keycap)
-msgid "V"
-msgstr "V"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:78
+msgid "<keyseq><key>Ctrl</key><key>V</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>V</key></keyseq>"
 
-#: C/meld.xml:504(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:79
 msgid "Paste the contents of the clipboard."
 msgstr "Fügt den Inhalt der Zwischenablage ein."
 
-#: C/meld.xml:509(keycap)
-msgid "F"
-msgstr "F"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:82
+msgid "<keyseq><key>Ctrl</key><key>F</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>F</key></keyseq>"
 
-#: C/meld.xml:512(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:83
 msgid "Find a string."
 msgstr "Sucht nach einer Zeichenkette."
 
-#: C/meld.xml:517(keycap)
-msgid "G"
-msgstr "G"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:86
+msgid "<keyseq><key>Ctrl</key><key>G</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>G</key></keyseq>"
 
-#: C/meld.xml:520(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:87
 msgid "Find the next instance of the string."
 msgstr "Findet das nächste Vorkommen der Zeichenkette."
 
-#: C/meld.xml:525(keycap)
-msgid "D"
-msgstr "D"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:90 C/keyboard-shortcuts.page:96
+msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
+msgstr "<keyseq><key>Alt</key><key>↑</key></keyseq>"
 
-#: C/meld.xml:528(para)
-msgid "Go to the next difference."
-msgstr "Springt zum nächsten Unterschied."
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:91
+msgid ""
+"Go to the next difference. (Also <keyseq><key>Ctrl</key><key>D</key></"
+"keyseq>)"
+msgstr ""
+"Zum nächsten Unterschied springen. (Auch <keyseq><key>Strg</key><key>D</"
+"key></keyseq>)"
 
-#: C/meld.xml:533(keycap)
-msgid "E"
-msgstr "E"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:97
+msgid ""
+"Go to the previous difference. (Also <keyseq><key>Ctrl</key><key>E</key></"
+"keyseq>)"
+msgstr ""
+"Zum vorherigen Unterschied springen. (Auch <keyseq><key>Strg</key><key>E</"
+"key></keyseq>)"
 
-#: C/meld.xml:536(para)
-msgid "Go to the previous difference."
-msgstr "Springt zum vorherigen Unterschied."
-
-#: C/meld.xml:544(title)
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:105
 msgid "Shortcuts for view settings"
 msgstr "Tastenkürzel für Anzeigeoptionen"
 
-#: C/meld.xml:560(keycap)
-msgid "Escape"
-msgstr "Esc"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:115
+msgid "<keyseq><key>Escape</key></keyseq>"
+msgstr "<keyseq><key>Escape</key></keyseq>"
 
-#: C/meld.xml:563(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:116
 msgid "Stop the current comparison."
 msgstr "Stoppt den aktuellen Vergleich."
 
-#: C/meld.xml:568(keycap) C/meld.xml:576(keycap)
-msgid "R"
-msgstr "R"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:119
+msgid "<keyseq><key>Ctrl</key><key>R</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>R</key></keyseq>"
 
-#: C/meld.xml:571(para)
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:120
 msgid "Refresh the current comparison."
 msgstr "Aktualisiert den aktuellen Vergleich."
 
-#: C/meld.xml:579(para)
-msgid "Reload the current comparison."
-msgstr "Lädt den aktuellen Vergleich neu."
-
-#: C/meld.xml:587(title)
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:127
 msgid "Shortcuts for help"
 msgstr "Tastenkürzel für Hilfe"
 
-#: C/meld.xml:603(keycap)
-msgid "F1"
-msgstr "F1"
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:137
+msgid "<keyseq><key>F1</key></keyseq>"
+msgstr "<keyseq><key>F1</key></keyseq>"
 
-#: C/meld.xml:606(para)
-msgid "Open <application>Meld</application>'s user manual."
-msgstr "Öffnet das Benutzerhandbuch von <application>Meld</application>."
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:138
+msgid "Open <app>Meld</app>'s user manual."
+msgstr "Das Benutzerhandbuch von <app>Meld</app> öffnen."
 
-#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
-#: C/meld.xml:0(None)
-msgid "translator-credits"
-msgstr "Mario Blättermann <mariobl@gnome.org>, 2009"
+#. (itstool) path: page/title
+#: C/introduction.page:15
+msgid "What is Meld?"
+msgstr "Was is Meld?"
+
+#. (itstool) path: page/p
+#: C/introduction.page:16
+msgid ""
+"<app>Meld</app> is a tool for comparing files and directories, and for "
+"resolving differences between them. It is also useful for comparing changes "
+"captured by version control systems."
+msgstr ""
+"<app>Meld</app> ist ein Werkzeug zum Vergleichen von Dateien und Ordnern und "
+"zum Auflösen von Unterschieden zwischen solchen. Es ist nützlich zum "
+"Betrachten von Änderungen, die von Versionskontrollsystemen erfasst werden."
+
+#. (itstool) path: page/p
+#: C/introduction.page:22
+msgid ""
+"<app>Meld</app> shows differences between two or three files (or two or "
+"three directories) and allows you to move content between them, or edit the "
+"files manually. <app>Meld</app>'s focus is on helping developers compare and "
+"merge source files, and get a visual overview of changes in their favourite "
+"version control system."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/folder-mode.page:16
+msgid "Getting started comparing folders"
+msgstr "Erste Schritte beim Vergleichen von Ordnern"
+
+#. (itstool) path: page/p
+#: C/folder-mode.page:18
+msgid ""
+"<app>Meld</app> lets you compare two or three folders side-by-side. You can "
+"start a new folder comparison by selecting the <guiseq><gui style=\"menu"
+"\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item, and "
+"clicking on the <gui style=\"tab\">Directory Comparison</gui> tab."
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/folder-mode.page:26
+msgid ""
+"Your selected folders will be shown as side-by-side trees, with differences "
+"between files in each folder highlighted. You can copy or delete files from "
+"either folder, or compare individual text files in more detail."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:36
+msgid "The folder comparison view"
+msgstr "Die Ordnervergleichsansicht"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:38
+msgid ""
+"The main parts of a folder comparison are the trees showing the folders "
+"you're comparing. You can easily <link xref=\"#folder-navigation\">move "
+"around</link> these comparisons to find changes that you're interested in. "
+"When you select a file or folder, more detailed information is given in the "
+"status bar at the bottom of the window. Pressing <key>Enter</key> on a "
+"selected file, or double-clicking any file in the tree will open a side-by-"
+"side <link xref=\"file-mode\">file comparison</link> of the files in a new "
+"tab, but this will only work properly if they're text files!"
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:50
+msgid ""
+"There are bars on the left and right-hand sides of the window that show you "
+"a simple coloured summary of the comparison results. Each file or folder in "
+"the comparison corresponds to a small section of these bars, though "
+"<app>Meld</app> doesn't show <em>Same</em> files so that it's easier to see "
+"any actually important differences. You can click anywhere on this bar to "
+"jump straight to that place in the comparison."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:63
+#, fuzzy
+#| msgid "Folder Comparison"
+msgid "Navigating folder comparisons"
+msgstr "Ordnervergleich"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:65
+msgid ""
+"You can jump between changed files (that is, any files/folders that are "
+"<em>not</em> classified as being identical) with the <guiseq><gui style="
+"\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> "
+"and <guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next "
+"change</gui></guiseq> menu items, or using the corresponding buttons on the "
+"toolbar."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:73
+msgid ""
+"You can use the <key>Left</key> and <key>Right</key> arrow keys to move "
+"between the folders you're comparing. This is useful so that you can select "
+"an individual file for copying or deletion."
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:83
+#, fuzzy
+#| msgid "Start a new comparison."
+msgid "States in folder comparisons"
+msgstr "Startet einen neuen Vergleich."
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:85
+msgid ""
+"Each file or folder in a tree has its own <em>state</em>, telling you how it "
+"differed from its corresponding files/folders. The possible states are:"
+msgstr ""
+
+#. (itstool) path: table/title
+#: C/folder-mode.page:106
+#, fuzzy
+#| msgid "Folder Comparison"
+msgid "Folder comparison states"
+msgstr "Ordnervergleich"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:126
+msgid "The file/folder is the same across all compared folders."
+msgstr "Die Datei/der Ordner ist identisch in allen verglichenen Ordnern."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:132
+msgid "Same when filtered"
+msgstr "Identisch, wenn gefiltert"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:134
+msgid "Italics"
+msgstr "Kursiv"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:140
+msgid ""
+"These files are different across folders, but once <link xref=\"text-filters"
+"\">text filters</link> are applied, these files become identical."
+msgstr ""
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:156
+msgid "These files differ between the folders being compared."
+msgstr ""
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:170
+msgid "This file/folder exists in this folder, but not in the others."
+msgstr ""
+"Diese Datei/der Ordner existiert in diesem Ordner, jedoch nicht in den "
+"anderen."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:178
+msgid "Greyed out text with a line through the middle"
+msgstr "Ausgegrauter, durchgestrichener Text"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:184
+msgid ""
+"This file/folder doesn't exist in this folder, but does in one of the others."
+msgstr ""
+"Diese Datei/dieser Ordner existiert nicht in diesem Ordner, jedoch in einem "
+"der anderen."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:199
+msgid ""
+"When comparing this file, an error occurred. The most common error causes "
+"are file permissions (i.e., <app>Meld</app> was not allowed to open the "
+"file) and filename encoding errors."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:217
+msgid ""
+"You can filter out files based on these states, for example, to show only "
+"files that have are <em>Modified</em>. You can read more about this in <link "
+"xref=\"file-filters#file-state-filter\"/>."
+msgstr ""
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:223
+msgid ""
+"Finally, the most recently modified file/folder has an emblem attached to it."
+msgstr ""
+
+#. (itstool) path: page/title
+#: C/missing-functionality.page:15
+msgid "Things that <app>Meld</app> doesn't do"
+msgstr "Dinge, die <app>Meld</app> nicht macht"
+
+#. (itstool) path: page/p
+#: C/missing-functionality.page:17
+msgid ""
+"Have you ever spent half an hour poking around an application trying to find "
+"out how to do something, thinking that <em>surely</em> there must be an "
+"option for this?"
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/missing-functionality.page:23
+msgid ""
+"This section lists a few of the common things that <app>Meld</app> "
+"<em>doesn't</em> do, either as a deliberate choice, or because we just "
+"haven't had time."
+msgstr ""
+"Dieser Abschnitt zählt ein paar der Dinge auf, die <app>Meld</app>, entweder "
+"aus gründlicher Wahl oder weil wir keine Zeit hatten, <em>nicht macht</em>"
+
+#. (itstool) path: section/title
+#: C/missing-functionality.page:30
+msgid "Aligning changes by adding lines"
+msgstr "Änderungen durch hinzufügen von Zeilen aneinander ausrichten"
+
+#. (itstool) path: section/p
+#: C/missing-functionality.page:31
+msgid ""
+"When <app>Meld</app> shows differences between files, it shows both files as "
+"they would appear in a normal text editor. It does <em>not</em> insert "
+"additional lines so that the left and right sides of a particular change are "
+"the same size. There is no option to do this."
+msgstr ""
+"Bei der Anzeige von Unterschieden, zeigt <app>Meld</app> die Dateien so an, "
+"wie sie in einem normalem Textbearbeitungsprogramm erscheinen. <app>Meld</"
+"app> fügt <em>keine</em> zusätzlichen Zeilen ein, so dass die linke und die "
+"rechte Seite einer bestimmten Änderung die selbe Größe haben. Es gibt dafür "
+"keine Einstellungsmöglichkeit."
+
+#. (itstool) path: page/title
+#: C/command-line.page:15
+msgid "Command line usage"
+msgstr "Befehlszeilenverwendung"
+
+#. (itstool) path: page/p
+#: C/command-line.page:17
+msgid ""
+"If you start <app>Meld</app> from the command line, you can tell it what to "
+"do when it starts."
+msgstr ""
+"Wenn Sie <app>Meld</app> von der Befehlszeile starten, können Sie angeben, "
+"was beim Starten zu tun ist."
+
+#. (itstool) path: page/p
+#: C/command-line.page:20
+msgid ""
+"For a two- or three-way <link xref=\"file-mode\">file comparison</link>, "
+"start <app>Meld</app> with <cmd>meld <var>file1</var> <var>file2</var></cmd> "
+"or <cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> "
+"respectively."
+msgstr ""
+"Für einen Zwei- oder Drei-Wege <link xref=\"file-mode\">Datei-Vergleich</"
+"link>, starten Sie <app>Meld</app> mit <cmd>meld <var>datei1</var> "
+"<var>datei2</var></cmd> beziehungsweise mit <cmd>meld <var>datei1</var> "
+"<var>datei2</var> <var>datei3</var></cmd>."
+
+#. (itstool) path: page/p
+#: C/command-line.page:26
+msgid ""
+"For a two- or three-way <link xref=\"folder-mode\">directory comparison</"
+"link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
+"cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
+msgstr ""
+"Für einen Zwei- oder Drei-Wege <link xref=\"file-mode\">Ordner-Vergleich</"
+"link>, starten Sie <app>Meld</app> mit <cmd>meld <var>ordner1</var> <var> "
+"ordner2</var></cmd> beziehungsweise mit <cmd>meld <var>ordner1</var> "
+"<var>ordner2</var> <var>ordner3</var></cmd>."
+
+#. (itstool) path: page/p
+#: C/command-line.page:31
+msgid ""
+"You can start a <link xref=\"vc-mode\">version control</link> comparison by "
+"just giving a single argument; if that file or directory is managed by a "
+"<link xref=\"vc-supported\">recognized version control system</link>, it "
+"will start a version control comparison on that argument. For example, "
+"<cmd>meld .</cmd> would start a version control view of the current "
+"directory."
+msgstr ""
+"Sie können einen <link xref=\"vc-mode\">Versionskontroll</link>-Vergleich "
+"mit einem einzelnen Argument starten. Wenn diese Datei oder dieses "
+"Verzeichnis durch ein <link xref=\"vc-supported\">unterstütztes "
+"Versionskontrollsystem</link> verwaltet wird, wird <app>Meld</app> einen "
+"Versionskontroll-Vergleich für das Argument starten. Zum Beispiel können Sie "
+"mit <cmd>meld .</cmd> eine Versionskontrollansicht des aktuellen Ordners "
+"starten."
+
+#. (itstool) path: note/p
+#: C/command-line.page:40
+msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
+msgstr ""
+"Um eine vollständige Liste von Optionen zu erhalten, rufen Sie <cmd>meld --"
+"help</cmd> auf."
+
+#~ msgid "Meld Users Manual"
+#~ msgstr "Meld-Benutzerhandbuch"
+
+#~ msgid "Stephen"
+#~ msgstr "Stephen"
+
+#~ msgid "Kennedy"
+#~ msgstr "Kennedy"
+
+#~ msgid "stevek@gnome.org"
+#~ msgstr "stevek@gnome.org"
+
+#~ msgid "2004"
+#~ msgstr "2004"
+
+#~ msgid "Stephen Kennedy"
+#~ msgstr "Stephen Kennedy"
+
+#~ msgid "This is version 0.1 of the meld manual, describing meld 0.9.6"
+#~ msgstr ""
+#~ "Die vorliegende Version 0.1 des Meld-Handbuchs beschreibt die "
+#~ "Anwendungsversion 0.9.6."
+
+#~ msgid ""
+#~ "Meld views differences between files and between directories. Meld makes "
+#~ "it easy to isolate and merge these differences."
+#~ msgstr ""
+#~ "Meld zeigt Unterschiede zwischen Dateien und zwischen Ordnern an. Meld "
+#~ "erleichtert Ihnen die Herauslösung oder Zusammenführung dieser "
+#~ "Unterschiede."
+
+#~ msgid "Starting meld"
+#~ msgstr "Starten von Meld"
+
+#~ msgid "meld"
+#~ msgstr "meld"
+
+#~ msgid "File Comparison"
+#~ msgstr "Dateivergleich"
+
+#~ msgid "Starting"
+#~ msgstr "Starten"
+
+#~ msgid ""
+#~ "To compare files, choose <menuchoice><guimenu>File</"
+#~ "guimenu><guimenuitem>New</guimenuitem></menuchoice> and select the "
+#~ "<guilabel>File Comparison</guilabel> tab. You can compare two or three "
+#~ "files."
+#~ msgstr ""
+#~ "Zum Vergleichen von Dateien wählen Sie <menuchoice><guimenu>Datei</"
+#~ "guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
+#~ "<guilabel>Dateien vergleichen</guilabel>. Sie können zwei oder drei "
+#~ "Dateien miteinander vergleichen."
+
+#~ msgid ""
+#~ "For two way comparisons the original is shown in the left pane and the "
+#~ "modified version in the right pane by convention."
+#~ msgstr ""
+#~ "Per Vorgabe wird bei Zweiwege-Vergleichen das Original in der linken "
+#~ "Ansicht und die geänderte Version in der rechten Ansicht dargestellt."
+
+#~ msgid ""
+#~ "For three way comparisons, the original is shown in the centre pane and "
+#~ "the left and right panes show the modified versions. By convention we put "
+#~ "the locally modified file in the right pane."
+#~ msgstr ""
+#~ "Bei Dreiwege-Vergleichen wird das Original in der mittleren Ansicht und "
+#~ "die geänderten Versionen in der linken und rechten Ansicht dargestellt. "
+#~ "Per Vorgabe wird die lokal geänderte Version in der linken Ansicht "
+#~ "dargestellt."
+
+#~ msgid "Change Summary"
+#~ msgstr "Änderungs-Zusammenfassung"
+
+#~ msgid ""
+#~ "The location of the changes is summarised in the window margins at the "
+#~ "far left and right. By default green marks insertions and deletions and "
+#~ "blue marks changes."
+#~ msgstr ""
+#~ "Die Orte der Änderungen werden an den linken und rechten Rändern des "
+#~ "Fensters zusammengefasst. Einfügungen werden standardmäßig grün markiert, "
+#~ "Löschungen dagegen blau."
+
+#~ msgid ""
+#~ "You can jump to an individual change by clicking in the margin or using "
+#~ "the scrollbar."
+#~ msgstr ""
+#~ "Sie können zu einer bestimmten Änderung springen, indem Sie auf diese "
+#~ "Ränder klicken oder die Bildlaufleiste bewegen."
+
+#~ msgid "Detailed View"
+#~ msgstr "Detailansicht"
+
+#~ msgid "Editing"
+#~ msgstr "Bearbeiten"
+
+#~ msgid "Regular Expressions"
+#~ msgstr "Reguläre Ausdrücke"
+
+#~ msgid ""
+#~ "Differences are computed line-by-line so multiline regulare expressions "
+#~ "will likely have unintended consequences."
+#~ msgstr ""
+#~ "Unterschiede werden zeilenweise erkannt, so dass sich über mehrere Zeilen "
+#~ "erstreckende reguläre Ausdrücke vielleicht unerwartete Konsequenzen haben "
+#~ "könnten."
+
+#~ msgid "Blank Lines"
+#~ msgstr "Leerzeilen"
+
+#~ msgid ""
+#~ "Changes which insert or remove blank lines can be ignored. This option is "
+#~ "most useful in conjunction with one or more regular expression filters."
+#~ msgstr ""
+#~ "Änderungen, die lediglich Leerzeilen einfügen oder löschen, werden "
+#~ "ignoriert. Diese Option ist am nützlichsten in Verbindung mit einem oder "
+#~ "mehreren Filtern für reguläre Ausdrücke."
+
+#~ msgid "Saving"
+#~ msgstr "speichern"
+
+#~ msgid ""
+#~ "To save a file, choose <menuchoice><guimenu>File</"
+#~ "guimenu><guimenuitem>Save</guimenuitem></menuchoice>, press "
+#~ "<keycombo><keycap>Ctrl</keycap><keycap>S</keycap></keycombo>, or press "
+#~ "the toolbar save button. All of these save the currently focussed file "
+#~ "(the file containing the edit cursor)."
+#~ msgstr ""
+#~ "Um eine Datei zu speichern, wählen Sie <menuchoice><guimenu>Datei</"
+#~ "guimenu><guimenuitem>Speichern</guimenuitem></menuchoice>, drücken "
+#~ "<keycombo><keycap>Strg</keycap><keycap>S</keycap></keycombo>, oder "
+#~ "klicken auf den Knopf <guilabel>Speichern</guilabel> in der "
+#~ "Werkzeugleiste. Auf alle diese Arten speichern Sie die aktuelle "
+#~ "ausgewählte Datei, also jene, die den Cursor enthält."
+
+#~ msgid "Status Bar"
+#~ msgstr "Statuszeile"
+
+#~ msgid ""
+#~ "The status bar shows the cursor location (line and column) and also "
+#~ "progress messages as files are initially loaded and compared."
+#~ msgstr ""
+#~ "Die Statuszeile zeigt die aktuelle Position des Cursors an (Zeile und "
+#~ "Spalte) sowie Fortschrittsmeldungen beim erstmaligen Laden von Dateien "
+#~ "und Vergleichsvorgängen."
+
+#~ msgid ""
+#~ "To compare directories, choose <menuchoice><guimenu>File</"
+#~ "guimenu><guimenuitem>New</guimenuitem></menuchoice> and select the "
+#~ "<guilabel>Directory Comparison</guilabel> tab. You can compare two or "
+#~ "three directories."
+#~ msgstr ""
+#~ "Zum Vergleichen von Ordnern wählen Sie <menuchoice><guimenu>Datei</"
+#~ "guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
+#~ "<guilabel>Ordner vergleichen</guilabel>. Sie können zwei oder drei Ordner "
+#~ "miteinander vergleichen."
+
+#~ msgid ""
+#~ "Modified files are highlighted with red, created files with green and "
+#~ "deleted files with a strikethrough. See also <xref linkend="
+#~ "\"dir_content_filtering\"/>"
+#~ msgstr ""
+#~ "Geänderte Dateien werden rot hervorgehoben, erzeugte Dateien grün und "
+#~ "gelöschte Dateien blau. Siehe auch <xref linkend=\"dir_content_filtering"
+#~ "\"/>."
+
+#~ msgid ""
+#~ "Activate an item with double click or <keycap>Return</keycap> to start an "
+#~ "individual file comparison."
+#~ msgstr ""
+#~ "Aktivieren Sie ein Objekt mittels Doppelklick oder durch Drücken der "
+#~ "<keycap>Eingabetaste</keycap>, um einen individuellen Dateivergleich zu "
+#~ "starten."
+
+#~ msgid "Additional options are available from a right click context menu."
+#~ msgstr ""
+#~ "Zusätzliche Optionen sind über das Kontextmenü (durch Klick mit der "
+#~ "rechten Maustaste) erreichbar."
+
+#~ msgid "Use Shift+Click and Control+Click to select multiple items."
+#~ msgstr ""
+#~ "Halten Sie beim Anklicken die <keycap>Umschalttaste</keycap> oder die "
+#~ "<keycap>Strg</keycap>-Taste gedrückt, um mehrere Dateien auszuwählen."
+
+#~ msgid ""
+#~ "Often the initial comparison will contain too much spurious information. "
+#~ "You can use filters to isolate the differences which are important to you."
+#~ msgstr ""
+#~ "Oft enthält ein erstmaliger Vergleich zu viele unnötige Informationen. "
+#~ "Sie können Filter verwenden, um nur die für Sie wichtigen Informationen "
+#~ "anzeigen zu lassen."
+
+#~ msgid "Explicit Hiding"
+#~ msgstr "Ausdrückliches Verbergen"
+
+#~ msgid ""
+#~ "Use the toolbar button to hide an item (and all subitems for directories)."
+#~ msgstr ""
+#~ "Verwenden Sie den Knopf in der Werkzeugleiste, um ein Objekt (und alle in "
+#~ "einem Ordner enthaltenen Objekte) zu verbergen."
+
+#~ msgid ""
+#~ "By default filename comparisons are case sensitive. Use the toolbar "
+#~ "button to toggle case sensitivty of filenames."
+#~ msgstr ""
+#~ "Per Vorgabe wird bei Vergleichen auf die Groß- und Kleinschreibung von "
+#~ "Dateinamen geachtet. Verwenden Sie den Knopf in der Werkzeugleiste, um "
+#~ "dieses Verhalten an- oder abzuschalten."
+
+#~ msgid "State Filtering"
+#~ msgstr "Filterung nach Status"
+
+#~ msgid ""
+#~ "Modified (there is some content difference between files which are "
+#~ "present)"
+#~ msgstr ""
+#~ "Geändert (Es gibt inhaltliche Unterschiede zwischen den vorhandenen "
+#~ "Dateien)"
+
+#~ msgid ""
+#~ "New (there is no content difference between present files, but the file "
+#~ "is missing from at least one directory)"
+#~ msgstr ""
+#~ "Neu (Es gibt keine inhaltlichen Unterschiede zwischen den vorhandenen "
+#~ "Dateien, die Datei fehlt aber in mindestens einem Ordner)"
+
+#~ msgid "Identical (all files have equal content and are all present)"
+#~ msgstr ""
+#~ "Identisch (Alle Dateien sind inhaltlich gleich und sind alle vorhanden)"
+
+#~ msgid "All items have a state which is one of: <placeholder-1/>"
+#~ msgstr "Der Status aller Objekte ist einer von diesen: <placeholder-1/>"
+
+#~ msgid ""
+#~ "In the current version, only files are filtered by state. Directories are "
+#~ "always shown."
+#~ msgstr ""
+#~ "In der aktuellen Version werden nur Dateien nach deren Status gefiltert. "
+#~ "Ordner werden immer angezeigt."
+
+#~ msgid ""
+#~ "Use the toolbar buttons to control which items are shown by their state."
+#~ "<placeholder-1/>"
+#~ msgstr ""
+#~ "Verwenden Sie die Knöpfe in der Werkzeugleiste, um festzulegen, welche "
+#~ "Objekte anhand deren Status angezeigt werden sollen.<placeholder-1/>"
+
+#~ msgid "Content Filtering"
+#~ msgstr "Filterung nach Inhalt"
+
+#~ msgid ""
+#~ "To browse a working copy of a source control repository, choose "
+#~ "<menuchoice><guimenu>File</guimenu><guimenuitem>New</guimenuitem></"
+#~ "menuchoice> and select the <guilabel>Version Control Browser</guilabel> "
+#~ "tab."
+#~ msgstr ""
+#~ "Um eine Arbeitskopie eines unter Versionskontrolle stehenden "
+#~ "Softwarebestandes zu durchsuchen, wählen Sie <menuchoice><guimenu>Datei</"
+#~ "guimenu><guimenuitem>Neu</guimenuitem></menuchoice> und wählen den Reiter "
+#~ "<guilabel>Versionskontrolle</guilabel>."
+
+#~ msgid "The file has not changed since it was checked out or committed."
+#~ msgstr ""
+#~ "Die Datei wurde nicht geändert, seit sie zuletzt ausgecheckt oder "
+#~ "eingespielt wurde."
+
+#~ msgid "The file has been locally changed, added, or removed."
+#~ msgstr "Die Datei wurde lokal geändert, hinzugefügt oder entfernt."
+
+#~ msgid ""
+#~ "The file is explicitly ignored e.g. though a <filename>.cvsignore</"
+#~ "filename> file."
+#~ msgstr ""
+#~ "Die Datei wird ausdrücklich ignoriert, z.B. in der Datei <filename>."
+#~ "cvsignore</filename>."
+
+#~ msgid "Viewing Differences"
+#~ msgstr "Anzeigen von Unterschieden"
+
+#~ msgid "Shortcut Keys"
+#~ msgstr "Tastenkombination"
+
+#~ msgid ""
+#~ "For more on shortcut keys, see the <ulink type=\"help\" url=\"ghelp:user-"
+#~ "guide?keyboard-skills\">Desktop User Guide</ulink>."
+#~ msgstr ""
+#~ "Weitere Informationen über Tastenkürzel finden Sie im <ulink type=\"help"
+#~ "\" url=\"ghelp:user-guide?keyboard-skills\">Desktop-Benutzerhandbuch</"
+#~ "ulink>."
+
+#~ msgid "Ctrl"
+#~ msgstr "Strg"
+
+#~ msgid "N"
+#~ msgstr "N"
+
+#~ msgid "S"
+#~ msgstr "S"
+
+#~ msgid "Shift"
+#~ msgstr "Umschalt"
+
+#~ msgid "W"
+#~ msgstr "W"
+
+#~ msgid "Q"
+#~ msgstr "Q"
+
+#~ msgid "Z"
+#~ msgstr "Z"
+
+#~ msgid "X"
+#~ msgstr "X"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "V"
+#~ msgstr "V"
+
+#~ msgid "F"
+#~ msgstr "F"
+
+#~ msgid "G"
+#~ msgstr "G"
+
+#~ msgid "D"
+#~ msgstr "D"
+
+#~ msgid "Go to the next difference."
+#~ msgstr "Springt zum nächsten Unterschied."
+
+#~ msgid "E"
+#~ msgstr "E"
+
+#~ msgid "Go to the previous difference."
+#~ msgstr "Springt zum vorherigen Unterschied."
+
+#~ msgid "Escape"
+#~ msgstr "Esc"
+
+#~ msgid "R"
+#~ msgstr "R"
+
+#~ msgid "Reload the current comparison."
+#~ msgstr "Lädt den aktuellen Vergleich neu."
