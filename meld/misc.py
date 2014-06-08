@@ -52,7 +52,7 @@ def error_dialog(
     """
     if not parent:
         from meld.meldapp import app
-        parent = app.window.widget
+        parent = app.get_active_window()
 
     dialog = Gtk.MessageDialog(
         parent=parent,
