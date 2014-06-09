@@ -143,7 +143,12 @@ class MeldApp(Gtk.Application):
         else:
             window = self.new_window()
 
-        return window.open_paths(paths, **kwargs)
+        try:
+            return window.open_paths(paths, **kwargs)
+        except ValueError:
+            if not new_tab:
+                self.remove_window(window.widget)
+            raise
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""
