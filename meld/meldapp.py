@@ -87,7 +87,7 @@ class MeldApp(Gtk.Application):
         window = self.get_active_window().meldwindow
         if not window.has_pages():
             window.append_new_comparison()
-        window.widget.show()
+        window.widget.present()
         return 0
 
     def do_window_removed(self, widget):
