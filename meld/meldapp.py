@@ -307,12 +307,12 @@ class MeldApp(Gtk.Application):
                     focus=i == 0)
             except ValueError as err:
                 error = err
+            else:
+                if options.label:
+                    tab.set_labels(options.label)
 
-            if options.label:
-                tab.set_labels(options.label)
-
-            if options.outfile and isinstance(tab, filediff.FileDiff):
-                tab.set_merge_output_file(options.outfile)
+                if options.outfile and isinstance(tab, filediff.FileDiff):
+                    tab.set_merge_output_file(options.outfile)
 
         if error:
             log.debug("Couldn't open comparison: %s", error)
