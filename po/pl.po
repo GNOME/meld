@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-26 00:12+0200\n"
-"PO-Revision-Date: 2014-05-26 00:13+0200\n"
+"POT-Creation-Date: 2014-06-10 20:50+0200\n"
+"PO-Revision-Date: 2014-06-10 20:51+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -575,7 +575,7 @@ msgid "_Add"
 msgstr "_Dodaj"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:743
+#: ../meld/vcview.py:747
 msgid "_Remove"
 msgstr "U_suń"
 
@@ -1612,85 +1612,90 @@ msgstr "Skopiuj w gó_rę"
 msgid "Copy _down"
 msgstr "Skopiuj w _dół"
 
-#: ../meld/meldapp.py:160
+#: ../meld/meldapp.py:169
 msgid "wrong number of arguments supplied to --diff"
 msgstr "błędna liczba parametrów dla opcji --diff"
 
-#: ../meld/meldapp.py:165
+#: ../meld/meldapp.py:174
 msgid "Start with an empty window"
 msgstr "Rozpoczyna z pustym oknem"
 
-#: ../meld/meldapp.py:166 ../meld/meldapp.py:168
+#: ../meld/meldapp.py:175 ../meld/meldapp.py:177
 msgid "file"
 msgstr "plik"
 
-#: ../meld/meldapp.py:166 ../meld/meldapp.py:170
+#: ../meld/meldapp.py:175 ../meld/meldapp.py:179
 msgid "folder"
 msgstr "katalog"
 
-#: ../meld/meldapp.py:167
+#: ../meld/meldapp.py:176
 msgid "Start a version control comparison"
 msgstr "Rozpoczyna porównanie systemu kontroli wersji"
 
-#: ../meld/meldapp.py:169
+#: ../meld/meldapp.py:178
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Rozpoczyna porównanie 2 lub 3 plików"
 
-#: ../meld/meldapp.py:171
+#: ../meld/meldapp.py:180
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Rozpoczyna porównanie 2 lub 3 katalogów"
 
-#: ../meld/meldapp.py:209
+#: ../meld/meldapp.py:223
+#, python-format
+msgid "Error: %s\n"
+msgstr "Błąd: %s\n"
+
+#: ../meld/meldapp.py:230
 msgid "Meld is a file and directory comparison tool."
 msgstr "Program Meld jest narzędziem do porównywania plików i katalogów."
 
-#: ../meld/meldapp.py:213
+#: ../meld/meldapp.py:234
 msgid "Set label to use instead of file name"
 msgstr "Ustawia etykietę, która ma być użyta zamiast nazwy pliku"
 
-#: ../meld/meldapp.py:216
+#: ../meld/meldapp.py:237
 msgid "Open a new tab in an already running instance"
 msgstr "Otwiera nową kartę w już uruchomionej kopii"
 
-#: ../meld/meldapp.py:219
+#: ../meld/meldapp.py:240
 msgid "Automatically compare all differing files on startup"
 msgstr ""
 "Automatycznie porównuje wszystkie różniące się pliki podczas uruchamiania"
 
-#: ../meld/meldapp.py:222
+#: ../meld/meldapp.py:243
 msgid "Ignored for compatibility"
 msgstr "Ignorowane - dla zachowania zgodności"
 
-#: ../meld/meldapp.py:226
+#: ../meld/meldapp.py:247
 msgid "Set the target file for saving a merge result"
 msgstr "Ustawia nazwę pliku, w którym zapisany zostanie wynik scalenia"
 
-#: ../meld/meldapp.py:229
+#: ../meld/meldapp.py:250
 msgid "Automatically merge files"
 msgstr "Automatycznie scala pliki"
 
-#: ../meld/meldapp.py:233
+#: ../meld/meldapp.py:254
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Wczytuje zapisane porównanie z pliku porównania programu Meld"
 
-#: ../meld/meldapp.py:237
+#: ../meld/meldapp.py:258
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Tworzy kartę różnicy dla podanych plików lub katalogów"
 
-#: ../meld/meldapp.py:249
+#: ../meld/meldapp.py:278
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "za dużo parametrów (powinno być 0-3, jest %d)"
 
-#: ../meld/meldapp.py:252
+#: ../meld/meldapp.py:281
 msgid "can't auto-merge less than 3 files"
 msgstr "nie można automatycznie scalić mniej niż 3 plików"
 
-#: ../meld/meldapp.py:254
+#: ../meld/meldapp.py:283
 msgid "can't auto-merge directories"
 msgstr "nie można automatycznie scalić katalogów"
 
-#: ../meld/meldapp.py:264
+#: ../meld/meldapp.py:297
 msgid "Error reading saved comparison file"
 msgstr "Błąd podczas odczytywania zapisanego pliku porównania"
 
@@ -1699,7 +1704,7 @@ msgstr "Błąd podczas odczytywania zapisanego pliku porównania"
 msgid "<unnamed>"
 msgstr "<bez nazwy>"
 
-#: ../meld/melddoc.py:76 ../meld/melddoc.py:77
+#: ../meld/melddoc.py:77 ../meld/melddoc.py:78
 msgid "untitled"
 msgstr "bez nazwy"
 
@@ -1916,7 +1921,7 @@ msgstr "etykieta"
 msgid "pattern"
 msgstr "wzorzec"
 
-#: ../meld/recent.py:105
+#: ../meld/recent.py:114
 msgid "Version control:"
 msgstr "System kontroli wersji:"
 
@@ -2010,7 +2015,7 @@ msgstr "Brakujący"
 msgid "Not present"
 msgstr "Nieobecny"
 
-#: ../meld/vcview.py:233 ../meld/vcview.py:413
+#: ../meld/vcview.py:233 ../meld/vcview.py:417
 msgid "Location"
 msgstr "Położenie"
 
@@ -2062,60 +2067,60 @@ msgid "Choose which version control system to use"
 msgstr "Proszę wybrać system kontroli wersji do użycia"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:413
+#: ../meld/vcview.py:417
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:427 ../meld/vcview.py:435
+#: ../meld/vcview.py:431 ../meld/vcview.py:439
 #, python-format
 msgid "Scanning %s"
 msgstr "Skanowanie %s"
 
-#: ../meld/vcview.py:475
+#: ../meld/vcview.py:479
 msgid "(Empty)"
 msgstr "(Pusty)"
 
-#: ../meld/vcview.py:518
+#: ../meld/vcview.py:522
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokalne"
 
-#: ../meld/vcview.py:519
+#: ../meld/vcview.py:523
 #, python-format
 msgid "%s — remote"
 msgstr "%s — zdalne"
 
-#: ../meld/vcview.py:527
+#: ../meld/vcview.py:531
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokalne, scalanie, zdalne)"
 
-#: ../meld/vcview.py:532
+#: ../meld/vcview.py:536
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (zdalne, scalanie, lokalne)"
 
-#: ../meld/vcview.py:543
+#: ../meld/vcview.py:547
 #, python-format
 msgid "%s — repository"
 msgstr "%s — repozytorium"
 
-#: ../meld/vcview.py:549
+#: ../meld/vcview.py:553
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (kopia robocza, repozytorium)"
 
-#: ../meld/vcview.py:553
+#: ../meld/vcview.py:557
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (repozytorium, kopia robocza)"
 
-#: ../meld/vcview.py:737
+#: ../meld/vcview.py:741
 msgid "Remove folder and all its files?"
 msgstr "Usunąć katalog i wszystkie zawarte w nim pliki?"
 
-#: ../meld/vcview.py:739
+#: ../meld/vcview.py:743
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2123,7 +2128,7 @@ msgstr ""
 "Spowoduje to usunięcie z systemu kontroli wersji wszystkich zaznaczonych "
 "plików i katalogów, a także wszystkich plików w zaznaczonych katalogach."
 
-#: ../meld/vcview.py:773
+#: ../meld/vcview.py:777
 #, python-format
 msgid "Error removing %s"
 msgstr "Błąd podczas usuwania %s"
