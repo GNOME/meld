@@ -78,11 +78,11 @@ class FilterList(ListWidget):
 
 class ColumnList(ListWidget):
 
-    available_columns = set((
-        "size",
-        "modification time",
-        "permissions",
-    ))
+    available_columns = {
+        "size": _("Size"),
+        "modification time": _("Modification time"),
+        "permissions": _("Permissions"),
+    }
 
     def __init__(self, key):
         ListWidget.__init__(self, "EditableList.ui",
@@ -92,10 +92,18 @@ class ColumnList(ListWidget):
 
         # Unwrap the variant
         prefs_columns = [(k, v) for k, v in settings.get_value(self.key)]
-        missing = self.available_columns - set([c[0] for c in prefs_columns])
-        prefs_columns.extend([(m, False) for m in missing])
-        for column_name, visibility in prefs_columns:
-            self.model.append([visibility, _(column_name.capitalize())])
+        column_vis = {}
+        column_order = {}
+        for sort_key, (column_name, visibility) in enumerate(prefs_columns):
+            column_vis[column_name] = bool(int(visibility))
+            column_order[column_name] = sort_key
+
+        columns = [(column_vis.get(name, True), name, label) for
+                   name, label in self.available_columns.items()]
+        columns = sorted(columns, key=lambda c: column_order.get(c[1], 0))
+
+        for visibility, name, label in columns:
+            self.model.append([visibility, name, label])
 
         for signal in ('row-changed', 'row-deleted', 'row-inserted',
                        'rows-reordered'):
