@@ -136,13 +136,14 @@ class MeldApp(Gtk.Application):
     def get_meld_window(self):
         return self.get_active_window().meldwindow
 
-    def open_paths(self, paths, **kwargs):
+    def open_files(self, files, **kwargs):
         new_tab = kwargs.pop('new_tab')
         if new_tab:
             window = self.get_meld_window()
         else:
             window = self.new_window()
 
+        paths = [f.get_path() for f in files]
         try:
             return window.open_paths(paths, **kwargs)
         except ValueError:
@@ -305,9 +306,10 @@ class MeldApp(Gtk.Application):
         comparisons = options.diff + [args]
         options.newtab = options.newtab or not command_line.get_is_remote()
         for i, paths in enumerate(comparisons):
+            files = [command_line.create_file_for_arg(p) for p in paths]
             try:
-                tab = self.open_paths(
-                    paths, auto_compare=options.auto_compare,
+                tab = self.open_files(
+                    files, auto_compare=options.auto_compare,
                     auto_merge=options.auto_merge, new_tab=options.newtab,
                     focus=i == 0)
             except ValueError as err:
