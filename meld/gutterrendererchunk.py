@@ -121,9 +121,9 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
 
         pixbuf = None
         if chunk_index is not None:
-            chunk = self.linediffer.get_chunk(chunk_index, self.from_pane)
-            # FIXME: This is all chunks, not just those shared with to_pane
-            if chunk[1] == line:
+            chunk = self.linediffer.get_chunk(
+                chunk_index, self.from_pane, self.to_pane)
+            if chunk and chunk[1] == line:
                 action = self._classify_change_actions(chunk)
                 pixbuf = self.action_map.get(action)
         if pixbuf:
