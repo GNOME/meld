@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-06-17 09:42+0000\n"
-"PO-Revision-Date: 2014-06-17 19:08+0200\n"
+"POT-Creation-Date: 2014-06-20 09:38+0000\n"
+"PO-Revision-Date: 2014-06-20 12:21+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -353,10 +353,11 @@ msgstr ""
 "«izquierda es el otro», «derecha es el mío»."
 
 #: ../data/org.gnome.meld.gschema.xml.h:48
-#, fuzzy
 #| msgid "Start a version control comparison"
 msgid "Order for files in three-way version control merge comparisons"
-msgstr "Iniciar una comparación de control de versiones"
+msgstr ""
+"Orden de los archivos en comparaciones de mezcla de control de versiones de "
+"tres vías"
 
 #: ../data/org.gnome.meld.gschema.xml.h:49
 msgid ""
@@ -364,6 +365,10 @@ msgid ""
 "preference only affects three-way comparisons launched from the version "
 "control view, so is used solely for merges/conflict resolution within Meld."
 msgstr ""
+"Las opciones para ordenar los archivos son remoto/mezcla/local y local/"
+"mezcla/remoto. Esta opción sólo afecta a las comparaciones de tres vías "
+"lanzadas desde la vista del control de versiones, por lo que se usa "
+"solamente para la resolución de mezclas/conflictos en Meld."
 
 #: ../data/org.gnome.meld.gschema.xml.h:50
 msgid "Show margin in commit message editor"
@@ -443,9 +448,6 @@ msgid "About Meld"
 msgstr "Acerca de Meld"
 
 #: ../data/ui/application.ui.h:2
-#| msgid ""
-#| "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-#| "Copyright &#xA9; 2009-2013 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
 "Copyright © 2009-2013 Kai Willadsen"
@@ -465,7 +467,6 @@ msgstr ""
 "Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004-2006"
 
 #: ../data/ui/application.ui.h:6
-#| msgid "Prefere_nces"
 msgid "_Preferences"
 msgstr "Prefere_ncias"
 
@@ -646,17 +647,14 @@ msgstr ""
 "archivo nuevo."
 
 #: ../data/ui/filediff.ui.h:7
-#| msgid "_File"
 msgid "File 3"
 msgstr "Fila 3"
 
 #: ../data/ui/filediff.ui.h:8
-#| msgid "_File"
 msgid "File 2"
 msgstr "Fila 2"
 
 #: ../data/ui/filediff.ui.h:9
-#| msgid "_File"
 msgid "File 1"
 msgstr "Fila 1"
 
@@ -747,12 +745,10 @@ msgid "Left is local, right is remote"
 msgstr "Local a la izquierda, remoto a la derecha"
 
 #: ../data/ui/preferences.ui.h:3
-#| msgid "Left is remote, right is local"
 msgid "Remote, merge, local"
 msgstr "Remoto, mezcla, local"
 
 #: ../data/ui/preferences.ui.h:4
-#| msgid "Left is local, right is remote"
 msgid "Local, merge, remote"
 msgstr "Local, mezcla, remoto"
 
@@ -869,14 +865,13 @@ msgid "Version Comparisons"
 msgstr "Comparación de versiones"
 
 #: ../data/ui/preferences.ui.h:34
-#, fuzzy
 #| msgid "_When comparing file revisions:"
 msgid "_Order when comparing file revisions:"
-msgstr "Al comprar re_visiones de archivos:"
+msgstr "_Orden al comprar revisiones de archivos:"
 
 #: ../data/ui/preferences.ui.h:35
 msgid "Order when _merging files:"
-msgstr ""
+msgstr "Orden al _mezclar archivos:"
 
 #: ../data/ui/preferences.ui.h:36
 msgid "Commit Messages"
@@ -895,7 +890,6 @@ msgid "Version Control"
 msgstr "Control de versión"
 
 #: ../data/ui/preferences.ui.h:40
-#| msgid "Filename-based filters"
 msgid "Filename filters"
 msgstr "Filtros basados en el nombre del archivo"
 
@@ -915,14 +909,15 @@ msgstr "Filtros de archivos"
 
 #: ../data/ui/preferences.ui.h:43
 msgid "Change trimming"
-msgstr ""
+msgstr "Cambiar recortado"
 
 #: ../data/ui/preferences.ui.h:44
 msgid "Trim blank line differences from the start and end of changes"
 msgstr ""
+"Recortar las diferencias de líneas en blanco desde el principio hasta el "
+"final de los cambios"
 
 #: ../data/ui/preferences.ui.h:45
-#| msgid "Text Filters"
 msgid "Text filters"
 msgstr "Filtros de texto"
 
@@ -1429,7 +1424,6 @@ msgstr ""
 "incorrecta. Vea el manual del usuario para más detalles."
 
 #: ../meld/filediff.py:890
-#| msgid "Mar_k as Resolved"
 msgid "Mark conflict as resolved?"
 msgstr "¿Marcar conflicto como resuelto?"
 
@@ -1437,14 +1431,13 @@ msgstr "¿Marcar conflicto como resuelto?"
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
+"Si el conflicto se ha resuelto con éxito, debe marcarlo como resuelto ahora."
 
 #: ../meld/filediff.py:894
-#| msgid "_Cancel"
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: ../meld/filediff.py:895
-#| msgid "Mar_k as Resolved"
 msgid "Mark _Resolved"
 msgstr "Mar_car como resuelto"
 
@@ -1660,7 +1653,6 @@ msgstr "Iniciar una comparación de carpetas de 2 ó 3 vías"
 
 #: ../meld/meldapp.py:224
 #, python-format
-#| msgid "Error"
 msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
@@ -1927,7 +1919,6 @@ msgid "Switch to this tab"
 msgstr "Cambiar a esta pestaña"
 
 #: ../meld/meldwindow.py:629
-#| msgid "Cannot compare a mixture of files and directories.\n"
 msgid "Cannot compare a mixture of files and directories"
 msgstr "No se puede comparar una mezcla de archivos y carpetas"
 
@@ -1949,9 +1940,6 @@ msgid "Version control:"
 msgstr "Control de versión:"
 
 #: ../meld/ui/findbar.py:144
-#| msgid ""
-#| "Regular expression error\n"
-#| "'%s'"
 msgid "Regular expression error"
 msgstr "Error en la expresión regular"
 
@@ -2020,7 +2008,6 @@ msgid "Newly added"
 msgstr "Nuevo añadido"
 
 #: ../meld/vc/_vc.py:72
-#| msgid "<unnamed>"
 msgid "Renamed"
 msgstr "Renombrado"
 
@@ -2119,31 +2106,28 @@ msgstr "%s — remoto"
 
 #: ../meld/vcview.py:531
 #, python-format
-#| msgid "Left is local, right is remote"
 msgid "%s (local, merge, remote)"
 msgstr "%s (local, mezcla, remoto)"
 
 #: ../meld/vcview.py:536
 #, python-format
-#| msgid "Left is remote, right is local"
 msgid "%s (remote, merge, local)"
 msgstr "%s (remoto, mezcla, local)"
 
 #: ../meld/vcview.py:547
 #, python-format
-#| msgid "Invalid repository"
 msgid "%s — repository"
 msgstr "%s — repositorio"
 
 #: ../meld/vcview.py:553
 #, python-format
 msgid "%s (working, repository)"
-msgstr ""
+msgstr "%s (funcionando, repositorio)"
 
 #: ../meld/vcview.py:557
 #, python-format
 msgid "%s (repository, working)"
-msgstr ""
+msgstr "%s (repositorio, funcionando)"
 
 #: ../meld/vcview.py:741
 msgid "Remove folder and all its files?"
@@ -2159,10 +2143,6 @@ msgstr ""
 
 #: ../meld/vcview.py:777
 #, python-format
-#| msgid ""
-#| "Error removing %s\n"
-#| "\n"
-#| "%s."
 msgid "Error removing %s"
 msgstr "Error al quitar %s"
 
