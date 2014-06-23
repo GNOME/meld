@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import pipes
 import shlex
 import string
 import subprocess
@@ -40,12 +41,12 @@ def make_custom_editor_command(path, line=0):
     replacements = [tok[1] for tok in fmt.parse(custom_command)]
 
     if not any(replacements):
-        cmd = " ".join([custom_command, path])
+        return [custom_command, path]
     elif not all(r in (None, 'file', 'line') for r in replacements):
-        cmd = " ".join([custom_command, path])
         log.error("Unsupported fields found", )
+        return [custom_command, path]
     else:
-        cmd = custom_command.format(file=path, line=line)
+        cmd = custom_command.format(file=pipes.quote(path), line=line)
     return shlex.split(cmd)
 
 
