@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-31 09:35+0000\n"
-"PO-Revision-Date: 2014-05-31 12:49+0200\n"
+"POT-Creation-Date: 2014-06-23 20:59+0000\n"
+"PO-Revision-Date: 2014-06-23 23:02+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -568,7 +568,7 @@ msgid "_Add"
 msgstr "_Přidat"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:743
+#: ../meld/vcview.py:747
 msgid "_Remove"
 msgstr "_Odstranit"
 
@@ -1117,17 +1117,17 @@ msgid "_Push commits"
 msgstr "_Odeslat zařazené"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:381
+#: ../meld/dirdiff.py:381 ../meld/preferences.py:82
 msgid "Size"
 msgstr "Velikost"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:389
+#: ../meld/dirdiff.py:389 ../meld/preferences.py:83
 msgid "Modification time"
 msgstr "Čas změny"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:397
+#: ../meld/dirdiff.py:397 ../meld/preferences.py:84
 msgid "Permissions"
 msgstr "Oprávnění"
 
@@ -1600,84 +1600,89 @@ msgstr "Kopírovat nahor_u"
 msgid "Copy _down"
 msgstr "Kopírovat _dolů"
 
-#: ../meld/meldapp.py:160
+#: ../meld/meldapp.py:170
 msgid "wrong number of arguments supplied to --diff"
 msgstr "poskytnut nesprávný počet argumentů pro --diff"
 
-#: ../meld/meldapp.py:165
+#: ../meld/meldapp.py:175
 msgid "Start with an empty window"
 msgstr "Spustit s prázdným oknem"
 
-#: ../meld/meldapp.py:166 ../meld/meldapp.py:168
+#: ../meld/meldapp.py:176 ../meld/meldapp.py:178
 msgid "file"
 msgstr "soubor"
 
-#: ../meld/meldapp.py:166 ../meld/meldapp.py:170
+#: ../meld/meldapp.py:176 ../meld/meldapp.py:180
 msgid "folder"
 msgstr "složka"
 
-#: ../meld/meldapp.py:167
+#: ../meld/meldapp.py:177
 msgid "Start a version control comparison"
 msgstr "Spustit nové porovnání správy verzí"
 
-#: ../meld/meldapp.py:169
+#: ../meld/meldapp.py:179
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Spustit dvojcestné nebo trojcestné porovnání souborů"
 
-#: ../meld/meldapp.py:171
+#: ../meld/meldapp.py:181
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Spustit dvojcestné nebo trojcestné porovnání složek"
 
-#: ../meld/meldapp.py:209
+#: ../meld/meldapp.py:224
+#, python-format
+msgid "Error: %s\n"
+msgstr "Chyba: %s\n"
+
+#: ../meld/meldapp.py:231
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld je nástroj porovnávající soubory a složky."
 
-#: ../meld/meldapp.py:213
+#: ../meld/meldapp.py:235
 msgid "Set label to use instead of file name"
 msgstr "Nastavit k použití popisek namísto názvu souboru"
 
-#: ../meld/meldapp.py:216
+#: ../meld/meldapp.py:238
 msgid "Open a new tab in an already running instance"
 msgstr "Otevřít novou kartu v již běžící instanci"
 
-#: ../meld/meldapp.py:219
+#: ../meld/meldapp.py:241
 msgid "Automatically compare all differing files on startup"
 msgstr "Automaticky při spuštění porovnat všechny lišící se soubory"
 
-#: ../meld/meldapp.py:222
+#: ../meld/meldapp.py:244
 msgid "Ignored for compatibility"
 msgstr "Ignorováno z důvodu kompatibility"
 
-#: ../meld/meldapp.py:226
+#: ../meld/meldapp.py:248
 msgid "Set the target file for saving a merge result"
 msgstr "Nastavit cílový soubor, do kterého se má uložit výsledek slučování"
 
-#: ../meld/meldapp.py:229
+#: ../meld/meldapp.py:251
 msgid "Automatically merge files"
 msgstr "Automaticky sloučit soubory"
 
-#: ../meld/meldapp.py:233
+#: ../meld/meldapp.py:255
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Načíst uložené porovnání ze srovnávacího souboru Meld"
 
-#: ../meld/meldapp.py:237
+#: ../meld/meldapp.py:259
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Vytvořit kartu s rozdílem pro zadané soubory nebo složky"
 
-#: ../meld/meldapp.py:249
+#: ../meld/meldapp.py:279
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "příliš mnoho argumentů (požadováno 0 – 3, obdrženo %d)"
 
-#: ../meld/meldapp.py:252
+#: ../meld/meldapp.py:282
 msgid "can't auto-merge less than 3 files"
 msgstr "nelze automaticky sloučit méně než 3 soubory"
 
-#: ../meld/meldapp.py:254
+#: ../meld/meldapp.py:284
 msgid "can't auto-merge directories"
 msgstr "nelze automaticky sloučit složky"
 
-#: ../meld/meldapp.py:264
+#: ../meld/meldapp.py:298
 msgid "Error reading saved comparison file"
 msgstr "Chyba při čtení uloženého srovnávacího souboru"
 
@@ -1686,7 +1691,7 @@ msgstr "Chyba při čtení uloženého srovnávacího souboru"
 msgid "<unnamed>"
 msgstr "<bez názvu>"
 
-#: ../meld/melddoc.py:76 ../meld/melddoc.py:77
+#: ../meld/melddoc.py:78 ../meld/melddoc.py:79
 msgid "untitled"
 msgstr "nepojmenovaný"
 
@@ -1903,7 +1908,7 @@ msgstr "popisek"
 msgid "pattern"
 msgstr "vzorek"
 
-#: ../meld/recent.py:105
+#: ../meld/recent.py:114
 msgid "Version control:"
 msgstr "Správa verzí:"
 
@@ -1997,7 +2002,7 @@ msgstr "Schází"
 msgid "Not present"
 msgstr "Není přítomno"
 
-#: ../meld/vcview.py:233 ../meld/vcview.py:413
+#: ../meld/vcview.py:233 ../meld/vcview.py:417
 msgid "Location"
 msgstr "Umístění"
 
@@ -2048,60 +2053,60 @@ msgid "Choose which version control system to use"
 msgstr "Vyberte, který systém správy verzí se má použít"
 
 #. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:413
+#: ../meld/vcview.py:417
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:427 ../meld/vcview.py:435
+#: ../meld/vcview.py:431 ../meld/vcview.py:439
 #, python-format
 msgid "Scanning %s"
 msgstr "Prochází se %s"
 
-#: ../meld/vcview.py:475
+#: ../meld/vcview.py:479
 msgid "(Empty)"
 msgstr "(Prázdný)"
 
-#: ../meld/vcview.py:518
+#: ../meld/vcview.py:522
 #, python-format
 msgid "%s — local"
 msgstr "%s — místní"
 
-#: ../meld/vcview.py:519
+#: ../meld/vcview.py:523
 #, python-format
 msgid "%s — remote"
 msgstr "%s — vzdálený"
 
-#: ../meld/vcview.py:527
+#: ../meld/vcview.py:531
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (místní, sloučený, vzdálený)"
 
-#: ../meld/vcview.py:532
+#: ../meld/vcview.py:536
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (vzdálený, sloučený, místní)"
 
-#: ../meld/vcview.py:543
+#: ../meld/vcview.py:547
 #, python-format
 msgid "%s — repository"
 msgstr "%s — repozitář"
 
-#: ../meld/vcview.py:549
+#: ../meld/vcview.py:553
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (pracovní, repozitář)"
 
-#: ../meld/vcview.py:553
+#: ../meld/vcview.py:557
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (repozitář, pracovní)"
 
-#: ../meld/vcview.py:737
+#: ../meld/vcview.py:741
 msgid "Remove folder and all its files?"
 msgstr "Odstranit složku a všechny soubory v ní?"
 
-#: ../meld/vcview.py:739
+#: ../meld/vcview.py:743
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2109,7 +2114,7 @@ msgstr ""
 "Tímto se ze správy verzí odstraní všechny vybrané soubory a složky (a "
 "všechny soubory v těchto složkách)."
 
-#: ../meld/vcview.py:773
+#: ../meld/vcview.py:777
 #, python-format
 msgid "Error removing %s"
 msgstr "Chyba při odstraňování %s"
