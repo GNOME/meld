@@ -30,7 +30,6 @@ class FindBar(gnomeglade.Component):
                                       ["arrow_left", "arrow_right"])
         self.set_text_view(None)
         context = self.find_entry.get_style_context()
-        self.orig_base_color = context.get_background_color(Gtk.StateFlags.NORMAL)
         self.arrow_left.show()
         self.arrow_right.show()
         parent.connect('set-focus-child', self.on_focus_child)
@@ -127,8 +126,7 @@ class FindBar(gnomeglade.Component):
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
 
     def on_find_entry_changed(self, entry):
-        entry.override_background_color(Gtk.StateType.NORMAL,
-                                        self.orig_base_color)
+        self.find_entry.get_style_context().remove_class("not-found")
         self._find_text(0)
 
     def _find_text(self, start_offset=1, backwards=False, wrap=True):
@@ -166,11 +164,5 @@ class FindBar(gnomeglade.Component):
             return True
         else:
             buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
-            # FIXME: Even though docs suggest this should work, it does
-            # not. It just sets the selection colour on the text, without
-            # affecting the entry colour at all.
-            color = Gdk.RGBA()
-            color.parse("#ffdddd")
-            self.find_entry.override_background_color(
-                Gtk.StateType.NORMAL, color)
+            self.find_entry.get_style_context().add_class("not-found")
             self.wrap_box.set_visible(False)
