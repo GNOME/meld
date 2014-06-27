@@ -16,7 +16,7 @@
 
 from gi.repository import Gdk
 from gi.repository import Gtk
-import re
+from gi.repository import GtkSource
 
 from meld import misc
 from . import gnomeglade
@@ -28,7 +28,7 @@ class FindBar(gnomeglade.Component):
     def __init__(self, parent):
         gnomeglade.Component.__init__(self, "findbar.ui", "findbar",
                                       ["arrow_left", "arrow_right"])
-        self.textview = None
+        self.set_text_view(None)
         context = self.find_entry.get_style_context()
         self.orig_base_color = context.get_background_color(Gtk.StateFlags.NORMAL)
         self.arrow_left.show()
@@ -43,12 +43,20 @@ class FindBar(gnomeglade.Component):
         return False
 
     def hide(self):
-        self.textview = None
+        self.set_text_view(None)
         self.wrap_box.set_visible(False)
         self.widget.hide()
 
-    def start_find(self, textview, text=None):
+    def set_text_view(self, textview):
         self.textview = textview
+        if textview is not None:
+            self.search_context = GtkSource.SearchContext.new(
+                                      textview.get_buffer(), None)
+        else:
+            self.search_context = None
+
+    def start_find(self, textview, text=None):
+        self.set_text_view(textview)
         self.replace_label.hide()
         self.replace_entry.hide()
         self.hbuttonbox2.hide()
@@ -59,21 +67,21 @@ class FindBar(gnomeglade.Component):
         self.find_entry.grab_focus()
 
     def start_find_next(self, textview):
-        self.textview = textview
+        self.set_text_view(textview)
         if self.find_entry.get_text():
             self.on_find_next_button_clicked(self.find_next_button)
         else:
             self.start_find(self.textview)
 
     def start_find_previous(self, textview, text=None):
-        self.textview = textview
+        self.set_text_view(textview)
         if self.find_entry.get_text():
             self.on_find_previous_button_clicked(self.find_previous_button)
         else:
             self.start_find(self.textview)
 
     def start_replace(self, textview, text=None):
-        self.textview = textview
+        self.set_text_view(textview)
         if text:
             self.find_entry.set_text(text)
         self.widget.set_row_spacing(6)
@@ -128,52 +136,41 @@ class FindBar(gnomeglade.Component):
         whole_word = self.whole_word.get_active()
         regex = self.regex.get_active()
         assert self.textview
+        assert self.search_context
         buf = self.textview.get_buffer()
         insert = buf.get_iter_at_mark(buf.get_insert())
         tofind_utf8 = self.find_entry.get_text()
         tofind = tofind_utf8.decode("utf-8")
+        self.search_context.get_settings().set_case_sensitive(match_case)
+        self.search_context.get_settings().set_at_word_boundaries(whole_word)
+        self.search_context.get_settings().set_regex_enabled(regex)
+        self.search_context.get_settings().set_search_text(tofind)
+        self.search_context.get_settings().set_wrap_around(wrap)
+        self.search_context.set_highlight(True)
         start, end = buf.get_bounds()
-        text = buf.get_text(start, end, False).decode("utf-8")
-        if not regex:
-            tofind = re.escape(tofind)
-        if whole_word:
-            tofind = r'\b' + tofind + r'\b'
-        try:
-            flags = re.M if match_case else re.M | re.I
-            pattern = re.compile(tofind, flags)
-        except re.error as e:
-            misc.error_dialog(_("Regular expression error"), str(e))
+        self.wrap_box.set_visible(False)
+        if not backwards:
+            insert.forward_chars (start_offset)
+            match, start_iter, end_iter = self.search_context.forward(insert)
+            if match and (start_iter.get_offset() < insert.get_offset()):
+                self.wrap_box.set_visible(True)
         else:
+            match, start_iter, end_iter = self.search_context.backward(insert)
+            if match and (start_iter.get_offset() > insert.get_offset()):
+                self.wrap_box.set_visible(True)
+        if match:
+            buf.place_cursor(start_iter)
+            buf.move_mark(buf.get_selection_bound(), end_iter)
+            self.textview.scroll_to_mark(
+                buf.get_insert(), 0.25, True, 0.5, 0.5)
+            return True
+        else:
+            buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
+            # FIXME: Even though docs suggest this should work, it does
+            # not. It just sets the selection colour on the text, without
+            # affecting the entry colour at all.
+            color = Gdk.RGBA()
+            color.parse("#ffdddd")
+            self.find_entry.override_background_color(
+                Gtk.StateType.NORMAL, color)
             self.wrap_box.set_visible(False)
-            if not backwards:
-                match = pattern.search(text,
-                                       insert.get_offset() + start_offset)
-                if match is None and wrap:
-                    self.wrap_box.set_visible(True)
-                    match = pattern.search(text, 0)
-            else:
-                match = None
-                for m in pattern.finditer(text, 0, insert.get_offset()):
-                    match = m
-                if match is None and wrap:
-                    self.wrap_box.set_visible(True)
-                    for m in pattern.finditer(text, insert.get_offset()):
-                        match = m
-            if match:
-                it = buf.get_iter_at_offset(match.start())
-                buf.place_cursor(it)
-                it.forward_chars(match.end() - match.start())
-                buf.move_mark(buf.get_selection_bound(), it)
-                self.textview.scroll_to_mark(
-                    buf.get_insert(), 0.25, True, 0.5, 0.5)
-                return True
-            else:
-                buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
-                # FIXME: Even though docs suggest this should work, it does
-                # not. It just sets the selection colour on the text, without
-                # affecting the entry colour at all.
-                color = Gdk.RGBA()
-                color.parse("#ffdddd")
-                self.find_entry.override_background_color(
-                    Gtk.StateType.NORMAL, color)
-                self.wrap_box.set_visible(False)
