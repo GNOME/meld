@@ -61,14 +61,14 @@ class FindBar(gnomeglade.Component):
     def start_find_next(self, textview):
         self.textview = textview
         if self.find_entry.get_text():
-            self.find_next_button.activate()
+            self.on_find_next_button_clicked(self.find_next_button)
         else:
             self.start_find(self.textview)
 
     def start_find_previous(self, textview, text=None):
         self.textview = textview
         if self.find_entry.get_text():
-            self.find_previous_button.activate()
+            self.on_find_previous_button_clicked(self.find_previous_button)
         else:
             self.start_find(self.textview)
 
@@ -121,6 +121,7 @@ class FindBar(gnomeglade.Component):
     def on_find_entry_changed(self, entry):
         entry.override_background_color(Gtk.StateType.NORMAL,
                                         self.orig_base_color)
+        self._find_text(0)
 
     def _find_text(self, start_offset=1, backwards=False, wrap=True):
         match_case = self.match_case.get_active()

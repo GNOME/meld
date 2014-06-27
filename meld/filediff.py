@@ -395,6 +395,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if event.keyval == Gdk.KEY_Escape:
                 self.findbar.hide()
         elif event.type == Gdk.EventType.KEY_RELEASE:
+            if event.keyval == Gdk.KEY_Return and self.keymask & MASK_SHIFT:
+                self.findbar.start_find_previous(self.focus_pane)
             self.keymask &= ~mod_key
 
     def on_style_updated(self, widget):
