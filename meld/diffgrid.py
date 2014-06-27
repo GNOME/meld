@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 
@@ -147,6 +148,8 @@ class DiffGrid(Gtk.Grid):
         wcols, hrows = self._get_min_sizes()
         yrows = [allocation.y,
                  allocation.y + hrows[0],
+                 # Roughly equivalent to hard-coding row 1 to expand=True
+                 allocation.y + (allocation.height - hrows[2]),
                  allocation.y + allocation.height]
 
         wmap1, wpane1, wlink1, wpane2, wlink2, wpane3, wmap2 = wcols
@@ -155,23 +158,51 @@ class DiffGrid(Gtk.Grid):
         pos1, pos2 = self._calculate_positions(xmin, xmax,
                                                wlink1, wlink2,
                                                wpane1, wpane2, wpane3)
-        xmap1 = allocation.x
-        xpane1 = xmin
-        wpane1 = pos1 - xpane1
+        wpane1 = pos1 - allocation.x + wmap1
         xlink1 = pos1
-        xpane2 = pos1 + wlink1
-        wpane2 = pos2 - xpane2
+        wpane2 = pos2 - pos1 + wlink1
         xlink2 = pos2
         xpane3 = pos2 + wlink2
         wpane3 = xmax - xpane3
-        xmap2 = xmax
-        self._set_column_allocation(0, xmap1, wmap1, yrows)
-        self._set_column_allocation(1, xpane1, wpane1, yrows)
-        self._set_column_allocation(2, xlink1, wlink1, yrows)
-        self._set_column_allocation(3, xpane2, wpane2, yrows)
-        self._set_column_allocation(4, xlink2, wlink2, yrows)
-        self._set_column_allocation(5, xpane3, wpane3, yrows)
-        self._set_column_allocation(6, xmap2, wmap2, yrows)
+        columns = [
+            allocation.x,
+            allocation.x + wmap1,
+            pos1,
+            pos1 + wlink1,
+            pos2,
+            pos2 + wlink2,
+            allocation.x + allocation.width - wmap2,
+            allocation.x + allocation.width,
+        ]
+
+        def get_child_prop_int(child, name):
+            prop = GObject.Value(int)
+            self.child_get_property(child, name, prop)
+            return prop.get_int()
+
+        def get_child_attach(child):
+            attach = [
+                get_child_prop_int(child, 'left-attach'),
+                get_child_prop_int(child, 'top-attach'),
+                get_child_prop_int(child, 'width'),
+                get_child_prop_int(child, 'height'),
+            ]
+            return attach
+
+        def child_allocate(child):
+            if not child.get_visible():
+                return
+            attach = get_child_attach(child)
+            left, top, width, height = attach
+            alloc = self.get_allocation()
+            alloc.x = columns[left]
+            alloc.y = yrows[top]
+            alloc.width = columns[left + width] - columns[left]
+            alloc.height = yrows[top + height] - yrows[top]
+            child.size_allocate(alloc)
+
+        for child in self.get_children():
+            child_allocate(child)
 
         if self.get_realized():
             mapped = self.get_mapped()
@@ -182,26 +213,21 @@ class DiffGrid(Gtk.Grid):
             self._handle2.set_visible(mapped and wlink2 > 0)
             self._handle2.move_resize(xlink2, ydrag, wlink2, hdrag)
 
-    def _set_column_allocation(self, col, x, width, rows):
-        for row in range(0, 2):
-            child = self.get_child_at(col, row)
-            if child and child.get_visible():
-                alloc = self.get_allocation()
-                alloc.x = x
-                alloc.y = rows[row]
-                alloc.width = width
-                alloc.height = rows[row+1] - alloc.y
-                child.size_allocate(alloc)
-
     def _get_min_sizes(self):
-        hrows = [0] * 2
+        hrows = [0] * 3
         wcols = [0] * 7
-        for row in range(0, 2):
+        for row in range(0, 3):
             for col in range(0, 7):
                 child = self.get_child_at(col, row)
                 if child and child.get_visible():
                     msize, nsize = child.get_preferred_size()
-                    wcols[col] = max(wcols[col], msize.width, nsize.width)
+                    # Ignore spanning columns in width calculations; we should
+                    # do this properly, but it's difficult.
+                    spanning = GObject.Value(int)
+                    self.child_get_property(child, 'width', spanning)
+                    spanning = spanning.get_int()
+                    if spanning == 1:
+                        wcols[col] = max(wcols[col], msize.width, nsize.width)
                     hrows[row] = max(hrows[row], msize.height, nsize.height)
         return wcols, hrows
 
