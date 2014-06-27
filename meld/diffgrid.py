@@ -159,11 +159,8 @@ class DiffGrid(Gtk.Grid):
                                                wlink1, wlink2,
                                                wpane1, wpane2, wpane3)
         wpane1 = pos1 - allocation.x + wmap1
-        xlink1 = pos1
         wpane2 = pos2 - pos1 + wlink1
-        xlink2 = pos2
-        xpane3 = pos2 + wlink2
-        wpane3 = xmax - xpane3
+        wpane3 = xmax - pos2 + wlink2
         columns = [
             allocation.x,
             allocation.x + wmap1,
@@ -209,9 +206,9 @@ class DiffGrid(Gtk.Grid):
             ydrag = yrows[0]
             hdrag = yrows[1] - yrows[0]
             self._handle1.set_visible(mapped and wlink1 > 0)
-            self._handle1.move_resize(xlink1, ydrag, wlink1, hdrag)
+            self._handle1.move_resize(pos1, ydrag, wlink1, hdrag)
             self._handle2.set_visible(mapped and wlink2 > 0)
-            self._handle2.move_resize(xlink2, ydrag, wlink2, hdrag)
+            self._handle2.move_resize(pos2, ydrag, wlink2, hdrag)
 
     def _get_min_sizes(self):
         hrows = [0] * 3
