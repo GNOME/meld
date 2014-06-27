@@ -158,19 +158,12 @@ class DiffGrid(Gtk.Grid):
         pos1, pos2 = self._calculate_positions(xmin, xmax,
                                                wlink1, wlink2,
                                                wpane1, wpane2, wpane3)
-        wpane1 = pos1 - allocation.x + wmap1
-        wpane2 = pos2 - pos1 + wlink1
-        wpane3 = xmax - pos2 + wlink2
-        columns = [
-            allocation.x,
-            allocation.x + wmap1,
-            pos1,
-            pos1 + wlink1,
-            pos2,
-            pos2 + wlink2,
-            allocation.x + allocation.width - wmap2,
-            allocation.x + allocation.width,
-        ]
+        wpane1 = pos1 - (allocation.x + wmap1)
+        wpane2 = pos2 - (pos1 + wlink1)
+        wpane3 = xmax - (pos2 + wlink2)
+        wcols = (
+            allocation.x, wmap1, wpane1, wlink1, wpane2, wlink2, wpane3, wmap2)
+        columns = [sum(wcols[:i + 1]) for i in range(len(wcols))]
 
         def get_child_prop_int(child, name):
             prop = GObject.Value(int)
