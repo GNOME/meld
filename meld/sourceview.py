@@ -67,6 +67,11 @@ class MeldSourceView(GtkSource.View):
         (Gdk.KEY_KP_Up, Gdk.ModifierType.MOD1_MASK),
         (Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK),
         (Gdk.KEY_KP_Down, Gdk.ModifierType.MOD1_MASK),
+        # ...and Alt+Left/Right
+        (Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK),
+        (Gdk.KEY_KP_Left, Gdk.ModifierType.MOD1_MASK),
+        (Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK),
+        (Gdk.KEY_KP_Right, Gdk.ModifierType.MOD1_MASK),
     )
 
     def __init__(self, *args, **kwargs):
