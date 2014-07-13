@@ -210,6 +210,9 @@ class MeldWindow(gnomeglade.Component):
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
         window_size = settings.get_value('window-size')
         self.widget.set_default_size(window_size[0], window_size[1])
+        window_state = settings.get_string('window-state')
+        if window_state == 'maximized':
+            self.widget.maximize()
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
@@ -384,6 +387,10 @@ class MeldWindow(gnomeglade.Component):
         if not (state & nosave):
             variant = GLib.Variant('(ii)', (event.width, event.height))
             settings.set_value('window-size', variant)
+
+        maximised = state & Gdk.WindowState.MAXIMIZED
+        window_state = 'maximized' if maximised else 'normal'
+        settings.set_string('window-state', window_state)
 
     def on_menu_file_new_activate(self, menuitem):
         self.append_new_comparison()
