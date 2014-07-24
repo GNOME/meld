@@ -141,16 +141,6 @@ class FifoScheduler(SchedulerBase):
             raise StopIteration
 
 
-class RoundRobinScheduler(SchedulerBase):
-    """Scheduler repeatedly calling tasks in turn"""
-
-    def get_current_task(self):
-        try:
-            self.tasks.append(self.tasks.pop(0))
-            return self.tasks[0]
-        except IndexError:
-            raise StopIteration
-
 
 if __name__ == "__main__":
     import time
