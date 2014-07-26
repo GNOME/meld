@@ -183,7 +183,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "selector_hbox", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
-            "fileentry_toolitem",
+            "fileentry_toolitem", "dummy_toolbar_diffmap"
         ]
         self.map_widgets_into_lists(widget_lists)
 
@@ -1887,12 +1887,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.num_panes = n
             for widget in (
                     self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
-                    self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1]):
+                    self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
+                    self.dummy_toolbar_diffmap[:n - 1]):
                 widget.show()
 
             for widget in (
                     self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
-                    self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:]):
+                    self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
+                    self.dummy_toolbar_diffmap[n - 1:]):
                 widget.hide()
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
