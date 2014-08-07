@@ -340,6 +340,15 @@ class Vc(_vc.CachedVc):
                 if os.name == 'nt':
                     # Git returns unix-style paths on Windows
                     name = os.path.normpath(name.strip())
+
+                # Unicode file names are returned by git as enquoted strings, example:
+                # $ git diff-files
+                #   :100644 100644 <cut> M  a.txt
+                #   :100644 100644 <cut> M  "\330\271.txt"
+                # So we docede them back to prober python strings
+                if '"' == name[0]:
+                    name = name[1:-1].decode('string_escape')
+
                 path = os.path.join(self.root, name.strip())
                 path = os.path.abspath(path)
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
@@ -376,8 +385,9 @@ class Vc(_vc.CachedVc):
         retfiles = []
         retdirs = []
         for name, path in files:
-            state = tree.get(path, _vc.STATE_NORMAL)
-            meta = self._tree_meta_cache.get(path, "")
+            # Inside python dictionaries, keys are stored as utf8 strings.
+            state = tree.get(path.encode('utf8'), _vc.STATE_NORMAL)
+            meta = self._tree_meta_cache.get(path.encode('utf8'), "")
             retfiles.append(_vc.File(path, name, state, options=meta))
         for name, path in dirs:
             state = tree.get(path, _vc.STATE_NORMAL)
