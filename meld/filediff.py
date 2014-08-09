@@ -1533,8 +1533,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 context.set_source_rgba(*self.fill_colors[change[0]])
                 context.fill_preserve()
                 if self.linediffer.locate_chunk(pane, change[1])[0] == self.cursor.chunk:
-                    h = self.fill_colors['current-chunk-highlight']
-                    context.set_source_rgba(h.red, h.green, h.blue, 0.5)
+                    highlight = self.fill_colors['current-chunk-highlight']
+                    context.set_source_rgba(*highlight)
                     context.fill_preserve()
 
             context.set_source_rgba(*self.line_colors[change[0]])
