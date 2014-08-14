@@ -5,7 +5,7 @@ import datetime
 import os
 import subprocess
 
-from jinja2 import Template
+from jinja2 import Environment, Template
 
 import meld.conf
 
@@ -25,10 +25,72 @@ NEWS_TEMPLATE = """
 {%- endfor %}
 
   Translations:
-{% for translator in translators|sort %}
-   * {{ translator }} ({{translators[translator]|sort|join(', ')}})
+{% for translator in translator_langs|sort %}
+   * {{ translator }} ({{translator_langs[translator]|sort|join(', ')}})
 {%- endfor %}
 
+"""
+
+EMAIL_TEMPLATE = """
+{{ app|title }} {{version}} has been released, and is now available at:
+  http://download.gnome.org/sources/meld/{{ version|minor_version }}/{{ app }}-{{ version }}.tar.xz
+
+
+Features
+--------
+{% for feature in features %}
+ {{ feature }}
+{%- endfor %}
+
+
+Fixes
+-----
+{% for fix in fixes %}
+ {{ fix }}
+{%- endfor %}
+
+
+Translations
+------------
+{% for translator in translators %}
+ {{ translator }}
+{%- endfor %}
+
+
+What is Meld?
+-------------
+
+Meld is a visual diff and merge tool. It lets you compare two or three files,
+and updates the comparisons while you edit them in-place. You can also compare
+folders, launching comparisons of individual files as desired. Last but by no
+means least, Meld lets you work with your current changes in a wide variety of
+version control systems, including Git, Bazaar, Mercurial and Subversion.
+"""
+
+
+MARKDOWN_TEMPLATE = """
+<!--
+{{ [date, app, version]|join(' ') }}
+{{ '=' * [date, app, version]|join(' ')|length }}
+-->
+
+Features
+--------
+{% for feature in features %}
+{{ feature }}
+{%- endfor %}
+
+Fixes
+-----
+{% for fix in fixes %}
+{{ fix }}
+{%- endfor %}
+
+Translations
+------------
+{% for translator in translators %}
+{{ translator }}
+{%- endfor %}
 """
 
 
@@ -86,19 +148,87 @@ def get_non_translation_commits():
     return [c.decode('utf-8') for c in commits]
 
 
-def format_news():
+def get_last_news_entry():
+    cmd = ['git', 'log', '--pretty=format:', '-p', '-1', 'NEWS']
+    lines = subprocess.check_output(cmd).strip().decode('utf-8').splitlines()
+    lines = [l[1:] for l in lines if (l and l[0] in ('+', '-')) and
+             (len(l) < 2 or l[1] not in ('+', '-'))]
+    return "\n".join(lines)
 
-    tokens = {
+
+def parse_news_entry(news):
+    features, fixes, translators = [], [], []
+    section = None
+    sections = {
+        'Features': features,
+        'Fixes': fixes,
+        'Translations': translators,
+    }
+    for line in news.splitlines():
+        if line.strip(' :') in sections:
+            section = line.strip(' :')
+            continue
+        if not section or not line.strip():
+            continue
+        sections[section].append(line)
+
+    def reformat(section):
+        def space_prefix(s):
+            for i in range(1, len(s)):
+                if not s[:i].isspace():
+                    break
+            return i - 1
+
+        indent = min(space_prefix(l) for l in section)
+        return [l[indent:] for l in section]
+
+    return reformat(features), reformat(fixes), reformat(translators)
+
+
+def make_env():
+
+    def minor_version(version):
+        return '.'.join(version.split('.')[:2])
+
+    jinja_env = Environment()
+    jinja_env.filters['minor_version'] = minor_version
+    return jinja_env
+
+
+def get_tokens():
+    news = get_last_news_entry()
+    features, fixes, translators = parse_news_entry(news)
+    return {
         'date': datetime.date.today().isoformat(),
         'app': meld.conf.__package__,
         'version': meld.conf.__version__,
-        'translators': get_translator_langs(),
+        'translator_langs': get_translator_langs(),
+        'features': features,
+        'fixes': fixes,
+        'translators': translators,
         'commits': get_non_translation_commits(),
     }
 
-    template = Template(NEWS_TEMPLATE)
+
+def format_news(jinja_env, tokens):
+    template = jinja_env.from_string(NEWS_TEMPLATE)
+    return(template.render(tokens))
+
+
+def format_email(jinja_env, tokens):
+    template = jinja_env.from_string(EMAIL_TEMPLATE)
+    return(template.render(tokens))
+
+
+def format_markdown(jinja_env, tokens):
+    template = jinja_env.from_string(MARKDOWN_TEMPLATE)
     return(template.render(tokens))
 
 
 if __name__ == '__main__':
-    print(format_news())
+    tokens = get_tokens()
+    jinja_env = make_env()
+
+    print(format_news(jinja_env, tokens))
+    print(format_email(jinja_env, tokens))
+    print(format_markdown(jinja_env, tokens))
