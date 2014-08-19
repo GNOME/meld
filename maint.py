@@ -5,6 +5,7 @@ import datetime
 import os
 import subprocess
 
+import click
 from jinja2 import Environment, Template
 
 import meld.conf
@@ -210,25 +211,35 @@ def get_tokens():
     }
 
 
-def format_news(jinja_env, tokens):
-    template = jinja_env.from_string(NEWS_TEMPLATE)
+def render_template(template):
+    tokens = get_tokens()
+    jinja_env = make_env()
+    template = jinja_env.from_string(template)
     return(template.render(tokens))
 
 
-def format_email(jinja_env, tokens):
-    template = jinja_env.from_string(EMAIL_TEMPLATE)
-    return(template.render(tokens))
+@click.group()
+def cli():
+    pass
 
 
-def format_markdown(jinja_env, tokens):
-    template = jinja_env.from_string(MARKDOWN_TEMPLATE)
-    return(template.render(tokens))
+@cli.command()
+def news():
+    news = render_template(NEWS_TEMPLATE)
+    click.echo(news)
+
+
+@cli.command()
+def email():
+    news = render_template(EMAIL_TEMPLATE)
+    click.echo(news)
+
+
+@cli.command()
+def markdown():
+    news = render_template(MARKDOWN_TEMPLATE)
+    click.echo(news)
 
 
 if __name__ == '__main__':
-    tokens = get_tokens()
-    jinja_env = make_env()
-
-    print(format_news(jinja_env, tokens))
-    print(format_email(jinja_env, tokens))
-    print(format_markdown(jinja_env, tokens))
+    cli()
