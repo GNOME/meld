@@ -6,7 +6,7 @@ import os
 import subprocess
 
 import click
-from jinja2 import Environment, Template
+from jinja2 import Environment
 
 import meld.conf
 
@@ -218,6 +218,16 @@ def render_template(template):
     return(template.render(tokens))
 
 
+def call_with_output(cmd, stdin_text=None, echo_stdout=True):
+    PIPE = subprocess.PIPE
+    with subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
+        stdout, stderr = proc.communicate(stdin_text, timeout=10)
+    if stdout and echo_stdout:
+        click.echo('\n' + stdout.decode('utf-8'))
+    if stderr or proc.returncode:
+        click.secho('\n' + stderr.decode('utf-8'), fg='red')
+
+
 @click.group()
 def cli():
     pass
@@ -225,21 +235,74 @@ def cli():
 
 @cli.command()
 def news():
-    news = render_template(NEWS_TEMPLATE)
-    click.echo(news)
+    rendered = render_template(NEWS_TEMPLATE)
+    click.echo(rendered)
 
 
 @cli.command()
 def email():
-    news = render_template(EMAIL_TEMPLATE)
-    click.echo(news)
+    rendered = render_template(EMAIL_TEMPLATE)
+    click.echo(rendered)
 
 
 @cli.command()
 def markdown():
-    news = render_template(MARKDOWN_TEMPLATE)
-    click.echo(news)
+    rendered = render_template(MARKDOWN_TEMPLATE)
+    click.echo(rendered)
+
+
+@cli.command()
+def dist():
+    archive = '%s-%s.tar.bz2' % (meld.conf.__package__, meld.conf.__version__)
+    dist_archive_path = os.path.abspath(os.path.join('dist', archive))
+    if os.path.exists(dist_archive_path):
+        click.echo('Replacing %s...' % dist_archive_path)
+    cmd = ['python', 'setup.py', 'sdist', '--formats=bztar']
+    call_with_output(cmd, echo_stdout=False)
+    if not os.path.exists(dist_archive_path):
+        raise click.Abort('Failed to create archive file %s')
+    return dist_archive_path
+
+
+@cli.command()
+def tag():
+    last_release = get_last_release_tag()
+    click.echo('\nLast release tag was: ', nl=False)
+    click.secho(last_release, fg='green', bold=True)
+    click.echo('New release tag will be: ', nl=False)
+    click.secho(meld.conf.__version__, fg='green', bold=True)
+    click.confirm('\nTag this release?', default=True, abort=True)
+
+    news_text = render_template(NEWS_TEMPLATE).encode('utf-8')
+    # FIXME: Should be signing tags
+    cmd = ['git', 'tag', '-a', '--file=-', meld.conf.__version__]
+    call_with_output(cmd, news_text)
+    click.echo('Tagged %s' % meld.conf.__version__)
+
+    cmd = ['git', 'show', '-s', meld.conf.__version__]
+    call_with_output(cmd, echo_stdout=True)
+    confirm = click.confirm('\nPush this tag?', default=True)
+    if not confirm:
+        return
+
+    cmd = ['git', 'push', '--dry-run', 'origin', meld.conf.__version__]
+    call_with_output(cmd, echo_stdout=True)
+
+
+@click.pass_context
+def make_release(ctx):
+    # Pull
+    # Write news, add news to NEWS, commit, push
+    archive_path = ctx.forward(dist)
+    ctx.forward(tag)
+    # Copy tarball to master, ssh in and run ftpadmin install
+    # Windows binaries
+    # Create 2 draft emails
+    # Create markdown NEWS section
+    # Version bump, commit, push
 
 
 if __name__ == '__main__':
+    # FIXME: Should include sanity check that we're at the top level of the
+    # project
     cli()
