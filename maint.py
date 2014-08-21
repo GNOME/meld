@@ -3,6 +3,7 @@
 import collections
 import datetime
 import os
+import re
 import subprocess
 
 import click
@@ -12,6 +13,7 @@ import meld.conf
 
 PO_DIR = "po"
 HELP_DIR = "help"
+RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
 
 NEWS_TEMPLATE = """
 {{ [date, app, version]|join(' ') }}
@@ -228,6 +230,16 @@ def call_with_output(cmd, stdin_text=None, echo_stdout=True):
         click.secho('\n' + stderr.decode('utf-8'), fg='red')
 
 
+def check_release_branch():
+    cmd = ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
+    branch = subprocess.check_output(cmd).strip().decode('utf-8')
+    if branch != 'master' and not re.match(RELEASE_BRANCH_RE, branch):
+        click.echo(
+            '\nBranch "%s" doesn\'t appear to be a release branch.\n' % branch)
+        click.confirm('Are you sure you wish to continue?', abort=True)
+    return branch
+
+
 @click.group()
 def cli():
     pass
@@ -249,6 +261,11 @@ def email():
 def markdown():
     rendered = render_template(MARKDOWN_TEMPLATE)
     click.echo(rendered)
+
+
+@cli.command()
+def pull():
+    branch = check_release_branch()
 
 
 @cli.command()
