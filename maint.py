@@ -220,7 +220,8 @@ def render_template(template):
     return(template.render(tokens))
 
 
-def call_with_output(cmd, stdin_text=None, echo_stdout=True):
+def call_with_output(
+        cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True):
     PIPE = subprocess.PIPE
     with subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
         stdout, stderr = proc.communicate(stdin_text, timeout=10)
@@ -228,6 +229,9 @@ def call_with_output(cmd, stdin_text=None, echo_stdout=True):
         click.echo('\n' + stdout.decode('utf-8'))
     if stderr or proc.returncode:
         click.secho('\n' + stderr.decode('utf-8'), fg='red')
+    if abort_on_fail and proc.returncode:
+        click.abort()
+    return proc.returncode
 
 
 def check_release_branch():
