@@ -70,6 +70,7 @@ and updates the comparisons while you edit them in-place. You can also compare
 folders, launching comparisons of individual files as desired. Last but by no
 means least, Meld lets you work with your current changes in a wide variety of
 version control systems, including Git, Bazaar, Mercurial and Subversion.
+
 """
 
 
@@ -96,6 +97,7 @@ Translations
 {% for translator in translators %}
 {{ translator }}
 {%- endfor %}
+
 """
 
 
@@ -296,16 +298,27 @@ def news():
     return message
 
 
-@cli.command()
-def email():
-    rendered = render_template(EMAIL_TEMPLATE)
-    click.echo(rendered)
+def write_somewhere(filename, output):
+    if filename and os.path.exists(filename):
+        click.echo('File "%s" already exists' % filename)
+        raise click.Abort()
+    if filename:
+        with open(filename, 'w') as f:
+            f.write(output)
+    else:
+        click.echo(output)
 
 
 @cli.command()
-def markdown():
-    rendered = render_template(MARKDOWN_TEMPLATE)
-    click.echo(rendered)
+@click.argument('filename', type=click.Path(), default=None, required=False)
+def email(filename):
+    write_somewhere(filename, render_template(EMAIL_TEMPLATE))
+
+
+@cli.command()
+@click.argument('filename', type=click.Path(), default=None, required=False)
+def markdown(filename):
+    write_somewhere(filename, render_template(MARKDOWN_TEMPLATE))
 
 
 @cli.command()
@@ -317,7 +330,8 @@ def dist():
     cmd = ['python', 'setup.py', 'sdist', '--formats=bztar']
     call_with_output(cmd, echo_stdout=False)
     if not os.path.exists(dist_archive_path):
-        raise click.Abort('Failed to create archive file %s')
+        click.echo('Failed to create archive file %s' % dist_archive_path)
+        raise click.Abort()
     return dist_archive_path
 
 
@@ -393,8 +407,9 @@ def make_release(ctx):
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
     ctx.forward(upload, path=archive_path)
-    # Create 2 draft emails
-    # Create markdown NEWS section
+    file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
+    ctx.forward(email, filename=file_prefix + '-email')
+    ctx.forward(markdown, filename=file_prefix + '.md')
     ctx.forward(version_bump)
     commit()
     push()
