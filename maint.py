@@ -252,7 +252,15 @@ def cli():
 @cli.command()
 def news():
     rendered = render_template(NEWS_TEMPLATE)
-    click.echo(rendered)
+    with open('NEWS', 'r') as f:
+        current_news = f.read()
+
+    new_news = rendered + current_news
+    with open('NEWS', 'w') as f:
+        f.write(new_news)
+
+    message = click.edit(filename='NEWS')
+    return message
 
 
 @cli.command()
