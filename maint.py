@@ -269,7 +269,9 @@ def markdown():
 
 @cli.command()
 def pull():
-    branch = check_release_branch()
+    check_release_branch()
+    cmd = ['git', 'pull', '--rebase']
+    call_with_output(cmd)
 
 
 @cli.command()
@@ -312,7 +314,7 @@ def tag():
 
 @click.pass_context
 def make_release(ctx):
-    # Pull
+    ctx.forward(pull)
     # Write news, add news to NEWS, commit, push
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
