@@ -393,12 +393,16 @@ def make_release(ctx):
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
     ctx.forward(upload, path=archive_path)
-    # TODO: ssh in and run ftpadmin install
     # Create 2 draft emails
     # Create markdown NEWS section
     ctx.forward(version_bump)
     commit()
     push()
+
+    # TODO: ssh in and run ftpadmin install
+    click.echo('\nNow run:')
+    click.echo('ssh %s' % UPLOAD_SERVER)
+    click.echo('ftpadmin install %s' % os.path.basename(archive_path))
 
 
 if __name__ == '__main__':
