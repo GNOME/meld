@@ -262,6 +262,19 @@ def commit():
     call_with_output(cmd, timeout=None)
 
 
+def push():
+    branch = check_release_branch()
+    cmd = ['git', 'log', 'origin/%s..%s'] % (branch, branch)
+    call_with_output(cmd, echo_stdout=True)
+
+    confirm = click.confirm('\nPush these commits?', default=True)
+    if not confirm:
+        return
+
+    cmd = ['git', 'push', '--dry-run']
+    call_with_output(cmd, echo_stdout=True)
+
+
 @click.group()
 def cli():
     pass
@@ -334,7 +347,9 @@ def tag():
 @click.pass_context
 def make_release(ctx):
     ctx.forward(pull)
-    # Write news, add news to NEWS, commit, push
+    ctx.forward(news)
+    commit()
+    push()
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
     # Copy tarball to master, ssh in and run ftpadmin install
