@@ -14,6 +14,7 @@ import meld.conf
 PO_DIR = "po"
 HELP_DIR = "help"
 RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
+UPLOAD_SERVER = 'master.gnome.org'
 
 NEWS_TEMPLATE = """
 {{ [date, app, version]|join(' ') }}
@@ -344,6 +345,16 @@ def tag():
     call_with_output(cmd, echo_stdout=True)
 
 
+@cli.command()
+@click.argument('path', type=click.Path(exists=True))
+def upload(path):
+    click.confirm(
+        '\nUpload %s to %s?' % (path, UPLOAD_SERVER), default=True, abort=True)
+    cmd = ['scp', path, UPLOAD_SERVER + ':']
+    call_with_output(cmd)
+
+
+@cli.command()
 @click.pass_context
 def make_release(ctx):
     ctx.forward(pull)
@@ -352,8 +363,8 @@ def make_release(ctx):
     push()
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
-    # Copy tarball to master, ssh in and run ftpadmin install
-    # Windows binaries
+    ctx.forward(upload, path=archive_path)
+    # TODO: ssh in and run ftpadmin install
     # Create 2 draft emails
     # Create markdown NEWS section
     # Version bump, commit, push
