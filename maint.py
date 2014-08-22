@@ -14,6 +14,7 @@ import meld.conf
 PO_DIR = "po"
 HELP_DIR = "help"
 RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
+VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
 UPLOAD_SERVER = 'master.gnome.org'
 
 NEWS_TEMPLATE = """
@@ -232,7 +233,7 @@ def call_with_output(
     if stderr or proc.returncode:
         click.secho('\n' + stderr.decode('utf-8'), fg='red')
     if abort_on_fail and proc.returncode:
-        click.abort()
+        raise click.Abort()
     return proc.returncode
 
 
@@ -355,6 +356,34 @@ def upload(path):
 
 
 @cli.command()
+def version_bump():
+    with open(meld.conf.__file__) as f:
+        conf_data = f.read().splitlines()
+
+    for i, line in enumerate(conf_data):
+        if line.startswith('__version__'):
+            match = re.match(VERSION_RE, line)
+            version = match.group('version')
+            if version != meld.conf.__version__:
+                continue
+            version_line = i
+            break
+    else:
+        click.echo('Couldn\'t determine version from %s' % meld.conf.__file__)
+        raise click.Abort()
+
+    click.echo('Current version is: %s' % meld.conf.__version__)
+    default_version = meld.conf.__version__.split('.')
+    default_version[-1] = str(int(default_version[-1]) + 1)
+    default_version = '.'.join(default_version)
+    new_version = click.prompt('Enter new version', default=default_version)
+
+    conf_data[version_line] = '__version__ = "%s"' % new_version
+    with open(meld.conf.__file__, 'w') as f:
+        f.write('\n'.join(conf_data) + '\n')
+
+
+@cli.command()
 @click.pass_context
 def make_release(ctx):
     ctx.forward(pull)
@@ -367,7 +396,9 @@ def make_release(ctx):
     # TODO: ssh in and run ftpadmin install
     # Create 2 draft emails
     # Create markdown NEWS section
-    # Version bump, commit, push
+    ctx.forward(version_bump)
+    commit()
+    push()
 
 
 if __name__ == '__main__':
