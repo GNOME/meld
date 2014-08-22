@@ -221,10 +221,11 @@ def render_template(template):
 
 
 def call_with_output(
-        cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True):
+        cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True,
+        timeout=10):
     PIPE = subprocess.PIPE
     with subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
-        stdout, stderr = proc.communicate(stdin_text, timeout=10)
+        stdout, stderr = proc.communicate(stdin_text, timeout=timeout)
     if stdout and echo_stdout:
         click.echo('\n' + stdout.decode('utf-8'))
     if stderr or proc.returncode:
@@ -242,6 +243,23 @@ def check_release_branch():
             '\nBranch "%s" doesn\'t appear to be a release branch.\n' % branch)
         click.confirm('Are you sure you wish to continue?', abort=True)
     return branch
+
+
+def pull():
+    check_release_branch()
+    cmd = ['git', 'pull', '--rebase']
+    call_with_output(cmd, timeout=None)
+
+
+def commit():
+    cmd = ['git', 'diff', 'HEAD']
+    call_with_output(cmd, echo_stdout=True)
+    confirm = click.confirm('\nCommit this change?', default=True)
+    if not confirm:
+        return
+
+    cmd = ['git', 'commit', '-a']
+    call_with_output(cmd, timeout=None)
 
 
 @click.group()
@@ -273,13 +291,6 @@ def email():
 def markdown():
     rendered = render_template(MARKDOWN_TEMPLATE)
     click.echo(rendered)
-
-
-@cli.command()
-def pull():
-    check_release_branch()
-    cmd = ['git', 'pull', '--rebase']
-    call_with_output(cmd)
 
 
 @cli.command()
