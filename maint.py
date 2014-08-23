@@ -344,7 +344,7 @@ def tag():
     click.secho(meld.conf.__version__, fg='green', bold=True)
     click.confirm('\nTag this release?', default=True, abort=True)
 
-    news_text = render_template(NEWS_TEMPLATE).encode('utf-8')
+    news_text = get_last_news_entry().encode('utf-8')
     # FIXME: Should be signing tags
     cmd = ['git', 'tag', '-a', '--file=-', meld.conf.__version__]
     call_with_output(cmd, news_text)
