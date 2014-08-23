@@ -277,7 +277,7 @@ def push():
     if not confirm:
         return
 
-    cmd = ['git', 'push', '--dry-run']
+    cmd = ['git', 'push']
     call_with_output(cmd, echo_stdout=True)
 
 
@@ -361,7 +361,7 @@ def tag():
     if not confirm:
         return
 
-    cmd = ['git', 'push', '--dry-run', 'origin', meld.conf.__version__]
+    cmd = ['git', 'push', 'origin', meld.conf.__version__]
     call_with_output(cmd, echo_stdout=True)
 
 
