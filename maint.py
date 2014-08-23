@@ -400,7 +400,7 @@ def version_bump():
 @cli.command()
 @click.pass_context
 def make_release(ctx):
-    ctx.forward(pull)
+    pull()
     ctx.forward(news)
     commit()
     push()
