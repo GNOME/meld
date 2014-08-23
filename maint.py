@@ -268,7 +268,7 @@ def commit():
 
 def push():
     branch = check_release_branch()
-    cmd = ['git', 'log', 'origin/%s..%s'] % (branch, branch)
+    cmd = ['git', 'log', 'origin/%s..%s' % (branch, branch)]
     call_with_output(cmd, echo_stdout=True)
 
     confirm = click.confirm('\nPush these commits?', default=True)
