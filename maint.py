@@ -302,11 +302,14 @@ def news():
 
 def write_somewhere(filename, output):
     if filename and os.path.exists(filename):
-        click.echo('File "%s" already exists' % filename)
-        raise click.Abort()
+        overwrite = click.confirm(
+            'File "%s" already exists. Overwrite?' % filename, abort=True)
+        if not overwrite:
+            raise click.Abort()
     if filename:
         with open(filename, 'w') as f:
             f.write(output)
+        click.echo('Wrote %s' % filename)
     else:
         click.echo(output)
 
