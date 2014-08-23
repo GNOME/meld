@@ -255,7 +255,7 @@ def pull():
     call_with_output(cmd, timeout=None)
 
 
-def commit():
+def commit(message=None):
     cmd = ['git', 'diff', 'HEAD']
     call_with_output(cmd, echo_stdout=True)
     confirm = click.confirm('\nCommit this change?', default=True)
@@ -263,6 +263,8 @@ def commit():
         return
 
     cmd = ['git', 'commit', '-a']
+    if message:
+        cmd.append('-m ' + message)
     call_with_output(cmd, timeout=None)
 
 
@@ -402,7 +404,7 @@ def version_bump():
 def make_release(ctx):
     pull()
     ctx.forward(news)
-    commit()
+    commit(message='Update NEWS')
     push()
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
@@ -411,7 +413,7 @@ def make_release(ctx):
     ctx.forward(email, filename=file_prefix + '-email')
     ctx.forward(markdown, filename=file_prefix + '.md')
     ctx.forward(version_bump)
-    commit()
+    commit(message='Post-release version bump')
     push()
 
     # TODO: ssh in and run ftpadmin install
