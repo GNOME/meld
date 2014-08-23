@@ -366,7 +366,7 @@ def upload(path):
     click.confirm(
         '\nUpload %s to %s?' % (path, UPLOAD_SERVER), default=True, abort=True)
     cmd = ['scp', path, UPLOAD_SERVER + ':']
-    call_with_output(cmd)
+    call_with_output(cmd, timeout=120)
 
 
 @cli.command()
