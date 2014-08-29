@@ -3,7 +3,6 @@
 import glob
 import os
 import site
-import sys
 
 from cx_Freeze import setup, Executable
 
@@ -63,8 +62,30 @@ build_exe_options = {
     "include_files": include_files,
 }
 
+
+# Create our registry key, and fill with install directory and exe
+registry_table = [
+    ('MeldKLM', 2, 'SOFTWARE\Meld', '*', None, 'TARGETDIR'),
+    ('MeldInstallDir', 2, 'SOFTWARE\Meld', 'InstallDir', '[TARGETDIR]', 'TARGETDIR'),
+    ('MeldExecutable', 2, 'SOFTWARE\Meld', 'Executable', '[TARGETDIR]Meld.exe', 'TARGETDIR'),
+]
+
+# Provide the locator and app search to give MSI the existing install directory
+# for future upgrades
+reg_locator_table = [
+    ('MeldInstallDirLocate', 2, 'SOFTWARE\Meld', 'InstallDir', 0)
+]
+app_search_table = [('TARGETDIR', 'MeldInstallDirLocate')]
+
+msi_data = {
+    'Registry': registry_table,
+    'RegLocator': reg_locator_table,
+    'AppSearch': app_search_table
+}
+
 bdist_msi_options = {
     "upgrade_code": "{1d303789-b4e2-4d6e-9515-c301e155cd50}",
+    "data": msi_data,
 }
 
 
@@ -72,8 +93,9 @@ setup(
     name="Meld",
     version=meld.conf.__version__,
     description='Visual diff and merge tool',
-    author='Kai Willadsen',
-    author_email='kai.willadsen@gmail.com',
+    author='The Meld project',
+    author_email='meld-list@gnome.org',
+    maintainer='Kai Willadsen',
     url='http://meldmerge.org',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
