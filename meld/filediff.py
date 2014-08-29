@@ -1114,6 +1114,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.linediffer.clear()
         self.queue_draw()
         try_codecs = list(settings.get_value('detect-encodings'))
+        try_codecs.append('latin1')
         yield _("[%s] Opening files") % self.label_text
         tasks = []
 
