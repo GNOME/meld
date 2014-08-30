@@ -121,8 +121,13 @@ class MeldDoc(GObject.GObject):
                         sys.platform == "win32":
                     if settings.get_boolean('use-system-editor'):
                         gfile = Gio.File.new_for_path(path)
-                        Gio.AppInfo.launch_default_for_uri(
-                            gfile.get_uri(), None)
+                        if sys.platform == "win32":
+                            handler = gfile.query_default_handler(None)
+                            result = handler.launch([gfile], None)
+                        else:
+                            uri = gfile.get_uri()
+                            Gio.AppInfo.launch_default_for_uri(
+                                uri, None)
                     else:
                         editor = make_custom_editor_command(path, line)
                         if editor:
