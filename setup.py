@@ -10,7 +10,7 @@ import meld.conf
 
 
 if (platform.system() == 'Linux' and
-        platform.linux_distribution()[0] == 'Ubuntu'):
+        platform.linux_distribution()[0].lower() in ('debian', 'ubuntu')):
     sys.argv.append('--install-layout=deb')
 
 setup(
