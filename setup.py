@@ -2,16 +2,10 @@
 
 from distutils.core import setup
 import glob
-import platform
-import sys
 
 import meld.build_helpers
 import meld.conf
 
-
-if (platform.system() == 'Linux' and
-        platform.linux_distribution()[0].lower() in ('debian', 'ubuntu')):
-    sys.argv.append('--install-layout=deb')
 
 setup(
     name=meld.conf.__package__,
@@ -66,6 +60,7 @@ setup(
         "build_icons": meld.build_helpers.build_icons,
         "build_data": meld.build_helpers.build_data,
         "build_py": meld.build_helpers.build_py,
+        "install": meld.build_helpers.install,
         "install_data": meld.build_helpers.install_data,
     },
     distclass=meld.build_helpers.MeldDistribution,

@@ -23,11 +23,13 @@ from __future__ import print_function
 import distutils.cmd
 import distutils.command.build
 import distutils.command.build_py
+import distutils.command.install
 import distutils.command.install_data
 import distutils.dist
 import distutils.dir_util
 import glob
 import os.path
+import platform
 import sys
 
 from distutils.log import info
@@ -358,6 +360,19 @@ class build_py(distutils.command.build_py.build_py):
 
         distutils.command.build_py.build_py.build_module(
             self, module, module_file, package)
+
+
+class install(distutils.command.install.install):
+
+    def finalize_options(self):
+        special_cases = ('debian', 'ubuntu')
+        if (platform.system() == 'Linux' and
+                platform.linux_distribution()[0].lower() in special_cases):
+            # Maintain an explicit install-layout, but use deb by default
+            specified_layout = getattr(self, 'install_layout', None)
+            self.install_layout = specified_layout or 'deb'
+
+        distutils.command.install.install.finalize_options(self)
 
 
 class install_data(distutils.command.install_data.install_data):
