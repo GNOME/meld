@@ -652,7 +652,9 @@ class MeldWindow(gnomeglade.Component):
         return doc
 
     def append_filemerge(self, files, merge_output=None):
-        assert len(files) == 3
+        if len(files) != 3:
+            raise ValueError(
+                _("Need three files to auto-merge, got: %r") % files)
         doc = filemerge.FileMerge(len(files))
         self._append_page(doc, "text-x-generic")
         doc.set_files(files)
