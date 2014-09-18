@@ -39,6 +39,7 @@ NEWS_TEMPLATE = """
 EMAIL_TEMPLATE = """
 {{ app|title }} {{version}} has been released, and is now available at:
   http://download.gnome.org/sources/meld/{{ version|minor_version }}/{{ app }}-{{ version }}.tar.xz
+{%- if features %}
 
 
 Features
@@ -46,6 +47,7 @@ Features
 {% for feature in features %}
  {{ feature }}
 {%- endfor %}
+{%- endif %}
 
 
 Fixes
@@ -79,12 +81,14 @@ MARKDOWN_TEMPLATE = """
 {{ [date, app, version]|join(' ') }}
 {{ '=' * [date, app, version]|join(' ')|length }}
 -->
+{%- if features %}
 
 Features
 --------
 {% for feature in features %}
 {{ feature }}
 {%- endfor %}
+{%- endif %}
 
 Fixes
 -----
@@ -180,6 +184,9 @@ def parse_news_entry(news):
         sections[section].append(line)
 
     def reformat(section):
+        if not section:
+            return section
+
         def space_prefix(s):
             for i in range(1, len(s)):
                 if not s[:i].isspace():
