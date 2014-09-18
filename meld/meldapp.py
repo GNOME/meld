@@ -307,10 +307,12 @@ class MeldApp(Gtk.Application):
         options.newtab = options.newtab or not command_line.get_is_remote()
         for i, paths in enumerate(comparisons):
             files = [command_line.create_file_for_arg(p) for p in paths]
+            auto_merge = (
+                options.auto_merge if i == len(comparisons) - 1 else False)
             try:
                 tab = self.open_files(
                     files, auto_compare=options.auto_compare,
-                    auto_merge=options.auto_merge, new_tab=options.newtab,
+                    auto_merge=auto_merge, new_tab=options.newtab,
                     focus=i == 0)
             except ValueError as err:
                 error = err
