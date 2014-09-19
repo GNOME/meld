@@ -333,40 +333,34 @@ class Vc(_vc.CachedVc):
             path = os.path.abspath(path)
             tree_state[path] = _vc.STATE_NORMAL
         else:
-            # There are 1 or more modified files, parse their state
-            for entry in entries:
-                columns = self.DIFF_RE.search(entry).groups()
-                old_mode, new_mode, statekey, name = columns
+            def get_real_path(name):
+                name = name.strip()
                 if os.name == 'nt':
                     # Git returns unix-style paths on Windows
-                    name = os.path.normpath(name.strip())
+                    name = os.path.normpath(name)
 
-                # Unicode file names are returned by git as enquoted strings, example:
-                # $ git diff-files
-                #   :100644 100644 <cut> M  a.txt
-                #   :100644 100644 <cut> M  "\330\271.txt"
-                # So we docede them back to prober python strings
-                if '"' == name[0]:
+                # Unicode file names and file names containing quotes are
+                # returned by git as quoted strings
+                if name[0] == '"':
                     name = name[1:-1].decode('string_escape')
+                return os.path.abspath(
+                    os.path.join(self.location, name))
 
-                path = os.path.join(self.root, name.strip())
-                path = os.path.abspath(path)
+            for entry in entries:
+                columns = self.DIFF_RE.search(entry).groups()
+                old_mode, new_mode, statekey, path = columns
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
-                tree_state[path] = state
+                tree_state[get_real_path(path)] = state
                 if old_mode != new_mode:
                     msg = _("Mode changed from %s to %s" %
                             (old_mode, new_mode))
                     self._tree_meta_cache[path] = msg
 
-            for entry in ignored_entries:
-                path = os.path.join(self.location, entry.strip())
-                path = os.path.abspath(path)
-                tree_state[path] = _vc.STATE_IGNORED
+            for path in ignored_entries:
+                tree_state[get_real_path(path)] = _vc.STATE_IGNORED
 
-            for entry in unversioned_entries:
-                path = os.path.join(self.location, entry.strip())
-                path = os.path.abspath(path)
-                tree_state[path] = _vc.STATE_NONE
+            for path in unversioned_entries:
+                tree_state[get_real_path(path)] = _vc.STATE_NONE
 
     def _lookup_tree_cache(self, rootdir):
         # Get a list of all files in rootdir, as well as their status
