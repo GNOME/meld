@@ -326,6 +326,20 @@ class Vc(_vc.CachedVc):
                 if e.errno != errno.EAGAIN:
                     raise
 
+        def get_real_path(name):
+            name = name.strip()
+            if os.name == 'nt':
+                # Git returns unix-style paths on Windows
+                name = os.path.normpath(name)
+
+            # Unicode file names and file names containing quotes are
+            # returned by git as quoted strings
+            if name[0] == '"':
+                name = name[1:-1].decode('string_escape')
+            name = name.decode(self.file_encoding)
+            return os.path.abspath(
+                os.path.join(self.location, name))
+
         if len(entries) == 0 and os.path.isfile(path):
             # If we're just updating a single file there's a chance that it
             # was it was previously modified, and now has been edited
@@ -333,23 +347,8 @@ class Vc(_vc.CachedVc):
             # 'entries' list, and tree_state['path'] will still contain stale
             # data.  When this corner case occurs we force tree_state['path']
             # to STATE_NORMAL.
-            path = os.path.abspath(path)
-            tree_state[path] = _vc.STATE_NORMAL
+            tree_state[get_real_path(path)] = _vc.STATE_NORMAL
         else:
-            def get_real_path(name):
-                name = name.strip()
-                if os.name == 'nt':
-                    # Git returns unix-style paths on Windows
-                    name = os.path.normpath(name)
-
-                # Unicode file names and file names containing quotes are
-                # returned by git as quoted strings
-                if name[0] == '"':
-                    name = name[1:-1].decode('string_escape')
-                name = name.decode(self.file_encoding)
-                return os.path.abspath(
-                    os.path.join(self.location, name))
-
             for entry in entries:
                 columns = self.DIFF_RE.search(entry).groups()
                 old_mode, new_mode, statekey, path = columns
