@@ -30,6 +30,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 
 from meld.conf import _, ngettext
@@ -64,6 +65,8 @@ class Vc(_vc.CachedVc):
         "T": _vc.STATE_MODIFIED,  # Type-changed
         "U": _vc.STATE_CONFLICT,  # Unmerged
     }
+
+    file_encoding = sys.getfilesystemencoding()
 
     def __init__(self, location):
         super(Vc, self).__init__(location)
@@ -343,6 +346,7 @@ class Vc(_vc.CachedVc):
                 # returned by git as quoted strings
                 if name[0] == '"':
                     name = name[1:-1].decode('string_escape')
+                name = name.decode(self.file_encoding)
                 return os.path.abspath(
                     os.path.join(self.location, name))
 
@@ -379,9 +383,8 @@ class Vc(_vc.CachedVc):
         retfiles = []
         retdirs = []
         for name, path in files:
-            # Inside python dictionaries, keys are stored as utf8 strings.
-            state = tree.get(path.encode('utf8'), _vc.STATE_NORMAL)
-            meta = self._tree_meta_cache.get(path.encode('utf8'), "")
+            state = tree.get(path, _vc.STATE_NORMAL)
+            meta = self._tree_meta_cache.get(path, "")
             retfiles.append(_vc.File(path, name, state, options=meta))
         for name, path in dirs:
             state = tree.get(path, _vc.STATE_NORMAL)
