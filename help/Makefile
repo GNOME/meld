@@ -1,7 +1,7 @@
 
 .SUFFIXES :
 
-LANGUAGES := C el es fr
+LANGUAGES := C cs el es fr
 
 .PHONY : all install uninstall clean
 
