@@ -187,7 +187,10 @@ class RecentFiles(object):
         for path in stored:
             file_path = os.path.abspath(os.path.join(self.recent_path, path))
             if file_path not in item_paths:
-                os.remove(file_path)
+                try:
+                    os.remove(file_path)
+                except OSError:
+                    pass
 
     def _update_recent_files(self, *args):
         meld_items = self._filter_items(self.recent_filter,
