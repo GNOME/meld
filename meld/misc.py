@@ -117,8 +117,13 @@ def run_dialog( text, parent=None, messagetype=Gtk.MessageType.WARNING, buttonst
     d.vbox.set_spacing(12)
     hbox = d.vbox.get_children()[0]
     hbox.set_spacing(12)
-    d.props.image.set_alignment(0.5, 0)
-    d.props.image.set_padding(12, 12)
+    try:
+        d.props.image.set_alignment(0.5, 0)
+        d.props.image.set_padding(12, 12)
+    except AttributeError:
+        # FIXME: This is ridiculous. Possibly distribution-specific patches,
+        # or just... bad things. This needs to go away.
+        pass
     ret = d.run()
     d.destroy()
     return ret
