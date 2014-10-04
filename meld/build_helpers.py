@@ -117,6 +117,9 @@ class build_help(distutils.cmd.Command):
         else:
             self.selected_languages = os.listdir(self.help_dir)
 
+        if 'C' not in self.selected_languages:
+            self.selected_languages.append('C')
+
         self.C_PAGES = glob.glob(os.path.join(self.help_dir, 'C', '*.page'))
         self.C_EXTRA = glob.glob(os.path.join(self.help_dir, 'C', '*.xml'))
 
