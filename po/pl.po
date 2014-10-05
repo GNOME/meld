@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-21 15:04+0200\n"
-"PO-Revision-Date: 2014-09-21 15:05+0200\n"
+"POT-Creation-Date: 2014-10-05 17:50+0200\n"
+"PO-Revision-Date: 2014-10-05 17:53+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -36,6 +36,15 @@ msgstr "Program Meld wymaga wersji %s lub nowszej."
 #: ../bin/meld:145
 msgid "Meld does not support Python 3."
 msgstr "Program Meld nie obsługuje biblioteki Python 3."
+
+#: ../bin/meld:193
+#, c-format
+msgid ""
+"Couldn't load Meld-specific CSS (%s)\n"
+"%s"
+msgstr ""
+"Nie można wczytać pliku CSS programu Meld (%s)\n"
+"%s"
 
 #: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
 msgid "Meld"
@@ -494,7 +503,7 @@ msgid "Compare selected files"
 msgstr "Porównuje zaznaczone pliki"
 
 #: ../data/ui/dirdiff.ui.h:3
-msgid "Copy _Left"
+msgid "Copy to _Left"
 msgstr "Skopiuj w _lewo"
 
 #: ../data/ui/dirdiff.ui.h:4
@@ -502,7 +511,7 @@ msgid "Copy to left"
 msgstr "Kopiuje element na lewo"
 
 #: ../data/ui/dirdiff.ui.h:5
-msgid "Copy _Right"
+msgid "Copy to _Right"
 msgstr "Skopiuj w p_rawo"
 
 #: ../data/ui/dirdiff.ui.h:6
@@ -1947,7 +1956,7 @@ msgid "Cannot compare a mixture of files and directories"
 msgstr "Jednoczesne porównanie plików i katalogów nie jest możliwe"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:213
+#: ../meld/misc.py:218
 msgid "[None]"
 msgstr "[Brak]"
 
