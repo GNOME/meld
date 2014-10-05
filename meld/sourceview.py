@@ -80,6 +80,9 @@ class MeldSourceView(GtkSource.View):
         binding_set = Gtk.binding_set_find('GtkSourceView')
         for key, modifiers in self.replaced_entries:
             Gtk.binding_entry_remove(binding_set, key, modifiers)
+        self.anim_source_id = None
+        self.animating_chunks = []
+        self.syncpoints = []
 
     def late_bind(self):
         settings.bind(
@@ -96,6 +99,108 @@ class MeldSourceView(GtkSource.View):
 
     def get_line_num_for_y(self, y):
         return self.get_line_at_y(y)[0].get_line()
+
+    def do_draw(self, context):
+
+        windows = [
+            self.get_window(window_type) for window_type in
+            (Gtk.TextWindowType.TEXT, Gtk.TextWindowType.WIDGET)
+            if self.get_window(window_type)]
+
+        should_draw = [Gtk.cairo_should_draw_window(context, w) for w in windows]
+
+        if not any(should_draw):
+            return GtkSource.View.do_draw(self, context)
+
+        context.save()
+
+        visible = self.get_visible_rect()
+        textbuffer = self.get_buffer()
+        x, y = self.window_to_buffer_coords(
+            Gtk.TextWindowType.WIDGET, 0, 0)
+        view_allocation = self.get_allocation()
+        bounds = (self.get_line_num_for_y(y),
+                  self.get_line_num_for_y(y + view_allocation.height + 1))
+
+        width, height = view_allocation.width, view_allocation.height
+        context.set_line_width(1.0)
+
+        for change in self.chunk_iter(bounds):
+            ypos0 = self.get_y_for_line_num(change[1]) - visible.y
+            ypos1 = self.get_y_for_line_num(change[2]) - visible.y
+
+            context.rectangle(-0.5, ypos0 - 0.5, width + 1, ypos1 - ypos0)
+            if change[1] != change[2]:
+                context.set_source_rgba(*self.fill_colors[change[0]])
+                context.fill_preserve()
+                if self.current_chunk_check(change):
+                    highlight = self.fill_colors['current-chunk-highlight']
+                    context.set_source_rgba(*highlight)
+                    context.fill_preserve()
+
+            context.set_source_rgba(*self.line_colors[change[0]])
+            context.stroke()
+
+        line_highlight = self.get_line_highlight()
+        if self.is_focus() and line_highlight is not None:
+            it = textbuffer.get_iter_at_line(line_highlight)
+            ypos, line_height = self.get_line_yrange(it)
+            context.save()
+            context.rectangle(0, ypos - visible.y, width, line_height)
+            context.clip()
+            context.set_source_rgba(*self.highlight_color)
+            context.paint_with_alpha(0.25)
+            context.restore()
+
+        for syncpoint in self.syncpoints:
+            if syncpoint is None:
+                continue
+            syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
+            if bounds[0] <= syncline <= bounds[1]:
+                ypos = self.get_y_for_line_num(syncline) - visible.y
+                context.rectangle(-0.5, ypos - 0.5, width + 1, 1)
+                context.set_source_rgba(*self.syncpoint_color)
+                context.stroke()
+
+        new_anim_chunks = []
+        for c in self.animating_chunks:
+            current_time = GLib.get_monotonic_time()
+            percent = min(1.0, (current_time - c.start_time) / float(c.duration))
+            rgba_pairs = zip(c.start_rgba, c.end_rgba)
+            rgba = [s + (e - s) * percent for s, e in rgba_pairs]
+
+            it = textbuffer.get_iter_at_mark(c.start_mark)
+            ystart, _ = self.get_line_yrange(it)
+            it = textbuffer.get_iter_at_mark(c.end_mark)
+            yend, _ = self.get_line_yrange(it)
+            if ystart == yend:
+                ystart -= 1
+
+            context.set_source_rgba(*rgba)
+            context.rectangle(0, ystart - visible.y, width, yend - ystart)
+            context.fill()
+
+            if current_time <= c.start_time + c.duration:
+                new_anim_chunks.append(c)
+            else:
+                textbuffer.delete_mark(c.start_mark)
+                textbuffer.delete_mark(c.end_mark)
+        self.animating_chunks = new_anim_chunks
+
+        if self.animating_chunks and self.anim_source_id is None:
+            def anim_cb():
+                self.queue_draw()
+                return True
+            # Using timeout_add interferes with recalculation of inline
+            # highlighting; this mechanism could be improved.
+            self.anim_source_id = GLib.idle_add(anim_cb)
+        elif not self.animating_chunks and self.anim_source_id:
+            GLib.source_remove(self.anim_source_id)
+            self.anim_source_id = None
+
+        context.restore()
+
+        return GtkSource.View.do_draw(self, context)
 
 
 class CommitMessageSourceView(GtkSource.View):

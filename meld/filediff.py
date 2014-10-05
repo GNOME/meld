@@ -160,12 +160,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     # Identifiers for MsgArea messages
     (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
 
-    text_windows = {
-        Gtk.TextWindowType.TEXT,
-        Gtk.TextWindowType.LEFT,
-        Gtk.TextWindowType.RIGHT,
-    }
-
     __gsignals__ = {
         'next-conflict-changed': (GObject.SignalFlags.RUN_FIRST, None, (bool, bool)),
         'action-mode-changed': (GObject.SignalFlags.RUN_FIRST, None, (int,)),
@@ -237,8 +231,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.syncpoints = []
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher()
-        self.anim_source_id = [None for buf in self.textbuffer]
-        self.animating_chunks = [[] for buf in self.textbuffer]
         for buf in self.textbuffer:
             buf.create_tag("inline")
             buf.connect("notify::has-selection",
@@ -1510,109 +1502,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.text_filters = []
             self.refresh_comparison()
 
-    def on_textview_draw(self, textview, context):
-        if self.num_panes == 1:
-            return
-
-        def should_draw(textwindow):
-            window = textview.get_window(textwindow)
-            if not window:
-                return False
-            return Gtk.cairo_should_draw_window(context, window)
-
-        if not any(should_draw(w) for w in self.text_windows):
-            return
-
-        visible = textview.get_visible_rect()
-        pane = self.textview.index(textview)
-        textbuffer = textview.get_buffer()
-        x, y = textview.window_to_buffer_coords(Gtk.TextWindowType.WIDGET,
-                                                0, 0)
-        view_allocation = textview.get_allocation()
-        bounds = (textview.get_line_num_for_y(y),
-                  textview.get_line_num_for_y(y + view_allocation.height + 1))
-
-        width, height = view_allocation.width, view_allocation.height
-        context.set_line_width(1.0)
-
-        if self.override_bg:
-            context.set_source_rgba(*self.override_bg)
-            context.rectangle(0, 0, width, height)
-            context.fill()
-
-        for change in self.linediffer.single_changes(pane, bounds):
-            ypos0 = textview.get_y_for_line_num(change[1]) - visible.y
-            ypos1 = textview.get_y_for_line_num(change[2]) - visible.y
-
-            context.rectangle(-0.5, ypos0 - 0.5, width + 1, ypos1 - ypos0)
-            if change[1] != change[2]:
-                context.set_source_rgba(*self.fill_colors[change[0]])
-                context.fill_preserve()
-                if self.linediffer.locate_chunk(pane, change[1])[0] == self.cursor.chunk:
-                    highlight = self.fill_colors['current-chunk-highlight']
-                    context.set_source_rgba(*highlight)
-                    context.fill_preserve()
-
-            context.set_source_rgba(*self.line_colors[change[0]])
-            context.stroke()
-
-        if (self.props.highlight_current_line and textview.is_focus() and
-                self.cursor.line is not None):
-            it = textbuffer.get_iter_at_line(self.cursor.line)
-            ypos, line_height = textview.get_line_yrange(it)
-            context.save()
-            context.rectangle(0, ypos - visible.y, width, line_height)
-            context.clip()
-            context.set_source_rgba(*self.highlight_color)
-            context.paint_with_alpha(0.25)
-            context.restore()
-
-        for syncpoint in [p[pane] for p in self.syncpoints]:
-            if not syncpoint:
-                continue
-            syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
-            if bounds[0] <= syncline <= bounds[1]:
-                ypos = textview.get_y_for_line_num(syncline) - visible.y
-                context.rectangle(-0.5, ypos - 0.5, width + 1, 1)
-                context.set_source_rgba(*self.syncpoint_color)
-                context.stroke()
-
-        new_anim_chunks = []
-        for c in self.animating_chunks[pane]:
-            current_time = GLib.get_monotonic_time()
-            percent = min(1.0, (current_time - c.start_time) / float(c.duration))
-            rgba_pairs = zip(c.start_rgba, c.end_rgba)
-            rgba = [s + (e - s) * percent for s, e in rgba_pairs]
-
-            it = textbuffer.get_iter_at_mark(c.start_mark)
-            ystart, _ = textview.get_line_yrange(it)
-            it = textbuffer.get_iter_at_mark(c.end_mark)
-            yend, _ = textview.get_line_yrange(it)
-            if ystart == yend:
-                ystart -= 1
-
-            context.set_source_rgba(*rgba)
-            context.rectangle(0, ystart - visible.y, width, yend - ystart)
-            context.fill()
-
-            if current_time <= c.start_time + c.duration:
-                new_anim_chunks.append(c)
-            else:
-                textbuffer.delete_mark(c.start_mark)
-                textbuffer.delete_mark(c.end_mark)
-        self.animating_chunks[pane] = new_anim_chunks
-
-        if self.animating_chunks[pane] and self.anim_source_id[pane] is None:
-            def anim_cb():
-                textview.queue_draw()
-                return True
-            # Using timeout_add interferes with recalculation of inline
-            # highlighting; this mechanism could be improved.
-            self.anim_source_id[pane] = GLib.idle_add(anim_cb)
-        elif not self.animating_chunks[pane] and self.anim_source_id[pane]:
-            GLib.source_remove(self.anim_source_id[pane])
-            self.anim_source_id[pane] = None
-
     def _get_filename_for_saving(self, title ):
         dialog = Gtk.FileChooserDialog(title,
             parent=self.widget.get_toplevel(),
@@ -1951,6 +1840,32 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
 
+            def chunk_iter(i):
+                def chunks(bounds):
+                    for chunk in self.linediffer.single_changes(i, bounds):
+                        yield chunk
+                return chunks
+
+            def current_chunk_check(i):
+                def chunks(change):
+                    chunk = self.linediffer.locate_chunk(i, change[1])[0]
+                    return chunk == self.cursor.chunk
+                return chunks
+
+            def get_line_highlight():
+                return self.cursor.line if self.props.highlight_current_line else None
+
+            for (w, i) in zip(self.textview, range(self.num_panes)):
+                w.fill_colors = self.fill_colors
+                w.line_colors = self.line_colors
+                w.highlight_color = self.highlight_color
+                w.syncpoint_color = self.syncpoint_color
+                w.pane = i
+                w.chunk_iter = chunk_iter(i)
+                w.current_chunk_check = current_chunk_check(i)
+                w.get_line_highlight = get_line_highlight
+                # w.setup(scroll, coords_iter(i), [self.fill_colors, self.line_colors])
+
             def coords_iter(i):
                 buf_index = 2 if i == 1 and self.num_panes == 3 else i
                 get_end_iter = self.textbuffer[buf_index].get_end_iter
@@ -2010,7 +1925,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         rgba0.alpha = 1.0
         rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 500000)
-        self.animating_chunks[dst].append(anim)
+        self.textview[dst].animating_chunks.append(anim)
 
     def replace_chunk(self, src, dst, chunk):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
@@ -2038,7 +1953,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         rgba0.alpha = 1.0
         rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 500000)
-        self.animating_chunks[dst].append(anim)
+        self.textview[dst].animating_chunks.append(anim)
 
     def delete_chunk(self, src, chunk):
         b0 = self.textbuffer[src]
@@ -2054,7 +1969,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         rgba0.alpha = 1.0
         rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 500000)
-        self.animating_chunks[src].append(anim)
+        self.textview[src].animating_chunks.append(anim)
 
     def add_sync_point(self, action):
         pane = self._get_focused_pane()
@@ -2070,6 +1985,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textbuffer[pane].get_insert())
         syncpoint[pane] = self.textbuffer[pane].create_mark(None, cursor_it)
         self.syncpoints.append(syncpoint)
+
+        for i, t in enumerate(self.textview[:self.num_panes]):
+            t.syncpoints = [p[i] for p in self.syncpoints if p[i] is not None]
 
         def make_line_retriever(pane, marks):
             buf = self.textbuffer[pane]
@@ -2109,6 +2027,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def clear_sync_points(self, action):
         self.syncpoints = []
         self.linediffer.syncpoints = []
+        for t in enumerate(self.textview):
+            t.syncpoints = []
         for mgr in self.msgarea_mgr:
             if mgr.get_msg_id() == FileDiff.MSG_SYNCPOINTS:
                 mgr.clear()
