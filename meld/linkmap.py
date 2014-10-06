@@ -39,6 +39,7 @@ class LinkMap(Gtk.DrawingArea):
         if self.get_direction() == Gtk.TextDirection.RTL:
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
+        self.do_style_updated()
 
     def do_style_updated(self, *args):
         Gtk.DrawingArea.do_style_updated(self)

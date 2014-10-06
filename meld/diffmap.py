@@ -41,6 +41,7 @@ class DiffMap(Gtk.DrawingArea):
         self._scroll_height = 0
         self._setup = False
         self._width = 10
+        self.do_style_updated()
 
     def setup(self, scrollbar, change_chunk_fn):
         for (o, h) in self._handlers:
