@@ -155,6 +155,7 @@ class MeldSourceView(GtkSource.View):
         width, height = view_allocation.width, view_allocation.height
         context.set_line_width(1.0)
 
+        # Paint chunk backgrounds and outlines
         for change in self.chunk_iter(bounds):
             ypos0 = self.get_y_for_line_num(change[1]) - visible.y
             ypos1 = self.get_y_for_line_num(change[2]) - visible.y
@@ -171,6 +172,7 @@ class MeldSourceView(GtkSource.View):
             context.set_source_rgba(*self.line_colors[change[0]])
             context.stroke()
 
+        # Paint current line highlight
         if self.props.highlight_current_line_local and self.is_focus():
             it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
             ypos, line_height = self.get_line_yrange(it)
@@ -181,6 +183,7 @@ class MeldSourceView(GtkSource.View):
             context.paint_with_alpha(0.25)
             context.restore()
 
+        # Draw syncpoint indicator lines
         for syncpoint in self.syncpoints:
             if syncpoint is None:
                 continue
@@ -191,6 +194,7 @@ class MeldSourceView(GtkSource.View):
                 context.set_source_rgba(*self.syncpoint_color)
                 context.stroke()
 
+        # Overdraw all animated chunks, and update animation states
         new_anim_chunks = []
         for c in self.animating_chunks:
             current_time = GLib.get_monotonic_time()
