@@ -317,8 +317,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             tag.props.background_rgba = colour_lookup_with_fallback(
                 style, "inline-bg", "LightSteelBlue2")
 
-        self.fill_colors, self.line_colors = get_common_theme(style)
-
         self.queue_draw()
 
     def on_focus_change(self):
