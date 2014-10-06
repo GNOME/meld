@@ -1854,13 +1854,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return self.cursor.line if self.props.highlight_current_line else None
 
             for (w, i) in zip(self.textview, range(self.num_panes)):
-                w.fill_colors = self.fill_colors
-                w.line_colors = self.line_colors
                 w.pane = i
                 w.chunk_iter = chunk_iter(i)
                 w.current_chunk_check = current_chunk_check(i)
                 w.get_line_highlight = get_line_highlight
-                # w.setup(scroll, coords_iter(i), [self.fill_colors, self.line_colors])
+                # w.setup(scroll, coords_iter(i))
 
             def coords_iter(i):
                 buf_index = 2 if i == 1 and self.num_panes == 3 else i
