@@ -1489,14 +1489,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 prompt = _("Save Right Pane As")
             filename = self._get_filename_for_saving(prompt)
-            if filename:
-                bufdata.filename = bufdata.label = os.path.abspath(filename)
-                bufdata.savefile = None
-                self.fileentry[pane].set_filename(bufdata.filename)
-                self.filelabel_toolitem[pane].set_visible(False)
-                self.fileentry_toolitem[pane].set_visible(True)
-            else:
+            if not filename:
                 return False
+
+            bufdata.filename = bufdata.label = os.path.abspath(filename)
+            bufdata.savefile = None
+            self.fileentry[pane].set_filename(bufdata.filename)
+            self.filelabel_toolitem[pane].set_visible(False)
+            self.fileentry_toolitem[pane].set_visible(True)
 
         if not force_overwrite and not bufdata.current_on_disk():
             gfile = Gio.File.new_for_path(bufdata.filename)
