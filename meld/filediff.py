@@ -600,10 +600,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
         self.scheduler.add_task(resync)
 
-    def delete_change(self, widget):
-        pane = self._get_focused_pane()
+    @with_focused_pane
+    def delete_change(self, pane):
         chunk = self.linediffer.get_chunk(self.cursor.chunk, pane)
-        assert(pane != -1 and self.cursor.chunk is not None)
+        assert(self.cursor.chunk is not None)
         assert(chunk is not None)
         self.delete_chunk(pane, chunk)
 
@@ -904,15 +904,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     ("Cut", "Copy", "Paste"), (cut, copy, paste)):
                 self.main_actiongroup.get_action(action).set_sensitive(sens)
 
-    def get_selected_text(self):
+    @with_focused_pane
+    def get_selected_text(self, pane):
         """Returns selected text of active pane"""
-        pane = self._get_focused_pane()
-        if pane != -1:
-            buf = self.textbuffer[pane]
-            sel = buf.get_selection_bounds()
-            if sel:
-                return text_type(buf.get_text(sel[0], sel[1], False), 'utf8')
-        return None
+        buf = self.textbuffer[pane]
+        sel = buf.get_selection_bounds()
+        if sel:
+            return text_type(buf.get_text(sel[0], sel[1], False), 'utf8')
 
     def on_find_activate(self, *args):
         selected_text = self.get_selected_text()
@@ -1618,15 +1616,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for linkmap in self.linkmap:
             linkmap.queue_draw()
 
-    def save(self):
-        pane = self._get_focused_pane()
-        if pane >= 0:
-            self.save_file(pane)
+    @with_focused_pane
+    def save(self, pane):
+        self.save_file(pane)
 
-    def save_as(self):
-        pane = self._get_focused_pane()
-        if pane >= 0:
-            self.save_file(pane, True)
+    @with_focused_pane
+    def save_as(self, pane):
+        self.save_file(pane, saveas=True)
 
     def on_save_all_activate(self, action):
         for i in range(self.num_panes):
@@ -1886,11 +1882,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview[src].add_fading_highlight(
             mark0, mark1, 'conflict', 500000)
 
-    def add_sync_point(self, action):
-        pane = self._get_focused_pane()
-        if pane == -1:
-            return
-
+    @with_focused_pane
+    def add_sync_point(self, pane, action):
         # Find a non-complete syncpoint, or create a new one
         if self.syncpoints and None in self.syncpoints[-1]:
             syncpoint = self.syncpoints.pop()
