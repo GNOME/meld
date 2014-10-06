@@ -51,6 +51,16 @@ from .util.compat import text_type
 from meld.sourceview import LanguageManager
 
 
+def with_focused_pane(function):
+    @functools.wraps(function)
+    def wrap_function(*args, **kwargs):
+        pane = args[0]._get_focused_pane()
+        if pane == -1:
+            return
+        return function(args[0], pane, *args[1:], **kwargs)
+    return wrap_function
+
+
 class CachedSequenceMatcher(object):
     """Simple class for caching diff results, with LRU-based eviction
 
@@ -869,14 +879,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
         self.set_buffer_modified(buf, not checkpointed)
 
-    def open_external(self):
-        pane = self._get_focused_pane()
-        if pane >= 0:
-            if self.textbuffer[pane].data.filename:
-                pos = self.textbuffer[pane].props.cursor_position
-                cursor_it = self.textbuffer[pane].get_iter_at_offset(pos)
-                line = cursor_it.get_line() + 1
-                self._open_files([self.textbuffer[pane].data.filename], line)
+    @with_focused_pane
+    def open_external(self, pane):
+        if not self.textbuffer[pane].data.filename:
+            return
+        pos = self.textbuffer[pane].props.cursor_position
+        cursor_it = self.textbuffer[pane].get_iter_at_offset(pos)
+        line = cursor_it.get_line() + 1
+        self._open_files([self.textbuffer[pane].data.filename], line)
 
     def update_text_actions_sensitivity(self, *args):
         widget = self.focus_pane
