@@ -176,13 +176,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             column_sizes.add_widget(widget)
 
         self.warned_bad_comparison = False
-        for v in self.textview:
-            buf = v.get_buffer()
-            buf.connect('begin_user_action',
-                        self.on_textbuffer_begin_user_action)
-            buf.connect('end_user_action', self.on_textbuffer_end_user_action)
-            buf.data.connect('file-changed', self.notify_file_changed)
-            v.late_bind()
         self._keymask = 0
         self.load_font()
         self.meta = {}
@@ -216,9 +209,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.syncpoints = []
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher()
+
+        for v in self.textview:
+            v.late_bind()
+
         for buf in self.textbuffer:
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
+            buf.connect('begin_user_action',
+                        self.on_textbuffer_begin_user_action)
+            buf.connect('end_user_action', self.on_textbuffer_end_user_action)
+            buf.data.connect('file-changed', self.notify_file_changed)
 
         self.ui_file = gnomeglade.ui_file("filediff-ui.xml")
         self.actiongroup = self.FilediffActions
