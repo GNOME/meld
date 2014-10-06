@@ -17,6 +17,7 @@
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -49,11 +50,15 @@ class MeldSourceView(GtkSource.View):
     __gtype_name__ = "MeldSourceView"
 
     __gsettings_bindings__ = (
+        ('highlight-current-line', 'highlight-current-line-local'),
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
         ('draw-spaces', 'draw-spaces'),
         ('wrap-mode', 'wrap-mode'),
     )
+
+    # Named so as not to conflict with the GtkSourceView property
+    highlight_current_line_local = GObject.property(type=bool, default=False)
 
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
@@ -75,8 +80,6 @@ class MeldSourceView(GtkSource.View):
 
     def __init__(self, *args, **kwargs):
         super(MeldSourceView, self).__init__(*args, **kwargs)
-        bind_settings(self)
-
         binding_set = Gtk.binding_set_find('GtkSourceView')
         for key, modifiers in self.replaced_entries:
             Gtk.binding_entry_remove(binding_set, key, modifiers)
@@ -99,6 +102,10 @@ class MeldSourceView(GtkSource.View):
 
     def get_line_num_for_y(self, y):
         return self.get_line_at_y(y)[0].get_line()
+
+    def do_realize(self):
+        bind_settings(self)
+        return GtkSource.View.do_realize(self)
 
     def do_style_updated(self, *args):
         GtkSource.View.do_style_updated(self)
@@ -164,9 +171,8 @@ class MeldSourceView(GtkSource.View):
             context.set_source_rgba(*self.line_colors[change[0]])
             context.stroke()
 
-        line_highlight = self.get_line_highlight()
-        if self.is_focus() and line_highlight is not None:
-            it = textbuffer.get_iter_at_line(line_highlight)
+        if self.props.highlight_current_line_local and self.is_focus():
+            it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
             ypos, line_height = self.get_line_yrange(it)
             context.save()
             context.rectangle(0, ypos - visible.y, width, line_height)

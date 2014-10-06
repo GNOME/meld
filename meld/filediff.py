@@ -136,11 +136,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     __gtype_name__ = "FileDiff"
 
     __gsettings_bindings__ = (
-        ('highlight-current-line', 'highlight-current-line'),
         ('ignore-blank-lines', 'ignore-blank-lines'),
     )
 
-    highlight_current_line = GObject.property(type=bool, default=False)
     ignore_blank_lines = GObject.property(
         type=bool,
         nick="Ignore blank lines",
@@ -1850,14 +1848,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     return chunk == self.cursor.chunk
                 return chunks
 
-            def get_line_highlight():
-                return self.cursor.line if self.props.highlight_current_line else None
-
             for (w, i) in zip(self.textview, range(self.num_panes)):
-                w.pane = i
                 w.chunk_iter = chunk_iter(i)
                 w.current_chunk_check = current_chunk_check(i)
-                w.get_line_highlight = get_line_highlight
                 # w.setup(scroll, coords_iter(i))
 
             def coords_iter(i):
