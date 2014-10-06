@@ -45,6 +45,19 @@ class LanguageManager(object):
         return cls.manager.guess_language(None, content_type)
 
 
+class TextviewLineAnimation(object):
+    __slots__ = ("start_mark", "end_mark", "start_rgba", "end_rgba",
+                 "start_time", "duration")
+
+    def __init__(self, mark0, mark1, rgba0, rgba1, duration):
+        self.start_mark = mark0
+        self.end_mark = mark1
+        self.start_rgba = rgba0
+        self.end_rgba = rgba1
+        self.start_time = GLib.get_monotonic_time()
+        self.duration = duration
+
+
 class MeldSourceView(GtkSource.View):
 
     __gtype_name__ = "MeldSourceView"
@@ -102,6 +115,14 @@ class MeldSourceView(GtkSource.View):
 
     def get_line_num_for_y(self, y):
         return self.get_line_at_y(y)[0].get_line()
+
+    def add_fading_highlight(self, mark0, mark1, colour_name, duration):
+        rgba0 = self.fill_colors[colour_name].copy()
+        rgba1 = self.fill_colors[colour_name].copy()
+        rgba0.alpha = 1.0
+        rgba1.alpha = 0.0
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, duration)
+        self.animating_chunks.append(anim)
 
     def do_realize(self):
         bind_settings(self)

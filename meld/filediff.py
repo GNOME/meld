@@ -117,19 +117,6 @@ class TaskEntry(object):
             setattr(self, var, val)
 
 
-class TextviewLineAnimation(object):
-    __slots__ = ("start_mark", "end_mark", "start_rgba", "end_rgba",
-                 "start_time", "duration")
-
-    def __init__(self, mark0, mark1, rgba0, rgba1, duration):
-        self.start_mark = mark0
-        self.end_mark = mark1
-        self.start_rgba = rgba0
-        self.end_rgba = rgba1
-        self.start_time = GLib.get_monotonic_time()
-        self.duration = duration
-
-
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way comparison of text files"""
 
@@ -1884,14 +1871,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.queue_draw()
             self.recompute_label()
 
-    def add_fading_highlight(self, view, mark0, mark1, colour_name, duration):
-        rgba0 = self.fill_colors[colour_name].copy()
-        rgba1 = self.fill_colors[colour_name].copy()
-        rgba0.alpha = 1.0
-        rgba1.alpha = 0.0
-        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, duration)
-        view.animating_chunks.append(anim)
-
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
         start = b0.get_iter_at_line_or_eof(chunk[1])
@@ -1915,8 +1894,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
         # this animation is not visible; this happens often in three-way diffs
-        self.add_fading_highlight(
-            self.textview[dst], mark0, mark1, 'insert', 500000)
+        self.textview[dst].add_fading_highlight(mark0, mark1, 'insert', 500000)
 
     def replace_chunk(self, src, dst, chunk):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
@@ -1939,8 +1917,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # this animation is not visible; this happens often in three-way
             # diffs
             colour = 'insert'
-        self.add_fading_highlight(
-            self.textview[dst], mark0, mark1, colour, 500000)
+        self.textview[dst].add_fading_highlight(mark0, mark1, colour, 500000)
 
     def delete_chunk(self, src, chunk):
         b0 = self.textbuffer[src]
@@ -1951,8 +1928,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         mark0 = b0.create_mark(None, it, True)
         mark1 = b0.create_mark(None, it, True)
         # TODO: Need a more specific colour here; conflict is wrong
-        self.add_fading_highlight(
-            self.textview[src], mark0, mark1, 'conflict', 500000)
+        self.textview[src].add_fading_highlight(
+            mark0, mark1, 'conflict', 500000)
 
     def add_sync_point(self, action):
         pane = self._get_focused_pane()
