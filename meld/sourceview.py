@@ -21,6 +21,8 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
+import meldbuffer
+
 from meld.misc import colour_lookup_with_fallback, get_common_theme
 from meld.settings import bind_settings, settings
 
@@ -101,6 +103,12 @@ class MeldSourceView(GtkSource.View):
         self.animating_chunks = []
         self.syncpoints = []
 
+        buf = meldbuffer.MeldBuffer()
+        buf.create_tag("inline")
+        self.set_buffer(buf)
+
+        self.do_style_updated()
+
     def late_bind(self):
         settings.bind(
             'show-line-numbers', self, 'show-line-numbers',
@@ -129,7 +137,7 @@ class MeldSourceView(GtkSource.View):
         bind_settings(self)
         return GtkSource.View.do_realize(self)
 
-    def do_style_updated(self, *args):
+    def do_style_updated(self):
         GtkSource.View.do_style_updated(self)
 
         style = self.get_style_context()
@@ -138,6 +146,10 @@ class MeldSourceView(GtkSource.View):
         self.syncpoint_color = colour_lookup_with_fallback(
             style, "syncpoint-outline", "#555555")
         self.fill_colors, self.line_colors = get_common_theme(style)
+
+        tag = self.get_buffer().get_tag_table().lookup("inline")
+        tag.props.background_rgba = colour_lookup_with_fallback(
+            style, "inline-bg", "LightSteelBlue2")
 
     def do_draw(self, context):
 

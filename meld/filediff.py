@@ -177,11 +177,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.warned_bad_comparison = False
         for v in self.textview:
-            buf = meldbuffer.MeldBuffer()
+            buf = v.get_buffer()
             buf.connect('begin_user_action',
                         self.on_textbuffer_begin_user_action)
             buf.connect('end_user_action', self.on_textbuffer_end_user_action)
-            v.set_buffer(buf)
             buf.data.connect('file-changed', self.notify_file_changed)
             v.late_bind()
         self._keymask = 0
@@ -218,7 +217,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher()
         for buf in self.textbuffer:
-            buf.create_tag("inline")
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
 
@@ -228,10 +226,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.findbar = findbar.FindBar(self.grid)
         self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
-
-        self.widget.ensure_style()
-        self.on_style_updated(self.widget)
-        self.widget.connect("style-updated", self.on_style_updated)
 
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
@@ -308,16 +302,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if event.keyval == Gdk.KEY_Return and self.keymask & MASK_SHIFT:
                 self.findbar.start_find_previous(self.focus_pane)
             self.keymask &= ~mod_key
-
-    def on_style_updated(self, widget):
-        style = widget.get_style_context()
-
-        for buf in self.textbuffer:
-            tag = buf.get_tag_table().lookup("inline")
-            tag.props.background_rgba = colour_lookup_with_fallback(
-                style, "inline-bg", "LightSteelBlue2")
-
-        self.queue_draw()
 
     def on_focus_change(self):
         self.keymask = 0
