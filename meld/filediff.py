@@ -319,7 +319,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.fill_colors, self.line_colors = get_common_theme(style)
 
-        for associated in self.diffmap + self.linkmap:
+        for associated in self.linkmap:
             associated.set_color_scheme([self.fill_colors, self.line_colors])
 
         self.queue_draw()
@@ -1843,7 +1843,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             for (w, i) in zip(self.diffmap, (0, self.num_panes - 1)):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
-                w.setup(scroll, coords_iter(i), [self.fill_colors, self.line_colors])
+                w.setup(scroll, coords_iter(i))
 
             for (w, i) in zip(self.linkmap, (0, self.num_panes - 2)):
                 w.associate(self, self.textview[i], self.textview[i + 1])

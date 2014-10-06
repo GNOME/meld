@@ -22,6 +22,8 @@ from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from meld.misc import get_common_theme
+
 
 class DiffMap(Gtk.DrawingArea):
 
@@ -40,7 +42,7 @@ class DiffMap(Gtk.DrawingArea):
         self._setup = False
         self._width = 10
 
-    def setup(self, scrollbar, change_chunk_fn, color_map):
+    def setup(self, scrollbar, change_chunk_fn):
         for (o, h) in self._handlers:
             o.disconnect(h)
 
@@ -61,7 +63,6 @@ class DiffMap(Gtk.DrawingArea):
                           (self._scrolladj, adj_change_hid),
                           (self._scrolladj, adj_val_hid)]
         self._difffunc = change_chunk_fn
-        self.set_color_scheme(color_map)
         self._setup = True
         self._cached_map = None
         self.queue_draw()
@@ -69,9 +70,10 @@ class DiffMap(Gtk.DrawingArea):
     def on_diffs_changed(self, *args):
         self._cached_map = None
 
-    def set_color_scheme(self, color_map):
-        self.fill_colors, self.line_colors = color_map
-        self.queue_draw()
+    def do_style_updated(self, *args):
+        Gtk.DrawingArea.do_style_updated(self)
+        style = self.get_style_context()
+        self.fill_colors, self.line_colors = get_common_theme(style)
 
     def on_scrollbar_style_updated(self, scrollbar):
         value = GObject.Value(int)
