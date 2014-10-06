@@ -46,7 +46,6 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
-from meld.misc import colour_lookup_with_fallback, get_common_theme
 from meld.settings import bind_settings, meldsettings, settings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager
