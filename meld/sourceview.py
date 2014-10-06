@@ -100,6 +100,22 @@ class MeldSourceView(GtkSource.View):
     def get_line_num_for_y(self, y):
         return self.get_line_at_y(y)[0].get_line()
 
+    def do_style_updated(self, *args):
+        GtkSource.View.do_style_updated(self)
+
+        def lookup_style_colour(name, default):
+            found, colour = style.lookup_color(name)
+            if not found:
+                colour = Gdk.RGBA()
+                colour.parse(default)
+            return colour
+
+        style = self.get_style_context()
+        self.highlight_color = lookup_style_colour(
+            "current-line-highlight", default="#ffff00")
+        self.syncpoint_color = lookup_style_colour(
+            "syncpoint-outline", default="#555555")
+
     def do_draw(self, context):
 
         windows = [

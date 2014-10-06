@@ -350,8 +350,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             "delete"  : lookup("insert-outline", "#77f077"),
                             "conflict": lookup("conflict-outline", "#f0768b"),
                             "replace" : lookup("replace-outline", "#8bbff3")}
-        self.highlight_color = lookup("current-line-highlight", "#ffff00")
-        self.syncpoint_color = lookup("syncpoint-outline", "#555555")
 
         for associated in self.diffmap + self.linkmap:
             associated.set_color_scheme([self.fill_colors, self.line_colors])
@@ -1858,8 +1856,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for (w, i) in zip(self.textview, range(self.num_panes)):
                 w.fill_colors = self.fill_colors
                 w.line_colors = self.line_colors
-                w.highlight_color = self.highlight_color
-                w.syncpoint_color = self.syncpoint_color
                 w.pane = i
                 w.chunk_iter = chunk_iter(i)
                 w.current_chunk_check = current_chunk_check(i)
