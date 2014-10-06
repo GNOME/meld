@@ -24,7 +24,7 @@ from gi.repository import GtkSource
 import meldbuffer
 
 from meld.misc import colour_lookup_with_fallback, get_common_theme
-from meld.settings import bind_settings, settings
+from meld.settings import bind_settings, meldsettings, settings
 
 
 class LanguageManager(object):
@@ -107,6 +107,8 @@ class MeldSourceView(GtkSource.View):
         buf.create_tag("inline")
         self.set_buffer(buf)
 
+        meldsettings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meldsettings, 'font')
         self.do_style_updated()
 
     def late_bind(self):
@@ -132,6 +134,10 @@ class MeldSourceView(GtkSource.View):
         rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, duration)
         self.animating_chunks.append(anim)
+
+    def on_setting_changed(self, settings, key):
+        if key == 'font':
+            self.override_font(meldsettings.font)
 
     def do_realize(self):
         bind_settings(self)

@@ -176,7 +176,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.warned_bad_comparison = False
         self._keymask = 0
-        self.load_font()
         self.meta = {}
         self.deleted_lines_pending = -1
         self.textview_overwrite = 0
@@ -273,8 +272,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 gutter.insert(renderer, -40)
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
-
-        meldsettings.connect('changed', self.on_setting_changed)
 
     def get_keymask(self):
         return self._keymask
@@ -780,20 +777,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._after_text_modified(buffer, starting_at, -self.deleted_lines_pending)
         self.deleted_lines_pending = -1
 
-    def load_font(self):
-        context = self.textview0.get_pango_context()
-        metrics = context.get_metrics(meldsettings.font,
-                                      context.get_language())
-        line_height_points = metrics.get_ascent() + metrics.get_descent()
-        self.pixels_per_line = line_height_points // 1024
-        for i in range(3):
-            self.textview[i].override_font(meldsettings.font)
-        for i in range(2):
-            self.linkmap[i].queue_draw()
-
-    def on_setting_changed(self, settings, key):
-        if key == 'font':
-            self.load_font()
 
     def check_save_modified(self):
         response = Gtk.ResponseType.OK

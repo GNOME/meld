@@ -20,6 +20,7 @@ import math
 from gi.repository import Gtk
 
 from meld.misc import get_common_theme
+from meld.settings import meldsettings
 
 
 # Rounded rectangle corner radius for culled changes display
@@ -32,6 +33,7 @@ class LinkMap(Gtk.DrawingArea):
 
     def __init__(self):
         self.filediff = None
+        meldsettings.connect('changed', self.on_setting_changed)
 
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
@@ -39,7 +41,18 @@ class LinkMap(Gtk.DrawingArea):
         if self.get_direction() == Gtk.TextDirection.RTL:
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
+
+        self.on_setting_changed(meldsettings, 'font')
         self.do_style_updated()
+
+    def on_setting_changed(self, settings, key):
+        if key == 'font':
+            context = self.views[0].get_pango_context()
+            metrics = context.get_metrics(
+                meldsettings.font, context.get_language())
+            line_height_points = metrics.get_ascent() + metrics.get_descent()
+            self.line_height = line_height_points // 1024
+            self.queue_draw()
 
     def do_style_updated(self, *args):
         Gtk.DrawingArea.do_style_updated(self)
