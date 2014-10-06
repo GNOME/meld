@@ -319,9 +319,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.fill_colors, self.line_colors = get_common_theme(style)
 
-        for associated in self.linkmap:
-            associated.set_color_scheme([self.fill_colors, self.line_colors])
-
         self.queue_draw()
 
     def on_focus_change(self):

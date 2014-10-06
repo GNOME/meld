@@ -19,6 +19,8 @@ import math
 
 from gi.repository import Gtk
 
+from meld.misc import get_common_theme
+
 
 # Rounded rectangle corner radius for culled changes display
 RADIUS = 3
@@ -38,11 +40,10 @@ class LinkMap(Gtk.DrawingArea):
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
-        self.set_color_scheme((filediff.fill_colors, filediff.line_colors))
-
-    def set_color_scheme(self, color_map):
-        self.fill_colors, self.line_colors = color_map
-        self.queue_draw()
+    def do_style_updated(self, *args):
+        Gtk.DrawingArea.do_style_updated(self)
+        style = self.get_style_context()
+        self.fill_colors, self.line_colors = get_common_theme(style)
 
     def do_draw(self, context):
         if not self.filediff:
