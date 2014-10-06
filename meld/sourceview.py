@@ -21,6 +21,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
+from meld.misc import colour_lookup_with_fallback, get_common_theme
 from meld.settings import bind_settings, settings
 
 
@@ -132,24 +133,11 @@ class MeldSourceView(GtkSource.View):
         GtkSource.View.do_style_updated(self)
 
         style = self.get_style_context()
-        get_style_colour = lambda name: style.lookup_color(name)[1]
-
-        self.highlight_color = get_style_colour("current-line-highlight")
-        self.syncpoint_color = get_style_colour("syncpoint-outline")
-        self.fill_colors = {
-            "insert": get_style_colour("insert-bg"),
-            "delete": get_style_colour("insert-bg"),
-            "conflict": get_style_colour("conflict-bg"),
-            "replace": get_style_colour("replace-bg"),
-            "current-chunk-highlight": get_style_colour(
-                "current-chunk-highlight"),
-        }
-        self.line_colors = {
-            "insert": get_style_colour("insert-outline"),
-            "delete": get_style_colour("insert-outline"),
-            "conflict": get_style_colour("conflict-outline"),
-            "replace": get_style_colour("replace-outline"),
-        }
+        self.highlight_color = colour_lookup_with_fallback(
+            style, "current-line-highlight", "#ffff00")
+        self.syncpoint_color = colour_lookup_with_fallback(
+            style, "syncpoint-outline", "#555555")
+        self.fill_colors, self.line_colors = get_common_theme(style)
 
     def do_draw(self, context):
 

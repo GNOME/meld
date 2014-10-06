@@ -46,6 +46,7 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
+from meld.misc import colour_lookup_with_fallback, get_common_theme
 from meld.settings import bind_settings, meldsettings, settings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager
@@ -311,30 +312,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_style_updated(self, widget):
         style = widget.get_style_context()
 
-        def lookup(name, default):
-            found, colour = style.lookup_color(name)
-            if not found:
-                colour = Gdk.RGBA()
-                colour.parse(default)
-            return colour
-
         for buf in self.textbuffer:
             tag = buf.get_tag_table().lookup("inline")
-            tag.props.background_rgba = lookup("inline-bg", "LightSteelBlue2")
+            tag.props.background_rgba = colour_lookup_with_fallback(
+                style, "inline-bg", "LightSteelBlue2")
 
-        override_bg = style.lookup_color("override-background-color")
-        self.override_bg = override_bg[1] if override_bg[0] else None
-
-        self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
-                            "delete"  : lookup("insert-bg", "DarkSeaGreen1"),
-                            "conflict": lookup("conflict-bg", "Pink"),
-                            "replace" : lookup("replace-bg", "#ddeeff"),
-                            "current-chunk-highlight":
-                                lookup("current-chunk-highlight", '#ffffff')}
-        self.line_colors = {"insert"  : lookup("insert-outline", "#77f077"),
-                            "delete"  : lookup("insert-outline", "#77f077"),
-                            "conflict": lookup("conflict-outline", "#f0768b"),
-                            "replace" : lookup("replace-outline", "#8bbff3")}
+        self.fill_colors, self.line_colors = get_common_theme(style)
 
         for associated in self.diffmap + self.linkmap:
             associated.set_color_scheme([self.fill_colors, self.line_colors])

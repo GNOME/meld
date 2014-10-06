@@ -24,6 +24,8 @@ import shutil
 import re
 import subprocess
 
+from gi.repository import Gdk
+from gi.repository import GObject
 from gi.repository import Gtk
 
 from meld.conf import _
@@ -139,6 +141,32 @@ def make_tool_button_widget(label):
     hbox.pack_end(label, True, True, 0)
     hbox.show_all()
     return hbox
+
+
+def colour_lookup_with_fallback(style, name, default):
+    found, colour = style.lookup_color(name)
+    if not found:
+        colour = Gdk.RGBA()
+        colour.parse(default)
+    return colour
+
+
+def get_common_theme(style):
+    lookup = lambda *args: colour_lookup_with_fallback(style, *args)
+    fill_colours = {
+        "insert": lookup("insert-bg", "DarkSeaGreen1"),
+        "delete": lookup("insert-bg", "DarkSeaGreen1"),
+        "conflict": lookup("conflict-bg", "Pink"),
+        "replace": lookup("replace-bg", "#ddeeff"),
+        "current-chunk-highlight": lookup("current-chunk-highlight", '#ffffff')
+    }
+    line_colours = {
+        "insert": lookup("insert-outline", "#77f077"),
+        "delete": lookup("insert-outline", "#77f077"),
+        "conflict": lookup("conflict-outline", "#f0768b"),
+        "replace": lookup("replace-outline", "#8bbff3"),
+    }
+    return fill_colours, line_colours
 
 
 def gdk_to_cairo_color(color):
