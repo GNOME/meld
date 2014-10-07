@@ -240,7 +240,28 @@ class PreferencesDialog(Component):
         self.combo_file_order.bind_to('vc-left-is-local')
         self.combo_merge_order.bind_to('vc-merge-file-order')
 
+        # Fill color schemes
+        liststore = Gtk.ListStore(str)
+        manager = GtkSource.StyleSchemeManager.get_default()
+        scheme_ids = GtkSource.StyleSchemeManager.get_scheme_ids(manager)
+        for scheme in scheme_ids:
+            liststore.append([scheme])
+        self.combobox_style_scheme.set_model(liststore)
+        cell = Gtk.CellRendererText()
+        self.combobox_style_scheme.pack_start(cell, True)
+        self.combobox_style_scheme.add_attribute(cell, 'text',0)
+
+        style_scheme = settings.get_string('style-scheme')
+        for idx,scheme in enumerate(scheme_ids):
+            if scheme == style_scheme:
+                self.combobox_style_scheme.set_active(idx)
+
+        self.combobox_style_scheme.connect("changed", self.on_combobox_style_scheme_changed)
+
         self.widget.show()
+
+    def on_combobox_style_scheme_changed(self, combobox):
+        settings.set_string('style-scheme', combobox.get_model()[combobox.get_active()][0])
 
     def on_checkbutton_wrap_text_toggled(self, button):
         if not self.checkbutton_wrap_text.get_active():

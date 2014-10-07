@@ -24,7 +24,7 @@ from gi.repository import GObject
 from gi.repository import GtkSource
 
 from meld.conf import _
-from meld.settings import bind_settings
+from meld.settings import bind_settings,settings
 from meld.util.compat import text_type
 
 
@@ -41,6 +41,12 @@ class MeldBuffer(GtkSource.Buffer):
         bind_settings(self)
         self.data = MeldBufferData(filename)
         self.user_action_count = 0
+        self.change_style_scheme(settings.get_string('style-scheme'))
+
+    def change_style_scheme(self, scheme):
+        manager = GtkSource.StyleSchemeManager.get_default()
+        style = GtkSource.StyleSchemeManager.get_scheme(manager, scheme)
+        GtkSource.Buffer.set_style_scheme(self, style)
 
     def do_begin_user_action(self, *args):
         self.user_action_count += 1

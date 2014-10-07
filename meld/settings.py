@@ -55,6 +55,9 @@ class MeldSettings(GObject.GObject):
         elif key in ('use-system-font', 'custom-font'):
             self.font = self._current_font_from_gsetting()
             self.emit('changed', 'font')
+        elif key in ('style-scheme'):
+            self.style_scheme = settings.get_string('style-scheme')
+            self.emit('changed', 'style-scheme')
 
     def _filters_from_gsetting(self, key, filt_type):
         filter_params = settings.get_value(key)
