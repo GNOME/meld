@@ -145,8 +145,11 @@ class GSettingsComboBox(Gtk.ComboBox):
             self.set_property('active', idx)
 
     def _active_changed(self, obj, val):
+        active_iter = self.get_active_iter()
+        if active_iter is None:
+            return
         column = self.get_property('gsettings-column')
-        value = self.get_model()[self.get_active_iter()][column]
+        value = self.get_model()[active_iter][column]
         self.set_property('gsettings-value', value)
 
 
@@ -181,7 +184,8 @@ class PreferencesDialog(Component):
                            ["adjustment1", "adjustment2", "fileorderstore",
                             "sizegroup_editor", "timestampstore",
                             "mergeorderstore", "sizegroup_file_order_labels",
-                            "sizegroup_file_order_combos"])
+                            "sizegroup_file_order_combos",
+                            'syntaxschemestore'])
         self.widget.set_transient_for(parent)
 
         bindings = [
@@ -241,27 +245,13 @@ class PreferencesDialog(Component):
         self.combo_merge_order.bind_to('vc-merge-file-order')
 
         # Fill color schemes
-        liststore = Gtk.ListStore(str)
         manager = GtkSource.StyleSchemeManager.get_default()
-        scheme_ids = GtkSource.StyleSchemeManager.get_scheme_ids(manager)
-        for scheme in scheme_ids:
-            liststore.append([scheme])
-        self.combobox_style_scheme.set_model(liststore)
-        cell = Gtk.CellRendererText()
-        self.combobox_style_scheme.pack_start(cell, True)
-        self.combobox_style_scheme.add_attribute(cell, 'text',0)
-
-        style_scheme = settings.get_string('style-scheme')
-        for idx,scheme in enumerate(scheme_ids):
-            if scheme == style_scheme:
-                self.combobox_style_scheme.set_active(idx)
-
-        self.combobox_style_scheme.connect("changed", self.on_combobox_style_scheme_changed)
+        for scheme_id in manager.get_scheme_ids():
+            scheme = manager.get_scheme(scheme_id)
+            self.syntaxschemestore.append([scheme_id, scheme.get_name()])
+        self.combobox_style_scheme.bind_to('style-scheme')
 
         self.widget.show()
-
-    def on_combobox_style_scheme_changed(self, combobox):
-        settings.set_string('style-scheme', combobox.get_model()[combobox.get_active()][0])
 
     def on_checkbutton_wrap_text_toggled(self, button):
         if not self.checkbutton_wrap_text.get_active():

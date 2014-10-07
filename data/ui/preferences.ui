@@ -15,6 +15,14 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkListStore" id="syntaxschemestore">
+    <columns>
+      <!-- column-name id -->
+      <column type="gchararray"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="fileorderstore">
     <columns>
       <!-- column-name id -->
@@ -494,9 +502,17 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="combobox_style_scheme">
+                                  <object class="GSettingsStringComboBox" id="combobox_style_scheme">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="model">syntaxschemestore</property>
+                                    <property name="gsettings-column">0</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="syntax_scheme_renderer"/>
+                                      <attributes>
+                                        <attribute name="text">1</attribute>
+                                      </attributes>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
