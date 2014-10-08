@@ -51,8 +51,8 @@ class PatchDialog(gnomeglade.Component):
         self.reverse_patch = self.reverse_checkbutton.get_active()
 
         if self.filediff.num_panes < 3:
-            self.label3.hide()
-            self.hbox2.hide()
+            self.side_selection_label.hide()
+            self.side_selection_box.hide()
 
         meldsettings.connect('changed', self.on_setting_changed)
 
