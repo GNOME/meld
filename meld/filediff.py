@@ -850,9 +850,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_setting_changed(self, settings, key):
         if key == 'font':
             self.load_font()
-        elif key == 'style-scheme':
-            for i in range(3):
-                self.textview[i].get_buffer().change_style_scheme(meldsettings.style_scheme)
 
     def check_save_modified(self, label=None):
         response = Gtk.ResponseType.OK
