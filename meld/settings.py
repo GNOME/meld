@@ -19,6 +19,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Pango
+from gi.repository import GtkSource
 
 import meld.conf
 import meld.filters
@@ -41,6 +42,7 @@ class MeldSettings(GObject.GObject):
         self.on_setting_changed(settings, 'filename-filters')
         self.on_setting_changed(settings, 'text-filters')
         self.on_setting_changed(settings, 'use-system-font')
+        self.style_scheme = self._style_scheme_from_gsettings()
         settings.connect('changed', self.on_setting_changed)
 
     def on_setting_changed(self, settings, key):
@@ -55,6 +57,14 @@ class MeldSettings(GObject.GObject):
         elif key in ('use-system-font', 'custom-font'):
             self.font = self._current_font_from_gsetting()
             self.emit('changed', 'font')
+        elif key in ('style-scheme'):
+            self.style_scheme = self._style_scheme_from_gsettings()
+            self.emit('changed', 'style-scheme')
+
+    def _style_scheme_from_gsettings(self):
+        manager = GtkSource.StyleSchemeManager.get_default()
+        return GtkSource.StyleSchemeManager.get_scheme(manager,
+                settings.get_string('style-scheme'))
 
     def _filters_from_gsetting(self, key, filt_type):
         filter_params = settings.get_value(key)

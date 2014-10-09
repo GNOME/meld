@@ -145,8 +145,11 @@ class GSettingsComboBox(Gtk.ComboBox):
             self.set_property('active', idx)
 
     def _active_changed(self, obj, val):
+        active_iter = self.get_active_iter()
+        if active_iter is None:
+            return
         column = self.get_property('gsettings-column')
-        value = self.get_model()[self.get_active_iter()][column]
+        value = self.get_model()[active_iter][column]
         self.set_property('gsettings-value', value)
 
 
@@ -181,7 +184,8 @@ class PreferencesDialog(Component):
                            ["adjustment1", "adjustment2", "fileorderstore",
                             "sizegroup_editor", "timestampstore",
                             "mergeorderstore", "sizegroup_file_order_labels",
-                            "sizegroup_file_order_combos"])
+                            "sizegroup_file_order_combos",
+                            'syntaxschemestore'])
         self.widget.set_transient_for(parent)
 
         bindings = [
@@ -239,6 +243,13 @@ class PreferencesDialog(Component):
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
         self.combo_merge_order.bind_to('vc-merge-file-order')
+
+        # Fill color schemes
+        manager = GtkSource.StyleSchemeManager.get_default()
+        for scheme_id in manager.get_scheme_ids():
+            scheme = manager.get_scheme(scheme_id)
+            self.syntaxschemestore.append([scheme_id, scheme.get_name()])
+        self.combobox_style_scheme.bind_to('style-scheme')
 
         self.widget.show()
 
