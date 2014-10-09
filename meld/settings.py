@@ -63,8 +63,7 @@ class MeldSettings(GObject.GObject):
 
     def _style_scheme_from_gsettings(self):
         manager = GtkSource.StyleSchemeManager.get_default()
-        return GtkSource.StyleSchemeManager.get_scheme(manager,
-                settings.get_string('style-scheme'))
+        return manager.get_scheme(settings.get_string('style-scheme'))
 
     def _filters_from_gsetting(self, key, filt_type):
         filter_params = settings.get_value(key)
