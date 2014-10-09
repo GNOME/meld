@@ -157,17 +157,9 @@ class MeldSourceView(GtkSource.View):
         tag.props.background_rgba = colour_lookup_with_fallback(
             style, "inline-bg", "LightSteelBlue2")
 
-    def do_draw(self, context):
-
-        windows = [
-            self.get_window(window_type) for window_type in
-            (Gtk.TextWindowType.TEXT, Gtk.TextWindowType.WIDGET)
-            if self.get_window(window_type)]
-
-        should_draw = [Gtk.cairo_should_draw_window(context, w) for w in windows]
-
-        if not any(should_draw):
-            return GtkSource.View.do_draw(self, context)
+    def do_draw_layer(self, layer, context):
+        if layer != Gtk.TextViewLayer.BELOW:
+            return GtkSource.View.do_draw_layer(self, layer, context)
 
         context.save()
 
@@ -260,7 +252,7 @@ class MeldSourceView(GtkSource.View):
 
         context.restore()
 
-        return GtkSource.View.do_draw(self, context)
+        return GtkSource.View.do_draw_layer(self, layer, context)
 
 
 class CommitMessageSourceView(GtkSource.View):
