@@ -1634,11 +1634,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         if not force_overwrite and not bufdata.current_on_disk():
             gfile = Gio.File.new_for_path(bufdata.filename)
-            primary = _("File %s has changed on disk since it was opened") % \
-                      gfile.get_parse_name()
+            primary = (
+                _("File %s has changed on disk since it was opened") %
+                gfile.get_parse_name())
             secondary = _("If you save it, any external changes will be lost.")
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                            Gtk.STOCK_DIALOG_WARNING, primary, secondary)
+                Gtk.STOCK_DIALOG_WARNING, primary, secondary)
             msgarea.add_button(_("Save Anyway"), Gtk.ResponseType.ACCEPT)
             msgarea.add_button(_("Don't Save"), Gtk.ResponseType.CLOSE)
 
@@ -1650,7 +1651,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             msgarea.connect("response", on_file_changed_response)
             msgarea.show_all()
             return
-
 
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
