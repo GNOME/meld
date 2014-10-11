@@ -1664,12 +1664,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     '\r\n': ("DOS/Windows (CR-LF)", 1),
                     '\r': ("Mac OS (CR)", 2),
                 }
-                newline = misc.run_dialog( _("This file '%s' contains a mixture of line endings.\n\nWhich format would you like to use?") % bufdata.label,
-                    self, Gtk.MessageType.WARNING, buttonstype=Gtk.ButtonsType.CANCEL,
-                    extrabuttons=[ buttons[b] for b in bufdata.newlines ] )
+                dialog_buttons = [(_("_Cancel"), Gtk.ResponseType.CANCEL)]
+                dialog_buttons += [buttons[b] for b in bufdata.newlines]
+                newline = misc.modal_dialog(
+                    primary=_("Inconsistent line endings found"),
+                    secondary=_(
+                        "'%s' contains a mixture of line endings. Select the "
+                        "line ending format to use.") % bufdata.label,
+                    buttons=dialog_buttons,
+                    messagetype=Gtk.MessageType.WARNING
+                )
                 if newline < 0:
-                    return
-                for k,v in buttons.items():
+                    return False
+                for k, v in buttons.items():
                     if v[1] == newline:
                         bufdata.newlines = k
                         if k != '\n':

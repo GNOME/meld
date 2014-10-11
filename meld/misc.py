@@ -78,16 +78,17 @@ def modal_dialog(
 
     if not parent:
         from meld.meldapp import app
-        parent = app.window.widget
+        parent = app.get_active_window()
     elif not isinstance(parent, Gtk.Window):
         parent = parent.get_toplevel()
 
     dialog = Gtk.MessageDialog(
-        parent=parent,
-        flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-        type=messagetype,
+        transient_for=parent,
+        modal=True,
+        destroy_with_parent=True,
+        message_type=messagetype,
         buttons=Gtk.ButtonsType.NONE,
-        message_format=primary)
+        text=primary)
     dialog.format_secondary_markup(secondary)
 
     for label, response_id in buttons:
