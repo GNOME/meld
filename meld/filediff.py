@@ -843,26 +843,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if key == 'font':
             self.load_font()
 
-    def check_save_modified(self, label=None):
+    def check_save_modified(self):
         response = Gtk.ResponseType.OK
-        modified = [b.data.modified for b in self.textbuffer]
+        modified = [b.data.modified for b in self.textbuffer[:self.num_panes]]
+        labels = [b.data.label for b in self.textbuffer[:self.num_panes]]
         if True in modified:
             dialog = gnomeglade.Component("filediff.ui", "check_save_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
-            if label:
-                dialog.widget.props.text = label
-            # FIXME: Should be packed into dialog.widget.get_message_area(),
-            # but this is unbound on currently required PyGTK.
+            message_area = dialog.widget.get_message_area()
             buttons = []
-            for i in range(self.num_panes):
-                button = Gtk.CheckButton(label=self.textbuffer[i].data.label)
-                button.set_use_underline(False)
-                button.set_sensitive(modified[i])
-                button.set_active(modified[i])
-                dialog.extra_vbox.pack_start(button, expand=True, fill=True,
-                                             padding=0)
+            for label, should_save in zip(labels, modified):
+                button = Gtk.CheckButton.new_with_label(label)
+                button.set_sensitive(should_save)
+                button.set_active(should_save)
+                message_area.pack_start(
+                    button, expand=False, fill=True, padding=0)
                 buttons.append(button)
-            dialog.extra_vbox.show_all()
+            message_area.show_all()
             response = dialog.widget.run()
             try_save = [b.get_active() for b in buttons]
             dialog.widget.destroy()
