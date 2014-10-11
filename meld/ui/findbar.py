@@ -14,15 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gdk
-from gi.repository import GObject
-from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from meld import misc
-from . import gnomeglade
-
-from meld.conf import _
+from meld.ui import gnomeglade
 
 
 class FindBar(gnomeglade.Component):
@@ -30,7 +24,6 @@ class FindBar(gnomeglade.Component):
         gnomeglade.Component.__init__(self, "findbar.ui", "findbar",
                                       ["arrow_left", "arrow_right"])
         self.set_text_view(None)
-        context = self.find_entry.get_style_context()
         self.arrow_left.show()
         self.arrow_right.show()
         parent.connect('set-focus-child', self.on_focus_child)
