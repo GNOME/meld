@@ -107,11 +107,9 @@ class FindBar(gnomeglade.Component):
         # Only replace if there is an already-selected match at the cursor
         if (match and oldsel and oldsel[0].equal(newsel[0]) and
                 oldsel[1].equal(newsel[1])):
-            buf.begin_user_action()
-            buf.delete_selection(False, False)
-            buf.insert_at_cursor(self.replace_entry.get_text())
+            self.search_context.replace(
+                newsel[0], newsel[1], self.replace_entry.get_text(), -1)
             self._find_text(0)
-            buf.end_user_action()
 
     def on_replace_all_button_clicked(self, entry):
         buf = self.textview.get_buffer()
