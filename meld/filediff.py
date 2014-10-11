@@ -1789,7 +1789,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for (w, i) in zip(self.textview, range(self.num_panes)):
                 w.chunk_iter = chunk_iter(i)
                 w.current_chunk_check = current_chunk_check(i)
-                # w.setup(scroll, coords_iter(i))
 
             def coords_iter(i):
                 buf_index = 2 if i == 1 and self.num_panes == 3 else i
