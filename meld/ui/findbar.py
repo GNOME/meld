@@ -33,6 +33,7 @@ class FindBar(gnomeglade.Component):
         self.whole_word.bind_property('active', settings, 'at-word-boundaries')
         self.regex.bind_property('active', settings, 'regex-enabled')
         self.find_entry.bind_property('text', settings, 'search-text')
+        settings.set_wrap_around(True)
         self.search_settings = settings
 
     def on_focus_child(self, container, widget):
@@ -124,13 +125,11 @@ class FindBar(gnomeglade.Component):
         self.find_entry.get_style_context().remove_class("not-found")
         self._find_text(0)
 
-    def _find_text(self, start_offset=1, backwards=False, wrap=True):
+    def _find_text(self, start_offset=1, backwards=False):
         assert self.textview
         assert self.search_context
         buf = self.textview.get_buffer()
         insert = buf.get_iter_at_mark(buf.get_insert())
-        settings = self.search_context.get_settings()
-        settings.set_wrap_around(wrap)
 
         start, end = buf.get_bounds()
         self.wrap_box.set_visible(False)
