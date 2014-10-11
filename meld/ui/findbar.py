@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gdk
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -34,6 +35,13 @@ class FindBar(gnomeglade.Component):
         self.arrow_right.show()
         parent.connect('set-focus-child', self.on_focus_child)
 
+        settings = GtkSource.SearchSettings()
+        self.match_case.bind_property('active', settings, 'case-sensitive')
+        self.whole_word.bind_property('active', settings, 'at-word-boundaries')
+        self.regex.bind_property('active', settings, 'regex-enabled')
+        self.find_entry.bind_property('text', settings, 'search-text')
+        self.search_settings = settings
+
     def on_focus_child(self, container, widget):
         if widget is not None:
             visible = self.widget.props.visible
@@ -50,7 +58,8 @@ class FindBar(gnomeglade.Component):
         self.textview = textview
         if textview is not None:
             self.search_context = GtkSource.SearchContext.new(
-                                      textview.get_buffer(), None)
+                textview.get_buffer(), self.search_settings)
+            self.search_context.set_highlight(True)
         else:
             self.search_context = None
 
@@ -130,21 +139,13 @@ class FindBar(gnomeglade.Component):
         self._find_text(0)
 
     def _find_text(self, start_offset=1, backwards=False, wrap=True):
-        match_case = self.match_case.get_active()
-        whole_word = self.whole_word.get_active()
-        regex = self.regex.get_active()
         assert self.textview
         assert self.search_context
         buf = self.textview.get_buffer()
         insert = buf.get_iter_at_mark(buf.get_insert())
-        tofind_utf8 = self.find_entry.get_text()
-        tofind = tofind_utf8.decode("utf-8")
-        self.search_context.get_settings().set_case_sensitive(match_case)
-        self.search_context.get_settings().set_at_word_boundaries(whole_word)
-        self.search_context.get_settings().set_regex_enabled(regex)
-        self.search_context.get_settings().set_search_text(tofind)
-        self.search_context.get_settings().set_wrap_around(wrap)
-        self.search_context.set_highlight(True)
+        settings = self.search_context.get_settings()
+        settings.set_wrap_around(wrap)
+
         start, end = buf.get_bounds()
         self.wrap_box.set_visible(False)
         if not backwards:
