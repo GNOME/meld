@@ -62,6 +62,7 @@ class FindBar(gnomeglade.Component):
         self.replace_label.hide()
         self.replace_entry.hide()
         self.hbuttonbox2.hide()
+        self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
         self.widget.set_row_spacing(0)
@@ -84,6 +85,7 @@ class FindBar(gnomeglade.Component):
 
     def start_replace(self, textview, text=None):
         self.set_text_view(textview)
+        self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
         self.widget.set_row_spacing(6)
@@ -147,6 +149,7 @@ class FindBar(gnomeglade.Component):
             buf.move_mark(buf.get_selection_bound(), end_iter)
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
+            self.find_entry.get_style_context().remove_class("not-found")
             return True
         else:
             buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
