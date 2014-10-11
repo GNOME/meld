@@ -135,7 +135,7 @@ class FindBar(gnomeglade.Component):
         start, end = buf.get_bounds()
         self.wrap_box.set_visible(False)
         if not backwards:
-            insert.forward_chars (start_offset)
+            insert.forward_chars(start_offset)
             match, start_iter, end_iter = self.search_context.forward(insert)
             if match and (start_iter.get_offset() < insert.get_offset()):
                 self.wrap_box.set_visible(True)
