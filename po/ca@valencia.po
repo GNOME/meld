@@ -2,264 +2,930 @@
 # Copyright (C) 2004 Free Software Foundation
 # This file is distributed under the same license as the meld package.
 # Xavier Conde Rueda <xaviconde@eresmas.com>, 2004.
-# Gil Forcada <gilforcada@guifi.net>, 2006, 2007, 2008.
+# Gil Forcada <gilforcada@guifi.net>, 2006, 2007, 2008, 2013, 2014.
 # David Planella <david.planella@gmail.com>, 2008, 2009.
+# Pere Orga <pere@orga.cat>, 2012.
+# Joan Coll i Teixidor <jcoll2@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=meld&component=general\n"
-"POT-Creation-Date: 2010-08-24 09:51+0000\n"
-"PO-Revision-Date: 2009-06-25 21:51+0200\n"
-"Last-Translator: David Planella <david.planella@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-13 00:03+0200\n"
+"PO-Revision-Date: 2014-10-13 00:01+0200\n"
+"Last-Translator: JoanColl <jcoll2@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
-"Language: ca@valencia\n"
+"Language: ca-XV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../bin/meld:77
+#: ../bin/meld:138
 msgid "Cannot import: "
 msgstr "No es pot importar: "
 
-#: ../bin/meld:80
+#: ../bin/meld:141
 #, c-format
 msgid "Meld requires %s or higher."
-msgstr "El Meld necessita el %s o superior."
+msgstr "El Meld requereix %s o superior."
 
-#: ../data/meld.desktop.in.h:1
-msgid "Compare and merge your files"
-msgstr "Compareu i fusioneu fitxers."
+#: ../bin/meld:145
+msgid "Meld does not support Python 3."
+msgstr "El Meld no es pot executar amb el Python 3."
 
-#: ../data/meld.desktop.in.h:2
-#, fuzzy
-#| msgid "Meld Diff Viewer"
-msgid "Diff Viewer"
-msgstr "Visualitzador de diferències Meld"
+#: ../bin/meld:193
+#, c-format
+msgid ""
+"Couldn't load Meld-specific CSS (%s)\n"
+"%s"
+msgstr ""
+"No s'ha pogut carregar el CSS específic del Meld (%s)\n"
+"%s"
 
-#: ../data/meld.desktop.in.h:3 ../data/ui/meldapp.glade.h:4
+#: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
 msgid "Meld"
 msgstr "Meld"
 
-#: ../data/meld.desktop.in.h:4
+#: ../data/meld.desktop.in.h:2
+msgid "Diff Viewer"
+msgstr "Visualitzador de diferències"
+
+#: ../data/meld.desktop.in.h:3
 msgid "Meld Diff Viewer"
 msgstr "Visualitzador de diferències Meld"
 
-#: ../data/ui/filediff.glade.h:1
+#: ../data/meld.desktop.in.h:4
+msgid "Compare and merge your files"
+msgstr "Compareu i fusioneu fitxers"
+
+#: ../data/meld.appdata.xml.in.h:1
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Some files have been modified.\n"
-"Which ones would you like to save?</span>"
+"Meld is a visual diff and merge tool targeted at developers. Meld helps you "
+"compare files, directories, and version controlled projects. It provides "
+"two- and three-way comparison of both files and directories, and supports "
+"many version control systems including Git, Mercurial, Bazaar and Subversion."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">S'han modificat alguns fitxers.\n"
-"Quins voleu alçar?</span>"
+"El Meld és una eina visual per veure diferències i fer fusions pensat per "
+"desenvolupadors. El Meld vos permet comparar fitxers, directoris i projectes "
+"amb control de versions. Ofereix comparacions entre dos i tres fitxers i/o "
+"directoris, a més a més de visualitzar molts sistemes de control de versió "
+"incloent Git, Mercurial, Bazaar i Subversion."
 
-#: ../data/ui/filediff.glade.h:3
-msgid "Copy to Clipboard"
-msgstr "Copia al porta-retalls"
-
-#: ../data/ui/filediff.glade.h:4 ../meld/filediff.py:180
-msgid "Create Patch"
-msgstr "Crea un pedaç"
-
-#: ../data/ui/filediff.glade.h:5
-msgid "Save modified files?"
-msgstr "Voleu alçar els fitxers modificats?"
-
-#: ../data/ui/filediff.glade.h:6
-msgid "_Discard Changes"
-msgstr "_Descarta els canvis"
-
-#: ../data/ui/filediff.glade.h:7
-msgid "_Save Selected"
-msgstr "Al_ça la selecció"
-
-#: ../data/ui/findbar.glade.h:1
-msgid "Regular E_xpression"
-msgstr "E_xpressió regular"
-
-#: ../data/ui/findbar.glade.h:2
-msgid "Replace _All"
-msgstr "Reemplaça-ho _tot"
-
-#: ../data/ui/findbar.glade.h:3
-msgid "Replace _With"
-msgstr "Reemplaça _per"
-
-#: ../data/ui/findbar.glade.h:4
-msgid "Who_le word"
-msgstr "Paraula _sencera"
-
-#: ../data/ui/findbar.glade.h:5
-msgid "_Match Case"
-msgstr "Coincidència de _majúscules i minúscules"
-
-#: ../data/ui/findbar.glade.h:6
-msgid "_Next"
-msgstr "_Següent"
-
-#: ../data/ui/findbar.glade.h:7
-msgid "_Previous"
-msgstr "_Anterior"
-
-#: ../data/ui/findbar.glade.h:8 ../meld/meldapp.py:154
-msgid "_Replace"
-msgstr "_Reemplaça"
-
-#: ../data/ui/findbar.glade.h:9
-msgid "_Search for"
-msgstr "_Cerca"
-
-#: ../data/ui/meldapp.glade.h:1
-msgid "Choose Files"
-msgstr "Escolliu els fitxers"
-
-#: ../data/ui/meldapp.glade.h:2
-msgid "Copyright © 2002-2009 Stephen Kennedy"
-msgstr "Copyright © 2002-2009 Stephen Kennedy"
-
-#: ../data/ui/meldapp.glade.h:3
-msgid "Directory"
-msgstr "Directori"
-
-#: ../data/ui/meldapp.glade.h:5
-msgid "Mine"
-msgstr "Meu"
-
-#: ../data/ui/meldapp.glade.h:6
-msgid "Original"
-msgstr "Original"
-
-#: ../data/ui/meldapp.glade.h:7
-msgid "Other"
-msgstr "Un altre"
-
-#: ../data/ui/meldapp.glade.h:8
-msgid "Three way directory"
-msgstr "Entre tres directoris"
-
-#: ../data/ui/meldapp.glade.h:9
-msgid "Three way file"
-msgstr "Entre tres fitxers"
-
-#: ../data/ui/meldapp.glade.h:10
-msgid "Two way directory"
-msgstr "Entre dos directoris"
-
-#: ../data/ui/meldapp.glade.h:11
-msgid "Two way file"
-msgstr "Entre dos fitxers"
-
-#: ../data/ui/meldapp.glade.h:12
-msgid "Version control view"
-msgstr "Visualització del control de versions"
-
-#: ../data/ui/meldapp.glade.h:13
-msgid "_Directory Comparison"
-msgstr "Comparació de _directoris"
-
-#: ../data/ui/meldapp.glade.h:14
-msgid "_File Comparison"
-msgstr "Comparació de _fitxers"
-
-#: ../data/ui/meldapp.glade.h:15
-msgid "_Three Way Compare"
-msgstr "Comparació entre _tres"
-
-#: ../data/ui/meldapp.glade.h:16
-msgid "_Version Control Browser"
-msgstr "Navegador del control de _versions"
-
-#: ../data/ui/preferences.glade.h:1
-#, fuzzy
-#| msgid "<b>Misc</b>"
-msgid "<b>Display</b>"
-msgstr "<b>Miscel·lània</b>"
-
-#: ../data/ui/preferences.glade.h:2
-#, fuzzy
-#| msgid "Internal editor"
-msgid "<b>External editor</b>"
-msgstr "Editor intern"
-
-#: ../data/ui/preferences.glade.h:3
-msgid "<b>Font</b>"
-msgstr "<b>Tipus de lletra</b>"
-
-#: ../data/ui/preferences.glade.h:4
-msgid "<b>Loading</b>"
-msgstr "<b>Càrrega</b>"
-
-#: ../data/ui/preferences.glade.h:5
-msgid "Do not _split words over two lines"
+#: ../data/meld.appdata.xml.in.h:2
+msgid ""
+"Meld helps you review code changes, understand patches, and makes enormous "
+"merge conflicts slightly less painful."
 msgstr ""
+"El Meld vos ajuda a revisar els canvis de codi, entendre els pedaços, i fer "
+"que els enormes conflictes quan es fusionen fitxers siguen menys difícils de "
+"solucionar."
 
-#: ../data/ui/preferences.glade.h:6
-#, fuzzy
-#| msgid "Custom command"
-msgid "Edito_r command:"
-msgstr "Orde personalitzada"
+#: ../data/mime/meld.xml.in.h:1
+msgid "Meld comparison description"
+msgstr "Descripció de la comparació del Meld"
 
-#: ../data/ui/preferences.glade.h:7
-msgid "Editor"
-msgstr "Editor"
+#: ../data/org.gnome.meld.gschema.xml.h:1
+msgid "Default window size"
+msgstr "Mida per defecte de la finestra"
 
-#: ../data/ui/preferences.glade.h:8
-msgid "Enable text _wrapping"
+#: ../data/org.gnome.meld.gschema.xml.h:2
+msgid "Default window state"
+msgstr "Estat per defecte de la finestra"
+
+#: ../data/org.gnome.meld.gschema.xml.h:3
+msgid "Show toolbar"
+msgstr "Mostra la barra d'eines"
+
+#: ../data/org.gnome.meld.gschema.xml.h:4
+msgid "If true, the window toolbar is visible."
+msgstr "Si és «True» (cert), la barra d'eines serà visible."
+
+#: ../data/org.gnome.meld.gschema.xml.h:5
+msgid "Show statusbar"
+msgstr "Mostra la barra d'estat"
+
+#: ../data/org.gnome.meld.gschema.xml.h:6
+msgid "If true, the window statusbar is visible."
+msgstr "Si és «True» (cert), la barra d'estat serà visible."
+
+#: ../data/org.gnome.meld.gschema.xml.h:7
+msgid "Automatically detected text encodings"
+msgstr "Detecta automàticament la codificació del text"
+
+#: ../data/org.gnome.meld.gschema.xml.h:8
+msgid ""
+"These text encodings will be automatically used (in order) to try to decode "
+"loaded text files."
 msgstr ""
+"S'utilitzaran automàticament estes codificacions de text (en este orde) per "
+"intentar descodificar els fitxers de text que es carregin."
 
-#: ../data/ui/preferences.glade.h:9
-msgid "Encoding"
-msgstr "Codificació"
+#: ../data/org.gnome.meld.gschema.xml.h:9
+msgid "Width of an indentation step"
+msgstr "Amplada d'un pas de sagnat"
 
-#: ../data/ui/preferences.glade.h:10
-msgid "File Filters"
-msgstr "Filtres de fitxer"
+#: ../data/org.gnome.meld.gschema.xml.h:10
+msgid "The number of spaces to use for a single indent step"
+msgstr "Nombre d'espais que s'utilitzaran per a cada sagnat"
 
-#: ../data/ui/preferences.glade.h:11
-msgid "Ignore changes which insert or delete blank lines"
-msgstr "Ignora els canvis que inserisquen o suprimisquen línies en blanc"
+#: ../data/org.gnome.meld.gschema.xml.h:11
+msgid "Whether to indent using spaces or tabs"
+msgstr "Si per fer el sagnat s'utilitzen espais o tabulacions"
 
-#: ../data/ui/preferences.glade.h:12
+#: ../data/org.gnome.meld.gschema.xml.h:12
+msgid "If true, any new indentation will use spaces instead of tabs."
+msgstr ""
+"Si és «True» (cert), qualsevol sagnat utilitzarà espais en comptes de "
+"tabulacions."
+
+#: ../data/org.gnome.meld.gschema.xml.h:13
+msgid "Show line numbers"
+msgstr "Mostra el número de línia"
+
+#: ../data/org.gnome.meld.gschema.xml.h:14
+msgid "If true, line numbers will be shown in the gutter of file comparisons."
+msgstr ""
+"Si és «True» (cert), el número de línia es mostrarà quan es comparin fitxers."
+
+#: ../data/org.gnome.meld.gschema.xml.h:15
+msgid "Highlight syntax"
+msgstr "Ressaltat de sintaxi"
+
+#: ../data/org.gnome.meld.gschema.xml.h:16
+msgid ""
+"Whether to highlight syntax in comparisons. Because of Meld's own color "
+"highlighting, this is off by default."
+msgstr ""
+"Si s'ha de ressaltar la sintaxi quan es compara. Com que el Meld ja té el "
+"seu propi ressaltat, per defecte, està inhabilitat."
+
+#: ../data/org.gnome.meld.gschema.xml.h:17
+msgid "Color scheme to use for syntax highlighting"
+msgstr "L'esquema de color que s'ha d'utilitzar pel ressaltat de sintaxi"
+
+#: ../data/org.gnome.meld.gschema.xml.h:18
+msgid "Used by GtkSourceView to determine colors for syntax highlighting"
+msgstr ""
+"L'utilitza la GtkSourceView per decidir quins colors utilitzar pel ressaltat "
+"de sintaxi"
+
+#: ../data/org.gnome.meld.gschema.xml.h:19
+msgid "Displayed whitespace"
+msgstr "Mostra els espais en blanc"
+
+#: ../data/org.gnome.meld.gschema.xml.h:20
+msgid ""
+"Selector for individual whitespace character types to be shown. Possible "
+"values are 'space', 'tab', 'newline' and 'nbsp'."
+msgstr ""
+"Esta opció permet que es facen visibles diversos tipus de caràcters. Els "
+"valors possibles són «space» (espai), «tab» (tabulació), «newline» (línia "
+"nova) i «nbsp» (espai no partible)."
+
+#: ../data/org.gnome.meld.gschema.xml.h:21
+msgid "Wrap mode"
+msgstr "Mode d'ajust"
+
+#: ../data/org.gnome.meld.gschema.xml.h:22
+msgid ""
+"Lines in file comparisons will be wrapped according to this setting, either "
+"not at all ('none'), at any character ('char') or only at the end of words "
+"('word')."
+msgstr ""
+"Quan es comparen fitxers les línies s'ajustaran automàticament d'acord amb "
+"este paràmetre: «none» (cap ajustament), «char» (en qualsevol caràcter) o "
+"«word» (només a final de paraula)."
+
+#: ../data/org.gnome.meld.gschema.xml.h:23
+msgid "Highlight current line"
+msgstr "Ressalta la línia actual"
+
+#: ../data/org.gnome.meld.gschema.xml.h:24
+msgid ""
+"If true, the line containing the cursor will be highlighted in file "
+"comparisons."
+msgstr ""
+"Si és «True» (cert), la línia que continga el cursor es ressaltarà en "
+"comparacions entre fitxers."
+
+#: ../data/org.gnome.meld.gschema.xml.h:25
+msgid "Use the system default monospace font"
+msgstr "Utilitza el tipus de lletra monoespai per defecte del sistema"
+
+#: ../data/org.gnome.meld.gschema.xml.h:26
+msgid ""
+"If false, the defined custom font will be used instead of the system "
+"monospace font."
+msgstr ""
+"Si és «false» (fals), s'utilitzarà el tipus de lletra personalitzat en "
+"comptes del tipus de lletra monoespai del sistema."
+
+#: ../data/org.gnome.meld.gschema.xml.h:27
+msgid "Custom font"
+msgstr "Tipus de lletra personalitzat"
+
+#: ../data/org.gnome.meld.gschema.xml.h:28
+msgid ""
+"The custom font to use, stored as a string and parsed as a Pango font "
+"description."
+msgstr ""
+"El tipus de lletra personalitzat que s'utilitzarà, definit com una cadena i "
+"d'acord amb la descripció de tipus de lletra de la Pango."
+
+#: ../data/org.gnome.meld.gschema.xml.h:29
+msgid "Ignore blank lines when comparing files"
+msgstr "Ignora les línies en blanc quan es comparin fitxers"
+
+#: ../data/org.gnome.meld.gschema.xml.h:30
+msgid ""
+"If true, blank lines will be trimmed when highlighting changes between files."
+msgstr ""
+"Si és «True» (cert), no es tindran en compte les línies en blanc quan es "
+"ressaltin els canvis entre fitxers."
+
+#: ../data/org.gnome.meld.gschema.xml.h:31
+msgid "Use the system default editor"
+msgstr "Utilitza l'editor per defecte del sistema"
+
+#: ../data/org.gnome.meld.gschema.xml.h:32
+msgid ""
+"If false, the defined custom editor will be used instead of the system "
+"editor when opening files externally."
+msgstr ""
+"Si és «false» (fals), s'utilitzarà l'editor personalitzat que s'haja definit "
+"per obrir fitxers externs, en comptes de l'editor del sistema."
+
+#: ../data/org.gnome.meld.gschema.xml.h:33
+msgid "The custom editor launch command"
+msgstr "Orde per iniciar l'editor personalitzat"
+
+#: ../data/org.gnome.meld.gschema.xml.h:34
+msgid ""
+"The command used to launch a custom editor. Some limited templating is "
+"supported here; at the moment '{file}' and '{line}' are recognised tokens."
+msgstr ""
+"L'orde utilitzada per iniciar l'editor personalitzat. Es poden utilitzar "
+"algunes variables: de moment es pot utilitzar «{file}» (nom del fitxer) i "
+"«{line}» (número de línia)."
+
+#: ../data/org.gnome.meld.gschema.xml.h:35
+msgid "Columns to display"
+msgstr "Columnes a mostrar"
+
+#: ../data/org.gnome.meld.gschema.xml.h:36
+msgid ""
+"List of column names in folder comparison and whether they should be "
+"displayed."
+msgstr ""
+"Llista dels noms de columnes en la comparació de carpetes i si estes es "
+"mostraran."
+
+#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:31
 msgid "Ignore symbolic links"
 msgstr "Ignora els enllaços simbòlics"
 
-#: ../data/ui/preferences.glade.h:13
-#, fuzzy
-#| msgid "Prefere_nces"
-msgid "Meld Preferences"
-msgstr "Preferè_ncies"
-
-#: ../data/ui/preferences.glade.h:14
-#, fuzzy
-#| msgid "Show line numbers"
-msgid "Show _line numbers"
-msgstr "Mostra els números de línia"
-
-#: ../data/ui/preferences.glade.h:15
-msgid "Text Filters"
-msgstr "Filtres de text"
-
-#: ../data/ui/preferences.glade.h:16
-#, fuzzy
-#| msgid "Gnome default editor"
-msgid "Use _default system editor"
-msgstr "Editor predeterminat del GNOME"
-
-#: ../data/ui/preferences.glade.h:17
-#, fuzzy
-#| msgid "Use syntax highlighting"
-msgid "Use s_yntax highlighting"
-msgstr "Utilitza acoloriment de sintaxi"
-
-# Suposo que "codecs" volia dir "encodings"
-#: ../data/ui/preferences.glade.h:18
-msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+#: ../data/org.gnome.meld.gschema.xml.h:38
+msgid ""
+"If true, folder comparisons do not follow symbolic links when traversing the "
+"folder tree."
 msgstr ""
-"En carregar, prova les codificacions en este orde. (p.ex. utf8, iso8859)"
+"Si és «True» (cert), les comparacions de carpetes no seguiran els enllaços "
+"simbòlics al recórrer l'arbre de carpetes."
 
-#: ../data/ui/preferences.glade.h:19
+#: ../data/org.gnome.meld.gschema.xml.h:39
+msgid "Use shallow comparison"
+msgstr "Utilitza comparació superficial"
+
+#: ../data/org.gnome.meld.gschema.xml.h:40
+msgid ""
+"If true, folder comparisons compare files based solely on size and mtime, "
+"considering files to be identical if their size and mtime match, and "
+"different otherwise."
+msgstr ""
+"Si és «True» (cert), les comparacions de carpetes compararan fitxers basant-"
+"se només en la mida i el temps de modificació. De manera que dos fitxers es "
+"consideraran idèntics si estos dos paràmetres concorden i diferents en cas "
+"contrari."
+
+#: ../data/org.gnome.meld.gschema.xml.h:41
+msgid "File timestamp resolution"
+msgstr "Resolució de la marca de temps del fitxer"
+
+#: ../data/org.gnome.meld.gschema.xml.h:42
+msgid ""
+"When comparing based on mtime, this is the minimum difference in nanoseconds "
+"between two files before they're considered to have different mtimes. This "
+"is useful when comparing files between filesystems with different timestamp "
+"resolution."
+msgstr ""
+"En fer una comparació basada en el temps de modificació, esta és la "
+"diferència mínima en nanosegons per tal de que dos fitxers es puguen "
+"considerar diferents. Això pot ser útil quan es comparin fitxers amb "
+"diferents sistemes de fitxers que tinguen una resolució de marca de temps "
+"diferent."
+
+#: ../data/org.gnome.meld.gschema.xml.h:43
+msgid "File status filters"
+msgstr "Filtres basats en l'estat del fitxer"
+
+#: ../data/org.gnome.meld.gschema.xml.h:44
+msgid "List of statuses used to filter visible files in folder comparison."
+msgstr ""
+"Llista dels estats utilitzats per filtrar els fitxers visibles en la "
+"comparació de carpetes."
+
+#: ../data/org.gnome.meld.gschema.xml.h:45
+msgid "Show the version control console output"
+msgstr "Mostra l'eixida de consola del control de versions"
+
+#: ../data/org.gnome.meld.gschema.xml.h:46
+msgid ""
+"If true, a console output section will be shown in version control views, "
+"showing the commands run for version control operations."
+msgstr ""
+"Si és «True» (cert), és mostrarà una secció de l'eixida de la consola en les "
+"visualitzacions del control de versions, al mateix temps també es mostrarà "
+"les ordes que s'executen per les operacions de control de versions."
+
+#: ../data/org.gnome.meld.gschema.xml.h:47
+msgid "Version control pane position"
+msgstr "Posició de la subfinestra del control de versions"
+
+#: ../data/org.gnome.meld.gschema.xml.h:48
+msgid ""
+"This is the height of the main version control tree when the console pane is "
+"shown."
+msgstr ""
+"Esta és l'alçada de l'arbre principal del control de versions quan es mostra "
+"la subfinestra de consola."
+
+#: ../data/org.gnome.meld.gschema.xml.h:49
+msgid "Present version comparisons as left-local/right-remote"
+msgstr "Mostra la comparació de versions com a esquerra-local/dreta-remot"
+
+#: ../data/org.gnome.meld.gschema.xml.h:50
+msgid ""
+"If true, version control comparisons will use a left-is-local, right-is-"
+"remote scheme to determine what order to present files in panes. Otherwise, "
+"a left-is-theirs, right-is-mine scheme is used."
+msgstr ""
+"Si és «True» (cert), les comparacions de control de versió utilitzaran "
+"l'esquema «esquerra com a local, dreta com a remot» per mostrar els fitxers "
+"a les subfinestres. En cas contrari, s'utilitzarà l'esquema «esquerra és de "
+"l'altre», «dreta és el meu»."
+
+#: ../data/org.gnome.meld.gschema.xml.h:51
+msgid "Order for files in three-way version control merge comparisons"
+msgstr ""
+"Orde dels fitxers en una comparació de fusió de control de versions entre "
+"tres fitxers"
+
+#: ../data/org.gnome.meld.gschema.xml.h:52
+msgid ""
+"Choices for file order are remote/merge/local and local/merged/remote. This "
+"preference only affects three-way comparisons launched from the version "
+"control view, so is used solely for merges/conflict resolution within Meld."
+msgstr ""
+"Les opcions són «remot/fusió/local» i «local/fusió/remot». Esta preferència "
+"només afectarà a les comparacions entre tres fitxers iniciades des de la "
+"vista de control de versions, de manera que només s'utilitza per resolució "
+"de conflictes de fusió dins del propi Meld."
+
+#: ../data/org.gnome.meld.gschema.xml.h:53
+msgid "Show margin in commit message editor"
+msgstr "Mostra el marge en l'editor de missatges de publicació"
+
+#: ../data/org.gnome.meld.gschema.xml.h:54
+msgid ""
+"If true, a guide will be displayed to show what column the margin is at in "
+"the version control commit message editor."
+msgstr ""
+"Si és «True» (cert), es mostra una guia per indicar en quina columna es "
+"troba el marge en l'editor de missatges de publicació del control de "
+"versions."
+
+#: ../data/org.gnome.meld.gschema.xml.h:55
+msgid "Margin column in commit message editor"
+msgstr "La columna del marge en l'editor de missatges de publicació"
+
+#: ../data/org.gnome.meld.gschema.xml.h:56
+#, fuzzy
+msgid ""
+"The column at which to show the margin in the version control commit message "
+"editor."
+msgstr ""
+"La columna del marge a l'editor de missatges de publicació del control de "
+"versions."
+
+#: ../data/org.gnome.meld.gschema.xml.h:57
+msgid "Automatically hard-wrap commit messages"
+msgstr "Força l'ajust automàtic de línia en missatges de publicació"
+
+#: ../data/org.gnome.meld.gschema.xml.h:58
+msgid ""
+"If true, the version control commit message editor will hard-wrap (i.e., "
+"insert line breaks) at the defined commit margin before commit."
+msgstr ""
+"Si és «True» (cert), l'editor de missatges de publicació del control de "
+"versions ajustarà l'amplada de línia segons el marge de publicació "
+"predefinit abans de publicar (p.e. inserirà automàticament salts de línia)."
+
+#: ../data/org.gnome.meld.gschema.xml.h:59
+msgid "Version control status filters"
+msgstr "Filtres basats en l'estat del control de versió"
+
+#: ../data/org.gnome.meld.gschema.xml.h:60
+msgid ""
+"List of statuses used to filter visible files in version control comparison."
+msgstr ""
+"Llista dels estats utilitzats per filtrar els fitxers visibles en la "
+"comparació del control de versions."
+
+#: ../data/org.gnome.meld.gschema.xml.h:61
+msgid "Filename-based filters"
+msgstr "Filtres basats en el nom de fitxer"
+
+#: ../data/org.gnome.meld.gschema.xml.h:62
+msgid ""
+"List of predefined filename-based filters that, if active, will remove "
+"matching files from a folder comparison."
+msgstr ""
+"Llista de filtres predefinits basats en nom de fitxers, que si estan actius, "
+"faran que els fitxers que concordin no s'utilitzen en una comparació de "
+"carpetes."
+
+#: ../data/org.gnome.meld.gschema.xml.h:63
+msgid "Text-based filters"
+msgstr "Filtres basats en text"
+
+#: ../data/org.gnome.meld.gschema.xml.h:64
+msgid ""
+"List of predefined text-based regex filters that, if active, will remove "
+"text from being used in a file comparison. The text will still be displayed, "
+"but won't contribute to the comparison itself."
+msgstr ""
+"Llista de filtres d'expressions regulars predefinides basades en text que, "
+"si estan actives, trauran el text que hi concordi de la comparació de "
+"fitxers. El text es mostrarà igualment, però no es tindrà en compte en la "
+"comparació."
+
+#: ../data/ui/application.ui.h:1
+msgid "About Meld"
+msgstr "Quan al Meld"
+
+#: ../data/ui/application.ui.h:2
+msgid ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+msgstr ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+
+#: ../data/ui/application.ui.h:4
+msgid "Website"
+msgstr "Lloc web"
+
+#: ../data/ui/application.ui.h:5
+msgid "translator-credits"
+msgstr ""
+"Xavier Conde Rueda <xaviconde@eresmas.com>\n"
+"Gil Forcada <gilforcada@guifi.net>\n"
+"David Planella <david.planella@gmail.com>\n"
+"Pere Orga <pere@orga.cat>\n"
+"Joan Coll <jcoll2@gmail.com>"
+
+#: ../data/ui/application.ui.h:6
+msgid "_Preferences"
+msgstr "_Preferències"
+
+#: ../data/ui/application.ui.h:7
+msgid "_Help"
+msgstr "A_juda"
+
+#: ../data/ui/application.ui.h:8
+msgid "_About"
+msgstr "_Quant a"
+
+#: ../data/ui/application.ui.h:9
+msgid "_Quit"
+msgstr "I_x"
+
+#: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
+msgid "_Compare"
+msgstr "_Compara"
+
+#: ../data/ui/dirdiff.ui.h:2 ../data/ui/vcview.ui.h:2
+msgid "Compare selected files"
+msgstr "Compara els fitxers seleccionats"
+
+#: ../data/ui/dirdiff.ui.h:3
+msgid "Copy to _Left"
+msgstr "Copia a l'_esquerra"
+
+#: ../data/ui/dirdiff.ui.h:4
+msgid "Copy to left"
+msgstr "Copia a l'esquerra"
+
+#: ../data/ui/dirdiff.ui.h:5
+msgid "Copy to _Right"
+msgstr "Copia a la _dreta"
+
+#: ../data/ui/dirdiff.ui.h:6
+msgid "Copy to right"
+msgstr "Copia a la dreta"
+
+#: ../data/ui/dirdiff.ui.h:7
+msgid "Delete selected"
+msgstr "Suprimeix el text seleccionat"
+
+#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1452
+msgid "Hide"
+msgstr "Amaga"
+
+#: ../data/ui/dirdiff.ui.h:9
+msgid "Hide selected"
+msgstr "Amaga la selecció"
+
+#: ../data/ui/dirdiff.ui.h:10
+msgid "Ignore Filename Case"
+msgstr "No distingisques majúscules/minúscules en el nom del fitxer"
+
+#: ../data/ui/dirdiff.ui.h:11
+msgid ""
+"Consider differently-cased filenames that are otherwise-identical to be the "
+"same"
+msgstr ""
+"Considera les diferències de majúscules/minúscules en els noms dels fitxers "
+"que sinó serien idèntics"
+
+#: ../data/ui/dirdiff.ui.h:12
+msgid "Same"
+msgstr "Iguals"
+
+#: ../data/ui/dirdiff.ui.h:13
+msgid "Show identical"
+msgstr "Mostra idèntics"
+
+#: ../data/ui/dirdiff.ui.h:14
+msgid "New"
+msgstr "Nou"
+
+#: ../data/ui/dirdiff.ui.h:15
+msgid "Show new"
+msgstr "Mostra nous"
+
+#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:71
+msgid "Modified"
+msgstr "Modificat"
+
+#: ../data/ui/dirdiff.ui.h:17
+msgid "Show modified"
+msgstr "Mostra modificats"
+
+#: ../data/ui/dirdiff.ui.h:18
+msgid "Filters"
+msgstr "Filtres"
+
+#: ../data/ui/dirdiff.ui.h:19
+msgid "Set active filters"
+msgstr "Estableix els filtres actius"
+
+#: ../data/ui/EditableList.ui.h:1
+msgid "Editable List"
+msgstr "Llista editable"
+
+#: ../data/ui/EditableList.ui.h:2
+msgid "Active"
+msgstr "Actiu"
+
+#: ../data/ui/EditableList.ui.h:3
+msgid "Column Name"
+msgstr "Nom de la columna"
+
+#: ../data/ui/EditableList.ui.h:4 ../data/ui/vcview.ui.h:9
+msgid "_Add"
+msgstr "_Afig"
+
+#: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
+#: ../meld/vcview.py:747
+msgid "_Remove"
+msgstr "Sup_rimeix"
+
+#: ../data/ui/EditableList.ui.h:6
+msgid "Move item up"
+msgstr "Mou l'element cap amunt"
+
+#: ../data/ui/EditableList.ui.h:7
+msgid "Move _Up"
+msgstr "Mou am_unt"
+
+#: ../data/ui/EditableList.ui.h:8
+msgid "Move item down"
+msgstr "Mou l'element cap avall"
+
+#: ../data/ui/EditableList.ui.h:9
+msgid "Move _Down"
+msgstr "Mou _avall"
+
+#. Create icon and filename CellRenderer
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:363
+#: ../meld/vcview.py:203
+msgid "Name"
+msgstr "Nom"
+
+#: ../data/ui/EditableList.ui.h:11
+msgid "Pattern"
+msgstr "Patró"
+
+#: ../data/ui/EditableList.ui.h:12
+msgid "Add new filter"
+msgstr "Afig un filtre nou"
+
+#: ../data/ui/EditableList.ui.h:13
+msgid "Remove selected filter"
+msgstr "Suprimeix el filtre seleccionat"
+
+#: ../data/ui/filediff.ui.h:1
+msgid "Save changes to documents before closing?"
+msgstr "Voleu guardar els canvis dels documents abans de tancar?"
+
+#: ../data/ui/filediff.ui.h:2
+msgid "If you don't save, changes will be permanently lost."
+msgstr "Si no els guardeu, es perdran els canvis de forma permanent."
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Close _without Saving"
+msgstr "Tanca _sense guardar"
+
+#: ../data/ui/filediff.ui.h:4
+msgid "_Cancel"
+msgstr "_Cancel·la"
+
+#: ../data/ui/filediff.ui.h:5
+msgid "_Save"
+msgstr "Al_ça"
+
+#: ../data/ui/filediff.ui.h:6
+msgid ""
+"This file can not be written to. You may click here to unlock this file and "
+"make changes anyway, but these changes must be saved to a new file."
+msgstr ""
+"No es pot escriure al fitxer. Feu clic ací per desbloquejar el fitxer i fer-"
+"hi canvis, però l'haureu de guardar en un altre fitxer nou."
+
+#: ../data/ui/filediff.ui.h:7
+msgid "File 3"
+msgstr "Fitxer 3"
+
+#: ../data/ui/filediff.ui.h:8
+msgid "File 2"
+msgstr "Fitxer 2"
+
+#: ../data/ui/filediff.ui.h:9
+msgid "File 1"
+msgstr "Fitxer 1"
+
+#: ../data/ui/filediff.ui.h:10
+msgid "Revert unsaved changes to documents?"
+msgstr "Voleu descartar els canvis no guardats als documents?"
+
+#: ../data/ui/filediff.ui.h:11
+msgid "Changes made to the following documents will be permanently lost:\n"
+msgstr ""
+"Els canvis fets als documents següents es perdran de forma definitiva:\n"
+
+#: ../data/ui/findbar.ui.h:1
+msgid "_Replace"
+msgstr "_Reemplaça"
+
+#: ../data/ui/findbar.ui.h:2
+msgid "Replace _All"
+msgstr "Reemplaça-ho _tot"
+
+#: ../data/ui/findbar.ui.h:3
+msgid "_Previous"
+msgstr "_Anterior"
+
+#: ../data/ui/findbar.ui.h:4
+msgid "_Next"
+msgstr "_Següent"
+
+#: ../data/ui/findbar.ui.h:5
+msgid "Find:"
+msgstr "Cerca:"
+
+#: ../data/ui/findbar.ui.h:6
+msgid "Replace _with:"
+msgstr "Reemplaça _per:"
+
+#: ../data/ui/findbar.ui.h:7
+msgid "_Match case"
+msgstr "Distingeix entre _majúscules i minúscules"
+
+#: ../data/ui/findbar.ui.h:8
+msgid "Who_le word"
+msgstr "Paraula _sencera"
+
+#: ../data/ui/findbar.ui.h:9
+msgid "Regular e_xpression"
+msgstr "E_xpressió regular"
+
+#: ../data/ui/findbar.ui.h:10
+msgid "Wrapped"
+msgstr "Ajustat"
+
+#: ../data/ui/patch-dialog.ui.h:1
+msgid "Format as Patch"
+msgstr "Formata com a pedaç"
+
+#: ../data/ui/patch-dialog.ui.h:2
+msgid "Copy to Clipboard"
+msgstr "Copia al porta-retalls"
+
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:119
+msgid "Save Patch"
+msgstr "Guarda el pedaç"
+
+#: ../data/ui/patch-dialog.ui.h:4
+msgid "Use differences between:"
+msgstr "Utilitza les diferències entre:"
+
+#: ../data/ui/patch-dialog.ui.h:5
+msgid "Left and middle panes"
+msgstr "Subfinestra esquerra i del mig"
+
+#: ../data/ui/patch-dialog.ui.h:6
+msgid "Middle and right panes"
+msgstr "Subfinestra del mig i dreta"
+
+#: ../data/ui/patch-dialog.ui.h:7
+msgid "_Reverse patch direction"
+msgstr "_Inverteix el sentit del pedaç"
+
+#: ../data/ui/preferences.ui.h:1
+msgid "Left is remote, right is local"
+msgstr "Esquerra és remot, dreta és local"
+
+#: ../data/ui/preferences.ui.h:2
+msgid "Left is local, right is remote"
+msgstr "Esquerra és local, dreta és remot"
+
+#: ../data/ui/preferences.ui.h:3
+msgid "Remote, merge, local"
+msgstr "Remot, fusió, local"
+
+#: ../data/ui/preferences.ui.h:4
+msgid "Local, merge, remote"
+msgstr "Local, fusió, remot"
+
+#: ../data/ui/preferences.ui.h:5
+msgid "1ns (ext4)"
+msgstr "1ns (ext4)"
+
+#: ../data/ui/preferences.ui.h:6
+msgid "100ns (NTFS)"
+msgstr "100ns (NTFS)"
+
+#: ../data/ui/preferences.ui.h:7
+msgid "1s (ext2/ext3)"
+msgstr "1s (ext2/ext3)"
+
+#: ../data/ui/preferences.ui.h:8
+msgid "2s (VFAT)"
+msgstr "2s (VFAT)"
+
+#: ../data/ui/preferences.ui.h:9
+msgid "Meld Preferences"
+msgstr "Preferències del Meld"
+
+#: ../data/ui/preferences.ui.h:10
+msgid "Font"
+msgstr "Tipus de lletra"
+
+#: ../data/ui/preferences.ui.h:11
+msgid "_Use the system fixed width font"
+msgstr "_Utilitza el tipus de lletra d'amplada fixa del sistema"
+
+#: ../data/ui/preferences.ui.h:12
+msgid "_Editor font:"
+msgstr "Tipus de lletra de l'_editor:"
+
+#: ../data/ui/preferences.ui.h:13
+msgid "Display"
+msgstr "Visualització"
+
+#: ../data/ui/preferences.ui.h:14
+msgid "_Tab width:"
+msgstr "Amplada de la _tabulació:"
+
+#: ../data/ui/preferences.ui.h:15
+msgid "_Insert spaces instead of tabs"
+msgstr "_Insereix espais en comptes de tabulacions"
+
+#: ../data/ui/preferences.ui.h:16
+msgid "Enable text _wrapping"
+msgstr "Activa l'a_justament del text"
+
+#: ../data/ui/preferences.ui.h:17
+msgid "Do not _split words over two lines"
+msgstr "No _dividisques les paraules en dues línies"
+
+#: ../data/ui/preferences.ui.h:18
+msgid "Highlight _current line"
+msgstr "Ressalta la _línia actual"
+
+#: ../data/ui/preferences.ui.h:19
+msgid "Show _line numbers"
+msgstr "Mostra els números de _línia"
+
+#: ../data/ui/preferences.ui.h:20
+msgid "Show w_hitespace"
+msgstr "Mostra els espais en _blanc"
+
+#: ../data/ui/preferences.ui.h:21
+msgid "Use s_yntax highlighting"
+msgstr "Utilitza el ressaltat de s_intaxi"
+
+#: ../data/ui/preferences.ui.h:22
+msgid "Syntax highlighting color scheme:"
+msgstr "Esquema de color pel ressaltat de sintaxi:"
+
+#: ../data/ui/preferences.ui.h:23
+msgid "External Editor"
+msgstr "Editor extern"
+
+#: ../data/ui/preferences.ui.h:24
+msgid "Use _default system editor"
+msgstr "Utilitza l'editor per _defecte del sistema"
+
+#: ../data/ui/preferences.ui.h:25
+msgid "Edito_r command:"
+msgstr "Orde de l'edito_r:"
+
+#: ../data/ui/preferences.ui.h:26
+msgid "Editor"
+msgstr "Editor"
+
+#: ../data/ui/preferences.ui.h:27
+msgid "Shallow Comparison"
+msgstr "Comparació superficial"
+
+#: ../data/ui/preferences.ui.h:28
+msgid "C_ompare files based only on size and timestamp"
+msgstr "C_ompara els fitxers basant-se només en la mida i la marca horària"
+
+#: ../data/ui/preferences.ui.h:29
+msgid "_Timestamp resolution:"
+msgstr "Resolució de la _marca horària:"
+
+#: ../data/ui/preferences.ui.h:30
+msgid "Symbolic Links"
+msgstr "Enllaços simbòlics"
+
+#: ../data/ui/preferences.ui.h:32
+msgid "Visible Columns"
+msgstr "Columnes visibles"
+
+#: ../data/ui/preferences.ui.h:33
+msgid "Folder Comparisons"
+msgstr "Comparació de carpetes"
+
+#: ../data/ui/preferences.ui.h:34
+msgid "Version Comparisons"
+msgstr "Comparació de versions"
+
+#: ../data/ui/preferences.ui.h:35
+msgid "_Order when comparing file revisions:"
+msgstr "_Orde quan es comparin les revisions de fitxers:"
+
+#: ../data/ui/preferences.ui.h:36
+msgid "Order when _merging files:"
+msgstr "Orde quan es _fusionin fitxers:"
+
+#: ../data/ui/preferences.ui.h:37
+msgid "Commit Messages"
+msgstr "Missatges de publicació"
+
+#: ../data/ui/preferences.ui.h:38
+msgid "Show _right margin at:"
+msgstr "Mostra el marge _dret a:"
+
+#: ../data/ui/preferences.ui.h:39
+msgid "Automatically _break lines at right margin on commit"
+msgstr ""
+"_Afig salts de línia automàticament al marge dret dels missatges de "
+"publicació"
+
+#: ../data/ui/preferences.ui.h:40
+msgid "Version Control"
+msgstr "Control de versions"
+
+#: ../data/ui/preferences.ui.h:41
+msgid "Filename filters"
+msgstr "Filtres de nom de fitxer"
+
+#: ../data/ui/preferences.ui.h:42
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -269,7 +935,25 @@ msgstr ""
 "directoris pel nom. Cada patró és una llista de comodins a l'estil de "
 "l'intèrpret d'ordes, separats per espais."
 
-#: ../data/ui/preferences.glade.h:20
+#: ../data/ui/preferences.ui.h:43 ../meld/meldwindow.py:103
+msgid "File Filters"
+msgstr "Filtres de fitxer"
+
+#: ../data/ui/preferences.ui.h:44
+msgid "Change trimming"
+msgstr "Canvia el retallat"
+
+#: ../data/ui/preferences.ui.h:45
+msgid "Trim blank line differences from the start and end of changes"
+msgstr ""
+"Retalla les diferències que siguen línies en blanc a l'inici i al final dels "
+"canvis"
+
+#: ../data/ui/preferences.ui.h:46
+msgid "Text filters"
+msgstr "Filtres de text"
+
+#: ../data/ui/preferences.ui.h:47
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -278,188 +962,281 @@ msgid ""
 "details."
 msgstr ""
 "En realitzar comparacions de fitxers, podeu ignorar alguns tipus de canvis. "
-"Cada patró d'ací és una expressió regular del Python que reemplaçarà amb "
-"una cadena buida cada text que hi coincidisca abans que es faça la "
-"comparació. Si l'expressió conté grups, només es reemplacen els grups. Vegeu "
-"el manual d'usuari per a obtindre'n més detalls."
+"Cada patró d'ací és una expressió regular del Python que reemplaçarà amb una "
+"cadena buida cada text que hi coincidisca abans que es faça la comparació. "
+"Si l'expressió conté grups, només es reemplacen els grups. Vegeu el manual "
+"d'usuari per a obtindre'n més detalls."
 
-#: ../data/ui/preferences.glade.h:21
-#, fuzzy
-#| msgid "Editor"
-msgid "_Editor font:"
-msgstr "Editor"
+#: ../data/ui/preferences.ui.h:48
+msgid "Text Filters"
+msgstr "Filtres de text"
 
-#: ../data/ui/preferences.glade.h:22
-#, fuzzy
-#| msgid "Insert spaces instead of tabs"
-msgid "_Insert spaces instead of tabs"
-msgstr "Insereix espais en lloc de tabulacions"
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:623
+msgid "New comparison"
+msgstr "Comparació nova"
 
-#: ../data/ui/preferences.glade.h:23
-#, fuzzy
-#| msgid "Tab width"
-msgid "_Tab width:"
-msgstr "Amplada de la pestanya"
+#: ../data/ui/tab-placeholder.ui.h:2
+msgid "File comparison"
+msgstr "Comparació de fitxers"
 
-#: ../data/ui/preferences.glade.h:24
-msgid "_Use the system fixed width font"
+#: ../data/ui/tab-placeholder.ui.h:3
+msgid "Directory comparison"
+msgstr "Comparació de directoris"
+
+#: ../data/ui/tab-placeholder.ui.h:4
+msgid "Version control view"
+msgstr "Visualització del control de versions"
+
+#: ../data/ui/tab-placeholder.ui.h:5
+msgid "_3-way comparison"
+msgstr "Comparació a _3 bandes"
+
+#: ../data/ui/tab-placeholder.ui.h:6
+msgid "Select Third File"
+msgstr "Seleccioneu el tercer fitxer"
+
+#: ../data/ui/tab-placeholder.ui.h:7
+msgid "Select Second File"
+msgstr "Seleccioneu el segon fitxer"
+
+#: ../data/ui/tab-placeholder.ui.h:8
+msgid "Select First File"
+msgstr "Seleccioneu el primer fitxer"
+
+#: ../data/ui/tab-placeholder.ui.h:9
+msgid "Select First Folder"
+msgstr "Seleccioneu el primer directori"
+
+#: ../data/ui/tab-placeholder.ui.h:10
+msgid "Select Second Folder"
+msgstr "Seleccioneu el segon directori"
+
+#: ../data/ui/tab-placeholder.ui.h:11
+msgid "Select Third Folder"
+msgstr "Seleccioneu el tercer directori"
+
+#: ../data/ui/tab-placeholder.ui.h:12
+msgid "Select A Version-Controlled Folder"
+msgstr "Seleccioneu un directori amb control de versions"
+
+#: ../data/ui/tab-placeholder.ui.h:13
+msgid "_Blank comparison"
+msgstr "Comparació en _blanc"
+
+#: ../data/ui/tab-placeholder.ui.h:14
+msgid "C_ompare"
+msgstr "C_ompara"
+
+#: ../data/ui/vcview.ui.h:3
+msgid "Co_mmit..."
+msgstr "_Publica..."
+
+#: ../data/ui/vcview.ui.h:4
+msgid "Commit changes to version control"
+msgstr "Publica els canvis al control de versions"
+
+#: ../data/ui/vcview.ui.h:5
+msgid "_Update"
+msgstr "Act_ualitza"
+
+#: ../data/ui/vcview.ui.h:6
+msgid "Update working copy from version control"
+msgstr "Actualitza la còpia de treball des del control de versions"
+
+#: ../data/ui/vcview.ui.h:7
+msgid "_Push"
+msgstr "_Envia"
+
+#: ../data/ui/vcview.ui.h:8
+msgid "Push local changes to remote"
+msgstr "Envia els canvis locals a l'equip remot"
+
+#: ../data/ui/vcview.ui.h:10
+msgid "Add to version control"
+msgstr "Afig al control de versions"
+
+#: ../data/ui/vcview.ui.h:12
+msgid "Remove from version control"
+msgstr "Suprimeix del control de versions"
+
+#: ../data/ui/vcview.ui.h:13
+msgid "Mar_k as Resolved"
+msgstr "Marca com a _resolt"
+
+#: ../data/ui/vcview.ui.h:14
+msgid "Mark as resolved in version control"
+msgstr "Marca com a resolt al control de versions"
+
+#: ../data/ui/vcview.ui.h:15
+msgid "Re_vert"
+msgstr "_Desfés"
+
+#: ../data/ui/vcview.ui.h:16
+msgid "Revert working copy to original state"
+msgstr "Reverteix la còpia de treball a l'estat original"
+
+#: ../data/ui/vcview.ui.h:17
+msgid "Delete from working copy"
+msgstr "Elimina de la còpia de treball"
+
+#: ../data/ui/vcview.ui.h:18
+msgid "Console"
+msgstr "Consola"
+
+#: ../data/ui/vcview.ui.h:19
+msgid "Show or hide the version control console output pane"
 msgstr ""
+"Mostra o amaga la subfinestra de l'eixida de consola del control de versions"
 
-#: ../data/ui/vcview.glade.h:1
+#: ../data/ui/vcview.ui.h:20
+msgid "_Flatten"
+msgstr "_Aplana"
+
+#: ../data/ui/vcview.ui.h:21
+msgid "Flatten directories"
+msgstr "Aplana els directoris"
+
+#: ../data/ui/vcview.ui.h:22
+msgid "_Modified"
+msgstr "_Modificats"
+
+#: ../data/ui/vcview.ui.h:23
+msgid "Show modified files"
+msgstr "Mostra els fitxers modificats"
+
+#: ../data/ui/vcview.ui.h:24
+msgid "_Normal"
+msgstr "_Normal"
+
+#: ../data/ui/vcview.ui.h:25
+msgid "Show normal files"
+msgstr "Mostra els fitxers normals"
+
+#: ../data/ui/vcview.ui.h:26
+msgid "Un_versioned"
+msgstr "No _versionats"
+
+#: ../data/ui/vcview.ui.h:27
+msgid "Show unversioned files"
+msgstr "Mostra els fitxers que no estan al control de versions"
+
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:64
+msgid "Ignored"
+msgstr "Ignorat"
+
+#: ../data/ui/vcview.ui.h:29
+msgid "Show ignored files"
+msgstr "Mostra els fitxers ignorats"
+
+#: ../data/ui/vcview.ui.h:30
+msgid "Commit"
+msgstr "Publica («commit»)"
+
+#: ../data/ui/vcview.ui.h:31
 msgid "Commit Files"
-msgstr "Confirma els canvis en els fitxers"
+msgstr "Publica els fitxers"
 
-#: ../data/ui/vcview.glade.h:2
-msgid "Compare Options"
-msgstr "Opcions de comparació"
-
-#: ../data/ui/vcview.glade.h:3
-msgid "Date"
-msgstr "Data"
-
-#: ../data/ui/vcview.glade.h:4
-msgid "Local copy against other remote revision"
-msgstr "Còpia local comparada amb una altra revisió remota"
-
-#: ../data/ui/vcview.glade.h:5
-msgid "Local copy against same remote revision"
-msgstr "Còpia local comparada amb la mateixa revisió remota"
-
-#: ../data/ui/vcview.glade.h:6
+#: ../data/ui/vcview.ui.h:32
 msgid "Log Message"
 msgstr "Missatge del registre"
 
-#: ../data/ui/vcview.glade.h:7
-msgid "Previous Logs"
-msgstr "Registres anteriors"
+#: ../data/ui/vcview.ui.h:33
+msgid "Previous logs:"
+msgstr "Registres anteriors:"
 
-#: ../data/ui/vcview.glade.h:8 ../meld/vcview.py:183
-msgid "Tag"
-msgstr "Etiqueta"
+#: ../data/ui/vcview.ui.h:34
+msgid "Co_mmit"
+msgstr "Confir_ma els canvis"
 
-#: ../data/ui/vcview.glade.h:9
-msgid "VC Log"
-msgstr "Registre del control de versions"
+#: ../data/ui/vcview.ui.h:35
+msgid "Console output"
+msgstr "Eixida de la consola"
 
-#: ../meld/dirdiff.py:184 ../meld/vcview.py:125
-msgid "_Compare"
-msgstr "_Compara"
+#: ../data/ui/vcview.ui.h:36
+msgid "Push local commits to remote?"
+msgstr "Voleu enviar les publicacions locals a l'equip remot?"
 
-#: ../meld/dirdiff.py:184 ../meld/vcview.py:125
-msgid "Compare selected"
-msgstr "Compara el text seleccionat"
+#: ../data/ui/vcview.ui.h:37
+msgid "The commits to be pushed are determined by your version control system."
+msgstr ""
+"Les publicacions per enviar les determina el sistema de control de versions."
 
-#: ../meld/dirdiff.py:185
-msgid "Left"
-msgstr "Esquerra"
+#: ../data/ui/vcview.ui.h:38
+msgid "_Push commits"
+msgstr "_Envia les publicacions"
 
-#: ../meld/dirdiff.py:185
-msgid "Copy To Left"
-msgstr "Copia a l'esquerra"
+#. Create file size CellRenderer
+#: ../meld/dirdiff.py:381 ../meld/preferences.py:82
+msgid "Size"
+msgstr "Mida"
 
-#: ../meld/dirdiff.py:186
-msgid "Right"
-msgstr "Dreta"
+#. Create date-time CellRenderer
+#: ../meld/dirdiff.py:389 ../meld/preferences.py:83
+msgid "Modification time"
+msgstr "Hora de modificació"
 
-#: ../meld/dirdiff.py:186
-msgid "Copy To Right"
-msgstr "Copia a la dreta"
+#. Create permissions CellRenderer
+#: ../meld/dirdiff.py:397 ../meld/preferences.py:84
+msgid "Permissions"
+msgstr "Permisos"
 
-#: ../meld/dirdiff.py:187
-msgid "Delete selected"
-msgstr "Suprimeix el text seleccionat"
-
-#: ../meld/dirdiff.py:188 ../meld/filediff.py:850
-msgid "Hide"
-msgstr "Oculta"
-
-#: ../meld/dirdiff.py:188
-msgid "Hide selected"
-msgstr "Oculta la selecció"
-
-#: ../meld/dirdiff.py:190 ../meld/filediff.py:179 ../meld/vcview.py:126
-msgid "Open selected"
-msgstr "Obri la selecció"
-
-#: ../meld/dirdiff.py:194
-msgid "Case"
-msgstr "Distingeix entre majúscules i minúscules"
-
-#: ../meld/dirdiff.py:194
-msgid "Ignore case of entries"
-msgstr "Ignora majúscules/minúscules de les entrades"
-
-#: ../meld/dirdiff.py:195
-msgid "Same"
-msgstr "Igual"
-
-#: ../meld/dirdiff.py:195
-msgid "Show identical"
-msgstr "Mostra el text idèntic"
-
-#: ../meld/dirdiff.py:196
-msgid "New"
-msgstr "Nou"
-
-#: ../meld/dirdiff.py:196
-msgid "Show new"
-msgstr "Mostra el text nou"
-
-#: ../meld/dirdiff.py:197
-msgid "Modified"
-msgstr "Modificat"
-
-#: ../meld/dirdiff.py:197 ../meld/vcview.py:139
-msgid "Show modified"
-msgstr "Mostra el text modificat"
-
-#: ../meld/dirdiff.py:199
-msgid "Filters"
-msgstr "Filtres"
-
-#: ../meld/dirdiff.py:199
-msgid "Set active filters"
-msgstr "Estableix els filtres actius"
-
-#: ../meld/dirdiff.py:252 ../meld/dirdiff.py:298
-#, python-format
-msgid "Error converting pattern '%s' to regular expression"
-msgstr "S'ha produït un error en convertir el patró «%s» en expressió regular"
-
-#: ../meld/dirdiff.py:309
+#: ../meld/dirdiff.py:543
 #, python-format
 msgid "Hide %s"
 msgstr "Amaga %s"
 
-#: ../meld/dirdiff.py:394 ../meld/dirdiff.py:404 ../meld/vcview.py:302
-#: ../meld/vcview.py:330
+#: ../meld/dirdiff.py:672 ../meld/dirdiff.py:694
 #, python-format
 msgid "[%s] Scanning %s"
-msgstr "[%s] S'està escanejant %s"
+msgstr "[%s] S'està analitzant %s"
 
-#: ../meld/dirdiff.py:433
-#, python-format
-msgid "'%s' hidden by '%s'"
-msgstr "«%s» amagat per «%s»"
-
-#: ../meld/dirdiff.py:439
-#, python-format
-msgid ""
-"You are running a case insensitive comparison on a case sensitive "
-"filesystem. Some files are not visible:\n"
-"%s"
-msgstr ""
-"Esteu executant una comparació que considera iguals les majúscules i les "
-"minúscules en un sistema de fitxers que les diferencia. Alguns fitxers no "
-"són visibles:\n"
-"%s"
-
-#: ../meld/dirdiff.py:516
+#: ../meld/dirdiff.py:823
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Fet"
 
-#: ../meld/dirdiff.py:562
+#: ../meld/dirdiff.py:830
+msgid "Multiple errors occurred while scanning this folder"
+msgstr "S'ha produït més d'un error en analitzar esta carpeta"
+
+#: ../meld/dirdiff.py:831
+msgid "Files with invalid encodings found"
+msgstr "S'han trobat fitxers amb codificacions no vàlides"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:833
+msgid "Some files were in an incorrect encoding. The names are something like:"
+msgstr ""
+"Alguns fitxers tenien una codificació incorrecte. Els noms són alguna cosa "
+"com:"
+
+#: ../meld/dirdiff.py:835
+msgid "Files hidden by case insensitive comparison"
+msgstr ""
+"Fitxers amagats per la comparació que no té en compte les majúscules/"
+"minúscules"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:837
+msgid ""
+"You are running a case insensitive comparison on a case sensitive "
+"filesystem. The following files in this folder are hidden:"
+msgstr ""
+"Esteu fent una comparació que no diferencia entre majúscules i minúscules en "
+"un sistema de fitxers que sí que les diferencia. S'han amagat els fitxers "
+"següents d'esta carpeta:"
+
+#: ../meld/dirdiff.py:848
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "«%s» amagat per «%s»"
+
+#: ../meld/dirdiff.py:873 ../meld/filediff.py:1127 ../meld/filediff.py:1278
+#: ../meld/filediff.py:1454 ../meld/filediff.py:1484 ../meld/filediff.py:1486
+msgid "Hi_de"
+msgstr "A_maga"
+
+#: ../meld/dirdiff.py:904
 #, python-format
 msgid ""
 "'%s' exists.\n"
@@ -468,262 +1245,320 @@ msgstr ""
 "«%s» ja existeix.\n"
 "Voleu sobreescriure'l?"
 
-#: ../meld/dirdiff.py:569
+#: ../meld/dirdiff.py:912
+msgid "Error copying file"
+msgstr "S'ha produït un error en copiar el fitxer"
+
+#: ../meld/dirdiff.py:913
 #, python-format
 msgid ""
-"Error copying '%s' to '%s'\n"
+"Couldn't copy %s\n"
+"to %s.\n"
 "\n"
-"%s."
+"%s"
 msgstr ""
-"S'ha produït un error en copiar «%s» a «%s»\n"
+"No s'ha pogut copiar «%s»\n"
+"a «%s».\n"
 "\n"
-"%s."
+"%s"
 
-#: ../meld/dirdiff.py:587 ../meld/vcview.py:489
+#: ../meld/dirdiff.py:936
 #, python-format
-msgid ""
-"'%s' is a directory.\n"
-"Remove recursively?"
-msgstr ""
-"«%s» és un directori.\n"
-"Voleu suprimir-lo recursivament?"
+msgid "Error deleting %s"
+msgstr "S'ha produït un error en suprimir %s"
 
-#: ../meld/dirdiff.py:594 ../meld/vcview.py:494
-#, python-format
-msgid ""
-"Error removing %s\n"
-"\n"
-"%s."
-msgstr ""
-"S'ha produït un error en suprimir %s\n"
-"\n"
-"%s."
+#: ../meld/filediff.py:244
+msgid "Format as Patch..."
+msgstr "Formata com a pedaç..."
 
-#: ../meld/dirdiff.py:606
-#, python-format
-msgid "%i second"
-msgid_plural "%i seconds"
-msgstr[0] "%i segon"
-msgstr[1] "%i segons"
+#: ../meld/filediff.py:245
+msgid "Create a patch using differences between files"
+msgstr "Crea un pedaç fent servir les diferències entre fitxers"
 
-#: ../meld/dirdiff.py:607
-#, python-format
-msgid "%i minute"
-msgid_plural "%i minutes"
-msgstr[0] "%i minut"
-msgstr[1] "%i minuts"
+#: ../meld/filediff.py:247
+msgid "Save A_ll"
+msgstr "Guarda-ho _tot"
 
-#: ../meld/dirdiff.py:608
-#, python-format
-msgid "%i hour"
-msgid_plural "%i hours"
-msgstr[0] "%i hora"
-msgstr[1] "%i hores"
+#: ../meld/filediff.py:248
+msgid "Save all files in the current comparison"
+msgstr "Guarda tots els fitxers de la comparació actual"
 
-#: ../meld/dirdiff.py:609
-#, python-format
-msgid "%i day"
-msgid_plural "%i days"
-msgstr[0] "%i dia"
-msgstr[1] "%i dies"
+#: ../meld/filediff.py:251
+msgid "Revert files to their saved versions"
+msgstr "Reverteix els fitxers a les seues versions guardades"
 
-#: ../meld/dirdiff.py:610
-#, python-format
-msgid "%i week"
-msgid_plural "%i weeks"
-msgstr[0] "%i setmana"
-msgstr[1] "%i setmanes"
+#: ../meld/filediff.py:253
+msgid "Add Synchronization Point"
+msgstr "Afig un punt de sincronització"
 
-#: ../meld/dirdiff.py:611
-#, python-format
-msgid "%i month"
-msgid_plural "%i months"
-msgstr[0] "%i mes"
-msgstr[1] "%i mesos"
+#: ../meld/filediff.py:254
+msgid "Add a manual point for synchronization of changes between files"
+msgstr "Afig un punt manual per sincronitzar els canvis entre fitxers"
 
-#: ../meld/dirdiff.py:612
-#, python-format
-msgid "%i year"
-msgid_plural "%i years"
-msgstr[0] "%i any"
-msgstr[1] "%i anys"
+#: ../meld/filediff.py:257
+msgid "Clear Synchronization Points"
+msgstr "Neteja els punts de sincronització"
 
-#: ../meld/filediff.py:180
-msgid "Create a patch"
-msgstr "Crea un pedaç"
+#: ../meld/filediff.py:258
+msgid "Clear manual change sychronization points"
+msgstr "Neteja els punts manuals de sincronització de canvis"
 
-#: ../meld/filediff.py:181
-#, fuzzy
-#| msgid "Path to file"
-msgid "Push to left"
-msgstr "Camí al fitxer"
+#: ../meld/filediff.py:260
+msgid "Previous Conflict"
+msgstr "Conflicte anterior"
 
-#: ../meld/filediff.py:181
+#: ../meld/filediff.py:261
+msgid "Go to the previous conflict"
+msgstr "Vés al conflicte anterior"
+
+#: ../meld/filediff.py:263
+msgid "Next Conflict"
+msgstr "Conflicte següent"
+
+#: ../meld/filediff.py:264
+msgid "Go to the next conflict"
+msgstr "Vés al conflicte següent"
+
+#: ../meld/filediff.py:266
+msgid "Push to Left"
+msgstr "Mou a l'esquerra"
+
+#: ../meld/filediff.py:267
 msgid "Push current change to the left"
-msgstr ""
+msgstr "Mou el canvi actual cap a l'esquerra"
 
-#: ../meld/filediff.py:182
-#, fuzzy
-#| msgid "Copy right"
-msgid "Push to right"
-msgstr "Copia a la dreta"
+#: ../meld/filediff.py:270
+msgid "Push to Right"
+msgstr "Mou a la dreta"
 
-#: ../meld/filediff.py:182
+#: ../meld/filediff.py:271
 msgid "Push current change to the right"
-msgstr ""
+msgstr "Mou el canvi actual cap a la dreta"
 
-#. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:184
-msgid "Pull from left"
-msgstr ""
+#: ../meld/filediff.py:275
+msgid "Pull from Left"
+msgstr "Agafa de l'esquerra"
 
-#: ../meld/filediff.py:184
-#, fuzzy
-#| msgid "Copy all changes from right pane to left pane"
+#: ../meld/filediff.py:276
 msgid "Pull change from the left"
-msgstr ""
-"Copia tots els canvis de la subfinestra dreta a la subfinestra esquerra"
+msgstr "Agafa el canvi de l'esquerra"
 
-#: ../meld/filediff.py:185
-msgid "Pull from right"
-msgstr ""
+#: ../meld/filediff.py:279
+msgid "Pull from Right"
+msgstr "Agafa de la dreta"
 
-#: ../meld/filediff.py:185
-#, fuzzy
-#| msgid "Copy all changes from left pane to right pane"
+#: ../meld/filediff.py:280
 msgid "Pull change from the right"
-msgstr ""
-"Copia tots els canvis de la subfinestra esquerra a la subfinestra dreta"
+msgstr "Agafa el canvi de la dreta"
 
-#: ../meld/filediff.py:186
-#, fuzzy
-#| msgid "Diff selected"
+#: ../meld/filediff.py:282
+msgid "Copy Above Left"
+msgstr "Copia a sobre a l'esquerra"
+
+#: ../meld/filediff.py:283
+msgid "Copy change above the left chunk"
+msgstr "Copia el canvi per sobre del tros de l'esquerre"
+
+#: ../meld/filediff.py:285
+msgid "Copy Below Left"
+msgstr "Copia per sota a l'esquerra"
+
+#: ../meld/filediff.py:286
+msgid "Copy change below the left chunk"
+msgstr "Copia el canvi per sota del tros de l'esquerre"
+
+#: ../meld/filediff.py:288
+msgid "Copy Above Right"
+msgstr "Copia per sobre a la dreta"
+
+#: ../meld/filediff.py:289
+msgid "Copy change above the right chunk"
+msgstr "Copia el canvi per sobre del tros de la dreta"
+
+#: ../meld/filediff.py:291
+msgid "Copy Below Right"
+msgstr "Copia per sota a la dreta"
+
+#: ../meld/filediff.py:292
+msgid "Copy change below the right chunk"
+msgstr "Copia el canvi per sota del tros de la dreta"
+
+#: ../meld/filediff.py:294
 msgid "Delete"
-msgstr "Diff seleccionat"
+msgstr "Elimina"
 
-#: ../meld/filediff.py:186
-#, fuzzy
-#| msgid "Delete locally"
+#: ../meld/filediff.py:295
 msgid "Delete change"
-msgstr "Suprimeix localment"
+msgstr "Elimina el canvi"
 
-#: ../meld/filediff.py:187
-#, fuzzy
-#| msgid "Copy all changes from right pane to left pane"
-msgid "Merge all changes from left"
-msgstr ""
-"Copia tots els canvis de la subfinestra dreta a la subfinestra esquerra"
+#: ../meld/filediff.py:297
+msgid "Merge All from Left"
+msgstr "Fusiona-ho tot a partir de l'esquerra"
 
-#: ../meld/filediff.py:187
+#: ../meld/filediff.py:298
 msgid "Merge all non-conflicting changes from the left"
-msgstr ""
+msgstr "Fusiona tots els canvis no conflictius de l'esquerra"
 
-#: ../meld/filediff.py:188
-#, fuzzy
-#| msgid "Copy all changes from right pane to left pane"
-msgid "Merge all changes from right"
-msgstr ""
-"Copia tots els canvis de la subfinestra dreta a la subfinestra esquerra"
+#: ../meld/filediff.py:300
+msgid "Merge All from Right"
+msgstr "Fusiona-ho tot a partir de la dreta"
 
-#: ../meld/filediff.py:188
+#: ../meld/filediff.py:301
 msgid "Merge all non-conflicting changes from the right"
-msgstr ""
+msgstr "Fusiona tots els canvis no conflictius de la dreta"
 
-#: ../meld/filediff.py:189
-msgid "Merge all non-conflicting"
-msgstr ""
+#: ../meld/filediff.py:303
+msgid "Merge All"
+msgstr "Fusiona-ho tot"
 
-#: ../meld/filediff.py:189
-#, fuzzy
-#| msgid "Copy all changes from left pane to right pane"
+#: ../meld/filediff.py:304
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr ""
-"Copia tots els canvis de la subfinestra esquerra a la subfinestra dreta"
+"Fusiona tots els canvis no conflictius de les subfinestres esquerra i dreta"
+
+#: ../meld/filediff.py:308
+msgid "Cycle Through Documents"
+msgstr "Avança pels documents"
+
+#: ../meld/filediff.py:309
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Mou el focus del teclat cap al document següent d'esta comparació"
+
+#: ../meld/filediff.py:315
+msgid "Lock Scrolling"
+msgstr "Bloqueja el desplaçament"
+
+#: ../meld/filediff.py:316
+msgid "Lock scrolling of all panes"
+msgstr "Bloqueja el desplaçament de totes les subfinestres"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:258
-#, fuzzy
-#| msgid "INS,OVR"
+#: ../meld/filediff.py:475
 msgid "INS"
-msgstr "INS,SOB"
+msgstr "INS"
 
-#: ../meld/filediff.py:258
-#, fuzzy
-#| msgid "INS,OVR"
+#: ../meld/filediff.py:475
 msgid "OVR"
-msgstr "INS,SOB"
+msgstr "SOB"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:260
+#: ../meld/filediff.py:477
 #, python-format
 msgid "Ln %i, Col %i"
-msgstr "Ln %i, Col %i"
+msgstr "Lín %i, Col %i"
 
-#: ../meld/filediff.py:435
+#: ../meld/filediff.py:824
 #, python-format
 msgid ""
-"Regular expression '%s' changed the number of lines in the file. Comparison "
-"will be incorrect. See the user manual for more details."
+"Filter '%s' changed the number of lines in the file. Comparison will be "
+"incorrect. See the user manual for more details."
 msgstr ""
-"L'expressió regular «%s» ha canviat el nombre de línies del fitxer. La "
-"comparació serà incorrecta. Vegeu el manual d'usuari per a més detalls."
+"El filtre «%s» ha canviat el nombre de línies del fitxer. La comparació serà "
+"incorrecta. Vegeu el manual d'usuari per a més informació."
 
-#. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:532
-msgid "<unnamed>"
-msgstr "<sensenom>"
+#: ../meld/filediff.py:893
+msgid "Mark conflict as resolved?"
+msgstr "Voleu mar_car el conflicte com a resolt?"
 
-#: ../meld/filediff.py:708
+#: ../meld/filediff.py:895
+msgid ""
+"If the conflict was resolved successfully, you may mark it as resolved now."
+msgstr ""
+"Si el conflicte s'ha resolt correctament, el podeu marcar com a resolt."
+
+#: ../meld/filediff.py:897
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: ../meld/filediff.py:898
+msgid "Mark _Resolved"
+msgstr "Marca com a _resolt"
+
+#: ../meld/filediff.py:1114
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Estableix el nombre de subfinestres"
 
-#: ../meld/filediff.py:714
+#: ../meld/filediff.py:1121
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] S'estan obrint els fitxers"
 
-#: ../meld/filediff.py:720 ../meld/filediff.py:854
-#, fuzzy
-#| msgid "Hide"
-msgid "Hi_de"
-msgstr "Oculta"
-
-#: ../meld/filediff.py:742 ../meld/filediff.py:753 ../meld/filediff.py:766
-#: ../meld/filediff.py:772
-#, fuzzy
-#| msgid "Could not read from '%s'"
+#: ../meld/filediff.py:1144 ../meld/filediff.py:1154 ../meld/filediff.py:1167
+#: ../meld/filediff.py:1173
 msgid "Could not read file"
-msgstr "No s'ha pogut llegir de «%s»"
+msgstr "No s'ha pogut llegir el fitxer"
 
-#: ../meld/filediff.py:745
+#: ../meld/filediff.py:1145
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] S'estan llegint els fitxers"
 
-#: ../meld/filediff.py:754
+#: ../meld/filediff.py:1155
 #, python-format
 msgid "%s appears to be a binary file."
-msgstr ""
+msgstr "%s pareix que és un fitxer binari."
 
-#: ../meld/filediff.py:767
-#, fuzzy, python-format
-#| msgid "I tried encodings %s."
+#: ../meld/filediff.py:1168
+#, python-format
 msgid "%s is not in encodings: %s"
-msgstr "S'han provat les codificacions %s."
+msgstr "%s no és a les codificacions: %s"
 
-#: ../meld/filediff.py:799 ../meld/filemerge.py:70
+#: ../meld/filediff.py:1206
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] S'estan calculant les diferències"
 
-#: ../meld/filediff.py:848
-#, fuzzy
-#| msgid "Show identical"
-msgid "Files are identical"
-msgstr "Mostra el text idèntic"
+#: ../meld/filediff.py:1273
+#, python-format
+msgid "File %s has changed on disk"
+msgstr "El fitxer %s ha canviat en el disc"
 
-#: ../meld/filediff.py:985
+#: ../meld/filediff.py:1274
+msgid "Do you want to reload the file?"
+msgstr "Voleu carregar el fitxer de nou?"
+
+#: ../meld/filediff.py:1277
+msgid "_Reload"
+msgstr "Torna a _carregar-lo"
+
+#: ../meld/filediff.py:1443
+msgid ""
+"Text filters are being used, and may be masking differences between files. "
+"Would you like to compare the unfiltered files?"
+msgstr ""
+"S'estan fent servir filtres de text i potser s'està emmascarant les "
+"diferències entre fitxers. Voleu comparar els fitxers sense filtrar?"
+
+#: ../meld/filediff.py:1449
+msgid "Files are identical"
+msgstr "Els fitxers són idèntics"
+
+#: ../meld/filediff.py:1457
+msgid "Show without filters"
+msgstr "Mostra sense filtres"
+
+#: ../meld/filediff.py:1479
+msgid "Change highlighting incomplete"
+msgstr "El ressaltat dels canvis és incomplet"
+
+#: ../meld/filediff.py:1480
+msgid ""
+"Some changes were not highlighted because they were too large. You can force "
+"Meld to take longer to highlight larger changes, though this may be slow."
+msgstr ""
+"Algunes diferències no s'han ressaltat ja són molt grans. Podeu forçar el "
+"Meld perquè ressalti els canvis grans, encara que el puga alentir."
+
+#: ../meld/filediff.py:1488
+msgid "Keep highlighting"
+msgstr "Manté el ressaltat"
+
+#: ../meld/filediff.py:1490
+msgid "_Keep highlighting"
+msgstr "_Manté el ressaltat"
+
+#: ../meld/filediff.py:1621
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -732,7 +1567,7 @@ msgstr ""
 "«%s» ja existeix.\n"
 "Voleu sobreescriure'l?"
 
-#: ../meld/filediff.py:998
+#: ../meld/filediff.py:1634
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -743,12 +1578,36 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1007
-#, python-format
-msgid "Choose a name for buffer %i."
-msgstr "Escolliu un nom per a la memòria intermèdia %i."
+#: ../meld/filediff.py:1645
+msgid "Save Left Pane As"
+msgstr "Anomena i guarda la subfinestra esquerra"
 
-#: ../meld/filediff.py:1021
+#: ../meld/filediff.py:1647
+msgid "Save Middle Pane As"
+msgstr "Anomena i guarda la subfinestra del mig"
+
+#: ../meld/filediff.py:1649
+msgid "Save Right Pane As"
+msgstr "Anomena i guarda la subfinestra dreta"
+
+#: ../meld/filediff.py:1662
+#, python-format
+msgid "File %s has changed on disk since it was opened"
+msgstr "El fitxer %s ha canviat des de que s'ha obert"
+
+#: ../meld/filediff.py:1664
+msgid "If you save it, any external changes will be lost."
+msgstr "Si el guardeu, es perdrà qualsevol canvi extern."
+
+#: ../meld/filediff.py:1667
+msgid "Save Anyway"
+msgstr "Guarda de totes maneres"
+
+#: ../meld/filediff.py:1668
+msgid "Don't Save"
+msgstr "No el guardes"
+
+#: ../meld/filediff.py:1692
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -759,1102 +1618,591 @@ msgstr ""
 "\n"
 "Quin format voleu emprar?"
 
-#: ../meld/filediff.py:1037
+#: ../meld/filediff.py:1708
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
 "Would you like to save as UTF-8?"
 msgstr ""
 "«%s» conté caràcters no codificables amb «%s»\n"
-"Voleu alçar-lo com a UTF-8?"
+"Voleu guardar-lo com a UTF-8?"
 
-#. save as
-#: ../meld/filediff.py:1074
-msgid "Save patch as..."
-msgstr "Anomena i alça el pedaç..."
+#: ../meld/filediff.py:2071
+msgid "Live comparison updating disabled"
+msgstr "Desactivada l'actualització automàtica de la comparació"
 
-#: ../meld/filediff.py:1121
-#, python-format
+#: ../meld/filediff.py:2072
 msgid ""
-"Reloading will discard changes in:\n"
-"%s\n"
-"\n"
-"You cannot undo this operation."
+"Live updating of comparisons is disabled when synchronization points are "
+"active. You can still manually refresh the comparison, and live updates will "
+"resume when synchronization points are cleared."
 msgstr ""
-"En tornar a carregar es descartaran els canvis a:\n"
-"%s\n"
-"\n"
-"No podreu desfer esta operació."
+"L'actualització automàtica de les comparacions es desactiva si s'activen "
+"els  punts de sincronització. Podeu actualitzar manualment la comparació. "
+"S'activarà de nou l'actualització automàtica quan s'eliminin els punts de "
+"sincronització."
 
-#: ../meld/filemerge.py:78
-#, fuzzy, python-format
-#| msgid "[%s] Opening files"
+#: ../meld/filemerge.py:48
+#, python-format
 msgid "[%s] Merging files"
-msgstr "[%s] S'estan obrint els fitxers"
+msgstr "[%s] S'estan fusionant els fitxers"
 
-#: ../meld/meldapp.py:139
-msgid "_File"
-msgstr "_Fitxer"
+#: ../meld/gutterrendererchunk.py:90
+msgid "Copy _up"
+msgstr "Copia cap _amunt"
 
-#: ../meld/meldapp.py:140
-msgid "_New..."
-msgstr "_Nova..."
-
-#: ../meld/meldapp.py:140
-msgid "Start a new comparison"
-msgstr "Inicia una comparació nova"
-
-#: ../meld/meldapp.py:141
-msgid "Save the current file"
-msgstr "Alça el fitxer actual"
-
-#: ../meld/meldapp.py:143
-msgid "Close the current file"
-msgstr "Tanca el fitxer actual"
-
-#: ../meld/meldapp.py:144
-msgid "Quit the program"
-msgstr "Ix del programa"
-
-#: ../meld/meldapp.py:146
-msgid "_Edit"
-msgstr "_Edita"
-
-#: ../meld/meldapp.py:147
-msgid "Undo the last action"
-msgstr "Desfés la darrera acció"
-
-#: ../meld/meldapp.py:148
-msgid "Redo the last undone action"
-msgstr "Refés la darrera acció desfeta"
-
-#: ../meld/meldapp.py:149
-msgid "Cut the selection"
-msgstr "Retalla la selecció"
-
-#: ../meld/meldapp.py:150
-msgid "Copy the selection"
-msgstr "Copia la selecció"
-
-#: ../meld/meldapp.py:151
-msgid "Paste the clipboard"
-msgstr "Enganxa el porta-retalls"
-
-#: ../meld/meldapp.py:152
-msgid "Search for text"
-msgstr "Cerca text"
-
-#: ../meld/meldapp.py:153
-msgid "Find Ne_xt"
-msgstr "Cerca el _següent"
-
-#: ../meld/meldapp.py:153
-msgid "Search forwards for the same text"
-msgstr "Cerca el mateix text cap avant"
-
-#: ../meld/meldapp.py:154
-msgid "Find and replace text"
-msgstr "Cerca i reemplaça text"
-
-#: ../meld/meldapp.py:155
-msgid "Prefere_nces"
-msgstr "Preferè_ncies"
-
-#: ../meld/meldapp.py:155
-msgid "Configure the application"
-msgstr "Configura l'aplicació"
-
-#: ../meld/meldapp.py:157
-#, fuzzy
-#| msgid "_Discard Changes"
-msgid "_Changes"
-msgstr "_Descarta els canvis"
-
-#: ../meld/meldapp.py:158
-msgid "Next change"
-msgstr ""
-
-#: ../meld/meldapp.py:158
-#, fuzzy
-#| msgid "Go to the next difference"
-msgid "Go to the next change"
-msgstr "Vés a la diferència següent"
-
-#: ../meld/meldapp.py:159
-#, fuzzy
-#| msgid "Previous Logs"
-msgid "Previous change"
-msgstr "Registres anteriors"
-
-#: ../meld/meldapp.py:159
-#, fuzzy
-#| msgid "Go to the previous difference"
-msgid "Go to the previous change"
-msgstr "Vés a la diferència anterior"
-
-#: ../meld/meldapp.py:161
-msgid "_View"
-msgstr "_Visualitza"
-
-#: ../meld/meldapp.py:162
-msgid "File status"
-msgstr "Estatus del fitxer"
-
-#: ../meld/meldapp.py:163
-msgid "Version status"
-msgstr "Estat de la versió"
-
-#: ../meld/meldapp.py:164
-msgid "File filters"
-msgstr "Filtres de fitxer"
-
-#: ../meld/meldapp.py:165
-msgid "Stop the current action"
-msgstr "Atura l'acció actual"
-
-#: ../meld/meldapp.py:166
-msgid "Refresh the view"
-msgstr "Actualitza la visualització"
-
-#: ../meld/meldapp.py:167
-msgid "Reload"
-msgstr "Torna a carregar"
-
-#: ../meld/meldapp.py:167
-msgid "Reload the comparison"
-msgstr "Torna a carregar la comparació"
-
-#: ../meld/meldapp.py:169
-msgid "_Help"
-msgstr "A_juda"
+#: ../meld/gutterrendererchunk.py:91
+msgid "Copy _down"
+msgstr "Copia cap a_vall"
 
 #: ../meld/meldapp.py:170
-msgid "_Contents"
-msgstr "_Continguts"
-
-#: ../meld/meldapp.py:170
-msgid "Open the Meld manual"
-msgstr "Obri el manual del Meld"
-
-#: ../meld/meldapp.py:171
-msgid "Report _Bug"
-msgstr "In_formeu d'un error"
-
-#: ../meld/meldapp.py:171
-msgid "Report a bug in Meld"
-msgstr "Informeu d'un error en el Meld"
-
-#: ../meld/meldapp.py:172
-msgid "About this program"
-msgstr "Quant a este programa"
-
-#: ../meld/meldapp.py:175
-msgid "Full Screen"
-msgstr "Pantalla completa"
-
-#: ../meld/meldapp.py:175
-msgid "View the comparison in full screen"
-msgstr "Visualitza la comparació a pantalla completa"
-
-#: ../meld/meldapp.py:176
-msgid "_Toolbar"
-msgstr "Ba_rra d'eines"
-
-#: ../meld/meldapp.py:176
-msgid "Show or hide the toolbar"
-msgstr "Mostra o oculta la barra d'eines"
-
-#: ../meld/meldapp.py:177
-msgid "_Statusbar"
-msgstr "_Barra d'estat"
-
-#: ../meld/meldapp.py:177
-msgid "Show or hide the statusbar"
-msgstr "Mostra o oculta la barra d'estat"
-
-#. exit at first non found directory + file
-#: ../meld/meldapp.py:533
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "No es pot comparar una mescla de fitxers i directoris.\n"
-
-#: ../meld/meldapp.py:587
-#, fuzzy
-#| msgid "Invalid number of arguments supplied for --diff."
 msgid "wrong number of arguments supplied to --diff"
-msgstr "S'ha especificat un nombre d'arguments incorrecte per a --diff."
+msgstr "s'ha especificat un nombre d'arguments incorrecte per a --diff"
 
-#: ../meld/meldapp.py:591
-#, fuzzy
-#| msgid "Start with no window open"
+#: ../meld/meldapp.py:175
 msgid "Start with an empty window"
-msgstr "Inicia sense obrir cap finestra"
+msgstr "Inicia amb una finestra buida"
 
-#: ../meld/meldapp.py:592 ../meld/meldapp.py:593 ../meld/meldapp.py:595
+#: ../meld/meldapp.py:176 ../meld/meldapp.py:178
 msgid "file"
 msgstr "fitxer"
 
-#: ../meld/meldapp.py:592 ../meld/meldapp.py:594 ../meld/meldapp.py:595
-msgid "dir"
-msgstr "directori"
+#: ../meld/meldapp.py:176 ../meld/meldapp.py:180
+msgid "folder"
+msgstr "carpeta"
 
-#: ../meld/meldapp.py:592
-#, fuzzy
-#| msgid "Start a new comparison"
+#: ../meld/meldapp.py:177
 msgid "Start a version control comparison"
-msgstr "Inicia una comparació nova"
+msgstr "Inicia una comparació de control de versions"
 
-#: ../meld/meldapp.py:593
-#, fuzzy
-#| msgid "Start with 2 or 3 way file comparison"
+#: ../meld/meldapp.py:179
 msgid "Start a 2- or 3-way file comparison"
-msgstr "Inicia amb una comparació de 2 o 3 fitxers"
+msgstr "Inicia una comparació de 2 o 3 fitxers"
 
-#: ../meld/meldapp.py:594
-#, fuzzy
-#| msgid "Start with 2 or 3 way directory comparison"
-msgid "Start a 2- or 3-way directory comparison"
-msgstr "Inicia una comparació de 2 o 3 directoris"
+#: ../meld/meldapp.py:181
+msgid "Start a 2- or 3-way folder comparison"
+msgstr "Inicia una comparació de 2 o 3 carpetes"
 
-#: ../meld/meldapp.py:595
-msgid "Start a comparison between file and dir/file"
-msgstr ""
+#: ../meld/meldapp.py:224
+#, python-format
+msgid "Error: %s\n"
+msgstr "Error: %s\n"
 
-#: ../meld/meldapp.py:601
+#: ../meld/meldapp.py:231
 msgid "Meld is a file and directory comparison tool."
 msgstr "El Meld és una eina de comparació de fitxers i directoris."
 
-#: ../meld/meldapp.py:604
+#: ../meld/meldapp.py:235
 msgid "Set label to use instead of file name"
 msgstr "Estableix l'etiqueta a emprar en lloc del nom del fitxer"
 
-#: ../meld/meldapp.py:606
+#: ../meld/meldapp.py:238
+msgid "Open a new tab in an already running instance"
+msgstr "Obri una pestanya nova en una instància que ja s'està executant"
+
+#: ../meld/meldapp.py:241
 msgid "Automatically compare all differing files on startup"
 msgstr "Compara tots els fitxers diferents en iniciar el programa"
 
-#: ../meld/meldapp.py:607 ../meld/meldapp.py:608 ../meld/meldapp.py:609
-#: ../meld/meldapp.py:610
+#: ../meld/meldapp.py:244
 msgid "Ignored for compatibility"
 msgstr "Ignorat per compatibilitat"
 
-#: ../meld/meldapp.py:613
-msgid "Creates a diff tab for up to 3 supplied files or directories."
-msgstr ""
-"Crea una pestanya de diferències per a un màxim de 3 fitxers o directoris "
-"especificats."
+#: ../meld/meldapp.py:248
+msgid "Set the target file for saving a merge result"
+msgstr "Estableix el fitxer objectiu per guardar els resultats de la fusió"
 
-#: ../meld/meldapp.py:616
+#: ../meld/meldapp.py:251
+msgid "Automatically merge files"
+msgstr "Fusiona els fitxers automàticament"
+
+#: ../meld/meldapp.py:255
+msgid "Load a saved comparison from a Meld comparison file"
+msgstr ""
+"Carrega una comparació guardada a partir d'un fitxer de comparació del Meld"
+
+#: ../meld/meldapp.py:259
+msgid "Create a diff tab for the supplied files or folders"
+msgstr ""
+"Crea una pestanya de diferències pels fitxers o directoris especificats"
+
+#: ../meld/meldapp.py:279
 #, python-format
-msgid "too many arguments (wanted 0-4, got %d)"
+msgid "too many arguments (wanted 0-3, got %d)"
 msgstr ""
+"s'han especificat massa arguments (se n'esperaven entre 0 i 3, i se n'han "
+"especificat %d)"
 
-#: ../meld/melddoc.py:47
+#: ../meld/meldapp.py:282
+msgid "can't auto-merge less than 3 files"
+msgstr "no es poden fusionar automàticament menys de tres fitxers"
+
+#: ../meld/meldapp.py:284
+msgid "can't auto-merge directories"
+msgstr "no es poden fusionar automàticament els directoris"
+
+#: ../meld/meldapp.py:298
+msgid "Error reading saved comparison file"
+msgstr "S'ha produït un error en llegir el fitxer de comparació guardat"
+
+#. TRANSLATORS: This is the label of a new, currently-unnamed file.
+#: ../meld/meldbuffer.py:137
+msgid "<unnamed>"
+msgstr "<sense nom>"
+
+#: ../meld/melddoc.py:78 ../meld/melddoc.py:79
 msgid "untitled"
 msgstr "sense títol"
 
+#: ../meld/meldwindow.py:48
+msgid "_File"
+msgstr "_Fitxer"
+
+#: ../meld/meldwindow.py:49
+msgid "_New Comparison..."
+msgstr "Comparació _nova..."
+
+#: ../meld/meldwindow.py:50
+msgid "Start a new comparison"
+msgstr "Inicia una comparació nova"
+
+#: ../meld/meldwindow.py:53
+msgid "Save the current file"
+msgstr "Guarda el fitxer actual"
+
+#: ../meld/meldwindow.py:55
+msgid "Save As..."
+msgstr "Anomena i guarda..."
+
+#: ../meld/meldwindow.py:56
+msgid "Save the current file with a different name"
+msgstr "Guarda el fitxer actual amb un nom diferent"
+
+#: ../meld/meldwindow.py:59
+msgid "Close the current file"
+msgstr "Tanca el fitxer actual"
+
+#: ../meld/meldwindow.py:62
+msgid "_Edit"
+msgstr "_Edita"
+
+#: ../meld/meldwindow.py:64
+msgid "Undo the last action"
+msgstr "Desfés la darrera acció"
+
+#: ../meld/meldwindow.py:67
+msgid "Redo the last undone action"
+msgstr "Refés la darrera acció desfeta"
+
+#: ../meld/meldwindow.py:69
+msgid "Cut the selection"
+msgstr "Retalla la selecció"
+
+#: ../meld/meldwindow.py:71
+msgid "Copy the selection"
+msgstr "Copia la selecció"
+
+#: ../meld/meldwindow.py:73
+msgid "Paste the clipboard"
+msgstr "Apega el porta-retalls"
+
+#: ../meld/meldwindow.py:75
+msgid "Find..."
+msgstr "Cerca..."
+
+#: ../meld/meldwindow.py:75
+msgid "Search for text"
+msgstr "Cerca text"
+
+#: ../meld/meldwindow.py:77
+msgid "Find Ne_xt"
+msgstr "Cerca el _següent"
+
+#: ../meld/meldwindow.py:78
+msgid "Search forwards for the same text"
+msgstr "Cerca el mateix text cap avant"
+
+#: ../meld/meldwindow.py:80
+msgid "Find _Previous"
+msgstr "Cerca l'_anterior"
+
+#: ../meld/meldwindow.py:81
+msgid "Search backwards for the same text"
+msgstr "Cerca el mateix text cap arrere"
+
+#: ../meld/meldwindow.py:84
+msgid "_Replace..."
+msgstr "_Reemplaça..."
+
+#: ../meld/meldwindow.py:85
+msgid "Find and replace text"
+msgstr "Cerca i reemplaça text"
+
+#: ../meld/meldwindow.py:88
+msgid "_Changes"
+msgstr "_Canvis"
+
+#: ../meld/meldwindow.py:89
+msgid "Next Change"
+msgstr "Canvi següent"
+
+#: ../meld/meldwindow.py:90
+msgid "Go to the next change"
+msgstr "Vés al canvi següent"
+
+#: ../meld/meldwindow.py:92
+msgid "Previous Change"
+msgstr "Canvi anterior"
+
+#: ../meld/meldwindow.py:93
+msgid "Go to the previous change"
+msgstr "Vés al canvi anterior"
+
+#: ../meld/meldwindow.py:95
+msgid "Open Externally"
+msgstr "Obri externament"
+
+#: ../meld/meldwindow.py:96
+msgid "Open selected file or directory in the default external application"
+msgstr ""
+"Obri el fitxer o la carpeta seleccionada en l'aplicació externa per defecte"
+
+#: ../meld/meldwindow.py:100
+msgid "_View"
+msgstr "_Visualitza"
+
+#: ../meld/meldwindow.py:101
+msgid "File Status"
+msgstr "Estat del fitxer"
+
+#: ../meld/meldwindow.py:102
+msgid "Version Status"
+msgstr "Estat de la versió"
+
+#: ../meld/meldwindow.py:105
+msgid "Stop the current action"
+msgstr "Para l'acció actual"
+
+#: ../meld/meldwindow.py:108
+msgid "Refresh the view"
+msgstr "Actualitza la visualització"
+
+#: ../meld/meldwindow.py:111
+msgid "_Tabs"
+msgstr "_Pestanyes"
+
+#: ../meld/meldwindow.py:112
+msgid "_Previous Tab"
+msgstr "Pestanya _anterior"
+
+#: ../meld/meldwindow.py:113
+msgid "Activate previous tab"
+msgstr "Activa la pestanya anterior"
+
+#: ../meld/meldwindow.py:115
+msgid "_Next Tab"
+msgstr "Pestanya _següent"
+
+#: ../meld/meldwindow.py:116
+msgid "Activate next tab"
+msgstr "Activa la pestanya següent"
+
+#: ../meld/meldwindow.py:119
+msgid "Move Tab _Left"
+msgstr "Mou la pestanya a l'_esquerra"
+
+#: ../meld/meldwindow.py:120
+msgid "Move current tab to left"
+msgstr "Mou la pestanya actual a l'esquerra"
+
+#: ../meld/meldwindow.py:123
+msgid "Move Tab _Right"
+msgstr "Mou la pestanya a la _dreta"
+
+#: ../meld/meldwindow.py:124
+msgid "Move current tab to right"
+msgstr "Mou la pestanya actual a la dreta"
+
+#: ../meld/meldwindow.py:128
+msgid "Fullscreen"
+msgstr "Pantalla completa"
+
+#: ../meld/meldwindow.py:129
+msgid "View the comparison in fullscreen"
+msgstr "Visualitza la comparació a pantalla completa"
+
+#: ../meld/meldwindow.py:131
+msgid "_Toolbar"
+msgstr "Ba_rra d'eines"
+
+#: ../meld/meldwindow.py:132
+msgid "Show or hide the toolbar"
+msgstr "Mostra o oculta la barra d'eines"
+
+#: ../meld/meldwindow.py:141
+msgid "Open Recent"
+msgstr "Obri el fitxer recent"
+
+#: ../meld/meldwindow.py:142
+msgid "Open recent files"
+msgstr "Obri els fitxers recents"
+
+#: ../meld/meldwindow.py:164
+msgid "_Meld"
+msgstr "_Meld"
+
+#: ../meld/meldwindow.py:165
+msgid "Quit the program"
+msgstr "Ix del programa"
+
+#: ../meld/meldwindow.py:167
+msgid "Prefere_nces"
+msgstr "_Preferències"
+
+#: ../meld/meldwindow.py:168
+msgid "Configure the application"
+msgstr "Configura l'aplicació"
+
+#: ../meld/meldwindow.py:170
+msgid "_Contents"
+msgstr "_Continguts"
+
+#: ../meld/meldwindow.py:171
+msgid "Open the Meld manual"
+msgstr "Obri el manual del Meld"
+
+#: ../meld/meldwindow.py:173
+msgid "About this application"
+msgstr "Quant a esta aplicació"
+
+#: ../meld/meldwindow.py:546
+msgid "Switch to this tab"
+msgstr "Canvia a esta pestanya"
+
+#: ../meld/meldwindow.py:657
+#, python-format
+msgid "Need three files to auto-merge, got: %r"
+msgstr ""
+
+#: ../meld/meldwindow.py:671
+msgid "Cannot compare a mixture of files and directories"
+msgstr "No es pot comparar una barreja de fitxers i directoris"
+
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:189
+#: ../meld/misc.py:218
 msgid "[None]"
 msgstr "[Cap]"
 
-#: ../meld/preferences.py:81
+#: ../meld/preferences.py:33
 msgid "label"
 msgstr "etiqueta"
 
-#: ../meld/preferences.py:81
+#: ../meld/preferences.py:33
 msgid "pattern"
 msgstr "patró"
 
-#: ../meld/preferences.py:143
-msgid "Only available if you have gnome-python-desktop installed"
-msgstr "Només està disponible si teniu el gnome-python-desktop instal·lat"
+#: ../meld/recent.py:114
+msgid "Version control:"
+msgstr "Control de versions:"
 
-#. file filters
-#. text filters
-#: ../meld/preferences.py:165 ../meld/preferences.py:170 ../meld/vcview.py:163
-msgid "Name"
-msgstr "Nom"
-
-#: ../meld/preferences.py:165 ../meld/preferences.py:170
-msgid "Active"
-msgstr "Actiu"
-
-#: ../meld/preferences.py:165
-msgid "Pattern"
-msgstr "Patró"
-
-#: ../meld/preferences.py:170
-msgid "Regex"
-msgstr "Expressió regular"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:264
-msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-msgstr "Còpies de seguretat\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:266
-#, python-format
-msgid "Version Control\t1\t%s\n"
-msgstr "Control de versions\t1\t%s\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:268
-msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-msgstr "Binaris\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:270
-msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-msgstr "Multimèdia\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:272
-msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-msgstr "Paraules clau del CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:274
-msgid "C++ comment\t0\t//.*\n"
-msgstr "Comentari de C++\t0\t//.*\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:276
-msgid "C comment\t0\t/\\*.*?\\*/\n"
-msgstr "Comentari de C\t0\t/\\*.*?\\*/\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:278
-msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
-msgstr "Tot els espais blancs\t0\t[ \\t\\r\\f\\v]*\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:280
-msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
-msgstr "Espais en blanc a l'inici\t0\t^[ \\t\\r\\f\\v]*\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:282
-msgid "Script comment\t0\t#.*"
-msgstr "Comentari d'script\t0\t#.*"
-
-#: ../meld/vcview.py:127
-msgid "_Commit"
-msgstr "_Confirma els canvis"
-
-#: ../meld/vcview.py:127
-msgid "Commit"
-msgstr "Confirma els canvis"
-
-#. FIXME: popup used to use gtk.STOCK_GO_BACK
-#: ../meld/vcview.py:128
-msgid "_Update"
-msgstr "Act_ualitza"
-
-#: ../meld/vcview.py:128
-msgid "Update"
-msgstr "Actualitza"
-
-#. FIXME: popup used to use gtk.STOCK_GO_FORWARD
-#: ../meld/vcview.py:129
-msgid "_Add"
-msgstr "_Afig"
-
-#: ../meld/vcview.py:129
-msgid "Add to VC"
-msgstr "Afig al control de versions"
-
-#. FIXME: popup used to use gtk.STOCK_ADD
-#: ../meld/vcview.py:130
-msgid "Add _Binary"
-msgstr "Afig com a fitxer _binari"
-
-#: ../meld/vcview.py:130
-msgid "Add binary to VC"
-msgstr "Afig com a fitxer binari al control de versions"
-
-#. FIXME: stock is inconsistent with other VC actions
-#: ../meld/vcview.py:131
-msgid "_Remove"
-msgstr "Sup_rimeix"
-
-#: ../meld/vcview.py:131
-msgid "Remove from VC"
-msgstr "Suprimeix del control de versions"
-
-#. FIXME: popup used to use gtk.STOCK_REMOVE
-#: ../meld/vcview.py:132
-msgid "_Resolved"
-msgstr "_Resolt"
-
-#: ../meld/vcview.py:132
-msgid "Mark as resolved for VC"
-msgstr "Marca-ho com a resolt per al control de versions"
-
-#: ../meld/vcview.py:133
-msgid "Revert to original"
-msgstr "Reverteix a l'original"
-
-#: ../meld/vcview.py:134
-msgid "Delete locally"
-msgstr "Suprimeix localment"
-
-#: ../meld/vcview.py:138
-msgid "_Flatten"
-msgstr "_Aplanar"
-
-#: ../meld/vcview.py:138
-msgid "Flatten directories"
-msgstr "Directoris aplanats"
-
-#: ../meld/vcview.py:139
-msgid "_Modified"
-msgstr "_Modificat"
-
-#: ../meld/vcview.py:140
-msgid "_Normal"
-msgstr "_Normal"
-
-#: ../meld/vcview.py:140
-msgid "Show normal"
-msgstr "Mostra el normal"
-
-#: ../meld/vcview.py:141
-msgid "Non _VC"
-msgstr "No controlat pel control de _versions"
-
-#: ../meld/vcview.py:141
-msgid "Show unversioned files"
-msgstr "Mostra els fitxers sense versionat"
-
-#: ../meld/vcview.py:142
-msgid "Ignored"
-msgstr "Ignorat"
-
-#: ../meld/vcview.py:142
-msgid "Show ignored files"
-msgstr "Mostra els fitxers ignorats"
-
-#: ../meld/vcview.py:180
-msgid "Location"
-msgstr "Ubicació"
-
-#: ../meld/vcview.py:181
-msgid "Status"
-msgstr "Estat"
-
-#: ../meld/vcview.py:182
-msgid "Rev"
-msgstr "Revisió"
-
-#: ../meld/vcview.py:184
-msgid "Options"
-msgstr "Opcions"
-
-#: ../meld/vcview.py:231
-msgid "Choose one Version Control"
-msgstr "Trieu un control de versions"
-
-#: ../meld/vcview.py:232
-msgid "Only one Version Control in this directory"
-msgstr "Només hi ha un control de versions en este directori"
-
-#. TRANSLATORS: this is an error message when a version control
-#. application isn't installed or can't be found
-#: ../meld/vcview.py:245
-#, python-format
-msgid "%s Not Installed"
-msgstr ""
-
-#. TRANSLATORS: this is an error message when a version
-#. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:249
-#, fuzzy
-#| msgid "Internal editor"
-msgid "Invalid Repository"
-msgstr "Editor intern"
-
-#: ../meld/vcview.py:258
-#, python-format
-msgid "%s (%s)"
-msgstr ""
-
-#: ../meld/vcview.py:346
-msgid "(Empty)"
-msgstr "(Buit)"
-
-#: ../meld/vcview.py:379
-#, python-format
-msgid "[%s] Fetching differences"
-msgstr "[%s] S'estan obtenint les diferències"
-
-#: ../meld/vcview.py:386
-#, python-format
-msgid "[%s] Applying patch"
-msgstr "[%s] S'està aplicant el pedaç"
-
-#: ../meld/vcview.py:390
-msgid "No differences found."
-msgstr "No s'ha trobat cap diferència."
-
-#: ../meld/vcview.py:464
-msgid "Select some files first."
-msgstr "Primer seleccioneu alguns fitxers."
-
-#: ../meld/vcview.py:530
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                    Invoking 'patch' failed.\n"
-#| "                    \n"
-#| "                    Maybe you don't have 'GNU patch' installed,\n"
-#| "                    or you use an untested version of %s.\n"
-#| "                    \n"
-#| "                    Please send email bug report to:\n"
-#| "                    meld-list@gnome.org\n"
-#| "                    \n"
-#| "                    Containing the following information:\n"
-#| "                    \n"
-#| "                    - meld version: '%s'\n"
-#| "                    - source control software type: '%s'\n"
-#| "                    - source control software version: 'X.Y.Z'\n"
-#| "                    - the output of '%s somefile.txt'\n"
-#| "                    - patch command: '%s'\n"
-#| "                    "
-msgid ""
-"\n"
-"                    Invoking 'patch' failed.\n"
-"                    \n"
-"                    Maybe you don't have 'GNU patch' installed,\n"
-"                    or you use an untested version of %s.\n"
-"                    \n"
-"                    Please send email bug report to:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Containing the following information:\n"
-"                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
-"                    (no need to actually run it, just provide\n"
-"                    the command line) \n"
-"                    \n"
-"                    Replace 'X.Y.Z' by the actual version for the\n"
-"                    source control software you use.\n"
-"                    "
-msgstr ""
-"\n"
-"                    Ha fallat la invocació de l'orde «patch».\n"
-"                    \n"
-"                    És possible que no tingueu instal·lat el \n"
-"                    programa «GNU patch», o que estigueu \n"
-"                    utilitzant una versió de proves de %s.\n"
-"                    \n"
-"                    Hauríeu d'enviar un correu electrònic \n"
-"                    d'informe d'error a:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    I que continga la informació següent:\n"
-"                    \n"
-"                    - versió del Meld: «%s»\n"
-"                    - tipus de control de versions: «%s»\n"
-"                    - versió del control de versions: «X.Y.Z»\n"
-"                    - el que mostre l'intèrpret d'ordes \n"
-"                      per a «%s fitxer.txt»\n"
-"                    - orde patch: «%s»\n"
-"                    "
-
-#: ../meld/ui/findbar.py:119
-#, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
-msgstr ""
-"S'ha produït un error en l'expressió regular\n"
-"«%s»"
-
-#: ../meld/ui/historyentry.py:248
-msgid "_Browse..."
-msgstr "_Navega..."
-
-#: ../meld/ui/historyentry.py:256
-msgid "Path"
-msgstr "Camí"
-
-#: ../meld/ui/historyentry.py:257
-msgid "Path to file"
-msgstr "Camí al fitxer"
-
-#: ../meld/ui/historyentry.py:258
-msgid "Pop up a file selector to choose a file"
-msgstr "Mostra un selector de fitxers per a escollir un fitxer"
-
-#: ../meld/ui/historyentry.py:379
-msgid "Select directory"
-msgstr "Seleccioneu el directori"
-
-#: ../meld/ui/historyentry.py:383
-msgid "Select file"
-msgstr "Seleccioneu el fitxer"
-
-#: ../meld/ui/notebooklabel.py:61
+#: ../meld/ui/notebooklabel.py:65
 msgid "Close tab"
 msgstr "Tanca la pestanya"
 
-#. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:40
-msgid ""
-"Ignored:Unversioned:::Error::Newly added:Modified:<b>Conflict</b>:Removed:"
-"Missing"
-msgstr ""
-"Ignorat:No versionat:::Error::Afegit de nou:Modificat:<b>Conflicte</b>:"
-"Suprimit:Falta"
+#: ../meld/ui/vcdialogs.py:61
+msgid "No files will be committed"
+msgstr "No es publicarà cap fitxer"
 
-#: ../meld/vc/cvs.py:156
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:129
 #, python-format
+msgid "%s in %s"
+msgstr "%s a %s"
+
+#. Translators: These messages cover the case where there is
+#. only one branch, and are not part of another message.
+#: ../meld/vc/git.py:130 ../meld/vc/git.py:137
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] "%d publicació no enviada"
+msgstr[1] "%d publicacions no enviades"
+
+#: ../meld/vc/git.py:132
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] "%d branca"
+msgstr[1] "%d branques"
+
+#: ../meld/vc/git.py:358
+#, python-format
+msgid "Mode changed from %s to %s"
+msgstr "S'ha canviat el mode de %s a %s"
+
+#: ../meld/vc/_vc.py:47
+msgid "Merged"
+msgstr "Fusionat"
+
+#: ../meld/vc/_vc.py:47
+msgid "Base"
+msgstr "Base"
+
+#: ../meld/vc/_vc.py:47
+msgid "Local"
+msgstr "Local"
+
+#: ../meld/vc/_vc.py:47
+msgid "Remote"
+msgstr "Remot"
+
+#: ../meld/vc/_vc.py:65
+msgid "Unversioned"
+msgstr "Sense versió"
+
+#: ../meld/vc/_vc.py:68
+msgid "Error"
+msgstr "Error"
+
+#: ../meld/vc/_vc.py:70
+msgid "Newly added"
+msgstr "Afegit recentment"
+
+#: ../meld/vc/_vc.py:72
+msgid "Renamed"
+msgstr "Renombrat"
+
+#: ../meld/vc/_vc.py:73
+msgid "Conflict"
+msgstr "Conflicte"
+
+#: ../meld/vc/_vc.py:74
+msgid "Removed"
+msgstr "Eliminat"
+
+#: ../meld/vc/_vc.py:75
+msgid "Missing"
+msgstr "Perdut"
+
+#: ../meld/vc/_vc.py:76
+msgid "Not present"
+msgstr "No hi és"
+
+#: ../meld/vcview.py:233 ../meld/vcview.py:417
+msgid "Location"
+msgstr "Ubicació"
+
+#: ../meld/vcview.py:234
+msgid "Status"
+msgstr "Estat"
+
+#: ../meld/vcview.py:235
+msgid "Revision"
+msgstr "Revisió"
+
+#: ../meld/vcview.py:236
+msgid "Options"
+msgstr "Opcions"
+
+#. TRANSLATORS: this is an error message when a version control
+#. application isn't installed or can't be found
+#: ../meld/vcview.py:324
+#, python-format
+msgid "%s not installed"
+msgstr "%s no està instal·lat"
+
+#. TRANSLATORS: this is an error message when a version
+#. controlled repository is invalid or corrupted
+#: ../meld/vcview.py:328
+msgid "Invalid repository"
+msgstr "El dipòsit no és vàlid"
+
+#: ../meld/vcview.py:337
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../meld/vcview.py:339 ../meld/vcview.py:347
+msgid "None"
+msgstr "Cap"
+
+#: ../meld/vcview.py:358
+msgid "No valid version control system found in this folder"
+msgstr "No s'ha trobat cap control de versió vàlid en esta carpeta"
+
+#: ../meld/vcview.py:360
+msgid "Only one version control system found in this folder"
+msgstr "Només hi ha un control de versions en este directori"
+
+#: ../meld/vcview.py:362
+msgid "Choose which version control system to use"
+msgstr "Trieu quin control de versions voleu utilitzar"
+
+#. TRANSLATORS: This is the location of the directory the user is diffing
+#: ../meld/vcview.py:417
+#, python-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: ../meld/vcview.py:431 ../meld/vcview.py:439
+#, python-format
+msgid "Scanning %s"
+msgstr "S'està escanejant %s"
+
+#: ../meld/vcview.py:479
+msgid "(Empty)"
+msgstr "(Buit)"
+
+#: ../meld/vcview.py:522
+#, python-format
+msgid "%s — local"
+msgstr "%s — local"
+
+#: ../meld/vcview.py:523
+#, python-format
+msgid "%s — remote"
+msgstr "%s — remot"
+
+#: ../meld/vcview.py:531
+#, python-format
+msgid "%s (local, merge, remote)"
+msgstr "%s (local, fusió, remot)"
+
+#: ../meld/vcview.py:536
+#, python-format
+msgid "%s (remote, merge, local)"
+msgstr "%s (remot, fusió, local)"
+
+#: ../meld/vcview.py:547
+#, python-format
+msgid "%s — repository"
+msgstr "%s — dipòsit"
+
+#: ../meld/vcview.py:553
+#, python-format
+msgid "%s (working, repository)"
+msgstr "%s (còpia de treball, dipòsit)"
+
+#: ../meld/vcview.py:557
+#, python-format
+msgid "%s (repository, working)"
+msgstr "%s (dipòsit, còpia de treball)"
+
+#: ../meld/vcview.py:741
+msgid "Remove folder and all its files?"
+msgstr "Vol eliminar la carpeta i tots els seus fitxers?"
+
+#: ../meld/vcview.py:743
 msgid ""
-"Error converting to a regular expression\n"
-"The pattern was '%s'\n"
-"The error was '%s'"
+"This will remove all selected files and folders, and all files within any "
+"selected folders, from version control."
 msgstr ""
-"S'ha produït un error en convertir en expressió regular\n"
-"El patró era «%s»\n"
-"L'error foufoufoufoufoufoufoufou «%s»"
-
-#~ msgid "The error was:"
-#~ msgstr "L'error ha estat:"
-
-#~ msgid ""
-#~ "It contains ascii nulls.\n"
-#~ "Perhaps it is a binary file."
-#~ msgstr ""
-#~ "Conté el caràcter nul de l'ASCII.\n"
-#~ "Potser és un fitxer binari."
-
-#~ msgid "<b>Edit Menu</b>"
-#~ msgstr "<b>Menú d'edició</b>"
-
-#~ msgid "Automatically supply missing newline at end of file"
-#~ msgstr ""
-#~ "Afegeix automàticament el caràcter de línia nova al final del fitxer"
-
-#~ msgid "Edit files with:"
-#~ msgstr "Edita els fitxers amb:"
-
-#~ msgid "Line Wrapping "
-#~ msgstr "Ajustament de línia "
-
-#~ msgid "Preferences : Meld"
-#~ msgstr "Preferències : Meld"
-
-#~ msgid "Use GNOME monospace font"
-#~ msgstr "Utilitza el tipus de lletra d'amplada fixa del GNOME"
-
-#~ msgid "Use custom font"
-#~ msgstr "Utilitza un tipus de lletra personalitzat"
-
-#~ msgid "_Character"
-#~ msgstr "_Caràcter"
-
-#~ msgid "_None"
-#~ msgstr "_Cap"
-
-#~ msgid "_Word"
-#~ msgstr "_Paraula"
-
-#~ msgid "Start with Version Control browser in '%s'"
-#~ msgstr "Inicia amb el navegador del control de versions a «%s»"
-
-#~ msgid "Start with Version Control diff of '%s'"
-#~ msgstr ""
-#~ "Inicia amb el navegador del control de versions mostrant les diferències "
-#~ "de «%s»"
-
-#~ msgid "Wrong number of arguments (Got %i)"
-#~ msgstr "Nombre d'arguments incorrecte (se n'han rebut %i)"
-
-#~ msgid "The regular expression '%s' was not found."
-#~ msgstr "No s'ha trobat l'expressió regular «%s»."
-
-#~ msgid "The text '%s' was not found."
-#~ msgstr "No s'ha trobat el text «%s»."
-
-#~ msgid "Find"
-#~ msgstr "Cerca"
-
-#~ msgid "Match _entire word only"
-#~ msgstr "Només coincideixen paraules s_enceres"
-
-#~ msgid "_Wrap around"
-#~ msgstr "_Torna al principi en arribar al final de fitxer"
-
-#~ msgid ""
-#~ "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
-#~ msgstr ""
-#~ "Control de versió\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory "
-#~ "RCS\n"
-
-#~ msgid "VC chooser"
-#~ msgstr "Seleccionador de control de versions"
-
-#~ msgid "Pick one source control plugin"
-#~ msgstr "Escolliu un connector de control de versions"
-
-#~ msgid "Invoking patch failed, you need GNU patch."
-#~ msgstr "No s'ha trobat l'ordre «patch», necessiteu el patch del GNU."
-
-#~ msgid "(gnome-default-editor)"
-#~ msgstr "(editor-predeterminat-gnome)"
-
-#~ msgid "Save the current file with a different name"
-#~ msgstr "Desa el fitxer actual amb un nom diferent"
-
-#~ msgid ""
-#~ "Spaces instead of tab is only available if you have gnome-python-desktop "
-#~ "installed."
-#~ msgstr ""
-#~ "La utilització d'espais en lloc de tabulacions només està disponible si "
-#~ "teniu instal·lat el gnome-python-desktop."
-
-#~ msgid ""
-#~ "Syntax highlighting is only available if you have gnome-python-desktop "
-#~ "installed."
-#~ msgstr ""
-#~ "L'acoloriment de sintaxi només està disponible si teniu instal·lat el "
-#~ "gnome-python-desktop."
-
-#~ msgid ""
-#~ "Meld %s\n"
-#~ "Written by Stephen Kennedy <stevek@gnome.org>"
-#~ msgstr ""
-#~ "Meld %s\n"
-#~ "Escrit per l'Stephen Kennedy <stevek@gnome.org>"
-
-#~ msgid "Mailing _List"
-#~ msgstr "_Llista de correu"
-
-#~ msgid "Go to the Meld mailing list"
-#~ msgstr "Vés a la llista de correu del Meld"
-
-#~ msgid "Compare"
-#~ msgstr "Compara"
-
-#~ msgid "Edit"
-#~ msgstr "Edita"
-
-#~ msgid "Copy All To _Left"
-#~ msgstr "Copia-ho tot a l'_esquerra"
-
-#~ msgid "Copy All To _Right"
-#~ msgstr "Copia-ho tot a la _dreta"
-
-#~ msgid "<b>Drawing Style</b>"
-#~ msgstr "<b>Estil de dibuix</b>"
-
-#~ msgid "<b>Saving</b>"
-#~ msgstr "<b>Desament</b>"
-
-#~ msgid "<b>Toolbar Appearance</b>"
-#~ msgstr "<b>Aparença de la barra d'eines</b>"
-
-#~ msgid "<b>Whitespace</b>"
-#~ msgstr "<b>Espai en blanc</b>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Comparació</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Visualització</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Codificació</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Filtres de fitxer</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Filtres de text</span>"
-
-#~ msgid ""
-#~ "Choose how the central bar of the diff viewer is drawn. You may wish to "
-#~ "choose a simpler mode if you find scrolling is slow."
-#~ msgstr ""
-#~ "Escolliu com s'ha de dibuixar la barra central del visualitzador de "
-#~ "diferències. Podeu escollir un mode més senzill si trobeu que el "
-#~ "desplaçament és lent."
-
-#~ msgid "Curved: Filled Curves"
-#~ msgstr "Corbat: corbes plenes"
-
-#~ msgid "Display"
-#~ msgstr "Visualització"
-
-#~ msgid "Down"
-#~ msgstr "Avall"
-
-#~ msgid "Gnome Default"
-#~ msgstr "Predeterminat del GNOME"
-
-#~ msgid "Icons Only"
-#~ msgstr "Només les icones"
-
-#~ msgid "Ignore changes in amount of white space"
-#~ msgstr "Ignora els canvis en el nombre d'espais en blanc"
-
-#~ msgid ""
-#~ "Ignore changes in case; consider upper and lower-case letters equivalent"
-#~ msgstr ""
-#~ "Ignora els canvis entre majúscules i minúscules; considera els dos tipus "
-#~ "de caràcters equivalents"
-
-#~ msgid "Ignore changes that just insert or delete blank lines"
-#~ msgstr ""
-#~ "Ignora els canvis que només insereixin o suprimeixin línies en blanc"
-
-#~ msgid "Redo"
-#~ msgstr "Refés"
-
-#~ msgid "Save"
-#~ msgstr "Desa"
-
-#~ msgid "Save _As"
-#~ msgstr "_Anomena i desa"
-
-#~ msgid "Save in UTF-8 encoding"
-#~ msgstr "Desa en codificació UTF-8"
-
-#~ msgid "Save in the files original encoding"
-#~ msgstr "Desa en la codificació original dels fitxers"
-
-#~ msgid "Simple: Lines only"
-#~ msgstr "Senzill: només línies"
-
-#~ msgid "Solid: Filled Quadilaterals"
-#~ msgstr "Sòlid: quadrilàters plens"
-
-#~ msgid "Stop"
-#~ msgstr "Atura"
-
-#~ msgid "Text Beside Icons"
-#~ msgstr "Text al costat de les icones"
-
-#~ msgid "Text Only"
-#~ msgstr "Només text"
-
-#~ msgid "Text Under Icons"
-#~ msgstr "Text sota les icones"
-
-#~ msgid "Undo"
-#~ msgstr "Desfés"
-
-#~ msgid "Up"
-#~ msgstr "Amunt"
-
-#~ msgid "Whitespace is significant"
-#~ msgstr "Tingues en compte els espais en blanc"
-
-#~ msgid "Yes"
-#~ msgstr "Sí"
-
-#~ msgid "_Down"
-#~ msgstr "_Avall"
-
-#~ msgid "_Logo"
-#~ msgstr "_Logotip"
-
-#~ msgid "_Save"
-#~ msgstr "_Desa"
-
-#~ msgid "_Stop"
-#~ msgstr "_Atura"
-
-#~ msgid "_Up"
-#~ msgstr "A_munt"
-
-#~ msgid "Remove _Locally"
-#~ msgstr "Suprimeix _localment"
-
-#~ msgid ""
-#~ "Due to incompatible API changes some functions may not operate as "
-#~ "expected."
-#~ msgstr ""
-#~ "Degut a canvis incompatibles en l'API, algunes funcions potser no "
-#~ "funcionaran com s'espera."
-
-#~ msgid "<b>Global options</b>"
-#~ msgstr "<b>Opcions globals</b>"
-
-#~ msgid "<b>Update Options</b>"
-#~ msgstr "<b>Opcions d'actualització</b>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">CVS</span>"
-
-#~ msgid "CVS"
-#~ msgstr "CVS"
-
-#~ msgid "CVS binary"
-#~ msgstr "Fitxer binari del CVS"
-
-#~ msgid "Create missing directories (-d)"
-#~ msgstr "Crea els directoris que faltin (-d)"
-
-#~ msgid "Ignore .cvsrc (-f)"
-#~ msgstr "Ignora el fitxer .cvsrc (-f)"
-
-#~ msgid "Locate CVS binary : Meld"
-#~ msgstr "Localitza el fitxer binari del CVS : Meld"
-
-#~ msgid "My Directory"
-#~ msgstr "El meu directori"
-
-#~ msgid "Original Directory"
-#~ msgstr "Directori original"
-
-#~ msgid "Original File"
-#~ msgstr "Fitxer original"
-
-#~ msgid "Other Directory"
-#~ msgstr "L'altre directori"
-
-#~ msgid "Other File"
-#~ msgstr "L'altre fitxer"
-
-#~ msgid "Prune empty directories (-P)"
-#~ msgstr "Suprimeix els directoris buits (-P)"
-
-#~ msgid "Quiet mode (-q)"
-#~ msgstr "Mode silenciós (-q)"
-
-#~ msgid "Use Compression (-z)"
-#~ msgstr "Comprimeix (-z)"
-
-#~ msgid "[%s] Scanning"
-#~ msgstr "[%s] S'està escanejant"
-
-#~ msgid ""
-#~ "second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:"
-#~ "year,years"
-#~ msgstr ""
-#~ "segon,segons:minut,minuts:hora,hores:dia,dies:setmana,setmanes:mes,mesos:"
-#~ "any,anys"
-
-#~ msgid ""
-#~ "Could not open '%s' for reading.\n"
-#~ "\n"
-#~ "The error was:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "No s'ha pogut obrir «%s» per llegir.\n"
-#~ "\n"
-#~ "L'error era:\n"
-#~ "%s"
-
-#~ msgid "Meld requires a recent version of pygtk."
-#~ msgstr "El meld necessita una versió recent de pygtk."
-
-#~ msgid "pygtk-%s or higher is recommended."
-#~ msgstr "Es recomana el pygtk-%s o superior."
-
-#~ msgid "Meld works best with pygtk-%s or higher. (found %s)"
-#~ msgstr ""
-#~ "El Meld funciona millor amb el pygtk-%s o superior (s'ha trobat el %s)"
-
-#~ msgid "folder"
-#~ msgstr "carpeta"
-
-#~ msgid "nonexistant"
-#~ msgstr "inexistent"
-
-#~ msgid ""
-#~ "Meld is a file and directory comparison tool. Usage:\n"
-#~ "\n"
-#~ "    meld                        Start with no windows open\n"
-#~ "    meld <dir>                  Start with CVS browser in 'dir'\n"
-#~ "    meld <file>                 Start with CVS diff of 'file'\n"
-#~ "    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
-#~ "    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory "
-#~ "comparison\n"
-#~ "\n"
-#~ "For more information choose help -> contents.\n"
-#~ "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-#~ "stevek@gnome.org\n"
-#~ msgstr ""
-#~ "El Meld és una eina de comparació de fitxers i directoris. Forma d'ús:\n"
-#~ "\n"
-#~ "    meld                        Inici sense finestres obertes\n"
-#~ "    meld <directori>            Inici amb el navegador de CVS al "
-#~ "«directori»\n"
-#~ "    meld <fitxer>               Inici amb les diferències CVS de «fitxer»\n"
-#~ "    meld <fitx> <fitx> [fitx]   Inici amb comparació entre 2 o 3 fitxers\n"
-#~ "    meld <dir>  <dir>  [dir]    Inici amb comparació entre 2 o 3 "
-#~ "directoris\n"
-#~ "\n"
-#~ "Per a més informació escolliu ajuda -> continguts.\n"
-#~ "Informeu dels errors a http://bugzilla.gnome.org/buglist.cgi?"
-#~ "product=meld\n"
-#~ "stevek@gnome.org\n"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "Diff Options"
-#~ msgstr "Opcions del diff"
-
-#~ msgid "Show non-CVS"
-#~ msgstr "Mostra el text no CVS"
-
-#~ msgid "_Diff"
-#~ msgstr "_Diferències"
-
-#~ msgid "Copy left"
-#~ msgstr "Copia a l'esquerra"
-
-#~ msgid "Diff"
-#~ msgstr "Diferències"
-
-#~ msgid " spaces."
-#~ msgstr " espais."
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Diferència</span>"
-
-#~ msgid "CVS view"
-#~ msgstr "Visualització CVS"
-
-#~ msgid "Edit menu popup invokes"
-#~ msgstr "El menú emergent d'edició invoca"
-
-#~ msgid "New..."
-#~ msgstr "Nou..."
-
-#~ msgid "SVN Directory"
-#~ msgstr "Directori SVN"
-
-#~ msgid "SVN view"
-#~ msgstr "Visualització SVN"
-
-#~ msgid "Tabs equivalent to "
-#~ msgstr "Pestanyes equivalents a "
-
-#~ msgid "_SVN Browser"
-#~ msgstr "Navegador _SVN"
-
-#~ msgid "http://meld.sourceforge.net"
-#~ msgstr "http://meld.sourceforge.net"
-
-#~ msgid "utf8 iso8859"
-#~ msgstr "utf8 iso8859"
-
-#~ msgid "Save File 1"
-#~ msgstr "Desa el fitxer 1"
-
-#~ msgid "Save File 2"
-#~ msgstr "Desa el fitxer 2"
-
-#~ msgid "Save File 3"
-#~ msgstr "Desa el fitxer 3"
+"Això suprimirà del control de versions totes les carpetes i els fitxers "
+"seleccionats, i també tots els fitxers que hi haja dins de les carpetes "
+"seleccionades."
+
+#: ../meld/vcview.py:777
+#, python-format
+msgid "Error removing %s"
+msgstr "S'ha produït un error en suprimir %s"
