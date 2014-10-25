@@ -283,14 +283,16 @@ class Vc(_vc.CachedVc):
 
         # Get the status of files that are different in the "index" vs
         # the HEAD of the git repository
-        proc = _vc.popen([self.CMD, "diff-index",
-                          "--cached", "HEAD", path], cwd=self.location)
+        proc = _vc.popen(
+            [self.CMD, "diff-index", "--cached", "HEAD", "--relative", path],
+            cwd=self.location)
         entries = proc.read().split("\n")[:-1]
 
         # Get the status of files that are different in the "index" vs
         # the files on disk
-        proc = _vc.popen([self.CMD, "diff-files",
-                          "-0", path], cwd=self.location)
+        proc = _vc.popen(
+            [self.CMD, "diff-files", "-0", "--relative", path],
+            cwd=self.location)
         entries += (proc.read().split("\n")[:-1])
 
         # An unmerged file or a file that has been modified, added to
