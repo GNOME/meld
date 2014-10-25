@@ -196,9 +196,20 @@ def setup_resources():
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     if Gtk.get_minor_version() >= 13:
+        # Retrieve the selection colour from GtkTextView. Ideally, we'd do this
+        # on MeldSourceView, but we don't really want to import that here.
+        style = Gtk.StyleContext()
+        widget_path = Gtk.WidgetPath()
+        widget_path.append_type(Gtk.TextView)
+        style.set_path(widget_path)
+        # This is basically indefensible internal GTK+ ABI, but... whatever.
+        style.add_class(Gtk.STYLE_CLASS_VIEW)
+        color = style.get_background_color(Gtk.StateFlags.SELECTED).to_string()
+
         fixes_provider = Gtk.CssProvider()
         fixes_provider.load_from_data(
-            "MeldSourceView { background-color: rgba(0.0, 0.0, 0.0, 0.0); }")
+            "MeldSourceView { background-color: rgba(0.0, 0.0, 0.0, 0.0); } "
+            "MeldSourceView:selected { background-color: %s; } " % color)
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), fixes_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
