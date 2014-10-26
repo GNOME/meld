@@ -161,10 +161,12 @@ class Vc(_vc.CachedVc):
         if _vc.call([cls.CMD, "info"], cwd=path):
             return False
 
+        root, location = cls.is_in_repo(path)
+
         # Check for repository version, trusting format file then entries file
-        format_path = os.path.join(path, cls.VC_DIR, "format")
-        entries_path = os.path.join(path, cls.VC_DIR, "entries")
-        wcdb_path = os.path.join(path, cls.VC_DIR, "wc.db")
+        format_path = os.path.join(root, cls.VC_DIR, "format")
+        entries_path = os.path.join(root, cls.VC_DIR, "entries")
+        wcdb_path = os.path.join(root, cls.VC_DIR, "wc.db")
         format_exists = os.path.exists(format_path)
         entries_exists = os.path.exists(entries_path)
         wcdb_exists = os.path.exists(wcdb_path)
