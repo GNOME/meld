@@ -184,12 +184,14 @@ class DiffGrid(Gtk.Grid):
                 return
             attach = get_child_attach(child)
             left, top, width, height = attach
-            alloc = self.get_allocation()
-            alloc.x = columns[left]
-            alloc.y = yrows[top]
-            alloc.width = columns[left + width] - columns[left]
-            alloc.height = yrows[top + height] - yrows[top]
-            child.size_allocate(alloc)
+            # This is a copy, and we have to do this because there's no Python
+            # access to Gtk.Allocation.
+            child_alloc = self.get_allocation()
+            child_alloc.x = columns[left]
+            child_alloc.y = yrows[top]
+            child_alloc.width = columns[left + width] - columns[left]
+            child_alloc.height = yrows[top + height] - yrows[top]
+            child.size_allocate(child_alloc)
 
         for child in self.get_children():
             child_allocate(child)
