@@ -191,6 +191,12 @@ class DiffGrid(Gtk.Grid):
             child_alloc.y = yrows[top]
             child_alloc.width = columns[left + width] - columns[left]
             child_alloc.height = yrows[top + height] - yrows[top]
+
+            if self.get_direction() == Gtk.TextDirection.RTL:
+                child_alloc.x = (
+                    allocation.x + allocation.width -
+                    (child_alloc.x - allocation.x) - child_alloc.width)
+
             child.size_allocate(child_alloc)
 
         for child in self.get_children():
