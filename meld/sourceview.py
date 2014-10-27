@@ -49,7 +49,7 @@ class MeldSourceView(GtkSource.View):
     __gtype_name__ = "MeldSourceView"
 
     __gsettings_bindings__ = (
-        ('indent-width', 'indent-width'),
+        ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
         ('show-line-numbers', 'show-line-numbers'),
         ('draw-spaces', 'draw-spaces'),
