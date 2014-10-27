@@ -58,6 +58,9 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         self.mode = MODE_REPLACE
         self.set_size(LINE_HEIGHT)
         direction = 'LTR' if from_pane < to_pane else 'RTL'
+        if self.views[0].get_direction() == Gtk.TextDirection.RTL:
+            direction = 'LTR' if direction == 'RTL' else 'RTL'
+
         self.action_map = self.ACTION_MAP[direction]
         self.filediff = filediff
         self.filediff.connect("action-mode-changed",
