@@ -217,8 +217,17 @@ def setup_resources():
 def setup_settings():
     import meld.conf
 
-    schema_path = os.path.join(meld.conf.DATADIR, "gschemas.compiled")
-    if uninstalled and not os.path.exists(schema_path):
+    schema_path = os.path.join(meld.conf.DATADIR, "org.gnome.meld.gschema.xml")
+    compiled_schema_path = os.path.join(meld.conf.DATADIR, "gschemas.compiled")
+
+    try:
+        schema_mtime = os.path.getmtime(schema_path)
+        compiled_mtime = os.path.getmtime(compiled_schema_path)
+        have_schema = schema_mtime < compiled_mtime
+    except OSError:
+        have_schema = False
+
+    if uninstalled and not have_schema:
         subprocess.call(["glib-compile-schemas", meld.conf.DATADIR],
                         cwd=melddir)
 
