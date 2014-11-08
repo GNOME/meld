@@ -322,7 +322,7 @@ def copy2(src, dst):
     try:
         shutil.copystat(src, dst)
     except OSError as e:
-        if e.errno != errno.EPERM:
+        if e.errno not in (errno.EPERM, errno.ENOTSUP):
             raise
 
 def copytree(src, dst):
