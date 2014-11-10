@@ -162,9 +162,8 @@ class MeldSourceView(GtkSource.View):
             return GtkSource.View.do_draw_layer(self, layer, context)
 
         context.save()
+        context.set_line_width(1.0)
 
-        visible = self.get_visible_rect()
-        textbuffer = self.get_buffer()
         _, rect = Gdk.cairo_get_clip_rectangle(context)
         _, y = self.window_to_buffer_coords(
             Gtk.TextWindowType.WIDGET, 0, rect.y)
@@ -173,8 +172,8 @@ class MeldSourceView(GtkSource.View):
         bounds = (self.get_line_num_for_y(y),
                   self.get_line_num_for_y(y_end))
 
+        visible = self.get_visible_rect()
         width = self.get_allocation().width
-        context.set_line_width(1.0)
 
         # Paint chunk backgrounds and outlines
         for change in self.chunk_iter(bounds):
@@ -192,6 +191,8 @@ class MeldSourceView(GtkSource.View):
 
             context.set_source_rgba(*self.line_colors[change[0]])
             context.stroke()
+
+        textbuffer = self.get_buffer()
 
         # Paint current line highlight
         if self.props.highlight_current_line_local and self.is_focus():
