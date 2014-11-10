@@ -165,13 +165,15 @@ class MeldSourceView(GtkSource.View):
 
         visible = self.get_visible_rect()
         textbuffer = self.get_buffer()
-        x, y = self.window_to_buffer_coords(
-            Gtk.TextWindowType.WIDGET, 0, 0)
-        view_allocation = self.get_allocation()
+        _, rect = Gdk.cairo_get_clip_rectangle(context)
+        _, y = self.window_to_buffer_coords(
+            Gtk.TextWindowType.WIDGET, 0, rect.y)
+        _, y_end = self.window_to_buffer_coords(
+            Gtk.TextWindowType.WIDGET, 0, rect.y + rect.height)
         bounds = (self.get_line_num_for_y(y),
-                  self.get_line_num_for_y(y + view_allocation.height + 1))
+                  self.get_line_num_for_y(y_end))
 
-        width, height = view_allocation.width, view_allocation.height
+        width = self.get_allocation().width
         context.set_line_width(1.0)
 
         # Paint chunk backgrounds and outlines
