@@ -18,6 +18,7 @@ from gi.repository import GtkSource
 
 from meld.conf import _
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
+from meld.misc import get_common_theme
 
 # Fixed size of the renderer. Ideally this would be font-dependent and
 # would adjust to other textview attributes, but that's both quite difficult
@@ -65,6 +66,7 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         self.filediff = filediff
         self.filediff.connect("action-mode-changed",
                               self.on_container_mode_changed)
+        self.do_style_updated()
 
     def do_activate(self, start, area, event):
         line = start.get_line()
@@ -107,6 +109,47 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         copy_up.connect('activate', copy_chunk, chunk, True)
         copy_down.connect('activate', copy_chunk, chunk, False)
         return copy_menu
+
+    def do_style_updated(self):
+        # GtkSource.GutterRendererPixbuf.do_style_updated(self)
+        # FIXME: Should be self.get_view() or something, but when and how?
+        widget = self.views[0]
+        style = widget.get_style_context()
+        self.fill_colors, self.line_colors = get_common_theme(style)
+
+    def do_draw(self, context, background_area, cell_area, start, end, state):
+        line = start.get_line()
+        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
+
+        context.save()
+        context.set_line_width(1.0)
+
+        if chunk_index is not None:
+            chunk = self.linediffer.get_chunk(
+                chunk_index, self.from_pane, self.to_pane)
+
+            if chunk:
+                height = 1 if chunk[1] == chunk[2] else background_area.height
+                y = background_area.y
+                context.rectangle(
+                    background_area.x - 1, y,
+                    background_area.width + 2, height)
+                context.set_source_rgba(*self.fill_colors[chunk[0]])
+                context.fill()
+                context.set_source_rgba(*self.line_colors[chunk[0]])
+                if line == chunk[1]:
+                    context.move_to(
+                        background_area.x - 1, y + 0.5)
+                    context.rel_line_to(background_area.width + 2, 0)
+                if line == chunk[2] - 1:
+                    context.move_to(
+                        background_area.x - 1, y - 0.5 + height)
+                    context.rel_line_to(background_area.width + 2, 0)
+                context.stroke()
+        context.restore()
+
+        return GtkSource.GutterRendererPixbuf.do_draw(
+            self, context, background_area, cell_area, start, end, state)
 
     def do_query_activatable(self, start, area, event):
         line = start.get_line()
