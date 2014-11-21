@@ -57,7 +57,7 @@ class LinkMap(Gtk.DrawingArea):
         style = self.get_style_context()
 
         pix_start = [t.get_visible_rect().y for t in self.views]
-        y_offset = [t.translate_coordinates(self, 0, 0)[1] for t in self.views]
+        y_offset = [t.translate_coordinates(self, 0, 0)[1] + 1 for t in self.views]
 
         clip_height = max(t.get_visible_rect().height for t in self.views) + 2
         Gtk.render_frame(style, context, 0, 0, allocation.width, clip_height)

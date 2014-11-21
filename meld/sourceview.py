@@ -175,8 +175,9 @@ class MeldSourceView(GtkSource.View):
         for change in self.chunk_iter(bounds):
             ypos0 = self.get_y_for_line_num(change[1]) - visible.y
             ypos1 = self.get_y_for_line_num(change[2]) - visible.y
+            height = max(0, ypos1 - ypos0 - 1)
 
-            context.rectangle(-0.5, ypos0 - 0.5, width + 1, ypos1 - ypos0)
+            context.rectangle(-0.5, ypos0 + 0.5, width + 1, height)
             if change[1] != change[2]:
                 context.set_source_rgba(*self.fill_colors[change[0]])
                 context.fill_preserve()
