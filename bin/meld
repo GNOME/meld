@@ -130,7 +130,7 @@ def check_requirements():
 
     pyver = (2, 7)
     gtk_requirement = (3, 6)
-    glib_requirement = (2, 34, 0)
+    glib_requirement = (2, 36, 0)
     gtksourceview_requirement = (3, 10, 0)
 
     def missing_reqs(mod, ver, exception=None):
@@ -260,6 +260,9 @@ if __name__ == '__main__':
     setup_resources()
 
     import meld.meldapp
-    signal.signal(signal.SIGINT, lambda *args: meld.meldapp.app.quit())
+    if sys.platform != 'win32':
+        from gi.repository import GLib
+        GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT,
+                             lambda *args: meld.meldapp.app.quit(), None)
     status = meld.meldapp.app.run(sys.argv)
     sys.exit(status)
