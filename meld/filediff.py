@@ -368,7 +368,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 views = [self.textview[pane], self.textview[pane - 1]]
                 renderer = GutterRendererChunkAction(pane, pane - 1, views, self, self.linediffer)
                 gutter = t.get_gutter(window)
-                gutter.insert(renderer, 10)
+                gutter.insert(renderer, -40)
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 
