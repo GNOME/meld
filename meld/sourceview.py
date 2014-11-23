@@ -20,7 +20,7 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from meld.settings import bind_settings
+from meld.settings import bind_settings, settings
 
 
 class LanguageManager(object):
@@ -51,7 +51,6 @@ class MeldSourceView(GtkSource.View):
     __gsettings_bindings__ = (
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
-        ('show-line-numbers', 'show-line-numbers'),
         ('draw-spaces', 'draw-spaces'),
         ('wrap-mode', 'wrap-mode'),
     )
@@ -81,6 +80,11 @@ class MeldSourceView(GtkSource.View):
         binding_set = Gtk.binding_set_find('GtkSourceView')
         for key, modifiers in self.replaced_entries:
             Gtk.binding_entry_remove(binding_set, key, modifiers)
+
+    def late_bind(self):
+        settings.bind(
+            'show-line-numbers', self, 'show-line-numbers',
+            Gio.SettingsBindFlags.DEFAULT)
 
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()
