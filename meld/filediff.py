@@ -203,6 +203,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.connect('end_user_action', self.on_textbuffer_end_user_action)
             v.set_buffer(buf)
             buf.data.connect('file-changed', self.notify_file_changed)
+            v.late_bind()
         self._keymask = 0
         self.load_font()
         self.meta = {}
