@@ -167,6 +167,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     # Identifiers for MsgArea messages
     (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
 
+    text_windows = {
+        Gtk.TextWindowType.TEXT,
+        Gtk.TextWindowType.LEFT,
+        Gtk.TextWindowType.RIGHT,
+    }
+
     __gsignals__ = {
         'next-conflict-changed': (GObject.SignalFlags.RUN_FIRST, None, (bool, bool)),
         'action-mode-changed': (GObject.SignalFlags.RUN_FIRST, None, (int,)),
@@ -1504,17 +1510,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.num_panes == 1:
             return
 
-        # FIXME: Update to use gtk_cairo_should_draw_window()
+        def should_draw(textwindow):
+            window = textview.get_window(textwindow)
+            if not window:
+                return False
+            return Gtk.cairo_should_draw_window(context, window)
 
-        # if event.window != textview.get_window(Gtk.TextWindowType.TEXT) \
-        #     and event.window != textview.get_window(Gtk.TextWindowType.LEFT):
-        #     return
-
-        # # Hack to redraw the line number gutter used by post-2.10 GtkSourceView
-        # if event.window == textview.get_window(Gtk.TextWindowType.LEFT) and \
-        #    self.in_nested_textview_gutter_expose:
-        #     self.in_nested_textview_gutter_expose = False
-        #     return
+        if not any(should_draw(w) for w in self.text_windows):
+            return
 
         visible = textview.get_visible_rect()
         pane = self.textview.index(textview)
@@ -1600,10 +1603,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif not self.animating_chunks[pane] and self.anim_source_id[pane]:
             GLib.source_remove(self.anim_source_id[pane])
             self.anim_source_id[pane] = None
-
-        # if event.window == textview.get_window(Gtk.TextWindowType.LEFT):
-        #     self.in_nested_textview_gutter_expose = True
-        #     textview.emit("expose-event", event)
 
     def _get_filename_for_saving(self, title ):
         dialog = Gtk.FileChooserDialog(title,
