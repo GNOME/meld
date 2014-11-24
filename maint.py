@@ -375,8 +375,11 @@ def tag():
 @cli.command()
 @click.argument('path', type=click.Path(exists=True))
 def upload(path):
-    click.confirm(
-        '\nUpload %s to %s?' % (path, UPLOAD_SERVER), default=True, abort=False)
+    confirm = click.confirm(
+        '\nUpload %s to %s?' % (path, UPLOAD_SERVER), default=True,
+        abort=False)
+    if not confirm:
+        return
     cmd = ['scp', path, UPLOAD_SERVER + ':']
     call_with_output(cmd, timeout=120)
 
