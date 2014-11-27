@@ -25,7 +25,7 @@ class LinkMap(Gtk.DrawingArea):
     __gtype_name__ = "LinkMap"
 
     def __init__(self):
-        self._setup = False
+        self.filediff = None
 
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
@@ -38,14 +38,12 @@ class LinkMap(Gtk.DrawingArea):
 
         self.line_height = filediff.pixels_per_line
 
-        self._setup = True
-
     def set_color_scheme(self, color_map):
         self.fill_colors, self.line_colors = color_map
         self.queue_draw()
 
     def do_draw(self, context):
-        if not self._setup:
+        if not self.filediff:
             return
 
         context.set_line_width(1.0)
@@ -128,13 +126,12 @@ class ScrollLinkMap(Gtk.DrawingArea):
     __gtype_name__ = "ScrollLinkMap"
 
     def __init__(self):
-        self._setup = False
+        self.melddoc = None
 
     def associate(self, melddoc):
         self.melddoc = melddoc
-        self._setup = True
 
     def do_scroll_event(self, event):
-        if not self._setup:
+        if not self.melddoc:
             return
         self.melddoc.next_diff(event.direction)
