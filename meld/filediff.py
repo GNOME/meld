@@ -925,10 +925,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.emit('close', 0)
         return response
 
-        #
-        # text buffer undo/redo
-        #
-
     def on_undo_activate(self):
         if self.undosequence.can_undo():
             self.undosequence.undo()
@@ -958,10 +954,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
         self.set_buffer_modified(buf, not checkpointed)
-
-        #
-        #
-        #
 
     def open_external(self):
         pane = self._get_focused_pane()
@@ -1041,11 +1033,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 v.emit("toggle-overwrite")
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
         self.on_cursor_position_changed(view.get_buffer(), None, True)
-
-
-        #
-        # text buffer loading/saving
-        #
 
     def set_labels(self, labels):
         labels = labels[:len(self.textbuffer)]
@@ -1825,9 +1812,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textbuffer[index]
         self.set_buffer_editable(buf, not button.get_active())
 
-        #
-        # scrollbars
-        #
     def _sync_hscroll(self, adjustment):
         if self._sync_hscroll_lock or self._scroll_lock:
             return
