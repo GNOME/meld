@@ -20,6 +20,10 @@ import math
 from gi.repository import Gtk
 
 
+# Rounded rectangle corner radius for culled changes display
+RADIUS = 3
+
+
 class LinkMap(Gtk.DrawingArea):
 
     __gtype_name__ = "LinkMap"
@@ -35,8 +39,6 @@ class LinkMap(Gtk.DrawingArea):
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
         self.set_color_scheme((filediff.fill_colors, filediff.line_colors))
-
-        self.line_height = filediff.pixels_per_line
 
     def set_color_scheme(self, color_map):
         self.fill_colors, self.line_colors = color_map
@@ -67,8 +69,6 @@ class LinkMap(Gtk.DrawingArea):
         wtotal = allocation.width
         # For bezier control points
         x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
-        # Rounded rectangle corner radius for culled changes display
-        radius = self.line_height // 3
         q_rad = math.pi / 2
 
         left, right = self.view_indices
@@ -83,15 +83,15 @@ class LinkMap(Gtk.DrawingArea):
             if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height):
                 if f0 == f1:
                     continue
-                context.arc(x_steps[0], f0 - 0.5 + radius, radius, -q_rad, 0)
-                context.arc(x_steps[0], f1 - 0.5 - radius, radius, 0, q_rad)
+                context.arc(x_steps[0], f0 - 0.5 + RADIUS, RADIUS, -q_rad, 0)
+                context.arc(x_steps[0], f1 - 0.5 - RADIUS, RADIUS, 0, q_rad)
                 context.close_path()
             elif (f0 < 0 and f1 < 0) or (f0 > height and f1 > height):
                 if t0 == t1:
                     continue
-                context.arc_negative(x_steps[3], t0 - 0.5 + radius, radius,
+                context.arc_negative(x_steps[3], t0 - 0.5 + RADIUS, RADIUS,
                                      -q_rad, q_rad * 2)
-                context.arc_negative(x_steps[3], t1 - 0.5 - radius, radius,
+                context.arc_negative(x_steps[3], t1 - 0.5 - RADIUS, RADIUS,
                                      q_rad * 2, q_rad)
                 context.close_path()
             else:
