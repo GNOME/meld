@@ -174,7 +174,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Start up an filediff with num_panes empty contents.
         """
         melddoc.MeldDoc.__init__(self)
-        gnomeglade.Component.__init__(self, "filediff.ui", "filediff")
+        gnomeglade.Component.__init__(
+            self, "filediff.ui", "filediff", ["FilediffActions"])
         bind_settings(self)
 
         widget_lists = [
@@ -239,77 +240,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
 
-        actions = (
-            ("MakePatch", None, _("Format as Patch..."), None,
-                _("Create a patch using differences between files"),
-                self.make_patch),
-            ("SaveAll", None, _("Save A_ll"), "<Ctrl><Shift>L",
-                _("Save all files in the current comparison"),
-                self.on_save_all_activate),
-            ("Revert", Gtk.STOCK_REVERT_TO_SAVED, None, None,
-                _("Revert files to their saved versions"),
-                self.on_revert_activate),
-            ("SplitAdd", None, _("Add Synchronization Point"), None,
-                _("Add a manual point for synchronization of changes between "
-                  "files"),
-                self.add_sync_point),
-            ("SplitClear", None, _("Clear Synchronization Points"), None,
-                _("Clear manual change sychronization points"),
-                self.clear_sync_points),
-            ("PrevConflict", None, _("Previous Conflict"), "<Ctrl>I",
-                _("Go to the previous conflict"),
-                lambda x: self.on_next_conflict(Gdk.ScrollDirection.UP)),
-            ("NextConflict", None, _("Next Conflict"), "<Ctrl>K",
-                _("Go to the next conflict"),
-                lambda x: self.on_next_conflict(Gdk.ScrollDirection.DOWN)),
-            ("PushLeft", Gtk.STOCK_GO_BACK, _("Push to Left"), "<Alt>Left",
-                _("Push current change to the left"),
-                lambda x: self.push_change(-1)),
-            ("PushRight", Gtk.STOCK_GO_FORWARD,
-                _("Push to Right"), "<Alt>Right",
-                _("Push current change to the right"),
-                lambda x: self.push_change(1)),
-            # FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-            ("PullLeft", Gtk.STOCK_GOTO_LAST,
-                _("Pull from Left"), "<Alt><Shift>Right",
-                _("Pull change from the left"),
-                lambda x: self.pull_change(-1)),
-            ("PullRight", Gtk.STOCK_GOTO_FIRST,
-                _("Pull from Right"), "<Alt><Shift>Left",
-                _("Pull change from the right"),
-                lambda x: self.pull_change(1)),
-            ("CopyLeftUp", None, _("Copy Above Left"), "<Alt>bracketleft",
-                _("Copy change above the left chunk"),
-                lambda x: self.copy_change(-1, -1)),
-            ("CopyLeftDown", None, _("Copy Below Left"), "<Alt>semicolon",
-                _("Copy change below the left chunk"),
-                lambda x: self.copy_change(-1, 1)),
-            ("CopyRightUp", None, _("Copy Above Right"), "<Alt>bracketright",
-                _("Copy change above the right chunk"),
-                lambda x: self.copy_change(1, -1)),
-            ("CopyRightDown", None, _("Copy Below Right"), "<Alt>quoteright",
-                _("Copy change below the right chunk"),
-                lambda x: self.copy_change(1, 1)),
-            ("Delete", Gtk.STOCK_DELETE, _("Delete"), "<Alt>Delete",
-                _("Delete change"),
-                self.delete_change),
-            ("MergeFromLeft", None, _("Merge All from Left"), None,
-                _("Merge all non-conflicting changes from the left"),
-                lambda x: self.pull_all_non_conflicting_changes(-1)),
-            ("MergeFromRight", None, _("Merge All from Right"), None,
-                _("Merge all non-conflicting changes from the right"),
-                lambda x: self.pull_all_non_conflicting_changes(1)),
-            ("MergeAll", None, _("Merge All"), None,
-                _("Merge all non-conflicting changes from left and right "
-                  "panes"),
-                lambda x: self.merge_all_non_conflicting_changes()),
-            ("CycleDocuments", None,
-                _("Cycle Through Documents"), "<control>Escape",
-                _("Move keyboard focus to the next document in this "
-                  "comparison"),
-                self.action_cycle_documents),
-        )
-
         toggle_actions = (
             ("LockScrolling", None, _("Lock Scrolling"), None,
              _("Lock scrolling of all panes"),
@@ -317,9 +247,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         )
 
         self.ui_file = gnomeglade.ui_file("filediff-ui.xml")
-        self.actiongroup = Gtk.ActionGroup(name="FilediffPopupActions")
+        self.actiongroup = self.FilediffActions
         self.actiongroup.set_translation_domain("meld")
-        self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggle_actions)
 
         self.findbar = findbar.FindBar(self.grid)
