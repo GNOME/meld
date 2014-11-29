@@ -66,13 +66,8 @@ class CachedSequenceMatcher(object):
             if os.name == "nt":
                 CachedSequenceMatcher.process_pool = ThreadPool(None)
             else:
-                # maxtasksperchild is new in Python 2.7; this is for 2.6 compat
-                try:
-                    CachedSequenceMatcher.process_pool = Pool(
-                        None, matchers.init_worker, maxtasksperchild=1)
-                except TypeError:
-                    CachedSequenceMatcher.process_pool = Pool(
-                        None, matchers.init_worker)
+                CachedSequenceMatcher.process_pool = Pool(
+                    None, matchers.init_worker, maxtasksperchild=1)
         self.cache = {}
 
     def match(self, text1, textn, cb):
