@@ -20,7 +20,6 @@ import math
 import os
 import time
 
-from multiprocessing import Pool
 from multiprocessing.pool import ThreadPool
 
 
@@ -67,15 +66,8 @@ class CachedSequenceMatcher(object):
     eviction is overly simplistic, but is okay for our usage pattern.
     """
 
-    process_pool = None
-
     def __init__(self):
-        if self.process_pool is None:
-            if os.name == "nt":
-                CachedSequenceMatcher.process_pool = ThreadPool(None)
-            else:
-                CachedSequenceMatcher.process_pool = Pool(
-                    None, matchers.init_worker, maxtasksperchild=1)
+        self.process_pool = ThreadPool(None)
         self.cache = {}
 
     def match(self, text1, textn, cb):
