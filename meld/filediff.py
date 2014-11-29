@@ -74,9 +74,6 @@ class CachedSequenceMatcher(object):
         try:
             self.cache[(text1, textn)][1] = time.time()
             opcodes = self.cache[(text1, textn)][0]
-            # FIXME: This idle should be totally unnecessary, and yet nothing
-            # gets highlighted without it, even though everything in the
-            # callback appears to run identically.
             GLib.idle_add(lambda: cb(opcodes))
         except KeyError:
             def inline_cb(opcodes):
