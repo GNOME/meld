@@ -43,7 +43,7 @@
       <object class="GtkAction" id="PrevConflict">
         <property name="label" translatable="yes">Previous Conflict</property>
         <property name="tooltip" translatable="yes">Go to the previous conflict</property>
-        <signal name="activate" handler="on_next_conflict(Gdk.ScrollDirection.UP)" swapped="no"/>
+        <signal name="activate" handler="action_previous_conflict" swapped="no"/>
       </object>
       <accelerator key="I" modifiers="GDK_CONTROL_MASK"/>
     </child>
@@ -51,7 +51,7 @@
       <object class="GtkAction" id="NextConflict">
         <property name="label" translatable="yes">Next Conflict</property>
         <property name="tooltip" translatable="yes">Go to the next conflict</property>
-        <signal name="activate" handler="on_next_conflict(Gdk.ScrollDirection.DOWN)" swapped="no"/>
+        <signal name="activate" handler="action_next_conflict" swapped="no"/>
       </object>
       <accelerator key="K" modifiers="GDK_CONTROL_MASK"/>
     </child>
