@@ -45,6 +45,7 @@ missing_dll = [
 ]
 
 gtk_libs = [
+    'etc/gtk-3.0/settings.ini',
     'lib/gdk-pixbuf-2.0',
     'lib/girepository-1.0',
     'share/glib-2.0',
