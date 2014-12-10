@@ -121,7 +121,7 @@ class MeldApp(Gtk.Application):
     def quit_callback(self, action, parameter):
         for window in self.get_windows():
             cancelled = window.emit("delete-event",
-                                    Gdk.Event(Gdk.EventType.DELETE))
+                                    Gdk.Event.new(Gdk.EventType.DELETE))
             if cancelled:
                 return
             window.destroy()
