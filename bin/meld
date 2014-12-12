@@ -204,12 +204,16 @@ def setup_resources():
         style.set_path(widget_path)
         # This is basically indefensible internal GTK+ ABI, but... whatever.
         style.add_class(Gtk.STYLE_CLASS_VIEW)
+        old_bg_color = style.get_background_color(
+            Gtk.StateFlags.NORMAL).to_string()
         color = style.get_background_color(Gtk.StateFlags.SELECTED).to_string()
 
         fixes_provider = Gtk.CssProvider()
         fixes_provider.load_from_data(
+            "@define-color override-background-color %s; "
             "MeldSourceView { background-color: rgba(0.0, 0.0, 0.0, 0.0); } "
-            "MeldSourceView:selected { background-color: %s; } " % color)
+            "MeldSourceView:selected { background-color: %s; } " %
+            (old_bg_color, color))
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), fixes_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
