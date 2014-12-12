@@ -252,12 +252,23 @@ def setup_logging():
     log.addHandler(handler)
 
 
+def environment_hacks():
+    # We manage cwd ourselves for git operations, and GIT_DIR in particular
+    # can mess with this when set.
+    for var in ('GIT_DIR', 'GIT_WORK_TREE'):
+        try:
+            del os.environ[var]
+        except KeyError:
+            pass
+
+
 if __name__ == '__main__':
     setup_logging()
     disable_stdout_buffering()
     check_requirements()
     setup_settings()
     setup_resources()
+    environment_hacks()
 
     import meld.meldapp
     if sys.platform != 'win32':
