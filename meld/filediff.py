@@ -419,6 +419,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             tag = buf.get_tag_table().lookup("inline")
             tag.props.background_rgba = lookup("inline-bg", "LightSteelBlue2")
 
+        override_bg = style.lookup_color("override-background-color")
+        self.override_bg = override_bg[1] if override_bg[0] else None
+
         self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
                             "delete"  : lookup("insert-bg", "DarkSeaGreen1"),
                             "conflict": lookup("conflict-bg", "Pink"),
@@ -1528,6 +1531,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         width, height = view_allocation.width, view_allocation.height
         context.set_line_width(1.0)
+
+        if self.override_bg:
+            context.set_source_rgba(*self.override_bg)
+            context.rectangle(0, 0, width, height)
+            context.fill()
 
         for change in self.linediffer.single_changes(pane, bounds):
             ypos0 = textview.get_y_for_line_num(change[1]) - visible.y
