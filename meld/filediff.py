@@ -240,16 +240,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
 
-        toggle_actions = (
-            ("LockScrolling", None, _("Lock Scrolling"), None,
-             _("Lock scrolling of all panes"),
-             self.on_action_lock_scrolling_toggled, True),
-        )
-
         self.ui_file = gnomeglade.ui_file("filediff-ui.xml")
         self.actiongroup = self.FilediffActions
         self.actiongroup.set_translation_domain("meld")
-        self.actiongroup.add_toggle_actions(toggle_actions)
 
         self.findbar = findbar.FindBar(self.grid)
         self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
