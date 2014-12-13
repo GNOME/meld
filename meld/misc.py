@@ -55,11 +55,12 @@ def error_dialog(
         parent = app.get_active_window()
 
     dialog = Gtk.MessageDialog(
-        parent=parent,
-        flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-        type=messagetype,
+        transient_for=parent,
+        modal=True,
+        destroy_with_parent=True,
+        message_type=messagetype,
         buttons=Gtk.ButtonsType.CLOSE,
-        message_format=primary)
+        text=primary)
     dialog.format_secondary_markup(secondary)
     dialog.run()
     dialog.destroy()
