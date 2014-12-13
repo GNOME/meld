@@ -1601,10 +1601,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _save_text_to_filename(self, filename, text):
         try:
             open(filename, "wb").write(text)
-        except IOError as e:
-            misc.run_dialog(
-                _("Error writing to %s\n\n%s.") % (filename, e),
-                self, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK)
+        except IOError as err:
+            misc.error_dialog(
+                primary=_("Could not save file %s.") % filename,
+                secondary=_("Couldn't save file due to:\n%s") % (
+                    GLib.markup_escape_text(str(err))),
+            )
             return False
         return True
 
