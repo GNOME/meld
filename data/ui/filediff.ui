@@ -60,7 +60,7 @@
         <property name="label" translatable="yes">Push to Left</property>
         <property name="tooltip" translatable="yes">Push current change to the left</property>
         <property name="stock_id">gtk-go-back</property>
-        <signal name="activate" handler="push_change(-1)" swapped="no"/>
+        <signal name="activate" handler="action_push_change_left" swapped="no"/>
       </object>
       <accelerator key="Left" modifiers="GDK_MOD1_MASK"/>
     </child>
@@ -69,9 +69,9 @@
         <property name="label" translatable="yes">Push to Right</property>
         <property name="tooltip" translatable="yes">Push current change to the right</property>
         <property name="stock_id">gtk-go-forward</property>
-        <signal name="activate" handler="push_change(1)" swapped="no"/>
+        <signal name="activate" handler="action_push_change_right" swapped="no"/>
       </object>
-      <accelerator key="Right" modifiers=""/>
+      <accelerator key="Right" modifiers="GDK_MOD1_MASK"/>
     </child>
     <!-- FIXME: using LAST and FIRST is terrible and unreliable icon abuse -->
     <child>
@@ -79,7 +79,7 @@
         <property name="label" translatable="yes">Pull from Left</property>
         <property name="tooltip" translatable="yes">Pull change from the left</property>
         <property name="stock_id">gtk-goto-last</property>
-        <signal name="activate" handler="pull_change(-1)" swapped="no"/>
+        <signal name="activate" handler="action_pull_change_left" swapped="no"/>
       </object>
       <accelerator key="Right" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
     </child>
@@ -88,7 +88,7 @@
         <property name="label" translatable="yes">Pull from Right</property>
         <property name="tooltip" translatable="yes">Pull change from the right</property>
         <property name="stock_id">gtk-goto-first</property>
-        <signal name="activate" handler="pull_change(1)" swapped="no"/>
+        <signal name="activate" handler="action_pull_change_right" swapped="no"/>
       </object>
       <accelerator key="Left" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
     </child>
@@ -96,7 +96,7 @@
       <object class="GtkAction" id="CopyLeftUp">
         <property name="label" translatable="yes">Copy Above Left</property>
         <property name="tooltip" translatable="yes">Copy change above the left chunk</property>
-        <signal name="activate" handler="copy_change(-1, -1)" swapped="no"/>
+        <signal name="activate" handler="action_copy_change_left_up" swapped="no"/>
       </object>
       <accelerator key="bracketleft" modifiers="GDK_MOD1_MASK"/>
     </child>
@@ -104,7 +104,7 @@
       <object class="GtkAction" id="CopyLeftDown">
         <property name="label" translatable="yes">Copy Below Left</property>
         <property name="tooltip" translatable="yes">Copy change below the left chunk</property>
-        <signal name="activate" handler="self.copy_change(-1, 1)" swapped="no"/>
+        <signal name="activate" handler="action_copy_change_left_down" swapped="no"/>
       </object>
       <accelerator key="semicolon" modifiers="GDK_MOD1_MASK"/>
     </child>
@@ -112,7 +112,7 @@
       <object class="GtkAction" id="CopyRightUp">
         <property name="label" translatable="yes">Copy Above Right</property>
         <property name="tooltip" translatable="yes">Copy change above the right chunk</property>
-        <signal name="activate" handler="copy_change(1, -1)" swapped="no"/>
+        <signal name="activate" handler="action_copy_change_right_up" swapped="no"/>
       </object>
       <accelerator key="bracketright" modifiers="GDK_MOD1_MASK"/>
     </child>
@@ -120,7 +120,7 @@
       <object class="GtkAction" id="CopyRightDown">
         <property name="label" translatable="yes">Copy Below Right</property>
         <property name="tooltip" translatable="yes">Copy change below the right chunk</property>
-        <signal name="activate" handler="copy_change(1, 1)" swapped="no"/>
+        <signal name="activate" handler="action_copy_change_right_down" swapped="no"/>
       </object>
       <accelerator key="quoteright" modifiers="GDK_MOD1_MASK"/>
     </child>

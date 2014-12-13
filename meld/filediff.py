@@ -556,33 +556,57 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def action_next_diff(self, *args):
         self.go_to_chunk(self.cursor.next)
 
-    def push_change(self, direction):
+    def get_action_chunk(self, src, dst):
+        valid_panes = list(range(0, self.num_panes))
+        if (src not in valid_panes or dst not in valid_panes or
+                self.cursor.chunk is None):
+            raise ValueError("Action was taken on invalid panes")
+
+        chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
+        if chunk is None:
+            raise ValueError("Action was taken on a missing chunk")
+        return chunk
+
+    def get_action_panes(self, direction, reverse=False):
         src = self._get_focused_pane()
         dst = src + direction
-        chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
-        assert(src != -1 and self.cursor.chunk is not None)
-        assert(dst in (0, 1, 2))
-        assert(chunk is not None)
-        self.replace_chunk(src, dst, chunk)
+        return (dst, src) if reverse else (src, dst)
 
-    def pull_change(self, direction):
-        dst = self._get_focused_pane()
-        src = dst + direction
-        chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
-        assert(dst != -1 and self.cursor.chunk is not None)
-        assert(src in (0, 1, 2))
-        assert(chunk is not None)
-        self.replace_chunk(src, dst, chunk)
+    def action_push_change_left(self, *args):
+        src, dst = self.get_action_panes(-1)
+        self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
-    def copy_change(self, direction, copy_direction):
-        src = self._get_focused_pane()
-        dst = src + direction
-        chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
-        assert(src != -1 and self.cursor.chunk is not None)
-        assert(dst in (0, 1, 2))
-        assert(chunk is not None)
-        copy_up = True if copy_direction < 0 else False
-        self.copy_chunk(src, dst, chunk, copy_up)
+    def action_push_change_right(self, *args):
+        src, dst = self.get_action_panes(+1)
+        self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
+
+    def action_pull_change_left(self, *args):
+        src, dst = self.get_action_panes(-1, reverse=True)
+        self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
+
+    def action_pull_change_right(self, *args):
+        src, dst = self.get_action_panes(+1, reverse=True)
+        self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
+
+    def action_copy_change_left_up(self, *args):
+        src, dst = self.get_action_panes(-1)
+        self.copy_chunk(
+            src, dst, self.get_action_chunk(src, dst), copy_up=True)
+
+    def action_copy_change_right_up(self, *args):
+        src, dst = self.get_action_panes(+1)
+        self.copy_chunk(
+            src, dst, self.get_action_chunk(src, dst), copy_up=True)
+
+    def action_copy_change_left_down(self, *args):
+        src, dst = self.get_action_panes(-1)
+        self.copy_chunk(
+            src, dst, self.get_action_chunk(src, dst), copy_up=False)
+
+    def action_copy_change_right_down(self, *args):
+        src, dst = self.get_action_panes(+1)
+        self.copy_chunk(
+            src, dst, self.get_action_chunk(src, dst), copy_up=False)
 
     def pull_all_non_conflicting_changes(self, direction):
         assert direction in (-1, 1)
