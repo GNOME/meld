@@ -608,11 +608,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=False)
 
-    def pull_all_non_conflicting_changes(self, direction):
-        assert direction in (-1, 1)
-        dst = self._get_focused_pane()
-        src = dst + direction
-        assert src in range(self.num_panes)
+    def pull_all_non_conflicting_changes(self, src, dst):
         merger = merge.Merger()
         merger.differ = self.linediffer
         merger.texts = self.buffer_texts
@@ -622,10 +618,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_textbuffer_begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
         self.on_textbuffer_end_user_action()
+
         def resync():
             self._sync_vscroll_lock = False
             self._sync_vscroll(self.scrolledwindow[src].get_vadjustment(), src)
         self.scheduler.add_task(resync)
+
+    def action_pull_all_changes_left(self, *args):
+        src, dst = self.get_action_panes(-1, reverse=True)
+        self.pull_all_non_conflicting_changes(src, dst)
+
+    def action_pull_all_changes_right(self, *args):
+        src, dst = self.get_action_panes(+1, reverse=True)
+        self.pull_all_non_conflicting_changes(src, dst)
 
     def merge_all_non_conflicting_changes(self):
         dst = 1
