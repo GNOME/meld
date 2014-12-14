@@ -471,13 +471,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 chunk = self.linediffer.get_chunk(chunk_id, pane)
                 insert_chunk = chunk[1] == chunk[2]
                 delete_chunk = chunk[3] == chunk[4]
-                push_left = editable_left and not insert_chunk
-                push_right = editable_right and not insert_chunk
+                push_left = editable_left
+                push_right = editable_right
                 pull_left = pane == 2 and editable and not delete_chunk
                 pull_right = pane == 0 and editable and not delete_chunk
                 delete = editable and not insert_chunk
-                copy_left = push_left and not delete_chunk
-                copy_right = push_right and not delete_chunk
+                copy_left = editable_left and not (insert_chunk or delete_chunk)
+                copy_right = editable_right and not (insert_chunk or delete_chunk)
             elif pane == 1:
                 chunk0 = self.linediffer.get_chunk(chunk_id, 1, 0)
                 chunk2 = None
@@ -487,13 +487,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 left_exists = chunk0 is not None and chunk0[3] != chunk0[4]
                 right_mid_exists = chunk2 is not None and chunk2[1] != chunk2[2]
                 right_exists = chunk2 is not None and chunk2[3] != chunk2[4]
-                push_left = editable_left and left_mid_exists
-                push_right = editable_right and right_mid_exists
+                push_left = editable_left
+                push_right = editable_right
                 pull_left = editable and left_exists
                 pull_right = editable and right_exists
                 delete = editable and (left_mid_exists or right_mid_exists)
-                copy_left = push_left and left_exists
-                copy_right = push_right and right_exists
+                copy_left = editable_left and left_mid_exists and left_exists
+                copy_right = editable_right and right_mid_exists and right_exists
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
@@ -1949,10 +1949,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         new_end = b1.insert_at_line(chunk[3], t0)
         self.on_textbuffer_end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
-        # FIXME: If the inserted chunk ends up being an insert chunk, then
-        # this animation is not visible; this happens often in three-way diffs
-        rgba0 = self.fill_colors['insert'].copy()
-        rgba1 = self.fill_colors['insert'].copy()
+        if chunk[1] == chunk[2]:
+            # TODO: Need a more specific colour here; conflict is wrong
+            rgba0 = self.fill_colors['conflict'].copy()
+            rgba1 = self.fill_colors['conflict'].copy()
+        else:
+            # FIXME: If the inserted chunk ends up being an insert chunk, then
+            # this animation is not visible; this happens often in three-way
+            # diffs
+            rgba0 = self.fill_colors['insert'].copy()
+            rgba1 = self.fill_colors['insert'].copy()
         rgba0.alpha = 1.0
         rgba1.alpha = 0.0
         anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, 500000)
