@@ -503,6 +503,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("CopyLeftDown").set_sensitive(copy_left)
         self.actiongroup.get_action("CopyRightUp").set_sensitive(copy_right)
         self.actiongroup.get_action("CopyRightDown").set_sensitive(copy_right)
+
+        prev_pane = pane > 0
+        next_pane = pane < self.num_panes - 1
+        self.actiongroup.get_action("PrevPane").set_sensitive(prev_pane)
+        self.actiongroup.get_action("NextPane").set_sensitive(next_pane)
         # FIXME: don't queue_draw() on everything... just on what changed
         self.queue_draw()
 
@@ -734,11 +739,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         return new_line
 
-    def action_cycle_documents(self, widget):
-        pane = self._get_focused_pane()
-        new_pane = (pane + 1) % self.num_panes
+    def move_cursor_pane(self, pane, new_pane):
         chunk, line = self.cursor.chunk, self.cursor.line
-
         new_line = self._corresponding_chunk_line(chunk, line, pane, new_pane)
 
         new_buf = self.textbuffer[new_pane]
@@ -746,6 +748,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         new_buf.place_cursor(new_buf.get_iter_at_line(new_line))
         self.textview[new_pane].scroll_to_mark(
             new_buf.get_insert(), 0.1, True, 0.5, 0.5)
+
+    def action_prev_pane(self, *args):
+        pane = self._get_focused_pane()
+        new_pane = (pane - 1) % self.num_panes
+        self.move_cursor_pane(pane, new_pane)
+
+    def action_next_pane(self, *args):
+        pane = self._get_focused_pane()
+        new_pane = (pane + 1) % self.num_panes
+        self.move_cursor_pane(pane, new_pane)
 
     def _set_external_action_sensitivity(self):
         have_file = self.focus_pane is not None
@@ -1862,7 +1874,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 widget.hide()
 
             self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
-            self.actiongroup.get_action("CycleDocuments").set_sensitive(n > 1)
 
             def coords_iter(i):
                 buf_index = 2 if i == 1 and self.num_panes == 3 else i

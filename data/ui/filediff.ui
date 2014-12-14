@@ -155,12 +155,20 @@
       </object>
     </child>
     <child>
-      <object class="GtkAction" id="CycleDocuments">
-        <property name="label" translatable="yes">Cycle Through Documents</property>
-        <property name="tooltip" translatable="yes">Move keyboard focus to the next document in this comparison</property>
-        <signal name="activate" handler="action_cycle_documents" swapped="no"/>
+      <object class="GtkAction" id="PrevPane">
+        <property name="label" translatable="yes">Previous Pane</property>
+        <property name="tooltip" translatable="yes">Move keyboard focus to the previous document in this comparison</property>
+        <signal name="activate" handler="action_prev_pane" swapped="no"/>
       </object>
-      <accelerator key="Escape" modifiers="GDK_CONTROL_MASK"/>
+      <accelerator key="Page_Up" modifiers="GDK_MOD1_MASK"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="NextPane">
+        <property name="label" translatable="yes">Next Pane</property>
+        <property name="tooltip" translatable="yes">Move keyboard focus to the next document in this comparison</property>
+        <signal name="activate" handler="action_next_pane" swapped="no"/>
+      </object>
+      <accelerator key="Page_Down" modifiers="GDK_MOD1_MASK"/>
     </child>
     <child>
       <object class="GtkToggleAction" id="LockScrolling">
