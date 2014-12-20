@@ -540,7 +540,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def next_diff(self, direction, centered=False):
         target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
                   else self.cursor.prev)
-        go_to_chunk(target, centered=centered)
+        self.go_to_chunk(target, centered=centered)
 
     def action_previous_conflict(self, *args):
         self.go_to_chunk(self.cursor.prev_conflict, self.cursor.pane)
