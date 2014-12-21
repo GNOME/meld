@@ -900,8 +900,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if response == Gtk.ResponseType.OK:
             for h in self.settings_handlers:
                 meldsettings.disconnect(h)
-        # TODO: Base the return code on something meaningful for VC tools
-        self.emit('close', 0)
+            # TODO: Base the return code on something meaningful for VC tools
+            self.emit('close', 0)
         return response
 
     def on_undo_activate(self):
