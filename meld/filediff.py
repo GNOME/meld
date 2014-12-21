@@ -855,7 +855,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # but this is unbound on currently required PyGTK.
             buttons = []
             for i in range(self.num_panes):
-                button = Gtk.CheckButton(self.textbuffer[i].data.label)
+                button = Gtk.CheckButton(label=self.textbuffer[i].data.label)
                 button.set_use_underline(False)
                 button.set_sensitive(modified[i])
                 button.set_active(modified[i])
