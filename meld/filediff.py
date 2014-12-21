@@ -1363,6 +1363,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if texts != (text1, textn):
                         return
 
+                    if clear:
+                        bufs[0].remove_tag(tags[0], starts[0], ends[0])
+                        bufs[1].remove_tag(tags[1], starts[1], ends[1])
+
                     offsets = [ends[0].get_offset() - starts[0].get_offset(),
                                ends[1].get_offset() - starts[1].get_offset()]
 
@@ -1389,10 +1393,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             start.set_offset(offset + o[1 + 2 * i])
                             end.set_offset(offset + o[2 + 2 * i])
                             bufs[i].apply_tag(tags[i], start, end)
-
-                if clear:
-                    bufs[0].remove_tag(tags[0], starts[0], ends[0])
-                    bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
                 starts = [bufs[0].create_mark(None, starts[0], True),
                           bufs[1].create_mark(None, starts[1], True)]
