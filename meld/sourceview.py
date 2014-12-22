@@ -96,3 +96,14 @@ class MeldSourceView(GtkSource.View):
 
     def get_line_num_for_y(self, y):
         return self.get_line_at_y(y)[0].get_line()
+
+
+class CommitMessageSourceView(GtkSource.View):
+
+    __gtype_name__ = "CommitMessageSourceView"
+
+    __gsettings_bindings__ = (
+        ('indent-width', 'tab-width'),
+        ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
+        ('draw-spaces', 'draw-spaces'),
+    )
