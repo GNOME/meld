@@ -118,6 +118,7 @@ class PatchDialog(gnomeglade.Component):
                 filename = self.filediff._get_filename_for_saving(
                     _("Save Patch"))
                 if filename:
+                    txt = txt.encode('utf-8')
                     self.filediff._save_text_to_filename(filename, txt)
                     break
 
