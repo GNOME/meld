@@ -178,7 +178,8 @@ def setup_resources():
     from gi.repository import Gtk
     from gi.repository import Gdk
 
-    GObject.threads_init()
+    if GObject.pygobject_version <= (3, 11):
+        GObject.threads_init()
     icon_dir = os.path.join(meld.conf.DATADIR, "icons")
     Gtk.IconTheme.get_default().append_search_path(icon_dir)
 
