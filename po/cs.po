@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-10-26 10:42+0000\n"
-"PO-Revision-Date: 2014-10-26 15:52+0100\n"
+"POT-Creation-Date: 2014-12-26 10:49+0000\n"
+"PO-Revision-Date: 2014-12-26 20:00+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -35,7 +35,7 @@ msgstr "Meld vyžaduje %s nebo vyšší."
 msgid "Meld does not support Python 3."
 msgstr "Meld nepodporuje Python 3."
 
-#: ../bin/meld:193
+#: ../bin/meld:194
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -162,7 +162,6 @@ msgstr ""
 "barevné zvýrazňování, je ve výchozím stavu vypnuto."
 
 #: ../data/org.gnome.meld.gschema.xml.h:17
-#| msgid "Use s_yntax highlighting"
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Schéma barev použité ke zvýraznění syntaxe"
 
@@ -503,7 +502,6 @@ msgid "Compare selected files"
 msgstr "Porovnat vybrané soubory"
 
 #: ../data/ui/dirdiff.ui.h:3
-#| msgid "Copy to left"
 msgid "Copy to _Left"
 msgstr "Kopírovat do_leva"
 
@@ -512,7 +510,6 @@ msgid "Copy to left"
 msgstr "Kopírovat doleva"
 
 #: ../data/ui/dirdiff.ui.h:5
-#| msgid "Copy to right"
 msgid "Copy to _Right"
 msgstr "Kopírovat dop_rava"
 
@@ -524,7 +521,7 @@ msgstr "Kopírovat doprava"
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1452
+#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1429
 msgid "Hide"
 msgstr "Skrýt"
 
@@ -632,26 +629,198 @@ msgid "Remove selected filter"
 msgstr "Odstranit vybraný filtr"
 
 #: ../data/ui/filediff.ui.h:1
+msgid "Format as Patch..."
+msgstr "Formátovat jako záplatu…"
+
+#: ../data/ui/filediff.ui.h:2
+msgid "Create a patch using differences between files"
+msgstr "Vytvořit záplatu použitím rozdílů mezi soubory"
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Save A_ll"
+msgstr "Uložit _vše"
+
+#: ../data/ui/filediff.ui.h:4
+msgid "Save all files in the current comparison"
+msgstr "Uložit všechny soubory v aktuálním porovnávání"
+
+#: ../data/ui/filediff.ui.h:5
+msgid "Revert files to their saved versions"
+msgstr "Vrátit soubory k jejich uloženým verzím"
+
+#: ../data/ui/filediff.ui.h:6
+msgid "Add Synchronization Point"
+msgstr "Přidat synchronizační bod"
+
+#: ../data/ui/filediff.ui.h:7
+msgid "Add a manual point for synchronization of changes between files"
+msgstr "Ručně přidat bod pro synchronizaci změn mezi soubory"
+
+#: ../data/ui/filediff.ui.h:8
+msgid "Clear Synchronization Points"
+msgstr "Vymazat synchronizační body"
+
+#: ../data/ui/filediff.ui.h:9
+msgid "Clear manual change sychronization points"
+msgstr "Vymazat ručně přidané synchronizační body"
+
+#: ../data/ui/filediff.ui.h:10
+msgid "Previous Conflict"
+msgstr "Předchozí konflikt"
+
+#: ../data/ui/filediff.ui.h:11
+msgid "Go to the previous conflict"
+msgstr "Přejít na předchozí konflikt"
+
+#: ../data/ui/filediff.ui.h:12
+msgid "Next Conflict"
+msgstr "Následující konflikt"
+
+#: ../data/ui/filediff.ui.h:13
+msgid "Go to the next conflict"
+msgstr "Přejít na následující konflikt"
+
+#: ../data/ui/filediff.ui.h:14
+msgid "Push to Left"
+msgstr "Zatlačit doleva"
+
+#: ../data/ui/filediff.ui.h:15
+msgid "Push current change to the left"
+msgstr "Zatlačit aktuální změnu doleva"
+
+#: ../data/ui/filediff.ui.h:16
+msgid "Push to Right"
+msgstr "Zatlačit doprava"
+
+#: ../data/ui/filediff.ui.h:17
+msgid "Push current change to the right"
+msgstr "Zatlačit aktuální změnu doprava"
+
+#: ../data/ui/filediff.ui.h:18
+msgid "Pull from Left"
+msgstr "Vytáhnout zleva"
+
+#: ../data/ui/filediff.ui.h:19
+msgid "Pull change from the left"
+msgstr "Vytáhnout změnu zleva"
+
+#: ../data/ui/filediff.ui.h:20
+msgid "Pull from Right"
+msgstr "Vytáhnout zprava"
+
+#: ../data/ui/filediff.ui.h:21
+msgid "Pull change from the right"
+msgstr "Vytáhnout změnu zprava"
+
+#: ../data/ui/filediff.ui.h:22
+msgid "Copy Above Left"
+msgstr "Kopírovat z levé vrchní části"
+
+#: ../data/ui/filediff.ui.h:23
+msgid "Copy change above the left chunk"
+msgstr "Kopírovat změnu nad levým blokem"
+
+#: ../data/ui/filediff.ui.h:24
+msgid "Copy Below Left"
+msgstr "Kopírovat z levé spodní části"
+
+#: ../data/ui/filediff.ui.h:25
+msgid "Copy change below the left chunk"
+msgstr "Kopírovat změnu pod levým blokem"
+
+#: ../data/ui/filediff.ui.h:26
+msgid "Copy Above Right"
+msgstr "Kopírovat z pravé vrchní části"
+
+#: ../data/ui/filediff.ui.h:27
+msgid "Copy change above the right chunk"
+msgstr "Kopírovat změnu nad pravým blokem"
+
+#: ../data/ui/filediff.ui.h:28
+msgid "Copy Below Right"
+msgstr "Kopírovat z pravé spodní části"
+
+#: ../data/ui/filediff.ui.h:29
+msgid "Copy change below the right chunk"
+msgstr "Kopírovat změnu pod pravým blokem"
+
+#: ../data/ui/filediff.ui.h:30
+msgid "Delete"
+msgstr "Smazat"
+
+#: ../data/ui/filediff.ui.h:31
+msgid "Delete change"
+msgstr "Smazat změnu"
+
+#: ../data/ui/filediff.ui.h:32
+msgid "Merge All from Left"
+msgstr "Sloučit vše zleva"
+
+#: ../data/ui/filediff.ui.h:33
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Sloučit veškeré změny bez konfliktů zleva"
+
+#: ../data/ui/filediff.ui.h:34
+msgid "Merge All from Right"
+msgstr "Sloučit vše zprava"
+
+#: ../data/ui/filediff.ui.h:35
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Sloučit veškeré změny bez konfliktů zprava"
+
+#: ../data/ui/filediff.ui.h:36
+msgid "Merge All"
+msgstr "Sloučit vše"
+
+#: ../data/ui/filediff.ui.h:37
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr "Sloučit veškeré změny bez konfliktů z levého a pravého panelu"
+
+#: ../data/ui/filediff.ui.h:38
+msgid "Previous Pane"
+msgstr "Předchozí panel"
+
+#: ../data/ui/filediff.ui.h:39
+msgid "Move keyboard focus to the previous document in this comparison"
+msgstr "Přepnout zaměření klávesnice na předchozí dokument v tomto porovnání"
+
+#: ../data/ui/filediff.ui.h:40
+msgid "Next Pane"
+msgstr "Následující panel"
+
+#: ../data/ui/filediff.ui.h:41
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Přepnout zaměření klávesnice na následující dokument v tomto porovnání"
+
+#: ../data/ui/filediff.ui.h:42
+msgid "Lock Scrolling"
+msgstr "Uzamknout posouvání"
+
+#: ../data/ui/filediff.ui.h:43
+msgid "Lock scrolling of all panes"
+msgstr "Uzamknout posouvání všech panelů"
+
+#: ../data/ui/filediff.ui.h:44
 msgid "Save changes to documents before closing?"
 msgstr "Uložit změny, než dokument zavřete?"
 
-#: ../data/ui/filediff.ui.h:2
+#: ../data/ui/filediff.ui.h:45
 msgid "If you don't save, changes will be permanently lost."
 msgstr "Pokud se změny neuloží, budou trvale ztraceny."
 
-#: ../data/ui/filediff.ui.h:3
+#: ../data/ui/filediff.ui.h:46
 msgid "Close _without Saving"
 msgstr "Zavřít _bez uložení"
 
-#: ../data/ui/filediff.ui.h:4
+#: ../data/ui/filediff.ui.h:47
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: ../data/ui/filediff.ui.h:5
+#: ../data/ui/filediff.ui.h:48
 msgid "_Save"
 msgstr "_Uložit"
 
-#: ../data/ui/filediff.ui.h:6
+#: ../data/ui/filediff.ui.h:49
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
@@ -660,23 +829,23 @@ msgstr ""
 "odemknout a změny v něm provést, ale tyto změny budou muset být uloženy v "
 "novém souboru."
 
-#: ../data/ui/filediff.ui.h:7
+#: ../data/ui/filediff.ui.h:50
 msgid "File 3"
 msgstr "Soubor 3"
 
-#: ../data/ui/filediff.ui.h:8
+#: ../data/ui/filediff.ui.h:51
 msgid "File 2"
 msgstr "Soubor 2"
 
-#: ../data/ui/filediff.ui.h:9
+#: ../data/ui/filediff.ui.h:52
 msgid "File 1"
 msgstr "Soubor 1"
 
-#: ../data/ui/filediff.ui.h:10
+#: ../data/ui/filediff.ui.h:53
 msgid "Revert unsaved changes to documents?"
 msgstr "Vrátit stav před neuložené změny v dokumentu?"
 
-#: ../data/ui/filediff.ui.h:11
+#: ../data/ui/filediff.ui.h:54
 msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr "Změny provedené v následujících dokumentech budou trvale ztraceny:\n"
 
@@ -833,7 +1002,6 @@ msgid "Use s_yntax highlighting"
 msgstr "Používat zvýrazňování s_yntaxe"
 
 #: ../data/ui/preferences.ui.h:22
-#| msgid "Change highlighting incomplete"
 msgid "Syntax highlighting color scheme:"
 msgstr "Schéma barev pro zvýraznění syntaxe:"
 
@@ -1208,8 +1376,8 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ skryto v „%s“"
 
-#: ../meld/dirdiff.py:873 ../meld/filediff.py:1127 ../meld/filediff.py:1278
-#: ../meld/filediff.py:1454 ../meld/filediff.py:1484 ../meld/filediff.py:1486
+#: ../meld/dirdiff.py:873 ../meld/filediff.py:1103 ../meld/filediff.py:1255
+#: ../meld/filediff.py:1431 ../meld/filediff.py:1461 ../meld/filediff.py:1463
 msgid "Hi_de"
 msgstr "_Skrýt"
 
@@ -1244,186 +1412,22 @@ msgstr ""
 msgid "Error deleting %s"
 msgstr "Chyba při mazání %s"
 
-#: ../meld/filediff.py:244
-msgid "Format as Patch..."
-msgstr "Formátovat jako záplatu…"
-
-#: ../meld/filediff.py:245
-msgid "Create a patch using differences between files"
-msgstr "Vytvořit záplatu použitím rozdílů mezi soubory"
-
-#: ../meld/filediff.py:247
-msgid "Save A_ll"
-msgstr "Uložit _vše"
-
-#: ../meld/filediff.py:248
-msgid "Save all files in the current comparison"
-msgstr "Uložit všechny soubory v aktuálním porovnávání"
-
-#: ../meld/filediff.py:251
-msgid "Revert files to their saved versions"
-msgstr "Vrátit soubory k jejich uloženým verzím"
-
-#: ../meld/filediff.py:253
-msgid "Add Synchronization Point"
-msgstr "Přidat synchronizační bod"
-
-#: ../meld/filediff.py:254
-msgid "Add a manual point for synchronization of changes between files"
-msgstr "Ručně přidat bod pro synchronizaci změn mezi soubory"
-
-#: ../meld/filediff.py:257
-msgid "Clear Synchronization Points"
-msgstr "Vymazat synchronizační body"
-
-#: ../meld/filediff.py:258
-msgid "Clear manual change sychronization points"
-msgstr "Vymazat ručně přidané synchronizační body"
-
-#: ../meld/filediff.py:260
-msgid "Previous Conflict"
-msgstr "Předchozí konflikt"
-
-#: ../meld/filediff.py:261
-msgid "Go to the previous conflict"
-msgstr "Přejít na předchozí konflikt"
-
-#: ../meld/filediff.py:263
-msgid "Next Conflict"
-msgstr "Následující konflikt"
-
-#: ../meld/filediff.py:264
-msgid "Go to the next conflict"
-msgstr "Přejít na následující konflikt"
-
-#: ../meld/filediff.py:266
-msgid "Push to Left"
-msgstr "Zatlačit doleva"
-
-#: ../meld/filediff.py:267
-msgid "Push current change to the left"
-msgstr "Zatlačit aktuální změnu doleva"
-
-#: ../meld/filediff.py:270
-msgid "Push to Right"
-msgstr "Zatlačit doprava"
-
-#: ../meld/filediff.py:271
-msgid "Push current change to the right"
-msgstr "Zatlačit aktuální změnu doprava"
-
-#: ../meld/filediff.py:275
-msgid "Pull from Left"
-msgstr "Vytáhnout zleva"
-
-#: ../meld/filediff.py:276
-msgid "Pull change from the left"
-msgstr "Vytáhnout změnu zleva"
-
-#: ../meld/filediff.py:279
-msgid "Pull from Right"
-msgstr "Vytáhnout zprava"
-
-#: ../meld/filediff.py:280
-msgid "Pull change from the right"
-msgstr "Vytáhnout změnu zprava"
-
-#: ../meld/filediff.py:282
-msgid "Copy Above Left"
-msgstr "Kopírovat z levé vrchní části"
-
-#: ../meld/filediff.py:283
-msgid "Copy change above the left chunk"
-msgstr "Kopírovat změnu nad levým blokem"
-
-#: ../meld/filediff.py:285
-msgid "Copy Below Left"
-msgstr "Kopírovat z levé spodní části"
-
-#: ../meld/filediff.py:286
-msgid "Copy change below the left chunk"
-msgstr "Kopírovat změnu pod levým blokem"
-
-#: ../meld/filediff.py:288
-msgid "Copy Above Right"
-msgstr "Kopírovat z pravé vrchní části"
-
-#: ../meld/filediff.py:289
-msgid "Copy change above the right chunk"
-msgstr "Kopírovat změnu nad pravým blokem"
-
-#: ../meld/filediff.py:291
-msgid "Copy Below Right"
-msgstr "Kopírovat z pravé spodní části"
-
-#: ../meld/filediff.py:292
-msgid "Copy change below the right chunk"
-msgstr "Kopírovat změnu pod pravým blokem"
-
-#: ../meld/filediff.py:294
-msgid "Delete"
-msgstr "Smazat"
-
-#: ../meld/filediff.py:295
-msgid "Delete change"
-msgstr "Smazat změnu"
-
-#: ../meld/filediff.py:297
-msgid "Merge All from Left"
-msgstr "Sloučit vše zleva"
-
-#: ../meld/filediff.py:298
-msgid "Merge all non-conflicting changes from the left"
-msgstr "Sloučit veškeré změny bez konfliktů zleva"
-
-#: ../meld/filediff.py:300
-msgid "Merge All from Right"
-msgstr "Sloučit vše zprava"
-
-#: ../meld/filediff.py:301
-msgid "Merge all non-conflicting changes from the right"
-msgstr "Sloučit veškeré změny bez konfliktů zprava"
-
-#: ../meld/filediff.py:303
-msgid "Merge All"
-msgstr "Sloučit vše"
-
-#: ../meld/filediff.py:304
-msgid "Merge all non-conflicting changes from left and right panes"
-msgstr "Sloučit veškeré změny bez konfliktů z levého a pravého panelu"
-
-#: ../meld/filediff.py:308
-msgid "Cycle Through Documents"
-msgstr "Přepnout mezi dokumenty"
-
-#: ../meld/filediff.py:309
-msgid "Move keyboard focus to the next document in this comparison"
-msgstr "Přepnout se s klávesnicí na další dokument v tomto porovnání"
-
-#: ../meld/filediff.py:315
-msgid "Lock Scrolling"
-msgstr "Uzamknout posouvání"
-
-#: ../meld/filediff.py:316
-msgid "Lock scrolling of all panes"
-msgstr "Uzamknout posouvání všech panelů"
-
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:475
+#: ../meld/filediff.py:399
 msgid "INS"
 msgstr "VKL"
 
-#: ../meld/filediff.py:475
+#: ../meld/filediff.py:399
 msgid "OVR"
 msgstr "PŘE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:477
+#: ../meld/filediff.py:401
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Řád %i, sl %i"
 
-#: ../meld/filediff.py:824
+#: ../meld/filediff.py:813
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -1432,72 +1436,72 @@ msgstr ""
 "Filtr „%s“ změnil počet řádků v souboru. Porovnání nebude správné. Další "
 "podrobnosti viz příručka uživatele."
 
-#: ../meld/filediff.py:893
+#: ../meld/filediff.py:882
 msgid "Mark conflict as resolved?"
 msgstr "Označit konflikt jako vyřešený?"
 
-#: ../meld/filediff.py:895
+#: ../meld/filediff.py:884
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Pokud byl konflikt vyřešen úspěšně, můžete jej označit za vyřešený."
 
-#: ../meld/filediff.py:897
+#: ../meld/filediff.py:886
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../meld/filediff.py:898
+#: ../meld/filediff.py:887
 msgid "Mark _Resolved"
 msgstr "Označi_t za vyřešené"
 
-#: ../meld/filediff.py:1114
+#: ../meld/filediff.py:1090
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Nastaven počet panelů"
 
-#: ../meld/filediff.py:1121
+#: ../meld/filediff.py:1097
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Otevírají se soubory"
 
-#: ../meld/filediff.py:1144 ../meld/filediff.py:1154 ../meld/filediff.py:1167
-#: ../meld/filediff.py:1173
+#: ../meld/filediff.py:1120 ../meld/filediff.py:1130 ../meld/filediff.py:1143
+#: ../meld/filediff.py:1149
 msgid "Could not read file"
 msgstr "Nelze přečíst soubor"
 
-#: ../meld/filediff.py:1145
+#: ../meld/filediff.py:1121
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Čtou se soubory"
 
-#: ../meld/filediff.py:1155
+#: ../meld/filediff.py:1131
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s je zřejmě binárním souborem."
 
-#: ../meld/filediff.py:1168
+#: ../meld/filediff.py:1144
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s není v kódováních: %s"
 
-#: ../meld/filediff.py:1206
+#: ../meld/filediff.py:1182
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Počítají se rozdíly"
 
-#: ../meld/filediff.py:1273
+#: ../meld/filediff.py:1250
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Soubor „%s“ byl změněn na disku."
 
-#: ../meld/filediff.py:1274
+#: ../meld/filediff.py:1251
 msgid "Do you want to reload the file?"
 msgstr "Chcete soubor znovu načíst?"
 
-#: ../meld/filediff.py:1277
+#: ../meld/filediff.py:1254
 msgid "_Reload"
 msgstr "Zno_vu načíst"
 
-#: ../meld/filediff.py:1443
+#: ../meld/filediff.py:1420
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1505,19 +1509,19 @@ msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory. Chcete porovnat nefiltrované soubory?"
 
-#: ../meld/filediff.py:1449
+#: ../meld/filediff.py:1426
 msgid "Files are identical"
 msgstr "Soubory jsou stejné"
 
-#: ../meld/filediff.py:1457
+#: ../meld/filediff.py:1434
 msgid "Show without filters"
 msgstr "Zobrazit bez filtrů"
 
-#: ../meld/filediff.py:1479
+#: ../meld/filediff.py:1456
 msgid "Change highlighting incomplete"
 msgstr "Změnit zvýraznění neúplných"
 
-#: ../meld/filediff.py:1480
+#: ../meld/filediff.py:1457
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1526,15 +1530,15 @@ msgstr ""
 "přimět k používání větší délky, aby se zvýraznily i rozsáhlé změny, ale může "
 "to pak být pomalé."
 
-#: ../meld/filediff.py:1488
+#: ../meld/filediff.py:1465
 msgid "Keep highlighting"
 msgstr "Zachovat zvýrazňování"
 
-#: ../meld/filediff.py:1490
+#: ../meld/filediff.py:1467
 msgid "_Keep highlighting"
 msgstr "Z_achovat zvýrazňování"
 
-#: ../meld/filediff.py:1621
+#: ../meld/filediff.py:1596
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -1543,7 +1547,7 @@ msgstr ""
 "„%s“ existuje!\n"
 "Přepsat?"
 
-#: ../meld/filediff.py:1634
+#: ../meld/filediff.py:1609
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -1554,36 +1558,36 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1645
+#: ../meld/filediff.py:1620
 msgid "Save Left Pane As"
 msgstr "Uložení levého panelu jako"
 
-#: ../meld/filediff.py:1647
+#: ../meld/filediff.py:1622
 msgid "Save Middle Pane As"
 msgstr "Uložení prostředního panelu jako"
 
-#: ../meld/filediff.py:1649
+#: ../meld/filediff.py:1624
 msgid "Save Right Pane As"
 msgstr "Uložení pravého panelu jako"
 
-#: ../meld/filediff.py:1662
+#: ../meld/filediff.py:1637
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Soubor „%s“ byl od doby, co jste jej otevřeli, změněn."
 
-#: ../meld/filediff.py:1664
+#: ../meld/filediff.py:1639
 msgid "If you save it, any external changes will be lost."
 msgstr "Pokud jej uložíte, budou vnější změny ztraceny."
 
-#: ../meld/filediff.py:1667
+#: ../meld/filediff.py:1642
 msgid "Save Anyway"
 msgstr "Přesto uložit"
 
-#: ../meld/filediff.py:1668
+#: ../meld/filediff.py:1643
 msgid "Don't Save"
 msgstr "Neukládat"
 
-#: ../meld/filediff.py:1692
+#: ../meld/filediff.py:1667
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -1594,7 +1598,7 @@ msgstr ""
 "\n"
 "Jaký formát chcete používat?"
 
-#: ../meld/filediff.py:1708
+#: ../meld/filediff.py:1683
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -1603,11 +1607,11 @@ msgstr ""
 "„%s“ obsahuje znaky, které nelze kódovat v „%s“\n"
 "Chcete uložit jako UTF-8?"
 
-#: ../meld/filediff.py:2071
+#: ../meld/filediff.py:2023
 msgid "Live comparison updating disabled"
 msgstr "Živá aktualizace porovnání zakázána"
 
-#: ../meld/filediff.py:2072
+#: ../meld/filediff.py:2024
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2177,12 +2181,3 @@ msgstr ""
 #, python-format
 msgid "Error removing %s"
 msgstr "Chyba při odstraňování %s"
-
-#~ msgid "Copy _Left"
-#~ msgstr "Kopírovat na_levo"
-
-#~ msgid "Copy _Right"
-#~ msgstr "Kopí_rovat napravo"
-
-#~ msgid "Regular expression error"
-#~ msgstr "Chyba v regulárním výrazu"
