@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=meld&ke"
 "ywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-10-28 10:44+0000\n"
-"PO-Revision-Date: 2014-10-28 20:03+0200\n"
+"POT-Creation-Date: 2014-12-27 10:52+0000\n"
+"PO-Revision-Date: 2014-12-27 15:53+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -33,7 +33,7 @@ msgstr "Meld zahteva %s ili noviji."
 msgid "Meld does not support Python 3."
 msgstr "Meld ne podržava Pitona 3."
 
-#: ../bin/meld:193
+#: ../bin/meld:194
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -88,7 +88,6 @@ msgid "Default window size"
 msgstr "Osnovna veličina prozora"
 
 #: ../data/org.gnome.meld.gschema.xml.h:2
-#| msgid "Default window size"
 msgid "Default window state"
 msgstr "Osnovno stanje prozora"
 
@@ -159,7 +158,6 @@ msgstr ""
 "je unapred isključeno."
 
 #: ../data/org.gnome.meld.gschema.xml.h:17
-#| msgid "Use s_yntax highlighting"
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Šema boje za isticanje sintakse"
 
@@ -365,9 +363,9 @@ msgstr ""
 "oknima. U suprotnom, koristi se šema „levo-je-njihovo, desno-je-moje“."
 
 #: ../data/org.gnome.meld.gschema.xml.h:51
-#| msgid "Start a version control comparison"
 msgid "Order for files in three-way version control merge comparisons"
-msgstr "Redosled datoteka za poređenje stapanja upravljanja izdanjem za tri elementa"
+msgstr ""
+"Redosled datoteka za poređenje stapanja upravljanja izdanjem za tri elementa"
 
 #: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
@@ -397,9 +395,6 @@ msgid "Margin column in commit message editor"
 msgstr "Stubac ivice u uređivaču poruke predaje"
 
 #: ../data/org.gnome.meld.gschema.xml.h:56
-#| msgid ""
-#| "The column of the margin is at in the version control commit message "
-#| "editor."
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -504,7 +499,6 @@ msgid "Compare selected files"
 msgstr "Uporedite izabrane datoteke"
 
 #: ../data/ui/dirdiff.ui.h:3
-#| msgid "Copy to left"
 msgid "Copy to _Left"
 msgstr "Umnoži _levo"
 
@@ -513,7 +507,6 @@ msgid "Copy to left"
 msgstr "Umnožite levo"
 
 #: ../data/ui/dirdiff.ui.h:5
-#| msgid "Copy to right"
 msgid "Copy to _Right"
 msgstr "Umnoži _desno"
 
@@ -525,7 +518,7 @@ msgstr "Umnožite desno"
 msgid "Delete selected"
 msgstr "Obriši izabrano"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1452
+#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1429
 msgid "Hide"
 msgstr "Sakrij"
 
@@ -633,26 +626,201 @@ msgid "Remove selected filter"
 msgstr "Uklonite izabrani propusnik"
 
 #: ../data/ui/filediff.ui.h:1
+msgid "Format as Patch..."
+msgstr "Oblikuj kao ispravku..."
+
+#: ../data/ui/filediff.ui.h:2
+msgid "Create a patch using differences between files"
+msgstr "Napravite ispravku koristeći razlike između datoteka"
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Save A_ll"
+msgstr "Sačuvaj _sve"
+
+#: ../data/ui/filediff.ui.h:4
+msgid "Save all files in the current comparison"
+msgstr "Sačuvajte sve datoteke u tekućem poređenju"
+
+#: ../data/ui/filediff.ui.h:5
+msgid "Revert files to their saved versions"
+msgstr "Povratite datoteke na njihova sačuvana izdanja"
+
+#: ../data/ui/filediff.ui.h:6
+msgid "Add Synchronization Point"
+msgstr "Dodaj tačku usklađivanja"
+
+#: ../data/ui/filediff.ui.h:7
+msgid "Add a manual point for synchronization of changes between files"
+msgstr "Dodajte tačku za usklađivanje izmena između datoteka"
+
+#: ../data/ui/filediff.ui.h:8
+msgid "Clear Synchronization Points"
+msgstr "Očisti tačke usklađivanja"
+
+#: ../data/ui/filediff.ui.h:9
+msgid "Clear manual change sychronization points"
+msgstr "Očistite tačke usklađivanja izmena"
+
+#: ../data/ui/filediff.ui.h:10
+msgid "Previous Conflict"
+msgstr "Prethodni sukob"
+
+#: ../data/ui/filediff.ui.h:11
+msgid "Go to the previous conflict"
+msgstr "Idite na prethodni sukob"
+
+#: ../data/ui/filediff.ui.h:12
+msgid "Next Conflict"
+msgstr "Sledeći sukob"
+
+#: ../data/ui/filediff.ui.h:13
+msgid "Go to the next conflict"
+msgstr "Idite na sledeći sukob"
+
+#: ../data/ui/filediff.ui.h:14
+msgid "Push to Left"
+msgstr "Gurni ulevo"
+
+#: ../data/ui/filediff.ui.h:15
+msgid "Push current change to the left"
+msgstr "Gurnite tekuću izmenu ulevo"
+
+#: ../data/ui/filediff.ui.h:16
+msgid "Push to Right"
+msgstr "Gurni udesno"
+
+#: ../data/ui/filediff.ui.h:17
+msgid "Push current change to the right"
+msgstr "Gurnite tekuću izmenu udesno"
+
+#: ../data/ui/filediff.ui.h:18
+msgid "Pull from Left"
+msgstr "Ubaci s leva"
+
+#: ../data/ui/filediff.ui.h:19
+msgid "Pull change from the left"
+msgstr "Ubacite izmenu s leva"
+
+#: ../data/ui/filediff.ui.h:20
+msgid "Pull from Right"
+msgstr "Ubaci s desna"
+
+#: ../data/ui/filediff.ui.h:21
+msgid "Pull change from the right"
+msgstr "Ubacite izmenu s desna"
+
+#: ../data/ui/filediff.ui.h:22
+msgid "Copy Above Left"
+msgstr "Umnoži iznad ulevo"
+
+#: ../data/ui/filediff.ui.h:23
+msgid "Copy change above the left chunk"
+msgstr "Umnožite izmenu iznad komada ulevo"
+
+#: ../data/ui/filediff.ui.h:24
+msgid "Copy Below Left"
+msgstr "Umnoži ispod ulevo"
+
+#: ../data/ui/filediff.ui.h:25
+msgid "Copy change below the left chunk"
+msgstr "Umnožite izmenu ispod komada ulevo"
+
+#: ../data/ui/filediff.ui.h:26
+msgid "Copy Above Right"
+msgstr "Umnoži iznad udesno"
+
+#: ../data/ui/filediff.ui.h:27
+msgid "Copy change above the right chunk"
+msgstr "Umnožite izmenu iznad komada udesno"
+
+#: ../data/ui/filediff.ui.h:28
+msgid "Copy Below Right"
+msgstr "Umnoži ispod udesno"
+
+#: ../data/ui/filediff.ui.h:29
+msgid "Copy change below the right chunk"
+msgstr "Umnožite izmenu ispod komada udesno"
+
+#: ../data/ui/filediff.ui.h:30
+msgid "Delete"
+msgstr "Obriši"
+
+#: ../data/ui/filediff.ui.h:31
+msgid "Delete change"
+msgstr "Obrišite izmenu"
+
+#: ../data/ui/filediff.ui.h:32
+msgid "Merge All from Left"
+msgstr "Objedini sve s leva"
+
+#: ../data/ui/filediff.ui.h:33
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Objedinite sve nesukobljavajuće izmene s leva"
+
+#: ../data/ui/filediff.ui.h:34
+msgid "Merge All from Right"
+msgstr "Objedini sve s desna"
+
+#: ../data/ui/filediff.ui.h:35
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Objedinite sve nesukobljavajuće izmene s desna"
+
+#: ../data/ui/filediff.ui.h:36
+msgid "Merge All"
+msgstr "Stopi sve"
+
+#: ../data/ui/filediff.ui.h:37
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr "Objedinite sve nesukobljavajuće izmene s leve i desne površi"
+
+#: ../data/ui/filediff.ui.h:38
+#| msgid "Previous Change"
+msgid "Previous Pane"
+msgstr "Prethodno okno"
+
+#: ../data/ui/filediff.ui.h:39
+#| msgid "Move keyboard focus to the next document in this comparison"
+msgid "Move keyboard focus to the previous document in this comparison"
+msgstr "Premestite fokus tastature na prethodni dokument u ovom poređenju"
+
+#: ../data/ui/filediff.ui.h:40
+#| msgid "Next Change"
+msgid "Next Pane"
+msgstr "Sledeće okno"
+
+#: ../data/ui/filediff.ui.h:41
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Premestite fokus tastature na sledeći dokument u ovom poređenju"
+
+#: ../data/ui/filediff.ui.h:42
+msgid "Lock Scrolling"
+msgstr "Zaključaj klizanje"
+
+#: ../data/ui/filediff.ui.h:43
+msgid "Lock scrolling of all panes"
+msgstr "Zaključajte klizanje svih površi"
+
+#: ../data/ui/filediff.ui.h:44
 msgid "Save changes to documents before closing?"
 msgstr "Da sačuvam izmene u dokumentu pre zatvaranja?"
 
-#: ../data/ui/filediff.ui.h:2
+#: ../data/ui/filediff.ui.h:45
 msgid "If you don't save, changes will be permanently lost."
 msgstr "Ako ne sačuvate, izmene će biti trajno izgubljene."
 
-#: ../data/ui/filediff.ui.h:3
+#: ../data/ui/filediff.ui.h:46
 msgid "Close _without Saving"
 msgstr "Zatvori _bez čuvanja"
 
-#: ../data/ui/filediff.ui.h:4
+#: ../data/ui/filediff.ui.h:47
 msgid "_Cancel"
 msgstr "_Otkaži"
 
-#: ../data/ui/filediff.ui.h:5
+#: ../data/ui/filediff.ui.h:48
 msgid "_Save"
 msgstr "_Sačuvaj"
 
-#: ../data/ui/filediff.ui.h:6
+#: ../data/ui/filediff.ui.h:49
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
@@ -661,26 +829,23 @@ msgstr ""
 "ovu datoteku i da ipak načinite izmene, ali te izmene moraju biti sačuvane u "
 "novu datoteku."
 
-#: ../data/ui/filediff.ui.h:7
-#| msgid "_File"
+#: ../data/ui/filediff.ui.h:50
 msgid "File 3"
 msgstr "3. datoteka"
 
-#: ../data/ui/filediff.ui.h:8
-#| msgid "_File"
+#: ../data/ui/filediff.ui.h:51
 msgid "File 2"
 msgstr "2. datoteka"
 
-#: ../data/ui/filediff.ui.h:9
-#| msgid "_File"
+#: ../data/ui/filediff.ui.h:52
 msgid "File 1"
 msgstr "1. datoteka"
 
-#: ../data/ui/filediff.ui.h:10
+#: ../data/ui/filediff.ui.h:53
 msgid "Revert unsaved changes to documents?"
 msgstr "Da povratim nesačuvane izmene u dokumentima?"
 
-#: ../data/ui/filediff.ui.h:11
+#: ../data/ui/filediff.ui.h:54
 msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr "Izmene načinjene nad sledećim dokumentima će biti trajno izgubljene:\n"
 
@@ -761,12 +926,10 @@ msgid "Left is local, right is remote"
 msgstr "Leva je mesna, desna je udaljena"
 
 #: ../data/ui/preferences.ui.h:3
-#| msgid "Left is remote, right is local"
 msgid "Remote, merge, local"
 msgstr "Udaljena, spojena, mesna"
 
 #: ../data/ui/preferences.ui.h:4
-#| msgid "Left is local, right is remote"
 msgid "Local, merge, remote"
 msgstr "Mesna, spojena, udaljena"
 
@@ -839,7 +1002,6 @@ msgid "Use s_yntax highlighting"
 msgstr "Koristi isticanje _sintakse"
 
 #: ../data/ui/preferences.ui.h:22
-#| msgid "Change highlighting incomplete"
 msgid "Syntax highlighting color scheme:"
 msgstr "Šema boje isticanja sintakse:"
 
@@ -888,7 +1050,6 @@ msgid "Version Comparisons"
 msgstr "Poređenje izdanja"
 
 #: ../data/ui/preferences.ui.h:35
-#| msgid "_When comparing file revisions:"
 msgid "_Order when comparing file revisions:"
 msgstr "_Redosled pri poređenju pregleda datoteke:"
 
@@ -913,7 +1074,6 @@ msgid "Version Control"
 msgstr "Upravljanje izdanjem"
 
 #: ../data/ui/preferences.ui.h:41
-#| msgid "Filename-based filters"
 msgid "Filename filters"
 msgstr "Propusnici naziva datoteka"
 
@@ -940,7 +1100,6 @@ msgid "Trim blank line differences from the start and end of changes"
 msgstr "Skraćuje razlike praznih redova od početka i kraja izmena"
 
 #: ../data/ui/preferences.ui.h:46
-#| msgid "Text Filters"
 msgid "Text filters"
 msgstr "Propusnici teksta"
 
@@ -1215,8 +1374,8 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ sakriveno od strane „%s“"
 
-#: ../meld/dirdiff.py:873 ../meld/filediff.py:1127 ../meld/filediff.py:1278
-#: ../meld/filediff.py:1454 ../meld/filediff.py:1484 ../meld/filediff.py:1486
+#: ../meld/dirdiff.py:873 ../meld/filediff.py:1103 ../meld/filediff.py:1255
+#: ../meld/filediff.py:1431 ../meld/filediff.py:1461 ../meld/filediff.py:1463
 msgid "Hi_de"
 msgstr "_Sakrij"
 
@@ -1251,186 +1410,22 @@ msgstr ""
 msgid "Error deleting %s"
 msgstr "Greška brisanja „%s“"
 
-#: ../meld/filediff.py:244
-msgid "Format as Patch..."
-msgstr "Oblikuj kao ispravku..."
-
-#: ../meld/filediff.py:245
-msgid "Create a patch using differences between files"
-msgstr "Napravite ispravku koristeći razlike između datoteka"
-
-#: ../meld/filediff.py:247
-msgid "Save A_ll"
-msgstr "Sačuvaj _sve"
-
-#: ../meld/filediff.py:248
-msgid "Save all files in the current comparison"
-msgstr "Sačuvajte sve datoteke u tekućem poređenju"
-
-#: ../meld/filediff.py:251
-msgid "Revert files to their saved versions"
-msgstr "Povratite datoteke na njihova sačuvana izdanja"
-
-#: ../meld/filediff.py:253
-msgid "Add Synchronization Point"
-msgstr "Dodaj tačku usklađivanja"
-
-#: ../meld/filediff.py:254
-msgid "Add a manual point for synchronization of changes between files"
-msgstr "Dodajte tačku za usklađivanje izmena između datoteka"
-
-#: ../meld/filediff.py:257
-msgid "Clear Synchronization Points"
-msgstr "Očisti tačke usklađivanja"
-
-#: ../meld/filediff.py:258
-msgid "Clear manual change sychronization points"
-msgstr "Očistite tačke usklađivanja izmena"
-
-#: ../meld/filediff.py:260
-msgid "Previous Conflict"
-msgstr "Prethodni sukob"
-
-#: ../meld/filediff.py:261
-msgid "Go to the previous conflict"
-msgstr "Idite na prethodni sukob"
-
-#: ../meld/filediff.py:263
-msgid "Next Conflict"
-msgstr "Sledeći sukob"
-
-#: ../meld/filediff.py:264
-msgid "Go to the next conflict"
-msgstr "Idite na sledeći sukob"
-
-#: ../meld/filediff.py:266
-msgid "Push to Left"
-msgstr "Gurni ulevo"
-
-#: ../meld/filediff.py:267
-msgid "Push current change to the left"
-msgstr "Gurnite tekuću izmenu ulevo"
-
-#: ../meld/filediff.py:270
-msgid "Push to Right"
-msgstr "Gurni udesno"
-
-#: ../meld/filediff.py:271
-msgid "Push current change to the right"
-msgstr "Gurnite tekuću izmenu udesno"
-
-#: ../meld/filediff.py:275
-msgid "Pull from Left"
-msgstr "Ubaci s leva"
-
-#: ../meld/filediff.py:276
-msgid "Pull change from the left"
-msgstr "Ubacite izmenu s leva"
-
-#: ../meld/filediff.py:279
-msgid "Pull from Right"
-msgstr "Ubaci s desna"
-
-#: ../meld/filediff.py:280
-msgid "Pull change from the right"
-msgstr "Ubacite izmenu s desna"
-
-#: ../meld/filediff.py:282
-msgid "Copy Above Left"
-msgstr "Umnoži iznad ulevo"
-
-#: ../meld/filediff.py:283
-msgid "Copy change above the left chunk"
-msgstr "Umnožite izmenu iznad komada ulevo"
-
-#: ../meld/filediff.py:285
-msgid "Copy Below Left"
-msgstr "Umnoži ispod ulevo"
-
-#: ../meld/filediff.py:286
-msgid "Copy change below the left chunk"
-msgstr "Umnožite izmenu ispod komada ulevo"
-
-#: ../meld/filediff.py:288
-msgid "Copy Above Right"
-msgstr "Umnoži iznad udesno"
-
-#: ../meld/filediff.py:289
-msgid "Copy change above the right chunk"
-msgstr "Umnožite izmenu iznad komada udesno"
-
-#: ../meld/filediff.py:291
-msgid "Copy Below Right"
-msgstr "Umnoži ispod udesno"
-
-#: ../meld/filediff.py:292
-msgid "Copy change below the right chunk"
-msgstr "Umnožite izmenu ispod komada udesno"
-
-#: ../meld/filediff.py:294
-msgid "Delete"
-msgstr "Obriši"
-
-#: ../meld/filediff.py:295
-msgid "Delete change"
-msgstr "Obrišite izmenu"
-
-#: ../meld/filediff.py:297
-msgid "Merge All from Left"
-msgstr "Objedini sve s leva"
-
-#: ../meld/filediff.py:298
-msgid "Merge all non-conflicting changes from the left"
-msgstr "Objedinite sve nesukobljavajuće izmene s leva"
-
-#: ../meld/filediff.py:300
-msgid "Merge All from Right"
-msgstr "Objedini sve s desna"
-
-#: ../meld/filediff.py:301
-msgid "Merge all non-conflicting changes from the right"
-msgstr "Objedinite sve nesukobljavajuće izmene s desna"
-
-#: ../meld/filediff.py:303
-msgid "Merge All"
-msgstr "Stopi sve"
-
-#: ../meld/filediff.py:304
-msgid "Merge all non-conflicting changes from left and right panes"
-msgstr "Objedinite sve nesukobljavajuće izmene s leve i desne površi"
-
-#: ../meld/filediff.py:308
-msgid "Cycle Through Documents"
-msgstr "Kruži kroz dokumente"
-
-#: ../meld/filediff.py:309
-msgid "Move keyboard focus to the next document in this comparison"
-msgstr "Premestite fokus tastature na sledeći dokument u ovom poređenju"
-
-#: ../meld/filediff.py:315
-msgid "Lock Scrolling"
-msgstr "Zaključaj klizanje"
-
-#: ../meld/filediff.py:316
-msgid "Lock scrolling of all panes"
-msgstr "Zaključajte klizanje svih površi"
-
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:475
+#: ../meld/filediff.py:399
 msgid "INS"
 msgstr "UMET"
 
-#: ../meld/filediff.py:475
+#: ../meld/filediff.py:399
 msgid "OVR"
 msgstr "PREP"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:477
+#: ../meld/filediff.py:401
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Red %i, mesto %i"
 
-#: ../meld/filediff.py:824
+#: ../meld/filediff.py:813
 #, python-format
 msgid ""
 "Filter '%s' changed the number of lines in the file. Comparison will be "
@@ -1439,75 +1434,72 @@ msgstr ""
 "Propusnik „%s“ je izmenio broj redova u datoteci. Poređenje neće biti tačno. "
 "Za više detalja pogledajte priručnik za korisnike."
 
-#: ../meld/filediff.py:893
-#| msgid "Mar_k as Resolved"
+#: ../meld/filediff.py:882
 msgid "Mark conflict as resolved?"
 msgstr "Da označim sukob rešenim?"
 
-#: ../meld/filediff.py:895
+#: ../meld/filediff.py:884
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Ako je sukob uspešno rešen, sada ga možete označiti rešenim."
 
-#: ../meld/filediff.py:897
-#| msgid "_Cancel"
+#: ../meld/filediff.py:886
 msgid "Cancel"
 msgstr "Otkaži"
 
-#: ../meld/filediff.py:898
-#| msgid "Mar_k as Resolved"
+#: ../meld/filediff.py:887
 msgid "Mark _Resolved"
 msgstr "Označi _rešenim"
 
-#: ../meld/filediff.py:1114
+#: ../meld/filediff.py:1090
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "Postavljam broj površi [%s]"
 
-#: ../meld/filediff.py:1121
+#: ../meld/filediff.py:1097
 #, python-format
 msgid "[%s] Opening files"
 msgstr "Otvaram datoteke [%s]"
 
-#: ../meld/filediff.py:1144 ../meld/filediff.py:1154 ../meld/filediff.py:1167
-#: ../meld/filediff.py:1173
+#: ../meld/filediff.py:1120 ../meld/filediff.py:1130 ../meld/filediff.py:1143
+#: ../meld/filediff.py:1149
 msgid "Could not read file"
 msgstr "Ne mogu da pročitam datoteku"
 
-#: ../meld/filediff.py:1145
+#: ../meld/filediff.py:1121
 #, python-format
 msgid "[%s] Reading files"
 msgstr "Čitam datoteke [%s]"
 
-#: ../meld/filediff.py:1155
+#: ../meld/filediff.py:1131
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "„%s“ izgleda da je izvršna datoteka."
 
-#: ../meld/filediff.py:1168
+#: ../meld/filediff.py:1144
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "„%s“ nije u kodiranjima: „%s“"
 
-#: ../meld/filediff.py:1206
+#: ../meld/filediff.py:1182
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "Sračunavam razlike [%s]"
 
-#: ../meld/filediff.py:1273
+#: ../meld/filediff.py:1250
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Datoteka „%s“ je izmenjena na disku"
 
-#: ../meld/filediff.py:1274
+#: ../meld/filediff.py:1251
 msgid "Do you want to reload the file?"
 msgstr "Da li želite ponovo da učitate datoteku?"
 
-#: ../meld/filediff.py:1277
+#: ../meld/filediff.py:1254
 msgid "_Reload"
 msgstr "_Učitaj ponovo"
 
-#: ../meld/filediff.py:1443
+#: ../meld/filediff.py:1420
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1515,19 +1507,19 @@ msgstr ""
 "Korišćeni su propusnici teksta, a mogu postojati i zamaskirane razlike "
 "između datoteka. Da li želite da poredite neizdvojene datoteke?"
 
-#: ../meld/filediff.py:1449
+#: ../meld/filediff.py:1426
 msgid "Files are identical"
 msgstr "Datoteke su istovetne"
 
-#: ../meld/filediff.py:1457
+#: ../meld/filediff.py:1434
 msgid "Show without filters"
 msgstr "Prikazuje bez propusnika"
 
-#: ../meld/filediff.py:1479
+#: ../meld/filediff.py:1456
 msgid "Change highlighting incomplete"
 msgstr "Isticanje izmena nije dovršeno"
 
-#: ../meld/filediff.py:1480
+#: ../meld/filediff.py:1457
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1535,15 +1527,15 @@ msgstr ""
 "Neke izmene nisu istaknute zato što su prevelike. Možete da primorate Meld "
 "da produži sa isticanjem većih izmena, iako to može biti sporo."
 
-#: ../meld/filediff.py:1488
+#: ../meld/filediff.py:1465
 msgid "Keep highlighting"
 msgstr "Zadržite isticanje"
 
-#: ../meld/filediff.py:1490
+#: ../meld/filediff.py:1467
 msgid "_Keep highlighting"
 msgstr "_Zadrži isticanje"
 
-#: ../meld/filediff.py:1621
+#: ../meld/filediff.py:1596
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -1552,7 +1544,7 @@ msgstr ""
 "„%s“ postoji!\n"
 "Da presnimim?"
 
-#: ../meld/filediff.py:1634
+#: ../meld/filediff.py:1609
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -1563,36 +1555,36 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1645
+#: ../meld/filediff.py:1620
 msgid "Save Left Pane As"
 msgstr "Sačuvaj levu površ kao"
 
-#: ../meld/filediff.py:1647
+#: ../meld/filediff.py:1622
 msgid "Save Middle Pane As"
 msgstr "Sačuvaj srednju površ kao"
 
-#: ../meld/filediff.py:1649
+#: ../meld/filediff.py:1624
 msgid "Save Right Pane As"
 msgstr "Sačuvaj desnu površ kao"
 
-#: ../meld/filediff.py:1662
+#: ../meld/filediff.py:1637
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Datoteka „%s“ je izmenjena na disku nakon otvaranja"
 
-#: ../meld/filediff.py:1664
+#: ../meld/filediff.py:1639
 msgid "If you save it, any external changes will be lost."
 msgstr "Ako je sačuvate, sve spoljne izmene će biti izgubljene."
 
-#: ../meld/filediff.py:1667
+#: ../meld/filediff.py:1642
 msgid "Save Anyway"
 msgstr "Ipak sačuvaj"
 
-#: ../meld/filediff.py:1668
+#: ../meld/filediff.py:1643
 msgid "Don't Save"
 msgstr "Nemoj čuvati"
 
-#: ../meld/filediff.py:1692
+#: ../meld/filediff.py:1667
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -1603,7 +1595,7 @@ msgstr ""
 "\n"
 "Koji oblik želite da koristite?"
 
-#: ../meld/filediff.py:1708
+#: ../meld/filediff.py:1683
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -1612,11 +1604,11 @@ msgstr ""
 "„%s“ sadrži znakove koji se ne mogu kodirati uz „%s“\n"
 "Da li želite da sačuvate kao UTF-8?"
 
-#: ../meld/filediff.py:2071
+#: ../meld/filediff.py:2023
 msgid "Live comparison updating disabled"
 msgstr "Isključeno je živo ažuriranje poređenja"
 
-#: ../meld/filediff.py:2072
+#: ../meld/filediff.py:2024
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1670,7 +1662,6 @@ msgstr "Pokreće poređenje 2 ili 3 fascikle"
 
 #: ../meld/meldapp.py:224
 #, python-format
-#| msgid "Error"
 msgid "Error: %s\n"
 msgstr "Greška: %s\n"
 
@@ -1929,7 +1920,6 @@ msgid "Open recent files"
 msgstr "Otvorite skorašnje datoteke"
 
 #: ../meld/meldwindow.py:164
-#| msgid "Meld"
 msgid "_Meld"
 msgstr "_Meld"
 
@@ -1938,12 +1928,10 @@ msgid "Quit the program"
 msgstr "Zatvorite program"
 
 #: ../meld/meldwindow.py:167
-#| msgid "_Preferences"
 msgid "Prefere_nces"
 msgstr "_Postavke"
 
 #: ../meld/meldwindow.py:168
-#| msgid "Cut the selection"
 msgid "Configure the application"
 msgstr "Podesite program"
 
@@ -1956,7 +1944,6 @@ msgid "Open the Meld manual"
 msgstr "Otvorite uputstvo Melda"
 
 #: ../meld/meldwindow.py:173
-#| msgid "Cut the selection"
 msgid "About this application"
 msgstr "O ovom programu"
 
@@ -2059,7 +2046,6 @@ msgid "Newly added"
 msgstr "Novo dodata"
 
 #: ../meld/vc/_vc.py:72
-#| msgid "<unnamed>"
 msgid "Renamed"
 msgstr "Preimenovana"
 
@@ -2156,19 +2142,16 @@ msgstr "%s — udaljena"
 
 #: ../meld/vcview.py:531
 #, python-format
-#| msgid "Left is local, right is remote"
 msgid "%s (local, merge, remote)"
 msgstr "%s (mesna, spojena, udaljena)"
 
 #: ../meld/vcview.py:536
 #, python-format
-#| msgid "Left is remote, right is local"
 msgid "%s (remote, merge, local)"
 msgstr "%s (udaljena, spojena, mesna)"
 
 #: ../meld/vcview.py:547
 #, python-format
-#| msgid "Invalid repository"
 msgid "%s — repository"
 msgstr "%s — riznica"
 
@@ -2198,6 +2181,9 @@ msgstr ""
 #, python-format
 msgid "Error removing %s"
 msgstr "Greška pri uklanjanju „%s“"
+
+#~ msgid "Cycle Through Documents"
+#~ msgstr "Kruži kroz dokumente"
 
 #~ msgid "Copy _Left"
 #~ msgstr "Umnoži _levo"
