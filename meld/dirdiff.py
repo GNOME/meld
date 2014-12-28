@@ -877,45 +877,47 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return msgarea
 
     def copy_selected(self, direction):
-        assert direction in (-1,1)
+        assert direction in (-1, 1)
         src_pane = self._get_focused_pane()
-        if src_pane is not None:
-            dst_pane = src_pane + direction
-            assert dst_pane >= 0 and dst_pane < self.num_panes
-            paths = self._get_selected_paths(src_pane)
-            paths.reverse()
-            model = self.model
-            for path in paths: #filter(lambda x: x.name is not None, sel):
-                it = model.get_iter(path)
-                name = model.value_path(it, src_pane)
-                if name is None:
-                    continue
-                src = model.value_path(it, src_pane)
-                dst = model.value_path(it, dst_pane)
-                try:
-                    if os.path.isfile(src):
-                        dstdir = os.path.dirname( dst )
-                        if not os.path.exists( dstdir ):
-                            os.makedirs( dstdir )
-                        misc.copy2( src, dstdir )
-                        self.file_created( path, dst_pane)
-                    elif os.path.isdir(src):
-                        if os.path.exists(dst):
-                            if misc.run_dialog( _("'%s' exists.\nOverwrite?") % os.path.basename(dst),
-                                    parent = self,
-                                    buttonstype = Gtk.ButtonsType.OK_CANCEL) != Gtk.ResponseType.OK:
-                                continue
-                        misc.copytree(src, dst)
-                        self.recursively_update( path )
-                except (OSError, IOError, shutil.Error) as err:
-                    misc.error_dialog(
-                        _("Error copying file"),
-                        _("Couldn't copy %s\nto %s.\n\n%s") % (
-                            GLib.markup_escape_text(src),
-                            GLib.markup_escape_text(dst),
-                            GLib.markup_escape_text(str(err)),
-                        )
+        if src_pane is None:
+            return
+
+        dst_pane = src_pane + direction
+        assert dst_pane >= 0 and dst_pane < self.num_panes
+        paths = self._get_selected_paths(src_pane)
+        paths.reverse()
+        model = self.model
+        for path in paths: #filter(lambda x: x.name is not None, sel):
+            it = model.get_iter(path)
+            name = model.value_path(it, src_pane)
+            if name is None:
+                continue
+            src = model.value_path(it, src_pane)
+            dst = model.value_path(it, dst_pane)
+            try:
+                if os.path.isfile(src):
+                    dstdir = os.path.dirname( dst )
+                    if not os.path.exists( dstdir ):
+                        os.makedirs( dstdir )
+                    misc.copy2( src, dstdir )
+                    self.file_created( path, dst_pane)
+                elif os.path.isdir(src):
+                    if os.path.exists(dst):
+                        if misc.run_dialog( _("'%s' exists.\nOverwrite?") % os.path.basename(dst),
+                                parent = self,
+                                buttonstype = Gtk.ButtonsType.OK_CANCEL) != Gtk.ResponseType.OK:
+                            continue
+                    misc.copytree(src, dst)
+                    self.recursively_update( path )
+            except (OSError, IOError, shutil.Error) as err:
+                misc.error_dialog(
+                    _("Error copying file"),
+                    _("Couldn't copy %s\nto %s.\n\n%s") % (
+                        GLib.markup_escape_text(src),
+                        GLib.markup_escape_text(dst),
+                        GLib.markup_escape_text(str(err)),
                     )
+                )
 
     def delete_selected(self):
         """Delete all selected files/folders recursively.
