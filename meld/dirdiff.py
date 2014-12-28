@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2009-2013 Kai Willadsen <kai.willadsen@gmail.com>
 #
@@ -903,9 +905,23 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.file_created( path, dst_pane)
                 elif os.path.isdir(src):
                     if os.path.exists(dst):
-                        if misc.run_dialog( _("'%s' exists.\nOverwrite?") % os.path.basename(dst),
-                                parent = self,
-                                buttonstype = Gtk.ButtonsType.OK_CANCEL) != Gtk.ResponseType.OK:
+                        parent_name = os.path.dirname(dst)
+                        folder_name = os.path.basename(dst)
+                        dialog_buttons = [
+                            (_("_Cancel"), Gtk.ResponseType.CANCEL),
+                            (_("_Replace"), Gtk.ResponseType.OK),
+                        ]
+                        replace = misc.modal_dialog(
+                            primary=_(u"Replace folder “%s”?") % folder_name,
+                            secondary=_(
+                                u"Another folder with the same name already "
+                                u"exists in “%s”.\n"
+                                u"If you replace the existing folder, all "
+                                u"files in it will be lost.") % parent_name,
+                            buttons=dialog_buttons,
+                            messagetype=Gtk.MessageType.WARNING,
+                        )
+                        if replace != Gtk.ResponseType.OK:
                             continue
                     misc.copytree(src, dst)
                     self.recursively_update( path )
