@@ -810,8 +810,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     txt = filt.filter.sub(killit, txt)
         except AssertionError:
             if not self.warned_bad_comparison:
-                misc.run_dialog(_("Filter '%s' changed the number of lines in the file. "
-                    "Comparison will be incorrect. See the user manual for more details.") % filt.label)
+                misc.error_dialog(
+                    primary=_(u"Comparison results will be inaccurate"),
+                    secondary=_(
+                        u"Filter “%s” changed the number of lines in the "
+                        u"file, which is unsupported. The comparison will "
+                        u"not be accurate.") % filt.label,
+                )
                 self.warned_bad_comparison = True
         return txt
 
