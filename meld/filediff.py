@@ -1699,14 +1699,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         if k != '\n':
                             text = text.replace('\n', k)
                         break
-        if bufdata.encoding:
+
+        while isinstance(text, unicode):
             try:
                 text = text.encode(bufdata.encoding)
             except UnicodeEncodeError:
                 if misc.run_dialog(
                     _("'%s' contains characters not encodable with '%s'\nWould you like to save as UTF-8?") % (bufdata.label, bufdata.encoding),
                     self, Gtk.MessageType.ERROR, Gtk.ButtonsType.YES_NO) != Gtk.ResponseType.YES:
-                    return False
+                    bufdata.encoding = 'utf-8'
+                    continue
+                return False
 
         save_to = bufdata.savefile or bufdata.filename
         if self._save_text_to_filename(save_to, text):
