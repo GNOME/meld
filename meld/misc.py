@@ -100,37 +100,6 @@ def modal_dialog(
     return response
 
 
-def run_dialog( text, parent=None, messagetype=Gtk.MessageType.WARNING, buttonstype=Gtk.ButtonsType.OK, extrabuttons=()):
-    """Run a dialog with text 'text'.
-       Extra buttons are passed as tuples of (button label, response id).
-    """
-    escaped = GObject.markup_escape_text(text)
-    d = Gtk.MessageDialog(
-        None,
-        Gtk.DialogFlags.DESTROY_WITH_PARENT,
-        messagetype,
-        buttonstype)
-    markup = '<span weight="bold" size="larger">%s</span>' % escaped
-    d.set_markup(markup)
-    if parent and isinstance(parent, Gtk.Window):
-        d.set_transient_for(parent.widget.get_toplevel())
-    for b, rid in extrabuttons:
-        d.add_button(b, rid)
-    d.vbox.set_spacing(12)
-    hbox = d.vbox.get_children()[0]
-    hbox.set_spacing(12)
-    try:
-        d.props.image.set_alignment(0.5, 0)
-        d.props.image.set_padding(12, 12)
-    except AttributeError:
-        # FIXME: This is ridiculous. Possibly distribution-specific patches,
-        # or just... bad things. This needs to go away.
-        pass
-    ret = d.run()
-    d.destroy()
-    return ret
-
-
 # Taken from epiphany
 def position_menu_under_widget(menu, widget):
     container = widget.get_ancestor(Gtk.Container)
