@@ -1594,11 +1594,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dialog.destroy()
         if filename:
             if os.path.exists(filename):
-                response = misc.run_dialog(
-                    _('"%s" exists!\nOverwrite?') % os.path.basename(filename),
-                    parent = self,
-                    buttonstype = Gtk.ButtonsType.YES_NO)
-                if response == Gtk.ResponseType.NO:
+                parent_name = os.path.dirname(filename)
+                file_name = os.path.basename(filename)
+                dialog_buttons = [
+                    (_("_Cancel"), Gtk.ResponseType.CANCEL),
+                    (_("_Replace"), Gtk.ResponseType.OK),
+                ]
+                replace = misc.modal_dialog(
+                    primary=_(u"Replace file “%s”?") % file_name,
+                    secondary=_(
+                        u"A file with this name already exists in “%s”.\n"
+                        u"If you replace the existing file, its contents "
+                        u"will be lost.") % parent_name,
+                    buttons=dialog_buttons,
+                    messagetype=Gtk.MessageType.WARNING,
+                )
+                if replace != Gtk.ResponseType.OK:
                     return None
             return filename
         return None
