@@ -40,8 +40,7 @@ else:
         return rlist, wlist, xlist
 
 
-def error_dialog(
-        primary, secondary, parent=None, messagetype=Gtk.MessageType.ERROR):
+def error_dialog(primary, secondary):
     """A common error dialog handler for Meld
 
     This should only ever be used as a last resort, and for errors that
@@ -50,20 +49,9 @@ def error_dialog(
 
     Primary must be plain text. Secondary must be valid markup.
     """
-    if not parent:
-        from meld.meldapp import app
-        parent = app.get_active_window()
-
-    dialog = Gtk.MessageDialog(
-        transient_for=parent,
-        modal=True,
-        destroy_with_parent=True,
-        message_type=messagetype,
-        buttons=Gtk.ButtonsType.CLOSE,
-        text=primary)
-    dialog.format_secondary_markup(secondary)
-    dialog.run()
-    dialog.destroy()
+    return modal_dialog(
+        primary, secondary, Gtk.ButtonsType.CLOSE, parent=None,
+        messagetype=Gtk.MessageType.ERROR)
 
 
 def modal_dialog(
@@ -83,16 +71,21 @@ def modal_dialog(
     elif not isinstance(parent, Gtk.Window):
         parent = parent.get_toplevel()
 
+    if isinstance(buttons, Gtk.ButtonsType):
+        custom_buttons = []
+    else:
+        custom_buttons, buttons = buttons, Gtk.ButtonsType.NONE
+
     dialog = Gtk.MessageDialog(
         transient_for=parent,
         modal=True,
         destroy_with_parent=True,
         message_type=messagetype,
-        buttons=Gtk.ButtonsType.NONE,
+        buttons=buttons,
         text=primary)
     dialog.format_secondary_markup(secondary)
 
-    for label, response_id in buttons:
+    for label, response_id in custom_buttons:
         dialog.add_button(label, response_id)
 
     response = dialog.run()
