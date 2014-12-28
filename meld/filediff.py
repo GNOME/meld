@@ -1616,6 +1616,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _save_text_to_filename(self, filename, text):
         try:
+            if not isinstance(text, str):
+                raise IOError("couldn't encode text")
             open(filename, "wb").write(text)
         except IOError as err:
             misc.error_dialog(
