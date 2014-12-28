@@ -889,7 +889,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         paths = self._get_selected_paths(src_pane)
         paths.reverse()
         model = self.model
-        for path in paths: #filter(lambda x: x.name is not None, sel):
+        for path in paths:  # filter(lambda x: x.name is not None, sel):
             it = model.get_iter(path)
             name = model.value_path(it, src_pane)
             if name is None:
@@ -898,11 +898,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             dst = model.value_path(it, dst_pane)
             try:
                 if os.path.isfile(src):
-                    dstdir = os.path.dirname( dst )
-                    if not os.path.exists( dstdir ):
-                        os.makedirs( dstdir )
-                    misc.copy2( src, dstdir )
-                    self.file_created( path, dst_pane)
+                    dstdir = os.path.dirname(dst)
+                    if not os.path.exists(dstdir):
+                        os.makedirs(dstdir)
+                    misc.copy2(src, dstdir)
+                    self.file_created(path, dst_pane)
                 elif os.path.isdir(src):
                     if os.path.exists(dst):
                         parent_name = os.path.dirname(dst)
@@ -924,7 +924,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         if replace != Gtk.ResponseType.OK:
                             continue
                     misc.copytree(src, dst)
-                    self.recursively_update( path )
+                    self.recursively_update(path)
             except (OSError, IOError, shutil.Error) as err:
                 misc.error_dialog(
                     _("Error copying file"),
