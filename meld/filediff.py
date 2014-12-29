@@ -97,6 +97,7 @@ class CachedSequenceMatcher(object):
 
 
 MASK_SHIFT, MASK_CTRL = 1, 2
+PANE_LEFT, PANE_RIGHT = -1, +1
 
 
 class CursorDetails(object):
@@ -571,38 +572,38 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return (dst, src) if reverse else (src, dst)
 
     def action_push_change_left(self, *args):
-        src, dst = self.get_action_panes(-1)
+        src, dst = self.get_action_panes(PANE_LEFT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_push_change_right(self, *args):
-        src, dst = self.get_action_panes(+1)
+        src, dst = self.get_action_panes(PANE_RIGHT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_pull_change_left(self, *args):
-        src, dst = self.get_action_panes(-1, reverse=True)
+        src, dst = self.get_action_panes(PANE_LEFT, reverse=True)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_pull_change_right(self, *args):
-        src, dst = self.get_action_panes(+1, reverse=True)
+        src, dst = self.get_action_panes(PANE_RIGHT, reverse=True)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_copy_change_left_up(self, *args):
-        src, dst = self.get_action_panes(-1)
+        src, dst = self.get_action_panes(PANE_LEFT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=True)
 
     def action_copy_change_right_up(self, *args):
-        src, dst = self.get_action_panes(+1)
+        src, dst = self.get_action_panes(PANE_RIGHT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=True)
 
     def action_copy_change_left_down(self, *args):
-        src, dst = self.get_action_panes(-1)
+        src, dst = self.get_action_panes(PANE_LEFT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=False)
 
     def action_copy_change_right_down(self, *args):
-        src, dst = self.get_action_panes(+1)
+        src, dst = self.get_action_panes(PANE_RIGHT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=False)
 
@@ -623,11 +624,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(resync)
 
     def action_pull_all_changes_left(self, *args):
-        src, dst = self.get_action_panes(-1, reverse=True)
+        src, dst = self.get_action_panes(PANE_LEFT, reverse=True)
         self.pull_all_non_conflicting_changes(src, dst)
 
     def action_pull_all_changes_right(self, *args):
-        src, dst = self.get_action_panes(+1, reverse=True)
+        src, dst = self.get_action_panes(PANE_RIGHT, reverse=True)
         self.pull_all_non_conflicting_changes(src, dst)
 
     def merge_all_non_conflicting_changes(self):
