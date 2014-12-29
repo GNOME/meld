@@ -1739,11 +1739,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.save_file(idx)
 
     def on_fileentry_file_set(self, entry):
+        entries = self.fileentry[:self.num_panes]
         if self.check_save_modified() != Gtk.ResponseType.CANCEL:
-            entries = self.fileentry[:self.num_panes]
             files = [e.get_file() for e in entries]
             paths = [f.get_path() for f in files]
             self.set_files(paths)
+        else:
+            idx = entries.index(entry)
+            existing_path = self.textbuffer[idx].data.filename
+            entry.set_filename(existing_path)
         return True
 
     def _get_focused_pane(self):
