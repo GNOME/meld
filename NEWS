@@ -1,4 +1,64 @@
 
+2014-12-31 meld 3.13.0
+======================
+
+  Features:
+
+   * Make syntax highlighting style configurable (Mark Pariente)
+   * Implemented incremental search, match highlighting and many other
+     find-related fixes (Robert Roth)
+   * Add support for GTK+ global dark theme setting (Kai Willadsen)
+   * Add support for pushing change deletions (Kai Willadsen)
+   * Remove cycle-pane action in favour of previous/next pane actions (Kai
+     Willadsen)
+
+  Fixes:
+
+   * Handle Unicode filenames in a git tree correctly (Hasan Arous, Kai
+     Willadsen)
+   * Many fixes for recent GTK+ deprecation warnings (Kai Willadsen)
+   * Fixing flickering inline highlighting on updates (Kai Willadsen)
+
+   * Multiple work arounds for change colours not displaying on GTK+ 3.14 (Kai
+     Willadsen)
+   * Fix inconsistent file chooser when cancelling file selection (Kai
+     Willadsen)
+   * UTF-8 encode patches created from the patch dialog (Kai Willadsen)
+   * Fix text-wrapping reset caused by the commit dialog (Kai Willadsen)
+   * Fix text background display on certain themes (Kai Willadsen)
+   * Fix for launching Meld with certain Git environment variables (Kai
+     Willadsen)
+   * Add GTK's settings.ini file for font blurriness fix on Windows (Kai
+     Willadsen)
+   * Fix display of change action buttons and line numbers when line numbers
+     are shown (Kai Willadsen)
+   * Fix positioning of the change action buttons (Kai Willadsen)
+   * Fix tab width setting not working correctly (Kai Willadsen)
+   * Fix starting comparison of Subversion checkouts from a subdirectory (Kai
+     Willadsen)
+   * Fix starting Meld from a differently-named symlink (Kai Willadsen)
+   * Ignore errors when copying file metadata if the destination file system
+     doesn't support it (Kai Willadsen)
+   * Automatically recompile stale in-place gschemas (Kai Willadsen)
+   * Handle SIGINT to support previous quit-on-Ctrl-C behaviour (Kai Willadsen)
+   * Fix missing cache opcodes in some circumstances (Kai Willadsen)
+   * Fix text view expansion when resizing patch dialog (Kai Willadsen)
+   * Build fix to always include C locale when LINGUAS is set (Kai Willadsen)
+
+  Translations:
+
+   * Andika Triwidada (id)
+   * Carles Ferrando (ca@valencia)
+   * Gábor Kelemen (hu)
+   * Jean Jordaan (cs, el, es)
+   * Joan Coll (ca)
+   * Jordi Mas (ca)
+   * Marek Černocký (cs)
+   * Maria  Mavridou (el)
+   * Piotr Drąg (pl)
+   * Мирослав Николић (sr, sr@latin)
+
+
 2014-09-27 meld 3.12.0
 ======================
 
