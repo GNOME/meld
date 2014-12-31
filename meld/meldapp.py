@@ -321,6 +321,9 @@ class MeldApp(Gtk.Application):
             auto_merge = (
                 options.auto_merge if i == len(comparisons) - 1 else False)
             try:
+                for p, f in zip(paths, files):
+                    if f.get_path() is None:
+                        raise ValueError(_("invalid path or URI \"%s\"") % p)
                 tab = self.open_files(
                     files, auto_compare=options.auto_compare,
                     auto_merge=auto_merge, new_tab=options.newtab,
