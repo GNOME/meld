@@ -301,12 +301,23 @@ class MeldApp(Gtk.Application):
                 return parser.exit_status
             return tab
 
+        def make_file_from_command_line(arg):
+            f = command_line.create_file_for_arg(arg)
+            if not f.query_exists():
+                # May be a relative path with ':', misinterpreted as a URI
+                cwd = Gio.File.new_for_path(command_line.get_cwd())
+                relative = Gio.File.resolve_relative_path(cwd, arg)
+                if relative.query_exists():
+                    return relative
+                # Return the original arg for a better error message
+            return f
+
         tab = None
         error = None
         comparisons = options.diff + [args]
         options.newtab = options.newtab or not command_line.get_is_remote()
         for i, paths in enumerate(comparisons):
-            files = [command_line.create_file_for_arg(p) for p in paths]
+            files = [make_file_from_command_line(p) for p in paths]
             auto_merge = (
                 options.auto_merge if i == len(comparisons) - 1 else False)
             try:
