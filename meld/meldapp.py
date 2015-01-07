@@ -303,11 +303,11 @@ class MeldApp(Gtk.Application):
 
         def make_file_from_command_line(arg):
             f = command_line.create_file_for_arg(arg)
-            if not f.query_exists():
+            if not f.query_exists(cancellable=None):
                 # May be a relative path with ':', misinterpreted as a URI
                 cwd = Gio.File.new_for_path(command_line.get_cwd())
                 relative = Gio.File.resolve_relative_path(cwd, arg)
-                if relative.query_exists():
+                if relative.query_exists(cancellable=None):
                     return relative
                 # Return the original arg for a better error message
             return f
