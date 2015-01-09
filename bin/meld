@@ -168,6 +168,7 @@ def check_requirements():
     try:
         from gi.repository import GtkSource
         # TODO: There is no way to get at GtkSourceView's actual version
+        assert hasattr(GtkSource, 'SearchSettings')
     except (ImportError, AssertionError) as e:
         missing_reqs("GtkSourceView", gtksourceview_requirement, e)
 
