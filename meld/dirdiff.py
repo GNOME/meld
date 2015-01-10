@@ -818,7 +818,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if differences:
                 expanded.add(path)
 
-        self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
+        if invalid_filenames or shadowed_entries:
+            self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
+        elif not expanded:
+            self._show_identical_status()
 
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(path)
@@ -827,6 +830,43 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(self.on_treeview_cursor_changed)
         self.treeview[0].get_selection().select_path(Gtk.TreePath.new_first())
         self._update_diffmaps()
+
+    def _show_identical_status(self):
+        primary = _("Folders have no differences")
+        identical_note = _(
+            "Contents of scanned files in folders are identical.")
+        shallow_note = _(
+            "Scanned files in folders appear identical, but contents have not "
+            "been scanned.")
+        file_filter_qualifier = _(
+            "File filters are in use, so not all files have been scanned.")
+        text_filter_qualifier = _(
+            "Text filters are in use and may be masking content differences.")
+
+        is_shallow = self.props.shallow_comparison
+        have_file_filters = any(f.active for f in self.name_filters)
+        have_text_filters = any(f.active for f in self.text_filters)
+
+        secondary = [shallow_note if is_shallow else identical_note]
+        if have_file_filters:
+            secondary.append(file_filter_qualifier)
+        if not is_shallow and have_text_filters:
+            secondary.append(text_filter_qualifier)
+        secondary = " ".join(secondary)
+
+        for pane in range(self.num_panes):
+            msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
+                Gtk.STOCK_INFO, primary, secondary)
+            button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
+            if pane == 0:
+                button.props.label = _("Hi_de")
+
+            def clear_all(*args):
+                for p in range(self.num_panes):
+                    self.msgarea_mgr[p].clear()
+            msgarea.connect("response", clear_all)
+            msgarea.show_all()
+
 
     def _show_tree_wide_errors(self, invalid_filenames, shadowed_entries):
         header = _("Multiple errors occurred while scanning this folder")
