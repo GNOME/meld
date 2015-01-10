@@ -355,6 +355,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.on_treeview_focus_out_event(None, None)
         self.focus_pane = None
+        self.row_expansions = set()
 
         # One column-dict for each treeview, for changing visibility and order
         self.columns_dict = [{}, {}, {}]
@@ -1042,6 +1043,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.current_path and self.focus_pane:
                 self.focus_pane.set_cursor(self.current_path)
 
+        self.row_expansions = set()
+
     def on_treeview_selection_changed(self, selection, pane):
         if not self.treeview[pane].is_focus():
             return
@@ -1159,11 +1162,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 view.expand_row(path, False)
 
     def on_treeview_row_expanded(self, view, it, path):
-        self._do_to_others(view, self.treeview, "expand_row", (path,0) )
+        self.row_expansions.add(str(path))
+        for row in self.model[path].iterchildren():
+            if str(row.path) in self.row_expansions:
+                view.expand_row(row.path, False)
+
+        self._do_to_others(view, self.treeview, "expand_row", (path, False))
         self._update_diffmaps()
 
     def on_treeview_row_collapsed(self, view, me, path):
-        self._do_to_others(view, self.treeview, "collapse_row", (path,) )
+        self.row_expansions.discard(str(path))
+        self._do_to_others(view, self.treeview, "collapse_row", (path,))
         self._update_diffmaps()
 
     def on_popup_deactivate_event(self, popup):
