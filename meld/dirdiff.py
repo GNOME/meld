@@ -343,8 +343,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                      "file_toolbar"])
 
         self.widget.ensure_style()
-        self.on_style_updated(self.widget)
-        self.widget.connect("style-updated", self.on_style_updated)
 
         self.custom_labels = []
         self.set_num_panes(num_panes)
@@ -444,29 +442,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.actiongroup.get_action(action_name).set_active(True)
 
         self._scan_in_progress = 0
-
-    def on_style_updated(self, widget):
-        style = widget.get_style_context()
-
-        def lookup(name, default):
-            found, colour = style.lookup_color(name)
-            if not found:
-                colour = Gdk.RGBA()
-                colour.parse(default)
-            return colour
-
-        self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
-                            "delete"  : lookup("delete-bg", "White"),
-                            "replace" : lookup("replace-bg", "#ddeeff"),
-                            "error"   : lookup("error-bg", "#fce94f")}
-        self.line_colors = {"insert"  : lookup("insert-outline", "#77f077"),
-                            "delete"  : lookup("delete-outline", "Grey"),
-                            "replace" : lookup("replace-outline", "#8bbff3"),
-                            "error"   : lookup("error-outline", "#edd400")}
-
-        for diffmap in self.diffmap:
-            diffmap.set_color_scheme([self.fill_colors, self.line_colors])
-        self.queue_draw()
 
     def queue_draw(self):
         for treeview in self.treeview:
@@ -1485,7 +1460,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             for (w, i) in zip(self.diffmap, (0, n - 1)):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
                 idx = 1 if i else 0
-                w.setup(scroll, self.get_state_traversal(idx), [self.fill_colors, self.line_colors])
+                w.setup(scroll, self.get_state_traversal(idx))
 
             for w in self.linkmap:
                 w.associate(self)
