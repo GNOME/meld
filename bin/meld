@@ -191,10 +191,7 @@ def setup_resources():
     icon_dir = os.path.join(meld.conf.DATADIR, "icons")
     Gtk.IconTheme.get_default().append_search_path(icon_dir)
 
-    gtk_settings = Gtk.Settings.get_default()
-    dark_theme = gtk_settings.get_property('gtk-application-prefer-dark-theme')
-    css_name = "meld-dark" if dark_theme else "meld"
-    css_file = os.path.join(meld.conf.DATADIR, css_name + ".css")
+    css_file = os.path.join(meld.conf.DATADIR, "meld.css")
     provider = Gtk.CssProvider()
     try:
         provider.load_from_path(css_file)
