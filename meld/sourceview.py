@@ -146,16 +146,15 @@ class MeldSourceView(GtkSource.View):
     def do_style_updated(self):
         GtkSource.View.do_style_updated(self)
 
-        style = self.get_buffer().get_style_scheme()
         self.highlight_color = colour_lookup_with_fallback(
-            style, "meld:current-line-highlight", "background", "#ffff00")
+            "meld:current-line-highlight", "background")
         self.syncpoint_color = colour_lookup_with_fallback(
-            style, "meld:syncpoint-outline", "foreground", "#555555")
+            "meld:syncpoint-outline", "foreground")
         self.fill_colors, self.line_colors = get_common_theme()
 
         tag = self.get_buffer().get_tag_table().lookup("inline")
         tag.props.background_rgba = colour_lookup_with_fallback(
-            style, "meld:inline", "background", "LightSteelBlue2")
+            "meld:inline", "background")
 
     def do_draw_layer(self, layer, context):
         if layer != Gtk.TextViewLayer.BELOW:

@@ -27,6 +27,7 @@ import subprocess
 from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import Gtk
+from gi.repository import GtkSource
 
 from meld.conf import _
 
@@ -143,36 +144,53 @@ def make_tool_button_widget(label):
     return hbox
 
 
-def colour_lookup_with_fallback(source_style, name, attribute, default):
+MELD_STYLE_SCHEME = "meld-base"
+
+
+def colour_lookup_with_fallback(name, attribute):
+    from meld.settings import meldsettings
+    source_style = meldsettings.style_scheme
+
     style = source_style.get_style(name)
-    if style:
-        style_attr = getattr(style.props, attribute)
-        if style_attr:
-            default = style_attr
+    style_attr = getattr(style.props, attribute) if style else None
+    if not style or not style_attr:
+        manager = GtkSource.StyleSchemeManager.get_default()
+        source_style = manager.get_scheme(MELD_STYLE_SCHEME)
+        try:
+            style = source_style.get_style(name)
+            style_attr = getattr(style.props, attribute)
+        except AttributeError:
+            pass
+
+    if not style_attr:
+        import sys
+        print >> sys.stderr, _(
+            "Couldn't find colour scheme details for %s-%s; "
+            "this is a bad install") % (name, attribute)
+        sys.exit(1)
+
     colour = Gdk.RGBA()
-    colour.parse(default)
+    colour.parse(style_attr)
     return colour
 
 
 def get_common_theme():
     # TODO: Everywhere that calls get_common_theme needs to bind to the
     # gsettings style-scheme key instead of triggering on style_updated
-    from meld.settings import meldsettings
-    source_style = meldsettings.style_scheme
-    lookup = lambda *args: colour_lookup_with_fallback(source_style, *args)
+    lookup = colour_lookup_with_fallback
     fill_colours = {
-        "insert": lookup("meld:insert", "background", "DarkSeaGreen1"),
-        "delete": lookup("meld:insert", "background", "DarkSeaGreen1"),
-        "conflict": lookup("meld:conflict", "background", "Pink"),
-        "replace": lookup("meld:replace", "background", "#ddeeff"),
+        "insert": lookup("meld:insert", "background"),
+        "delete": lookup("meld:insert", "background"),
+        "conflict": lookup("meld:conflict", "background"),
+        "replace": lookup("meld:replace", "background"),
         "current-chunk-highlight": lookup(
-            "meld:current-chunk-highlight", "background", '#ffffff')
+            "meld:current-chunk-highlight", "background")
     }
     line_colours = {
-        "insert": lookup("meld:insert", "line-background", "#77f077"),
-        "delete": lookup("meld:insert", "line-background", "#77f077"),
-        "conflict": lookup("meld:conflict", "line-background", "#f0768b"),
-        "replace": lookup("meld:replace", "line-background", "#8bbff3"),
+        "insert": lookup("meld:insert", "line-background"),
+        "delete": lookup("meld:insert", "line-background"),
+        "conflict": lookup("meld:conflict", "line-background"),
+        "replace": lookup("meld:replace", "line-background"),
     }
     return fill_colours, line_colours
 
