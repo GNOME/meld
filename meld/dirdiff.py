@@ -823,6 +823,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         elif not expanded:
             self._show_identical_status()
 
+        self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(path)
         yield _("[%s] Done") % self.label_text
