@@ -175,8 +175,6 @@ def colour_lookup_with_fallback(name, attribute):
 
 
 def get_common_theme():
-    # TODO: Everywhere that calls get_common_theme needs to bind to the
-    # gsettings style-scheme key instead of triggering on style_updated
     lookup = colour_lookup_with_fallback
     fill_colours = {
         "insert": lookup("meld:insert", "background"),

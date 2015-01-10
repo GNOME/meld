@@ -23,6 +23,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 
 from meld.misc import get_common_theme
+from meld.settings import meldsettings
 
 
 class DiffMap(Gtk.DrawingArea):
@@ -41,7 +42,8 @@ class DiffMap(Gtk.DrawingArea):
         self._scroll_height = 0
         self._setup = False
         self._width = 10
-        self.do_style_updated()
+        meldsettings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meldsettings, 'style-scheme')
 
     def setup(self, scrollbar, change_chunk_fn):
         for (o, h) in self._handlers:
@@ -71,9 +73,9 @@ class DiffMap(Gtk.DrawingArea):
     def on_diffs_changed(self, *args):
         self._cached_map = None
 
-    def do_style_updated(self, *args):
-        Gtk.DrawingArea.do_style_updated(self)
-        self.fill_colors, self.line_colors = get_common_theme()
+    def on_setting_changed(self, meldsettings, key):
+        if key == 'style-scheme':
+            self.fill_colors, self.line_colors = get_common_theme()
 
     def on_scrollbar_style_updated(self, scrollbar):
         value = GObject.Value(int)

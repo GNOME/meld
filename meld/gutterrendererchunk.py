@@ -19,6 +19,7 @@ from gi.repository import GtkSource
 from meld.conf import _
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
 from meld.misc import get_common_theme
+from meld.settings import meldsettings
 
 # Fixed size of the renderer. Ideally this would be font-dependent and
 # would adjust to other textview attributes, but that's both quite difficult
@@ -66,7 +67,14 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         self.filediff = filediff
         self.filediff.connect("action-mode-changed",
                               self.on_container_mode_changed)
-        self.do_style_updated()
+
+        meldsettings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meldsettings, 'style-scheme')
+
+    def on_setting_changed(self, meldsettings, key):
+        if key == 'style-scheme':
+            #meldsettings.style_scheme
+            self.fill_colors, self.line_colors = get_common_theme()
 
     def do_activate(self, start, area, event):
         line = start.get_line()
@@ -109,11 +117,6 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         copy_up.connect('activate', copy_chunk, chunk, True)
         copy_down.connect('activate', copy_chunk, chunk, False)
         return copy_menu
-
-    def do_style_updated(self):
-        # GtkSource.GutterRendererPixbuf.do_style_updated(self)
-        # FIXME: Should be self.get_view() or something, but when and how?
-        self.fill_colors, self.line_colors = get_common_theme()
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
         line = start.get_line()

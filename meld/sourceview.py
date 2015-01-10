@@ -109,7 +109,7 @@ class MeldSourceView(GtkSource.View):
 
         meldsettings.connect('changed', self.on_setting_changed)
         self.on_setting_changed(meldsettings, 'font')
-        self.do_style_updated()
+        self.on_setting_changed(meldsettings, 'style-scheme')
 
     def late_bind(self):
         settings.bind(
@@ -138,23 +138,20 @@ class MeldSourceView(GtkSource.View):
     def on_setting_changed(self, settings, key):
         if key == 'font':
             self.override_font(meldsettings.font)
+        elif key == 'style-scheme':
+            self.highlight_color = colour_lookup_with_fallback(
+                "meld:current-line-highlight", "background")
+            self.syncpoint_color = colour_lookup_with_fallback(
+                "meld:syncpoint-outline", "foreground")
+            self.fill_colors, self.line_colors = get_common_theme()
+
+            tag = self.get_buffer().get_tag_table().lookup("inline")
+            tag.props.background_rgba = colour_lookup_with_fallback(
+                "meld:inline", "background")
 
     def do_realize(self):
         bind_settings(self)
         return GtkSource.View.do_realize(self)
-
-    def do_style_updated(self):
-        GtkSource.View.do_style_updated(self)
-
-        self.highlight_color = colour_lookup_with_fallback(
-            "meld:current-line-highlight", "background")
-        self.syncpoint_color = colour_lookup_with_fallback(
-            "meld:syncpoint-outline", "foreground")
-        self.fill_colors, self.line_colors = get_common_theme()
-
-        tag = self.get_buffer().get_tag_table().lookup("inline")
-        tag.props.background_rgba = colour_lookup_with_fallback(
-            "meld:inline", "background")
 
     def do_draw_layer(self, layer, context):
         if layer != Gtk.TextViewLayer.BELOW:
