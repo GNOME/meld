@@ -111,7 +111,7 @@
       <key name="use-system-font" type="b">
           <default>true</default>
           <summary>Use the system default monospace font</summary>
-          <description>If false, the defined custom font will be used instead of the system monospace font.</description>
+          <description>If false, custom-font will be used instead of the system monospace font.</description>
       </key>
       <key name="custom-font" type="s">
           <default>"monospace, 14"</default>
@@ -132,7 +132,7 @@
       <key name="use-system-editor" type="b">
           <default>true</default>
           <summary>Use the system default editor</summary>
-          <description>If false, the defined custom editor will be used instead of the system editor when opening files externally.</description>
+          <description>If false, custom-editor-command will be used instead of the system editor when opening files externally.</description>
       </key>
       <key name="custom-editor-command" type="s">
           <default>""</default>
@@ -186,7 +186,7 @@
       <key name="vc-merge-file-order" enum="org.gnome.meld.mergefileorder">
           <default>"remote-merge-local"</default>
           <summary>Order for files in three-way version control merge comparisons</summary>
-          <description>Choices for file order are remote/merge/local and local/merged/remote. This preference only affects three-way comparisons launched from the version control view, so is used solely for merges/conflict resolution within Meld.</description>
+          <description>Choices for file order are remote/merged/local and local/merged/remote. This preference only affects three-way comparisons launched from the version control view, so is used solely for merges/conflict resolution within Meld.</description>
       </key>
       <key name="vc-show-commit-margin" type="b">
           <default>true</default>
@@ -201,7 +201,7 @@
       <key name="vc-break-commit-message" type="b">
           <default>false</default>
           <summary>Automatically hard-wrap commit messages</summary>
-          <description>If true, the version control commit message editor will hard-wrap (i.e., insert line breaks) at the defined commit margin before commit.</description>
+          <description>If true, the version control commit message editor will hard-wrap (i.e., insert line breaks) at the commit margin before commit.</description>
       </key>
       <key name="vc-status-filters" type="as">
           <default>['flatten', 'modified']</default>
