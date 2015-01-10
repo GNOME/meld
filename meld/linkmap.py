@@ -42,18 +42,10 @@ class LinkMap(Gtk.DrawingArea):
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
-        self.on_setting_changed(meldsettings, 'font')
         self.on_setting_changed(meldsettings, 'style-scheme')
 
     def on_setting_changed(self, settings, key):
-        if key == 'font':
-            context = self.views[0].get_pango_context()
-            metrics = context.get_metrics(
-                meldsettings.font, context.get_language())
-            line_height_points = metrics.get_ascent() + metrics.get_descent()
-            self.line_height = line_height_points // 1024
-            self.queue_draw()
-        elif key == 'style-scheme':
+        if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
 
     def do_draw(self, context):
