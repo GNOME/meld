@@ -73,8 +73,7 @@ class DiffMap(Gtk.DrawingArea):
 
     def do_style_updated(self, *args):
         Gtk.DrawingArea.do_style_updated(self)
-        style = self.get_style_context()
-        self.fill_colors, self.line_colors = get_common_theme(style)
+        self.fill_colors, self.line_colors = get_common_theme()
 
     def on_scrollbar_style_updated(self, scrollbar):
         value = GObject.Value(int)

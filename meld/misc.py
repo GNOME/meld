@@ -143,28 +143,36 @@ def make_tool_button_widget(label):
     return hbox
 
 
-def colour_lookup_with_fallback(style, name, default):
-    found, colour = style.lookup_color(name)
-    if not found:
-        colour = Gdk.RGBA()
-        colour.parse(default)
+def colour_lookup_with_fallback(source_style, name, attribute, default):
+    style = source_style.get_style(name)
+    if style:
+        style_attr = getattr(style.props, attribute)
+        if style_attr:
+            default = style_attr
+    colour = Gdk.RGBA()
+    colour.parse(default)
     return colour
 
 
-def get_common_theme(style):
-    lookup = lambda *args: colour_lookup_with_fallback(style, *args)
+def get_common_theme():
+    # TODO: Everywhere that calls get_common_theme needs to bind to the
+    # gsettings style-scheme key instead of triggering on style_updated
+    from meld.settings import meldsettings
+    source_style = meldsettings.style_scheme
+    lookup = lambda *args: colour_lookup_with_fallback(source_style, *args)
     fill_colours = {
-        "insert": lookup("insert-bg", "DarkSeaGreen1"),
-        "delete": lookup("insert-bg", "DarkSeaGreen1"),
-        "conflict": lookup("conflict-bg", "Pink"),
-        "replace": lookup("replace-bg", "#ddeeff"),
-        "current-chunk-highlight": lookup("current-chunk-highlight", '#ffffff')
+        "insert": lookup("meld:insert", "background", "DarkSeaGreen1"),
+        "delete": lookup("meld:insert", "background", "DarkSeaGreen1"),
+        "conflict": lookup("meld:conflict", "background", "Pink"),
+        "replace": lookup("meld:replace", "background", "#ddeeff"),
+        "current-chunk-highlight": lookup(
+            "meld:current-chunk-highlight", "background", '#ffffff')
     }
     line_colours = {
-        "insert": lookup("insert-outline", "#77f077"),
-        "delete": lookup("insert-outline", "#77f077"),
-        "conflict": lookup("conflict-outline", "#f0768b"),
-        "replace": lookup("replace-outline", "#8bbff3"),
+        "insert": lookup("meld:insert", "line-background", "#77f077"),
+        "delete": lookup("meld:insert", "line-background", "#77f077"),
+        "conflict": lookup("meld:conflict", "line-background", "#f0768b"),
+        "replace": lookup("meld:replace", "line-background", "#8bbff3"),
     }
     return fill_colours, line_colours
 

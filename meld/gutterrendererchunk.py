@@ -113,9 +113,7 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
     def do_style_updated(self):
         # GtkSource.GutterRendererPixbuf.do_style_updated(self)
         # FIXME: Should be self.get_view() or something, but when and how?
-        widget = self.views[0]
-        style = widget.get_style_context()
-        self.fill_colors, self.line_colors = get_common_theme(style)
+        self.fill_colors, self.line_colors = get_common_theme()
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
         line = start.get_line()
