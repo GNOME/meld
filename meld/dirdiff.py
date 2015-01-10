@@ -548,7 +548,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if f.filter is None:
                 disabled_actions.append(name)
 
-        self.filter_actiongroup = Gtk.ActionGroup("DirdiffFilterActions")
+        self.filter_actiongroup = Gtk.ActionGroup(name="DirdiffFilterActions")
         self.filter_actiongroup.add_toggle_actions(actions)
         for name in disabled_actions:
             self.filter_actiongroup.get_action(name).set_sensitive(False)

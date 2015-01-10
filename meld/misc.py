@@ -131,7 +131,8 @@ def position_menu_under_widget(menu, widget):
 
 def make_tool_button_widget(label):
     """Make a GtkToolButton label-widget suggestive of a menu dropdown"""
-    arrow = Gtk.Arrow(Gtk.ArrowType.DOWN, Gtk.ShadowType.NONE)
+    arrow = Gtk.Arrow(
+        arrow_type=Gtk.ArrowType.DOWN, shadow_type=Gtk.ShadowType.NONE)
     label = Gtk.Label(label=label)
     hbox = Gtk.HBox(spacing=3)
     hbox.pack_end(arrow, True, True, 0)
