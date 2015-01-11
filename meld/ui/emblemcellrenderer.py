@@ -31,6 +31,10 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         "emblem-name": (str, "Named emblem icon",
                         "Name for emblem icon to overlay",
                         None, GObject.PARAM_READWRITE),
+        "secondary-emblem-name": (
+            str, "Named secondary emblem icon",
+            "Name for secondary emblem icon to overlay",
+            None, GObject.PARAM_READWRITE),
         "icon-tint":   (str, "Icon tint",
                         "GDK-parseable color to be used to tint icon",
                         None, GObject.PARAM_READWRITE),
@@ -42,6 +46,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         super(EmblemCellRenderer, self).__init__()
         self._icon_name = "text-x-generic"
         self._emblem_name = None
+        self._secondary_emblem_name = None
         self._icon_tint = None
         self._tint_color = None
         self._state = None
@@ -54,6 +59,8 @@ class EmblemCellRenderer(Gtk.CellRenderer):
             self._icon_name = value
         elif pspec.name == "emblem-name":
             self._emblem_name = value
+        elif pspec.name == "secondary-emblem-name":
+            self._secondary_emblem_name = value
         elif pspec.name == "icon-tint":
             self._icon_tint = value
             if self._icon_tint:
@@ -69,6 +76,8 @@ class EmblemCellRenderer(Gtk.CellRenderer):
             return self._icon_name
         elif pspec.name == "emblem-name":
             return self._emblem_name
+        elif pspec.name == "secondary-emblem-name":
+            return self._secondary_emblem_name
         elif pspec.name == "icon-tint":
             return self._icon_tint
         else:
@@ -119,6 +128,18 @@ class EmblemCellRenderer(Gtk.CellRenderer):
                 Gdk.cairo_set_source_pixbuf(context, pixbuf, x_offset, 0)
                 context.rectangle(x_offset, 0,
                                   cell_area.width, self._emblem_size)
+                context.fill()
+
+            if self._secondary_emblem_name:
+                pixbuf = self._get_pixbuf(
+                    self._secondary_emblem_name, self._emblem_size)
+                x_offset = self._icon_size - self._emblem_size
+                y_offset = self._icon_size - self._emblem_size + height_offset
+                context.set_operator(cairo.OPERATOR_OVER)
+                Gdk.cairo_set_source_pixbuf(
+                    context, pixbuf, x_offset, y_offset)
+                context.rectangle(
+                    x_offset, y_offset, cell_area.width, self._emblem_size)
                 context.fill()
 
         context.pop_group_to_source()

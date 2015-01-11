@@ -206,14 +206,15 @@ def _files_same(files, regexes, comparison_args):
 
 
 EMBLEM_NEW = "emblem-meld-newer-file"
+EMBLEM_SYMLINK = "emblem-symbolic-link"
 
-COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
-        range(tree.COL_END, tree.COL_END + 5)
+COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
+        range(tree.COL_END, tree.COL_END + 6)
 
 
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(self, ntree, [str, object, object, object])
+        tree.DiffTreeStore.__init__(self, ntree, [str, str, object, object, object])
 
 
 class CanonicalListing(object):
@@ -384,10 +385,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                   style=col_index(tree.COL_STYLE, i),
                                   weight=col_index(tree.COL_WEIGHT, i),
                                   strikethrough=col_index(tree.COL_STRIKE, i))
-            column.set_attributes(renicon,
-                                  icon_name=col_index(tree.COL_ICON, i),
-                                  emblem_name=col_index(COL_EMBLEM, i),
-                                  icon_tint=col_index(tree.COL_TINT, i))
+            column.set_attributes(
+                renicon,
+                icon_name=col_index(tree.COL_ICON, i),
+                emblem_name=col_index(COL_EMBLEM, i),
+                secondary_emblem_name=col_index(COL_EMBLEM_SECONDARY, i),
+                icon_tint=col_index(tree.COL_TINT, i)
+            )
             self.treeview[i].append_column(column)
             self.columns_dict[i]["name"] = column
             # Create file size CellRenderer
@@ -1261,15 +1265,26 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         files = self.model.value_paths(it)
         regexes = [f.byte_filter for f in self.text_filters if f.active]
 
-        def stat(f):
+        def none_stat(f):
             try:
                 return os.stat(f)
             except OSError:
                 return None
-        stats = [stat(f) for f in files[:self.num_panes]]
+        stats = [none_stat(f) for f in files[:self.num_panes]]
         sizes = [s.st_size if s else 0 for s in stats]
         perms = [s.st_mode if s else 0 for s in stats]
         times = [s.st_mtime if s else 0 for s in stats]
+
+        def none_lstat(f):
+            try:
+                return os.lstat(f)
+            except OSError:
+                return None
+
+        lstats = [none_lstat(f) for f in files[:self.num_panes]]
+        symlinks = {
+            i for i, s in enumerate(lstats) if s and stat.S_ISLNK(s.st_mode)
+        }
 
         existing_times = [s.st_mtime for s in stats if s]
         newest_time = max(existing_times)
@@ -1311,6 +1326,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.model.set_path_state(it, j, state, isdir[j])
                 emblem = EMBLEM_NEW if j in newest else None
                 self.model.set_value(it, column_index(COL_EMBLEM), emblem)
+                link_emblem = EMBLEM_SYMLINK if j in symlinks else None
+                self.model.set_value(
+                    it, column_index(COL_EMBLEM_SECONDARY), link_emblem)
                 self.model.set_value(it, column_index(COL_TIME), times[j])
                 self.model.set_value(it, column_index(COL_SIZE), sizes[j])
                 self.model.set_value(it, column_index(COL_PERMS), perms[j])
