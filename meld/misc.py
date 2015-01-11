@@ -24,7 +24,6 @@ import shutil
 import re
 import subprocess
 
-from gi.repository import GObject
 from gi.repository import Gtk
 
 from meld.conf import _
@@ -129,6 +128,7 @@ def position_menu_under_widget(menu, widget):
 
     return (x, y, False)
 
+
 def make_tool_button_widget(label):
     """Make a GtkToolButton label-widget suggestive of a menu dropdown"""
     arrow = Gtk.Arrow(
@@ -140,8 +140,10 @@ def make_tool_button_widget(label):
     hbox.show_all()
     return hbox
 
+
 def gdk_to_cairo_color(color):
     return (color.red / 65535., color.green / 65535., color.blue / 65535.)
+
 
 def all_equal(alist):
     """Return true if all members of the list are equal to the first.
@@ -154,7 +156,8 @@ def all_equal(alist):
             if n != first:
                 return 0
     return 1
-    
+
+
 def shorten_names(*names):
     """Remove redunant parts of a list of names (e.g. /tmp/foo{1,2} -> foo{1,2}
     """
@@ -252,6 +255,7 @@ def write_pipe(command, text, error=None):
     proc.communicate(text)
     return proc.wait()
 
+
 def commonprefix(dirs):
     """Given a list of pathnames, returns the longest common leading component.
     """
@@ -267,6 +271,7 @@ def commonprefix(dirs):
                     return ''
                 break
     return os.sep.join(prefix)
+
 
 def copy2(src, dst):
     """Like shutil.copy2 but ignores chmod errors, and copies symlinks as links
@@ -289,6 +294,7 @@ def copy2(src, dst):
     except OSError as e:
         if e.errno not in (errno.EPERM, errno.ENOTSUP):
             raise
+
 
 def copytree(src, dst):
     """Similar to shutil.copytree, but always copies symlinks and doesn't
@@ -321,15 +327,18 @@ def copytree(src, dst):
         if e.errno != errno.EPERM:
             raise
 
+
 def shell_escape(glob_pat):
     # TODO: handle all cases
     assert not re.compile(r"[][*?]").findall(glob_pat)
     return glob_pat.replace('{', '[{]').replace('}', '[}]')
 
+
 def shell_to_regex(pat):
     """Translate a shell PATTERN to a regular expression.
 
-    Based on fnmatch.translate(). We also handle {a,b,c} where fnmatch does not.
+    Based on fnmatch.translate().
+    We also handle {a,b,c} where fnmatch does not.
     """
 
     i, n = 0, len(pat)
@@ -370,7 +379,9 @@ def shell_to_regex(pat):
             else:
                 stuff = pat[i:j]
                 i = j+1
-                res += '(%s)' % "|".join([shell_to_regex(p)[:-1] for p in stuff.split(",")])
+                res += '(%s)' % "|".join(
+                    [shell_to_regex(p)[:-1] for p in stuff.split(",")]
+                )
         else:
             res += re.escape(c)
     return res + "$"
