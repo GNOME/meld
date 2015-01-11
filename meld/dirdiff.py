@@ -430,6 +430,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 action_name = self.state_actions[s][1]
                 self.actiongroup.get_action(action_name).set_active(True)
 
+        self._scan_in_progress = 0
+
     def on_style_updated(self, widget):
         style = widget.get_style_context()
 
@@ -664,6 +666,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.model.remove(child)
             child = self.model.iter_children( it )
         self._update_item_state(it)
+        self._scan_in_progress += 1
         self.scheduler.add_task(self._search_recursively_iter(path))
 
     def _search_recursively_iter(self, rootpath):
@@ -829,6 +832,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Done") % self.label_text
 
         self.scheduler.add_task(self.on_treeview_cursor_changed)
+        self._scan_in_progress -= 1
         self.treeview[0].get_selection().select_path(Gtk.TreePath.new_first())
         self._update_diffmaps()
 
@@ -1059,12 +1063,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     is_valid = False
                     break
 
+            busy = self._scan_in_progress > 0
+
             get_action("DirCompare").set_sensitive(True)
             get_action("Hide").set_sensitive(True)
-            get_action("DirDelete").set_sensitive(is_valid)
-            get_action("DirCopyLeft").set_sensitive(is_valid and pane > 0)
+            get_action("DirDelete").set_sensitive(
+                is_valid and not busy)
+            get_action("DirCopyLeft").set_sensitive(
+                is_valid and not busy and pane > 0)
             get_action("DirCopyRight").set_sensitive(
-                is_valid and pane + 1 < self.num_panes)
+                is_valid and not busy and pane + 1 < self.num_panes)
             if self.main_actiongroup:
                 act = self.main_actiongroup.get_action("OpenExternal")
                 act.set_sensitive(is_valid)
