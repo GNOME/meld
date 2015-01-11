@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-05 09:30+0100\n"
-"PO-Revision-Date: 2015-01-05 09:31+0100\n"
+"POT-Creation-Date: 2015-01-11 15:18+0100\n"
+"PO-Revision-Date: 2015-01-11 15:19+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -37,7 +37,7 @@ msgstr "Program Meld wymaga wersji %s lub nowszej."
 msgid "Meld does not support Python 3."
 msgstr "Program Meld nie obsługuje biblioteki Python 3."
 
-#: ../bin/meld:194
+#: ../bin/meld:195
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -217,11 +217,10 @@ msgstr "Używanie domyślnej systemowej czcionki o stałej szerokości"
 
 #: ../data/org.gnome.meld.gschema.xml.h:26
 msgid ""
-"If false, the defined custom font will be used instead of the system "
-"monospace font."
+"If false, custom-font will be used instead of the system monospace font."
 msgstr ""
-"Jeśli wynosi \"false\", to podana własna czcionka będzie używana zamiast "
-"systemowej czcionki o stałej szerokości."
+"Jeśli wynosi \"false\", to podana własna czcionka w \"custom-font\" będzie "
+"używana zamiast systemowej czcionki o stałej szerokości."
 
 #: ../data/org.gnome.meld.gschema.xml.h:27
 msgid "Custom font"
@@ -252,11 +251,12 @@ msgstr "Używanie domyślnego edytora systemu"
 
 #: ../data/org.gnome.meld.gschema.xml.h:32
 msgid ""
-"If false, the defined custom editor will be used instead of the system "
-"editor when opening files externally."
+"If false, custom-editor-command will be used instead of the system editor "
+"when opening files externally."
 msgstr ""
-"Jeśli wynosi \"false\", to podany własny edytor będzie używany zamiast "
-"systemowego edytora podczas zewnętrznego otwierania plików."
+"Jeśli wynosi \"false\", to podany własny edytor w \"custom-editor-command\" "
+"będzie używany zamiast systemowego edytora podczas zewnętrznego otwierania "
+"plików."
 
 #: ../data/org.gnome.meld.gschema.xml.h:33
 msgid "The custom editor launch command"
@@ -382,11 +382,11 @@ msgstr ""
 
 #: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
-"Choices for file order are remote/merge/local and local/merged/remote. This "
+"Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
 "control view, so is used solely for merges/conflict resolution within Meld."
 msgstr ""
-"Można wybrać kolejność: zdalne/scalanie/lokalne lub lokalne/scalone/zdalne. "
+"Można wybrać kolejność: zdalne/scalone/lokalne lub lokalne/scalone/zdalne. "
 "Ta preferencja ma wpływ tylko na porównania trzech plików wykonane z widoku "
 "kontroli wersji, więc jest używana wyłącznie do scalania/rozwiązywania "
 "konfliktów w ramach programu Meld."
@@ -422,11 +422,11 @@ msgstr "Automatyczne twarde zawijanie komunikatów zatwierdzeń"
 #: ../data/org.gnome.meld.gschema.xml.h:58
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
-"insert line breaks) at the defined commit margin before commit."
+"insert line breaks) at the commit margin before commit."
 msgstr ""
 "Jeśli wynosi \"true\", to edytor komunikatów zatwierdzeń kontroli wersji "
-"będzie twardo zawijał (tzn. wstawiał łamanie wierszy) na podanym marginesie "
-"przed zatwierdzeniem."
+"będzie twardo zawijał (tzn. wstawiał łamanie wierszy) na marginesie przed "
+"zatwierdzeniem."
 
 #: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Version control status filters"
@@ -532,7 +532,7 @@ msgstr "Kopiuje element na prawo"
 msgid "Delete selected"
 msgstr "Usuwa zaznaczone"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1438
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:865 ../meld/filediff.py:1438
 msgid "Hide"
 msgstr "Ukryj"
 
@@ -662,16 +662,16 @@ msgid "Add Synchronization Point"
 msgstr "Dodaj punkt synchronizacji"
 
 #: ../data/ui/filediff.ui.h:7
-msgid "Add a manual point for synchronization of changes between files"
-msgstr "Dodaje ręczny punkt do synchronizacji zmian między plikami"
+msgid "Add a synchronization point for changes between files"
+msgstr "Dodaje punkt synchronizacji zmian między plikami"
 
 #: ../data/ui/filediff.ui.h:8
 msgid "Clear Synchronization Points"
 msgstr "Wyczyść punkty synchronizacji"
 
 #: ../data/ui/filediff.ui.h:9
-msgid "Clear manual change sychronization points"
-msgstr "Czyści ręczne punkty synchronizacji zmian"
+msgid "Clear sychronization points for changes between files"
+msgstr "Czyści punkty synchronizacji zmian między plikami"
 
 #: ../data/ui/filediff.ui.h:10
 msgid "Previous Conflict"
@@ -822,7 +822,7 @@ msgstr ""
 msgid "Close _without Saving"
 msgstr "Zamknij _bez zapisywania"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:911 ../meld/filediff.py:1607
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:956 ../meld/filediff.py:1607
 #: ../meld/filediff.py:1691 ../meld/filediff.py:1716
 msgid "_Cancel"
 msgstr "_Anuluj"
@@ -860,7 +860,7 @@ msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr ""
 "Zmiany naniesione do poniższych dokumentów zostaną bezpowrotnie utracone:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:912 ../meld/filediff.py:1608
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:957 ../meld/filediff.py:1608
 msgid "_Replace"
 msgstr "Z_amień"
 
@@ -1340,41 +1340,72 @@ msgstr "Czas modyfikacji"
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: ../meld/dirdiff.py:545
+#: ../meld/dirdiff.py:547
 #, python-format
 msgid "Hide %s"
 msgstr "Ukryj %s"
 
-#: ../meld/dirdiff.py:674 ../meld/dirdiff.py:696
+#: ../meld/dirdiff.py:677 ../meld/dirdiff.py:699
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Skanowanie %s"
 
-#: ../meld/dirdiff.py:825
+#: ../meld/dirdiff.py:832
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Ukończono"
 
-#: ../meld/dirdiff.py:832
+#: ../meld/dirdiff.py:840
+msgid "Folders have no differences"
+msgstr "Katalogi się nie różnią"
+
+#: ../meld/dirdiff.py:842
+msgid "Contents of scanned files in folders are identical."
+msgstr "Treść zeskanowanych plików w katalogach jest identyczna."
+
+#: ../meld/dirdiff.py:844
+msgid ""
+"Scanned files in folders appear identical, but contents have not been "
+"scanned."
+msgstr ""
+"Zeskanowane pliki wydają się identyczne, ale treść mogła nie zostać "
+"zeskanowana."
+
+#: ../meld/dirdiff.py:847
+msgid "File filters are in use, so not all files have been scanned."
+msgstr ""
+"Filtry plików są używane, więc nie wszystkie pliki zostały zeskanowane."
+
+#: ../meld/dirdiff.py:849
+msgid "Text filters are in use and may be masking content differences."
+msgstr "Filtry tekstowe są używane i mogą ukrywać różnice między plikami."
+
+#: ../meld/dirdiff.py:867 ../meld/dirdiff.py:920 ../meld/filediff.py:1112
+#: ../meld/filediff.py:1264 ../meld/filediff.py:1440 ../meld/filediff.py:1470
+#: ../meld/filediff.py:1472
+msgid "Hi_de"
+msgstr "_Ukryj"
+
+#: ../meld/dirdiff.py:877
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Wystąpiło wiele błędów podczas skanowania tego katalogu"
 
-#: ../meld/dirdiff.py:833
+#: ../meld/dirdiff.py:878
 msgid "Files with invalid encodings found"
 msgstr "Odnaleziono pliki z nieprawidłowym kodowaniem znaków"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:835
+#: ../meld/dirdiff.py:880
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Niektóre pliki mają nieprawidłowe kodowanie znaków. Nazwy tych plików to:"
 
-#: ../meld/dirdiff.py:837
+#: ../meld/dirdiff.py:882
 msgid "Files hidden by case insensitive comparison"
 msgstr "Pliku ukryte przez porównywanie bez uwzględniania wielkości liter"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:839
+#: ../meld/dirdiff.py:884
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1383,22 +1414,17 @@ msgstr ""
 "systemie plików, który rozróżnia wielkość liter. Następujące pliki w tym "
 "katalogu zostały ukryte:"
 
-#: ../meld/dirdiff.py:850
+#: ../meld/dirdiff.py:895
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "\"%s\" ukryty przez \"%s\""
 
-#: ../meld/dirdiff.py:875 ../meld/filediff.py:1112 ../meld/filediff.py:1264
-#: ../meld/filediff.py:1440 ../meld/filediff.py:1470 ../meld/filediff.py:1472
-msgid "Hi_de"
-msgstr "_Ukryj"
-
-#: ../meld/dirdiff.py:915
+#: ../meld/dirdiff.py:960
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Zastąpić katalog \"%s\"?"
 
-#: ../meld/dirdiff.py:917
+#: ../meld/dirdiff.py:962
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1408,11 +1434,11 @@ msgstr ""
 "Zastąpienie istniejącego katalogu spowoduje utratę wszystkich plików w nim "
 "zawartych."
 
-#: ../meld/dirdiff.py:930
+#: ../meld/dirdiff.py:975
 msgid "Error copying file"
 msgstr "Błąd podczas kopiowania pliku"
 
-#: ../meld/dirdiff.py:931
+#: ../meld/dirdiff.py:976
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1425,7 +1451,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:954
+#: ../meld/dirdiff.py:999
 #, python-format
 msgid "Error deleting %s"
 msgstr "Błąd podczas usuwania %s"
@@ -1530,7 +1556,7 @@ msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr ""
-"Filtry tekstowe są aktywne i mogą ukrywać różnice między plikami. Porównać "
+"Filtry tekstowe są używane i mogą ukrywać różnice między plikami. Porównać "
 "pliki bez uwzględniania filtrów?"
 
 #: ../meld/filediff.py:1435
@@ -2014,7 +2040,7 @@ msgid "Cannot compare a mixture of files and directories"
 msgstr "Jednoczesne porównanie plików i katalogów nie jest możliwe"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:182
+#: ../meld/misc.py:183
 msgid "[None]"
 msgstr "[Brak]"
 
