@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
 from gi.repository import Gtk
 
 import meld.conf
@@ -23,19 +21,17 @@ import meld.conf
 from meld.ui import gladesupport
 
 
-def ui_file(filename):
-    return os.path.join(meld.conf.DATADIR, "ui", filename)
-
-
 def get_widget(filename, widget):
     builder = Gtk.Builder()
     builder.set_translation_domain(meld.conf.__package__)
-    builder.add_objects_from_file(ui_file(filename), [widget])
+    path = meld.conf.ui_file(filename)
+    builder.add_objects_from_file(path, [widget])
     return builder.get_object(widget)
 
 
 def get_builder(filename):
     builder = Gtk.Builder()
     builder.set_translation_domain(meld.conf.__package__)
-    builder.add_from_file(ui_file(filename))
+    path = meld.conf.ui_file(filename)
+    builder.add_from_file(path)
     return builder

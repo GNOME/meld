@@ -14,15 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
 from gi.repository import Gtk
 
 import meld.conf
 
-
-def ui_file(filename):
-    return os.path.join(meld.conf.DATADIR, "ui", filename)
+# For backwards compat
+ui_file = meld.conf.ui_file
 
 
 class Component(object):
