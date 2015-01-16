@@ -34,6 +34,12 @@ Gtk.rc_parse_string(
 class MeldStatusBar(Gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
+    source_language = GObject.property(
+        type=GtkSource.Language,
+        nick="The GtkSourceLanguage displayed in the status bar",
+        default=None,
+    )
+
     def __init__(self):
         GObject.GObject.__init__(self)
         self.props.spacing = 6
@@ -59,9 +65,20 @@ class MeldStatusBar(Gtk.Statusbar):
         self.box_box.show_all()
 
     def construct_highlighting_selector(self):
+        def change_language(selector, lang):
+            self.props.source_language = lang
+            pop.hide()
+
+        def set_initial_language(selector):
+            selector.select_language(self.props.source_language)
+
+        selector = HighlightModeSelector()
+        selector.connect('language-selected', change_language)
+        selector.connect('map', set_initial_language)
+
         pop = Gtk.Popover()
         pop.set_position(Gtk.PositionType.TOP)
-        pop.add(HighlightModeSelector())
+        pop.add(selector)
 
         button = Gtk.MenuButton()
         button.set_label("Foo")
@@ -129,7 +146,7 @@ class HighlightModeSelector(TemplateHackMixin, Gtk.Grid):
         self.liststore = self.listfilter.get_model()
 
         self.liststore.append((_("Plain Text"), None))
-        manager = GtkSource.LanguageManager()
+        manager = GtkSource.LanguageManager.get_default()
         for lang_id in manager.get_language_ids():
             lang = manager.get_language(lang_id)
             self.liststore.append((lang.get_name(), lang))
@@ -140,6 +157,17 @@ class HighlightModeSelector(TemplateHackMixin, Gtk.Grid):
 
         self.entry.connect('activate', self.on_activate)
         self.treeview.connect('row-activated', self.on_activate)
+
+    def select_language(self, language):
+        if not language:
+            return
+
+        for row in self.liststore:
+            row_lang = row[self.LANG_COLUMN]
+            if row_lang and row_lang.get_id() != language.get_id():
+                continue
+            self.treeview_selection.select_path(row.path)
+            self.treeview.scroll_to_cell(row.path, None, True, 0.5, 0)
 
     def lang_name_filter(self, model, it, *args):
         if not self.filter_string:
