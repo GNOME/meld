@@ -221,6 +221,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.status_info_labels = [overwrite_label, cursor_label]
         self.statusbar.set_info_box(self.status_info_labels)
 
+        def bind_textbuffer_to_statusbar(buf, statusbar):
+            buf.bind_property(
+                'language', statusbar, 'source-language',
+                GObject.BindingFlags.BIDIRECTIONAL)
+
+        bind_textbuffer_to_statusbar(self.textbuffer[0], self.statusbar)
+
         # Prototype implementation
 
         from meld.gutterrendererchunk import GutterRendererChunkAction, GutterRendererChunkLines
