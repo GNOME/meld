@@ -280,7 +280,6 @@ class Vc(object):
     @classmethod
     def find_repo_root(cls, location):
         while location:
-            location = os.path.realpath(location)
             if cls.check_repo_root(location):
                 return location
 
