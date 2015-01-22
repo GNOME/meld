@@ -1277,8 +1277,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # Notification for unknown buffer
             return
         gfile = Gio.File.new_for_path(data.filename)
-
-        primary = _("File %s has changed on disk") % gfile.get_parse_name()
+        display_name = gfile.get_parse_name().decode('utf-8')
+        primary = _("File %s has changed on disk") % display_name
         secondary = _("Do you want to reload the file?")
         msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                         Gtk.STOCK_DIALOG_WARNING, primary, secondary)
