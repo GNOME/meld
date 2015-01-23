@@ -249,7 +249,11 @@ class BufferLines(object):
                         assert len(ends) >= i + 1
                         lines[i:i + 2] = [line + end[-1] + lines[i + 1]]
                         ends[i:i + 2] = [end + ends[i + 1]]
-                    i += 1
+                    else:
+                        # We only increment if we don't correct a line, to
+                        # handle the case of a single line having multiple
+                        # additional_breaks characters that need correcting.
+                        i += 1
 
             return lines
 
