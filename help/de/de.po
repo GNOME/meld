@@ -1,6 +1,8 @@
 # German translation for meld.
 # Copyright (C) 2015 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
+# Mario Blättermann <mariobl@gnome.org>, 2009.
+# Benjamin Steinwender <b@stbe.at>, 2014-2015.
 # Christian Kirbach <Christian.Kirbach@gmail.com>, 2015.
 #
 msgid ""
@@ -20,7 +22,10 @@ msgstr ""
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
 msgid "translator-credits"
-msgstr "Christian Kirbach <christian.kirbach@gmail.com>, 2015"
+msgstr ""
+"Mario Blättermann <mariobl@gnome.org>, 2009\n"
+"Benjamin Steinwender <b@stbe.at>, 2014-2015\n"
+"Christian Kirbach <christian.kirbach@gmail.com>, 2014"
 
 #. (itstool) path: info/title
 #: C/vc-supported.page:5
@@ -50,12 +55,13 @@ msgstr "2012"
 #. (itstool) path: page/title
 #: C/vc-supported.page:15
 msgid "Supported version control systems"
-msgstr "Unterstütze Versionskontrollsysteme"
+msgstr "Unterstützte Versionskontrollsysteme"
 
 #. (itstool) path: page/p
 #: C/vc-supported.page:17
 msgid "<app>Meld</app> supports a wide range of version control systems:"
 msgstr ""
+"<app>Meld</app> unterstützt eine große Anzahl von Versionskontrollsystemen:"
 
 #. (itstool) path: item/p
 #: C/vc-supported.page:22
@@ -119,6 +125,10 @@ msgid ""
 "properly tested; please report any version control support bugs to <link "
 "href=\"https://bugzilla.gnome.org/\">GNOME bugzilla</link>."
 msgstr ""
+"Weniger gebräuchliche Versionskontrollsysteme oder unübliche Einstellungen "
+"sind eventuelle nicht ausgiebig getestet. Bitte berichten Sie Fehler in der "
+"Unterstützung der Versionskontrollsysteme im <link href=\"https://bugzilla."
+"gnome.org/\"> Bugzilla-Fehlererfassungssystem von GNOME </link>."
 
 #. (itstool) path: info/title
 #: C/file-filters.page:5 C/text-filters.page:5 C/resolving-conflicts.page:5
@@ -142,9 +152,15 @@ msgid ""
 "Alternatively, you might want to ignore all the files in your <file>.git</"
 "file> directory, or ignore all images."
 msgstr ""
+"Wenn Sie Ordner vergleichen, möchten Sie eventuell einige Dateien "
+"ignorieren. Zum Beispiel möchten Sie nur Dateien sehen, die in beiden "
+"Ordnern unterschiedlich sind und jede Dateien ignorieren, die gleich sind "
+"oder sich nur in einem Ordner befinden. Alternativ können Sie alle Dateien "
+"in Ihrem <file>.git</file>-Ordner ignorieren oder alle Bilder."
 
 #. (itstool) path: page/p
 #: C/file-filters.page:25
+#, fuzzy
 msgid ""
 "<app>Meld</app> has several different ways of controlling which files and "
 "what kind of differences you see. You can filter based on <link xref=\"#file-"
@@ -154,6 +170,15 @@ msgid ""
 "\">case insensitive</link>. Finally, you can use <link xref=\"text-filters"
 "\">text filters</link> to change what both folder and file comparisons see."
 msgstr ""
+"<app>Meld</app> besitzt verschiedene Einstellungsmöglichkeiten, um "
+"festzulegen, welche Dateien und Unterschiede angezeigt werden sollen. Sie "
+"können Filter basierend auf <link xref=\"#file-state-filter\">Unterschiede "
+"einer Datei in verschiedenen Ordnern</link> oder <link xref=\"#file-name-"
+"filter\">Datei- und Ordnernamen</link> anwenden. Sie können <app>Meld</app> "
+"auch befehlen, bei Dateinamen die <link xref=\"#file-case-filter\">Groß-/"
+"Kleinschreibung zu ignorieren</link>. Zuletzt können Sie <link xref=\"text-"
+"filters\">Text-Filter</link> verwenden, um festzulegen welche Ordner und "
+"Dateien der Vergleich sieht."
 
 #. (itstool) path: note/p
 #: C/file-filters.page:37
@@ -188,6 +213,8 @@ msgstr "Geändert"
 #: C/file-filters.page:59
 msgid "The file exists in multiple folders, but the files are different"
 msgstr ""
+"Die Datei existiert in mehreren Ordnern, aber die Dateien sind "
+"unterschiedlich"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
@@ -198,18 +225,18 @@ msgstr "Neu"
 #. (itstool) path: item/p
 #: C/file-filters.page:63
 msgid "The file exists in one folder but not in the others"
-msgstr ""
+msgstr "Die Datei existiert in einem Ordnern, jedoch nicht in den anderen"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
 #: C/file-filters.page:66 C/vc-mode.page:93 C/folder-mode.page:118
 msgid "Same"
-msgstr "Genauso"
+msgstr "Identisch"
 
 #. (itstool) path: item/p
 #: C/file-filters.page:67
 msgid "The file exists in all folders, and is the same everywhere"
-msgstr ""
+msgstr "Die Datei existiert in allen Ordnern und ist überall identisch"
 
 #. (itstool) path: section/p
 #: C/file-filters.page:70
@@ -233,7 +260,7 @@ msgstr ""
 #. (itstool) path: section/title
 #: C/file-filters.page:94
 msgid "Filename filtering"
-msgstr ""
+msgstr "Filterung nach Dateinamen"
 
 #. (itstool) path: section/p
 #: C/file-filters.page:96
@@ -275,12 +302,12 @@ msgstr ""
 #. (itstool) path: td/p
 #: C/file-filters.page:128
 msgid "Wildcard"
-msgstr ""
+msgstr "Platzhalter"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:128
 msgid "Matches"
-msgstr "Stimmt überein"
+msgstr "Entspricht"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:134
@@ -290,7 +317,7 @@ msgstr "<code>*</code>"
 #. (itstool) path: td/p
 #: C/file-filters.page:135
 msgid "anything (i.e., zero or more characters)"
-msgstr ""
+msgstr "alles (z.B. kein oder mehr Zeichen)"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:138
@@ -300,7 +327,7 @@ msgstr "<code>?</code>"
 #. (itstool) path: td/p
 #: C/file-filters.page:139
 msgid "exactly one character"
-msgstr "genau ein Buchstabe"
+msgstr "genau ein Zeichen"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:142
@@ -310,7 +337,7 @@ msgstr "<code>[abc]</code>"
 #. (itstool) path: td/p
 #: C/file-filters.page:143
 msgid "any one of the listed characters"
-msgstr ""
+msgstr "ein beliebiges der aufgelisteten Zeichen"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:146
@@ -320,17 +347,17 @@ msgstr "<code>[!abc]</code>"
 #. (itstool) path: td/p
 #: C/file-filters.page:147
 msgid "anything <em>except</em> one of the listed characters"
-msgstr ""
+msgstr "ein beliebiges, jedoch <em>keines</em> der aufgelisteten, Zeichen"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:150
 msgid "<code>{cat,dog}</code>"
-msgstr "<code>{cat,dog}</code>"
+msgstr "<code>{Katze,Hund}</code>"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:151
 msgid "either \"cat\" or \"dog\""
-msgstr ""
+msgstr "entweder »Katze« oder »Hund«"
 
 #. (itstool) path: note/p
 #: C/file-filters.page:157
@@ -349,7 +376,7 @@ msgstr ""
 #. (itstool) path: section/title
 #: C/file-filters.page:174
 msgid "Case insensitive filenames"
-msgstr ""
+msgstr "Dateinamen mit beliebiger Groß-/Kleinschreibung"
 
 #. (itstool) path: section/p
 #: C/file-filters.page:176
@@ -371,8 +398,10 @@ msgstr ""
 
 #. (itstool) path: page/title
 #: C/text-filters.page:17
+#, fuzzy
+#| msgid "Filtering"
 msgid "Filtering out text"
-msgstr ""
+msgstr "Filterung"
 
 #. (itstool) path: page/p
 #: C/text-filters.page:19
@@ -441,7 +470,7 @@ msgstr ""
 #. (itstool) path: listing/title
 #: C/text-filters.page:80
 msgid "<file>comment1.txt</file>"
-msgstr ""
+msgstr "<file>Kommentar1.txt</file>"
 
 #. (itstool) path: listing/code
 #: C/text-filters.page:81
@@ -457,7 +486,7 @@ msgstr ""
 #. (itstool) path: listing/title
 #: C/text-filters.page:90
 msgid "<file>comment2.txt</file>"
-msgstr ""
+msgstr "<file>Kommentar2.txt</file>"
 
 #. (itstool) path: listing/code
 #: C/text-filters.page:91
@@ -533,6 +562,9 @@ msgid ""
 "[merge]\n"
 "    tool = meld\n"
 msgstr ""
+"\n"
+"[merge]\n"
+"    tool = meld\n"
 
 #. (itstool) path: page/p
 #: C/resolving-conflicts.page:31
@@ -770,7 +802,7 @@ msgstr ""
 #. (itstool) path: page/title
 #: C/index.page:14
 msgid "Meld Help"
-msgstr ""
+msgstr "Handbuch zu Meld"
 
 #. (itstool) path: section/title
 #: C/index.page:17
@@ -780,22 +812,22 @@ msgstr "Einführung"
 #. (itstool) path: section/title
 #: C/index.page:21
 msgid "Comparing Files"
-msgstr ""
+msgstr "Dateien vergleichen"
 
 #. (itstool) path: section/title
 #: C/index.page:25
 msgid "Comparing Folders"
-msgstr ""
+msgstr "Ordner vergleichen"
 
 #. (itstool) path: section/title
 #: C/index.page:29
 msgid "Using Meld with Version Control"
-msgstr ""
+msgstr "Meld für Versionskontrolle verwenden"
 
 #. (itstool) path: section/title
 #: C/index.page:33
 msgid "Advanced Usage"
-msgstr ""
+msgstr "Fortgeschrittene Verwendung"
 
 #. (itstool) path: info/title
 #: C/vc-mode.page:5
@@ -806,7 +838,7 @@ msgstr "0"
 #. (itstool) path: page/title
 #: C/vc-mode.page:16
 msgid "Viewing version-controlled files"
-msgstr ""
+msgstr "Betrachten von Dateien unter Versionskontrolle"
 
 #. (itstool) path: page/p
 #: C/vc-mode.page:18
@@ -822,7 +854,7 @@ msgstr ""
 #. (itstool) path: section/title
 #: C/vc-mode.page:30
 msgid "Version control comparisons"
-msgstr ""
+msgstr "Versionskontroll-Vergleiche"
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:32
@@ -882,27 +914,30 @@ msgstr "Normale Schriftart"
 #: C/vc-mode.page:101
 msgid "The file/folder is the same as the repository version."
 msgstr ""
+"Die Datei/der Ordner ist identisch mit der Version aus dem Softwarebestand."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:109 C/folder-mode.page:150
 msgid "Red and bold"
-msgstr ""
+msgstr "Rot und fett"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:115
 msgid "This file is different to the repository version."
-msgstr ""
+msgstr "Die Datei ist unterschiedlich zu der Version im Softwarebestand."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:123 C/folder-mode.page:164
 msgid "Green and bold"
-msgstr ""
+msgstr "Grün und fett"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:129
 msgid ""
 "This file/folder is new, and is scheduled to be added to the repository."
 msgstr ""
+"Die Datei/der Ordner ist neu und bereits zum Hinzufügen zum Softwarebestand "
+"markiert."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:136
@@ -912,13 +947,15 @@ msgstr "Entfernt"
 #. (itstool) path: td/p
 #: C/vc-mode.page:138
 msgid "Red bold text with a line through the middle"
-msgstr ""
+msgstr "Roter, fetter, durchgestrichener Text"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:144
 msgid ""
 "This file/folder existed, but is scheduled to be removed from the repository."
 msgstr ""
+"Diese Datei/dieser Ordner existiert, ist jedoch zum Entfernen aus dem "
+"Softwarebestand markiert."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:151
@@ -928,7 +965,7 @@ msgstr "Konflikt"
 #. (itstool) path: td/p
 #: C/vc-mode.page:153
 msgid "Bright red bold text"
-msgstr ""
+msgstr "Heller, roter, fetter Text"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:159
@@ -937,21 +974,24 @@ msgid ""
 "file and the repository could not be resolved, and the file is now in "
 "conflict with the repository contents"
 msgstr ""
+"Die Unterschiede zwischen der lokalen Datei und dem Softwarebestand konnten "
+"beim Zusammenzuführen nicht gelöst werden. Die Datei ist nun im Konflikt mit "
+"den Inhalten des Softwarebestandes."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:167 C/folder-mode.page:176
 msgid "Missing"
-msgstr "Fehlend"
+msgstr "Fehlt"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:169
 msgid "Blue bold text with a line through the middle"
-msgstr ""
+msgstr "Blauer, fetter, durchgestrichener Text"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:175
 msgid "This file/folder should be present, but isn't."
-msgstr ""
+msgstr "Diese Datei/dieser Ordner sollte vorhanden sein, ist es jedoch nicht."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:181
@@ -961,7 +1001,7 @@ msgstr "Ignoriert"
 #. (itstool) path: td/p
 #: C/vc-mode.page:183 C/vc-mode.page:199
 msgid "Greyed out text"
-msgstr ""
+msgstr "Ausgegrauter Text"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:189
@@ -969,17 +1009,21 @@ msgid ""
 "This file/folder has been explicitly ignored (e.g., by an entry in <file>."
 "gitignore</file>) and is not being tracked by version control."
 msgstr ""
+"Diese Datei/dieser Ordner wurde ausdrücklich ignoriert (z.B. durch einen "
+"Eintrag in <file>.gitignore</file>) und wird nicht durch die "
+"Versionskontrolle überwacht."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:197
 msgid "Non VC"
-msgstr ""
+msgstr "Nicht unter VK"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:205
 msgid ""
 "This file is not in the version control system; it is only in the local copy."
 msgstr ""
+"Die Datei steht nicht unter Versionskontrolle. Sie ist nur lokal vorhanden."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:212 C/folder-mode.page:191
@@ -989,12 +1033,12 @@ msgstr "Fehler"
 #. (itstool) path: td/p
 #: C/vc-mode.page:214 C/folder-mode.page:193
 msgid "Bright red with a yellow background and bold"
-msgstr ""
+msgstr "Helles Rot mit einem gelben Hintergrund"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:220
 msgid "The version control system has reported a problem with this file."
-msgstr ""
+msgstr "Das Versionskontrollsystem hat ein Problem zu dieser Datei gemeldet."
 
 #. (itstool) path: section/title
 #: C/vc-mode.page:230
@@ -1016,18 +1060,18 @@ msgstr ""
 #. (itstool) path: page/title
 #: C/keyboard-shortcuts.page:15
 msgid "Keyboard shortcuts"
-msgstr "Tastenkombinationen"
+msgstr "Tastenkürzel"
 
 #. (itstool) path: table/title
 #: C/keyboard-shortcuts.page:18
 msgid "Shortcuts for working with files and comparisons"
-msgstr ""
+msgstr "Tastenkürzel zum Arbeiten mit Dateien und Vergleichen"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
 #: C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131
 msgid "Shortcut"
-msgstr "Tastenkombination"
+msgstr "Tastenkürzel"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
@@ -1058,7 +1102,7 @@ msgstr "Das aktuelle Dokument auf einem Datenträger speichern."
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:37
 msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>S</key></keyseq>"
-msgstr "<keyseq><key>Strg</key><key>Umschalttaste</key><key>S</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>Umschalt</key><key>S</key></keyseq>"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:38
@@ -1088,7 +1132,7 @@ msgstr "<app>Meld</app> beenden."
 #. (itstool) path: table/title
 #: C/keyboard-shortcuts.page:52
 msgid "Shortcuts for editing documents"
-msgstr ""
+msgstr "Tastenkürzel zum Bearbeiten von Dokumenten"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:62
@@ -1103,12 +1147,12 @@ msgstr "Die letzte Aktion rückgängig machen."
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:66
 msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>Z</key></keyseq>"
-msgstr "<keyseq><key>Strg</key><key>Umschalttaste</key><key>Z</key></keyseq>"
+msgstr "<keyseq><key>Strg</key><key>Umschalt</key><key>Z</key></keyseq>"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:67
 msgid "Redo the last undone action."
-msgstr "Die zuletzt rückgängig gemachte Aktion wiederholen"
+msgstr "Die zuletzt rückgängig gemachte Aktion wiederholen."
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:70
@@ -1119,7 +1163,7 @@ msgstr "<keyseq><key>Strg</key><key>X</key></keyseq>"
 #: C/keyboard-shortcuts.page:71
 msgid "Cut the selected text or region and place it on the clipboard."
 msgstr ""
-"Den markierten Text oder die markierte Region ausschneiden und in die "
+"Den markierten Text oder den markierten Bereich ausschneiden und in die "
 "Zwischenablage verschieben."
 
 #. (itstool) path: td/p
@@ -1167,7 +1211,7 @@ msgstr "Das nächste Vorkommen der Zeichenkette suchen."
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:90 C/keyboard-shortcuts.page:96
 msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
-msgstr ""
+msgstr "<keyseq><key>Alt</key><key>↑</key></keyseq>"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:91
@@ -1175,6 +1219,8 @@ msgid ""
 "Go to the next difference. (Also <keyseq><key>Ctrl</key><key>D</key></"
 "keyseq>)"
 msgstr ""
+"Zum nächsten Unterschied springen. (Auch <keyseq><key>Strg</key><key>D</"
+"key></keyseq>)"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:97
@@ -1182,11 +1228,13 @@ msgid ""
 "Go to the previous difference. (Also <keyseq><key>Ctrl</key><key>E</key></"
 "keyseq>)"
 msgstr ""
+"Zum vorherigen Unterschied springen. (Auch <keyseq><key>Strg</key><key>E</"
+"key></keyseq>)"
 
 #. (itstool) path: table/title
 #: C/keyboard-shortcuts.page:105
 msgid "Shortcuts for view settings"
-msgstr ""
+msgstr "Tastenkürzel für Anzeigeoptionen"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:115
@@ -1196,7 +1244,7 @@ msgstr "<keyseq><key>Esc</key></keyseq>"
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:116
 msgid "Stop the current comparison."
-msgstr ""
+msgstr "Den aktuellen Vergleich stoppen."
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:119
@@ -1206,12 +1254,12 @@ msgstr "<keyseq><key>Strg</key><key>R</key></keyseq>"
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:120
 msgid "Refresh the current comparison."
-msgstr ""
+msgstr "Den aktuellen Vergleich aktualisieren."
 
 #. (itstool) path: table/title
 #: C/keyboard-shortcuts.page:127
 msgid "Shortcuts for help"
-msgstr ""
+msgstr "Tastenkürzel für Hilfe"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:137
@@ -1221,12 +1269,12 @@ msgstr "<keyseq><key>F1</key></keyseq>"
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:138
 msgid "Open <app>Meld</app>'s user manual."
-msgstr ""
+msgstr "Das Benutzerhandbuch von <app>Meld</app> öffnen."
 
 #. (itstool) path: page/title
 #: C/introduction.page:15
 msgid "What is Meld?"
-msgstr ""
+msgstr "Was is Meld?"
 
 #. (itstool) path: page/p
 #: C/introduction.page:16
@@ -1235,6 +1283,9 @@ msgid ""
 "resolving differences between them. It is also useful for comparing changes "
 "captured by version control systems."
 msgstr ""
+"<app>Meld</app> ist ein Werkzeug zum Vergleichen von Dateien und Ordnern und "
+"zum Auflösen von Unterschieden zwischen solchen. Es ist nützlich zum "
+"Betrachten von Änderungen, die von Versionskontrollsystemen erfasst werden."
 
 #. (itstool) path: page/p
 #: C/introduction.page:22
@@ -1249,7 +1300,7 @@ msgstr ""
 #. (itstool) path: page/title
 #: C/folder-mode.page:16
 msgid "Getting started comparing folders"
-msgstr ""
+msgstr "Erste Schritte beim Vergleichen von Ordnern"
 
 #. (itstool) path: page/p
 #: C/folder-mode.page:18
@@ -1271,7 +1322,7 @@ msgstr ""
 #. (itstool) path: section/title
 #: C/folder-mode.page:36
 msgid "The folder comparison view"
-msgstr ""
+msgstr "Die Ordnervergleichsansicht"
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:38
@@ -1299,8 +1350,10 @@ msgstr ""
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:63
+#, fuzzy
+#| msgid "Folder Comparison"
 msgid "Navigating folder comparisons"
-msgstr ""
+msgstr "Ordnervergleich"
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:65
@@ -1323,8 +1376,10 @@ msgstr ""
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:83
+#, fuzzy
+#| msgid "Start a new comparison."
 msgid "States in folder comparisons"
-msgstr ""
+msgstr "Startet einen neuen Vergleich."
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:85
@@ -1335,23 +1390,25 @@ msgstr ""
 
 #. (itstool) path: table/title
 #: C/folder-mode.page:106
+#, fuzzy
+#| msgid "Folder Comparison"
 msgid "Folder comparison states"
-msgstr ""
+msgstr "Ordnervergleich"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:126
 msgid "The file/folder is the same across all compared folders."
-msgstr ""
+msgstr "Die Datei/der Ordner ist identisch in allen verglichenen Ordnern."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:132
 msgid "Same when filtered"
-msgstr ""
+msgstr "Identisch, wenn gefiltert"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:134
 msgid "Italics"
-msgstr ""
+msgstr "Kursiv"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:140
@@ -1369,17 +1426,21 @@ msgstr ""
 #: C/folder-mode.page:170
 msgid "This file/folder exists in this folder, but not in the others."
 msgstr ""
+"Diese Datei/der Ordner existiert in diesem Ordner, jedoch nicht in den "
+"anderen."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:178
 msgid "Greyed out text with a line through the middle"
-msgstr ""
+msgstr "Ausgegrauter, durchgestrichener Text"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:184
 msgid ""
 "This file/folder doesn't exist in this folder, but does in one of the others."
 msgstr ""
+"Diese Datei/dieser Ordner existiert nicht in diesem Ordner, jedoch in einem "
+"der anderen."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:199
@@ -1406,7 +1467,7 @@ msgstr ""
 #. (itstool) path: page/title
 #: C/missing-functionality.page:15
 msgid "Things that <app>Meld</app> doesn't do"
-msgstr ""
+msgstr "Dinge, die <app>Meld</app> nicht macht"
 
 #. (itstool) path: page/p
 #: C/missing-functionality.page:17
@@ -1423,11 +1484,13 @@ msgid ""
 "<em>doesn't</em> do, either as a deliberate choice, or because we just "
 "haven't had time."
 msgstr ""
+"Dieser Abschnitt zählt ein paar der Dinge auf, die <app>Meld</app>, entweder "
+"aus gründlicher Wahl oder weil wir keine Zeit hatten, <em>nicht macht</em>"
 
 #. (itstool) path: section/title
 #: C/missing-functionality.page:30
 msgid "Aligning changes by adding lines"
-msgstr ""
+msgstr "Änderungen durch hinzufügen von Zeilen aneinander ausrichten"
 
 #. (itstool) path: section/p
 #: C/missing-functionality.page:31
@@ -1437,11 +1500,16 @@ msgid ""
 "additional lines so that the left and right sides of a particular change are "
 "the same size. There is no option to do this."
 msgstr ""
+"Bei der Anzeige von Unterschieden, zeigt <app>Meld</app> die Dateien so an, "
+"wie sie in einem normalem Textbearbeitungsprogramm erscheinen. <app>Meld</"
+"app> fügt <em>keine</em> zusätzlichen Zeilen ein, so dass die linke und die "
+"rechte Seite einer bestimmten Änderung die selbe Größe haben. Es gibt dafür "
+"keine Einstellungsmöglichkeit."
 
 #. (itstool) path: page/title
 #: C/command-line.page:15
 msgid "Command line usage"
-msgstr "Befehlszeilenaufruf"
+msgstr "Befehlszeilenverwendung"
 
 #. (itstool) path: page/p
 #: C/command-line.page:17
@@ -1449,6 +1517,8 @@ msgid ""
 "If you start <app>Meld</app> from the command line, you can tell it what to "
 "do when it starts."
 msgstr ""
+"Wenn Sie <app>Meld</app> von der Befehlszeile starten, können Sie angeben, "
+"was beim Starten zu tun ist."
 
 #. (itstool) path: page/p
 #: C/command-line.page:20
@@ -1458,6 +1528,10 @@ msgid ""
 "or <cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> "
 "respectively."
 msgstr ""
+"Für einen Zwei- oder Drei-Wege <link xref=\"file-mode\">Datei-Vergleich</"
+"link>, starten Sie <app>Meld</app> mit <cmd>meld <var>datei1</var> "
+"<var>datei2</var></cmd> beziehungsweise mit <cmd>meld <var>datei1</var> "
+"<var>datei2</var> <var>datei3</var></cmd>."
 
 #. (itstool) path: page/p
 #: C/command-line.page:26
@@ -1466,6 +1540,10 @@ msgid ""
 "link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
 "cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
 msgstr ""
+"Für einen Zwei- oder Drei-Wege <link xref=\"file-mode\">Ordner-Vergleich</"
+"link>, starten Sie <app>Meld</app> mit <cmd>meld <var>ordner1</var> <var> "
+"ordner2</var></cmd> beziehungsweise mit <cmd>meld <var>ordner1</var> "
+"<var>ordner2</var> <var>ordner3</var></cmd>."
 
 #. (itstool) path: page/p
 #: C/command-line.page:31
@@ -1477,8 +1555,17 @@ msgid ""
 "<cmd>meld .</cmd> would start a version control view of the current "
 "directory."
 msgstr ""
+"Sie können einen <link xref=\"vc-mode\">Versionskontroll</link>-Vergleich "
+"mit einem einzelnen Argument starten. Wenn diese Datei oder dieses "
+"Verzeichnis durch ein <link xref=\"vc-supported\">unterstütztes "
+"Versionskontrollsystem</link> verwaltet wird, wird <app>Meld</app> einen "
+"Versionskontroll-Vergleich für das Argument starten. Zum Beispiel können Sie "
+"mit <cmd>meld .</cmd> eine Versionskontrollansicht des aktuellen Ordners "
+"starten."
 
 #. (itstool) path: note/p
 #: C/command-line.page:40
 msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
 msgstr ""
+"Um eine vollständige Liste von Optionen zu erhalten, rufen Sie <cmd>meld --"
+"help</cmd> auf."
