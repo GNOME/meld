@@ -1561,6 +1561,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # do the update
         for path in changed_paths:
             self._update_item_state( model.get_iter(path) )
+        self._update_diffmaps()
 
     def next_diff(self, direction):
         if self.focus_pane:
