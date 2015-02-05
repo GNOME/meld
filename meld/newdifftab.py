@@ -63,8 +63,8 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
 
         self.diff_type = self.button_types.index(button)
         self.choosers_notebook.set_current_page(self.diff_type + 1)
-        # FIXME: Add support for new blank for DirDiff and VcView
-        self.button_new_blank.set_sensitive(self.diff_type == 0)
+        # FIXME: Add support for new blank for VcView
+        self.button_new_blank.set_sensitive(self.diff_type in (0, 1))
         self.button_compare.set_sensitive(True)
 
     def on_three_way_checkbutton_toggled(self, button, *args):
