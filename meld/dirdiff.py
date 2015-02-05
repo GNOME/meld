@@ -635,12 +635,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i, l in enumerate(locations):
             if not isinstance(l, unicode):
                 locations[i] = l.decode(sys.getfilesystemencoding())
-        # TODO: Support for blank folder comparisons should probably look here
-        locations = [os.path.abspath(l or ".") for l in locations]
+        locations = [os.path.abspath(l) if l else '' for l in locations]
         self.current_path = None
         self.model.clear()
         for pane, loc in enumerate(locations):
-            self.fileentry[pane].set_filename(loc)
+            if loc:
+                self.fileentry[pane].set_filename(loc)
         child = self.model.add_entries(None, locations)
         self.treeview0.grab_focus()
         self._update_item_state(child)
@@ -1501,6 +1501,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def recompute_label(self):
         root = self.model.get_iter_first()
         filenames = self.model.value_paths(root)
+        filenames = [f or _('No folder') for f in filenames]
         if self.custom_labels:
             label_options = zip(self.custom_labels, filenames)
             shortnames = [l[0] or l[1] for l in label_options]
