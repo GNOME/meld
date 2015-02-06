@@ -883,6 +883,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             elif response == Gtk.ResponseType.DELETE_EVENT:
                 response = Gtk.ResponseType.CANCEL
 
+        if response == Gtk.ResponseType.CLOSE:
+            response = Gtk.ResponseType.OK
+
         if response == Gtk.ResponseType.OK and self.meta:
             parent = self.meta.get('parent', None)
             saved = self.meta.get('middle_saved', False)
