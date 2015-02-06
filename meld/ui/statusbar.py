@@ -80,8 +80,15 @@ class MeldStatusBar(Gtk.Statusbar):
         pop.set_position(Gtk.PositionType.TOP)
         pop.add(selector)
 
+        def get_language_label(binding, language, *args):
+            if not language:
+                return _("Plain Text")
+            return language.get_name()
+
         button = Gtk.MenuButton()
-        button.set_label("Foo")
+        self.bind_property(
+            'source-language', button, 'label', GObject.BindingFlags.DEFAULT,
+            get_language_label)
         button.set_popover(pop)
         button.show()
 
