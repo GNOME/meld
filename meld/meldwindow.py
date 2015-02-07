@@ -402,7 +402,8 @@ class MeldWindow(gnomeglade.Component):
         if actiongroup:
             idx = self.notebook.page_num(page)
             action_name = "SwitchTab%d" % idx
-            actiongroup.get_action(action_name).set_label(text)
+            label = text.replace("_", "__")
+            actiongroup.get_action(action_name).set_label(label)
 
     def on_can_undo(self, undosequence, can):
         self.actiongroup.get_action("Undo").set_sensitive(can)
@@ -542,6 +543,7 @@ class MeldWindow(gnomeglade.Component):
         for i in range(self.notebook.get_n_pages()):
             page = self.notebook.get_nth_page(i)
             label = self.notebook.get_menu_label_text(page) or ""
+            label = label.replace("_", "__")
             name = "SwitchTab%d" % i
             tooltip = _("Switch to this tab")
             action = Gtk.RadioAction(name=name, label=label, tooltip=tooltip, stock_id=None, value=i)
