@@ -1422,6 +1422,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if self.num_panes == 1 or error_message:
                 return
             for index, mgr in enumerate(self.msgarea_mgr):
+                primary = _("Files are identical")
                 secondary_text = None
                 # TODO: Currently this only checks to see whether text filters
                 # are active, and may be altering the comparison. It would be
@@ -1434,9 +1435,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                        "Would you like to compare the "
                                        "unfiltered files?")
 
-                msgarea = mgr.new_from_text_and_icon(Gtk.STOCK_INFO,
-                                                     _("Files are identical"),
-                                                     secondary_text)
+                msgarea = mgr.new_from_text_and_icon(
+                    Gtk.STOCK_INFO, primary, secondary_text)
                 mgr.set_msg_id(FileDiff.MSG_SAME)
                 button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
                 if index == 0:
