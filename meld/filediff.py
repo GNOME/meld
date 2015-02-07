@@ -1429,11 +1429,30 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # better if we only showed this message if the filters *did*
                 # change the text in question.
                 active_filters = any([f.active for f in self.text_filters])
+
+                bufs = self.textbuffer[:self.num_panes]
+                newlines = [b.data.newlines for b in bufs]
+                different_newlines = not misc.all_same(newlines)
+
                 if active_filters:
                     secondary_text = _("Text filters are being used, and may "
                                        "be masking differences between files. "
                                        "Would you like to compare the "
                                        "unfiltered files?")
+                elif different_newlines:
+                    primary = _("Files differ in line endings only")
+                    secondary_text = _(
+                        "Files are identical except for differing line "
+                        "endings:\n%s")
+
+                    labels = [b.data.label for b in bufs]
+                    newline_types = [
+                        n if isinstance(n, tuple) else (n,) for n in newlines]
+                    newline_strings = []
+                    for label, nl_types in zip(labels, newline_types):
+                        nl_string = ", ".join(NEWLINES[n] for n in nl_types)
+                        newline_strings.append("\t%s: %s" % (label, nl_string))
+                    secondary_text %= "\n".join(newline_strings)
 
                 msgarea = mgr.new_from_text_and_icon(
                     Gtk.STOCK_INFO, primary, secondary_text)
