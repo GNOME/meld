@@ -45,7 +45,7 @@ from . import undo
 from .ui import findbar
 from .ui import gnomeglade
 
-from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
+from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
 from meld.settings import bind_settings, meldsettings, settings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager
@@ -1687,9 +1687,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     text = text.replace("\n", bufdata.newlines)
             else:
                 buttons = {
-                    '\n': ("UNIX (LF)", 0),
-                    '\r\n': ("DOS/Windows (CR-LF)", 1),
-                    '\r': ("Mac OS (CR)", 2),
+                    '\n': (NEWLINES['\n'], 0),
+                    '\r\n': (NEWLINES['\r\n'], 1),
+                    '\r': (NEWLINES['\r'], 2),
                 }
                 dialog_buttons = [(_("_Cancel"), Gtk.ResponseType.CANCEL)]
                 dialog_buttons += [buttons[b] for b in bufdata.newlines]
