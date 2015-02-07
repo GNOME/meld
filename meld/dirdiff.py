@@ -44,6 +44,7 @@ from collections import namedtuple
 from decimal import Decimal
 
 from meld.conf import _
+from meld.misc import all_same
 from meld.settings import bind_settings, meldsettings, settings
 
 
@@ -86,10 +87,6 @@ Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
     list(range(6))
 # TODO: Get the block size from os.stat
 CHUNK_SIZE = 4096
-
-
-def all_same(lst):
-    return not lst or lst.count(lst[0]) == len(lst)
 
 
 def remove_blank_lines(text):

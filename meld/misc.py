@@ -145,17 +145,9 @@ def gdk_to_cairo_color(color):
     return (color.red / 65535., color.green / 65535., color.blue / 65535.)
 
 
-def all_equal(alist):
-    """Return true if all members of the list are equal to the first.
-
-    An empty list is considered to have all elements equal.
-    """
-    if len(alist):
-        first = alist[0]
-        for n in alist[1:]:
-            if n != first:
-                return 0
-    return 1
+def all_same(lst):
+    """Return True if all elements of the list are equal"""
+    return not lst or lst.count(lst[0]) == len(lst)
 
 
 def shorten_names(*names):
@@ -173,7 +165,7 @@ def shorten_names(*names):
     except IndexError:
         pass
     else:
-        if all_equal(basenames):
+        if all_same(basenames):
             def firstpart(alist):
                 if len(alist) > 1:
                     return "[%s] " % alist[0]
