@@ -251,9 +251,18 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         ('folder-shallow-comparison', 'shallow-comparison'),
         ('folder-time-resolution', 'time-resolution'),
         ('folder-status-filters', 'status-filters'),
+        ('folder-filter-text', 'apply-text-filters'),
         ('ignore-blank-lines', 'ignore-blank-lines'),
     )
 
+    apply_text_filters = GObject.property(
+        type=bool,
+        nick="Apply text filters",
+        blurb=(
+            "Whether text filters and other text sanitisation preferences "
+            "should be applied when comparing file contents"),
+        default=False,
+    )
     ignore_blank_lines = GObject.property(
         type=bool,
         nick="Ignore blank lines",
@@ -419,6 +428,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.connect("notify::shallow-comparison", self.update_comparator)
         self.connect("notify::time-resolution", self.update_comparator)
         self.connect("notify::ignore-blank-lines", self.update_comparator)
+        self.connect("notify::apply-text-filters", self.update_comparator)
 
         self.state_filters = []
         for s in self.state_actions:
@@ -462,6 +472,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         comparison_args = {
             'shallow-comparison': self.props.shallow_comparison,
             'time-resolution': self.props.time_resolution,
+            'apply-text-filters': self.props.apply_text_filters,
             'ignore_blank_lines': self.props.ignore_blank_lines,
         }
         self.file_compare = functools.partial(
