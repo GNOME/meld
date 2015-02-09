@@ -161,6 +161,11 @@
           <summary>File timestamp resolution</summary>
           <description>When comparing based on mtime, this is the minimum difference in nanoseconds between two files before they're considered to have different mtimes. This is useful when comparing files between filesystems with different timestamp resolution.</description>
       </key>
+      <key name="folder-filter-text" type="b">
+          <default>true</default>
+          <summary>Apply text filters during folder comparisons</summary>
+          <description>If true, folder comparisons that compare file contents also apply active text filters and the blank line trimming option, and ignore newline differences.</description>
+      </key>
       <key name="folder-status-filters" type="as">
           <default>['normal', 'modified', 'new']</default>
           <summary>File status filters</summary>

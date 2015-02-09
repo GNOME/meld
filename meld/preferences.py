@@ -199,6 +199,7 @@ class PreferencesDialog(Component):
             ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),
+            ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),
             ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
@@ -212,12 +213,15 @@ class PreferencesDialog(Component):
         for key, obj, attribute in bindings:
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
 
-        settings.bind(
-            'use-system-editor', self.custom_edit_command_entry, 'sensitive',
-            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN)
-        settings.bind(
-            'use-system-font', self.fontpicker, 'sensitive',
-            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN)
+        invert_bindings = [
+            ('use-system-editor', self.custom_edit_command_entry, 'sensitive'),
+            ('use-system-font', self.fontpicker, 'sensitive'),
+            ('folder-shallow-comparison', self.checkbutton_folder_filter_text, 'sensitive'),
+        ]
+        for key, obj, attribute in invert_bindings:
+            settings.bind(
+                key, obj, attribute, Gio.SettingsBindFlags.DEFAULT |
+                Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
         self.checkbutton_wrap_text.bind_property(
             'active', self.checkbutton_wrap_word, 'sensitive',
