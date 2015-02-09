@@ -119,7 +119,7 @@ def _files_same(files, regexes, comparison_args):
     time_resolution_ns = comparison_args['time-resolution']
     ignore_blank_lines = comparison_args['ignore_blank_lines']
 
-    need_contents = regexes or ignore_blank_lines
+    need_contents = comparison_args['apply-text-filters']
 
     # If all entries are directories, they are considered to be the same
     if all([stat.S_ISDIR(s.mode) for s in stats]):
@@ -141,7 +141,7 @@ def _files_same(files, regexes, comparison_args):
         return Different
 
     # Check the cache before doing the expensive comparison
-    cache_key = (files, regexes, ignore_blank_lines)
+    cache_key = (files, need_contents, regexes, ignore_blank_lines)
     cache = _cache.get(cache_key)
     if cache and cache.stats == stats:
         return cache.result
@@ -190,6 +190,9 @@ def _files_same(files, regexes, comparison_args):
 
     if result == Different and need_contents:
         contents = ["".join(c) for c in contents]
+        # For probable text files, discard newline differences to match
+        # file comparisons.
+        contents = ["\n".join(c.splitlines()) for c in contents]
         for r in regexes:
             contents = [re.sub(r, "", c) for c in contents]
         if ignore_blank_lines:
