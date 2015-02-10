@@ -142,7 +142,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "selector_hbox", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
-            "fileentry_toolitem", "dummy_toolbar_diffmap"
+            "fileentry_toolitem", "dummy_toolbar_diffmap", "statusbar",
         ]
         self.map_widgets_into_lists(widget_lists)
 
@@ -214,19 +214,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for diffmap in self.diffmap:
             self.linediffer.connect('diffs-changed', diffmap.on_diffs_changed)
 
-        overwrite_label = Gtk.Label()
-        overwrite_label.show()
-        cursor_label = Gtk.Label()
-        cursor_label.show()
-        self.status_info_labels = [overwrite_label, cursor_label]
-        self.statusbar.set_info_box(self.status_info_labels)
+        self.status_info_labels = []
+        for statusbar, buf in zip(self.statusbar, self.textbuffer):
+            overwrite_label = Gtk.Label()
+            overwrite_label.show()
+            cursor_label = Gtk.Label()
+            cursor_label.show()
+            pane_labels = [overwrite_label, cursor_label]
+            self.status_info_labels.append(pane_labels)
 
-        def bind_textbuffer_to_statusbar(buf, statusbar):
+            statusbar.set_info_box(pane_labels)
             buf.bind_property(
                 'language', statusbar, 'source-language',
                 GObject.BindingFlags.BIDIRECTIONAL)
-
-        bind_textbuffer_to_statusbar(self.textbuffer[0], self.statusbar)
 
         # Prototype implementation
 
@@ -359,8 +359,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         insert_overwrite = self._insert_overwrite_text[self.textview_overwrite]
         line_column = self._line_column_text % (line + 1, offset + 1)
-        self.status_info_labels[0].set_text(insert_overwrite)
-        self.status_info_labels[1].set_text(line_column)
+        overwrite_label, cursor_label = self.status_info_labels[pane]
+        overwrite_label.set_text(insert_overwrite)
+        cursor_label.set_text(line_column)
 
         if line != self.cursor.line or force:
             chunk, prev, next_ = self.linediffer.locate_chunk(pane, line)
@@ -1772,13 +1773,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for widget in (
                 self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
                 self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
-                self.dummy_toolbar_diffmap[:n - 1]):
+                self.dummy_toolbar_diffmap[:n - 1] + self.statusbar[:n]):
             widget.show()
 
         for widget in (
                 self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
                 self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
-                self.dummy_toolbar_diffmap[n - 1:]):
+                self.dummy_toolbar_diffmap[n - 1:] + self.statusbar[n:]):
             widget.hide()
 
         self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
