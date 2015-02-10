@@ -154,7 +154,8 @@ class DiffGrid(Gtk.Grid):
         yrows = [allocation.y,
                  allocation.y + hrows[0],
                  # Roughly equivalent to hard-coding row 1 to expand=True
-                 allocation.y + (allocation.height - hrows[2]),
+                 allocation.y + (allocation.height - hrows[2] - hrows[3]),
+                 allocation.y + (allocation.height - hrows[3]),
                  allocation.y + allocation.height]
 
         wmap1, wpane1, wlink1, wpane2, wlink2, wpane3, wmap2 = wcols
@@ -203,9 +204,9 @@ class DiffGrid(Gtk.Grid):
             self._handle2.move_resize(pos2, ydrag, wlink2, hdrag)
 
     def _get_min_sizes(self):
-        hrows = [0] * 3
+        hrows = [0] * 4
         wcols = [0] * 7
-        for row in range(0, 3):
+        for row in range(0, 4):
             for col in range(0, 7):
                 child = self.get_child_at(col, row)
                 if child and child.get_visible():
