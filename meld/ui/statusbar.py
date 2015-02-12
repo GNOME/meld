@@ -49,18 +49,18 @@ class MeldStatusBar(Gtk.Statusbar):
         hbox.props.spacing = 6
         label.props.ellipsize = Pango.EllipsizeMode.NONE
         hbox.remove(label)
-        hbox.pack_start(label, True, True, 0)
+        hbox.pack_end(label, False, True, 0)
 
         alignment = Gtk.Alignment.new(
             xalign=1.0, yalign=0.5, xscale=1.0, yscale=1.0)
         self.info_box = Gtk.HBox(homogeneous=False, spacing=12)
         self.info_box.show()
         alignment.add(self.info_box)
-        self.pack_start(alignment, True, True, 0)
+        self.pack_end(alignment, False, True, 0)
         alignment.show()
 
         self.box_box = Gtk.HBox(homogeneous=False, spacing=6)
-        self.pack_start(self.box_box, True, True, 0)
+        self.pack_end(self.box_box, False, True, 0)
         self.box_box.pack_end(self.construct_highlighting_selector(), False, True, 0)
         self.box_box.show_all()
 
