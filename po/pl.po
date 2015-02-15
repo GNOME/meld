@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-08 14:14+0100\n"
-"PO-Revision-Date: 2015-02-08 14:15+0100\n"
+"POT-Creation-Date: 2015-02-15 18:44+0100\n"
+"PO-Revision-Date: 2015-02-15 18:47+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -24,20 +24,20 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
-#: ../bin/meld:138
+#: ../bin/meld:144
 msgid "Cannot import: "
 msgstr "Nie można zaimportować: "
 
-#: ../bin/meld:141
+#: ../bin/meld:147
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Program Meld wymaga wersji %s lub nowszej."
 
-#: ../bin/meld:145
+#: ../bin/meld:151
 msgid "Meld does not support Python 3."
 msgstr "Program Meld nie obsługuje biblioteki Python 3."
 
-#: ../bin/meld:195
+#: ../bin/meld:201
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -282,7 +282,7 @@ msgid ""
 msgstr ""
 "Lista nazwa kolumn w porównaniu katalogów i czy powinny być wyświetlane."
 
-#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:31
+#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:32
 msgid "Ignore symbolic links"
 msgstr "Ignorowanie dowiązań symbolicznych"
 
@@ -324,21 +324,35 @@ msgstr ""
 "przydatne podczas porównywania plików między systemami plików z różnym "
 "rozwiązywaniem czasu modyfikacji."
 
-#: ../data/org.gnome.meld.gschema.xml.h:43
+#: ../data/org.gnome.meld.gschema.xml.h:43 ../data/ui/preferences.ui.h:30
+msgid "Apply text filters during folder comparisons"
+msgstr "Zastosowywanie filtrów tekstowych podczas porównywania katalogów"
+
+#: ../data/org.gnome.meld.gschema.xml.h:44
+msgid ""
+"If true, folder comparisons that compare file contents also apply active "
+"text filters and the blank line trimming option, and ignore newline "
+"differences."
+msgstr ""
+"Jeśli wynosi \"true\", to porównania katalogów, które porównują treść plików "
+"także zastosowują aktywne filtry tekstowe i opcję usuwania pustych wierszy, "
+"oraz ignorują różnice znaczników nowych wierszy."
+
+#: ../data/org.gnome.meld.gschema.xml.h:45
 msgid "File status filters"
 msgstr "Filtry stanu plików"
 
-#: ../data/org.gnome.meld.gschema.xml.h:44
+#: ../data/org.gnome.meld.gschema.xml.h:46
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "Lista stanów używanych do filtrowania widocznym plików w porównaniu "
 "katalogów."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45
+#: ../data/org.gnome.meld.gschema.xml.h:47
 msgid "Show the version control console output"
 msgstr "Wyświetlanie wyjścia konsoli systemu kontroli wersji"
 
-#: ../data/org.gnome.meld.gschema.xml.h:46
+#: ../data/org.gnome.meld.gschema.xml.h:48
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -347,11 +361,11 @@ msgstr ""
 "widokach kontroli wersji, wyświetlając polecenia wykonywane do działań "
 "kontroli wersji."
 
-#: ../data/org.gnome.meld.gschema.xml.h:47
+#: ../data/org.gnome.meld.gschema.xml.h:49
 msgid "Version control pane position"
 msgstr "Położenie panelu kontroli wersji"
 
-#: ../data/org.gnome.meld.gschema.xml.h:48
+#: ../data/org.gnome.meld.gschema.xml.h:50
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
@@ -359,11 +373,11 @@ msgstr ""
 "Jest to wysokość głównego drzewa kontroli wersji, kiedy wyświetlany jest "
 "panel konsoli."
 
-#: ../data/org.gnome.meld.gschema.xml.h:49
+#: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Wyświetlanie porównań wersji jako lewo-lokalne/prawo-zdalne"
 
-#: ../data/org.gnome.meld.gschema.xml.h:50
+#: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -374,13 +388,13 @@ msgstr ""
 "plików w panelach. W przeciwnym wypadku używany będzie schemat lewo-jest-"
 "ich, prawo-jest-moje."
 
-#: ../data/org.gnome.meld.gschema.xml.h:51
+#: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Order for files in three-way version control merge comparisons"
 msgstr ""
 "Kolejność plików podczas porównywania trzech plików w czasie scalania w "
 "systemie kontroli wersji"
 
-#: ../data/org.gnome.meld.gschema.xml.h:52
+#: ../data/org.gnome.meld.gschema.xml.h:54
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -391,11 +405,11 @@ msgstr ""
 "kontroli wersji, więc jest używana wyłącznie do scalania/rozwiązywania "
 "konfliktów w ramach programu Meld."
 
-#: ../data/org.gnome.meld.gschema.xml.h:53
+#: ../data/org.gnome.meld.gschema.xml.h:55
 msgid "Show margin in commit message editor"
 msgstr "Wyświetlanie marginesów w edytorze komunikatów zatwierdzeń"
 
-#: ../data/org.gnome.meld.gschema.xml.h:54
+#: ../data/org.gnome.meld.gschema.xml.h:56
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -403,11 +417,11 @@ msgstr ""
 "Jeśli wynosi \"true\", to wyświetlana będzie linia oznaczająca kolumnę "
 "marginesu w edytorze komunikatów zatwierdzeń kontroli wersji."
 
-#: ../data/org.gnome.meld.gschema.xml.h:55
+#: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Margin column in commit message editor"
 msgstr "Kolumna marginesu w edytorze komunikatów zatwierdzeń"
 
-#: ../data/org.gnome.meld.gschema.xml.h:56
+#: ../data/org.gnome.meld.gschema.xml.h:58
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -415,11 +429,11 @@ msgstr ""
 "Kolumna, w której wyświetlać margines w edytorze komunikatów zatwierdzeń "
 "kontroli wersji."
 
-#: ../data/org.gnome.meld.gschema.xml.h:57
+#: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Automatically hard-wrap commit messages"
 msgstr "Automatyczne twarde zawijanie komunikatów zatwierdzeń"
 
-#: ../data/org.gnome.meld.gschema.xml.h:58
+#: ../data/org.gnome.meld.gschema.xml.h:60
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -428,22 +442,22 @@ msgstr ""
 "będzie twardo zawijał (tzn. wstawiał łamanie wierszy) na marginesie przed "
 "zatwierdzeniem."
 
-#: ../data/org.gnome.meld.gschema.xml.h:59
+#: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Version control status filters"
 msgstr "Filtry stanu kontroli wersji"
 
-#: ../data/org.gnome.meld.gschema.xml.h:60
+#: ../data/org.gnome.meld.gschema.xml.h:62
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "Lista stanów używanych do filtrowania widocznych plików w porównaniu "
 "kontroli wersji."
 
-#: ../data/org.gnome.meld.gschema.xml.h:61
+#: ../data/org.gnome.meld.gschema.xml.h:63
 msgid "Filename-based filters"
 msgstr "Filtry oparte o nazwy plików"
 
-#: ../data/org.gnome.meld.gschema.xml.h:62
+#: ../data/org.gnome.meld.gschema.xml.h:64
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -451,11 +465,11 @@ msgstr ""
 "Lista uprzednio podanych filtrów opartych o nazwy plików które, jeśli są "
 "aktywne, będą usuwały pasujące pliki z porównania katalogów."
 
-#: ../data/org.gnome.meld.gschema.xml.h:63
+#: ../data/org.gnome.meld.gschema.xml.h:65
 msgid "Text-based filters"
 msgstr "Filtry oparte na tekście"
 
-#: ../data/org.gnome.meld.gschema.xml.h:64
+#: ../data/org.gnome.meld.gschema.xml.h:66
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -532,7 +546,7 @@ msgstr "Kopiuje element na prawo"
 msgid "Delete selected"
 msgstr "Usuwa zaznaczone"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:862 ../meld/filediff.py:1460
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:876 ../meld/filediff.py:1460
 msgid "Hide"
 msgstr "Ukryj"
 
@@ -620,7 +634,7 @@ msgid "Move _Down"
 msgstr "Przesuń w _dół"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:362
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:374
 #: ../meld/vcview.py:203
 msgid "Name"
 msgstr "Nazwa"
@@ -822,7 +836,7 @@ msgstr ""
 msgid "Close _without Saving"
 msgstr "Zamknij _bez zapisywania"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:953 ../meld/filediff.py:1629
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:967 ../meld/filediff.py:1629
 #: ../meld/filediff.py:1713 ../meld/filediff.py:1738
 msgid "_Cancel"
 msgstr "_Anuluj"
@@ -860,7 +874,7 @@ msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr ""
 "Zmiany naniesione do poniższych dokumentów zostaną bezpowrotnie utracone:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:954 ../meld/filediff.py:1630
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:968 ../meld/filediff.py:1630
 msgid "_Replace"
 msgstr "Z_amień"
 
@@ -1044,52 +1058,52 @@ msgstr "P_orównywanie plików w oparciu tylko o rozmiar i czas modyfikacji"
 msgid "_Timestamp resolution:"
 msgstr "Rozwiązywanie _czasu modyfikacji:"
 
-#: ../data/ui/preferences.ui.h:30
+#: ../data/ui/preferences.ui.h:31
 msgid "Symbolic Links"
 msgstr "Dowiązania symboliczne"
 
-#: ../data/ui/preferences.ui.h:32
+#: ../data/ui/preferences.ui.h:33
 msgid "Visible Columns"
 msgstr "Widoczne kolumny"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:34
 msgid "Folder Comparisons"
 msgstr "Porównywanie katalogów"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:35
 msgid "Version Comparisons"
 msgstr "Porównywanie wersji"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:36
 msgid "_Order when comparing file revisions:"
 msgstr "_Kolejność podczas porównywania wersji plików:"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:37
 msgid "Order when _merging files:"
 msgstr "K_olejność podczas scalania plików:"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:38
 msgid "Commit Messages"
 msgstr "Opisy zatwierdzeń"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../data/ui/preferences.ui.h:39
 msgid "Show _right margin at:"
 msgstr "Wyświetlanie p_rawego marginesu w kolumnie:"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:40
 msgid "Automatically _break lines at right margin on commit"
 msgstr ""
 "Automatyczne łamanie _wierszy na prawym marginesie podczas zatwierdzania"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:41
 msgid "Version Control"
 msgstr "System kontroli wersji"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../data/ui/preferences.ui.h:42
 msgid "Filename filters"
 msgstr "Filtry nazw plików"
 
-#: ../data/ui/preferences.ui.h:42
+#: ../data/ui/preferences.ui.h:43
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1099,23 +1113,23 @@ msgstr ""
 "podstawie nazwy. Każdy wzorzec jest listą symboli wieloznacznych powłoki "
 "rozdzieloną spacjami."
 
-#: ../data/ui/preferences.ui.h:43 ../meld/meldwindow.py:103
+#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:103
 msgid "File Filters"
 msgstr "Filtry plików"
 
-#: ../data/ui/preferences.ui.h:44
+#: ../data/ui/preferences.ui.h:45
 msgid "Change trimming"
 msgstr "Obcinanie zmian"
 
-#: ../data/ui/preferences.ui.h:45
+#: ../data/ui/preferences.ui.h:46
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Obcinanie różnic pustych wierszy z początku i końca zmian"
 
-#: ../data/ui/preferences.ui.h:46
+#: ../data/ui/preferences.ui.h:47
 msgid "Text filters"
 msgstr "Filtry tekstu"
 
-#: ../data/ui/preferences.ui.h:47
+#: ../data/ui/preferences.ui.h:48
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1129,7 +1143,7 @@ msgstr ""
 "zawiera grupy, tylko grupy są zamieniane. Więcej informacji dostępne jest w "
 "podręczniku użytkownika."
 
-#: ../data/ui/preferences.ui.h:48
+#: ../data/ui/preferences.ui.h:49
 msgid "Text Filters"
 msgstr "Filtry plików tekstowych"
 
@@ -1338,44 +1352,44 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:380 ../meld/preferences.py:82
+#: ../meld/dirdiff.py:392 ../meld/preferences.py:82
 msgid "Size"
 msgstr "Rozmiar"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:388 ../meld/preferences.py:83
+#: ../meld/dirdiff.py:400 ../meld/preferences.py:83
 msgid "Modification time"
 msgstr "Czas modyfikacji"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:396 ../meld/preferences.py:84
+#: ../meld/dirdiff.py:408 ../meld/preferences.py:84
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: ../meld/dirdiff.py:544
+#: ../meld/dirdiff.py:558
 #, python-format
 msgid "Hide %s"
 msgstr "Ukryj %s"
 
-#: ../meld/dirdiff.py:674 ../meld/dirdiff.py:696
+#: ../meld/dirdiff.py:688 ../meld/dirdiff.py:710
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Skanowanie %s"
 
-#: ../meld/dirdiff.py:829
+#: ../meld/dirdiff.py:843
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Ukończono"
 
-#: ../meld/dirdiff.py:837
+#: ../meld/dirdiff.py:851
 msgid "Folders have no differences"
 msgstr "Katalogi się nie różnią"
 
-#: ../meld/dirdiff.py:839
+#: ../meld/dirdiff.py:853
 msgid "Contents of scanned files in folders are identical."
 msgstr "Treść zeskanowanych plików w katalogach jest identyczna."
 
-#: ../meld/dirdiff.py:841
+#: ../meld/dirdiff.py:855
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1383,41 +1397,41 @@ msgstr ""
 "Zeskanowane pliki wydają się identyczne, ale treść mogła nie zostać "
 "zeskanowana."
 
-#: ../meld/dirdiff.py:844
+#: ../meld/dirdiff.py:858
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Filtry plików są używane, więc nie wszystkie pliki zostały zeskanowane."
 
-#: ../meld/dirdiff.py:846
+#: ../meld/dirdiff.py:860
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Filtry tekstowe są używane i mogą ukrywać różnice między plikami."
 
-#: ../meld/dirdiff.py:864 ../meld/dirdiff.py:917 ../meld/filediff.py:1115
+#: ../meld/dirdiff.py:878 ../meld/dirdiff.py:931 ../meld/filediff.py:1115
 #: ../meld/filediff.py:1267 ../meld/filediff.py:1462 ../meld/filediff.py:1492
 #: ../meld/filediff.py:1494
 msgid "Hi_de"
 msgstr "_Ukryj"
 
-#: ../meld/dirdiff.py:874
+#: ../meld/dirdiff.py:888
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Wystąpiło wiele błędów podczas skanowania tego katalogu"
 
-#: ../meld/dirdiff.py:875
+#: ../meld/dirdiff.py:889
 msgid "Files with invalid encodings found"
 msgstr "Odnaleziono pliki z nieprawidłowym kodowaniem znaków"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:877
+#: ../meld/dirdiff.py:891
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Niektóre pliki mają nieprawidłowe kodowanie znaków. Nazwy tych plików to:"
 
-#: ../meld/dirdiff.py:879
+#: ../meld/dirdiff.py:893
 msgid "Files hidden by case insensitive comparison"
 msgstr "Pliku ukryte przez porównywanie bez uwzględniania wielkości liter"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:881
+#: ../meld/dirdiff.py:895
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1426,17 +1440,17 @@ msgstr ""
 "systemie plików, który rozróżnia wielkość liter. Następujące pliki w tym "
 "katalogu zostały ukryte:"
 
-#: ../meld/dirdiff.py:892
+#: ../meld/dirdiff.py:906
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "\"%s\" ukryty przez \"%s\""
 
-#: ../meld/dirdiff.py:957
+#: ../meld/dirdiff.py:971
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Zastąpić katalog \"%s\"?"
 
-#: ../meld/dirdiff.py:959
+#: ../meld/dirdiff.py:973
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1446,11 +1460,11 @@ msgstr ""
 "Zastąpienie istniejącego katalogu spowoduje utratę wszystkich plików w nim "
 "zawartych."
 
-#: ../meld/dirdiff.py:972
+#: ../meld/dirdiff.py:986
 msgid "Error copying file"
 msgstr "Błąd podczas kopiowania pliku"
 
-#: ../meld/dirdiff.py:973
+#: ../meld/dirdiff.py:987
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1463,12 +1477,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:996
+#: ../meld/dirdiff.py:1010
 #, python-format
 msgid "Error deleting %s"
 msgstr "Błąd podczas usuwania %s"
 
-#: ../meld/dirdiff.py:1501
+#: ../meld/dirdiff.py:1515
 msgid "No folder"
 msgstr "Brak katalogu"
 
