@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-08 13:17+0000\n"
-"PO-Revision-Date: 2015-02-08 23:46+0100\n"
+"POT-Creation-Date: 2015-02-16 20:12+0000\n"
+"PO-Revision-Date: 2015-02-16 22:57+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -22,20 +22,20 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../bin/meld:138
+#: ../bin/meld:144
 msgid "Cannot import: "
 msgstr "Nelze importovat: "
 
-#: ../bin/meld:141
+#: ../bin/meld:147
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld vyžaduje %s nebo vyšší."
 
-#: ../bin/meld:145
+#: ../bin/meld:151
 msgid "Meld does not support Python 3."
 msgstr "Meld nepodporuje Python 3."
 
-#: ../bin/meld:195
+#: ../bin/meld:201
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -274,7 +274,7 @@ msgid ""
 "displayed."
 msgstr "Seznam názvů sloupců v porovnávání složek a zda by měly být zobrazeny."
 
-#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:31
+#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:32
 msgid "Ignore symbolic links"
 msgstr "Ignorovat symbolické odkazy"
 
@@ -316,20 +316,34 @@ msgstr ""
 "jejich časy považovány za rozdílné. To je užitečné při porovnávání souborů "
 "mezi souborovými systémy, které mají různou přesnost časových razítek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:43
+#: ../data/org.gnome.meld.gschema.xml.h:43 ../data/ui/preferences.ui.h:30
+msgid "Apply text filters during folder comparisons"
+msgstr "Použít textové filtry při porovnávání složek"
+
+#: ../data/org.gnome.meld.gschema.xml.h:44
+msgid ""
+"If true, folder comparisons that compare file contents also apply active "
+"text filters and the blank line trimming option, and ignore newline "
+"differences."
+msgstr ""
+"Když je zapnuto, porovnávání složek, které porovnává obsah souborů, rovněž "
+"použije aktivní textové filtry, volbu ořezávání prázdných řádků a ignorování "
+"rozdílů v zalomení řádků."
+
+#: ../data/org.gnome.meld.gschema.xml.h:45
 msgid "File status filters"
 msgstr "Filtry stavu souboru"
 
-#: ../data/org.gnome.meld.gschema.xml.h:44
+#: ../data/org.gnome.meld.gschema.xml.h:46
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "Seznam stavů použitých k filtrování viditelných souborů v porovnávání složek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45
+#: ../data/org.gnome.meld.gschema.xml.h:47
 msgid "Show the version control console output"
 msgstr "Zobrazovat výstup konzole správy verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:46
+#: ../data/org.gnome.meld.gschema.xml.h:48
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -337,11 +351,11 @@ msgstr ""
 "Když je zapnuto, bude v zobrazení správy verzí zobrazen výstup konzole, na "
 "kterém uvidíte příkazy spouštěné pro jednotlivé operace správy verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:47
+#: ../data/org.gnome.meld.gschema.xml.h:49
 msgid "Version control pane position"
 msgstr "Umístění panelu správy verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:48
+#: ../data/org.gnome.meld.gschema.xml.h:50
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
@@ -349,11 +363,11 @@ msgstr ""
 "Jde o výšku hlavního stromu správy verzí v případě, že je zobrazen panel "
 "konzoly."
 
-#: ../data/org.gnome.meld.gschema.xml.h:49
+#: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Zobrazovat porovnání verzí jako vlevo-místní/vpravo-vzdálené"
 
-#: ../data/org.gnome.meld.gschema.xml.h:50
+#: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -363,11 +377,11 @@ msgstr ""
 "vpravo-vzdálené k určení pořadí, v jakém se mají soubory zobrazovat v "
 "panelech. V opačném případe je použito schéma vlevo-jejich, vpravo-moje."
 
-#: ../data/org.gnome.meld.gschema.xml.h:51
+#: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Order for files in three-way version control merge comparisons"
 msgstr "Pořadí pro soubory v trojcestném slučovacím porovnání ve správě verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:52
+#: ../data/org.gnome.meld.gschema.xml.h:54
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -379,11 +393,11 @@ msgstr ""
 "protože se používá výhradně pro řešení slučování/konfliktů v rámci aplikace "
 "Meld."
 
-#: ../data/org.gnome.meld.gschema.xml.h:53
+#: ../data/org.gnome.meld.gschema.xml.h:55
 msgid "Show margin in commit message editor"
 msgstr "Zobrazovat okraj v editoru zpráv k zařazení"
 
-#: ../data/org.gnome.meld.gschema.xml.h:54
+#: ../data/org.gnome.meld.gschema.xml.h:56
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -391,11 +405,11 @@ msgstr ""
 "Když je zapnuto, bude zobrazeno vodítko, které ukazuje, na kterém sloupci je "
 "okraj editoru zpráv popisujících zařazení ve správě verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:55
+#: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Margin column in commit message editor"
 msgstr "Sloupec okraje v editoru zpráv k zařazení"
 
-#: ../data/org.gnome.meld.gschema.xml.h:56
+#: ../data/org.gnome.meld.gschema.xml.h:58
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -403,11 +417,11 @@ msgstr ""
 "Sloupec, ve kterém se má zobrazit okraj v editoru zpráv popisujících "
 "zařazení ve správě verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:57
+#: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Automatically hard-wrap commit messages"
 msgstr "Automaticky natvrdo zalamovat zprávy k zařazení"
 
-#: ../data/org.gnome.meld.gschema.xml.h:58
+#: ../data/org.gnome.meld.gschema.xml.h:60
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -416,22 +430,22 @@ msgstr ""
 "zařazením zprávu natvrdo zalamovat (tj. vkládat zalomení řádku) na "
 "příslušném sloupci."
 
-#: ../data/org.gnome.meld.gschema.xml.h:59
+#: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Version control status filters"
 msgstr "Filtry stavu správy verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:60
+#: ../data/org.gnome.meld.gschema.xml.h:62
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "Seznam stavů použitých k filtrování viditelných souborů v porovnávání správy "
 "verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:61
+#: ../data/org.gnome.meld.gschema.xml.h:63
 msgid "Filename-based filters"
 msgstr "Filtry názvů souborů"
 
-#: ../data/org.gnome.meld.gschema.xml.h:62
+#: ../data/org.gnome.meld.gschema.xml.h:64
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -439,11 +453,11 @@ msgstr ""
 "Seznam předdefinovaných filtrů názvů souborů. Když jsou aktivní, vynechají "
 "odpovídající soubory z porovnání složek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:63
+#: ../data/org.gnome.meld.gschema.xml.h:65
 msgid "Text-based filters"
 msgstr "Filtry textu"
 
-#: ../data/org.gnome.meld.gschema.xml.h:64
+#: ../data/org.gnome.meld.gschema.xml.h:66
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -520,7 +534,7 @@ msgstr "Kopírovat doprava"
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:862 ../meld/filediff.py:1460
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:876 ../meld/filediff.py:1460
 msgid "Hide"
 msgstr "Skrýt"
 
@@ -610,7 +624,7 @@ msgid "Move _Down"
 msgstr "Přesunout _dolů"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:362
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:374
 #: ../meld/vcview.py:203
 msgid "Name"
 msgstr "Název"
@@ -811,7 +825,7 @@ msgstr "Pokud se změny neuloží, budou trvale ztraceny."
 msgid "Close _without Saving"
 msgstr "Zavřít _bez uložení"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:953 ../meld/filediff.py:1629
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:967 ../meld/filediff.py:1629
 #: ../meld/filediff.py:1713 ../meld/filediff.py:1738
 msgid "_Cancel"
 msgstr "_Zrušit"
@@ -849,7 +863,7 @@ msgstr "Vrátit stav před neuložené změny v dokumentu?"
 msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr "Změny provedené v následujících dokumentech budou trvale ztraceny:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:954 ../meld/filediff.py:1630
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:968 ../meld/filediff.py:1630
 msgid "_Replace"
 msgstr "Nahradi_t"
 
@@ -1033,51 +1047,51 @@ msgstr "P_orovnávat soubory jen na základě velikosti a časového razítka"
 msgid "_Timestamp resolution:"
 msgstr "Přesnos_t časového razítka:"
 
-#: ../data/ui/preferences.ui.h:30
+#: ../data/ui/preferences.ui.h:31
 msgid "Symbolic Links"
 msgstr "Symbolické odkazy"
 
-#: ../data/ui/preferences.ui.h:32
+#: ../data/ui/preferences.ui.h:33
 msgid "Visible Columns"
 msgstr "Viditelné sloupce"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:34
 msgid "Folder Comparisons"
 msgstr "Porovnávání složek"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:35
 msgid "Version Comparisons"
 msgstr "Porovnávání verzí"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:36
 msgid "_Order when comparing file revisions:"
 msgstr "P_ořadí při porovnávání revizí souborů:"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:37
 msgid "Order when _merging files:"
 msgstr "Pořadí při slučová_ní souborů:"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:38
 msgid "Commit Messages"
 msgstr "Zprávy o zařazování"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../data/ui/preferences.ui.h:39
 msgid "Show _right margin at:"
 msgstr "Zobrazit p_ravý okraj na:"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:40
 msgid "Automatically _break lines at right margin on commit"
 msgstr "Při zařazování automaticky za_lamovat řádky na pravém okraji"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:41
 msgid "Version Control"
 msgstr "Správa verzí"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../data/ui/preferences.ui.h:42
 msgid "Filename filters"
 msgstr "Filtry názvů souborů"
 
-#: ../data/ui/preferences.ui.h:42
+#: ../data/ui/preferences.ui.h:43
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1087,24 +1101,24 @@ msgstr ""
 "Každý vzorek je seznamem zástupných znaků ve stylu shellu oddělovaný "
 "mezerami."
 
-#: ../data/ui/preferences.ui.h:43 ../meld/meldwindow.py:103
+#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:103
 msgid "File Filters"
 msgstr "Filtry souborů"
 
-#: ../data/ui/preferences.ui.h:44
+#: ../data/ui/preferences.ui.h:45
 msgid "Change trimming"
 msgstr "Vynechávání změn"
 
-#: ../data/ui/preferences.ui.h:45
+#: ../data/ui/preferences.ui.h:46
 msgid "Trim blank line differences from the start and end of changes"
 msgstr ""
 "Vynechat od začátku do konce změn rozdíly spočívající v prázdných řádcích"
 
-#: ../data/ui/preferences.ui.h:46
+#: ../data/ui/preferences.ui.h:47
 msgid "Text filters"
 msgstr "Filtry textu"
 
-#: ../data/ui/preferences.ui.h:47
+#: ../data/ui/preferences.ui.h:48
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1117,7 +1131,7 @@ msgstr ""
 "řetězcem před provedením porovnání. Pokud výraz obsahuje skupiny, jsou "
 "nahrazeny jen skupiny. Více podrobností viz příručka uživatele."
 
-#: ../data/ui/preferences.ui.h:48
+#: ../data/ui/preferences.ui.h:49
 msgid "Text Filters"
 msgstr "Filtry textu"
 
@@ -1327,44 +1341,44 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:380 ../meld/preferences.py:82
+#: ../meld/dirdiff.py:392 ../meld/preferences.py:82
 msgid "Size"
 msgstr "Velikost"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:388 ../meld/preferences.py:83
+#: ../meld/dirdiff.py:400 ../meld/preferences.py:83
 msgid "Modification time"
 msgstr "Čas změny"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:396 ../meld/preferences.py:84
+#: ../meld/dirdiff.py:408 ../meld/preferences.py:84
 msgid "Permissions"
 msgstr "Oprávnění"
 
-#: ../meld/dirdiff.py:544
+#: ../meld/dirdiff.py:558
 #, python-format
 msgid "Hide %s"
 msgstr "Skrýt %s"
 
-#: ../meld/dirdiff.py:674 ../meld/dirdiff.py:696
+#: ../meld/dirdiff.py:688 ../meld/dirdiff.py:710
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Prochází se %s"
 
-#: ../meld/dirdiff.py:829
+#: ../meld/dirdiff.py:843
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Hotovo"
 
-#: ../meld/dirdiff.py:837
+#: ../meld/dirdiff.py:851
 msgid "Folders have no differences"
 msgstr "Mezi složkami není žádný rozdíl"
 
-#: ../meld/dirdiff.py:839
+#: ../meld/dirdiff.py:853
 msgid "Contents of scanned files in folders are identical."
 msgstr "Obsah kontrolovaných souborů ve složkách je stejný."
 
-#: ../meld/dirdiff.py:841
+#: ../meld/dirdiff.py:855
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1372,43 +1386,43 @@ msgstr ""
 "Kontrolované soubory ve složkách vypadají stejně, ale nebyl kontrolován "
 "jejich obsah."
 
-#: ../meld/dirdiff.py:844
+#: ../meld/dirdiff.py:858
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Jsou používány filtry souborů, takže ne všechny soubory byly kontrolovány."
 
-#: ../meld/dirdiff.py:846
+#: ../meld/dirdiff.py:860
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory."
 
-#: ../meld/dirdiff.py:864 ../meld/dirdiff.py:917 ../meld/filediff.py:1115
+#: ../meld/dirdiff.py:878 ../meld/dirdiff.py:931 ../meld/filediff.py:1115
 #: ../meld/filediff.py:1267 ../meld/filediff.py:1462 ../meld/filediff.py:1492
 #: ../meld/filediff.py:1494
 msgid "Hi_de"
 msgstr "_Skrýt"
 
-#: ../meld/dirdiff.py:874
+#: ../meld/dirdiff.py:888
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Při skenování této složky došlo k několika chybám"
 
-#: ../meld/dirdiff.py:875
+#: ../meld/dirdiff.py:889
 msgid "Files with invalid encodings found"
 msgstr "Nalezeny soubory s neplatným kódováním"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:877
+#: ../meld/dirdiff.py:891
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Některé soubory měly neplatné kódování. Názvy jsou přibližně následující:"
 
-#: ../meld/dirdiff.py:879
+#: ../meld/dirdiff.py:893
 msgid "Files hidden by case insensitive comparison"
 msgstr "Soubory skryty porovnáním nerozlišujícím velikost písmen"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:881
+#: ../meld/dirdiff.py:895
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1416,17 +1430,17 @@ msgstr ""
 "Provádí se porovnání nerozlišující velikost písmen na systému souborů "
 "rozlišujícím velikost písmen. Některé soubory v této složce jsou skryté:"
 
-#: ../meld/dirdiff.py:892
+#: ../meld/dirdiff.py:906
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ skryto v „%s“"
 
-#: ../meld/dirdiff.py:957
+#: ../meld/dirdiff.py:971
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Nahradit složku „%s“?"
 
-#: ../meld/dirdiff.py:959
+#: ../meld/dirdiff.py:973
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1435,11 +1449,11 @@ msgstr ""
 "V „%s“ již existuje jiná složka se stejným názvem.\n"
 "Pokud stávající složku nahradíte, budou všechny soubory v ní ztraceny."
 
-#: ../meld/dirdiff.py:972
+#: ../meld/dirdiff.py:986
 msgid "Error copying file"
 msgstr "Chyba při kopírování souboru"
 
-#: ../meld/dirdiff.py:973
+#: ../meld/dirdiff.py:987
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1452,12 +1466,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:996
+#: ../meld/dirdiff.py:1010
 #, python-format
 msgid "Error deleting %s"
 msgstr "Chyba při mazání %s"
 
-#: ../meld/dirdiff.py:1501
+#: ../meld/dirdiff.py:1515
 msgid "No folder"
 msgstr "Žádná složka"
 
