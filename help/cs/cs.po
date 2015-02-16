@@ -1,13 +1,13 @@
 # Czech translation for meld.
 # Copyright (C) 2014 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
-# Marek Černocký <marek@manet.cz>, 2014.
+# Marek Černocký <marek@manet.cz>, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
-"POT-Creation-Date: 2014-08-25 21:46+0000\n"
-"PO-Revision-Date: 2014-08-26 10:13+0200\n"
+"POT-Creation-Date: 2015-02-16 11:01+0000\n"
+"PO-Revision-Date: 2015-02-16 21:11+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -204,8 +204,8 @@ msgid ""
 "em>:"
 msgstr ""
 "V porovnání složek obsahuje každý řádek jeden soubor nebo složku, které se "
-"nachází aspoň ve jedné z porovnávaných složek. Každý z řádků je označen "
-"jako <em>změněné</em> nebo <em>nové</em> nebo <em>stejné</em>."
+"nachází aspoň ve jedné z porovnávaných složek. Každý z řádků je označen jako "
+"<em>změněné</em> nebo <em>nové</em> nebo <em>stejné</em>."
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
@@ -714,6 +714,53 @@ msgstr ""
 "nahradí názvem souboru včetně cesty, respektive číslem aktuálního řádku. "
 "(např. <cmd>gedit {file}:{line}</cmd>)."
 
+#. (itstool) path: terms/title
+#: C/preferences.page:31
+#| msgid "Folder comparison states"
+msgid "Folder Comparison preferences"
+msgstr "Předvolby porovnávání složek"
+
+#. (itstool) path: item/title
+#: C/preferences.page:33
+#| msgid "States in folder comparisons"
+msgid "Apply text filters during folder comparisons"
+msgstr "Použití textových filtrů při porovnávání složek"
+
+#. (itstool) path: item/p
+#: C/preferences.page:34
+msgid ""
+"When comparing files in folder comparison mode, text filters and other text "
+"manipulation options can be applied to the contents of files. If this option "
+"is enabled, all currently enabled text filters will be applied, the blank "
+"line trimming option will be applied as appropriate, and differences in line "
+"endings will be ignored."
+msgstr ""
+"Když se porovnávají soubory v režimu porovnávání složek, mohou být na obsah "
+"souborů použity filtry a další možnosti práce s textem. Pokud je tato volba "
+"zapnutá, všechny zapnuté textové filtry se použijí, bude příslušně použita "
+"volba ořezávání prázných řádků a rozdíly v zakončeních řádků budou "
+"ignorovány."
+
+#. (itstool) path: item/p
+#: C/preferences.page:40
+msgid ""
+"Enabling this option means that <app>Meld</app> must fully read all non-"
+"binary files into memory during the folder comparison. With large text "
+"files, this can be slow and may cause memory issues."
+msgstr ""
+"Zapnutí této volby znamená, že <app>Meld</app> musí během porovnávání složek "
+"načíst všechny nebinární soubory kompletně do paměti. U rozsáhlých textových "
+"souborů to může způsobit problémy v podobě zpomalení a velké spotřeby paměti."
+
+#. (itstool) path: item/p
+#: C/preferences.page:44
+msgid ""
+"This option only has an effect if if \"Compare files based only on size and "
+"timestamp\" is not enabled."
+msgstr ""
+"Tato volba má význam, jen když není zapnuto „Porovnávat soubory jen na "
+"základě velikosti a časového razítka“."
+
 #. (itstool) path: page/title
 #: C/file-changes.page:16
 msgid "Dealing with changes"
@@ -818,8 +865,8 @@ msgid ""
 "\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item."
 msgstr ""
 "<app>Meld</app> umožňuje porovnávat vedle sebe dva nebo tři textové soubory. "
-"Nové porovnávání souborů můžete začít pomocí položky <guiseq><gui style=\"menu"
-"\">Soubor</gui><gui style=\"menuitem\">Nové…</gui></guiseq> v nabídce."
+"Nové porovnávání souborů můžete začít pomocí položky <guiseq><gui style="
+"\"menu\">Soubor</gui><gui style=\"menuitem\">Nové…</gui></guiseq> v nabídce."
 
 #. (itstool) path: page/p
 #: C/file-mode.page:26
@@ -1674,8 +1721,8 @@ msgstr ""
 #: C/folder-mode.page:217
 msgid ""
 "You can filter out files based on these states, for example, to show only "
-"files that have been <em>Modified</em>. You can read more about this in <link "
-"xref=\"file-filters#file-state-filter\"/>."
+"files that have been <em>Modified</em>. You can read more about this in "
+"<link xref=\"file-filters#file-state-filter\"/>."
 msgstr ""
 "Můžete odfiltrovat soubory na základě jejich stavu, například aby se "
 "zobrazovaly jen soubory, které byly <em>změněné</em>. Více si o tom můžete "
