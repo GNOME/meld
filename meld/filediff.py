@@ -53,6 +53,8 @@ log = logging.getLogger(__name__)
 
 class MatcherWorker(threading.Thread):
 
+    matcher_class = matchers.InlineMyersSequenceMatcher
+
     def __init__(self, tasks, results):
         super(MatcherWorker, self).__init__()
         self.tasks = tasks
@@ -64,8 +66,8 @@ class MatcherWorker(threading.Thread):
         while True:
             task_id, (text1, textn) = self.tasks.get()
             try:
-                opcodes = matchers.matcher_worker(text1, textn)
-                self.results.put((task_id, opcodes))
+                matcher = self.matcher_class(None, text1, textn)
+                self.results.put((task_id, matcher.get_opcodes()))
             except Exception as e:
                 log.error("Exception while running diff: %s", e)
             finally:

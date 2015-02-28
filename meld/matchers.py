@@ -18,11 +18,6 @@ import collections
 import difflib
 
 
-def matcher_worker(text1, textn):
-    matcher = InlineMyersSequenceMatcher(None, text1, textn)
-    return matcher.get_opcodes()
-
-
 def find_common_prefix(a, b):
     if not a or not b:
         return 0
