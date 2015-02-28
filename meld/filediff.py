@@ -60,7 +60,6 @@ class MatcherWorker(threading.Thread):
         self.tasks = tasks
         self.results = results
         self.daemon = True
-        self.start()
 
     def run(self):
         while True:
@@ -100,6 +99,7 @@ class CachedSequenceMatcher(object):
         self.thread = MatcherWorker(self.tasks, self.results)
         self.task_id = 1
         self.queued_matches = {}
+        GLib.idle_add(self.thread.start)
 
     def match(self, text1, textn, cb):
         texts = (text1, textn)
@@ -108,11 +108,14 @@ class CachedSequenceMatcher(object):
             opcodes = self.cache[texts][0]
             GLib.idle_add(lambda: cb(opcodes))
         except KeyError:
-            self.tasks.put((self.task_id, texts))
-            if not bool(self.queued_matches):
-                GLib.idle_add(self.check_results)
-            self.queued_matches[self.task_id] = (texts, cb)
-            self.task_id += 1
+            GLib.idle_add(lambda: self.enqueue_task(texts, cb))
+
+    def enqueue_task(self, texts, cb):
+        if not bool(self.queued_matches):
+            GLib.idle_add(self.check_results)
+        self.queued_matches[self.task_id] = (texts, cb)
+        self.tasks.put((self.task_id, texts))
+        self.task_id += 1
 
     def check_results(self):
         try:
