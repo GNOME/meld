@@ -16,20 +16,6 @@
 
 import collections
 import difflib
-import os
-import signal
-import sys
-
-
-# Support re-execing on Windows
-if os.name == "nt":
-    self_path = os.path.realpath(__file__)
-    self_dir = os.path.abspath(os.path.dirname(self_path))
-    sys.path[0:0] = [self_dir]
-
-
-def init_worker():
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 def matcher_worker(text1, textn):
