@@ -76,7 +76,7 @@ command. In other words, do this:
 Contacting
 ----------
 
-Home page:      http://meldmerge.org
-Documentation:  http://meldmerge.org/help
-Wiki:           https://wiki.gnome.org/Apps/Meld
+Home page:      http://meldmerge.org  
+Documentation:  http://meldmerge.org/help  
+Wiki:           https://wiki.gnome.org/Apps/Meld  
 Mailing list:   https://mail.gnome.org/mailman/listinfo/meld-list
