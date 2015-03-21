@@ -689,7 +689,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         yield workdir, r
 
     def has_command(self, command):
-        return command in self.command_map
+        # Because of the way we've chosen to implement the newer command API,
+        # it's very very hard to determine whether a plugin implements a call
+        # at this point. We're using whether a plugin has been updated to the
+        # new API as a proxy for understanding these commands, since right now
+        # that happens to work... this is bad.
+        uses_new_api = hasattr(self.vc, 'update_actions_for_paths')
+        return uses_new_api and command in self.command_map
 
     def command(self, command, files):
         if not self.has_command(command):
