@@ -92,7 +92,6 @@ class Vc(_vc.Vc):
 
     def __init__(self, location):
         super(Vc, self).__init__(location)
-        self._tree_cache = {}
         self._tree_meta_cache = {}
 
     def commit_command(self, message):

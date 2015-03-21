@@ -121,7 +121,7 @@ class Vc(object):
         self.root, self.location = self.is_in_repo(path)
         if not self.root:
             raise ValueError
-        self._tree_cache = None
+        self._tree_cache = {}
 
     def commit_command(self, message):
         raise NotImplementedError()
@@ -194,7 +194,6 @@ class Vc(object):
 
     def _get_tree_cache(self):
         if not self._tree_cache:
-            self._tree_cache = {}
             self._update_tree_state_cache("./", self._tree_cache)
         return self._tree_cache
 
