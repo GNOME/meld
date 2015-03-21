@@ -31,6 +31,7 @@ import tempfile
 import xml.etree.ElementTree as ElementTree
 import subprocess
 
+from meld.conf import _
 from . import _vc
 
 
@@ -41,7 +42,7 @@ class Vc(_vc.Vc):
     VC_DIR = ".svn"
     VC_ROOT_WALK = True
 
-    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION)
+    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
 
     state_map = {
         "unversioned": _vc.STATE_NONE,
@@ -253,6 +254,7 @@ class Vc(_vc.Vc):
                     retdirs.append( _vc.Dir(path,name,state) )
             else:
                 state = self.state_map.get(svn_state, _vc.STATE_NONE)
-                retfiles.append(_vc.File(path, name, state, rev))
+                rev_label = _("Revision %s") % rev
+                retfiles.append(_vc.File(path, name, state, options=rev_label))
 
         return retdirs, retfiles

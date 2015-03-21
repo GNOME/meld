@@ -118,8 +118,8 @@ class ConsoleStream(object):
         self.textview.scroll_mark_onscreen(self.end_mark)
 
 
-COL_LOCATION, COL_STATUS, COL_REVISION, COL_OPTIONS, COL_END = \
-    list(range(tree.COL_END, tree.COL_END + 5))
+COL_LOCATION, COL_STATUS, COL_OPTIONS, COL_END = \
+    list(range(tree.COL_END, tree.COL_END + 4))
 
 
 class VcTreeStore(tree.DiffTreeStore):
@@ -232,8 +232,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         self.treeview_column_location = addCol(_("Location"), COL_LOCATION)
         addCol(_("Status"), COL_STATUS, vc.DATA_STATE)
-        addCol(_("Revision"), COL_REVISION, vc.DATA_REVISION)
-        addCol(_("Options"), COL_OPTIONS, vc.DATA_OPTIONS)
+        addCol(_("Extra"), COL_OPTIONS, vc.DATA_OPTIONS)
 
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
@@ -821,7 +820,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.model.set_value(it, self.model.column_index(col, 0), val)
         setcol(COL_LOCATION, location)
         setcol(COL_STATUS, e.get_status())
-        setcol(COL_REVISION, e.rev)
         setcol(COL_OPTIONS, e.options)
 
     def on_file_changed(self, filename):
