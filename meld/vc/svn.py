@@ -65,8 +65,10 @@ class Vc(_vc.Vc):
         return [self.CMD,"rm","--force"]
     def revert_command(self):
         return [self.CMD,"revert"]
-    def resolved_command(self):
-        return [self.CMD,"resolved"]
+
+    def resolve(self, runner, files):
+        command = [self.CMD, 'resolve', '--accept=working']
+        runner(command, files, refresh=True, working_dir=self.root)
 
     def get_path_for_repo_file(self, path, commit=None):
         if commit is None:
