@@ -167,24 +167,18 @@ class Vc(_vc.Vc):
             return False
 
         root, location = cls.is_in_repo(path)
+        vc_dir = os.path.join(root, cls.VC_DIR)
 
         # Check for repository version, trusting format file then entries file
-        format_path = os.path.join(root, cls.VC_DIR, "format")
-        entries_path = os.path.join(root, cls.VC_DIR, "entries")
-        wcdb_path = os.path.join(root, cls.VC_DIR, "wc.db")
-        format_exists = os.path.exists(format_path)
-        entries_exists = os.path.exists(entries_path)
-        wcdb_exists = os.path.exists(wcdb_path)
-        if format_exists:
-            with open(format_path) as f:
-                repo_version = int(f.readline().strip())
-        elif entries_exists:
-            with open(entries_path) as f:
-                repo_version = int(f.readline().strip())
-        elif wcdb_exists:
+        for filename in ("format", "entries"):
+            path = os.path.join(vc_dir, filename)
+            if os.path.exists(path):
+                with open(path) as f:
+                    repo_version = int(f.readline().strip())
+                break
+
+        if not repo_version and os.path.exists(os.path.join(vc_dir, "wc.db")):
             repo_version = 12
-        else:
-            return False
 
         return cls._repo_version_support(repo_version)
 
