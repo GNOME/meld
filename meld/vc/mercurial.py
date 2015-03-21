@@ -122,7 +122,7 @@ class Vc(_vc.Vc):
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 tree_state[path] = state
 
-    def _lookup_tree_cache(self, rootdir):
+    def cache_tree(self, rootdir):
         # Get a list of all files in rootdir, as well as their status
         tree_state = {}
         self._update_tree_state_cache("./", tree_state)

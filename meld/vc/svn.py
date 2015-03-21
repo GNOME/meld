@@ -214,7 +214,7 @@ class Vc(_vc.Vc):
                         tree_state[mydir] = {}
                     tree_state[mydir][name] = (item, rev)
 
-    def _lookup_tree_cache(self, rootdir):
+    def cache_tree(self, rootdir):
         # Get a list of all files in rootdir, as well as their status
         tree_state = {}
         self._update_tree_state_cache(rootdir, tree_state)

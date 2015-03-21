@@ -367,7 +367,7 @@ class Vc(_vc.Vc):
             for path in unversioned_entries:
                 tree_state[get_real_path(path)] = _vc.STATE_NONE
 
-    def _lookup_tree_cache(self, rootdir):
+    def cache_tree(self, rootdir):
         # Get a list of all files in rootdir, as well as their status
         tree_state = {}
         self._update_tree_state_cache("./", tree_state)
