@@ -208,7 +208,7 @@ class Vc(object):
         """
         self._update_tree_state_cache(path)
 
-    def listdir(self, path="."):
+    def listdir(self, path):
         try:
             entries = sorted(e for e in os.listdir(path) if e != self.VC_DIR)
         except OSError:
