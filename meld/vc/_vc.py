@@ -146,9 +146,6 @@ class Vc(object):
     def revert_command(self):
         raise NotImplementedError()
 
-    def resolved_command(self):
-        raise NotImplementedError()
-
     # Prototyping VC interface version 2
 
     def get_files_to_commit(self, paths):

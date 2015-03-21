@@ -159,7 +159,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "VcUpdate": ("update_command", ()),
         "VcPush": ("push", (lambda *args, **kwargs: None, )),
         "VcAdd": ("add_command", ()),
-        "VcResolved": ("resolved_command", ()),
+        "VcResolved": ("resolve", (lambda *args, **kwargs: None, [])),
         "VcRemove": ("remove_command", ()),
         "VcRevert": ("revert_command", ()),
     }
@@ -761,10 +761,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command_on_selected(self.vc.remove_command())
 
     def on_button_resolved_clicked(self, obj):
-        try:
-            self.vc.resolve(self._command, self._get_selected_files())
-        except NotImplementedError:
-            self._command_on_selected(self.vc.resolved_command())
+        self.vc.resolve(self._command, self._get_selected_files())
 
     def on_button_revert_clicked(self, obj):
         try:
