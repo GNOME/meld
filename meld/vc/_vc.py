@@ -77,10 +77,11 @@ class Entry(object):
         STATE_NONEXIST: _("Not present"),
     }
 
-    def __init__(self, path, name, state):
+    def __init__(self, path, name, state, options=None):
         self.path = path
         self.state = state
         self.parent, self.name = os.path.split(path.rstrip("/"))
+        self.options = options
 
     def __str__(self):
         return "<%s:%s %s>" % (self.__class__.__name__, self.path,
@@ -95,18 +96,11 @@ class Entry(object):
 
 
 class Dir(Entry):
-    def __init__(self, path, name, state, options=None):
-        Entry.__init__(self, path, name, state)
-        self.isdir = 1
-        self.options = options
+    isdir = True
 
 
 class File(Entry):
-    def __init__(self, path, name, state, options=""):
-        assert path[-1] != "/"
-        Entry.__init__(self, path, name, state)
-        self.isdir = 0
-        self.options = options
+    isdir = False
 
 
 class Vc(object):
