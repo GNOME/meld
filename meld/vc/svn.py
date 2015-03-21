@@ -182,7 +182,7 @@ class Vc(_vc.Vc):
 
         return cls._repo_version_support(repo_version)
 
-    def _update_tree_state_cache(self, path, tree_state):
+    def _update_tree_state_cache(self, path):
         while 1:
             try:
                 proc = _vc.popen(
@@ -212,13 +212,12 @@ class Vc(_vc.Vc):
                     if "revision" in status.attrib:
                         rev = status.attrib["revision"]
                     mydir, name = os.path.split(path)
-                    if mydir not in tree_state:
-                        tree_state[mydir] = {}
-                    tree_state[mydir][name] = (item, rev)
+                    if mydir not in self._tree_cache:
+                        self._tree_cache[mydir] = {}
+                    self._tree_cache[mydir][name] = (item, rev)
 
     def update_file_state(self, path):
-        tree_state = self._get_tree_cache()
-        self._update_tree_state_cache(path, tree_state)
+        self._update_tree_state_cache(path)
 
     def _get_dirsandfiles(self, directory, dirs, files):
         tree = self._get_tree_cache()

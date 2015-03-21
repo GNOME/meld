@@ -88,8 +88,8 @@ class Vc(_vc.Vc):
             shutil.copyfileobj(process.stdout, f)
         return f.name
 
-    def _update_tree_state_cache(self, path, tree_state):
-        """ Update the state of the file(s) at tree_state['path'] """
+    def _update_tree_state_cache(self, path):
+        """ Update the state of the file(s) at self._tree_cache['path'] """
         while 1:
             try:
                 # Get the status of modified files
@@ -107,12 +107,12 @@ class Vc(_vc.Vc):
 
         if len(entries) == 0 and os.path.isfile(path):
             # If we're just updating a single file there's a chance that it
-            # was it was previously modified, and now has been edited
-            # so that it is un-modified.  This will result in an empty
-            # 'entries' list, and tree_state['path'] will still contain stale
-            # data.  When this corner case occurs we force tree_state['path']
+            # was it was previously modified, and now has been edited so that
+            # it is un-modified.  This will result in an empty 'entries' list,
+            # and self._tree_cache['path'] will still contain stale data.
+            # When this corner case occurs we force self._tree_cache['path']
             # to STATE_NORMAL.
-            tree_state[path] = _vc.STATE_NORMAL
+            self._tree_cache[path] = _vc.STATE_NORMAL
         else:
             # There are 1 or more modified files, parse their state
             for entry in entries:
@@ -120,11 +120,10 @@ class Vc(_vc.Vc):
                 statekey, name = entry.split(" ", 1)
                 path = os.path.join(self.location, name.strip())
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
-                tree_state[path] = state
+                self._tree_cache[path] = state
 
     def update_file_state(self, path):
-        tree_state = self._get_tree_cache()
-        self._update_tree_state_cache(path, tree_state)
+        self._update_tree_state_cache(path)
 
     def _get_dirsandfiles(self, directory, dirs, files):
 

@@ -147,7 +147,7 @@ class Vc(_vc.Vc):
                 files.append(os.path.relpath(p, self.root))
         return sorted(list(set(files)))
 
-    def _update_tree_state_cache(self, path, tree_state):
+    def _update_tree_state_cache(self, path):
         # FIXME: This actually clears out state information, because the
         # current API doesn't have any state outside of _tree_cache.
         branch_root = _vc.popen(
@@ -219,7 +219,8 @@ class Vc(_vc.Vc):
                 del tree_meta_cache[old]
             self._reverse_rename_cache[new] = old
 
-        tree_state.update(dict((x, max(y)) for x, y in tree_cache.items()))
+        self._tree_cache.update(
+            dict((x, max(y)) for x, y in tree_cache.items()))
 
     def _get_dirsandfiles(self, directory, dirs, files):
         tree = self._get_tree_cache()
