@@ -226,7 +226,7 @@ class Vc(_vc.Vc):
         return tree_cache
 
     def _get_dirsandfiles(self, directory, dirs, files):
-        tree = self._get_tree_cache(directory)
+        tree = self._get_tree_cache()
 
         retfiles = []
         retdirs = []

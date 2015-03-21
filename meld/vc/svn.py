@@ -222,11 +222,11 @@ class Vc(_vc.Vc):
         return tree_state
 
     def update_file_state(self, path):
-        tree_state = self._get_tree_cache(os.path.dirname(path))
+        tree_state = self._get_tree_cache()
         self._update_tree_state_cache(path, tree_state)
 
     def _get_dirsandfiles(self, directory, dirs, files):
-        tree = self._get_tree_cache(directory)
+        tree = self._get_tree_cache()
 
         if not directory in tree:
             return [], []

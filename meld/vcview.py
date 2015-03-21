@@ -428,7 +428,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                    active_action(a[0]) and a[1]]
 
         yield _("Scanning %s") % rootname
-        self.vc._get_tree_cache(rootname)
+        self.vc._get_tree_cache()
         while todo:
             # This needs to happen sorted and depth-first in order for our row
             # references to remain valid while we traverse.

@@ -195,7 +195,7 @@ class Vc(object):
     def cache_tree(self, directory):
         raise NotImplementedError()
 
-    def _get_tree_cache(self, directory):
+    def _get_tree_cache(self):
         if not self._tree_cache:
             self._tree_cache = self.cache_tree()
         return self._tree_cache
