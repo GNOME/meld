@@ -192,15 +192,12 @@ class Vc(object):
     def get_working_directory(self, workdir):
         return workdir
 
-    def cache_inventory(self, directory):
-        self._tree_cache = self._lookup_tree_cache(directory)
-
     def _lookup_tree_cache(self, directory):
         raise NotImplementedError()
 
     def _get_tree_cache(self, directory):
         if self._tree_cache is None:
-            self.cache_inventory(directory)
+            self._tree_cache = self._lookup_tree_cache(directory)
         return self._tree_cache
 
     def update_file_state(self, path):
