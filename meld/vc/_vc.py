@@ -195,9 +195,6 @@ class Vc(object):
     def cache_inventory(self, directory):
         self._tree_cache = self._lookup_tree_cache(directory)
 
-    def uncache_inventory(self):
-        self._tree_cache = None
-
     def _lookup_tree_cache(self, directory):
         raise NotImplementedError()
 
