@@ -228,7 +228,25 @@ class Vc(object):
         return self._get_dirsandfiles(directory, dirs, files)
 
     def _get_dirsandfiles(self, directory, dirs, files):
-        raise NotImplementedError()
+
+        tree = self._get_tree_cache()
+
+        retfiles = []
+        retdirs = []
+        for name, path in files:
+            state = tree.get(path, STATE_NORMAL)
+            meta = self._tree_meta_cache.get(path, "")
+            retfiles.append(File(path, name, state, options=meta))
+        for name, path in dirs:
+            state = tree.get(path, STATE_NORMAL)
+            retdirs.append(Dir(path, name, state))
+        for path, state in tree.items():
+            # removed files are not in the filesystem, so must be added here
+            if state in (STATE_REMOVED, STATE_MISSING):
+                folder, name = os.path.split(path)
+                if folder == directory:
+                    retfiles.append(File(path, name, state))
+        return retdirs, retfiles
 
     def get_entry(self, path):
         """Return the entry associated with the given path in this VC

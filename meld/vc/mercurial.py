@@ -121,23 +121,3 @@ class Vc(_vc.Vc):
                 path = os.path.join(self.location, name.strip())
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 self._tree_cache[path] = state
-
-    def _get_dirsandfiles(self, directory, dirs, files):
-
-        tree = self._get_tree_cache()
-
-        retfiles = []
-        retdirs = []
-        for name, path in files:
-            state = tree.get(path, _vc.STATE_NORMAL)
-            retfiles.append(_vc.File(path, name, state))
-        for name, path in dirs:
-            # mercurial does not operate on dirs, just files
-            retdirs.append(_vc.Dir(path, name, _vc.STATE_NORMAL))
-        for path, state in tree.items():
-            # removed files are not in the filesystem, so must be added here
-            if state in (_vc.STATE_REMOVED, _vc.STATE_MISSING):
-                folder, name = os.path.split(path)
-                if folder == directory:
-                    retfiles.append(_vc.File(path, name, state))
-        return retdirs, retfiles

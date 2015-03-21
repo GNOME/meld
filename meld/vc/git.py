@@ -361,24 +361,3 @@ class Vc(_vc.Vc):
 
             for path in unversioned_entries:
                 self._tree_cache[get_real_path(path)] = _vc.STATE_NONE
-
-    def _get_dirsandfiles(self, directory, dirs, files):
-
-        tree = self._get_tree_cache()
-
-        retfiles = []
-        retdirs = []
-        for name, path in files:
-            state = tree.get(path, _vc.STATE_NORMAL)
-            meta = self._tree_meta_cache.get(path, "")
-            retfiles.append(_vc.File(path, name, state, options=meta))
-        for name, path in dirs:
-            state = tree.get(path, _vc.STATE_NORMAL)
-            retdirs.append(_vc.Dir(path, name, state))
-        for path, state in tree.items():
-            # removed files are not in the filesystem, so must be added here
-            if state in (_vc.STATE_REMOVED, _vc.STATE_MISSING):
-                folder, name = os.path.split(path)
-                if folder == directory:
-                    retfiles.append(_vc.File(path, name, state))
-        return retdirs, retfiles
