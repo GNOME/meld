@@ -40,7 +40,6 @@ class Vc(_vc.Vc):
     CMD = "svn"
     NAME = "Subversion"
     VC_DIR = ".svn"
-    VC_ROOT_WALK = True
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
 
