@@ -140,9 +140,9 @@ class Vc(_vc.Vc):
         files = []
         for p in paths:
             if os.path.isdir(p):
-                names = [
-                    x for x, y in tree.items() if y in self.commit_statuses]
-                files.extend(names)
+                for path, status in tree.items():
+                    if status in self.commit_statuses and path.startswith(p):
+                        files.append(os.path.relpath(path, self.root))
             else:
                 files.append(os.path.relpath(p, self.root))
         return sorted(list(set(files)))
