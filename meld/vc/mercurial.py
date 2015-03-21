@@ -122,9 +122,6 @@ class Vc(_vc.Vc):
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 self._tree_cache[path] = state
 
-    def update_file_state(self, path):
-        self._update_tree_state_cache(path)
-
     def _get_dirsandfiles(self, directory, dirs, files):
 
         tree = self._get_tree_cache()

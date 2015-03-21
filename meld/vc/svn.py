@@ -216,9 +216,6 @@ class Vc(_vc.Vc):
                         self._tree_cache[mydir] = {}
                     self._tree_cache[mydir][name] = (item, rev)
 
-    def update_file_state(self, path):
-        self._update_tree_state_cache(path)
-
     def _get_dirsandfiles(self, directory, dirs, files):
         tree = self._get_tree_cache()
 

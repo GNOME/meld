@@ -198,13 +198,14 @@ class Vc(object):
         return self._tree_cache
 
     def update_file_state(self, path):
-        """ Update the state of a specific file.  For example after a file
-        has been modified and saved, its state may be out of date and require
-        updating.  This can be implemented for Vc plugins that cache file
-        states, eg 'git' an 'bzr' so that the top-level file status is always
-        accurate.
+        """Update the cached version control state of the given path.
+
+        After a file has been modified and saved, for example by
+        editing in the file comparison view, its state may be out of
+        date and require updating. The method updates the version
+        control object's internal cache of file state.
         """
-        pass
+        self._update_tree_state_cache(path)
 
     def listdir(self, path="."):
         try:
