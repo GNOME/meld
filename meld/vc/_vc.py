@@ -192,14 +192,10 @@ class Vc(object):
     def get_working_directory(self, workdir):
         return workdir
 
-    def cache_tree(self):
-        tree_state = {}
-        self._update_tree_state_cache("./", tree_state)
-        return tree_state
-
     def _get_tree_cache(self):
         if not self._tree_cache:
-            self._tree_cache = self.cache_tree()
+            self._tree_cache = {}
+            self._update_tree_state_cache("./", self._tree_cache)
         return self._tree_cache
 
     def update_file_state(self, path):
