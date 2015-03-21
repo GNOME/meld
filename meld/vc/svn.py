@@ -28,6 +28,7 @@ import os
 import shutil
 import tempfile
 import xml.etree.ElementTree as ElementTree
+import subprocess
 
 from . import _vc
 
@@ -37,7 +38,7 @@ class Vc(_vc.CachedVc):
     CMD = "svn"
     NAME = "Subversion"
     VC_DIR = ".svn"
-    VC_ROOT_WALK = False
+    VC_ROOT_WALK = True
 
     VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_REVISION)
 
@@ -66,26 +67,26 @@ class Vc(_vc.CachedVc):
         return [self.CMD,"resolved"]
 
     def get_path_for_repo_file(self, path, commit=None):
-        if commit is not None:
+        if commit is None:
+            commit = "BASE"
+        else:
             raise NotImplementedError()
 
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
+        path = path[len(self.root) + 1:]
 
-        base, fname = os.path.split(path)
-        svn_path = os.path.join(base, ".svn", "text-base", fname + ".svn-base")
+        process = subprocess.Popen([self.CMD, "cat", "-r", commit, path],
+                                   cwd=self.root, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        vc_file = process.stdout
+
+        # Error handling here involves doing nothing; in most cases, the only
+        # sane response is to return an empty temp file. The most common error
+        # is "no base revision until committed" from diffing a new file.
 
         with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
-            try:
-                with open(svn_path, 'r') as vc_file:
-                    shutil.copyfileobj(vc_file, f)
-            except IOError as err:
-                if err.errno != errno.ENOENT:
-                    raise
-                # If the repository path doesn't exist, we either have an
-                # invalid path (difficult to check) or a new file. Either way,
-                # we just return an empty file
-
+            shutil.copyfileobj(vc_file, f)
         return f.name
 
     def get_path_for_conflict(self, path, conflict=None):
@@ -154,7 +155,7 @@ class Vc(_vc.CachedVc):
 
     @classmethod
     def _repo_version_support(cls, version):
-        return version < 12
+        return version >= 12
 
     @classmethod
     def valid_repo(cls, path):
