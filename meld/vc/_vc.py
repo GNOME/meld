@@ -197,7 +197,7 @@ class Vc(object):
 
     def _get_tree_cache(self, directory):
         if not self._tree_cache:
-            self._tree_cache = self.cache_tree(directory)
+            self._tree_cache = self.cache_tree()
         return self._tree_cache
 
     def update_file_state(self, path):

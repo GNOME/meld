@@ -185,8 +185,10 @@ class Vc(_vc.Vc):
     def _update_tree_state_cache(self, path, tree_state):
         while 1:
             try:
-                status_cmd = [self.CMD, "status", "-v", "--xml", path]
-                tree = ElementTree.parse(_vc.popen(status_cmd))
+                proc = _vc.popen(
+                    [self.CMD, "status", "-v", "--xml", path],
+                    cwd=self.location)
+                tree = ElementTree.parse(proc)
                 break
             except OSError as e:
                 if e.errno != errno.EAGAIN:
@@ -214,10 +216,9 @@ class Vc(_vc.Vc):
                         tree_state[mydir] = {}
                     tree_state[mydir][name] = (item, rev)
 
-    def cache_tree(self, rootdir):
-        # Get a list of all files in rootdir, as well as their status
+    def cache_tree(self):
         tree_state = {}
-        self._update_tree_state_cache(rootdir, tree_state)
+        self._update_tree_state_cache('./', tree_state)
         return tree_state
 
     def update_file_state(self, path):

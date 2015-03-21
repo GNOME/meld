@@ -142,7 +142,7 @@ class Vc(_vc.Vc):
             if os.path.isdir(p):
                 # FIXME: This used to be self._lookup_files(p), which
                 # definitely didn't do what we wanted.
-                entries = self.cache_tree(p)
+                entries = self.cache_tree()
                 names = [
                     x for x, y in entries.items() if y in self.commit_statuses]
                 files.extend(names)
@@ -150,9 +150,10 @@ class Vc(_vc.Vc):
                 files.append(os.path.relpath(p, self.root))
         return sorted(list(set(files)))
 
-    def cache_tree(self, rootdir):
+    def cache_tree(self):
         branch_root = _vc.popen(
-            [self.CMD] + self.CMDARGS + ["root", rootdir]).read().rstrip('\n')
+            [self.CMD] + self.CMDARGS + ["root", "./"],
+            cwd=self.location).read().rstrip('\n')
         entries = []
         while 1:
             try:
