@@ -136,11 +136,10 @@ class Vc(_vc.Vc):
         return self.root
 
     def get_files_to_commit(self, paths):
-        tree = self._get_tree_cache()
         files = []
         for p in paths:
             if os.path.isdir(p):
-                for path, status in tree.items():
+                for path, status in self._tree_cache.items():
                     if status in self.commit_statuses and path.startswith(p):
                         files.append(os.path.relpath(path, self.root))
             else:
