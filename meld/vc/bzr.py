@@ -149,8 +149,15 @@ class Vc(_vc.Vc):
         return sorted(list(set(files)))
 
     def cache_tree(self):
+        tree_state = {}
+        self._update_tree_state_cache("./", tree_state)
+        return tree_state
+
+    def _update_tree_state_cache(self, path, tree_state):
+        # FIXME: This actually clears out state information, because the
+        # current API doesn't have any state outside of _tree_cache.
         branch_root = _vc.popen(
-            [self.CMD] + self.CMDARGS + ["root", "./"],
+            [self.CMD] + self.CMDARGS + ["root", path],
             cwd=self.location).read().rstrip('\n')
         entries = []
         while 1:
@@ -163,7 +170,7 @@ class Vc(_vc.Vc):
                 if e.errno != errno.EAGAIN:
                     raise
 
-        self._tree_cache = tree_cache = defaultdict(set)
+        tree_cache = defaultdict(set)
         self._tree_meta_cache = tree_meta_cache = defaultdict(list)
         self._rename_cache = rename_cache = {}
         self._reverse_rename_cache = {}
@@ -206,8 +213,6 @@ class Vc(_vc.Vc):
                 if executable_match:
                     meta.append(executable_match.group(2))
 
-
-
             tree_cache[path].update(states)
             tree_meta_cache[path].extend(meta)
 
@@ -220,8 +225,7 @@ class Vc(_vc.Vc):
                 del tree_meta_cache[old]
             self._reverse_rename_cache[new] = old
 
-        tree_cache = dict((x, max(y)) for x,y in tree_cache.items())
-        return tree_cache
+        tree_state.update(dict((x, max(y)) for x, y in tree_cache.items()))
 
     def _get_dirsandfiles(self, directory, dirs, files):
         tree = self._get_tree_cache()
