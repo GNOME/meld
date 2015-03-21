@@ -192,8 +192,10 @@ class Vc(object):
     def get_working_directory(self, workdir):
         return workdir
 
-    def cache_tree(self, directory):
-        raise NotImplementedError()
+    def cache_tree(self):
+        tree_state = {}
+        self._update_tree_state_cache("./", tree_state)
+        return tree_state
 
     def _get_tree_cache(self):
         if not self._tree_cache:

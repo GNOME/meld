@@ -367,11 +367,6 @@ class Vc(_vc.Vc):
             for path in unversioned_entries:
                 tree_state[get_real_path(path)] = _vc.STATE_NONE
 
-    def cache_tree(self):
-        tree_state = {}
-        self._update_tree_state_cache("./", tree_state)
-        return tree_state
-
     def update_file_state(self, path):
         tree_state = self._get_tree_cache()
         self._update_tree_state_cache(path, tree_state)

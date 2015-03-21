@@ -148,11 +148,6 @@ class Vc(_vc.Vc):
                 files.append(os.path.relpath(p, self.root))
         return sorted(list(set(files)))
 
-    def cache_tree(self):
-        tree_state = {}
-        self._update_tree_state_cache("./", tree_state)
-        return tree_state
-
     def _update_tree_state_cache(self, path, tree_state):
         # FIXME: This actually clears out state information, because the
         # current API doesn't have any state outside of _tree_cache.

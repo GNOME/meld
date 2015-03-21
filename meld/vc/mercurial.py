@@ -122,11 +122,6 @@ class Vc(_vc.Vc):
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 tree_state[path] = state
 
-    def cache_tree(self):
-        tree_state = {}
-        self._update_tree_state_cache("./", tree_state)
-        return tree_state
-
     def update_file_state(self, path):
         tree_state = self._get_tree_cache()
         self._update_tree_state_cache(path, tree_state)
