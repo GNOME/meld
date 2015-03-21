@@ -98,16 +98,14 @@ class Dir(Entry):
     def __init__(self, path, name, state, options=None):
         Entry.__init__(self, path, name, state)
         self.isdir = 1
-        self.rev = ""
         self.options = options
 
 
 class File(Entry):
-    def __init__(self, path, name, state, rev="", options=""):
+    def __init__(self, path, name, state, options=""):
         assert path[-1] != "/"
         Entry.__init__(self, path, name, state)
         self.isdir = 0
-        self.rev = rev
         self.options = options
 
 
