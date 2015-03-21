@@ -227,7 +227,7 @@ class Vc(object):
             directory = os.path.dirname(files[0][1])
         return self._get_dirsandfiles(directory, dirs, files)
 
-    def _get_dirsandfiles(self, directory, dirs, files):
+    def _get_dirsandfiles(self, base, dirs, files):
 
         tree = self._get_tree_cache()
 
@@ -244,7 +244,7 @@ class Vc(object):
             # removed files are not in the filesystem, so must be added here
             if state in (STATE_REMOVED, STATE_MISSING):
                 folder, name = os.path.split(path)
-                if folder == directory:
+                if folder == base:
                     retfiles.append(File(path, name, state))
         return retdirs, retfiles
 

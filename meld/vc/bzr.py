@@ -218,7 +218,7 @@ class Vc(_vc.Vc):
             dict((x, max(y)) for x, y in tree_cache.items()))
         self._tree_meta_cache = dict(tree_meta_cache)
 
-    def _get_dirsandfiles(self, directory, dirs, files):
+    def _get_dirsandfiles(self, base, dirs, files):
         tree = self._get_tree_cache()
 
         retfiles = []
@@ -228,7 +228,7 @@ class Vc(_vc.Vc):
             mydir, name = os.path.split(path)
             if path.endswith('/'):
                 mydir, name = os.path.split(mydir)
-            if mydir != directory:
+            if mydir != base:
                 continue
             meta = ','.join(self._tree_meta_cache.get(path, []))
             if path.endswith('/'):
