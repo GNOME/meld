@@ -208,37 +208,9 @@ class Vc(_vc.Vc):
                     item = status.attrib["item"]
                     if item == "":
                         continue
-                    rev = None
-                    if "revision" in status.attrib:
-                        rev = status.attrib["revision"]
                     state = self.state_map.get(item, _vc.STATE_NONE)
                     self._tree_cache[path] = state
-                    self._tree_meta_cache[path] = rev
 
-    def _get_dirsandfiles(self, directory, dirs, files):
-        tree = self._get_tree_cache()
-
-        retfiles = []
-        retdirs = []
-
-        for path in sorted(tree.keys()):
-            if os.path.dirname(path) != directory:
-                continue
-
-            name = os.path.basename(path)
-
-            isdir = os.path.isdir(path)
-            if isdir:
-                if os.path.exists(path):
-                    state = _vc.STATE_NORMAL
-                else:
-                    state = _vc.STATE_MISSING
-                # svn adds the directory reported to the status list we get.
-                if name != directory:
-                    retdirs.append( _vc.Dir(path,name,state) )
-            else:
-                state = self._tree_cache[path]
-                rev_label = _("Revision %s") % self._tree_meta_cache[path]
-                retfiles.append(_vc.File(path, name, state, options=rev_label))
-
-        return retdirs, retfiles
+                    rev = status.attrib.get("revision")
+                    rev_label = _("Rev %s") % rev if rev is not None else ''
+                    self._tree_meta_cache[path] = rev_label
