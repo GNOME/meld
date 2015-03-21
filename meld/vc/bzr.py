@@ -34,7 +34,7 @@ import tempfile
 from . import _vc
 
 
-class Vc(_vc.CachedVc):
+class Vc(_vc.Vc):
 
     CMD = "bzr"
     CMDARGS = ["--no-aliases", "--no-plugins"]

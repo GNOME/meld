@@ -33,7 +33,7 @@ import subprocess
 from . import _vc
 
 
-class Vc(_vc.CachedVc):
+class Vc(_vc.Vc):
 
     CMD = "svn"
     NAME = "Subversion"

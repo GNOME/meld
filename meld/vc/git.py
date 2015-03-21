@@ -38,7 +38,7 @@ from meld.conf import _, ngettext
 from . import _vc
 
 
-class Vc(_vc.CachedVc):
+class Vc(_vc.Vc):
 
     CMD = "git"
     NAME = "Git"

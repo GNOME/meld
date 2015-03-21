@@ -128,6 +128,7 @@ class Vc(object):
         self.root, self.location = self.is_in_repo(path)
         if not self.root:
             raise ValueError
+        self._tree_cache = None
 
     def commit_command(self, message):
         raise NotImplementedError()
@@ -201,11 +202,19 @@ class Vc(object):
     def get_working_directory(self, workdir):
         return workdir
 
-    def cache_inventory(self, topdir):
-        pass
+    def cache_inventory(self, directory):
+        self._tree_cache = self._lookup_tree_cache(directory)
 
     def uncache_inventory(self):
-        pass
+        self._tree_cache = None
+
+    def _lookup_tree_cache(self, directory):
+        raise NotImplementedError()
+
+    def _get_tree_cache(self, directory):
+        if self._tree_cache is None:
+            self.cache_inventory(directory)
+        return self._tree_cache
 
     def update_file_state(self, path):
         """ Update the state of a specific file.  For example after a file
@@ -291,27 +300,6 @@ class Vc(object):
     def valid_repo(cls, path):
         """Determine if a directory is a valid repository for this class"""
         raise NotImplementedError
-
-
-class CachedVc(Vc):
-
-    def __init__(self, location):
-        super(CachedVc, self).__init__(location)
-        self._tree_cache = None
-
-    def cache_inventory(self, directory):
-        self._tree_cache = self._lookup_tree_cache(directory)
-
-    def uncache_inventory(self):
-        self._tree_cache = None
-
-    def _lookup_tree_cache(self, directory):
-        raise NotImplementedError()
-
-    def _get_tree_cache(self, directory):
-        if self._tree_cache is None:
-            self.cache_inventory(directory)
-        return self._tree_cache
 
 
 class InvalidVCPath(ValueError):
