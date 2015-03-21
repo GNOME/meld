@@ -144,6 +144,9 @@ class Vc(object):
     def get_commit_message_prefill(self):
         return None
 
+    def commit(self, runner, files, message):
+        raise NotImplementedError()
+
     def update(self, runner, files):
         raise NotImplementedError()
 

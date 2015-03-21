@@ -2,7 +2,7 @@
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
 # Copyright (C) 2007 José Fonseca <j_r_fonseca@yahoo.co.uk>
-# Copyright (C) 2010-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2015 Kai Willadsen <kai.willadsen@gmail.com>
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -79,9 +79,6 @@ class Vc(_vc.Vc):
     def check_repo_root(self, location):
         # Check exists instead of isdir, since .git might be a git-file
         return os.path.exists(os.path.join(location, self.VC_DIR))
-
-    def commit_command(self, message):
-        return [self.CMD, "commit", "-m", message]
 
     # Prototyping VC interface version 2
 
@@ -177,6 +174,10 @@ class Vc(_vc.Vc):
             return "\n".join(
                 (l for l in message.splitlines() if not l.startswith("#")))
         return None
+
+    def commit(self, runner, files, message):
+        command = [self.CMD, 'commit', '-m', message]
+        runner(command, files, refresh=True, working_dir=self.root)
 
     def update(self, runner, files):
         command = [self.CMD, 'pull']
