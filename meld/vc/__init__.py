@@ -28,8 +28,7 @@ from ._vc import DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS
 
 # FIXME: This is a horrible hack to help cx_Freeze pick up these plugins when
 # freezing the distributable package.
-from . import (
-    git, mercurial, bzr, fossil, monotone, darcs, svk, svn, svn_17, cvs)
+from . import git, mercurial, bzr, svn
 
 # Tuple with module name and vc.NAME field, ordered according to best-guess
 # as to which VC a user is likely to want by default in a multiple-VC situation
@@ -37,13 +36,7 @@ vc_names = (
     "git",
     "mercurial",
     "bzr",
-    "fossil",
-    "monotone",
-    "darcs",
-    "svk",
     "svn",
-    "svn_17",
-    "cvs",
 )
 
 _plugins = [importlib.import_module("." + vc, __package__) for vc in vc_names]
