@@ -68,10 +68,6 @@ class Vc(_vc.Vc):
 
     file_encoding = sys.getfilesystemencoding()
 
-    def __init__(self, location):
-        super(Vc, self).__init__(location)
-        self._tree_meta_cache = {}
-
     @classmethod
     def is_installed(cls):
         try:

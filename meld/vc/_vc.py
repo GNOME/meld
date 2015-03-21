@@ -122,6 +122,7 @@ class Vc(object):
         if not self.root:
             raise ValueError
         self._tree_cache = {}
+        self._tree_meta_cache = {}
 
     def commit_command(self, message):
         raise NotImplementedError()

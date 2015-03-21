@@ -90,10 +90,6 @@ class Vc(_vc.Vc):
                                             ''.join(state_2_map.keys()),
                                             ''.join(state_3_map.keys()),)
 
-    def __init__(self, location):
-        super(Vc, self).__init__(location)
-        self._tree_meta_cache = {}
-
     def commit_command(self, message):
         return [self.CMD] + self.CMDARGS + ["commit", "-m", message]
 
@@ -164,7 +160,7 @@ class Vc(_vc.Vc):
                     raise
 
         tree_cache = defaultdict(set)
-        self._tree_meta_cache = tree_meta_cache = defaultdict(list)
+        tree_meta_cache = defaultdict(list)
         self._rename_cache = rename_cache = {}
         self._reverse_rename_cache = {}
         # Files can appear twice in the list if they conflict and were renamed
@@ -220,6 +216,7 @@ class Vc(_vc.Vc):
 
         self._tree_cache.update(
             dict((x, max(y)) for x, y in tree_cache.items()))
+        self._tree_meta_cache = dict(tree_meta_cache)
 
     def _get_dirsandfiles(self, directory, dirs, files):
         tree = self._get_tree_cache()
