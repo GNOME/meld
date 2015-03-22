@@ -148,7 +148,7 @@ class Vc(object):
 
     def revert(self, runner, files):
         raise NotImplementedError()
-    
+
     def get_commits_to_push_summary(self):
         raise NotImplementedError()
 
