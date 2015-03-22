@@ -236,16 +236,24 @@ class Vc(object):
         for name, path in files:
             state = tree.get(path, STATE_NORMAL)
             meta = self._tree_meta_cache.get(path, "")
+            if isinstance(meta, list):
+                meta = ','.join(meta)
             retfiles.append(File(path, name, state, options=meta))
         for name, path in dirs:
             state = tree.get(path, STATE_NORMAL)
-            retdirs.append(Dir(path, name, state))
+            meta = self._tree_meta_cache.get(path, "")
+            if isinstance(meta, list):
+                meta = ','.join(meta)
+            retdirs.append(Dir(path, name, state, options=meta))
         for path, state in tree.items():
             # removed files are not in the filesystem, so must be added here
             if state in (STATE_REMOVED, STATE_MISSING):
                 folder, name = os.path.split(path)
                 if folder == base:
-                    retfiles.append(File(path, name, state))
+                    meta = self._tree_meta_cache.get(path, "")
+                    if isinstance(meta, list):
+                        meta = ','.join(meta)
+                    retfiles.append(File(path, name, state, options=meta))
         return retdirs, retfiles
 
     def get_entry(self, path):
