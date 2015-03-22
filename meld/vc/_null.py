@@ -34,14 +34,8 @@ class Vc(_vc.Vc):
     NAME = ""
     VC_DIR = "."
 
-    def lookup_files(self, dirs, files, directory=None):
-        dirs = [
-            _vc.Entry(path, name, _vc.STATE_NONE, isdir=True)
-            for name, path in dirs]
-        files = [
-            _vc.Entry(path, name, _vc.STATE_NONE, isdir=False)
-            for name, path in files]
-        return dirs, files
+    def _update_tree_state_cache(*args):
+        pass
 
     def get_path_for_repo_file(self, path, commit=None):
         with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
