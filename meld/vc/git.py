@@ -135,11 +135,15 @@ class Vc(_vc.Vc):
             label = ""
         return label
 
+    def run(self, *args):
+        cmd = (self.CMD,) + args
+        return subprocess.Popen(cmd, cwd=self.location, stdout=subprocess.PIPE)
+
     def get_commits_to_push(self):
-        proc = _vc.popen([self.CMD, "for-each-ref",
-                          "--format=%(refname:short) %(upstream:short)",
-                          "refs/heads"], cwd=self.location)
-        branch_remotes = proc.read().split("\n")[:-1]
+        proc = self.run(
+            "for-each-ref", "--format=%(refname:short) %(upstream:short)",
+            "refs/heads")
+        branch_remotes = proc.stdout.read().split("\n")[:-1]
 
         branch_revisions = {}
         for line in branch_remotes:
@@ -148,9 +152,8 @@ class Vc(_vc.Vc):
             except ValueError:
                 continue
 
-            proc = _vc.popen([self.CMD, "rev-list", branch, "^" + remote],
-                             cwd=self.location)
-            revisions = proc.read().split("\n")[:-1]
+            proc = self.run("rev-list", branch, "^" + remote)
+            revisions = proc.stdout.read().split("\n")[:-1]
             branch_revisions[branch] = revisions
         return branch_revisions
 
@@ -273,22 +276,17 @@ class Vc(_vc.Vc):
     def _get_modified_files(self, path):
         # Update the index before getting status, otherwise we could
         # be reading stale status information
-        _vc.call([self.CMD, "update-index", "--refresh"],
-                 cwd=self.location)
+        proc = self.run("update-index", "--refresh")
 
         # Get the status of files that are different in the "index" vs
         # the HEAD of the git repository
-        proc = _vc.popen(
-            [self.CMD, "diff-index", "--cached", "HEAD", "--relative", path],
-            cwd=self.location)
-        entries = proc.read().split("\n")[:-1]
+        proc = self.run("diff-index", "--cached", "HEAD", "--relative", path)
+        entries = proc.stdout.read().split("\n")[:-1]
 
         # Get the status of files that are different in the "index" vs
         # the files on disk
-        proc = _vc.popen(
-            [self.CMD, "diff-files", "-0", "--relative", path],
-            cwd=self.location)
-        entries += (proc.read().split("\n")[:-1])
+        proc = self.run("diff-files", "-0", "--relative", path)
+        entries += (proc.stdout.read().split("\n")[:-1])
 
         # An unmerged file or a file that has been modified, added to
         # git's index, then modified again would result in the file
@@ -306,17 +304,15 @@ class Vc(_vc.Vc):
                 entries = self._get_modified_files(path)
 
                 # Identify ignored files and folders
-                proc = _vc.popen([self.CMD, "ls-files", "--others",
-                                  "--ignored", "--exclude-standard",
-                                  "--directory", path],
-                                 cwd=self.location)
-                ignored_entries = proc.read().split("\n")[:-1]
+                proc = self.run(
+                    "ls-files", "--others", "--ignored", "--exclude-standard",
+                    "--directory", path)
+                ignored_entries = proc.stdout.read().split("\n")[:-1]
 
                 # Identify unversioned files
-                proc = _vc.popen([self.CMD, "ls-files", "--others",
-                                  "--exclude-standard", path],
-                                 cwd=self.location)
-                unversioned_entries = proc.read().split("\n")[:-1]
+                proc = self.run(
+                    "ls-files", "--others", "--exclude-standard", path)
+                unversioned_entries = proc.stdout.read().split("\n")[:-1]
 
                 break
             except OSError as e:
