@@ -94,6 +94,13 @@ class Entry(object):
     def get_status(self):
         return self.state_names[self.state]
 
+    @staticmethod
+    def make_entry(path, name, state, isdir, options=None):
+        if isdir:
+            return Dir(path, name, state, options)
+        else:
+            return File(path, name, state, options)
+
 
 class Dir(Entry):
     isdir = True
@@ -231,20 +238,16 @@ class Vc(object):
 
         tree = self._get_tree_cache()
 
-        retfiles = []
-        retdirs = []
-        for name, path in files:
+        def make_entry(name, path, isdir):
             state = tree.get(path, STATE_NORMAL)
             meta = self._tree_meta_cache.get(path, "")
             if isinstance(meta, list):
                 meta = ','.join(meta)
-            retfiles.append(File(path, name, state, options=meta))
-        for name, path in dirs:
-            state = tree.get(path, STATE_NORMAL)
-            meta = self._tree_meta_cache.get(path, "")
-            if isinstance(meta, list):
-                meta = ','.join(meta)
-            retdirs.append(Dir(path, name, state, options=meta))
+            return Entry.make_entry(path, name, state, isdir, options=meta)
+
+        retfiles = [make_entry(name, path, False) for name, path in files]
+        retdirs = [make_entry(name, path, True) for name, path in dirs]
+
         for path, state in tree.items():
             # removed files are not in the filesystem, so must be added here
             if state in (STATE_REMOVED, STATE_MISSING):
