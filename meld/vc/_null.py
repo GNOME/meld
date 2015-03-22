@@ -35,8 +35,12 @@ class Vc(_vc.Vc):
     VC_DIR = "."
 
     def lookup_files(self, dirs, files, directory=None):
-        dirs = [_vc.Dir(d[1], d[0], _vc.STATE_NONE) for d in dirs]
-        files = [_vc.File(f[1], f[0], _vc.STATE_NONE) for f in files]
+        dirs = [
+            _vc.Entry(path, name, _vc.STATE_NONE, isdir=True)
+            for name, path in dirs]
+        files = [
+            _vc.Entry(path, name, _vc.STATE_NONE, isdir=False)
+            for name, path in files]
         return dirs, files
 
     def get_path_for_repo_file(self, path, commit=None):

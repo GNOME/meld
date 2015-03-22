@@ -77,10 +77,11 @@ class Entry(object):
         STATE_NONEXIST: _("Not present"),
     }
 
-    def __init__(self, path, name, state, options=None):
+    def __init__(self, path, name, state, isdir, options=None):
         self.path = path
         self.state = state
         self.parent, self.name = os.path.split(path.rstrip("/"))
+        self.isdir = isdir
         self.options = options
 
     def __str__(self):
@@ -93,21 +94,6 @@ class Entry(object):
 
     def get_status(self):
         return self.state_names[self.state]
-
-    @staticmethod
-    def make_entry(path, name, state, isdir, options=None):
-        if isdir:
-            return Dir(path, name, state, options)
-        else:
-            return File(path, name, state, options)
-
-
-class Dir(Entry):
-    isdir = True
-
-
-class File(Entry):
-    isdir = False
 
 
 class Vc(object):
@@ -243,7 +229,7 @@ class Vc(object):
             meta = self._tree_meta_cache.get(path, "")
             if isinstance(meta, list):
                 meta = ','.join(meta)
-            return Entry.make_entry(path, name, state, isdir, options=meta)
+            return Entry(path, name, state, isdir, options=meta)
 
         retfiles = [make_entry(name, path, False) for name, path in files]
         retdirs = [make_entry(name, path, True) for name, path in dirs]
@@ -253,10 +239,8 @@ class Vc(object):
             if state in (STATE_REMOVED, STATE_MISSING):
                 folder, name = os.path.split(path)
                 if folder == base:
-                    meta = self._tree_meta_cache.get(path, "")
-                    if isinstance(meta, list):
-                        meta = ','.join(meta)
-                    retfiles.append(File(path, name, state, options=meta))
+                    retfiles.append(make_entry(name, path, False))
+
         return retdirs, retfiles
 
     def get_entry(self, path):
