@@ -202,6 +202,7 @@ class Vc(_vc.Vc):
                 if executable_match:
                     meta.append(executable_match.group(2))
 
+            path = path[:-1] if path.endswith('/') else path
             tree_cache[path].update(states)
             tree_meta_cache[path].extend(meta)
 
@@ -217,36 +218,6 @@ class Vc(_vc.Vc):
         self._tree_cache.update(
             dict((x, max(y)) for x, y in tree_cache.items()))
         self._tree_meta_cache = dict(tree_meta_cache)
-
-    def _get_dirsandfiles(self, base, dirs, files):
-        tree = self._get_tree_cache()
-
-        retfiles = []
-        retdirs = []
-        bzrfiles = {}
-        for path, state in tree.items():
-            mydir, name = os.path.split(path)
-            if path.endswith('/'):
-                mydir, name = os.path.split(mydir)
-            if mydir != base:
-                continue
-            meta = ','.join(self._tree_meta_cache.get(path, []))
-            if path.endswith('/'):
-                retdirs.append(_vc.Dir(path[:-1], name, state, options=meta))
-            else:
-                retfiles.append(_vc.File(path, name, state, options=meta))
-            bzrfiles[name] = 1
-        for f, path in files:
-            if f not in bzrfiles:
-                state = _vc.STATE_NORMAL
-                meta = ','.join(self._tree_meta_cache.get(path, []))
-                retfiles.append(_vc.File(path, f, state, options=meta))
-        for d, path in dirs:
-            if d not in bzrfiles:
-                state = _vc.STATE_NORMAL
-                meta = ','.join(self._tree_meta_cache.get(path, []))
-                retdirs.append(_vc.Dir(path, d, state, options=meta))
-        return retdirs, retfiles
 
     def get_path_for_repo_file(self, path, commit=None):
         if not path.startswith(self.root + os.path.sep):
