@@ -74,7 +74,7 @@ class Vc(_vc.Vc):
             proc = _vc.popen([cls.CMD, '--version'])
             assert proc.read().startswith('git version')
             return True
-        except:
+        except Exception:
             return False
 
     @classmethod
