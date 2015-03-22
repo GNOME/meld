@@ -234,12 +234,15 @@ class Vc(object):
         retfiles = [make_entry(name, path, False) for name, path in files]
         retdirs = [make_entry(name, path, True) for name, path in dirs]
 
+        # Removed entries are not in the filesystem, so must be added here
         for path, state in tree.items():
-            # removed files are not in the filesystem, so must be added here
             if state in (STATE_REMOVED, STATE_MISSING):
                 folder, name = os.path.split(path)
                 if folder == base:
-                    retfiles.append(make_entry(name, path, False))
+                    # TODO: Ideally we'd know whether this was a folder
+                    # or a file. Since it's gone however, only the VC
+                    # knows, and may or may not tell us.
+                    retfiles.append(make_entry(name, path, isdir=False))
 
         return retdirs, retfiles
 
