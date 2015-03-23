@@ -41,8 +41,6 @@ class Vc(_vc.Vc):
     NAME = "Subversion"
     VC_DIR = ".svn"
 
-    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
-
     state_map = {
         "unversioned": _vc.STATE_NONE,
         "added": _vc.STATE_NEW,

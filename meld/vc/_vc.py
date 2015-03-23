@@ -48,8 +48,6 @@ CONFLICT_THIS = CONFLICT_LOCAL
 conflicts = [_("Merged"), _("Base"), _("Local"), _("Remote")]
 assert len(conflicts) == CONFLICT_MAX
 
-DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS = list(range(4))
-
 
 # Lifted from the itertools recipes section
 def partition(pred, iterable):
@@ -101,8 +99,6 @@ class Vc(object):
     VC_DIR = None
     VC_ROOT_WALK = True
     VC_METADATA = None
-
-    VC_COLUMNS = (DATA_NAME, DATA_STATE)
 
     def __init__(self, path):
         # Save the requested comparison location. The location may be a

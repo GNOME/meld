@@ -25,7 +25,6 @@
 
 import importlib
 from . import _null
-from ._vc import DATA_NAME, DATA_STATE, DATA_OPTIONS
 
 # FIXME: This is a horrible hack to help cx_Freeze pick up these plugins when
 # freezing the distributable package.

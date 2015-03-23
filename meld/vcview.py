@@ -198,7 +198,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.model.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
 
-        self.column_name_map = {}
         col_index = self.model.column_index
         column = Gtk.TreeViewColumn(_("Name"))
         column.set_resizable(True)
@@ -215,24 +214,21 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                               style=col_index(tree.COL_STYLE, 0),
                               weight=col_index(tree.COL_WEIGHT, 0),
                               strikethrough=col_index(tree.COL_STRIKE, 0))
-        column_index = self.treeview.append_column(column) - 1
-        self.column_name_map[vc.DATA_NAME] = column_index
+        self.treeview.append_column(column)
 
-        def addCol(name, num, data_name=None):
+        def addCol(name, num):
             column = Gtk.TreeViewColumn(name)
             column.set_resizable(True)
             rentext = Gtk.CellRendererText()
             column.pack_start(rentext, True)
             column.set_attributes(rentext,
                                   markup=self.model.column_index(num, 0))
-            column_index = self.treeview.append_column(column) - 1
-            if data_name:
-                self.column_name_map[data_name] = column_index
+            self.treeview.append_column(column)
             return column
 
         self.treeview_column_location = addCol(_("Location"), COL_LOCATION)
-        addCol(_("Status"), COL_STATUS, vc.DATA_STATE)
-        addCol(_("Extra"), COL_OPTIONS, vc.DATA_OPTIONS)
+        addCol(_("Status"), COL_STATUS)
+        addCol(_("Extra"), COL_OPTIONS)
 
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
@@ -276,11 +272,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_container_switch_out_event(self, ui):
         self._set_external_action_sensitivity(False)
         super(VcView, self).on_container_switch_out_event(ui)
-
-    def update_visible_columns(self):
-        for data_id in self.column_name_map:
-            col = self.treeview.get_column(self.column_name_map[data_id])
-            col.set_visible(data_id in self.vc.VC_COLUMNS)
 
     def update_actions_sensitivity(self):
         """Disable actions that use not implemented VC plugin methods"""
@@ -370,7 +361,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.vc = cb.get_model()[cb.get_active_iter()][1]
             self._set_location(self.vc.location)
             self.update_actions_sensitivity()
-            self.update_visible_columns()
 
     def set_location(self, location):
         self.choose_vc(location)

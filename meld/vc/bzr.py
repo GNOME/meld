@@ -50,8 +50,6 @@ class Vc(_vc.Vc):
         _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED
     )
 
-    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
-
     conflict_map = {
         _vc.CONFLICT_BASE: '.BASE',
         _vc.CONFLICT_OTHER: '.OTHER',

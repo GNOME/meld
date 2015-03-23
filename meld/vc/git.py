@@ -44,8 +44,6 @@ class Vc(_vc.Vc):
     NAME = "Git"
     VC_DIR = ".git"
 
-    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
-
     GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([XADMTU])\t(.*)"
     DIFF_RE = re.compile(GIT_DIFF_FILES_RE)
 
