@@ -715,10 +715,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command_on_selected(self.vc.update_command())
 
     def on_button_push_clicked(self, obj):
-        vcdialogs.PushDialog(self).run()
+        response = vcdialogs.PushDialog(self).run()
+        if response == Gtk.ResponseType.OK:
+            self.vc.push(self._command)
 
     def on_button_commit_clicked(self, obj):
-        vcdialogs.CommitDialog(self).run()
+        response, commit_msg = vcdialogs.CommitDialog(self).run()
+        if response == Gtk.ResponseType.OK:
+            self._command_on_selected(
+                self.vc.commit_command(commit_msg))
 
     def on_button_add_clicked(self, obj):
         try:
