@@ -274,28 +274,22 @@ class Vc(_vc.Vc):
             return ''
 
     def _get_modified_files(self, path):
-        # Update the index before getting status, otherwise we could
-        # be reading stale status information
+        # Update the index to avoid reading stale status information
         proc = self.run("update-index", "--refresh")
 
-        # Get the status of files that are different in the "index" vs
-        # the HEAD of the git repository
+        # Get status differences between the index and the repo HEAD
         proc = self.run("diff-index", "--cached", "HEAD", "--relative", path)
         entries = proc.stdout.read().split("\n")[:-1]
 
-        # Get the status of files that are different in the "index" vs
-        # the files on disk
+        # Get status differences between the index and files-on-disk
         proc = self.run("diff-files", "-0", "--relative", path)
-        entries += (proc.stdout.read().split("\n")[:-1])
+        entries += proc.stdout.read().split("\n")[:-1]
 
-        # An unmerged file or a file that has been modified, added to
-        # git's index, then modified again would result in the file
-        # showing up in both the output of "diff-files" and
-        # "diff-index".  The following command removes duplicate
-        # file entries.
-        entries = list(set(entries))
-
-        return entries
+        # Files can show up in both lists, e.g., if a file is modified,
+        # added to the index and changed again, so we uniquify.
+        # TODO: This doesn't work as expected for many cases; we should
+        # pick the last entry (diff to disk) based on filename.
+        return list(set(entries))
 
     def _update_tree_state_cache(self, path):
         """ Update the state of the file(s) at self._tree_cache['path'] """
