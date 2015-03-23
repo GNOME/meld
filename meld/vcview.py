@@ -379,19 +379,21 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         # If the user is just diffing a file (ie not a directory), there's no
         # need to scan the rest of the repository
-        if os.path.isdir(self.vc.location):
-            root = self.model.get_iter_first()
+        if not os.path.isdir(self.vc.location):
+            return
 
-            try:
-                col = self.model.column_index(COL_OPTIONS, 0)
-                self.model.set_value(root, col,
-                                     self.vc.get_commits_to_push_summary())
-            except NotImplementedError:
-                pass
+        root = self.model.get_iter_first()
 
-            self.scheduler.add_task(self._search_recursively_iter(root))
-            self.scheduler.add_task(self.on_treeview_selection_changed)
-            self.scheduler.add_task(self.on_treeview_cursor_changed)
+        try:
+            col = self.model.column_index(COL_OPTIONS, 0)
+            self.model.set_value(
+                root, col, self.vc.get_commits_to_push_summary())
+        except NotImplementedError:
+            pass
+
+        self.scheduler.add_task(self._search_recursively_iter(root))
+        self.scheduler.add_task(self.on_treeview_selection_changed)
+        self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def get_comparison(self):
         return recent.TYPE_VC, [self.location]
