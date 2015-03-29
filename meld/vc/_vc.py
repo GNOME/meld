@@ -200,18 +200,16 @@ class Vc(object):
         self._update_tree_state_cache(path)
 
     def listdir(self, path):
-        gfile = Gio.File.new_for_path(path)
-        children = gfile.enumerate_children(
+        parent = Gio.File.new_for_path(path)
+        enumerator = parent.enumerate_children(
             'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
 
         entries = []
-        for e in children:
-            name = e.get_name()
-            if name == self.VC_DIR:
+        for file_info in enumerator:
+            if file_info.get_name() == self.VC_DIR:
                 continue
-            child_path = gfile.get_child(name).get_path()
-            file_type = e.get_file_type()
-            entries.append((e.get_display_name(), child_path, file_type))
+            gfile = enumerator.get_child(file_info)
+            entries.append((gfile, file_info))
 
         return self.lookup_files(entries, path)
 
@@ -219,16 +217,19 @@ class Vc(object):
         # All dirs and files must be direct children of same directory.
         # dirs and files are lists of (name, path) tuples.
         tree = self._get_tree_cache()
+        meta_tree = self._tree_meta_cache
 
-        def make_entry(name, path, file_type):
+        def make_entry(gfile, file_info):
+            path = gfile.get_path()
+            name = file_info.get_display_name()
             state = tree.get(path, STATE_NORMAL)
-            meta = self._tree_meta_cache.get(path, "")
-            isdir = file_type == Gio.FileType.DIRECTORY
+            meta = meta_tree.get(path, "")
+            isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
             if isinstance(meta, list):
                 meta = ','.join(meta)
             return Entry(path, name, state, isdir, options=meta)
 
-        retfiles = [make_entry(name, path, file_type) for name, path, file_type in files]
+        retfiles = [make_entry(gfile, file_info) for gfile, file_info in files]
 
         # Removed entries are not in the filesystem, so must be added here
         for path, state in tree.items():
@@ -254,8 +255,7 @@ class Vc(object):
             'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
         parent = gfile.get_parent().get_path()
 
-        entry = [(info.get_display_name(), gfile.get_path(), info.get_file_type())]
-        vc_files = self.lookup_files(entry, parent)
+        vc_files = self.lookup_files((gfile, info), parent)
         vc_file = [x for x in vc_files if x.path == path]
         if not vc_file:
             return None
