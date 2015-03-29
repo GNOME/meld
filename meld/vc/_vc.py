@@ -234,8 +234,9 @@ class Vc(object):
                     # TODO: Ideally we'd know whether this was a folder
                     # or a file. Since it's gone however, only the VC
                     # knows, and may or may not tell us.
-                    entry = make_entry(name, path, Gio.FileType.UNKNOWN)
-                    retfiles.append(entry)
+                    meta = meta_tree.get(path, "")
+                    retfiles.append(
+                        Entry(path, name, state, isdir=False, options=meta))
 
         return retfiles
 
