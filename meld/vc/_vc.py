@@ -201,23 +201,18 @@ class Vc(object):
         """
         self._update_tree_state_cache(path)
 
-    def listdir(self, path):
-        parent = Gio.File.new_for_path(path)
+    def listdir(self, base):
+        parent = Gio.File.new_for_path(base)
         enumerator = parent.enumerate_children(
             'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
 
-        entries = []
+        files = []
         for file_info in enumerator:
             if file_info.get_name() == self.VC_DIR:
                 continue
             gfile = enumerator.get_child(file_info)
-            entries.append((gfile, file_info))
+            files.append((gfile, file_info))
 
-        return self.lookup_files(entries, path)
-
-    def lookup_files(self, files, base):
-        # All dirs and files must be direct children of same directory.
-        # dirs and files are lists of (name, path) tuples.
         tree = self._get_tree_cache()
         meta_tree = self._tree_meta_cache
 
