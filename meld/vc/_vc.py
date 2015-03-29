@@ -207,7 +207,7 @@ class Vc(object):
         dirs, files = self.lookup_files(cdirs, cfiles, path)
         return dirs + files
 
-    def lookup_files(self, dirs, files, directory=None):
+    def lookup_files(self, dirs, files, directory):
         # Assumes that all files are in the same directory. files is an array
         # of (name, path) tuples.
         if len(dirs):
@@ -248,15 +248,12 @@ class Vc(object):
         If the given path does not correspond to any entry in the VC, this
         method returns return None.
         """
-        vc_files = [
-            x for x in
-            self.lookup_files(
-                [], [(os.path.basename(path), path)])[1]
-            if x.path == path
-        ]
-        if not vc_files:
+        vc_files = self.lookup_files(
+            [], [(os.path.basename(path), path)], os.path.dirname(path))
+        vc_file = [x for x in vc_files[1] if x.path == path]
+        if not vc_file:
             return None
-        return vc_files[0]
+        return vc_file[0]
 
     @classmethod
     def is_installed(cls):
