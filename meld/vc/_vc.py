@@ -97,6 +97,10 @@ class Entry(object):
     def get_status(self):
         return self.state_names[self.state]
 
+    def is_present(self):
+        """Should this Entry actually be present on the file system"""
+        return self.state not in (STATE_REMOVED, STATE_MISSING)
+
 
 class Vc(object):
 

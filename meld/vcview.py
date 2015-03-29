@@ -432,7 +432,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             entries = self.vc.get_entries(path)
             entries = [e for e in entries if any(f(e) for f in filters)]
             for e in entries:
-                if e.isdir and e.state != tree.STATE_REMOVED:
+                if e.isdir and e.is_present():
                     try:
                         st = os.lstat(e.path)
                     # Covers certain unreadable symlink cases; see bgo#585895
