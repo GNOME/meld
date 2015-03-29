@@ -27,6 +27,8 @@ import itertools
 import os
 import subprocess
 
+from gi.repository import Gio
+
 from meld.conf import _
 
 # ignored, new, normal, ignored changes,
@@ -198,29 +200,35 @@ class Vc(object):
         self._update_tree_state_cache(path)
 
     def listdir(self, path):
-        try:
-            entries = sorted(e for e in os.listdir(path) if e != self.VC_DIR)
-        except OSError:
-            entries = []
-        full_entries = [(f, os.path.join(path, f)) for f in entries]
-        cfiles, cdirs = partition(lambda e: os.path.isdir(e[1]), full_entries)
-        dirs, files = self.lookup_files(cdirs, cfiles, path)
-        return dirs + files
+        gfile = Gio.File.new_for_path(path)
+        children = gfile.enumerate_children(
+            'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
 
-    def lookup_files(self, dirs, files, base):
+        entries = []
+        for e in children:
+            name = e.get_name()
+            if name == self.VC_DIR:
+                continue
+            child_path = gfile.get_child(name).get_path()
+            file_type = e.get_file_type()
+            entries.append((e.get_display_name(), child_path, file_type))
+
+        return self.lookup_files(entries, path)
+
+    def lookup_files(self, files, base):
         # All dirs and files must be direct children of same directory.
         # dirs and files are lists of (name, path) tuples.
         tree = self._get_tree_cache()
 
-        def make_entry(name, path, isdir):
+        def make_entry(name, path, file_type):
             state = tree.get(path, STATE_NORMAL)
             meta = self._tree_meta_cache.get(path, "")
+            isdir = file_type == Gio.FileType.DIRECTORY
             if isinstance(meta, list):
                 meta = ','.join(meta)
             return Entry(path, name, state, isdir, options=meta)
 
-        retfiles = [make_entry(name, path, False) for name, path in files]
-        retdirs = [make_entry(name, path, True) for name, path in dirs]
+        retfiles = [make_entry(name, path, file_type) for name, path, file_type in files]
 
         # Removed entries are not in the filesystem, so must be added here
         for path, state in tree.items():
@@ -230,9 +238,10 @@ class Vc(object):
                     # TODO: Ideally we'd know whether this was a folder
                     # or a file. Since it's gone however, only the VC
                     # knows, and may or may not tell us.
-                    retfiles.append(make_entry(name, path, isdir=False))
+                    entry = make_entry(name, path, Gio.FileType.UNKNOWN)
+                    retfiles.append(entry)
 
-        return retdirs, retfiles
+        return retfiles
 
     def get_entry(self, path):
         """Return the entry associated with the given path in this VC
@@ -240,9 +249,14 @@ class Vc(object):
         If the given path does not correspond to any entry in the VC, this
         method returns return None.
         """
-        vc_files = self.lookup_files(
-            [], [(os.path.basename(path), path)], os.path.dirname(path))
-        vc_file = [x for x in vc_files[1] if x.path == path]
+        gfile = Gio.File.new_for_path(path)
+        info = gfile.query_info(
+            'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
+        parent = gfile.get_parent().get_path()
+
+        entry = [(info.get_display_name(), gfile.get_path(), info.get_file_type())]
+        vc_files = self.lookup_files(entry, parent)
+        vc_file = [x for x in vc_files if x.path == path]
         if not vc_file:
             return None
         return vc_file[0]
