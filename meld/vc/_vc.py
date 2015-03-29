@@ -82,6 +82,8 @@ class Entry(object):
         self.state = state
         self.parent, self.name = os.path.split(path.rstrip("/"))
         self.isdir = isdir
+        if isinstance(options, list):
+            options = ','.join(options)
         self.options = options
 
     def __str__(self):
@@ -225,8 +227,6 @@ class Vc(object):
             state = tree.get(path, STATE_NORMAL)
             meta = meta_tree.get(path, "")
             isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
-            if isinstance(meta, list):
-                meta = ','.join(meta)
             return Entry(path, name, state, isdir, options=meta)
 
         retfiles = [make_entry(gfile, file_info) for gfile, file_info in files]
