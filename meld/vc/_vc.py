@@ -186,10 +186,9 @@ class Vc(object):
     def get_working_directory(self, workdir):
         return workdir
 
-    def _get_tree_cache(self):
-        if not self._tree_cache:
-            self._update_tree_state_cache("./")
-        return self._tree_cache
+    def refresh_files(self):
+        self._tree_cache = {}
+        self._update_tree_state_cache("./")
 
     def update_file_state(self, path):
         """Update the cached version control state of the given path.
@@ -206,9 +205,6 @@ class Vc(object):
         enumerator = parent.enumerate_children(
             'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
 
-        tree = self._tree_cache
-        meta_tree = self._tree_meta_cache
-
         for file_info in enumerator:
             if file_info.get_name() == self.VC_DIR:
                 continue
@@ -216,20 +212,20 @@ class Vc(object):
 
             path = gfile.get_path()
             name = file_info.get_display_name()
-            state = tree.get(path, STATE_NORMAL)
-            meta = meta_tree.get(path, "")
+            state = self._tree_cache.get(path, STATE_NORMAL)
+            meta = self._tree_meta_cache.get(path, "")
             isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
             yield Entry(path, name, state, isdir, options=meta)
 
         # Removed entries are not in the filesystem, so must be added here
-        for path, state in tree.items():
+        for path, state in self._tree_cache.items():
             if state in (STATE_REMOVED, STATE_MISSING):
                 folder, name = os.path.split(path)
                 if folder == base:
                     # TODO: Ideally we'd know whether this was a folder
                     # or a file. Since it's gone however, only the VC
                     # knows, and may or may not tell us.
-                    meta = meta_tree.get(path, "")
+                    meta = self._tree_meta_cache.get(path, "")
                     yield Entry(path, name, state, isdir=False, options=meta)
 
     def get_entry(self, path):
@@ -245,7 +241,7 @@ class Vc(object):
 
         path = gfile.get_path()
         name = file_info.get_display_name()
-        state = self._get_tree_cache().get(path, STATE_NORMAL)
+        state = self._tree_cache.get(path, STATE_NORMAL)
         meta = self._tree_meta_cache.get(path, "")
         isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
 
