@@ -251,15 +251,16 @@ class Vc(object):
         method returns return None.
         """
         gfile = Gio.File.new_for_path(path)
-        info = gfile.query_info(
+        file_info = gfile.query_info(
             'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
-        parent = gfile.get_parent().get_path()
 
-        vc_files = self.lookup_files((gfile, info), parent)
-        vc_file = [x for x in vc_files if x.path == path]
-        if not vc_file:
-            return None
-        return vc_file[0]
+        path = gfile.get_path()
+        name = file_info.get_display_name()
+        state = self._get_tree_cache().get(path, STATE_NORMAL)
+        meta = self._tree_meta_cache.get(path, "")
+        isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
+
+        return Entry(path, name, state, isdir, options=meta)
 
     @classmethod
     def is_installed(cls):
