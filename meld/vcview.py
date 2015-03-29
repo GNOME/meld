@@ -461,14 +461,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     todo.append((self.model.get_path(child), e.path))
                 self._update_item_state(child, e, path[prefixlen:])
 
-            if flattened:
-                root = Gtk.TreePath.new_first()
-                self.treeview.expand_row(Gtk.TreePath(root), False)
-            else:
+            if not flattened:
                 if not entries:
                     self.model.add_empty(it, _("(Empty)"))
                 if any(e.state != tree.STATE_NORMAL for e in entries):
                     self.treeview.expand_to_path(treepath)
+
+        if flattened:
+            self.treeview.expand_row(Gtk.TreePath.new_first(), False)
 
     # TODO: This doesn't fire when the user selects a shortcut folder
     def on_fileentry_file_set(self, fileentry):
