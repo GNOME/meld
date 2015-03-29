@@ -391,7 +391,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         except NotImplementedError:
             pass
 
-        self.scheduler.add_task(self.vc.refresh_files)
+        self.scheduler.add_task(self.vc.refresh_vc_state)
         self.scheduler.add_task(self._search_recursively_iter(root))
         self.scheduler.add_task(self.on_treeview_selection_changed)
         self.scheduler.add_task(self.on_treeview_cursor_changed)
@@ -820,7 +820,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         it = self.find_iter_by_name(filename)
         if it:
             path = self.model.value_path(it, 0)
-            self.vc.update_file_state(path)
+            self.vc.refresh_vc_state(path)
             entry = self.vc.get_entry(path)
             prefixlen = 1 + len(self.model.value_path(self.model.get_iter_first(), 0))
             self._update_item_state(it, entry, entry.parent[prefixlen:])

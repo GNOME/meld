@@ -186,18 +186,19 @@ class Vc(object):
     def get_working_directory(self, workdir):
         return workdir
 
-    def refresh_files(self):
-        self._tree_cache = {}
-        self._update_tree_state_cache("./")
+    def refresh_vc_state(self, path=None):
+        """Update cached version control state
 
-    def update_file_state(self, path):
-        """Update the cached version control state of the given path.
+        If a path is provided, for example when a file has been modified
+        and saved in the file comparison view and needs its state
+        refreshed, then only that path will be updated.
 
-        After a file has been modified and saved, for example by
-        editing in the file comparison view, its state may be out of
-        date and require updating. The method updates the version
-        control object's internal cache of file state.
+        If no path is provided then the version control tree rooted at
+        its `location` will be recursively refreshed.
         """
+        if path is None:
+            self._tree_cache = {}
+            path = './'
         self._update_tree_state_cache(path)
 
     def get_entries(self, base):
