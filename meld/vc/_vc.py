@@ -207,13 +207,9 @@ class Vc(object):
         dirs, files = self.lookup_files(cdirs, cfiles, path)
         return dirs + files
 
-    def lookup_files(self, dirs, files, directory):
+    def lookup_files(self, dirs, files, base):
         # All dirs and files must be direct children of same directory.
         # dirs and files are lists of (name, path) tuples.
-        return self._get_dirsandfiles(directory, dirs, files)
-
-    def _get_dirsandfiles(self, base, dirs, files):
-
         tree = self._get_tree_cache()
 
         def make_entry(name, path, isdir):
