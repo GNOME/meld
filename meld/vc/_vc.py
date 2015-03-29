@@ -79,8 +79,8 @@ class Entry(object):
 
     def __init__(self, path, name, state, isdir, options=None):
         self.path = path
+        self.name = name
         self.state = state
-        self.parent, self.name = os.path.split(path.rstrip("/"))
         self.isdir = isdir
         if isinstance(options, list):
             options = ','.join(options)

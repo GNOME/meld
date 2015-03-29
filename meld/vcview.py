@@ -453,14 +453,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                             # in flattened mode.
                             if e.state != tree.STATE_NORMAL:
                                 child = self.model.add_entries(it, [e.path])
-                                self._update_item_state(child, e, path[prefixlen:])
+                                self._update_item_state(child, e)
                             todo.append((Gtk.TreePath.new_first(), e.path))
                         continue
 
                 child = self.model.add_entries(it, [e.path])
                 if e.isdir and e.state != tree.STATE_IGNORED:
                     todo.append((self.model.get_path(child), e.path))
-                self._update_item_state(child, e, path[prefixlen:])
+                self._update_item_state(child, e)
 
             if not flattened:
                 if not entries:
@@ -806,15 +806,18 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             # XXX fixme
             self.refresh()
 
-    def _update_item_state(self, it, vcentry, location):
-        e = vcentry
-        self.model.set_path_state(it, 0, e.state, e.isdir)
+    def _update_item_state(self, it, entry):
+        self.model.set_path_state(it, 0, entry.state, entry.isdir)
+
+        location = Gio.File.new_for_path(self.vc.location)
+        parent = Gio.File.new_for_path(entry.path).get_parent()
+        display_location = location.get_relative_path(parent)
 
         def setcol(col, val):
             self.model.set_value(it, self.model.column_index(col, 0), val)
-        setcol(COL_LOCATION, location)
-        setcol(COL_STATUS, e.get_status())
-        setcol(COL_OPTIONS, e.options)
+        setcol(COL_LOCATION, display_location)
+        setcol(COL_STATUS, entry.get_status())
+        setcol(COL_OPTIONS, entry.options)
 
     def on_file_changed(self, filename):
         it = self.find_iter_by_name(filename)
@@ -822,8 +825,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             path = self.model.value_path(it, 0)
             self.vc.refresh_vc_state(path)
             entry = self.vc.get_entry(path)
-            prefixlen = 1 + len(self.model.value_path(self.model.get_iter_first(), 0))
-            self._update_item_state(it, entry, entry.parent[prefixlen:])
+            self._update_item_state(it, entry)
 
     def find_iter_by_name(self, name):
         it = self.model.get_iter_first()
