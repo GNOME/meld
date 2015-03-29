@@ -208,12 +208,8 @@ class Vc(object):
         return dirs + files
 
     def lookup_files(self, dirs, files, directory):
-        # Assumes that all files are in the same directory. files is an array
-        # of (name, path) tuples.
-        if len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        elif len(files):
-            directory = os.path.dirname(files[0][1])
+        # All dirs and files must be direct children of same directory.
+        # dirs and files are lists of (name, path) tuples.
         return self._get_dirsandfiles(directory, dirs, files)
 
     def _get_dirsandfiles(self, base, dirs, files):
