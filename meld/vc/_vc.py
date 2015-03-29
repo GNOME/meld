@@ -247,8 +247,9 @@ class Vc(object):
     def get_entry(self, path):
         """Return the entry associated with the given path in this VC
 
-        If the given path does not correspond to any entry in the VC, this
-        method returns return None.
+        If the given path does not correspond to an entry in the VC,
+        this method returns an Entry with the appropriate REMOVED or
+        MISSING state.
         """
         gfile = Gio.File.new_for_path(path)
         file_info = gfile.query_info(
