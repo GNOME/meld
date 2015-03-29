@@ -201,30 +201,25 @@ class Vc(object):
         """
         self._update_tree_state_cache(path)
 
-    def listdir(self, base):
+    def get_entries(self, base):
         parent = Gio.File.new_for_path(base)
         enumerator = parent.enumerate_children(
             'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
 
-        files = []
+        tree = self._tree_cache
+        meta_tree = self._tree_meta_cache
+
         for file_info in enumerator:
             if file_info.get_name() == self.VC_DIR:
                 continue
             gfile = enumerator.get_child(file_info)
-            files.append((gfile, file_info))
 
-        tree = self._get_tree_cache()
-        meta_tree = self._tree_meta_cache
-
-        def make_entry(gfile, file_info):
             path = gfile.get_path()
             name = file_info.get_display_name()
             state = tree.get(path, STATE_NORMAL)
             meta = meta_tree.get(path, "")
             isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
-            return Entry(path, name, state, isdir, options=meta)
-
-        retfiles = [make_entry(gfile, file_info) for gfile, file_info in files]
+            yield Entry(path, name, state, isdir, options=meta)
 
         # Removed entries are not in the filesystem, so must be added here
         for path, state in tree.items():
@@ -235,10 +230,7 @@ class Vc(object):
                     # or a file. Since it's gone however, only the VC
                     # knows, and may or may not tell us.
                     meta = meta_tree.get(path, "")
-                    retfiles.append(
-                        Entry(path, name, state, isdir=False, options=meta))
-
-        return retfiles
+                    yield Entry(path, name, state, isdir=False, options=meta)
 
     def get_entry(self, path):
         """Return the entry associated with the given path in this VC

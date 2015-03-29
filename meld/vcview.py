@@ -428,7 +428,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             it = self.model.get_iter(treepath)
             yield _("Scanning %s") % path[prefixlen:]
 
-            entries = self.vc.listdir(path)
+            entries = self.vc.get_entries(path)
             entries = [e for e in entries if any(f(e) for f in filters)]
             for e in entries:
                 if e.isdir and e.state != tree.STATE_REMOVED:
