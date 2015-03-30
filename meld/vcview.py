@@ -284,8 +284,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         """Display VC plugin(s) that can handle the location"""
         vcs_model = self.combobox_vcs.get_model()
         vcs_model.clear()
-        current_vc_name = self.vc.NAME if self.vc else None
-        default_active = -1
         location = os.path.abspath(location or ".")
 
         # VC systems work at the directory level, so make sure we're checking
@@ -293,8 +291,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if os.path.isfile(location):
             location = os.path.dirname(location)
         vcs = vc.get_vcs(location)
-        # Try to keep the same VC plugin active on refresh()
-        for idx, avc in enumerate(vcs):
+
+        for avc in vcs:
             # See if the necessary version control command exists.  If so,
             # make sure what we're diffing is a valid respository.  If either
             # check fails don't let the user select the that version control
@@ -315,18 +313,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 vcs_model.append([err_str % vc_details, avc, False])
                 continue
 
-            if current_vc_name == avc.NAME:
-                default_active = idx
-
             vcs_model.append([avc.NAME, avc(location), True])
 
-        valid_vcs = [i for i, row in enumerate(vcs_model) if row[2]]
+        valid_vcs = [(i, r[1].NAME) for i, r in enumerate(vcs_model) if r[2]]
+        default_active = min(valid_vcs)[0] if valid_vcs else 0
 
-        if default_active == -1:
-            if valid_vcs:
-                default_active = min(valid_vcs)
-            else:
-                default_active = 0
+        # Keep the same VC plugin active on refresh, otherwise use the first
+        current_vc_name = self.vc.NAME if self.vc else None
+        same_vc = [i for i, name in valid_vcs if name == current_vc_name]
+        if same_vc:
+            default_active = same_vc[0]
 
         if not valid_vcs:
             # If we didn't get any valid vcs then fallback to null
