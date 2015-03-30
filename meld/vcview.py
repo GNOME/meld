@@ -236,8 +236,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.vc = None
         self.valid_vc_actions = tuple()
 
-        self.combobox_vcs.lock = False
-
         settings.bind('vc-console-visible',
                       self.actiongroup.get_action('VcConsoleVisible'),
                       'active', Gio.SettingsBindFlags.DEFAULT)
@@ -284,7 +282,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def choose_vc(self, location):
         """Display VC plugin(s) that can handle the location"""
-        self.combobox_vcs.lock = True
         vcs_model = self.combobox_vcs.get_model()
         vcs_model.clear()
         default_active = -1
@@ -349,14 +346,15 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         self.combobox_vcs.set_tooltip_text(tooltip)
         self.combobox_vcs.set_sensitive(len(vcs) > 1)
-        self.combobox_vcs.lock = False
         self.combobox_vcs.set_active(default_active)
 
-    def on_vc_change(self, cb):
-        if not cb.lock:
-            self.vc = cb.get_model()[cb.get_active_iter()][1]
-            self._set_location(self.vc.location)
-            self.update_actions_sensitivity()
+    def on_vc_change(self, combobox_vcs):
+        active_iter = combobox_vcs.get_active_iter()
+        if active_iter is None:
+            return
+        self.vc = combobox_vcs.get_model()[active_iter][1]
+        self._set_location(self.vc.location)
+        self.update_actions_sensitivity()
 
     def set_location(self, location):
         self.choose_vc(location)
