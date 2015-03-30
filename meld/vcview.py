@@ -290,9 +290,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # for VC support there instead of on a specific file.
         if os.path.isfile(location):
             location = os.path.dirname(location)
-        vcs = vc.get_vcs(location)
 
-        for avc in vcs:
+        for avc in vc.get_vcs(location):
             # See if the necessary version control command exists.  If so,
             # make sure what we're diffing is a valid respository.  If either
             # check fails don't let the user select the that version control
@@ -329,13 +328,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             null_vcs = _null.Vc(location)
             vcs_model.insert(0, [null_vcs.NAME, null_vcs, True])
             tooltip = _("No valid version control system found in this folder")
-        elif len(vcs) == 1:
+        elif len(vcs_model) == 1:
             tooltip = _("Only one version control system found in this folder")
         else:
             tooltip = _("Choose which version control system to use")
 
         self.combobox_vcs.set_tooltip_text(tooltip)
-        self.combobox_vcs.set_sensitive(len(vcs) > 1)
+        self.combobox_vcs.set_sensitive(len(vcs_model) > 1)
         self.combobox_vcs.set_active(default_active)
 
     def on_vc_change(self, combobox_vcs):
