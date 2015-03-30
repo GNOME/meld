@@ -284,18 +284,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         """Display VC plugin(s) that can handle the location"""
         vcs_model = self.combobox_vcs.get_model()
         vcs_model.clear()
-        location = os.path.abspath(location or ".")
 
         # VC systems work at the directory level, so make sure we're checking
         # for VC support there instead of on a specific file.
+        location = os.path.abspath(location or ".")
         if os.path.isfile(location):
             location = os.path.dirname(location)
 
         for avc in vc.get_vcs(location):
-            # See if the necessary version control command exists.  If so,
-            # make sure what we're diffing is a valid respository.  If either
-            # check fails don't let the user select the that version control
-            # tool and display a basic error message in the drop-down menu.
             err_str = ''
             vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
 
