@@ -322,22 +322,16 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
             vcs_model.append([avc.NAME, avc(location), True])
 
-        if not valid_vcs:
-            # If we didn't get any valid vcs then fallback to null
-            null_vcs = _null.Vc(location)
-            vcs.append(null_vcs)
-            vcs_model.insert(
-                0, [_("None"), null_vcs, True])
-            default_active = 0
-
         if default_active == -1:
             if valid_vcs:
                 default_active = min(valid_vcs)
             else:
                 default_active = 0
 
-        # If we only have the null VC, give a better error message.
-        if (len(vcs) == 1 and not vcs[0].CMD) or (len(valid_vcs) == 0):
+        if not valid_vcs:
+            # If we didn't get any valid vcs then fallback to null
+            null_vcs = _null.Vc(location)
+            vcs_model.insert(0, [null_vcs.NAME, null_vcs, True])
             tooltip = _("No valid version control system found in this folder")
         elif len(vcs) == 1:
             tooltip = _("Only one version control system found in this folder")
