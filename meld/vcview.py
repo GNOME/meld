@@ -236,10 +236,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.vc = None
         self.valid_vc_actions = tuple()
 
-        cell = Gtk.CellRendererText()
-        self.combobox_vcs.pack_start(cell, False)
-        self.combobox_vcs.add_attribute(cell, 'text', 0)
-        self.combobox_vcs.add_attribute(cell, 'sensitive', 2)
         self.combobox_vcs.lock = False
 
         settings.bind('vc-console-visible',

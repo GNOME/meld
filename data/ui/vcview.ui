@@ -454,6 +454,14 @@
                     <property name="can_focus">False</property>
                     <property name="model">liststore_vcs</property>
                     <signal name="changed" handler="on_vc_change" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText">
+                      </object>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                        <attribute name="sensitive">2</attribute>
+                      </attributes>
+                    </child>
                   </object>
                 </child>
               </object>
