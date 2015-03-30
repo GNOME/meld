@@ -280,10 +280,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 action.props.sensitive = False
         self.valid_vc_actions = tuple(valid_vc_actions)
 
-    def choose_vc(self, location):
+    def populate_vcs_for_location(self, location):
         """Display VC plugin(s) that can handle the location"""
         vcs_model = self.combobox_vcs.get_model()
         vcs_model.clear()
+        current_vc_name = self.vc.NAME if self.vc else None
         default_active = -1
         valid_vcs = []
         location = os.path.abspath(location or ".")
@@ -299,28 +300,28 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             # make sure what we're diffing is a valid respository.  If either
             # check fails don't let the user select the that version control
             # tool and display a basic error message in the drop-down menu.
-            err_str = ""
+            err_str = ''
+            vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
 
             if not avc.is_installed():
-                # TRANSLATORS: this is an error message when a version control
-                # application isn't installed or can't be found
-                err_str = _("%s not installed" % avc.CMD)
+                # Translators: This error message is shown when a version
+                # control binary isn't installed.
+                err_str = _("%(name)s (%(cmd)s not installed)")
             elif not avc.valid_repo(location):
-                # TRANSLATORS: this is an error message when a version
-                # controlled repository is invalid or corrupted
-                err_str = _("Invalid repository")
-            else:
-                valid_vcs.append(idx)
-                if (self.vc is not None and
-                        self.vc.__class__ == avc.__class__):
-                    default_active = idx
+                # Translators: This error message is shown when a version
+                # controlled repository is invalid.
+                err_str = _("%(name)s (Invalid repository)")
 
             if err_str:
-                vcs_model.append(
-                    [_("%s (%s)") % (avc.NAME, err_str), avc, False])
-            else:
-                name = avc.NAME or _("None")
-                vcs_model.append([name, avc(location), True])
+                vcs_model.append([err_str % vc_details, avc, False])
+                continue
+
+            valid_vcs.append(idx)
+            if current_vc_name == avc.NAME:
+                default_active = idx
+
+            name = avc.NAME or _("None")
+            vcs_model.append([name, avc(location), True])
 
         if not valid_vcs:
             # If we didn't get any valid vcs then fallback to null
@@ -357,7 +358,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.update_actions_sensitivity()
 
     def set_location(self, location):
-        self.choose_vc(location)
+        self.populate_vcs_for_location(location)
 
     def _set_location(self, location):
         self.location = location
