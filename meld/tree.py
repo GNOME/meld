@@ -236,14 +236,14 @@ class DiffTreeStore(Gtk.TreeStore):
         # If the key contains a path separator, search the whole path,
         # otherwise just use the filename. If the key is all lower-case, do a
         # case-insensitive match.
-        abs_search = key.find('/') >= 0
+        abs_search = '/' in key
         lower_key = key.islower()
 
         for path in model.value_paths(it):
             if not path:
                 continue
-            lineText = path if abs_search else os.path.basename(path)
-            lineText = lineText.lower() if lower_key else lineText
-            if lineText.find(key) != -1:
+            text = path if abs_search else os.path.basename(path)
+            text = text.lower() if lower_key else text
+            if key in text:
                 return False
         return True
