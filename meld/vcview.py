@@ -286,7 +286,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         vcs_model.clear()
         current_vc_name = self.vc.NAME if self.vc else None
         default_active = -1
-        valid_vcs = []
         location = os.path.abspath(location or ".")
 
         # VC systems work at the directory level, so make sure we're checking
@@ -316,11 +315,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 vcs_model.append([err_str % vc_details, avc, False])
                 continue
 
-            valid_vcs.append(idx)
             if current_vc_name == avc.NAME:
                 default_active = idx
 
             vcs_model.append([avc.NAME, avc(location), True])
+
+        valid_vcs = [i for i, row in enumerate(vcs_model) if row[2]]
 
         if default_active == -1:
             if valid_vcs:
