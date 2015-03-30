@@ -26,13 +26,16 @@
 import shutil
 import tempfile
 
+from meld.conf import _
 from meld.vc import _vc
 
 
 class Vc(_vc.Vc):
 
     CMD = None
-    NAME = ""
+    # Translators: This is the displayed name of a version control system
+    # when no version control system is actually found.
+    NAME = _("None")
     VC_DIR = "."
 
     def _update_tree_state_cache(*args):

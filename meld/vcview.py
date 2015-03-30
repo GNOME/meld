@@ -320,8 +320,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if current_vc_name == avc.NAME:
                 default_active = idx
 
-            name = avc.NAME or _("None")
-            vcs_model.append([name, avc(location), True])
+            vcs_model.append([avc.NAME, avc(location), True])
 
         if not valid_vcs:
             # If we didn't get any valid vcs then fallback to null
