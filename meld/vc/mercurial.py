@@ -47,8 +47,9 @@ class Vc(_vc.Vc):
         "R": _vc.STATE_REMOVED,
     }
 
-    def commit_command(self, message):
-        return [self.CMD, "commit", "-m", message]
+    def commit(self, runner, files, message):
+        command = [self.CMD, 'commit', '-m', message]
+        runner(command, [], refresh=True, working_dir=self.root)
 
     def update_command(self):
         return [self.CMD, "update"]

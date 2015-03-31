@@ -52,8 +52,9 @@ class Vc(_vc.Vc):
         "conflicted": _vc.STATE_CONFLICT,
     }
 
-    def commit_command(self, message):
-        return [self.CMD,"commit","-m",message]
+    def commit(self, runner, files, message):
+        command = [self.CMD, 'commit', '-m', message]
+        runner(command, [], refresh=True, working_dir=self.root)
 
     def update_command(self):
         return [self.CMD,"update"]
