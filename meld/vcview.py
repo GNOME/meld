@@ -155,7 +155,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
-        "VcCommit": ("commit_command", ("",)),
+        "VcCommit": ("commit", (lambda *args, **kwargs: None, [])),
         "VcUpdate": ("update_command", ()),
         "VcPush": ("push", (lambda *args, **kwargs: None, )),
         "VcAdd": ("add_command", ()),
@@ -702,12 +702,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_button_commit_clicked(self, obj):
         response, commit_msg = vcdialogs.CommitDialog(self).run()
         if response == Gtk.ResponseType.OK:
-            try:
-                self.vc.commit(
-                    self._command, self._get_selected_files(), commit_msg)
-            except NotImplementedError:
-                self._command_on_selected(
-                    self.vc.commit_command(commit_msg))
+            self.vc.commit(
+                self._command, self._get_selected_files(), commit_msg)
 
     def on_button_add_clicked(self, obj):
         try:

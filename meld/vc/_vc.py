@@ -121,9 +121,6 @@ class Vc(object):
         self._tree_cache = {}
         self._tree_meta_cache = {}
 
-    def commit_command(self, message):
-        raise NotImplementedError()
-
     def update_command(self):
         raise NotImplementedError()
 
