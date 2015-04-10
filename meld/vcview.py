@@ -560,36 +560,27 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.refresh()
 
     def on_treeview_selection_changed(self, selection=None):
-
-        def set_sensitive(action, sensitive):
-            self.actiongroup.get_action(action).set_sensitive(sensitive)
-
         if selection is None:
             selection = self.treeview.get_selection()
         model, rows = selection.get_selected_rows()
+        paths = [self.model.value_path(model.get_iter(r), 0) for r in rows]
+        states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
+        path_states = dict(zip(paths, states))
 
-        if hasattr(self.vc, 'get_valid_actions'):
-            paths = [self.model.value_path(model.get_iter(r), 0) for r in rows]
-            states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
-            path_states = dict(zip(paths, states))
-            valid_actions = self.vc.get_valid_actions(path_states)
-            action_sensitivity = {
-                "VcCompare": 'compare' in valid_actions,
-                "VcCommit": 'commit' in valid_actions,
-                "VcUpdate": 'update' in valid_actions,
-                "VcPush": 'push' in valid_actions,
-                "VcAdd": 'add' in valid_actions,
-                "VcResolved": 'resolve' in valid_actions,
-                "VcRemove": 'remove' in valid_actions,
-                "VcRevert": 'revert' in valid_actions,
-                "VcDeleteLocally": bool(paths) and self.vc.root not in paths,
-            }
-            for action, sensitivity in action_sensitivity.items():
-                set_sensitive(action, sensitivity)
-        else:
-            have_selection = bool(rows)
-            for action in self.valid_vc_actions:
-                set_sensitive(action, have_selection)
+        valid_actions = self.vc.get_valid_actions(path_states)
+        action_sensitivity = {
+            "VcCompare": 'compare' in valid_actions,
+            "VcCommit": 'commit' in valid_actions,
+            "VcUpdate": 'update' in valid_actions,
+            "VcPush": 'push' in valid_actions,
+            "VcAdd": 'add' in valid_actions,
+            "VcResolved": 'resolve' in valid_actions,
+            "VcRemove": 'remove' in valid_actions,
+            "VcRevert": 'revert' in valid_actions,
+            "VcDeleteLocally": bool(paths) and self.vc.root not in paths,
+        }
+        for action, sensitivity in action_sensitivity.items():
+            self.actiongroup.get_action(action).set_sensitive(sensitivity)
 
     def _get_selected_files(self):
         model, rows = self.treeview.get_selection().get_selected_rows()
