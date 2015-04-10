@@ -190,9 +190,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.widget.connect("style-updated", self.model.on_style_updated)
         self.model.on_style_updated(self.widget)
         self.treeview.set_model(self.model)
-        selection = self.treeview.get_selection()
-        selection.set_mode(Gtk.SelectionMode.MULTIPLE)
-        selection.connect("changed", self.on_treeview_selection_changed)
+        self.treeview.get_selection().connect(
+            "changed", self.on_treeview_selection_changed)
         self.treeview.set_headers_visible(1)
         self.treeview.set_search_equal_func(
             self.model.treeview_search_cb, None)

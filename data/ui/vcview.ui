@@ -508,7 +508,9 @@
                     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                     <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
                     <child internal-child="selection">
-                      <object class="GtkTreeSelection" id="treeview-selection1"/>
+                      <object class="GtkTreeSelection" id="treeview-selection">
+                        <property name="mode">multiple</property>
+                      </object>
                     </child>
                   </object>
                 </child>
