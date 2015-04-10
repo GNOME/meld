@@ -197,41 +197,32 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.model.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
 
-        col_index = self.model.column_index
-        column = Gtk.TreeViewColumn(_("Name"))
-        column.set_resizable(True)
+        col_index = lambda col: self.model.column_index(col, 0)
+        column = self.name_column
         renicon = emblemcellrenderer.EmblemCellRenderer()
         column.pack_start(renicon, False)
         column.set_attributes(renicon,
-                              icon_name=col_index(tree.COL_ICON, 0),
-                              icon_tint=col_index(tree.COL_TINT, 0))
+                              icon_name=col_index(tree.COL_ICON),
+                              icon_tint=col_index(tree.COL_TINT))
         rentext = Gtk.CellRendererText()
         column.pack_start(rentext, True)
         column.set_attributes(rentext,
-                              text=col_index(tree.COL_TEXT, 0),
-                              foreground=col_index(tree.COL_FG, 0),
-                              style=col_index(tree.COL_STYLE, 0),
-                              weight=col_index(tree.COL_WEIGHT, 0),
-                              strikethrough=col_index(tree.COL_STRIKE, 0))
-        self.treeview.append_column(column)
+                              text=col_index(tree.COL_TEXT),
+                              foreground=col_index(tree.COL_FG),
+                              style=col_index(tree.COL_STYLE),
+                              weight=col_index(tree.COL_WEIGHT),
+                              strikethrough=col_index(tree.COL_STRIKE))
 
-        def addCol(name, num):
-            column = Gtk.TreeViewColumn(name)
-            column.set_resizable(True)
-            rentext = Gtk.CellRendererText()
-            column.pack_start(rentext, True)
-            column.set_attributes(rentext,
-                                  markup=self.model.column_index(num, 0))
-            self.treeview.append_column(column)
-            return column
-
-        self.treeview_column_location = addCol(_("Location"), COL_LOCATION)
-        addCol(_("Status"), COL_STATUS)
-        addCol(_("Extra"), COL_OPTIONS)
+        self.location_column.set_attributes(
+            self.location_renderer, markup=col_index(COL_LOCATION))
+        self.status_column.set_attributes(
+            self.status_renderer, markup=col_index(COL_STATUS))
+        self.extra_column.set_attributes(
+            self.extra_renderer, markup=col_index(COL_OPTIONS))
 
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
-        self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
+        self.location_column.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         self.vc = None
         self.valid_vc_actions = tuple()
 
@@ -558,7 +549,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_button_flatten_toggled(self, button):
         action = self.actiongroup.get_action("VcFlatten")
-        self.treeview_column_location.set_visible(action.get_active())
+        self.location_column.set_visible(action.get_active())
         self.on_filter_state_toggled(button)
 
     def on_filter_state_toggled(self, button):
