@@ -567,22 +567,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         if selection is None:
             selection = self.treeview.get_selection()
         model, rows = selection.get_selected_rows()
-        if hasattr(self.vc, 'update_actions_for_paths'):
+
+        if hasattr(self.vc, 'get_valid_actions'):
             paths = [self.model.value_path(model.get_iter(r), 0) for r in rows]
             states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
+            path_states = dict(zip(paths, states))
+            valid_actions = self.vc.get_valid_actions(path_states)
             action_sensitivity = {
-                "VcCompare": False,
-                "VcCommit": False,
-                "VcUpdate": False,
-                "VcPush": False,
-                "VcAdd": False,
-                "VcResolved": False,
-                "VcRemove": False,
-                "VcRevert": False,
+                "VcCompare": 'compare' in valid_actions,
+                "VcCommit": 'commit' in valid_actions,
+                "VcUpdate": 'update' in valid_actions,
+                "VcPush": 'push' in valid_actions,
+                "VcAdd": 'add' in valid_actions,
+                "VcResolved": 'resolve' in valid_actions,
+                "VcRemove": 'remove' in valid_actions,
+                "VcRevert": 'revert' in valid_actions,
                 "VcDeleteLocally": bool(paths) and self.vc.root not in paths,
             }
-            path_states = dict(zip(paths, states))
-            self.vc.update_actions_for_paths(path_states, action_sensitivity)
             for action, sensitivity in action_sensitivity.items():
                 set_sensitive(action, sensitivity)
         else:
@@ -649,6 +650,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # at this point. We're using whether a plugin has been updated to the
         # new API as a proxy for understanding these commands, since right now
         # that happens to work... this is bad.
+        # FIXME: This is now even more broken than it was already
         uses_new_api = hasattr(self.vc, 'update_actions_for_paths')
         return uses_new_api and command in self.command_map
 

@@ -165,6 +165,39 @@ class Vc(object):
     def resolve(self, runner, files):
         raise NotImplementedError()
 
+    def get_valid_actions(self, path_states):
+        """Get the set of valid actions for paths with version states
+
+        path_states is a list of (path, state) tuples describing paths
+        in the version control system. This will return all valid
+        version control actions that could reasonably be taken on *all*
+        of the paths in path_states.
+        """
+        valid_actions = set()
+        states = path_states.values()
+
+        if bool(path_states):
+            valid_actions.add('compare')
+        valid_actions.add('update')
+        # TODO: We can't do this; this shells out for each selection change...
+        # if bool(self.get_commits_to_push()):
+        valid_actions.add('push')
+        # TODO: We can't disable this for NORMAL, because folders don't
+        # inherit any state from their children, but committing a folder with
+        # modified children is expected behaviour.
+        if all(s not in (STATE_NONE, STATE_IGNORED) for s in states):
+            valid_actions.add('commit')
+        if all(s not in (STATE_NORMAL, STATE_REMOVED) for s in states):
+            valid_actions.add('add')
+        if all(s == STATE_CONFLICT for s in states):
+            valid_actions.add('resolve')
+        if (all(s not in (STATE_NONE, STATE_IGNORED, STATE_REMOVED) for s in states)
+                and self.root not in path_states.keys()):
+            valid_actions.add('remove')
+        if all(s not in (STATE_NONE, STATE_NORMAL, STATE_IGNORED) for s in states):
+            valid_actions.add('revert')
+        return valid_actions
+
     def get_path_for_repo_file(self, path, commit=None):
         """Returns a file path for the repository path at commit
 

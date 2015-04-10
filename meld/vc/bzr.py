@@ -252,30 +252,3 @@ class Vc(_vc.Vc):
 
         # bzr paths are all temporary files
         return "%s%s" % (path, self.conflict_map[conflict]), False
-
-    # Sensitivity button mappings.
-    def update_actions_for_paths(self, path_states, actions):
-        states = path_states.values()
-
-        actions["VcCompare"] = bool(path_states)
-        # TODO: We can't disable this for NORMAL, because folders don't
-        # inherit any state from their children, but committing a folder with
-        # modified children is expected behaviour.
-        actions["VcCommit"] = all(s not in (
-            _vc.STATE_NONE, _vc.STATE_IGNORED) for s in states)
-
-        actions["VcUpdate"] = True
-        # TODO: We can't do this; this shells out for each selection change...
-        # actions["VcPush"] = bool(self.get_commits_to_push())
-        actions["VcPush"] = True
-
-        actions["VcAdd"] = all(s not in (
-            _vc.STATE_NORMAL, _vc.STATE_REMOVED) for s in states)
-        actions["VcResolved"] = all(s == _vc.STATE_CONFLICT for s in states)
-        actions["VcRemove"] = (all(s not in (
-            _vc.STATE_NONE, _vc.STATE_IGNORED,
-            _vc.STATE_REMOVED) for s in states) and
-            self.root not in path_states.keys())
-        actions["VcRevert"] = all(s not in (
-            _vc.STATE_NONE, _vc.STATE_NORMAL,
-            _vc.STATE_IGNORED) for s in states)
