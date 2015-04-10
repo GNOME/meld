@@ -622,9 +622,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def command(self, command, files):
         if not self.has_command(command):
             log.error("Couldn't understand command %s", command)
+            return
 
         if not isinstance(files, list):
             log.error("Invalid files argument to '%s': %r", command, files)
+            return
 
         command = getattr(self.vc, self.command_map[command])
         command(self._command, files)
