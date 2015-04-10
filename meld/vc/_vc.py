@@ -141,28 +141,7 @@ class Vc(object):
     def get_commit_message_prefill(self):
         return None
 
-    def commit(self, runner, files, message):
-        raise NotImplementedError()
-
-    def update(self, runner):
-        raise NotImplementedError()
-
-    def push(self, runner):
-        raise NotImplementedError()
-
-    def revert(self, runner, files):
-        raise NotImplementedError()
-
     def get_commits_to_push_summary(self):
-        raise NotImplementedError()
-
-    def add(self, runner, files):
-        raise NotImplementedError()
-
-    def remove(self, runner, files):
-        raise NotImplementedError()
-
-    def resolve(self, runner, files):
         raise NotImplementedError()
 
     def get_valid_actions(self, path_states):
