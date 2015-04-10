@@ -172,6 +172,9 @@ class Vc(object):
         in the version control system. This will return all valid
         version control actions that could reasonably be taken on *all*
         of the paths in path_states.
+
+        If an individual plugin needs special handling, or doesn't
+        implement all standard actions, this should be overridden.
         """
         valid_actions = set()
         states = path_states.values()

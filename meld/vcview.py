@@ -219,7 +219,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.location = None
         self.location_column.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         self.vc = None
-        self.valid_vc_actions = tuple()
 
         settings.bind('vc-console-visible',
                       self.actiongroup.get_action('VcConsoleVisible'),
@@ -251,19 +250,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_container_switch_out_event(self, ui):
         self._set_external_action_sensitivity(False)
         super(VcView, self).on_container_switch_out_event(ui)
-
-    def update_actions_sensitivity(self):
-        """Disable actions that use not implemented VC plugin methods"""
-        valid_vc_actions = ["VcDeleteLocally"]
-        for action_name, (meth_name, args) in self.action_vc_cmds_map.items():
-            action = self.actiongroup.get_action(action_name)
-            try:
-                getattr(self.vc, meth_name)(*args)
-                action.props.sensitive = True
-                valid_vc_actions.append(action_name)
-            except NotImplementedError:
-                action.props.sensitive = False
-        self.valid_vc_actions = tuple(valid_vc_actions)
 
     def populate_vcs_for_location(self, location):
         """Display VC plugin(s) that can handle the location"""
@@ -324,7 +310,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return
         self.vc = combobox_vcs.get_model()[active_iter][1]
         self._set_location(self.vc.location)
-        self.update_actions_sensitivity()
 
     def set_location(self, location):
         self.populate_vcs_for_location(location)
