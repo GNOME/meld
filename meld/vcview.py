@@ -152,17 +152,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     left_is_local = GObject.property(type=bool, default=False)
     merge_file_order = GObject.property(type=str, default="local-merge-remote")
 
-    # Map action names to VC commands and required arguments list
-    action_vc_cmds_map = {
-        "VcCommit": ("commit", (lambda *args, **kwargs: None, [], "")),
-        "VcUpdate": ("update", (lambda *args, **kwargs: None, )),
-        "VcPush": ("push", (lambda *args, **kwargs: None, )),
-        "VcAdd": ("add", (lambda *args, **kwargs: None, [])),
-        "VcRemove": ("remove", (lambda *args, **kwargs: None, [])),
-        "VcResolved": ("resolve", (lambda *args, **kwargs: None, [])),
-        "VcRevert": ("revert", (lambda *args, **kwargs: None, [])),
-    }
-
     # Map for inter-tab command() calls
     command_map = {
         'resolve': 'resolve',
