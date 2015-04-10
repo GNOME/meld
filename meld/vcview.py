@@ -155,7 +155,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
-        "VcCommit": ("commit", (lambda *args, **kwargs: None, [])),
+        "VcCommit": ("commit", (lambda *args, **kwargs: None, [], "")),
         "VcUpdate": ("update_command", ()),
         "VcPush": ("push", (lambda *args, **kwargs: None, )),
         "VcAdd": ("add_command", ()),
