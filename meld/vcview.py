@@ -159,8 +159,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "VcUpdate": ("update", (lambda *args, **kwargs: None, )),
         "VcPush": ("push", (lambda *args, **kwargs: None, )),
         "VcAdd": ("add", (lambda *args, **kwargs: None, [])),
+        "VcRemove": ("remove", (lambda *args, **kwargs: None, [])),
         "VcResolved": ("resolve", (lambda *args, **kwargs: None, [])),
-        "VcRemove": ("remove_command", ()),
         "VcRevert": ("revert_command", ()),
     }
 
@@ -725,10 +725,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if response != Gtk.ResponseType.OK:
                 return
 
-        try:
-            self.vc.remove(self._command, selected)
-        except NotImplementedError:
-            self._command_on_selected(self.vc.remove_command())
+        self.vc.remove(self._command, selected)
 
     def on_button_resolved_clicked(self, obj):
         self.vc.resolve(self._command, self._get_selected_files())
