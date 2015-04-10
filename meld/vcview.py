@@ -38,7 +38,6 @@ from . import misc
 from . import recent
 from . import tree
 from . import vc
-from .ui import emblemcellrenderer
 from .ui import gnomeglade
 from .ui import vcdialogs
 
