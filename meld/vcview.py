@@ -198,21 +198,17 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.current_path, self.prev_path, self.next_path = None, None, None
 
         col_index = lambda col: self.model.column_index(col, 0)
-        column = self.name_column
-        renicon = emblemcellrenderer.EmblemCellRenderer()
-        column.pack_start(renicon, False)
-        column.set_attributes(renicon,
-                              icon_name=col_index(tree.COL_ICON),
-                              icon_tint=col_index(tree.COL_TINT))
-        rentext = Gtk.CellRendererText()
-        column.pack_start(rentext, True)
-        column.set_attributes(rentext,
-                              text=col_index(tree.COL_TEXT),
-                              foreground=col_index(tree.COL_FG),
-                              style=col_index(tree.COL_STYLE),
-                              weight=col_index(tree.COL_WEIGHT),
-                              strikethrough=col_index(tree.COL_STRIKE))
-
+        self.name_column.set_attributes(
+            self.emblem_renderer,
+            icon_name=col_index(tree.COL_ICON),
+            icon_tint=col_index(tree.COL_TINT))
+        self.name_column.set_attributes(
+            self.name_renderer,
+            text=col_index(tree.COL_TEXT),
+            foreground=col_index(tree.COL_FG),
+            style=col_index(tree.COL_STYLE),
+            weight=col_index(tree.COL_WEIGHT),
+            strikethrough=col_index(tree.COL_STRIKE))
         self.location_column.set_attributes(
             self.location_renderer, markup=col_index(COL_LOCATION))
         self.status_column.set_attributes(

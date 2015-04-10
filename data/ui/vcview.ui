@@ -511,6 +511,12 @@
                       <object class="GtkTreeViewColumn" id="name_column">
                         <property name="title" translatable="yes">Name</property>
                         <property name="resizable">True</property>
+                        <child>
+                          <object class="EmblemCellRenderer" id="emblem_renderer"/>
+                        </child>
+                        <child>
+                          <object class="GtkCellRendererText" id="name_renderer"/>
+                        </child>
                       </object>
                     </child>
                     <child>
