@@ -63,8 +63,9 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'rm']
         runner(command, files, refresh=True, working_dir=self.root)
 
-    def revert_command(self):
-        return [self.CMD, "revert"]
+    def revert(self, runner, files):
+        command = [self.CMD, 'revert']
+        runner(command, files, refresh=True, working_dir=self.root)
 
     @classmethod
     def valid_repo(cls, path):

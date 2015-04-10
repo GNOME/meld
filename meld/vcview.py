@@ -161,7 +161,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "VcAdd": ("add", (lambda *args, **kwargs: None, [])),
         "VcRemove": ("remove", (lambda *args, **kwargs: None, [])),
         "VcResolved": ("resolve", (lambda *args, **kwargs: None, [])),
-        "VcRevert": ("revert_command", ()),
+        "VcRevert": ("revert", (lambda *args, **kwargs: None, [])),
     }
 
     # Map for inter-tab command() calls
@@ -731,10 +731,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.vc.resolve(self._command, self._get_selected_files())
 
     def on_button_revert_clicked(self, obj):
-        try:
-            self.vc.revert(self._command, self._get_selected_files())
-        except NotImplementedError:
-            self._command_on_selected(self.vc.revert_command())
+        self.vc.revert(self._command, self._get_selected_files())
 
     def on_button_delete_clicked(self, obj):
         files = self._get_selected_files()

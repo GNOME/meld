@@ -121,11 +121,6 @@ class Vc(object):
         self._tree_cache = {}
         self._tree_meta_cache = {}
 
-    def revert_command(self):
-        raise NotImplementedError()
-
-    # Prototyping VC interface version 2
-
     def get_files_to_commit(self, paths):
         raise NotImplementedError()
 
