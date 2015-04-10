@@ -55,8 +55,9 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'pull', '-u']
         runner(command, [], refresh=True, working_dir=self.root)
 
-    def add_command(self):
-        return [self.CMD, "add"]
+    def add(self, runner, files):
+        command = [self.CMD, 'add']
+        runner(command, files, refresh=True, working_dir=self.root)
 
     def remove_command(self, force=0):
         return [self.CMD, "rm"]

@@ -88,8 +88,10 @@ class Vc(_vc.Vc):
                                             ''.join(state_2_map.keys()),
                                             ''.join(state_3_map.keys()),)
 
-    def add_command(self):
-        return [self.CMD] + self.CMDARGS + ["add"]
+    def add(self, runner, files):
+        fullcmd = [self.CMD] + self.CMDARGS
+        command = [fullcmd, 'add']
+        runner(command, files, refresh=True, working_dir=self.root)
 
     def commit(self, runner, files, message):
         fullcmd = [self.CMD] + self.CMDARGS

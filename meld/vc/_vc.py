@@ -121,9 +121,6 @@ class Vc(object):
         self._tree_cache = {}
         self._tree_meta_cache = {}
 
-    def add_command(self):
-        raise NotImplementedError()
-
     def remove_command(self, force=0):
         raise NotImplementedError()
 
