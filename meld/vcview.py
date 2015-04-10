@@ -669,11 +669,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(self._command_iter(command, files, refresh,
                                                    working_dir))
 
-    def _command_on_selected(self, command, refresh=1):
-        files = self._get_selected_files()
-        if len(files):
-            self._command(command, files, refresh)
-
     def on_button_update_clicked(self, obj):
         self.vc.update(self._command)
 
