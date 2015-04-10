@@ -156,7 +156,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     # Map action names to VC commands and required arguments list
     action_vc_cmds_map = {
         "VcCommit": ("commit", (lambda *args, **kwargs: None, [], "")),
-        "VcUpdate": ("update_command", ()),
+        "VcUpdate": ("update", (lambda *args, **kwargs: None, )),
         "VcPush": ("push", (lambda *args, **kwargs: None, )),
         "VcAdd": ("add_command", ()),
         "VcResolved": ("resolve", (lambda *args, **kwargs: None, [])),
@@ -689,10 +689,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self._command(command, files, refresh)
 
     def on_button_update_clicked(self, obj):
-        try:
-            self.vc.update(self._command, self._get_selected_files())
-        except NotImplementedError:
-            self._command_on_selected(self.vc.update_command())
+        self.vc.update(self._command)
 
     def on_button_push_clicked(self, obj):
         response = vcdialogs.PushDialog(self).run()

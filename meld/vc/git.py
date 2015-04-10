@@ -179,7 +179,7 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'commit', '-m', message]
         runner(command, files, refresh=True, working_dir=self.root)
 
-    def update(self, runner, files):
+    def update(self, runner):
         command = [self.CMD, 'pull']
         runner(command, [], refresh=True, working_dir=self.root)
 

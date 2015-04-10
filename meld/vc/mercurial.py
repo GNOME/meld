@@ -51,8 +51,9 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'commit', '-m', message]
         runner(command, [], refresh=True, working_dir=self.root)
 
-    def update_command(self):
-        return [self.CMD, "update"]
+    def update(self, runner):
+        command = [self.CMD, 'pull', '-u']
+        runner(command, [], refresh=True, working_dir=self.root)
 
     def add_command(self):
         return [self.CMD, "add"]

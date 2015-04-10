@@ -56,8 +56,9 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'commit', '-m', message]
         runner(command, [], refresh=True, working_dir=self.root)
 
-    def update_command(self):
-        return [self.CMD,"update"]
+    def update(self, runner):
+        command = [self.CMD, 'update']
+        runner(command, [], refresh=True, working_dir=self.root)
 
     def remove_command(self, force=0):
         return [self.CMD,"rm","--force"]

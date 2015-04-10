@@ -106,7 +106,7 @@ class Vc(_vc.Vc):
             [self.CMD] + self.CMDARGS + ["push"], [], refresh=True,
             working_dir=self.root)
 
-    def update(self, runner, files):
+    def update(self, runner):
         # TODO: Handle checkouts/bound branches by calling
         # update instead of pull. For now we've replicated existing
         # functionality, as update will not work for unbound branches.
