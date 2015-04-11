@@ -436,7 +436,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("create-diff", [path], {})
             return
 
-        left_is_local = self.props.left_is_local
         basename = os.path.basename(path)
         meta = {
             'parent': self,
@@ -475,7 +474,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             remote_label = _(u"%s — repository") % basename
             comp_path = self.vc.get_path_for_repo_file(path)
             temps = [comp_path]
-            if left_is_local:
+            if self.props.left_is_local:
                 diffs = [path, comp_path]
                 meta['labels'] = (None, remote_label)
                 meta['tablabel'] = _(u"%s (working, repository)") % basename
