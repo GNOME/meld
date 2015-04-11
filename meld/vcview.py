@@ -491,13 +491,21 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         self.emit("create-diff", diffs, kwargs)
 
+    def do_popup_treeview_menu(self, widget, event):
+        if event:
+            button = event.button
+            time = event.time
+        else:
+            button = 0
+            time = Gtk.get_current_event_time()
+        self.popup_menu.popup(None, None, None, None, button, time)
+
     def on_treeview_popup_menu(self, treeview):
-        time = Gtk.get_current_event_time()
-        self.popup_menu.popup(None, None, None, None, 0, time)
+        self.do_popup_treeview_menu(treeview, None)
         return True
 
     def on_button_press_event(self, treeview, event):
-        if event.button == 3:
+        if event.triggers_context_menu() and event.type == Gdk.EventType.BUTTON_PRESS:
             path = treeview.get_path_at_pos(int(event.x), int(event.y))
             if path is None:
                 return False
@@ -509,8 +517,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 selection.select_path(path[0])
                 treeview.set_cursor(path[0])
 
-            self.popup_menu.popup(None, None, None, None, event.button,
-                                  event.time)
+            self.do_popup_treeview_menu(treeview, event)
             return True
         return False
 
