@@ -180,7 +180,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.treeview.set_model(self.model)
         self.treeview.get_selection().connect(
             "changed", self.on_treeview_selection_changed)
-        self.treeview.set_headers_visible(1)
         self.treeview.set_search_equal_func(
             self.model.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
