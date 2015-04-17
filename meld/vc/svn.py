@@ -157,7 +157,7 @@ class Vc(_vc.Vc):
             runner(command, [path], refresh=True,
                    working_dir=os.path.dirname(path))
         if files:
-            runner(command, files, refresh=True)
+            runner(command, files, refresh=True, working_dir=self.location)
 
     @classmethod
     def _repo_version_support(cls, version):
