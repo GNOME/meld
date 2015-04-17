@@ -202,10 +202,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.status_renderer, markup=col_index(COL_STATUS))
         self.extra_column.set_attributes(
             self.extra_renderer, markup=col_index(COL_OPTIONS))
+        self.location_column.bind_property(
+            'visible', self.actiongroup.get_action("VcFlatten"), 'active')
 
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
-        self.location_column.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         self.vc = None
 
         settings.bind('vc-console-visible',
@@ -520,11 +521,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.do_popup_treeview_menu(treeview, event)
             return True
         return False
-
-    def on_button_flatten_toggled(self, button):
-        action = self.actiongroup.get_action("VcFlatten")
-        self.location_column.set_visible(action.get_active())
-        self.on_filter_state_toggled(button)
 
     def on_filter_state_toggled(self, button):
         active_action = lambda a: self.actiongroup.get_action(a).get_active()
