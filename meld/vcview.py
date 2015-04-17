@@ -574,30 +574,30 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return " ".join(quote(tok) for tok in command)
 
         files = [os.path.relpath(f, working_dir) for f in files]
-        r = None
         msg = shelljoin(command + files) + " (in %s)\n" % working_dir
         self.consolestream.command(msg)
         readiter = misc.read_pipe_iter(
             command + files, workdir=working_dir,
             errorstream=self.consolestream)
         try:
-            while r is None:
-                r = next(readiter)
-                self.consolestream.output(r)
+            result = next(readiter)
+            while not result:
                 yield 1
+                result = next(readiter)
         except IOError as err:
             misc.error_dialog(
                 "Error running command",
                 "While running '%s'\nError: %s" % (msg, err))
-        self.consolestream.output("\n")
+            result = (1, "")
 
-        returncode = next(readiter)
+        returncode, output = result
+        self.consolestream.output(output + "\n")
+
         if returncode:
             self.console_vbox.show()
 
         if refresh:
             self.refresh_partial(working_dir)
-        yield working_dir, r
 
     def has_command(self, command):
         vc_command = self.command_map.get(command)

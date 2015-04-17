@@ -231,8 +231,7 @@ def read_pipe_iter(command, workdir, errorstream, yield_interval=0.1):
             self.proc = None
             if status:
                 errorstream.error("Exit code: %i\n" % status)
-            yield "".join(bits)
-            yield status
+            yield status, "".join(bits)
     return sentinel()()
 
 
