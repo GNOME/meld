@@ -48,14 +48,6 @@ from meld.vc import _null
 log = logging.getLogger(__name__)
 
 
-def _commonprefix(files):
-    if len(files) != 1:
-        workdir = misc.commonprefix(files)
-    else:
-        workdir = os.path.dirname(files[0]) or "."
-    return workdir
-
-
 def cleanup_temp():
     temp_location = tempfile.gettempdir()
     # The strings below will probably end up as debug log, and are deliberately
@@ -676,7 +668,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 gfile.trash(None)
             except GLib.GError as e:
                 misc.error_dialog(_("Error removing %s") % name, str(e))
-        workdir = _commonprefix(files)
+
+        workdir = os.path.dirname(os.path.commonprefix(files))
         self.refresh_partial(workdir)
 
     def on_button_diff_clicked(self, obj):

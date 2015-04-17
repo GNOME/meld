@@ -244,23 +244,6 @@ def write_pipe(command, text, error=None):
     return proc.wait()
 
 
-def commonprefix(dirs):
-    """Given a list of pathnames, returns the longest common leading component.
-    """
-    if not dirs:
-        return ''
-    n = [d.split(os.sep) for d in dirs]
-    prefix = n[0]
-    for item in n:
-        for i in range(len(prefix)):
-            if prefix[:i+1] != item[:i+1]:
-                prefix = prefix[:i]
-                if i == 0:
-                    return ''
-                break
-    return os.sep.join(prefix)
-
-
 def copy2(src, dst):
     """Like shutil.copy2 but ignores chmod errors, and copies symlinks as links
     See [Bug 568000] Copying to NTFS fails

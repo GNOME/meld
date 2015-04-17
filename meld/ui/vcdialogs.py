@@ -25,18 +25,8 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.conf import _
-from meld.misc import commonprefix
 from meld.settings import meldsettings, settings
 from meld.ui.gnomeglade import Component
-
-
-# FIXME: Duplication from vcview
-def _commonprefix(files):
-    if len(files) != 1:
-        workdir = commonprefix(files)
-    else:
-        workdir = os.path.dirname(files[0]) or "."
-    return workdir
 
 
 class CommitDialog(GObject.GObject, Component):
@@ -59,7 +49,7 @@ class CommitDialog(GObject.GObject, Component):
             else:
                 to_commit = ["\t" + _("No files will be committed")]
         except NotImplementedError:
-            topdir = _commonprefix(selected)
+            topdir = os.path.dirname(os.path.commonprefix(selected))
             to_commit = ["\t" + s[len(topdir) + 1:] for s in selected]
         self.changedfiles.set_text("(in %s)\n%s" %
                                    (topdir, "\n".join(to_commit)))
