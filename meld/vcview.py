@@ -315,8 +315,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.recompute_label()
         self.scheduler.remove_all_tasks()
 
-        # If the user is just diffing a file (ie not a directory), there's no
-        # need to scan the rest of the repository
+        # If the user is just diffing a file (i.e., not a directory),
+        # there's no need to scan the rest of the repository.
         if not os.path.isdir(self.vc.location):
             return
 
