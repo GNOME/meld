@@ -564,8 +564,11 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
 
     def _command_iter(self, command, files, refresh, working_dir):
-        """Run 'command' on 'files'. Return a tuple of the directory the
-           command was executed in and the output of the command.
+        """An iterable that runs a VC command on a set of files
+
+        This method is intended to be used as a scheduled task, with
+        standard out and error output displayed in this view's
+        consolestream.
         """
 
         def shelljoin(command):
