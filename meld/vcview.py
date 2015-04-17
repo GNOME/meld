@@ -616,30 +616,29 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         command = getattr(self.vc, self.command_map[command])
-        command(self._command, files)
+        command(self.runner, files)
 
-    def _command(self, command, files, refresh, working_dir):
-        """Run 'command' on 'files'.
-        """
-        self.scheduler.add_task(self._command_iter(command, files, refresh,
-                                                   working_dir))
+    def runner(self, command, files, refresh, working_dir):
+        """Schedule a version control command to run as an idle task"""
+        self.scheduler.add_task(
+            self._command_iter(command, files, refresh, working_dir))
 
     def on_button_update_clicked(self, obj):
-        self.vc.update(self._command)
+        self.vc.update(self.runner)
 
     def on_button_push_clicked(self, obj):
         response = vcdialogs.PushDialog(self).run()
         if response == Gtk.ResponseType.OK:
-            self.vc.push(self._command)
+            self.vc.push(self.runner)
 
     def on_button_commit_clicked(self, obj):
         response, commit_msg = vcdialogs.CommitDialog(self).run()
         if response == Gtk.ResponseType.OK:
             self.vc.commit(
-                self._command, self._get_selected_files(), commit_msg)
+                self.runner, self._get_selected_files(), commit_msg)
 
     def on_button_add_clicked(self, obj):
-        self.vc.add(self._command, self._get_selected_files())
+        self.vc.add(self.runner, self._get_selected_files())
 
     def on_button_remove_clicked(self, obj):
         selected = self._get_selected_files()
@@ -661,13 +660,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if response != Gtk.ResponseType.OK:
                 return
 
-        self.vc.remove(self._command, selected)
+        self.vc.remove(self.runner, selected)
 
     def on_button_resolved_clicked(self, obj):
-        self.vc.resolve(self._command, self._get_selected_files())
+        self.vc.resolve(self.runner, self._get_selected_files())
 
     def on_button_revert_clicked(self, obj):
-        self.vc.revert(self._command, self._get_selected_files())
+        self.vc.revert(self.runner, self._get_selected_files())
 
     def on_button_delete_clicked(self, obj):
         files = self._get_selected_files()
