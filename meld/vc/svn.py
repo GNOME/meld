@@ -199,12 +199,10 @@ class Vc(_vc.Vc):
         for target in tree.findall("target") + tree.findall("changelist"):
             for entry in (t for t in target.getchildren() if t.tag == "entry"):
                 path = entry.attrib["path"]
-                if path == ".":
-                    path = os.getcwd()
-                if path == "":
+                if not path:
                     continue
                 if not os.path.isabs(path):
-                    path = os.path.abspath(path)
+                    path = os.path.abspath(os.path.join(self.location, path))
                 for status in (e for e in entry.getchildren() \
                                if e.tag == "wc-status"):
                     item = status.attrib["item"]
