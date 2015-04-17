@@ -766,7 +766,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_consoleview_populate_popup(self, textview, menu):
         buf = textview.get_buffer()
         clear_cb = lambda *args: buf.delete(*buf.get_bounds())
-        clear_action = Gtk.ImageMenuItem(Gtk.STOCK_CLEAR)
+        clear_action = Gtk.MenuItem.new_with_label(_("Clear"))
         clear_action.connect("activate", clear_cb)
         menu.insert(clear_action, 0)
         menu.insert(Gtk.SeparatorMenuItem(), 1)
