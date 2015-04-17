@@ -563,7 +563,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # Remove empty entries and trailing slashes
         return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
 
-    def _command_iter(self, command, files, refresh, working_dir=None):
+    def _command_iter(self, command, files, refresh, working_dir):
         """Run 'command' on 'files'. Return a tuple of the directory the
            command was executed in and the output of the command.
         """
@@ -626,7 +626,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         command = getattr(self.vc, self.command_map[command])
         command(self._command, files)
 
-    def _command(self, command, files, refresh=1, working_dir=None):
+    def _command(self, command, files, refresh, working_dir):
         """Run 'command' on 'files'.
         """
         self.scheduler.add_task(self._command_iter(command, files, refresh,
