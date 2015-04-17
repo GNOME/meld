@@ -578,13 +578,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if len(pbase) and p.startswith(pbase):
                 kill = len(pbase) + 1
             return p[kill:] or "."
-        workdir = self.vc.get_working_directory(working_dir)
-        files = [relpath(workdir, f) for f in files]
+
+        files = [relpath(working_dir, f) for f in files]
         r = None
-        msg = shelljoin(command + files) + " (in %s)\n" % workdir
+        msg = shelljoin(command + files) + " (in %s)\n" % working_dir
         self.consolestream.command(msg)
         readiter = misc.read_pipe_iter(command + files, self.consolestream,
-                                       workdir=workdir)
+                                       workdir=working_dir)
         try:
             while r is None:
                 r = next(readiter)
@@ -601,8 +601,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.console_vbox.show()
 
         if refresh:
-            self.refresh_partial(workdir)
-        yield workdir, r
+            self.refresh_partial(working_dir)
+        yield working_dir, r
 
     def has_command(self, command):
         vc_command = self.command_map.get(command)

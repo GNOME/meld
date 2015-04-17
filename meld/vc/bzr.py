@@ -130,9 +130,6 @@ class Vc(_vc.Vc):
     def valid_repo(cls, path):
         return not _vc.call([cls.CMD, "root"], cwd=path)
 
-    def get_working_directory(self, workdir):
-        return self.root
-
     def get_files_to_commit(self, paths):
         files = []
         for p in paths:

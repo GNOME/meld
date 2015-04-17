@@ -202,9 +202,6 @@ class Vc(object):
         """
         raise NotImplementedError()
 
-    def get_working_directory(self, workdir):
-        return workdir
-
     def refresh_vc_state(self, path=None):
         """Update cached version control state
 

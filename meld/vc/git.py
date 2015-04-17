@@ -238,12 +238,6 @@ class Vc(_vc.Vc):
         # appears to be correct under the default git bash shell however.
         return not _vc.call([cls.CMD, "branch"], cwd=path)
 
-    def get_working_directory(self, workdir):
-        if workdir.startswith("/"):
-            return self.root
-        else:
-            return ''
-
     def _get_modified_files(self, path):
         # Update the index to avoid reading stale status information
         proc = self.run("update-index", "--refresh")

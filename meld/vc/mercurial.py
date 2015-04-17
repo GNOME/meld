@@ -71,12 +71,6 @@ class Vc(_vc.Vc):
     def valid_repo(cls, path):
         return not _vc.call([cls.CMD, "root"], cwd=path)
 
-    def get_working_directory(self, workdir):
-        if workdir.startswith("/"):
-            return self.root
-        else:
-            return ''
-
     def get_path_for_repo_file(self, path, commit=None):
         if commit is not None:
             raise NotImplementedError()
