@@ -580,12 +580,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if len(pbase) and p.startswith(pbase):
                 kill = len(pbase) + 1
             return p[kill:] or "."
-        if working_dir:
-            workdir = self.vc.get_working_directory(working_dir)
-        elif len(files) == 1 and os.path.isdir(files[0]):
-            workdir = self.vc.get_working_directory(files[0])
-        else:
-            workdir = self.vc.get_working_directory(_commonprefix(files))
+        workdir = self.vc.get_working_directory(working_dir)
         files = [relpath(workdir, f) for f in files]
         r = None
         self.consolestream.command(shelljoin(command + files) + " (in %s)\n" % workdir)
