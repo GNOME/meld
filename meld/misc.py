@@ -178,13 +178,12 @@ def shorten_names(*names):
     return [name or _("[None]") for name in basenames]
 
 
-def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
+def read_pipe_iter(command, workdir, errorstream, yield_interval=0.1):
     """Read the output of a shell command iteratively.
 
     Each time 'callback_interval' seconds pass without reading any data,
     this function yields None.
     When all the data is read, the entire string is yielded.
-    If 'workdir' is specified the command is run from that directory.
     """
     class sentinel(object):
         def __init__(self):
@@ -234,8 +233,6 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
                 errorstream.error("Exit code: %i\n" % status)
             yield "".join(bits)
             yield status
-    if workdir == "":
-        workdir = None
     return sentinel()()
 
 

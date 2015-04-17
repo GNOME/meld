@@ -577,8 +577,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         r = None
         msg = shelljoin(command + files) + " (in %s)\n" % working_dir
         self.consolestream.command(msg)
-        readiter = misc.read_pipe_iter(command + files, self.consolestream,
-                                       workdir=working_dir)
+        readiter = misc.read_pipe_iter(
+            command + files, workdir=working_dir,
+            errorstream=self.consolestream)
         try:
             while r is None:
                 r = next(readiter)
