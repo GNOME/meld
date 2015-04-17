@@ -573,8 +573,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 return '"%s"' % s if len(s.split()) > 1 else s
             return " ".join(quote(tok) for tok in command)
 
-        msg = shelljoin(command)
-        yield "[%s] %s" % (self.label_text, msg.replace("\n", "\t"))
         def relpath(pbase, p):
             kill = 0
             if len(pbase) and p.startswith(pbase):
@@ -583,7 +581,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         workdir = self.vc.get_working_directory(working_dir)
         files = [relpath(workdir, f) for f in files]
         r = None
-        self.consolestream.command(shelljoin(command + files) + " (in %s)\n" % workdir)
+        msg = shelljoin(command + files) + " (in %s)\n" % workdir
+        self.consolestream.command(msg)
         readiter = misc.read_pipe_iter(command + files, self.consolestream,
                                        workdir=workdir)
         try:
