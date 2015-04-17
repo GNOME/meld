@@ -573,13 +573,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 return '"%s"' % s if len(s.split()) > 1 else s
             return " ".join(quote(tok) for tok in command)
 
-        def relpath(pbase, p):
-            kill = 0
-            if len(pbase) and p.startswith(pbase):
-                kill = len(pbase) + 1
-            return p[kill:] or "."
-
-        files = [relpath(working_dir, f) for f in files]
+        files = [os.path.relpath(f, working_dir) for f in files]
         r = None
         msg = shelljoin(command + files) + " (in %s)\n" % working_dir
         self.consolestream.command(msg)
