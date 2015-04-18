@@ -208,12 +208,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         settings.bind('vc-console-pane-position', self.vc_console_vpaned,
                       'position', Gio.SettingsBindFlags.DEFAULT)
 
-        self.state_filters = []
-        for s in self.state_actions:
-            if s in self.props.status_filters:
-                action_name = self.state_actions[s][0]
-                self.state_filters.append(s)
-                self.actiongroup.get_action(action_name).set_active(True)
+        for s in self.props.status_filters:
+            if s in self.state_actions:
+                self.actiongroup.get_action(
+                    self.state_actions[s][0]).set_active(True)
 
     def _set_external_action_sensitivity(self, focused):
         try:
@@ -343,10 +341,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
 
-        flattened = self.actiongroup.get_action("VcFlatten").get_active()
-        active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        filters = [a[1] for a in self.state_actions.values() if
-                   active_action(a[0]) and a[1]]
+        flattened = 'flatten' in self.props.status_filters
+        active_actions = [
+            self.state_actions.get(k) for k in self.props.status_filters]
+        filters = [a[1] for a in active_actions if a and a[1]]
 
         yield _("Scanning %s") % rootname
         while todo:
@@ -514,13 +512,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_filter_state_toggled(self, button):
         active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        active_filters = [a for a in self.state_actions if
-                          active_action(self.state_actions[a][0])]
+        active_filters = [
+            k for k, v in self.state_actions.items() if active_action(v[0])]
 
-        if set(active_filters) == set(self.state_filters):
+        if set(active_filters) == set(self.props.status_filters):
             return
 
-        self.state_filters = active_filters
         self.props.status_filters = active_filters
         self.refresh()
 
