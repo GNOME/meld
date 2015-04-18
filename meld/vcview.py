@@ -384,7 +384,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if not flattened:
                 if not entries:
                     self.model.add_empty(it, _("(Empty)"))
-                if any(e.state != tree.STATE_NORMAL for e in entries):
+                elif any(e.state != tree.STATE_NORMAL for e in entries):
                     self.treeview.expand_to_path(treepath)
 
         if flattened:
