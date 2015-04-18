@@ -679,7 +679,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._open_files(self._get_selected_files())
 
     def refresh(self):
-        self.set_location(self.model.value_path(self.model.get_iter_first(), 0))
+        root = self.model.get_iter_first()
+        if root is None:
+            return
+        self.set_location(self.model.value_path(root, 0))
 
     def refresh_partial(self, where):
         if not self.actiongroup.get_action("VcFlatten").get_active():
