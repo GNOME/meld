@@ -324,7 +324,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             location = location.decode(
                 sys.getfilesystemencoding(), 'replace')
         self.label_text = os.path.basename(location)
-        # TRANSLATORS: This is the location of the directory the user is diffing
+        # TRANSLATORS: This is the location of the directory being viewed
         self.tooltip_text = _("%s: %s") % (_("Location"), location)
         self.label_changed()
 
@@ -487,7 +487,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return True
 
     def on_button_press_event(self, treeview, event):
-        if event.triggers_context_menu() and event.type == Gdk.EventType.BUTTON_PRESS:
+        if (event.triggers_context_menu() and
+                event.type == Gdk.EventType.BUTTON_PRESS):
             path = treeview.get_path_at_pos(int(event.x), int(event.y))
             if path is None:
                 return False
@@ -626,7 +627,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             # TODO: Improve and reuse this dialog for the non-VC delete action
             dialog = Gtk.MessageDialog(
                 parent=self.widget.get_toplevel(),
-                flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                flags=(Gtk.DialogFlags.MODAL |
+                       Gtk.DialogFlags.DESTROY_WITH_PARENT),
                 type=Gtk.MessageType.WARNING,
                 message_format=_("Remove folder and all its files?"))
             dialog.format_secondary_text(
@@ -718,7 +720,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if name == path:
                 return it
             elif name.startswith(path):
-                child = self.model.iter_children( it )
+                child = self.model.iter_children(it)
                 while child:
                     path = self.model.value_path(child, 0)
                     if name == path:
@@ -726,7 +728,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     elif name.startswith(path):
                         break
                     else:
-                        child = self.model.iter_next( child )
+                        child = self.model.iter_next(child)
                 it = child
             else:
                 break
