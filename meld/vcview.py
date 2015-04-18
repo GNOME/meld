@@ -33,18 +33,18 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
 
-from . import melddoc
-from . import misc
-from . import recent
-from . import tree
-from . import vc
-from meld.vc._vc import Entry
-from .ui import gnomeglade
-from .ui import vcdialogs
+from meld import melddoc
+from meld import misc
+from meld import recent
+from meld import tree
+from meld import vc
+from meld.ui import gnomeglade
+from meld.ui import vcdialogs
 
 from meld.conf import _
 from meld.settings import settings, bind_settings
 from meld.vc import _null
+from meld.vc._vc import Entry
 
 log = logging.getLogger(__name__)
 
