@@ -38,6 +38,7 @@ from . import misc
 from . import recent
 from . import tree
 from . import vc
+from meld.vc._vc import Entry
 from .ui import gnomeglade
 from .ui import vcdialogs
 
@@ -117,14 +118,6 @@ class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
         tree.DiffTreeStore.__init__(self, 1, [str] * 5)
 
-################################################################################
-# filters
-################################################################################
-entry_modified = lambda x: (x.state >= tree.STATE_NEW) or (x.isdir and (x.state > tree.STATE_NONE))
-entry_normal   = lambda x: (x.state == tree.STATE_NORMAL)
-entry_nonvc    = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
-entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
-
 
 class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
@@ -151,10 +144,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     state_actions = {
         "flatten": ("VcFlatten", None),
-        "modified": ("VcShowModified", entry_modified),
-        "normal": ("VcShowNormal", entry_normal),
-        "unknown": ("VcShowNonVC", entry_nonvc),
-        "ignored": ("VcShowIgnored", entry_ignored),
+        "modified": ("VcShowModified", Entry.is_modified),
+        "normal": ("VcShowNormal", Entry.is_normal),
+        "unknown": ("VcShowNonVC", Entry.is_nonvc),
+        "ignored": ("VcShowIgnored", Entry.is_ignored),
     }
 
     def __init__(self):

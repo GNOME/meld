@@ -101,19 +101,23 @@ class Entry(object):
         """Should this Entry actually be present on the file system"""
         return self.state not in (STATE_REMOVED, STATE_MISSING)
 
-    def is_modified(self):
-        return self.state >= STATE_NEW or (
-            self.isdir and (self.state > STATE_NONE))
+    @staticmethod
+    def is_modified(entry):
+        return entry.state >= STATE_NEW or (
+            entry.isdir and (entry.state > STATE_NONE))
 
-    def is_normal(self):
-        return self.state == STATE_NORMAL
+    @staticmethod
+    def is_normal(entry):
+        return entry.state == STATE_NORMAL
 
-    def is_nonvc(self):
-        return self.state == STATE_NONE or (
-            self.isdir and (self.state > STATE_IGNORED))
+    @staticmethod
+    def is_nonvc(entry):
+        return entry.state == STATE_NONE or (
+            entry.isdir and (entry.state > STATE_IGNORED))
 
-    def is_ignored(self):
-        return self.state == STATE_IGNORED or self.isdir
+    @staticmethod
+    def is_ignored(entry):
+        return entry.state == STATE_IGNORED or entry.isdir
 
 
 class Vc(object):
