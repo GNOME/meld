@@ -387,8 +387,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 elif any(e.state != tree.STATE_NORMAL for e in entries):
                     self.treeview.expand_to_path(treepath)
 
-        if flattened:
-            self.treeview.expand_row(Gtk.TreePath.new_first(), False)
+        self.treeview.expand_row(Gtk.TreePath.new_first(), False)
 
     # TODO: This doesn't fire when the user selects a shortcut folder
     def on_fileentry_file_set(self, fileentry):
