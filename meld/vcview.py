@@ -176,24 +176,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.model.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
 
-        col_index = lambda col: self.model.column_index(col, 0)
         self.name_column.set_attributes(
             self.emblem_renderer,
-            icon_name=col_index(tree.COL_ICON),
-            icon_tint=col_index(tree.COL_TINT))
+            icon_name=tree.COL_ICON,
+            icon_tint=tree.COL_TINT)
         self.name_column.set_attributes(
             self.name_renderer,
-            text=col_index(tree.COL_TEXT),
-            foreground=col_index(tree.COL_FG),
-            style=col_index(tree.COL_STYLE),
-            weight=col_index(tree.COL_WEIGHT),
-            strikethrough=col_index(tree.COL_STRIKE))
+            text=tree.COL_TEXT,
+            foreground=tree.COL_FG,
+            style=tree.COL_STYLE,
+            weight=tree.COL_WEIGHT,
+            strikethrough=tree.COL_STRIKE)
         self.location_column.set_attributes(
-            self.location_renderer, markup=col_index(COL_LOCATION))
+            self.location_renderer, markup=COL_LOCATION)
         self.status_column.set_attributes(
-            self.status_renderer, markup=col_index(COL_STATUS))
+            self.status_renderer, markup=COL_STATUS)
         self.extra_column.set_attributes(
-            self.extra_renderer, markup=col_index(COL_OPTIONS))
+            self.extra_renderer, markup=COL_OPTIONS)
         self.location_column.bind_property(
             'visible', self.actiongroup.get_action("VcFlatten"), 'active')
 
@@ -315,9 +314,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         root = self.model.get_iter_first()
 
         try:
-            col = self.model.column_index(COL_OPTIONS, 0)
             self.model.set_value(
-                root, col, self.vc.get_commits_to_push_summary())
+                root, COL_OPTIONS, self.vc.get_commits_to_push_summary())
         except NotImplementedError:
             pass
 
@@ -689,7 +687,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if it:
                 newiter = self.model.insert_after(None, it)
                 self.model.set_value(
-                    newiter, self.model.column_index(tree.COL_PATH, 0), where)
+                    newiter, tree.COL_PATH, where)
                 self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
                 self.model.remove(it)
                 self.treeview.grab_focus()
@@ -708,11 +706,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         parent = Gio.File.new_for_path(entry.path).get_parent()
         display_location = location.get_relative_path(parent)
 
-        def setcol(col, val):
-            self.model.set_value(it, self.model.column_index(col, 0), val)
-        setcol(COL_LOCATION, display_location)
-        setcol(COL_STATUS, entry.get_status())
-        setcol(COL_OPTIONS, entry.options)
+        self.model.set_value(it, COL_LOCATION, display_location)
+        self.model.set_value(it, COL_STATUS, entry.get_status())
+        self.model.set_value(it, COL_OPTIONS, entry.options)
 
     def on_file_changed(self, filename):
         it = self.find_iter_by_name(filename)
