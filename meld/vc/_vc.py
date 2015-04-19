@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2010, 2012-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010, 2012-2015 Kai Willadsen <kai.willadsen@gmail.com>
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
