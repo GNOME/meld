@@ -1,4 +1,66 @@
 
+2015-04-20 meld 3.13.1
+======================
+
+  Features:
+
+   * Previously, Meld could show very different results in file vs. folder
+     comparisons when the files differed in line endings. These are now much
+     more consistent.
+
+      * In folder comparisons, applying filters now also normalises line
+        endings (Kai Willadsen)
+      * In a file comparison, if the files-are-identical notification is shown
+        when files differ in line endings, this now mentioned (Kai Willadsen)
+      * There is a new preferences controlling whether to apply text filters
+        during folder comparisons, defaulting to on, which also controls line
+        ending normalisation (Kai Willadsen)
+      * Help documentation has been updated with details of how text filters
+        are applied in folder comparison (Kai Willadsen)
+
+   * Folder comparisons will now show an identical notification similar to the
+     one used in file comparison (Kai Willadsen)
+   * The "New blank comparion" button now works for folder comparisons as well
+     as file ones (Kai Willadsen)
+   * In folder comparisons, the expansion state of the tree is now remembered
+     when you collapse and re-expand a row (Kai Willadsen)
+
+  Fixes:
+
+   * Install fixes (oco)
+   * Code style fixes (Sandro Bonazzola)
+   * Better support RTL locales by flipping icons and panes consistently (Kai
+     Willadsen)
+   * Fixes for file encoding when saving with bad or missing encodings (Kai
+     Willadsen)
+   * More consistent dialog handling and appearance (Kai Willadsen)
+   * Deprecation updates and compatibility fixes (Kai Willadsen)
+   * Fix bad comparison offset when multiple line breaks occurred on a single
+     line (don't ask) (Kai Willadsen)
+   * Unicode fixes for file change notifications (Kai Willadsen)
+   * Warnings (such as deprecation warnings) are now explicitly silenced in
+     stable Meld (Kai Willadsen)
+   * Folder actions are now disabled while Meld is still scanning folders (Kai
+     Willadsen)
+   * Fix some command line handling for ambiguous relative paths and invalid
+     URIs (Kai Willadsen)
+   * Fix updating the comparison map when a file is updated within Meld (Kai
+     Willadsen)
+
+  Translations:
+
+   * Anders Jonsson (sv)
+   * Cheng-Chia Tseng (zh_TW)
+   * Christian Kirbach (de)
+   * Daniel Mustieles (es)
+   * Jordi Mas (ca)
+   * Marek Černocký (cs)
+   * Matej Urbančič (sl)
+   * Piotr Drąg (pl)
+   * Samir Ribic (bs)
+   * Tibor Kaputa (sk)
+
+
 2014-12-31 meld 3.13.0
 ======================
 
