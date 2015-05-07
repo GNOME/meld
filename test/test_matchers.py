@@ -1,6 +1,6 @@
 
 import unittest
-import matchers
+from meld import matchers
 
 class MatchersTests(unittest.TestCase):
 
@@ -10,9 +10,7 @@ class MatchersTests(unittest.TestCase):
         r = [(0, 2, 3), (4, 5, 3), (10, 8, 2), (15, 10, 0)]
         matcher = matchers.MyersSequenceMatcher(None, a, b)
         blocks = matcher.get_matching_blocks()
-        self.assertEqual(len(blocks), len(r))
-        for i in range(len(blocks)):
-            self.assertEqual(blocks[i], r[i])
+        self.assertEqual(blocks, r)
 
     def testPostprocessingCleanup(self):
         a = list('abcfabgcd')
@@ -20,9 +18,7 @@ class MatchersTests(unittest.TestCase):
         r = [(0, 2, 3), (4, 6, 3), (7, 12, 2), (9, 14, 0)]
         matcher = matchers.MyersSequenceMatcher(None, a, b)
         blocks = matcher.get_matching_blocks()
-        self.assertEqual(len(blocks), len(r))
-        for i in range(len(blocks)):
-            self.assertEqual(blocks[i], r[i])
+        self.assertEqual(blocks, r)
 
     def testInlineMatcher(self):
         a = 'red, blue, yellow, white'
@@ -30,9 +26,7 @@ class MatchersTests(unittest.TestCase):
         r = [(17, 16, 7), (24, 23, 0)]
         matcher = matchers.InlineMyersSequenceMatcher(None, a, b)
         blocks = matcher.get_matching_blocks()
-        self.assertEqual(len(blocks), len(r))
-        for i in range(len(blocks)):
-            self.assertEqual(blocks[i], r[i])
+        self.assertEqual(blocks, r)
 
     def testSyncPointMatcher0(self):
         a = list('012a3456c789')
@@ -40,9 +34,7 @@ class MatchersTests(unittest.TestCase):
         r = [(0, 0, 1), (3, 1, 3), (6, 7, 2), (9, 9, 2), (12, 11, 0)]
         matcher = matchers.SyncPointMyersSequenceMatcher(None, a, b)
         blocks = matcher.get_matching_blocks()
-        self.assertEqual(len(blocks), len(r))
-        for i in range(len(blocks)):
-            self.assertEqual(blocks[i], r[i])
+        self.assertEqual(blocks, r)
 
     def testSyncPointMatcher1(self):
         a = list('012a3456c789')
@@ -50,19 +42,15 @@ class MatchersTests(unittest.TestCase):
         r = [(0, 0, 1), (1, 4, 2), (6, 7, 2), (9, 9, 2), (12, 11, 0)]
         matcher = matchers.SyncPointMyersSequenceMatcher(None, a, b, [(3,6)])
         blocks = matcher.get_matching_blocks()
-        self.assertEqual(len(blocks), len(r))
-        for i in range(len(blocks)):
-            self.assertEqual(blocks[i], r[i])
+        self.assertEqual(blocks, r)
 
     def testSyncPointMatcher2(self):
         a = list('012a3456c789')
         b = list('02a341b5678')
-        r = [(0, 0, 1), (2, 1, 4), (9, 9, 2), (12, 11, 0)]
+        r = [(0, 0, 1), (2, 1, 1), (3, 2, 3), (9, 9, 2), (12, 11, 0)]
         matcher = matchers.SyncPointMyersSequenceMatcher(None, a, b, [(3,2), (8,6)])
         blocks = matcher.get_matching_blocks()
-        self.assertEqual(len(blocks), len(r))
-        self.assertEqual(blocks[0], r[0])
-        self.assertEqual(blocks[1], r[1])
+        self.assertEqual(blocks, r)
 
 if __name__ == '__main__':
     unittest.main()

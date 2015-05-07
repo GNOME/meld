@@ -292,6 +292,10 @@ def push():
 def cli():
     pass
 
+@cli.command()
+def test():
+    cmd = ['python', '-m', 'unittest', 'discover']
+    call_with_output(cmd, echo_stdout=True)    
 
 @cli.command()
 def news():
