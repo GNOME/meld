@@ -271,7 +271,8 @@ def commit(message=None):
 
     cmd = ['git', 'commit', '-a']
     if message:
-        cmd.append('-m ' + message)
+        cmd.append('-m')
+        cmd.append(message)
     call_with_output(cmd, timeout=None)
 
 
