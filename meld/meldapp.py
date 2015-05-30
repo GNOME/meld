@@ -336,7 +336,8 @@ class MeldApp(Gtk.Application):
                     tab.set_labels(options.label)
 
                 if options.outfile and isinstance(tab, filediff.FileDiff):
-                    tab.set_merge_output_file(options.outfile)
+                    outfile = make_file_from_command_line(options.outfile)
+                    tab.set_merge_output_file(outfile.get_path())
 
         if error:
             log.debug("Couldn't open comparison: %s", error)
