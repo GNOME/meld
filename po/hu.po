@@ -3,23 +3,23 @@
 # Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013. Free Software Foundation, Inc.
 #
 # CSÉCSY László <boobaa at ajrg dot hu>, 2005.
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013, 2014.
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013, 2014, 2015.
 # Balázs Úr <urbalazs at gmail dot com>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-12-19 22:52+0000\n"
-"PO-Revision-Date: 2014-12-20 00:18+0100\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"POT-Creation-Date: 2015-05-08 22:32+0000\n"
+"PO-Revision-Date: 2015-05-31 23:54+0200\n"
+"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: ../bin/meld:138
 msgid "Cannot import: "
@@ -80,7 +80,6 @@ msgid "Default window size"
 msgstr "Alapértelmezett ablakméret"
 
 #: ../data/org.gnome.meld.gschema.xml.h:2
-#| msgid "Default window size"
 msgid "Default window state"
 msgstr "Alapértelmezett ablakállapot"
 
@@ -160,6 +159,8 @@ msgid ""
 "Selector for individual whitespace character types to be shown. Possible "
 "values are 'space', 'tab', 'newline' and 'nbsp'."
 msgstr ""
+"A megjelenítendő egyedi üres hely karaktertípusok listája. A lehetséges "
+"értékek: „space”, „tab”, „newline”, és „nbsp”."
 
 #: ../data/org.gnome.meld.gschema.xml.h:19
 msgid "Wrap mode"
@@ -171,6 +172,9 @@ msgid ""
 "not at all ('none'), at any character ('char') or only at the end of words "
 "('word')."
 msgstr ""
+"A fájl-összehasonlításban a sorok ezen beállításnak megfelelően fognak törni. "
+"Lehetséges értékek: „none” (ne törjön), „char” (bármely karakter) vagy „word” "
+"(csak szavak végén)."
 
 #: ../data/org.gnome.meld.gschema.xml.h:21
 msgid "Highlight current line"
@@ -180,7 +184,7 @@ msgstr "A jelenlegi sor kiemelése"
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
-msgstr ""
+msgstr "A kurzort tartalmazó sor kiemelése a fájl-összehasonlításokban."
 
 #: ../data/org.gnome.meld.gschema.xml.h:23
 msgid "Use the system default monospace font"
@@ -192,6 +196,8 @@ msgid ""
 "If false, the defined custom font will be used instead of the system "
 "monospace font."
 msgstr ""
+"A rendszer rögzített szélességű betűkészlete helyett az egyéni lesz "
+"használva, ha hamis."
 
 #: ../data/org.gnome.meld.gschema.xml.h:25
 msgid "Custom font"
@@ -202,15 +208,18 @@ msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
 msgstr ""
+"Használandó egyéni betűkészlet, karakterláncként tárolva és Pango "
+"betűleírásként feldolgozva."
 
 #: ../data/org.gnome.meld.gschema.xml.h:27
 msgid "Ignore blank lines when comparing files"
-msgstr ""
+msgstr "Üres sorok figyelmen kívül hagyása fájlok összehasonlításakor"
 
 #: ../data/org.gnome.meld.gschema.xml.h:28
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
+"Az üres sorok ki lesznek hagyva a fájlok közti különbségek kiemelésekor."
 
 #: ../data/org.gnome.meld.gschema.xml.h:29
 msgid "Use the system default editor"
@@ -221,16 +230,20 @@ msgid ""
 "If false, the defined custom editor will be used instead of the system "
 "editor when opening files externally."
 msgstr ""
+"Ha hamis, a custom-editor-command lesz a rendszer alapértelmezett "
+"szerkesztője helyett használva."
 
 #: ../data/org.gnome.meld.gschema.xml.h:31
 msgid "The custom editor launch command"
-msgstr ""
+msgstr "Az egyéni szerkesztőt indító parancs"
 
 #: ../data/org.gnome.meld.gschema.xml.h:32
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr ""
+"Az egyéni szerkesztőt indító parancs. Ez a kulcs korlátozottan támogat "
+"sablonokat is. Jelenleg a {file} és {line} a felismert helyettesítők."
 
 #: ../data/org.gnome.meld.gschema.xml.h:33
 msgid "Columns to display"
@@ -241,6 +254,7 @@ msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
 msgstr ""
+"Oszlopnevek listája a mappa-összehasonlításban, és hogy megjelenítendők-e."
 
 #: ../data/org.gnome.meld.gschema.xml.h:35 ../data/ui/preferences.ui.h:30
 msgid "Ignore symbolic links"
@@ -251,6 +265,8 @@ msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
 msgstr ""
+"A mappa-összehasonlítások nem követik a szimbolikus linkeket a mappafa "
+"bejárásakor."
 
 #: ../data/org.gnome.meld.gschema.xml.h:37
 msgid "Use shallow comparison"
@@ -262,6 +278,9 @@ msgid ""
 "considering files to be identical if their size and mtime match, and "
 "different otherwise."
 msgstr ""
+"A mappa-összehasonlítások a fájlokat csak a méret és módosítási idő alapján "
+"hasonlítják össze, a fájlokat azonosnak tekintik a méret és módosítási idő "
+"egyezésekor, és eltérőnek egyébként."
 
 #: ../data/org.gnome.meld.gschema.xml.h:39
 msgid "File timestamp resolution"
@@ -274,6 +293,10 @@ msgid ""
 "is useful when comparing files between filesystems with different timestamp "
 "resolution."
 msgstr ""
+"A módosítási idő szerinti összehasonlításkor ez a minimális eltérés "
+"nanomásodpercben a két fájl között, mielőtt a módosítási idők eltérőnek "
+"számítanának. Ez eltérő időbélyeg-felbontással rendelkező fájlrendszereken "
+"lévő fájlok összehasonlításakor hasznos."
 
 #: ../data/org.gnome.meld.gschema.xml.h:41
 msgid "File status filters"
@@ -282,6 +305,8 @@ msgstr "Fájlállapotszűrők"
 #: ../data/org.gnome.meld.gschema.xml.h:42
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
+"A mappa-összehasonlításban látható fájlok szűrésére használt állapotok "
+"listája."
 
 #: ../data/org.gnome.meld.gschema.xml.h:43
 msgid "Show the version control console output"
@@ -292,9 +317,10 @@ msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
 msgstr ""
+"A verziókövető nézetekben megjelenik egy konzolos kimenet szakasz, amely a "
+"verziókövetési műveletekhez használt parancsokat jeleníti meg."
 
 #: ../data/org.gnome.meld.gschema.xml.h:45
-#| msgid "Version control view"
 msgid "Version control pane position"
 msgstr "Verziókövetés ablaktábla pozíciója"
 
@@ -302,11 +328,11 @@ msgstr "Verziókövetés ablaktábla pozíciója"
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
-msgstr ""
+msgstr "A fő verziókövetési fa magassága, amikor a konzol ablaktábla látható."
 
 #: ../data/org.gnome.meld.gschema.xml.h:47
 msgid "Present version comparisons as left-local/right-remote"
-msgstr ""
+msgstr "Verzió-összehasonlítások megjelenítése mint bal-helyi / jobb-távoli"
 
 #: ../data/org.gnome.meld.gschema.xml.h:48
 msgid ""
@@ -314,11 +340,14 @@ msgid ""
 "remote scheme to determine what order to present files in panes. Otherwise, "
 "a left-is-theirs, right-is-mine scheme is used."
 msgstr ""
+"A verziókövető összehasonlítások a bal-helyi, jobb-távoli sémát használják-e "
+"a fájlok megjelenítéséhez az ablaktáblákon. Ha nincs bejelölve, a bal-övék, "
+"jobb-enyém séma kerül felhasználásra."
 
 #: ../data/org.gnome.meld.gschema.xml.h:49
-#| msgid "Start a version control comparison"
 msgid "Order for files in three-way version control merge comparisons"
 msgstr ""
+"Fájlok sorrendje a háromutas verziókövetési összefésülési összehasonlításokban"
 
 #: ../data/org.gnome.meld.gschema.xml.h:50
 msgid ""
@@ -326,36 +355,45 @@ msgid ""
 "preference only affects three-way comparisons launched from the version "
 "control view, so is used solely for merges/conflict resolution within Meld."
 msgstr ""
+"A lehetséges fájlsorrendek a távoli/összefésült/helyi és "
+"helyi/összefésült/távoli. Ez a beállítás csak a verziókövető nézetből "
+"indított háromutas összehasonlításokat befolyásolja, így csak a Melden belüli "
+"összefésülésekhez/ütközésfeloldásokhoz kerül felhasználásra."
 
 #: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Show margin in commit message editor"
-msgstr ""
+msgstr "Margó megjelenítése a kommitüzenet-szerkesztőben"
 
 #: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
 msgstr ""
+"Megjelenjen-e egy útmutató, jelezve, hogy a margó melyik oszlopban van a "
+"verziókövetési kommitüzenet-szerkesztőben."
 
 #: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Margin column in commit message editor"
-msgstr ""
+msgstr "Margó oszlop a kommitüzenet-szerkesztőben"
 
 #: ../data/org.gnome.meld.gschema.xml.h:54
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
 msgstr ""
+"A margó megjelenítése ebben az oszlopban a verziókövető "
+"kommitüzenet-szerkesztőjében."
 
 #: ../data/org.gnome.meld.gschema.xml.h:55
 msgid "Automatically hard-wrap commit messages"
-msgstr ""
+msgstr "Kommitüzenetek automatikus törése"
 
 #: ../data/org.gnome.meld.gschema.xml.h:56
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the defined commit margin before commit."
 msgstr ""
+"A verziókövető szúrjon-e be sortöréseket a kommit margónál a kommit előtt."
 
 #: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Version control status filters"
@@ -365,6 +403,9 @@ msgstr "Verziókövetési állapotszűrők"
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
+"A verziókövetési összehasonlításban látható fájlok szűrésére használt "
+"állapotok "
+"listája."
 
 #: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Filename-based filters"
@@ -375,6 +416,8 @@ msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
 msgstr ""
+"Előre megadott fájlnév alapú szűrők listája, amelyekre illeszkedő fájlok "
+"eltávolításra kerülnek a mappa-összehasonlításból."
 
 #: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Text-based filters"
@@ -386,6 +429,9 @@ msgid ""
 "text from being used in a file comparison. The text will still be displayed, "
 "but won't contribute to the comparison itself."
 msgstr ""
+"Előre megadott szövegalapú reguláris kifejezés szűrők listája, amelyekre "
+"illeszkedő szöveg eltávolításra kerül a fájl-összehasonlításból. A szöveg "
+"megjelenítésre kerül, de nem fog részt venni magában az összehasonlításban."
 
 #: ../data/ui/application.ui.h:1
 msgid "About Meld"
@@ -453,7 +499,7 @@ msgstr "Másolás a jobb oldalra"
 msgid "Delete selected"
 msgstr "Kijelölt törlése"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1460
+#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1463
 msgid "Hide"
 msgstr "Elrejtés"
 
@@ -589,17 +635,14 @@ msgstr ""
 "módosításokat végezhet, de ezeket a módosításokat új fájlba kell mentenie."
 
 #: ../data/ui/filediff.ui.h:7
-#| msgid "_File"
 msgid "File 3"
 msgstr "3. fájl"
 
 #: ../data/ui/filediff.ui.h:8
-#| msgid "_File"
 msgid "File 2"
 msgstr "2. fájl"
 
 #: ../data/ui/filediff.ui.h:9
-#| msgid "_File"
 msgid "File 1"
 msgstr "1. fájl"
 
@@ -688,12 +731,10 @@ msgid "Left is local, right is remote"
 msgstr "Bal a helyi, jobb a távoli"
 
 #: ../data/ui/preferences.ui.h:3
-#| msgid "Left is remote, right is local"
 msgid "Remote, merge, local"
 msgstr "Távoli, összefésült, helyi"
 
 #: ../data/ui/preferences.ui.h:4
-#| msgid "Left is local, right is remote"
 msgid "Local, merge, remote"
 msgstr "Helyi, összefésült, távoli"
 
@@ -810,7 +851,6 @@ msgid "Version Comparisons"
 msgstr "Verzió-összehasonlítás"
 
 #: ../data/ui/preferences.ui.h:34
-#| msgid "_When comparing file revisions:"
 msgid "_Order when comparing file revisions:"
 msgstr "So_rrend fájlrevíziók összehasonlításakor:"
 
@@ -835,7 +875,6 @@ msgid "Version Control"
 msgstr "Verziókövetés"
 
 #: ../data/ui/preferences.ui.h:40
-#| msgid "Filename-based filters"
 msgid "Filename filters"
 msgstr "Fájlnév szűrők"
 
@@ -862,7 +901,6 @@ msgid "Trim blank line differences from the start and end of changes"
 msgstr "Üres sorokból álló eltérés lenyírása a módosítások elejéről és végéről"
 
 #: ../data/ui/preferences.ui.h:45
-#| msgid "Text Filters"
 msgid "Text filters"
 msgstr "Szövegszűrők"
 
@@ -997,7 +1035,6 @@ msgid "Console"
 msgstr "Konzol"
 
 #: ../data/ui/vcview.ui.h:19
-#| msgid "Show the version control console output"
 msgid "Show or hide the version control console output pane"
 msgstr "A verziókövetési konzolkimenet ablaktábla megjelenítése/elrejtése"
 
@@ -1140,8 +1177,8 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "„%s” rejtve „%s” által"
 
-#: ../meld/dirdiff.py:873 ../meld/filediff.py:1135 ../meld/filediff.py:1286
-#: ../meld/filediff.py:1462 ../meld/filediff.py:1492 ../meld/filediff.py:1494
+#: ../meld/dirdiff.py:873 ../meld/filediff.py:1138 ../meld/filediff.py:1289
+#: ../meld/filediff.py:1465 ../meld/filediff.py:1495 ../meld/filediff.py:1497
 msgid "Hi_de"
 msgstr "_Elrejtés"
 
@@ -1364,76 +1401,73 @@ msgstr ""
 "„%s” szűrő megváltoztatta a fájl sorainak számát. Az összehasonlítás hibás "
 "lesz. További részletekért lásd a felhasználói kézikönyvet."
 
-#: ../meld/filediff.py:901
-#| msgid "Mar_k as Resolved"
+#: ../meld/filediff.py:904
 msgid "Mark conflict as resolved?"
 msgstr "Megjelöli az ütközést feloldottként?"
 
-#: ../meld/filediff.py:903
+#: ../meld/filediff.py:906
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Ha az ütközést sikeresen feloldotta, akkor most megjelölheti feloldottként."
 
-#: ../meld/filediff.py:905
-#| msgid "_Cancel"
+#: ../meld/filediff.py:908
 msgid "Cancel"
 msgstr "Mégse"
 
-#: ../meld/filediff.py:906
-#| msgid "Mar_k as Resolved"
+#: ../meld/filediff.py:909
 msgid "Mark _Resolved"
 msgstr "Megjelölés _feloldottként"
 
-#: ../meld/filediff.py:1122
+#: ../meld/filediff.py:1125
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Panelek számának beállítása"
 
-#: ../meld/filediff.py:1129
+#: ../meld/filediff.py:1132
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Fájlok megnyitása"
 
-#: ../meld/filediff.py:1152 ../meld/filediff.py:1162 ../meld/filediff.py:1175
-#: ../meld/filediff.py:1181
+#: ../meld/filediff.py:1155 ../meld/filediff.py:1165 ../meld/filediff.py:1178
+#: ../meld/filediff.py:1184
 msgid "Could not read file"
 msgstr "A fájl nem olvasható"
 
-#: ../meld/filediff.py:1153
+#: ../meld/filediff.py:1156
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Fájlok olvasása"
 
-#: ../meld/filediff.py:1163
+#: ../meld/filediff.py:1166
 #, python-format
 msgid "%s appears to be a binary file."
 msgstr "%s bináris fájlnak tűnik."
 
-#: ../meld/filediff.py:1176
+#: ../meld/filediff.py:1179
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s nincs a kódolások között: %s"
 
-#: ../meld/filediff.py:1214
+#: ../meld/filediff.py:1217
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Eltérések számítása"
 
-#: ../meld/filediff.py:1281
+#: ../meld/filediff.py:1284
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "%s fájl megváltozott a lemezen"
 
-#: ../meld/filediff.py:1282
+#: ../meld/filediff.py:1285
 msgid "Do you want to reload the file?"
 msgstr "Újratölti a fájlt?"
 
-#: ../meld/filediff.py:1285
+#: ../meld/filediff.py:1288
 msgid "_Reload"
 msgstr "Új_ratöltés"
 
-#: ../meld/filediff.py:1451
+#: ../meld/filediff.py:1454
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1441,19 +1475,19 @@ msgstr ""
 "Szöveges szűrők vannak használatban, és elfedhetik a fájlok közti "
 "különbségeket. Szeretné a szűretlen fájlokat összehasonlítani?"
 
-#: ../meld/filediff.py:1457
+#: ../meld/filediff.py:1460
 msgid "Files are identical"
 msgstr "A fájlok azonosak"
 
-#: ../meld/filediff.py:1465
+#: ../meld/filediff.py:1468
 msgid "Show without filters"
 msgstr "Megjelenítés szűrők nélkül"
 
-#: ../meld/filediff.py:1487
+#: ../meld/filediff.py:1490
 msgid "Change highlighting incomplete"
 msgstr "Részleges kiemelés módosítása"
 
-#: ../meld/filediff.py:1488
+#: ../meld/filediff.py:1491
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1461,15 +1495,15 @@ msgstr ""
 "Egyes változtatások nincsenek kiemelve, mert túl nagyok. A Meld kiemelheti "
 "ezeket a nagyobb változtatásokat, de lassú lehet."
 
-#: ../meld/filediff.py:1496
+#: ../meld/filediff.py:1499
 msgid "Keep highlighting"
 msgstr "Kiemelés továbbra is"
 
-#: ../meld/filediff.py:1498
+#: ../meld/filediff.py:1501
 msgid "_Keep highlighting"
 msgstr "_Kiemelés továbbra is"
 
-#: ../meld/filediff.py:1627
+#: ../meld/filediff.py:1630
 #, python-format
 msgid ""
 "\"%s\" exists!\n"
@@ -1478,7 +1512,7 @@ msgstr ""
 "„%s” létezik!\n"
 "Felülírja?"
 
-#: ../meld/filediff.py:1640
+#: ../meld/filediff.py:1643
 #, python-format
 msgid ""
 "Error writing to %s\n"
@@ -1489,36 +1523,36 @@ msgstr ""
 "\n"
 "%s."
 
-#: ../meld/filediff.py:1651
+#: ../meld/filediff.py:1654
 msgid "Save Left Pane As"
 msgstr "Bal ablaktábla mentése másként"
 
-#: ../meld/filediff.py:1653
+#: ../meld/filediff.py:1656
 msgid "Save Middle Pane As"
 msgstr "Középső ablaktábla mentése másként"
 
-#: ../meld/filediff.py:1655
+#: ../meld/filediff.py:1658
 msgid "Save Right Pane As"
 msgstr "Jobb ablaktábla mentése másként"
 
-#: ../meld/filediff.py:1668
+#: ../meld/filediff.py:1671
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "A(z) %s fájl megváltozott a lemezen a megnyitása óta"
 
-#: ../meld/filediff.py:1670
+#: ../meld/filediff.py:1673
 msgid "If you save it, any external changes will be lost."
 msgstr "Ha menti, minden külső változtatás elvész."
 
-#: ../meld/filediff.py:1673
+#: ../meld/filediff.py:1676
 msgid "Save Anyway"
 msgstr "Mentés mindenképp"
 
-#: ../meld/filediff.py:1674
+#: ../meld/filediff.py:1677
 msgid "Don't Save"
 msgstr "Ne mentse"
 
-#: ../meld/filediff.py:1698
+#: ../meld/filediff.py:1701
 #, python-format
 msgid ""
 "This file '%s' contains a mixture of line endings.\n"
@@ -1529,7 +1563,7 @@ msgstr ""
 "\n"
 "Melyik formátumot szeretné használni?"
 
-#: ../meld/filediff.py:1714
+#: ../meld/filediff.py:1717
 #, python-format
 msgid ""
 "'%s' contains characters not encodable with '%s'\n"
@@ -1538,11 +1572,11 @@ msgstr ""
 "„%s” „%s” használatával kódolhatatlan karaktereket tartalmaz\n"
 "Szeretné UTF-8 kódolással menteni?"
 
-#: ../meld/filediff.py:2077
+#: ../meld/filediff.py:2084
 msgid "Live comparison updating disabled"
 msgstr "Az élő összehasonlítás-frissítés kikapcsolva"
 
-#: ../meld/filediff.py:2078
+#: ../meld/filediff.py:2085
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1590,13 +1624,11 @@ msgid "Start a 2- or 3-way file comparison"
 msgstr "2 vagy 3 utas fájl-összehasonlítás indítása"
 
 #: ../meld/meldapp.py:181
-#| msgid "Start a 2- or 3-way file comparison"
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "2 vagy 3 utas mappa-összehasonlítás indítása"
 
 #: ../meld/meldapp.py:224
 #, python-format
-#| msgid "Error"
 msgid "Error: %s\n"
 msgstr "Hiba: %s\n"
 
@@ -1856,7 +1888,6 @@ msgid "Open recent files"
 msgstr "Legutóbbi fájlok megnyitása"
 
 #: ../meld/meldwindow.py:164
-#| msgid "Meld"
 msgid "_Meld"
 msgstr "_Meld"
 
@@ -1865,7 +1896,6 @@ msgid "Quit the program"
 msgstr "Kilépés a programból"
 
 #: ../meld/meldwindow.py:167
-#| msgid "_Preferences"
 msgid "Prefere_nces"
 msgstr "B_eállítások"
 
@@ -1882,7 +1912,6 @@ msgid "Open the Meld manual"
 msgstr "A Meld kézikönyvének megnyitása"
 
 #: ../meld/meldwindow.py:173
-#| msgid "Configure the application"
 msgid "About this application"
 msgstr "Az alkalmazás névjegye"
 
@@ -1985,7 +2014,6 @@ msgid "Newly added"
 msgstr "Újonnan hozzáadott"
 
 #: ../meld/vc/_vc.py:72
-#| msgid "<unnamed>"
 msgid "Renamed"
 msgstr "Átnevezve"
 
@@ -2082,19 +2110,16 @@ msgstr "%s – távoli"
 
 #: ../meld/vcview.py:531
 #, python-format
-#| msgid "Left is local, right is remote"
 msgid "%s (local, merge, remote)"
 msgstr "%s (helyi, összefésült, távoli)"
 
 #: ../meld/vcview.py:536
 #, python-format
-#| msgid "Left is remote, right is local"
 msgid "%s (remote, merge, local)"
 msgstr "%s (távoli, összefésült, helyi)"
 
 #: ../meld/vcview.py:547
 #, python-format
-#| msgid "Invalid repository"
 msgid "%s — repository"
 msgstr "%s – tároló"
 
