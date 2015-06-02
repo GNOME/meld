@@ -238,7 +238,7 @@ class BufferLines(object):
             if hi - lo != len(lines):
                 # These codepoints are considered line breaks by Python, but
                 # not by GtkTextStore.
-                additional_breaks = set(('\x0c', '\x85'))
+                additional_breaks = set(('\x0c', '\x85', u'\u2028'))
                 i = 0
                 while i < len(ends):
                     line, end = lines[i], ends[i]
