@@ -314,12 +314,11 @@ class MeldApp(Gtk.Application):
 
         tab = None
         error = None
-        comparisons = options.diff + [args]
+        comparisons = [args] + options.diff
         options.newtab = options.newtab or not command_line.get_is_remote()
         for i, paths in enumerate(comparisons):
             files = [make_file_from_command_line(p) for p in paths]
-            auto_merge = (
-                options.auto_merge if i == len(comparisons) - 1 else False)
+            auto_merge = options.auto_merge and i == 0
             try:
                 for p, f in zip(paths, files):
                     if f.get_path() is None:
