@@ -330,6 +330,9 @@ class MeldApp(Gtk.Application):
             except ValueError as err:
                 error = err
             else:
+                if i > 0:
+                    continue
+
                 if options.label:
                     tab.set_labels(options.label)
 
