@@ -23,6 +23,14 @@ merge file differences.
 .br
 Automatically compare all differing files on startup.
 .TP
+\fB\-\-auto\-merge\fR
+.br
+Automatically merge files
+.TP
+\fB\-\-comparison\-file=<file>\fR
+.br
+Load a saved comparison from a Meld comparison file
+.TP
 \fB\-\-diff FILE1|DIR1 FILE2|DIR2 [FILE3|DIR3]\fR
 .br
 Create a diff tab for the given files or directories.
@@ -39,6 +47,20 @@ Print application help and usage.
 \fB\-\-label=<label>, \-L <label>\fR
 .br
 Set application window title to <label>.
+.TP
+\fB\-\-newtab, \-n\fR
+.br
+Open the comparison as a new tab in an already-running instance.
+.TP
+\fB\-\-output, \-o\fR
+.br
+Sets the save path for the middle buffer in a three-pane merge view. This is
+useful for loading the middle buffer from one file and saving it to another,
+for example in use as a version control merge helper.
+.TP
+\fB\-\-unified, \-u\fR
+.br
+Ignored for compatibility
 .TP
 \fB\-\-version\fR
 .br
