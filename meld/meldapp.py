@@ -69,7 +69,6 @@ class MeldApp(Gtk.Application):
         self.get_active_window().present()
 
     def do_command_line(self, command_line):
-        self.activate()
         tab = self.parse_args(command_line)
 
         if isinstance(tab, int):
@@ -87,7 +86,7 @@ class MeldApp(Gtk.Application):
         window = self.get_active_window().meldwindow
         if not window.has_pages():
             window.append_new_comparison()
-        window.widget.present()
+        self.activate()
         return 0
 
     def do_window_removed(self, widget):
