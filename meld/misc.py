@@ -154,6 +154,9 @@ def fallback_decode(bytes, encodings, lossy=False):
     If lossy is True, then decode errors will be replaced. This may be
     reasonable when the string is for display only.
     """
+    if isinstance(bytes, unicode):
+        return bytes
+
     for encoding in encodings:
         try:
             return bytes.decode(encoding)
