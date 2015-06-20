@@ -93,10 +93,10 @@ class RecentFiles(object):
         if None in paths:
             return
 
-        paths = [unicodeify(p) for p in paths]
         # If a (type, paths) comparison is already registered, then re-add
         # the corresponding comparison file
         comparison_key = (comp_type, tuple(paths))
+        paths = [unicodeify(p) for p in paths]
         if comparison_key in self._stored_comparisons:
             gio_file = Gio.File.new_for_uri(self._stored_comparisons[comparison_key])
         else:
