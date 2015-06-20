@@ -182,6 +182,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "ignored": ("VcShowIgnored", entry_ignored),
     }
 
+    file_encoding = sys.getfilesystemencoding()
+
+    @classmethod
+    def display_path(cls, bytes):
+        encodings = (cls.file_encoding,)
+        return misc.fallback_decode(bytes, encodings, lossy=True)
+
     def __init__(self):
         melddoc.MeldDoc.__init__(self)
         gnomeglade.Component.__init__(self, "vcview.ui", "vcview",
@@ -413,10 +420,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return recent.TYPE_VC, [self.location]
 
     def recompute_label(self):
-        location = self.location
-        if isinstance(location, str):
-            location = location.decode(
-                sys.getfilesystemencoding(), 'replace')
+        location = self.display_path(self.location)
         self.label_text = os.path.basename(location)
         # TRANSLATORS: This is the location of the directory the user is diffing
         self.tooltip_text = _("%s: %s") % (_("Location"), location)
@@ -424,7 +428,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def _search_recursively_iter(self, iterstart):
         rootname = self.model.get_file_path(iterstart)
-        prefixlen = len(self.location) + 1
+        prefixlen = len(rootname) + 1
+        display_prefix = len(self.display_path(rootname)) + 1
         symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
 
@@ -433,7 +438,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         filters = [a[1] for a in self.state_actions.values() if
                    active_action(a[0]) and a[1]]
 
-        yield _("Scanning %s") % rootname
         self.vc.cache_inventory(rootname)
         while todo:
             # This needs to happen sorted and depth-first in order for our row
@@ -441,7 +445,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             todo.sort()
             treepath, path = todo.pop(0)
             it = self.model.get_iter(treepath)
-            yield _("Scanning %s") % path[prefixlen:]
+            yield _("Scanning %s") % self.display_path(path)[display_prefix:]
 
             entries = self.vc.listdir(path)
             entries = [e for e in entries if any(f(e) for f in filters)]
@@ -451,7 +455,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                         st = os.lstat(e.path)
                     # Covers certain unreadable symlink cases; see bgo#585895
                     except OSError as err:
-                        error_string = "%s: %s" % (e.path, err.strerror)
+                        error_string = "%r: %s" % (e.path, err.strerror)
                         self.model.add_error(it, error_string, 0)
                         continue
 
@@ -514,7 +518,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         left_is_local = self.props.left_is_local
-        basename = os.path.basename(path)
+        basename = self.display_path(os.path.basename(path))
         meta = {
             'parent': self,
             'prompt_resolve': False,
