@@ -126,6 +126,11 @@ class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
         tree.DiffTreeStore.__init__(self, 1, [str] * 5)
 
+    def get_file_path(self, it):
+        # Use instead of value_path; does not incorrectly decode
+        return self.get_value(it, self.column_index(tree.COL_PATH, 0))
+
+
 ################################################################################
 # filters
 ################################################################################
@@ -418,7 +423,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.label_changed()
 
     def _search_recursively_iter(self, iterstart):
-        rootname = self.model.value_path(iterstart, 0)
+        rootname = self.model.get_file_path(iterstart)
         prefixlen = len(self.location) + 1
         symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
@@ -499,7 +504,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             else:
                 self.treeview.expand_row(path, False)
         else:
-            path = self.model.value_path(it, 0)
+            path = self.model.get_file_path(it)
             if not self.model.is_folder(it, 0, path):
                 self.run_diff(path)
 
@@ -613,7 +618,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             selection = self.treeview.get_selection()
         model, rows = selection.get_selected_rows()
         if hasattr(self.vc, 'update_actions_for_paths'):
-            paths = [self.model.value_path(model.get_iter(r), 0) for r in rows]
+            paths = [self.model.get_file_path(model.get_iter(r)) for r in rows]
             states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
             action_sensitivity = {
                 "VcCompare": False,
@@ -637,7 +642,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def _get_selected_files(self):
         model, rows = self.treeview.get_selection().get_selected_rows()
-        sel = [self.model.value_path(self.model.get_iter(r), 0) for r in rows]
+        sel = [self.model.get_file_path(self.model.get_iter(r)) for r in rows]
         # Remove empty entries and trailing slashes
         return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
 
@@ -793,7 +798,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._open_files(self._get_selected_files())
 
     def refresh(self):
-        self.set_location(self.model.value_path(self.model.get_iter_first(), 0))
+        self.set_location(self.model.get_file_path(self.model.get_iter_first()))
 
     def refresh_partial(self, where):
         if not self.actiongroup.get_action("VcFlatten").get_active():
@@ -827,25 +832,26 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_file_changed(self, filename):
         it = self.find_iter_by_name(filename)
         if it:
-            path = self.model.value_path(it, 0)
+            path = self.model.get_file_path(it)
             self.vc.update_file_state(path)
             files = self.vc.lookup_files([], [(os.path.basename(path), path)])[1]
             for e in files:
                 if e.path == path:
-                    prefixlen = 1 + len( self.model.value_path( self.model.get_iter_first(), 0 ) )
+                    prefixlen = 1 + len(
+                        self.model.get_file_path(self.model.get_iter_first()))
                     self._update_item_state( it, e, e.parent[prefixlen:])
                     return
 
     def find_iter_by_name(self, name):
         it = self.model.get_iter_first()
-        path = self.model.value_path(it, 0)
+        path = self.model.get_file_path(it)
         while it:
             if name == path:
                 return it
             elif name.startswith(path):
                 child = self.model.iter_children( it )
                 while child:
-                    path = self.model.value_path(child, 0)
+                    path = self.model.get_file_path(child)
                     if name == path:
                         return child
                     elif name.startswith(path):
