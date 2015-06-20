@@ -66,8 +66,6 @@ class Vc(_vc.CachedVc):
         "U": _vc.STATE_CONFLICT,  # Unmerged
     }
 
-    file_encoding = sys.getfilesystemencoding()
-
     def __init__(self, location):
         super(Vc, self).__init__(location)
         self._tree_cache = {}
@@ -338,7 +336,6 @@ class Vc(_vc.CachedVc):
             # returned by git as quoted strings
             if name[0] == '"':
                 name = name[1:-1].decode('string_escape')
-            name = name.decode(self.file_encoding)
             return os.path.abspath(
                 os.path.join(self.location, name))
 
