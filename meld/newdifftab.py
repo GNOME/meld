@@ -106,8 +106,13 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
         for chooser in type_choosers[self.diff_type][:num_paths]:
             gfile = chooser.get_file()
             path = gfile.get_path() if gfile else ""
-            path = path.decode('utf8')
             compare_paths.append(path)
+
+        # TODO: We should be migrating to passing around either GFiles
+        # or raw (i.e., not decoded) paths. Currently VcView is the
+        # only thing that expects this.
+        if self.diff_type in (0, 1):
+            compare_paths = [p.decode('utf8') for p in compare_paths]
 
         tab = self.diff_methods[self.diff_type](compare_paths)
         recent_comparisons.add(tab)
