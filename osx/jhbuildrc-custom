@@ -1,0 +1,53 @@
+# -*- mode: python -*-
+
+#prefix = "/opt/gtk"
+checkoutroot = os.path.expanduser("~/Source/gtk")
+
+setup_sdk(target="10.7", sdk_version="10.10", architectures=["x86_64"])
+#setup_sdk(target="10.6", sdk_version="10.6", architectures=["i386"])
+
+_gtk_osx_use_jhbuild_python = True
+
+skip.append("libiconv") # Lion issues
+skip.append("cups")
+skip.append("adwaita-icon-theme")
+
+modules = [
+  "python",
+#  "meta-gtk-osx-bootstrap",
+#  "meta-gtk-osx-core",
+#  "gtk-mac-integration",
+#  "librsvg", "libglade",
+#  "meta-gtk-osx-python",
+#  "meta-gtk-osx-themes",
+  "gtksourceview3",
+  "gsettings-desktop-schemas",
+  "tango-icon-theme",
+  "meta-gtk-osx-gtk3-core-themes"
+]
+
+autogenargs='--disable-static --disable-gtk-doc --disable-documentation ' + \
+            '--disable-docs --enable-introspection'
+
+module_autogenargs['cmake'] = ''# + autogenargs
+module_autogenargs['zlib'] = ''# + autogenargs
+module_autogenargs['gdk-pixbuf'] = '--with-included-loaders ' + autogenargs
+module_autogenargs['pygobject'] = '--disable-introspection --disable-docs  --enable-cairo '
+module_autogenargs['gtk-quartz-engine'] = 'CFLAGS=-Wuninitialized ' + autogenargs
+module_autogenargs['openssl'] = ''# + autogenargs
+module_autogenargs['pango'] = "--with-included-modules " + autogenargs
+#module_autogenargs['gtk+'] = '--with-included-immodules ' + autogenargs
+module_autogenargs['gtk+'] = ' --disable-papi --disable-cups ' + autogenargs
+module_autogenargs['gtk-engines'] = "--disable-all --enable-clearlooks --enable-animation " + autogenargs
+module_autogenargs['gtksourceview'] = '--disable-gtk-doc-html' #--disable-nls ' + autogenargs
+module_autogenargs['gtk-mac-integration'] = '' #'CFLAGS="$CFLAGS -mmacosx-version-min=10.7" '  + autogenargs
+
+
+#`pkg-config gtk+-quartz-2.0 --libs` -L"../Frameworks"
+
+module_autogenargs['gtk+-3.0'] = '--with-included-immodules ' + autogenargs
+
+
+# Can be usefull when tweaking modulesets to avoid jhbuild overwriting:
+#nonetwork=True
+
