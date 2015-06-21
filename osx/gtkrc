@@ -1,0 +1,43 @@
+    
+gtk-icon-theme-name = "Tango"
+#gtk-font-name       = "DejaVa Sans 9"
+gtk-theme-name      = "ClearLooks"
+gtk-enable-mnemonics = 0
+gtk-toolbar-style   = GTK_TOOLBAR_ICONS
+
+
+style "meld-color-scheme"
+{
+    color["insert-bg"] = "DarkSeaGreen1"
+    color["insert-outline"] = shade(0.8, @insert-bg)
+    color["insert-text"] = "#008800"
+
+    color["delete-bg"] = "White"
+    color["delete-outline"] = shade(0.8, @delete-bg)
+    color["delete-text"] = "#880000"
+
+    color["replace-bg"] = "#ddeeff"
+    color["replace-outline"] = shade(0.8, @replace-bg)
+    color["replace-text"] = "#0044dd"
+
+    color["conflict-bg"] = "Pink"
+    color["conflict-outline"] = shade(0.8, @conflict-bg)
+    color["conflict-text"] = "#ff0000"
+
+    color["error-bg"] = "#fce94f"
+    color["error-outline"] = shade(0.8, @error-bg)
+    color["error-text"] = "#faad3d"
+
+    color["inline-bg"] = "LightSteelBlue2"
+    color["inline-fg"] = "Red"
+
+    color["unknown-text"] = "#888888"
+
+    color["current-line-highlight"] = "#ffff00"
+
+    color["syncpoint-outline"] = "#555555"
+
+    color["current-chunk-highlight"] = "#ffffff"
+}
+widget "meldapp.*" style : lowest "meld-color-scheme"
+

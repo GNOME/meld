@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+    <repository type="tarball" name="sourceforge"
+        href="http://downloads.sourceforge.net/sourceforge/"/>
+    <repository type="git" name="git.gnome"
+        href="git://git.gnome.org"/>
+    <repository type="tarball" name="gnome_ftp"
+        href="http://ftp.gnome.org/pub/gnome/"/>
+    <repository type="tarball" name="pypi"
+        href="http://pypi.python.org/packages/source/"/>
+
+    <metamodule id="meld-deps">
+        <dependencies>
+            <dep package="meld-python-deps"/>
+        </dependencies>
+    </metamodule>
+
+    <repository type="tarball" name="openssl"
+        href="http://www.openssl.org/source/"/>
+    <autotools id="openssl" autogen-sh="Configure"
+        autogen-template="%(srcdir)s/%(autogen-sh)s --prefix=%(prefix)s --libdir=%(libdir)s -L%(libdir)s %(autogenargs)s"
+        autogenargs="darwin-i386-cc zlib no-krb5 shared">
+        <!--autogenargs="darwin64-x86_64-cc zlib no-krb5 shared">-->
+        <branch repo="openssl" version="1.0.1e"
+            module="openssl-1.0.1e.tar.gz"
+            hash="md5:66bf6f10f060d561929de96f9dfe5b8c"/>
+    </autotools>
+
+    <autotools id="gtk-mac-bundler" autogen-template="echo no configure">
+        <branch repo="git.gnome" module="gtk-mac-bundler"/>
+    </autotools>
+
+    <metamodule id="meld-python-deps">
+        <dependencies>
+            <dep package="setuptools"/>
+            <dep package="py2app"/>
+            <dep package="pygtksourceview2"/>
+        </dependencies>
+    </metamodule>
+
+    <distutils id="setuptools">
+        <branch repo="pypi" version="0.6c11"
+            module="s/setuptools/setuptools-0.6c11.tar.gz"/>
+    </distutils>
+    <distutils id="pyopenssl">
+        <dependencies>
+            <dep package="openssl"/>
+        </dependencies>
+        <branch repo="pypi" version="0.13"
+            module="p/pyOpenSSL/pyOpenSSL-0.13.tar.gz"/>
+    </distutils>
+    <distutils id="py2app">
+        <branch repo="pypi" version="0.7.3"
+            module="p/py2app/py2app-0.7.3.tar.gz"/>
+    </distutils>
+    <autotools id="pygtksourceview2">
+        <branch repo="gnome_ftp" version="2.10.1"
+            module="sources/pygtksourceview/2.10/pygtksourceview-2.10.1.tar.gz"/>
+    </autotools>
+</moduleset>
