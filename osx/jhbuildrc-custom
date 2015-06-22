@@ -10,16 +10,13 @@ _gtk_osx_use_jhbuild_python = True
 
 skip.append("libiconv") # Lion issues
 skip.append("cups")
-skip.append("adwaita-icon-theme")
+#skip.append("adwaita-icon-theme")
 
 modules = [
   "python",
-#  "meta-gtk-osx-bootstrap",
 #  "meta-gtk-osx-core",
 #  "gtk-mac-integration",
 #  "librsvg", "libglade",
-#  "meta-gtk-osx-python",
-#  "meta-gtk-osx-themes",
   "gtksourceview3",
   "gsettings-desktop-schemas",
   "tango-icon-theme",
@@ -42,11 +39,8 @@ module_autogenargs['gtk-engines'] = "--disable-all --enable-clearlooks --enable-
 module_autogenargs['gtksourceview'] = '--disable-gtk-doc-html' #--disable-nls ' + autogenargs
 module_autogenargs['gtk-mac-integration'] = '' #'CFLAGS="$CFLAGS -mmacosx-version-min=10.7" '  + autogenargs
 
-
 #`pkg-config gtk+-quartz-2.0 --libs` -L"../Frameworks"
-
 module_autogenargs['gtk+-3.0'] = '--with-included-immodules ' + autogenargs
-
 
 # Can be usefull when tweaking modulesets to avoid jhbuild overwriting:
 #nonetwork=True
