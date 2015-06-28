@@ -24,6 +24,7 @@ from gi.repository import GObject
 from gi.repository import GtkSource
 
 from meld.conf import _
+from meld.misc import fallback_decode
 from meld.settings import bind_settings, meldsettings
 from meld.util.compat import text_type
 
@@ -113,7 +114,7 @@ class MeldBufferData(GObject.GObject):
     def __init__(self, filename=None):
         GObject.GObject.__init__(self)
         self.reset()
-        self._label = self.filename = filename
+        self.label = self.filename = filename
 
     def reset(self):
         self.modified = False
@@ -134,11 +135,14 @@ class MeldBufferData(GObject.GObject):
     @property
     def label(self):
         #TRANSLATORS: This is the label of a new, currently-unnamed file.
-        return self._label or _("<unnamed>")
+        return self._label or _(u"<unnamed>")
 
     @label.setter
     def label(self, value):
-        self._label = value
+        if not value:
+            return
+        encodings = (sys.getfilesystemencoding(), 'utf8')
+        self._label = fallback_decode(value, encodings, lossy=True)
 
     def _connect_monitor(self):
         if self._filename:
@@ -238,7 +242,7 @@ class BufferLines(object):
             if hi - lo != len(lines):
                 # These codepoints are considered line breaks by Python, but
                 # not by GtkTextStore.
-                additional_breaks = set(('\x0c', '\x85'))
+                additional_breaks = set(('\x0c', '\x85', u'\u2028'))
                 i = 0
                 while i < len(ends):
                     line, end = lines[i], ends[i]

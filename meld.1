@@ -12,16 +12,24 @@
 .br
 \fBmeld\fR [options] DIR1 DIR2 [DIR3]
 .SH DESCRIPTION
-\fBMeld\fR is a graphical diff viewer and merge application for the Gnome
+\fBMeld\fR is a graphical diff viewer and merge application for the GNOME
 desktop.  It supports 2 and 3-file diffs, recursive directory diffs, diffing
-of directories under version control (Arch, Bazaar, Codeville, CVS, Darcs,
-Git, Mercurial, Monotone, RCS), as well as the ability to manually and
-automatically merge file differences.
+of directories under version control (Bazaar, CVS, Darcs, Fossil, Git,
+Mercurial, Monotone), as well as the ability to manually and automatically
+merge file differences.
 .SH OPTIONS
 .TP
 \fB\-\-auto-compare, \-a\fR
 .br
 Automatically compare all differing files on startup.
+.TP
+\fB\-\-auto\-merge\fR
+.br
+Automatically merge files
+.TP
+\fB\-\-comparison\-file=<file>\fR
+.br
+Load a saved comparison from a Meld comparison file
 .TP
 \fB\-\-diff FILE1|DIR1 FILE2|DIR2 [FILE3|DIR3]\fR
 .br
@@ -36,9 +44,23 @@ See examples below.
 .br
 Print application help and usage.
 .TP
-\fB\-\-LABEL=<label>, \-L <label>\fR
+\fB\-\-label=<label>, \-L <label>\fR
 .br
 Set application window title to <label>.
+.TP
+\fB\-\-newtab, \-n\fR
+.br
+Open the comparison as a new tab in an already-running instance.
+.TP
+\fB\-\-output, \-o\fR
+.br
+Sets the save path for the middle buffer in a three-pane merge view. This is
+useful for loading the middle buffer from one file and saving it to another,
+for example in use as a version control merge helper.
+.TP
+\fB\-\-unified, \-u\fR
+.br
+Ignored for compatibility
 .TP
 \fB\-\-version\fR
 .br

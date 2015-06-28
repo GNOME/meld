@@ -69,7 +69,6 @@ class MeldApp(Gtk.Application):
         self.get_active_window().present()
 
     def do_command_line(self, command_line):
-        self.activate()
         tab = self.parse_args(command_line)
 
         if isinstance(tab, int):
@@ -87,7 +86,7 @@ class MeldApp(Gtk.Application):
         window = self.get_active_window().meldwindow
         if not window.has_pages():
             window.append_new_comparison()
-        window.widget.present()
+        self.activate()
         return 0
 
     def do_window_removed(self, widget):
@@ -314,12 +313,11 @@ class MeldApp(Gtk.Application):
 
         tab = None
         error = None
-        comparisons = options.diff + [args]
+        comparisons = [args] + options.diff
         options.newtab = options.newtab or not command_line.get_is_remote()
         for i, paths in enumerate(comparisons):
             files = [make_file_from_command_line(p) for p in paths]
-            auto_merge = (
-                options.auto_merge if i == len(comparisons) - 1 else False)
+            auto_merge = options.auto_merge and i == 0
             try:
                 for p, f in zip(paths, files):
                     if f.get_path() is None:
@@ -331,11 +329,15 @@ class MeldApp(Gtk.Application):
             except ValueError as err:
                 error = err
             else:
+                if i > 0:
+                    continue
+
                 if options.label:
                     tab.set_labels(options.label)
 
                 if options.outfile and isinstance(tab, filediff.FileDiff):
-                    tab.set_merge_output_file(options.outfile)
+                    outfile = make_file_from_command_line(options.outfile)
+                    tab.set_merge_output_file(outfile.get_path())
 
         if error:
             log.debug("Couldn't open comparison: %s", error)

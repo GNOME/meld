@@ -64,8 +64,6 @@ class Vc(_vc.Vc):
         "U": _vc.STATE_CONFLICT,  # Unmerged
     }
 
-    file_encoding = sys.getfilesystemencoding()
-
     @classmethod
     def is_installed(cls):
         try:
@@ -288,7 +286,6 @@ class Vc(_vc.Vc):
             # returned by git as quoted strings
             if name[0] == '"':
                 name = name[1:-1].decode('string_escape')
-            name = name.decode(self.file_encoding)
             return os.path.abspath(
                 os.path.join(self.location, name))
 
