@@ -334,7 +334,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def _search_recursively_iter(self, iterstart):
         rootname = self.model.get_file_path(iterstart)
-        prefixlen = len(rootname) + 1
         display_prefix = len(self.display_path(rootname)) + 1
         symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
