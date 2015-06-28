@@ -118,6 +118,10 @@ class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
         tree.DiffTreeStore.__init__(self, 1, [str] * 5)
 
+    def get_file_path(self, it):
+        # Use instead of value_path; does not incorrectly decode
+        return self.get_value(it, self.column_index(tree.COL_PATH, 0))
+
 
 class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
