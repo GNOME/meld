@@ -2,6 +2,9 @@
 
 This README should help you build Meld for OS X. 
 
+*NOTE:* The latest OSX meld is still broken. You may want to switch to the 1.8 branch. I think I need a couple of nights to get this to work. The good new is: I can run it from within the dev environment. The bad news is: Packaging it is not a walk in the park...
+
+
 ### Preparing JHBuild Environment ###
 
 JHBuild is the build system that we will be using to build Meld. This step should really be done once and further builds should not require updating the build environment unless there has been some updates to the libraries that you'd like to do.
