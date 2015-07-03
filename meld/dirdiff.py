@@ -376,7 +376,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.pack_start(renicon, False)
             column.pack_start(rentext, True)
             column.set_attributes(rentext, markup=col_index(tree.COL_TEXT, i),
-                                  foreground=col_index(tree.COL_FG, i),
+                                  foreground_rgba=col_index(tree.COL_FG, i),
                                   style=col_index(tree.COL_STYLE, i),
                                   weight=col_index(tree.COL_WEIGHT, i),
                                   strikethrough=col_index(tree.COL_STRIKE, i))

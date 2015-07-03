@@ -16,16 +16,17 @@
 
 import os
 from gi.repository import GLib
+from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
 
-COL_TYPES = (str, str, str, str, str, str, Pango.Style,
+COL_TYPES = (str, str, str, str, str, Gdk.RGBA, Pango.Style,
              Pango.Weight, bool)
 
-
+from meld.misc import colour_lookup_with_fallback
 from meld.vc._vc import \
     STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
     STATE_ERROR, STATE_EMPTY, STATE_NEW, \
@@ -53,23 +54,13 @@ class DiffTreeStore(Gtk.TreeStore):
         roman, italic = Pango.Style.NORMAL, Pango.Style.ITALIC
         normal, bold = Pango.Weight.NORMAL, Pango.Weight.BOLD
 
-        def lookup(name, default):
-            try:
-                found, colour = style.lookup_color(name)
-                if found:
-                    colour = colour.to_string()
-                else:
-                    colour = default
-            except AttributeError:
-                colour = default
-            return colour
-
-        unk_fg = lookup("unknown-text", "#888888")
-        new_fg = lookup("insert-text", "#008800")
-        mod_fg = lookup("replace-text", "#0044dd")
-        del_fg = lookup("delete-text", "#880000")
-        err_fg = lookup("error-text", "#ffff00")
-        con_fg = lookup("conflict-text", "#ff0000")
+        lookup = colour_lookup_with_fallback
+        unk_fg = lookup("meld:unknown-text", "foreground")
+        new_fg = lookup("meld:insert", "foreground")
+        mod_fg = lookup("meld:replace", "foreground")
+        del_fg = lookup("meld:delete", "foreground")
+        err_fg = lookup("meld:error", "foreground")
+        con_fg = lookup("meld:conflict", "foreground")
 
         self.text_attributes = [
             # foreground, style, weight, strikethrough
@@ -158,6 +149,8 @@ class DiffTreeStore(Gtk.TreeStore):
         self.set_value(it, col_idx(COL_ICON,  pane), icon)
         # FIXME: This is horrible, but EmblemCellRenderer crashes
         # if you try to give it a Gdk.Color property
+        if tint:
+            tint = tint.to_string() if tint else None
         self.set_value(it, col_idx(COL_TINT,  pane), tint)
 
         fg, style, weight, strike = self.text_attributes[state]
