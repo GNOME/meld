@@ -82,6 +82,9 @@ class LinkMap(Gtk.DrawingArea):
             # f and t are short for "from" and "to"
             f0, f1 = [view_offset_line(0, l) for l in c[1:3]]
             t0, t1 = [view_offset_line(1, l) for l in c[3:5]]
+            # We want the last pixel of the previous line
+            f1 -= 1
+            t1 -= 1
 
             # If either endpoint is completely off-screen, we cull for clarity
             if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height):
