@@ -136,7 +136,13 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
                     background_area.x - 1, y,
                     background_area.width + 2, height)
                 context.set_source_rgba(*self.fill_colors[chunk[0]])
+
+                if self.props.view.current_chunk_check(chunk):
+                    context.fill_preserve()
+                    highlight = self.fill_colors['current-chunk-highlight']
+                    context.set_source_rgba(*highlight)
                 context.fill()
+
                 context.set_source_rgba(*self.line_colors[chunk[0]])
                 if line == chunk[1]:
                     context.move_to(
