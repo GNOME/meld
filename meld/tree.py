@@ -136,7 +136,7 @@ class DiffTreeStore(Gtk.TreeStore):
         self.set_state(it, pane, STATE_ERROR, msg)
 
     def set_path_state(self, it, pane, state, isdir=0):
-        fullname = self.get_value(it, self.column_index(COL_PATH,pane))
+        fullname = self.get_value(it, self.column_index(COL_PATH, pane))
         name = GLib.markup_escape_text(os.path.basename(fullname))
         self.set_state(it, pane, state, name, isdir)
 
