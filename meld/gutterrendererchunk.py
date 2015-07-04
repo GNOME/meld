@@ -64,14 +64,15 @@ class MeldGutterRenderer(object):
                     context.set_source_rgba(*highlight)
                 context.fill()
 
-                context.set_source_rgba(*self.line_colors[chunk[0]])
-                if line == chunk[1]:
-                    context.move_to(x, y + 0.5)
-                    context.rel_line_to(width, 0)
-                if line == chunk[2] - 1:
-                    context.move_to(x, y - 0.5 + height)
-                    context.rel_line_to(width, 0)
-                context.stroke()
+                if line == chunk[1] or line == chunk[2] - 1:
+                    context.set_source_rgba(*self.line_colors[chunk[0]])
+                    if line == chunk[1]:
+                        context.move_to(x, y + 0.5)
+                        context.rel_line_to(width, 0)
+                    if line == chunk[2] - 1:
+                        context.move_to(x, y - 0.5 + height)
+                        context.rel_line_to(width, 0)
+                    context.stroke()
         context.restore()
 
 
