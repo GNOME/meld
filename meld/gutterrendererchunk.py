@@ -35,7 +35,49 @@ def load(icon_name):
     return icon_theme.load_icon(icon_name, LINE_HEIGHT, 0)
 
 
-class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
+class MeldGutterRenderer(object):
+
+    def draw_chunks(
+            self, context, background_area, cell_area, start, end, state):
+        line = start.get_line()
+        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
+
+        context.save()
+        context.set_line_width(1.0)
+
+        if chunk_index is not None:
+            chunk = self.linediffer.get_chunk(
+                chunk_index, self.from_pane, self.to_pane)
+
+            if chunk:
+                height = 1 if chunk[1] == chunk[2] else background_area.height
+                y = background_area.y
+                context.rectangle(
+                    background_area.x - 1, y,
+                    background_area.width + 2, height)
+                context.set_source_rgba(*self.fill_colors[chunk[0]])
+
+                if self.props.view.current_chunk_check(chunk):
+                    context.fill_preserve()
+                    highlight = self.fill_colors['current-chunk-highlight']
+                    context.set_source_rgba(*highlight)
+                context.fill()
+
+                context.set_source_rgba(*self.line_colors[chunk[0]])
+                if line == chunk[1]:
+                    context.move_to(
+                        background_area.x - 1, y + 0.5)
+                    context.rel_line_to(background_area.width + 2, 0)
+                if line == chunk[2] - 1:
+                    context.move_to(
+                        background_area.x - 1, y - 0.5 + height)
+                    context.rel_line_to(background_area.width + 2, 0)
+                context.stroke()
+        context.restore()
+
+
+class GutterRendererChunkAction(
+        GtkSource.GutterRendererPixbuf, MeldGutterRenderer):
     __gtype_name__ = "GutterRendererChunkAction"
 
     ACTION_MAP = {
@@ -122,42 +164,8 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         return copy_menu
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
-        line = start.get_line()
-        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
-
-        context.save()
-        context.set_line_width(1.0)
-
-        if chunk_index is not None:
-            chunk = self.linediffer.get_chunk(
-                chunk_index, self.from_pane, self.to_pane)
-
-            if chunk:
-                height = 1 if chunk[1] == chunk[2] else background_area.height
-                y = background_area.y
-                context.rectangle(
-                    background_area.x - 1, y,
-                    background_area.width + 2, height)
-                context.set_source_rgba(*self.fill_colors[chunk[0]])
-
-                if self.props.view.current_chunk_check(chunk):
-                    context.fill_preserve()
-                    highlight = self.fill_colors['current-chunk-highlight']
-                    context.set_source_rgba(*highlight)
-                context.fill()
-
-                context.set_source_rgba(*self.line_colors[chunk[0]])
-                if line == chunk[1]:
-                    context.move_to(
-                        background_area.x - 1, y + 0.5)
-                    context.rel_line_to(background_area.width + 2, 0)
-                if line == chunk[2] - 1:
-                    context.move_to(
-                        background_area.x - 1, y - 0.5 + height)
-                    context.rel_line_to(background_area.width + 2, 0)
-                context.stroke()
-        context.restore()
-
+        self.draw_chunks(
+            context, background_area, cell_area, start, end, state)
         return GtkSource.GutterRendererPixbuf.do_draw(
             self, context, background_area, cell_area, start, end, state)
 
@@ -237,7 +245,8 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
 # Python reimplementation is Copyright (C) 2015 Kai Willadsen
 
 
-class GutterRendererChunkLines(GtkSource.GutterRendererText):
+class GutterRendererChunkLines(
+        GtkSource.GutterRendererText, MeldGutterRenderer):
     __gtype_name__ = "GutterRendererChunkLines"
 
     def __init__(self, from_pane, to_pane, linediffer):
@@ -291,43 +300,8 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
             self.fill_colors, self.line_colors = get_common_theme()
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
-        line = start.get_line()
-        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
-
-        context.save()
-        context.set_line_width(1.0)
-
-        if chunk_index is not None:
-            chunk = self.linediffer.get_chunk(
-                chunk_index, self.from_pane, self.to_pane)
-
-            if chunk:
-                height = 1 if chunk[1] == chunk[2] else background_area.height
-                y = background_area.y
-                context.rectangle(
-                    background_area.x - 1, y,
-                    background_area.width + 2, height)
-                context.set_source_rgba(*self.fill_colors[chunk[0]])
-
-                if self.props.view.current_chunk_check(chunk):
-                    context.fill_preserve()
-                    highlight = self.fill_colors['current-chunk-highlight']
-                    context.set_source_rgba(*highlight)
-                context.fill()
-
-                if line == chunk[1] or line == chunk[2] - 1:
-                    context.set_source_rgba(*self.line_colors[chunk[0]])
-                    if line == chunk[1]:
-                        context.move_to(
-                            background_area.x - 1, y + 0.5)
-                        context.rel_line_to(background_area.width + 2, 0)
-                    if line == chunk[2] - 1:
-                        context.move_to(
-                            background_area.x - 1, y - 0.5 + height)
-                        context.rel_line_to(background_area.width + 2, 0)
-                    context.stroke()
-        context.restore()
-
+        self.draw_chunks(
+            context, background_area, cell_area, start, end, state)
         return GtkSource.GutterRendererText.do_draw(
             self, context, background_area, cell_area, start, end, state)
 
