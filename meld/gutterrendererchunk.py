@@ -37,6 +37,11 @@ def load(icon_name):
 
 class MeldGutterRenderer(object):
 
+    def on_setting_changed(self, meldsettings, key):
+        if key == 'style-scheme':
+            #meldsettings.style_scheme
+            self.fill_colors, self.line_colors = get_common_theme()
+
     def draw_chunks(
             self, context, background_area, cell_area, start, end, state):
         line = start.get_line()
@@ -115,11 +120,6 @@ class GutterRendererChunkAction(
 
         meldsettings.connect('changed', self.on_setting_changed)
         self.on_setting_changed(meldsettings, 'style-scheme')
-
-    def on_setting_changed(self, meldsettings, key):
-        if key == 'style-scheme':
-            #meldsettings.style_scheme
-            self.fill_colors, self.line_colors = get_common_theme()
 
     def do_activate(self, start, area, event):
         line = start.get_line()
@@ -293,11 +293,6 @@ class GutterRendererChunkLines(
         markup = "<b>%d</b>" % num_lines
         width, height = self._measure_markup(markup)
         self.set_size(width)
-
-    def on_setting_changed(self, meldsettings, key):
-        if key == 'style-scheme':
-            #meldsettings.style_scheme
-            self.fill_colors, self.line_colors = get_common_theme()
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
         self.draw_chunks(
