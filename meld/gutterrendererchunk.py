@@ -13,6 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import math
+
+from gi.repository import Pango
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -226,3 +229,110 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
                 action = self.mode
 
         return action
+
+
+# GutterRendererChunkLines is an adaptation of GtkSourceGutterRendererLines
+# Copyright (C) 2010 - Jesse van den Kieboom
+#
+# Python reimplementation is Copyright (C) 2015 Kai Willadsen
+
+
+class GutterRendererChunkLines(GtkSource.GutterRendererText):
+    __gtype_name__ = "GutterRendererChunkLines"
+
+    def __init__(self, from_pane, to_pane, linediffer):
+        super(GutterRendererChunkLines, self).__init__()
+        self.from_pane = from_pane
+        self.to_pane = to_pane
+        # FIXME: Don't pass in the linediffer; pass a generator like elsewhere
+        self.linediffer = linediffer
+
+        self.num_line_digits = 2
+        self.changed_handler_id = None
+
+        meldsettings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meldsettings, 'style-scheme')
+
+    def do_change_buffer(self, old_buffer):
+        if old_buffer:
+            old_buffer.disconnect(self.changed_handler_id)
+
+        view = self.get_view()
+        if view:
+            buf = view.get_buffer()
+            if buf:
+                self.changed_handler_id = buf.connect(
+                    "changed", self.recalculate_size)
+                self.recalculate_size(buf)
+
+    def _measure_markup(self, markup):
+        layout = self.get_view().create_pango_layout()
+        layout.set_markup(markup)
+        w, h = layout.get_size()
+        return w / Pango.SCALE, h / Pango.SCALE
+
+    def recalculate_size(self, buf):
+
+        # Always calculate display size for at least two-digit line counts
+        num_lines = max(buf.get_line_count(), 99)
+        num_digits = int(math.ceil(math.log(num_lines, 10)))
+
+        if num_digits == self.num_line_digits:
+            return
+
+        self.num_line_digits = num_digits
+        markup = "<b>%d</b>" % num_lines
+        width, height = self._measure_markup(markup)
+        self.set_size(width)
+
+    def on_setting_changed(self, meldsettings, key):
+        if key == 'style-scheme':
+            #meldsettings.style_scheme
+            self.fill_colors, self.line_colors = get_common_theme()
+
+    def do_draw(self, context, background_area, cell_area, start, end, state):
+        line = start.get_line()
+        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
+
+        context.save()
+        context.set_line_width(1.0)
+
+        if chunk_index is not None:
+            chunk = self.linediffer.get_chunk(
+                chunk_index, self.from_pane, self.to_pane)
+
+            if chunk:
+                height = 1 if chunk[1] == chunk[2] else background_area.height
+                y = background_area.y
+                context.rectangle(
+                    background_area.x - 1, y,
+                    background_area.width + 2, height)
+                context.set_source_rgba(*self.fill_colors[chunk[0]])
+
+                if self.props.view.current_chunk_check(chunk):
+                    context.fill_preserve()
+                    highlight = self.fill_colors['current-chunk-highlight']
+                    context.set_source_rgba(*highlight)
+                context.fill()
+
+                if line == chunk[1] or line == chunk[2] - 1:
+                    context.set_source_rgba(*self.line_colors[chunk[0]])
+                    if line == chunk[1]:
+                        context.move_to(
+                            background_area.x - 1, y + 0.5)
+                        context.rel_line_to(background_area.width + 2, 0)
+                    if line == chunk[2] - 1:
+                        context.move_to(
+                            background_area.x - 1, y - 0.5 + height)
+                        context.rel_line_to(background_area.width + 2, 0)
+                    context.stroke()
+        context.restore()
+
+        return GtkSource.GutterRendererText.do_draw(
+            self, context, background_area, cell_area, start, end, state)
+
+    def do_query_data(self, start, end, state):
+        line = start.get_line() + 1
+        current_line = state & GtkSource.GutterRendererState.CURSOR
+        markup = "<b>%d</b>" % line if current_line else str(line)
+        self.set_markup(markup, -1)

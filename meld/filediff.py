@@ -258,7 +258,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # Prototype implementation
 
-        from meld.gutterrendererchunk import GutterRendererChunkAction
+        from meld.gutterrendererchunk import GutterRendererChunkAction, GutterRendererChunkLines
 
         for pane, t in enumerate(self.textview):
             # FIXME: set_num_panes will break this good
@@ -280,6 +280,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 renderer = GutterRendererChunkAction(pane, pane - 1, views, self, self.linediffer)
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, -40)
+
+            window = Gtk.TextWindowType.LEFT
+            if direction == Gtk.TextDirection.RTL:
+                window = Gtk.TextWindowType.RIGHT
+            renderer = GutterRendererChunkLines(pane, pane - 1, self.linediffer)
+            gutter = t.get_gutter(window)
+            gutter.insert(renderer, -30)
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 
