@@ -50,11 +50,12 @@ class MeldGutterRenderer(object):
                 chunk_index, self.from_pane, self.to_pane)
 
             if chunk:
+                x = background_area.x - 1
+                width = background_area.width + 2
+
                 height = 1 if chunk[1] == chunk[2] else background_area.height
                 y = background_area.y
-                context.rectangle(
-                    background_area.x - 1, y,
-                    background_area.width + 2, height)
+                context.rectangle(x, y, width, height)
                 context.set_source_rgba(*self.fill_colors[chunk[0]])
 
                 if self.props.view.current_chunk_check(chunk):
@@ -65,13 +66,11 @@ class MeldGutterRenderer(object):
 
                 context.set_source_rgba(*self.line_colors[chunk[0]])
                 if line == chunk[1]:
-                    context.move_to(
-                        background_area.x - 1, y + 0.5)
-                    context.rel_line_to(background_area.width + 2, 0)
+                    context.move_to(x, y + 0.5)
+                    context.rel_line_to(width, 0)
                 if line == chunk[2] - 1:
-                    context.move_to(
-                        background_area.x - 1, y - 0.5 + height)
-                    context.rel_line_to(background_area.width + 2, 0)
+                    context.move_to(x, y - 0.5 + height)
+                    context.rel_line_to(width, 0)
                 context.stroke()
         context.restore()
 
