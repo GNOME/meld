@@ -24,7 +24,7 @@ from gi.repository import GtkSource
 import meldbuffer
 
 from meld.misc import colour_lookup_with_fallback, get_common_theme
-from meld.settings import bind_settings, meldsettings, settings
+from meld.settings import bind_settings, meldsettings
 
 
 class LanguageManager(object):
@@ -71,10 +71,28 @@ class MeldSourceView(GtkSource.View):
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
         ('draw-spaces', 'draw-spaces'),
         ('wrap-mode', 'wrap-mode'),
+        ('show-line-numbers', 'show-line-numbers'),
     )
 
     # Named so as not to conflict with the GtkSourceView property
     highlight_current_line_local = GObject.property(type=bool, default=False)
+
+    def get_show_line_numbers(self):
+        return self._show_line_numbers
+
+    def set_show_line_numbers(self, show):
+        if show == self._show_line_numbers:
+            return
+
+        if self.line_renderer:
+            self.line_renderer.set_visible(show)
+
+        self._show_line_numbers = bool(show)
+        self.notify("show-line-numbers")
+
+    show_line_numbers = GObject.property(
+        type=bool, default=False, getter=get_show_line_numbers,
+        setter=set_show_line_numbers)
 
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
@@ -102,6 +120,7 @@ class MeldSourceView(GtkSource.View):
         self.anim_source_id = None
         self.animating_chunks = []
         self.syncpoints = []
+        self._show_line_numbers = None
 
         buf = meldbuffer.MeldBuffer()
         buf.create_tag("inline")
@@ -110,11 +129,6 @@ class MeldSourceView(GtkSource.View):
         meldsettings.connect('changed', self.on_setting_changed)
         self.on_setting_changed(meldsettings, 'font')
         self.on_setting_changed(meldsettings, 'style-scheme')
-
-    def late_bind(self):
-        settings.bind(
-            'show-line-numbers', self, 'show-line-numbers',
-            Gio.SettingsBindFlags.DEFAULT)
 
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()

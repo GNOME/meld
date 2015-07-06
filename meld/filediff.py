@@ -31,6 +31,7 @@ from gi.repository import GObject
 from gi.repository import Gio
 from gi.repository import Gdk
 from gi.repository import Gtk
+from gi.repository import GtkSource
 
 from meld.conf import _
 from . import diffutil
@@ -218,9 +219,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher()
 
-        for v in self.textview:
-            v.late_bind()
-
         for buf in self.textbuffer:
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
@@ -281,12 +279,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, -40)
 
+            # TODO: This renderer handling should all be part of
+            # MeldSourceView, but our current diff-chunk-handling makes
+            # this difficult.
             window = Gtk.TextWindowType.LEFT
             if direction == Gtk.TextDirection.RTL:
                 window = Gtk.TextWindowType.RIGHT
             renderer = GutterRendererChunkLines(pane, pane - 1, self.linediffer)
+            renderer.set_properties(
+                "alignment-mode", GtkSource.GutterRendererAlignmentMode.FIRST,
+                "yalign", 0.5,
+                "xalign", 1.0,
+                "xpad", 3,
+            )
             gutter = t.get_gutter(window)
             gutter.insert(renderer, -30)
+            t.line_renderer = renderer
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 
