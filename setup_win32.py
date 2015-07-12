@@ -49,6 +49,7 @@ gtk_libs = [
     'lib/gdk-pixbuf-2.0',
     'lib/girepository-1.0',
     'share/glib-2.0',
+    'share/gtksourceview-3.0',
     'share/icons',
 ]
 
