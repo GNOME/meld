@@ -1106,7 +1106,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf.data.loaded = True
 
         if all(b.data.loaded for b in self.textbuffer[:self.num_panes]):
-            self.scheduler.add_task(self._diff_files())
+            self.scheduler.add_task(self._compare_files_internal())
 
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
@@ -1155,6 +1155,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _set_files_internal(self, files):
         for i in self._load_files(files, self.textbuffer):
+            yield i
+
+    def _compare_files_internal(self):
+        for i in self._diff_files():
             yield i
 
     def set_meta(self, meta):
