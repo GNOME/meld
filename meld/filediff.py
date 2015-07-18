@@ -1061,17 +1061,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             # TODO: Maybe re-add support for the 'detect-encodings' gsetting
             loader = GtkSource.FileLoader.new(textbuffers[pane], sourcefile)
-            # FIXME: add a cancelable
             loader.load_async(
                 GLib.PRIORITY_HIGH,
-                progress_callback=self.load_progress,
-                progress_callback_data=(pane,),
                 callback=self.file_loaded,
                 user_data=(pane,)
             )
-
-    def load_progress(self, current_bytes, total_bytes, pane):
-        print pane, "%d%%" % int((current_bytes / float(total_bytes)) * 100)
 
     def file_loaded(self, loader, result, user_data):
 
