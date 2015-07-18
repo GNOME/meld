@@ -1090,8 +1090,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gfile = loader.get_location()
         pane = user_data[0]
 
+        success = False
         try:
-            loader.load_finish(result)
+            success = loader.load_finish(result)
         except GLib.Error as err:
             # TODO: Find sane error domain constants
             if err.domain == 'gtk-source-file-loader-error':
@@ -1106,7 +1107,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 u"There was a problem opening the file “%s”." % filename)
             add_dismissable_msg(
                 pane, Gtk.STOCK_DIALOG_ERROR, primary, err.message)
-            return
 
         def is_writable(gfile):
             try:
@@ -1117,20 +1117,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         buf = loader.get_buffer()
 
-        write_file = Gio.File.new_for_path(buf.data.savefile) if buf.data.savefile else gfile
-        self.set_buffer_writable(buf, is_writable(write_file))
+        writable = False
+        if success:
+            write_file = Gio.File.new_for_path(buf.data.savefile) if buf.data.savefile else gfile
+            writable = is_writable(write_file)
+            buf.data.encoding = loader.get_encoding()
 
-        buf.data.encoding = loader.get_encoding()
+            # TODO: Remove handling for mixed newlines in other places, or add
+            # mixed newline support to GtkSourceFile.
+            buf.data.newlines = loader.get_newline_type()
 
-        # TODO: Remove handling for mixed newlines in other places, or add
-        # mixed newline support to GtkSourceFile.
-        buf.data.newlines = loader.get_newline_type()
+        self.set_buffer_writable(buf, writable)
 
         self.undosequence.checkpoint(buf)
         buf.data.update_mtime()
+        buf.data.loaded = True
 
-        # FIXME: Only add once...
-        self.scheduler.add_task(self._diff_files())
+        if all(b.data.loaded for b in self.textbuffer[:self.num_panes]):
+            self.scheduler.add_task(self._diff_files())
 
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text

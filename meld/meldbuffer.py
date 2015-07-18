@@ -117,6 +117,7 @@ class MeldBufferData(GObject.GObject):
         self.label = self.filename = filename
 
     def reset(self):
+        self.loaded = False
         self.modified = False
         self.writable = True
         self.editable = True
