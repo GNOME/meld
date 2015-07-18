@@ -1120,8 +1120,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         write_file = Gio.File.new_for_path(buf.data.savefile) if buf.data.savefile else gfile
         self.set_buffer_writable(buf, is_writable(write_file))
 
-        # TODO: Move to using the GtkSourceEncoding type
-        buf.data.encoding = loader.get_encoding().get_charset()
+        buf.data.encoding = loader.get_encoding()
 
         # TODO: Remove handling for mixed newlines in other places, or add
         # mixed newline support to GtkSourceFile.
@@ -1569,9 +1568,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             #             text = text.replace('\n', k)
             #         break
 
-        encoding = bufdata.encoding
+        source_encoding = bufdata.encoding
         while isinstance(text, unicode):
             try:
+                encoding = source_encoding.get_charset()
                 text = text.encode(encoding)
             except UnicodeEncodeError:
                 dialog_buttons = [
@@ -1591,7 +1591,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if reencode != Gtk.ResponseType.OK:
                     return False
 
-                encoding = 'utf-8'
+                source_encoding = GtkSource.Encoding.get_utf8()
 
         save_to = bufdata.savefile or bufdata.filename
         if self._save_text_to_filename(save_to, text):
