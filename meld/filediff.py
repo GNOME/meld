@@ -1075,15 +1075,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def file_loaded(self, loader, result, user_data):
 
-        def add_dismissable_msg(pane, icon, primary, secondary):
-            msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                icon, primary, secondary)
-            msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-            msgarea.connect("response",
-                            lambda *args: self.msgarea_mgr[pane].clear())
-            msgarea.show_all()
-            return msgarea
-
         gfile = loader.get_location()
         pane = user_data[0]
 
@@ -1102,8 +1093,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 gfile.get_parse_name()).decode('utf-8')
             primary = _(
                 u"There was a problem opening the file “%s”." % filename)
-            add_dismissable_msg(
-                pane, Gtk.STOCK_DIALOG_ERROR, primary, err.message)
+            self.msgarea_mgr[pane].add_dismissable_msg(
+                Gtk.STOCK_DIALOG_ERROR, primary, err.message)
 
         buf = loader.get_buffer()
 

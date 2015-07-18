@@ -902,17 +902,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 else:
                     continue
                 secondary = "\n".join(messages)
-                self.add_dismissable_msg(pane, Gtk.STOCK_DIALOG_ERROR, header,
-                                         secondary)
-
-    def add_dismissable_msg(self, pane, icon, primary, secondary):
-        msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                        icon, primary, secondary)
-        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-        msgarea.connect("response",
-                        lambda *args: self.msgarea_mgr[pane].clear())
-        msgarea.show_all()
-        return msgarea
+                self.msgarea_mgr[pane].add_dismissable_msg(
+                    Gtk.STOCK_DIALOG_ERROR, header, secondary)
 
     def copy_selected(self, direction):
         assert direction in (-1, 1)

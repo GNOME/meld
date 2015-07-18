@@ -21,6 +21,7 @@
 
 from gi.repository import Gtk
 
+from meld.conf import _
 from meld.ui.wraplabel import WrapLabel
 
 
@@ -102,4 +103,11 @@ class MsgAreaController(Gtk.HBox):
         content_area.add(content)
 
         self.pack_start(msgarea, True, True, 0)
+        return msgarea
+
+    def add_dismissable_msg(self, icon, primary, secondary):
+        msgarea = self.new_from_text_and_icon(icon, primary, secondary)
+        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
+        msgarea.connect("response", lambda *args: self.clear())
+        msgarea.show_all()
         return msgarea
