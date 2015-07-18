@@ -1050,91 +1050,88 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._disconnect_buffer_handlers()
         self.linediffer.clear()
         self.queue_draw()
-        try_codecs = list(settings.get_value('detect-encodings'))
-        try_codecs.append('latin1')
+
         yield _("[%s] Opening files") % self.label_text
         tasks = []
 
+        for pane, filename in enumerate(files):
+            if not filename:
+                continue
+
+            gfile = Gio.File.new_for_path(filename)
+            sourcefile = GtkSource.File()
+            sourcefile.set_location(gfile)
+
+            # TODO: Maybe re-add support for the 'detect-encodings' gsetting
+            loader = GtkSource.FileLoader.new(textbuffers[pane], sourcefile)
+            # FIXME: add a cancelable
+            loader.load_async(
+                GLib.PRIORITY_HIGH,
+                progress_callback=self.load_progress,
+                progress_callback_data=(pane,),
+                callback=self.file_loaded,
+                user_data=(pane,)
+            )
+
+    def load_progress(self, current_bytes, total_bytes, pane):
+        print pane, "%d%%" % int((current_bytes / float(total_bytes)) * 100)
+
+    def file_loaded(self, loader, result, user_data):
+
         def add_dismissable_msg(pane, icon, primary, secondary):
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                            icon, primary, secondary)
+                icon, primary, secondary)
             msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
             msgarea.connect("response",
                             lambda *args: self.msgarea_mgr[pane].clear())
             msgarea.show_all()
             return msgarea
 
-        for pane, filename in enumerate(files):
-            buf = textbuffers[pane]
-            if filename:
-                try:
-                    handle = io.open(filename, "r", encoding=try_codecs[0])
-                    task = TaskEntry(filename, handle, buf, try_codecs[:],
-                                     pane, False)
-                    tasks.append(task)
-                except (IOError, LookupError) as e:
-                    buf.delete(*buf.get_bounds())
-                    add_dismissable_msg(pane, Gtk.STOCK_DIALOG_ERROR,
-                                        _("Could not read file"), str(e))
-        yield _("[%s] Reading files") % self.label_text
-        while len(tasks):
-            for t in tasks[:]:
-                try:
-                    nextbit = t.file.read(4096)
-                    if nextbit.find("\x00") != -1:
-                        t.buf.delete(*t.buf.get_bounds())
-                        filename = GObject.markup_escape_text(t.filename)
-                        add_dismissable_msg(t.pane, Gtk.STOCK_DIALOG_ERROR,
-                            _("Could not read file"),
-                            _("%s appears to be a binary file.") % filename)
-                        tasks.remove(t)
-                        continue
-                except ValueError as err:
-                    t.codec.pop(0)
-                    if len(t.codec):
-                        t.buf.delete(*t.buf.get_bounds())
-                        t.file = io.open(t.filename, "r", encoding=t.codec[0])
-                    else:
-                        t.buf.delete(*t.buf.get_bounds())
-                        filename = GObject.markup_escape_text(t.filename)
-                        add_dismissable_msg(t.pane, Gtk.STOCK_DIALOG_ERROR,
-                                        _("Could not read file"),
-                                        _("%s is not in encodings: %s") %
-                                            (filename, try_codecs))
-                        tasks.remove(t)
-                except IOError as ioerr:
-                    add_dismissable_msg(t.pane, Gtk.STOCK_DIALOG_ERROR,
-                                    _("Could not read file"), str(ioerr))
-                    tasks.remove(t)
-                else:
-                    # The handling here avoids inserting split CR/LF pairs into
-                    # GtkTextBuffers; this is relevant only when universal
-                    # newline support is unavailable or broken.
-                    if t.was_cr:
-                        nextbit = "\r" + nextbit
-                        t.was_cr = False
-                    if len(nextbit):
-                        if nextbit[-1] == "\r" and len(nextbit) > 1:
-                            t.was_cr = True
-                            nextbit = nextbit[0:-1]
-                        t.buf.insert(t.buf.get_end_iter(), nextbit)
-                    else:
-                        if t.buf.data.savefile:
-                            writable = True
-                            if os.path.exists(t.buf.data.savefile):
-                                writable = os.access(
-                                    t.buf.data.savefile, os.W_OK)
-                        else:
-                            writable = os.access(t.filename, os.W_OK)
-                        self.set_buffer_writable(t.buf, writable)
-                        t.buf.data.encoding = t.codec[0]
-                        if hasattr(t.file, "newlines"):
-                            t.buf.data.newlines = t.file.newlines
-                        tasks.remove(t)
-            yield 1
-        for b in self.textbuffer:
-            self.undosequence.checkpoint(b)
-            b.data.update_mtime()
+        gfile = loader.get_location()
+        pane = user_data[0]
+
+        try:
+            loader.load_finish(result)
+        except GLib.Error as err:
+            # TODO: Find sane error domain constants
+            if err.domain == 'gtk-source-file-loader-error':
+                # TODO: Add custom reload-with-encoding handling for
+                # GtkSource.FileLoaderError.CONVERSION_FALLBACK and
+                # GtkSource.FileLoaderError.ENCODING_AUTO_DETECTION_FAILED
+                pass
+
+            filename = GLib.markup_escape_text(
+                gfile.get_parse_name()).decode('utf-8')
+            primary = _(
+                u"There was a problem opening the file “%s”." % filename)
+            add_dismissable_msg(
+                pane, Gtk.STOCK_DIALOG_ERROR, primary, err.message)
+            return
+
+        def is_writable(gfile):
+            try:
+                info = gfile.query_info(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
+            except GLib.GError:
+                return False
+            return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)
+
+        buf = loader.get_buffer()
+
+        write_file = Gio.File.new_for_path(buf.data.savefile) if buf.data.savefile else gfile
+        self.set_buffer_writable(buf, is_writable(write_file))
+
+        # TODO: Move to using the GtkSourceEncoding type
+        buf.data.encoding = loader.get_encoding().get_charset()
+
+        # TODO: Remove handling for mixed newlines in other places, or add
+        # mixed newline support to GtkSourceFile.
+        buf.data.newlines = loader.get_newline_type()
+
+        self.undosequence.checkpoint(buf)
+        buf.data.update_mtime()
+
+        # FIXME: Only add once...
+        self.scheduler.add_task(self._diff_files())
 
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
@@ -1183,8 +1180,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _set_files_internal(self, files):
         for i in self._load_files(files, self.textbuffer):
-            yield i
-        for i in self._diff_files():
             yield i
 
     def set_meta(self, meta):
@@ -1396,7 +1391,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         n if isinstance(n, tuple) else (n,) for n in newlines]
                     newline_strings = []
                     for label, nl_types in zip(labels, newline_types):
-                        nl_string = ", ".join(NEWLINES[n] for n in nl_types)
+                        nl_string = ", ".join(NEWLINES[n][1] for n in nl_types)
                         newline_strings.append("\t%s: %s" % (label, nl_string))
                     secondary_text %= "\n".join(newline_strings)
 
@@ -1543,34 +1538,36 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
-        if bufdata.newlines:
-            if isinstance(bufdata.newlines, basestring):
-                if bufdata.newlines != '\n':
-                    text = text.replace("\n", bufdata.newlines)
-            else:
-                buttons = {
-                    '\n': (NEWLINES['\n'], 0),
-                    '\r\n': (NEWLINES['\r\n'], 1),
-                    '\r': (NEWLINES['\r'], 2),
-                }
-                dialog_buttons = [(_("_Cancel"), Gtk.ResponseType.CANCEL)]
-                dialog_buttons += [buttons[b] for b in bufdata.newlines]
-                newline = misc.modal_dialog(
-                    primary=_("Inconsistent line endings found"),
-                    secondary=_(
-                        "'%s' contains a mixture of line endings. Select the "
-                        "line ending format to use.") % bufdata.label,
-                    buttons=dialog_buttons,
-                    messagetype=Gtk.MessageType.WARNING
-                )
-                if newline < 0:
-                    return False
-                for k, v in buttons.items():
-                    if v[1] == newline:
-                        bufdata.newlines = k
-                        if k != '\n':
-                            text = text.replace('\n', k)
-                        break
+
+        nl_text = NEWLINES[bufdata.newlines][0]
+        if nl_text != '\n':
+            text = text.replace("\n", nl_text)
+
+            # TODO: Multiple line-ending handling is now missing; remove
+            # this or adapt.
+            # buttons = {
+            #     '\n': (NEWLINES['\n'], 0),
+            #     '\r\n': (NEWLINES['\r\n'], 1),
+            #     '\r': (NEWLINES['\r'], 2),
+            # }
+            # dialog_buttons = [(_("_Cancel"), Gtk.ResponseType.CANCEL)]
+            # dialog_buttons += [buttons[b] for b in bufdata.newlines]
+            # newline = misc.modal_dialog(
+            #     primary=_("Inconsistent line endings found"),
+            #     secondary=_(
+            #         "'%s' contains a mixture of line endings. Select the "
+            #         "line ending format to use.") % bufdata.label,
+            #     buttons=dialog_buttons,
+            #     messagetype=Gtk.MessageType.WARNING
+            # )
+            # if newline < 0:
+            #     return False
+            # for k, v in buttons.items():
+            #     if v[1] == newline:
+            #         bufdata.newlines = k
+            #         if k != '\n':
+            #             text = text.replace('\n', k)
+            #         break
 
         encoding = bufdata.encoding
         while isinstance(text, unicode):
