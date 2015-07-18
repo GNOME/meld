@@ -119,7 +119,6 @@ class MeldBufferData(GObject.GObject):
     def reset(self):
         self.loaded = False
         self.modified = False
-        self.writable = True
         self.editable = True
         self._monitor = None
         self._mtime = None
@@ -184,6 +183,19 @@ class MeldBufferData(GObject.GObject):
         self._filename = value
         self.update_mtime()
         self._connect_monitor()
+
+    @property
+    def writable(self):
+        path = self.savefile or self._filename
+        if not path:
+            return False
+        gfile = Gio.File.new_for_path(path)
+        try:
+            info = gfile.query_info(
+                Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
+        except GLib.GError:
+            return False
+        return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)
 
     def update_mtime(self):
         if self._filename:

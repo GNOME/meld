@@ -983,10 +983,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textbuffer[1]
         buf.data.savefile = os.path.abspath(filename)
         buf.data.label = filename
-        writable = True
-        if os.path.exists(buf.data.savefile):
-            writable = os.access(buf.data.savefile, os.W_OK)
-        self.set_buffer_writable(buf, writable)
+        self.update_buffer_writable(buf)
         self.fileentry[1].set_filename(buf.data.savefile)
         self.recompute_label()
 
@@ -1108,26 +1105,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             add_dismissable_msg(
                 pane, Gtk.STOCK_DIALOG_ERROR, primary, err.message)
 
-        def is_writable(gfile):
-            try:
-                info = gfile.query_info(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
-            except GLib.GError:
-                return False
-            return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)
-
         buf = loader.get_buffer()
 
-        writable = False
         if success:
-            write_file = Gio.File.new_for_path(buf.data.savefile) if buf.data.savefile else gfile
-            writable = is_writable(write_file)
             buf.data.encoding = loader.get_encoding()
 
             # TODO: Remove handling for mixed newlines in other places, or add
             # mixed newline support to GtkSourceFile.
             buf.data.newlines = loader.get_newline_type()
 
-        self.set_buffer_writable(buf, writable)
+        self.update_buffer_writable(buf)
 
         self.undosequence.checkpoint(buf)
         buf.data.update_mtime()
@@ -1612,8 +1599,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dialog = patchdialog.PatchDialog(self)
         dialog.run()
 
-    def set_buffer_writable(self, buf, writable):
-        buf.data.writable = writable
+    def update_buffer_writable(self, buf):
+        writable = buf.data.writable
         self.recompute_label()
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].props.visible = not writable
