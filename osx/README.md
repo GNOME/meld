@@ -10,6 +10,13 @@ This README should help you build Meld for OS X.
 JHBuild is the build system that we will be using to build Meld. This step should really be done once and further builds should not require updating the build environment unless there has been some updates to the libraries that you'd like to do.
 
 ---
+#### Preparation ####
+
+To ensure that we don't hit some issue with python not able to determine locales on OSX, let's do the following
+```
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+```
 
 #### Initial Phase ####
 
@@ -24,6 +31,7 @@ curl -O https://git.gnome.org/browse/gtk-osx/plain/gtk-osx-build-setup.sh
 sh gtk-osx-build-setup.sh
 ~/.local/bin/jhbuild shell
 ```
+You can exit the shell once you determine that it works properly
 
 3. Build python
 ```
@@ -32,7 +40,7 @@ jhbuild build python
 
 4. Prepare paths and build the bootstrap
 ```
-alias jhbuild="PATH=gtk-prefix/bin:$PATH jhbuild"
+alias jhbuild="PATH=~/.local/bin:$PATH jhbuild"
 jhbuild bootstrap
 ```
 
@@ -40,14 +48,14 @@ jhbuild bootstrap
 ```
 git clone https://github.com/yousseb/meld.git
 cd meld
-git checkout meld-1-8
+# if building the 1.8 version, run: git checkout meld-1-8
 cd osx/
 ln -sf $PWD/jhbuildrc-custom ~/.jhbuildrc-custom
 cd ..
 jhbuild
 ```
 
-6- Fix the gtksourceview issues
+6- 1.8 branch only: Fix the gtksourceview issues
 ```
 ln -sf ~/gtk/inst/lib/pkgconfig/gtk-mac-integration-gtk2.pc ~/gtk/inst/lib/pkgconfig/gtk-mac-integration.pc
 ```
@@ -72,10 +80,11 @@ jhbuild
 8. Build extra dependencies
 ```
 jhbuild -m osx/meld.modules build meld-python-deps
-easy_install py2app
+jhbuild run easy_install py2app
 ```
 
 9. You're now ready to build Meld. 
 ```
-bash osx/build_app.sh
+chmod +x osx/build_app.sh
+jhbuild run osx/build_app.sh
 ```
