@@ -1020,6 +1020,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         If an element is None, the text of a pane is left as is.
         """
+        if len(files) != self.num_panes:
+            return
+
         self._disconnect_buffer_handlers()
         files = list(files)
         for i, f in enumerate(files):
@@ -1034,17 +1037,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
-        self._connect_buffer_handlers()
-        self._load_files(files)
 
-    def get_comparison(self):
-        files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
-        return recent.TYPE_FILE, files
-
-    def _load_files(self, files):
-        if len(files) != self.num_panes:
-            return
-        self._disconnect_buffer_handlers()
         self.undosequence.clear()
         self.linediffer.clear()
 
@@ -1064,6 +1057,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 callback=self.file_loaded,
                 user_data=(pane,)
             )
+
+    def get_comparison(self):
+        files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
+        return recent.TYPE_FILE, files
 
     def file_loaded(self, loader, result, user_data):
 
