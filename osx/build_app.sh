@@ -6,6 +6,7 @@
 #easy_install pip
 #pip install pygtksourceview
 
+jhbuild run glib-compile-schemas data
 jhbuild run python setup_py2app.py build
 jhbuild run python setup_py2app.py py2app
 

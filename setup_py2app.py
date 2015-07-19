@@ -94,6 +94,12 @@ setup(
         ('share/meld',
          ['data/gschemas.compiled']
          ),
+         ('share/meld',
+          ['data/org.gnome.meld.gschema.xml']
+          ),
+        ('share/meld',
+         ['data/meld.css']
+         ),
         ('share/meld/icons',
          glob.glob("data/icons/*.png") +
          glob.glob("data/icons/COPYING*")
