@@ -1104,6 +1104,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if all(b.data.loaded for b in self.textbuffer[:self.num_panes]):
             self.scheduler.add_task(self._compare_files_internal())
 
+    def _merge_files(self):
+        yield 1
+
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
         texts = self.buffer_filtered[:self.num_panes]
@@ -1150,6 +1153,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textbuffer[i].set_language(langs[i])
 
     def _compare_files_internal(self):
+        for i in self._merge_files():
+            yield i
         for i in self._diff_files():
             yield i
 
