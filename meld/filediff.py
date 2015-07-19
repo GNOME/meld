@@ -1034,7 +1034,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.msgarea_mgr[pane].clear()
 
         self.recompute_label()
-        self.textview[len(files) >= 2].grab_focus()
 
         self.undosequence.clear()
         self.linediffer.clear()
@@ -1150,6 +1149,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield i
         for i in self._diff_files():
             yield i
+        focus_pane = 0 if self.num_panes < 3 else 1
+        self.textview[focus_pane].grab_focus()
 
     def set_meta(self, meta):
         self.meta = meta
