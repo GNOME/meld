@@ -1123,13 +1123,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
 
-        langs = []
-        for i in range(self.num_panes):
-            filename = self.textbuffer[i].data.filename
-            if filename:
-                langs.append(LanguageManager.get_language_from_file(filename))
-            else:
-                langs.append(None)
+        langs = [LanguageManager.get_language_from_file(buf.data.gfile)
+                 for buf in self.textbuffer[:self.num_panes]]
 
         # If we have only one identified language then we assume that all of
         # the files are actually of that type.
