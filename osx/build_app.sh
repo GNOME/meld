@@ -18,13 +18,15 @@ MAIN="$APP/"
 RES="$MAIN/Contents/Resources/"
 
 mkdir -p $RES/share/icons
-cp -R ~/gtk/inst/share/icons/Tango $RES/share/icons
-mv $RES/share/icons/Tango $RES/share/icons/Adwaita
+cp -R ~/gtk/inst/share/icons/Adwaita $RES/share/icons
 cp -R data/icons/* $RES/share/icons
 
 # glib schemas
 cp -R ~/gtk/inst/share/glib-2.0/schemas $RES/share/glib-2.0
 cp -R ~/gtk/inst/share/GConf/gsettings $RES/share/GConf
+
+# gdk-pixbuf
+cp -R ~/gtk/inst/lib/gdk-pixbuf-2.0 $RES/lib
 
 # DIRTY HACK FOR NOW
 pushd .
@@ -40,16 +42,14 @@ cp -R ~/gtk/inst/share/themes/Mac/ $RES/share/themes/Mac
 cp -R ~/gtk/inst/share/gtksourceview-3.0 $RES/share
 
 mkdir -p $RES/etc/gtk-3.0
-#mkdir -p $RES/etc/pango
-#mkdir -p $RES/etc/xdg
 cp -R osx/gtkrc $RES/etc/gtk-3.0
 cp -R ~/gtk/inst/share/gtksourceview-3.0 $RES/share
 
-mkdir -p $RES/etc/gtk-3.0
-mkdir -p $RES/etc/pango
-mkdir -p $RES/etc/xdg
-cp -R osx/gtkrc $RES/etc/gtk-3.0
-cp -R osx/pangorc $RES/etc/pango
+# mkdir -p $RES/etc/gtk-3.0
+# mkdir -p $RES/etc/pango
+# mkdir -p $RES/etc/xdg
+# cp -R osx/gtkrc $RES/etc/gtk-3.0
+# cp -R osx/pangorc $RES/etc/pango
 
 mkdir -p $RES/lib
 #cp -R ~/gtk/inst/lib/girepository-1.0 $RES/lib
