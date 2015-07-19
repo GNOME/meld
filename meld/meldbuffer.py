@@ -37,10 +37,10 @@ class MeldBuffer(GtkSource.Buffer):
         ('highlight-syntax', 'highlight-syntax'),
     )
 
-    def __init__(self, filename=None):
+    def __init__(self):
         GtkSource.Buffer.__init__(self)
         bind_settings(self)
-        self.data = MeldBufferData(filename)
+        self.data = MeldBufferData()
         self.user_action_count = 0
         meldsettings.connect('changed', self.on_setting_changed)
         self.set_style_scheme(meldsettings.style_scheme)
@@ -103,11 +103,11 @@ class MeldBufferData(GObject.GObject):
         str('file-changed'): (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    def __init__(self, filename=None):
+    def __init__(self):
         GObject.GObject.__init__(self)
         self._filename = None
         self._label = None
-        self.reset(filename)
+        self.reset(filename=None)
 
     def reset(self, filename):
         self.loaded = False
