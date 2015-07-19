@@ -1024,16 +1024,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         self._disconnect_buffer_handlers()
-        files = list(files)
-        for i, f in enumerate(files):
-            if not f:
-                continue
-            if not isinstance(f, unicode):
-                files[i] = f = f.decode('utf8')
-            absfile = os.path.abspath(f)
-            self.fileentry[i].set_filename(absfile)
-            self.textbuffer[i].data.reset(absfile)
-            self.msgarea_mgr[i].clear()
+
+        files = [(pane, Gio.File.new_for_path(filename))
+                 for pane, filename in enumerate(files) if filename]
+
+        for pane, gfile in files:
+            self.fileentry[pane].set_file(gfile)
+            self.textbuffer[pane].data.reset(gfile)
+            self.msgarea_mgr[pane].clear()
 
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
@@ -1041,11 +1039,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.clear()
         self.linediffer.clear()
 
-        for pane, filename in enumerate(files):
-            if not filename:
-                continue
-
-            gfile = Gio.File.new_for_path(filename)
+        for pane, gfile in files:
             sourcefile = GtkSource.File()
             sourcefile.set_location(gfile)
 
@@ -1486,6 +1480,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 return False
 
             bufdata.filename = bufdata.label = os.path.abspath(filename)
+            bufdata.gfile = Gio.File.new_for_path(bufdata.filename)
             bufdata.savefile = None
             self.fileentry[pane].set_filename(bufdata.filename)
             self.filelabel_toolitem[pane].set_visible(False)

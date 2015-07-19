@@ -107,16 +107,23 @@ class MeldBufferData(GObject.GObject):
         GObject.GObject.__init__(self)
         self._filename = None
         self._label = None
-        self.reset(filename=None)
+        self.reset(gfile=None)
 
-    def reset(self, filename):
+    def reset(self, gfile):
+        same_file = gfile and self.gfile and gfile.equal(self.gfile)
+        self.gfile = gfile
         self.loaded = False
         self.modified = False
         self.editable = True
         self._monitor = None
         self._mtime = None
         self._disk_mtime = None
-        self.label = self._label if self._filename == filename else filename
+
+        # This is aiming to maintain existing behaviour for filename. The
+        # behaviour is however wrong and should be fixed.
+        filename = gfile.get_path().decode('utf8') if gfile else None
+
+        self.label = self._label if same_file else filename
         self.filename = filename
         self.savefile = None
         self.encoding = None
