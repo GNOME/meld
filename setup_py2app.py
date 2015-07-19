@@ -24,11 +24,10 @@ FORCE_32_BIT = False
 
 PLIST = {
     'CFBundleDocumentTypes': [
-        # Associate application with .xyz files
         {
-            #'CFBundleTypeExtensions': ['xyz'],
-            #'CFBundleTypeIconFile': 'xyz.icns',
-            #'CFBundleTypeName': 'XYZ Project',
+            'CFBundleTypeExtensions': ['scmdifftool'],
+            'CFBundleTypeIconFile': 'DiffToolDocument',
+            'CFBundleTypeName': 'Diff Tool',
             'CFBundleTypeRole': 'Editor',
             'LSTypeIsPackage': True,
         },
@@ -38,7 +37,7 @@ PLIST = {
     'CFBundleSignature': '???',
     'CFBundleVersion': VERSION_STRING,
     'LSPrefersPPC': FORCE_32_BIT,
-    'NSHumanReadableCopyright': u'Copyright © 2014',
+    'NSHumanReadableCopyright': u'Copyright © 205',
     'CFBundleDisplayName': 'Meld',
     'CFBundleName': 'Meld',
     'NSHighResolutionCapable': True,
@@ -93,7 +92,7 @@ setup(
          ['COPYING', 'NEWS']
          ),
         ('share/meld',
-         ['data/gtkrc']
+         ['data/gschemas.compiled']
          ),
         ('share/meld/icons',
          glob.glob("data/icons/*.png") +
