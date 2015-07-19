@@ -36,8 +36,7 @@ class FileMerge(filediff.FileDiff):
 
     def _set_files_internal(self, files):
         self.textview[1].set_buffer(meldbuffer.MeldBuffer())
-        for i in self._load_files(files, self.textbuffer):
-            yield i
+        self._load_files(files, self.textbuffer)
 
     def _compare_files_internal(self):
         for i in self._merge_files():

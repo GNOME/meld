@@ -1034,22 +1034,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
         self._connect_buffer_handlers()
-        self.scheduler.add_task(self._set_files_internal(files))
+        self._set_files_internal(files)
 
     def get_comparison(self):
         files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
         return recent.TYPE_FILE, files
 
     def _load_files(self, files, textbuffers):
-        self.undosequence.clear()
-        yield _("[%s] Set num panes") % self.label_text
-        self.set_num_panes( len(files) )
+        if len(files) != self.num_panes:
+            return
         self._disconnect_buffer_handlers()
+        self.undosequence.clear()
         self.linediffer.clear()
-        self.queue_draw()
-
-        yield _("[%s] Opening files") % self.label_text
-        tasks = []
 
         for pane, filename in enumerate(files):
             if not filename:
@@ -1154,8 +1150,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textbuffer[i].set_language(langs[i])
 
     def _set_files_internal(self, files):
-        for i in self._load_files(files, self.textbuffer):
-            yield i
+        self._load_files(files, self.textbuffer)
 
     def _compare_files_internal(self):
         for i in self._diff_files():
