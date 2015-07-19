@@ -10,6 +10,7 @@ This README should help you build Meld for OS X.
 JHBuild is the build system that we will be using to build Meld. This step should really be done once and further builds should not require updating the build environment unless there has been some updates to the libraries that you'd like to do.
 
 ---
+<<<<<<< HEAD
 #### Preparation ####
 
 To ensure that we don't hit some issue with python not able to determine locales on OSX, let's do the following
@@ -17,6 +18,8 @@ To ensure that we don't hit some issue with python not able to determine locales
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 ```
+=======
+>>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 
 #### Initial Phase ####
 
@@ -31,7 +34,10 @@ curl -O https://git.gnome.org/browse/gtk-osx/plain/gtk-osx-build-setup.sh
 sh gtk-osx-build-setup.sh
 ~/.local/bin/jhbuild shell
 ```
+<<<<<<< HEAD
 You can exit the shell once you determine that it works properly
+=======
+>>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 
 3. Build python
 ```
@@ -40,7 +46,11 @@ jhbuild build python
 
 4. Prepare paths and build the bootstrap
 ```
+<<<<<<< HEAD
 alias jhbuild="PATH=~/.local/bin:$PATH jhbuild"
+=======
+alias jhbuild="PATH=gtk-prefix/bin:$PATH jhbuild"
+>>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 jhbuild bootstrap
 ```
 
@@ -48,14 +58,22 @@ jhbuild bootstrap
 ```
 git clone https://github.com/yousseb/meld.git
 cd meld
+<<<<<<< HEAD
 # if building the 1.8 version, run: git checkout meld-1-8
+=======
+git checkout meld-1-8
+>>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 cd osx/
 ln -sf $PWD/jhbuildrc-custom ~/.jhbuildrc-custom
 cd ..
 jhbuild
 ```
 
+<<<<<<< HEAD
 6- 1.8 branch only: Fix the gtksourceview issues
+=======
+6- Fix the gtksourceview issues
+>>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 ```
 ln -sf ~/gtk/inst/lib/pkgconfig/gtk-mac-integration-gtk2.pc ~/gtk/inst/lib/pkgconfig/gtk-mac-integration.pc
 ```
@@ -80,11 +98,19 @@ jhbuild
 8. Build extra dependencies
 ```
 jhbuild -m osx/meld.modules build meld-python-deps
+<<<<<<< HEAD
 jhbuild run easy_install py2app
+=======
+easy_install py2app
+>>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 ```
 
 9. You're now ready to build Meld. 
 ```
+<<<<<<< HEAD
 chmod +x osx/build_app.sh
 jhbuild run osx/build_app.sh
+=======
+bash osx/build_app.sh
+>>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 ```
