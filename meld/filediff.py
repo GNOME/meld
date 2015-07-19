@@ -884,7 +884,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             meldbuffer.BufferDeletionAction(buf, it0.get_offset(), text))
 
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
-        self.set_buffer_modified(buf, not checkpointed)
+        buf.data.modified = not checkpointed
+        self.recompute_label()
 
     @with_focused_pane
     def open_external(self, pane):
@@ -1568,10 +1569,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].props.visible = not writable
         self.set_buffer_editable(buf, writable)
-
-    def set_buffer_modified(self, buf, yesno):
-        buf.data.modified = yesno
-        self.recompute_label()
 
     def set_buffer_editable(self, buf, editable):
         buf.data.editable = editable
