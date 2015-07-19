@@ -1034,13 +1034,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.recompute_label()
         self.textview[len(files) >= 2].grab_focus()
         self._connect_buffer_handlers()
-        self._load_files(files, self.textbuffer)
+        self._load_files(files)
 
     def get_comparison(self):
         files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
         return recent.TYPE_FILE, files
 
-    def _load_files(self, files, textbuffers):
+    def _load_files(self, files):
         if len(files) != self.num_panes:
             return
         self._disconnect_buffer_handlers()
@@ -1056,7 +1056,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             sourcefile.set_location(gfile)
 
             # TODO: Maybe re-add support for the 'detect-encodings' gsetting
-            loader = GtkSource.FileLoader.new(textbuffers[pane], sourcefile)
+            loader = GtkSource.FileLoader.new(
+                self.textbuffer[pane], sourcefile)
             loader.load_async(
                 GLib.PRIORITY_HIGH,
                 callback=self.file_loaded,
