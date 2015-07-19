@@ -16,7 +16,6 @@
 
 from meld.conf import _
 from . import filediff
-from . import meldbuffer
 from . import merge
 from . import recent
 
@@ -35,13 +34,11 @@ class FileMerge(filediff.FileDiff):
         return recent.TYPE_MERGE, comp[1]
 
     def _set_files_internal(self, files):
-        self.textview[1].set_buffer(meldbuffer.MeldBuffer())
         self._load_files(files, self.textbuffer)
 
     def _compare_files_internal(self):
         for i in self._merge_files():
             yield i
-        self.textview[1].set_buffer(self.textbuffer[1])
         for i in self._diff_files():
             yield i
 
