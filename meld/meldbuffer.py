@@ -105,26 +105,21 @@ class MeldBufferData(GObject.GObject):
 
     def __init__(self):
         GObject.GObject.__init__(self)
-        self._filename = None
+        self._gfile = None
         self._label = None
+        self._monitor = None
         self.reset(gfile=None)
 
     def reset(self, gfile):
-        same_file = gfile and self.gfile and gfile.equal(self.gfile)
+        same_file = gfile and self._gfile and gfile.equal(self._gfile)
         self.gfile = gfile
+        self.label = self._label if same_file else self.filename
         self.loaded = False
         self.modified = False
         self.editable = True
         self._monitor = None
         self._mtime = None
         self._disk_mtime = None
-
-        # This is aiming to maintain existing behaviour for filename. The
-        # behaviour is however wrong and should be fixed.
-        filename = gfile.get_path().decode('utf8') if gfile else None
-
-        self.label = self._label if same_file else filename
-        self.filename = filename
         self.savefile = None
         self.encoding = None
         self.newlines = None
@@ -145,8 +140,8 @@ class MeldBufferData(GObject.GObject):
         self._label = fallback_decode(value, encodings, lossy=True)
 
     def _connect_monitor(self):
-        if self._filename:
-            monitor = Gio.File.new_for_path(self._filename).monitor_file(
+        if self.filename:
+            monitor = Gio.File.new_for_path(self.filename).monitor_file(
                 Gio.FileMonitorFlags.NONE, None)
             handler_id = monitor.connect('changed', self._handle_file_change)
             self._monitor = monitor, handler_id
@@ -174,19 +169,22 @@ class MeldBufferData(GObject.GObject):
         self._disk_mtime = mtime
 
     @property
-    def filename(self):
-        return self._filename
+    def gfile(self):
+        return self._gfile
 
-    @filename.setter
-    def filename(self, value):
+    @gfile.setter
+    def gfile(self, value):
         self._disconnect_monitor()
-        self._filename = value
+        self._gfile = value
+        # This is aiming to maintain existing behaviour for filename. The
+        # behaviour is however wrong and should be fixed.
+        self.filename = value.get_path().decode('utf8') if value else None
         self.update_mtime()
         self._connect_monitor()
 
     @property
     def writable(self):
-        path = self.savefile or self._filename
+        path = self.savefile or self.filename
         if not path:
             return False
         gfile = Gio.File.new_for_path(path)
@@ -198,9 +196,8 @@ class MeldBufferData(GObject.GObject):
         return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)
 
     def update_mtime(self):
-        if self._filename:
-            gfile = Gio.File.new_for_path(self._filename)
-            self._disk_mtime = self._query_mtime(gfile)
+        if self._gfile:
+            self._disk_mtime = self._query_mtime(self._gfile)
             self._mtime = self._disk_mtime
 
     def current_on_disk(self):

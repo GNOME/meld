@@ -1475,9 +1475,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             filename = self._get_filename_for_saving(prompt)
             if not filename:
                 return False
-
-            bufdata.filename = bufdata.label = os.path.abspath(filename)
-            bufdata.gfile = Gio.File.new_for_path(bufdata.filename)
+            filename = os.path.abspath(filename)
+            bufdata.label = filename
+            bufdata.gfile = Gio.File.new_for_path(filename)
             bufdata.savefile = None
             self.fileentry[pane].set_filename(bufdata.filename)
             self.filelabel_toolitem[pane].set_visible(False)
