@@ -1016,8 +1016,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.label_changed()
 
     def set_files(self, files):
-        """Set num panes to len(files) and load each file given.
-           If an element is None, the text of a pane is left as is.
+        """Load the given files
+
+        If an element is None, the text of a pane is left as is.
         """
         self._disconnect_buffer_handlers()
         files = list(files)
@@ -1028,7 +1029,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 files[i] = f = f.decode('utf8')
             absfile = os.path.abspath(f)
             self.fileentry[i].set_filename(absfile)
-            self.textbuffer[i].reset_buffer(absfile)
+            self.textbuffer[i].data.reset(absfile)
             self.msgarea_mgr[i].clear()
 
         self.recompute_label()
