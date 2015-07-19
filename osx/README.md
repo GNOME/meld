@@ -31,10 +31,7 @@ curl -O https://git.gnome.org/browse/gtk-osx/plain/gtk-osx-build-setup.sh
 sh gtk-osx-build-setup.sh
 ~/.local/bin/jhbuild shell
 ```
-<<<<<<< HEAD
 You can exit the shell once you determine that it works properly
-=======
->>>>>>> da87c5c4fffb10614d606301de670c7807f1f69b
 
 3. Build python
 ```
@@ -83,7 +80,7 @@ jhbuild
 8. Build extra dependencies
 ```
 jhbuild -m osx/meld.modules build meld-python-deps
-easy_install py2app
+jhbuild run easy_install py2app
 ```
 
 9. You're now ready to build Meld.
