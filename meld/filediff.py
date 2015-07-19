@@ -1479,10 +1479,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.fileentry_toolitem[pane].set_visible(True)
 
         if not force_overwrite and not bufdata.current_on_disk():
-            gfile = Gio.File.new_for_path(bufdata.filename)
             primary = (
                 _("File %s has changed on disk since it was opened") %
-                gfile.get_parse_name().decode('utf-8'))
+                bufdata.gfile.get_parse_name().decode('utf-8'))
             secondary = _("If you save it, any external changes will be lost.")
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                 Gtk.STOCK_DIALOG_WARNING, primary, secondary)
