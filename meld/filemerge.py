@@ -33,9 +33,6 @@ class FileMerge(filediff.FileDiff):
         comp = filediff.FileDiff.get_comparison(self)
         return recent.TYPE_MERGE, comp[1]
 
-    def _set_files_internal(self, files):
-        self._load_files(files, self.textbuffer)
-
     def _compare_files_internal(self):
         for i in self._merge_files():
             yield i
