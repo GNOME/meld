@@ -1024,19 +1024,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         self._disconnect_buffer_handlers()
+        self.undosequence.clear()
+        self.linediffer.clear()
 
         files = [(pane, Gio.File.new_for_path(filename))
                  for pane, filename in enumerate(files) if filename]
 
         for pane, gfile in files:
             self.fileentry[pane].set_file(gfile)
-            self.textbuffer[pane].data.reset(gfile)
             self.msgarea_mgr[pane].clear()
 
-        self.undosequence.clear()
-        self.linediffer.clear()
-
-        for pane, gfile in files:
+            self.textbuffer[pane].data.reset(gfile)
             sourcefile = GtkSource.File()
             sourcefile.set_location(gfile)
 
