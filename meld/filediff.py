@@ -1033,8 +1033,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.textbuffer[pane].data.reset(gfile)
             self.msgarea_mgr[pane].clear()
 
-        self.recompute_label()
-
         self.undosequence.clear()
         self.linediffer.clear()
 
