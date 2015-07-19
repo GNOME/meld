@@ -120,14 +120,6 @@ class CursorDetails(object):
             setattr(self, var, None)
 
 
-class TaskEntry(object):
-    __slots__ = ("filename", "file", "buf", "codec", "pane", "was_cr")
-
-    def __init__(self, *args):
-        for var, val in zip(self.__slots__, args):
-            setattr(self, var, val)
-
-
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way comparison of text files"""
 
