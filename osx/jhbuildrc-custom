@@ -15,8 +15,8 @@ skip.append("cups")
 modules = [
   "python",
 #  "meta-gtk-osx-core",
-#  "gtk-mac-integration",
-#  "librsvg", "libglade",
+  "gtk-mac-integration",
+  "librsvg", "libglade",
   "gtksourceview3",
   "gsettings-desktop-schemas",
   "tango-icon-theme",
@@ -37,11 +37,10 @@ module_autogenargs['pango'] = "--with-included-modules " + autogenargs
 module_autogenargs['gtk+'] = ' --disable-papi --disable-cups ' + autogenargs
 module_autogenargs['gtk-engines'] = "--disable-all --enable-clearlooks --enable-animation " + autogenargs
 module_autogenargs['gtksourceview'] = '--disable-gtk-doc-html' #--disable-nls ' + autogenargs
-module_autogenargs['gtk-mac-integration'] = '' #'CFLAGS="$CFLAGS -mmacosx-version-min=10.7" '  + autogenargs
+module_autogenargs['gtk-mac-integration'] = '--enable-python=all --without-gtk2 --with-gtk3 --enable-introspection=yes ' + autogenargs
 
 #`pkg-config gtk+-quartz-2.0 --libs` -L"../Frameworks"
 module_autogenargs['gtk+-3.0'] = '--with-included-immodules ' + autogenargs
 
 # Can be usefull when tweaking modulesets to avoid jhbuild overwriting:
 #nonetwork=True
-

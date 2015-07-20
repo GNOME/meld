@@ -33,7 +33,7 @@ from .ui import gnomeglade
 from .ui import notebooklabel
 
 from .util.compat import string_types
-from meld.conf import _, keymap
+from meld.conf import _, is_darwin
 from meld.recent import recent_comparisons
 from meld.settings import interface_settings, settings
 
@@ -46,13 +46,13 @@ class MeldWindow(gnomeglade.Component):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), keymap("<control>N"),
+            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), "<Primary>N",
                 _("Start a new comparison"),
                 self.on_menu_file_new_activate),
             ("Save", Gtk.STOCK_SAVE, None, None,
                 _("Save the current file"),
                 self.on_menu_save_activate),
-            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), keymap("<control><shift>S"),
+            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), "<Primary><shift>S",
                 _("Save the current file with a different name"),
                 self.on_menu_save_as_activate),
             ("Close", Gtk.STOCK_CLOSE, None, None,
@@ -60,10 +60,10 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_close_activate),
 
             ("EditMenu", None, _("_Edit")),
-            ("Undo", Gtk.STOCK_UNDO, None, keymap("<control>Z"),
+            ("Undo", Gtk.STOCK_UNDO, None, "<Primary>Z",
                 _("Undo the last action"),
                 self.on_menu_undo_activate),
-            ("Redo", Gtk.STOCK_REDO, None, keymap("<control><shift>Z"),
+            ("Redo", Gtk.STOCK_REDO, None, "<Primary><shift>Z",
                 _("Redo the last undone action"),
                 self.on_menu_redo_activate),
             ("Cut", Gtk.STOCK_CUT, None, None, _("Cut the selection"),
@@ -74,14 +74,14 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_paste_activate),
             ("Find", Gtk.STOCK_FIND, _("Find..."), None, _("Search for text"),
                 self.on_menu_find_activate),
-            ("FindNext", None, _("Find Ne_xt"), keymap("<control>G"),
+            ("FindNext", None, _("Find Ne_xt"), "<Primary>G",
                 _("Search forwards for the same text"),
                 self.on_menu_find_next_activate),
-            ("FindPrevious", None, _("Find _Previous"), keymap("<control><shift>G"),
+            ("FindPrevious", None, _("Find _Previous"), "<Primary><shift>G",
                 _("Search backwards for the same text"),
                 self.on_menu_find_previous_activate),
             ("Replace", Gtk.STOCK_FIND_AND_REPLACE,
-                _("_Replace..."), keymap("<control>H"),
+                _("_Replace..."), "<Primary>H",
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
 
@@ -104,23 +104,23 @@ class MeldWindow(gnomeglade.Component):
             ("Stop", Gtk.STOCK_STOP, None, "Escape",
                 _("Stop the current action"),
                 self.on_toolbar_stop_clicked),
-            ("Refresh", Gtk.STOCK_REFRESH, None, keymap("<control>R"),
+            ("Refresh", Gtk.STOCK_REFRESH, None, "<Primary>R",
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
 
             ("TabMenu", None, _("_Tabs")),
-            ("PrevTab",   None, _("_Previous Tab"), keymap("<Ctrl><Alt>Page_Up"),
+            ("PrevTab",   None, _("_Previous Tab"), "<Ctrl><Alt>Page_Up",
                 _("Activate previous tab"),
                 self.on_prev_tab),
-            ("NextTab",   None, _("_Next Tab"), keymap("<Ctrl><Alt>Page_Down"),
+            ("NextTab",   None, _("_Next Tab"), "<Ctrl><Alt>Page_Down",
                 _("Activate next tab"),
                 self.on_next_tab),
             ("MoveTabPrev", None,
-                _("Move Tab _Left"), keymap("<Ctrl><Alt><Shift>Page_Up"),
+                _("Move Tab _Left"), "<Ctrl><Alt><Shift>Page_Up",
                 _("Move current tab to left"),
                 self.on_move_tab_prev),
             ("MoveTabNext", None,
-                _("Move Tab _Right"), keymap("<Ctrl><Alt><Shift>Page_Down"),
+                _("Move Tab _Right"), "<Ctrl><Alt><Shift>Page_Down",
                 _("Move current tab to right"),
                 self.on_move_tab_next),
         )
@@ -203,9 +203,9 @@ class MeldWindow(gnomeglade.Component):
 
         # Add alternate keybindings for Prev/Next Change
         accels = self.ui.get_accel_group()
-        (keyval, mask) = Gtk.accelerator_parse(keymap("<Ctrl>D"))
+        (keyval, mask) = Gtk.accelerator_parse("<Primary>D")
         accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
-        (keyval, mask) = Gtk.accelerator_parse(keymap("<Ctrl>E"))
+        (keyval, mask) = Gtk.accelerator_parse("<Primary>E")
         accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
         (keyval, mask) = Gtk.accelerator_parse("F5")
         accels.connect(keyval, mask, 0, self.on_menu_refresh_activate)
@@ -251,6 +251,30 @@ class MeldWindow(gnomeglade.Component):
         self.undo_handlers = tuple()
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
+
+        if is_darwin():
+            print "Will setup MAC integration..."
+            self.osx_ready = False
+            self.widget.connect('focus_in_event', self.osx_menu_setup)
+
+    def osx_menu_setup(self, widget, event, callback_data=None):
+        print "osx_menu_setup..."
+        if self.osx_ready == False:
+            print "osx_menu_setup yes..."
+            from gi.repository import GtkosxApplication as gtkosx_application
+            self.macapp = gtkosx_application.Application()
+            about_item = self.ui.get_widget('/Menubar/HelpMenu/About')
+            prefs_item = self.ui.get_widget('/Menubar/EditMenu/Preferences')
+            self.menubar.show()
+            self.macapp.set_menu_bar(self.menubar)
+            self.menubar.hide()
+            self.macapp.insert_app_menu_item(about_item, 0)
+            self.macapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 1)
+            self.macapp.insert_app_menu_item(prefs_item, 2)
+            self.macapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 3)
+            self.macapp.ready()
+            self.osx_ready = True
+            self.widget.connect('focus_in_event', self.on_focus_change)
 
     def on_focus_change(self, widget, event, callback_data=None):
         for idx in range(self.notebook.get_n_pages()):
