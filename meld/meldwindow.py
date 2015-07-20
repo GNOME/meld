@@ -253,12 +253,10 @@ class MeldWindow(gnomeglade.Component):
         self.widget.connect('focus_out_event', self.on_focus_change)
 
         if is_darwin():
-            print "Will setup MAC integration..."
             self.osx_ready = False
             self.widget.connect('window_state_event', self.osx_menu_setup)
 
     def osx_menu_setup(self, widget, event, callback_data=None):
-        print "osx_menu_setup..."
         if self.osx_ready == False:
             from gi.repository import GtkosxApplication as gtkosx_application
             self.macapp = gtkosx_application.Application()

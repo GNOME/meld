@@ -3,11 +3,8 @@
 EXEC="exec"
 
 name="`basename $0`"
-if [[ "$0" == `pwd`* ]] || [[ "$0" == "//"* ]]; then
-    full_path="$0"
-else
-    full_path="`pwd`/$0"
-fi
+full_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/$name"
+
 tmp=`dirname "$full_path"`
 tmp=`dirname "$tmp"`
 bundle=`dirname "$tmp"`
