@@ -152,7 +152,7 @@ class MeldWindow(gnomeglade.Component):
 
         # Manually handle shells that don't show an application menu
         gtk_settings = Gtk.Settings.get_default()
-        if not gtk_settings.props.gtk_shell_shows_app_menu:
+        if not gtk_settings.props.gtk_shell_shows_app_menu or is_darwin():
             from meldapp import app
 
             def make_app_action(name):
@@ -255,26 +255,29 @@ class MeldWindow(gnomeglade.Component):
         if is_darwin():
             print "Will setup MAC integration..."
             self.osx_ready = False
-            self.widget.connect('focus_in_event', self.osx_menu_setup)
+            self.widget.connect('window_state_event', self.osx_menu_setup)
 
     def osx_menu_setup(self, widget, event, callback_data=None):
         print "osx_menu_setup..."
         if self.osx_ready == False:
-            print "osx_menu_setup yes..."
             from gi.repository import GtkosxApplication as gtkosx_application
             self.macapp = gtkosx_application.Application()
-            about_item = self.ui.get_widget('/Menubar/HelpMenu/About')
-            prefs_item = self.ui.get_widget('/Menubar/EditMenu/Preferences')
+            prefs_item =self.menubar.get_children()[1].get_submenu().get_children()[1]
+            about_item = self.menubar.get_children()[1].get_submenu().get_children()[3]
+            #self.menubar.get_children()[1].get_submenu().get_children()[2] #help
+            quit_item = self.menubar.get_children()[1].get_submenu().get_children()[4]
+
             self.menubar.show()
+            self.menubar.remove(self.menubar.get_children()[1])
             self.macapp.set_menu_bar(self.menubar)
             self.menubar.hide()
+            self.menubar.get_children()[1].hide()
             self.macapp.insert_app_menu_item(about_item, 0)
-            self.macapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 1)
+            self.macapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 1)
             self.macapp.insert_app_menu_item(prefs_item, 2)
-            self.macapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 3)
-            self.macapp.ready()
+            self.macapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 3)
+            #self.macapp.ready()
             self.osx_ready = True
-            self.widget.connect('focus_in_event', self.on_focus_change)
 
     def on_focus_change(self, widget, event, callback_data=None):
         for idx in range(self.notebook.get_n_pages()):
