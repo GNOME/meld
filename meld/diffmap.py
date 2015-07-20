@@ -119,6 +119,11 @@ class DiffMap(Gtk.DrawingArea):
         x0 = xpad
         x1 = width - 2 * xpad
 
+        # Hack to work around a cairo bug when calling create_similar
+        # https://bugs.freedesktop.org/show_bug.cgi?id=60519
+        if not (width and height):
+            return
+
         context.translate(0, y_start)
         context.set_line_width(1)
         context.rectangle(x0 - 3, -1, x1 + 6, height + 1)
