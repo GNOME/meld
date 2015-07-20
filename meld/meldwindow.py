@@ -33,7 +33,7 @@ from .ui import gnomeglade
 from .ui import notebooklabel
 
 from .util.compat import string_types
-from meld.conf import _
+from meld.conf import _, keymap
 from meld.recent import recent_comparisons
 from meld.settings import interface_settings, settings
 
@@ -46,13 +46,13 @@ class MeldWindow(gnomeglade.Component):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), "<control>N",
+            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), keymap("<control>N"),
                 _("Start a new comparison"),
                 self.on_menu_file_new_activate),
             ("Save", Gtk.STOCK_SAVE, None, None,
                 _("Save the current file"),
                 self.on_menu_save_activate),
-            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), "<control><shift>S",
+            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), keymap("<control><shift>S"),
                 _("Save the current file with a different name"),
                 self.on_menu_save_as_activate),
             ("Close", Gtk.STOCK_CLOSE, None, None,
@@ -60,10 +60,10 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_close_activate),
 
             ("EditMenu", None, _("_Edit")),
-            ("Undo", Gtk.STOCK_UNDO, None, "<control>Z",
+            ("Undo", Gtk.STOCK_UNDO, None, keymap("<control>Z"),
                 _("Undo the last action"),
                 self.on_menu_undo_activate),
-            ("Redo", Gtk.STOCK_REDO, None, "<control><shift>Z",
+            ("Redo", Gtk.STOCK_REDO, None, keymap("<control><shift>Z"),
                 _("Redo the last undone action"),
                 self.on_menu_redo_activate),
             ("Cut", Gtk.STOCK_CUT, None, None, _("Cut the selection"),
@@ -74,14 +74,14 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_paste_activate),
             ("Find", Gtk.STOCK_FIND, _("Find..."), None, _("Search for text"),
                 self.on_menu_find_activate),
-            ("FindNext", None, _("Find Ne_xt"), "<control>G",
+            ("FindNext", None, _("Find Ne_xt"), keymap("<control>G"),
                 _("Search forwards for the same text"),
                 self.on_menu_find_next_activate),
-            ("FindPrevious", None, _("Find _Previous"), "<control><shift>G",
+            ("FindPrevious", None, _("Find _Previous"), keymap("<control><shift>G"),
                 _("Search backwards for the same text"),
                 self.on_menu_find_previous_activate),
             ("Replace", Gtk.STOCK_FIND_AND_REPLACE,
-                _("_Replace..."), "<control>H",
+                _("_Replace..."), keymap("<control>H"),
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
 
@@ -104,23 +104,23 @@ class MeldWindow(gnomeglade.Component):
             ("Stop", Gtk.STOCK_STOP, None, "Escape",
                 _("Stop the current action"),
                 self.on_toolbar_stop_clicked),
-            ("Refresh", Gtk.STOCK_REFRESH, None, "<control>R",
+            ("Refresh", Gtk.STOCK_REFRESH, None, keymap("<control>R"),
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
 
             ("TabMenu", None, _("_Tabs")),
-            ("PrevTab",   None, _("_Previous Tab"), "<Ctrl><Alt>Page_Up",
+            ("PrevTab",   None, _("_Previous Tab"), keymap("<Ctrl><Alt>Page_Up"),
                 _("Activate previous tab"),
                 self.on_prev_tab),
-            ("NextTab",   None, _("_Next Tab"), "<Ctrl><Alt>Page_Down",
+            ("NextTab",   None, _("_Next Tab"), keymap("<Ctrl><Alt>Page_Down"),
                 _("Activate next tab"),
                 self.on_next_tab),
             ("MoveTabPrev", None,
-                _("Move Tab _Left"), "<Ctrl><Alt><Shift>Page_Up",
+                _("Move Tab _Left"), keymap("<Ctrl><Alt><Shift>Page_Up"),
                 _("Move current tab to left"),
                 self.on_move_tab_prev),
             ("MoveTabNext", None,
-                _("Move Tab _Right"), "<Ctrl><Alt><Shift>Page_Down",
+                _("Move Tab _Right"), keymap("<Ctrl><Alt><Shift>Page_Down"),
                 _("Move current tab to right"),
                 self.on_move_tab_next),
         )
@@ -203,9 +203,9 @@ class MeldWindow(gnomeglade.Component):
 
         # Add alternate keybindings for Prev/Next Change
         accels = self.ui.get_accel_group()
-        (keyval, mask) = Gtk.accelerator_parse("<Ctrl>D")
+        (keyval, mask) = Gtk.accelerator_parse(keymap("<Ctrl>D"))
         accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
-        (keyval, mask) = Gtk.accelerator_parse("<Ctrl>E")
+        (keyval, mask) = Gtk.accelerator_parse(keymap("<Ctrl>E"))
         accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
         (keyval, mask) = Gtk.accelerator_parse("F5")
         accels.connect(keyval, mask, 0, self.on_menu_refresh_activate)

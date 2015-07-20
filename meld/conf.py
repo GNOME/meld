@@ -45,3 +45,17 @@ def uninstalled():
     data_dir = os.environ.get('XDG_DATA_DIRS', "/usr/local/share/:/usr/share/")
     data_dir = ":".join((melddir, data_dir))
     os.environ['XDG_DATA_DIRS'] = data_dir
+
+def is_darwin():
+    return sys.platform == "darwin"
+
+def keymap(accel_key):
+    if not is_darwin():
+        return accel_key
+    else:
+        import re
+        pattern = re.compile("control", re.IGNORECASE)
+        accel1 = pattern.sub("Primary", accel_key)
+        pattern = re.compile("ctrl", re.IGNORECASE)
+        accel = pattern.sub("Primary", accel1)
+        return accel
