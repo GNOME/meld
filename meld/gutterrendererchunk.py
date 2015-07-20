@@ -72,8 +72,8 @@ class GutterRendererChunkAction(GtkSource.GutterRendererPixbuf):
         if chunk_index is None:
             return
 
-        # FIXME: This is all chunks, not just those shared with to_pane
-        chunk = self.linediffer.get_chunk(chunk_index, self.from_pane)
+        chunk = self.linediffer.get_chunk(
+            chunk_index, self.from_pane, self.to_pane)
         if chunk[1] != line:
             return
 
