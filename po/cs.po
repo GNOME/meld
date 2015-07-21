@@ -1,13 +1,18 @@
-# Czech translation for meld.
-# Copyright (C) 2014 meld's COPYRIGHT HOLDER
+# Czech translation of meld.
+# Copyright (C) 2003, 2004, 2005, 2008, 2009, 2010, 2011 the author(s) of meld.
 # This file is distributed under the same license as the meld package.
-# Marek Černocký <marek@manet.cz>, 2014, 2015.
+#
+# Miloslav Trmac <mitr@volny.cz>, 2003, 2004, 2005.
+# Petr Kovar <pknbe@volny.cz>, 2008, 2009, 2010, 2011.
+# Marek Černocký <marek@manet.cz>, 2011, 2012, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meld master\n"
-"POT-Creation-Date: 2015-07-20 19:42+0000\n"
-"PO-Revision-Date: 2015-07-21 11:57+0200\n"
+"Project-Id-Version: meld\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=meld&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-02-16 20:12+0000\n"
+"PO-Revision-Date: 2015-02-16 22:57+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -17,1829 +22,2266 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
-msgctxt "_"
+#: ../bin/meld:144
+msgid "Cannot import: "
+msgstr "Nelze importovat: "
+
+#: ../bin/meld:147
+#, c-format
+msgid "Meld requires %s or higher."
+msgstr "Meld vyžaduje %s nebo vyšší."
+
+#: ../bin/meld:151
+msgid "Meld does not support Python 3."
+msgstr "Meld nepodporuje Python 3."
+
+#: ../bin/meld:201
+#, c-format
+msgid ""
+"Couldn't load Meld-specific CSS (%s)\n"
+"%s"
+msgstr ""
+"Nelze načíst CSS určené pro Meld (%s)\n"
+"%s"
+
+#: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
+msgid "Meld"
+msgstr "Meld"
+
+#: ../data/meld.desktop.in.h:2
+msgid "Diff Viewer"
+msgstr "Prohlížeč rozdílů"
+
+#: ../data/meld.desktop.in.h:3
+msgid "Meld Diff Viewer"
+msgstr "Prohlížeč rozdílů Meld"
+
+#: ../data/meld.desktop.in.h:4
+msgid "Compare and merge your files"
+msgstr "Porovnává a slučuje soubory"
+
+#: ../data/meld.appdata.xml.in.h:1
+msgid ""
+"Meld is a visual diff and merge tool targeted at developers. Meld helps you "
+"compare files, directories, and version controlled projects. It provides "
+"two- and three-way comparison of both files and directories, and supports "
+"many version control systems including Git, Mercurial, Bazaar and Subversion."
+msgstr ""
+"Meld je vizuální nástroj pro práci s rozdíly (diff) a slučování (merge). "
+"Míří na vývojáře, kterým pomáhá porovnávat soubory, složky a projekty "
+"používající správu verzí. Poskytuje dvou a třícestné porovnání jak souborů, "
+"tak složek a podporuje řadu systémů pro správu verzí, včetně Git, Mercurial, "
+"Bazaar a Subversion."
+
+#: ../data/meld.appdata.xml.in.h:2
+msgid ""
+"Meld helps you review code changes, understand patches, and makes enormous "
+"merge conflicts slightly less painful."
+msgstr ""
+"Pomocí aplikace Meld můžete kontrolovat změny kódu, pochopit jednotlivé "
+"záplaty a řešit konflikty při rozsáhlém slučování více bezbolestně."
+
+#: ../data/mime/meld.xml.in.h:1
+msgid "Meld comparison description"
+msgstr "Definice porovnávání Meld"
+
+#: ../data/org.gnome.meld.gschema.xml.h:1
+msgid "Default window size"
+msgstr "Výchozí velikost okna"
+
+#: ../data/org.gnome.meld.gschema.xml.h:2
+msgid "Default window state"
+msgstr "Výchozí stav okna"
+
+#: ../data/org.gnome.meld.gschema.xml.h:3
+msgid "Show toolbar"
+msgstr "Zobrazovat nástrojovou lištu"
+
+#: ../data/org.gnome.meld.gschema.xml.h:4
+msgid "If true, the window toolbar is visible."
+msgstr "Když je zapnuto, je nástrojová lišta v okně viditelná."
+
+#: ../data/org.gnome.meld.gschema.xml.h:5
+msgid "Show statusbar"
+msgstr "Zobrazovat stavovou lištu"
+
+#: ../data/org.gnome.meld.gschema.xml.h:6
+msgid "If true, the window statusbar is visible."
+msgstr "Když je zapnuto, je stavová lišta v okně viditelná."
+
+#: ../data/org.gnome.meld.gschema.xml.h:7
+msgid "Automatically detected text encodings"
+msgstr "Automaticky zjišťovat kódování textu"
+
+#: ../data/org.gnome.meld.gschema.xml.h:8
+msgid ""
+"These text encodings will be automatically used (in order) to try to decode "
+"loaded text files."
+msgstr ""
+"Tato kódování textu budou automaticky použita (v daném pořadí) k pokusům "
+"dekódovat načítané textové soubory."
+
+#: ../data/org.gnome.meld.gschema.xml.h:9
+msgid "Width of an indentation step"
+msgstr "Šířka stupně odsazení"
+
+#: ../data/org.gnome.meld.gschema.xml.h:10
+msgid "The number of spaces to use for a single indent step"
+msgstr "Počet mezer použitých pro jeden stupeň odsazení"
+
+#: ../data/org.gnome.meld.gschema.xml.h:11
+msgid "Whether to indent using spaces or tabs"
+msgstr "Zda odsazovat pomocí mezer nebo tabulátorů"
+
+#: ../data/org.gnome.meld.gschema.xml.h:12
+msgid "If true, any new indentation will use spaces instead of tabs."
+msgstr ""
+"Když je zapnuto, budou se pro nová odsazení používat mezery namísto "
+"tabulátorů."
+
+#: ../data/org.gnome.meld.gschema.xml.h:13
+msgid "Show line numbers"
+msgstr "Zobrazovat čísla řádků"
+
+#: ../data/org.gnome.meld.gschema.xml.h:14
+msgid "If true, line numbers will be shown in the gutter of file comparisons."
+msgstr ""
+"Když je zapnuto, budou se po boku porovnávaných souborů zobrazovat čísla "
+"řádků."
+
+#: ../data/org.gnome.meld.gschema.xml.h:15
+msgid "Highlight syntax"
+msgstr "Zvýrazňovat syntaxe"
+
+#: ../data/org.gnome.meld.gschema.xml.h:16
+msgid ""
+"Whether to highlight syntax in comparisons. Because of Meld's own color "
+"highlighting, this is off by default."
+msgstr ""
+"Zda v porovnání zvýrazňovat syntaxe. Vzhledem k tomu, že Meld má vlastní "
+"barevné zvýrazňování, je ve výchozím stavu vypnuto."
+
+#: ../data/org.gnome.meld.gschema.xml.h:17
+msgid "Color scheme to use for syntax highlighting"
+msgstr "Schéma barev použité ke zvýraznění syntaxe"
+
+#: ../data/org.gnome.meld.gschema.xml.h:18
+msgid "Used by GtkSourceView to determine colors for syntax highlighting"
+msgstr "Používá GtkSourceView k určení barev pro zvýraznění syntaxe"
+
+#: ../data/org.gnome.meld.gschema.xml.h:19
+msgid "Displayed whitespace"
+msgstr "Viditelné bílé znaky"
+
+#: ../data/org.gnome.meld.gschema.xml.h:20
+msgid ""
+"Selector for individual whitespace character types to be shown. Possible "
+"values are 'space', 'tab', 'newline' and 'nbsp'."
+msgstr ""
+"Výběr typů jednotlivých bílých znaků, které se mají zobrazovat. Možné "
+"hodnoty jsou „space“ (mezera), „tab“ (tabulátor), „newline“ (odřádkování) a "
+"„nbsp“ (nezalomitelná mezera)."
+
+#: ../data/org.gnome.meld.gschema.xml.h:21
+msgid "Wrap mode"
+msgstr "Režim zalamování"
+
+#: ../data/org.gnome.meld.gschema.xml.h:22
+msgid ""
+"Lines in file comparisons will be wrapped according to this setting, either "
+"not at all ('none'), at any character ('char') or only at the end of words "
+"('word')."
+msgstr ""
+"Řádky v porovnání souborů budou zalamovány podle tohoto nastavení, a to buď "
+"vůbec („none“), za libovolným znakem („char“) nebo na koncích slov („word“)."
+
+#: ../data/org.gnome.meld.gschema.xml.h:23
+msgid "Highlight current line"
+msgstr "Zvýrazňovat aktuální řádek"
+
+#: ../data/org.gnome.meld.gschema.xml.h:24
+msgid ""
+"If true, the line containing the cursor will be highlighted in file "
+"comparisons."
+msgstr "Když je zapnuto, bude řádek s kurzorem v porovnání zvýrazněn."
+
+#: ../data/org.gnome.meld.gschema.xml.h:25
+msgid "Use the system default monospace font"
+msgstr "Používat výchozí systémové písmo s pevnou šířkou"
+
+#: ../data/org.gnome.meld.gschema.xml.h:26
+msgid ""
+"If false, custom-font will be used instead of the system monospace font."
+msgstr ""
+"Když je vypnuto, použije se namísto systémového písma s pevnou šířkou "
+"vlastní písmo."
+
+#: ../data/org.gnome.meld.gschema.xml.h:27
+msgid "Custom font"
+msgstr "Vlastní písmo"
+
+#: ../data/org.gnome.meld.gschema.xml.h:28
+msgid ""
+"The custom font to use, stored as a string and parsed as a Pango font "
+"description."
+msgstr ""
+"Vlastní písmo, které se má používat; uloženo jako řetězec a zpracováno jako "
+"popis písma Pango."
+
+#: ../data/org.gnome.meld.gschema.xml.h:29
+msgid "Ignore blank lines when comparing files"
+msgstr "Při porovnávání souborů ignorovat prázdné řádky"
+
+#: ../data/org.gnome.meld.gschema.xml.h:30
+msgid ""
+"If true, blank lines will be trimmed when highlighting changes between files."
+msgstr ""
+"Když je zapnuto, budou prázdné řádky ve zvýrazňování změn mezi soubory "
+"vynechány."
+
+#: ../data/org.gnome.meld.gschema.xml.h:31
+msgid "Use the system default editor"
+msgstr "Používat výchozí editor systému"
+
+#: ../data/org.gnome.meld.gschema.xml.h:32
+msgid ""
+"If false, custom-editor-command will be used instead of the system editor "
+"when opening files externally."
+msgstr ""
+"Když je zapnuto, použije se při externím otevírání souborů vlastní editor "
+"namísto systémového editoru."
+
+#: ../data/org.gnome.meld.gschema.xml.h:33
+msgid "The custom editor launch command"
+msgstr "Příkaz pro spuštění vlastního editoru"
+
+#: ../data/org.gnome.meld.gschema.xml.h:34
+msgid ""
+"The command used to launch a custom editor. Some limited templating is "
+"supported here; at the moment '{file}' and '{line}' are recognised tokens."
+msgstr ""
+"Příkaz sloužící ke spuštění vlastního editoru. Podporovány jsou do jisté "
+"míry šablony – v tuto chvíli jsou rozpoznávány symboly „{file}“ (soubor) a "
+"„{line}“ (řádek)."
+
+#: ../data/org.gnome.meld.gschema.xml.h:35
+msgid "Columns to display"
+msgstr "Zobrazované sloupce"
+
+#: ../data/org.gnome.meld.gschema.xml.h:36
+msgid ""
+"List of column names in folder comparison and whether they should be "
+"displayed."
+msgstr "Seznam názvů sloupců v porovnávání složek a zda by měly být zobrazeny."
+
+#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:32
+msgid "Ignore symbolic links"
+msgstr "Ignorovat symbolické odkazy"
+
+#: ../data/org.gnome.meld.gschema.xml.h:38
+msgid ""
+"If true, folder comparisons do not follow symbolic links when traversing the "
+"folder tree."
+msgstr ""
+"Když je zapnuto, nenásledují se při porovnávání složek symbolické odkazy "
+"během procházení stromu složek."
+
+#: ../data/org.gnome.meld.gschema.xml.h:39
+msgid "Use shallow comparison"
+msgstr "Používat povrchní porovnání"
+
+#: ../data/org.gnome.meld.gschema.xml.h:40
+msgid ""
+"If true, folder comparisons compare files based solely on size and mtime, "
+"considering files to be identical if their size and mtime match, and "
+"different otherwise."
+msgstr ""
+"Když je zapnuto, porovnávání složek porovnává soubory pouze podle velikosti "
+"a času mtime. Soubory jsou považovány za identické, když mají stejnou "
+"velikost i čas, v opačném případě za rozdílné."
+
+#: ../data/org.gnome.meld.gschema.xml.h:41
+msgid "File timestamp resolution"
+msgstr "Přesnost časového razítka"
+
+#: ../data/org.gnome.meld.gschema.xml.h:42
+msgid ""
+"When comparing based on mtime, this is the minimum difference in nanoseconds "
+"between two files before they're considered to have different mtimes. This "
+"is useful when comparing files between filesystems with different timestamp "
+"resolution."
+msgstr ""
+"Když se provádí porovnání na základě času mtime, je tento údaj brán za "
+"nejmenší rozdíl v nanosekundách mezi dvěma soubory, po jehož překročení jsou "
+"jejich časy považovány za rozdílné. To je užitečné při porovnávání souborů "
+"mezi souborovými systémy, které mají různou přesnost časových razítek."
+
+#: ../data/org.gnome.meld.gschema.xml.h:43 ../data/ui/preferences.ui.h:30
+msgid "Apply text filters during folder comparisons"
+msgstr "Použít textové filtry při porovnávání složek"
+
+#: ../data/org.gnome.meld.gschema.xml.h:44
+msgid ""
+"If true, folder comparisons that compare file contents also apply active "
+"text filters and the blank line trimming option, and ignore newline "
+"differences."
+msgstr ""
+"Když je zapnuto, porovnávání složek, které porovnává obsah souborů, rovněž "
+"použije aktivní textové filtry, volbu ořezávání prázdných řádků a ignorování "
+"rozdílů v zalomení řádků."
+
+#: ../data/org.gnome.meld.gschema.xml.h:45
+msgid "File status filters"
+msgstr "Filtry stavu souboru"
+
+#: ../data/org.gnome.meld.gschema.xml.h:46
+msgid "List of statuses used to filter visible files in folder comparison."
+msgstr ""
+"Seznam stavů použitých k filtrování viditelných souborů v porovnávání složek."
+
+#: ../data/org.gnome.meld.gschema.xml.h:47
+msgid "Show the version control console output"
+msgstr "Zobrazovat výstup konzole správy verzí"
+
+#: ../data/org.gnome.meld.gschema.xml.h:48
+msgid ""
+"If true, a console output section will be shown in version control views, "
+"showing the commands run for version control operations."
+msgstr ""
+"Když je zapnuto, bude v zobrazení správy verzí zobrazen výstup konzole, na "
+"kterém uvidíte příkazy spouštěné pro jednotlivé operace správy verzí."
+
+#: ../data/org.gnome.meld.gschema.xml.h:49
+msgid "Version control pane position"
+msgstr "Umístění panelu správy verzí"
+
+#: ../data/org.gnome.meld.gschema.xml.h:50
+msgid ""
+"This is the height of the main version control tree when the console pane is "
+"shown."
+msgstr ""
+"Jde o výšku hlavního stromu správy verzí v případě, že je zobrazen panel "
+"konzoly."
+
+#: ../data/org.gnome.meld.gschema.xml.h:51
+msgid "Present version comparisons as left-local/right-remote"
+msgstr "Zobrazovat porovnání verzí jako vlevo-místní/vpravo-vzdálené"
+
+#: ../data/org.gnome.meld.gschema.xml.h:52
+msgid ""
+"If true, version control comparisons will use a left-is-local, right-is-"
+"remote scheme to determine what order to present files in panes. Otherwise, "
+"a left-is-theirs, right-is-mine scheme is used."
+msgstr ""
+"Když je zapnuto, bude porovnávání správy verzí používat schéma vlevo-místní, "
+"vpravo-vzdálené k určení pořadí, v jakém se mají soubory zobrazovat v "
+"panelech. V opačném případe je použito schéma vlevo-jejich, vpravo-moje."
+
+#: ../data/org.gnome.meld.gschema.xml.h:53
+msgid "Order for files in three-way version control merge comparisons"
+msgstr "Pořadí pro soubory v trojcestném slučovacím porovnání ve správě verzí"
+
+#: ../data/org.gnome.meld.gschema.xml.h:54
+msgid ""
+"Choices for file order are remote/merged/local and local/merged/remote. This "
+"preference only affects three-way comparisons launched from the version "
+"control view, so is used solely for merges/conflict resolution within Meld."
+msgstr ""
+"Možnosti pro pořadí souborů jsou remote/merged/local (vzdálený, sloučený, "
+"místní) a local/merged/remote (místní, sloučený, vzdálený). Tato předvolba "
+"se týká pouze trojcestného porovnávání spuštěného ze zobrazení správy verzí, "
+"protože se používá výhradně pro řešení slučování/konfliktů v rámci aplikace "
+"Meld."
+
+#: ../data/org.gnome.meld.gschema.xml.h:55
+msgid "Show margin in commit message editor"
+msgstr "Zobrazovat okraj v editoru zpráv k zařazení"
+
+#: ../data/org.gnome.meld.gschema.xml.h:56
+msgid ""
+"If true, a guide will be displayed to show what column the margin is at in "
+"the version control commit message editor."
+msgstr ""
+"Když je zapnuto, bude zobrazeno vodítko, které ukazuje, na kterém sloupci je "
+"okraj editoru zpráv popisujících zařazení ve správě verzí."
+
+#: ../data/org.gnome.meld.gschema.xml.h:57
+msgid "Margin column in commit message editor"
+msgstr "Sloupec okraje v editoru zpráv k zařazení"
+
+#: ../data/org.gnome.meld.gschema.xml.h:58
+msgid ""
+"The column at which to show the margin in the version control commit message "
+"editor."
+msgstr ""
+"Sloupec, ve kterém se má zobrazit okraj v editoru zpráv popisujících "
+"zařazení ve správě verzí."
+
+#: ../data/org.gnome.meld.gschema.xml.h:59
+msgid "Automatically hard-wrap commit messages"
+msgstr "Automaticky natvrdo zalamovat zprávy k zařazení"
+
+#: ../data/org.gnome.meld.gschema.xml.h:60
+msgid ""
+"If true, the version control commit message editor will hard-wrap (i.e., "
+"insert line breaks) at the commit margin before commit."
+msgstr ""
+"Když je zapnuto, bude editor zprávy popisující zařazení ve správě verzí před "
+"zařazením zprávu natvrdo zalamovat (tj. vkládat zalomení řádku) na "
+"příslušném sloupci."
+
+#: ../data/org.gnome.meld.gschema.xml.h:61
+msgid "Version control status filters"
+msgstr "Filtry stavu správy verzí"
+
+#: ../data/org.gnome.meld.gschema.xml.h:62
+msgid ""
+"List of statuses used to filter visible files in version control comparison."
+msgstr ""
+"Seznam stavů použitých k filtrování viditelných souborů v porovnávání správy "
+"verzí."
+
+#: ../data/org.gnome.meld.gschema.xml.h:63
+msgid "Filename-based filters"
+msgstr "Filtry názvů souborů"
+
+#: ../data/org.gnome.meld.gschema.xml.h:64
+msgid ""
+"List of predefined filename-based filters that, if active, will remove "
+"matching files from a folder comparison."
+msgstr ""
+"Seznam předdefinovaných filtrů názvů souborů. Když jsou aktivní, vynechají "
+"odpovídající soubory z porovnání složek."
+
+#: ../data/org.gnome.meld.gschema.xml.h:65
+msgid "Text-based filters"
+msgstr "Filtry textu"
+
+#: ../data/org.gnome.meld.gschema.xml.h:66
+msgid ""
+"List of predefined text-based regex filters that, if active, will remove "
+"text from being used in a file comparison. The text will still be displayed, "
+"but won't contribute to the comparison itself."
+msgstr ""
+"Seznam předdefinovaných filtrů textu založených na regulárních výrazech. "
+"Když jsou aktivní, vynechají odpovídající texty z porovnání souborů. Text "
+"bude sice i nadále zobrazen, ale nezasáhne do samotného porovnávání."
+
+#: ../data/ui/application.ui.h:1
+msgid "About Meld"
+msgstr "O aplikaci Meld"
+
+#: ../data/ui/application.ui.h:2
+msgid ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+msgstr ""
+"Copyright © 2002 – 2009 Stephen Kennedy\n"
+"Copyright © 2009 – 2013 Kai Willadsen"
+
+#: ../data/ui/application.ui.h:4
+msgid "Website"
+msgstr "Webové stránky"
+
+#: ../data/ui/application.ui.h:5
 msgid "translator-credits"
-msgstr "Marek Černocký <marek@manet.cz>"
-
-#. (itstool) path: info/title
-#: C/vc-supported.page:5
-msgctxt "sort"
-msgid "3"
-msgstr "3"
-
-#. (itstool) path: credit/name
-#: C/vc-supported.page:10 C/file-filters.page:10 C/text-filters.page:11
-#: C/resolving-conflicts.page:10 C/preferences.page:10 C/file-changes.page:10
-#: C/file-mode.page:11 C/flattened-view.page:10 C/index.page:8
-#: C/vc-mode.page:10 C/keyboard-shortcuts.page:10 C/introduction.page:10
-#: C/folder-mode.page:10 C/missing-functionality.page:10
-#: C/command-line.page:10
-msgid "Kai Willadsen"
-msgstr "Kai Willadsen"
-
-#. (itstool) path: credit/years
-#: C/vc-supported.page:12 C/file-filters.page:12 C/text-filters.page:13
-#: C/resolving-conflicts.page:12 C/file-changes.page:12 C/file-mode.page:13
-#: C/flattened-view.page:12 C/index.page:10 C/vc-mode.page:12
-#: C/keyboard-shortcuts.page:12 C/introduction.page:12 C/folder-mode.page:12
-#: C/missing-functionality.page:12 C/command-line.page:12
-msgid "2012"
-msgstr "2012"
-
-#. (itstool) path: page/title
-#: C/vc-supported.page:15
-msgid "Supported version control systems"
-msgstr "Podporované systémy pro správu verzí"
-
-#. (itstool) path: page/p
-#: C/vc-supported.page:17
-msgid "<app>Meld</app> supports a wide range of version control systems:"
-msgstr "<app>Meld</app> podporuje širokou škálu systémů pro správu verzí:"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:22
-msgid "Arch"
-msgstr "Arch"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:23
-msgid "Bazaar"
-msgstr "Bazaar"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:24
-msgid "Codeville"
-msgstr "Codeville"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:25
-msgid "CVS"
-msgstr "CVS"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:26
-msgid "Fossil"
-msgstr "Fossil"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:27
-msgid "Git"
-msgstr "Git"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:28
-msgid "Mercurial"
-msgstr "Mercurial"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:29
-msgid "Monotone"
-msgstr "Monotone"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:30
-msgid "RCS"
-msgstr "RCS"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:31
-msgid "SVK"
-msgstr "SVK"
-
-#. (itstool) path: item/p
-#: C/vc-supported.page:32
-msgid "SVN"
-msgstr "SVN"
-
-# Poznámky:
-# Přidat poznámku
-#
-# Vybalené komentáře:
-# (itstool) path: page/p
-#
-#. (itstool) path: page/p
-#: C/vc-supported.page:35
-msgid ""
-"Less common version control systems or unusual configurations may not be "
-"properly tested; please report any version control support bugs to <link "
-"href=\"https://bugzilla.gnome.org/\">GNOME bugzilla</link>."
 msgstr ""
-"Méně běžné systémy pro správu verzí nebo méně obvyklá nastavení nemusí být "
-"úplně otestovaná. Případné chyby v podpoře správy verzí prosím nahlaste na "
-"<link href=\"https://bugzilla.gnome.org/\">GNOME bugzilla</link>."
+"Miloslav Trmač <mitr@volny.cz>\n"
+"Petr Kovář <pknbe@volny.cz>\n"
+"Marek Černocký <marek@manet.cz>"
 
-#. (itstool) path: info/title
-#: C/file-filters.page:5 C/text-filters.page:5 C/resolving-conflicts.page:5
-#: C/file-changes.page:5 C/flattened-view.page:5 C/keyboard-shortcuts.page:5
-#: C/command-line.page:5
-msgctxt "sort"
-msgid "2"
-msgstr "2"
+#: ../data/ui/application.ui.h:6
+msgid "_Preferences"
+msgstr "_Předvolby"
 
-#. (itstool) path: page/title
-#: C/file-filters.page:15
-msgid "Filtering out files"
-msgstr "Odfiltrování souborů"
+#: ../data/ui/application.ui.h:7
+msgid "_Help"
+msgstr "Nápo_věda"
 
-#. (itstool) path: page/p
-#: C/file-filters.page:17
+#: ../data/ui/application.ui.h:8
+msgid "_About"
+msgstr "O _aplikaci"
+
+#: ../data/ui/application.ui.h:9
+msgid "_Quit"
+msgstr "U_končit"
+
+#: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
+msgid "_Compare"
+msgstr "_Porovnat"
+
+#: ../data/ui/dirdiff.ui.h:2 ../data/ui/vcview.ui.h:2
+msgid "Compare selected files"
+msgstr "Porovnat vybrané soubory"
+
+#: ../data/ui/dirdiff.ui.h:3
+msgid "Copy to _Left"
+msgstr "Kopírovat do_leva"
+
+#: ../data/ui/dirdiff.ui.h:4
+msgid "Copy to left"
+msgstr "Kopírovat doleva"
+
+#: ../data/ui/dirdiff.ui.h:5
+msgid "Copy to _Right"
+msgstr "Kopírovat dop_rava"
+
+#: ../data/ui/dirdiff.ui.h:6
+msgid "Copy to right"
+msgstr "Kopírovat doprava"
+
+#: ../data/ui/dirdiff.ui.h:7
+msgid "Delete selected"
+msgstr "Odstranit vybrané"
+
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:876 ../meld/filediff.py:1460
+msgid "Hide"
+msgstr "Skrýt"
+
+#: ../data/ui/dirdiff.ui.h:9
+msgid "Hide selected"
+msgstr "Skrýt vybrané"
+
+#: ../data/ui/dirdiff.ui.h:10
+msgid "Ignore Filename Case"
+msgstr "Ignorovat velikost písmen v názvu souboru"
+
+#: ../data/ui/dirdiff.ui.h:11
 msgid ""
-"When you compare folders, you may want to be able to ignore some files. For "
-"example, you may wish to only see files that are present and different in "
-"both folders, ignoring those that are the same or only exist in one folder. "
-"Alternatively, you might want to ignore all the files in your <file>.git</"
-"file> directory, or ignore all images."
+"Consider differently-cased filenames that are otherwise-identical to be the "
+"same"
 msgstr ""
-"Když porovnáváte složky, můžete chtít, aby se ignorovaly některé soubory. "
-"Například si můžete přát vidět jen soubory, které se v obou složkách "
-"navzájem liší a ignorovat soubory, které se shodují nebo se vyskytují jen v "
-"jedné ze složek. Případně můžete chtít ignorovat všechny soubory ve složce "
-"<file>.git</file> nebo ignorovat všechny obrázky."
+"Považovat názvy souborů, které se odlišují velikostí písmen, ale jinak jsou "
+"stejné, za shodné"
 
-#. (itstool) path: page/p
-#: C/file-filters.page:25
-msgid ""
-"<app>Meld</app> has several different ways of controlling which files and "
-"what kind of differences you see. You can filter based on <link xref=\"#file-"
-"state-filter\">differences between a file across folders</link> or <link "
-"xref=\"#file-name-filter\">file and folder names</link>. You can also tell "
-"<app>Meld</app> to treat filenames as being <link xref=\"#file-case-filter"
-"\">case insensitive</link>. Finally, you can use <link xref=\"text-filters"
-"\">text filters</link> to change what both folder and file comparisons see."
-msgstr ""
-"<app>Meld</app> má několik různých způsobů, jak řídit, které soubory a které "
-"druhy rozdílů se zobrazí. Můžete filtrovat na základě <link xref=\"#file-"
-"state-filter\">rozdílů mezi soubory napříč složkami</link> nebo na základě "
-"<link xref=\"#file-name-filter\">názvů souborů a složek</link>. Můžete také "
-"aplikaci <app>Meld</app> říci, aby brala názvy souborů <link xref=\"#file-"
-"case-filter\">bez ohledu na velikost písmen</link>. A k tomu všemu můžete "
-"použít <link xref=\"text-filters\">textové filtry</link> ke změně toho, co "
-"porovnání souborů i složek uvidí."
-
-#. (itstool) path: note/p
-#: C/file-filters.page:37
-msgid ""
-"Any <link xref=\"text-filters\">text filters</link> you've defined "
-"<em>automatically apply</em> when comparing folders. Files that are "
-"identical after all of the text filters are applied are not highlighted as "
-"being different, but are shown in italics."
-msgstr ""
-"Některé <link xref=\"text-filters\">textové filtry</link>, které máte "
-"nadefinované, <em>se použijí automaticky</em> při porovnávání složek. "
-"Soubory, které se shodují po té, co se použily všechny textové filtry, se "
-"neoznačí jako lišící se, ale vypíší se kurzívou."
-
-#. (itstool) path: section/title
-#: C/file-filters.page:48
-msgid "File differences filtering"
-msgstr "Filtrování rozdílů v souborech"
-
-#. (itstool) path: section/p
-#: C/file-filters.page:50
-msgid ""
-"In a folder comparison, each line contains a single file or folder that is "
-"present in at least one of the folders being compared. Each of these lines "
-"is classified as being either <em>Modified</em>, <em>New</em> or <em>Same</"
-"em>:"
-msgstr ""
-"V porovnání složek obsahuje každý řádek jeden soubor nebo složku, které se "
-"nachází aspoň ve jedné z porovnávaných složek. Každý z řádků je označen jako "
-"<em>změněné</em> nebo <em>nové</em> nebo <em>stejné</em>."
-
-#. (itstool) path: item/title
-#. (itstool) path: td/p
-#: C/file-filters.page:58 C/vc-mode.page:107 C/folder-mode.page:148
-msgid "Modified"
-msgstr "Změněné"
-
-#. (itstool) path: item/p
-#: C/file-filters.page:59
-msgid "The file exists in multiple folders, but the files are different"
-msgstr "Soubor existuje ve více složkách, ale jednotlivé verze jsou rozdílné"
-
-#. (itstool) path: item/title
-#. (itstool) path: td/p
-#: C/file-filters.page:62 C/vc-mode.page:121 C/folder-mode.page:162
-msgid "New"
-msgstr "Nové"
-
-#. (itstool) path: item/p
-#: C/file-filters.page:63
-msgid "The file exists in one folder but not in the others"
-msgstr "Soubor existuje v jedné složce, ale v ostatních ne"
-
-#. (itstool) path: item/title
-#. (itstool) path: td/p
-#: C/file-filters.page:66 C/vc-mode.page:93 C/folder-mode.page:118
+#: ../data/ui/dirdiff.ui.h:12
 msgid "Same"
 msgstr "Stejné"
 
-#. (itstool) path: item/p
-#: C/file-filters.page:67
-msgid "The file exists in all folders, and is the same everywhere"
-msgstr "Soubor existuje ve všech složkách a ve všech je stejný"
+#: ../data/ui/dirdiff.ui.h:13
+msgid "Show identical"
+msgstr "Zobrazovat stejné"
 
-#. (itstool) path: section/p
-#: C/file-filters.page:70
+#: ../data/ui/dirdiff.ui.h:14
+msgid "New"
+msgstr "Nové"
+
+#: ../data/ui/dirdiff.ui.h:15
+msgid "Show new"
+msgstr "Zobrazovat nové"
+
+#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:71
+msgid "Modified"
+msgstr "Změněné"
+
+#: ../data/ui/dirdiff.ui.h:17
+msgid "Show modified"
+msgstr "Zobrazovat změněné"
+
+#: ../data/ui/dirdiff.ui.h:18
+msgid "Filters"
+msgstr "Filtry"
+
+#: ../data/ui/dirdiff.ui.h:19
+msgid "Set active filters"
+msgstr "Nastavte aktivní filtry"
+
+#: ../data/ui/EditableList.ui.h:1
+msgid "Editable List"
+msgstr "Upravitelný seznam"
+
+#: ../data/ui/EditableList.ui.h:2
+msgid "Active"
+msgstr "Aktivní"
+
+#: ../data/ui/EditableList.ui.h:3
+msgid "Column Name"
+msgstr "Název sloupce"
+
+#: ../data/ui/EditableList.ui.h:4 ../data/ui/vcview.ui.h:9
+msgid "_Add"
+msgstr "_Přidat"
+
+#: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
+#: ../meld/vcview.py:747
+msgid "_Remove"
+msgstr "_Odstranit"
+
+#: ../data/ui/EditableList.ui.h:6
+msgid "Move item up"
+msgstr "Přesunout položku nahoru"
+
+#: ../data/ui/EditableList.ui.h:7
+msgid "Move _Up"
+msgstr "Přes_unout nahoru"
+
+#: ../data/ui/EditableList.ui.h:8
+msgid "Move item down"
+msgstr "Přesunout položku dolů"
+
+#: ../data/ui/EditableList.ui.h:9
+msgid "Move _Down"
+msgstr "Přesunout _dolů"
+
+#. Create icon and filename CellRenderer
+#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:374
+#: ../meld/vcview.py:203
+msgid "Name"
+msgstr "Název"
+
+#: ../data/ui/EditableList.ui.h:11
+msgid "Pattern"
+msgstr "Vzorek"
+
+#: ../data/ui/EditableList.ui.h:12
+msgid "Add new filter"
+msgstr "Přidat nový filtr"
+
+#: ../data/ui/EditableList.ui.h:13
+msgid "Remove selected filter"
+msgstr "Odstranit vybraný filtr"
+
+#: ../data/ui/filediff.ui.h:1
+msgid "Format as Patch..."
+msgstr "Formátovat jako záplatu…"
+
+#: ../data/ui/filediff.ui.h:2
+msgid "Create a patch using differences between files"
+msgstr "Vytvořit záplatu použitím rozdílů mezi soubory"
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Save A_ll"
+msgstr "Uložit _vše"
+
+#: ../data/ui/filediff.ui.h:4
+msgid "Save all files in the current comparison"
+msgstr "Uložit všechny soubory v aktuálním porovnávání"
+
+#: ../data/ui/filediff.ui.h:5
+msgid "Revert files to their saved versions"
+msgstr "Vrátit soubory k jejich uloženým verzím"
+
+#: ../data/ui/filediff.ui.h:6
+msgid "Add Synchronization Point"
+msgstr "Přidat synchronizační bod"
+
+#: ../data/ui/filediff.ui.h:7
+msgid "Add a synchronization point for changes between files"
+msgstr "Přidat bod pro synchronizaci změn mezi soubory"
+
+#: ../data/ui/filediff.ui.h:8
+msgid "Clear Synchronization Points"
+msgstr "Vymazat synchronizační body"
+
+#: ../data/ui/filediff.ui.h:9
+msgid "Clear sychronization points for changes between files"
+msgstr "Smazat bod pro synchronizaci změn mezi soubory"
+
+#: ../data/ui/filediff.ui.h:10
+msgid "Previous Conflict"
+msgstr "Předchozí konflikt"
+
+#: ../data/ui/filediff.ui.h:11
+msgid "Go to the previous conflict"
+msgstr "Přejít na předchozí konflikt"
+
+#: ../data/ui/filediff.ui.h:12
+msgid "Next Conflict"
+msgstr "Následující konflikt"
+
+#: ../data/ui/filediff.ui.h:13
+msgid "Go to the next conflict"
+msgstr "Přejít na následující konflikt"
+
+#: ../data/ui/filediff.ui.h:14
+msgid "Push to Left"
+msgstr "Zatlačit doleva"
+
+#: ../data/ui/filediff.ui.h:15
+msgid "Push current change to the left"
+msgstr "Zatlačit aktuální změnu doleva"
+
+#: ../data/ui/filediff.ui.h:16
+msgid "Push to Right"
+msgstr "Zatlačit doprava"
+
+#: ../data/ui/filediff.ui.h:17
+msgid "Push current change to the right"
+msgstr "Zatlačit aktuální změnu doprava"
+
+#: ../data/ui/filediff.ui.h:18
+msgid "Pull from Left"
+msgstr "Vytáhnout zleva"
+
+#: ../data/ui/filediff.ui.h:19
+msgid "Pull change from the left"
+msgstr "Vytáhnout změnu zleva"
+
+#: ../data/ui/filediff.ui.h:20
+msgid "Pull from Right"
+msgstr "Vytáhnout zprava"
+
+#: ../data/ui/filediff.ui.h:21
+msgid "Pull change from the right"
+msgstr "Vytáhnout změnu zprava"
+
+#: ../data/ui/filediff.ui.h:22
+msgid "Copy Above Left"
+msgstr "Kopírovat z levé vrchní části"
+
+#: ../data/ui/filediff.ui.h:23
+msgid "Copy change above the left chunk"
+msgstr "Kopírovat změnu nad levým blokem"
+
+#: ../data/ui/filediff.ui.h:24
+msgid "Copy Below Left"
+msgstr "Kopírovat z levé spodní části"
+
+#: ../data/ui/filediff.ui.h:25
+msgid "Copy change below the left chunk"
+msgstr "Kopírovat změnu pod levým blokem"
+
+#: ../data/ui/filediff.ui.h:26
+msgid "Copy Above Right"
+msgstr "Kopírovat z pravé vrchní části"
+
+#: ../data/ui/filediff.ui.h:27
+msgid "Copy change above the right chunk"
+msgstr "Kopírovat změnu nad pravým blokem"
+
+#: ../data/ui/filediff.ui.h:28
+msgid "Copy Below Right"
+msgstr "Kopírovat z pravé spodní části"
+
+#: ../data/ui/filediff.ui.h:29
+msgid "Copy change below the right chunk"
+msgstr "Kopírovat změnu pod pravým blokem"
+
+#: ../data/ui/filediff.ui.h:30
+msgid "Delete"
+msgstr "Smazat"
+
+#: ../data/ui/filediff.ui.h:31
+msgid "Delete change"
+msgstr "Smazat změnu"
+
+#: ../data/ui/filediff.ui.h:32
+msgid "Merge All from Left"
+msgstr "Sloučit vše zleva"
+
+#: ../data/ui/filediff.ui.h:33
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Sloučit veškeré změny bez konfliktů zleva"
+
+#: ../data/ui/filediff.ui.h:34
+msgid "Merge All from Right"
+msgstr "Sloučit vše zprava"
+
+#: ../data/ui/filediff.ui.h:35
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Sloučit veškeré změny bez konfliktů zprava"
+
+#: ../data/ui/filediff.ui.h:36
+msgid "Merge All"
+msgstr "Sloučit vše"
+
+#: ../data/ui/filediff.ui.h:37
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr "Sloučit veškeré změny bez konfliktů z levého a pravého panelu"
+
+#: ../data/ui/filediff.ui.h:38
+msgid "Previous Pane"
+msgstr "Předchozí panel"
+
+#: ../data/ui/filediff.ui.h:39
+msgid "Move keyboard focus to the previous document in this comparison"
+msgstr "Přepnout zaměření klávesnice na předchozí dokument v tomto porovnání"
+
+#: ../data/ui/filediff.ui.h:40
+msgid "Next Pane"
+msgstr "Následující panel"
+
+#: ../data/ui/filediff.ui.h:41
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Přepnout zaměření klávesnice na následující dokument v tomto porovnání"
+
+#: ../data/ui/filediff.ui.h:42
+msgid "Lock Scrolling"
+msgstr "Uzamknout posouvání"
+
+#: ../data/ui/filediff.ui.h:43
+msgid "Lock scrolling of all panes"
+msgstr "Uzamknout posouvání všech panelů"
+
+#: ../data/ui/filediff.ui.h:44
+msgid "Save changes to documents before closing?"
+msgstr "Uložit změny, než dokument zavřete?"
+
+#: ../data/ui/filediff.ui.h:45
+msgid "If you don't save, changes will be permanently lost."
+msgstr "Pokud se změny neuloží, budou trvale ztraceny."
+
+#: ../data/ui/filediff.ui.h:46
+msgid "Close _without Saving"
+msgstr "Zavřít _bez uložení"
+
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:967 ../meld/filediff.py:1629
+#: ../meld/filediff.py:1713 ../meld/filediff.py:1738
+msgid "_Cancel"
+msgstr "_Zrušit"
+
+#: ../data/ui/filediff.ui.h:48
+msgid "_Save"
+msgstr "_Uložit"
+
+#: ../data/ui/filediff.ui.h:49
 msgid ""
-"You can change which types of differences you see in your current comparison "
-"by using the <gui style=\"button\">Same</gui>, <gui style=\"button\">New</"
-"gui> and <gui style=\"button\">Modified</gui> buttons on the toolbar or the "
-"<guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">File Status</"
-"gui></guiseq> menu."
+"This file can not be written to. You may click here to unlock this file and "
+"make changes anyway, but these changes must be saved to a new file."
 msgstr ""
-"Pomocí tlačítek <gui style=\"button\">Stejné</gui>, <gui style=\"button"
-"\">Nové</gui> a <gui style=\"button\">Změněné</gui> na nástrojové liště "
-"můžete změnit, které typy rozdílů uvidíte v aktuálním porovnání. Případně "
-"můžete použít nabídku <guiseq><gui style=\"menu\">Zobrazit</gui><gui style="
-"\"menuitem\">Stav souboru</gui></guiseq>."
-
-#. (itstool) path: note/p
-#: C/file-filters.page:80
-msgid ""
-"Currently, you can only filter files based on their state; folders can't be "
-"filtered in this way. For example, you can't tell <app>Meld</app> to ignore "
-"all folders that contain only new files. A folder containing only \"New\" "
-"files would show up as empty, but still present."
-msgstr ""
-"V současné době je možné na základě stavu filtrovat jen soubory. Nelze tímto "
-"způsobem filtrovat složky. Například nemůžete aplikaci <app>Meld</app> říci, "
-"aby ignorovala všechny složky, které obsahují jen nové soubory. Složka "
-"obsahující jen „nové“ soubory by se měla jevit jako prázdá, ale stále bude v "
-"seznamu zastoupena."
-
-#. (itstool) path: section/title
-#: C/file-filters.page:94
-msgid "Filename filtering"
-msgstr "Filtrování názvů souborů"
-
-#. (itstool) path: section/p
-#: C/file-filters.page:96
-msgid ""
-"<app>Meld</app> comes with a useful set of filename filters that let you "
-"ignore uninteresting files and folders like common backup files and the "
-"metadata folders of version control systems. Each filename filter can be "
-"separately activated or deactivated from the <gui style=\"button\">Filters</"
-"gui> button on the toolbar or the <guiseq><gui style=\"menu\">View</gui><gui "
-"style=\"menuitem\">File Filters</gui></guiseq> menu."
-msgstr ""
-"<app>Meld</app> nabízí užitečnou sadu filtrů názvů souborů, díky kterým se "
-"ignorují nezajímavé soubory a složky, jako jsou běžné záložní soubory a "
-"složky s metadaty systémů správy verzí. Všechny tyto filtry lze jednotlivě "
-"zapínat a vypínat přes tlačítko <gui style=\"button\">Filtry</gui> na "
-"nástrojové liště nebo přes nabídku <guiseq><gui style=\"menu\">Zobrazit</"
-"gui><gui style=\"menuitem\">Filtry souborů</gui></guiseq>."
-
-#. (itstool) path: section/p
-#: C/file-filters.page:106
-msgid ""
-"You can add, remove or change filename filters from the <gui style=\"tab"
-"\">File Filters</gui> section of the <gui>Preferences</gui> dialog. Filename "
-"filters specify patterns of filenames that will <em>not</em> be looked at "
-"when performing a folder comparison. Any file that matches an active filter "
-"won't even show up in the tree comparison. Filename filters match both files "
-"and folders; if a folder matches a filter, it and all of its contents are "
-"ignored."
-msgstr ""
-"Filtry můžete přidávat, odebírat a měnit v části <gui style=\"tab\">Filtry "
-"souborů</gui> v dialogovém okně <gui>Předvolby</gui>. Filtry souborů určují "
-"vzory názvů souborů, na které <em>nebude</em> brán ohled při porovnávání "
-"složek. Žádný ze souborů, který vyhovuje aktivnímu filtru, nebude zobrazen "
-"ve stromu porovnání. Filtry souborů kontrolují názvy souborů i složek. V "
-"případě, že filtru vyhovuje složka, bude ignorována včetně celého svého "
-"obsahu."
-
-#. (itstool) path: section/p
-#: C/file-filters.page:116
-msgid ""
-"Filename filters match according to shell glob patterns. For example, "
-"<code>*.jpg</code> will match all filenames ending in <code>.jpg</code>. The "
-"following table lists all of the shell glob characters that <app>Meld</app> "
-"recognises."
-msgstr ""
-"Filtry souborů používají při srovnávání vzory shellu. Například vzoru "
-"<code>*.jpg</code> odpovídají všechny názvy souborů končící na <code>.jpg</"
-"code>. Následující tabulka uvádí všechny znaky vzorů shellu, kterým "
-"<app>Meld</app> rozumí."
-
-#. (itstool) path: table/title
-#: C/file-filters.page:124
-msgid "Shell glob patterns"
-msgstr "Vzory shellu"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:128
-msgid "Wildcard"
-msgstr "divoký znak"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:128
-msgid "Matches"
-msgstr "odpovídá"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:134
-msgid "<code>*</code>"
-msgstr "<code>*</code>"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:135
-msgid "anything (i.e., zero or more characters)"
-msgstr "cokoliv (tj. žádný, jeden nebo více znaků)"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:138
-msgid "<code>?</code>"
-msgstr "<code>?</code>"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:139
-msgid "exactly one character"
-msgstr "právě jeden znak"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:142
-msgid "<code>[abc]</code>"
-msgstr "<code>[abc]</code>"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:143
-msgid "any one of the listed characters"
-msgstr "jeden libovolný znak z uvedených"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:146
-msgid "<code>[!abc]</code>"
-msgstr "<code>[!abc]</code>"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:147
-msgid "anything <em>except</em> one of the listed characters"
-msgstr "libovolný znak <em>vyjma</em> těch uvedených"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:150
-msgid "<code>{cat,dog}</code>"
-msgstr "<code>{kočka,pes}</code>"
-
-#. (itstool) path: td/p
-#: C/file-filters.page:151
-msgid "either \"cat\" or \"dog\""
-msgstr "buď „kočka“ nebo „pes“"
-
-#. (itstool) path: note/p
-#: C/file-filters.page:157
-msgid ""
-"Changing a filter's <gui>Active</gui> setting in the <gui>Preferences</gui> "
-"dialog changes whether that filter is active <em>by default</em>."
-msgstr ""
-"Změnou údaje <gui>Aktivní</gui> v dialgovém okně <gui>Předvolby</gui> "
-"nastavíte, jestli má být filtr <em>ve výchozím</em> stavu aktivní."
-
-#. (itstool) path: note/p
-#: C/file-filters.page:163
-msgid ""
-"Activating a filter from the menu or the toolbar turns the filter on or off "
-"for <em>this comparison only</em>."
-msgstr ""
-"Aktivací filtru pomocí nabídky nebo nástrojové lišty se filtr zapne nebo "
-"vypne <em>jen pro právě aktuální porovnávání</em>."
-
-#. (itstool) path: section/title
-#: C/file-filters.page:174
-msgid "Case insensitive filenames"
-msgstr "Názvy souborů bez rozlišení velikosti písmen"
-
-#. (itstool) path: section/p
-#: C/file-filters.page:176
-msgid ""
-"Files are compared across directories according to their name. This "
-"comparison is case sensitive by default; that is, the files <file>README</"
-"file>, <file>readme</file> and <file>ReadMe</file> would all be seen as "
-"different files."
-msgstr ""
-"Soubory jsou porovnávány napříč složkami na základě jejich názvů. Jako "
-"výchozí chování je rozlišovat velikost písmen, takže soubory jako "
-"<file>README</file>, <file>readme</file> a <file>ReadMe</file> budou "
-"zobrazeny jako odlišné."
-
-#. (itstool) path: section/p
-#: C/file-filters.page:183
-msgid ""
-"When comparing folders on some filesystems (e.g., HFS+ or FAT) you may wish "
-"to make <app>Meld</app> treat filenames as case insensitive. You can do this "
-"by selecting <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem"
-"\">Ignore filename case</gui></guiseq> from the menus."
-msgstr ""
-"Při porovnávání složek na některých souborových systémech (např. HFS+ nebo "
-"FAT) si můžete přát, aby se na velikost písmen nebral ohled. Toho můžete "
-"docílit přes nabídku <guiseq><gui style=\"menu\">Zobrazit</gui><gui style="
-"\"menuitem\">Ignorovat velikost písmen v názvu souboru</gui></guiseq>."
-
-#. (itstool) path: page/title
-#: C/text-filters.page:17
-msgid "Filtering out text"
-msgstr "Odfiltrování textu"
-
-#. (itstool) path: page/p
-#: C/text-filters.page:19
-msgid ""
-"When comparing several files, you may have sections of text where "
-"differences aren't really important. For example, you may want to focus on "
-"changed sections of code, and ignore any changes in comment lines. With text "
-"filters you can tell <app>Meld</app> to ignore text that matches a pattern "
-"(i.e., a regular expression) when showing differences between files."
-msgstr ""
-"Když porovnáváte několik souborů, můžete v nich mít části textu, ve kterých "
-"nejsou rozdíly důležité. Například se můžete chtít zaměřit na změny v části "
-"s kódem a ignorovat změny v řádcích s komentáři. Díky textovým filtrům stačí "
-"aplikaci <app>Meld</app> říci, aby při zobrazování rozdílů mezi soubory "
-"ignorovala text, který vyhovuje nějakému vzoru (tj. regulárnímu výrazu)."
-
-#. (itstool) path: note/p
-#: C/text-filters.page:28
-msgid ""
-"Text filters don't just affect file comparisons, but also folder "
-"comparisons. Check the <link xref=\"file-filters\">file filtering notes</"
-"link> for more details."
-msgstr ""
-"Textové filtry neovlivňují jen porovnání souborů, ale i porovnání složek. "
-"Více podrobností najdete v <link xref=\"file-filters\">poznámkách k "
-"filtrování souborů</link>."
-
-#. (itstool) path: section/title
-#: C/text-filters.page:37
-msgid "Adding and using text filters"
-msgstr "Přidávání a používání textových filtrů"
-
-#. (itstool) path: section/p
-#: C/text-filters.page:39
-msgid ""
-"You can turn text filters on or off from the the <gui>Text Filters</gui> tab "
-"in <gui>Preferences</gui> dialog. <app>Meld</app> comes with a few simple "
-"filters that you might find useful, but you can add your own as well."
-msgstr ""
-"Textové filtry můžete zapínat a vypínat na kartě <gui>Filtry textu</gui> v "
-"dialogovém okně <gui>Předvolby</gui>. <app>Meld</app> má předdefinováno "
-"několik jednoduchých filtrů, které mohou být užitečné, a k tomu si můžete "
-"vytvořit své vlastní."
-
-#. (itstool) path: section/p
-#: C/text-filters.page:45
-msgid ""
-"In <app>Meld</app>, text filters are regular expressions that are matched "
-"against the text of files you're comparing. Any text that is matched is "
-"ignored during the comparison; you'll still see this text in the comparison "
-"view, but it won't be taken into account when finding differences. Text "
-"filters are applied in order, so it's possible for the first filter to "
-"remove text that now makes the second filter match, and so on."
-msgstr ""
-"V aplikaci <app>Meld</app> nejsou textové filtry nic jiného, než regulární "
-"výrazy spouštěné vůči textu nebo souborům, které porovnáváte. Text, který "
-"regulárnímu výrazu vyhovuje, je během porovnávání ignorován. V zobrazení "
-"porovnání sice takovýto text stále uvidíte, ale nebude brán v úvahu při "
-"hledání rozdílů. Textové filtry se použijí v určeném pořadí, takže je možné, "
-"aby první filtr odebral text tak, aby zbytek vyhovoval druhému filtru atd."
-
-#. (itstool) path: note/p
-#: C/text-filters.page:55
-msgid ""
-"If you're not familiar with regular expressions, you might want to check out "
-"the Python <link href=\"http://docs.python.org/howto/regex.html\">Regular "
-"Expression HOWTO</link>."
-msgstr ""
-"Jestli nejste v regulárních výrazech zběhlí, můžete se podívat na <link href="
-"\"http://docs.python.org/howto/regex.html\">JAK NA regulární výrazy</link> v "
-"dokumentaci jazyka Python (odkazovaný text je v angličtině)."
-
-#. (itstool) path: section/title
-#: C/text-filters.page:67
-msgid "Getting text filters right"
-msgstr "Aby textové filtry fungovaly správně"
-
-#. (itstool) path: section/p
-#: C/text-filters.page:69
-msgid ""
-"It's easy to get text filtering wrong, and Meld's support for filtering "
-"isn't complete. In particular, a text filter can't change the number of "
-"lines in a file. For example, if we had the built-in <gui>Script comment</"
-"gui> filter enabled, and compared the following files:"
-msgstr ""
-"Udělat chybu v definici filtrování textu je lehké a podpora filtrování ze "
-"strany aplikace Meld také není úplně dodělaná. Jedním z problémů třeba je, "
-"že filtr nedokáže měnit počet řádků v souboru. Kupříkladu mějme zapnutý "
-"zabudovaný filtr <gui>Script comment</gui> a porovnejme následující soubory:"
-
-#. (itstool) path: listing/title
-#: C/text-filters.page:80
-msgid "<file>comment1.txt</file>"
-msgstr "<file>poznámky1.txt</file>"
-
-#. (itstool) path: listing/code
-#: C/text-filters.page:81
-#, no-wrap
-msgid ""
-"\n"
-"a\n"
-"b#comment\n"
-"c\n"
-"d"
-msgstr ""
-"\n"
-"a\n"
-"b#poznámka\n"
-"c\n"
-"d"
-
-#. (itstool) path: listing/title
-#: C/text-filters.page:90
-msgid "<file>comment2.txt</file>"
-msgstr "<file>poznámky2.txt</file>"
-
-#. (itstool) path: listing/code
-#: C/text-filters.page:91
-#, no-wrap
-msgid ""
-"\n"
-"a\n"
-"b\n"
-"c\n"
-"#comment"
-msgstr ""
-"\n"
-"a\n"
-"b\n"
-"c\n"
-"#poznámka"
-
-#. (itstool) path: section/p
-#: C/text-filters.page:101
-msgid ""
-"then the lines starting with <code>b</code> would be shown as identical (the "
-"comment is stripped out) but the <code>d</code> line would be shown as "
-"different to the comment line on the right. This happens because the "
-"<code>#comment</code> is removed from the right-hand side, but the line "
-"itself can not be removed; <app>Meld</app> will show the <code>d</code> line "
-"as being different to what it sees as a blank line on the other side."
-msgstr ""
-"potom by řádky začínající <code>b</code> měly být zobrazeny jako shodné "
-"(komentář je zahozen), ale řádek <code>d</code> by měl být zobrazen jako "
-"lišící se od řádku s komentářem napravo. To je způsobeno tím, že na pravé "
-"straně je odstraněno <code>#comment</code>, ale řádek jako takový zůstává. "
-"<app>Meld</app> pak zobrazuje, že řádek <code>d</code> se liší od toho, co "
-"je na druhé straně zobrazeno, jako prázdný řádek."
-
-#. (itstool) path: section/title
-#: C/text-filters.page:114
-msgid "Blank lines and filters"
-msgstr "Prázdné řádky a filtry"
-
-#. (itstool) path: section/p
-#: C/text-filters.page:116
-msgid ""
-"The <gui>Ignore changes which insert or delete blank lines</gui> preference "
-"in the <gui>Text Filters</gui> tab requires special explanation. If this "
-"special filter is enabled, then any change consisting only of blank lines is "
-"completely ignored. This may occur because there was an actual whitespace "
-"change in the text, but it may also arise if your active text filters have "
-"removed all of the other content from a change, leaving only blank lines."
-msgstr ""
-"Předvolba <gui>Ignorovat změny, které přidávají nebo odstraňují prázdné "
-"řádky</gui> na kartě <gui>Filtry textu</gui> si vyžaduje vysvětlení. Když je "
-"tento speciální filtr zapnutý, pak jsou změny spočívající jen v prázdných "
-"řádcích zcela ignorovány. To může nastat, když byly současné bílé znaky v "
-"textu změněny, ale také když váš aktivní textový filtr odstranil ze změny "
-"všechen ostatní obsah a ponechal jen prázdné řádky."
-
-#. (itstool) path: section/p
-#: C/text-filters.page:125
-msgid ""
-"You can use this option to get around some of the <link xref=\"#text-filter-"
-"problems\">problems and limitations</link> resulting from filters not being "
-"able to remove whole lines, but it can also be useful in and of itself."
-msgstr ""
-"Tuto volbu můžete použít k obejití některých <link xref=\"#text-filter-"
-"problems\">problémů a omezení</link> vyplývajících z toho, že filtry nejsou "
-"schopné odstraňovat celé řádky, ale může být užitečná i sama o sobě."
-
-#. (itstool) path: page/title
-#: C/resolving-conflicts.page:15
-msgid "Resolving merge conflicts"
-msgstr "Řešení konfliktů při slučování"
-
-#. (itstool) path: page/p
-#: C/resolving-conflicts.page:17
-msgid ""
-"One of the best uses of <app>Meld</app> is to resolve conflicts that occur "
-"while merging different branches."
-msgstr ""
-"Jednou z nejlepších věcí na aplikaci <app>Meld</app> je řešení konfliktů, "
-"které vznikají při slučování rozdílných větví."
-
-#. (itstool) path: page/p
-#: C/resolving-conflicts.page:22
-msgid ""
-"For example, when using <app>Git</app>, <cmd>git mergetool</cmd> will start "
-"a 'merge helper'; <app>Meld</app> is one such helper. If you want to make "
-"<app>git mergetool</app> use <app>Meld</app> by default, you can add"
-msgstr ""
-"Například, když používáte <app>Git</app>, <cmd>git mergtool</app> spustí "
-"„pomocníka se slučováním“. <app>Meld</app> je jedním z možných takovýchto "
-"pomocníků. Jestli chcete, aby <app>git mergetool</app> používal <app>Meld</"
-"app> jako výchozího pomocníka, můžete přidat"
-
-#. (itstool) path: page/code
-#: C/resolving-conflicts.page:27
-#, no-wrap
-msgid ""
-"\n"
-"[merge]\n"
-"    tool = meld\n"
-msgstr ""
-"\n"
-"[merge]\n"
-"    tool = meld\n"
-
-#. (itstool) path: page/p
-#: C/resolving-conflicts.page:31
-msgid ""
-"to <file>.git/gitconfig</file>. See the <app>git mergetool</app> manual for "
-"details."
-msgstr ""
-"do souboru <file>.git/gitconfig</file>. Podrobnější informace viz příručka "
-"ke <app>git mergetool</app>."
-
-#. (itstool) path: info/title
-#: C/preferences.page:5 C/file-mode.page:5 C/introduction.page:5
-#: C/folder-mode.page:5 C/missing-functionality.page:5
-msgctxt "sort"
-msgid "1"
-msgstr "1"
-
-#. (itstool) path: credit/years
-#: C/preferences.page:12
-msgid "2013"
-msgstr "2013"
-
-#. (itstool) path: page/title
-#: C/preferences.page:15
-msgid "Meld's preferences"
-msgstr "Předvolby Meld"
-
-#. (itstool) path: terms/title
-#: C/preferences.page:18
-msgid "Editor preferences"
-msgstr "Předvolby editoru"
-
-#. (itstool) path: item/title
-#: C/preferences.page:20
-msgid "Editor command"
-msgstr "Příkaz editoru"
-
-#. (itstool) path: item/p
-#: C/preferences.page:21
-msgid ""
-"The name of the command to run to open text files in an external editor. "
-"This may be just the command (e.g., <cmd>gedit</cmd>) in which case the file "
-"to be opened will be passed as the last argument. Alternatively, you can add "
-"<code>{file}</code> and <code>{line}</code> elements to the command, in "
-"which case <app>Meld</app> will substitute the file path and current line "
-"number respectively (e.g., <cmd>gedit {file}:{line}</cmd>)."
-msgstr ""
-"Název příkazu, který provede otevření textových souborů v externím editoru. "
-"Stačí samotný příkaz (např. <cmd>gedit</cmd>), a otevíraný soubor je pak "
-"předán jako poslední argument. Nebo případně můžete do příkazu přidat <code>"
-"{file}</code> a <code>{line}</code>,  které pak <app>Meld</app> nahradí "
-"názvem souboru včetně cesty, respektive číslem aktuálního řádku. (např. "
-"<cmd>gedit {file}:{line}</cmd>)."
-
-#. (itstool) path: terms/title
-#: C/preferences.page:31
-msgid "Folder Comparison preferences"
-msgstr "Předvolby porovnávání složek"
-
-#. (itstool) path: item/title
-#: C/preferences.page:33
-msgid "Apply text filters during folder comparisons"
-msgstr "Použití textových filtrů při porovnávání složek"
-
-#. (itstool) path: item/p
-#: C/preferences.page:34
-msgid ""
-"When comparing files in folder comparison mode, text filters and other text "
-"manipulation options can be applied to the contents of files. If this option "
-"is enabled, all currently enabled text filters will be applied, the blank "
-"line trimming option will be applied as appropriate, and differences in line "
-"endings will be ignored."
-msgstr ""
-"Když se porovnávají soubory v režimu porovnávání složek, mohou být na obsah "
-"souborů použity filtry a další možnosti práce s textem. Pokud je tato volba "
-"zapnutá, všechny zapnuté textové filtry se použijí, bude příslušně použita "
-"volba ořezávání prázných řádků a rozdíly v zakončeních řádků budou "
-"ignorovány."
-
-#. (itstool) path: item/p
-#: C/preferences.page:40
-msgid ""
-"Enabling this option means that <app>Meld</app> must fully read all non-"
-"binary files into memory during the folder comparison. With large text "
-"files, this can be slow and may cause memory issues."
-msgstr ""
-"Zapnutí této volby znamená, že <app>Meld</app> musí během porovnávání složek "
-"načíst všechny nebinární soubory kompletně do paměti. U rozsáhlých textových "
-"souborů to může způsobit problémy v podobě zpomalení a velké spotřeby paměti."
-
-#. (itstool) path: item/p
-#: C/preferences.page:44
-msgid ""
-"This option only has an effect if \"Compare files based only on size and "
-"timestamp\" is not enabled."
-msgstr ""
-"Tato volba má význam, jen když není zapnuto „Porovnávat soubory jen na "
-"základě velikosti a časového razítka“."
-
-#. (itstool) path: page/title
-#: C/file-changes.page:16
-msgid "Dealing with changes"
-msgstr "Práce se změnami"
-
-#. (itstool) path: page/p
-#: C/file-changes.page:18
-msgid ""
-"<app>Meld</app> deals with differences between files as a list of <em>change "
-"blocks</em> or more simply <em>changes</em>. Each change is a group of lines "
-"which correspond between files. Since these changes are what you're usually "
-"interested in, <app>Meld</app> gives you specific tools to navigate between "
-"these changes and to edit them. You can find these tools in the <gui style="
-"\"menu\">Changes</gui> menu."
-msgstr ""
-"<app>Meld</app> se chová ke změnám mezi soubory jako k seznamu <em>bloků "
-"změn</em>, zkráceně jen <em>změn</em>. Každá změna sestává ze skupiny řádků, "
-"které si mezi soubory odpovídají. Protože právě tyto změny jsou obvykle to, "
-"co vás zajímá, poskytuje <app>Meld</app> nástroje pro přecházení mezi nimi a "
-"pro jejich úpravy. Tyto nástroje najdete v nabídce <gui style=\"menu"
-"\">Změny</gui>."
-
-#. (itstool) path: section/title
-#: C/file-changes.page:30
-msgid "Navigating between changes"
-msgstr "Pohyb mezi změnami"
-
-#. (itstool) path: section/p
-#: C/file-changes.page:32
-msgid ""
-"You can navigate between changes with the <guiseq><gui style=\"menu"
-"\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> and "
-"<guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next "
-"change</gui></guiseq> menu items. You can also use your mouse's scroll wheel "
-"to move between changes, by scrolling on the central change bar."
-msgstr ""
-"Mezi změnami se můžete pohybovat pomocí položek nabídky <guiseq><gui style="
-"\"menu\">Změny</gui><gui style=\"menuitem\">Předchozí změna</gui></guiseq> a "
-"<guiseq><gui style=\"menu\">Změny</gui><gui style=\"menuitem\">Následující "
-"změna</gui></guiseq>. Můžete také použít kolečko myši nad středovou lištou "
-"se změnami."
-
-#. (itstool) path: section/title
-#: C/file-changes.page:46
-msgid "Changing changes"
-msgstr "Změna změn"
-
-#. (itstool) path: section/p
-#: C/file-changes.page:48
-msgid ""
-"In addition to directly editing text files, <app>Meld</app> gives you tools "
-"to move, copy or delete individual differences between files. The bar "
-"between two files not only shows you what parts of the two files correspond, "
-"but also lets you selectively merge or delete differing changes by clicking "
-"the arrow or cross icons next to the start of each change."
-msgstr ""
-"Mimo přímých úprav textu vám <app>Meld</app> poskytuje nástroje pro přesun, "
-"kopírování nebo mazání jednotlivých rozdílů mezi soubory. Lišta mezi dvěma "
-"soubory nejen zobrazuje, které části těchto souborů si navzájem odpovídají, "
-"ale také umožňuje cíleně slučovat nebo mazat rozdílové změny kliknutím na "
-"ikonu se šipkou nebo křížkem vedle začátku každé změny."
-
-#. (itstool) path: section/p
-#: C/file-changes.page:52
-msgid ""
-"The default action is <em>replace</em>. This action replaces the contents of "
-"the corresponding change with the current change."
-msgstr ""
-"Výchozí činností je <em>nahrazení</em>. Tím se nahradí obsah odpovídající "
-"změny aktuální změnou."
-
-#. (itstool) path: section/p
-#: C/file-changes.page:59
-msgid ""
-"Hold down the <key>Shift</key> key to change the current action to "
-"<em>delete</em>. This action deletes the current change."
-msgstr ""
-"Přidržením klávesy <key>Shift</key> změníte aktuální činnost na <em>smazat</"
-"em>. Touto činností se smažou současné změny."
-
-#. (itstool) path: section/p
-#: C/file-changes.page:62
-msgid ""
-"Hold down the <key>Ctrl</key> key to change the current action to "
-"<em>insert</em>. This action inserts the current change above or below (as "
-"selected) the corresponding change."
-msgstr ""
-"Přidržením klávesy <key>Ctrl</key> změníte aktuální činnost na <em>vložit</"
-"em>. Touto činností se současné změny vloží nad nebo pod (podle výběru) "
-"odpovídající změny."
-
-#. (itstool) path: page/title
-#: C/file-mode.page:17
-msgid "Getting started comparing files"
-msgstr "Začínáme s porovnáváním souborů"
-
-#. (itstool) path: page/p
-#: C/file-mode.page:19
-msgid ""
-"<app>Meld</app> lets you compare two or three text files side-by-side. You "
-"can start a new file comparison by selecting the <guiseq><gui style=\"menu"
-"\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item."
-msgstr ""
-"<app>Meld</app> umožňuje porovnávat vedle sebe dva nebo tři textové soubory. "
-"Nové porovnávání souborů můžete začít pomocí položky <guiseq><gui style="
-"\"menu\">Soubor</gui><gui style=\"menuitem\">Nové…</gui></guiseq> v nabídce."
-
-#. (itstool) path: page/p
-#: C/file-mode.page:26
-msgid ""
-"Once you've selected your files, <app>Meld</app> will show them side-by-"
-"side. Differences between the files will be highlighted to make individual "
-"changes easier to see. Editing the files will cause the comparison to update "
-"on-the-fly. For details on navigating between individual changes, and on how "
-"to use change-based editing, see <link xref=\"file-changes\"/>."
-msgstr ""
-"Po té, co si vyberete své soubory, <app>Meld</app> je zobrazí vedle sebe. "
-"Změny mezi soubory se zvýrazní, aby byly jednotlivé rozdíly lépe viditelné. "
-"Během případných úprav se porovnání ihned živě aktualizuje. Více podrobností "
-"o pohybu mezi jednotlivými změnami a jak použít úpravy založené na změnách, "
-"najdete v oddíle <link xref=\"file-changes\"/>."
-
-#. (itstool) path: section/title
-#: C/file-mode.page:35
-msgid "<app>Meld</app>'s file comparisons"
-msgstr "Porovnávání souborů v aplikaci <app>Meld</app>"
-
-#. (itstool) path: section/p
-#: C/file-mode.page:37
-msgid ""
-"There are several different parts to a file comparison. The most important "
-"parts are the editors where your files appear. In addition to these editors, "
-"the areas around and between your files give you a visual overview and "
-"actions to help you handle changes between the files."
-msgstr ""
-"Okno s porovnáním souborů má několik různých části. Nejdůležitějšími částmi "
-"jsou editory, ve který se zobrazují soubory. Mimo těchto editorů se v "
-"místech okolo nich a mezi nimi nabízí vizuální přehled a funkce, které vám "
-"pomáhají se změnami mezi soubory pracovat."
-
-#. (itstool) path: section/p
-#: C/file-mode.page:43
-msgid ""
-"On the left and right-hand sides of the window, there are two small vertical "
-"bars showing various coloured blocks. These bars are designed to give you an "
-"overview of all of the differences between your two files. Each coloured "
-"block represents a section that is inserted, deleted, changed or in conflict "
-"between your files, depending on the block's colour used."
-msgstr ""
-"Po levé a pravé straně okna se nachází dvě malé svislé lišty, které "
-"zobrazují různorodé barevné bloky. Slouží k tomu, abyste získali přehled o "
-"všech změnách mezi vašimi soubory. Každý barevný blok zastupuje úsek, který "
-"je v souboru vložený, smazaný, změněný nebo v konfliktu, což se rozlišuje "
-"barvou bloku."
-
-#. (itstool) path: section/p
-#: C/file-mode.page:50
-msgid ""
-"In between each pair of files is a segment that shows how the changed "
-"sections between your files correspond to each other. You can click on the "
-"arrows in a segment to replace sections in one file with sections from the "
-"other. You can also delete, copy or merge changes. For details on what you "
-"can do with individual change segments, see <link xref=\"file-changes#change-"
-"actions\"/>."
-msgstr ""
-"Mezi soubory je část zobrazující, které změněné úseky si mezi soubory "
-"navzájem odpovídají. Můžete kliknout na šipky v této části, aby se změny "
-"mezi soubory navzájem prohodily. Změny můžete také smazat, kopírovat nebo "
-"sloučit. Další popis, co s jednotlivými změnami můžete provádět, najdete v "
-"kapitole <link xref=\"file-changes#change-actions\"/>."
-
-#. (itstool) path: section/title
-#: C/file-mode.page:62
-msgid "Saving your changes"
-msgstr "Ukládání vašich změn"
-
-#. (itstool) path: section/p
-#: C/file-mode.page:64
-msgid ""
-"Once you've finished editing your files, you need to save each file you've "
-"changed."
-msgstr "Když dokončíte úpravy svých souborů, musíte je všechny uložit."
-
-#. (itstool) path: section/p
-#: C/file-mode.page:68
-msgid ""
-"You can tell whether your files have been saved since they last changed by "
-"the save icon that appears next to the file name above each file. Also, the "
-"notebook label will show an asterisk (<code>*</code>) after any file that "
-"hasn't been saved."
-msgstr ""
-"Podle ikony, která se objeví vedle názvu souboru nad každým otevřeným "
-"souborem, můžete poznat, jestli byl soubor od poslední změny uložen. Navíc "
-"se na popisku sešitu zobrazuje hvězdička (<code>*</code>) za každým "
-"souborem, který nebyl uložen."
-
-#. (itstool) path: section/p
-#: C/file-mode.page:74
-msgid ""
-"You can save the current file by selecting the <guiseq><gui style=\"menu"
-"\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu item, or using "
-"the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard shortcut."
-msgstr ""
-"Aktuální soubor uložíte pomocí položky nabídky <guiseq><gui style=\"menu"
-"\">Soubor</gui> <gui style=\"menuitem\">Uložit</gui></guiseq> nebo pomocí "
-"klávesové zkratky <keyseq><key>Ctrl</key> <key>S</key></keyseq>."
-
-#. (itstool) path: note/p
-#: C/file-mode.page:81
-msgid ""
-"Saving only saves the <em>currently focussed</em> file, which is the file "
-"containing the cursor. If you can't tell which file is focussed, you can "
-"click on the file to focus it before saving."
-msgstr ""
-"Uloží se pouze <em>právě zaměřený</em> soubor, což je ten, ve kterém se "
-"nachází kurzor. Pokud nedokážete rozlišit, který soubor je zaměřen, prostě "
-"na něj před uložením klikněte."
-
-#. (itstool) path: page/title
-#: C/flattened-view.page:15
-msgid "Flattened view"
-msgstr "Zúžené zobrazení"
-
-#. (itstool) path: page/p
-#: C/flattened-view.page:17
-msgid ""
-"When viewing large folders, you may be interested in only a few files among "
-"the thousands in the folder itself. For this reason, <app>Meld</app> "
-"includes a <em>flattened view</em> of a folder; only files that have not "
-"been filtered out (e.g., by <link xref=\"vc-mode#vc-state-filtering\"/>) are "
-"shown, and the folder hierarchy is stripped away, with file paths shown in "
-"the <em>Location</em> column."
-msgstr ""
-"Když si prohlížíte rozsáhle složky, může vás zajímat jen pár souborů z "
-"tisíců dalších. Z tohoto důvodu poskytuje <app>Meld</app> <em>zúžené "
-"zobrazení</em> složky. Pak se zobrazují jen soubory, které nejsou "
-"odfiltrovány (např. pomocí <link xref=\"vc-mode#vc-state-filtering\"/>) a "
-"stromová struktura je zrušena s tím, že ve sloupci <em>Umístění</em> je "
-"zobrazena cesta."
-
-#. (itstool) path: page/p
-#: C/flattened-view.page:27
-msgid ""
-"You can turn this flattened view on or off by unchecking the <guiseq><gui "
-"style=\"menu\">View</gui><gui style=\"menuitem\">Flatten</gui></guiseq> menu "
-"item, or by clicking the corresponding <gui style=\"button\">Flatten</gui> "
-"button on the toolbar."
-msgstr ""
-"Toto zúžené zobrazení můžete zapnout nebo vypnout zaškrtnutím položky "
-"nabídky <guiseq><gui style=\"menu\">Zobrazit</gui><gui style=\"menuitem"
-"\">Zúžené</gui></guiseq> nebo kliknutím na příslušné tlačítko <gui style="
-"\"button\">Zúžené</gui> na nástrojové liště."
-
-#. (itstool) path: page/title
-#: C/index.page:14
-msgid "Meld Help"
-msgstr "Nápověda k aplikaci Meld"
-
-#. (itstool) path: section/title
-#: C/index.page:17
-msgid "Introduction"
-msgstr "Úvod"
-
-#. (itstool) path: section/title
-#: C/index.page:21
-msgid "Comparing Files"
-msgstr "Porovnávání souborů"
-
-#. (itstool) path: section/title
-#: C/index.page:25
-msgid "Comparing Folders"
+"Do tohoto souboru nelze zapisovat. Kliknutím zde můžete tento soubor "
+"odemknout a změny v něm provést, ale tyto změny budou muset být uloženy v "
+"novém souboru."
+
+#: ../data/ui/filediff.ui.h:50
+msgid "File 3"
+msgstr "Soubor 3"
+
+#: ../data/ui/filediff.ui.h:51
+msgid "File 2"
+msgstr "Soubor 2"
+
+#: ../data/ui/filediff.ui.h:52
+msgid "File 1"
+msgstr "Soubor 1"
+
+#: ../data/ui/filediff.ui.h:53
+msgid "Revert unsaved changes to documents?"
+msgstr "Vrátit stav před neuložené změny v dokumentu?"
+
+#: ../data/ui/filediff.ui.h:54
+msgid "Changes made to the following documents will be permanently lost:\n"
+msgstr "Změny provedené v následujících dokumentech budou trvale ztraceny:\n"
+
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:968 ../meld/filediff.py:1630
+msgid "_Replace"
+msgstr "Nahradi_t"
+
+#: ../data/ui/findbar.ui.h:2
+msgid "Replace _All"
+msgstr "Nahradit _vše"
+
+#: ../data/ui/findbar.ui.h:3
+msgid "_Previous"
+msgstr "_Předchozí"
+
+#: ../data/ui/findbar.ui.h:4
+msgid "_Next"
+msgstr "_Následující"
+
+#: ../data/ui/findbar.ui.h:5
+msgid "Find:"
+msgstr "Najít:"
+
+#: ../data/ui/findbar.ui.h:6
+msgid "Replace _with:"
+msgstr "Nahra_dit za:"
+
+#: ../data/ui/findbar.ui.h:7
+msgid "_Match case"
+msgstr "_Rozlišovat velikost písmen"
+
+#: ../data/ui/findbar.ui.h:8
+msgid "Who_le word"
+msgstr "Ce_lé slovo"
+
+#: ../data/ui/findbar.ui.h:9
+msgid "Regular e_xpression"
+msgstr "Re_gulární výraz"
+
+#: ../data/ui/findbar.ui.h:10
+msgid "Wrapped"
+msgstr "Prošlo přes okraj"
+
+#: ../data/ui/patch-dialog.ui.h:1
+msgid "Format as Patch"
+msgstr "Formátovat jako záplatu"
+
+#: ../data/ui/patch-dialog.ui.h:2
+msgid "Copy to Clipboard"
+msgstr "Kopírovat do schránky"
+
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:119
+msgid "Save Patch"
+msgstr "Uložení záplaty"
+
+#: ../data/ui/patch-dialog.ui.h:4
+msgid "Use differences between:"
+msgstr "Použít rozdíly mezi:"
+
+#: ../data/ui/patch-dialog.ui.h:5
+msgid "Left and middle panes"
+msgstr "Levý a prostřední panel"
+
+#: ../data/ui/patch-dialog.ui.h:6
+msgid "Middle and right panes"
+msgstr "Prostřední a pravý panel"
+
+#: ../data/ui/patch-dialog.ui.h:7
+msgid "_Reverse patch direction"
+msgstr "_Obrátit směr záplaty"
+
+#: ../data/ui/preferences.ui.h:1
+msgid "Left is remote, right is local"
+msgstr "Levý je vzdálený, pravý je místní"
+
+#: ../data/ui/preferences.ui.h:2
+msgid "Left is local, right is remote"
+msgstr "Levý je místní, pravý je vzdálený"
+
+#: ../data/ui/preferences.ui.h:3
+msgid "Remote, merge, local"
+msgstr "Vzdálený, sloučený, místní"
+
+#: ../data/ui/preferences.ui.h:4
+msgid "Local, merge, remote"
+msgstr "Místní, sloučený, vzdálený"
+
+#: ../data/ui/preferences.ui.h:5
+msgid "1ns (ext4)"
+msgstr "1 ns (ext4)"
+
+#: ../data/ui/preferences.ui.h:6
+msgid "100ns (NTFS)"
+msgstr "100 ns (NTFS)"
+
+#: ../data/ui/preferences.ui.h:7
+msgid "1s (ext2/ext3)"
+msgstr "1 s (ext2/ext3)"
+
+#: ../data/ui/preferences.ui.h:8
+msgid "2s (VFAT)"
+msgstr "2 s (VFAT)"
+
+#: ../data/ui/preferences.ui.h:9
+msgid "Meld Preferences"
+msgstr "Předvolby aplikace Meld"
+
+#: ../data/ui/preferences.ui.h:10
+msgid "Font"
+msgstr "Písmo"
+
+#: ../data/ui/preferences.ui.h:11
+msgid "_Use the system fixed width font"
+msgstr "Po_užívat systémové písmo s pevnou šířkou"
+
+#: ../data/ui/preferences.ui.h:12
+msgid "_Editor font:"
+msgstr "Písmo _editoru:"
+
+#: ../data/ui/preferences.ui.h:13
+msgid "Display"
+msgstr "Zobrazení"
+
+#: ../data/ui/preferences.ui.h:14
+msgid "_Tab width:"
+msgstr "Šířka _tabulátoru:"
+
+#: ../data/ui/preferences.ui.h:15
+msgid "_Insert spaces instead of tabs"
+msgstr "V_kládat mezery namísto tabulátorů"
+
+#: ../data/ui/preferences.ui.h:16
+msgid "Enable text _wrapping"
+msgstr "Povolit zalamování _textu"
+
+#: ../data/ui/preferences.ui.h:17
+msgid "Do not _split words over two lines"
+msgstr "Nerozdělovat _slova na dva řádky"
+
+#: ../data/ui/preferences.ui.h:18
+msgid "Highlight _current line"
+msgstr "Zvýrazňovat _aktuální řádek"
+
+#: ../data/ui/preferences.ui.h:19
+msgid "Show _line numbers"
+msgstr "Zobrazovat čís_la řádků"
+
+#: ../data/ui/preferences.ui.h:20
+msgid "Show w_hitespace"
+msgstr "Zobrazovat _mezery"
+
+#: ../data/ui/preferences.ui.h:21
+msgid "Use s_yntax highlighting"
+msgstr "Používat zvýrazňování s_yntaxe"
+
+#: ../data/ui/preferences.ui.h:22
+msgid "Syntax highlighting color scheme:"
+msgstr "Schéma barev pro zvýraznění syntaxe:"
+
+#: ../data/ui/preferences.ui.h:23
+msgid "External Editor"
+msgstr "Externí editor"
+
+#: ../data/ui/preferences.ui.h:24
+msgid "Use _default system editor"
+msgstr "Používat výchozí e_ditor systému"
+
+#: ../data/ui/preferences.ui.h:25
+msgid "Edito_r command:"
+msgstr "Příkaz edito_ru:"
+
+#: ../data/ui/preferences.ui.h:26
+msgid "Editor"
+msgstr "Editor"
+
+#: ../data/ui/preferences.ui.h:27
+msgid "Shallow Comparison"
+msgstr "Povrchní porovnání"
+
+#: ../data/ui/preferences.ui.h:28
+msgid "C_ompare files based only on size and timestamp"
+msgstr "P_orovnávat soubory jen na základě velikosti a časového razítka"
+
+#: ../data/ui/preferences.ui.h:29
+msgid "_Timestamp resolution:"
+msgstr "Přesnos_t časového razítka:"
+
+#: ../data/ui/preferences.ui.h:31
+msgid "Symbolic Links"
+msgstr "Symbolické odkazy"
+
+#: ../data/ui/preferences.ui.h:33
+msgid "Visible Columns"
+msgstr "Viditelné sloupce"
+
+#: ../data/ui/preferences.ui.h:34
+msgid "Folder Comparisons"
 msgstr "Porovnávání složek"
 
-#. (itstool) path: section/title
-#: C/index.page:29
-msgid "Using Meld with Version Control"
-msgstr "Používání aplikace Meld se správou verzí"
+#: ../data/ui/preferences.ui.h:35
+msgid "Version Comparisons"
+msgstr "Porovnávání verzí"
 
-#. (itstool) path: section/title
-#: C/index.page:33
-msgid "Advanced Usage"
-msgstr "Pokročilé používání"
+#: ../data/ui/preferences.ui.h:36
+msgid "_Order when comparing file revisions:"
+msgstr "P_ořadí při porovnávání revizí souborů:"
 
-#. (itstool) path: info/title
-#: C/vc-mode.page:5
-msgctxt "sort"
-msgid "0"
-msgstr "0"
+#: ../data/ui/preferences.ui.h:37
+msgid "Order when _merging files:"
+msgstr "Pořadí při slučová_ní souborů:"
 
-#. (itstool) path: page/title
-#: C/vc-mode.page:16
-msgid "Viewing version-controlled files"
-msgstr "Zobrazení souborů ze správy verzí"
+#: ../data/ui/preferences.ui.h:38
+msgid "Commit Messages"
+msgstr "Zprávy o zařazování"
 
-#. (itstool) path: page/p
-#: C/vc-mode.page:18
+#: ../data/ui/preferences.ui.h:39
+msgid "Show _right margin at:"
+msgstr "Zobrazit p_ravý okraj na:"
+
+#: ../data/ui/preferences.ui.h:40
+msgid "Automatically _break lines at right margin on commit"
+msgstr "Při zařazování automaticky za_lamovat řádky na pravém okraji"
+
+#: ../data/ui/preferences.ui.h:41
+msgid "Version Control"
+msgstr "Správa verzí"
+
+#: ../data/ui/preferences.ui.h:42
+msgid "Filename filters"
+msgstr "Filtry názvů souborů"
+
+#: ../data/ui/preferences.ui.h:43
 msgid ""
-"<app>Meld</app> integrates with <link xref=\"vc-supported\">many version "
-"control systems</link> to let you review local changes and perform simple "
-"version control tasks. You can start a new version control comparison by "
-"selecting the <guiseq><gui style=\"menu\">File</gui><gui style=\"menuitem"
-"\">New...</gui></guiseq> menu item, and clicking on the <gui style=\"tab"
-"\">Version Control</gui> tab."
+"When performing directory comparisons, you may filter out files and "
+"directories by name. Each pattern is a list of shell style wildcards "
+"separated by spaces."
 msgstr ""
-"<app>Meld</app> integruje <link xref=\"vc-supported\">řadu systémů pro "
-"správu verzí</link>, abyste si mohli prohlížet místně provedené změny a "
-"provádět jednoduché činnosti ve správě verzí. Nové porovnávání správy verzí "
-"můžete začít pomocí položky nabídky <guiseq><gui style=\"menu\">Soubor</"
-"gui><gui style=\"menuitem\">Nový…</gui></guiseq> a kliknutím na kartu <gui "
-"style=\"tab\">Správa verzí</gui>."
+"Při porovnávání složek můžete odfiltrovat soubory a složky podle názvu. "
+"Každý vzorek je seznamem zástupných znaků ve stylu shellu oddělovaný "
+"mezerami."
 
-#. (itstool) path: section/title
-#: C/vc-mode.page:30
-msgid "Version control comparisons"
-msgstr "Porovnávání správy verzí"
+#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:103
+msgid "File Filters"
+msgstr "Filtry souborů"
 
-#. (itstool) path: section/p
-#: C/vc-mode.page:32
+#: ../data/ui/preferences.ui.h:45
+msgid "Change trimming"
+msgstr "Vynechávání změn"
+
+#: ../data/ui/preferences.ui.h:46
+msgid "Trim blank line differences from the start and end of changes"
+msgstr ""
+"Vynechat od začátku do konce změn rozdíly spočívající v prázdných řádcích"
+
+#: ../data/ui/preferences.ui.h:47
+msgid "Text filters"
+msgstr "Filtry textu"
+
+#: ../data/ui/preferences.ui.h:48
 msgid ""
-"Version control comparisons show the differences between the contents of "
-"your folder and the current repository version. Each file in your local copy "
-"has a <link xref=\"#vc-state\">state</link> that indicates how it differs "
-"from the repository copy."
+"When performing file comparisons, you may ignore certain types of changes. "
+"Each pattern here is a python regular expression which replaces matching "
+"text with the empty string before comparison is performed. If the expression "
+"contains groups, only the groups are replaced. See the user manual for more "
+"details."
 msgstr ""
-"Porovnání správy verzí zobrazuje rozdíly mezi obsahem vaší složky a aktuální "
-"verzí v repozitáři. Každý soubor ve vaší místní kopii má <link xref=\"#vc-"
-"state\">stav</link>, který určuje, jak se liší od kopie v repozitáři."
+"Při porovnávání souborů můžete ignorovat některé typy změn. Každý vzorek je "
+"regulární výraz jazyka Python, který nahrazuje odpovídající text prázdným "
+"řetězcem před provedením porovnání. Pokud výraz obsahuje skupiny, jsou "
+"nahrazeny jen skupiny. Více podrobností viz příručka uživatele."
 
-#. (itstool) path: section/p
-#: C/vc-mode.page:46
-msgid ""
-"If you want to look at a particular file's differences, you can select it "
-"and press <key>Enter</key>, or double-click the file to start a <link xref="
-"\"file-mode\">file comparison</link>. You can also interact with your "
-"version control system using the <gui style=\"menu\">Changes</gui> menu."
-msgstr ""
-"Když se chcete podívat na rozdíly u konkrétního souboru, můžete jej vybrat a "
-"zmáčknout <key>Enter</key> nebo na něj dvojitě kliknout a začne <link xref="
-"\"file-mode\">porovnávání souboru</link>. Můžete take využí funkce svého "
-"systému správy verzí přes nabídku <gui style=\"menu\">Změny</gui>."
+#: ../data/ui/preferences.ui.h:49
+msgid "Text Filters"
+msgstr "Filtry textu"
 
-#. (itstool) path: section/title
-#. (itstool) path: table/title
-#: C/vc-mode.page:56 C/vc-mode.page:81
-msgid "Version control states"
-msgstr "Stavy správy verzí"
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:625
+msgid "New comparison"
+msgstr "Nové porovnání"
 
-#. (itstool) path: section/p
-#: C/vc-mode.page:58
-msgid ""
-"Each file or folder in a version control comparison has a <em>state</em>, "
-"obtained from the version control system itself. <app>Meld</app> maps these "
-"different states into a standard set of very similar concepts. As such, "
-"<app>Meld</app> might use slightly different names for states than your "
-"version control system does. The possible states are:"
-msgstr ""
-"Každý soubor nebo složka v porovnání správy verzí má <em>stav</em> získaný "
-"přímo ze systém správy verzí. <app>Meld</app> převádí tyto různé stavy na "
-"standardní množinu stavů založené na podobném konceptu. Proto může používat "
-"mírně odlišné názvy stavů, než používá váš systém správy verzí. Možné stavy "
-"jsou:"
+#: ../data/ui/tab-placeholder.ui.h:2
+msgid "File comparison"
+msgstr "Porovnávání souborů"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:85 C/folder-mode.page:110
-msgid "State"
-msgstr "stav"
+#: ../data/ui/tab-placeholder.ui.h:3
+msgid "Directory comparison"
+msgstr "Porovnávání složek"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:86 C/folder-mode.page:111
-msgid "Appearance"
-msgstr "vzhled"
+#: ../data/ui/tab-placeholder.ui.h:4
+msgid "Version control view"
+msgstr "Zobrazení správy verzí"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:87 C/folder-mode.page:112
-msgid "Meaning"
-msgstr "význam"
+#: ../data/ui/tab-placeholder.ui.h:5
+msgid "_3-way comparison"
+msgstr "_Trojcestné porovnání"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:95 C/folder-mode.page:120
-msgid "Normal font"
-msgstr "normální písmo"
+#: ../data/ui/tab-placeholder.ui.h:6
+msgid "Select Third File"
+msgstr "Výběr třetího souboru"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:101
-msgid "The file/folder is the same as the repository version."
-msgstr "Soubor/složka jsou stejné jako verze v repozitáři."
+#: ../data/ui/tab-placeholder.ui.h:7
+msgid "Select Second File"
+msgstr "Výběr druhého souboru"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:109
-msgid "Red and bold"
-msgstr "červené a tučné"
+#: ../data/ui/tab-placeholder.ui.h:8
+msgid "Select First File"
+msgstr "Výběr prvního souboru"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:115
-msgid "This file is different to the repository version."
-msgstr "Tento soubor se liší od verze v repozitáři."
+#: ../data/ui/tab-placeholder.ui.h:9
+msgid "Select First Folder"
+msgstr "Výběr první složky"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:123 C/folder-mode.page:164
-msgid "Green and bold"
-msgstr "zelené a tučné"
+#: ../data/ui/tab-placeholder.ui.h:10
+msgid "Select Second Folder"
+msgstr "Výběr druhé složky"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:129
-msgid ""
-"This file/folder is new, and is scheduled to be added to the repository."
-msgstr ""
-"Tento soubor/složka jsou nové a je naplánováno jejich přidání do repozitáře."
+#: ../data/ui/tab-placeholder.ui.h:11
+msgid "Select Third Folder"
+msgstr "Výběr třetí složky"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:136
-msgid "Removed"
-msgstr "Odstraněno"
+#: ../data/ui/tab-placeholder.ui.h:12
+msgid "Select A Version-Controlled Folder"
+msgstr "Výběr složky se správou verzí"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:138
-msgid "Red bold text with a line through the middle"
-msgstr "přeškrtnuté červené tučné"
+#: ../data/ui/tab-placeholder.ui.h:13
+msgid "_Blank comparison"
+msgstr "_Prázdné porovnávání"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:144
-msgid ""
-"This file/folder existed, but is scheduled to be removed from the repository."
-msgstr ""
-"Tento soubor/složka existují, ale je naplánováno jejich odstranění z "
-"repozitáře."
+#: ../data/ui/tab-placeholder.ui.h:14
+msgid "C_ompare"
+msgstr "P_orovnat"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:151
-msgid "Conflict"
-msgstr "Konflikt"
+#: ../data/ui/vcview.ui.h:3
+msgid "Co_mmit..."
+msgstr "Zařa_dit…"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:153
-msgid "Bright red bold text"
-msgstr "jasně červené a tučné"
+#: ../data/ui/vcview.ui.h:4
+msgid "Commit changes to version control"
+msgstr "Zařadit změny do správy verzí"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:159
-msgid ""
-"When trying to merge with the repository, the differences between the local "
-"file and the repository could not be resolved, and the file is now in "
-"conflict with the repository contents"
-msgstr ""
-"Když se pokoušíte o sloučení s repozitářem, nemusí být možné vyřešit rozdíly "
-"mezi místním souborem a repozitářem a soubor se bude nacházet v konfliktu s "
-"obsahem repozitáře."
+#: ../data/ui/vcview.ui.h:5
+msgid "_Update"
+msgstr "Akt_ualizovat"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:167 C/folder-mode.page:176
-msgid "Missing"
-msgstr "Schází"
+#: ../data/ui/vcview.ui.h:6
+msgid "Update working copy from version control"
+msgstr "Aktualizovat pracovní kopii ze správy verzí"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:169
-msgid "Blue bold text with a line through the middle"
-msgstr "modré tučné přeškrtnuté"
+#: ../data/ui/vcview.ui.h:7
+msgid "_Push"
+msgstr "_Odeslat"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:175
-msgid "This file/folder should be present, but isn't."
-msgstr "Tento soubor/složka by měli existovat, ale není tomu tak."
+#: ../data/ui/vcview.ui.h:8
+msgid "Push local changes to remote"
+msgstr "Odeslat místní změny na server"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:181
+#: ../data/ui/vcview.ui.h:10
+msgid "Add to version control"
+msgstr "Přidat do správy verzí"
+
+#: ../data/ui/vcview.ui.h:12
+msgid "Remove from version control"
+msgstr "Odebrat ze správy verzí"
+
+#: ../data/ui/vcview.ui.h:13
+msgid "Mar_k as Resolved"
+msgstr "Označi_t jako vyřešené"
+
+#: ../data/ui/vcview.ui.h:14
+msgid "Mark as resolved in version control"
+msgstr "Označit jako vyřešené ve vztahu ke správě verzí"
+
+#: ../data/ui/vcview.ui.h:15
+msgid "Re_vert"
+msgstr "_Vrátit zpět"
+
+#: ../data/ui/vcview.ui.h:16
+msgid "Revert working copy to original state"
+msgstr "Vrátit pracovní kopii do původního stavu"
+
+#: ../data/ui/vcview.ui.h:17
+msgid "Delete from working copy"
+msgstr "Smazat z pracovní kopie"
+
+#: ../data/ui/vcview.ui.h:18
+msgid "Console"
+msgstr "Konzola"
+
+#: ../data/ui/vcview.ui.h:19
+msgid "Show or hide the version control console output pane"
+msgstr "Zobrazit nebo skrýt panel s výstupem konzoly správy verzí"
+
+#: ../data/ui/vcview.ui.h:20
+msgid "_Flatten"
+msgstr "Z_ploštit"
+
+#: ../data/ui/vcview.ui.h:21
+msgid "Flatten directories"
+msgstr "Zploštit složky"
+
+#: ../data/ui/vcview.ui.h:22
+msgid "_Modified"
+msgstr "_Změněné"
+
+#: ../data/ui/vcview.ui.h:23
+msgid "Show modified files"
+msgstr "Zobrazovat změněné soubory"
+
+#: ../data/ui/vcview.ui.h:24
+msgid "_Normal"
+msgstr "_Normální"
+
+#: ../data/ui/vcview.ui.h:25
+msgid "Show normal files"
+msgstr "Zobrazovat normální soubory"
+
+#: ../data/ui/vcview.ui.h:26
+msgid "Un_versioned"
+msgstr "Ne_verzované"
+
+#: ../data/ui/vcview.ui.h:27
+msgid "Show unversioned files"
+msgstr "Zobrazovat soubory bez verzí"
+
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:64
 msgid "Ignored"
-msgstr "Ignorováno"
+msgstr "Ignorované"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:183 C/vc-mode.page:199
-msgid "Greyed out text"
-msgstr "zašedlý text"
+#: ../data/ui/vcview.ui.h:29
+msgid "Show ignored files"
+msgstr "Zobrazovat ignorované soubory"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:189
-msgid ""
-"This file/folder has been explicitly ignored (e.g., by an entry in <file>."
-"gitignore</file>) and is not being tracked by version control."
+#: ../data/ui/vcview.ui.h:30
+msgid "Commit"
+msgstr "Commit"
+
+#: ../data/ui/vcview.ui.h:31
+msgid "Commit Files"
+msgstr "Commit souborů"
+
+#: ../data/ui/vcview.ui.h:32
+msgid "Log Message"
+msgstr "Zpráva záznamu"
+
+#: ../data/ui/vcview.ui.h:33
+msgid "Previous logs:"
+msgstr "Předchozí záznamy:"
+
+#: ../data/ui/vcview.ui.h:34
+msgid "Co_mmit"
+msgstr "Co_mmit"
+
+#: ../data/ui/vcview.ui.h:35
+msgid "Console output"
+msgstr "Výstup konzoly"
+
+#: ../data/ui/vcview.ui.h:36
+msgid "Push local commits to remote?"
+msgstr "Odeslat místně zařazené na server?"
+
+#: ../data/ui/vcview.ui.h:37
+msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
-"Pro tento soubor/složku bylo určeno, že se mají ignorovat (tj. záznamem v "
-"<file>.gitignore</file>) a nejsou sledovány správou verzí."
+"Zařazené změny, které se mají odeslat jsou dány vaším systém správy verzí."
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:197
+#: ../data/ui/vcview.ui.h:38
+msgid "_Push commits"
+msgstr "_Odeslat zařazené"
+
+#: ../meld/const.py:10
+msgid "UNIX (LF)"
+msgstr "UNIX (LF)"
+
+#: ../meld/const.py:11
+msgid "DOS/Windows (CR-LF)"
+msgstr "DOS/Windows (CR+LF)"
+
+#: ../meld/const.py:12
+msgid "Mac OS (CR)"
+msgstr "Mac OS (CR)"
+
+#. Create file size CellRenderer
+#: ../meld/dirdiff.py:392 ../meld/preferences.py:82
+msgid "Size"
+msgstr "Velikost"
+
+#. Create date-time CellRenderer
+#: ../meld/dirdiff.py:400 ../meld/preferences.py:83
+msgid "Modification time"
+msgstr "Čas změny"
+
+#. Create permissions CellRenderer
+#: ../meld/dirdiff.py:408 ../meld/preferences.py:84
+msgid "Permissions"
+msgstr "Oprávnění"
+
+#: ../meld/dirdiff.py:558
+#, python-format
+msgid "Hide %s"
+msgstr "Skrýt %s"
+
+#: ../meld/dirdiff.py:688 ../meld/dirdiff.py:710
+#, python-format
+msgid "[%s] Scanning %s"
+msgstr "[%s] Prochází se %s"
+
+#: ../meld/dirdiff.py:843
+#, python-format
+msgid "[%s] Done"
+msgstr "[%s] Hotovo"
+
+#: ../meld/dirdiff.py:851
+msgid "Folders have no differences"
+msgstr "Mezi složkami není žádný rozdíl"
+
+#: ../meld/dirdiff.py:853
+msgid "Contents of scanned files in folders are identical."
+msgstr "Obsah kontrolovaných souborů ve složkách je stejný."
+
+#: ../meld/dirdiff.py:855
+msgid ""
+"Scanned files in folders appear identical, but contents have not been "
+"scanned."
+msgstr ""
+"Kontrolované soubory ve složkách vypadají stejně, ale nebyl kontrolován "
+"jejich obsah."
+
+#: ../meld/dirdiff.py:858
+msgid "File filters are in use, so not all files have been scanned."
+msgstr ""
+"Jsou používány filtry souborů, takže ne všechny soubory byly kontrolovány."
+
+#: ../meld/dirdiff.py:860
+msgid "Text filters are in use and may be masking content differences."
+msgstr ""
+"Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
+"soubory."
+
+#: ../meld/dirdiff.py:878 ../meld/dirdiff.py:931 ../meld/filediff.py:1115
+#: ../meld/filediff.py:1267 ../meld/filediff.py:1462 ../meld/filediff.py:1492
+#: ../meld/filediff.py:1494
+msgid "Hi_de"
+msgstr "_Skrýt"
+
+#: ../meld/dirdiff.py:888
+msgid "Multiple errors occurred while scanning this folder"
+msgstr "Při skenování této složky došlo k několika chybám"
+
+#: ../meld/dirdiff.py:889
+msgid "Files with invalid encodings found"
+msgstr "Nalezeny soubory s neplatným kódováním"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:891
+msgid "Some files were in an incorrect encoding. The names are something like:"
+msgstr ""
+"Některé soubory měly neplatné kódování. Názvy jsou přibližně následující:"
+
+#: ../meld/dirdiff.py:893
+msgid "Files hidden by case insensitive comparison"
+msgstr "Soubory skryty porovnáním nerozlišujícím velikost písmen"
+
+#. TRANSLATORS: This is followed by a list of files
+#: ../meld/dirdiff.py:895
+msgid ""
+"You are running a case insensitive comparison on a case sensitive "
+"filesystem. The following files in this folder are hidden:"
+msgstr ""
+"Provádí se porovnání nerozlišující velikost písmen na systému souborů "
+"rozlišujícím velikost písmen. Některé soubory v této složce jsou skryté:"
+
+#: ../meld/dirdiff.py:906
+#, python-format
+msgid "'%s' hidden by '%s'"
+msgstr "„%s“ skryto v „%s“"
+
+#: ../meld/dirdiff.py:971
+#, python-format
+msgid "Replace folder “%s”?"
+msgstr "Nahradit složku „%s“?"
+
+#: ../meld/dirdiff.py:973
+#, python-format
+msgid ""
+"Another folder with the same name already exists in “%s”.\n"
+"If you replace the existing folder, all files in it will be lost."
+msgstr ""
+"V „%s“ již existuje jiná složka se stejným názvem.\n"
+"Pokud stávající složku nahradíte, budou všechny soubory v ní ztraceny."
+
+#: ../meld/dirdiff.py:986
+msgid "Error copying file"
+msgstr "Chyba při kopírování souboru"
+
+#: ../meld/dirdiff.py:987
+#, python-format
+msgid ""
+"Couldn't copy %s\n"
+"to %s.\n"
+"\n"
+"%s"
+msgstr ""
+"Nelze zkopírovat %s\n"
+"do %s.\n"
+"\n"
+"%s"
+
+#: ../meld/dirdiff.py:1010
+#, python-format
+msgid "Error deleting %s"
+msgstr "Chyba při mazání %s"
+
+#: ../meld/dirdiff.py:1515
+msgid "No folder"
+msgstr "Žádná složka"
+
+#. Abbreviations for insert and overwrite that fit in the status bar
+#: ../meld/filediff.py:406
+msgid "INS"
+msgstr "VKL"
+
+#: ../meld/filediff.py:406
+msgid "OVR"
+msgstr "PŘE"
+
+#. Abbreviation for line, column so that it will fit in the status bar
+#: ../meld/filediff.py:408
+#, python-format
+msgid "Ln %i, Col %i"
+msgstr "Řád %i, sl %i"
+
+#: ../meld/filediff.py:821
+msgid "Comparison results will be inaccurate"
+msgstr "Výsledky porovnávání budou nepřesné"
+
+#: ../meld/filediff.py:823
+#, python-format
+msgid ""
+"Filter “%s” changed the number of lines in the file, which is unsupported. "
+"The comparison will not be accurate."
+msgstr ""
+"Filtr „%s“ změnil počet řádků v souboru, což není podporováno. Porovnání "
+"nebude správné."
+
+#: ../meld/filediff.py:894
+msgid "Mark conflict as resolved?"
+msgstr "Označit konflikt jako vyřešený?"
+
+#: ../meld/filediff.py:896
+msgid ""
+"If the conflict was resolved successfully, you may mark it as resolved now."
+msgstr "Pokud byl konflikt vyřešen úspěšně, můžete jej označit za vyřešený."
+
+#: ../meld/filediff.py:898
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../meld/filediff.py:899
+msgid "Mark _Resolved"
+msgstr "Označi_t za vyřešené"
+
+#: ../meld/filediff.py:1102
+#, python-format
+msgid "[%s] Set num panes"
+msgstr "[%s] Nastaven počet panelů"
+
+#: ../meld/filediff.py:1109
+#, python-format
+msgid "[%s] Opening files"
+msgstr "[%s] Otevírají se soubory"
+
+#: ../meld/filediff.py:1132 ../meld/filediff.py:1142 ../meld/filediff.py:1155
+#: ../meld/filediff.py:1161
+msgid "Could not read file"
+msgstr "Nelze přečíst soubor"
+
+#: ../meld/filediff.py:1133
+#, python-format
+msgid "[%s] Reading files"
+msgstr "[%s] Čtou se soubory"
+
+#: ../meld/filediff.py:1143
+#, python-format
+msgid "%s appears to be a binary file."
+msgstr "%s je zřejmě binárním souborem."
+
+#: ../meld/filediff.py:1156
+#, python-format
+msgid "%s is not in encodings: %s"
+msgstr "%s není v kódováních: %s"
+
+#: ../meld/filediff.py:1194
+#, python-format
+msgid "[%s] Computing differences"
+msgstr "[%s] Počítají se rozdíly"
+
+#: ../meld/filediff.py:1262
+#, python-format
+msgid "File %s has changed on disk"
+msgstr "Soubor „%s“ byl změněn na disku."
+
+#: ../meld/filediff.py:1263
+msgid "Do you want to reload the file?"
+msgstr "Chcete soubor znovu načíst?"
+
+#: ../meld/filediff.py:1266
+msgid "_Reload"
+msgstr "Zno_vu načíst"
+
+#: ../meld/filediff.py:1425
+msgid "Files are identical"
+msgstr "Soubory jsou stejné"
+
+#: ../meld/filediff.py:1438
+msgid ""
+"Text filters are being used, and may be masking differences between files. "
+"Would you like to compare the unfiltered files?"
+msgstr ""
+"Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
+"soubory. Chcete porovnat nefiltrované soubory?"
+
+#: ../meld/filediff.py:1443
+msgid "Files differ in line endings only"
+msgstr "Soubory se liší pouze zakončením řádků"
+
+#: ../meld/filediff.py:1445
+#, python-format
+msgid ""
+"Files are identical except for differing line endings:\n"
+"%s"
+msgstr ""
+"Soubory jsou shodné, vyjma rozdílného zakončení řádků:\n"
+"%s"
+
+#: ../meld/filediff.py:1465
+msgid "Show without filters"
+msgstr "Zobrazit bez filtrů"
+
+#: ../meld/filediff.py:1487
+msgid "Change highlighting incomplete"
+msgstr "Změnit zvýraznění neúplných"
+
+#: ../meld/filediff.py:1488
+msgid ""
+"Some changes were not highlighted because they were too large. You can force "
+"Meld to take longer to highlight larger changes, though this may be slow."
+msgstr ""
+"Některé změny nebyly zvýrazněny, protože jsou příliš rozsáhlé. Můžete Meld "
+"přimět k používání větší délky, aby se zvýraznily i rozsáhlé změny, ale může "
+"to pak být pomalé."
+
+#: ../meld/filediff.py:1496
+msgid "Keep highlighting"
+msgstr "Zachovat zvýrazňování"
+
+#: ../meld/filediff.py:1498
+msgid "_Keep highlighting"
+msgstr "Z_achovat zvýrazňování"
+
+#: ../meld/filediff.py:1633
+#, python-format
+msgid "Replace file “%s”?"
+msgstr "Nahradit soubor „%s“?"
+
+#: ../meld/filediff.py:1635
+#, python-format
+msgid ""
+"A file with this name already exists in “%s”.\n"
+"If you replace the existing file, its contents will be lost."
+msgstr ""
+"V „%s“ již existuje soubor se stejným názvem.\n"
+"Pokud stávající soubor nahradíte, jeho obsah bude ztracen."
+
+#: ../meld/filediff.py:1653
+#, python-format
+msgid "Could not save file %s."
+msgstr "Nelze uložit soubor %s."
+
+#: ../meld/filediff.py:1654
+#, python-format
+msgid ""
+"Couldn't save file due to:\n"
+"%s"
+msgstr ""
+"Nelze uložit soubor z důvodu:\n"
+"%s"
+
+#: ../meld/filediff.py:1666
+msgid "Save Left Pane As"
+msgstr "Uložení levého panelu jako"
+
+#: ../meld/filediff.py:1668
+msgid "Save Middle Pane As"
+msgstr "Uložení prostředního panelu jako"
+
+#: ../meld/filediff.py:1670
+msgid "Save Right Pane As"
+msgstr "Uložení pravého panelu jako"
+
+#: ../meld/filediff.py:1684
+#, python-format
+msgid "File %s has changed on disk since it was opened"
+msgstr "Soubor „%s“ byl od doby, co jste jej otevřeli, změněn."
+
+#: ../meld/filediff.py:1686
+msgid "If you save it, any external changes will be lost."
+msgstr "Pokud jej uložíte, budou vnější změny ztraceny."
+
+#: ../meld/filediff.py:1689
+msgid "Save Anyway"
+msgstr "Přesto uložit"
+
+#: ../meld/filediff.py:1690
+msgid "Don't Save"
+msgstr "Neukládat"
+
+#: ../meld/filediff.py:1716
+msgid "Inconsistent line endings found"
+msgstr "Nalezeny řádky s nejednotným zakončením"
+
+#: ../meld/filediff.py:1718
+#, python-format
+msgid ""
+"'%s' contains a mixture of line endings. Select the line ending format to "
+"use."
+msgstr ""
+"„%s“ obsahuje směsici různých zakončení řádků. Vyberte si, který formát "
+"zakončení chcete použít?"
+
+#: ../meld/filediff.py:1739
+msgid "_Save as UTF-8"
+msgstr "_Uložit v UTF-8"
+
+#: ../meld/filediff.py:1742
+#, python-format
+msgid "Couldn't encode text as “%s”"
+msgstr "Text nelze zakódovat jako „%s“"
+
+#: ../meld/filediff.py:1744
+#, python-format
+msgid ""
+"File “%s” contains characters that can't be encoded using encoding “%s”.\n"
+"Would you like to save as UTF-8?"
+msgstr ""
+"Soubor „%s“ obsahuje znaky, které nelze zakódovat pomocí kódování „%s“\n"
+"Chcete jej uložit v UTF-8?"
+
+#: ../meld/filediff.py:2096
+msgid "Live comparison updating disabled"
+msgstr "Živá aktualizace porovnání zakázána"
+
+#: ../meld/filediff.py:2097
+msgid ""
+"Live updating of comparisons is disabled when synchronization points are "
+"active. You can still manually refresh the comparison, and live updates will "
+"resume when synchronization points are cleared."
+msgstr ""
+"Když jsou aktivní synchronizační body, je živá aktualizace porovnávání "
+"zakázána. Možnost aktualizovat porovnávání ručně vám ale zůstává a živé "
+"aktualizace se obnoví ve chvíli, kdy jsou synchronizační body smazány."
+
+#: ../meld/filemerge.py:48
+#, python-format
+msgid "[%s] Merging files"
+msgstr "[%s] Slučují se soubory"
+
+#: ../meld/gutterrendererchunk.py:93
+msgid "Copy _up"
+msgstr "Kopírovat nahor_u"
+
+#: ../meld/gutterrendererchunk.py:94
+msgid "Copy _down"
+msgstr "Kopírovat _dolů"
+
+#: ../meld/meldapp.py:170
+msgid "wrong number of arguments supplied to --diff"
+msgstr "poskytnut nesprávný počet argumentů pro --diff"
+
+#: ../meld/meldapp.py:175
+msgid "Start with an empty window"
+msgstr "Spustit s prázdným oknem"
+
+#: ../meld/meldapp.py:176 ../meld/meldapp.py:178
+msgid "file"
+msgstr "soubor"
+
+#: ../meld/meldapp.py:176 ../meld/meldapp.py:180
+msgid "folder"
+msgstr "složka"
+
+#: ../meld/meldapp.py:177
+msgid "Start a version control comparison"
+msgstr "Spustit nové porovnání správy verzí"
+
+#: ../meld/meldapp.py:179
+msgid "Start a 2- or 3-way file comparison"
+msgstr "Spustit dvojcestné nebo trojcestné porovnání souborů"
+
+#: ../meld/meldapp.py:181
+msgid "Start a 2- or 3-way folder comparison"
+msgstr "Spustit dvojcestné nebo trojcestné porovnání složek"
+
+#: ../meld/meldapp.py:224
+#, python-format
+msgid "Error: %s\n"
+msgstr "Chyba: %s\n"
+
+#: ../meld/meldapp.py:231
+msgid "Meld is a file and directory comparison tool."
+msgstr "Meld je nástroj porovnávající soubory a složky."
+
+#: ../meld/meldapp.py:235
+msgid "Set label to use instead of file name"
+msgstr "Nastavit k použití popisek namísto názvu souboru"
+
+#: ../meld/meldapp.py:238
+msgid "Open a new tab in an already running instance"
+msgstr "Otevřít novou kartu v již běžící instanci"
+
+#: ../meld/meldapp.py:241
+msgid "Automatically compare all differing files on startup"
+msgstr "Automaticky při spuštění porovnat všechny lišící se soubory"
+
+#: ../meld/meldapp.py:244
+msgid "Ignored for compatibility"
+msgstr "Ignorováno z důvodu kompatibility"
+
+#: ../meld/meldapp.py:248
+msgid "Set the target file for saving a merge result"
+msgstr "Nastavit cílový soubor, do kterého se má uložit výsledek slučování"
+
+#: ../meld/meldapp.py:251
+msgid "Automatically merge files"
+msgstr "Automaticky sloučit soubory"
+
+#: ../meld/meldapp.py:255
+msgid "Load a saved comparison from a Meld comparison file"
+msgstr "Načíst uložené porovnání ze srovnávacího souboru Meld"
+
+#: ../meld/meldapp.py:259
+msgid "Create a diff tab for the supplied files or folders"
+msgstr "Vytvořit kartu s rozdílem pro zadané soubory nebo složky"
+
+#: ../meld/meldapp.py:279
+#, python-format
+msgid "too many arguments (wanted 0-3, got %d)"
+msgstr "příliš mnoho argumentů (požadováno 0 – 3, obdrženo %d)"
+
+#: ../meld/meldapp.py:282
+msgid "can't auto-merge less than 3 files"
+msgstr "nelze automaticky sloučit méně než 3 soubory"
+
+#: ../meld/meldapp.py:284
+msgid "can't auto-merge directories"
+msgstr "nelze automaticky sloučit složky"
+
+#: ../meld/meldapp.py:298
+msgid "Error reading saved comparison file"
+msgstr "Chyba při čtení uloženého srovnávacího souboru"
+
+#: ../meld/meldapp.py:326
+#, python-format
+msgid "invalid path or URI \"%s\""
+msgstr "neplatná cesta nebo adresa URI „%s“"
+
+#. TRANSLATORS: This is the label of a new, currently-unnamed file.
+#: ../meld/meldbuffer.py:137
+msgid "<unnamed>"
+msgstr "<bez názvu>"
+
+#: ../meld/melddoc.py:78 ../meld/melddoc.py:79
+msgid "untitled"
+msgstr "nepojmenovaný"
+
+#: ../meld/meldwindow.py:48
+msgid "_File"
+msgstr "_Soubor"
+
+#: ../meld/meldwindow.py:49
+msgid "_New Comparison..."
+msgstr "_Nové porovnávání…"
+
+#: ../meld/meldwindow.py:50
+msgid "Start a new comparison"
+msgstr "Spustit nové porovnání"
+
+#: ../meld/meldwindow.py:53
+msgid "Save the current file"
+msgstr "Uložit aktuální soubor"
+
+#: ../meld/meldwindow.py:55
+msgid "Save As..."
+msgstr "Uložit jako…"
+
+#: ../meld/meldwindow.py:56
+msgid "Save the current file with a different name"
+msgstr "Uložit aktuální soubor pod jiným názvem"
+
+#: ../meld/meldwindow.py:59
+msgid "Close the current file"
+msgstr "Zavřít aktuální soubor"
+
+#: ../meld/meldwindow.py:62
+msgid "_Edit"
+msgstr "_Upravit"
+
+#: ../meld/meldwindow.py:64
+msgid "Undo the last action"
+msgstr "Vrátit zpět poslední činnost"
+
+#: ../meld/meldwindow.py:67
+msgid "Redo the last undone action"
+msgstr "Zopakovat poslední činnost vrácenou zpět"
+
+#: ../meld/meldwindow.py:69
+msgid "Cut the selection"
+msgstr "Vyjmout výběr"
+
+#: ../meld/meldwindow.py:71
+msgid "Copy the selection"
+msgstr "Kopírovat výběr"
+
+#: ../meld/meldwindow.py:73
+msgid "Paste the clipboard"
+msgstr "Vložit obsah schránky"
+
+#: ../meld/meldwindow.py:75
+msgid "Find..."
+msgstr "Najít…"
+
+#: ../meld/meldwindow.py:75
+msgid "Search for text"
+msgstr "Hledat text"
+
+#: ../meld/meldwindow.py:77
+msgid "Find Ne_xt"
+msgstr "_Najít následující"
+
+#: ../meld/meldwindow.py:78
+msgid "Search forwards for the same text"
+msgstr "Hledat tentýž text vpřed"
+
+#: ../meld/meldwindow.py:80
+msgid "Find _Previous"
+msgstr "Nalézt _předchozí"
+
+#: ../meld/meldwindow.py:81
+msgid "Search backwards for the same text"
+msgstr "Hledat nazpět tentýž text"
+
+#: ../meld/meldwindow.py:84
+msgid "_Replace..."
+msgstr "Nah_radit…"
+
+#: ../meld/meldwindow.py:85
+msgid "Find and replace text"
+msgstr "Najít a nahradit text"
+
+#: ../meld/meldwindow.py:88
+msgid "_Changes"
+msgstr "_Změny"
+
+#: ../meld/meldwindow.py:89
+msgid "Next Change"
+msgstr "Následující změna"
+
+#: ../meld/meldwindow.py:90
+msgid "Go to the next change"
+msgstr "Přejít na následující změnu"
+
+#: ../meld/meldwindow.py:92
+msgid "Previous Change"
+msgstr "Předchozí změna"
+
+#: ../meld/meldwindow.py:93
+msgid "Go to the previous change"
+msgstr "Přejít na předchozí změnu"
+
+#: ../meld/meldwindow.py:95
+msgid "Open Externally"
+msgstr "Otevřít externě"
+
+#: ../meld/meldwindow.py:96
+msgid "Open selected file or directory in the default external application"
+msgstr "Otevřít vybraný soubor nebo složku ve výchozí externí aplikaci"
+
+#: ../meld/meldwindow.py:100
+msgid "_View"
+msgstr "_Zobrazit"
+
+#: ../meld/meldwindow.py:101
+msgid "File Status"
+msgstr "Stav souboru"
+
+#: ../meld/meldwindow.py:102
+msgid "Version Status"
+msgstr "Stav verze"
+
+#: ../meld/meldwindow.py:105
+msgid "Stop the current action"
+msgstr "Zastavit aktuální činnost"
+
+#: ../meld/meldwindow.py:108
+msgid "Refresh the view"
+msgstr "Obnovit zobrazení"
+
+#: ../meld/meldwindow.py:111
+msgid "_Tabs"
+msgstr "Kar_ty"
+
+#: ../meld/meldwindow.py:112
+msgid "_Previous Tab"
+msgstr "_Předchozí karta"
+
+#: ../meld/meldwindow.py:113
+msgid "Activate previous tab"
+msgstr "Přejít na předchozí kartu"
+
+#: ../meld/meldwindow.py:115
+msgid "_Next Tab"
+msgstr "_Následující karta"
+
+#: ../meld/meldwindow.py:116
+msgid "Activate next tab"
+msgstr "Aktivovat následující kartu"
+
+#: ../meld/meldwindow.py:119
+msgid "Move Tab _Left"
+msgstr "Přesunout kartu do_leva"
+
+#: ../meld/meldwindow.py:120
+msgid "Move current tab to left"
+msgstr "Přesunout aktuální kartu doleva"
+
+#: ../meld/meldwindow.py:123
+msgid "Move Tab _Right"
+msgstr "Přesunout kartu dop_rava"
+
+#: ../meld/meldwindow.py:124
+msgid "Move current tab to right"
+msgstr "Přesunout aktuální kartu doprava"
+
+#: ../meld/meldwindow.py:128
+msgid "Fullscreen"
+msgstr "Celá obrazovka"
+
+#: ../meld/meldwindow.py:129
+msgid "View the comparison in fullscreen"
+msgstr "Zobrazit porovnání na celou obrazovku"
+
+#: ../meld/meldwindow.py:131
+msgid "_Toolbar"
+msgstr "Nástrojová _lišta"
+
+#: ../meld/meldwindow.py:132
+msgid "Show or hide the toolbar"
+msgstr "Zobrazit nebo skrýt nástrojovou lištu"
+
+#: ../meld/meldwindow.py:141
+msgid "Open Recent"
+msgstr "Otevřít nedávné"
+
+#: ../meld/meldwindow.py:142
+msgid "Open recent files"
+msgstr "Otevřít nedávné soubory"
+
+#: ../meld/meldwindow.py:164
+msgid "_Meld"
+msgstr "_Meld"
+
+#: ../meld/meldwindow.py:165
+msgid "Quit the program"
+msgstr "Ukončit program"
+
+#: ../meld/meldwindow.py:167
+msgid "Prefere_nces"
+msgstr "_Předvolby"
+
+#: ../meld/meldwindow.py:168
+msgid "Configure the application"
+msgstr "Nastavit aplikaci"
+
+#: ../meld/meldwindow.py:170
+msgid "_Contents"
+msgstr "O_bsah"
+
+#: ../meld/meldwindow.py:171
+msgid "Open the Meld manual"
+msgstr "Otevřít příručku aplikace Meld"
+
+#: ../meld/meldwindow.py:173
+msgid "About this application"
+msgstr "O této aplikaci"
+
+#: ../meld/meldwindow.py:548
+msgid "Switch to this tab"
+msgstr "Přepnout na tuto kartu"
+
+#: ../meld/meldwindow.py:659
+#, python-format
+msgid "Need three files to auto-merge, got: %r"
+msgstr "Pro automatické sloučení jsou zapotřebí tři soubory, obdržen: %r"
+
+#: ../meld/meldwindow.py:673
+msgid "Cannot compare a mixture of files and directories"
+msgstr "Nelze porovnávat směs souborů a složek"
+
+#. no common path. empty names get changed to "[None]"
+#: ../meld/misc.py:178
+msgid "[None]"
+msgstr "[Žádný]"
+
+#: ../meld/preferences.py:33
+msgid "label"
+msgstr "popisek"
+
+#: ../meld/preferences.py:33
+msgid "pattern"
+msgstr "vzorek"
+
+#: ../meld/recent.py:114
+msgid "Version control:"
+msgstr "Správa verzí:"
+
+#: ../meld/ui/notebooklabel.py:65
+msgid "Close tab"
+msgstr "Zavřít kartu"
+
+#: ../meld/ui/vcdialogs.py:61
+msgid "No files will be committed"
+msgstr "Žádné soubory nebudou zařazeny"
+
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:129
+#, python-format
+msgid "%s in %s"
+msgstr "%s v %s"
+
+#. Translators: These messages cover the case where there is
+#. only one branch, and are not part of another message.
+#: ../meld/vc/git.py:130 ../meld/vc/git.py:137
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] "%d zařazená neodeslaná"
+msgstr[1] "%d zařazené neodeslané"
+msgstr[2] "%d zařazených neodeslaných"
+
+#: ../meld/vc/git.py:132
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] "%d větvi"
+msgstr[1] "%d větvích"
+msgstr[2] "%d větvích"
+
+#: ../meld/vc/git.py:360
+#, python-format
+msgid "Mode changed from %s to %s"
+msgstr "Režim změněn z %s na %s"
+
+#: ../meld/vc/_vc.py:47
+msgid "Merged"
+msgstr "sloučené"
+
+#: ../meld/vc/_vc.py:47
+msgid "Base"
+msgstr "základní"
+
+#: ../meld/vc/_vc.py:47
+msgid "Local"
+msgstr "místní"
+
+#: ../meld/vc/_vc.py:47
+msgid "Remote"
+msgstr "vzdálené"
+
+#: ../meld/vc/_vc.py:65
 msgid "Unversioned"
 msgstr "Neverzováno"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:205
-msgid ""
-"This file is not in the version control system; it is only in the local copy."
-msgstr ""
-"Tento soubor není v systému správy verzí, nachází se pouze v místní kopii."
-
-#. (itstool) path: td/p
-#: C/vc-mode.page:212 C/folder-mode.page:191
+#: ../meld/vc/_vc.py:68
 msgid "Error"
 msgstr "Chyba"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:214 C/folder-mode.page:193
-msgid "Bright red with a yellow background and bold"
-msgstr "světle červený tučný text na žlutém pozadí"
+#: ../meld/vc/_vc.py:70
+msgid "Newly added"
+msgstr "Nově přidáno"
 
-#. (itstool) path: td/p
-#: C/vc-mode.page:220
-msgid "The version control system has reported a problem with this file."
-msgstr "Systém správy verzí oznámil problém s tímto souborem."
+#: ../meld/vc/_vc.py:72
+msgid "Renamed"
+msgstr "Přejmenováno"
 
-#. (itstool) path: section/title
-#: C/vc-mode.page:230
-msgid "Version control state filtering"
-msgstr "Filtrování stavu ve správě verzí"
+#: ../meld/vc/_vc.py:73
+msgid "Conflict"
+msgstr "Konflikt"
 
-#. (itstool) path: section/p
-#: C/vc-mode.page:232
+#: ../meld/vc/_vc.py:74
+msgid "Removed"
+msgstr "Odstraněno"
+
+#: ../meld/vc/_vc.py:75
+msgid "Missing"
+msgstr "Schází"
+
+#: ../meld/vc/_vc.py:76
+msgid "Not present"
+msgstr "Není přítomno"
+
+#: ../meld/vcview.py:233 ../meld/vcview.py:417
+msgid "Location"
+msgstr "Umístění"
+
+#: ../meld/vcview.py:234
+msgid "Status"
+msgstr "Stav"
+
+#: ../meld/vcview.py:235
+msgid "Revision"
+msgstr "Revize"
+
+#: ../meld/vcview.py:236
+msgid "Options"
+msgstr "Možnosti"
+
+#. TRANSLATORS: this is an error message when a version control
+#. application isn't installed or can't be found
+#: ../meld/vcview.py:324
+#, python-format
+msgid "%s not installed"
+msgstr "%s není nainstalováno"
+
+#. TRANSLATORS: this is an error message when a version
+#. controlled repository is invalid or corrupted
+#: ../meld/vcview.py:328
+msgid "Invalid repository"
+msgstr "Neplatné úložiště"
+
+#: ../meld/vcview.py:337
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../meld/vcview.py:339 ../meld/vcview.py:347
+msgid "None"
+msgstr "Žádný"
+
+#: ../meld/vcview.py:358
+msgid "No valid version control system found in this folder"
+msgstr "V této složce nebyl nalezen žádný platný systém správy verzí"
+
+#: ../meld/vcview.py:360
+msgid "Only one version control system found in this folder"
+msgstr "V této složce byl nalezen jen jeden systém správy verzí"
+
+#: ../meld/vcview.py:362
+msgid "Choose which version control system to use"
+msgstr "Vyberte, který systém správy verzí se má použít"
+
+#. TRANSLATORS: This is the location of the directory the user is diffing
+#: ../meld/vcview.py:417
+#, python-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: ../meld/vcview.py:431 ../meld/vcview.py:439
+#, python-format
+msgid "Scanning %s"
+msgstr "Prochází se %s"
+
+#: ../meld/vcview.py:479
+msgid "(Empty)"
+msgstr "(Prázdný)"
+
+#: ../meld/vcview.py:522
+#, python-format
+msgid "%s — local"
+msgstr "%s — místní"
+
+#: ../meld/vcview.py:523
+#, python-format
+msgid "%s — remote"
+msgstr "%s — vzdálený"
+
+#: ../meld/vcview.py:531
+#, python-format
+msgid "%s (local, merge, remote)"
+msgstr "%s (místní, sloučený, vzdálený)"
+
+#: ../meld/vcview.py:536
+#, python-format
+msgid "%s (remote, merge, local)"
+msgstr "%s (vzdálený, sloučený, místní)"
+
+#: ../meld/vcview.py:547
+#, python-format
+msgid "%s — repository"
+msgstr "%s — repozitář"
+
+#: ../meld/vcview.py:553
+#, python-format
+msgid "%s (working, repository)"
+msgstr "%s (pracovní, repozitář)"
+
+#: ../meld/vcview.py:557
+#, python-format
+msgid "%s (repository, working)"
+msgstr "%s (repozitář, pracovní)"
+
+#: ../meld/vcview.py:741
+msgid "Remove folder and all its files?"
+msgstr "Odstranit složku a všechny soubory v ní?"
+
+#: ../meld/vcview.py:743
 msgid ""
-"Most often, you will only want to see files that are identified as being in "
-"some way different; this is the default setting in <app>Meld</app>. You can "
-"change which file states you see by using the <guiseq><gui style=\"menu"
-"\">View</gui><gui style=\"menuitem\">Version Status</gui></guiseq> menu, or "
-"by clicking the corresponding <gui style=\"button\">Modified</gui>, <gui "
-"style=\"button\">Normal</gui>, <gui style=\"button\">Unversioned</gui> and "
-"<gui style=\"button\">Ignored</gui> buttons on the toolbar."
+"This will remove all selected files and folders, and all files within any "
+"selected folders, from version control."
 msgstr ""
-"Velmi často budete chtít vidět jen soubory, u kterých bylo zjištěno, že se "
-"nějakým způsobem liší. Proto se jedná o výchozí nastavení aplikace "
-"<app>Meld</app>. Které stavy chcete vidět, můžete změnit pomocí nabídky "
-"<guiseq><gui style=\"menu\">Zobrazit</gui><gui style=\"menuitem\">Stav "
-"verze</gui></guiseq> nebo kliknutím na příslušné tlačítko <gui style=\"button"
-"\">Změněno</gui>, <gui style=\"button\">Normální</gui>, <gui style=\"button"
-"\">Neverzováno</gui> a <gui style=\"button\">Ignorováno</gui> na nástrojové "
-"liště."
-
-#. (itstool) path: page/title
-#: C/keyboard-shortcuts.page:15
-msgid "Keyboard shortcuts"
-msgstr "Klávesové zkratky"
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:18
-msgid "Shortcuts for working with files and comparisons"
-msgstr "Klávesové zkratky pro práci se soubory a pro porovnávání"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
-#: C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131
-msgid "Shortcut"
-msgstr "klávesová zkratka"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
-#: C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131
-msgid "Description"
-msgstr "popis"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:29
-msgid "<keyseq><key>Ctrl</key><key>N</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>N</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:30
-msgid "Start a new comparison."
-msgstr "Začít nové porovnávání"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:33
-msgid "<keyseq><key>Ctrl</key><key>S</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>S</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:34
-msgid "Save the current document to disk."
-msgstr "Uložit aktuální dokument na disk"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:37
-msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>S</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Shift</key><key>S</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:38
-msgid "Save the current document with a new filename."
-msgstr "Uložit aktuální dokument pod novým názvem"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:41
-msgid "<keyseq><key>Ctrl</key><key>W</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>W</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:42
-msgid "Close the current comparison."
-msgstr "Zavřít aktuální porovnávání"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:45
-msgid "<keyseq><key>Ctrl</key><key>Q</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Q</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:46
-msgid "Quit <app>Meld</app>."
-msgstr "Ukončit <app>Meld</app>"
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:52
-msgid "Shortcuts for editing documents"
-msgstr "Klávesové zkratky pro úpravu dokumentů"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:62
-msgid "<keyseq><key>Ctrl</key><key>Z</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Z</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:63
-msgid "Undo the last action."
-msgstr "Vrátit zpět poslední úkon"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:66
-msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>Z</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Shift</key><key>Z</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:67
-msgid "Redo the last undone action."
-msgstr "Znovu provést poslední vrácený úkon"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:70
-msgid "<keyseq><key>Ctrl</key><key>X</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>X</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:71
-msgid "Cut the selected text or region and place it on the clipboard."
-msgstr "Vyjmout vybraný text nebo oblast a vložit ji do schránky"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:74
-msgid "<keyseq><key>Ctrl</key><key>C</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>C</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:75
-msgid "Copy the selected text or region onto the clipboard."
-msgstr "Kopírovat vybraný text nebo oblast do schránky"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:78
-msgid "<keyseq><key>Ctrl</key><key>V</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>V</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:79
-msgid "Paste the contents of the clipboard."
-msgstr "Vložit obsah ze schránky"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:82
-msgid "<keyseq><key>Ctrl</key><key>F</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>F</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:83
-msgid "Find a string."
-msgstr "Hledat řetězec"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:86
-msgid "<keyseq><key>Ctrl</key><key>G</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>G</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:87
-msgid "Find the next instance of the string."
-msgstr "Najít následující výskyt řetězce"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:90 C/keyboard-shortcuts.page:96
-msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
-msgstr "<keyseq><key>Alt</key><key>Up</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:91
-msgid ""
-"Go to the next difference. (Also <keyseq><key>Ctrl</key><key>D</key></"
-"keyseq>)"
-msgstr ""
-"Přejít na následující rozdíl (také <keyseq><key>Ctrl</key><key>D</key></"
-"keyseq>)"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:97
-msgid ""
-"Go to the previous difference. (Also <keyseq><key>Ctrl</key><key>E</key></"
-"keyseq>)"
-msgstr ""
-"Přejít na předchozí rozdíl (také <keyseq><key>Ctrl</key><key>E</key></"
-"keyseq>)"
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:105
-msgid "Shortcuts for view settings"
-msgstr "Klávesové zkratky pro zobrazení nastavení"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:115
-msgid "<keyseq><key>Escape</key></keyseq>"
-msgstr "<keyseq><key>Esc</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:116
-msgid "Stop the current comparison."
-msgstr "Zastavit aktuální porovnávání"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:119
-msgid "<keyseq><key>Ctrl</key><key>R</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>R</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:120
-msgid "Refresh the current comparison."
-msgstr "Aktualizovat aktuální porovnávání"
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:127
-msgid "Shortcuts for help"
-msgstr "Klávesové zkratky pro nápovědu"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:137
-msgid "<keyseq><key>F1</key></keyseq>"
-msgstr "<keyseq><key>F1</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:138
-msgid "Open <app>Meld</app>'s user manual."
-msgstr "Otevřít uživatelskou příručku <app>Meld</app>"
-
-#. (itstool) path: page/title
-#: C/introduction.page:15
-msgid "What is Meld?"
-msgstr "Co je to Meld?"
-
-#. (itstool) path: page/p
-#: C/introduction.page:16
-msgid ""
-"<app>Meld</app> is a tool for comparing files and directories, and for "
-"resolving differences between them. It is also useful for comparing changes "
-"captured by version control systems."
-msgstr ""
-"<app>Meld</app> je nástroj sloužící k porovnávání souborů a složek a řešení "
-"rozdílů mezi nimi. Hodí se také k porovnání změn provedených v rámci systémů "
-"pro správu verzí."
-
-#. (itstool) path: page/p
-#: C/introduction.page:22
-msgid ""
-"<app>Meld</app> shows differences between two or three files (or two or "
-"three directories) and allows you to move content between them, or edit the "
-"files manually. <app>Meld</app>'s focus is on helping developers compare and "
-"merge source files, and get a visual overview of changes in their favourite "
-"version control system."
-msgstr ""
-"<app>Meld</app> zobrazuje rozdíly mezi dvěma nebo třemi soubory (či dvěma "
-"nebo třemi složkami) a umožňuje mezi nimi přesouvat obsah nebo soubory ručně "
-"upravit. Cílem aplikace <app>Meld</app> je pomoci vývojářům porovnávat a "
-"slučovat soubory se zdrojovými kódy a získat vizuální přehled o změnách v "
-"jejich oblíbeném systému správy verzí."
-
-#. (itstool) path: page/title
-#: C/folder-mode.page:16
-msgid "Getting started comparing folders"
-msgstr "Začínáme s porovnáváním složek"
-
-#. (itstool) path: page/p
-#: C/folder-mode.page:18
-msgid ""
-"<app>Meld</app> lets you compare two or three folders side-by-side. You can "
-"start a new folder comparison by selecting the <guiseq><gui style=\"menu"
-"\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item, and "
-"clicking on the <gui style=\"tab\">Directory Comparison</gui> tab."
-msgstr ""
-"<app>Meld</app> umožňuje porovnávat dvě nebo tři složky vedle sebe. Nové "
-"porovnávání složek začnete přes položku nabídky <guiseq><gui style=\"menu"
-"\">Soubor</gui><gui style=\"menuitem\">Nový…</gui></guiseq> a kliknutím na "
-"kartu <gui style=\"tab\">Porovnávání složek</gui>."
-
-#. (itstool) path: page/p
-#: C/folder-mode.page:26
-msgid ""
-"Your selected folders will be shown as side-by-side trees, with differences "
-"between files in each folder highlighted. You can copy or delete files from "
-"either folder, or compare individual text files in more detail."
-msgstr ""
-"Vybrané složky budou zobrazeny jako stromové struktury vedle sebe a rozdíly "
-"mezi soubory v každé složce budou zvýrazněny. Soubory v každé ze složek "
-"můžete kopírovat a mazat, případně si u textových souborů zobrazit rozdíly "
-"podrobně."
-
-#. (itstool) path: section/title
-#: C/folder-mode.page:36
-msgid "The folder comparison view"
-msgstr "Zobrazení porovnání složek"
-
-#. (itstool) path: section/p
-#: C/folder-mode.page:38
-msgid ""
-"The main parts of a folder comparison are the trees showing the folders "
-"you're comparing. You can easily <link xref=\"#folder-navigation\">move "
-"around</link> these comparisons to find changes that you're interested in. "
-"When you select a file or folder, more detailed information is given in the "
-"status bar at the bottom of the window. Pressing <key>Enter</key> on a "
-"selected file, or double-clicking any file in the tree will open a side-by-"
-"side <link xref=\"file-mode\">file comparison</link> of the files in a new "
-"tab, but this will only work properly if they're text files!"
-msgstr ""
-"Hlavními částmi v porovnání složek jsou stromy zobrazující porovnávané "
-"složky. V těchto porovnáních se můžete snadno <link xref=\"#folder-navigation"
-"\">pohybovat</link>, abyste našli změny, které vás zajímají. Když vyberete "
-"soubor nebo složku, na stavové liště ve spodní části okna se zobrazí "
-"podrobné informace. Zmáčknutím klávesy <key>Enter</key> na vybraném souboru "
-"nebo dvojitým kliknutím na libovolném souboru se otevře <link xref=\"file-"
-"mode\">porovnávání souboru</link> vedle sebe v nové kartě, ale rozumné "
-"použití to má jen pro textové soubory."
-
-#. (itstool) path: section/p
-#: C/folder-mode.page:50
-msgid ""
-"There are bars on the left and right-hand sides of the window that show you "
-"a simple coloured summary of the comparison results. Each file or folder in "
-"the comparison corresponds to a small section of these bars, though "
-"<app>Meld</app> doesn't show <em>Same</em> files so that it's easier to see "
-"any actually important differences. You can click anywhere on this bar to "
-"jump straight to that place in the comparison."
-msgstr ""
-"Po levé i pravé straně okna se nachází lišty, které vám zobrazují jednoduchý "
-"barevný přehled výsledků porovnávání. Každý soubor nebo složka v porovnání "
-"odpovídají malému úseku lišty, přitom ale <app>Meld</app> nezobrazuje "
-"<em>stejné</em> soubory, takže jsou lépe vidět opravdu podstatné rozdíly. Na "
-"lištu můžete kdekoliv kliknout a dostat se tak přímo na místo v porovnání."
-
-#. (itstool) path: section/title
-#: C/folder-mode.page:63
-msgid "Navigating folder comparisons"
-msgstr "Pohyb v porovnávání složek"
-
-#. (itstool) path: section/p
-#: C/folder-mode.page:65
-msgid ""
-"You can jump between changed files (that is, any files/folders that are "
-"<em>not</em> classified as being identical) with the <guiseq><gui style="
-"\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> "
-"and <guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next "
-"change</gui></guiseq> menu items, or using the corresponding buttons on the "
-"toolbar."
-msgstr ""
-"Mezi změněnými soubory (to jsou všechny soubory/složky, které <em>nejsou</"
-"em> označené jako shodné) se můžete pohybovat pomocí položek nabídky "
-"<guiseq><gui style=\"menu\">Změny</gui><gui style=\"menuitem\">Předchozí "
-"změna</gui></guiseq> a <guiseq><gui style=\"menu\">Změny</gui><gui style="
-"\"menuitem\">Následující změna</gui></guiseq> nebo použít příslušné tlačítko "
-"na nástrojové liště."
-
-#. (itstool) path: section/p
-#: C/folder-mode.page:73
-msgid ""
-"You can use the <key>Left</key> and <key>Right</key> arrow keys to move "
-"between the folders you're comparing. This is useful so that you can select "
-"an individual file for copying or deletion."
-msgstr ""
-"Pomocí kláves <key>←</key> a <key>→</key> můžete přecházet mezi složkami, "
-"které porovnáváte. To se hodí, abyste mohli vybírat jednotlivé soubory ke "
-"zkopírování nebo ke smazání."
-
-#. (itstool) path: section/title
-#: C/folder-mode.page:83
-msgid "States in folder comparisons"
-msgstr "Stavy při porovnávání složek"
-
-#. (itstool) path: section/p
-#: C/folder-mode.page:85
-msgid ""
-"Each file or folder in a tree has its own <em>state</em>, telling you how it "
-"differed from its corresponding files/folders. The possible states are:"
-msgstr ""
-"Každý soubor či složka ve stromu má svůj vlastní <em>stav</em>, který vám "
-"říká, jak se liší od svého protějšku. Možné stavy jsou:"
-
-#. (itstool) path: table/title
-#: C/folder-mode.page:106
-msgid "Folder comparison states"
-msgstr "Stavy při porovnávání složek"
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:126
-msgid "The file/folder is the same across all compared folders."
-msgstr "Soubor/složka je stejná ve všech porovnávaných složkách."
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:132
-msgid "Same when filtered"
-msgstr "Stejné díky filtru"
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:134
-msgid "Italics"
-msgstr "kurzíva"
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:140
-msgid ""
-"These files are different across folders, but once <link xref=\"text-filters"
-"\">text filters</link> are applied, these files become identical."
-msgstr ""
-"Tyto soubory se napříč složkami liší, ale díky použití <link xref=\"text-"
-"filters\">textového filtru</link> se tyto soubory jeví jako stejné."
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:150
-msgid "Blue and bold"
-msgstr "modré a tučné"
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:156
-msgid "These files differ between the folders being compared."
-msgstr "Tyto soubory se liší mezi složkami, které jsou porovnávány."
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:170
-msgid "This file/folder exists in this folder, but not in the others."
-msgstr "Tento soubor/složka existuje v této složce, ale ne v ostatních."
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:178
-msgid "Greyed out text with a line through the middle"
-msgstr "zašedlý středem přeškrtnutý text"
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:184
-msgid ""
-"This file/folder doesn't exist in this folder, but does in one of the others."
-msgstr ""
-"Tento soubor/složka neexistuje v této složce, ale v některé z ostatních ano."
-
-#. (itstool) path: td/p
-#: C/folder-mode.page:199
-msgid ""
-"When comparing this file, an error occurred. The most common error causes "
-"are file permissions (i.e., <app>Meld</app> was not allowed to open the "
-"file) and filename encoding errors."
-msgstr ""
-"Při porovnávání tohoto souboru nastala chyba. Nejčastější příčinou chyb jsou "
-"oprávnění k souboru (tj. aplikaci <app>Meld</app> nebylo dovoleno soubor "
-"otevřít) a chyby v kódování názvu souboru."
-
-#. (itstool) path: section/p
-#: C/folder-mode.page:217
-msgid ""
-"You can filter out files based on these states, for example, to show only "
-"files that have been <em>Modified</em>. You can read more about this in "
-"<link xref=\"file-filters#file-state-filter\"/>."
-msgstr ""
-"Můžete odfiltrovat soubory na základě jejich stavu, například aby se "
-"zobrazovaly jen soubory, které byly <em>změněné</em>. Více si o tom můžete "
-"přečíst v kapitole <link xref=\"file-filters#file-state-filter\"/>."
-
-#. (itstool) path: section/p
-#: C/folder-mode.page:223
-msgid ""
-"Finally, the most recently modified file/folder has an emblem attached to it."
-msgstr "Navíc mají nejnověji změněné soubory/složky připojen symbol."
-
-#. (itstool) path: page/title
-#: C/missing-functionality.page:15
-msgid "Things that <app>Meld</app> doesn't do"
-msgstr "Věci, které <app>Meld</app> nedělá"
-
-#. (itstool) path: page/p
-#: C/missing-functionality.page:17
-msgid ""
-"Have you ever spent half an hour poking around an application trying to find "
-"out how to do something, thinking that <em>surely</em> there must be an "
-"option for this?"
-msgstr ""
-"Strávili jste hodinu a půl prozkoumáváním aplikace ve snaze najít, jak se "
-"udělá jedna konkrétní věc, protože jste si byli <em>jistí</em>, že to musí "
-"nějak jít?"
-
-#. (itstool) path: page/p
-#: C/missing-functionality.page:23
-msgid ""
-"This section lists a few of the common things that <app>Meld</app> "
-"<em>doesn't</em> do, either as a deliberate choice, or because we just "
-"haven't had time."
-msgstr ""
-"Tato část uvádí několik běžných věcí, které <app>Meld</app> <em>nedělá</em>, "
-"ať už záměrně nebo proto, že na ně ještě nebyl čas."
-
-#. (itstool) path: section/title
-#: C/missing-functionality.page:30
-msgid "Aligning changes by adding lines"
-msgstr "Zarovnávání změn přidáním řádků"
-
-#. (itstool) path: section/p
-#: C/missing-functionality.page:31
-msgid ""
-"When <app>Meld</app> shows differences between files, it shows both files as "
-"they would appear in a normal text editor. It does <em>not</em> insert "
-"additional lines so that the left and right sides of a particular change are "
-"the same size. There is no option to do this."
-msgstr ""
-"Když <app>Meld</app> zobrazuje rozdíly mezi soubory, zobrazuje oba soubory "
-"stejným způsobem jako běžný textový editor. <em>Nevkládá</em> žádné "
-"dodatečné řádky, aby levá a pravá strana se změnami měly stejnou velikost. "
-"Není k dispozici ani žádná volba, která by to dělala."
-
-#. (itstool) path: page/title
-#: C/command-line.page:15
-msgid "Command line usage"
-msgstr "Použití příkazového řádku"
-
-#. (itstool) path: page/p
-#: C/command-line.page:17
-msgid ""
-"If you start <app>Meld</app> from the command line, you can tell it what to "
-"do when it starts."
-msgstr ""
-"Když spouštíte <app>Meld</app> z příkazové řádky, můžete mu říct, co má po "
-"spuštění udělat."
-
-#. (itstool) path: page/p
-#: C/command-line.page:20
-msgid ""
-"For a two- or three-way <link xref=\"file-mode\">file comparison</link>, "
-"start <app>Meld</app> with <cmd>meld <var>file1</var> <var>file2</var></cmd> "
-"or <cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> "
-"respectively."
-msgstr ""
-"Pro dvoj nebo trojcestné <link xref=\"file-mode\">porovnání souborů</link> "
-"spusťte <app>Meld</app> pomocí <cmd>meld <var>soubor1</var> <var>soubor2</"
-"var></cmd> respektive <cmd>meld <var>soubor1</var> <var>soubor2</var> "
-"<var>soubor3</var></cmd>."
-
-#. (itstool) path: page/p
-#: C/command-line.page:26
-msgid ""
-"For a two- or three-way <link xref=\"folder-mode\">directory comparison</"
-"link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
-"cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
-msgstr ""
-"Pro dvoj nebo trojcestné <link xref=\"file-mode\">porovnání složek</link> "
-"spusťte <app>Meld</app> pomocí <cmd>meld <var>složka1</var> <var>složka2</"
-"var></cmd> respektive <cmd>meld <var>složka1</var> <var>složka2</var> "
-"<var>složka3</var></cmd>."
-
-#. (itstool) path: page/p
-#: C/command-line.page:31
-msgid ""
-"You can start a <link xref=\"vc-mode\">version control</link> comparison by "
-"just giving a single argument; if that file or directory is managed by a "
-"<link xref=\"vc-supported\">recognized version control system</link>, it "
-"will start a version control comparison on that argument. For example, "
-"<cmd>meld .</cmd> would start a version control view of the current "
-"directory."
-msgstr ""
-"Porovnání ve <link xref=\"vc-mode\">správě verzí</link> můžete spustit "
-"zadání pouhého jednoho argumentu. Pokud je zadaný soubor nebo složka "
-"spravována některým <link xref=\"vc-supported\">rozpoznaným systémem správy "
-"verzí</link>, spustí se porovnání tohoto argumentu ve správě verzí. "
-"Například <cmd>meld .</cmd> by spustilo zobrazení správy verzí pro aktuální "
-"složku."
-
-#. (itstool) path: note/p
-#: C/command-line.page:40
-msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
-msgstr ""
-"Spuštěním <cmd>meld --help</cmd> si můžete vypsat všechny možnosti "
-"příkazového řádku."
+"Tímto se ze správy verzí odstraní všechny vybrané soubory a složky (a "
+"všechny soubory v těchto složkách)."
+
+#: ../meld/vcview.py:777
+#, python-format
+msgid "Error removing %s"
+msgstr "Chyba při odstraňování %s"
