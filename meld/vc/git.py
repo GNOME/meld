@@ -2,7 +2,7 @@
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
 # Copyright (C) 2007 José Fonseca <j_r_fonseca@yahoo.co.uk>
-# Copyright (C) 2010-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2015 Kai Willadsen <kai.willadsen@gmail.com>
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -38,13 +38,11 @@ from meld.conf import _, ngettext
 from . import _vc
 
 
-class Vc(_vc.CachedVc):
+class Vc(_vc.Vc):
 
     CMD = "git"
     NAME = "Git"
     VC_DIR = ".git"
-
-    VC_COLUMNS = (_vc.DATA_NAME, _vc.DATA_STATE, _vc.DATA_OPTIONS)
 
     GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([XADMTU])\t(.*)"
     DIFF_RE = re.compile(GIT_DIFF_FILES_RE)
@@ -66,55 +64,19 @@ class Vc(_vc.CachedVc):
         "U": _vc.STATE_CONFLICT,  # Unmerged
     }
 
-    def __init__(self, location):
-        super(Vc, self).__init__(location)
-        self._tree_cache = {}
-        self._tree_meta_cache = {}
-
     @classmethod
     def is_installed(cls):
         try:
             proc = _vc.popen([cls.CMD, '--version'])
             assert proc.read().startswith('git version')
             return True
-        except:
+        except Exception:
             return False
 
     @classmethod
     def check_repo_root(self, location):
         # Check exists instead of isdir, since .git might be a git-file
         return os.path.exists(os.path.join(location, self.VC_DIR))
-
-    def commit_command(self, message):
-        return [self.CMD, "commit", "-m", message]
-
-    # Prototyping VC interface version 2
-
-    def update_actions_for_paths(self, path_states, actions):
-        states = path_states.values()
-
-        actions["VcCompare"] = bool(path_states)
-        # TODO: We can't disable this for NORMAL, because folders don't
-        # inherit any state from their children, but committing a folder with
-        # modified children is expected behaviour.
-        actions["VcCommit"] = all(s not in (
-            _vc.STATE_NONE, _vc.STATE_IGNORED) for s in states)
-
-        actions["VcUpdate"] = True
-        # TODO: We can't do this; this shells out for each selection change...
-        # actions["VcPush"] = bool(self.get_commits_to_push())
-        actions["VcPush"] = True
-
-        actions["VcAdd"] = all(s not in (
-            _vc.STATE_NORMAL, _vc.STATE_REMOVED) for s in states)
-        actions["VcResolved"] = all(s == _vc.STATE_CONFLICT for s in states)
-        actions["VcRemove"] = (all(s not in (
-            _vc.STATE_NONE, _vc.STATE_IGNORED,
-            _vc.STATE_REMOVED) for s in states) and
-            self.root not in path_states.keys())
-        actions["VcRevert"] = all(s not in (
-            _vc.STATE_NONE, _vc.STATE_NORMAL,
-            _vc.STATE_IGNORED) for s in states)
 
     def get_commits_to_push_summary(self):
         branch_refs = self.get_commits_to_push()
@@ -138,11 +100,15 @@ class Vc(_vc.CachedVc):
             label = ""
         return label
 
+    def run(self, *args):
+        cmd = (self.CMD,) + args
+        return subprocess.Popen(cmd, cwd=self.location, stdout=subprocess.PIPE)
+
     def get_commits_to_push(self):
-        proc = _vc.popen([self.CMD, "for-each-ref",
-                          "--format=%(refname:short) %(upstream:short)",
-                          "refs/heads"], cwd=self.location)
-        branch_remotes = proc.read().split("\n")[:-1]
+        proc = self.run(
+            "for-each-ref", "--format=%(refname:short) %(upstream:short)",
+            "refs/heads")
+        branch_remotes = proc.stdout.read().split("\n")[:-1]
 
         branch_revisions = {}
         for line in branch_remotes:
@@ -151,9 +117,8 @@ class Vc(_vc.CachedVc):
             except ValueError:
                 continue
 
-            proc = _vc.popen([self.CMD, "rev-list", branch, "^" + remote],
-                             cwd=self.location)
-            revisions = proc.read().split("\n")[:-1]
+            proc = self.run("rev-list", branch, "^" + remote)
+            revisions = proc.stdout.read().split("\n")[:-1]
             branch_revisions[branch] = revisions
         return branch_revisions
 
@@ -180,7 +145,11 @@ class Vc(_vc.CachedVc):
                 (l for l in message.splitlines() if not l.startswith("#")))
         return None
 
-    def update(self, runner, files):
+    def commit(self, runner, files, message):
+        command = [self.CMD, 'commit', '-m', message]
+        runner(command, files, refresh=True, working_dir=self.root)
+
+    def update(self, runner):
         command = [self.CMD, 'pull']
         runner(command, [], refresh=True, working_dir=self.root)
 
@@ -267,59 +236,40 @@ class Vc(_vc.CachedVc):
         # appears to be correct under the default git bash shell however.
         return not _vc.call([cls.CMD, "branch"], cwd=path)
 
-    def get_working_directory(self, workdir):
-        if workdir.startswith("/"):
-            return self.root
-        else:
-            return ''
-
     def _get_modified_files(self, path):
-        # Update the index before getting status, otherwise we could
-        # be reading stale status information
-        _vc.call([self.CMD, "update-index", "--refresh"],
-                 cwd=self.location)
+        # Update the index to avoid reading stale status information
+        proc = self.run("update-index", "--refresh")
 
-        # Get the status of files that are different in the "index" vs
-        # the HEAD of the git repository
-        proc = _vc.popen(
-            [self.CMD, "diff-index", "--cached", "HEAD", "--relative", path],
-            cwd=self.location)
-        entries = proc.read().split("\n")[:-1]
+        # Get status differences between the index and the repo HEAD
+        proc = self.run("diff-index", "--cached", "HEAD", "--relative", path)
+        entries = proc.stdout.read().split("\n")[:-1]
 
-        # Get the status of files that are different in the "index" vs
-        # the files on disk
-        proc = _vc.popen(
-            [self.CMD, "diff-files", "-0", "--relative", path],
-            cwd=self.location)
-        entries += (proc.read().split("\n")[:-1])
+        # Get status differences between the index and files-on-disk
+        proc = self.run("diff-files", "-0", "--relative", path)
+        entries += proc.stdout.read().split("\n")[:-1]
 
-        # An unmerged file or a file that has been modified, added to
-        # git's index, then modified again would result in the file
-        # showing up in both the output of "diff-files" and
-        # "diff-index".  The following command removes duplicate
-        # file entries.
-        entries = list(set(entries))
+        # Files can show up in both lists, e.g., if a file is modified,
+        # added to the index and changed again, so we uniquify.
+        # TODO: This doesn't work as expected for many cases; we should
+        # pick the last entry (diff to disk) based on filename.
+        return list(set(entries))
 
-        return entries
-
-    def _update_tree_state_cache(self, path, tree_state):
-        """ Update the state of the file(s) at tree_state['path'] """
+    def _update_tree_state_cache(self, path):
+        """ Update the state of the file(s) at self._tree_cache['path'] """
         while 1:
             try:
                 entries = self._get_modified_files(path)
 
                 # Identify ignored files and folders
-                proc = _vc.popen([self.CMD, "ls-files", "--others",
-                                  "--ignored", "--exclude-standard",
-                                  "--directory", path],
-                                 cwd=self.location)
-                ignored_entries = proc.read().split("\n")[:-1]
+                proc = self.run(
+                    "ls-files", "--others", "--ignored", "--exclude-standard",
+                    "--directory", path)
+                ignored_entries = proc.stdout.read().split("\n")[:-1]
 
                 # Identify unversioned files
-                proc = _vc.popen([self.CMD, "ls-files", "--others",
-                                  "--exclude-standard", path],
-                                 cwd=self.location)
-                unversioned_entries = proc.read().split("\n")[:-1]
+                proc = self.run(
+                    "ls-files", "--others", "--exclude-standard", path)
+                unversioned_entries = proc.stdout.read().split("\n")[:-1]
 
                 break
             except OSError as e:
@@ -341,56 +291,25 @@ class Vc(_vc.CachedVc):
 
         if len(entries) == 0 and os.path.isfile(path):
             # If we're just updating a single file there's a chance that it
-            # was it was previously modified, and now has been edited
-            # so that it is un-modified.  This will result in an empty
-            # 'entries' list, and tree_state['path'] will still contain stale
-            # data.  When this corner case occurs we force tree_state['path']
+            # was it was previously modified, and now has been edited so that
+            # it is un-modified.  This will result in an empty 'entries' list,
+            # and self._tree_cache['path'] will still contain stale data.
+            # When this corner case occurs we force self._tree_cache['path']
             # to STATE_NORMAL.
-            tree_state[get_real_path(path)] = _vc.STATE_NORMAL
+            self._tree_cache[get_real_path(path)] = _vc.STATE_NORMAL
         else:
             for entry in entries:
                 columns = self.DIFF_RE.search(entry).groups()
                 old_mode, new_mode, statekey, path = columns
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
-                tree_state[get_real_path(path)] = state
+                self._tree_cache[get_real_path(path)] = state
                 if old_mode != new_mode:
                     msg = _("Mode changed from %s to %s" %
                             (old_mode, new_mode))
                     self._tree_meta_cache[path] = msg
 
             for path in ignored_entries:
-                tree_state[get_real_path(path)] = _vc.STATE_IGNORED
+                self._tree_cache[get_real_path(path)] = _vc.STATE_IGNORED
 
             for path in unversioned_entries:
-                tree_state[get_real_path(path)] = _vc.STATE_NONE
-
-    def _lookup_tree_cache(self, rootdir):
-        # Get a list of all files in rootdir, as well as their status
-        tree_state = {}
-        self._update_tree_state_cache("./", tree_state)
-        return tree_state
-
-    def update_file_state(self, path):
-        tree_state = self._get_tree_cache(os.path.dirname(path))
-        self._update_tree_state_cache(path, tree_state)
-
-    def _get_dirsandfiles(self, directory, dirs, files):
-
-        tree = self._get_tree_cache(directory)
-
-        retfiles = []
-        retdirs = []
-        for name, path in files:
-            state = tree.get(path, _vc.STATE_NORMAL)
-            meta = self._tree_meta_cache.get(path, "")
-            retfiles.append(_vc.File(path, name, state, options=meta))
-        for name, path in dirs:
-            state = tree.get(path, _vc.STATE_NORMAL)
-            retdirs.append(_vc.Dir(path, name, state))
-        for path, state in tree.items():
-            # removed files are not in the filesystem, so must be added here
-            if state in (_vc.STATE_REMOVED, _vc.STATE_MISSING):
-                folder, name = os.path.split(path)
-                if folder == directory:
-                    retfiles.append(_vc.File(path, name, state))
-        return retdirs, retfiles
+                self._tree_cache[get_real_path(path)] = _vc.STATE_NONE

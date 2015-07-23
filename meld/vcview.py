@@ -1,7 +1,7 @@
 # coding=UTF-8
 
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2010-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2015 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,28 +33,20 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
 
-from . import melddoc
-from . import misc
-from . import recent
-from . import tree
-from . import vc
-from .ui import emblemcellrenderer
-from .ui import gnomeglade
-from .ui import vcdialogs
+from meld import melddoc
+from meld import misc
+from meld import recent
+from meld import tree
+from meld import vc
+from meld.ui import gnomeglade
+from meld.ui import vcdialogs
 
 from meld.conf import _
 from meld.settings import settings, bind_settings
 from meld.vc import _null
+from meld.vc._vc import Entry
 
 log = logging.getLogger(__name__)
-
-
-def _commonprefix(files):
-    if len(files) != 1:
-        workdir = misc.commonprefix(files)
-    else:
-        workdir = os.path.dirname(files[0]) or "."
-    return workdir
 
 
 def cleanup_temp():
@@ -118,8 +110,8 @@ class ConsoleStream(object):
         self.textview.scroll_mark_onscreen(self.end_mark)
 
 
-COL_LOCATION, COL_STATUS, COL_REVISION, COL_OPTIONS, COL_END = \
-    list(range(tree.COL_END, tree.COL_END + 5))
+COL_LOCATION, COL_STATUS, COL_OPTIONS, COL_END = \
+    list(range(tree.COL_END, tree.COL_END + 4))
 
 
 class VcTreeStore(tree.DiffTreeStore):
@@ -129,15 +121,6 @@ class VcTreeStore(tree.DiffTreeStore):
     def get_file_path(self, it):
         # Use instead of value_path; does not incorrectly decode
         return self.get_value(it, self.column_index(tree.COL_PATH, 0))
-
-
-################################################################################
-# filters
-################################################################################
-entry_modified = lambda x: (x.state >= tree.STATE_NEW) or (x.isdir and (x.state > tree.STATE_NONE))
-entry_normal   = lambda x: (x.state == tree.STATE_NORMAL)
-entry_nonvc    = lambda x: (x.state == tree.STATE_NONE) or (x.isdir and (x.state > tree.STATE_IGNORED))
-entry_ignored  = lambda x: (x.state == tree.STATE_IGNORED) or x.isdir
 
 
 class VcView(melddoc.MeldDoc, gnomeglade.Component):
@@ -158,17 +141,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     left_is_local = GObject.property(type=bool, default=False)
     merge_file_order = GObject.property(type=str, default="local-merge-remote")
 
-    # Map action names to VC commands and required arguments list
-    action_vc_cmds_map = {
-        "VcCommit": ("commit_command", ("",)),
-        "VcUpdate": ("update_command", ()),
-        "VcPush": ("push", (lambda *args, **kwargs: None, )),
-        "VcAdd": ("add_command", ()),
-        "VcResolved": ("resolved_command", ()),
-        "VcRemove": ("remove_command", ()),
-        "VcRevert": ("revert_command", ()),
-    }
-
     # Map for inter-tab command() calls
     command_map = {
         'resolve': 'resolve',
@@ -176,10 +148,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     state_actions = {
         "flatten": ("VcFlatten", None),
-        "modified": ("VcShowModified", entry_modified),
-        "normal": ("VcShowNormal", entry_normal),
-        "unknown": ("VcShowNonVC", entry_nonvc),
-        "ignored": ("VcShowIgnored", entry_ignored),
+        "modified": ("VcShowModified", Entry.is_modified),
+        "normal": ("VcShowNormal", Entry.is_normal),
+        "unknown": ("VcShowNonVC", Entry.is_nonvc),
+        "ignored": ("VcShowIgnored", Entry.is_ignored),
     }
 
     file_encoding = sys.getfilesystemencoding()
@@ -202,62 +174,35 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.widget.connect("style-updated", self.model.on_style_updated)
         self.model.on_style_updated(self.widget)
         self.treeview.set_model(self.model)
-        selection = self.treeview.get_selection()
-        selection.set_mode(Gtk.SelectionMode.MULTIPLE)
-        selection.connect("changed", self.on_treeview_selection_changed)
-        self.treeview.set_headers_visible(1)
+        self.treeview.get_selection().connect(
+            "changed", self.on_treeview_selection_changed)
         self.treeview.set_search_equal_func(
             self.model.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
 
-        self.column_name_map = {}
-        col_index = self.model.column_index
-        column = Gtk.TreeViewColumn(_("Name"))
-        column.set_resizable(True)
-        renicon = emblemcellrenderer.EmblemCellRenderer()
-        column.pack_start(renicon, False)
-        column.set_attributes(renicon,
-                              icon_name=col_index(tree.COL_ICON, 0),
-                              icon_tint=col_index(tree.COL_TINT, 0))
-        rentext = Gtk.CellRendererText()
-        column.pack_start(rentext, True)
-        column.set_attributes(rentext,
-                              text=col_index(tree.COL_TEXT, 0),
-                              foreground=col_index(tree.COL_FG, 0),
-                              style=col_index(tree.COL_STYLE, 0),
-                              weight=col_index(tree.COL_WEIGHT, 0),
-                              strikethrough=col_index(tree.COL_STRIKE, 0))
-        column_index = self.treeview.append_column(column) - 1
-        self.column_name_map[vc.DATA_NAME] = column_index
-
-        def addCol(name, num, data_name=None):
-            column = Gtk.TreeViewColumn(name)
-            column.set_resizable(True)
-            rentext = Gtk.CellRendererText()
-            column.pack_start(rentext, True)
-            column.set_attributes(rentext,
-                                  markup=self.model.column_index(num, 0))
-            column_index = self.treeview.append_column(column) - 1
-            if data_name:
-                self.column_name_map[data_name] = column_index
-            return column
-
-        self.treeview_column_location = addCol(_("Location"), COL_LOCATION)
-        addCol(_("Status"), COL_STATUS, vc.DATA_STATE)
-        addCol(_("Revision"), COL_REVISION, vc.DATA_REVISION)
-        addCol(_("Options"), COL_OPTIONS, vc.DATA_OPTIONS)
+        self.name_column.set_attributes(
+            self.emblem_renderer,
+            icon_name=tree.COL_ICON,
+            icon_tint=tree.COL_TINT)
+        self.name_column.set_attributes(
+            self.name_renderer,
+            text=tree.COL_TEXT,
+            foreground=tree.COL_FG,
+            style=tree.COL_STYLE,
+            weight=tree.COL_WEIGHT,
+            strikethrough=tree.COL_STRIKE)
+        self.location_column.set_attributes(
+            self.location_renderer, markup=COL_LOCATION)
+        self.status_column.set_attributes(
+            self.status_renderer, markup=COL_STATUS)
+        self.extra_column.set_attributes(
+            self.extra_renderer, markup=COL_OPTIONS)
+        self.location_column.bind_property(
+            'visible', self.actiongroup.get_action("VcFlatten"), 'active')
 
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
-        self.treeview_column_location.set_visible(self.actiongroup.get_action("VcFlatten").get_active())
         self.vc = None
-        self.valid_vc_actions = tuple()
-
-        cell = Gtk.CellRendererText()
-        self.combobox_vcs.pack_start(cell, False)
-        self.combobox_vcs.add_attribute(cell, 'text', 0)
-        self.combobox_vcs.add_attribute(cell, 'sensitive', 2)
-        self.combobox_vcs.lock = False
 
         settings.bind('vc-console-visible',
                       self.actiongroup.get_action('VcConsoleVisible'),
@@ -267,12 +212,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         settings.bind('vc-console-pane-position', self.vc_console_vpaned,
                       'position', Gio.SettingsBindFlags.DEFAULT)
 
-        self.state_filters = []
-        for s in self.state_actions:
-            if s in self.props.status_filters:
-                action_name = self.state_actions[s][0]
-                self.state_filters.append(s)
-                self.actiongroup.get_action(action_name).set_active(True)
+        for s in self.props.status_filters:
+            if s in self.state_actions:
+                self.actiongroup.get_action(
+                    self.state_actions[s][0]).set_active(True)
 
     def _set_external_action_sensitivity(self, focused):
         try:
@@ -290,103 +233,68 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._set_external_action_sensitivity(False)
         super(VcView, self).on_container_switch_out_event(ui)
 
-    def update_visible_columns(self):
-        for data_id in self.column_name_map:
-            col = self.treeview.get_column(self.column_name_map[data_id])
-            col.set_visible(data_id in self.vc.VC_COLUMNS)
-
-    def update_actions_sensitivity(self):
-        """Disable actions that use not implemented VC plugin methods"""
-        valid_vc_actions = ["VcDeleteLocally"]
-        for action_name, (meth_name, args) in self.action_vc_cmds_map.items():
-            action = self.actiongroup.get_action(action_name)
-            try:
-                getattr(self.vc, meth_name)(*args)
-                action.props.sensitive = True
-                valid_vc_actions.append(action_name)
-            except NotImplementedError:
-                action.props.sensitive = False
-        self.valid_vc_actions = tuple(valid_vc_actions)
-
-    def choose_vc(self, location):
+    def populate_vcs_for_location(self, location):
         """Display VC plugin(s) that can handle the location"""
-        self.combobox_vcs.lock = True
         vcs_model = self.combobox_vcs.get_model()
         vcs_model.clear()
-        default_active = -1
-        valid_vcs = []
-        location = os.path.abspath(location or ".")
 
         # VC systems work at the directory level, so make sure we're checking
         # for VC support there instead of on a specific file.
+        location = os.path.abspath(location or ".")
         if os.path.isfile(location):
             location = os.path.dirname(location)
-        vcs = vc.get_vcs(location)
-        # Try to keep the same VC plugin active on refresh()
-        for idx, avc in enumerate(vcs):
-            # See if the necessary version control command exists.  If so,
-            # make sure what we're diffing is a valid respository.  If either
-            # check fails don't let the user select the that version control
-            # tool and display a basic error message in the drop-down menu.
-            err_str = ""
+
+        for avc in vc.get_vcs(location):
+            err_str = ''
+            vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
 
             if not avc.is_installed():
-                # TRANSLATORS: this is an error message when a version control
-                # application isn't installed or can't be found
-                err_str = _("%s not installed" % avc.CMD)
+                # Translators: This error message is shown when a version
+                # control binary isn't installed.
+                err_str = _("%(name)s (%(cmd)s not installed)")
             elif not avc.valid_repo(location):
-                # TRANSLATORS: this is an error message when a version
-                # controlled repository is invalid or corrupted
-                err_str = _("Invalid repository")
-            else:
-                valid_vcs.append(idx)
-                if (self.vc is not None and
-                        self.vc.__class__ == avc.__class__):
-                    default_active = idx
+                # Translators: This error message is shown when a version
+                # controlled repository is invalid.
+                err_str = _("%(name)s (Invalid repository)")
 
             if err_str:
-                vcs_model.append(
-                    [_("%s (%s)") % (avc.NAME, err_str), avc, False])
-            else:
-                name = avc.NAME or _("None")
-                vcs_model.append([name, avc(location), True])
+                vcs_model.append([err_str % vc_details, avc, False])
+                continue
+
+            vcs_model.append([avc.NAME, avc(location), True])
+
+        valid_vcs = [(i, r[1].NAME) for i, r in enumerate(vcs_model) if r[2]]
+        default_active = min(valid_vcs)[0] if valid_vcs else 0
+
+        # Keep the same VC plugin active on refresh, otherwise use the first
+        current_vc_name = self.vc.NAME if self.vc else None
+        same_vc = [i for i, name in valid_vcs if name == current_vc_name]
+        if same_vc:
+            default_active = same_vc[0]
 
         if not valid_vcs:
             # If we didn't get any valid vcs then fallback to null
             null_vcs = _null.Vc(location)
-            vcs.append(null_vcs)
-            vcs_model.insert(
-                0, [_("None"), null_vcs, True])
-            default_active = 0
-
-        if default_active == -1:
-            if valid_vcs:
-                default_active = min(valid_vcs)
-            else:
-                default_active = 0
-
-        # If we only have the null VC, give a better error message.
-        if (len(vcs) == 1 and not vcs[0].CMD) or (len(valid_vcs) == 0):
+            vcs_model.insert(0, [null_vcs.NAME, null_vcs, True])
             tooltip = _("No valid version control system found in this folder")
-        elif len(vcs) == 1:
+        elif len(vcs_model) == 1:
             tooltip = _("Only one version control system found in this folder")
         else:
             tooltip = _("Choose which version control system to use")
 
         self.combobox_vcs.set_tooltip_text(tooltip)
-        self.combobox_vcs.set_sensitive(len(vcs) > 1)
-        self.combobox_vcs.lock = False
+        self.combobox_vcs.set_sensitive(len(vcs_model) > 1)
         self.combobox_vcs.set_active(default_active)
 
-    def on_vc_change(self, cb):
-        if not cb.lock:
-            self.vc = cb.get_model()[cb.get_active_iter()][1]
-            self._set_location(self.vc.location)
-            self.update_actions_sensitivity()
-            self.update_visible_columns()
+    def on_vc_change(self, combobox_vcs):
+        active_iter = combobox_vcs.get_active_iter()
+        if active_iter is None:
+            return
+        self.vc = combobox_vcs.get_model()[active_iter][1]
+        self._set_location(self.vc.location)
 
     def set_location(self, location):
-        self.choose_vc(location)
+        self.populate_vcs_for_location(location)
 
     def _set_location(self, location):
         self.location = location
@@ -400,21 +308,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.recompute_label()
         self.scheduler.remove_all_tasks()
 
-        # If the user is just diffing a file (ie not a directory), there's no
-        # need to scan the rest of the repository
-        if os.path.isdir(self.vc.location):
-            root = self.model.get_iter_first()
+        # If the user is just diffing a file (i.e., not a directory),
+        # there's no need to scan the rest of the repository.
+        if not os.path.isdir(self.vc.location):
+            return
 
-            try:
-                col = self.model.column_index(COL_OPTIONS, 0)
-                self.model.set_value(root, col,
-                                     self.vc.get_commits_to_push_summary())
-            except NotImplementedError:
-                pass
+        root = self.model.get_iter_first()
 
-            self.scheduler.add_task(self._search_recursively_iter(root))
-            self.scheduler.add_task(self.on_treeview_selection_changed)
-            self.scheduler.add_task(self.on_treeview_cursor_changed)
+        try:
+            self.model.set_value(
+                root, COL_OPTIONS, self.vc.get_commits_to_push_summary())
+        except NotImplementedError:
+            pass
+
+        self.scheduler.add_task(self.vc.refresh_vc_state)
+        self.scheduler.add_task(self._search_recursively_iter(root))
+        self.scheduler.add_task(self.on_treeview_selection_changed)
+        self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def get_comparison(self):
         return recent.TYPE_VC, [self.location]
@@ -422,23 +332,21 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def recompute_label(self):
         location = self.display_path(self.location)
         self.label_text = os.path.basename(location)
-        # TRANSLATORS: This is the location of the directory the user is diffing
+        # TRANSLATORS: This is the location of the directory being viewed
         self.tooltip_text = _("%s: %s") % (_("Location"), location)
         self.label_changed()
 
     def _search_recursively_iter(self, iterstart):
         rootname = self.model.get_file_path(iterstart)
-        prefixlen = len(rootname) + 1
         display_prefix = len(self.display_path(rootname)) + 1
         symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
 
-        flattened = self.actiongroup.get_action("VcFlatten").get_active()
-        active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        filters = [a[1] for a in self.state_actions.values() if
-                   active_action(a[0]) and a[1]]
+        flattened = 'flatten' in self.props.status_filters
+        active_actions = [
+            self.state_actions.get(k) for k in self.props.status_filters]
+        filters = [a[1] for a in active_actions if a and a[1]]
 
-        self.vc.cache_inventory(rootname)
         while todo:
             # This needs to happen sorted and depth-first in order for our row
             # references to remain valid while we traverse.
@@ -447,10 +355,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             it = self.model.get_iter(treepath)
             yield _("Scanning %s") % self.display_path(path)[display_prefix:]
 
-            entries = self.vc.listdir(path)
+            entries = self.vc.get_entries(path)
             entries = [e for e in entries if any(f(e) for f in filters)]
             for e in entries:
-                if e.isdir and e.state != tree.STATE_REMOVED:
+                if e.isdir and e.is_present():
                     try:
                         st = os.lstat(e.path)
                     # Covers certain unreadable symlink cases; see bgo#585895
@@ -471,23 +379,22 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                             # in flattened mode.
                             if e.state != tree.STATE_NORMAL:
                                 child = self.model.add_entries(it, [e.path])
-                                self._update_item_state(child, e, path[prefixlen:])
+                                self._update_item_state(child, e)
                             todo.append((Gtk.TreePath.new_first(), e.path))
                         continue
 
                 child = self.model.add_entries(it, [e.path])
                 if e.isdir and e.state != tree.STATE_IGNORED:
                     todo.append((self.model.get_path(child), e.path))
-                self._update_item_state(child, e, path[prefixlen:])
+                self._update_item_state(child, e)
 
-            if flattened:
-                root = Gtk.TreePath.new_first()
-                self.treeview.expand_row(Gtk.TreePath(root), False)
-            else:
+            if not flattened:
                 if not entries:
                     self.model.add_empty(it, _("(Empty)"))
-                if any(e.state != tree.STATE_NORMAL for e in entries):
+                elif any(e.state != tree.STATE_NORMAL for e in entries):
                     self.treeview.expand_to_path(treepath)
+
+        self.treeview.expand_row(Gtk.TreePath.new_first(), False)
 
     # TODO: This doesn't fire when the user selects a shortcut folder
     def on_fileentry_file_set(self, fileentry):
@@ -517,7 +424,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("create-diff", [path], {})
             return
 
-        left_is_local = self.props.left_is_local
         basename = self.display_path(os.path.basename(path))
         meta = {
             'parent': self,
@@ -556,7 +462,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             remote_label = _(u"%s — repository") % basename
             comp_path = self.vc.get_path_for_repo_file(path)
             temps = [comp_path]
-            if left_is_local:
+            if self.props.left_is_local:
                 diffs = [path, comp_path]
                 meta['labels'] = (None, remote_label)
                 meta['tablabel'] = _(u"%s (working, repository)") % basename
@@ -573,13 +479,22 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
         self.emit("create-diff", diffs, kwargs)
 
+    def do_popup_treeview_menu(self, widget, event):
+        if event:
+            button = event.button
+            time = event.time
+        else:
+            button = 0
+            time = Gtk.get_current_event_time()
+        self.popup_menu.popup(None, None, None, None, button, time)
+
     def on_treeview_popup_menu(self, treeview):
-        time = Gtk.get_current_event_time()
-        self.popup_menu.popup(None, None, None, None, 0, time)
+        self.do_popup_treeview_menu(treeview, None)
         return True
 
     def on_button_press_event(self, treeview, event):
-        if event.button == 3:
+        if (event.triggers_context_menu() and
+                event.type == Gdk.EventType.BUTTON_PRESS):
             path = treeview.get_path_at_pos(int(event.x), int(event.y))
             if path is None:
                 return False
@@ -591,58 +506,43 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 selection.select_path(path[0])
                 treeview.set_cursor(path[0])
 
-            self.popup_menu.popup(None, None, None, None, event.button,
-                                  event.time)
+            self.do_popup_treeview_menu(treeview, event)
             return True
         return False
 
-    def on_button_flatten_toggled(self, button):
-        action = self.actiongroup.get_action("VcFlatten")
-        self.treeview_column_location.set_visible(action.get_active())
-        self.on_filter_state_toggled(button)
-
     def on_filter_state_toggled(self, button):
         active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        active_filters = [a for a in self.state_actions if
-                          active_action(self.state_actions[a][0])]
+        active_filters = [
+            k for k, v in self.state_actions.items() if active_action(v[0])]
 
-        if set(active_filters) == set(self.state_filters):
+        if set(active_filters) == set(self.props.status_filters):
             return
 
-        self.state_filters = active_filters
         self.props.status_filters = active_filters
         self.refresh()
 
     def on_treeview_selection_changed(self, selection=None):
-
-        def set_sensitive(action, sensitive):
-            self.actiongroup.get_action(action).set_sensitive(sensitive)
-
         if selection is None:
             selection = self.treeview.get_selection()
         model, rows = selection.get_selected_rows()
-        if hasattr(self.vc, 'update_actions_for_paths'):
-            paths = [self.model.get_file_path(model.get_iter(r)) for r in rows]
-            states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
-            action_sensitivity = {
-                "VcCompare": False,
-                "VcCommit": False,
-                "VcUpdate": False,
-                "VcPush": False,
-                "VcAdd": False,
-                "VcResolved": False,
-                "VcRemove": False,
-                "VcRevert": False,
-                "VcDeleteLocally": bool(paths) and self.vc.root not in paths,
-            }
-            path_states = dict(zip(paths, states))
-            self.vc.update_actions_for_paths(path_states, action_sensitivity)
-            for action, sensitivity in action_sensitivity.items():
-                set_sensitive(action, sensitivity)
-        else:
-            have_selection = bool(rows)
-            for action in self.valid_vc_actions:
-                set_sensitive(action, have_selection)
+        paths = [self.model.get_file_path(model.get_iter(r)) for r in rows]
+        states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
+        path_states = dict(zip(paths, states))
+
+        valid_actions = self.vc.get_valid_actions(path_states)
+        action_sensitivity = {
+            "VcCompare": 'compare' in valid_actions,
+            "VcCommit": 'commit' in valid_actions,
+            "VcUpdate": 'update' in valid_actions,
+            "VcPush": 'push' in valid_actions,
+            "VcAdd": 'add' in valid_actions,
+            "VcResolved": 'resolve' in valid_actions,
+            "VcRemove": 'remove' in valid_actions,
+            "VcRevert": 'revert' in valid_actions,
+            "VcDeleteLocally": bool(paths) and self.vc.root not in paths,
+        }
+        for action, sensitivity in action_sensitivity.items():
+            self.actiongroup.get_action(action).set_sensitive(sensitivity)
 
     def _get_selected_files(self):
         model, rows = self.treeview.get_selection().get_selected_rows()
@@ -650,9 +550,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         # Remove empty entries and trailing slashes
         return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
 
-    def _command_iter(self, command, files, refresh, working_dir=None):
-        """Run 'command' on 'files'. Return a tuple of the directory the
-           command was executed in and the output of the command.
+    def _command_iter(self, command, files, refresh, working_dir):
+        """An iterable that runs a VC command on a set of files
+
+        This method is intended to be used as a scheduled task, with
+        standard out and error output displayed in this view's
+        consolestream.
         """
 
         def shelljoin(command):
@@ -660,90 +563,69 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 return '"%s"' % s if len(s.split()) > 1 else s
             return " ".join(quote(tok) for tok in command)
 
-        msg = shelljoin(command)
-        yield "[%s] %s" % (self.label_text, msg.replace("\n", "\t"))
-        def relpath(pbase, p):
-            kill = 0
-            if len(pbase) and p.startswith(pbase):
-                kill = len(pbase) + 1
-            return p[kill:] or "."
-        if working_dir:
-            workdir = self.vc.get_working_directory(working_dir)
-        elif len(files) == 1 and os.path.isdir(files[0]):
-            workdir = self.vc.get_working_directory(files[0])
-        else:
-            workdir = self.vc.get_working_directory(_commonprefix(files))
-        files = [relpath(workdir, f) for f in files]
-        r = None
-        self.consolestream.command(shelljoin(command + files) + " (in %s)\n" % workdir)
-        readiter = misc.read_pipe_iter(command + files, self.consolestream,
-                                       workdir=workdir)
+        files = [os.path.relpath(f, working_dir) for f in files]
+        msg = shelljoin(command + files) + " (in %s)\n" % working_dir
+        self.consolestream.command(msg)
+        readiter = misc.read_pipe_iter(
+            command + files, workdir=working_dir,
+            errorstream=self.consolestream)
         try:
-            while r is None:
-                r = next(readiter)
-                self.consolestream.output(r)
+            result = next(readiter)
+            while not result:
                 yield 1
+                result = next(readiter)
         except IOError as err:
             misc.error_dialog(
                 "Error running command",
                 "While running '%s'\nError: %s" % (msg, err))
-        self.consolestream.output("\n")
+            result = (1, "")
 
-        returncode = next(readiter)
+        returncode, output = result
+        self.consolestream.output(output + "\n")
+
         if returncode:
             self.console_vbox.show()
 
         if refresh:
-            self.refresh_partial(workdir)
-        yield workdir, r
+            self.refresh_partial(working_dir)
 
     def has_command(self, command):
-        # Because of the way we've chosen to implement the newer command API,
-        # it's very very hard to determine whether a plugin implements a call
-        # at this point. We're using whether a plugin has been updated to the
-        # new API as a proxy for understanding these commands, since right now
-        # that happens to work... this is bad.
-        uses_new_api = hasattr(self.vc, 'update_actions_for_paths')
-        return uses_new_api and command in self.command_map
+        vc_command = self.command_map.get(command)
+        return vc_command and hasattr(self.vc, vc_command)
 
     def command(self, command, files):
         if not self.has_command(command):
             log.error("Couldn't understand command %s", command)
+            return
 
         if not isinstance(files, list):
             log.error("Invalid files argument to '%s': %r", command, files)
+            return
 
         command = getattr(self.vc, self.command_map[command])
-        command(self._command, files)
+        command(self.runner, files)
 
-    def _command(self, command, files, refresh=1, working_dir=None):
-        """Run 'command' on 'files'.
-        """
-        self.scheduler.add_task(self._command_iter(command, files, refresh,
-                                                   working_dir))
-
-    def _command_on_selected(self, command, refresh=1):
-        files = self._get_selected_files()
-        if len(files):
-            self._command(command, files, refresh)
+    def runner(self, command, files, refresh, working_dir):
+        """Schedule a version control command to run as an idle task"""
+        self.scheduler.add_task(
+            self._command_iter(command, files, refresh, working_dir))
 
     def on_button_update_clicked(self, obj):
-        try:
-            self.vc.update(self._command, self._get_selected_files())
-        except NotImplementedError:
-            self._command_on_selected(self.vc.update_command())
+        self.vc.update(self.runner)
 
     def on_button_push_clicked(self, obj):
-        vcdialogs.PushDialog(self).run()
+        response = vcdialogs.PushDialog(self).run()
+        if response == Gtk.ResponseType.OK:
+            self.vc.push(self.runner)
 
     def on_button_commit_clicked(self, obj):
-        vcdialogs.CommitDialog(self).run()
+        response, commit_msg = vcdialogs.CommitDialog(self).run()
+        if response == Gtk.ResponseType.OK:
+            self.vc.commit(
+                self.runner, self._get_selected_files(), commit_msg)
 
     def on_button_add_clicked(self, obj):
-        try:
-            self.vc.add(self._command, self._get_selected_files())
-        except NotImplementedError:
-            self._command_on_selected(self.vc.add_command())
+        self.vc.add(self.runner, self._get_selected_files())
 
     def on_button_remove_clicked(self, obj):
         selected = self._get_selected_files()
@@ -751,7 +633,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             # TODO: Improve and reuse this dialog for the non-VC delete action
             dialog = Gtk.MessageDialog(
                 parent=self.widget.get_toplevel(),
-                flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                flags=(Gtk.DialogFlags.MODAL |
+                       Gtk.DialogFlags.DESTROY_WITH_PARENT),
                 type=Gtk.MessageType.WARNING,
                 message_format=_("Remove folder and all its files?"))
             dialog.format_secondary_text(
@@ -765,22 +648,13 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if response != Gtk.ResponseType.OK:
                 return
 
-        try:
-            self.vc.remove(self._command, selected)
-        except NotImplementedError:
-            self._command_on_selected(self.vc.remove_command())
+        self.vc.remove(self.runner, selected)
 
     def on_button_resolved_clicked(self, obj):
-        try:
-            self.vc.resolve(self._command, self._get_selected_files())
-        except NotImplementedError:
-            self._command_on_selected(self.vc.resolved_command())
+        self.vc.resolve(self.runner, self._get_selected_files())
 
     def on_button_revert_clicked(self, obj):
-        try:
-            self.vc.revert(self._command, self._get_selected_files())
-        except NotImplementedError:
-            self._command_on_selected(self.vc.revert_command())
+        self.vc.revert(self.runner, self._get_selected_files())
 
     def on_button_delete_clicked(self, obj):
         files = self._get_selected_files()
@@ -790,7 +664,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 gfile.trash(None)
             except GLib.GError as e:
                 misc.error_dialog(_("Error removing %s") % name, str(e))
-        workdir = _commonprefix(files)
+
+        workdir = os.path.dirname(os.path.commonprefix(files))
         self.refresh_partial(workdir)
 
     def on_button_diff_clicked(self, obj):
@@ -802,7 +677,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self._open_files(self._get_selected_files())
 
     def refresh(self):
-        self.set_location(self.model.get_file_path(self.model.get_iter_first()))
+        root = self.model.get_iter_first()
+        if root is None:
+            return
+        self.set_location(self.model.get_file_path(root))
 
     def refresh_partial(self, where):
         if not self.actiongroup.get_action("VcFlatten").get_active():
@@ -810,7 +688,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if it:
                 newiter = self.model.insert_after(None, it)
                 self.model.set_value(
-                    newiter, self.model.column_index(tree.COL_PATH, 0), where)
+                    newiter, tree.COL_PATH, where)
                 self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
                 self.model.remove(it)
                 self.treeview.grab_focus()
@@ -822,29 +700,24 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             # XXX fixme
             self.refresh()
 
-    def _update_item_state(self, it, vcentry, location):
-        e = vcentry
-        self.model.set_path_state(it, 0, e.state, e.isdir)
+    def _update_item_state(self, it, entry):
+        self.model.set_path_state(it, 0, entry.state, entry.isdir)
 
-        def setcol(col, val):
-            self.model.set_value(it, self.model.column_index(col, 0), val)
-        setcol(COL_LOCATION, location)
-        setcol(COL_STATUS, e.get_status())
-        setcol(COL_REVISION, e.rev)
-        setcol(COL_OPTIONS, e.options)
+        location = Gio.File.new_for_path(self.vc.location)
+        parent = Gio.File.new_for_path(entry.path).get_parent()
+        display_location = location.get_relative_path(parent)
+
+        self.model.set_value(it, COL_LOCATION, display_location)
+        self.model.set_value(it, COL_STATUS, entry.get_status())
+        self.model.set_value(it, COL_OPTIONS, entry.options)
 
     def on_file_changed(self, filename):
         it = self.find_iter_by_name(filename)
         if it:
             path = self.model.get_file_path(it)
-            self.vc.update_file_state(path)
-            files = self.vc.lookup_files([], [(os.path.basename(path), path)])[1]
-            for e in files:
-                if e.path == path:
-                    prefixlen = 1 + len(
-                        self.model.get_file_path(self.model.get_iter_first()))
-                    self._update_item_state( it, e, e.parent[prefixlen:])
-                    return
+            self.vc.refresh_vc_state(path)
+            entry = self.vc.get_entry(path)
+            self._update_item_state(it, entry)
 
     def find_iter_by_name(self, name):
         it = self.model.get_iter_first()
@@ -853,7 +726,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             if name == path:
                 return it
             elif name.startswith(path):
-                child = self.model.iter_children( it )
+                child = self.model.iter_children(it)
                 while child:
                     path = self.model.get_file_path(child)
                     if name == path:
@@ -861,7 +734,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                     elif name.startswith(path):
                         break
                     else:
-                        child = self.model.iter_next( child )
+                        child = self.model.iter_next(child)
                 it = child
             else:
                 break
@@ -870,7 +743,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def on_consoleview_populate_popup(self, textview, menu):
         buf = textview.get_buffer()
         clear_cb = lambda *args: buf.delete(*buf.get_bounds())
-        clear_action = Gtk.ImageMenuItem(Gtk.STOCK_CLEAR)
+        clear_action = Gtk.MenuItem.new_with_label(_("Clear"))
         clear_action.connect("activate", clear_cb)
         menu.insert(clear_action, 0)
         menu.insert(Gtk.SeparatorMenuItem(), 1)

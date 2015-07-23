@@ -25,18 +25,8 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.conf import _
-from meld.misc import commonprefix
 from meld.settings import meldsettings, settings
 from meld.ui.gnomeglade import Component
-
-
-# FIXME: Duplication from vcview
-def _commonprefix(files):
-    if len(files) != 1:
-        workdir = commonprefix(files)
-    else:
-        workdir = os.path.dirname(files[0]) or "."
-    return workdir
 
 
 class CommitDialog(GObject.GObject, Component):
@@ -48,7 +38,6 @@ class CommitDialog(GObject.GObject, Component):
     def __init__(self, parent):
         GObject.GObject.__init__(self)
         Component.__init__(self, "vcview.ui", "commitdialog")
-        self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
         selected = parent._get_selected_files()
 
@@ -60,13 +49,13 @@ class CommitDialog(GObject.GObject, Component):
             else:
                 to_commit = ["\t" + _("No files will be committed")]
         except NotImplementedError:
-            topdir = _commonprefix(selected)
+            topdir = os.path.dirname(os.path.commonprefix(selected))
             to_commit = ["\t" + s[len(topdir) + 1:] for s in selected]
         self.changedfiles.set_text("(in %s)\n%s" %
                                    (topdir, "\n".join(to_commit)))
 
         self.textview.modify_font(meldsettings.font)
-        commit_prefill = self.parent.vc.get_commit_message_prefill()
+        commit_prefill = parent.vc.get_commit_message_prefill()
         if commit_prefill:
             buf = self.textview.get_buffer()
             buf.set_text(commit_prefill)
@@ -92,6 +81,7 @@ class CommitDialog(GObject.GObject, Component):
         self.previousentry.set_active(-1)
         self.textview.grab_focus()
         response = self.widget.run()
+        msg = None
         if response == Gtk.ResponseType.OK:
             show_margin = self.textview.get_show_right_margin()
             margin = self.textview.get_right_margin_position()
@@ -101,11 +91,10 @@ class CommitDialog(GObject.GObject, Component):
             if show_margin and self.props.break_commit_message:
                 paragraphs = msg.split("\n\n")
                 msg = "\n\n".join(textwrap.fill(p, margin) for p in paragraphs)
-            self.parent._command_on_selected(
-                self.parent.vc.commit_command(msg))
             if msg.strip():
                 self.previousentry.prepend_history(msg)
         self.widget.destroy()
+        return response, msg
 
     def on_previousentry_activate(self, gentry):
         idx = gentry.get_active()
@@ -119,7 +108,6 @@ class PushDialog(Component):
 
     def __init__(self, parent):
         Component.__init__(self, "vcview.ui", "pushdialog")
-        self.parent = parent
         self.widget.set_transient_for(parent.widget.get_toplevel())
         self.widget.show_all()
 
@@ -128,6 +116,5 @@ class PushDialog(Component):
         # In git, this is probably the parsed output of push --dry-run.
 
         response = self.widget.run()
-        if response == Gtk.ResponseType.OK:
-            self.parent.vc.push(self.parent._command)
         self.widget.destroy()
+        return response

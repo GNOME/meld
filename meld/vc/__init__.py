@@ -1,35 +1,34 @@
-### Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
-### Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
+# -*- coding: utf-8 -*-
+# Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
+# Copyright (C) 2012 Kai Willadsen <kai.willadsen@gmail.com>
 
-### Redistribution and use in source and binary forms, with or without
-### modification, are permitted provided that the following conditions
-### are met:
-###
-### 1. Redistributions of source code must retain the above copyright
-###    notice, this list of conditions and the following disclaimer.
-### 2. Redistributions in binary form must reproduce the above copyright
-###    notice, this list of conditions and the following disclaimer in the
-###    documentation and/or other materials provided with the distribution.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
 
-### THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-### IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-### OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-### IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-### INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-### NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-### DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-### THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-### (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-### THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import importlib
 from . import _null
-from ._vc import DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS
 
 # FIXME: This is a horrible hack to help cx_Freeze pick up these plugins when
 # freezing the distributable package.
-from . import (
-    git, mercurial, bzr, fossil, monotone, darcs, svk, svn, svn_17, cvs)
+from . import git, mercurial, bzr, svn
 
 # Tuple with module name and vc.NAME field, ordered according to best-guess
 # as to which VC a user is likely to want by default in a multiple-VC situation
@@ -37,13 +36,7 @@ vc_names = (
     "git",
     "mercurial",
     "bzr",
-    "fossil",
-    "monotone",
-    "darcs",
-    "svk",
     "svn",
-    "svn_17",
-    "cvs",
 )
 
 _plugins = [importlib.import_module("." + vc, __package__) for vc in vc_names]

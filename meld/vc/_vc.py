@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2010, 2012-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010, 2012-2015 Kai Willadsen <kai.willadsen@gmail.com>
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -26,6 +27,8 @@ import itertools
 import os
 import subprocess
 
+from gi.repository import Gio
+
 from meld.conf import _
 
 # ignored, new, normal, ignored changes,
@@ -46,8 +49,6 @@ CONFLICT_THIS = CONFLICT_LOCAL
 
 conflicts = [_("Merged"), _("Base"), _("Local"), _("Remote")]
 assert len(conflicts) == CONFLICT_MAX
-
-DATA_NAME, DATA_STATE, DATA_REVISION, DATA_OPTIONS = list(range(4))
 
 
 # Lifted from the itertools recipes section
@@ -76,10 +77,14 @@ class Entry(object):
         STATE_NONEXIST: _("Not present"),
     }
 
-    def __init__(self, path, name, state):
+    def __init__(self, path, name, state, isdir, options=None):
         self.path = path
+        self.name = name
         self.state = state
-        self.parent, self.name = os.path.split(path.rstrip("/"))
+        self.isdir = isdir
+        if isinstance(options, list):
+            options = ','.join(options)
+        self.options = options
 
     def __str__(self):
         return "<%s:%s %s>" % (self.__class__.__name__, self.path,
@@ -92,22 +97,27 @@ class Entry(object):
     def get_status(self):
         return self.state_names[self.state]
 
+    def is_present(self):
+        """Should this Entry actually be present on the file system"""
+        return self.state not in (STATE_REMOVED, STATE_MISSING)
 
-class Dir(Entry):
-    def __init__(self, path, name, state, options=None):
-        Entry.__init__(self, path, name, state)
-        self.isdir = 1
-        self.rev = ""
-        self.options = options
+    @staticmethod
+    def is_modified(entry):
+        return entry.state >= STATE_NEW or (
+            entry.isdir and (entry.state > STATE_NONE))
 
+    @staticmethod
+    def is_normal(entry):
+        return entry.state == STATE_NORMAL
 
-class File(Entry):
-    def __init__(self, path, name, state, rev="", options=""):
-        assert path[-1] != "/"
-        Entry.__init__(self, path, name, state)
-        self.isdir = 0
-        self.rev = rev
-        self.options = options
+    @staticmethod
+    def is_nonvc(entry):
+        return entry.state == STATE_NONE or (
+            entry.isdir and (entry.state > STATE_IGNORED))
+
+    @staticmethod
+    def is_ignored(entry):
+        return entry.state == STATE_IGNORED or entry.isdir
 
 
 class Vc(object):
@@ -115,8 +125,6 @@ class Vc(object):
     VC_DIR = None
     VC_ROOT_WALK = True
     VC_METADATA = None
-
-    VC_COLUMNS = (DATA_NAME, DATA_STATE)
 
     def __init__(self, path):
         # Save the requested comparison location. The location may be a
@@ -128,26 +136,8 @@ class Vc(object):
         self.root, self.location = self.is_in_repo(path)
         if not self.root:
             raise ValueError
-
-    def commit_command(self, message):
-        raise NotImplementedError()
-
-    def update_command(self):
-        raise NotImplementedError()
-
-    def add_command(self):
-        raise NotImplementedError()
-
-    def remove_command(self, force=0):
-        raise NotImplementedError()
-
-    def revert_command(self):
-        raise NotImplementedError()
-
-    def resolved_command(self):
-        raise NotImplementedError()
-
-    # Prototyping VC interface version 2
+        self._tree_cache = {}
+        self._tree_meta_cache = {}
 
     def get_files_to_commit(self, paths):
         raise NotImplementedError()
@@ -155,26 +145,44 @@ class Vc(object):
     def get_commit_message_prefill(self):
         return None
 
-    def update(self, runner, files):
-        raise NotImplementedError()
-
-    def push(self, runner):
-        raise NotImplementedError()
-
-    def revert(self, runner, files):
-        raise NotImplementedError()
-    
     def get_commits_to_push_summary(self):
         raise NotImplementedError()
 
-    def add(self, runner, files):
-        raise NotImplementedError()
+    def get_valid_actions(self, path_states):
+        """Get the set of valid actions for paths with version states
 
-    def remove(self, runner, files):
-        raise NotImplementedError()
+        path_states is a list of (path, state) tuples describing paths
+        in the version control system. This will return all valid
+        version control actions that could reasonably be taken on *all*
+        of the paths in path_states.
 
-    def resolve(self, runner, files):
-        raise NotImplementedError()
+        If an individual plugin needs special handling, or doesn't
+        implement all standard actions, this should be overridden.
+        """
+        valid_actions = set()
+        states = path_states.values()
+
+        if bool(path_states):
+            valid_actions.add('compare')
+        valid_actions.add('update')
+        # TODO: We can't do this; this shells out for each selection change...
+        # if bool(self.get_commits_to_push()):
+        valid_actions.add('push')
+        # TODO: We can't disable this for NORMAL, because folders don't
+        # inherit any state from their children, but committing a folder with
+        # modified children is expected behaviour.
+        if all(s not in (STATE_NONE, STATE_IGNORED) for s in states):
+            valid_actions.add('commit')
+        if all(s not in (STATE_NORMAL, STATE_REMOVED) for s in states):
+            valid_actions.add('add')
+        if all(s == STATE_CONFLICT for s in states):
+            valid_actions.add('resolve')
+        if (all(s not in (STATE_NONE, STATE_IGNORED, STATE_REMOVED) for s in states)
+                and self.root not in path_states.keys()):
+            valid_actions.add('remove')
+        if all(s not in (STATE_NONE, STATE_NORMAL, STATE_IGNORED) for s in states):
+            valid_actions.add('revert')
+        return valid_actions
 
     def get_path_for_repo_file(self, path, commit=None):
         """Returns a file path for the repository path at commit
@@ -198,61 +206,67 @@ class Vc(object):
         """
         raise NotImplementedError()
 
-    def get_working_directory(self, workdir):
-        return workdir
+    def refresh_vc_state(self, path=None):
+        """Update cached version control state
 
-    def cache_inventory(self, topdir):
-        pass
+        If a path is provided, for example when a file has been modified
+        and saved in the file comparison view and needs its state
+        refreshed, then only that path will be updated.
 
-    def uncache_inventory(self):
-        pass
-
-    def update_file_state(self, path):
-        """ Update the state of a specific file.  For example after a file
-        has been modified and saved, its state may be out of date and require
-        updating.  This can be implemented for Vc plugins that cache file
-        states, eg 'git' an 'bzr' so that the top-level file status is always
-        accurate.
+        If no path is provided then the version control tree rooted at
+        its `location` will be recursively refreshed.
         """
-        pass
+        if path is None:
+            self._tree_cache = {}
+            path = './'
+        self._update_tree_state_cache(path)
 
-    def listdir(self, path="."):
-        try:
-            entries = sorted(e for e in os.listdir(path) if e != self.VC_DIR)
-        except OSError:
-            entries = []
-        full_entries = [(f, os.path.join(path, f)) for f in entries]
-        cfiles, cdirs = partition(lambda e: os.path.isdir(e[1]), full_entries)
-        dirs, files = self.lookup_files(cdirs, cfiles, path)
-        return dirs + files
+    def get_entries(self, base):
+        parent = Gio.File.new_for_path(base)
+        enumerator = parent.enumerate_children(
+            'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
 
-    def lookup_files(self, dirs, files, directory=None):
-        # Assumes that all files are in the same directory. files is an array
-        # of (name, path) tuples.
-        if len(dirs):
-            directory = os.path.dirname(dirs[0][1])
-        elif len(files):
-            directory = os.path.dirname(files[0][1])
-        return self._get_dirsandfiles(directory, dirs, files)
+        for file_info in enumerator:
+            if file_info.get_name() == self.VC_DIR:
+                continue
+            gfile = enumerator.get_child(file_info)
 
-    def _get_dirsandfiles(self, directory, dirs, files):
-        raise NotImplementedError()
+            path = gfile.get_path()
+            name = file_info.get_display_name()
+            state = self._tree_cache.get(path, STATE_NORMAL)
+            meta = self._tree_meta_cache.get(path, "")
+            isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
+            yield Entry(path, name, state, isdir, options=meta)
+
+        # Removed entries are not in the filesystem, so must be added here
+        for path, state in self._tree_cache.items():
+            if state in (STATE_REMOVED, STATE_MISSING):
+                folder, name = os.path.split(path)
+                if folder == base:
+                    # TODO: Ideally we'd know whether this was a folder
+                    # or a file. Since it's gone however, only the VC
+                    # knows, and may or may not tell us.
+                    meta = self._tree_meta_cache.get(path, "")
+                    yield Entry(path, name, state, isdir=False, options=meta)
 
     def get_entry(self, path):
         """Return the entry associated with the given path in this VC
 
-        If the given path does not correspond to any entry in the VC, this
-        method returns return None.
+        If the given path does not correspond to an entry in the VC,
+        this method returns an Entry with the appropriate REMOVED or
+        MISSING state.
         """
-        vc_files = [
-            x for x in
-            self.lookup_files(
-                [], [(os.path.basename(path), path)])[1]
-            if x.path == path
-        ]
-        if not vc_files:
-            return None
-        return vc_files[0]
+        gfile = Gio.File.new_for_path(path)
+        file_info = gfile.query_info(
+            'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
+
+        path = gfile.get_path()
+        name = file_info.get_display_name()
+        state = self._tree_cache.get(path, STATE_NORMAL)
+        meta = self._tree_meta_cache.get(path, "")
+        isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
+
+        return Entry(path, name, state, isdir, options=meta)
 
     @classmethod
     def is_installed(cls):
@@ -291,27 +305,6 @@ class Vc(object):
     def valid_repo(cls, path):
         """Determine if a directory is a valid repository for this class"""
         raise NotImplementedError
-
-
-class CachedVc(Vc):
-
-    def __init__(self, location):
-        super(CachedVc, self).__init__(location)
-        self._tree_cache = None
-
-    def cache_inventory(self, directory):
-        self._tree_cache = self._lookup_tree_cache(directory)
-
-    def uncache_inventory(self):
-        self._tree_cache = None
-
-    def _lookup_tree_cache(self, directory):
-        raise NotImplementedError()
-
-    def _get_tree_cache(self, directory):
-        if self._tree_cache is None:
-            self.cache_inventory(directory)
-        return self._tree_cache
 
 
 class InvalidVCPath(ValueError):

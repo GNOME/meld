@@ -203,13 +203,12 @@ def shorten_names(*names):
     return [name or _("[None]") for name in basenames]
 
 
-def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
+def read_pipe_iter(command, workdir, errorstream, yield_interval=0.1):
     """Read the output of a shell command iteratively.
 
     Each time 'callback_interval' seconds pass without reading any data,
     this function yields None.
     When all the data is read, the entire string is yielded.
-    If 'workdir' is specified the command is run from that directory.
     """
     class sentinel(object):
         def __init__(self):
@@ -257,10 +256,7 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
             self.proc = None
             if status:
                 errorstream.error("Exit code: %i\n" % status)
-            yield "".join(bits)
-            yield status
-    if workdir == "":
-        workdir = None
+            yield status, "".join(bits)
     return sentinel()()
 
 
@@ -271,23 +267,6 @@ def write_pipe(command, text, error=None):
                             stdout=subprocess.PIPE, stderr=error)
     proc.communicate(text)
     return proc.wait()
-
-
-def commonprefix(dirs):
-    """Given a list of pathnames, returns the longest common leading component.
-    """
-    if not dirs:
-        return ''
-    n = [d.split(os.sep) for d in dirs]
-    prefix = n[0]
-    for item in n:
-        for i in range(len(prefix)):
-            if prefix[:i+1] != item[:i+1]:
-                prefix = prefix[:i]
-                if i == 0:
-                    return ''
-                break
-    return os.sep.join(prefix)
 
 
 def copy2(src, dst):
