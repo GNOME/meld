@@ -135,9 +135,9 @@ except WindowsError as e:
 def check_requirements():
 
     pyver = (2, 7)
-    gtk_requirement = (3, 6)
+    gtk_requirement = (3, 14)
     glib_requirement = (2, 36, 0)
-    gtksourceview_requirement = (3, 10, 0)
+    gtksourceview_requirement = (3, 14, 0)
 
     def missing_reqs(mod, ver, exception=None):
         if isinstance(exception, ImportError):
