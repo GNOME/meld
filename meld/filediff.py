@@ -599,7 +599,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         src, dst = self.get_action_panes(PANE_RIGHT, reverse=True)
         self.pull_all_non_conflicting_changes(src, dst)
 
-    def merge_all_non_conflicting_changes(self):
+    def merge_all_non_conflicting_changes(self, *args):
         dst = 1
         merger = merge.Merger()
         merger.differ = self.linediffer
