@@ -652,6 +652,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         locations = [os.path.abspath(l) if l else '' for l in locations]
         self.current_path = None
         self.model.clear()
+        for m in self.msgarea_mgr:
+            m.clear()
         for pane, loc in enumerate(locations):
             if loc:
                 self.fileentry[pane].set_filename(loc)
