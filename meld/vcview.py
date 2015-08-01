@@ -357,6 +357,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
             entries = self.vc.get_entries(path)
             entries = [e for e in entries if any(f(e) for f in filters)]
+            entries = sorted(entries, key=lambda e: e.name)
+            entries = sorted(entries, key=lambda e: not e.isdir)
             for e in entries:
                 if e.isdir and e.is_present():
                     try:
