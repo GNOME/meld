@@ -1071,9 +1071,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         if success:
             buf.data.encoding = loader.get_encoding()
-
-            # TODO: Remove handling for mixed newlines in other places, or add
-            # mixed newline support to GtkSourceFile.
             buf.data.newlines = loader.get_newline_type()
 
         self.update_buffer_writable(buf)
@@ -1492,36 +1489,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
-
-        nl_text = NEWLINES[bufdata.newlines][0]
-        if nl_text != '\n':
-            text = text.replace("\n", nl_text)
-
-            # TODO: Multiple line-ending handling is now missing; remove
-            # this or adapt.
-            # buttons = {
-            #     '\n': (NEWLINES['\n'], 0),
-            #     '\r\n': (NEWLINES['\r\n'], 1),
-            #     '\r': (NEWLINES['\r'], 2),
-            # }
-            # dialog_buttons = [(_("_Cancel"), Gtk.ResponseType.CANCEL)]
-            # dialog_buttons += [buttons[b] for b in bufdata.newlines]
-            # newline = misc.modal_dialog(
-            #     primary=_("Inconsistent line endings found"),
-            #     secondary=_(
-            #         "'%s' contains a mixture of line endings. Select the "
-            #         "line ending format to use.") % bufdata.label,
-            #     buttons=dialog_buttons,
-            #     messagetype=Gtk.MessageType.WARNING
-            # )
-            # if newline < 0:
-            #     return False
-            # for k, v in buttons.items():
-            #     if v[1] == newline:
-            #         bufdata.newlines = k
-            #         if k != '\n':
-            #             text = text.replace('\n', k)
-            #         break
 
         source_encoding = bufdata.encoding
         while isinstance(text, unicode):
