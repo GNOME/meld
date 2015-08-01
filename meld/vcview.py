@@ -187,7 +187,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.name_column.set_attributes(
             self.name_renderer,
             text=tree.COL_TEXT,
-            foreground=tree.COL_FG,
+            foreground_rgba=tree.COL_FG,
             style=tree.COL_STYLE,
             weight=tree.COL_WEIGHT,
             strikethrough=tree.COL_STRIKE)
