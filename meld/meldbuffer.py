@@ -108,6 +108,7 @@ class MeldBufferData(GObject.GObject):
         self._gfile = None
         self._label = None
         self._monitor = None
+        self._sourcefile = None
         self.reset(gfile=None)
 
     def reset(self, gfile):
@@ -176,11 +177,18 @@ class MeldBufferData(GObject.GObject):
     def gfile(self, value):
         self._disconnect_monitor()
         self._gfile = value
+        self._sourcefile = GtkSource.File()
+        self._sourcefile.set_location(value)
+
         # This is aiming to maintain existing behaviour for filename. The
         # behaviour is however wrong and should be fixed.
         self.filename = value.get_path().decode('utf8') if value else None
         self.update_mtime()
         self._connect_monitor()
+
+    @property
+    def sourcefile(self):
+        return self._sourcefile
 
     @property
     def writable(self):
