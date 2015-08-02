@@ -118,9 +118,6 @@ class MeldBufferData(GObject.GObject):
         self.loaded = False
         self.modified = False
         self.editable = True
-        self._monitor = None
-        self._mtime = None
-        self._disk_mtime = None
         self.savefile = None
         self.encoding = None
         self.newlines = None
@@ -141,17 +138,19 @@ class MeldBufferData(GObject.GObject):
         self._label = fallback_decode(value, encodings, lossy=True)
 
     def _connect_monitor(self):
-        if self.filename:
-            monitor = Gio.File.new_for_path(self.filename).monitor_file(
-                Gio.FileMonitorFlags.NONE, None)
-            handler_id = monitor.connect('changed', self._handle_file_change)
-            self._monitor = monitor, handler_id
+        if not self._gfile:
+            return
+        monitor = self._gfile.monitor_file(Gio.FileMonitorFlags.NONE, None)
+        handler_id = monitor.connect('changed', self._handle_file_change)
+        self._monitor = monitor, handler_id
 
     def _disconnect_monitor(self):
-        if self._monitor:
-            monitor, handler_id = self._monitor
-            monitor.disconnect(handler_id)
-            monitor.cancel()
+        if not self._monitor:
+            return
+        monitor, handler_id = self._monitor
+        monitor.disconnect(handler_id)
+        monitor.cancel()
+        self._monitor = None
 
     def _query_mtime(self, gfile):
         try:
