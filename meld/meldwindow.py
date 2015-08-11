@@ -344,7 +344,7 @@ class MeldWindow(gnomeglade.Component):
                     undoseq.disconnect(handler)
                 self.undo_handlers = tuple()
 
-        newdoc = notebook.get_nth_page(which).pyobject
+        newdoc = notebook.get_nth_page(which).pyobject if which >= 0 else None
         try:
             undoseq = newdoc.undosequence
             can_undo = undoseq.can_undo()
@@ -364,9 +364,13 @@ class MeldWindow(gnomeglade.Component):
         else:
             self.actiongroup.get_action("SaveAs").set_sensitive(True)
 
-        nbl = self.notebook.get_tab_label(newdoc.widget)
-        self.widget.set_title(nbl.get_label_text() + " - Meld")
-        newdoc.on_container_switch_in_event(self.ui)
+        if newdoc:
+            nbl = self.notebook.get_tab_label(newdoc.widget)
+            self.widget.set_title(nbl.get_label_text() + " - Meld")
+            newdoc.on_container_switch_in_event(self.ui)
+        else:
+            self.widget.set_title("Meld")
+
         if isinstance(newdoc, melddoc.MeldDoc):
             self.diff_handler = newdoc.connect("next-diff-changed",
                                                self.on_next_diff_changed)
@@ -571,22 +575,12 @@ class MeldWindow(gnomeglade.Component):
             if hasattr(page, 'scheduler'):
                 self.scheduler.remove_scheduler(page.scheduler)
             page_num = self.notebook.page_num(page.widget)
-            assert page_num >= 0
-
-            # If the page we're removing is the current page, we need to
-            # disconnect and clear undo handlers, and trigger a switch out
-            if self.notebook.get_current_page() == page_num:
-                if self.diff_handler is not None:
-                    page.disconnect(self.diff_handler)
-                if self.undo_handlers:
-                    for handler in self.undo_handlers:
-                        page.undosequence.disconnect(handler)
-                self.undo_handlers = tuple()
-                page.on_container_switch_out_event(self.ui)
 
             self.notebook.remove_page(page_num)
+            # Normal switch-page handlers don't get run for removing
+            # the last page from a notebook.
             if self.notebook.get_n_pages() == 0:
-                self.widget.set_title("Meld")
+                self.on_switch_page(self.notebook, page, -1)
                 self._update_page_action_sensitivity()
         return response
 
