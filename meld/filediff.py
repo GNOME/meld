@@ -18,7 +18,6 @@
 
 import copy
 import functools
-import io
 import os
 import time
 
@@ -47,7 +46,7 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
-from meld.settings import bind_settings, meldsettings, settings
+from meld.settings import bind_settings, meldsettings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager
 
