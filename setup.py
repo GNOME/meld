@@ -44,7 +44,7 @@ setup(
          ['COPYING', 'NEWS']
          ),
         ('share/meld',
-         ['data/meld.css', 'data/meld-dark.css']
+         ['data/meld.css']
          ),
         ('share/meld/icons',
          glob.glob("data/icons/*.png") +
