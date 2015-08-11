@@ -817,6 +817,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if response == Gtk.ResponseType.OK:
                 for i in range(self.num_panes):
                     if try_save[i]:
+                        # FIXME: See save_file; we can't assume that
+                        # the save has succeeded at this point.
                         if not self.save_file(i):
                             return Gtk.ResponseType.CANCEL
             elif response == Gtk.ResponseType.DELETE_EVENT:
@@ -1435,20 +1437,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return filename
         return None
 
-    def _save_text_to_filename(self, filename, text):
-        try:
-            if not isinstance(text, str):
-                raise IOError("couldn't encode text")
-            open(filename, "wb").write(text)
-        except IOError as err:
-            misc.error_dialog(
-                primary=_("Could not save file %s.") % filename,
-                secondary=_("Couldn't save file due to:\n%s") % (
-                    GLib.markup_escape_text(str(err))),
-            )
-            return False
-        return True
-
     def save_file(self, pane, saveas=False, force_overwrite=False):
         buf = self.textbuffer[pane]
         bufdata = buf.data
@@ -1488,7 +1476,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             msgarea.connect("response", on_file_changed_response)
             msgarea.show_all()
-            return
+            return False
 
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
@@ -1518,16 +1506,48 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                 source_encoding = GtkSource.Encoding.get_utf8()
 
-        save_to = bufdata.savefile or bufdata.filename
-        if self._save_text_to_filename(save_to, text):
-            self.emit("file-changed", save_to)
-            self.undosequence.checkpoint(buf)
-            bufdata.update_mtime()
-            if pane == 1 and self.num_panes == 3:
-                self.meta['middle_saved'] = True
-            return True
-        else:
-            return False
+        saver = GtkSource.FileSaver.new_with_target(
+            self.textbuffer[pane], bufdata.sourcefile, bufdata.gfiletarget)
+        # TODO: Think about removing this flag and above handling, and instead
+        # handling the GtkSource.FileSaverError.EXTERNALLY_MODIFIED error
+        if force_overwrite:
+            saver.set_flags(GtkSource.FileSaverFlags.IGNORE_MODIFICATION_TIME)
+        saver.save_async(
+            GLib.PRIORITY_HIGH,
+            callback=self.file_saved_cb,
+            user_data=(pane,)
+        )
+        # TODO: We need to stop assuming that we know whether a save
+        # has been successful at the end of this function; we won't
+        # really know until later.
+        return True
+
+    def file_saved_cb(self, saver, result, user_data):
+        gfile = saver.get_location()
+        pane = user_data[0]
+
+        try:
+            saver.save_finish(result)
+        except GLib.Error as err:
+            # TODO: Handle recoverable error cases, like external modifications
+            # or invalid buffer characters.
+            filename = GLib.markup_escape_text(
+                gfile.get_parse_name()).decode('utf-8')
+            misc.error_dialog(
+                primary=_("Could not save file %s.") % filename,
+                secondary=_("Couldn't save file due to:\n%s") % (
+                    GLib.markup_escape_text(str(err))),
+            )
+            self.state = melddoc.STATE_SAVING_ERROR
+            return
+
+        buf = saver.get_buffer()
+        self.emit('file-changed', gfile.get_path())
+        self.undosequence.checkpoint(buf)
+        buf.data.update_mtime()
+        if pane == 1 and self.num_panes == 3:
+            self.meta['middle_saved'] = True
+        self.state = melddoc.STATE_NORMAL
 
     def make_patch(self, *extra):
         dialog = patchdialog.PatchDialog(self)

@@ -50,6 +50,10 @@ def make_custom_editor_command(path, line=0):
     return shlex.split(cmd)
 
 
+# TODO: Consider use-cases for states in gedit-enum-types.c
+STATE_NORMAL, STATE_SAVING_ERROR, NUM_STATES = range(3)
+
+
 class MeldDoc(GObject.GObject):
     """Base class for documents in the meld application.
     """
@@ -78,6 +82,7 @@ class MeldDoc(GObject.GObject):
         self.label_text = _("untitled")
         self.tooltip_text = _("untitled")
         self.main_actiongroup = None
+        self.state = STATE_NORMAL
 
     def get_comparison(self):
         """Get the comparison type and path(s) being compared"""

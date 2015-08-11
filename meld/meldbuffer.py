@@ -190,6 +190,12 @@ class MeldBufferData(GObject.GObject):
         return self._sourcefile
 
     @property
+    def gfiletarget(self):
+        if self.savefile:
+            return Gio.File.new_for_path(self.savefile)
+        return self.gfile
+
+    @property
     def writable(self):
         path = self.savefile or self.filename
         if not path:
