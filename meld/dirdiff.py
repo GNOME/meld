@@ -1562,7 +1562,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_refresh_activate(self, *extra):
         self.on_fileentry_file_set(None)
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
         for h in self.settings_handlers:
             meldsettings.disconnect(h)
         self.emit('close', 0)

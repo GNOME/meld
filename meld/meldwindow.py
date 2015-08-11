@@ -570,7 +570,7 @@ class MeldWindow(gnomeglade.Component):
 
     def try_remove_page(self, page, appquit=0):
         "See if a page will allow itself to be removed"
-        response = page.on_delete_event(appquit)
+        response = page.on_delete_event()
         if response != Gtk.ResponseType.CANCEL:
             if hasattr(page, 'scheduler'):
                 self.scheduler.remove_scheduler(page.scheduler)

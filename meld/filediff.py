@@ -847,7 +847,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         return response
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
         response = self.check_save_modified()
         if response == Gtk.ResponseType.OK:
             for h in self.settings_handlers:

@@ -193,7 +193,7 @@ class MeldDoc(GObject.GObject):
         uimanager.remove_ui(self.ui_merge_id)
         self.main_actiongroup = None
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
         """Called when the docs container is about to close.
 
         A doc normally returns Gtk.ResponseType.OK, but may instead return

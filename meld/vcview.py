@@ -404,7 +404,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         path = directory.get_path()
         self.set_location(path)
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
         self.scheduler.remove_all_tasks()
         self.emit('close', 0)
         return Gtk.ResponseType.OK
