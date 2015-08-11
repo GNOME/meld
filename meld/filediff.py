@@ -483,7 +483,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if pane is None:
             pane = self._get_focused_pane()
             if pane == -1:
-                pane = 1 if len(self.textview) > 1 else 0
+                pane = 1 if self.num_panes > 1 else 0
 
         chunk = self.linediffer.get_chunk(target, pane)
         if not chunk:
@@ -965,13 +965,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_cursor_position_changed(view.get_buffer(), None, True)
 
     def set_labels(self, labels):
-        labels = labels[:len(self.textbuffer)]
+        labels = labels[:self.num_panes]
         for label, buf in zip(labels, self.textbuffer):
             if label:
                 buf.data.label = label
 
     def set_merge_output_file(self, filename):
-        if len(self.textbuffer) < 2:
+        if self.num_panes < 2:
             return
         buf = self.textbuffer[1]
         buf.data.savefile = os.path.abspath(filename)
