@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import codecs
 import copy
 import functools
 import io
@@ -1107,8 +1108,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._disconnect_buffer_handlers()
         self.linediffer.clear()
         self.queue_draw()
-        try_codecs = list(settings.get_value('detect-encodings'))
-        try_codecs.append('latin1')
+
+        # Build and uniquify a list of encodings to try out
+        extras = list(settings.get_value('detect-encodings'))
+        builtin = ['utf-8', GLib.get_codeset(), 'utf-16le', 'iso8859-15']
+        allencs = [codecs.lookup(c).name for c in extras + builtin]
+        seen = set()
+        try_codecs = [c for c in allencs if c not in seen and not seen.add(c)]
+
         yield _("[%s] Opening files") % self.label_text
         tasks = []
 
