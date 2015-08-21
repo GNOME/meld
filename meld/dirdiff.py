@@ -71,8 +71,8 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         if abs(self.time - other.time) > 2:
             return False
 
-        dectime1 = Decimal(str(self.time)).scaleb(Decimal(9)).quantize(1)
-        dectime2 = Decimal(str(other.time)).scaleb(Decimal(9)).quantize(1)
+        dectime1 = Decimal(self.time).scaleb(Decimal(9)).quantize(1)
+        dectime2 = Decimal(other.time).scaleb(Decimal(9)).quantize(1)
         mtime1 = dectime1 // time_resolution_ns
         mtime2 = dectime2 // time_resolution_ns
 
