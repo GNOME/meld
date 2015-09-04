@@ -176,6 +176,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for widget in self.selector_hbox:
             column_sizes.add_widget(widget)
 
+        self.state = melddoc.STATE_NORMAL
         self.warned_bad_comparison = False
         self._keymask = 0
         self.meta = {}
@@ -814,17 +815,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             response = dialog.widget.run()
             try_save = [b.get_active() for b in buttons]
             dialog.widget.destroy()
-            if response == Gtk.ResponseType.OK:
+            if response == Gtk.ResponseType.OK and any(try_save):
                 for i in range(self.num_panes):
                     if try_save[i]:
-                        # FIXME: See save_file; we can't assume that
-                        # the save has succeeded at this point.
-                        if not self.save_file(i):
-                            return Gtk.ResponseType.CANCEL
-            elif response == Gtk.ResponseType.DELETE_EVENT:
-                response = Gtk.ResponseType.CANCEL
+                        self.save_file(i)
+                return Gtk.ResponseType.CANCEL
 
-        if response == Gtk.ResponseType.CLOSE:
+        if response == Gtk.ResponseType.DELETE_EVENT:
+            response = Gtk.ResponseType.CANCEL
+        elif response == Gtk.ResponseType.CLOSE:
             response = Gtk.ResponseType.OK
 
         if response == Gtk.ResponseType.OK and self.meta:
@@ -845,10 +844,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if resolve_response == Gtk.ResponseType.OK:
                     conflict_file = self.textbuffer[1].data.filename
                     parent.command('resolve', [conflict_file])
+        elif response == Gtk.ResponseType.CANCEL:
+            self.state = melddoc.STATE_NORMAL
 
         return response
 
     def on_delete_event(self):
+        self.state = melddoc.STATE_CLOSING
         response = self.check_save_modified()
         if response == Gtk.ResponseType.OK:
             for h in self.settings_handlers:
@@ -1547,7 +1549,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf.data.update_mtime()
         if pane == 1 and self.num_panes == 3:
             self.meta['middle_saved'] = True
-        self.state = melddoc.STATE_NORMAL
+
+        if (self.state == melddoc.STATE_CLOSING and
+                not any(b.data.modified for b in self.textbuffer)):
+            self.on_delete_event()
+        else:
+            self.state = melddoc.STATE_NORMAL
 
     def make_patch(self, *extra):
         dialog = patchdialog.PatchDialog(self)

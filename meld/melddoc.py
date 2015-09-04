@@ -51,7 +51,7 @@ def make_custom_editor_command(path, line=0):
 
 
 # TODO: Consider use-cases for states in gedit-enum-types.c
-STATE_NORMAL, STATE_SAVING_ERROR, NUM_STATES = range(3)
+STATE_NORMAL, STATE_CLOSING, STATE_SAVING_ERROR, NUM_STATES = range(4)
 
 
 class MeldDoc(GObject.GObject):
