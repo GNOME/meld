@@ -176,7 +176,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for widget in self.selector_hbox:
             column_sizes.add_widget(widget)
 
-        self.state = melddoc.STATE_NORMAL
         self.warned_bad_comparison = False
         self._keymask = 0
         self.meta = {}

@@ -73,6 +73,7 @@ class MeldDoc(GObject.GObject):
         'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
         'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
+        'state-changed': (GObject.SignalFlags.RUN_FIRST, None, (int, int)),
     }
 
     def __init__(self):
@@ -82,7 +83,18 @@ class MeldDoc(GObject.GObject):
         self.label_text = _("untitled")
         self.tooltip_text = _("untitled")
         self.main_actiongroup = None
-        self.state = STATE_NORMAL
+        self._state = STATE_NORMAL
+
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, value):
+        if value == self._state:
+            return
+        self.emit('state-changed', self._state, value)
+        self._state = value
 
     def get_comparison(self):
         """Get the comparison type and path(s) being compared"""
