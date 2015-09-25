@@ -1152,9 +1152,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if nextbit.find("\x00") != -1:
                         t.buf.delete(*t.buf.get_bounds())
                         filename = GObject.markup_escape_text(t.filename)
-                        add_dismissable_msg(t.pane, Gtk.STOCK_DIALOG_ERROR,
-                            _("Could not read file"),
-                            _("%s appears to be a binary file.") % filename)
+
+                        primary = _("File %s appears to be a binary file.") % filename
+                        secondary = _("Do you want to open the file using the default application?")
+                        msgarea = self.msgarea_mgr[t.pane].new_from_text_and_icon(
+                                        Gtk.STOCK_DIALOG_WARNING, primary, secondary)
+                        msgarea.add_button(_("Open"), Gtk.ResponseType.ACCEPT)
+                        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
+
+                        def make_binary_callback(pane, filename):
+                            def on_binary_file_open(msgarea, response_id, *args):
+                                self.msgarea_mgr[pane].clear()
+                                if response_id == Gtk.ResponseType.ACCEPT:
+                                    self._open_files([filename])
+                                return on_binary_file_open
+                            return on_binary_file_open
+
+                        msgarea.connect("response", make_binary_callback(t.pane, t.filename))
+                        msgarea.show_all()
                         tasks.remove(t)
                         continue
                 except ValueError as err:
