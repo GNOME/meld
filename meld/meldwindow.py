@@ -238,6 +238,8 @@ class MeldWindow(gnomeglade.Component):
         self.widget.drag_dest_add_uri_targets()
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
+
+        self.should_close = False
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
@@ -291,6 +293,7 @@ class MeldWindow(gnomeglade.Component):
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
     def on_delete_event(self, *extra):
+        should_cancel = False
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
         for c in reversed(self.notebook.get_children()):
@@ -298,11 +301,15 @@ class MeldWindow(gnomeglade.Component):
             self.notebook.set_current_page(self.notebook.page_num(page.widget))
             response = page.on_delete_event()
             if response == Gtk.ResponseType.CANCEL:
-                return True
+                should_cancel = True
         # TODO: Now also need to check whether any page is in an error
         # state, or is asynchronously closing, or... etc. Some errors
         # or cancellation requests will be returned from the page's
         # on_delete_event, but not all.
+        should_cancel = should_cancel or self.has_pages()
+        if should_cancel:
+            self.should_close = True
+        return should_cancel
 
     def has_pages(self):
         return self.notebook.get_n_pages() > 0
@@ -579,9 +586,19 @@ class MeldWindow(gnomeglade.Component):
         page_num = self.notebook.page_num(page.widget)
 
         self.notebook.remove_page(page_num)
-        if self.notebook.get_n_pages() == 0:
+        if not self.has_pages():
             self.on_switch_page(self.notebook, page, -1)
             self._update_page_action_sensitivity()
+            if self.should_close:
+                cancelled = self.widget.emit(
+                    'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))
+                if not cancelled:
+                    self.widget.emit('destroy')
+
+    def on_page_state_changed(self, page, old_state, new_state):
+        if self.should_close and old_state == melddoc.STATE_CLOSING:
+            # Cancel closing if one of our tabs does
+            self.should_close = False
 
     def on_file_changed(self, srcpage, filename):
         for c in self.notebook.get_children():
@@ -609,6 +626,7 @@ class MeldWindow(gnomeglade.Component):
             page.connect("file-changed", self.on_file_changed)
             page.connect("create-diff", lambda obj, arg, kwargs:
                          self.append_diff(arg, **kwargs))
+            page.connect("state-changed", self.on_page_state_changed)
         page.connect("close", self.page_removed)
 
         self.notebook.set_tab_reorderable(page.widget, True)
