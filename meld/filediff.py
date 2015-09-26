@@ -1003,8 +1003,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if buf.data.modified:
                 shortnames[i] += "*"
             self.file_save_button[i].set_sensitive(buf.data.modified)
-            self.file_save_button[i].props.stock_id = (
-                Gtk.STOCK_SAVE if buf.data.writable else Gtk.STOCK_SAVE_AS)
+            self.file_save_button[i].props.icon_name = (
+                'document-save-symbolic' if buf.data.writable else
+                'document-save-as-symbolic')
 
         label = self.meta.get("tablabel", "")
         if label:
