@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 from distutils.core import setup
 import glob
@@ -49,6 +49,9 @@ setup(
         ('share/meld/icons',
          glob.glob("data/icons/*.png") +
          glob.glob("data/icons/COPYING*")
+         ),
+        ('share/meld/styles',
+         glob.glob("data/styles/*.xml")
          ),
         ('share/meld/ui',
          glob.glob("data/ui/*.ui") + glob.glob("data/ui/*.xml")

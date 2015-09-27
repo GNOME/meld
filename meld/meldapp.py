@@ -34,6 +34,12 @@ from meld.conf import _
 
 log = logging.getLogger(__name__)
 
+# Monkeypatching optparse like this is obviously awful, but this is to
+# handle Unicode translated strings within optparse itself that will
+# otherwise crash badly. This just makes optparse use our ugettext
+# import of _, rather than the non-unicode gettext.
+optparse._ = _
+
 
 class MeldApp(Gtk.Application):
 
