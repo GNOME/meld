@@ -111,3 +111,16 @@ class MsgAreaController(Gtk.HBox):
         msgarea.connect("response", lambda *args: self.clear())
         msgarea.show_all()
         return msgarea
+
+    def add_action_msg(self, icon, primary, secondary, action_label, callback):
+        def on_response(msgarea, response_id, *args):
+            self.clear()
+            if response_id == Gtk.ResponseType.ACCEPT:
+                callback()
+
+        msgarea = self.new_from_text_and_icon(icon, primary, secondary)
+        msgarea.add_button(action_label, Gtk.ResponseType.ACCEPT)
+        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
+        msgarea.connect("response", on_response)
+        msgarea.show_all()
+        return msgarea

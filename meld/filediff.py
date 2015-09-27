@@ -1086,22 +1086,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             primary = _("File %s appears to be a binary file.") % filename
             secondary = _(
                 "Do you want to open the file using the default application?")
-            msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                Gtk.STOCK_DIALOG_WARNING, primary, secondary)
-            msgarea.add_button(_("Open"), Gtk.ResponseType.ACCEPT)
-            msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-
-            def make_binary_callback(pane, filename):
-                def on_binary_file_open(msgarea, response_id, *args):
-                    self.msgarea_mgr[pane].clear()
-                    if response_id == Gtk.ResponseType.ACCEPT:
-                        self._open_files([filename])
-                    return on_binary_file_open
-                return on_binary_file_open
-
-            msgarea.connect(
-                "response", make_binary_callback(pane, gfile.get_path()))
-            msgarea.show_all()
+            self.msgarea_mgr[pane].add_action_msg(
+                Gtk.STOCK_DIALOG_WARNING, primary, secondary, _("Open"),
+                functools.partial(self._open_files, [gfile.get_path()]))
 
         self.update_buffer_writable(buf)
 
