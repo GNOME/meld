@@ -302,10 +302,7 @@ class MeldWindow(gnomeglade.Component):
             response = page.on_delete_event()
             if response == Gtk.ResponseType.CANCEL:
                 should_cancel = True
-        # TODO: Now also need to check whether any page is in an error
-        # state, or is asynchronously closing, or... etc. Some errors
-        # or cancellation requests will be returned from the page's
-        # on_delete_event, but not all.
+
         should_cancel = should_cancel or self.has_pages()
         if should_cancel:
             self.should_close = True

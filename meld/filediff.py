@@ -1519,9 +1519,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             callback=self.file_saved_cb,
             user_data=(pane,)
         )
-        # TODO: We need to stop assuming that we know whether a save
-        # has been successful at the end of this function; we won't
-        # really know until later.
         return True
 
     def file_saved_cb(self, saver, result, user_data):
