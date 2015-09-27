@@ -1170,18 +1170,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         display_name = gfile.get_parse_name().decode('utf-8')
         primary = _("File %s has changed on disk") % display_name
         secondary = _("Do you want to reload the file?")
-        msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                        Gtk.STOCK_DIALOG_WARNING, primary, secondary)
-        msgarea.add_button(_("_Reload"), Gtk.ResponseType.ACCEPT)
-        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-
-        def on_file_changed_response(msgarea, response_id, *args):
-            self.msgarea_mgr[pane].clear()
-            if response_id == Gtk.ResponseType.ACCEPT:
-                self.on_revert_activate()
-
-        msgarea.connect("response", on_file_changed_response)
-        msgarea.show_all()
+        self.msgarea_mgr[pane].add_action_msg(
+            Gtk.STOCK_DIALOG_WARNING, primary, secondary, _("_Reload"),
+            self.on_revert_activate)
 
     def refresh_comparison(self, *args):
         """Refresh the view by clearing and redoing all comparisons"""
