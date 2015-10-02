@@ -1569,6 +1569,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf.data.editable = editable
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].set_active(not editable)
+        self.readonlytoggle[index].props.icon_name = (
+            'changes-allow-symbolic' if editable else
+            'changes-prevent-symbolic')
         self.textview[index].set_editable(editable)
         self.on_cursor_position_changed(buf, None, True)
         for linkmap in self.linkmap:
