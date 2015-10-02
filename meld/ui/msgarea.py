@@ -29,8 +29,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     hbox_content = Gtk.HBox(homogeneous=False, spacing=8)
     hbox_content.show()
 
-    image = Gtk.Image()
-    image.set_from_stock(stockid, Gtk.IconSize.DIALOG)
+    image = Gtk.Image.new_from_icon_name(stockid, Gtk.IconSize.DIALOG)
     image.show()
     hbox_content.pack_start(image, False, False, 0)
     image.set_alignment(0.5, 0.5)

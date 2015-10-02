@@ -852,7 +852,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for pane in range(self.num_panes):
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                Gtk.STOCK_INFO, primary, secondary)
+                'dialog-information-symbolic', primary, secondary)
             button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
             if pane == 0:
                 button.props.label = _("Hi_de")
@@ -903,7 +903,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     continue
                 secondary = "\n".join(messages)
                 self.msgarea_mgr[pane].add_dismissable_msg(
-                    Gtk.STOCK_DIALOG_ERROR, header, secondary)
+                    'dialog-error-symbolic', header, secondary)
 
     def copy_selected(self, direction):
         assert direction in (-1, 1)

@@ -1072,7 +1072,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             primary = _(
                 u"There was a problem opening the file “%s”." % filename)
             self.msgarea_mgr[pane].add_dismissable_msg(
-                Gtk.STOCK_DIALOG_ERROR, primary, err.message)
+                'dialog-error-symbolic', primary, err.message)
 
         buf = loader.get_buffer()
 
@@ -1087,7 +1087,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             secondary = _(
                 "Do you want to open the file using the default application?")
             self.msgarea_mgr[pane].add_action_msg(
-                Gtk.STOCK_DIALOG_WARNING, primary, secondary, _("Open"),
+                'dialog-warning-symbolic', primary, secondary, _("Open"),
                 functools.partial(self._open_files, [gfile.get_path()]))
 
         self.update_buffer_writable(buf)
@@ -1171,7 +1171,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         primary = _("File %s has changed on disk") % display_name
         secondary = _("Do you want to reload the file?")
         self.msgarea_mgr[pane].add_action_msg(
-            Gtk.STOCK_DIALOG_WARNING, primary, secondary, _("_Reload"),
+            'dialog-warning-symbolic', primary, secondary, _("_Reload"),
             self.on_revert_activate)
 
     def refresh_comparison(self, *args):
@@ -1355,7 +1355,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     secondary_text %= "\n".join(newline_strings)
 
                 msgarea = mgr.new_from_text_and_icon(
-                    Gtk.STOCK_INFO, primary, secondary_text)
+                    'dialog-information-symbolic', primary, secondary_text)
                 mgr.set_msg_id(FileDiff.MSG_SAME)
                 button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
                 if index == 0:
@@ -1383,7 +1383,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for index, mgr in enumerate(self.msgarea_mgr):
             msgarea = mgr.new_from_text_and_icon(
-                Gtk.STOCK_INFO,
+                'dialog-information-symbolic',
                 _("Change highlighting incomplete"),
                 _("Some changes were not highlighted because they were too "
                   "large. You can force Meld to take longer to highlight "
@@ -1468,7 +1468,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 bufdata.gfile.get_parse_name().decode('utf-8'))
             secondary = _("If you save it, any external changes will be lost.")
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                Gtk.STOCK_DIALOG_WARNING, primary, secondary)
+                'dialog-warning-symbolic', primary, secondary)
             msgarea.add_button(_("Save Anyway"), Gtk.ResponseType.ACCEPT)
             msgarea.add_button(_("Don't Save"), Gtk.ResponseType.CLOSE)
 
@@ -1881,7 +1881,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if valid_points:
             for mgr in self.msgarea_mgr:
                 msgarea = mgr.new_from_text_and_icon(
-                    Gtk.STOCK_DIALOG_INFO,
+                    'dialog-information-symbolic',
                     _("Live comparison updating disabled"),
                     _("Live updating of comparisons is disabled when "
                       "synchronization points are active. You can still "
