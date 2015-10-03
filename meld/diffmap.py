@@ -78,21 +78,13 @@ class DiffMap(Gtk.DrawingArea):
             self.fill_colors, self.line_colors = get_common_theme()
 
     def on_scrollbar_style_updated(self, scrollbar):
-        value = GObject.Value(int)
-        scrollbar.style_get_property("stepper-size", value)
-        stepper_size = value.get_int()
-        scrollbar.style_get_property("stepper-spacing", value)
-        stepper_spacing = value.get_int()
+        stepper_size = scrollbar.style_get_property("stepper-size")
+        stepper_spacing = scrollbar.style_get_property("stepper-spacing")
 
-        bool_value = GObject.Value(bool)
-        scrollbar.style_get_property("has-backward-stepper", bool_value)
-        has_backward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-secondary-forward-stepper", bool_value)
-        has_secondary_forward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-secondary-backward-stepper", bool_value)
-        has_secondary_backward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-forward-stepper", bool_value)
-        has_foreward = bool_value.get_boolean()
+        has_backward = scrollbar.style_get_property("has-backward-stepper")
+        has_secondary_forward = scrollbar.style_get_property("has-secondary-forward-stepper")
+        has_secondary_backward = scrollbar.style_get_property("has-secondary-backward-stepper")
+        has_foreward = scrollbar.style_get_property("has-forward-stepper")
         steppers = [has_backward, has_secondary_forward, has_secondary_backward, has_foreward]
 
         offset = stepper_size * steppers[0:2].count(True)
