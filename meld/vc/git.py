@@ -186,11 +186,9 @@ class Vc(_vc.Vc):
         runner(command, files, refresh=True, working_dir=self.root)
 
     def remerge_with_ancestor(self, local, base, remote):
-        args = [self.CMD, "merge-file", "-p", "--diff3", local, base, remote]
-        process = subprocess.Popen(args, cwd=self.location,
-                                   stdout=subprocess.PIPE)
+        proc = self.run("merge-file", "-p", "--diff3", local, base, remote)
         vc_file = StringIO.StringIO(
-            _vc.base_from_diff3(process.stdout.read()))
+            _vc.base_from_diff3(proc.stdout.read()))
 
         prefix = 'meld-tmp-%s-' % _vc.CONFLICT_MERGED
         with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
