@@ -17,6 +17,7 @@
 import difflib
 import os
 
+from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -113,8 +114,8 @@ class PatchDialog(gnomeglade.Component):
 
             # Copy patch to clipboard
             if result == 1:
-                clip = Gtk.clipboard_get()
-                clip.set_text(txt)
+                clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+                clip.set_text(txt, -1)
                 clip.store()
                 break
             # Save patch as a file
