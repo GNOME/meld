@@ -82,14 +82,14 @@ class DiffMap(Gtk.DrawingArea):
         stepper_spacing = scrollbar.style_get_property("stepper-spacing")
 
         has_backward = scrollbar.style_get_property("has-backward-stepper")
-        has_secondary_forward = scrollbar.style_get_property(
-            "has-secondary-forward-stepper")
         has_secondary_backward = scrollbar.style_get_property(
             "has-secondary-backward-stepper")
+        has_secondary_forward = scrollbar.style_get_property(
+            "has-secondary-forward-stepper")
         has_forward = scrollbar.style_get_property("has-forward-stepper")
         steppers = [
-            has_backward, has_secondary_forward,
-            has_secondary_backward, has_forward
+            has_backward, has_secondary_backward,
+            has_secondary_forward, has_forward,
         ]
 
         offset = stepper_size * steppers[0:2].count(True)
