@@ -107,7 +107,8 @@ class DiffMap(Gtk.DrawingArea):
         self.queue_draw()
 
     def on_scrollbar_size_allocate(self, scrollbar, allocation):
-        self._scroll_y = allocation.y
+        translation = scrollbar.translate_coordinates(self, 0, 0)
+        self._scroll_y = translation[1] if translation else 0
         self._scroll_height = allocation.height
         self._width = max(allocation.width, 10)
         self._cached_map = None
@@ -117,7 +118,7 @@ class DiffMap(Gtk.DrawingArea):
         if not self._setup:
             return
         height = self._scroll_height - self._h_offset - 1
-        y_start = self._scroll_y - self.get_allocation().y - self._y_offset + 1
+        y_start = self._scroll_y + self._y_offset + 1
         width = self.get_allocated_width()
         xpad = 2.5
         x0 = xpad
