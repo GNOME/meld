@@ -172,6 +172,7 @@ class Vc(_vc.Vc):
         vc_dir = os.path.join(root, cls.VC_DIR)
 
         # Check for repository version, trusting format file then entries file
+        repo_version = None
         for filename in ("format", "entries"):
             path = os.path.join(vc_dir, filename)
             if os.path.exists(path):
