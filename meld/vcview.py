@@ -660,7 +660,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 return '"%s"' % s if len(s.split()) > 1 else s
             return " ".join(quote(tok) for tok in command)
 
-        msg = shelljoin(command)
+        msg = misc.fallback_decode(shelljoin(command), ['utf-8'], lossy=True)
         yield "[%s] %s" % (self.label_text, msg.replace("\n", "\t"))
         def relpath(pbase, p):
             kill = 0
