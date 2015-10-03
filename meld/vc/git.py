@@ -32,10 +32,14 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from collections import defaultdict
 
 from meld.conf import _, ngettext
 
 from . import _vc
+
+
+NULL_SHA = "0000000000000000000000000000000000000000"
 
 
 class Vc(_vc.Vc):
@@ -44,7 +48,7 @@ class Vc(_vc.Vc):
     NAME = "Git"
     VC_DIR = ".git"
 
-    GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([XADMTU])\t(.*)"
+    GIT_DIFF_FILES_RE = ":(\d+) (\d+) ([a-z0-9]+) ([a-z0-9]+) ([XADMTU])\t(.*)"
     DIFF_RE = re.compile(GIT_DIFF_FILES_RE)
 
     conflict_map = {
@@ -127,7 +131,7 @@ class Vc(_vc.Vc):
         for p in paths:
             if os.path.isdir(p):
                 entries = self._get_modified_files(p)
-                names = [self.DIFF_RE.search(e).groups()[3] for e in entries]
+                names = [self.DIFF_RE.search(e).groups()[5] for e in entries]
                 files.extend(names)
             else:
                 files.append(os.path.relpath(p, self.root))
@@ -298,15 +302,28 @@ class Vc(_vc.Vc):
             # to STATE_NORMAL.
             self._tree_cache[get_real_path(path)] = _vc.STATE_NORMAL
         else:
+            tree_meta_cache = defaultdict(list)
+            staged = set()
+            unstaged = set()
+
             for entry in entries:
                 columns = self.DIFF_RE.search(entry).groups()
-                old_mode, new_mode, statekey, path = columns
+                old_mode, new_mode, old_sha, new_sha, statekey, path = columns
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 self._tree_cache[get_real_path(path)] = state
                 if old_mode != new_mode:
                     msg = _("Mode changed from %s to %s" %
                             (old_mode, new_mode))
-                    self._tree_meta_cache[path] = msg
+                    tree_meta_cache[path].append(msg)
+                collection = unstaged if new_sha == NULL_SHA else staged
+                collection.add(path)
+
+            for path in staged:
+                tree_meta_cache[path].append(
+                    _("Partially staged") if path in unstaged else _("Staged"))
+
+            for path, msgs in tree_meta_cache.items():
+                self._tree_meta_cache[get_real_path(path)] = "; ".join(msgs)
 
             for path in ignored_entries:
                 self._tree_cache[get_real_path(path)] = _vc.STATE_IGNORED
