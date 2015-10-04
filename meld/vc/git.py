@@ -186,6 +186,13 @@ class Vc(_vc.Vc):
         runner(command, files, refresh=True, working_dir=self.root)
 
     def remerge_with_ancestor(self, local, base, remote):
+        """Reconstruct a mixed merge-plus-base file
+
+        This method re-merges a given file to get diff3-style conflicts
+        which we can then use to get a file that contains the
+        pre-merged result everywhere that has no conflict, and the
+        common ancestor anywhere there *is* a conflict.
+        """
         proc = self.run("merge-file", "-p", "--diff3", local, base, remote)
         vc_file = StringIO.StringIO(
             _vc.base_from_diff3(proc.stdout.read()))
