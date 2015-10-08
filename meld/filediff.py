@@ -850,7 +850,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     messagetype=Gtk.MessageType.QUESTION)
 
                 if resolve_response == Gtk.ResponseType.OK:
-                    conflict_file = self.textbuffer[1].data.filename
+                    bufdata = self.textbuffer[1].data
+                    conflict_file = bufdata.savefile or bufdata.filename
                     parent.command('resolve', [conflict_file])
 
         return response
