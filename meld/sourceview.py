@@ -232,7 +232,8 @@ class MeldSourceView(GtkSource.View):
         new_anim_chunks = []
         for c in self.animating_chunks:
             current_time = GLib.get_monotonic_time()
-            percent = min(1.0, (current_time - c.start_time) / float(c.duration))
+            percent = min(
+                1.0, (current_time - c.start_time) / float(c.duration))
             rgba_pairs = zip(c.start_rgba, c.end_rgba)
             rgba = [s + (e - s) * percent for s, e in rgba_pairs]
 
