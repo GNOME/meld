@@ -183,7 +183,8 @@ class MeldSourceView(GtkSource.View):
                   self.get_line_num_for_y(buffer_y_end))
 
         visible = self.get_visible_rect()
-        width = self.get_allocation().width
+        x = clip.x - 0.5
+        width = clip.width + 1
 
         # Paint chunk backgrounds and outlines
         for change in self.chunk_iter(bounds):
@@ -191,7 +192,7 @@ class MeldSourceView(GtkSource.View):
             ypos1 = self.get_y_for_line_num(change[2]) - visible.y
             height = max(0, ypos1 - ypos0 - 1)
 
-            context.rectangle(-0.5, ypos0 + 0.5, width + 1, height)
+            context.rectangle(x, ypos0 + 0.5, width, height)
             if change[1] != change[2]:
                 context.set_source_rgba(*self.fill_colors[change[0]])
                 context.fill_preserve()
@@ -210,7 +211,7 @@ class MeldSourceView(GtkSource.View):
             it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
             ypos, line_height = self.get_line_yrange(it)
             context.save()
-            context.rectangle(0, ypos - visible.y, width, line_height)
+            context.rectangle(x, ypos - visible.y, width, line_height)
             context.clip()
             context.set_source_rgba(*self.highlight_color)
             context.paint_with_alpha(0.25)
@@ -223,7 +224,7 @@ class MeldSourceView(GtkSource.View):
             syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
             if bounds[0] <= syncline <= bounds[1]:
                 ypos = self.get_y_for_line_num(syncline) - visible.y
-                context.rectangle(-0.5, ypos - 0.5, width + 1, 1)
+                context.rectangle(x, ypos - 0.5, width, 1)
                 context.set_source_rgba(*self.syncpoint_color)
                 context.stroke()
 
@@ -243,7 +244,7 @@ class MeldSourceView(GtkSource.View):
                 ystart -= 1
 
             context.set_source_rgba(*rgba)
-            context.rectangle(0, ystart - visible.y, width, yend - ystart)
+            context.rectangle(x, ystart - visible.y, width, yend - ystart)
             context.fill()
 
             if current_time <= c.start_time + c.duration:
