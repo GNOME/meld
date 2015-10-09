@@ -337,15 +337,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
-            textview.set_editable(0)
+            textview.set_sensitive(False)
         for buf in self.textbuffer:
             assert hasattr(buf,"handlers")
             for h in buf.handlers:
                 buf.disconnect(h)
 
     def _connect_buffer_handlers(self):
-        for textview, buf in zip(self.textview, self.textbuffer):
-            textview.set_editable(buf.data.editable)
+        for textview in self.textview:
+            textview.set_sensitive(True)
         for buf in self.textbuffer:
             id0 = buf.connect("insert-text", self.on_text_insert_text)
             id1 = buf.connect("delete-range", self.on_text_delete_range)
