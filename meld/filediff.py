@@ -1566,7 +1566,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.set_buffer_editable(buf, writable)
 
     def set_buffer_editable(self, buf, editable):
-        buf.data.editable = editable
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].set_active(not editable)
         self.readonlytoggle[index].props.icon_name = (
