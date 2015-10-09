@@ -118,10 +118,11 @@ def create_settings(uninstalled=False):
 
 def bind_settings(obj):
     global settings
+    bind_flags = (
+        Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.NO_SENSITIVITY)
     for binding in getattr(obj, '__gsettings_bindings__', ()):
         settings_id, property_id = binding
-        settings.bind(
-            settings_id, obj, property_id, Gio.SettingsBindFlags.DEFAULT)
+        settings.bind(settings_id, obj, property_id, bind_flags)
 
 
 settings = None
