@@ -174,13 +174,13 @@ class MeldSourceView(GtkSource.View):
         context.save()
         context.set_line_width(1.0)
 
-        _, rect = Gdk.cairo_get_clip_rectangle(context)
-        _, y = self.window_to_buffer_coords(
-            Gtk.TextWindowType.WIDGET, 0, rect.y)
-        _, y_end = self.window_to_buffer_coords(
-            Gtk.TextWindowType.WIDGET, 0, rect.y + rect.height)
-        bounds = (self.get_line_num_for_y(y),
-                  self.get_line_num_for_y(y_end))
+        _, clip = Gdk.cairo_get_clip_rectangle(context)
+        _, buffer_y = self.window_to_buffer_coords(
+            Gtk.TextWindowType.WIDGET, 0, clip.y)
+        _, buffer_y_end = self.window_to_buffer_coords(
+            Gtk.TextWindowType.WIDGET, 0, clip.y + clip.height)
+        bounds = (self.get_line_num_for_y(buffer_y),
+                  self.get_line_num_for_y(buffer_y_end))
 
         visible = self.get_visible_rect()
         width = self.get_allocation().width
