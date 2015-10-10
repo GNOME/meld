@@ -1036,12 +1036,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.msgarea_mgr[pane].clear()
 
             self.textbuffer[pane].data.reset(gfile)
-            sourcefile = GtkSource.File()
-            sourcefile.set_location(gfile)
 
             # TODO: Maybe re-add support for the 'detect-encodings' gsetting
             loader = GtkSource.FileLoader.new(
-                self.textbuffer[pane], sourcefile)
+                self.textbuffer[pane], self.textbuffer[pane].data.sourcefile)
             loader.load_async(
                 GLib.PRIORITY_HIGH,
                 callback=self.file_loaded,
