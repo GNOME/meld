@@ -116,7 +116,6 @@ class MeldBufferData(GObject.GObject):
         self.gfile = gfile
         self.label = self._label if same_file else self.filename
         self.loaded = False
-        self.modified = False
         self.savefile = None
         self.encoding = None
         self.newlines = None

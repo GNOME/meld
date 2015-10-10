@@ -796,7 +796,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def check_save_modified(self):
         response = Gtk.ResponseType.OK
-        modified = [b.data.modified for b in self.textbuffer[:self.num_panes]]
+        modified = [b.get_modified() for b in self.textbuffer[:self.num_panes]]
         labels = [b.data.label for b in self.textbuffer[:self.num_panes]]
         if True in modified:
             dialog = gnomeglade.Component("filediff.ui", "check_save_dialog")
@@ -886,7 +886,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             meldbuffer.BufferDeletionAction(buf, it0.get_offset(), text))
 
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
-        buf.data.modified = not checkpointed
+        buf.set_modified(not checkpointed)
         self.recompute_label()
 
     @with_focused_pane
@@ -988,10 +988,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _set_save_action_sensitivity(self):
         pane = self._get_focused_pane()
-        modified = False if pane == -1 else self.textbuffer[pane].data.modified
+        modified = (
+            False if pane == -1 else self.textbuffer[pane].get_modified())
         if self.main_actiongroup:
             self.main_actiongroup.get_action("Save").set_sensitive(modified)
-        any_modified = any(b.data.modified for b in self.textbuffer)
+        any_modified = any(b.get_modified() for b in self.textbuffer)
         self.actiongroup.get_action("SaveAll").set_sensitive(any_modified)
 
     def recompute_label(self):
@@ -1000,9 +1001,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         shortnames = misc.shorten_names(*filenames)
 
         for i, buf in enumerate(self.textbuffer[:self.num_panes]):
-            if buf.data.modified:
+            if buf.get_modified():
                 shortnames[i] += "*"
-            self.file_save_button[i].set_sensitive(buf.data.modified)
+            self.file_save_button[i].set_sensitive(buf.get_modified())
             self.file_save_button[i].props.icon_name = (
                 'document-save-symbolic' if buf.data.writable else
                 'document-save-as-symbolic')
@@ -1549,7 +1550,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.meta['middle_saved'] = True
 
         if (self.state == melddoc.STATE_CLOSING and
-                not any(b.data.modified for b in self.textbuffer)):
+                not any(b.get_modified() for b in self.textbuffer)):
             self.on_delete_event()
         else:
             self.state = melddoc.STATE_NORMAL
@@ -1586,7 +1587,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_save_all_activate(self, action):
         for i in range(self.num_panes):
-            if self.textbuffer[i].data.modified:
+            if self.textbuffer[i].get_modified():
                 self.save_file(i)
 
     def on_file_save_button_clicked(self, button):
@@ -1613,7 +1614,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_revert_activate(self, *extra):
         response = Gtk.ResponseType.OK
-        unsaved = [b.data.label for b in self.textbuffer if b.data.modified]
+        unsaved = [b.data.label for b in self.textbuffer if b.get_modified()]
         if unsaved:
             dialog = gnomeglade.Component("filediff.ui", "revert_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
@@ -1777,7 +1778,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             for i in range(self.num_panes):
                 self.file_save_button[i].set_sensitive(
-                    self.textbuffer[i].data.modified)
+                    self.textbuffer[i].get_modified())
             self.queue_draw()
             self.recompute_label()
 
