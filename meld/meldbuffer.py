@@ -118,7 +118,6 @@ class MeldBufferData(GObject.GObject):
         self.loaded = False
         self.savefile = None
         self.encoding = None
-        self.newlines = None
 
     def __del__(self):
         self._disconnect_monitor()

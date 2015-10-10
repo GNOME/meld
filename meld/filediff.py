@@ -1077,7 +1077,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         if success:
             buf.data.encoding = loader.get_encoding()
-            buf.data.newlines = loader.get_newline_type()
 
         start, end = buf.get_bounds()
         buffer_text = buf.get_text(start, end, False)
@@ -1330,7 +1329,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 active_filters = any([f.active for f in self.text_filters])
 
                 bufs = self.textbuffer[:self.num_panes]
-                newlines = [b.data.newlines for b in bufs]
+                newlines = [b.data.sourcefile.get_newline_type() for b in bufs]
                 different_newlines = not misc.all_same(newlines)
 
                 if active_filters:
