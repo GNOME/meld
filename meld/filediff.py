@@ -1074,13 +1074,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 'dialog-error-symbolic', primary, err.message)
 
         buf = loader.get_buffer()
-
-        if success:
-            buf.data.encoding = loader.get_encoding()
-
         start, end = buf.get_bounds()
         buffer_text = buf.get_text(start, end, False)
-        if not buf.data.encoding and '\\00' in buffer_text:
+        if not loader.get_encoding() and '\\00' in buffer_text:
             primary = _("File %s appears to be a binary file.") % filename
             secondary = _(
                 "Do you want to open the file using the default application?")
@@ -1482,7 +1478,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
 
-        source_encoding = bufdata.encoding
+        source_encoding = bufdata.sourcefile.get_encoding()
         while isinstance(text, unicode):
             try:
                 encoding = source_encoding.get_charset()

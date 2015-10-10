@@ -117,7 +117,6 @@ class MeldBufferData(GObject.GObject):
         self.label = self._label if same_file else self.filename
         self.loaded = False
         self.savefile = None
-        self.encoding = None
 
     def __del__(self):
         self._disconnect_monitor()
