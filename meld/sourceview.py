@@ -124,6 +124,7 @@ class MeldSourceView(GtkSource.View):
 
         buf = meldbuffer.MeldBuffer()
         buf.create_tag("inline")
+        buf.create_tag("dimmed")
         self.set_buffer(buf)
 
         meldsettings.connect('changed', self.on_setting_changed)
@@ -162,6 +163,9 @@ class MeldSourceView(GtkSource.View):
             tag = self.get_buffer().get_tag_table().lookup("inline")
             tag.props.background_rgba = colour_lookup_with_fallback(
                 "meld:inline", "background")
+            tag = self.get_buffer().get_tag_table().lookup("dimmed")
+            tag.props.foreground_rgba = colour_lookup_with_fallback(
+                "meld:dimmed", "foreground")
 
     def do_realize(self):
         bind_settings(self)
