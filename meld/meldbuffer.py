@@ -196,7 +196,7 @@ class MeldBufferData(GObject.GObject):
         try:
             info = self.gfiletarget.query_info(
                 Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
-        except GLib.GError:
+        except (AttributeError, GLib.GError):
             return False
         return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)
 
