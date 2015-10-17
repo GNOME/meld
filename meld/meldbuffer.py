@@ -193,12 +193,8 @@ class MeldBufferData(GObject.GObject):
 
     @property
     def writable(self):
-        path = self.savefile or self.filename
-        if not path:
-            return False
-        gfile = Gio.File.new_for_path(path)
         try:
-            info = gfile.query_info(
+            info = self.gfiletarget.query_info(
                 Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
         except GLib.GError:
             return False
