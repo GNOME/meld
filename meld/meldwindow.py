@@ -252,6 +252,14 @@ class MeldWindow(gnomeglade.Component):
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
 
+        # Set tooltip on map because the recentmenu is lazily created
+        rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
+        rmenu.connect("map", self._on_recentmenu_map)
+
+    def _on_recentmenu_map(self, recentmenu):
+        for imagemenuitem in recentmenu.get_children():
+            imagemenuitem.set_tooltip_text(imagemenuitem.get_label())
+
     def on_focus_change(self, widget, event, callback_data=None):
         for idx in range(self.notebook.get_n_pages()):
             w = self.notebook.get_nth_page(idx)
