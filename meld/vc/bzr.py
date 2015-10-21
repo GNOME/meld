@@ -46,7 +46,6 @@ class Vc(_vc.Vc):
     CONFLICT_RE = "conflict in (.*)$"
     RENAMED_RE = u"^(.*) => (.*)$"
 
-
     commit_statuses = (
         _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED
     )

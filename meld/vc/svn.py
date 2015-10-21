@@ -204,7 +204,7 @@ class Vc(_vc.Vc):
                     continue
                 if not os.path.isabs(path):
                     path = os.path.abspath(os.path.join(self.location, path))
-                for status in (e for e in entry.getchildren() \
+                for status in (e for e in entry.getchildren()
                                if e.tag == "wc-status"):
                     item = status.attrib["item"]
                     if item == "":

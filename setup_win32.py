@@ -114,11 +114,11 @@ setup(
         'Topic :: Software Development',
         'Topic :: Software Development :: Version Control',
     ],
-    options = {
+    options={
         "build_exe": build_exe_options,
         "bdist_msi": bdist_msi_options,
     },
-    executables = [
+    executables=[
         Executable(
             "bin/meld",
             base="Win32GUI",

@@ -63,7 +63,7 @@ class Differ(GObject.GObject):
 
     __gsignals__ = {
         'diffs-changed': (GObject.SignalFlags.RUN_FIRST, None,
-                                                    (object,)),
+                          (object,)),
     }
 
     _matcher = MyersSequenceMatcher
@@ -296,14 +296,14 @@ class Differ(GObject.GObject):
 
         def offset(c, o1, o2):
             return DiffChunk._make((c[0], c[1] + o1, c[2] + o1,
-                                          c[3] + o2, c[4] + o2))
+                                    c[3] + o2, c[4] + o2))
 
         newdiffs = self._matcher(None, lines1, linesx).get_difference_opcodes()
         newdiffs = [offset(c, range1[0], rangex[0]) for c in newdiffs]
 
         if hiidx < len(self.diffs[which]):
-            offset_diffs = [offset(c, lines_added[1], lines_added[x]) for c
-                                                  in self.diffs[which][hiidx:]]
+            offset_diffs = [offset(c, lines_added[1], lines_added[x])
+                            for c in self.diffs[which][hiidx:]]
             self.diffs[which][hiidx:] = offset_diffs
         self.diffs[which][loidx:hiidx] = newdiffs
 

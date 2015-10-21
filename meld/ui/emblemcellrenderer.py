@@ -91,8 +91,9 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         if self._icon_name:
             pixbuf = self._get_pixbuf(self._icon_name, self._icon_size)
             context.set_operator(cairo.OPERATOR_SOURCE)
-            # Assumes square icons; may break if we don't get the requested size
-            height_offset = int((cell_area.height - pixbuf.get_height())/2)
+            # Assumes square icons; may break if we don't get the requested
+            # size
+            height_offset = int((cell_area.height - pixbuf.get_height()) / 2)
             Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, height_offset)
             context.rectangle(0, height_offset,
                               pixbuf.get_width(), pixbuf.get_height())

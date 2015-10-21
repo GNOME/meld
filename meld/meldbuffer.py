@@ -134,7 +134,7 @@ class MeldBufferData(GObject.GObject):
 
     @property
     def label(self):
-        #TRANSLATORS: This is the label of a new, currently-unnamed file.
+        # TRANSLATORS: This is the label of a new, currently-unnamed file.
         return self._label or _(u"<unnamed>")
 
     @label.setter

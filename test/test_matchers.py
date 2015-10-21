@@ -2,6 +2,7 @@
 import unittest
 from meld import matchers
 
+
 class MatchersTests(unittest.TestCase):
 
     def testBasicMatcher(self):
@@ -40,7 +41,7 @@ class MatchersTests(unittest.TestCase):
         a = list('012a3456c789')
         b = list('0a3412b5678')
         r = [(0, 0, 1), (1, 4, 2), (6, 7, 2), (9, 9, 2), (12, 11, 0)]
-        matcher = matchers.SyncPointMyersSequenceMatcher(None, a, b, [(3,6)])
+        matcher = matchers.SyncPointMyersSequenceMatcher(None, a, b, [(3, 6)])
         blocks = matcher.get_matching_blocks()
         self.assertEqual(blocks, r)
 
@@ -48,7 +49,8 @@ class MatchersTests(unittest.TestCase):
         a = list('012a3456c789')
         b = list('02a341b5678')
         r = [(0, 0, 1), (2, 1, 1), (3, 2, 3), (9, 9, 2), (12, 11, 0)]
-        matcher = matchers.SyncPointMyersSequenceMatcher(None, a, b, [(3,2), (8,6)])
+        matcher = matchers.SyncPointMyersSequenceMatcher(
+            None, a, b, [(3, 2), (8, 6)])
         blocks = matcher.get_matching_blocks()
         self.assertEqual(blocks, r)
 

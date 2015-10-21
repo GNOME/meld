@@ -20,7 +20,7 @@ from . import matchers
 class AutoMergeDiffer(diffutil.Differ):
 
     _matcher = matchers.MyersSequenceMatcher
-   # _matcher = PatienceSequenceMatcher
+    # _matcher = PatienceSequenceMatcher
 
     def __init__(self):
         diffutil.Differ.__init__(self)

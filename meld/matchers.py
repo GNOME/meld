@@ -428,7 +428,7 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                     tag = 'insert'
                 if tag:
                     opcodes.append((tag, i, ai, j, bj))
-                i, j = ai+size, bj+size
+                i, j = ai + size, bj + size
                 # the list of matching blocks is terminated by a
                 # sentinel with size 0
                 if size:
