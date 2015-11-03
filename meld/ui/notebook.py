@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gdk
+from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import Gtk
 
@@ -31,8 +32,44 @@ class MeldNotebook(Gtk.Notebook):
         MeldNotebook { gtk-key-bindings: TabSwitchBindings; }
     """
 
+    ui = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <interface>
+          <menu id="tab-menu">
+            <item>
+              <attribute name="label">Move _Left</attribute>
+              <attribute name="action">popup.tabmoveleft</attribute>
+            </item>
+            <item>
+              <attribute name="label">Move _Right</attribute>
+              <attribute name="action">popup.tabmoveright</attribute>
+            </item>
+            <item>
+              <attribute name="label">_Close</attribute>
+              <attribute name="action">win.close</attribute>
+            </item>
+          </menu>
+        </interface>
+    """
+
     def __init__(self, *args, **kwargs):
         Gtk.Notebook.__init__(self, *args, **kwargs)
+
+        self.action_group = Gio.SimpleActionGroup()
+
+        actions = (
+            ("tabmoveleft", self.on_tab_move_left),
+            ("tabmoveright", self.on_tab_move_right),
+        )
+        for (name, callback) in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.action_group.add_action(action)
+
+        self.insert_action_group("popup", self.action_group)
+
+        builder = Gtk.Builder.new_from_string(self.ui, -1)
+        self.popup_menu = builder.get_object("tab-menu")
 
         provider = Gtk.CssProvider()
         provider.load_from_data(self.css)
@@ -49,5 +86,43 @@ class MeldNotebook(Gtk.Notebook):
                 bindings, 'bind "<Alt>%d" { "tab-switch" (%d) };' % (key, i))
         self.connect('tab-switch', self.do_tab_switch)
 
+        self.connect('button-press-event', self.on_button_press_event)
+        self.connect('popup-menu', self.on_popup_menu)
+
     def do_tab_switch(self, notebook, page_num):
         notebook.set_current_page(page_num)
+
+    def on_popup_menu(self, widget, event=None):
+        self.action_group.lookup_action("tabmoveleft").set_enabled(
+            self.get_current_page() > 0)
+        self.action_group.lookup_action("tabmoveright").set_enabled(
+            self.get_current_page() < self.get_n_pages() - 1)
+
+        if event:
+            button = event.button
+            time = event.time
+        else:
+            button = 0
+            time = Gtk.get_current_event_time()
+        popup = Gtk.Menu.new_from_model(self.popup_menu)
+        popup.attach_to_widget(widget, None)
+        popup.show_all()
+        popup.popup(None, None, None, None, button, time)
+        return True
+
+    def on_button_press_event(self, widget, event):
+        if (event.triggers_context_menu() and
+                event.type == Gdk.EventType.BUTTON_PRESS):
+            return self.on_popup_menu(widget, event)
+        return False
+
+    def on_tab_move_left(self, *args):
+        page_num = self.get_current_page()
+        child = self.get_nth_page(page_num)
+        page_num = page_num - 1 if page_num > 0 else 0
+        self.reorder_child(child, page_num)
+
+    def on_tab_move_right(self, *args):
+        page_num = self.get_current_page()
+        child = self.get_nth_page(page_num)
+        self.reorder_child(child, page_num + 1)

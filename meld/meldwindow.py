@@ -108,22 +108,6 @@ class MeldWindow(gnomeglade.Component):
             ("Refresh", Gtk.STOCK_REFRESH, None, "<Primary>R",
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
-
-            ("TabMenu", None, _("_Tabs")),
-            ("PrevTab",   None, _("_Previous Tab"), "<Ctrl><Alt>Page_Up",
-                _("Activate previous tab"),
-                self.on_prev_tab),
-            ("NextTab",   None, _("_Next Tab"), "<Ctrl><Alt>Page_Down",
-                _("Activate next tab"),
-                self.on_next_tab),
-            ("MoveTabPrev", None,
-                _("Move Tab _Left"), "<Ctrl><Alt><Shift>Page_Up",
-                _("Move current tab to left"),
-                self.on_move_tab_prev),
-            ("MoveTabNext", None,
-                _("Move Tab _Right"), "<Ctrl><Alt><Shift>Page_Down",
-                _("Move current tab to right"),
-                self.on_move_tab_next),
         )
         toggleactions = (
             ("Fullscreen", None, _("Fullscreen"), "F11",
@@ -328,12 +312,6 @@ class MeldWindow(gnomeglade.Component):
 
     def _update_page_action_sensitivity(self):
         current_page = self.notebook.get_current_page()
-        have_prev_tab = current_page > 0
-        have_next_tab = current_page < self.notebook.get_n_pages() - 1
-        self.actiongroup.get_action("PrevTab").set_sensitive(have_prev_tab)
-        self.actiongroup.get_action("NextTab").set_sensitive(have_next_tab)
-        self.actiongroup.get_action("MoveTabPrev").set_sensitive(have_prev_tab)
-        self.actiongroup.get_action("MoveTabNext").set_sensitive(have_next_tab)
 
         if current_page != -1:
             page = self.notebook.get_nth_page(current_page).pyobject
@@ -531,23 +509,6 @@ class MeldWindow(gnomeglade.Component):
 
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()
-
-    def on_prev_tab(self, *args):
-        self.notebook.prev_page()
-
-    def on_next_tab(self, *args):
-        self.notebook.next_page()
-
-    def on_move_tab_prev(self, *args):
-        page_num = self.notebook.get_current_page()
-        child = self.notebook.get_nth_page(page_num)
-        page_num = page_num - 1 if page_num > 0 else 0
-        self.notebook.reorder_child(child, page_num)
-
-    def on_move_tab_next(self, *args):
-        page_num = self.notebook.get_current_page()
-        child = self.notebook.get_nth_page(page_num)
-        self.notebook.reorder_child(child, page_num + 1)
 
     def page_removed(self, page, status):
         if hasattr(page, 'scheduler'):
