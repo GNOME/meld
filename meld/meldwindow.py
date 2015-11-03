@@ -184,9 +184,6 @@ class MeldWindow(gnomeglade.Component):
             self.ui.add_ui_from_file(ui_file)
             self.widget.set_show_menubar(False)
 
-        self.tab_switch_actiongroup = None
-        self.tab_switch_merge_id = None
-
         for menuitem in ("Save", "Undo"):
             self.actiongroup.get_action(menuitem).props.is_important = True
         self.widget.add_accel_group(self.ui.get_accel_group())
@@ -410,10 +407,6 @@ class MeldWindow(gnomeglade.Component):
 
     def after_switch_page(self, notebook, page, which):
         self._update_page_action_sensitivity()
-        actiongroup = self.tab_switch_actiongroup
-        if actiongroup:
-            action_name = "SwitchTab%d" % which
-            actiongroup.get_action(action_name).set_active(True)
 
     def after_page_reordered(self, notebook, page, page_num):
         self._update_page_action_sensitivity()
@@ -430,13 +423,6 @@ class MeldWindow(gnomeglade.Component):
         if isinstance(text, unicode):
             text = text.encode('utf8')
         self.notebook.child_set_property(page, "menu-label", text)
-
-        actiongroup = self.tab_switch_actiongroup
-        if actiongroup:
-            idx = self.notebook.page_num(page)
-            action_name = "SwitchTab%d" % idx
-            label = text.replace("_", "__")
-            actiongroup.get_action(action_name).set_label(label)
 
     def on_can_undo(self, undosequence, can):
         self.actiongroup.get_action("Undo").set_sensitive(can)
@@ -562,48 +548,6 @@ class MeldWindow(gnomeglade.Component):
         page_num = self.notebook.get_current_page()
         child = self.notebook.get_nth_page(page_num)
         self.notebook.reorder_child(child, page_num + 1)
-
-    def _update_notebook_menu(self, *args):
-        if self.tab_switch_merge_id:
-            self.ui.remove_ui(self.tab_switch_merge_id)
-            self.ui.remove_action_group(self.tab_switch_actiongroup)
-            self.ui.ensure_update()
-            self.tab_switch_merge_id = None
-            self.tab_switch_actiongroup = None
-
-        if not self.notebook.get_n_pages():
-            return
-
-        self.tab_switch_merge_id = self.ui.new_merge_id()
-        self.tab_switch_actiongroup = Gtk.ActionGroup(name="TabSwitchActions")
-        self.ui.insert_action_group(self.tab_switch_actiongroup)
-        group = None
-        current_page = self.notebook.get_current_page()
-        for i in range(self.notebook.get_n_pages()):
-            page = self.notebook.get_nth_page(i)
-            label = self.notebook.get_menu_label_text(page) or ""
-            label = label.replace("_", "__")
-            name = "SwitchTab%d" % i
-            tooltip = _("Switch to this tab")
-            action = Gtk.RadioAction(
-                name=name, label=label, tooltip=tooltip,
-                stock_id=None, value=i)
-            action.join_group(group)
-            group = action
-            action.set_active(current_page == i)
-
-            def current_tab_changed_cb(action, current):
-                if action == current:
-                    self.notebook.set_current_page(action.get_current_value())
-            action.connect("changed", current_tab_changed_cb)
-            if i < 10:
-                accel = "<Alt>%d" % ((i + 1) % 10)
-            else:
-                accel = None
-            self.tab_switch_actiongroup.add_action_with_accel(action, accel)
-            self.ui.add_ui(self.tab_switch_merge_id,
-                           "/Menubar/TabMenu/TabPlaceholder",
-                           name, name, Gtk.UIManagerItemType.MENUITEM, False)
 
     def page_removed(self, page, status):
         if hasattr(page, 'scheduler'):

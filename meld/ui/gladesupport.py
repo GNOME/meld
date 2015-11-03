@@ -7,4 +7,5 @@ from meld import sourceview
 from meld.ui import emblemcellrenderer
 from meld.ui import historyentry
 from meld.ui import msgarea
+from meld.ui import notebook
 from meld.ui import statusbar
