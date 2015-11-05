@@ -370,7 +370,7 @@ class MeldWindow(gnomeglade.Component):
 
         if newdoc:
             nbl = self.notebook.get_tab_label(newdoc.widget)
-            self.widget.set_title(nbl.get_label_text() + " - Meld")
+            self.widget.set_title(nbl.get_label_text())
             newdoc.on_container_switch_in_event(self.ui)
         else:
             self.widget.set_title("Meld")
@@ -390,7 +390,7 @@ class MeldWindow(gnomeglade.Component):
         self._update_page_action_sensitivity()
 
     def on_page_label_changed(self, notebook, label_text):
-        self.widget.set_title(label_text + " - Meld")
+        self.widget.set_title(label_text)
 
     def on_can_undo(self, undosequence, can):
         self.actiongroup.get_action("Undo").set_sensitive(can)
