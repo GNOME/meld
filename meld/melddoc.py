@@ -62,7 +62,7 @@ class LabeledObjectMixin(GObject.GObject):
     }
 
     label_text = _("untitled")
-    tooltip_text = _("untitled")
+    tooltip_text = None
 
     def label_changed(self):
         self.emit("label-changed", self.label_text, self.tooltip_text)

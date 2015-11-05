@@ -20,6 +20,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from .ui import gnomeglade
+from meld.conf import _
 from meld.melddoc import LabeledObjectMixin
 from meld.recent import recent_comparisons
 
@@ -33,6 +34,8 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         'diff-created': (GObject.SignalFlags.RUN_FIRST, None,
                          (object,)),
     }
+
+    label_text = _("New comparison")
 
     def __init__(self, parentapp):
         GObject.GObject.__init__(self)
@@ -129,7 +132,7 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         self.emit('diff-created', tab)
 
     def on_container_switch_in_event(self, *args):
-        pass
+        self.label_changed()
 
     def on_container_switch_out_event(self, *args):
         pass

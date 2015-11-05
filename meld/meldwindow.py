@@ -570,7 +570,6 @@ class MeldWindow(gnomeglade.Component):
     def append_new_comparison(self):
         doc = newdifftab.NewDiffTab(self)
         self._append_page(doc, "document-new")
-        self.on_notebook_label_changed(doc, _("New comparison"), None)
 
         def diff_created_cb(doc, newdoc):
             doc.on_delete_event()
