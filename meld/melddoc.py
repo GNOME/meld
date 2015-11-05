@@ -54,13 +54,25 @@ def make_custom_editor_command(path, line=0):
 STATE_NORMAL, STATE_CLOSING, STATE_SAVING_ERROR, NUM_STATES = range(4)
 
 
-class MeldDoc(GObject.GObject):
+class LabeledObjectMixin(GObject.GObject):
+    __gsignals__ = {
+        'label-changed': (
+            GObject.SignalFlags.RUN_FIRST, None,
+            (GObject.TYPE_STRING, GObject.TYPE_STRING)),
+    }
+
+    label_text = _("untitled")
+    tooltip_text = _("untitled")
+
+    def label_changed(self):
+        self.emit("label-changed", self.label_text, self.tooltip_text)
+
+
+class MeldDoc(LabeledObjectMixin, GObject.GObject):
     """Base class for documents in the meld application.
     """
 
     __gsignals__ = {
-        'label-changed':        (GObject.SignalFlags.RUN_FIRST, None,
-                                 (GObject.TYPE_STRING, GObject.TYPE_STRING)),
         'file-changed':         (GObject.SignalFlags.RUN_FIRST, None,
                                  (GObject.TYPE_STRING,)),
         'create-diff':          (GObject.SignalFlags.RUN_FIRST, None,
@@ -80,8 +92,6 @@ class MeldDoc(GObject.GObject):
         GObject.GObject.__init__(self)
         self.scheduler = task.FifoScheduler()
         self.num_panes = 0
-        self.label_text = _("untitled")
-        self.tooltip_text = _("untitled")
         self.main_actiongroup = None
         self._state = STATE_NORMAL
 
@@ -183,9 +193,6 @@ class MeldDoc(GObject.GObject):
 
     def on_file_changed(self, filename):
         pass
-
-    def label_changed(self):
-        self.emit("label-changed", self.label_text, self.tooltip_text)
 
     def set_labels(self, lst):
         pass
