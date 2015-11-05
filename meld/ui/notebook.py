@@ -25,6 +25,7 @@ class MeldNotebook(Gtk.Notebook):
 
     __gsignals__ = {
         'tab-switch': (GObject.SignalFlags.ACTION, None, (int,)),
+        'page-label-changed': (0, None, (GObject.TYPE_STRING,)),
     }
 
     css = """
@@ -88,6 +89,8 @@ class MeldNotebook(Gtk.Notebook):
 
         self.connect('button-press-event', self.on_button_press_event)
         self.connect('popup-menu', self.on_popup_menu)
+        self.connect('page-added', self.on_page_added)
+        self.connect('page-removed', self.on_page_removed)
 
     def do_tab_switch(self, notebook, page_num):
         notebook.set_current_page(page_num)
@@ -126,3 +129,22 @@ class MeldNotebook(Gtk.Notebook):
         page_num = self.get_current_page()
         child = self.get_nth_page(page_num)
         self.reorder_child(child, page_num + 1)
+
+    def on_page_added(self, notebook, child, page_num, *args):
+        child.pyobject.connect("label-changed", self.on_label_changed)
+
+    def on_page_removed(self, notebook, child, page_num, *args):
+        child.pyobject.disconnect_by_func(self.on_label_changed)
+
+    def on_label_changed(self, component, text, tooltip):
+        page = component.widget
+        nbl = self.get_tab_label(page)
+        nbl.set_label_text(text)
+        nbl.set_tooltip_text(tooltip)
+
+        # Only update the window title if the current page is active
+        if self.get_current_page() == self.page_num(page):
+            self.emit('page-label-changed', text)
+        if isinstance(text, unicode):
+            text = text.encode('utf8')
+        self.child_set_property(page, "menu-label", text)

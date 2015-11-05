@@ -389,18 +389,8 @@ class MeldWindow(gnomeglade.Component):
     def after_page_reordered(self, notebook, page, page_num):
         self._update_page_action_sensitivity()
 
-    def on_notebook_label_changed(self, component, text, tooltip):
-        page = component.widget
-        nbl = self.notebook.get_tab_label(page)
-        nbl.set_label_text(text)
-        nbl.set_tooltip_text(tooltip)
-
-        # Only update the window title if the current page is active
-        if self.notebook.get_current_page() == self.notebook.page_num(page):
-            self.widget.set_title(text + " - Meld")
-        if isinstance(text, unicode):
-            text = text.encode('utf8')
-        self.notebook.child_set_property(page, "menu-label", text)
+    def on_page_label_changed(self, notebook, label_text):
+        self.widget.set_title(label_text + " - Meld")
 
     def on_can_undo(self, undosequence, can):
         self.actiongroup.get_action("Undo").set_sensitive(can)
@@ -558,7 +548,6 @@ class MeldWindow(gnomeglade.Component):
         if hasattr(page, 'scheduler'):
             self.scheduler.add_scheduler(page.scheduler)
         if isinstance(page, melddoc.MeldDoc):
-            page.connect("label-changed", self.on_notebook_label_changed)
             page.connect("file-changed", self.on_file_changed)
             page.connect("create-diff", lambda obj, arg, kwargs:
                          self.append_diff(arg, **kwargs))
@@ -570,6 +559,7 @@ class MeldWindow(gnomeglade.Component):
     def append_new_comparison(self):
         doc = newdifftab.NewDiffTab(self)
         self._append_page(doc, "document-new")
+        self.notebook.on_label_changed(doc, _("New comparison"), None)
 
         def diff_created_cb(doc, newdoc):
             doc.on_delete_event()
