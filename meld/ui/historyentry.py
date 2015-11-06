@@ -88,7 +88,7 @@ class HistoryCombo(Gtk.ComboBox):
             os.makedirs(pref_dir)
 
         self.history_file = os.path.join(pref_dir, "history.ini")
-        self.config = configparser.SafeConfigParser()
+        self.config = configparser.RawConfigParser()
         if os.path.exists(self.history_file):
             self.config.read(self.history_file)
 
