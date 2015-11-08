@@ -765,31 +765,31 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def _filter_text(self, txt, buf, start_iter, end_iter):
         dimmed_tag = buf.get_tag_table().lookup("dimmed")
         buf.remove_tag(dimmed_tag, start_iter, end_iter)
-        start = start_iter.copy()
-        end = start_iter.copy()
 
         def killit(m):
+
+            def get_match_iters(match, match_index=0):
+                start = start_iter.copy()
+                end = start_iter.copy()
+                start.forward_chars(match.start(match_index))
+                end.forward_chars(match.end(match_index))
+                return start, end
+
             assert m.group().count("\n") == 0
             if len(m.groups()):
                 s = m.group()
                 for i in reversed(range(1, len(m.groups())+1)):
                     g = m.group(i)
                     if g:
-                        start.forward_chars(m.start(i))
-                        end.forward_chars(m.end(i))
+                        start, end = get_match_iters(m, i)
                         buf.apply_tag(dimmed_tag, start, end)
-                        start.forward_chars(-m.start(i))
-                        end.forward_chars(-m.end(i))
 
                         s = s[:m.start(i)-m.start()]+s[m.end(i)-m.start():]
 
                 return s
             else:
-                start.forward_chars(m.start())
-                end.forward_chars(m.end())
+                start, end = get_match_iters(m)
                 buf.apply_tag(dimmed_tag, start, end)
-                start.forward_chars(-m.start())
-                end.forward_chars(-m.end())
 
                 return ""
 
