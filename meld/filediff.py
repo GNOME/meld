@@ -45,7 +45,6 @@ from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
 from meld.settings import bind_settings, meldsettings
-from .util.compat import text_type
 from meld.sourceview import LanguageManager, get_custom_encoding_candidates
 
 
@@ -925,7 +924,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textbuffer[pane]
         sel = buf.get_selection_bounds()
         if sel:
-            return text_type(buf.get_text(sel[0], sel[1], False), 'utf8')
+            return buf.get_text(sel[0], sel[1], False)
 
     def on_find_activate(self, *args):
         selected_text = self.get_selected_text()

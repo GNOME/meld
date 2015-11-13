@@ -39,7 +39,6 @@ from . import misc
 from . import recent
 from .ui import gnomeglade
 from .ui import emblemcellrenderer
-from meld.util.compat import text_type
 
 from collections import namedtuple
 from decimal import Decimal
@@ -624,7 +623,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # the time we get this far. This is a fallback, and may be wrong!
         locations = list(locations)
         for i, l in enumerate(locations):
-            if not isinstance(l, text_type):
+            if not isinstance(l, str):
                 locations[i] = l.decode(sys.getfilesystemencoding())
         locations = [os.path.abspath(l) if l else '' for l in locations]
         self.current_path = None
@@ -719,7 +718,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                 for e in entries:
                     try:
-                        if not isinstance(e, text_type):
+                        if not isinstance(e, str):
                             e = e.decode('utf8')
                     except UnicodeDecodeError:
                         approximate_name = e.decode('utf8', 'replace')

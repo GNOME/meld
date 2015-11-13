@@ -24,7 +24,6 @@ from gi.repository import GtkSource
 from meld.conf import _
 from meld.misc import fallback_decode
 from meld.settings import bind_settings, meldsettings
-from meld.util.compat import text_type
 
 
 class MeldBuffer(GtkSource.Buffer):
