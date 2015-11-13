@@ -51,7 +51,7 @@ COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
 def unicodeify(s):
     if s is None:
         return None
-    if isinstance(s, str):
+    if isinstance(s, bytes):
         return s.decode(sys.getfilesystemencoding(), 'replace')
     return s
 
