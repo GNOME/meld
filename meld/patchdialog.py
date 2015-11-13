@@ -98,7 +98,7 @@ class PatchDialog(gnomeglade.Component):
         name0, name1 = names[indices[0]], names[indices[1]]
 
         diff = difflib.unified_diff(text0, text1, name0, name1)
-        unicodeify = lambda x: x.decode('utf8') if isinstance(x, str) else x
+        unicodeify = lambda x: x.decode('utf8') if isinstance(x, bytes) else x
         diff_text = "".join(unicodeify(d) for d in diff)
         buf.set_text(diff_text)
 
