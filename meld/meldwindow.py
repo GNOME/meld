@@ -33,7 +33,6 @@ from . import vcview
 from .ui import gnomeglade
 from .ui import notebooklabel
 
-from .util.compat import string_types
 from meld.conf import _
 from meld.recent import recent_comparisons
 from meld.settings import interface_settings, settings
@@ -291,7 +290,7 @@ class MeldWindow(gnomeglade.Component):
 
     def on_idle(self):
         ret = self.scheduler.iteration()
-        if ret and isinstance(ret, string_types):
+        if ret and isinstance(ret, str):
             self.spinner.set_tooltip_text(ret)
 
         pending = self.scheduler.tasks_pending()
