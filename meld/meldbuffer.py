@@ -287,8 +287,7 @@ class BufferLines(object):
             if not line_end.ends_line():
                 line_end.forward_to_line_end()
             txt = self.buf.get_text(line_start, line_end, False)
-            txt_filtered = self.textfilter(txt, self.buf, line_start, line_end)
-            return text_type(txt_filtered, 'utf8')
+            return self.textfilter(txt, self.buf, line_start, line_end)
 
     def __len__(self):
         return self.buf.get_line_count()
