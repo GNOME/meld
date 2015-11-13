@@ -1489,7 +1489,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         text = text_type(buf.get_text(start, end, False), 'utf8')
 
         source_encoding = bufdata.sourcefile.get_encoding()
-        while isinstance(text, unicode):
+        while isinstance(text, str):
             try:
                 encoding = source_encoding.get_charset()
                 text = text.encode(encoding)
