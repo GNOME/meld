@@ -229,18 +229,9 @@ class Vc(_vc.Vc):
             path = path.replace("\\", "/")
 
         args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], path)]
-        process = subprocess.Popen(args,
-                                   cwd=self.location, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-        vc_file = process.stdout
-
-        # Error handling here involves doing nothing; in most cases, the only
-        # sane response is to return an empty temp file.
-
-        prefix = 'meld-tmp-%s-' % _vc.conflicts[conflict]
-        with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
-            shutil.copyfileobj(vc_file, f)
-        return f.name, True
+        filename = _vc.call_temp_output(
+            args, cwd=self.location, file_id=_vc.conflicts[conflict])
+        return filename, True
 
     def get_path_for_repo_file(self, path, commit=None):
         if commit is None:

@@ -373,11 +373,14 @@ def popen(cmd, cwd=None):
     return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
 
 
-def call_temp_output(cmd, cwd):
+def call_temp_output(cmd, cwd, file_id=''):
     """Call `cmd` in `cwd` and write the output to a temporary file
 
     This returns the name of the temporary file used. It is the
     caller's responsibility to delete this file.
+
+    If `file_id` is provided, it is used as part of the
+    temporary file's name, for ease of identification.
     """
     process = subprocess.Popen(
         cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -386,7 +389,8 @@ def call_temp_output(cmd, cwd):
     # Error handling here involves doing nothing; in most cases, the only
     # sane response is to return an empty temp file.
 
-    with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+    prefix = 'meld-tmp' + ('-' + file_id if file_id else '')
+    with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
         shutil.copyfileobj(vc_file, f)
     return f.name
 
