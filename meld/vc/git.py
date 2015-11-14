@@ -255,17 +255,8 @@ class Vc(_vc.Vc):
             path = path.replace("\\", "/")
 
         obj = commit + ":" + path
-        process = subprocess.Popen([self.CMD, "cat-file", "blob", obj],
-                                   cwd=self.root, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-        vc_file = process.stdout
-
-        # Error handling here involves doing nothing; in most cases, the only
-        # sane response is to return an empty temp file.
-
-        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
-            shutil.copyfileobj(vc_file, f)
-        return f.name
+        args = [self.CMD, "cat-file", "blob", obj]
+        return _vc.call_temp_output(args, cwd=self.root)
 
     @classmethod
     def valid_repo(cls, path):

@@ -25,9 +25,6 @@
 
 import errno
 import os
-import shutil
-import subprocess
-import tempfile
 
 from . import _vc
 
@@ -80,13 +77,8 @@ class Vc(_vc.Vc):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
         path = path[len(self.root) + 1:]
 
-        process = subprocess.Popen([self.CMD, "cat", path], cwd=self.root,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-
-        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
-            shutil.copyfileobj(process.stdout, f)
-        return f.name
+        args = [self.CMD, "cat", path]
+        return _vc.call_temp_output(args, cwd=self.root)
 
     def _update_tree_state_cache(self, path):
         """ Update the state of the file(s) at self._tree_cache['path'] """

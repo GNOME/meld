@@ -27,7 +27,9 @@ import collections
 import itertools
 import os
 import re
+import shutil
 import subprocess
+import tempfile
 
 from gi.repository import Gio
 
@@ -369,6 +371,24 @@ class InvalidVCRevision(ValueError):
 # Return the stdout output of a given command
 def popen(cmd, cwd=None):
     return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
+
+
+def call_temp_output(cmd, cwd):
+    """Call `cmd` in `cwd` and write the output to a temporary file
+
+    This returns the name of the temporary file used. It is the
+    caller's responsibility to delete this file.
+    """
+    process = subprocess.Popen(
+        cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    vc_file = process.stdout
+
+    # Error handling here involves doing nothing; in most cases, the only
+    # sane response is to return an empty temp file.
+
+    with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+        shutil.copyfileobj(vc_file, f)
+    return f.name
 
 
 # Return the return value of a given command
