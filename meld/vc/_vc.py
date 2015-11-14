@@ -144,6 +144,17 @@ class Vc(object):
         self._tree_meta_cache = {}
         self._tree_missing_cache = collections.defaultdict(set)
 
+    def run(self, *args):
+        """Return subprocess running VC with `args` at VC's location
+
+        For example, `git_vc.run('log', '-p')` will run `git log -p`
+        and return the subprocess object.
+
+        Note that this runs at the *location*, not at the *root*.
+        """
+        cmd = (self.CMD,) + args
+        return subprocess.Popen(cmd, cwd=self.location, stdout=subprocess.PIPE)
+
     def get_files_to_commit(self, paths):
         """Get a list of files that will be committed from paths
 

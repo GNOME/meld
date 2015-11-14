@@ -31,7 +31,6 @@ import os
 import re
 import shutil
 import stat
-import subprocess
 import tempfile
 from collections import defaultdict
 
@@ -104,10 +103,6 @@ class Vc(_vc.Vc):
         else:
             label = ""
         return label
-
-    def run(self, *args):
-        cmd = (self.CMD,) + args
-        return subprocess.Popen(cmd, cwd=self.location, stdout=subprocess.PIPE)
 
     def get_commits_to_push(self):
         proc = self.run(
