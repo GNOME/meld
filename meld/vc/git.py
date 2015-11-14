@@ -299,7 +299,8 @@ class Vc(_vc.Vc):
             # Unicode file names and file names containing quotes are
             # returned by git as quoted strings
             if name[0] == '"':
-                name = name[1:-1].decode('string_escape')
+                name = name.encode('utf-8')
+                name = name[1:-1].decode('unicode_escape')
             return os.path.abspath(
                 os.path.join(self.location, name))
 
