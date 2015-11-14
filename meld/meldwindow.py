@@ -138,8 +138,9 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
 
-        recent_action = Gtk.RecentAction(name="Recent",  label=_("Open Recent"),
-                                         tooltip=_("Open recent files"), stock_id=None)
+        recent_action = Gtk.RecentAction(
+            name="Recent",  label=_("Open Recent"),
+            tooltip=_("Open recent files"), stock_id=None)
         recent_action.set_show_private(True)
         recent_action.set_filter(recent_comparisons.recent_filter)
         recent_action.set_sort_type(Gtk.RecentSortType.MRU)
@@ -253,6 +254,14 @@ class MeldWindow(gnomeglade.Component):
         self.undo_handlers = tuple()
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
+
+        # Set tooltip on map because the recentmenu is lazily created
+        rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
+        rmenu.connect("map", self._on_recentmenu_map)
+
+    def _on_recentmenu_map(self, recentmenu):
+        for imagemenuitem in recentmenu.get_children():
+            imagemenuitem.set_tooltip_text(imagemenuitem.get_label())
 
     def on_focus_change(self, widget, event, callback_data=None):
         for idx in range(self.notebook.get_n_pages()):
@@ -558,7 +567,9 @@ class MeldWindow(gnomeglade.Component):
             label = label.replace("_", "__")
             name = "SwitchTab%d" % i
             tooltip = _("Switch to this tab")
-            action = Gtk.RadioAction(name=name, label=label, tooltip=tooltip, stock_id=None, value=i)
+            action = Gtk.RadioAction(
+                name=name, label=label, tooltip=tooltip,
+                stock_id=None, value=i)
             action.join_group(group)
             group = action
             action.set_active(current_page == i)
@@ -651,7 +662,7 @@ class MeldWindow(gnomeglade.Component):
             doc.on_button_diff_clicked(None)
         return doc
 
-    def append_filediff(self, files,  merge_output=None, meta=None):
+    def append_filediff(self, files, merge_output=None, meta=None):
         assert len(files) in (1, 2, 3)
         doc = filediff.FileDiff(len(files))
         self._append_page(doc, "text-x-generic")

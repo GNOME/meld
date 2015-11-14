@@ -172,6 +172,7 @@ class Vc(_vc.Vc):
         vc_dir = os.path.join(root, cls.VC_DIR)
 
         # Check for repository version, trusting format file then entries file
+        repo_version = None
         for filename in ("format", "entries"):
             path = os.path.join(vc_dir, filename)
             if os.path.exists(path):
@@ -203,7 +204,7 @@ class Vc(_vc.Vc):
                     continue
                 if not os.path.isabs(path):
                     path = os.path.abspath(os.path.join(self.location, path))
-                for status in (e for e in entry.getchildren() \
+                for status in (e for e in entry.getchildren()
                                if e.tag == "wc-status"):
                     item = status.attrib["item"]
                     if item == "":

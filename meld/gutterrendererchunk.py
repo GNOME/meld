@@ -39,7 +39,7 @@ class MeldGutterRenderer(object):
 
     def on_setting_changed(self, meldsettings, key):
         if key == 'style-scheme':
-            #meldsettings.style_scheme
+            # meldsettings.style_scheme
             self.fill_colors, self.line_colors = get_common_theme()
 
     def draw_chunks(

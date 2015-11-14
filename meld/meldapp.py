@@ -98,7 +98,7 @@ class MeldApp(Gtk.Application):
     def do_window_removed(self, widget):
         widget.meldwindow = None
         Gtk.Application.do_window_removed(self, widget)
-        if not self.get_windows():
+        if not len(self.get_windows()):
             self.quit()
 
     # We can't override do_local_command_line because it has no introspection

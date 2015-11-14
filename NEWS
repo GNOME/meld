@@ -1,4 +1,69 @@
 
+2015-10-05 meld 3.15.0
+======================
+
+  Features:
+
+   * New API for version control plugins with more consistent interfaces and
+     data structures across different plugins, enabling many minor
+     improvements (Kai Willadsen)
+     * Support the conflict resolution prompt in file comparisons for all VCs
+     * Improve caching behaviour for some version control plugins
+     * Better sensitivity handling for version control actions
+     * Cache and show more metadata (e.g., file renames)
+     * Several version control plugins have not been ported to the new API; the
+       current list of support plugins is: Git, Mercurial, Subversion 1.7+,
+       Bazaar
+   * Faster rendering in file comparison view, enabled by new GtkTextView API
+     (Kai Willadsen)
+   * Move to using GtkSourceView style schemes with Meld-specific colour tags
+     for highlight colours; this lets themes include colours that match the
+     sourceview theme (Kai Willadsen)
+   * Offer to open binary files externally (Pratik Dayama)
+   * Show the common ancestor in conflicting regions (and the merged file
+     everywhere else) when viewing conflicts through Meld's version control
+     view; currently this is only supported under Git (Kai Willadsen)
+   * Support showing staged/partially staged status of files under Git (Kai
+     Willadsen)
+   * Update preferences dialog to new style with headerbar (Kai Willadsen)
+
+
+  Fixes:
+
+   * Documentation updates (Andrew Beyer)
+   * Fix crash with some GTK+ versions when using --output (Kai Willadsen)
+   * Fix merge-all action not working at all (Kai Willadsen)
+   * Fix creating patches with unicode path names (Kai Willadsen)
+   * Fix copy-to-clipboard option in patch dialog (Kai Willadsen)
+   * Fix diffmap alignment for new GTK+ allocation behaviour (Kai Willadsen)
+   * Improve float accuracy in folder comparison timestamp resolution (Kai
+     Willadsen)
+   * Fix default SVN keyword filter to escape $ characters (Kai Willadsen)
+   * Fix display of unicode --help from command line (Kai Willadsen)
+   * Fix keyboard shortcut docs (Kai Willadsen)
+   * Don't incorrectly show identical notification for changed folder
+     comparisons (Kai Willadsen)
+
+
+  Internal changes:
+
+   * Requirements are now GTK+ 3.14, GtkSourceView 3.14 and GLib 2.36
+   * Rewritten version control plugin API
+   * Unified colour handling between linkmap, diffmap and file comparison
+   * Move all textview drawing to a new GtkSourceView subclass, using the new
+     GTK+ draw-layer API
+
+
+  Translations:
+
+   * Daniel Mustieles (es)
+   * Gábor Kelemen (hu)
+   * Jiri Grönroos (fi)
+   * Josef Andersson (sv)
+   * Marek Černocký (cs)
+   * Piotr Drąg (pl)
+
+
 2015-07-23 meld 3.14.0
 ======================
 

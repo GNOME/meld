@@ -17,6 +17,7 @@
 import difflib
 import os
 
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -90,11 +91,16 @@ class PatchDialog(gnomeglade.Component):
         names = [self.filediff.textbuffer[i].data.label for i in range(3)]
         prefix = os.path.commonprefix(names)
         names = [n[prefix.rfind("/") + 1:] for n in names]
+        # difflib doesn't handle getting unicode file labels
+        names = [n.encode('utf8') for n in names]
 
         buf = self.textview.get_buffer()
         text0, text1 = texts[indices[0]], texts[indices[1]]
         name0, name1 = names[indices[0]], names[indices[1]]
-        diff_text = "".join(difflib.unified_diff(text0, text1, name0, name1))
+
+        diff = difflib.unified_diff(text0, text1, name0, name1)
+        unicodeify = lambda x: x.decode('utf8') if isinstance(x, str) else x
+        diff_text = "".join(unicodeify(d) for d in diff)
         buf.set_text(diff_text)
 
     def save_patch(self, filename):
@@ -133,8 +139,8 @@ class PatchDialog(gnomeglade.Component):
         if result == 1:
             buf = self.textview.get_buffer()
             start, end = buf.get_bounds()
-            clip = Gtk.Clipboard.get()
-            clip.set_text(buf.get_text(start, end, False))
+            clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+            clip.set_text(buf.get_text(start, end, False), -1)
             clip.store()
         # Save patch as a file
         else:

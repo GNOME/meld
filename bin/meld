@@ -158,8 +158,8 @@ def check_requirements():
     try:
         # FIXME: Extra clause for gi
         import gi
-        from gi.repository import Gtk
         gi.require_version("Gtk", "3.0")
+        from gi.repository import Gtk
         version = (Gtk.get_major_version(), Gtk.get_minor_version())
         assert version >= gtk_requirement
     except (ImportError, AssertionError) as e:
@@ -172,6 +172,7 @@ def check_requirements():
         missing_reqs("GLib", glib_requirement, e)
 
     try:
+        gi.require_version('GtkSource', '3.0')
         from gi.repository import GtkSource
         # TODO: There is no way to get at GtkSourceView's actual version
         assert hasattr(GtkSource, 'SearchSettings')

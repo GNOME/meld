@@ -19,6 +19,7 @@
 from __future__ import print_function
 
 import atexit
+import functools
 import logging
 import tempfile
 import shutil
@@ -589,7 +590,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.console_vbox.show()
 
         if refresh:
-            self.refresh_partial(working_dir)
+            refresh = functools.partial(self.refresh_partial, working_dir)
+            GLib.idle_add(refresh)
 
     def has_command(self, command):
         vc_command = self.command_map.get(command)

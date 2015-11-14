@@ -151,7 +151,7 @@ class DiffTreeStore(Gtk.TreeStore):
         # if you try to give it a Gdk.Color property
         if tint:
             tint = tint.to_string() if tint else None
-        self.set_value(it, col_idx(COL_TINT,  pane), tint)
+        self.set_value(it, col_idx(COL_TINT, pane), tint)
 
         fg, style, weight, strike = self.text_attributes[state]
         self.set_value(it, col_idx(COL_FG, pane), fg)
@@ -196,7 +196,7 @@ class DiffTreeStore(Gtk.TreeStore):
                 while 1:
                     nc = self.iter_n_children(it)
                     if nc:
-                        it = self.iter_nth_child(it, nc-1)
+                        it = self.iter_nth_child(it, nc - 1)
                     else:
                         break
             else:

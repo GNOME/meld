@@ -53,14 +53,17 @@ class NotebookLabel(Gtk.HBox):
         font_desc = self.get_style_context().get_font(Gtk.StateFlags.NORMAL)
         metrics = context.get_metrics(font_desc, context.get_language())
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
-        valid, w, h = Gtk.icon_size_lookup_for_settings(self.get_settings(), Gtk.IconSize.MENU)
+        valid, w, h = Gtk.icon_size_lookup_for_settings(
+            self.get_settings(), Gtk.IconSize.MENU)
         # FIXME: PIXELS replacement
-        self.set_size_request(self.tab_width_in_chars * char_width + 2 * w, -1)
+        self.set_size_request(
+            self.tab_width_in_chars * char_width + 2 * w, -1)
 
         button = Gtk.Button()
         button.set_relief(Gtk.ReliefStyle.NONE)
         button.set_focus_on_click(False)
-        icon = Gio.ThemedIcon.new_with_default_fallbacks('window-close-symbolic')
+        icon = Gio.ThemedIcon.new_with_default_fallbacks(
+            'window-close-symbolic')
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.MENU)
         image.set_tooltip_text(_("Close tab"))
         button.add(image)

@@ -123,7 +123,7 @@ class MeldBufferData(GObject.GObject):
 
     @property
     def label(self):
-        #TRANSLATORS: This is the label of a new, currently-unnamed file.
+        # TRANSLATORS: This is the label of a new, currently-unnamed file.
         return self._label or _(u"<unnamed>")
 
     @label.setter
@@ -238,7 +238,7 @@ class BufferLines(object):
             end = self.buf.get_iter_at_line_or_eof(hi)
             txt = text_type(self.buf.get_text(start, end, False), 'utf8')
 
-            filter_txt = self.textfilter(txt)
+            filter_txt = self.textfilter(txt, self.buf, start, end)
             lines = filter_txt.splitlines()
             ends = filter_txt.splitlines(True)
 
@@ -284,7 +284,8 @@ class BufferLines(object):
             if not line_end.ends_line():
                 line_end.forward_to_line_end()
             txt = self.buf.get_text(line_start, line_end, False)
-            return text_type(self.textfilter(txt), 'utf8')
+            txt_filtered = self.textfilter(txt, self.buf, line_start, line_end)
+            return text_type(txt_filtered, 'utf8')
 
     def __len__(self):
         return self.buf.get_line_count()

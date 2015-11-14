@@ -98,7 +98,8 @@ class RecentFiles(object):
         comparison_key = (comp_type, tuple(paths))
         paths = [unicodeify(p) for p in paths]
         if comparison_key in self._stored_comparisons:
-            gio_file = Gio.File.new_for_uri(self._stored_comparisons[comparison_key])
+            gio_file = Gio.File.new_for_uri(
+                self._stored_comparisons[comparison_key])
         else:
             recent_path = self._write_recent_file(comp_type, paths)
             gio_file = Gio.File.new_for_path(recent_path)
@@ -181,7 +182,8 @@ class RecentFiles(object):
 
         # Remove any comparison files that are not listed by RecentManager
         item_uris = [item.get_uri() for item in meld_items]
-        item_paths = [Gio.File.new_for_uri(uri).get_path() for uri in item_uris]
+        item_paths = [
+            Gio.File.new_for_uri(uri).get_path() for uri in item_uris]
         stored = [p for p in os.listdir(self.recent_path)
                   if p.endswith(self.recent_suffix)]
         for path in stored:

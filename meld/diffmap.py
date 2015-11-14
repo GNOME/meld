@@ -78,22 +78,19 @@ class DiffMap(Gtk.DrawingArea):
             self.fill_colors, self.line_colors = get_common_theme()
 
     def on_scrollbar_style_updated(self, scrollbar):
-        value = GObject.Value(int)
-        scrollbar.style_get_property("stepper-size", value)
-        stepper_size = value.get_int()
-        scrollbar.style_get_property("stepper-spacing", value)
-        stepper_spacing = value.get_int()
+        stepper_size = scrollbar.style_get_property("stepper-size")
+        stepper_spacing = scrollbar.style_get_property("stepper-spacing")
 
-        bool_value = GObject.Value(bool)
-        scrollbar.style_get_property("has-backward-stepper", bool_value)
-        has_backward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-secondary-forward-stepper", bool_value)
-        has_secondary_forward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-secondary-backward-stepper", bool_value)
-        has_secondary_backward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-forward-stepper", bool_value)
-        has_foreward = bool_value.get_boolean()
-        steppers = [has_backward, has_secondary_forward, has_secondary_backward, has_foreward]
+        has_backward = scrollbar.style_get_property("has-backward-stepper")
+        has_secondary_backward = scrollbar.style_get_property(
+            "has-secondary-backward-stepper")
+        has_secondary_forward = scrollbar.style_get_property(
+            "has-secondary-forward-stepper")
+        has_forward = scrollbar.style_get_property("has-forward-stepper")
+        steppers = [
+            has_backward, has_secondary_backward,
+            has_secondary_forward, has_forward,
+        ]
 
         offset = stepper_size * steppers[0:2].count(True)
         shorter = stepper_size * steppers.count(True)
@@ -107,7 +104,8 @@ class DiffMap(Gtk.DrawingArea):
         self.queue_draw()
 
     def on_scrollbar_size_allocate(self, scrollbar, allocation):
-        self._scroll_y = allocation.y
+        translation = scrollbar.translate_coordinates(self, 0, 0)
+        self._scroll_y = translation[1] if translation else 0
         self._scroll_height = allocation.height
         self._width = max(allocation.width, 10)
         self._cached_map = None
@@ -117,7 +115,7 @@ class DiffMap(Gtk.DrawingArea):
         if not self._setup:
             return
         height = self._scroll_height - self._h_offset - 1
-        y_start = self._scroll_y - self.get_allocation().y - self._y_offset + 1
+        y_start = self._scroll_y + self._y_offset + 1
         width = self.get_allocated_width()
         xpad = 2.5
         x0 = xpad

@@ -29,13 +29,19 @@ import errno
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
+import StringIO
 import tempfile
+from collections import defaultdict
 
 from meld.conf import _, ngettext
 
 from . import _vc
+
+
+NULL_SHA = "0000000000000000000000000000000000000000"
 
 
 class Vc(_vc.Vc):
@@ -44,7 +50,7 @@ class Vc(_vc.Vc):
     NAME = "Git"
     VC_DIR = ".git"
 
-    GIT_DIFF_FILES_RE = ":(\d+) (\d+) [a-z0-9]+ [a-z0-9]+ ([XADMTU])\t(.*)"
+    GIT_DIFF_FILES_RE = ":(\d+) (\d+) ([a-z0-9]+) ([a-z0-9]+) ([XADMTU])\t(.*)"
     DIFF_RE = re.compile(GIT_DIFF_FILES_RE)
 
     conflict_map = {
@@ -127,7 +133,7 @@ class Vc(_vc.Vc):
         for p in paths:
             if os.path.isdir(p):
                 entries = self._get_modified_files(p)
-                names = [self.DIFF_RE.search(e).groups()[3] for e in entries]
+                names = [self.DIFF_RE.search(e).groups()[5] for e in entries]
                 files.extend(names)
             else:
                 files.append(os.path.relpath(p, self.root))
@@ -179,13 +185,46 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'add']
         runner(command, files, refresh=True, working_dir=self.root)
 
+    def remerge_with_ancestor(self, local, base, remote):
+        """Reconstruct a mixed merge-plus-base file
+
+        This method re-merges a given file to get diff3-style conflicts
+        which we can then use to get a file that contains the
+        pre-merged result everywhere that has no conflict, and the
+        common ancestor anywhere there *is* a conflict.
+        """
+        proc = self.run("merge-file", "-p", "--diff3", local, base, remote)
+        vc_file = StringIO.StringIO(
+            _vc.base_from_diff3(proc.stdout.read()))
+
+        prefix = 'meld-tmp-%s-' % _vc.CONFLICT_MERGED
+        with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
+            shutil.copyfileobj(vc_file, f)
+
+        return f.name, True
+
     def get_path_for_conflict(self, path, conflict):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
 
         if conflict == _vc.CONFLICT_MERGED:
             # Special case: no way to get merged result from git directly
-            return path, False
+            local, _ = self.get_path_for_conflict(path, _vc.CONFLICT_LOCAL)
+            base, _ = self.get_path_for_conflict(path, _vc.CONFLICT_BASE)
+            remote, _ = self.get_path_for_conflict(path, _vc.CONFLICT_REMOTE)
+
+            if not (local and base and remote):
+                raise _vc.InvalidVCPath(self, path,
+                                        "Couldn't access conflict parents")
+
+            filename, is_temp = self.remerge_with_ancestor(local, base, remote)
+
+            for temp_file in (local, base, remote):
+                if os.name == "nt":
+                    os.chmod(temp_file, stat.S_IWRITE)
+                os.remove(temp_file)
+
+            return filename, is_temp
 
         path = path[len(self.root) + 1:]
         if os.name == "nt":
@@ -298,15 +337,28 @@ class Vc(_vc.Vc):
             # to STATE_NORMAL.
             self._tree_cache[get_real_path(path)] = _vc.STATE_NORMAL
         else:
+            tree_meta_cache = defaultdict(list)
+            staged = set()
+            unstaged = set()
+
             for entry in entries:
                 columns = self.DIFF_RE.search(entry).groups()
-                old_mode, new_mode, statekey, path = columns
+                old_mode, new_mode, old_sha, new_sha, statekey, path = columns
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 self._tree_cache[get_real_path(path)] = state
                 if old_mode != new_mode:
                     msg = _("Mode changed from %s to %s" %
                             (old_mode, new_mode))
-                    self._tree_meta_cache[path] = msg
+                    tree_meta_cache[path].append(msg)
+                collection = unstaged if new_sha == NULL_SHA else staged
+                collection.add(path)
+
+            for path in staged:
+                tree_meta_cache[path].append(
+                    _("Partially staged") if path in unstaged else _("Staged"))
+
+            for path, msgs in tree_meta_cache.items():
+                self._tree_meta_cache[get_real_path(path)] = "; ".join(msgs)
 
             for path in ignored_entries:
                 self._tree_cache[get_real_path(path)] = _vc.STATE_IGNORED

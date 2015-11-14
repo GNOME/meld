@@ -413,7 +413,7 @@ def shell_to_regex(pat):
                 res += r'\['
             else:
                 stuff = pat[i:j]
-                i = j+1
+                i = j + 1
                 if stuff[0] == '!':
                     stuff = '^%s' % stuff[1:]
                 elif stuff[0] == '^':
@@ -426,7 +426,7 @@ def shell_to_regex(pat):
                 res += '\\{'
             else:
                 stuff = pat[i:j]
-                i = j+1
+                i = j + 1
                 res += '(%s)' % "|".join(
                     [shell_to_regex(p)[:-1] for p in stuff.split(",")]
                 )

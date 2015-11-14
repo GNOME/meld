@@ -753,17 +753,37 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                                 None, True)
             self.queue_draw()
 
-    def _filter_text(self, txt):
+    def _filter_text(self, txt, buf, start_iter, end_iter):
+        dimmed_tag = buf.get_tag_table().lookup("dimmed")
+        buf.remove_tag(dimmed_tag, start_iter, end_iter)
+        start = start_iter.copy()
+        end = start_iter.copy()
+
         def killit(m):
             assert m.group().count("\n") == 0
             if len(m.groups()):
                 s = m.group()
-                for g in m.groups():
+                for i in reversed(range(1, len(m.groups())+1)):
+                    g = m.group(i)
                     if g:
-                        s = s.replace(g,"")
+                        start.forward_chars(m.start(i))
+                        end.forward_chars(m.end(i))
+                        buf.apply_tag(dimmed_tag, start, end)
+                        start.forward_chars(-m.start(i))
+                        end.forward_chars(-m.end(i))
+
+                        s = s[:m.start(i)-m.start()]+s[m.end(i)-m.start():]
+
                 return s
             else:
+                start.forward_chars(m.start())
+                end.forward_chars(m.end())
+                buf.apply_tag(dimmed_tag, start, end)
+                start.forward_chars(-m.start())
+                end.forward_chars(-m.end())
+
                 return ""
+
         try:
             for filt in self.text_filters:
                 if filt.active:
@@ -841,7 +861,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     messagetype=Gtk.MessageType.QUESTION)
 
                 if resolve_response == Gtk.ResponseType.OK:
-                    conflict_file = self.textbuffer[1].data.filename
+                    bufdata = self.textbuffer[1].data
+                    conflict_file = bufdata.savefile or bufdata.filename
                     parent.command('resolve', [conflict_file])
         elif response == Gtk.ResponseType.CANCEL:
             self.state = melddoc.STATE_NORMAL

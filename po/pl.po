@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-26 20:24+0200\n"
-"PO-Revision-Date: 2015-09-04 00:25+0200\n"
+"POT-Creation-Date: 2015-10-04 19:53+0200\n"
+"PO-Revision-Date: 2015-10-04 19:54+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -599,7 +599,7 @@ msgstr "Nowe"
 msgid "Show new"
 msgstr "Wyświetla nowe"
 
-#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:72
+#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:73
 msgid "Modified"
 msgstr "Zmodyfikowane"
 
@@ -632,7 +632,7 @@ msgid "_Add"
 msgstr "_Dodaj"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:647
+#: ../meld/vcview.py:649
 msgid "_Remove"
 msgstr "U_suń"
 
@@ -941,7 +941,7 @@ msgstr "Sformatowanie jako poprawka"
 msgid "Copy to Clipboard"
 msgstr "Skopiuj do schowka"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:119
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:125
 msgid "Save Patch"
 msgstr "Zapisz poprawkę"
 
@@ -1314,7 +1314,7 @@ msgstr "Poza systemem kontroli _wersji"
 msgid "Show unversioned files"
 msgstr "Wyświetla pliki poza systemem kontroli wersji"
 
-#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:65
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:66
 msgid "Ignored"
 msgstr "Zignorowane"
 
@@ -1342,7 +1342,7 @@ msgstr "Wcześniejsze zmiany:"
 msgid "Co_mmit"
 msgstr "_Zatwierdź"
 
-#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:336
+#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:337
 msgid "Location"
 msgstr "Położenie"
 
@@ -2154,14 +2154,14 @@ msgstr "Żadne pliki nie zostaną zatwierdzone"
 
 #. Translators: First %s is replaced by translated "%d unpushed
 #. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:89
+#: ../meld/vc/git.py:95
 #, python-format
 msgid "%s in %s"
 msgstr "%s w %s"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:90 ../meld/vc/git.py:97
+#: ../meld/vc/git.py:96 ../meld/vc/git.py:103
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
@@ -2169,7 +2169,7 @@ msgstr[0] "%d niewysłane zatwierdzenie"
 msgstr[1] "%d niewysłane zatwierdzenia"
 msgstr[2] "%d niewysłanych zatwierdzeń"
 
-#: ../meld/vc/git.py:92
+#: ../meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
@@ -2177,10 +2177,18 @@ msgstr[0] "%d gałęzi"
 msgstr[1] "%d gałęziach"
 msgstr[2] "%d gałęziach"
 
-#: ../meld/vc/git.py:307
+#: ../meld/vc/git.py:350
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Zmieniono tryb z %s na %s"
+
+#: ../meld/vc/git.py:358
+msgid "Partially staged"
+msgstr "Częściowo w przechowalni"
+
+#: ../meld/vc/git.py:358
+msgid "Staged"
+msgstr "W przechowalni"
 
 #. Translators: This is the displayed name of a version control system
 #. when no version control system is actually found.
@@ -2188,141 +2196,141 @@ msgstr "Zmieniono tryb z %s na %s"
 msgid "None"
 msgstr "Brak"
 
-#: ../meld/vc/svn.py:215
+#: ../meld/vc/svn.py:216
 #, python-format
 msgid "Rev %s"
 msgstr "Wersja %s"
 
-#: ../meld/vc/_vc.py:50
+#: ../meld/vc/_vc.py:51
 msgid "Merged"
 msgstr "Scalone"
 
-#: ../meld/vc/_vc.py:50
+#: ../meld/vc/_vc.py:51
 msgid "Base"
 msgstr "Podstawa"
 
-#: ../meld/vc/_vc.py:50
+#: ../meld/vc/_vc.py:51
 msgid "Local"
 msgstr "Lokalne"
 
-#: ../meld/vc/_vc.py:50
+#: ../meld/vc/_vc.py:51
 msgid "Remote"
 msgstr "Zdalne"
 
-#: ../meld/vc/_vc.py:66
+#: ../meld/vc/_vc.py:67
 msgid "Unversioned"
 msgstr "Poza systemem kontroli wersji"
 
-#: ../meld/vc/_vc.py:69
+#: ../meld/vc/_vc.py:70
 msgid "Error"
 msgstr "Błąd"
 
-#: ../meld/vc/_vc.py:71
+#: ../meld/vc/_vc.py:72
 msgid "Newly added"
 msgstr "Nowo dodany"
 
-#: ../meld/vc/_vc.py:73
+#: ../meld/vc/_vc.py:74
 msgid "Renamed"
 msgstr "Zmieniono nazwę"
 
-#: ../meld/vc/_vc.py:74
+#: ../meld/vc/_vc.py:75
 msgid "Conflict"
 msgstr "Konflikt"
 
-#: ../meld/vc/_vc.py:75
+#: ../meld/vc/_vc.py:76
 msgid "Removed"
 msgstr "Usunięty"
 
-#: ../meld/vc/_vc.py:76
+#: ../meld/vc/_vc.py:77
 msgid "Missing"
 msgstr "Brakujący"
 
-#: ../meld/vc/_vc.py:77
+#: ../meld/vc/_vc.py:78
 msgid "Not present"
 msgstr "Nieobecny"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: ../meld/vcview.py:254
+#: ../meld/vcview.py:255
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (program %(cmd)s nie jest zainstalowany)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: ../meld/vcview.py:258
+#: ../meld/vcview.py:259
 #, python-format
 msgid "%(name)s (Invalid repository)"
 msgstr "%(name)s (nieprawidłowe repozytorium)"
 
-#: ../meld/vcview.py:279
+#: ../meld/vcview.py:280
 msgid "No valid version control system found in this folder"
 msgstr ""
 "W tym katalogu nie odnaleziono żadnego prawidłowego systemu kontroli wersji"
 
-#: ../meld/vcview.py:281
+#: ../meld/vcview.py:282
 msgid "Only one version control system found in this folder"
 msgstr "W tym katalogu odnaleziono tylko jeden system kontroli wersji"
 
-#: ../meld/vcview.py:283
+#: ../meld/vcview.py:284
 msgid "Choose which version control system to use"
 msgstr "Proszę wybrać system kontroli wersji do użycia"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: ../meld/vcview.py:336
+#: ../meld/vcview.py:337
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:356
+#: ../meld/vcview.py:357
 #, python-format
 msgid "Scanning %s"
 msgstr "Skanowanie %s"
 
-#: ../meld/vcview.py:395
+#: ../meld/vcview.py:396
 msgid "(Empty)"
 msgstr "(Pusty)"
 
-#: ../meld/vcview.py:439
+#: ../meld/vcview.py:440
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokalne"
 
-#: ../meld/vcview.py:440
+#: ../meld/vcview.py:441
 #, python-format
 msgid "%s — remote"
 msgstr "%s — zdalne"
 
-#: ../meld/vcview.py:448
+#: ../meld/vcview.py:449
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokalne, scalanie, zdalne)"
 
-#: ../meld/vcview.py:453
+#: ../meld/vcview.py:454
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (zdalne, scalanie, lokalne)"
 
-#: ../meld/vcview.py:464
+#: ../meld/vcview.py:465
 #, python-format
 msgid "%s — repository"
 msgstr "%s — repozytorium"
 
-#: ../meld/vcview.py:470
+#: ../meld/vcview.py:471
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (kopia robocza, repozytorium)"
 
-#: ../meld/vcview.py:474
+#: ../meld/vcview.py:475
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (repozytorium, kopia robocza)"
 
-#: ../meld/vcview.py:641
+#: ../meld/vcview.py:643
 msgid "Remove folder and all its files?"
 msgstr "Usunąć katalog i wszystkie zawarte w nim pliki?"
 
-#: ../meld/vcview.py:643
+#: ../meld/vcview.py:645
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2330,11 +2338,11 @@ msgstr ""
 "Spowoduje to usunięcie z systemu kontroli wersji wszystkich zaznaczonych "
 "plików i katalogów, a także wszystkich plików w zaznaczonych katalogach."
 
-#: ../meld/vcview.py:668
+#: ../meld/vcview.py:670
 #, python-format
 msgid "Error removing %s"
 msgstr "Błąd podczas usuwania %s"
 
-#: ../meld/vcview.py:748
+#: ../meld/vcview.py:750
 msgid "Clear"
 msgstr "Wyczyść"
