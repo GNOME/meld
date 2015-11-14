@@ -153,7 +153,9 @@ class Vc(object):
         Note that this runs at the *location*, not at the *root*.
         """
         cmd = (self.CMD,) + args
-        return subprocess.Popen(cmd, cwd=self.location, stdout=subprocess.PIPE)
+        return subprocess.Popen(
+            cmd, cwd=self.location, stdout=subprocess.PIPE,
+            universal_newlines=True)
 
     def get_files_to_commit(self, paths):
         """Get a list of files that will be committed from paths
@@ -381,7 +383,9 @@ class InvalidVCRevision(ValueError):
 
 # Return the stdout output of a given command
 def popen(cmd, cwd=None):
-    return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
+    process = subprocess.Popen(
+        cmd, cwd=cwd, stdout=subprocess.PIPE, universal_newlines=True)
+    return process.stdout
 
 
 def call_temp_output(cmd, cwd, file_id=''):
