@@ -433,3 +433,38 @@ def shell_to_regex(pat):
         else:
             res += re.escape(c)
     return res + "$"
+
+
+def merge_intervals(interval_list):
+    """Merge a list of intervals
+
+    Returns a list of itervals as 2-tuples with all overlapping
+    intervals merged.
+
+    interval_list must be a list of 2-tuples of integers representing
+    the start and end of an interval.
+    """
+
+    if len(interval_list) < 2:
+        return interval_list
+
+    interval_list.sort()
+    merged_intervals = [interval_list.pop(0)]
+    current_start, current_end = merged_intervals[-1]
+
+    while interval_list:
+        new_start, new_end = interval_list.pop(0)
+
+        if current_end >= new_end:
+            continue
+
+        if current_end < new_start:
+            # Intervals do not overlap; create a new one
+            merged_intervals.append((new_start, new_end))
+        elif current_end < new_end:
+            # Intervals overlap; extend the current one
+            merged_intervals[-1] = (current_start, new_end)
+
+        current_start, current_end = merged_intervals[-1]
+
+    return merged_intervals
