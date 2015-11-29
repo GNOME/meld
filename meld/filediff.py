@@ -762,41 +762,29 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                                                 None, True)
             self.queue_draw()
 
-    def _filter_text(self, txt, buf, start_iter, end_iter):
+    def _filter_text(self, txt, buf, txt_start_iter, txt_end_iter):
         dimmed_tag = buf.get_tag_table().lookup("dimmed")
-        buf.remove_tag(dimmed_tag, start_iter, end_iter)
-
-        def killit(m):
-
-            def get_match_iters(match, match_index=0):
-                start = start_iter.copy()
-                end = start_iter.copy()
-                start.forward_chars(match.start(match_index))
-                end.forward_chars(match.end(match_index))
-                return start, end
-
-            assert m.group().count("\n") == 0
-            if len(m.groups()):
-                s = m.group()
-                for i in reversed(range(1, len(m.groups())+1)):
-                    g = m.group(i)
-                    if g:
-                        start, end = get_match_iters(m, i)
-                        buf.apply_tag(dimmed_tag, start, end)
-
-                        s = s[:m.start(i)-m.start()]+s[m.end(i)-m.start():]
-
-                return s
-            else:
-                start, end = get_match_iters(m)
-                buf.apply_tag(dimmed_tag, start, end)
-
-                return ""
+        buf.remove_tag(dimmed_tag, txt_start_iter, txt_end_iter)
 
         try:
+            filter_ranges = []
+
             for filt in self.text_filters:
                 if filt.active:
-                    txt = filt.filter.sub(killit, txt)
+                    for match in filt.filter.finditer(txt):
+                        filter_ranges.append(match.span())
+
+            filter_ranges = misc.merge_intervals(filter_ranges)
+
+            for (start, end) in reversed(filter_ranges):
+                assert txt[start:end].count("\n") == 0
+                txt = txt[:start] + txt[end:]
+                start_iter = txt_start_iter.copy()
+                start_iter.forward_chars(start)
+                end_iter = txt_start_iter.copy()
+                end_iter.forward_chars(end)
+                buf.apply_tag(dimmed_tag, start_iter, end_iter)
+
         except AssertionError:
             if not self.warned_bad_comparison:
                 misc.error_dialog(
@@ -807,6 +795,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         u"not be accurate.") % filt.label,
                 )
                 self.warned_bad_comparison = True
+
         return txt
 
     def after_text_insert_text(self, buf, it, newtext, textlen):
