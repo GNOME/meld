@@ -211,7 +211,7 @@ class BufferLines(object):
         if textfilter is not None:
             self.textfilter = textfilter
         else:
-            self.textfilter = lambda x: x
+            self.textfilter = lambda x, buf, start_iter, end_iter: x
 
     def __getitem__(self, key):
         if isinstance(key, slice):
