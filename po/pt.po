@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 2.6\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-31 11:17+0000\n"
-"PO-Revision-Date: 2015-10-31 11:24+0000\n"
+"POT-Creation-Date: 2015-12-04 23:51+0000\n"
+"PO-Revision-Date: 2015-12-05 08:23+0000\n"
 "Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
 "Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
@@ -33,7 +33,7 @@ msgstr "O Meld requer o %s ou superior."
 msgid "Meld does not support Python 3."
 msgstr "O Meld não suporta Python 3."
 
-#: ../bin/meld:199
+#: ../bin/meld:200
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -57,6 +57,11 @@ msgstr "Visualizador de Diferenças Meld"
 #: ../data/meld.desktop.in.h:4
 msgid "Compare and merge your files"
 msgstr "Compare e una os seus ficheiros."
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/meld.desktop.in.h:6
+msgid "diff;merge;"
+msgstr "diff;diferenças;comparar;unir;"
 
 #: ../data/meld.appdata.xml.in.h:1
 msgid ""
@@ -1577,12 +1582,10 @@ msgstr "[%s] A ler ficheiros"
 
 #: ../meld/filediff.py:1109
 #, python-format
-#| msgid "%s appears to be a binary file."
 msgid "File %s appears to be a binary file."
 msgstr "%s parece ser um ficheiro binário."
 
 #: ../meld/filediff.py:1110
-#| msgid "Open selected file or directory in the default external application"
 msgid "Do you want to open the file using the default application?"
 msgstr "Quer abrir o ficheiro usando a aplicação predefinida?"
 
@@ -1779,93 +1782,93 @@ msgstr "Copiar a_Cima"
 msgid "Copy _down"
 msgstr "Copiar a_Baixo"
 
-#: ../meld/meldapp.py:175
+#: ../meld/meldapp.py:177
 msgid "wrong number of arguments supplied to --diff"
 msgstr "número errado de argumentos fornecidos a --diff"
 
-#: ../meld/meldapp.py:180
+#: ../meld/meldapp.py:182
 msgid "Start with an empty window"
 msgstr "Começar com uma janela vazia"
 
-#: ../meld/meldapp.py:181 ../meld/meldapp.py:183
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:185
 msgid "file"
 msgstr "ficheiro"
 
-#: ../meld/meldapp.py:181 ../meld/meldapp.py:185
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:187
 msgid "folder"
 msgstr "pasta"
 
-#: ../meld/meldapp.py:182
+#: ../meld/meldapp.py:184
 msgid "Start a version control comparison"
 msgstr "Começar uma comparação de controlo de versão"
 
-#: ../meld/meldapp.py:184
+#: ../meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Começar uma comparação de ficheiros de duas ou três vias"
 
-#: ../meld/meldapp.py:186
+#: ../meld/meldapp.py:188
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Começar uma comparação de pastas de duas ou três vias"
 
-#: ../meld/meldapp.py:229
+#: ../meld/meldapp.py:231
 #, python-format
 msgid "Error: %s\n"
 msgstr "Erro: %s\n"
 
-#: ../meld/meldapp.py:236
+#: ../meld/meldapp.py:238
 msgid "Meld is a file and directory comparison tool."
 msgstr "O Meld é uma ferramenta de comparação de ficheiros e pastas."
 
-#: ../meld/meldapp.py:240
+#: ../meld/meldapp.py:242
 msgid "Set label to use instead of file name"
 msgstr "Definir rótulo a usar em vez do nome de ficheiro"
 
-#: ../meld/meldapp.py:243
+#: ../meld/meldapp.py:245
 msgid "Open a new tab in an already running instance"
 msgstr "Abrir novo separador numa instância já em execução"
 
-#: ../meld/meldapp.py:246
+#: ../meld/meldapp.py:248
 msgid "Automatically compare all differing files on startup"
 msgstr "Comparar automaticamente todos os ficheiros diferentes no arranque"
 
-#: ../meld/meldapp.py:249
+#: ../meld/meldapp.py:251
 msgid "Ignored for compatibility"
 msgstr "Ignorado para compatibilidade"
 
-#: ../meld/meldapp.py:253
+#: ../meld/meldapp.py:255
 msgid "Set the target file for saving a merge result"
 msgstr "Definir ficheiro destino para gravar o resultado de uma união"
 
-#: ../meld/meldapp.py:256
+#: ../meld/meldapp.py:258
 msgid "Automatically merge files"
 msgstr "Unir ficheiros automaticamente"
 
-#: ../meld/meldapp.py:260
+#: ../meld/meldapp.py:262
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Carregar uma comparação gravada de um ficheiro do Meld"
 
-#: ../meld/meldapp.py:264
+#: ../meld/meldapp.py:266
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Criar um separador Diff para os ficheiros/pastas selecionados"
 
-#: ../meld/meldapp.py:284
+#: ../meld/meldapp.py:286
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "demasiados argumentos (desejados 0-3, obtidos %d)"
 
-#: ../meld/meldapp.py:287
+#: ../meld/meldapp.py:289
 msgid "can't auto-merge less than 3 files"
 msgstr "impossível unir automaticamente menos de 3 ficheiros"
 
-#: ../meld/meldapp.py:289
+#: ../meld/meldapp.py:291
 msgid "can't auto-merge directories"
 msgstr "impossível unir automaticamente pastas"
 
-#: ../meld/meldapp.py:303
+#: ../meld/meldapp.py:305
 msgid "Error reading saved comparison file"
 msgstr "Erro ao ler ficheiro de comparação gravado"
 
-#: ../meld/meldapp.py:330
+#: ../meld/meldapp.py:332
 #, python-format
 msgid "invalid path or URI \"%s\""
 msgstr "Caminho ou URI inválido \"%s\""
