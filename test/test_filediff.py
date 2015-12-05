@@ -1,0 +1,87 @@
+
+import pytest
+
+import mock
+from gi.repository import Gtk
+
+from meld.filediff import FileDiff
+from meld.filters import FilterEntry
+
+
+@pytest.mark.parametrize("text, ignored_ranges", [
+    #    0123456789012345678901234567890123456789012345678901234567890123456789
+    # Matching without groups
+    (
+        "# asdasdasdasdsad",
+        [(0, 17)],
+    ),
+    # Matching with single group
+    (
+        "asdasdasdasdsab",
+        [(1, 14)],
+    ),
+    # Matching with multiple groups
+    (
+        "xasdyasdz",
+        [(1, 4), (5, 8)],
+    ),
+    # Matching with multiple partially overlapping filters
+    (
+        "qaqxqbyqzq",
+        [(2, 6), (7, 8)],
+    ),
+    # Matching with multiple fully overlapping filters
+    (
+        "qaqxqybqzq",
+        [(2, 8)],
+    ),
+    # Matching with and without groups, with single dominated match
+    (
+        "# asdasdasdasdsab",
+        [(0, 17)],
+    ),
+    # Non-matching with groups
+    (
+        "xasdyasdx",
+        [],
+    ),
+])
+def test_filter_text(text, ignored_ranges):
+    filter_patterns = [
+        '#.*',
+        '/\*.*\*/',
+        'a(.*)b',
+        'x(.*)y(.*)z',
+    ]
+    filters = [
+        FilterEntry.new_from_gsetting(("name", True, f), FilterEntry.REGEX)
+        for f in filter_patterns
+    ]
+
+    filediff = mock.MagicMock()
+    filediff.text_filters = filters
+    filter_text = FileDiff._filter_text.__func__
+
+    buf = Gtk.TextBuffer()
+    buf.create_tag("inline")
+    buf.create_tag("dimmed")
+    buf.set_text(text)
+    start, end = buf.get_bounds()
+
+    text = filter_text(
+        filediff, buf.get_text(start, end, False), buf, start, end)
+
+    # Find ignored ranges
+    tag = buf.get_tag_table().lookup("dimmed")
+    toggles = []
+    it = start.copy()
+    if it.toggles_tag(tag):
+        toggles.append(it.get_offset())
+    while it.forward_to_tag_toggle(tag):
+        toggles.append(it.get_offset())
+    toggles = zip(toggles[::2], toggles[1::2])
+
+    print("Text:", text)
+    print("Toggles:", toggles)
+
+    assert toggles == ignored_ranges
