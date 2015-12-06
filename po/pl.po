@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-04 19:53+0200\n"
-"PO-Revision-Date: 2015-10-04 19:54+0200\n"
+"POT-Creation-Date: 2015-12-06 19:04+0100\n"
+"PO-Revision-Date: 2015-12-06 19:05+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -37,7 +37,7 @@ msgstr "Program Meld wymaga wersji %s lub nowszej."
 msgid "Meld does not support Python 3."
 msgstr "Program Meld nie obsługuje biblioteki Python 3."
 
-#: ../bin/meld:199
+#: ../bin/meld:200
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -61,6 +61,11 @@ msgstr "Przeglądarka różnic Meld"
 #: ../data/meld.desktop.in.h:4
 msgid "Compare and merge your files"
 msgstr "Porównywanie i scalanie plików"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/meld.desktop.in.h:6
+msgid "diff;merge;"
+msgstr "różnica;diff;merge;scalanie;łączenie;połącz;porównaj;łata;łatka;patch;"
 
 #: ../data/meld.appdata.xml.in.h:1
 msgid ""
@@ -565,7 +570,7 @@ msgstr "Kopiuje element na prawo"
 msgid "Delete selected"
 msgstr "Usuwa zaznaczone"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:856 ../meld/filediff.py:1421
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:856 ../meld/filediff.py:1441
 msgid "Hide"
 msgstr "Ukryj"
 
@@ -855,8 +860,8 @@ msgstr ""
 msgid "Close _without Saving"
 msgstr "Zamknij _bez zapisywania"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:947 ../meld/filediff.py:1487
-#: ../meld/filediff.py:1571 ../meld/filediff.py:1596
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:947 ../meld/filediff.py:1507
+#: ../meld/filediff.py:1591 ../meld/filediff.py:1616
 msgid "_Cancel"
 msgstr "_Anuluj"
 
@@ -893,7 +898,7 @@ msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr ""
 "Zmiany naniesione do poniższych dokumentów zostaną bezpowrotnie utracone:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:948 ../meld/filediff.py:1488
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:948 ../meld/filediff.py:1508
 msgid "_Replace"
 msgstr "Z_amień"
 
@@ -1166,7 +1171,7 @@ msgstr ""
 msgid "Text Filters"
 msgstr "Filtry plików tekstowych"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:625
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:636
 msgid "New comparison"
 msgstr "Nowe porównanie"
 
@@ -1437,9 +1442,9 @@ msgstr ""
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Filtry tekstowe są używane i mogą ukrywać różnice między plikami."
 
-#: ../meld/dirdiff.py:858 ../meld/dirdiff.py:911 ../meld/filediff.py:1061
-#: ../meld/filediff.py:1093 ../meld/filediff.py:1228 ../meld/filediff.py:1423
-#: ../meld/filediff.py:1453 ../meld/filediff.py:1455
+#: ../meld/dirdiff.py:858 ../meld/dirdiff.py:911 ../meld/filediff.py:1081
+#: ../meld/filediff.py:1113 ../meld/filediff.py:1248 ../meld/filediff.py:1443
+#: ../meld/filediff.py:1473 ../meld/filediff.py:1475
 msgid "Hi_de"
 msgstr "_Ukryj"
 
@@ -1532,11 +1537,11 @@ msgstr "ZAS"
 msgid "Ln %i, Col %i"
 msgstr "Wrsz %i, kol %i"
 
-#: ../meld/filediff.py:783
+#: ../meld/filediff.py:801
 msgid "Comparison results will be inaccurate"
 msgstr "Wyniki porównania będą niepoprawne"
 
-#: ../meld/filediff.py:785
+#: ../meld/filediff.py:803
 #, python-format
 msgid ""
 "Filter “%s” changed the number of lines in the file, which is unsupported. "
@@ -1545,85 +1550,85 @@ msgstr ""
 "Filtr „%s” zmienił liczbę wierszy w pliku, co nie jest obsługiwane. "
 "Porównanie będzie niepoprawne."
 
-#: ../meld/filediff.py:842
+#: ../meld/filediff.py:861
 msgid "Mark conflict as resolved?"
 msgstr "Oznaczyć konflikt jako rozwiązany?"
 
-#: ../meld/filediff.py:844
+#: ../meld/filediff.py:863
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Jeśli konflikt został pomyślnie rozwiązany, to można go teraz jako taki "
 "oznaczyć."
 
-#: ../meld/filediff.py:846
+#: ../meld/filediff.py:865
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../meld/filediff.py:847
+#: ../meld/filediff.py:866
 msgid "Mark _Resolved"
 msgstr "Oznacz jako _rozwiązane"
 
-#: ../meld/filediff.py:1048
+#: ../meld/filediff.py:1068
 #, python-format
 msgid "[%s] Set num panes"
 msgstr "[%s] Ustawianie liczby paneli"
 
-#: ../meld/filediff.py:1055
+#: ../meld/filediff.py:1075
 #, python-format
 msgid "[%s] Opening files"
 msgstr "[%s] Otwieranie plików"
 
-#: ../meld/filediff.py:1078 ../meld/filediff.py:1116 ../meld/filediff.py:1122
+#: ../meld/filediff.py:1098 ../meld/filediff.py:1136 ../meld/filediff.py:1142
 msgid "Could not read file"
 msgstr "Nie można odczytać pliku"
 
-#: ../meld/filediff.py:1079
+#: ../meld/filediff.py:1099
 #, python-format
 msgid "[%s] Reading files"
 msgstr "[%s] Odczytywanie plików"
 
-#: ../meld/filediff.py:1088
+#: ../meld/filediff.py:1108
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Plik %s wygląda na plik binarny."
 
-#: ../meld/filediff.py:1089
+#: ../meld/filediff.py:1109
 msgid "Do you want to open the file using the default application?"
 msgstr "Otworzyć go w domyślnym programie?"
 
-#: ../meld/filediff.py:1092
+#: ../meld/filediff.py:1112
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../meld/filediff.py:1117
+#: ../meld/filediff.py:1137
 #, python-format
 msgid "%s is not in encodings: %s"
 msgstr "%s nie jest zakodowany z użyciem: %s"
 
-#: ../meld/filediff.py:1155
+#: ../meld/filediff.py:1175
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Analizowanie różnic"
 
-#: ../meld/filediff.py:1223
+#: ../meld/filediff.py:1243
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Plik %s został zmieniony na dysku"
 
-#: ../meld/filediff.py:1224
+#: ../meld/filediff.py:1244
 msgid "Do you want to reload the file?"
 msgstr "Ponownie wczytać plik?"
 
-#: ../meld/filediff.py:1227
+#: ../meld/filediff.py:1247
 msgid "_Reload"
 msgstr "_Wczytaj ponownie"
 
-#: ../meld/filediff.py:1386
+#: ../meld/filediff.py:1406
 msgid "Files are identical"
 msgstr "Pliki są identyczne"
 
-#: ../meld/filediff.py:1399
+#: ../meld/filediff.py:1419
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1631,11 +1636,11 @@ msgstr ""
 "Filtry tekstowe są używane i mogą ukrywać różnice między plikami. Porównać "
 "pliki bez uwzględniania filtrów?"
 
-#: ../meld/filediff.py:1404
+#: ../meld/filediff.py:1424
 msgid "Files differ in line endings only"
 msgstr "Pliki różnią się tylko znacznikami końca wierszy"
 
-#: ../meld/filediff.py:1406
+#: ../meld/filediff.py:1426
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1644,15 +1649,15 @@ msgstr ""
 "Pliki są identyczne, z wyjątkiem różnych znaczników końca wierszy:\n"
 "%s"
 
-#: ../meld/filediff.py:1426
+#: ../meld/filediff.py:1446
 msgid "Show without filters"
 msgstr "Wyświetl bez filtrów"
 
-#: ../meld/filediff.py:1448
+#: ../meld/filediff.py:1468
 msgid "Change highlighting incomplete"
 msgstr "Wyróżnianie zmian jest niepełne"
 
-#: ../meld/filediff.py:1449
+#: ../meld/filediff.py:1469
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1660,20 +1665,20 @@ msgstr ""
 "Niektóre zmiany nie zostały wyróżnione, ponieważ były za duże. Można "
 "wymusić, aby program Meld wyróżnił większe zmiany, ale może to być wolne."
 
-#: ../meld/filediff.py:1457
+#: ../meld/filediff.py:1477
 msgid "Keep highlighting"
 msgstr "Wyróżniaj dalej"
 
-#: ../meld/filediff.py:1459
+#: ../meld/filediff.py:1479
 msgid "_Keep highlighting"
 msgstr "_Wyróżniaj dalej"
 
-#: ../meld/filediff.py:1491
+#: ../meld/filediff.py:1511
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Zastąpić plik „%s”?"
 
-#: ../meld/filediff.py:1493
+#: ../meld/filediff.py:1513
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -1682,12 +1687,12 @@ msgstr ""
 "Plik o tej samej nazwie już istnieje w „%s”.\n"
 "Zastąpienie istniejącego pliku spowoduje utratę jego zawartości."
 
-#: ../meld/filediff.py:1511
+#: ../meld/filediff.py:1531
 #, python-format
 msgid "Could not save file %s."
 msgstr "Nie można zapisać pliku %s."
 
-#: ../meld/filediff.py:1512
+#: ../meld/filediff.py:1532
 #, python-format
 msgid ""
 "Couldn't save file due to:\n"
@@ -1696,42 +1701,42 @@ msgstr ""
 "Nie można zapisać pliku z powodu:\n"
 "%s"
 
-#: ../meld/filediff.py:1524
+#: ../meld/filediff.py:1544
 msgid "Save Left Pane As"
 msgstr "Zapis lewego panelu jako"
 
-#: ../meld/filediff.py:1526
+#: ../meld/filediff.py:1546
 msgid "Save Middle Pane As"
 msgstr "Zapis środkowego panelu jako"
 
-#: ../meld/filediff.py:1528
+#: ../meld/filediff.py:1548
 msgid "Save Right Pane As"
 msgstr "Zapis prawego panelu jako"
 
-#: ../meld/filediff.py:1542
+#: ../meld/filediff.py:1562
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Plik %s został zmieniony na dysku od czasu jego otwarcia"
 
-#: ../meld/filediff.py:1544
+#: ../meld/filediff.py:1564
 msgid "If you save it, any external changes will be lost."
 msgstr ""
 "Jeżeli plik zostanie zapisany, to wszystkie zewnętrzne zmiany zostaną "
 "utracone."
 
-#: ../meld/filediff.py:1547
+#: ../meld/filediff.py:1567
 msgid "Save Anyway"
 msgstr "Zapisz mimo to"
 
-#: ../meld/filediff.py:1548
+#: ../meld/filediff.py:1568
 msgid "Don't Save"
 msgstr "Nie zapisuj"
 
-#: ../meld/filediff.py:1574
+#: ../meld/filediff.py:1594
 msgid "Inconsistent line endings found"
 msgstr "Odnaleziono niespójne znaczniki końca wiersza"
 
-#: ../meld/filediff.py:1576
+#: ../meld/filediff.py:1596
 #, python-format
 msgid ""
 "'%s' contains a mixture of line endings. Select the line ending format to "
@@ -1740,16 +1745,16 @@ msgstr ""
 "Plik „%s” zawiera różne znaczniki końca wiersza. Proszę wybrać format "
 "znaczników końca wiersza, który ma zostać użyty."
 
-#: ../meld/filediff.py:1597
+#: ../meld/filediff.py:1617
 msgid "_Save as UTF-8"
 msgstr "_Zapisz za pomocą UTF-8"
 
-#: ../meld/filediff.py:1600
+#: ../meld/filediff.py:1620
 #, python-format
 msgid "Couldn't encode text as “%s”"
 msgstr "Nie można zakodować tekstu za pomocą „%s”"
 
-#: ../meld/filediff.py:1602
+#: ../meld/filediff.py:1622
 #, python-format
 msgid ""
 "File “%s” contains characters that can't be encoded using encoding “%s”.\n"
@@ -1759,11 +1764,11 @@ msgstr ""
 "„%s”.\n"
 "Zapisać za pomocą kodowania UTF-8?"
 
-#: ../meld/filediff.py:1954
+#: ../meld/filediff.py:1974
 msgid "Live comparison updating disabled"
 msgstr "Wyłączono aktualizowanie porównań na żywo"
 
-#: ../meld/filediff.py:1955
+#: ../meld/filediff.py:1975
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1786,94 +1791,94 @@ msgstr "Skopiuj w gó_rę"
 msgid "Copy _down"
 msgstr "Skopiuj w _dół"
 
-#: ../meld/meldapp.py:175
+#: ../meld/meldapp.py:177
 msgid "wrong number of arguments supplied to --diff"
 msgstr "błędna liczba parametrów dla opcji --diff"
 
-#: ../meld/meldapp.py:180
+#: ../meld/meldapp.py:182
 msgid "Start with an empty window"
 msgstr "Rozpoczyna z pustym oknem"
 
-#: ../meld/meldapp.py:181 ../meld/meldapp.py:183
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:185
 msgid "file"
 msgstr "plik"
 
-#: ../meld/meldapp.py:181 ../meld/meldapp.py:185
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:187
 msgid "folder"
 msgstr "katalog"
 
-#: ../meld/meldapp.py:182
+#: ../meld/meldapp.py:184
 msgid "Start a version control comparison"
 msgstr "Rozpoczyna porównanie systemu kontroli wersji"
 
-#: ../meld/meldapp.py:184
+#: ../meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Rozpoczyna porównanie 2 lub 3 plików"
 
-#: ../meld/meldapp.py:186
+#: ../meld/meldapp.py:188
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Rozpoczyna porównanie 2 lub 3 katalogów"
 
-#: ../meld/meldapp.py:229
+#: ../meld/meldapp.py:231
 #, python-format
 msgid "Error: %s\n"
 msgstr "Błąd: %s\n"
 
-#: ../meld/meldapp.py:236
+#: ../meld/meldapp.py:238
 msgid "Meld is a file and directory comparison tool."
 msgstr "Program Meld jest narzędziem do porównywania plików i katalogów."
 
-#: ../meld/meldapp.py:240
+#: ../meld/meldapp.py:242
 msgid "Set label to use instead of file name"
 msgstr "Ustawia etykietę, która ma być użyta zamiast nazwy pliku"
 
-#: ../meld/meldapp.py:243
+#: ../meld/meldapp.py:245
 msgid "Open a new tab in an already running instance"
 msgstr "Otwiera nową kartę w już uruchomionej kopii"
 
-#: ../meld/meldapp.py:246
+#: ../meld/meldapp.py:248
 msgid "Automatically compare all differing files on startup"
 msgstr ""
 "Automatycznie porównuje wszystkie różniące się pliki podczas uruchamiania"
 
-#: ../meld/meldapp.py:249
+#: ../meld/meldapp.py:251
 msgid "Ignored for compatibility"
 msgstr "Ignorowane — dla zachowania zgodności"
 
-#: ../meld/meldapp.py:253
+#: ../meld/meldapp.py:255
 msgid "Set the target file for saving a merge result"
 msgstr "Ustawia nazwę pliku, w którym zapisany zostanie wynik scalenia"
 
-#: ../meld/meldapp.py:256
+#: ../meld/meldapp.py:258
 msgid "Automatically merge files"
 msgstr "Automatycznie scala pliki"
 
-#: ../meld/meldapp.py:260
+#: ../meld/meldapp.py:262
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Wczytuje zapisane porównanie z pliku porównania programu Meld"
 
-#: ../meld/meldapp.py:264
+#: ../meld/meldapp.py:266
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Tworzy kartę różnicy dla podanych plików lub katalogów"
 
-#: ../meld/meldapp.py:284
+#: ../meld/meldapp.py:286
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "za dużo parametrów (powinno być 0-3, jest %d)"
 
-#: ../meld/meldapp.py:287
+#: ../meld/meldapp.py:289
 msgid "can't auto-merge less than 3 files"
 msgstr "nie można automatycznie scalić mniej niż 3 plików"
 
-#: ../meld/meldapp.py:289
+#: ../meld/meldapp.py:291
 msgid "can't auto-merge directories"
 msgstr "nie można automatycznie scalić katalogów"
 
-#: ../meld/meldapp.py:303
+#: ../meld/meldapp.py:305
 msgid "Error reading saved comparison file"
 msgstr "Błąd podczas odczytywania zapisanego pliku porównania"
 
-#: ../meld/meldapp.py:330
+#: ../meld/meldapp.py:332
 #, python-format
 msgid "invalid path or URI \"%s\""
 msgstr "nieprawidłowa ścieżka lub adres URL „%s”"
@@ -2071,52 +2076,52 @@ msgstr "Pasek _narzędziowy"
 msgid "Show or hide the toolbar"
 msgstr "Wyświetla/ukrywa pasek narzędziowy"
 
-#: ../meld/meldwindow.py:141
+#: ../meld/meldwindow.py:142
 msgid "Open Recent"
 msgstr "Otwórz ostatnio używane"
 
-#: ../meld/meldwindow.py:142
+#: ../meld/meldwindow.py:143
 msgid "Open recent files"
 msgstr "Otwiera ostatnio używane pliki"
 
-#: ../meld/meldwindow.py:164
+#: ../meld/meldwindow.py:165
 msgid "_Meld"
 msgstr "_Meld"
 
-#: ../meld/meldwindow.py:165
+#: ../meld/meldwindow.py:166
 msgid "Quit the program"
 msgstr "Kończy działanie programu"
 
-#: ../meld/meldwindow.py:167
+#: ../meld/meldwindow.py:168
 msgid "Prefere_nces"
 msgstr "Prefere_ncje"
 
-#: ../meld/meldwindow.py:168
+#: ../meld/meldwindow.py:169
 msgid "Configure the application"
 msgstr "Konfiguracja programu"
 
-#: ../meld/meldwindow.py:170
+#: ../meld/meldwindow.py:171
 msgid "_Contents"
 msgstr "_Spis treści"
 
-#: ../meld/meldwindow.py:171
+#: ../meld/meldwindow.py:172
 msgid "Open the Meld manual"
 msgstr "Otwiera podręcznik programu Meld"
 
-#: ../meld/meldwindow.py:173
+#: ../meld/meldwindow.py:174
 msgid "About this application"
 msgstr "Informacje o tym programie"
 
-#: ../meld/meldwindow.py:548
+#: ../meld/meldwindow.py:557
 msgid "Switch to this tab"
 msgstr "Przechodzi do tej karty"
 
-#: ../meld/meldwindow.py:659
+#: ../meld/meldwindow.py:670
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Automatyczne scalenie wymaga trzech plików, otrzymano: %r"
 
-#: ../meld/meldwindow.py:673
+#: ../meld/meldwindow.py:684
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Jednoczesne porównanie plików i katalogów nie jest możliwe"
 
@@ -2140,11 +2145,11 @@ msgstr "etykieta"
 msgid "pattern"
 msgstr "wzorzec"
 
-#: ../meld/recent.py:114
+#: ../meld/recent.py:115
 msgid "Version control:"
 msgstr "System kontroli wersji:"
 
-#: ../meld/ui/notebooklabel.py:65
+#: ../meld/ui/notebooklabel.py:68
 msgid "Close tab"
 msgstr "Zamknij kartę"
 
