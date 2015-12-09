@@ -1076,9 +1076,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         gfile = loader.get_location()
         pane = user_data[0]
 
-        success = False
         try:
-            success = loader.load_finish(result)
+            loader.load_finish(result)
         except GLib.Error as err:
             # TODO: Find sane error domain constants
             if err.domain == 'gtk-source-file-loader-error':
