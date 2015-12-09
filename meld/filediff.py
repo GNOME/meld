@@ -1054,6 +1054,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         files = [(pane, Gio.File.new_for_path(filename))
                  for pane, filename in enumerate(files) if filename]
 
+        if not files:
+            self.scheduler.add_task(self._compare_files_internal())
+
         for pane, gfile in files:
             self.fileentry[pane].set_file(gfile)
             self.msgarea_mgr[pane].clear()
