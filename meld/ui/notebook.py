@@ -20,6 +20,12 @@ from gi.repository import Gtk
 
 
 class MeldNotebook(Gtk.Notebook):
+    """Notebook subclass with tab switch and reordering behaviour
+
+    MeldNotebook implements some fairly generic tab switching shortcuts
+    and a popup menu for simple tab controls, as well as some
+    Meld-specific tab label handling.
+    """
 
     __gtype_name__ = "MeldNotebook"
 
