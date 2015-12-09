@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
@@ -24,7 +26,28 @@ from gi.repository import GtkSource
 import meldbuffer
 
 from meld.misc import colour_lookup_with_fallback, get_common_theme
-from meld.settings import bind_settings, meldsettings
+from meld.settings import bind_settings, meldsettings, settings
+
+
+log = logging.getLogger(__name__)
+
+
+def get_custom_encoding_candidates():
+    custom_candidates = []
+    try:
+        for charset in settings.get_value('detect-encodings'):
+            encoding = GtkSource.Encoding.get_from_charset(charset)
+            if not encoding:
+                log.warning('Invalid charset "%s" skipped', charset)
+                continue
+            custom_candidates.append(encoding)
+        if custom_candidates:
+            custom_candidates.extend(
+                GtkSource.Encoding.get_default_candidates())
+    except AttributeError:
+        # get_default_candidates() is only available in GtkSourceView 3.18
+        # and we'd rather use their defaults than our old detect list.
+        pass
 
 
 class LanguageManager(object):

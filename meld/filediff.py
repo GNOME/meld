@@ -48,7 +48,7 @@ from .ui import gnomeglade
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
 from meld.settings import bind_settings, meldsettings
 from .util.compat import text_type
-from meld.sourceview import LanguageManager
+from meld.sourceview import LanguageManager, get_custom_encoding_candidates
 
 
 def with_focused_pane(function):
@@ -1049,6 +1049,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.clear()
         self.linediffer.clear()
 
+        custom_candidates = get_custom_encoding_candidates()
+
         files = [(pane, Gio.File.new_for_path(filename))
                  for pane, filename in enumerate(files) if filename]
 
@@ -1058,9 +1060,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             self.textbuffer[pane].data.reset(gfile)
 
-            # TODO: Maybe re-add support for the 'detect-encodings' gsetting
             loader = GtkSource.FileLoader.new(
                 self.textbuffer[pane], self.textbuffer[pane].data.sourcefile)
+            if custom_candidates:
+                loader.set_candidate_encodings(custom_candidates)
             loader.load_async(
                 GLib.PRIORITY_HIGH,
                 callback=self.file_loaded,
