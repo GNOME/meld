@@ -339,9 +339,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for textview in self.textview:
             textview.set_sensitive(False)
         for buf in self.textbuffer:
-            assert hasattr(buf,"handlers")
             for h in buf.handlers:
                 buf.disconnect(h)
+            buf.handlers = []
 
     def _connect_buffer_handlers(self):
         for textview in self.textview:
