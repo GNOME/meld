@@ -206,6 +206,15 @@ class MeldWindow(gnomeglade.Component):
             Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
         self.toolbar_holder.pack_end(self.secondary_toolbar, False, True, 0)
 
+        # Manually handle GAction additions
+        actions = (
+            ("close", self.on_menu_close_activate, None),
+        )
+        for (name, callback, accel) in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.widget.add_action(action)
+
         toolbutton = Gtk.ToolItem()
         self.spinner = Gtk.Spinner()
         toolbutton.add(self.spinner)
