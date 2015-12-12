@@ -66,6 +66,7 @@ build_exe_options = {
     "includes": ["gi"],
     "packages": ["gi", "weakref"],
     "include_files": include_files,
+    "bin_path_excludes": [""],
 }
 
 
