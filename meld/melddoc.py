@@ -192,6 +192,8 @@ class MeldDoc(GObject.GObject):
         uimanager.remove_action_group(self.actiongroup)
         uimanager.remove_ui(self.ui_merge_id)
         self.main_actiongroup = None
+        self.popup_menu = None
+        self.ui_merge_id = None
 
     def on_delete_event(self, appquit=0):
         """Called when the docs container is about to close.
