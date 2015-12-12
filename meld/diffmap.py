@@ -168,9 +168,9 @@ class DiffMap(Gtk.DrawingArea):
 
     def do_button_press_event(self, event):
         if event.button == 1:
-            y_start = self.get_allocation().y - self._scroll_y - self._y_offset
+            y_start = self._scroll_y + self._y_offset
             total_height = self._scroll_height - self._h_offset
-            fraction = (event.y + y_start) / total_height
+            fraction = (event.y - y_start) / total_height
 
             adj = self._scrolladj
             val = fraction * adj.get_upper() - adj.get_page_size() / 2
