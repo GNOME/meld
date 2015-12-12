@@ -543,6 +543,8 @@ class MeldWindow(gnomeglade.Component):
         if self.tab_switch_merge_id:
             self.ui.remove_ui(self.tab_switch_merge_id)
             self.ui.remove_action_group(self.tab_switch_actiongroup)
+            self.tab_switch_merge_id = None
+            self.tab_switch_actiongroup = None
 
         self.tab_switch_merge_id = self.ui.new_merge_id()
         self.tab_switch_actiongroup = Gtk.ActionGroup(name="TabSwitchActions")
