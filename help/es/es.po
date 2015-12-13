@@ -3,27 +3,27 @@
 # This file is distributed under the same license as the meld package.
 # Facundo Dario Illanes <fdillanes@gmail.com>, 2014.
 # Facundo Dario Illanes <fdillanes@gmail.com>, 2014.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
-"POT-Creation-Date: 2014-04-09 10:27+0000\n"
-"PO-Revision-Date: 2014-04-09 16:44+0200\n"
+"POT-Creation-Date: 2015-12-07 13:24+0000\n"
+"PO-Revision-Date: 2015-12-07 15:43+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
 msgid "translator-credits"
 msgstr ""
-"Daniel Mustieles <daniel.mustieles@gmail.com>, 2014\n"
+"Daniel Mustieles <daniel.mustieles@gmail.com>, 2014 - 2015\n"
 "Facundo Darío Illanes <fdillanes@gmail.com>, 2014"
 
 #. (itstool) path: info/title
@@ -199,15 +199,21 @@ msgstr "Filtrado por diferencias de archivo"
 
 #. (itstool) path: section/p
 #: C/file-filters.page:50
+#| msgid ""
+#| "In a folder comparison, each line contains a single file or folder that "
+#| "is present in at least one of the folders being compared. Each of these "
+#| "lines is classified as being either <em>Modifed</em>, <em>New</em> or "
+#| "<em>Same</em>:"
 msgid ""
 "In a folder comparison, each line contains a single file or folder that is "
 "present in at least one of the folders being compared. Each of these lines "
-"is classified as being either <em>Modifed</em>, <em>New</em> or <em>Same</"
+"is classified as being either <em>Modified</em>, <em>New</em> or <em>Same</"
 "em>:"
 msgstr ""
 "Cuando se comparan carpetas, cada línea contiene un solo archivo o carpeta "
 "que exista en al menos una de las carpetas comparadas. Cada una de esas "
-"líneas se clasifica como <em>Modificada</em>, <em>Nueva</em> o <em>Igual</em>"
+"líneas se clasifica como <em>Modificada</em>, <em>Nueva</em> o <em>Igual</"
+"em>:"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
@@ -495,10 +501,18 @@ msgstr ""
 
 #. (itstool) path: section/p
 #: C/text-filters.page:45
+#| msgid ""
+#| "In <app>Meld</app>, text filters are regular expressions that are matched "
+#| "against the text of files you're comparing. Any text that is matched is "
+#| "ignored during the comparsion; you'll still see this text in the "
+#| "comparison view, but it won't be taken into account when finding "
+#| "differences. Text filters are applied in order, so it's possible for the "
+#| "first filter to remove text that now makes the second filter match, and "
+#| "so on."
 msgid ""
 "In <app>Meld</app>, text filters are regular expressions that are matched "
 "against the text of files you're comparing. Any text that is matched is "
-"ignored during the comparsion; you'll still see this text in the comparison "
+"ignored during the comparison; you'll still see this text in the comparison "
 "view, but it won't be taken into account when finding differences. Text "
 "filters are applied in order, so it's possible for the first filter to "
 "remove text that now makes the second filter match, and so on."
@@ -723,10 +737,58 @@ msgstr ""
 "El nombre del comando que ejecutar para abrir archivos de texto en un editor "
 "externo. Este puede ser simplemente el comando (por ejemplo: <cmd>gedit</"
 "cmd>) en cuyo caso el archivo que abrir se pasará como el último argumento. "
-"De otra manera, puede agregar los elementos <code>{archivo}</code> y <code>"
-"{línea}</code> al comando, en cuyo caso <app>Meld</app> sustituirá la ruta "
-"al archivo y el número de línea respectivamente (por ejemplo: <cmd>gedit "
-"{archivo}:{línea}</cmd>)."
+"De otra manera, puede agregar los elementos <code>{archivo}</code> y "
+"<code>{línea}</code> al comando, en cuyo caso <app>Meld</app> sustituirá la "
+"ruta al archivo y el número de línea respectivamente (por ejemplo: "
+"<cmd>gedit {archivo}:{línea}</cmd>)."
+
+#. (itstool) path: terms/title
+#: C/preferences.page:31
+#| msgid "Folder comparison states"
+msgid "Folder Comparison preferences"
+msgstr "Preferencias de la comparación de carpetas"
+
+#. (itstool) path: item/title
+#: C/preferences.page:33
+#| msgid "States in folder comparisons"
+msgid "Apply text filters during folder comparisons"
+msgstr "Aplicar filtros de texto en la comparación de carpetas"
+
+#. (itstool) path: item/p
+#: C/preferences.page:34
+msgid ""
+"When comparing files in folder comparison mode, text filters and other text "
+"manipulation options can be applied to the contents of files. If this option "
+"is enabled, all currently enabled text filters will be applied, the blank "
+"line trimming option will be applied as appropriate, and differences in line "
+"endings will be ignored."
+msgstr ""
+"Al comparar archivo en modo de comparación de carpetas, se pueden aplicar "
+"filtros de texto y otras opciones de manipulación de texto al contenido de "
+"los archivos. Si esta opción está activada, se aplicarán todos los filtros "
+"de texto activados, la opción de eliminación de líneas en blanco se aplicará "
+"adecuadamente, y las diferencias en los finales de línea de ignorarán."
+
+#. (itstool) path: item/p
+#: C/preferences.page:40
+msgid ""
+"Enabling this option means that <app>Meld</app> must fully read all non-"
+"binary files into memory during the folder comparison. With large text "
+"files, this can be slow and may cause memory issues."
+msgstr ""
+"Activar esta opción hará que <app>Meld</app> lea por completo todos los "
+"archivos no binarios que estén en memoria durante la comparación de "
+"carpetas. Con archivos de texto grandes, esto puede ser lento y provocar "
+"problemas de memoria."
+
+#. (itstool) path: item/p
+#: C/preferences.page:44
+msgid ""
+"This option only has an effect if \"Compare files based only on size and "
+"timestamp\" is not enabled."
+msgstr ""
+"Esta opción sólo tiene efecto si la opción «Comparar archivos basándose sólo "
+"en el tamaño y en la marca de tiempo» no está activada."
 
 #. (itstool) path: page/title
 #: C/file-changes.page:16
@@ -961,15 +1023,22 @@ msgstr "Vista aplanada"
 
 #. (itstool) path: page/p
 #: C/flattened-view.page:17
+#| msgid ""
+#| "When viewing large folders, you may be interested in only a few files "
+#| "among the thousands in the folder itself. For this reason, <app>Meld</"
+#| "app> includes a <em>flattened view</em> of a folder; only files that have "
+#| "not been filtered out (e.g., by <link xref=\"vc-mode#vc-state-filtering\"/"
+#| ">) are shown, and the folder heirarchy is stripped away, with file paths "
+#| "shown in the <em>Location</em> column."
 msgid ""
 "When viewing large folders, you may be interested in only a few files among "
 "the thousands in the folder itself. For this reason, <app>Meld</app> "
 "includes a <em>flattened view</em> of a folder; only files that have not "
 "been filtered out (e.g., by <link xref=\"vc-mode#vc-state-filtering\"/>) are "
-"shown, and the folder heirarchy is stripped away, with file paths shown in "
+"shown, and the folder hierarchy is stripped away, with file paths shown in "
 "the <em>Location</em> column."
 msgstr ""
-"Cuando esté viendo carpetas grandes, puede estar interesado solo en unos "
+"Cuando esté viendo carpetas grandes, puede estar interesado en solo unos "
 "pocos archivos entre los miles que estén en la carpeta. Por esta razón, "
 "<app>Meld</app> incluye la <em>vista aplanada</em> de una carpeta; solo se "
 "muestran los archivos que no se hayan filtrado (por ejemplo, mediante <link "
@@ -1128,7 +1197,7 @@ msgid "The file/folder is the same as the repository version."
 msgstr "El archivo o carpeta es el mismo que el del repositorio"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:109 C/folder-mode.page:150
+#: C/vc-mode.page:109
 msgid "Red and bold"
 msgstr "Rojo y en negrita"
 
@@ -1225,7 +1294,7 @@ msgstr ""
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:197
-msgid "Non VC"
+msgid "Unversioned"
 msgstr "Sin control de versiones"
 
 #. (itstool) path: td/p
@@ -1259,22 +1328,30 @@ msgstr "Filtrar el estado del control de versiones"
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:232
+#| msgid ""
+#| "Most often, you will only want to see files that are identified as being "
+#| "in some way different; this is the default setting in <app>Meld</app>. "
+#| "You can change which file states you see by using the <guiseq><gui style="
+#| "\"menu\">View</gui><gui style=\"menuitem\">Version Status</gui></guiseq> "
+#| "menu, or by clicking the corresponding <gui style=\"button\">Modified</"
+#| "gui>, <gui style=\"button\">Normal</gui>, <gui style=\"button\">Non VC</"
+#| "gui> and <gui style=\"button\">Ignored</gui> buttons on the toolbar."
 msgid ""
 "Most often, you will only want to see files that are identified as being in "
 "some way different; this is the default setting in <app>Meld</app>. You can "
 "change which file states you see by using the <guiseq><gui style=\"menu"
 "\">View</gui><gui style=\"menuitem\">Version Status</gui></guiseq> menu, or "
 "by clicking the corresponding <gui style=\"button\">Modified</gui>, <gui "
-"style=\"button\">Normal</gui>, <gui style=\"button\">Non VC</gui> and <gui "
-"style=\"button\">Ignored</gui> buttons on the toolbar."
+"style=\"button\">Normal</gui>, <gui style=\"button\">Unversioned</gui> and "
+"<gui style=\"button\">Ignored</gui> buttons on the toolbar."
 msgstr ""
 "A menudo, querrá ver solo los archivos que se presentan alguna diferencia; "
-"esta es la configuración por defecto en <app>Meld</app>. Puede cambiar qué "
-"estados de archivos se muestran usando el menú <guiseq><gui style=\"menu"
+"esta es la configuración predeterminada en <app>Meld</app>. Puede cambiar "
+"qué estados de archivos se muestran usando el menú <guiseq><gui style=\"menu"
 "\">Vista</gui><gui style=\"menuitem\">Estado de la versión</gui></guiseq> o "
-"pulsando el botón <gui style=\"button\">Modificado</gui>, <gui style=\"button"
-"\">Normal</gui>, <gui style=\"button\">Sin control de versiones</gui> o <gui "
-"style=\"button\">Ignorado</gui> en la barra de herramientas."
+"pulsando los botones <gui style=\"button\">Modificado</gui>, <gui style="
+"\"button\">Normal</gui>, <gui style=\"button\">Sin control de versiones</"
+"gui> o <gui style=\"button\">Ignorado</gui> en la barra de herramientas."
 
 #. (itstool) path: page/title
 #: C/keyboard-shortcuts.page:15
@@ -1425,9 +1502,10 @@ msgid "Find the next instance of the string."
 msgstr "Buscar la siguiente instancia de la cadena"
 
 #. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:90 C/keyboard-shortcuts.page:96
-msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
-msgstr "<keyseq><key>Alt</key><key>Arriba</key></keyseq>"
+#: C/keyboard-shortcuts.page:90
+#| msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
+msgid "<keyseq><key>Alt</key><key>Down</key></keyseq>"
+msgstr "<keyseq><key>Alt</key><key>Abajo</key></keyseq>"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:91
@@ -1437,6 +1515,11 @@ msgid ""
 msgstr ""
 "Ir a la siguiente diferencia. (También <keyseq><key>Ctrl</key><key>D</key></"
 "keyseq>)"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:96
+msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
+msgstr "<keyseq><key>Alt</key><key>Arriba</key></keyseq>"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:97
@@ -1671,6 +1754,12 @@ msgstr ""
 "<link xref=\"text-filters\">filtros de texto</link>, se han vuelto idénticos."
 
 #. (itstool) path: td/p
+#: C/folder-mode.page:150
+#| msgid "Red and bold"
+msgid "Blue and bold"
+msgstr "Azul y en negrita"
+
+#. (itstool) path: td/p
 #: C/folder-mode.page:156
 msgid "These files differ between the folders being compared."
 msgstr "Estos archivos difieren entre las carpetas comparadas."
@@ -1707,8 +1796,8 @@ msgstr ""
 #: C/folder-mode.page:217
 msgid ""
 "You can filter out files based on these states, for example, to show only "
-"files that have been <em>Modified</em>. You can read more about this in <link "
-"xref=\"file-filters#file-state-filter\"/>."
+"files that have been <em>Modified</em>. You can read more about this in "
+"<link xref=\"file-filters#file-state-filter\"/>."
 msgstr ""
 "Es posible filtrar archivos en base a sus estados, por ejemplo, mostrar solo "
 "los archivos <em>Modificados</em>. Puede leer más sobre esto en la <link "
@@ -1828,3 +1917,6 @@ msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
 msgstr ""
 "Ejecute <cmd>meld --help</cmd> para una lista de todas las opciones de línea "
 "de comandos."
+
+#~ msgid "Non VC"
+#~ msgstr "Sin control de versiones"
