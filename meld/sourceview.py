@@ -136,7 +136,7 @@ class MeldSourceView(GtkSource.View):
         it = buf.get_iter_at_line(line)
         y, h = self.get_line_yrange(it)
         if line >= buf.get_line_count():
-            return y + h - 1
+            return y + h
         return y
 
     def get_line_num_for_y(self, y):
