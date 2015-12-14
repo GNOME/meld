@@ -1984,7 +1984,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def clear_sync_points(self, action):
         self.syncpoints = []
         self.linediffer.syncpoints = []
-        for t in enumerate(self.textview):
+        for t in self.textview:
             t.syncpoints = []
         for mgr in self.msgarea_mgr:
             if mgr.get_msg_id() == FileDiff.MSG_SYNCPOINTS:
