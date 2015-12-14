@@ -1,4 +1,45 @@
 
+2015-12-15 meld 3.15.1
+======================
+
+  Features:
+
+   * Text ignored by filters is now dimmed to give some visual feedback that
+     it's being ignored (David Rabel)
+   * Text filters now apply independently, improving consistency; note that
+     this is a behaviour change as filter order no longer matters, and filters
+     will always apply to the original (not the filtered) text (David Rabel,
+     Kai Willadsen)
+   * Recent menu items now show more detail in tooltips (Alan Suran)
+   * Update dialog action area layout for GTK+ theme changes (Kai Willadsen)
+
+  Fixes:
+
+   * Conflict resolution prompt now resolves properly again (Andrew Sutherland)
+   * Silence some GTK+ assertions on window close (Zain)
+   * Fix default filter issues from recent rework (Erik Schilling)
+   * Percent-containing commit messages no longer corrupt our recent commit
+     messages store (Kai Willadsen)
+   * Fix some problems with unicode user directories on Windows (Kai Willadsen)
+   * Fix encoding issues when saving files with load errors (Kai Willadsen)
+   * Fix drawing corruption when scrolling horizontally (Kai Willadsen)
+   * Fix clicking on the diffmap scrolling to the wrong location (Kai Willadsen)
+   * Fix off-by-one drawing error for final line in file (Kai Willadsen)
+   * Fix introspection requires to silence startup warnings (Kai Willadsen)
+   * Fix clearing syncpoints (Kai Willadsen)
+   * Add manual appdata kudos markers (Kai Willadsen)
+   * PEP8 fixes (David Rabel, Kai Willadsen)
+
+  Translations:
+
+   * Daniel Mustieles (es)
+   * Marek Černocký (cs)
+   * Milo Casagrande (it)
+   * Pedro Albuquerque (pt)
+   * Piotr Drąg (pl)
+   * Rafael Fontenelle (pt_BR)
+
+
 2015-10-05 meld 3.15.0
 ======================
 
