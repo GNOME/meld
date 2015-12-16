@@ -50,6 +50,10 @@ def make_custom_editor_command(path, line=0):
     return shlex.split(cmd)
 
 
+# TODO: Consider use-cases for states in gedit-enum-types.c
+STATE_NORMAL, STATE_CLOSING, STATE_SAVING_ERROR, NUM_STATES = range(4)
+
+
 class MeldDoc(GObject.GObject):
     """Base class for documents in the meld application.
     """
@@ -69,6 +73,7 @@ class MeldDoc(GObject.GObject):
         'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
         'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
+        'state-changed': (GObject.SignalFlags.RUN_FIRST, None, (int, int)),
     }
 
     def __init__(self):
@@ -78,6 +83,18 @@ class MeldDoc(GObject.GObject):
         self.label_text = _("untitled")
         self.tooltip_text = _("untitled")
         self.main_actiongroup = None
+        self._state = STATE_NORMAL
+
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, value):
+        if value == self._state:
+            return
+        self.emit('state-changed', self._state, value)
+        self._state = value
 
     def get_comparison(self):
         """Get the comparison type and path(s) being compared"""
@@ -195,7 +212,7 @@ class MeldDoc(GObject.GObject):
         self.popup_menu = None
         self.ui_merge_id = None
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
         """Called when the docs container is about to close.
 
         A doc normally returns Gtk.ResponseType.OK, but may instead return

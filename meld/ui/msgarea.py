@@ -21,6 +21,7 @@
 
 from gi.repository import Gtk
 
+from meld.conf import _
 from meld.ui.wraplabel import WrapLabel
 
 
@@ -28,8 +29,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     hbox_content = Gtk.HBox(homogeneous=False, spacing=8)
     hbox_content.show()
 
-    image = Gtk.Image()
-    image.set_from_stock(stockid, Gtk.IconSize.DIALOG)
+    image = Gtk.Image.new_from_icon_name(stockid, Gtk.IconSize.DIALOG)
     image.show()
     hbox_content.pack_start(image, False, False, 0)
     image.set_alignment(0.5, 0.5)
@@ -102,4 +102,24 @@ class MsgAreaController(Gtk.HBox):
         content_area.add(content)
 
         self.pack_start(msgarea, True, True, 0)
+        return msgarea
+
+    def add_dismissable_msg(self, icon, primary, secondary):
+        msgarea = self.new_from_text_and_icon(icon, primary, secondary)
+        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
+        msgarea.connect("response", lambda *args: self.clear())
+        msgarea.show_all()
+        return msgarea
+
+    def add_action_msg(self, icon, primary, secondary, action_label, callback):
+        def on_response(msgarea, response_id, *args):
+            self.clear()
+            if response_id == Gtk.ResponseType.ACCEPT:
+                callback()
+
+        msgarea = self.new_from_text_and_icon(icon, primary, secondary)
+        msgarea.add_button(action_label, Gtk.ResponseType.ACCEPT)
+        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
+        msgarea.connect("response", on_response)
+        msgarea.show_all()
         return msgarea

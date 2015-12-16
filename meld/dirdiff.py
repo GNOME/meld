@@ -852,7 +852,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for pane in range(self.num_panes):
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                Gtk.STOCK_INFO, primary, secondary)
+                'dialog-information-symbolic', primary, secondary)
             button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
             if pane == 0:
                 button.props.label = _("Hi_de")
@@ -902,17 +902,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 else:
                     continue
                 secondary = "\n".join(messages)
-                self.add_dismissable_msg(pane, Gtk.STOCK_DIALOG_ERROR, header,
-                                         secondary)
-
-    def add_dismissable_msg(self, pane, icon, primary, secondary):
-        msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                        icon, primary, secondary)
-        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-        msgarea.connect("response",
-                        lambda *args: self.msgarea_mgr[pane].clear())
-        msgarea.show_all()
-        return msgarea
+                self.msgarea_mgr[pane].add_dismissable_msg(
+                    'dialog-error-symbolic', header, secondary)
 
     def copy_selected(self, direction):
         assert direction in (-1, 1)
@@ -1571,7 +1562,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_refresh_activate(self, *extra):
         self.on_fileentry_file_set(None)
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
         for h in self.settings_handlers:
             meldsettings.disconnect(h)
         self.emit('close', 0)

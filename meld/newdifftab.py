@@ -29,6 +29,7 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
+        'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
         'diff-created': (GObject.SignalFlags.RUN_FIRST, None,
                          (object,)),
     }
@@ -134,4 +135,5 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
         pass
 
     def on_delete_event(self, *args):
+        self.emit('close', 0)
         return Gtk.ResponseType.OK

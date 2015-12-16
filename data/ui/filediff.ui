@@ -326,17 +326,16 @@
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <property name="icon_name">emblem-readonly</property>
+                    <property name="icon_name">changes-prevent-symbolic</property>
                     <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
                   </object>
                 </child>
                 <child>
                   <object class="GtkToolButton" id="file_save_button2">
-                    <property name="stock-id">gtk-save</property>
+                    <property name="icon-name">document-save</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_underline">True</property>
                     <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
                   </object>
                 </child>
@@ -403,11 +402,10 @@
                 </child>
                 <child>
                   <object class="GtkToolButton" id="file_save_button1">
-                    <property name="stock-id">gtk-save</property>
+                    <property name="icon-name">document-save-symbolic</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_underline">True</property>
                     <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
                   </object>
                 </child>
@@ -474,11 +472,10 @@
                 </child>
                 <child>
                   <object class="GtkToolButton" id="file_save_button0">
-                    <property name="stock-id">gtk-save</property>
+                    <property name="icon-name">document-save-symbolic</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_underline">True</property>
                     <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
                   </object>
                 </child>

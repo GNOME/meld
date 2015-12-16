@@ -18,12 +18,15 @@ import difflib
 import os
 
 from gi.repository import Gdk
+from gi.repository import Gio
+from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from .ui import gnomeglade
 
 from meld.conf import _
+from meld.misc import error_dialog
 from meld.settings import meldsettings
 from .util.compat import text_type
 from meld.sourceview import LanguageManager
@@ -100,32 +103,51 @@ class PatchDialog(gnomeglade.Component):
         diff_text = "".join(unicodeify(d) for d in diff)
         buf.set_text(diff_text)
 
+    def save_patch(self, filename):
+        buf = self.textview.get_buffer()
+        sourcefile = GtkSource.File.new()
+        targetfile = Gio.File.new_for_path(filename)
+        saver = GtkSource.FileSaver.new_with_target(
+            buf, sourcefile, targetfile)
+        saver.save_async(
+            GLib.PRIORITY_HIGH,
+            callback=self.file_saved_cb,
+        )
+
+    def file_saved_cb(self, saver, result, *args):
+        gfile = saver.get_location()
+        try:
+            saver.save_finish(result)
+        except GLib.Error as err:
+            filename = GLib.markup_escape_text(
+                gfile.get_parse_name()).decode('utf-8')
+            error_dialog(
+                primary=_("Could not save file %s.") % filename,
+                secondary=_("Couldn't save file due to:\n%s") % (
+                    GLib.markup_escape_text(str(err))),
+            )
+
     def run(self):
         self.update_patch()
 
-        while 1:
-            result = self.widget.run()
-            if result < 0:
-                break
+        result = self.widget.run()
+        if result < 0:
+            self.widget.hide()
+            return
 
+        # Copy patch to clipboard
+        if result == 1:
             buf = self.textview.get_buffer()
             start, end = buf.get_bounds()
-            txt = text_type(buf.get_text(start, end, False), 'utf8')
-
-            # Copy patch to clipboard
-            if result == 1:
-                clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-                clip.set_text(txt, -1)
-                clip.store()
-                break
-            # Save patch as a file
-            else:
-                # FIXME: These filediff methods are actually general utility.
-                filename = self.filediff._get_filename_for_saving(
-                    _("Save Patch"))
-                if filename:
-                    txt = txt.encode('utf-8')
-                    self.filediff._save_text_to_filename(filename, txt)
-                    break
+            clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+            clip.set_text(buf.get_text(start, end, False), -1)
+            clip.store()
+        # Save patch as a file
+        else:
+            # FIXME: These filediff methods are actually general utility.
+            filename = self.filediff._get_filename_for_saving(
+                _("Save Patch"))
+            if filename:
+                self.save_patch(filename)
 
         self.widget.hide()

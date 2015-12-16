@@ -1,7 +1,7 @@
 # coding=UTF-8
 
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2009-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2009-2015 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 import copy
 import functools
-import io
 import os
 import time
 
@@ -47,9 +46,9 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
-from meld.settings import bind_settings, meldsettings, settings
+from meld.settings import bind_settings, meldsettings
 from .util.compat import text_type
-from meld.sourceview import LanguageManager
+from meld.sourceview import LanguageManager, get_custom_encoding_candidates
 
 
 def with_focused_pane(function):
@@ -118,14 +117,6 @@ class CursorDetails(object):
     def __init__(self):
         for var in self.__slots__:
             setattr(self, var, None)
-
-
-class TaskEntry(object):
-    __slots__ = ("filename", "file", "buf", "codec", "pane", "was_cr")
-
-    def __init__(self, *args):
-        for var, val in zip(self.__slots__, args):
-            setattr(self, var, val)
 
 
 class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
@@ -346,15 +337,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
-            textview.set_editable(0)
+            textview.set_sensitive(False)
         for buf in self.textbuffer:
-            assert hasattr(buf,"handlers")
             for h in buf.handlers:
                 buf.disconnect(h)
+            buf.handlers = []
 
     def _connect_buffer_handlers(self):
-        for textview, buf in zip(self.textview, self.textbuffer):
-            textview.set_editable(buf.data.editable)
+        for textview in self.textview:
+            textview.set_sensitive(True)
         for buf in self.textbuffer:
             id0 = buf.connect("insert-text", self.on_text_insert_text)
             id1 = buf.connect("delete-range", self.on_text_delete_range)
@@ -491,7 +482,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if pane is None:
             pane = self._get_focused_pane()
             if pane == -1:
-                pane = 1 if len(self.textview) > 1 else 0
+                pane = 1 if self.num_panes > 1 else 0
 
         chunk = self.linediffer.get_chunk(target, pane)
         if not chunk:
@@ -824,7 +815,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def check_save_modified(self):
         response = Gtk.ResponseType.OK
-        modified = [b.data.modified for b in self.textbuffer[:self.num_panes]]
+        modified = [b.get_modified() for b in self.textbuffer[:self.num_panes]]
         labels = [b.data.label for b in self.textbuffer[:self.num_panes]]
         if True in modified:
             dialog = gnomeglade.Component("filediff.ui", "check_save_dialog")
@@ -842,15 +833,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             response = dialog.widget.run()
             try_save = [b.get_active() for b in buttons]
             dialog.widget.destroy()
-            if response == Gtk.ResponseType.OK:
+            if response == Gtk.ResponseType.OK and any(try_save):
                 for i in range(self.num_panes):
                     if try_save[i]:
-                        if not self.save_file(i):
-                            return Gtk.ResponseType.CANCEL
-            elif response == Gtk.ResponseType.DELETE_EVENT:
-                response = Gtk.ResponseType.CANCEL
+                        self.save_file(i)
+                return Gtk.ResponseType.CANCEL
 
-        if response == Gtk.ResponseType.CLOSE:
+        if response == Gtk.ResponseType.DELETE_EVENT:
+            response = Gtk.ResponseType.CANCEL
+        elif response == Gtk.ResponseType.CLOSE:
             response = Gtk.ResponseType.OK
 
         if response == Gtk.ResponseType.OK and self.meta:
@@ -872,10 +863,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     bufdata = self.textbuffer[1].data
                     conflict_file = bufdata.savefile or bufdata.filename
                     parent.command('resolve', [conflict_file])
+        elif response == Gtk.ResponseType.CANCEL:
+            self.state = melddoc.STATE_NORMAL
 
         return response
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
+        self.state = melddoc.STATE_CLOSING
         response = self.check_save_modified()
         if response == Gtk.ResponseType.OK:
             for h in self.settings_handlers:
@@ -912,7 +906,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             meldbuffer.BufferDeletionAction(buf, it0.get_offset(), text))
 
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
-        self.set_buffer_modified(buf, not checkpointed)
+        buf.set_modified(not checkpointed)
+        self.recompute_label()
 
     @with_focused_pane
     def open_external(self, pane):
@@ -992,30 +987,32 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.on_cursor_position_changed(view.get_buffer(), None, True)
 
     def set_labels(self, labels):
-        labels = labels[:len(self.textbuffer)]
+        labels = labels[:self.num_panes]
         for label, buf in zip(labels, self.textbuffer):
             if label:
                 buf.data.label = label
 
     def set_merge_output_file(self, filename):
-        if len(self.textbuffer) < 2:
+        if self.num_panes < 2:
             return
         buf = self.textbuffer[1]
         buf.data.savefile = os.path.abspath(filename)
         buf.data.label = filename
-        writable = True
-        if os.path.exists(buf.data.savefile):
-            writable = os.access(buf.data.savefile, os.W_OK)
-        self.set_buffer_writable(buf, writable)
-        self.fileentry[1].set_filename(buf.data.savefile)
+        self.update_buffer_writable(buf)
+
+        # FIXME: Hack around bgo#737804; remove after GTK+ 3.18 is required
+        def set_merge_file_entry():
+            self.fileentry[1].set_filename(buf.data.savefile)
+        self.scheduler.add_task(set_merge_file_entry)
         self.recompute_label()
 
     def _set_save_action_sensitivity(self):
         pane = self._get_focused_pane()
-        modified = False if pane == -1 else self.textbuffer[pane].data.modified
+        modified = (
+            False if pane == -1 else self.textbuffer[pane].get_modified())
         if self.main_actiongroup:
             self.main_actiongroup.get_action("Save").set_sensitive(modified)
-        any_modified = any(b.data.modified for b in self.textbuffer)
+        any_modified = any(b.get_modified() for b in self.textbuffer)
         self.actiongroup.get_action("SaveAll").set_sensitive(any_modified)
 
     def recompute_label(self):
@@ -1024,11 +1021,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         shortnames = misc.shorten_names(*filenames)
 
         for i, buf in enumerate(self.textbuffer[:self.num_panes]):
-            if buf.data.modified:
+            if buf.get_modified():
                 shortnames[i] += "*"
-            self.file_save_button[i].set_sensitive(buf.data.modified)
-            self.file_save_button[i].props.stock_id = (
-                Gtk.STOCK_SAVE if buf.data.writable else Gtk.STOCK_SAVE_AS)
+            self.file_save_button[i].set_sensitive(buf.get_modified())
+            self.file_save_button[i].props.icon_name = (
+                'document-save-symbolic' if buf.data.writable else
+                'document-save-as-symbolic')
 
         label = self.meta.get("tablabel", "")
         if label:
@@ -1039,137 +1037,89 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.label_changed()
 
     def set_files(self, files):
-        """Set num panes to len(files) and load each file given.
-           If an element is None, the text of a pane is left as is.
-        """
-        self._disconnect_buffer_handlers()
-        files = list(files)
-        for i, f in enumerate(files):
-            if not f:
-                continue
-            if not isinstance(f, unicode):
-                files[i] = f = f.decode('utf8')
-            absfile = os.path.abspath(f)
-            self.fileentry[i].set_filename(absfile)
-            self.textbuffer[i].reset_buffer(absfile)
-            self.msgarea_mgr[i].clear()
+        """Load the given files
 
-        self.recompute_label()
-        self.textview[len(files) >= 2].grab_focus()
-        self._connect_buffer_handlers()
-        self.scheduler.add_task(self._set_files_internal(files))
+        If an element is None, the text of a pane is left as is.
+        """
+        if len(files) != self.num_panes:
+            return
+
+        self._disconnect_buffer_handlers()
+        self.undosequence.clear()
+        self.linediffer.clear()
+
+        custom_candidates = get_custom_encoding_candidates()
+
+        files = [(pane, Gio.File.new_for_path(filename))
+                 for pane, filename in enumerate(files) if filename]
+
+        if not files:
+            self.scheduler.add_task(self._compare_files_internal())
+
+        for pane, gfile in files:
+            self.fileentry[pane].set_file(gfile)
+            self.msgarea_mgr[pane].clear()
+
+            self.textbuffer[pane].data.reset(gfile)
+
+            loader = GtkSource.FileLoader.new(
+                self.textbuffer[pane], self.textbuffer[pane].data.sourcefile)
+            if custom_candidates:
+                loader.set_candidate_encodings(custom_candidates)
+            loader.load_async(
+                GLib.PRIORITY_HIGH,
+                callback=self.file_loaded,
+                user_data=(pane,)
+            )
 
     def get_comparison(self):
         files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
         return recent.TYPE_FILE, files
 
-    def _load_files(self, files, textbuffers):
-        self.undosequence.clear()
-        yield _("[%s] Set num panes") % self.label_text
-        self.set_num_panes( len(files) )
-        self._disconnect_buffer_handlers()
-        self.linediffer.clear()
-        self.queue_draw()
-        try_codecs = list(settings.get_value('detect-encodings'))
-        try_codecs.append('latin1')
-        yield _("[%s] Opening files") % self.label_text
-        tasks = []
+    def file_loaded(self, loader, result, user_data):
 
-        def add_dismissable_msg(pane, icon, primary, secondary):
-            msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                            icon, primary, secondary)
-            msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-            msgarea.connect("response",
-                            lambda *args: self.msgarea_mgr[pane].clear())
-            msgarea.show_all()
-            return msgarea
+        gfile = loader.get_location()
+        pane = user_data[0]
 
-        for pane, filename in enumerate(files):
-            buf = textbuffers[pane]
-            if filename:
-                try:
-                    handle = io.open(filename, "r", encoding=try_codecs[0])
-                    task = TaskEntry(filename, handle, buf, try_codecs[:],
-                                     pane, False)
-                    tasks.append(task)
-                except (IOError, LookupError) as e:
-                    buf.delete(*buf.get_bounds())
-                    add_dismissable_msg(pane, Gtk.STOCK_DIALOG_ERROR,
-                                        _("Could not read file"), str(e))
-        yield _("[%s] Reading files") % self.label_text
-        while len(tasks):
-            for t in tasks[:]:
-                try:
-                    nextbit = t.file.read(4096)
-                    if nextbit.find("\x00") != -1:
-                        t.buf.delete(*t.buf.get_bounds())
-                        filename = GObject.markup_escape_text(t.filename)
+        try:
+            loader.load_finish(result)
+        except GLib.Error as err:
+            # TODO: Find sane error domain constants
+            if err.domain == 'gtk-source-file-loader-error':
+                # TODO: Add custom reload-with-encoding handling for
+                # GtkSource.FileLoaderError.CONVERSION_FALLBACK and
+                # GtkSource.FileLoaderError.ENCODING_AUTO_DETECTION_FAILED
+                pass
 
-                        primary = _("File %s appears to be a binary file.") % filename
-                        secondary = _("Do you want to open the file using the default application?")
-                        msgarea = self.msgarea_mgr[t.pane].new_from_text_and_icon(
-                                        Gtk.STOCK_DIALOG_WARNING, primary, secondary)
-                        msgarea.add_button(_("Open"), Gtk.ResponseType.ACCEPT)
-                        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
+            filename = GLib.markup_escape_text(
+                gfile.get_parse_name()).decode('utf-8')
+            primary = _(
+                u"There was a problem opening the file “%s”." % filename)
+            self.msgarea_mgr[pane].add_dismissable_msg(
+                'dialog-error-symbolic', primary, err.message)
 
-                        def make_binary_callback(pane, filename):
-                            def on_binary_file_open(msgarea, response_id, *args):
-                                self.msgarea_mgr[pane].clear()
-                                if response_id == Gtk.ResponseType.ACCEPT:
-                                    self._open_files([filename])
-                                return on_binary_file_open
-                            return on_binary_file_open
+        buf = loader.get_buffer()
+        start, end = buf.get_bounds()
+        buffer_text = buf.get_text(start, end, False)
+        if not loader.get_encoding() and '\\00' in buffer_text:
+            primary = _("File %s appears to be a binary file.") % filename
+            secondary = _(
+                "Do you want to open the file using the default application?")
+            self.msgarea_mgr[pane].add_action_msg(
+                'dialog-warning-symbolic', primary, secondary, _("Open"),
+                functools.partial(self._open_files, [gfile.get_path()]))
 
-                        msgarea.connect("response", make_binary_callback(t.pane, t.filename))
-                        msgarea.show_all()
-                        tasks.remove(t)
-                        continue
-                except ValueError as err:
-                    t.codec.pop(0)
-                    if len(t.codec):
-                        t.buf.delete(*t.buf.get_bounds())
-                        t.file = io.open(t.filename, "r", encoding=t.codec[0])
-                    else:
-                        t.buf.delete(*t.buf.get_bounds())
-                        filename = GObject.markup_escape_text(t.filename)
-                        add_dismissable_msg(t.pane, Gtk.STOCK_DIALOG_ERROR,
-                                        _("Could not read file"),
-                                        _("%s is not in encodings: %s") %
-                                            (filename, try_codecs))
-                        tasks.remove(t)
-                except IOError as ioerr:
-                    add_dismissable_msg(t.pane, Gtk.STOCK_DIALOG_ERROR,
-                                    _("Could not read file"), str(ioerr))
-                    tasks.remove(t)
-                else:
-                    # The handling here avoids inserting split CR/LF pairs into
-                    # GtkTextBuffers; this is relevant only when universal
-                    # newline support is unavailable or broken.
-                    if t.was_cr:
-                        nextbit = "\r" + nextbit
-                        t.was_cr = False
-                    if len(nextbit):
-                        if nextbit[-1] == "\r" and len(nextbit) > 1:
-                            t.was_cr = True
-                            nextbit = nextbit[0:-1]
-                        t.buf.insert(t.buf.get_end_iter(), nextbit)
-                    else:
-                        if t.buf.data.savefile:
-                            writable = True
-                            if os.path.exists(t.buf.data.savefile):
-                                writable = os.access(
-                                    t.buf.data.savefile, os.W_OK)
-                        else:
-                            writable = os.access(t.filename, os.W_OK)
-                        self.set_buffer_writable(t.buf, writable)
-                        t.buf.data.encoding = t.codec[0]
-                        if hasattr(t.file, "newlines"):
-                            t.buf.data.newlines = t.file.newlines
-                        tasks.remove(t)
-            yield 1
-        for b in self.textbuffer:
-            self.undosequence.checkpoint(b)
-            b.data.update_mtime()
+        self.update_buffer_writable(buf)
+
+        self.undosequence.checkpoint(buf)
+        buf.data.update_mtime()
+        buf.data.loaded = True
+
+        if all(b.data.loaded for b in self.textbuffer[:self.num_panes]):
+            self.scheduler.add_task(self._compare_files_internal())
+
+    def _merge_files(self):
+        yield 1
 
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
@@ -1199,13 +1149,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
 
-        langs = []
-        for i in range(self.num_panes):
-            filename = self.textbuffer[i].data.filename
-            if filename:
-                langs.append(LanguageManager.get_language_from_file(filename))
-            else:
-                langs.append(None)
+        langs = [LanguageManager.get_language_from_file(buf.data.gfile)
+                 for buf in self.textbuffer[:self.num_panes]]
 
         # If we have only one identified language then we assume that all of
         # the files are actually of that type.
@@ -1216,11 +1161,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for i in range(self.num_panes):
             self.textbuffer[i].set_language(langs[i])
 
-    def _set_files_internal(self, files):
-        for i in self._load_files(files, self.textbuffer):
+    def _compare_files_internal(self):
+        for i in self._merge_files():
             yield i
         for i in self._diff_files():
             yield i
+        focus_pane = 0 if self.num_panes < 3 else 1
+        self.textview[focus_pane].grab_focus()
 
     def set_meta(self, meta):
         self.meta = meta
@@ -1242,18 +1189,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         display_name = gfile.get_parse_name().decode('utf-8')
         primary = _("File %s has changed on disk") % display_name
         secondary = _("Do you want to reload the file?")
-        msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                        Gtk.STOCK_DIALOG_WARNING, primary, secondary)
-        msgarea.add_button(_("_Reload"), Gtk.ResponseType.ACCEPT)
-        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-
-        def on_file_changed_response(msgarea, response_id, *args):
-            self.msgarea_mgr[pane].clear()
-            if response_id == Gtk.ResponseType.ACCEPT:
-                self.on_revert_activate()
-
-        msgarea.connect("response", on_file_changed_response)
-        msgarea.show_all()
+        self.msgarea_mgr[pane].add_action_msg(
+            'dialog-warning-symbolic', primary, secondary, _("_Reload"),
+            self.on_revert_activate)
 
     def refresh_comparison(self, *args):
         """Refresh the view by clearing and redoing all comparisons"""
@@ -1412,7 +1350,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 active_filters = any([f.active for f in self.text_filters])
 
                 bufs = self.textbuffer[:self.num_panes]
-                newlines = [b.data.newlines for b in bufs]
+                newlines = [b.data.sourcefile.get_newline_type() for b in bufs]
                 different_newlines = not misc.all_same(newlines)
 
                 if active_filters:
@@ -1431,12 +1369,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         n if isinstance(n, tuple) else (n,) for n in newlines]
                     newline_strings = []
                     for label, nl_types in zip(labels, newline_types):
-                        nl_string = ", ".join(NEWLINES[n] for n in nl_types)
+                        nl_string = ", ".join(NEWLINES[n][1] for n in nl_types)
                         newline_strings.append("\t%s: %s" % (label, nl_string))
                     secondary_text %= "\n".join(newline_strings)
 
                 msgarea = mgr.new_from_text_and_icon(
-                    Gtk.STOCK_INFO, primary, secondary_text)
+                    'dialog-information-symbolic', primary, secondary_text)
                 mgr.set_msg_id(FileDiff.MSG_SAME)
                 button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
                 if index == 0:
@@ -1464,7 +1402,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for index, mgr in enumerate(self.msgarea_mgr):
             msgarea = mgr.new_from_text_and_icon(
-                Gtk.STOCK_INFO,
+                'dialog-information-symbolic',
                 _("Change highlighting incomplete"),
                 _("Some changes were not highlighted because they were too "
                   "large. You can force Meld to take longer to highlight "
@@ -1521,20 +1459,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return filename
         return None
 
-    def _save_text_to_filename(self, filename, text):
-        try:
-            if not isinstance(text, str):
-                raise IOError("couldn't encode text")
-            open(filename, "wb").write(text)
-        except IOError as err:
-            misc.error_dialog(
-                primary=_("Could not save file %s.") % filename,
-                secondary=_("Couldn't save file due to:\n%s") % (
-                    GLib.markup_escape_text(str(err))),
-            )
-            return False
-        return True
-
     def save_file(self, pane, saveas=False, force_overwrite=False):
         buf = self.textbuffer[pane]
         bufdata = buf.data
@@ -1549,21 +1473,21 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             filename = self._get_filename_for_saving(prompt)
             if not filename:
                 return False
-
-            bufdata.filename = bufdata.label = os.path.abspath(filename)
+            filename = os.path.abspath(filename)
+            bufdata.label = filename
+            bufdata.gfile = Gio.File.new_for_path(filename)
             bufdata.savefile = None
             self.fileentry[pane].set_filename(bufdata.filename)
             self.filelabel_toolitem[pane].set_visible(False)
             self.fileentry_toolitem[pane].set_visible(True)
 
         if not force_overwrite and not bufdata.current_on_disk():
-            gfile = Gio.File.new_for_path(bufdata.filename)
             primary = (
                 _("File %s has changed on disk since it was opened") %
-                gfile.get_parse_name().decode('utf-8'))
+                bufdata.gfile.get_parse_name().decode('utf-8'))
             secondary = _("If you save it, any external changes will be lost.")
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                Gtk.STOCK_DIALOG_WARNING, primary, secondary)
+                'dialog-warning-symbolic', primary, secondary)
             msgarea.add_button(_("Save Anyway"), Gtk.ResponseType.ACCEPT)
             msgarea.add_button(_("Don't Save"), Gtk.ResponseType.CLOSE)
 
@@ -1574,42 +1498,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             msgarea.connect("response", on_file_changed_response)
             msgarea.show_all()
-            return
+            return False
 
         start, end = buf.get_bounds()
         text = text_type(buf.get_text(start, end, False), 'utf8')
-        if bufdata.newlines:
-            if isinstance(bufdata.newlines, basestring):
-                if bufdata.newlines != '\n':
-                    text = text.replace("\n", bufdata.newlines)
-            else:
-                buttons = {
-                    '\n': (NEWLINES['\n'], 0),
-                    '\r\n': (NEWLINES['\r\n'], 1),
-                    '\r': (NEWLINES['\r'], 2),
-                }
-                dialog_buttons = [(_("_Cancel"), Gtk.ResponseType.CANCEL)]
-                dialog_buttons += [buttons[b] for b in bufdata.newlines]
-                newline = misc.modal_dialog(
-                    primary=_("Inconsistent line endings found"),
-                    secondary=_(
-                        "'%s' contains a mixture of line endings. Select the "
-                        "line ending format to use.") % bufdata.label,
-                    buttons=dialog_buttons,
-                    messagetype=Gtk.MessageType.WARNING
-                )
-                if newline < 0:
-                    return False
-                for k, v in buttons.items():
-                    if v[1] == newline:
-                        bufdata.newlines = k
-                        if k != '\n':
-                            text = text.replace('\n', k)
-                        break
 
-        encoding = bufdata.encoding or 'utf-8'
+        source_encoding = bufdata.sourcefile.get_encoding()
         while isinstance(text, unicode):
             try:
+                encoding = source_encoding.get_charset()
                 text = text.encode(encoding)
             except UnicodeEncodeError:
                 dialog_buttons = [
@@ -1629,38 +1526,70 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if reencode != Gtk.ResponseType.OK:
                     return False
 
-                encoding = 'utf-8'
+                source_encoding = GtkSource.Encoding.get_utf8()
 
-        save_to = bufdata.savefile or bufdata.filename
-        if self._save_text_to_filename(save_to, text):
-            self.emit("file-changed", save_to)
-            self.undosequence.checkpoint(buf)
-            bufdata.update_mtime()
-            if pane == 1 and self.num_panes == 3:
-                self.meta['middle_saved'] = True
-            return True
+        saver = GtkSource.FileSaver.new_with_target(
+            self.textbuffer[pane], bufdata.sourcefile, bufdata.gfiletarget)
+        # TODO: Think about removing this flag and above handling, and instead
+        # handling the GtkSource.FileSaverError.EXTERNALLY_MODIFIED error
+        if force_overwrite:
+            saver.set_flags(GtkSource.FileSaverFlags.IGNORE_MODIFICATION_TIME)
+        saver.save_async(
+            GLib.PRIORITY_HIGH,
+            callback=self.file_saved_cb,
+            user_data=(pane,)
+        )
+        return True
+
+    def file_saved_cb(self, saver, result, user_data):
+        gfile = saver.get_location()
+        pane = user_data[0]
+
+        try:
+            saver.save_finish(result)
+        except GLib.Error as err:
+            # TODO: Handle recoverable error cases, like external modifications
+            # or invalid buffer characters.
+            filename = GLib.markup_escape_text(
+                gfile.get_parse_name()).decode('utf-8')
+            misc.error_dialog(
+                primary=_("Could not save file %s.") % filename,
+                secondary=_("Couldn't save file due to:\n%s") % (
+                    GLib.markup_escape_text(str(err))),
+            )
+            self.state = melddoc.STATE_SAVING_ERROR
+            return
+
+        buf = saver.get_buffer()
+        self.emit('file-changed', gfile.get_path())
+        self.undosequence.checkpoint(buf)
+        buf.data.update_mtime()
+        if pane == 1 and self.num_panes == 3:
+            self.meta['middle_saved'] = True
+
+        if (self.state == melddoc.STATE_CLOSING and
+                not any(b.get_modified() for b in self.textbuffer)):
+            self.on_delete_event()
         else:
-            return False
+            self.state = melddoc.STATE_NORMAL
 
     def make_patch(self, *extra):
         dialog = patchdialog.PatchDialog(self)
         dialog.run()
 
-    def set_buffer_writable(self, buf, writable):
-        buf.data.writable = writable
+    def update_buffer_writable(self, buf):
+        writable = buf.data.writable
         self.recompute_label()
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].props.visible = not writable
         self.set_buffer_editable(buf, writable)
 
-    def set_buffer_modified(self, buf, yesno):
-        buf.data.modified = yesno
-        self.recompute_label()
-
     def set_buffer_editable(self, buf, editable):
-        buf.data.editable = editable
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].set_active(not editable)
+        self.readonlytoggle[index].props.icon_name = (
+            'changes-allow-symbolic' if editable else
+            'changes-prevent-symbolic')
         self.textview[index].set_editable(editable)
         self.on_cursor_position_changed(buf, None, True)
         for linkmap in self.linkmap:
@@ -1676,7 +1605,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_save_all_activate(self, action):
         for i in range(self.num_panes):
-            if self.textbuffer[i].data.modified:
+            if self.textbuffer[i].get_modified():
                 self.save_file(i)
 
     def on_file_save_button_clicked(self, button):
@@ -1703,7 +1632,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_revert_activate(self, *extra):
         response = Gtk.ResponseType.OK
-        unsaved = [b.data.label for b in self.textbuffer if b.data.modified]
+        unsaved = [b.data.label for b in self.textbuffer if b.get_modified()]
         if unsaved:
             dialog = gnomeglade.Component("filediff.ui", "revert_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
@@ -1867,7 +1796,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             for i in range(self.num_panes):
                 self.file_save_button[i].set_sensitive(
-                    self.textbuffer[i].data.modified)
+                    self.textbuffer[i].get_modified())
             self.queue_draw()
             self.recompute_label()
 
@@ -1970,7 +1899,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if valid_points:
             for mgr in self.msgarea_mgr:
                 msgarea = mgr.new_from_text_and_icon(
-                    Gtk.STOCK_DIALOG_INFO,
+                    'dialog-information-symbolic',
                     _("Live comparison updating disabled"),
                     _("Live updating of comparisons is disabled when "
                       "synchronization points are active. You can still "
