@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-11 11:40+0000\n"
-"PO-Revision-Date: 2015-10-11 18:40+0200\n"
+"POT-Creation-Date: 2015-12-22 16:44+0000\n"
+"PO-Revision-Date: 2015-12-22 19:42+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -35,7 +35,7 @@ msgstr "Meld vyžaduje %s nebo vyšší."
 msgid "Meld does not support Python 3."
 msgstr "Meld nepodporuje Python 3."
 
-#: ../bin/meld:199
+#: ../bin/meld:200
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -59,6 +59,13 @@ msgstr "Prohlížeč rozdílů Meld"
 #: ../data/meld.desktop.in.h:4
 msgid "Compare and merge your files"
 msgstr "Porovnává a slučuje soubory"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/meld.desktop.in.h:6
+msgid "diff;merge;"
+msgstr ""
+"rozdíl;odlišnosti;diff;porovnání;porovnávání;srovnání;srovnávání;slučování;"
+"sloučení;"
 
 #: ../data/meld.appdata.xml.in.h:1
 msgid ""
@@ -110,16 +117,22 @@ msgid "If true, the window statusbar is visible."
 msgstr "Když je zapnuto, je stavová lišta v okně viditelná."
 
 #: ../data/org.gnome.meld.gschema.xml.h:7
-msgid "Automatically detected text encodings"
-msgstr "Automaticky zjišťovat kódování textu"
+#| msgid "Automatically detected text encodings"
+msgid "Additional automatically detected text encodings"
+msgstr "Doplňková kódování textu pro automatickou detekci"
 
 #: ../data/org.gnome.meld.gschema.xml.h:8
 msgid ""
-"These text encodings will be automatically used (in order) to try to decode "
-"loaded text files."
+"Meld will use these text encodings to try to decode loaded text files before "
+"trying any other encodings. In addition to the encodings in this list, UTF-8 "
+"and the current locale-default encoding will always be used; other encodings "
+"may also be tried, depending on the user's locale."
 msgstr ""
-"Tato kódování textu budou automaticky použita (v daném pořadí) k pokusům "
-"dekódovat načítané textové soubory."
+"Meld použije při pokusu o dekódování načtených textových souborů tato "
+"kódování přednostně před zkoušením ostatních. Mimo kódování v tomto seznamu "
+"se vždy zkusí také UTF-8 a výchozí kódování pro aktuální národní prostředí. "
+"V závislosti na národním prostředí mohou být vyzkoušena i některá další "
+"kódování."
 
 #: ../data/org.gnome.meld.gschema.xml.h:9
 msgid "Width of an indentation step"
@@ -550,7 +563,7 @@ msgstr "Kopírovat doprava"
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:856 ../meld/filediff.py:1422
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:856 ../meld/filediff.py:1379
 msgid "Hide"
 msgstr "Skrýt"
 
@@ -841,8 +854,8 @@ msgstr "Pokud se změny neuloží, budou trvale ztraceny."
 msgid "Close _without Saving"
 msgstr "Zavřít _bez uložení"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:947 ../meld/filediff.py:1488
-#: ../meld/filediff.py:1572 ../meld/filediff.py:1597
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:938 ../meld/filediff.py:1445
+#: ../meld/filediff.py:1513
 msgid "_Cancel"
 msgstr "_Zrušit"
 
@@ -879,7 +892,7 @@ msgstr "Vrátit stav před neuložené změny v dokumentu?"
 msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr "Změny provedené v následujících dokumentech budou trvale ztraceny:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:948 ../meld/filediff.py:1489
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:939 ../meld/filediff.py:1446
 msgid "_Replace"
 msgstr "Nahradi_t"
 
@@ -927,7 +940,7 @@ msgstr "Formátovat jako záplatu"
 msgid "Copy to Clipboard"
 msgstr "Kopírovat do schránky"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:125
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:149
 msgid "Save Patch"
 msgstr "Uložení záplaty"
 
@@ -1151,7 +1164,7 @@ msgstr ""
 msgid "Text Filters"
 msgstr "Filtry textu"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:625
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:651
 msgid "New comparison"
 msgstr "Nové porovnání"
 
@@ -1356,15 +1369,15 @@ msgstr ""
 msgid "_Push commits"
 msgstr "_Odeslat zařazené"
 
-#: ../meld/const.py:10
+#: ../meld/const.py:12
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: ../meld/const.py:11
+#: ../meld/const.py:13
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR+LF)"
 
-#: ../meld/const.py:12
+#: ../meld/const.py:14
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
@@ -1425,9 +1438,8 @@ msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory."
 
-#: ../meld/dirdiff.py:858 ../meld/dirdiff.py:911 ../meld/filediff.py:1062
-#: ../meld/filediff.py:1094 ../meld/filediff.py:1229 ../meld/filediff.py:1424
-#: ../meld/filediff.py:1454 ../meld/filediff.py:1456
+#: ../meld/dirdiff.py:858 ../meld/filediff.py:1381 ../meld/filediff.py:1411
+#: ../meld/filediff.py:1413 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
 msgid "Hi_de"
 msgstr "_Skrýt"
 
@@ -1463,12 +1475,12 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "„%s“ skryto v „%s“"
 
-#: ../meld/dirdiff.py:951
+#: ../meld/dirdiff.py:942
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Nahradit složku „%s“?"
 
-#: ../meld/dirdiff.py:953
+#: ../meld/dirdiff.py:944
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1477,11 +1489,11 @@ msgstr ""
 "V „%s“ již existuje jiná složka se stejným názvem.\n"
 "Pokud stávající složku nahradíte, budou všechny soubory v ní ztraceny."
 
-#: ../meld/dirdiff.py:966
+#: ../meld/dirdiff.py:957
 msgid "Error copying file"
 msgstr "Chyba při kopírování souboru"
 
-#: ../meld/dirdiff.py:967
+#: ../meld/dirdiff.py:958
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1494,35 +1506,35 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:990
+#: ../meld/dirdiff.py:981
 #, python-format
 msgid "Error deleting %s"
 msgstr "Chyba při mazání %s"
 
-#: ../meld/dirdiff.py:1495
+#: ../meld/dirdiff.py:1486
 msgid "No folder"
 msgstr "Žádná složka"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:368
+#: ../meld/filediff.py:359
 msgid "INS"
 msgstr "VKL"
 
-#: ../meld/filediff.py:368
+#: ../meld/filediff.py:359
 msgid "OVR"
 msgstr "PŘE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:370
+#: ../meld/filediff.py:361
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Řád %i, sl %i"
 
-#: ../meld/filediff.py:783
+#: ../meld/filediff.py:792
 msgid "Comparison results will be inaccurate"
 msgstr "Výsledky porovnávání budou nepřesné"
 
-#: ../meld/filediff.py:785
+#: ../meld/filediff.py:794
 #, python-format
 msgid ""
 "Filter “%s” changed the number of lines in the file, which is unsupported. "
@@ -1531,83 +1543,64 @@ msgstr ""
 "Filtr „%s“ změnil počet řádků v souboru, což není podporováno. Porovnání "
 "nebude správné."
 
-#: ../meld/filediff.py:842
+#: ../meld/filediff.py:852
 msgid "Mark conflict as resolved?"
 msgstr "Označit konflikt jako vyřešený?"
 
-#: ../meld/filediff.py:844
+#: ../meld/filediff.py:854
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Pokud byl konflikt vyřešen úspěšně, můžete jej označit za vyřešený."
 
-#: ../meld/filediff.py:846
+#: ../meld/filediff.py:856
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../meld/filediff.py:847
+#: ../meld/filediff.py:857
 msgid "Mark _Resolved"
 msgstr "Označi_t za vyřešené"
 
-#: ../meld/filediff.py:1049
+#: ../meld/filediff.py:1097
 #, python-format
-msgid "[%s] Set num panes"
-msgstr "[%s] Nastaven počet panelů"
+msgid "There was a problem opening the file “%s”."
+msgstr "Vyskytl se problém při otevírání souboru „%s“."
 
-#: ../meld/filediff.py:1056
-#, python-format
-msgid "[%s] Opening files"
-msgstr "[%s] Otevírají se soubory"
-
-#: ../meld/filediff.py:1079 ../meld/filediff.py:1117 ../meld/filediff.py:1123
-msgid "Could not read file"
-msgstr "Nelze přečíst soubor"
-
-#: ../meld/filediff.py:1080
-#, python-format
-msgid "[%s] Reading files"
-msgstr "[%s] Čtou se soubory"
-
-#: ../meld/filediff.py:1089
+#: ../meld/filediff.py:1105
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Soubor %s je zřejmě binární."
 
-#: ../meld/filediff.py:1090
+#: ../meld/filediff.py:1107
 msgid "Do you want to open the file using the default application?"
 msgstr "Chcete soubor otevřít pomocí výchozí aplikace?"
 
-#: ../meld/filediff.py:1093
+#: ../meld/filediff.py:1109
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../meld/filediff.py:1118
-#, python-format
-msgid "%s is not in encodings: %s"
-msgstr "%s není v kódováních: %s"
-
-#: ../meld/filediff.py:1156
+#: ../meld/filediff.py:1125
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Počítají se rozdíly"
 
-#: ../meld/filediff.py:1224
+#: ../meld/filediff.py:1190
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Soubor „%s“ byl změněn na disku."
 
-#: ../meld/filediff.py:1225
+#: ../meld/filediff.py:1191
 msgid "Do you want to reload the file?"
 msgstr "Chcete soubor znovu načíst?"
 
-#: ../meld/filediff.py:1228
+#: ../meld/filediff.py:1193
 msgid "_Reload"
 msgstr "Zno_vu načíst"
 
-#: ../meld/filediff.py:1387
+#: ../meld/filediff.py:1344
 msgid "Files are identical"
 msgstr "Soubory jsou stejné"
 
-#: ../meld/filediff.py:1400
+#: ../meld/filediff.py:1357
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1615,11 +1608,11 @@ msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory. Chcete porovnat nefiltrované soubory?"
 
-#: ../meld/filediff.py:1405
+#: ../meld/filediff.py:1362
 msgid "Files differ in line endings only"
 msgstr "Soubory se liší pouze zakončením řádků"
 
-#: ../meld/filediff.py:1407
+#: ../meld/filediff.py:1364
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1628,15 +1621,15 @@ msgstr ""
 "Soubory jsou shodné, vyjma rozdílného zakončení řádků:\n"
 "%s"
 
-#: ../meld/filediff.py:1427
+#: ../meld/filediff.py:1384
 msgid "Show without filters"
 msgstr "Zobrazit bez filtrů"
 
-#: ../meld/filediff.py:1449
+#: ../meld/filediff.py:1406
 msgid "Change highlighting incomplete"
 msgstr "Změnit zvýraznění neúplných"
 
-#: ../meld/filediff.py:1450
+#: ../meld/filediff.py:1407
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1645,20 +1638,20 @@ msgstr ""
 "přimět k používání větší délky, aby se zvýraznily i rozsáhlé změny, ale může "
 "to pak být pomalé."
 
-#: ../meld/filediff.py:1458
+#: ../meld/filediff.py:1415
 msgid "Keep highlighting"
 msgstr "Zachovat zvýrazňování"
 
-#: ../meld/filediff.py:1460
+#: ../meld/filediff.py:1417
 msgid "_Keep highlighting"
 msgstr "Z_achovat zvýrazňování"
 
-#: ../meld/filediff.py:1492
+#: ../meld/filediff.py:1449
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Nahradit soubor „%s“?"
 
-#: ../meld/filediff.py:1494
+#: ../meld/filediff.py:1451
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -1667,72 +1660,45 @@ msgstr ""
 "V „%s“ již existuje soubor se stejným názvem.\n"
 "Pokud stávající soubor nahradíte, jeho obsah bude ztracen."
 
-#: ../meld/filediff.py:1512
-#, python-format
-msgid "Could not save file %s."
-msgstr "Nelze uložit soubor %s."
-
-#: ../meld/filediff.py:1513
-#, python-format
-msgid ""
-"Couldn't save file due to:\n"
-"%s"
-msgstr ""
-"Nelze uložit soubor z důvodu:\n"
-"%s"
-
-#: ../meld/filediff.py:1525
+#: ../meld/filediff.py:1468
 msgid "Save Left Pane As"
 msgstr "Uložení levého panelu jako"
 
-#: ../meld/filediff.py:1527
+#: ../meld/filediff.py:1470
 msgid "Save Middle Pane As"
 msgstr "Uložení prostředního panelu jako"
 
-#: ../meld/filediff.py:1529
+#: ../meld/filediff.py:1472
 msgid "Save Right Pane As"
 msgstr "Uložení pravého panelu jako"
 
-#: ../meld/filediff.py:1543
+#: ../meld/filediff.py:1486
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Soubor „%s“ byl od doby, co jste jej otevřeli, změněn."
 
-#: ../meld/filediff.py:1545
+#: ../meld/filediff.py:1488
 msgid "If you save it, any external changes will be lost."
 msgstr "Pokud jej uložíte, budou vnější změny ztraceny."
 
-#: ../meld/filediff.py:1548
+#: ../meld/filediff.py:1491
 msgid "Save Anyway"
 msgstr "Přesto uložit"
 
-#: ../meld/filediff.py:1549
+#: ../meld/filediff.py:1492
 msgid "Don't Save"
 msgstr "Neukládat"
 
-#: ../meld/filediff.py:1575
-msgid "Inconsistent line endings found"
-msgstr "Nalezeny řádky s nejednotným zakončením"
-
-#: ../meld/filediff.py:1577
-#, python-format
-msgid ""
-"'%s' contains a mixture of line endings. Select the line ending format to "
-"use."
-msgstr ""
-"„%s“ obsahuje směsici různých zakončení řádků. Vyberte si, který formát "
-"zakončení chcete použít?"
-
-#: ../meld/filediff.py:1598
+#: ../meld/filediff.py:1514
 msgid "_Save as UTF-8"
 msgstr "_Uložit v UTF-8"
 
-#: ../meld/filediff.py:1601
+#: ../meld/filediff.py:1517
 #, python-format
 msgid "Couldn't encode text as “%s”"
 msgstr "Text nelze zakódovat jako „%s“"
 
-#: ../meld/filediff.py:1603
+#: ../meld/filediff.py:1519
 #, python-format
 msgid ""
 "File “%s” contains characters that can't be encoded using encoding “%s”.\n"
@@ -1741,11 +1707,25 @@ msgstr ""
 "Soubor „%s“ obsahuje znaky, které nelze zakódovat pomocí kódování „%s“\n"
 "Chcete jej uložit v UTF-8?"
 
-#: ../meld/filediff.py:1955
+#: ../meld/filediff.py:1556 ../meld/patchdialog.py:125
+#, python-format
+msgid "Could not save file %s."
+msgstr "Nelze uložit soubor %s."
+
+#: ../meld/filediff.py:1557 ../meld/patchdialog.py:126
+#, python-format
+msgid ""
+"Couldn't save file due to:\n"
+"%s"
+msgstr ""
+"Nelze uložit soubor z důvodu:\n"
+"%s"
+
+#: ../meld/filediff.py:1903
 msgid "Live comparison updating disabled"
 msgstr "Živá aktualizace porovnání zakázána"
 
-#: ../meld/filediff.py:1956
+#: ../meld/filediff.py:1904
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1755,7 +1735,7 @@ msgstr ""
 "zakázána. Možnost aktualizovat porovnávání ručně vám ale zůstává a živé "
 "aktualizace se obnoví ve chvíli, kdy jsou synchronizační body smazány."
 
-#: ../meld/filemerge.py:48
+#: ../meld/filemerge.py:37
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Slučují se soubory"
@@ -1768,103 +1748,103 @@ msgstr "Kopírovat nahor_u"
 msgid "Copy _down"
 msgstr "Kopírovat _dolů"
 
-#: ../meld/meldapp.py:175
+#: ../meld/meldapp.py:177
 msgid "wrong number of arguments supplied to --diff"
 msgstr "poskytnut nesprávný počet argumentů pro --diff"
 
-#: ../meld/meldapp.py:180
+#: ../meld/meldapp.py:182
 msgid "Start with an empty window"
 msgstr "Spustit s prázdným oknem"
 
-#: ../meld/meldapp.py:181 ../meld/meldapp.py:183
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:185
 msgid "file"
 msgstr "soubor"
 
-#: ../meld/meldapp.py:181 ../meld/meldapp.py:185
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:187
 msgid "folder"
 msgstr "složka"
 
-#: ../meld/meldapp.py:182
+#: ../meld/meldapp.py:184
 msgid "Start a version control comparison"
 msgstr "Spustit nové porovnání správy verzí"
 
-#: ../meld/meldapp.py:184
+#: ../meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Spustit dvojcestné nebo trojcestné porovnání souborů"
 
-#: ../meld/meldapp.py:186
+#: ../meld/meldapp.py:188
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Spustit dvojcestné nebo trojcestné porovnání složek"
 
-#: ../meld/meldapp.py:229
+#: ../meld/meldapp.py:231
 #, python-format
 msgid "Error: %s\n"
 msgstr "Chyba: %s\n"
 
-#: ../meld/meldapp.py:236
+#: ../meld/meldapp.py:238
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld je nástroj porovnávající soubory a složky."
 
-#: ../meld/meldapp.py:240
+#: ../meld/meldapp.py:242
 msgid "Set label to use instead of file name"
 msgstr "Nastavit k použití popisek namísto názvu souboru"
 
-#: ../meld/meldapp.py:243
+#: ../meld/meldapp.py:245
 msgid "Open a new tab in an already running instance"
 msgstr "Otevřít novou kartu v již běžící instanci"
 
-#: ../meld/meldapp.py:246
+#: ../meld/meldapp.py:248
 msgid "Automatically compare all differing files on startup"
 msgstr "Automaticky při spuštění porovnat všechny lišící se soubory"
 
-#: ../meld/meldapp.py:249
+#: ../meld/meldapp.py:251
 msgid "Ignored for compatibility"
 msgstr "Ignorováno z důvodu kompatibility"
 
-#: ../meld/meldapp.py:253
+#: ../meld/meldapp.py:255
 msgid "Set the target file for saving a merge result"
 msgstr "Nastavit cílový soubor, do kterého se má uložit výsledek slučování"
 
-#: ../meld/meldapp.py:256
+#: ../meld/meldapp.py:258
 msgid "Automatically merge files"
 msgstr "Automaticky sloučit soubory"
 
-#: ../meld/meldapp.py:260
+#: ../meld/meldapp.py:262
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Načíst uložené porovnání ze srovnávacího souboru Meld"
 
-#: ../meld/meldapp.py:264
+#: ../meld/meldapp.py:266
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Vytvořit kartu s rozdílem pro zadané soubory nebo složky"
 
-#: ../meld/meldapp.py:284
+#: ../meld/meldapp.py:286
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "příliš mnoho argumentů (požadováno 0 – 3, obdrženo %d)"
 
-#: ../meld/meldapp.py:287
+#: ../meld/meldapp.py:289
 msgid "can't auto-merge less than 3 files"
 msgstr "nelze automaticky sloučit méně než 3 soubory"
 
-#: ../meld/meldapp.py:289
+#: ../meld/meldapp.py:291
 msgid "can't auto-merge directories"
 msgstr "nelze automaticky sloučit složky"
 
-#: ../meld/meldapp.py:303
+#: ../meld/meldapp.py:305
 msgid "Error reading saved comparison file"
 msgstr "Chyba při čtení uloženého srovnávacího souboru"
 
-#: ../meld/meldapp.py:330
+#: ../meld/meldapp.py:332
 #, python-format
 msgid "invalid path or URI \"%s\""
 msgstr "neplatná cesta nebo adresa URI „%s“"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:138
+#: ../meld/meldbuffer.py:127
 msgid "<unnamed>"
 msgstr "<bez názvu>"
 
-#: ../meld/melddoc.py:78 ../meld/melddoc.py:79
+#: ../meld/melddoc.py:83 ../meld/melddoc.py:84
 msgid "untitled"
 msgstr "nepojmenovaný"
 
@@ -2052,52 +2032,52 @@ msgstr "Nástrojová _lišta"
 msgid "Show or hide the toolbar"
 msgstr "Zobrazit nebo skrýt nástrojovou lištu"
 
-#: ../meld/meldwindow.py:141
+#: ../meld/meldwindow.py:142
 msgid "Open Recent"
 msgstr "Otevřít nedávné"
 
-#: ../meld/meldwindow.py:142
+#: ../meld/meldwindow.py:143
 msgid "Open recent files"
 msgstr "Otevřít nedávné soubory"
 
-#: ../meld/meldwindow.py:164
+#: ../meld/meldwindow.py:165
 msgid "_Meld"
 msgstr "_Meld"
 
-#: ../meld/meldwindow.py:165
+#: ../meld/meldwindow.py:166
 msgid "Quit the program"
 msgstr "Ukončit program"
 
-#: ../meld/meldwindow.py:167
+#: ../meld/meldwindow.py:168
 msgid "Prefere_nces"
 msgstr "_Předvolby"
 
-#: ../meld/meldwindow.py:168
+#: ../meld/meldwindow.py:169
 msgid "Configure the application"
 msgstr "Nastavit aplikaci"
 
-#: ../meld/meldwindow.py:170
+#: ../meld/meldwindow.py:171
 msgid "_Contents"
 msgstr "O_bsah"
 
-#: ../meld/meldwindow.py:171
+#: ../meld/meldwindow.py:172
 msgid "Open the Meld manual"
 msgstr "Otevřít příručku aplikace Meld"
 
-#: ../meld/meldwindow.py:173
+#: ../meld/meldwindow.py:174
 msgid "About this application"
 msgstr "O této aplikaci"
 
-#: ../meld/meldwindow.py:548
+#: ../meld/meldwindow.py:575
 msgid "Switch to this tab"
 msgstr "Přepnout na tuto kartu"
 
-#: ../meld/meldwindow.py:659
+#: ../meld/meldwindow.py:685
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Pro automatické sloučení jsou zapotřebí tři soubory, obdržen: %r"
 
-#: ../meld/meldwindow.py:673
+#: ../meld/meldwindow.py:699
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Nelze porovnávat směs souborů a složek"
 
@@ -2120,11 +2100,11 @@ msgstr "popisek"
 msgid "pattern"
 msgstr "vzorek"
 
-#: ../meld/recent.py:114
+#: ../meld/recent.py:115
 msgid "Version control:"
 msgstr "Správa verzí:"
 
-#: ../meld/ui/notebooklabel.py:65
+#: ../meld/ui/notebooklabel.py:68
 msgid "Close tab"
 msgstr "Zavřít kartu"
 
@@ -2325,3 +2305,35 @@ msgstr "Chyba při odstraňování %s"
 #: ../meld/vcview.py:750
 msgid "Clear"
 msgstr "Vymazat"
+
+#~ msgid ""
+#~ "These text encodings will be automatically used (in order) to try to "
+#~ "decode loaded text files."
+#~ msgstr ""
+#~ "Tato kódování textu budou automaticky použita (v daném pořadí) k pokusům "
+#~ "dekódovat načítané textové soubory."
+
+#~ msgid "[%s] Set num panes"
+#~ msgstr "[%s] Nastaven počet panelů"
+
+#~ msgid "[%s] Opening files"
+#~ msgstr "[%s] Otevírají se soubory"
+
+#~ msgid "Could not read file"
+#~ msgstr "Nelze přečíst soubor"
+
+#~ msgid "[%s] Reading files"
+#~ msgstr "[%s] Čtou se soubory"
+
+#~ msgid "%s is not in encodings: %s"
+#~ msgstr "%s není v kódováních: %s"
+
+#~ msgid "Inconsistent line endings found"
+#~ msgstr "Nalezeny řádky s nejednotným zakončením"
+
+#~ msgid ""
+#~ "'%s' contains a mixture of line endings. Select the line ending format to "
+#~ "use."
+#~ msgstr ""
+#~ "„%s“ obsahuje směsici různých zakončení řádků. Vyberte si, který formát "
+#~ "zakončení chcete použít?"
