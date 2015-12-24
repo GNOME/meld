@@ -40,11 +40,27 @@ from meld.filters import FilterEntry
         "# asdasdasdasdsab",
         [(0, 17)],
     ),
+    # Matching with and without groups, with partially overlapping filters
+    (
+        "/*a*/ub",
+        [(0, 6)],
+    ),
     # Non-matching with groups
     (
         "xasdyasdx",
         [],
     ),
+    # Multiple lines with non-overlapping filters
+    (
+        "#ab\na2b",
+        [(0, 3), (5, 6)],
+    ),
+    # CVS keyword
+    (
+        "$Author: John Doe $",
+        [(8, 18)],
+    ),
+
 ])
 def test_filter_text(text, ignored_ranges):
     filter_patterns = [
@@ -52,6 +68,7 @@ def test_filter_text(text, ignored_ranges):
         '/\*.*\*/',
         'a(.*)b',
         'x(.*)y(.*)z',
+        '\$\w+:([^\n$]+)\$'
     ]
     filters = [
         FilterEntry.new_from_gsetting(("name", True, f), FilterEntry.REGEX)
