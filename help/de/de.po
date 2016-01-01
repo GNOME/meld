@@ -8,16 +8,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: meld meld-3-12\n"
-"POT-Creation-Date: 2015-01-23 10:52+0000\n"
-"PO-Revision-Date: 2015-01-23 23:33+0100\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2015-12-27 01:30+0000\n"
+"PO-Revision-Date: 2015-12-27 09:35+0100\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -38,8 +38,7 @@ msgstr "3"
 #: C/resolving-conflicts.page:10 C/preferences.page:10 C/file-changes.page:10
 #: C/file-mode.page:11 C/flattened-view.page:10 C/index.page:8
 #: C/vc-mode.page:10 C/keyboard-shortcuts.page:10 C/introduction.page:10
-#: C/folder-mode.page:10 C/missing-functionality.page:10
-#: C/command-line.page:10
+#: C/folder-mode.page:10 C/missing-functionality.page:10 C/command-line.page:10
 msgid "Kai Willadsen"
 msgstr "Kai Willadsen"
 
@@ -199,7 +198,7 @@ msgstr ""
 msgid ""
 "In a folder comparison, each line contains a single file or folder that is "
 "present in at least one of the folders being compared. Each of these lines "
-"is classified as being either <em>Modifed</em>, <em>New</em> or <em>Same</"
+"is classified as being either <em>Modified</em>, <em>New</em> or <em>Same</"
 "em>:"
 msgstr ""
 
@@ -439,7 +438,7 @@ msgstr ""
 msgid ""
 "In <app>Meld</app>, text filters are regular expressions that are matched "
 "against the text of files you're comparing. Any text that is matched is "
-"ignored during the comparsion; you'll still see this text in the comparison "
+"ignored during the comparison; you'll still see this text in the comparison "
 "view, but it won't be taken into account when finding differences. Text "
 "filters are applied in order, so it's possible for the first filter to "
 "remove text that now makes the second filter match, and so on."
@@ -482,6 +481,11 @@ msgid ""
 "c\n"
 "d"
 msgstr ""
+"\n"
+"a\n"
+"b#Kommentar\n"
+"c\n"
+"d"
 
 #. (itstool) path: listing/title
 #: C/text-filters.page:90
@@ -498,6 +502,11 @@ msgid ""
 "c\n"
 "#comment"
 msgstr ""
+"\n"
+"a\n"
+"b\n"
+"c\n"
+"#Kommentar"
 
 #. (itstool) path: section/p
 #: C/text-filters.page:101
@@ -537,7 +546,7 @@ msgstr ""
 #. (itstool) path: page/title
 #: C/resolving-conflicts.page:15
 msgid "Resolving merge conflicts"
-msgstr ""
+msgstr "Konflikte beim Zusammenführen lösen"
 
 #. (itstool) path: page/p
 #: C/resolving-conflicts.page:17
@@ -609,6 +618,41 @@ msgid ""
 "<code>{file}</code> and <code>{line}</code> elements to the command, in "
 "which case <app>Meld</app> will substitute the file path and current line "
 "number respectively (e.g., <cmd>gedit {file}:{line}</cmd>)."
+msgstr ""
+
+#. (itstool) path: terms/title
+#: C/preferences.page:31
+msgid "Folder Comparison preferences"
+msgstr "Ordnervergleich-Einstellungen"
+
+#. (itstool) path: item/title
+#: C/preferences.page:33
+msgid "Apply text filters during folder comparisons"
+msgstr "Textfilter während eines Ordnervergleichs anwenden"
+
+#. (itstool) path: item/p
+#: C/preferences.page:34
+msgid ""
+"When comparing files in folder comparison mode, text filters and other text "
+"manipulation options can be applied to the contents of files. If this option "
+"is enabled, all currently enabled text filters will be applied, the blank "
+"line trimming option will be applied as appropriate, and differences in line "
+"endings will be ignored."
+msgstr ""
+
+#. (itstool) path: item/p
+#: C/preferences.page:40
+msgid ""
+"Enabling this option means that <app>Meld</app> must fully read all non-"
+"binary files into memory during the folder comparison. With large text "
+"files, this can be slow and may cause memory issues."
+msgstr ""
+
+#. (itstool) path: item/p
+#: C/preferences.page:44
+msgid ""
+"This option only has an effect if \"Compare files based only on size and "
+"timestamp\" is not enabled."
 msgstr ""
 
 #. (itstool) path: page/title
@@ -786,7 +830,7 @@ msgid ""
 "the thousands in the folder itself. For this reason, <app>Meld</app> "
 "includes a <em>flattened view</em> of a folder; only files that have not "
 "been filtered out (e.g., by <link xref=\"vc-mode#vc-state-filtering\"/>) are "
-"shown, and the folder heirarchy is stripped away, with file paths shown in "
+"shown, and the folder hierarchy is stripped away, with file paths shown in "
 "the <em>Location</em> column."
 msgstr ""
 
@@ -917,7 +961,7 @@ msgstr ""
 "Die Datei/der Ordner ist identisch mit der Version aus dem Softwarebestand."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:109 C/folder-mode.page:150
+#: C/vc-mode.page:109
 msgid "Red and bold"
 msgstr "Rot und fett"
 
@@ -1015,8 +1059,8 @@ msgstr ""
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:197
-msgid "Non VC"
-msgstr "Nicht unter VK"
+msgid "Unversioned"
+msgstr "Nicht versioniert"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:205
@@ -1053,8 +1097,8 @@ msgid ""
 "change which file states you see by using the <guiseq><gui style=\"menu"
 "\">View</gui><gui style=\"menuitem\">Version Status</gui></guiseq> menu, or "
 "by clicking the corresponding <gui style=\"button\">Modified</gui>, <gui "
-"style=\"button\">Normal</gui>, <gui style=\"button\">Non VC</gui> and <gui "
-"style=\"button\">Ignored</gui> buttons on the toolbar."
+"style=\"button\">Normal</gui>, <gui style=\"button\">Unversioned</gui> and "
+"<gui style=\"button\">Ignored</gui> buttons on the toolbar."
 msgstr ""
 
 #. (itstool) path: page/title
@@ -1209,9 +1253,9 @@ msgid "Find the next instance of the string."
 msgstr "Das nächste Vorkommen der Zeichenkette suchen."
 
 #. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:90 C/keyboard-shortcuts.page:96
-msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
-msgstr "<keyseq><key>Alt</key><key>↑</key></keyseq>"
+#: C/keyboard-shortcuts.page:90
+msgid "<keyseq><key>Alt</key><key>Down</key></keyseq>"
+msgstr "<keyseq><key>Alt</key><key>↓</key></keyseq>"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:91
@@ -1221,6 +1265,11 @@ msgid ""
 msgstr ""
 "Zum nächsten Unterschied springen. (Auch <keyseq><key>Strg</key><key>D</"
 "key></keyseq>)"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:96
+msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
+msgstr "<keyseq><key>Alt</key><key>↑</key></keyseq>"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:97
@@ -1350,10 +1399,8 @@ msgstr ""
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:63
-#, fuzzy
-#| msgid "Folder Comparison"
 msgid "Navigating folder comparisons"
-msgstr "Ordnervergleich"
+msgstr "Navigieren im Ordnervergleich"
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:65
@@ -1376,10 +1423,8 @@ msgstr ""
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:83
-#, fuzzy
-#| msgid "Start a new comparison."
 msgid "States in folder comparisons"
-msgstr "Startet einen neuen Vergleich."
+msgstr "Zustände im Ordnervergleich"
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:85
@@ -1390,10 +1435,8 @@ msgstr ""
 
 #. (itstool) path: table/title
 #: C/folder-mode.page:106
-#, fuzzy
-#| msgid "Folder Comparison"
 msgid "Folder comparison states"
-msgstr "Ordnervergleich"
+msgstr "Ordnervergleichszustände"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:126
@@ -1416,6 +1459,11 @@ msgid ""
 "These files are different across folders, but once <link xref=\"text-filters"
 "\">text filters</link> are applied, these files become identical."
 msgstr ""
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:150
+msgid "Blue and bold"
+msgstr "Blau und fett"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:156
@@ -1454,8 +1502,8 @@ msgstr ""
 #: C/folder-mode.page:217
 msgid ""
 "You can filter out files based on these states, for example, to show only "
-"files that have are <em>Modified</em>. You can read more about this in <link "
-"xref=\"file-filters#file-state-filter\"/>."
+"files that have been <em>Modified</em>. You can read more about this in "
+"<link xref=\"file-filters#file-state-filter\"/>."
 msgstr ""
 
 #. (itstool) path: section/p
@@ -1569,3 +1617,6 @@ msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
 msgstr ""
 "Um eine vollständige Liste von Optionen zu erhalten, rufen Sie <cmd>meld --"
 "help</cmd> auf."
+
+#~ msgid "Non VC"
+#~ msgstr "Nicht unter VK"
