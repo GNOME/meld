@@ -7,15 +7,15 @@
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2004, 2005, 2007, 2008, 2009, 2010, 2011.
 # 
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015., 2015.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015., 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-06 18:05+0000\n"
-"PO-Revision-Date: 2015-12-07 12:37+0100\n"
+"POT-Creation-Date: 2016-01-07 01:26+0000\n"
+"PO-Revision-Date: 2016-01-07 11:31+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -118,16 +118,22 @@ msgid "If true, the window statusbar is visible."
 msgstr "Si es cierto, la barra de estado es visible."
 
 #: ../data/org.gnome.meld.gschema.xml.h:7
-msgid "Automatically detected text encodings"
-msgstr "Detectar automáticamente la codificación del texto"
+#| msgid "Automatically detected text encodings"
+msgid "Additional automatically detected text encodings"
+msgstr "Codificaciones del texto detectadas automáticamente"
 
 #: ../data/org.gnome.meld.gschema.xml.h:8
 msgid ""
-"These text encodings will be automatically used (in order) to try to decode "
-"loaded text files."
+"Meld will use these text encodings to try to decode loaded text files before "
+"trying any other encodings. In addition to the encodings in this list, UTF-8 "
+"and the current locale-default encoding will always be used; other encodings "
+"may also be tried, depending on the user's locale."
 msgstr ""
-"Estas codificaciones te texto se usarán automáticamente (en orden) para "
-"intentar decodificar los archivos de texto cargados."
+"Meld usa estas codificaciones de texto para intentar decodificar los "
+"archivos de texto cargados antes de probar otras codificaciones. Además de "
+"las codificaciones de esta lista, siempre se usará UTF-8 y la codificación "
+"de la configuración regional; se pueden probar otras, dependiendo de la "
+"configuración regional del usuario."
 
 #: ../data/org.gnome.meld.gschema.xml.h:9
 msgid "Width of an indentation step"
@@ -568,7 +574,7 @@ msgstr "Copiar a la derecha"
 msgid "Delete selected"
 msgstr "Eliminar seleccionados"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:856 ../meld/filediff.py:1441
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:856 ../meld/filediff.py:1379
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -862,8 +868,8 @@ msgstr "Los cambios se perderán permanentemente si no los guarda."
 msgid "Close _without Saving"
 msgstr "Cerrar _sin guardar"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:947 ../meld/filediff.py:1507
-#: ../meld/filediff.py:1591 ../meld/filediff.py:1616
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:938 ../meld/filediff.py:1445
+#: ../meld/filediff.py:1513
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -902,7 +908,7 @@ msgstr ""
 "Los cambios realizados a los siguientes documentos se perderán para "
 "siempre:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:948 ../meld/filediff.py:1508
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:939 ../meld/filediff.py:1446
 msgid "_Replace"
 msgstr "_Reemplazar"
 
@@ -950,7 +956,7 @@ msgstr "Formatear como parche"
 msgid "Copy to Clipboard"
 msgstr "Copiar al portapapeles"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:125
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:149
 msgid "Save Patch"
 msgstr "Guardar parche"
 
@@ -1176,7 +1182,7 @@ msgstr ""
 msgid "Text Filters"
 msgstr "Filtros de texto"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:636
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:651
 msgid "New comparison"
 msgstr "Nueva comparación"
 
@@ -1382,15 +1388,15 @@ msgstr ""
 msgid "_Push commits"
 msgstr "_Empujar cambios"
 
-#: ../meld/const.py:10
+#: ../meld/const.py:12
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: ../meld/const.py:11
+#: ../meld/const.py:13
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR-LF)"
 
-#: ../meld/const.py:12
+#: ../meld/const.py:14
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
@@ -1452,9 +1458,9 @@ msgstr ""
 "Se están usando filtros de texto, y pueden estar ocultando diferencias entre "
 "archivos."
 
-#: ../meld/dirdiff.py:858 ../meld/dirdiff.py:911 ../meld/filediff.py:1081
-#: ../meld/filediff.py:1113 ../meld/filediff.py:1248 ../meld/filediff.py:1443
-#: ../meld/filediff.py:1473 ../meld/filediff.py:1475
+#: ../meld/dirdiff.py:858 ../meld/filediff.py:1381 ../meld/filediff.py:1411
+#: ../meld/filediff.py:1413 ../meld/ui/msgarea.py:109
+#: ../meld/ui/msgarea.py:122
 msgid "Hi_de"
 msgstr "_Ocultar"
 
@@ -1492,12 +1498,12 @@ msgstr ""
 msgid "'%s' hidden by '%s'"
 msgstr "«%s» oculto por «%s»"
 
-#: ../meld/dirdiff.py:951
+#: ../meld/dirdiff.py:942
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "¿Reemplazar la carpeta «%s»?"
 
-#: ../meld/dirdiff.py:953
+#: ../meld/dirdiff.py:944
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1506,11 +1512,11 @@ msgstr ""
 "Ya existe otra carpeta con el mismo nombre en «%s».\n"
 "Si reemplaza la carpeta existente, se perderán todos sus archivos."
 
-#: ../meld/dirdiff.py:966
+#: ../meld/dirdiff.py:957
 msgid "Error copying file"
 msgstr "Error al copiar el archivo"
 
-#: ../meld/dirdiff.py:967
+#: ../meld/dirdiff.py:958
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1523,35 +1529,35 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:990
+#: ../meld/dirdiff.py:981
 #, python-format
 msgid "Error deleting %s"
 msgstr "Error al eliminar %s"
 
-#: ../meld/dirdiff.py:1495
+#: ../meld/dirdiff.py:1486
 msgid "No folder"
 msgstr "No hay ninguna carpeta"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:368
+#: ../meld/filediff.py:359
 msgid "INS"
 msgstr "INS"
 
-#: ../meld/filediff.py:368
+#: ../meld/filediff.py:359
 msgid "OVR"
 msgstr "SOB"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:370
+#: ../meld/filediff.py:361
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Lín %i, Col %i"
 
-#: ../meld/filediff.py:801
+#: ../meld/filediff.py:792
 msgid "Comparison results will be inaccurate"
 msgstr "Los resultados de la comparación pueden no ser precisos"
 
-#: ../meld/filediff.py:803
+#: ../meld/filediff.py:794
 #, python-format
 msgid ""
 "Filter “%s” changed the number of lines in the file, which is unsupported. "
@@ -1560,84 +1566,65 @@ msgstr ""
 "El filtro «%s» ha cambiado el número de líneas en el archivo, lo que no está "
 "soportado. La comparación no será precisa."
 
-#: ../meld/filediff.py:861
+#: ../meld/filediff.py:852
 msgid "Mark conflict as resolved?"
 msgstr "¿Marcar conflicto como resuelto?"
 
-#: ../meld/filediff.py:863
+#: ../meld/filediff.py:854
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Si el conflicto se ha resuelto con éxito, debe marcarlo como resuelto ahora."
 
-#: ../meld/filediff.py:865
+#: ../meld/filediff.py:856
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../meld/filediff.py:866
+#: ../meld/filediff.py:857
 msgid "Mark _Resolved"
 msgstr "Mar_car como resuelto"
 
-#: ../meld/filediff.py:1068
+#: ../meld/filediff.py:1097
 #, python-format
-msgid "[%s] Set num panes"
-msgstr "[%s] Establezca el número de paneles"
+msgid "There was a problem opening the file “%s”."
+msgstr "Ha habido un problema al abrir el archivo «%s»."
 
-#: ../meld/filediff.py:1075
-#, python-format
-msgid "[%s] Opening files"
-msgstr "[%s] Abriendo archivos"
-
-#: ../meld/filediff.py:1098 ../meld/filediff.py:1136 ../meld/filediff.py:1142
-msgid "Could not read file"
-msgstr "No se pudo leer el archivo"
-
-#: ../meld/filediff.py:1099
-#, python-format
-msgid "[%s] Reading files"
-msgstr "[%s] Leyendo archivos"
-
-#: ../meld/filediff.py:1108
+#: ../meld/filediff.py:1105
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "El archivo %s parece ser un archivo binario."
 
-#: ../meld/filediff.py:1109
+#: ../meld/filediff.py:1107
 msgid "Do you want to open the file using the default application?"
 msgstr "¿Quiere abrir el archivo usando la aplicación predeterminada?"
 
-#: ../meld/filediff.py:1112
+#: ../meld/filediff.py:1109
 msgid "Open"
 msgstr "Abrir"
 
-#: ../meld/filediff.py:1137
-#, python-format
-msgid "%s is not in encodings: %s"
-msgstr "%s no está en codificación: %s"
-
-#: ../meld/filediff.py:1175
+#: ../meld/filediff.py:1125
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Calculando las diferencias"
 
-#: ../meld/filediff.py:1243
+#: ../meld/filediff.py:1190
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "El archivo %s ha cambiado en el disco"
 
-#: ../meld/filediff.py:1244
+#: ../meld/filediff.py:1191
 msgid "Do you want to reload the file?"
 msgstr "¿Quiere recargar el archivo?"
 
-#: ../meld/filediff.py:1247
+#: ../meld/filediff.py:1193
 msgid "_Reload"
 msgstr "_Recargar"
 
-#: ../meld/filediff.py:1406
+#: ../meld/filediff.py:1344
 msgid "Files are identical"
 msgstr "Los campos son idénticos"
 
-#: ../meld/filediff.py:1419
+#: ../meld/filediff.py:1357
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1645,11 +1632,11 @@ msgstr ""
 "Se están usando filtros de texto, y pueden estar ocultando diferencias entre "
 "archivos. ¿Quiere comprar los archivos no filtrados?"
 
-#: ../meld/filediff.py:1424
+#: ../meld/filediff.py:1362
 msgid "Files differ in line endings only"
 msgstr "Los archivos difieren en los finales de línea"
 
-#: ../meld/filediff.py:1426
+#: ../meld/filediff.py:1364
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1658,15 +1645,15 @@ msgstr ""
 "Los archivos son idénticos excepto por los finales de línea:\n"
 "%s"
 
-#: ../meld/filediff.py:1446
+#: ../meld/filediff.py:1384
 msgid "Show without filters"
 msgstr "Mostrar sin filtros"
 
-#: ../meld/filediff.py:1468
+#: ../meld/filediff.py:1406
 msgid "Change highlighting incomplete"
 msgstr "Cambiar el resaltado incompleto"
 
-#: ../meld/filediff.py:1469
+#: ../meld/filediff.py:1407
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1675,20 +1662,20 @@ msgstr ""
 "forzar a Meld para que resalte los cambios largos, aunque esto haga que sea "
 "más lento."
 
-#: ../meld/filediff.py:1477
+#: ../meld/filediff.py:1415
 msgid "Keep highlighting"
 msgstr "Mantener el resaltado"
 
-#: ../meld/filediff.py:1479
+#: ../meld/filediff.py:1417
 msgid "_Keep highlighting"
 msgstr "_Mantener el resaltado"
 
-#: ../meld/filediff.py:1511
+#: ../meld/filediff.py:1449
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "¿Reemplazar el archivo «%s»?"
 
-#: ../meld/filediff.py:1513
+#: ../meld/filediff.py:1451
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -1697,72 +1684,45 @@ msgstr ""
 "Ya existe un archivo con el mismo nombre en «%s».\n"
 "Si reemplaza el archivo existente, se perderá su contenido."
 
-#: ../meld/filediff.py:1531
-#, python-format
-msgid "Could not save file %s."
-msgstr "No se pudo guardar el archivo %s."
-
-#: ../meld/filediff.py:1532
-#, python-format
-msgid ""
-"Couldn't save file due to:\n"
-"%s"
-msgstr ""
-"No se pudo guardar el archivo debido a:\n"
-"%s"
-
-#: ../meld/filediff.py:1544
+#: ../meld/filediff.py:1468
 msgid "Save Left Pane As"
 msgstr "Guardar panel izquierdo como"
 
-#: ../meld/filediff.py:1546
+#: ../meld/filediff.py:1470
 msgid "Save Middle Pane As"
 msgstr "Guardar el panel central como"
 
-#: ../meld/filediff.py:1548
+#: ../meld/filediff.py:1472
 msgid "Save Right Pane As"
 msgstr "Guardar el panel derecho como"
 
-#: ../meld/filediff.py:1562
+#: ../meld/filediff.py:1486
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "El archivo %s ha cambiado en el disco desde que se abrió"
 
-#: ../meld/filediff.py:1564
+#: ../meld/filediff.py:1488
 msgid "If you save it, any external changes will be lost."
 msgstr "Si lo guarda, los cambios externos se perderán."
 
-#: ../meld/filediff.py:1567
+#: ../meld/filediff.py:1491
 msgid "Save Anyway"
 msgstr "Guardar de todas formas"
 
-#: ../meld/filediff.py:1568
+#: ../meld/filediff.py:1492
 msgid "Don't Save"
 msgstr "No guardar"
 
-#: ../meld/filediff.py:1594
-msgid "Inconsistent line endings found"
-msgstr "Se encontraron finales de línea inconsistentes"
-
-#: ../meld/filediff.py:1596
-#, python-format
-msgid ""
-"'%s' contains a mixture of line endings. Select the line ending format to "
-"use."
-msgstr ""
-"«%s» contiene una mezcla de finales de línea. Seleccione el formato de fin "
-"de línea que quiere usar."
-
-#: ../meld/filediff.py:1617
+#: ../meld/filediff.py:1514
 msgid "_Save as UTF-8"
 msgstr "_Guardar como UTF-8"
 
-#: ../meld/filediff.py:1620
+#: ../meld/filediff.py:1517
 #, python-format
 msgid "Couldn't encode text as “%s”"
 msgstr "No se pudo codificar el texto como «%s»"
 
-#: ../meld/filediff.py:1622
+#: ../meld/filediff.py:1519
 #, python-format
 msgid ""
 "File “%s” contains characters that can't be encoded using encoding “%s”.\n"
@@ -1771,11 +1731,25 @@ msgstr ""
 "El archivo «%s» contiene caracteres no codificables con «%s».\n"
 "¿Quiere guardarlos como UTF-8?"
 
-#: ../meld/filediff.py:1974
+#: ../meld/filediff.py:1556 ../meld/patchdialog.py:125
+#, python-format
+msgid "Could not save file %s."
+msgstr "No se pudo guardar el archivo %s."
+
+#: ../meld/filediff.py:1557 ../meld/patchdialog.py:126
+#, python-format
+msgid ""
+"Couldn't save file due to:\n"
+"%s"
+msgstr ""
+"No se pudo guardar el archivo debido a:\n"
+"%s"
+
+#: ../meld/filediff.py:1903
 msgid "Live comparison updating disabled"
 msgstr "Actualización de la comparación en directo desactivada"
 
-#: ../meld/filediff.py:1975
+#: ../meld/filediff.py:1904
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1786,7 +1760,7 @@ msgstr ""
 "manualmente la comparación y la comparación en directo se reanudará cuando "
 "se limpien los puntos de sincronización."
 
-#: ../meld/filemerge.py:48
+#: ../meld/filemerge.py:37
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Mezclando archivos"
@@ -1893,11 +1867,11 @@ msgid "invalid path or URI \"%s\""
 msgstr "ruta u URI «%s» no válido"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:138
+#: ../meld/meldbuffer.py:127
 msgid "<unnamed>"
 msgstr "<sin nombre>"
 
-#: ../meld/melddoc.py:78 ../meld/melddoc.py:79
+#: ../meld/melddoc.py:83 ../meld/melddoc.py:84
 msgid "untitled"
 msgstr "sin título"
 
@@ -2123,16 +2097,16 @@ msgstr "Abrir el manual de Meld"
 msgid "About this application"
 msgstr "Acerca de esta aplicación"
 
-#: ../meld/meldwindow.py:557
+#: ../meld/meldwindow.py:575
 msgid "Switch to this tab"
 msgstr "Cambiar a esta pestaña"
 
-#: ../meld/meldwindow.py:670
+#: ../meld/meldwindow.py:685
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Se necesita tres archivos para la mezcla automática, se obtuvieron: %r"
 
-#: ../meld/meldwindow.py:684
+#: ../meld/meldwindow.py:699
 msgid "Cannot compare a mixture of files and directories"
 msgstr "No se puede comparar una mezcla de archivos y carpetas"
 
@@ -2361,6 +2335,38 @@ msgstr "Error al quitar %s"
 #: ../meld/vcview.py:750
 msgid "Clear"
 msgstr "Limpiar"
+
+#~ msgid ""
+#~ "These text encodings will be automatically used (in order) to try to "
+#~ "decode loaded text files."
+#~ msgstr ""
+#~ "Estas codificaciones te texto se usarán automáticamente (en orden) para "
+#~ "intentar decodificar los archivos de texto cargados."
+
+#~ msgid "[%s] Set num panes"
+#~ msgstr "[%s] Establezca el número de paneles"
+
+#~ msgid "[%s] Opening files"
+#~ msgstr "[%s] Abriendo archivos"
+
+#~ msgid "Could not read file"
+#~ msgstr "No se pudo leer el archivo"
+
+#~ msgid "[%s] Reading files"
+#~ msgstr "[%s] Leyendo archivos"
+
+#~ msgid "%s is not in encodings: %s"
+#~ msgstr "%s no está en codificación: %s"
+
+#~ msgid "Inconsistent line endings found"
+#~ msgstr "Se encontraron finales de línea inconsistentes"
+
+#~ msgid ""
+#~ "'%s' contains a mixture of line endings. Select the line ending format to "
+#~ "use."
+#~ msgstr ""
+#~ "«%s» contiene una mezcla de finales de línea. Seleccione el formato de "
+#~ "fin de línea que quiere usar."
 
 #~ msgid "Revision"
 #~ msgstr "Revisión"
