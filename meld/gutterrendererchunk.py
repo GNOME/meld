@@ -256,7 +256,7 @@ class GutterRendererChunkLines(
         # FIXME: Don't pass in the linediffer; pass a generator like elsewhere
         self.linediffer = linediffer
 
-        self.num_line_digits = 2
+        self.num_line_digits = 0
         self.changed_handler_id = None
 
         meldsettings.connect('changed', self.on_setting_changed)
