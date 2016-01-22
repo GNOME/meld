@@ -348,18 +348,21 @@ class MeldWindow(gnomeglade.Component):
                            "Replace"):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
+    def handle_current_doc_switch(self, page):
+        if self.diff_handler is not None:
+            page.disconnect(self.diff_handler)
+        page.on_container_switch_out_event(self.ui)
+        if self.undo_handlers:
+            undoseq = page.undosequence
+            for handler in self.undo_handlers:
+                undoseq.disconnect(handler)
+            self.undo_handlers = tuple()
+
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
             olddoc = notebook.get_nth_page(oldidx).pyobject
-            if self.diff_handler is not None:
-                olddoc.disconnect(self.diff_handler)
-            olddoc.on_container_switch_out_event(self.ui)
-            if self.undo_handlers:
-                undoseq = olddoc.undosequence
-                for handler in self.undo_handlers:
-                    undoseq.disconnect(handler)
-                self.undo_handlers = tuple()
+            self.handle_current_doc_switch(olddoc)
 
         newdoc = notebook.get_nth_page(which).pyobject if which >= 0 else None
         try:
@@ -598,6 +601,9 @@ class MeldWindow(gnomeglade.Component):
             self.scheduler.remove_scheduler(page.scheduler)
 
         page_num = self.notebook.page_num(page.widget)
+
+        if self.notebook.get_current_page() == page_num:
+            self.handle_current_doc_switch(page)
 
         self.notebook.remove_page(page_num)
         # Normal switch-page handlers don't get run for removing the
