@@ -600,6 +600,8 @@ class MeldWindow(gnomeglade.Component):
         page_num = self.notebook.page_num(page.widget)
 
         self.notebook.remove_page(page_num)
+        # Normal switch-page handlers don't get run for removing the
+        # last page from a notebook.
         if not self.has_pages():
             self.on_switch_page(self.notebook, page, -1)
             self._update_page_action_sensitivity()
