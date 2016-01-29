@@ -19,6 +19,8 @@ from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from meld.misc import parse_rgba
+
 
 class EmblemCellRenderer(Gtk.CellRenderer):
 
@@ -57,8 +59,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         elif pspec.name == "icon-tint":
             self._icon_tint = value
             if self._icon_tint:
-                self._tint_color = Gdk.RGBA()
-                self._tint_color.parse(value)
+                self._tint_color = parse_rgba(value)
             else:
                 self._tint_color = None
         else:
