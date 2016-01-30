@@ -49,8 +49,13 @@ class NotebookLabel(Gtk.HBox):
         label.set_alignment(0.0, 0.5)
         label.set_padding(0, 0)
 
+        style_context = self.get_style_context()
+        style_context.save()
+        style_context.set_state(Gtk.StateFlags.NORMAL)
+        font_desc = style_context.get_font(style_context.get_state())
+        style_context.restore()
+
         context = self.get_pango_context()
-        font_desc = self.get_style_context().get_font(Gtk.StateFlags.NORMAL)
         metrics = context.get_metrics(font_desc, context.get_language())
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
         valid, w, h = Gtk.icon_size_lookup_for_settings(
