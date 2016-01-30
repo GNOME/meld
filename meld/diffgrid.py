@@ -315,7 +315,7 @@ class HandleWindow():
             return
 
         stylecontext = self._widget.get_style_context()
-        state = self._widget.get_state_flags()
+        state = stylecontext.get_state()
         if self._widget.is_focus():
             state |= Gtk.StateFlags.SELECTED
         if self._prelit:
