@@ -212,7 +212,7 @@ def setup_resources():
     bg_colour = textview_context.get_background_color(
         textview_context.get_state())
     textview_context.restore()
-    linkmap_css = "LinkMap { background-color: %s; }" % bg_colour.to_string()
+    linkmap_css = "link-map { background-color: %s; }" % bg_colour.to_string()
     linkmap_provider = Gtk.CssProvider()
     linkmap_provider.load_from_data(linkmap_css)
     Gtk.StyleContext.add_provider_for_screen(

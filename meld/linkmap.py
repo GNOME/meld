@@ -127,6 +127,12 @@ class LinkMap(Gtk.DrawingArea):
     def do_scroll_event(self, event):
         self.filediff.next_diff(event.direction)
 
+try:
+    LinkMap.set_css_name("link-map")
+except AttributeError:
+    # New API in 3.20
+    pass
+
 
 class ScrollLinkMap(Gtk.DrawingArea):
 
