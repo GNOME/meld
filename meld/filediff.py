@@ -757,26 +757,31 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dimmed_tag = buf.get_tag_table().lookup("dimmed")
         buf.remove_tag(dimmed_tag, txt_start_iter, txt_end_iter)
 
+        filter_ranges = []
+
+        active_filters = [f for f in self.text_filters if f.active]
+        for filt in active_filters:
+            for match in filt.filter.finditer(txt):
+                # If there are no groups in the match, use the whole match
+                if not filt.filter.groups:
+                    span = match.span()
+                    if span[0] != span[1]:
+                        filter_ranges.append(span)
+                    continue
+
+                # If there are groups in the regex, include all groups that
+                # participated in the match
+                for i in range(filt.filter.groups):
+                    span = match.span(i + 1)
+                    if span != (-1, -1) and span[0] != span[1]:
+                        filter_ranges.append(span)
+
+        filter_ranges = misc.merge_intervals(filter_ranges)
+
+        return self._apply_filter_ranges(txt,buf,txt_start_iter,txt_end_iter,dimmed_tag,filter_ranges)
+
+    def _apply_filter_ranges(self,txt,buf,txt_start_iter,txt_end_iter,dimmed_tag,filter_ranges):
         try:
-            filter_ranges = []
-
-            active_filters = [f for f in self.text_filters if f.active]
-            for filt in active_filters:
-                for match in filt.filter.finditer(txt):
-                    # If there are no groups in the match, use the whole match
-                    if not filt.filter.groups:
-                        filter_ranges.append(match.span())
-                        continue
-
-                    # If there are groups in the regex, include all groups that
-                    # participated in the match
-                    for i in range(filt.filter.groups):
-                        span = match.span(i + 1)
-                        if span != (-1, -1):
-                            filter_ranges.append(span)
-
-            filter_ranges = misc.merge_intervals(filter_ranges)
-
             for (start, end) in reversed(filter_ranges):
                 assert txt[start:end].count("\n") == 0
                 txt = txt[:start] + txt[end:]
