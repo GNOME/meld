@@ -672,7 +672,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         if isinstance(rootpath, tuple):
             rootpath = Gtk.TreePath(rootpath)
         todo = [rootpath]
-        expanded = set()
+        expanded = []
 
         shadowed_entries = []
         invalid_filenames = []
@@ -783,7 +783,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         not all(os.path.isdir(f) for f in roots)):
                     self.model.add_empty(it)
                     if self.model.iter_parent(it) is None:
-                        expanded.add(rootpath)
+                        if rootpath not in expanded:
+                            expanded.append(rootpath)
                 else:
                     # At this point, we have an empty folder tree node; we can
                     # prune this and any ancestors that then end up empty.
@@ -794,7 +795,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         # no siblings. If we're here, we have an empty tree.
                         if parent is None:
                             self.model.add_empty(it)
-                            expanded.add(rootpath)
+                            if rootpath not in expanded:
+                                expanded.append(rootpath)
                             break
 
                         # Remove the current row, and then revalidate all
@@ -810,7 +812,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         it = parent
 
             if differences:
-                expanded.add(path)
+                if path not in expanded:
+                    expanded.append(path)
 
         if invalid_filenames or shadowed_entries:
             self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
