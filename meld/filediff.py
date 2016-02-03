@@ -877,13 +877,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._scroll_to_actions(actions)
 
     def on_text_insert_text(self, buf, it, text, textlen):
-        text = text_type(text, 'utf8')
         self.undosequence.add_action(
             meldbuffer.BufferInsertionAction(buf, it.get_offset(), text))
         buf.create_mark("insertion-start", it, True)
 
     def on_text_delete_range(self, buf, it0, it1):
-        text = text_type(buf.get_text(it0, it1, False), 'utf8')
+        text = buf.get_text(it0, it1, False)
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = it1.get_line() - it0.get_line()
         self.undosequence.add_action(
@@ -1247,9 +1246,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # We don't use self.buffer_texts here, as removing line
                 # breaks messes with inline highlighting in CRLF cases
                 text1 = bufs[0].get_text(starts[0], ends[0], False)
-                text1 = text_type(text1, 'utf8')
                 textn = bufs[1].get_text(starts[1], ends[1], False)
-                textn = text_type(textn, 'utf8')
 
                 # Bail on long sequences, rather than try a slow comparison
                 inline_limit = 10000
@@ -1266,9 +1263,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     ends = [bufs[0].get_iter_at_mark(end_marks[0]),
                             bufs[1].get_iter_at_mark(end_marks[1])]
                     text1 = bufs[0].get_text(starts[0], ends[0], False)
-                    text1 = text_type(text1, 'utf8')
                     textn = bufs[1].get_text(starts[1], ends[1], False)
-                    textn = text_type(textn, 'utf8')
 
                     bufs[0].delete_mark(start_marks[0])
                     bufs[0].delete_mark(end_marks[0])
@@ -1485,7 +1480,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return False
 
         start, end = buf.get_bounds()
-        text = text_type(buf.get_text(start, end, False), 'utf8')
+        text = buf.get_text(start, end, False)
 
         source_encoding = bufdata.sourcefile.get_encoding()
         while isinstance(text, str):
@@ -1788,7 +1783,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
         start = b0.get_iter_at_line_or_eof(chunk[1])
         end = b0.get_iter_at_line_or_eof(chunk[2])
-        t0 = text_type(b0.get_text(start, end, False), 'utf8')
+        t0 = b0.get_text(start, end, False)
 
         if copy_up:
             if chunk[2] >= b0.get_line_count() and \
@@ -1815,7 +1810,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         src_end = b0.get_iter_at_line_or_eof(chunk[2])
         dst_start = b1.get_iter_at_line_or_eof(chunk[3])
         dst_end = b1.get_iter_at_line_or_eof(chunk[4])
-        t0 = text_type(b0.get_text(src_start, src_end, False), 'utf8')
+        t0 = b0.get_text(src_start, src_end, False)
         mark0 = b1.create_mark(None, dst_start, True)
         self.textbuffer[dst].begin_user_action()
         b1.delete(dst_start, dst_end)
