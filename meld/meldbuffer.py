@@ -179,7 +179,8 @@ class MeldBufferData(GObject.GObject):
 
         # This is aiming to maintain existing behaviour for filename. The
         # behaviour is however wrong and should be fixed.
-        self.filename = value.get_path().decode('utf8') if value else None
+        # FIXME: maintaining previous comment above; this is now wrong in different awful ways
+        self.filename = value.get_path() if value else None
         self.update_mtime()
         self._connect_monitor()
 
