@@ -97,7 +97,7 @@ class CachedSequenceMatcher(object):
         """
         if len(self.cache) < size_hint * 3:
             return
-        items = self.cache.items()
+        items = list(self.cache.items())
         items.sort(key=lambda it: it[1][1])
         for item in items[:-size_hint * 2]:
             del self.cache[item[0]]
