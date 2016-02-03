@@ -674,6 +674,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         todo = [rootpath]
         expanded = set()
 
+        tuple_tree_path = lambda p: tuple(p.get_indices())
+
         shadowed_entries = []
         invalid_filenames = []
         while len(todo):
@@ -783,7 +785,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         not all(os.path.isdir(f) for f in roots)):
                     self.model.add_empty(it)
                     if self.model.iter_parent(it) is None:
-                        expanded.add(rootpath)
+                        expanded.add(tuple_tree_path(rootpath))
                 else:
                     # At this point, we have an empty folder tree node; we can
                     # prune this and any ancestors that then end up empty.
@@ -794,7 +796,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         # no siblings. If we're here, we have an empty tree.
                         if parent is None:
                             self.model.add_empty(it)
-                            expanded.add(rootpath)
+                            expanded.add(tuple_tree_path(rootpath))
                             break
 
                         # Remove the current row, and then revalidate all
@@ -810,7 +812,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         it = parent
 
             if differences:
-                expanded.add(path)
+                expanded.add(tuple_tree_path(path))
 
         if invalid_filenames or shadowed_entries:
             self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
@@ -819,7 +821,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
         for path in sorted(expanded):
-            self.treeview[0].expand_to_path(path)
+            self.treeview[0].expand_to_path(Gtk.TreePath(path))
         yield _("[%s] Done") % self.label_text
 
         self.scheduler.add_task(self.on_treeview_cursor_changed)
