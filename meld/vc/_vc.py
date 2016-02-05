@@ -141,12 +141,37 @@ class Vc(object):
         self._tree_meta_cache = {}
 
     def get_files_to_commit(self, paths):
+        """Get a list of files that will be committed from paths
+
+        paths is a list of paths under the version control system root,
+        which may include directories. The return value must be a list
+        of file paths that would actually be committed given the path
+        argument; specifically this should exclude unchanged files and
+        recursively list files in directories.
+        """
         raise NotImplementedError()
 
     def get_commit_message_prefill(self):
+        """Get a version-control defined pre-filled commit message
+
+        This will return a unicode message in situations where the
+        version control system has a (possibly partial) pre-filled
+        message, or None if no such message exists.
+
+        This method should use pre-filled commit messages whereever
+        provided by the version control system, most commonly these are
+        given in merging, revert or cherry-picking scenarios.
+        """
         return None
 
     def get_commits_to_push_summary(self):
+        """Return a one-line readable description of unpushed commits
+
+        This provides a one-line description of what would be pushed by the
+        version control's push action, e.g., "2 unpushed commits in 3
+        branches". Version control systems that always only push the current
+        branch should not show branch information.
+        """
         raise NotImplementedError()
 
     def get_valid_actions(self, path_states):

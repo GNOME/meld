@@ -140,7 +140,6 @@ class Vc(_vc.Vc):
         return sorted(list(set(files)))
 
     def get_commit_message_prefill(self):
-        """This will be inserted into the commit dialog when commit is run"""
         commit_path = os.path.join(self.root, ".git", "MERGE_MSG")
         if os.path.exists(commit_path):
             # If I have to deal with non-ascii, non-UTF8 pregenerated commit
