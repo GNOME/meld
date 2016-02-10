@@ -101,6 +101,27 @@
         <child>
           <object class="GtkShortcutsGroup">
             <property name="visible">True</property>
+            <property name="view">tab</property>
+            <property name="title" translatable="yes">Changes</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Up</property>
+                <property name="title" translatable="yes">Go to previous change</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Down</property>
+                <property name="title" translatable="yes">Go to next change</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">True</property>
             <property name="view">editing</property>
             <property name="title" translatable="yes">Editing</property>
             <child>
