@@ -8,7 +8,6 @@
       <object class="GtkShortcutsSection">
         <property name="visible">True</property>
         <property name="section-name">main</property>
-        <property name="max-height">10</property>
         <child>
           <object class="GtkShortcutsGroup">
             <property name="visible">True</property>
@@ -107,20 +106,6 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;S</property>
-                <property name="title" translatable="yes">Save current file</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="accelerator">&lt;shift&gt;&lt;primary&gt;S</property>
-                <property name="title" translatable="yes">Save current file to new path</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
                 <property name="accelerator">&lt;primary&gt;Z</property>
                 <property name="title" translatable="yes">Undo</property>
               </object>
@@ -132,7 +117,6 @@
                 <property name="title" translatable="yes">Redo</property>
               </object>
             </child>
-
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
@@ -180,6 +164,125 @@
                 <property name="visible">True</property>
                 <property name="accelerator">&lt;primary&gt;H</property>
                 <property name="title" translatable="yes">Replace</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">True</property>
+            <property name="view">file</property>
+            <property name="title" translatable="yes">File comparison</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;primary&gt;S</property>
+                <property name="title" translatable="yes">Save current file</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;shift&gt;&lt;primary&gt;S</property>
+                <property name="title" translatable="yes">Save current file to new path</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;shift&gt;&lt;primary&gt;L</property>
+                <property name="title" translatable="yes">Save all files in comparison</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;primary&gt;I</property>
+                <property name="title" translatable="yes">Previous conflict</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;primary&gt;K</property>
+                <property name="title" translatable="yes">Next conflict</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Left</property>
+                <property name="title" translatable="yes">Push change to left</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Right</property>
+                <property name="title" translatable="yes">Push change to right</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;shift&gt;&lt;alt&gt;Left</property>
+                <property name="title" translatable="yes">Pull change from left</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;shift&gt;&lt;alt&gt;Right</property>
+                <property name="title" translatable="yes">Pull change from right</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;bracketleft</property>
+                <property name="title" translatable="yes">Copy change above left</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;semicolon</property>
+                <property name="title" translatable="yes">Copy change below left</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;bracketright</property>
+                <property name="title" translatable="yes">Copy change above right</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;quoteright</property>
+                <property name="title" translatable="yes">Copy change below right</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Delete</property>
+                <property name="title" translatable="yes">Delete change</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Page_Up</property>
+                <property name="title" translatable="yes">Previous comparison pane</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Page_Down</property>
+                <property name="title" translatable="yes">Next comparison pane</property>
               </object>
             </child>
           </object>
