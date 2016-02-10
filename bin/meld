@@ -202,23 +202,6 @@ def setup_resources():
         Gdk.Screen.get_default(), provider,
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-    # This is a hack to get the LinkMap to use Gtk.TextView background
-    # colour. Ideally we'd have a symbolic colour, or could more easily
-    # do this on the widget itself.
-    textview = Gtk.TextView()
-    textview_context = textview.get_style_context()
-    textview_context.save()
-    textview_context.set_state(Gtk.StateFlags.NORMAL)
-    bg_colour = textview_context.get_background_color(
-        textview_context.get_state())
-    textview_context.restore()
-    linkmap_css = "link-map { background-color: %s; }" % bg_colour.to_string()
-    linkmap_provider = Gtk.CssProvider()
-    linkmap_provider.load_from_data(linkmap_css)
-    Gtk.StyleContext.add_provider_for_screen(
-        Gdk.Screen.get_default(), linkmap_provider,
-        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-
     style_path = os.path.join(meld.conf.DATADIR, "styles")
     GtkSource.StyleSchemeManager.get_default().append_search_path(style_path)
 
