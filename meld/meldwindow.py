@@ -21,6 +21,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
 
+import meld.ui.util
 from . import dirdiff
 from . import filediff
 from . import filemerge
@@ -258,6 +259,14 @@ class MeldWindow(gnomeglade.Component):
         # Set tooltip on map because the recentmenu is lazily created
         rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
         rmenu.connect("map", self._on_recentmenu_map)
+
+        try:
+            builder = meld.ui.util.get_builder("shortcuts.ui")
+            shortcut_window = builder.get_object("shortcuts-meld")
+            self.widget.set_help_overlay(shortcut_window)
+        except GLib.Error:
+            # GtkShortcutsWindow is new in GTK+ 3.20
+            pass
 
     def _on_recentmenu_map(self, recentmenu):
         for imagemenuitem in recentmenu.get_children():
