@@ -64,6 +64,10 @@ class LinkMap(Gtk.DrawingArea):
         context.rectangle(0, clip_y, allocation.width, clip_height)
         context.clip()
 
+        stylecontext = self.get_style_context()
+        Gtk.render_background(
+            stylecontext, context, 0, clip_y, allocation.width, clip_height)
+
         height = allocation.height
         visible = [self.views[0].get_line_num_for_y(pix_start[0]),
                    self.views[0].get_line_num_for_y(pix_start[0] + height),
