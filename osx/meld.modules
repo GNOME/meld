@@ -15,6 +15,8 @@
     <repository type="tarball" name="freedesktop"
                 href="ftp://ftp.freedesktop.org/pub/"/>
     <repository type="git" name="github" href="git://github.com/"/>
+    <repository type="tarball" name="zlib.net"
+                href="http://zlib.net/"/>
     <repository type="tarball" name="pypi"
         href="http://pypi.python.org/packages/source/"/>
 
@@ -68,8 +70,17 @@
         <after>
           <dep package="libxml2"/>
           <dep package="libxslt"/>
+          <dep package="zeelib"/>
         </after>
     </metamodule>
+
+    <autotools id="zeelib"
+        autogen-sh="configure"
+        autogen-template="%(srcdir)s/%(autogen-sh)s --prefix=%(prefix)s --libdir=%(libdir)s"
+        autogenargs="darwin-i386-cc shared">
+        <branch repo="zlib.net" version="1.2.8"
+            module="zlib-1.2.8.tar.gz"/>
+    </autotools>
 
     <metamodule id="pango-thatbuilds">
         <dependencies>

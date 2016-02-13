@@ -22,13 +22,13 @@ modules = [
   "meld-deps"
 ]
 
-autogenargs = '--disable-static --disable-documentation --disable-docs --enable-introspection --disable-rpath '
+autogenargs = '--disable-documentation --disable-docs --enable-introspection '
 nogtkdoc = '--enable-gtk-doc=no --enable-gtk-doc-html=no --enable-gtk-doc-pdf=no '
 
 module_autogenargs['zlib']= ''# + autogenargs
 module_autogenargs['librsvg'] = nogtkdoc + autogenargs
 module_autogenargs['glib'] = nogtkdoc + autogenargs
-module_autogenargs['gdk-pixbuf'] = '--with-included-loaders --disable-modules ' + nogtkdoc + autogenargs
+module_autogenargs['gdk-pixbuf'] = '--with-included-loaders ' + nogtkdoc + autogenargs
 module_autogenargs['pygobject3'] = '--disable-introspection --disable-docs  --enable-cairo '
 #module_autogenargs['gtk-quartz-engine'] = 'CFLAGS=-Wuninitialized ' + autogenargs
 module_autogenargs['cairo'] = '--enable-full-testing=no ' + autogenargs

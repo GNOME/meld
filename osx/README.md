@@ -16,6 +16,10 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 ```
 
+> :bulb:**Tip:** Renaming /opt/local (MacPorts) during the initial build of the the build
+environment proved to reduce collisions later on. You might want to consider doing this..
+
+
 #### Initial Phase ####
 
  1. Download the setup script
@@ -48,17 +52,26 @@ export LANG=en_US.UTF-8
 
 #### Building Meld ####
 
+This can probably be done in the meld.modules file. Unfortunately I don't have
+the time to fix the order/dependencies. So let's do it one by one. The following
+is the list of the exact steps followed during the build to reduce conflicts
+
  1. Build python - with libxml2 support
 	```
 	jhbuild -m osx/meld.modules build python-withxml2
 	```
 
- 2. Build the rest of meld dependencies
+  2. Build graphics dependencies
+ 	```
+ 	jhbuild  -m osx/meld.modules build graphics-dependencies
+ 	```
+
+ 3. Build the rest of meld dependencies (rebuilding previous dependencies as well)
 	```
-	jhbuild  -m osx/meld.modules build meld-deps
+	jhbuild  -m osx/meld.modules build meld-deps -f
 	```
 
- 3. You're now ready to build Meld.
+ 4. You're now ready to build Meld.
 	```
 	chmod +x osx/build_app.sh
 	jhbuild run osx/build_app.sh
@@ -72,27 +85,13 @@ export LANG=en_US.UTF-8
 
 #### Output ####
 
-> **DMG:** Find the DMG <i class="icon-folder-open"></i> file  in osx/Archives after you're done building.
+> :bulb:**Output:** Find the output dmg file in osx/Archives after you're done building.
 
 #### FQA ####
+
 1. Can't run jhbuild bootstrap - gives an error related to bash
   Issue the following command:
 	```
 	mkdir -p $HOME/gtk/inst/bin
 	ln -sf /bin/bash $HOME/gtk/inst/bin/bash
 	```
-
-2. Build stops at Adwaita theme
-  So you see lots of the following error?
-  ```
-  Can't load file: Unrecognized image file format
-  ```
-  1. Select the option to **Start shell**.
-  2. Issue the commands:
-    ```
-    mv /tmp/meldroot/bin/gtk-encode-symbolic-svg /tmp/meldroot/bin/gtk-encode-symbolic-svg.orig
-    ./configure
-    ```
-  3. Exit the shell: type ``` exit ```
-  4. Choose **Rerun phase install**.
-  We won't have SVG icons... Sucks but better than not having meld. If someone can help, please do.
