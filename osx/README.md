@@ -37,7 +37,7 @@ environment proved to reduce collisions later on. You might want to consider doi
 
  3. Prepare paths and build the bootstrap
 	```
-  export PATH="~/.local/bin/:$PATH"
+	export PATH="~/.local/bin/:$PATH"
 	jhbuild bootstrap
 	```
 
@@ -61,7 +61,7 @@ is the list of the exact steps followed during the build to reduce conflicts
 	jhbuild -m osx/meld.modules build python-withxml2
 	```
 
-  2. Build graphics dependencies
+ 2. Build graphics dependencies
  	```
  	jhbuild  -m osx/meld.modules build graphics-dependencies
  	```
@@ -89,9 +89,9 @@ is the list of the exact steps followed during the build to reduce conflicts
 
 #### FQA ####
 
-1. Can't run jhbuild bootstrap - gives an error related to bash
+ 1. Can't run jhbuild bootstrap - gives an error related to bash
   Issue the following command:
-	```
-	mkdir -p $HOME/gtk/inst/bin
-	ln -sf /bin/bash $HOME/gtk/inst/bin/bash
-	```
+  ```
+  mkdir -p $HOME/gtk/inst/bin; 
+  ln -sf /bin/bash $HOME/gtk/inst/bin/bash
+  ```
