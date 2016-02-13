@@ -69,6 +69,8 @@ setup(
     app=['bin/meld'],
     setup_requires=["py2app"],
     options={'py2app': {
+                "packages": ["gio", "gobject", "gtk", "cairo"],
+                "includes": ["atk", "pango", "pangocairo"],
                 'argv_emulation': True,
                 'iconfile': 'osx/meld.icns',
                 'plist': PLIST,
