@@ -1,9 +1,7 @@
-# Meld for OS X #
+Meld for OS X
+===========
 
 This README should help you build Meld for OS X.
-
-*NOTE:* The latest OSX meld is still broken. You may want to switch to the 1.8 branch. I think I need a couple of nights to get this to work. The good new is: I can run it from within the dev environment. The bad news is: Packaging it is not a walk in the park...
-
 
 ### Preparing JHBuild Environment ###
 
@@ -20,71 +18,81 @@ export LANG=en_US.UTF-8
 
 #### Initial Phase ####
 
-1. Download the setup script
-```
-cd ~
-curl -O https://git.gnome.org/browse/gtk-osx/plain/gtk-osx-build-setup.sh
-```
+ 1. Download the setup script
+	```
+	cd ~
+	curl -O https://git.gnome.org/browse/gtk-osx/plain/gtk-osx-build-setup.sh
+	```
 
-2. Run the setup script
-```
-sh gtk-osx-build-setup.sh
-~/.local/bin/jhbuild shell
-```
-You can exit the shell once you determine that it works properly
+ 2. Run the setup script
+	```
+	sh gtk-osx-build-setup.sh
+	~/.local/bin/jhbuild shell
+	```
+	You can exit the shell once you determine that it works properly
 
-3. Build python
-```
-jhbuild build python
-```
+ 3. Prepare paths and build the bootstrap
+	```
+  export PATH="~/.local/bin/:$PATH"
+	jhbuild bootstrap
+	```
 
-4. Prepare paths and build the bootstrap
-```
-alias jhbuild="PATH=~/.local/bin:$PATH jhbuild"
-jhbuild bootstrap
-```
+ 4. Checkout meld and start the initial phase
+	```
+	git clone https://github.com/yousseb/meld.git
+	cd meld
+	cd osx/
+	ln -sf $PWD/jhbuildrc-custom ~/.jhbuildrc-custom
+	cd ..
+	```
 
-5. Checkout meld and start the initial phase
-```
-git clone https://github.com/yousseb/meld.git
-cd meld
-# if building the 1.8 version, run: git checkout meld-1-8
-cd osx/
-ln -sf $PWD/jhbuildrc-custom ~/.jhbuildrc-custom
-cd ..
-jhbuild
-```
+#### Building Meld ####
 
-6- 1.8 branch only: Fix the gtksourceview issues
-```
-ln -sf ~/gtk/inst/lib/pkgconfig/gtk-mac-integration-gtk2.pc ~/gtk/inst/lib/pkgconfig/gtk-mac-integration.pc
-```
-```
-cp ~/Source/gtk/gtksourceview-2.10.5/tests/test-completion.c  ~/Source/gtk/gtksourceview-2.10.5/tests/test-widget.c
-```
-Edit: ~/Source/gtk/gtksourceview-2.10.5/gtksourceview/gtksourceview-i18n.c
-Comment out:
-```
-//if (quartz_application_get_bundle_id () != NULL)
-//{
-//    locale_dir = g_build_filename (quartz_application_get_resource_path (), "share", "locale", NULL);
-//}
-//else
-```
+ 1. Build python - with libxml2 support
+	```
+	jhbuild -m osx/meld.modules build python-withxml2
+	```
 
-7. Continue the build
-```
-jhbuild
-```
+ 2. Build the rest of meld dependencies
+	```
+	jhbuild  -m osx/meld.modules build meld-deps
+	```
 
-8. Build extra dependencies
-```
-jhbuild -m osx/meld.modules build meld-python-deps
-jhbuild run easy_install py2app
-```
+ 3. You're now ready to build Meld.
+	```
+	chmod +x osx/build_app.sh
+	jhbuild run osx/build_app.sh
+	```
+	or
+	```
+	jhbuild shell
+	chmod +x osx/build_app.sh
+	./osx/build_app.sh
+	```
 
-9. You're now ready to build Meld.
-```
-chmod +x osx/build_app.sh
-jhbuild run osx/build_app.sh
-```
+#### Output ####
+
+> **DMG:** Find the DMG <i class="icon-folder-open"></i> file  in osx/Archives after you're done building.
+
+#### FQA ####
+1. Can't run jhbuild bootstrap - gives an error related to bash
+  Issue the following command:
+	```
+	mkdir -p $HOME/gtk/inst/bin
+	ln -sf /bin/bash $HOME/gtk/inst/bin/bash
+	```
+
+2. Build stops at Adwaita theme
+  So you see lots of the following error?
+  ```
+  Can't load file: Unrecognized image file format
+  ```
+  1. Select the option to **Start shell**.
+  2. Issue the commands:
+    ```
+    mv /tmp/meldroot/bin/gtk-encode-symbolic-svg /tmp/meldroot/bin/gtk-encode-symbolic-svg.orig
+    ./configure
+    ```
+  3. Exit the shell: type ``` exit ```
+  4. Choose **Rerun phase install**.
+  We won't have SVG icons... Sucks but better than not having meld. If someone can help, please do.

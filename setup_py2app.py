@@ -5,18 +5,8 @@
 import glob
 import os
 import site
-
 from setuptools import setup
-
 import meld.meldapp
-
-# Ensure 'py2app' package installed
-try:
-    import py2app
-except ImportError:
-    exit(
-        'This script requires py2app to be installed. ' +
-        'Download it from http://undefined.org/python/py2app.html')
 
 APP_NAME = 'MeldMerge'
 VERSION_STRING = '1.0'
@@ -37,7 +27,7 @@ PLIST = {
     'CFBundleSignature': '???',
     'CFBundleVersion': VERSION_STRING,
     'LSPrefersPPC': FORCE_32_BIT,
-    'NSHumanReadableCopyright': u'Copyright © 205',
+    'NSHumanReadableCopyright': u'Copyright © 2016',
     'CFBundleDisplayName': 'Meld',
     'CFBundleName': 'Meld',
     'NSHighResolutionCapable': True,
