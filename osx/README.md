@@ -87,11 +87,10 @@ is the list of the exact steps followed during the build to reduce conflicts
 
 > :bulb:**Output:** Find the output dmg file in osx/Archives after you're done building.
 
-#### FQA ####
+#### FAQ ####
 
- 1. Can't run jhbuild bootstrap - gives an error related to bash
-  Issue the following command:
-  ```
-  mkdir -p $HOME/gtk/inst/bin; 
-  ln -sf /bin/bash $HOME/gtk/inst/bin/bash
-  ```
+1. Can't run jhbuild bootstrap - gives an error related to bash not being found.
+	```
+	mkdir -p $HOME/gtk/inst/bin; 
+	ln -sf /bin/bash $HOME/gtk/inst/bin/bash
+	```
