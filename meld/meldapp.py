@@ -34,6 +34,12 @@ from meld.conf import _
 
 log = logging.getLogger(__name__)
 
+# Monkeypatching optparse like this is obviously awful, but this is to
+# handle Unicode translated strings within optparse itself that will
+# otherwise crash badly. This just makes optparse use our ugettext
+# import of _, rather than the non-unicode gettext.
+optparse._ = _
+
 
 class MeldApp(Gtk.Application):
 
@@ -92,6 +98,8 @@ class MeldApp(Gtk.Application):
     def do_window_removed(self, widget):
         widget.meldwindow = None
         Gtk.Application.do_window_removed(self, widget)
+        if not len(self.get_windows()):
+            self.quit()
 
     # We can't override do_local_command_line because it has no introspection
     # annotations: https://bugzilla.gnome.org/show_bug.cgi?id=687912

@@ -19,6 +19,9 @@ import math
 
 from gi.repository import Gtk
 
+from meld.misc import get_common_theme
+from meld.settings import meldsettings
+
 
 # Rounded rectangle corner radius for culled changes display
 RADIUS = 3
@@ -30,6 +33,7 @@ class LinkMap(Gtk.DrawingArea):
 
     def __init__(self):
         self.filediff = None
+        meldsettings.connect('changed', self.on_setting_changed)
 
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
@@ -38,11 +42,11 @@ class LinkMap(Gtk.DrawingArea):
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
-        self.set_color_scheme((filediff.fill_colors, filediff.line_colors))
+        self.on_setting_changed(meldsettings, 'style-scheme')
 
-    def set_color_scheme(self, color_map):
-        self.fill_colors, self.line_colors = color_map
-        self.queue_draw()
+    def on_setting_changed(self, settings, key):
+        if key == 'style-scheme':
+            self.fill_colors, self.line_colors = get_common_theme()
 
     def do_draw(self, context):
         if not self.filediff:
@@ -50,14 +54,14 @@ class LinkMap(Gtk.DrawingArea):
 
         context.set_line_width(1.0)
         allocation = self.get_allocation()
-        style = self.get_style_context()
 
         pix_start = [t.get_visible_rect().y for t in self.views]
-        y_offset = [t.translate_coordinates(self, 0, 0)[1] for t in self.views]
+        y_offset = [
+            t.translate_coordinates(self, 0, 0)[1] + 1 for t in self.views]
 
+        clip_y = min(y_offset) - 1
         clip_height = max(t.get_visible_rect().height for t in self.views) + 2
-        Gtk.render_frame(style, context, 0, 0, allocation.width, clip_height)
-        context.rectangle(0, -1, allocation.width, clip_height)
+        context.rectangle(0, clip_y, allocation.width, clip_height)
         context.clip()
 
         height = allocation.height
@@ -78,6 +82,9 @@ class LinkMap(Gtk.DrawingArea):
             # f and t are short for "from" and "to"
             f0, f1 = [view_offset_line(0, l) for l in c[1:3]]
             t0, t1 = [view_offset_line(1, l) for l in c[3:5]]
+            # We want the last pixel of the previous line
+            f1 = f1 if f1 == f0 else f1 - 1
+            t1 = t1 if t1 == t0 else t1 - 1
 
             # If either endpoint is completely off-screen, we cull for clarity
             if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height):

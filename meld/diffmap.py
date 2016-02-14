@@ -1,5 +1,5 @@
 # Copyright (C) 2002-2009 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2009-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2009-2013, 2015 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,6 +22,9 @@ from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from meld.misc import get_common_theme
+from meld.settings import meldsettings
+
 
 class DiffMap(Gtk.DrawingArea):
 
@@ -39,8 +42,10 @@ class DiffMap(Gtk.DrawingArea):
         self._scroll_height = 0
         self._setup = False
         self._width = 10
+        meldsettings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meldsettings, 'style-scheme')
 
-    def setup(self, scrollbar, change_chunk_fn, color_map):
+    def setup(self, scrollbar, change_chunk_fn):
         for (o, h) in self._handlers:
             o.disconnect(h)
 
@@ -61,7 +66,6 @@ class DiffMap(Gtk.DrawingArea):
                           (self._scrolladj, adj_change_hid),
                           (self._scrolladj, adj_val_hid)]
         self._difffunc = change_chunk_fn
-        self.set_color_scheme(color_map)
         self._setup = True
         self._cached_map = None
         self.queue_draw()
@@ -69,27 +73,24 @@ class DiffMap(Gtk.DrawingArea):
     def on_diffs_changed(self, *args):
         self._cached_map = None
 
-    def set_color_scheme(self, color_map):
-        self.fill_colors, self.line_colors = color_map
-        self.queue_draw()
+    def on_setting_changed(self, meldsettings, key):
+        if key == 'style-scheme':
+            self.fill_colors, self.line_colors = get_common_theme()
 
     def on_scrollbar_style_updated(self, scrollbar):
-        value = GObject.Value(int)
-        scrollbar.style_get_property("stepper-size", value)
-        stepper_size = value.get_int()
-        scrollbar.style_get_property("stepper-spacing", value)
-        stepper_spacing = value.get_int()
+        stepper_size = scrollbar.style_get_property("stepper-size")
+        stepper_spacing = scrollbar.style_get_property("stepper-spacing")
 
-        bool_value = GObject.Value(bool)
-        scrollbar.style_get_property("has-backward-stepper", bool_value)
-        has_backward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-secondary-forward-stepper", bool_value)
-        has_secondary_forward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-secondary-backward-stepper", bool_value)
-        has_secondary_backward = bool_value.get_boolean()
-        scrollbar.style_get_property("has-forward-stepper", bool_value)
-        has_foreward = bool_value.get_boolean()
-        steppers = [has_backward, has_secondary_forward, has_secondary_backward, has_foreward]
+        has_backward = scrollbar.style_get_property("has-backward-stepper")
+        has_secondary_backward = scrollbar.style_get_property(
+            "has-secondary-backward-stepper")
+        has_secondary_forward = scrollbar.style_get_property(
+            "has-secondary-forward-stepper")
+        has_forward = scrollbar.style_get_property("has-forward-stepper")
+        steppers = [
+            has_backward, has_secondary_backward,
+            has_secondary_forward, has_forward,
+        ]
 
         offset = stepper_size * steppers[0:2].count(True)
         shorter = stepper_size * steppers.count(True)
@@ -103,7 +104,8 @@ class DiffMap(Gtk.DrawingArea):
         self.queue_draw()
 
     def on_scrollbar_size_allocate(self, scrollbar, allocation):
-        self._scroll_y = allocation.y
+        translation = scrollbar.translate_coordinates(self, 0, 0)
+        self._scroll_y = translation[1] if translation else 0
         self._scroll_height = allocation.height
         self._width = max(allocation.width, 10)
         self._cached_map = None
@@ -113,11 +115,16 @@ class DiffMap(Gtk.DrawingArea):
         if not self._setup:
             return
         height = self._scroll_height - self._h_offset - 1
-        y_start = self._scroll_y - self.get_allocation().y - self._y_offset + 1
+        y_start = self._scroll_y + self._y_offset + 1
         width = self.get_allocated_width()
         xpad = 2.5
         x0 = xpad
         x1 = width - 2 * xpad
+
+        # Hack to work around a cairo bug when calling create_similar
+        # https://bugs.freedesktop.org/show_bug.cgi?id=60519
+        if not (width and height):
+            return
 
         context.translate(0, y_start)
         context.set_line_width(1)
@@ -161,9 +168,9 @@ class DiffMap(Gtk.DrawingArea):
 
     def do_button_press_event(self, event):
         if event.button == 1:
-            y_start = self.get_allocation().y - self._scroll_y - self._y_offset
+            y_start = self._scroll_y + self._y_offset
             total_height = self._scroll_height - self._h_offset
-            fraction = (event.y + y_start) / total_height
+            fraction = (event.y - y_start) / total_height
 
             adj = self._scrolladj
             val = fraction * adj.get_upper() - adj.get_page_size() / 2

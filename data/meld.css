@@ -1,25 +1,4 @@
 
-@define-color insert-bg #d0ffa3;
-@define-color insert-outline shade(@insert-bg, 0.8);
-@define-color insert-text #008800;
-@define-color delete-bg White;
-@define-color delete-outline shade(@delete-bg, 0.8);
-@define-color delete-text #880000;
-@define-color replace-bg #bdddff;
-@define-color replace-outline shade(@replace-bg, 0.8);
-@define-color replace-text #0044dd;
-@define-color conflict-bg #ffa5a3;
-@define-color conflict-outline shade(@conflict-bg, 0.8);
-@define-color conflict-text #ff0000;
-@define-color error-bg #fce94f;
-@define-color error-outline shade(@error-bg, 0.8);
-@define-color error-text #faad3d;
-@define-color inline-bg #8ac2ff;
-@define-color unknown-text #888888;
-@define-color current-line-highlight #ffff00;
-@define-color syncpoint-outline #555555;
-@define-color current-chunk-highlight alpha(#ffffff, 0.5);
-
 .meld-notebook-toolbar.toolbar {
 	background-image: none;
     background-color: @theme_base_color;
@@ -38,7 +17,7 @@ LinkMap {
 }
 
 .meld-vc-console-pane {
-    border-width: 1px 0 0px 0;
+    border-width: 1px 0 0 0;
     border-style: solid;
     border-color: @borders;
 }
@@ -46,5 +25,5 @@ LinkMap {
 .not-found {
     color: white;
     background-image: none;
-    background-color: rgb (237, 54, 54);
+    background-color: rgb(237, 54, 54);
 }

@@ -1,5 +1,5 @@
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2011-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2011-2015 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,16 +16,17 @@
 
 import os
 from gi.repository import GLib
+from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
 
-COL_TYPES = (str, str, str, str, str, str, Pango.Style,
+COL_TYPES = (str, str, str, str, str, Gdk.RGBA, Pango.Style,
              Pango.Weight, bool)
 
-
+from meld.misc import colour_lookup_with_fallback
 from meld.vc._vc import \
     STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
     STATE_ERROR, STATE_EMPTY, STATE_NEW, \
@@ -53,23 +54,13 @@ class DiffTreeStore(Gtk.TreeStore):
         roman, italic = Pango.Style.NORMAL, Pango.Style.ITALIC
         normal, bold = Pango.Weight.NORMAL, Pango.Weight.BOLD
 
-        def lookup(name, default):
-            try:
-                found, colour = style.lookup_color(name)
-                if found:
-                    colour = colour.to_string()
-                else:
-                    colour = default
-            except AttributeError:
-                colour = default
-            return colour
-
-        unk_fg = lookup("unknown-text", "#888888")
-        new_fg = lookup("insert-text", "#008800")
-        mod_fg = lookup("replace-text", "#0044dd")
-        del_fg = lookup("delete-text", "#880000")
-        err_fg = lookup("error-text", "#ffff00")
-        con_fg = lookup("conflict-text", "#ff0000")
+        lookup = colour_lookup_with_fallback
+        unk_fg = lookup("meld:unknown-text", "foreground")
+        new_fg = lookup("meld:insert", "foreground")
+        mod_fg = lookup("meld:replace", "foreground")
+        del_fg = lookup("meld:delete", "foreground")
+        err_fg = lookup("meld:error", "foreground")
+        con_fg = lookup("meld:conflict", "foreground")
 
         self.text_attributes = [
             # foreground, style, weight, strikethrough
@@ -94,8 +85,8 @@ class DiffTreeStore(Gtk.TreeStore):
             ("text-x-generic", "folder", None,   None),    # NONE
             ("text-x-generic", "folder", None,   None),    # NORMAL
             ("text-x-generic", "folder", None,   None),    # NOCHANGE
-            ("dialog-warning", None    , None,   None),    # ERROR
-            (None,             None    , None,   None),    # EMPTY
+            ("dialog-warning", None,     None,   None),    # ERROR
+            (None,             None,     None,   None),    # EMPTY
             ("text-x-generic", "folder", new_fg, None),    # NEW
             ("text-x-generic", "folder", mod_fg, None),    # MODIFIED
             ("text-x-generic", "folder", mod_fg, None),    # RENAMED
@@ -145,7 +136,7 @@ class DiffTreeStore(Gtk.TreeStore):
         self.set_state(it, pane, STATE_ERROR, msg)
 
     def set_path_state(self, it, pane, state, isdir=0):
-        fullname = self.get_value(it, self.column_index(COL_PATH,pane))
+        fullname = self.get_value(it, self.column_index(COL_PATH, pane))
         name = GLib.markup_escape_text(os.path.basename(fullname))
         self.set_state(it, pane, state, name, isdir)
 
@@ -158,7 +149,9 @@ class DiffTreeStore(Gtk.TreeStore):
         self.set_value(it, col_idx(COL_ICON,  pane), icon)
         # FIXME: This is horrible, but EmblemCellRenderer crashes
         # if you try to give it a Gdk.Color property
-        self.set_value(it, col_idx(COL_TINT,  pane), tint)
+        if tint:
+            tint = tint.to_string() if tint else None
+        self.set_value(it, col_idx(COL_TINT, pane), tint)
 
         fg, style, weight, strike = self.text_attributes[state]
         self.set_value(it, col_idx(COL_FG, pane), fg)
@@ -203,7 +196,7 @@ class DiffTreeStore(Gtk.TreeStore):
                 while 1:
                     nc = self.iter_n_children(it)
                     if nc:
-                        it = self.iter_nth_child(it, nc-1)
+                        it = self.iter_nth_child(it, nc - 1)
                     else:
                         break
             else:
@@ -236,14 +229,14 @@ class DiffTreeStore(Gtk.TreeStore):
         # If the key contains a path separator, search the whole path,
         # otherwise just use the filename. If the key is all lower-case, do a
         # case-insensitive match.
-        abs_search = key.find('/') >= 0
+        abs_search = '/' in key
         lower_key = key.islower()
 
         for path in model.value_paths(it):
             if not path:
                 continue
-            lineText = path if abs_search else os.path.basename(path)
-            lineText = lineText.lower() if lower_key else lineText
-            if lineText.find(key) != -1:
+            text = path if abs_search else os.path.basename(path)
+            text = text.lower() if lower_key else text
+            if key in text:
                 return False
         return True

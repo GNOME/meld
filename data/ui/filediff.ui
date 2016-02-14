@@ -181,7 +181,6 @@
   </object>
   <object class="GtkMessageDialog" id="check_save_dialog">
     <property name="can_focus">False</property>
-    <property name="border_width">5</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="message_type">warning</property>
@@ -197,7 +196,7 @@
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="layout_style">expand</property>
             <child>
               <object class="GtkButton" id="close_button">
                 <property name="label" translatable="yes">Close _without Saving</property>
@@ -208,7 +207,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -222,7 +221,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -236,7 +235,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -327,17 +326,16 @@
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                    <property name="icon_name">emblem-readonly</property>
+                    <property name="icon_name">changes-prevent-symbolic</property>
                     <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
                   </object>
                 </child>
                 <child>
                   <object class="GtkToolButton" id="file_save_button2">
-                    <property name="stock-id">gtk-save</property>
+                    <property name="icon-name">document-save</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_underline">True</property>
                     <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
                   </object>
                 </child>
@@ -363,7 +361,7 @@
                     <property name="visible">False</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="margin-start">12</property>
                     <child>
                       <object class="GtkLabel" id="filelabel2">
                         <property name="visible">True</property>
@@ -404,11 +402,10 @@
                 </child>
                 <child>
                   <object class="GtkToolButton" id="file_save_button1">
-                    <property name="stock-id">gtk-save</property>
+                    <property name="icon-name">document-save-symbolic</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_underline">True</property>
                     <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
                   </object>
                 </child>
@@ -434,7 +431,7 @@
                     <property name="visible">False</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="margin-start">12</property>
                     <child>
                       <object class="GtkLabel" id="filelabel1">
                         <property name="visible">True</property>
@@ -475,11 +472,10 @@
                 </child>
                 <child>
                   <object class="GtkToolButton" id="file_save_button0">
-                    <property name="stock-id">gtk-save</property>
+                    <property name="icon-name">document-save-symbolic</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_underline">True</property>
                     <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
                   </object>
                 </child>
@@ -505,7 +501,7 @@
                     <property name="visible">False</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="margin-start">12</property>
                     <child>
                       <object class="GtkLabel" id="filelabel0">
                         <property name="visible">True</property>
@@ -556,7 +552,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                        <signal name="draw" handler="on_textview_draw" swapped="no"/>
                         <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                         <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
@@ -605,7 +600,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                        <signal name="draw" handler="on_textview_draw" swapped="no"/>
                         <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                         <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
@@ -654,7 +648,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                        <signal name="draw" handler="on_textview_draw" swapped="no"/>
                         <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                         <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
@@ -797,7 +790,7 @@
         <child>
           <object class="MeldStatusBar" id="statusbar">
             <property name="visible">True</property>
-            <property name="margin-right">12</property>
+            <property name="margin-end">12</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -810,7 +803,6 @@
   </object>
   <object class="GtkMessageDialog" id="revert_dialog">
     <property name="can_focus">False</property>
-    <property name="border_width">5</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="message_type">question</property>
@@ -827,7 +819,7 @@
           <object class="GtkButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="layout_style">expand</property>
             <child>
               <object class="GtkButton" id="cancel_button1">
                 <property name="label">gtk-cancel</property>
@@ -839,7 +831,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -854,7 +846,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>

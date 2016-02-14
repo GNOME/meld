@@ -15,6 +15,7 @@
 
 import os
 
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 
@@ -28,6 +29,7 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
+        'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
         'diff-created': (GObject.SignalFlags.RUN_FIRST, None,
                          (object,)),
     }
@@ -45,7 +47,7 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
                              parentapp.append_vcview)
         self.diff_type = -1
 
-        default_path = os.path.expanduser("~")
+        default_path = GLib.get_home_dir()
         for chooser in self.file_chooser:
             chooser.set_current_folder(default_path)
 
@@ -133,4 +135,5 @@ class NewDiffTab(GObject.GObject, gnomeglade.Component):
         pass
 
     def on_delete_event(self, *args):
+        self.emit('close', 0)
         return Gtk.ResponseType.OK

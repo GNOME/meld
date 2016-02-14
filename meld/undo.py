@@ -239,7 +239,8 @@ class UndoSequence(GObject.GObject):
     def abort_group(self):
         """Revert the sequence to the state before begin_group() was called.
 
-        Raises an AssertionError if there was no a matching call to begin_group().
+        Raises an AssertionError if there was no a matching call to
+        begin_group().
         """
         if self.busy:
             return

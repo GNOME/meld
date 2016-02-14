@@ -139,10 +139,12 @@ class build_help(distutils.cmd.Command):
                 msgfmt = ['msgfmt', po_file, '-o', mo_file]
                 self.spawn(msgfmt)
                 for page in self.C_PAGES:
-                    itstool = ['itstool', '-m', mo_file, '-o', build_path, page]
+                    itstool = [
+                        'itstool', '-m', mo_file, '-o', build_path, page]
                     self.spawn(itstool)
                 for extra in self.C_EXTRA:
-                    extra_path = os.path.join(build_path, os.path.basename(extra))
+                    extra_path = os.path.join(
+                        build_path, os.path.basename(extra))
                     if os.path.exists(extra_path):
                         os.unlink(extra_path)
                     os.symlink(os.path.relpath(extra, source_path), extra_path)
@@ -154,7 +156,8 @@ class build_help(distutils.cmd.Command):
             path_help = os.path.join('share', 'help', lang, name)
             path_figures = os.path.join(path_help, 'figures')
             data_files.append((path_help, xml_files + mallard_files))
-            data_files.append((path_figures, glob.glob('%s/figures/*.png' % build_path)))
+            data_files.append(
+                (path_figures, glob.glob('%s/figures/*.png' % build_path)))
 
         return data_files
 
@@ -201,7 +204,8 @@ class build_icons(distutils.cmd.Command):
                 for category in glob.glob(os.path.join(size, "*")):
                     icons = (glob.glob(os.path.join(category, "*.png")) +
                              glob.glob(os.path.join(category, "*.svg")))
-                    icons = [icon for icon in icons if not os.path.islink(icon)]
+                    icons = [
+                        icon for icon in icons if not os.path.islink(icon)]
                     if not icons:
                         continue
                     data_files.append(("%s/%s/%s/%s" %
@@ -262,7 +266,7 @@ class build_i18n(distutils.cmd.Command):
         max_po_mtime = 0
         for po_file in glob.glob("%s/*.po" % self.po_dir):
             lang = os.path.basename(po_file[:-3])
-            if selected_languages and not lang in selected_languages:
+            if selected_languages and lang not in selected_languages:
                 continue
             mo_dir = os.path.join("build", "mo", lang, "LC_MESSAGES")
             mo_file = os.path.join(mo_dir, "%s.mo" % self.domain)

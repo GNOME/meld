@@ -24,7 +24,10 @@ import shutil
 import re
 import subprocess
 
+from gi.repository import Gdk
+from gi.repository import GObject
 from gi.repository import Gtk
+from gi.repository import GtkSource
 
 from meld.conf import _
 
@@ -141,6 +144,55 @@ def make_tool_button_widget(label):
     return hbox
 
 
+MELD_STYLE_SCHEME = "meld-base"
+
+
+def colour_lookup_with_fallback(name, attribute):
+    from meld.settings import meldsettings
+    source_style = meldsettings.style_scheme
+
+    style = source_style.get_style(name)
+    style_attr = getattr(style.props, attribute) if style else None
+    if not style or not style_attr:
+        manager = GtkSource.StyleSchemeManager.get_default()
+        source_style = manager.get_scheme(MELD_STYLE_SCHEME)
+        try:
+            style = source_style.get_style(name)
+            style_attr = getattr(style.props, attribute)
+        except AttributeError:
+            pass
+
+    if not style_attr:
+        import sys
+        print >> sys.stderr, _(
+            "Couldn't find colour scheme details for %s-%s; "
+            "this is a bad install") % (name, attribute)
+        sys.exit(1)
+
+    colour = Gdk.RGBA()
+    colour.parse(style_attr)
+    return colour
+
+
+def get_common_theme():
+    lookup = colour_lookup_with_fallback
+    fill_colours = {
+        "insert": lookup("meld:insert", "background"),
+        "delete": lookup("meld:insert", "background"),
+        "conflict": lookup("meld:conflict", "background"),
+        "replace": lookup("meld:replace", "background"),
+        "current-chunk-highlight": lookup(
+            "meld:current-chunk-highlight", "background")
+    }
+    line_colours = {
+        "insert": lookup("meld:insert", "line-background"),
+        "delete": lookup("meld:insert", "line-background"),
+        "conflict": lookup("meld:conflict", "line-background"),
+        "replace": lookup("meld:replace", "line-background"),
+    }
+    return fill_colours, line_colours
+
+
 def gdk_to_cairo_color(color):
     return (color.red / 65535., color.green / 65535., color.blue / 65535.)
 
@@ -203,13 +255,12 @@ def shorten_names(*names):
     return [name or _("[None]") for name in basenames]
 
 
-def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
+def read_pipe_iter(command, workdir, errorstream, yield_interval=0.1):
     """Read the output of a shell command iteratively.
 
     Each time 'callback_interval' seconds pass without reading any data,
     this function yields None.
     When all the data is read, the entire string is yielded.
-    If 'workdir' is specified the command is run from that directory.
     """
     class sentinel(object):
         def __init__(self):
@@ -257,10 +308,7 @@ def read_pipe_iter(command, errorstream, yield_interval=0.1, workdir=None):
             self.proc = None
             if status:
                 errorstream.error("Exit code: %i\n" % status)
-            yield "".join(bits)
-            yield status
-    if workdir == "":
-        workdir = None
+            yield status, "".join(bits)
     return sentinel()()
 
 
@@ -271,23 +319,6 @@ def write_pipe(command, text, error=None):
                             stdout=subprocess.PIPE, stderr=error)
     proc.communicate(text)
     return proc.wait()
-
-
-def commonprefix(dirs):
-    """Given a list of pathnames, returns the longest common leading component.
-    """
-    if not dirs:
-        return ''
-    n = [d.split(os.sep) for d in dirs]
-    prefix = n[0]
-    for item in n:
-        for i in range(len(prefix)):
-            if prefix[:i+1] != item[:i+1]:
-                prefix = prefix[:i]
-                if i == 0:
-                    return ''
-                break
-    return os.sep.join(prefix)
 
 
 def copy2(src, dst):
@@ -382,7 +413,7 @@ def shell_to_regex(pat):
                 res += r'\['
             else:
                 stuff = pat[i:j]
-                i = j+1
+                i = j + 1
                 if stuff[0] == '!':
                     stuff = '^%s' % stuff[1:]
                 elif stuff[0] == '^':
@@ -395,10 +426,45 @@ def shell_to_regex(pat):
                 res += '\\{'
             else:
                 stuff = pat[i:j]
-                i = j+1
+                i = j + 1
                 res += '(%s)' % "|".join(
                     [shell_to_regex(p)[:-1] for p in stuff.split(",")]
                 )
         else:
             res += re.escape(c)
     return res + "$"
+
+
+def merge_intervals(interval_list):
+    """Merge a list of intervals
+
+    Returns a list of itervals as 2-tuples with all overlapping
+    intervals merged.
+
+    interval_list must be a list of 2-tuples of integers representing
+    the start and end of an interval.
+    """
+
+    if len(interval_list) < 2:
+        return interval_list
+
+    interval_list.sort()
+    merged_intervals = [interval_list.pop(0)]
+    current_start, current_end = merged_intervals[-1]
+
+    while interval_list:
+        new_start, new_end = interval_list.pop(0)
+
+        if current_end >= new_end:
+            continue
+
+        if current_end < new_start:
+            # Intervals do not overlap; create a new one
+            merged_intervals.append((new_start, new_end))
+        elif current_end < new_end:
+            # Intervals overlap; extend the current one
+            merged_intervals[-1] = (current_start, new_end)
+
+        current_start, current_end = merged_intervals[-1]
+
+    return merged_intervals

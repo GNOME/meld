@@ -71,8 +71,8 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         if abs(self.time - other.time) > 2:
             return False
 
-        dectime1 = Decimal(str(self.time)).scaleb(Decimal(9)).quantize(1)
-        dectime2 = Decimal(str(other.time)).scaleb(Decimal(9)).quantize(1)
+        dectime1 = Decimal(self.time).scaleb(Decimal(9)).quantize(1)
+        dectime2 = Decimal(other.time).scaleb(Decimal(9)).quantize(1)
         mtime1 = dectime1 // time_resolution_ns
         mtime2 = dectime2 // time_resolution_ns
 
@@ -343,8 +343,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                                      "file_toolbar"])
 
         self.widget.ensure_style()
-        self.on_style_updated(self.widget)
-        self.widget.connect("style-updated", self.on_style_updated)
 
         self.custom_labels = []
         self.set_num_panes(num_panes)
@@ -378,7 +376,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column.pack_start(renicon, False)
             column.pack_start(rentext, True)
             column.set_attributes(rentext, markup=col_index(tree.COL_TEXT, i),
-                                  foreground=col_index(tree.COL_FG, i),
+                                  foreground_rgba=col_index(tree.COL_FG, i),
                                   style=col_index(tree.COL_STYLE, i),
                                   weight=col_index(tree.COL_WEIGHT, i),
                                   strikethrough=col_index(tree.COL_STRIKE, i))
@@ -444,29 +442,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.actiongroup.get_action(action_name).set_active(True)
 
         self._scan_in_progress = 0
-
-    def on_style_updated(self, widget):
-        style = widget.get_style_context()
-
-        def lookup(name, default):
-            found, colour = style.lookup_color(name)
-            if not found:
-                colour = Gdk.RGBA()
-                colour.parse(default)
-            return colour
-
-        self.fill_colors = {"insert"  : lookup("insert-bg", "DarkSeaGreen1"),
-                            "delete"  : lookup("delete-bg", "White"),
-                            "replace" : lookup("replace-bg", "#ddeeff"),
-                            "error"   : lookup("error-bg", "#fce94f")}
-        self.line_colors = {"insert"  : lookup("insert-outline", "#77f077"),
-                            "delete"  : lookup("delete-outline", "Grey"),
-                            "replace" : lookup("replace-outline", "#8bbff3"),
-                            "error"   : lookup("error-outline", "#edd400")}
-
-        for diffmap in self.diffmap:
-            diffmap.set_color_scheme([self.fill_colors, self.line_colors])
-        self.queue_draw()
 
     def queue_draw(self):
         for treeview in self.treeview:
@@ -652,6 +627,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         locations = [os.path.abspath(l) if l else '' for l in locations]
         self.current_path = None
         self.model.clear()
+        for m in self.msgarea_mgr:
+            m.clear()
         for pane, loc in enumerate(locations):
             if loc:
                 self.fileentry[pane].set_filename(loc)
@@ -696,6 +673,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             rootpath = Gtk.TreePath(rootpath)
         todo = [rootpath]
         expanded = set()
+
+        tuple_tree_path = lambda p: tuple(p.get_indices())
 
         shadowed_entries = []
         invalid_filenames = []
@@ -806,7 +785,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         not all(os.path.isdir(f) for f in roots)):
                     self.model.add_empty(it)
                     if self.model.iter_parent(it) is None:
-                        expanded.add(rootpath)
+                        expanded.add(tuple_tree_path(rootpath))
                 else:
                     # At this point, we have an empty folder tree node; we can
                     # prune this and any ancestors that then end up empty.
@@ -817,7 +796,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         # no siblings. If we're here, we have an empty tree.
                         if parent is None:
                             self.model.add_empty(it)
-                            expanded.add(rootpath)
+                            expanded.add(tuple_tree_path(rootpath))
                             break
 
                         # Remove the current row, and then revalidate all
@@ -833,7 +812,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         it = parent
 
             if differences:
-                expanded.add(path)
+                expanded.add(tuple_tree_path(path))
 
         if invalid_filenames or shadowed_entries:
             self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
@@ -842,7 +821,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
         for path in sorted(expanded):
-            self.treeview[0].expand_to_path(path)
+            self.treeview[0].expand_to_path(Gtk.TreePath(path))
         yield _("[%s] Done") % self.label_text
 
         self.scheduler.add_task(self.on_treeview_cursor_changed)
@@ -875,7 +854,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for pane in range(self.num_panes):
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                Gtk.STOCK_INFO, primary, secondary)
+                'dialog-information-symbolic', primary, secondary)
             button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
             if pane == 0:
                 button.props.label = _("Hi_de")
@@ -925,17 +904,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 else:
                     continue
                 secondary = "\n".join(messages)
-                self.add_dismissable_msg(pane, Gtk.STOCK_DIALOG_ERROR, header,
-                                         secondary)
-
-    def add_dismissable_msg(self, pane, icon, primary, secondary):
-        msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                        icon, primary, secondary)
-        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
-        msgarea.connect("response",
-                        lambda *args: self.msgarea_mgr[pane].clear())
-        msgarea.show_all()
-        return msgarea
+                self.msgarea_mgr[pane].add_dismissable_msg(
+                    'dialog-error-symbolic', header, secondary)
 
     def copy_selected(self, direction):
         assert direction in (-1, 1)
@@ -1485,7 +1455,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             for (w, i) in zip(self.diffmap, (0, n - 1)):
                 scroll = self.scrolledwindow[i].get_vscrollbar()
                 idx = 1 if i else 0
-                w.setup(scroll, self.get_state_traversal(idx), [self.fill_colors, self.line_colors])
+                w.setup(scroll, self.get_state_traversal(idx))
 
             for w in self.linkmap:
                 w.associate(self)
@@ -1594,7 +1564,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_refresh_activate(self, *extra):
         self.on_fileentry_file_set(None)
 
-    def on_delete_event(self, appquit=0):
+    def on_delete_event(self):
         for h in self.settings_handlers:
             meldsettings.disconnect(h)
         self.emit('close', 0)

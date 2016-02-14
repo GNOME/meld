@@ -1,4 +1,6 @@
 
+from gi.repository import GtkSource
+
 from meld.conf import _
 
 # Chunk action mode, set by filediff and used in gutterrendererchunk
@@ -7,7 +9,7 @@ MODE_DELETE = 1
 MODE_INSERT = 2
 
 NEWLINES = {
-    '\n': _("UNIX (LF)"),
-    '\r\n': _("DOS/Windows (CR-LF)"),
-    '\r': _("Mac OS (CR)"),
+    GtkSource.NewlineType.LF: ('\n', _("UNIX (LF)")),
+    GtkSource.NewlineType.CR_LF: ('\r\n', _("DOS/Windows (CR-LF)")),
+    GtkSource.NewlineType.CR: ('\r', _("Mac OS (CR)")),
 }

@@ -53,9 +53,9 @@
 
       <!-- File loading settings -->
       <key name="detect-encodings" type="as">
-          <default>["utf8"]</default>
-          <summary>Automatically detected text encodings</summary>
-          <description>These text encodings will be automatically used (in order) to try to decode loaded text files.</description>
+          <default>[]</default>
+          <summary>Additional automatically detected text encodings</summary>
+          <description>Meld will use these text encodings to try to decode loaded text files before trying any other encodings. In addition to the encodings in this list, UTF-8 and the current locale-default encoding will always be used; other encodings may also be tried, depending on the user's locale.</description>
       </key>
 
 
@@ -231,7 +231,7 @@
       <key name="text-filters" type="a(sbs)">
           <default>
             [
-              ("CVS/SVN keywords", false, "\$\\w+(:[^\\n$]+)?\$"),
+              ("CVS/SVN keywords", false, "\\$\\w+(:[^\\n$]+)?\\$"),
               ("C++ comment", false, "//.*"),
               ("C comment", false, "/\\*.*?\\*/"),
               ("All whitespace", false, "[ \\t\\r\\f\\v]*"),

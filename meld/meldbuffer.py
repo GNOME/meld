@@ -37,10 +37,10 @@ class MeldBuffer(GtkSource.Buffer):
         ('highlight-syntax', 'highlight-syntax'),
     )
 
-    def __init__(self, filename=None):
+    def __init__(self):
         GtkSource.Buffer.__init__(self)
         bind_settings(self)
-        self.data = MeldBufferData(filename)
+        self.data = MeldBufferData()
         self.user_action_count = 0
         meldsettings.connect('changed', self.on_setting_changed)
         self.set_style_scheme(meldsettings.style_scheme)
@@ -67,14 +67,6 @@ class MeldBuffer(GtkSource.Buffer):
         if tag.props.name == 'inline' and self.user_action_count > 0:
             return
         return GtkSource.Buffer.do_apply_tag(self, tag, start, end)
-
-    def reset_buffer(self, filename):
-        """Clear the contents of the buffer and reset its metadata"""
-        self.delete(*self.get_bounds())
-        label = self.data.label if self.data.filename == filename else filename
-        self.data.reset()
-        self.data.filename = filename
-        self.data.label = label
 
     def get_iter_at_line_or_eof(self, line):
         """Return a Gtk.TextIter at the given line, or the end of the buffer.
@@ -111,30 +103,27 @@ class MeldBufferData(GObject.GObject):
         str('file-changed'): (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    def __init__(self, filename=None):
+    def __init__(self):
         GObject.GObject.__init__(self)
-        self.reset()
-        self.label = self.filename = filename
-
-    def reset(self):
-        self.modified = False
-        self.writable = True
-        self.editable = True
-        self._monitor = None
-        self._mtime = None
-        self._disk_mtime = None
-        self.filename = None
-        self.savefile = None
+        self._gfile = None
         self._label = None
-        self.encoding = None
-        self.newlines = None
+        self._monitor = None
+        self._sourcefile = None
+        self.reset(gfile=None)
+
+    def reset(self, gfile):
+        same_file = gfile and self._gfile and gfile.equal(self._gfile)
+        self.gfile = gfile
+        self.label = self._label if same_file else self.filename
+        self.loaded = False
+        self.savefile = None
 
     def __del__(self):
         self._disconnect_monitor()
 
     @property
     def label(self):
-        #TRANSLATORS: This is the label of a new, currently-unnamed file.
+        # TRANSLATORS: This is the label of a new, currently-unnamed file.
         return self._label or _(u"<unnamed>")
 
     @label.setter
@@ -145,17 +134,19 @@ class MeldBufferData(GObject.GObject):
         self._label = fallback_decode(value, encodings, lossy=True)
 
     def _connect_monitor(self):
-        if self._filename:
-            monitor = Gio.File.new_for_path(self._filename).monitor_file(
-                Gio.FileMonitorFlags.NONE, None)
-            handler_id = monitor.connect('changed', self._handle_file_change)
-            self._monitor = monitor, handler_id
+        if not self._gfile:
+            return
+        monitor = self._gfile.monitor_file(Gio.FileMonitorFlags.NONE, None)
+        handler_id = monitor.connect('changed', self._handle_file_change)
+        self._monitor = monitor, handler_id
 
     def _disconnect_monitor(self):
-        if self._monitor:
-            monitor, handler_id = self._monitor
-            monitor.disconnect(handler_id)
-            monitor.cancel()
+        if not self._monitor:
+            return
+        monitor, handler_id = self._monitor
+        monitor.disconnect(handler_id)
+        monitor.cancel()
+        self._monitor = None
 
     def _query_mtime(self, gfile):
         try:
@@ -174,20 +165,44 @@ class MeldBufferData(GObject.GObject):
         self._disk_mtime = mtime
 
     @property
-    def filename(self):
-        return self._filename
+    def gfile(self):
+        return self._gfile
 
-    @filename.setter
-    def filename(self, value):
+    @gfile.setter
+    def gfile(self, value):
         self._disconnect_monitor()
-        self._filename = value
+        self._gfile = value
+        self._sourcefile = GtkSource.File()
+        self._sourcefile.set_location(value)
+
+        # This is aiming to maintain existing behaviour for filename. The
+        # behaviour is however wrong and should be fixed.
+        self.filename = value.get_path().decode('utf8') if value else None
         self.update_mtime()
         self._connect_monitor()
 
+    @property
+    def sourcefile(self):
+        return self._sourcefile
+
+    @property
+    def gfiletarget(self):
+        if self.savefile:
+            return Gio.File.new_for_path(self.savefile)
+        return self.gfile
+
+    @property
+    def writable(self):
+        try:
+            info = self.gfiletarget.query_info(
+                Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
+        except (AttributeError, GLib.GError):
+            return False
+        return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)
+
     def update_mtime(self):
-        if self._filename:
-            gfile = Gio.File.new_for_path(self._filename)
-            self._disk_mtime = self._query_mtime(gfile)
+        if self._gfile:
+            self._disk_mtime = self._query_mtime(self._gfile)
             self._mtime = self._disk_mtime
 
     def current_on_disk(self):
@@ -211,7 +226,7 @@ class BufferLines(object):
         if textfilter is not None:
             self.textfilter = textfilter
         else:
-            self.textfilter = lambda x: x
+            self.textfilter = lambda x, buf, start_iter, end_iter: x
 
     def __getitem__(self, key):
         if isinstance(key, slice):
@@ -223,7 +238,7 @@ class BufferLines(object):
             end = self.buf.get_iter_at_line_or_eof(hi)
             txt = text_type(self.buf.get_text(start, end, False), 'utf8')
 
-            filter_txt = self.textfilter(txt)
+            filter_txt = self.textfilter(txt, self.buf, start, end)
             lines = filter_txt.splitlines()
             ends = filter_txt.splitlines(True)
 
@@ -269,7 +284,8 @@ class BufferLines(object):
             if not line_end.ends_line():
                 line_end.forward_to_line_end()
             txt = self.buf.get_text(line_start, line_end, False)
-            return text_type(self.textfilter(txt), 'utf8')
+            txt_filtered = self.textfilter(txt, self.buf, line_start, line_end)
+            return text_type(txt_filtered, 'utf8')
 
     def __len__(self):
         return self.buf.get_line_count()

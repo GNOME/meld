@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 from distutils.core import setup
 import glob
@@ -14,6 +14,7 @@ setup(
     author='Kai Willadsen',
     author_email='kai.willadsen@gmail.com',
     url='http://meldmerge.org',
+    license='GPLv2+',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: X11 Applications :: GTK',
@@ -21,10 +22,12 @@ setup(
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
         'Topic :: Desktop Environment :: Gnome',
         'Topic :: Software Development',
         'Topic :: Software Development :: Version Control',
     ],
+    keywords=['diff', 'merge'],
     packages=[
         'meld',
         'meld.ui',
@@ -44,11 +47,14 @@ setup(
          ['COPYING', 'NEWS']
          ),
         ('share/meld',
-         ['data/meld.css', 'data/meld-dark.css']
+         ['data/meld.css']
          ),
         ('share/meld/icons',
          glob.glob("data/icons/*.png") +
          glob.glob("data/icons/COPYING*")
+         ),
+        ('share/meld/styles',
+         glob.glob("data/styles/*.xml")
          ),
         ('share/meld/ui',
          glob.glob("data/ui/*.ui") + glob.glob("data/ui/*.xml")

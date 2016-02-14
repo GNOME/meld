@@ -21,6 +21,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
 
+import meld.ui.util
 from . import dirdiff
 from . import filediff
 from . import filemerge
@@ -138,8 +139,9 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.add_actions(actions)
         self.actiongroup.add_toggle_actions(toggleactions)
 
-        recent_action = Gtk.RecentAction(name="Recent",  label=_("Open Recent"),
-                                         tooltip=_("Open recent files"), stock_id=None)
+        recent_action = Gtk.RecentAction(
+            name="Recent",  label=_("Open Recent"),
+            tooltip=_("Open recent files"), stock_id=None)
         recent_action.set_show_private(True)
         recent_action.set_filter(recent_comparisons.recent_filter)
         recent_action.set_sort_type(Gtk.RecentSortType.MRU)
@@ -238,6 +240,8 @@ class MeldWindow(gnomeglade.Component):
         self.widget.drag_dest_add_uri_targets()
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
+
+        self.should_close = False
         self.idle_hooked = 0
         self.scheduler = task.LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
@@ -255,6 +259,18 @@ class MeldWindow(gnomeglade.Component):
         if is_darwin():
             self.osx_ready = False
             self.widget.connect('window_state_event', self.osx_menu_setup)
+            
+        # Set tooltip on map because the recentmenu is lazily created
+        rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
+        rmenu.connect("map", self._on_recentmenu_map)
+
+        try:
+            builder = meld.ui.util.get_builder("shortcuts.ui")
+            shortcut_window = builder.get_object("shortcuts-meld")
+            self.widget.set_help_overlay(shortcut_window)
+        except GLib.Error:
+            # GtkShortcutsWindow is new in GTK+ 3.20
+            pass
 
     def osx_menu_setup(self, widget, event, callback_data=None):
         if self.osx_ready == False:
@@ -276,6 +292,10 @@ class MeldWindow(gnomeglade.Component):
             self.macapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 3)
             #self.macapp.ready()
             self.osx_ready = True
+
+    def _on_recentmenu_map(self, recentmenu):
+        for imagemenuitem in recentmenu.get_children():
+            imagemenuitem.set_tooltip_text(imagemenuitem.get_label())
 
     def on_focus_change(self, widget, event, callback_data=None):
         for idx in range(self.notebook.get_n_pages()):
@@ -316,14 +336,20 @@ class MeldWindow(gnomeglade.Component):
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
     def on_delete_event(self, *extra):
+        should_cancel = False
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
         for c in reversed(self.notebook.get_children()):
             page = c.pyobject
             self.notebook.set_current_page(self.notebook.page_num(page.widget))
-            response = self.try_remove_page(page, appquit=1)
+            response = page.on_delete_event()
             if response == Gtk.ResponseType.CANCEL:
-                return True
+                should_cancel = True
+
+        should_cancel = should_cancel or self.has_pages()
+        if should_cancel:
+            self.should_close = True
+        return should_cancel
 
     def has_pages(self):
         return self.notebook.get_n_pages() > 0
@@ -356,20 +382,23 @@ class MeldWindow(gnomeglade.Component):
                            "Replace"):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
+    def handle_current_doc_switch(self, page):
+        if self.diff_handler is not None:
+            page.disconnect(self.diff_handler)
+        page.on_container_switch_out_event(self.ui)
+        if self.undo_handlers:
+            undoseq = page.undosequence
+            for handler in self.undo_handlers:
+                undoseq.disconnect(handler)
+            self.undo_handlers = tuple()
+
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
             olddoc = notebook.get_nth_page(oldidx).pyobject
-            if self.diff_handler is not None:
-                olddoc.disconnect(self.diff_handler)
-            olddoc.on_container_switch_out_event(self.ui)
-            if self.undo_handlers:
-                undoseq = olddoc.undosequence
-                for handler in self.undo_handlers:
-                    undoseq.disconnect(handler)
-                self.undo_handlers = tuple()
+            self.handle_current_doc_switch(olddoc)
 
-        newdoc = notebook.get_nth_page(which).pyobject
+        newdoc = notebook.get_nth_page(which).pyobject if which >= 0 else None
         try:
             undoseq = newdoc.undosequence
             can_undo = undoseq.can_undo()
@@ -389,9 +418,13 @@ class MeldWindow(gnomeglade.Component):
         else:
             self.actiongroup.get_action("SaveAs").set_sensitive(True)
 
-        nbl = self.notebook.get_tab_label(newdoc.widget)
-        self.widget.set_title(nbl.get_label_text() + " - Meld")
-        newdoc.on_container_switch_in_event(self.ui)
+        if newdoc:
+            nbl = self.notebook.get_tab_label(newdoc.widget)
+            self.widget.set_title(nbl.get_label_text() + " - Meld")
+            newdoc.on_container_switch_in_event(self.ui)
+        else:
+            self.widget.set_title("Meld")
+
         if isinstance(newdoc, melddoc.MeldDoc):
             self.diff_handler = newdoc.connect("next-diff-changed",
                                                self.on_next_diff_changed)
@@ -474,7 +507,7 @@ class MeldWindow(gnomeglade.Component):
         i = self.notebook.get_current_page()
         if i >= 0:
             page = self.notebook.get_nth_page(i).pyobject
-            self.try_remove_page(page)
+            page.on_delete_event()
 
     def on_menu_undo_activate(self, *extra):
         self.current_doc().on_undo_activate()
@@ -559,6 +592,12 @@ class MeldWindow(gnomeglade.Component):
         if self.tab_switch_merge_id:
             self.ui.remove_ui(self.tab_switch_merge_id)
             self.ui.remove_action_group(self.tab_switch_actiongroup)
+            self.ui.ensure_update()
+            self.tab_switch_merge_id = None
+            self.tab_switch_actiongroup = None
+
+        if not self.notebook.get_n_pages():
+            return
 
         self.tab_switch_merge_id = self.ui.new_merge_id()
         self.tab_switch_actiongroup = Gtk.ActionGroup(name="TabSwitchActions")
@@ -571,7 +610,9 @@ class MeldWindow(gnomeglade.Component):
             label = label.replace("_", "__")
             name = "SwitchTab%d" % i
             tooltip = _("Switch to this tab")
-            action = Gtk.RadioAction(name=name, label=label, tooltip=tooltip, stock_id=None, value=i)
+            action = Gtk.RadioAction(
+                name=name, label=label, tooltip=tooltip,
+                stock_id=None, value=i)
             action.join_group(group)
             group = action
             action.set_active(current_page == i)
@@ -589,31 +630,31 @@ class MeldWindow(gnomeglade.Component):
                            "/Menubar/TabMenu/TabPlaceholder",
                            name, name, Gtk.UIManagerItemType.MENUITEM, False)
 
-    def try_remove_page(self, page, appquit=0):
-        "See if a page will allow itself to be removed"
-        response = page.on_delete_event(appquit)
-        if response != Gtk.ResponseType.CANCEL:
-            if hasattr(page, 'scheduler'):
-                self.scheduler.remove_scheduler(page.scheduler)
-            page_num = self.notebook.page_num(page.widget)
-            assert page_num >= 0
+    def page_removed(self, page, status):
+        if hasattr(page, 'scheduler'):
+            self.scheduler.remove_scheduler(page.scheduler)
 
-            # If the page we're removing is the current page, we need to
-            # disconnect and clear undo handlers, and trigger a switch out
-            if self.notebook.get_current_page() == page_num:
-                if self.diff_handler is not None:
-                    page.disconnect(self.diff_handler)
-                if self.undo_handlers:
-                    for handler in self.undo_handlers:
-                        page.undosequence.disconnect(handler)
-                self.undo_handlers = tuple()
-                page.on_container_switch_out_event(self.ui)
+        page_num = self.notebook.page_num(page.widget)
 
-            self.notebook.remove_page(page_num)
-            if self.notebook.get_n_pages() == 0:
-                self.widget.set_title("Meld")
-                self._update_page_action_sensitivity()
-        return response
+        if self.notebook.get_current_page() == page_num:
+            self.handle_current_doc_switch(page)
+
+        self.notebook.remove_page(page_num)
+        # Normal switch-page handlers don't get run for removing the
+        # last page from a notebook.
+        if not self.has_pages():
+            self.on_switch_page(self.notebook, page, -1)
+            self._update_page_action_sensitivity()
+            if self.should_close:
+                cancelled = self.widget.emit(
+                    'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))
+                if not cancelled:
+                    self.widget.emit('destroy')
+
+    def on_page_state_changed(self, page, old_state, new_state):
+        if self.should_close and old_state == melddoc.STATE_CLOSING:
+            # Cancel closing if one of our tabs does
+            self.should_close = False
 
     def on_file_changed(self, srcpage, filename):
         for c in self.notebook.get_children():
@@ -622,8 +663,8 @@ class MeldWindow(gnomeglade.Component):
                 page.on_file_changed(filename)
 
     def _append_page(self, page, icon):
-        nbl = notebooklabel.NotebookLabel(icon, "",
-                                          lambda b: self.try_remove_page(page))
+        nbl = notebooklabel.NotebookLabel(
+            icon, "", lambda b: page.on_delete_event())
         self.notebook.append_page(page.widget, nbl)
 
         # Change focus to the newly created page only if the user is on a
@@ -641,6 +682,8 @@ class MeldWindow(gnomeglade.Component):
             page.connect("file-changed", self.on_file_changed)
             page.connect("create-diff", lambda obj, arg, kwargs:
                          self.append_diff(arg, **kwargs))
+            page.connect("state-changed", self.on_page_state_changed)
+        page.connect("close", self.page_removed)
 
         self.notebook.set_tab_reorderable(page.widget, True)
 
@@ -650,7 +693,7 @@ class MeldWindow(gnomeglade.Component):
         self.on_notebook_label_changed(doc, _("New comparison"), None)
 
         def diff_created_cb(doc, newdoc):
-            self.try_remove_page(doc)
+            doc.on_delete_event()
             idx = self.notebook.page_num(newdoc.widget)
             self.notebook.set_current_page(idx)
 
@@ -667,7 +710,7 @@ class MeldWindow(gnomeglade.Component):
             doc.on_button_diff_clicked(None)
         return doc
 
-    def append_filediff(self, files,  merge_output=None, meta=None):
+    def append_filediff(self, files, merge_output=None, meta=None):
         assert len(files) in (1, 2, 3)
         doc = filediff.FileDiff(len(files))
         self._append_page(doc, "text-x-generic")
