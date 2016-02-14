@@ -48,14 +48,3 @@ def uninstalled():
 
 def is_darwin():
     return sys.platform == "darwin"
-
-def keymap(accel_key):
-    if not is_darwin():
-        return accel_key
-    else:
-        import re
-        pattern = re.compile("control", re.IGNORECASE)
-        accel1 = pattern.sub("Primary", accel_key)
-        pattern = re.compile("ctrl", re.IGNORECASE)
-        accel = pattern.sub("Primary", accel1)
-        return accel
