@@ -38,8 +38,17 @@ cp -R $INSTROOT/share/themes/Default/ $RES/share/themes/Default
 cp -R $INSTROOT/share/themes/Mac/ $RES/share/themes/Mac
 cp -R $INSTROOT/share/gtksourceview-3.0 $RES/share
 
+cp -R data/styles/meld-dark.xml $RES/share/gtksourceview-3.0/styles
+cp -R data/styles/meld-base.xml $RES/share/gtksourceview-3.0/styles
+
 # Meld installs in other places than Adwaita - fix it..
 cp -R $RES/share/icons/hicolor/* $RES/share/icons/Adwaita
+
+# Update icon cache
+pushd .
+cd $RES/share/icons/Adwaita
+gtk-update-icon-cache -f .
+popd
 
 mkdir -p $RES/lib
 cp -R $INSTROOT/lib/gtk-3.0 $RES/lib

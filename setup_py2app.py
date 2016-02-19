@@ -7,9 +7,10 @@ import os
 import site
 from setuptools import setup
 import meld.meldapp
+import meld.conf
 
 APP_NAME = 'MeldMerge'
-VERSION_STRING = '1.0'
+VERSION_STRING = meld.conf.__version__
 FORCE_32_BIT = False
 
 PLIST = {
@@ -38,13 +39,13 @@ PLIST = {
 #find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"])
 
 setup(
-    name="meldmerge",
-    version="1.8.2",
+    name='Meld',
+    version=meld.conf.__version__,
     description='Visual diff and merge tool',
-    author='The Meld project',
-    author_email='meld-list@gnome.org',
-    maintainer='Kai Willadsen',
+    author='Kai Willadsen',
+    author_email='kai.willadsen@gmail.com',
     url='http://meldmerge.org',
+    license='GPLv2+',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: X11 Applications :: GTK',
@@ -52,6 +53,7 @@ setup(
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
         'Topic :: Desktop Environment :: Gnome',
         'Topic :: Software Development',
         'Topic :: Software Development :: Version Control',
