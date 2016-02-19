@@ -1,8 +1,5 @@
 #!/bin/sh
 
-export GTK_THEME=Adwaita
-#export GTK_THEME=Adwaita:dark
-
 EXEC="exec"
 
 name="`basename $0`"
@@ -85,6 +82,11 @@ fi
 # Strip out the argument added by the OS.
 if [ "x`echo "x$1" | sed -e "s/^x-psn_.*//"`" == "x" ]; then
     shift 1
+fi
+
+if test "$GTK_THEME" == ""; then
+    export GTK_THEME="Adwaita"
+    #export GTK_THEME=Adwaita:dark
 fi
 
 $EXEC "$bundle_contents/MacOS/Meld-bin" "$@"
