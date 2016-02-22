@@ -793,9 +793,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 misc.error_dialog(
                     primary=_(u"Comparison results will be inaccurate"),
                     secondary=_(
-                        u"Filter “%s” changed the number of lines in the "
+                        u"A filter changed the number of lines in the "
                         u"file, which is unsupported. The comparison will "
-                        u"not be accurate.") % filt.label,
+                        u"not be accurate."),
                 )
                 self.warned_bad_comparison = True
 
