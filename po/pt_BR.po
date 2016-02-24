@@ -1,5 +1,5 @@
 # Brazilian Portuguese translation of meld.
-# Copyright (C) 2015 Free Software Foundation, Inc.
+# Copyright (C) 2016 Free Software Foundation, Inc.
 # This file is distributed under the same license as the meld package.
 # Raphael Higino <In memoriam>, 2004.
 # Djavan Fagundes <dnoway@gmail.com>, 2008, 2009.
@@ -9,15 +9,15 @@
 # Gabriel Speckhahn <gabspeck@gmail.com>, 2011.
 # Florêncio Neves <florencioneves@gmail.com>, 2012.
 # Enrico Nicoletto <liverig@gmail.com>, 2013.
-# Rafael Fontenelle <rffontenelle@gmail.com>, 2013, 2014, 2015.
+# Rafael Fontenelle <rffontenelle@gmail.com>, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-12 13:31+0000\n"
-"PO-Revision-Date: 2016-02-12 16:46-0200\n"
+"POT-Creation-Date: 2016-02-23 08:49+0000\n"
+"PO-Revision-Date: 2016-02-24 07:26-0300\n"
 "Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Project-Style: gnome\n"
 
 #: ../bin/meld:144
@@ -387,7 +387,7 @@ msgstr ""
 
 #: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Present version comparisons as left-local/right-remote"
-msgstr "Apresenta comparações de versões como esquerda-local/direita-remoto"
+msgstr "Apresenta comparações de versão como esquerda-local/direita-remoto"
 
 #: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
@@ -542,10 +542,14 @@ msgid "_Help"
 msgstr "Aj_uda"
 
 #: ../data/ui/application.ui.h:8
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de teclado"
+
+#: ../data/ui/application.ui.h:9
 msgid "_About"
 msgstr "_Sobre"
 
-#: ../data/ui/application.ui.h:9
+#: ../data/ui/application.ui.h:10
 msgid "_Quit"
 msgstr "_Sair"
 
@@ -752,19 +756,19 @@ msgstr "Leva a alteração atual para a direita"
 
 #: ../data/ui/filediff.ui.h:18
 msgid "Pull from Left"
-msgstr "Puxar da esquerda"
+msgstr "Trazer da esquerda"
 
 #: ../data/ui/filediff.ui.h:19
 msgid "Pull change from the left"
-msgstr "Puxa a alteração da esquerda"
+msgstr "Traz a alteração da esquerda"
 
 #: ../data/ui/filediff.ui.h:20
 msgid "Pull from Right"
-msgstr "Puxar da direita"
+msgstr "Trazer da direita"
 
 #: ../data/ui/filediff.ui.h:21
 msgid "Pull change from the right"
-msgstr "Puxa a alteração da direita"
+msgstr "Traz a alteração da direita"
 
 #: ../data/ui/filediff.ui.h:22
 msgid "Copy Above Left"
@@ -1104,7 +1108,7 @@ msgstr "Comparação de pastas"
 
 #: ../data/ui/preferences.ui.h:35
 msgid "Version Comparisons"
-msgstr "Comparação de versões"
+msgstr "Comparação de versão"
 
 #: ../data/ui/preferences.ui.h:36
 msgid "_Order when comparing file revisions:"
@@ -1144,7 +1148,7 @@ msgstr ""
 "arquivos e diretórios por nome. Cada padrão é um lista com caracteres "
 "curingas (* ou ?) separados por espaços."
 
-#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:103
+#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:104
 msgid "File Filters"
 msgstr "Filtros de arquivos"
 
@@ -1178,7 +1182,252 @@ msgstr ""
 msgid "Text Filters"
 msgstr "Filtros de texto"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:659
+#: ../data/ui/shortcuts.ui.h:1
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Geral"
+
+#: ../data/ui/shortcuts.ui.h:2
+msgctxt "shortcut window"
+msgid "New comparison"
+msgstr "Nova comparação"
+
+#: ../data/ui/shortcuts.ui.h:3
+msgctxt "shortcut window"
+msgid "Close a comparison"
+msgstr "Fechar uma comparação"
+
+#: ../data/ui/shortcuts.ui.h:4
+msgctxt "shortcut window"
+msgid "Quit Meld"
+msgstr "Sair do Meld"
+
+#: ../data/ui/shortcuts.ui.h:5
+msgctxt "shortcut window"
+msgid "Stop the current action"
+msgstr "Interromper a ação atual"
+
+#: ../data/ui/shortcuts.ui.h:6
+msgctxt "shortcut window"
+msgid "Refresh comparison"
+msgstr "Atualizar comparação"
+
+#: ../data/ui/shortcuts.ui.h:7
+msgctxt "shortcut window"
+msgid "Fullscreen"
+msgstr "Tela cheia"
+
+#: ../data/ui/shortcuts.ui.h:8
+msgctxt "shortcut window"
+msgid "Tabs"
+msgstr "Abas"
+
+#: ../data/ui/shortcuts.ui.h:9
+msgctxt "shortcut window"
+msgid "Go to previous tab"
+msgstr "Ir para a aba anterior"
+
+#: ../data/ui/shortcuts.ui.h:10
+msgctxt "shortcut window"
+msgid "Go to next tab"
+msgstr "Ir para a próxima aba"
+
+#: ../data/ui/shortcuts.ui.h:11
+msgctxt "shortcut window"
+msgid "Switch to tab"
+msgstr "Alternar para aba"
+
+#: ../data/ui/shortcuts.ui.h:12
+msgctxt "shortcut window"
+msgid "Move tab left"
+msgstr "Mover aba para a esquerda"
+
+#: ../data/ui/shortcuts.ui.h:13
+msgctxt "shortcut window"
+msgid "Move tab right"
+msgstr "Mover aba para a direita"
+
+#: ../data/ui/shortcuts.ui.h:14
+msgctxt "shortcut window"
+msgid "Changes"
+msgstr "Alterações"
+
+#: ../data/ui/shortcuts.ui.h:15
+msgctxt "shortcut window"
+msgid "Go to previous change"
+msgstr "Ir para a alteração anterior"
+
+#: ../data/ui/shortcuts.ui.h:16
+msgctxt "shortcut window"
+msgid "Go to next change"
+msgstr "Ir para a próxima alteração"
+
+#: ../data/ui/shortcuts.ui.h:17
+msgctxt "shortcut window"
+msgid "Editing"
+msgstr "Edição"
+
+#: ../data/ui/shortcuts.ui.h:18
+msgctxt "shortcut window"
+msgid "Undo"
+msgstr "Desfazer"
+
+#: ../data/ui/shortcuts.ui.h:19
+msgctxt "shortcut window"
+msgid "Redo"
+msgstr "Refazer"
+
+#: ../data/ui/shortcuts.ui.h:20
+msgctxt "shortcut window"
+msgid "Cut"
+msgstr "Recortar"
+
+#: ../data/ui/shortcuts.ui.h:21
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr "Copiar"
+
+#: ../data/ui/shortcuts.ui.h:22
+msgctxt "shortcut window"
+msgid "Paste"
+msgstr "Colar"
+
+#: ../data/ui/shortcuts.ui.h:23
+msgctxt "shortcut window"
+msgid "Find"
+msgstr "Localizar"
+
+#: ../data/ui/shortcuts.ui.h:24
+msgctxt "shortcut window"
+msgid "Find Next"
+msgstr "Localizar próximo"
+
+#: ../data/ui/shortcuts.ui.h:25
+msgctxt "shortcut window"
+msgid "Find Previous"
+msgstr "Localizar anterior"
+
+#: ../data/ui/shortcuts.ui.h:26
+msgctxt "shortcut window"
+msgid "Replace"
+msgstr "Substituir"
+
+#: ../data/ui/shortcuts.ui.h:27
+msgctxt "shortcut window"
+msgid "File comparison"
+msgstr "Comparação de arquivos"
+
+#: ../data/ui/shortcuts.ui.h:28
+msgctxt "shortcut window"
+msgid "Save current file"
+msgstr "Salvar o arquivo atual"
+
+#: ../data/ui/shortcuts.ui.h:29
+msgctxt "shortcut window"
+msgid "Save current file to new path"
+msgstr "Salvar o arquivo atual em novo caminho"
+
+#: ../data/ui/shortcuts.ui.h:30
+msgctxt "shortcut window"
+msgid "Save all files in comparison"
+msgstr "Salvar todos os arquivos na comparação"
+
+#: ../data/ui/shortcuts.ui.h:31
+msgctxt "shortcut window"
+msgid "Previous conflict"
+msgstr "Conflito anterior"
+
+#: ../data/ui/shortcuts.ui.h:32
+msgctxt "shortcut window"
+msgid "Next conflict"
+msgstr "Próximo conflito"
+
+#: ../data/ui/shortcuts.ui.h:33
+msgctxt "shortcut window"
+msgid "Push change to left"
+msgstr "Levar a alteração atual para a esquerda"
+
+#: ../data/ui/shortcuts.ui.h:34
+msgctxt "shortcut window"
+msgid "Push change to right"
+msgstr "Levar a alteração atual para a dirieta"
+
+#: ../data/ui/shortcuts.ui.h:35
+msgctxt "shortcut window"
+msgid "Pull change from left"
+msgstr "Trazer a alteração da esquerda"
+
+#: ../data/ui/shortcuts.ui.h:36
+msgctxt "shortcut window"
+msgid "Pull change from right"
+msgstr "Trazer a alteração da direita"
+
+#: ../data/ui/shortcuts.ui.h:37
+msgctxt "shortcut window"
+msgid "Copy change above left"
+msgstr "Copiar a alteração acima para a esquerda"
+
+#: ../data/ui/shortcuts.ui.h:38
+msgctxt "shortcut window"
+msgid "Copy change below left"
+msgstr "Copiar a alteração abaixo para a esquerda"
+
+#: ../data/ui/shortcuts.ui.h:39
+msgctxt "shortcut window"
+msgid "Copy change above right"
+msgstr "Copiar a alteração acima para a direita"
+
+#: ../data/ui/shortcuts.ui.h:40
+msgctxt "shortcut window"
+msgid "Copy change below right"
+msgstr "Copiar a alteração abaixo para a direita"
+
+#: ../data/ui/shortcuts.ui.h:41
+msgctxt "shortcut window"
+msgid "Delete change"
+msgstr "Excluir a alteração"
+
+#: ../data/ui/shortcuts.ui.h:42
+msgctxt "shortcut window"
+msgid "Previous comparison pane"
+msgstr "Painel de comparação anterior"
+
+#: ../data/ui/shortcuts.ui.h:43
+msgctxt "shortcut window"
+msgid "Next comparison pane"
+msgstr "Próximo painel de comparação"
+
+#: ../data/ui/shortcuts.ui.h:44
+msgctxt "shortcut window"
+msgid "Folder comparison"
+msgstr "Comparação de pastas"
+
+#: ../data/ui/shortcuts.ui.h:45
+msgctxt "shortcut window"
+msgid "Copy to left"
+msgstr "Copiar para a esquerda"
+
+#: ../data/ui/shortcuts.ui.h:46
+msgctxt "shortcut window"
+msgid "Copy to right"
+msgstr "Copiar para a direita"
+
+#: ../data/ui/shortcuts.ui.h:47
+msgctxt "shortcut window"
+msgid "Version control comparison"
+msgstr "Comparação de controle de versão"
+
+#: ../data/ui/shortcuts.ui.h:48
+msgctxt "shortcut window"
+msgid "Commit to version control"
+msgstr "Submeter para um controle de versão"
+
+#: ../data/ui/shortcuts.ui.h:49
+msgctxt "shortcut window"
+msgid "Show/hide console output"
+msgstr "Mostrar/ocultar saída de console"
+
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:668
 msgid "New comparison"
 msgstr "Nova comparação"
 
@@ -1788,7 +2037,7 @@ msgstr "pasta"
 
 #: ../meld/meldapp.py:184
 msgid "Start a version control comparison"
-msgstr "Inicia uma comparação de controle de versões"
+msgstr "Inicia uma comparação de controle de versão"
 
 #: ../meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
@@ -1870,238 +2119,238 @@ msgstr "<sem nome>"
 msgid "untitled"
 msgstr "sem título"
 
-#: ../meld/meldwindow.py:48
+#: ../meld/meldwindow.py:49
 msgid "_File"
 msgstr "_Arquivo"
 
-#: ../meld/meldwindow.py:49
+#: ../meld/meldwindow.py:50
 msgid "_New Comparison..."
 msgstr "_Nova comparação..."
 
-#: ../meld/meldwindow.py:50
+#: ../meld/meldwindow.py:51
 msgid "Start a new comparison"
 msgstr "Inicia uma nova comparação"
 
-#: ../meld/meldwindow.py:53
+#: ../meld/meldwindow.py:54
 msgid "Save the current file"
 msgstr "Salva o arquivo atual"
 
-#: ../meld/meldwindow.py:55
+#: ../meld/meldwindow.py:56
 msgid "Save As..."
 msgstr "Salvar como..."
 
-#: ../meld/meldwindow.py:56
+#: ../meld/meldwindow.py:57
 msgid "Save the current file with a different name"
 msgstr "Salva o arquivo atual com um nome diferente"
 
-#: ../meld/meldwindow.py:59
+#: ../meld/meldwindow.py:60
 msgid "Close the current file"
 msgstr "Fecha o arquivo atual"
 
-#: ../meld/meldwindow.py:62
+#: ../meld/meldwindow.py:63
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../meld/meldwindow.py:64
+#: ../meld/meldwindow.py:65
 msgid "Undo the last action"
 msgstr "Desfaz a última ação"
 
-#: ../meld/meldwindow.py:67
+#: ../meld/meldwindow.py:68
 msgid "Redo the last undone action"
 msgstr "Refaz a última ação desfeita"
 
-#: ../meld/meldwindow.py:69
+#: ../meld/meldwindow.py:70
 msgid "Cut the selection"
 msgstr "Recortar a seleção"
 
-#: ../meld/meldwindow.py:71
+#: ../meld/meldwindow.py:72
 msgid "Copy the selection"
 msgstr "Copiar a seleção"
 
-#: ../meld/meldwindow.py:73
+#: ../meld/meldwindow.py:74
 msgid "Paste the clipboard"
 msgstr "Cola da área de transferência"
 
-#: ../meld/meldwindow.py:75
+#: ../meld/meldwindow.py:76
 msgid "Find..."
 msgstr "Localizar..."
 
-#: ../meld/meldwindow.py:75
+#: ../meld/meldwindow.py:76
 msgid "Search for text"
 msgstr "Pesquisa por texto"
 
-#: ../meld/meldwindow.py:77
+#: ../meld/meldwindow.py:78
 msgid "Find Ne_xt"
 msgstr "Localizar pró_ximo"
 
-#: ../meld/meldwindow.py:78
+#: ../meld/meldwindow.py:79
 msgid "Search forwards for the same text"
 msgstr "Pesquisa pelo mesmo texto em frente"
 
-#: ../meld/meldwindow.py:80
+#: ../meld/meldwindow.py:81
 msgid "Find _Previous"
 msgstr "Localizar _anterior"
 
-#: ../meld/meldwindow.py:81
+#: ../meld/meldwindow.py:82
 msgid "Search backwards for the same text"
 msgstr "Pesquisa o mesmo texto para trás"
 
-#: ../meld/meldwindow.py:84
+#: ../meld/meldwindow.py:85
 msgid "_Replace..."
 msgstr "_Substituir..."
 
-#: ../meld/meldwindow.py:85
+#: ../meld/meldwindow.py:86
 msgid "Find and replace text"
 msgstr "Localiza e substitui texto"
 
-#: ../meld/meldwindow.py:88
+#: ../meld/meldwindow.py:89
 msgid "_Changes"
 msgstr "_Alterações"
 
-#: ../meld/meldwindow.py:89
+#: ../meld/meldwindow.py:90
 msgid "Next Change"
 msgstr "Próxima alteração"
 
-#: ../meld/meldwindow.py:90
+#: ../meld/meldwindow.py:91
 msgid "Go to the next change"
 msgstr "Vai à próxima alteração"
 
-#: ../meld/meldwindow.py:92
+#: ../meld/meldwindow.py:93
 msgid "Previous Change"
 msgstr "Alteração anterior"
 
-#: ../meld/meldwindow.py:93
+#: ../meld/meldwindow.py:94
 msgid "Go to the previous change"
 msgstr "Vai à alteração anterior"
 
-#: ../meld/meldwindow.py:95
+#: ../meld/meldwindow.py:96
 msgid "Open Externally"
 msgstr "Abrir externamente"
 
-#: ../meld/meldwindow.py:96
+#: ../meld/meldwindow.py:97
 msgid "Open selected file or directory in the default external application"
 msgstr ""
 "Abre o arquivo ou diretório selecionado com o aplicativo externo padrão"
 
-#: ../meld/meldwindow.py:100
+#: ../meld/meldwindow.py:101
 msgid "_View"
 msgstr "E_xibir"
 
-#: ../meld/meldwindow.py:101
+#: ../meld/meldwindow.py:102
 msgid "File Status"
 msgstr "Status do arquivo"
 
-#: ../meld/meldwindow.py:102
+#: ../meld/meldwindow.py:103
 msgid "Version Status"
 msgstr "Status da versão"
 
-#: ../meld/meldwindow.py:105
+#: ../meld/meldwindow.py:106
 msgid "Stop the current action"
 msgstr "Interrompe a ação atual"
 
-#: ../meld/meldwindow.py:108
+#: ../meld/meldwindow.py:109
 msgid "Refresh the view"
 msgstr "Atualiza a visão"
 
-#: ../meld/meldwindow.py:111
+#: ../meld/meldwindow.py:112
 msgid "_Tabs"
 msgstr "A_bas"
 
-#: ../meld/meldwindow.py:112
+#: ../meld/meldwindow.py:113
 msgid "_Previous Tab"
 msgstr "Aba _anterior"
 
-#: ../meld/meldwindow.py:113
+#: ../meld/meldwindow.py:114
 msgid "Activate previous tab"
 msgstr "Ativa a aba anterior"
 
-#: ../meld/meldwindow.py:115
+#: ../meld/meldwindow.py:116
 msgid "_Next Tab"
 msgstr "Aba _seguinte"
 
-#: ../meld/meldwindow.py:116
+#: ../meld/meldwindow.py:117
 msgid "Activate next tab"
 msgstr "Ativa a aba seguinte"
 
-#: ../meld/meldwindow.py:119
+#: ../meld/meldwindow.py:120
 msgid "Move Tab _Left"
 msgstr "Mover aba para a _esquerda"
 
-#: ../meld/meldwindow.py:120
+#: ../meld/meldwindow.py:121
 msgid "Move current tab to left"
 msgstr "Move a aba atual para a esquerda"
 
-#: ../meld/meldwindow.py:123
+#: ../meld/meldwindow.py:124
 msgid "Move Tab _Right"
 msgstr "Mover aba para a _direita"
 
-#: ../meld/meldwindow.py:124
+#: ../meld/meldwindow.py:125
 msgid "Move current tab to right"
 msgstr "Move a aba atual para a direita"
 
-#: ../meld/meldwindow.py:128
+#: ../meld/meldwindow.py:129
 msgid "Fullscreen"
 msgstr "Tela cheia"
 
-#: ../meld/meldwindow.py:129
+#: ../meld/meldwindow.py:130
 msgid "View the comparison in fullscreen"
 msgstr "Visualiza a comparação em tela cheia"
 
-#: ../meld/meldwindow.py:131
+#: ../meld/meldwindow.py:132
 msgid "_Toolbar"
 msgstr "Barra de _ferramentas"
 
-#: ../meld/meldwindow.py:132
+#: ../meld/meldwindow.py:133
 msgid "Show or hide the toolbar"
 msgstr "Mostra ou oculta a barra de ferramentas"
 
-#: ../meld/meldwindow.py:142
+#: ../meld/meldwindow.py:143
 msgid "Open Recent"
 msgstr "Abrir recente"
 
-#: ../meld/meldwindow.py:143
+#: ../meld/meldwindow.py:144
 msgid "Open recent files"
 msgstr "Abre arquivos recentes"
 
-#: ../meld/meldwindow.py:165
+#: ../meld/meldwindow.py:166
 msgid "_Meld"
 msgstr "_Meld"
 
-#: ../meld/meldwindow.py:166
+#: ../meld/meldwindow.py:167
 msgid "Quit the program"
 msgstr "Sai do programa"
 
-#: ../meld/meldwindow.py:168
+#: ../meld/meldwindow.py:169
 msgid "Prefere_nces"
 msgstr "Preferê_ncias"
 
-#: ../meld/meldwindow.py:169
+#: ../meld/meldwindow.py:170
 msgid "Configure the application"
 msgstr "Configura o aplicativo"
 
-#: ../meld/meldwindow.py:171
+#: ../meld/meldwindow.py:172
 msgid "_Contents"
 msgstr "S_umário"
 
-#: ../meld/meldwindow.py:172
+#: ../meld/meldwindow.py:173
 msgid "Open the Meld manual"
 msgstr "Abre o manual do Meld"
 
-#: ../meld/meldwindow.py:174
+#: ../meld/meldwindow.py:175
 msgid "About this application"
 msgstr "Sobre esse aplicativo"
 
-#: ../meld/meldwindow.py:578
+#: ../meld/meldwindow.py:587
 msgid "Switch to this tab"
 msgstr "Alterna para esta aba"
 
-#: ../meld/meldwindow.py:693
+#: ../meld/meldwindow.py:702
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr ""
 "É necessário ter três arquivos para mesclar automaticamente, obtive: %r"
 
-#: ../meld/meldwindow.py:707
+#: ../meld/meldwindow.py:716
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Não foi possível comparar uma mistura de arquivos e diretórios."
 
@@ -2478,7 +2727,7 @@ msgstr "Limpar"
 #~ "Thumbs.db Desktop.ini\n"
 
 #~ msgid "Version Control\t1\t%s\n"
-#~ msgstr "Controle de versões\t1\t%s\n"
+#~ msgstr "Controle de versão\t1\t%s\n"
 
 #~ msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
 #~ msgstr "Binários\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
@@ -2508,7 +2757,7 @@ msgstr "Limpar"
 #~ "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:"
 #~ "Missing:Not present"
 #~ msgstr ""
-#~ "Ignorado:Sem controle de versões:::Erro::Adicionado recentemente:"
+#~ "Ignorado:Sem controle de versão:::Erro::Adicionado recentemente:"
 #~ "Modificado:Conflito:Removido:Faltando:Não presente"
 
 #~ msgid ""
@@ -2996,9 +3245,6 @@ msgstr "Limpar"
 
 #~ msgid "Invoking patch failed, you need GNU patch."
 #~ msgstr "Falha ao invocar patch, você precisa do GNU patch."
-
-#~ msgid "Edit"
-#~ msgstr "Editar"
 
 #~ msgid "Edit selected"
 #~ msgstr "Editar selecionado"
