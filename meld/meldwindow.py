@@ -34,7 +34,7 @@ from .ui import gnomeglade
 from .ui import notebooklabel
 
 from .util.compat import string_types
-from meld.conf import _
+from meld.conf import _, is_darwin
 from meld.recent import recent_comparisons
 from meld.settings import interface_settings, settings
 
@@ -154,7 +154,7 @@ class MeldWindow(gnomeglade.Component):
 
         # Manually handle shells that don't show an application menu
         gtk_settings = Gtk.Settings.get_default()
-        if not gtk_settings.props.gtk_shell_shows_app_menu:
+        if not gtk_settings.props.gtk_shell_shows_app_menu or is_darwin():
             from meldapp import app
 
             def make_app_action(name):
@@ -256,6 +256,10 @@ class MeldWindow(gnomeglade.Component):
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
 
+        if is_darwin():
+            self.osx_ready = False
+            self.widget.connect('window_state_event', self.osx_menu_setup)
+            
         # Set tooltip on map because the recentmenu is lazily created
         rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
         rmenu.connect("map", self._on_recentmenu_map)
@@ -267,6 +271,27 @@ class MeldWindow(gnomeglade.Component):
         except GLib.Error:
             # GtkShortcutsWindow is new in GTK+ 3.20
             pass
+
+    def osx_menu_setup(self, widget, event, callback_data=None):
+        if self.osx_ready == False:
+            from gi.repository import GtkosxApplication as gtkosx_application
+            self.macapp = gtkosx_application.Application()
+            prefs_item =self.menubar.get_children()[1].get_submenu().get_children()[1]
+            about_item = self.menubar.get_children()[1].get_submenu().get_children()[3]
+            #self.menubar.get_children()[1].get_submenu().get_children()[2] #help
+            quit_item = self.menubar.get_children()[1].get_submenu().get_children()[4]
+
+            self.menubar.show()
+            self.menubar.remove(self.menubar.get_children()[1])
+            self.macapp.set_menu_bar(self.menubar)
+            self.menubar.hide()
+            self.menubar.get_children()[1].hide()
+            self.macapp.insert_app_menu_item(about_item, 0)
+            self.macapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 1)
+            self.macapp.insert_app_menu_item(prefs_item, 2)
+            self.macapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 3)
+            #self.macapp.ready()
+            self.osx_ready = True
 
     def _on_recentmenu_map(self, recentmenu):
         for imagemenuitem in recentmenu.get_children():
