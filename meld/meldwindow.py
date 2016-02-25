@@ -47,13 +47,13 @@ class MeldWindow(gnomeglade.Component):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), "<control>N",
+            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), "<Primary>N",
                 _("Start a new comparison"),
                 self.on_menu_file_new_activate),
             ("Save", Gtk.STOCK_SAVE, None, None,
                 _("Save the current file"),
                 self.on_menu_save_activate),
-            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), "<control><shift>S",
+            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), "<Primary><shift>S",
                 _("Save the current file with a different name"),
                 self.on_menu_save_as_activate),
             ("Close", Gtk.STOCK_CLOSE, None, None,
@@ -61,10 +61,10 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_close_activate),
 
             ("EditMenu", None, _("_Edit")),
-            ("Undo", Gtk.STOCK_UNDO, None, "<control>Z",
+            ("Undo", Gtk.STOCK_UNDO, None, "<Primary>Z",
                 _("Undo the last action"),
                 self.on_menu_undo_activate),
-            ("Redo", Gtk.STOCK_REDO, None, "<control><shift>Z",
+            ("Redo", Gtk.STOCK_REDO, None, "<Primary><shift>Z",
                 _("Redo the last undone action"),
                 self.on_menu_redo_activate),
             ("Cut", Gtk.STOCK_CUT, None, None, _("Cut the selection"),
@@ -75,14 +75,14 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_paste_activate),
             ("Find", Gtk.STOCK_FIND, _("Find..."), None, _("Search for text"),
                 self.on_menu_find_activate),
-            ("FindNext", None, _("Find Ne_xt"), "<control>G",
+            ("FindNext", None, _("Find Ne_xt"), "<Primary>G",
                 _("Search forwards for the same text"),
                 self.on_menu_find_next_activate),
-            ("FindPrevious", None, _("Find _Previous"), "<control><shift>G",
+            ("FindPrevious", None, _("Find _Previous"), "<Primary><shift>G",
                 _("Search backwards for the same text"),
                 self.on_menu_find_previous_activate),
             ("Replace", Gtk.STOCK_FIND_AND_REPLACE,
-                _("_Replace..."), "<control>H",
+                _("_Replace..."), "<Primary>H",
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
 
@@ -105,7 +105,7 @@ class MeldWindow(gnomeglade.Component):
             ("Stop", Gtk.STOCK_STOP, None, "Escape",
                 _("Stop the current action"),
                 self.on_toolbar_stop_clicked),
-            ("Refresh", Gtk.STOCK_REFRESH, None, "<control>R",
+            ("Refresh", Gtk.STOCK_REFRESH, None, "<Primary>R",
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
 
@@ -205,9 +205,9 @@ class MeldWindow(gnomeglade.Component):
 
         # Add alternate keybindings for Prev/Next Change
         accels = self.ui.get_accel_group()
-        (keyval, mask) = Gtk.accelerator_parse("<Ctrl>D")
+        (keyval, mask) = Gtk.accelerator_parse("<Primary>D")
         accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
-        (keyval, mask) = Gtk.accelerator_parse("<Ctrl>E")
+        (keyval, mask) = Gtk.accelerator_parse("<Primary>E")
         accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
         (keyval, mask) = Gtk.accelerator_parse("F5")
         accels.connect(keyval, mask, 0, self.on_menu_refresh_activate)
