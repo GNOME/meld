@@ -204,6 +204,8 @@ class Vc(_vc.Vc):
             path = path[:-1] if path.endswith('/') else path
             tree_cache[path].update(states)
             tree_meta_cache[path].extend(meta)
+            # Bazaar entries will only be REMOVED in the second state column
+            self._add_missing_cache_entry(path, state2)
 
         # Handle any renames now
         for old, new in rename_cache.items():

@@ -345,6 +345,8 @@ class Vc(_vc.Vc):
                 old_mode, new_mode, old_sha, new_sha, statekey, path = columns
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 self._tree_cache[get_real_path(path)] = state
+                # Git entries can't be MISSING; that's just an unstaged REMOVED
+                self._add_missing_cache_entry(path, state)
                 if old_mode != new_mode:
                     msg = _("Mode changed from %s to %s" %
                             (old_mode, new_mode))

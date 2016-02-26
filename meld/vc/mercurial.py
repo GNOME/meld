@@ -121,3 +121,4 @@ class Vc(_vc.Vc):
                 path = os.path.join(self.location, name.strip())
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
                 self._tree_cache[path] = state
+                self._add_missing_cache_entry(path, state)
