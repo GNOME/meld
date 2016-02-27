@@ -124,6 +124,7 @@
             <dep package="python-withxml2"/>
             <dep package="setuptools"/>
             <dep package="py2app"/>
+            <dep package="pyobjc"/>
         </dependencies>
     </metamodule>
     <distutils id="setuptools">
@@ -150,6 +151,25 @@
     <distutils id="altgraph">
         <branch repo="pypi" version="0.12"
             module="a/altgraph/altgraph-0.12.tar.gz"/>
+    </distutils>
+
+    <distutils id="pyobjc-core">
+        <branch repo="pypi" version="3.0.4"
+            module="p/pyobjc-core/pyobjc-core-3.0.4.tar.gz"/>
+    </distutils>
+    <distutils id="pyobjc">
+        <branch repo="pypi" version="3.0.4"
+            module="p/pyobjc/pyobjc-3.0.4.tar.gz"/>
+        <dependencies>
+            <dep package="pyobjc-core"/>
+        </dependencies>
+    </distutils>
+    <distutils id="pyobjc-framework-Cocoa">
+        <branch repo="pypi" version="3.0.4"
+            module="p/pyobjc-framework-Cocoa/pyobjc-framework-Cocoa-3.0.4.tar.gz"/>
+        <dependencies>
+            <dep package="pyobjc-core"/>
+        </dependencies>
     </distutils>
 
     <!-- ********************************************************************************************** -->

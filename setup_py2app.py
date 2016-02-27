@@ -23,6 +23,11 @@ PLIST = {
             'LSTypeIsPackage': True,
         },
     ],
+    'LSEnvironment':
+    {
+        'DYLD_LIBRARY_PATH': 'Contents/Resources:/lib:Contents/Frameworks/',
+        'LIBRARY_PATH': 'Contents/Resources:/lib:Contents/Frameworks/:'
+    },
     'CFBundleIdentifier': 'org.gnome.meld',
     'CFBundleShortVersionString': VERSION_STRING,
     'CFBundleSignature': '???',

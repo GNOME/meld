@@ -6,75 +6,87 @@ RES="$MAIN/Contents/Resources/"
 FRAMEWORKS="$MAIN/Contents/Frameworks/"
 INSTROOT="$HOME/gtk/inst/"
 
+cp osx/conf.py meld/conf.py
+
 glib-compile-schemas data
 python setup_py2app.py build
 python setup_py2app.py py2app
 
+# icon themes
 mkdir -p $RES/share/icons
-cp -R $INSTROOT/share/icons/Adwaita $RES/share/icons
-cp -R data/icons/* $RES/share/icons
+rsync -r -t --ignore-existing $INSTROOT/share/icons/Adwaita $RES/share/icons
+rsync -r -t --ignore-existing $INSTROOT/share/icons/hicolor $RES/share/icons
 
 # glib schemas
-cp -R $INSTROOT/share/glib-2.0/schemas $RES/share/glib-2.0
-cp -R $INSTROOT/share/GConf/gsettings $RES/share/GConf
+rsync -r -t  $INSTROOT/share/glib-2.0/schemas $RES/share/glib-2.0
+rsync -r -t  $INSTROOT/share/GConf/gsettings $RES/share/GConf
 
+# pango
 mkdir -p $RES/etc/pango
 pango-querymodules |perl -i -pe 's/^[^#].*\///' > $RES/etc/pango/pango.modules
 echo "[Pango]\nModuleFiles=./etc/pango/pango.modules\n" > $RES/etc/pango/pangorc
 
 # gdk-pixbuf
-cp -R $INSTROOT/lib/gdk-pixbuf-2.0 $RES/lib
+rsync -r -t $INSTROOT/lib/gdk-pixbuf-2.0 $RES/lib
 gdk-pixbuf-query-loaders |perl -i -pe 's/^[^#].*\/(lib\/.*")$/"..\/Resources\/$1/' > $RES/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
 
-# DIRTY HACK FOR NOW
-pushd .
-cd $MAIN/Contents/MacOS
-ln -s ../Resources/share .
-popd
-
-cp -R data/icons/* $RES/share/icons
+# GTK themes
 mkdir -p $RES/share/themes
-cp -R $INSTROOT/share/themes/Default/ $RES/share/themes/Default
-cp -R $INSTROOT/share/themes/Mac/ $RES/share/themes/Mac
-cp -R $INSTROOT/share/gtksourceview-3.0 $RES/share
+rsync -r -t $INSTROOT/share/themes/Default/ $RES/share/themes/Default
+rsync -r -t $INSTROOT/share/themes/Mac/ $RES/share/themes/Mac
+rsync -r -t $INSTROOT/share/gtksourceview-3.0 $RES/share
 
-cp -R data/styles/meld-dark.xml $RES/share/gtksourceview-3.0/styles
-cp -R data/styles/meld-base.xml $RES/share/gtksourceview-3.0/styles
+# meld specific resources
+rsync -r -t data/icons/* $RES/share/icons
+rsync -r -t data/styles/meld-dark.xml $RES/share/gtksourceview-3.0/styles
+rsync -r -t data/styles/meld-base.xml $RES/share/gtksourceview-3.0/styles
 
-# Meld installs in other places than Adwaita - fix it..
-cp -R $RES/share/icons/hicolor/* $RES/share/icons/Adwaita
-
-# Update icon cache
+# update icon cache for Adwaita
 pushd .
 cd $RES/share/icons/Adwaita
 gtk-update-icon-cache -f .
 popd
 
+# update icon cache for hicolor
+pushd .
+cd $RES/share/icons/hicolor
+gtk-update-icon-cache -f .
+popd
+
+# DIRTY HACK FOR NOW
+#pushd .
+#cd $MAIN/Contents/MacOS
+#ln -s ../Resources/share .
+#popd
+
+# copy main libraries
 mkdir -p $RES/lib
-cp -R $INSTROOT/lib/gtk-3.0 $RES/lib
-cp -R $INSTROOT/lib/girepository-1.0 $RES/lib
-cp -R $INSTROOT/lib/gobject-introspection $RES/lib
+rsync -r -t $INSTROOT/lib/gtk-3.0 $RES/lib
+rsync -r -t $INSTROOT/lib/girepository-1.0 $RES/lib
+rsync -r -t $INSTROOT/lib/gobject-introspection $RES/lib
 
-# Some libraries that py2app misses
+# copy some libraries that py2app misses
 mkdir -p $FRAMEWORKS
-cp -R $INSTROOT/lib/libglib-2.0.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libcairo-gobject.2.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libcairo-script-interpreter.2.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libcairo.2.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libpangocairo-1.0.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libatk-1.0.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libgio-2.0.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libgobject-2.0.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libpango-1.0.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libpangoft2-1.0.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libgtk-3.0.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libgtksourceview-3.0.1.dylib $FRAMEWORKS
-cp -R $INSTROOT/lib/libgtkmacintegration-gtk3.2.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libglib-2.0.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libcairo-gobject.2.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libcairo-script-interpreter.2.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libcairo.2.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libpangocairo-1.0.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libatk-1.0.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libgio-2.0.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libgobject-2.0.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libpango-1.0.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libpangoft2-1.0.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libgtk-3.0.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libgtksourceview-3.0.1.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libgtkmacintegration-gtk3.2.dylib $FRAMEWORKS
 
+# rename script, use wrapper
 mv $MAIN/Contents/MacOS/Meld $MAIN/Contents/MacOS/Meld-bin
-cp -R osx/Meld $MAIN/Contents/MacOS
+rsync -t osx/Meld $MAIN/Contents/MacOS
 chmod +x $MAIN/Contents/MacOS/Meld
 
+# unroot the library path
 pushd .
 cd $MAIN/Contents/
 # Original from
@@ -110,6 +122,7 @@ while [ $newlibs -gt 0 ]; do
 done
 popd
 
+exit
 
 # Create the dmg file..
 hdiutil create -size 250m -fs HFS+ -volname "Meld Merge" myimg.dmg

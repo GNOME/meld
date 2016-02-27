@@ -16,15 +16,7 @@ bundle_bin="$bundle_res"/bin
 bundle_data="$bundle_res"/share
 bundle_etc="$bundle_res"/etc
 
-echo $bundle_lib
 export DYLD_LIBRARY_PATH="$bundle_lib"
-export XDG_CONFIG_DIRS="$bundle_etc"/xdg
-export XDG_DATA_DIRS="$bundle_data"
-export GTK_DATA_PREFIX="$bundle_res"
-export GTK_EXE_PREFIX="$bundle_res"
-export GTK_PATH="$bundle_res"
-export GSETTINGS_SCHEMA_DIR="$bundle_res"/share/glib-2.0
-export GI_TYPELIB_PATH="$bundle_res"/lib/girepository-1.0
 
 # GTK3 understands the following:
 #GTK_PATH
@@ -36,22 +28,6 @@ export GI_TYPELIB_PATH="$bundle_res"/lib/girepository-1.0
 #GDK_BACKEND
 #XDG_DATA_HOME
 #XDG_DATA_DIRS
-
-export GDK_PIXBUF_MODULEDIR="$bundle_lib/gdk-pixbuf-2.0/2.10.0/loaders"
-export GDK_RENDERING="image"
-export PANGO_RC_FILE="$bundle_etc/pango/pangorc"
-export PANGO_LIBDIR="$bundle_lib"
-export PANGO_SYSCONFDIR="$bundle_etc"
-
-#Set $PYTHON to point inside the bundle
-export PYTHON="$bundle_macos/python"
-export PYTHONHOME="$bundle_res"
-#Add the bundle's python modules
-PYTHONPATH="$bundle_lib:$PYTHONPATH"
-PYTHONPATH="$bundle_lib/python/lib-dynload/:$PYTHONPATH"
-PYTHONPATH="$bundle_lib/python/:$PYTHONPATH"
-PYTHONPATH="$bundle_lib/pygtk/2.0:$PYTHONPATH"
-export PYTHONPATH
 
 # We need a UTF-8 locale.
 lang=`defaults read .GlobalPreferences AppleLocale 2>/dev/null`
@@ -84,9 +60,5 @@ if [ "x`echo "x$1" | sed -e "s/^x-psn_.*//"`" == "x" ]; then
     shift 1
 fi
 
-if test "$GTK_THEME" == ""; then
-    export GTK_THEME="Adwaita"
-    #export GTK_THEME=Adwaita:dark
-fi
 
 $EXEC "$bundle_contents/MacOS/Meld-bin" "$@"
