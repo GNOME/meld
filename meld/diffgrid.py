@@ -144,6 +144,7 @@ class DiffGrid(Gtk.Grid):
         return int(round(pos1)), int(round(pos2))
 
     def do_size_allocate(self, allocation):
+        Gtk.Grid.do_size_allocate(self, allocation)
         self.set_allocation(allocation)
         wcols, hrows = self._get_min_sizes()
         yrows = [allocation.y,
