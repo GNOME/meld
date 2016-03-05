@@ -1,0 +1,102 @@
+{
+  "app-id": "org.gnome.meld",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "master",
+  "sdk": "org.gnome.Sdk",
+  "command": "meld",
+  "cleanup": [
+    "/include",
+    "/lib/pkgconfig",
+    "/share/pkgconfig",
+    "/share/aclocal",
+    "/man",
+    "/share/man",
+    "/share/gtk-doc",
+    "/share/vala",
+    "*.la",
+    "*.a",
+    "*.pyc",
+    "*.pyo"
+  ],
+  "build-options" : {
+    "cflags": "-O2 -g",
+    "cxxflags": "-O2 -g",
+    "env": {
+      "V": "1"
+    }
+  },
+  "finish-args": [
+    /* X11 + XShm */
+    "--share=ipc", "--socket=x11",
+    /* Wayland */
+    "--socket=wayland",
+    /* Filesystem */
+    "--filesystem=host",
+    /* dconf */
+    "--talk-name=ca.desrt.dconf", "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+  ],
+  "modules": [
+    {
+      "name": "gtksourceview",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/3.18/gtksourceview-3.18.2.tar.xz",
+          "sha256": "60f75a9f0039e13a2281fc595b5ef7344afa06732cc53b57d13234bfb0a5b7b2"
+        }
+      ]
+    },
+    {
+      "name": "py2cairo",
+      "rm-configure": true,
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2",
+          "sha256": "d30439f06c2ec1a39e27464c6c828b6eface3b22ee17b2de05dc409e429a7431"
+        },
+        {
+          "type": "script",
+          "commands": [
+            "libtoolize --force",
+            "aclocal",
+            "autoheader",
+            "automake --force-missing --add-missing --foreign",
+            "autoconf"
+          ],
+          "dest-filename": "autogen.sh"
+        }
+      ]
+    },
+    {
+      "name": "pygobject",
+      "build-options" : {
+        "env": {
+          "PYTHON": "python2"
+        }
+      },
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.18/pygobject-3.18.2.tar.xz",
+          "sha256": "2a3cad1517916b74e131e6002c3824361aee0671ffb0d55ded119477fc1c2c5f"
+        }
+      ]
+    },
+    {
+      "name": "meld",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "git",
+          "url": "git://git.gnome.org/meld"
+        },
+        {
+          "type": "file",
+          "path": "data/meld-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    }
+  ]
+}
