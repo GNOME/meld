@@ -96,7 +96,7 @@ def modal_dialog(
 
 
 # Taken from epiphany
-def position_menu_under_widget(menu, widget):
+def position_menu_under_widget(menu, x, y, widget):
     container = widget.get_ancestor(Gtk.Container)
 
     widget_width = widget.get_allocation().width
