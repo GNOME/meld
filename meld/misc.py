@@ -477,3 +477,39 @@ def merge_intervals(interval_list):
         current_start, current_end = merged_intervals[-1]
 
     return merged_intervals
+
+
+def apply_text_filters(txt, regexes, cutter=lambda txt, start, end:
+                       txt[:start] + txt[end:]):
+    """Apply text filters
+
+    Text filters "regexes", resolved as regular expressions are applied
+    to "txt".
+
+    "cutter" defines the way how to apply them. Default is to just cut
+    out the matches.
+    """
+    filter_ranges = []
+    for r in regexes:
+        for match in r.finditer(txt):
+
+            # If there are no groups in the match, use the whole match
+            if not r.groups:
+                span = match.span()
+                if span[0] != span[1]:
+                    filter_ranges.append(span)
+                continue
+
+            # If there are groups in the regex, include all groups that
+            # participated in the match
+            for i in range(r.groups):
+                span = match.span(i + 1)
+                if span != (-1, -1) and span[0] != span[1]:
+                    filter_ranges.append(span)
+                    
+    filter_ranges = merge_intervals(filter_ranges)
+
+    for (start, end) in reversed(filter_ranges):
+        txt = cutter(txt, start, end)
+
+    return txt

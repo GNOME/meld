@@ -193,8 +193,9 @@ def _files_same(files, regexes, comparison_args):
         # For probable text files, discard newline differences to match
         # file comparisons.
         contents = ["\n".join(c.splitlines()) for c in contents]
-        for r in regexes:
-            contents = [re.sub(r, "", c) for c in contents]
+
+        contents = [misc.apply_text_filters(c, regexes) for c in contents]
+
         if ignore_blank_lines:
             contents = [remove_blank_lines(c) for c in contents]
         result = SameFiltered if all_same(contents) else Different
