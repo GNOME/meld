@@ -24,21 +24,19 @@
 
 import errno
 import os
-import re
 import shutil
-import stat
 import subprocess
-import sys
 import tempfile
 from collections import defaultdict
 from . import _vc
 
+
 class Vc(_vc.Vc):
 
-# Requires Darcs version >= 2.10.3
-# TODO implement get_commits_to_push_summary using `darcs push --dry-run`
-# Currently `darcs whatsnew` (as of v2.10.3) does not report conflicts
-# see http://bugs.darcs.net/issue2138
+    # Requires Darcs version >= 2.10.3
+    # TODO implement get_commits_to_push_summary using `darcs push --dry-run`
+    # Currently `darcs whatsnew` (as of v2.10.3) does not report conflicts
+    # see http://bugs.darcs.net/issue2138
 
     CMD = "darcs"
     NAME = "Darcs"
@@ -59,8 +57,8 @@ class Vc(_vc.Vc):
         try:
             proc = _vc.popen([cls.CMD, '--version'])
             # check that version >= 2.10.3
-            (x,y,z) = proc.read().split(" ", 1)[0].split(".", 2)[:3]
-            assert (x,y,z) >= (2,10,3)
+            (x, y, z) = proc.read().split(" ", 1)[0].split(".", 2)[:3]
+            assert (x, y, z) >= (2, 10, 3)
             return True
         except Exception:
             return False
@@ -101,9 +99,9 @@ class Vc(_vc.Vc):
             path = self._reverse_rename_cache[path]
 
         path = path[len(self.root) + 1:]
-        process = subprocess.Popen([self.CMD, "show", "contents", path], cwd=self.root,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            [self.CMD, "show", "contents", path], cwd=self.root,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
             shutil.copyfileobj(process.stdout, f)
@@ -119,8 +117,9 @@ class Vc(_vc.Vc):
         """ Update the state of the file(s) at self._tree_cache['path'] """
         while 1:
             try:
-                proc = _vc.popen([self.CMD, "whatsnew" , "-sl", "--machine-readable"],
-                                 cwd=self.location)
+                proc = _vc.popen(
+                    [self.CMD, "whatsnew", "-sl", "--machine-readable"],
+                    cwd=self.location)
                 lines = proc.read().split("\n")[:-1]
                 break
             except OSError as e:
@@ -171,4 +170,3 @@ class Vc(_vc.Vc):
             self._tree_cache.update(
                 dict((x, y) for x, y in tree_cache.items()))
             self._tree_meta_cache = dict(tree_meta_cache)
-
