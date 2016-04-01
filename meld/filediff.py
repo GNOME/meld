@@ -211,11 +211,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._cached_match = CachedSequenceMatcher()
 
         for buf in self.textbuffer:
+            buf.undo_sequence = self.undosequence
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
-            buf.connect('begin_user_action',
-                        self.on_textbuffer_begin_user_action)
-            buf.connect('end_user_action', self.on_textbuffer_end_user_action)
             buf.data.connect('file-changed', self.notify_file_changed)
 
         self.ui_file = gnomeglade.ui_file("filediff-ui.xml")
@@ -573,9 +571,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for mergedfile in merger.merge_2_files(src, dst):
             pass
         self._sync_vscroll_lock = True
-        self.on_textbuffer_begin_user_action()
+        self.textbuffer[dst].begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
-        self.on_textbuffer_end_user_action()
+        self.textbuffer[dst].end_user_action()
 
         def resync():
             self._sync_vscroll_lock = False
@@ -598,9 +596,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for mergedfile in merger.merge_3_files(False):
             pass
         self._sync_vscroll_lock = True
-        self.on_textbuffer_begin_user_action()
+        self.textbuffer[dst].begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
-        self.on_textbuffer_end_user_action()
+        self.textbuffer[dst].end_user_action()
         def resync():
             self._sync_vscroll_lock = False
             self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
@@ -869,12 +867,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_redo_activate(self):
         if self.undosequence.can_redo():
             self.undosequence.redo()
-
-    def on_textbuffer_begin_user_action(self, *buffer):
-        self.undosequence.begin_group()
-
-    def on_textbuffer_end_user_action(self, *buffer):
-        self.undosequence.end_group()
 
     def on_text_insert_text(self, buf, it, text, textlen):
         text = text_type(text, 'utf8')
@@ -1817,10 +1809,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dst_end = b1.get_iter_at_line_or_eof(chunk[4])
         t0 = text_type(b0.get_text(src_start, src_end, False), 'utf8')
         mark0 = b1.create_mark(None, dst_start, True)
-        self.on_textbuffer_begin_user_action()
+        self.textbuffer[dst].begin_user_action()
         b1.delete(dst_start, dst_end)
         new_end = b1.insert_at_line(chunk[3], t0)
-        self.on_textbuffer_end_user_action()
+        self.textbuffer[dst].end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
         if chunk[1] == chunk[2]:
             # TODO: Need a more specific colour here; conflict is wrong

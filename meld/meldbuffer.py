@@ -42,6 +42,7 @@ class MeldBuffer(GtkSource.Buffer):
         bind_settings(self)
         self.data = MeldBufferData()
         self.user_action_count = 0
+        self.undo_sequence = None
         meldsettings.connect('changed', self.on_setting_changed)
         self.set_style_scheme(meldsettings.style_scheme)
 
@@ -51,8 +52,12 @@ class MeldBuffer(GtkSource.Buffer):
 
     def do_begin_user_action(self, *args):
         self.user_action_count += 1
+        if self.undo_sequence:
+            self.undo_sequence.begin_group()
 
     def do_end_user_action(self, *args):
+        if self.undo_sequence:
+            self.undo_sequence.end_group()
         self.user_action_count -= 1
 
     def do_apply_tag(self, tag, start, end):
