@@ -860,13 +860,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.emit('close', 0)
         return response
 
+    def _scroll_to_actions(self, actions):
+        """Scroll all views affected by *actions* to the current cursor"""
+
+        affected_buffers = set(a.buffer for a in actions)
+        for buf in affected_buffers:
+            buf_index = self.textbuffer.index(buf)
+            view = self.textview[buf_index]
+            view.scroll_mark_onscreen(buf.get_insert())
+
     def on_undo_activate(self):
         if self.undosequence.can_undo():
-            self.undosequence.undo()
+            actions = self.undosequence.undo()
+        self._scroll_to_actions(actions)
 
     def on_redo_activate(self):
         if self.undosequence.can_redo():
-            self.undosequence.redo()
+            actions = self.undosequence.redo()
+        self._scroll_to_actions(actions)
 
     def on_text_insert_text(self, buf, it, text, textlen):
         text = text_type(text, 'utf8')
