@@ -308,10 +308,12 @@ class BufferAction(object):
         start = self.buffer.get_iter_at_offset(self.offset)
         end = self.buffer.get_iter_at_offset(self.offset + len(self.text))
         self.buffer.delete(start, end)
+        self.buffer.place_cursor(end)
         return [self]
 
     def insert(self):
         start = self.buffer.get_iter_at_offset(self.offset)
+        self.buffer.place_cursor(start)
         self.buffer.insert(start, self.text)
         return [self]
 
