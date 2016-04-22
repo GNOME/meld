@@ -39,7 +39,7 @@ def frozen():
         #dyld_library_path.insert(0, lib_path)
         #dyld_library_path.insert(1, frameworks_path)
         #os.environ['DYLD_LIBRARY_PATH'] = ':'.join(dyld_library_path)
-        print "DYLD_LIBRARY_PATH %s" % os.environ.get('DYLD_LIBRARY_PATH', '')
+        #print "DYLD_LIBRARY_PATH %s" % os.environ.get('DYLD_LIBRARY_PATH', '')
 
         # Glib and GI environment variables
         os.environ['GSETTINGS_SCHEMA_DIR'] = os.path.join(
@@ -81,10 +81,11 @@ def frozen():
         os.environ['PYTHONPATH'] = python_path
 
         # meld specific
-        DATADIR = os.path.join(resource_path, "share", "meld")
-        LOCALEDIR = os.path.join(resource_path, "share", "mo")
+        DATADIR = os.path.join(share_path, "meld")
+        LOCALEDIR = os.path.join(share_path, "mo")
 
     except ImportError:
+        print "frozen: ImportError"
         melddir = os.path.dirname(sys.executable)
         DATADIR = os.path.join(melddir, "share", "meld")
         LOCALEDIR = os.path.join(melddir, "share", "mo")

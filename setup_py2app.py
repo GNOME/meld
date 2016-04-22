@@ -25,8 +25,8 @@ PLIST = {
     ],
     'LSEnvironment':
     {
-        'DYLD_LIBRARY_PATH': 'Contents/Resources:/lib:Contents/Frameworks/',
-        'LIBRARY_PATH': 'Contents/Resources:/lib:Contents/Frameworks/:'
+        'DYLD_LIBRARY_PATH': 'Contents/Resources/lib:Contents/Frameworks/',
+        'LIBRARY_PATH': 'Contents/Resources:/lib:Contents/Frameworks/'
     },
     'CFBundleIdentifier': 'org.gnome.meld',
     'CFBundleShortVersionString': VERSION_STRING,
@@ -42,6 +42,9 @@ PLIST = {
 }
 
 #find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"])
+
+from modulegraph.find_modules import PY_SUFFIXES
+PY_SUFFIXES.append('')
 
 setup(
     name='Meld',
@@ -76,8 +79,26 @@ setup(
     app=['bin/meld'],
     setup_requires=["py2app"],
     options={'py2app': {
-                "packages": ["gio", "gobject", "gtk", "cairo"],
-                "includes": ["atk", "pango", "pangocairo"],
+                'includes': '',
+                'frameworks':
+                'libatk-1.0.0.dylib,'
+                'libcairo-gobject.2.dylib,'
+                'libcairo-script-interpreter.2.dylib,'
+                'libcairo.2.dylib,'
+                'libgio-2.0.0.dylib,'
+                'libgirepository-1.0.1.dylib,'
+                'libglib-2.0.0.dylib,'
+                'libgmodule-2.0.0.dylib,'
+                'libgobject-2.0.0.dylib,'
+                'libgtk-3.0.dylib,'
+                'libgtkmacintegration-gtk3.2.dylib,'
+                'libgtksourceview-3.0.1.dylib,'
+                'libharfbuzz.0.dylib,'
+                'libpango-1.0.0.dylib,'
+                'libpangocairo-1.0.0.dylib,'
+                'libpangoft2-1.0.0.dylib,'
+                'librsvg-2.2.dylib,'
+                ,
                 'argv_emulation': True,
                 'iconfile': 'osx/meld.icns',
                 'plist': PLIST,

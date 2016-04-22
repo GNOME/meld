@@ -1,15 +1,21 @@
 # -*- mode: python -*-
+# -*- coding: utf-8 -*-
 
 #prefix = "/tmp/meldroot"
 checkoutroot = os.path.expanduser("~/Source/gtk")
 setup_sdk(target="10.7", sdk_version="10.11", architectures=["x86_64"])
-_gtk_osx_use_jhbuild_python = True
+#_gtk_osx_use_jhbuild_python = True
 
-skip.append("libiconv") # Lion issues
+# custom CFLAGS / environment pieces for the build
+# os.environ['CFLAGS'] = '-Wall -g -O0'
+
+#skip.append("libiconv") # Lion issues
 skip.append("cups")
-#skip.append("hicolor-icon-theme")
+skip.append("python3")
 skip.append("gnome-themes-standard")
-#skip.append("adwaita-icon-theme")
+skip.append("berkeleydb")
+skip.append("berkeleydb-nonsrctree")
+skip.append("gnome-user-docs")
 
 # gtk-doc required to build pango. We generate nothing with it, though.
 #   libxslt
@@ -17,19 +23,44 @@ skip.append("gnome-themes-standard")
 #   gtk-doc
 #   yelp-xsl
 #   yelp-tools
+#
 
 modules = [
-  "meld-deps"
+  "zlib",
+  "meta-gtk-osx-bootstrap",
+  "meta-gtk-osx-freetype",
+  "meta-gtk-osx-gtk3",
+  "glib",
+  "python",
+  "libxml2", "libxslt",
+  "libpng", "libjpeg", "libtiff",
+  "cairo", "gtk-doc", "pango", "gdk-pixbuf", "librsvg",
+  "py2cairo",
+  "meta-gtk-osx-python-gtk3",
+  "gsettings-desktop-schemas",
+  "gtksourceview3",
+  "adwaita-icon-theme",
+  "pygobject3"
 ]
 
-autogenargs = '--disable-documentation --disable-docs --enable-introspection '
-nogtkdoc = '--enable-gtk-doc=no --enable-gtk-doc-html=no --enable-gtk-doc-pdf=no '
+#moduleset="http://git.gnome.org/browse/gtk-osx/plain/modulesets/gtk-osx.modules"
 
+#prefix = os.path.join(os.environ["HOME"], "meld")
+#append_autogenargs("libiconv", "--with-libintl-prefix=" + prefix)
+#branches["glib"] = (None, "glib-2-45")
+#branches["gtk+-3.0"] = "gtk+-3.17.9"    # Meld breaks on anything higher
+#branches["pango"] = "pango-1.37.3"
+
+global autogenargs
+autogenargs = autogenargs + ' --disable-documentation --disable-docs --enable-introspection '
+nogtkdoc = ' --enable-gtk-doc=no --enable-gtk-doc-html=no --enable-gtk-doc-pdf=no '
+
+module_autogenargs['yelp'] = '--disable-Werror'
 module_autogenargs['zlib']= ''# + autogenargs
 module_autogenargs['librsvg'] = nogtkdoc + autogenargs
 module_autogenargs['glib'] = nogtkdoc + autogenargs
 module_autogenargs['gdk-pixbuf'] = '--with-included-loaders ' + nogtkdoc + autogenargs
-module_autogenargs['pygobject3'] = '--disable-introspection --disable-docs  --enable-cairo '
+module_autogenargs['pygobject3'] = '--disable-docs  --enable-cairo '
 #module_autogenargs['gtk-quartz-engine'] = 'CFLAGS=-Wuninitialized ' + autogenargs
 module_autogenargs['cairo'] = '--enable-full-testing=no ' + autogenargs
 module_autogenargs['pango']='--with-included-modules=yes --with-dynamic-modules=no' + nogtkdoc
@@ -38,9 +69,12 @@ module_autogenargs['gobject-introspection']= '--with-cairo=yes ' + nogtkdoc + au
 module_autogenargs['gtk-mac-integration']='--enable-python=all --without-gtk2 --with-gtk3 --enable-introspection=yes ' + autogenargs
 module_autogenargs['tango-icon-theme']='--disable-nls --disable-icon-framing ' + nogtkdoc + autogenargs
 module_autogenargs['gtk+-3.0'] = '--enable-quartz-backend --enable-quartz-relocation --disable-cloudprint --with-included-immodules=am-et,cedilla,cyrillic-translit,inuktitut,ipa,multipress,thai,ti-er,ti-et,viqr --disable-modules ' + nogtkdoc + autogenargs  #--disable-schemas-compile ?
-module_autogenargs['gtk-mac-integration'] = '' + nogtkdoc + autogenargs
 module_autogenargs['gtksourceview3'] = '' + nogtkdoc + autogenargs
 module_autogenargs['gnome-themes-standard'] = '--disable-gtk2-engine ' + nogtkdoc + autogenargs
 
 # Can be usefull when tweaking modulesets to avoid jhbuild overwriting:
-#nonetwork=True
+# nonetwork=True
+# nobuild=True # Download only
+# quiet_mode=True
+# Don't respect suggests
+ignore_suggests = True

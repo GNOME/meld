@@ -37,7 +37,9 @@ rsync -r -t $INSTROOT/share/themes/Mac/ $RES/share/themes/Mac
 rsync -r -t $INSTROOT/share/gtksourceview-3.0 $RES/share
 
 # meld specific resources
+mkdir $RES/share/meld
 rsync -r -t data/icons/* $RES/share/icons
+rsync -r -t data/meld.css $RES/share/meld
 rsync -r -t data/styles/meld-dark.xml $RES/share/gtksourceview-3.0/styles
 rsync -r -t data/styles/meld-base.xml $RES/share/gtksourceview-3.0/styles
 
@@ -67,24 +69,26 @@ rsync -r -t $INSTROOT/lib/gobject-introspection $RES/lib
 
 # copy some libraries that py2app misses
 mkdir -p $FRAMEWORKS
-rsync -t $INSTROOT/lib/libglib-2.0.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libcairo-gobject.2.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libcairo-script-interpreter.2.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libcairo.2.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libpangocairo-1.0.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libatk-1.0.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libgio-2.0.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libgobject-2.0.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libpango-1.0.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libpangoft2-1.0.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libgtk-3.0.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libgtksourceview-3.0.1.dylib $FRAMEWORKS
-rsync -t $INSTROOT/lib/libgtkmacintegration-gtk3.2.dylib $FRAMEWORKS
+rsync -t $INSTROOT/lib/libglib-2.0.0.dylib $FRAMEWORKS/libglib-2.0.0.dylib
+rsync -t $INSTROOT/lib/libcairo-gobject.2.dylib $FRAMEWORKS/libcairo-gobject.2.dylib
+rsync -t $INSTROOT/lib/libcairo-script-interpreter.2.dylib $FRAMEWORKS/libcairo-script-interpreter.2.dylib
+rsync -t $INSTROOT/lib/libcairo.2.dylib $FRAMEWORKS/libcairo.2.dylib
+rsync -t $INSTROOT/lib/libpangocairo-1.0.0.dylib $FRAMEWORKS/libpangocairo-1.0.0.dylib
+rsync -t $INSTROOT/lib/libatk-1.0.0.dylib $FRAMEWORKS/libatk-1.0.0.dylib
+rsync -t $INSTROOT/lib/libgio-2.0.0.dylib $FRAMEWORKS/libgio-2.0.0.dylib
+rsync -t $INSTROOT/lib/libgobject-2.0.0.dylib $FRAMEWORKS/libgobject-2.0.0.dylib
+rsync -t $INSTROOT/lib/libpango-1.0.0.dylib $FRAMEWORKS/libpango-1.0.0.dylib
+rsync -t $INSTROOT/lib/libpangoft2-1.0.0.dylib $FRAMEWORKS/libpangoft2-1.0.0.dylib
+rsync -t $INSTROOT/lib/libgtk-3.0.dylib $FRAMEWORKS/libgtk-3.0.dylib
+rsync -t $INSTROOT/lib/libgtksourceview-3.0.1.dylib $FRAMEWORKS/libgtksourceview-3.0.1.dylib
+rsync -t $INSTROOT/lib/libgtkmacintegration-gtk3.2.dylib $FRAMEWORKS/libgtkmacintegration-gtk3.2.dylib
 
 # rename script, use wrapper
 mv $MAIN/Contents/MacOS/Meld $MAIN/Contents/MacOS/Meld-bin
-rsync -t osx/Meld $MAIN/Contents/MacOS
+rsync -t osx/Meld $MAIN/Contents/MacOS/meld_wrapper
+mv $MAIN/Contents/MacOS/meld_wrapper $MAIN/Contents/MacOS/Meld
 chmod +x $MAIN/Contents/MacOS/Meld
+chmod +x $MAIN/Contents/MacOS/Meld-bin
 
 # unroot the library path
 pushd .
@@ -120,9 +124,12 @@ while [ $newlibs -gt 0 ]; do
     fi
   done
 done
-popd
 
-exit
+#for dylib in $(find . -name "*.dylib"); do
+#  echo "Adding @executable_path/../Frameworks/$dylib to Meld"
+#  install_name_tool -add_rpath "@executable_path/../Frameworks/$dylib" $MAIN/Contents/MacOS/Meld
+#done
+popd
 
 # Create the dmg file..
 hdiutil create -size 250m -fs HFS+ -volname "Meld Merge" myimg.dmg
@@ -143,4 +150,4 @@ hdiutil convert myimg.dmg -format UDZO -o meldmerge.dmg
 # Cleanup
 mkdir -p osx/Archives
 mv meldmerge.dmg osx/Archives
-rm -f myimg.dmg
+#rm -f myimg.dmg
