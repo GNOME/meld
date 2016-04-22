@@ -7,25 +7,17 @@ import subprocess
 def getScriptPath():
     return os.path.dirname(os.path.realpath(sys.argv[0]))
 
+
 arglist = []
-
-if len(sys.argv) > 1:
-  try:
-    arglist.append(os.path.abspath(sys.argv[1]));
-  except:
-    arglist.append(sys.argv[1])
-
-if len(sys.argv) > 2:
-  try:
-    arglist.append(os.path.abspath(sys.argv[2]));
-  except:
-    arglist.append(sys.argv[2])
-
-if len(sys.argv) > 3:
-  try:
-    arglist.append(os.path.abspath(sys.argv[3]));
-  except:
-    arglist.append(sys.argv[3])
+for arg in sys.argv[1:]:
+    if arg.startswith('--output'):
+        filename = arg.split('=')[1]
+        newArg = '--output=' + os.path.abspath(filename)
+    elif arg.startswith('-'):
+        newArg = arg
+    else:
+        newArg = os.path.abspath(arg)
+    arglist.append(newArg)
 
 MELDPATH = getScriptPath() + "/Meld-bin"
 APPPATH = os.path.abspath(os.path.join(getScriptPath(), '..'))
