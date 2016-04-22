@@ -1,4 +1,73 @@
 
+2016-04-20 meld 3.15.3
+======================
+
+  Fixes:
+
+   * Handle unicode dates in non-UTF8 locales in folder comparison (Kai
+     Willadsen)
+   * Try to auto-detect when to use our dark theme highlighting (Kai Willadsen)
+   * After undo/redo actions in file comparisons, place the cursor at the
+     natural edit position and scroll it back onscreen (Kai Willadsen)
+
+
+2016-03-28 meld 3.15.2
+======================
+
+  Features:
+
+   * Port to use GtkSourceView's file loader and saver helpers, bringing
+     several benefits (Kai Willadsen)
+     * Loading and saving speed are significantly improved, and are
+       asychronous
+     * We try a wider range of locale-specific file encodings by default,
+       and still support user-specified default encodings (requires
+       GtkSourceView 3.18 or later)
+     * We now support saving files with inconsistent newline types
+     * Binary files will now be loaded on a best-effort basis
+   * Reinstate support for Darcs; this is currently limited to very new
+     (>2.10.3) versions (Guillaume Hoffmann)
+   * Folder comparisons now apply text filters in the same way as file
+     comparisons (David Rabel)
+   * Add support for showing new shortcuts help dialog (Kai Willadsen, Piotr
+     Drąg)
+   * Preliminary support for building Meld as an xdg-app (Kai Willadsen)
+
+  Fixes:
+
+   * Many fixes for GTK+ 3.20 theming changes and widget compatibility issues
+     (Kai Willadsen)
+   * All accelerators should now consistently use the Primary key, for better
+     integration on OSX systems (Youssef Adnan)
+   * Significantly improve text filter performance (Jason Gauci)
+   * Fix performance regression where scanning for missing files was extremely
+     slow, especially in large repositories (Kai Willadsen)
+   * Fix truncated line number display in short file (Kai Willadsen)
+   * Fix filter dropdown not appearing below button (Kai Willadsen)
+   * Add more documentation on setup and installation requirements (Jesse
+     Sheridan, Martin Thoma)
+   * Update the AppData to spec version 0.7+ (Richard Hughes)
+
+
+  Translations:
+
+   * Anders Jonsson (sv)
+   * Benjamin Steinwender (de)
+   * Bernd Homuth (de)
+   * Cédric Valmary (oc)
+   * Daniel Mustieles (es)
+   * Gábor Kelemen (hu)
+   * Jiri Grönroos (fi)
+   * Luisa Cerón Perea (es)
+   * Marek Černocký (cs)
+   * Mario Blättermann (de)
+   * Muhammet Kara (tr)
+   * Pedro Albuquerque (pt)
+   * Piotr Drąg (pl)
+   * Rafael Fontenelle (pt_BR)
+   * Мирослав Николић (sr, sr@latin)
+
+
 2015-12-15 meld 3.15.1
 ======================
 

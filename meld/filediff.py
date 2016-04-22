@@ -211,11 +211,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._cached_match = CachedSequenceMatcher()
 
         for buf in self.textbuffer:
+            buf.undo_sequence = self.undosequence
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
-            buf.connect('begin_user_action',
-                        self.on_textbuffer_begin_user_action)
-            buf.connect('end_user_action', self.on_textbuffer_end_user_action)
             buf.data.connect('file-changed', self.notify_file_changed)
 
         self.ui_file = gnomeglade.ui_file("filediff-ui.xml")
@@ -573,9 +571,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for mergedfile in merger.merge_2_files(src, dst):
             pass
         self._sync_vscroll_lock = True
-        self.on_textbuffer_begin_user_action()
+        self.textbuffer[dst].begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
-        self.on_textbuffer_end_user_action()
+        self.textbuffer[dst].end_user_action()
 
         def resync():
             self._sync_vscroll_lock = False
@@ -598,9 +596,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for mergedfile in merger.merge_3_files(False):
             pass
         self._sync_vscroll_lock = True
-        self.on_textbuffer_begin_user_action()
+        self.textbuffer[dst].begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
-        self.on_textbuffer_end_user_action()
+        self.textbuffer[dst].end_user_action()
         def resync():
             self._sync_vscroll_lock = False
             self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
@@ -757,45 +755,27 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dimmed_tag = buf.get_tag_table().lookup("dimmed")
         buf.remove_tag(dimmed_tag, txt_start_iter, txt_end_iter)
 
+        def cutter(txt, start, end):
+            assert txt[start:end].count("\n") == 0
+            txt = txt[:start] + txt[end:]
+            start_iter = txt_start_iter.copy()
+            start_iter.forward_chars(start)
+            end_iter = txt_start_iter.copy()
+            end_iter.forward_chars(end)
+            buf.apply_tag(dimmed_tag, start_iter, end_iter)
+            return txt
+
         try:
-            filter_ranges = []
-
-            active_filters = [f for f in self.text_filters if f.active]
-            for filt in active_filters:
-                for match in filt.filter.finditer(txt):
-                    # If there are no groups in the match, use the whole match
-                    if not filt.filter.groups:
-                        span = match.span()
-                        if span[0] != span[1]:
-                            filter_ranges.append(span)
-                        continue
-
-                    # If there are groups in the regex, include all groups that
-                    # participated in the match
-                    for i in range(filt.filter.groups):
-                        span = match.span(i + 1)
-                        if span != (-1, -1) and span[0] != span[1]:
-                            filter_ranges.append(span)
-
-            filter_ranges = misc.merge_intervals(filter_ranges)
-
-            for (start, end) in reversed(filter_ranges):
-                assert txt[start:end].count("\n") == 0
-                txt = txt[:start] + txt[end:]
-                start_iter = txt_start_iter.copy()
-                start_iter.forward_chars(start)
-                end_iter = txt_start_iter.copy()
-                end_iter.forward_chars(end)
-                buf.apply_tag(dimmed_tag, start_iter, end_iter)
-
+            regexes = [f.filter for f in self.text_filters if f.active]
+            txt = misc.apply_text_filters(txt, regexes, cutter)
         except AssertionError:
             if not self.warned_bad_comparison:
                 misc.error_dialog(
                     primary=_(u"Comparison results will be inaccurate"),
                     secondary=_(
-                        u"Filter “%s” changed the number of lines in the "
+                        u"A filter changed the number of lines in the "
                         u"file, which is unsupported. The comparison will "
-                        u"not be accurate.") % filt.label,
+                        u"not be accurate."),
                 )
                 self.warned_bad_comparison = True
 
@@ -880,19 +860,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.emit('close', 0)
         return response
 
+    def _scroll_to_actions(self, actions):
+        """Scroll all views affected by *actions* to the current cursor"""
+
+        affected_buffers = set(a.buffer for a in actions)
+        for buf in affected_buffers:
+            buf_index = self.textbuffer.index(buf)
+            view = self.textview[buf_index]
+            view.scroll_mark_onscreen(buf.get_insert())
+
     def on_undo_activate(self):
         if self.undosequence.can_undo():
-            self.undosequence.undo()
+            actions = self.undosequence.undo()
+        self._scroll_to_actions(actions)
 
     def on_redo_activate(self):
         if self.undosequence.can_redo():
-            self.undosequence.redo()
-
-    def on_textbuffer_begin_user_action(self, *buffer):
-        self.undosequence.begin_group()
-
-    def on_textbuffer_end_user_action(self, *buffer):
-        self.undosequence.end_group()
+            actions = self.undosequence.redo()
+        self._scroll_to_actions(actions)
 
     def on_text_insert_text(self, buf, it, text, textlen):
         text = text_type(text, 'utf8')
@@ -1835,10 +1820,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dst_end = b1.get_iter_at_line_or_eof(chunk[4])
         t0 = text_type(b0.get_text(src_start, src_end, False), 'utf8')
         mark0 = b1.create_mark(None, dst_start, True)
-        self.on_textbuffer_begin_user_action()
+        self.textbuffer[dst].begin_user_action()
         b1.delete(dst_start, dst_end)
         new_end = b1.insert_at_line(chunk[3], t0)
-        self.on_textbuffer_end_user_action()
+        self.textbuffer[dst].end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
         if chunk[1] == chunk[2]:
             # TODO: Need a more specific colour here; conflict is wrong

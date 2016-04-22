@@ -25,6 +25,7 @@ import re
 import subprocess
 
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
@@ -96,7 +97,7 @@ def modal_dialog(
 
 
 # Taken from epiphany
-def position_menu_under_widget(menu, widget):
+def position_menu_under_widget(menu, x, y, widget):
     container = widget.get_ancestor(Gtk.Container)
 
     widget_width = widget.get_allocation().width
@@ -144,7 +145,41 @@ def make_tool_button_widget(label):
     return hbox
 
 
-MELD_STYLE_SCHEME = "meld-base"
+def get_base_style_scheme():
+    MELD_STYLE_SCHEME = "meld-base"
+    MELD_STYLE_SCHEME_DARK = "meld-dark"
+
+    global base_style_scheme
+
+    if base_style_scheme:
+        return base_style_scheme
+
+    env_theme = GLib.getenv('GTK_THEME')
+    if env_theme:
+        use_dark = env_theme.endswith(':dark')
+    else:
+        gtk_settings = Gtk.Settings.get_default()
+        use_dark = gtk_settings.props.gtk_application_prefer_dark_theme
+    base_scheme_name = (
+        MELD_STYLE_SCHEME_DARK if use_dark else MELD_STYLE_SCHEME)
+
+    manager = GtkSource.StyleSchemeManager.get_default()
+    base_style_scheme = manager.get_scheme(base_scheme_name)
+
+    return base_style_scheme
+
+base_style_scheme = None
+
+
+def parse_rgba(string):
+    """Parse a string to a Gdk.RGBA across different GTK+ APIs
+
+    Introspection changes broke this API in GTK+ 3.20; this function
+    is just a backwards-compatiblity workaround.
+    """
+    colour = Gdk.RGBA()
+    result = colour.parse(string)
+    return result[1] if isinstance(result, tuple) else colour
 
 
 def colour_lookup_with_fallback(name, attribute):
@@ -154,10 +189,9 @@ def colour_lookup_with_fallback(name, attribute):
     style = source_style.get_style(name)
     style_attr = getattr(style.props, attribute) if style else None
     if not style or not style_attr:
-        manager = GtkSource.StyleSchemeManager.get_default()
-        source_style = manager.get_scheme(MELD_STYLE_SCHEME)
+        base_style = get_base_style_scheme()
         try:
-            style = source_style.get_style(name)
+            style = base_style.get_style(name)
             style_attr = getattr(style.props, attribute)
         except AttributeError:
             pass
@@ -169,9 +203,7 @@ def colour_lookup_with_fallback(name, attribute):
             "this is a bad install") % (name, attribute)
         sys.exit(1)
 
-    colour = Gdk.RGBA()
-    colour.parse(style_attr)
-    return colour
+    return parse_rgba(style_attr)
 
 
 def get_common_theme():
@@ -468,3 +500,39 @@ def merge_intervals(interval_list):
         current_start, current_end = merged_intervals[-1]
 
     return merged_intervals
+
+
+def apply_text_filters(txt, regexes, cutter=lambda txt, start, end:
+                       txt[:start] + txt[end:]):
+    """Apply text filters
+
+    Text filters "regexes", resolved as regular expressions are applied
+    to "txt".
+
+    "cutter" defines the way how to apply them. Default is to just cut
+    out the matches.
+    """
+    filter_ranges = []
+    for r in regexes:
+        for match in r.finditer(txt):
+
+            # If there are no groups in the match, use the whole match
+            if not r.groups:
+                span = match.span()
+                if span[0] != span[1]:
+                    filter_ranges.append(span)
+                continue
+
+            # If there are groups in the regex, include all groups that
+            # participated in the match
+            for i in range(r.groups):
+                span = match.span(i + 1)
+                if span != (-1, -1) and span[0] != span[1]:
+                    filter_ranges.append(span)
+
+    filter_ranges = merge_intervals(filter_ranges)
+
+    for (start, end) in reversed(filter_ranges):
+        txt = cutter(txt, start, end)
+
+    return txt

@@ -25,16 +25,6 @@ from meld.conf import _
 class NotebookLabel(Gtk.HBox):
     __gtype_name__ = "NotebookLabel"
 
-    css = """
-    * {
-        -GtkButton-default-border : 0;
-        -GtkButton-default-outside-border : 0;
-        -GtkButton-inner-border: 0;
-        -GtkWidget-focus-line-width : 0;
-        -GtkWidget-focus-padding : 0;
-        padding : 0;
-    }
-    """
     tab_width_in_chars = 30
 
     def __init__(self, iconname, text, onclose):
@@ -49,8 +39,13 @@ class NotebookLabel(Gtk.HBox):
         label.set_alignment(0.0, 0.5)
         label.set_padding(0, 0)
 
+        style_context = self.get_style_context()
+        style_context.save()
+        style_context.set_state(Gtk.StateFlags.NORMAL)
+        font_desc = style_context.get_font(style_context.get_state())
+        style_context.restore()
+
         context = self.get_pango_context()
-        font_desc = self.get_style_context().get_font(Gtk.StateFlags.NORMAL)
         metrics = context.get_metrics(font_desc, context.get_language())
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
         valid, w, h = Gtk.icon_size_lookup_for_settings(
@@ -67,13 +62,7 @@ class NotebookLabel(Gtk.HBox):
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.MENU)
         image.set_tooltip_text(_("Close tab"))
         button.add(image)
-        button.set_name("meld-tab-close-button")
         button.connect("clicked", onclose)
-
-        context = button.get_style_context()
-        provider = Gtk.CssProvider()
-        provider.load_from_data(self.css)
-        context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         icon = Gtk.Image.new_from_icon_name(iconname, Gtk.IconSize.MENU)
 

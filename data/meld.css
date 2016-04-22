@@ -1,7 +1,7 @@
 
-.meld-notebook-toolbar.toolbar {
+.meld-notebook-toolbar {
 	background-image: none;
-    background-color: @theme_base_color;
+    background-color: @theme_bg_color;
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: @borders;
@@ -10,10 +10,16 @@
     padding: 3px 2px 2px 2px;
 }
 
-LinkMap {
+link-map {
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: @borders;
+    background-color: @theme_bg_color;
+}
+
+/* Only for backwards-compatibility with pre-3.20 GTK+ */
+LinkMap {
+    background-color: @theme_bg_color;
 }
 
 .meld-vc-console-pane {

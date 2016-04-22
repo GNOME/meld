@@ -21,6 +21,7 @@ import copy
 import datetime
 import errno
 import functools
+import locale
 import os
 import re
 import shutil
@@ -193,8 +194,9 @@ def _files_same(files, regexes, comparison_args):
         # For probable text files, discard newline differences to match
         # file comparisons.
         contents = ["\n".join(c.splitlines()) for c in contents]
-        for r in regexes:
-            contents = [re.sub(r, "", c) for c in contents]
+
+        contents = [misc.apply_text_filters(c, regexes) for c in contents]
+
         if ignore_blank_lines:
             contents = [remove_blank_lines(c) for c in contents]
         result = SameFiltered if all_same(contents) else Different
@@ -1318,6 +1320,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             all_present_same = self.file_compare(lof, regexes)
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
+        locale_encoding = locale.getpreferredencoding()
         for j in range(self.model.ntree):
             if mod_times[j]:
                 isdir = os.path.isdir( files[j] )
@@ -1345,6 +1348,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 TIME = self.model.column_index(COL_TIME, j)
                 mod_datetime = datetime.datetime.fromtimestamp(mod_times[j])
                 time_str = mod_datetime.strftime("%a %d %b %Y %H:%M:%S")
+                time_str = time_str.decode(locale_encoding, errors='replace')
                 self.model.set_value(it, TIME, time_str)
 
                 def natural_size(bytes):

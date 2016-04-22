@@ -344,7 +344,10 @@ class Vc(_vc.Vc):
                 columns = self.DIFF_RE.search(entry).groups()
                 old_mode, new_mode, old_sha, new_sha, statekey, path = columns
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
-                self._tree_cache[get_real_path(path)] = state
+                path = get_real_path(path)
+                self._tree_cache[path] = state
+                # Git entries can't be MISSING; that's just an unstaged REMOVED
+                self._add_missing_cache_entry(path, state)
                 if old_mode != new_mode:
                     msg = _("Mode changed from %s to %s" %
                             (old_mode, new_mode))
@@ -357,7 +360,7 @@ class Vc(_vc.Vc):
                     _("Partially staged") if path in unstaged else _("Staged"))
 
             for path, msgs in tree_meta_cache.items():
-                self._tree_meta_cache[get_real_path(path)] = "; ".join(msgs)
+                self._tree_meta_cache[path] = "; ".join(msgs)
 
             for path in ignored_entries:
                 self._tree_cache[get_real_path(path)] = _vc.STATE_IGNORED

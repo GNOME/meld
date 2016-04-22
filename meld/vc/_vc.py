@@ -23,6 +23,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import collections
 import itertools
 import os
 import re
@@ -139,6 +140,7 @@ class Vc(object):
             raise ValueError
         self._tree_cache = {}
         self._tree_meta_cache = {}
+        self._tree_missing_cache = collections.defaultdict(set)
 
     def get_files_to_commit(self, paths):
         """Get a list of files that will be committed from paths
@@ -244,6 +246,7 @@ class Vc(object):
         """
         if path is None:
             self._tree_cache = {}
+            self._tree_missing_cache = collections.defaultdict(set)
             path = './'
         self._update_tree_state_cache(path)
 
@@ -265,15 +268,19 @@ class Vc(object):
             yield Entry(path, name, state, isdir, options=meta)
 
         # Removed entries are not in the filesystem, so must be added here
-        for path, state in self._tree_cache.items():
-            if state in (STATE_REMOVED, STATE_MISSING):
-                folder, name = os.path.split(path)
-                if folder == base:
-                    # TODO: Ideally we'd know whether this was a folder
-                    # or a file. Since it's gone however, only the VC
-                    # knows, and may or may not tell us.
-                    meta = self._tree_meta_cache.get(path, "")
-                    yield Entry(path, name, state, isdir=False, options=meta)
+        for name in self._tree_missing_cache[base]:
+            path = os.path.join(base, name)
+            state = self._tree_cache.get(path, STATE_NORMAL)
+            # TODO: Ideally we'd know whether this was a folder
+            # or a file. Since it's gone however, only the VC
+            # knows, and may or may not tell us.
+            meta = self._tree_meta_cache.get(path, "")
+            yield Entry(path, name, state, isdir=False, options=meta)
+
+    def _add_missing_cache_entry(self, path, state):
+        if state in (STATE_REMOVED, STATE_MISSING):
+            folder, name = os.path.split(path)
+            self._tree_missing_cache[folder].add(name)
 
     def get_entry(self, path):
         """Return the entry associated with the given path in this VC

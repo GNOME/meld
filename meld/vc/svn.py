@@ -215,3 +215,4 @@ class Vc(_vc.Vc):
                     rev = status.attrib.get("revision")
                     rev_label = _("Rev %s") % rev if rev is not None else ''
                     self._tree_meta_cache[path] = rev_label
+                    self._add_missing_cache_entry(path, state)

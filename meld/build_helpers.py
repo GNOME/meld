@@ -186,7 +186,7 @@ class build_help(distutils.cmd.Command):
 class build_icons(distutils.cmd.Command):
 
     icon_dir = os.path.join("data", "icons")
-    target = "share/icons/"
+    target = "share/icons"
     frozen_target = "share/meld/icons"
 
     def initialize_options(self):

@@ -144,6 +144,7 @@ class DiffGrid(Gtk.Grid):
         return int(round(pos1)), int(round(pos2))
 
     def do_size_allocate(self, allocation):
+        Gtk.Grid.do_size_allocate(self, allocation)
         self.set_allocation(allocation)
         wcols, hrows = self._get_min_sizes()
         yrows = [allocation.y,
@@ -315,7 +316,7 @@ class HandleWindow():
             return
 
         stylecontext = self._widget.get_style_context()
-        state = self._widget.get_state_flags()
+        state = stylecontext.get_state()
         if self._widget.is_focus():
             state |= Gtk.StateFlags.SELECTED
         if self._prelit:
