@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import sys
 import os
@@ -7,23 +7,33 @@ import subprocess
 def getScriptPath():
     return os.path.dirname(os.path.realpath(sys.argv[0]))
 
+def fix_abspath(path):
+    if not os.path.isabs(path):
+        cwd = os.environ['PWD']
+        path = os.path.join(cwd, path)
+    return os.path.normpath(path)
 
 arglist = []
 for arg in sys.argv[1:]:
     if arg.startswith('--output'):
         filename = arg.split('=')[1]
-        newArg = '--output=' + os.path.abspath(filename)
+        newArg = '--output=' + fix_abspath(filename)
     elif arg.startswith('-'):
         newArg = arg
     else:
-        newArg = os.path.abspath(arg)
+        newArg = fix_abspath(arg)
     arglist.append(newArg)
 
-MELDPATH = getScriptPath() + "/Meld-bin"
-APPPATH = os.path.abspath(os.path.join(getScriptPath(), '..'))
+MELDPATH = os.path.join(getScriptPath(), "Meld-bin")
+APPPATH = fix_abspath(os.path.join(getScriptPath(), '..'))
 
-environment = dict(os.environ,
-  **{ "DYLD_LIBRARY_PATH" : APPPATH+"/Resources/lib:"+ APPPATH+"/Frameworks",
-      "LANG": "C"})
+environment = dict(os.environ, **{
+    "DYLD_LIBRARY_PATH": ":".join([
+        os.path.join(APPPATH, "Resources", "lib"),
+        os.path.join(APPPATH, "Frameworks")
+    ]),
+    "LANG": "C"
+})
 
-p = subprocess.call([MELDPATH] + arglist, env= environment)
+status = subprocess.call([MELDPATH] + arglist, env=environment)
+exit(status)
