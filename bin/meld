@@ -114,6 +114,10 @@ try:
         libintl.bindtextdomain(locale_domain, locale_dir)
         libintl.bind_textdomain_codeset(locale_domain, 'UTF-8')
         del libintl
+    elif sys.platform == 'darwin':
+        gettext.install(locale_domain, locale_dir, names=["ngettext"])
+        gettext.textdomain(locale_domain)
+        gettext.bindtextdomain(locale_domain, locale_dir)
     else:
         locale.bindtextdomain(locale_domain, locale_dir)
         locale.bind_textdomain_codeset(locale_domain, 'UTF-8')
