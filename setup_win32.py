@@ -146,11 +146,14 @@ setup(
          ['COPYING', 'NEWS']
          ),
         ('share/meld',
-         ['data/meld.css', 'data/meld-dark.css']
+         ['data/meld.css']
          ),
         ('share/meld/icons',
          glob.glob("data/icons/*.png") +
          glob.glob("data/icons/COPYING*")
+         ),
+        ('share/meld/styles',
+         glob.glob("data/styles/*.xml")
          ),
         ('share/meld/ui',
          glob.glob("data/ui/*.ui") + glob.glob("data/ui/*.xml")
