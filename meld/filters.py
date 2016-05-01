@@ -20,20 +20,34 @@ from . import misc
 
 class FilterEntry(object):
 
-    __slots__ = ("label", "active", "filter", "filter_string")
+    __slots__ = ("label", "active", "filter", "byte_filter", "filter_string")
 
     REGEX, SHELL = 0, 1
 
-    def __init__(self, label, active, filter, filter_string):
+    def __init__(self, label, active, filter, byte_filter, filter_string):
         self.label = label
         self.active = active
         self.filter = filter
+        self.byte_filter = byte_filter
         self.filter_string = filter_string
 
     @classmethod
     def _compile_regex(cls, regex):
         try:
             compiled = re.compile(regex + "(?m)")
+        except re.error:
+            compiled = None
+        return compiled
+
+    @classmethod
+    def _compile_byte_regex(cls, regex):
+        if not isinstance(regex, bytes):
+            # TODO: Register a custom error handling function to replace
+            # encoding errors with '.'?
+            regex = regex.encode('utf8', 'replace')
+
+        try:
+            compiled = re.compile(regex + b"(?m)")
         except re.error:
             compiled = None
         return compiled
@@ -67,7 +81,8 @@ class FilterEntry(object):
         compiled = FilterEntry.compile_filter(filter_string, filter_type)
         if compiled is None:
             active = False
-        return FilterEntry(name, active, compiled, filter_string)
+        byte_filt = FilterEntry.compile_byte_filter(filter_string, filter_type)
+        return FilterEntry(name, active, compiled, byte_filt, filter_string)
 
     @classmethod
     def new_from_gsetting(cls, elements, filter_type):
@@ -75,7 +90,8 @@ class FilterEntry(object):
         compiled = FilterEntry.compile_filter(filter_string, filter_type)
         if compiled is None:
             active = False
-        return FilterEntry(name, active, compiled, filter_string)
+        byte_filt = FilterEntry.compile_byte_filter(filter_string, filter_type)
+        return FilterEntry(name, active, compiled, byte_filt, filter_string)
 
     @classmethod
     def compile_filter(cls, filter_string, filter_type):
@@ -87,8 +103,22 @@ class FilterEntry(object):
             raise ValueError("Unknown filter type")
         return compiled
 
+    @classmethod
+    def compile_byte_filter(cls, filter_string, filter_type):
+        if filter_type == FilterEntry.REGEX:
+            compiled = FilterEntry._compile_byte_regex(filter_string)
+        elif filter_type == FilterEntry.SHELL:
+            compiled = None
+        else:
+            raise ValueError("Unknown filter type")
+        return compiled
+
     def __copy__(self):
-        new = type(self)(self.label, self.active, None, self.filter_string)
+        new = type(self)(
+            self.label, self.active, None, None, self.filter_string)
         if self.filter is not None:
             new.filter = re.compile(self.filter.pattern, self.filter.flags)
+        if self.byte_filter is not None:
+            new.byte_filter = re.compile(
+                self.byte_filter.pattern, self.byte_filter.flags)
         return new

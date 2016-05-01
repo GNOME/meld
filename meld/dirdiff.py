@@ -189,10 +189,10 @@ def _files_same(files, regexes, comparison_args):
         result = Same
 
     if result == Different and need_contents:
-        contents = ["".join(c) for c in contents]
+        contents = [b"".join(c) for c in contents]
         # For probable text files, discard newline differences to match
         # file comparisons.
-        contents = ["\n".join(c.splitlines()) for c in contents]
+        contents = [b"\n".join(c.splitlines()) for c in contents]
 
         contents = [misc.apply_text_filters(c, regexes) for c in contents]
 
@@ -1266,7 +1266,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         assert len(roots) == self.model.ntree
         ret = []
-        regexes = [f.filter for f in self.text_filters if f.active]
+        regexes = [f.byte_filter for f in self.text_filters if f.active]
         for files in fileslist:
             curfiles = [ os.path.join( r, f ) for r,f in zip(roots,files) ]
             is_present = [ os.path.exists( f ) for f in curfiles ]
@@ -1290,7 +1290,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Update the state of the item at 'it'
         """
         files = self.model.value_paths(it)
-        regexes = [f.filter for f in self.text_filters if f.active]
+        regexes = [f.byte_filter for f in self.text_filters if f.active]
 
         def stat(f):
             try:
