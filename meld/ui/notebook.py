@@ -34,7 +34,7 @@ class MeldNotebook(Gtk.Notebook):
         'page-label-changed': (0, None, (GObject.TYPE_STRING,)),
     }
 
-    css = """
+    css = b"""
         @binding-set TabSwitchBindings {}
         MeldNotebook { gtk-key-bindings: TabSwitchBindings; }
     """
@@ -151,6 +151,4 @@ class MeldNotebook(Gtk.Notebook):
         # Only update the window title if the current page is active
         if self.get_current_page() == self.page_num(page):
             self.emit('page-label-changed', text)
-        if isinstance(text, unicode):
-            text = text.encode('utf8')
         self.child_set_property(page, "menu-label", text)
