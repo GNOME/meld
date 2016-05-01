@@ -77,7 +77,7 @@ def test_filter_text(text, ignored_ranges):
 
     filediff = mock.MagicMock()
     filediff.text_filters = filters
-    filter_text = FileDiff._filter_text.__func__
+    filter_text = FileDiff._filter_text
 
     buf = Gtk.TextBuffer()
     buf.create_tag("inline")
@@ -96,7 +96,7 @@ def test_filter_text(text, ignored_ranges):
         toggles.append(it.get_offset())
     while it.forward_to_tag_toggle(tag):
         toggles.append(it.get_offset())
-    toggles = zip(toggles[::2], toggles[1::2])
+    toggles = list(zip(toggles[::2], toggles[1::2]))
 
     print("Text:", text)
     print("Toggles:", toggles)
