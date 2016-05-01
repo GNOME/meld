@@ -25,6 +25,7 @@ import re
 import subprocess
 
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
@@ -144,7 +145,30 @@ def make_tool_button_widget(label):
     return hbox
 
 
-MELD_STYLE_SCHEME = "meld-base"
+def get_base_style_scheme():
+    MELD_STYLE_SCHEME = "meld-base"
+    MELD_STYLE_SCHEME_DARK = "meld-dark"
+
+    global base_style_scheme
+
+    if base_style_scheme:
+        return base_style_scheme
+
+    env_theme = GLib.getenv('GTK_THEME')
+    if env_theme:
+        use_dark = env_theme.endswith(':dark')
+    else:
+        gtk_settings = Gtk.Settings.get_default()
+        use_dark = gtk_settings.props.gtk_application_prefer_dark_theme
+    base_scheme_name = (
+        MELD_STYLE_SCHEME_DARK if use_dark else MELD_STYLE_SCHEME)
+
+    manager = GtkSource.StyleSchemeManager.get_default()
+    base_style_scheme = manager.get_scheme(base_scheme_name)
+
+    return base_style_scheme
+
+base_style_scheme = None
 
 
 def parse_rgba(string):
@@ -165,10 +189,9 @@ def colour_lookup_with_fallback(name, attribute):
     style = source_style.get_style(name)
     style_attr = getattr(style.props, attribute) if style else None
     if not style or not style_attr:
-        manager = GtkSource.StyleSchemeManager.get_default()
-        source_style = manager.get_scheme(MELD_STYLE_SCHEME)
+        base_style = get_base_style_scheme()
         try:
-            style = source_style.get_style(name)
+            style = base_style.get_style(name)
             style_attr = getattr(style.props, attribute)
         except AttributeError:
             pass
@@ -506,7 +529,7 @@ def apply_text_filters(txt, regexes, cutter=lambda txt, start, end:
                 span = match.span(i + 1)
                 if span != (-1, -1) and span[0] != span[1]:
                     filter_ranges.append(span)
-                    
+
     filter_ranges = merge_intervals(filter_ranges)
 
     for (start, end) in reversed(filter_ranges):
