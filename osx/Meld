@@ -29,10 +29,10 @@ MELDPATH = os.path.join(getScriptPath(), "Meld-bin")
 APPPATH = fix_abspath(os.path.join(getScriptPath(), '..'))
 
 LANG="C"
-try:
-    LANG= ".".join(locale.getdefaultlocale()[0], "UTF-8")
-except:
-    pass
+#try:
+#    LANG= ".".join(locale.getdefaultlocale()[0], "UTF-8")
+#except:
+#    pass
 
 environment = dict(os.environ, **{
     "DYLD_LIBRARY_PATH": ":".join([
