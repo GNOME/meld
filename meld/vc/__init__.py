@@ -28,7 +28,7 @@ from . import _null
 
 # FIXME: This is a horrible hack to help cx_Freeze pick up these plugins when
 # freezing the distributable package.
-from . import git, mercurial, bzr, svn
+from . import git, mercurial, bzr, svn, darcs
 
 # Tuple with module name and vc.NAME field, ordered according to best-guess
 # as to which VC a user is likely to want by default in a multiple-VC situation
@@ -37,6 +37,7 @@ vc_names = (
     "mercurial",
     "bzr",
     "svn",
+    "darcs",
 )
 
 _plugins = [importlib.import_module("." + vc, __package__) for vc in vc_names]
