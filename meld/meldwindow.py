@@ -138,7 +138,7 @@ class MeldWindow(gnomeglade.Component):
         # Manually handle shells that don't show an application menu
         gtk_settings = Gtk.Settings.get_default()
         if not gtk_settings.props.gtk_shell_shows_app_menu:
-            from meldapp import app
+            from meld.meldapp import app
 
             def make_app_action(name):
                 def app_action(*args):
