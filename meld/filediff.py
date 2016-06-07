@@ -1047,10 +1047,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.fileentry[pane].set_file(gfile)
             self.msgarea_mgr[pane].clear()
 
-            self.textbuffer[pane].data.reset(gfile)
+            buf = self.textbuffer[pane]
+            buf.data.reset(gfile)
 
-            loader = GtkSource.FileLoader.new(
-                self.textbuffer[pane], self.textbuffer[pane].data.sourcefile)
+            if buf.data.is_special:
+                loader = GtkSource.FileLoader.new_from_stream(
+                    buf, buf.data.sourcefile, buf.data.gfile.read())
+            else:
+                loader = GtkSource.FileLoader.new(buf, buf.data.sourcefile)
+
             if custom_candidates:
                 loader.set_candidate_encodings(custom_candidates)
             loader.load_async(

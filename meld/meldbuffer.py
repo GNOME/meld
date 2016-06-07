@@ -197,6 +197,15 @@ class MeldBufferData(GObject.GObject):
         return self.gfile
 
     @property
+    def is_special(self):
+        try:
+            info = self._gfile.query_info(
+                Gio.FILE_ATTRIBUTE_STANDARD_TYPE, 0, None)
+            return info.get_file_type() == Gio.FileType.SPECIAL
+        except (AttributeError, GLib.GError):
+            return False
+
+    @property
     def writable(self):
         try:
             info = self.gfiletarget.query_info(
