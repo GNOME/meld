@@ -29,6 +29,13 @@ opcode_reverse = {
 }
 
 
+def merged_chunk_order(merged_chunk):
+    if not merged_chunk:
+        return 0
+    chunk = merged_chunk[0] or merged_chunk[1]
+    return chunk.start_a
+
+
 def reverse_chunk(chunk):
     tag = opcode_reverse[chunk[0]]
     return DiffChunk._make((tag, chunk[3], chunk[4], chunk[1], chunk[2]))

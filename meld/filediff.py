@@ -1209,8 +1209,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # We need to clear removed and modified chunks, and need to
         # re-highlight added and modified chunks.
-        need_clearing = sorted(list(removed_chunks))
-        need_highlighting = sorted(list(added_chunks) + [modified_chunks])
+        need_clearing = sorted(
+            list(removed_chunks),
+            key=diffutil.merged_chunk_order)
+        need_highlighting = sorted(
+            list(added_chunks) + [modified_chunks],
+            key=diffutil.merged_chunk_order)
 
         alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]
 
