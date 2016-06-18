@@ -21,7 +21,6 @@ import copy
 import datetime
 import errno
 import functools
-import locale
 import os
 import re
 import shutil
@@ -1320,7 +1319,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             all_present_same = self.file_compare(lof, regexes)
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
-        locale_encoding = locale.getpreferredencoding()
         for j in range(self.model.ntree):
             if mod_times[j]:
                 isdir = os.path.isdir( files[j] )
@@ -1348,7 +1346,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 TIME = self.model.column_index(COL_TIME, j)
                 mod_datetime = datetime.datetime.fromtimestamp(mod_times[j])
                 time_str = mod_datetime.strftime("%a %d %b %Y %H:%M:%S")
-                time_str = time_str.decode(locale_encoding, errors='replace')
                 self.model.set_value(it, TIME, time_str)
 
                 def natural_size(bytes):
