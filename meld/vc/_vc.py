@@ -381,10 +381,16 @@ class InvalidVCRevision(ValueError):
             (self.vc.NAME, self.revision, self.error)
 
 
-# Return the stdout output of a given command
-def popen(cmd, cwd=None):
+def popen(cmd, cwd=None, use_locale_encoding=True):
+    """Return the stdout output of a given command as a stream.
+
+    If use_locale_encoding is True, the output is parsed to unicode
+    text stream with universal newlines.
+    If use_locale_encoding is False output is treated as binary stream.
+    """
     process = subprocess.Popen(
-        cmd, cwd=cwd, stdout=subprocess.PIPE, universal_newlines=True)
+        cmd, cwd=cwd, stdout=subprocess.PIPE,
+        universal_newlines=use_locale_encoding)
     return process.stdout
 
 

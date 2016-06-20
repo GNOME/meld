@@ -175,9 +175,10 @@ class Vc(_vc.Vc):
     def _update_tree_state_cache(self, path):
         while 1:
             try:
+                # "svn --xml" outputs utf8, even with Windows non-utf8 locale
                 proc = _vc.popen(
                     [self.CMD, "status", "-v", "--xml", path],
-                    cwd=self.location)
+                    cwd=self.location, use_locale_encoding=False)
                 tree = ElementTree.parse(proc)
                 break
             except OSError as e:
