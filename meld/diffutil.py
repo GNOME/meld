@@ -255,6 +255,15 @@ class Differ(GObject.GObject):
                 chunk = self._merge_cache[index][1]
             return chunk
 
+    def get_chunk_starts(self, index):
+        chunks = self._merge_cache[index]
+        chunk_starts = [
+            chunks[0].start_b if chunks[0] else None,
+            chunks[0].start_a if chunks[0] else None,
+            chunks[1].start_b if chunks[1] else None,
+        ]
+        return chunk_starts
+
     def locate_chunk(self, pane, line):
         """Find the index of the chunk which contains line."""
         try:

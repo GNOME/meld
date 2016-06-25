@@ -473,6 +473,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("PrevConflict").set_sensitive(have_prev)
         self.actiongroup.get_action("NextConflict").set_sensitive(have_next)
 
+    def scroll_to_chunk_index(self, chunk_index, tolerance):
+        """Scrolls chunks with the given index on screen in all panes"""
+        starts = self.linediffer.get_chunk_starts(chunk_index)
+        for pane, start in enumerate(starts):
+            if start is None:
+                continue
+            buf = self.textbuffer[pane]
+            it = buf.get_iter_at_line(start)
+            self.textview[pane].scroll_to_iter(it, tolerance, True, 0.5, 0.5)
+
     def go_to_chunk(self, target, pane=None, centered=False):
         if target is None:
             return
@@ -491,7 +501,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.cursor.line != chunk[1]:
             buf.place_cursor(buf.get_iter_at_line(chunk[1]))
 
+        # Scroll all panes to the given chunk, and then ensure that the newly
+        # placed cursor is definitely on-screen.
         tolerance = 0.0 if centered else 0.2
+        self.scroll_to_chunk_index(target, tolerance)
         self.textview[pane].scroll_to_mark(
             buf.get_insert(), tolerance, True, 0.5, 0.5)
 
