@@ -48,6 +48,7 @@ def get_custom_encoding_candidates():
         # get_default_candidates() is only available in GtkSourceView 3.18
         # and we'd rather use their defaults than our old detect list.
         pass
+    return custom_candidates
 
 
 class LanguageManager(object):
