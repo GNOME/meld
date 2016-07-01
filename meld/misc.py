@@ -18,6 +18,7 @@
 """Module of commonly used helper classes and functions
 """
 
+import collections
 import os
 import errno
 import shutil
@@ -480,12 +481,12 @@ def merge_intervals(interval_list):
     if len(interval_list) < 2:
         return interval_list
 
-    interval_list.sort()
-    merged_intervals = [interval_list.pop(0)]
+    interval_list = collections.deque(sorted(interval_list))
+    merged_intervals = [interval_list.popleft()]
     current_start, current_end = merged_intervals[-1]
 
     while interval_list:
-        new_start, new_end = interval_list.pop(0)
+        new_start, new_end = interval_list.popleft()
 
         if current_end >= new_end:
             continue
