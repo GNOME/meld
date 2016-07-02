@@ -1075,7 +1075,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pass
 
             filename = GLib.markup_escape_text(
-                gfile.get_parse_name()).decode('utf-8')
+                gfile.get_parse_name())
             primary = _(
                 u"There was a problem opening the file “%s”." % filename)
             self.msgarea_mgr[pane].add_dismissable_msg(
@@ -1169,7 +1169,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # Notification for unknown buffer
             return
         gfile = Gio.File.new_for_path(data.filename)
-        display_name = gfile.get_parse_name().decode('utf-8')
+        display_name = gfile.get_parse_name()
         primary = _("File %s has changed on disk") % display_name
         secondary = _("Do you want to reload the file?")
         self.msgarea_mgr[pane].add_action_msg(
@@ -1467,7 +1467,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if not force_overwrite and not bufdata.current_on_disk():
             primary = (
                 _("File %s has changed on disk since it was opened") %
-                bufdata.gfile.get_parse_name().decode('utf-8'))
+                bufdata.gfile.get_parse_name())
             secondary = _("If you save it, any external changes will be lost.")
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                 'dialog-warning-symbolic', primary, secondary)
@@ -1534,7 +1534,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # TODO: Handle recoverable error cases, like external modifications
             # or invalid buffer characters.
             filename = GLib.markup_escape_text(
-                gfile.get_parse_name()).decode('utf-8')
+                gfile.get_parse_name())
             misc.error_dialog(
                 primary=_("Could not save file %s.") % filename,
                 secondary=_("Couldn't save file due to:\n%s") % (
