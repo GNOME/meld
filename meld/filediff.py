@@ -768,19 +768,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dimmed_tag = buf.get_tag_table().lookup("dimmed")
         buf.remove_tag(dimmed_tag, txt_start_iter, txt_end_iter)
 
-        def cutter(txt, start, end):
-            assert txt[start:end].count("\n") == 0
-            txt = txt[:start] + txt[end:]
+        def highlighter(start, end):
             start_iter = txt_start_iter.copy()
             start_iter.forward_chars(start)
             end_iter = txt_start_iter.copy()
             end_iter.forward_chars(end)
             buf.apply_tag(dimmed_tag, start_iter, end_iter)
-            return txt
 
         try:
             regexes = [f.filter for f in self.text_filters if f.active]
-            txt = misc.apply_text_filters(txt, regexes, cutter)
+            txt = misc.apply_text_filters(txt, regexes, apply_fn=highlighter)
         except AssertionError:
             if not self.warned_bad_comparison:
                 misc.error_dialog(

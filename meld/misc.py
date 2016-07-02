@@ -503,15 +503,13 @@ def merge_intervals(interval_list):
     return merged_intervals
 
 
-def apply_text_filters(txt, regexes, cutter=lambda txt, start, end:
-                       txt[:start] + txt[end:]):
+def apply_text_filters(txt, regexes, apply_fn=None):
     """Apply text filters
 
     Text filters "regexes", resolved as regular expressions are applied
     to "txt".
 
-    "cutter" defines the way how to apply them. Default is to just cut
-    out the matches.
+    "apply_fn" is a callable run for each filtered interval
     """
     filter_ranges = []
     for r in regexes:
@@ -533,7 +531,15 @@ def apply_text_filters(txt, regexes, cutter=lambda txt, start, end:
 
     filter_ranges = merge_intervals(filter_ranges)
 
-    for (start, end) in reversed(filter_ranges):
-        txt = cutter(txt, start, end)
+    if apply_fn:
+        for (start, end) in reversed(filter_ranges):
+            apply_fn(start, end)
 
-    return txt
+    offset = 0
+    result_txts = []
+    for (start, end) in filter_ranges:
+        assert txt[start:end].count("\n") == 0
+        result_txts.append(txt[offset:start])
+        offset = end
+    result_txts.append(txt[offset:])
+    return "".join(result_txts)
