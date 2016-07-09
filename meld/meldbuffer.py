@@ -162,7 +162,7 @@ class MeldBufferData(GObject.GObject):
 
     def _handle_file_change(self, monitor, f, other_file, event_type):
         mtime = self._query_mtime(f)
-        if self._disk_mtime and mtime > self._disk_mtime:
+        if self._disk_mtime and mtime and mtime > self._disk_mtime:
             self.emit('file-changed')
         self._disk_mtime = mtime
 
