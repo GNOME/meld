@@ -1250,12 +1250,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for chunk in need_highlighting:
             clear = chunk == modified_chunks
-            for i, c in enumerate(chunk):
+            for merge_cache_index, c in enumerate(chunk):
                 if not c or c[0] != "replace":
                     continue
-                to_idx = 2 if i == 1 else 0
-                bufs = self.textbuffer[1], self.textbuffer[to_idx]
-                tags = alltags[1], alltags[to_idx]
+                to_pane = 2 if merge_cache_index == 1 else 0
+                bufs = self.textbuffer[1], self.textbuffer[to_pane]
+                tags = alltags[1], alltags[to_pane]
 
                 starts = [b.get_iter_at_line_or_eof(l) for b, l in
                           zip(bufs, (c[1], c[3]))]
