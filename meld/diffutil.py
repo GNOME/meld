@@ -244,6 +244,14 @@ class Differ(GObject.GObject):
                 return i
         return len(self.diffs[whichdiffs])
 
+    def has_chunk(self, to_pane, chunk):
+        """Return whether the pane/chunk exists in the current Differ"""
+        sequence = 1 if to_pane == 2 else 0
+        chunk_index, _, _ = self.locate_chunk(1, chunk.start_a)
+        if chunk_index is None:
+            return False
+        return self._merge_cache[chunk_index][sequence] == chunk
+
     def get_chunk(self, index, from_pane, to_pane=None):
         """Return the index-th change in from_pane
 
