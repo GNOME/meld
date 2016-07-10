@@ -133,6 +133,12 @@ class Differ(GObject.GObject):
         self.emit("diffs-changed", chunk_changes)
 
     def _update_line_cache(self):
+        """Cache a mapping from line index to per-pane chunk indices
+
+        This cache exists so that the UI can quickly query for current,
+        next and previous chunks when the current cursor line changes,
+        enabling better action sensitivity feedback.
+        """
         for i, l in enumerate(self.seqlength):
             # seqlength + 1 for after-last-line requests, which we do
             self._line_cache[i] = [(None, None, None)] * (l + 1)
@@ -256,6 +262,7 @@ class Differ(GObject.GObject):
             return chunk
 
     def get_chunk_starts(self, index):
+        """Return the starting lines of all chunks at an index"""
         chunks = self._merge_cache[index]
         chunk_starts = [
             chunks[0].start_b if chunks[0] else None,
@@ -265,7 +272,14 @@ class Differ(GObject.GObject):
         return chunk_starts
 
     def locate_chunk(self, pane, line):
-        """Find the index of the chunk which contains line."""
+        """Find the index of the chunk which contains line
+
+        Returns a tuple containing the current, previous and next chunk
+        indices in that order. If the line has no associated chunk,
+        None will be returned as the first element. If there are no
+        previous/next chunks then None will be returned as the
+        second/third elements.
+        """
         try:
             return self._line_cache[pane][line]
         except IndexError:
