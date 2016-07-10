@@ -1278,11 +1278,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self._prompt_long_highlighting()
                     continue
 
-                def apply_highlight(bufs, tags, start_marks, end_marks, texts, matches):
+                def apply_highlight(
+                        bufs, tags, start_marks, end_marks, texts, to_pane,
+                        chunk, matches):
                     bufs[0].delete_mark(start_marks[0])
                     bufs[0].delete_mark(end_marks[0])
                     bufs[1].delete_mark(start_marks[1])
                     bufs[1].delete_mark(end_marks[1])
+
+                    if not self.linediffer.has_chunk(to_pane, chunk):
+                        return
 
                     starts = [bufs[0].get_iter_at_mark(start_marks[0]),
                               bufs[1].get_iter_at_mark(start_marks[1])]
@@ -1331,8 +1336,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                           bufs[1].create_mark(None, starts[1], True)]
                 ends = [bufs[0].create_mark(None, ends[0], True),
                         bufs[1].create_mark(None, ends[1], True)]
-                match_cb = functools.partial(apply_highlight, bufs, tags,
-                                             starts, ends, (text1, textn))
+                match_cb = functools.partial(
+                    apply_highlight, bufs, tags, starts, ends, (text1, textn),
+                    to_pane, c)
                 self._cached_match.match(text1, textn, match_cb)
 
         self._cached_match.clean(self.linediffer.diff_count())
