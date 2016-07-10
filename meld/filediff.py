@@ -1279,6 +1279,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     continue
 
                 def apply_highlight(bufs, tags, start_marks, end_marks, texts, matches):
+                    bufs[0].delete_mark(start_marks[0])
+                    bufs[0].delete_mark(end_marks[0])
+                    bufs[1].delete_mark(start_marks[1])
+                    bufs[1].delete_mark(end_marks[1])
+
                     starts = [bufs[0].get_iter_at_mark(start_marks[0]),
                               bufs[1].get_iter_at_mark(start_marks[1])]
                     ends = [bufs[0].get_iter_at_mark(end_marks[0]),
@@ -1287,11 +1292,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     text1 = text_type(text1, 'utf8')
                     textn = bufs[1].get_text(starts[1], ends[1], False)
                     textn = text_type(textn, 'utf8')
-
-                    bufs[0].delete_mark(start_marks[0])
-                    bufs[0].delete_mark(end_marks[0])
-                    bufs[1].delete_mark(start_marks[1])
-                    bufs[1].delete_mark(end_marks[1])
 
                     if texts != (text1, textn):
                         return
