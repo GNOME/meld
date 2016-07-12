@@ -1281,6 +1281,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 def apply_highlight(
                         bufs, tags, start_marks, end_marks, texts, to_pane,
                         chunk, matches):
+                    starts = [bufs[0].get_iter_at_mark(start_marks[0]),
+                              bufs[1].get_iter_at_mark(start_marks[1])]
+                    ends = [bufs[0].get_iter_at_mark(end_marks[0]),
+                            bufs[1].get_iter_at_mark(end_marks[1])]
+
                     bufs[0].delete_mark(start_marks[0])
                     bufs[0].delete_mark(end_marks[0])
                     bufs[1].delete_mark(start_marks[1])
@@ -1289,10 +1294,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     if not self.linediffer.has_chunk(to_pane, chunk):
                         return
 
-                    starts = [bufs[0].get_iter_at_mark(start_marks[0]),
-                              bufs[1].get_iter_at_mark(start_marks[1])]
-                    ends = [bufs[0].get_iter_at_mark(end_marks[0]),
-                            bufs[1].get_iter_at_mark(end_marks[1])]
                     text1 = bufs[0].get_text(starts[0], ends[0], False)
                     text1 = text_type(text1, 'utf8')
                     textn = bufs[1].get_text(starts[1], ends[1], False)
