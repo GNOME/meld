@@ -470,6 +470,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup.get_action("PrevConflict").set_sensitive(have_prev)
         self.actiongroup.get_action("NextConflict").set_sensitive(have_next)
 
+    def scroll_to_chunk_index(self, chunk_index, tolerance):
+        """Scrolls chunks with the given index on screen in all panes"""
+        starts = self.linediffer.get_chunk_starts(chunk_index)
+        for pane, start in enumerate(starts):
+            if start is None:
+                continue
+            buf = self.textbuffer[pane]
+            it = buf.get_iter_at_line(start)
+            self.textview[pane].scroll_to_iter(it, tolerance, True, 0.5, 0.5)
+
     def go_to_chunk(self, target, pane=None, centered=False):
         if target is None:
             return
@@ -488,7 +498,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self.cursor.line != chunk[1]:
             buf.place_cursor(buf.get_iter_at_line(chunk[1]))
 
+        # Scroll all panes to the given chunk, and then ensure that the newly
+        # placed cursor is definitely on-screen.
         tolerance = 0.0 if centered else 0.2
+        self.scroll_to_chunk_index(target, tolerance)
         self.textview[pane].scroll_to_mark(
             buf.get_insert(), tolerance, True, 0.5, 0.5)
 
@@ -752,19 +765,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dimmed_tag = buf.get_tag_table().lookup("dimmed")
         buf.remove_tag(dimmed_tag, txt_start_iter, txt_end_iter)
 
-        def cutter(txt, start, end):
-            assert txt[start:end].count("\n") == 0
-            txt = txt[:start] + txt[end:]
+        def highlighter(start, end):
             start_iter = txt_start_iter.copy()
             start_iter.forward_chars(start)
             end_iter = txt_start_iter.copy()
             end_iter.forward_chars(end)
             buf.apply_tag(dimmed_tag, start_iter, end_iter)
-            return txt
 
         try:
             regexes = [f.filter for f in self.text_filters if f.active]
-            txt = misc.apply_text_filters(txt, regexes, cutter)
+            txt = misc.apply_text_filters(txt, regexes, apply_fn=highlighter)
         except AssertionError:
             if not self.warned_bad_comparison:
                 misc.error_dialog(
@@ -1043,10 +1053,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.fileentry[pane].set_file(gfile)
             self.msgarea_mgr[pane].clear()
 
-            self.textbuffer[pane].data.reset(gfile)
+            buf = self.textbuffer[pane]
+            buf.data.reset(gfile)
 
-            loader = GtkSource.FileLoader.new(
-                self.textbuffer[pane], self.textbuffer[pane].data.sourcefile)
+            if buf.data.is_special:
+                loader = GtkSource.FileLoader.new_from_stream(
+                    buf, buf.data.sourcefile, buf.data.gfile.read())
+            else:
+                loader = GtkSource.FileLoader.new(buf, buf.data.sourcefile)
+
             if custom_candidates:
                 loader.set_candidate_encodings(custom_candidates)
             loader.load_async(
@@ -1235,12 +1250,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for chunk in need_highlighting:
             clear = chunk == modified_chunks
-            for i, c in enumerate(chunk):
+            for merge_cache_index, c in enumerate(chunk):
                 if not c or c[0] != "replace":
                     continue
-                to_idx = 2 if i == 1 else 0
-                bufs = self.textbuffer[1], self.textbuffer[to_idx]
-                tags = alltags[1], alltags[to_idx]
+                to_pane = 2 if merge_cache_index == 1 else 0
+                bufs = self.textbuffer[1], self.textbuffer[to_pane]
+                tags = alltags[1], alltags[to_pane]
 
                 starts = [b.get_iter_at_line_or_eof(l) for b, l in
                           zip(bufs, (c[1], c[3]))]
@@ -1261,18 +1276,24 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self._prompt_long_highlighting()
                     continue
 
-                def apply_highlight(bufs, tags, start_marks, end_marks, texts, matches):
+                def apply_highlight(
+                        bufs, tags, start_marks, end_marks, texts, to_pane,
+                        chunk, matches):
                     starts = [bufs[0].get_iter_at_mark(start_marks[0]),
                               bufs[1].get_iter_at_mark(start_marks[1])]
                     ends = [bufs[0].get_iter_at_mark(end_marks[0]),
                             bufs[1].get_iter_at_mark(end_marks[1])]
-                    text1 = bufs[0].get_text(starts[0], ends[0], False)
-                    textn = bufs[1].get_text(starts[1], ends[1], False)
 
                     bufs[0].delete_mark(start_marks[0])
                     bufs[0].delete_mark(end_marks[0])
                     bufs[1].delete_mark(start_marks[1])
                     bufs[1].delete_mark(end_marks[1])
+
+                    if not self.linediffer.has_chunk(to_pane, chunk):
+                        return
+
+                    text1 = bufs[0].get_text(starts[0], ends[0], False)
+                    textn = bufs[1].get_text(starts[1], ends[1], False)
 
                     if texts != (text1, textn):
                         return
@@ -1312,8 +1333,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                           bufs[1].create_mark(None, starts[1], True)]
                 ends = [bufs[0].create_mark(None, ends[0], True),
                         bufs[1].create_mark(None, ends[1], True)]
-                match_cb = functools.partial(apply_highlight, bufs, tags,
-                                             starts, ends, (text1, textn))
+                match_cb = functools.partial(
+                    apply_highlight, bufs, tags, starts, ends, (text1, textn),
+                    to_pane, c)
                 self._cached_match.match(text1, textn, match_cb)
 
         self._cached_match.clean(self.linediffer.diff_count())
