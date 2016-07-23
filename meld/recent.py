@@ -154,11 +154,6 @@ class RecentFiles(object):
         return comp_type, paths, flags
 
     def _write_recent_file(self, comp_type, paths):
-        # FIXME: Commenting out this line is 100% incorrect. We need to
-        # be storing bytestrings here, but the configparser API doesn't
-        # like this. This code *will* eventually break.
-        # paths = [p.encode(sys.getfilesystemencoding()) for p in paths]
-
         # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're
         # using ';' to join comparison paths.
         with tempfile.NamedTemporaryFile(
