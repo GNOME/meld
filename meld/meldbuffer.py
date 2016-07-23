@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import sys
 
 from gi.repository import Gio
@@ -22,8 +23,9 @@ from gi.repository import GObject
 from gi.repository import GtkSource
 
 from meld.conf import _
-from meld.misc import fallback_decode
 from meld.settings import bind_settings, meldsettings
+
+log = logging.getLogger(__name__)
 
 
 class MeldBuffer(GtkSource.Buffer):
@@ -132,8 +134,10 @@ class MeldBufferData(GObject.GObject):
     def label(self, value):
         if not value:
             return
-        encodings = (sys.getfilesystemencoding(), 'utf8')
-        self._label = fallback_decode(value, encodings, lossy=True)
+        if not isinstance(value, str):
+            log.warning('Invalid label ignored "%r"', value)
+            return
+        self._label = value
 
     def _connect_monitor(self):
         if not self._gfile:
