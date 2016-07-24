@@ -230,31 +230,6 @@ def gdk_to_cairo_color(color):
     return (color.red / 65535., color.green / 65535., color.blue / 65535.)
 
 
-def fallback_decode(bytestring, encodings, lossy=False):
-    """Try and decode bytes according to multiple encodings
-
-    Generally, this should be used for best-effort decoding, when the
-    desired behaviour is "probably this, or UTF-8".
-
-    If lossy is True, then decode errors will be replaced. This may be
-    reasonable when the string is for display only.
-    """
-    if isinstance(bytestring, str):
-        return bytestring
-
-    for encoding in encodings:
-        try:
-            return bytestring.decode(encoding)
-        except UnicodeDecodeError:
-            pass
-
-    if lossy:
-        return bytestring.decode(encoding, errors='replace')
-
-    raise ValueError(
-        "Couldn't decode %r as one of %r" % (bytestring, encodings))
-
-
 def all_same(lst):
     """Return True if all elements of the list are equal"""
     return not lst or lst.count(lst[0]) == len(lst)
