@@ -115,8 +115,7 @@ class PatchDialog(gnomeglade.Component):
         try:
             saver.save_finish(result)
         except GLib.Error as err:
-            filename = GLib.markup_escape_text(
-                gfile.get_parse_name()).decode('utf-8')
+            filename = GLib.markup_escape_text(gfile.get_parse_name())
             error_dialog(
                 primary=_("Could not save file %s.") % filename,
                 secondary=_("Couldn't save file due to:\n%s") % (
