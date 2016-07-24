@@ -139,8 +139,8 @@ class Vc(_vc.Vc):
         if os.path.exists(commit_path):
             # If I have to deal with non-ascii, non-UTF8 pregenerated commit
             # messages, I'm taking up pig farming.
-            with open(commit_path) as f:
-                message = f.read().decode('utf8')
+            with open(commit_path, encoding='utf-8') as f:
+                message = f.read()
             return "\n".join(
                 (l for l in message.splitlines() if not l.startswith("#")))
         return None
