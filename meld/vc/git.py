@@ -25,6 +25,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import codecs
 import errno
 import io
 import os
@@ -299,8 +300,8 @@ class Vc(_vc.Vc):
             # Unicode file names and file names containing quotes are
             # returned by git as quoted strings
             if name[0] == '"':
-                name = name.encode('utf-8')
-                name = name[1:-1].decode('unicode_escape')
+                name = name.encode('latin1')
+                name = codecs.escape_decode(name[1:-1])[0].decode('utf-8')
             return os.path.abspath(
                 os.path.join(self.location, name))
 
