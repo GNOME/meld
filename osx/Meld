@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+
+import sys
+import os
+import subprocess
+import locale
+
+def getScriptPath():
+    return os.path.dirname(os.path.realpath(sys.argv[0]))
+
+def fix_abspath(path):
+    if not os.path.isabs(path):
+        cwd = os.environ['PWD']
+        path = os.path.join(cwd, path)
+    return os.path.normpath(path)
+
+arglist = []
+for arg in sys.argv[1:]:
+    if arg.startswith('--output'):
+        filename = arg.split('=')[1]
+        newArg = '--output=' + fix_abspath(filename)
+    elif arg.startswith('-'):
+        newArg = arg
+    else:
+        newArg = fix_abspath(arg)
+    arglist.append(newArg)
+
+MELDPATH = os.path.join(getScriptPath(), "Meld-bin")
+APPPATH = fix_abspath(os.path.join(getScriptPath(), '..'))
+
+LANG="C"
+#try:
+#    LANG= ".".join(locale.getdefaultlocale()[0], "UTF-8")
+#except:
+#    pass
+
+environment = dict(os.environ, **{
+    "DYLD_LIBRARY_PATH": ":".join([
+        os.path.join(APPPATH, "Resources", "lib"),
+        os.path.join(APPPATH, "Frameworks")
+    ]),
+    "LANG": LANG,
+    "LC_ALL": LANG,
+    "LC_CTYPE": LANG
+})
+
+status = subprocess.call([MELDPATH] + arglist, env=environment)
+exit(status)

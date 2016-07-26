@@ -45,3 +45,6 @@ def uninstalled():
     data_dir = os.environ.get('XDG_DATA_DIRS', "/usr/local/share/:/usr/share/")
     data_dir = ":".join((melddir, data_dir))
     os.environ['XDG_DATA_DIRS'] = data_dir
+
+def is_darwin():
+    return sys.platform == "darwin"

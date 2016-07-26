@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+    <repository type="tarball" name="ftp.gnome.org" default="yes"
+                href="http://ftp.gnome.org/pub/GNOME/sources/"/>
+    <repository type="tarball" name="sourceforge"
+                href="http://downloads.sourceforge.net/sourceforge/"/>
+    <repository type="tarball" name="cairographics"
+                href="http://cairographics.org/releases/"/>
+    <repository type="tarball" name="ftp.gnu.org"
+                href="http://ftp.gnu.org/gnu/"/>
+    <repository type="tarball" name="sourceware.org"
+                href="ftp://sourceware.org/pub/"/>
+    <repository type="tarball" name="freedesktop"
+                href="ftp://ftp.freedesktop.org/pub/"/>
+    <repository type="git" name="github" href="git://github.com/"/>
+    <repository type="tarball" name="zlib.net"
+                href="http://zlib.net/"/>
+    <repository type="tarball" name="pypi"
+        href="http://pypi.python.org/packages/source/"/>
+
+    <repository type="tarball" name="openssl"
+        href="http://www.openssl.org/source/"/>
+    <autotools id="openssl" autogen-sh="Configure"
+        autogen-template="%(srcdir)s/%(autogen-sh)s --prefix=%(prefix)s --libdir=%(libdir)s -L%(libdir)s %(autogenargs)s"
+        autogenargs="darwin-i386-cc zlib no-krb5 shared">
+        <!--autogenargs="darwin64-x86_64-cc zlib no-krb5 shared">-->
+        <branch repo="openssl" version="1.0.1e"
+            module="openssl-1.0.1e.tar.gz"
+            hash="md5:66bf6f10f060d561929de96f9dfe5b8c"/>
+    </autotools>
+    <distutils id="pyopenssl">
+        <dependencies>
+            <dep package="openssl"/>
+        </dependencies>
+        <branch repo="pypi" version="0.13"
+            module="p/pyOpenSSL/pyOpenSSL-0.13.tar.gz"/>
+    </distutils>
+
+    <metamodule id="meld-python-deps">
+        <dependencies>
+            <dep package="setuptools"/>
+            <dep package="py2app"/>
+            <dep package="pyobjc"/>
+        </dependencies>
+    </metamodule>
+    <distutils id="setuptools">
+        <branch repo="pypi" version="0.6c11"
+            module="s/setuptools/setuptools-0.6c11.tar.gz"/>
+    </distutils>
+    <distutils id="py2app">
+        <dependencies>
+            <dep package="macholib"/>
+            <dep package="modulegraph"/>
+            <dep package="altgraph"/>
+        </dependencies>
+        <branch repo="pypi" version="0.7.3"
+            module="p/py2app/py2app-0.7.3.tar.gz"/>
+    </distutils>
+    <distutils id="macholib">
+        <branch repo="pypi" version="1.7"
+            module="m/macholib/macholib-1.7.tar.gz"/>
+    </distutils>
+    <distutils id="modulegraph">
+        <branch repo="pypi" version="0.12.1"
+            module="m/modulegraph/modulegraph-0.12.1.tar.gz"/>
+    </distutils>
+    <distutils id="altgraph">
+        <branch repo="pypi" version="0.12"
+            module="a/altgraph/altgraph-0.12.tar.gz"/>
+    </distutils>
+
+    <distutils id="pyobjc-core">
+        <branch repo="pypi" version="3.0.4"
+            module="p/pyobjc-core/pyobjc-core-3.0.4.tar.gz"/>
+    </distutils>
+    <distutils id="pyobjc">
+        <branch repo="pypi" version="3.0.4"
+            module="p/pyobjc/pyobjc-3.0.4.tar.gz"/>
+        <dependencies>
+            <dep package="pyobjc-core"/>
+        </dependencies>
+    </distutils>
+    <distutils id="pyobjc-framework-Cocoa">
+        <branch repo="pypi" version="3.0.4"
+            module="p/pyobjc-framework-Cocoa/pyobjc-framework-Cocoa-3.0.4.tar.gz"/>
+        <dependencies>
+            <dep package="pyobjc-core"/>
+        </dependencies>
+    </distutils>
+
+
+</moduleset>
