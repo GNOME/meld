@@ -33,7 +33,6 @@ from . import vcview
 from .ui import gnomeglade
 from .ui import notebooklabel
 
-from .util.compat import string_types
 from meld.conf import _
 from meld.recent import recent_comparisons
 from meld.settings import interface_settings, settings
@@ -139,7 +138,7 @@ class MeldWindow(gnomeglade.Component):
         # Manually handle shells that don't show an application menu
         gtk_settings = Gtk.Settings.get_default()
         if not gtk_settings.props.gtk_shell_shows_app_menu:
-            from meldapp import app
+            from meld.meldapp import app
 
             def make_app_action(name):
                 def app_action(*args):
@@ -281,7 +280,7 @@ class MeldWindow(gnomeglade.Component):
 
     def on_idle(self):
         ret = self.scheduler.iteration()
-        if ret and isinstance(ret, string_types):
+        if ret and isinstance(ret, str):
             self.spinner.set_tooltip_text(ret)
 
         pending = self.scheduler.tasks_pending()

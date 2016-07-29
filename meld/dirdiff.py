@@ -21,7 +21,6 @@ import copy
 import datetime
 import errno
 import functools
-import locale
 import os
 import re
 import shutil
@@ -158,7 +157,7 @@ def _files_same(files, regexes, comparison_args):
 
             # Rough test to see whether files are binary. If files are guessed
             # to be binary, we don't examine contents for speed and space.
-            if any(["\0" in d for d in data]):
+            if any(b"\0" in d for d in data):
                 need_contents = False
 
             while True:
@@ -190,10 +189,10 @@ def _files_same(files, regexes, comparison_args):
         result = Same
 
     if result == Different and need_contents:
-        contents = ["".join(c) for c in contents]
+        contents = [b"".join(c) for c in contents]
         # For probable text files, discard newline differences to match
         # file comparisons.
-        contents = ["\n".join(c.splitlines()) for c in contents]
+        contents = [b"\n".join(c.splitlines()) for c in contents]
 
         contents = [misc.apply_text_filters(c, regexes) for c in contents]
 
@@ -624,7 +623,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # the time we get this far. This is a fallback, and may be wrong!
         locations = list(locations)
         for i, l in enumerate(locations):
-            if not isinstance(l, unicode):
+            if not isinstance(l, str):
                 locations[i] = l.decode(sys.getfilesystemencoding())
         locations = [os.path.abspath(l) if l else '' for l in locations]
         self.current_path = None
@@ -719,7 +718,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                 for e in entries:
                     try:
-                        if not isinstance(e, unicode):
+                        if not isinstance(e, str):
                             e = e.decode('utf8')
                     except UnicodeDecodeError:
                         approximate_name = e.decode('utf8', 'replace')
@@ -1267,7 +1266,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """
         assert len(roots) == self.model.ntree
         ret = []
-        regexes = [f.filter for f in self.text_filters if f.active]
+        regexes = [f.byte_filter for f in self.text_filters if f.active]
         for files in fileslist:
             curfiles = [ os.path.join( r, f ) for r,f in zip(roots,files) ]
             is_present = [ os.path.exists( f ) for f in curfiles ]
@@ -1291,7 +1290,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         """Update the state of the item at 'it'
         """
         files = self.model.value_paths(it)
-        regexes = [f.filter for f in self.text_filters if f.active]
+        regexes = [f.byte_filter for f in self.text_filters if f.active]
 
         def stat(f):
             try:
@@ -1320,7 +1319,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             all_present_same = self.file_compare(lof, regexes)
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
-        locale_encoding = locale.getpreferredencoding()
         for j in range(self.model.ntree):
             if mod_times[j]:
                 isdir = os.path.isdir( files[j] )
@@ -1348,7 +1346,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 TIME = self.model.column_index(COL_TIME, j)
                 mod_datetime = datetime.datetime.fromtimestamp(mod_times[j])
                 time_str = mod_datetime.strftime("%a %d %b %Y %H:%M:%S")
-                time_str = time_str.decode(locale_encoding, errors='replace')
                 self.model.set_value(it, TIME, time_str)
 
                 def natural_size(bytes):

@@ -13,11 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-try:
-    # py3k
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 import os
 import sys
 
@@ -90,7 +86,7 @@ class HistoryCombo(Gtk.ComboBox):
         self.history_file = os.path.join(pref_dir, "history.ini")
         self.config = configparser.RawConfigParser()
         if os.path.exists(self.history_file):
-            self.config.read(self.history_file)
+            self.config.read(self.history_file, encoding='utf8')
 
         self.set_model(Gtk.ListStore(str, str))
         rentext = Gtk.CellRendererText()
@@ -137,11 +133,12 @@ class HistoryCombo(Gtk.ComboBox):
 
         store = self.get_model()
         store.clear()
-        paths = sorted(self.config.items(section_key))
-        for key, path in paths[:self.props.history_length - 1]:
-            path = path.decode("string-escape")
-            firstline = path.splitlines()[0]
-            store.append((firstline, path))
+        messages = sorted(self.config.items(section_key))
+        for key, message in messages[:self.props.history_length - 1]:
+            message = message.encode('utf8')
+            message = message.decode('unicode-escape')
+            firstline = message.splitlines()[0]
+            store.append((firstline, message))
 
     def _save_history(self):
         section_key = self.props.history_id
@@ -151,7 +148,9 @@ class HistoryCombo(Gtk.ComboBox):
         self.config.remove_section(section_key)
         self.config.add_section(section_key)
         for i, row in enumerate(self.get_model()):
-            message = row[1].encode('string-escape')
+            # This dance is to avoid newline, etc. issues in the ini file
+            message = row[1].encode('unicode-escape')
+            message = message.decode('utf8')
             self.config.set(section_key, "item%d" % i, message)
-        with open(self.history_file, 'w') as f:
+        with open(self.history_file, 'w', encoding='utf8') as f:
             self.config.write(f)

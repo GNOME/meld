@@ -18,8 +18,6 @@
 # Modified by Kai Willadsen for the Meld project
 # Copyright (C) 2013-2014 Kai Willadsen <kai.willadsen@gmail.com>
 
-from __future__ import print_function
-
 import distutils.cmd
 import distutils.command.build
 import distutils.command.build_py

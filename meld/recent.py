@@ -51,7 +51,7 @@ COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
 def unicodeify(s):
     if s is None:
         return None
-    if isinstance(s, str):
+    if isinstance(s, bytes):
         return s.decode(sys.getfilesystemencoding(), 'replace')
     return s
 
@@ -60,7 +60,6 @@ class RecentFiles(object):
 
     mime_type = "application/x-meld-comparison"
     recent_path = os.path.join(GLib.get_user_data_dir(), "meld")
-    recent_path = recent_path.decode('utf8')
     recent_suffix = ".meldcmp"
 
     # Recent data
@@ -120,8 +119,8 @@ class RecentFiles(object):
         recent_metadata.mime_type = self.mime_type
         recent_metadata.app_name = self.app_name
         recent_metadata.app_exec = "%s --comparison-file %%u" % self.app_exec
-        recent_metadata.display_name = display_name.encode('utf8')
-        recent_metadata.description = description.encode('utf8')
+        recent_metadata.display_name = display_name
+        recent_metadata.description = description
         recent_metadata.is_private = True
         self.recent_manager.add_full(gio_file.get_uri(), recent_metadata)
 
@@ -155,13 +154,11 @@ class RecentFiles(object):
         return comp_type, paths, flags
 
     def _write_recent_file(self, comp_type, paths):
-        paths = [p.encode(sys.getfilesystemencoding()) for p in paths]
         # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're
         # using ';' to join comparison paths.
-        with tempfile.NamedTemporaryFile(prefix='recent-',
-                                         suffix=self.recent_suffix,
-                                         dir=self.recent_path,
-                                         delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+                mode='w+t', prefix='recent-', suffix=self.recent_suffix,
+                dir=self.recent_path, delete=False) as f:
             config = configparser.RawConfigParser()
             config.add_section("Comparison")
             config.set("Comparison", "type", comp_type)
@@ -215,7 +212,7 @@ class RecentFiles(object):
                    Gtk.RecentFilterFlags.GROUP: "groups",
                    Gtk.RecentFilterFlags.AGE: "age"}
         needed = recent_filter.get_needed()
-        attrs = [v for k, v in getters.iteritems() if needed & k]
+        attrs = [v for k, v in getters.items() if needed & k]
 
         filtered_items = []
         for i in items:
@@ -224,7 +221,7 @@ class RecentFiles(object):
                 filter_data[attr] = getattr(i, "get_" + attr)()
             filter_info = Gtk.RecentFilterInfo()
             filter_info.contains = recent_filter.get_needed()
-            for f, v in filter_data.iteritems():
+            for f, v in filter_data.items():
                 # https://bugzilla.gnome.org/show_bug.cgi?id=695970
                 if isinstance(v, list):
                     continue

@@ -29,9 +29,6 @@ from collections import defaultdict
 import errno
 import os
 import re
-import shutil
-import subprocess
-import tempfile
 
 from . import _vc
 
@@ -230,17 +227,7 @@ class Vc(_vc.Vc):
         if commit:
             args.append("-r%s" % commit)
 
-        process = subprocess.Popen(args,
-                                   cwd=self.root, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-        vc_file = process.stdout
-
-        # Error handling here involves doing nothing; in most cases, the only
-        # sane response is to return an empty temp file.
-
-        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
-            shutil.copyfileobj(vc_file, f)
-        return f.name
+        return _vc.call_temp_output(args, cwd=self.root)
 
     def get_path_for_conflict(self, path, conflict):
         if path in self._reverse_rename_cache and not \

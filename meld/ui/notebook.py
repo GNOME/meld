@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2015-2016 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,10 +34,14 @@ class MeldNotebook(Gtk.Notebook):
         'page-label-changed': (0, None, (GObject.TYPE_STRING,)),
     }
 
-    css = """
+    # Python 3.4; no bytes formatting
+    css = (
+        b"""
         @binding-set TabSwitchBindings {}
-        MeldNotebook { gtk-key-bindings: TabSwitchBindings; }
-    """
+        MeldNotebook { """ +
+        (b"" if Gtk.get_minor_version() <= 18 else b"-") +
+        b"gtk-key-bindings: TabSwitchBindings; }"
+    )
 
     ui = """
         <?xml version="1.0" encoding="UTF-8"?>
@@ -151,6 +155,4 @@ class MeldNotebook(Gtk.Notebook):
         # Only update the window title if the current page is active
         if self.get_current_page() == self.page_num(page):
             self.emit('page-label-changed', text)
-        if isinstance(text, unicode):
-            text = text.encode('utf8')
         self.child_set_property(page, "menu-label", text)

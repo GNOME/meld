@@ -26,10 +26,7 @@
 import errno
 import glob
 import os
-import shutil
-import tempfile
 import xml.etree.ElementTree as ElementTree
-import subprocess
 
 from meld.conf import _
 from . import _vc
@@ -82,18 +79,8 @@ class Vc(_vc.Vc):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
         path = path[len(self.root) + 1:]
 
-        process = subprocess.Popen([self.CMD, "cat", "-r", commit, path],
-                                   cwd=self.root, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-        vc_file = process.stdout
-
-        # Error handling here involves doing nothing; in most cases, the only
-        # sane response is to return an empty temp file. The most common error
-        # is "no base revision until committed" from diffing a new file.
-
-        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
-            shutil.copyfileobj(vc_file, f)
-        return f.name
+        args = [self.CMD, "cat", "-r", commit, path]
+        return _vc.call_temp_output(args, cwd=self.root)
 
     def get_path_for_conflict(self, path, conflict=None):
         """
@@ -188,9 +175,10 @@ class Vc(_vc.Vc):
     def _update_tree_state_cache(self, path):
         while 1:
             try:
+                # "svn --xml" outputs utf8, even with Windows non-utf8 locale
                 proc = _vc.popen(
                     [self.CMD, "status", "-v", "--xml", path],
-                    cwd=self.location)
+                    cwd=self.location, use_locale_encoding=False)
                 tree = ElementTree.parse(proc)
                 break
             except OSError as e:

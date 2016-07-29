@@ -27,7 +27,9 @@ import collections
 import itertools
 import os
 import re
+import shutil
 import subprocess
+import tempfile
 
 from gi.repository import Gio
 
@@ -141,6 +143,19 @@ class Vc(object):
         self._tree_cache = {}
         self._tree_meta_cache = {}
         self._tree_missing_cache = collections.defaultdict(set)
+
+    def run(self, *args):
+        """Return subprocess running VC with `args` at VC's location
+
+        For example, `git_vc.run('log', '-p')` will run `git log -p`
+        and return the subprocess object.
+
+        Note that this runs at the *location*, not at the *root*.
+        """
+        cmd = (self.CMD,) + args
+        return subprocess.Popen(
+            cmd, cwd=self.location, stdout=subprocess.PIPE,
+            universal_newlines=True)
 
     def get_files_to_commit(self, paths):
         """Get a list of files that will be committed from paths
@@ -366,9 +381,39 @@ class InvalidVCRevision(ValueError):
             (self.vc.NAME, self.revision, self.error)
 
 
-# Return the stdout output of a given command
-def popen(cmd, cwd=None):
-    return subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE).stdout
+def popen(cmd, cwd=None, use_locale_encoding=True):
+    """Return the stdout output of a given command as a stream.
+
+    If use_locale_encoding is True, the output is parsed to unicode
+    text stream with universal newlines.
+    If use_locale_encoding is False output is treated as binary stream.
+    """
+    process = subprocess.Popen(
+        cmd, cwd=cwd, stdout=subprocess.PIPE,
+        universal_newlines=use_locale_encoding)
+    return process.stdout
+
+
+def call_temp_output(cmd, cwd, file_id=''):
+    """Call `cmd` in `cwd` and write the output to a temporary file
+
+    This returns the name of the temporary file used. It is the
+    caller's responsibility to delete this file.
+
+    If `file_id` is provided, it is used as part of the
+    temporary file's name, for ease of identification.
+    """
+    process = subprocess.Popen(
+        cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    vc_file = process.stdout
+
+    # Error handling here involves doing nothing; in most cases, the only
+    # sane response is to return an empty temp file.
+
+    prefix = 'meld-tmp' + ('-' + file_id if file_id else '')
+    with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
+        shutil.copyfileobj(vc_file, f)
+    return f.name
 
 
 # Return the return value of a given command

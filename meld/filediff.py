@@ -1,5 +1,3 @@
-# coding=UTF-8
-
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2009-2015 Kai Willadsen <kai.willadsen@gmail.com>
 #
@@ -47,7 +45,6 @@ from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
 from meld.settings import bind_settings, meldsettings
-from .util.compat import text_type
 from meld.sourceview import LanguageManager, get_custom_encoding_candidates
 
 
@@ -100,7 +97,7 @@ class CachedSequenceMatcher(object):
         """
         if len(self.cache) < size_hint * 3:
             return
-        items = self.cache.items()
+        items = list(self.cache.items())
         items.sort(key=lambda it: it[1][1])
         for item in items[:-size_hint * 2]:
             del self.cache[item[0]]
@@ -890,13 +887,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._scroll_to_actions(actions)
 
     def on_text_insert_text(self, buf, it, text, textlen):
-        text = text_type(text, 'utf8')
         self.undosequence.add_action(
             meldbuffer.BufferInsertionAction(buf, it.get_offset(), text))
         buf.create_mark("insertion-start", it, True)
 
     def on_text_delete_range(self, buf, it0, it1):
-        text = text_type(buf.get_text(it0, it1, False), 'utf8')
+        text = buf.get_text(it0, it1, False)
         assert self.deleted_lines_pending == -1
         self.deleted_lines_pending = it1.get_line() - it0.get_line()
         self.undosequence.add_action(
@@ -937,7 +933,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textbuffer[pane]
         sel = buf.get_selection_bounds()
         if sel:
-            return text_type(buf.get_text(sel[0], sel[1], False), 'utf8')
+            return buf.get_text(sel[0], sel[1], False)
 
     def on_find_activate(self, *args):
         selected_text = self.get_selected_text()
@@ -1029,7 +1025,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if label:
             self.label_text = label
         else:
-            self.label_text = (" — ").decode('utf8').join(shortnames)
+            self.label_text = " — ".join(shortnames)
         self.tooltip_text = self.label_text
         self.label_changed()
 
@@ -1094,7 +1090,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pass
 
             filename = GLib.markup_escape_text(
-                gfile.get_parse_name()).decode('utf-8')
+                gfile.get_parse_name())
             primary = _(
                 u"There was a problem opening the file “%s”." % filename)
             self.msgarea_mgr[pane].add_dismissable_msg(
@@ -1188,7 +1184,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # Notification for unknown buffer
             return
         gfile = Gio.File.new_for_path(data.filename)
-        display_name = gfile.get_parse_name().decode('utf-8')
+        display_name = gfile.get_parse_name()
         primary = _("File %s has changed on disk") % display_name
         secondary = _("Do you want to reload the file?")
         self.msgarea_mgr[pane].add_action_msg(
@@ -1228,8 +1224,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # We need to clear removed and modified chunks, and need to
         # re-highlight added and modified chunks.
-        need_clearing = sorted(list(removed_chunks))
-        need_highlighting = sorted(list(added_chunks) + [modified_chunks])
+        need_clearing = sorted(
+            list(removed_chunks),
+            key=diffutil.merged_chunk_order)
+        need_highlighting = sorted(
+            list(added_chunks) + [modified_chunks],
+            key=diffutil.merged_chunk_order)
 
         alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]
 
@@ -1265,9 +1265,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # We don't use self.buffer_texts here, as removing line
                 # breaks messes with inline highlighting in CRLF cases
                 text1 = bufs[0].get_text(starts[0], ends[0], False)
-                text1 = text_type(text1, 'utf8')
                 textn = bufs[1].get_text(starts[1], ends[1], False)
-                textn = text_type(textn, 'utf8')
 
                 # Bail on long sequences, rather than try a slow comparison
                 inline_limit = 10000
@@ -1295,9 +1293,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         return
 
                     text1 = bufs[0].get_text(starts[0], ends[0], False)
-                    text1 = text_type(text1, 'utf8')
                     textn = bufs[1].get_text(starts[1], ends[1], False)
-                    textn = text_type(textn, 'utf8')
 
                     if texts != (text1, textn):
                         return
@@ -1493,7 +1489,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if not force_overwrite and not bufdata.current_on_disk():
             primary = (
                 _("File %s has changed on disk since it was opened") %
-                bufdata.gfile.get_parse_name().decode('utf-8'))
+                bufdata.gfile.get_parse_name())
             secondary = _("If you save it, any external changes will be lost.")
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                 'dialog-warning-symbolic', primary, secondary)
@@ -1510,10 +1506,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return False
 
         start, end = buf.get_bounds()
-        text = text_type(buf.get_text(start, end, False), 'utf8')
+        text = buf.get_text(start, end, False)
 
         source_encoding = bufdata.sourcefile.get_encoding()
-        while isinstance(text, unicode):
+        while isinstance(text, str):
             try:
                 encoding = source_encoding.get_charset()
                 text = text.encode(encoding)
@@ -1560,7 +1556,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # TODO: Handle recoverable error cases, like external modifications
             # or invalid buffer characters.
             filename = GLib.markup_escape_text(
-                gfile.get_parse_name()).decode('utf-8')
+                gfile.get_parse_name())
             misc.error_dialog(
                 primary=_("Could not save file %s.") % filename,
                 secondary=_("Couldn't save file due to:\n%s") % (
@@ -1813,7 +1809,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
         start = b0.get_iter_at_line_or_eof(chunk[1])
         end = b0.get_iter_at_line_or_eof(chunk[2])
-        t0 = text_type(b0.get_text(start, end, False), 'utf8')
+        t0 = b0.get_text(start, end, False)
 
         if copy_up:
             if chunk[2] >= b0.get_line_count() and \
@@ -1840,7 +1836,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         src_end = b0.get_iter_at_line_or_eof(chunk[2])
         dst_start = b1.get_iter_at_line_or_eof(chunk[3])
         dst_end = b1.get_iter_at_line_or_eof(chunk[4])
-        t0 = text_type(b0.get_text(src_start, src_end, False), 'utf8')
+        t0 = b0.get_text(src_start, src_end, False)
         mark0 = b1.create_mark(None, dst_start, True)
         self.textbuffer[dst].begin_user_action()
         b1.delete(dst_start, dst_end)

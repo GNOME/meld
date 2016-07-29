@@ -199,9 +199,9 @@ def colour_lookup_with_fallback(name, attribute):
 
     if not style_attr:
         import sys
-        print >> sys.stderr, _(
+        print(_(
             "Couldn't find colour scheme details for %s-%s; "
-            "this is a bad install") % (name, attribute)
+            "this is a bad install") % (name, attribute), file=sys.stderr)
         sys.exit(1)
 
     return parse_rgba(style_attr)
@@ -228,31 +228,6 @@ def get_common_theme():
 
 def gdk_to_cairo_color(color):
     return (color.red / 65535., color.green / 65535., color.blue / 65535.)
-
-
-def fallback_decode(bytes, encodings, lossy=False):
-    """Try and decode bytes according to multiple encodings
-
-    Generally, this should be used for best-effort decoding, when the
-    desired behaviour is "probably this, or UTF-8".
-
-    If lossy is True, then decode errors will be replaced. This may be
-    reasonable when the string is for display only.
-    """
-    if isinstance(bytes, unicode):
-        return bytes
-
-    for encoding in encodings:
-        try:
-            return bytes.decode(encoding)
-        except UnicodeDecodeError:
-            pass
-
-    if lossy:
-        return bytes.decode(encoding, errors='replace')
-
-    raise ValueError(
-        "Couldn't decode %r as one of %r" % (bytes, encodings))
 
 
 def all_same(lst):
@@ -307,10 +282,10 @@ def read_pipe_iter(command, workdir, errorstream, yield_interval=0.1):
                                   self.proc.wait())
 
         def __call__(self):
-            self.proc = subprocess.Popen(command, cwd=workdir,
-                                         stdin=subprocess.PIPE,
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.PIPE)
+            self.proc = subprocess.Popen(
+                command, cwd=workdir, stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True)
             self.proc.stdin.close()
             childout, childerr = self.proc.stdout, self.proc.stderr
             bits = []

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-
 import atexit
 import functools
 import logging
@@ -120,7 +118,6 @@ class VcTreeStore(tree.DiffTreeStore):
         tree.DiffTreeStore.__init__(self, 1, [str] * 5)
 
     def get_file_path(self, it):
-        # Use instead of value_path; does not incorrectly decode
         return self.get_value(it, self.column_index(tree.COL_PATH, 0))
 
 
@@ -154,13 +151,6 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "unknown": ("VcShowNonVC", Entry.is_nonvc),
         "ignored": ("VcShowIgnored", Entry.is_ignored),
     }
-
-    file_encoding = sys.getfilesystemencoding()
-
-    @classmethod
-    def display_path(cls, bytes):
-        encodings = (cls.file_encoding,)
-        return misc.fallback_decode(bytes, encodings, lossy=True)
 
     def __init__(self):
         melddoc.MeldDoc.__init__(self)
@@ -331,15 +321,14 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return recent.TYPE_VC, [self.location]
 
     def recompute_label(self):
-        location = self.display_path(self.location)
-        self.label_text = os.path.basename(location)
+        self.label_text = os.path.basename(self.location)
         # TRANSLATORS: This is the location of the directory being viewed
-        self.tooltip_text = _("%s: %s") % (_("Location"), location)
+        self.tooltip_text = _("%s: %s") % (_("Location"), self.location)
         self.label_changed()
 
     def _search_recursively_iter(self, iterstart):
         rootname = self.model.get_file_path(iterstart)
-        display_prefix = len(self.display_path(rootname)) + 1
+        display_prefix = len(rootname) + 1
         symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
 
@@ -354,7 +343,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             todo.sort()
             treepath, path = todo.pop(0)
             it = self.model.get_iter(treepath)
-            yield _("Scanning %s") % self.display_path(path)[display_prefix:]
+            yield _("Scanning %s") % path[display_prefix:]
 
             entries = self.vc.get_entries(path)
             entries = [e for e in entries if any(f(e) for f in filters)]
@@ -427,7 +416,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.emit("create-diff", [path], {})
             return
 
-        basename = self.display_path(os.path.basename(path))
+        basename = os.path.basename(path)
         meta = {
             'parent': self,
             'prompt_resolve': False,
