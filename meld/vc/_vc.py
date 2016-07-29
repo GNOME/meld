@@ -144,18 +144,22 @@ class Vc(object):
         self._tree_meta_cache = {}
         self._tree_missing_cache = collections.defaultdict(set)
 
-    def run(self, *args):
+    def run(self, *args, use_locale_encoding=True):
         """Return subprocess running VC with `args` at VC's location
 
         For example, `git_vc.run('log', '-p')` will run `git log -p`
         and return the subprocess object.
+
+        If use_locale_encoding is True, the return value is a unicode
+        text stream with universal newlines. If use_locale_encoding is
+        False, the return value is a binary stream.
 
         Note that this runs at the *location*, not at the *root*.
         """
         cmd = (self.CMD,) + args
         return subprocess.Popen(
             cmd, cwd=self.location, stdout=subprocess.PIPE,
-            universal_newlines=True)
+            universal_newlines=use_locale_encoding)
 
     def get_files_to_commit(self, paths):
         """Get a list of files that will be committed from paths
