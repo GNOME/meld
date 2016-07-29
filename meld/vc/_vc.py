@@ -427,11 +427,11 @@ def call(cmd, cwd=None):
 
 
 base_re = re.compile(
-    r"^<{7}.*?$\r?\n(?P<local>.*?)"
-    r"^\|{7}.*?$\r?\n(?P<base>.*?)"
-    r"^={7}.*?$\r?\n(?P<remote>.*?)"
-    r"^>{7}.*?$\r?\n", flags=re.DOTALL | re.MULTILINE)
+    br"^<{7}.*?$\r?\n(?P<local>.*?)"
+    br"^\|{7}.*?$\r?\n(?P<base>.*?)"
+    br"^={7}.*?$\r?\n(?P<remote>.*?)"
+    br"^>{7}.*?$\r?\n", flags=re.DOTALL | re.MULTILINE)
 
 
 def base_from_diff3(merged):
-    return base_re.sub(r"==== BASE ====\n\g<base>==== BASE ====\n", merged)
+    return base_re.sub(br"==== BASE ====\n\g<base>==== BASE ====\n", merged)

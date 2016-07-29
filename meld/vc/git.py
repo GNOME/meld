@@ -187,7 +187,7 @@ class Vc(_vc.Vc):
         pre-merged result everywhere that has no conflict, and the
         common ancestor anywhere there *is* a conflict.
         """
-        proc = self.run("merge-file", "-p", "--diff3", local, base, remote)
+        proc = self.run("merge-file", "-p", "--diff3", local, base, remote, universal_newlines=False)
         vc_file = io.BytesIO(
             _vc.base_from_diff3(proc.stdout.read()))
 
