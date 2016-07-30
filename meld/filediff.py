@@ -176,7 +176,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.warned_bad_comparison = False
         self._keymask = 0
         self.meta = {}
-        self.deleted_lines_pending = -1
+        self.lines_removed = 0
         self.textview_overwrite = 0
         self.focus_pane = None
         self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
@@ -795,12 +795,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         lines_added = it.get_line() - starting_at
         self._after_text_modified(buf, starting_at, lines_added)
 
-    def after_text_delete_range(self, buffer, it0, it1):
+    def after_text_delete_range(self, buf, it0, it1):
         starting_at = it0.get_line()
-        assert self.deleted_lines_pending != -1
-        self._after_text_modified(buffer, starting_at, -self.deleted_lines_pending)
-        self.deleted_lines_pending = -1
-
+        self._after_text_modified(buf, starting_at, -self.lines_removed)
+        self.lines_removed = 0
 
     def check_save_modified(self):
         response = Gtk.ResponseType.OK
@@ -893,8 +891,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_text_delete_range(self, buf, it0, it1):
         text = buf.get_text(it0, it1, False)
-        assert self.deleted_lines_pending == -1
-        self.deleted_lines_pending = it1.get_line() - it0.get_line()
+        self.lines_removed = it1.get_line() - it0.get_line()
         self.undosequence.add_action(
             meldbuffer.BufferDeletionAction(buf, it0.get_offset(), text))
 
