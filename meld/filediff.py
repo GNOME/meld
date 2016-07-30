@@ -748,9 +748,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
 
-    def _after_text_modified(self, buffer, startline, sizechange):
+    def _after_text_modified(self, buf, startline, sizechange):
         if self.num_panes > 1:
-            pane = self.textbuffer.index(buffer)
+            pane = self.textbuffer.index(buf)
             if not self.linediffer.syncpoints:
                 self.linediffer.change_sequence(pane, startline, sizechange,
                                                 self.buffer_filtered)
