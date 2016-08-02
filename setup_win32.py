@@ -131,7 +131,6 @@ setup(
     packages=[
         'meld',
         'meld.ui',
-        'meld.util',
         'meld.vc',
     ],
     package_data={
