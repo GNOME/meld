@@ -1539,6 +1539,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # handling the GtkSource.FileSaverError.EXTERNALLY_MODIFIED error
         if force_overwrite:
             saver.set_flags(GtkSource.FileSaverFlags.IGNORE_MODIFICATION_TIME)
+        bufdata.disconnect_monitor()
         saver.save_async(
             GLib.PRIORITY_HIGH,
             callback=self.file_saved_cb,
@@ -1549,6 +1550,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def file_saved_cb(self, saver, result, user_data):
         gfile = saver.get_location()
         pane = user_data[0]
+        buf = saver.get_buffer()
+        buf.data.connect_monitor()
 
         try:
             saver.save_finish(result)
@@ -1565,7 +1568,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.state = melddoc.STATE_SAVING_ERROR
             return
 
-        buf = saver.get_buffer()
         self.emit('file-changed', gfile.get_path())
         self.undosequence.checkpoint(buf)
         buf.data.update_mtime()

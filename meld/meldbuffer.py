@@ -123,7 +123,7 @@ class MeldBufferData(GObject.GObject):
         self.savefile = None
 
     def __del__(self):
-        self._disconnect_monitor()
+        self.disconnect_monitor()
 
     @property
     def label(self):
@@ -139,14 +139,14 @@ class MeldBufferData(GObject.GObject):
             return
         self._label = value
 
-    def _connect_monitor(self):
+    def connect_monitor(self):
         if not self._gfile:
             return
         monitor = self._gfile.monitor_file(Gio.FileMonitorFlags.NONE, None)
         handler_id = monitor.connect('changed', self._handle_file_change)
         self._monitor = monitor, handler_id
 
-    def _disconnect_monitor(self):
+    def disconnect_monitor(self):
         if not self._monitor:
             return
         monitor, handler_id = self._monitor
@@ -176,7 +176,7 @@ class MeldBufferData(GObject.GObject):
 
     @gfile.setter
     def gfile(self, value):
-        self._disconnect_monitor()
+        self.disconnect_monitor()
         self._gfile = value
         self._sourcefile = GtkSource.File()
         self._sourcefile.set_location(value)
@@ -186,7 +186,7 @@ class MeldBufferData(GObject.GObject):
         # FIXME: maintaining previous comment above; this is now wrong in different awful ways
         self.filename = value.get_path() if value else None
         self.update_mtime()
-        self._connect_monitor()
+        self.connect_monitor()
 
     @property
     def sourcefile(self):
