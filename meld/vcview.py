@@ -229,30 +229,36 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         vcs_model = self.combobox_vcs.get_model()
         vcs_model.clear()
 
-        # VC systems work at the directory level, so make sure we're checking
-        # for VC support there instead of on a specific file.
+        # VC systems can be executed at the directory level, so make sure
+        # we're checking for VC support there instead of
+        # on a specific file or on deleted/unexisting path inside vc
         location = os.path.abspath(location or ".")
-        if os.path.isfile(location):
-            location = os.path.dirname(location)
+        while not os.path.isdir(location):
+            parent_location = os.path.dirname(location)
+            if len(parent_location) >= len(location):
+                # no existing parent: for example unexisting drive on Windows
+                break
+            location = parent_location
+        else:
+            # existing parent directory was found
+            for avc in vc.get_vcs(location):
+                err_str = ''
+                vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
 
-        for avc in vc.get_vcs(location):
-            err_str = ''
-            vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
+                if not avc.is_installed():
+                    # Translators: This error message is shown when a version
+                    # control binary isn't installed.
+                    err_str = _("%(name)s (%(cmd)s not installed)")
+                elif not avc.valid_repo(location):
+                    # Translators: This error message is shown when a version
+                    # controlled repository is invalid.
+                    err_str = _("%(name)s (Invalid repository)")
 
-            if not avc.is_installed():
-                # Translators: This error message is shown when a version
-                # control binary isn't installed.
-                err_str = _("%(name)s (%(cmd)s not installed)")
-            elif not avc.valid_repo(location):
-                # Translators: This error message is shown when a version
-                # controlled repository is invalid.
-                err_str = _("%(name)s (Invalid repository)")
+                if err_str:
+                    vcs_model.append([err_str % vc_details, avc, False])
+                    continue
 
-            if err_str:
-                vcs_model.append([err_str % vc_details, avc, False])
-                continue
-
-            vcs_model.append([avc.NAME, avc(location), True])
+                vcs_model.append([avc.NAME, avc(location), True])
 
         valid_vcs = [(i, r[1].NAME) for i, r in enumerate(vcs_model) if r[2]]
         default_active = min(valid_vcs)[0] if valid_vcs else 0
