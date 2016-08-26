@@ -197,6 +197,6 @@ class HighlightModeSelector(TemplateHackMixin, Gtk.Grid):
         self.emit('language-selected', lang)
 
 
-template = open(ui_file('gedit-highlight-mode-selector.ui')).read()
+template = open(ui_file('gedit-highlight-mode-selector.ui'), 'rb').read()
 template_bytes = GLib.Bytes.new(template)
 HighlightModeSelector.set_template(template_bytes)
