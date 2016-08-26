@@ -85,6 +85,17 @@ class PatchDialog(gnomeglade.Component):
             start, end = b.get_bounds()
             text = b.get_text(start, end, False)
             lines = text.splitlines(True)
+
+            # Ensure that the last line ends in a newline
+            barelines = text.splitlines(False)
+            if barelines and lines and barelines[-1] == lines[-1]:
+                # Final line lacks a line-break; add in a best guess
+                if len(lines) > 1:
+                    previous_linebreak = lines[-2][len(barelines[-2]):]
+                else:
+                    previous_linebreak = "\n"
+                lines[-1] += previous_linebreak
+
             texts.append(lines)
 
         names = [self.filediff.textbuffer[i].data.label for i in range(3)]
