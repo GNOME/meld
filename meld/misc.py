@@ -482,10 +482,14 @@ def apply_text_filters(txt, regexes, apply_fn=None):
     """Apply text filters
 
     Text filters "regexes", resolved as regular expressions are applied
-    to "txt".
+    to "txt". "txt" may be either strings or bytes, but the supplied
+    regexes must match the type.
 
     "apply_fn" is a callable run for each filtered interval
     """
+    empty_string = b"" if isinstance(txt, bytes) else ""
+    newline = b"\n" if isinstance(txt, bytes) else "\n"
+
     filter_ranges = []
     for r in regexes:
         for match in r.finditer(txt):
@@ -513,8 +517,8 @@ def apply_text_filters(txt, regexes, apply_fn=None):
     offset = 0
     result_txts = []
     for (start, end) in filter_ranges:
-        assert txt[start:end].count("\n") == 0
+        assert txt[start:end].count(newline) == 0
         result_txts.append(txt[offset:start])
         offset = end
     result_txts.append(txt[offset:])
-    return "".join(result_txts)
+    return empty_string.join(result_txts)
