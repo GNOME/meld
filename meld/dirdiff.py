@@ -797,7 +797,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         # no siblings. If we're here, we have an empty tree.
                         if parent is None:
                             self.model.add_empty(it)
-                            expanded.add(tuple_tree_path(rootpath))
                             break
 
                         # Remove the current row, and then revalidate all
