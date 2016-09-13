@@ -18,6 +18,7 @@
 
 import copy
 import functools
+import math
 import os
 import time
 
@@ -1715,6 +1716,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 val += (other_line-int(other_line)) * height
                 val = min(max(val, adj.get_lower()),
                           adj.get_upper() - adj.get_page_size())
+                val = math.floor(val)
                 adj.set_value(val)
 
                 # If we just changed the central bar, make it the master
