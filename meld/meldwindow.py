@@ -414,7 +414,8 @@ class MeldWindow(gnomeglade.Component):
         state = event.window.get_state()
         nosave = Gdk.WindowState.FULLSCREEN | Gdk.WindowState.MAXIMIZED
         if not (state & nosave):
-            variant = GLib.Variant('(ii)', (event.width, event.height))
+            width, height = self.widget.get_size()
+            variant = GLib.Variant('(ii)', (width, height))
             settings.set_value('window-size', variant)
 
         maximised = state & Gdk.WindowState.MAXIMIZED
