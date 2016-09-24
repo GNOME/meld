@@ -237,6 +237,27 @@ def setup_logging():
     log.addHandler(handler)
 
 
+def setup_glib_logging():
+    from gi.repository import GLib
+    levels = {
+        GLib.LogLevelFlags.LEVEL_WARNING: logging.WARNING,
+        GLib.LogLevelFlags.LEVEL_ERROR: logging.ERROR,
+        GLib.LogLevelFlags.LEVEL_CRITICAL: logging.CRITICAL,
+    }
+    level_flag = (
+        GLib.LogLevelFlags.LEVEL_WARNING |
+        GLib.LogLevelFlags.LEVEL_ERROR |
+        GLib.LogLevelFlags.LEVEL_CRITICAL
+    )
+
+    log_domain = "Gtk"
+    log = logging.getLogger(log_domain)
+
+    def log_adapter(domain, level, message, user_data):
+        log.log(levels[level], message)
+    GLib.log_set_handler(log_domain, level_flag, log_adapter, None)
+
+
 def environment_hacks():
     # We manage cwd ourselves for git operations, and GIT_DIR in particular
     # can mess with this when set.
@@ -251,6 +272,7 @@ if __name__ == '__main__':
     setup_logging()
     disable_stdout_buffering()
     check_requirements()
+    setup_glib_logging()
     setup_resources()
     setup_settings()
     environment_hacks()
