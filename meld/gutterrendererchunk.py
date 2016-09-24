@@ -30,6 +30,13 @@ from meld.settings import meldsettings
 # and not necessarily desirable.
 LINE_HEIGHT = 16
 
+GTK_RENDERER_STATE_MAPPING = {
+    GtkSource.GutterRendererState.NORMAL: Gtk.StateFlags.NORMAL,
+    GtkSource.GutterRendererState.CURSOR: Gtk.StateFlags.FOCUSED,
+    GtkSource.GutterRendererState.PRELIT: Gtk.StateFlags.PRELIGHT,
+    GtkSource.GutterRendererState.SELECTED: Gtk.StateFlags.SELECTED,
+}
+
 
 def load(icon_name):
     icon_theme = Gtk.IconTheme.get_default()
@@ -55,6 +62,14 @@ def get_background_rgba(renderer):
                 stylecontext.lookup_color('theme_bg_color'))
     return _background_rgba
 _background_rgba = None
+
+
+def renderer_to_gtk_state(state):
+    gtk_state = Gtk.StateFlags(0)
+    for renderer_flag, gtk_flag in GTK_RENDERER_STATE_MAPPING.items():
+        if renderer_flag & state:
+            gtk_state |= gtk_flag
+    return gtk_state
 
 
 class MeldGutterRenderer(object):
