@@ -102,9 +102,10 @@ class MeldGutterRenderer(object):
     def query_chunks(self, start, end, state):
         line = start.get_line()
         chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
+        in_chunk = chunk_index is not None
 
         chunk = None
-        if chunk_index is not None:
+        if in_chunk:
             chunk = self.linediffer.get_chunk(
                 chunk_index, self.from_pane, self.to_pane)
 
@@ -120,6 +121,7 @@ class MeldGutterRenderer(object):
             background_rgba = get_background_rgba(self)
         self._chunk = chunk
         self.set_background(background_rgba)
+        return in_chunk
 
 
 class GutterRendererChunkAction(
