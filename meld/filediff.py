@@ -205,6 +205,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     window = Gtk.TextWindowType.LEFT
                 views = [self.textview[pane], self.textview[pane + 1]]
                 renderer = GutterRendererChunkAction(pane, pane + 1, views, self, self.linediffer)
+                renderer.set_alignment_mode(GtkSource.GutterRendererAlignmentMode.FIRST)
+                renderer.set_padding(3, 0)
+                renderer.set_alignment(0.5, 0.5)
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, 10)
             if pane in (1, 2):
@@ -213,6 +216,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     window = Gtk.TextWindowType.RIGHT
                 views = [self.textview[pane], self.textview[pane - 1]]
                 renderer = GutterRendererChunkAction(pane, pane - 1, views, self, self.linediffer)
+                renderer.set_alignment_mode(GtkSource.GutterRendererAlignmentMode.FIRST)
+                renderer.set_padding(3, 0)
+                renderer.set_alignment(0.5, 0.5)
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, -40)
 
