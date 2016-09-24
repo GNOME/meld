@@ -226,6 +226,25 @@ class GutterRendererChunkAction(
         self.views_editable = [v.get_editable() for v in self.views]
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
+        if self.is_action:
+            stylecontext = self.props.view.get_style_context()
+            stylecontext.save()
+            stylecontext.set_state(renderer_to_gtk_state(state))
+            stylecontext.add_class(Gtk.STYLE_CLASS_BUTTON)
+            stylecontext.add_class(Gtk.STYLE_CLASS_FLAT)
+
+            button_area = background_area.copy()
+            button_area.x += 1
+            button_area.width -= 2
+
+            Gtk.render_background(
+                stylecontext, context, button_area.x, button_area.y,
+                button_area.width, button_area.height)
+            Gtk.render_frame(
+                stylecontext, context, button_area.x, button_area.y,
+                button_area.width, button_area.height)
+            stylecontext.restore()
+
         GtkSource.GutterRendererPixbuf.do_draw(
             self, context, background_area, cell_area, start, end, state)
         self.draw_chunks(
