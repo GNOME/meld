@@ -156,6 +156,7 @@ class GutterRendererChunkAction(
         if self.views[0].get_direction() == Gtk.TextDirection.RTL:
             direction = 'LTR' if direction == 'RTL' else 'RTL'
 
+        self.is_action = False
         self.action_map = self.ACTION_MAP[direction]
         self.filediff = filediff
         self.filediff.connect("action-mode-changed",
@@ -234,6 +235,7 @@ class GutterRendererChunkAction(
             pixbuf = self.action_map.get(action)
         else:
             pixbuf = None
+        self.is_action = bool(pixbuf)
         self.props.pixbuf = pixbuf
 
     def on_container_mode_changed(self, container, mode):
