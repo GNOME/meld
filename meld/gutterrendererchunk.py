@@ -61,9 +61,6 @@ class MeldGutterRenderer(object):
         width = background_area.width + 2
         height = 1 if chunk[1] == chunk[2] else background_area.height
 
-        context.save()
-        context.set_line_width(1.0)
-
         context.rectangle(x, y, width, height)
         context.set_source_rgba(*self.fill_colors[chunk[0]])
 
@@ -74,6 +71,7 @@ class MeldGutterRenderer(object):
         context.fill()
 
         if line == chunk[1] or line == chunk[2] - 1:
+            context.set_line_width(1.0)
             context.set_source_rgba(*self.line_colors[chunk[0]])
             if line == chunk[1]:
                 context.move_to(x, y + 0.5)
@@ -82,8 +80,6 @@ class MeldGutterRenderer(object):
                 context.move_to(x, y - 0.5 + height)
                 context.rel_line_to(width, 0)
             context.stroke()
-
-        context.restore()
 
 
 class GutterRendererChunkAction(
