@@ -45,21 +45,11 @@ class MeldGutterRenderer(object):
     def draw_chunks(
             self, context, background_area, cell_area, start, end, state):
 
-        stylecontext = self.props.view.get_style_context()
-        background_set, background_rgba = (
-            stylecontext.lookup_color('theme_bg_color'))
-
         line = start.get_line()
         chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
 
         context.save()
         context.set_line_width(1.0)
-
-        context.rectangle(
-            background_area.x, background_area.y,
-            background_area.width, background_area.height)
-        context.set_source_rgba(*background_rgba)
-        context.fill()
 
         if chunk_index is not None:
             chunk = self.linediffer.get_chunk(
@@ -201,6 +191,14 @@ class GutterRendererChunkAction(
             if chunk and chunk[1] == line:
                 action = self._classify_change_actions(chunk)
                 pixbuf = self.action_map.get(action)
+            self.set_background(None)
+        else:
+            # TODO: Remove when fixed in upstream GTK+
+            stylecontext = self.props.view.get_style_context()
+            background_set, background_rgba = (
+                stylecontext.lookup_color('theme_bg_color'))
+            self.set_background(background_rgba)
+
         if pixbuf:
             self.set_pixbuf(pixbuf)
         else:
