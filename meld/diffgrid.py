@@ -166,25 +166,11 @@ class DiffGrid(Gtk.Grid):
             allocation.x, wmap1, wpane1, wlink1, wpane2, wlink2, wpane3, wmap2)
         columns = [sum(wcols[:i + 1]) for i in range(len(wcols))]
 
-        def get_child_prop_int(child, name):
-            prop = GObject.Value(int)
-            self.child_get_property(child, name, prop)
-            return prop.get_int()
-
-        def get_child_attach(child):
-            attach = [
-                get_child_prop_int(child, 'left-attach'),
-                get_child_prop_int(child, 'top-attach'),
-                get_child_prop_int(child, 'width'),
-                get_child_prop_int(child, 'height'),
-            ]
-            return attach
-
         def child_allocate(child):
             if not child.get_visible():
                 return
-            attach = get_child_attach(child)
-            left, top, width, height = attach
+            left, top, width, height = self.child_get(
+                child, 'left-attach', 'top-attach', 'width', 'height')
             # This is a copy, and we have to do this because there's no Python
             # access to Gtk.Allocation.
             child_alloc = self.get_allocation()
