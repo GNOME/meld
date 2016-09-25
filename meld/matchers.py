@@ -82,8 +82,11 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
     def __init__(self, isjunk=None, a="", b=""):
         if isjunk is not None:
             raise NotImplementedError('isjunk is not supported yet')
-        self.a = a
-        self.b = b
+        # The sequences we're comparing must be considered immutable;
+        # calling e.g., GtkTextBuffer methods to retrieve these line-by-line
+        # isn't really a thing we can or should do.
+        self.a = a[:]
+        self.b = b[:]
         self.matching_blocks = self.opcodes = None
         self.aindex = []
         self.bindex = []
