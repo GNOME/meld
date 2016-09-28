@@ -410,15 +410,22 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("PrevChange").set_sensitive(have_prev)
         self.actiongroup.get_action("NextChange").set_sensitive(have_next)
 
-    def on_configure_event(self, window, event):
-        state = event.window.get_state()
+    def on_size_allocate(self, window, allocation):
+        gdk_window = window.get_window()
+        if not gdk_window:
+            return
         nosave = Gdk.WindowState.FULLSCREEN | Gdk.WindowState.MAXIMIZED
-        if not (state & nosave):
+        if not (gdk_window.get_state() & nosave):
             width, height = self.widget.get_size()
             variant = GLib.Variant('(ii)', (width, height))
             settings.set_value('window-size', variant)
 
+    def on_window_state_event(self, window, event):
+        state = event.window.get_state()
+
+        # TODO: Handle fullscreen
         maximised = state & Gdk.WindowState.MAXIMIZED
+        # fullscreen = state & Gdk.WindowState.FULLSCREEN
         window_state = 'maximized' if maximised else 'normal'
         settings.set_string('window-state', window_state)
 
