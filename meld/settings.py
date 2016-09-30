@@ -13,10 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
 from gi.repository import Gio
-from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Pango
 from gi.repository import GtkSource
@@ -81,32 +78,16 @@ class MeldSettings(GObject.GObject):
         return Pango.FontDescription(font_string)
 
 
-def find_schema(schema_id):
-    schema_source = Gio.SettingsSchemaSource.new_from_directory(
-        meld.conf.DATADIR,
-        Gio.SettingsSchemaSource.get_default(),
-        False,
-    )
-    return schema_source.lookup(schema_id, False)
-
-
-def check_backend():
-    force_ini = os.path.exists(
-        os.path.join(GLib.get_user_config_dir(), 'meld', 'use-rc-prefs'))
-    if force_ini:
-        # TODO: Use GKeyfileSettingsBackend once available (see bgo#682702)
-        print("Using a flat-file settings backend is not yet supported")
-        return None
-    return None
-
-
 def load_settings_schema(schema_id, uninstalled=False):
-    backend = check_backend()
     if uninstalled:
-        schema = find_schema(schema_id)
-        settings = Gio.Settings.new_full(schema, backend, None)
-    elif backend:
-        settings = Gio.Settings.new_with_backend(schema_id, backend)
+        schema_source = Gio.SettingsSchemaSource.new_from_directory(
+            meld.conf.DATADIR,
+            Gio.SettingsSchemaSource.get_default(),
+            False,
+        )
+        schema = schema_source.lookup(schema_id, False)
+        settings = Gio.Settings.new_full(
+            schema=schema, backend=None, path=None)
     else:
         settings = Gio.Settings.new(schema_id)
     return settings
