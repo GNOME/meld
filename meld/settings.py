@@ -81,13 +81,13 @@ class MeldSettings(GObject.GObject):
         return Pango.FontDescription(font_string)
 
 
-def find_schema():
+def find_schema(schema_id):
     schema_source = Gio.SettingsSchemaSource.new_from_directory(
         meld.conf.DATADIR,
         Gio.SettingsSchemaSource.get_default(),
         False,
     )
-    return schema_source.lookup(MELD_SCHEMA, False)
+    return schema_source.lookup(schema_id, False)
 
 
 def check_backend():
@@ -100,18 +100,22 @@ def check_backend():
     return None
 
 
+def load_settings_schema(schema_id, uninstalled=False):
+    backend = check_backend()
+    if uninstalled:
+        schema = find_schema(schema_id)
+        settings = Gio.Settings.new_full(schema, backend, None)
+    elif backend:
+        settings = Gio.Settings.new_with_backend(schema_id, backend)
+    else:
+        settings = Gio.Settings.new(schema_id)
+    return settings
+
+
 def create_settings(uninstalled=False):
     global settings, interface_settings, meldsettings
 
-    backend = check_backend()
-    if uninstalled:
-        schema = find_schema()
-        settings = Gio.Settings.new_full(schema, backend, None)
-    elif backend:
-        settings = Gio.Settings.new_with_backend(MELD_SCHEMA, backend)
-    else:
-        settings = Gio.Settings.new(MELD_SCHEMA)
-
+    settings = load_settings_schema(MELD_SCHEMA, uninstalled)
     interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
     meldsettings = MeldSettings()
 
