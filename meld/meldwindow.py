@@ -230,15 +230,18 @@ class MeldWindow(gnomeglade.Component):
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
 
-        self.should_close = False
-        self.idle_hooked = 0
-        self.scheduler = task.LifoScheduler()
-        self.scheduler.connect("runnable", self.on_scheduler_runnable)
+        # Handle saved window size and state
         window_size = settings.get_value('window-size')
         self.widget.set_default_size(window_size[0], window_size[1])
         window_state = settings.get_string('window-state')
         if window_state == 'maximized':
             self.widget.maximize()
+
+        self.should_close = False
+        self.idle_hooked = 0
+        self.scheduler = task.LifoScheduler()
+        self.scheduler.connect("runnable", self.on_scheduler_runnable)
+
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
