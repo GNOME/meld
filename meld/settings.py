@@ -78,8 +78,8 @@ class MeldSettings(GObject.GObject):
         return Pango.FontDescription(font_string)
 
 
-def load_settings_schema(schema_id, uninstalled=False):
-    if uninstalled:
+def load_settings_schema(schema_id):
+    if meld.conf.UNINSTALLED_SCHEMA:
         schema_source = Gio.SettingsSchemaSource.new_from_directory(
             meld.conf.DATADIR,
             Gio.SettingsSchemaSource.get_default(),
@@ -93,10 +93,10 @@ def load_settings_schema(schema_id, uninstalled=False):
     return settings
 
 
-def create_settings(uninstalled=False):
+def create_settings():
     global settings, interface_settings, meldsettings
 
-    settings = load_settings_schema(MELD_SCHEMA, uninstalled)
+    settings = load_settings_schema(MELD_SCHEMA)
     interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
     meldsettings = MeldSettings()
 
