@@ -36,6 +36,7 @@ from .ui import notebooklabel
 from meld.conf import _
 from meld.recent import recent_comparisons
 from meld.settings import interface_settings, settings
+from meld.windowstate import SavedWindowState
 
 
 class MeldWindow(gnomeglade.Component):
@@ -230,12 +231,8 @@ class MeldWindow(gnomeglade.Component):
         self.widget.connect("drag_data_received",
                             self.on_widget_drag_data_received)
 
-        # Handle saved window size and state
-        window_size = settings.get_value('window-size')
-        self.widget.set_default_size(window_size[0], window_size[1])
-        window_state = settings.get_string('window-state')
-        if window_state == 'maximized':
-            self.widget.maximize()
+        self.window_state = SavedWindowState()
+        self.window_state.bind(self.widget)
 
         self.should_close = False
         self.idle_hooked = 0
@@ -412,25 +409,6 @@ class MeldWindow(gnomeglade.Component):
     def on_next_diff_changed(self, doc, have_prev, have_next):
         self.actiongroup.get_action("PrevChange").set_sensitive(have_prev)
         self.actiongroup.get_action("NextChange").set_sensitive(have_next)
-
-    def on_size_allocate(self, window, allocation):
-        gdk_window = window.get_window()
-        if not gdk_window:
-            return
-        nosave = Gdk.WindowState.FULLSCREEN | Gdk.WindowState.MAXIMIZED
-        if not (gdk_window.get_state() & nosave):
-            width, height = self.widget.get_size()
-            variant = GLib.Variant('(ii)', (width, height))
-            settings.set_value('window-size', variant)
-
-    def on_window_state_event(self, window, event):
-        state = event.window.get_state()
-
-        # TODO: Handle fullscreen
-        maximised = state & Gdk.WindowState.MAXIMIZED
-        # fullscreen = state & Gdk.WindowState.FULLSCREEN
-        window_state = 'maximized' if maximised else 'normal'
-        settings.set_string('window-state', window_state)
 
     def on_menu_file_new_activate(self, menuitem):
         self.append_new_comparison()

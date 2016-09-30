@@ -23,21 +23,29 @@
     <value nick="trailing" value="64"/>
   </flags>
 
+  <schema id="org.gnome.meld.WindowState" path="/org/gnome/meld/window-state/">
+      <!-- Saved window state -->
+
+      <key name="width" type="i">
+          <default>-1</default>
+          <summary>Default window width</summary>
+      </key>
+      <key name="height" type="i">
+          <default>-1</default>
+          <summary>Default window height</summary>
+      </key>
+      <key name="is-maximized" type="b">
+          <default>false</default>
+          <summary>Default window maximised state</summary>
+      </key>
+      <key name="is-fullscreen" type="b">
+          <default>false</default>
+          <summary>Default window fullscreen state</summary>
+      </key>
+  </schema>
+
   <schema id="org.gnome.meld" path="/org/gnome/meld/">
       <!-- Application settings -->
-      <key name="window-size" type="(ii)">
-          <default>(-1, -1)</default>
-          <summary>Default window size</summary>
-      </key>
-
-      <key name="window-state" type="s">
-          <choices>
-            <choice value="normal"/>
-            <choice value="maximized"/>
-          </choices>
-          <default>"normal"</default>
-          <summary>Default window state</summary>
-      </key>
 
       <key name="toolbar-visible" type="b">
           <default>true</default>
