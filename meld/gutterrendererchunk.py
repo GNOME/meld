@@ -16,6 +16,7 @@
 import math
 
 from gi.repository import Pango
+from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -62,7 +63,7 @@ class MeldGutterRenderer(object):
         height = 1 if chunk[1] == chunk[2] else background_area.height
 
         context.set_line_width(1.0)
-        context.set_source_rgba(*self.line_colors[chunk[0]])
+        Gdk.cairo_set_source_rgba(context, self.line_colors[chunk[0]])
         if is_first_line:
             context.move_to(x, y + 0.5)
             context.rel_line_to(width, 0)
