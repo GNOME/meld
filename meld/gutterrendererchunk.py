@@ -45,17 +45,11 @@ class MeldGutterRenderer(object):
     def draw_chunks(
             self, context, background_area, cell_area, start, end, state):
 
-        line = start.get_line()
-        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
-
-        if chunk_index is None:
-            return
-
-        chunk = self.linediffer.get_chunk(
-            chunk_index, self.from_pane, self.to_pane)
+        chunk = self._chunk
         if not chunk:
             return
 
+        line = start.get_line()
         is_first_line = line == chunk[1]
         is_last_line = line == chunk[2] - 1
         if not (is_first_line or is_last_line):
@@ -76,6 +70,26 @@ class MeldGutterRenderer(object):
             context.move_to(x, y - 0.5 + height)
             context.rel_line_to(width, 0)
         context.stroke()
+
+    def query_chunks(self, start, end, state):
+        line = start.get_line()
+        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
+
+        if chunk_index is not None:
+            self._chunk = self.linediffer.get_chunk(
+                chunk_index, self.from_pane, self.to_pane)
+
+            if self.props.view.current_chunk_check(self._chunk):
+                background_rgba = self.fill_colors['current-chunk-highlight']
+            else:
+                background_rgba = self.fill_colors[self._chunk[0]]
+        else:
+            self._chunk = None
+            # TODO: Remove when fixed in upstream GTK+
+            stylecontext = self.props.view.get_style_context()
+            background_set, background_rgba = (
+                stylecontext.lookup_color('theme_bg_color'))
+        self.set_background(background_rgba)
 
 
 class GutterRendererChunkAction(
@@ -177,27 +191,14 @@ class GutterRendererChunkAction(
         return False
 
     def do_query_data(self, start, end, state):
+        self.query_chunks(start, end, state)
         line = start.get_line()
-        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
 
-        pixbuf = None
-        if chunk_index is not None:
-            chunk = self.linediffer.get_chunk(
-                chunk_index, self.from_pane, self.to_pane)
-            if chunk and chunk[1] == line:
-                action = self._classify_change_actions(chunk)
-                pixbuf = self.action_map.get(action)
-
-            if self.props.view.current_chunk_check(chunk):
-                background_rgba = self.fill_colors['current-chunk-highlight']
-            else:
-                background_rgba = self.fill_colors[chunk[0]]
+        if self._chunk and self._chunk[1] == line:
+            action = self._classify_change_actions(self._chunk)
+            pixbuf = self.action_map.get(action)
         else:
-            # TODO: Remove when fixed in upstream GTK+
-            stylecontext = self.props.view.get_style_context()
-            background_set, background_rgba = (
-                stylecontext.lookup_color('theme_bg_color'))
-        self.set_background(background_rgba)
+            pixbuf = None
         self.props.pixbuf = pixbuf
 
     def on_container_mode_changed(self, container, mode):
@@ -300,12 +301,13 @@ class GutterRendererChunkLines(
         self.set_size(width)
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
+        GtkSource.GutterRendererText.do_draw(
+            self, context, background_area, cell_area, start, end, state)
         self.draw_chunks(
             context, background_area, cell_area, start, end, state)
-        return GtkSource.GutterRendererText.do_draw(
-            self, context, background_area, cell_area, start, end, state)
 
     def do_query_data(self, start, end, state):
+        self.query_chunks(start, end, state)
         line = start.get_line() + 1
         current_line = state & GtkSource.GutterRendererState.CURSOR
         markup = "<b>%d</b>" % line if current_line else str(line)
