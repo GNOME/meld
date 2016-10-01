@@ -61,12 +61,6 @@ class MeldGutterRenderer(object):
         width = background_area.width + 2
         height = 1 if chunk[1] == chunk[2] else background_area.height
 
-        if self.props.view.current_chunk_check(chunk):
-            highlight = self.fill_colors['current-chunk-highlight']
-            context.rectangle(x, y, width, height)
-            context.set_source_rgba(*highlight)
-            context.fill()
-
         if line == chunk[1] or line == chunk[2] - 1:
             context.set_line_width(1.0)
             context.set_source_rgba(*self.line_colors[chunk[0]])
@@ -188,14 +182,17 @@ class GutterRendererChunkAction(
             if chunk and chunk[1] == line:
                 action = self._classify_change_actions(chunk)
                 pixbuf = self.action_map.get(action)
-            self.set_background(self.fill_colors[chunk[0]])
 
+            if self.props.view.current_chunk_check(chunk):
+                background_rgba = self.fill_colors['current-chunk-highlight']
+            else:
+                background_rgba = self.fill_colors[chunk[0]]
         else:
             # TODO: Remove when fixed in upstream GTK+
             stylecontext = self.props.view.get_style_context()
             background_set, background_rgba = (
                 stylecontext.lookup_color('theme_bg_color'))
-            self.set_background(background_rgba)
+        self.set_background(background_rgba)
 
         if pixbuf:
             self.set_pixbuf(pixbuf)
