@@ -198,11 +198,7 @@ class GutterRendererChunkAction(
             background_set, background_rgba = (
                 stylecontext.lookup_color('theme_bg_color'))
         self.set_background(background_rgba)
-
-        if pixbuf:
-            self.set_pixbuf(pixbuf)
-        else:
-            self.props.pixbuf = None
+        self.props.pixbuf = pixbuf
 
     def on_container_mode_changed(self, container, mode):
         self.mode = mode
