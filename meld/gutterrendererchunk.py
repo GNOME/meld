@@ -36,6 +36,27 @@ def load(icon_name):
     return icon_theme.load_icon(icon_name, LINE_HEIGHT, 0)
 
 
+def get_background_rgba(renderer):
+    '''Get and cache the expected background for the renderer widget
+
+    Current versions of GTK+ don't paint the background of text view
+    gutters with the actual expected widget background, which causes
+    them to look wrong when put next to any other widgets. This hack
+    just gets the background from the renderer's view, and then caches
+    in for performance, and on the basis that all renderers will be
+    assigned to similarly-styled views. This is fragile, but the
+    alternative is really significantly slower.
+    '''
+    global _background_rgba
+    if _background_rgba is None:
+        if renderer.props.view:
+            stylecontext = renderer.props.view.get_style_context()
+            background_set, _background_rgba = (
+                stylecontext.lookup_color('theme_bg_color'))
+    return _background_rgba
+_background_rgba = None
+
+
 class MeldGutterRenderer(object):
 
     def on_setting_changed(self, meldsettings, key):
@@ -77,19 +98,18 @@ class MeldGutterRenderer(object):
         chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
 
         if chunk_index is not None:
-            self._chunk = self.linediffer.get_chunk(
+            chunk = self.linediffer.get_chunk(
                 chunk_index, self.from_pane, self.to_pane)
 
-            if self.props.view.current_chunk_check(self._chunk):
+            if self.props.view.current_chunk_check(chunk):
                 background_rgba = self.fill_colors['current-chunk-highlight']
             else:
-                background_rgba = self.fill_colors[self._chunk[0]]
+                background_rgba = self.fill_colors[chunk[0]]
         else:
-            self._chunk = None
+            chunk = None
             # TODO: Remove when fixed in upstream GTK+
-            stylecontext = self.props.view.get_style_context()
-            background_set, background_rgba = (
-                stylecontext.lookup_color('theme_bg_color'))
+            background_rgba = get_background_rgba(self)
+        self._chunk = chunk
         self.set_background(background_rgba)
 
 
