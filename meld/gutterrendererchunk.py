@@ -61,14 +61,11 @@ class MeldGutterRenderer(object):
         width = background_area.width + 2
         height = 1 if chunk[1] == chunk[2] else background_area.height
 
-        context.rectangle(x, y, width, height)
-        context.set_source_rgba(*self.fill_colors[chunk[0]])
-
         if self.props.view.current_chunk_check(chunk):
-            context.fill_preserve()
             highlight = self.fill_colors['current-chunk-highlight']
+            context.rectangle(x, y, width, height)
             context.set_source_rgba(*highlight)
-        context.fill()
+            context.fill()
 
         if line == chunk[1] or line == chunk[2] - 1:
             context.set_line_width(1.0)
@@ -165,10 +162,10 @@ class GutterRendererChunkAction(
         return copy_menu
 
     def do_draw(self, context, background_area, cell_area, start, end, state):
+        GtkSource.GutterRendererPixbuf.do_draw(
+            self, context, background_area, cell_area, start, end, state)
         self.draw_chunks(
             context, background_area, cell_area, start, end, state)
-        return GtkSource.GutterRendererPixbuf.do_draw(
-            self, context, background_area, cell_area, start, end, state)
 
     def do_query_activatable(self, start, area, event):
         line = start.get_line()
@@ -191,7 +188,8 @@ class GutterRendererChunkAction(
             if chunk and chunk[1] == line:
                 action = self._classify_change_actions(chunk)
                 pixbuf = self.action_map.get(action)
-            self.set_background(None)
+            self.set_background(self.fill_colors[chunk[0]])
+
         else:
             # TODO: Remove when fixed in upstream GTK+
             stylecontext = self.props.view.get_style_context()
