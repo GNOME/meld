@@ -56,21 +56,26 @@ class MeldGutterRenderer(object):
         if not chunk:
             return
 
+        is_first_line = line == chunk[1]
+        is_last_line = line == chunk[2] - 1
+        if not (is_first_line or is_last_line):
+            # Only paint for the first and last lines of a chunk
+            return
+
         x = background_area.x - 1
         y = background_area.y
         width = background_area.width + 2
         height = 1 if chunk[1] == chunk[2] else background_area.height
 
-        if line == chunk[1] or line == chunk[2] - 1:
-            context.set_line_width(1.0)
-            context.set_source_rgba(*self.line_colors[chunk[0]])
-            if line == chunk[1]:
-                context.move_to(x, y + 0.5)
-                context.rel_line_to(width, 0)
-            if line == chunk[2] - 1:
-                context.move_to(x, y - 0.5 + height)
-                context.rel_line_to(width, 0)
-            context.stroke()
+        context.set_line_width(1.0)
+        context.set_source_rgba(*self.line_colors[chunk[0]])
+        if is_first_line:
+            context.move_to(x, y + 0.5)
+            context.rel_line_to(width, 0)
+        if is_last_line:
+            context.move_to(x, y - 0.5 + height)
+            context.rel_line_to(width, 0)
+        context.stroke()
 
 
 class GutterRendererChunkAction(
