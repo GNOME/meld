@@ -101,7 +101,9 @@ class MeldGutterRenderer(object):
             chunk = self.linediffer.get_chunk(
                 chunk_index, self.from_pane, self.to_pane)
 
-            if self.props.view.current_chunk_check(chunk):
+            if chunk[1] == chunk[2]:
+                background_rgba = get_background_rgba(self)
+            elif self.props.view.current_chunk_check(chunk):
                 background_rgba = self.fill_colors['current-chunk-highlight']
             else:
                 background_rgba = self.fill_colors[chunk[0]]
