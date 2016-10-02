@@ -17,6 +17,7 @@
 
 import math
 
+from gi.repository import Gdk
 from gi.repository import Gtk
 
 from meld.misc import get_common_theme
@@ -115,16 +116,16 @@ class LinkMap(Gtk.DrawingArea):
                                  x_steps[0], f1 - 0.5)
                 context.close_path()
 
-            context.set_source_rgba(*self.fill_colors[c[0]])
+            Gdk.cairo_set_source_rgba(context, self.fill_colors[c[0]])
             context.fill_preserve()
 
             chunk_idx = self.filediff.linediffer.locate_chunk(left, c[1])[0]
             if chunk_idx == self.filediff.cursor.chunk:
                 highlight = self.fill_colors['current-chunk-highlight']
-                context.set_source_rgba(*highlight)
+                Gdk.cairo_set_source_rgba(context, highlight)
                 context.fill_preserve()
 
-            context.set_source_rgba(*self.line_colors[c[0]])
+            Gdk.cairo_set_source_rgba(context, self.line_colors[c[0]])
             context.stroke()
 
     def do_scroll_event(self, event):
