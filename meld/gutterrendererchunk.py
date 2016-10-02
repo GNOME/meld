@@ -180,7 +180,7 @@ class GutterRendererChunkAction(
             # TODO: Need a custom GtkMenuPositionFunc to position this next to
             # the clicked gutter, not where the cursor is
             copy_menu.popup(None, None, None, None, 0, event.time)
-        else:
+        elif action == MODE_REPLACE:
             self.filediff.replace_chunk(self.from_pane, self.to_pane, chunk)
 
     def _make_copy_menu(self, chunk):
