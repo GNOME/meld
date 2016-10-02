@@ -63,6 +63,12 @@ class MeldGutterRenderer(object):
         if key == 'style-scheme':
             # meldsettings.style_scheme
             self.fill_colors, self.line_colors = get_common_theme()
+            alpha = self.fill_colors['current-chunk-highlight'].alpha
+            make_highlight = lambda color: Gdk.RGBA(
+                *[alpha + c * (1.0 - alpha) for c in color])
+            self.chunk_highlights = {
+                k: make_highlight(v) for k, v in self.fill_colors.items()
+            }
 
     def draw_chunks(
             self, context, background_area, cell_area, start, end, state):
@@ -104,7 +110,7 @@ class MeldGutterRenderer(object):
             if chunk[1] == chunk[2]:
                 background_rgba = get_background_rgba(self)
             elif self.props.view.current_chunk_check(chunk):
-                background_rgba = self.fill_colors['current-chunk-highlight']
+                background_rgba = self.chunk_highlights[chunk[0]]
             else:
                 background_rgba = self.fill_colors[chunk[0]]
         else:
