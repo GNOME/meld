@@ -259,21 +259,16 @@ class GutterRendererChunkAction(
             else:
                 change_type = "replace"
 
-        action = None
-        if change_type == "delete":
-            if (editable and (self.mode == MODE_DELETE or not other_editable)):
-                action = MODE_DELETE
-            elif other_editable and self.mode != MODE_DELETE:
-                action = MODE_REPLACE
-        elif change_type == "replace":
-            if not editable:
-                if self.mode in (MODE_INSERT, MODE_REPLACE):
-                    action = self.mode
-            elif not other_editable:
-                action = MODE_DELETE
-            else:
-                action = self.mode
+        if change_type == 'insert':
+            return None
 
+        action = self.mode
+        if action == MODE_DELETE and not editable:
+            action = None
+        elif action == MODE_INSERT and change_type == 'delete':
+            action = MODE_REPLACE
+        if not other_editable:
+            action = MODE_DELETE
         return action
 
 
