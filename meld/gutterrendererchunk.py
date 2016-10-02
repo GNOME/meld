@@ -203,6 +203,9 @@ class GutterRendererChunkAction(
         copy_down.connect('activate', copy_chunk, chunk, False)
         return copy_menu
 
+    def do_begin(self, *args):
+        self.views_editable = [v.get_editable() for v in self.views]
+
     def do_draw(self, context, background_area, cell_area, start, end, state):
         GtkSource.GutterRendererPixbuf.do_draw(
             self, context, background_area, cell_area, start, end, state)
@@ -240,7 +243,7 @@ class GutterRendererChunkAction(
         Returns the action that can be performed given the content and
         context of the change.
         """
-        editable, other_editable = [v.get_editable() for v in self.views]
+        editable, other_editable = self.views_editable
 
         if not editable and not other_editable:
             return None
