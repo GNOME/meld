@@ -43,6 +43,6 @@ class Vc(_vc.Vc):
 
     def get_path_for_repo_file(self, path, commit=None):
         with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
-            with open(path, 'r') as vc_file:
+            with open(path, 'rb') as vc_file:
                 shutil.copyfileobj(vc_file, f)
         return f.name
