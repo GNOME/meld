@@ -74,7 +74,7 @@ class LinkMap(Gtk.DrawingArea):
 
         wtotal = allocation.width
         # For bezier control points
-        x_steps = [-0.5, (1. / 3) * wtotal, (2. / 3) * wtotal, wtotal + 0.5]
+        x_steps = [-0.5, wtotal / 2, wtotal / 2, wtotal + 0.5]
         q_rad = math.pi / 2
 
         left, right = self.view_indices
