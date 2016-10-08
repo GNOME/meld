@@ -103,10 +103,12 @@ class MeldGutterRenderer(object):
         line = start.get_line()
         chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
 
+        chunk = None
         if chunk_index is not None:
             chunk = self.linediffer.get_chunk(
                 chunk_index, self.from_pane, self.to_pane)
 
+        if chunk is not None:
             if chunk[1] == chunk[2]:
                 background_rgba = get_background_rgba(self)
             elif self.props.view.current_chunk_check(chunk):
@@ -114,7 +116,6 @@ class MeldGutterRenderer(object):
             else:
                 background_rgba = self.fill_colors[chunk[0]]
         else:
-            chunk = None
             # TODO: Remove when fixed in upstream GTK+
             background_rgba = get_background_rgba(self)
         self._chunk = chunk
