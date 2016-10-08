@@ -23,18 +23,17 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from .ui import gnomeglade
-
 from meld.conf import _
 from meld.misc import error_dialog
 from meld.settings import meldsettings
 from meld.sourceview import LanguageManager
+from meld.ui.gnomeglade import Component
 
 
-class PatchDialog(gnomeglade.Component):
+class PatchDialog(Component):
 
     def __init__(self, filediff):
-        gnomeglade.Component.__init__(self, "patch-dialog.ui", "patchdialog")
+        super().__init__("patch-dialog.ui", "patchdialog")
 
         self.widget.set_transient_for(filediff.widget.get_toplevel())
         self.filediff = filediff
