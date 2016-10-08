@@ -27,21 +27,21 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.conf import _
-from meld.matchers import diffutil
 from . import meldbuffer
 from . import melddoc
-from meld.matchers import merge
 from . import misc
-from . import patchdialog
 from . import recent
 from . import undo
-from .ui import findbar
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
+from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
+from meld.matchers.merge import Merger
+from meld.patchdialog import PatchDialog
 from meld.settings import bind_settings, meldsettings
 from meld.sourceview import LanguageManager, get_custom_encoding_candidates
+from meld.ui.findbar import FindBar
 
 
 def with_focused_pane(function):
@@ -83,7 +83,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         default=False,
     )
 
-    differ = diffutil.Differ
+    differ = Differ
 
     keylookup = {
         Gdk.KEY_Shift_L: MASK_SHIFT,
@@ -168,7 +168,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.actiongroup = self.FilediffActions
         self.actiongroup.set_translation_domain("meld")
 
-        self.findbar = findbar.FindBar(self.grid)
+        self.findbar = FindBar(self.grid)
         self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
 
         self.set_num_panes(num_panes)
@@ -526,7 +526,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             src, dst, self.get_action_chunk(src, dst), copy_up=False)
 
     def pull_all_non_conflicting_changes(self, src, dst):
-        merger = merge.Merger()
+        merger = Merger()
         merger.differ = self.linediffer
         merger.texts = self.buffer_texts
         for mergedfile in merger.merge_2_files(src, dst):
@@ -551,7 +551,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def merge_all_non_conflicting_changes(self, *args):
         dst = 1
-        merger = merge.Merger()
+        merger = Merger()
         merger.differ = self.linediffer
         merger.texts = self.buffer_texts
         for mergedfile in merger.merge_3_files(False):
@@ -1173,11 +1173,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # We need to clear removed and modified chunks, and need to
         # re-highlight added and modified chunks.
         need_clearing = sorted(
-            list(removed_chunks),
-            key=diffutil.merged_chunk_order)
+            list(removed_chunks), key=merged_chunk_order)
         need_highlighting = sorted(
-            list(added_chunks) + [modified_chunks],
-            key=diffutil.merged_chunk_order)
+            list(added_chunks) + [modified_chunks], key=merged_chunk_order)
 
         alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]
 
@@ -1533,7 +1531,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.state = melddoc.STATE_NORMAL
 
     def make_patch(self, *extra):
-        dialog = patchdialog.PatchDialog(self)
+        dialog = PatchDialog(self)
         dialog.run()
 
     def update_buffer_writable(self, buf):
