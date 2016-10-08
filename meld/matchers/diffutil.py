@@ -16,8 +16,8 @@
 
 from gi.repository import GObject
 
-from .matchers import DiffChunk, MyersSequenceMatcher, \
-    SyncPointMyersSequenceMatcher
+from meld.matchers.myers import (
+    DiffChunk, MyersSequenceMatcher, SyncPointMyersSequenceMatcher)
 
 
 opcode_reverse = {

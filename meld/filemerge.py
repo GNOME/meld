@@ -16,7 +16,7 @@
 
 from meld.conf import _
 from . import filediff
-from . import merge
+from meld.matchers import merge
 from . import recent
 
 

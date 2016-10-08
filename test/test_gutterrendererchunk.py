@@ -5,7 +5,7 @@ import pytest
 import meld.gutterrendererchunk
 from meld.gutterrendererchunk import GutterRendererChunkAction
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
-from meld.matchers import DiffChunk
+from meld.matchers.myers import DiffChunk
 
 
 def make_chunk(chunk_type):

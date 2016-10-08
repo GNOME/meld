@@ -30,6 +30,7 @@ setup(
     keywords=['diff', 'merge'],
     packages=[
         'meld',
+        'meld.matchers',
         'meld.ui',
         'meld.vc',
     ],

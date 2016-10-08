@@ -16,12 +16,8 @@
 
 import copy
 import functools
-import logging
 import math
 import os
-import queue
-import threading
-import time
 
 from gi.repository import GLib
 from gi.repository import GObject
@@ -31,11 +27,10 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.conf import _
-from . import diffutil
-from . import matchers
+from meld.matchers import diffutil
 from . import meldbuffer
 from . import melddoc
-from . import merge
+from meld.matchers import merge
 from . import misc
 from . import patchdialog
 from . import recent
@@ -44,34 +39,9 @@ from .ui import findbar
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
+from meld.matchers.helpers import CachedSequenceMatcher
 from meld.settings import bind_settings, meldsettings
 from meld.sourceview import LanguageManager, get_custom_encoding_candidates
-
-
-log = logging.getLogger(__name__)
-
-
-class MatcherWorker(threading.Thread):
-
-    matcher_class = matchers.InlineMyersSequenceMatcher
-
-    def __init__(self, tasks, results):
-        super(MatcherWorker, self).__init__()
-        self.tasks = tasks
-        self.results = results
-        self.daemon = True
-
-    def run(self):
-        while True:
-            task_id, (text1, textn) = self.tasks.get()
-            try:
-                matcher = self.matcher_class(None, text1, textn)
-                self.results.put((task_id, matcher.get_opcodes()))
-            except Exception as e:
-                log.error("Exception while running diff: %s", e)
-            finally:
-                self.tasks.task_done()
-            time.sleep(0)
 
 
 def with_focused_pane(function):
@@ -82,67 +52,6 @@ def with_focused_pane(function):
             return
         return function(args[0], pane, *args[1:], **kwargs)
     return wrap_function
-
-
-class CachedSequenceMatcher(object):
-    """Simple class for caching diff results, with LRU-based eviction
-
-    Results from the SequenceMatcher are cached and timestamped, and
-    subsequently evicted based on least-recent generation/usage. The LRU-based
-    eviction is overly simplistic, but is okay for our usage pattern.
-    """
-
-    def __init__(self):
-        self.cache = {}
-        self.tasks = queue.Queue()
-        # Limiting the result queue here has the effect of giving us
-        # much better interactivity. Without this limit, the
-        # result-checker tends to get starved and all highlights get
-        # delayed until we're almost completely finished.
-        self.results = queue.Queue(5)
-        self.thread = MatcherWorker(self.tasks, self.results)
-        self.task_id = 1
-        self.queued_matches = {}
-        GLib.idle_add(self.thread.start)
-
-    def match(self, text1, textn, cb):
-        texts = (text1, textn)
-        try:
-            self.cache[texts][1] = time.time()
-            opcodes = self.cache[texts][0]
-            GLib.idle_add(lambda: cb(opcodes))
-        except KeyError:
-            GLib.idle_add(lambda: self.enqueue_task(texts, cb))
-
-    def enqueue_task(self, texts, cb):
-        if not bool(self.queued_matches):
-            GLib.idle_add(self.check_results)
-        self.queued_matches[self.task_id] = (texts, cb)
-        self.tasks.put((self.task_id, texts))
-        self.task_id += 1
-
-    def check_results(self):
-        try:
-            task_id, opcodes = self.results.get_nowait()
-            texts, cb = self.queued_matches.pop(task_id)
-            self.cache[texts] = [opcodes, time.time()]
-            GLib.idle_add(lambda: cb(opcodes))
-        except queue.Empty:
-            pass
-
-        return bool(self.queued_matches)
-
-    def clean(self, size_hint):
-        """Clean the cache if necessary
-
-        @param size_hint: the recommended minimum number of cache entries
-        """
-        if len(self.cache) < size_hint * 3:
-            return
-        items = list(self.cache.items())
-        items.sort(key=lambda it: it[1][1])
-        for item in items[:-size_hint * 2]:
-            del self.cache[item[0]]
 
 
 MASK_SHIFT, MASK_CTRL = 1, 2

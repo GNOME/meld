@@ -13,13 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import diffutil
-from . import matchers
+from meld.matchers import diffutil
+from meld.matchers.myers import MyersSequenceMatcher
 
 
 class AutoMergeDiffer(diffutil.Differ):
 
-    _matcher = matchers.MyersSequenceMatcher
+    _matcher = MyersSequenceMatcher
     # _matcher = PatienceSequenceMatcher
 
     def __init__(self):
