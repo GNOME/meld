@@ -235,7 +235,9 @@ class GutterRendererChunkAction(
 
             button_area = background_area.copy()
             button_area.x += 1
+            button_area.y += 1
             button_area.width -= 2
+            button_area.height -= 2
 
             Gtk.render_background(
                 stylecontext, context, button_area.x, button_area.y,
