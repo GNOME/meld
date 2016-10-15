@@ -252,7 +252,12 @@ def setup_glib_logging():
 
     def log_adapter(domain, level, message, user_data):
         log.log(levels[level], message)
-    GLib.log_set_handler(log_domain, level_flag, log_adapter, None)
+
+    try:
+        GLib.log_set_handler(log_domain, level_flag, log_adapter, None)
+    except AttributeError:
+        # Only present in glib 2.46+
+        pass
 
 
 def environment_hacks():
