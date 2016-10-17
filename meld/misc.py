@@ -187,7 +187,7 @@ def colour_lookup_with_fallback(name, attribute):
     from meld.settings import meldsettings
     source_style = meldsettings.style_scheme
 
-    style = source_style.get_style(name)
+    style = source_style.get_style(name) if source_style else None
     style_attr = getattr(style.props, attribute) if style else None
     if not style or not style_attr:
         base_style = get_base_style_scheme()
