@@ -1419,9 +1419,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         self.model = DirDiffTreeStore(num_panes)
-        for i in range(num_panes):
-            self.treeview[i].set_model(self.model)
         self.model.connect("row-deleted", self.on_treemodel_row_deleted)
+        for treeview in self.treeview:
+            treeview.set_model(self.model)
 
         for (w, i) in zip(self.diffmap, (0, num_panes - 1)):
             scroll = self.scrolledwindow[i].get_vscrollbar()
@@ -1440,11 +1440,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.dummy_toolbar_linkmap[num_panes - 1:]):
             widget.hide()
 
-        if self.num_panes != 0:  # not first time through
-            self.num_panes = num_panes
-            self.on_fileentry_file_set(None)
-        else:
-            self.num_panes = num_panes
+        self.num_panes = num_panes
 
     def refresh(self):
         root = self.model.get_iter_first()
