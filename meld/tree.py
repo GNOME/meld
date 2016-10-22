@@ -169,19 +169,18 @@ class DiffTreeStore(Gtk.TreeStore):
             if child:
                 it = child
             else:
-                next = self.iter_next(it)
-                if next:
-                    it = next
+                next_it = self.iter_next(it)
+                if next_it:
+                    it = next_it
                 else:
-                    while 1:
+                    while True:
                         it = self.iter_parent(it)
-                        if it:
-                            next = self.iter_next(it)
-                            if next:
-                                it = next
-                                break
-                        else:
+                        if not it:
                             raise StopIteration()
+                        next_it = self.iter_next(it)
+                        if next_it:
+                            it = next_it
+                            break
             yield it
 
     def inorder_search_up(self, it):
