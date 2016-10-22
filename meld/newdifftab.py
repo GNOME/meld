@@ -40,10 +40,12 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
 
     def __init__(self, parentapp):
         GObject.GObject.__init__(self)
+        file_choosers = ["filechooserdialog0", "filechooserdialog1",
+                         "filechooserdialog2"]
         gnomeglade.Component.__init__(self, "tab-placeholder.ui",
-                                      "new_comparison_tab")
+                                      "new_comparison_tab", file_choosers)
         self.map_widgets_into_lists(["file_chooser", "dir_chooser",
-                                     "vc_chooser"])
+                                     "vc_chooser", "filechooserdialog"])
         self.button_types = [self.button_type_file, self.button_type_dir,
                              self.button_type_vc]
         self.diff_methods = (parentapp.append_filediff,
@@ -106,9 +108,17 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
 
     def on_button_compare_clicked(self, *args):
         type_choosers = (self.file_chooser, self.dir_chooser, self.vc_chooser)
-        compare_gfiles = [c.get_file() for c in
-                         type_choosers[self.diff_type][:self._get_num_paths()]]
-        tab = self.diff_methods[self.diff_type](compare_gfiles)
+        choosers = type_choosers[self.diff_type][:self._get_num_paths()]
+        compare_gfiles = [chooser.get_file() for chooser in choosers]
+
+        compare_kwargs = {}
+        if self.diff_type == 0:
+            chooserdialogs = self.filechooserdialog[:self._get_num_paths()]
+            encodings = [chooser.get_encoding() for chooser in chooserdialogs]
+            compare_kwargs = {'encodings': encodings}
+
+        tab = self.diff_methods[self.diff_type](
+            compare_gfiles, **compare_kwargs)
         recent_comparisons.add(tab)
         self.emit('diff-created', tab)
 
