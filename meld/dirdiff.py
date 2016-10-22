@@ -1284,26 +1284,28 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     lof.append(files[j])
             all_same = Different
             all_present_same = self.file_compare(lof, regexes)
-        different = 1
+
+        # TODO: Differentiate the DodgySame case
+        if all_same == Same or all_same == DodgySame:
+            state = tree.STATE_NORMAL
+        elif all_same == SameFiltered:
+            state = tree.STATE_NOCHANGE
+        # TODO: Differentiate the SameFiltered and DodgySame cases
+        elif all_present_same in (Same, SameFiltered, DodgySame):
+            state = tree.STATE_NEW
+        elif all_same == FileError or all_present_same == FileError:
+            state = tree.STATE_ERROR
+        # Different and DodgyDifferent
+        else:
+            state = tree.STATE_MODIFIED
+        different = state not in {tree.STATE_NORMAL, tree.STATE_NOCHANGE}
+
         one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
             if mod_times[j]:
                 isdir = os.path.isdir(files[j])
-                # TODO: Differentiate the DodgySame case
-                if all_same == Same or all_same == DodgySame:
-                    self.model.set_path_state(it, j, tree.STATE_NORMAL, isdir)
-                    different = 0
-                elif all_same == SameFiltered:
-                    self.model.set_path_state(it, j, tree.STATE_NOCHANGE, isdir)
-                    different = 0
-                # TODO: Differentiate the SameFiltered and DodgySame cases
-                elif all_present_same in (Same, SameFiltered, DodgySame):
-                    self.model.set_path_state(it, j, tree.STATE_NEW, isdir)
-                elif all_same == FileError or all_present_same == FileError:
-                    self.model.set_path_state(it, j, tree.STATE_ERROR, isdir)
-                # Different and DodgyDifferent
-                else:
-                    self.model.set_path_state(it, j, tree.STATE_MODIFIED, isdir)
+                self.model.set_path_state(it, j, state, isdir)
+
                 emblem = "emblem-meld-newer-file" if j in newest else None
                 self.model.set_value(
                     it, self.model.column_index(COL_EMBLEM, j), emblem)
