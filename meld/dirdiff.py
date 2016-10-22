@@ -358,7 +358,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.focus_in_events.append(handler_id)
             handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
             self.focus_out_events.append(handler_id)
-            treeview.set_search_equal_func(self.model.treeview_search_cb, None)
+            treeview.set_search_equal_func(tree.treeview_search_cb, None)
         self.force_cursor_recalculate = False
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.on_treeview_focus_out_event(None, None)

@@ -226,22 +226,6 @@ class DiffTreeStore(Gtk.TreeStore):
 
         return prev_path, next_path
 
-    def treeview_search_cb(self, model, column, key, it, data):
-        # If the key contains a path separator, search the whole path,
-        # otherwise just use the filename. If the key is all lower-case, do a
-        # case-insensitive match.
-        abs_search = '/' in key
-        lower_key = key.islower()
-
-        for path in model.value_paths(it):
-            if not path:
-                continue
-            text = path if abs_search else os.path.basename(path)
-            text = text.lower() if lower_key else text
-            if key in text:
-                return False
-        return True
-
     def state_rows(self, states):
         """Generator of rows in one of the given states
 
@@ -252,3 +236,20 @@ class DiffTreeStore(Gtk.TreeStore):
             state = self.get_state(it, 0)
             if state in states:
                 yield it
+
+
+def treeview_search_cb(model, column, key, it, data):
+    # If the key contains a path separator, search the whole path,
+    # otherwise just use the filename. If the key is all lower-case, do a
+    # case-insensitive match.
+    abs_search = '/' in key
+    lower_key = key.islower()
+
+    for path in model.value_paths(it):
+        if not path:
+            continue
+        text = path if abs_search else os.path.basename(path)
+        text = text.lower() if lower_key else text
+        if key in text:
+            return False
+    return True
