@@ -78,6 +78,26 @@ class SearchableTreeStore(Gtk.TreeStore):
                     raise StopIteration()
             yield it
 
+    def get_previous_next_paths(self, path, match_func):
+        prev_path, next_path = None, None
+        try:
+            start_iter = self.get_iter(path)
+        except ValueError:
+            # Invalid tree path
+            return None, None
+
+        for it in self.inorder_search_up(start_iter):
+            if match_func(it):
+                prev_path = self.get_path(it)
+                break
+
+        for it in self.inorder_search_down(start_iter):
+            if match_func(it):
+                next_path = self.get_path(it)
+                break
+
+        return prev_path, next_path
+
 
 class DiffTreeStore(SearchableTreeStore):
 
@@ -207,26 +227,11 @@ class DiffTreeStore(SearchableTreeStore):
             return None
 
     def _find_next_prev_diff(self, start_path):
-        prev_path, next_path = None, None
-        try:
-            start_iter = self.get_iter(start_path)
-        except ValueError:
-            # Invalid tree path
-            return None, None
+        def match_func(it):
+            # TODO: It works, but matching on the first pane only is very poor
+            return self.get_state(it, 0) not in (STATE_NORMAL, STATE_EMPTY)
 
-        for it in self.inorder_search_up(start_iter):
-            state = self.get_state(it, 0)
-            if state not in (STATE_NORMAL, STATE_EMPTY):
-                prev_path = self.get_path(it)
-                break
-
-        for it in self.inorder_search_down(start_iter):
-            state = self.get_state(it, 0)
-            if state not in (STATE_NORMAL, STATE_EMPTY):
-                next_path = self.get_path(it)
-                break
-
-        return prev_path, next_path
+        return self.get_previous_next_paths(start_path, match_func)
 
     def state_rows(self, states):
         """Generator of rows in one of the given states
