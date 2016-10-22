@@ -27,6 +27,7 @@ COL_TYPES = (str, str, str, str, str, Gdk.RGBA, Pango.Style,
              Pango.Weight, bool)
 
 from meld.misc import colour_lookup_with_fallback
+from meld.treehelpers import SearchableTreeStore
 from meld.vc._vc import \
     STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE, \
     STATE_ERROR, STATE_EMPTY, STATE_NEW, \
@@ -34,69 +35,6 @@ from meld.vc._vc import \
     STATE_MISSING, STATE_NONEXIST, STATE_MAX, \
     CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_REMOTE, \
     CONFLICT_MERGED, CONFLICT_OTHER, CONFLICT_THIS
-
-
-class SearchableTreeStore(Gtk.TreeStore):
-
-    def inorder_search_down(self, it):
-        while it:
-            child = self.iter_children(it)
-            if child:
-                it = child
-            else:
-                next_it = self.iter_next(it)
-                if next_it:
-                    it = next_it
-                else:
-                    while True:
-                        it = self.iter_parent(it)
-                        if not it:
-                            raise StopIteration()
-                        next_it = self.iter_next(it)
-                        if next_it:
-                            it = next_it
-                            break
-            yield it
-
-    def inorder_search_up(self, it):
-        while it:
-            path = self.get_path(it)
-            if path[-1]:
-                path = path[:-1] + [path[-1] - 1]
-                it = self.get_iter(path)
-                while 1:
-                    nc = self.iter_n_children(it)
-                    if nc:
-                        it = self.iter_nth_child(it, nc - 1)
-                    else:
-                        break
-            else:
-                up = self.iter_parent(it)
-                if up:
-                    it = up
-                else:
-                    raise StopIteration()
-            yield it
-
-    def get_previous_next_paths(self, path, match_func):
-        prev_path, next_path = None, None
-        try:
-            start_iter = self.get_iter(path)
-        except ValueError:
-            # Invalid tree path
-            return None, None
-
-        for it in self.inorder_search_up(start_iter):
-            if match_func(it):
-                prev_path = self.get_path(it)
-                break
-
-        for it in self.inorder_search_down(start_iter):
-            if match_func(it):
-                next_path = self.get_path(it)
-                break
-
-        return prev_path, next_path
 
 
 class DiffTreeStore(SearchableTreeStore):
