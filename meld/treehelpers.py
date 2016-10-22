@@ -17,6 +17,49 @@
 from gi.repository import Gtk
 
 
+def tree_path_prev(path):
+    if not path or path[-1] == 0:
+        return None
+    return path[:-1] + (path[-1] - 1,)
+
+
+def tree_path_up(path):
+    if not path:
+        return None
+    return path[:-1]
+
+
+def valid_path(model, path):
+    try:
+        model.get_iter(path)
+        return True
+    except ValueError:
+        return False
+
+
+def refocus_deleted_path(model, path):
+    # Since the passed path has been deleted, either the path is now a
+    # valid successor, or there are no successors. If valid, return it.
+    # If not, and the path has a predecessor sibling (immediate or
+    # otherwise), then return that. If there are no siblings, traverse
+    # parents until we get a valid path, and return that.
+
+    if valid_path(model, path):
+        return path
+
+    new_path = tree_path_prev(path)
+    while new_path:
+        if valid_path(model, new_path):
+            return new_path
+        new_path = tree_path_prev(new_path)
+
+    new_path = tree_path_up(path)
+    while new_path:
+        if valid_path(model, new_path):
+            return new_path
+        new_path = tree_path_up(new_path)
+
+
 class SearchableTreeStore(Gtk.TreeStore):
 
     def inorder_search_down(self, it):
