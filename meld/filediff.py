@@ -31,6 +31,7 @@ from . import meldbuffer
 from . import melddoc
 from . import misc
 from . import undo
+from .ui import filechooser
 from .ui import gnomeglade
 
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
@@ -1468,7 +1469,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.refresh_comparison()
 
     def _get_filename_for_saving(self, title):
-        dialog = Gtk.FileChooserDialog(
+        dialog = filechooser.MeldFileChooserDialog(
             title,
             parent=self.widget.get_toplevel(),
             action=Gtk.FileChooserAction.SAVE,
@@ -1668,6 +1669,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         entries = self.fileentry[:self.num_panes]
         if self.check_save_modified() != Gtk.ResponseType.CANCEL:
             gfiles = [e.get_file() for e in entries]
+            # TODO: Make sure to reuse file encodings if present
             self.set_files(gfiles)
         else:
             idx = entries.index(entry)
@@ -1696,6 +1698,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         if response == Gtk.ResponseType.OK:
             gfiles = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
+            # TODO: Make sure to reuse file encodings if present
             self.set_files(gfiles)
 
     def on_refresh_activate(self, *extra):
