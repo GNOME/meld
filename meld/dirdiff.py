@@ -1414,33 +1414,37 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     chunkstart, laststate = index, state
         return tree_state_iter
 
-    def set_num_panes(self, n):
-        if n != self.num_panes and n in (1, 2, 3):
-            self.model = DirDiffTreeStore(n)
-            for i in range(n):
-                self.treeview[i].set_model(self.model)
-            self.model.connect("row-deleted", self.on_treemodel_row_deleted)
+    def set_num_panes(self, num_panes):
+        if num_panes == self.num_panes or num_panes not in (1, 2, 3):
+            return
 
-            for (w, i) in zip(self.diffmap, (0, n - 1)):
-                scroll = self.scrolledwindow[i].get_vscrollbar()
-                idx = 1 if i else 0
-                w.setup(scroll, self.get_state_traversal(idx))
+        self.model = DirDiffTreeStore(num_panes)
+        for i in range(num_panes):
+            self.treeview[i].set_model(self.model)
+        self.model.connect("row-deleted", self.on_treemodel_row_deleted)
 
-            for widget in (
-                    self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
-                    self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1]):
-                widget.show()
+        for (w, i) in zip(self.diffmap, (0, num_panes - 1)):
+            scroll = self.scrolledwindow[i].get_vscrollbar()
+            idx = 1 if i else 0
+            w.setup(scroll, self.get_state_traversal(idx))
 
-            for widget in (
-                    self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
-                    self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:]):
-                widget.hide()
+        for widget in (
+                self.vbox[:num_panes] + self.file_toolbar[:num_panes] +
+                self.diffmap[:num_panes] + self.linkmap[:num_panes - 1] +
+                self.dummy_toolbar_linkmap[:num_panes - 1]):
+            widget.show()
 
-            if self.num_panes != 0:  # not first time through
-                self.num_panes = n
-                self.on_fileentry_file_set(None)
-            else:
-                self.num_panes = n
+        for widget in (
+                self.vbox[num_panes:] + self.file_toolbar[num_panes:] +
+                self.diffmap[num_panes:] + self.linkmap[num_panes - 1:] +
+                self.dummy_toolbar_linkmap[num_panes - 1:]):
+            widget.hide()
+
+        if self.num_panes != 0:  # not first time through
+            self.num_panes = num_panes
+            self.on_fileentry_file_set(None)
+        else:
+            self.num_panes = num_panes
 
     def refresh(self):
         root = self.model.get_iter_first()
