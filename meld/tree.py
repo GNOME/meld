@@ -36,7 +36,50 @@ from meld.vc._vc import \
     CONFLICT_MERGED, CONFLICT_OTHER, CONFLICT_THIS
 
 
-class DiffTreeStore(Gtk.TreeStore):
+class SearchableTreeStore(Gtk.TreeStore):
+
+    def inorder_search_down(self, it):
+        while it:
+            child = self.iter_children(it)
+            if child:
+                it = child
+            else:
+                next_it = self.iter_next(it)
+                if next_it:
+                    it = next_it
+                else:
+                    while True:
+                        it = self.iter_parent(it)
+                        if not it:
+                            raise StopIteration()
+                        next_it = self.iter_next(it)
+                        if next_it:
+                            it = next_it
+                            break
+            yield it
+
+    def inorder_search_up(self, it):
+        while it:
+            path = self.get_path(it)
+            if path[-1]:
+                path = path[:-1] + [path[-1] - 1]
+                it = self.get_iter(path)
+                while 1:
+                    nc = self.iter_n_children(it)
+                    if nc:
+                        it = self.iter_nth_child(it, nc - 1)
+                    else:
+                        break
+            else:
+                up = self.iter_parent(it)
+                if up:
+                    it = up
+                else:
+                    raise StopIteration()
+            yield it
+
+
+class DiffTreeStore(SearchableTreeStore):
 
     def __init__(self, ntree, types):
         full_types = []
@@ -162,46 +205,6 @@ class DiffTreeStore(Gtk.TreeStore):
             return int(self.get_value(it, STATE))
         except TypeError:
             return None
-
-    def inorder_search_down(self, it):
-        while it:
-            child = self.iter_children(it)
-            if child:
-                it = child
-            else:
-                next_it = self.iter_next(it)
-                if next_it:
-                    it = next_it
-                else:
-                    while True:
-                        it = self.iter_parent(it)
-                        if not it:
-                            raise StopIteration()
-                        next_it = self.iter_next(it)
-                        if next_it:
-                            it = next_it
-                            break
-            yield it
-
-    def inorder_search_up(self, it):
-        while it:
-            path = self.get_path(it)
-            if path[-1]:
-                path = path[:-1] + [path[-1] - 1]
-                it = self.get_iter(path)
-                while 1:
-                    nc = self.iter_n_children(it)
-                    if nc:
-                        it = self.iter_nth_child(it, nc - 1)
-                    else:
-                        break
-            else:
-                up = self.iter_parent(it)
-                if up:
-                    it = up
-                else:
-                    raise StopIteration()
-            yield it
 
     def _find_next_prev_diff(self, start_path):
         prev_path, next_path = None, None
