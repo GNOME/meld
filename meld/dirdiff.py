@@ -22,7 +22,6 @@ import datetime
 import errno
 import functools
 import os
-import re
 import shutil
 import stat
 import sys
@@ -534,7 +533,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             callback = lambda b, i=i: self._update_name_filter(b, i)
             actions.append((name, None, f.label, None, _("Hide %s") % f.label, callback, f.active))
             self.filter_ui.append(["/CustomPopup" , name, name, Gtk.UIManagerItemType.MENUITEM, False])
-            self.filter_ui.append(["/Menubar/ViewMenu/FileFilters" , name, name, Gtk.UIManagerItemType.MENUITEM, False])
+            self.filter_ui.append(["/Menubar/ViewMenu/FileFilters", name, name, Gtk.UIManagerItemType.MENUITEM, False])
             if f.filter is None:
                 disabled_actions.append(name)
 
@@ -594,10 +593,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # is file still extant in other pane?
         it = self.model.get_iter(path)
         files = self.model.value_paths(it)
-        is_present = [ os.path.exists(f) for f in files ]
+        is_present = [os.path.exists(f) for f in files]
         if 1 in is_present:
             self._update_item_state(it)
-        else: # nope its gone
+        else:  # nope its gone
             self.model.remove(it)
         self._update_diffmaps()
 
@@ -605,7 +604,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         it = self.model.get_iter(path)
         root = Gtk.TreePath.new_first()
         while it and self.model.get_path(it) != root:
-            self._update_item_state( it )
+            self._update_item_state(it)
             it = self.model.iter_parent(it)
         self._update_diffmaps()
 
@@ -648,14 +647,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             uris = []
         return RecentType.Folder, uris
 
-    def recursively_update( self, path ):
+    def recursively_update(self, path):
         """Recursively update from tree path 'path'.
         """
-        it = self.model.get_iter( path )
-        child = self.model.iter_children( it )
+        it = self.model.get_iter(path)
+        child = self.model.iter_children(it)
         while child:
             self.model.remove(child)
-            child = self.model.iter_children( it )
+            child = self.model.iter_children(it)
         self._update_item_state(it)
         self._scan_in_progress += 1
         self.scheduler.add_task(self._search_recursively_iter(path))
@@ -666,7 +665,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             sel.unselect_all()
 
         yield _("[%s] Scanning %s") % (self.label_text, "")
-        prefixlen = 1 + len( self.model.value_path( self.model.get_iter(rootpath), 0 ) )
+        prefixlen = 1 + len(self.model.value_path(self.model.get_iter(rootpath), 0))
         symlinks_followed = set()
         # TODO: This is horrible.
         if isinstance(rootpath, tuple):
@@ -679,10 +678,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         shadowed_entries = []
         invalid_filenames = []
         while len(todo):
-            todo.sort() # depth first
+            todo.sort()  # depth first
             path = todo.pop(0)
-            it = self.model.get_iter( path )
-            roots = self.model.value_paths( it )
+            it = self.model.get_iter(path)
+            roots = self.model.value_paths(it)
 
             # Buggy ordering when deleting rows means that we sometimes try to
             # recursively update files; this fix seems the least invasive.
@@ -695,7 +694,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             canonicalize = None
             if self.actiongroup.get_action("IgnoreCase").get_active():
-                canonicalize = lambda x : x.lower()
+                canonicalize = lambda x: x.lower()
             dirs = CanonicalListing(self.num_panes, canonicalize)
             files = CanonicalListing(self.num_panes, canonicalize)
 
@@ -863,7 +862,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.msgarea_mgr[p].clear()
             msgarea.connect("response", clear_all)
             msgarea.show_all()
-
 
     def _show_tree_wide_errors(self, invalid_filenames, shadowed_entries):
         header = _("Multiple errors occurred while scanning this folder")
@@ -1088,7 +1086,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 for p in paths:
                     tree.get_selection().select_path(p)
             tree.emit("cursor-changed")
-        return event.keyval in (Gdk.KEY_Left, Gdk.KEY_Right) #handled
+        return event.keyval in (Gdk.KEY_Left, Gdk.KEY_Right)  # handled
 
     def on_treeview_row_activated(self, view, path, column):
         pane = self.treeview.index(view)
@@ -1163,8 +1161,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_button_copy_left_clicked(self, button):
         self.copy_selected(-1)
+
     def on_button_copy_right_clicked(self, button):
         self.copy_selected(1)
+
     def on_button_delete_clicked(self, button):
         self.delete_selected()
 
@@ -1183,7 +1183,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_filter_state_toggled(self, button):
         active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        active_filters = [a for a in self.state_actions if \
+        active_filters = [a for a in self.state_actions if
                           active_action(self.state_actions[a][1])]
 
         if set(active_filters) == set(self.state_filters):
@@ -1205,7 +1205,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             paths = self._get_selected_paths(pane)
             paths.reverse()
             for p in paths:
-                self.model.remove( self.model.get_iter(p) )
+                self.model.remove(self.model.get_iter(p))
 
         #
         # Selection
@@ -1229,8 +1229,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         ret = []
         regexes = [f.byte_filter for f in self.text_filters if f.active]
         for files in fileslist:
-            curfiles = [ os.path.join( r, f ) for r,f in zip(roots,files) ]
-            is_present = [ os.path.exists( f ) for f in curfiles ]
+            curfiles = [os.path.join(r, f) for r, f in zip(roots, files)]
+            is_present = [os.path.exists(f) for f in curfiles]
             all_present = 0 not in is_present
             if all_present:
                 if self.file_compare(curfiles, regexes) in (
@@ -1244,7 +1244,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             # later if they have no children.
             if (state in self.state_filters or
                     all(os.path.isdir(f) for f in curfiles)):
-                ret.append( files )
+                ret.append(files)
         return ret
 
     def _update_item_state(self, it):
@@ -1281,14 +1281,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             lof = []
             for j in range(len(mod_times)):
                 if mod_times[j]:
-                    lof.append( files[j] )
+                    lof.append(files[j])
             all_same = Different
             all_present_same = self.file_compare(lof, regexes)
         different = 1
         one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
             if mod_times[j]:
-                isdir = os.path.isdir( files[j] )
+                isdir = os.path.isdir(files[j])
                 # TODO: Differentiate the DodgySame case
                 if all_same == Same or all_same == DodgySame:
                     self.model.set_path_state(it, j, tree.STATE_NORMAL, isdir)
@@ -1317,8 +1317,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
                 def natural_size(bytes):
                     suffixes = (
-                            'B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
-                            )
+                        'B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
+                    )
                     size = float(bytes)
                     unit = 0
                     while size > 1000 and unit < len(suffixes) - 1:
@@ -1395,6 +1395,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             treeindex = (0, self.num_panes-1)[diffmapindex]
             treeview = self.treeview[treeindex]
             row_states = []
+
             def recurse_tree_states(rowiter):
                 row_states.append(self.model.get_state(rowiter.iter, treeindex))
                 if treeview.row_expanded(rowiter.path):
@@ -1414,7 +1415,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return tree_state_iter
 
     def set_num_panes(self, n):
-        if n != self.num_panes and n in (1,2,3):
+        if n != self.num_panes and n in (1, 2, 3):
             self.model = DirDiffTreeStore(n)
             for i in range(n):
                 self.treeview[i].set_model(self.model)
@@ -1435,7 +1436,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:]):
                 widget.hide()
 
-            if self.num_panes != 0: # not first time through
+            if self.num_panes != 0:  # not first time through
                 self.num_panes = n
                 self.on_fileentry_file_set(None)
             else:
@@ -1445,7 +1446,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         root = self.model.get_iter_first()
         if root:
             roots = self.model.value_paths(root)
-            self.set_locations( roots )
+            self.set_locations(roots)
 
     def recompute_label(self):
         root = self.model.get_iter_first()
@@ -1493,7 +1494,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             changed = changed[len(current):]
             # search the tree component at a time
             for component in changed:
-                child = model.iter_children( it )
+                child = model.iter_children(it)
                 while child:
                     child_path = model.value_path(child, pane)
                     # Found the changed path
@@ -1510,7 +1511,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     changed_paths.append(path)
         # do the update
         for path in changed_paths:
-            self._update_item_state( model.get_iter(path) )
+            self._update_item_state(model.get_iter(path))
         self._update_diffmaps()
         self.force_cursor_recalculate = True
 
