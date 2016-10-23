@@ -1264,8 +1264,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         stats = [stat(f) for f in files[:self.num_panes]]
         sizes = [s.st_size if s else 0 for s in stats]
         perms = [s.st_mode if s else 0 for s in stats]
+        times = [s.st_mtime if s else 0 for s in stats]
 
-        mod_times = [s.st_mtime if s else 0 for s in stats]
         existing_times = [s.st_mtime for s in stats if s]
         newest_time = max(existing_times)
         if existing_times.count(newest_time) == len(existing_times):
@@ -1274,17 +1274,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             # there's only one file.
             newest = set()
         else:
-            newest = {i for i, t in enumerate(mod_times) if t == newest_time}
+            newest = {i for i, t in enumerate(times) if t == newest_time}
 
-        all_present = 0 not in mod_times
-        if all_present:
+        if all(stats):
             all_same = self.file_compare(files, regexes)
             all_present_same = all_same
         else:
-            lof = []
-            for j in range(len(mod_times)):
-                if mod_times[j]:
-                    lof.append(files[j])
+            lof = [f for f, time in zip(files, times) if time]
             all_same = Different
             all_present_same = self.file_compare(lof, regexes)
 
@@ -1306,11 +1302,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         isdir = [os.path.isdir(files[j]) for j in range(self.model.ntree)]
         for j in range(self.model.ntree):
             column_index = functools.partial(self.model.column_index, pane=j)
-            if mod_times[j]:
+            if stats[j]:
                 self.model.set_path_state(it, j, state, isdir[j])
                 emblem = EMBLEM_NEW if j in newest else None
                 self.model.set_value(it, column_index(COL_EMBLEM), emblem)
-                self.model.set_value(it, column_index(COL_TIME), mod_times[j])
+                self.model.set_value(it, column_index(COL_TIME), times[j])
                 self.model.set_value(it, column_index(COL_SIZE), sizes[j])
                 self.model.set_value(it, column_index(COL_PERMS), perms[j])
             else:
