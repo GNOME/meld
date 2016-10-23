@@ -85,8 +85,6 @@ class CellRendererFileMode(Gtk.CellRendererText):
 
     __gtype_name__ = "CellRendererFileMode"
 
-    DATETIME_FORMAT = "%a %d %b %Y %H:%M:%S"
-
     def get_file_mode(self):
         return getattr(self, '_file_mode', None)
 
