@@ -1303,24 +1303,21 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             state = tree.STATE_MODIFIED
         different = state not in {tree.STATE_NORMAL, tree.STATE_NOCHANGE}
 
-        one_isdir = [None for i in range(self.model.ntree)]
+        isdir = [os.path.isdir(files[j]) for j in range(self.model.ntree)]
         for j in range(self.model.ntree):
             column_index = functools.partial(self.model.column_index, pane=j)
             if mod_times[j]:
-                isdir = os.path.isdir(files[j])
-                one_isdir[j] = isdir
+                self.model.set_path_state(it, j, state, isdir[j])
                 emblem = EMBLEM_NEW if j in newest else None
-
-                self.model.set_path_state(it, j, state, isdir)
                 self.model.set_value(it, column_index(COL_EMBLEM), emblem)
                 self.model.set_value(it, column_index(COL_TIME), mod_times[j])
                 self.model.set_value(it, column_index(COL_SIZE), sizes[j])
                 self.model.set_value(it, column_index(COL_PERMS), perms[j])
-
-        for j in range(self.model.ntree):
-            if not mod_times[j]:
-                self.model.set_path_state(it, j, tree.STATE_NONEXIST,
-                                          True in one_isdir)
+            else:
+                # TODO: More consistent state setting here would let us avoid
+                # pyobjects for column types by avoiding None use.
+                self.model.set_path_state(
+                    it, j, tree.STATE_NONEXIST, any(isdir))
         return different
 
     def popup_in_pane(self, pane, event):
