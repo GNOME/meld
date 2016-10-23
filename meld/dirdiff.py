@@ -45,7 +45,8 @@ from meld.misc import all_same
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path
-from meld.ui.cellrenderers import CellRendererByteSize, CellRendererDate
+from meld.ui.cellrenderers import (
+    CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 
 
 ################################################################################
@@ -210,7 +211,7 @@ COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
 
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(self, ntree, [str, object, object, str])
+        tree.DiffTreeStore.__init__(self, ntree, [str, object, object, object])
 
 
 class CanonicalListing(object):
@@ -406,9 +407,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             # Create permissions CellRenderer
             column = Gtk.TreeViewColumn(_("Permissions"))
             column.set_resizable(True)
-            rentext = Gtk.CellRendererText()
+            rentext = CellRendererFileMode()
             column.pack_start(rentext, False)
-            column.set_attributes(rentext, markup=col_index(COL_PERMS, i))
+            column.set_attributes(rentext, file_mode=col_index(COL_PERMS, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["permissions"] = column
 
@@ -1317,17 +1318,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 SIZE = self.model.column_index(COL_SIZE, j)
                 self.model.set_value(it, SIZE, sizes[j])
 
-                def format_mode(mode):
-                    perms = []
-                    rwx = ((4, 'r'), (2, 'w'), (1, 'x'))
-                    for group_index in (6, 3, 0):
-                        group = mode >> group_index & 7
-                        perms.extend([p if group & i else '-' for i, p in rwx])
-                    return "".join(perms)
-
                 PERMS = self.model.column_index(COL_PERMS, j)
-                perm_str = format_mode(perms[j])
-                self.model.set_value(it, PERMS, perm_str)
+                self.model.set_value(it, PERMS, perms[j])
 
         for j in range(self.model.ntree):
             if not mod_times[j]:

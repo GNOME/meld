@@ -79,3 +79,35 @@ class CellRendererByteSize(Gtk.CellRendererText):
         getter=get_bytesize,
         setter=set_bytesize,
     )
+
+
+class CellRendererFileMode(Gtk.CellRendererText):
+
+    __gtype_name__ = "CellRendererFileMode"
+
+    DATETIME_FORMAT = "%a %d %b %Y %H:%M:%S"
+
+    def get_file_mode(self):
+        return getattr(self, '_file_mode', None)
+
+    def set_file_mode(self, value):
+        if value == self.get_file_mode():
+            return
+        if value is None:
+            mode_str = ''
+        else:
+            perms = []
+            rwx = ((4, 'r'), (2, 'w'), (1, 'x'))
+            for group_index in (6, 3, 0):
+                group = value >> group_index & 7
+                perms.extend([p if group & i else '-' for i, p in rwx])
+            mode_str = "".join(perms)
+        self.props.markup = mode_str
+        self._file_mode = value
+
+    file_mode = GObject.property(
+        type=object,
+        nick="Byte size to display",
+        getter=get_file_mode,
+        setter=set_file_mode,
+    )
