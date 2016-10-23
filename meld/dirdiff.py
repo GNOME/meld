@@ -18,7 +18,6 @@
 
 import collections
 import copy
-import datetime
 import errno
 import functools
 import os
@@ -46,6 +45,7 @@ from meld.misc import all_same
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path
+from meld.ui.cellrenderers import CellRendererDate
 
 
 ################################################################################
@@ -210,7 +210,7 @@ COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
 
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(self, ntree, [str, str, str, str])
+        tree.DiffTreeStore.__init__(self, ntree, [str, str, object, str])
 
 
 class CanonicalListing(object):
@@ -398,9 +398,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             # Create date-time CellRenderer
             column = Gtk.TreeViewColumn(_("Modification time"))
             column.set_resizable(True)
-            rentext = Gtk.CellRendererText()
+            rentext = CellRendererDate()
             column.pack_start(rentext, True)
-            column.set_attributes(rentext, markup=col_index(COL_TIME, i))
+            column.set_attributes(rentext, timestamp=col_index(COL_TIME, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["modification time"] = column
             # Create permissions CellRenderer
@@ -1311,11 +1311,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     it, self.model.column_index(COL_EMBLEM, j), emblem)
                 one_isdir[j] = isdir
 
-                # A DateCellRenderer would be nicer, but potentially very slow
                 TIME = self.model.column_index(COL_TIME, j)
-                mod_datetime = datetime.datetime.fromtimestamp(mod_times[j])
-                time_str = mod_datetime.strftime("%a %d %b %Y %H:%M:%S")
-                self.model.set_value(it, TIME, time_str)
+                self.model.set_value(it, TIME, mod_times[j])
 
                 def natural_size(bytes):
                     suffixes = (
