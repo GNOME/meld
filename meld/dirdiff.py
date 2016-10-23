@@ -205,6 +205,8 @@ def _files_same(files, regexes, comparison_args):
     return result
 
 
+EMBLEM_NEW = "emblem-meld-newer-file"
+
 COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
         range(tree.COL_END, tree.COL_END + 5)
 
@@ -1303,23 +1305,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         one_isdir = [None for i in range(self.model.ntree)]
         for j in range(self.model.ntree):
+            column_index = functools.partial(self.model.column_index, pane=j)
             if mod_times[j]:
                 isdir = os.path.isdir(files[j])
-                self.model.set_path_state(it, j, state, isdir)
-
-                emblem = "emblem-meld-newer-file" if j in newest else None
-                self.model.set_value(
-                    it, self.model.column_index(COL_EMBLEM, j), emblem)
                 one_isdir[j] = isdir
+                emblem = EMBLEM_NEW if j in newest else None
 
-                TIME = self.model.column_index(COL_TIME, j)
-                self.model.set_value(it, TIME, mod_times[j])
-
-                SIZE = self.model.column_index(COL_SIZE, j)
-                self.model.set_value(it, SIZE, sizes[j])
-
-                PERMS = self.model.column_index(COL_PERMS, j)
-                self.model.set_value(it, PERMS, perms[j])
+                self.model.set_path_state(it, j, state, isdir)
+                self.model.set_value(it, column_index(COL_EMBLEM), emblem)
+                self.model.set_value(it, column_index(COL_TIME), mod_times[j])
+                self.model.set_value(it, column_index(COL_SIZE), sizes[j])
+                self.model.set_value(it, column_index(COL_PERMS), perms[j])
 
         for j in range(self.model.ntree):
             if not mod_times[j]:
