@@ -45,7 +45,7 @@ from meld.misc import all_same
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path
-from meld.ui.cellrenderers import CellRendererDate
+from meld.ui.cellrenderers import CellRendererByteSize, CellRendererDate
 
 
 ################################################################################
@@ -210,7 +210,7 @@ COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
 
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(self, ntree, [str, str, object, str])
+        tree.DiffTreeStore.__init__(self, ntree, [str, object, object, str])
 
 
 class CanonicalListing(object):
@@ -390,9 +390,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             # Create file size CellRenderer
             column = Gtk.TreeViewColumn(_("Size"))
             column.set_resizable(True)
-            rentext = Gtk.CellRendererText()
+            rentext = CellRendererByteSize()
             column.pack_start(rentext, True)
-            column.set_attributes(rentext, markup=col_index(COL_SIZE, i))
+            column.set_attributes(rentext, bytesize=col_index(COL_SIZE, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["size"] = column
             # Create date-time CellRenderer
@@ -1314,22 +1314,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 TIME = self.model.column_index(COL_TIME, j)
                 self.model.set_value(it, TIME, mod_times[j])
 
-                def natural_size(bytes):
-                    suffixes = (
-                        'B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
-                    )
-                    size = float(bytes)
-                    unit = 0
-                    while size > 1000 and unit < len(suffixes) - 1:
-                        size /= 1000
-                        unit += 1
-                    format_str = "%.1f %s" if unit > 0 else "%d %s"
-                    return format_str % (size, suffixes[unit])
-
-                # A SizeCellRenderer would be nicer, but potentially very slow
                 SIZE = self.model.column_index(COL_SIZE, j)
-                size_str = natural_size(sizes[j])
-                self.model.set_value(it, SIZE, size_str)
+                self.model.set_value(it, SIZE, sizes[j])
 
                 def format_mode(mode):
                     perms = []

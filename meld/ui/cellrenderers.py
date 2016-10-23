@@ -45,4 +45,37 @@ class CellRendererDate(Gtk.CellRendererText):
         getter=get_timestamp,
         setter=set_timestamp,
     )
+
+
+class CellRendererByteSize(Gtk.CellRendererText):
+
+    __gtype_name__ = "CellRendererByteSize"
+
+    def get_bytesize(self):
+        return getattr(self, '_bytesize', None)
+
+    def set_bytesize(self, value):
+        if value == self.get_bytesize():
+            return
+        if value is None:
+            byte_str = ''
+        else:
+            suffixes = (
+                'B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
+            )
+            size = float(value)
+            unit = 0
+            while size > 1000 and unit < len(suffixes) - 1:
+                size /= 1000
+                unit += 1
+            format_str = "%.1f %s" if unit > 0 else "%d %s"
+            byte_str = format_str % (size, suffixes[unit])
+        self.props.markup = byte_str
+        self._bytesize = value
+
+    bytesize = GObject.property(
+        type=object,
+        nick="Byte size to display",
+        getter=get_bytesize,
+        setter=set_bytesize,
     )
