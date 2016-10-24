@@ -1579,7 +1579,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         entries = self.fileentry[:self.num_panes]
         if self.check_save_modified() != Gtk.ResponseType.CANCEL:
             files = [e.get_file() for e in entries]
-            paths = [f.get_path() for f in files]
+            paths = [f.get_path() if f is not None else f for f in files]
             self.set_files(paths)
         else:
             idx = entries.index(entry)
