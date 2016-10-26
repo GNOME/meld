@@ -572,7 +572,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(resync)
 
     @with_focused_pane
-    def delete_change(self, pane):
+    def delete_change(self, pane, *args):
         chunk = self.linediffer.get_chunk(self.cursor.chunk, pane)
         assert(self.cursor.chunk is not None)
         assert(chunk is not None)
