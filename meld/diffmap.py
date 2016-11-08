@@ -121,8 +121,6 @@ class DiffMap(Gtk.DrawingArea):
         x0 = xpad
         x1 = width - 2 * xpad
 
-        # Hack to work around a cairo bug when calling create_similar
-        # https://bugs.freedesktop.org/show_bug.cgi?id=60519
         if not (width > 0 and height > 0):
             return
 
