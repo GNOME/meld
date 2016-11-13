@@ -135,7 +135,7 @@ class PatchDialog(gnomeglade.Component):
             error_dialog(
                 primary=_("Could not save file %s.") % filename,
                 secondary=_("Couldn't save file due to:\n%s") % (
-                    GLib.markup_escape_text(str(err))),
+                    GLib.markup_escape_text(str(err)).decode('utf-8')),
             )
 
     def run(self):

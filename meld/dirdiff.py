@@ -730,7 +730,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         s = os.lstat(os.path.join(root, e))
                     # Covers certain unreadable symlink cases; see bgo#585895
                     except OSError as err:
-                        error_string = e + err.strerror
+                        error_string = e + err.strerror.decode(
+                            'utf8', 'replace')
                         self.model.add_error(it, error_string, pane)
                         continue
 
@@ -751,7 +752,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                             if err.errno == errno.ENOENT:
                                 error_string = e + ": Dangling symlink"
                             else:
-                                error_string = e + err.strerror
+                                error_string = e + err.strerror.decode(
+                                    'utf8', 'replace')
                             self.model.add_error(it, error_string, pane)
                             differences = True
                     elif stat.S_ISREG(s.st_mode):
@@ -957,12 +959,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     misc.copytree(src, dst)
                     self.recursively_update(path)
             except (OSError, IOError, shutil.Error) as err:
+                if len(err.args) == 1 and isinstance(err.args[0], unicode):
+                    # str() raises on Exception instance with non-ascii unicode
+                    msg = err.args[0].encode('utf8', 'replace')
+                else:
+                    msg = str(err)
                 misc.error_dialog(
                     _("Error copying file"),
                     _("Couldn't copy %s\nto %s.\n\n%s") % (
-                        GLib.markup_escape_text(src),
-                        GLib.markup_escape_text(dst),
-                        GLib.markup_escape_text(str(err)),
+                        GLib.markup_escape_text(src).decode('utf8', 'replace'),
+                        GLib.markup_escape_text(dst).decode('utf8', 'replace'),
+                        GLib.markup_escape_text(msg).decode('utf8', 'replace'),
                     )
                 )
 
