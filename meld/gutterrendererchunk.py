@@ -24,6 +24,7 @@ from meld.conf import _
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
 from meld.misc import get_common_theme
 from meld.settings import meldsettings
+from meld.ui.gtkcompat import draw_style_common, get_style
 
 # Fixed size of the renderer. Ideally this would be font-dependent and
 # would adjust to other textview attributes, but that's both quite difficult
@@ -229,33 +230,30 @@ class GutterRendererChunkAction(
         GtkSource.GutterRendererPixbuf.do_draw(
             self, context, background_area, cell_area, start, end, state)
         if self.is_action:
-            stylecontext = self.props.view.get_style_context()
-            stylecontext.save()
-            stylecontext.set_state(renderer_to_gtk_state(state))
-            stylecontext.add_class(Gtk.STYLE_CLASS_BUTTON)
-            stylecontext.add_class(Gtk.STYLE_CLASS_FLAT)
+            if Gtk.get_minor_version() < 20:
+                style_context = get_style(None, "GtkButton.flat.image-button")
+                style_context.add_class(Gtk.STYLE_CLASS_BUTTON)
+                style_context.add_class(Gtk.STYLE_CLASS_FLAT)
+            else:
+                # TODO: Fix padding and min-height in CSS and use
+                # draw_style_common
+                style_context = get_style(None, "button.flat.image-button")
+            style_context.set_state(renderer_to_gtk_state(state))
 
-            button_area = background_area.copy()
-            button_area.x += 1
-            button_area.y += 1
-            button_area.width -= 2
-            button_area.height -= 2
+            x = background_area.x + 1
+            y = background_area.y + 1
+            width = background_area.width - 2
+            height = background_area.height - 2
 
-            Gtk.render_background(
-                stylecontext, context, button_area.x, button_area.y,
-                button_area.width, button_area.height)
-            Gtk.render_frame(
-                stylecontext, context, button_area.x, button_area.y,
-                button_area.width, button_area.height)
+            Gtk.render_background(style_context, context, x, y, width, height)
+            Gtk.render_frame(style_context, context, x, y, width, height)
 
             pixbuf = self.props.pixbuf
             pix_width, pix_height = pixbuf.props.width, pixbuf.props.height
             Gtk.render_icon(
-                stylecontext, context, pixbuf,
-                button_area.x + (button_area.width - pix_width) // 2,
-                button_area.y + (button_area.height - pix_height) // 2)
-
-            stylecontext.restore()
+                style_context, context, pixbuf,
+                x + (width - pix_width) // 2,
+                y + (height - pix_height) // 2)
 
         self.draw_chunks(
             context, background_area, cell_area, start, end, state)
