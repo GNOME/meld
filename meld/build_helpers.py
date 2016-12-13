@@ -154,8 +154,9 @@ class build_help(distutils.cmd.Command):
             path_help = os.path.join('share', 'help', lang, name)
             path_figures = os.path.join(path_help, 'figures')
             data_files.append((path_help, xml_files + mallard_files))
-            data_files.append(
-                (path_figures, glob.glob('%s/figures/*.png' % build_path)))
+            figures = glob.glob('%s/figures/*.png' % build_path)
+            if figures:
+                data_files.append((path_figures, figures))
 
         return data_files
 
