@@ -1251,7 +1251,12 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return ret
 
     def _update_item_state(self, it):
-        """Update the state of the item at 'it'
+        """Update the state of a tree row
+
+        All changes and updates to tree rows should happen here;
+        structural changes happen elsewhere, but they only delete rows
+        or add new rows with path information. This function is the
+        only place where row details are changed.
         """
         files = self.model.value_paths(it)
         regexes = [f.byte_filter for f in self.text_filters if f.active]
