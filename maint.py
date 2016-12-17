@@ -296,7 +296,7 @@ def cli():
 
 @cli.command()
 def test():
-    cmd = ['python', '-m', 'unittest', 'discover']
+    cmd = ['py.test-3', 'test/']
     call_with_output(cmd, echo_stdout=True)
 
 
