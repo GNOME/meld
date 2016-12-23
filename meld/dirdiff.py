@@ -1300,11 +1300,17 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         sizes = [s.st_size if s else 0 for s in stats]
         perms = [s.st_mode if s else 0 for s in stats]
 
-        # find the newest file, checking also that they differ
         mod_times = [s.st_mtime if s else 0 for s in stats]
-        newest_index = mod_times.index( max(mod_times) )
-        if mod_times.count( max(mod_times) ) == len(mod_times):
-            newest_index = -1 # all same
+        existing_times = [s.st_mtime for s in stats if s]
+        newest_time = max(existing_times)
+        if existing_times.count(newest_time) == len(existing_times):
+            # If all actually-present files have the same mtime, don't
+            # pretend that any are "newer", and do the same if e.g.,
+            # there's only one file.
+            newest = set()
+        else:
+            newest = {i for i, t in enumerate(mod_times) if t == newest_time}
+
         all_present = 0 not in mod_times
         if all_present:
             all_same = self.file_compare(files, regexes)
@@ -1336,9 +1342,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 # Different and DodgyDifferent
                 else:
                     self.model.set_path_state(it, j, tree.STATE_MODIFIED, isdir)
-                self.model.set_value(it,
-                    self.model.column_index(COL_EMBLEM, j),
-                    j == newest_index and "emblem-meld-newer-file" or None)
+                emblem = "emblem-meld-newer-file" if j in newest else None
+                self.model.set_value(
+                    it, self.model.column_index(COL_EMBLEM, j), emblem)
                 one_isdir[j] = isdir
 
                 # A DateCellRenderer would be nicer, but potentially very slow
