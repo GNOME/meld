@@ -214,6 +214,7 @@ def get_common_theme():
         "delete": lookup("meld:insert", "background"),
         "conflict": lookup("meld:conflict", "background"),
         "replace": lookup("meld:replace", "background"),
+        "error": lookup("meld:error", "background"),
         "current-chunk-highlight": lookup(
             "meld:current-chunk-highlight", "background")
     }
@@ -222,6 +223,7 @@ def get_common_theme():
         "delete": lookup("meld:insert", "line-background"),
         "conflict": lookup("meld:conflict", "line-background"),
         "replace": lookup("meld:replace", "line-background"),
+        "error": lookup("meld:error", "line-background"),
     }
     return fill_colours, line_colours
 
