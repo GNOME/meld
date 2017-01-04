@@ -41,11 +41,11 @@ Meld can be run directly from this directory. Just type:
 
 Alternatively, you can install Meld system-wide by running:
 
- * `python setup.py install`
+ * `python3 setup.py install`
 
 or if you're on Ubuntu, instead try:
 
- * `python setup.py install --prefix=/usr`
+ * `python3 setup.py install --prefix=/usr`
 
 ...but you should probably just get a RPM/deb/installer instead, depending on
 your system. Meld packages are available for just about every \*nix
@@ -75,11 +75,11 @@ such as:
 These arguments need to be passed to `setup.py` itself, *not* to the install
 command. In other words, do this:
 
-    python setup.py --no-compile-schemas install
+    python3 setup.py --no-compile-schemas install
 
 **not** this:
 
-    python setup.py install --no-compile-schemas
+    python3 setup.py install --no-compile-schemas
 
 
 Contacting
