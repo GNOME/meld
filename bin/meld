@@ -129,6 +129,42 @@ except WindowsError as e:
     print("Couldn't bind the translation domain. Some translations won't work.")
     print(e)
 
+def show_error_and_exit(error_text):
+    """
+    Show error in a robust way: always print to stdout and try to
+    display gui message via gtk or tkinter (first available).
+    Empty toplevel window is used as message box parent since
+    parentless message box cause toolkit and windowing system problems.
+    This function is both python 2 and python 3 compatible since it is used
+    to display wrong python version.
+    """
+    print(error_text)
+    try:
+        import gi
+        gi.require_version("Gtk", "3.0")
+        from gi.repository import Gtk
+        toplevel = Gtk.Window(title = "Meld")
+        toplevel.show()
+        Gtk.MessageDialog(
+            toplevel, 0, Gtk.MessageType.ERROR,
+            Gtk.ButtonsType.CLOSE, error_text).run()
+    except Exception:
+        # Although tkinter is imported here, it isn't meld's dependency:
+        # if found it is used to show GUI error about lacking true dependecies.
+        try:
+            if sys.version_info < (3, 0):
+                from Tkinter import Tk, Toplevel
+                from tkMessageBox import showerror
+            else:
+                from tkinter import Tk, Toplevel
+                from tkinter.messagebox import showerror
+            toplevel = Tk(className = "Meld")
+            toplevel.wait_visibility()
+            showerror("Meld", error_text, parent = toplevel)
+        except Exception:
+            # Displaying with tkinter failed too, just exit.
+            pass
+    sys.exit(1)
 
 def check_requirements():
 
@@ -139,11 +175,10 @@ def check_requirements():
 
     def missing_reqs(mod, ver, exception=None):
         if isinstance(exception, ImportError):
-            print(_("Cannot import: ") + mod + "\n" + str(e))
+            show_error_and_exit(_("Cannot import: ") + mod + "\n" + str(e))
         else:
             modver = mod + " " + ".".join(map(str, ver))
-            print(_("Meld requires %s or higher.") % modver)
-        sys.exit(1)
+            show_error_and_exit(_("Meld requires %s or higher.") % modver)
 
     if sys.version_info[:2] < pyver:
         missing_reqs("Python", pyver)
