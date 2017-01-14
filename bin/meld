@@ -129,6 +129,7 @@ except WindowsError as e:
     print("Couldn't bind the translation domain. Some translations won't work.")
     print(e)
 
+
 def show_error_and_exit(error_text):
     """
     Show error in a robust way: always print to stdout and try to
@@ -143,7 +144,7 @@ def show_error_and_exit(error_text):
         import gi
         gi.require_version("Gtk", "3.0")
         from gi.repository import Gtk
-        toplevel = Gtk.Window(title = "Meld")
+        toplevel = Gtk.Window(title="Meld")
         toplevel.show()
         Gtk.MessageDialog(
             toplevel, 0, Gtk.MessageType.ERROR,
@@ -153,18 +154,19 @@ def show_error_and_exit(error_text):
         # if found it is used to show GUI error about lacking true dependecies.
         try:
             if sys.version_info < (3, 0):
-                from Tkinter import Tk, Toplevel
+                from Tkinter import Tk
                 from tkMessageBox import showerror
             else:
-                from tkinter import Tk, Toplevel
+                from tkinter import Tk
                 from tkinter.messagebox import showerror
-            toplevel = Tk(className = "Meld")
+            toplevel = Tk(className="Meld")
             toplevel.wait_visibility()
-            showerror("Meld", error_text, parent = toplevel)
+            showerror("Meld", error_text, parent=toplevel)
         except Exception:
             # Displaying with tkinter failed too, just exit.
             pass
     sys.exit(1)
+
 
 def check_requirements():
 
