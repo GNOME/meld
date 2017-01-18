@@ -2,10 +2,14 @@
 
 from distutils.core import setup
 import glob
+import sys
 
 import meld.build_helpers
 import meld.conf
 
+if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
+    version = ".".join(map(str, meld.conf.PYTHON_REQUIREMENT_TUPLE))
+    raise Exception("Meld setup requires Python %s or higher." % version)
 
 setup(
     name=meld.conf.__package__,
@@ -22,7 +26,7 @@ setup(
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3 :: Only',
         'Topic :: Desktop Environment :: Gnome',
         'Topic :: Software Development',
         'Topic :: Software Development :: Version Control',

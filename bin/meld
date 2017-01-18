@@ -170,7 +170,6 @@ def show_error_and_exit(error_text):
 
 def check_requirements():
 
-    pyver = (3, 3)
     gtk_requirement = (3, 14)
     glib_requirement = (2, 36, 0)
     gtksourceview_requirement = (3, 14, 0)
@@ -182,8 +181,8 @@ def check_requirements():
             modver = mod + " " + ".".join(map(str, ver))
             show_error_and_exit(_("Meld requires %s or higher.") % modver)
 
-    if sys.version_info[:2] < pyver:
-        missing_reqs("Python", pyver)
+    if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
+        missing_reqs("Python", meld.conf.PYTHON_REQUIREMENT_TUPLE)
 
     # gtk+ and related imports
     try:

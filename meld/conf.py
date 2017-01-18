@@ -11,6 +11,7 @@ LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
 # END
 UNINSTALLED = False
 UNINSTALLED_SCHEMA = False
+PYTHON_REQUIREMENT_TUPLE = (3, 3)
 
 # Installed from main script
 _ = lambda x: x
