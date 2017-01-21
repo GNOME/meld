@@ -38,6 +38,8 @@ GTK_RENDERER_STATE_MAPPING = {
     GtkSource.GutterRendererState.SELECTED: Gtk.StateFlags.SELECTED,
 }
 
+ALIGN_MODE_FIRST = GtkSource.GutterRendererAlignmentMode.FIRST
+
 
 def load(icon_name):
     icon_theme = Gtk.IconTheme.get_default()
@@ -250,10 +252,19 @@ class GutterRendererChunkAction(
 
             pixbuf = self.props.pixbuf
             pix_width, pix_height = pixbuf.props.width, pixbuf.props.height
-            Gtk.render_icon(
-                style_context, context, pixbuf,
-                x + (width - pix_width) // 2,
-                y + (height - pix_height) // 2)
+
+            xalign, yalign = self.get_alignment()
+            align_mode = self.get_alignment_mode()
+            if align_mode == GtkSource.GutterRendererAlignmentMode.CELL:
+                icon_x = x + (width - pix_width) // 2
+                icon_y = y + (height - pix_height) // 2
+            else:
+                line_iter = start if align_mode == ALIGN_MODE_FIRST else end
+                loc = self.get_view().get_iter_location(line_iter)
+                icon_x = cell_area.x + (cell_area.width - pix_width) * xalign
+                icon_y = loc.y + (loc.height - pix_height) * yalign
+
+            Gtk.render_icon(style_context, context, pixbuf, icon_x, icon_y)
 
         self.draw_chunks(
             context, background_area, cell_area, start, end, state)
