@@ -1,16 +1,16 @@
 # Polish translation for meld.
-# Copyright © 2011-2016 the meld authors.
+# Copyright © 2011-2017 the meld authors.
 # This file is distributed under the same license as the meld package.
 # Marcin Floryan <mfloryan@mm.waw.pl>, 2011.
-# Piotr Drąg <piotrdrag@gmail.com>, 2011-2016.
-# Aviary.pl <community-poland@mozilla.org>, 2011-2016.
+# Piotr Drąg <piotrdrag@gmail.com>, 2011-2017.
+# Aviary.pl <community-poland@mozilla.org>, 2011-2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-02 12:49+0200\n"
-"PO-Revision-Date: 2016-10-02 12:50+0200\n"
+"POT-Creation-Date: 2017-01-22 21:31+0100\n"
+"PO-Revision-Date: 2017-01-22 21:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -20,16 +20,16 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 
-#: ../bin/meld:142
+#: ../bin/meld:179
 msgid "Cannot import: "
 msgstr "Nie można zaimportować: "
 
-#: ../bin/meld:145
+#: ../bin/meld:182
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Program Meld wymaga wersji %s lub nowszej."
 
-#: ../bin/meld:191
+#: ../bin/meld:227
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -296,7 +296,7 @@ msgid ""
 msgstr ""
 "Lista nazwa kolumn w porównaniu katalogów i czy powinny być wyświetlane."
 
-#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
 msgid "Ignore symbolic links"
 msgstr "Ignorowanie dowiązań symbolicznych"
 
@@ -338,7 +338,7 @@ msgstr ""
 "Jest to przydatne podczas porównywania plików między systemami plików "
 "z różnym rozwiązywaniem czasu modyfikacji."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:22
 msgid "Apply text filters during folder comparisons"
 msgstr "Zastosowywanie filtrów tekstowych podczas porównywania katalogów"
 
@@ -533,8 +533,8 @@ msgstr "Witryna"
 msgid "translator-credits"
 msgstr ""
 "Marcin Floryan <mfloryan@mm.waw.pl>, 2011\n"
-"Piotr Drąg <piotrdrag@gmail.com>, 2011-2016\n"
-"Aviary.pl <community-poland@mozilla.org>, 2011-2016"
+"Piotr Drąg <piotrdrag@gmail.com>, 2011-2017\n"
+"Aviary.pl <community-poland@mozilla.org>, 2011-2017"
 
 #: ../data/ui/application.ui.h:6
 msgid "_Preferences"
@@ -584,7 +584,7 @@ msgstr "Kopiuje element na prawo"
 msgid "Delete selected"
 msgstr "Usuwa zaznaczone"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:858 ../meld/filediff.py:1382
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:858 ../meld/filediff.py:1336
 msgid "Hide"
 msgstr "Ukryj"
 
@@ -874,8 +874,8 @@ msgstr ""
 msgid "Close _without Saving"
 msgstr "Zamknij _bez zapisywania"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:940 ../meld/filediff.py:1448
-#: ../meld/filediff.py:1520
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:940 ../meld/filediff.py:1402
+#: ../meld/filediff.py:1474
 msgid "_Cancel"
 msgstr "_Anuluj"
 
@@ -912,7 +912,7 @@ msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr ""
 "Zmiany naniesione do poniższych dokumentów zostaną bezpowrotnie utracone:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:941 ../meld/filediff.py:1449
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:941 ../meld/filediff.py:1403
 msgid "_Replace"
 msgstr "Z_amień"
 
@@ -960,7 +960,7 @@ msgstr "Sformatowanie jako poprawka"
 msgid "Copy to Clipboard"
 msgstr "Skopiuj do schowka"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:155
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:154
 msgid "Save Patch"
 msgstr "Zapisz poprawkę"
 
@@ -981,167 +981,141 @@ msgid "_Reverse patch direction"
 msgstr "Przeciwny kie_runek porównania"
 
 #: ../data/ui/preferences.ui.h:1
-msgid "Left is remote, right is local"
-msgstr "Zdalne po lewej, lokalne po prawej"
-
-#: ../data/ui/preferences.ui.h:2
-msgid "Left is local, right is remote"
-msgstr "Lokalne po lewej, zdalne po prawej"
-
-#: ../data/ui/preferences.ui.h:3
-msgid "Remote, merge, local"
-msgstr "Zdalne, scalanie, lokalne"
-
-#: ../data/ui/preferences.ui.h:4
-msgid "Local, merge, remote"
-msgstr "Lokalne, scalanie, zdalne"
-
-#: ../data/ui/preferences.ui.h:5
-msgid "1ns (ext4)"
-msgstr "1 ns (ext4)"
-
-#: ../data/ui/preferences.ui.h:6
-msgid "100ns (NTFS)"
-msgstr "100 ns (NTFS)"
-
-#: ../data/ui/preferences.ui.h:7
-msgid "1s (ext2/ext3)"
-msgstr "1 s (ext2/ext3)"
-
-#: ../data/ui/preferences.ui.h:8
-msgid "2s (VFAT)"
-msgstr "2 s (VFAT)"
-
-#: ../data/ui/preferences.ui.h:9
 msgid "Meld Preferences"
 msgstr "Preferencje programu Meld"
 
-#: ../data/ui/preferences.ui.h:10
+#: ../data/ui/preferences.ui.h:2
 msgid "Font"
 msgstr "Czcionka"
 
-#: ../data/ui/preferences.ui.h:11
+#: ../data/ui/preferences.ui.h:3
 msgid "_Use the system fixed width font"
 msgstr "Systemowa o stałej s_zerokości"
 
-#: ../data/ui/preferences.ui.h:12
+#: ../data/ui/preferences.ui.h:4
 msgid "_Editor font:"
 msgstr "Czcionka _edytora:"
 
-#: ../data/ui/preferences.ui.h:13
+#: ../data/ui/preferences.ui.h:5
 msgid "Display"
 msgstr "Wyświetlanie"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:6
 msgid "_Tab width:"
 msgstr "Szerokość _tabulacji:"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:7
 msgid "_Insert spaces instead of tabs"
 msgstr "_Spacje zamiast tabulacji"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../data/ui/preferences.ui.h:8
 msgid "Enable text _wrapping"
 msgstr "Zawijanie _wierszy"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../data/ui/preferences.ui.h:9
 msgid "Do not _split words over two lines"
 msgstr "Bez _dzielenia wyrazów między wierszami"
 
-#: ../data/ui/preferences.ui.h:18
+#: ../data/ui/preferences.ui.h:10
 msgid "Highlight _current line"
 msgstr "Wyróż_nianie bieżącego wiersza"
 
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:11
 msgid "Show _line numbers"
 msgstr "_Numery wierszy"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:12
 msgid "Show w_hitespace"
 msgstr "_Białe znaki"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../data/ui/preferences.ui.h:13
 msgid "Use s_yntax highlighting"
 msgstr "Wyróżnianie elementów s_kładni"
 
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:14
 msgid "Syntax highlighting color scheme:"
 msgstr "Schemat kolorów wyróżniania elementów składni:"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../data/ui/preferences.ui.h:15
 msgid "External Editor"
 msgstr "Zewnętrzny edytor"
 
-#: ../data/ui/preferences.ui.h:24
+#: ../data/ui/preferences.ui.h:16
 msgid "Use _default system editor"
 msgstr "_Domyślny edytor systemowy"
 
-#: ../data/ui/preferences.ui.h:25
+#: ../data/ui/preferences.ui.h:17
 msgid "Edito_r command:"
 msgstr "Polecenie uruchamiające edyto_r:"
 
-#: ../data/ui/preferences.ui.h:26
+#: ../data/ui/preferences.ui.h:18
 msgid "Editor"
 msgstr "Edytor"
 
-#: ../data/ui/preferences.ui.h:27
+#: ../data/ui/preferences.ui.h:19
 msgid "Shallow Comparison"
 msgstr "Płytkie porównanie"
 
-#: ../data/ui/preferences.ui.h:28
+#: ../data/ui/preferences.ui.h:20
 msgid "C_ompare files based only on size and timestamp"
 msgstr "P_orównywanie plików tylko na podstawie rozmiaru i czasu modyfikacji"
 
-#: ../data/ui/preferences.ui.h:29
+#: ../data/ui/preferences.ui.h:21
 msgid "_Timestamp resolution:"
 msgstr "Rozwiązywanie _czasu modyfikacji:"
 
-#: ../data/ui/preferences.ui.h:31
+#: ../data/ui/preferences.ui.h:23
+msgid "Note: enabling text filters may make comparing large files much slower"
+msgstr ""
+"Uwaga: włączenie filtrów tekstowych może znacznie spowolnić porównywanie "
+"dużych plików"
+
+#: ../data/ui/preferences.ui.h:24
 msgid "Symbolic Links"
 msgstr "Dowiązania symboliczne"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:26
 msgid "Visible Columns"
 msgstr "Widoczne kolumny"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:27
 msgid "Folder Comparisons"
 msgstr "Porównywanie katalogów"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:28
 msgid "Version Comparisons"
 msgstr "Porównywanie wersji"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:29
 msgid "_Order when comparing file revisions:"
 msgstr "_Kolejność podczas porównywania wersji plików:"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:30
 msgid "Order when _merging files:"
 msgstr "K_olejność podczas scalania plików:"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../data/ui/preferences.ui.h:31
 msgid "Commit Messages"
 msgstr "Opisy zatwierdzeń"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:32
 msgid "Show _right margin at:"
 msgstr "P_rawy margines w kolumnie:"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:33
 msgid "Automatically _break lines at right margin on commit"
 msgstr ""
 "Automatyczne łamanie _wierszy na prawym marginesie podczas zatwierdzania"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../data/ui/preferences.ui.h:34
 msgid "Version Control"
 msgstr "System kontroli wersji"
 
-#: ../data/ui/preferences.ui.h:42
+#: ../data/ui/preferences.ui.h:35
 msgid "Filename filters"
 msgstr "Filtry nazw plików"
 
-#: ../data/ui/preferences.ui.h:43
+#: ../data/ui/preferences.ui.h:36
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1151,23 +1125,23 @@ msgstr ""
 "podstawie nazwy. Każdy wzorzec jest listą symboli wieloznacznych powłoki "
 "rozdzieloną spacjami."
 
-#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:104
+#: ../data/ui/preferences.ui.h:37 ../meld/meldwindow.py:104
 msgid "File Filters"
 msgstr "Filtry plików"
 
-#: ../data/ui/preferences.ui.h:45
+#: ../data/ui/preferences.ui.h:38
 msgid "Change trimming"
 msgstr "Obcinanie zmian"
 
-#: ../data/ui/preferences.ui.h:46
+#: ../data/ui/preferences.ui.h:39
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Obcinanie różnic pustych wierszy z początku i końca zmian"
 
-#: ../data/ui/preferences.ui.h:47
+#: ../data/ui/preferences.ui.h:40
 msgid "Text filters"
 msgstr "Filtry tekstu"
 
-#: ../data/ui/preferences.ui.h:48
+#: ../data/ui/preferences.ui.h:41
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1181,9 +1155,41 @@ msgstr ""
 "zawiera grupy, tylko grupy są zamieniane. Więcej informacji dostępne jest "
 "w podręczniku użytkownika."
 
-#: ../data/ui/preferences.ui.h:49
+#: ../data/ui/preferences.ui.h:42
 msgid "Text Filters"
 msgstr "Filtry plików tekstowych"
+
+#: ../data/ui/preferences.ui.h:43
+msgid "Left is remote, right is local"
+msgstr "Zdalne po lewej, lokalne po prawej"
+
+#: ../data/ui/preferences.ui.h:44
+msgid "Left is local, right is remote"
+msgstr "Lokalne po lewej, zdalne po prawej"
+
+#: ../data/ui/preferences.ui.h:45
+msgid "Remote, merge, local"
+msgstr "Zdalne, scalanie, lokalne"
+
+#: ../data/ui/preferences.ui.h:46
+msgid "Local, merge, remote"
+msgstr "Lokalne, scalanie, zdalne"
+
+#: ../data/ui/preferences.ui.h:47
+msgid "1ns (ext4)"
+msgstr "1 ns (ext4)"
+
+#: ../data/ui/preferences.ui.h:48
+msgid "100ns (NTFS)"
+msgstr "100 ns (NTFS)"
+
+#: ../data/ui/preferences.ui.h:49
+msgid "1s (ext2/ext3)"
+msgstr "1 s (ext2/ext3)"
+
+#: ../data/ui/preferences.ui.h:50
+msgid "2s (VFAT)"
+msgstr "2 s (VFAT)"
 
 #: ../data/ui/shortcuts.ui.h:1
 msgctxt "shortcut window"
@@ -1702,8 +1708,8 @@ msgstr ""
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Filtry tekstowe są używane i mogą ukrywać różnice między plikami."
 
-#: ../meld/dirdiff.py:860 ../meld/filediff.py:1384 ../meld/filediff.py:1414
-#: ../meld/filediff.py:1416 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
+#: ../meld/dirdiff.py:860 ../meld/filediff.py:1338 ../meld/filediff.py:1368
+#: ../meld/filediff.py:1370 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
 msgid "Hi_de"
 msgstr "_Ukryj"
 
@@ -1777,30 +1783,30 @@ msgstr ""
 msgid "Error deleting %s"
 msgstr "Błąd podczas usuwania %s"
 
-#: ../meld/dirdiff.py:1488
+#: ../meld/dirdiff.py:1494
 msgid "No folder"
 msgstr "Brak katalogu"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:355
+#: ../meld/filediff.py:311
 msgid "INS"
 msgstr "WST"
 
-#: ../meld/filediff.py:355
+#: ../meld/filediff.py:311
 msgid "OVR"
 msgstr "ZAS"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:357
+#: ../meld/filediff.py:313
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Wrsz %i, kol %i"
 
-#: ../meld/filediff.py:782
+#: ../meld/filediff.py:738
 msgid "Comparison results will be inaccurate"
 msgstr "Wyniki porównania będą niepoprawne"
 
-#: ../meld/filediff.py:784
+#: ../meld/filediff.py:740
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1808,66 +1814,66 @@ msgstr ""
 "Filtr zmienił liczbę wierszy w pliku, co nie jest obsługiwane. Porównanie "
 "będzie niepoprawne."
 
-#: ../meld/filediff.py:840
+#: ../meld/filediff.py:796
 msgid "Mark conflict as resolved?"
 msgstr "Oznaczyć konflikt jako rozwiązany?"
 
-#: ../meld/filediff.py:842
+#: ../meld/filediff.py:798
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Jeśli konflikt został pomyślnie rozwiązany, to można go teraz jako taki "
 "oznaczyć."
 
-#: ../meld/filediff.py:844
+#: ../meld/filediff.py:800
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../meld/filediff.py:845
+#: ../meld/filediff.py:801
 msgid "Mark _Resolved"
 msgstr "Oznacz jako _rozwiązane"
 
-#: ../meld/filediff.py:1093
+#: ../meld/filediff.py:1049
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Wystąpił problem podczas otwierania pliku „%s”."
 
-#: ../meld/filediff.py:1101
+#: ../meld/filediff.py:1057
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Plik %s wygląda na plik binarny."
 
-#: ../meld/filediff.py:1103
+#: ../meld/filediff.py:1059
 msgid "Do you want to open the file using the default application?"
 msgstr "Otworzyć go w domyślnym programie?"
 
-#: ../meld/filediff.py:1105
+#: ../meld/filediff.py:1061
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../meld/filediff.py:1121
+#: ../meld/filediff.py:1077
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Analizowanie różnic"
 
-#: ../meld/filediff.py:1186
+#: ../meld/filediff.py:1142
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Plik %s został zmieniony na dysku"
 
-#: ../meld/filediff.py:1187
+#: ../meld/filediff.py:1143
 msgid "Do you want to reload the file?"
 msgstr "Ponownie wczytać plik?"
 
-#: ../meld/filediff.py:1189
+#: ../meld/filediff.py:1145
 msgid "_Reload"
 msgstr "_Wczytaj ponownie"
 
-#: ../meld/filediff.py:1347
+#: ../meld/filediff.py:1301
 msgid "Files are identical"
 msgstr "Pliki są identyczne"
 
-#: ../meld/filediff.py:1360
+#: ../meld/filediff.py:1314
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1875,11 +1881,11 @@ msgstr ""
 "Filtry tekstowe są używane i mogą ukrywać różnice między plikami. Porównać "
 "pliki bez uwzględniania filtrów?"
 
-#: ../meld/filediff.py:1365
+#: ../meld/filediff.py:1319
 msgid "Files differ in line endings only"
 msgstr "Pliki różnią się tylko znacznikami końca wierszy"
 
-#: ../meld/filediff.py:1367
+#: ../meld/filediff.py:1321
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1888,15 +1894,15 @@ msgstr ""
 "Pliki są identyczne, z wyjątkiem różnych znaczników końca wierszy:\n"
 "%s"
 
-#: ../meld/filediff.py:1387
+#: ../meld/filediff.py:1341
 msgid "Show without filters"
 msgstr "Wyświetl bez filtrów"
 
-#: ../meld/filediff.py:1409
+#: ../meld/filediff.py:1363
 msgid "Change highlighting incomplete"
 msgstr "Wyróżnianie zmian jest niepełne"
 
-#: ../meld/filediff.py:1410
+#: ../meld/filediff.py:1364
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1904,20 +1910,20 @@ msgstr ""
 "Niektóre zmiany nie zostały wyróżnione, ponieważ były za duże. Można "
 "wymusić, aby program Meld wyróżnił większe zmiany, ale może to być wolne."
 
-#: ../meld/filediff.py:1418
+#: ../meld/filediff.py:1372
 msgid "Keep highlighting"
 msgstr "Wyróżniaj dalej"
 
-#: ../meld/filediff.py:1420
+#: ../meld/filediff.py:1374
 msgid "_Keep highlighting"
 msgstr "_Wyróżniaj dalej"
 
-#: ../meld/filediff.py:1452
+#: ../meld/filediff.py:1406
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Zastąpić plik „%s”?"
 
-#: ../meld/filediff.py:1454
+#: ../meld/filediff.py:1408
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -1926,47 +1932,47 @@ msgstr ""
 "Plik o tej samej nazwie już istnieje w „%s”.\n"
 "Zastąpienie istniejącego pliku spowoduje utratę jego zawartości."
 
-#: ../meld/filediff.py:1471
+#: ../meld/filediff.py:1425
 msgid "Save Left Pane As"
 msgstr "Zapis lewego panelu jako"
 
-#: ../meld/filediff.py:1473
+#: ../meld/filediff.py:1427
 msgid "Save Middle Pane As"
 msgstr "Zapis środkowego panelu jako"
 
-#: ../meld/filediff.py:1475
+#: ../meld/filediff.py:1429
 msgid "Save Right Pane As"
 msgstr "Zapis prawego panelu jako"
 
-#: ../meld/filediff.py:1489
+#: ../meld/filediff.py:1443
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Plik %s został zmieniony na dysku od czasu jego otwarcia"
 
-#: ../meld/filediff.py:1491
+#: ../meld/filediff.py:1445
 msgid "If you save it, any external changes will be lost."
 msgstr ""
 "Jeżeli plik zostanie zapisany, to wszystkie zewnętrzne zmiany zostaną "
 "utracone."
 
-#: ../meld/filediff.py:1494
+#: ../meld/filediff.py:1448
 msgid "Save Anyway"
 msgstr "Zapisz mimo to"
 
-#: ../meld/filediff.py:1495
+#: ../meld/filediff.py:1449
 msgid "Don't Save"
 msgstr "Nie zapisuj"
 
-#: ../meld/filediff.py:1521
+#: ../meld/filediff.py:1475
 msgid "_Save as UTF-8"
 msgstr "_Zapisz za pomocą UTF-8"
 
-#: ../meld/filediff.py:1524
+#: ../meld/filediff.py:1478
 #, python-format
 msgid "Couldn't encode text as “%s”"
 msgstr "Nie można zakodować tekstu za pomocą „%s”"
 
-#: ../meld/filediff.py:1526
+#: ../meld/filediff.py:1480
 #, python-format
 msgid ""
 "File “%s” contains characters that can't be encoded using encoding “%s”.\n"
@@ -1976,12 +1982,12 @@ msgstr ""
 "„%s”.\n"
 "Zapisać za pomocą kodowania UTF-8?"
 
-#: ../meld/filediff.py:1566 ../meld/patchdialog.py:131
+#: ../meld/filediff.py:1520 ../meld/patchdialog.py:130
 #, python-format
 msgid "Could not save file %s."
 msgstr "Nie można zapisać pliku %s."
 
-#: ../meld/filediff.py:1567 ../meld/patchdialog.py:132
+#: ../meld/filediff.py:1521 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
 "Couldn't save file due to:\n"
@@ -1990,11 +1996,11 @@ msgstr ""
 "Nie można zapisać pliku z powodu:\n"
 "%s"
 
-#: ../meld/filediff.py:1913
+#: ../meld/filediff.py:1867
 msgid "Live comparison updating disabled"
 msgstr "Wyłączono aktualizowanie porównań na żywo"
 
-#: ../meld/filediff.py:1914
+#: ../meld/filediff.py:1868
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2009,11 +2015,11 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Scalanie plików"
 
-#: ../meld/gutterrendererchunk.py:188
+#: ../meld/gutterrendererchunk.py:210
 msgid "Copy _up"
 msgstr "Skopiuj w gó_rę"
 
-#: ../meld/gutterrendererchunk.py:189
+#: ../meld/gutterrendererchunk.py:211
 msgid "Copy _down"
 msgstr "Skopiuj w _dół"
 
@@ -2319,7 +2325,7 @@ msgstr ""
 "instalacja"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:263
+#: ../meld/misc.py:265
 msgid "[None]"
 msgstr "[Brak]"
 
