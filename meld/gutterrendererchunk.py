@@ -260,9 +260,12 @@ class GutterRendererChunkAction(
                 icon_y = y + (height - pix_height) // 2
             else:
                 line_iter = start if align_mode == ALIGN_MODE_FIRST else end
-                loc = self.get_view().get_iter_location(line_iter)
+                textview = self.get_view()
+                loc = textview.get_iter_location(line_iter)
+                line_x, line_y = textview.buffer_to_window_coords(
+                    self.get_window_type(), loc.x, loc.y)
                 icon_x = cell_area.x + (cell_area.width - pix_width) * xalign
-                icon_y = loc.y + (loc.height - pix_height) * yalign
+                icon_y = line_y + (loc.height - pix_height) * yalign
 
             Gtk.render_icon(style_context, context, pixbuf, icon_x, icon_y)
 
