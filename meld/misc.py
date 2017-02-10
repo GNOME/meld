@@ -228,10 +228,6 @@ def get_common_theme():
     return fill_colours, line_colours
 
 
-def gdk_to_cairo_color(color):
-    return (color.red / 65535., color.green / 65535., color.blue / 65535.)
-
-
 def all_same(lst):
     """Return True if all elements of the list are equal"""
     return not lst or lst.count(lst[0]) == len(lst)
@@ -384,12 +380,6 @@ def copytree(src, dst):
     except OSError as e:
         if e.errno != errno.EPERM:
             raise
-
-
-def shell_escape(glob_pat):
-    # TODO: handle all cases
-    assert not re.compile(r"[][*?]").findall(glob_pat)
-    return glob_pat.replace('{', '[{]').replace('}', '[}]')
 
 
 def shell_to_regex(pat):
