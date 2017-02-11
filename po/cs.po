@@ -4,15 +4,15 @@
 #
 # Miloslav Trmac <mitr@volny.cz>, 2003, 2004, 2005.
 # Petr Kovar <pknbe@volny.cz>, 2008, 2009, 2010, 2011.
-# Marek Černocký <marek@manet.cz>, 2011, 2012, 2013, 2014, 2015, 2016.
+# Marek Černocký <marek@manet.cz>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-30 23:28+0000\n"
-"PO-Revision-Date: 2016-10-01 12:39+0200\n"
+"POT-Creation-Date: 2017-01-21 23:12+0000\n"
+"PO-Revision-Date: 2017-02-11 10:22+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -22,16 +22,16 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: ../bin/meld:142
+#: ../bin/meld:179
 msgid "Cannot import: "
 msgstr "Nelze importovat: "
 
-#: ../bin/meld:145
+#: ../bin/meld:182
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld vyžaduje %s nebo vyšší."
 
-#: ../bin/meld:191
+#: ../bin/meld:227
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -295,7 +295,7 @@ msgid ""
 "displayed."
 msgstr "Seznam názvů sloupců v porovnávání složek a zda by měly být zobrazeny."
 
-#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
 msgid "Ignore symbolic links"
 msgstr "Ignorovat symbolické odkazy"
 
@@ -337,7 +337,7 @@ msgstr ""
 "jejich časy považovány za rozdílné. To je užitečné při porovnávání souborů "
 "mezi souborovými systémy, které mají různou přesnost časových razítek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:22
 msgid "Apply text filters during folder comparisons"
 msgstr "Použít textové filtry při porovnávání složek"
 
@@ -575,7 +575,7 @@ msgstr "Kopírovat doprava"
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:858 ../meld/filediff.py:1382
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:858 ../meld/filediff.py:1336
 msgid "Hide"
 msgstr "Skrýt"
 
@@ -866,8 +866,8 @@ msgstr "Pokud se změny neuloží, budou trvale ztraceny."
 msgid "Close _without Saving"
 msgstr "Zavřít _bez uložení"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:940 ../meld/filediff.py:1448
-#: ../meld/filediff.py:1520
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:940 ../meld/filediff.py:1402
+#: ../meld/filediff.py:1474
 msgid "_Cancel"
 msgstr "_Zrušit"
 
@@ -904,7 +904,7 @@ msgstr "Vrátit stav před neuložené změny v dokumentu?"
 msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr "Změny provedené v následujících dokumentech budou trvale ztraceny:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:941 ../meld/filediff.py:1449
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:941 ../meld/filediff.py:1403
 msgid "_Replace"
 msgstr "Nahradi_t"
 
@@ -952,7 +952,7 @@ msgstr "Formátovat jako záplatu"
 msgid "Copy to Clipboard"
 msgstr "Kopírovat do schránky"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:155
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:154
 msgid "Save Patch"
 msgstr "Uložení záplaty"
 
@@ -973,166 +973,140 @@ msgid "_Reverse patch direction"
 msgstr "_Obrátit směr záplaty"
 
 #: ../data/ui/preferences.ui.h:1
-msgid "Left is remote, right is local"
-msgstr "Levý je vzdálený, pravý je místní"
-
-#: ../data/ui/preferences.ui.h:2
-msgid "Left is local, right is remote"
-msgstr "Levý je místní, pravý je vzdálený"
-
-#: ../data/ui/preferences.ui.h:3
-msgid "Remote, merge, local"
-msgstr "Vzdálený, sloučený, místní"
-
-#: ../data/ui/preferences.ui.h:4
-msgid "Local, merge, remote"
-msgstr "Místní, sloučený, vzdálený"
-
-#: ../data/ui/preferences.ui.h:5
-msgid "1ns (ext4)"
-msgstr "1 ns (ext4)"
-
-#: ../data/ui/preferences.ui.h:6
-msgid "100ns (NTFS)"
-msgstr "100 ns (NTFS)"
-
-#: ../data/ui/preferences.ui.h:7
-msgid "1s (ext2/ext3)"
-msgstr "1 s (ext2/ext3)"
-
-#: ../data/ui/preferences.ui.h:8
-msgid "2s (VFAT)"
-msgstr "2 s (VFAT)"
-
-#: ../data/ui/preferences.ui.h:9
 msgid "Meld Preferences"
 msgstr "Předvolby aplikace Meld"
 
-#: ../data/ui/preferences.ui.h:10
+#: ../data/ui/preferences.ui.h:2
 msgid "Font"
 msgstr "Písmo"
 
-#: ../data/ui/preferences.ui.h:11
+#: ../data/ui/preferences.ui.h:3
 msgid "_Use the system fixed width font"
 msgstr "Po_užívat systémové písmo s pevnou šířkou"
 
-#: ../data/ui/preferences.ui.h:12
+#: ../data/ui/preferences.ui.h:4
 msgid "_Editor font:"
 msgstr "Písmo _editoru:"
 
-#: ../data/ui/preferences.ui.h:13
+#: ../data/ui/preferences.ui.h:5
 msgid "Display"
 msgstr "Zobrazení"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:6
 msgid "_Tab width:"
 msgstr "Šířka _tabulátoru:"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:7
 msgid "_Insert spaces instead of tabs"
 msgstr "V_kládat mezery namísto tabulátorů"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../data/ui/preferences.ui.h:8
 msgid "Enable text _wrapping"
 msgstr "Povolit zalamování _textu"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../data/ui/preferences.ui.h:9
 msgid "Do not _split words over two lines"
 msgstr "Nerozdělovat _slova na dva řádky"
 
-#: ../data/ui/preferences.ui.h:18
+#: ../data/ui/preferences.ui.h:10
 msgid "Highlight _current line"
 msgstr "Zvýrazňovat _aktuální řádek"
 
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:11
 msgid "Show _line numbers"
 msgstr "Zobrazovat čís_la řádků"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:12
 msgid "Show w_hitespace"
 msgstr "Zobrazovat _mezery"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../data/ui/preferences.ui.h:13
 msgid "Use s_yntax highlighting"
 msgstr "Používat zvýrazňování s_yntaxe"
 
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:14
 msgid "Syntax highlighting color scheme:"
 msgstr "Schéma barev pro zvýraznění syntaxe:"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../data/ui/preferences.ui.h:15
 msgid "External Editor"
 msgstr "Externí editor"
 
-#: ../data/ui/preferences.ui.h:24
+#: ../data/ui/preferences.ui.h:16
 msgid "Use _default system editor"
 msgstr "Používat výchozí e_ditor systému"
 
-#: ../data/ui/preferences.ui.h:25
+#: ../data/ui/preferences.ui.h:17
 msgid "Edito_r command:"
 msgstr "Příkaz edito_ru:"
 
-#: ../data/ui/preferences.ui.h:26
+#: ../data/ui/preferences.ui.h:18
 msgid "Editor"
 msgstr "Editor"
 
-#: ../data/ui/preferences.ui.h:27
+#: ../data/ui/preferences.ui.h:19
 msgid "Shallow Comparison"
 msgstr "Povrchní porovnání"
 
-#: ../data/ui/preferences.ui.h:28
+#: ../data/ui/preferences.ui.h:20
 msgid "C_ompare files based only on size and timestamp"
 msgstr "P_orovnávat soubory jen na základě velikosti a časového razítka"
 
-#: ../data/ui/preferences.ui.h:29
+#: ../data/ui/preferences.ui.h:21
 msgid "_Timestamp resolution:"
 msgstr "Přesnos_t časového razítka:"
 
-#: ../data/ui/preferences.ui.h:31
+#: ../data/ui/preferences.ui.h:23
+msgid "Note: enabling text filters may make comparing large files much slower"
+msgstr ""
+"Poznámka: zapnutí textových filtrů může výrazně zpomalit porovnávání velkých "
+"souborů"
+
+#: ../data/ui/preferences.ui.h:24
 msgid "Symbolic Links"
 msgstr "Symbolické odkazy"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:26
 msgid "Visible Columns"
 msgstr "Viditelné sloupce"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:27
 msgid "Folder Comparisons"
 msgstr "Porovnávání složek"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:28
 msgid "Version Comparisons"
 msgstr "Porovnávání verzí"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:29
 msgid "_Order when comparing file revisions:"
 msgstr "P_ořadí při porovnávání revizí souborů:"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:30
 msgid "Order when _merging files:"
 msgstr "Pořadí při slučová_ní souborů:"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../data/ui/preferences.ui.h:31
 msgid "Commit Messages"
 msgstr "Zprávy o zařazování"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:32
 msgid "Show _right margin at:"
 msgstr "Zobrazit p_ravý okraj na:"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:33
 msgid "Automatically _break lines at right margin on commit"
 msgstr "Při zařazování automaticky za_lamovat řádky na pravém okraji"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../data/ui/preferences.ui.h:34
 msgid "Version Control"
 msgstr "Správa verzí"
 
-#: ../data/ui/preferences.ui.h:42
+#: ../data/ui/preferences.ui.h:35
 msgid "Filename filters"
 msgstr "Filtry názvů souborů"
 
-#: ../data/ui/preferences.ui.h:43
+#: ../data/ui/preferences.ui.h:36
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1142,24 +1116,24 @@ msgstr ""
 "Každý vzorek je seznamem zástupných znaků ve stylu shellu oddělovaný "
 "mezerami."
 
-#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:104
+#: ../data/ui/preferences.ui.h:37 ../meld/meldwindow.py:104
 msgid "File Filters"
 msgstr "Filtry souborů"
 
-#: ../data/ui/preferences.ui.h:45
+#: ../data/ui/preferences.ui.h:38
 msgid "Change trimming"
 msgstr "Vynechávání změn"
 
-#: ../data/ui/preferences.ui.h:46
+#: ../data/ui/preferences.ui.h:39
 msgid "Trim blank line differences from the start and end of changes"
 msgstr ""
 "Vynechat od začátku do konce změn rozdíly spočívající v prázdných řádcích"
 
-#: ../data/ui/preferences.ui.h:47
+#: ../data/ui/preferences.ui.h:40
 msgid "Text filters"
 msgstr "Filtry textu"
 
-#: ../data/ui/preferences.ui.h:48
+#: ../data/ui/preferences.ui.h:41
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1172,9 +1146,41 @@ msgstr ""
 "řetězcem před provedením porovnání. Pokud výraz obsahuje skupiny, jsou "
 "nahrazeny jen skupiny. Více podrobností viz příručka uživatele."
 
-#: ../data/ui/preferences.ui.h:49
+#: ../data/ui/preferences.ui.h:42
 msgid "Text Filters"
 msgstr "Filtry textu"
+
+#: ../data/ui/preferences.ui.h:43
+msgid "Left is remote, right is local"
+msgstr "Levý je vzdálený, pravý je místní"
+
+#: ../data/ui/preferences.ui.h:44
+msgid "Left is local, right is remote"
+msgstr "Levý je místní, pravý je vzdálený"
+
+#: ../data/ui/preferences.ui.h:45
+msgid "Remote, merge, local"
+msgstr "Vzdálený, sloučený, místní"
+
+#: ../data/ui/preferences.ui.h:46
+msgid "Local, merge, remote"
+msgstr "Místní, sloučený, vzdálený"
+
+#: ../data/ui/preferences.ui.h:47
+msgid "1ns (ext4)"
+msgstr "1 ns (ext4)"
+
+#: ../data/ui/preferences.ui.h:48
+msgid "100ns (NTFS)"
+msgstr "100 ns (NTFS)"
+
+#: ../data/ui/preferences.ui.h:49
+msgid "1s (ext2/ext3)"
+msgstr "1 s (ext2/ext3)"
+
+#: ../data/ui/preferences.ui.h:50
+msgid "2s (VFAT)"
+msgstr "2 s (VFAT)"
 
 #: ../data/ui/shortcuts.ui.h:1
 msgctxt "shortcut window"
@@ -1696,8 +1702,8 @@ msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory."
 
-#: ../meld/dirdiff.py:860 ../meld/filediff.py:1384 ../meld/filediff.py:1414
-#: ../meld/filediff.py:1416 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
+#: ../meld/dirdiff.py:860 ../meld/filediff.py:1338 ../meld/filediff.py:1368
+#: ../meld/filediff.py:1370 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
 msgid "Hi_de"
 msgstr "_Skrýt"
 
@@ -1769,30 +1775,30 @@ msgstr ""
 msgid "Error deleting %s"
 msgstr "Chyba při mazání %s"
 
-#: ../meld/dirdiff.py:1488
+#: ../meld/dirdiff.py:1494
 msgid "No folder"
 msgstr "Žádná složka"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:355
+#: ../meld/filediff.py:311
 msgid "INS"
 msgstr "VKL"
 
-#: ../meld/filediff.py:355
+#: ../meld/filediff.py:311
 msgid "OVR"
 msgstr "PŘE"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:357
+#: ../meld/filediff.py:313
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Řád %i, sl %i"
 
-#: ../meld/filediff.py:782
+#: ../meld/filediff.py:738
 msgid "Comparison results will be inaccurate"
 msgstr "Výsledky porovnávání budou nepřesné"
 
-#: ../meld/filediff.py:784
+#: ../meld/filediff.py:740
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1800,64 +1806,64 @@ msgstr ""
 "Filtr změnil počet řádků v souboru, což není podporováno. Porovnání nebude "
 "správné."
 
-#: ../meld/filediff.py:840
+#: ../meld/filediff.py:796
 msgid "Mark conflict as resolved?"
 msgstr "Označit konflikt jako vyřešený?"
 
-#: ../meld/filediff.py:842
+#: ../meld/filediff.py:798
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Pokud byl konflikt vyřešen úspěšně, můžete jej označit za vyřešený."
 
-#: ../meld/filediff.py:844
+#: ../meld/filediff.py:800
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../meld/filediff.py:845
+#: ../meld/filediff.py:801
 msgid "Mark _Resolved"
 msgstr "Označi_t za vyřešené"
 
-#: ../meld/filediff.py:1093
+#: ../meld/filediff.py:1049
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Vyskytl se problém při otevírání souboru „%s“."
 
-#: ../meld/filediff.py:1101
+#: ../meld/filediff.py:1057
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Soubor %s je zřejmě binární."
 
-#: ../meld/filediff.py:1103
+#: ../meld/filediff.py:1059
 msgid "Do you want to open the file using the default application?"
 msgstr "Chcete soubor otevřít pomocí výchozí aplikace?"
 
-#: ../meld/filediff.py:1105
+#: ../meld/filediff.py:1061
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../meld/filediff.py:1121
+#: ../meld/filediff.py:1077
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Počítají se rozdíly"
 
-#: ../meld/filediff.py:1186
+#: ../meld/filediff.py:1142
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Soubor „%s“ byl změněn na disku."
 
-#: ../meld/filediff.py:1187
+#: ../meld/filediff.py:1143
 msgid "Do you want to reload the file?"
 msgstr "Chcete soubor znovu načíst?"
 
-#: ../meld/filediff.py:1189
+#: ../meld/filediff.py:1145
 msgid "_Reload"
 msgstr "Zno_vu načíst"
 
-#: ../meld/filediff.py:1347
+#: ../meld/filediff.py:1301
 msgid "Files are identical"
 msgstr "Soubory jsou stejné"
 
-#: ../meld/filediff.py:1360
+#: ../meld/filediff.py:1314
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1865,11 +1871,11 @@ msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory. Chcete porovnat nefiltrované soubory?"
 
-#: ../meld/filediff.py:1365
+#: ../meld/filediff.py:1319
 msgid "Files differ in line endings only"
 msgstr "Soubory se liší pouze zakončením řádků"
 
-#: ../meld/filediff.py:1367
+#: ../meld/filediff.py:1321
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1878,15 +1884,15 @@ msgstr ""
 "Soubory jsou shodné, vyjma rozdílného zakončení řádků:\n"
 "%s"
 
-#: ../meld/filediff.py:1387
+#: ../meld/filediff.py:1341
 msgid "Show without filters"
 msgstr "Zobrazit bez filtrů"
 
-#: ../meld/filediff.py:1409
+#: ../meld/filediff.py:1363
 msgid "Change highlighting incomplete"
 msgstr "Změnit zvýraznění neúplných"
 
-#: ../meld/filediff.py:1410
+#: ../meld/filediff.py:1364
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1895,20 +1901,20 @@ msgstr ""
 "přimět k používání větší délky, aby se zvýraznily i rozsáhlé změny, ale může "
 "to pak být pomalé."
 
-#: ../meld/filediff.py:1418
+#: ../meld/filediff.py:1372
 msgid "Keep highlighting"
 msgstr "Zachovat zvýrazňování"
 
-#: ../meld/filediff.py:1420
+#: ../meld/filediff.py:1374
 msgid "_Keep highlighting"
 msgstr "Z_achovat zvýrazňování"
 
-#: ../meld/filediff.py:1452
+#: ../meld/filediff.py:1406
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Nahradit soubor „%s“?"
 
-#: ../meld/filediff.py:1454
+#: ../meld/filediff.py:1408
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -1917,45 +1923,45 @@ msgstr ""
 "V „%s“ již existuje soubor se stejným názvem.\n"
 "Pokud stávající soubor nahradíte, jeho obsah bude ztracen."
 
-#: ../meld/filediff.py:1471
+#: ../meld/filediff.py:1425
 msgid "Save Left Pane As"
 msgstr "Uložení levého panelu jako"
 
-#: ../meld/filediff.py:1473
+#: ../meld/filediff.py:1427
 msgid "Save Middle Pane As"
 msgstr "Uložení prostředního panelu jako"
 
-#: ../meld/filediff.py:1475
+#: ../meld/filediff.py:1429
 msgid "Save Right Pane As"
 msgstr "Uložení pravého panelu jako"
 
-#: ../meld/filediff.py:1489
+#: ../meld/filediff.py:1443
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Soubor „%s“ byl od doby, co jste jej otevřeli, změněn."
 
-#: ../meld/filediff.py:1491
+#: ../meld/filediff.py:1445
 msgid "If you save it, any external changes will be lost."
 msgstr "Pokud jej uložíte, budou vnější změny ztraceny."
 
-#: ../meld/filediff.py:1494
+#: ../meld/filediff.py:1448
 msgid "Save Anyway"
 msgstr "Přesto uložit"
 
-#: ../meld/filediff.py:1495
+#: ../meld/filediff.py:1449
 msgid "Don't Save"
 msgstr "Neukládat"
 
-#: ../meld/filediff.py:1521
+#: ../meld/filediff.py:1475
 msgid "_Save as UTF-8"
 msgstr "_Uložit v UTF-8"
 
-#: ../meld/filediff.py:1524
+#: ../meld/filediff.py:1478
 #, python-format
 msgid "Couldn't encode text as “%s”"
 msgstr "Text nelze zakódovat jako „%s“"
 
-#: ../meld/filediff.py:1526
+#: ../meld/filediff.py:1480
 #, python-format
 msgid ""
 "File “%s” contains characters that can't be encoded using encoding “%s”.\n"
@@ -1964,12 +1970,12 @@ msgstr ""
 "Soubor „%s“ obsahuje znaky, které nelze zakódovat pomocí kódování „%s“\n"
 "Chcete jej uložit v UTF-8?"
 
-#: ../meld/filediff.py:1566 ../meld/patchdialog.py:131
+#: ../meld/filediff.py:1520 ../meld/patchdialog.py:130
 #, python-format
 msgid "Could not save file %s."
 msgstr "Nelze uložit soubor %s."
 
-#: ../meld/filediff.py:1567 ../meld/patchdialog.py:132
+#: ../meld/filediff.py:1521 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
 "Couldn't save file due to:\n"
@@ -1978,11 +1984,11 @@ msgstr ""
 "Nelze uložit soubor z důvodu:\n"
 "%s"
 
-#: ../meld/filediff.py:1913
+#: ../meld/filediff.py:1867
 msgid "Live comparison updating disabled"
 msgstr "Živá aktualizace porovnání zakázána"
 
-#: ../meld/filediff.py:1914
+#: ../meld/filediff.py:1868
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1997,11 +2003,11 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Slučují se soubory"
 
-#: ../meld/gutterrendererchunk.py:159
+#: ../meld/gutterrendererchunk.py:210
 msgid "Copy _up"
 msgstr "Kopírovat nahor_u"
 
-#: ../meld/gutterrendererchunk.py:160
+#: ../meld/gutterrendererchunk.py:211
 msgid "Copy _down"
 msgstr "Kopírovat _dolů"
 
@@ -2305,7 +2311,7 @@ msgstr ""
 "Ve schématu barev nelze najít údaj pro %s-%s. Jedná se o chybnou instalaci"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:263
+#: ../meld/misc.py:265
 msgid "[None]"
 msgstr "[Žádný]"
 
@@ -2522,4 +2528,3 @@ msgstr "Chyba při odstraňování %s"
 #: ../meld/vcview.py:745
 msgid "Clear"
 msgstr "Vymazat"
-
