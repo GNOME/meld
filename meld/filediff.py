@@ -1816,7 +1816,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         b0 = self.textbuffer[src]
         it = b0.get_iter_at_line_or_eof(chunk[1])
         if chunk[2] >= b0.get_line_count():
+            # If this is the end of the buffer, we need to remove the
+            # previous newline, because the current line has none.
             it.backward_char()
+            newline_type = b0.data.sourcefile.get_newline_type()
+            if newline_type == GtkSource.NewlineType.CR_LF:
+                it.backward_char()
         b0.delete(it, b0.get_iter_at_line_or_eof(chunk[2]))
         mark0 = b0.create_mark(None, it, True)
         mark1 = b0.create_mark(None, it, True)
