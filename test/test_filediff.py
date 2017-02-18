@@ -1,7 +1,7 @@
 
-import pytest
+from unittest import mock
 
-import mock
+import pytest
 from gi.repository import Gtk
 
 from meld.filediff import FileDiff
