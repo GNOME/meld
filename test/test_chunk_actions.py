@@ -21,9 +21,13 @@ from meld.matchers.myers import DiffChunk
     ("ree\reee", GtkSource.NewlineType.LF, 'ree'),
     ("ree\reee\r", GtkSource.NewlineType.LF, 'ree\reee'),
 
-    # This case is intentionally incorrect; the newline information is
-    # wrong for the text, and the result is also incorrect.
-    ("ree\r\neee", GtkSource.NewlineType.CR, 'ree\r'),
+    # Mismatched newline and text
+    ("ree\r\neee", GtkSource.NewlineType.CR, 'ree'),
+
+    # Mismatched newline types within text
+    ("ree\r\neee\n", GtkSource.NewlineType.CR_LF, 'ree\r\neee'),
+    ("ree\r\neee\nqqq", GtkSource.NewlineType.CR_LF, 'ree\r\neee'),
+    ("ree\r\neee\nqqq\r\n", GtkSource.NewlineType.CR_LF, 'ree\r\neee\nqqq'),
 ])
 def test_delete_last_line_crlf(text, newline, expected_text):
     filediff = mock.Mock(FileDiff)
