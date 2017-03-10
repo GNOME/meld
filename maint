@@ -346,7 +346,7 @@ def dist():
     dist_archive_path = os.path.abspath(os.path.join('dist', archive))
     if os.path.exists(dist_archive_path):
         click.echo('Replacing %s...' % dist_archive_path)
-    cmd = ['python', 'setup.py', 'sdist', '--formats=bztar']
+    cmd = ['python3', 'setup.py', 'sdist', '--formats=bztar']
     call_with_output(cmd, echo_stdout=False)
     if not os.path.exists(dist_archive_path):
         click.echo('Failed to create archive file %s' % dist_archive_path)
