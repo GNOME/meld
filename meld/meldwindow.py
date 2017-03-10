@@ -512,6 +512,9 @@ class MeldWindow(gnomeglade.Component):
         if not self.has_pages():
             self.on_switch_page(self.notebook, page, -1)
             self._update_page_action_sensitivity()
+            # Synchronise UIManager state; this shouldn't be necessary,
+            # but upstream aren't touching UIManager bugs.
+            self.ui.ensure_update()
             if self.should_close:
                 cancelled = self.widget.emit(
                     'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))
