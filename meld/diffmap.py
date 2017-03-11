@@ -18,7 +18,6 @@ import collections
 
 import cairo
 
-from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
 
@@ -31,7 +30,7 @@ class DiffMap(Gtk.DrawingArea):
     __gtype_name__ = "DiffMap"
 
     def __init__(self):
-        GObject.GObject.__init__(self)
+        Gtk.DrawingArea.__init__(self)
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self._scrolladj = None
         self._difffunc = lambda: None
