@@ -1797,10 +1797,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         dst_end = b1.get_iter_at_line_or_eof(chunk[4])
         t0 = b0.get_text(src_start, src_end, False)
         mark0 = b1.create_mark(None, dst_start, True)
-        self.textbuffer[dst].begin_user_action()
+        b1.begin_user_action()
         b1.delete(dst_start, dst_end)
         new_end = b1.insert_at_line(chunk[3], t0)
-        self.textbuffer[dst].end_user_action()
+        b1.end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
         if chunk[1] == chunk[2]:
             # TODO: Need a more specific colour here; conflict is wrong
