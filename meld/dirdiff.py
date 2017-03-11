@@ -578,13 +578,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _sync_vscroll(self, adjustment):
         adjs = [sw.get_vadjustment() for sw in self.scrolledwindow]
-        self._do_to_others(adjustment, adjs, "set_value",
-                           (adjustment.get_value(), ))
+        self._do_to_others(
+            adjustment, adjs, "set_value", (int(adjustment.get_value()),))
 
     def _sync_hscroll(self, adjustment):
         adjs = [sw.get_hadjustment() for sw in self.scrolledwindow]
-        self._do_to_others(adjustment, adjs, "set_value",
-                           (adjustment.get_value(), ))
+        self._do_to_others(
+            adjustment, adjs, "set_value", (int(adjustment.get_value()),))
 
     def _get_focused_pane(self):
         for i, treeview in enumerate(self.treeview):
