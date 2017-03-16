@@ -15,36 +15,47 @@
 # Kristina Salas Sierra <kristina_salas_sierra@hotmail.com>, 2013.
 # Larraitz Uriarte Erkoreka <larraitz.uriarte@gmail.com>, 2013.
 # Josune Zuzuarregui Lizarazu <josunezl@gmail.com>, 2013.
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: meld master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-18 15:06+0200\n"
-"PO-Revision-Date: 2014-05-19 23:22+0200\n"
+"Project-Id-Version: meld meld-3-16\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=meld&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-08-20 21:39+0000\n"
+"PO-Revision-Date: 2017-03-15 22:46+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
-"Language-Team: Basque <librezale@librezale.org>\n"
+"Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
-#: ../bin/meld:134
+#: ../bin/meld:144
 msgid "Cannot import: "
 msgstr "Ezin da inportatu: "
 
-#: ../bin/meld:137
+#: ../bin/meld:147
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld-ek %s edo berriagoa behar du."
 
-#: ../bin/meld:141
+#: ../bin/meld:151
 msgid "Meld does not support Python 3."
 msgstr "Meld-ek ez du Python 3 onartzen."
 
-#: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
+#: ../bin/meld:200
+#, c-format
+msgid ""
+"Couldn't load Meld-specific CSS (%s)\n"
+"%s"
+msgstr ""
+"Ezin izan da Meld-ekiko berezia den CSSa (%s) kargatu\n"
+"%s"
+
+#: ../data/meld.desktop.in.h:1 ../data/meld.appdata.xml.in.h:1
+#: ../data/ui/meldapp.ui.h:1
 msgid "Meld"
 msgstr "Meld"
 
@@ -56,11 +67,16 @@ msgstr "Diferentzia-ikustailea"
 msgid "Meld Diff Viewer"
 msgstr "Meld diferentzia-ikustailea"
 
-#: ../data/meld.desktop.in.h:4
+#: ../data/meld.desktop.in.h:4 ../data/meld.appdata.xml.in.h:2
 msgid "Compare and merge your files"
 msgstr "Konparatu eta konbinatu fitxategiak"
 
-#: ../data/meld.appdata.xml.in.h:1
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/meld.desktop.in.h:6
+msgid "diff;merge;"
+msgstr "diff;merge;batu;desberdintasunak;elkartu;"
+
+#: ../data/meld.appdata.xml.in.h:3
 msgid ""
 "Meld is a visual diff and merge tool targeted at developers. Meld helps you "
 "compare files, directories, and version controlled projects. It provides "
@@ -70,19 +86,21 @@ msgstr ""
 "Meld aplikazioak garatzaileentzako 'diff' eta 'merge' tresna bisuala da. "
 "Meld-ek fitxategiak, direktorioak eta bertsio-kontrola daramaten proiektuak "
 "konparatzen lagunduko dizu. Bai fitxategi bai direktorioen bi eta hiru "
-"elementuen "
-"arteko konparazioa eskaintzen ditu. Bertsio-kontrola daramaten "
+"elementuen arteko konparazioa eskaintzen ditu. Bertsio-kontrola daramaten "
 "hainbat sistema onartzen ditu, Git, Mercurial, Bazaar eta Subversion barne."
 
-#: ../data/meld.appdata.xml.in.h:2
+#: ../data/meld.appdata.xml.in.h:4
 msgid ""
 "Meld helps you review code changes, understand patches, and makes enormous "
 "merge conflicts slightly less painful."
 msgstr ""
 "Meld-ek zure kodearen aldaketak gainbegiratzen, adabakiak ulertzen lagunduko "
 "dizu. Kode handiak batzean gerta daitezkeen gatazkak sortzen dituzte "
-"buruhausteak "
-"leunduz."
+"buruhausteak leunduz."
+
+#: ../data/meld.appdata.xml.in.h:5
+msgid "The GNOME Project"
+msgstr "GNOME proiektua"
 
 #: ../data/mime/meld.xml.in.h:1
 msgid "Meld comparison description"
@@ -93,90 +111,111 @@ msgid "Default window size"
 msgstr "Leihoaren tamaina lehenetsia"
 
 #: ../data/org.gnome.meld.gschema.xml.h:2
+#| msgid "Default window size"
+msgid "Default window state"
+msgstr "Leiho lehenetsiaren egoera"
+
+#: ../data/org.gnome.meld.gschema.xml.h:3
 msgid "Show toolbar"
 msgstr "Erakutsi tresna-barra"
 
-#: ../data/org.gnome.meld.gschema.xml.h:3
+#: ../data/org.gnome.meld.gschema.xml.h:4
 msgid "If true, the window toolbar is visible."
 msgstr "TRUE (egia) bada, leihoaren tresna-barra ikusgai egongo da."
 
-#: ../data/org.gnome.meld.gschema.xml.h:4
+#: ../data/org.gnome.meld.gschema.xml.h:5
 msgid "Show statusbar"
 msgstr "Erakutsi egoera-barra"
 
-#: ../data/org.gnome.meld.gschema.xml.h:5
+#: ../data/org.gnome.meld.gschema.xml.h:6
 msgid "If true, the window statusbar is visible."
 msgstr "TRUE (egia) bada, leihoaren egoera-barra ikusgai egongo da."
 
-#: ../data/org.gnome.meld.gschema.xml.h:6
-msgid "Automatically detected text encodings"
-msgstr "Atzeman automatikoki testu-kodeketak"
-
 #: ../data/org.gnome.meld.gschema.xml.h:7
-msgid ""
-"These text encodings will be automatically used (in order) to try to decode "
-"loaded text files."
-msgstr ""
-"Testu-kodeketa hauek automatikoki erabiliko dira kargatutako "
-"testu-fitxategiak deskodetzen saiatzeko."
+#| msgid "Automatically detected text encodings"
+msgid "Additional automatically detected text encodings"
+msgstr "Automatikoki antzemandako testu-kodeketa gehigarriak"
 
 #: ../data/org.gnome.meld.gschema.xml.h:8
+msgid ""
+"Meld will use these text encodings to try to decode loaded text files before "
+"trying any other encodings. In addition to the encodings in this list, UTF-8 "
+"and the current locale-default encoding will always be used; other encodings "
+"may also be tried, depending on the user's locale."
+msgstr ""
+"Meld-ek testu-kodeketa hauek erabiliko ditu kargatutako testu-fitxategiak "
+"deskodetzean erabiltzeko, beste kodeketa batzuekin saiatu aurretik. Zerrenda "
+"honetako "
+"kodeketez gain, UTF-8 eta uneko lokala lehenetsiaren kodeketa erabiliko da "
+"beti. "
+"Beste kodeketa batzuk ere probatuko dira, erabiltzailearen lokalaren arabera."
+
+#: ../data/org.gnome.meld.gschema.xml.h:9
 msgid "Width of an indentation step"
 msgstr "Koskatzearen urratsaren zabalera"
 
-#: ../data/org.gnome.meld.gschema.xml.h:9
+#: ../data/org.gnome.meld.gschema.xml.h:10
 msgid "The number of spaces to use for a single indent step"
 msgstr "Koskatze bakar batean erabiliko den zuriuneen kopurua"
 
-#: ../data/org.gnome.meld.gschema.xml.h:10
+#: ../data/org.gnome.meld.gschema.xml.h:11
 msgid "Whether to indent using spaces or tabs"
 msgstr "Zuriuneak edo tabulazioak erabiliko diren koskatzean"
 
-#: ../data/org.gnome.meld.gschema.xml.h:11
+#: ../data/org.gnome.meld.gschema.xml.h:12
 msgid "If true, any new indentation will use spaces instead of tabs."
 msgstr ""
-"TRUE (egia) bada, koskatze berri bakoitzean zuriuneak erabiliko "
-"dira tabulazioen ordez."
+"TRUE (egia) bada, koskatze berri bakoitzean zuriuneak erabiliko dira "
+"tabulazioen ordez."
 
-#: ../data/org.gnome.meld.gschema.xml.h:12
+#: ../data/org.gnome.meld.gschema.xml.h:13
 msgid "Show line numbers"
 msgstr "Erakutsi lerro-zenbakiak"
 
-#: ../data/org.gnome.meld.gschema.xml.h:13
+#: ../data/org.gnome.meld.gschema.xml.h:14
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
 msgstr ""
 "TRUE (egia) bada, lerroen zenbakiak erakutsiko dira fitxategien konparazioan."
 
-#: ../data/org.gnome.meld.gschema.xml.h:14
+#: ../data/org.gnome.meld.gschema.xml.h:15
 msgid "Highlight syntax"
 msgstr "Nabarmendu sintaxia"
 
-#: ../data/org.gnome.meld.gschema.xml.h:15
+#: ../data/org.gnome.meld.gschema.xml.h:16
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld's own color "
 "highlighting, this is off by default."
 msgstr ""
-"Konparazioetan sintaxia nabarmenduko den edo ez. Meld-en kolore "
-"propioa dela eta, lehenetsi gisa hau desgaituta dago."
+"Konparazioetan sintaxia nabarmenduko den edo ez. Meld-en kolore propioa dela "
+"eta, lehenetsi gisa hau desgaituta dago."
 
-#: ../data/org.gnome.meld.gschema.xml.h:16
+#: ../data/org.gnome.meld.gschema.xml.h:17
+#| msgid "Use s_yntax highlighting"
+msgid "Color scheme to use for syntax highlighting"
+msgstr "Kolore-eskema sintaxia nabarmentzean erabiltzeko"
+
+#: ../data/org.gnome.meld.gschema.xml.h:18
+msgid "Used by GtkSourceView to determine colors for syntax highlighting"
+msgstr "GtkSourceView-ek erabilita sintaxia nabarmentzeko koloreak zehazteko"
+
+#: ../data/org.gnome.meld.gschema.xml.h:19
 msgid "Displayed whitespace"
 msgstr "Bistaratutako zuriuneak"
 
-#: ../data/org.gnome.meld.gschema.xml.h:17
+#: ../data/org.gnome.meld.gschema.xml.h:20
 msgid ""
 "Selector for individual whitespace character types to be shown. Possible "
 "values are 'space', 'tab', 'newline' and 'nbsp'."
 msgstr ""
 "Zuriunea karaktere mota bakoitzaren hautatzailea erakusteko. Balio "
-"erabilgarriak: 'space' (zuriunea), 'tab' (tabulazioa), "
-"'newline' (lerro berria) and 'nbsp' (zuriune zatikaitza)."
+"erabilgarriak: 'space' (zuriunea), 'tab' (tabulazioa), 'newline' (lerro "
+"berria) and 'nbsp' (zuriune zatikaitza)."
 
-#: ../data/org.gnome.meld.gschema.xml.h:18
+#: ../data/org.gnome.meld.gschema.xml.h:21
 msgid "Wrap mode"
 msgstr "Itzulbiratze modua"
 
-#: ../data/org.gnome.meld.gschema.xml.h:19
+#: ../data/org.gnome.meld.gschema.xml.h:22
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
@@ -184,14 +223,13 @@ msgid ""
 msgstr ""
 "Fitxategien konparazioko lerroak itzulbiratu egingo dira ezarpen honen "
 "arabera: 'none' (bat ere ez), 'char' (edozer karaktere) edo 'word' (hitzen "
-"amaieran "
-"soilik)."
+"amaieran soilik)."
 
-#: ../data/org.gnome.meld.gschema.xml.h:20
+#: ../data/org.gnome.meld.gschema.xml.h:23
 msgid "Highlight current line"
 msgstr "Nabarmendu uneko lerroa"
 
-#: ../data/org.gnome.meld.gschema.xml.h:21
+#: ../data/org.gnome.meld.gschema.xml.h:24
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
@@ -199,83 +237,90 @@ msgstr ""
 "TRUE (egia) bada, kurtsorea kokatuta dagoen lerroa nabarmenduko da "
 "fitxategien konparazioan."
 
-#: ../data/org.gnome.meld.gschema.xml.h:22
+#: ../data/org.gnome.meld.gschema.xml.h:25
 msgid "Use the system default monospace font"
 msgstr "Erabili sistemaren zabalera finkoko letra-tipo lehenetsia"
 
-#: ../data/org.gnome.meld.gschema.xml.h:23
+#: ../data/org.gnome.meld.gschema.xml.h:26
+#| msgid ""
+#| "If false, the defined custom font will be used instead of the system "
+#| "monospace font."
 msgid ""
-"If false, the defined custom font will be used instead of the system "
-"monospace font."
+"If false, custom-font will be used instead of the system monospace font."
 msgstr ""
-"FALSE (faltsua) bada, letra-tipo pertsonalizatua erabiliko da "
-"sistemaren zabalera finkoko letra-tipoaren ordez."
+"FALSE (faltsua) bada, letra-tipo pertsonalizatua erabiliko da sistemaren "
+"zabalera finkoko letra-tipoaren ordez."
 
-#: ../data/org.gnome.meld.gschema.xml.h:24
+#: ../data/org.gnome.meld.gschema.xml.h:27
 msgid "Custom font"
 msgstr "Letra-tipo pertsonalizatua"
 
-#: ../data/org.gnome.meld.gschema.xml.h:25
+#: ../data/org.gnome.meld.gschema.xml.h:28
 msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
 msgstr ""
-"Letra-tipo pertsonalizatua, kate bat bezala gordeta eta "
-"Pango letra-tipoaren azalpen gisa analizatuta."
+"Letra-tipo pertsonalizatua, kate bat bezala gordeta eta Pango letra-tipoaren "
+"azalpen gisa analizatuta."
 
-#: ../data/org.gnome.meld.gschema.xml.h:26
+#: ../data/org.gnome.meld.gschema.xml.h:29
 msgid "Ignore blank lines when comparing files"
 msgstr "Ez ikusi egin lerro hutsei fitxategiak konparatzean"
 
-#: ../data/org.gnome.meld.gschema.xml.h:27
+#: ../data/org.gnome.meld.gschema.xml.h:30
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
-"TRUE (egia) bada, lerro hutsak kendu egingo dira fitxategien arteko aldaketak "
-"nabarmentzean."
+"TRUE (egia) bada, lerro hutsak kendu egingo dira fitxategien arteko "
+"aldaketak nabarmentzean."
 
-#: ../data/org.gnome.meld.gschema.xml.h:28
+#: ../data/org.gnome.meld.gschema.xml.h:31
 msgid "Use the system default editor"
 msgstr "Erabili sistemaren editore lehenetsia"
 
-#: ../data/org.gnome.meld.gschema.xml.h:29
+#: ../data/org.gnome.meld.gschema.xml.h:32
+#| msgid ""
+#| "If false, the defined custom editor will be used instead of the system "
+#| "editor when opening files externally."
 msgid ""
-"If false, the defined custom editor will be used instead of the system "
-"editor when opening files externally."
+"If false, custom-editor-command will be used instead of the system editor "
+"when opening files externally."
 msgstr ""
-"FALSE (faltsua) bada, fitxategiak kanpoko editore pertsonalizatuarekin "
-"irekiko dira sistemaren editorea erabili ordez."
+"FALSE (faltsua) bada, 'custom-editor-command' (editore pertsonalizatuaren "
+"komandoa) "
+"erabiliko da sistemaren editorea erabili ordez, fitxategiak kanpotik "
+"irekitzean."
 
-#: ../data/org.gnome.meld.gschema.xml.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:33
 msgid "The custom editor launch command"
 msgstr "Editore pertsonalizatua abiarazteko komandoa"
 
-#: ../data/org.gnome.meld.gschema.xml.h:31
+#: ../data/org.gnome.meld.gschema.xml.h:34
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr ""
 "Editore pertsonalizatua abiaraztean erabiliko den komandoa. Txantiloi gutxi "
-"batzuk soilik daude onartuta: oraingoz '{file}' eta '{line}' tokenak bakarrik "
-"onartzen dira."
+"batzuk soilik daude onartuta: oraingoz '{file}' eta '{line}' tokenak "
+"bakarrik onartzen dira."
 
-#: ../data/org.gnome.meld.gschema.xml.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:35
 msgid "Columns to display"
 msgstr "Zutabeak bistaratzeko"
 
-#: ../data/org.gnome.meld.gschema.xml.h:33
+#: ../data/org.gnome.meld.gschema.xml.h:36
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
 msgstr ""
-"Zutabeen izenen zerrenda karpetak konparatzean eta "
-"hauek bistaratu behar diren edo ez."
+"Zutabeen izenen zerrenda karpetak konparatzean eta hauek bistaratu behar "
+"diren edo ez."
 
-#: ../data/org.gnome.meld.gschema.xml.h:34 ../data/ui/preferences.ui.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:32
 msgid "Ignore symbolic links"
 msgstr "Ez ikusi egin esteka sinbolikoei"
 
-#: ../data/org.gnome.meld.gschema.xml.h:35
+#: ../data/org.gnome.meld.gschema.xml.h:38
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
@@ -283,28 +328,26 @@ msgstr ""
 "TRUE (egia) bada, karpetak konparatzean ez jarraitu esteka sinbolikorik "
 "karpeten zuhaitza arakatzean."
 
-#: ../data/org.gnome.meld.gschema.xml.h:36
+#: ../data/org.gnome.meld.gschema.xml.h:39
 msgid "Use shallow comparison"
 msgstr "Erabili azaleko konparazioa"
 
-#: ../data/org.gnome.meld.gschema.xml.h:37
+#: ../data/org.gnome.meld.gschema.xml.h:40
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
 "different otherwise."
 msgstr ""
-"TRUE (egia) bada, karpeten konparazioak fitxategietan oinarritutako "
-"tamaina eta aldatze-datan bakarrik konparatuko dira, fitxategiak berdinak "
-"direla "
+"TRUE (egia) bada, karpeten konparazioak fitxategietan oinarritutako tamaina "
+"eta aldatze-datan bakarrik konparatuko dira, fitxategiak berdinak direla "
 "onartuko du haien tamaina eta aldatze-data bat datozenean, bestela "
-"desberdintzat joko "
-"ditu."
+"desberdintzat joko ditu."
 
-#: ../data/org.gnome.meld.gschema.xml.h:38
+#: ../data/org.gnome.meld.gschema.xml.h:41
 msgid "File timestamp resolution"
 msgstr "Fitxategiaren data-zigiluaren bereizmena"
 
-#: ../data/org.gnome.meld.gschema.xml.h:39
+#: ../data/org.gnome.meld.gschema.xml.h:42
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they're considered to have different mtimes. This "
@@ -313,38 +356,52 @@ msgid ""
 msgstr ""
 "Konparazioa aldatze-datan oinarritzean, aldatze-data desberdinak dituztela "
 "onartzeko bi fitxategien arteko gutxieneko desberdintasuna nanosegundotan "
-"neurtzen da "
-"hau. Erabilgarria da denbora-zigiluaren bereizmen desberdinak dituzten "
-"fitxategi-sistemetako fitxategiak konparatzeko."
+"neurtzen da hau. Erabilgarria da denbora-zigiluaren bereizmen desberdinak "
+"dituzten fitxategi-sistemetako fitxategiak konparatzeko."
 
-#: ../data/org.gnome.meld.gschema.xml.h:40
+#: ../data/org.gnome.meld.gschema.xml.h:43 ../data/ui/preferences.ui.h:30
+msgid "Apply text filters during folder comparisons"
+msgstr "Aplikatu testuaren iragazkiak karpetak konparatzean"
+
+#: ../data/org.gnome.meld.gschema.xml.h:44
+msgid ""
+"If true, folder comparisons that compare file contents also apply active "
+"text filters and the blank line trimming option, and ignore newline "
+"differences."
+msgstr ""
+"true (egia) bada, karpeten konparazioak fitxategien edukia konparatzen "
+"dituenak testu-iragazki aktiboak ere aplikatzen ditu, eta lerro hutsak "
+"kentzeko aukera, eta "
+"lerro berrien desberdintasunei ez ikusi egingo die. "
+
+#: ../data/org.gnome.meld.gschema.xml.h:45
 msgid "File status filters"
 msgstr "Fitxategiaren egoeraren iragazkiak"
 
-#: ../data/org.gnome.meld.gschema.xml.h:41
+#: ../data/org.gnome.meld.gschema.xml.h:46
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
-"Karpeten konparazioan fitxategi ikusgaiak iragazteko "
-"erabiliko den egoeren zerrenda."
+"Karpeten konparazioan fitxategi ikusgaiak iragazteko erabiliko den egoeren "
+"zerrenda."
 
-#: ../data/org.gnome.meld.gschema.xml.h:42
+#: ../data/org.gnome.meld.gschema.xml.h:47
 msgid "Show the version control console output"
 msgstr "Erakutsi bertsio-kontrolaren kontsolaren irteera"
 
-#: ../data/org.gnome.meld.gschema.xml.h:43
+#: ../data/org.gnome.meld.gschema.xml.h:48
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
 msgstr ""
-"TRUE (egia) bada, kontsolaren irteerako atala erakutsiko da "
-"bertsio-kontrolaren ikuspegian, bertsio-kontrolaren eragiketetan "
-"exekutatutako komandoak erakutsiz."
+"TRUE (egia) bada, kontsolaren irteerako atala erakutsiko da bertsio-"
+"kontrolaren ikuspegian, bertsio-kontrolaren eragiketetan exekutatutako "
+"komandoak erakutsiz."
 
-#: ../data/org.gnome.meld.gschema.xml.h:44
+#: ../data/org.gnome.meld.gschema.xml.h:49
 msgid "Version control pane position"
 msgstr "Bertsio-kontrolaren panelaren posizioa"
 
-#: ../data/org.gnome.meld.gschema.xml.h:45
+#: ../data/org.gnome.meld.gschema.xml.h:50
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
@@ -352,109 +409,139 @@ msgstr ""
 "Bertsio-kontrolaren zuhaitz nagusiaren altuera da, kontsolaren panela "
 "erakusten denean."
 
-#: ../data/org.gnome.meld.gschema.xml.h:46
+#: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Aurkeztu bertsioen konparazioa ezkerra-lokala/eskuina-urrunekoa gisa"
 
-#: ../data/org.gnome.meld.gschema.xml.h:47
+#: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
 "a left-is-theirs, right-is-mine scheme is used."
 msgstr ""
-"TRUE (egia) bada, bertsio-kontrolen konparazioak ezkerra-lokala, "
-"eskuina-urrunekoa eskema erabiliko du fitxategiak paneletan zer ordenarekin "
-"aurkeztuko diren "
-"zehazteko. Bestela, ezkerra-haiena, eskuina-nirea eskema erabiliko da."
+"TRUE (egia) bada, bertsio-kontrolen konparazioak ezkerra-lokala, eskuina-"
+"urrunekoa eskema erabiliko du fitxategiak paneletan zer ordenarekin "
+"aurkeztuko diren zehazteko. Bestela, ezkerra-haiena, eskuina-nirea eskema "
+"erabiliko da."
 
-#: ../data/org.gnome.meld.gschema.xml.h:48
+#: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Order for files in three-way version control merge comparisons"
 msgstr "Fitxategien ordena hiruko bertsio-kontrolaren baturen konparazioan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:49
+#: ../data/org.gnome.meld.gschema.xml.h:54
+#| msgid ""
+#| "Choices for file order are remote/merge/local and local/merged/remote. "
+#| "This preference only affects three-way comparisons launched from the "
+#| "version control view, so is used solely for merges/conflict resolution "
+#| "within Meld."
 msgid ""
-"Choices for file order are remote/merge/local and local/merged/remote. This "
+"Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
 "control view, so is used solely for merges/conflict resolution within Meld."
 msgstr ""
 "Fitxategiak ordenatzeko aukerak: 'remote/merge/local' eta "
 "'local/merged/remote' dira. Hobespen honek soilik bertsio-kontrolaren "
-"ikuspegitik abiarazitako hiruko konparazioari "
-"eragiten dio, bakarrik batzean/gatazken ebazpenean erabiltzen da Meld-en."
+"ikuspegitik "
+"abiarazitako hiruko konparazioari eragiten dio, bakarrik batzean/gatazken "
+"ebazpenean erabiltzen da Meld-en."
 
-#: ../data/org.gnome.meld.gschema.xml.h:50
+#: ../data/org.gnome.meld.gschema.xml.h:55
 msgid "Show margin in commit message editor"
 msgstr "Erakutsi marjinak egikaritze-mezuen editorean"
 
-#: ../data/org.gnome.meld.gschema.xml.h:51
+#: ../data/org.gnome.meld.gschema.xml.h:56
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
 msgstr ""
-"TRUE (egia) bada, gida bat bistaratuko da bertsio-kontrolaren "
-"egikaritze-mezuaren editorean marjina zer zutabean dagoen erakusteko."
+"TRUE (egia) bada, gida bat bistaratuko da bertsio-kontrolaren egikaritze-"
+"mezuaren editorean marjina zer zutabean dagoen erakusteko."
 
-#: ../data/org.gnome.meld.gschema.xml.h:52
+#: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Margin column in commit message editor"
 msgstr "Marjinaren zutabea egikaritze-mezuaren editorean"
 
-#: ../data/org.gnome.meld.gschema.xml.h:53
+#: ../data/org.gnome.meld.gschema.xml.h:58
+#| msgid ""
+#| "The column of the margin is at in the version control commit message "
+#| "editor."
 msgid ""
-"The column of the margin is at in the version control commit message editor."
+"The column at which to show the margin in the version control commit message "
+"editor."
 msgstr ""
-"Bertsio-kontrolaren egikaritze-mezuaren editorean marjina zer zutabean dagoen."
+"Bertsio-kontrolaren egikaritze-mezuaren editorean marjina zer zutabean "
+"dagoen."
 
-#: ../data/org.gnome.meld.gschema.xml.h:54
+#: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Automatically hard-wrap commit messages"
 msgstr "Itzulbiratze gogor automatikoa egikaritze-mezuetan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:55
+#: ../data/org.gnome.meld.gschema.xml.h:60
+#| msgid ""
+#| "If true, the version control commit message editor will hard-wrap (i.e., "
+#| "insert line breaks) at the defined commit margin before commit."
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
-"insert line breaks) at the defined commit margin before commit."
+"insert line breaks) at the commit margin before commit."
 msgstr ""
 "TRUE (egia) bada, bertsio-kontrolaren egikaritze-mezuen editoreak "
 "itzulbiratze gogorra (adib. lerro-jauzia txertatzea) landuko du definitutako "
 "egikaritzearen marjinan egikaritu aurretik."
 
-#: ../data/org.gnome.meld.gschema.xml.h:56
+#: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Version control status filters"
 msgstr "Bertsio-kontrolaren egoeraren iragazkiak"
 
-#: ../data/org.gnome.meld.gschema.xml.h:57
+#: ../data/org.gnome.meld.gschema.xml.h:62
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
-"Bertsio-kontrolen konparazioan fitxategi ikusgaiak iragazteko "
-"erabiliko den egoeren zerrenda."
+"Bertsio-kontrolen konparazioan fitxategi ikusgaiak iragazteko erabiliko den "
+"egoeren zerrenda."
 
-#: ../data/org.gnome.meld.gschema.xml.h:58
+#: ../data/org.gnome.meld.gschema.xml.h:63
 msgid "Filename-based filters"
 msgstr "Fitxategi-izenean oinarritutako iragazkiak"
 
-#: ../data/org.gnome.meld.gschema.xml.h:59
+#: ../data/org.gnome.meld.gschema.xml.h:64
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
 msgstr ""
 "Aurredefinitutako fitxategi-izenetan oinarritutako iragazkien zerrenda. "
-"Aktibo dauden iragazkiek bat datozen fitxategiak kenduko dituzte "
-"karpeten konparaziotik."
+"Aktibo dauden iragazkiek bat datozen fitxategiak kenduko dituzte karpeten "
+"konparaziotik."
 
-#: ../data/org.gnome.meld.gschema.xml.h:60
+#: ../data/org.gnome.meld.gschema.xml.h:65
 msgid "Text-based filters"
 msgstr "Testuan oinarritutako iragazkiak"
 
-#: ../data/org.gnome.meld.gschema.xml.h:61
+#: ../data/org.gnome.meld.gschema.xml.h:66
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
 "but won't contribute to the comparison itself."
 msgstr ""
-"Aurredefinitutako testuetan oinarritutako iragazkien zerrenda. "
-"Aktibo dauden iragazkiek bat datozen testuak kenduko dituzte "
-"fitxategien konparaziotik. Hala ere, testua bistaratzen jarraituko da, "
-"baina ez dio konparazio berari lagunduko."
+"Aurredefinitutako testuetan oinarritutako iragazkien zerrenda. Aktibo dauden "
+"iragazkiek bat datozen testuak kenduko dituzte fitxategien konparaziotik. "
+"Hala ere, testua bistaratzen jarraituko da, baina ez dio konparazio berari "
+"lagunduko."
+
+#: ../data/styles/meld-base.xml.h:1
+msgid "Meld base scheme"
+msgstr "Meld-en oinarrizko eskema"
+
+#: ../data/styles/meld-base.xml.h:2
+msgid "Base color scheme for Meld highlighting"
+msgstr "Oinarrizko kolore-eskema Meld-en nabarmentzeko"
+
+#: ../data/styles/meld-dark.xml.h:1
+msgid "Meld dark scheme"
+msgstr "Meld-en eskema iluna"
+
+#: ../data/styles/meld-dark.xml.h:2
+msgid "Dark color scheme for Meld highlighting"
+msgstr "Kolore-eskema iluna Meld-en nabarmentzeko"
 
 #: ../data/ui/application.ui.h:1
 msgid "About Meld"
@@ -499,10 +586,14 @@ msgid "_Help"
 msgstr "_Laguntza"
 
 #: ../data/ui/application.ui.h:8
+msgid "Keyboard Shortcuts"
+msgstr "Laster-teklak"
+
+#: ../data/ui/application.ui.h:9
 msgid "_About"
 msgstr "Honi _buruz"
 
-#: ../data/ui/application.ui.h:9
+#: ../data/ui/application.ui.h:10
 msgid "_Quit"
 msgstr "I_rten"
 
@@ -515,7 +606,8 @@ msgid "Compare selected files"
 msgstr "Konparatu hautatutako fitxategiak"
 
 #: ../data/ui/dirdiff.ui.h:3
-msgid "Copy _Left"
+#| msgid "Copy to left"
+msgid "Copy to _Left"
 msgstr "Kopiatu e_zkerrean"
 
 #: ../data/ui/dirdiff.ui.h:4
@@ -523,7 +615,8 @@ msgid "Copy to left"
 msgstr "Ezkerrean kopiatzen du"
 
 #: ../data/ui/dirdiff.ui.h:5
-msgid "Copy _Right"
+#| msgid "Copy to right"
+msgid "Copy to _Right"
 msgstr "Kopiatu e_skuinean"
 
 #: ../data/ui/dirdiff.ui.h:6
@@ -534,7 +627,7 @@ msgstr "Eskuinean kopiatzen du"
 msgid "Delete selected"
 msgstr "Ezabatu hautapena"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/filediff.py:1448
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:860 ../meld/filediff.py:1368
 msgid "Hide"
 msgstr "Ezkutatu"
 
@@ -570,7 +663,7 @@ msgstr "Berriak"
 msgid "Show new"
 msgstr "Berriak erakusten ditu"
 
-#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:71
+#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:74
 msgid "Modified"
 msgstr "Aldatuak"
 
@@ -603,7 +696,7 @@ msgid "_Add"
 msgstr "_Gehitu"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:735
+#: ../meld/vcview.py:655
 msgid "_Remove"
 msgstr "_Kendu"
 
@@ -624,8 +717,8 @@ msgid "Move _Down"
 msgstr "_Jaitsi"
 
 #. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../meld/dirdiff.py:363
-#: ../meld/vcview.py:203
+#: ../data/ui/EditableList.ui.h:10 ../data/ui/vcview.ui.h:35
+#: ../meld/dirdiff.py:374
 msgid "Name"
 msgstr "Izena"
 
@@ -642,26 +735,207 @@ msgid "Remove selected filter"
 msgstr "Kendu hautatutako iragazkia"
 
 #: ../data/ui/filediff.ui.h:1
+msgid "Format as Patch..."
+msgstr "Eman formatua adabaki gisa..."
+
+#: ../data/ui/filediff.ui.h:2
+msgid "Create a patch using differences between files"
+msgstr "Adabaki bat sortzen du fitxategien arteko diferentziekin"
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Save A_ll"
+msgstr "Gorde _denak"
+
+#: ../data/ui/filediff.ui.h:4
+msgid "Save all files in the current comparison"
+msgstr "Gorde fitxategi guztiak uneko konparazioan"
+
+#: ../data/ui/filediff.ui.h:5
+msgid "Revert files to their saved versions"
+msgstr "Leheneratu fitxategiak haien gordetako bertsioetara"
+
+#: ../data/ui/filediff.ui.h:6
+msgid "Add Synchronization Point"
+msgstr "Gehitu sinkronizazio-puntua"
+
+#: ../data/ui/filediff.ui.h:7
+#| msgid "Add a manual point for synchronization of changes between files"
+msgid "Add a synchronization point for changes between files"
+msgstr "Gehitu fitxategien arteko aldaketen sinkronizazio-puntua"
+
+#: ../data/ui/filediff.ui.h:8
+msgid "Clear Synchronization Points"
+msgstr "Garbitu sinkronizazio-puntuak"
+
+#: ../data/ui/filediff.ui.h:9
+#| msgid "Add a manual point for synchronization of changes between files"
+msgid "Clear sychronization points for changes between files"
+msgstr "Garbitu fitxategien arteko aldaketen sinkronizazio-puntuak"
+
+#: ../data/ui/filediff.ui.h:10
+msgid "Previous Conflict"
+msgstr "Aurreko gatazka"
+
+#: ../data/ui/filediff.ui.h:11
+msgid "Go to the previous conflict"
+msgstr "Aurreko gatazkara joaten da"
+
+#: ../data/ui/filediff.ui.h:12
+msgid "Next Conflict"
+msgstr "Hurrengo gatazka"
+
+#: ../data/ui/filediff.ui.h:13
+msgid "Go to the next conflict"
+msgstr "Hurrengo gatazkara joaten da"
+
+#: ../data/ui/filediff.ui.h:14
+msgid "Push to Left"
+msgstr "Bidali ezkerrera"
+
+#: ../data/ui/filediff.ui.h:15
+msgid "Push current change to the left"
+msgstr "Uneko aldaketa ezkerrera bidaltzen du"
+
+#: ../data/ui/filediff.ui.h:16
+msgid "Push to Right"
+msgstr "Bidali eskuinera"
+
+#: ../data/ui/filediff.ui.h:17
+msgid "Push current change to the right"
+msgstr "Uneko aldaketa eskuinera bidaltzen du"
+
+#: ../data/ui/filediff.ui.h:18
+msgid "Pull from Left"
+msgstr "Ekarri ezkerretik"
+
+#: ../data/ui/filediff.ui.h:19
+msgid "Pull change from the left"
+msgstr "Ezkerreko aldaketa ekartzen du"
+
+#: ../data/ui/filediff.ui.h:20
+msgid "Pull from Right"
+msgstr "Ekarri eskuinetik"
+
+#: ../data/ui/filediff.ui.h:21
+msgid "Pull change from the right"
+msgstr "Eskuineko aldaketa ekartzen du"
+
+#: ../data/ui/filediff.ui.h:22
+msgid "Copy Above Left"
+msgstr "Kopiatu ezkerrekoaren gainean"
+
+#: ../data/ui/filediff.ui.h:23
+msgid "Copy change above the left chunk"
+msgstr "Aldaketa ezkerreko zatiaren gainean kopiatzen du"
+
+#: ../data/ui/filediff.ui.h:24
+msgid "Copy Below Left"
+msgstr "Kopiatu ezkerrekoaren azpian"
+
+#: ../data/ui/filediff.ui.h:25
+msgid "Copy change below the left chunk"
+msgstr "Aldaketa ezkerreko zatiaren azpian kopiatzen du"
+
+#: ../data/ui/filediff.ui.h:26
+msgid "Copy Above Right"
+msgstr "Kopiatu eskuinekoaren gainean"
+
+#: ../data/ui/filediff.ui.h:27
+msgid "Copy change above the right chunk"
+msgstr "Aldaketa eskuineko zatiaren gainean kopiatzen du"
+
+#: ../data/ui/filediff.ui.h:28
+msgid "Copy Below Right"
+msgstr "Kopiatu eskuinekoaren azpian"
+
+#: ../data/ui/filediff.ui.h:29
+msgid "Copy change below the right chunk"
+msgstr "Aldaketa eskuinekoaren azpian kopiatzen du"
+
+#: ../data/ui/filediff.ui.h:30
+msgid "Delete"
+msgstr "Ezabatu"
+
+#: ../data/ui/filediff.ui.h:31
+msgid "Delete change"
+msgstr "Ezabatu aldaketa"
+
+#: ../data/ui/filediff.ui.h:32
+msgid "Merge All from Left"
+msgstr "Batu guztiak ezkerretik"
+
+#: ../data/ui/filediff.ui.h:33
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Ezkerreko aldaketa ez-gatazkatsu guztiak konbinatzen ditu"
+
+#: ../data/ui/filediff.ui.h:34
+msgid "Merge All from Right"
+msgstr "Batu guztiak eskuinetik"
+
+#: ../data/ui/filediff.ui.h:35
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Eskuineko aldaketa ez-gatazkatsu guztiak konbinatzen ditu"
+
+#: ../data/ui/filediff.ui.h:36
+msgid "Merge All"
+msgstr "Batu guztiak"
+
+#: ../data/ui/filediff.ui.h:37
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr ""
+"Ezkerreko eta eskuineko paneletako aldaketa ez-gatazkatsu guztiak "
+"konbinatzen ditu"
+
+#: ../data/ui/filediff.ui.h:38
+#| msgid "Previous Change"
+msgid "Previous Pane"
+msgstr "Aurreko panela"
+
+#: ../data/ui/filediff.ui.h:39
+#| msgid "Move keyboard focus to the next document in this comparison"
+msgid "Move keyboard focus to the previous document in this comparison"
+msgstr "Eraman teklatuaren fokua aurreko dokumentura konparaketa honetan"
+
+#: ../data/ui/filediff.ui.h:40
+#| msgid "Next Change"
+msgid "Next Pane"
+msgstr "Hurrengo panela"
+
+#: ../data/ui/filediff.ui.h:41
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr ""
+"Teklatuaren fokua konparaketa honetako hurrengo dokumentura eramaten du"
+
+#: ../data/ui/filediff.ui.h:42
+msgid "Lock Scrolling"
+msgstr "Blokeatu korritzea"
+
+#: ../data/ui/filediff.ui.h:43
+msgid "Lock scrolling of all panes"
+msgstr "Panel guztien korritzea blokeatzen du"
+
+#: ../data/ui/filediff.ui.h:44
 msgid "Save changes to documents before closing?"
 msgstr "Dokumentuetan egindako aldaketak gorde itxi aurretik?"
 
-#: ../data/ui/filediff.ui.h:2
+#: ../data/ui/filediff.ui.h:45
 msgid "If you don't save, changes will be permanently lost."
 msgstr "Aldaketak gordetzen ez badituzu, betiko galduko dira."
 
-#: ../data/ui/filediff.ui.h:3
+#: ../data/ui/filediff.ui.h:46
 msgid "Close _without Saving"
 msgstr "Itxi gorde _gabe"
 
-#: ../data/ui/filediff.ui.h:4
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:942 ../meld/filediff.py:1434
+#: ../meld/filediff.py:1502
 msgid "_Cancel"
 msgstr "_Utzi"
 
-#: ../data/ui/filediff.ui.h:5
+#: ../data/ui/filediff.ui.h:48
 msgid "_Save"
 msgstr "_Gorde"
 
-#: ../data/ui/filediff.ui.h:6
+#: ../data/ui/filediff.ui.h:49
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
@@ -670,27 +944,27 @@ msgstr ""
 "desblokea dezakezu, aldaketak egiteko. Aldaketa horiek, ordea, beste "
 "fitxategi batean gorde behar dira."
 
-#: ../data/ui/filediff.ui.h:7
+#: ../data/ui/filediff.ui.h:50
 msgid "File 3"
 msgstr "3. fitxategia"
 
-#: ../data/ui/filediff.ui.h:8
+#: ../data/ui/filediff.ui.h:51
 msgid "File 2"
 msgstr "2. fitxategia"
 
-#: ../data/ui/filediff.ui.h:9
+#: ../data/ui/filediff.ui.h:52
 msgid "File 1"
 msgstr "1. fitxategia"
 
-#: ../data/ui/filediff.ui.h:10
+#: ../data/ui/filediff.ui.h:53
 msgid "Revert unsaved changes to documents?"
 msgstr "Leheneratu gorde gabeko aldaketak dokumentuetan?"
 
-#: ../data/ui/filediff.ui.h:11
+#: ../data/ui/filediff.ui.h:54
 msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr "Dokumentu hauetan egindako aldaketak betirako galduko dira:\n"
 
-#: ../data/ui/findbar.ui.h:1
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:943 ../meld/filediff.py:1435
 msgid "_Replace"
 msgstr "_Ordeztu"
 
@@ -735,28 +1009,28 @@ msgid "Format as Patch"
 msgstr "Formateatu adabaki gisa"
 
 #: ../data/ui/patch-dialog.ui.h:2
-msgid "Use differences between:"
-msgstr "Erabili hauen arteko diferentziak:"
-
-#: ../data/ui/patch-dialog.ui.h:3
-msgid "Left and middle panes"
-msgstr "Ezkerreko eta erdiko panelak"
-
-#: ../data/ui/patch-dialog.ui.h:4
-msgid "Middle and right panes"
-msgstr "Erdiko eta eskuineko panelak"
-
-#: ../data/ui/patch-dialog.ui.h:5
-msgid "_Reverse patch direction"
-msgstr "_Alderantzikatu adabakiaren norabidea"
-
-#: ../data/ui/patch-dialog.ui.h:6
 msgid "Copy to Clipboard"
 msgstr "Kopiatu arbelean"
 
-#: ../data/ui/patch-dialog.ui.h:7 ../meld/patchdialog.py:119
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:149
 msgid "Save Patch"
 msgstr "Gorde adabakia"
+
+#: ../data/ui/patch-dialog.ui.h:4
+msgid "Use differences between:"
+msgstr "Erabili hauen arteko diferentziak:"
+
+#: ../data/ui/patch-dialog.ui.h:5
+msgid "Left and middle panes"
+msgstr "Ezkerreko eta erdiko panelak"
+
+#: ../data/ui/patch-dialog.ui.h:6
+msgid "Middle and right panes"
+msgstr "Erdiko eta eskuineko panelak"
+
+#: ../data/ui/patch-dialog.ui.h:7
+msgid "_Reverse patch direction"
+msgstr "_Alderantzikatu adabakiaren norabidea"
 
 #: ../data/ui/preferences.ui.h:1
 msgid "Left is remote, right is local"
@@ -843,74 +1117,84 @@ msgid "Use s_yntax highlighting"
 msgstr "Nabarmendu _sintaxia"
 
 #: ../data/ui/preferences.ui.h:22
+#| msgid "Change highlighting incomplete"
+msgid "Syntax highlighting color scheme:"
+msgstr "Sintaxia nabarmentzeko kolore-eskema:"
+
+#: ../data/ui/preferences.ui.h:23
 msgid "External Editor"
 msgstr "Kanpoko editorea"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../data/ui/preferences.ui.h:24
 msgid "Use _default system editor"
 msgstr "Erabili sistema-editore _lehenetsia"
 
-#: ../data/ui/preferences.ui.h:24
+#: ../data/ui/preferences.ui.h:25
 msgid "Edito_r command:"
 msgstr "Edito_rearen komandoa:"
 
-#: ../data/ui/preferences.ui.h:25
+#: ../data/ui/preferences.ui.h:26
 msgid "Editor"
 msgstr "Editorea"
 
-#: ../data/ui/preferences.ui.h:26
+#: ../data/ui/preferences.ui.h:27
 msgid "Shallow Comparison"
 msgstr "Azaleko konparazioa"
 
-#: ../data/ui/preferences.ui.h:27
+#: ../data/ui/preferences.ui.h:28
 msgid "C_ompare files based only on size and timestamp"
 msgstr "_Konparatu fitxategiak tamainan eta data-zigiluan soilik oinarrituta"
 
-#: ../data/ui/preferences.ui.h:28
+#: ../data/ui/preferences.ui.h:29
 msgid "_Timestamp resolution:"
 msgstr "_Data-zigiluaren bereizmena:"
 
-#: ../data/ui/preferences.ui.h:29
+#: ../data/ui/preferences.ui.h:31
 msgid "Symbolic Links"
 msgstr "Esteka sinbolikoak"
 
-#: ../data/ui/preferences.ui.h:31
+#: ../data/ui/preferences.ui.h:33
 msgid "Visible Columns"
 msgstr "Zutabe ikusgaiak"
 
-#: ../data/ui/preferences.ui.h:32
+#: ../data/ui/preferences.ui.h:34
 msgid "Folder Comparisons"
 msgstr "Karpeten konparazioa"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:35
 msgid "Version Comparisons"
 msgstr "Bertsioen konparazioa"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:36
 msgid "_Order when comparing file revisions:"
 msgstr "_Ordenatu fitxategien gainbegiraketa konparatzean"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:37
 msgid "Order when _merging files:"
 msgstr "Ordenatu fitxategiak _batzean:"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:38
 msgid "Commit Messages"
 msgstr "Egikaritze-mezuak"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:39
 msgid "Show _right margin at:"
 msgstr "Erakutsi e_skuineko marjina hemen:"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../data/ui/preferences.ui.h:40
 msgid "Automatically _break lines at right margin on commit"
 msgstr "_Hautsi lerroak automatikoki eskuineko marjinan egikaritzean"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:41
 msgid "Version Control"
 msgstr "Bertsio-kontrola"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:42
+#| msgid "Filename-based filters"
+msgid "Filename filters"
+msgstr "Fitxategi-izenen iragazkiak"
+
+#: ../data/ui/preferences.ui.h:43
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -920,11 +1204,24 @@ msgstr ""
 "direktorioak. Zuriunez bereizia dagoen shell motako komodinen zerrenda bat "
 "da eredu bakoitza."
 
-#: ../data/ui/preferences.ui.h:41 ../meld/meldwindow.py:103
+#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:104
 msgid "File Filters"
 msgstr "Fitxategi-iragazkiak"
 
-#: ../data/ui/preferences.ui.h:42
+#: ../data/ui/preferences.ui.h:45
+msgid "Change trimming"
+msgstr "Aldaketen lerro hutsak kentzea"
+
+#: ../data/ui/preferences.ui.h:46
+msgid "Trim blank line differences from the start and end of changes"
+msgstr "Kendu desberdintasunen lerro hutsak aldaketen hasiera eta amaieretatik"
+
+#: ../data/ui/preferences.ui.h:47
+#| msgid "Text Filters"
+msgid "Text filters"
+msgstr "Testu-iragazkiak"
+
+#: ../data/ui/preferences.ui.h:48
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -938,16 +1235,300 @@ msgstr ""
 "taldeak badauzka, taldeak soilik ordezkatzen dira. Informazio gehiago behar "
 "izanez gero, ikusi erabiltzailearen eskuliburua."
 
-#: ../data/ui/preferences.ui.h:43
-msgid "Ignore changes which insert or delete blank lines"
-msgstr ""
-"Ez ikusi egin lerro zurriak txertatzen edo ezabatzen dituzten aldaketei"
-
-#: ../data/ui/preferences.ui.h:44
+#: ../data/ui/preferences.ui.h:49
 msgid "Text Filters"
 msgstr "Testu-iragazkiak"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:583
+#: ../data/ui/shortcuts.ui.h:1
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Orokorra"
+
+#: ../data/ui/shortcuts.ui.h:2
+#| msgid "New comparison"
+msgctxt "shortcut window"
+msgid "New comparison"
+msgstr "Konparazio berria"
+
+#: ../data/ui/shortcuts.ui.h:3
+#| msgid "File comparison"
+msgctxt "shortcut window"
+msgid "Close a comparison"
+msgstr "Itxi konparazioa"
+
+#: ../data/ui/shortcuts.ui.h:4
+#| msgid "About Meld"
+msgctxt "shortcut window"
+msgid "Quit Meld"
+msgstr "Irten Meld-etik"
+
+#: ../data/ui/shortcuts.ui.h:5
+#| msgid "Stop the current action"
+msgctxt "shortcut window"
+msgid "Stop the current action"
+msgstr "Gelditu uneko ekintza"
+
+#: ../data/ui/shortcuts.ui.h:6
+#| msgid "New comparison"
+msgctxt "shortcut window"
+msgid "Refresh comparison"
+msgstr "Freskatu konparazioa"
+
+#: ../data/ui/shortcuts.ui.h:7
+#| msgid "Fullscreen"
+msgctxt "shortcut window"
+msgid "Fullscreen"
+msgstr "Pantaila osoa"
+
+#: ../data/ui/shortcuts.ui.h:8
+#| msgid "_Tabs"
+msgctxt "shortcut window"
+msgid "Tabs"
+msgstr "Fitxak"
+
+#: ../data/ui/shortcuts.ui.h:9
+#| msgid "Go to the previous change"
+msgctxt "shortcut window"
+msgid "Go to previous tab"
+msgstr "Joan aurreko fitxara"
+
+#: ../data/ui/shortcuts.ui.h:10
+#| msgid "Go to the next change"
+msgctxt "shortcut window"
+msgid "Go to next tab"
+msgstr "Joan hurrengo fitxara"
+
+#: ../data/ui/shortcuts.ui.h:11
+#| msgid "Switch to this tab"
+msgctxt "shortcut window"
+msgid "Switch to tab"
+msgstr "Aldatu fitxara"
+
+#: ../data/ui/shortcuts.ui.h:12
+#| msgid "Move Tab _Left"
+msgctxt "shortcut window"
+msgid "Move tab left"
+msgstr "Eraman fitxa ezkerrera"
+
+#: ../data/ui/shortcuts.ui.h:13
+#| msgid "Move Tab _Right"
+msgctxt "shortcut window"
+msgid "Move tab right"
+msgstr "Eraman fitxa eskuinera"
+
+#: ../data/ui/shortcuts.ui.h:14
+#| msgid "_Changes"
+msgctxt "shortcut window"
+msgid "Changes"
+msgstr "Aldaketak"
+
+#: ../data/ui/shortcuts.ui.h:15
+#| msgid "Go to the previous change"
+msgctxt "shortcut window"
+msgid "Go to previous change"
+msgstr "Joan aurreko aldaketara"
+
+#: ../data/ui/shortcuts.ui.h:16
+#| msgid "Go to the next change"
+msgctxt "shortcut window"
+msgid "Go to next change"
+msgstr "Joan hurrengo aldaketara"
+
+#: ../data/ui/shortcuts.ui.h:17
+#| msgid "_Edit"
+msgctxt "shortcut window"
+msgid "Editing"
+msgstr "Edizioa"
+
+#: ../data/ui/shortcuts.ui.h:18
+msgctxt "shortcut window"
+msgid "Undo"
+msgstr "Desegin"
+
+#: ../data/ui/shortcuts.ui.h:19
+msgctxt "shortcut window"
+msgid "Redo"
+msgstr "Berregin"
+
+#: ../data/ui/shortcuts.ui.h:20
+msgctxt "shortcut window"
+msgid "Cut"
+msgstr "Ebaki"
+
+#: ../data/ui/shortcuts.ui.h:21
+#| msgid "Copy _up"
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr "Kopiatu"
+
+#: ../data/ui/shortcuts.ui.h:22
+msgctxt "shortcut window"
+msgid "Paste"
+msgstr "Itsatsi"
+
+#: ../data/ui/shortcuts.ui.h:23
+#| msgid "Find:"
+msgctxt "shortcut window"
+msgid "Find"
+msgstr "Bilatu"
+
+#: ../data/ui/shortcuts.ui.h:24
+#| msgid "Find Ne_xt"
+msgctxt "shortcut window"
+msgid "Find Next"
+msgstr "Bilatu hurrengoa"
+
+#: ../data/ui/shortcuts.ui.h:25
+#| msgid "Find _Previous"
+msgctxt "shortcut window"
+msgid "Find Previous"
+msgstr "Bilatu aurrekoa"
+
+#: ../data/ui/shortcuts.ui.h:26
+#| msgid "_Replace"
+msgctxt "shortcut window"
+msgid "Replace"
+msgstr "Ordeztu"
+
+#: ../data/ui/shortcuts.ui.h:27
+#| msgid "File comparison"
+msgctxt "shortcut window"
+msgid "File comparison"
+msgstr "Fitxategi-konparazioa"
+
+#: ../data/ui/shortcuts.ui.h:28
+#| msgid "Save the current file"
+msgctxt "shortcut window"
+msgid "Save current file"
+msgstr "Gorde uneko fitxategia"
+
+#: ../data/ui/shortcuts.ui.h:29
+#| msgid "Save the current file"
+msgctxt "shortcut window"
+msgid "Save current file to new path"
+msgstr "Gorde uneko fitxategia bide-izen berrian"
+
+#: ../data/ui/shortcuts.ui.h:30
+#| msgid "Save all files in the current comparison"
+msgctxt "shortcut window"
+msgid "Save all files in comparison"
+msgstr "Gorde konparazioko fitxategi guztiak"
+
+#: ../data/ui/shortcuts.ui.h:31
+#| msgid "Previous Conflict"
+msgctxt "shortcut window"
+msgid "Previous conflict"
+msgstr "Aurreko gatazka"
+
+#: ../data/ui/shortcuts.ui.h:32
+#| msgid "Next Conflict"
+msgctxt "shortcut window"
+msgid "Next conflict"
+msgstr "Hurrengo gatazka"
+
+#: ../data/ui/shortcuts.ui.h:33
+#| msgid "Push current change to the left"
+msgctxt "shortcut window"
+msgid "Push change to left"
+msgstr "Bultzatu aldaketa ezkerrera"
+
+#: ../data/ui/shortcuts.ui.h:34
+#| msgid "Push current change to the right"
+msgctxt "shortcut window"
+msgid "Push change to right"
+msgstr "Bultzatu aldaketa eskuinera"
+
+#: ../data/ui/shortcuts.ui.h:35
+#| msgid "Pull change from the left"
+msgctxt "shortcut window"
+msgid "Pull change from left"
+msgstr "Ekarri aldaketa ezkerretik"
+
+#: ../data/ui/shortcuts.ui.h:36
+#| msgid "Pull change from the right"
+msgctxt "shortcut window"
+msgid "Pull change from right"
+msgstr "Ekarri aldaketa eskuinetik"
+
+#: ../data/ui/shortcuts.ui.h:37
+#| msgid "Copy change above the left chunk"
+msgctxt "shortcut window"
+msgid "Copy change above left"
+msgstr "Kopiatu aldaketa goi-ezkerrean"
+
+#: ../data/ui/shortcuts.ui.h:38
+#| msgid "Copy change below the left chunk"
+msgctxt "shortcut window"
+msgid "Copy change below left"
+msgstr "Kopiatu aldaketa azpi-ezkerrean"
+
+#: ../data/ui/shortcuts.ui.h:39
+#| msgid "Copy change above the right chunk"
+msgctxt "shortcut window"
+msgid "Copy change above right"
+msgstr "Kopiatu aldaketa goi-eskuinean"
+
+#: ../data/ui/shortcuts.ui.h:40
+#| msgid "Copy change below the right chunk"
+msgctxt "shortcut window"
+msgid "Copy change below right"
+msgstr "Kopiatu aldaketa azpi-eskuinean"
+
+#: ../data/ui/shortcuts.ui.h:41
+#| msgid "Delete change"
+msgctxt "shortcut window"
+msgid "Delete change"
+msgstr "Ezabatu aldaketa"
+
+#: ../data/ui/shortcuts.ui.h:42
+#| msgid "Directory comparison"
+msgctxt "shortcut window"
+msgid "Previous comparison pane"
+msgstr "Aurreko konparazioaren panela"
+
+#: ../data/ui/shortcuts.ui.h:43
+#| msgid "New comparison"
+msgctxt "shortcut window"
+msgid "Next comparison pane"
+msgstr "Hurrengo konparazioaren panela"
+
+#: ../data/ui/shortcuts.ui.h:44
+#| msgid "Folder Comparisons"
+msgctxt "shortcut window"
+msgid "Folder comparison"
+msgstr "Karpeten konparazioa"
+
+#: ../data/ui/shortcuts.ui.h:45
+#| msgid "Copy to left"
+msgctxt "shortcut window"
+msgid "Copy to left"
+msgstr "Kopiatu ezkerrean"
+
+#: ../data/ui/shortcuts.ui.h:46
+#| msgid "Copy to right"
+msgctxt "shortcut window"
+msgid "Copy to right"
+msgstr "Kopiatu eskuinean"
+
+#: ../data/ui/shortcuts.ui.h:47
+#| msgid "Start a version control comparison"
+msgctxt "shortcut window"
+msgid "Version control comparison"
+msgstr "Bertsio-kontrolen konparazioa"
+
+#: ../data/ui/shortcuts.ui.h:48
+#| msgid "Commit changes to version control"
+msgctxt "shortcut window"
+msgid "Commit to version control"
+msgstr "Egikaritu bertsio-kontrolera"
+
+#: ../data/ui/shortcuts.ui.h:49
+#| msgid "Console output"
+msgctxt "shortcut window"
+msgid "Show/hide console output"
+msgstr "Erakutsi/ezkutatu kontsolaren irteera"
+
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:668
 msgid "New comparison"
 msgstr "Beste konparazio bat"
 
@@ -1095,7 +1676,7 @@ msgstr "Bertsiorik _gabe"
 msgid "Show unversioned files"
 msgstr "Bertsiorik ez duten fitxategiak bistaratzen ditu"
 
-#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:64
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:67
 msgid "Ignored"
 msgstr "Ez ikusi eginda"
 
@@ -1123,75 +1704,135 @@ msgstr "Aurreko egunkaria:"
 msgid "Co_mmit"
 msgstr "_Egikaritu"
 
-#: ../data/ui/vcview.ui.h:35
+#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:343
+msgid "Location"
+msgstr "Kokapena"
+
+#: ../data/ui/vcview.ui.h:37
+msgid "Status"
+msgstr "Egoera"
+
+#: ../data/ui/vcview.ui.h:38
+msgid "Extra"
+msgstr "Gehigarria"
+
+#: ../data/ui/vcview.ui.h:39
 msgid "Console output"
 msgstr "Kontsolaren irteera"
 
-#: ../data/ui/vcview.ui.h:36
+#: ../data/ui/vcview.ui.h:40
 msgid "Push local commits to remote?"
 msgstr "Bidali egikaritze lokalak urrunekora?"
 
-#: ../data/ui/vcview.ui.h:37
+#: ../data/ui/vcview.ui.h:41
 msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
 "Bidali beharreko egikaritzeak bertsio-kontrol sistemaren arabera zehaztuta "
 "dago."
 
-#: ../data/ui/vcview.ui.h:38
+#: ../data/ui/vcview.ui.h:42
 msgid "_Push commits"
 msgstr "_Bidali egikariketak"
 
+#: ../meld/const.py:12
+msgid "UNIX (LF)"
+msgstr "UNIX (LF)"
+
+#: ../meld/const.py:13
+msgid "DOS/Windows (CR-LF)"
+msgstr "DOS/Windows (CR-LF)"
+
+#: ../meld/const.py:14
+msgid "Mac OS (CR)"
+msgstr "Mac OS (CR)"
+
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:381
+#: ../meld/dirdiff.py:392 ../meld/preferences.py:82
 msgid "Size"
 msgstr "Tamaina"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:389
+#: ../meld/dirdiff.py:400 ../meld/preferences.py:83
 msgid "Modification time"
 msgstr "Aldatze-ordua"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:397
+#: ../meld/dirdiff.py:408 ../meld/preferences.py:84
 msgid "Permissions"
 msgstr "Baimenak"
 
-#: ../meld/dirdiff.py:543
+#: ../meld/dirdiff.py:538
 #, python-format
 msgid "Hide %s"
 msgstr "Ezkutatu %s"
 
-#: ../meld/dirdiff.py:672 ../meld/dirdiff.py:694
+#: ../meld/dirdiff.py:670 ../meld/dirdiff.py:694
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] %s eskaneatzen"
 
-#: ../meld/dirdiff.py:823
+#: ../meld/dirdiff.py:827
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Eginda"
 
-#: ../meld/dirdiff.py:830
+#: ../meld/dirdiff.py:835
+#| msgid "[%s] Fetching differences"
+msgid "Folders have no differences"
+msgstr "Karpetek ez daukate desberdintasunik"
+
+#: ../meld/dirdiff.py:837
+msgid "Contents of scanned files in folders are identical."
+msgstr "Karpetetako aztertutako fitxategien edukiak berdinak dira."
+
+#: ../meld/dirdiff.py:839
+msgid ""
+"Scanned files in folders appear identical, but contents have not been "
+"scanned."
+msgstr ""
+"Karpetetako aztertutako fitxategiak berdintsuak dirudite, baina "
+"edukiak ez dira aztertu."
+
+#: ../meld/dirdiff.py:842
+msgid "File filters are in use, so not all files have been scanned."
+msgstr ""
+"Fitxategien iragazkiak erabiltzen ari dira, ez dira fitxategi guztiak aztertu."
+
+#: ../meld/dirdiff.py:844
+#| msgid ""
+#| "Text filters are being used, and may be masking differences between "
+#| "files. Would you like to compare the unfiltered files?"
+msgid "Text filters are in use and may be masking content differences."
+msgstr ""
+"Testu-iragazkiak erabiltzen ari dira fitxategiak, eta baliteke iragazki "
+"horiek diferentziak ezkutatzea."
+
+#: ../meld/dirdiff.py:862 ../meld/filediff.py:1370 ../meld/filediff.py:1400
+#: ../meld/filediff.py:1402 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
+msgid "Hi_de"
+msgstr "_Ezkutatu"
+
+#: ../meld/dirdiff.py:872
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Erroreak gertatu dira karpeta hau eskaneatzean"
 
-#: ../meld/dirdiff.py:831
+#: ../meld/dirdiff.py:873
 msgid "Files with invalid encodings found"
 msgstr "Kodeketa baliogabea duten fitxategiak aurkitu dira"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:833
+#: ../meld/dirdiff.py:875
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Fitxategi batzuen kodeketa okerra da. Hauek dira fitxategi-izenak:"
 
-#: ../meld/dirdiff.py:835
+#: ../meld/dirdiff.py:877
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 "Fitxategiren bat ezkutatu da, konparazioan maiuskulak/minuskulak ez "
 "bereizteagatik"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:837
+#: ../meld/dirdiff.py:879
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1200,30 +1841,30 @@ msgstr ""
 "maiuskulak/minuskulak bereizten dituen fitxategi-sistema batean. Karpeta "
 "honetako fitxategi hauek ezkutatu dira:"
 
-#: ../meld/dirdiff.py:848
+#: ../meld/dirdiff.py:890
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "'%s', honek ezkutatua: '%s'"
 
-#: ../meld/dirdiff.py:873 ../meld/filediff.py:1123 ../meld/filediff.py:1274
-#: ../meld/filediff.py:1450 ../meld/filediff.py:1480 ../meld/filediff.py:1482
-msgid "Hi_de"
-msgstr "_Ezkutatu"
+#: ../meld/dirdiff.py:946
+#, python-format
+msgid "Replace folder “%s”?"
+msgstr "Ordeztu “%s” karpeta?"
 
-#: ../meld/dirdiff.py:904
+#: ../meld/dirdiff.py:948
 #, python-format
 msgid ""
-"'%s' exists.\n"
-"Overwrite?"
+"Another folder with the same name already exists in “%s”.\n"
+"If you replace the existing folder, all files in it will be lost."
 msgstr ""
-"'%s' badago lehendik ere.\n"
-"Gainidatzi?"
+"Jadanik badago izen berdineko beste karpeta bat ”%s”(e)n.\n"
+"Dagoen karpeta ordezten baduzu, bere fitxategi guztiak galduko dira."
 
-#: ../meld/dirdiff.py:912
+#: ../meld/dirdiff.py:961
 msgid "Error copying file"
 msgstr "Errorea fitxategia kopiatzean"
 
-#: ../meld/dirdiff.py:913
+#: ../meld/dirdiff.py:962
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1236,269 +1877,106 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:936
+#: ../meld/dirdiff.py:985
 #, python-format
 msgid "Error deleting %s"
 msgstr "Errorea '%s' ezabatzean"
 
-#: ../meld/filediff.py:243
-msgid "Format as Patch..."
-msgstr "Eman formatua adabaki gisa..."
-
-#: ../meld/filediff.py:244
-msgid "Create a patch using differences between files"
-msgstr "Adabaki bat sortzen du fitxategien arteko diferentziekin"
-
-#: ../meld/filediff.py:246
-msgid "Save A_ll"
-msgstr "Gorde _denak"
-
-#: ../meld/filediff.py:247
-msgid "Save all files in the current comparison"
-msgstr "Gorde fitxategi guztiak uneko konparazioan"
-
-#: ../meld/filediff.py:250
-msgid "Revert files to their saved versions"
-msgstr "Leheneratu fitxategiak haien gordetako bertsioetara"
-
-#: ../meld/filediff.py:252
-msgid "Add Synchronization Point"
-msgstr "Gehitu sinkronizazio-puntua"
-
-#: ../meld/filediff.py:253
-msgid "Add a manual point for synchronization of changes between files"
-msgstr "Gehitu eskuzko puntu bat fitxategien arteko aldaketak sinkronizatzeko"
-
-#: ../meld/filediff.py:256
-msgid "Clear Synchronization Points"
-msgstr "Garbitu sinkronizazio-puntuak"
-
-#: ../meld/filediff.py:257
-msgid "Clear manual change sychronization points"
-msgstr "Garbitu eskuzko aldaketen sinkronizazio-puntuak"
-
-#: ../meld/filediff.py:259
-msgid "Previous Conflict"
-msgstr "Aurreko gatazka"
-
-#: ../meld/filediff.py:260
-msgid "Go to the previous conflict"
-msgstr "Aurreko gatazkara joaten da"
-
-#: ../meld/filediff.py:262
-msgid "Next Conflict"
-msgstr "Hurrengo gatazka"
-
-#: ../meld/filediff.py:263
-msgid "Go to the next conflict"
-msgstr "Hurrengo gatazkara joaten da"
-
-#: ../meld/filediff.py:265
-msgid "Push to Left"
-msgstr "Bidali ezkerrera"
-
-#: ../meld/filediff.py:266
-msgid "Push current change to the left"
-msgstr "Uneko aldaketa ezkerrera bidaltzen du"
-
-#: ../meld/filediff.py:269
-msgid "Push to Right"
-msgstr "Bidali eskuinera"
-
-#: ../meld/filediff.py:270
-msgid "Push current change to the right"
-msgstr "Uneko aldaketa eskuinera bidaltzen du"
-
-#: ../meld/filediff.py:274
-msgid "Pull from Left"
-msgstr "Ekarri ezkerretik"
-
-#: ../meld/filediff.py:275
-msgid "Pull change from the left"
-msgstr "Ezkerreko aldaketa ekartzen du"
-
-#: ../meld/filediff.py:278
-msgid "Pull from Right"
-msgstr "Ekarri eskuinetik"
-
-#: ../meld/filediff.py:279
-msgid "Pull change from the right"
-msgstr "Eskuineko aldaketa ekartzen du"
-
-#: ../meld/filediff.py:281
-msgid "Copy Above Left"
-msgstr "Kopiatu ezkerrekoaren gainean"
-
-#: ../meld/filediff.py:282
-msgid "Copy change above the left chunk"
-msgstr "Aldaketa ezkerreko zatiaren gainean kopiatzen du"
-
-#: ../meld/filediff.py:284
-msgid "Copy Below Left"
-msgstr "Kopiatu ezkerrekoaren azpian"
-
-#: ../meld/filediff.py:285
-msgid "Copy change below the left chunk"
-msgstr "Aldaketa ezkerreko zatiaren azpian kopiatzen du"
-
-#: ../meld/filediff.py:287
-msgid "Copy Above Right"
-msgstr "Kopiatu eskuinekoaren gainean"
-
-#: ../meld/filediff.py:288
-msgid "Copy change above the right chunk"
-msgstr "Aldaketa eskuineko zatiaren gainean kopiatzen du"
-
-#: ../meld/filediff.py:290
-msgid "Copy Below Right"
-msgstr "Kopiatu eskuinekoaren azpian"
-
-#: ../meld/filediff.py:291
-msgid "Copy change below the right chunk"
-msgstr "Aldaketa eskuinekoaren azpian kopiatzen du"
-
-#: ../meld/filediff.py:293
-msgid "Delete"
-msgstr "Ezabatu"
-
-#: ../meld/filediff.py:294
-msgid "Delete change"
-msgstr "Ezabatu aldaketa"
-
-#: ../meld/filediff.py:296
-msgid "Merge All from Left"
-msgstr "Batu guztiak ezkerretik"
-
-#: ../meld/filediff.py:297
-msgid "Merge all non-conflicting changes from the left"
-msgstr "Ezkerreko aldaketa ez-gatazkatsu guztiak konbinatzen ditu"
-
-#: ../meld/filediff.py:299
-msgid "Merge All from Right"
-msgstr "Batu guztiak eskuinetik"
-
-#: ../meld/filediff.py:300
-msgid "Merge all non-conflicting changes from the right"
-msgstr "Eskuineko aldaketa ez-gatazkatsu guztiak konbinatzen ditu"
-
-#: ../meld/filediff.py:302
-msgid "Merge All"
-msgstr "Batu guztiak"
-
-#: ../meld/filediff.py:303
-msgid "Merge all non-conflicting changes from left and right panes"
-msgstr ""
-"Ezkerreko eta eskuineko paneletako aldaketa ez-gatazkatsu guztiak "
-"konbinatzen ditu"
-
-#: ../meld/filediff.py:307
-msgid "Cycle Through Documents"
-msgstr "Begiztatu dokumentuen artean"
-
-#: ../meld/filediff.py:308
-msgid "Move keyboard focus to the next document in this comparison"
-msgstr ""
-"Teklatuaren fokua konparaketa honetako hurrengo dokumentura eramaten du"
-
-#: ../meld/filediff.py:314
-msgid "Lock Scrolling"
-msgstr "Blokeatu korritzea"
-
-#: ../meld/filediff.py:315
-msgid "Lock scrolling of all panes"
-msgstr "Panel guztien korritzea blokeatzen du"
+#: ../meld/dirdiff.py:1492
+#| msgid "folder"
+msgid "No folder"
+msgstr "Karpetarik ez"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:472
+#: ../meld/filediff.py:357
 msgid "INS"
 msgstr "TXER"
 
-#: ../meld/filediff.py:472
+#: ../meld/filediff.py:357
 msgid "OVR"
 msgstr "GAIN"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:474
+#: ../meld/filediff.py:359
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "%i. err., %i. zut."
 
-#: ../meld/filediff.py:821
-#, python-format
-msgid ""
-"Filter '%s' changed the number of lines in the file. Comparison will be "
-"incorrect. See the user manual for more details."
-msgstr ""
-"'%s' iragazkiak fitxategiko lerro kopurua aldatu du. Konparazioa okerra "
-"izango da. Informazio gehiago behar izanez gero, ikusi erabiltzailearen "
-"eskuliburua."
+#: ../meld/filediff.py:771
+msgid "Comparison results will be inaccurate"
+msgstr "Konparazioaren emaitzak ez dira zehatzak izango"
 
-#: ../meld/filediff.py:890
+#: ../meld/filediff.py:773
+#| msgid ""
+#| "Filter '%s' changed the number of lines in the file. Comparison will be "
+#| "incorrect. See the user manual for more details."
+msgid ""
+"A filter changed the number of lines in the file, which is unsupported. The "
+"comparison will not be accurate."
+msgstr ""
+"Iragazki batek fitxategiko lerro kopurua aldatu du, onartu gabe dago ordea. "
+"Konparazioa ez da zehatza izango."
+
+#: ../meld/filediff.py:831
 msgid "Mark conflict as resolved?"
 msgstr "Markatu gatazka ebatzita bezala?"
 
-#: ../meld/filediff.py:892
+#: ../meld/filediff.py:833
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Gatazka ongi ebatzi bada, ebatzita bezala marka dezakezu orain."
 
-#: ../meld/filediff.py:894
+#: ../meld/filediff.py:835
 msgid "Cancel"
 msgstr "Utzi"
 
-#: ../meld/filediff.py:895
+#: ../meld/filediff.py:836
 msgid "Mark _Resolved"
 msgstr "Markatu _ebatzita"
 
-#: ../meld/filediff.py:1111
+#: ../meld/filediff.py:1086
 #, python-format
-msgid "[%s] Set num panes"
-msgstr "[%s] Ezarri panel kopurua"
+msgid "There was a problem opening the file “%s”."
+msgstr "Arazo bat egon da “%s“ fitxategia irekitzean."
 
-#: ../meld/filediff.py:1117
+#: ../meld/filediff.py:1094
 #, python-format
-msgid "[%s] Opening files"
-msgstr "[%s] Fitxategiak irekitzen"
+#| msgid "%s appears to be a binary file."
+msgid "File %s appears to be a binary file."
+msgstr "Badirudi “%s“ fitxategia bitarra dela."
 
-#: ../meld/filediff.py:1140 ../meld/filediff.py:1150 ../meld/filediff.py:1163
-#: ../meld/filediff.py:1169
-msgid "Could not read file"
-msgstr "Ezin izan da fitxategia irakurri"
+#: ../meld/filediff.py:1096
+#| msgid "Open selected file or directory in the default external application"
+msgid "Do you want to open the file using the default application?"
+msgstr "Fitxategia aplikazio lehenetsiarekin irekitzea nahi duzu?"
 
-#: ../meld/filediff.py:1141
-#, python-format
-msgid "[%s] Reading files"
-msgstr "[%s] Fitxategiak irakurtzen"
+#: ../meld/filediff.py:1098
+msgid "Open"
+msgstr "Ireki"
 
-#: ../meld/filediff.py:1151
-#, python-format
-msgid "%s appears to be a binary file."
-msgstr "Badirudi '%s' fitxategia bitarra dela."
-
-#: ../meld/filediff.py:1164
-#, python-format
-msgid "%s is not in encodings: %s"
-msgstr "%s ez dago kodeketetan: %s"
-
-#: ../meld/filediff.py:1202
+#: ../meld/filediff.py:1114
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Diferentziak kalkulatzen"
 
-#: ../meld/filediff.py:1269
+#: ../meld/filediff.py:1179
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "'%s' fitxategia diskoan aldatu da"
 
-#: ../meld/filediff.py:1270
+#: ../meld/filediff.py:1180
 msgid "Do you want to reload the file?"
 msgstr "Fitxategia berriro kargatzea nahi duzu?"
 
-#: ../meld/filediff.py:1273
+#: ../meld/filediff.py:1182
 msgid "_Reload"
 msgstr "_Birkargatu"
 
-#: ../meld/filediff.py:1439
+#: ../meld/filediff.py:1333
+msgid "Files are identical"
+msgstr "Fitxategiak berdinak dira"
+
+#: ../meld/filediff.py:1346
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1507,109 +1985,128 @@ msgstr ""
 "horiek fitxategien arteko diferentziak ezkutatzea. Iragazi gabeko "
 "fitxategiak konparatu nahi dituzu?"
 
-#: ../meld/filediff.py:1445
-msgid "Files are identical"
-msgstr "Fitxategiak berdinak dira"
+#: ../meld/filediff.py:1351
+#| msgid "Files with invalid encodings found"
+msgid "Files differ in line endings only"
+msgstr "Fitxategiak lerroen amaieretan soilik desberdintzen dira"
 
-#: ../meld/filediff.py:1453
+#: ../meld/filediff.py:1353
+#, python-format
+msgid ""
+"Files are identical except for differing line endings:\n"
+"%s"
+msgstr ""
+"Fitxategiak berdinak dira, soilik lerroen amaieretan desberdintzen dira:\n"
+"%s"
+
+#: ../meld/filediff.py:1373
 msgid "Show without filters"
 msgstr "Erakutsi iragazkirik gabe"
 
-#: ../meld/filediff.py:1475
+#: ../meld/filediff.py:1395
 msgid "Change highlighting incomplete"
 msgstr "Aldaketen nabarmentzea osatu gabe"
 
-#: ../meld/filediff.py:1476
+#: ../meld/filediff.py:1396
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
 msgstr ""
-"Aldaketa batzuk ez dira nabarmendu handiegiak direlako. "
-"Derrigor diezaiokezu Meld-i aldaketa handiak nabarmentzeko, nahiz eta "
-"halakoetan motelagoa izan."
+"Aldaketa batzuk ez dira nabarmendu handiegiak direlako. Derrigor diezaiokezu "
+"Meld-i aldaketa handiak nabarmentzeko, nahiz eta halakoetan motelagoa izan."
 
-#: ../meld/filediff.py:1484
+#: ../meld/filediff.py:1404
 msgid "Keep highlighting"
 msgstr "Mantendu nabarmentzea"
 
-#: ../meld/filediff.py:1486
+#: ../meld/filediff.py:1406
 msgid "_Keep highlighting"
 msgstr "_Mantendu nabarmentzea"
 
-#: ../meld/filediff.py:1617
+#: ../meld/filediff.py:1438
+#, python-format
+msgid "Replace file “%s”?"
+msgstr "Ordeztu “%s\" fitxategia?"
+
+#: ../meld/filediff.py:1440
 #, python-format
 msgid ""
-"\"%s\" exists!\n"
-"Overwrite?"
+"A file with this name already exists in “%s”.\n"
+"If you replace the existing file, its contents will be lost."
 msgstr ""
-"'%s' badago!\n"
-"Gainidatzi?"
+"Izen bereko fitxategia badago lehendik ere “%s“.\n"
+"Dagoen fitxategia gainidazten baduzu, bere edukia galduko da."
 
-#: ../meld/filediff.py:1630
-#, python-format
-msgid ""
-"Error writing to %s\n"
-"\n"
-"%s."
-msgstr ""
-"Errorea gertatu da '%s'(e)n idaztean\n"
-"\n"
-"%s."
-
-#: ../meld/filediff.py:1641
+#: ../meld/filediff.py:1457
 msgid "Save Left Pane As"
 msgstr "Gorde ezkerreko panela honela"
 
-#: ../meld/filediff.py:1643
+#: ../meld/filediff.py:1459
 msgid "Save Middle Pane As"
 msgstr "Gorde erdiko panela honela"
 
-#: ../meld/filediff.py:1645
+#: ../meld/filediff.py:1461
 msgid "Save Right Pane As"
 msgstr "Gorde eskuineko panela honela"
 
-#: ../meld/filediff.py:1658
+#: ../meld/filediff.py:1475
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "'%s' fitxategia diskoan aldatu egin da (ireki zenetik)"
 
-#: ../meld/filediff.py:1660
+#: ../meld/filediff.py:1477
 msgid "If you save it, any external changes will be lost."
 msgstr "Gordetzen baduzu, kanpoko edozer aldaketa galdu egingo da."
 
-#: ../meld/filediff.py:1663
+#: ../meld/filediff.py:1480
 msgid "Save Anyway"
 msgstr "Gorde dena den"
 
-#: ../meld/filediff.py:1664
+#: ../meld/filediff.py:1481
 msgid "Don't Save"
 msgstr "Ez gorde"
 
-#: ../meld/filediff.py:1688
-#, python-format
-msgid ""
-"This file '%s' contains a mixture of line endings.\n"
-"\n"
-"Which format would you like to use?"
-msgstr ""
-"'%s' fitxategiak askotariko lerro-amaierak ditu.\n"
-"\n"
-"Zer formatu erabili nahi duzu?"
+#: ../meld/filediff.py:1503
+msgid "_Save as UTF-8"
+msgstr "_Gorde UTF-8 gisa"
 
-#: ../meld/filediff.py:1704
+#: ../meld/filediff.py:1506
 #, python-format
+msgid "Couldn't encode text as “%s”"
+msgstr "Ezin izan da testua “%s“ gisa kodetu"
+
+#: ../meld/filediff.py:1508
+#, python-format
+#| msgid ""
+#| "'%s' contains characters not encodable with '%s'\n"
+#| "Would you like to save as UTF-8?"
 msgid ""
-"'%s' contains characters not encodable with '%s'\n"
+"File “%s” contains characters that can't be encoded using encoding “%s”.\n"
 "Would you like to save as UTF-8?"
 msgstr ""
-"'%s' fitxategiko karaktere batzuk ezin dira '%s'(r)ekin kodetu.\n"
-"UTF-8 gisa gorde nahi duzu ?"
+"“%s“ fitxategiko karaktere batzuk ezin dira “%s“(r)ekin kodetu.\n"
+"UTF-8 gisa gorde nahi duzu?"
 
-#: ../meld/filediff.py:2065
+#: ../meld/filediff.py:1545 ../meld/patchdialog.py:125
+#, python-format
+#| msgid "Could not read file"
+msgid "Could not save file %s."
+msgstr "Ezin izan da “%s“ fitxategia gorde."
+
+#: ../meld/filediff.py:1546 ../meld/patchdialog.py:126
+#, python-format
+msgid ""
+"Couldn't save file due to:\n"
+"%s"
+msgstr ""
+"Ezin izan da fitxategia gorde:\n"
+"%s"
+
+#: ../meld/filediff.py:1892
 msgid "Live comparison updating disabled"
 msgstr "Konparazioaren zuzeneko eguneraketa desgaituta"
 
-#: ../meld/filediff.py:2066
+#: ../meld/filediff.py:1893
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1617,316 +2114,370 @@ msgid ""
 msgstr ""
 "Konparazioen zuzeneko eguneraketa desgaitu egiten da sinkronizazio-puntuak "
 "aktibo daudenean. Hala ere, konparazioak eskuz freskatu ditzakezu, eta "
-"zuzeneko "
-"eguneraketak jarraitu egingo dute sinkronizazio-puntuak garbitzen direnean."
+"zuzeneko eguneraketak jarraitu egingo dute sinkronizazio-puntuak garbitzen "
+"direnean."
 
-#: ../meld/filemerge.py:48
+#: ../meld/filemerge.py:37
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Fitxategiak konbinatzen"
 
-#: ../meld/gutterrendererchunk.py:90
+#: ../meld/gutterrendererchunk.py:159
 msgid "Copy _up"
 msgstr "Kopiatu _goian"
 
-#: ../meld/gutterrendererchunk.py:91
+#: ../meld/gutterrendererchunk.py:160
 msgid "Copy _down"
 msgstr "Kopiatu _behean"
 
-#: ../meld/meldapp.py:160
+#: ../meld/meldapp.py:177
 msgid "wrong number of arguments supplied to --diff"
 msgstr "--diff: emandako argumentu kopurua okerra da"
 
-#: ../meld/meldapp.py:165
+#: ../meld/meldapp.py:182
 msgid "Start with an empty window"
 msgstr "Hasi leiho huts batekin"
 
-#: ../meld/meldapp.py:166 ../meld/meldapp.py:168
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:185
 msgid "file"
 msgstr "fitxategia"
 
-#: ../meld/meldapp.py:166 ../meld/meldapp.py:170
+#: ../meld/meldapp.py:183 ../meld/meldapp.py:187
 msgid "folder"
 msgstr "karpeta"
 
-#: ../meld/meldapp.py:167
+#: ../meld/meldapp.py:184
 msgid "Start a version control comparison"
 msgstr "Hasi bertsio-kontrolaren konparazioa"
 
-#: ../meld/meldapp.py:169
+#: ../meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Hasi bi edo hiru sarrerako fitxategi-konparazioa"
 
-#: ../meld/meldapp.py:171
+#: ../meld/meldapp.py:188
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Hasi bi edo hiru sarrerako karpeten konparazioa"
 
-#: ../meld/meldapp.py:209
+#: ../meld/meldapp.py:231
+#, python-format
+#| msgid "Error"
+msgid "Error: %s\n"
+msgstr "Errorea: %s\n"
+
+#: ../meld/meldapp.py:238
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld fitxategiak eta direktorioak konparatzeko tresna bat da."
 
-#: ../meld/meldapp.py:213
+#: ../meld/meldapp.py:242
 msgid "Set label to use instead of file name"
 msgstr "Ezarri etiketa bat fitxategi-izenaren ordez erabiltzeko"
 
-#: ../meld/meldapp.py:216
+#: ../meld/meldapp.py:245
 msgid "Open a new tab in an already running instance"
 msgstr "Ireki beste fitxa bat dagoeneko martxan dagoen instantzia batean"
 
-#: ../meld/meldapp.py:219
+#: ../meld/meldapp.py:248
 msgid "Automatically compare all differing files on startup"
 msgstr "Automatikoki konparatu fitxategi desberdin guztiak abioan"
 
-#: ../meld/meldapp.py:222
+#: ../meld/meldapp.py:251
 msgid "Ignored for compatibility"
 msgstr "Ez ikusi egin zaio, bateragarritasuna dela eta"
 
-#: ../meld/meldapp.py:226
+#: ../meld/meldapp.py:255
 msgid "Set the target file for saving a merge result"
 msgstr "Ezarri helburuko fitxategia emaitza konbinatua gordetzeko"
 
-#: ../meld/meldapp.py:229
+#: ../meld/meldapp.py:258
 msgid "Automatically merge files"
 msgstr "Automatikoki konbinatu fitxategiak"
 
-#: ../meld/meldapp.py:233
+#: ../meld/meldapp.py:262
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Kargatu gordetako konparazioa Meld-en konparazio-fitxategi batetik"
 
-#: ../meld/meldapp.py:237
+#: ../meld/meldapp.py:266
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Sortu diferentzia-fitxa emandako fitxategi edo karpetentzako"
 
-#: ../meld/meldapp.py:249
+#: ../meld/meldapp.py:286
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "argumentu gehiegi (0-3 ordez, %d jasota)"
 
-#: ../meld/meldapp.py:252
+#: ../meld/meldapp.py:289
 msgid "can't auto-merge less than 3 files"
 msgstr "ezin dira automatikoki konbinatu 3 fitxategi baino gutxiago"
 
-#: ../meld/meldapp.py:254
+#: ../meld/meldapp.py:291
 msgid "can't auto-merge directories"
 msgstr "ezin dira automatikoki konbinatu direktorioak"
 
-#: ../meld/meldapp.py:264
+#: ../meld/meldapp.py:305
 msgid "Error reading saved comparison file"
 msgstr "Errorea gertatu da gordetako konparazio-fitxategia irakurtzean"
 
+#: ../meld/meldapp.py:332
+#, python-format
+msgid "invalid path or URI \"%s\""
+msgstr "“%s“ bide-izen edo URI baliogabea"
+
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:131
+#: ../meld/meldbuffer.py:132
 msgid "<unnamed>"
 msgstr "<izenik gabea>"
 
-#: ../meld/melddoc.py:76 ../meld/melddoc.py:77
+#: ../meld/melddoc.py:83 ../meld/melddoc.py:84
 msgid "untitled"
 msgstr "izengabea"
 
-#: ../meld/meldwindow.py:48
+#: ../meld/meldwindow.py:49
 msgid "_File"
 msgstr "_Fitxategia"
 
-#: ../meld/meldwindow.py:49
+#: ../meld/meldwindow.py:50
 msgid "_New Comparison..."
 msgstr "Konparazio _berria..."
 
-#: ../meld/meldwindow.py:50
+#: ../meld/meldwindow.py:51
 msgid "Start a new comparison"
 msgstr "Konparazio berri bat hasten du"
 
-#: ../meld/meldwindow.py:53
+#: ../meld/meldwindow.py:54
 msgid "Save the current file"
 msgstr "Gorde uneko fitxategia"
 
-#: ../meld/meldwindow.py:55
+#: ../meld/meldwindow.py:56
 msgid "Save As..."
 msgstr "Gorde honela..."
 
-#: ../meld/meldwindow.py:56
+#: ../meld/meldwindow.py:57
 msgid "Save the current file with a different name"
 msgstr "Gorde uneko fitxategia beste izen batekin"
 
-#: ../meld/meldwindow.py:59
+#: ../meld/meldwindow.py:60
 msgid "Close the current file"
 msgstr "Itxi uneko fitxategia"
 
-#: ../meld/meldwindow.py:62
+#: ../meld/meldwindow.py:63
 msgid "_Edit"
 msgstr "_Editatu"
 
-#: ../meld/meldwindow.py:64
+#: ../meld/meldwindow.py:65
 msgid "Undo the last action"
 msgstr "Desegin azken ekintza"
 
-#: ../meld/meldwindow.py:67
+#: ../meld/meldwindow.py:68
 msgid "Redo the last undone action"
 msgstr "Berregin desegindako azken ekintza"
 
-#: ../meld/meldwindow.py:69
+#: ../meld/meldwindow.py:70
 msgid "Cut the selection"
 msgstr "Ebaki hautapena"
 
-#: ../meld/meldwindow.py:71
+#: ../meld/meldwindow.py:72
 msgid "Copy the selection"
 msgstr "Kopiatu hautapena"
 
-#: ../meld/meldwindow.py:73
+#: ../meld/meldwindow.py:74
 msgid "Paste the clipboard"
 msgstr "Itsatsi arbelean"
 
-#: ../meld/meldwindow.py:75
+#: ../meld/meldwindow.py:76
 msgid "Find..."
 msgstr "Bilatu..."
 
-#: ../meld/meldwindow.py:75
+#: ../meld/meldwindow.py:76
 msgid "Search for text"
 msgstr "Bilatu testua"
 
-#: ../meld/meldwindow.py:77
+#: ../meld/meldwindow.py:78
 msgid "Find Ne_xt"
 msgstr "Bilatu _hurrengoa"
 
-#: ../meld/meldwindow.py:78
+#: ../meld/meldwindow.py:79
 msgid "Search forwards for the same text"
 msgstr "Testu bera bilatzen du berriro, aurrerantz"
 
-#: ../meld/meldwindow.py:80
+#: ../meld/meldwindow.py:81
 msgid "Find _Previous"
 msgstr "Bilatu _aurrekoa"
 
-#: ../meld/meldwindow.py:81
+#: ../meld/meldwindow.py:82
 msgid "Search backwards for the same text"
 msgstr "Testu bera bilatzen du berriro, atzerantz"
 
-#: ../meld/meldwindow.py:84
+#: ../meld/meldwindow.py:85
 msgid "_Replace..."
 msgstr "_Ordeztu..."
 
-#: ../meld/meldwindow.py:85
+#: ../meld/meldwindow.py:86
 msgid "Find and replace text"
 msgstr "Bilatu eta ordeztu testua"
 
-#: ../meld/meldwindow.py:88
+#: ../meld/meldwindow.py:89
 msgid "_Changes"
 msgstr "_Aldaketak"
 
-#: ../meld/meldwindow.py:89
+#: ../meld/meldwindow.py:90
 msgid "Next Change"
 msgstr "Hurrengo aldaketa"
 
-#: ../meld/meldwindow.py:90
+#: ../meld/meldwindow.py:91
 msgid "Go to the next change"
 msgstr "Hurrengo aldaketara joaten da"
 
-#: ../meld/meldwindow.py:92
+#: ../meld/meldwindow.py:93
 msgid "Previous Change"
 msgstr "Aurreko aldaketa"
 
-#: ../meld/meldwindow.py:93
+#: ../meld/meldwindow.py:94
 msgid "Go to the previous change"
 msgstr "Aurreko aldaketara joaten da"
 
-#: ../meld/meldwindow.py:95
+#: ../meld/meldwindow.py:96
 msgid "Open Externally"
 msgstr "Ireki kanpotik"
 
-#: ../meld/meldwindow.py:96
+#: ../meld/meldwindow.py:97
 msgid "Open selected file or directory in the default external application"
 msgstr ""
 "Hautatutako fitxategia edo direktorioa irekitzen du kanpoko aplikazio "
 "lehenetsian"
 
-#: ../meld/meldwindow.py:100
+#: ../meld/meldwindow.py:101
 msgid "_View"
 msgstr "_Ikusi"
 
-#: ../meld/meldwindow.py:101
+#: ../meld/meldwindow.py:102
 msgid "File Status"
 msgstr "Fitxategiaren egoera"
 
-#: ../meld/meldwindow.py:102
+#: ../meld/meldwindow.py:103
 msgid "Version Status"
 msgstr "Bertsioaren egoera"
 
-#: ../meld/meldwindow.py:105
+#: ../meld/meldwindow.py:106
 msgid "Stop the current action"
 msgstr "Gelditu uneko ekintza"
 
-#: ../meld/meldwindow.py:108
+#: ../meld/meldwindow.py:109
 msgid "Refresh the view"
 msgstr "Freskatu ikuspegia"
 
-#: ../meld/meldwindow.py:111
+#: ../meld/meldwindow.py:112
 msgid "_Tabs"
 msgstr "_Fitxak"
 
-#: ../meld/meldwindow.py:112
+#: ../meld/meldwindow.py:113
 msgid "_Previous Tab"
 msgstr "_Aurreko fitxa"
 
-#: ../meld/meldwindow.py:113
+#: ../meld/meldwindow.py:114
 msgid "Activate previous tab"
 msgstr "Aurreko fitxa aktibatzen du"
 
-#: ../meld/meldwindow.py:115
+#: ../meld/meldwindow.py:116
 msgid "_Next Tab"
 msgstr "_Hurrengo fitxa"
 
-#: ../meld/meldwindow.py:116
+#: ../meld/meldwindow.py:117
 msgid "Activate next tab"
 msgstr "Hurrengo fitxa aktibatzen du"
 
-#: ../meld/meldwindow.py:119
+#: ../meld/meldwindow.py:120
 msgid "Move Tab _Left"
 msgstr "Eraman fitxa e_zkerrera"
 
-#: ../meld/meldwindow.py:120
+#: ../meld/meldwindow.py:121
 msgid "Move current tab to left"
 msgstr "Uneko fitxa ezkerrera eramaten du"
 
-#: ../meld/meldwindow.py:123
+#: ../meld/meldwindow.py:124
 msgid "Move Tab _Right"
 msgstr "Eraman fitxa e_skuinera"
 
-#: ../meld/meldwindow.py:124
+#: ../meld/meldwindow.py:125
 msgid "Move current tab to right"
 msgstr "Uneko fitxa eskuinera eramaten du"
 
-#: ../meld/meldwindow.py:128
+#: ../meld/meldwindow.py:129
 msgid "Fullscreen"
 msgstr "Pantaila osoa"
 
-#: ../meld/meldwindow.py:129
+#: ../meld/meldwindow.py:130
 msgid "View the comparison in fullscreen"
 msgstr "Ikusi konparazioa pantaila osoan"
 
-#: ../meld/meldwindow.py:131
+#: ../meld/meldwindow.py:132
 msgid "_Toolbar"
 msgstr "_Tresna-barra"
 
-#: ../meld/meldwindow.py:132
+#: ../meld/meldwindow.py:133
 msgid "Show or hide the toolbar"
 msgstr "Erakutsi edo ezkutatu tresna-barra"
 
-#: ../meld/meldwindow.py:141
+#: ../meld/meldwindow.py:143
 msgid "Open Recent"
 msgstr "Ireki azkenak"
 
-#: ../meld/meldwindow.py:142
+#: ../meld/meldwindow.py:144
 msgid "Open recent files"
 msgstr "Azken erabilitako fitxategiak irekitzen ditu"
 
-#: ../meld/meldwindow.py:506
+#: ../meld/meldwindow.py:166
+#| msgid "Meld"
+msgid "_Meld"
+msgstr "_Meld"
+
+#: ../meld/meldwindow.py:167
+msgid "Quit the program"
+msgstr "Irten programatik"
+
+#: ../meld/meldwindow.py:169
+#| msgid "_Preferences"
+msgid "Prefere_nces"
+msgstr "_Hobespenak"
+
+#: ../meld/meldwindow.py:170
+msgid "Configure the application"
+msgstr "Aplikazioa konfiguratzen du"
+
+#: ../meld/meldwindow.py:172
+msgid "_Contents"
+msgstr "_Edukia"
+
+#: ../meld/meldwindow.py:173
+msgid "Open the Meld manual"
+msgstr "Meld-en eskuliburua irekitzen du"
+
+#: ../meld/meldwindow.py:175
+#| msgid "Configure the application"
+msgid "About this application"
+msgstr "Aplikazio honi buruz"
+
+#: ../meld/meldwindow.py:587
 msgid "Switch to this tab"
 msgstr "Joan fitxa honetara"
 
-#: ../meld/meldwindow.py:629
+#: ../meld/meldwindow.py:702
+#, python-format
+msgid "Need three files to auto-merge, got: %r"
+msgstr "Hiru fitxategi behar dira automatikoki batzeko, hau dauka: %r"
+
+#: ../meld/meldwindow.py:716
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Ezin dira konparatu fitxategiak eta direktorioak nahasian"
 
+#: ../meld/misc.py:203
+#, python-format
+msgid "Couldn't find colour scheme details for %s-%s; this is a bad install"
+msgstr ""
+"Ezin izan da %s-%s(r)en kolore-eskemaren xehetasunak aurkitu. Instalazio "
+"txarra da"
+
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:213
+#: ../meld/misc.py:288
 msgid "[None]"
 msgstr "[Bat ere ez]"
 
@@ -1938,211 +2489,291 @@ msgstr "etiketa"
 msgid "pattern"
 msgstr "eredua"
 
-#: ../meld/recent.py:105
+#: ../meld/recent.py:115
 msgid "Version control:"
 msgstr "Bertsio-kontrola:"
 
-#: ../meld/ui/findbar.py:141
-msgid "Regular expression error"
-msgstr "Adierazpen erregularraren errorea"
-
-#: ../meld/ui/notebooklabel.py:65
+#: ../meld/ui/notebooklabel.py:63
 msgid "Close tab"
 msgstr "Itxi fitxa"
 
-#: ../meld/ui/vcdialogs.py:61
+#: ../meld/ui/vcdialogs.py:50
 msgid "No files will be committed"
 msgstr "Ez da fitxategirik egikarituko"
 
 #. Translators: First %s is replaced by translated "%d unpushed
 #. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:126
+#: ../meld/vc/git.py:95
 #, python-format
 msgid "%s in %s"
 msgstr "%s (%s)"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:127 ../meld/vc/git.py:134
+#: ../meld/vc/git.py:96 ../meld/vc/git.py:103
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "Bidali gabeko egikaritze %d"
 msgstr[1] "Bidali gabeko %d egikaritze"
 
-#: ../meld/vc/git.py:129
+#: ../meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "adar %d"
 msgstr[1] "%d adar"
 
-#: ../meld/vc/git.py:348
+#: ../meld/vc/git.py:352
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "'%s' modua hona aldatuta: %s"
 
-#: ../meld/vc/_vc.py:47
-msgid "Merged"
-msgstr "Batuta"
+#: ../meld/vc/git.py:360
+msgid "Partially staged"
+msgstr "Partzialki aurre-hautatuta"
 
-#: ../meld/vc/_vc.py:47
-msgid "Base"
-msgstr "Oinarria"
+#: ../meld/vc/git.py:360
+msgid "Staged"
+msgstr "Aurre-hautatuta"
 
-#: ../meld/vc/_vc.py:47
-msgid "Local"
-msgstr "Lokala"
-
-#: ../meld/vc/_vc.py:47
-msgid "Remote"
-msgstr "Urrunekoa"
-
-#: ../meld/vc/_vc.py:65
-msgid "Unversioned"
-msgstr "Bertsiorik gabekoa"
-
-#: ../meld/vc/_vc.py:68
-msgid "Error"
-msgstr "Errorea"
-
-#: ../meld/vc/_vc.py:70
-msgid "Newly added"
-msgstr "Berriki gehituta"
-
-#: ../meld/vc/_vc.py:72
-msgid "Conflict"
-msgstr "Gatazka"
-
-#: ../meld/vc/_vc.py:73
-msgid "Removed"
-msgstr "Kenduta"
-
-#: ../meld/vc/_vc.py:74
-msgid "Missing"
-msgstr "Falta da"
-
-#: ../meld/vc/_vc.py:75
-msgid "Not present"
-msgstr "Ez dago"
-
-#: ../meld/vcview.py:233 ../meld/vcview.py:413
-msgid "Location"
-msgstr "Kokapena"
-
-#: ../meld/vcview.py:234
-msgid "Status"
-msgstr "Egoera"
-
-#: ../meld/vcview.py:235
-msgid "Revision"
-msgstr "Berrikuspena"
-
-#: ../meld/vcview.py:236
-msgid "Options"
-msgstr "Aukerak"
-
-#. TRANSLATORS: this is an error message when a version control
-#. application isn't installed or can't be found
-#: ../meld/vcview.py:324
-#, python-format
-msgid "%s not installed"
-msgstr "'%s' ez dago instalatua"
-
-#. TRANSLATORS: this is an error message when a version
-#. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:328
-msgid "Invalid repository"
-msgstr "Baliogabeko biltegia"
-
-#: ../meld/vcview.py:337
-#, python-format
-msgid "%s (%s)"
-msgstr "%s (%s)"
-
-#: ../meld/vcview.py:339 ../meld/vcview.py:347
+#. Translators: This is the displayed name of a version control system
+#. when no version control system is actually found.
+#: ../meld/vc/_null.py:38
 msgid "None"
 msgstr "Bat ere ez"
 
-#: ../meld/vcview.py:358
+#: ../meld/vc/svn.py:216
+#, python-format
+msgid "Rev %s"
+msgstr "%s arg."
+
+#: ../meld/vc/_vc.py:52
+msgid "Merged"
+msgstr "Batuta"
+
+#: ../meld/vc/_vc.py:52
+msgid "Base"
+msgstr "Oinarria"
+
+#: ../meld/vc/_vc.py:52
+msgid "Local"
+msgstr "Lokala"
+
+#: ../meld/vc/_vc.py:52
+msgid "Remote"
+msgstr "Urrunekoa"
+
+#: ../meld/vc/_vc.py:68
+msgid "Unversioned"
+msgstr "Bertsiorik gabekoa"
+
+#: ../meld/vc/_vc.py:71
+msgid "Error"
+msgstr "Errorea"
+
+#: ../meld/vc/_vc.py:73
+msgid "Newly added"
+msgstr "Berriki gehituta"
+
+#: ../meld/vc/_vc.py:75
+#| msgid "<unnamed>"
+msgid "Renamed"
+msgstr "Izenez aldatua"
+
+#: ../meld/vc/_vc.py:76
+msgid "Conflict"
+msgstr "Gatazka"
+
+#: ../meld/vc/_vc.py:77
+msgid "Removed"
+msgstr "Kenduta"
+
+#: ../meld/vc/_vc.py:78
+msgid "Missing"
+msgstr "Falta da"
+
+#: ../meld/vc/_vc.py:79
+msgid "Not present"
+msgstr "Ez dago"
+
+#. Translators: This error message is shown when a version
+#. control binary isn't installed.
+#: ../meld/vcview.py:261
+#, python-format
+#| msgid "%s not installed"
+msgid "%(name)s (%(cmd)s not installed)"
+msgstr "%(name)s (%(cmd)s ez dago instalatuta)"
+
+#. Translators: This error message is shown when a version
+#. controlled repository is invalid.
+#: ../meld/vcview.py:265
+#, python-format
+#| msgid "Invalid repository"
+msgid "%(name)s (Invalid repository)"
+msgstr "%(name)s (baliogabeko biltegia)"
+
+#: ../meld/vcview.py:286
 msgid "No valid version control system found in this folder"
 msgstr "Ez da baliozko bertsio-kontrol sistemarik aurkitu karpeta honetan"
 
-#: ../meld/vcview.py:360
+#: ../meld/vcview.py:288
 msgid "Only one version control system found in this folder"
 msgstr "Bertsio-kontrol bakar bat aurkituta karpeta honetan"
 
-#: ../meld/vcview.py:362
+#: ../meld/vcview.py:290
 msgid "Choose which version control system to use"
 msgstr "Aukeratu zer bertsio-kontrol sistema erabiliko den"
 
-#. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:413
+#. TRANSLATORS: This is the location of the directory being viewed
+#: ../meld/vcview.py:343
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:427 ../meld/vcview.py:435
+#: ../meld/vcview.py:363
 #, python-format
 msgid "Scanning %s"
 msgstr "%s eskaneatzen"
 
-#: ../meld/vcview.py:470
+#: ../meld/vcview.py:402
 msgid "(Empty)"
 msgstr "(hutsik)"
 
-#: ../meld/vcview.py:510
+#: ../meld/vcview.py:446
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokala"
 
-#: ../meld/vcview.py:511
+#: ../meld/vcview.py:447
 #, python-format
 msgid "%s — remote"
 msgstr "%s — urrunekoa"
 
-#: ../meld/vcview.py:519
+#: ../meld/vcview.py:455
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokala, batu, urrunekoa)"
 
-#: ../meld/vcview.py:524
+#: ../meld/vcview.py:460
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (urrunekoa, batu, lokala)"
 
-#: ../meld/vcview.py:535
+#: ../meld/vcview.py:471
 #, python-format
 msgid "%s — repository"
 msgstr "%s — biltegia"
 
-#: ../meld/vcview.py:541
+#: ../meld/vcview.py:477
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (lanekoa, biltegia)"
 
-#: ../meld/vcview.py:545
+#: ../meld/vcview.py:481
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (biltegia, lanekoa)"
 
-#: ../meld/vcview.py:729
+#: ../meld/vcview.py:649
 msgid "Remove folder and all its files?"
 msgstr "Kendu karpeta eta bere fitxategi guztiak?"
 
-#: ../meld/vcview.py:731
+#: ../meld/vcview.py:651
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
 msgstr ""
-"Honek hautatutako fitxategi eta karpeta guztiak, baita "
-"hautatutako karpeten barruan dauden fitxategi guztiak ere, "
-"bertsio-kontroletik kenduko ditu."
+"Honek hautatutako fitxategi eta karpeta guztiak, baita hautatutako karpeten "
+"barruan dauden fitxategi guztiak ere, bertsio-kontroletik kenduko ditu."
 
-#: ../meld/vcview.py:765
+#: ../meld/vcview.py:676
 #, python-format
 msgid "Error removing %s"
 msgstr "Errorea %s kentzean"
+
+#: ../meld/vcview.py:756
+msgid "Clear"
+msgstr "Garbitu"
+
+#~ msgid ""
+#~ "These text encodings will be automatically used (in order) to try to "
+#~ "decode loaded text files."
+#~ msgstr ""
+#~ "Testu-kodeketa hauek automatikoki erabiliko dira kargatutako testu-"
+#~ "fitxategiak deskodetzen saiatzeko."
+
+#~ msgid "Copy _Left"
+#~ msgstr "Kopiatu e_zkerrean"
+
+#~ msgid "Copy _Right"
+#~ msgstr "Kopiatu e_skuinean"
+
+#~ msgid "Ignore changes which insert or delete blank lines"
+#~ msgstr ""
+#~ "Ez ikusi egin lerro zurriak txertatzen edo ezabatzen dituzten aldaketei"
+
+#~ msgid ""
+#~ "'%s' exists.\n"
+#~ "Overwrite?"
+#~ msgstr ""
+#~ "'%s' badago lehendik ere.\n"
+#~ "Gainidatzi?"
+
+#~ msgid "Clear manual change sychronization points"
+#~ msgstr "Garbitu eskuzko aldaketen sinkronizazio-puntuak"
+
+#~ msgid "Cycle Through Documents"
+#~ msgstr "Begiztatu dokumentuen artean"
+
+#~ msgid "[%s] Set num panes"
+#~ msgstr "[%s] Ezarri panel kopurua"
+
+#~ msgid "[%s] Opening files"
+#~ msgstr "[%s] Fitxategiak irekitzen"
+
+#~ msgid "[%s] Reading files"
+#~ msgstr "[%s] Fitxategiak irakurtzen"
+
+#~ msgid "%s is not in encodings: %s"
+#~ msgstr "%s ez dago kodeketetan: %s"
+
+#~ msgid ""
+#~ "\"%s\" exists!\n"
+#~ "Overwrite?"
+#~ msgstr ""
+#~ "'%s' badago!\n"
+#~ "Gainidatzi?"
+
+#~ msgid ""
+#~ "Error writing to %s\n"
+#~ "\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Errorea gertatu da '%s'(e)n idaztean\n"
+#~ "\n"
+#~ "%s."
+
+#~ msgid ""
+#~ "This file '%s' contains a mixture of line endings.\n"
+#~ "\n"
+#~ "Which format would you like to use?"
+#~ msgstr ""
+#~ "'%s' fitxategiak askotariko lerro-amaierak ditu.\n"
+#~ "\n"
+#~ "Zer formatu erabili nahi duzu?"
+
+#~ msgid "Regular expression error"
+#~ msgstr "Adierazpen erregularraren errorea"
+
+#~ msgid "Revision"
+#~ msgstr "Berrikuspena"
+
+#~ msgid "Options"
+#~ msgstr "Aukerak"
+
+#~ msgid "%s (%s)"
+#~ msgstr "%s (%s)"
 
 #~ msgid ""
 #~ "Meld is free software: you can redistribute it and/or modify it under the "
@@ -2253,20 +2884,8 @@ msgstr "Errorea %s kentzean"
 #~ msgid "D-Bus error; comparisons will open in a new window."
 #~ msgstr "D-Bus errorea; konparazioak beste leiho batean irekiko dira."
 
-#~ msgid "Quit the program"
-#~ msgstr "Irten programatik"
-
-#~ msgid "Configure the application"
-#~ msgstr "Aplikazioa konfiguratzen du"
-
 #~ msgid "Reload the comparison"
 #~ msgstr "Konparazioa birkargatzen du"
-
-#~ msgid "_Contents"
-#~ msgstr "_Edukia"
-
-#~ msgid "Open the Meld manual"
-#~ msgstr "Meld-en eskuliburua irekitzen du"
 
 #~ msgid "Report _Bug"
 #~ msgstr "Akatsaren _berri eman"
@@ -2340,9 +2959,6 @@ msgstr "Errorea %s kentzean"
 
 #~ msgid "Tag"
 #~ msgstr "Etiketa"
-
-#~ msgid "[%s] Fetching differences"
-#~ msgstr "[%s] Diferentziak bilatzen"
 
 #~ msgid "[%s] Applying patch"
 #~ msgstr "[%s] Adabakia aplikatzen"
