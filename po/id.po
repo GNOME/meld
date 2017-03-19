@@ -1,15 +1,15 @@
 # Indonesian translation for meld.
 # Copyright (C) 2013 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
-# Andika Triwidada <andika@gmail.com>, 2013, 2014.
+# Andika Triwidada <andika@gmail.com>, 2013, 2014, 2016, 2017.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meld meld-3-16\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Project-Id-Version: meld master\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-01 10:47+0000\n"
-"PO-Revision-Date: 2016-07-06 13:39+0700\n"
+"POT-Creation-Date: 2017-03-18 12:18+0000\n"
+"PO-Revision-Date: 2017-03-20 02:01+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -17,22 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.12\n"
 
-#: ../bin/meld:144
+#: ../bin/meld:179
 msgid "Cannot import: "
 msgstr "Tak bisa mengimpor:"
 
-#: ../bin/meld:147
+#: ../bin/meld:182
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld memerlukan %s atau lebih tinggi."
 
-#: ../bin/meld:151
-msgid "Meld does not support Python 3."
-msgstr "Meld tidak mendukung Python 3."
-
-#: ../bin/meld:200
+#: ../bin/meld:227
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -84,39 +80,51 @@ msgstr ""
 "Meld membantu Anda meninjau perubahan kode, memahami patch, dan membuat "
 "konflik merge yang besar sedikit lebih mudah."
 
+#: ../data/meld.appdata.xml.in.h:5
+msgid "The GNOME Project"
+msgstr "Proyek GNOME"
+
 #: ../data/mime/meld.xml.in.h:1
 msgid "Meld comparison description"
 msgstr "Deskripsi perbandingan Meld"
 
 #: ../data/org.gnome.meld.gschema.xml.h:1
-msgid "Default window size"
-msgstr "Ukuran jendela baku"
+msgid "Default window width"
+msgstr "Lebar jendela baku"
 
 #: ../data/org.gnome.meld.gschema.xml.h:2
-msgid "Default window state"
-msgstr "Keadaan jendela baku"
+msgid "Default window height"
+msgstr "Tinggi jendela baku"
 
 #: ../data/org.gnome.meld.gschema.xml.h:3
+msgid "Default window maximised state"
+msgstr "Keadaan termaksimalkan jendela baku"
+
+#: ../data/org.gnome.meld.gschema.xml.h:4
+msgid "Default window fullscreen state"
+msgstr "Keadaan layar penuh jendela baku"
+
+#: ../data/org.gnome.meld.gschema.xml.h:5
 msgid "Show toolbar"
 msgstr "Tampilkan bilah alat"
 
-#: ../data/org.gnome.meld.gschema.xml.h:4
+#: ../data/org.gnome.meld.gschema.xml.h:6
 msgid "If true, the window toolbar is visible."
 msgstr "Bila berisi true, bilah alat jendela tampak."
 
-#: ../data/org.gnome.meld.gschema.xml.h:5
+#: ../data/org.gnome.meld.gschema.xml.h:7
 msgid "Show statusbar"
 msgstr "Tampilkan bilah status"
 
-#: ../data/org.gnome.meld.gschema.xml.h:6
+#: ../data/org.gnome.meld.gschema.xml.h:8
 msgid "If true, the window statusbar is visible."
 msgstr "Bila berisi true, bilah status jendela tampak."
 
-#: ../data/org.gnome.meld.gschema.xml.h:7
+#: ../data/org.gnome.meld.gschema.xml.h:9
 msgid "Additional automatically detected text encodings"
 msgstr "Tambahan enkoding teks yang dideteksi secara otomatis"
 
-#: ../data/org.gnome.meld.gschema.xml.h:8
+#: ../data/org.gnome.meld.gschema.xml.h:10
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
@@ -129,39 +137,39 @@ msgstr ""
 "selalu dipakai; encoding lain mungkin juga dicoba, bergantung kepada locale "
 "pengguna."
 
-#: ../data/org.gnome.meld.gschema.xml.h:9
+#: ../data/org.gnome.meld.gschema.xml.h:11
 msgid "Width of an indentation step"
 msgstr "Lebar langkah indentasi"
 
-#: ../data/org.gnome.meld.gschema.xml.h:10
+#: ../data/org.gnome.meld.gschema.xml.h:12
 msgid "The number of spaces to use for a single indent step"
 msgstr "Banyaknya spasi yang dipakai untuk langkah indentasi tunggal"
 
-#: ../data/org.gnome.meld.gschema.xml.h:11
+#: ../data/org.gnome.meld.gschema.xml.h:13
 msgid "Whether to indent using spaces or tabs"
 msgstr "Apakah indentasi memakai spasi atau tab"
 
-#: ../data/org.gnome.meld.gschema.xml.h:12
+#: ../data/org.gnome.meld.gschema.xml.h:14
 msgid "If true, any new indentation will use spaces instead of tabs."
 msgstr ""
 "Bila berisi true, sebarang indentasi baru akan memakai spasi sebagai ganti "
 "tab."
 
-#: ../data/org.gnome.meld.gschema.xml.h:13
+#: ../data/org.gnome.meld.gschema.xml.h:15
 msgid "Show line numbers"
 msgstr "Tampilkan nomor baris"
 
-#: ../data/org.gnome.meld.gschema.xml.h:14
+#: ../data/org.gnome.meld.gschema.xml.h:16
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
 msgstr ""
 "Bila berisi true, nomor baris akan ditampilkan dalam parit perbandingan "
 "berkas."
 
-#: ../data/org.gnome.meld.gschema.xml.h:15
+#: ../data/org.gnome.meld.gschema.xml.h:17
 msgid "Highlight syntax"
 msgstr "Sorot sintaks"
 
-#: ../data/org.gnome.meld.gschema.xml.h:16
+#: ../data/org.gnome.meld.gschema.xml.h:18
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld's own color "
 "highlighting, this is off by default."
@@ -169,20 +177,20 @@ msgstr ""
 "Apakah menyorot sintaks dalam perbandingan. Karena warna penyorotan milik "
 "Meld, ini secara baku mati."
 
-#: ../data/org.gnome.meld.gschema.xml.h:17
+#: ../data/org.gnome.meld.gschema.xml.h:19
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Skema warna yang digunakan untuk penyorotan sintaks"
 
-#: ../data/org.gnome.meld.gschema.xml.h:18
+#: ../data/org.gnome.meld.gschema.xml.h:20
 msgid "Used by GtkSourceView to determine colors for syntax highlighting"
 msgstr ""
 "Dipakai oleh GtkSourceView untuk menentukan warna bagi penyorotan sintaks"
 
-#: ../data/org.gnome.meld.gschema.xml.h:19
+#: ../data/org.gnome.meld.gschema.xml.h:21
 msgid "Displayed whitespace"
 msgstr "Whitespace yang ditampilkan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:20
+#: ../data/org.gnome.meld.gschema.xml.h:22
 msgid ""
 "Selector for individual whitespace character types to be shown. Possible "
 "values are 'space', 'tab', 'newline' and 'nbsp'."
@@ -191,11 +199,11 @@ msgstr ""
 "yang mungkin adalah 'space' (spasi), 'tab', 'newline' (baris baru), dan "
 "'nbsp' (spasi tak putus)."
 
-#: ../data/org.gnome.meld.gschema.xml.h:21
+#: ../data/org.gnome.meld.gschema.xml.h:23
 msgid "Wrap mode"
 msgstr "Mode lipat"
 
-#: ../data/org.gnome.meld.gschema.xml.h:22
+#: ../data/org.gnome.meld.gschema.xml.h:24
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
@@ -205,11 +213,11 @@ msgstr ""
 "tidak sedikitpun ('none'), pada sebarang karakter ('char'), atau hanya pada "
 "akhir kata ('word')."
 
-#: ../data/org.gnome.meld.gschema.xml.h:23
+#: ../data/org.gnome.meld.gschema.xml.h:25
 msgid "Highlight current line"
 msgstr "Sorot baris saat ini"
 
-#: ../data/org.gnome.meld.gschema.xml.h:24
+#: ../data/org.gnome.meld.gschema.xml.h:26
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
@@ -217,22 +225,22 @@ msgstr ""
 "Bila berisi true, baris yang memuat kursor akan disorot dalam perbandingan "
 "berkas."
 
-#: ../data/org.gnome.meld.gschema.xml.h:25
+#: ../data/org.gnome.meld.gschema.xml.h:27
 msgid "Use the system default monospace font"
 msgstr "Gunakan fonta monospace bawaan sistem"
 
-#: ../data/org.gnome.meld.gschema.xml.h:26
+#: ../data/org.gnome.meld.gschema.xml.h:28
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
 "Bila berisi false, fonta ubahan akan dipakai sebagai ganti fonta monospace "
 "sistem."
 
-#: ../data/org.gnome.meld.gschema.xml.h:27
+#: ../data/org.gnome.meld.gschema.xml.h:29
 msgid "Custom font"
 msgstr "Fonta ubahan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:28
+#: ../data/org.gnome.meld.gschema.xml.h:30
 msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
@@ -240,22 +248,22 @@ msgstr ""
 "Fonta ubahan yang dipakai, disimpan sebagai suatu string dan diurai sebagai "
 "suatu deskripsi fonta Pango."
 
-#: ../data/org.gnome.meld.gschema.xml.h:29
+#: ../data/org.gnome.meld.gschema.xml.h:31
 msgid "Ignore blank lines when comparing files"
 msgstr "Abaikan baris kosong ketika membandingkan berkas"
 
-#: ../data/org.gnome.meld.gschema.xml.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:32
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
 "Bila berisi true, baris-baris kosong akan dibuang ketika menyorot perubahan "
 "antar berkas."
 
-#: ../data/org.gnome.meld.gschema.xml.h:31
+#: ../data/org.gnome.meld.gschema.xml.h:33
 msgid "Use the system default editor"
 msgstr "Gunakan penyunting bawaan sistem"
 
-#: ../data/org.gnome.meld.gschema.xml.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:34
 msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
@@ -263,11 +271,11 @@ msgstr ""
 "Bila berisi false, perintah penyunting ubahan akan dipakai sebagai ganti "
 "penyunting sistem ketika membuka berkas secara eksternal."
 
-#: ../data/org.gnome.meld.gschema.xml.h:33
+#: ../data/org.gnome.meld.gschema.xml.h:35
 msgid "The custom editor launch command"
 msgstr "Perintah peluncuran penyunting ubahan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:34
+#: ../data/org.gnome.meld.gschema.xml.h:36
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
@@ -276,11 +284,11 @@ msgstr ""
 "penemplatan yang terbatas didukung di sini; saat ini '{file}' dan '{line}' "
 "adalah token yang dikenal."
 
-#: ../data/org.gnome.meld.gschema.xml.h:35
+#: ../data/org.gnome.meld.gschema.xml.h:37
 msgid "Columns to display"
 msgstr "Kolom yang akan ditampilkan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:36
+#: ../data/org.gnome.meld.gschema.xml.h:38
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
@@ -288,11 +296,11 @@ msgstr ""
 "Daftar nama kolom dalam perbandingan folder dan apakah mereka mesti "
 "ditampilkan."
 
-#: ../data/org.gnome.meld.gschema.xml.h:37 ../data/ui/preferences.ui.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
 msgid "Ignore symbolic links"
 msgstr "Abaikan taut simbolik"
 
-#: ../data/org.gnome.meld.gschema.xml.h:38
+#: ../data/org.gnome.meld.gschema.xml.h:40
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
@@ -300,11 +308,11 @@ msgstr ""
 "Bila berisi true, perbandingan folder tidak mengikuti taut simbolik ketika "
 "menelusuri pohon folder."
 
-#: ../data/org.gnome.meld.gschema.xml.h:39
+#: ../data/org.gnome.meld.gschema.xml.h:41
 msgid "Use shallow comparison"
 msgstr "Gunakan perbandingan dangkal"
 
-#: ../data/org.gnome.meld.gschema.xml.h:40
+#: ../data/org.gnome.meld.gschema.xml.h:42
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
@@ -314,11 +322,11 @@ msgstr ""
 "pada ukuran dan mtime, menganggap berkas identik bila ukuran dan mtime "
 "mereka cocok, dan berbeda bila tidak."
 
-#: ../data/org.gnome.meld.gschema.xml.h:41
+#: ../data/org.gnome.meld.gschema.xml.h:43
 msgid "File timestamp resolution"
 msgstr "Resolusi penanda waktu"
 
-#: ../data/org.gnome.meld.gschema.xml.h:42
+#: ../data/org.gnome.meld.gschema.xml.h:44
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they're considered to have different mtimes. This "
@@ -330,11 +338,11 @@ msgstr ""
 "berbeda. Ini berguna ketika membandingkan berkas antar sistem berkas dengan "
 "resolusi penanda waktu yang berbeda."
 
-#: ../data/org.gnome.meld.gschema.xml.h:43 ../data/ui/preferences.ui.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:22
 msgid "Apply text filters during folder comparisons"
 msgstr "Terapkan penyaring teks selama perbandingan folder"
 
-#: ../data/org.gnome.meld.gschema.xml.h:44
+#: ../data/org.gnome.meld.gschema.xml.h:46
 msgid ""
 "If true, folder comparisons that compare file contents also apply active "
 "text filters and the blank line trimming option, and ignore newline "
@@ -344,21 +352,21 @@ msgstr ""
 "menerapkan penyaring teks aktif dan opsi pemangkasan baris kosong, dan "
 "mengabaikan perbedaan baris baru."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45
+#: ../data/org.gnome.meld.gschema.xml.h:47
 msgid "File status filters"
 msgstr "Penyaring status berkas"
 
-#: ../data/org.gnome.meld.gschema.xml.h:46
+#: ../data/org.gnome.meld.gschema.xml.h:48
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "Daftar dari status yang dipakai untuk menyaring berkas yang tampak dalam "
 "perbandingan folder."
 
-#: ../data/org.gnome.meld.gschema.xml.h:47
+#: ../data/org.gnome.meld.gschema.xml.h:49
 msgid "Show the version control console output"
 msgstr "Tampilkan keluaran konsol kendali versi"
 
-#: ../data/org.gnome.meld.gschema.xml.h:48
+#: ../data/org.gnome.meld.gschema.xml.h:50
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -367,22 +375,22 @@ msgstr ""
 "kendali versi, menunjukkan perintah yang dijalankan bagi operasi kendali "
 "versi."
 
-#: ../data/org.gnome.meld.gschema.xml.h:49
+#: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Version control pane position"
 msgstr "Posisi panel kendali versi"
 
-#: ../data/org.gnome.meld.gschema.xml.h:50
+#: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
 msgstr ""
 "Ini adalah tinggi phon kendali versi utama ketika panel konsol ditampilkan."
 
-#: ../data/org.gnome.meld.gschema.xml.h:51
+#: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Sajikan perbandingan versi sebagai kiri-lokal/kanan-jauh"
 
-#: ../data/org.gnome.meld.gschema.xml.h:52
+#: ../data/org.gnome.meld.gschema.xml.h:54
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -393,11 +401,11 @@ msgstr ""
 "dalam panel. Bila tidak, skema left-adalah-milik-mereka, kanan-adalah-"
 "milikku dipakai."
 
-#: ../data/org.gnome.meld.gschema.xml.h:53
+#: ../data/org.gnome.meld.gschema.xml.h:55
 msgid "Order for files in three-way version control merge comparisons"
 msgstr "Urutan bagi berkas dalam perbandingan merge kendali versi tiga arah"
 
-#: ../data/org.gnome.meld.gschema.xml.h:54
+#: ../data/org.gnome.meld.gschema.xml.h:56
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -408,11 +416,11 @@ msgstr ""
 "diluncurkan dari tilikan kendali versi, sehingga hanya dipakai untuk "
 "resolusi merge/konflik di dalam Meld."
 
-#: ../data/org.gnome.meld.gschema.xml.h:55
+#: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Show margin in commit message editor"
 msgstr "Tampilkan marjin dalam penyunting pesan komit"
 
-#: ../data/org.gnome.meld.gschema.xml.h:56
+#: ../data/org.gnome.meld.gschema.xml.h:58
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -420,11 +428,11 @@ msgstr ""
 "Bila berisi true, suatu panduan akan ditampilkan untuk menunjukkan marjin "
 "pada kolom mana dalam penyunting pesan komit kendali versi."
 
-#: ../data/org.gnome.meld.gschema.xml.h:57
+#: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Margin column in commit message editor"
 msgstr "Marjin kolom dalam penyunting pesan komit"
 
-#: ../data/org.gnome.meld.gschema.xml.h:58
+#: ../data/org.gnome.meld.gschema.xml.h:60
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -432,11 +440,11 @@ msgstr ""
 "Kolom tempat menunjukkan posisi marjin dalam penyunting pesan komit kendali "
 "versi."
 
-#: ../data/org.gnome.meld.gschema.xml.h:59
+#: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Automatically hard-wrap commit messages"
 msgstr "Secara otomatis melipat isi pesan komit"
 
-#: ../data/org.gnome.meld.gschema.xml.h:60
+#: ../data/org.gnome.meld.gschema.xml.h:62
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -444,22 +452,22 @@ msgstr ""
 "Bila berisi true, penyunting pesan komit kendali versi akan melipat (yaitu "
 "menyisipkan pemecah baris) pada marjin komit sebelum komit."
 
-#: ../data/org.gnome.meld.gschema.xml.h:61
+#: ../data/org.gnome.meld.gschema.xml.h:63
 msgid "Version control status filters"
 msgstr "Penyaring status kendali versi"
 
-#: ../data/org.gnome.meld.gschema.xml.h:62
+#: ../data/org.gnome.meld.gschema.xml.h:64
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "Daftar status yang dipakai untuk menyaring berkas yang tampak dalam "
 "perbandingan kendali versi."
 
-#: ../data/org.gnome.meld.gschema.xml.h:63
+#: ../data/org.gnome.meld.gschema.xml.h:65
 msgid "Filename-based filters"
 msgstr "Penyaring berbasis nama berkas"
 
-#: ../data/org.gnome.meld.gschema.xml.h:64
+#: ../data/org.gnome.meld.gschema.xml.h:66
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -467,11 +475,11 @@ msgstr ""
 "Daftar penyaring berbasis nama berkas yang terpradefinisi, yang bila aktif, "
 "akan menghapus berkas yang cocok dari perbandingan folder."
 
-#: ../data/org.gnome.meld.gschema.xml.h:65
+#: ../data/org.gnome.meld.gschema.xml.h:67
 msgid "Text-based filters"
 msgstr "Penyaring berbasis teks"
 
-#: ../data/org.gnome.meld.gschema.xml.h:66
+#: ../data/org.gnome.meld.gschema.xml.h:68
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -565,7 +573,7 @@ msgstr "Salin ke kanan"
 msgid "Delete selected"
 msgstr "Hapus yang dipilih"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:860 ../meld/filediff.py:1366
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:858 ../meld/filediff.py:1336
 msgid "Hide"
 msgstr "Sembunyikan"
 
@@ -601,7 +609,7 @@ msgstr "Baru"
 msgid "Show new"
 msgstr "Tampilkan yang baru"
 
-#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:74
+#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Diubah"
 
@@ -634,7 +642,7 @@ msgid "_Add"
 msgstr "T_ambah"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:649
+#: ../meld/vcview.py:644
 msgid "_Remove"
 msgstr "_Hapus"
 
@@ -656,7 +664,7 @@ msgstr "_Turunkan"
 
 #. Create icon and filename CellRenderer
 #: ../data/ui/EditableList.ui.h:10 ../data/ui/vcview.ui.h:35
-#: ../meld/dirdiff.py:374
+#: ../meld/dirdiff.py:373
 msgid "Name"
 msgstr "Nama"
 
@@ -857,8 +865,8 @@ msgstr "Bila Anda tak menyimpan, perubahan akan hilang selamanya."
 msgid "Close _without Saving"
 msgstr "Tutup _Tanpa Menyimpan"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:942 ../meld/filediff.py:1432
-#: ../meld/filediff.py:1500
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:940 ../meld/filediff.py:1402
+#: ../meld/filediff.py:1474
 msgid "_Cancel"
 msgstr "_Batal"
 
@@ -896,7 +904,7 @@ msgid "Changes made to the following documents will be permanently lost:\n"
 msgstr ""
 "Perubahan yang dibuat ke dokumen-dokumen berikut akan hilang selamanya:\n"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:943 ../meld/filediff.py:1433
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:941 ../meld/filediff.py:1403
 msgid "_Replace"
 msgstr "_Timpa"
 
@@ -944,7 +952,7 @@ msgstr "Format sebagai Patch"
 msgid "Copy to Clipboard"
 msgstr "Salin ke Papan Klip"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:149
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:154
 msgid "Save Patch"
 msgstr "Simpan Patch"
 
@@ -965,166 +973,140 @@ msgid "_Reverse patch direction"
 msgstr "Balikkan a_rah patch"
 
 #: ../data/ui/preferences.ui.h:1
-msgid "Left is remote, right is local"
-msgstr "Kiri remote, kanan lokal"
-
-#: ../data/ui/preferences.ui.h:2
-msgid "Left is local, right is remote"
-msgstr "Kiri lokal, kanan remote"
-
-#: ../data/ui/preferences.ui.h:3
-msgid "Remote, merge, local"
-msgstr "Remote, merge, lokal"
-
-#: ../data/ui/preferences.ui.h:4
-msgid "Local, merge, remote"
-msgstr "Lokal, merge, remote"
-
-#: ../data/ui/preferences.ui.h:5
-msgid "1ns (ext4)"
-msgstr "1ns (ext4)"
-
-#: ../data/ui/preferences.ui.h:6
-msgid "100ns (NTFS)"
-msgstr "100ns (NTFS)"
-
-#: ../data/ui/preferences.ui.h:7
-msgid "1s (ext2/ext3)"
-msgstr "1s (ext2/ext3)"
-
-#: ../data/ui/preferences.ui.h:8
-msgid "2s (VFAT)"
-msgstr "2s (VFAT)"
-
-#: ../data/ui/preferences.ui.h:9
 msgid "Meld Preferences"
 msgstr "Preferensi Meld"
 
-#: ../data/ui/preferences.ui.h:10
+#: ../data/ui/preferences.ui.h:2
 msgid "Font"
 msgstr "Fonta"
 
-#: ../data/ui/preferences.ui.h:11
+#: ../data/ui/preferences.ui.h:3
 msgid "_Use the system fixed width font"
 msgstr "G_unakan fonta lebar tetap sistem"
 
-#: ../data/ui/preferences.ui.h:12
+#: ../data/ui/preferences.ui.h:4
 msgid "_Editor font:"
 msgstr "Fonta p_enyunting:"
 
-#: ../data/ui/preferences.ui.h:13
+#: ../data/ui/preferences.ui.h:5
 msgid "Display"
 msgstr "Tampilan"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:6
 msgid "_Tab width:"
 msgstr "Lebar _tab:"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:7
 msgid "_Insert spaces instead of tabs"
 msgstr "S_isipkan spasi-spasi sebagai penggati tab"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../data/ui/preferences.ui.h:8
 msgid "Enable text _wrapping"
 msgstr "Fungsikan pe_lipatan text"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../data/ui/preferences.ui.h:9
 msgid "Do not _split words over two lines"
 msgstr "Jangan penggal kata ke dua bari_s"
 
-#: ../data/ui/preferences.ui.h:18
+#: ../data/ui/preferences.ui.h:10
 msgid "Highlight _current line"
 msgstr "Sorot baris _saat ini"
 
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:11
 msgid "Show _line numbers"
 msgstr "Tampi_lkan nomor baris"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:12
 msgid "Show w_hitespace"
 msgstr "Tampilkan w_hitespace"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../data/ui/preferences.ui.h:13
 msgid "Use s_yntax highlighting"
 msgstr "Gunakan penyorotan s_intaks"
 
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:14
 msgid "Syntax highlighting color scheme:"
 msgstr "Skema warna penyorotan sintaks:"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../data/ui/preferences.ui.h:15
 msgid "External Editor"
 msgstr "Penyunting Eksternal"
 
-#: ../data/ui/preferences.ui.h:24
+#: ../data/ui/preferences.ui.h:16
 msgid "Use _default system editor"
 msgstr "_Gunakan penyunting bawaan sistem"
 
-#: ../data/ui/preferences.ui.h:25
+#: ../data/ui/preferences.ui.h:17
 msgid "Edito_r command:"
 msgstr "Pe_rintah penyunting:"
 
-#: ../data/ui/preferences.ui.h:26
+#: ../data/ui/preferences.ui.h:18
 msgid "Editor"
 msgstr "Penyunting"
 
-#: ../data/ui/preferences.ui.h:27
+#: ../data/ui/preferences.ui.h:19
 msgid "Shallow Comparison"
 msgstr "Perbandingan Dangkal"
 
-#: ../data/ui/preferences.ui.h:28
+#: ../data/ui/preferences.ui.h:20
 msgid "C_ompare files based only on size and timestamp"
 msgstr "B_andingkan berkas hanya berdasarkan ukuran dan penanda waktu"
 
-#: ../data/ui/preferences.ui.h:29
+#: ../data/ui/preferences.ui.h:21
 msgid "_Timestamp resolution:"
 msgstr "Resolusi penanda wak_tu:"
 
-#: ../data/ui/preferences.ui.h:31
+#: ../data/ui/preferences.ui.h:23
+msgid "Note: enabling text filters may make comparing large files much slower"
+msgstr ""
+"Catatan: memfungsikan penyaring teks bisa membuat membandingkan berkas-"
+"berkas besar jauh lebih lambat"
+
+#: ../data/ui/preferences.ui.h:24
 msgid "Symbolic Links"
 msgstr "Taut Simbolik"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:26
 msgid "Visible Columns"
 msgstr "Kolom Yang Nampak"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:27
 msgid "Folder Comparisons"
 msgstr "Perbandingan Folder"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:28
 msgid "Version Comparisons"
 msgstr "Perbandingan Versi"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:29
 msgid "_Order when comparing file revisions:"
 msgstr "_Urutan ketika membandingkan revisi berkas:"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:30
 msgid "Order when _merging files:"
 msgstr "Urutan ketika _merge berkas"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../data/ui/preferences.ui.h:31
 msgid "Commit Messages"
 msgstr "Pesan Komit"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:32
 msgid "Show _right margin at:"
 msgstr "Tampilkan ma_rjin kanan pada:"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:33
 msgid "Automatically _break lines at right margin on commit"
 msgstr "Otomatis lipat _baris pada marjin kanan saat komit"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../data/ui/preferences.ui.h:34
 msgid "Version Control"
 msgstr "Kendali Versi"
 
-#: ../data/ui/preferences.ui.h:42
+#: ../data/ui/preferences.ui.h:35
 msgid "Filename filters"
 msgstr "Penyaring nama berkas"
 
-#: ../data/ui/preferences.ui.h:43
+#: ../data/ui/preferences.ui.h:36
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1134,23 +1116,23 @@ msgstr ""
 "direktori menurut namanya. Setiap pola adalah daftar dari wildcard gaya "
 "shell yang dipisahkan oleh spasi."
 
-#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:104
+#: ../data/ui/preferences.ui.h:37 ../meld/meldwindow.py:104
 msgid "File Filters"
 msgstr "Penyaring Berkas"
 
-#: ../data/ui/preferences.ui.h:45
+#: ../data/ui/preferences.ui.h:38
 msgid "Change trimming"
 msgstr "Ubah pemangkasan"
 
-#: ../data/ui/preferences.ui.h:46
+#: ../data/ui/preferences.ui.h:39
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Pangkas perbedaan baris kosong dari awal dan akhir perubahan"
 
-#: ../data/ui/preferences.ui.h:47
+#: ../data/ui/preferences.ui.h:40
 msgid "Text filters"
 msgstr "Penyaring teks"
 
-#: ../data/ui/preferences.ui.h:48
+#: ../data/ui/preferences.ui.h:41
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1164,9 +1146,41 @@ msgstr ""
 "dilakukan. Bila ekspresi memuat grup, hanya grup tersebut yang diganti. "
 "Lihat manual pengguna untuk rincian lebih lanjut."
 
-#: ../data/ui/preferences.ui.h:49
+#: ../data/ui/preferences.ui.h:42
 msgid "Text Filters"
 msgstr "Penyaring Teks"
+
+#: ../data/ui/preferences.ui.h:43
+msgid "Left is remote, right is local"
+msgstr "Kiri remote, kanan lokal"
+
+#: ../data/ui/preferences.ui.h:44
+msgid "Left is local, right is remote"
+msgstr "Kiri lokal, kanan remote"
+
+#: ../data/ui/preferences.ui.h:45
+msgid "Remote, merge, local"
+msgstr "Remote, merge, lokal"
+
+#: ../data/ui/preferences.ui.h:46
+msgid "Local, merge, remote"
+msgstr "Lokal, merge, remote"
+
+#: ../data/ui/preferences.ui.h:47
+msgid "1ns (ext4)"
+msgstr "1ns (ext4)"
+
+#: ../data/ui/preferences.ui.h:48
+msgid "100ns (NTFS)"
+msgstr "100ns (NTFS)"
+
+#: ../data/ui/preferences.ui.h:49
+msgid "1s (ext2/ext3)"
+msgstr "1s (ext2/ext3)"
+
+#: ../data/ui/preferences.ui.h:50
+msgid "2s (VFAT)"
+msgstr "2s (VFAT)"
 
 #: ../data/ui/shortcuts.ui.h:1
 msgctxt "shortcut window"
@@ -1413,7 +1427,8 @@ msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Tampilkan/sembunyikan keluaran konsol"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:668
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:562
+#: ../meld/newdifftab.py:38
 msgid "New comparison"
 msgstr "Perbandingan baru"
 
@@ -1561,7 +1576,7 @@ msgstr "Tanpa _Versi"
 msgid "Show unversioned files"
 msgstr "Tampilkan berkas tanpa versi"
 
-#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:67
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:69
 msgid "Ignored"
 msgstr "Diabaikan"
 
@@ -1589,7 +1604,7 @@ msgstr "Log sebelumnya:"
 msgid "Co_mmit"
 msgstr "Ko_mit"
 
-#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:337
+#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:332
 msgid "Location"
 msgstr "Lokasi"
 
@@ -1630,44 +1645,44 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:392 ../meld/preferences.py:82
+#: ../meld/dirdiff.py:391 ../meld/preferences.py:82
 msgid "Size"
 msgstr "Ukuran"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:400 ../meld/preferences.py:83
+#: ../meld/dirdiff.py:399 ../meld/preferences.py:83
 msgid "Modification time"
 msgstr "Waktu modifikasi"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:408 ../meld/preferences.py:84
+#: ../meld/dirdiff.py:407 ../meld/preferences.py:84
 msgid "Permissions"
 msgstr "Ijin"
 
-#: ../meld/dirdiff.py:538
+#: ../meld/dirdiff.py:537
 #, python-format
 msgid "Hide %s"
 msgstr "Sembunyikan %s"
 
-#: ../meld/dirdiff.py:670 ../meld/dirdiff.py:694
+#: ../meld/dirdiff.py:669 ../meld/dirdiff.py:693
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Memindai %s"
 
-#: ../meld/dirdiff.py:827
+#: ../meld/dirdiff.py:825
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Selesai"
 
-#: ../meld/dirdiff.py:835
+#: ../meld/dirdiff.py:833
 msgid "Folders have no differences"
 msgstr "Folder-folder tak punya perbedaan"
 
-#: ../meld/dirdiff.py:837
+#: ../meld/dirdiff.py:835
 msgid "Contents of scanned files in folders are identical."
 msgstr "Isi berkas yang dipindai dalam folder-folder identik."
 
-#: ../meld/dirdiff.py:839
+#: ../meld/dirdiff.py:837
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1675,42 +1690,42 @@ msgstr ""
 "Berkas-berkas yang dipindai dalam folder-folder tampak identik, tapi isi "
 "belum dipindai."
 
-#: ../meld/dirdiff.py:842
+#: ../meld/dirdiff.py:840
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Penyaring berkas sedang dipakai, maka tidak semua berkas telah dipindai."
 
-#: ../meld/dirdiff.py:844
+#: ../meld/dirdiff.py:842
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Penyaring teks sedang dipakai dan mungkin menutupi perbedaan isi."
 
-#: ../meld/dirdiff.py:862 ../meld/filediff.py:1368 ../meld/filediff.py:1398
-#: ../meld/filediff.py:1400 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
+#: ../meld/dirdiff.py:860 ../meld/filediff.py:1338 ../meld/filediff.py:1368
+#: ../meld/filediff.py:1370 ../meld/ui/msgarea.py:109 ../meld/ui/msgarea.py:122
 msgid "Hi_de"
 msgstr "Sem_bunyikan"
 
-#: ../meld/dirdiff.py:872
+#: ../meld/dirdiff.py:870
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Galat berganda terjadi ketika memindai folder ini"
 
-#: ../meld/dirdiff.py:873
+#: ../meld/dirdiff.py:871
 msgid "Files with invalid encodings found"
 msgstr "Berkas dengan pengkodean tak valid ditemukan"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:875
+#: ../meld/dirdiff.py:873
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Beberapa berkas memiliki pengkodean yang salah. Namanya kurang lebih seperti:"
 
-#: ../meld/dirdiff.py:877
+#: ../meld/dirdiff.py:875
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 "Berkasn yang disembunyikan oleh perbandingan yang tak membedakan huruf besar "
 "kecil"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:879
+#: ../meld/dirdiff.py:877
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1719,17 +1734,17 @@ msgstr ""
 "sistem berkas yang peka huruf besar kecil. Berkas-berkas berikut dalam "
 "folder ini tersembunyi: "
 
-#: ../meld/dirdiff.py:890
+#: ../meld/dirdiff.py:888
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "'%s' disembunyikan oleh '%s'"
 
-#: ../meld/dirdiff.py:946
+#: ../meld/dirdiff.py:944
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Timpa folder “%s”?"
 
-#: ../meld/dirdiff.py:948
+#: ../meld/dirdiff.py:946
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1738,11 +1753,11 @@ msgstr ""
 "Folder lain dengan nama sama telah ada dalam \"%s\".\n"
 "Bila Anda menimpa folder yang ada, semua berkas di dalamnya akan hilang."
 
-#: ../meld/dirdiff.py:961
+#: ../meld/dirdiff.py:959
 msgid "Error copying file"
 msgstr "Galat saat menyalin berkas"
 
-#: ../meld/dirdiff.py:962
+#: ../meld/dirdiff.py:960
 #, python-format
 msgid ""
 "Couldn't copy %s\n"
@@ -1755,35 +1770,35 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:985
+#: ../meld/dirdiff.py:983
 #, python-format
 msgid "Error deleting %s"
 msgstr "Galat saat menghapus %s"
 
-#: ../meld/dirdiff.py:1492
+#: ../meld/dirdiff.py:1494
 msgid "No folder"
 msgstr "Tidak ada folder"
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:357
+#: ../meld/filediff.py:311
 msgid "INS"
 msgstr "INS"
 
-#: ../meld/filediff.py:357
+#: ../meld/filediff.py:311
 msgid "OVR"
 msgstr "OVR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:359
+#: ../meld/filediff.py:313
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Brs %i, Kol %i"
 
-#: ../meld/filediff.py:774
+#: ../meld/filediff.py:738
 msgid "Comparison results will be inaccurate"
 msgstr "Hasil perbandingan tidak akan akurat"
 
-#: ../meld/filediff.py:776
+#: ../meld/filediff.py:740
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1791,66 +1806,66 @@ msgstr ""
 "Suatu penyaring mengubah cacah baris dalam berkas, yang tidak didukung. "
 "Perbandingan tidak akan akurat."
 
-#: ../meld/filediff.py:834
+#: ../meld/filediff.py:796
 msgid "Mark conflict as resolved?"
 msgstr "Tandai konflik sebagai terselesaikan?"
 
-#: ../meld/filediff.py:836
+#: ../meld/filediff.py:798
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Bila konflik sukses dipecahkan, Anda dapat menandainya sebagai terpecahkan "
 "sekarang."
 
-#: ../meld/filediff.py:838
+#: ../meld/filediff.py:800
 msgid "Cancel"
 msgstr "Batal"
 
-#: ../meld/filediff.py:839
+#: ../meld/filediff.py:801
 msgid "Mark _Resolved"
 msgstr "Tandai Te_rselesaikan"
 
-#: ../meld/filediff.py:1084
+#: ../meld/filediff.py:1049
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Ada masalah saat membuka berkas \"%s\"."
 
-#: ../meld/filediff.py:1092
+#: ../meld/filediff.py:1057
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Berkas %s tampaknya berkas biner."
 
-#: ../meld/filediff.py:1094
+#: ../meld/filediff.py:1059
 msgid "Do you want to open the file using the default application?"
 msgstr "Apakah Anda ingin membuka berkas memakai aplikasi baku?"
 
-#: ../meld/filediff.py:1096
+#: ../meld/filediff.py:1061
 msgid "Open"
 msgstr "Buka"
 
-#: ../meld/filediff.py:1112
+#: ../meld/filediff.py:1077
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Menghitung perbedaan"
 
-#: ../meld/filediff.py:1177
+#: ../meld/filediff.py:1142
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Berkas %s telah berubah pada disk"
 
-#: ../meld/filediff.py:1178
+#: ../meld/filediff.py:1143
 msgid "Do you want to reload the file?"
 msgstr "Apakah Anda ingin memuat ulang berkas?"
 
-#: ../meld/filediff.py:1180
+#: ../meld/filediff.py:1145
 msgid "_Reload"
 msgstr "Muat _Ulang"
 
-#: ../meld/filediff.py:1331
+#: ../meld/filediff.py:1301
 msgid "Files are identical"
 msgstr "Berkas identik"
 
-#: ../meld/filediff.py:1344
+#: ../meld/filediff.py:1314
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1858,11 +1873,11 @@ msgstr ""
 "Penyaring teks sedang dipakai, dan mungkin menutupi perbedaan antara berkas. "
 "Apakah Anda ingin membandingkan berkas-berkas yang tak tersaring?"
 
-#: ../meld/filediff.py:1349
+#: ../meld/filediff.py:1319
 msgid "Files differ in line endings only"
 msgstr "Berkas berbeda hanya pada akhiran baris"
 
-#: ../meld/filediff.py:1351
+#: ../meld/filediff.py:1321
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1871,15 +1886,15 @@ msgstr ""
 "Berkas-berkas identik kecuali perbedaan akhiran baris:\n"
 "%s"
 
-#: ../meld/filediff.py:1371
+#: ../meld/filediff.py:1341
 msgid "Show without filters"
 msgstr "Tampilkan tanpa penyaring"
 
-#: ../meld/filediff.py:1393
+#: ../meld/filediff.py:1363
 msgid "Change highlighting incomplete"
 msgstr "Penyorotan perubahan tak lengkap"
 
-#: ../meld/filediff.py:1394
+#: ../meld/filediff.py:1364
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1888,20 +1903,20 @@ msgstr ""
 "untuk lebih panjanga sehingga menyorot perubahan yang lebih besar, walaupun "
 "ini mungkin lambat."
 
-#: ../meld/filediff.py:1402
+#: ../meld/filediff.py:1372
 msgid "Keep highlighting"
 msgstr "Tetap menyorot"
 
-#: ../meld/filediff.py:1404
+#: ../meld/filediff.py:1374
 msgid "_Keep highlighting"
 msgstr "_Tetap menyorot"
 
-#: ../meld/filediff.py:1436
+#: ../meld/filediff.py:1406
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Timpa berkas “%s”?"
 
-#: ../meld/filediff.py:1438
+#: ../meld/filediff.py:1408
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -1910,45 +1925,45 @@ msgstr ""
 "Sebuah berkas dengan nama ini telah ada dalam \"%s\".\n"
 "Bila Anda menimpa berkas yang ada, isinya akan hilang."
 
-#: ../meld/filediff.py:1455
+#: ../meld/filediff.py:1425
 msgid "Save Left Pane As"
 msgstr "Simpan Panel Kiri Sebagai"
 
-#: ../meld/filediff.py:1457
+#: ../meld/filediff.py:1427
 msgid "Save Middle Pane As"
 msgstr "Simpan Panel Tengah Sebagai"
 
-#: ../meld/filediff.py:1459
+#: ../meld/filediff.py:1429
 msgid "Save Right Pane As"
 msgstr "Simpan Panel Kanan Sebagai"
 
-#: ../meld/filediff.py:1473
+#: ../meld/filediff.py:1443
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Berkas %s telah berubah pada disk sejak dibuka"
 
-#: ../meld/filediff.py:1475
+#: ../meld/filediff.py:1445
 msgid "If you save it, any external changes will be lost."
 msgstr "Bila Anda menyimpannya, perubahan eksternal akan hilang."
 
-#: ../meld/filediff.py:1478
+#: ../meld/filediff.py:1448
 msgid "Save Anyway"
 msgstr "Simpan Saja"
 
-#: ../meld/filediff.py:1479
+#: ../meld/filediff.py:1449
 msgid "Don't Save"
 msgstr "Jangan Simpan"
 
-#: ../meld/filediff.py:1501
+#: ../meld/filediff.py:1475
 msgid "_Save as UTF-8"
 msgstr "_Simpan sebagai UTF-8"
 
-#: ../meld/filediff.py:1504
+#: ../meld/filediff.py:1478
 #, python-format
 msgid "Couldn't encode text as “%s”"
 msgstr "Tak bisa meng-encode teks sebagai \"%s\""
 
-#: ../meld/filediff.py:1506
+#: ../meld/filediff.py:1480
 #, python-format
 msgid ""
 "File “%s” contains characters that can't be encoded using encoding “%s”.\n"
@@ -1957,12 +1972,12 @@ msgstr ""
 "Berkas \"%s\" memuat karakter yang tak bisa dienkode dengan \"%s\".\n"
 "Apakah Anda ingin menyimpan sebagai UTF-8?"
 
-#: ../meld/filediff.py:1543 ../meld/patchdialog.py:125
+#: ../meld/filediff.py:1520 ../meld/patchdialog.py:130
 #, python-format
 msgid "Could not save file %s."
 msgstr "Tak bisa menyimpan berkas %s."
 
-#: ../meld/filediff.py:1544 ../meld/patchdialog.py:126
+#: ../meld/filediff.py:1521 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
 "Couldn't save file due to:\n"
@@ -1971,11 +1986,11 @@ msgstr ""
 "Tidak bisa menyimpan berkas karena:\n"
 "%s"
 
-#: ../meld/filediff.py:1890
+#: ../meld/filediff.py:1870
 msgid "Live comparison updating disabled"
 msgstr "Pemutakhiran perbandingan live dinonaktifkan"
 
-#: ../meld/filediff.py:1891
+#: ../meld/filediff.py:1871
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1991,111 +2006,111 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Sedang merge berkas"
 
-#: ../meld/gutterrendererchunk.py:159
+#: ../meld/gutterrendererchunk.py:210
 msgid "Copy _up"
 msgstr "Salin _naik"
 
-#: ../meld/gutterrendererchunk.py:160
+#: ../meld/gutterrendererchunk.py:211
 msgid "Copy _down"
 msgstr "Salin _turun"
 
-#: ../meld/meldapp.py:177
+#: ../meld/meldapp.py:175
 msgid "wrong number of arguments supplied to --diff"
 msgstr "banyaknya argumen yang diberikan ke --diff salah"
 
-#: ../meld/meldapp.py:182
+#: ../meld/meldapp.py:180
 msgid "Start with an empty window"
 msgstr "Mulai dengan jendela kosong"
 
-#: ../meld/meldapp.py:183 ../meld/meldapp.py:185
+#: ../meld/meldapp.py:181 ../meld/meldapp.py:183
 msgid "file"
 msgstr "berkas"
 
-#: ../meld/meldapp.py:183 ../meld/meldapp.py:187
+#: ../meld/meldapp.py:181 ../meld/meldapp.py:185
 msgid "folder"
 msgstr "folder"
 
-#: ../meld/meldapp.py:184
+#: ../meld/meldapp.py:182
 msgid "Start a version control comparison"
 msgstr "Mulai suatu perbandingan kendali versi"
 
-#: ../meld/meldapp.py:186
+#: ../meld/meldapp.py:184
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Mulai perbandingan berkas 2 atau 3 pihak"
 
-#: ../meld/meldapp.py:188
+#: ../meld/meldapp.py:186
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Mulai perbandingan folder 2 atau 3 pihak"
 
-#: ../meld/meldapp.py:231
+#: ../meld/meldapp.py:229
 #, python-format
 msgid "Error: %s\n"
 msgstr "Galat: %s\n"
 
-#: ../meld/meldapp.py:238
+#: ../meld/meldapp.py:236
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld adalah alat perbandingan berkas dan direktori."
 
-#: ../meld/meldapp.py:242
+#: ../meld/meldapp.py:240
 msgid "Set label to use instead of file name"
 msgstr "Tata label yang akan dipakai sebagai ganti nama berkas"
 
-#: ../meld/meldapp.py:245
+#: ../meld/meldapp.py:243
 msgid "Open a new tab in an already running instance"
 msgstr "Buka tab baru pada instansi yang sedang berjalan"
 
-#: ../meld/meldapp.py:248
+#: ../meld/meldapp.py:246
 msgid "Automatically compare all differing files on startup"
 msgstr "Otomatis membandingkan semua berkas yang berbeda saat awal mula"
 
-#: ../meld/meldapp.py:251
+#: ../meld/meldapp.py:249
 msgid "Ignored for compatibility"
 msgstr "Diabaikan untuk kompatibilitas"
 
-#: ../meld/meldapp.py:255
+#: ../meld/meldapp.py:253
 msgid "Set the target file for saving a merge result"
 msgstr "Tata berkas target untuk menyimpan hasil merge"
 
-#: ../meld/meldapp.py:258
+#: ../meld/meldapp.py:256
 msgid "Automatically merge files"
 msgstr "Otomatis me-merge berkas"
 
-#: ../meld/meldapp.py:262
+#: ../meld/meldapp.py:260
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Muat perbandingan yang disimpan dari suatu berkas perbandingan Meld"
 
-#: ../meld/meldapp.py:266
+#: ../meld/meldapp.py:264
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Buat suatu tab diff bagi berkas atau folder yang diberikan"
 
-#: ../meld/meldapp.py:286
+#: ../meld/meldapp.py:284
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "terlalu banyak argumen (diinginkan 0-3, diperoleh %d)"
 
-#: ../meld/meldapp.py:289
+#: ../meld/meldapp.py:287
 msgid "can't auto-merge less than 3 files"
 msgstr "tak bisa merge otomatis kurang dari 3 berkas"
 
-#: ../meld/meldapp.py:291
+#: ../meld/meldapp.py:289
 msgid "can't auto-merge directories"
 msgstr "tak bisa merge otomatis direktori"
 
-#: ../meld/meldapp.py:305
+#: ../meld/meldapp.py:303
 msgid "Error reading saved comparison file"
 msgstr "Galat saat membaca berkas perbandingan yang disimpan"
 
-#: ../meld/meldapp.py:332
+#: ../meld/meldapp.py:330
 #, python-format
 msgid "invalid path or URI \"%s\""
 msgstr "path atau URI \"%s\" tidak valid"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:132
+#: ../meld/meldbuffer.py:131
 msgid "<unnamed>"
 msgstr "<tanpa nama>"
 
-#: ../meld/melddoc.py:83 ../meld/melddoc.py:84
+#: ../meld/melddoc.py:64
 msgid "untitled"
 msgstr "tanpa judul"
 
@@ -2231,108 +2246,68 @@ msgstr "Hentikan aksi saat ini"
 msgid "Refresh the view"
 msgstr "Segarkan tilikan"
 
-#: ../meld/meldwindow.py:112
-msgid "_Tabs"
-msgstr "_Tab"
-
 #: ../meld/meldwindow.py:113
-msgid "_Previous Tab"
-msgstr "Tab Se_belumnya"
-
-#: ../meld/meldwindow.py:114
-msgid "Activate previous tab"
-msgstr "Aktifkan tab sebelumnya"
-
-#: ../meld/meldwindow.py:116
-msgid "_Next Tab"
-msgstr "Tab Sela_njutnya"
-
-#: ../meld/meldwindow.py:117
-msgid "Activate next tab"
-msgstr "Aktifkan tab selanjutnya"
-
-#: ../meld/meldwindow.py:120
-msgid "Move Tab _Left"
-msgstr "Pindahkan Tab Ke K_iri"
-
-#: ../meld/meldwindow.py:121
-msgid "Move current tab to left"
-msgstr "Pindahkan tab saat ini ke kiri"
-
-#: ../meld/meldwindow.py:124
-msgid "Move Tab _Right"
-msgstr "Pindahkan Tab Ke K_anan"
-
-#: ../meld/meldwindow.py:125
-msgid "Move current tab to right"
-msgstr "Pindahkan tab saat ini ke kanan"
-
-#: ../meld/meldwindow.py:129
 msgid "Fullscreen"
 msgstr "Layar Penuh"
 
-#: ../meld/meldwindow.py:130
+#: ../meld/meldwindow.py:114
 msgid "View the comparison in fullscreen"
 msgstr "Tilik perbandingan dalam layar penuh"
 
-#: ../meld/meldwindow.py:132
+#: ../meld/meldwindow.py:116
 msgid "_Toolbar"
 msgstr "Bilah Ala_t"
 
-#: ../meld/meldwindow.py:133
+#: ../meld/meldwindow.py:117
 msgid "Show or hide the toolbar"
 msgstr "Tampilkan atau sembunyikan bilah alat"
 
-#: ../meld/meldwindow.py:143
+#: ../meld/meldwindow.py:127
 msgid "Open Recent"
 msgstr "Buka Terkini"
 
-#: ../meld/meldwindow.py:144
+#: ../meld/meldwindow.py:128
 msgid "Open recent files"
 msgstr "Buka berkas yang baru-baru ini"
 
-#: ../meld/meldwindow.py:166
+#: ../meld/meldwindow.py:150
 msgid "_Meld"
 msgstr "_Meld"
 
-#: ../meld/meldwindow.py:167
+#: ../meld/meldwindow.py:151
 msgid "Quit the program"
 msgstr "Keluar program"
 
-#: ../meld/meldwindow.py:169
+#: ../meld/meldwindow.py:153
 msgid "Prefere_nces"
 msgstr "Prefere_nsi"
 
-#: ../meld/meldwindow.py:170
+#: ../meld/meldwindow.py:154
 msgid "Configure the application"
 msgstr "Atur konfigurasi aplikasi"
 
-#: ../meld/meldwindow.py:172
+#: ../meld/meldwindow.py:156
 msgid "_Contents"
 msgstr "_Isi"
 
-#: ../meld/meldwindow.py:173
+#: ../meld/meldwindow.py:157
 msgid "Open the Meld manual"
 msgstr "Buka manual Meld"
 
-#: ../meld/meldwindow.py:175
+#: ../meld/meldwindow.py:159
 msgid "About this application"
 msgstr "Tentang aplikasi ini"
 
-#: ../meld/meldwindow.py:587
-msgid "Switch to this tab"
-msgstr "Tukar ke tab ini"
-
-#: ../meld/meldwindow.py:702
+#: ../meld/meldwindow.py:596
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Perlu tiga berkas untuk merge otomatis, mendapat: %r"
 
-#: ../meld/meldwindow.py:716
+#: ../meld/meldwindow.py:610
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Tak bisa membandingkan campuran berkas dan direktori"
 
-#: ../meld/misc.py:202
+#: ../meld/misc.py:203
 #, python-format
 msgid "Couldn't find colour scheme details for %s-%s; this is a bad install"
 msgstr ""
@@ -2340,7 +2315,7 @@ msgstr ""
 "buruk"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:287
+#: ../meld/misc.py:261
 msgid "[None]"
 msgstr "[Nihil]"
 
@@ -2352,7 +2327,7 @@ msgstr "label"
 msgid "pattern"
 msgstr "pola"
 
-#: ../meld/recent.py:115
+#: ../meld/recent.py:114
 msgid "Version control:"
 msgstr "Kendali versi:"
 
@@ -2360,41 +2335,41 @@ msgstr "Kendali versi:"
 msgid "Close tab"
 msgstr "Tutup tab"
 
-#: ../meld/ui/vcdialogs.py:50
+#: ../meld/ui/vcdialogs.py:48
 msgid "No files will be committed"
 msgstr "Tak ada berkas yang akan dikomit"
 
 #. Translators: First %s is replaced by translated "%d unpushed
 #. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:95
+#: ../meld/vc/git.py:94
 #, python-format
 msgid "%s in %s"
 msgstr "%s dalam %s"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:96 ../meld/vc/git.py:103
+#: ../meld/vc/git.py:95 ../meld/vc/git.py:102
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d komit belum di-push"
 
-#: ../meld/vc/git.py:98
+#: ../meld/vc/git.py:97
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d branch"
 
-#: ../meld/vc/git.py:352
+#: ../meld/vc/git.py:330
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Mode diubah dari %s ke %s"
 
-#: ../meld/vc/git.py:360
+#: ../meld/vc/git.py:338
 msgid "Partially staged"
 msgstr "Di-stage sebagian"
 
-#: ../meld/vc/git.py:360
+#: ../meld/vc/git.py:338
 msgid "Staged"
 msgstr "Di-stage"
 
@@ -2404,140 +2379,140 @@ msgstr "Di-stage"
 msgid "None"
 msgstr "Nihil"
 
-#: ../meld/vc/svn.py:216
+#: ../meld/vc/svn.py:204
 #, python-format
 msgid "Rev %s"
 msgstr "Rev %s"
 
-#: ../meld/vc/_vc.py:52
+#: ../meld/vc/_vc.py:54
 msgid "Merged"
 msgstr "Di-merge"
 
-#: ../meld/vc/_vc.py:52
+#: ../meld/vc/_vc.py:54
 msgid "Base"
 msgstr "Basis"
 
-#: ../meld/vc/_vc.py:52
+#: ../meld/vc/_vc.py:54
 msgid "Local"
 msgstr "Lokal"
 
-#: ../meld/vc/_vc.py:52
+#: ../meld/vc/_vc.py:54
 msgid "Remote"
 msgstr "Remote"
 
-#: ../meld/vc/_vc.py:68
+#: ../meld/vc/_vc.py:70
 msgid "Unversioned"
 msgstr "Tanpa versi"
 
-#: ../meld/vc/_vc.py:71
+#: ../meld/vc/_vc.py:73
 msgid "Error"
 msgstr "Galat"
 
-#: ../meld/vc/_vc.py:73
+#: ../meld/vc/_vc.py:75
 msgid "Newly added"
 msgstr "Baru ditambahkan"
 
-#: ../meld/vc/_vc.py:75
+#: ../meld/vc/_vc.py:77
 msgid "Renamed"
 msgstr "Diubah nama"
 
-#: ../meld/vc/_vc.py:76
+#: ../meld/vc/_vc.py:78
 msgid "Conflict"
 msgstr "Konflik"
 
-#: ../meld/vc/_vc.py:77
+#: ../meld/vc/_vc.py:79
 msgid "Removed"
 msgstr "Dihapus"
 
-#: ../meld/vc/_vc.py:78
+#: ../meld/vc/_vc.py:80
 msgid "Missing"
 msgstr "Kurang"
 
-#: ../meld/vc/_vc.py:79
+#: ../meld/vc/_vc.py:81
 msgid "Not present"
 msgstr "Tak ada"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: ../meld/vcview.py:255
+#: ../meld/vcview.py:251
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s tidak terpasang)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: ../meld/vcview.py:259
+#: ../meld/vcview.py:255
 #, python-format
 msgid "%(name)s (Invalid repository)"
 msgstr "%(name)s (Repositori tak valid)"
 
-#: ../meld/vcview.py:280
+#: ../meld/vcview.py:276
 msgid "No valid version control system found in this folder"
 msgstr "Tak ada sistem kendali versi yang valid dalam folder ini"
 
-#: ../meld/vcview.py:282
+#: ../meld/vcview.py:278
 msgid "Only one version control system found in this folder"
 msgstr "Hanya satu sistem kendali versi ditemukan dalam folder ini"
 
-#: ../meld/vcview.py:284
+#: ../meld/vcview.py:280
 msgid "Choose which version control system to use"
 msgstr "Pilih sistem kendali mana yang akan dipakai"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: ../meld/vcview.py:337
+#: ../meld/vcview.py:332
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:357
+#: ../meld/vcview.py:352
 #, python-format
 msgid "Scanning %s"
 msgstr "Memindai %s"
 
-#: ../meld/vcview.py:396
+#: ../meld/vcview.py:391
 msgid "(Empty)"
 msgstr "(Kosong)"
 
-#: ../meld/vcview.py:440
+#: ../meld/vcview.py:435
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokal"
 
-#: ../meld/vcview.py:441
+#: ../meld/vcview.py:436
 #, python-format
 msgid "%s — remote"
 msgstr "%s — remote"
 
-#: ../meld/vcview.py:449
+#: ../meld/vcview.py:444
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokal, merge, remote)"
 
-#: ../meld/vcview.py:454
+#: ../meld/vcview.py:449
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (remote, merge, lokal)"
 
-#: ../meld/vcview.py:465
+#: ../meld/vcview.py:460
 #, python-format
 msgid "%s — repository"
 msgstr "%s — repositori"
 
-#: ../meld/vcview.py:471
+#: ../meld/vcview.py:466
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (kerja, repositori)"
 
-#: ../meld/vcview.py:475
+#: ../meld/vcview.py:470
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (repositori, kerja)"
 
-#: ../meld/vcview.py:643
+#: ../meld/vcview.py:638
 msgid "Remove folder and all its files?"
 msgstr "Hapus folder dan semua berkasnya?"
 
-#: ../meld/vcview.py:645
+#: ../meld/vcview.py:640
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2545,11 +2520,11 @@ msgstr ""
 "Ini akan menghapus semua berkas dan folder yang dipilih, dan semua berkas di "
 "dalam sebarang folder yang dipilih, dari kendali versi."
 
-#: ../meld/vcview.py:670
+#: ../meld/vcview.py:665
 #, python-format
 msgid "Error removing %s"
 msgstr "Galat saat menghapus %s"
 
-#: ../meld/vcview.py:750
+#: ../meld/vcview.py:745
 msgid "Clear"
 msgstr "Bersihkan"
