@@ -420,9 +420,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 "value-changed", self._sync_vscroll)
             self.scrolledwindow[i].get_hadjustment().connect(
                 "value-changed", self._sync_hscroll)
-            # Revert overlay scrolling that messes with widget interactivity
-            if hasattr(self.scrolledwindow[i], 'set_overlay_scrolling'):
-                self.scrolledwindow[i].set_overlay_scrolling(False)
         self.linediffs = [[], []]
 
         self.update_treeview_columns(settings, 'folder-columns')
