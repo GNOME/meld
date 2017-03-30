@@ -40,7 +40,12 @@ class SavedWindowState(GObject.GObject):
         window.connect('size-allocate', self.on_size_allocate)
         window.connect('window-state-event', self.on_window_state_event)
 
-        bind_flags = Gio.SettingsBindFlags.DEFAULT
+        # Don't re-read from gsettings after initialisation; we've seen
+        # what looked like issues with buggy debounce here.
+        bind_flags = (
+            Gio.SettingsBindFlags.DEFAULT |
+            Gio.SettingsBindFlags.GET_NO_CHANGES
+        )
         self.settings = load_settings_schema(WINDOW_STATE_SCHEMA)
         self.settings.bind('width', self, 'width', bind_flags)
         self.settings.bind('height', self, 'height', bind_flags)
