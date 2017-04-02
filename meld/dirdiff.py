@@ -90,11 +90,13 @@ CHUNK_SIZE = 4096
 
 
 def remove_blank_lines(text):
-    splits = text.splitlines()
-    lines = text.splitlines(True)
-    blanks = set([i for i, l in enumerate(splits) if not l])
-    lines = [l for i, l in enumerate(lines) if i not in blanks]
-    return ''.join(lines)
+	if isinstance(text, bytes): text = text.strip().decode('ISO-8859-1')
+	splits = text.splitlines()
+	lines = text.splitlines(True)
+	blanks = set([i for i, l in enumerate(splits) if not l])
+	lines = [l for i, l in enumerate(lines) if i not in blanks]
+
+	return ''.join(lines)
 
 
 def _files_same(files, regexes, comparison_args):
