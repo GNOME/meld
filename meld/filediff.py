@@ -1647,55 +1647,54 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def _sync_vscroll(self, adjustment, master):
         # only allow one scrollbar to be here at a time
-        if self._sync_vscroll_lock:
+        if self._sync_vscroll_lock or self._scroll_lock:
             return
 
-        if not self._scroll_lock:
-            self._sync_vscroll_lock = True
-            syncpoint = 0.5
+        self._sync_vscroll_lock = True
+        syncpoint = 0.5
 
-            # the line to search for in the 'master' text
-            master_y = (adjustment.get_value() + adjustment.get_page_size() *
-                        syncpoint)
-            it = self.textview[master].get_line_at_y(int(master_y))[0]
-            line_y, height = self.textview[master].get_line_yrange(it)
-            line = it.get_line() + ((master_y-line_y)/height)
+        # the line to search for in the 'master' text
+        master_y = (adjustment.get_value() + adjustment.get_page_size() *
+                    syncpoint)
+        it = self.textview[master].get_line_at_y(int(master_y))[0]
+        line_y, height = self.textview[master].get_line_yrange(it)
+        line = it.get_line() + ((master_y-line_y)/height)
 
-            # scrollbar influence 0->1->2 or 0<-1->2 or 0<-1<-2
-            scrollbar_influence = ((1, 2), (0, 2), (1, 0))
+        # scrollbar influence 0->1->2 or 0<-1->2 or 0<-1<-2
+        scrollbar_influence = ((1, 2), (0, 2), (1, 0))
 
-            for i in scrollbar_influence[master][:self.num_panes - 1]:
-                adj = self.scrolledwindow[i].get_vadjustment()
-                mbegin, mend = 0, self.textbuffer[master].get_line_count()
-                obegin, oend = 0, self.textbuffer[i].get_line_count()
-                # look for the chunk containing 'line'
-                for c in self.linediffer.pair_changes(master, i):
-                    if c[1] >= line:
-                        mend = c[1]
-                        oend = c[3]
-                        break
-                    elif c[2] >= line:
-                        mbegin, mend = c[1], c[2]
-                        obegin, oend = c[3], c[4]
-                        break
-                    else:
-                        mbegin = c[2]
-                        obegin = c[4]
-                fraction = (line - mbegin) / ((mend - mbegin) or 1)
-                other_line = (obegin + fraction * (oend - obegin))
-                it = self.textbuffer[i].get_iter_at_line(int(other_line))
-                val, height = self.textview[i].get_line_yrange(it)
-                val -= (adj.get_page_size()) * syncpoint
-                val += (other_line-int(other_line)) * height
-                val = min(max(val, adj.get_lower()),
-                          adj.get_upper() - adj.get_page_size())
-                val = math.floor(val)
-                adj.set_value(val)
+        for i in scrollbar_influence[master][:self.num_panes - 1]:
+            adj = self.scrolledwindow[i].get_vadjustment()
+            mbegin, mend = 0, self.textbuffer[master].get_line_count()
+            obegin, oend = 0, self.textbuffer[i].get_line_count()
+            # look for the chunk containing 'line'
+            for c in self.linediffer.pair_changes(master, i):
+                if c[1] >= line:
+                    mend = c[1]
+                    oend = c[3]
+                    break
+                elif c[2] >= line:
+                    mbegin, mend = c[1], c[2]
+                    obegin, oend = c[3], c[4]
+                    break
+                else:
+                    mbegin = c[2]
+                    obegin = c[4]
+            fraction = (line - mbegin) / ((mend - mbegin) or 1)
+            other_line = (obegin + fraction * (oend - obegin))
+            it = self.textbuffer[i].get_iter_at_line(int(other_line))
+            val, height = self.textview[i].get_line_yrange(it)
+            val -= (adj.get_page_size()) * syncpoint
+            val += (other_line-int(other_line)) * height
+            val = min(max(val, adj.get_lower()),
+                      adj.get_upper() - adj.get_page_size())
+            val = math.floor(val)
+            adj.set_value(val)
 
-                # If we just changed the central bar, make it the master
-                if i == 1:
-                    master, line = 1, other_line
-            self._sync_vscroll_lock = False
+            # If we just changed the central bar, make it the master
+            if i == 1:
+                master, line = 1, other_line
+        self._sync_vscroll_lock = False
 
         for lm in self.linkmap:
             lm.queue_draw()
