@@ -1650,7 +1650,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if self._sync_vscroll_lock:
             return
 
-        if not self._scroll_lock and (self.keymask & MASK_SHIFT) == 0:
+        if not self._scroll_lock:
             self._sync_vscroll_lock = True
             syncpoint = 0.5
 
