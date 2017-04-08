@@ -1660,7 +1660,17 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         line_y, height = self.textview[master].get_line_yrange(it)
         line = it.get_line() + ((master_y-line_y)/height)
 
-        # scrollbar influence 0->1->2 or 0<-1->2 or 0<-1<-2
+        # In the case of two pane scrolling, it's clear how to bind
+        # scrollbars: if the user moves the left pane, we move the
+        # right pane, and vice versa.
+        #
+        # For three pane scrolling, we want panes to be tied, but need
+        # an influence mapping. In Meld, all influence flows through
+        # the middle pane, e.g., the user moves the left pane, that
+        # moves the middle pane, and the middle pane moves the right
+        # pane. If the user moves the middle pane, then the left and
+        # right panes are moved directly.
+
         scrollbar_influence = ((1, 2), (0, 2), (1, 0))
 
         for i in scrollbar_influence[master][:self.num_panes - 1]:
