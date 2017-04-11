@@ -1651,7 +1651,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         self._sync_vscroll_lock = True
-        syncpoint = 0.5
+        SYNCPOINT = 0.5
 
         # the line to search for in the 'master' text
         master_y = (adjustment.get_value() + adjustment.get_page_size() *
@@ -1694,7 +1694,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             other_line = (obegin + fraction * (oend - obegin))
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
-            val -= (adj.get_page_size()) * syncpoint
+            val -= (adj.get_page_size()) * SYNCPOINT
             val += (other_line-int(other_line)) * height
             val = min(max(val, adj.get_lower()),
                       adj.get_upper() - adj.get_page_size())
