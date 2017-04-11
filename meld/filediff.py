@@ -1646,19 +1646,22 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._sync_hscroll_lock = False
 
     def _sync_vscroll(self, adjustment, master):
-        # only allow one scrollbar to be here at a time
         if self._sync_vscroll_lock or self._scroll_lock:
             return
 
         self._sync_vscroll_lock = True
         SYNCPOINT = 0.5
 
-        # the line to search for in the 'master' text
-        master_y = (adjustment.get_value() + adjustment.get_page_size() *
-                    syncpoint)
-        it = self.textview[master].get_line_at_y(int(master_y))[0]
-        line_y, height = self.textview[master].get_line_yrange(it)
-        line = it.get_line() + ((master_y-line_y)/height)
+        # Middle of the screen, in buffer coords
+        middle_y = (
+            adjustment.get_value() + adjustment.get_page_size() * SYNCPOINT)
+
+        # Find the target line. This is a float because, especially for
+        # wrapped lines, the sync point may be half way through a line.
+        # Not doing this calculation makes scrolling jerky.
+        middle_iter, _ = self.textview[master].get_line_at_y(int(middle_y))
+        line_y, height = self.textview[master].get_line_yrange(middle_iter)
+        target_line = middle_iter.get_line() + ((middle_y-line_y)/height)
 
         # In the case of two pane scrolling, it's clear how to bind
         # scrollbars: if the user moves the left pane, we move the
@@ -1679,18 +1682,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             obegin, oend = 0, self.textbuffer[i].get_line_count()
             # look for the chunk containing 'line'
             for c in self.linediffer.pair_changes(master, i):
-                if c[1] >= line:
+                if c[1] >= target_line:
                     mend = c[1]
                     oend = c[3]
                     break
-                elif c[2] >= line:
+                elif c[2] >= target_line:
                     mbegin, mend = c[1], c[2]
                     obegin, oend = c[3], c[4]
                     break
                 else:
                     mbegin = c[2]
                     obegin = c[4]
-            fraction = (line - mbegin) / ((mend - mbegin) or 1)
+            fraction = (target_line - mbegin) / ((mend - mbegin) or 1)
             other_line = (obegin + fraction * (oend - obegin))
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
@@ -1703,7 +1706,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             # If we just changed the central bar, make it the master
             if i == 1:
-                master, line = 1, other_line
+                master, target_line = 1, other_line
         self._sync_vscroll_lock = False
 
         for lm in self.linkmap:
