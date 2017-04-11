@@ -1694,11 +1694,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     mbegin = c[2]
                     obegin = c[4]
             fraction = (target_line - mbegin) / ((mend - mbegin) or 1)
-            other_line = (obegin + fraction * (oend - obegin))
+            other_line = obegin + fraction * (oend - obegin)
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
-            val -= (adj.get_page_size()) * SYNCPOINT
-            val += (other_line-int(other_line)) * height
+            val -= adj.get_page_size() * SYNCPOINT
+            val += (other_line - int(other_line)) * height
             val = min(max(val, adj.get_lower()),
                       adj.get_upper() - adj.get_page_size())
             val = math.floor(val)
