@@ -320,7 +320,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.cursor.pane, self.cursor.pos = pane, pos
 
         cursor_it = buf.get_iter_at_offset(pos)
-        offset = cursor_it.get_line_offset()
+        offset = self.textview[pane].get_visual_column(cursor_it)
         line = cursor_it.get_line()
 
         insert_overwrite = self._insert_overwrite_text[self.textview_overwrite]
