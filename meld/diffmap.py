@@ -108,9 +108,7 @@ class DiffMap(Gtk.DrawingArea):
         self._scroll_height = allocation.height
         self._width = max(allocation.width, 10)
         self._cached_map = None
-
-        try: self.queue_allocate()
-        except AttributeError: pass
+        self.queue_resize()
 
     def do_draw(self, context):
         if not self._setup:
