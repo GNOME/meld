@@ -54,6 +54,33 @@ def with_focused_pane(function):
     return wrap_function
 
 
+def with_scroll_lock(lock_attr):
+    """Decorator for locking a callback based on an instance attribute
+
+    This is used when scrolling panes. Since a scroll event in one pane
+    causes us to set the scroll position in other panes, we need to
+    stop these other panes re-scrolling the initial one.
+
+    Unlike a threading-style lock, this decorator discards any calls
+    that occur while the lock is held, rather than queuing them.
+
+    :param lock_attr: The instance attribute used to lock access
+    """
+    def wrap(function):
+        @functools.wraps(function)
+        def wrap_function(locked, *args, **kwargs):
+            if getattr(locked, lock_attr, False) or locked._scroll_lock:
+                return
+
+            try:
+                setattr(locked, lock_attr, True)
+                return function(locked, *args, **kwargs)
+            finally:
+                setattr(locked, lock_attr, False)
+        return wrap_function
+    return wrap
+
+
 MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
@@ -1633,23 +1660,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textbuffer[index]
         self.set_buffer_editable(buf, not button.get_active())
 
+    @with_scroll_lock('_sync_hscroll_lock')
     def _sync_hscroll(self, adjustment):
-        if self._sync_hscroll_lock or self._scroll_lock:
-            return
-
-        self._sync_hscroll_lock = True
         val = adjustment.get_value()
         for sw in self.scrolledwindow[:self.num_panes]:
             adj = sw.get_hadjustment()
             if adj is not adjustment:
                 adj.set_value(val)
-        self._sync_hscroll_lock = False
 
+    @with_scroll_lock('_sync_vscroll_lock')
     def _sync_vscroll(self, adjustment, master):
-        if self._sync_vscroll_lock or self._scroll_lock:
-            return
-
-        self._sync_vscroll_lock = True
         SYNCPOINT = 0.5
 
         # Middle of the screen, in buffer coords
@@ -1715,7 +1735,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # If we just changed the central bar, make it the master
             if i == 1:
                 master, target_line = 1, other_line
-        self._sync_vscroll_lock = False
 
         for lm in self.linkmap:
             lm.queue_draw()
