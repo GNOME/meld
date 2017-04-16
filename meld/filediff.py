@@ -1678,21 +1678,29 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         for i in scrollbar_influence[master][:self.num_panes - 1]:
             adj = self.scrolledwindow[i].get_vadjustment()
+
+            # Find the chunk, or more commonly the space between
+            # chunks, that contains the target line.
+            #
+            # This is a naive linear search that remains because it's
+            # never shown up in profiles. We can't reuse our line cache
+            # here; it doesn't have the necessary information in three-
+            # way diffs.
             mbegin, mend = 0, self.textbuffer[master].get_line_count()
             obegin, oend = 0, self.textbuffer[i].get_line_count()
-            # look for the chunk containing 'line'
-            for c in self.linediffer.pair_changes(master, i):
-                if c[1] >= target_line:
-                    mend = c[1]
-                    oend = c[3]
+            for chunk in self.linediffer.pair_changes(master, i):
+                if chunk.start_a >= target_line:
+                    mend = chunk.start_a
+                    oend = chunk.start_b
                     break
-                elif c[2] >= target_line:
-                    mbegin, mend = c[1], c[2]
-                    obegin, oend = c[3], c[4]
+                elif chunk.end_a >= target_line:
+                    mbegin, mend = chunk.start_a, chunk.end_a
+                    obegin, oend = chunk.start_b, chunk.end_b
                     break
                 else:
-                    mbegin = c[2]
-                    obegin = c[4]
+                    mbegin = chunk.end_a
+                    obegin = chunk.end_b
+
             fraction = (target_line - mbegin) / ((mend - mbegin) or 1)
             other_line = obegin + fraction * (oend - obegin)
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
