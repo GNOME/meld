@@ -211,8 +211,14 @@ class DiffGrid(Gtk.Grid):
                     spanning = GObject.Value(int)
                     self.child_get_property(child, 'width', spanning)
                     spanning = spanning.get_int()
+                    # We ignore natural size when calculating required
+                    # width, but use it when doing required height. The
+                    # logic here is that height-for-width means that
+                    # minimum width requisitions mean more-than-minimum
+                    # heights. This is all extremely dodgy, but works
+                    # for now.
                     if spanning == 1:
-                        wcols[col] = max(wcols[col], msize.width, nsize.width)
+                        wcols[col] = max(wcols[col], msize.width)
                     hrows[row] = max(hrows[row], msize.height, nsize.height)
         return wcols, hrows
 
