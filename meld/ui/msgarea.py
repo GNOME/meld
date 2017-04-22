@@ -22,7 +22,6 @@
 from gi.repository import Gtk
 
 from meld.conf import _
-from meld.ui.wraplabel import WrapLabel
 
 
 def layout_text_and_icon(stockid, primary_text, secondary_text=None):
@@ -39,7 +38,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     hbox_content.pack_start(vbox, True, True, 0)
 
     primary_markup = "<b>%s</b>" % (primary_text,)
-    primary_label = WrapLabel(primary_markup)
+    primary_label = Gtk.Label(primary_markup)
     primary_label.show()
     vbox.pack_start(primary_label, True, True, 0)
     primary_label.set_use_markup(True)
@@ -50,7 +49,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
 
     if secondary_text:
         secondary_markup = "<small>%s</small>" % (secondary_text,)
-        secondary_label = WrapLabel(secondary_markup)
+        secondary_label = Gtk.Label(secondary_markup)
         secondary_label.show()
         vbox.pack_start(secondary_label, True, True, 0)
         secondary_label.set_can_focus(True)
