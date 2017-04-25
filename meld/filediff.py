@@ -1725,7 +1725,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             other_line = obegin + fraction * (oend - obegin)
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
-            val += (other_line - int(other_line)) * height
+            # Special case line-height adjustment for EOF
+            line_factor = 1.0 if it.is_end() else other_line - int(other_line)
+            val += line_factor * height
             val -= adj.get_page_size() * syncpoint
             val = min(max(val, adj.get_lower()),
                       adj.get_upper() - adj.get_page_size())
