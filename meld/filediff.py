@@ -1670,11 +1670,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     @with_scroll_lock('_sync_vscroll_lock')
     def _sync_vscroll(self, adjustment, master):
-        SYNCPOINT = 0.5
+        syncpoint = misc.calc_syncpoint(adjustment)
 
         # Middle of the screen, in buffer coords
         middle_y = (
-            adjustment.get_value() + adjustment.get_page_size() * SYNCPOINT)
+            adjustment.get_value() + adjustment.get_page_size() * syncpoint)
 
         # Find the target line. This is a float because, especially for
         # wrapped lines, the sync point may be half way through a line.
@@ -1725,8 +1725,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             other_line = obegin + fraction * (oend - obegin)
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
-            val -= adj.get_page_size() * SYNCPOINT
             val += (other_line - int(other_line)) * height
+            val -= adj.get_page_size() * syncpoint
             val = min(max(val, adj.get_lower()),
                       adj.get_upper() - adj.get_page_size())
             val = math.floor(val)
