@@ -1109,17 +1109,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield 1
 
         if not refresh:
-            chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
-            self.cursor.next = chunk
-            if self.cursor.next is None:
-                self.cursor.next = next_
             for buf in self.textbuffer:
                 buf.place_cursor(buf.get_start_iter())
 
-            if self.cursor.next is not None:
-                self.scheduler.add_task(
-                    lambda: self.go_to_chunk(self.cursor.next, centered=True),
-                    True)
+            chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
+            target_chunk = chunk if chunk is not None else next_
+            self.scheduler.add_task(
+                lambda: self.go_to_chunk(target_chunk, centered=True), True)
 
         self.queue_draw()
         self._connect_buffer_handlers()
