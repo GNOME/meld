@@ -1120,9 +1120,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.scheduler.add_task(
                     lambda: self.go_to_chunk(self.cursor.next, centered=True),
                     True)
-            else:
-                buf = self.textbuffer[1 if self.num_panes > 1 else 0]
-                self.on_cursor_position_changed(buf, None, True)
 
         self.queue_draw()
         self._connect_buffer_handlers()
