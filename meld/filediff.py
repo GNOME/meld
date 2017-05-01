@@ -1674,7 +1674,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         # Not doing this calculation makes scrolling jerky.
         middle_iter, _ = self.textview[master].get_line_at_y(int(middle_y))
         line_y, height = self.textview[master].get_line_yrange(middle_iter)
-        target_line = middle_iter.get_line() + ((middle_y-line_y)/height)
+        height = height or 1
+        target_line = middle_iter.get_line() + ((middle_y - line_y) / height)
 
         # In the case of two pane scrolling, it's clear how to bind
         # scrollbars: if the user moves the left pane, we move the
