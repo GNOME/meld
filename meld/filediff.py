@@ -172,9 +172,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for (i, w) in enumerate(self.scrolledwindow):
             w.get_vadjustment().connect("value-changed", self._sync_vscroll, i)
             w.get_hadjustment().connect("value-changed", self._sync_hscroll)
-            # Revert overlay scrolling that messes with widget interactivity
-            if hasattr(w, 'set_overlay_scrolling'):
-                w.set_overlay_scrolling(False)
         self._connect_buffer_handlers()
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
