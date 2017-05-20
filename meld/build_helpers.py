@@ -336,8 +336,8 @@ class build_py(distutils.command.build_py.build_py):
                 contents = f.read()
 
             try:
-                iobj = self.distribution.command_obj['install']
-                prefix = iobj.prefix
+                options = self.distribution.get_option_dict('install')
+                prefix = options['prefix'][1]
             except KeyError as e:
                 print (e)
                 prefix = sys.prefix
