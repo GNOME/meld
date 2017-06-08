@@ -42,6 +42,8 @@ missing_dll = [
     'librsvg-2-2.dll',
     'libharfbuzz-gobject-0.dll',
     'libwebp-5.dll',
+    'libharfbuzz-0.dll',
+    'libtiff-5.dll',
 ]
 
 gtk_libs = [
@@ -61,8 +63,7 @@ include_files = [(os.path.join(include_dll_path, path), path) for path in
                  missing_dll + gtk_libs]
 
 build_exe_options = {
-    "compressed": False,
-    "icon": "data/icons/meld.ico",
+    "no_compress": True,
     "includes": ["gi"],
     "packages": ["gi", "weakref"],
     "include_files": include_files,
@@ -126,6 +127,7 @@ setup(
             targetName="Meld.exe",
             shortcutName="Meld",
             shortcutDir="ProgramMenuFolder",
+            icon="data/icons/meld.ico",
         ),
     ],
     packages=[
