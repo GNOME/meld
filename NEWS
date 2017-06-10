@@ -1,3 +1,47 @@
+
+2017-06-11 meld 3.17.2
+======================
+
+  UI changes:
+
+   * Significantly improve synchronisation of scroll bars between panes; we
+     now try much harder to scroll all of a chunk on screen at the top and
+     bottom of comparisons, and handle last-line-in-file cases better (Kai
+     Willadsen)
+   * Place the cursor at the start of a replaced chunk instead of after it;
+     this change should improve keyboard ergonomics when doing three-way
+     merges, but does change our existing behaviour (Kai Willadsen)
+   * Remove Shift-based scroll locking; this was already broken by a GTK+
+     change, so this is just making it official (Kai Willadsen)
+
+
+  Fixes:
+
+   * Show correct column offset in status bar for tab indents (Simon Marchi)
+   * Fix installation with a prefix for Python 3 changes (Ting-Wei Lan)
+   * Fix initial scroll-to-first-difference behaviour to avoid a race
+     condition if the first change was on the first line (Kai Willadsen)
+   * Improve text wrapping behaviour in information bars, and avoid too-large
+     allocations with long labels (Kai Willadsen)
+   * Work around infinite re-allocation problems and silence GTK+ allocation
+     warnings (Kai Willadsen)
+   * Fix bad UI state when closing a single-instance activated window (Kai
+     Willadsen)
+   * Fix bad function call when using internal git conflict resolution (Kai
+     Willadsen)
+
+
+  Translations:
+
+   * Anders Jonsson (sv)
+   * Andika Triwidada (id)
+   * Balázs Úr (hu)
+   * Daniel Korostil (uk)
+   * Emin Tufan Çetin (tr)
+   * Marek Černocký (cs)
+   * Milo Casagrande (it)
+
+
 2017-03-11 meld 3.17.1
 ======================
 
