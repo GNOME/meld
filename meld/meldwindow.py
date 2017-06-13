@@ -575,11 +575,12 @@ class MeldWindow(gnomeglade.Component):
             doc.scheduler.add_task(doc.auto_compare)
         return doc
 
-    def append_filediff(self, gfiles, merge_output=None, meta=None):
+    def append_filediff(
+            self, gfiles, *, encodings=None, merge_output=None, meta=None):
         assert len(gfiles) in (1, 2, 3)
         doc = filediff.FileDiff(len(gfiles))
         self._append_page(doc, "text-x-generic")
-        doc.set_files(gfiles)
+        doc.set_files(gfiles, encodings)
         if merge_output is not None:
             doc.set_merge_output_file(merge_output)
         if meta is not None:
