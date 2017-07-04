@@ -123,6 +123,10 @@ class Entry(object):
     def is_ignored(entry):
         return entry.state == STATE_IGNORED or entry.isdir
 
+    @staticmethod
+    def is_conflicted(entry):
+        return entry.state == STATE_CONFLICT
+
 
 class Vc(object):
 

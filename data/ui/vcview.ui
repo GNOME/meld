@@ -102,6 +102,15 @@
       </object>
     </child>
     <child>
+      <object class="GtkToggleAction" id="VcShowConflict">
+        <property name="label" translatable="yes">_Conflict</property>
+        <property name="tooltip" translatable="yes">Show conflict files</property>
+        <property name="icon_name">filter-conflict-24</property>
+        <property name="is_important">True</property>
+        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
+      </object>
+    </child>    
+    <child>
       <object class="GtkToggleAction" id="VcShowNormal">
         <property name="label" translatable="yes">_Normal</property>
         <property name="tooltip" translatable="yes">Show normal files</property>
