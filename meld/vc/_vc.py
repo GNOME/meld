@@ -107,7 +107,7 @@ class Entry(object):
 
     @staticmethod
     def is_modified(entry):
-        return entry.state >= STATE_NEW or (
+        return (entry.state >= STATE_NEW and entry.state != STATE_CONFLICT) or (
             entry.isdir and (entry.state > STATE_NONE))
 
     @staticmethod
@@ -122,6 +122,10 @@ class Entry(object):
     @staticmethod
     def is_ignored(entry):
         return entry.state == STATE_IGNORED or entry.isdir
+
+    @staticmethod
+    def is_conflicted(entry):
+        return entry.state == STATE_CONFLICT
 
 
 class Vc(object):

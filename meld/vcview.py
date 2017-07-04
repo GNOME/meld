@@ -150,6 +150,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         "normal": ("VcShowNormal", Entry.is_normal),
         "unknown": ("VcShowNonVC", Entry.is_nonvc),
         "ignored": ("VcShowIgnored", Entry.is_ignored),
+        "conflict": ("VcShowConflict", Entry.is_conflicted),
     }
 
     def __init__(self):
