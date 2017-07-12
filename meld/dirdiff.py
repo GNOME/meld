@@ -94,7 +94,7 @@ def remove_blank_lines(text):
     lines = text.splitlines(True)
     blanks = set([i for i, l in enumerate(splits) if not l])
     lines = [l for i, l in enumerate(lines) if i not in blanks]
-    return ''.join(lines)
+    return b''.join(lines)
 
 
 def _files_same(files, regexes, comparison_args):
