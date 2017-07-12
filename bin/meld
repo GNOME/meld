@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2009-2014 Kai Willadsen <kai.willadsen@gmail.com>
@@ -289,10 +289,16 @@ def setup_glib_logging():
     log_domain = "Gtk"
     log = logging.getLogger(log_domain)
 
+    def silence(message):
+        if "Drawing a gadget with negative dimensions" in message:
+            return True
+        return False
+
     # This logging handler is for "old" glib logging using a simple
     # syslog-style API.
     def log_adapter(domain, level, message, user_data):
-        log.log(levels.get(level, logging.WARNING), message)
+        if not silence(message):
+            log.log(levels.get(level, logging.WARNING), message)
 
     try:
         GLib.log_set_handler(log_domain, level_flag, log_adapter, None)
@@ -306,7 +312,8 @@ def setup_glib_logging():
     # handlers to get it to work.
     def structured_log_adapter(level, fields, field_count, user_data):
         message = GLib.log_writer_format_fields(level, fields, True)
-        log.log(levels.get(level, logging.WARNING), message)
+        if not silence(message):
+            log.log(levels.get(level, logging.WARNING), message)
         return GLib.LogWriterOutput.HANDLED
 
     try:

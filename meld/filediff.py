@@ -54,6 +54,33 @@ def with_focused_pane(function):
     return wrap_function
 
 
+def with_scroll_lock(lock_attr):
+    """Decorator for locking a callback based on an instance attribute
+
+    This is used when scrolling panes. Since a scroll event in one pane
+    causes us to set the scroll position in other panes, we need to
+    stop these other panes re-scrolling the initial one.
+
+    Unlike a threading-style lock, this decorator discards any calls
+    that occur while the lock is held, rather than queuing them.
+
+    :param lock_attr: The instance attribute used to lock access
+    """
+    def wrap(function):
+        @functools.wraps(function)
+        def wrap_function(locked, *args, **kwargs):
+            if getattr(locked, lock_attr, False) or locked._scroll_lock:
+                return
+
+            try:
+                setattr(locked, lock_attr, True)
+                return function(locked, *args, **kwargs)
+            finally:
+                setattr(locked, lock_attr, False)
+        return wrap_function
+    return wrap
+
+
 MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
@@ -145,9 +172,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for (i, w) in enumerate(self.scrolledwindow):
             w.get_vadjustment().connect("value-changed", self._sync_vscroll, i)
             w.get_hadjustment().connect("value-changed", self._sync_hscroll)
-            # Revert overlay scrolling that messes with widget interactivity
-            if hasattr(w, 'set_overlay_scrolling'):
-                w.set_overlay_scrolling(False)
         self._connect_buffer_handlers()
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
@@ -320,7 +344,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.cursor.pane, self.cursor.pos = pane, pos
 
         cursor_it = buf.get_iter_at_offset(pos)
-        offset = cursor_it.get_line_offset()
+        offset = self.textview[pane].get_visual_column(cursor_it)
         line = cursor_it.get_line()
 
         insert_overwrite = self._insert_overwrite_text[self.textview_overwrite]
@@ -1082,20 +1106,13 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             yield 1
 
         if not refresh:
-            chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
-            self.cursor.next = chunk
-            if self.cursor.next is None:
-                self.cursor.next = next_
             for buf in self.textbuffer:
                 buf.place_cursor(buf.get_start_iter())
 
-            if self.cursor.next is not None:
-                self.scheduler.add_task(
-                    lambda: self.go_to_chunk(self.cursor.next, centered=True),
-                    True)
-            else:
-                buf = self.textbuffer[1 if self.num_panes > 1 else 0]
-                self.on_cursor_position_changed(buf, None, True)
+            chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
+            target_chunk = chunk if chunk is not None else next_
+            self.scheduler.add_task(
+                lambda: self.go_to_chunk(target_chunk, centered=True), True)
 
         self.queue_draw()
         self._connect_buffer_handlers()
@@ -1633,69 +1650,84 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf = self.textbuffer[index]
         self.set_buffer_editable(buf, not button.get_active())
 
+    @with_scroll_lock('_sync_hscroll_lock')
     def _sync_hscroll(self, adjustment):
-        if self._sync_hscroll_lock or self._scroll_lock:
-            return
-
-        self._sync_hscroll_lock = True
         val = adjustment.get_value()
         for sw in self.scrolledwindow[:self.num_panes]:
             adj = sw.get_hadjustment()
             if adj is not adjustment:
                 adj.set_value(val)
-        self._sync_hscroll_lock = False
 
+    @with_scroll_lock('_sync_vscroll_lock')
     def _sync_vscroll(self, adjustment, master):
-        # only allow one scrollbar to be here at a time
-        if self._sync_vscroll_lock:
-            return
+        syncpoint = misc.calc_syncpoint(adjustment)
 
-        if not self._scroll_lock and (self.keymask & MASK_SHIFT) == 0:
-            self._sync_vscroll_lock = True
-            syncpoint = 0.5
+        # Middle of the screen, in buffer coords
+        middle_y = (
+            adjustment.get_value() + adjustment.get_page_size() * syncpoint)
 
-            # the line to search for in the 'master' text
-            master_y = (adjustment.get_value() + adjustment.get_page_size() *
-                        syncpoint)
-            it = self.textview[master].get_line_at_y(int(master_y))[0]
-            line_y, height = self.textview[master].get_line_yrange(it)
-            line = it.get_line() + ((master_y-line_y)/height)
+        # Find the target line. This is a float because, especially for
+        # wrapped lines, the sync point may be half way through a line.
+        # Not doing this calculation makes scrolling jerky.
+        middle_iter, _ = self.textview[master].get_line_at_y(int(middle_y))
+        line_y, height = self.textview[master].get_line_yrange(middle_iter)
+        height = height or 1
+        target_line = middle_iter.get_line() + ((middle_y - line_y) / height)
 
-            # scrollbar influence 0->1->2 or 0<-1->2 or 0<-1<-2
-            scrollbar_influence = ((1, 2), (0, 2), (1, 0))
+        # In the case of two pane scrolling, it's clear how to bind
+        # scrollbars: if the user moves the left pane, we move the
+        # right pane, and vice versa.
+        #
+        # For three pane scrolling, we want panes to be tied, but need
+        # an influence mapping. In Meld, all influence flows through
+        # the middle pane, e.g., the user moves the left pane, that
+        # moves the middle pane, and the middle pane moves the right
+        # pane. If the user moves the middle pane, then the left and
+        # right panes are moved directly.
 
-            for i in scrollbar_influence[master][:self.num_panes - 1]:
-                adj = self.scrolledwindow[i].get_vadjustment()
-                mbegin, mend = 0, self.textbuffer[master].get_line_count()
-                obegin, oend = 0, self.textbuffer[i].get_line_count()
-                # look for the chunk containing 'line'
-                for c in self.linediffer.pair_changes(master, i):
-                    if c[1] >= line:
-                        mend = c[1]
-                        oend = c[3]
-                        break
-                    elif c[2] >= line:
-                        mbegin, mend = c[1], c[2]
-                        obegin, oend = c[3], c[4]
-                        break
-                    else:
-                        mbegin = c[2]
-                        obegin = c[4]
-                fraction = (line - mbegin) / ((mend - mbegin) or 1)
-                other_line = (obegin + fraction * (oend - obegin))
-                it = self.textbuffer[i].get_iter_at_line(int(other_line))
-                val, height = self.textview[i].get_line_yrange(it)
-                val -= (adj.get_page_size()) * syncpoint
-                val += (other_line-int(other_line)) * height
-                val = min(max(val, adj.get_lower()),
-                          adj.get_upper() - adj.get_page_size())
-                val = math.floor(val)
-                adj.set_value(val)
+        scrollbar_influence = ((1, 2), (0, 2), (1, 0))
 
-                # If we just changed the central bar, make it the master
-                if i == 1:
-                    master, line = 1, other_line
-            self._sync_vscroll_lock = False
+        for i in scrollbar_influence[master][:self.num_panes - 1]:
+            adj = self.scrolledwindow[i].get_vadjustment()
+
+            # Find the chunk, or more commonly the space between
+            # chunks, that contains the target line.
+            #
+            # This is a naive linear search that remains because it's
+            # never shown up in profiles. We can't reuse our line cache
+            # here; it doesn't have the necessary information in three-
+            # way diffs.
+            mbegin, mend = 0, self.textbuffer[master].get_line_count()
+            obegin, oend = 0, self.textbuffer[i].get_line_count()
+            for chunk in self.linediffer.pair_changes(master, i):
+                if chunk.start_a >= target_line:
+                    mend = chunk.start_a
+                    oend = chunk.start_b
+                    break
+                elif chunk.end_a >= target_line:
+                    mbegin, mend = chunk.start_a, chunk.end_a
+                    obegin, oend = chunk.start_b, chunk.end_b
+                    break
+                else:
+                    mbegin = chunk.end_a
+                    obegin = chunk.end_b
+
+            fraction = (target_line - mbegin) / ((mend - mbegin) or 1)
+            other_line = obegin + fraction * (oend - obegin)
+            it = self.textbuffer[i].get_iter_at_line(int(other_line))
+            val, height = self.textview[i].get_line_yrange(it)
+            # Special case line-height adjustment for EOF
+            line_factor = 1.0 if it.is_end() else other_line - int(other_line)
+            val += line_factor * height
+            val -= adj.get_page_size() * syncpoint
+            val = min(max(val, adj.get_lower()),
+                      adj.get_upper() - adj.get_page_size())
+            val = math.floor(val)
+            adj.set_value(val)
+
+            # If we just changed the central bar, make it the master
+            if i == 1:
+                master, target_line = 1, other_line
 
         for lm in self.linkmap:
             lm.queue_draw()

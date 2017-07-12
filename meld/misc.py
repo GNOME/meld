@@ -514,3 +514,32 @@ def apply_text_filters(txt, regexes, apply_fn=None):
         offset = end
     result_txts.append(txt[offset:])
     return empty_string.join(result_txts)
+
+
+def calc_syncpoint(adj):
+    """Calculate a cross-pane adjustment synchronisation point
+
+    Our normal syncpoint is the middle of the screen. If the
+    current position is within the first half screen of a
+    document, we scale the sync point linearly back to 0.0 (top
+    of the screen); if it's the the last half screen, we again
+    scale linearly to 1.0.
+
+    The overall effect of this is to make sure that the top and
+    bottom parts of documents with different lengths and chunk
+    offsets correctly scroll into view.
+    """
+
+    current = adj.get_value()
+    half_a_screen = adj.get_page_size() / 2
+
+    syncpoint = 0.0
+    # How far through the first half-screen our adjustment is
+    top_val = adj.get_lower()
+    first_scale = (current - top_val) / half_a_screen
+    syncpoint += 0.5 * min(1, first_scale)
+    # How far through the last half-screen our adjustment is
+    bottom_val = adj.get_upper() - 1.5 * adj.get_page_size()
+    last_scale = (current - bottom_val) / half_a_screen
+    syncpoint += 0.5 * max(0, last_scale)
+    return syncpoint

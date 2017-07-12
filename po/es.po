@@ -8,15 +8,15 @@
 # Jorge González <jorgegonz@svn.gnome.org>, 2004, 2005, 2007, 2008, 2009, 2010, 2011.
 #
 # Luisa Ceron <luisacerpe@gmail.com>, 2016.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld.master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-12-17 21:39+0000\n"
-"PO-Revision-Date: 2016-12-22 13:05+0100\n"
+"POT-Creation-Date: 2017-03-18 12:18+0000\n"
+"PO-Revision-Date: 2017-06-20 12:50+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -26,16 +26,16 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../bin/meld:142
+#: ../bin/meld:179
 msgid "Cannot import: "
 msgstr "No se pudo importar: "
 
-#: ../bin/meld:145
+#: ../bin/meld:182
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld requiere %s o superior."
 
-#: ../bin/meld:191
+#: ../bin/meld:227
 #, c-format
 msgid ""
 "Couldn't load Meld-specific CSS (%s)\n"
@@ -96,22 +96,18 @@ msgid "Meld comparison description"
 msgstr "Descripción de la comparación de Meld"
 
 #: ../data/org.gnome.meld.gschema.xml.h:1
-#| msgid "Default window size"
 msgid "Default window width"
 msgstr "Anchura predeterminada de ventana"
 
 #: ../data/org.gnome.meld.gschema.xml.h:2
-#| msgid "Default window size"
 msgid "Default window height"
 msgstr "Altura predeterminada de ventana"
 
 #: ../data/org.gnome.meld.gschema.xml.h:3
-#| msgid "Default window state"
 msgid "Default window maximised state"
 msgstr "Estado predeterminado de la ventana maximizada"
 
 #: ../data/org.gnome.meld.gschema.xml.h:4
-#| msgid "Default window state"
 msgid "Default window fullscreen state"
 msgstr "Estado predeterminado de la ventana a pantalla completa"
 
@@ -306,7 +302,7 @@ msgstr ""
 "Lista de nombres de columnas en comparación de carpetas y si deberían "
 "mostrarse."
 
-#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
 msgid "Ignore symbolic links"
 msgstr "Ignorar enlaces simbólicos"
 
@@ -348,7 +344,7 @@ msgstr ""
 "diferentes horas de modificación. Esto es útil para comparar archivos entre "
 "sistemas de archivos con diferente resolución de marca de tiempo."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:22
 msgid "Apply text filters during folder comparisons"
 msgstr "Aplicar filtros de texto durante la comparación de carpetas"
 
@@ -459,9 +455,6 @@ msgid "Automatically hard-wrap commit messages"
 msgstr "Recortar automáticamente los mensajes de «commit»"
 
 #: ../data/org.gnome.meld.gschema.xml.h:62
-#| msgid ""
-#| "If true, the version control commit message editor will hard-wrap (i.e, "
-#| "insert line breaks) at the commit margin before commit."
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -997,166 +990,140 @@ msgid "_Reverse patch direction"
 msgstr "Dirección in_versa del parche"
 
 #: ../data/ui/preferences.ui.h:1
-msgid "Left is remote, right is local"
-msgstr "Remoto a la izquierda, local a la derecha"
-
-#: ../data/ui/preferences.ui.h:2
-msgid "Left is local, right is remote"
-msgstr "Local a la izquierda, remoto a la derecha"
-
-#: ../data/ui/preferences.ui.h:3
-msgid "Remote, merge, local"
-msgstr "Remoto, mezcla, local"
-
-#: ../data/ui/preferences.ui.h:4
-msgid "Local, merge, remote"
-msgstr "Local, mezcla, remoto"
-
-#: ../data/ui/preferences.ui.h:5
-msgid "1ns (ext4)"
-msgstr "1ns (ext4)"
-
-#: ../data/ui/preferences.ui.h:6
-msgid "100ns (NTFS)"
-msgstr "100ns (NTFS)"
-
-#: ../data/ui/preferences.ui.h:7
-msgid "1s (ext2/ext3)"
-msgstr "1s (ext2/ext3)"
-
-#: ../data/ui/preferences.ui.h:8
-msgid "2s (VFAT)"
-msgstr "2s (VFAT)"
-
-#: ../data/ui/preferences.ui.h:9
 msgid "Meld Preferences"
 msgstr "Preferencias de Meld"
 
-#: ../data/ui/preferences.ui.h:10
+#: ../data/ui/preferences.ui.h:2
 msgid "Font"
 msgstr "Tipografía"
 
-#: ../data/ui/preferences.ui.h:11
+#: ../data/ui/preferences.ui.h:3
 msgid "_Use the system fixed width font"
 msgstr "Usar la tipografía de anchura fija del sistema"
 
-#: ../data/ui/preferences.ui.h:12
+#: ../data/ui/preferences.ui.h:4
 msgid "_Editor font:"
 msgstr "Tipogra_fía del editor: "
 
-#: ../data/ui/preferences.ui.h:13
+#: ../data/ui/preferences.ui.h:5
 msgid "Display"
 msgstr "Visor"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:6
 msgid "_Tab width:"
 msgstr "Anchura del _tabulador:"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:7
 msgid "_Insert spaces instead of tabs"
 msgstr "Insertar e_spacios en lugar de tabuladores"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../data/ui/preferences.ui.h:8
 msgid "Enable text _wrapping"
 msgstr "Activar a_juste de texto"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../data/ui/preferences.ui.h:9
 msgid "Do not _split words over two lines"
 msgstr "No _dividir palabras en dos líneas"
 
-#: ../data/ui/preferences.ui.h:18
+#: ../data/ui/preferences.ui.h:10
 msgid "Highlight _current line"
 msgstr "Resaltar la línea a_ctual"
 
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:11
 msgid "Show _line numbers"
 msgstr "Mostrar los números de _línea"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:12
 msgid "Show w_hitespace"
 msgstr "Mostrar espacios en _blanco"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../data/ui/preferences.ui.h:13
 msgid "Use s_yntax highlighting"
 msgstr "Usar resaltado de _sintaxis"
 
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:14
 msgid "Syntax highlighting color scheme:"
 msgstr "Esquema de color para el resaltado de sintaxis:"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../data/ui/preferences.ui.h:15
 msgid "External Editor"
 msgstr "Editor externo"
 
-#: ../data/ui/preferences.ui.h:24
+#: ../data/ui/preferences.ui.h:16
 msgid "Use _default system editor"
 msgstr "Usar el editor pre_determinado del sistema"
 
-#: ../data/ui/preferences.ui.h:25
+#: ../data/ui/preferences.ui.h:17
 msgid "Edito_r command:"
 msgstr "Comando del edito_r:"
 
-#: ../data/ui/preferences.ui.h:26
+#: ../data/ui/preferences.ui.h:18
 msgid "Editor"
 msgstr "Editor"
 
-#: ../data/ui/preferences.ui.h:27
+#: ../data/ui/preferences.ui.h:19
 msgid "Shallow Comparison"
 msgstr "Comparación superficial"
 
-#: ../data/ui/preferences.ui.h:28
+#: ../data/ui/preferences.ui.h:20
 msgid "C_ompare files based only on size and timestamp"
 msgstr "C_omparar archivos basándose sólo en el tamaño y en la marca de tiempo"
 
-#: ../data/ui/preferences.ui.h:29
+#: ../data/ui/preferences.ui.h:21
 msgid "_Timestamp resolution:"
 msgstr "_Resolución de marca de _tiempo:"
 
-#: ../data/ui/preferences.ui.h:31
+#: ../data/ui/preferences.ui.h:23
+msgid "Note: enabling text filters may make comparing large files much slower"
+msgstr ""
+"Nota: activar los filtros de texto puede ralentizar mucho la comparación de "
+"archivos grandes"
+
+#: ../data/ui/preferences.ui.h:24
 msgid "Symbolic Links"
 msgstr "Enlaces simbólicos"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../data/ui/preferences.ui.h:26
 msgid "Visible Columns"
 msgstr "Columnas visibles"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../data/ui/preferences.ui.h:27
 msgid "Folder Comparisons"
 msgstr "Comparación de carpetas"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../data/ui/preferences.ui.h:28
 msgid "Version Comparisons"
 msgstr "Comparación de versiones"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../data/ui/preferences.ui.h:29
 msgid "_Order when comparing file revisions:"
 msgstr "_Orden al comprar revisiones de archivos:"
 
-#: ../data/ui/preferences.ui.h:37
+#: ../data/ui/preferences.ui.h:30
 msgid "Order when _merging files:"
 msgstr "Orden al _mezclar archivos:"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../data/ui/preferences.ui.h:31
 msgid "Commit Messages"
 msgstr "Mensaje de registro"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../data/ui/preferences.ui.h:32
 msgid "Show _right margin at:"
 msgstr "Mostrar margen de_recho en:"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../data/ui/preferences.ui.h:33
 msgid "Automatically _break lines at right margin on commit"
 msgstr "_Dividir las líneas automáticamente en el margen derecho al efectuar"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../data/ui/preferences.ui.h:34
 msgid "Version Control"
 msgstr "Control de versión"
 
-#: ../data/ui/preferences.ui.h:42
+#: ../data/ui/preferences.ui.h:35
 msgid "Filename filters"
 msgstr "Filtros basados en el nombre del archivo"
 
-#: ../data/ui/preferences.ui.h:43
+#: ../data/ui/preferences.ui.h:36
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1166,25 +1133,25 @@ msgstr ""
 "carpetas por nombre. Cada patrón es una lista de comodines al estilo shell "
 "separados por espacios."
 
-#: ../data/ui/preferences.ui.h:44 ../meld/meldwindow.py:104
+#: ../data/ui/preferences.ui.h:37 ../meld/meldwindow.py:104
 msgid "File Filters"
 msgstr "Filtros de archivos"
 
-#: ../data/ui/preferences.ui.h:45
+#: ../data/ui/preferences.ui.h:38
 msgid "Change trimming"
 msgstr "Cambiar recortado"
 
-#: ../data/ui/preferences.ui.h:46
+#: ../data/ui/preferences.ui.h:39
 msgid "Trim blank line differences from the start and end of changes"
 msgstr ""
 "Recortar las diferencias de líneas en blanco desde el principio hasta el "
 "final de los cambios"
 
-#: ../data/ui/preferences.ui.h:47
+#: ../data/ui/preferences.ui.h:40
 msgid "Text filters"
 msgstr "Filtros de texto"
 
-#: ../data/ui/preferences.ui.h:48
+#: ../data/ui/preferences.ui.h:41
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1198,9 +1165,41 @@ msgstr ""
 "expresión contiene grupos, sólo los grupos se reemplazan. Vea el manual de "
 "usuario para más detalles."
 
-#: ../data/ui/preferences.ui.h:49
+#: ../data/ui/preferences.ui.h:42
 msgid "Text Filters"
 msgstr "Filtros de texto"
+
+#: ../data/ui/preferences.ui.h:43
+msgid "Left is remote, right is local"
+msgstr "Remoto a la izquierda, local a la derecha"
+
+#: ../data/ui/preferences.ui.h:44
+msgid "Left is local, right is remote"
+msgstr "Local a la izquierda, remoto a la derecha"
+
+#: ../data/ui/preferences.ui.h:45
+msgid "Remote, merge, local"
+msgstr "Remoto, mezcla, local"
+
+#: ../data/ui/preferences.ui.h:46
+msgid "Local, merge, remote"
+msgstr "Local, mezcla, remoto"
+
+#: ../data/ui/preferences.ui.h:47
+msgid "1ns (ext4)"
+msgstr "1ns (ext4)"
+
+#: ../data/ui/preferences.ui.h:48
+msgid "100ns (NTFS)"
+msgstr "100ns (NTFS)"
+
+#: ../data/ui/preferences.ui.h:49
+msgid "1s (ext2/ext3)"
+msgstr "1s (ext2/ext3)"
+
+#: ../data/ui/preferences.ui.h:50
+msgid "2s (VFAT)"
+msgstr "2s (VFAT)"
 
 #: ../data/ui/shortcuts.ui.h:1
 msgctxt "shortcut window"
@@ -1447,7 +1446,7 @@ msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Mostrar/ocultar la salida de la consola"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:559
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:562
 #: ../meld/newdifftab.py:38
 msgid "New comparison"
 msgstr "Nueva comparación"
@@ -1800,7 +1799,7 @@ msgstr ""
 msgid "Error deleting %s"
 msgstr "Error al eliminar %s"
 
-#: ../meld/dirdiff.py:1488
+#: ../meld/dirdiff.py:1494
 msgid "No folder"
 msgstr "No hay ninguna carpeta"
 
@@ -2010,11 +2009,11 @@ msgstr ""
 "No se pudo guardar el archivo debido a:\n"
 "%s"
 
-#: ../meld/filediff.py:1867
+#: ../meld/filediff.py:1870
 msgid "Live comparison updating disabled"
 msgstr "Actualización de la comparación en directo desactivada"
 
-#: ../meld/filediff.py:1868
+#: ../meld/filediff.py:1871
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2030,11 +2029,11 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Mezclando archivos"
 
-#: ../meld/gutterrendererchunk.py:208
+#: ../meld/gutterrendererchunk.py:210
 msgid "Copy _up"
 msgstr "Copiar hacia _arriba"
 
-#: ../meld/gutterrendererchunk.py:209
+#: ../meld/gutterrendererchunk.py:211
 msgid "Copy _down"
 msgstr "Copiar hacia a_bajo"
 
@@ -2326,12 +2325,12 @@ msgstr "Abrir el manual de Meld"
 msgid "About this application"
 msgstr "Acerca de esta aplicación"
 
-#: ../meld/meldwindow.py:593
+#: ../meld/meldwindow.py:596
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Se necesita tres archivos para la mezcla automática, se obtuvieron: %r"
 
-#: ../meld/meldwindow.py:607
+#: ../meld/meldwindow.py:610
 msgid "Cannot compare a mixture of files and directories"
 msgstr "No se puede comparar una mezcla de archivos y carpetas"
 
@@ -2343,7 +2342,7 @@ msgstr ""
 "una instalación incorrecta"
 
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:263
+#: ../meld/misc.py:261
 msgid "[None]"
 msgstr "[Ninguno]"
 

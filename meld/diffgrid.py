@@ -144,7 +144,11 @@ class DiffGrid(Gtk.Grid):
         return int(round(pos1)), int(round(pos2))
 
     def do_size_allocate(self, allocation):
-        Gtk.Grid.do_size_allocate(self, allocation)
+        # We should be chaining up here to:
+        #     Gtk.Grid.do_size_allocate(self, allocation)
+        # However, when we do this, we hit issues with doing multiple
+        # allocations in a single allocation cycle (see bgo#779883).
+
         self.set_allocation(allocation)
         wcols, hrows = self._get_min_sizes()
         yrows = [allocation.y,
@@ -211,8 +215,14 @@ class DiffGrid(Gtk.Grid):
                     spanning = GObject.Value(int)
                     self.child_get_property(child, 'width', spanning)
                     spanning = spanning.get_int()
+                    # We ignore natural size when calculating required
+                    # width, but use it when doing required height. The
+                    # logic here is that height-for-width means that
+                    # minimum width requisitions mean more-than-minimum
+                    # heights. This is all extremely dodgy, but works
+                    # for now.
                     if spanning == 1:
-                        wcols[col] = max(wcols[col], msize.width, nsize.width)
+                        wcols[col] = max(wcols[col], msize.width)
                     hrows[row] = max(hrows[row], msize.height, nsize.height)
         return wcols, hrows
 

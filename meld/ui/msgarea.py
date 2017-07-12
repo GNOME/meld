@@ -22,43 +22,39 @@
 from gi.repository import Gtk
 
 from meld.conf import _
-from meld.ui.wraplabel import WrapLabel
 
 
 def layout_text_and_icon(stockid, primary_text, secondary_text=None):
-    hbox_content = Gtk.HBox(homogeneous=False, spacing=8)
-    hbox_content.show()
-
     image = Gtk.Image.new_from_icon_name(stockid, Gtk.IconSize.DIALOG)
-    image.show()
-    hbox_content.pack_start(image, False, False, 0)
     image.set_alignment(0.5, 0.5)
 
     vbox = Gtk.VBox(homogeneous=False, spacing=6)
-    vbox.show()
-    hbox_content.pack_start(vbox, True, True, 0)
 
-    primary_markup = "<b>%s</b>" % (primary_text,)
-    primary_label = WrapLabel(primary_markup)
-    primary_label.show()
+    primary_label = Gtk.Label(
+        "<b>{}</b>".format(primary_text),
+        wrap=True,
+        use_markup=True,
+        xalign=0,
+        can_focus=True,
+        selectable=True,
+    )
     vbox.pack_start(primary_label, True, True, 0)
-    primary_label.set_use_markup(True)
-    primary_label.set_line_wrap(True)
-    primary_label.set_alignment(0, 0.5)
-    primary_label.set_can_focus(True)
-    primary_label.set_selectable(True)
 
     if secondary_text:
-        secondary_markup = "<small>%s</small>" % (secondary_text,)
-        secondary_label = WrapLabel(secondary_markup)
-        secondary_label.show()
+        secondary_label = Gtk.Label(
+            "<small>{}</small>".format(secondary_text),
+            wrap=True,
+            use_markup=True,
+            xalign=0,
+            can_focus=True,
+            selectable=True,
+        )
         vbox.pack_start(secondary_label, True, True, 0)
-        secondary_label.set_can_focus(True)
-        secondary_label.set_use_markup(True)
-        secondary_label.set_line_wrap(True)
-        secondary_label.set_selectable(True)
-        secondary_label.set_alignment(0, 0.5)
 
+    hbox_content = Gtk.HBox(homogeneous=False, spacing=8)
+    hbox_content.pack_start(image, False, False, 0)
+    hbox_content.pack_start(vbox, True, True, 0)
+    hbox_content.show_all()
     return hbox_content
 
 
