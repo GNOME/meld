@@ -1,7 +1,7 @@
 
 import logging
+import multiprocessing
 import queue
-import threading
 import time
 
 from gi.repository import GLib
@@ -12,7 +12,7 @@ from meld.matchers import myers
 log = logging.getLogger(__name__)
 
 
-class MatcherWorker(threading.Thread):
+class MatcherWorker(multiprocessing.Process):
 
     matcher_class = myers.InlineMyersSequenceMatcher
 
@@ -45,12 +45,12 @@ class CachedSequenceMatcher(object):
 
     def __init__(self):
         self.cache = {}
-        self.tasks = queue.Queue()
+        self.tasks = multiprocessing.JoinableQueue()
         # Limiting the result queue here has the effect of giving us
         # much better interactivity. Without this limit, the
         # result-checker tends to get starved and all highlights get
         # delayed until we're almost completely finished.
-        self.results = queue.Queue(5)
+        self.results = multiprocessing.JoinableQueue(5)
         self.thread = MatcherWorker(self.tasks, self.results)
         self.task_id = 1
         self.queued_matches = {}
