@@ -67,7 +67,7 @@ class CachedSequenceMatcher(object):
 
     def enqueue_task(self, texts, cb):
         if not bool(self.queued_matches):
-            GLib.idle_add(self.check_results)
+            GLib.timeout_add(10, self.check_results)
         self.queued_matches[self.task_id] = (texts, cb)
         self.tasks.put((self.task_id, texts))
         self.task_id += 1
