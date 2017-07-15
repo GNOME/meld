@@ -180,7 +180,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.force_highlight = False
         self.syncpoints = []
         self.in_nested_textview_gutter_expose = False
-        self._cached_match = CachedSequenceMatcher()
+        self._cached_match = CachedSequenceMatcher(self.scheduler)
 
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence

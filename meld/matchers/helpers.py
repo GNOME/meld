@@ -43,7 +43,13 @@ class CachedSequenceMatcher(object):
     eviction is overly simplistic, but is okay for our usage pattern.
     """
 
-    def __init__(self):
+    def __init__(self, scheduler):
+        """Create a new caching sequence matcher
+
+        :param scheduler: a `meld.task.SchedulerBase` used to schedule
+            sequence comparison result checks
+        """
+        self.scheduler = scheduler
         self.cache = {}
         self.tasks = multiprocessing.JoinableQueue()
         # Limiting the result queue here has the effect of giving us
@@ -67,14 +73,14 @@ class CachedSequenceMatcher(object):
 
     def enqueue_task(self, texts, cb):
         if not bool(self.queued_matches):
-            GLib.timeout_add(10, self.check_results)
+            self.scheduler.add_task(self.check_results)
         self.queued_matches[self.task_id] = (texts, cb)
         self.tasks.put((self.task_id, texts))
         self.task_id += 1
 
     def check_results(self):
         try:
-            task_id, opcodes = self.results.get_nowait()
+            task_id, opcodes = self.results.get(block=True, timeout=0.01)
             texts, cb = self.queued_matches.pop(task_id)
             self.cache[texts] = [opcodes, time.time()]
             GLib.idle_add(lambda: cb(opcodes))
