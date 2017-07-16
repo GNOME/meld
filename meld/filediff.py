@@ -1118,6 +1118,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
 
+        # Changing textview sensitivity destroys focus; we reestablish it here
+        if self.cursor.pane is not None:
+            self.textview[self.cursor.pane].grab_focus()
+
         langs = [LanguageManager.get_language_from_file(buf.data.gfile)
                  for buf in self.textbuffer[:self.num_panes]]
 
