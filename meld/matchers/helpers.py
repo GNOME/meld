@@ -94,7 +94,7 @@ class CachedSequenceMatcher(object):
 
         @param size_hint: the recommended minimum number of cache entries
         """
-        if len(self.cache) < size_hint * 3:
+        if len(self.cache) <= size_hint * 3:
             return
         items = list(self.cache.items())
         items.sort(key=lambda it: it[1][1])
