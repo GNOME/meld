@@ -32,6 +32,7 @@ import subprocess
 import tempfile
 
 from gi.repository import Gio
+from gi.repository import GLib
 
 from meld.conf import _
 
@@ -309,14 +310,21 @@ class Vc(object):
         MISSING state.
         """
         gfile = Gio.File.new_for_path(path)
-        file_info = gfile.query_info(
-            'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
+        try:
+            file_info = gfile.query_info(
+                'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
+            name = file_info.get_display_name()
+            isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
+        except GLib.Error as e:
+            if e.domain != 'g-io-error-quark':
+                raise
+            # Handling for non-existant files (or other IO errors)
+            name = path
+            isdir = False
 
         path = gfile.get_path()
-        name = file_info.get_display_name()
         state = self._tree_cache.get(path, STATE_NORMAL)
         meta = self._tree_meta_cache.get(path, "")
-        isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
 
         return Entry(path, name, state, isdir, options=meta)
 
