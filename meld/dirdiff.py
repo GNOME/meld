@@ -823,8 +823,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         yield _("[%s] Done") % self.label_text
 
         self._scan_in_progress -= 1
-        self.treeview[0].get_selection().select_path(Gtk.TreePath.new_first())
         self.force_cursor_recalculate = True
+        self.treeview[0].set_cursor(Gtk.TreePath.new_first())
         self._update_diffmaps()
 
     def _show_identical_status(self):
