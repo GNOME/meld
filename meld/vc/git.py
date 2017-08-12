@@ -259,23 +259,22 @@ class Vc(_vc.Vc):
 
         # Get status differences between the index and the repo HEAD
         proc = self.run("diff-index", "--cached", "HEAD", "--relative", path)
-        entries = proc.stdout.read().split("\n")[:-1]
+        cached_entries = proc.stdout.read().split("\n")[:-1]
 
         # Get status differences between the index and files-on-disk
         proc = self.run("diff-files", "-0", "--relative", path)
-        entries += proc.stdout.read().split("\n")[:-1]
+        entries = proc.stdout.read().split("\n")[:-1]
 
         # Files can show up in both lists, e.g., if a file is modified,
-        # added to the index and changed again, so we uniquify.
-        # TODO: This doesn't work as expected for many cases; we should
-        # pick the last entry (diff to disk) based on filename.
-        return list(set(entries))
+        # added to the index and changed again. This is okay, and in
+        # fact the calling logic requires it for staging feedback.
+        return cached_entries, entries
 
     def _update_tree_state_cache(self, path):
         """ Update the state of the file(s) at self._tree_cache['path'] """
         while 1:
             try:
-                entries = self._get_modified_files(path)
+                cached_entries, entries = self._get_modified_files(path)
 
                 # Identify ignored files and folders
                 proc = self.run(
@@ -307,7 +306,7 @@ class Vc(_vc.Vc):
             return os.path.abspath(
                 os.path.join(self.location, name))
 
-        if len(entries) == 0 and os.path.isfile(path):
+        if not cached_entries and not entries and os.path.isfile(path):
             # If we're just updating a single file there's a chance that it
             # was it was previously modified, and now has been edited so that
             # it is un-modified.  This will result in an empty 'entries' list,
@@ -320,7 +319,9 @@ class Vc(_vc.Vc):
             staged = set()
             unstaged = set()
 
-            for entry in entries:
+            # We iterate over both cached entries and entries, accumulating
+            # metadata from both, but using the state from entries.
+            for entry in cached_entries + entries:
                 columns = self.DIFF_RE.search(entry).groups()
                 old_mode, new_mode, old_sha, new_sha, statekey, path = columns
                 state = self.state_map.get(statekey.strip(), _vc.STATE_NONE)
