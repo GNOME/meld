@@ -360,6 +360,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
             self.focus_out_events.append(handler_id)
             treeview.set_search_equal_func(self.model.treeview_search_cb, None)
+        self.force_cursor_recalculate = False
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.on_treeview_focus_out_event(None, None)
         self.focus_pane = None
@@ -821,9 +822,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.treeview[0].expand_to_path(Gtk.TreePath(path))
         yield _("[%s] Done") % self.label_text
 
-        self.scheduler.add_task(self.on_treeview_cursor_changed)
         self._scan_in_progress -= 1
         self.treeview[0].get_selection().select_path(Gtk.TreePath.new_first())
+        self.force_cursor_recalculate = True
         self._update_diffmaps()
 
     def _show_identical_status(self):
@@ -1076,9 +1077,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.current_path = cursor_path
             return
 
-        # If invoked directly rather than through a callback, we always check
-        if not args:
+        if self.force_cursor_recalculate:
+            # We force cursor recalculation on initial load, and when
+            # we handle model change events.
             skip = False
+            self.force_cursor_recalculate = False
         else:
             try:
                 old_cursor = self.model.get_iter(self.current_path)
@@ -1550,6 +1553,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for path in changed_paths:
             self._update_item_state( model.get_iter(path) )
         self._update_diffmaps()
+        self.force_cursor_recalculate = True
 
     def next_diff(self, direction):
         if self.focus_pane:
