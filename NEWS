@@ -1,4 +1,31 @@
 
+2017-08-13 meld 3.17.3
+======================
+
+  Fixes:
+
+   * Fix folder compare when using text filters (Alsan Wong)
+   * Make activity spinner show when inline comparisons are running (Kai
+     Willadsen)
+   * Migrate back from threads to multiprocessing for inline diffs; unusual
+     CPU contention caused this to harm interactivity (Kai Willadsen)
+   * Manually refreshing a file comparison sometimes caused diff navigation
+     to break (Kai Willadsen)
+   * Folder comparisons that update their state no longer break navigation
+     (Kai Willadsen)
+   * Version-control comparison on missing files now work again (Kai
+     Willadsen)
+   * Fix regression in initial focus for folder comparisons (Kai Willadsen)
+   * Fix handling for added, partially staged files in git (Kai Willadsen)
+
+   * Bugs fixed: 784436, 785603, 785859, 786043
+
+  Translations:
+
+   * Daniel Mustieles (es)
+   * Matej Urbančič (sl)
+
+
 2017-06-11 meld 3.17.2
 ======================
 
