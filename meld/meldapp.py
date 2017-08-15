@@ -333,8 +333,8 @@ class MeldApp(Gtk.Application):
                     auto_merge=auto_merge, new_tab=options.newtab,
                     focus=i == 0)
             except ValueError as err:
-                log.debug("Couldn't open comparison: %s", error, exc_info=True)
                 error = err
+                log.debug("Couldn't open comparison: %s", error, exc_info=True)
             else:
                 if i > 0:
                     continue
