@@ -351,6 +351,9 @@ class MeldApp(Gtk.Application):
                 parser.local_error(error)
             else:
                 print(error)
+            # Delete the error here; otherwise we keep the local app
+            # alive in a reference cycle, and the command line hangs.
+            del error
 
         if parser.should_exit:
             cleanup()
