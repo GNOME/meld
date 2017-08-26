@@ -61,8 +61,6 @@ include_files = [(os.path.join(include_dll_path, path), path) for path in
                  missing_dll + gtk_libs]
 
 build_exe_options = {
-    "compressed": False,
-    "icon": "data/icons/meld.ico",
     "includes": ["gi"],
     "packages": ["gi", "weakref"],
     "include_files": include_files,
@@ -123,6 +121,7 @@ setup(
         Executable(
             "bin/meld",
             base="Win32GUI",
+            icon="data/icons/meld.ico",
             targetName="Meld.exe",
             shortcutName="Meld",
             shortcutDir="ProgramMenuFolder",
