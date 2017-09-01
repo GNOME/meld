@@ -692,6 +692,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             self.model.remove(it)
             self.treeview.grab_focus()
             self.treeview.get_selection().select_iter(newiter)
+            self.vc.refresh_vc_state(where)
             self.scheduler.add_task(self._search_recursively_iter(newiter))
             self.scheduler.add_task(self.on_treeview_selection_changed)
             self.scheduler.add_task(self.on_treeview_cursor_changed)
