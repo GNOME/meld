@@ -684,17 +684,17 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     def refresh_partial(self, where):
         if not self.actiongroup.get_action("VcFlatten").get_active():
             it = self.find_iter_by_name(where)
-            if it:
-                newiter = self.model.insert_after(None, it)
-                self.model.set_value(
-                    newiter, tree.COL_PATH, where)
-                self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
-                self.model.remove(it)
-                self.treeview.grab_focus()
-                self.treeview.get_selection().select_iter(newiter)
-                self.scheduler.add_task(self._search_recursively_iter(newiter))
-                self.scheduler.add_task(self.on_treeview_selection_changed)
-                self.scheduler.add_task(self.on_treeview_cursor_changed)
+            if not it:
+                return
+            newiter = self.model.insert_after(None, it)
+            self.model.set_value(newiter, tree.COL_PATH, where)
+            self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
+            self.model.remove(it)
+            self.treeview.grab_focus()
+            self.treeview.get_selection().select_iter(newiter)
+            self.scheduler.add_task(self._search_recursively_iter(newiter))
+            self.scheduler.add_task(self.on_treeview_selection_changed)
+            self.scheduler.add_task(self.on_treeview_cursor_changed)
         else:
             # XXX fixme
             self.refresh()
