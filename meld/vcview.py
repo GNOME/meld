@@ -592,7 +592,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         vc_command = self.command_map.get(command)
         return vc_command and hasattr(self.vc, vc_command)
 
-    def command(self, command, files):
+    def command(self, command, files, sync=False):
         if not self.has_command(command):
             log.error("Couldn't understand command %s", command)
             return
@@ -601,13 +601,19 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             log.error("Invalid files argument to '%s': %r", command, files)
             return
 
+        runner = self.runner if not sync else self.sync_runner
         command = getattr(self.vc, self.command_map[command])
-        command(self.runner, files)
+        command(runner, files)
 
     def runner(self, command, files, refresh, working_dir):
         """Schedule a version control command to run as an idle task"""
         self.scheduler.add_task(
             self._command_iter(command, files, refresh, working_dir))
+
+    def sync_runner(self, command, files, refresh, working_dir):
+        """Run a version control command immediately"""
+        for it in self._command_iter(command, files, refresh, working_dir):
+            pass
 
     def on_button_update_clicked(self, obj):
         self.vc.update(self.runner)
