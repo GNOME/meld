@@ -830,7 +830,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if resolve_response == Gtk.ResponseType.OK:
                     bufdata = self.textbuffer[1].data
                     conflict_file = bufdata.savefile or bufdata.filename
-                    parent.command('resolve', [conflict_file])
+                    # It's possible that here we're in a quit callback,
+                    # so we can't schedule the resolve action to an
+                    # idle loop; it might never happen.
+                    parent.command('resolve', [conflict_file], sync=True)
         elif response == Gtk.ResponseType.CANCEL:
             self.state = melddoc.STATE_NORMAL
 
