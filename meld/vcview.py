@@ -593,6 +593,19 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return vc_command and hasattr(self.vc, vc_command)
 
     def command(self, command, files, sync=False):
+        """
+        Run a command against this view's version control subsystem
+
+        This is the intended way for things outside of the VCView to
+        call in to version control methods, e.g., to mark a conflict as
+        resolved from a file comparison.
+
+        :param command: The version control command to run, taken from
+            keys in `VCView.command_map`.
+        :param files: File parameters to the command as paths
+        :param sync: If True, the command will be executed immediately
+            (as opposed to being run by the idle scheduler).
+        """
         if not self.has_command(command):
             log.error("Couldn't understand command %s", command)
             return
