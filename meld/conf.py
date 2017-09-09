@@ -3,7 +3,7 @@ import os
 import sys
 
 __package__ = "meld"
-__version__ = "3.17.5"
+__version__ = "3.18.0"
 
 # START; these paths are clobbered on install by meld.build_helpers
 DATADIR = os.path.join(sys.prefix, "share", "meld")
