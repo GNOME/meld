@@ -2,32 +2,45 @@
 # Copyright (C) 2010 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
 # Cosmin Clapon <cosminx2003@yahoo.com>, 2010.
-#
+# Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-03 07:51+0000\n"
-"PO-Revision-Date: 2011-01-02 15:31+0200\n"
-"Last-Translator: Cosmin Clapon <cosminx2003@yahoo.com>\n"
-"Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2017-09-09 21:16+0000\n"
+"PO-Revision-Date: 2017-08-30 18:54+0200\n"
+"Last-Translator: Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
+"Language-Team: Gnome Romanian Translation Team\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2);;\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
 
-#: ../bin/meld:97
+#: ../bin/meld:179
 msgid "Cannot import: "
 msgstr "Nu se poate importa:"
 
-#: ../bin/meld:100
+#: ../bin/meld:182
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld necesită %s sau superior."
 
-#: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
+#: ../bin/meld:227
+#, c-format
+msgid ""
+"Couldn't load Meld-specific CSS (%s)\n"
+"%s"
+msgstr ""
+"Nu s-a putut încărca CSS specific Meld (%s)\n"
+"%s"
+
+#: ../data/meld.desktop.in.h:1 ../data/meld.appdata.xml.in.h:1
+#: ../data/ui/meldapp.ui.h:1
 msgid "Meld"
 msgstr "Meld"
 
@@ -39,9 +52,546 @@ msgstr "Vizualizator de diferențe"
 msgid "Meld Diff Viewer"
 msgstr "Vizualizatorul de diferențe Meld"
 
-#: ../data/meld.desktop.in.h:4
+#: ../data/meld.desktop.in.h:4 ../data/meld.appdata.xml.in.h:2
 msgid "Compare and merge your files"
 msgstr "Comparați-vă și combinati-vă fișierele"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/meld.desktop.in.h:6
+msgid "diff;merge;"
+msgstr "diff;merge;diferență;diferențe;îmbinare;"
+
+#: ../data/meld.appdata.xml.in.h:3
+msgid ""
+"Meld is a visual diff and merge tool targeted at developers. Meld helps you "
+"compare files, directories, and version controlled projects. It provides "
+"two- and three-way comparison of both files and directories, and supports "
+"many version control systems including Git, Mercurial, Bazaar and Subversion."
+msgstr ""
+"Meld este o unealtă de diferențe vizuală destinată dezvoltatorilor. Meld vă "
+"ajută să comparați fișiere, directoare, și proiecte versionate. Oferă "
+"comparație între două sau trei fișiere sau directoare, și suportă multe "
+"sisteme de control ale versiunilor incluzând Git, Mercurial, Bazaar și "
+"Subversion."
+
+#: ../data/meld.appdata.xml.in.h:4
+msgid ""
+"Meld helps you review code changes, understand patches, and makes enormous "
+"merge conflicts slightly less painful."
+msgstr ""
+"Meld vă ajută să revizuiți schimbări ale codului, să înțelegeți petice, și "
+"face conflictele de combinații imense mai puțin dureroase."
+
+#: ../data/meld.appdata.xml.in.h:5
+msgid "The GNOME Project"
+msgstr "Proiectul GNOME"
+
+#: ../data/mime/meld.xml.in.h:1
+msgid "Meld comparison description"
+msgstr "Descrierea comparației Meld"
+
+#: ../data/org.gnome.meld.gschema.xml.h:1
+msgid "Default window width"
+msgstr "Lățimea implicită a ferestrei"
+
+#: ../data/org.gnome.meld.gschema.xml.h:2
+msgid "Default window height"
+msgstr "Înălțimea implicită a ferestrei"
+
+#: ../data/org.gnome.meld.gschema.xml.h:3
+msgid "Default window maximised state"
+msgstr "Starea maximizată implicită a ferestrei"
+
+#: ../data/org.gnome.meld.gschema.xml.h:4
+msgid "Default window fullscreen state"
+msgstr "Starea pe întreg ecranul implicită a ferestrei"
+
+#: ../data/org.gnome.meld.gschema.xml.h:5
+msgid "Show toolbar"
+msgstr "Arată bara de unelte"
+
+#: ../data/org.gnome.meld.gschema.xml.h:6
+msgid "If true, the window toolbar is visible."
+msgstr "Dacă este „true”, bara de unelte a ferestrei este vizibilă."
+
+#: ../data/org.gnome.meld.gschema.xml.h:7
+msgid "Show statusbar"
+msgstr "Arată bara de stare"
+
+#: ../data/org.gnome.meld.gschema.xml.h:8
+msgid "If true, the window statusbar is visible."
+msgstr "Dacă este „true”, bara de stare a ferestrei este vizibilă."
+
+#: ../data/org.gnome.meld.gschema.xml.h:9
+msgid "Additional automatically detected text encodings"
+msgstr "Codări text detectate automat adiționale"
+
+#: ../data/org.gnome.meld.gschema.xml.h:10
+msgid ""
+"Meld will use these text encodings to try to decode loaded text files before "
+"trying any other encodings. In addition to the encodings in this list, UTF-8 "
+"and the current locale-default encoding will always be used; other encodings "
+"may also be tried, depending on the user's locale."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:11
+msgid "Width of an indentation step"
+msgstr "Lățimea unui pas de indentare"
+
+#: ../data/org.gnome.meld.gschema.xml.h:12
+msgid "The number of spaces to use for a single indent step"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:13
+msgid "Whether to indent using spaces or tabs"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:14
+msgid "If true, any new indentation will use spaces instead of tabs."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:15
+#, fuzzy
+#| msgid "Show _line numbers"
+msgid "Show line numbers"
+msgstr "Afișează numărul de _linii"
+
+#: ../data/org.gnome.meld.gschema.xml.h:16
+msgid "If true, line numbers will be shown in the gutter of file comparisons."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:17
+msgid "Highlight syntax"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:18
+msgid ""
+"Whether to highlight syntax in comparisons. Because of Meld's own color "
+"highlighting, this is off by default."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:19
+#, fuzzy
+#| msgid "Use s_yntax highlighting"
+msgid "Color scheme to use for syntax highlighting"
+msgstr "Folosește _evidențierea sintaxei"
+
+#: ../data/org.gnome.meld.gschema.xml.h:20
+msgid "Used by GtkSourceView to determine colors for syntax highlighting"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:21
+#, fuzzy
+#| msgid "Show w_hitespace"
+msgid "Displayed whitespace"
+msgstr "Afișează _spațiile goale"
+
+#: ../data/org.gnome.meld.gschema.xml.h:22
+msgid ""
+"Selector for individual whitespace character types to be shown. Possible "
+"values are 'space', 'tab', 'newline' and 'nbsp'."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:23
+msgid "Wrap mode"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:24
+msgid ""
+"Lines in file comparisons will be wrapped according to this setting, either "
+"not at all ('none'), at any character ('char') or only at the end of words "
+"('word')."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:25
+msgid "Highlight current line"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:26
+msgid ""
+"If true, the line containing the cursor will be highlighted in file "
+"comparisons."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:27
+#, fuzzy
+#| msgid "_Use the system fixed width font"
+msgid "Use the system default monospace font"
+msgstr "_Folosește mărimea fontului fixată de sistem"
+
+#: ../data/org.gnome.meld.gschema.xml.h:28
+msgid ""
+"If false, custom-font will be used instead of the system monospace font."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:29
+msgid "Custom font"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:30
+msgid ""
+"The custom font to use, stored as a string and parsed as a Pango font "
+"description."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:31
+msgid "Ignore blank lines when comparing files"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:32
+msgid ""
+"If true, blank lines will be trimmed when highlighting changes between files."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:33
+#, fuzzy
+#| msgid "Use _default system editor"
+msgid "Use the system default editor"
+msgstr "Folosește editorul implicit _de sistem"
+
+#: ../data/org.gnome.meld.gschema.xml.h:34
+msgid ""
+"If false, custom-editor-command will be used instead of the system editor "
+"when opening files externally."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:35
+msgid "The custom editor launch command"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:36
+msgid ""
+"The command used to launch a custom editor. Some limited templating is "
+"supported here; at the moment '{file}' and '{line}' are recognised tokens."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:37
+msgid "Columns to display"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:38
+msgid ""
+"List of column names in folder comparison and whether they should be "
+"displayed."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
+msgid "Ignore symbolic links"
+msgstr "Ignoră legaturile simbolice"
+
+#: ../data/org.gnome.meld.gschema.xml.h:40
+msgid ""
+"If true, folder comparisons do not follow symbolic links when traversing the "
+"folder tree."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:41
+#, fuzzy
+#| msgid "Reload the comparison"
+msgid "Use shallow comparison"
+msgstr "Reîncarcă comparația"
+
+#: ../data/org.gnome.meld.gschema.xml.h:42
+msgid ""
+"If true, folder comparisons compare files based solely on size and mtime, "
+"considering files to be identical if their size and mtime match, and "
+"different otherwise."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:43
+msgid "File timestamp resolution"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:44
+msgid ""
+"When comparing based on mtime, this is the minimum difference in nanoseconds "
+"between two files before they're considered to have different mtimes. This "
+"is useful when comparing files between filesystems with different timestamp "
+"resolution."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:22
+msgid "Apply text filters during folder comparisons"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:46
+msgid ""
+"If true, folder comparisons that compare file contents also apply active "
+"text filters and the blank line trimming option, and ignore newline "
+"differences."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:47
+#, fuzzy
+#| msgid "File filters"
+msgid "File status filters"
+msgstr "Filtre de fișier"
+
+#: ../data/org.gnome.meld.gschema.xml.h:48
+msgid "List of statuses used to filter visible files in folder comparison."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:49
+#, fuzzy
+msgid "Show the version control console output"
+msgstr "Începe o comparație de control a versiunilor"
+
+#: ../data/org.gnome.meld.gschema.xml.h:50
+msgid ""
+"If true, a console output section will be shown in version control views, "
+"showing the commands run for version control operations."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:51
+#, fuzzy
+#| msgid "_Version Control Browser"
+msgid "Version control pane position"
+msgstr "Navigator de control al _versiunilor"
+
+#: ../data/org.gnome.meld.gschema.xml.h:52
+msgid ""
+"This is the height of the main version control tree when the console pane is "
+"shown."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:53
+msgid "Present version comparisons as left-local/right-remote"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:54
+msgid ""
+"If true, version control comparisons will use a left-is-local, right-is-"
+"remote scheme to determine what order to present files in panes. Otherwise, "
+"a left-is-theirs, right-is-mine scheme is used."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:55
+#, fuzzy
+msgid "Order for files in three-way version control merge comparisons"
+msgstr "Începe o comparație de control a versiunilor"
+
+#: ../data/org.gnome.meld.gschema.xml.h:56
+msgid ""
+"Choices for file order are remote/merged/local and local/merged/remote. This "
+"preference only affects three-way comparisons launched from the version "
+"control view, so is used solely for merges/conflict resolution within Meld."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:57
+msgid "Show margin in commit message editor"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:58
+msgid ""
+"If true, a guide will be displayed to show what column the margin is at in "
+"the version control commit message editor."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:59
+msgid "Margin column in commit message editor"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:60
+msgid ""
+"The column at which to show the margin in the version control commit message "
+"editor."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:61
+msgid "Automatically hard-wrap commit messages"
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:62
+msgid ""
+"If true, the version control commit message editor will hard-wrap (i.e., "
+"insert line breaks) at the commit margin before commit."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:63
+#, fuzzy
+#| msgid "_Version Control Browser"
+msgid "Version control status filters"
+msgstr "Navigator de control al _versiunilor"
+
+#: ../data/org.gnome.meld.gschema.xml.h:64
+msgid ""
+"List of statuses used to filter visible files in version control comparison."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:65
+#, fuzzy
+#| msgid "File filters"
+msgid "Filename-based filters"
+msgstr "Filtre de fișier"
+
+#: ../data/org.gnome.meld.gschema.xml.h:66
+msgid ""
+"List of predefined filename-based filters that, if active, will remove "
+"matching files from a folder comparison."
+msgstr ""
+
+#: ../data/org.gnome.meld.gschema.xml.h:67
+#, fuzzy
+#| msgid "Text Filters"
+msgid "Text-based filters"
+msgstr "Filtre de text"
+
+#: ../data/org.gnome.meld.gschema.xml.h:68
+msgid ""
+"List of predefined text-based regex filters that, if active, will remove "
+"text from being used in a file comparison. The text will still be displayed, "
+"but won't contribute to the comparison itself."
+msgstr ""
+
+#: ../data/styles/meld-base.xml.h:1
+msgid "Meld base scheme"
+msgstr ""
+
+#: ../data/styles/meld-base.xml.h:2
+msgid "Base color scheme for Meld highlighting"
+msgstr ""
+
+#: ../data/styles/meld-dark.xml.h:1
+msgid "Meld dark scheme"
+msgstr ""
+
+#: ../data/styles/meld-dark.xml.h:2
+msgid "Dark color scheme for Meld highlighting"
+msgstr ""
+
+#: ../data/ui/application.ui.h:1
+msgid "About Meld"
+msgstr ""
+
+#: ../data/ui/application.ui.h:2
+#, fuzzy
+#| msgid ""
+#| "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
+#| "Copyright &#xA9; 2009-2010 Kai Willadsen"
+msgid ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2013 Kai Willadsen"
+msgstr ""
+"Drepturi de autor &#xA9; 2002-2009 Stephen Kennedy\n"
+"Drepturi de autor &#xA9; 2009-2010 Kai Willadsen"
+
+#: ../data/ui/application.ui.h:4
+msgid "Website"
+msgstr ""
+
+#: ../data/ui/application.ui.h:5
+msgid "translator-credits"
+msgstr "Cosmin Clapon <cosminx2003@yahoo.com>, 2010"
+
+#: ../data/ui/application.ui.h:6
+#, fuzzy
+#| msgid "Prefere_nces"
+msgid "_Preferences"
+msgstr "Preferi_nțe"
+
+#: ../data/ui/application.ui.h:7
+msgid "_Help"
+msgstr "_Ajutor"
+
+#: ../data/ui/application.ui.h:8
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: ../data/ui/application.ui.h:9
+msgid "_About"
+msgstr ""
+
+#: ../data/ui/application.ui.h:10
+msgid "_Quit"
+msgstr ""
+
+#: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
+msgid "_Compare"
+msgstr "_Compară"
+
+#: ../data/ui/dirdiff.ui.h:2 ../data/ui/vcview.ui.h:2
+#, fuzzy
+#| msgid "Compare selected"
+msgid "Compare selected files"
+msgstr "Compară obiectul selectat"
+
+#: ../data/ui/dirdiff.ui.h:3
+#, fuzzy
+#| msgid "Copy To Left"
+msgid "Copy to _Left"
+msgstr "Copiază la stânga"
+
+#: ../data/ui/dirdiff.ui.h:4
+#, fuzzy
+#| msgid "Copy To Left"
+msgid "Copy to left"
+msgstr "Copiază la stânga"
+
+#: ../data/ui/dirdiff.ui.h:5
+#, fuzzy
+#| msgid "Copy To Right"
+msgid "Copy to _Right"
+msgstr "Copiază la dreapta"
+
+#: ../data/ui/dirdiff.ui.h:6
+#, fuzzy
+#| msgid "Copy To Right"
+msgid "Copy to right"
+msgstr "Copiază la dreapta"
+
+#: ../data/ui/dirdiff.ui.h:7
+msgid "Delete selected"
+msgstr "Șterge obiectul selectat"
+
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:856 ../meld/filediff.py:1360
+msgid "Hide"
+msgstr "Ascunde"
+
+#: ../data/ui/dirdiff.ui.h:9
+msgid "Hide selected"
+msgstr "Ascunde obiectul selectat"
+
+#: ../data/ui/dirdiff.ui.h:10
+msgid "Ignore Filename Case"
+msgstr ""
+
+#: ../data/ui/dirdiff.ui.h:11
+msgid ""
+"Consider differently-cased filenames that are otherwise-identical to be the "
+"same"
+msgstr ""
+
+#: ../data/ui/dirdiff.ui.h:12
+msgid "Same"
+msgstr "Același"
+
+#: ../data/ui/dirdiff.ui.h:13
+msgid "Show identical"
+msgstr "Afișează fișierele identice"
+
+#: ../data/ui/dirdiff.ui.h:14
+msgid "New"
+msgstr "Nou"
+
+#: ../data/ui/dirdiff.ui.h:15
+msgid "Show new"
+msgstr "Afișează fișierele noi"
+
+#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:77
+msgid "Modified"
+msgstr "Modificări"
+
+#: ../data/ui/dirdiff.ui.h:17
+msgid "Show modified"
+msgstr "Afișează obiectele modificate"
+
+#: ../data/ui/dirdiff.ui.h:18
+msgid "Filters"
+msgstr "Filtre"
+
+#: ../data/ui/dirdiff.ui.h:19
+msgid "Set active filters"
+msgstr "Definește filtrele active"
 
 #: ../data/ui/EditableList.ui.h:1
 msgid "Editable List"
@@ -51,71 +601,314 @@ msgstr ""
 msgid "Active"
 msgstr "Activ"
 
-#: ../data/ui/EditableList.ui.h:3 ../meld/vcview.py:166
+#: ../data/ui/EditableList.ui.h:3
+msgid "Column Name"
+msgstr ""
+
+#: ../data/ui/EditableList.ui.h:4 ../data/ui/vcview.ui.h:9
+msgid "_Add"
+msgstr "_Adaugă"
+
+#: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
+#: ../meld/vcview.py:663
+msgid "_Remove"
+msgstr "_Elimină"
+
+#: ../data/ui/EditableList.ui.h:6
+msgid "Move item up"
+msgstr ""
+
+#: ../data/ui/EditableList.ui.h:7
+msgid "Move _Up"
+msgstr ""
+
+#: ../data/ui/EditableList.ui.h:8
+msgid "Move item down"
+msgstr ""
+
+#: ../data/ui/EditableList.ui.h:9
+msgid "Move _Down"
+msgstr ""
+
+#. Create icon and filename CellRenderer
+#: ../data/ui/EditableList.ui.h:10 ../data/ui/vcview.ui.h:35
+#: ../meld/dirdiff.py:374
 msgid "Name"
 msgstr "Nume"
 
-#: ../data/ui/EditableList.ui.h:4
+#: ../data/ui/EditableList.ui.h:11
 msgid "Pattern"
 msgstr "Tipar"
 
-#: ../data/ui/EditableList.ui.h:5
+#: ../data/ui/EditableList.ui.h:12
 #, fuzzy
 #| msgid "File filters"
 msgid "Add new filter"
 msgstr "Filtre de fișier"
 
-#: ../data/ui/EditableList.ui.h:6 ../meld/vcview.py:130
-msgid "_Add"
-msgstr "_Adaugă"
-
-#: ../data/ui/EditableList.ui.h:7
+#: ../data/ui/EditableList.ui.h:13
 #, fuzzy
 #| msgid "Select file"
 msgid "Remove selected filter"
 msgstr "Selectați fișierul"
 
-#: ../data/ui/EditableList.ui.h:8 ../meld/vcview.py:132
-msgid "_Remove"
-msgstr "_Elimină"
-
-#: ../data/ui/EditableList.ui.h:9
-msgid "Move item up"
-msgstr ""
-
-#: ../data/ui/EditableList.ui.h:10
-msgid "Move _Up"
-msgstr ""
-
-#: ../data/ui/EditableList.ui.h:11
-msgid "Move item down"
-msgstr ""
-
-#: ../data/ui/EditableList.ui.h:12
-msgid "Move _Down"
-msgstr ""
-
 #: ../data/ui/filediff.ui.h:1
-msgid "Save modified files?"
-msgstr "Salvați fișierele modificate?"
+#, fuzzy
+#| msgid "Format as patch..."
+msgid "Format as Patch..."
+msgstr "Formatează ca petic..."
 
 #: ../data/ui/filediff.ui.h:2
-msgid ""
-"Some files have been modified.\n"
-"Which ones would you like to save?"
+msgid "Create a patch using differences between files"
+msgstr "Creează un petic folosind diferențe între fișiere"
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Save A_ll"
 msgstr ""
-"Unele fișiere au fost modificate.\n"
-"Pe care dintre ele doriți să le salvați?"
 
 #: ../data/ui/filediff.ui.h:4
-msgid "_Discard Changes"
-msgstr "Anulează mo_dificările"
+#, fuzzy
+msgid "Save all files in the current comparison"
+msgstr "Începe o comparație de control a versiunilor"
 
 #: ../data/ui/filediff.ui.h:5
-msgid "_Save Selected"
-msgstr "_Salvează fișierul"
+msgid "Revert files to their saved versions"
+msgstr ""
 
-#: ../data/ui/findbar.ui.h:1 ../meld/meldwindow.py:141
+#: ../data/ui/filediff.ui.h:6
+msgid "Add Synchronization Point"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:7
+msgid "Add a synchronization point for changes between files"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:8
+msgid "Clear Synchronization Points"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:9
+msgid "Clear sychronization points for changes between files"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:10
+#, fuzzy
+#| msgid "Previous conflict"
+msgid "Previous Conflict"
+msgstr "Conflict precedent"
+
+#: ../data/ui/filediff.ui.h:11
+msgid "Go to the previous conflict"
+msgstr "Mergi la conflictul precedent"
+
+#: ../data/ui/filediff.ui.h:12
+#, fuzzy
+#| msgid "Next conflict"
+msgid "Next Conflict"
+msgstr "Următorul conflict"
+
+#: ../data/ui/filediff.ui.h:13
+msgid "Go to the next conflict"
+msgstr "Mergi la următorul conflict"
+
+#: ../data/ui/filediff.ui.h:14
+#, fuzzy
+msgid "Push to Left"
+msgstr "Împinge la stânga"
+
+#: ../data/ui/filediff.ui.h:15
+#, fuzzy
+msgid "Push current change to the left"
+msgstr "Împinge modificarea curentă la stânga"
+
+#: ../data/ui/filediff.ui.h:16
+#, fuzzy
+msgid "Push to Right"
+msgstr "Împinge la dreapta"
+
+#: ../data/ui/filediff.ui.h:17
+#, fuzzy
+msgid "Push current change to the right"
+msgstr "Împinge modificarea curentă la dreapta"
+
+#: ../data/ui/filediff.ui.h:18
+#, fuzzy
+#| msgid "Pull from left"
+msgid "Pull from Left"
+msgstr "Trage de la stânga"
+
+#: ../data/ui/filediff.ui.h:19
+msgid "Pull change from the left"
+msgstr "Trage modificarea de la stânga"
+
+#: ../data/ui/filediff.ui.h:20
+#, fuzzy
+#| msgid "Pull from right"
+msgid "Pull from Right"
+msgstr "Trage de la dreapta"
+
+#: ../data/ui/filediff.ui.h:21
+msgid "Pull change from the right"
+msgstr "Trage modificarea de la dreapta"
+
+#: ../data/ui/filediff.ui.h:22
+#, fuzzy
+#| msgid "Copy above left"
+msgid "Copy Above Left"
+msgstr "Copiază deasupra la stânga"
+
+#: ../data/ui/filediff.ui.h:23
+msgid "Copy change above the left chunk"
+msgstr "Copiază modificarea deasupra segmentului stâng"
+
+#: ../data/ui/filediff.ui.h:24
+#, fuzzy
+#| msgid "Copy below left"
+msgid "Copy Below Left"
+msgstr "Copiază dedesubt la stânga"
+
+#: ../data/ui/filediff.ui.h:25
+msgid "Copy change below the left chunk"
+msgstr "Copiază modificarea sub segmentul stâng"
+
+#: ../data/ui/filediff.ui.h:26
+#, fuzzy
+#| msgid "Copy above right"
+msgid "Copy Above Right"
+msgstr "Copiază deasupra la dreapta"
+
+#: ../data/ui/filediff.ui.h:27
+msgid "Copy change above the right chunk"
+msgstr "Copiază modificarea deasupra segmentului drept"
+
+#: ../data/ui/filediff.ui.h:28
+#, fuzzy
+#| msgid "Copy below right"
+msgid "Copy Below Right"
+msgstr "Copiază dedesubt la dreapta"
+
+#: ../data/ui/filediff.ui.h:29
+msgid "Copy change below the right chunk"
+msgstr "Copiază modificarea sub segmentul drept"
+
+#: ../data/ui/filediff.ui.h:30
+msgid "Delete"
+msgstr "Șterge"
+
+#: ../data/ui/filediff.ui.h:31
+msgid "Delete change"
+msgstr "Șterge modificarea"
+
+#: ../data/ui/filediff.ui.h:32
+#, fuzzy
+#| msgid "Merge all changes from left"
+msgid "Merge All from Left"
+msgstr "Combină toate modificările din stânga"
+
+#: ../data/ui/filediff.ui.h:33
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Combină toate modificările non-conflictuale din stânga"
+
+#: ../data/ui/filediff.ui.h:34
+#, fuzzy
+#| msgid "Merge all changes from right"
+msgid "Merge All from Right"
+msgstr "Combină toate modificările din dreapta"
+
+#: ../data/ui/filediff.ui.h:35
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Combină toate modificările non-conflictuale din dreapta"
+
+#: ../data/ui/filediff.ui.h:36
+msgid "Merge All"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:37
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr "Combină toate modificările non-conflictuale din panoul stâng și drept"
+
+#: ../data/ui/filediff.ui.h:38
+#, fuzzy
+#| msgid "Previous change"
+msgid "Previous Pane"
+msgstr "Modificarea precedentă"
+
+#: ../data/ui/filediff.ui.h:39
+msgid "Move keyboard focus to the previous document in this comparison"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:40
+#, fuzzy
+#| msgid "Next change"
+msgid "Next Pane"
+msgstr "Următoarea modificare"
+
+#: ../data/ui/filediff.ui.h:41
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:42
+msgid "Lock Scrolling"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:43
+msgid "Lock scrolling of all panes"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:44
+msgid "Save changes to documents before closing?"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:45
+msgid "If you don't save, changes will be permanently lost."
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:46
+msgid "Close _without Saving"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:938 ../meld/filediff.py:1426
+#: ../meld/filediff.py:1498
+msgid "_Cancel"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:48
+msgid "_Save"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:49
+msgid ""
+"This file can not be written to. You may click here to unlock this file and "
+"make changes anyway, but these changes must be saved to a new file."
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:50
+#, fuzzy
+#| msgid "_File"
+msgid "File 3"
+msgstr "_Fișier"
+
+#: ../data/ui/filediff.ui.h:51
+#, fuzzy
+#| msgid "_File"
+msgid "File 2"
+msgstr "_Fișier"
+
+#: ../data/ui/filediff.ui.h:52
+#, fuzzy
+#| msgid "_File"
+msgid "File 1"
+msgstr "_Fișier"
+
+#: ../data/ui/filediff.ui.h:53
+msgid "Revert unsaved changes to documents?"
+msgstr ""
+
+#: ../data/ui/filediff.ui.h:54
+msgid "Changes made to the following documents will be permanently lost:\n"
+msgstr ""
+
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:939 ../meld/filediff.py:1427
 msgid "_Replace"
 msgstr "În_locuiește"
 
@@ -132,15 +925,19 @@ msgid "_Next"
 msgstr "Î_nainte"
 
 #: ../data/ui/findbar.ui.h:5
-msgid "_Search for"
-msgstr "_Caută după"
+msgid "Find:"
+msgstr ""
 
 #: ../data/ui/findbar.ui.h:6
-msgid "Replace _With"
+#, fuzzy
+#| msgid "Replace _With"
+msgid "Replace _with:"
 msgstr "Înlocuiește _cu"
 
 #: ../data/ui/findbar.ui.h:7
-msgid "_Match Case"
+#, fuzzy
+#| msgid "_Match Case"
+msgid "_Match case"
 msgstr "_Potrivește majuscule"
 
 #: ../data/ui/findbar.ui.h:8
@@ -148,95 +945,46 @@ msgid "Who_le word"
 msgstr "Întregu_l cuvânt"
 
 #: ../data/ui/findbar.ui.h:9
-msgid "Regular E_xpression"
+#, fuzzy
+#| msgid "Regular E_xpression"
+msgid "Regular e_xpression"
 msgstr "E_xpresie regulată"
 
-#: ../data/ui/meldapp.ui.h:2
-#, fuzzy
-#| msgid ""
-#| "Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-#| "Copyright &#xA9; 2009-2010 Kai Willadsen"
-msgid ""
-"Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-"Copyright &#xA9; 2009-2012 Kai Willadsen"
+#: ../data/ui/findbar.ui.h:10
+msgid "Wrapped"
 msgstr ""
-"Drepturi de autor &#xA9; 2002-2009 Stephen Kennedy\n"
-"Drepturi de autor &#xA9; 2009-2010 Kai Willadsen"
-
-#: ../data/ui/meldapp.ui.h:4
-msgid "translator-credits"
-msgstr "Cosmin Clapon <cosminx2003@yahoo.com>, 2010"
-
-#: ../data/ui/meldapp.ui.h:5
-msgid "Choose Files"
-msgstr "Alege fișierele"
-
-#: ../data/ui/meldapp.ui.h:6
-msgid "_Three Way Compare"
-msgstr "Comparație _triplă"
-
-#. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:8
-msgid "Mine"
-msgstr "Al meu"
-
-#. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:10
-msgid "Original"
-msgstr "Originalul"
-
-#. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:12
-msgid "Other"
-msgstr "Altul"
-
-#: ../data/ui/meldapp.ui.h:13
-msgid "_File Comparison"
-msgstr "Comparație _fișier"
-
-#: ../data/ui/meldapp.ui.h:14
-msgid "_Directory Comparison"
-msgstr "Comparație _director"
-
-#: ../data/ui/meldapp.ui.h:15
-msgid "Select VC Directory"
-msgstr "Selectați directorul de control al versiunilor"
-
-#: ../data/ui/meldapp.ui.h:16
-msgid "Directory"
-msgstr "Director"
-
-#: ../data/ui/meldapp.ui.h:17
-msgid "_Version Control Browser"
-msgstr "Navigator de control al _versiunilor"
 
 #: ../data/ui/patch-dialog.ui.h:1
-msgid "Create Patch"
-msgstr "Creează petic"
+#, fuzzy
+#| msgid "Format as patch..."
+msgid "Format as Patch"
+msgstr "Formatează ca petic..."
 
 #: ../data/ui/patch-dialog.ui.h:2
-msgid "Create a patch"
-msgstr "Creează un petic"
+msgid "Copy to Clipboard"
+msgstr "Copiază în clipboard"
 
-#: ../data/ui/patch-dialog.ui.h:3
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:154
+#, fuzzy
+#| msgid "Save Patch As..."
+msgid "Save Patch"
+msgstr "Salvează petic ca..."
+
+#: ../data/ui/patch-dialog.ui.h:4
 msgid "Use differences between:"
 msgstr "Folosește diferențele dintre:"
 
-#: ../data/ui/patch-dialog.ui.h:4
+#: ../data/ui/patch-dialog.ui.h:5
 msgid "Left and middle panes"
 msgstr "Panouri la stânga și la mijloc"
 
-#: ../data/ui/patch-dialog.ui.h:5
+#: ../data/ui/patch-dialog.ui.h:6
 msgid "Middle and right panes"
 msgstr "Panouri la mijloc și la dreapta"
 
-#: ../data/ui/patch-dialog.ui.h:6
+#: ../data/ui/patch-dialog.ui.h:7
 msgid "_Reverse patch direction"
 msgstr "Inve_rsează direcția peticului"
-
-#: ../data/ui/patch-dialog.ui.h:7
-msgid "Copy to Clipboard"
-msgstr "Copiază în clipboard"
 
 #: ../data/ui/preferences.ui.h:1
 msgid "Meld Preferences"
@@ -275,34 +1023,120 @@ msgid "Do not _split words over two lines"
 msgstr "Nu impărți cuvintele pe _două linii"
 
 #: ../data/ui/preferences.ui.h:10
+msgid "Highlight _current line"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:11
 msgid "Show _line numbers"
 msgstr "Afișează numărul de _linii"
 
-#: ../data/ui/preferences.ui.h:11
+#: ../data/ui/preferences.ui.h:12
 msgid "Show w_hitespace"
 msgstr "Afișează _spațiile goale"
 
-#: ../data/ui/preferences.ui.h:12
+#: ../data/ui/preferences.ui.h:13
 msgid "Use s_yntax highlighting"
 msgstr "Folosește _evidențierea sintaxei"
 
-#: ../data/ui/preferences.ui.h:13
-msgid "External editor"
+#: ../data/ui/preferences.ui.h:14
+#, fuzzy
+#| msgid "Use s_yntax highlighting"
+msgid "Syntax highlighting color scheme:"
+msgstr "Folosește _evidențierea sintaxei"
+
+#: ../data/ui/preferences.ui.h:15
+#, fuzzy
+#| msgid "External editor"
+msgid "External Editor"
 msgstr "Editor extern"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:16
 msgid "Use _default system editor"
 msgstr "Folosește editorul implicit _de sistem"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:17
 msgid "Edito_r command:"
 msgstr "Comandă de editor:"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../data/ui/preferences.ui.h:18
 msgid "Editor"
 msgstr "Editor"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../data/ui/preferences.ui.h:19
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "Shallow Comparison"
+msgstr "Comparație _fișier"
+
+#: ../data/ui/preferences.ui.h:20
+msgid "C_ompare files based only on size and timestamp"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:21
+msgid "_Timestamp resolution:"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:23
+msgid "Note: enabling text filters may make comparing large files much slower"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:24
+#, fuzzy
+#| msgid "Ignore symbolic links"
+msgid "Symbolic Links"
+msgstr "Ignoră legaturile simbolice"
+
+#: ../data/ui/preferences.ui.h:26
+msgid "Visible Columns"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:27
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "Folder Comparisons"
+msgstr "Comparație _fișier"
+
+#: ../data/ui/preferences.ui.h:28
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "Version Comparisons"
+msgstr "Comparație _fișier"
+
+#: ../data/ui/preferences.ui.h:29
+msgid "_Order when comparing file revisions:"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:30
+msgid "Order when _merging files:"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:31
+#, fuzzy
+#| msgid "Log Message"
+msgid "Commit Messages"
+msgstr "Mesaj de înregistrare"
+
+#: ../data/ui/preferences.ui.h:32
+msgid "Show _right margin at:"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:33
+msgid "Automatically _break lines at right margin on commit"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:34
+#, fuzzy
+#| msgid "Version Control\t1\t%s\n"
+msgid "Version Control"
+msgstr "Control al versiunilor\t1\t%s\n"
+
+#: ../data/ui/preferences.ui.h:35
+#, fuzzy
+#| msgid "File filters"
+msgid "Filename filters"
+msgstr "Filtre de fișier"
+
+#: ../data/ui/preferences.ui.h:36
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -312,15 +1146,25 @@ msgstr ""
 "după nume. Fiecare tipar este o listă de metacaractere de tip shell separate "
 "prin spații."
 
-#: ../data/ui/preferences.ui.h:18
-msgid "Ignore symbolic links"
-msgstr "Ignoră legaturile simbolice"
-
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:37 ../meld/meldwindow.py:104
 msgid "File Filters"
 msgstr "Filtre de fișiere"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:38
+msgid "Change trimming"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:39
+msgid "Trim blank line differences from the start and end of changes"
+msgstr ""
+
+#: ../data/ui/preferences.ui.h:40
+#, fuzzy
+#| msgid "Text Filters"
+msgid "Text filters"
+msgstr "Filtre de text"
+
+#: ../data/ui/preferences.ui.h:41
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -334,165 +1178,705 @@ msgstr ""
 "grupuri, atunci doar grupurile vor fi înlocuite. Pentru mai multe detalii "
 "consultați manualul."
 
-#: ../data/ui/preferences.ui.h:21
-msgid "Ignore changes which insert or delete blank lines"
-msgstr ""
-"Ignoră modificările care implică adăugarea sau ștergerea de linii goale"
-
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:42
 msgid "Text Filters"
 msgstr "Filtre de text"
 
-#: ../data/ui/preferences.ui.h:23
-msgid "Loading"
-msgstr "Se încarcă"
-
-#: ../data/ui/preferences.ui.h:24
-msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+#: ../data/ui/preferences.ui.h:43
+msgid "Left is remote, right is local"
 msgstr ""
-"Cand se încarcă, încercați aceste codecuri în ordine. (ex. utf8, iso8859)"
 
-#: ../data/ui/preferences.ui.h:25
-msgid "Encoding"
-msgstr "Codare"
+#: ../data/ui/preferences.ui.h:44
+msgid "Left is local, right is remote"
+msgstr ""
 
-#: ../data/ui/vcview.ui.h:1
-msgid "VC Log"
-msgstr "Înregistrare control de versiuni"
+#: ../data/ui/preferences.ui.h:45
+msgid "Remote, merge, local"
+msgstr ""
 
-#: ../data/ui/vcview.ui.h:2
-msgid "Commit Files"
-msgstr "Validează fișierele"
+#: ../data/ui/preferences.ui.h:46
+msgid "Local, merge, remote"
+msgstr ""
 
-#: ../data/ui/vcview.ui.h:3
-msgid "Previous Logs"
-msgstr "Înregistrări precedente"
+#: ../data/ui/preferences.ui.h:47
+msgid "1ns (ext4)"
+msgstr ""
 
-#: ../data/ui/vcview.ui.h:4
-msgid "Log Message"
-msgstr "Mesaj de înregistrare"
+#: ../data/ui/preferences.ui.h:48
+msgid "100ns (NTFS)"
+msgstr ""
 
-#: ../meld/dirdiff.py:232 ../meld/vcview.py:127
-msgid "_Compare"
-msgstr "_Compară"
+#: ../data/ui/preferences.ui.h:49
+msgid "1s (ext2/ext3)"
+msgstr ""
 
-#: ../meld/dirdiff.py:232 ../meld/vcview.py:127
-msgid "Compare selected"
-msgstr "Compară obiectul selectat"
+#: ../data/ui/preferences.ui.h:50
+msgid "2s (VFAT)"
+msgstr ""
 
-#: ../meld/dirdiff.py:233
+#: ../data/ui/shortcuts.ui.h:1
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:2
+#, fuzzy
+#| msgid "_File Comparison"
+msgctxt "shortcut window"
+msgid "New comparison"
+msgstr "Comparație _fișier"
+
+#: ../data/ui/shortcuts.ui.h:3
+#, fuzzy
+#| msgid "Reload the comparison"
+msgctxt "shortcut window"
+msgid "Close a comparison"
+msgstr "Reîncarcă comparația"
+
+#: ../data/ui/shortcuts.ui.h:4
+#, fuzzy
+#| msgid "Meld"
+msgctxt "shortcut window"
+msgid "Quit Meld"
+msgstr "Meld"
+
+#: ../data/ui/shortcuts.ui.h:5
+#, fuzzy
+#| msgid "Stop the current action"
+msgctxt "shortcut window"
+msgid "Stop the current action"
+msgstr "Întrerupe acțiunea curentă"
+
+#: ../data/ui/shortcuts.ui.h:6
+#, fuzzy
+#| msgid "Reload the comparison"
+msgctxt "shortcut window"
+msgid "Refresh comparison"
+msgstr "Reîncarcă comparația"
+
+#: ../data/ui/shortcuts.ui.h:7
+#, fuzzy
+#| msgid "Full Screen"
+msgctxt "shortcut window"
+msgid "Fullscreen"
+msgstr "Ecran complet"
+
+#: ../data/ui/shortcuts.ui.h:8
+msgctxt "shortcut window"
+msgid "Tabs"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:9
+#, fuzzy
+#| msgid "Go to the previous change"
+msgctxt "shortcut window"
+msgid "Go to previous tab"
+msgstr "Revino la modificarea precedentă"
+
+#: ../data/ui/shortcuts.ui.h:10
+#, fuzzy
+#| msgid "Go to the next change"
+msgctxt "shortcut window"
+msgid "Go to next tab"
+msgstr "Mergi la următoarea modificare"
+
+#: ../data/ui/shortcuts.ui.h:11
+msgctxt "shortcut window"
+msgid "Switch to tab"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:12
 #, fuzzy
 #| msgid "Copy To Left"
-msgid "Copy _Left"
+msgctxt "shortcut window"
+msgid "Move tab left"
 msgstr "Copiază la stânga"
 
-#: ../meld/dirdiff.py:233
+#: ../data/ui/shortcuts.ui.h:13
+#, fuzzy
+#| msgid "Copy To Right"
+msgctxt "shortcut window"
+msgid "Move tab right"
+msgstr "Copiază la dreapta"
+
+#: ../data/ui/shortcuts.ui.h:14
+#, fuzzy
+#| msgid "_Changes"
+msgctxt "shortcut window"
+msgid "Changes"
+msgstr "_Modificări"
+
+#: ../data/ui/shortcuts.ui.h:15
+#, fuzzy
+#| msgid "Go to the previous change"
+msgctxt "shortcut window"
+msgid "Go to previous change"
+msgstr "Revino la modificarea precedentă"
+
+#: ../data/ui/shortcuts.ui.h:16
+#, fuzzy
+#| msgid "Go to the next change"
+msgctxt "shortcut window"
+msgid "Go to next change"
+msgstr "Mergi la următoarea modificare"
+
+#: ../data/ui/shortcuts.ui.h:17
+#, fuzzy
+#| msgid "_Edit"
+msgctxt "shortcut window"
+msgid "Editing"
+msgstr "_Editare"
+
+#: ../data/ui/shortcuts.ui.h:18
+msgctxt "shortcut window"
+msgid "Undo"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:19
+msgctxt "shortcut window"
+msgid "Redo"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:20
+msgctxt "shortcut window"
+msgid "Cut"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:21
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:22
+msgctxt "shortcut window"
+msgid "Paste"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:23
+msgctxt "shortcut window"
+msgid "Find"
+msgstr ""
+
+#: ../data/ui/shortcuts.ui.h:24
+#, fuzzy
+#| msgid "Find Ne_xt"
+msgctxt "shortcut window"
+msgid "Find Next"
+msgstr "Găsește _următorul"
+
+#: ../data/ui/shortcuts.ui.h:25
+#, fuzzy
+#| msgid "_Previous"
+msgctxt "shortcut window"
+msgid "Find Previous"
+msgstr "Îna_poi"
+
+#: ../data/ui/shortcuts.ui.h:26
+#, fuzzy
+#| msgid "_Replace"
+msgctxt "shortcut window"
+msgid "Replace"
+msgstr "În_locuiește"
+
+#: ../data/ui/shortcuts.ui.h:27
+#, fuzzy
+#| msgid "_File Comparison"
+msgctxt "shortcut window"
+msgid "File comparison"
+msgstr "Comparație _fișier"
+
+#: ../data/ui/shortcuts.ui.h:28
+#, fuzzy
+#| msgid "Save the current file"
+msgctxt "shortcut window"
+msgid "Save current file"
+msgstr "Salvează fișierul curent"
+
+#: ../data/ui/shortcuts.ui.h:29
+#, fuzzy
+#| msgid "Save the current file"
+msgctxt "shortcut window"
+msgid "Save current file to new path"
+msgstr "Salvează fișierul curent"
+
+#: ../data/ui/shortcuts.ui.h:30
+#, fuzzy
+#| msgid "Start a new comparison"
+msgctxt "shortcut window"
+msgid "Save all files in comparison"
+msgstr "Începe o nouă comparație"
+
+#: ../data/ui/shortcuts.ui.h:31
+#, fuzzy
+#| msgid "Previous conflict"
+msgctxt "shortcut window"
+msgid "Previous conflict"
+msgstr "Conflict precedent"
+
+#: ../data/ui/shortcuts.ui.h:32
+#, fuzzy
+#| msgid "Next conflict"
+msgctxt "shortcut window"
+msgid "Next conflict"
+msgstr "Următorul conflict"
+
+#: ../data/ui/shortcuts.ui.h:33
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Push change to left"
+msgstr "Împinge la stânga"
+
+#: ../data/ui/shortcuts.ui.h:34
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Push change to right"
+msgstr "Împinge la dreapta"
+
+#: ../data/ui/shortcuts.ui.h:35
+#, fuzzy
+#| msgid "Pull change from the left"
+msgctxt "shortcut window"
+msgid "Pull change from left"
+msgstr "Trage modificarea de la stânga"
+
+#: ../data/ui/shortcuts.ui.h:36
+#, fuzzy
+#| msgid "Pull change from the right"
+msgctxt "shortcut window"
+msgid "Pull change from right"
+msgstr "Trage modificarea de la dreapta"
+
+#: ../data/ui/shortcuts.ui.h:37
+#, fuzzy
+#| msgid "Copy change above the left chunk"
+msgctxt "shortcut window"
+msgid "Copy change above left"
+msgstr "Copiază modificarea deasupra segmentului stâng"
+
+#: ../data/ui/shortcuts.ui.h:38
+#, fuzzy
+#| msgid "Copy change below the left chunk"
+msgctxt "shortcut window"
+msgid "Copy change below left"
+msgstr "Copiază modificarea sub segmentul stâng"
+
+#: ../data/ui/shortcuts.ui.h:39
+#, fuzzy
+#| msgid "Copy change above the right chunk"
+msgctxt "shortcut window"
+msgid "Copy change above right"
+msgstr "Copiază modificarea deasupra segmentului drept"
+
+#: ../data/ui/shortcuts.ui.h:40
+#, fuzzy
+#| msgid "Copy change below the right chunk"
+msgctxt "shortcut window"
+msgid "Copy change below right"
+msgstr "Copiază modificarea sub segmentul drept"
+
+#: ../data/ui/shortcuts.ui.h:41
+#, fuzzy
+#| msgid "Delete change"
+msgctxt "shortcut window"
+msgid "Delete change"
+msgstr "Șterge modificarea"
+
+#: ../data/ui/shortcuts.ui.h:42
+#, fuzzy
+#| msgid "Previous change"
+msgctxt "shortcut window"
+msgid "Previous comparison pane"
+msgstr "Modificarea precedentă"
+
+#: ../data/ui/shortcuts.ui.h:43
+#, fuzzy
+#| msgid "Reload the comparison"
+msgctxt "shortcut window"
+msgid "Next comparison pane"
+msgstr "Reîncarcă comparația"
+
+#: ../data/ui/shortcuts.ui.h:44
+#, fuzzy
+#| msgid "_File Comparison"
+msgctxt "shortcut window"
+msgid "Folder comparison"
+msgstr "Comparație _fișier"
+
+#: ../data/ui/shortcuts.ui.h:45
 #, fuzzy
 #| msgid "Copy To Left"
+msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Copiază la stânga"
 
-#: ../meld/dirdiff.py:234
+#: ../data/ui/shortcuts.ui.h:46
 #, fuzzy
 #| msgid "Copy To Right"
-msgid "Copy _Right"
-msgstr "Copiază la dreapta"
-
-#: ../meld/dirdiff.py:234
-#, fuzzy
-#| msgid "Copy To Right"
+msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Copiază la dreapta"
 
-#: ../meld/dirdiff.py:235
-msgid "Delete selected"
-msgstr "Șterge obiectul selectat"
+#: ../data/ui/shortcuts.ui.h:47
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Version control comparison"
+msgstr "Începe o comparație de control a versiunilor"
 
-#: ../meld/dirdiff.py:236 ../meld/filediff.py:1165
-msgid "Hide"
-msgstr "Ascunde"
+#: ../data/ui/shortcuts.ui.h:48
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Commit to version control"
+msgstr "Alegeți un panou de control al versiunilor"
 
-#: ../meld/dirdiff.py:236
-msgid "Hide selected"
-msgstr "Ascunde obiectul selectat"
+#: ../data/ui/shortcuts.ui.h:49
+msgctxt "shortcut window"
+msgid "Show/hide console output"
+msgstr ""
 
-#: ../meld/dirdiff.py:240
-msgid "Case"
-msgstr "Majusculă"
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:562
+#: ../meld/newdifftab.py:38
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "New comparison"
+msgstr "Comparație _fișier"
 
-#: ../meld/dirdiff.py:240
-msgid "Ignore case of entries"
-msgstr "Ignoră majusculele intrărilor"
+#: ../data/ui/tab-placeholder.ui.h:2
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "File comparison"
+msgstr "Comparație _fișier"
 
-#: ../meld/dirdiff.py:241
-msgid "Same"
-msgstr "Același"
+#: ../data/ui/tab-placeholder.ui.h:3
+#, fuzzy
+#| msgid "_Directory Comparison"
+msgid "Directory comparison"
+msgstr "Comparație _director"
 
-#: ../meld/dirdiff.py:241
-msgid "Show identical"
-msgstr "Afișează fișierele identice"
+#: ../data/ui/tab-placeholder.ui.h:4
+#, fuzzy
+#| msgid "_Version Control Browser"
+msgid "Version control view"
+msgstr "Navigator de control al _versiunilor"
 
-#: ../meld/dirdiff.py:242
-msgid "New"
-msgstr "Nou"
+#: ../data/ui/tab-placeholder.ui.h:5
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "_3-way comparison"
+msgstr "Comparație _fișier"
 
-#: ../meld/dirdiff.py:242
-msgid "Show new"
-msgstr "Afișează fișierele noi"
+#: ../data/ui/tab-placeholder.ui.h:6
+#, fuzzy
+#| msgid "Select file"
+msgid "Select Third File"
+msgstr "Selectați fișierul"
 
-#: ../meld/dirdiff.py:243
-msgid "Modified"
-msgstr "Modificări"
+#: ../data/ui/tab-placeholder.ui.h:7
+#, fuzzy
+#| msgid "Select file"
+msgid "Select Second File"
+msgstr "Selectați fișierul"
 
-#: ../meld/dirdiff.py:243 ../meld/vcview.py:140
-msgid "Show modified"
-msgstr "Afișează obiectele modificate"
+#: ../data/ui/tab-placeholder.ui.h:8
+#, fuzzy
+#| msgid "Select file"
+msgid "Select First File"
+msgstr "Selectați fișierul"
 
-#: ../meld/dirdiff.py:245
-msgid "Filters"
-msgstr "Filtre"
+#: ../data/ui/tab-placeholder.ui.h:9
+#, fuzzy
+#| msgid "Select directory"
+msgid "Select First Folder"
+msgstr "Selectați directorul"
 
-#: ../meld/dirdiff.py:245
-msgid "Set active filters"
-msgstr "Definește filtrele active"
+#: ../data/ui/tab-placeholder.ui.h:10
+#, fuzzy
+#| msgid "Select directory"
+msgid "Select Second Folder"
+msgstr "Selectați directorul"
 
-#: ../meld/dirdiff.py:362
+#: ../data/ui/tab-placeholder.ui.h:11
+#, fuzzy
+#| msgid "Select file"
+msgid "Select Third Folder"
+msgstr "Selectați fișierul"
+
+#: ../data/ui/tab-placeholder.ui.h:12
+#, fuzzy
+#| msgid "_Version Control Browser"
+msgid "Select A Version-Controlled Folder"
+msgstr "Navigator de control al _versiunilor"
+
+#: ../data/ui/tab-placeholder.ui.h:13
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "_Blank comparison"
+msgstr "Comparație _fișier"
+
+#: ../data/ui/tab-placeholder.ui.h:14
+#, fuzzy
+#| msgid "_Compare"
+msgid "C_ompare"
+msgstr "_Compară"
+
+#: ../data/ui/vcview.ui.h:3
+#, fuzzy
+#| msgid "Commit"
+msgid "Co_mmit..."
+msgstr "Validează"
+
+#: ../data/ui/vcview.ui.h:4
+#, fuzzy
+msgid "Commit changes to version control"
+msgstr "Alegeți un panou de control al versiunilor"
+
+#: ../data/ui/vcview.ui.h:5
+msgid "_Update"
+msgstr "_Actualizează"
+
+#: ../data/ui/vcview.ui.h:6
+msgid "Update working copy from version control"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:7
+msgid "_Push"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:8
+#, fuzzy
+msgid "Push local changes to remote"
+msgstr "Împinge modificarea curentă la stânga"
+
+#: ../data/ui/vcview.ui.h:10
+#, fuzzy
+msgid "Add to version control"
+msgstr "Alegeți un panou de control al versiunilor"
+
+#: ../data/ui/vcview.ui.h:12
+#, fuzzy
+msgid "Remove from version control"
+msgstr "Alegeți un panou de control al versiunilor"
+
+#: ../data/ui/vcview.ui.h:13
+#, fuzzy
+msgid "Mar_k as Resolved"
+msgstr "Marcat ca rezolvat pentru panoul de control al versiunilor"
+
+#: ../data/ui/vcview.ui.h:14
+#, fuzzy
+msgid "Mark as resolved in version control"
+msgstr "Marcat ca rezolvat pentru panoul de control al versiunilor"
+
+#: ../data/ui/vcview.ui.h:15
+msgid "Re_vert"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:16
+#, fuzzy
+#| msgid "Revert to original"
+msgid "Revert working copy to original state"
+msgstr "Revino la original"
+
+#: ../data/ui/vcview.ui.h:17
+msgid "Delete from working copy"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:18
+msgid "Console"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:19
+msgid "Show or hide the version control console output pane"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:20
+msgid "_Flatten"
+msgstr "_Nivelează"
+
+#: ../data/ui/vcview.ui.h:21
+msgid "Flatten directories"
+msgstr "Nivelează directoarele"
+
+#: ../data/ui/vcview.ui.h:22
+msgid "_Modified"
+msgstr "_Modificat"
+
+#: ../data/ui/vcview.ui.h:23
+#, fuzzy
+#| msgid "Save modified files?"
+msgid "Show modified files"
+msgstr "Salvați fișierele modificate?"
+
+#: ../data/ui/vcview.ui.h:24
+msgid "_Normal"
+msgstr "_Normal"
+
+#: ../data/ui/vcview.ui.h:25
+#, fuzzy
+#| msgid "Show ignored files"
+msgid "Show normal files"
+msgstr "Afișează fișierele ignorate"
+
+#: ../data/ui/vcview.ui.h:26
+msgid "Un_versioned"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:27
+msgid "Show unversioned files"
+msgstr "Afișează fișierele care nu au versiune"
+
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:70
+msgid "Ignored"
+msgstr "Ignorat"
+
+#: ../data/ui/vcview.ui.h:29
+msgid "Show ignored files"
+msgstr "Afișează fișierele ignorate"
+
+#: ../data/ui/vcview.ui.h:30
+msgid "Commit"
+msgstr "Validează"
+
+#: ../data/ui/vcview.ui.h:31
+msgid "Commit Files"
+msgstr "Validează fișierele"
+
+#: ../data/ui/vcview.ui.h:32
+msgid "Log Message"
+msgstr "Mesaj de înregistrare"
+
+#: ../data/ui/vcview.ui.h:33
+#, fuzzy
+#| msgid "Previous Logs"
+msgid "Previous logs:"
+msgstr "Înregistrări precedente"
+
+#: ../data/ui/vcview.ui.h:34
+#, fuzzy
+#| msgid "Commit"
+msgid "Co_mmit"
+msgstr "Validează"
+
+#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:332
+msgid "Location"
+msgstr "Locație"
+
+#: ../data/ui/vcview.ui.h:37
+msgid "Status"
+msgstr "Stare"
+
+#: ../data/ui/vcview.ui.h:38
+msgid "Extra"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:39
+msgid "Console output"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:40
+msgid "Push local commits to remote?"
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:41
+msgid "The commits to be pushed are determined by your version control system."
+msgstr ""
+
+#: ../data/ui/vcview.ui.h:42
+#, fuzzy
+msgid "_Push commits"
+msgstr "Împinge la dreapta"
+
+#: ../meld/const.py:12
+msgid "UNIX (LF)"
+msgstr ""
+
+#: ../meld/const.py:13
+msgid "DOS/Windows (CR-LF)"
+msgstr ""
+
+#: ../meld/const.py:14
+msgid "Mac OS (CR)"
+msgstr ""
+
+#. Create file size CellRenderer
+#: ../meld/dirdiff.py:392 ../meld/preferences.py:82
+msgid "Size"
+msgstr ""
+
+#. Create date-time CellRenderer
+#: ../meld/dirdiff.py:400 ../meld/preferences.py:83
+msgid "Modification time"
+msgstr ""
+
+#. Create permissions CellRenderer
+#: ../meld/dirdiff.py:408 ../meld/preferences.py:84
+msgid "Permissions"
+msgstr ""
+
+#: ../meld/dirdiff.py:535
 #, python-format
 msgid "Hide %s"
 msgstr "Ascunde %s"
 
-#: ../meld/dirdiff.py:466 ../meld/dirdiff.py:479 ../meld/vcview.py:323
-#: ../meld/vcview.py:347
+#: ../meld/dirdiff.py:667 ../meld/dirdiff.py:691
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Se analizează %s"
 
-#: ../meld/dirdiff.py:578
+#: ../meld/dirdiff.py:823
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Terminat"
 
-#: ../meld/dirdiff.py:582
+#: ../meld/dirdiff.py:831
+#, fuzzy
+#| msgid "[%s] Fetching differences"
+msgid "Folders have no differences"
+msgstr "[%s] Se potrivesc diferențele"
+
+#: ../meld/dirdiff.py:833
+msgid "Contents of scanned files in folders are identical."
+msgstr ""
+
+#: ../meld/dirdiff.py:835
+msgid ""
+"Scanned files in folders appear identical, but contents have not been "
+"scanned."
+msgstr ""
+
+#: ../meld/dirdiff.py:838
+msgid "File filters are in use, so not all files have been scanned."
+msgstr ""
+
+#: ../meld/dirdiff.py:840
+msgid "Text filters are in use and may be masking content differences."
+msgstr ""
+
+#: ../meld/dirdiff.py:858 ../meld/filediff.py:1362 ../meld/filediff.py:1392
+#: ../meld/filediff.py:1394 ../meld/ui/msgarea.py:105 ../meld/ui/msgarea.py:118
+msgid "Hi_de"
+msgstr "Ascun_de"
+
+#: ../meld/dirdiff.py:868
 msgid "Multiple errors occurred while scanning this folder"
 msgstr ""
 
-#: ../meld/dirdiff.py:583
+#: ../meld/dirdiff.py:869
 #, fuzzy
 #| msgid "%s is not in encodings: %s"
 msgid "Files with invalid encodings found"
 msgstr "%s nu se află în codări: %s"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:585
+#: ../meld/dirdiff.py:871
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 
-#: ../meld/dirdiff.py:587
+#: ../meld/dirdiff.py:873
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:589
+#: ../meld/dirdiff.py:875
 #, fuzzy
 #| msgid ""
 #| "You are running a case insensitive comparison on a case sensitive "
@@ -506,1059 +1890,1274 @@ msgstr ""
 "sensibil la majuscule. Anumite fișiere nu sunt vizibile:\n"
 "%s"
 
-#: ../meld/dirdiff.py:600
+#: ../meld/dirdiff.py:886
 #, python-format
 msgid "'%s' hidden by '%s'"
 msgstr "„%s” ascuns de „%s”"
 
-#: ../meld/dirdiff.py:625 ../meld/filediff.py:1008 ../meld/filediff.py:1169
-msgid "Hi_de"
-msgstr "Ascun_de"
-
-#: ../meld/dirdiff.py:675
+#: ../meld/dirdiff.py:942
 #, python-format
-msgid ""
-"'%s' exists.\n"
-"Overwrite?"
+msgid "Replace folder “%s”?"
 msgstr ""
-"„%s” există deja.\n"
-"Suprascrieți?"
 
-#: ../meld/dirdiff.py:682
+#: ../meld/dirdiff.py:944
 #, python-format
 msgid ""
-"Error copying '%s' to '%s'\n"
+"Another folder with the same name already exists in “%s”.\n"
+"If you replace the existing folder, all files in it will be lost."
+msgstr ""
+
+#: ../meld/dirdiff.py:957
+msgid "Error copying file"
+msgstr ""
+
+#: ../meld/dirdiff.py:958
+#, fuzzy, python-format
+#| msgid ""
+#| "Error copying '%s' to '%s'\n"
+#| "\n"
+#| "%s."
+msgid ""
+"Couldn't copy %s\n"
+"to %s.\n"
 "\n"
-"%s."
+"%s"
 msgstr ""
 "Eroare la copierea „%s” în „%s”\n"
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:700 ../meld/vcview.py:536
-#, python-format
-msgid ""
-"'%s' is a directory.\n"
-"Remove recursively?"
-msgstr ""
-"„%s” este un director.\n"
-"Eliminați recursiv?"
-
-#: ../meld/dirdiff.py:707 ../meld/vcview.py:541
-#, python-format
-msgid ""
-"Error removing %s\n"
-"\n"
-"%s."
+#: ../meld/dirdiff.py:981
+#, fuzzy, python-format
+#| msgid ""
+#| "Error removing %s\n"
+#| "\n"
+#| "%s."
+msgid "Error deleting %s"
 msgstr ""
 "Eroare la ștergerea %s\n"
 "\n"
 "%s."
 
-#: ../meld/dirdiff.py:741
-#, python-format
-msgid "%i second"
-msgid_plural "%i seconds"
-msgstr[0] "%i secundă"
-msgstr[1] "%i secunde"
-
-#: ../meld/dirdiff.py:742
-#, python-format
-msgid "%i minute"
-msgid_plural "%i minutes"
-msgstr[0] "%i minut"
-msgstr[1] "%i minute"
-
-#: ../meld/dirdiff.py:743
-#, python-format
-msgid "%i hour"
-msgid_plural "%i hours"
-msgstr[0] "%i oră"
-msgstr[1] "%i ore"
-
-#: ../meld/dirdiff.py:744
-#, python-format
-msgid "%i day"
-msgid_plural "%i days"
-msgstr[0] "%i zi"
-msgstr[1] "%i zile"
-
-#: ../meld/dirdiff.py:745
-#, python-format
-msgid "%i week"
-msgid_plural "%i weeks"
-msgstr[0] "%i saptamână"
-msgstr[1] "%i săptămâni"
-
-#: ../meld/dirdiff.py:746
-#, python-format
-msgid "%i month"
-msgid_plural "%i months"
-msgstr[0] "%i lună"
-msgstr[1] "%i luni"
-
-#: ../meld/dirdiff.py:747
-#, python-format
-msgid "%i year"
-msgid_plural "%i years"
-msgstr[0] "%i an"
-msgstr[1] "%i ani"
-
-#: ../meld/filediff.py:294
-msgid "Format as patch..."
-msgstr "Formatează ca petic..."
-
-#: ../meld/filediff.py:294
-msgid "Create a patch using differences between files"
-msgstr "Creează un petic folosind diferențe între fișiere"
-
-#: ../meld/filediff.py:295
-msgid "Previous conflict"
-msgstr "Conflict precedent"
-
-#: ../meld/filediff.py:295
-msgid "Go to the previous conflict"
-msgstr "Mergi la conflictul precedent"
-
-#: ../meld/filediff.py:296
-msgid "Next conflict"
-msgstr "Următorul conflict"
-
-#: ../meld/filediff.py:296
-msgid "Go to the next conflict"
-msgstr "Mergi la următorul conflict"
-
-#: ../meld/filediff.py:297
-#, fuzzy
-msgid "Push to left"
-msgstr "Împinge la stânga"
-
-#: ../meld/filediff.py:297
-#, fuzzy
-msgid "Push current change to the left"
-msgstr "Împinge modificarea curentă la stânga"
-
-#: ../meld/filediff.py:298
-#, fuzzy
-msgid "Push to right"
-msgstr "Împinge la dreapta"
-
-#: ../meld/filediff.py:298
-#, fuzzy
-msgid "Push current change to the right"
-msgstr "Împinge modificarea curentă la dreapta"
-
-#. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:300
-msgid "Pull from left"
-msgstr "Trage de la stânga"
-
-#: ../meld/filediff.py:300
-msgid "Pull change from the left"
-msgstr "Trage modificarea de la stânga"
-
-#: ../meld/filediff.py:301
-msgid "Pull from right"
-msgstr "Trage de la dreapta"
-
-#: ../meld/filediff.py:301
-msgid "Pull change from the right"
-msgstr "Trage modificarea de la dreapta"
-
-#: ../meld/filediff.py:302
-msgid "Copy above left"
-msgstr "Copiază deasupra la stânga"
-
-#: ../meld/filediff.py:302
-msgid "Copy change above the left chunk"
-msgstr "Copiază modificarea deasupra segmentului stâng"
-
-#: ../meld/filediff.py:303
-msgid "Copy below left"
-msgstr "Copiază dedesubt la stânga"
-
-#: ../meld/filediff.py:303
-msgid "Copy change below the left chunk"
-msgstr "Copiază modificarea sub segmentul stâng"
-
-#: ../meld/filediff.py:304
-msgid "Copy above right"
-msgstr "Copiază deasupra la dreapta"
-
-#: ../meld/filediff.py:304
-msgid "Copy change above the right chunk"
-msgstr "Copiază modificarea deasupra segmentului drept"
-
-#: ../meld/filediff.py:305
-msgid "Copy below right"
-msgstr "Copiază dedesubt la dreapta"
-
-#: ../meld/filediff.py:305
-msgid "Copy change below the right chunk"
-msgstr "Copiază modificarea sub segmentul drept"
-
-#: ../meld/filediff.py:306
-msgid "Delete"
-msgstr "Șterge"
-
-#: ../meld/filediff.py:306
-msgid "Delete change"
-msgstr "Șterge modificarea"
-
-#: ../meld/filediff.py:307
-msgid "Merge all changes from left"
-msgstr "Combină toate modificările din stânga"
-
-#: ../meld/filediff.py:307
-msgid "Merge all non-conflicting changes from the left"
-msgstr "Combină toate modificările non-conflictuale din stânga"
-
-#: ../meld/filediff.py:308
-msgid "Merge all changes from right"
-msgstr "Combină toate modificările din dreapta"
-
-#: ../meld/filediff.py:308
-msgid "Merge all non-conflicting changes from the right"
-msgstr "Combină toate modificările non-conflictuale din dreapta"
-
-#: ../meld/filediff.py:309
-msgid "Merge all non-conflicting"
-msgstr "Combină toate modificările non-conflictuale"
-
-#: ../meld/filediff.py:309
-msgid "Merge all non-conflicting changes from left and right panes"
-msgstr "Combină toate modificările non-conflictuale din panoul stâng și drept"
-
-#: ../meld/filediff.py:310
-msgid "Cycle through documents"
-msgstr ""
-
-#: ../meld/filediff.py:310
-msgid "Move keyboard focus to the next document in this comparison"
-msgstr ""
-
-#: ../meld/filediff.py:314
-msgid "Lock scrolling"
-msgstr ""
-
-#: ../meld/filediff.py:315
-msgid "Lock scrolling of all panes"
+#: ../meld/dirdiff.py:1494
+msgid "No folder"
 msgstr ""
 
 #. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:396
+#: ../meld/filediff.py:335
 msgid "INS"
 msgstr "INS"
 
-#: ../meld/filediff.py:396
+#: ../meld/filediff.py:335
 msgid "OVR"
 msgstr "SPR"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:398
+#: ../meld/filediff.py:337
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Ln %i, Col %i"
 
-#: ../meld/filediff.py:722
-#, fuzzy, python-format
+#: ../meld/filediff.py:762
+msgid "Comparison results will be inaccurate"
+msgstr ""
+
+#: ../meld/filediff.py:764
+#, fuzzy
 #| msgid ""
 #| "Regular expression '%s' changed the number of lines in the file. "
 #| "Comparison will be incorrect. See the user manual for more details."
 msgid ""
-"Filter '%s' changed the number of lines in the file. Comparison will be "
-"incorrect. See the user manual for more details."
+"A filter changed the number of lines in the file, which is unsupported. The "
+"comparison will not be accurate."
 msgstr ""
 "Expresia regulată „%s” a modificat numărul de linii din fișier. Comparația "
 "va fi incorectă. Pentru mai multe detalii consultați manualul utilizatorului."
 
-#. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:809
-msgid "<unnamed>"
-msgstr "<nedenumit>"
+#: ../meld/filediff.py:820
+#, fuzzy
+msgid "Mark conflict as resolved?"
+msgstr "Marcat ca rezolvat pentru panoul de control al versiunilor"
 
-#: ../meld/filediff.py:996
+#: ../meld/filediff.py:822
+msgid ""
+"If the conflict was resolved successfully, you may mark it as resolved now."
+msgstr ""
+
+#: ../meld/filediff.py:824
+msgid "Cancel"
+msgstr ""
+
+#: ../meld/filediff.py:825
+#, fuzzy
+#| msgid "_Resolved"
+msgid "Mark _Resolved"
+msgstr "_Rezolvat"
+
+#: ../meld/filediff.py:1076
 #, python-format
-msgid "[%s] Set num panes"
-msgstr "[%s] Definește numărul de panouri"
+msgid "There was a problem opening the file “%s”."
+msgstr ""
 
-#: ../meld/filediff.py:1002
-#, python-format
-msgid "[%s] Opening files"
-msgstr "[%s] Se deschid fișierele"
-
-#: ../meld/filediff.py:1026 ../meld/filediff.py:1035 ../meld/filediff.py:1047
-#: ../meld/filediff.py:1053
-msgid "Could not read file"
-msgstr "Nu s-a putut citi fișierul"
-
-#: ../meld/filediff.py:1027
-#, python-format
-msgid "[%s] Reading files"
-msgstr "[%s] Se citesc fișierele"
-
-#: ../meld/filediff.py:1036
-#, python-format
-msgid "%s appears to be a binary file."
+#: ../meld/filediff.py:1084
+#, fuzzy, python-format
+#| msgid "%s appears to be a binary file."
+msgid "File %s appears to be a binary file."
 msgstr "%s apare ca fișier binar."
 
-#: ../meld/filediff.py:1048
-#, python-format
-msgid "%s is not in encodings: %s"
-msgstr "%s nu se află în codări: %s"
+#: ../meld/filediff.py:1086
+msgid "Do you want to open the file using the default application?"
+msgstr ""
 
-#: ../meld/filediff.py:1078 ../meld/filemerge.py:67
+#: ../meld/filediff.py:1088
+msgid "Open"
+msgstr ""
+
+#: ../meld/filediff.py:1104
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Se calculează diferențele"
 
-#: ../meld/filediff.py:1156
+#: ../meld/filediff.py:1166
+#, python-format
+msgid "File %s has changed on disk"
+msgstr ""
+
+#: ../meld/filediff.py:1167
+#, fuzzy
+#| msgid "Could not read file"
+msgid "Do you want to reload the file?"
+msgstr "Nu s-a putut citi fișierul"
+
+#: ../meld/filediff.py:1169
+#, fuzzy
+#| msgid "Reload"
+msgid "_Reload"
+msgstr "Reîncarcă"
+
+#: ../meld/filediff.py:1325
+msgid "Files are identical"
+msgstr "Fișierele sunt identice"
+
+#: ../meld/filediff.py:1338
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr ""
 
-#: ../meld/filediff.py:1162
-msgid "Files are identical"
-msgstr "Fișierele sunt identice"
+#: ../meld/filediff.py:1343
+#, fuzzy
+#| msgid "%s is not in encodings: %s"
+msgid "Files differ in line endings only"
+msgstr "%s nu se află în codări: %s"
 
-#: ../meld/filediff.py:1172
+#: ../meld/filediff.py:1345
+#, python-format
+msgid ""
+"Files are identical except for differing line endings:\n"
+"%s"
+msgstr ""
+
+#: ../meld/filediff.py:1365
 #, fuzzy
 #| msgid "Show ignored files"
 msgid "Show without filters"
 msgstr "Afișează fișierele ignorate"
 
-#: ../meld/filediff.py:1361
-#, python-format
-msgid ""
-"\"%s\" exists!\n"
-"Overwrite?"
+#: ../meld/filediff.py:1387
+msgid "Change highlighting incomplete"
 msgstr ""
-"„%s” există deja!\n"
-"Suprascrieți?"
 
-#: ../meld/filediff.py:1374
-#, python-format
+#: ../meld/filediff.py:1388
 msgid ""
-"Error writing to %s\n"
-"\n"
-"%s."
+"Some changes were not highlighted because they were too large. You can force "
+"Meld to take longer to highlight larger changes, though this may be slow."
 msgstr ""
-"Eroare la scrierea în %s\n"
-"\n"
-"%s."
 
-#: ../meld/filediff.py:1383
-#, python-format
-msgid "Choose a name for buffer %i."
-msgstr "Alegeți un nume pentru zona de memorie tampon %i."
+#: ../meld/filediff.py:1396
+#, fuzzy
+#| msgid "Use s_yntax highlighting"
+msgid "Keep highlighting"
+msgstr "Folosește _evidențierea sintaxei"
 
 #: ../meld/filediff.py:1398
-#, python-format
-msgid ""
-"This file '%s' contains a mixture of line endings.\n"
-"\n"
-"Which format would you like to use?"
-msgstr ""
-"Fișierul „%s” conține un amestec de linii de sfârșit.\n"
-"\n"
-"Ce format doriți să folosiți?"
+#, fuzzy
+#| msgid "Use s_yntax highlighting"
+msgid "_Keep highlighting"
+msgstr "Folosește _evidențierea sintaxei"
 
-#: ../meld/filediff.py:1414
+#: ../meld/filediff.py:1430
+#, python-format
+msgid "Replace file “%s”?"
+msgstr ""
+
+#: ../meld/filediff.py:1432
 #, python-format
 msgid ""
-"'%s' contains characters not encodable with '%s'\n"
+"A file with this name already exists in “%s”.\n"
+"If you replace the existing file, its contents will be lost."
+msgstr ""
+
+#: ../meld/filediff.py:1449
+#, fuzzy
+#| msgid "Save Patch As..."
+msgid "Save Left Pane As"
+msgstr "Salvează petic ca..."
+
+#: ../meld/filediff.py:1451
+#, fuzzy
+#| msgid "Left and middle panes"
+msgid "Save Middle Pane As"
+msgstr "Panouri la stânga și la mijloc"
+
+#: ../meld/filediff.py:1453
+msgid "Save Right Pane As"
+msgstr ""
+
+#: ../meld/filediff.py:1467
+#, python-format
+msgid "File %s has changed on disk since it was opened"
+msgstr ""
+
+#: ../meld/filediff.py:1469
+msgid "If you save it, any external changes will be lost."
+msgstr ""
+
+#: ../meld/filediff.py:1472
+msgid "Save Anyway"
+msgstr ""
+
+#: ../meld/filediff.py:1473
+msgid "Don't Save"
+msgstr ""
+
+#: ../meld/filediff.py:1499
+msgid "_Save as UTF-8"
+msgstr ""
+
+#: ../meld/filediff.py:1502
+#, python-format
+msgid "Couldn't encode text as “%s”"
+msgstr ""
+
+#: ../meld/filediff.py:1504
+#, fuzzy, python-format
+#| msgid ""
+#| "'%s' contains characters not encodable with '%s'\n"
+#| "Would you like to save as UTF-8?"
+msgid ""
+"File “%s” contains characters that can't be encoded using encoding “%s”.\n"
 "Would you like to save as UTF-8?"
 msgstr ""
 "„%s” conține caractere care nu pot fi codificare cu „%s”\n"
 "Doriți să salvați ca UTF-8?"
 
-#: ../meld/filediff.py:1473
+#: ../meld/filediff.py:1544 ../meld/patchdialog.py:130
+#, fuzzy, python-format
+#| msgid "Could not read file"
+msgid "Could not save file %s."
+msgstr "Nu s-a putut citi fișierul"
+
+#: ../meld/filediff.py:1545 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
-"Reloading will discard changes in:\n"
-"%s\n"
-"\n"
-"You cannot undo this operation."
+"Couldn't save file due to:\n"
+"%s"
 msgstr ""
-"Reîncărcarea va anula modificările în:\n"
-"%s\n"
-"\n"
-"Nu puteți anula această operație."
 
-#: ../meld/filemerge.py:82
+#: ../meld/filediff.py:1909
+msgid "Live comparison updating disabled"
+msgstr ""
+
+#: ../meld/filediff.py:1910
+msgid ""
+"Live updating of comparisons is disabled when synchronization points are "
+"active. You can still manually refresh the comparison, and live updates will "
+"resume when synchronization points are cleared."
+msgstr ""
+
+#: ../meld/filemerge.py:37
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Se combină fișierele"
 
-#: ../meld/meldapp.py:152
+#: ../meld/gutterrendererchunk.py:210
+#, fuzzy
+#| msgid "Copy To Left"
+msgid "Copy _up"
+msgstr "Copiază la stânga"
+
+#: ../meld/gutterrendererchunk.py:211
+#, fuzzy
+#| msgid "Copy To Left"
+msgid "Copy _down"
+msgstr "Copiază la stânga"
+
+#: ../meld/meldapp.py:179
 msgid "wrong number of arguments supplied to --diff"
 msgstr "număr de parametri incorect pentru --diff"
 
-#: ../meld/meldapp.py:156
+#: ../meld/meldapp.py:184
 msgid "Start with an empty window"
 msgstr "Începe cu o fereastră goală"
 
-#: ../meld/meldapp.py:157 ../meld/meldapp.py:158 ../meld/meldapp.py:160
+#: ../meld/meldapp.py:185 ../meld/meldapp.py:187
 msgid "file"
 msgstr "fișier"
 
-#: ../meld/meldapp.py:157 ../meld/meldapp.py:159 ../meld/meldapp.py:160
-msgid "dir"
-msgstr "director"
+#: ../meld/meldapp.py:185 ../meld/meldapp.py:189
+msgid "folder"
+msgstr ""
 
-#: ../meld/meldapp.py:157
+#: ../meld/meldapp.py:186
 #, fuzzy
 msgid "Start a version control comparison"
 msgstr "Începe o comparație de control a versiunilor"
 
-#: ../meld/meldapp.py:158
+#: ../meld/meldapp.py:188
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Începe o comparație de 2 sau 3 fișiere"
 
-#: ../meld/meldapp.py:159
-msgid "Start a 2- or 3-way directory comparison"
-msgstr "Începe o comparație de 2 sau 3 directoare"
+#: ../meld/meldapp.py:190
+#, fuzzy
+#| msgid "Start a 2- or 3-way file comparison"
+msgid "Start a 2- or 3-way folder comparison"
+msgstr "Începe o comparație de 2 sau 3 fișiere"
 
-#: ../meld/meldapp.py:160
-msgid "Start a comparison between file and dir/file"
-msgstr "Începe o comparație dintre fișier și director/fișier"
+#: ../meld/meldapp.py:233
+#, python-format
+msgid "Error: %s\n"
+msgstr ""
 
-#: ../meld/meldapp.py:166
+#: ../meld/meldapp.py:240
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld este o unealtă de comparare a fișierelor și directoarelor."
 
-#: ../meld/meldapp.py:169
+#: ../meld/meldapp.py:244
 msgid "Set label to use instead of file name"
 msgstr "Definiți eticheta care să file folosită în locul numelui de fișier"
 
-#: ../meld/meldapp.py:171
+#: ../meld/meldapp.py:247
+msgid "Open a new tab in an already running instance"
+msgstr ""
+
+#: ../meld/meldapp.py:250
 msgid "Automatically compare all differing files on startup"
 msgstr "Compară automat la pornire toate fișierele care diferă"
 
-#: ../meld/meldapp.py:173
+#: ../meld/meldapp.py:253
 msgid "Ignored for compatibility"
 msgstr ""
 
-#: ../meld/meldapp.py:176
+#: ../meld/meldapp.py:257
 msgid "Set the target file for saving a merge result"
 msgstr "Definiți fișierul țintă pentru a salva un rezultat combinat"
 
-#: ../meld/meldapp.py:179
-msgid "Creates a diff tab for up to 3 supplied files or directories."
+#: ../meld/meldapp.py:260
+#, fuzzy
+#| msgid "Automatically compare all differing files on startup"
+msgid "Automatically merge files"
+msgstr "Compară automat la pornire toate fișierele care diferă"
+
+#: ../meld/meldapp.py:264
+msgid "Load a saved comparison from a Meld comparison file"
+msgstr ""
+
+#: ../meld/meldapp.py:268
+#, fuzzy
+#| msgid "Creates a diff tab for up to 3 supplied files or directories."
+msgid "Create a diff tab for the supplied files or folders"
 msgstr "Creează un tab diferențiat pentru cel mult 3 fișiere sau directoare."
 
-#: ../meld/meldapp.py:182
-#, python-format
-msgid "too many arguments (wanted 0-4, got %d)"
+#: ../meld/meldapp.py:288
+#, fuzzy, python-format
+#| msgid "too many arguments (wanted 0-4, got %d)"
+msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "prea multe argumente (e nevoie de 0-4, %d obținute)"
 
-#: ../meld/meldapp.py:184 ../meld/meldapp.py:188
-#, fuzzy
-#| msgid "Cannot compare a mixture of files and directories.\n"
-msgid "can't compare more than three directories"
-msgstr "Nu se poate compara un amestec de fișiere și directoare.\n"
+#: ../meld/meldapp.py:291
+msgid "can't auto-merge less than 3 files"
+msgstr ""
 
-#: ../meld/melddoc.py:56 ../meld/melddoc.py:57
+#: ../meld/meldapp.py:293
+#, fuzzy
+#| msgid "Flatten directories"
+msgid "can't auto-merge directories"
+msgstr "Nivelează directoarele"
+
+#: ../meld/meldapp.py:307
+msgid "Error reading saved comparison file"
+msgstr ""
+
+#: ../meld/meldapp.py:349
+#, python-format
+msgid "invalid path or URI \"%s\""
+msgstr ""
+
+#. TRANSLATORS: This is the label of a new, currently-unnamed file.
+#: ../meld/meldbuffer.py:131
+msgid "<unnamed>"
+msgstr "<nedenumit>"
+
+#: ../meld/melddoc.py:64
 msgid "untitled"
 msgstr "fără titlu"
 
-#: ../meld/meldwindow.py:125
+#: ../meld/meldwindow.py:49
 msgid "_File"
 msgstr "_Fișier"
 
-#: ../meld/meldwindow.py:126
-msgid "_New..."
-msgstr "_Nou..."
+#: ../meld/meldwindow.py:50
+#, fuzzy
+#| msgid "_File Comparison"
+msgid "_New Comparison..."
+msgstr "Comparație _fișier"
 
-#: ../meld/meldwindow.py:126
+#: ../meld/meldwindow.py:51
 msgid "Start a new comparison"
 msgstr "Începe o nouă comparație"
 
-#: ../meld/meldwindow.py:127
+#: ../meld/meldwindow.py:54
 msgid "Save the current file"
 msgstr "Salvează fișierul curent"
 
-#: ../meld/meldwindow.py:129
+#: ../meld/meldwindow.py:56
+#, fuzzy
+#| msgid "Save Patch As..."
+msgid "Save As..."
+msgstr "Salvează petic ca..."
+
+#: ../meld/meldwindow.py:57
+#, fuzzy
+#| msgid "Save the current file"
+msgid "Save the current file with a different name"
+msgstr "Salvează fișierul curent"
+
+#: ../meld/meldwindow.py:60
 msgid "Close the current file"
 msgstr "Închide fișierul curent"
 
-#: ../meld/meldwindow.py:130
-msgid "Quit the program"
-msgstr "Părăsește programul"
-
-#: ../meld/meldwindow.py:132
+#: ../meld/meldwindow.py:63
 msgid "_Edit"
 msgstr "_Editare"
 
-#: ../meld/meldwindow.py:133
+#: ../meld/meldwindow.py:65
 msgid "Undo the last action"
 msgstr "Anulează ultima acțiune"
 
-#: ../meld/meldwindow.py:134
+#: ../meld/meldwindow.py:68
 msgid "Redo the last undone action"
 msgstr "Refă ultima acțiune neterminată"
 
-#: ../meld/meldwindow.py:135
+#: ../meld/meldwindow.py:70
 msgid "Cut the selection"
 msgstr "Taie selecția"
 
-#: ../meld/meldwindow.py:136
+#: ../meld/meldwindow.py:72
 msgid "Copy the selection"
 msgstr "Copiază selecția"
 
-#: ../meld/meldwindow.py:137
+#: ../meld/meldwindow.py:74
 msgid "Paste the clipboard"
 msgstr "Lipește clipboard-ul"
 
-#: ../meld/meldwindow.py:138
+#: ../meld/meldwindow.py:76
+msgid "Find..."
+msgstr ""
+
+#: ../meld/meldwindow.py:76
 msgid "Search for text"
 msgstr "Caută după text"
 
-#: ../meld/meldwindow.py:139
+#: ../meld/meldwindow.py:78
 msgid "Find Ne_xt"
 msgstr "Găsește _următorul"
 
-#: ../meld/meldwindow.py:139
+#: ../meld/meldwindow.py:79
 msgid "Search forwards for the same text"
 msgstr "Caută după același text în față"
 
-#: ../meld/meldwindow.py:140
+#: ../meld/meldwindow.py:81
 #, fuzzy
 #| msgid "_Previous"
 msgid "Find _Previous"
 msgstr "Îna_poi"
 
-#: ../meld/meldwindow.py:140
+#: ../meld/meldwindow.py:82
 #, fuzzy
 #| msgid "Search forwards for the same text"
 msgid "Search backwards for the same text"
 msgstr "Caută după același text în față"
 
-#: ../meld/meldwindow.py:141
+#: ../meld/meldwindow.py:85
+#, fuzzy
+#| msgid "_Replace"
+msgid "_Replace..."
+msgstr "În_locuiește"
+
+#: ../meld/meldwindow.py:86
 msgid "Find and replace text"
 msgstr "Caută și înlocuiește un text"
 
-#: ../meld/meldwindow.py:142
-msgid "Prefere_nces"
-msgstr "Preferi_nțe"
-
-#: ../meld/meldwindow.py:142
-msgid "Configure the application"
-msgstr "Configurează aplicația"
-
-#: ../meld/meldwindow.py:144
+#: ../meld/meldwindow.py:89
 msgid "_Changes"
 msgstr "_Modificări"
 
-#: ../meld/meldwindow.py:145
-msgid "Next change"
+#: ../meld/meldwindow.py:90
+#, fuzzy
+#| msgid "Next change"
+msgid "Next Change"
 msgstr "Următoarea modificare"
 
-#: ../meld/meldwindow.py:145
+#: ../meld/meldwindow.py:91
 msgid "Go to the next change"
 msgstr "Mergi la următoarea modificare"
 
-#: ../meld/meldwindow.py:146
-msgid "Previous change"
+#: ../meld/meldwindow.py:93
+#, fuzzy
+#| msgid "Previous change"
+msgid "Previous Change"
 msgstr "Modificarea precedentă"
 
-#: ../meld/meldwindow.py:146
+#: ../meld/meldwindow.py:94
 msgid "Go to the previous change"
 msgstr "Revino la modificarea precedentă"
 
-#: ../meld/meldwindow.py:147
-msgid "Open externally"
+#: ../meld/meldwindow.py:96
+msgid "Open Externally"
 msgstr ""
 
-#: ../meld/meldwindow.py:147
+#: ../meld/meldwindow.py:97
 msgid "Open selected file or directory in the default external application"
 msgstr ""
 
-#: ../meld/meldwindow.py:149
+#: ../meld/meldwindow.py:101
 msgid "_View"
 msgstr "_Vizualizare"
 
-#: ../meld/meldwindow.py:150
-msgid "File status"
+#: ../meld/meldwindow.py:102
+#, fuzzy
+#| msgid "File status"
+msgid "File Status"
 msgstr "Stare fișier"
 
-#: ../meld/meldwindow.py:151
-msgid "Version status"
+#: ../meld/meldwindow.py:103
+#, fuzzy
+#| msgid "Version status"
+msgid "Version Status"
 msgstr "Stare versiune"
 
-#: ../meld/meldwindow.py:152
-msgid "File filters"
-msgstr "Filtre de fișier"
-
-#: ../meld/meldwindow.py:153
+#: ../meld/meldwindow.py:106
 msgid "Stop the current action"
 msgstr "Întrerupe acțiunea curentă"
 
-#: ../meld/meldwindow.py:154
+#: ../meld/meldwindow.py:109
 msgid "Refresh the view"
 msgstr "Reîmprospătează ecranul"
 
-#: ../meld/meldwindow.py:155
-msgid "Reload"
-msgstr "Reîncarcă"
-
-#: ../meld/meldwindow.py:155
-msgid "Reload the comparison"
-msgstr "Reîncarcă comparația"
-
-#: ../meld/meldwindow.py:157
-msgid "_Tabs"
-msgstr ""
-
-#: ../meld/meldwindow.py:158
+#: ../meld/meldwindow.py:113
 #, fuzzy
-#| msgid "_Previous"
-msgid "_Previous Tab"
-msgstr "Îna_poi"
-
-#: ../meld/meldwindow.py:158
-#, fuzzy
-#| msgid "Go to the previous change"
-msgid "Activate previous tab"
-msgstr "Revino la modificarea precedentă"
-
-#: ../meld/meldwindow.py:159
-#, fuzzy
-#| msgid "_Next"
-msgid "_Next Tab"
-msgstr "Î_nainte"
-
-#: ../meld/meldwindow.py:159
-msgid "Activate next tab"
-msgstr ""
-
-#: ../meld/meldwindow.py:160
-#, fuzzy
-#| msgid "Copy To Left"
-msgid "Move Tab _Left"
-msgstr "Copiază la stânga"
-
-#: ../meld/meldwindow.py:160
-#, fuzzy
-msgid "Move current tab to left"
-msgstr "Împinge modificarea curentă la stânga"
-
-#: ../meld/meldwindow.py:161
-#, fuzzy
-#| msgid "Copy To Right"
-msgid "Move Tab _Right"
-msgstr "Copiază la dreapta"
-
-#: ../meld/meldwindow.py:161
-#, fuzzy
-msgid "Move current tab to right"
-msgstr "Împinge modificarea curentă la dreapta"
-
-#: ../meld/meldwindow.py:163
-msgid "_Help"
-msgstr "_Ajutor"
-
-#: ../meld/meldwindow.py:164
-msgid "_Contents"
-msgstr "_Sumar"
-
-#: ../meld/meldwindow.py:164
-msgid "Open the Meld manual"
-msgstr "Deschide manulaul Meld"
-
-#: ../meld/meldwindow.py:165
-msgid "Report _Bug"
-msgstr "Raportează _eroare"
-
-#: ../meld/meldwindow.py:165
-msgid "Report a bug in Meld"
-msgstr "Raportează o eroare în Meld"
-
-#: ../meld/meldwindow.py:166
-msgid "About this program"
-msgstr "Despre acest program"
-
-#: ../meld/meldwindow.py:169
-msgid "Full Screen"
+#| msgid "Full Screen"
+msgid "Fullscreen"
 msgstr "Ecran complet"
 
-#: ../meld/meldwindow.py:169
-msgid "View the comparison in full screen"
+#: ../meld/meldwindow.py:114
+#, fuzzy
+#| msgid "View the comparison in full screen"
+msgid "View the comparison in fullscreen"
 msgstr "Vezi comparația pe ecran complet"
 
-#: ../meld/meldwindow.py:170
+#: ../meld/meldwindow.py:116
 msgid "_Toolbar"
 msgstr "_Bară de unelte"
 
-#: ../meld/meldwindow.py:170
+#: ../meld/meldwindow.py:117
 msgid "Show or hide the toolbar"
 msgstr "Arată sau ascunde bara de unelte"
 
-#: ../meld/meldwindow.py:171
-msgid "_Statusbar"
-msgstr "Bară de _stare"
+#: ../meld/meldwindow.py:127
+#, fuzzy
+#| msgid "Open selected"
+msgid "Open Recent"
+msgstr "Deschide obiectul selectat"
 
-#: ../meld/meldwindow.py:171
-msgid "Show or hide the statusbar"
-msgstr "Arată sau ascunde bara de stare"
+#: ../meld/meldwindow.py:128
+#, fuzzy
+#| msgid "Select file"
+msgid "Open recent files"
+msgstr "Selectați fișierul"
 
-#: ../meld/meldwindow.py:538
-msgid "Switch to this tab"
+#: ../meld/meldwindow.py:150
+#, fuzzy
+#| msgid "Meld"
+msgid "_Meld"
+msgstr "Meld"
+
+#: ../meld/meldwindow.py:151
+msgid "Quit the program"
+msgstr "Părăsește programul"
+
+#: ../meld/meldwindow.py:153
+msgid "Prefere_nces"
+msgstr "Preferi_nțe"
+
+#: ../meld/meldwindow.py:154
+msgid "Configure the application"
+msgstr "Configurează aplicația"
+
+#: ../meld/meldwindow.py:156
+msgid "_Contents"
+msgstr "_Sumar"
+
+#: ../meld/meldwindow.py:157
+msgid "Open the Meld manual"
+msgstr "Deschide manulaul Meld"
+
+#: ../meld/meldwindow.py:159
+#, fuzzy
+#| msgid "Configure the application"
+msgid "About this application"
+msgstr "Configurează aplicația"
+
+#: ../meld/meldwindow.py:596
+#, python-format
+msgid "Need three files to auto-merge, got: %r"
 msgstr ""
 
-#. exit at first non found directory + file
-#: ../meld/meldwindow.py:629
-msgid "Cannot compare a mixture of files and directories.\n"
+#: ../meld/meldwindow.py:610
+#, fuzzy
+#| msgid "Cannot compare a mixture of files and directories.\n"
+msgid "Cannot compare a mixture of files and directories"
 msgstr "Nu se poate compara un amestec de fișiere și directoare.\n"
 
+#: ../meld/misc.py:203
+#, python-format
+msgid "Couldn't find colour scheme details for %s-%s; this is a bad install"
+msgstr ""
+
 #. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:174
+#: ../meld/misc.py:261
 msgid "[None]"
 msgstr "[Nespecificat]"
 
-#: ../meld/patchdialog.py:122
-msgid "Save Patch As..."
-msgstr "Salvează petic ca..."
-
-#: ../meld/preferences.py:37
+#: ../meld/preferences.py:33
 msgid "label"
 msgstr "etichetă"
 
-#: ../meld/preferences.py:37
+#: ../meld/preferences.py:33
 msgid "pattern"
 msgstr "tipar"
 
-#: ../meld/preferences.py:111
-msgid "Only available if you have gnome-python-desktop installed"
-msgstr "Disponibil doar dacă aveți gnome-python-desktop instalat"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:234
-msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-msgstr "Copii de rezervă\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:236
-msgid ""
-"OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
-"Desktop.ini\n"
-msgstr ""
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:238
-#, python-format
-msgid "Version Control\t1\t%s\n"
+#: ../meld/recent.py:114
+#, fuzzy
+#| msgid "Version Control\t1\t%s\n"
+msgid "Version control:"
 msgstr "Control al versiunilor\t1\t%s\n"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:240
-msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-msgstr "Binare\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+#: ../meld/ui/notebooklabel.py:63
+msgid "Close tab"
+msgstr "Închide tabul"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:242
-msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-msgstr "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+#: ../meld/ui/vcdialogs.py:48
+msgid "No files will be committed"
+msgstr ""
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:244
-msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-msgstr "Cuvinte cheie CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:94
+#, python-format
+msgid "%s in %s"
+msgstr ""
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:246
-msgid "C++ comment\t0\t//.*\n"
-msgstr "Comentariu C++\t0\t//.*\n"
+#. Translators: These messages cover the case where there is
+#. only one branch, and are not part of another message.
+#: ../meld/vc/git.py:95 ../meld/vc/git.py:102
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] ""
+msgstr[1] ""
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:248
-msgid "C comment\t0\t/\\*.*?\\*/\n"
-msgstr "Comentariu C\t0\t/\\*.*?\\*/\n"
+#: ../meld/vc/git.py:97
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] ""
+msgstr[1] ""
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:250
-msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
-msgstr "Toate spațiile goalel\t0\t[ \\t\\r\\f\\v]*\n"
+#: ../meld/vc/git.py:333
+#, fuzzy, python-format
+#| msgid "Merge all changes from left"
+msgid "Mode changed from %s to %s"
+msgstr "Combină toate modificările din stânga"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:252
-msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
-msgstr "Spațiul gol de la începutul liniei\t0\t^[ \\t\\r\\f\\v]*\n"
+#: ../meld/vc/git.py:341
+msgid "Partially staged"
+msgstr ""
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:254
-msgid "Script comment\t0\t#.*"
-msgstr "Comentariu script\t0\t#.*"
+#: ../meld/vc/git.py:341
+msgid "Staged"
+msgstr ""
 
-#: ../meld/vcview.py:128
+#. Translators: This is the displayed name of a version control system
+#. when no version control system is actually found.
+#: ../meld/vc/_null.py:38
 #, fuzzy
-#| msgid "Commit"
-msgid "Co_mmit"
-msgstr "Validează"
+#| msgid "[None]"
+msgid "None"
+msgstr "[Nespecificat]"
 
-#: ../meld/vcview.py:128
-msgid "Commit"
-msgstr "Validează"
+#: ../meld/vc/svn.py:204
+#, python-format
+msgid "Rev %s"
+msgstr ""
 
-#: ../meld/vcview.py:129
-msgid "_Update"
-msgstr "_Actualizează"
+#: ../meld/vc/_vc.py:55
+msgid "Merged"
+msgstr ""
 
-#: ../meld/vcview.py:129
-msgid "Update"
-msgstr "Actualizează"
+#: ../meld/vc/_vc.py:55
+msgid "Base"
+msgstr ""
 
-#: ../meld/vcview.py:130
+#: ../meld/vc/_vc.py:55
 #, fuzzy
-msgid "Add to VC"
-msgstr "Adaugă în panoul de control al versiunilor"
-
-#: ../meld/vcview.py:131
-#, fuzzy
-msgid "Add _Binary"
-msgstr "Adaugă _binar"
-
-#: ../meld/vcview.py:131
-#, fuzzy
-msgid "Add binary to VC"
-msgstr "Adaugă binar în panoul de control al versiunilor"
-
-#: ../meld/vcview.py:132
-#, fuzzy
-msgid "Remove from VC"
-msgstr "Elimină din panoul de control al versiunilor"
-
-#: ../meld/vcview.py:133
-msgid "_Resolved"
-msgstr "_Rezolvat"
-
-#: ../meld/vcview.py:133
-#, fuzzy
-msgid "Mark as resolved for VC"
-msgstr "Marcat ca rezolvat pentru panoul de control al versiunilor"
-
-#: ../meld/vcview.py:134
-msgid "Revert to original"
-msgstr "Revino la original"
-
-#: ../meld/vcview.py:135
-msgid "Delete locally"
-msgstr "Șterge local"
-
-#: ../meld/vcview.py:139
-msgid "_Flatten"
-msgstr "_Nivelează"
-
-#: ../meld/vcview.py:139
-msgid "Flatten directories"
-msgstr "Nivelează directoarele"
-
-#: ../meld/vcview.py:140
-msgid "_Modified"
-msgstr "_Modificat"
-
-#: ../meld/vcview.py:141
-msgid "_Normal"
-msgstr "_Normal"
-
-#: ../meld/vcview.py:141
-msgid "Show normal"
-msgstr "Arată normal"
-
-#: ../meld/vcview.py:142
-#, fuzzy
-msgid "Non _VC"
-msgstr "Non _versiune"
-
-#: ../meld/vcview.py:142
-msgid "Show unversioned files"
-msgstr "Afișează fișierele care nu au versiune"
-
-#: ../meld/vcview.py:143
-msgid "Ignored"
-msgstr "Ignorat"
-
-#: ../meld/vcview.py:143
-msgid "Show ignored files"
-msgstr "Afișează fișierele ignorate"
-
-#: ../meld/vcview.py:186 ../meld/vcview.py:319
-msgid "Location"
+#| msgid "Location"
+msgid "Local"
 msgstr "Locație"
 
-#: ../meld/vcview.py:187
-msgid "Status"
-msgstr "Stare"
-
-#: ../meld/vcview.py:188
-msgid "Rev"
-msgstr "Revizie"
-
-#: ../meld/vcview.py:189
-msgid "Tag"
-msgstr "Etichetă"
-
-#: ../meld/vcview.py:190
-msgid "Options"
-msgstr "Opțiuni"
-
-#: ../meld/vcview.py:249
+#: ../meld/vc/_vc.py:55
 #, fuzzy
-msgid "Choose one Version Control"
-msgstr "Alegeți un panou de control al versiunilor"
+#| msgid "_Remove"
+msgid "Remote"
+msgstr "_Elimină"
 
-#: ../meld/vcview.py:250
+#: ../meld/vc/_vc.py:71
 #, fuzzy
-msgid "Only one Version Control in this directory"
-msgstr "Doar un panou de control al versiunilor în acest director"
+#| msgid "Show unversioned files"
+msgid "Unversioned"
+msgstr "Afișează fișierele care nu au versiune"
 
-#. TRANSLATORS: this is an error message when a version control
-#. application isn't installed or can't be found
-#: ../meld/vcview.py:263
+#: ../meld/vc/_vc.py:74
+msgid "Error"
+msgstr ""
+
+#: ../meld/vc/_vc.py:76
+msgid "Newly added"
+msgstr ""
+
+#: ../meld/vc/_vc.py:78
+#, fuzzy
+#| msgid "<unnamed>"
+msgid "Renamed"
+msgstr "<nedenumit>"
+
+#: ../meld/vc/_vc.py:79
+#, fuzzy
+#| msgid "Next conflict"
+msgid "Conflict"
+msgstr "Următorul conflict"
+
+#: ../meld/vc/_vc.py:80
+#, fuzzy
+#| msgid "_Remove"
+msgid "Removed"
+msgstr "_Elimină"
+
+#: ../meld/vc/_vc.py:81
+msgid "Missing"
+msgstr ""
+
+#: ../meld/vc/_vc.py:82
+msgid "Not present"
+msgstr ""
+
+#. Translators: This error message is shown when a version
+#. control binary isn't installed.
+#: ../meld/vcview.py:251
 #, python-format
-msgid "%s Not Installed"
-msgstr "%s neinstalat"
+msgid "%(name)s (%(cmd)s not installed)"
+msgstr ""
 
-#. TRANSLATORS: this is an error message when a version
-#. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:267
-msgid "Invalid Repository"
+#. Translators: This error message is shown when a version
+#. controlled repository is invalid.
+#: ../meld/vcview.py:255
+#, fuzzy, python-format
+#| msgid "Invalid Repository"
+msgid "%(name)s (Invalid repository)"
 msgstr "Depozit invalid"
 
 #: ../meld/vcview.py:276
-#, python-format
-msgid "%s (%s)"
-msgstr "%s (%s)"
+msgid "No valid version control system found in this folder"
+msgstr ""
 
-#. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:319
+#: ../meld/vcview.py:278
+#, fuzzy
+msgid "Only one version control system found in this folder"
+msgstr "Doar un panou de control al versiunilor în acest director"
+
+#: ../meld/vcview.py:280
+#, fuzzy
+msgid "Choose which version control system to use"
+msgstr "Alegeți un panou de control al versiunilor"
+
+#. TRANSLATORS: This is the location of the directory being viewed
+#: ../meld/vcview.py:332
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../meld/vcview.py:363
+#: ../meld/vcview.py:352
+#, fuzzy, python-format
+#| msgid "[%s] Scanning %s"
+msgid "Scanning %s"
+msgstr "[%s] Se analizează %s"
+
+#: ../meld/vcview.py:391
 msgid "(Empty)"
 msgstr "(gol)"
 
-#: ../meld/vcview.py:401
+#: ../meld/vcview.py:435
 #, python-format
-msgid "[%s] Fetching differences"
-msgstr "[%s] Se potrivesc diferențele"
-
-#: ../meld/vcview.py:409
-#, python-format
-msgid "[%s] Applying patch"
-msgstr "[%s] Se aplică petic"
-
-#: ../meld/vcview.py:511
-msgid "Select some files first."
-msgstr "Selectați niște fișiere mai întâi."
-
-#: ../meld/vcview.py:584
-#, python-format
-msgid ""
-"\n"
-"                    Invoking 'patch' failed.\n"
-"                    \n"
-"                    Maybe you don't have 'GNU patch' installed,\n"
-"                    or you use an untested version of %s.\n"
-"                    \n"
-"                    Please send email bug report to:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Containing the following information:\n"
-"                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
-"                    (no need to actually run it, just provide\n"
-"                    the command line) \n"
-"                    \n"
-"                    Replace 'X.Y.Z' by the actual version for the\n"
-"                    source control software you use.\n"
-"                    "
+msgid "%s — local"
 msgstr ""
-"\n"
-"                    Apelarea „peticului” a eșuat.\n"
-"                    \n"
-"                    Se poate să nu aveți instalat „peticul GNU” instalat,\n"
-"                    sau folosiți o versiune netestată a %s.\n"
-"                    \n"
-"                    Trimiteți un email cu raportul de eroare la:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Care să conțină următoarele informații:\n"
-"                    \n"
-"                    - versiunea meld: „%s”\n"
-"                    - tipul programului de control: „%s”\n"
-"                    - versiunea programului de control: „X.Y.Z”\n"
-"                    - rezultatul fișierului „%s somefile.txt”\n"
-"                    - comandă petic: „%s”\n"
-"                    (nu este nevoie s-o rulați, doar specificați\n"
-"                    linia de comandă) \n"
-"                    \n"
-"                    Înlocuiți „X.Y.Z” cu versiunea actuală a\n"
-"                    programului de control pe care o folosiți.\n"
-"                    "
 
-#: ../meld/ui/findbar.py:127
+#: ../meld/vcview.py:436
 #, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
+msgid "%s — remote"
 msgstr ""
-"Eroare expresie regulată\n"
-"„%s”"
 
-#: ../meld/ui/historyentry.py:293
-msgid "_Browse..."
-msgstr "_Navighează..."
-
-#: ../meld/ui/historyentry.py:301
-msgid "Path"
-msgstr "Cale"
-
-#: ../meld/ui/historyentry.py:302
-msgid "Path to file"
-msgstr "Calea către fișier"
-
-#: ../meld/ui/historyentry.py:303
-msgid "Pop up a file selector to choose a file"
-msgstr "Afișează un selector de fișiere pentru a alege un fișier"
-
-#: ../meld/ui/historyentry.py:441
-msgid "Select directory"
-msgstr "Selectați directorul"
-
-#: ../meld/ui/historyentry.py:445
-msgid "Select file"
-msgstr "Selectați fișierul"
-
-#: ../meld/ui/notebooklabel.py:60
-msgid "Close tab"
-msgstr "Închide tabul"
-
-#. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:40
-msgid ""
-"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing"
-msgstr ""
-"Ignorat:Fără versiune:::Eroare::Recent adăugat:Modificat:Conflict:Eliminat:"
-"Lipsă"
-
-#: ../meld/vc/cvs.py:163
+#: ../meld/vcview.py:444
 #, python-format
-msgid ""
-"Error converting to a regular expression\n"
-"The pattern was '%s'\n"
-"The error was '%s'"
+msgid "%s (local, merge, remote)"
 msgstr ""
-"Eroare la convertirea în expresie regulată\n"
-"Tiparul este „%s”\n"
-"Eroarea este „%s”"
+
+#: ../meld/vcview.py:449
+#, python-format
+msgid "%s (remote, merge, local)"
+msgstr ""
+
+#: ../meld/vcview.py:460
+#, python-format
+msgid "%s — repository"
+msgstr ""
+
+#: ../meld/vcview.py:466
+#, python-format
+msgid "%s (working, repository)"
+msgstr ""
+
+#: ../meld/vcview.py:470
+#, python-format
+msgid "%s (repository, working)"
+msgstr ""
+
+#: ../meld/vcview.py:657
+msgid "Remove folder and all its files?"
+msgstr ""
+
+#: ../meld/vcview.py:659
+msgid ""
+"This will remove all selected files and folders, and all files within any "
+"selected folders, from version control."
+msgstr ""
+
+#: ../meld/vcview.py:684
+#, python-format
+msgid "Error removing %s"
+msgstr "Eroare la ștergerea %s"
+
+#: ../meld/vcview.py:765
+msgid "Clear"
+msgstr "Curăță"
+
+#~ msgid ""
+#~ "Some files have been modified.\n"
+#~ "Which ones would you like to save?"
+#~ msgstr ""
+#~ "Unele fișiere au fost modificate.\n"
+#~ "Pe care dintre ele doriți să le salvați?"
+
+#~ msgid "_Discard Changes"
+#~ msgstr "Anulează mo_dificările"
+
+#~ msgid "_Save Selected"
+#~ msgstr "_Salvează fișierul"
+
+#~ msgid "_Search for"
+#~ msgstr "_Caută după"
+
+#~ msgid "Choose Files"
+#~ msgstr "Alege fișierele"
+
+#~ msgid "_Three Way Compare"
+#~ msgstr "Comparație _triplă"
+
+#~ msgid "Mine"
+#~ msgstr "Al meu"
+
+#~ msgid "Original"
+#~ msgstr "Originalul"
+
+#~ msgid "Other"
+#~ msgstr "Altul"
+
+#~ msgid "Select VC Directory"
+#~ msgstr "Selectați directorul de control al versiunilor"
+
+#~ msgid "Directory"
+#~ msgstr "Director"
+
+#~ msgid "Create Patch"
+#~ msgstr "Creează petic"
+
+#~ msgid "Create a patch"
+#~ msgstr "Creează un petic"
+
+#~ msgid "Ignore changes which insert or delete blank lines"
+#~ msgstr ""
+#~ "Ignoră modificările care implică adăugarea sau ștergerea de linii goale"
+
+#~ msgid "Loading"
+#~ msgstr "Se încarcă"
+
+#~ msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+#~ msgstr ""
+#~ "Cand se încarcă, încercați aceste codecuri în ordine. (ex. utf8, iso8859)"
+
+#~ msgid "Encoding"
+#~ msgstr "Codare"
+
+#~ msgid "VC Log"
+#~ msgstr "Înregistrare control de versiuni"
+
+#, fuzzy
+#~| msgid "Copy To Right"
+#~ msgid "Copy _Right"
+#~ msgstr "Copiază la dreapta"
+
+#~ msgid "Case"
+#~ msgstr "Majusculă"
+
+#~ msgid "Ignore case of entries"
+#~ msgstr "Ignoră majusculele intrărilor"
+
+#~ msgid ""
+#~ "'%s' exists.\n"
+#~ "Overwrite?"
+#~ msgstr ""
+#~ "„%s” există deja.\n"
+#~ "Suprascrieți?"
+
+#~ msgid ""
+#~ "'%s' is a directory.\n"
+#~ "Remove recursively?"
+#~ msgstr ""
+#~ "„%s” este un director.\n"
+#~ "Eliminați recursiv?"
+
+#~ msgid "%i second"
+#~ msgid_plural "%i seconds"
+#~ msgstr[0] "%i secundă"
+#~ msgstr[1] "%i secunde"
+
+#~ msgid "%i minute"
+#~ msgid_plural "%i minutes"
+#~ msgstr[0] "%i minut"
+#~ msgstr[1] "%i minute"
+
+#~ msgid "%i hour"
+#~ msgid_plural "%i hours"
+#~ msgstr[0] "%i oră"
+#~ msgstr[1] "%i ore"
+
+#~ msgid "%i day"
+#~ msgid_plural "%i days"
+#~ msgstr[0] "%i zi"
+#~ msgstr[1] "%i zile"
+
+#~ msgid "%i week"
+#~ msgid_plural "%i weeks"
+#~ msgstr[0] "%i saptamână"
+#~ msgstr[1] "%i săptămâni"
+
+#~ msgid "%i month"
+#~ msgid_plural "%i months"
+#~ msgstr[0] "%i lună"
+#~ msgstr[1] "%i luni"
+
+#~ msgid "%i year"
+#~ msgid_plural "%i years"
+#~ msgstr[0] "%i an"
+#~ msgstr[1] "%i ani"
+
+#~ msgid "Merge all non-conflicting"
+#~ msgstr "Combină toate modificările non-conflictuale"
+
+#~ msgid "[%s] Set num panes"
+#~ msgstr "[%s] Definește numărul de panouri"
+
+#~ msgid "[%s] Opening files"
+#~ msgstr "[%s] Se deschid fișierele"
+
+#~ msgid "[%s] Reading files"
+#~ msgstr "[%s] Se citesc fișierele"
+
+#~ msgid "%s is not in encodings: %s"
+#~ msgstr "%s nu se află în codări: %s"
+
+#~ msgid ""
+#~ "\"%s\" exists!\n"
+#~ "Overwrite?"
+#~ msgstr ""
+#~ "„%s” există deja!\n"
+#~ "Suprascrieți?"
+
+#~ msgid ""
+#~ "Error writing to %s\n"
+#~ "\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Eroare la scrierea în %s\n"
+#~ "\n"
+#~ "%s."
+
+#~ msgid "Choose a name for buffer %i."
+#~ msgstr "Alegeți un nume pentru zona de memorie tampon %i."
+
+#~ msgid ""
+#~ "This file '%s' contains a mixture of line endings.\n"
+#~ "\n"
+#~ "Which format would you like to use?"
+#~ msgstr ""
+#~ "Fișierul „%s” conține un amestec de linii de sfârșit.\n"
+#~ "\n"
+#~ "Ce format doriți să folosiți?"
+
+#~ msgid ""
+#~ "Reloading will discard changes in:\n"
+#~ "%s\n"
+#~ "\n"
+#~ "You cannot undo this operation."
+#~ msgstr ""
+#~ "Reîncărcarea va anula modificările în:\n"
+#~ "%s\n"
+#~ "\n"
+#~ "Nu puteți anula această operație."
+
+#~ msgid "dir"
+#~ msgstr "director"
+
+#~ msgid "Start a 2- or 3-way directory comparison"
+#~ msgstr "Începe o comparație de 2 sau 3 directoare"
+
+#~ msgid "Start a comparison between file and dir/file"
+#~ msgstr "Începe o comparație dintre fișier și director/fișier"
+
+#, fuzzy
+#~| msgid "Cannot compare a mixture of files and directories.\n"
+#~ msgid "can't compare more than three directories"
+#~ msgstr "Nu se poate compara un amestec de fișiere și directoare.\n"
+
+#~ msgid "_New..."
+#~ msgstr "_Nou..."
+
+#, fuzzy
+#~| msgid "_Previous"
+#~ msgid "_Previous Tab"
+#~ msgstr "Îna_poi"
+
+#, fuzzy
+#~| msgid "Go to the previous change"
+#~ msgid "Activate previous tab"
+#~ msgstr "Revino la modificarea precedentă"
+
+#, fuzzy
+#~| msgid "_Next"
+#~ msgid "_Next Tab"
+#~ msgstr "Î_nainte"
+
+#, fuzzy
+#~ msgid "Move current tab to left"
+#~ msgstr "Împinge modificarea curentă la stânga"
+
+#, fuzzy
+#~ msgid "Move current tab to right"
+#~ msgstr "Împinge modificarea curentă la dreapta"
+
+#~ msgid "Report _Bug"
+#~ msgstr "Raportează _eroare"
+
+#~ msgid "Report a bug in Meld"
+#~ msgstr "Raportează o eroare în Meld"
+
+#~ msgid "About this program"
+#~ msgstr "Despre acest program"
+
+#~ msgid "Show or hide the statusbar"
+#~ msgstr "Arată sau ascunde bara de stare"
+
+#~ msgid "Only available if you have gnome-python-desktop installed"
+#~ msgstr "Disponibil doar dacă aveți gnome-python-desktop instalat"
+
+#~ msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
+#~ msgstr "Copii de rezervă\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
+
+#~ msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+#~ msgstr "Binare\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+
+#~ msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+#~ msgstr "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+
+#~ msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+#~ msgstr "Cuvinte cheie CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+
+#~ msgid "C++ comment\t0\t//.*\n"
+#~ msgstr "Comentariu C++\t0\t//.*\n"
+
+#~ msgid "C comment\t0\t/\\*.*?\\*/\n"
+#~ msgstr "Comentariu C\t0\t/\\*.*?\\*/\n"
+
+#~ msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
+#~ msgstr "Toate spațiile goalel\t0\t[ \\t\\r\\f\\v]*\n"
+
+#~ msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
+#~ msgstr "Spațiul gol de la începutul liniei\t0\t^[ \\t\\r\\f\\v]*\n"
+
+#~ msgid "Script comment\t0\t#.*"
+#~ msgstr "Comentariu script\t0\t#.*"
+
+#~ msgid "Update"
+#~ msgstr "Actualizează"
+
+#, fuzzy
+#~ msgid "Add to VC"
+#~ msgstr "Adaugă în panoul de control al versiunilor"
+
+#, fuzzy
+#~ msgid "Add _Binary"
+#~ msgstr "Adaugă _binar"
+
+#, fuzzy
+#~ msgid "Add binary to VC"
+#~ msgstr "Adaugă binar în panoul de control al versiunilor"
+
+#, fuzzy
+#~ msgid "Remove from VC"
+#~ msgstr "Elimină din panoul de control al versiunilor"
+
+#~ msgid "Delete locally"
+#~ msgstr "Șterge local"
+
+#~ msgid "Show normal"
+#~ msgstr "Arată normal"
+
+#, fuzzy
+#~ msgid "Non _VC"
+#~ msgstr "Non _versiune"
+
+#~ msgid "Rev"
+#~ msgstr "Revizie"
+
+#~ msgid "Tag"
+#~ msgstr "Etichetă"
+
+#~ msgid "Options"
+#~ msgstr "Opțiuni"
+
+#~ msgid "%s Not Installed"
+#~ msgstr "%s neinstalat"
+
+#~ msgid "%s (%s)"
+#~ msgstr "%s (%s)"
+
+#~ msgid "[%s] Applying patch"
+#~ msgstr "[%s] Se aplică petic"
+
+#~ msgid "Select some files first."
+#~ msgstr "Selectați niște fișiere mai întâi."
+
+#~ msgid ""
+#~ "\n"
+#~ "                    Invoking 'patch' failed.\n"
+#~ "                    \n"
+#~ "                    Maybe you don't have 'GNU patch' installed,\n"
+#~ "                    or you use an untested version of %s.\n"
+#~ "                    \n"
+#~ "                    Please send email bug report to:\n"
+#~ "                    meld-list@gnome.org\n"
+#~ "                    \n"
+#~ "                    Containing the following information:\n"
+#~ "                    \n"
+#~ "                    - meld version: '%s'\n"
+#~ "                    - source control software type: '%s'\n"
+#~ "                    - source control software version: 'X.Y.Z'\n"
+#~ "                    - the output of '%s somefile.txt'\n"
+#~ "                    - patch command: '%s'\n"
+#~ "                    (no need to actually run it, just provide\n"
+#~ "                    the command line) \n"
+#~ "                    \n"
+#~ "                    Replace 'X.Y.Z' by the actual version for the\n"
+#~ "                    source control software you use.\n"
+#~ "                    "
+#~ msgstr ""
+#~ "\n"
+#~ "                    Apelarea „peticului” a eșuat.\n"
+#~ "                    \n"
+#~ "                    Se poate să nu aveți instalat „peticul GNU” "
+#~ "instalat,\n"
+#~ "                    sau folosiți o versiune netestată a %s.\n"
+#~ "                    \n"
+#~ "                    Trimiteți un email cu raportul de eroare la:\n"
+#~ "                    meld-list@gnome.org\n"
+#~ "                    \n"
+#~ "                    Care să conțină următoarele informații:\n"
+#~ "                    \n"
+#~ "                    - versiunea meld: „%s”\n"
+#~ "                    - tipul programului de control: „%s”\n"
+#~ "                    - versiunea programului de control: „X.Y.Z”\n"
+#~ "                    - rezultatul fișierului „%s somefile.txt”\n"
+#~ "                    - comandă petic: „%s”\n"
+#~ "                    (nu este nevoie s-o rulați, doar specificați\n"
+#~ "                    linia de comandă) \n"
+#~ "                    \n"
+#~ "                    Înlocuiți „X.Y.Z” cu versiunea actuală a\n"
+#~ "                    programului de control pe care o folosiți.\n"
+#~ "                    "
+
+#~ msgid ""
+#~ "Regular expression error\n"
+#~ "'%s'"
+#~ msgstr ""
+#~ "Eroare expresie regulată\n"
+#~ "„%s”"
+
+#~ msgid "_Browse..."
+#~ msgstr "_Navighează..."
+
+#~ msgid "Path"
+#~ msgstr "Cale"
+
+#~ msgid "Path to file"
+#~ msgstr "Calea către fișier"
+
+#~ msgid "Pop up a file selector to choose a file"
+#~ msgstr "Afișează un selector de fișiere pentru a alege un fișier"
+
+#~ msgid ""
+#~ "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing"
+#~ msgstr ""
+#~ "Ignorat:Fără versiune:::Eroare::Recent adăugat:Modificat:Conflict:"
+#~ "Eliminat:Lipsă"
+
+#~ msgid ""
+#~ "Error converting to a regular expression\n"
+#~ "The pattern was '%s'\n"
+#~ "The error was '%s'"
+#~ msgstr ""
+#~ "Eroare la convertirea în expresie regulată\n"
+#~ "Tiparul este „%s”\n"
+#~ "Eroarea este „%s”"
 
 #~ msgid "Compare Options"
 #~ msgstr "Opțiuni comparare"
@@ -1579,9 +3178,6 @@ msgstr ""
 
 #~ msgid "Right"
 #~ msgstr "Dreapta"
-
-#~ msgid "Open selected"
-#~ msgstr "Deschide obiectul selectat"
 
 #~ msgid "Error converting pattern '%s' to regular expression"
 #~ msgstr "Eroare la convertirea tiparului „%s” în expresie regulată"
