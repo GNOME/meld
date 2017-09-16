@@ -226,7 +226,7 @@ class build_i18n(distutils.cmd.Command):
     # way except magically extracting them from self.distribution.data_files
     desktop_files = [('share/applications', glob.glob("data/*.desktop.in"))]
     xml_files = [
-        ('share/appdata', glob.glob("data/*.appdata.xml.in")),
+        ('share/metainfo', glob.glob("data/*.appdata.xml.in")),
         ('share/mime/packages', glob.glob("data/mime/*.xml.in"))
     ]
     schemas_files = []
