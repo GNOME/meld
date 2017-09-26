@@ -1,0 +1,49 @@
+version: tag-or-branch-set-from-init-script.{build}
+init:
+- ps: >-
+    if ($env:APPVEYOR_REPO_TAG -eq "true")
+
+    {
+        Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME.$env:APPVEYOR_BUILD_NUMBER"
+    }
+
+    else
+
+    {
+        Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_BRANCH-$($env:APPVEYOR_REPO_COMMIT.substring(0,7)).$env:APPVEYOR_BUILD_NUMBER"
+    }
+environment:
+  PYTHON_PREFIX: C:\Python34
+  PATH: $(PYTHON_PREFIX);$(PYTHON_PREFIX)\Lib\site-packages\gnome;$(PATH)
+install:
+- cmd: >-
+    python -m pip install pypiwin32==219
+
+    python -m pip install cx_Freeze==5.0.2
+
+
+    curl "https://sourceforge.net/projects/pygobjectwin32/files/pygi-aio-3.24.1_rev1-setup_049a323fe25432b10f7e9f543b74598d4be74a39.exe/download" --location --output pygi-aio-setup.exe
+
+    set SOURCEPATH=%cd%\pygi-aio-source
+
+    mkdir %SOURCEPATH%
+
+    7z.exe x -o%SOURCEPATH% pygi-aio-setup.exe
+
+    mkdir pygi-aio-setup
+
+    7z.exe x -opygi-aio-setup %SOURCEPATH%\setup.exe
+
+    set GIR=True
+
+    echo %PYTHON_PREFIX% is used because it is the last supported by pygi-aio, GTK is istalled as a dependency of GTKSourceView
+
+    pygi-aio-setup\rcmd.exe /c "cd pygi-aio-setup && setup.bat %PYTHON_PREFIX% GTKSourceView >pygi-aio-setup.log"
+build_script:
+- cmd: >-
+    %PYTHON_PREFIX%\Lib\site-packages\gnome\glib-compile-schemas data
+
+    %PYTHON_PREFIX%\python setup_win32.py bdist_msi
+artifacts:
+- path: dist/*.msi
+  name: Meld installer
