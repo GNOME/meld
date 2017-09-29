@@ -241,3 +241,14 @@ class DiffTreeStore(Gtk.TreeStore):
             if key in text:
                 return False
         return True
+
+    def state_rows(self, states):
+        """Generator of rows in one of the given states
+
+        Tree iterators are returned in depth-first tree order.
+        """
+        root = self.get_iter_first()
+        for it in self.inorder_search_down(root):
+            state = self.get_state(it, 0)
+            if state in states:
+                yield it
