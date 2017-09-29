@@ -1188,6 +1188,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         except AttributeError:
             pass
 
+    def run_diff_from_iter(self, it):
+        row_paths = self.model.value_paths(it)
+        paths = [p for p in row_paths if os.path.exists(p)]
+        self.emit("create-diff", paths, {})
+
     def on_button_diff_clicked(self, button):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1195,9 +1200,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         selected = self._get_selected_paths(pane)
         for row in selected:
-            row_paths = self.model.value_paths(self.model.get_iter(row))
-            paths = [p for p in row_paths if os.path.exists(p)]
-            self.emit("create-diff", paths, {})
+            self.run_diff_from_iter(self.model.get_iter(row))
 
     def on_button_copy_left_clicked(self, button):
         self.copy_selected(-1)
