@@ -821,3 +821,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_find_activate(self, *extra):
         self.treeview.emit("start-interactive-search")
+
+    def auto_compare(self):
+        modified_states = (tree.STATE_MODIFIED, tree.STATE_CONFLICT)
+        for it in self.model.state_rows(modified_states):
+            row_paths = self.model.value_paths(it)
+            paths = [p for p in row_paths if os.path.exists(p)]
+            self.run_diff(paths[0])

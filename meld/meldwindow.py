@@ -574,9 +574,8 @@ class MeldWindow(gnomeglade.Component):
         doc = dirdiff.DirDiff(len(dirs))
         self._append_page(doc, "folder")
         doc.set_locations(dirs)
-        # FIXME: This doesn't work, as dirdiff behaves differently to vcview
         if auto_compare:
-            doc.on_button_diff_clicked(None)
+            doc.scheduler.add_task(doc.auto_compare)
         return doc
 
     def append_filediff(self, files, merge_output=None, meta=None):
@@ -622,7 +621,7 @@ class MeldWindow(gnomeglade.Component):
         location = location[0] if isinstance(location, list) else location
         doc.set_location(location)
         if auto_compare:
-            doc.on_button_diff_clicked(None)
+            doc.scheduler.add_task(doc.auto_compare)
         return doc
 
     def append_recent(self, uri):

@@ -1582,3 +1582,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_find_activate(self, *extra):
         self.focus_pane.emit("start-interactive-search")
+
+    def auto_compare(self):
+        modified_states = (tree.STATE_MODIFIED, tree.STATE_CONFLICT)
+        for it in self.model.state_rows(modified_states):
+            self.run_diff_from_iter(it)
