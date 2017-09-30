@@ -311,6 +311,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             return
 
         root = self.model.get_iter_first()
+        root_path = self.model.get_path(root)
 
         try:
             self.model.set_value(
@@ -319,7 +320,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             pass
 
         self.scheduler.add_task(self.vc.refresh_vc_state)
-        self.scheduler.add_task(self._search_recursively_iter(root))
+        self.scheduler.add_task(self._search_recursively_iter(root_path))
         self.scheduler.add_task(self.on_treeview_selection_changed)
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
@@ -332,7 +333,23 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.tooltip_text = _("%s: %s") % (_("Location"), self.location)
         self.label_changed()
 
-    def _search_recursively_iter(self, iterstart):
+    def _search_recursively_iter(self, start_path, replace=False):
+
+        # Initial yield so when we add this to our tasks, we don't
+        # create iterators that may be invalidated.
+        yield _("Scanning repository")
+
+        if replace:
+            # Replace the row at start_path with a new, empty row ready
+            # to be filled.
+            old_iter = self.model.get_iter(start_path)
+            file_path = self.model.get_file_path(old_iter)
+            new_iter = self.model.insert_after(None, old_iter)
+            self.model.set_value(new_iter, tree.COL_PATH, file_path)
+            self.model.set_path_state(new_iter, 0, tree.STATE_NORMAL, True)
+            self.model.remove(old_iter)
+
+        iterstart = self.model.get_iter(start_path)
         rootname = self.model.get_file_path(iterstart)
         display_prefix = len(rootname) + 1
         symlinks_followed = set()
@@ -705,14 +722,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             it = self.find_iter_by_name(where)
             if not it:
                 return
-            newiter = self.model.insert_after(None, it)
-            self.model.set_value(newiter, tree.COL_PATH, where)
-            self.model.set_path_state(newiter, 0, tree.STATE_NORMAL, True)
-            self.model.remove(it)
+            path = self.model.get_path(it)
+
             self.treeview.grab_focus()
-            self.treeview.get_selection().select_iter(newiter)
             self.vc.refresh_vc_state(where)
-            self.scheduler.add_task(self._search_recursively_iter(newiter))
+            self.scheduler.add_task(
+                self._search_recursively_iter(path, replace=True))
             self.scheduler.add_task(self.on_treeview_selection_changed)
             self.scheduler.add_task(self.on_treeview_cursor_changed)
         else:
