@@ -15,6 +15,7 @@
 
 import os
 
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -105,16 +106,9 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
 
     def on_button_compare_clicked(self, *args):
         type_choosers = (self.file_chooser, self.dir_chooser, self.vc_chooser)
-
-        compare_paths = []
-        num_paths = self._get_num_paths()
-        for chooser in type_choosers[self.diff_type][:num_paths]:
-            gfile = chooser.get_file()
-            path = gfile.get_path() if gfile else ""
-            compare_paths.append(path)
-
-        # TODO: We should be migrating to passing around GFiles
-        tab = self.diff_methods[self.diff_type](compare_paths)
+        compare_gfiles = [c.get_file() for c in
+                         type_choosers[self.diff_type][:self._get_num_paths()]]
+        tab = self.diff_methods[self.diff_type](compare_gfiles)
         recent_comparisons.add(tab)
         self.emit('diff-created', tab)
 
@@ -122,8 +116,8 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         # TODO: This doesn't work the way I'd like for DirDiff and VCView.
         # It should do something similar to FileDiff; give a tab with empty
         # file entries and no comparison done.
-        compare_paths = [""] * self._get_num_paths()
-        tab = self.diff_methods[self.diff_type](compare_paths)
+        compare_gfiles = [Gio.File.new_for_path("")] * self._get_num_paths()
+        tab = self.diff_methods[self.diff_type](compare_gfiles)
         self.emit('diff-created', tab)
 
     def on_container_switch_in_event(self, *args):

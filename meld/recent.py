@@ -81,35 +81,35 @@ class RecentFiles(object):
         The passed flags are currently ignored. In the future these are to be
         used for extra initialisation not captured by the tab itself.
         """
-        comp_type, paths = tab.get_comparison()
+        comp_type, uris = tab.get_comparison()
 
         # While Meld handles comparisons including None, recording these as
         # recently-used comparisons just isn't that sane.
-        if None in paths:
+        if None in uris:
             return
 
-        # If a (type, paths) comparison is already registered, then re-add
+        # If a (type, uris) comparison is already registered, then re-add
         # the corresponding comparison file
-        comparison_key = (comp_type, tuple(paths))
-        paths = [unicodeify(p) for p in paths]
+        comparison_key = (comp_type, tuple(uris))
+        uris = [unicodeify(u) for u in uris]
         if comparison_key in self._stored_comparisons:
-            gio_file = Gio.File.new_for_uri(
+            gfile = Gio.File.new_for_uri(
                 self._stored_comparisons[comparison_key])
         else:
-            recent_path = self._write_recent_file(comp_type, paths)
-            gio_file = Gio.File.new_for_path(recent_path)
+            recent_path = self._write_recent_file(comp_type, uris)
+            gfile = Gio.File.new_for_path(recent_path)
 
-        if len(paths) > 1:
-            display_name = " : ".join(meld.misc.shorten_names(*paths))
+        if len(uris) > 1:
+            display_name = " : ".join(meld.misc.shorten_names(*uris))
         else:
-            display_path = paths[0]
+            display_path = uris[0]
             userhome = os.path.expanduser("~")
             if display_path.startswith(userhome):
                 # FIXME: What should we show on Windows?
                 display_path = "~" + display_path[len(userhome):]
             display_name = _("Version control:") + " " + display_path
         # FIXME: Should this be translatable? It's not actually used anywhere.
-        description = "%s comparison\n%s" % (comp_type, ", ".join(paths))
+        description = "%s comparison\n%s" % (comp_type, ", ".join(uris))
 
         recent_metadata = Gtk.RecentData()
         recent_metadata.mime_type = self.mime_type
@@ -118,38 +118,45 @@ class RecentFiles(object):
         recent_metadata.display_name = display_name
         recent_metadata.description = description
         recent_metadata.is_private = True
-        self.recent_manager.add_full(gio_file.get_uri(), recent_metadata)
+        self.recent_manager.add_full(gfile.get_uri(), recent_metadata)
 
     def read(self, uri):
         """Read stored comparison from URI
 
-        Returns the comparison type, the paths involved and the comparison
+        Returns the comparison type, the URIs involved and the comparison
         flags.
         """
-        gio_file = Gio.File.new_for_uri(uri)
-        path = gio_file.get_path()
-        if not gio_file.query_exists(None) or not path:
-            raise IOError("File does not exist")
+        comp_gfile = Gio.File.new_for_uri(uri)
+        comp_path = comp_gfile.get_path()
+        if not comp_gfile.query_exists(None) or not comp_path:
+            raise IOError("Recent comparison file does not exist")
 
+        # TODO: remove reading paths in next release
         try:
             config = configparser.RawConfigParser()
-            config.read(path)
+            config.read(comp_path)
             assert (config.has_section("Comparison") and
                     config.has_option("Comparison", "type") and
-                    config.has_option("Comparison", "paths"))
+                    (config.has_option("Comparison", "paths") or
+                     config.has_option("Comparison", "uris")))
         except (configparser.Error, AssertionError):
             raise ValueError("Invalid recent comparison file")
 
         comp_type = config.get("Comparison", "type")
-        paths = tuple(config.get("Comparison", "paths").split(";"))
-        flags = tuple()
-
         if comp_type not in COMPARISON_TYPES:
             raise ValueError("Invalid recent comparison file")
 
-        return comp_type, paths, flags
+        if config.has_option("Comparison", "uris"):
+            gfiles = tuple([Gio.File.new_for_uri(u)
+                for u in tuple(config.get("Comparison", "uris").split(";"))])
+        else:
+            gfiles = tuple([Gio.File.new_for_path(p)
+                for p in tuple(config.get("Comparison", "paths").split(";"))])
+        flags = tuple()
 
-    def _write_recent_file(self, comp_type, paths):
+        return comp_type, gfiles, flags
+
+    def _write_recent_file(self, comp_type, uris):
         # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're
         # using ';' to join comparison paths.
         with tempfile.NamedTemporaryFile(
@@ -158,7 +165,7 @@ class RecentFiles(object):
             config = configparser.RawConfigParser()
             config.add_section("Comparison")
             config.set("Comparison", "type", comp_type)
-            config.set("Comparison", "paths", ";".join(paths))
+            config.set("Comparison", "uris", ";".join(uris))
             config.write(f)
             name = f.name
         return name

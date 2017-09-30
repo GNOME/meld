@@ -1025,12 +1025,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.tooltip_text = self.label_text
         self.label_changed()
 
-    def set_files(self, files):
+    def set_files(self, gfiles):
         """Load the given files
 
         If an element is None, the text of a pane is left as is.
         """
-        if len(files) != self.num_panes:
+        if len(gfiles) != self.num_panes:
             return
 
         self._disconnect_buffer_handlers()
@@ -1039,14 +1039,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         custom_candidates = get_custom_encoding_candidates()
 
-        files = [(pane, Gio.File.new_for_path(filename))
-                 for pane, filename in enumerate(files) if filename]
+        gfiles_enum = [(pane, gfile)
+                       for pane, gfile in enumerate(gfiles) if gfile]
 
-        if not files:
+        if not gfiles_enum:
             self.scheduler.add_task(self._compare_files_internal())
 
-        for pane, gfile in files:
+        for pane, gfile in gfiles_enum:
             self.fileentry[pane].set_file(gfile)
+            # TODO: filentry handling of URIs
+            self.fileentry[pane].set_sensitive(gfile.is_native())
             self.msgarea_mgr[pane].clear()
 
             buf = self.textbuffer[pane]
@@ -1067,8 +1069,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             )
 
     def get_comparison(self):
-        files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
-        return recent.TYPE_FILE, files
+        uris = [b.data.gfile.get_uri()
+                for b in self.textbuffer[:self.num_panes]]
+        return recent.TYPE_FILE, uris
 
     def file_loaded(self, loader, result, user_data):
 
@@ -1176,8 +1179,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         except ValueError:
             # Notification for unknown buffer
             return
-        gfile = Gio.File.new_for_path(data.filename)
-        display_name = gfile.get_parse_name()
+        display_name = data.gfile.get_parse_name()
         primary = _("File %s has changed on disk") % display_name
         secondary = _("Do you want to reload the file?")
         self.msgarea_mgr[pane].add_action_msg(
@@ -1463,7 +1465,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def save_file(self, pane, saveas=False, force_overwrite=False):
         buf = self.textbuffer[pane]
         bufdata = buf.data
-        if saveas or not (bufdata.filename or bufdata.savefile) \
+        if saveas or not (bufdata.gfile or bufdata.savefile) \
                 or not bufdata.writable:
             if pane == 0:
                 prompt = _("Save Left Pane As")
@@ -1622,9 +1624,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_fileentry_file_set(self, entry):
         entries = self.fileentry[:self.num_panes]
         if self.check_save_modified() != Gtk.ResponseType.CANCEL:
-            files = [e.get_file() for e in entries]
-            paths = [f.get_path() if f is not None else f for f in files]
-            self.set_files(paths)
+            gfiles = [e.get_file() for e in entries]
+            self.set_files(gfiles)
         else:
             idx = entries.index(entry)
             existing_path = self.textbuffer[idx].data.filename
@@ -1651,8 +1652,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             dialog.widget.destroy()
 
         if response == Gtk.ResponseType.OK:
-            files = [b.data.filename for b in self.textbuffer[:self.num_panes]]
-            self.set_files(files)
+            gfiles = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
+            self.set_files(gfiles)
 
     def on_refresh_activate(self, *extra):
         self.refresh_comparison()

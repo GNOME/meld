@@ -142,19 +142,17 @@ class MeldApp(Gtk.Application):
         return self.get_active_window().meldwindow
 
     def open_files(
-            self, files, *, window=None, close_on_error=False, **kwargs):
+            self, gfiles, *, window=None, close_on_error=False, **kwargs):
         """Open a comparison between files in a Meld window
 
-        :param files: list of Gio.File to be compared
+        :param gfiles: list of Gio.File to be compared
         :param window: window in which to open comparison tabs; if
             None, the current window is used
         :param close_on_error: if true, close window if an error occurs
         """
         window = window or self.get_meld_window()
-
-        paths = [f.get_path() for f in files]
         try:
-            return window.open_paths(paths, **kwargs)
+            return window.open_paths(gfiles, **kwargs)
         except ValueError:
             if close_on_error:
                 self.remove_window(window.widget)
@@ -345,7 +343,10 @@ class MeldApp(Gtk.Application):
             auto_merge = options.auto_merge and i == 0
             try:
                 for p, f in zip(paths, files):
-                    if f.get_path() is None:
+                    # TODO: support for directories specified by URIs
+                    if f.get_uri() is None or (not f.is_native() and
+                        f.query_file_type(Gio.FileQueryInfoFlags.NONE, None) ==
+                            Gio.FileType.DIRECTORY):
                         raise ValueError(_("invalid path or URI “%s”") % p)
                 tab = self.open_files(
                     files, window=window,

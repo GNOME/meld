@@ -325,7 +325,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def get_comparison(self):
-        return recent.TYPE_VC, [self.location]
+        uris = [Gio.File.new_for_path(self.location).get_uri()]
+        return recent.TYPE_VC, uris
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)
@@ -436,7 +437,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def run_diff(self, path):
         if os.path.isdir(path):
-            self.emit("create-diff", [path], {})
+            self.emit("create-diff", [Gio.File.new_for_path(path)], {})
             return
 
         basename = os.path.basename(path)
@@ -492,7 +493,8 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             os.chmod(temp_file, 0o444)
             _temp_files.append(temp_file)
 
-        self.emit("create-diff", diffs, kwargs)
+        self.emit("create-diff",
+                  [Gio.File.new_for_path(d) for d in diffs], kwargs)
 
     def do_popup_treeview_menu(self, widget, event):
         if event:

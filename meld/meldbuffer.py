@@ -118,7 +118,10 @@ class MeldBufferData(GObject.GObject):
     def reset(self, gfile):
         same_file = gfile and self._gfile and gfile.equal(self._gfile)
         self.gfile = gfile
-        self.label = self._label if same_file else self.filename
+        if same_file:
+            self.label = self._label
+        else:
+            self.label = gfile.get_parse_name() if gfile else None
         self.loaded = False
         self.savefile = None
 

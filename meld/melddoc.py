@@ -107,7 +107,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         self._state = value
 
     def get_comparison(self):
-        """Get the comparison type and path(s) being compared"""
+        """Get the comparison type and URI(s) being compared"""
         pass
 
     def save(self):

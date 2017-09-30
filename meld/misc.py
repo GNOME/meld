@@ -249,7 +249,7 @@ def all_same(lst):
 def shorten_names(*names):
     """Remove redunant parts of a list of names (e.g. /tmp/foo{1,2} -> foo{1,2}
     """
-    # TODO: Update for different path separators
+    # TODO: Update for different path separators and URIs
     prefix = os.path.commonprefix(names)
     prefixslash = prefix.rfind("/") + 1
 
@@ -263,7 +263,7 @@ def shorten_names(*names):
     else:
         if all_same(basenames):
             def firstpart(alist):
-                if len(alist) > 1:
+                if len(alist) > 1 and alist[0]:
                     return "[%s] " % alist[0]
                 else:
                     return ""
