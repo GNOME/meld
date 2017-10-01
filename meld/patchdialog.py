@@ -128,7 +128,7 @@ class PatchDialog(Component):
             filename = GLib.markup_escape_text(gfile.get_parse_name())
             error_dialog(
                 primary=_("Could not save file %s.") % filename,
-                secondary=_("Couldn't save file due to:\n%s") % (
+                secondary=_("Couldn’t save file due to:\n%s") % (
                     GLib.markup_escape_text(str(err))),
             )
 

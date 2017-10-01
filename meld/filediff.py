@@ -1470,7 +1470,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
                 'dialog-warning-symbolic', primary, secondary)
             msgarea.add_button(_("Save Anyway"), Gtk.ResponseType.ACCEPT)
-            msgarea.add_button(_("Don't Save"), Gtk.ResponseType.CLOSE)
+            msgarea.add_button(_("Don’t Save"), Gtk.ResponseType.CLOSE)
 
             def on_file_changed_response(msgarea, response_id, *args):
                 self.msgarea_mgr[pane].clear()
@@ -1499,9 +1499,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     (_("_Save as UTF-8"), Gtk.ResponseType.OK),
                 ]
                 reencode = misc.modal_dialog(
-                    primary=_(u"Couldn't encode text as “%s”") % encoding,
+                    primary=_(u"Couldn’t encode text as “%s”") % encoding,
                     secondary=_(
-                        u"File “%s” contains characters that can't be encoded "
+                        u"File “%s” contains characters that can’t be encoded "
                         u"using encoding “%s”.\n"
                         u"Would you like to save as UTF-8?") % (
                         bufdata.label, encoding),
@@ -1542,7 +1542,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 gfile.get_parse_name())
             misc.error_dialog(
                 primary=_("Could not save file %s.") % filename,
-                secondary=_("Couldn't save file due to:\n%s") % (
+                secondary=_("Couldn’t save file due to:\n%s") % (
                     GLib.markup_escape_text(str(err))),
             )
             self.state = melddoc.STATE_SAVING_ERROR

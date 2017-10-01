@@ -224,7 +224,7 @@ def setup_resources():
     try:
         provider.load_from_path(css_file)
     except GLib.GError as err:
-        print(_("Couldn't load Meld-specific CSS (%s)\n%s") % (css_file, err))
+        print(_("Couldn’t load Meld-specific CSS (%s)\n%s") % (css_file, err))
     Gtk.StyleContext.add_provider_for_screen(
         Gdk.Screen.get_default(), provider,
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

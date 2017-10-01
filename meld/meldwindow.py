@@ -47,13 +47,13 @@ class MeldWindow(gnomeglade.Component):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("New", Gtk.STOCK_NEW, _("_New Comparison..."), "<Primary>N",
+            ("New", Gtk.STOCK_NEW, _("_New Comparison…"), "<Primary>N",
                 _("Start a new comparison"),
                 self.on_menu_file_new_activate),
             ("Save", Gtk.STOCK_SAVE, None, None,
                 _("Save the current file"),
                 self.on_menu_save_activate),
-            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As..."), "<Primary><shift>S",
+            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As…"), "<Primary><shift>S",
                 _("Save the current file with a different name"),
                 self.on_menu_save_as_activate),
             ("Close", Gtk.STOCK_CLOSE, None, None,
@@ -73,7 +73,7 @@ class MeldWindow(gnomeglade.Component):
                 self.on_menu_copy_activate),
             ("Paste", Gtk.STOCK_PASTE, None, None, _("Paste the clipboard"),
                 self.on_menu_paste_activate),
-            ("Find", Gtk.STOCK_FIND, _("Find..."), None, _("Search for text"),
+            ("Find", Gtk.STOCK_FIND, _("Find…"), None, _("Search for text"),
                 self.on_menu_find_activate),
             ("FindNext", None, _("Find Ne_xt"), "<Primary>G",
                 _("Search forwards for the same text"),
@@ -82,7 +82,7 @@ class MeldWindow(gnomeglade.Component):
                 _("Search backwards for the same text"),
                 self.on_menu_find_previous_activate),
             ("Replace", Gtk.STOCK_FIND_AND_REPLACE,
-                _("_Replace..."), "<Primary>H",
+                _("_Replace…"), "<Primary>H",
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
 

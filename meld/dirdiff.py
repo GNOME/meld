@@ -883,7 +883,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         formatted_entries = [[] for i in range(self.num_panes)]
         for pane, root, f1, f2 in shadowed_entries:
             paths = [os.path.join(root, f) for f in (f1, f2)]
-            entry_str = _("'%s' hidden by '%s'") % (paths[0], paths[1])
+            entry_str = _("“%s” hidden by “%s”") % (paths[0], paths[1])
             formatted_entries[pane].append(entry_str)
 
         if invalid_filenames or shadowed_entries:
@@ -955,7 +955,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             except (OSError, IOError, shutil.Error) as err:
                 misc.error_dialog(
                     _("Error copying file"),
-                    _("Couldn't copy %s\nto %s.\n\n%s") % (
+                    _("Couldn’t copy %s\nto %s.\n\n%s") % (
                         GLib.markup_escape_text(src),
                         GLib.markup_escape_text(dst),
                         GLib.markup_escape_text(str(err)),

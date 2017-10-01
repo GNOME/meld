@@ -200,7 +200,7 @@ def colour_lookup_with_fallback(name, attribute):
     if not style_attr:
         import sys
         print(_(
-            "Couldn't find colour scheme details for %s-%s; "
+            "Couldn’t find colour scheme details for %s-%s; "
             "this is a bad install") % (name, attribute), file=sys.stderr)
         sys.exit(1)
 

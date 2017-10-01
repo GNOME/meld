@@ -288,9 +288,9 @@ class MeldApp(Gtk.Application):
             parser.local_error(_("too many arguments (wanted 0-3, got %d)") %
                                len(args))
         elif options.auto_merge and len(args) < 3:
-            parser.local_error(_("can't auto-merge less than 3 files"))
+            parser.local_error(_("can’t auto-merge less than 3 files"))
         elif options.auto_merge and any([os.path.isdir(f) for f in args]):
-            parser.local_error(_("can't auto-merge directories"))
+            parser.local_error(_("can’t auto-merge directories"))
 
         if parser.should_exit:
             cleanup()
@@ -346,7 +346,7 @@ class MeldApp(Gtk.Application):
             try:
                 for p, f in zip(paths, files):
                     if f.get_path() is None:
-                        raise ValueError(_("invalid path or URI \"%s\"") % p)
+                        raise ValueError(_("invalid path or URI “%s”") % p)
                 tab = self.open_files(
                     files, window=window,
                     close_on_error=close_on_error,
