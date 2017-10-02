@@ -31,6 +31,73 @@ Gtk.rc_parse_string(
     """)
 
 
+class MeldStatusMenuButton(Gtk.MenuButton):
+    """Compact menu button with arrow indicator for use in a status bar
+
+    Implementation based on gedit-status-menu-button.c
+    Copyright (C) 2008 - Jesse van den Kieboom
+    """
+
+    __gtype_name__ = "MeldStatusMenuButton"
+
+    style = b"""
+    * {
+      padding: 1px 8px 2px 4px;
+      border: 0;
+      outline-width: 0;
+    }
+    """
+
+    css_provider = Gtk.CssProvider()
+    css_provider.load_from_data(style)
+
+    def get_label(self):
+        return self._label.get_text()
+
+    def set_label(self, markup):
+        if markup == self._label.get_text():
+            return
+        self._label.set_markup(markup)
+
+    label = GObject.property(
+        type=str,
+        nick="The GtkSourceLanguage displayed in the status bar",
+        default=None,
+        getter=get_label,
+        setter=set_label,
+    )
+
+    def __init__(self):
+        Gtk.MenuButton.__init__(self)
+
+        style_context = self.get_style_context()
+        style_context.add_provider(
+            self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        style_context.add_class('flat')
+
+        # Ideally this would be a template child, but there's still no
+        # Python support for this.
+        label = Gtk.Label()
+        label.props.single_line_mode = True
+        label.props.halign = Gtk.Align.START
+        label.props.valign = Gtk.Align.BASELINE
+
+        arrow = Gtk.Image.new_from_icon_name(
+            'pan-down-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
+        arrow.props.valign = Gtk.Align.BASELINE
+
+        box = Gtk.Box()
+        box.set_spacing(3)
+        box.add(label)
+        box.add(arrow)
+        box.show_all()
+
+        self.remove(self.get_child())
+        self.add(box)
+
+        self._label = label
+
+
 class MeldStatusBar(Gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
@@ -85,7 +152,7 @@ class MeldStatusBar(Gtk.Statusbar):
                 return _("Plain Text")
             return language.get_name()
 
-        button = Gtk.MenuButton()
+        button = MeldStatusMenuButton()
         self.bind_property(
             'source-language', button, 'label', GObject.BindingFlags.DEFAULT,
             get_language_label)
