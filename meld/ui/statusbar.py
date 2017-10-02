@@ -109,6 +109,7 @@ class MeldStatusBar(Gtk.Statusbar):
 
     def __init__(self):
         GObject.GObject.__init__(self)
+        self.props.margin = 0
         self.props.spacing = 6
 
         hbox = self.get_message_area()
