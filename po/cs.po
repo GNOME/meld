@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-09-30 03:39+0000\n"
-"PO-Revision-Date: 2017-10-01 09:57+0200\n"
+"POT-Creation-Date: 2017-10-02 00:27+0000\n"
+"PO-Revision-Date: 2017-10-02 10:24+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -34,7 +34,7 @@ msgstr "Meld vyžaduje %s nebo vyšší."
 #: ../bin/meld:227
 #, c-format
 msgid ""
-"Couldn't load Meld-specific CSS (%s)\n"
+"Couldn’t load Meld-specific CSS (%s)\n"
 "%s"
 msgstr ""
 "Nelze načíst CSS určené pro Meld (%s)\n"
@@ -134,7 +134,7 @@ msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
 "and the current locale-default encoding will always be used; other encodings "
-"may also be tried, depending on the user's locale."
+"may also be tried, depending on the user’s locale."
 msgstr ""
 "Meld použije při pokusu o dekódování načtených textových souborů tato "
 "kódování přednostně před zkoušením ostatních. Mimo kódování v tomto seznamu "
@@ -176,7 +176,7 @@ msgstr "Zvýrazňovat syntaxe"
 
 #: ../data/org.gnome.meld.gschema.xml.h:18
 msgid ""
-"Whether to highlight syntax in comparisons. Because of Meld's own color "
+"Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
 msgstr ""
 "Zda v porovnání zvýrazňovat syntaxe. Vzhledem k tomu, že Meld má vlastní "
@@ -328,7 +328,7 @@ msgstr "Přesnost časového razítka"
 #: ../data/org.gnome.meld.gschema.xml.h:44
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
-"between two files before they're considered to have different mtimes. This "
+"between two files before they’re considered to have different mtimes. This "
 "is useful when comparing files between filesystems with different timestamp "
 "resolution."
 msgstr ""
@@ -482,7 +482,7 @@ msgstr "Filtry textu"
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
-"but won't contribute to the comparison itself."
+"but won’t contribute to the comparison itself."
 msgstr ""
 "Seznam předdefinovaných filtrů textu založených na regulárních výrazech. "
 "Když jsou aktivní, vynechají odpovídající texty z porovnání souborů. Text "
@@ -511,10 +511,10 @@ msgstr "O aplikaci Meld"
 #: ../data/ui/application.ui.h:2
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2013 Kai Willadsen"
+"Copyright © 2009-2017 Kai Willadsen"
 msgstr ""
 "Copyright © 2002 – 2009 Stephen Kennedy\n"
-"Copyright © 2009 – 2013 Kai Willadsen"
+"Copyright © 2009 – 2017 Kai Willadsen"
 
 #: ../data/ui/application.ui.h:4
 msgid "Website"
@@ -683,7 +683,7 @@ msgid "Remove selected filter"
 msgstr "Odstranit vybraný filtr"
 
 #: ../data/ui/filediff.ui.h:1
-msgid "Format as Patch..."
+msgid "Format as Patch…"
 msgstr "Formátovat jako záplatu…"
 
 #: ../data/ui/filediff.ui.h:2
@@ -859,7 +859,7 @@ msgid "Save changes to documents before closing?"
 msgstr "Uložit změny, než dokument zavřete?"
 
 #: ../data/ui/filediff.ui.h:45
-msgid "If you don't save, changes will be permanently lost."
+msgid "If you don’t save, changes will be permanently lost."
 msgstr "Pokud se změny neuloží, budou trvale ztraceny."
 
 #: ../data/ui/filediff.ui.h:46
@@ -1485,7 +1485,7 @@ msgid "C_ompare"
 msgstr "P_orovnat"
 
 #: ../data/ui/vcview.ui.h:3
-msgid "Co_mmit..."
+msgid "Co_mmit…"
 msgstr "Zařa_dit…"
 
 #: ../data/ui/vcview.ui.h:4
@@ -1736,7 +1736,7 @@ msgstr ""
 
 #: ../meld/dirdiff.py:886
 #, python-format
-msgid "'%s' hidden by '%s'"
+msgid "“%s” hidden by “%s”"
 msgstr "„%s“ skryto v „%s“"
 
 #: ../meld/dirdiff.py:942
@@ -1760,7 +1760,7 @@ msgstr "Chyba při kopírování souboru"
 #: ../meld/dirdiff.py:958
 #, python-format
 msgid ""
-"Couldn't copy %s\n"
+"Couldn’t copy %s\n"
 "to %s.\n"
 "\n"
 "%s"
@@ -1949,7 +1949,7 @@ msgid "Save Anyway"
 msgstr "Přesto uložit"
 
 #: ../meld/filediff.py:1473
-msgid "Don't Save"
+msgid "Don’t Save"
 msgstr "Neukládat"
 
 #: ../meld/filediff.py:1499
@@ -1958,13 +1958,13 @@ msgstr "_Uložit v UTF-8"
 
 #: ../meld/filediff.py:1502
 #, python-format
-msgid "Couldn't encode text as “%s”"
+msgid "Couldn’t encode text as “%s”"
 msgstr "Text nelze zakódovat jako „%s“"
 
 #: ../meld/filediff.py:1504
 #, python-format
 msgid ""
-"File “%s” contains characters that can't be encoded using encoding “%s”.\n"
+"File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
 "Would you like to save as UTF-8?"
 msgstr ""
 "Soubor „%s“ obsahuje znaky, které nelze zakódovat pomocí kódování „%s“\n"
@@ -1978,7 +1978,7 @@ msgstr "Nelze uložit soubor %s."
 #: ../meld/filediff.py:1545 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
-"Couldn't save file due to:\n"
+"Couldn’t save file due to:\n"
 "%s"
 msgstr ""
 "Nelze uložit soubor z důvodu:\n"
@@ -2086,11 +2086,11 @@ msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "příliš mnoho argumentů (požadováno 0 – 3, obdrženo %d)"
 
 #: ../meld/meldapp.py:291
-msgid "can't auto-merge less than 3 files"
+msgid "can’t auto-merge less than 3 files"
 msgstr "nelze automaticky sloučit méně než 3 soubory"
 
 #: ../meld/meldapp.py:293
-msgid "can't auto-merge directories"
+msgid "can’t auto-merge directories"
 msgstr "nelze automaticky sloučit složky"
 
 #: ../meld/meldapp.py:307
@@ -2099,7 +2099,7 @@ msgstr "Chyba při čtení uloženého srovnávacího souboru"
 
 #: ../meld/meldapp.py:349
 #, python-format
-msgid "invalid path or URI \"%s\""
+msgid "invalid path or URI “%s”"
 msgstr "neplatná cesta nebo adresa URI „%s“"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
@@ -2116,7 +2116,7 @@ msgid "_File"
 msgstr "_Soubor"
 
 #: ../meld/meldwindow.py:50
-msgid "_New Comparison..."
+msgid "_New Comparison…"
 msgstr "_Nové porovnávání…"
 
 #: ../meld/meldwindow.py:51
@@ -2128,7 +2128,7 @@ msgid "Save the current file"
 msgstr "Uložit aktuální soubor"
 
 #: ../meld/meldwindow.py:56
-msgid "Save As..."
+msgid "Save As…"
 msgstr "Uložit jako…"
 
 #: ../meld/meldwindow.py:57
@@ -2164,8 +2164,8 @@ msgid "Paste the clipboard"
 msgstr "Vložit obsah schránky"
 
 #: ../meld/meldwindow.py:76
-msgid "Find..."
-msgstr "Najít…"
+msgid "Find…"
+msgstr "Hledat…"
 
 #: ../meld/meldwindow.py:76
 msgid "Search for text"
@@ -2177,7 +2177,7 @@ msgstr "_Najít následující"
 
 #: ../meld/meldwindow.py:79
 msgid "Search forwards for the same text"
-msgstr "Hledat tentýž text vpřed"
+msgstr "Hledat tentýž text směrem vpřed"
 
 #: ../meld/meldwindow.py:81
 msgid "Find _Previous"
@@ -2185,10 +2185,10 @@ msgstr "Najít _předchozí"
 
 #: ../meld/meldwindow.py:82
 msgid "Search backwards for the same text"
-msgstr "Hledat nazpět tentýž text"
+msgstr "Hledat tentýž text směrem zpět"
 
 #: ../meld/meldwindow.py:85
-msgid "_Replace..."
+msgid "_Replace…"
 msgstr "Nah_radit…"
 
 #: ../meld/meldwindow.py:86
@@ -2306,7 +2306,7 @@ msgstr "Nelze porovnávat směs souborů a složek"
 
 #: ../meld/misc.py:203
 #, python-format
-msgid "Couldn't find colour scheme details for %s-%s; this is a bad install"
+msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgstr ""
 "Ve schématu barev nelze najít údaj pro %s-%s. Jedná se o chybnou instalaci"
 
