@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=meld&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-09-30 03:39+0000\n"
-"PO-Revision-Date: 2017-10-01 00:13+0200\n"
+"POT-Creation-Date: 2017-10-02 00:27+0000\n"
+"PO-Revision-Date: 2017-10-03 13:37+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -35,7 +35,7 @@ msgstr "Meld kräver %s eller högre."
 #: ../bin/meld:227
 #, c-format
 msgid ""
-"Couldn't load Meld-specific CSS (%s)\n"
+"Couldn’t load Meld-specific CSS (%s)\n"
 "%s"
 msgstr ""
 "Kunde inte läsa in Meld-specifik CSS (%s)\n"
@@ -133,7 +133,7 @@ msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
 "and the current locale-default encoding will always be used; other encodings "
-"may also be tried, depending on the user's locale."
+"may also be tried, depending on the user’s locale."
 msgstr ""
 "Meld kommer använda dessa textkodningar för att försöka avkoda inlästa "
 "textfiler innan andra kodningar provas. Utöver kodningarna i denna lista "
@@ -171,11 +171,11 @@ msgstr "Markera syntax"
 
 #: ../data/org.gnome.meld.gschema.xml.h:18
 msgid ""
-"Whether to highlight syntax in comparisons. Because of Meld's own color "
+"Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
 msgstr ""
 "Huruvida syntax ska markeras i jämförelser. På grund av Melds egna "
-"markeringar är detta som standard av."
+"färgmarkeringar är detta som standard av."
 
 #: ../data/org.gnome.meld.gschema.xml.h:19
 msgid "Color scheme to use for syntax highlighting"
@@ -324,7 +324,7 @@ msgstr "Tidsstämpelupplösning på filen"
 #: ../data/org.gnome.meld.gschema.xml.h:44
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
-"between two files before they're considered to have different mtimes. This "
+"between two files before they’re considered to have different mtimes. This "
 "is useful when comparing files between filesystems with different timestamp "
 "resolution."
 msgstr ""
@@ -479,7 +479,7 @@ msgstr "Textbaserade filter"
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
-"but won't contribute to the comparison itself."
+"but won’t contribute to the comparison itself."
 msgstr ""
 "Lista över fördefinierade textbaserade regex-filter som, om aktiva, kommer "
 "att ta bort text från att användas vid filjämförelse. Texten kommer "
@@ -508,10 +508,10 @@ msgstr "Om Meld"
 #: ../data/ui/application.ui.h:2
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2013 Kai Willadsen"
+"Copyright © 2009-2017 Kai Willadsen"
 msgstr ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2013 Kai Willadsen"
+"Copyright © 2009-2017 Kai Willadsen"
 
 #: ../data/ui/application.ui.h:4
 msgid "Website"
@@ -682,7 +682,7 @@ msgid "Remove selected filter"
 msgstr "Ta bort markerat filter"
 
 #: ../data/ui/filediff.ui.h:1
-msgid "Format as Patch..."
+msgid "Format as Patch…"
 msgstr "Formatera som programfix…"
 
 #: ../data/ui/filediff.ui.h:2
@@ -859,7 +859,7 @@ msgid "Save changes to documents before closing?"
 msgstr "Spara ändringar till dokument innan stängning?"
 
 #: ../data/ui/filediff.ui.h:45
-msgid "If you don't save, changes will be permanently lost."
+msgid "If you don’t save, changes will be permanently lost."
 msgstr "Sparar du inte kommer ändringar att gå förlorade för alltid."
 
 #: ../data/ui/filediff.ui.h:46
@@ -1485,8 +1485,8 @@ msgid "C_ompare"
 msgstr "_Jämför"
 
 #: ../data/ui/vcview.ui.h:3
-msgid "Co_mmit..."
-msgstr "Ver_kställ…"
+msgid "Co_mmit…"
+msgstr "Che_cka in…"
 
 #: ../data/ui/vcview.ui.h:4
 msgid "Commit changes to version control"
@@ -1730,7 +1730,7 @@ msgstr ""
 
 #: ../meld/dirdiff.py:886
 #, python-format
-msgid "'%s' hidden by '%s'"
+msgid "“%s” hidden by “%s”"
 msgstr "”%s” dolda av ”%s”"
 
 #: ../meld/dirdiff.py:942
@@ -1754,7 +1754,7 @@ msgstr "Fel vid filkopiering"
 #: ../meld/dirdiff.py:958
 #, python-format
 msgid ""
-"Couldn't copy %s\n"
+"Couldn’t copy %s\n"
 "to %s.\n"
 "\n"
 "%s"
@@ -1943,7 +1943,7 @@ msgid "Save Anyway"
 msgstr "Spara ändå"
 
 #: ../meld/filediff.py:1473
-msgid "Don't Save"
+msgid "Don’t Save"
 msgstr "Spara inte"
 
 #: ../meld/filediff.py:1499
@@ -1952,13 +1952,13 @@ msgstr "_Spara som UTF-8"
 
 #: ../meld/filediff.py:1502
 #, python-format
-msgid "Couldn't encode text as “%s”"
+msgid "Couldn’t encode text as “%s”"
 msgstr "Kunde inte koda text som ”%s”"
 
 #: ../meld/filediff.py:1504
 #, python-format
 msgid ""
-"File “%s” contains characters that can't be encoded using encoding “%s”.\n"
+"File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
 "Would you like to save as UTF-8?"
 msgstr ""
 "Filen ”%s” innehåller tecken som inte kan kodas med kodningen ”%s”\n"
@@ -1972,7 +1972,7 @@ msgstr "Kunde inte spara filen %s."
 #: ../meld/filediff.py:1545 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
-"Couldn't save file due to:\n"
+"Couldn’t save file due to:\n"
 "%s"
 msgstr ""
 "Kunde in spara fil beroende på:\n"
@@ -2081,12 +2081,12 @@ msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "för många argument (ville ha 0-3, fick %d)"
 
 #: ../meld/meldapp.py:291
-msgid "can't auto-merge less than 3 files"
-msgstr "kan inte auto-sammanfoga mindre är tre filer"
+msgid "can’t auto-merge less than 3 files"
+msgstr "kan inte automatiskt sammanfoga mindre är tre filer"
 
 #: ../meld/meldapp.py:293
-msgid "can't auto-merge directories"
-msgstr "kan inte auto-sammanfoga kataloger"
+msgid "can’t auto-merge directories"
+msgstr "kan inte automatiskt sammanfoga kataloger"
 
 #: ../meld/meldapp.py:307
 msgid "Error reading saved comparison file"
@@ -2094,7 +2094,7 @@ msgstr "Fel vid läsning av den sparade konfigurationsfilen"
 
 #: ../meld/meldapp.py:349
 #, python-format
-msgid "invalid path or URI \"%s\""
+msgid "invalid path or URI “%s”"
 msgstr "ogiltig sökväg eller URI ”%s”"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
@@ -2111,7 +2111,7 @@ msgid "_File"
 msgstr "_Arkiv"
 
 #: ../meld/meldwindow.py:50
-msgid "_New Comparison..."
+msgid "_New Comparison…"
 msgstr "_Ny jämförelse…"
 
 #: ../meld/meldwindow.py:51
@@ -2123,7 +2123,7 @@ msgid "Save the current file"
 msgstr "Spara den aktuella filen"
 
 #: ../meld/meldwindow.py:56
-msgid "Save As..."
+msgid "Save As…"
 msgstr "Spara som…"
 
 #: ../meld/meldwindow.py:57
@@ -2159,7 +2159,7 @@ msgid "Paste the clipboard"
 msgstr "Klistra in Urklipp"
 
 #: ../meld/meldwindow.py:76
-msgid "Find..."
+msgid "Find…"
 msgstr "Sök…"
 
 #: ../meld/meldwindow.py:76
@@ -2183,7 +2183,7 @@ msgid "Search backwards for the same text"
 msgstr "Sök bakåt efter samma text"
 
 #: ../meld/meldwindow.py:85
-msgid "_Replace..."
+msgid "_Replace…"
 msgstr "_Ersätt…"
 
 #: ../meld/meldwindow.py:86
@@ -2293,7 +2293,7 @@ msgstr "Om detta program"
 #: ../meld/meldwindow.py:595
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
-msgstr "Behöver tre filer för att auto-sammanfoga, fick: %r"
+msgstr "Behöver tre filer för att sammanfoga automatiskt, fick: %r"
 
 #: ../meld/meldwindow.py:609
 msgid "Cannot compare a mixture of files and directories"
@@ -2301,7 +2301,7 @@ msgstr "Kan inte jämföra en blandning av filer och kataloger"
 
 #: ../meld/misc.py:203
 #, python-format
-msgid "Couldn't find colour scheme details for %s-%s; this is a bad install"
+msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgstr ""
 "Kunde inte hitta färgschemadetaljer för %s-%s; detta är en felaktig "
 "installation"
@@ -2528,6 +2528,18 @@ msgstr "Fel vid borttagning av %s"
 #: ../meld/vcview.py:780
 msgid "Clear"
 msgstr "Töm"
+
+#~ msgid "Format as Patch..."
+#~ msgstr "Formatera som programfix…"
+
+#~ msgid "Co_mmit..."
+#~ msgstr "Ver_kställ…"
+
+#~ msgid "Find..."
+#~ msgstr "Sök…"
+
+#~ msgid "_Replace..."
+#~ msgstr "_Ersätt…"
 
 #~ msgid "Meld does not support Python 3."
 #~ msgstr "Meld stöder inte Python 3."
