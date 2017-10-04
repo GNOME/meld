@@ -37,9 +37,11 @@ missing_dll = [
     'libjasper-1.dll',
     'libjpeg-8.dll',
     'libpng16-16.dll',
-    'libgnutls-26.dll',
     'libxmlxpat.dll',
     'librsvg-2-2.dll',
+    'libtiff-5.dll',
+    'libepoxy-0.dll',
+    'libharfbuzz-0.dll',
     'libharfbuzz-gobject-0.dll',
     'libwebp-5.dll',
 ]
