@@ -22,6 +22,11 @@ import os
 import signal
 import subprocess
 import sys
+from multiprocessing import freeze_support
+
+# Main module hasn't multiprocessing workers, so not imported in subprocesses.
+# This allows skipping '__name__ == "main"' guard, but freezed case is special.
+freeze_support()
 
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
 # dummy stdout and stderr streams that silently throw away any output. However,
