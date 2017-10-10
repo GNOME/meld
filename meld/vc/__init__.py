@@ -40,7 +40,7 @@ vc_names = (
     "darcs",
 )
 
-_plugins = [importlib.import_module("." + vc, __package__) for vc in vc_names]
+_plugins = [importlib.import_module("." + vc, __name__) for vc in vc_names]
 
 
 def get_plugins_metadata():
