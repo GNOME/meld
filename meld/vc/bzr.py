@@ -172,7 +172,7 @@ class Vc(_vc.Vc):
             state2 = self.state_2_map.get(state_string[1])
             state3 = self.state_3_map.get(state_string[2])
 
-            states = {state1, state2, state3}
+            states = {state1, state2, state3} - {None}
 
             if _vc.STATE_CONFLICT in states:
                 real_path_match = re.search(self.CONFLICT_RE, name)
