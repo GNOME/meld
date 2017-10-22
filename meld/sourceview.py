@@ -150,8 +150,6 @@ class MeldSourceView(GtkSource.View):
         self.set_buffer(buf)
 
         meldsettings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meldsettings, 'font')
-        self.on_setting_changed(meldsettings, 'style-scheme')
 
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()
@@ -191,6 +189,8 @@ class MeldSourceView(GtkSource.View):
 
     def do_realize(self):
         bind_settings(self)
+        self.on_setting_changed(meldsettings, 'font')
+        self.on_setting_changed(meldsettings, 'style-scheme')
         return GtkSource.View.do_realize(self)
 
     def do_draw_layer(self, layer, context):
