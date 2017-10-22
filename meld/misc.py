@@ -161,6 +161,19 @@ def get_base_style_scheme():
     else:
         gtk_settings = Gtk.Settings.get_default()
         use_dark = gtk_settings.props.gtk_application_prefer_dark_theme
+
+    # As of 3.28, the global dark theme switch is going away.
+    if not use_dark:
+        from meld.sourceview import MeldSourceView
+        stylecontext = MeldSourceView().get_style_context()
+        background_set, rgba = (
+            stylecontext.lookup_color('theme_bg_color'))
+
+        # This heuristic is absolutely dire. I made it up. There's
+        # literally no basis to this.
+        if background_set and rgba.red + rgba.green + rgba.blue < 1.0:
+            use_dark = True
+
     base_scheme_name = (
         MELD_STYLE_SCHEME_DARK if use_dark else MELD_STYLE_SCHEME)
 
