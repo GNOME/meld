@@ -48,6 +48,9 @@ class FindBar(gnomeglade.Component):
         self.wrap_box.set_visible(False)
         self.widget.hide()
 
+    def on_stop_search(self, search_entry):
+        self.hide()
+
     def set_text_view(self, textview):
         self.textview = textview
         if textview is not None:
