@@ -1047,8 +1047,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.clear()
         self.linediffer.clear()
 
-        custom_candidates = get_custom_encoding_candidates()
-
         gfiles_enum = [(pane, gfile)
                        for pane, gfile in enumerate(gfiles) if gfile]
 
@@ -1056,27 +1054,34 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.scheduler.add_task(self._compare_files_internal())
 
         for pane, gfile in gfiles_enum:
-            self.fileentry[pane].set_file(gfile)
-            # TODO: filentry handling of URIs
-            self.fileentry[pane].set_sensitive(gfile.is_native())
-            self.msgarea_mgr[pane].clear()
+            self.load_file_in_pane(pane, gfile)
 
-            buf = self.textbuffer[pane]
-            buf.data.reset(gfile)
+    def load_file_in_pane(self, pane: int, gfile: Gio.File):
 
-            if buf.data.is_special:
-                loader = GtkSource.FileLoader.new_from_stream(
-                    buf, buf.data.sourcefile, buf.data.gfile.read())
-            else:
-                loader = GtkSource.FileLoader.new(buf, buf.data.sourcefile)
+        self.fileentry[pane].set_file(gfile)
+        # TODO: filentry handling of URIs
+        self.fileentry[pane].set_sensitive(gfile.is_native())
 
-            if custom_candidates:
-                loader.set_candidate_encodings(custom_candidates)
-            loader.load_async(
-                GLib.PRIORITY_HIGH,
-                callback=self.file_loaded,
-                user_data=(pane,)
-            )
+        self.msgarea_mgr[pane].clear()
+
+        buf = self.textbuffer[pane]
+        buf.data.reset(gfile)
+
+        if buf.data.is_special:
+            loader = GtkSource.FileLoader.new_from_stream(
+                buf, buf.data.sourcefile, buf.data.gfile.read())
+        else:
+            loader = GtkSource.FileLoader.new(buf, buf.data.sourcefile)
+
+        custom_candidates = get_custom_encoding_candidates()
+        if custom_candidates:
+            loader.set_candidate_encodings(custom_candidates)
+
+        loader.load_async(
+            GLib.PRIORITY_HIGH,
+            callback=self.file_loaded,
+            user_data=(pane,)
+        )
 
     def get_comparison(self):
         uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
