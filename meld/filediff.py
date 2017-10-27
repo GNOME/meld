@@ -228,6 +228,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 'language', statusbar, 'source-language',
                 GObject.BindingFlags.BIDIRECTIONAL)
 
+            buf.data.bind_property(
+                'encoding', statusbar, 'source-encoding',
+                GObject.BindingFlags.DEFAULT)
+
         # Prototype implementation
 
         from meld.gutterrendererchunk import GutterRendererChunkAction, GutterRendererChunkLines
