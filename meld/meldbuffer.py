@@ -107,6 +107,12 @@ class MeldBufferData(GObject.GObject):
         str('file-changed'): (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
+    encoding = GObject.property(
+        type=GtkSource.Encoding,
+        nick="The file encoding of the linked GtkSourceFile",
+        default=None,
+    )
+
     def __init__(self):
         GObject.GObject.__init__(self)
         self._gfile = None
@@ -183,6 +189,8 @@ class MeldBufferData(GObject.GObject):
         self._gfile = value
         self._sourcefile = GtkSource.File()
         self._sourcefile.set_location(value)
+        self._sourcefile.bind_property(
+            'encoding', self, 'encoding', GObject.BindingFlags.DEFAULT)
 
         # This is aiming to maintain existing behaviour for filename. The
         # behaviour is however wrong and should be fixed.
