@@ -26,6 +26,12 @@ class TemplateHackMixin(object):
 
 class FilteredListSelector(TemplateHackMixin):
 
+    # FilteredListSelector was intially based on gedit's
+    # GeditHighlightModeSelector
+    # Copyright (C) 2013 - Ignacio Casal Quinteiro
+    # Python translation and adaptations
+    # Copyright (C) 2015, 2017 Kai Willadsen <kai.willadsen@gmail.com>
+
     __gtype_name__ = 'FilteredListSelector'
 
     NAME_COLUMN, VALUE_COLUMN = 0, 1

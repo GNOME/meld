@@ -13,13 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 from gi.repository import Pango
 
-from meld.conf import _, ui_file
+from meld.ui.bufferselectors import EncodingSelector
+from meld.ui.bufferselectors import SourceLangSelector
 
 
 Gtk.rc_parse_string(
@@ -101,6 +101,12 @@ class MeldStatusMenuButton(Gtk.MenuButton):
 class MeldStatusBar(Gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
+    source_encoding = GObject.property(
+        type=GtkSource.Encoding,
+        nick="The file encoding displayed in the status bar",
+        default=None,
+    )
+
     source_language = GObject.property(
         type=GtkSource.Language,
         nick="The GtkSourceLanguage displayed in the status bar",
@@ -130,7 +136,33 @@ class MeldStatusBar(Gtk.Statusbar):
         self.box_box = Gtk.HBox(homogeneous=False, spacing=6)
         self.pack_end(self.box_box, False, True, 0)
         self.box_box.pack_end(self.construct_highlighting_selector(), False, True, 0)
+        self.box_box.pack_end(self.construct_encoding_selector(), False, True, 0)
         self.box_box.show_all()
+
+    def construct_encoding_selector(self):
+        def change_encoding(selector, encoding):
+            self.props.source_encoding = encoding
+            pop.hide()
+
+        def set_initial_encoding(selector):
+            selector.select_value(self.props.source_encoding)
+
+        selector = EncodingSelector()
+        selector.connect('encoding-selected', change_encoding)
+        selector.connect('map', set_initial_encoding)
+
+        pop = Gtk.Popover()
+        pop.set_position(Gtk.PositionType.TOP)
+        pop.add(selector)
+
+        button = MeldStatusMenuButton()
+        self.bind_property(
+            'source-encoding', button, 'label', GObject.BindingFlags.DEFAULT,
+            lambda binding, enc: selector.get_value_label(enc))
+        button.set_popover(pop)
+        button.show()
+
+        return button
 
     def construct_highlighting_selector(self):
         def change_language(selector, lang):
@@ -138,9 +170,9 @@ class MeldStatusBar(Gtk.Statusbar):
             pop.hide()
 
         def set_initial_language(selector):
-            selector.select_language(self.props.source_language)
+            selector.select_value(self.props.source_language)
 
-        selector = HighlightModeSelector()
+        selector = SourceLangSelector()
         selector.connect('language-selected', change_language)
         selector.connect('map', set_initial_language)
 
@@ -148,15 +180,10 @@ class MeldStatusBar(Gtk.Statusbar):
         pop.set_position(Gtk.PositionType.TOP)
         pop.add(selector)
 
-        def get_language_label(binding, language, *args):
-            if not language:
-                return _("Plain Text")
-            return language.get_name()
-
         button = MeldStatusMenuButton()
         self.bind_property(
             'source-language', button, 'label', GObject.BindingFlags.DEFAULT,
-            get_language_label)
+            lambda binding, enc: selector.get_value_label(enc))
         button.set_popover(pop)
         button.show()
 
@@ -167,104 +194,3 @@ class MeldStatusBar(Gtk.Statusbar):
             self.info_box.remove(child)
         for widget in widgets:
             self.info_box.pack_end(widget, False, True, 0)
-
-
-class TemplateHackMixin(object):
-
-    def get_template_child(self, widget_type, name):
-        # Taken from an in-progress patch on bgo#701843
-
-        def get_template_child(widget, widget_type, name):
-            # Explicitly use gtk_buildable_get_name() because it is masked by
-            # gtk_widget_get_name() in GI.
-            if isinstance(widget, widget_type) and \
-                    isinstance(widget, Gtk.Buildable) and \
-                    Gtk.Buildable.get_name(widget) == name:
-                return widget
-
-            if isinstance(widget, Gtk.Container):
-                for child in widget.get_children():
-                    result = get_template_child(child, widget_type, name)
-                    if result is not None:
-                        return result
-
-        return get_template_child(self, widget_type, name)
-
-
-# HighlightModeSelector was copied and translated to Python from gedit
-# Copyright (C) 2013 - Ignacio Casal Quinteiro
-# Python translation and adaptations
-# Copyright (C) 2015 Kai Willadsen <kai.willadsen@gmail.com>
-
-
-class HighlightModeSelector(TemplateHackMixin, Gtk.Grid):
-
-    __gtype_name__ = "HighlightModeSelector"
-
-    __gsignals__ = {
-        'language-selected': (
-            GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION,
-            None, (GtkSource.Language,)),
-    }
-
-    NAME_COLUMN, LANG_COLUMN = 0, 1
-
-    def __init__(self):
-        Gtk.Grid.__init__(self)
-        self.init_template()
-
-        self.entry = self.get_template_child(Gtk.SearchEntry, 'entry')
-        self.treeview = self.get_template_child(Gtk.TreeView, 'treeview')
-        self.treeview_selection = self.treeview.get_selection()
-        # FIXME: Should be able to access as a template child, but can't.
-        self.listfilter = self.treeview.get_model()
-        self.liststore = self.listfilter.get_model()
-
-        self.liststore.append((_("Plain Text"), None))
-        manager = GtkSource.LanguageManager.get_default()
-        for lang_id in manager.get_language_ids():
-            lang = manager.get_language(lang_id)
-            self.liststore.append((lang.get_name(), lang))
-
-        self.filter_string = ''
-        self.entry.connect('changed', self.on_entry_changed)
-        self.listfilter.set_visible_func(self.lang_name_filter)
-
-        self.entry.connect('activate', self.on_activate)
-        self.treeview.connect('row-activated', self.on_activate)
-
-    def select_language(self, language):
-        if not language:
-            return
-
-        for row in self.liststore:
-            row_lang = row[self.LANG_COLUMN]
-            if row_lang and row_lang.get_id() != language.get_id():
-                continue
-            self.treeview_selection.select_path(row.path)
-            self.treeview.scroll_to_cell(row.path, None, True, 0.5, 0)
-
-    def lang_name_filter(self, model, it, *args):
-        if not self.filter_string:
-            return True
-        lang_name = model.get_value(it, self.NAME_COLUMN).lower()
-        return self.filter_string.lower() in lang_name
-
-    def on_entry_changed(self, entry):
-        self.filter_string = entry.get_text()
-        self.listfilter.refilter()
-        first = self.listfilter.get_iter_first()
-        if first:
-            self.treeview_selection.select_iter(first)
-
-    def on_activate(self, *args):
-        model, it = self.treeview_selection.get_selected()
-        if not it:
-            return
-        lang = model.get_value(it, self.LANG_COLUMN)
-        self.emit('language-selected', lang)
-
-
-template = open(ui_file('gedit-highlight-mode-selector.ui'), 'rb').read()
-template_bytes = GLib.Bytes.new(template)
-HighlightModeSelector.set_template(template_bytes)
