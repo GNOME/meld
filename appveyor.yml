@@ -1,5 +1,14 @@
 version: tag-or-branch-set-from-init-script.{build}
 
+# Limit builds to release branches
+branches:
+  only:
+    - master
+    - meld-3-18
+
+# Only build tags automatically
+skip_non_tags: true
+
 init:
   - ps: |
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
