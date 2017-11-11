@@ -24,11 +24,7 @@ single-file registers for multi-file comparisons, and tell the recent files
 infrastructure that that's actually what we opened.
 """
 
-try:
-    # py3k
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 import os
 import sys
 import tempfile
