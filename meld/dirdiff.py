@@ -219,11 +219,10 @@ class CanonicalListing(object):
     def __init__(self, n, canonicalize=None):
         self.items = collections.defaultdict(lambda: [None] * n)
         self.errors = []
-        if canonicalize is not None:
-            self.canonicalize = canonicalize
-            self.add = self.add_canon
+        self.canonicalize = canonicalize
+        self.add = self.add_simple if canonicalize is None else self.add_canon
 
-    def add(self, pane, item):
+    def add_simple(self, pane, item):
         self.items[item][pane] = item
 
     def add_canon(self, pane, item):
