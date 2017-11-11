@@ -364,6 +364,6 @@ if __name__ == '__main__':
         # FontConfig on win32 at least with version <= 2.12.6 can cause several
         # minutes 'hang' during first startup. So use native fonts backend.
         from gi.repository import PangoCairo
-        PangoCairo.FontMap.set_default(PangoCairo.Win32FontMap()) 
+        PangoCairo.FontMap.set_default(PangoCairo.Win32FontMap())
     status = meld.meldapp.app.run(sys.argv)
     sys.exit(status)
