@@ -157,7 +157,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.lines_removed = 0
         self.textview_overwrite = 0
         self.focus_pane = None
-        self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
+        self.textview_overwrite_handlers = [
+            t.connect("toggle-overwrite", self.on_textview_toggle_overwrite)
+            for t in self.textview
+        ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.buffer_texts = [meldbuffer.BufferLines(b) for b in self.textbuffer]
         self.undosequence = undo.UndoSequence()
@@ -267,6 +270,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def get_keymask(self):
         return self._keymask
+
     def set_keymask(self, value):
         if value & MASK_SHIFT:
             mode = MODE_DELETE
@@ -401,8 +405,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             # target pane.
             editable = self.textview[pane].get_editable()
             editable_left = pane > 0 and self.textview[pane - 1].get_editable()
-            editable_right = pane < self.num_panes - 1 and \
-                             self.textview[pane + 1].get_editable()
+            editable_right = (
+                pane < self.num_panes - 1 and
+                self.textview[pane + 1].get_editable()
+            )
             if pane == 0 or pane == 2:
                 chunk = self.linediffer.get_chunk(chunk_id, pane)
                 insert_chunk = chunk[1] == chunk[2]
@@ -590,6 +596,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textbuffer[dst].begin_user_action()
         self.textbuffer[dst].set_text(mergedfile)
         self.textbuffer[dst].end_user_action()
+
         def resync():
             self._sync_vscroll_lock = False
             self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
@@ -638,12 +645,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                     break
                 next_ += 1
 
+        # TODO: Move myers.DiffChunk to a more general place, update
+        # this to use it, and update callers to use nice attributes.
         return "Same", start0, end0, start1, end1
 
     def _corresponding_chunk_line(self, chunk, line, pane, new_pane):
         """Approximates the corresponding line between panes"""
 
-        old_buf, new_buf = self.textbuffer[pane], self.textbuffer[new_pane]
+        new_buf = self.textbuffer[new_pane]
 
         # Special-case cross-pane jumps
         if (pane == 0 and new_pane == 2) or (pane == 2 and new_pane == 0):
@@ -671,8 +680,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             already_in_chunk = cursor_chunk == chunk
         else:
             cursor_chunk = self._synth_chunk(pane, new_pane, cursor_line)
-            already_in_chunk = cursor_chunk[3] == new_start and \
-                               cursor_chunk[4] == new_end
+            already_in_chunk = (
+                cursor_chunk[3] == new_start and cursor_chunk[4] == new_end)
 
         if already_in_chunk:
             new_line = cursor_line
@@ -956,11 +965,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_textview_toggle_overwrite(self, view):
         self.textview_overwrite = not self.textview_overwrite
-        for v,h in zip(self.textview, self.textview_overwrite_handlers):
+        for v, h in zip(self.textview, self.textview_overwrite_handlers):
             v.disconnect(h)
             if v != view:
                 v.emit("toggle-overwrite")
-        self.textview_overwrite_handlers = [ t.connect("toggle-overwrite", self.on_textview_toggle_overwrite) for t in self.textview ]
+        self.textview_overwrite_handlers = [
+            t.connect("toggle-overwrite", self.on_textview_toggle_overwrite)
+            for t in self.textview
+        ]
         self.on_cursor_position_changed(view.get_buffer(), None, True)
 
     def set_labels(self, labels):
@@ -1293,7 +1305,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                             (match.end_a == offsets[0] and match.end_b == offsets[1]))
                         if start_or_end:
                             return False
-                       # Remove equal matches of size less than 3
+                        # Remove equal matches of size less than 3
                         too_short = ((match.end_a - match.start_a < 3) or
                                      (match.end_b - match.start_b < 3))
                         return too_short
@@ -1410,11 +1422,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.text_filters = []
             self.refresh_comparison()
 
-    def _get_filename_for_saving(self, title ):
-        dialog = Gtk.FileChooserDialog(title,
+    def _get_filename_for_saving(self, title):
+        dialog = Gtk.FileChooserDialog(
+            title,
             parent=self.widget.get_toplevel(),
             action=Gtk.FileChooserAction.SAVE,
-            buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK) )
+            buttons=(
+                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_OK, Gtk.ResponseType.OK,
+            ),
+        )
         dialog.set_default_response(Gtk.ResponseType.OK)
         response = dialog.run()
         filename = None
