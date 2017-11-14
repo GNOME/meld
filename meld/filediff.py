@@ -1069,8 +1069,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             )
 
     def get_comparison(self):
-        uris = [b.data.gfile.get_uri()
-                for b in self.textbuffer[:self.num_panes]]
+        uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
         return recent.TYPE_FILE, uris
 
     def file_loaded(self, loader, result, user_data):

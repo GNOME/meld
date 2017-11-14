@@ -325,7 +325,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def get_comparison(self):
-        uris = [Gio.File.new_for_path(self.location).get_uri()]
+        uris = [Gio.File.new_for_path(self.location)]
         return recent.TYPE_VC, uris
 
     def recompute_label(self):

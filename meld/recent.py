@@ -81,12 +81,14 @@ class RecentFiles(object):
         The passed flags are currently ignored. In the future these are to be
         used for extra initialisation not captured by the tab itself.
         """
-        comp_type, uris = tab.get_comparison()
+        comp_type, gfiles = tab.get_comparison()
 
         # While Meld handles comparisons including None, recording these as
         # recently-used comparisons just isn't that sane.
-        if None in uris:
+        if None in gfiles:
             return
+
+        uris = [f.get_uri() for f in gfiles]
 
         # If a (type, uris) comparison is already registered, then re-add
         # the corresponding comparison file

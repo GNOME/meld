@@ -641,7 +641,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     def get_comparison(self):
         root = self.model.get_iter_first()
         if root:
-            uris = [Gio.File.new_for_path(d).get_uri()
+            uris = [Gio.File.new_for_path(d)
                     for d in self.model.value_paths(root)]
         else:
             uris = []
