@@ -25,6 +25,7 @@ infrastructure that that's actually what we opened.
 """
 
 import configparser
+import enum
 import os
 import sys
 import tempfile
@@ -37,11 +38,12 @@ import meld.misc
 
 from meld.conf import _
 
-TYPE_FILE = "File"
-TYPE_FOLDER = "Folder"
-TYPE_VC = "Version control"
-TYPE_MERGE = "Merge"
-COMPARISON_TYPES = (TYPE_FILE, TYPE_FOLDER, TYPE_VC, TYPE_MERGE)
+
+class RecentType(enum.Enum):
+    File = "File"
+    Folder = "Folder"
+    VersionControl = "Version control"
+    Merge = "Merge"
 
 
 def unicodeify(s):
@@ -81,7 +83,7 @@ class RecentFiles(object):
         The passed flags are currently ignored. In the future these are to be
         used for extra initialisation not captured by the tab itself.
         """
-        comp_type, gfiles = tab.get_comparison()
+        recent_type, gfiles = tab.get_comparison()
 
         # While Meld handles comparisons including None, recording these as
         # recently-used comparisons just isn't that sane.
@@ -90,6 +92,7 @@ class RecentFiles(object):
 
         uris = [f.get_uri() for f in gfiles]
         names = [f.get_parse_name() for f in gfiles]
+        comp_type = recent_type.value
 
         # If a (type, uris) comparison is already registered, then re-add
         # the corresponding comparison file
@@ -146,7 +149,9 @@ class RecentFiles(object):
             raise ValueError("Invalid recent comparison file")
 
         comp_type = config.get("Comparison", "type")
-        if comp_type not in COMPARISON_TYPES:
+        try:
+            recent_type = RecentType(comp_type)
+        except ValueError:
             raise ValueError("Invalid recent comparison file")
 
         if config.has_option("Comparison", "uris"):
@@ -157,7 +162,7 @@ class RecentFiles(object):
                 for p in tuple(config.get("Comparison", "paths").split(";"))])
         flags = tuple()
 
-        return comp_type, gfiles, flags
+        return recent_type, gfiles, flags
 
     def _write_recent_file(self, comp_type, uris):
         # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're

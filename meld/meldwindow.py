@@ -14,8 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
@@ -27,14 +25,13 @@ from . import filediff
 from . import filemerge
 from . import melddoc
 from . import newdifftab
-from . import recent
 from . import task
 from . import vcview
 from .ui import gnomeglade
 from .ui import notebooklabel
 
 from meld.conf import _
-from meld.recent import recent_comparisons
+from meld.recent import RecentType, recent_comparisons
 from meld.settings import interface_settings, settings
 from meld.windowstate import SavedWindowState
 
@@ -623,7 +620,8 @@ class MeldWindow(gnomeglade.Component):
     def append_vcview(self, location, auto_compare=False):
         doc = vcview.VcView()
         self._append_page(doc, "meld-version-control")
-        location = location[0] if isinstance(location, list) else location
+        if isinstance(location, (list, tuple)):
+            location = location[0]
         doc.set_location(location.get_path())
         if auto_compare:
             doc.scheduler.add_task(doc.auto_compare)
@@ -631,15 +629,13 @@ class MeldWindow(gnomeglade.Component):
 
     def append_recent(self, uri):
         comparison_type, gfiles, flags = recent_comparisons.read(uri)
-        if comparison_type == recent.TYPE_MERGE:
-            tab = self.append_filemerge(gfiles)
-        elif comparison_type == recent.TYPE_FOLDER:
-            tab = self.append_dirdiff(gfiles)
-        elif comparison_type == recent.TYPE_VC:
-            # Files should be a single-element iterable
-            tab = self.append_vcview(gfiles[0])
-        else:  # comparison_type == recent.TYPE_FILE:
-            tab = self.append_filediff(gfiles)
+        comparison_method = {
+            RecentType.File: self.append_filediff,
+            RecentType.Folder: self.append_dirdiff,
+            RecentType.Merge: self.append_filemerge,
+            RecentType.VersionControl: self.append_vcview,
+        }
+        tab = comparison_method[comparison_type](gfiles)
         self.notebook.set_current_page(self.notebook.page_num(tab.widget))
         recent_comparisons.add(tab)
         return tab

@@ -30,7 +30,6 @@ from meld.conf import _
 from . import meldbuffer
 from . import melddoc
 from . import misc
-from . import recent
 from . import undo
 from .ui import gnomeglade
 
@@ -39,6 +38,7 @@ from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
 from meld.matchers.merge import Merger
 from meld.patchdialog import PatchDialog
+from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
 from meld.sourceview import LanguageManager, get_custom_encoding_candidates
 from meld.ui.findbar import FindBar
@@ -1070,7 +1070,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def get_comparison(self):
         uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
-        return recent.TYPE_FILE, uris
+        return RecentType.File, uris
 
     def file_loaded(self, loader, result, user_data):
 

@@ -34,13 +34,13 @@ from gi.repository import Pango
 
 from meld import melddoc
 from meld import misc
-from meld import recent
 from meld import tree
 from meld import vc
 from meld.ui import gnomeglade
 from meld.ui import vcdialogs
 
 from meld.conf import _
+from meld.recent import RecentType
 from meld.settings import settings, bind_settings
 from meld.vc import _null
 from meld.vc._vc import Entry
@@ -326,7 +326,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def get_comparison(self):
         uris = [Gio.File.new_for_path(self.location)]
-        return recent.TYPE_VC, uris
+        return RecentType.VersionControl, uris
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)

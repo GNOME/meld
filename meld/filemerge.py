@@ -17,7 +17,7 @@
 from meld.conf import _
 from . import filediff
 from meld.matchers import merge
-from . import recent
+from meld.recent import RecentType
 
 
 class FileMerge(filediff.FileDiff):
@@ -31,7 +31,7 @@ class FileMerge(filediff.FileDiff):
 
     def get_comparison(self):
         comp = filediff.FileDiff.get_comparison(self)
-        return recent.TYPE_MERGE, comp[1]
+        return RecentType.Merge, comp[1]
 
     def _merge_files(self):
         yield _("[%s] Merging files") % self.label_text

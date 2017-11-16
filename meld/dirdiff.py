@@ -36,7 +36,6 @@ from gi.repository import Gtk
 from . import melddoc
 from . import tree
 from . import misc
-from . import recent
 from .ui import gnomeglade
 from .ui import emblemcellrenderer
 
@@ -45,6 +44,7 @@ from decimal import Decimal
 
 from meld.conf import _
 from meld.misc import all_same
+from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 
 
@@ -645,7 +645,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                     for d in self.model.value_paths(root)]
         else:
             uris = []
-        return recent.TYPE_FOLDER, uris
+        return RecentType.Folder, uris
 
     def recursively_update( self, path ):
         """Recursively update from tree path 'path'.

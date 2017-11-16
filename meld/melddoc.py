@@ -31,6 +31,7 @@ from . import task
 
 from meld.conf import _
 from meld.settings import settings
+from meld.recent import RecentType
 
 log = logging.getLogger(__name__)
 
@@ -106,7 +107,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         self.emit('state-changed', self._state, value)
         self._state = value
 
-    def get_comparison(self):
+    def get_comparison(self) -> RecentType:
         """Get the comparison type and URI(s) being compared"""
         pass
 
