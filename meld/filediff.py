@@ -86,8 +86,10 @@ PANE_LEFT, PANE_RIGHT = -1, +1
 
 
 class CursorDetails(object):
-    __slots__ = ("pane", "pos", "line", "offset", "chunk", "prev", "next",
-                 "prev_conflict", "next_conflict")
+    __slots__ = (
+        "pane", "pos", "line", "offset", "chunk", "prev", "next",
+        "prev_conflict", "next_conflict",
+    )
 
     def __init__(self):
         for var in self.__slots__:
@@ -162,13 +164,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             for t in self.textview
         ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
-        self.buffer_texts = [meldbuffer.BufferLines(b) for b in self.textbuffer]
+        self.buffer_texts = [
+            meldbuffer.BufferLines(b) for b in self.textbuffer]
         self.undosequence = undo.UndoSequence()
         self.text_filters = []
         self.create_text_filters()
         self.settings_handlers = [
-            meldsettings.connect("text-filters-changed",
-                                 self.on_text_filters_changed)
+            meldsettings.connect(
+                "text-filters-changed", self.on_text_filters_changed)
         ]
         self.buffer_filtered = [meldbuffer.BufferLines(b, self._filter_text)
                                 for b in self.textbuffer]
@@ -307,8 +310,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def create_text_filters(self):
         # In contrast to file filters, ordering of text filters can matter
         old_active = [f.filter_string for f in self.text_filters if f.active]
-        new_active = [f.filter_string for f in meldsettings.text_filters
-                      if f.active]
+        new_active = [
+            f.filter_string for f in meldsettings.text_filters if f.active
+        ]
         active_filters_changed = old_active != new_active
 
         self.text_filters = [copy.copy(f) for f in meldsettings.text_filters]
@@ -330,9 +334,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             id0 = buf.connect("insert-text", self.on_text_insert_text)
             id1 = buf.connect("delete-range", self.on_text_delete_range)
             id2 = buf.connect_after("insert-text", self.after_text_insert_text)
-            id3 = buf.connect_after("delete-range", self.after_text_delete_range)
-            id4 = buf.connect("notify::cursor-position",
-                              self.on_cursor_position_changed)
+            id3 = buf.connect_after(
+                "delete-range", self.after_text_delete_range)
+            id4 = buf.connect(
+                "notify::cursor-position", self.on_cursor_position_changed)
             buf.handlers = id0, id1, id2, id3, id4
 
     # Abbreviations for insert and overwrite that fit in the status bar
@@ -362,8 +367,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.cursor.chunk = chunk
                 self.emit("current-diff-changed")
             if prev != self.cursor.prev or next_ != self.cursor.next or force:
-                self.emit("next-diff-changed", prev is not None,
-                          next_ is not None)
+                self.emit(
+                    "next-diff-changed", prev is not None, next_ is not None)
 
             prev_conflict, next_conflict = None, None
             for conflict in self.linediffer.conflicts:
