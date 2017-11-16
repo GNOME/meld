@@ -24,7 +24,7 @@ from meld.conf import _
 from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
 from meld.misc import get_common_theme
 from meld.settings import meldsettings
-from meld.ui.gtkcompat import draw_style_common, get_style
+from meld.ui.gtkcompat import get_style
 
 # Fixed size of the renderer. Ideally this would be font-dependent and
 # would adjust to other textview attributes, but that's both quite difficult
@@ -53,7 +53,7 @@ def get_background_rgba(renderer):
     gutters with the actual expected widget background, which causes
     them to look wrong when put next to any other widgets. This hack
     just gets the background from the renderer's view, and then caches
-    in for performance, and on the basis that all renderers will be
+    it for performance, and on the basis that all renderers will be
     assigned to similarly-styled views. This is fragile, but the
     alternative is really significantly slower.
     '''
@@ -64,6 +64,8 @@ def get_background_rgba(renderer):
             background_set, _background_rgba = (
                 stylecontext.lookup_color('theme_bg_color'))
     return _background_rgba
+
+
 _background_rgba = None
 
 
@@ -79,13 +81,11 @@ class MeldGutterRenderer(object):
 
     def on_setting_changed(self, meldsettings, key):
         if key == 'style-scheme':
-            # meldsettings.style_scheme
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors['current-chunk-highlight'].alpha
-            make_highlight = lambda color: Gdk.RGBA(
-                *[alpha + c * (1.0 - alpha) for c in color])
             self.chunk_highlights = {
-                k: make_highlight(v) for k, v in self.fill_colors.items()
+                state: Gdk.RGBA(*[alpha + c * (1.0 - alpha) for c in colour])
+                for state, colour in self.fill_colors.items()
             }
 
     def draw_chunks(
