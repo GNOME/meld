@@ -238,14 +238,9 @@ class GutterRendererChunkAction(
         GtkSource.GutterRendererPixbuf.do_draw(
             self, context, background_area, cell_area, start, end, state)
         if self.is_action:
-            if Gtk.get_minor_version() < 20:
-                style_context = get_style(None, "GtkButton.flat.image-button")
-                style_context.add_class(Gtk.STYLE_CLASS_BUTTON)
-                style_context.add_class(Gtk.STYLE_CLASS_FLAT)
-            else:
-                # TODO: Fix padding and min-height in CSS and use
-                # draw_style_common
-                style_context = get_style(None, "button.flat.image-button")
+            # TODO: Fix padding and min-height in CSS and use
+            # draw_style_common
+            style_context = get_style(None, "button.flat.image-button")
             style_context.set_state(renderer_to_gtk_state(state))
 
             x = background_area.x + 1

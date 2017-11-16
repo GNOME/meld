@@ -185,17 +185,6 @@ def get_base_style_scheme():
 base_style_scheme = None
 
 
-def parse_rgba(string):
-    """Parse a string to a Gdk.RGBA across different GTK+ APIs
-
-    Introspection changes broke this API in GTK+ 3.20; this function
-    is just a backwards-compatiblity workaround.
-    """
-    colour = Gdk.RGBA()
-    result = colour.parse(string)
-    return result[1] if isinstance(result, tuple) else colour
-
-
 def colour_lookup_with_fallback(name, attribute):
     from meld.settings import meldsettings
     source_style = meldsettings.style_scheme
@@ -217,7 +206,9 @@ def colour_lookup_with_fallback(name, attribute):
             "this is a bad install") % (name, attribute), file=sys.stderr)
         sys.exit(1)
 
-    return parse_rgba(style_attr)
+    colour = Gdk.RGBA()
+    colour.parse(style_attr)
+    return colour
 
 
 def get_common_theme():

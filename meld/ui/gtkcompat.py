@@ -42,9 +42,8 @@ def append_element(path, selector):
         ('link',          Gtk.StateFlags.LINK),
         ('visited',       Gtk.StateFlags.VISITED),
         ('checked',       Gtk.StateFlags.CHECKED),
+        ('drop(active)',  Gtk.StateFlags.DROP_ACTIVE)
     ]
-    if Gtk.get_minor_version() >= 20:
-        pseudo_classes.append(('drop(active)',  Gtk.StateFlags.DROP_ACTIVE))
 
     toks = [t for t in re.split('([#\.:])', selector) if t]
     elements = [toks[i] + toks[i + 1] for i in range(1, len(toks), 2)]

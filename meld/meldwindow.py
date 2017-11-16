@@ -246,13 +246,9 @@ class MeldWindow(gnomeglade.Component):
         rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
         rmenu.connect("map", self._on_recentmenu_map)
 
-        try:
-            builder = meld.ui.util.get_builder("shortcuts.ui")
-            shortcut_window = builder.get_object("shortcuts-meld")
-            self.widget.set_help_overlay(shortcut_window)
-        except GLib.Error:
-            # GtkShortcutsWindow is new in GTK+ 3.20
-            pass
+        builder = meld.ui.util.get_builder("shortcuts.ui")
+        shortcut_window = builder.get_object("shortcuts-meld")
+        self.widget.set_help_overlay(shortcut_window)
 
     def _on_recentmenu_map(self, recentmenu):
         for imagemenuitem in recentmenu.get_children():

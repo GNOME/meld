@@ -38,9 +38,8 @@ class MeldNotebook(Gtk.Notebook):
     css = (
         b"""
         @binding-set TabSwitchBindings {}
-        MeldNotebook { """ +
-        (b"" if Gtk.get_minor_version() <= 18 else b"-") +
-        b"gtk-key-bindings: TabSwitchBindings; }"
+        MeldNotebook { -gtk-key-bindings: TabSwitchBindings; }
+        """
     )
 
     ui = """
