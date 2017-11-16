@@ -27,7 +27,6 @@ import subprocess
 
 from gi.repository import Gdk
 from gi.repository import GLib
-from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -181,6 +180,7 @@ def get_base_style_scheme():
     base_style_scheme = manager.get_scheme(base_scheme_name)
 
     return base_style_scheme
+
 
 base_style_scheme = None
 

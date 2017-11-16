@@ -339,7 +339,7 @@ class build_py(distutils.command.build_py.build_py):
                 options = self.distribution.get_option_dict('install')
                 prefix = options['prefix'][1]
             except KeyError as e:
-                print (e)
+                print(e)
                 prefix = sys.prefix
 
             datadir = os.path.join(prefix, 'share', 'meld')
