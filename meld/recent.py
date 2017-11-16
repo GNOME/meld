@@ -89,6 +89,7 @@ class RecentFiles(object):
             return
 
         uris = [f.get_uri() for f in gfiles]
+        names = [f.get_parse_name() for f in gfiles]
 
         # If a (type, uris) comparison is already registered, then re-add
         # the corresponding comparison file
@@ -102,9 +103,9 @@ class RecentFiles(object):
             gfile = Gio.File.new_for_path(recent_path)
 
         if len(uris) > 1:
-            display_name = " : ".join(meld.misc.shorten_names(*uris))
+            display_name = " : ".join(meld.misc.shorten_names(*names))
         else:
-            display_path = uris[0]
+            display_path = names[0]
             userhome = os.path.expanduser("~")
             if display_path.startswith(userhome):
                 # FIXME: What should we show on Windows?
