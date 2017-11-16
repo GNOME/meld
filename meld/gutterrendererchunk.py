@@ -79,6 +79,11 @@ def renderer_to_gtk_state(state):
 
 class MeldGutterRenderer(object):
 
+    def set_renderer_defaults(self):
+        self.set_alignment_mode(GtkSource.GutterRendererAlignmentMode.FIRST)
+        self.set_padding(3, 0)
+        self.set_alignment(0.5, 0.5)
+
     def on_setting_changed(self, meldsettings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
@@ -161,6 +166,7 @@ class GutterRendererChunkAction(
 
     def __init__(self, from_pane, to_pane, views, filediff, linediffer):
         super(GutterRendererChunkAction, self).__init__()
+        self.set_renderer_defaults()
         self.from_pane = from_pane
         self.to_pane = to_pane
         # FIXME: Views are needed only for editable checking; connect to this
@@ -345,6 +351,7 @@ class GutterRendererChunkLines(
 
     def __init__(self, from_pane, to_pane, linediffer):
         super(GutterRendererChunkLines, self).__init__()
+        self.set_renderer_defaults()
         self.from_pane = from_pane
         self.to_pane = to_pane
         # FIXME: Don't pass in the linediffer; pass a generator like elsewhere
