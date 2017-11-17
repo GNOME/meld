@@ -1826,23 +1826,23 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
-        start = b0.get_iter_at_line_or_eof(chunk[1])
-        end = b0.get_iter_at_line_or_eof(chunk[2])
+        start = b0.get_iter_at_line_or_eof(chunk.start_a)
+        end = b0.get_iter_at_line_or_eof(chunk.end_a)
         t0 = b0.get_text(start, end, False)
 
         if copy_up:
-            if chunk[2] >= b0.get_line_count() and \
-               chunk[3] < b1.get_line_count():
+            if chunk.end_a >= b0.get_line_count() and \
+               chunk.start_b < b1.get_line_count():
                 # TODO: We need to insert a linebreak here, but there is no
                 # way to be certain what kind of linebreak to use.
                 t0 = t0 + "\n"
-            dst_start = b1.get_iter_at_line_or_eof(chunk[3])
+            dst_start = b1.get_iter_at_line_or_eof(chunk.start_b)
             mark0 = b1.create_mark(None, dst_start, True)
-            new_end = b1.insert_at_line(chunk[3], t0)
+            new_end = b1.insert_at_line(chunk.start_b, t0)
         else:
-            dst_start = b1.get_iter_at_line_or_eof(chunk[4])
+            dst_start = b1.get_iter_at_line_or_eof(chunk.end_b)
             mark0 = b1.create_mark(None, dst_start, True)
-            new_end = b1.insert_at_line(chunk[4], t0)
+            new_end = b1.insert_at_line(chunk.end_b, t0)
 
         mark1 = b1.create_mark(None, new_end, True)
         # FIXME: If the inserted chunk ends up being an insert chunk, then
@@ -1851,19 +1851,19 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def replace_chunk(self, src, dst, chunk):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
-        src_start = b0.get_iter_at_line_or_eof(chunk[1])
-        src_end = b0.get_iter_at_line_or_eof(chunk[2])
-        dst_start = b1.get_iter_at_line_or_eof(chunk[3])
-        dst_end = b1.get_iter_at_line_or_eof(chunk[4])
+        src_start = b0.get_iter_at_line_or_eof(chunk.start_a)
+        src_end = b0.get_iter_at_line_or_eof(chunk.end_a)
+        dst_start = b1.get_iter_at_line_or_eof(chunk.start_b)
+        dst_end = b1.get_iter_at_line_or_eof(chunk.end_b)
         t0 = b0.get_text(src_start, src_end, False)
         mark0 = b1.create_mark(None, dst_start, True)
         b1.begin_user_action()
         b1.delete(dst_start, dst_end)
-        new_end = b1.insert_at_line(chunk[3], t0)
-        b1.place_cursor(b1.get_iter_at_line(chunk[3]))
+        new_end = b1.insert_at_line(chunk.start_b, t0)
+        b1.place_cursor(b1.get_iter_at_line(chunk.start_b))
         b1.end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
-        if chunk[1] == chunk[2]:
+        if chunk.start_a == chunk.end_a:
             # TODO: Need a more specific colour here; conflict is wrong
             colour = 'conflict'
         else:
@@ -1875,12 +1875,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def delete_chunk(self, src, chunk):
         b0 = self.textbuffer[src]
-        it = b0.get_iter_at_line_or_eof(chunk[1])
-        if chunk[2] >= b0.get_line_count():
+        it = b0.get_iter_at_line_or_eof(chunk.start_a)
+        if chunk.end_a >= b0.get_line_count():
             # If this is the end of the buffer, we need to remove the
             # previous newline, because the current line has none.
             it.backward_cursor_position()
-        b0.delete(it, b0.get_iter_at_line_or_eof(chunk[2]))
+        b0.delete(it, b0.get_iter_at_line_or_eof(chunk.end_a))
         mark0 = b0.create_mark(None, it, True)
         mark1 = b0.create_mark(None, it, True)
         # TODO: Need a more specific colour here; conflict is wrong
