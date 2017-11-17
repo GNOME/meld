@@ -1759,68 +1759,70 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             lm.queue_draw()
 
     def set_num_panes(self, n):
-        if n != self.num_panes and n in (1, 2, 3):
-            self.num_panes = n
-            for widget in (
-                    self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
-                    self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
-                    self.dummy_toolbar_diffmap[:n - 1]):
-                widget.show()
+        if n == self.num_panes or n not in (1, 2, 3):
+            return
 
-            for widget in (
-                    self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
-                    self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
-                    self.dummy_toolbar_diffmap[n - 1:]):
-                widget.hide()
+        self.num_panes = n
+        for widget in (
+                self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
+                self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
+                self.dummy_toolbar_diffmap[:n - 1]):
+            widget.show()
 
-            self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
+        for widget in (
+                self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
+                self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
+                self.dummy_toolbar_diffmap[n - 1:]):
+            widget.hide()
 
-            def chunk_iter(i):
-                def chunks(bounds):
-                    for chunk in self.linediffer.single_changes(i, bounds):
-                        yield chunk
-                return chunks
+        self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
 
-            def current_chunk_check(i):
-                def chunks(change):
-                    chunk = self.linediffer.locate_chunk(i, change[1])[0]
-                    return chunk == self.cursor.chunk
-                return chunks
+        def chunk_iter(i):
+            def chunks(bounds):
+                for chunk in self.linediffer.single_changes(i, bounds):
+                    yield chunk
+            return chunks
 
-            for (w, i) in zip(self.textview, range(self.num_panes)):
-                w.chunk_iter = chunk_iter(i)
-                w.current_chunk_check = current_chunk_check(i)
+        def current_chunk_check(i):
+            def chunks(change):
+                chunk = self.linediffer.locate_chunk(i, change[1])[0]
+                return chunk == self.cursor.chunk
+            return chunks
 
-            def coords_iter(i):
-                buf_index = 2 if i == 1 and self.num_panes == 3 else i
-                get_end_iter = self.textbuffer[buf_index].get_end_iter
-                get_iter_at_line = self.textbuffer[buf_index].get_iter_at_line
-                get_line_yrange = self.textview[buf_index].get_line_yrange
+        for (w, i) in zip(self.textview, range(self.num_panes)):
+            w.chunk_iter = chunk_iter(i)
+            w.current_chunk_check = current_chunk_check(i)
 
-                def coords_by_chunk():
-                    y, h = get_line_yrange(get_end_iter())
-                    max_y = float(y + h)
-                    for c in self.linediffer.single_changes(i):
-                        y0, _ = get_line_yrange(get_iter_at_line(c[1]))
-                        if c[1] == c[2]:
-                            y, h = y0, 0
-                        else:
-                            y, h = get_line_yrange(get_iter_at_line(c[2] - 1))
-                        yield c[0], y0 / max_y, (y + h) / max_y
-                return coords_by_chunk
+        def coords_iter(i):
+            buf_index = 2 if i == 1 and self.num_panes == 3 else i
+            get_end_iter = self.textbuffer[buf_index].get_end_iter
+            get_iter_at_line = self.textbuffer[buf_index].get_iter_at_line
+            get_line_yrange = self.textview[buf_index].get_line_yrange
 
-            for (w, i) in zip(self.diffmap, (0, self.num_panes - 1)):
-                scroll = self.scrolledwindow[i].get_vscrollbar()
-                w.setup(scroll, coords_iter(i))
+            def coords_by_chunk():
+                y, h = get_line_yrange(get_end_iter())
+                max_y = float(y + h)
+                for c in self.linediffer.single_changes(i):
+                    y0, _ = get_line_yrange(get_iter_at_line(c[1]))
+                    if c[1] == c[2]:
+                        y, h = y0, 0
+                    else:
+                        y, h = get_line_yrange(get_iter_at_line(c[2] - 1))
+                    yield c[0], y0 / max_y, (y + h) / max_y
+            return coords_by_chunk
 
-            for (w, i) in zip(self.linkmap, (0, self.num_panes - 2)):
-                w.associate(self, self.textview[i], self.textview[i + 1])
+        for (w, i) in zip(self.diffmap, (0, self.num_panes - 1)):
+            scroll = self.scrolledwindow[i].get_vscrollbar()
+            w.setup(scroll, coords_iter(i))
 
-            for i in range(self.num_panes):
-                self.file_save_button[i].set_sensitive(
-                    self.textbuffer[i].get_modified())
-            self.queue_draw()
-            self.recompute_label()
+        for (w, i) in zip(self.linkmap, (0, self.num_panes - 2)):
+            w.associate(self, self.textview[i], self.textview[i + 1])
+
+        for i in range(self.num_panes):
+            self.file_save_button[i].set_sensitive(
+                self.textbuffer[i].get_modified())
+        self.queue_draw()
+        self.recompute_label()
 
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
