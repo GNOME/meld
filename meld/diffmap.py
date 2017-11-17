@@ -32,6 +32,7 @@ class DiffMap(Gtk.DrawingArea):
     def __init__(self):
         Gtk.DrawingArea.__init__(self)
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
+        self._last_allocation = None
         self._scrolladj = None
         self._difffunc = lambda: None
         self._handlers = []
@@ -103,6 +104,10 @@ class DiffMap(Gtk.DrawingArea):
         self.queue_draw()
 
     def on_scrollbar_size_allocate(self, scrollbar, allocation):
+        if self._last_allocation and self._last_allocation.equal(allocation):
+            return
+
+        self._last_allocation = allocation
         translation = scrollbar.translate_coordinates(self, 0, 0)
         _scroll_y = translation[1] if translation else 0
         self._y_start = _scroll_y + self._y_offset + 1
