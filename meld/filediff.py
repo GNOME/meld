@@ -491,6 +491,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.textview[pane].scroll_to_mark(
             buf.get_insert(), tolerance, True, 0.5, 0.5)
 
+    def on_linkmap_scroll_event(self, linkmap, event):
+        self.next_diff(event.direction)
+
     def next_diff(self, direction, centered=False):
         target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
                   else self.cursor.prev)

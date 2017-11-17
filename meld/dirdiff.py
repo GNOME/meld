@@ -1467,9 +1467,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                 idx = 1 if i else 0
                 w.setup(scroll, self.get_state_traversal(idx))
 
-            for w in self.linkmap:
-                w.associate(self)
-
             for widget in (
                     self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
                     self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1]):
@@ -1558,6 +1555,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             self._update_item_state( model.get_iter(path) )
         self._update_diffmaps()
         self.force_cursor_recalculate = True
+
+    def on_linkmap_scroll_event(self, linkmap, event):
+        self.next_diff(event.direction)
 
     def next_diff(self, direction):
         if self.focus_pane:

@@ -131,9 +131,6 @@ class LinkMap(Gtk.DrawingArea):
             Gdk.cairo_set_source_rgba(context, self.line_colors[c[0]])
             context.stroke()
 
-    def do_scroll_event(self, event):
-        self.filediff.next_diff(event.direction)
-
 
 LinkMap.set_css_name("link-map")
 
@@ -141,14 +138,3 @@ LinkMap.set_css_name("link-map")
 class ScrollLinkMap(Gtk.DrawingArea):
 
     __gtype_name__ = "ScrollLinkMap"
-
-    def __init__(self):
-        self.melddoc = None
-
-    def associate(self, melddoc):
-        self.melddoc = melddoc
-
-    def do_scroll_event(self, event):
-        if not self.melddoc:
-            return
-        self.melddoc.next_diff(event.direction)
