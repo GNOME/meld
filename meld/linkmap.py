@@ -34,6 +34,7 @@ class LinkMap(Gtk.DrawingArea):
 
     def __init__(self):
         self.filediff = None
+        self.views = []
         meldsettings.connect('changed', self.on_setting_changed)
 
     def associate(self, filediff, left_view, right_view):
@@ -50,7 +51,7 @@ class LinkMap(Gtk.DrawingArea):
             self.fill_colors, self.line_colors = get_common_theme()
 
     def do_draw(self, context):
-        if not self.filediff:
+        if not self.views:
             return
 
         pix_start = [t.get_visible_rect().y for t in self.views]
