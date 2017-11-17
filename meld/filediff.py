@@ -840,6 +840,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         return response
 
     def on_delete_event(self):
+        # TODO: This should not be necessary; remove if and when we
+        # figure out what's keeping MeldDocs alive for too long.
+        del self._cached_match
         self.state = melddoc.STATE_CLOSING
         response = self.check_save_modified()
         if response == Gtk.ResponseType.OK:
