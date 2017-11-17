@@ -54,8 +54,10 @@ def find_common_suffix(a, b):
     return 0
 
 
-DiffChunk = collections.namedtuple('DiffChunk',
-                                   'tag, start_a, end_a, start_b, end_b')
+class DiffChunk(collections.namedtuple(
+        'DiffChunk', 'tag, start_a, end_a, start_b, end_b')):
+
+    __slots__ = ()
 
 
 class MyersSequenceMatcher(difflib.SequenceMatcher):
