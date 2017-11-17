@@ -14,6 +14,8 @@ log = logging.getLogger(__name__)
 
 class MatcherWorker(multiprocessing.Process):
 
+    END_TASK = -1
+
     matcher_class = myers.InlineMyersSequenceMatcher
 
     def __init__(self, tasks, results):
@@ -25,6 +27,9 @@ class MatcherWorker(multiprocessing.Process):
     def run(self):
         while True:
             task_id, (text1, textn) = self.tasks.get()
+            if task_id == self.END_TASK:
+                break
+
             try:
                 matcher = self.matcher_class(None, text1, textn)
                 self.results.put((task_id, matcher.get_opcodes()))
@@ -42,6 +47,8 @@ class CachedSequenceMatcher(object):
     subsequently evicted based on least-recent generation/usage. The LRU-based
     eviction is overly simplistic, but is okay for our usage pattern.
     """
+
+    TASK_GRACE_PERIOD = 5
 
     def __init__(self, scheduler):
         """Create a new caching sequence matcher
@@ -61,6 +68,12 @@ class CachedSequenceMatcher(object):
         self.task_id = 1
         self.queued_matches = {}
         GLib.idle_add(self.thread.start)
+
+    def __del__(self):
+        self.tasks.put((MatcherWorker.END_TASK, ('', '')))
+        self.thread.join(self.TASK_GRACE_PERIOD)
+        if self.thread.exitcode is None:
+            self.thread.terminate()
 
     def match(self, text1, textn, cb):
         texts = (text1, textn)
