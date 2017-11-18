@@ -990,11 +990,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         buf.data.savefile = os.path.abspath(filename)
         buf.data.label = filename
         self.update_buffer_writable(buf)
-
-        # FIXME: Hack around bgo#737804; remove after GTK+ 3.18 is required
-        def set_merge_file_entry():
-            self.fileentry[1].set_filename(buf.data.savefile)
-        self.scheduler.add_task(set_merge_file_entry)
+        self.fileentry[1].set_filename(buf.data.savefile)
         self.recompute_label()
 
     def _set_save_action_sensitivity(self):
