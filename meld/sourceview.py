@@ -145,7 +145,9 @@ class MeldSourceView(GtkSource.View):
         self._show_line_numbers = None
 
         buf = MeldBuffer()
-        buf.create_tag("inline")
+        inline_tag = GtkSource.Tag.new("inline")
+        inline_tag.props.draw_spaces = True
+        buf.get_tag_table().add(inline_tag)
         buf.create_tag("dimmed")
         self.set_buffer(buf)
 
