@@ -1035,7 +1035,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.tooltip_text = self.label_text
         self.label_changed()
 
-    def set_files(self, gfiles):
+    def set_files(self, gfiles, encodings=None):
         """Load the given files
 
         If an element is None, the text of a pane is left as is.
@@ -1047,16 +1047,33 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.undosequence.clear()
         self.linediffer.clear()
 
-        gfiles_enum = [(pane, gfile)
-                       for pane, gfile in enumerate(gfiles) if gfile]
+        encodings = encodings or ((None,) * len(gfiles))
 
-        if not gfiles_enum:
+        files = [
+            (pane, gfile, encoding)
+            for pane, (gfile, encoding) in enumerate(zip(gfiles, encodings))
+            if gfile
+        ]
+
+        if not files:
             self.scheduler.add_task(self._compare_files_internal())
 
-        for pane, gfile in gfiles_enum:
-            self.load_file_in_pane(pane, gfile)
+        for pane, gfile, encoding in files:
+            self.load_file_in_pane(pane, gfile, encoding)
 
-    def load_file_in_pane(self, pane: int, gfile: Gio.File):
+    def load_file_in_pane(
+            self,
+            pane: int,
+            gfile: Gio.File,
+            encoding: GtkSource.Encoding = None):
+        """Load a file into the given pane
+
+        Don't call this directly; use `set_file()` or `set_files()`,
+        which handle sensitivity and signal connection. Even if you
+        don't care about those things, you need it because they'll be
+        unconditionally added after file load, which will cause
+        duplicate handlers, etc. if you don't do this thing.
+        """
 
         self.fileentry[pane].set_file(gfile)
         # TODO: filentry handling of URIs
@@ -1074,6 +1091,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             loader = GtkSource.FileLoader.new(buf, buf.data.sourcefile)
 
         custom_candidates = get_custom_encoding_candidates()
+        if encoding:
+            custom_candidates = [encoding]
         if custom_candidates:
             loader.set_candidate_encodings(custom_candidates)
 
