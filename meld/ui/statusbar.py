@@ -101,6 +101,11 @@ class MeldStatusMenuButton(Gtk.MenuButton):
 class MeldStatusBar(Gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
+    __gsignals__ = {
+        'encoding-changed': (
+            GObject.SignalFlags.RUN_FIRST, None, (GtkSource.Encoding,)),
+    }
+
     source_encoding = GObject.property(
         type=GtkSource.Encoding,
         nick="The file encoding displayed in the status bar",
@@ -142,6 +147,7 @@ class MeldStatusBar(Gtk.Statusbar):
     def construct_encoding_selector(self):
         def change_encoding(selector, encoding):
             self.props.source_encoding = encoding
+            self.emit('encoding-changed', encoding)
             pop.hide()
 
         def set_initial_encoding(selector):

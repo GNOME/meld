@@ -232,6 +232,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 'encoding', statusbar, 'source-encoding',
                 GObject.BindingFlags.DEFAULT)
 
+            def reload_with_encoding(widget, encoding, pane):
+                self.set_file(pane, self.textbuffer[pane].data.gfile, encoding)
+
+            pane = self.statusbar.index(statusbar)
+            statusbar.connect('encoding-changed', reload_with_encoding, pane)
+
         # Prototype implementation
 
         from meld.gutterrendererchunk import GutterRendererChunkAction, GutterRendererChunkLines
