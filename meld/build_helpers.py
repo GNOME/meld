@@ -113,7 +113,9 @@ class build_help(distutils.cmd.Command):
         if "LINGUAS" in os.environ:
             self.selected_languages = os.environ["LINGUAS"].split()
         else:
-            self.selected_languages = os.listdir(self.help_dir)
+            self.selected_languages = [
+                d for d in os.listdir(self.help_dir) if os.path.isdir(d)
+            ]
 
         if 'C' not in self.selected_languages:
             self.selected_languages.append('C')
