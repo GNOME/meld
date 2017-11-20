@@ -1035,6 +1035,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.tooltip_text = self.label_text
         self.label_changed()
 
+    def pre_comparison_init(self):
+        self._disconnect_buffer_handlers()
+        self.linediffer.clear()
+
+        for buf in self.textbuffer:
+            tag = buf.get_tag_table().lookup("inline")
+            buf.remove_tag(tag, buf.get_start_iter(), buf.get_end_iter())
+
     def set_files(self, gfiles, encodings=None):
         """Load the given files
 
@@ -1043,9 +1051,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if len(gfiles) != self.num_panes:
             return
 
-        self._disconnect_buffer_handlers()
+        self.pre_comparison_init()
         self.undosequence.clear()
-        self.linediffer.clear()
 
         encodings = encodings or ((None,) * len(gfiles))
 
@@ -1066,9 +1073,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             pane: int,
             gfile: Gio.File,
             encoding: GtkSource.Encoding = None):
-        self._disconnect_buffer_handlers()
+        self.pre_comparison_init()
         self.undosequence.clear()
-        self.linediffer.clear()
         self.load_file_in_pane(pane, gfile, encoding)
 
     def load_file_in_pane(
@@ -1231,13 +1237,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def refresh_comparison(self, *args):
         """Refresh the view by clearing and redoing all comparisons"""
-        self._disconnect_buffer_handlers()
-        self.linediffer.clear()
-
-        for buf in self.textbuffer:
-            tag = buf.get_tag_table().lookup("inline")
-            buf.remove_tag(tag, buf.get_start_iter(), buf.get_end_iter())
-
+        self.pre_comparison_init()
         self.queue_draw()
         self.scheduler.add_task(self._diff_files(refresh=True))
 
