@@ -1061,6 +1061,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for pane, gfile, encoding in files:
             self.load_file_in_pane(pane, gfile, encoding)
 
+    def set_file(
+            self,
+            pane: int,
+            gfile: Gio.File,
+            encoding: GtkSource.Encoding = None):
+        self._disconnect_buffer_handlers()
+        self.undosequence.clear()
+        self.linediffer.clear()
+        self.load_file_in_pane(pane, gfile, encoding)
+
     def load_file_in_pane(
             self,
             pane: int,
