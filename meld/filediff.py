@@ -218,9 +218,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for statusbar, buf in zip(self.statusbar, self.textbuffer):
             overwrite_label = Gtk.Label()
             overwrite_label.show()
-            cursor_label = Gtk.Label()
-            cursor_label.show()
-            pane_labels = [overwrite_label, cursor_label]
+            pane_labels = [overwrite_label]
             self.status_info_labels.append(pane_labels)
 
             statusbar.set_info_box(pane_labels)
@@ -353,8 +351,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     # Abbreviations for insert and overwrite that fit in the status bar
     _insert_overwrite_text = (_("INS"), _("OVR"))
-    # Abbreviation for line, column so that it will fit in the status bar
-    _line_column_text = _("Ln %i, Col %i")
 
     def on_cursor_position_changed(self, buf, pspec, force=False):
         pane = self.textbuffer.index(buf)
@@ -368,10 +364,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         line = cursor_it.get_line()
 
         insert_overwrite = self._insert_overwrite_text[self.textview_overwrite]
-        line_column = self._line_column_text % (line + 1, offset + 1)
-        overwrite_label, cursor_label = self.status_info_labels[pane]
+        self.statusbar[pane].props.cursor_position = (line, offset)
+        overwrite_label = self.status_info_labels[pane][0]
         overwrite_label.set_text(insert_overwrite)
-        cursor_label.set_text(line_column)
 
         if line != self.cursor.line or force:
             chunk, prev, next_ = self.linediffer.locate_chunk(pane, line)

@@ -18,6 +18,7 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 from gi.repository import Pango
 
+from meld.conf import _
 from meld.ui.bufferselectors import EncodingSelector
 from meld.ui.bufferselectors import SourceLangSelector
 
@@ -102,9 +103,17 @@ class MeldStatusBar(Gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
     __gsignals__ = {
+        'go-to-line': (
+            GObject.SignalFlags.RUN_FIRST, None, (int,)),
         'encoding-changed': (
             GObject.SignalFlags.RUN_FIRST, None, (GtkSource.Encoding,)),
     }
+
+    cursor_position = GObject.property(
+        type=object,
+        nick="The position of the cursor displayed in the status bar",
+        default=None,
+    )
 
     source_encoding = GObject.property(
         type=GtkSource.Encoding,
@@ -117,6 +126,9 @@ class MeldStatusBar(Gtk.Statusbar):
         nick="The GtkSourceLanguage displayed in the status bar",
         default=None,
     )
+
+    # Abbreviation for line, column so that it will fit in the status bar
+    _line_column_text = _("Ln %i, Col %i")
 
     def __init__(self):
         GObject.GObject.__init__(self)
@@ -140,9 +152,63 @@ class MeldStatusBar(Gtk.Statusbar):
 
         self.box_box = Gtk.HBox(homogeneous=False, spacing=6)
         self.pack_end(self.box_box, False, True, 0)
+        self.box_box.pack_end(self.construct_line_display(), False, True, 0)
         self.box_box.pack_end(self.construct_highlighting_selector(), False, True, 0)
         self.box_box.pack_end(self.construct_encoding_selector(), False, True, 0)
         self.box_box.show_all()
+
+    def construct_line_display(self):
+
+        # Note that we're receiving one-based line numbers from the
+        # user and storing and emitting zero-base line numbers.
+
+        def line_entry_mapped(entry):
+            line, offset = self.props.cursor_position
+            entry.set_text(str(line + 1))
+
+        def line_entry_insert_text(entry, new_text, length, position):
+            if not new_text.isdigit():
+                GObject.signal_stop_emission_by_name(entry, 'insert-text')
+                return
+
+        def line_entry_activated(entry):
+            try:
+                line = int(entry.get_text())
+            except ValueError:
+                return
+            self.emit('go-to-line', max(0, line - 1))
+
+        entry = Gtk.Entry()
+        entry.set_icon_from_icon_name(
+            Gtk.EntryIconPosition.PRIMARY, 'go-jump-symbolic')
+        entry.set_icon_activatable(Gtk.EntryIconPosition.PRIMARY, False)
+        entry.set_icon_from_icon_name(
+            Gtk.EntryIconPosition.SECONDARY, 'edit-clear-symbolic')
+        entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
+        entry.connect('map', line_entry_mapped)
+        entry.connect('insert-text', line_entry_insert_text)
+        entry.connect('activate', line_entry_activated)
+
+        selector = Gtk.Grid()
+        selector.add(entry)
+        selector.show_all()
+
+        pop = Gtk.Popover()
+        pop.set_position(Gtk.PositionType.TOP)
+        pop.add(selector)
+
+        def format_cursor_position(binding, cursor):
+            line, offset = cursor
+            return self._line_column_text % (line + 1, offset + 1)
+
+        button = MeldStatusMenuButton()
+        self.bind_property(
+            'cursor_position', button, 'label', GObject.BindingFlags.DEFAULT,
+            format_cursor_position)
+        button.set_popover(pop)
+        button.show()
+
+        return button
 
     def construct_encoding_selector(self):
         def change_encoding(selector, encoding):
