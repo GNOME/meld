@@ -323,14 +323,14 @@ class MeldWindow(gnomeglade.Component):
         if not isinstance(page, melddoc.MeldDoc):
             for action in ("PrevChange", "NextChange", "Cut", "Copy", "Paste",
                            "Find", "FindNext", "FindPrevious", "Replace",
-                           "Refresh"):
+                           "Refresh", "GoToLine"):
                 self.actiongroup.get_action(action).set_sensitive(False)
         else:
             for action in ("Find", "Refresh"):
                 self.actiongroup.get_action(action).set_sensitive(True)
             is_filediff = isinstance(page, filediff.FileDiff)
             for action in ("Cut", "Copy", "Paste", "FindNext", "FindPrevious",
-                           "Replace"):
+                           "Replace", "GoToLine"):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
     def handle_current_doc_switch(self, page):
