@@ -144,14 +144,6 @@ class MeldStatusBar(Gtk.Statusbar):
         hbox.remove(label)
         hbox.pack_end(label, False, True, 0)
 
-        alignment = Gtk.Alignment.new(
-            xalign=1.0, yalign=0.5, xscale=1.0, yscale=1.0)
-        self.info_box = Gtk.HBox(homogeneous=False, spacing=12)
-        self.info_box.show()
-        alignment.add(self.info_box)
-        self.pack_end(alignment, False, True, 0)
-        alignment.show()
-
         self.box_box = Gtk.HBox(homogeneous=False, spacing=6)
         self.pack_end(self.box_box, False, True, 0)
         self.box_box.pack_end(self.construct_line_display(), False, True, 0)
@@ -263,9 +255,3 @@ class MeldStatusBar(Gtk.Statusbar):
         button.show()
 
         return button
-
-    def set_info_box(self, widgets):
-        for child in self.info_box.get_children():
-            self.info_box.remove(child)
-        for widget in widgets:
-            self.info_box.pack_end(widget, False, True, 0)
