@@ -157,12 +157,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._keymask = 0
         self.meta = {}
         self.lines_removed = 0
-        self.textview_overwrite = 0
         self.focus_pane = None
-        self.textview_overwrite_handlers = [
-            t.connect("toggle-overwrite", self.on_textview_toggle_overwrite)
-            for t in self.textview
-        ]
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.buffer_texts = [
             meldbuffer.BufferLines(b) for b in self.textbuffer]
@@ -207,6 +202,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         for t in self.textview:
             t.connect("focus-in-event", self.on_current_diff_changed)
             t.connect("focus-out-event", self.on_current_diff_changed)
+
+        # Bind all overwrite properties together, so that toggling
+        # overwrite mode is per-FileDiff.
+        for t in self.textview[1:]:
+            t.bind_property(
+                'overwrite', self.textview[0], 'overwrite',
+                GObject.BindingFlags.BIDIRECTIONAL)
+
         self.linediffer.connect("diffs-changed", self.on_diffs_changed)
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
         self.connect("next-conflict-changed", self.on_next_conflict_changed)
@@ -973,18 +976,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             self.popup_menu.popup(None, None, None, None, event.button, event.time)
             return True
         return False
-
-    def on_textview_toggle_overwrite(self, view):
-        self.textview_overwrite = not self.textview_overwrite
-        for v, h in zip(self.textview, self.textview_overwrite_handlers):
-            v.disconnect(h)
-            if v != view:
-                v.emit("toggle-overwrite")
-        self.textview_overwrite_handlers = [
-            t.connect("toggle-overwrite", self.on_textview_toggle_overwrite)
-            for t in self.textview
-        ]
-        self.on_cursor_position_changed(view.get_buffer(), None, True)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
