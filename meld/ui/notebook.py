@@ -18,6 +18,8 @@ from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import Gtk
 
+KEYBINDING_FLAGS = GObject.SignalFlags.RUN_LAST | GObject.SignalFlags.ACTION
+
 
 class MeldNotebook(Gtk.Notebook):
     """Notebook subclass with tab switch and reordering behaviour
@@ -30,15 +32,26 @@ class MeldNotebook(Gtk.Notebook):
     __gtype_name__ = "MeldNotebook"
 
     __gsignals__ = {
-        'tab-switch': (GObject.SignalFlags.ACTION, None, (int,)),
+        'tab-switch': (KEYBINDING_FLAGS, None, (int,)),
         'page-label-changed': (0, None, (GObject.TYPE_STRING,)),
     }
 
     # Python 3.4; no bytes formatting
     css = (
         b"""
-        @binding-set TabSwitchBindings {}
-        MeldNotebook { -gtk-key-bindings: TabSwitchBindings; }
+        @binding-set TabSwitchBindings {
+          bind "<Alt>1" { "tab-switch" (0) };
+          bind "<Alt>2" { "tab-switch" (1) };
+          bind "<Alt>3" { "tab-switch" (2) };
+          bind "<Alt>4" { "tab-switch" (3) };
+          bind "<Alt>5" { "tab-switch" (4) };
+          bind "<Alt>6" { "tab-switch" (5) };
+          bind "<Alt>7" { "tab-switch" (6) };
+          bind "<Alt>8" { "tab-switch" (7) };
+          bind "<Alt>9" { "tab-switch" (8) };
+          bind "<Alt>0" { "tab-switch" (9) };
+        }
+        notebook.meld-notebook { -gtk-key-bindings: TabSwitchBindings; }
         """
     )
 
@@ -87,22 +100,16 @@ class MeldNotebook(Gtk.Notebook):
             Gdk.Screen.get_default(), provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-        # Awful hacks because we can't create GtkBindingArg from Python, or
-        # create a BindingSet from Python, or get a set by class from Python.
-        bindings = Gtk.BindingSet.find('TabSwitchBindings')
-        for i in range(10):
-            key = (i + 1) % 10
-            Gtk.BindingEntry().add_signal_from_string(
-                bindings, 'bind "<Alt>%d" { "tab-switch" (%d) };' % (key, i))
-        self.connect('tab-switch', self.do_tab_switch)
+        stylecontext = self.get_style_context()
+        stylecontext.add_class('meld-notebook')
 
         self.connect('button-press-event', self.on_button_press_event)
         self.connect('popup-menu', self.on_popup_menu)
         self.connect('page-added', self.on_page_added)
         self.connect('page-removed', self.on_page_removed)
 
-    def do_tab_switch(self, notebook, page_num):
-        notebook.set_current_page(page_num)
+    def do_tab_switch(self, page_num):
+        self.set_current_page(page_num)
 
     def on_popup_menu(self, widget, event=None):
         self.action_group.lookup_action("tabmoveleft").set_enabled(
