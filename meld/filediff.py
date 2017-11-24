@@ -233,8 +233,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             def reload_with_encoding(widget, encoding, pane):
                 self.set_file(pane, self.textbuffer[pane].data.gfile, encoding)
 
+            def go_to_line(widget, line, pane):
+                self.move_cursor(pane, line)
+
             pane = self.statusbar.index(statusbar)
             statusbar.connect('encoding-changed', reload_with_encoding, pane)
+            statusbar.connect('go-to-line', go_to_line, pane)
 
         # Prototype implementation
 
@@ -712,15 +716,16 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         return new_line
 
+    def move_cursor(self, pane, line):
+        buf, view = self.textbuffer[pane], self.textview[pane]
+        view.grab_focus()
+        buf.place_cursor(buf.get_iter_at_line(line))
+        view.scroll_to_mark(buf.get_insert(), 0.1, True, 0.5, 0.5)
+
     def move_cursor_pane(self, pane, new_pane):
         chunk, line = self.cursor.chunk, self.cursor.line
         new_line = self._corresponding_chunk_line(chunk, line, pane, new_pane)
-
-        new_buf = self.textbuffer[new_pane]
-        self.textview[new_pane].grab_focus()
-        new_buf.place_cursor(new_buf.get_iter_at_line(new_line))
-        self.textview[new_pane].scroll_to_mark(
-            new_buf.get_insert(), 0.1, True, 0.5, 0.5)
+        self.move_cursor(pane, new_line)
 
     def action_prev_pane(self, *args):
         pane = self._get_focused_pane()
