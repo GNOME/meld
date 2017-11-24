@@ -146,9 +146,12 @@ class MeldStatusBar(Gtk.Statusbar):
 
         self.box_box = Gtk.HBox(homogeneous=False, spacing=6)
         self.pack_end(self.box_box, False, True, 0)
-        self.box_box.pack_end(self.construct_line_display(), False, True, 0)
-        self.box_box.pack_end(self.construct_highlighting_selector(), False, True, 0)
-        self.box_box.pack_end(self.construct_encoding_selector(), False, True, 0)
+        self.box_box.pack_end(
+            self.construct_line_display(), False, True, 0)
+        self.box_box.pack_end(
+            self.construct_highlighting_selector(), False, True, 0)
+        self.box_box.pack_end(
+            self.construct_encoding_selector(), False, True, 0)
         self.box_box.show_all()
 
     def construct_line_display(self):
