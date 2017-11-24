@@ -82,6 +82,9 @@ class MeldWindow(gnomeglade.Component):
                 _("_Replace…"), "<Primary>H",
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
+            ("GoToLine", None, _("Go to _Line"), "<Primary>I",
+                _("Go to a specific line"),
+                self.on_menu_go_to_line_activate),
 
             ("ChangesMenu", None, _("_Changes")),
             ("NextChange", Gtk.STOCK_GO_DOWN, _("Next Change"), "<Alt>Down",
@@ -445,6 +448,9 @@ class MeldWindow(gnomeglade.Component):
 
     def on_menu_replace_activate(self, *extra):
         self.current_doc().on_replace_activate()
+
+    def on_menu_go_to_line_activate(self, *extra):
+        self.current_doc().on_go_to_line_activate()
 
     def on_menu_copy_activate(self, *extra):
         widget = self.widget.get_focus()

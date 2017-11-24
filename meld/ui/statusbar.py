@@ -103,6 +103,8 @@ class MeldStatusBar(Gtk.Statusbar):
     __gtype_name__ = "MeldStatusBar"
 
     __gsignals__ = {
+        'start-go-to-line': (
+            GObject.SignalFlags.ACTION, None, tuple()),
         'go-to-line': (
             GObject.SignalFlags.RUN_FIRST, None, (int,)),
         'encoding-changed': (
@@ -205,6 +207,7 @@ class MeldStatusBar(Gtk.Statusbar):
         self.bind_property(
             'cursor_position', button, 'label', GObject.BindingFlags.DEFAULT,
             format_cursor_position)
+        self.connect('start-go-to-line', lambda *args: button.clicked())
         button.set_popover(pop)
         button.show()
 

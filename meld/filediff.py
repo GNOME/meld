@@ -959,6 +959,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_find_previous_activate(self, *args):
         self.findbar.start_find_previous(self.focus_pane)
 
+    @with_focused_pane
+    def on_go_to_line_activate(self, pane, *args):
+        self.statusbar[pane].emit('start-go-to-line')
+
     def on_scrolledwindow_size_allocate(self, scrolledwindow, allocation):
         index = self.scrolledwindow.index(scrolledwindow)
         if index == 0 or index == 1:
