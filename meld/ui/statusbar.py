@@ -181,17 +181,17 @@ class MeldStatusBar(Gtk.Statusbar):
             self.emit('go-to-line', max(0, line - 1))
 
         entry = Gtk.Entry()
+        entry.set_tooltip_text(_('Line you want to move the cursor to'))
         entry.set_icon_from_icon_name(
             Gtk.EntryIconPosition.PRIMARY, 'go-jump-symbolic')
         entry.set_icon_activatable(Gtk.EntryIconPosition.PRIMARY, False)
-        entry.set_icon_from_icon_name(
-            Gtk.EntryIconPosition.SECONDARY, 'edit-clear-symbolic')
         entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
         entry.connect('map', line_entry_mapped)
         entry.connect('insert-text', line_entry_insert_text)
         entry.connect('activate', line_entry_activated)
 
         selector = Gtk.Grid()
+        selector.set_border_width(6)
         selector.add(entry)
         selector.show_all()
 
