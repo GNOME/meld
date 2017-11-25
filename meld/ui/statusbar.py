@@ -159,6 +159,13 @@ class MeldStatusBar(Gtk.Statusbar):
         # Note that we're receiving one-based line numbers from the
         # user and storing and emitting zero-base line numbers.
 
+        def go_to_line_text(text):
+            try:
+                line = int(text)
+            except ValueError:
+                return
+            self.emit('go-to-line', max(0, line - 1))
+
         def line_entry_mapped(entry):
             line, offset = self.props.cursor_position
             entry.set_text(str(line + 1))
@@ -168,12 +175,12 @@ class MeldStatusBar(Gtk.Statusbar):
                 GObject.signal_stop_emission_by_name(entry, 'insert-text')
                 return
 
+        def line_entry_changed(entry):
+            go_to_line_text(entry.get_text())
+
         def line_entry_activated(entry):
-            try:
-                line = int(entry.get_text())
-            except ValueError:
-                return
-            self.emit('go-to-line', max(0, line - 1))
+            go_to_line_text(entry.get_text())
+            pop.popdown()
 
         entry = Gtk.Entry()
         entry.set_tooltip_text(_('Line you want to move the cursor to'))
@@ -183,6 +190,7 @@ class MeldStatusBar(Gtk.Statusbar):
         entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
         entry.connect('map', line_entry_mapped)
         entry.connect('insert-text', line_entry_insert_text)
+        entry.connect('changed', line_entry_changed)
         entry.connect('activate', line_entry_activated)
 
         selector = Gtk.Grid()

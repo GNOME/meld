@@ -230,7 +230,7 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 self.set_file(pane, self.textbuffer[pane].data.gfile, encoding)
 
             def go_to_line(widget, line, pane):
-                self.move_cursor(pane, line)
+                self.move_cursor(pane, line, focus=False)
 
             pane = self.statusbar.index(statusbar)
             statusbar.connect('encoding-changed', reload_with_encoding, pane)
@@ -706,9 +706,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         return new_line
 
-    def move_cursor(self, pane, line):
+    def move_cursor(self, pane, line, focus=True):
         buf, view = self.textbuffer[pane], self.textview[pane]
-        view.grab_focus()
+        if focus:
+            view.grab_focus()
         buf.place_cursor(buf.get_iter_at_line(line))
         view.scroll_to_mark(buf.get_insert(), 0.1, True, 0.5, 0.5)
 
