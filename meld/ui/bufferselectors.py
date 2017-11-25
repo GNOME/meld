@@ -77,6 +77,6 @@ class SourceLangSelector(FilteredListSelector, Gtk.Grid):
 # TODO: When there's proper pygobject support for widget templates,
 # make both selectors here use a generic UI file. We can't do this
 # currently due to subclassing issues.
-template = open(ui_file('gedit-highlight-mode-selector.ui'), 'rb').read()
+template = open(ui_file('language-selector.ui'), 'rb').read()
 template_bytes = GLib.Bytes.new(template)
 SourceLangSelector.set_template(template_bytes)
