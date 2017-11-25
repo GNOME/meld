@@ -1,5 +1,21 @@
 
+from gi.repository import GLib
 from gi.repository import Gtk
+
+from meld.conf import ui_file
+
+
+def with_template_file(template_file):
+    """Class decorator for setting a widget template"""
+
+    def add_template(cls):
+        template_path = ui_file(template_file)
+        template = open(template_path, 'rb').read()
+        template_bytes = GLib.Bytes.new(template)
+        cls.set_template(template_bytes)
+        return cls
+
+    return add_template
 
 
 class TemplateHackMixin(object):

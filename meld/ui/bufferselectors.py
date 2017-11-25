@@ -1,13 +1,13 @@
 
-from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from meld.conf import _, ui_file
-from meld.ui.listselector import FilteredListSelector
+from meld.conf import _
+from meld.ui.listselector import FilteredListSelector, with_template_file
 
 
+@with_template_file('encoding-selector.ui')
 class EncodingSelector(FilteredListSelector, Gtk.Grid):
     # The subclassing here is weird; the Selector must directly
     # subclass Gtk.Grid, or the template building explodes.
@@ -33,11 +33,6 @@ class EncodingSelector(FilteredListSelector, Gtk.Grid):
             name=enc.get_name(), charset=enc.get_charset())
 
 
-template = open(ui_file('encoding-selector.ui'), 'rb').read()
-template_bytes = GLib.Bytes.new(template)
-EncodingSelector.set_template(template_bytes)
-
-
 # SourceLangSelector was intially based on gedit's
 # GeditHighlightModeSelector
 # Copyright (C) 2013 - Ignacio Casal Quinteiro
@@ -45,6 +40,11 @@ EncodingSelector.set_template(template_bytes)
 # Copyright (C) 2015, 2017 Kai Willadsen <kai.willadsen@gmail.com>
 
 
+# TODO: When there's proper pygobject support for widget templates,
+# make both selectors here use a generic UI file. We can't do this
+# currently due to subclassing issues.
+
+@with_template_file('language-selector.ui')
 class SourceLangSelector(FilteredListSelector, Gtk.Grid):
     # The subclassing here is weird; the Selector must directly
     # subclass Gtk.Grid, or the template building explodes.
@@ -72,11 +72,3 @@ class SourceLangSelector(FilteredListSelector, Gtk.Grid):
         if not lang:
             return _("Plain Text")
         return lang.get_name()
-
-
-# TODO: When there's proper pygobject support for widget templates,
-# make both selectors here use a generic UI file. We can't do this
-# currently due to subclassing issues.
-template = open(ui_file('language-selector.ui'), 'rb').read()
-template_bytes = GLib.Bytes.new(template)
-SourceLangSelector.set_template(template_bytes)
