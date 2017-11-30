@@ -1029,6 +1029,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if len(files) != self.num_panes:
             return
 
+        self.fileentry455.set_text(files[0] if files[0] else "")
+        self.fileentry466.set_text(files[1] if files[1] else "")
+
         self._disconnect_buffer_handlers()
         self.undosequence.clear()
         self.linediffer.clear()
