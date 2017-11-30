@@ -614,7 +614,9 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_fileentry_file_set(self, entry):
         files = [e.get_file() for e in self.fileentry[:self.num_panes]]
-        paths = [f.get_path() for f in files]
+        paths = [f.get_path() if f is not None else f for f in files]
+        self.fileentry45.set_text(paths[0] if paths[0] else "")
+        self.fileentry46.set_text(paths[1] if paths[1] else "")
         self.set_locations(paths)
 
     def set_locations(self, locations):
@@ -624,7 +626,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         # the time we get this far. This is a fallback, and may be wrong!
         locations = list(locations)
         for i, l in enumerate(locations):
-            if not isinstance(l, unicode):
+            if l and not isinstance(l, unicode):
                 locations[i] = l.decode(sys.getfilesystemencoding())
         locations = [os.path.abspath(l) if l else '' for l in locations]
         self.current_path = None
