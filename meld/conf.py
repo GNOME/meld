@@ -44,12 +44,6 @@ def uninstalled():
     UNINSTALLED = True
     UNINSTALLED_SCHEMA = True
 
-    # This first bit should be unnecessary, but some things (GTK icon theme
-    # location, GSettings schema location) don't fall back correctly.
-    data_dir = os.environ.get('XDG_DATA_DIRS', "/usr/local/share/:/usr/share/")
-    data_dir = ":".join((melddir, data_dir))
-    os.environ['XDG_DATA_DIRS'] = data_dir
-
 
 def ui_file(filename):
     return os.path.join(DATADIR, "ui", filename)
