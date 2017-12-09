@@ -1057,11 +1057,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         encodings = encodings or ((None,) * len(gfiles))
 
-        files = [
-            (pane, gfile, encoding)
-            for pane, (gfile, encoding) in enumerate(zip(gfiles, encodings))
-            if gfile
-        ]
+        files = []
+        for pane, (gfile, encoding) in enumerate(zip(gfiles, encodings)):
+            if gfile:
+                files.append((pane, gfile, encoding))
+            else:
+                self.textbuffer[pane].data.loaded = True
 
         if not files:
             self.scheduler.add_task(self._compare_files_internal())
