@@ -1698,9 +1698,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             dialog.widget.destroy()
 
         if response == Gtk.ResponseType.OK:
-            gfiles = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
-            # TODO: Make sure to reuse file encodings if present
-            self.set_files(gfiles)
+            buffers = self.textbuffer[:self.num_panes]
+            gfiles = [b.data.gfile for b in buffers]
+            encodings = [b.data.encoding for b in buffers]
+            self.set_files(gfiles, encodings=encodings)
 
     def on_refresh_activate(self, *extra):
         self.refresh_comparison()
