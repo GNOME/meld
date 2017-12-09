@@ -1667,14 +1667,12 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.save_file(idx)
 
     def on_fileentry_file_set(self, entry):
-        entries = self.fileentry[:self.num_panes]
+        pane = self.fileentry[:self.num_panes].index(entry)
         if self.check_save_modified() != Gtk.ResponseType.CANCEL:
-            gfiles = [e.get_file() for e in entries]
-            # TODO: Make sure to reuse file encodings if present
-            self.set_files(gfiles)
+            # TODO: Use encoding file selectors in FileDiff
+            self.set_file(pane, entry.get_file())
         else:
-            idx = entries.index(entry)
-            existing_path = self.textbuffer[idx].data.filename
+            existing_path = self.textbuffer[pane].data.filename
             entry.set_filename(existing_path)
         return True
 
