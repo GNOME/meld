@@ -993,7 +993,23 @@ class DirDiff(MeldDoc, Component):
                     gfile.trash(None)
                     self.file_deleted(path, pane)
                 except GLib.GError as e:
-                    misc.error_dialog(_("Error deleting %s") % name, str(e))
+                    try:
+                        # Gio will fail if trash doesn't exist - so try and
+                        # just delete.
+                        # Delete using regular python since we can delete
+                        # the whole tree this way - for Gio all files would
+                        # have to be removed - this is simpler
+                        # NOTE: if a file doesn't have write permission and
+                        #       the user owns it, it will get deleted anyway
+                        if (os.path.exists(name)):
+                            if (os.path.isfile(name)):
+                                os.remove(name)
+                                self.file_deleted(path, pane)
+                            else:
+                                shutil.rmtree(name)
+                                self.file_deleted(path, pane)
+                    except OSError as e:
+                        misc.error_dialog(_("Error deleting %s") % name, str(e))
 
     def on_treemodel_row_deleted(self, model, path):
         if self.current_path == path:
