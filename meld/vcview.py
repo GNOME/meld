@@ -74,6 +74,7 @@ def cleanup_temp():
             print("Directory \"{0}\" not removed due to".format(f), except_str,
                   file=sys.stderr)
 
+
 _temp_dirs, _temp_files = [], []
 atexit.register(cleanup_temp)
 
