@@ -156,10 +156,10 @@ class RecentFiles(object):
 
         if config.has_option("Comparison", "uris"):
             uris = config.get("Comparison", "uris").split(";")
-            gfiles = [Gio.File.new_for_uri(u) for u in uris]
+            gfiles = tuple(Gio.File.new_for_uri(u) for u in uris)
         else:
             paths = config.get("Comparison", "paths").split(";")
-            gfiles = [Gio.File.new_for_path(p) for p in paths]
+            gfiles = tuple(Gio.File.new_for_path(p) for p in paths)
         flags = tuple()
 
         return recent_type, gfiles, flags
