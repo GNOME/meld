@@ -1185,8 +1185,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         pane = self._get_focused_pane()
         if pane is None:
             return
-        path = lambda p: self.model.value_path(self.model.get_iter(p), pane)
-        files = [path(p) for p in self._get_selected_paths(pane)]
+        files = [
+            self.model.value_path(self.model.get_iter(p), pane)
+            for p in self._get_selected_paths(pane)
+        ]
         files = [f for f in files if f]
         if files:
             self._open_files(files)
@@ -1195,9 +1197,10 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.refresh()
 
     def on_filter_state_toggled(self, button):
-        active_action = lambda a: self.actiongroup.get_action(a).get_active()
-        active_filters = [a for a in self.state_actions if
-                          active_action(self.state_actions[a][1])]
+        active_filters = [
+            a for a in self.state_actions if
+            self.actiongroup.get_action(self.state_actions[a][1]).get_active()
+        ]
 
         if set(active_filters) == set(self.state_filters):
             return
