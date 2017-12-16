@@ -60,7 +60,7 @@ def cleanup_temp():
             if os.name == "nt":
                 os.chmod(f, stat.S_IWRITE)
             os.remove(f)
-        except:
+        except Exception:
             except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
             print("File \"{0}\" not removed due to".format(f), except_str,
                   file=sys.stderr)
@@ -69,7 +69,7 @@ def cleanup_temp():
             assert (os.path.exists(f) and os.path.isabs(f) and
                     os.path.dirname(f) == temp_location)
             shutil.rmtree(f, ignore_errors=1)
-        except:
+        except Exception:
             except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
             print("Directory \"{0}\" not removed due to".format(f), except_str,
                   file=sys.stderr)

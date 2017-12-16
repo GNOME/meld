@@ -334,7 +334,7 @@ class Vc(object):
         try:
             call([cls.CMD])
             return True
-        except:
+        except Exception:
             return False
 
     @classmethod

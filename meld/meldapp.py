@@ -207,7 +207,7 @@ class MeldApp(Gtk.Application):
                 try:
                     self.command_line.do_print_literal(
                         self.command_line, self.output.getvalue())
-                except:
+                except Exception:
                     print(self.output.getvalue())
                 self.exit_status = status
 
