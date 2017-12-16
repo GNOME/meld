@@ -531,10 +531,19 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.filter_ui = []
         for i, f in enumerate(self.name_filters):
             name = "Hide%d" % i
-            callback = lambda b, i=i: self._update_name_filter(b, i)
-            actions.append((name, None, f.label, None, _("Hide %s") % f.label, callback, f.active))
-            self.filter_ui.append(["/CustomPopup" , name, name, Gtk.UIManagerItemType.MENUITEM, False])
-            self.filter_ui.append(["/Menubar/ViewMenu/FileFilters", name, name, Gtk.UIManagerItemType.MENUITEM, False])
+            callback = functools.partial(self._update_name_filter, idx=i)
+            actions.append((
+                name, None, f.label, None, _("Hide %s") % f.label,
+                callback, f.active
+            ))
+            self.filter_ui.append([
+                "/CustomPopup", name, name,
+                Gtk.UIManagerItemType.MENUITEM, False
+            ])
+            self.filter_ui.append([
+                "/Menubar/ViewMenu/FileFilters", name, name,
+                Gtk.UIManagerItemType.MENUITEM, False
+            ])
             if f.filter is None:
                 disabled_actions.append(name)
 
@@ -1491,13 +1500,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             except IndexError:
                 continue
             changed = changed[len(current):]
-            # search the tree component at a time
-            for component in changed:
+            # search the tree one path part at a time
+            for part in changed:
                 child = model.iter_children(it)
                 while child:
                     child_path = model.value_path(child, pane)
                     # Found the changed path
-                    if child_path and component == os.path.basename(child_path):
+                    if child_path and part == os.path.basename(child_path):
                         it = child
                         break
                     child = self.model.iter_next(child)
