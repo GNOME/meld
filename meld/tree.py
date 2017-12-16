@@ -20,12 +20,6 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
 
-COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
-    COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
-
-COL_TYPES = (str, str, str, str, str, Gdk.RGBA, Pango.Style,
-             Pango.Weight, bool)
-
 from meld.misc import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
 from meld.vc._vc import \
@@ -35,6 +29,12 @@ from meld.vc._vc import \
     STATE_MISSING, STATE_NONEXIST, STATE_MAX, \
     CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_REMOTE, \
     CONFLICT_MERGED, CONFLICT_OTHER, CONFLICT_THIS
+
+COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
+    COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
+
+COL_TYPES = (str, str, str, str, str, Gdk.RGBA, Pango.Style,
+             Pango.Weight, bool)
 
 
 class DiffTreeStore(SearchableTreeStore):
