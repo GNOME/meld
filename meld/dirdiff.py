@@ -987,28 +987,60 @@ class DirDiff(MeldDoc, Component):
         for path in paths:
             it = self.model.get_iter(path)
             name = self.model.value_path(it, pane)
+
+            show_error = functools.partial(
+                misc.error_dialog, _("Error deleting {}").format(name))
+
             try:
                 gfile = Gio.File.new_for_path(name)
                 gfile.trash(None)
                 self.file_deleted(path, pane)
+                continue
             except GLib.GError as e:
-                try:
-                    # Gio will fail if trash doesn't exist - so try and
-                    # just delete.
-                    # Delete using regular python since we can delete
-                    # the whole tree this way - for Gio all files would
-                    # have to be removed - this is simpler
-                    # NOTE: if a file doesn't have write permission and
-                    #       the user owns it, it will get deleted anyway
-                    if (os.path.exists(name)):
-                        if (os.path.isfile(name)):
-                            os.remove(name)
-                            self.file_deleted(path, pane)
-                        else:
-                            shutil.rmtree(name)
-                            self.file_deleted(path, pane)
-                except OSError as e:
-                    misc.error_dialog(_("Error deleting %s") % name, str(e))
+                # Only handle not-supported, as that's due to trashing
+                # the target mount-point, not an underlying problem.
+                if e.code != Gio.IOErrorEnum.NOT_SUPPORTED:
+                    show_error(str(e))
+                    continue
+
+            file_type = gfile.query_file_type(
+                Gio.FileQueryInfoFlags.NONE, None)
+
+            if file_type == Gio.FileType.DIRECTORY:
+                show_error(_("Deleting remote folders is not supported"))
+                continue
+            elif file_type != Gio.FileType.REGULAR:
+                show_error(_("Not a file or directory"))
+                continue
+
+            delete_permanently = misc.modal_dialog(
+                primary=_(
+                    "“{}” can’t be put in the trash. Do you want to "
+                    "delete it immediately?".format(gfile.get_parse_name())
+                ),
+                secondary=_(
+                    "This remote location does not support sending items "
+                    "to the trash."
+                ),
+                buttons=[
+                    (_("_Cancel"), Gtk.ResponseType.CANCEL),
+                    (_("_Delete Permanently"), Gtk.ResponseType.OK),
+                ],
+            )
+
+            if delete_permanently != Gtk.ResponseType.OK:
+                continue
+
+            try:
+                gfile.delete(None)
+                # TODO: Deleting remote folders involves reimplementing
+                # shutil.rmtree for gio, and then calling
+                # self.recursively_update().
+            except Exception as e:
+                show_error(str(e))
+                continue
+
+            self.file_deleted(path, pane)
 
     def on_treemodel_row_deleted(self, model, path):
         if self.current_path == path:
