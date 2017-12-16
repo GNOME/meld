@@ -91,14 +91,14 @@ class AutoMergeDiffer(diffutil.Differ):
                         # delete + delete (any length) -> split into delete/conflict
                         seq0 = seq1 = None
                         while 1:
-                            if seq0 == None:
+                            if seq0 is None:
                                 try:
                                     seq0 = using[0].pop(0)
                                     i0 = seq0[1]
                                     end0 = seq0[4]
                                 except IndexError:
                                     break
-                            if seq1 == None:
+                            if seq1 is None:
                                 try:
                                     seq1 = using[1].pop(0)
                                     i1 = seq1[1]
@@ -195,16 +195,16 @@ class Merger(diffutil.Differ):
         for change in self.differ.all_changes():
             yield None
             low_mark = lastline
-            if change[0] != None:
+            if change[0] is not None:
                 low_mark = change[0][LO]
-            if change[1] != None:
+            if change[1] is not None:
                 if change[1][LO] > low_mark:
                     low_mark = change[1][LO]
             for i in range(lastline, low_mark, 1):
                 mergedtext.append(self.texts[1][i])
             mergedline += low_mark - lastline
             lastline = low_mark
-            if change[0] != None and change[1] != None and change[0][0] == 'conflict':
+            if change[0] is not None and change[1] is not None and change[0][0] == 'conflict':
                 high_mark = max(change[0][HI], change[1][HI])
                 if mark_conflicts:
                     if low_mark < high_mark:
@@ -219,7 +219,7 @@ class Merger(diffutil.Differ):
                         self.unresolved.append(mergedline)
                         mergedline += 1
                     lastline = high_mark
-            elif change[0] != None:
+            elif change[0] is not None:
                 lastline += self._apply_change(self.texts[0], change[0], mergedtext)
                 mergedline += change[0][HI + 2] - change[0][LO + 2]
             else:
