@@ -155,11 +155,11 @@ class RecentFiles(object):
             raise ValueError("Invalid recent comparison file")
 
         if config.has_option("Comparison", "uris"):
-            gfiles = tuple([Gio.File.new_for_uri(u)
-                for u in tuple(config.get("Comparison", "uris").split(";"))])
+            uris = config.get("Comparison", "uris").split(";")
+            gfiles = [Gio.File.new_for_uri(u) for u in uris]
         else:
-            gfiles = tuple([Gio.File.new_for_path(p)
-                for p in tuple(config.get("Comparison", "paths").split(";"))])
+            paths = config.get("Comparison", "paths").split(";")
+            gfiles = [Gio.File.new_for_path(p) for p in paths]
         flags = tuple()
 
         return recent_type, gfiles, flags
