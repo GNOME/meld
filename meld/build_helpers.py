@@ -259,7 +259,10 @@ class build_i18n(distutils.cmd.Command):
 
         # Update po(t) files and print a report
         # We have to change the working dir to the po dir for intltool
-        cmd = ["intltool-update", (self.merge_po and "-r" or "-p"), "-g", self.domain]
+        cmd = [
+            "intltool-update",
+            (self.merge_po and "-r" or "-p"), "-g", self.domain
+        ]
         wd = os.getcwd()
         os.chdir(self.po_dir)
         self.spawn(cmd)
@@ -275,7 +278,8 @@ class build_i18n(distutils.cmd.Command):
                 os.makedirs(mo_dir)
             cmd = [msgfmt, po_file, "-o", mo_file]
             po_mtime = os.path.getmtime(po_file)
-            mo_mtime = os.path.exists(mo_file) and os.path.getmtime(mo_file) or 0
+            mo_mtime = (
+                os.path.exists(mo_file) and os.path.getmtime(mo_file) or 0)
             if po_mtime > max_po_mtime:
                 max_po_mtime = po_mtime
             if po_mtime > mo_mtime:
@@ -315,7 +319,8 @@ class build_i18n(distutils.cmd.Command):
                     mtime_merged = (os.path.exists(file_merged) and
                                     os.path.getmtime(file_merged) or 0)
                     mtime_file = os.path.getmtime(file)
-                    if mtime_merged < self.max_po_mtime or mtime_merged < mtime_file:
+                    if (mtime_merged < self.max_po_mtime or
+                            mtime_merged < mtime_file):
                         # Only build if output is older than input (.po,.in)
                         self.spawn(cmd)
                     files_merged.append(file_merged)
