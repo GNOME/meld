@@ -17,6 +17,15 @@
 from gi.repository import Gtk
 
 
+def tree_path_as_tuple(path):
+    """Get the path indices as a tuple
+
+    This helper only exists because we often want to use tree paths
+    as set members or dictionary keys, and this is a convenient option.
+    """
+    return tuple(path.get_indices())
+
+
 def tree_path_prev(path):
     if not path or path[-1] == 0:
         return None

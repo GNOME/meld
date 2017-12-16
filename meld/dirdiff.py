@@ -44,7 +44,7 @@ from meld.conf import _
 from meld.misc import all_same
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
-from meld.treehelpers import refocus_deleted_path
+from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
 from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 
@@ -684,8 +684,6 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         todo = [rootpath]
         expanded = set()
 
-        tuple_tree_path = lambda p: tuple(p.get_indices())
-
         shadowed_entries = []
         invalid_filenames = []
         while len(todo):
@@ -798,7 +796,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         not all(os.path.isdir(f) for f in roots)):
                     self.model.add_empty(it)
                     if self.model.iter_parent(it) is None:
-                        expanded.add(tuple_tree_path(rootpath))
+                        expanded.add(tree_path_as_tuple(rootpath))
                 else:
                     # At this point, we have an empty folder tree node; we can
                     # prune this and any ancestors that then end up empty.
@@ -824,7 +822,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
                         it = parent
 
             if differences:
-                expanded.add(tuple_tree_path(path))
+                expanded.add(tree_path_as_tuple(path))
 
         if invalid_filenames or shadowed_entries:
             self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
