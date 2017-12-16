@@ -126,10 +126,10 @@ def _files_same(files, regexes, comparison_args):
 
     # Compare files superficially if the options tells us to
     if shallow_comparison:
-        if all(s.shallow_equal(stats[0], time_resolution_ns) for s in stats[1:]):
-            return DodgySame
-        else:
-            return Different
+        all_same_timestamp = all(
+            s.shallow_equal(stats[0], time_resolution_ns) for s in stats[1:]
+        )
+        return DodgySame if all_same_timestamp else Different
 
     # If there are no text filters, unequal sizes imply a difference
     if not need_contents and not all_same([s.size for s in stats]):
@@ -675,7 +675,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             sel.unselect_all()
 
         yield _("[%s] Scanning %s") % (self.label_text, "")
-        prefixlen = 1 + len(self.model.value_path(self.model.get_iter(rootpath), 0))
+        prefixlen = 1 + len(
+            self.model.value_path(self.model.get_iter(rootpath), 0))
         symlinks_followed = set()
         # TODO: This is horrible.
         if isinstance(rootpath, tuple):
@@ -698,7 +699,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             if not any(os.path.isdir(root) for root in roots):
                 continue
 
-            yield _("[%s] Scanning %s") % (self.label_text, roots[0][prefixlen:])
+            yield _("[%s] Scanning %s") % (
+                self.label_text, roots[0][prefixlen:])
             differences = False
             encoding_errors = []
 
@@ -1136,7 +1138,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self._update_diffmaps()
 
     def on_popup_deactivate_event(self, popup):
-        for (treeview, inid, outid) in zip(self.treeview, self.focus_in_events, self.focus_out_events):
+        for (treeview, inid, outid) in zip(
+                self.treeview, self.focus_in_events, self.focus_out_events):
             treeview.handler_unblock(inid)
             treeview.handler_unblock(outid)
 
