@@ -133,10 +133,11 @@ class DiffTreeStore(SearchableTreeStore):
                            str(STATE_ERROR))
         self.set_state(it, pane, STATE_ERROR, msg)
 
-    def set_path_state(self, it, pane, state, isdir=0):
-        fullname = self.get_value(it, self.column_index(COL_PATH, pane))
-        name = GLib.markup_escape_text(os.path.basename(fullname))
-        self.set_state(it, pane, state, name, isdir)
+    def set_path_state(self, it, pane, state, isdir=0, display_text=None):
+        if not display_text:
+            fullname = self.get_value(it, self.column_index(COL_PATH, pane))
+            display_text = GLib.markup_escape_text(os.path.basename(fullname))
+        self.set_state(it, pane, state, display_text, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
         col_idx = self.column_index
