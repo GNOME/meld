@@ -61,7 +61,8 @@ class AutoMergeDiffer(diffutil.Differ):
                 #     # but unresolved conflicts may sometimes look confusing
                 #     # as the line numbers in ancestor file will be
                 #     # interpolated and may not reflect the actual changes
-                #     matcher = self._matcher(None, texts[0][l0:h0], texts[2][l2:h2])
+                #     matcher = self._matcher(
+                #         None, texts[0][l0:h0], texts[2][l2:h2])
                 #     if len0 > len2:
                 #         maxindex = 1
                 #         maxlen = len0
@@ -69,13 +70,19 @@ class AutoMergeDiffer(diffutil.Differ):
                 #         maxindex = 3
                 #         maxlen = len2
                 #     for chunk in matcher.get_opcodes():
+                #         new_start = l1 + len1 * chunk[maxindex] / maxlen
+                #         new_end = l1 + len1 * chunk[maxindex + 1] / maxlen
+                #         out0_bounds = (
+                #             new_start, new_end, l0 + chunk[1], l0 + chunk[2])
+                #         out1_bounds = (
+                #             new_start, new_end, l2 + chunk[3], l2 + chunk[4])
                 #         if chunk[0] == 'equal':
-                #             out0 = ('replace', l1 + len1 * chunk[maxindex] / maxlen, l1 + len1 * chunk[maxindex + 1] / maxlen, l0 + chunk[1], l0 + chunk[2])
-                #             out1 = ('replace', l1 + len1 * chunk[maxindex] / maxlen, l1 + len1 * chunk[maxindex + 1] / maxlen, l2 + chunk[3], l2 + chunk[4])
+                #             out0 = ('replace',) + out0_bounds
+                #             out1 = ('replace',) + out1_bounds
                 #             yield out0, out1
                 #         else:
-                #             out0 = ('conflict', l1 + len1 * chunk[maxindex] / maxlen, l1 + len1 * chunk[maxindex + 1] / maxlen, l0 + chunk[1], l0 + chunk[2])
-                #             out1 = ('conflict', l1 + len1 * chunk[maxindex] / maxlen, l1 + len1 * chunk[maxindex + 1] / maxlen, l2 + chunk[3], l2 + chunk[4])
+                #             out0 = ('conflict',) + out0_bounds
+                #             out1 = ('conflict',) + out1_bounds
                 #             yield out0, out1
                 #     return
                 else:
