@@ -49,12 +49,6 @@ from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 
 
-################################################################################
-#
-# Local Functions
-#
-################################################################################
-
 class StatItem(namedtuple('StatItem', 'mode size time')):
     __slots__ = ()
 
@@ -241,12 +235,6 @@ class CanonicalListing(object):
         filled = lambda seq: tuple([s or first(seq) for s in seq])
         return sorted(filled(v) for v in self.items.values())
 
-
-################################################################################
-#
-# DirDiff
-#
-################################################################################
 
 class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     """Two or three way folder comparison"""
