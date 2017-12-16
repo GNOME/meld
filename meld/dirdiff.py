@@ -232,9 +232,15 @@ class CanonicalListing(object):
             self.errors.append((pane, item, self.items[ci][pane]))
 
     def get(self):
-        first = lambda seq: next(s for s in seq if s)
-        filled = lambda seq: tuple([s or first(seq) for s in seq])
+        def filled(seq):
+            fill_value = next(s for s in seq if s)
+            return tuple(s or fill_value for s in seq)
+
         return sorted(filled(v) for v in self.items.values())
+
+    @staticmethod
+    def canonicalize_lower(element):
+        return element.lower()
 
 
 class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
@@ -704,7 +710,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             canonicalize = None
             if self.actiongroup.get_action("IgnoreCase").get_active():
-                canonicalize = lambda x: x.lower()
+                canonicalize = CanonicalListing.canonicalize_lower
             dirs = CanonicalListing(self.num_panes, canonicalize)
             files = CanonicalListing(self.num_panes, canonicalize)
 
