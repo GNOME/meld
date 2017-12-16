@@ -1286,6 +1286,16 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             i for i, s in enumerate(lstats) if s and stat.S_ISLNK(s.st_mode)
         }
 
+        def format_name_override(f):
+            source = GLib.markup_escape_text(os.path.basename(f))
+            target = GLib.markup_escape_text(os.readlink(f))
+            return "{} ⟶ {}".format(source, target)
+
+        name_overrides = [
+            format_name_override(f) if i in symlinks else None
+            for i, f in enumerate(files)
+        ]
+
         existing_times = [s.st_mtime for s in stats if s]
         newest_time = max(existing_times)
         if existing_times.count(newest_time) == len(existing_times):
@@ -1323,7 +1333,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         for j in range(self.model.ntree):
             column_index = functools.partial(self.model.column_index, pane=j)
             if stats[j]:
-                self.model.set_path_state(it, j, state, isdir[j])
+                self.model.set_path_state(
+                    it, j, state, isdir[j], display_text=name_overrides[j])
                 emblem = EMBLEM_NEW if j in newest else None
                 self.model.set_value(it, column_index(COL_EMBLEM), emblem)
                 link_emblem = EMBLEM_SYMLINK if j in symlinks else None
