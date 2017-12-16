@@ -208,7 +208,8 @@ COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
 
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(self, ntree, [str, str, object, object, object])
+        tree.DiffTreeStore.__init__(
+            self, ntree, [str, str, object, object, object])
 
 
 class CanonicalListing(object):
@@ -346,9 +347,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.focus_in_events = []
         self.focus_out_events = []
         for treeview in self.treeview:
-            handler_id = treeview.connect("focus-in-event", self.on_treeview_focus_in_event)
+            handler_id = treeview.connect(
+                "focus-in-event", self.on_treeview_focus_in_event)
             self.focus_in_events.append(handler_id)
-            handler_id = treeview.connect("focus-out-event", self.on_treeview_focus_out_event)
+            handler_id = treeview.connect(
+                "focus-out-event", self.on_treeview_focus_out_event)
             self.focus_out_events.append(handler_id)
             treeview.set_search_equal_func(tree.treeview_search_cb, None)
         self.force_cursor_recalculate = False
@@ -489,10 +492,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.custom_merge_id = ui.new_merge_id()
         for x in self.filter_ui:
             ui.add_ui(self.custom_merge_id, *x)
-        self.popup_deactivate_id = self.popup_menu.connect("deactivate", self.on_popup_deactivate_event)
+        self.popup_deactivate_id = self.popup_menu.connect(
+            "deactivate", self.on_popup_deactivate_event)
         self.custom_popup = ui.get_widget("/CustomPopup")
-        self.filter_menu_button = ui.get_widget("/Toolbar/FilterActions/CustomFilterMenu")
-        label = misc.make_tool_button_widget(self.filter_menu_button.props.label)
+        self.filter_menu_button = ui.get_widget(
+            "/Toolbar/FilterActions/CustomFilterMenu")
+        label = misc.make_tool_button_widget(
+            self.filter_menu_button.props.label)
         self.filter_menu_button.set_label_widget(label)
 
     def on_container_switch_in_event(self, ui):
@@ -765,12 +771,14 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
 
             if alldirs or allfiles:
                 for names in alldirs:
-                    entries = [os.path.join(r, n) for r, n in zip(roots, names)]
+                    entries = [
+                        os.path.join(r, n) for r, n in zip(roots, names)]
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
                     todo.append(self.model.get_path(child))
                 for names in allfiles:
-                    entries = [os.path.join(r, n) for r, n in zip(roots, names)]
+                    entries = [
+                        os.path.join(r, n) for r, n in zip(roots, names)]
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
             else:
@@ -1339,11 +1347,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         return different
 
     def popup_in_pane(self, pane, event):
-        for (treeview, inid, outid) in zip(self.treeview, self.focus_in_events, self.focus_out_events):
+        for (treeview, inid, outid) in zip(
+                self.treeview, self.focus_in_events, self.focus_out_events):
             treeview.handler_block(inid)
             treeview.handler_block(outid)
         self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
-        self.actiongroup.get_action("DirCopyRight").set_sensitive(pane+1 < self.num_panes)
+        self.actiongroup.get_action("DirCopyRight").set_sensitive(
+            pane + 1 < self.num_panes)
         if event:
             button = event.button
             time = event.time
@@ -1385,7 +1395,8 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             row_states = []
 
             def recurse_tree_states(rowiter):
-                row_states.append(self.model.get_state(rowiter.iter, treeindex))
+                row_states.append(
+                    self.model.get_state(rowiter.iter, treeindex))
                 if treeview.row_expanded(rowiter.path):
                     for row in rowiter.iterchildren():
                         recurse_tree_states(row)
