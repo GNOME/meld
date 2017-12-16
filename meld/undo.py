@@ -61,9 +61,18 @@ class UndoSequence(GObject.GObject):
     """
 
     __gsignals__ = {
-        'can-undo': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
-        'can-redo': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
-        'checkpointed': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN,)),
+        'can-undo': (
+            GObject.SignalFlags.RUN_FIRST,
+            None, (GObject.TYPE_BOOLEAN,)
+        ),
+        'can-redo': (
+            GObject.SignalFlags.RUN_FIRST,
+            None, (GObject.TYPE_BOOLEAN,)
+        ),
+        'checkpointed': (
+            GObject.SignalFlags.RUN_FIRST,
+            None, (GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN,)
+        ),
     }
 
     def __init__(self):
