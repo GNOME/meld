@@ -527,9 +527,10 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         return False
 
     def on_filter_state_toggled(self, button):
-        active_action = lambda a: self.actiongroup.get_action(a).get_active()
         active_filters = [
-            k for k, v in self.state_actions.items() if active_action(v[0])]
+            k for k, (action_name, fn) in self.state_actions.items()
+            if self.actiongroup.get_action(action_name).get_active()
+        ]
 
         if set(active_filters) == set(self.props.status_filters):
             return
@@ -777,9 +778,9 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
 
     def on_consoleview_populate_popup(self, textview, menu):
         buf = textview.get_buffer()
-        clear_cb = lambda *args: buf.delete(*buf.get_bounds())
         clear_action = Gtk.MenuItem.new_with_label(_("Clear"))
-        clear_action.connect("activate", clear_cb)
+        clear_action.connect(
+            "activate", lambda *args: buf.delete(*buf.get_bounds()))
         menu.insert(clear_action, 0)
         menu.insert(Gtk.SeparatorMenuItem(), 1)
         menu.show_all()
