@@ -30,7 +30,8 @@ class AutoMergeDiffer(diffutil.Differ):
     def _auto_merge(self, using, texts):
         for out0, out1 in diffutil.Differ._auto_merge(self, using, texts):
             if self.auto_merge and out0[0] == 'conflict':
-                # we will try to resolve more complex conflicts automatically here... if possible
+                # we will try to resolve more complex conflicts automatically
+                # here... if possible
                 l0, h0, l1, h1, l2, h2 = out0[3], out0[4], out0[1], out0[2], out1[3], out1[4]
                 len0 = h0 - l0
                 len1 = h1 - l1
@@ -77,8 +78,9 @@ class AutoMergeDiffer(diffutil.Differ):
 #                    return
                 else:
                     # some tricks to resolve even more conflicts automatically
-                    # unfortunately the resulting chunks cannot be used to highlight changes
-                    # but hey, they are good enough to merge the resulting file :)
+                    # unfortunately the resulting chunks cannot be used to
+                    # highlight changes but hey, they are good enough to merge
+                    # the resulting file :)
                     chunktype = using[0][0][0]
                     for chunkarr in using:
                         for chunk in chunkarr:
@@ -88,7 +90,7 @@ class AutoMergeDiffer(diffutil.Differ):
                         if not chunktype:
                             break
                     if chunktype == 'delete':
-                        # delete + delete (any length) -> split into delete/conflict
+                        # delete + delete -> split into delete/conflict
                         seq0 = seq1 = None
                         while 1:
                             if seq0 is None:
@@ -158,6 +160,7 @@ class AutoMergeDiffer(diffutil.Differ):
     def get_unresolved_count(self):
         return len(self.unresolved)
 
+
 class Merger(diffutil.Differ):
 
     def __init__(self, ):
@@ -213,17 +216,17 @@ class Merger(diffutil.Differ):
                             self.unresolved.append(mergedline)
                             mergedline += 1
                     else:
-                        #conflictsize = min(1, max(change[0][HI + 2] - change[0][LO + 2], change[1][HI + 2] - change[1][LO + 2]))
-                        #for i in range(conflictsize):
                         mergedtext.append("(??)")
                         self.unresolved.append(mergedline)
                         mergedline += 1
                     lastline = high_mark
             elif change[0] is not None:
-                lastline += self._apply_change(self.texts[0], change[0], mergedtext)
+                lastline += self._apply_change(
+                    self.texts[0], change[0], mergedtext)
                 mergedline += change[0][HI + 2] - change[0][LO + 2]
             else:
-                lastline += self._apply_change(self.texts[2], change[1], mergedtext)
+                lastline += self._apply_change(
+                    self.texts[2], change[1], mergedtext)
                 mergedline += change[1][HI + 2] - change[1][LO + 2]
         baselen = len(self.texts[1])
         for i in range(lastline, baselen, 1):
@@ -248,7 +251,8 @@ class Merger(diffutil.Differ):
                 mergedtext.append(self.texts[toindex][i])
             lastline = low_mark
             if change[0] != 'conflict':
-                lastline += self._apply_change(self.texts[fromindex], change, mergedtext)
+                lastline += self._apply_change(
+                    self.texts[fromindex], change, mergedtext)
         baselen = len(self.texts[toindex])
         for i in range(lastline, baselen):
             mergedtext.append(self.texts[toindex][i])
