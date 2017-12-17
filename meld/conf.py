@@ -13,9 +13,14 @@ UNINSTALLED = False
 UNINSTALLED_SCHEMA = False
 PYTHON_REQUIREMENT_TUPLE = (3, 3)
 
+
 # Installed from main script
-_ = lambda x: x
-ngettext = lambda x, *args: x
+def no_translation(gettext_string, *args):
+    return gettext_string
+
+
+_ = no_translation
+ngettext = no_translation
 
 
 def frozen():
