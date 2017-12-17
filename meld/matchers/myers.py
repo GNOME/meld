@@ -376,15 +376,15 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                 for i in matcher.initialise():
                     yield None
                 blocks = matcher.get_matching_blocks()
-                l = len(matching_blocks) - 1
-                if l >= 0 and len(blocks) > 1:
-                    aj = matching_blocks[l][0]
-                    bj = matching_blocks[l][1]
-                    bl = matching_blocks[l][2]
+                mb_len = len(matching_blocks) - 1
+                if mb_len >= 0 and len(blocks) > 1:
+                    aj = matching_blocks[mb_len][0]
+                    bj = matching_blocks[mb_len][1]
+                    bl = matching_blocks[mb_len][2]
                     if (aj + bl == ai and bj + bl == bi and
                             blocks[0][0] == 0 and blocks[0][1] == 0):
                         block = blocks.pop(0)
-                        matching_blocks[l] = (aj, bj, bl + block[2])
+                        matching_blocks[mb_len] = (aj, bj, bl + block[2])
                 for x, y, l in blocks[:-1]:
                     matching_blocks.append((ai + x, bi + y, l))
                 self.matching_blocks.extend(matching_blocks)
