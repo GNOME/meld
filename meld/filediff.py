@@ -433,10 +433,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 chunk2 = None
                 if self.num_panes == 3:
                     chunk2 = self.linediffer.get_chunk(chunk_id, 1, 2)
-                left_mid_exists = chunk0 is not None and chunk0[1] != chunk0[2]
-                left_exists = chunk0 is not None and chunk0[3] != chunk0[4]
-                right_mid_exists = chunk2 is not None and chunk2[1] != chunk2[2]
-                right_exists = chunk2 is not None and chunk2[3] != chunk2[4]
+                left_mid_exists = chunk0 and chunk0[1] != chunk0[2]
+                left_exists = chunk0 and chunk0[3] != chunk0[4]
+                right_mid_exists = chunk2 and chunk2[1] != chunk2[2]
+                right_exists = chunk2 and chunk2[3] != chunk2[4]
                 push_left = editable_left
                 push_right = editable_right
                 pull_left = editable and left_exists
