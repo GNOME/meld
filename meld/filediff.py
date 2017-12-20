@@ -767,7 +767,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             if not self.linediffer.syncpoints:
                 self.linediffer.change_sequence(pane, startline, sizechange,
                                                 self.buffer_filtered)
-            # FIXME: diff-changed signal for the current buffer would be cleaner
+            # TODO: We should have a diff-changed signal for the
+            # current buffer instead of passing everything through
+            # cursor change logic.
             focused_pane = self._get_focused_pane()
             if focused_pane != -1:
                 self.on_cursor_position_changed(self.textbuffer[focused_pane],
