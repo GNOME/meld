@@ -127,8 +127,10 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
 
     __gsignals__ = {
-        'next-conflict-changed': (GObject.SignalFlags.RUN_FIRST, None, (bool, bool)),
-        'action-mode-changed': (GObject.SignalFlags.RUN_FIRST, None, (int,)),
+        'next-conflict-changed': (
+            GObject.SignalFlags.RUN_FIRST, None, (bool, bool)),
+        'action-mode-changed': (
+            GObject.SignalFlags.RUN_FIRST, None, (int,)),
     }
 
     def __init__(self, num_panes):
@@ -240,7 +242,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
 
         # Prototype implementation
 
-        from meld.gutterrendererchunk import GutterRendererChunkAction, GutterRendererChunkLines
+        from meld.gutterrendererchunk import (
+            GutterRendererChunkAction, GutterRendererChunkLines)
 
         for pane, t in enumerate(self.textview):
             # FIXME: set_num_panes will break this good
@@ -251,7 +254,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if direction == Gtk.TextDirection.RTL:
                     window = Gtk.TextWindowType.LEFT
                 views = [self.textview[pane], self.textview[pane + 1]]
-                renderer = GutterRendererChunkAction(pane, pane + 1, views, self, self.linediffer)
+                renderer = GutterRendererChunkAction(
+                    pane, pane + 1, views, self, self.linediffer)
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, 10)
             if pane in (1, 2):
@@ -259,7 +263,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 if direction == Gtk.TextDirection.RTL:
                     window = Gtk.TextWindowType.RIGHT
                 views = [self.textview[pane], self.textview[pane - 1]]
-                renderer = GutterRendererChunkAction(pane, pane - 1, views, self, self.linediffer)
+                renderer = GutterRendererChunkAction(
+                    pane, pane - 1, views, self, self.linediffer)
                 gutter = t.get_gutter(window)
                 gutter.insert(renderer, -40)
 
@@ -269,13 +274,14 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             window = Gtk.TextWindowType.LEFT
             if direction == Gtk.TextDirection.RTL:
                 window = Gtk.TextWindowType.RIGHT
-            renderer = GutterRendererChunkLines(pane, pane - 1, self.linediffer)
             renderer.set_properties(
                 "alignment-mode", GtkSource.GutterRendererAlignmentMode.FIRST,
                 "yalign", 0.5,
                 "xalign", 1.0,
                 "xpad", 3,
             )
+            renderer = GutterRendererChunkLines(
+                pane, pane - 1, self.linediffer)
             gutter = t.get_gutter(window)
             gutter.insert(renderer, -30)
             t.line_renderer = renderer
@@ -443,7 +449,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                 pull_right = editable and right_exists
                 delete = editable and (left_mid_exists or right_mid_exists)
                 copy_left = editable_left and left_mid_exists and left_exists
-                copy_right = editable_right and right_mid_exists and right_exists
+                copy_right = (
+                    editable_right and right_mid_exists and right_exists)
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
@@ -696,7 +703,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         cursor_it = new_buf.get_iter_at_mark(new_buf.get_insert())
         cursor_line = cursor_it.get_line()
 
-        cursor_chunk, _, _ = self.linediffer.locate_chunk(new_pane, cursor_line)
+        cursor_chunk, _, _ = self.linediffer.locate_chunk(
+            new_pane, cursor_line)
         if cursor_chunk is not None:
             already_in_chunk = cursor_chunk == chunk
         else:
@@ -988,7 +996,8 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
-            self.popup_menu.popup(None, None, None, None, event.button, event.time)
+            self.popup_menu.popup(
+                None, None, None, None, event.button, event.time)
             return True
         return False
 
@@ -1253,13 +1262,18 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         else:
             editable = False
             mergeable = (False, False)
-        self.actiongroup.get_action("MergeFromLeft").set_sensitive(mergeable[0] and editable)
-        self.actiongroup.get_action("MergeFromRight").set_sensitive(mergeable[1] and editable)
+
+        # TODO: We need this helper everywhere.
+        def set_action_enabled(action, enabled):
+            self.actiongroup.get_action(action).set_sensitive(enabled)
+
+        set_action_enabled("MergeFromLeft", mergeable[0] and editable)
+        set_action_enabled("MergeFromRight", mergeable[1] and editable)
         if self.num_panes == 3 and self.textview[1].get_editable():
             mergeable = self.linediffer.has_mergeable_changes(1)
         else:
             mergeable = (False, False)
-        self.actiongroup.get_action("MergeAll").set_sensitive(mergeable[0] or mergeable[1])
+        set_action_enabled("MergeAll", mergeable[0] or mergeable[1])
 
     def on_diffs_changed(self, linediffer, chunk_changes):
         removed_chunks, added_chunks, modified_chunks = chunk_changes
@@ -1349,10 +1363,11 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
                         if match.tag != "equal":
                             return True
                         # Always keep matches occurring at the start or end
-                        start_or_end = (
-                            (match.start_a == 0 and match.start_b == 0) or
-                            (match.end_a == offsets[0] and match.end_b == offsets[1]))
-                        if start_or_end:
+                        is_start = match.start_a == 0 and match.start_b == 0
+                        is_end = (
+                            match.end_a == offsets[0] and
+                            match.end_b == offsets[1])
+                        if is_start or is_end:
                             return False
                         # Remove equal matches of size less than 3
                         too_short = ((match.end_a - match.start_a < 3) or
