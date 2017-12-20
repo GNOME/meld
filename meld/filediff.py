@@ -419,15 +419,15 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             )
             if pane == 0 or pane == 2:
                 chunk = self.linediffer.get_chunk(chunk_id, pane)
-                insert_chunk = chunk[1] == chunk[2]
-                delete_chunk = chunk[3] == chunk[4]
+                is_insert = chunk[1] == chunk[2]
+                is_delete = chunk[3] == chunk[4]
                 push_left = editable_left
                 push_right = editable_right
-                pull_left = pane == 2 and editable and not delete_chunk
-                pull_right = pane == 0 and editable and not delete_chunk
-                delete = editable and not insert_chunk
-                copy_left = editable_left and not (insert_chunk or delete_chunk)
-                copy_right = editable_right and not (insert_chunk or delete_chunk)
+                pull_left = pane == 2 and editable and not is_delete
+                pull_right = pane == 0 and editable and not is_delete
+                delete = editable and not is_insert
+                copy_left = editable_left and not is_insert or is_delete
+                copy_right = editable_right and not is_insert or is_delete
             elif pane == 1:
                 chunk0 = self.linediffer.get_chunk(chunk_id, 1, 0)
                 chunk2 = None
