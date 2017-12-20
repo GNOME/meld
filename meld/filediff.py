@@ -274,12 +274,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             window = Gtk.TextWindowType.LEFT
             if direction == Gtk.TextDirection.RTL:
                 window = Gtk.TextWindowType.RIGHT
-            renderer.set_properties(
-                "alignment-mode", GtkSource.GutterRendererAlignmentMode.FIRST,
-                "yalign", 0.5,
-                "xalign", 1.0,
-                "xpad", 3,
-            )
             renderer = GutterRendererChunkLines(
                 pane, pane - 1, self.linediffer)
             gutter = t.get_gutter(window)
