@@ -19,15 +19,15 @@
 import atexit
 import functools
 import logging
-import tempfile
-import shutil
 import os
+import shutil
 import stat
 import sys
+import tempfile
 
 from gi.repository import Gdk
-from gi.repository import GLib
 from gi.repository import Gio
+from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
@@ -36,12 +36,11 @@ from meld import melddoc
 from meld import misc
 from meld import tree
 from meld import vc
-from meld.ui import gnomeglade
-from meld.ui import vcdialogs
-
 from meld.conf import _
 from meld.recent import RecentType
-from meld.settings import settings, bind_settings
+from meld.settings import bind_settings, settings
+from meld.ui import gnomeglade
+from meld.ui import vcdialogs
 from meld.vc import _null
 from meld.vc._vc import Entry
 
