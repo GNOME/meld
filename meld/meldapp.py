@@ -78,6 +78,7 @@ class MeldApp(Gtk.Application):
         if isinstance(tab, int):
             return tab
         elif tab:
+
             def done(tab, status):
                 self.release()
                 tab.command_line.set_exit_status(status)
@@ -113,8 +114,8 @@ class MeldApp(Gtk.Application):
             uri = "http://meldmerge.org/help/"
         else:
             uri = "help:meld"
-        Gtk.show_uri(Gdk.Screen.get_default(), uri,
-                     Gtk.get_current_event_time())
+        Gtk.show_uri(
+            Gdk.Screen.get_default(), uri, Gtk.get_current_event_time())
 
     def about_callback(self, action, parameter):
         about = meld.ui.util.get_widget("application.ui", "aboutdialog")
@@ -125,8 +126,8 @@ class MeldApp(Gtk.Application):
 
     def quit_callback(self, action, parameter):
         for window in self.get_windows():
-            cancelled = window.emit("delete-event",
-                                    Gdk.Event.new(Gdk.EventType.DELETE))
+            cancelled = window.emit(
+                "delete-event", Gdk.Event.new(Gdk.EventType.DELETE))
             if cancelled:
                 return
             window.destroy()
@@ -353,7 +354,8 @@ class MeldApp(Gtk.Application):
             try:
                 files = [make_file_from_command_line(p) for p in paths]
                 tab = self.open_files(
-                    files, window=window,
+                    files,
+                    window=window,
                     close_on_error=close_on_error,
                     auto_compare=options.auto_compare,
                     auto_merge=auto_merge,
