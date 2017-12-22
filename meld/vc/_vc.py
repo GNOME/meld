@@ -216,6 +216,10 @@ class Vc(object):
         # TODO: We can't do this; this shells out for each selection change...
         # if bool(self.get_commits_to_push()):
         valid_actions.add('push')
+
+        non_removeable_states = (STATE_NONE, STATE_IGNORED, STATE_REMOVED)
+        non_revertable_states = (STATE_NONE, STATE_NORMAL, STATE_IGNORED)
+
         # TODO: We can't disable this for NORMAL, because folders don't
         # inherit any state from their children, but committing a folder with
         # modified children is expected behaviour.
@@ -225,10 +229,10 @@ class Vc(object):
             valid_actions.add('add')
         if all(s == STATE_CONFLICT for s in states):
             valid_actions.add('resolve')
-        if (all(s not in (STATE_NONE, STATE_IGNORED, STATE_REMOVED) for s in states)
+        if (all(s not in non_removeable_states for s in states)
                 and self.root not in path_states.keys()):
             valid_actions.add('remove')
-        if all(s not in (STATE_NONE, STATE_NORMAL, STATE_IGNORED) for s in states):
+        if all(s not in non_revertable_states for s in states):
             valid_actions.add('revert')
         return valid_actions
 
