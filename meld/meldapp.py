@@ -317,6 +317,16 @@ class MeldApp(Gtk.Application):
                 if relative.query_exists(cancellable=None):
                     return relative
                 # Return the original arg for a better error message
+
+            if f.get_uri() is None:
+                raise ValueError(_("invalid path or URI “%s”") % arg)
+
+            # TODO: support for directories specified by URIs
+            file_type = f.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
+            if not f.is_native() and file_type == Gio.FileType.DIRECTORY:
+                raise ValueError(
+                    _("remote folder “{}” not supported").format(arg))
+
             return f
 
         tab = None
@@ -339,15 +349,9 @@ class MeldApp(Gtk.Application):
             close_on_error = True
 
         for i, paths in enumerate(comparisons):
-            files = [make_file_from_command_line(p) for p in paths]
             auto_merge = options.auto_merge and i == 0
             try:
-                for p, f in zip(paths, files):
-                    # TODO: support for directories specified by URIs
-                    if f.get_uri() is None or (not f.is_native() and
-                        f.query_file_type(Gio.FileQueryInfoFlags.NONE, None) ==
-                            Gio.FileType.DIRECTORY):
-                        raise ValueError(_("invalid path or URI “%s”") % p)
+                files = [make_file_from_command_line(p) for p in paths]
                 tab = self.open_files(
                     files, window=window,
                     close_on_error=close_on_error,
