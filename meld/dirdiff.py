@@ -33,19 +33,19 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 
-from . import melddoc
-from . import misc
-from . import tree
-from .ui import emblemcellrenderer
-from .ui import gnomeglade
-
+# TODO: Don't from-import whole modules
+from meld import misc
+from meld import tree
 from meld.conf import _
+from meld.melddoc import MeldDoc
 from meld.misc import all_same
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
 from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
+from meld.ui.emblemcellrenderer import EmblemCellRenderer
+from meld.ui.gnomeglade import Component, ui_file
 
 
 class StatItem(namedtuple('StatItem', 'mode size time')):
@@ -242,7 +242,7 @@ class CanonicalListing(object):
         return element.lower()
 
 
-class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
+class DirDiff(MeldDoc, Component):
     """Two or three way folder comparison"""
 
     __gtype_name__ = "DirDiff"
@@ -315,12 +315,11 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
     }
 
     def __init__(self, num_panes):
-        melddoc.MeldDoc.__init__(self)
-        gnomeglade.Component.__init__(self, "dirdiff.ui", "dirdiff",
-                                      ["DirdiffActions"])
+        MeldDoc.__init__(self)
+        Component.__init__(self, "dirdiff.ui", "dirdiff", ["DirdiffActions"])
         bind_settings(self)
 
-        self.ui_file = gnomeglade.ui_file("dirdiff-ui.xml")
+        self.ui_file = ui_file("dirdiff-ui.xml")
         self.actiongroup = self.DirdiffActions
         self.actiongroup.set_translation_domain("meld")
 
@@ -373,7 +372,7 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
             column = Gtk.TreeViewColumn(_("Name"))
             column.set_resizable(True)
             rentext = Gtk.CellRendererText()
-            renicon = emblemcellrenderer.EmblemCellRenderer()
+            renicon = EmblemCellRenderer()
             column.pack_start(renicon, False)
             column.pack_start(rentext, True)
             column.set_attributes(rentext, markup=col_index(tree.COL_TEXT, i),
@@ -507,13 +506,13 @@ class DirDiff(melddoc.MeldDoc, gnomeglade.Component):
         self.filter_menu_button.set_label_widget(label)
 
     def on_container_switch_in_event(self, ui):
-        melddoc.MeldDoc.on_container_switch_in_event(self, ui)
+        MeldDoc.on_container_switch_in_event(self, ui)
         self._create_filter_menu_button(ui)
         self.ui_manager = ui
 
     def on_container_switch_out_event(self, ui):
         self._cleanup_filter_menu_button(ui)
-        melddoc.MeldDoc.on_container_switch_out_event(self, ui)
+        MeldDoc.on_container_switch_out_event(self, ui)
 
     def on_file_filters_changed(self, app):
         self._cleanup_filter_menu_button(self.ui_manager)
