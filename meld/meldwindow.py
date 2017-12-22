@@ -20,26 +20,25 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import meld.ui.util
-from . import dirdiff
-from . import filediff
-from . import filemerge
-from . import melddoc
-from . import newdifftab
-from . import task
-from . import vcview
-from .ui import gnomeglade
-from .ui import notebooklabel
-
 from meld.conf import _
+from meld.dirdiff import DirDiff
+from meld.filediff import FileDiff
+from meld.filemerge import FileMerge
+from meld.melddoc import MeldDoc, STATE_CLOSING
+from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
 from meld.settings import interface_settings, settings
+from meld.task import LifoScheduler
+from meld.ui.gnomeglade import Component, ui_file
+from meld.ui.notebooklabel import NotebookLabel
+from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
 
-class MeldWindow(gnomeglade.Component):
+class MeldWindow(Component):
 
     def __init__(self):
-        gnomeglade.Component.__init__(self, "meldapp.ui", "meldapp")
+        Component.__init__(self, "meldapp.ui", "meldapp")
         self.widget.set_name("meldapp")
 
         actions = (
@@ -117,7 +116,6 @@ class MeldWindow(gnomeglade.Component):
                 _("Show or hide the toolbar"),
                 None, True),
         )
-        ui_file = gnomeglade.ui_file("meldapp-ui.xml")
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
@@ -134,7 +132,7 @@ class MeldWindow(gnomeglade.Component):
 
         self.ui = Gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
-        self.ui.add_ui_from_file(ui_file)
+        self.ui.add_ui_from_file(ui_file("meldapp-ui.xml"))
 
         # Manually handle shells that don't show an application menu
         gtk_settings = Gtk.Settings.get_default()
@@ -164,8 +162,7 @@ class MeldWindow(gnomeglade.Component):
             app_actiongroup.add_actions(app_actions)
             self.ui.insert_action_group(app_actiongroup, 0)
 
-            ui_file = gnomeglade.ui_file("appmenu-fallback.xml")
-            self.ui.add_ui_from_file(ui_file)
+            self.ui.add_ui_from_file(ui_file("appmenu-fallback.xml"))
             self.widget.set_show_menubar(False)
 
         for menuitem in ("Save", "Undo"):
@@ -236,7 +233,7 @@ class MeldWindow(gnomeglade.Component):
 
         self.should_close = False
         self.idle_hooked = 0
-        self.scheduler = task.LifoScheduler()
+        self.scheduler = LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
 
         self.ui.ensure_update()
@@ -320,7 +317,7 @@ class MeldWindow(gnomeglade.Component):
             page = None
 
         self.actiongroup.get_action("Close").set_sensitive(bool(page))
-        if not isinstance(page, melddoc.MeldDoc):
+        if not isinstance(page, MeldDoc):
             for action in ("PrevChange", "NextChange", "Cut", "Copy", "Paste",
                            "Find", "FindNext", "FindPrevious", "Replace",
                            "Refresh", "GoToLine"):
@@ -328,7 +325,7 @@ class MeldWindow(gnomeglade.Component):
         else:
             for action in ("Find", "Refresh"):
                 self.actiongroup.get_action(action).set_sensitive(True)
-            is_filediff = isinstance(page, filediff.FileDiff)
+            is_filediff = isinstance(page, FileDiff)
             for action in ("Cut", "Copy", "Paste", "FindNext", "FindPrevious",
                            "Replace", "GoToLine"):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
@@ -363,7 +360,7 @@ class MeldWindow(gnomeglade.Component):
         self.actiongroup.get_action("Redo").set_sensitive(can_redo)
 
         # FileDiff handles save sensitivity; it makes no sense for other modes
-        if not isinstance(newdoc, filediff.FileDiff):
+        if not isinstance(newdoc, FileDiff):
             self.actiongroup.get_action("Save").set_sensitive(False)
             self.actiongroup.get_action("SaveAs").set_sensitive(False)
         else:
@@ -376,7 +373,7 @@ class MeldWindow(gnomeglade.Component):
         else:
             self.widget.set_title("Meld")
 
-        if isinstance(newdoc, melddoc.MeldDoc):
+        if isinstance(newdoc, MeldDoc):
             self.diff_handler = newdoc.connect("next-diff-changed",
                                                self.on_next_diff_changed)
         else:
@@ -518,7 +515,7 @@ class MeldWindow(gnomeglade.Component):
                     self.widget.emit('destroy')
 
     def on_page_state_changed(self, page, old_state, new_state):
-        if self.should_close and old_state == melddoc.STATE_CLOSING:
+        if self.should_close and old_state == STATE_CLOSING:
             # Cancel closing if one of our tabs does
             self.should_close = False
 
@@ -529,21 +526,20 @@ class MeldWindow(gnomeglade.Component):
                 page.on_file_changed(filename)
 
     def _append_page(self, page, icon):
-        nbl = notebooklabel.NotebookLabel(
-            icon, "", lambda b: page.on_delete_event())
+        nbl = NotebookLabel(icon, "", lambda b: page.on_delete_event())
         self.notebook.append_page(page.widget, nbl)
 
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents
         # cycling through X pages when X diffs are initiated.
-        if isinstance(self.current_doc(), dirdiff.DirDiff) or \
-           isinstance(self.current_doc(), vcview.VcView) or \
-           isinstance(page, newdifftab.NewDiffTab):
+        if isinstance(self.current_doc(), DirDiff) or \
+           isinstance(self.current_doc(), VcView) or \
+           isinstance(page, NewDiffTab):
             self.notebook.set_current_page(self.notebook.page_num(page.widget))
 
         if hasattr(page, 'scheduler'):
             self.scheduler.add_scheduler(page.scheduler)
-        if isinstance(page, melddoc.MeldDoc):
+        if isinstance(page, MeldDoc):
             page.connect("file-changed", self.on_file_changed)
             page.connect("create-diff", lambda obj, arg, kwargs:
                          self.append_diff(arg, **kwargs))
@@ -553,7 +549,7 @@ class MeldWindow(gnomeglade.Component):
         self.notebook.set_tab_reorderable(page.widget, True)
 
     def append_new_comparison(self):
-        doc = newdifftab.NewDiffTab(self)
+        doc = NewDiffTab(self)
         self._append_page(doc, "document-new")
         self.notebook.on_label_changed(doc, _("New comparison"), None)
 
@@ -568,7 +564,7 @@ class MeldWindow(gnomeglade.Component):
     def append_dirdiff(self, gfiles, auto_compare=False):
         dirs = [d.get_path() for d in gfiles if d]
         assert len(dirs) in (1, 2, 3)
-        doc = dirdiff.DirDiff(len(dirs))
+        doc = DirDiff(len(dirs))
         self._append_page(doc, "folder")
         doc.set_locations(dirs)
         if auto_compare:
@@ -578,7 +574,7 @@ class MeldWindow(gnomeglade.Component):
     def append_filediff(
             self, gfiles, *, encodings=None, merge_output=None, meta=None):
         assert len(gfiles) in (1, 2, 3)
-        doc = filediff.FileDiff(len(gfiles))
+        doc = FileDiff(len(gfiles))
         self._append_page(doc, "text-x-generic")
         doc.set_files(gfiles, encodings)
         if merge_output is not None:
@@ -592,7 +588,7 @@ class MeldWindow(gnomeglade.Component):
             raise ValueError(
                 _("Need three files to auto-merge, got: %r") %
                 [f.get_parse_name() for f in gfiles])
-        doc = filemerge.FileMerge(len(gfiles))
+        doc = FileMerge(len(gfiles))
         self._append_page(doc, "text-x-generic")
         doc.set_files(gfiles)
         if merge_output is not None:
@@ -621,7 +617,7 @@ class MeldWindow(gnomeglade.Component):
                 gfiles, merge_output=merge_output, meta=meta)
 
     def append_vcview(self, location, auto_compare=False):
-        doc = vcview.VcView()
+        doc = VcView()
         self._append_page(doc, "meld-version-control")
         if isinstance(location, (list, tuple)):
             location = location[0]
@@ -644,7 +640,7 @@ class MeldWindow(gnomeglade.Component):
         return tab
 
     def _single_file_open(self, gfile):
-        doc = vcview.VcView()
+        doc = VcView()
 
         def cleanup():
             self.scheduler.remove_scheduler(doc.scheduler)
@@ -683,7 +679,7 @@ class MeldWindow(gnomeglade.Component):
         index = self.notebook.get_current_page()
         if index >= 0:
             page = self.notebook.get_nth_page(index).pyobject
-            if isinstance(page, melddoc.MeldDoc):
+            if isinstance(page, MeldDoc):
                 return page
 
         class DummyDoc(object):
