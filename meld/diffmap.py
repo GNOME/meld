@@ -17,7 +17,6 @@
 import collections
 
 import cairo
-
 from gi.repository import Gdk
 from gi.repository import Gtk
 

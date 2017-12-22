@@ -24,21 +24,20 @@ import os
 import shutil
 import stat
 import sys
+from collections import namedtuple
+from decimal import Decimal
 
-from gi.repository import GLib
-from gi.repository import Gio
-from gi.repository import GObject
 from gi.repository import Gdk
+from gi.repository import Gio
+from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gtk
 
 from . import melddoc
-from . import tree
 from . import misc
-from .ui import gnomeglade
+from . import tree
 from .ui import emblemcellrenderer
-
-from collections import namedtuple
-from decimal import Decimal
+from .ui import gnomeglade
 
 from meld.conf import _
 from meld.misc import all_same

@@ -15,8 +15,8 @@
 
 from gi.repository import Gio
 from gi.repository import GObject
-from gi.repository import Pango
 from gi.repository import GtkSource
+from gi.repository import Pango
 
 import meld.conf
 import meld.filters

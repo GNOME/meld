@@ -20,10 +20,10 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 
-from .ui import gnomeglade
 from meld.conf import _
 from meld.melddoc import LabeledObjectMixin
 from meld.recent import recent_comparisons
+from meld.ui import gnomeglade
 
 
 class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):

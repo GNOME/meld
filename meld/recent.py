@@ -35,7 +35,6 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import meld.misc
-
 from meld.conf import _
 
 

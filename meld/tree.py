@@ -15,20 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from gi.repository import GLib
+
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.misc import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
 from meld.vc._vc import (
-    STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE,
-    STATE_ERROR, STATE_EMPTY, STATE_NEW,
-    STATE_MODIFIED, STATE_CONFLICT, STATE_REMOVED,
-    STATE_MISSING, STATE_NONEXIST, STATE_MAX,
-    CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_REMOTE,
-    CONFLICT_MERGED, CONFLICT_OTHER, CONFLICT_THIS,
+    CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_MERGED, CONFLICT_OTHER,
+    CONFLICT_REMOTE, CONFLICT_THIS, STATE_CONFLICT, STATE_EMPTY, STATE_ERROR,
+    STATE_IGNORED, STATE_MAX, STATE_MISSING, STATE_MODIFIED, STATE_NEW,
+    STATE_NOCHANGE, STATE_NONE, STATE_NONEXIST, STATE_NORMAL, STATE_REMOVED,
 )
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \

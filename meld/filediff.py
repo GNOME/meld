@@ -19,14 +19,13 @@ import functools
 import math
 import os
 
+from gi.repository import Gdk
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
-from gi.repository import Gio
-from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from meld.conf import _
 from . import meldbuffer
 from . import melddoc
 from . import misc
@@ -34,7 +33,8 @@ from . import undo
 from .ui import filechooser
 from .ui import gnomeglade
 
-from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT, NEWLINES
+from meld.conf import _
+from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE, NEWLINES
 from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
 from meld.matchers.merge import Merger
@@ -42,7 +42,7 @@ from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
 from meld.sourceview import (
-    LanguageManager, TextviewLineAnimationType, get_custom_encoding_candidates)
+    get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
 from meld.ui.findbar import FindBar
 
 

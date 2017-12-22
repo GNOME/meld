@@ -22,16 +22,15 @@ import subprocess
 import sys
 
 from gi.repository import Gdk
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
-from gi.repository import Gio
 from gi.repository import Gtk
 
-from . import task
-
 from meld.conf import _
-from meld.settings import settings
 from meld.recent import RecentType
+from meld.settings import settings
+from meld.task import FifoScheduler
 
 log = logging.getLogger(__name__)
 
@@ -91,7 +90,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
     def __init__(self):
         GObject.GObject.__init__(self)
-        self.scheduler = task.FifoScheduler()
+        self.scheduler = FifoScheduler()
         self.num_panes = 0
         self.main_actiongroup = None
         self._state = STATE_NORMAL

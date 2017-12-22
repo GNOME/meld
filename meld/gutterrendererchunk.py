@@ -15,13 +15,13 @@
 
 import math
 
-from gi.repository import Pango
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import GtkSource
+from gi.repository import Pango
 
 from meld.conf import _
-from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
+from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE
 from meld.misc import get_common_theme
 from meld.settings import meldsettings
 from meld.ui.gtkcompat import get_style

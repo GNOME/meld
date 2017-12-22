@@ -31,7 +31,7 @@ from .ui import gnomeglade
 from .ui import notebooklabel
 
 from meld.conf import _
-from meld.recent import RecentType, recent_comparisons
+from meld.recent import recent_comparisons, RecentType
 from meld.settings import interface_settings, settings
 from meld.windowstate import SavedWindowState
 

@@ -19,10 +19,10 @@
 """
 
 import collections
-import os
 import errno
-import shutil
+import os
 import re
+import shutil
 import subprocess
 
 from gi.repository import Gdk

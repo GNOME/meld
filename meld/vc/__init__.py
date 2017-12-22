@@ -23,7 +23,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from . import git, mercurial, bzr, svn, darcs, _null
+from . import _null, bzr, darcs, git, mercurial, svn
 
 # Tuple of plugins, ordered according to best-guess as to which VC a
 # user is likely to want by default in a multiple-VC situation.

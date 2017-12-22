@@ -23,13 +23,12 @@ import distutils.command.build
 import distutils.command.build_py
 import distutils.command.install
 import distutils.command.install_data
-import distutils.dist
 import distutils.dir_util
+import distutils.dist
 import glob
 import os.path
 import platform
 import sys
-
 from distutils.log import info
 
 

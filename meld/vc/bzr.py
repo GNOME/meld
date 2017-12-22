@@ -24,11 +24,10 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from collections import defaultdict
-
 import errno
 import os
 import re
+from collections import defaultdict
 
 from . import _vc
 

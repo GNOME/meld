@@ -19,15 +19,14 @@ import logging
 import optparse
 import os
 
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
-from gi.repository import Gdk
 from gi.repository import Gtk
 
 import meld.conf
 import meld.preferences
 import meld.ui.util
-
 from meld.conf import _
 
 log = logging.getLogger(__name__)

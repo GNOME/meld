@@ -36,7 +36,6 @@ import tempfile
 from collections import defaultdict
 
 from meld.conf import _, ngettext
-
 from . import _vc
 
 
