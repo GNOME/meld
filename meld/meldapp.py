@@ -28,6 +28,8 @@ import meld.conf
 import meld.preferences
 import meld.ui.util
 from meld.conf import _
+from meld.filediff import FileDiff
+from meld.meldwindow import MeldWindow
 
 log = logging.getLogger(__name__)
 
@@ -133,7 +135,7 @@ class MeldApp(Gtk.Application):
         self.quit()
 
     def new_window(self):
-        window = meldwindow.MeldWindow()
+        window = MeldWindow()
         self.add_window(window.widget)
         window.widget.meldwindow = window
         return window
@@ -370,7 +372,7 @@ class MeldApp(Gtk.Application):
                 if options.label:
                     tab.set_labels(options.label)
 
-                if options.outfile and isinstance(tab, filediff.FileDiff):
+                if options.outfile and isinstance(tab, FileDiff):
                     outfile = make_file_from_command_line(options.outfile)
                     tab.set_merge_output_file(outfile.get_path())
 
@@ -392,6 +394,3 @@ class MeldApp(Gtk.Application):
 
 
 app = MeldApp()
-
-from . import filediff
-from . import meldwindow
