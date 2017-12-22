@@ -15,22 +15,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from meld.conf import _
-from . import filediff
+from meld.filediff import FileDiff
 from meld.matchers import merge
 from meld.recent import RecentType
 
 
-class FileMerge(filediff.FileDiff):
+class FileMerge(FileDiff):
 
     differ = merge.AutoMergeDiffer
 
     def _connect_buffer_handlers(self):
-        filediff.FileDiff._connect_buffer_handlers(self)
+        FileDiff._connect_buffer_handlers(self)
         self.textview[0].set_editable(0)
         self.textview[2].set_editable(0)
 
     def get_comparison(self):
-        comp = filediff.FileDiff.get_comparison(self)
+        comp = FileDiff.get_comparison(self)
         return RecentType.Merge, comp[1]
 
     def _merge_files(self):
