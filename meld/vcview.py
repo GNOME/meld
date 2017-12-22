@@ -32,16 +32,15 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Pango
 
-from meld import melddoc
-from meld import misc
 from meld import tree
-from meld import vc
 from meld.conf import _
+from meld.melddoc import MeldDoc
+from meld.misc import error_dialog, read_pipe_iter
 from meld.recent import RecentType
 from meld.settings import bind_settings, settings
-from meld.ui import gnomeglade
-from meld.ui import vcdialogs
-from meld.vc import _null
+from meld.ui.gnomeglade import Component, ui_file
+from meld.ui.vcdialogs import CommitDialog, PushDialog
+from meld.vc import _null, get_vcs
 from meld.vc._vc import Entry
 
 log = logging.getLogger(__name__)
@@ -121,7 +120,7 @@ class VcTreeStore(tree.DiffTreeStore):
         return self.get_value(it, self.column_index(tree.COL_PATH, 0))
 
 
-class VcView(melddoc.MeldDoc, gnomeglade.Component):
+class VcView(MeldDoc, Component):
 
     __gtype_name__ = "VcView"
 
@@ -153,12 +152,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
     }
 
     def __init__(self):
-        melddoc.MeldDoc.__init__(self)
-        gnomeglade.Component.__init__(self, "vcview.ui", "vcview",
-                                      ["VcviewActions", 'liststore_vcs'])
+        MeldDoc.__init__(self)
+        Component.__init__(
+            self, "vcview.ui", "vcview", ["VcviewActions", 'liststore_vcs'])
         bind_settings(self)
 
-        self.ui_file = gnomeglade.ui_file("vcview-ui.xml")
+        self.ui_file = ui_file("vcview-ui.xml")
         self.actiongroup = self.VcviewActions
         self.actiongroup.set_translation_domain("meld")
         self.model = VcTreeStore()
@@ -240,7 +239,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
             location = parent_location
         else:
             # existing parent directory was found
-            for avc in vc.get_vcs(location):
+            for avc in get_vcs(location):
                 err_str = ''
                 vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
 
@@ -583,7 +582,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         files = [os.path.relpath(f, working_dir) for f in files]
         msg = shelljoin(command + files) + " (in %s)\n" % working_dir
         self.consolestream.command(msg)
-        readiter = misc.read_pipe_iter(
+        readiter = read_pipe_iter(
             command + files, workdir=working_dir,
             errorstream=self.consolestream)
         try:
@@ -592,7 +591,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 yield 1
                 result = next(readiter)
         except IOError as err:
-            misc.error_dialog(
+            error_dialog(
                 "Error running command",
                 "While running '%s'\nError: %s" % (msg, err))
             result = (1, "")
@@ -651,12 +650,12 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
         self.vc.update(self.runner)
 
     def on_button_push_clicked(self, obj):
-        response = vcdialogs.PushDialog(self).run()
+        response = PushDialog(self).run()
         if response == Gtk.ResponseType.OK:
             self.vc.push(self.runner)
 
     def on_button_commit_clicked(self, obj):
-        response, commit_msg = vcdialogs.CommitDialog(self).run()
+        response, commit_msg = CommitDialog(self).run()
         if response == Gtk.ResponseType.OK:
             self.vc.commit(
                 self.runner, self._get_selected_files(), commit_msg)
@@ -700,7 +699,7 @@ class VcView(melddoc.MeldDoc, gnomeglade.Component):
                 gfile = Gio.File.new_for_path(name)
                 gfile.trash(None)
             except GLib.GError as e:
-                misc.error_dialog(_("Error removing %s") % name, str(e))
+                error_dialog(_("Error removing %s") % name, str(e))
 
         workdir = os.path.dirname(os.path.commonprefix(files))
         self.refresh_partial(workdir)
