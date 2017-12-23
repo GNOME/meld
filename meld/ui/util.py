@@ -17,7 +17,7 @@ from gi.repository import Gtk
 
 import meld.conf
 # Import support module to get all builder-constructed widgets in the namespace
-from meld.ui import gladesupport
+from meld.ui import gladesupport  # noqa: F401
 
 
 def get_widget(filename, widget):
