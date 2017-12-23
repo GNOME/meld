@@ -192,23 +192,23 @@ class PreferencesDialog(Component):
             ('use-system-font', self.checkbutton_default_font, 'active'),
             ('custom-font', self.fontpicker, 'font'),
             ('indent-width', self.spinbutton_tabsize, 'value'),
-            ('insert-spaces-instead-of-tabs', self.checkbutton_spaces_instead_of_tabs, 'active'),
-            ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),
-            ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),
-            ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),
+            ('insert-spaces-instead-of-tabs', self.checkbutton_spaces_instead_of_tabs, 'active'),  # noqa: E501
+            ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
+            ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
+            ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
             ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
-            ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),
-            ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),
-            ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),
-            ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),
+            ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),  # noqa: E501
+            ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
+            ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
+            ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),  # noqa: E501
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
-            ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),
-            ('ignore-blank-lines', self.checkbutton_ignore_blank_lines, 'active'),
+            ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),  # noqa: E501
+            ('ignore-blank-lines', self.checkbutton_ignore_blank_lines, 'active'),  # noqa: E501
             # Sensitivity bindings must come after value bindings, or the key
             # writability in gsettings overrides manual sensitivity setting.
-            ('vc-show-commit-margin', self.spinbutton_commit_margin, 'sensitive'),
-            ('vc-show-commit-margin', self.checkbutton_break_commit_lines, 'sensitive'),
+            ('vc-show-commit-margin', self.spinbutton_commit_margin, 'sensitive'),  # noqa: E501
+            ('vc-show-commit-margin', self.checkbutton_break_commit_lines, 'sensitive'),  # noqa: E501
         ]
         for key, obj, attribute in bindings:
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
@@ -216,7 +216,7 @@ class PreferencesDialog(Component):
         invert_bindings = [
             ('use-system-editor', self.custom_edit_command_entry, 'sensitive'),
             ('use-system-font', self.fontpicker, 'sensitive'),
-            ('folder-shallow-comparison', self.checkbutton_folder_filter_text, 'sensitive'),
+            ('folder-shallow-comparison', self.checkbutton_folder_filter_text, 'sensitive'),  # noqa: E501
         ]
         for key, obj, attribute in invert_bindings:
             settings.bind(
