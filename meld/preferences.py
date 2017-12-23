@@ -31,22 +31,22 @@ class FilterList(ListWidget):
 
     def __init__(self, key, filter_type):
         default_entry = [_("label"), False, _("pattern"), True]
-        ListWidget.__init__(self, "EditableList.ui",
-                            "list_vbox", ["EditableListStore"],
-                            "EditableList", default_entry)
+        ListWidget.__init__(
+            self, "EditableList.ui", "list_vbox", ["EditableListStore"],
+            "EditableList", default_entry)
         self.key = key
         self.filter_type = filter_type
 
-        self.pattern_column.set_cell_data_func(self.validity_renderer,
-                                               self.valid_icon_celldata)
+        self.pattern_column.set_cell_data_func(
+            self.validity_renderer, self.valid_icon_celldata)
 
         for filter_params in settings.get_value(self.key):
             filt = FilterEntry.new_from_gsetting(filter_params, filter_type)
             if filt is None:
                 continue
             valid = filt.filter is not None
-            self.model.append([filt.label, filt.active,
-                               filt.filter_string, valid])
+            self.model.append(
+                [filt.label, filt.active, filt.filter_string, valid])
 
         for signal in ('row-changed', 'row-deleted', 'row-inserted',
                        'rows-reordered'):
@@ -85,9 +85,9 @@ class ColumnList(ListWidget):
     }
 
     def __init__(self, key):
-        ListWidget.__init__(self, "EditableList.ui",
-                            "columns_ta", ["ColumnsListStore"],
-                            "columns_treeview")
+        ListWidget.__init__(
+            self, "EditableList.ui", "columns_ta", ["ColumnsListStore"],
+            "columns_treeview")
         self.key = key
 
         # Unwrap the variant
@@ -98,8 +98,10 @@ class ColumnList(ListWidget):
             column_vis[column_name] = bool(int(visibility))
             column_order[column_name] = sort_key
 
-        columns = [(column_vis.get(name, True), name, label) for
-                   name, label in self.available_columns.items()]
+        columns = [
+            (column_vis.get(name, True), name, label)
+            for name, label in self.available_columns.items()
+        ]
         columns = sorted(columns, key=lambda c: column_order.get(c[1], 0))
 
         for visibility, name, label in columns:
@@ -180,12 +182,13 @@ class GSettingsStringComboBox(GSettingsComboBox):
 class PreferencesDialog(Component):
 
     def __init__(self, parent):
-        Component.__init__(self, "preferences.ui", "preferencesdialog",
-                           ["adjustment1", "adjustment2", "fileorderstore",
-                            "sizegroup_editor", "timestampstore",
-                            "mergeorderstore", "sizegroup_file_order_labels",
-                            "sizegroup_file_order_combos",
-                            'syntaxschemestore'])
+        Component.__init__(
+            self, "preferences.ui", "preferencesdialog", [
+                "adjustment1", "adjustment2", "fileorderstore",
+                "sizegroup_editor", "timestampstore", "mergeorderstore",
+                "sizegroup_file_order_labels", "sizegroup_file_order_combos",
+                "syntaxschemestore"
+            ])
         self.widget.set_transient_for(parent)
 
         bindings = [
