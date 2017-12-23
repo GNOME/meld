@@ -23,7 +23,7 @@ from gi.repository import Pango
 
 from meld.misc import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
-from meld.vc._vc import (
+from meld.vc._vc import (  # noqa: F401
     CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_MERGED, CONFLICT_OTHER,
     CONFLICT_REMOTE, CONFLICT_THIS, STATE_CONFLICT, STATE_EMPTY, STATE_ERROR,
     STATE_IGNORED, STATE_MAX, STATE_MISSING, STATE_MODIFIED, STATE_NEW,
