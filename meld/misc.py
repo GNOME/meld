@@ -145,9 +145,11 @@ def make_tool_button_widget(label):
     return hbox
 
 
+MELD_STYLE_SCHEME = "meld-base"
+MELD_STYLE_SCHEME_DARK = "meld-dark"
+
+
 def get_base_style_scheme():
-    MELD_STYLE_SCHEME = "meld-base"
-    MELD_STYLE_SCHEME_DARK = "meld-dark"
 
     global base_style_scheme
 
