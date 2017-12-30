@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from distutils.core import setup
 import glob
 import sys
+from distutils.core import setup
 
 import meld.build_helpers
 import meld.conf
