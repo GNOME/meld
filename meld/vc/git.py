@@ -78,9 +78,9 @@ class Vc(_vc.Vc):
             return False
 
     @classmethod
-    def check_repo_root(self, location):
+    def check_repo_root(cls, location):
         # Check exists instead of isdir, since .git might be a git-file
-        return os.path.exists(os.path.join(location, self.VC_DIR))
+        return os.path.exists(os.path.join(location, cls.VC_DIR))
 
     def get_commits_to_push_summary(self):
         branch_refs = self.get_commits_to_push()

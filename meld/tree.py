@@ -159,9 +159,9 @@ class DiffTreeStore(SearchableTreeStore):
         self.set_value(it, col_idx(COL_STRIKE, pane), strike)
 
     def get_state(self, it, pane):
-        STATE = self.column_index(COL_STATE, pane)
+        state_idx = self.column_index(COL_STATE, pane)
         try:
-            return int(self.get_value(it, STATE))
+            return int(self.get_value(it, state_idx))
         except TypeError:
             return None
 
