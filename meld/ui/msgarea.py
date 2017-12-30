@@ -83,13 +83,14 @@ class MsgAreaController(Gtk.HBox):
             self.__msgarea = None
         self.__msgid = None
 
-    def new_from_text_and_icon(self, stockid, primary, secondary=None,
-                               buttons=[]):
+    def new_from_text_and_icon(
+            self, stockid, primary, secondary=None, buttons=None):
         self.clear()
         msgarea = self.__msgarea = Gtk.InfoBar()
 
-        for (text, respid) in buttons:
-            self.add_button(text, respid)
+        if buttons:
+            for (text, respid) in buttons:
+                self.add_button(text, respid)
 
         content = layout_text_and_icon(stockid, primary, secondary)
 
