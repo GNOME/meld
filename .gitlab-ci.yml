@@ -1,0 +1,28 @@
+image: fedora:rawhide
+stages:
+  - check
+  - build
+
+variables:
+  DEPENDENCIES: python3 pygobject3 gobject-introspection
+                python3-gobject gtk3 gtksourceview3
+
+flake8:
+  stage: check
+  script:
+    - dnf update -y --nogpgcheck && dnf install -y --nogpgcheck $DEPENDENCIES
+    - pip3 install -r dev-requirements.txt
+    - flake8 meld/
+  allow_failure: true
+
+pytest:
+  stage: check
+  script:
+    - dnf update -y --nogpgcheck && dnf install -y --nogpgcheck $DEPENDENCIES python3-pytest
+    - py.test-3 test/
+
+build:
+  stage: build
+  script:
+    - dnf update -y --nogpgcheck && dnf install -y --nogpgcheck $DEPENDENCIES
+    - python3 setup.py build
