@@ -213,7 +213,8 @@ class Vc(_vc.Vc):
             self._reverse_rename_cache[new] = old
 
         self._tree_cache.update(
-            dict((x, max(y)) for x, y in tree_cache.items()))
+            dict((x, max(filter(lambda z: z is not None, y)))
+                    for x, y in tree_cache.items()))
         self._tree_meta_cache = dict(tree_meta_cache)
 
     def get_path_for_repo_file(self, path, commit=None):
