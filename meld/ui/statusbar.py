@@ -218,7 +218,6 @@ class MeldStatusBar(Gtk.Statusbar):
 
     def construct_encoding_selector(self):
         def change_encoding(selector, encoding):
-            self.props.source_encoding = encoding
             self.emit('encoding-changed', encoding)
             pop.hide()
 
@@ -244,6 +243,11 @@ class MeldStatusBar(Gtk.Statusbar):
 
     def construct_highlighting_selector(self):
         def change_language(selector, lang):
+            # TODO: Our other GObject properties are expected to be
+            # updated through a bound state from our parent. This is
+            # the only place where we assign to them instead of
+            # emitting a signal, and it makes the class logic as a
+            # whole kind of confusing.
             self.props.source_language = lang
             pop.hide()
 
