@@ -90,10 +90,7 @@ class UndoSequence(GObject.GObject):
 
         If the sequence was previously able to undo and/or redo, the
         'can-undo' and 'can-redo' signals are emitted.
-
-        Raises an AssertionError if a group is in progress.
         """
-        assert self.group is None
         if self.can_undo():
             self.emit('can-undo', 0)
         if self.can_redo():
