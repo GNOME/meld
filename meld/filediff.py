@@ -1695,24 +1695,29 @@ class FileDiff(MeldDoc, Component):
                 return i
         return -1
 
-    def on_revert_activate(self, *extra):
-        response = Gtk.ResponseType.OK
+    def check_unsaved_changes(self):
         unsaved = [b.data.label for b in self.textbuffer if b.get_modified()]
-        if unsaved:
-            dialog = Component("filediff.ui", "revert_dialog")
-            dialog.widget.set_transient_for(self.widget.get_toplevel())
-            # FIXME: Should be packed into dialog.widget.get_message_area(),
-            # but this is unbound on currently required PyGTK.
-            filelist = "\n".join(["\t" + f for f in unsaved])
-            dialog.widget.props.secondary_text += filelist
-            response = dialog.widget.run()
-            dialog.widget.destroy()
+        if not unsaved:
+            return True
 
-        if response == Gtk.ResponseType.OK:
-            buffers = self.textbuffer[:self.num_panes]
-            gfiles = [b.data.gfile for b in buffers]
-            encodings = [b.data.encoding for b in buffers]
-            self.set_files(gfiles, encodings=encodings)
+        dialog = Component("filediff.ui", "revert_dialog")
+        dialog.widget.set_transient_for(self.widget.get_toplevel())
+        # FIXME: Should be packed into dialog.widget.get_message_area(),
+        # but this is unbound on currently required PyGTK.
+        filelist = "\n".join(["\t" + f for f in unsaved])
+        dialog.widget.props.secondary_text += filelist
+        response = dialog.widget.run()
+        dialog.widget.destroy()
+        return response == Gtk.ResponseType.OK
+
+    def on_revert_activate(self, *extra):
+        if not self.check_unsaved_changes():
+            return
+
+        buffers = self.textbuffer[:self.num_panes]
+        gfiles = [b.data.gfile for b in buffers]
+        encodings = [b.data.encoding for b in buffers]
+        self.set_files(gfiles, encodings=encodings)
 
     def on_refresh_activate(self, *extra):
         self.refresh_comparison()
