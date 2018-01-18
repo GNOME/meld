@@ -233,6 +233,8 @@ class FileDiff(MeldDoc, Component):
                 GObject.BindingFlags.DEFAULT)
 
             def reload_with_encoding(widget, encoding, pane):
+                if not self.check_unsaved_changes():
+                    return
                 self.set_file(pane, self.textbuffer[pane].data.gfile, encoding)
 
             def go_to_line(widget, line, pane):
