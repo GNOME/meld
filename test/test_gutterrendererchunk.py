@@ -3,9 +3,7 @@ from unittest import mock
 
 import pytest
 
-import meld.gutterrendererchunk
-from meld.gutterrendererchunk import GutterRendererChunkAction
-from meld.const import MODE_REPLACE, MODE_DELETE, MODE_INSERT
+from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE
 from meld.matchers.myers import DiffChunk
 
 
@@ -57,6 +55,10 @@ def make_chunk(chunk_type):
     # TODO: Add tests for conflict chunks
 ])
 def test_classify_change_actions(mode, editable, chunk, expected_action):
+
+    import meld.gutterrendererchunk
+    from meld.gutterrendererchunk import GutterRendererChunkAction
+
     filediff = mock.MagicMock()
     meld.gutterrendererchunk.meldsettings = mock.MagicMock(style_scheme=None)
     GutterRendererChunkAction.on_setting_changed = mock.MagicMock()
