@@ -17,11 +17,17 @@ Requirements
 ------------
 
 * Python 3.4
+* pycairo (Python3 bindings for cairo without GObject layer)
+* PyGObject 3.20 (Python3 bindings for GObject introspection)
+* gsettings-desktop-schemas
+
+And following packages with GObject introspection:
+
+* GLib 2.36 (meld install also needs GLib binaries like glib-compile-schemas)
+* Pango
+* PangoCairo
 * GTK+ 3.20
-* GLib 2.36
-* PyGObject 3.20
 * GtkSourceView 3.20
-* pycairo
 
 
 Build requirements
@@ -31,11 +37,15 @@ Build requirements
 * itstool
 * xmllint
 
+Building Windows MSIs requires:
+
+* cx_Freeze 5
+* pywin32/pypiwin32 (optional, for storing version info in Meld.exe)
 
 Running
 -------
 
-Meld can be run directly from this directory. Just type:
+Meld can be run directly from this source tree directory. Just type:
 
  * `bin/meld`
 
@@ -51,7 +61,9 @@ or if you're on Ubuntu, instead try:
 your system. Meld packages are available for just about every \*nix
 distribution.
 
-For Windows users, MSIs are available from the Meld home page.
+For Windows users, MSIs are available from the Meld home page. Also if all
+dependencies are installed manually, running from source tree is supported:
+ * `python3.exe bin/meld`
 
 For OSX users, Meld can be installed on OSX using MacPorts/Fink/etc. There are
 also unofficial native builds available for older releases. See the wiki for
@@ -81,6 +93,11 @@ command. In other words, do this:
 
     python3 setup.py install --no-compile-schemas
 
+Windows installer can be built with command
+
+    C:\Python34\python.exe setup_win32.py bdist_msi
+
+that creates file `dist/Meld-VERSION-ARCH.msi`
 
 Contributing
 ------------
