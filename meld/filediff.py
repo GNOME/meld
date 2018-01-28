@@ -127,6 +127,9 @@ class FileDiff(MeldDoc, Component):
 
     # Identifiers for MsgArea messages
     (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
+    # Transient messages that should be removed if any file in the
+    # comparison gets reloaded.
+    TRANSIENT_MESSAGES = {MSG_SAME, MSG_SLOW_HIGHLIGHT}
 
     __gsignals__ = {
         'next-conflict-changed': (
@@ -1052,6 +1055,10 @@ class FileDiff(MeldDoc, Component):
         for buf in self.textbuffer:
             tag = buf.get_tag_table().lookup("inline")
             buf.remove_tag(tag, buf.get_start_iter(), buf.get_end_iter())
+
+        for mgr in self.msgarea_mgr:
+            if mgr.get_msg_id() in self.TRANSIENT_MESSAGES:
+                mgr.clear()
 
     def set_files(self, gfiles, encodings=None):
         """Load the given files
