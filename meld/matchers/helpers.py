@@ -46,7 +46,7 @@ class CachedSequenceMatcher(object):
     eviction is overly simplistic, but is okay for our usage pattern.
     """
 
-    TASK_GRACE_PERIOD = 5
+    TASK_GRACE_PERIOD = 1
 
     def __init__(self, scheduler):
         """Create a new caching sequence matcher
