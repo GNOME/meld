@@ -35,8 +35,6 @@ class MatcherWorker(multiprocessing.Process):
                 self.results.put((task_id, matcher.get_opcodes()))
             except Exception as e:
                 log.error("Exception while running diff: %s", e)
-            finally:
-                self.tasks.task_done()
             time.sleep(0)
 
 
@@ -58,12 +56,12 @@ class CachedSequenceMatcher(object):
         """
         self.scheduler = scheduler
         self.cache = {}
-        self.tasks = multiprocessing.JoinableQueue()
+        self.tasks = multiprocessing.Queue()
         # Limiting the result queue here has the effect of giving us
         # much better interactivity. Without this limit, the
         # result-checker tends to get starved and all highlights get
         # delayed until we're almost completely finished.
-        self.results = multiprocessing.JoinableQueue(5)
+        self.results = multiprocessing.Queue(5)
         self.thread = MatcherWorker(self.tasks, self.results)
         self.task_id = 1
         self.queued_matches = {}
