@@ -57,11 +57,13 @@ class CachedSequenceMatcher(object):
         self.scheduler = scheduler
         self.cache = {}
         self.tasks = multiprocessing.Queue()
+        self.tasks.cancel_join_thread()
         # Limiting the result queue here has the effect of giving us
         # much better interactivity. Without this limit, the
         # result-checker tends to get starved and all highlights get
         # delayed until we're almost completely finished.
         self.results = multiprocessing.Queue(5)
+        self.results.cancel_join_thread()
         self.thread = MatcherWorker(self.tasks, self.results)
         self.task_id = 1
         self.queued_matches = {}
