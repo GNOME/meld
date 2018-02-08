@@ -825,11 +825,12 @@ class FileDiff(MeldDoc, Component):
         self._after_text_modified(buf, starting_at, -self.lines_removed)
         self.lines_removed = 0
 
-    def check_save_modified(self):
+    def check_save_modified(self, buffers=None):
         response = Gtk.ResponseType.OK
-        modified = [b.get_modified() for b in self.textbuffer[:self.num_panes]]
-        labels = [b.data.label for b in self.textbuffer[:self.num_panes]]
-        if True in modified:
+        buffers = buffers or self.textbuffer[:self.num_panes]
+        modified = [b.get_modified() for b in buffers]
+        labels = [b.data.label for b in buffers]
+        if any(modified):
             dialog = Component("filediff.ui", "check_save_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             message_area = dialog.widget.get_message_area()
@@ -1691,11 +1692,12 @@ class FileDiff(MeldDoc, Component):
 
     def on_fileentry_file_set(self, entry):
         pane = self.fileentry[:self.num_panes].index(entry)
-        if self.check_save_modified() != Gtk.ResponseType.CANCEL:
+        buffer = self.textbuffer[pane]
+        if self.check_save_modified([buffer]) != Gtk.ResponseType.CANCEL:
             # TODO: Use encoding file selectors in FileDiff
             self.set_file(pane, entry.get_file())
         else:
-            existing_path = self.textbuffer[pane].data.filename
+            existing_path = buffer.data.filename
             entry.set_filename(existing_path)
         return True
 
