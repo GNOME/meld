@@ -1711,10 +1711,13 @@ class FileDiff(MeldDoc, Component):
 
         dialog = Component("filediff.ui", "revert_dialog")
         dialog.widget.set_transient_for(self.widget.get_toplevel())
-        # FIXME: Should be packed into dialog.widget.get_message_area(),
-        # but this is unbound on currently required PyGTK.
-        filelist = "\n".join(["\t" + f for f in unsaved])
-        dialog.widget.props.secondary_text += filelist
+
+        filelist = Gtk.Label("\n".join(["\t• " + f for f in unsaved]))
+        filelist.props.xalign = 0.0
+        filelist.show()
+        message_area = dialog.widget.get_message_area()
+        message_area.pack_start(filelist, expand=False, fill=True, padding=0)
+
         response = dialog.widget.run()
         dialog.widget.destroy()
         return response == Gtk.ResponseType.OK
