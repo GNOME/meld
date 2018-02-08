@@ -236,9 +236,10 @@ class FileDiff(MeldDoc, Component):
                 GObject.BindingFlags.DEFAULT)
 
             def reload_with_encoding(widget, encoding, pane):
-                if not self.check_unsaved_changes():
+                buffer = self.textbuffer[pane]
+                if not self.check_unsaved_changes([buffer]):
                     return
-                self.set_file(pane, self.textbuffer[pane].data.gfile, encoding)
+                self.set_file(pane, buffer.data.gfile, encoding)
 
             def go_to_line(widget, line, pane):
                 self.move_cursor(pane, line, focus=False)
@@ -1704,8 +1705,9 @@ class FileDiff(MeldDoc, Component):
                 return i
         return -1
 
-    def check_unsaved_changes(self):
-        unsaved = [b.data.label for b in self.textbuffer if b.get_modified()]
+    def check_unsaved_changes(self, buffers=None):
+        buffers = buffers or self.textbuffer
+        unsaved = [b.data.label for b in buffers if b.get_modified()]
         if not unsaved:
             return True
 
