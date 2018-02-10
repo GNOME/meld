@@ -100,14 +100,13 @@ class UndoSequence(GObject.GObject):
         self.checkpoints = {}
 
     def can_undo(self):
-        """Return if an undo is possible.
-        """
-        return self.next_redo > 0
+        """Return whether an undo is possible."""
+        return getattr(self, 'next_redo', 0) > 0
 
     def can_redo(self):
-        """Return if a redo is possible.
-        """
-        return self.next_redo < len(self.actions)
+        """Return whether a redo is possible."""
+        next_redo = getattr(self, 'next_redo', 0)
+        return next_redo < len(getattr(self, 'actions', []))
 
     def add_action(self, action):
         """Add an action to the undo list.
