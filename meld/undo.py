@@ -85,12 +85,8 @@ class UndoSequence(GObject.GObject):
         buffers for the lifetime of the UndoSequence.
         """
         GObject.GObject.__init__(self)
-        self.actions = []
-        self.next_redo = 0
-        self.checkpoints = {}
-        self.group = None
-        self.busy = False
         self.buffer_refs = [weakref.ref(buf) for buf in buffers]
+        self.clear()
 
     def clear(self):
         """Remove all undo and redo actions from this sequence
@@ -105,6 +101,8 @@ class UndoSequence(GObject.GObject):
         self.actions = []
         self.next_redo = 0
         self.checkpoints = {}
+        self.group = None
+        self.busy = False
 
     def can_undo(self):
         """Return whether an undo is possible."""
