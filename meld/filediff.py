@@ -169,7 +169,7 @@ class FileDiff(MeldDoc, Component):
         self.focus_pane = None
         self.textbuffer = [v.get_buffer() for v in self.textview]
         self.buffer_texts = [BufferLines(b) for b in self.textbuffer]
-        self.undosequence = UndoSequence()
+        self.undosequence = UndoSequence(self.textbuffer)
         self.text_filters = []
         self.create_text_filters()
         self.settings_handlers = [

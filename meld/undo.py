@@ -31,6 +31,8 @@ def on_undo_button_pressed():
     s.undo()
 """
 
+import weakref
+
 from gi.repository import GObject
 
 
@@ -75,8 +77,12 @@ class UndoSequence(GObject.GObject):
         ),
     }
 
-    def __init__(self):
-        """Create an empty UndoSequence.
+    def __init__(self, buffers):
+        """Create an empty UndoSequence
+
+        An undo sequence is tied to a collection of GtkTextBuffers, and
+        expects to maintain undo checkpoints for the same set of
+        buffers for the lifetime of the UndoSequence.
         """
         GObject.GObject.__init__(self)
         self.actions = []
@@ -84,6 +90,7 @@ class UndoSequence(GObject.GObject):
         self.checkpoints = {}
         self.group = None
         self.busy = False
+        self.buffer_refs = [weakref.ref(buf) for buf in buffers]
 
     def clear(self):
         """Remove all undo and redo actions from this sequence
@@ -224,7 +231,8 @@ class UndoSequence(GObject.GObject):
         if self.group:
             self.group.begin_group()
         else:
-            self.group = UndoSequence()
+            buffers = [ref() for ref in self.buffer_refs]
+            self.group = UndoSequence(buffers)
 
     def end_group(self):
         """End a logical group action. See also begin_group().
