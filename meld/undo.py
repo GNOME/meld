@@ -84,7 +84,7 @@ class UndoSequence(GObject.GObject):
         expects to maintain undo checkpoints for the same set of
         buffers for the lifetime of the UndoSequence.
         """
-        GObject.GObject.__init__(self)
+        super().__init__()
         self.buffer_refs = [weakref.ref(buf) for buf in buffers]
         self.clear()
 
