@@ -24,7 +24,7 @@ from meld.conf import _
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
 from meld.filemerge import FileMerge
-from meld.melddoc import MeldDoc, STATE_CLOSING
+from meld.melddoc import ComparisonState, MeldDoc
 from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
 from meld.settings import interface_settings, settings
@@ -515,7 +515,7 @@ class MeldWindow(Component):
                     self.widget.emit('destroy')
 
     def on_page_state_changed(self, page, old_state, new_state):
-        if self.should_close and old_state == STATE_CLOSING:
+        if self.should_close and old_state == ComparisonState.Closing:
             # Cancel closing if one of our tabs does
             self.should_close = False
 

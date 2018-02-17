@@ -35,8 +35,7 @@ from meld.matchers.helpers import CachedSequenceMatcher
 from meld.matchers.merge import Merger
 from meld.meldbuffer import (
     BufferDeletionAction, BufferInsertionAction, BufferLines)
-from meld.melddoc import (
-    MeldDoc, STATE_CLOSING, STATE_NORMAL, STATE_SAVING_ERROR)
+from meld.melddoc import ComparisonState, MeldDoc
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
@@ -880,12 +879,12 @@ class FileDiff(MeldDoc, Component):
                     # idle loop; it might never happen.
                     parent.command('resolve', [conflict_file], sync=True)
         elif response == Gtk.ResponseType.CANCEL:
-            self.state = STATE_NORMAL
+            self.state = ComparisonState.Normal
 
         return response
 
     def on_delete_event(self):
-        self.state = STATE_CLOSING
+        self.state = ComparisonState.Closing
         response = self.check_save_modified()
         if response == Gtk.ResponseType.OK:
             for h in self.settings_handlers:
@@ -1636,7 +1635,7 @@ class FileDiff(MeldDoc, Component):
                 secondary=_("Couldn’t save file due to:\n%s") % (
                     GLib.markup_escape_text(str(err))),
             )
-            self.state = STATE_SAVING_ERROR
+            self.state = ComparisonState.SavingError
             return
 
         self.emit('file-changed', gfile.get_path())
@@ -1645,11 +1644,11 @@ class FileDiff(MeldDoc, Component):
         if pane == 1 and self.num_panes == 3:
             self.meta['middle_saved'] = True
 
-        if (self.state == STATE_CLOSING and
+        if (self.state == ComparisonState.Closing and
                 not any(b.get_modified() for b in self.textbuffer)):
             self.on_delete_event()
         else:
-            self.state = STATE_NORMAL
+            self.state = ComparisonState.Normal
 
     def make_patch(self, *extra):
         dialog = PatchDialog(self)

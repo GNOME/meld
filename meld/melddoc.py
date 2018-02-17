@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import enum
 import logging
 import pipes
 import shlex
@@ -50,8 +51,11 @@ def make_custom_editor_command(path, line=0):
     return shlex.split(cmd)
 
 
-# TODO: Consider use-cases for states in gedit-enum-types.c
-STATE_NORMAL, STATE_CLOSING, STATE_SAVING_ERROR, NUM_STATES = range(4)
+class ComparisonState(enum.IntEnum):
+    # TODO: Consider use-cases for states in gedit-enum-types.c
+    Normal = 0
+    Closing = 1
+    SavingError = 2
 
 
 class LabeledObjectMixin(GObject.GObject):
@@ -93,7 +97,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         self.scheduler = FifoScheduler()
         self.num_panes = 0
         self.main_actiongroup = None
-        self._state = STATE_NORMAL
+        self._state = ComparisonState.Normal
 
     @property
     def state(self):
