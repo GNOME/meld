@@ -1644,9 +1644,9 @@ class FileDiff(MeldDoc, Component):
         if pane == 1 and self.num_panes == 3:
             self.meta['middle_saved'] = True
 
-        if (self.state == ComparisonState.Closing and
-                not any(b.get_modified() for b in self.textbuffer)):
-            self.on_delete_event()
+        if self.state == ComparisonState.Closing:
+            if not any(b.get_modified() for b in self.textbuffer):
+                self.on_delete_event()
         else:
             self.state = ComparisonState.Normal
 
