@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
@@ -212,8 +214,13 @@ class MeldWindow(Component):
             action.connect('activate', callback)
             self.widget.add_action(action)
 
+        # Create a secondary toolbar, just to hold our progress spinner
         toolbutton = Gtk.ToolItem()
         self.spinner = Gtk.Spinner()
+        # Fake out the spinner on Windows. See Gitlab issue #133.
+        if os.name == 'nt':
+            for attr in ('stop', 'hide', 'show', 'start'):
+                setattr(self.spinner, attr, lambda *args: True)
         toolbutton.add(self.spinner)
         self.secondary_toolbar.insert(toolbutton, -1)
         # Set a minimum size because the spinner requests nothing
