@@ -21,4 +21,4 @@ HELP_FILES = \
  vc-mode.page \
  vc-supported.page
 
-HELP_LINGUAS = cs de el es sv
+HELP_LINGUAS = cs de el es pl sv
