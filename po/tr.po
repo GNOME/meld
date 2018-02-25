@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld 1.7.3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2017-12-31 20:13+0000\n"
-"PO-Revision-Date: 2018-01-21 11:14+0300\n"
+"POT-Creation-Date: 2018-02-10 09:01+0000\n"
+"PO-Revision-Date: 2018-02-18 13:29+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -574,7 +574,7 @@ msgstr "Sağa kopyala"
 msgid "Delete selected"
 msgstr "Seçileni Sil"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:872 ../meld/filediff.py:1435
+#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:872 ../meld/filediff.py:1446
 msgid "Hide"
 msgstr "Gizle"
 
@@ -869,8 +869,8 @@ msgstr "Eğer kaydetmezseniz, değişiklikler kalıcı olarak kaybolacaktır."
 msgid "Close _without Saving"
 msgstr "Kaydet_meden Kapat"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:953 ../meld/filediff.py:1506
-#: ../meld/filediff.py:1578
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:953 ../meld/filediff.py:1517
+#: ../meld/filediff.py:1589
 msgid "_Cancel"
 msgstr "_İptal"
 
@@ -900,14 +900,20 @@ msgid "File 1"
 msgstr "Dosya 1"
 
 #: ../data/ui/filediff.ui.h:53
-msgid "Revert unsaved changes to documents?"
-msgstr "Belgedeki kaydedilmemiş değişiklikler geri alınsın mı?"
+#| msgid "Revert unsaved changes to documents?"
+msgid "Discard unsaved changes to documents?"
+msgstr "Belgelere yapılan kaydedilmemiş değişiklikleri at?"
 
 #: ../data/ui/filediff.ui.h:54
-msgid "Changes made to the following documents will be permanently lost:\n"
-msgstr "Aşağıdaki belgelerde yapılan değişiklikler kaybolacak:\n"
+#| msgid "Changes made to the following documents will be permanently lost:\n"
+msgid "Changes made to the following documents will be permanently lost:"
+msgstr "Aşağıdaki belgelere yapılan değişiklikler kalıcı olarak kaybedilecek:"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:954 ../meld/filediff.py:1507
+#: ../data/ui/filediff.ui.h:55
+msgid "_Discard"
+msgstr "_At"
+
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:954 ../meld/filediff.py:1518
 msgid "_Replace"
 msgstr "_Değiştir"
 
@@ -1706,8 +1712,8 @@ msgstr "Dosya süzgeçleri kullanımda, bu yüzden tüm dosyalar taranamamış."
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Metin süzgeçleri kullanımda ve içerik farklılıklarını maskeleyebilir."
 
-#: ../meld/dirdiff.py:874 ../meld/filediff.py:1437 ../meld/filediff.py:1467
-#: ../meld/filediff.py:1469 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
+#: ../meld/dirdiff.py:874 ../meld/filediff.py:1448 ../meld/filediff.py:1478
+#: ../meld/filediff.py:1480 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
 msgid "Hi_de"
 msgstr "Gi_zle"
 
@@ -1782,11 +1788,11 @@ msgstr "%s silinirken hata"
 msgid "No folder"
 msgstr "Klasör yok"
 
-#: ../meld/filediff.py:800
+#: ../meld/filediff.py:806
 msgid "Comparison results will be inaccurate"
 msgstr "Karşılaştırma sonuçları hatalı olacak"
 
-#: ../meld/filediff.py:802
+#: ../meld/filediff.py:808
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1794,66 +1800,66 @@ msgstr ""
 "Bir süzgeç dosyadaki satır numaralarını desteklenmeyen şekilde değiştirdi. "
 "Karşılaştırma doğru olmayacaktır."
 
-#: ../meld/filediff.py:858
+#: ../meld/filediff.py:865
 msgid "Mark conflict as resolved?"
 msgstr "Çakışma çözüldü olarak işaretlensin mi?"
 
-#: ../meld/filediff.py:860
+#: ../meld/filediff.py:867
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Eğer çakışma başarıyla çözüldüyse, o zaman çözüldü olarak "
 "işaretleyebilirsiniz."
 
-#: ../meld/filediff.py:862
+#: ../meld/filediff.py:869
 msgid "Cancel"
 msgstr "İptal Et"
 
-#: ../meld/filediff.py:863
+#: ../meld/filediff.py:870
 msgid "Mark _Resolved"
 msgstr "_Çözümlendi olarak işaretle"
 
-#: ../meld/filediff.py:1152
+#: ../meld/filediff.py:1163
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "“%s” dosyası açılırken bir sorun var."
 
-#: ../meld/filediff.py:1160
+#: ../meld/filediff.py:1171
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "%s dosyası ikili bir dosya olarak görünüyor."
 
-#: ../meld/filediff.py:1162
+#: ../meld/filediff.py:1173
 msgid "Do you want to open the file using the default application?"
 msgstr "Dosyayı öntanımlı uygulamayı kullanarak açmak istiyor musunuz?"
 
-#: ../meld/filediff.py:1164
+#: ../meld/filediff.py:1175
 msgid "Open"
 msgstr "Aç"
 
-#: ../meld/filediff.py:1180
+#: ../meld/filediff.py:1191
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Farklılıklar hesaplanıyor"
 
-#: ../meld/filediff.py:1241
+#: ../meld/filediff.py:1252
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Disk üzerindeki %s dosyası değiştirildi"
 
-#: ../meld/filediff.py:1242
+#: ../meld/filediff.py:1253
 msgid "Do you want to reload the file?"
 msgstr "Dosyayı yeniden yüklemek istiyor musunuz?"
 
-#: ../meld/filediff.py:1244
+#: ../meld/filediff.py:1255
 msgid "_Reload"
 msgstr "_Yeniden yükle"
 
-#: ../meld/filediff.py:1400
+#: ../meld/filediff.py:1411
 msgid "Files are identical"
 msgstr "Dosyalar birbiri ile aynı"
 
-#: ../meld/filediff.py:1413
+#: ../meld/filediff.py:1424
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1861,11 +1867,11 @@ msgstr ""
 "Metin süzgeçleri kullanılmakta ve dosyalar arasındaki farklılıkları "
 "maskeliyor olabilir. Süzülmemiş dosyaları karşılaştırmak ister misiniz?"
 
-#: ../meld/filediff.py:1418
+#: ../meld/filediff.py:1429
 msgid "Files differ in line endings only"
 msgstr "Dosyalar yalnızca satır sonlarında farklılaşıyor"
 
-#: ../meld/filediff.py:1420
+#: ../meld/filediff.py:1431
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1874,15 +1880,15 @@ msgstr ""
 "Dosyalar satır sonları dışında özdeş:\n"
 "%s"
 
-#: ../meld/filediff.py:1440
+#: ../meld/filediff.py:1451
 msgid "Show without filters"
 msgstr "Süzgeçsiz göster"
 
-#: ../meld/filediff.py:1462
+#: ../meld/filediff.py:1473
 msgid "Change highlighting incomplete"
 msgstr "Vurgulama değişikliği tamamlanamadı"
 
-#: ../meld/filediff.py:1463
+#: ../meld/filediff.py:1474
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1891,20 +1897,20 @@ msgstr ""
 "daha büyük değişiklikleri daha uzun sürede ve daha yavaş olmasına rağmen "
 "vurgulaması için zorlayabilirsiniz."
 
-#: ../meld/filediff.py:1471
+#: ../meld/filediff.py:1482
 msgid "Keep highlighting"
 msgstr "Vurgulamayı koru"
 
-#: ../meld/filediff.py:1473
+#: ../meld/filediff.py:1484
 msgid "_Keep highlighting"
 msgstr "Vurgulamayı _koru"
 
-#: ../meld/filediff.py:1510
+#: ../meld/filediff.py:1521
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "“%s” dosyası değiştirilsin mi?"
 
-#: ../meld/filediff.py:1512
+#: ../meld/filediff.py:1523
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -1913,45 +1919,45 @@ msgstr ""
 "“%s” içinde bu ad ile bir dosya zaten var.\n"
 "Eğer var olan dosyayı değiştirirseniz, içerikleri kaybolacaktır."
 
-#: ../meld/filediff.py:1529
+#: ../meld/filediff.py:1540
 msgid "Save Left Pane As"
 msgstr "Sol Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1531
+#: ../meld/filediff.py:1542
 msgid "Save Middle Pane As"
 msgstr "Orta Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1533
+#: ../meld/filediff.py:1544
 msgid "Save Right Pane As"
 msgstr "Sağ Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1547
+#: ../meld/filediff.py:1558
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "%s dosyası açıldığından beri diskte değişti"
 
-#: ../meld/filediff.py:1549
+#: ../meld/filediff.py:1560
 msgid "If you save it, any external changes will be lost."
 msgstr "Eğer onu kaydederseniz, harici değişiklikler kaybolacaktır."
 
-#: ../meld/filediff.py:1552
+#: ../meld/filediff.py:1563
 msgid "Save Anyway"
 msgstr "Yine De Kaydet"
 
-#: ../meld/filediff.py:1553
+#: ../meld/filediff.py:1564
 msgid "Don’t Save"
 msgstr "Kaydetme"
 
-#: ../meld/filediff.py:1579
+#: ../meld/filediff.py:1590
 msgid "_Save as UTF-8"
 msgstr "UTF-8 Olarak _kaydet"
 
-#: ../meld/filediff.py:1582
+#: ../meld/filediff.py:1593
 #, python-format
 msgid "Couldn’t encode text as “%s”"
 msgstr "Metin “%s” olarak kodlanamadı"
 
-#: ../meld/filediff.py:1584
+#: ../meld/filediff.py:1595
 #, python-format
 msgid ""
 "File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
@@ -1961,12 +1967,12 @@ msgstr ""
 "içeriyor.\n"
 "UTF-8 olarak kaydetmek ister misiniz?"
 
-#: ../meld/filediff.py:1624 ../meld/patchdialog.py:130
+#: ../meld/filediff.py:1635 ../meld/patchdialog.py:130
 #, python-format
 msgid "Could not save file %s."
 msgstr "%s dosyası kaydedilemedi."
 
-#: ../meld/filediff.py:1625 ../meld/patchdialog.py:131
+#: ../meld/filediff.py:1636 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1975,11 +1981,11 @@ msgstr ""
 "Şu nedenle dosya kaydedilemedi:\n"
 "%s"
 
-#: ../meld/filediff.py:1991
+#: ../meld/filediff.py:2012
 msgid "Live comparison updating disabled"
 msgstr "Canlı karşılaştırma güncellemesi devre dışı bırakıldı"
 
-#: ../meld/filediff.py:1992
+#: ../meld/filediff.py:2013
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2102,7 +2108,7 @@ msgstr "uzak klasör “{}” desteklenmiyor"
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
 #: ../meld/meldbuffer.py:140
 msgid "<unnamed>"
-msgstr "<unnamed>"
+msgstr "<adsiz>"
 
 #: ../meld/melddoc.py:64
 msgid "untitled"
