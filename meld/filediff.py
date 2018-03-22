@@ -36,6 +36,7 @@ from meld.matchers.merge import Merger
 from meld.meldbuffer import (
     BufferDeletionAction, BufferInsertionAction, BufferLines)
 from meld.melddoc import ComparisonState, MeldDoc
+from meld.misc import with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
@@ -45,16 +46,6 @@ from meld.ui.filechooser import MeldFileChooserDialog
 from meld.ui.findbar import FindBar
 from meld.ui.gnomeglade import Component, ui_file
 from meld.undo import UndoSequence
-
-
-def with_focused_pane(function):
-    @functools.wraps(function)
-    def wrap_function(*args, **kwargs):
-        pane = args[0]._get_focused_pane()
-        if pane == -1:
-            return
-        return function(args[0], pane, *args[1:], **kwargs)
-    return wrap_function
 
 
 def with_scroll_lock(lock_attr):

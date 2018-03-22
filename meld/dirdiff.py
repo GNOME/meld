@@ -38,7 +38,7 @@ from meld import misc
 from meld import tree
 from meld.conf import _
 from meld.melddoc import MeldDoc
-from meld.misc import all_same
+from meld.misc import all_same, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
@@ -977,39 +977,38 @@ class DirDiff(MeldDoc, Component):
                     )
                 )
 
-    def delete_selected(self):
+    @with_focused_pane
+    def delete_selected(self, pane):
         """Delete all selected files/folders recursively.
         """
         # reverse so paths dont get changed
-        pane = self._get_focused_pane()
-        if pane is not None:
-            paths = self._get_selected_paths(pane)
-            paths.reverse()
-            for path in paths:
-                it = self.model.get_iter(path)
-                name = self.model.value_path(it, pane)
+        paths = self._get_selected_paths(pane)
+        paths.reverse()
+        for path in paths:
+            it = self.model.get_iter(path)
+            name = self.model.value_path(it, pane)
+            try:
+                gfile = Gio.File.new_for_path(name)
+                gfile.trash(None)
+                self.file_deleted(path, pane)
+            except GLib.GError as e:
                 try:
-                    gfile = Gio.File.new_for_path(name)
-                    gfile.trash(None)
-                    self.file_deleted(path, pane)
-                except GLib.GError as e:
-                    try:
-                        # Gio will fail if trash doesn't exist - so try and
-                        # just delete.
-                        # Delete using regular python since we can delete
-                        # the whole tree this way - for Gio all files would
-                        # have to be removed - this is simpler
-                        # NOTE: if a file doesn't have write permission and
-                        #       the user owns it, it will get deleted anyway
-                        if (os.path.exists(name)):
-                            if (os.path.isfile(name)):
-                                os.remove(name)
-                                self.file_deleted(path, pane)
-                            else:
-                                shutil.rmtree(name)
-                                self.file_deleted(path, pane)
-                    except OSError as e:
-                        misc.error_dialog(_("Error deleting %s") % name, str(e))
+                    # Gio will fail if trash doesn't exist - so try and
+                    # just delete.
+                    # Delete using regular python since we can delete
+                    # the whole tree this way - for Gio all files would
+                    # have to be removed - this is simpler
+                    # NOTE: if a file doesn't have write permission and
+                    #       the user owns it, it will get deleted anyway
+                    if (os.path.exists(name)):
+                        if (os.path.isfile(name)):
+                            os.remove(name)
+                            self.file_deleted(path, pane)
+                        else:
+                            shutil.rmtree(name)
+                            self.file_deleted(path, pane)
+                except OSError as e:
+                    misc.error_dialog(_("Error deleting %s") % name, str(e))
 
     def on_treemodel_row_deleted(self, model, path):
         if self.current_path == path:

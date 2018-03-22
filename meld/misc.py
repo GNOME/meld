@@ -20,6 +20,7 @@
 
 import collections
 import errno
+import functools
 import os
 import re
 import shutil
@@ -41,6 +42,16 @@ else:
     def select(rlist, wlist, xlist, timeout):
         time.sleep(timeout)
         return rlist, wlist, xlist
+
+
+def with_focused_pane(function):
+    @functools.wraps(function)
+    def wrap_function(*args, **kwargs):
+        pane = args[0]._get_focused_pane()
+        if pane == -1:
+            return
+        return function(args[0], pane, *args[1:], **kwargs)
+    return wrap_function
 
 
 def error_dialog(primary, secondary):
