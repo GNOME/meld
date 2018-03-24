@@ -34,6 +34,7 @@ from gi.repository import Pango
 
 from meld import tree
 from meld.conf import _
+from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import error_dialog, read_pipe_iter
 from meld.recent import RecentType
@@ -695,27 +696,17 @@ class VcView(MeldDoc, Component):
     def on_button_delete_clicked(self, obj):
         files = self._get_selected_files()
         for name in files:
+            gfile = Gio.File.new_for_path(name)
+
             try:
-                gfile = Gio.File.new_for_path(name)
-                gfile.trash(None)
-            except GLib.GError as e:
-                try:
-                   # Gio will fail if trash doesn't exist - so try and
-                   # just delete.
-                   # Delete using regular python since we can delete
-                   # the whole tree this way - for Gio all files would
-                   # have to be removed - this is simpler
-                   # NOTE: if a file doesn't have write permission and
-                   #       the user owns it, it will get deleted anyway
-                   if (os.path.exists(name)):
-                      if (os.path.isfile(name)):
-                         os.remove(name)
-                         self.file_deleted(path, pane)
-                      else:
-                         shutil.rmtree(name)
-                         self.file_deleted(path, pane)
-                except OSError as e:
-                   error_dialog(_("Error deleting %s") % name, str(e))
+                trash_or_confirm(gfile)
+            except Exception as e:
+                error_dialog(
+                    _("Error deleting {}").format(
+                        GLib.markup_escape_text(gfile.get_parse_name()),
+                    ),
+                    str(e),
+                )
 
         workdir = os.path.dirname(os.path.commonprefix(files))
         self.refresh_partial(workdir)
