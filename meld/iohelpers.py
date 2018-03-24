@@ -8,6 +8,16 @@ from meld.misc import modal_dialog
 
 
 def trash_or_confirm(gfile):
+    """Trash or delete the given Gio.File
+
+    Files and folders will be moved to the system Trash location
+    without confirmation. If they can't be trashed, then the user is
+    prompted for an irreversible deletion.
+
+    :rtype: bool
+    :returns: whether the file was deleted
+    """
+
     try:
         gfile.trash(None)
         return True

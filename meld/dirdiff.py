@@ -980,10 +980,12 @@ class DirDiff(MeldDoc, Component):
 
     @with_focused_pane
     def delete_selected(self, pane):
-        """Delete all selected files/folders recursively.
-        """
-        # reverse so paths dont get changed
+        """Trash or delete all selected files/folders recursively"""
+
         paths = self._get_selected_paths(pane)
+
+        # Reversing paths means that we remove tree rows bottom-up, so
+        # tree paths don't change during the iteration.
         paths.reverse()
         for path in paths:
             it = self.model.get_iter(path)
