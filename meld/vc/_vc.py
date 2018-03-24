@@ -277,7 +277,7 @@ class Vc(object):
     def get_entries(self, base):
         parent = Gio.File.new_for_path(base)
         enumerator = parent.enumerate_children(
-            'standard::display-name,standard::type',
+            'standard::name,standard::display-name,standard::type',
             Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
 
         for file_info in enumerator:
