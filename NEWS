@@ -1,4 +1,92 @@
 
+2018-03-28 meld 3.19.0
+======================
+
+  Features:
+
+   * Initial Windows build pipeline using Appveyor (Vasily Galkin)
+   * Add new per-pane status bar with selectors for syntax highlighting and
+     text encoding (Kai Willadsen, with extensive testing by Vasily Galkin)
+   * Allow text encoding to be chosen from file selectors (Kai Willadsen)
+   * Add new go-to-line action and UI (Kai Willadsen)
+   * Folder comparison now explicitly indicates symlinks in the tree, and
+     shows the symlink target (Kai Willadsen)
+   * Inline highlighting now draws whitespace in any changes it covers (Kai
+     Willadsen)
+   * Improved contrast in dark theme support (Vitalii Dmitriev)
+   * Navigating between changes in file comparison now briefly animates the
+     outline, to make it easier to keep track of the focus in busy
+     comparisons (Kai Willadsen)
+
+
+  Fixes:
+
+   * Find bar now hides when pressing Escape (Vladimir Panteleev)
+   * Handle file deletion where we can't move to trash (e.g., network mounts)
+     (Kai Willadsen)
+   * Guess whether we're running a dark theme, for supporting Tweak Tool
+     changes (Kai Willadsen)
+   * Keybindings for notebook switching work again (Kai Willadsen)
+   * Significantly speed up folder and version control comparisons by limiting
+     the file metadata we request (Kai Willadsen)
+   * Threading fixes for more responsive highlighting and better exit handling
+     (Kai Willadsen)
+   * Fix memory and file handle leakage for closed comparisons (Kai Willadsen)
+   * Make the --auto-compare command line flag work again (Kai Willadsen)
+   * Make multiple --diff command line options work again (Kai Willadsen)
+   * Fix committing selected files in Mercurial (Kai Willadsen)
+   * Fix Bazaar support for our Python 3 port (Kai Willadsen)
+   * Avoid a race conditon that made the "Resolve conflict" prompt unreliable
+     (Kai Willadsen)
+   * Fix invalid-iter crash when refreshing version control view (Kai
+     Willadsen)
+   * Make non-existent files writable by default (Kai Willadsen)
+   * Several fixes for translations, unicode typography, and typos (Piotr Drąg)
+   * Windows compatibility updates (Vasily Galkin, Kai Willadsen)
+   * Windows build fixes (Vasily Galkin)
+   * Add Gitlab CI for Python styling and lint, and update a lot of old code
+     to match (Kai Willadsen)
+   * Packaging fixes for AppStream (Balint Reczey)
+
+
+  Internal changes:
+
+   * Update GTK+ and GtkSourceView requirements to 3.20
+   * Migrate recently-used handling, comparison launching, and file
+     comparisons to use Gio for URI support (Chris Mayo, Kai Willadsen)
+   * Migrated to GNOME Gitlab for hosting and issue tracking
+
+   * Bugs fixed (bugzilla): 589366, 783989, 785313, 785630, 786629, 786867,
+     787256, 788455, 788487, 790335, 791173
+   * Issues fixed (gitlab): 46, 97, 133, 146, 151, 152, 158, 159, 161, 165
+
+
+  Translations:
+
+   * Alan Mortensen (da)
+   * Anders Jonsson (sv)
+   * Andika Triwidada (id)
+   * Andre Klapper (cs, de)
+   * Ask Hjorth Larsen (da)
+   * Balázs Úr (hu)
+   * Daniel Mustieles (es)
+   * Daniel Șerbănescu (ro)
+   * Emin Tufan Çetin (tr)
+   * Enrico Nicoletto (pt_BR)
+   * Jiri Grönroos (fi)
+   * Joe Hansen (da)
+   * Jordi Mas (ca)
+   * Kristjan SCHMIDT (eo)
+   * Kukuh Syafaat (id)
+   * Marcos Lans (gl)
+   * Marek Černocký (cs)
+   * Mario Blättermann (de)
+   * Matej Urbančič (sl)
+   * Milo Casagrande (it)
+   * Piotr Drąg (pl)
+   * Rafael Fontenelle (pt_BR)
+
+
 2017-09-10 meld 3.18.0
 ======================
 
