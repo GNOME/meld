@@ -159,8 +159,13 @@ def get_translator_langs(folders=[PO_DIR, HELP_DIR]):
 def get_non_translation_commits():
     last_release = get_last_release_tag()
     revspec = "%s..HEAD" % last_release
-    # FIXME: Use the Git 1.9 spec to negate logging translation commits
-    cmd = ['git', 'log', '--pretty=format:%s (%an)', revspec]
+    cmd = [
+        'git', 'log', '--pretty=format:%s (%an)', revspec,
+        # Exclude commits that only cover the po/ or help/ folders,
+        # except commits in help/C. Basically, we want to separate
+        # translation-only commits from everything else.
+        '--', '.', ":!po/", ':(glob,exclude)help/[!C]*/**',
+    ]
     commits = subprocess.check_output(cmd).strip().splitlines()
     return [c.decode('utf-8') for c in commits]
 
