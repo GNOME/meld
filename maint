@@ -428,8 +428,8 @@ def tag():
     call_with_output(cmd, echo_stdout=True)
 
 
-@cli.command()
-def release_tag():
+@cli.command('gitlab-release')
+def gitlab_release():
     last_release = get_last_release_tag()
     confirm = click.confirm(
         'Annotate {} as a Gitlab release?'.format(last_release), default=True)
@@ -451,7 +451,7 @@ def upload(path):
     call_with_output(cmd, timeout=120)
 
 
-@cli.command()
+@cli.command('version-bump')
 def version_bump():
     with open(meld.conf.__file__) as f:
         conf_data = f.read().splitlines()
@@ -479,7 +479,7 @@ def version_bump():
         f.write('\n'.join(conf_data) + '\n')
 
 
-@cli.command()
+@cli.command('release')
 @click.pass_context
 def make_release(ctx):
     pull()
@@ -488,14 +488,15 @@ def make_release(ctx):
     push()
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
-    ctx.forward(release_tag)
-    ctx.forward(upload, path=archive_path)
+    ctx.forward(gitlab_release)
     file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
     ctx.forward(email, filename=file_prefix + '-email')
     ctx.forward(markdown, filename=file_prefix + '.md')
     ctx.forward(version_bump)
     commit(message='Post-release version bump')
     push()
+
+    ctx.forward(upload, path=archive_path)
 
     # TODO: ssh in and run ftpadmin install
     click.echo('\nNow run:')
