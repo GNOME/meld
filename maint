@@ -244,7 +244,7 @@ def render_template(template):
 
 def call_with_output(
         cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True,
-        timeout=10):
+        timeout=30):
     PIPE = subprocess.PIPE
     with subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
         stdout, stderr = proc.communicate(stdin_text, timeout=timeout)
@@ -482,12 +482,13 @@ def version_bump():
 @cli.command('release')
 @click.pass_context
 def make_release(ctx):
-    pull()
-    ctx.forward(news)
-    commit(message='Update NEWS')
-    push()
-    archive_path = ctx.forward(dist)
-    ctx.forward(tag)
+    # pull()
+    # ctx.forward(news)
+    # commit(message='Update NEWS')
+    # push()
+    # archive_path = ctx.forward(dist)
+    # ctx.forward(tag)
+    archive_path = '/home/kaiw/Hacking/meld-gitlab/dist/meld-3.19.0.tar.bz2'
     ctx.forward(gitlab_release)
     file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
     ctx.forward(email, filename=file_prefix + '-email')
