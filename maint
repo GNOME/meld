@@ -2,7 +2,6 @@
 
 import collections
 import datetime
-import json
 import os
 import re
 import subprocess
@@ -312,7 +311,7 @@ def gitlab_release_tag(tag):
                 id=GITLAB_PROJECT_ID)
         )
 
-    cmd = ['git', 'tag', '-l', "--format='%(contents)'", tag]
+    cmd = ['git', 'tag', '-l', "--format=%(contents)", tag]
     description = subprocess.check_output(cmd).decode('utf-8')
 
     endpoint = '{base}/projects/{id}/repository/tags/{tag_name}/release'
@@ -329,13 +328,18 @@ def gitlab_release_tag(tag):
     # TODO: Should probably sanity-check that it's not already a
     # release tag.
 
-    requests.post(
+    response = requests.post(
         release_url,
-        data=json.dumps(release_data),
+        json=release_data,
         headers={
             'Private-Token': auth_token,
         },
     )
+    try:
+        response.raise_for_status()
+    except Exception as e:
+        click.secho(
+            'Error making release: {}\n{}'.format(e, response.text), fg='red')
 
 
 @click.group()
