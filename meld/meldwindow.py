@@ -189,6 +189,10 @@ class MeldWindow(Component):
         accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
         (keyval, mask) = Gtk.accelerator_parse("<Primary>E")
         accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
+        (keyval, mask) = Gtk.accelerator_parse("<Alt>KP_Down")
+        accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
+        (keyval, mask) = Gtk.accelerator_parse("<Alt>KP_Up")
+        accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
         (keyval, mask) = Gtk.accelerator_parse("F5")
         accels.connect(keyval, mask, 0, self.on_menu_refresh_activate)
 
