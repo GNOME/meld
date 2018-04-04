@@ -183,18 +183,19 @@ class MeldWindow(Component):
         interface_settings.bind('toolbar-style', self.toolbar, 'toolbar-style',
                                 Gio.SettingsBindFlags.DEFAULT)
 
-        # Add alternate keybindings for Prev/Next Change
-        accels = self.ui.get_accel_group()
-        (keyval, mask) = Gtk.accelerator_parse("<Primary>D")
-        accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
-        (keyval, mask) = Gtk.accelerator_parse("<Primary>E")
-        accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
-        (keyval, mask) = Gtk.accelerator_parse("<Alt>KP_Down")
-        accels.connect(keyval, mask, 0, self.on_menu_edit_down_activate)
-        (keyval, mask) = Gtk.accelerator_parse("<Alt>KP_Up")
-        accels.connect(keyval, mask, 0, self.on_menu_edit_up_activate)
-        (keyval, mask) = Gtk.accelerator_parse("F5")
-        accels.connect(keyval, mask, 0, self.on_menu_refresh_activate)
+        # Alternate keybindings for a few commands.
+        extra_accels = (
+            ("<Primary>D", self.on_menu_edit_down_activate),
+            ("<Primary>E", self.on_menu_edit_up_activate),
+            ("<Alt>KP_Down", self.on_menu_edit_down_activate),
+            ("<Alt>KP_Up", self.on_menu_edit_up_activate),
+            ("F5", self.on_menu_refresh_activate),
+        )
+
+        accel_group = self.ui.get_accel_group()
+        for accel, callback in extra_accels:
+            keyval, mask = Gtk.accelerator_parse(accel)
+            accel_group.connect(keyval, mask, 0, callback)
 
         # Initialise sensitivity for important actions
         self.actiongroup.get_action("Stop").set_sensitive(False)
