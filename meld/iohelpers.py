@@ -7,7 +7,7 @@ from meld.conf import _
 from meld.misc import modal_dialog
 
 
-def trash_or_confirm(gfile):
+def trash_or_confirm(gfile: Gio.File):
     """Trash or delete the given Gio.File
 
     Files and folders will be moved to the system Trash location

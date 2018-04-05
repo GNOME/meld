@@ -54,7 +54,7 @@ def with_focused_pane(function):
     return wrap_function
 
 
-def error_dialog(primary, secondary):
+def error_dialog(primary, secondary) -> Gtk.ResponseType:
     """A common error dialog handler for Meld
 
     This should only ever be used as a last resort, and for errors that
@@ -70,7 +70,7 @@ def error_dialog(primary, secondary):
 
 def modal_dialog(
         primary, secondary, buttons, parent=None,
-        messagetype=Gtk.MessageType.WARNING):
+        messagetype=Gtk.MessageType.WARNING) -> Gtk.ResponseType:
     """A common message dialog handler for Meld
 
     This should only ever be used for interactions that must be resolved
