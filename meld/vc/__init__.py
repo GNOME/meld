@@ -30,18 +30,6 @@ from . import _null, bzr, darcs, git, mercurial, svn
 VC_PLUGINS = (git, mercurial, bzr, svn, darcs)
 
 
-def get_plugins_metadata():
-    ret = []
-    for p in VC_PLUGINS:
-        # Some plugins have VC_DIR=None until instantiated
-        if p.Vc.VC_DIR:
-            ret.append(p.Vc.VC_DIR)
-        # Most plugins have VC_METADATA=None
-        if p.Vc.VC_METADATA:
-            ret.extend(p.Vc.VC_METADATA)
-    return ret
-
-
 def get_vcs(location):
     """Pick only the Vcs with the longest repo root
 

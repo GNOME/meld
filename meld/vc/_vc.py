@@ -129,7 +129,6 @@ class Vc(object):
 
     VC_DIR = None
     VC_ROOT_WALK = True
-    VC_METADATA = None
 
     def __init__(self, path):
         # Save the requested comparison location. The location may be a
