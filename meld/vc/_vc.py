@@ -128,6 +128,10 @@ class Entry(object):
 class Vc(object):
 
     VC_DIR = None
+
+    #: Whether to walk the current location's parents to find a
+    #: repository root. Only used in legacy version control systems
+    #: (e.g., old SVN, CVS, RCS).
     VC_ROOT_WALK = True
 
     def __init__(self, path):
