@@ -54,6 +54,17 @@ def with_focused_pane(function):
     return wrap_function
 
 
+def get_modal_parent(widget: Gtk.Widget = None) -> Gtk.Window:
+    if not widget:
+        from meld.meldapp import app
+        parent = app.get_active_window()
+    elif not isinstance(widget, Gtk.Window):
+        parent = widget.get_toplevel()
+    else:
+        parent = widget
+    return parent
+
+
 def error_dialog(primary, secondary) -> Gtk.ResponseType:
     """A common error dialog handler for Meld
 
@@ -79,19 +90,13 @@ def modal_dialog(
     Primary must be plain text. Secondary must be valid markup.
     """
 
-    if not parent:
-        from meld.meldapp import app
-        parent = app.get_active_window()
-    elif not isinstance(parent, Gtk.Window):
-        parent = parent.get_toplevel()
-
     if isinstance(buttons, Gtk.ButtonsType):
         custom_buttons = []
     else:
         custom_buttons, buttons = buttons, Gtk.ButtonsType.NONE
 
     dialog = Gtk.MessageDialog(
-        transient_for=parent,
+        transient_for=get_modal_parent(parent),
         modal=True,
         destroy_with_parent=True,
         message_type=messagetype,
