@@ -71,15 +71,11 @@ def prompt_save_filename(title, parent: Gtk.Widget = None):
         title,
         parent=get_modal_parent(parent),
         action=Gtk.FileChooserAction.SAVE,
-        buttons=(
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_OK, Gtk.ResponseType.OK,
-        ),
     )
-    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_default_response(Gtk.ResponseType.ACCEPT)
     response = dialog.run()
     filename = None
-    if response == Gtk.ResponseType.OK:
+    if response == Gtk.ResponseType.ACCEPT:
         filename = dialog.get_filename()
     dialog.destroy()
     if filename:
