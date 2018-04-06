@@ -24,6 +24,7 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.conf import _
+from meld.iohelpers import prompt_save_filename
 from meld.misc import error_dialog
 from meld.settings import meldsettings
 from meld.sourceview import LanguageManager
@@ -149,9 +150,7 @@ class PatchDialog(Component):
             clip.store()
         # Save patch as a file
         else:
-            # FIXME: These filediff methods are actually general utility.
-            filename = self.filediff._get_filename_for_saving(
-                _("Save Patch"))
+            filename = prompt_save_filename(_("Save Patch"))
             if filename:
                 self.save_patch(filename)
 

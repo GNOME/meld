@@ -30,6 +30,7 @@ from gi.repository import GtkSource
 from meld import misc
 from meld.conf import _
 from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE, NEWLINES
+from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
 from meld.matchers.merge import Merger
@@ -1483,44 +1484,6 @@ class FileDiff(MeldDoc, Component):
             self.text_filters = []
             self.refresh_comparison()
 
-    def _get_filename_for_saving(self, title):
-        dialog = MeldFileChooserDialog(
-            title,
-            parent=self.widget.get_toplevel(),
-            action=Gtk.FileChooserAction.SAVE,
-            buttons=(
-                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_OK, Gtk.ResponseType.OK,
-            ),
-        )
-        dialog.set_default_response(Gtk.ResponseType.OK)
-        response = dialog.run()
-        filename = None
-        if response == Gtk.ResponseType.OK:
-            filename = dialog.get_filename()
-        dialog.destroy()
-        if filename:
-            if os.path.exists(filename):
-                parent_name = os.path.dirname(filename)
-                file_name = os.path.basename(filename)
-                dialog_buttons = [
-                    (_("_Cancel"), Gtk.ResponseType.CANCEL),
-                    (_("_Replace"), Gtk.ResponseType.OK),
-                ]
-                replace = misc.modal_dialog(
-                    primary=_(u"Replace file “%s”?") % file_name,
-                    secondary=_(
-                        u"A file with this name already exists in “%s”.\n"
-                        u"If you replace the existing file, its contents "
-                        u"will be lost.") % parent_name,
-                    buttons=dialog_buttons,
-                    messagetype=Gtk.MessageType.WARNING,
-                )
-                if replace != Gtk.ResponseType.OK:
-                    return None
-            return filename
-        return None
-
     def save_file(self, pane, saveas=False, force_overwrite=False):
         buf = self.textbuffer[pane]
         bufdata = buf.data
@@ -1532,7 +1495,7 @@ class FileDiff(MeldDoc, Component):
                 prompt = _("Save Middle Pane As")
             else:
                 prompt = _("Save Right Pane As")
-            filename = self._get_filename_for_saving(prompt)
+            filename = prompt_save_filename(prompt, self.widget)
             if not filename:
                 return False
             filename = os.path.abspath(filename)

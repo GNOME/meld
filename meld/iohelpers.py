@@ -4,7 +4,8 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 from meld.conf import _
-from meld.misc import modal_dialog
+from meld.misc import get_modal_parent, modal_dialog
+from meld.ui.filechooser import MeldFileChooserDialog
 
 
 def trash_or_confirm(gfile: Gio.File):
@@ -61,3 +62,44 @@ def trash_or_confirm(gfile: Gio.File):
         # self.recursively_update().
     except Exception as e:
         raise RuntimeError(str(e))
+
+
+def prompt_save_filename(title, parent: Gtk.Widget = None):
+    import os
+
+    dialog = MeldFileChooserDialog(
+        title,
+        parent=get_modal_parent(parent),
+        action=Gtk.FileChooserAction.SAVE,
+        buttons=(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OK, Gtk.ResponseType.OK,
+        ),
+    )
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    response = dialog.run()
+    filename = None
+    if response == Gtk.ResponseType.OK:
+        filename = dialog.get_filename()
+    dialog.destroy()
+    if filename:
+        if os.path.exists(filename):
+            parent_name = os.path.dirname(filename)
+            file_name = os.path.basename(filename)
+            dialog_buttons = [
+                (_("_Cancel"), Gtk.ResponseType.CANCEL),
+                (_("_Replace"), Gtk.ResponseType.OK),
+            ]
+            replace = modal_dialog(
+                primary=_("Replace file “%s”?") % file_name,
+                secondary=_(
+                    u"A file with this name already exists in “%s”.\n"
+                    u"If you replace the existing file, its contents "
+                    u"will be lost.") % parent_name,
+                buttons=dialog_buttons,
+                messagetype=Gtk.MessageType.WARNING,
+            )
+            if replace != Gtk.ResponseType.OK:
+                return None
+        return filename
+    return None
