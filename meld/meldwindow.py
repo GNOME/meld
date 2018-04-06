@@ -274,10 +274,11 @@ class MeldWindow(Component):
         # Let the rest of the stack know about this event
         return False
 
-    def on_widget_drag_data_received(self, wid, context, x, y, selection_data,
-                                     info, time):
-        if len(selection_data.get_files()) != 0:
-            self.open_paths(selection_data.get_files())
+    def on_widget_drag_data_received(
+            self, wid, context, x, y, selection_data, info, time):
+        uris = selection_data.get_uris()
+        if uris:
+            self.open_paths([Gio.File.new_for_uri(uri) for uri in uris])
             return True
 
     def on_idle(self):
