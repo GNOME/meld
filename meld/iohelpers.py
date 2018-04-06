@@ -74,28 +74,29 @@ def prompt_save_filename(title, parent: Gtk.Widget = None):
     )
     dialog.set_default_response(Gtk.ResponseType.ACCEPT)
     response = dialog.run()
-    filename = None
-    if response == Gtk.ResponseType.ACCEPT:
-        filename = dialog.get_filename()
+    filename = dialog.get_filename()
     dialog.destroy()
-    if filename:
-        if os.path.exists(filename):
-            parent_name = os.path.dirname(filename)
-            file_name = os.path.basename(filename)
-            dialog_buttons = [
-                (_("_Cancel"), Gtk.ResponseType.CANCEL),
-                (_("_Replace"), Gtk.ResponseType.OK),
-            ]
-            replace = modal_dialog(
-                primary=_("Replace file “%s”?") % file_name,
-                secondary=_(
-                    "A file with this name already exists in “%s”.\n"
-                    "If you replace the existing file, its contents "
-                    "will be lost.") % parent_name,
-                buttons=dialog_buttons,
-                messagetype=Gtk.MessageType.WARNING,
-            )
-            if replace != Gtk.ResponseType.OK:
-                return None
-        return filename
-    return None
+
+    if response != Gtk.ResponseType.ACCEPT or not filename:
+        return
+
+    if os.path.exists(filename):
+        parent_name = os.path.dirname(filename)
+        file_name = os.path.basename(filename)
+        dialog_buttons = [
+            (_("_Cancel"), Gtk.ResponseType.CANCEL),
+            (_("_Replace"), Gtk.ResponseType.OK),
+        ]
+        replace = modal_dialog(
+            primary=_("Replace file “%s”?") % file_name,
+            secondary=_(
+                "A file with this name already exists in “%s”.\n"
+                "If you replace the existing file, its contents "
+                "will be lost.") % parent_name,
+            buttons=dialog_buttons,
+            messagetype=Gtk.MessageType.WARNING,
+        )
+        if replace != Gtk.ResponseType.OK:
+            return None
+
+    return filename
