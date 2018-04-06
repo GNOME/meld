@@ -178,6 +178,10 @@ class MeldSourceView(GtkSource.View):
     def add_fading_highlight(
             self, mark0, mark1, colour_name, duration,
             anim_type=TextviewLineAnimationType.fill, starting_alpha=1.0):
+
+        if not self.get_realized():
+            return
+
         rgba0 = self.fill_colors[colour_name].copy()
         rgba1 = self.fill_colors[colour_name].copy()
         rgba0.alpha = starting_alpha
