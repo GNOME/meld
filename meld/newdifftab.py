@@ -126,8 +126,14 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         # TODO: This doesn't work the way I'd like for DirDiff and VCView.
         # It should do something similar to FileDiff; give a tab with empty
         # file entries and no comparison done.
-        compare_gfiles = [Gio.File.new_for_path("")] * self._get_num_paths()
-        tab = self.diff_methods[self.diff_type](compare_gfiles)
+
+        # File comparison wants None for its paths here. Folder mode
+        # needs an actual directory.
+        if self.diff_type == 0:
+            gfiles = [None] * self._get_num_paths()
+        else:
+            gfiles = [Gio.File.new_for_path("")] * self._get_num_paths()
+        tab = self.diff_methods[self.diff_type](gfiles)
         self.emit('diff-created', tab)
 
     def on_container_switch_in_event(self, *args):
