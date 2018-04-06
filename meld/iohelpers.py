@@ -65,7 +65,7 @@ def trash_or_confirm(gfile: Gio.File):
 
 
 def prompt_save_filename(title, parent: Gtk.Widget = None):
-    import os
+    # TODO: Have this return a GFile instead of a path
 
     dialog = MeldFileChooserDialog(
         title,
@@ -74,29 +74,37 @@ def prompt_save_filename(title, parent: Gtk.Widget = None):
     )
     dialog.set_default_response(Gtk.ResponseType.ACCEPT)
     response = dialog.run()
-    filename = dialog.get_filename()
+    gfile = dialog.get_file()
     dialog.destroy()
 
-    if response != Gtk.ResponseType.ACCEPT or not filename:
+    if response != Gtk.ResponseType.ACCEPT or not gfile:
         return
 
-    if os.path.exists(filename):
-        parent_name = os.path.dirname(filename)
-        file_name = os.path.basename(filename)
-        dialog_buttons = [
+    try:
+        file_info = gfile.query_info(
+            'standard::name,standard::display-name', 0, None)
+    except GLib.Error as err:
+        if err.code == Gio.IOErrorEnum.NOT_FOUND:
+            return gfile.get_path()
+        raise
+
+    # The selected file exists, so we need to prompt for overwrite.
+    parent_name = gfile.get_parent().get_parse_name()
+    file_name = file_info.get_display_name()
+
+    replace = modal_dialog(
+        primary=_("Replace file “%s”?") % file_name,
+        secondary=_(
+            "A file with this name already exists in “%s”.\n"
+            "If you replace the existing file, its contents "
+            "will be lost.") % parent_name,
+        buttons=[
             (_("_Cancel"), Gtk.ResponseType.CANCEL),
             (_("_Replace"), Gtk.ResponseType.OK),
-        ]
-        replace = modal_dialog(
-            primary=_("Replace file “%s”?") % file_name,
-            secondary=_(
-                "A file with this name already exists in “%s”.\n"
-                "If you replace the existing file, its contents "
-                "will be lost.") % parent_name,
-            buttons=dialog_buttons,
-            messagetype=Gtk.MessageType.WARNING,
-        )
-        if replace != Gtk.ResponseType.OK:
-            return None
+        ],
+        messagetype=Gtk.MessageType.WARNING,
+    )
+    if replace != Gtk.ResponseType.OK:
+        return
 
-    return filename
+    return gfile.get_path()
