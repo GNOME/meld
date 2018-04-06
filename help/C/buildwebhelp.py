@@ -1,11 +1,11 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 
 import glob
 import os
 import subprocess
 import sys
 
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup
 
 
 JEKYLL_HEADER = """---
@@ -59,17 +59,17 @@ SCSS_FOOTER = """
 
 def munge_html(filename):
     if not os.path.exists(filename):
-        print >> sys.stderr, "File not found: " + filename
+        print("File not found: " + filename, file=sys.stderr)
         sys.exit(1)
 
     with open(filename) as f:
         contents = f.read()
 
-    soup = bs(contents)
+    soup = BeautifulSoup(contents, "lxml")
     body = "".join([str(tag) for tag in soup.body])
     body = JEKYLL_HEADER + body
 
-    print "Rewriting " + filename
+    print("Rewriting " + filename)
     with open(filename, "w") as f:
         f.write(body)
 
@@ -77,7 +77,7 @@ def munge_html(filename):
 def munge_css(filename):
 
     if not os.path.exists(filename):
-        print >> sys.stderr, "File not found: " + filename
+        print("File not found: " + filename, file=sys.stderr)
         sys.exit(1)
 
     with open(filename) as f:
@@ -86,14 +86,18 @@ def munge_css(filename):
     contents = SCSS_HEADER + contents + SCSS_FOOTER
     new_css = sassify(contents)
 
-    print "Rewriting " + filename
+    print("Rewriting " + filename)
     with open(filename, 'w') as f:
         f.write(new_css)
 
 
 def sassify(scss_string):
-    scss = subprocess.Popen(['scss', '-s'],
-                            stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    scss = subprocess.Popen(
+        ['scss', '-s'],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        universal_newlines=True,
+    )
     stdout, stderr = scss.communicate(scss_string)
     return stdout
 
@@ -101,13 +105,13 @@ def sassify(scss_string):
 if __name__ == "__main__":
 
     if os.path.exists('html'):
-        print >> sys.stderr, "Refusing to overwrite existing html/ folder"
+        print("Refusing to overwrite existing html/ folder", file=sys.stderr)
         sys.exit(1)
 
-    print >> sys.stderr, "Generating CSS with gnome-doc-tool..."
+    print("Generating CSS with gnome-doc-tool...", file=sys.stderr)
     subprocess.check_call(['gnome-doc-tool', 'css'])
 
-    print >> sys.stderr, "Generating HTML with gnome-doc-tool..."
+    print("Generating HTML with gnome-doc-tool...", file=sys.stderr)
     subprocess.check_call(['gnome-doc-tool', 'html', '-c', 'index.css',
                            '--copy-graphics', '*.page'])
 
@@ -119,4 +123,4 @@ if __name__ == "__main__":
     munge_css('index.css')
     os.rename('index.css', os.path.join('html', 'index.css'))
 
-    print >> sys.stderr, "Embeddable documentation written to html/"
+    print("Embeddable documentation written to html/", file=sys.stderr)
