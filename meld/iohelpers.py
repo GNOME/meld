@@ -93,9 +93,9 @@ def prompt_save_filename(title, parent: Gtk.Widget = None):
             replace = modal_dialog(
                 primary=_("Replace file “%s”?") % file_name,
                 secondary=_(
-                    u"A file with this name already exists in “%s”.\n"
-                    u"If you replace the existing file, its contents "
-                    u"will be lost.") % parent_name,
+                    "A file with this name already exists in “%s”.\n"
+                    "If you replace the existing file, its contents "
+                    "will be lost.") % parent_name,
                 buttons=dialog_buttons,
                 messagetype=Gtk.MessageType.WARNING,
             )
