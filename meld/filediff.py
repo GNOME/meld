@@ -924,12 +924,14 @@ class FileDiff(MeldDoc, Component):
 
     @with_focused_pane
     def open_external(self, pane):
-        if not self.textbuffer[pane].data.filename:
+        if not self.textbuffer[pane].data.gfile:
             return
         pos = self.textbuffer[pane].props.cursor_position
         cursor_it = self.textbuffer[pane].get_iter_at_offset(pos)
         line = cursor_it.get_line() + 1
-        self._open_files([self.textbuffer[pane].data.filename], line)
+        # TODO: Support URI-based opens
+        path = self.textbuffer[pane].data.gfile.get_path()
+        self._open_files([path], line)
 
     def update_text_actions_sensitivity(self, *args):
         widget = self.focus_pane
