@@ -47,6 +47,28 @@ from meld.ui.gnomeglade import Component, ui_file
 from meld.undo import UndoSequence
 
 
+def user_critical(message):
+    def wrap(function):
+        @functools.wraps(function)
+        def wrap_function(locked, *args, **kwargs):
+            try:
+                return function(locked, *args, **kwargs)
+            except Exception:
+                misc.error_dialog(
+                    primary=message,
+                    secondary=_(
+                        "Meld encountered a critical error while running: "
+                        "<tt>{}</tt>\n\n"
+                        "We're sorry this isn't a more useful error, but we "
+                        "thought you needed to know about this."
+                        "".format(GLib.markup_escape_text(str(function)))
+                    ),
+                )
+                raise
+        return wrap_function
+    return wrap
+
+
 def with_scroll_lock(lock_attr):
     """Decorator for locking a callback based on an instance attribute
 
@@ -1497,6 +1519,10 @@ class FileDiff(MeldDoc, Component):
             self.text_filters = []
             self.refresh_comparison()
 
+    # FIXME: Should have a decorator that catches exceptions, shows a dialog
+    # if it does so, and reraises. Basically, this is for stuff that the user
+    # should *really* know about if it fails.
+    @user_critical(_('Saving failed')) # FIXME: better error...
     def save_file(self, pane, saveas=False, force_overwrite=False):
         buf = self.textbuffer[pane]
         bufdata = buf.data
