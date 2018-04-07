@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import enum
-import os
 
 from gi.repository import Gio
 from gi.repository import GLib
@@ -102,16 +101,20 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         else:  # button is self.dir_three_way_checkbutton
             self.dir_chooser2.set_sensitive(button.get_active())
 
-    def on_file_set(self, button, *args):
-        filename = button.get_filename()
-        if not filename:
+    def on_file_set(self, filechooser, *args):
+        gfile = filechooser.get_file()
+        if not gfile:
             return
 
-        parent = os.path.dirname(filename)
-        if os.path.isdir(parent):
+        parent = gfile.get_parent()
+        if not parent:
+            return
+
+        if parent.query_file_type(
+                Gio.FileQueryInfoFlags.NONE, None) == Gio.FileType.DIRECTORY:
             for chooser in self.file_chooser:
-                if not chooser.get_filename():
-                    chooser.set_current_folder(parent)
+                if not chooser.get_file():
+                    chooser.set_current_folder_file(parent)
 
         # TODO: We could do checks here to prevent errors: check to see if
         # we've got binary files; check for null file selections; sniff text
