@@ -44,22 +44,28 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
 
     __gsignals__ = {
         'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
-        'diff-created': (GObject.SignalFlags.RUN_FIRST, None,
-                         (object,)),
+        'diff-created': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
 
     label_text = _("New comparison")
 
     def __init__(self, parentapp):
         GObject.GObject.__init__(self)
-        file_choosers = ["filechooserdialog0", "filechooserdialog1",
-                         "filechooserdialog2"]
-        gnomeglade.Component.__init__(self, "tab-placeholder.ui",
-                                      "new_comparison_tab", file_choosers)
-        self.map_widgets_into_lists(["file_chooser", "dir_chooser",
-                                     "vc_chooser", "filechooserdialog"])
-        self.button_types = [self.button_type_file, self.button_type_dir,
-                             self.button_type_vc]
+        gnomeglade.Component.__init__(
+            self, "tab-placeholder.ui", "new_comparison_tab",
+            [
+                "filechooserdialog0",
+                "filechooserdialog1",
+                "filechooserdialog2",
+            ]
+        )
+        self.map_widgets_into_lists(
+            ["file_chooser", "dir_chooser", "vc_chooser", "filechooserdialog"])
+        self.button_types = [
+            self.button_type_file,
+            self.button_type_dir,
+            self.button_type_vc,
+        ]
         self.diff_methods = {
             DiffType.File: parentapp.append_filediff,
             DiffType.Folder: parentapp.append_dirdiff,
@@ -113,8 +119,10 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
 
     def _get_num_paths(self):
         if self.diff_type in (DiffType.File, DiffType.Folder):
-            three_way_buttons = (self.file_three_way_checkbutton,
-                                 self.dir_three_way_checkbutton)
+            three_way_buttons = (
+                self.file_three_way_checkbutton,
+                self.dir_three_way_checkbutton,
+            )
             three_way = three_way_buttons[self.diff_type].get_active()
             num_paths = 3 if three_way else 2
         else:  # DiffType.Version
