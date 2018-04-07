@@ -1495,14 +1495,13 @@ class FileDiff(MeldDoc, Component):
                 prompt = _("Save Middle Pane As")
             else:
                 prompt = _("Save Right Pane As")
-            filename = prompt_save_filename(prompt, self.widget)
-            if not filename:
+            gfile = prompt_save_filename(prompt, self.widget)
+            if not gfile:
                 return False
-            filename = os.path.abspath(filename)
-            bufdata.label = filename
-            bufdata.gfile = Gio.File.new_for_path(filename)
+            bufdata.label = gfile.get_path()
+            bufdata.gfile = gfile
             bufdata.savefile = None
-            self.fileentry[pane].set_filename(bufdata.filename)
+            self.fileentry[pane].set_file(gfile)
             self.filelabel_toolitem[pane].set_visible(False)
             self.fileentry_toolitem[pane].set_visible(True)
 

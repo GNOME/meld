@@ -64,9 +64,7 @@ def trash_or_confirm(gfile: Gio.File):
         raise RuntimeError(str(e))
 
 
-def prompt_save_filename(title, parent: Gtk.Widget = None):
-    # TODO: Have this return a GFile instead of a path
-
+def prompt_save_filename(title: str, parent: Gtk.Widget = None) -> Gio.File:
     dialog = MeldFileChooserDialog(
         title,
         parent=get_modal_parent(parent),
@@ -85,7 +83,7 @@ def prompt_save_filename(title, parent: Gtk.Widget = None):
             'standard::name,standard::display-name', 0, None)
     except GLib.Error as err:
         if err.code == Gio.IOErrorEnum.NOT_FOUND:
-            return gfile.get_path()
+            return gfile
         raise
 
     # The selected file exists, so we need to prompt for overwrite.
@@ -107,4 +105,4 @@ def prompt_save_filename(title, parent: Gtk.Widget = None):
     if replace != Gtk.ResponseType.OK:
         return
 
-    return gfile.get_path()
+    return gfile
