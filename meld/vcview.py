@@ -470,7 +470,7 @@ class VcView(MeldDoc, Component):
             diffs = [p for p, is_temp in diffs]
             kwargs = {
                 'auto_merge': False,
-                'merge_output': path,
+                'merge_output': Gio.File.new_for_path(path),
             }
             meta['prompt_resolve'] = True
         else:

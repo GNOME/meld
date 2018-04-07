@@ -374,7 +374,7 @@ class MeldApp(Gtk.Application):
 
                 if options.outfile and isinstance(tab, FileDiff):
                     outfile = make_file_from_command_line(options.outfile)
-                    tab.set_merge_output_file(outfile.get_path())
+                    tab.set_merge_output_file(outfile)
 
         if error:
             if not tab:

@@ -865,11 +865,12 @@ class FileDiff(MeldDoc, Component):
 
                 if resolve_response == Gtk.ResponseType.OK:
                     bufdata = self.textbuffer[1].data
-                    conflict_file = bufdata.savefile or bufdata.filename
+                    conflict_gfile = bufdata.savefile or bufdata.gfile
                     # It's possible that here we're in a quit callback,
                     # so we can't schedule the resolve action to an
                     # idle loop; it might never happen.
-                    parent.command('resolve', [conflict_file], sync=True)
+                    parent.command(
+                        'resolve', [conflict_gfile.get_path()], sync=True)
         elif response == Gtk.ResponseType.CANCEL:
             self.state = ComparisonState.Normal
 
@@ -1003,14 +1004,14 @@ class FileDiff(MeldDoc, Component):
             if label:
                 buf.data.label = label
 
-    def set_merge_output_file(self, filename):
+    def set_merge_output_file(self, gfile):
         if self.num_panes < 2:
             return
         buf = self.textbuffer[1]
-        buf.data.savefile = os.path.abspath(filename)
-        buf.data.label = filename
+        buf.data.savefile = gfile
+        buf.data.label = gfile.get_path()
         self.update_buffer_writable(buf)
-        self.fileentry[1].set_filename(buf.data.savefile)
+        self.fileentry[1].set_file(gfile)
         self.recompute_label()
 
     def _set_save_action_sensitivity(self):

@@ -206,9 +206,7 @@ class MeldBufferData(GObject.GObject):
 
     @property
     def gfiletarget(self):
-        if self.savefile:
-            return Gio.File.new_for_path(self.savefile)
-        return self.gfile
+        return self.savefile or self.gfile
 
     @property
     def is_special(self):
