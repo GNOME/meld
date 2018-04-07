@@ -192,11 +192,6 @@ class MeldBufferData(GObject.GObject):
         self._sourcefile.bind_property(
             'encoding', self, 'encoding', GObject.BindingFlags.DEFAULT)
 
-        # TODO: Figure out how we use filename, and decide on how this
-        # should actually work. This was previously wrong, but since
-        # then we've moved to Python 3 with a different filename
-        # encoding model, and also changed stuff to use Gio.File.
-        self.filename = value.get_path() if value else None
         self.update_mtime()
         self.connect_monitor()
 
