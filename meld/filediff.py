@@ -1647,12 +1647,11 @@ class FileDiff(MeldDoc, Component):
     def on_fileentry_file_set(self, entry):
         pane = self.fileentry[:self.num_panes].index(entry)
         buffer = self.textbuffer[pane]
-        if self.check_save_modified([buffer]) != Gtk.ResponseType.CANCEL:
+        if self.check_save_modified([buffer]) == Gtk.ResponseType.OK:
             # TODO: Use encoding file selectors in FileDiff
             self.set_file(pane, entry.get_file())
         else:
-            existing_path = buffer.data.filename
-            entry.set_filename(existing_path)
+            entry.set_file(buffer.data.gfile)
         return True
 
     def _get_focused_pane(self):
