@@ -19,6 +19,12 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 
+FILE_ACTIONS = {
+    Gtk.FileChooserAction.OPEN,
+    Gtk.FileChooserAction.SAVE,
+}
+
+
 class MeldFileChooserDialog(Gtk.FileChooserDialog):
 
     """A simple GTK+ file chooser dialog with a text encoding combo box."""
@@ -39,6 +45,10 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
         Gtk.FileChooserDialog.__init__(self, title, parent, action, buttons)
         self.encoding_store = Gtk.ListStore(str, str)
         self.connect("notify::action", self.action_changed_cb)
+
+        # We only have sufficient Gio support for remote operations in
+        # file comparisons, not in folder or version-control.
+        self.props.local_only = action not in FILE_ACTIONS
 
     def make_encoding_combo(self):
         """Create the combo box for text encoding selection"""
