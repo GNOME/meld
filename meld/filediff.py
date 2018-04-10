@@ -1106,8 +1106,6 @@ class FileDiff(MeldDoc, Component):
         """
 
         self.fileentry[pane].set_file(gfile)
-        # TODO: filentry handling of URIs
-        self.fileentry[pane].set_sensitive(gfile.is_native())
 
         self.msgarea_mgr[pane].clear()
 
