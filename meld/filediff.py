@@ -17,7 +17,6 @@
 import copy
 import functools
 import math
-import os
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -43,7 +42,6 @@ from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
 from meld.sourceview import (
     get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
-from meld.ui.filechooser import MeldFileChooserDialog
 from meld.ui.findbar import FindBar
 from meld.ui.gnomeglade import Component, ui_file
 from meld.undo import UndoSequence
