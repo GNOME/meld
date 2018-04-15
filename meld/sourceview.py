@@ -164,6 +164,19 @@ class MeldSourceView(GtkSource.View):
 
         meldsettings.connect('changed', self.on_setting_changed)
 
+    def do_paste_clipboard(self, *args):
+        # This is an awful hack to replace another awful hack. The idea
+        # here is to sanitise the clipboard contents so that it doesn't
+        # contain GtkTextTags, by requesting and setting plain text.
+
+        def text_received_cb(clipboard, text, *user_data):
+            clipboard.set_text(text, len(text))
+            self.get_buffer().paste_clipboard(
+                clipboard, None, self.get_editable())
+
+        clipboard = self.get_clipboard(Gdk.SELECTION_CLIPBOARD)
+        clipboard.request_text(text_received_cb)
+
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()
         it = buf.get_iter_at_line(line)
