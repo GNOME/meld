@@ -113,6 +113,15 @@ def modal_dialog(
 
 
 def user_critical(primary, message):
+    """Decorator for when the user must be told about failures
+
+    The use case here is for e.g., saving a file, where even if we
+    don't handle errors, the user *still* needs to know that something
+    failed. This should be extremely sparingly used, but anything where
+    the user might not otherwise see a problem and data loss is a
+    potential side effect should be considered a candidate.
+    """
+
     def wrap(function):
         @functools.wraps(function)
         def wrap_function(locked, *args, **kwargs):
