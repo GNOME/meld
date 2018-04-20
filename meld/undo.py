@@ -268,15 +268,19 @@ class UndoSequence(GObject.GObject):
                 self.add_action(GroupAction(group))
 
     def abort_group(self):
-        """Revert the sequence to the state before begin_group() was called.
+        """Clear the currently grouped actions
 
-        Raises an AssertionError if there was no a matching call to
-        begin_group().
+        This discards all actions since the last begin_group() was
+        called. Note that it does not actually undo the actions
+        themselves.
         """
         if self.busy:
             return
 
-        assert self.group is not None
+        if self.group is None:
+            log.warning('Tried to abort a non-existent group')
+            return
+
         if self.group.group is not None:
             self.group.abort_group()
         else:
