@@ -1154,8 +1154,8 @@ class FileDiff(MeldDoc, Component):
                 buf.end_not_undoable_action()
                 buf.end_user_action()
 
-            # TODO: Find sane error domain constants
-            if err.domain == 'gtk-source-file-loader-error':
+            if err.domain == GLib.quark_to_string(
+                    GtkSource.FileLoaderError.quark()):
                 # TODO: Add custom reload-with-encoding handling for
                 # GtkSource.FileLoaderError.CONVERSION_FALLBACK and
                 # GtkSource.FileLoaderError.ENCODING_AUTO_DETECTION_FAILED
