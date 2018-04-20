@@ -1140,6 +1140,20 @@ class FileDiff(MeldDoc, Component):
         try:
             loader.load_finish(result)
         except GLib.Error as err:
+            if err.matches(
+                    GLib.convert_error_quark(),
+                    GLib.ConvertError.ILLEGAL_SEQUENCE):
+                # While there are probably others, this is the main
+                # case where GtkSourceView's loader doesn't finish its
+                # in-progress user-action on error. See bgo#795387 for
+                # the GtkSourceView bug report.
+                #
+                # The handling here is fragile, but it's better than
+                # getting into a non-obvious corrupt state.
+                buf = loader.get_buffer()
+                buf.end_not_undoable_action()
+                buf.end_user_action()
+
             # TODO: Find sane error domain constants
             if err.domain == 'gtk-source-file-loader-error':
                 # TODO: Add custom reload-with-encoding handling for
