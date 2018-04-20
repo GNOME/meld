@@ -31,9 +31,13 @@ def on_undo_button_pressed():
     s.undo()
 """
 
+import logging
 import weakref
 
 from gi.repository import GObject
+
+
+log = logging.getLogger(__name__)
 
 
 class GroupAction(object):
@@ -236,15 +240,22 @@ class UndoSequence(GObject.GObject):
             self.group = UndoSequence(buffers)
 
     def end_group(self):
-        """End a logical group action. See also begin_group().
+        """End a logical group action
 
-        Raises an AssertionError if there was not a matching call to
-        begin_group().
+        This must always be paired with a begin_group() call. However,
+        we don't complain if this is not the case because we rely on
+        external libraries (i.e., GTK+ and GtkSourceView) also pairing
+        these correctly.
+
+        See also begin_group().
         """
         if self.busy:
             return
 
-        assert self.group is not None
+        if self.group is None:
+            log.warning('Tried to end a non-existent group')
+            return
+
         if self.group.group is not None:
             self.group.end_group()
         else:
