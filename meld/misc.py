@@ -133,8 +133,8 @@ def user_critical(primary, message):
                     secondary=_(
                         "{}\n\n"
                         "Meld encountered a critical error while running:\n"
-                        "<tt>{}</tt>".format(
-                            message, GLib.markup_escape_text(str(function)))
+                        "<tt>{}</tt>").format(
+                            message, GLib.markup_escape_text(str(function))
                     ),
                 )
                 raise
