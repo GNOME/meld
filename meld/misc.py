@@ -112,6 +112,27 @@ def modal_dialog(
     return response
 
 
+def user_critical(primary, message):
+    def wrap(function):
+        @functools.wraps(function)
+        def wrap_function(locked, *args, **kwargs):
+            try:
+                return function(locked, *args, **kwargs)
+            except Exception:
+                error_dialog(
+                    primary=primary,
+                    secondary=_(
+                        "{}\n\n"
+                        "Meld encountered a critical error while running:\n"
+                        "<tt>{}</tt>".format(
+                            message, GLib.markup_escape_text(str(function)))
+                    ),
+                )
+                raise
+        return wrap_function
+    return wrap
+
+
 # Taken from epiphany
 def position_menu_under_widget(menu, x, y, widget):
     container = widget.get_ancestor(Gtk.Container)

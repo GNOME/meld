@@ -36,7 +36,7 @@ from meld.matchers.merge import Merger
 from meld.meldbuffer import (
     BufferDeletionAction, BufferInsertionAction, BufferLines)
 from meld.melddoc import ComparisonState, MeldDoc
-from meld.misc import with_focused_pane
+from meld.misc import user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
@@ -45,27 +45,6 @@ from meld.sourceview import (
 from meld.ui.findbar import FindBar
 from meld.ui.gnomeglade import Component, ui_file
 from meld.undo import UndoSequence
-
-
-def user_critical(primary, message):
-    def wrap(function):
-        @functools.wraps(function)
-        def wrap_function(locked, *args, **kwargs):
-            try:
-                return function(locked, *args, **kwargs)
-            except Exception:
-                misc.error_dialog(
-                    primary=primary,
-                    secondary=_(
-                        "{}\n\n"
-                        "Meld encountered a critical error while running:\n"
-                        "<tt>{}</tt>".format(
-                            message, GLib.markup_escape_text(str(function)))
-                    ),
-                )
-                raise
-        return wrap_function
-    return wrap
 
 
 def with_scroll_lock(lock_attr):
