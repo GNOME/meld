@@ -170,7 +170,10 @@ class MeldSourceView(GtkSource.View):
         # contain GtkTextTags, by requesting and setting plain text.
 
         def text_received_cb(clipboard, text, *user_data):
-            clipboard.set_text(text, len(text))
+            # Manual encoding is required here, or the length will be
+            # incorrect, and the API requires a UTF-8 bytestring.
+            utf8_text = text.encode('utf-8')
+            clipboard.set_text(text, len(utf8_text))
             self.get_buffer().paste_clipboard(
                 clipboard, None, self.get_editable())
 
