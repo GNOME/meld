@@ -102,13 +102,11 @@ that creates file `dist/Meld-VERSION-ARCH.msi`
 Contributing
 ------------
 
-Meld uses Bugzilla to track bugs, and user questions and development
+Meld uses GNOME's GitLab to track bugs, and user questions and development
 discussions happen on the Meld mailing list. The development team is small,
 and new contributors are always welcome!
 
-Report a bug:   https://bugzilla.gnome.org/enter_bug.cgi?product=meld
-
-List of bugs:   https://bugzilla.gnome.org/buglist.cgi?quicksearch=product%3A%22meld%22
+List of issues: https://gitlab.gnome.org/GNOME/meld/issues
 
 Mailing list:   https://mail.gnome.org/mailman/listinfo/meld-list
 
