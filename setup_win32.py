@@ -9,7 +9,7 @@ from cx_Freeze import setup, Executable
 import meld.build_helpers
 import meld.conf
 
-site_dir = site.getsitepackages()[1]
+site_dir = [f for f in site.getsitepackages() if 'site-packages' in f][0]
 include_dll_path = os.path.join(site_dir, "gnome")
 
 missing_dll = [
