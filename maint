@@ -486,13 +486,12 @@ def version_bump():
 @cli.command('release')
 @click.pass_context
 def make_release(ctx):
-    # pull()
-    # ctx.forward(news)
-    # commit(message='Update NEWS')
-    # push()
-    # archive_path = ctx.forward(dist)
-    # ctx.forward(tag)
-    archive_path = '/home/kaiw/Hacking/meld-gitlab/dist/meld-3.19.0.tar.bz2'
+    pull()
+    ctx.forward(news)
+    commit(message='Update NEWS')
+    push()
+    archive_path = ctx.forward(dist)
+    ctx.forward(tag)
     ctx.forward(gitlab_release)
     file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
     ctx.forward(email, filename=file_prefix + '-email')
