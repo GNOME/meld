@@ -442,6 +442,13 @@ class FileDiff(MeldDoc, Component):
                 copy_left = editable_left and left_mid_exists and left_exists
                 copy_right = (
                     editable_right and right_mid_exists and right_exists)
+
+        # Always enable push_left and push_right for two pane mode.
+        if self.num_panes == 2:
+            push_right = True
+            push_left = True
+
+
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
         self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
@@ -530,9 +537,10 @@ class FileDiff(MeldDoc, Component):
 
     def get_action_chunk(self, src, dst):
         valid_panes = list(range(0, self.num_panes))
-        if (src not in valid_panes or dst not in valid_panes or
-                self.cursor.chunk is None):
+        if src not in valid_panes or dst not in valid_panes:
             raise ValueError("Action was taken on invalid panes")
+        if self.num_panes > 2 and self.cursor.chunk is None:
+            raise ValueError("Action chunk taken from passive pane")
 
         chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
         if chunk is None:
@@ -545,11 +553,17 @@ class FileDiff(MeldDoc, Component):
         return (dst, src) if reverse else (src, dst)
 
     def action_push_change_left(self, *args):
-        src, dst = self.get_action_panes(PANE_LEFT)
+        if self.num_panes == 2:
+            src, dst = 1, 0
+        else:
+            src, dst = self.get_action_panes(PANE_LEFT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_push_change_right(self, *args):
-        src, dst = self.get_action_panes(PANE_RIGHT)
+        if self.num_panes == 2:
+            src, dst = 0, 1
+        else:
+            src, dst = self.get_action_panes(PANE_RIGHT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_pull_change_left(self, *args):
