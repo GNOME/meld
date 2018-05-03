@@ -691,6 +691,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 copy_right = (
                     editable_right and right_mid_exists and right_exists)
 
+            # If there is chunk and there are only two panes (#25)
+            if self.num_panes == 2:
+                push_right = True
+                push_left = True
+
         self.set_action_enabled('file-push-left', push_left)
         self.set_action_enabled('file-push-right', push_right)
         self.set_action_enabled('file-pull-left', pull_left)
@@ -815,9 +820,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def get_action_chunk(self, src, dst):
         valid_panes = list(range(0, self.num_panes))
-        if (src not in valid_panes or dst not in valid_panes or
-                self.cursor.chunk is None):
+        if src not in valid_panes or dst not in valid_panes:
             raise ValueError("Action was taken on invalid panes")
+        if self.num_panes > 2 and self.cursor.chunk is None:
+            raise ValueError("Action chunk taken from passive pane")
 
         chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
         if chunk is None:
@@ -853,11 +859,17 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self.copy_chunk(from_pane, to_pane, chunk, copy_up=False)
 
     def action_push_change_left(self, *args):
-        src, dst = self.get_action_panes(PANE_LEFT)
+        if self.num_panes == 2:
+            src, dst = 1, 0
+        else:
+            src, dst = self.get_action_panes(PANE_LEFT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_push_change_right(self, *args):
-        src, dst = self.get_action_panes(PANE_RIGHT)
+        if self.num_panes == 2:
+            src, dst = 0, 1
+        else:
+            src, dst = self.get_action_panes(PANE_RIGHT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
     def action_pull_change_left(self, *args):
