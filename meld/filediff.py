@@ -443,10 +443,10 @@ class FileDiff(MeldDoc, Component):
                 copy_right = (
                     editable_right and right_mid_exists and right_exists)
 
-        # Always enable push_left and push_right for two pane mode.
-        if self.num_panes == 2:
-            push_right = True
-            push_left = True
+            # If there is chunk and there are only two panes (#25)
+            if self.num_panes == 2:
+                push_right = True
+                push_left = True
 
         self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
         self.actiongroup.get_action("PushRight").set_sensitive(push_right)
