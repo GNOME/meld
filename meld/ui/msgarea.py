@@ -31,7 +31,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     vbox = Gtk.VBox(homogeneous=False, spacing=6)
 
     primary_label = Gtk.Label(
-        "<b>{}</b>".format(primary_text),
+        label="<b>{}</b>".format(primary_text),
         wrap=True,
         use_markup=True,
         xalign=0,
