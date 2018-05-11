@@ -61,7 +61,7 @@ class HistoryCombo(Gtk.ComboBox):
         nick="History ID",
         blurb="Identifier associated with entry's history store",
         default=None,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READWRITE,
     )
 
     history_length = GObject.Property(

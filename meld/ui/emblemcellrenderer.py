@@ -27,17 +27,17 @@ class EmblemCellRenderer(Gtk.CellRenderer):
     __gproperties__ = {
         "icon-name":   (str, "Named icon",
                         "Name for base icon",
-                        "text-x-generic", GObject.PARAM_READWRITE),
+                        "text-x-generic", GObject.ParamFlags.READWRITE),
         "emblem-name": (str, "Named emblem icon",
                         "Name for emblem icon to overlay",
-                        None, GObject.PARAM_READWRITE),
+                        None, GObject.ParamFlags.READWRITE),
         "secondary-emblem-name": (
             str, "Named secondary emblem icon",
             "Name for secondary emblem icon to overlay",
-            None, GObject.PARAM_READWRITE),
+            None, GObject.ParamFlags.READWRITE),
         "icon-tint":   (str, "Icon tint",
                         "GDK-parseable color to be used to tint icon",
-                        None, GObject.PARAM_READWRITE),
+                        None, GObject.ParamFlags.READWRITE),
     }
 
     icon_cache = {}
