@@ -64,6 +64,7 @@ def get_meld_dir():
     self_path = os.path.realpath(__file__)
     return os.path.abspath(os.path.join(os.path.dirname(self_path), ".."))
 
+
 frozen = getattr(sys, 'frozen', False)
 melddir = get_meld_dir()
 
@@ -73,7 +74,7 @@ if os.path.exists(os.path.join(melddir, "meld.doap")):
     uninstalled = True
 devel = os.path.exists(os.path.join(melddir, ".git"))
 
-import meld.conf
+import meld.conf  # noqa: E402
 
 # Silence warnings on non-devel releases (minor version is divisible by 2)
 is_stable = not bool(int(meld.conf.__version__.split('.')[1]) % 2)
@@ -87,7 +88,7 @@ elif frozen:
     meld.conf.frozen()
 
 # TODO: Possibly move to elib.intl
-import gettext
+import gettext  # noqa: E402, I100
 locale_domain = meld.conf.__package__
 locale_dir = meld.conf.LOCALEDIR
 
@@ -123,16 +124,19 @@ try:
 except AttributeError as e:
     # Python builds linked without libintl (i.e., OSX) don't have
     # bindtextdomain(), which causes Gtk.Builder translations to fail.
-    print("Couldn't bind the translation domain. Some translations won't work.")
-    print(e)
+    print(
+        "Couldn't bind the translation domain. Some translations won't "
+        "work.\n{}".format(e))
 except locale.Error as e:
-    print("Couldn't bind the translation domain. Some translations won't work.")
-    print(e)
+    print(
+        "Couldn't bind the translation domain. Some translations won't "
+        "work.\n{}".format(e))
 except WindowsError as e:
     # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
     # Let's just continue, as translations are non-essential.
-    print("Couldn't bind the translation domain. Some translations won't work.")
-    print(e)
+    print(
+        "Couldn't bind the translation domain. Some translations won't "
+        "work.\n{}".format(e))
 
 
 def show_error_and_exit(error_text):
@@ -217,7 +221,7 @@ def check_requirements():
 
     try:
         gi.require_version("PangoCairo", "1.0")
-        from gi.repository import PangoCairo
+        from gi.repository import PangoCairo  # noqa: F401
         # Only check that imports ok; the version is fine since Gtk loaded fine
     except (ImportError, ValueError) as e:
         missing_reqs("PangoCairo", pangocairo_requirement, e)
