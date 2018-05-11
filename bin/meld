@@ -180,7 +180,7 @@ def show_error_and_exit(error_text):
 def check_requirements():
 
     gtk_requirement = (3, 20)
-    glib_requirement = (2, 48, 0)
+    glib_requirement = (2, 48)
     gtksourceview_requirement = (3, 20, 0)
     pangocairo_requirement = (1, 34)
 
@@ -206,8 +206,8 @@ def check_requirements():
         missing_reqs("GTK+", gtk_requirement, e)
 
     try:
-        from gi.repository import GObject
-        assert GObject.glib_version >= glib_requirement
+        from gi.repository import GLib
+        assert (GLib.MAJOR_VERSION, GLib.MINOR_VERSION) >= glib_requirement
     except (ImportError, AssertionError, ValueError) as e:
         missing_reqs("GLib", glib_requirement, e)
 
