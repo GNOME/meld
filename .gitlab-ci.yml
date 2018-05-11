@@ -16,7 +16,7 @@ flake8:
   stage: check
   script:
     - pip3 install -r dev-requirements.txt
-    - flake8 meld/
+    - flake8 bin/meld meld/
   allow_failure: true
 
 pytest:
