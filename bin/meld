@@ -180,9 +180,9 @@ def check_requirements():
     gtksourceview_requirement = (3, 20, 0)
     pangocairo_requirement = (1, 34)
 
-    def missing_reqs(mod, ver, exception=None):
-        if isinstance(exception, ImportError):
-            show_error_and_exit(_("Cannot import: ") + mod + "\n" + str(e))
+    def missing_reqs(mod, ver, exc=None):
+        if isinstance(exc, ImportError):
+            show_error_and_exit(_("Cannot import: ") + mod + "\n" + str(exc))
         else:
             modver = mod + " " + ".".join(map(str, ver))
             show_error_and_exit(_("Meld requires %s or higher.") % modver)
