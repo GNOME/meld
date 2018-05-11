@@ -50,54 +50,17 @@
       ]
     },
     {
-      "name": "py2cairo",
-      "rm-configure": true,
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2",
-          "sha256": "d30439f06c2ec1a39e27464c6c828b6eface3b22ee17b2de05dc409e429a7431"
-        },
-        {
-          "type": "script",
-          "commands": [
-            "libtoolize --force",
-            "aclocal",
-            "autoheader",
-            "automake --force-missing --add-missing --foreign",
-            "autoconf"
-          ],
-          "dest-filename": "autogen.sh"
-        }
-      ]
-    },
-    {
-      "name": "pygobject",
-      "build-options" : {
-        "env": {
-          "PYTHON": "python2"
-        }
-      },
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.18/pygobject-3.18.2.tar.xz",
-          "sha256": "2a3cad1517916b74e131e6002c3824361aee0671ffb0d55ded119477fc1c2c5f"
-        }
-      ]
-    },
-    {
       "name": "meld",
       "no-autogen": true,
+      "buildsystem": "simple",
+      "build-commands": [
+        "python3 setup.py build",
+        "python3 setup.py install --prefix /app"
+      ],
       "sources": [
         {
           "type": "git",
-          "url": "git://git.gnome.org/meld"
-        },
-        {
-          "type": "file",
-          "path": "data/meld-Makefile",
-          "dest-filename": "Makefile"
+          "url": "https://gitlab.gnome.org/GNOME/meld.git"
         }
       ]
     }
