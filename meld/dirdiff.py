@@ -257,7 +257,7 @@ class DirDiff(MeldDoc, Component):
         ('ignore-blank-lines', 'ignore-blank-lines'),
     )
 
-    apply_text_filters = GObject.property(
+    apply_text_filters = GObject.Property(
         type=bool,
         nick="Apply text filters",
         blurb=(
@@ -265,30 +265,30 @@ class DirDiff(MeldDoc, Component):
             "should be applied when comparing file contents"),
         default=False,
     )
-    ignore_blank_lines = GObject.property(
+    ignore_blank_lines = GObject.Property(
         type=bool,
         nick="Ignore blank lines",
         blurb="Whether to ignore blank lines when comparing file contents",
         default=False,
     )
-    ignore_symlinks = GObject.property(
+    ignore_symlinks = GObject.Property(
         type=bool,
         nick="Ignore symbolic links",
         blurb="Whether to follow symbolic links when comparing folders",
         default=False,
     )
-    shallow_comparison = GObject.property(
+    shallow_comparison = GObject.Property(
         type=bool,
         nick="Use shallow comparison",
         blurb="Whether to compare files based solely on size and mtime",
         default=False,
     )
-    status_filters = GObject.property(
+    status_filters = GObject.Property(
         type=GObject.TYPE_STRV,
         nick="File status filters",
         blurb="Files with these statuses will be shown by the comparison.",
     )
-    time_resolution = GObject.property(
+    time_resolution = GObject.Property(
         type=int,
         nick="Time resolution",
         blurb="When comparing based on mtime, the minimum difference in "

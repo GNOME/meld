@@ -91,7 +91,7 @@ class MeldBufferData(GObject.GObject):
         str('file-changed'): (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    encoding = GObject.property(
+    encoding = GObject.Property(
         type=GtkSource.Encoding,
         nick="The file encoding of the linked GtkSourceFile",
         default=None,

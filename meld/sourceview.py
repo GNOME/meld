@@ -104,7 +104,7 @@ class MeldSourceView(GtkSource.View):
     )
 
     # Named so as not to conflict with the GtkSourceView property
-    highlight_current_line_local = GObject.property(type=bool, default=False)
+    highlight_current_line_local = GObject.Property(type=bool, default=False)
 
     def get_show_line_numbers(self):
         return self._show_line_numbers
@@ -119,7 +119,7 @@ class MeldSourceView(GtkSource.View):
         self._show_line_numbers = bool(show)
         self.notify("show-line-numbers")
 
-    show_line_numbers = GObject.property(
+    show_line_numbers = GObject.Property(
         type=bool, default=False, getter=get_show_line_numbers,
         setter=set_show_line_numbers)
 

@@ -27,13 +27,13 @@ class SavedWindowState(GObject.GObject):
 
     __gtype_name__ = 'SavedWindowState'
 
-    width = GObject.property(
+    width = GObject.Property(
         type=int, nick='Current window width', default=-1)
-    height = GObject.property(
+    height = GObject.Property(
         type=int, nick='Current window height', default=-1)
-    is_maximized = GObject.property(
+    is_maximized = GObject.Property(
         type=bool, nick='Is window maximized', default=False)
-    is_fullscreen = GObject.property(
+    is_fullscreen = GObject.Property(
         type=bool, nick='Is window fullscreen', default=False)
 
     def bind(self, window):

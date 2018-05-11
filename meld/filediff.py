@@ -98,7 +98,7 @@ class FileDiff(MeldDoc, Component):
         ('ignore-blank-lines', 'ignore-blank-lines'),
     )
 
-    ignore_blank_lines = GObject.property(
+    ignore_blank_lines = GObject.Property(
         type=bool,
         nick="Ignore blank lines",
         blurb="Whether to ignore blank lines when comparing file contents",

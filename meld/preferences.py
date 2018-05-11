@@ -159,24 +159,24 @@ class GSettingsIntComboBox(GSettingsComboBox):
 
     __gtype_name__ = "GSettingsIntComboBox"
 
-    gsettings_column = GObject.property(type=int, default=0)
-    gsettings_value = GObject.property(type=int)
+    gsettings_column = GObject.Property(type=int, default=0)
+    gsettings_value = GObject.Property(type=int)
 
 
 class GSettingsBoolComboBox(GSettingsComboBox):
 
     __gtype_name__ = "GSettingsBoolComboBox"
 
-    gsettings_column = GObject.property(type=int, default=0)
-    gsettings_value = GObject.property(type=bool, default=False)
+    gsettings_column = GObject.Property(type=int, default=0)
+    gsettings_value = GObject.Property(type=bool, default=False)
 
 
 class GSettingsStringComboBox(GSettingsComboBox):
 
     __gtype_name__ = "GSettingsStringComboBox"
 
-    gsettings_column = GObject.property(type=int, default=0)
-    gsettings_value = GObject.property(type=str, default="")
+    gsettings_column = GObject.Property(type=int, default=0)
+    gsettings_value = GObject.Property(type=str, default="")
 
 
 class PreferencesDialog(Component):

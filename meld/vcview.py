@@ -131,13 +131,13 @@ class VcView(MeldDoc, Component):
         ('vc-merge-file-order', 'merge-file-order'),
     )
 
-    status_filters = GObject.property(
+    status_filters = GObject.Property(
         type=GObject.TYPE_STRV,
         nick="File status filters",
         blurb="Files with these statuses will be shown by the comparison.",
     )
-    left_is_local = GObject.property(type=bool, default=False)
-    merge_file_order = GObject.property(type=str, default="local-merge-remote")
+    left_is_local = GObject.Property(type=bool, default=False)
+    merge_file_order = GObject.Property(type=str, default="local-merge-remote")
 
     # Map for inter-tab command() calls
     command_map = {

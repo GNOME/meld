@@ -56,7 +56,7 @@ def _clamp_list_store(liststore, max_items):
 class HistoryCombo(Gtk.ComboBox):
     __gtype_name__ = "HistoryCombo"
 
-    history_id = GObject.property(
+    history_id = GObject.Property(
         type=str,
         nick="History ID",
         blurb="Identifier associated with entry's history store",
@@ -64,7 +64,7 @@ class HistoryCombo(Gtk.ComboBox):
         flags=GObject.PARAM_READWRITE,
     )
 
-    history_length = GObject.property(
+    history_length = GObject.Property(
         type=int,
         nick="History length",
         blurb="Number of history items to display in the combo",

@@ -60,7 +60,7 @@ class MeldStatusMenuButton(Gtk.MenuButton):
             return
         self._label.set_markup(markup)
 
-    label = GObject.property(
+    label = GObject.Property(
         type=str,
         nick="The GtkSourceLanguage displayed in the status bar",
         default=None,
@@ -111,19 +111,19 @@ class MeldStatusBar(Gtk.Statusbar):
             GObject.SignalFlags.RUN_FIRST, None, (GtkSource.Encoding,)),
     }
 
-    cursor_position = GObject.property(
+    cursor_position = GObject.Property(
         type=object,
         nick="The position of the cursor displayed in the status bar",
         default=None,
     )
 
-    source_encoding = GObject.property(
+    source_encoding = GObject.Property(
         type=GtkSource.Encoding,
         nick="The file encoding displayed in the status bar",
         default=None,
     )
 
-    source_language = GObject.property(
+    source_language = GObject.Property(
         type=GtkSource.Language,
         nick="The GtkSourceLanguage displayed in the status bar",
         default=None,
