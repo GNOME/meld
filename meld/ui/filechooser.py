@@ -31,18 +31,17 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
 
     __gtype_name__ = 'MeldFileChooserDialog'
 
-    def __init__(self, title=None, transient_for=None,
-                 action=Gtk.FileChooserAction.OPEN):
+    def __init__(
+            self, title=None, transient_for=None,
+            action=Gtk.FileChooserAction.OPEN):
         Gtk.FileChooserDialog.__init__(
           self, title=title, transient_for=transient_for, action=action)
 
+        self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         if action == Gtk.FileChooserAction.SAVE:
-            buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                       Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT)
+            self.add_button(Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT)
         else:
-            buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                       Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT)
-        self.add_buttons(*buttons)
+            self.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT)
 
         self.encoding_store = Gtk.ListStore(str, str)
         self.connect("notify::action", self.action_changed_cb)
