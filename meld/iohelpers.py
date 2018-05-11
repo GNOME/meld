@@ -67,7 +67,7 @@ def trash_or_confirm(gfile: Gio.File):
 def prompt_save_filename(title: str, parent: Gtk.Widget = None) -> Gio.File:
     dialog = MeldFileChooserDialog(
         title,
-        parent=get_modal_parent(parent),
+        transient_for=get_modal_parent(parent),
         action=Gtk.FileChooserAction.SAVE,
     )
     dialog.set_default_response(Gtk.ResponseType.ACCEPT)
