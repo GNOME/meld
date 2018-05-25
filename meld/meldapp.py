@@ -333,7 +333,7 @@ class MeldApp(Gtk.Application):
 
         tab = None
         error = None
-        comparisons = [args] + options.diff
+        comparisons = [c for c in [args] + options.diff if c]
 
         # Every Meld invocation creates at most one window. If there is
         # no existing application, a window is created in do_startup().
