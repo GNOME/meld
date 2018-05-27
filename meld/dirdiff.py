@@ -1353,6 +1353,7 @@ class DirDiff(MeldDoc, Component):
         different = state not in {tree.STATE_NORMAL, tree.STATE_NOCHANGE}
 
         isdir = [os.path.isdir(files[j]) for j in range(self.model.ntree)]
+
         for j in range(self.model.ntree):
             column_index = functools.partial(self.model.column_index, pane=j)
             if stats[j]:
@@ -1371,6 +1372,16 @@ class DirDiff(MeldDoc, Component):
                 # pyobjects for column types by avoiding None use.
                 self.model.set_path_state(
                     it, j, tree.STATE_NONEXIST, any(isdir))
+
+        # update parents as modified
+        parent = self.model.iter_parent(it)
+        while(different and
+                parent and
+                self.model.get_state(parent, 0) != tree.STATE_MODIFIED):
+            for j in range(self.model.ntree):
+                self.model.set_path_state(
+                    parent, j, tree.STATE_MODIFIED, True)
+            parent = self.model.iter_parent(parent)
         return different
 
     def popup_in_pane(self, pane, event):
