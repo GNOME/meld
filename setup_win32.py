@@ -44,6 +44,8 @@ missing_dll = [
     'libharfbuzz-0.dll',
     'libharfbuzz-gobject-0.dll',
     'libwebp-5.dll',
+    # for Gtk.show_uri; note that name is bitness-dependant
+    'gspawn-win32-helper.exe',
 ]
 
 gtk_libs = [
