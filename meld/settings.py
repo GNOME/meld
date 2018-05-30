@@ -79,7 +79,7 @@ class MeldSettings(GObject.GObject):
 
 
 def load_settings_schema(schema_id):
-    if meld.conf.UNINSTALLED_SCHEMA:
+    if meld.conf.DATADIR_IS_UNINSTALLED:
         schema_source = Gio.SettingsSchemaSource.new_from_directory(
             meld.conf.DATADIR,
             Gio.SettingsSchemaSource.get_default(),
