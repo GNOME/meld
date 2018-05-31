@@ -191,6 +191,11 @@ class FileDiff(MeldDoc, Component):
         self.actiongroup = self.FilediffActions
         self.actiongroup.set_translation_domain("meld")
 
+        # Alternate keybindings for a few commands.
+        self.extra_accels = (
+            ("<Alt>KP_Delete", self.delete_change),
+        )
+
         self.findbar = FindBar(self.grid)
         self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
 
@@ -278,6 +283,22 @@ class FileDiff(MeldDoc, Component):
             t.line_renderer = renderer
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
+
+    def on_container_switch_in_event(self, ui):
+        MeldDoc.on_container_switch_in_event(self, ui)
+
+        accel_group = ui.get_accel_group()
+        for accel, callback in self.extra_accels:
+            keyval, mask = Gtk.accelerator_parse(accel)
+            accel_group.connect(keyval, mask, 0, callback)
+
+    def on_container_switch_out_event(self, ui):
+        accel_group = ui.get_accel_group()
+        for accel, callback in self.extra_accels:
+            keyval, mask = Gtk.accelerator_parse(accel)
+            accel_group.disconnect_key(keyval, mask)
+
+        MeldDoc.on_container_switch_out_event(self, ui)
 
     def get_keymask(self):
         return self._keymask
