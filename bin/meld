@@ -24,19 +24,20 @@ import subprocess
 import sys
 from multiprocessing import freeze_support
 
-# Main module hasn't multiprocessing workers, so not imported in subprocesses.
-# This allows skipping '__name__ == "main"' guard, but freezed case is special.
-freeze_support()
-
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
 # dummy stdout and stderr streams that silently throw away any output. However,
 # these streams seem to have issues with flush() so we just redirect stdout and
 # stderr to actual dummy files (the equivalent of /dev/null).
 # Regarding pythonw.exe stdout, see also http://bugs.python.org/issue706263
-if sys.executable.endswith("pythonw.exe"):
+# Also cx_Freeze built with Win32GUI base sets sys.stdout to None
+# leading to exceptions in print() and freeze_support() that uses flush()
+if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
     devnull = open(os.devnull, "w")
     sys.stdout = sys.stderr = devnull
 
+# Main module hasn't multiprocessing workers, so not imported in subprocesses.
+# This allows skipping '__name__ == "main"' guard, but freezed case is special.
+freeze_support()
 
 def disable_stdout_buffering():
 

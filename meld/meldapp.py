@@ -111,7 +111,7 @@ class MeldApp(Gtk.Application):
         meld.preferences.PreferencesDialog(self.get_active_window())
 
     def help_callback(self, action, parameter):
-        if meld.conf.UNINSTALLED:
+        if meld.conf.DATADIR_IS_UNINSTALLED:
             uri = "http://meldmerge.org/help/"
         else:
             uri = "help:meld"
