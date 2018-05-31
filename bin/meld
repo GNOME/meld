@@ -39,6 +39,7 @@ if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
 # This allows skipping '__name__ == "main"' guard, but freezed case is special.
 freeze_support()
 
+
 def disable_stdout_buffering():
 
     class Unbuffered(object):
