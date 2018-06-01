@@ -216,6 +216,9 @@ def _files_same(files, regexes, comparison_args):
         except (MemoryError, OverflowError):
             result = DodgySame if all(same(stats)) else DodgyDifferent
         finally:
+            for m in mmaps:
+                if hasattr(m, 'close') and not m.closed:
+                    m.close()
             for h in handles:
                 h.close()
     except IOError:
