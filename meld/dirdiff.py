@@ -121,8 +121,9 @@ def _files_same(files, regexes, comparison_args):
     shallow_comparison = comparison_args['shallow-comparison']
     time_resolution_ns = comparison_args['time-resolution']
     ignore_blank_lines = comparison_args['ignore_blank_lines']
+    apply_text_filters = comparison_args['apply-text-filters']
 
-    need_contents = ignore_blank_lines and comparison_args['apply-text-filters']
+    need_contents = ignore_blank_lines and apply_text_filters
 
     # If all entries are directories, they are considered to be the same
     if all([stat.S_ISDIR(s.mode) for s in stats]):
