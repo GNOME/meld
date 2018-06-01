@@ -21,6 +21,7 @@ import copy
 import errno
 import functools
 import itertools
+import mmap
 import os
 import shutil
 import stat
@@ -153,33 +154,63 @@ def _files_same(files, regexes, comparison_args):
         return cache.result
 
     # Open files and compare bit-by-bit
+    mmaps = []
+    is_bin = False
+    num_of_files = len(stats)
+    min_size = min(s.size for s in stats)
+    max_size = max(s.size for s in stats)
+    min_rounds = 1 + min_size // CHUNK_SIZE
+    result = None if min_size else Different
+
     contents = [[] for f in files]
     result = None
 
     try:
         handles = [open(f, "rb") for f in files]
         try:
-            data = [h.read(CHUNK_SIZE) for h in handles]
-
-            # Rough test to see whether files are binary. If files are guessed
-            # to be binary, we don't examine contents for speed and space.
-            if any(b"\0" in d for d in data):
-                need_contents = False
-
-            while True:
-                if all(same(data)):
-                    if not data[0]:
-                        break
+            for i, f in enumerate(handles):
+                size = stats[i].size
+                if size > CHUNK_SIZE:
+                    data = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_COPY)
                 else:
-                    result = Different
-                    if not need_contents:
-                        break
+                    data = f.read()
+                mmaps.append(data)
+                max_bin_pos = size if size < CHUNK_SIZE else CHUNK_SIZE
+                # Rough test to see whether files are binary. If files are
+                # guessed to be binary, we don't examine contents for speed
+                # and space.
+                if b"\0" in data[:max_bin_pos]:
+                    is_bin = True
 
-                if need_contents:
-                    for i in range(len(data)):
-                        contents[i].append(data[i])
+            if max_size == min_size:
+                for i in range(min_rounds):
+                    m = i * CHUNK_SIZE
+                    n = m + CHUNK_SIZE
+                    for j in range(num_of_files - 1):
+                        match = mmaps[j][m:n] == mmaps[j+1][m:n]
+                        if not match:
+                            result = Different
+                            break
+            else:
+                result = Different
 
-                data = [h.read(CHUNK_SIZE) for h in handles]
+            if not is_bin and result == Different and need_contents:
+                contents = (
+                    data.read() if(hasattr(data, 'read')) else data
+                    for data in mmaps
+                )
+                # For probable text files, discard newline differences to match
+                # file comparisons.
+                contents = (b"\n".join(c.splitlines()) for c in contents)
+
+                contents = (
+                    misc.apply_text_filters(c, regexes) for c in contents
+                )
+
+                if ignore_blank_lines:
+                    contents = (remove_blank_lines(c) for c in contents)
+                contents = list(contents)
+                result = SameFiltered if all(same(contents)) else Different
 
         # Files are too large; we can't apply filters
         except (MemoryError, OverflowError):
@@ -193,18 +224,6 @@ def _files_same(files, regexes, comparison_args):
 
     if result is None:
         result = Same
-
-    if result == Different and need_contents:
-        contents = (b"".join(c) for c in contents)
-        # For probable text files, discard newline differences to match
-        # file comparisons.
-        contents = (b"\n".join(c.splitlines()) for c in contents)
-
-        contents = (misc.apply_text_filters(c, regexes) for c in contents)
-
-        if ignore_blank_lines:
-            contents = (remove_blank_lines(c) for c in contents)
-        result = SameFiltered if all(same(contents)) else Different
 
     _cache[cache_key] = CacheResult(stats, result)
     return result
