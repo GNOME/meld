@@ -110,7 +110,7 @@ def _files_same(files, regexes, comparison_args):
       FileError: There was a problem reading one or more of the files
     """
 
-    if all(same(files)):
+    if (not files) or all(same(files)):
         return Same
 
     files = tuple(files)
