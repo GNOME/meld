@@ -20,6 +20,7 @@ import collections
 import copy
 import errno
 import functools
+import itertools
 import os
 import shutil
 import stat
@@ -39,7 +40,7 @@ from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
-from meld.misc import all_same, with_focused_pane
+from meld.misc import with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
@@ -84,6 +85,12 @@ Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
 CHUNK_SIZE = 4096
 
 
+same = functools.partial(
+    itertools.accumulate,
+    func=lambda x, x1: x == x1 and x
+)
+
+
 def remove_blank_lines(text):
     splits = text.splitlines()
     lines = text.splitlines(True)
@@ -103,7 +110,7 @@ def _files_same(files, regexes, comparison_args):
       FileError: There was a problem reading one or more of the files
     """
 
-    if all_same(files):
+    if all(same(files)):
         return Same
 
     files = tuple(files)
@@ -127,12 +134,12 @@ def _files_same(files, regexes, comparison_args):
     # Compare files superficially if the options tells us to
     if shallow_comparison:
         all_same_timestamp = all(
-            s.shallow_equal(stats[0], time_resolution_ns) for s in stats[1:]
+            [s.shallow_equal(stats[0], time_resolution_ns) for s in stats[1:]]
         )
         return DodgySame if all_same_timestamp else Different
 
     # If there are no text filters, unequal sizes imply a difference
-    if not need_contents and not all_same([s.size for s in stats]):
+    if not need_contents and not all(same([s.size for s in stats])):
         return Different
 
     # Check the cache before doing the expensive comparison
@@ -156,7 +163,7 @@ def _files_same(files, regexes, comparison_args):
                 need_contents = False
 
             while True:
-                if all_same(data):
+                if all(same(data)):
                     if not data[0]:
                         break
                 else:
@@ -172,7 +179,7 @@ def _files_same(files, regexes, comparison_args):
 
         # Files are too large; we can't apply filters
         except (MemoryError, OverflowError):
-            result = DodgySame if all_same(stats) else DodgyDifferent
+            result = DodgySame if all(same(stats)) else DodgyDifferent
         finally:
             for h in handles:
                 h.close()
@@ -184,16 +191,16 @@ def _files_same(files, regexes, comparison_args):
         result = Same
 
     if result == Different and need_contents:
-        contents = [b"".join(c) for c in contents]
+        contents = (b"".join(c) for c in contents)
         # For probable text files, discard newline differences to match
         # file comparisons.
-        contents = [b"\n".join(c.splitlines()) for c in contents]
+        contents = (b"\n".join(c.splitlines()) for c in contents)
 
-        contents = [misc.apply_text_filters(c, regexes) for c in contents]
+        contents = (misc.apply_text_filters(c, regexes) for c in contents)
 
         if ignore_blank_lines:
-            contents = [remove_blank_lines(c) for c in contents]
-        result = SameFiltered if all_same(contents) else Different
+            contents = (remove_blank_lines(c) for c in contents)
+        result = SameFiltered if all(same(contents)) else Different
 
     _cache[cache_key] = CacheResult(stats, result)
     return result
