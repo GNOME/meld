@@ -138,6 +138,10 @@ def _files_same(files, regexes, comparison_args):
         )
         return DodgySame if all_same_timestamp else Different
 
+    # Empty files are equal
+    if all([s.size == 0 for s in stats]):
+        return Same
+
     # If there are no text filters, unequal sizes imply a difference
     if not need_contents and not all(same([s.size for s in stats])):
         return Different
