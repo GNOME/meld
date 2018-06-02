@@ -45,14 +45,6 @@ class RecentType(enum.Enum):
     Merge = "Merge"
 
 
-def unicodeify(s):
-    if s is None:
-        return None
-    if isinstance(s, bytes):
-        return s.decode(sys.getfilesystemencoding(), 'replace')
-    return s
-
-
 class RecentFiles(object):
 
     mime_type = "application/x-meld-comparison"
@@ -96,7 +88,6 @@ class RecentFiles(object):
         # If a (type, uris) comparison is already registered, then re-add
         # the corresponding comparison file
         comparison_key = (comp_type, tuple(uris))
-        uris = [unicodeify(u) for u in uris]
         if comparison_key in self._stored_comparisons:
             gfile = Gio.File.new_for_uri(
                 self._stored_comparisons[comparison_key])
