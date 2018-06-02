@@ -20,7 +20,6 @@ import collections
 import copy
 import errno
 import functools
-import itertools
 import mmap
 import os
 import shutil
@@ -41,7 +40,7 @@ from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
-from meld.misc import with_focused_pane
+from meld.misc import all_same, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
@@ -86,12 +85,6 @@ Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
 CHUNK_SIZE = 4096
 
 
-same = functools.partial(
-    itertools.accumulate,
-    func=lambda x, x1: x == x1 and x
-)
-
-
 def remove_blank_lines(text):
     splits = text.splitlines()
     lines = text.splitlines(True)
@@ -111,7 +104,7 @@ def _files_same(files, regexes, comparison_args):
       FileError: There was a problem reading one or more of the files
     """
 
-    if (not files) or all(same(files)):
+    if all_same(files):
         return Same
 
     files = tuple(files)
@@ -145,7 +138,7 @@ def _files_same(files, regexes, comparison_args):
         return Same
 
     # If there are no text filters, unequal sizes imply a difference
-    if not need_contents and not all(same([s.size for s in stats])):
+    if not need_contents and not all_same([s.size for s in stats]):
         return Different
 
     # Check the cache before doing the expensive comparison
@@ -211,11 +204,11 @@ def _files_same(files, regexes, comparison_args):
                 if ignore_blank_lines:
                     contents = (remove_blank_lines(c) for c in contents)
                 contents = list(contents)
-                result = SameFiltered if all(same(contents)) else Different
+                result = SameFiltered if all_same(contents) else Different
 
         # Files are too large; we can't apply filters
         except (MemoryError, OverflowError):
-            result = DodgySame if all(same(stats)) else DodgyDifferent
+            result = DodgySame if all_same(stats) else DodgyDifferent
         finally:
             for m in mmaps:
                 if hasattr(m, 'close') and not m.closed:

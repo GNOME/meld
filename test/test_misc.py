@@ -1,6 +1,6 @@
-
 import pytest
-from meld.misc import calc_syncpoint, merge_intervals
+
+from meld.misc import all_same, calc_syncpoint, merge_intervals
 
 
 @pytest.mark.parametrize("intervals, expected", [
@@ -51,3 +51,24 @@ def test_calc_syncpoint(value, page_size, lower, upper, expected):
     adjustment.configure(value, lower, upper, 1, 1, page_size)
     syncpoint = calc_syncpoint(adjustment)
     assert syncpoint == expected
+
+@pytest.mark.parametrize("lst, expected", [
+    (None, True),
+    ([], True),
+    ([0], True),
+    ([1], True),
+    ([0, 0], True),
+    ([0, 1], False),
+    ([1, 0], False),
+    ([1, 1], True),
+    ([0, 0, 0], True),
+    ([0, 0, 1], False),
+    ([0, 1, 0], False),
+    ([0, 1, 1], False),
+    ([1, 0, 0], False),
+    ([1, 0, 1], False),
+    ([1, 1, 0], False),
+    ([1, 1, 1], True)
+])
+def test_all_same(lst, expected):
+    assert all_same(lst) == expected

@@ -283,7 +283,12 @@ def get_common_theme():
 
 def all_same(lst):
     """Return True if all elements of the list are equal"""
-    return not lst or lst.count(lst[0]) == len(lst)
+    lst = lst or [1]
+    f = lst[0]
+    for d in lst[1:]:
+        if f != d:
+            return False
+    return True
 
 
 def shorten_names(*names):
