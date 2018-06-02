@@ -58,7 +58,7 @@ class RecentFiles(object):
         self.recent_manager = Gtk.RecentManager.get_default()
         self.recent_filter = Gtk.RecentFilter()
         self.recent_filter.add_mime_type(self.mime_type)
-        self._stored_comparisons = []
+        self._stored_comparisons = {}
         self.app_exec = os.path.abspath(sys.argv[0])
 
         if not os.path.exists(self.recent_path):
