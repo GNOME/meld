@@ -123,7 +123,7 @@ def _files_same(files, regexes, comparison_args):
     ignore_blank_lines = comparison_args['ignore_blank_lines']
     apply_text_filters = comparison_args['apply-text-filters']
 
-    need_contents = ignore_blank_lines and apply_text_filters
+    need_contents = ignore_blank_lines or apply_text_filters
 
     # If all entries are directories, they are considered to be the same
     if all([stat.S_ISDIR(s.mode) for s in stats]):
