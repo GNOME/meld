@@ -196,13 +196,14 @@ class RecentFiles(object):
                                         self.recent_manager.get_items())
         item_uris = [item.get_uri() for item in meld_items if item.exists()]
         self._stored_comparisons = {}
-        for uri in item_uris:
+        for item_uri in item_uris:
             try:
-                comp = self.read(uri)
+                recent_type, gfiles, flags = self.read(item_uri)
             except (IOError, ValueError):
                 continue
             # Store and look up comparisons by type and paths, ignoring flags
-            self._stored_comparisons[comp[:2]] = uri
+            gfile_uris = tuple(gfile.get_uri() for gfile in gfiles)
+            self._stored_comparisons[recent_type, gfile_uris] = item_uri
 
     def _filter_items(self, recent_filter, items):
         getters = {Gtk.RecentFilterFlags.URI: "uri",
