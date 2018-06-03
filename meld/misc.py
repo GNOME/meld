@@ -281,12 +281,13 @@ def get_common_theme():
     return fill_colours, line_colours
 
 
-def all_same(lst):
+def all_same(iterable):
     """Return True if all elements of the list are equal"""
-    lst = lst or [1]
-    f = lst[0]
-    for d in lst[1:]:
-        if f != d:
+    b, f = None, True
+    for d in iterable or ():
+        if f:
+            b, f = d, False
+        elif b != d:
             return False
     return True
 
