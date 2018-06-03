@@ -1,5 +1,6 @@
 from os import mkdir, path
 
+CHUNK_SIZE = 4096
 
 diff_definition = {
     'a': {
@@ -8,7 +9,7 @@ diff_definition = {
             'c.txt': lambda: b''
         },
         'd': {
-            'd.txt': lambda: (b'd' * 4096) + b'd'
+            'd.txt': lambda: (b'd' * CHUNK_SIZE) + b'd'
         },
         'e': {
             'f': {},
@@ -27,9 +28,9 @@ diff_definition = {
             'c.txt': lambda: b''
         },
         'd': {
-            'd.txt': lambda: (b'd' * 4096) + b'd',
-            'd.1.txt': lambda: (b'D' * 4096) + b'D',
-            'd.2.txt': lambda: (b'd' * (4096)) + b'D'
+            'd.txt': lambda: (b'd' * CHUNK_SIZE) + b'd',
+            'd.1.txt': lambda: (b'D' * CHUNK_SIZE) + b'D',
+            'd.2.txt': lambda: (b'd' * CHUNK_SIZE) + b'D'
         },
         'e': {
             'f': {
