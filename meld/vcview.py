@@ -447,8 +447,8 @@ class VcView(MeldDoc, Component):
         vc_entry = self.vc.get_entry(path)
         if vc_entry and vc_entry.state == tree.STATE_CONFLICT and \
                 hasattr(self.vc, 'get_path_for_conflict'):
-            local_label = _(u"%s — local") % basename
-            remote_label = _(u"%s — remote") % basename
+            local_label = _("%s — local") % basename
+            remote_label = _("%s — remote") % basename
 
             # We create new temp files for other, base and this, and
             # then set the output to the current file.
@@ -456,12 +456,12 @@ class VcView(MeldDoc, Component):
                 conflicts = (tree.CONFLICT_THIS, tree.CONFLICT_MERGED,
                              tree.CONFLICT_OTHER)
                 meta['labels'] = (local_label, None, remote_label)
-                meta['tablabel'] = _(u"%s (local, merge, remote)") % basename
+                meta['tablabel'] = _("%s (local, merge, remote)") % basename
             else:
                 conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
                              tree.CONFLICT_THIS)
                 meta['labels'] = (remote_label, None, local_label)
-                meta['tablabel'] = _(u"%s (remote, merge, local)") % basename
+                meta['tablabel'] = _("%s (remote, merge, local)") % basename
             diffs = [self.vc.get_path_for_conflict(path, conflict=c)
                      for c in conflicts]
             temps = [p for p, is_temp in diffs if is_temp]
@@ -472,17 +472,17 @@ class VcView(MeldDoc, Component):
             }
             meta['prompt_resolve'] = True
         else:
-            remote_label = _(u"%s — repository") % basename
+            remote_label = _("%s — repository") % basename
             comp_path = self.vc.get_path_for_repo_file(path)
             temps = [comp_path]
             if self.props.left_is_local:
                 diffs = [path, comp_path]
                 meta['labels'] = (None, remote_label)
-                meta['tablabel'] = _(u"%s (working, repository)") % basename
+                meta['tablabel'] = _("%s (working, repository)") % basename
             else:
                 diffs = [comp_path, path]
                 meta['labels'] = (remote_label, None)
-                meta['tablabel'] = _(u"%s (repository, working)") % basename
+                meta['tablabel'] = _("%s (repository, working)") % basename
             kwargs = {}
         kwargs['meta'] = meta
 

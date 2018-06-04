@@ -39,7 +39,7 @@ class Vc(_vc.Vc):
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)' (.*)$"
     CONFLICT_RE = "conflict in (.*)$"
-    RENAMED_RE = u"^(.*) => (.*)$"
+    RENAMED_RE = "^(.*) => (.*)$"
 
     commit_statuses = (
         _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED

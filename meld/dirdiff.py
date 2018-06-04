@@ -953,12 +953,12 @@ class DirDiff(MeldDoc, Component):
                             (_("_Replace"), Gtk.ResponseType.OK),
                         ]
                         replace = misc.modal_dialog(
-                            primary=_(u"Replace folder “%s”?") % folder_name,
+                            primary=_("Replace folder “%s”?") % folder_name,
                             secondary=_(
-                                u"Another folder with the same name already "
-                                u"exists in “%s”.\n"
-                                u"If you replace the existing folder, all "
-                                u"files in it will be lost.") % parent_name,
+                                "Another folder with the same name already "
+                                "exists in “%s”.\n"
+                                "If you replace the existing folder, all "
+                                "files in it will be lost.") % parent_name,
                             buttons=dialog_buttons,
                             messagetype=Gtk.MessageType.WARNING,
                         )
