@@ -1,10 +1,8 @@
-from os import path
-
 import pytest
 
-from meld.dirdiff import _files_same, DodgySame, Different, Same
+from os import path
+from meld.dirdiff import _files_same, Different, DodgySame, Same
 from .fixture import make
-
 
 
 @pytest.fixture
@@ -19,7 +17,7 @@ def files(*args):
 
 cmp_args = {
     'shallow-comparison': False,
-    'time-resolution': 100000000,
+    'time-resolution': 10000000000,
     'ignore_blank_lines': True,
     'apply-text-filters': True
 }
@@ -28,7 +26,7 @@ dodgy_args = dict(cmp_args)
 dodgy_args['shallow-comparison'] = True
 
 
-@pytest.mark.parametrize("files, regexes, comparison_args, expected", [
+@pytest.mark.parametrize('files, regexes, comparison_args, expected', [
     # empty file list
     (files(), [], cmp_args, Same),
     # dirs are same
