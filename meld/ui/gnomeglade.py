@@ -22,7 +22,7 @@ import meld.conf
 ui_file = meld.conf.ui_file
 
 
-class Component(object):
+class Component:
     """Base class for all Gtk.Builder created objects
 
     This class loads the UI file, autoconnects signals, and makes

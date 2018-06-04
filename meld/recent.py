@@ -45,7 +45,7 @@ class RecentType(enum.Enum):
     Merge = "Merge"
 
 
-class RecentFiles(object):
+class RecentFiles:
 
     mime_type = "application/x-meld-comparison"
     recent_path = os.path.join(GLib.get_user_data_dir(), "meld")

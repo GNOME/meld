@@ -18,7 +18,7 @@ import re
 from . import misc
 
 
-class FilterEntry(object):
+class FilterEntry:
 
     __slots__ = ("label", "active", "filter", "byte_filter", "filter_string")
 

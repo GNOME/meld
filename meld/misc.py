@@ -321,7 +321,7 @@ def read_pipe_iter(command, workdir, errorstream, yield_interval=0.1):
     this function yields None.
     When all the data is read, the entire string is yielded.
     """
-    class Sentinel(object):
+    class Sentinel:
 
         def __init__(self):
             self.proc = None

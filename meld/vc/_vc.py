@@ -62,7 +62,7 @@ def partition(pred, iterable):
             list(itertools.ifilter(pred, t2)))
 
 
-class Entry(object):
+class Entry:
     # These are labels for possible states of version controlled files;
     # not all states have a label to avoid visual clutter.
     state_names = {
@@ -124,7 +124,7 @@ class Entry(object):
         return entry.state == STATE_IGNORED or entry.isdir
 
 
-class Vc(object):
+class Vc:
 
     VC_DIR = None
 

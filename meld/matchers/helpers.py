@@ -38,7 +38,7 @@ class MatcherWorker(multiprocessing.Process):
             time.sleep(0)
 
 
-class CachedSequenceMatcher(object):
+class CachedSequenceMatcher:
     """Simple class for caching diff results, with LRU-based eviction
 
     Results from the SequenceMatcher are cached and timestamped, and

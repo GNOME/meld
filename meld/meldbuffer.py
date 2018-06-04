@@ -218,7 +218,7 @@ class MeldBufferData(GObject.GObject):
         return self._mtime == self._disk_mtime
 
 
-class BufferLines(object):
+class BufferLines:
     """Gtk.TextBuffer shim with line-based access and optional filtering
 
     This class allows a Gtk.TextBuffer to be treated as a list of lines of
@@ -299,7 +299,7 @@ class BufferLines(object):
         return self.buf.get_line_count()
 
 
-class BufferAction(object):
+class BufferAction:
     """A helper to undo/redo text insertion/deletion into/from a text buffer"""
 
     def __init__(self, buf, offset, text):

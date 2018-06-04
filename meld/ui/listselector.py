@@ -18,7 +18,7 @@ def with_template_file(template_file):
     return add_template
 
 
-class TemplateHackMixin(object):
+class TemplateHackMixin:
 
     def get_template_child(self, widget_type, name):
         # Taken from an in-progress patch on bgo#701843

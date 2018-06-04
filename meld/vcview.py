@@ -76,7 +76,7 @@ _temp_dirs, _temp_files = [], []
 atexit.register(cleanup_temp)
 
 
-class ConsoleStream(object):
+class ConsoleStream:
 
     def __init__(self, textview):
         self.textview = textview

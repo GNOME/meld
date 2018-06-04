@@ -210,7 +210,7 @@ class DirDiffTreeStore(tree.DiffTreeStore):
             self, ntree, [str, str, object, object, object])
 
 
-class CanonicalListing(object):
+class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
     def __init__(self, n, canonicalize=None):

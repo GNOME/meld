@@ -51,7 +51,7 @@ def get_custom_encoding_candidates():
     return custom_candidates
 
 
-class LanguageManager(object):
+class LanguageManager:
 
     manager = GtkSource.LanguageManager()
 
@@ -76,7 +76,7 @@ class TextviewLineAnimationType(Enum):
     stroke = 'stroke'
 
 
-class TextviewLineAnimation(object):
+class TextviewLineAnimation:
     __slots__ = ("start_mark", "end_mark", "start_rgba", "end_rgba",
                  "start_time", "duration", "anim_type")
 

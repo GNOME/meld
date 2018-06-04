@@ -78,7 +78,7 @@ MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
 
-class CursorDetails(object):
+class CursorDetails:
     __slots__ = (
         "pane", "pos", "line", "offset", "chunk", "prev", "next",
         "prev_conflict", "next_conflict",
