@@ -43,7 +43,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
     icon_cache = {}
 
     def __init__(self):
-        super(EmblemCellRenderer, self).__init__()
+        super().__init__()
         self._icon_name = "text-x-generic"
         self._emblem_name = None
         self._secondary_emblem_name = None

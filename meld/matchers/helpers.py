@@ -19,7 +19,7 @@ class MatcherWorker(multiprocessing.Process):
     matcher_class = myers.InlineMyersSequenceMatcher
 
     def __init__(self, tasks, results):
-        super(MatcherWorker, self).__init__()
+        super().__init__()
         self.tasks = tasks
         self.results = results
         self.daemon = True

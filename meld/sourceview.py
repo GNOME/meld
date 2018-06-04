@@ -146,7 +146,7 @@ class MeldSourceView(GtkSource.View):
     )
 
     def __init__(self, *args, **kwargs):
-        super(MeldSourceView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         binding_set = Gtk.binding_set_find('GtkSourceView')
         for key, modifiers in self.replaced_entries:
             Gtk.binding_entry_remove(binding_set, key, modifiers)

@@ -215,13 +215,13 @@ class VcView(MeldDoc, Component):
             pass
 
     def on_container_switch_in_event(self, ui):
-        super(VcView, self).on_container_switch_in_event(ui)
+        super().on_container_switch_in_event(ui)
         self._set_external_action_sensitivity(True)
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def on_container_switch_out_event(self, ui):
         self._set_external_action_sensitivity(False)
-        super(VcView, self).on_container_switch_out_event(ui)
+        super().on_container_switch_out_event(ui)
 
     def populate_vcs_for_location(self, location):
         """Display VC plugin(s) that can handle the location"""
