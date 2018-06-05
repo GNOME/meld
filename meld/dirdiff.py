@@ -22,6 +22,7 @@ import errno
 import functools
 import mmap
 import os
+import re
 import shutil
 import stat
 import sys
@@ -83,6 +84,7 @@ Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
     list(range(6))
 # TODO: Get the block size from os.stat
 CHUNK_SIZE = 4096
+NEWLINE_RE = re.compile(b'\n')
 
 
 def remove_blank_lines(text):
@@ -189,13 +191,9 @@ def _files_same(files, regexes, comparison_args):
                 result = Different
 
             if not is_bin and result == Different and need_contents:
-                contents = (
-                    data.read() if(hasattr(data, 'read')) else data
-                    for data in mmaps
-                )
                 # For probable text files, discard newline differences to match
                 # file comparisons.
-                contents = (b"\n".join(c.splitlines()) for c in contents)
+                contents = (NEWLINE_RE.sub(b'\n', c) for c in mmaps)
 
                 contents = (
                     misc.apply_text_filters(c, regexes) for c in contents
