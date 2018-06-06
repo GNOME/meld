@@ -85,14 +85,31 @@ Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
 # TODO: Get the block size from os.stat
 CHUNK_SIZE = 4096
 NEWLINE_RE = re.compile(b'\n')
+BLANK_RE = re.compile(b'\n\s*(?=\n)')
+
+
+def strip_blank_line(text):
+    """
+    Remove blank lines from begin/end of text.
+    """
+    result = b''
+    for i, c in enumerate(text):
+        if c not in b'\t\r\f\v\n ':
+            result = text
+            break
+        elif c == b'\n':
+            result = text[i + 1:]
+            break
+    for n in range(len(result) - 1, -1, -1):
+        if result[n] not in b'\t\r\f\v\n ':
+            return result
+        elif result[n] == b'\n':
+            return result[:n]
+    return result
 
 
 def remove_blank_lines(text):
-    splits = text.splitlines()
-    lines = text.splitlines(True)
-    blanks = set([i for i, l in enumerate(splits) if not l])
-    lines = [l for i, l in enumerate(lines) if i not in blanks]
-    return b''.join(lines)
+    return strip_blank_line(BLANK_RE.sub(b'', text))
 
 
 def _files_same(files, regexes, comparison_args):
