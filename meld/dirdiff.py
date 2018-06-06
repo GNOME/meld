@@ -213,9 +213,8 @@ def _files_same(files, regexes, comparison_args):
                 contents = (NEWLINE_RE.sub(b'\n', c) for c in mmaps)
 
                 if apply_text_filters:
-                    contents = (
-                        misc.apply_text_filters(c, regexes) for c in contents
-                    )
+                    for r in regexes:
+                        contents = (r.sub(b'', c) for c in contents)
 
                 if ignore_blank_lines:
                     contents = (remove_blank_lines(c) for c in contents)
