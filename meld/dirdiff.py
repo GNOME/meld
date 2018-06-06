@@ -219,7 +219,6 @@ def _files_same(files, regexes, comparison_args):
 
                 if ignore_blank_lines:
                     contents = (remove_blank_lines(c) for c in contents)
-                contents = list(contents)
                 result = SameFiltered if all_same(contents) else Different
 
         # Files are too large; we can't apply filters
