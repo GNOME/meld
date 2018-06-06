@@ -142,7 +142,7 @@ def _files_same(files, regexes, comparison_args):
         return Same
 
     # If any entries are not regular files, consider them different
-    if not all([stat.S_ISREG(s.mode) for s in stats]):
+    if any([not stat.S_ISREG(s.mode) for s in stats]):
         return Different
 
     # Compare files superficially if the options tells us to
@@ -153,7 +153,8 @@ def _files_same(files, regexes, comparison_args):
         return DodgySame if all_same_timestamp else Different
 
     # If there are no text filters, unequal sizes imply a difference
-    if not need_contents and not all_same([s.size for s in stats]):
+    same_size = all_same([s.size for s in stats])
+    if not need_contents and not same_size:
         return Different
 
     # Check the cache before doing the expensive comparison
@@ -163,50 +164,52 @@ def _files_same(files, regexes, comparison_args):
         return cache.result
 
     # Open files and compare bit-by-bit
-    mmaps = []
-    is_bin = False
-    num_of_files = len(stats)
-    min_size = min(s.size for s in stats)
-    max_size = max(s.size for s in stats)
-    min_rounds = 1 + min_size // CHUNK_SIZE
-    result = None if min_size else Different
-
-    contents = [[] for f in files]
     result = None
-
     try:
+        mmaps = []
+        contents = []
         handles = [open(f, "rb") for f in files]
         try:
-            for i, f in enumerate(handles):
-                size = stats[i].size
-                if size > CHUNK_SIZE:
+            for f, s in zip(handles, stats):
+                # use mmap for files with size > CHUNK_SIZE
+                if s.size > CHUNK_SIZE:
                     data = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_COPY)
+                    mmaps.append(data)
                 else:
                     data = f.read()
-                mmaps.append(data)
-                max_bin_pos = size if size < CHUNK_SIZE else CHUNK_SIZE
+                contents.append(data)
+
                 # Rough test to see whether files are binary. If files are
                 # guessed to be binary, we don't examine contents for speed
                 # and space.
-                if b"\0" in data[:max_bin_pos]:
-                    is_bin = True
+                chunk_size = min([s.size, CHUNK_SIZE])
+                if b"\0" in data[:chunk_size]:
+                    need_contents = False
 
-            if max_size == min_size:
-                for i in range(min_rounds):
+            if same_size:
+                # compare files bit-by-bit
+                file_size = stats[0].size
+                rounds = range(1 + file_size // CHUNK_SIZE)
+                num_of_files = list(range(len(files) - 1))
+                match = True
+
+                for i in rounds:
                     m = i * CHUNK_SIZE
                     n = m + CHUNK_SIZE
-                    for j in range(num_of_files - 1):
-                        match = mmaps[j][m:n] == mmaps[j+1][m:n]
+                    for j in num_of_files:
+                        match = contents[j][m:n] == contents[j+1][m:n]
                         if not match:
                             result = Different
                             break
+                    if not match:
+                        break
             else:
                 result = Different
 
-            if not is_bin and result == Different and need_contents:
+            if need_contents and result == Different:
                 # For probable text files, discard newline differences to match
                 # file comparisons.
-                contents = (NEWLINE_RE.sub(b'\n', c) for c in mmaps)
+                contents = (NEWLINE_RE.sub(b'\n', c) for c in contents)
 
                 if apply_text_filters:
                     for r in regexes:
@@ -221,8 +224,7 @@ def _files_same(files, regexes, comparison_args):
             result = DodgySame if all_same(stats) else DodgyDifferent
         finally:
             for m in mmaps:
-                if hasattr(m, 'close') and not m.closed:
-                    m.close()
+                m.close()
             for h in handles:
                 h.close()
     except IOError:
