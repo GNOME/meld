@@ -125,8 +125,11 @@ class Vc(_vc.Vc):
         files = []
         for p in paths:
             if os.path.isdir(p):
-                entries = self._get_modified_files(p)
-                names = [self.DIFF_RE.search(e).groups()[5] for e in entries]
+                cached_entries, entries = self._get_modified_files(p)
+                all_entries = set(entries + cached_entries)
+                names = [
+                    self.DIFF_RE.search(e).groups()[5] for e in all_entries
+                ]
                 files.extend(names)
             else:
                 files.append(os.path.relpath(p, self.root))
