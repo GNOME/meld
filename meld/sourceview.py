@@ -51,7 +51,7 @@ def get_custom_encoding_candidates():
     return custom_candidates
 
 
-class LanguageManager(object):
+class LanguageManager:
 
     manager = GtkSource.LanguageManager()
 
@@ -76,7 +76,7 @@ class TextviewLineAnimationType(Enum):
     stroke = 'stroke'
 
 
-class TextviewLineAnimation(object):
+class TextviewLineAnimation:
     __slots__ = ("start_mark", "end_mark", "start_rgba", "end_rgba",
                  "start_time", "duration", "anim_type")
 
@@ -146,7 +146,7 @@ class MeldSourceView(GtkSource.View):
     )
 
     def __init__(self, *args, **kwargs):
-        super(MeldSourceView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         binding_set = Gtk.binding_set_find('GtkSourceView')
         for key, modifiers in self.replaced_entries:
             Gtk.binding_entry_remove(binding_set, key, modifiers)

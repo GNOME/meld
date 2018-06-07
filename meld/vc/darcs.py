@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2010-2015 Kai Willadsen <kai.willadsen@gmail.com>
 # Copyright (C)      2016 Guillaume Hoffmann <guillaumh@gmail.com>
 # Redistribution and use in source and binary forms, with or without

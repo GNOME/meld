@@ -73,7 +73,7 @@ class HistoryCombo(Gtk.ComboBox):
     )
 
     def __init__(self, **kwargs):
-        super(HistoryCombo, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         if sys.platform == "win32":
             pref_dir = os.path.join(os.getenv("APPDATA"), "Meld")

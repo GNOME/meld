@@ -42,7 +42,7 @@ freeze_support()
 
 def disable_stdout_buffering():
 
-    class Unbuffered(object):
+    class Unbuffered:
 
         def __init__(self, file):
             self.file = file

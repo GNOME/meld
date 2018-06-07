@@ -40,7 +40,7 @@ from gi.repository import GObject
 log = logging.getLogger(__name__)
 
 
-class GroupAction(object):
+class GroupAction:
     """A group action combines several actions into one logical action.
     """
     def __init__(self, seq):

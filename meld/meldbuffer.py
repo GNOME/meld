@@ -121,7 +121,7 @@ class MeldBufferData(GObject.GObject):
     @property
     def label(self):
         # TRANSLATORS: This is the label of a new, currently-unnamed file.
-        return self._label or _(u"<unnamed>")
+        return self._label or _("<unnamed>")
 
     @label.setter
     def label(self, value):
@@ -218,7 +218,7 @@ class MeldBufferData(GObject.GObject):
         return self._mtime == self._disk_mtime
 
 
-class BufferLines(object):
+class BufferLines:
     """Gtk.TextBuffer shim with line-based access and optional filtering
 
     This class allows a Gtk.TextBuffer to be treated as a list of lines of
@@ -266,7 +266,7 @@ class BufferLines(object):
             if hi - lo != len(lines):
                 # These codepoints are considered line breaks by Python, but
                 # not by GtkTextStore.
-                additional_breaks = set(('\x0c', '\x85', u'\u2028'))
+                additional_breaks = set(('\x0c', '\x85', '\u2028'))
                 i = 0
                 while i < len(ends):
                     line, end = lines[i], ends[i]
@@ -299,7 +299,7 @@ class BufferLines(object):
         return self.buf.get_line_count()
 
 
-class BufferAction(object):
+class BufferAction:
     """A helper to undo/redo text insertion/deletion into/from a text buffer"""
 
     def __init__(self, buf, offset, text):

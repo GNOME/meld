@@ -62,7 +62,7 @@ class MsgAreaController(Gtk.HBox):
     __gtype_name__ = "MsgAreaController"
 
     def __init__(self):
-        super(MsgAreaController, self).__init__()
+        super().__init__()
 
         self.__msgarea = None
         self.__msgid = None

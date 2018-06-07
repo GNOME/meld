@@ -695,7 +695,7 @@ class MeldWindow(Component):
             if isinstance(page, MeldDoc):
                 return page
 
-        class DummyDoc(object):
+        class DummyDoc:
             def __getattr__(self, a):
                 return lambda *x: None
         return DummyDoc()

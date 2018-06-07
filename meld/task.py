@@ -19,7 +19,7 @@
 import traceback
 
 
-class SchedulerBase(object):
+class SchedulerBase:
     """Base class with common functionality for schedulers
 
     Derived classes must implement get_current_task.

@@ -19,7 +19,7 @@ class MatcherWorker(multiprocessing.Process):
     matcher_class = myers.InlineMyersSequenceMatcher
 
     def __init__(self, tasks, results):
-        super(MatcherWorker, self).__init__()
+        super().__init__()
         self.tasks = tasks
         self.results = results
         self.daemon = True
@@ -38,7 +38,7 @@ class MatcherWorker(multiprocessing.Process):
             time.sleep(0)
 
 
-class CachedSequenceMatcher(object):
+class CachedSequenceMatcher:
     """Simple class for caching diff results, with LRU-based eviction
 
     Results from the SequenceMatcher are cached and timestamped, and

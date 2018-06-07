@@ -77,7 +77,7 @@ def renderer_to_gtk_state(state):
     return gtk_state
 
 
-class MeldGutterRenderer(object):
+class MeldGutterRenderer:
 
     def set_renderer_defaults(self):
         self.set_alignment_mode(GtkSource.GutterRendererAlignmentMode.FIRST)
@@ -165,7 +165,7 @@ class GutterRendererChunkAction(
     }
 
     def __init__(self, from_pane, to_pane, views, filediff, linediffer):
-        super(GutterRendererChunkAction, self).__init__()
+        super().__init__()
         self.set_renderer_defaults()
         self.from_pane = from_pane
         self.to_pane = to_pane
@@ -345,7 +345,7 @@ class GutterRendererChunkLines(
     __gtype_name__ = "GutterRendererChunkLines"
 
     def __init__(self, from_pane, to_pane, linediffer):
-        super(GutterRendererChunkLines, self).__init__()
+        super().__init__()
         self.set_renderer_defaults()
         self.from_pane = from_pane
         self.to_pane = to_pane

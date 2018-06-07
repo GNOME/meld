@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
 # Copyright (C) 2015 Kai Willadsen <kai.willadsen@gmail.com>
@@ -40,7 +39,7 @@ class Vc(_vc.Vc):
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)' (.*)$"
     CONFLICT_RE = "conflict in (.*)$"
-    RENAMED_RE = u"^(.*) => (.*)$"
+    RENAMED_RE = "^(.*) => (.*)$"
 
     commit_statuses = (
         _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED

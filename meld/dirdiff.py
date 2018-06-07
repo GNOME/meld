@@ -1,5 +1,3 @@
-# coding=UTF-8
-
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2009-2013 Kai Willadsen <kai.willadsen@gmail.com>
 #
@@ -212,7 +210,7 @@ class DirDiffTreeStore(tree.DiffTreeStore):
             self, ntree, [str, str, object, object, object])
 
 
-class CanonicalListing(object):
+class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
     def __init__(self, n, canonicalize=None):
@@ -955,12 +953,12 @@ class DirDiff(MeldDoc, Component):
                             (_("_Replace"), Gtk.ResponseType.OK),
                         ]
                         replace = misc.modal_dialog(
-                            primary=_(u"Replace folder “%s”?") % folder_name,
+                            primary=_("Replace folder “%s”?") % folder_name,
                             secondary=_(
-                                u"Another folder with the same name already "
-                                u"exists in “%s”.\n"
-                                u"If you replace the existing folder, all "
-                                u"files in it will be lost.") % parent_name,
+                                "Another folder with the same name already "
+                                "exists in “%s”.\n"
+                                "If you replace the existing folder, all "
+                                "files in it will be lost.") % parent_name,
                             buttons=dialog_buttons,
                             messagetype=Gtk.MessageType.WARNING,
                         )

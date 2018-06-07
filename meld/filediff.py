@@ -78,7 +78,7 @@ MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
 
-class CursorDetails(object):
+class CursorDetails:
     __slots__ = (
         "pane", "pos", "line", "offset", "chunk", "prev", "next",
         "prev_conflict", "next_conflict",
@@ -813,11 +813,11 @@ class FileDiff(MeldDoc, Component):
         except AssertionError:
             if not self.warned_bad_comparison:
                 misc.error_dialog(
-                    primary=_(u"Comparison results will be inaccurate"),
+                    primary=_("Comparison results will be inaccurate"),
                     secondary=_(
-                        u"A filter changed the number of lines in the "
-                        u"file, which is unsupported. The comparison will "
-                        u"not be accurate."),
+                        "A filter changed the number of lines in the "
+                        "file, which is unsupported. The comparison will "
+                        "not be accurate."),
                 )
                 self.warned_bad_comparison = True
 
@@ -1185,7 +1185,7 @@ class FileDiff(MeldDoc, Component):
             filename = GLib.markup_escape_text(
                 gfile.get_parse_name())
             primary = _(
-                u"There was a problem opening the file “%s”." % filename)
+                "There was a problem opening the file “%s”." % filename)
             self.msgarea_mgr[pane].add_dismissable_msg(
                 'dialog-error-symbolic', primary, err.message)
 
@@ -1581,11 +1581,11 @@ class FileDiff(MeldDoc, Component):
                     (_("_Save as UTF-8"), Gtk.ResponseType.OK),
                 ]
                 reencode = misc.modal_dialog(
-                    primary=_(u"Couldn’t encode text as “%s”") % encoding,
+                    primary=_("Couldn’t encode text as “%s”") % encoding,
                     secondary=_(
-                        u"File “%s” contains characters that can’t be encoded "
-                        u"using encoding “%s”.\n"
-                        u"Would you like to save as UTF-8?") % (
+                        "File “%s” contains characters that can’t be encoded "
+                        "using encoding “%s”.\n"
+                        "Would you like to save as UTF-8?") % (
                         bufdata.label, encoding),
                     buttons=dialog_buttons,
                     messagetype=Gtk.MessageType.WARNING

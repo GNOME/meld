@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2005 Aaron Bentley <aaron.bentley@utoronto.ca>
 # Copyright (C) 2007 José Fonseca <j_r_fonseca@yahoo.co.uk>
