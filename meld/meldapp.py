@@ -43,14 +43,14 @@ optparse._ = _
 class MeldApp(Gtk.Application):
 
     def __init__(self):
-        Gtk.Application.__init__(self)
+        super().__init__()
         self.set_flags(Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.set_application_id("org.gnome.meld")
         GLib.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
 
     def do_startup(self):
-        Gtk.Application.do_startup(self)
+        super().do_startup()
 
         actions = (
             ("preferences", self.preferences_callback),
@@ -97,7 +97,7 @@ class MeldApp(Gtk.Application):
 
     def do_window_removed(self, widget):
         widget.meldwindow = None
-        Gtk.Application.do_window_removed(self, widget)
+        super().do_window_removed(widget)
         if not len(self.get_windows()):
             self.quit()
 
@@ -200,7 +200,7 @@ class MeldApp(Gtk.Application):
                 self.should_exit = False
                 self.output = io.StringIO()
                 self.exit_status = 0
-                optparse.OptionParser.__init__(self, *args, **kwargs)
+                super().__init__(*args, **kwargs)
 
             def exit(self, status=0, msg=None):
                 self.should_exit = True

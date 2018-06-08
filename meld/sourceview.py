@@ -227,11 +227,11 @@ class MeldSourceView(GtkSource.View):
         bind_settings(self)
         self.on_setting_changed(meldsettings, 'font')
         self.on_setting_changed(meldsettings, 'style-scheme')
-        return GtkSource.View.do_realize(self)
+        return super().do_realize()
 
     def do_draw_layer(self, layer, context):
         if layer != Gtk.TextViewLayer.BELOW:
-            return GtkSource.View.do_draw_layer(self, layer, context)
+            return super().do_draw_layer(layer, context)
 
         context.save()
         context.set_line_width(1.0)
@@ -333,7 +333,7 @@ class MeldSourceView(GtkSource.View):
 
         context.restore()
 
-        return GtkSource.View.do_draw_layer(self, layer, context)
+        return super().do_draw_layer(layer, context)
 
 
 class CommitMessageSourceView(GtkSource.View):

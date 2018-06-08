@@ -206,8 +206,7 @@ COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
 
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        tree.DiffTreeStore.__init__(
-            self, ntree, [str, str, object, object, object])
+        super().__init__(ntree, [str, str, object, object, object])
 
 
 class CanonicalListing:

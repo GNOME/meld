@@ -83,7 +83,7 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         return self.matching_blocks
 
     def get_opcodes(self):
-        opcodes = difflib.SequenceMatcher.get_opcodes(self)
+        opcodes = super().get_opcodes()
         return [DiffChunk._make(chunk) for chunk in opcodes]
 
     def get_difference_opcodes(self):
@@ -349,13 +349,13 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
 class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
 
     def __init__(self, isjunk=None, a="", b="", syncpoints=None):
-        MyersSequenceMatcher.__init__(self, isjunk, a, b)
+        super().__init__(isjunk, a, b)
         self.isjunk = isjunk
         self.syncpoints = syncpoints
 
     def initialise(self):
         if self.syncpoints is None or len(self.syncpoints) == 0:
-            for i in MyersSequenceMatcher.initialise(self):
+            for i in super().initialise():
                 yield i
         else:
             chunks = []

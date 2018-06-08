@@ -76,7 +76,7 @@ class MeldNotebook(Gtk.Notebook):
     """
 
     def __init__(self, *args, **kwargs):
-        Gtk.Notebook.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.action_group = Gio.SimpleActionGroup()
 

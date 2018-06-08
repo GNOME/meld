@@ -35,7 +35,7 @@ class MeldSettings(GObject.GObject):
     }
 
     def __init__(self):
-        GObject.GObject.__init__(self)
+        super().__init__()
         self.on_setting_changed(settings, 'filename-filters')
         self.on_setting_changed(settings, 'text-filters')
         self.on_setting_changed(settings, 'use-system-font')

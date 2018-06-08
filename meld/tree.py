@@ -43,7 +43,7 @@ class DiffTreeStore(SearchableTreeStore):
         full_types = []
         for col_type in (COL_TYPES + tuple(types)):
             full_types.extend([col_type] * ntree)
-        Gtk.TreeStore.__init__(self, *full_types)
+        super().__init__(*full_types)
         self.ntree = ntree
         self._setup_default_styles()
 

@@ -31,8 +31,8 @@ class FilterList(ListWidget):
 
     def __init__(self, key, filter_type):
         default_entry = [_("label"), False, _("pattern"), True]
-        ListWidget.__init__(
-            self, "EditableList.ui", "list_vbox", ["EditableListStore"],
+        super().__init__(
+            "EditableList.ui", "list_vbox", ["EditableListStore"],
             "EditableList", default_entry)
         self.key = key
         self.filter_type = filter_type
@@ -85,8 +85,8 @@ class ColumnList(ListWidget):
     }
 
     def __init__(self, key):
-        ListWidget.__init__(
-            self, "EditableList.ui", "columns_ta", ["ColumnsListStore"],
+        super().__init__(
+            "EditableList.ui", "columns_ta", ["ColumnsListStore"],
             "columns_treeview")
         self.key = key
 
@@ -124,7 +124,7 @@ class ColumnList(ListWidget):
 class GSettingsComboBox(Gtk.ComboBox):
 
     def __init__(self):
-        Gtk.ComboBox.__init__(self)
+        super().__init__()
         self.connect('notify::gsettings-value', self._setting_changed)
         self.connect('notify::active', self._active_changed)
 
@@ -182,8 +182,8 @@ class GSettingsStringComboBox(GSettingsComboBox):
 class PreferencesDialog(Component):
 
     def __init__(self, parent):
-        Component.__init__(
-            self, "preferences.ui", "preferencesdialog", [
+        super().__init__(
+            "preferences.ui", "preferencesdialog", [
                 "adjustment1", "adjustment2", "fileorderstore",
                 "sizegroup_editor", "timestampstore", "mergeorderstore",
                 "sizegroup_file_order_labels", "sizegroup_file_order_combos",

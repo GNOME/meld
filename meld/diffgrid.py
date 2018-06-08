@@ -22,7 +22,7 @@ class DiffGrid(Gtk.Grid):
     __gtype_name__ = "DiffGrid"
 
     def __init__(self):
-        Gtk.Grid.__init__(self)
+        super().__init__()
         self._in_drag = False
         self._drag_pos = -1
         self._drag_handle = None
@@ -30,17 +30,17 @@ class DiffGrid(Gtk.Grid):
         self._handle2 = HandleWindow()
 
     def do_realize(self):
-        Gtk.Grid.do_realize(self)
+        super().do_realize()
         self._handle1.realize(self)
         self._handle2.realize(self)
 
     def do_unrealize(self):
         self._handle1.unrealize()
         self._handle2.unrealize()
-        Gtk.Grid.do_unrealize(self)
+        super().do_unrealize()
 
     def do_map(self):
-        Gtk.Grid.do_map(self)
+        super().do_map()
         drag = self.get_child_at(2, 0)
         if drag and drag.get_visible():
             self._handle1.set_visible(True)
@@ -52,7 +52,7 @@ class DiffGrid(Gtk.Grid):
     def do_unmap(self):
         self._handle1.set_visible(False)
         self._handle2.set_visible(False)
-        Gtk.Grid.do_unmap(self)
+        super().do_unmap()
 
     def _handle_set_prelight(self, window, flag):
         if hasattr(window, "handle"):
@@ -228,7 +228,7 @@ class DiffGrid(Gtk.Grid):
         return wcols, hrows
 
     def do_draw(self, context):
-        Gtk.Grid.do_draw(self, context)
+        super().do_draw(context)
         self._handle1.draw(context)
         self._handle2.draw(context)
 
