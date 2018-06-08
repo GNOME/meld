@@ -184,7 +184,6 @@ def check_requirements():
     gtk_requirement = (3, 20)
     glib_requirement = (2, 48)
     gtksourceview_requirement = (3, 20, 0)
-    pangocairo_requirement = (1, 34)
 
     def missing_reqs(mod, ver, exc=None):
         if isinstance(exc, ImportError):
@@ -221,13 +220,6 @@ def check_requirements():
         assert hasattr(GtkSource, 'Tag')
     except (ImportError, AssertionError, ValueError) as e:
         missing_reqs("GtkSourceView", gtksourceview_requirement, e)
-
-    try:
-        gi.require_version("PangoCairo", "1.0")
-        from gi.repository import PangoCairo  # noqa: F401
-        # Only check that imports ok; the version is fine since Gtk loaded fine
-    except (ImportError, ValueError) as e:
-        missing_reqs("PangoCairo", pangocairo_requirement, e)
 
 
 def setup_resources():
@@ -367,10 +359,5 @@ if __name__ == '__main__':
         from gi.repository import GLib
         GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT,
                              lambda *args: meld.meldapp.app.quit(), None)
-    if sys.platform == 'win32':
-        # FontConfig on win32 at least with version <= 2.12.6 can cause several
-        # minutes 'hang' during first startup. So use native fonts backend.
-        from gi.repository import PangoCairo
-        PangoCairo.FontMap.set_default(PangoCairo.Win32FontMap())
     status = meld.meldapp.app.run(sys.argv)
     sys.exit(status)
