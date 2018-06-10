@@ -18,7 +18,6 @@ import os
 
 from gi.repository import Gdk
 from gi.repository import GLib
-from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.misc import colour_lookup_with_fallback
@@ -43,7 +42,7 @@ class DiffTreeStore(SearchableTreeStore):
         full_types = []
         for col_type in (COL_TYPES + tuple(types)):
             full_types.extend([col_type] * ntree)
-        Gtk.TreeStore.__init__(self, *full_types)
+        super().__init__(*full_types)
         self.ntree = ntree
         self._setup_default_styles()
 

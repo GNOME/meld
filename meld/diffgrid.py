@@ -22,7 +22,7 @@ class DiffGrid(Gtk.Grid):
     __gtype_name__ = "DiffGrid"
 
     def __init__(self):
-        Gtk.Grid.__init__(self)
+        super().__init__()
         self._in_drag = False
         self._drag_pos = -1
         self._drag_handle = None

@@ -69,7 +69,7 @@ class MeldStatusMenuButton(Gtk.MenuButton):
     )
 
     def __init__(self):
-        Gtk.MenuButton.__init__(self)
+        super().__init__()
 
         style_context = self.get_style_context()
         style_context.add_provider(

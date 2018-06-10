@@ -20,8 +20,7 @@ from . import gnomeglade
 class ListWidget(gnomeglade.Component):
 
     def __init__(self, ui_file, widget, store, treeview, new_row_data=None):
-        gnomeglade.Component.__init__(self, ui_file,
-                                      widget, store)
+        super().__init__(ui_file, widget, store)
         self.new_row_data = new_row_data
         self.list = getattr(self, treeview)
         self.model = self.list.get_model()

@@ -78,7 +78,7 @@ class Differ(GObject.GObject):
 
     def __init__(self):
         # Internally, diffs are stored from text1 -> text0 and text1 -> text2.
-        GObject.GObject.__init__(self)
+        super().__init__()
         self.num_sequences = 0
         self.seqlength = [0, 0, 0]
         self.diffs = [[], []]

@@ -34,8 +34,8 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
     def __init__(
             self, title=None, transient_for=None,
             action=Gtk.FileChooserAction.OPEN):
-        Gtk.FileChooserDialog.__init__(
-          self, title=title, transient_for=transient_for, action=action)
+        super().__init__(
+          title=title, transient_for=transient_for, action=action)
 
         self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         if action == Gtk.FileChooserAction.SAVE:

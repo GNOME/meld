@@ -40,7 +40,7 @@ from meld.windowstate import SavedWindowState
 class MeldWindow(Component):
 
     def __init__(self):
-        Component.__init__(self, "meldapp.ui", "meldapp")
+        super().__init__("meldapp.ui", "meldapp")
         self.widget.set_name("meldapp")
 
         actions = (
