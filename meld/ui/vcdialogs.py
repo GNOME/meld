@@ -105,7 +105,7 @@ class CommitDialog(GObject.GObject, Component):
 class PushDialog(Component):
 
     def __init__(self, parent):
-        Component.__init__(self, "vcview.ui", "pushdialog")
+        super().__init__("vcview.ui", "pushdialog")
         self.widget.set_transient_for(parent.widget.get_toplevel())
         self.widget.show_all()
 
