@@ -63,14 +63,14 @@ def file_attrs(
     )
 
 
-def _list_dir(parents, canonicalize):
+def _list_dir(parents, canonicalize, filterer=None):
     files = {}
     directories = (p for p in parents if p[S.TYPE] == TYPE.DIR)
     for directory in directories:
         root = directory[S.ROOT] or directory
         names = ()
         try:
-            names = listdir(directory[S.ABS_PATH])
+            names = filter(filterer, listdir(directory[S.ABS_PATH]))
             for name in names:
                 canon = canonicalize and canonicalize(name) or name
                 info = file_attrs(
@@ -100,7 +100,9 @@ def _first_canon_key(files):
     return files[0][ATTR.CANON].lower()
 
 
-def dirs_recursion(parents, canonicalize, max_depth=None, depth=0):
+def dirs_recursion(
+    parents, canonicalize, filterer=None, max_depth=None, depth=0
+):
     '''
     list all contensts for parents
     use listdirs to start from root
@@ -108,6 +110,7 @@ def dirs_recursion(parents, canonicalize, max_depth=None, depth=0):
     parents: Iterable[file_attrs] of base dirs
     canonicalize: function for name standadization
         ie: lambda i: i.lower()
+    filterer: function that filters
     max_depth: int of max depth
     depth: int of current depth
 
@@ -119,7 +122,7 @@ def dirs_recursion(parents, canonicalize, max_depth=None, depth=0):
         return
 
     files = sorted(
-        _list_dir(parents, canonicalize),
+        _list_dir(parents, canonicalize, filterer),
         key=_first_canon_key
     )
 
@@ -129,30 +132,38 @@ def dirs_recursion(parents, canonicalize, max_depth=None, depth=0):
 
     # list next depth
     for items in files:
-        yield from dirs_recursion(items, canonicalize, max_depth, depth)
+        yield from dirs_recursion(
+            items, canonicalize, filterer, max_depth, depth
+        )
 
 
-def list_dirs(roots, canonicalize=None, max_depth=None):
+def list_dirs(roots, canonicalize=None, filterer=None, max_depth=None):
     '''
     list all contensts for roots
 
     roots: Iterable[str] of base dirs
     canonicalize: function for name standadization
         ie: lambda i: i.lower()
+    filterer: function that filters
     max_depth: int of max depth
 
     retuns iterable(depth, Iterable[file_attrs])
     '''
-    if not roots:
-        return ()
+
+    name_path = [(f.strip(sep).split(sep)[-1], abspath(f)) for f in roots or ()]
+    name_path = [
+        (name, abs_path)
+        for name, abs_path in name_path
+        if not filterer or filterer(name)
+    ]
 
     files = [
         file_attrs(
-            abs_path=abspath(f),
-            path=f.strip(sep).split(sep)[-1],
-            name=f.strip(sep).split(sep)[-1],
-            canon=canonicalize and canonicalize(f) or f
-        ) for f in roots
+            abs_path=abs_path,
+            path=name,
+            name=name,
+            canon=canonicalize and canonicalize(name) or name
+        ) for name, abs_path in name_path
     ]
     depth = 0
 
@@ -160,14 +171,14 @@ def list_dirs(roots, canonicalize=None, max_depth=None):
     yield depth, files
 
     # list subitems
-    yield from dirs_recursion(files, canonicalize, max_depth, depth)
+    yield from dirs_recursion(files, canonicalize, filterer, max_depth, depth)
 
 
 if __name__ == '__main__':
     import sys
     roots = [
-        '../netlify-cms',
-        '../netlify-cms-again'
+        '.',
+        '.'
     ]
     if 'dirs_recursion_sort' in sys.argv:
         # for 52k files * 2
