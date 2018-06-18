@@ -63,6 +63,18 @@ def file_attrs(
     )
 
 
+def _dir_err_attr(directory, root, e):
+    canon = directory[S.CANON] + ' OsError'
+    name = directory[S.NAME] + ' OsError'
+    return file_attrs(
+        name,
+        canon,
+        path=directory[S.PATH],
+        abs_path=directory[S.ABS_PATH],
+        root=root,
+        stat_err=e
+    )
+
 def _list_dir(parents, canonicalize, filterer=None):
     files = {}
     directories = (p for p in parents if p[S.TYPE] == TYPE.DIR)
@@ -82,16 +94,7 @@ def _list_dir(parents, canonicalize, filterer=None):
                 )
                 files[canon] = files.get(canon, ()) + (info,)
         except OSError as e:
-            canon = directory[S.CANON] + ' OsError'
-            name = directory[S.NAME] + ' OsError'
-            info = file_attrs(
-                name,
-                canon,
-                path=directory[S.PATH],
-                abs_path=directory[S.ABS_PATH],
-                root=root,
-                stat_err=e
-            )
+            info = _dir_err_attr(directory, root, e)
             files[canon] = files.get(canon, ()) + (info,)
     return files.values()
 
