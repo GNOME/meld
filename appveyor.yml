@@ -46,7 +46,11 @@ build_script:
   - cmd: |
       %PYTHON_PREFIX%\Lib\site-packages\gnome\glib-compile-schemas data
       %PYTHON_PREFIX%\python setup_win32.py bdist_msi
+      %PYTHON_PREFIX%\python setup_win32.py install --root build/install_root --prefix . bdist_dumb
 
 artifacts:
   - path: dist/*.msi
     name: Meld installer
+
+  - path: dist/*.zip
+    name: Meld freezed binaries archive
