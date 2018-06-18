@@ -11,27 +11,38 @@ class ATTR(int, Enum):
     ABS_PATH = 3
     ROOT = 4
     STAT = 5
-    EXISTS = 6
-    IS_DIR = 7
-
+    TYPE = 6
+    STAT_ERR = 7
 S = ATTR
 
 
-def file_attrs(name, canon=None, path=None, abs_path=None, root=None):
+class TYPE(int, Enum):
+    DIR = stat_const.S_IFDIR
+    CHR = stat_const.S_IFCHR
+    BLK = stat_const.S_IFBLK
+    REG = stat_const.S_IFREG
+    LNK = stat_const.S_IFLNK
+    FIFO = stat_const.S_IFIFO
+    SOCK = stat_const.S_IFSOCK
+
+
+def file_attrs(
+    name, canon=None, path=None, abs_path=None, root=None, stat_err=None
+):
     '''
     Create a tuple of file infos
-    (NAME, CANON, PATH, ABS_PATH, ROOT, STAT, EXISTS, IS_DIR)
+    (NAME, CANON, PATH, ABS_PATH, ROOT, STAT, EXISTS, TYPE, STAT_ERR)
 
     Why not a named tuple?
     Performance issue until 3.7
     See: https://bugs.python.org/issue28638
     '''
-    exists = True
     stats = None
-    try:
-        stats = stat(abs_path)
-    except OSError:
-        exists = False
+    if not stat_err:
+        try:
+            stats = stat(abs_path)
+        except OSError as e:
+            stat_err = e
     return (
         # path
         name,
@@ -45,26 +56,41 @@ def file_attrs(name, canon=None, path=None, abs_path=None, root=None):
         root,
         # stat
         stats,
-        # exists
-        exists,
-        # is_dir
-        stats and stat_const.S_ISDIR(stats.st_mode)
+        # type
+        stats and stat_const.S_IFMT(stats.st_mode),
+        # stat_err
+        stat_err
     )
 
 
 def _list_dir(parents, canonicalize):
     files = {}
-    directories = (p for p in parents if p[S.IS_DIR])
+    directories = (p for p in parents if p[S.TYPE] == TYPE.DIR)
     for directory in directories:
         root = directory[S.ROOT] or directory
-        for name in listdir(directory[S.ABS_PATH]):
-            canon = canonicalize and canonicalize(name) or name
+        names = ()
+        try:
+            names = listdir(directory[S.ABS_PATH])
+            for name in names:
+                canon = canonicalize and canonicalize(name) or name
+                info = file_attrs(
+                    name,
+                    canon,
+                    path=directory[S.PATH] + sep + name,
+                    abs_path=directory[S.ABS_PATH] + sep + name,
+                    root=root
+                )
+                files[canon] = files.get(canon, ()) + (info,)
+        except OSError as e:
+            canon = directory[S.CANON] + ' OsError'
+            name = directory[S.NAME] + ' OsError'
             info = file_attrs(
                 name,
                 canon,
-                path=directory[S.PATH] + sep + name,
-                abs_path=directory[S.ABS_PATH] + sep + name,
-                root=root
+                path=directory[S.PATH],
+                abs_path=directory[S.ABS_PATH],
+                root=root,
+                stat_err=e
             )
             files[canon] = files.get(canon, ()) + (info,)
     return files.values()
@@ -140,8 +166,8 @@ def list_dirs(roots, canonicalize=None, max_depth=None):
 if __name__ == '__main__':
     import sys
     roots = [
-        '.',
-        '.'
+        '../netlify-cms',
+        '../netlify-cms-again'
     ]
     if 'dirs_recursion_sort' in sys.argv:
         # for 52k files * 2
