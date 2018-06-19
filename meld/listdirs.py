@@ -9,10 +9,11 @@ class ATTR(int, Enum):
     CANON = 1
     PATH = 2
     ABS_PATH = 3
-    ROOT = 4
-    STAT = 5
-    TYPE = 6
-    STAT_ERR = 7
+    PARENT_PATH = 4
+    ROOT = 5
+    STAT = 6
+    TYPE = 7
+    STAT_ERR = 8
 S = ATTR
 
 
@@ -27,11 +28,14 @@ class TYPE(int, Enum):
 
 
 def file_attrs(
-    name, canon=None, path=None, abs_path=None, root=None, stat_err=None
+    name, canon=None, path=None, abs_path=None,
+    parent_path=None, root=None, stat_err=None
 ):
     '''
-    Create a tuple of file infos
-    (NAME, CANON, PATH, ABS_PATH, ROOT, STAT, EXISTS, TYPE, STAT_ERR)
+    Create a tuple of file infos (
+        NAME, CANON, PATH, ABS_PATH, PARENT_PATH,
+        ROOT, STAT, EXISTS, TYPE, STAT_ERR
+    )
 
     Why not a named tuple?
     Performance issue until 3.7
@@ -52,6 +56,8 @@ def file_attrs(
         path,
         # abs_path
         abs_path,
+        # parent path
+        parent_path,
         # root
         root,
         # stat
@@ -90,6 +96,7 @@ def _list_dir(parents, canonicalize, filterer=None):
                     canon,
                     path=directory[S.PATH] + sep + name,
                     abs_path=directory[S.ABS_PATH] + sep + name,
+                    parent_path=directory[S.PATH],
                     root=root
                 )
                 files[canon] = files.get(canon, ()) + (info,)
