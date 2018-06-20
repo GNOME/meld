@@ -1,6 +1,7 @@
 from enum import Enum
 from os import listdir, stat
 from os.path import sep, abspath
+from itertools import chain
 import stat as stat_const
 
 
@@ -44,7 +45,7 @@ def file_attrs(
     stats = None
     if not stat_err:
         try:
-            stats = stat(abs_path)
+            stats = stat(abs_path, follow_symlinks=False)
         except OSError as e:
             stat_err = e
     return (
@@ -70,8 +71,8 @@ def file_attrs(
 
 
 def _dir_err_attr(directory, root, e):
-    canon = directory[S.CANON] + ' OsError'
-    name = directory[S.NAME] + ' OsError'
+    canon = directory[S.CANON] + e.strerror
+    name = directory[S.NAME] + e.strerror
     return file_attrs(
         name,
         canon,
@@ -80,6 +81,7 @@ def _dir_err_attr(directory, root, e):
         root=root,
         stat_err=e
     )
+
 
 def _list_dir(parents, canonicalize, filterer=None):
     files = {}
@@ -110,9 +112,7 @@ def _first_canon_key(files):
     return files[0][ATTR.CANON].lower()
 
 
-def dirs_recursion(
-    parents, canonicalize, filterer=None, max_depth=None, depth=0
-):
+def dirs_recursion(parents, canonicalize, filterer=None):
     '''
     list all contensts for parents
     use listdirs to start from root
@@ -121,33 +121,25 @@ def dirs_recursion(
     canonicalize: function for name standadization
         ie: lambda i: i.lower()
     filterer: function that filters
-    max_depth: int of max depth
-    depth: int of current depth
 
-    returns iterable(depth, Iterable[file_attrs])
+    returns: Iterable[tuple[Iterable[file_attrs], Iterable[children]]]
+
+    children signature is same as return
     '''
 
-    depth += 1
-    if max_depth is not None and max_depth < depth:
-        return
-
-    files = sorted(
+    nodes = sorted(
         _list_dir(parents, canonicalize, filterer),
         key=_first_canon_key
     )
 
     # list current depth first
-    for f in files:
-        yield depth, f
-
-    # list next depth
-    for items in files:
-        yield from dirs_recursion(
-            items, canonicalize, filterer, max_depth, depth
+    for files in nodes:
+        yield files, dirs_recursion(
+            files, canonicalize, filterer
         )
 
 
-def list_dirs(roots, canonicalize=None, filterer=None, max_depth=None):
+def list_dirs(roots, canonicalize=None, filterer=None):
     '''
     list all contensts for roots
 
@@ -155,9 +147,10 @@ def list_dirs(roots, canonicalize=None, filterer=None, max_depth=None):
     canonicalize: function for name standadization
         ie: lambda i: i.lower()
     filterer: function that filters
-    max_depth: int of max depth
 
-    retuns iterable(depth, Iterable[file_attrs])
+    returns: Iterable[tuple[Iterable[file_attrs], Iterable[children]]]
+
+    children signature is same as return
     '''
 
     name_path = [(f.strip(sep).split(sep)[-1], abspath(f)) for f in roots or ()]
@@ -166,7 +159,6 @@ def list_dirs(roots, canonicalize=None, filterer=None, max_depth=None):
         for name, abs_path in name_path
         if not filterer or filterer(name)
     ]
-
     files = [
         file_attrs(
             abs_path=abs_path,
@@ -175,13 +167,48 @@ def list_dirs(roots, canonicalize=None, filterer=None, max_depth=None):
             canon=canonicalize and canonicalize(name) or name
         ) for name, abs_path in name_path
     ]
-    depth = 0
 
     # list roots files
-    yield depth, files
+    yield files, dirs_recursion(
+        files, canonicalize, filterer
+    )
 
-    # list subitems
-    yield from dirs_recursion(files, canonicalize, filterer, max_depth, depth)
+
+def flattern_bfs(iterator, max_depth=None, depth=None):
+    '''
+    Flattern list_dirs using breadth-first search
+
+    iterator: Iterable[tuple[Iterable[file_attrs], Iterable[children]]]
+    depth: int of current depth
+    max_depth: int of max depth
+
+    returns: Iterable[tuple[depth, Iterable[file_attrs]]]
+    '''
+    sub_iterator = ()
+    depth = depth or 0
+    for files, children in iterator:
+        sub_iterator = sub_iterator + (children,)
+        yield depth, files
+    if max_depth != depth:
+        for iterator in sub_iterator:
+            yield from flattern_bfs(iterator, max_depth, depth + 1)
+
+
+def flattern(iterator, max_depth=None, depth=None):
+    '''
+    Flattern list_dirs using depth-first preorder
+
+    iterator: Iterable[tuple[Iterable[file_attrs], Iterable[children]]]
+    depth: int of current depth
+    max_depth: int of max depth
+
+    returns: Iterable[tuple[depth, Iterable[file_attrs]]]
+    '''
+    depth = depth or 0
+    for files, children in iterator:
+        yield depth, files
+        if max_depth != depth:
+            yield from flattern(children, max_depth, depth + 1)
 
 
 if __name__ == '__main__':
@@ -193,13 +220,14 @@ if __name__ == '__main__':
     if 'dirs_recursion_sort' in sys.argv:
         # for 52k files * 2
         # 1.62user 0.57system 0:02.20elapsed 99%CPU 15mb
-        for depth, files in list_dirs(roots):
+        for depth, files in flattern_bfs(list_dirs(roots)):
             print(depth, files[0][ATTR.PATH])
-    elif 'dirs_recursion_lower' in sys.argv:
+
+    elif 'dirs_recursion' in sys.argv:
         # for 52k files * 2
         # 1.62user 0.57system 0:02.20elapsed 99%CPU 15mb
-        for depth, files in list_dirs(roots, lambda x: x.upper()):
-            print(depth, files[0][ATTR.CANON])
+        for depth, files in flattern(list_dirs(roots)):
+            print(depth, files[0][ATTR.PATH])
     else:
         # for 0 files
         # 0.02user 0.00system 0:00.03elapsed 97%CPU 8MB

@@ -1,7 +1,7 @@
 import pytest
 
 from os import path
-from meld.listdirs import list_dirs
+from meld.listdirs import list_dirs, flattern, flattern_bfs
 from .fixture import make
 
 
@@ -38,7 +38,13 @@ def files(*args):
 def test_listdirs(
     roots, canonicalize, filterer, max_depth, expected, different_dirs
 ):
-    result = list_dirs(roots, canonicalize, filterer, max_depth)
+    result = flattern(list_dirs(roots, canonicalize, filterer), max_depth)
     lst = list(result)
     size = len(lst)
     assert size == expected
+
+    result = flattern_bfs(list_dirs(roots, canonicalize, filterer), max_depth)
+    lst = list(result)
+    size = len(lst)
+    assert size == expected
+
