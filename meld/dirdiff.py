@@ -1027,7 +1027,16 @@ class DirDiff(MeldDoc, Component):
 
             busy = self._scan_in_progress > 0
 
+            is_single_foldable_row = False
+            if (selection.count_selected_rows() == 1):
+                path = selection.get_selected_rows()[1][0]
+                iter = self.model.get_iter(path)
+                os_path = self.model.value_path(iter, pane)
+                is_single_foldable_row = self.model.is_folder(iter, pane, os_path)
+
             get_action("DirCompare").set_sensitive(True)
+            get_action("DirCollapseRecursively").set_sensitive(is_single_foldable_row)
+            get_action("DirExpandRecursively").set_sensitive(is_single_foldable_row)
             get_action("Hide").set_sensitive(True)
             get_action("DirDelete").set_sensitive(
                 is_valid and not busy)
@@ -1183,6 +1192,27 @@ class DirDiff(MeldDoc, Component):
         selected = self._get_selected_paths(pane)
         for row in selected:
             self.run_diff_from_iter(self.model.get_iter(row))
+
+    def on_collapse_recursive_clicked(self, action):
+        pane = self._get_focused_pane()
+        root_path = self._get_selected_paths(pane)[0]
+        filter_model = Gtk.TreeModelFilter(child_model=self.model, virtual_root=root_path)
+        paths_to_collapse = []
+        filter_model.foreach(self.append_paths_to_collapse, paths_to_collapse)
+        paths_to_collapse.insert(0, root_path)
+
+        for path in reversed(paths_to_collapse):
+            self.treeview[pane].collapse_row(path)
+
+    def append_paths_to_collapse(self, filter_model, filter_path, filter_iter, paths_to_collapse):
+        path = filter_model.convert_path_to_child_path(filter_path)
+        paths_to_collapse.append(path)
+
+    def on_expand_recursive_clicked(self, action):
+        pane = self._get_focused_pane()
+        paths = self._get_selected_paths(pane)
+        for path in paths:
+            self.treeview[pane].expand_row(path, True)
 
     def on_button_copy_left_clicked(self, button):
         self.copy_selected(-1)
