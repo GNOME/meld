@@ -1,36 +1,28 @@
-from enum import Enum
 from os import listdir, stat
-from os.path import sep, abspath
-from itertools import chain
+from os.path import sep as SEP, abspath
+from functools import partial
+from collections import defaultdict, deque
 import stat as stat_const
 
-
-class ATTR(int, Enum):
-    NAME = 0
-    CANON = 1
-    PATH = 2
-    ABS_PATH = 3
-    PARENT_PATH = 4
-    ROOT = 5
-    STAT = 6
-    TYPE = 7
-    STAT_ERR = 8
-S = ATTR
+(
+    NAME, CANON, PATH, ABS_PATH, PARENT_PATH,
+    ROOT, POS, STAT, TYPE, STAT_ERR
+) = range(10)
 
 
-class TYPE(int, Enum):
-    DIR = stat_const.S_IFDIR
-    CHR = stat_const.S_IFCHR
-    BLK = stat_const.S_IFBLK
-    REG = stat_const.S_IFREG
-    LNK = stat_const.S_IFLNK
-    FIFO = stat_const.S_IFIFO
-    SOCK = stat_const.S_IFSOCK
+S_IFMT = 0o170000
+DIR = stat_const.S_IFDIR
+CHR = stat_const.S_IFCHR
+BLK = stat_const.S_IFBLK
+REG = stat_const.S_IFREG
+LNK = stat_const.S_IFLNK
+FIFO = stat_const.S_IFIFO
+SOCK = stat_const.S_IFSOCK
 
 
 def file_attrs(
     name, canon=None, path=None, abs_path=None,
-    parent_path=None, root=None, stat_err=None
+    parent_path=None, root=None, stat_err=None, pos=None
 ):
     '''
     Create a tuple of file infos (
@@ -42,10 +34,11 @@ def file_attrs(
     Performance issue until 3.7
     See: https://bugs.python.org/issue28638
     '''
+
     stats = None
     if not stat_err:
         try:
-            stats = stat(abs_path, follow_symlinks=False)
+            stats = stat(abs_path)
         except OSError as e:
             stat_err = e
     return (
@@ -61,82 +54,80 @@ def file_attrs(
         parent_path,
         # root
         root,
+        # root position
+        pos,
         # stat
         stats,
         # type
-        stats and stat_const.S_IFMT(stats.st_mode),
+        stats and (stats.st_mode & S_IFMT) or 0,
         # stat_err
         stat_err
     )
 
 
 def _dir_err_attr(directory, root, e):
-    canon = directory[S.CANON] + e.strerror
-    name = directory[S.NAME] + e.strerror
+    canon = directory[CANON] + e.strerror
+    name = directory[NAME] + e.strerror
     return file_attrs(
         name,
         canon,
-        path=directory[S.PATH],
-        abs_path=directory[S.ABS_PATH],
+        path=directory[PATH],
+        abs_path=directory[ABS_PATH],
         root=root,
-        stat_err=e
+        stat_err=e,
+        pos=directory[POS]
     )
 
 
-def _list_dir(parents, canonicalize, filterer=None):
-    files = {}
-    directories = (p for p in parents if p[S.TYPE] == TYPE.DIR)
-    for directory in directories:
-        root = directory[S.ROOT] or directory
-        names = ()
+def _list_dir(parents, canonicalize=None, filterer=None):
+    # TODO use scandir when min version is 3.5
+    files = defaultdict(tuple)
+    for node in parents:
+        if node[TYPE] != DIR:
+            continue
+
+        root = node[ROOT] or node
         try:
-            names = filter(filterer, listdir(directory[S.ABS_PATH]))
-            for name in names:
+            for name in listdir(node[ABS_PATH]):
                 canon = canonicalize and canonicalize(name) or name
-                info = file_attrs(
-                    name,
-                    canon,
-                    path=directory[S.PATH] + sep + name,
-                    abs_path=directory[S.ABS_PATH] + sep + name,
-                    parent_path=directory[S.PATH],
-                    root=root
-                )
-                files[canon] = files.get(canon, ()) + (info,)
+                if filterer and not filterer(canon):
+                    continue
+
+                files[canon] += (
+                    file_attrs(
+                        name,
+                        canon,
+                        path=node[PATH] + SEP + name,
+                        abs_path=node[ABS_PATH] + SEP + name,
+                        parent_path=node[PATH],
+                        root=root,
+                        pos=node[POS]
+                    )
+                ,)
         except OSError as e:
-            info = _dir_err_attr(directory, root, e)
-            files[canon] = files.get(canon, ()) + (info,)
-    return files.values()
+            yield node[CANON], (
+                _dir_err_attr(node, root, e)
+            ,)
+    yield from sorted(files.items())
 
 
-def _first_canon_key(files):
-    return files[0][ATTR.CANON].lower()
+_default_list_dir = partial(_list_dir, canonicalize=None, filterer=None)
 
 
-def dirs_recursion(parents, canonicalize, filterer=None):
+def dirs_recursion(parents, fn=_default_list_dir):
     '''
     list all contensts for parents
     use listdirs to start from root
 
     parents: Iterable[file_attrs] of base dirs
-    canonicalize: function for name standadization
-        ie: lambda i: i.lower()
-    filterer: function that filters
 
-    returns: Iterable[tuple[Iterable[file_attrs], Iterable[children]]]
+    returns: Iterable[tuple[name, Iterable[file_attrs], Iterable[children]]]
 
     children signature is same as return
     '''
 
-    nodes = sorted(
-        _list_dir(parents, canonicalize, filterer),
-        key=_first_canon_key
-    )
-
-    # list current depth first
-    for files in nodes:
-        yield files, dirs_recursion(
-            files, canonicalize, filterer
-        )
+    for name, files in fn(parents):
+        yield name, files, dirs_recursion(files, fn)
 
 
 def list_dirs(roots, canonicalize=None, filterer=None):
@@ -144,34 +135,28 @@ def list_dirs(roots, canonicalize=None, filterer=None):
     list all contensts for roots
 
     roots: Iterable[str] of base dirs
-    canonicalize: function for name standadization
-        ie: lambda i: i.lower()
-    filterer: function that filters
 
-    returns: Iterable[tuple[Iterable[file_attrs], Iterable[children]]]
+    returns: Iterable[tuple[name, Iterable[file_attrs], Iterable[children]]]
 
     children signature is same as return
     '''
 
-    name_path = [(f.strip(sep).split(sep)[-1], abspath(f)) for f in roots or ()]
     name_path = [
-        (name, abs_path)
-        for name, abs_path in name_path
-        if not filterer or filterer(name)
+        (pos, f.strip(SEP).split(SEP)[-1], abspath(f))
+        for pos, f in enumerate(roots or ())
     ]
     files = [
         file_attrs(
+            pos=pos,
             abs_path=abs_path,
             path=name,
             name=name,
             canon=canonicalize and canonicalize(name) or name
-        ) for name, abs_path in name_path
+        ) for pos, name, abs_path in name_path
     ]
 
-    # list roots files
-    yield files, dirs_recursion(
-        files, canonicalize, filterer
-    )
+    fn = partial(_list_dir, canonicalize=canonicalize, filterer=filterer)
+    yield '', files, dirs_recursion(files, fn)
 
 
 def flattern_bfs(iterator, max_depth=None, depth=None):
@@ -182,13 +167,13 @@ def flattern_bfs(iterator, max_depth=None, depth=None):
     depth: int of current depth
     max_depth: int of max depth
 
-    returns: Iterable[tuple[depth, Iterable[file_attrs]]]
+    returns: Iterable[tuple[depth, name, Iterable[file_attrs]]]
     '''
-    sub_iterator = ()
     depth = depth or 0
-    for files, children in iterator:
+    sub_iterator = ()
+    for name, files, children in iterator:
         sub_iterator = sub_iterator + (children,)
-        yield depth, files
+        yield depth, name, files
     if max_depth != depth:
         for iterator in sub_iterator:
             yield from flattern_bfs(iterator, max_depth, depth + 1)
@@ -200,13 +185,14 @@ def flattern(iterator, max_depth=None, depth=None):
 
     iterator: Iterable[tuple[Iterable[file_attrs], Iterable[children]]]
     depth: int of current depth
+    name: name o current node
     max_depth: int of max depth
 
-    returns: Iterable[tuple[depth, Iterable[file_attrs]]]
+    returns: Iterable[tuple[depth, name, Iterable[file_attrs]]]
     '''
     depth = depth or 0
-    for files, children in iterator:
-        yield depth, files
+    for name, files, children in iterator:
+        yield depth, name, files
         if max_depth != depth:
             yield from flattern(children, max_depth, depth + 1)
 
@@ -220,14 +206,14 @@ if __name__ == '__main__':
     if 'dirs_recursion_sort' in sys.argv:
         # for 52k files * 2
         # 1.62user 0.57system 0:02.20elapsed 99%CPU 15mb
-        for depth, files in flattern_bfs(list_dirs(roots)):
-            print(depth, files[0][ATTR.PATH])
+        for depth, name, files in flattern_bfs(list_dirs(roots)):
+            print(depth, name, files[0][PATH])
 
     elif 'dirs_recursion' in sys.argv:
         # for 52k files * 2
-        # 1.62user 0.57system 0:02.20elapsed 99%CPU 15mb
-        for depth, files in flattern(list_dirs(roots)):
-            print(depth, files[0][ATTR.PATH])
+        # 1.38user 0.54system 0:01.94elapsed 14mb
+        for depth, name, files in flattern(list_dirs(roots)):
+            print(depth, name, files[0][PATH])
     else:
         # for 0 files
         # 0.02user 0.00system 0:00.03elapsed 97%CPU 8MB
