@@ -66,9 +66,9 @@ include_files = [(os.path.join(include_dll_path, path), path) for path in
 
 build_exe_options = {
     "includes": ["gi"],
+    "excludes": ["tkinter"],
     "packages": ["gi", "weakref"],
     "include_files": include_files,
-    "bin_path_excludes": [""],
     "zip_exclude_packages": [],
     "zip_include_packages": ["*"],
 }
