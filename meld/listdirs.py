@@ -1,16 +1,25 @@
+import stat as stat_const
 from os import listdir, stat
 from os.path import sep as SEP, abspath
 from functools import partial
-from collections import defaultdict, deque
-import stat as stat_const
-
-(
-    NAME, CANON, PATH, ABS_PATH, PARENT_PATH,
-    ROOT, POS, STAT, TYPE, STAT_ERR
-) = range(10)
+from collections import ChainMap, defaultdict
 
 
-S_IFMT = 0o170000
+class ATTRS(object):
+    name = 0
+    canon = 1
+    path = 2
+    abs_path = 3
+    parent_path = 4
+    root = 5
+    pos = 6
+    stat = 7
+    type = 8
+    stat_err = 9
+
+s = ATTRS
+
+
 DIR = stat_const.S_IFDIR
 CHR = stat_const.S_IFCHR
 BLK = stat_const.S_IFBLK
@@ -18,6 +27,7 @@ REG = stat_const.S_IFREG
 LNK = stat_const.S_IFLNK
 FIFO = stat_const.S_IFIFO
 SOCK = stat_const.S_IFSOCK
+S_IFMT = 0o170000
 
 
 def file_attrs(
@@ -36,7 +46,7 @@ def file_attrs(
     '''
 
     stats = None
-    if not stat_err:
+    if abs_path and not stat_err:
         try:
             stats = stat(abs_path)
         except OSError as e:
@@ -66,16 +76,16 @@ def file_attrs(
 
 
 def _dir_err_attr(directory, root, e):
-    canon = directory[CANON] + e.strerror
-    name = directory[NAME] + e.strerror
+    canon = directory[s.canon] + e.strerror
+    name = directory[s.name] + e.strerror
     return file_attrs(
         name,
         canon,
-        path=directory[PATH],
-        abs_path=directory[ABS_PATH],
+        path=directory[s.path],
+        abs_path=directory[s.abs_path],
         root=root,
         stat_err=e,
-        pos=directory[POS]
+        pos=directory[s.pos]
     )
 
 
@@ -83,12 +93,12 @@ def _list_dir(parents, canonicalize=None, filterer=None):
     # TODO use scandir when min version is 3.5
     files = defaultdict(tuple)
     for node in parents:
-        if node[TYPE] != DIR:
+        if node[s.type] != DIR:
             continue
 
-        root = node[ROOT] or node
+        root = node[s.root] or node
         try:
-            for name in listdir(node[ABS_PATH]):
+            for name in listdir(node[s.abs_path]):
                 canon = canonicalize and canonicalize(name) or name
                 if filterer and not filterer(canon):
                     continue
@@ -97,15 +107,15 @@ def _list_dir(parents, canonicalize=None, filterer=None):
                     file_attrs(
                         name,
                         canon,
-                        path=node[PATH] + SEP + name,
-                        abs_path=node[ABS_PATH] + SEP + name,
-                        parent_path=node[PATH],
+                        path=node[s.path] + SEP + name,
+                        abs_path=node[s.abs_path] + SEP + name,
+                        parent_path=node[s.path],
                         root=root,
-                        pos=node[POS]
+                        pos=node[s.pos]
                     )
                 ,)
         except OSError as e:
-            yield node[CANON], (
+            yield node[s.canon], (
                 _dir_err_attr(node, root, e)
             ,)
     yield from sorted(files.items())
@@ -143,7 +153,7 @@ def list_dirs(roots, canonicalize=None, filterer=None):
 
     name_path = [
         (pos, f.strip(SEP).split(SEP)[-1], abspath(f))
-        for pos, f in enumerate(roots or ())
+        for pos, f in enumerate(roots or ()) if f
     ]
     files = [
         file_attrs(
@@ -159,7 +169,7 @@ def list_dirs(roots, canonicalize=None, filterer=None):
     yield '', files, dirs_recursion(files, fn)
 
 
-def flattern_bfs(iterator, max_depth=None, depth=None):
+def flattern_bfs(iterator, max_depth=None, parents=None, depth=None):
     '''
     Flattern list_dirs using breadth-first search
 
@@ -173,13 +183,13 @@ def flattern_bfs(iterator, max_depth=None, depth=None):
     sub_iterator = ()
     for name, files, children in iterator:
         sub_iterator = sub_iterator + (children,)
-        yield depth, name, files
+        yield depth, name, files, parents
     if max_depth != depth:
         for iterator in sub_iterator:
-            yield from flattern_bfs(iterator, max_depth, depth + 1)
+            yield from flattern_bfs(iterator, max_depth, files, depth + 1)
 
 
-def flattern(iterator, max_depth=None, depth=None):
+def flattern(iterator, max_depth=None, parents=None, depth=None):
     '''
     Flattern list_dirs using depth-first preorder
 
@@ -192,29 +202,51 @@ def flattern(iterator, max_depth=None, depth=None):
     '''
     depth = depth or 0
     for name, files, children in iterator:
-        yield depth, name, files
+        yield depth, name, files, parents
         if max_depth != depth:
-            yield from flattern(children, max_depth, depth + 1)
+            yield from flattern(children, max_depth, files, depth + 1)
 
+
+def fil_empty_spaces(trunks, branchs):
+    base = branchs[0]
+    name = base[ATTRS.canon]
+    current = { f[ATTRS.pos]: f for f in branchs }
+    return {
+        t[ATTRS.pos]: current.get(
+            t[ATTRS.pos],
+            file_attrs(
+                name,
+                name,
+                root=t,
+                pos=t[ATTRS.pos]
+            )
+        )
+        for t in trunks if t
+    }
 
 if __name__ == '__main__':
     import sys
     roots = [
-        '.',
-        '.'
+        '../netlify-cms',
+        '../netlify-cms'
     ]
     if 'dirs_recursion_sort' in sys.argv:
         # for 52k files * 2
         # 1.62user 0.57system 0:02.20elapsed 99%CPU 15mb
         for depth, name, files in flattern_bfs(list_dirs(roots)):
-            print(depth, name, files[0][PATH])
+            print(depth, name, files[0][s.path])
 
     elif 'dirs_recursion' in sys.argv:
         # for 52k files * 2
         # 1.38user 0.54system 0:01.94elapsed 14mb
-        for depth, name, files in flattern(list_dirs(roots)):
-            print(depth, name, files[0][PATH])
+        for depth, name, files, parent in flattern(list_dirs(roots)):
+            print(depth, name, files[0][s.path])
     else:
         # for 0 files
         # 0.02user 0.00system 0:00.03elapsed 97%CPU 8MB
         pass
+
+
+__all__ = [
+    'ATTRS', 'dirs_recursion', 'flattern_bfs', 'flattern_bfs', 'list_dirs',
+    'DIR', 'CHR', 'BLK', 'REG', 'LNK', 'FIFO', 'SOCK', 'S_IFMT']

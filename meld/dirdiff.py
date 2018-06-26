@@ -24,8 +24,9 @@ import os
 import shutil
 import stat
 import sys
-from collections import namedtuple
+from collections import namedtuple, ChainMap
 from decimal import Decimal
+from os.path import sep as SEP
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -38,6 +39,8 @@ from meld import misc
 from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
+from meld.listdirs import ATTRS, DIR, \
+    fil_empty_spaces, flattern_bfs, list_dirs
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, with_focused_pane
 from meld.recent import RecentType
@@ -672,7 +675,120 @@ class DirDiff(MeldDoc, Component):
             child = self.model.iter_children(it)
         self._update_item_state(it)
         self._scan_in_progress += 1
-        self.scheduler.add_task(self._search_recursively_iter(path))
+        self.scheduler.add_task(self._seedling())
+
+    def _seedling(self):
+        trunk_path = Gtk.TreePath.new_first()
+        trunk_iter = self.model.get_iter(trunk_path)
+        files_path = [e.get_filename() for e in self.fileentry]
+        files_iter = list_dirs(files_path)
+        regexes = [f.byte_filter for f in self.text_filters if f.active]
+        # ignore trunk
+        trunk_file_iter = next(files_iter)
+        trunk_files = trunk_file_iter[1]
+        branch_iter = trunk_file_iter[2]
+        n_columns = self.model.get_n_columns()
+        base = n_columns, trunk_files, regexes
+        yield from self._append_branch(branch_iter, trunk_iter, base)
+        sys.exit(0)
+        # TODO move this code somewhere else and make a recursion
+
+
+    def _append_branch(self, iterator, parent, base):
+        sub_iterator = ()
+        n_columns, trunk_files, regexes = base
+        for name, files, children in iterator:
+            entries = fil_empty_spaces(trunk_files, files)
+            values = [None] * n_columns
+            for i, v in self._files_values(entries, regexes).items():
+                values[i] = v
+            sub_parent = self.model.append(parent, values)
+            sub_iterator = sub_iterator + ((children, sub_parent),)
+            yield sub_parent
+        for iterator, sub_parent in sub_iterator:
+            yield from self._append_branch(iterator, sub_parent, base)
+
+
+    def _files_values(self, files_entries, regexes):
+        files = files_entries.values()
+        stats = [f[ATTRS.stat] for f in files]
+        sizes = [s.st_size if s else 0 for s in stats]
+        perms = [s.st_mode if s else 0 for s in stats]
+        times = [s.st_mtime if s else 0 for s in stats]
+        existing_files = [f for f in files if f[ATTRS.stat]]
+        existing_times = [f[ATTRS.stat].st_mtime for f in existing_files if f]
+        files_path = [f[ATTRS.abs_path] for f in files]
+
+        if all_same(existing_times):
+            newest = set()
+        else:
+            newest_time = max(existing_times)
+            newest = {i for i, t in enumerate(times) if t == newest_time}
+
+        if len(times) == len(existing_times):
+            files_are_same = self.file_compare(files_path, regexes)
+            all_present_same = files_are_same
+        else:
+            files_are_same = Different
+            all_present_same = self.file_compare(existing_files, regexes)
+        state = self._files_state_tree_state(files_are_same, all_present_same)
+
+        values = {}
+        for j, f in files_entries.items():
+            col_idx = functools.partial(self.model.column_index, pane=j)
+            f_is_dir = f[ATTRS.type] == DIR
+            f_label = f[ATTRS.canon]
+            if f[ATTRS.stat]:
+                values = self._initial_files_values(
+                    state, f_is_dir, values, f_label, col_idx
+                )
+
+                emblem = EMBLEM_NEW if j in newest else None
+                values[col_idx(COL_EMBLEM)] = emblem
+                values[col_idx(COL_EMBLEM_SECONDARY)] = None
+                values[col_idx(COL_TIME)] = times[j]
+                values[col_idx(COL_SIZE)] = sizes[j]
+                values[col_idx(COL_PERMS)] = perms[j]
+            else:
+                # TODO: More consistent state setting here would let us avoid
+                # pyobjects for column types by avoiding None use.
+                values = self._initial_files_values(
+                    tree.STATE_NONEXIST, f_is_dir, values, f_label, col_idx
+                )
+        return values
+
+    def _initial_files_values(self, state, f_is_dir, values, f_label, col_idx):
+        icon = self.model.icon_details[state][1 if f_is_dir else 0]
+        tint = self.model.icon_details[state][3 if f_is_dir else 2]
+        values[col_idx(tree.COL_STATE)] = str(state)
+        values[col_idx(tree.COL_TEXT)] = f_label
+        values[col_idx(tree.COL_ICON)] = icon
+        # FIXME: This is horrible, but EmblemCellRenderer crashes
+        # if you try to give it a Gdk.Color property
+        values[col_idx(tree.COL_TINT)] = tint.to_string() if tint else None
+
+        fg, style, weight, strike = self.model.text_attributes[state]
+        values[col_idx(tree.COL_FG)] = fg
+        values[col_idx(tree.COL_STYLE)] = style
+        values[col_idx(tree.COL_WEIGHT)] = weight
+        values[col_idx(tree.COL_STRIKE)] = strike
+        return values
+
+    def _files_state_tree_state(self, files_are_same, all_present_same):
+        # TODO: Differentiate the DodgySame case
+        if files_are_same == Same or files_are_same == DodgySame:
+            state = tree.STATE_NORMAL
+        elif files_are_same == SameFiltered:
+            state = tree.STATE_NOCHANGE
+        # TODO: Differentiate the SameFiltered and DodgySame cases
+        elif all_present_same in (Same, SameFiltered, DodgySame):
+            state = tree.STATE_NEW
+        elif files_are_same == FileError or all_present_same == FileError:
+            state = tree.STATE_ERROR
+        # Different and DodgyDifferent
+        else:
+            state = tree.STATE_MODIFIED
+        return state
 
     def _search_recursively_iter(self, rootpath):
         for t in self.treeview:
@@ -696,7 +812,6 @@ class DirDiff(MeldDoc, Component):
             path = todo.pop(0)
             it = self.model.get_iter(path)
             roots = self.model.value_paths(it)
-
             # Buggy ordering when deleting rows means that we sometimes try to
             # recursively update files; this fix seems the least invasive.
             if not any(os.path.isdir(root) for root in roots):
@@ -787,6 +902,9 @@ class DirDiff(MeldDoc, Component):
                 for names in alldirs:
                     entries = [
                         os.path.join(r, n) for r, n in zip(roots, names)]
+                    print('roots', roots)
+                    print('mames', names)
+                    raise Exception('adsfasdf')
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
                     todo.append(self.model.get_path(child))
