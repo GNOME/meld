@@ -697,15 +697,16 @@ class DirDiff(MeldDoc, Component):
         sub_iterator = ()
         n_columns, trunk_files, regexes = base
         for name, files, children in dirs_first(iterator):
+            yield _("{} Scanning {}".format(
+                self.label_text, files[0][ATTRS.path]))
             entries = fil_empty_spaces(trunk_files, files)
             values = [None] * n_columns
             for i, v in self._files_values(entries, regexes).items():
                 values[i] = v
             sub_parent = self.model.append(parent, values)
-            sub_iterator = sub_iterator + ((children, sub_parent),)
-            yield sub_parent
-        for iterator, sub_parent in sub_iterator:
-            yield from self._append_branch(iterator, sub_parent, base)
+            self.scheduler.add_task(
+                self._append_branch(children, sub_parent, base)
+            )
 
 
     def _files_values(self, files_entries, regexes):
