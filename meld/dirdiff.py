@@ -39,7 +39,7 @@ from meld import misc
 from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
-from meld.listdirs import ATTRS, DIR, \
+from meld.listdirs import ATTRS, DIR, dirs_first, \
     fil_empty_spaces, flattern_bfs, list_dirs
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, with_focused_pane
@@ -690,14 +690,13 @@ class DirDiff(MeldDoc, Component):
         n_columns = self.model.get_n_columns()
         base = n_columns, trunk_files, regexes
         yield from self._append_branch(branch_iter, trunk_iter, base)
-        sys.exit(0)
-        # TODO move this code somewhere else and make a recursion
 
 
+    # TODO move this code somewhere else and make
     def _append_branch(self, iterator, parent, base):
         sub_iterator = ()
         n_columns, trunk_files, regexes = base
-        for name, files, children in iterator:
+        for name, files, children in dirs_first(iterator):
             entries = fil_empty_spaces(trunk_files, files)
             values = [None] * n_columns
             for i, v in self._files_values(entries, regexes).items():
@@ -742,7 +741,6 @@ class DirDiff(MeldDoc, Component):
                 values = self._initial_files_values(
                     state, f_is_dir, values, f_label, col_idx
                 )
-
                 emblem = EMBLEM_NEW if j in newest else None
                 values[col_idx(COL_EMBLEM)] = emblem
                 values[col_idx(COL_EMBLEM_SECONDARY)] = None
