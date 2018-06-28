@@ -21,7 +21,6 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Pango
 
-from meld.gvalues import RowFactory
 from meld.misc import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
 from meld.vc._vc import (  # noqa: F401
@@ -46,7 +45,6 @@ class DiffTreeStore(SearchableTreeStore):
         Gtk.TreeStore.__init__(self, *full_types)
         self.ntree = ntree
         self._setup_default_styles()
-        self.row_factory = RowFactory(self)
 
     def on_style_updated(self, widget):
         style = widget.get_style_context()

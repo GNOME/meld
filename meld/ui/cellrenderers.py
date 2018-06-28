@@ -40,7 +40,7 @@ class CellRendererDate(Gtk.CellRendererText):
         self._datetime = value
 
     timestamp = GObject.Property(
-        type=object,
+        type=float,
         nick="Unix timestamp to display",
         getter=get_timestamp,
         setter=set_timestamp,
@@ -74,7 +74,7 @@ class CellRendererByteSize(Gtk.CellRendererText):
         self._bytesize = value
 
     bytesize = GObject.Property(
-        type=object,
+        type=int,
         nick="Byte size to display",
         getter=get_bytesize,
         setter=set_bytesize,
@@ -104,7 +104,7 @@ class CellRendererFileMode(Gtk.CellRendererText):
         self._file_mode = value
 
     file_mode = GObject.Property(
-        type=object,
+        type=int,
         nick="Byte size to display",
         getter=get_file_mode,
         setter=set_file_mode,

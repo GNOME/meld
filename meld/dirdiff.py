@@ -212,7 +212,7 @@ COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
         tree.DiffTreeStore.__init__(
-            self, ntree, [str, str, object, object, object])
+            self, ntree, [str, str, int, float, int])
 
 
 class CanonicalListing(object):
@@ -701,9 +701,11 @@ class DirDiff(MeldDoc, Component):
                 self.label_text, files[0][ATTRS.path]))
             entries = fil_empty_spaces(trunk_files, files)
             values = self._files_values(entries, regexes)
-            row_factory = self.model.row_factory
-            row_info = row_factory.make(values)
-            sub_parent = row_factory.append(parent, row_info)
+            row_info = { k: v for k, v in values.items() if v is not None }
+            columns = tuple(row_info.keys())
+            row = tuple(row_info.values())
+            sub_parent = self.model.insert_with_values(
+                parent, -1, columns, row)
             sub_iterator = sub_iterator + ((children, sub_parent),)
             yield sub_parent
         for iterator, sub_parent in sub_iterator:
