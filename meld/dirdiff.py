@@ -698,10 +698,10 @@ class DirDiff(MeldDoc, Component):
         n_columns, trunk_files, regexes = base
         for name, files, children in dirs_first(iterator):
             entries = fil_empty_spaces(trunk_files, files)
-            values = [None] * n_columns
-            for i, v in self._files_values(entries, regexes).items():
-                values[i] = v
-            sub_parent = self.model.append(parent, values)
+            values = self._files_values(entries, regexes)
+            row_factory = self.model.row_factory
+            row_info = row_factory.make(values)
+            sub_parent = row_factory.append(parent, row_info)
             sub_iterator = sub_iterator + ((children, sub_parent),)
             yield sub_parent
         for iterator, sub_parent in sub_iterator:
