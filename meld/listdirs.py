@@ -31,8 +31,8 @@ S_IFMT = 0o170000
 
 
 def file_attrs(
-    name, canon=None, path=None, abs_path=None,
-    parent_path=None, root=None, stat_err=None, pos=None
+    name, canon=None, path=None, abs_path=None, parent_path=None,
+    root=None, stat_err=None, pos=None, fake_type=0
 ):
     '''
     Create a tuple of file infos (
@@ -69,7 +69,7 @@ def file_attrs(
         # stat
         stats,
         # type
-        stats and (stats.st_mode & S_IFMT) or 0,
+        stats and (stats.st_mode & S_IFMT) or fake_type,
         # stat_err
         stat_err
     )
@@ -209,6 +209,7 @@ def flattern(iterator, max_depth=None, parents=None, depth=None):
 def fil_empty_spaces(trunks, branchs):
     base = branchs[0]
     name = base[ATTRS.canon]
+    fake_type = base[ATTRS.type]
     current = { f[ATTRS.pos]: f for f in branchs }
     return {
         t[ATTRS.pos]: current.get(
@@ -217,7 +218,8 @@ def fil_empty_spaces(trunks, branchs):
                 name,
                 name,
                 root=t,
-                pos=t[ATTRS.pos]
+                pos=t[ATTRS.pos],
+                fake_type=fake_type
             )
         )
         for t in trunks if t
