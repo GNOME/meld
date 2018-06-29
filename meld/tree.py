@@ -33,7 +33,7 @@ from meld.vc._vc import (  # noqa: F401
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
 
-COL_TYPES = (str, str, str, str, str, Gdk.RGBA, Pango.Style,
+COL_TYPES = (str, str, str, str, Gdk.RGBA, Gdk.RGBA, Pango.Style,
              Pango.Weight, bool)
 
 class DiffTreeStore(SearchableTreeStore):

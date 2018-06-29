@@ -767,9 +767,7 @@ class DirDiff(MeldDoc, Component):
         values[col_idx(tree.COL_STATE)] = str(state)
         values[col_idx(tree.COL_TEXT)] = f_label
         values[col_idx(tree.COL_ICON)] = icon
-        # FIXME: This is horrible, but EmblemCellRenderer crashes
-        # if you try to give it a Gdk.Color property
-        values[col_idx(tree.COL_TINT)] = tint.to_string() if tint else None
+        values[col_idx(tree.COL_TINT)] = tint
 
         fg, style, weight, strike = self.model.text_attributes[state]
         values[col_idx(tree.COL_FG)] = fg
