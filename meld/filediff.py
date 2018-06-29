@@ -748,7 +748,7 @@ class FileDiff(MeldDoc, Component):
     def move_cursor_pane(self, pane, new_pane):
         chunk, line = self.cursor.chunk, self.cursor.line
         new_line = self._corresponding_chunk_line(chunk, line, pane, new_pane)
-        self.move_cursor(pane, new_line)
+        self.move_cursor(new_pane, new_line)
 
     def action_prev_pane(self, *args):
         pane = self._get_focused_pane()
