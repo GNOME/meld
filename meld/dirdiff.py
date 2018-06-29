@@ -694,14 +694,18 @@ class DirDiff(MeldDoc, Component):
         base = n_columns, trunk_files, regexes
         yield from self._append_branch(branch_iter, trunk_iter, base)
 
+        self.treeview[0].expand_to_path(trunk_path)
+        self.treeview[0].set_cursor(trunk_path)
+        self.force_cursor_recalculate = True
+        self._update_diffmaps()
+        yield _("[%s] Done") % self.label_text
+
 
     # TODO move this code somewhere else and make
     def _append_branch(self, iterator, parent, base):
         sub_iterator = ()
         n_columns, trunk_files, regexes = base
         for name, files, children in dirs_first(iterator):
-            yield _("{} Scanning {}".format(
-                self.label_text, files[0][ATTRS.path]))
             entries = fil_empty_spaces(trunk_files, files)
             values = self._files_values(entries, regexes)
             row_info = { k: v for k, v in values.items() if v is not None }
@@ -710,7 +714,12 @@ class DirDiff(MeldDoc, Component):
             sub_parent = self.model.insert_with_values(
                 parent, -1, columns, row)
             sub_iterator = sub_iterator + ((children, sub_parent),)
-            yield sub_parent
+
+            yield row, row_info, files
+
+            path = self.model.get_path(sub_parent)
+            self.treeview[0].expand_to_path(Gtk.TreePath(path))
+
         for iterator, sub_parent in sub_iterator:
             yield from self._append_branch(iterator, sub_parent, base)
 
