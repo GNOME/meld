@@ -95,7 +95,7 @@ def remove_blank_lines(text):
     return b''.join(lines)
 
 
-def _files_same(files, regexes, comparison_args):
+def _files_same(files, regexes, comparison_args, file_stats=None):
     """Determine whether a list of files are the same.
 
     Possible results are:
@@ -111,7 +111,10 @@ def _files_same(files, regexes, comparison_args):
 
     files = tuple(files)
     regexes = tuple(regexes)
-    stats = tuple([StatItem._make(os.stat(f)) for f in files])
+    if file_stats:
+        stats = tuple([StatItem._make(s) for s in file_stats])
+    else:
+        stats = tuple([StatItem._make(os.stat(f)) for f in files])
 
     shallow_comparison = comparison_args['shallow-comparison']
     time_resolution_ns = comparison_args['time-resolution']
@@ -718,22 +721,23 @@ class DirDiff(MeldDoc, Component):
         sizes = [s.st_size if s else 0 for s in stats]
         perms = [s.st_mode if s else 0 for s in stats]
         times = [s.st_mtime if s else 0 for s in stats]
-        existing_files = [f for f in files if f[ATTRS.stat]]
-        existing_times = [f[ATTRS.stat].st_mtime for f in existing_files if f]
         files_path = [f[ATTRS.abs_path] for f in files]
+        existing_files = [f for f in files if f[ATTRS.stat]]
+        existing_paths = [f[ATTRS.abs_path] for f in existing_files]
+        existing_stats = [f[ATTRS.stat] for f in existing_files]
+        existing_times = [s.st_mtime for s in existing_stats]
 
-        if all_same(existing_times):
-            newest = set()
-        else:
+        newest = set()
+        if not all_same(existing_times):
             newest_time = max(existing_times)
             newest = {i for i, t in enumerate(times) if t == newest_time}
 
+        all_present_same = self.file_compare(
+            existing_paths, regexes, file_stats= existing_stats)
         if len(times) == len(existing_times):
-            files_are_same = self.file_compare(files_path, regexes)
-            all_present_same = files_are_same
+            files_are_same = all_present_same
         else:
             files_are_same = Different
-            all_present_same = self.file_compare(existing_files, regexes)
         state = self._files_state_tree_state(files_are_same, all_present_same)
 
         values = {}
@@ -752,8 +756,6 @@ class DirDiff(MeldDoc, Component):
                 values[col_idx(COL_SIZE)] = sizes[j]
                 values[col_idx(COL_PERMS)] = perms[j]
             else:
-                # TODO: More consistent state setting here would let us avoid
-                # pyobjects for column types by avoiding None use.
                 values = self._initial_files_values(
                     tree.STATE_NONEXIST, f_is_dir, values, f_label, col_idx
                 )
