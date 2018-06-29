@@ -35,9 +35,9 @@ class EmblemCellRenderer(Gtk.CellRenderer):
             str, "Named secondary emblem icon",
             "Name for secondary emblem icon to overlay",
             None, GObject.ParamFlags.READWRITE),
-        "icon-tint":   (str, "Icon tint",
+        "icon-tint":   (Gdk.RGBA, "Icon tint",
                         "GDK-parseable color to be used to tint icon",
-                        None, GObject.ParamFlags.READWRITE),
+                        GObject.ParamFlags.READWRITE),
     }
 
     icon_cache = {}
@@ -48,7 +48,6 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         self._emblem_name = None
         self._secondary_emblem_name = None
         self._icon_tint = None
-        self._tint_color = None
         self._state = None
         # FIXME: hardcoded sizes
         self._icon_size = 16
@@ -63,11 +62,6 @@ class EmblemCellRenderer(Gtk.CellRenderer):
             self._secondary_emblem_name = value
         elif pspec.name == "icon-tint":
             self._icon_tint = value
-            if self._icon_tint:
-                self._tint_color = Gdk.RGBA()
-                self._tint_color.parse(value)
-            else:
-                self._tint_color = None
         else:
             raise AttributeError("unknown property %s" % pspec.name)
 
@@ -108,8 +102,8 @@ class EmblemCellRenderer(Gtk.CellRenderer):
                               pixbuf.get_width(), pixbuf.get_height())
             context.fill()
 
-            if self._tint_color:
-                c = self._tint_color
+            if self._icon_tint:
+                c = self._icon_tint
                 r, g, b = c.red, c.green, c.blue
                 # Figure out the difference between our tint colour and an
                 # empirically determined (i.e., guessed) satisfying luma and
