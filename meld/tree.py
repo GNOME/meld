@@ -134,10 +134,7 @@ class DiffTreeStore(SearchableTreeStore):
         col_pane = [self.col_idx(pane) for pane in range(self.ntree)]
         while parent:
             for j in range(self.ntree):
-                state = self.get_state(parent, j)
-                if state == STATE_NONEXIST:
-                    self.set_value(parent, col_pane[j](COL_ICON), icon)
-                    self.set_value(parent, col_pane[j](COL_TINT), tint)
+                self.set_state(parent, j, STATE_MODIFIED, isdir=1)
             parent = self.iter_parent(parent)
 
     def add_empty(self, parent, text="empty folder"):
@@ -159,12 +156,11 @@ class DiffTreeStore(SearchableTreeStore):
             display_text = GLib.markup_escape_text(os.path.basename(fullname))
         self.set_state(it, pane, state, display_text, isdir)
 
-    def set_state(self, it, pane, state, label, isdir=0):
+    def set_state(self, it, pane, state, label=None, isdir=0):
         col_idx = self.col_idx(pane)
         icon = self.icon_details[state][1 if isdir else 0]
         tint = self.icon_details[state][3 if isdir else 2]
         self.set_value(it, col_idx(COL_STATE), str(state))
-        self.set_value(it, col_idx(COL_TEXT), label)
         self.set_value(it, col_idx(COL_ICON), icon)
         self.set_value(it, col_idx(COL_TINT), tint)
         fg, style, weight, strike = self.text_attributes[state]
@@ -172,6 +168,8 @@ class DiffTreeStore(SearchableTreeStore):
         self.set_value(it, col_idx(COL_STYLE), style)
         self.set_value(it, col_idx(COL_WEIGHT), weight)
         self.set_value(it, col_idx(COL_STRIKE), strike)
+        if label:
+            self.set_value(it, col_idx(COL_TEXT), label)
 
 
     def base_state(self, state=STATE_NORMAL, is_dir=False, label="", pane=0):

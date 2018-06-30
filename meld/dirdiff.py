@@ -708,11 +708,12 @@ class DirDiff(MeldDoc, Component):
             values = self._files_values(entries, state)
             branch = self.model.append_row_with_values(parent, values)
 
-            if len([1 for f in entries if f[ATTRS.stat]]) > 1:
+            at_least_two_files_exists = len([1 for f in entries if f[ATTRS.stat]]) > 1
+            if at_least_two_files_exists:
                 sub_iterator = sub_iterator + ((children, branch),)
 
             if state not in (tree.STATE_NORMAL,
-                tree.STATE_NOCHANGE, tree.STATE_NONEXIST):
+                tree.STATE_NOCHANGE):
                 self.model._mark_parent_as_different(parent)
                 if len(trunk_files) == len(files):
                     path = self.model.get_path(branch)
@@ -736,7 +737,9 @@ class DirDiff(MeldDoc, Component):
         values = {}
         for pane, f in enumerate(files):
             col_idx = self.model.col_idx(pane)
+            f_is_dir = f[ATTRS.type] == DIR
             f_exists = f[ATTRS.stat]
+            f_state = state
 
             if f_exists:
                 values[col_idx(COL_TIME)] = times[pane]
@@ -744,11 +747,15 @@ class DirDiff(MeldDoc, Component):
                 values[col_idx(COL_PERMS)] = perms[pane]
                 if newest_time == times[pane]:
                     values[col_idx(COL_EMBLEM)] = EMBLEM_NEW
+                if f_is_dir:
+                    f_state = tree.STATE_NORMAL
+            else:
+                f_state = tree.STATE_NONEXIST
 
             values.update(
                 self.model.base_state(
-                    state=state if f_exists else tree.STATE_NONEXIST,
-                    is_dir=f[ATTRS.type] == DIR,
+                    state=f_state,
+                    is_dir=f_is_dir,
                     label=f[ATTRS.canon],
                     pane=pane)
             )
