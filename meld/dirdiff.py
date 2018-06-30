@@ -1030,10 +1030,10 @@ class DirDiff(MeldDoc, Component):
             is_single_foldable_row = False
             if (selection.count_selected_rows() == 1):
                 path = selection.get_selected_rows()[1][0]
-                iter = self.model.get_iter(path)
-                os_path = self.model.value_path(iter, pane)
+                it = self.model.get_iter(path)
+                os_path = self.model.value_path(it, pane)
                 is_single_foldable_row = self.model.is_folder(
-                    iter, pane, os_path)
+                    it, pane, os_path)
 
             get_action("DirCompare").set_sensitive(True)
             get_action("DirCollapseRecursively").set_sensitive(
@@ -1198,6 +1198,9 @@ class DirDiff(MeldDoc, Component):
 
     def on_collapse_recursive_clicked(self, action):
         pane = self._get_focused_pane()
+        if pane is None:
+            return
+
         root_path = self._get_selected_paths(pane)[0]
         filter_model = Gtk.TreeModelFilter(
             child_model=self.model, virtual_root=root_path)
@@ -1215,6 +1218,9 @@ class DirDiff(MeldDoc, Component):
 
     def on_expand_recursive_clicked(self, action):
         pane = self._get_focused_pane()
+        if pane is None:
+            return
+
         paths = self._get_selected_paths(pane)
         for path in paths:
             self.treeview[pane].expand_row(path, True)
