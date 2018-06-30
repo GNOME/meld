@@ -129,12 +129,11 @@ class DiffTreeStore(SearchableTreeStore):
             return self.insert_with_values(parent, -1, columns, row)
 
     def _mark_parent_as_different(self, parent):
-        icon = self.icon_details[STATE_MODIFIED][1]
-        tint = self.icon_details[STATE_MODIFIED][3]
-        col_pane = [self.col_idx(pane) for pane in range(self.ntree)]
         while parent:
             for j in range(self.ntree):
-                self.set_state(parent, j, STATE_MODIFIED, isdir=1)
+                state = self.get_state(parent, j)
+                if state != STATE_MODIFIED:
+                    self.set_state(parent, j, STATE_MODIFIED, isdir=True)
             parent = self.iter_parent(parent)
 
     def add_empty(self, parent, text="empty folder"):
