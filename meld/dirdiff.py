@@ -40,7 +40,7 @@ from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
 from meld.listdirs import ATTRS, DIR, dirs_first, \
-    fil_empty_spaces, flattern_bfs, list_dirs
+    fil_empty_spaces, list_dirs
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, with_focused_pane
 from meld.recent import RecentType
@@ -681,16 +681,27 @@ class DirDiff(MeldDoc, Component):
         self.scheduler.add_task(self._seedling())
 
     def _seedling(self):
+        canonicalize = None
+        if self.actiongroup.get_action("IgnoreCase").get_active():
+            canonicalize = str.lower
+
+        filters = [e.filter for e in self.name_filters if e.active and e.filter]
+        filterer = None if not filters else \
+            lambda name: not any(f.match(name) for f in filters)
+
         trunk_path = Gtk.TreePath.new_first()
         trunk_iter = self.model.get_iter(trunk_path)
         files_path = [e.get_filename() for e in self.fileentry]
-        files_iter = list_dirs(files_path)
+
+        files_iter = list_dirs(files_path, canonicalize, filterer)
         regexes = [f.byte_filter for f in self.text_filters if f.active]
+
         # ignore trunk
         trunk_file_iter = next(files_iter)
         trunk_files = trunk_file_iter[1]
         branch_iter = trunk_file_iter[2]
         base = trunk_files, regexes
+        yield _("[%s] Scanning") % self.label_text
         yield from self._append_branch(branch_iter, trunk_iter, base)
 
         self.treeview[0].expand_to_path(trunk_path)
@@ -917,9 +928,6 @@ class DirDiff(MeldDoc, Component):
                 for names in alldirs:
                     entries = [
                         os.path.join(r, n) for r, n in zip(roots, names)]
-                    print('roots', roots)
-                    print('mames', names)
-                    raise Exception('adsfasdf')
                     child = self.model.add_entries(it, entries)
                     differences |= self._update_item_state(child)
                     todo.append(self.model.get_path(child))

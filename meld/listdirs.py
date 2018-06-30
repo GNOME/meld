@@ -169,25 +169,6 @@ def list_dirs(roots, canonicalize=None, filterer=None):
     yield '', files, dirs_recursion(files, fn)
 
 
-def flattern_bfs(orphans, max_depth=None, depth=0):
-    '''
-    Flattern list_dirs using breadth-first search
-
-    orphans: Iterable[Iterable[tuple[Iterable[file_attrs], Iterable[children]]]]
-    depth: int of current depth
-    max_depth: int of max depth
-
-    returns: Iterable[tuple[depth, name, Iterable[file_attrs]]]
-    '''
-    orphans_children = ()
-    for iterator in orphans:
-        for name, files, children in iterator:
-            yield depth, name, files, None
-            orphans_children += (children,)
-    if orphans_children:
-        yield from flattern_bfs(orphans_children, max_depth, depth + 1)
-
-
 def flattern(iterator, max_depth=None, parents=None, depth=None):
     '''
     Flattern list_dirs using depth-first preorder
@@ -246,13 +227,7 @@ if __name__ == '__main__':
         '../netlify-cms',
         '../netlify-cms-again'
     ]
-    if 'dirs_recursion_sort' in sys.argv:
-        # for 52k files * 2
-        # 1.62user 0.57system 0:02.20elapsed 99%CPU 15mb
-        for depth, name, files, parent in flattern_bfs((list_dirs(roots),)):
-            print(depth, name, files[0][s.path])
-
-    elif 'dirs_recursion' in sys.argv:
+    if 'dirs_recursion' in sys.argv:
         # for 52k files * 2
         # 1.38user 0.54system 0:01.94elapsed 14mb
         for depth, name, files, parent in flattern(list_dirs(roots)):
@@ -264,6 +239,6 @@ if __name__ == '__main__':
 
 
 __all__ = [
-    'ATTRS', 'dirs_recursion', 'flattern', 'flattern_bfs', 'list_dirs',
+    'ATTRS', 'dirs_recursion', 'flattern', 'list_dirs',
     'fil_empty_spaces', 'dirs_first',
     'DIR', 'CHR', 'BLK', 'REG', 'LNK', 'FIFO', 'SOCK', 'S_IFMT']
