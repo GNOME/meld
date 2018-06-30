@@ -26,6 +26,7 @@ import stat
 import sys
 from collections import namedtuple, ChainMap
 from decimal import Decimal
+from multiprocessing import Pool
 from os.path import sep as SEP
 
 from gi.repository import Gdk
@@ -696,13 +697,19 @@ class DirDiff(MeldDoc, Component):
         files_iter = list_dirs(files_path, canonicalize, filterer)
         regexes = [f.byte_filter for f in self.text_filters if f.active]
 
-        # ignore trunk
         trunk_file_iter = next(files_iter)
         trunk_files = trunk_file_iter[1]
         branch_iter = trunk_file_iter[2]
         base = trunk_files, regexes
+
         yield _("[%s] Scanning") % self.label_text
-        yield from self._append_branch(branch_iter, trunk_iter, base)
+
+        basic_result = self._append_branch(branch_iter, trunk_iter, base)
+        def identity(args):
+            print(args)
+            return args
+        with Pool(4) as pool:
+            yield from pool.imap_unordered(identity, basic_result)
 
         self.treeview[0].expand_to_path(trunk_path)
         self.treeview[0].set_cursor(trunk_path)
