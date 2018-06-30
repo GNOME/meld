@@ -708,7 +708,8 @@ class DirDiff(MeldDoc, Component):
             values = self._files_values(entries, state)
             branch = self.model.append_row_with_values(parent, values)
 
-            sub_iterator = sub_iterator + ((children, branch),)
+            if len([1 for f in entries if f[ATTRS.stat]]) > 1:
+                sub_iterator = sub_iterator + ((children, branch),)
 
             if state not in (tree.STATE_NORMAL,
                 tree.STATE_NOCHANGE, tree.STATE_NONEXIST):
