@@ -685,7 +685,7 @@ class DirDiff(MeldDoc, Component):
         if self.actiongroup.get_action("IgnoreCase").get_active():
             canonicalize = str.lower
 
-        filters = [e.filter for e in self.name_filters if e.active and e.filter]
+        filters = [e.filter for e in self.name_filters if e.active]
         filterer = None if not filters else \
             lambda name: not any(f.match(name) for f in filters)
 
