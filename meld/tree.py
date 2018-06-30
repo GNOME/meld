@@ -135,7 +135,7 @@ class DiffTreeStore(SearchableTreeStore):
         while parent:
             for j in range(self.ntree):
                 state = self.get_state(parent, j)
-                if state not in (STATE_NORMAL, STATE_NOCHANGE):
+                if state == STATE_NONEXIST:
                     self.set_value(parent, col_pane[j](COL_ICON), icon)
                     self.set_value(parent, col_pane[j](COL_TINT), tint)
             parent = self.iter_parent(parent)

@@ -699,21 +699,20 @@ class DirDiff(MeldDoc, Component):
         self._update_diffmaps()
         yield _("[%s] Done") % self.label_text
 
-
-    # TODO move this code somewhere else and make
     def _append_branch(self, iterator, parent, base):
         sub_iterator = ()
         trunk_files, regexes = base
         for name, files, children in dirs_first(iterator):
-            entries = fil_empty_spaces(trunk_files, files)
-            state = self._files_state(entries, regexes)
+            entries = fil_empty_spaces(trunk_files, files).values()
+            state = self._files_dodgy_state(entries)
             values = self._files_values(entries, state)
             branch = self.model.append_row_with_values(parent, values)
 
             sub_iterator = sub_iterator + ((children, branch),)
 
-            if state not in (tree.STATE_NORMAL, tree.STATE_NOCHANGE):
-                self._mark_parent_as_different(parent)
+            if state not in (tree.STATE_NORMAL,
+                tree.STATE_NOCHANGE, tree.STATE_NONEXIST):
+                self.model._mark_parent_as_different(parent)
                 if len(trunk_files) == len(files):
                     path = self.model.get_path(branch)
                     self.treeview[0].expand_to_path(Gtk.TreePath(path))
@@ -723,8 +722,7 @@ class DirDiff(MeldDoc, Component):
         for iterator, parent in sub_iterator:
             yield from self._append_branch(iterator, parent, base)
 
-    def _files_values(self, files_entries, state):
-        files = files_entries.values()
+    def _files_values(self, files, state):
         stats = [f[ATTRS.stat] for f in files]
         times = [s.st_mtime if s else 0 for s in stats]
         sizes = [s.st_size if s else 0 for s in stats]
@@ -735,7 +733,7 @@ class DirDiff(MeldDoc, Component):
             newest_time = max(times)
 
         values = {}
-        for pane, f in files_entries.items():
+        for pane, f in enumerate(files):
             col_idx = self.model.col_idx(pane)
             f_exists = f[ATTRS.stat]
 
@@ -755,6 +753,18 @@ class DirDiff(MeldDoc, Component):
             )
         return values
 
+    def _files_dodgy_state(self, files):
+        sizes = [f[ATTRS.stat].st_size for f in files if f[ATTRS.stat]]
+        all_files_exist = len(files) == len(sizes)
+
+        existing_files_diff = DodgySame if all_same(sizes) \
+            else DodgyDifferent
+
+        all_files_diff = existing_files_diff if all_files_exist \
+            else Different
+
+        return self._files_tree_stat(all_files_diff, existing_files_diff)
+
     def _files_state(self, files_entries, regexes):
         files = files_entries.values()
         existing_files = [f for f in files if f[ATTRS.stat]]
@@ -769,19 +779,23 @@ class DirDiff(MeldDoc, Component):
         else:
             files_are_same = Different
 
+        return self._files_tree_stat(files_are_same, all_present_same)
+
+    def _files_tree_stat(self, files_are_same, all_present_same):
         # TODO: Differentiate the DodgySame case
         if files_are_same == Same or files_are_same == DodgySame:
-            return tree.STATE_NORMAL
+            state = tree.STATE_NORMAL
         elif files_are_same == SameFiltered:
-            return tree.STATE_NOCHANGE
+            state = tree.STATE_NOCHANGE
         # TODO: Differentiate the SameFiltered and DodgySame cases
         elif all_present_same in (Same, SameFiltered, DodgySame):
-            return tree.STATE_NEW
+            state = tree.STATE_NEW
         elif files_are_same == FileError or all_present_same == FileError:
-            return tree.STATE_ERROR
+            state = tree.STATE_ERROR
         # Different and DodgyDifferent
-
-        return tree.STATE_MODIFIED
+        else:
+            state = tree.STATE_MODIFIED
+        return state
 
     def _search_recursively_iter(self, rootpath):
         for t in self.treeview:
