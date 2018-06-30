@@ -113,11 +113,32 @@ class DiffTreeStore(SearchableTreeStore):
     def column_index(self, col, pane):
         return self.ntree * col + pane
 
+    def col_idx(self, pane):
+        return lambda col: self.column_index(col, pane)
+
     def add_entries(self, parent, names):
         child = self.append(parent)
         for pane, path in enumerate(names):
             self.set_value(child, self.column_index(COL_PATH, pane), path)
         return child
+
+    def append_row_with_values(self, parent, values):
+            row_info = { k: v for k, v in values.items() if v is not None }
+            columns = tuple(row_info.keys())
+            row = tuple(row_info.values())
+            return self.insert_with_values(parent, -1, columns, row)
+
+    def _mark_parent_as_different(self, parent):
+        icon = self.icon_details[STATE_MODIFIED][1]
+        tint = self.icon_details[STATE_MODIFIED][3]
+        col_pane = [self.col_idx(pane) for pane in range(self.ntree)]
+        while parent:
+            for j in range(self.ntree):
+                state = self.get_state(parent, j)
+                if state not in (STATE_NORMAL, STATE_NOCHANGE):
+                    self.set_value(parent, col_pane[j](COL_ICON), icon)
+                    self.set_value(parent, col_pane[j](COL_TINT), tint)
+            parent = self.iter_parent(parent)
 
     def add_empty(self, parent, text="empty folder"):
         it = self.append(parent)
@@ -139,23 +160,35 @@ class DiffTreeStore(SearchableTreeStore):
         self.set_state(it, pane, state, display_text, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
-        col_idx = self.column_index
+        col_idx = self.col_idx(pane)
         icon = self.icon_details[state][1 if isdir else 0]
         tint = self.icon_details[state][3 if isdir else 2]
-        self.set_value(it, col_idx(COL_STATE, pane), str(state))
-        self.set_value(it, col_idx(COL_TEXT,  pane), label)
-        self.set_value(it, col_idx(COL_ICON,  pane), icon)
-        # FIXME: This is horrible, but EmblemCellRenderer crashes
-        # if you try to give it a Gdk.Color property
-        if tint:
-            tint = tint.to_string() if tint else None
-        self.set_value(it, col_idx(COL_TINT, pane), tint)
-
+        self.set_value(it, col_idx(COL_STATE), str(state))
+        self.set_value(it, col_idx(COL_TEXT), label)
+        self.set_value(it, col_idx(COL_ICON), icon)
+        self.set_value(it, col_idx(COL_TINT), tint)
         fg, style, weight, strike = self.text_attributes[state]
-        self.set_value(it, col_idx(COL_FG, pane), fg)
-        self.set_value(it, col_idx(COL_STYLE, pane), style)
-        self.set_value(it, col_idx(COL_WEIGHT, pane), weight)
-        self.set_value(it, col_idx(COL_STRIKE, pane), strike)
+        self.set_value(it, col_idx(COL_FG), fg)
+        self.set_value(it, col_idx(COL_STYLE), style)
+        self.set_value(it, col_idx(COL_WEIGHT), weight)
+        self.set_value(it, col_idx(COL_STRIKE), strike)
+
+
+    def base_state(self, state=STATE_NORMAL, is_dir=False, label="", pane=0):
+        values = {}
+        col_idx = self.col_idx(pane)
+        icon = self.icon_details[state][1 if is_dir else 0]
+        tint = self.icon_details[state][3 if is_dir else 2]
+        values[col_idx(COL_STATE)] = str(state)
+        values[col_idx(COL_TEXT)] = label
+        values[col_idx(COL_ICON)] = icon
+        values[col_idx(COL_TINT)] = tint
+        fg, style, weight, strike = self.text_attributes[state]
+        values[col_idx(COL_FG)] = fg
+        values[col_idx(COL_STYLE)] = style
+        values[col_idx(COL_WEIGHT)] = weight
+        values[col_idx(COL_STRIKE)] = strike
+        return values
 
     def get_state(self, it, pane):
         state_idx = self.column_index(COL_STATE, pane)

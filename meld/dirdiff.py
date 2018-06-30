@@ -690,8 +690,7 @@ class DirDiff(MeldDoc, Component):
         trunk_file_iter = next(files_iter)
         trunk_files = trunk_file_iter[1]
         branch_iter = trunk_file_iter[2]
-        n_columns = self.model.get_n_columns()
-        base = n_columns, trunk_files, regexes
+        base = trunk_files, regexes
         yield from self._append_branch(branch_iter, trunk_iter, base)
 
         self.treeview[0].expand_to_path(trunk_path)
@@ -704,102 +703,85 @@ class DirDiff(MeldDoc, Component):
     # TODO move this code somewhere else and make
     def _append_branch(self, iterator, parent, base):
         sub_iterator = ()
-        n_columns, trunk_files, regexes = base
+        trunk_files, regexes = base
         for name, files, children in dirs_first(iterator):
             entries = fil_empty_spaces(trunk_files, files)
-            values = self._files_values(entries, regexes)
-            row_info = { k: v for k, v in values.items() if v is not None }
-            columns = tuple(row_info.keys())
-            row = tuple(row_info.values())
-            sub_parent = self.model.insert_with_values(
-                parent, -1, columns, row)
-            sub_iterator = sub_iterator + ((children, sub_parent),)
+            state = self._files_state(entries, regexes)
+            values = self._files_values(entries, state)
+            branch = self.model.append_row_with_values(parent, values)
 
-            yield row, row_info, files
+            sub_iterator = sub_iterator + ((children, branch),)
 
-            path = self.model.get_path(sub_parent)
-            self.treeview[0].expand_to_path(Gtk.TreePath(path))
+            if state not in (tree.STATE_NORMAL, tree.STATE_NOCHANGE):
+                self._mark_parent_as_different(parent)
+                if len(trunk_files) == len(files):
+                    path = self.model.get_path(branch)
+                    self.treeview[0].expand_to_path(Gtk.TreePath(path))
 
-        for iterator, sub_parent in sub_iterator:
-            yield from self._append_branch(iterator, sub_parent, base)
+            yield branch, state, name, values
 
+        for iterator, parent in sub_iterator:
+            yield from self._append_branch(iterator, parent, base)
 
-    def _files_values(self, files_entries, regexes):
+    def _files_values(self, files_entries, state):
         files = files_entries.values()
         stats = [f[ATTRS.stat] for f in files]
+        times = [s.st_mtime if s else 0 for s in stats]
         sizes = [s.st_size if s else 0 for s in stats]
         perms = [s.st_mode if s else 0 for s in stats]
-        times = [s.st_mtime if s else 0 for s in stats]
-        files_path = [f[ATTRS.abs_path] for f in files]
+
+        newest_time = -1
+        if not all_same([t for t in times if t]):
+            newest_time = max(times)
+
+        values = {}
+        for pane, f in files_entries.items():
+            col_idx = self.model.col_idx(pane)
+            f_exists = f[ATTRS.stat]
+
+            if f_exists:
+                values[col_idx(COL_TIME)] = times[pane]
+                values[col_idx(COL_SIZE)] = sizes[pane]
+                values[col_idx(COL_PERMS)] = perms[pane]
+                if newest_time == times[pane]:
+                    values[col_idx(COL_EMBLEM)] = EMBLEM_NEW
+
+            values.update(
+                self.model.base_state(
+                    state=state if f_exists else tree.STATE_NONEXIST,
+                    is_dir=f[ATTRS.type] == DIR,
+                    label=f[ATTRS.canon],
+                    pane=pane)
+            )
+        return values
+
+    def _files_state(self, files_entries, regexes):
+        files = files_entries.values()
         existing_files = [f for f in files if f[ATTRS.stat]]
         existing_paths = [f[ATTRS.abs_path] for f in existing_files]
         existing_stats = [f[ATTRS.stat] for f in existing_files]
-        existing_times = [s.st_mtime for s in existing_stats]
-
-        newest = set()
-        if not all_same(existing_times):
-            newest_time = max(existing_times)
-            newest = {i for i, t in enumerate(times) if t == newest_time}
 
         all_present_same = self.file_compare(
-            existing_paths, regexes, file_stats= existing_stats)
-        if len(times) == len(existing_times):
+            existing_paths, regexes, file_stats=existing_stats)
+
+        if len(files) == len(existing_files):
             files_are_same = all_present_same
         else:
             files_are_same = Different
-        state = self._files_state_tree_state(files_are_same, all_present_same)
 
-        values = {}
-        for j, f in files_entries.items():
-            col_idx = functools.partial(self.model.column_index, pane=j)
-            f_is_dir = f[ATTRS.type] == DIR
-            f_label = f[ATTRS.canon]
-            if f[ATTRS.stat]:
-                values = self._initial_files_values(
-                    state, f_is_dir, values, f_label, col_idx
-                )
-                emblem = EMBLEM_NEW if j in newest else None
-                values[col_idx(COL_EMBLEM)] = emblem
-                values[col_idx(COL_EMBLEM_SECONDARY)] = None
-                values[col_idx(COL_TIME)] = times[j]
-                values[col_idx(COL_SIZE)] = sizes[j]
-                values[col_idx(COL_PERMS)] = perms[j]
-            else:
-                values = self._initial_files_values(
-                    tree.STATE_NONEXIST, f_is_dir, values, f_label, col_idx
-                )
-        return values
-
-    def _initial_files_values(self, state, f_is_dir, values, f_label, col_idx):
-        icon = self.model.icon_details[state][1 if f_is_dir else 0]
-        tint = self.model.icon_details[state][3 if f_is_dir else 2]
-        values[col_idx(tree.COL_STATE)] = str(state)
-        values[col_idx(tree.COL_TEXT)] = f_label
-        values[col_idx(tree.COL_ICON)] = icon
-        values[col_idx(tree.COL_TINT)] = tint
-
-        fg, style, weight, strike = self.model.text_attributes[state]
-        values[col_idx(tree.COL_FG)] = fg
-        values[col_idx(tree.COL_STYLE)] = style
-        values[col_idx(tree.COL_WEIGHT)] = weight
-        values[col_idx(tree.COL_STRIKE)] = strike
-        return values
-
-    def _files_state_tree_state(self, files_are_same, all_present_same):
         # TODO: Differentiate the DodgySame case
         if files_are_same == Same or files_are_same == DodgySame:
-            state = tree.STATE_NORMAL
+            return tree.STATE_NORMAL
         elif files_are_same == SameFiltered:
-            state = tree.STATE_NOCHANGE
+            return tree.STATE_NOCHANGE
         # TODO: Differentiate the SameFiltered and DodgySame cases
         elif all_present_same in (Same, SameFiltered, DodgySame):
-            state = tree.STATE_NEW
+            return tree.STATE_NEW
         elif files_are_same == FileError or all_present_same == FileError:
-            state = tree.STATE_ERROR
+            return tree.STATE_ERROR
         # Different and DodgyDifferent
-        else:
-            state = tree.STATE_MODIFIED
-        return state
+
+        return tree.STATE_MODIFIED
 
     def _search_recursively_iter(self, rootpath):
         for t in self.treeview:
