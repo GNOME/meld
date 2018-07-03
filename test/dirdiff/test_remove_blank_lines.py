@@ -24,7 +24,9 @@ from meld.dirdiff import remove_blank_lines
     # one line with space and char
     (b' c', b' c'),
     # empty line between content
-    (b'c\n \nc', b'c\nc')
+    (b'c\n \nc', b'c\nc'),
+    # multiple leading and trailing newlines
+    (b'\n\ncontent\ncontent\n\n\n', b'content\ncontent\n'),
 ])
 def test_blank_re(txt, expected):
     result = remove_blank_lines(txt)

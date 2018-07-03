@@ -20,7 +20,9 @@ diff_definition = {
                 'h.txt': lambda: b'h'
             },
             'e.txt': lambda: b''
-        }
+        },
+        'crlf.txt': lambda: b'foo\r\nbar\r\n',
+        'crlftrailing.txt': lambda: b'foo\r\nbar\r\n\r\n',
     },
     'b': {
         'b.txt': lambda: b'',
@@ -43,7 +45,9 @@ diff_definition = {
                 'h.txt': lambda: b'h'
             },
             'e.txt': lambda: b''
-        }
+        },
+        'lf.txt': lambda: b'foo\nbar\n',
+        'lftrailing.txt': lambda: b'foo\nbar\n\n',
     }
 }
 
