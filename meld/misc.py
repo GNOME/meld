@@ -281,9 +281,15 @@ def get_common_theme():
     return fill_colours, line_colours
 
 
-def all_same(lst):
+def all_same(iterable):
     """Return True if all elements of the list are equal"""
-    return not lst or lst.count(lst[0]) == len(lst)
+    sample, has_no_sample = None, True
+    for item in iterable or ():
+        if has_no_sample:
+            sample, has_no_sample = item, False
+        elif sample != item:
+            return False
+    return True
 
 
 def shorten_names(*names):
