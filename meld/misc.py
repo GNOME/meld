@@ -283,11 +283,11 @@ def get_common_theme():
 
 def all_same(iterable):
     """Return True if all elements of the list are equal"""
-    b, f = None, True
-    for d in iterable or ():
-        if f:
-            b, f = d, False
-        elif b != d:
+    sample, has_no_sample = None, True
+    for item in iterable or ():
+        if has_no_sample:
+            sample, has_no_sample = item, False
+        elif sample != item:
             return False
     return True
 
