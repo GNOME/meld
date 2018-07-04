@@ -84,32 +84,29 @@ Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
     list(range(6))
 # TODO: Get the block size from os.stat
 CHUNK_SIZE = 4096
-NEWLINE_RE = re.compile(b'\n')
-BLANK_RE = re.compile(b'\n\s*(?=\n)')
+NEWLINE_RE = re.compile(b'(\r\n)|[\r\v\f\x1c\x1d\x1e\x85]')
+BLANK_RE = re.compile(b'\n+')
 
 
-def strip_blank_line(text):
+def strip_newline_line(text):
     """
     Remove blank lines from begin/end of text.
     """
-    result = b''
-    for i, c in enumerate(text):
-        if c not in b'\t\r\f\v\n ':
-            result = text
-            break
-        elif c == b'\n':
-            result = text[i + 1:]
-            break
-    for n in range(len(result) - 1, -1, -1):
-        if result[n] not in b'\t\r\f\v\n ':
-            return result
-        elif result[n] == b'\n':
-            return result[:n]
-    return result
+    first_char = text[:1]
+    last_char = text[-1:]
+
+    begin = 0 if first_char != b'\n' else 1
+    end = None if last_char != b'\n' else -1
+
+    return text[begin:end]
 
 
 def remove_blank_lines(text):
-    return strip_blank_line(BLANK_RE.sub(b'', text))
+    """
+    Remove blank lines from text.
+    Text must have normalized newline as \n
+    """
+    return strip_newline_line(BLANK_RE.sub(b'\n', text))
 
 
 def _files_same(files, regexes, comparison_args):
@@ -212,9 +209,8 @@ def _files_same(files, regexes, comparison_args):
                 contents = (NEWLINE_RE.sub(b'\n', c) for c in contents)
 
                 if apply_text_filters:
-                    for r in regexes:
-                        contents = (r.sub(b'', c) for c in contents)
-
+                    for regex in regexes:
+                        contents = (regex.sub(b'', c) for c in contents)
                 if ignore_blank_lines:
                     contents = (remove_blank_lines(c) for c in contents)
                 result = SameFiltered if all_same(contents) else Different
