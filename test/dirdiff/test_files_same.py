@@ -28,6 +28,7 @@ cmp_args = {
 
 no_ignore_args = dict(cmp_args)
 no_ignore_args['ignore_blank_lines'] = False
+no_ignore_args['apply-text-filters'] = False
 
 dodgy_args = dict(cmp_args)
 dodgy_args['shallow-comparison'] = True
@@ -72,4 +73,4 @@ def test_files_same(files, regexes, comparison_args, expected, differnt_dirs):
     files_path = abspath(*files)
     result = _files_same(files_path, regexes, comparison_args)
     actual = DiffResult(result + 1)
-    assert actual == expected, (files, regexes, comparison_args)
+    assert actual == expected
