@@ -19,6 +19,7 @@ import copy
 import errno
 import functools
 import os
+import re
 import shutil
 import stat
 import sys
@@ -83,11 +84,11 @@ CHUNK_SIZE = 4096
 
 
 def remove_blank_lines(text):
-    splits = text.splitlines()
-    lines = text.splitlines(True)
-    blanks = set([i for i, l in enumerate(splits) if not l])
-    lines = [l for i, l in enumerate(lines) if i not in blanks]
-    return b''.join(lines)
+    """
+    Remove blank lines from text.
+    And normalize line ending
+    """
+    return b'\n'.join(filter(bool, text.splitlines()))
 
 
 def _files_same(files, regexes, comparison_args):
@@ -184,13 +185,12 @@ def _files_same(files, regexes, comparison_args):
     if result == Different and need_contents:
         contents = [b"".join(c) for c in contents]
         # For probable text files, discard newline differences to match
-        # file comparisons.
-        contents = [b"\n".join(c.splitlines()) for c in contents]
-
-        contents = [misc.apply_text_filters(c, regexes) for c in contents]
-
         if ignore_blank_lines:
             contents = [remove_blank_lines(c) for c in contents]
+        else:
+            contents = [b"\n".join(c.splitlines()) for c in contents]
+
+        contents = [misc.apply_text_filters(c, regexes) for c in contents]
         result = SameFiltered if all_same(contents) else Different
 
     _cache[cache_key] = CacheResult(stats, result)
