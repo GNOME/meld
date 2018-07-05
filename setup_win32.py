@@ -127,7 +127,7 @@ setup(
         Executable(
             "bin/meld",
             base="Win32GUI",
-            icon="data/icons/meld.ico",
+            icon="data/icons/org.gnome.meld.ico",
             targetName="Meld.exe",
             shortcutName="Meld",
             shortcutDir="ProgramMenuFolder",
