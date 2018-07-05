@@ -19,7 +19,6 @@ import copy
 import errno
 import functools
 import os
-import re
 import shutil
 import stat
 import sys
