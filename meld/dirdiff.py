@@ -187,7 +187,8 @@ def _files_same(files, regexes, comparison_args):
         # file comparisons.
         contents = [b"\n".join(c.splitlines()) for c in contents]
 
-        contents = [misc.apply_text_filters(c, regexes) for c in contents]
+        for regex in regexes:
+            contents = (regex.sub(b'', c) for c in contents)
 
         if ignore_blank_lines:
             contents = [remove_blank_lines(c) for c in contents]
