@@ -151,6 +151,7 @@ def show_error_and_exit(error_text):
     to display wrong python version.
     """
     print(error_text)
+    raise_as_last_resort_to_display = False
     try:
         import gi
         gi.require_version("Gtk", "3.0")
@@ -174,8 +175,11 @@ def show_error_and_exit(error_text):
             toplevel.wait_visibility()
             showerror("Meld", error_text, parent=toplevel)
         except Exception:
-            # Displaying with tkinter failed too, just exit.
-            pass
+            # Displaying with tkinter failed too, just exit if not frozen.
+            # Frozen app may lack console but be able to show exceptions.
+            raise_as_last_resort_to_display = frozen
+    if raise_as_last_resort_to_display:
+        raise Exception(error_text)
     sys.exit(1)
 
 

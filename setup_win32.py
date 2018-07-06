@@ -1,74 +1,77 @@
 #!/usr/bin/env python3
 
 import glob
-import os
-import site
+import os.path
+import platform
+import sys
+import sysconfig
 
-from cx_Freeze import setup, Executable
+from cx_Freeze import Executable, setup
 
 import meld.build_helpers
 import meld.conf
 
-site_dir = [f for f in site.getsitepackages() if 'site-packages' in f][0]
-include_dll_path = os.path.join(site_dir, "gnome")
 
-missing_dll = [
-    'libgtk-3-0.dll',
-    'libgdk-3-0.dll',
-    'libatk-1.0-0.dll',
-    'libintl-8.dll',
-    'libzzz.dll',
-    'libwinpthread-1.dll',
-    'libcairo-gobject-2.dll',
-    'libgdk_pixbuf-2.0-0.dll',
-    'libpango-1.0-0.dll',
-    'libpangocairo-1.0-0.dll',
-    'libpangoft2-1.0-0.dll',
-    'libpangowin32-1.0-0.dll',
-    'libffi-6.dll',
-    'libfontconfig-1.dll',
-    'libfreetype-6.dll',
-    'libgio-2.0-0.dll',
-    'libglib-2.0-0.dll',
-    'libgmodule-2.0-0.dll',
-    'libgobject-2.0-0.dll',
-    'libgirepository-1.0-1.dll',
-    'libgtksourceview-3.0-1.dll',
-    'libjasper-1.dll',
-    'libjpeg-8.dll',
-    'libpng16-16.dll',
-    'libxmlxpat.dll',
-    'librsvg-2-2.dll',
-    'libtiff-5.dll',
-    'libepoxy-0.dll',
-    'libharfbuzz-0.dll',
-    'libharfbuzz-gobject-0.dll',
-    'libwebp-5.dll',
-    # for Gtk.show_uri; note that name is bitness-dependant
-    'gspawn-win32-helper.exe',
-]
+def get_non_python_dependencies():
+    """Returns list of tuples containing extra dependencies required to run
+    meld on current platform.
+    Every pair corresponds to a single required file/folder.
+    First tuple item correspond to path expected in meld installation
+    relative to meld prefix.
+    Second tuple item is path in local filesystem during build.
+    Note that for returned dynamic libraries their dependencies
+    are expected to be resolved by caller, for example by cx_freeze.
+    """
+    gtk_prefix = sys.prefix
+    gtk_exec_prefix = sys.prefix
+    sysconfig_platform = sysconfig.get_platform()
 
-gtk_libs = [
-    'etc/fonts',
-    'etc/gtk-3.0/settings.ini',
-    'etc/pango',
-    'lib/gdk-pixbuf-2.0',
-    'lib/girepository-1.0',
-    'share/fontconfig',
-    'share/fonts',
-    'share/glib-2.0',
-    'share/gtksourceview-3.0',
-    'share/icons',
-]
+    gtk_data = [
+        'etc/fonts',
+        'etc/gtk-3.0/settings.ini',
+        'lib/gdk-pixbuf-2.0',
+        'lib/girepository-1.0',
+        'share/fontconfig',
+        'share/glib-2.0',
+        'share/gtksourceview-3.0',
+        'share/icons',
+    ]
+    gtk_exec = []
 
-include_files = [(os.path.join(include_dll_path, path), path) for path in
-                 missing_dll + gtk_libs]
+    if 'mingw' in sysconfig_platform:
+        # dll imported by dll dependencies expected to be auto-resolved later
+        gtk_exec = [
+            'libgtksourceview-3.0-1.dll',
+        ]
+
+        # gspawn-helper is needed for Gtk.show_uri function
+        if platform.architecture()[0] == '32bit':
+            gtk_exec.append('gspawn-win32-helper.exe')
+        else:
+            gtk_exec.append('gspawn-win64-helper.exe')
+        gtk_exec_prefix = os.path.join(gtk_exec_prefix, "bin")
+    elif 'win32' in sysconfig_platform or 'win-amd64' in sysconfig_platform:
+        # Official python on windows (non-mingw)
+        # The required gtk version isn't available,
+        # so kept mostly for temporarily keep appveyour build green.
+        gtk_exec = [
+            'libgtk-3-0.dll',
+        ]
+        gtk_prefix = os.path.join(gtk_prefix, "Lib", "site-packages", "gnome")
+        gtk_exec_prefix = gtk_prefix
+
+    path_list = [(os.path.join(gtk_prefix, path), path) for path in gtk_data]
+    path_list += [
+        (os.path.join(gtk_exec_prefix, path), path) for path in gtk_exec
+    ]
+    return path_list
+
 
 build_exe_options = {
     "includes": ["gi"],
+    "excludes": ["tkinter"],
     "packages": ["gi", "weakref"],
-    "include_files": include_files,
-    "bin_path_excludes": [""],
+    "include_files": get_non_python_dependencies(),
     "zip_exclude_packages": [],
     "zip_include_packages": ["*"],
 }
@@ -99,6 +102,18 @@ bdist_msi_options = {
     "data": msi_data,
 }
 
+executable_options = {
+    "script": "bin/meld",
+    "icon": "data/icons/org.gnome.meld.ico",
+}
+
+if 'mingw' in sysconfig.get_platform():
+    executable_options.update({
+         "base": "Win32GUI",  # comment to build cosole version to see stderr
+         "targetName": "Meld.exe",
+         "shortcutName": "Meld",
+         "shortcutDir": "ProgramMenuFolder",
+    })
 
 setup(
     name="Meld",
@@ -124,14 +139,7 @@ setup(
         "bdist_msi": bdist_msi_options,
     },
     executables=[
-        Executable(
-            "bin/meld",
-            base="Win32GUI",
-            icon="data/icons/meld.ico",
-            targetName="Meld.exe",
-            shortcutName="Meld",
-            shortcutDir="ProgramMenuFolder",
-        ),
+        Executable(**executable_options),
     ],
     packages=[
         'meld',
