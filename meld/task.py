@@ -17,6 +17,7 @@
 """Classes to implement scheduling for cooperative threads."""
 
 import traceback
+from collections import deque
 
 
 class SchedulerBase(object):
@@ -26,7 +27,7 @@ class SchedulerBase(object):
     """
 
     def __init__(self):
-        self.tasks = []
+        self.tasks = deque()
         self.callbacks = []
 
     def __repr__(self):
@@ -47,7 +48,7 @@ class SchedulerBase(object):
         self.remove_task(task)
 
         if atfront:
-            self.tasks.insert(0, task)
+            self.tasks.appendleft(task)
         else:
             self.tasks.append(task)
 
@@ -63,7 +64,7 @@ class SchedulerBase(object):
 
     def remove_all_tasks(self):
         """Remove all tasks from the scheduler"""
-        self.tasks = []
+        self.tasks.clear()
 
     def add_scheduler(self, sched):
         """Adds a subscheduler as a child task of this scheduler"""

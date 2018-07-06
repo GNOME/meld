@@ -16,18 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import collections
 import copy
 import errno
 import functools
+import gi
 import os
 import shutil
 import stat
 import sys
-from collections import namedtuple, ChainMap
-from decimal import Decimal
-from multiprocessing import Pool
-from os.path import sep as SEP
+from collections import ChainMap, defaultdict, namedtuple
+from multiprocessing import get_context
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -39,6 +37,8 @@ from gi.repository import Gtk
 from meld import misc
 from meld import tree
 from meld.conf import _
+from meld.files_same import branch_content_is_same, files_same as _files_same, \
+Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError
 from meld.iohelpers import trash_or_confirm
 from meld.listdirs import ATTRS, DIR, dirs_first, \
     fil_empty_spaces, list_dirs
@@ -51,159 +51,6 @@ from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
 from meld.ui.gnomeglade import Component, ui_file
-
-
-class StatItem(namedtuple('StatItem', 'mode size time')):
-    __slots__ = ()
-
-    @classmethod
-    def _make(cls, stat_result):
-        return StatItem(stat.S_IFMT(stat_result.st_mode),
-                        stat_result.st_size, stat_result.st_mtime)
-
-    def shallow_equal(self, other, time_resolution_ns):
-        if self.size != other.size:
-            return False
-
-        # Shortcut to avoid expensive Decimal calculations. 2 seconds is our
-        # current accuracy threshold (for VFAT), so should be safe for now.
-        if abs(self.time - other.time) > 2:
-            return False
-
-        dectime1 = Decimal(self.time).scaleb(Decimal(9)).quantize(1)
-        dectime2 = Decimal(other.time).scaleb(Decimal(9)).quantize(1)
-        mtime1 = dectime1 // time_resolution_ns
-        mtime2 = dectime2 // time_resolution_ns
-
-        return mtime1 == mtime2
-
-
-CacheResult = namedtuple('CacheResult', 'stats result')
-
-
-_cache = {}
-Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
-    list(range(6))
-# TODO: Get the block size from os.stat
-CHUNK_SIZE = 4096
-
-
-def remove_blank_lines(text):
-    splits = text.splitlines()
-    lines = text.splitlines(True)
-    blanks = set([i for i, l in enumerate(splits) if not l])
-    lines = [l for i, l in enumerate(lines) if i not in blanks]
-    return b''.join(lines)
-
-
-def _files_same(files, regexes, comparison_args, file_stats=None):
-    """Determine whether a list of files are the same.
-
-    Possible results are:
-      Same: The files are the same
-      SameFiltered: The files are identical only after filtering with 'regexes'
-      DodgySame: The files are superficially the same (i.e., type, size, mtime)
-      DodgyDifferent: The files are superficially different
-      FileError: There was a problem reading one or more of the files
-    """
-
-    if all_same(files):
-        return Same
-
-    files = tuple(files)
-    regexes = tuple(regexes)
-    if file_stats:
-        stats = tuple([StatItem._make(s) for s in file_stats])
-    else:
-        stats = tuple([StatItem._make(os.stat(f)) for f in files])
-
-    shallow_comparison = comparison_args['shallow-comparison']
-    time_resolution_ns = comparison_args['time-resolution']
-    ignore_blank_lines = comparison_args['ignore_blank_lines']
-
-    need_contents = comparison_args['apply-text-filters']
-
-    # If all entries are directories, they are considered to be the same
-    if all([stat.S_ISDIR(s.mode) for s in stats]):
-        return Same
-
-    # If any entries are not regular files, consider them different
-    if not all([stat.S_ISREG(s.mode) for s in stats]):
-        return Different
-
-    # Compare files superficially if the options tells us to
-    if shallow_comparison:
-        all_same_timestamp = all(
-            s.shallow_equal(stats[0], time_resolution_ns) for s in stats[1:]
-        )
-        return DodgySame if all_same_timestamp else Different
-
-    # If there are no text filters, unequal sizes imply a difference
-    if not need_contents and not all_same([s.size for s in stats]):
-        return Different
-
-    # Check the cache before doing the expensive comparison
-    cache_key = (files, need_contents, regexes, ignore_blank_lines)
-    cache = _cache.get(cache_key)
-    if cache and cache.stats == stats:
-        return cache.result
-
-    # Open files and compare bit-by-bit
-    contents = [[] for f in files]
-    result = None
-
-    try:
-        handles = [open(f, "rb") for f in files]
-        try:
-            data = [h.read(CHUNK_SIZE) for h in handles]
-
-            # Rough test to see whether files are binary. If files are guessed
-            # to be binary, we don't examine contents for speed and space.
-            if any(b"\0" in d for d in data):
-                need_contents = False
-
-            while True:
-                if all_same(data):
-                    if not data[0]:
-                        break
-                else:
-                    result = Different
-                    if not need_contents:
-                        break
-
-                if need_contents:
-                    for i in range(len(data)):
-                        contents[i].append(data[i])
-
-                data = [h.read(CHUNK_SIZE) for h in handles]
-
-        # Files are too large; we can't apply filters
-        except (MemoryError, OverflowError):
-            result = DodgySame if all_same(stats) else DodgyDifferent
-        finally:
-            for h in handles:
-                h.close()
-    except IOError:
-        # Don't cache generic errors as results
-        return FileError
-
-    if result is None:
-        result = Same
-
-    if result == Different and need_contents:
-        contents = [b"".join(c) for c in contents]
-        # For probable text files, discard newline differences to match
-        # file comparisons.
-        contents = [b"\n".join(c.splitlines()) for c in contents]
-
-        contents = [misc.apply_text_filters(c, regexes) for c in contents]
-
-        if ignore_blank_lines:
-            contents = [remove_blank_lines(c) for c in contents]
-        result = SameFiltered if all_same(contents) else Different
-
-    _cache[cache_key] = CacheResult(stats, result)
-    return result
 
 
 EMBLEM_NEW = "emblem-meld-newer-file"
@@ -223,7 +70,7 @@ class CanonicalListing(object):
     """Multi-pane lists with canonicalised matching and error detection"""
 
     def __init__(self, n, canonicalize=None):
-        self.items = collections.defaultdict(lambda: [None] * n)
+        self.items = defaultdict(lambda: [None] * n)
         self.errors = []
         self.canonicalize = canonicalize
         self.add = self.add_simple if canonicalize is None else self.add_canon
@@ -457,15 +304,17 @@ class DirDiff(MeldDoc, Component):
         for diffmap in self.diffmap:
             diffmap.queue_draw()
 
-    def update_comparator(self, *args):
-        comparison_args = {
-            'shallow-comparison': self.props.shallow_comparison,
+    def _comparison_args(self):
+        return {
             'time-resolution': self.props.time_resolution,
+            'shallow-comparison': self.props.shallow_comparison,
             'apply-text-filters': self.props.apply_text_filters,
             'ignore_blank_lines': self.props.ignore_blank_lines,
         }
+
+    def update_comparator(self, *args):
         self.file_compare = functools.partial(
-            _files_same, comparison_args=comparison_args)
+            _files_same, comparison_args=self._comparison_args())
         self.refresh()
 
     def update_treeview_columns(self, settings, key):
@@ -695,52 +544,72 @@ class DirDiff(MeldDoc, Component):
         files_path = [e.get_filename() for e in self.fileentry]
 
         files_iter = list_dirs(files_path, canonicalize, filterer)
-        regexes = [f.byte_filter for f in self.text_filters if f.active]
 
-        trunk_file_iter = next(files_iter)
-        trunk_files = trunk_file_iter[1]
-        branch_iter = trunk_file_iter[2]
-        base = trunk_files, regexes
+        name, trunk_files, branch_iter = next(files_iter)
 
         yield _("[%s] Scanning") % self.label_text
-
-        basic_result = self._append_branch(branch_iter, trunk_iter, base)
-        def identity(args):
-            print(args)
-            return args
-        with Pool(4) as pool:
-            yield from pool.imap_unordered(identity, basic_result)
+        branchs = self._append_branch(branch_iter, trunk_iter, trunk_files)
+        yield from self._check_branch_state(branchs)
 
         self.treeview[0].expand_to_path(trunk_path)
         self.treeview[0].set_cursor(trunk_path)
         self.force_cursor_recalculate = True
         self._update_diffmaps()
-        yield _("[%s] Done") % self.label_text
+        yield _("[%s] Scan Done") % self.label_text
 
-    def _append_branch(self, iterator, parent, base):
+    def _check_branch_state(self, branchs):
+        comparison_args = self._comparison_args()
+        regexes = [f.byte_filter for f in self.text_filters if f.active]
+        context = get_context("spawn")
+        with context.Pool() as pool:
+            for state, branch, files in branchs:
+                if files[0][ATTRS.type] != DIR:
+                    branch_path = self.model.get_string_from_iter(branch)
+                    pool.apply_async(
+                        branch_content_is_same,
+                        (branch_path, files, regexes, comparison_args),
+                        callback=lambda _branch: state != _branch[2] and self.scheduler.add_task(
+                            self._update_branch_state(_branch)
+                        ),
+                        error_callback=lambda *e: print('error_callback', e)
+                    )
+                yield files
+
+    def _update_branch_state(self, branch):
+        branch_path, files, state = branch
+        yield _("[%s] Update status") % self.label_text
+        files_are_same = self._files_state(state, files)
+        branch_state = self._files_tree_stat(files_are_same, state)
+        branch = self.model.get_iter_from_string(branch_path)
+        for branch_file in files:
+            if branch_file[ATTRS.stat]:
+                pos = branch_file[ATTRS.pos]
+                self.model.set_state(branch, pos, branch_state, isdir=False)
+                if branch_state not in (tree.STATE_NORMAL, tree.STATE_NOCHANGE):
+                    self.treeview[0].expand_to_path(Gtk.TreePath(branch_path))
+
+    def _append_branch(self, iterator, parent, trunk_files):
         sub_iterator = ()
-        trunk_files, regexes = base
         for name, files, children in dirs_first(iterator):
             entries = fil_empty_spaces(trunk_files, files).values()
-            state = self._files_dodgy_state(entries)
+            files_are_same, all_present_same = self._files_dodgy_state(entries)
+            state = self._files_tree_stat(files_are_same, all_present_same)
             values = self._files_values(entries, state)
             branch = self.model.append_row_with_values(parent, values)
 
-            at_least_two_files_exists = len([1 for f in entries if f[ATTRS.stat]]) > 1
-            if at_least_two_files_exists:
+            yield all_present_same, branch, tuple(entries)
+
+            # check if at least two files exists
+            num_of_files = len([1 for f in entries if f[ATTRS.stat]])
+            if num_of_files > 1:
                 sub_iterator = sub_iterator + ((children, branch),)
 
-            if state not in (tree.STATE_NORMAL,
-                tree.STATE_NOCHANGE):
-                self.model._mark_parent_as_different(parent)
-                if len(trunk_files) == len(files):
-                    path = self.model.get_path(branch)
-                    self.treeview[0].expand_to_path(Gtk.TreePath(path))
-
-            yield branch, state, name, values
+            if num_of_files != len(trunk_files):
+                path = self.model.get_path(branch)
+                self.treeview[0].expand_to_path(Gtk.TreePath(path))
 
         for iterator, parent in sub_iterator:
-            yield from self._append_branch(iterator, parent, base)
+            yield from self._append_branch(iterator, parent, trunk_files)
 
     def _files_values(self, files, state):
         stats = [f[ATTRS.stat] for f in files]
@@ -753,17 +622,19 @@ class DirDiff(MeldDoc, Component):
             newest_time = max(times)
 
         values = {}
-        for pane, f in enumerate(files):
-            col_idx = self.model.col_idx(pane)
-            f_is_dir = f[ATTRS.type] == DIR
-            f_exists = f[ATTRS.stat]
+        for branch_file in files:
             f_state = state
+            f_pos = branch_file[ATTRS.pos]
+            f_is_dir = branch_file[ATTRS.type] == DIR
+            f_exists = branch_file[ATTRS.stat]
+            f_canon = branch_file[ATTRS.canon]
+            col_idx = self.model.col_idx(f_pos)
 
             if f_exists:
-                values[col_idx(COL_TIME)] = times[pane]
-                values[col_idx(COL_SIZE)] = sizes[pane]
-                values[col_idx(COL_PERMS)] = perms[pane]
-                if newest_time == times[pane]:
+                values[col_idx(COL_TIME)] = times[f_pos]
+                values[col_idx(COL_SIZE)] = sizes[f_pos]
+                values[col_idx(COL_PERMS)] = perms[f_pos]
+                if newest_time == times[f_pos]:
                     values[col_idx(COL_EMBLEM)] = EMBLEM_NEW
                 if f_is_dir:
                     f_state = tree.STATE_NORMAL
@@ -774,8 +645,8 @@ class DirDiff(MeldDoc, Component):
                 self.model.base_state(
                     state=f_state,
                     is_dir=f_is_dir,
-                    label=f[ATTRS.canon],
-                    pane=pane)
+                    label=f_canon,
+                    pane=f_pos)
             )
         return values
 
@@ -783,29 +654,23 @@ class DirDiff(MeldDoc, Component):
         sizes = [f[ATTRS.stat].st_size for f in files if f[ATTRS.stat]]
         all_files_exist = len(files) == len(sizes)
 
-        existing_files_diff = DodgySame if all_same(sizes) \
-            else DodgyDifferent
+        existing_files_diff = Same if all_same(sizes) \
+            else Different
 
         all_files_diff = existing_files_diff if all_files_exist \
             else Different
 
-        return self._files_tree_stat(all_files_diff, existing_files_diff)
+        return all_files_diff, existing_files_diff
 
-    def _files_state(self, files_entries, regexes):
-        files = files_entries.values()
+    def _files_state(self, all_present_same, files):
         existing_files = [f for f in files if f[ATTRS.stat]]
-        existing_paths = [f[ATTRS.abs_path] for f in existing_files]
-        existing_stats = [f[ATTRS.stat] for f in existing_files]
-
-        all_present_same = self.file_compare(
-            existing_paths, regexes, file_stats=existing_stats)
 
         if len(files) == len(existing_files):
-            files_are_same = all_present_same
+            all_files_diff = all_present_same
         else:
-            files_are_same = Different
+            all_files_diff = Different
 
-        return self._files_tree_stat(files_are_same, all_present_same)
+        return all_files_diff
 
     def _files_tree_stat(self, files_are_same, all_present_same):
         # TODO: Differentiate the DodgySame case
