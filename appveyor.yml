@@ -45,8 +45,7 @@ install:
 build_script:
   - cmd: |
       %PYTHON_PREFIX%\Lib\site-packages\gnome\glib-compile-schemas data
-      %PYTHON_PREFIX%\python setup_win32.py bdist_msi
-      %PYTHON_PREFIX%\python setup_win32.py install --root build/install_root --prefix . bdist_dumb
+      %PYTHON_PREFIX%\python setup_win32.py bdist_dumb --bdist-dir build\bdist.mingw\msi --keep-temp bdist_msi --keep-temp
 
 artifacts:
   - path: dist/*.msi
