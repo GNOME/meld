@@ -1,4 +1,4 @@
-version: tag-or-branch-set-from-init-script.{build}
+version: tag-or-branch-set-dynamically.{build}
 
 # Limit builds to release branches
 branches:
@@ -10,20 +10,18 @@ branches:
 # TODO: Disabled due to https://github.com/appveyor/ci/issues/1887
 # skip_non_tags: true
 
-init:
-  - ps: |
-      if ($env:APPVEYOR_REPO_TAG -eq "true") {
-          Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME.$env:APPVEYOR_BUILD_NUMBER"
-      }
-      else {
-          Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_BRANCH-$($env:APPVEYOR_REPO_COMMIT.substring(0,7)).$env:APPVEYOR_BUILD_NUMBER"
-      }
-
 environment:
   PYTHON_PREFIX: C:\Python34
   PATH: $(PYTHON_PREFIX);$(PYTHON_PREFIX)\Lib\site-packages\gnome;$(PATH)
 
 install:
+  - ps: |
+      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+          Update-AppveyorBuild -Version $env:APPVEYOR_REPO_TAG_NAME.$env:APPVEYOR_BUILD_NUMBER
+      } else {
+          Update-AppveyorBuild -Version $env:APPVEYOR_REPO_BRANCH-$($env:APPVEYOR_REPO_COMMIT.substring(0,7)).$env:APPVEYOR_BUILD_NUMBER
+      }
+
   # Install cxFreeze
   - cmd: |
       python -m pip install pypiwin32==219
@@ -48,7 +46,11 @@ build_script:
   - cmd: |
       %PYTHON_PREFIX%\Lib\site-packages\gnome\glib-compile-schemas data
       %PYTHON_PREFIX%\python setup_win32.py bdist_msi
+      %PYTHON_PREFIX%\python setup_win32.py install --root build/install_root --prefix . bdist_dumb
 
 artifacts:
   - path: dist/*.msi
     name: Meld installer
+
+  - path: dist/*.zip
+    name: Meld freezed binaries archive
