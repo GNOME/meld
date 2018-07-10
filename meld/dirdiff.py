@@ -111,8 +111,9 @@ def _files_same(files, regexes, comparison_args):
     shallow_comparison = comparison_args['shallow-comparison']
     time_resolution_ns = comparison_args['time-resolution']
     ignore_blank_lines = comparison_args['ignore_blank_lines']
+    apply_text_filters = comparison_args['apply-text-filters']
 
-    need_contents = comparison_args['apply-text-filters']
+    need_contents = ignore_blank_lines or apply_text_filters
 
     # If all entries are directories, they are considered to be the same
     if all([stat.S_ISDIR(s.mode) for s in stats]):
@@ -189,7 +190,9 @@ def _files_same(files, regexes, comparison_args):
         else:
             contents = [b"\n".join(c.splitlines()) for c in contents]
 
-        contents = [misc.apply_text_filters(c, regexes) for c in contents]
+        if apply_text_filters:
+            contents = [misc.apply_text_filters(c, regexes) for c in contents]
+
         result = SameFiltered if all_same(contents) else Different
 
     _cache[cache_key] = CacheResult(stats, result)
