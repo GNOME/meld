@@ -183,12 +183,12 @@ def _files_same(files, regexes, comparison_args):
         result = Same
 
     if result == Different and need_contents:
-        contents = [b"".join(c) for c in contents]
+        contents = (b"".join(c) for c in contents)
         # For probable text files, discard newline differences to match
         if ignore_blank_lines:
-            contents = [remove_blank_lines(c) for c in contents]
+            contents = (remove_blank_lines(c) for c in contents)
         else:
-            contents = [b"\n".join(c.splitlines()) for c in contents]
+            contents = (b"\n".join(c.splitlines()) for c in contents)
 
         if apply_text_filters:
             for regex in regexes:
