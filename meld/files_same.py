@@ -166,6 +166,5 @@ def branch_content_is_same(branch_path, files, regexes, comparison_args):
     existing_files = [f for f in files if f[ATTRS.stat]]
     files_paths = [f[ATTRS.abs_path] for f in existing_files]
     files_stats = [f[ATTRS.stat] for f in existing_files]
-    print(files_paths)
     state = files_same(files_paths, regexes, comparison_args, files_stats)
     return (branch_path, files, state)

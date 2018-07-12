@@ -25,8 +25,8 @@ import shutil
 import stat
 import sys
 from collections import ChainMap, defaultdict, namedtuple
+from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import get_context
-
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
@@ -573,6 +573,28 @@ class DirDiff(MeldDoc, Component):
                         ),
                         error_callback=lambda *e: print('error_callback', e)
                     )
+                yield files
+    
+    def _check_branch_state_coro(self, branchs):
+        comparison_args = self._comparison_args()
+        regexes = [f.byte_filter for f in self.text_filters if f.active]
+        context = get_context("spawn")
+        with ThreadPoolExecutor() as pool:
+            for state, branch, files in branchs:
+                if files[0][ATTRS.type] != DIR:
+                    branch_path = self.model.get_string_from_iter(branch)
+                    coro = pool.submit(
+                        branch_content_is_same,
+                        branch_path, files, regexes, comparison_args)
+
+                    def update_branch_state(future):
+                        _branch = future.result()
+                        if state != _branch[2]:
+                            self.scheduler.add_task(
+                                self._update_branch_state(_branch)
+                            )
+
+                    coro.add_done_callback(update_branch_state)
                 yield files
 
     def _update_branch_state(self, branch):
