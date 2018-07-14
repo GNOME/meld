@@ -24,6 +24,7 @@ import stat
 import sys
 from collections import namedtuple
 from decimal import Decimal
+from mmap import ACCESS_COPY, mmap
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -90,6 +91,58 @@ def remove_blank_lines(text):
     return b'\n'.join(filter(bool, text.splitlines()))
 
 
+def _files_contents(files, stats):
+    mmaps = []
+    is_bin = False
+    contents = [b'' for file_obj in files]
+
+    for index, file_and_stat in enumerate(zip(files, stats)):
+        file_obj, stat_ = file_and_stat
+        # use mmap for files with size > CHUNK_SIZE
+        data = b''
+        if stat_.size > CHUNK_SIZE:
+            data = mmap(file_obj.fileno(), 0, access=ACCESS_COPY)
+            mmaps.append(data)
+        else:
+            data = file_obj.read()
+        contents[index] = data
+
+        # Rough test to see whether files are binary.
+        chunk_size = min([stat_.size, CHUNK_SIZE])
+        if b"\0" in data[:chunk_size]:
+            is_bin = True
+
+    return contents, mmaps, is_bin
+
+
+def _contents_same(contents, file_size):
+    other_files_index = list(range(1, len(contents)))
+    chunk_range = zip(
+        range(0, file_size, CHUNK_SIZE),
+        range(CHUNK_SIZE, file_size + CHUNK_SIZE, CHUNK_SIZE)
+    )
+
+    for start, end in chunk_range:
+        chunk = contents[0][start:end]
+        for index in other_files_index:
+            if not chunk == contents[index][start:end]:
+                return Different
+
+
+def _normalize(contents, ignore_blank_lines, regexes = ()):
+    contents = (bytes(c) for c in contents)
+    # For probable text files, discard newline differences to match
+    if ignore_blank_lines:
+        contents = (remove_blank_lines(c) for c in contents)
+    else:
+        contents = (b"\n".join(c.splitlines()) for c in contents)
+
+    for regex in regexes:
+        contents = (regex.sub(b'', c) for c in contents)
+
+    return contents
+
+
 def _files_same(files, regexes, comparison_args):
     """Determine whether a list of files are the same.
 
@@ -105,7 +158,6 @@ def _files_same(files, regexes, comparison_args):
         return Same
 
     files = tuple(files)
-    regexes = tuple(regexes)
     stats = tuple([StatItem._make(os.stat(f)) for f in files])
 
     shallow_comparison = comparison_args['shallow-comparison']
@@ -114,6 +166,8 @@ def _files_same(files, regexes, comparison_args):
     apply_text_filters = comparison_args['apply-text-filters']
 
     need_contents = ignore_blank_lines or apply_text_filters
+
+    regexes = tuple(regexes) if apply_text_filters else ()
 
     # If all entries are directories, they are considered to be the same
     if all([stat.S_ISDIR(s.mode) for s in stats]):
@@ -130,8 +184,9 @@ def _files_same(files, regexes, comparison_args):
         )
         return DodgySame if all_same_timestamp else Different
 
+    same_size = all_same([s.size for s in stats])
     # If there are no text filters, unequal sizes imply a difference
-    if not need_contents and not all_same([s.size for s in stats]):
+    if not need_contents and not same_size:
         return Different
 
     # Check the cache before doing the expensive comparison
@@ -141,38 +196,31 @@ def _files_same(files, regexes, comparison_args):
         return cache.result
 
     # Open files and compare bit-by-bit
-    contents = [[] for f in files]
     result = None
 
     try:
-        handles = [open(f, "rb") for f in files]
+        mmaps = []
+        handles = [open(file_path, "rb") for file_path in files]
         try:
-            data = [h.read(CHUNK_SIZE) for h in handles]
+            contents, mmaps, is_bin = _files_contents(handles, stats)
 
-            # Rough test to see whether files are binary. If files are guessed
-            # to be binary, we don't examine contents for speed and space.
-            if any(b"\0" in d for d in data):
-                need_contents = False
+            # compare files chunk-by-chunk
+            if same_size:
+                result = _contents_same(contents, stats[0].size)
+            else:
+                result = Different
 
-            while True:
-                if all_same(data):
-                    if not data[0]:
-                        break
-                else:
-                    result = Different
-                    if not need_contents:
-                        break
-
-                if need_contents:
-                    for i in range(len(data)):
-                        contents[i].append(data[i])
-
-                data = [h.read(CHUNK_SIZE) for h in handles]
+            # normalize and compare files again
+            if result == Different and need_contents and not is_bin:
+                contents = _normalize(contents, ignore_blank_lines, regexes)
+                result = SameFiltered if all_same(contents) else Different
 
         # Files are too large; we can't apply filters
         except (MemoryError, OverflowError):
             result = DodgySame if all_same(stats) else DodgyDifferent
         finally:
+            for m in mmaps:
+                m.close()
             for h in handles:
                 h.close()
     except IOError:
@@ -181,20 +229,6 @@ def _files_same(files, regexes, comparison_args):
 
     if result is None:
         result = Same
-
-    if result == Different and need_contents:
-        contents = (b"".join(c) for c in contents)
-        # For probable text files, discard newline differences to match
-        if ignore_blank_lines:
-            contents = (remove_blank_lines(c) for c in contents)
-        else:
-            contents = (b"\n".join(c.splitlines()) for c in contents)
-
-        if apply_text_filters:
-            for regex in regexes:
-                contents = (regex.sub(b'', c) for c in contents)
-
-        result = SameFiltered if all_same(contents) else Different
 
     _cache[cache_key] = CacheResult(stats, result)
     return result
