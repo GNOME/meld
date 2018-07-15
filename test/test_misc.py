@@ -1,4 +1,6 @@
 
+from unittest import mock
+
 import pytest
 from meld.misc import all_same, calc_syncpoint, merge_intervals
 
@@ -73,3 +75,24 @@ def test_calc_syncpoint(value, page_size, lower, upper, expected):
 ])
 def test_all_same(lst, expected):
     assert all_same(lst) == expected
+
+
+@pytest.mark.parametrize("os_name, paths, expected", [
+    ('posix', ['/tmp/foo1', '/tmp/foo2'], ['foo1', 'foo2']),
+    ('posix', ['/tmp/foo1', '/tmp/foo2', '/tmp/foo3'], ['foo1', 'foo2', 'foo3']),
+    ('posix', ['/tmp/bar/foo1', '/tmp/woo/foo2'], ['foo1', 'foo2']),
+    ('posix', ['/tmp/bar/foo1', '/tmp/woo/foo1'], ['[bar] foo1', '[woo] foo1']),
+    ('posix', ['/tmp/bar/foo1', '/tmp/woo/foo1', '/tmp/ree/foo1'], ['[bar] foo1', '[woo] foo1', '[ree] foo1']),
+    ('posix', ['/tmp/bar/deep/deep', '/tmp/bar/shallow'], ['deep', 'shallow']),
+    ('posix', ['/tmp/bar/deep/deep/foo1', '/tmp/bar/shallow/foo1'], ['[deep] foo1', '[shallow] foo1']),
+    # This case doesn't actually make much sense, so it's not that bad
+    # that our output is... somewhat unclear.
+    ('posix', ['/tmp/bar/subdir/subsub', '/tmp/bar/'], ['subsub', 'bar']),
+    ('nt', ['C:\\Users\\hmm\\bar', 'C:\\Users\\hmm\\foo'], ['bar', 'foo']),
+    ('nt', ['C:\\Users\\bar\\hmm', 'C:\\Users\\foo\\hmm'], ['[bar] hmm', '[foo] hmm']),
+])
+def test_shorten_names(os_name, paths, expected):
+    from meld.misc import shorten_names
+
+    with mock.patch('os.name', os_name):
+        assert shorten_names(*paths) == expected

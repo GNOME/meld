@@ -25,6 +25,7 @@ import os
 import re
 import shutil
 import subprocess
+from pathlib import PurePath
 
 from gi.repository import Gdk
 from gi.repository import GLib
@@ -293,30 +294,32 @@ def all_same(iterable):
 
 
 def shorten_names(*names):
-    """Remove redunant parts of a list of names (e.g. /tmp/foo{1,2} -> foo{1,2}
+    """Remove common parts of a list of paths
+
+    For example, `('/tmp/foo1', '/tmp/foo2')` would be summarised as
+    `('foo1', 'foo2')`. Paths that share a basename are distinguished
+    by prepending an indicator, e.g., `('/a/b/c', '/a/d/c')` would be
+    summarised to `['[b] c', '[d] c']`.
     """
-    # TODO: Update for different path separators and URIs
-    prefix = os.path.commonprefix(names)
-    prefixslash = prefix.rfind("/") + 1
 
-    names = [n[prefixslash:] for n in names]
-    paths = [n.split("/") for n in names]
+    paths = [PurePath(n) for n in names]
 
-    try:
-        basenames = [p[-1] for p in paths]
-    except IndexError:
-        pass
-    else:
-        if all_same(basenames):
-            def firstpart(alist):
-                if len(alist) > 1 and alist[0]:
-                    return "[%s] " % alist[0]
-                else:
-                    return ""
-            roots = [firstpart(p) for p in paths]
-            base = basenames[0].strip()
-            return [r + base for r in roots]
-    # no common path. empty names get changed to "[None]"
+    # Identify the longest common path among the list of path
+    common = set(paths[0].parents)
+    common = common.intersection(*(p.parents for p in paths))
+    common_parent = sorted(common, key=lambda p: -len(p.parts))[0]
+
+    paths = [p.relative_to(common_parent) for p in paths]
+    basenames = [p.name for p in paths]
+
+    if all_same(basenames):
+        def firstpart(path: PurePath):
+            if len(path.parts) > 1 and path.parts[0]:
+                return "[%s] " % path.parts[0]
+            else:
+                return ""
+        return [firstpart(p) + p.name for p in paths]
+
     return [name or _("[None]") for name in basenames]
 
 
