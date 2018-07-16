@@ -38,7 +38,7 @@ from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
-from meld.misc import all_same, with_focused_pane
+from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
@@ -137,8 +137,8 @@ def _normalize(contents, ignore_blank_lines, regexes = ()):
     else:
         contents = (b"\n".join(c.splitlines()) for c in contents)
 
-    for regex in regexes:
-        contents = (regex.sub(b'', c) for c in contents)
+    if regexes:
+        contents = (apply_text_filters(c, regexes) for c in contents)
 
     return contents
 
