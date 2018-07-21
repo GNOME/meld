@@ -26,6 +26,7 @@ import re
 import shutil
 import subprocess
 from pathlib import PurePath
+from typing import List
 
 from gi.repository import Gdk
 from gi.repository import GLib
@@ -293,7 +294,7 @@ def all_same(iterable):
     return True
 
 
-def shorten_names(*names):
+def shorten_names(*names) -> List[str]:
     """Remove common parts of a list of paths
 
     For example, `('/tmp/foo1', '/tmp/foo2')` would be summarised as
@@ -307,6 +308,8 @@ def shorten_names(*names):
     # Identify the longest common path among the list of path
     common = set(paths[0].parents)
     common = common.intersection(*(p.parents for p in paths))
+    if not common:
+        return list(names)
     common_parent = sorted(common, key=lambda p: -len(p.parts))[0]
 
     paths = [p.relative_to(common_parent) for p in paths]

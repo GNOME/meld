@@ -90,6 +90,9 @@ def test_all_same(lst, expected):
     ('posix', ['/tmp/bar/subdir/subsub', '/tmp/bar/'], ['subsub', 'bar']),
     ('nt', ['C:\\Users\\hmm\\bar', 'C:\\Users\\hmm\\foo'], ['bar', 'foo']),
     ('nt', ['C:\\Users\\bar\\hmm', 'C:\\Users\\foo\\hmm'], ['[bar] hmm', '[foo] hmm']),
+    # Check that paths with no commonality are handled
+    ('posix', ['nothing in', 'common'], ['nothing in', 'common']),
+    ('posix', ['<unnamed>', '/tmp/real/path'], ['<unnamed>', '/tmp/real/path']),
 ])
 def test_shorten_names(os_name, paths, expected):
     from meld.misc import shorten_names
