@@ -147,6 +147,9 @@ class MeldSourceView(GtkSource.View):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.drag_dest_add_uri_targets()
+
         binding_set = Gtk.binding_set_find('GtkSourceView')
         for key, modifiers in self.replaced_entries:
             Gtk.binding_entry_remove(binding_set, key, modifiers)

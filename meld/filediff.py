@@ -205,6 +205,8 @@ class FileDiff(MeldDoc, Component):
         for t in self.textview:
             t.connect("focus-in-event", self.on_current_diff_changed)
             t.connect("focus-out-event", self.on_current_diff_changed)
+            t.connect(
+                "drag_data_received", self.on_textview_drag_data_received)
 
         # Bind all overwrite properties together, so that toggling
         # overwrite mode is per-FileDiff.
@@ -767,6 +769,22 @@ class FileDiff(MeldDoc, Component):
                 have_file)
         except AttributeError:
             pass
+
+    def on_textview_drag_data_received(
+            self, widget, context, x, y, selection_data, info, time):
+        uris = selection_data.get_uris()
+        if uris:
+            gfiles = [Gio.File.new_for_uri(uri) for uri in uris]
+
+            if len(gfiles) == self.num_panes:
+                if self.check_save_modified() == Gtk.ResponseType.OK:
+                    self.set_files(gfiles)
+            elif len(gfiles) == 1:
+                pane = self.textview.index(widget)
+                buffer = self.textbuffer[pane]
+                if self.check_save_modified([buffer]) == Gtk.ResponseType.OK:
+                    self.set_file(pane, gfiles[0])
+            return True
 
     def on_textview_focus_in_event(self, view, event):
         self.focus_pane = view
