@@ -29,7 +29,7 @@ class DiffMap(Gtk.DrawingArea):
     __gtype_name__ = "DiffMap"
 
     def __init__(self):
-        Gtk.DrawingArea.__init__(self)
+        super().__init__()
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self._last_allocation = None
         self._scrolladj = None

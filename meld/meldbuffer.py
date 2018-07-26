@@ -37,7 +37,7 @@ class MeldBuffer(GtkSource.Buffer):
     )
 
     def __init__(self):
-        GtkSource.Buffer.__init__(self)
+        super().__init__()
         bind_settings(self)
         self.data = MeldBufferData()
         self.undo_sequence = None
@@ -98,7 +98,7 @@ class MeldBufferData(GObject.GObject):
     )
 
     def __init__(self):
-        GObject.GObject.__init__(self)
+        super().__init__()
         self._gfile = None
         self._label = None
         self._monitor = None

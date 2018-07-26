@@ -65,7 +65,7 @@ class MeldDistribution(distutils.dist.Distribution):
     def __init__(self, *args, **kwargs):
         self.no_update_icon_cache = False
         self.no_compile_schemas = False
-        distutils.dist.Distribution.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class build_data(distutils.cmd.Command):

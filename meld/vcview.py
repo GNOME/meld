@@ -113,7 +113,7 @@ COL_LOCATION, COL_STATUS, COL_OPTIONS, COL_END = \
 
 class VcTreeStore(tree.DiffTreeStore):
     def __init__(self):
-        tree.DiffTreeStore.__init__(self, 1, [str] * 5)
+        super().__init__(1, [str] * 5)
 
     def get_file_path(self, it):
         return self.get_value(it, self.column_index(tree.COL_PATH, 0))

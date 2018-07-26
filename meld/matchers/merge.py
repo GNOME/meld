@@ -23,12 +23,12 @@ class AutoMergeDiffer(diffutil.Differ):
     # _matcher = PatienceSequenceMatcher
 
     def __init__(self):
-        diffutil.Differ.__init__(self)
+        super().__init__()
         self.auto_merge = False
         self.unresolved = []
 
     def _auto_merge(self, using, texts):
-        for out0, out1 in diffutil.Differ._auto_merge(self, using, texts):
+        for out0, out1 in super()._auto_merge(using, texts):
             if self.auto_merge and out0[0] == 'conflict':
                 # we will try to resolve more complex conflicts automatically
                 # here... if possible
@@ -195,8 +195,7 @@ class AutoMergeDiffer(diffutil.Differ):
                     ]
                 self.unresolved[lo:hi] = []
 
-        return diffutil.Differ.change_sequence(
-            self, sequence, startidx, sizechange, texts)
+        return super().change_sequence(sequence, startidx, sizechange, texts)
 
     def get_unresolved_count(self):
         return len(self.unresolved)

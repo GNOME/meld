@@ -25,12 +25,12 @@ class FileMerge(FileDiff):
     differ = merge.AutoMergeDiffer
 
     def _connect_buffer_handlers(self):
-        FileDiff._connect_buffer_handlers(self)
+        super()._connect_buffer_handlers()
         self.textview[0].set_editable(0)
         self.textview[2].set_editable(0)
 
     def get_comparison(self):
-        comp = FileDiff.get_comparison(self)
+        comp = super().get_comparison()
         return RecentType.Merge, comp[1]
 
     def _merge_files(self):

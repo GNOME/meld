@@ -28,7 +28,7 @@ class NotebookLabel(Gtk.HBox):
     tab_width_in_chars = 30
 
     def __init__(self, iconname, text, onclose):
-        Gtk.HBox.__init__(self, homogeneous=False, spacing=4)
+        super().__init__(homogeneous=False, spacing=4)
 
         label = Gtk.Label(label=text)
         # FIXME: ideally, we would use custom ellipsization that ellipsized the

@@ -93,7 +93,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     }
 
     def __init__(self):
-        GObject.GObject.__init__(self)
+        super().__init__()
         self.scheduler = FifoScheduler()
         self.num_panes = 0
         self.main_actiongroup = None

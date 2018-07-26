@@ -21,8 +21,8 @@ from meld.ui import gnomeglade
 
 class FindBar(gnomeglade.Component):
     def __init__(self, parent):
-        gnomeglade.Component.__init__(self, "findbar.ui", "findbar",
-                                      ["arrow_left", "arrow_right"])
+        super().__init__("findbar.ui", "findbar",
+                         ["arrow_left", "arrow_right"])
         self.set_text_view(None)
         self.arrow_left.show()
         self.arrow_right.show()
