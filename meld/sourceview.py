@@ -233,28 +233,25 @@ class MeldSourceView(GtkSource.View):
         return GtkSource.View.do_realize(self)
 
     def do_draw_layer(self, layer, context):
-        if layer != Gtk.TextViewLayer.BELOW:
+        if layer != Gtk.TextViewLayer.BELOW_TEXT:
             return GtkSource.View.do_draw_layer(self, layer, context)
 
         context.save()
         context.set_line_width(1.0)
 
         _, clip = Gdk.cairo_get_clip_rectangle(context)
-        _, buffer_y = self.window_to_buffer_coords(
-            Gtk.TextWindowType.WIDGET, 0, clip.y)
-        _, buffer_y_end = self.window_to_buffer_coords(
-            Gtk.TextWindowType.WIDGET, 0, clip.y + clip.height)
-        bounds = (self.get_line_num_for_y(buffer_y),
-                  self.get_line_num_for_y(buffer_y_end))
+        bounds = (
+            self.get_line_num_for_y(clip.y),
+            self.get_line_num_for_y(clip.y + clip.height),
+        )
 
-        visible = self.get_visible_rect()
         x = clip.x - 0.5
         width = clip.width + 1
 
         # Paint chunk backgrounds and outlines
         for change in self.chunk_iter(bounds):
-            ypos0 = self.get_y_for_line_num(change[1]) - visible.y
-            ypos1 = self.get_y_for_line_num(change[2]) - visible.y
+            ypos0 = self.get_y_for_line_num(change[1])
+            ypos1 = self.get_y_for_line_num(change[2])
             height = max(0, ypos1 - ypos0 - 1)
 
             context.rectangle(x, ypos0 + 0.5, width, height)
@@ -276,7 +273,7 @@ class MeldSourceView(GtkSource.View):
             it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
             ypos, line_height = self.get_line_yrange(it)
             context.save()
-            context.rectangle(x, ypos - visible.y, width, line_height)
+            context.rectangle(x, ypos, width, line_height)
             context.clip()
             context.set_source_rgba(*self.highlight_color)
             context.paint_with_alpha(0.25)
@@ -288,7 +285,7 @@ class MeldSourceView(GtkSource.View):
                 continue
             syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
             if bounds[0] <= syncline <= bounds[1]:
-                ypos = self.get_y_for_line_num(syncline) - visible.y
+                ypos = self.get_y_for_line_num(syncline)
                 context.rectangle(x, ypos - 0.5, width, 1)
                 context.set_source_rgba(*self.syncpoint_color)
                 context.stroke()
@@ -310,7 +307,7 @@ class MeldSourceView(GtkSource.View):
                 ystart -= 1
 
             context.set_source_rgba(*rgba)
-            context.rectangle(x, ystart - visible.y, width, yend - ystart)
+            context.rectangle(x, ystart, width, yend - ystart)
             if c.anim_type == TextviewLineAnimationType.stroke:
                 context.stroke()
             else:
