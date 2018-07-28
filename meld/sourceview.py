@@ -272,12 +272,9 @@ class MeldSourceView(GtkSource.View):
         if self.props.highlight_current_line_local and self.is_focus():
             it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
             ypos, line_height = self.get_line_yrange(it)
-            context.save()
             context.rectangle(x, ypos, width, line_height)
-            context.clip()
             context.set_source_rgba(*self.highlight_color)
-            context.paint_with_alpha(0.25)
-            context.restore()
+            context.fill()
 
         # Draw syncpoint indicator lines
         for syncpoint in self.syncpoints:
