@@ -345,6 +345,7 @@ class DirDiff(MeldDoc, Component):
 
     state_actions = {
         tree.STATE_NORMAL: ("normal", "ShowSame"),
+        tree.STATE_NOCHANGE: ("normal", "ShowSame"),
         tree.STATE_NEW: ("new", "ShowNew"),
         tree.STATE_MODIFIED: ("modified", "ShowModified"),
     }
@@ -1120,7 +1121,7 @@ class DirDiff(MeldDoc, Component):
                 # We can skip recalculation if the new cursor is between
                 # the previous/next bounds, and we weren't on a changed row
                 state = self.model.get_state(old_cursor, 0)
-                if state not in (tree.STATE_NORMAL, tree.STATE_EMPTY):
+                if state not in (tree.STATE_NORMAL, tree.STATE_NOCHANGE, tree.STATE_EMPTY):
                     skip = False
                 else:
                     if self.prev_path is None and self.next_path is None:
@@ -1325,7 +1326,7 @@ class DirDiff(MeldDoc, Component):
 
     def _filter_on_state(self, roots, fileslist):
         """Get state of 'files' for filtering purposes.
-           Returns STATE_NORMAL, STATE_NEW or STATE_MODIFIED
+           Returns STATE_NORMAL, STATE_NOCHANGE, STATE_NEW or STATE_MODIFIED
 
                roots - array of root directories
                fileslist - array of filename tuples of length len(roots)
@@ -1338,9 +1339,12 @@ class DirDiff(MeldDoc, Component):
             is_present = [os.path.exists(f) for f in curfiles]
             all_present = 0 not in is_present
             if all_present:
-                if self.file_compare(curfiles, regexes) in (
-                        Same, SameFiltered, DodgySame):
+                comparison_result = self.file_compare(curfiles, regexes)
+                if comparison_result in (
+                        Same, DodgySame):
                     state = tree.STATE_NORMAL
+                elif comparison_result == SameFiltered:
+                    state = tree.STATE_NOCHANGE
                 else:
                     state = tree.STATE_MODIFIED
             else:

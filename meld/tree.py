@@ -163,7 +163,7 @@ class DiffTreeStore(SearchableTreeStore):
     def _find_next_prev_diff(self, start_path):
         def match_func(it):
             # TODO: It works, but matching on the first pane only is very poor
-            return self.get_state(it, 0) not in (STATE_NORMAL, STATE_EMPTY)
+            return self.get_state(it, 0) not in (STATE_NORMAL, STATE_NOCHANGE, STATE_EMPTY)
 
         return self.get_previous_next_paths(start_path, match_func)
 
