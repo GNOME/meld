@@ -84,7 +84,7 @@ class SearchableTreeStore(Gtk.TreeStore):
                     while True:
                         it = self.iter_parent(it)
                         if not it:
-                            raise StopIteration()
+                            return
                         next_it = self.iter_next(it)
                         if next_it:
                             it = next_it
@@ -108,7 +108,7 @@ class SearchableTreeStore(Gtk.TreeStore):
                 if up:
                     it = up
                 else:
-                    raise StopIteration()
+                    return
             yield it
 
     def get_previous_next_paths(self, path, match_func):
