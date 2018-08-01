@@ -34,7 +34,7 @@ class FilterEntry:
     @classmethod
     def _compile_regex(cls, regex):
         try:
-            compiled = re.compile(regex + "(?m)")
+            compiled = re.compile("(?m)" + regex)
         except re.error:
             compiled = None
         return compiled
@@ -47,7 +47,7 @@ class FilterEntry:
             regex = regex.encode('utf8', 'replace')
 
         try:
-            compiled = re.compile(regex + b"(?m)")
+            compiled = re.compile(b"(?m)" + regex)
         except re.error:
             compiled = None
         return compiled
