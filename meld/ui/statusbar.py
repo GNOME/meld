@@ -23,15 +23,6 @@ from meld.ui.bufferselectors import EncodingSelector
 from meld.ui.bufferselectors import SourceLangSelector
 
 
-Gtk.rc_parse_string(
-    """
-    style "meld-statusbar-style" {
-        GtkStatusbar::shadow-type = GTK_SHADOW_NONE
-    }
-    class "MeldStatusBar" style "meld-statusbar-style"
-    """)
-
-
 class MeldStatusMenuButton(Gtk.MenuButton):
     """Compact menu button with arrow indicator for use in a status bar
 
