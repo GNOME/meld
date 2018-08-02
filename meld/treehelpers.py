@@ -14,9 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
-from gi.repository import GObject
 from gi.module import get_introspection_module
+from gi.repository import GObject
+from gi.repository import Gtk
 
 
 _GIGtk = get_introspection_module('Gtk')
