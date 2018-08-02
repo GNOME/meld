@@ -15,6 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
+from gi.repository import GObject
+from gi.module import get_introspection_module
+
+
+_GIGtk = get_introspection_module('Gtk')
 
 
 def tree_path_as_tuple(path):
@@ -70,6 +75,12 @@ def refocus_deleted_path(model, path):
 
 
 class SearchableTreeStore(Gtk.TreeStore):
+
+    def set_none_of_cols(self, types):
+        self._none_of_cols = {
+            col_num: GObject.Value(col_type, None)
+            for col_num, col_type in enumerate(types)
+        }
 
     def inorder_search_down(self, it):
         while it:
@@ -130,3 +141,22 @@ class SearchableTreeStore(Gtk.TreeStore):
                 break
 
         return prev_path, next_path
+
+    def unsafe_set_value(self, treeiter, column, value):
+        """ This must be fastest than super.set_value,
+        at the cost that may crash the application if you don't
+        know what your're passing here.
+        ie: pass treeiter or column as None crash meld
+
+        treeiter: Gtk.TreeIter
+        column: Int col index
+        value: Str (UTF-8), Int, Float, Double, Boolean or GObject
+
+        return None
+        """
+        if value is None and hasattr(self, '_none_of_cols'):
+            value = self._none_of_cols.get(column)
+        if value is None:
+            self.set_value(treeiter, column, value)
+        else:
+            _GIGtk.TreeStore.set_value(self, treeiter, column, value)

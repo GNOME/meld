@@ -43,6 +43,7 @@ class DiffTreeStore(SearchableTreeStore):
         for col_type in (COL_TYPES + tuple(types)):
             full_types.extend([col_type] * ntree)
         super().__init__(*full_types)
+        self.set_none_of_cols(full_types)
         self.ntree = ntree
         self._setup_default_styles()
 
@@ -116,14 +117,17 @@ class DiffTreeStore(SearchableTreeStore):
     def add_entries(self, parent, names):
         child = self.append(parent)
         for pane, path in enumerate(names):
-            self.set_value(child, self.column_index(COL_PATH, pane), path)
+            column = self.column_index(COL_PATH, pane)
+            self.unsafe_set_value(child, column, path)
         return child
 
     def add_empty(self, parent, text="empty folder"):
         it = self.append(parent)
         for pane in range(self.ntree):
-            self.set_value(it, self.column_index(COL_PATH, pane), None)
+            column = self.column_index(COL_PATH, pane)
+            self.set_value(it, column, None)
             self.set_state(it, pane, STATE_EMPTY, text)
+        return it
 
     def add_error(self, parent, msg, pane):
         it = self.append(parent)
@@ -139,19 +143,21 @@ class DiffTreeStore(SearchableTreeStore):
         self.set_state(it, pane, state, display_text, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
+        if not it:
+            return None
         col_idx = self.column_index
         icon = self.icon_details[state][1 if isdir else 0]
         tint = self.icon_details[state][3 if isdir else 2]
-        self.set_value(it, col_idx(COL_STATE, pane), str(state))
-        self.set_value(it, col_idx(COL_TEXT,  pane), label)
-        self.set_value(it, col_idx(COL_ICON,  pane), icon)
-        self.set_value(it, col_idx(COL_TINT, pane), tint)
+        self.unsafe_set_value(it, col_idx(COL_STATE, pane), str(state))
+        self.unsafe_set_value(it, col_idx(COL_TEXT,  pane), label)
+        self.unsafe_set_value(it, col_idx(COL_ICON,  pane), icon)
+        self.unsafe_set_value(it, col_idx(COL_TINT, pane), tint)
 
         fg, style, weight, strike = self.text_attributes[state]
-        self.set_value(it, col_idx(COL_FG, pane), fg)
-        self.set_value(it, col_idx(COL_STYLE, pane), style)
-        self.set_value(it, col_idx(COL_WEIGHT, pane), weight)
-        self.set_value(it, col_idx(COL_STRIKE, pane), strike)
+        self.unsafe_set_value(it, col_idx(COL_FG, pane), fg)
+        self.unsafe_set_value(it, col_idx(COL_STYLE, pane), style)
+        self.unsafe_set_value(it, col_idx(COL_WEIGHT, pane), weight)
+        self.unsafe_set_value(it, col_idx(COL_STRIKE, pane), strike)
 
     def get_state(self, it, pane):
         state_idx = self.column_index(COL_STATE, pane)
