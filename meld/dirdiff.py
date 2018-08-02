@@ -1394,18 +1394,18 @@ class DirDiff(MeldDoc, Component):
 
         isdir = [os.path.isdir(files[j]) for j in range(self.model.ntree)]
         for j in range(self.model.ntree):
-            column_index = functools.partial(self.model.column_index, pane=j)
+            column = functools.partial(self.model.column_index, pane=j)
             if stats[j]:
                 self.model.set_path_state(
                     it, j, state, isdir[j], display_text=name_overrides[j])
                 emblem = EMBLEM_NEW if j in newest else None
-                self.model.set_value(it, column_index(COL_EMBLEM), emblem)
+                self.model.unsafe_set_value(it, column(COL_EMBLEM), emblem)
                 link_emblem = EMBLEM_SYMLINK if j in symlinks else None
-                self.model.set_value(
-                    it, column_index(COL_EMBLEM_SECONDARY), link_emblem)
-                self.model.set_value(it, column_index(COL_TIME), times[j])
-                self.model.set_value(it, column_index(COL_SIZE), sizes[j])
-                self.model.set_value(it, column_index(COL_PERMS), perms[j])
+                self.model.unsafe_set_value(
+                    it, column(COL_EMBLEM_SECONDARY), link_emblem)
+                self.model.unsafe_set_value(it, column(COL_TIME), times[j])
+                self.model.unsafe_set_value(it, column(COL_SIZE), sizes[j])
+                self.model.unsafe_set_value(it, column(COL_PERMS), perms[j])
             else:
                 # TODO: More consistent state setting here would let us avoid
                 # pyobjects for column types by avoiding None use.
