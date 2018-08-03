@@ -1,6 +1,6 @@
 from os import mkdir, path
 
-CHUNK_SIZE = 4096
+CHUNK_SIZE = 4096 * 10
 
 diff_definition = {
     'a': {
