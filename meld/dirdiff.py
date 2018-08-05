@@ -1394,18 +1394,17 @@ class DirDiff(MeldDoc, Component):
 
         isdir = [os.path.isdir(files[j]) for j in range(self.model.ntree)]
         for j in range(self.model.ntree):
-            column = functools.partial(self.model.column_index, pane=j)
             if stats[j]:
                 self.model.set_path_state(
                     it, j, state, isdir[j], display_text=name_overrides[j])
                 emblem = EMBLEM_NEW if j in newest else None
                 link_emblem = EMBLEM_SYMLINK if j in symlinks else None
-                self.model.unsafe_set(it, {
-                    column(COL_EMBLEM): emblem,
-                    column(COL_EMBLEM_SECONDARY): link_emblem,
-                    column(COL_TIME): times[j],
-                    column(COL_SIZE): sizes[j],
-                    column(COL_PERMS): perms[j],
+                self.model.unsafe_set(it, j, {
+                    COL_EMBLEM: emblem,
+                    COL_EMBLEM_SECONDARY: link_emblem,
+                    COL_TIME: times[j],
+                    COL_SIZE: sizes[j],
+                    COL_PERMS: perms[j]
                 })
             else:
                 # TODO: More consistent state setting here would let us avoid
