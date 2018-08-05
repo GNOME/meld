@@ -14,17 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.module import get_introspection_module
-from gi.repository import GObject
 from gi.repository import Gtk
-
-
-_GIGtk = None
-
-try:
-    _GIGtk = get_introspection_module('Gtk')
-except Exception:
-    pass
 
 
 def tree_path_as_tuple(path):
@@ -80,12 +70,6 @@ def refocus_deleted_path(model, path):
 
 
 class SearchableTreeStore(Gtk.TreeStore):
-
-    def set_none_of_cols(self, types):
-        self._none_of_cols = {
-            col_num: GObject.Value(col_type, None)
-            for col_num, col_type in enumerate(types)
-        }
 
     def inorder_search_down(self, it):
         while it:
@@ -146,27 +130,3 @@ class SearchableTreeStore(Gtk.TreeStore):
                 break
 
         return prev_path, next_path
-
-    def unsafe_set(self, treeiter, keys_values):
-        """ This must be fastest than super.set,
-        at the cost that may crash the application if you don't
-        know what your're passing here.
-        ie: pass treeiter or column as None crash meld
-
-        treeiter: Gtk.TreeIter
-        keys_values: dict<column, value>
-            column: Int col index
-            value: Str (UTF-8), Int, Float, Double, Boolean, None or GObject
-
-        return None
-        """
-        safe_keys_values = {
-            col: val if val is not None else self._none_of_cols.get(col)
-            for col, val in keys_values.items()
-        }
-        if _GIGtk and treeiter:
-            columns = [col for col in safe_keys_values.keys()]
-            values = [val for val in safe_keys_values.values()]
-            _GIGtk.TreeStore.set(self, treeiter, columns, values)
-        else:
-            self.set(treeiter, safe_keys_values)

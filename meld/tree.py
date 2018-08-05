@@ -16,8 +16,11 @@
 
 import os
 
+from gi.module import get_introspection_module
 from gi.repository import Gdk
 from gi.repository import GLib
+from gi.repository import GObject
+from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.misc import colour_lookup_with_fallback
@@ -28,6 +31,13 @@ from meld.vc._vc import (  # noqa: F401
     STATE_IGNORED, STATE_MAX, STATE_MISSING, STATE_MODIFIED, STATE_NEW,
     STATE_NOCHANGE, STATE_NONE, STATE_NONEXIST, STATE_NORMAL, STATE_REMOVED,
 )
+
+_GIGtk = None
+
+try:
+    _GIGtk = get_introspection_module('Gtk')
+except Exception:
+    pass
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
@@ -43,7 +53,10 @@ class DiffTreeStore(SearchableTreeStore):
         for col_type in (COL_TYPES + tuple(types)):
             full_types.extend([col_type] * ntree)
         super().__init__(*full_types)
-        self.set_none_of_cols(full_types)
+        self._none_of_cols = {
+            col_num: GObject.Value(col_type, None)
+            for col_num, col_type in enumerate(full_types)
+        }
         self.ntree = ntree
         self._setup_default_styles()
 
@@ -182,6 +195,30 @@ class DiffTreeStore(SearchableTreeStore):
             state = self.get_state(it, 0)
             if state in states:
                 yield it
+
+    def unsafe_set(self, treeiter, keys_values):
+        """ This must be fastest than super.set,
+        at the cost that may crash the application if you don't
+        know what your're passing here.
+        ie: pass treeiter or column as None crash meld
+
+        treeiter: Gtk.TreeIter
+        keys_values: dict<column, value>
+            column: Int col index
+            value: Str (UTF-8), Int, Float, Double, Boolean, None or GObject
+
+        return None
+        """
+        safe_keys_values = {
+            col: val if val is not None else self._none_of_cols.get(col)
+            for col, val in keys_values.items()
+        }
+        if _GIGtk and treeiter:
+            columns = [col for col in safe_keys_values.keys()]
+            values = [val for val in safe_keys_values.values()]
+            _GIGtk.TreeStore.set(self, treeiter, columns, values)
+        else:
+            self.set(treeiter, safe_keys_values)
 
 
 def treeview_search_cb(model, column, key, it, data):
