@@ -20,7 +20,6 @@ from gi.module import get_introspection_module
 from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import GObject
-from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld.misc import colour_lookup_with_fallback
@@ -131,14 +130,14 @@ class DiffTreeStore(SearchableTreeStore):
         it = self.append(parent)
         for pane, path in enumerate(names):
             column = self.column_index(COL_PATH, pane)
-            self.unsafe_set(it, { column: path })
+            self.unsafe_set(it, {column: path})
         return it
 
     def add_empty(self, parent, text="empty folder"):
         it = self.append(parent)
         for pane in range(self.ntree):
             column = self.column_index(COL_PATH, pane)
-            self.unsafe_set(it, { column: None })
+            self.unsafe_set(it, {column: None})
             self.set_state(it, pane, STATE_EMPTY, text)
         return it
 
@@ -146,7 +145,7 @@ class DiffTreeStore(SearchableTreeStore):
         it = self.append(parent)
         for i in range(self.ntree):
             column = self.column_index(COL_STATE, i)
-            self.unsafe_set(it, { column: str(STATE_ERROR) })
+            self.unsafe_set(it, {column: str(STATE_ERROR)})
         self.set_state(it, pane, STATE_ERROR, msg)
 
     def set_path_state(self, it, pane, state, isdir=0, display_text=None):
