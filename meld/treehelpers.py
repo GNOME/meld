@@ -154,9 +154,10 @@ class SearchableTreeStore(Gtk.TreeStore):
 
         return None
         """
-        if value is None and hasattr(self, '_none_of_cols'):
-            value = self._none_of_cols.get(column)
-        if value is None:
-            self.set_value(treeiter, column, value)
-        else:
-            _GIGtk.TreeStore.set_value(self, treeiter, column, value)
+        if treeiter:
+            if value is None and hasattr(self, '_none_of_cols'):
+                value = self._none_of_cols.get(column)
+            if value is None:
+                self.set_value(treeiter, column, value)
+            else:
+                _GIGtk.TreeStore.set_value(self, treeiter, column, value)

@@ -143,8 +143,6 @@ class DiffTreeStore(SearchableTreeStore):
         self.set_state(it, pane, state, display_text, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
-        if not it:
-            return None
         col_idx = self.column_index
         icon = self.icon_details[state][1 if isdir else 0]
         tint = self.icon_details[state][3 if isdir else 2]
