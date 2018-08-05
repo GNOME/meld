@@ -19,7 +19,12 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 
-_GIGtk = get_introspection_module('Gtk')
+_GIGtk = None
+
+try:
+    _GIGtk = get_introspection_module('Gtk')
+except Exception:
+    pass
 
 
 def tree_path_as_tuple(path):
@@ -154,10 +159,9 @@ class SearchableTreeStore(Gtk.TreeStore):
 
         return None
         """
-        if treeiter:
-            if value is None and hasattr(self, '_none_of_cols'):
-                value = self._none_of_cols.get(column)
-            if value is None:
-                self.set_value(treeiter, column, value)
-            else:
-                _GIGtk.TreeStore.set_value(self, treeiter, column, value)
+        if value is None and hasattr(self, '_none_of_cols'):
+            value = self._none_of_cols.get(column)
+        if value is not None and _GIGtk and treeiter:
+            _GIGtk.TreeStore.set_value(self, treeiter, column, value)
+        else:
+            self.set_value(treeiter, column, value)
