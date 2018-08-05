@@ -147,21 +147,26 @@ class SearchableTreeStore(Gtk.TreeStore):
 
         return prev_path, next_path
 
-    def unsafe_set_value(self, treeiter, column, value):
-        """ This must be fastest than super.set_value,
+    def unsafe_set(self, treeiter, keys_values):
+        """ This must be fastest than super.set,
         at the cost that may crash the application if you don't
         know what your're passing here.
         ie: pass treeiter or column as None crash meld
 
         treeiter: Gtk.TreeIter
-        column: Int col index
-        value: Str (UTF-8), Int, Float, Double, Boolean or GObject
+        keys_values: dict<column, value>
+            column: Int col index
+            value: Str (UTF-8), Int, Float, Double, Boolean, None or GObject
 
         return None
         """
-        if value is None and hasattr(self, '_none_of_cols'):
-            value = self._none_of_cols.get(column)
-        if value is not None and _GIGtk and treeiter:
-            _GIGtk.TreeStore.set_value(self, treeiter, column, value)
+        safe_keys_values = {
+            col: val if val is not None else self._none_of_cols.get(col)
+            for col, val in keys_values.items()
+        }
+        if _GIGtk and treeiter:
+            columns = [col for col in safe_keys_values.keys()]
+            values = [val for val in safe_keys_values.values()]
+            _GIGtk.TreeStore.set(self, treeiter, columns, values)
         else:
-            self.set_value(treeiter, column, value)
+            self.set(treeiter, safe_keys_values)

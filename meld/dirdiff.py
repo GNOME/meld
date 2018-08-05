@@ -1399,13 +1399,14 @@ class DirDiff(MeldDoc, Component):
                 self.model.set_path_state(
                     it, j, state, isdir[j], display_text=name_overrides[j])
                 emblem = EMBLEM_NEW if j in newest else None
-                self.model.unsafe_set_value(it, column(COL_EMBLEM), emblem)
                 link_emblem = EMBLEM_SYMLINK if j in symlinks else None
-                self.model.unsafe_set_value(
-                    it, column(COL_EMBLEM_SECONDARY), link_emblem)
-                self.model.unsafe_set_value(it, column(COL_TIME), times[j])
-                self.model.unsafe_set_value(it, column(COL_SIZE), sizes[j])
-                self.model.unsafe_set_value(it, column(COL_PERMS), perms[j])
+                self.model.unsafe_set(it, {
+                    column(COL_EMBLEM): emblem,
+                    column(COL_EMBLEM_SECONDARY): link_emblem,
+                    column(COL_TIME): times[j],
+                    column(COL_SIZE): sizes[j],
+                    column(COL_PERMS): perms[j],
+                })
             else:
                 # TODO: More consistent state setting here would let us avoid
                 # pyobjects for column types by avoiding None use.

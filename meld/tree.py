@@ -115,25 +115,25 @@ class DiffTreeStore(SearchableTreeStore):
         return self.ntree * col + pane
 
     def add_entries(self, parent, names):
-        child = self.append(parent)
+        it = self.append(parent)
         for pane, path in enumerate(names):
             column = self.column_index(COL_PATH, pane)
-            self.unsafe_set_value(child, column, path)
-        return child
+            self.unsafe_set(it, { column: path })
+        return it
 
     def add_empty(self, parent, text="empty folder"):
         it = self.append(parent)
         for pane in range(self.ntree):
             column = self.column_index(COL_PATH, pane)
-            self.set_value(it, column, None)
+            self.unsafe_set(it, { column: None })
             self.set_state(it, pane, STATE_EMPTY, text)
         return it
 
     def add_error(self, parent, msg, pane):
         it = self.append(parent)
         for i in range(self.ntree):
-            self.set_value(it, self.column_index(COL_STATE, i),
-                           str(STATE_ERROR))
+            column = self.column_index(COL_STATE, i)
+            self.unsafe_set(it, { column: str(STATE_ERROR) })
         self.set_state(it, pane, STATE_ERROR, msg)
 
     def set_path_state(self, it, pane, state, isdir=0, display_text=None):
@@ -146,16 +146,17 @@ class DiffTreeStore(SearchableTreeStore):
         col_idx = self.column_index
         icon = self.icon_details[state][1 if isdir else 0]
         tint = self.icon_details[state][3 if isdir else 2]
-        self.unsafe_set_value(it, col_idx(COL_STATE, pane), str(state))
-        self.unsafe_set_value(it, col_idx(COL_TEXT,  pane), label)
-        self.unsafe_set_value(it, col_idx(COL_ICON,  pane), icon)
-        self.unsafe_set_value(it, col_idx(COL_TINT, pane), tint)
-
         fg, style, weight, strike = self.text_attributes[state]
-        self.unsafe_set_value(it, col_idx(COL_FG, pane), fg)
-        self.unsafe_set_value(it, col_idx(COL_STYLE, pane), style)
-        self.unsafe_set_value(it, col_idx(COL_WEIGHT, pane), weight)
-        self.unsafe_set_value(it, col_idx(COL_STRIKE, pane), strike)
+        self.unsafe_set(it, {
+            col_idx(COL_STATE, pane): str(state),
+            col_idx(COL_TEXT,  pane): label,
+            col_idx(COL_ICON,  pane): icon,
+            col_idx(COL_TINT, pane): tint,
+            col_idx(COL_FG, pane): fg,
+            col_idx(COL_STYLE, pane): style,
+            col_idx(COL_WEIGHT, pane): weight,
+            col_idx(COL_STRIKE, pane): strike,
+        })
 
     def get_state(self, it, pane):
         state_idx = self.column_index(COL_STATE, pane)
