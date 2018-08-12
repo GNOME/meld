@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld 1.7.3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2018-05-03 08:05+0000\n"
-"PO-Revision-Date: 2018-05-19 01:50+0300\n"
+"POT-Creation-Date: 2018-07-20 11:19+0000\n"
+"PO-Revision-Date: 2018-07-27 11:59+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -22,16 +22,16 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.7\n"
 "X-POOTLE-MTIME: 1428188634.000000\n"
 
-#: ../bin/meld:185
+#: ../bin/meld:194
 msgid "Cannot import: "
 msgstr "İçe aktarılamıyor: "
 
-#: ../bin/meld:188
+#: ../bin/meld:197
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld %s veya üstünü gerektirir."
 
-#: ../bin/meld:240
+#: ../bin/meld:243
 #, c-format
 msgid ""
 "Couldn’t load Meld-specific CSS (%s)\n"
@@ -40,29 +40,30 @@ msgstr ""
 "Meld’e özel CSS (%s) yüklenemedi\n"
 "%s"
 
-#: ../data/meld.desktop.in.h:1 ../data/meld.appdata.xml.in.h:1
-#: ../data/ui/meldapp.ui.h:1
+#: ../data/org.gnome.meld.desktop.in.h:1
+#: ../data/org.gnome.meld.appdata.xml.in.h:1 ../data/ui/meldapp.ui.h:1
 msgid "Meld"
 msgstr "Meld"
 
-#: ../data/meld.desktop.in.h:2
+#: ../data/org.gnome.meld.desktop.in.h:2
 msgid "Diff Viewer"
 msgstr "Fark Görüntüleyicisi"
 
-#: ../data/meld.desktop.in.h:3
+#: ../data/org.gnome.meld.desktop.in.h:3
 msgid "Meld Diff Viewer"
 msgstr "Meld Fark Görüntüleyicisi"
 
-#: ../data/meld.desktop.in.h:4 ../data/meld.appdata.xml.in.h:2
+#: ../data/org.gnome.meld.desktop.in.h:4
+#: ../data/org.gnome.meld.appdata.xml.in.h:2
 msgid "Compare and merge your files"
 msgstr "Dosyalarınızı karşılaştırın ve birleştirin"
 
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: ../data/meld.desktop.in.h:6
+#: ../data/org.gnome.meld.desktop.in.h:6
 msgid "diff;merge;"
 msgstr "diff;fark;birleştir;merge;"
 
-#: ../data/meld.appdata.xml.in.h:3
+#: ../data/org.gnome.meld.appdata.xml.in.h:3
 msgid ""
 "Meld is a visual diff and merge tool targeted at developers. Meld helps you "
 "compare files, directories, and version controlled projects. It provides "
@@ -75,7 +76,7 @@ msgstr ""
 "karşılaştırmayı sağlar. Git, Mercurial, Bazaar ve Subversion gibi sürüm "
 "denetim sistemlerinin çoğunu destekler."
 
-#: ../data/meld.appdata.xml.in.h:4
+#: ../data/org.gnome.meld.appdata.xml.in.h:4
 msgid ""
 "Meld helps you review code changes, understand patches, and makes enormous "
 "merge conflicts slightly less painful."
@@ -83,11 +84,11 @@ msgstr ""
 "Meld; kod değişikliklerinizi yeniden incelemenize, yamaları anlamanıza ve "
 "çok büyük birleştirme çatışmalarını daha sorunsuz çözmenize yardımcı olur."
 
-#: ../data/meld.appdata.xml.in.h:5
+#: ../data/org.gnome.meld.appdata.xml.in.h:5
 msgid "The GNOME Project"
 msgstr "GNOME Projesi"
 
-#: ../data/mime/meld.xml.in.h:1
+#: ../data/mime/org.gnome.meld.xml.in.h:1
 msgid "Meld comparison description"
 msgstr "Meld karşılaştırma açıklaması"
 
@@ -555,38 +556,56 @@ msgid "Compare selected files"
 msgstr "Seçilen dosyaları karşılaştır"
 
 #: ../data/ui/dirdiff.ui.h:3
+msgid "Collapse Recursively"
+msgstr "Özyinelemeli Daralt"
+
+#: ../data/ui/dirdiff.ui.h:4
+#| msgid "Remove folder and all its files?"
+msgid "Collapse selected folder and all subfolders"
+msgstr "Seçili klasörü ve tüm alt klasörlerini daralt"
+
+#: ../data/ui/dirdiff.ui.h:5
+msgid "Expand Recursively"
+msgstr "Özyinelemeli Genişlet"
+
+#: ../data/ui/dirdiff.ui.h:6
+#| msgid "Remove folder and all its files?"
+msgid "Expand selected folder and all subfolders"
+msgstr "Seçili klasörü ve tüm alt klasörlerini genişlet"
+
+#: ../data/ui/dirdiff.ui.h:7
 msgid "Copy to _Left"
 msgstr "_Sola Kopyala"
 
-#: ../data/ui/dirdiff.ui.h:4
+#: ../data/ui/dirdiff.ui.h:8
 msgid "Copy to left"
 msgstr "Sola kopyala"
 
-#: ../data/ui/dirdiff.ui.h:5
+#: ../data/ui/dirdiff.ui.h:9
 msgid "Copy to _Right"
 msgstr "_Sağa Kopyala"
 
-#: ../data/ui/dirdiff.ui.h:6
+#: ../data/ui/dirdiff.ui.h:10
 msgid "Copy to right"
 msgstr "Sağa kopyala"
 
-#: ../data/ui/dirdiff.ui.h:7
+#: ../data/ui/dirdiff.ui.h:11
 msgid "Delete selected"
 msgstr "Seçileni Sil"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:873 ../meld/filediff.py:1450
+#: ../data/ui/dirdiff.ui.h:12 ../meld/dirdiff.py:873 ../meld/filediff.py:1471
 msgid "Hide"
 msgstr "Gizle"
 
-#: ../data/ui/dirdiff.ui.h:9
+#: ../data/ui/dirdiff.ui.h:13
 msgid "Hide selected"
 msgstr "Seçileni gizle"
 
-#: ../data/ui/dirdiff.ui.h:10
+#: ../data/ui/dirdiff.ui.h:14
 msgid "Ignore Filename Case"
 msgstr "Dosya adı Büyük Küçük Harf Durumunu Yoksay"
 
-#: ../data/ui/dirdiff.ui.h:11
+#: ../data/ui/dirdiff.ui.h:15
 msgid ""
 "Consider differently-cased filenames that are otherwise-identical to be the "
 "same"
@@ -594,35 +613,35 @@ msgstr ""
 "Farklı harf duyarlılığındaki dosya adlarının başka bir şekilde aynı "
 "olacağını da dikkate alın"
 
-#: ../data/ui/dirdiff.ui.h:12
+#: ../data/ui/dirdiff.ui.h:16
 msgid "Same"
 msgstr "Benzer"
 
-#: ../data/ui/dirdiff.ui.h:13
+#: ../data/ui/dirdiff.ui.h:17
 msgid "Show identical"
 msgstr "Özdeş olanları göster"
 
-#: ../data/ui/dirdiff.ui.h:14
+#: ../data/ui/dirdiff.ui.h:18
 msgid "New"
 msgstr "Yeni"
 
-#: ../data/ui/dirdiff.ui.h:15
+#: ../data/ui/dirdiff.ui.h:19
 msgid "Show new"
 msgstr "Yeniyi göster"
 
-#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:77
+#: ../data/ui/dirdiff.ui.h:20 ../meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Değiştirilmiş"
 
-#: ../data/ui/dirdiff.ui.h:17
+#: ../data/ui/dirdiff.ui.h:21
 msgid "Show modified"
 msgstr "Değiştirilmişi göster"
 
-#: ../data/ui/dirdiff.ui.h:18
+#: ../data/ui/dirdiff.ui.h:22
 msgid "Filters"
 msgstr "Süzgeçler"
 
-#: ../data/ui/dirdiff.ui.h:19
+#: ../data/ui/dirdiff.ui.h:23
 msgid "Set active filters"
 msgstr "Etkin süzgeçleri ayarla"
 
@@ -643,7 +662,7 @@ msgid "_Add"
 msgstr "_Ekle"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:682
+#: ../meld/vcview.py:680
 msgid "_Remove"
 msgstr "_Kaldır"
 
@@ -869,7 +888,7 @@ msgstr "Eğer kaydetmezseniz, değişiklikler kalıcı olarak kaybolacaktır."
 msgid "Close _without Saving"
 msgstr "Kaydet_meden Kapat"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:954 ../meld/filediff.py:1559
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:954 ../meld/filediff.py:1580
 #: ../meld/iohelpers.py:50 ../meld/iohelpers.py:100
 msgid "_Cancel"
 msgstr "_İptal"
@@ -1587,7 +1606,7 @@ msgstr "Sü_rümlendirilmemiş"
 msgid "Show unversioned files"
 msgstr "Sürümlendirilmemiş dosyaları göster"
 
-#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:70
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:69
 msgid "Ignored"
 msgstr "Yoksayılmış"
 
@@ -1615,7 +1634,7 @@ msgstr "Önceki kayıtlar:"
 msgid "Co_mmit"
 msgstr "Gö_nder"
 
-#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:333
+#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:331
 msgid "Location"
 msgstr "Konum"
 
@@ -1710,8 +1729,8 @@ msgstr "Dosya süzgeçleri kullanımda, bu yüzden tüm dosyalar taranamamış."
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Metin süzgeçleri kullanımda ve içerik farklılıklarını maskeleyebilir."
 
-#: ../meld/dirdiff.py:875 ../meld/filediff.py:1452 ../meld/filediff.py:1482
-#: ../meld/filediff.py:1484 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
+#: ../meld/dirdiff.py:875 ../meld/filediff.py:1473 ../meld/filediff.py:1503
+#: ../meld/filediff.py:1505 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
 msgid "Hi_de"
 msgstr "Gi_zle"
 
@@ -1777,20 +1796,19 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:999 ../meld/vcview.py:705
-#| msgid "Error deleting %s"
+#: ../meld/dirdiff.py:999 ../meld/vcview.py:703
 msgid "Error deleting {}"
 msgstr "{} silinirken hata"
 
-#: ../meld/dirdiff.py:1480
+#: ../meld/dirdiff.py:1521
 msgid "No folder"
 msgstr "Klasör yok"
 
-#: ../meld/filediff.py:795
+#: ../meld/filediff.py:816
 msgid "Comparison results will be inaccurate"
 msgstr "Karşılaştırma sonuçları hatalı olacak"
 
-#: ../meld/filediff.py:797
+#: ../meld/filediff.py:818
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1798,66 +1816,66 @@ msgstr ""
 "Bir süzgeç dosyadaki satır numaralarını desteklenmeyen şekilde değiştirdi. "
 "Karşılaştırma doğru olmayacaktır."
 
-#: ../meld/filediff.py:854
+#: ../meld/filediff.py:875
 msgid "Mark conflict as resolved?"
 msgstr "Çakışma çözüldü olarak işaretlensin mi?"
 
-#: ../meld/filediff.py:856
+#: ../meld/filediff.py:877
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Eğer çakışma başarıyla çözüldüyse, o zaman çözüldü olarak "
 "işaretleyebilirsiniz."
 
-#: ../meld/filediff.py:858
+#: ../meld/filediff.py:879
 msgid "Cancel"
 msgstr "İptal Et"
 
-#: ../meld/filediff.py:859
+#: ../meld/filediff.py:880
 msgid "Mark _Resolved"
 msgstr "_Çözümlendi olarak işaretle"
 
-#: ../meld/filediff.py:1167
+#: ../meld/filediff.py:1188
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "“%s” dosyası açılırken bir sorun var."
 
-#: ../meld/filediff.py:1175
+#: ../meld/filediff.py:1196
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "%s dosyası ikili bir dosya olarak görünüyor."
 
-#: ../meld/filediff.py:1177
+#: ../meld/filediff.py:1198
 msgid "Do you want to open the file using the default application?"
 msgstr "Dosyayı öntanımlı uygulamayı kullanarak açmak istiyor musunuz?"
 
-#: ../meld/filediff.py:1179
+#: ../meld/filediff.py:1200
 msgid "Open"
 msgstr "Aç"
 
-#: ../meld/filediff.py:1195
+#: ../meld/filediff.py:1216
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Farklılıklar hesaplanıyor"
 
-#: ../meld/filediff.py:1256
+#: ../meld/filediff.py:1277
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Disk üzerindeki %s dosyası değiştirildi"
 
-#: ../meld/filediff.py:1257
+#: ../meld/filediff.py:1278
 msgid "Do you want to reload the file?"
 msgstr "Dosyayı yeniden yüklemek istiyor musunuz?"
 
-#: ../meld/filediff.py:1259
+#: ../meld/filediff.py:1280
 msgid "_Reload"
 msgstr "_Yeniden yükle"
 
-#: ../meld/filediff.py:1415
+#: ../meld/filediff.py:1436
 msgid "Files are identical"
 msgstr "Dosyalar birbiri ile aynı"
 
-#: ../meld/filediff.py:1428
+#: ../meld/filediff.py:1449
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1865,11 +1883,11 @@ msgstr ""
 "Metin süzgeçleri kullanılmakta ve dosyalar arasındaki farklılıkları "
 "maskeliyor olabilir. Süzülmemiş dosyaları karşılaştırmak ister misiniz?"
 
-#: ../meld/filediff.py:1433
+#: ../meld/filediff.py:1454
 msgid "Files differ in line endings only"
 msgstr "Dosyalar yalnızca satır sonlarında farklılaşıyor"
 
-#: ../meld/filediff.py:1435
+#: ../meld/filediff.py:1456
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1878,15 +1896,15 @@ msgstr ""
 "Dosyalar satır sonları dışında özdeş:\n"
 "%s"
 
-#: ../meld/filediff.py:1455
+#: ../meld/filediff.py:1476
 msgid "Show without filters"
 msgstr "Süzgeçsiz göster"
 
-#: ../meld/filediff.py:1477
+#: ../meld/filediff.py:1498
 msgid "Change highlighting incomplete"
 msgstr "Vurgulama değişikliği tamamlanamadı"
 
-#: ../meld/filediff.py:1478
+#: ../meld/filediff.py:1499
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1895,19 +1913,19 @@ msgstr ""
 "daha büyük değişiklikleri daha uzun sürede ve daha yavaş olmasına rağmen "
 "vurgulaması için zorlayabilirsiniz."
 
-#: ../meld/filediff.py:1486
+#: ../meld/filediff.py:1507
 msgid "Keep highlighting"
 msgstr "Vurgulamayı koru"
 
-#: ../meld/filediff.py:1488
+#: ../meld/filediff.py:1509
 msgid "_Keep highlighting"
 msgstr "Vurgulamayı _koru"
 
-#: ../meld/filediff.py:1501
+#: ../meld/filediff.py:1522
 msgid "Saving failed"
 msgstr "Kaydetme başarısız"
 
-#: ../meld/filediff.py:1502
+#: ../meld/filediff.py:1523
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1915,45 +1933,45 @@ msgstr ""
 "Veri kaybını önlemek için lütfen ciddi değişiklikleri başka programa veya "
 "dosyaya kopyalayın."
 
-#: ../meld/filediff.py:1511
+#: ../meld/filediff.py:1532
 msgid "Save Left Pane As"
 msgstr "Sol Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1513
+#: ../meld/filediff.py:1534
 msgid "Save Middle Pane As"
 msgstr "Orta Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1515
+#: ../meld/filediff.py:1536
 msgid "Save Right Pane As"
 msgstr "Sağ Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1528
+#: ../meld/filediff.py:1549
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "%s dosyası açıldığından beri diskte değişti"
 
-#: ../meld/filediff.py:1530
+#: ../meld/filediff.py:1551
 msgid "If you save it, any external changes will be lost."
 msgstr "Eğer onu kaydederseniz, harici değişiklikler kaybolacaktır."
 
-#: ../meld/filediff.py:1533
+#: ../meld/filediff.py:1554
 msgid "Save Anyway"
 msgstr "Yine De Kaydet"
 
-#: ../meld/filediff.py:1534
+#: ../meld/filediff.py:1555
 msgid "Don’t Save"
 msgstr "Kaydetme"
 
-#: ../meld/filediff.py:1560
+#: ../meld/filediff.py:1581
 msgid "_Save as UTF-8"
 msgstr "UTF-8 Olarak _kaydet"
 
-#: ../meld/filediff.py:1563
+#: ../meld/filediff.py:1584
 #, python-format
 msgid "Couldn’t encode text as “%s”"
 msgstr "Metin “%s” olarak kodlanamadı"
 
-#: ../meld/filediff.py:1565
+#: ../meld/filediff.py:1586
 #, python-format
 msgid ""
 "File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
@@ -1963,12 +1981,12 @@ msgstr ""
 "içeriyor.\n"
 "UTF-8 olarak kaydetmek ister misiniz?"
 
-#: ../meld/filediff.py:1605 ../meld/patchdialog.py:130
+#: ../meld/filediff.py:1626 ../meld/patchdialog.py:130
 #, python-format
 msgid "Could not save file %s."
 msgstr "%s dosyası kaydedilemedi."
 
-#: ../meld/filediff.py:1606 ../meld/patchdialog.py:131
+#: ../meld/filediff.py:1627 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1977,11 +1995,11 @@ msgstr ""
 "Şu nedenle dosya kaydedilemedi:\n"
 "%s"
 
-#: ../meld/filediff.py:1981
+#: ../meld/filediff.py:2002
 msgid "Live comparison updating disabled"
 msgstr "Canlı karşılaştırma güncellemesi devre dışı bırakıldı"
 
-#: ../meld/filediff.py:1982
+#: ../meld/filediff.py:2003
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2006,12 +2024,10 @@ msgid "Copy _down"
 msgstr "_Aşağı kopyala"
 
 #: ../meld/iohelpers.py:35
-#| msgid "remote folder “{}” not supported"
 msgid "Deleting remote folders is not supported"
 msgstr "Uzak klasörlerin silinmesi desteklenmiyor"
 
 #: ../meld/iohelpers.py:37
-#| msgid "Two way directory"
 msgid "Not a file or directory"
 msgstr "Bir dosya veya dizin değil"
 
@@ -2024,7 +2040,6 @@ msgid "This remote location does not support sending items to the trash."
 msgstr "Bu uzak konum ögelerin çöpe gönderilmesini desteklemiyor."
 
 #: ../meld/iohelpers.py:51
-#| msgid "Delete change"
 msgid "_Delete Permanently"
 msgstr "Kalıcı Olarak _Sil"
 
@@ -2348,7 +2363,7 @@ msgstr "Kendiliğinden birleştirme için üç dosya gerekiyor, var olan: %r"
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Dosya ve dizinlerin karışımı karşılaştırılamıyor"
 
-#: ../meld/misc.py:134
+#: ../meld/misc.py:135
 msgid ""
 "{}\n"
 "\n"
@@ -2360,13 +2375,12 @@ msgstr ""
 "Meld şunu çalıştırırken ciddi bir hatayla karşılaştı:\n"
 "<tt>{}</tt>"
 
-#: ../meld/misc.py:253
+#: ../meld/misc.py:254
 #, python-format
 msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgstr "%s-%s için renk şeması ayrıntıları bulunamadı; bu kötü bir kurulum"
 
-#. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:314
+#: ../meld/misc.py:323
 msgid "[None]"
 msgstr "[Hiçbiri]"
 
@@ -2378,7 +2392,7 @@ msgstr "etiket"
 msgid "pattern"
 msgstr "örüntü"
 
-#: ../meld/recent.py:115
+#: ../meld/recent.py:105
 msgid "Version control:"
 msgstr "Sürüm denetimi:"
 
@@ -2411,184 +2425,184 @@ msgstr "Hiçbir dosya gönderilemeyecektir"
 
 #. Translators: First %s is replaced by translated "%d unpushed
 #. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:93
+#: ../meld/vc/git.py:92
 #, python-format
 msgid "%s in %s"
 msgstr "%s uzağa gönderilmemiş gönderim %s dalında"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:94 ../meld/vc/git.py:101
+#: ../meld/vc/git.py:93 ../meld/vc/git.py:100
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d uzağa gönderilmemiş gönderim"
 
-#: ../meld/vc/git.py:96
+#: ../meld/vc/git.py:95
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d dal"
 
-#: ../meld/vc/git.py:332
+#: ../meld/vc/git.py:334
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Kip %s’den %s’e değiştirildi"
 
-#: ../meld/vc/git.py:340
+#: ../meld/vc/git.py:342
 msgid "Partially staged"
 msgstr "Kısmen sahnelendi"
 
-#: ../meld/vc/git.py:340
+#: ../meld/vc/git.py:342
 msgid "Staged"
 msgstr "Sahnelendi"
 
 #. Translators: This is the displayed name of a version control system
 #. when no version control system is actually found.
-#: ../meld/vc/_null.py:38
+#: ../meld/vc/_null.py:37
 msgid "None"
 msgstr "Hiçbiri"
 
-#: ../meld/vc/svn.py:204
+#: ../meld/vc/svn.py:203
 #, python-format
 msgid "Rev %s"
 msgstr "Rev %s"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Merged"
 msgstr "Birleştirilmiş"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Base"
 msgstr "Taban"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Local"
 msgstr "Yerel"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Remote"
 msgstr "Uzak"
 
-#: ../meld/vc/_vc.py:71
+#: ../meld/vc/_vc.py:70
 msgid "Unversioned"
 msgstr "Sürümlendirilmemiş"
 
-#: ../meld/vc/_vc.py:74
+#: ../meld/vc/_vc.py:73
 msgid "Error"
 msgstr "Hata"
 
-#: ../meld/vc/_vc.py:76
+#: ../meld/vc/_vc.py:75
 msgid "Newly added"
 msgstr "Yakın zamanda eklenmiş"
 
-#: ../meld/vc/_vc.py:78
+#: ../meld/vc/_vc.py:77
 msgid "Renamed"
 msgstr "Yeniden Adlandırılmış"
 
-#: ../meld/vc/_vc.py:79
+#: ../meld/vc/_vc.py:78
 msgid "Conflict"
 msgstr "Çakışma"
 
-#: ../meld/vc/_vc.py:80
+#: ../meld/vc/_vc.py:79
 msgid "Removed"
 msgstr "Silindi"
 
-#: ../meld/vc/_vc.py:81
+#: ../meld/vc/_vc.py:80
 msgid "Missing"
 msgstr "Eksik"
 
-#: ../meld/vc/_vc.py:82
+#: ../meld/vc/_vc.py:81
 msgid "Not present"
 msgstr "Mevcut değil"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: ../meld/vcview.py:250
+#: ../meld/vcview.py:248
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s yüklü değil)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: ../meld/vcview.py:254
+#: ../meld/vcview.py:252
 #, python-format
 msgid "%(name)s (Invalid repository)"
 msgstr "%(name)s (Geçersiz depo)"
 
-#: ../meld/vcview.py:275
+#: ../meld/vcview.py:273
 msgid "No valid version control system found in this folder"
 msgstr "Bu klasörde geçerli bir sürüm denetimi sistemi bulunamadı"
 
-#: ../meld/vcview.py:277
+#: ../meld/vcview.py:275
 msgid "Only one version control system found in this folder"
 msgstr "Bu klasörde yalnızca bir sürüm denetimi sistemi bulundu"
 
-#: ../meld/vcview.py:279
+#: ../meld/vcview.py:277
 msgid "Choose which version control system to use"
 msgstr "Hangi sürüm denetimi sistemini kullanacağınızı seçin"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: ../meld/vcview.py:333
+#: ../meld/vcview.py:331
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: ../meld/vcview.py:340
+#: ../meld/vcview.py:338
 msgid "Scanning repository"
 msgstr "Depo taranıyor"
 
-#: ../meld/vcview.py:369
+#: ../meld/vcview.py:367
 #, python-format
 msgid "Scanning %s"
 msgstr "%s taranıyor"
 
-#: ../meld/vcview.py:408
+#: ../meld/vcview.py:406
 msgid "(Empty)"
 msgstr "(Boş)"
 
-#: ../meld/vcview.py:452
+#: ../meld/vcview.py:450
 #, python-format
 msgid "%s — local"
 msgstr "%s — yerel"
 
-#: ../meld/vcview.py:453
+#: ../meld/vcview.py:451
 #, python-format
 msgid "%s — remote"
 msgstr "%s — uzak"
 
-#: ../meld/vcview.py:461
+#: ../meld/vcview.py:459
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (yerel, birleştir, uzak)"
 
-#: ../meld/vcview.py:466
+#: ../meld/vcview.py:464
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (uzak, birleştir, yerel)"
 
-#: ../meld/vcview.py:477
+#: ../meld/vcview.py:475
 #, python-format
 msgid "%s — repository"
 msgstr "%s — depo"
 
-#: ../meld/vcview.py:483
+#: ../meld/vcview.py:481
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (çalışma dizini, depo)"
 
-#: ../meld/vcview.py:487
+#: ../meld/vcview.py:485
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (depo, çalışma dizini)"
 
-#: ../meld/vcview.py:676
+#: ../meld/vcview.py:674
 msgid "Remove folder and all its files?"
 msgstr "Klasör ve dosyaları silinsin mi?"
 
-#: ../meld/vcview.py:678
+#: ../meld/vcview.py:676
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2596,7 +2610,7 @@ msgstr ""
 "Bu işlem, sürüm denetimi sisteminden tüm seçili dosya ve klasörleri, ve "
 "seçili herhangi bir klasör içindeki tüm dosyaları kaldıracak."
 
-#: ../meld/vcview.py:787
+#: ../meld/vcview.py:785
 msgid "Clear"
 msgstr "Temizle"
 
