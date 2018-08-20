@@ -138,10 +138,12 @@ class DiffTreeStore(SearchableTreeStore):
             self.set_state(it, pane, STATE_EMPTY, text)
         return it
 
-    def add_error(self, parent, msg, pane):
+    def add_error(self, parent, msg, pane, defaults={}):
         it = self.append(parent)
+        key_values = {COL_STATE: str(STATE_ERROR)}
+        key_values.update(defaults)
         for i in range(self.ntree):
-            self.unsafe_set(it, i, {COL_STATE: str(STATE_ERROR)})
+            self.unsafe_set(it, i, key_values)
         self.set_state(it, pane, STATE_ERROR, msg)
 
     def set_path_state(self, it, pane, state, isdir=0, display_text=None):

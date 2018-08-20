@@ -719,7 +719,11 @@ class DirDiff(MeldDoc, Component):
                 try:
                     entries = os.listdir(root)
                 except OSError as err:
-                    self.model.add_error(it, err.strerror, pane)
+                    self.model.add_error(it, err.strerror, pane, {
+                        COL_TIME: -1.0,
+                        COL_SIZE: -1,
+                        COL_PERMS: -1
+                    })
                     differences = True
                     continue
 
@@ -742,7 +746,11 @@ class DirDiff(MeldDoc, Component):
                     # Covers certain unreadable symlink cases; see bgo#585895
                     except OSError as err:
                         error_string = e + err.strerror
-                        self.model.add_error(it, error_string, pane)
+                        self.model.add_error(it, error_string, pane, {
+                            COL_TIME: -1.0,
+                            COL_SIZE: -1,
+                            COL_PERMS: -1
+                        })
                         continue
 
                     if stat.S_ISLNK(s.st_mode):
@@ -763,7 +771,11 @@ class DirDiff(MeldDoc, Component):
                                 error_string = e + ": Dangling symlink"
                             else:
                                 error_string = e + err.strerror
-                            self.model.add_error(it, error_string, pane)
+                            self.model.add_error(it, error_string, pane, {
+                                COL_TIME: -1.0,
+                                COL_SIZE: -1,
+                                COL_PERMS: -1
+                            })
                             differences = True
                     elif stat.S_ISREG(s.st_mode):
                         files.add(pane, e)
@@ -1407,10 +1419,16 @@ class DirDiff(MeldDoc, Component):
                     COL_PERMS: perms[j]
                 })
             else:
-                # TODO: More consistent state setting here would let us avoid
-                # pyobjects for column types by avoiding None use.
                 self.model.set_path_state(
                     it, j, tree.STATE_NONEXIST, any(isdir))
+                # SET time, size and perms to -1 since None of GInt is 0
+                # TODO: change it to math.nan some day
+                # https://gitlab.gnome.org/GNOME/glib/issues/183
+                self.model.unsafe_set(it, j, {
+                    COL_TIME: -1.0,
+                    COL_SIZE: -1,
+                    COL_PERMS: -1
+                })
         return different
 
     def popup_in_pane(self, pane, event):
