@@ -470,12 +470,16 @@ class DirDiff(MeldDoc, Component):
         self.connect("notify::ignore-blank-lines", self.update_comparator)
         self.connect("notify::apply-text-filters", self.update_comparator)
 
+        # The list copying and state_filters reset here is because the action
+        # toggled callback modifies the state while we're constructing it.
         self.state_filters = []
-        for s in self.state_actions:
-            if self.state_actions[s][0] in self.props.status_filters:
-                self.state_filters.append(s)
-                action_name = self.state_actions[s][1]
+        state_filters = []
+        status_filters = list(self.props.status_filters)
+        for state, (filter_name, action_name) in self.state_actions.items():
+            if filter_name in status_filters:
+                state_filters.append(state)
                 self.actiongroup.get_action(action_name).set_active(True)
+        self.state_filters = state_filters
 
         self._scan_in_progress = 0
 
@@ -1288,8 +1292,8 @@ class DirDiff(MeldDoc, Component):
 
     def on_filter_state_toggled(self, button):
         active_filters = [
-            a for a in self.state_actions if
-            self.actiongroup.get_action(self.state_actions[a][1]).get_active()
+            state for state, (_, action_name) in self.state_actions.items()
+            if self.actiongroup.get_action(action_name).get_active()
         ]
 
         if set(active_filters) == set(self.state_filters):
