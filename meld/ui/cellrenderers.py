@@ -26,7 +26,7 @@ class CellRendererDate(Gtk.CellRendererText):
     DATETIME_FORMAT = "%a %d %b %Y %H:%M:%S"
 
     def get_timestamp(self):
-        return getattr(self, '_datetime', None)
+        return getattr(self, '_datetime', -1.0)
 
     def set_timestamp(self, value):
         if value == self.get_timestamp():
@@ -52,7 +52,7 @@ class CellRendererByteSize(Gtk.CellRendererText):
     __gtype_name__ = "CellRendererByteSize"
 
     def get_bytesize(self):
-        return getattr(self, '_bytesize', None)
+        return getattr(self, '_bytesize', -1)
 
     def set_bytesize(self, value):
         if value == self.get_bytesize():
@@ -86,7 +86,7 @@ class CellRendererFileMode(Gtk.CellRendererText):
     __gtype_name__ = "CellRendererFileMode"
 
     def get_file_mode(self):
-        return getattr(self, '_file_mode', None)
+        return getattr(self, '_file_mode', -1)
 
     def set_file_mode(self, value):
         if value == self.get_file_mode():
