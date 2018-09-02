@@ -31,7 +31,7 @@ class CellRendererDate(Gtk.CellRendererText):
     def set_timestamp(self, value):
         if value == self.get_timestamp():
             return
-        if value is None:
+        if value == -1.0:
             time_str = ''
         else:
             mod_datetime = datetime.datetime.fromtimestamp(value)
@@ -40,7 +40,7 @@ class CellRendererDate(Gtk.CellRendererText):
         self._datetime = value
 
     timestamp = GObject.Property(
-        type=object,
+        type=float,
         nick="Unix timestamp to display",
         getter=get_timestamp,
         setter=set_timestamp,
@@ -57,7 +57,7 @@ class CellRendererByteSize(Gtk.CellRendererText):
     def set_bytesize(self, value):
         if value == self.get_bytesize():
             return
-        if value is None:
+        if value == -1:
             byte_str = ''
         else:
             suffixes = (
@@ -74,7 +74,7 @@ class CellRendererByteSize(Gtk.CellRendererText):
         self._bytesize = value
 
     bytesize = GObject.Property(
-        type=object,
+        type=int,
         nick="Byte size to display",
         getter=get_bytesize,
         setter=set_bytesize,
@@ -91,7 +91,7 @@ class CellRendererFileMode(Gtk.CellRendererText):
     def set_file_mode(self, value):
         if value == self.get_file_mode():
             return
-        if value is None:
+        if value == -1.0:
             mode_str = ''
         else:
             perms = []
@@ -104,7 +104,7 @@ class CellRendererFileMode(Gtk.CellRendererText):
         self._file_mode = value
 
     file_mode = GObject.Property(
-        type=object,
+        type=int,
         nick="Byte size to display",
         getter=get_file_mode,
         setter=set_file_mode,

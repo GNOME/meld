@@ -16,8 +16,10 @@
 
 import os
 
+from gi.module import get_introspection_module
 from gi.repository import Gdk
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Pango
 
 from meld.misc import colour_lookup_with_fallback
@@ -28,6 +30,13 @@ from meld.vc._vc import (  # noqa: F401
     STATE_IGNORED, STATE_MAX, STATE_MISSING, STATE_MODIFIED, STATE_NEW,
     STATE_NOCHANGE, STATE_NONE, STATE_NONEXIST, STATE_NORMAL, STATE_REMOVED,
 )
+
+_GIGtk = None
+
+try:
+    _GIGtk = get_introspection_module('Gtk')
+except Exception:
+    pass
 
 COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
     COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
@@ -43,6 +52,10 @@ class DiffTreeStore(SearchableTreeStore):
         for col_type in (COL_TYPES + tuple(types)):
             full_types.extend([col_type] * ntree)
         super().__init__(*full_types)
+        self._none_of_cols = {
+            col_num: GObject.Value(col_type, None)
+            for col_num, col_type in enumerate(full_types)
+        }
         self.ntree = ntree
         self._setup_default_styles()
 
@@ -114,22 +127,23 @@ class DiffTreeStore(SearchableTreeStore):
         return self.ntree * col + pane
 
     def add_entries(self, parent, names):
-        child = self.append(parent)
+        it = self.append(parent)
         for pane, path in enumerate(names):
-            self.set_value(child, self.column_index(COL_PATH, pane), path)
-        return child
+            self.unsafe_set(it, pane, {COL_PATH: path})
+        return it
 
     def add_empty(self, parent, text="empty folder"):
         it = self.append(parent)
         for pane in range(self.ntree):
-            self.set_value(it, self.column_index(COL_PATH, pane), None)
             self.set_state(it, pane, STATE_EMPTY, text)
+        return it
 
-    def add_error(self, parent, msg, pane):
+    def add_error(self, parent, msg, pane, defaults={}):
         it = self.append(parent)
+        key_values = {COL_STATE: str(STATE_ERROR)}
+        key_values.update(defaults)
         for i in range(self.ntree):
-            self.set_value(it, self.column_index(COL_STATE, i),
-                           str(STATE_ERROR))
+            self.unsafe_set(it, i, key_values)
         self.set_state(it, pane, STATE_ERROR, msg)
 
     def set_path_state(self, it, pane, state, isdir=0, display_text=None):
@@ -139,19 +153,19 @@ class DiffTreeStore(SearchableTreeStore):
         self.set_state(it, pane, state, display_text, isdir)
 
     def set_state(self, it, pane, state, label, isdir=0):
-        col_idx = self.column_index
         icon = self.icon_details[state][1 if isdir else 0]
         tint = self.icon_details[state][3 if isdir else 2]
-        self.set_value(it, col_idx(COL_STATE, pane), str(state))
-        self.set_value(it, col_idx(COL_TEXT,  pane), label)
-        self.set_value(it, col_idx(COL_ICON,  pane), icon)
-        self.set_value(it, col_idx(COL_TINT, pane), tint)
-
         fg, style, weight, strike = self.text_attributes[state]
-        self.set_value(it, col_idx(COL_FG, pane), fg)
-        self.set_value(it, col_idx(COL_STYLE, pane), style)
-        self.set_value(it, col_idx(COL_WEIGHT, pane), weight)
-        self.set_value(it, col_idx(COL_STRIKE, pane), strike)
+        self.unsafe_set(it, pane, {
+            COL_STATE: str(state),
+            COL_TEXT: label,
+            COL_ICON: icon,
+            COL_TINT: tint,
+            COL_FG: fg,
+            COL_STYLE: style,
+            COL_WEIGHT: weight,
+            COL_STRIKE: strike
+        })
 
     def get_state(self, it, pane):
         state_idx = self.column_index(COL_STATE, pane)
@@ -177,6 +191,32 @@ class DiffTreeStore(SearchableTreeStore):
             state = self.get_state(it, 0)
             if state in states:
                 yield it
+
+    def unsafe_set(self, treeiter, pane, keys_values):
+        """ This must be fastest than super.set,
+        at the cost that may crash the application if you don't
+        know what your're passing here.
+        ie: pass treeiter or column as None crash meld
+
+        treeiter: Gtk.TreeIter
+        keys_values: dict<column, value>
+            column: Int col index
+            value: Str (UTF-8), Int, Float, Double, Boolean, None or GObject
+
+        return None
+        """
+        safe_keys_values = {
+            self.column_index(col, pane):
+            val if val is not None
+            else self._none_of_cols.get(self.column_index(col, pane))
+            for col, val in keys_values.items()
+        }
+        if _GIGtk and treeiter:
+            columns = [col for col in safe_keys_values.keys()]
+            values = [val for val in safe_keys_values.values()]
+            _GIGtk.TreeStore.set(self, treeiter, columns, values)
+        else:
+            self.set(treeiter, safe_keys_values)
 
 
 def treeview_search_cb(model, column, key, it, data):
