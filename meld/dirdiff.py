@@ -245,6 +245,14 @@ class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
         super().__init__(ntree, [str, str, int, float, int])
 
+    def add_error(self, parent, msg, pane):
+        defaults = {
+            COL_TIME: -1.0,
+            COL_SIZE: -1,
+            COL_PERMS: -1
+        }
+        super().add_error(parent, msg, pane, defaults)
+
 
 class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
@@ -759,11 +767,7 @@ class DirDiff(MeldDoc, Component):
                 try:
                     entries = os.listdir(root)
                 except OSError as err:
-                    self.model.add_error(it, err.strerror, pane, {
-                        COL_TIME: -1.0,
-                        COL_SIZE: -1,
-                        COL_PERMS: -1
-                    })
+                    self.model.add_error(it, err.strerror, pane)
                     differences = True
                     continue
 
@@ -786,11 +790,7 @@ class DirDiff(MeldDoc, Component):
                     # Covers certain unreadable symlink cases; see bgo#585895
                     except OSError as err:
                         error_string = e + err.strerror
-                        self.model.add_error(it, error_string, pane, {
-                            COL_TIME: -1.0,
-                            COL_SIZE: -1,
-                            COL_PERMS: -1
-                        })
+                        self.model.add_error(it, error_string, pane)
                         continue
 
                     if stat.S_ISLNK(s.st_mode):
@@ -811,11 +811,7 @@ class DirDiff(MeldDoc, Component):
                                 error_string = e + ": Dangling symlink"
                             else:
                                 error_string = e + err.strerror
-                            self.model.add_error(it, error_string, pane, {
-                                COL_TIME: -1.0,
-                                COL_SIZE: -1,
-                                COL_PERMS: -1
-                            })
+                            self.model.add_error(it, error_string, pane)
                             differences = True
                     elif stat.S_ISREG(s.st_mode):
                         files.add(pane, e)
