@@ -1272,7 +1272,7 @@ class FileDiff(MeldDoc, Component):
             yield i
         for i in self._diff_files():
             yield i
-        focus_pane = 0 if self.num_panes < 3 else 1
+        focus_pane = 0 if self.num_panes < 2 else 1
         self.textview[focus_pane].grab_focus()
 
     def set_meta(self, meta):
