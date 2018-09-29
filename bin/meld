@@ -325,9 +325,16 @@ def setup_glib_logging():
     # redirection API became a no-op, so we need to hack both of these
     # handlers to get it to work.
     def structured_log_adapter(level, fields, field_count, user_data):
-        message = GLib.log_writer_format_fields(level, fields, True)
-        if not silence(message):
-            log.log(levels.get(level, logging.WARNING), message)
+        # Don't even format the message if it will be discarded
+        py_logging_level = levels.get(level, logging.WARNING)
+        if log.isEnabledFor(py_logging_level):
+            # at least glib 2.52 log_writer_format_fields can raise on win32
+            try:
+                message = GLib.log_writer_format_fields(level, fields, True)
+                if not silence(message):
+                    log.log(py_logging_level, message)
+            except Exception:
+                GLib.log_writer_standard_streams(level, fields, user_data)
         return GLib.LogWriterOutput.HANDLED
 
     try:
