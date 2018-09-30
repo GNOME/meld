@@ -43,9 +43,10 @@ optparse._ = _
 class MeldApp(Gtk.Application):
 
     def __init__(self):
-        super().__init__()
-        self.set_flags(Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
-        self.set_application_id("org.gnome.meld")
+        super().__init__(
+          application_id=meld.conf.APPLICATION_ID,
+          flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
+        )
         GLib.set_application_name("Meld")
         Gtk.Window.set_default_icon_name("meld")
 

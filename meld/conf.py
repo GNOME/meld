@@ -5,6 +5,8 @@ import sys
 __package__ = "meld"
 __version__ = "3.19.1"
 
+APPLICATION_ID = "org.gnome.meld"
+
 # START; these paths are clobbered on install by meld.build_helpers
 DATADIR = os.path.join(sys.prefix, "share", "meld")
 LOCALEDIR = os.path.join(sys.prefix, "share", "locale")

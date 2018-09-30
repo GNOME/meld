@@ -22,9 +22,6 @@ import meld.conf
 import meld.filters
 
 
-MELD_SCHEMA = 'org.gnome.meld'
-
-
 class MeldSettings(GObject.GObject):
     """Handler for settings that can't easily be bound to object properties"""
 
@@ -96,7 +93,7 @@ def load_settings_schema(schema_id):
 def create_settings():
     global settings, interface_settings, meldsettings
 
-    settings = load_settings_schema(MELD_SCHEMA)
+    settings = load_settings_schema(meld.conf.APPLICATION_ID)
     interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
     meldsettings = MeldSettings()
 
