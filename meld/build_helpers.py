@@ -377,7 +377,7 @@ class build_py(distutils.command.build_py.build_py):
 class install(distutils.command.install.install):
 
     def finalize_options(self):
-        special_cases = ('debian', 'ubuntu')
+        special_cases = ('debian', 'ubuntu', 'linuxmint')
         if (platform.system() == 'Linux' and
                 platform.linux_distribution()[0].lower() in special_cases):
             # Maintain an explicit install-layout, but use deb by default
