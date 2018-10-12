@@ -16,29 +16,32 @@ def get_non_python_libs():
     """Returns list of tuples containing extra dependencies required to run
     meld on current platform.
     Every pair corresponds to a single library file.
-    First tuple item correspond to path expected in meld installation
+    First tuple item is path in local filesystem during build.
+    Second tuple item correspond to path expected in meld installation
     relative to meld prefix.
-    Second tuple item is path in local filesystem during build.
     Note that for returned dynamic libraries and executables dependencies
     are expected to be resolved by caller, for example by cx_freeze.
     """
-    gtk_exec_prefix = os.path.join(sys.prefix, "bin")
+    local_bin = os.path.join(sys.prefix, "bin")
 
-    gtk_exec = []
+    inst_root = []  # local paths of files "to put at freezed root"
+    inst_lib = []  # local paths of files "to put at freezed 'lib' subdir"
 
     if 'mingw' in sysconfig.get_platform():
         # dll imported by dll dependencies expected to be auto-resolved later
-        gtk_exec = [
-            'libgtksourceview-3.0-1.dll',
-        ]
+        inst_root = [os.path.join(local_bin, 'libgtksourceview-3.0-1.dll')]
 
         # gspawn-helper is needed for Gtk.show_uri function
         if platform.architecture()[0] == '32bit':
-            gtk_exec.append('gspawn-win32-helper.exe')
+            inst_lib.append(os.path.join(local_bin, 'gspawn-win32-helper.exe'))
         else:
-            gtk_exec.append('gspawn-win64-helper.exe')
+            inst_lib.append(os.path.join(local_bin, 'gspawn-win64-helper.exe'))
 
-    return [(os.path.join(gtk_exec_prefix, path), path) for path in gtk_exec]
+    return [
+            (f, os.path.basename(f)) for f in inst_root
+        ] + [
+            (f, os.path.join('lib', os.path.basename(f))) for f in inst_lib
+        ]
 
 
 gtk_data_dirs = [
