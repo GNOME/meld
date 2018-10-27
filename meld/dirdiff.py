@@ -778,11 +778,11 @@ class DirDiff(MeldDoc, Component):
 
                 for e in entries:
                     try:
-                        if not isinstance(e, str):
-                            e = e.decode('utf8')
-                    except UnicodeDecodeError:
-                        approximate_name = e.decode('utf8', 'replace')
-                        encoding_errors.append((pane, approximate_name))
+                        e.encode('utf8')
+                    except UnicodeEncodeError:
+                        invalid = e.encode('utf8', 'surrogatepass')
+                        printable = invalid.decode('utf8', 'backslashreplace')
+                        encoding_errors.append((pane, printable))
                         continue
 
                     try:
