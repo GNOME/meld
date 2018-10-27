@@ -32,21 +32,17 @@ class FilterEntry:
         self.filter_string = filter_string
 
     @classmethod
-    def _compile_regex(cls, regex):
+    def _compile_regex(cls, regex, byte_regex=False):
+        if byte_regex and not isinstance(regex, bytes):
+            # TODO: Register a custom error handling function to replace
+            # encoding errors with '.'?
+            regex = regex.encode('utf8', 'replace')
+
         try:
             compiled = re.compile(regex, re.M)
         except re.error:
             compiled = None
         return compiled
-
-    @classmethod
-    def _compile_byte_regex(cls, regex):
-        if not isinstance(regex, bytes):
-            # TODO: Register a custom error handling function to replace
-            # encoding errors with '.'?
-            regex = regex.encode('utf8', 'replace')
-
-        return cls._compile_regex(regex)
 
     @classmethod
     def _compile_shell_pattern(cls, pattern):
@@ -72,7 +68,7 @@ class FilterEntry:
         name, active, filter_string = elements
         if filter_type == cls.REGEX:
             str_re = cls._compile_regex(filter_string)
-            bytes_re = cls._compile_byte_regex(filter_string)
+            bytes_re = cls._compile_regex(filter_string, byte_regex=True)
         elif filter_type == cls.SHELL:
             str_re = cls._compile_shell_pattern(filter_string)
             bytes_re = None
