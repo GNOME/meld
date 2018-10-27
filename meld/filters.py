@@ -13,9 +13,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import re
 
 from . import misc
+
+log = logging.getLogger(__name__)
+
+
+def try_compile(regex, flags=0):
+    try:
+        compiled = re.compile(regex, flags)
+    except re.error:
+        log.warning(
+            'Error compiling regex {!r} with flags {!r}'.format(regex, flags))
+        compiled = None
+    return compiled
 
 
 class FilterEntry:
@@ -37,12 +50,7 @@ class FilterEntry:
             # TODO: Register a custom error handling function to replace
             # encoding errors with '.'?
             regex = regex.encode('utf8', 'replace')
-
-        try:
-            compiled = re.compile(regex, re.M)
-        except re.error:
-            compiled = None
-        return compiled
+        return try_compile(regex, re.M)
 
     @classmethod
     def _compile_shell_pattern(cls, pattern):
@@ -55,13 +63,7 @@ class FilterEntry:
             regex = "(%s)$" % "|".join(regexes)
         else:
             regex = misc.shell_to_regex(bits[0])
-
-        try:
-            compiled = re.compile(regex)
-        except re.error:
-            compiled = None
-
-        return compiled
+        return try_compile(regex)
 
     @classmethod
     def new_from_gsetting(cls, elements, filter_type):

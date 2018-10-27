@@ -26,3 +26,15 @@ def test_file_filters(patterns, filename, expected_match):
     # that's what we test here, even if it looks a bit weird.
     match = any(f.filter.match(filename) for f in filters)
     assert match == expected_match
+
+
+@pytest.mark.parametrize("pattern", [
+    r'*.foo*',  # Trailing wildcard
+    r'\xfoo',  # Invalid escape
+])
+def test_bad_regex_compilation(pattern):
+    from meld.filters import FilterEntry
+
+    f = FilterEntry.new_from_gsetting(
+        ("name", True, pattern), FilterEntry.REGEX)
+    assert f.filter is None
