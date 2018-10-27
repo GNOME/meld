@@ -66,8 +66,7 @@ class FilterList(ListWidget):
         self.model[path][1] = not ren.get_active()
 
     def on_pattern_edited(self, ren, path, text):
-        filt = FilterEntry.compile_filter(text, self.filter_type)
-        valid = filt is not None
+        valid = FilterEntry.check_filter(text, self.filter_type)
         self.model[path][2] = text
         self.model[path][3] = valid
 

@@ -96,6 +96,14 @@ class FilterEntry:
             raise ValueError("Unknown filter type")
         return compiled
 
+    @classmethod
+    def check_filter(cls, filter_string, filter_type):
+        if filter_type == cls.REGEX:
+            compiled = cls._compile_regex(filter_string)
+        elif filter_type == cls.SHELL:
+            compiled = cls._compile_shell_pattern(filter_string)
+        return compiled is not None
+
     def __copy__(self):
         new = type(self)(
             self.label, self.active, None, None, self.filter_string)
