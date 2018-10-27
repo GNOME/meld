@@ -82,19 +82,19 @@ class FilterEntry:
 
     @classmethod
     def compile_filter(cls, filter_string, filter_type):
-        if filter_type == FilterEntry.REGEX:
-            compiled = FilterEntry._compile_regex(filter_string)
-        elif filter_type == FilterEntry.SHELL:
-            compiled = FilterEntry._compile_shell_pattern(filter_string)
+        if filter_type == cls.REGEX:
+            compiled = cls._compile_regex(filter_string)
+        elif filter_type == cls.SHELL:
+            compiled = cls._compile_shell_pattern(filter_string)
         else:
             raise ValueError("Unknown filter type")
         return compiled
 
     @classmethod
     def compile_byte_filter(cls, filter_string, filter_type):
-        if filter_type == FilterEntry.REGEX:
-            compiled = FilterEntry._compile_byte_regex(filter_string)
-        elif filter_type == FilterEntry.SHELL:
+        if filter_type == cls.REGEX:
+            compiled = cls._compile_byte_regex(filter_string)
+        elif filter_type == cls.SHELL:
             compiled = None
         else:
             raise ValueError("Unknown filter type")
