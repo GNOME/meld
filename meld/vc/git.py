@@ -118,7 +118,7 @@ class Vc(_vc.Vc):
             except ValueError:
                 continue
 
-            proc = self.run("rev-list", branch, "^" + remote)
+            proc = self.run("rev-list", branch, "^" + remote, "--")
             revisions = proc.stdout.read().split("\n")[:-1]
             branch_revisions[branch] = revisions
         return branch_revisions
