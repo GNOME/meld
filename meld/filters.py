@@ -47,14 +47,14 @@ class FilterEntry:
     @classmethod
     def _compile_shell_pattern(cls, pattern):
         bits = pattern.split()
-        if len(bits) > 1:
-            regexes = [misc.shell_to_regex(b)[:-1] for b in bits]
-            regex = "(%s)$" % "|".join(regexes)
-        elif len(bits):
-            regex = misc.shell_to_regex(bits[0])
-        else:
+        if not bits:
             # An empty pattern would match everything, so skip it
             return None
+        elif len(bits) > 1:
+            regexes = [misc.shell_to_regex(b)[:-1] for b in bits]
+            regex = "(%s)$" % "|".join(regexes)
+        else:
+            regex = misc.shell_to_regex(bits[0])
 
         try:
             compiled = re.compile(regex)
