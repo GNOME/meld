@@ -72,19 +72,6 @@ class FilterEntry:
         return compiled
 
     @classmethod
-    def parse(cls, string, filter_type):
-        elements = string.split("\t")
-        if len(elements) < 3:
-            return None
-        name, active = elements[0], bool(int(elements[1]))
-        filter_string = " ".join(elements[2:])
-        compiled = FilterEntry.compile_filter(filter_string, filter_type)
-        if compiled is None:
-            active = False
-        byte_filt = FilterEntry.compile_byte_filter(filter_string, filter_type)
-        return FilterEntry(name, active, compiled, byte_filt, filter_string)
-
-    @classmethod
     def new_from_gsetting(cls, elements, filter_type):
         name, active, filter_string = elements
         compiled = FilterEntry.compile_filter(filter_string, filter_type)
