@@ -45,7 +45,7 @@ class FilterEntry:
         self.filter_string = filter_string
 
     @classmethod
-    def _compile_regex(cls, regex, byte_regex=False):
+    def compile_regex(cls, regex, byte_regex=False):
         if byte_regex and not isinstance(regex, bytes):
             # TODO: Register a custom error handling function to replace
             # encoding errors with '.'?
@@ -53,7 +53,7 @@ class FilterEntry:
         return try_compile(regex, re.M)
 
     @classmethod
-    def _compile_shell_pattern(cls, pattern):
+    def compile_shell_pattern(cls, pattern):
         bits = pattern.split()
         if not bits:
             # An empty pattern would match everything, so skip it
@@ -69,10 +69,10 @@ class FilterEntry:
     def new_from_gsetting(cls, elements, filter_type):
         name, active, filter_string = elements
         if filter_type == cls.REGEX:
-            str_re = cls._compile_regex(filter_string)
-            bytes_re = cls._compile_regex(filter_string, byte_regex=True)
+            str_re = cls.compile_regex(filter_string)
+            bytes_re = cls.compile_regex(filter_string, byte_regex=True)
         elif filter_type == cls.SHELL:
-            str_re = cls._compile_shell_pattern(filter_string)
+            str_re = cls.compile_shell_pattern(filter_string)
             bytes_re = None
         else:
             raise ValueError("Unknown filter type")
@@ -83,9 +83,9 @@ class FilterEntry:
     @classmethod
     def check_filter(cls, filter_string, filter_type):
         if filter_type == cls.REGEX:
-            compiled = cls._compile_regex(filter_string)
+            compiled = cls.compile_regex(filter_string)
         elif filter_type == cls.SHELL:
-            compiled = cls._compile_shell_pattern(filter_string)
+            compiled = cls.compile_shell_pattern(filter_string)
         return compiled is not None
 
     def __copy__(self):
