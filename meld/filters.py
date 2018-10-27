@@ -16,8 +16,6 @@
 import logging
 import re
 
-from . import misc
-
 log = logging.getLogger(__name__)
 
 
@@ -59,10 +57,10 @@ class FilterEntry:
             # An empty pattern would match everything, so skip it
             return None
         elif len(bits) > 1:
-            regexes = [misc.shell_to_regex(b)[:-1] for b in bits]
+            regexes = [shell_to_regex(b)[:-1] for b in bits]
             regex = "(%s)$" % "|".join(regexes)
         else:
-            regex = misc.shell_to_regex(bits[0])
+            regex = shell_to_regex(bits[0])
         return try_compile(regex)
 
     @classmethod
@@ -97,3 +95,56 @@ class FilterEntry:
             new.byte_filter = re.compile(
                 self.byte_filter.pattern, self.byte_filter.flags)
         return new
+
+
+def shell_to_regex(pat):
+    """Translate a shell PATTERN to a regular expression.
+
+    Based on fnmatch.translate().
+    We also handle {a,b,c} where fnmatch does not.
+    """
+
+    i, n = 0, len(pat)
+    res = ''
+    while i < n:
+        c = pat[i]
+        i += 1
+        if c == '\\':
+            try:
+                c = pat[i]
+            except IndexError:
+                pass
+            else:
+                i += 1
+                res += re.escape(c)
+        elif c == '*':
+            res += '.*'
+        elif c == '?':
+            res += '.'
+        elif c == '[':
+            try:
+                j = pat.index(']', i)
+            except ValueError:
+                res += r'\['
+            else:
+                stuff = pat[i:j]
+                i = j + 1
+                if stuff[0] == '!':
+                    stuff = '^%s' % stuff[1:]
+                elif stuff[0] == '^':
+                    stuff = r'\^%s' % stuff[1:]
+                res += '[%s]' % stuff
+        elif c == '{':
+            try:
+                j = pat.index('}', i)
+            except ValueError:
+                res += '\\{'
+            else:
+                stuff = pat[i:j]
+                i = j + 1
+                res += '(%s)' % "|".join(
+                    [shell_to_regex(p)[:-1] for p in stuff.split(",")]
+                )
+        else:
+            res += re.escape(c)
+    return res + "$"

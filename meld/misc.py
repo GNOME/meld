@@ -22,7 +22,6 @@ import collections
 import errno
 import functools
 import os
-import re
 import shutil
 import subprocess
 from pathlib import PurePath
@@ -447,59 +446,6 @@ def copytree(src, dst):
     except OSError as e:
         if e.errno != errno.EPERM:
             raise
-
-
-def shell_to_regex(pat):
-    """Translate a shell PATTERN to a regular expression.
-
-    Based on fnmatch.translate().
-    We also handle {a,b,c} where fnmatch does not.
-    """
-
-    i, n = 0, len(pat)
-    res = ''
-    while i < n:
-        c = pat[i]
-        i += 1
-        if c == '\\':
-            try:
-                c = pat[i]
-            except IndexError:
-                pass
-            else:
-                i += 1
-                res += re.escape(c)
-        elif c == '*':
-            res += '.*'
-        elif c == '?':
-            res += '.'
-        elif c == '[':
-            try:
-                j = pat.index(']', i)
-            except ValueError:
-                res += r'\['
-            else:
-                stuff = pat[i:j]
-                i = j + 1
-                if stuff[0] == '!':
-                    stuff = '^%s' % stuff[1:]
-                elif stuff[0] == '^':
-                    stuff = r'\^%s' % stuff[1:]
-                res += '[%s]' % stuff
-        elif c == '{':
-            try:
-                j = pat.index('}', i)
-            except ValueError:
-                res += '\\{'
-            else:
-                stuff = pat[i:j]
-                i = j + 1
-                res += '(%s)' % "|".join(
-                    [shell_to_regex(p)[:-1] for p in stuff.split(",")]
-                )
-        else:
-            res += re.escape(c)
-    return res + "$"
 
 
 def merge_intervals(interval_list):
