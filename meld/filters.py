@@ -70,31 +70,17 @@ class FilterEntry:
     @classmethod
     def new_from_gsetting(cls, elements, filter_type):
         name, active, filter_string = elements
-        compiled = FilterEntry.compile_filter(filter_string, filter_type)
-        if compiled is None:
-            active = False
-        byte_filt = FilterEntry.compile_byte_filter(filter_string, filter_type)
-        return FilterEntry(name, active, compiled, byte_filt, filter_string)
-
-    @classmethod
-    def compile_filter(cls, filter_string, filter_type):
         if filter_type == cls.REGEX:
-            compiled = cls._compile_regex(filter_string)
+            str_re = cls._compile_regex(filter_string)
+            bytes_re = cls._compile_byte_regex(filter_string)
         elif filter_type == cls.SHELL:
-            compiled = cls._compile_shell_pattern(filter_string)
+            str_re = cls._compile_shell_pattern(filter_string)
+            bytes_re = None
         else:
             raise ValueError("Unknown filter type")
-        return compiled
 
-    @classmethod
-    def compile_byte_filter(cls, filter_string, filter_type):
-        if filter_type == cls.REGEX:
-            compiled = cls._compile_byte_regex(filter_string)
-        elif filter_type == cls.SHELL:
-            compiled = None
-        else:
-            raise ValueError("Unknown filter type")
-        return compiled
+        active = active and bool(str_re)
+        return cls(name, active, str_re, bytes_re, filter_string)
 
     @classmethod
     def check_filter(cls, filter_string, filter_type):
