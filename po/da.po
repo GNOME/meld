@@ -2,7 +2,7 @@
 # Copyright (C) 2018 meld & nedenstående oversættere.
 # This file is distributed under the same license as the meld package.
 # Joe Hansen <joedalton2@yahoo.dk>, 2010, 2011, 2018.
-# Alan Mortensen <alanmortensen.am@gmail.com>, 2016.
+# Alan Mortensen <alanmortensen.am@gmail.com>, 2016, 2018.
 #
 # merge -> flet (sammenføj er til versionstyringskommandoer)
 # pane -> rude
@@ -17,27 +17,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2018-02-25 22:59+0000\n"
-"PO-Revision-Date: 2018-03-03 17:49+0200\n"
-"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
+"POT-Creation-Date: 2018-10-27 22:06+0000\n"
+"PO-Revision-Date: 2018-10-28 16:07+0100\n"
+"Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: ../bin/meld:185
+#: ../bin/meld:194
 msgid "Cannot import: "
 msgstr "Kan ikke importere: "
 
-#: ../bin/meld:188
+#: ../bin/meld:197
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld kræver %s eller højere."
 
-#: ../bin/meld:240
+#: ../bin/meld:243
 #, c-format
 msgid ""
 "Couldn’t load Meld-specific CSS (%s)\n"
@@ -46,30 +46,31 @@ msgstr ""
 "Kunne ikke indlæse det Meld-specifikke CSS (%s)\n"
 "%s"
 
-#: ../data/meld.desktop.in.h:1 ../data/meld.appdata.xml.in.h:1
-#: ../data/ui/meldapp.ui.h:1
+#: ../data/org.gnome.meld.desktop.in.h:1
+#: ../data/org.gnome.meld.appdata.xml.in.h:1 ../data/ui/meldapp.ui.h:1
 msgid "Meld"
 msgstr "Meld"
 
 # Jeg synes også "Diff-viser" kan gå an. (Torben)
-#: ../data/meld.desktop.in.h:2
+#: ../data/org.gnome.meld.desktop.in.h:2
 msgid "Diff Viewer"
 msgstr "Diff-fremviser"
 
-#: ../data/meld.desktop.in.h:3
+#: ../data/org.gnome.meld.desktop.in.h:3
 msgid "Meld Diff Viewer"
 msgstr "Meld - diff-fremviser"
 
-#: ../data/meld.desktop.in.h:4 ../data/meld.appdata.xml.in.h:2
+#: ../data/org.gnome.meld.desktop.in.h:4
+#: ../data/org.gnome.meld.appdata.xml.in.h:2
 msgid "Compare and merge your files"
 msgstr "Sammenlign og flet dine filer"
 
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: ../data/meld.desktop.in.h:6
+#: ../data/org.gnome.meld.desktop.in.h:6
 msgid "diff;merge;"
 msgstr "diff;flet;"
 
-#: ../data/meld.appdata.xml.in.h:3
+#: ../data/org.gnome.meld.appdata.xml.in.h:3
 msgid ""
 "Meld is a visual diff and merge tool targeted at developers. Meld helps you "
 "compare files, directories, and version controlled projects. It provides "
@@ -82,7 +83,7 @@ msgstr ""
 "mange versionsstyringssystemer, bl.a. Git, Mercurial, Bazaar og Subversion, "
 "er understøttede."
 
-#: ../data/meld.appdata.xml.in.h:4
+#: ../data/org.gnome.meld.appdata.xml.in.h:4
 msgid ""
 "Meld helps you review code changes, understand patches, and makes enormous "
 "merge conflicts slightly less painful."
@@ -90,11 +91,11 @@ msgstr ""
 "Meld hjælper dig med at gennemgå kodeændringer, forstå rettelser (patches) "
 "og gør enorme flettekonflikter mindre besværlige."
 
-#: ../data/meld.appdata.xml.in.h:5
+#: ../data/org.gnome.meld.appdata.xml.in.h:5
 msgid "The GNOME Project"
 msgstr "GNOME-projektet"
 
-#: ../data/mime/meld.xml.in.h:1
+#: ../data/mime/org.gnome.meld.xml.in.h:1
 msgid "Meld comparison description"
 msgstr "Meld-sammenligningsbeskrivelse"
 
@@ -563,38 +564,54 @@ msgid "Compare selected files"
 msgstr "Sammenlign de valgte filer"
 
 #: ../data/ui/dirdiff.ui.h:3
+msgid "Collapse Recursively"
+msgstr "Fold sammen rekursivt"
+
+#: ../data/ui/dirdiff.ui.h:4
+msgid "Collapse selected folder and all subfolders"
+msgstr "Fold den valgte mappe og alle undermapperne sammen"
+
+#: ../data/ui/dirdiff.ui.h:5
+msgid "Expand Recursively"
+msgstr "Udfold rekursivt"
+
+#: ../data/ui/dirdiff.ui.h:6
+msgid "Expand selected folder and all subfolders"
+msgstr "Udfold den valgte mappe og alle undermapperne"
+
+#: ../data/ui/dirdiff.ui.h:7
 msgid "Copy to _Left"
 msgstr "Kopiér til _venstre"
 
-#: ../data/ui/dirdiff.ui.h:4
+#: ../data/ui/dirdiff.ui.h:8
 msgid "Copy to left"
 msgstr "Kopiér til venstre"
 
-#: ../data/ui/dirdiff.ui.h:5
+#: ../data/ui/dirdiff.ui.h:9
 msgid "Copy to _Right"
 msgstr "Kopiér til _højre"
 
-#: ../data/ui/dirdiff.ui.h:6
+#: ../data/ui/dirdiff.ui.h:10
 msgid "Copy to right"
 msgstr "Kopiér til højre"
 
-#: ../data/ui/dirdiff.ui.h:7
+#: ../data/ui/dirdiff.ui.h:11
 msgid "Delete selected"
 msgstr "Slet det valgte"
 
-#: ../data/ui/dirdiff.ui.h:8 ../meld/dirdiff.py:872 ../meld/filediff.py:1445
+#: ../data/ui/dirdiff.ui.h:12 ../meld/dirdiff.py:920 ../meld/filediff.py:1489
 msgid "Hide"
 msgstr "Skjul"
 
-#: ../data/ui/dirdiff.ui.h:9
+#: ../data/ui/dirdiff.ui.h:13
 msgid "Hide selected"
 msgstr "Skjul det valgte"
 
-#: ../data/ui/dirdiff.ui.h:10
+#: ../data/ui/dirdiff.ui.h:14
 msgid "Ignore Filename Case"
 msgstr "Ignorér store/små bogstaver i filnavne"
 
-#: ../data/ui/dirdiff.ui.h:11
+#: ../data/ui/dirdiff.ui.h:15
 msgid ""
 "Consider differently-cased filenames that are otherwise-identical to be the "
 "same"
@@ -602,35 +619,35 @@ msgstr ""
 "Anse filnavne med forskelle i store/små bogstaver, men ellers er identiske, "
 "som værende ens"
 
-#: ../data/ui/dirdiff.ui.h:12
+#: ../data/ui/dirdiff.ui.h:16
 msgid "Same"
 msgstr "Ens"
 
-#: ../data/ui/dirdiff.ui.h:13
+#: ../data/ui/dirdiff.ui.h:17
 msgid "Show identical"
 msgstr "Vis ens"
 
-#: ../data/ui/dirdiff.ui.h:14
+#: ../data/ui/dirdiff.ui.h:18
 msgid "New"
 msgstr "Ny"
 
-#: ../data/ui/dirdiff.ui.h:15
+#: ../data/ui/dirdiff.ui.h:19
 msgid "Show new"
 msgstr "Vis ny"
 
-#: ../data/ui/dirdiff.ui.h:16 ../meld/vc/_vc.py:77
+#: ../data/ui/dirdiff.ui.h:20 ../meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Ændret"
 
-#: ../data/ui/dirdiff.ui.h:17
+#: ../data/ui/dirdiff.ui.h:21
 msgid "Show modified"
 msgstr "Vis ændret"
 
-#: ../data/ui/dirdiff.ui.h:18
+#: ../data/ui/dirdiff.ui.h:22
 msgid "Filters"
 msgstr "Filtre"
 
-#: ../data/ui/dirdiff.ui.h:19
+#: ../data/ui/dirdiff.ui.h:23
 msgid "Set active filters"
 msgstr "Angiv aktivt filter"
 
@@ -651,7 +668,7 @@ msgid "_Add"
 msgstr "_Tilføj"
 
 #: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:681
+#: ../meld/vcview.py:680
 msgid "_Remove"
 msgstr "_Fjern"
 
@@ -673,7 +690,7 @@ msgstr "Flyt _ned"
 
 #. Create icon and filename CellRenderer
 #: ../data/ui/EditableList.ui.h:10 ../data/ui/vcview.ui.h:35
-#: ../meld/dirdiff.py:372
+#: ../meld/dirdiff.py:416
 msgid "Name"
 msgstr "Navn"
 
@@ -878,8 +895,8 @@ msgstr "Ændringerne vil gå tabt, hvis ikke du gemmer."
 msgid "Close _without Saving"
 msgstr "Luk _uden at gemme"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:953 ../meld/filediff.py:1516
-#: ../meld/filediff.py:1588
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:1001 ../meld/filediff.py:1598
+#: ../meld/iohelpers.py:50 ../meld/iohelpers.py:100
 msgid "_Cancel"
 msgstr "_Annullér"
 
@@ -920,7 +937,7 @@ msgstr "Ændringer foretaget i følgende dokumenter vil gå tabt for altid:"
 msgid "_Discard"
 msgstr "_Kassér"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:954 ../meld/filediff.py:1517
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:1002 ../meld/iohelpers.py:101
 msgid "_Replace"
 msgstr "_Erstat"
 
@@ -972,7 +989,7 @@ msgstr "Formatér som rettelse (patch)"
 msgid "Copy to Clipboard"
 msgstr "Kopiér til udklipsholderen"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:154
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:152
 msgid "Save Patch"
 msgstr "Gem rettelse (patch)"
 
@@ -1453,8 +1470,8 @@ msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Vis/skjul konsoloutput"
 
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:561
-#: ../meld/newdifftab.py:39
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:567
+#: ../meld/newdifftab.py:49
 msgid "New comparison"
 msgstr "Ny sammenligning"
 
@@ -1607,7 +1624,7 @@ msgstr "Ikke _versioneret"
 msgid "Show unversioned files"
 msgstr "Vis filer uden versionering"
 
-#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:70
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:69
 msgid "Ignored"
 msgstr "Ignoreret"
 
@@ -1636,7 +1653,7 @@ msgstr "Forrige logge:"
 msgid "Co_mmit"
 msgstr "Co_mmit"
 
-#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:332
+#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:331
 msgid "Location"
 msgstr "Sted"
 
@@ -1678,44 +1695,44 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:393 ../meld/preferences.py:82
+#: ../meld/dirdiff.py:437 ../meld/preferences.py:81
 msgid "Size"
 msgstr "Størrelse"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:401 ../meld/preferences.py:83
+#: ../meld/dirdiff.py:445 ../meld/preferences.py:82
 msgid "Modification time"
 msgstr "Ændringstidspunkt"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:409 ../meld/preferences.py:84
+#: ../meld/dirdiff.py:453 ../meld/preferences.py:83
 msgid "Permissions"
 msgstr "Rettigheder"
 
-#: ../meld/dirdiff.py:540
+#: ../meld/dirdiff.py:588
 #, python-format
 msgid "Hide %s"
 msgstr "Skjul %s"
 
-#: ../meld/dirdiff.py:681 ../meld/dirdiff.py:704
+#: ../meld/dirdiff.py:729 ../meld/dirdiff.py:752
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Skanner %s"
 
-#: ../meld/dirdiff.py:839
+#: ../meld/dirdiff.py:887
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Færdig"
 
-#: ../meld/dirdiff.py:847
+#: ../meld/dirdiff.py:895
 msgid "Folders have no differences"
 msgstr "Der er ingen forskelle på mapperne"
 
-#: ../meld/dirdiff.py:849
+#: ../meld/dirdiff.py:897
 msgid "Contents of scanned files in folders are identical."
 msgstr "Indholdet af de skannede filer i mapperne er ens."
 
-#: ../meld/dirdiff.py:851
+#: ../meld/dirdiff.py:899
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1723,40 +1740,40 @@ msgstr ""
 "De skannede filer i mapperne ser ud til at være ens, men indholdet er ikke "
 "blevet skannet."
 
-#: ../meld/dirdiff.py:854
+#: ../meld/dirdiff.py:902
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Ikke alle filer er blevet skannet, da filfiltre er i brug."
 
-#: ../meld/dirdiff.py:856
+#: ../meld/dirdiff.py:904
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Tekstfiltre er i brug og kan maskere forskelle i indhold."
 
-#: ../meld/dirdiff.py:874 ../meld/filediff.py:1447 ../meld/filediff.py:1477
-#: ../meld/filediff.py:1479 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
+#: ../meld/dirdiff.py:922 ../meld/filediff.py:1491 ../meld/filediff.py:1521
+#: ../meld/filediff.py:1523 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
 msgid "Hi_de"
 msgstr "_Skjul"
 
-#: ../meld/dirdiff.py:883
+#: ../meld/dirdiff.py:931
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Der opstod flere fejl, under skanning af mappen"
 
-#: ../meld/dirdiff.py:884
+#: ../meld/dirdiff.py:932
 msgid "Files with invalid encodings found"
 msgstr "Fandt filer med ugyldige kodninger"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:886
+#: ../meld/dirdiff.py:934
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Nogle filer var ikke kodet korrekt. Navnene er noget lignende dette:"
 
-#: ../meld/dirdiff.py:888
+#: ../meld/dirdiff.py:936
 msgid "Files hidden by case insensitive comparison"
 msgstr "Filer skjult af søgning, som ikke tager højde for store/små bogstaver"
 
 # Du udfører en sammenligning uden forskel på store og små bogstaver på
 # et filsystem, hvor der er forskel på store og små bogstaver.
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:890
+#: ../meld/dirdiff.py:938
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1765,17 +1782,17 @@ msgstr ""
 "på et filsystem, som tager højde for store/små bogstaver. Følgende filer i "
 "denne mappe er skjulte:"
 
-#: ../meld/dirdiff.py:901
+#: ../meld/dirdiff.py:949
 #, python-format
 msgid "“%s” hidden by “%s”"
 msgstr "“%s” skjult af “%s”"
 
-#: ../meld/dirdiff.py:957
+#: ../meld/dirdiff.py:1005
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Erstat mappen “%s”?"
 
-#: ../meld/dirdiff.py:959
+#: ../meld/dirdiff.py:1007
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1784,11 +1801,11 @@ msgstr ""
 "En mappe med det samme navn findes allerede i “%s”.\n"
 "Hvis du erstatter den eksisterende mappe, vil alle filer i den gå tabt."
 
-#: ../meld/dirdiff.py:972
+#: ../meld/dirdiff.py:1020
 msgid "Error copying file"
 msgstr "Fejl ved kopiering af fil"
 
-#: ../meld/dirdiff.py:973
+#: ../meld/dirdiff.py:1021
 #, python-format
 msgid ""
 "Couldn’t copy %s\n"
@@ -1801,20 +1818,19 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:996
-#, python-format
-msgid "Error deleting %s"
-msgstr "Fejl ved sletning af %s"
+#: ../meld/dirdiff.py:1046 ../meld/vcview.py:703
+msgid "Error deleting {}"
+msgstr "Fejl ved sletning af {}"
 
-#: ../meld/dirdiff.py:1470
+#: ../meld/dirdiff.py:1577
 msgid "No folder"
 msgstr "Ingen mappe"
 
-#: ../meld/filediff.py:805
+#: ../meld/filediff.py:834
 msgid "Comparison results will be inaccurate"
 msgstr "Resultatet af sammenligningen vil være unøjagtigt"
 
-#: ../meld/filediff.py:807
+#: ../meld/filediff.py:836
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1822,64 +1838,64 @@ msgstr ""
 "Et filter ændrede antallet af linjer i filen, hvilket ikke understøttes. "
 "Sammenligningen vil ikke være nøjagtig."
 
-#: ../meld/filediff.py:864
+#: ../meld/filediff.py:893
 msgid "Mark conflict as resolved?"
 msgstr "Markér konflikt som løst?"
 
-#: ../meld/filediff.py:866
+#: ../meld/filediff.py:895
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Hvis konflikten blev løst, kan du nu markere den som løst."
 
-#: ../meld/filediff.py:868
+#: ../meld/filediff.py:897
 msgid "Cancel"
 msgstr "Annullér"
 
-#: ../meld/filediff.py:869
+#: ../meld/filediff.py:898
 msgid "Mark _Resolved"
 msgstr "Markér som _løst"
 
-#: ../meld/filediff.py:1162
+#: ../meld/filediff.py:1206
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Der var et problem med at åbne filen “%s”."
 
-#: ../meld/filediff.py:1170
+#: ../meld/filediff.py:1214
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Filen %s ser ud til at være en binær fil."
 
-#: ../meld/filediff.py:1172
+#: ../meld/filediff.py:1216
 msgid "Do you want to open the file using the default application?"
 msgstr "Vil du åbne filen med standardprogrammet?"
 
-#: ../meld/filediff.py:1174
+#: ../meld/filediff.py:1218
 msgid "Open"
 msgstr "Åbn"
 
-#: ../meld/filediff.py:1190
+#: ../meld/filediff.py:1234
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Beregner forskelle"
 
-#: ../meld/filediff.py:1251
+#: ../meld/filediff.py:1295
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Filen %s er blevet ændret på disken"
 
-#: ../meld/filediff.py:1252
+#: ../meld/filediff.py:1296
 msgid "Do you want to reload the file?"
 msgstr "Vil du genindlæse filen?"
 
-#: ../meld/filediff.py:1254
+#: ../meld/filediff.py:1298
 msgid "_Reload"
 msgstr "_Genindlæs"
 
-#: ../meld/filediff.py:1410
+#: ../meld/filediff.py:1454
 msgid "Files are identical"
 msgstr "Filer er identiske"
 
-#: ../meld/filediff.py:1423
+#: ../meld/filediff.py:1467
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1887,11 +1903,11 @@ msgstr ""
 "Tekstfiltre er i brug og kan maskere forskelle mellem filer. Vil du "
 "sammenligne de ikke-filtrerede filer?"
 
-#: ../meld/filediff.py:1428
+#: ../meld/filediff.py:1472
 msgid "Files differ in line endings only"
 msgstr "Filer er kun forskellige i slutningen af linjerne"
 
-#: ../meld/filediff.py:1430
+#: ../meld/filediff.py:1474
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1900,15 +1916,15 @@ msgstr ""
 "Filerne er ens bortset fra forskelle i slutningen af linjerne:\n"
 "%s"
 
-#: ../meld/filediff.py:1450
+#: ../meld/filediff.py:1494
 msgid "Show without filters"
 msgstr "Vis uden filtre"
 
-#: ../meld/filediff.py:1472
+#: ../meld/filediff.py:1516
 msgid "Change highlighting incomplete"
 msgstr "Fremhævning af ændringer ufuldstændig"
 
-#: ../meld/filediff.py:1473
+#: ../meld/filediff.py:1517
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1917,68 +1933,66 @@ msgstr ""
 "Meld til at bruge længere tid på at fremhæve større ændringer, selvom det "
 "kan være langsomt."
 
-#: ../meld/filediff.py:1481
+#: ../meld/filediff.py:1525
 msgid "Keep highlighting"
 msgstr "Bliv ved med at fremhæve"
 
-#: ../meld/filediff.py:1483
+#: ../meld/filediff.py:1527
 msgid "_Keep highlighting"
 msgstr "_Bliv ved med at fremhæve"
 
-#: ../meld/filediff.py:1520
-#, python-format
-msgid "Replace file “%s”?"
-msgstr "Erstat filen “%s”?"
+#: ../meld/filediff.py:1540
+msgid "Saving failed"
+msgstr "Kunne ikke gemme"
 
-#: ../meld/filediff.py:1522
-#, python-format
+#: ../meld/filediff.py:1541
 msgid ""
-"A file with this name already exists in “%s”.\n"
-"If you replace the existing file, its contents will be lost."
+"Please consider copying any critical changes to another program or file to "
+"avoid data loss."
 msgstr ""
-"Der er allerede en fil med dette navn i “%s”.\n"
-"Hvis du erstatter den eksisterende fil, vil dens indhold gå tabt."
+"Overvej at kopiere kritiske ændringer til et andet program eller en anden "
+"fil for at undgå tab af data."
 
-#: ../meld/filediff.py:1539
+#: ../meld/filediff.py:1550
 msgid "Save Left Pane As"
 msgstr "Gem venstre rude som"
 
-#: ../meld/filediff.py:1541
+#: ../meld/filediff.py:1552
 msgid "Save Middle Pane As"
 msgstr "Gem midterste rude som"
 
-#: ../meld/filediff.py:1543
+#: ../meld/filediff.py:1554
 msgid "Save Right Pane As"
 msgstr "Gem højre rude som"
 
-#: ../meld/filediff.py:1557
+#: ../meld/filediff.py:1567
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Filen %s er blevet ændret på disken, siden den blev åbnet"
 
-#: ../meld/filediff.py:1559
+#: ../meld/filediff.py:1569
 msgid "If you save it, any external changes will be lost."
 msgstr ""
 "Hvis du gemmer den, vil alle ændringer, som er foretaget eksternt, gå tabt."
 
-#: ../meld/filediff.py:1562
+#: ../meld/filediff.py:1572
 msgid "Save Anyway"
 msgstr "Gem alligevel"
 
-#: ../meld/filediff.py:1563
+#: ../meld/filediff.py:1573
 msgid "Don’t Save"
 msgstr "Gem ikke"
 
-#: ../meld/filediff.py:1589
+#: ../meld/filediff.py:1599
 msgid "_Save as UTF-8"
 msgstr "_Gem som UTF-8"
 
-#: ../meld/filediff.py:1592
+#: ../meld/filediff.py:1602
 #, python-format
 msgid "Couldn’t encode text as “%s”"
 msgstr "Kunne ikke kode teksten som “%s”"
 
-#: ../meld/filediff.py:1594
+#: ../meld/filediff.py:1604
 #, python-format
 msgid ""
 "File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
@@ -1987,12 +2001,12 @@ msgstr ""
 "Filen “%s” indeholder tegn, som ikke kan kodes med kodningen “%s”.\n"
 "Ønsker du at gemme som UTF-8?"
 
-#: ../meld/filediff.py:1634 ../meld/patchdialog.py:130
+#: ../meld/filediff.py:1644 ../meld/patchdialog.py:130
 #, python-format
 msgid "Could not save file %s."
 msgstr "Kunne ikke gemme filen %s."
 
-#: ../meld/filediff.py:1635 ../meld/patchdialog.py:131
+#: ../meld/filediff.py:1645 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2001,11 +2015,11 @@ msgstr ""
 "Kunne ikke gemme filen pga.:\n"
 "%s"
 
-#: ../meld/filediff.py:2011
+#: ../meld/filediff.py:2020
 msgid "Live comparison updating disabled"
 msgstr "Liveopdatering af sammenligninger deaktiveret"
 
-#: ../meld/filediff.py:2012
+#: ../meld/filediff.py:2021
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2028,106 +2042,141 @@ msgstr "Kopiér _op"
 msgid "Copy _down"
 msgstr "Kopiér _ned"
 
-#: ../meld/meldapp.py:179
+#: ../meld/iohelpers.py:35
+msgid "Deleting remote folders is not supported"
+msgstr "Sletning af eksterne mapper understøttes ikke"
+
+#: ../meld/iohelpers.py:37
+msgid "Not a file or directory"
+msgstr "Ikke en fil eller mappe"
+
+#: ../meld/iohelpers.py:41
+msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
+msgstr "“{}” kan ikke puttes i papirkurven. Vil du slette den helt?"
+
+#: ../meld/iohelpers.py:46
+msgid "This remote location does not support sending items to the trash."
+msgstr ""
+"Denne eksterne placering understøtter ikke papirkurv."
+
+#: ../meld/iohelpers.py:51
+msgid "_Delete Permanently"
+msgstr "_Slet for evigt"
+
+#: ../meld/iohelpers.py:94
+#, python-format
+msgid "Replace file “%s”?"
+msgstr "Erstat filen “%s”?"
+
+#: ../meld/iohelpers.py:96
+#, python-format
+msgid ""
+"A file with this name already exists in “%s”.\n"
+"If you replace the existing file, its contents will be lost."
+msgstr ""
+"Der er allerede en fil med dette navn i “%s”.\n"
+"Hvis du erstatter den eksisterende fil, vil dens indhold gå tabt."
+
+#: ../meld/meldapp.py:181
 msgid "wrong number of arguments supplied to --diff"
 msgstr "forkert antal argumenter angivet til --diff"
 
-#: ../meld/meldapp.py:184
+#: ../meld/meldapp.py:186
 msgid "Start with an empty window"
 msgstr "Start med et tomt vindue"
 
-#: ../meld/meldapp.py:185 ../meld/meldapp.py:187
+#: ../meld/meldapp.py:187 ../meld/meldapp.py:189
 msgid "file"
 msgstr "fil"
 
-#: ../meld/meldapp.py:185 ../meld/meldapp.py:189
+#: ../meld/meldapp.py:187 ../meld/meldapp.py:191
 msgid "folder"
 msgstr "mappe"
 
-#: ../meld/meldapp.py:186
+#: ../meld/meldapp.py:188
 msgid "Start a version control comparison"
 msgstr "Start en sammenligning af versioner"
 
-#: ../meld/meldapp.py:188
+#: ../meld/meldapp.py:190
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Sammenlign to eller tre filer"
 
-#: ../meld/meldapp.py:190
+#: ../meld/meldapp.py:192
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Sammenlign to eller tre mapper"
 
-#: ../meld/meldapp.py:233
+#: ../meld/meldapp.py:235
 #, python-format
 msgid "Error: %s\n"
 msgstr "Fejl: %s\n"
 
-#: ../meld/meldapp.py:240
+#: ../meld/meldapp.py:242
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld er et sammenligningsværktøj for filer og mapper."
 
-#: ../meld/meldapp.py:244
+#: ../meld/meldapp.py:246
 msgid "Set label to use instead of file name"
 msgstr "Angiv etiket, der skal bruges i stedet for filnavn"
 
-#: ../meld/meldapp.py:247
+#: ../meld/meldapp.py:249
 msgid "Open a new tab in an already running instance"
 msgstr "Åbn et nyt faneblad i en allerede kørende forekomst"
 
-#: ../meld/meldapp.py:250
+#: ../meld/meldapp.py:252
 msgid "Automatically compare all differing files on startup"
 msgstr "Sammenlign automatisk alle filer der har forskelle ved opstart"
 
-#: ../meld/meldapp.py:253
+#: ../meld/meldapp.py:255
 msgid "Ignored for compatibility"
 msgstr "Ignoreret pga. kompatibilitet"
 
-#: ../meld/meldapp.py:257
+#: ../meld/meldapp.py:259
 msgid "Set the target file for saving a merge result"
 msgstr "Angiv målfilen hvor resultatet af en fletning skal gemmes"
 
-#: ../meld/meldapp.py:260
+#: ../meld/meldapp.py:262
 msgid "Automatically merge files"
 msgstr "Flet automatisk filer"
 
-#: ../meld/meldapp.py:264
+#: ../meld/meldapp.py:266
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Indlæs en gemt sammenligning fra en Meld-sammenligningsfil"
 
 # Tab is a common term for a widget used to provide page-based switching in GUIs,
 # as seen in gedit, epiphany, firefox, etc.
 # https://secure.wikimedia.org/wikipedia/en/wiki/Tab_%28GUI%29
-#: ../meld/meldapp.py:268
+#: ../meld/meldapp.py:270
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Opret et forskelsfaneblad for de angivne filer eller mapper."
 
-#: ../meld/meldapp.py:288
+#: ../meld/meldapp.py:290
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "for mange argumenter (ønskede 0-3, fik %d)"
 
-#: ../meld/meldapp.py:291
+#: ../meld/meldapp.py:293
 msgid "can’t auto-merge less than 3 files"
 msgstr "kan ikke auto-flette mindre end tre filer"
 
-#: ../meld/meldapp.py:293
+#: ../meld/meldapp.py:295
 msgid "can’t auto-merge directories"
 msgstr "kan ikke auto-flette mapper"
 
-#: ../meld/meldapp.py:307
+#: ../meld/meldapp.py:309
 msgid "Error reading saved comparison file"
 msgstr "Fejl ved læsning af gemt sammenligningsfil"
 
-#: ../meld/meldapp.py:324
+#: ../meld/meldapp.py:326
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "ugyldig sti eller URI “%s”"
 
-#: ../meld/meldapp.py:330
+#: ../meld/meldapp.py:332
 msgid "remote folder “{}” not supported"
 msgstr "ekstern mappe “{}” er ikke understøttet"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:140
+#: ../meld/meldbuffer.py:124
 msgid "<unnamed>"
 msgstr "<unavngivet>"
 
@@ -2328,24 +2377,35 @@ msgstr "Åbn manualen til Meld"
 msgid "About this application"
 msgstr "Om programmet"
 
-#: ../meld/meldwindow.py:596
+#: ../meld/meldwindow.py:602
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Behøver tre filer for at auto-flette, fik: %r"
 
-#: ../meld/meldwindow.py:617
+#: ../meld/meldwindow.py:623
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Kan ikke sammenligne en blanding af filer og mapper"
 
-#: ../meld/misc.py:207
+#: ../meld/misc.py:135
+msgid ""
+"{}\n"
+"\n"
+"Meld encountered a critical error while running:\n"
+"<tt>{}</tt>"
+msgstr ""
+"{}\n"
+"\n"
+"Meld stødte på en kritisk fejl under kørslen af:\n"
+"<tt>{}</tt>"
+
+#: ../meld/misc.py:254
 #, python-format
 msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgstr ""
 "Kunne ikke finde farveskemadetaljer for %s-%s; dette er en dårlig "
 "installation"
 
-#. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:268
+#: ../meld/misc.py:325
 msgid "[None]"
 msgstr "[Ingen]"
 
@@ -2357,7 +2417,7 @@ msgstr "etiket"
 msgid "pattern"
 msgstr "mønster"
 
-#: ../meld/recent.py:115
+#: ../meld/recent.py:105
 msgid "Version control:"
 msgstr "Versionsstyring:"
 
@@ -2376,12 +2436,12 @@ msgid "Close tab"
 msgstr "Luk faneblad"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/ui/statusbar.py:133
+#: ../meld/ui/statusbar.py:124
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Lin. %i, kol. %i"
 
-#: ../meld/ui/statusbar.py:186
+#: ../meld/ui/statusbar.py:177
 msgid "Line you want to move the cursor to"
 msgstr "Linje du ønsker at flytte markøren til"
 
@@ -2391,189 +2451,189 @@ msgstr "Ingen filer vil blive commit'et"
 
 #. Translators: First %s is replaced by translated "%d unpushed
 #. commits", second %s is replaced by translated "%d branches"
-#: ../meld/vc/git.py:93
+#: ../meld/vc/git.py:92
 #, python-format
 msgid "%s in %s"
 msgstr "%s i %s"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: ../meld/vc/git.py:94 ../meld/vc/git.py:101
+#: ../meld/vc/git.py:93 ../meld/vc/git.py:100
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d ikke skubbet commit"
 msgstr[1] "%d ikke skubbet commit'er"
 
-#: ../meld/vc/git.py:96
+#: ../meld/vc/git.py:95
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d gren"
 msgstr[1] "%d grene"
 
-#: ../meld/vc/git.py:332
+#: ../meld/vc/git.py:334
 #, python-format
 msgid "Mode changed from %s to %s"
 msgstr "Tilstand skiftede fra %s til %s"
 
-#: ../meld/vc/git.py:340
+#: ../meld/vc/git.py:342
 msgid "Partially staged"
 msgstr "Delvist staged"
 
-#: ../meld/vc/git.py:340
+#: ../meld/vc/git.py:342
 msgid "Staged"
 msgstr "Staged"
 
 #. Translators: This is the displayed name of a version control system
 #. when no version control system is actually found.
-#: ../meld/vc/_null.py:38
+#: ../meld/vc/_null.py:37
 msgid "None"
 msgstr "Ingen"
 
-#: ../meld/vc/svn.py:204
+#: ../meld/vc/svn.py:203
 #, python-format
 msgid "Rev %s"
 msgstr "Rev. %s"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Merged"
 msgstr "Flettet"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Base"
 msgstr "Base"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Local"
 msgstr "Lokal"
 
-#: ../meld/vc/_vc.py:55
+#: ../meld/vc/_vc.py:54
 msgid "Remote"
 msgstr "Fjern"
 
 # "Vis ikke-versionsstyrede filer"
-#: ../meld/vc/_vc.py:71
+#: ../meld/vc/_vc.py:70
 msgid "Unversioned"
 msgstr "Uden versionering"
 
-#: ../meld/vc/_vc.py:74
+#: ../meld/vc/_vc.py:73
 msgid "Error"
 msgstr "Fejl"
 
-#: ../meld/vc/_vc.py:76
+#: ../meld/vc/_vc.py:75
 msgid "Newly added"
 msgstr "Nyligt tilføjet"
 
-#: ../meld/vc/_vc.py:78
+#: ../meld/vc/_vc.py:77
 msgid "Renamed"
 msgstr "Omdøbt"
 
-#: ../meld/vc/_vc.py:79
+#: ../meld/vc/_vc.py:78
 msgid "Conflict"
 msgstr "Konflikt"
 
-#: ../meld/vc/_vc.py:80
+#: ../meld/vc/_vc.py:79
 msgid "Removed"
 msgstr "Fjernet"
 
 # Manglende?
-#: ../meld/vc/_vc.py:81
+#: ../meld/vc/_vc.py:80
 msgid "Missing"
 msgstr "Mangler"
 
-#: ../meld/vc/_vc.py:82
+#: ../meld/vc/_vc.py:81
 msgid "Not present"
 msgstr "Ikke tilstedeværende"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: ../meld/vcview.py:249
+#: ../meld/vcview.py:248
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s ikke installeret)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: ../meld/vcview.py:253
+#: ../meld/vcview.py:252
 #, python-format
 msgid "%(name)s (Invalid repository)"
 msgstr "%(name)s (ugyldigt arkiv)"
 
-#: ../meld/vcview.py:274
+#: ../meld/vcview.py:273
 msgid "No valid version control system found in this folder"
 msgstr "Fandt ikke et gyldigt versionsstyringssystem i denne mappe"
 
-#: ../meld/vcview.py:276
+#: ../meld/vcview.py:275
 msgid "Only one version control system found in this folder"
 msgstr "Fandt kun ét versionsstyringssystem i denne mappe"
 
-#: ../meld/vcview.py:278
+#: ../meld/vcview.py:277
 msgid "Choose which version control system to use"
 msgstr "Vælg hvilket versionsstyringssystem, der skal anvendes"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: ../meld/vcview.py:332
+#: ../meld/vcview.py:331
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: ../meld/vcview.py:339
+#: ../meld/vcview.py:338
 msgid "Scanning repository"
 msgstr "Skanner arkiv"
 
-#: ../meld/vcview.py:368
+#: ../meld/vcview.py:367
 #, python-format
 msgid "Scanning %s"
 msgstr "Skanner %s"
 
-#: ../meld/vcview.py:407
+#: ../meld/vcview.py:406
 msgid "(Empty)"
 msgstr "(tom)"
 
-#: ../meld/vcview.py:451
+#: ../meld/vcview.py:450
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokal"
 
-#: ../meld/vcview.py:452
+#: ../meld/vcview.py:451
 #, python-format
 msgid "%s — remote"
 msgstr "%s — fjern"
 
-#: ../meld/vcview.py:460
+#: ../meld/vcview.py:459
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokal, flet, fjern)"
 
-#: ../meld/vcview.py:465
+#: ../meld/vcview.py:464
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (fjern, flet, lokal)"
 
-#: ../meld/vcview.py:476
+#: ../meld/vcview.py:475
 #, python-format
 msgid "%s — repository"
 msgstr "%s — arkiv"
 
 # arbejdskopi?
-#: ../meld/vcview.py:482
+#: ../meld/vcview.py:481
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (arbejdskopi, arkiv)"
 
-#: ../meld/vcview.py:486
+#: ../meld/vcview.py:485
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (arkiv, arbejdskopi)"
 
-#: ../meld/vcview.py:675
+#: ../meld/vcview.py:674
 msgid "Remove folder and all its files?"
 msgstr "Fjern mappen og alle dens filer?"
 
-#: ../meld/vcview.py:677
+#: ../meld/vcview.py:676
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2581,12 +2641,9 @@ msgstr ""
 "Dette vil fjerne alle valgte filer og mapper, samt alle filer i de valgte "
 "mapper, fra versionsstyring."
 
-#: ../meld/vcview.py:702
-#, python-format
-msgid "Error removing %s"
-msgstr "Fejl ved fjernelse af %s"
-
-#: ../meld/vcview.py:780
+#: ../meld/vcview.py:785
 msgid "Clear"
 msgstr "Ryd"
 
+#~ msgid "Error removing %s"
+#~ msgstr "Fejl ved fjernelse af %s"
