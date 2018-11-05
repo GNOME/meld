@@ -1,15 +1,28 @@
-*.pyc
+# VCS conflicts
 *.orig
 *.rej
-*.desktop
-*.install
-data/appdata.xml
-data/mime/meld.xml
-.cache/
+
+# Byte compiled Python files
+__pycache__/
+*.pyc
+
+# Compiled resources
+data/gschemas.compiled
+
+# External tooling caches
 .flatpak-builder/
 .mypy_cache/
-build
-dist
-MANIFEST
-data/gschemas.compiled
+.pytest_cache/
+
+# Build & distribution artifacts
 build/
+dist/
+MANIFEST
+
+# Special project build artifacts
+*-installed
+
+# Files created from intltool .in templates
+*.desktop
+data/appdata.xml
+data/mime/meld.xml
