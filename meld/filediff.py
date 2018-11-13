@@ -1581,38 +1581,6 @@ class FileDiff(MeldDoc, Component):
             msgarea.show_all()
             return False
 
-        start, end = buf.get_bounds()
-        text = buf.get_text(start, end, False)
-
-        source_encoding = bufdata.sourcefile.get_encoding()
-        if not source_encoding:
-            # no encoding for new blank comparison
-            source_encoding = GtkSource.Encoding.get_utf8()
-
-        while isinstance(text, str):
-            try:
-                encoding = source_encoding.get_charset()
-                text = text.encode(encoding)
-            except UnicodeEncodeError:
-                dialog_buttons = [
-                    (_("_Cancel"), Gtk.ResponseType.CANCEL),
-                    (_("_Save as UTF-8"), Gtk.ResponseType.OK),
-                ]
-                reencode = misc.modal_dialog(
-                    primary=_("Couldn’t encode text as “%s”") % encoding,
-                    secondary=_(
-                        "File “%s” contains characters that can’t be encoded "
-                        "using encoding “%s”.\n"
-                        "Would you like to save as UTF-8?") % (
-                        bufdata.label, encoding),
-                    buttons=dialog_buttons,
-                    messagetype=Gtk.MessageType.WARNING
-                )
-                if reencode != Gtk.ResponseType.OK:
-                    return False
-
-                source_encoding = GtkSource.Encoding.get_utf8()
-
         saver = GtkSource.FileSaver.new_with_target(
             self.textbuffer[pane], bufdata.sourcefile, bufdata.gfiletarget)
         # TODO: Think about removing this flag and above handling, and instead
@@ -1640,10 +1608,20 @@ class FileDiff(MeldDoc, Component):
             # or invalid buffer characters.
             filename = GLib.markup_escape_text(
                 gfile.get_parse_name())
+
+            if err.matches(Gio.io_error_quark(), Gio.IOErrorEnum.INVALID_DATA):
+                encoding = saver.get_file().get_encoding()
+                secondary = _(
+                    "File “{}” contains characters that can’t be encoded "
+                    "using its current encoding “{}”."
+                ).format(filename, encoding.to_string())
+            else:
+                secondary = _("Couldn’t save file due to:\n%s") % (
+                    GLib.markup_escape_text(str(err)))
+
             misc.error_dialog(
                 primary=_("Could not save file %s.") % filename,
-                secondary=_("Couldn’t save file due to:\n%s") % (
-                    GLib.markup_escape_text(str(err))),
+                secondary=secondary,
             )
             self.state = ComparisonState.SavingError
             return
