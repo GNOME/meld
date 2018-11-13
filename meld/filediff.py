@@ -1481,38 +1481,6 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
             msgarea.show_all()
             return False
 
-        start, end = buf.get_bounds()
-        text = buf.get_text(start, end, False)
-
-        source_encoding = bufdata.sourcefile.get_encoding()
-        if not source_encoding:
-            # no encoding for new blank comparison
-            source_encoding = GtkSource.Encoding.get_utf8()
-
-        while isinstance(text, str):
-            try:
-                encoding = source_encoding.get_charset()
-                text = text.encode(encoding)
-            except UnicodeEncodeError:
-                dialog_buttons = [
-                    (_("_Cancel"), Gtk.ResponseType.CANCEL),
-                    (_("_Save as UTF-8"), Gtk.ResponseType.OK),
-                ]
-                reencode = misc.modal_dialog(
-                    primary=_(u"Couldn't encode text as “%s”") % encoding,
-                    secondary=_(
-                        u"File “%s” contains characters that can't be encoded "
-                        u"using encoding “%s”.\n"
-                        u"Would you like to save as UTF-8?") % (
-                        bufdata.label, encoding),
-                    buttons=dialog_buttons,
-                    messagetype=Gtk.MessageType.WARNING
-                )
-                if reencode != Gtk.ResponseType.OK:
-                    return False
-
-                source_encoding = GtkSource.Encoding.get_utf8()
-
         saver = GtkSource.FileSaver.new_with_target(
             self.textbuffer[pane], bufdata.sourcefile, bufdata.gfiletarget)
         # TODO: Think about removing this flag and above handling, and instead
