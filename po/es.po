@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2018-10-27 22:06+0000\n"
-"PO-Revision-Date: 2018-10-31 16:36+0100\n"
+"POT-Creation-Date: 2018-11-13 20:40+0000\n"
+"PO-Revision-Date: 2018-11-15 12:02+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -572,7 +572,6 @@ msgid "Collapse Recursively"
 msgstr "Contraer recursivamente"
 
 #: ../data/ui/dirdiff.ui.h:4
-#| msgid "Remove folder and all its files?"
 msgid "Collapse selected folder and all subfolders"
 msgstr "Contraer la carpeta seleccionada y todas sus subcarpetas"
 
@@ -581,7 +580,6 @@ msgid "Expand Recursively"
 msgstr "Expandir recursivamente"
 
 #: ../data/ui/dirdiff.ui.h:6
-#| msgid "Remove folder and all its files?"
 msgid "Expand selected folder and all subfolders"
 msgstr "Expandir la carpeta seleccionada y todas sus subcarpetas"
 
@@ -903,8 +901,8 @@ msgstr "Los cambios se perderán permanentemente si no los guarda."
 msgid "Close _without Saving"
 msgstr "Cerrar _sin guardar"
 
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:1001 ../meld/filediff.py:1598
-#: ../meld/iohelpers.py:50 ../meld/iohelpers.py:100
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:1001 ../meld/iohelpers.py:50
+#: ../meld/iohelpers.py:100
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -1987,30 +1985,18 @@ msgstr "Guardar de todas formas"
 msgid "Don’t Save"
 msgstr "No guardar"
 
-#: ../meld/filediff.py:1599
-msgid "_Save as UTF-8"
-msgstr "_Guardar como UTF-8"
-
-#: ../meld/filediff.py:1602
-#, python-format
-msgid "Couldn’t encode text as “%s”"
-msgstr "No se pudo codificar el texto como «%s»"
-
-#: ../meld/filediff.py:1604
-#, python-format
+#: ../meld/filediff.py:1615
+#| msgid ""
+#| "File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
+#| "Would you like to save as UTF-8?"
 msgid ""
-"File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
-"Would you like to save as UTF-8?"
+"File “{}” contains characters that can’t be encoded using its current "
+"encoding “{}”."
 msgstr ""
-"El archivo «%s» contiene caracteres no codificables con «%s».\n"
-"¿Quiere guardarlos como UTF-8?"
+"El archivo «{}» contiene caracteres no codificables con la codificación «{}» "
+"actual."
 
-#: ../meld/filediff.py:1644 ../meld/patchdialog.py:130
-#, python-format
-msgid "Could not save file %s."
-msgstr "No se pudo guardar el archivo %s."
-
-#: ../meld/filediff.py:1645 ../meld/patchdialog.py:131
+#: ../meld/filediff.py:1619 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2019,11 +2005,16 @@ msgstr ""
 "No se pudo guardar el archivo debido a:\n"
 "%s"
 
-#: ../meld/filediff.py:2020
+#: ../meld/filediff.py:1623 ../meld/patchdialog.py:130
+#, python-format
+msgid "Could not save file %s."
+msgstr "No se pudo guardar el archivo %s."
+
+#: ../meld/filediff.py:1998
 msgid "Live comparison updating disabled"
 msgstr "Actualización de la comparación en directo desactivada"
 
-#: ../meld/filediff.py:2021
+#: ../meld/filediff.py:1999
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2646,6 +2637,12 @@ msgstr ""
 #: ../meld/vcview.py:785
 msgid "Clear"
 msgstr "Limpiar"
+
+#~ msgid "_Save as UTF-8"
+#~ msgstr "_Guardar como UTF-8"
+
+#~ msgid "Couldn’t encode text as “%s”"
+#~ msgstr "No se pudo codificar el texto como «%s»"
 
 #~ msgid "Error removing %s"
 #~ msgstr "Error al quitar %s"
