@@ -1,4 +1,87 @@
 
+2018-11-21 meld 3.19.1
+======================
+
+  Features:
+
+   * Support comparing remote files (Kai Willadsen; initial work by Chris Mayo)
+   * Significantly improve folder comparison performance when comparing large
+     trees (Hugo Sena Ribeiro)
+   * Improve folder comparison IO and memory use (Hugo Sena Ribeiro)
+   * Add recursive collapse/expand actions to folder comparisons (Jesus Arroyo)
+   * Add OARS metadata for software management (Nick Richards)
+   * Support file drag-and-drop directly on to textviews (Kai Willadsen)
+   * Refresh the application icon and add a processing pipeline (Kai Willadsen)
+
+   * Windows build improvements:
+     * Build using msys2 on GNOME Gitlab infrastructure and update to using
+       current GTK+ (Vasily Galkin)
+     * Add simple zip-based Windows build output to pipeline (Vasily Galkin)
+     * Improve Windows logging behaviour (Vasily Galkin)
+     * Help launching now works (Vasily Galkin)
+     * Shortcuts now work in non-English keyboard layouts (via GTK+)
+     * Windows paths are shortened correctly (Kai Willadsen)
+
+
+  Fixes:
+
+   * Next/Previous Change actions correctly account for text filters (Heikki
+     Ketoharju)
+   * Fix blank line ignoring in folder comparisons (Hugo Sena Ribeiro)
+   * Miscellaneous performance improvements (Hugo Sena Ribeiro)
+   * Fix initial focus pane for two-pane comparison (Kai Willadsen)
+   * Handle encoding failures on file load (Kai Willadsen)
+   * Fix surrogate problems in on-save encoding check (Kai Willadsen)
+   * Fix display of some encoding errors in folder comparisons (Kai Willadsen)
+   * Fix Git unpushed commit check for ambiguous filenames (Kai Willadsen)
+   * Fix committing a folder in Git (Kai Willadsen)
+   * Show errors for critical unhandled application failures, such as failed
+     saves (Kai Willadsen)
+   * Work around GTK+ shortcut activation issues; see GNOME/gtk#140 (Kai
+     Willadsen)
+   * Update Up/Down/Delete shortcuts to support numpad (Kai Willadsen)
+   * Fix copy-paste of GtkSourceView-highlighted text into Meld (Kai Willadsen)
+   * Don't open additional blank comparison tabs when using the --diff CLI
+     argument (Kai Willadsen)
+   * Fix installation on Mint (Kai Willadsen)
+
+
+  Internal changes:
+
+   * File comparisons and CLI argument handling now use Gio.File and support
+     URIs (Kai Willadsen; initial work by Chris Mayo)
+   * Many Python 3 deprecation cleanups (Claude Paroz)
+   * Rename icon/desktop/appdata for consistency with appid (Mathieu Bridon)
+   * Flatpak build updates (Mathieu Bridon, Kai Willadsen)
+   * Make XDG application ID match other application IDs (Kai Willadsen)
+   * Multiple pygobject/GTK+ deprecation cleanups (Kai Willadsen)
+   * Python 3.7 support (Kai Willadsen)
+   * PEP8 and style compliance (Jesus Arroyo, Stefan Erichsen)
+
+   * Bugs fixed: 152, 175, 177, 179, 193, 196, 197, 197, 203, 217, 225, 233,
+     235, 239
+
+
+  Translations:
+
+   * Alan Mortensen (da)
+   * Anders Jonsson (sv)
+   * Claude Paroz (fr)
+   * Daniel Mustieles (es)
+   * Emin Tufan Çetin (tr)
+   * Jiri Grönroos (fi)
+   * Kukuh Syafaat (id)
+   * Marek Černocký (cs)
+   * Mario Blättermann (de)
+   * Matej Urbančič (sl)
+   * Mathieu Bridon ()
+   * Milo Casagrande (it)
+   * Piotr Drąg (pl)
+   * Rafael Fontenelle (pt_BR)
+   * Reginaldo Izidório (pt_BR)
+   * Yi-Jyun Pan (zh_TW)
+
+
 2018-03-28 meld 3.19.0
 ======================
 
