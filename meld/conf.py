@@ -3,7 +3,7 @@ import os
 import sys
 
 __package__ = "meld"
-__version__ = "3.19.1"
+__version__ = "3.19.2"
 
 APPLICATION_ID = "org.gnome.meld"
 
