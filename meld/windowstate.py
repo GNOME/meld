@@ -61,10 +61,18 @@ class SavedWindowState(GObject.GObject):
     def on_size_allocate(self, window, allocation):
         if not (self.props.is_maximized or self.props.is_fullscreen):
             width, height = window.get_size()
-            self.props.width = width
-            self.props.height = height
+            if width != self.props.width:
+                self.props.width = width
+            if height != self.props.height:
+                self.props.height = height
 
     def on_window_state_event(self, window, event):
         state = event.window.get_state()
-        self.props.is_maximized = state & Gdk.WindowState.MAXIMIZED
-        self.props.is_fullscreen = state & Gdk.WindowState.FULLSCREEN
+
+        is_maximized = state & Gdk.WindowState.MAXIMIZED
+        if is_maximized != self.props.is_maximized:
+            self.props.is_maximized = is_maximized
+
+        is_fullscreen = state & Gdk.WindowState.FULLSCREEN
+        if is_fullscreen != self.props.is_fullscreen:
+            self.props.is_fullscreen = is_fullscreen
