@@ -129,7 +129,7 @@ def _contents_same(contents, file_size):
                 return Different
 
 
-def _normalize(contents, ignore_blank_lines, regexes = ()):
+def _normalize(contents, ignore_blank_lines, regexes=()):
     contents = (bytes(c) for c in contents)
     # For probable text files, discard newline differences to match
     if ignore_blank_lines:
@@ -1133,7 +1133,9 @@ class DirDiff(MeldDoc, Component):
                 # We can skip recalculation if the new cursor is between
                 # the previous/next bounds, and we weren't on a changed row
                 state = self.model.get_state(old_cursor, 0)
-                if state not in (tree.STATE_NORMAL, tree.STATE_NOCHANGE, tree.STATE_EMPTY):
+                if state not in (
+                        tree.STATE_NORMAL, tree.STATE_NOCHANGE,
+                        tree.STATE_EMPTY):
                     skip = False
                 else:
                     if self.prev_path is None and self.next_path is None:
