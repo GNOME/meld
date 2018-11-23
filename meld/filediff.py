@@ -158,6 +158,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
     scrolledwindow0 = Template.Child()
     scrolledwindow1 = Template.Child()
     scrolledwindow2 = Template.Child()
+    sourcemap0 = Template.Child()
+    sourcemap1 = Template.Child()
+    sourcemap2 = Template.Child()
     statusbar0 = Template.Child()
     statusbar1 = Template.Child()
     statusbar2 = Template.Child()
@@ -211,7 +214,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         bind_settings(self)
 
         widget_lists = [
-            "file_save_button", "file_toolbar", "fileentry",
+            "sourcemap", "file_save_button", "file_toolbar", "fileentry",
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
@@ -1987,7 +1990,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.num_panes = n
         for widget in (
-                self.vbox[:n] + self.file_toolbar[:n] +
+                self.vbox[:n] + self.file_toolbar[:n] + self.sourcemap[:n] +
                 self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
                 self.statusbar[:n] +
                 self.actiongutter[:(n - 1) * 2] +
@@ -1995,7 +1998,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             widget.show()
 
         for widget in (
-                self.vbox[n:] + self.file_toolbar[n:] +
+                self.vbox[n:] + self.file_toolbar[n:] + self.sourcemap[n:] +
                 self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
                 self.statusbar[n:] +
                 self.actiongutter[(n - 1) * 2:] +

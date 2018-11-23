@@ -398,3 +398,56 @@ class CommitMessageSourceView(GtkSource.View):
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
         ('draw-spaces', 'draw-spaces'),
     )
+
+
+class MeldSourceMap(GtkSource.Map):
+
+    __gtype_name__ = "MeldSourceMap"
+
+    def do_draw_layer(self, layer, context):
+        if layer != Gtk.TextViewLayer.BELOW_TEXT:
+            return GtkSource.Map.do_draw_layer(self, layer, context)
+
+        def rect_to_lines(rect):
+            return (
+                self.get_line_at_y(rect.y)[0].get_line(),
+                self.get_line_at_y(rect.y + rect.height)[0].get_line(),
+            )
+
+        def get_y_for_line_num(line):
+            buf = self.get_buffer()
+            it = buf.get_iter_at_line(line)
+            y, h = self.get_line_yrange(it)
+            if line >= buf.get_line_count():
+                return y + h
+            return y
+
+        context.save()
+        context.set_line_width(1.0)
+
+        _, clip = Gdk.cairo_get_clip_rectangle(context)
+        bounds = rect_to_lines(clip)
+
+        x = clip.x - 0.5
+        width = clip.width + 1
+
+        parent_view = self.props.view
+        if not hasattr(parent_view, 'chunk_iter'):
+            context.restore()
+            print("yes, but why")
+            return GtkSource.Map.do_draw_layer(self, layer, context)
+
+        # Paint chunk backgrounds and outlines
+        for change in parent_view.chunk_iter(bounds):
+            ypos0 = get_y_for_line_num(change[1])
+            ypos1 = get_y_for_line_num(change[2])
+            height = max(0, ypos1 - ypos0 - 1)
+
+            context.rectangle(x, ypos0 + 0.5, width, height)
+            if change[1] != change[2]:
+                context.set_source_rgba(*parent_view.fill_colors[change[0]])
+                context.fill()
+
+        context.restore()
+
+        return GtkSource.Map.do_draw_layer(self, layer, context)
