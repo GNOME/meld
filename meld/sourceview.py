@@ -404,6 +404,14 @@ class MeldSourceMap(GtkSource.Map):
 
     __gtype_name__ = "MeldSourceMap"
 
+    compact_view = GObject.Property(
+        type=bool,
+        nick="Limit the view to a fixed width",
+        default=False,
+    )
+
+    COMPACT_MODE_WIDTH = 40
+
     def do_draw_layer(self, layer, context):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
             return GtkSource.Map.do_draw_layer(self, layer, context)
@@ -451,3 +459,9 @@ class MeldSourceMap(GtkSource.Map):
         context.restore()
 
         return GtkSource.Map.do_draw_layer(self, layer, context)
+
+    def do_get_preferred_width(self):
+        if self.props.compact_view:
+            return (self.COMPACT_MODE_WIDTH, self.COMPACT_MODE_WIDTH)
+        else:
+            return GtkSource.Map.do_get_preferred_width(self)
