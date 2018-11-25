@@ -90,7 +90,21 @@ class TextviewLineAnimation:
         self.anim_type = anim_type
 
 
-class MeldSourceView(GtkSource.View):
+class SourceViewHelperMixin:
+
+    def get_y_for_line_num(self, line):
+        buf = self.get_buffer()
+        it = buf.get_iter_at_line(line)
+        y, h = self.get_line_yrange(it)
+        if line >= buf.get_line_count():
+            return y + h
+        return y
+
+    def get_line_num_for_y(self, y):
+        return self.get_line_at_y(y)[0].get_line()
+
+
+class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     __gtype_name__ = "MeldSourceView"
 
@@ -200,17 +214,6 @@ class MeldSourceView(GtkSource.View):
 
         clipboard = self.get_clipboard(Gdk.SELECTION_CLIPBOARD)
         clipboard.request_text(text_received_cb)
-
-    def get_y_for_line_num(self, line):
-        buf = self.get_buffer()
-        it = buf.get_iter_at_line(line)
-        y, h = self.get_line_yrange(it)
-        if line >= buf.get_line_count():
-            return y + h
-        return y
-
-    def get_line_num_for_y(self, y):
-        return self.get_line_at_y(y)[0].get_line()
 
     def add_fading_highlight(
             self, mark0, mark1, colour_name, duration,
