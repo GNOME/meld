@@ -403,7 +403,7 @@ class CommitMessageSourceView(GtkSource.View):
     )
 
 
-class MeldSourceMap(GtkSource.Map):
+class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
 
     __gtype_name__ = "MeldSourceMap"
 
@@ -419,45 +419,35 @@ class MeldSourceMap(GtkSource.Map):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
             return GtkSource.Map.do_draw_layer(self, layer, context)
 
-        def rect_to_lines(rect):
-            return (
-                self.get_line_at_y(rect.y)[0].get_line(),
-                self.get_line_at_y(rect.y + rect.height)[0].get_line(),
-            )
-
-        def get_y_for_line_num(line):
-            buf = self.get_buffer()
-            it = buf.get_iter_at_line(line)
-            y, h = self.get_line_yrange(it)
-            if line >= buf.get_line_count():
-                return y + h
-            return y
+        # Handle bad view assignments and partial initialisation
+        parent_view = self.props.view
+        if not hasattr(parent_view, 'chunk_iter'):
+            return GtkSource.Map.do_draw_layer(self, layer, context)
 
         context.save()
         context.set_line_width(1.0)
 
         _, clip = Gdk.cairo_get_clip_rectangle(context)
-        bounds = rect_to_lines(clip)
-
         x = clip.x - 0.5
         width = clip.width + 1
+        bounds = (
+            self.get_line_num_for_y(clip.y),
+            self.get_line_num_for_y(clip.y + clip.height),
+        )
 
-        parent_view = self.props.view
-        if not hasattr(parent_view, 'chunk_iter'):
-            context.restore()
-            print("yes, but why")
-            return GtkSource.Map.do_draw_layer(self, layer, context)
-
-        # Paint chunk backgrounds and outlines
+        # Paint chunk backgrounds
         for change in parent_view.chunk_iter(bounds):
-            ypos0 = get_y_for_line_num(change[1])
-            ypos1 = get_y_for_line_num(change[2])
+            if change[1] == change[2]:
+                # We don't have room to paint inserts in this widget
+                continue
+
+            ypos0 = self.get_y_for_line_num(change[1])
+            ypos1 = self.get_y_for_line_num(change[2])
             height = max(0, ypos1 - ypos0 - 1)
 
             context.rectangle(x, ypos0 + 0.5, width, height)
-            if change[1] != change[2]:
-                context.set_source_rgba(*parent_view.fill_colors[change[0]])
-                context.fill()
+            context.set_source_rgba(*parent_view.fill_colors[change[0]])
+            context.fill()
 
         context.restore()
 
