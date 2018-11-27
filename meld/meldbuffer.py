@@ -224,10 +224,6 @@ class BufferLines:
     This class allows a Gtk.TextBuffer to be treated as a list of lines of
     possibly-filtered text. If no filter is given, the raw output from the
     Gtk.TextBuffer is used.
-
-    The logic here (and in places in FileDiff) requires that Python's
-    unicode splitlines() implementation and Gtk.TextBuffer agree on where
-    linebreaks occur. Happily, this is usually the case.
     """
 
     def __init__(self, buf, textfilter=None):
@@ -240,48 +236,18 @@ class BufferLines:
     def __getitem__(self, key):
         if isinstance(key, slice):
             lo, hi, _ = key.indices(self.buf.get_line_count())
-
-            # FIXME: If we ask for arbitrary slices past the end of the buffer,
-            # this will return the last line.
-            start = self.buf.get_iter_at_line_or_eof(lo)
+            line_start = self.buf.get_iter_at_line_or_eof(lo)
             end = self.buf.get_iter_at_line_or_eof(hi)
-            txt = self.buf.get_text(start, end, False)
 
-            filter_txt = self.textfilter(txt, self.buf, start, end)
-            lines = filter_txt.splitlines()
-            ends = filter_txt.splitlines(True)
-
-            # The last line in a Gtk.TextBuffer is guaranteed never to end in a
-            # newline. As splitlines() discards an empty line at the end, we
-            # need to artificially add a line if the requested slice is past
-            # the end of the buffer, and the last line in the slice ended in a
-            # newline.
-            if hi >= self.buf.get_line_count() and \
-               lo < self.buf.get_line_count() and \
-               (len(lines) == 0 or len(lines[-1]) != len(ends[-1])):
-                lines.append("")
-                ends.append("")
-
-            hi = self.buf.get_line_count() if hi == sys.maxsize else hi
-            if hi - lo != len(lines):
-                # These codepoints are considered line breaks by Python, but
-                # not by GtkTextStore.
-                additional_breaks = set(('\x0c', '\x85', '\u2028'))
-                i = 0
-                while i < len(ends):
-                    line, end = lines[i], ends[i]
-                    # It's possible that the last line in a file would end in a
-                    # line break character, which requires no joining.
-                    if end and end[-1] in additional_breaks and \
-                       (not line or line[-1] not in additional_breaks):
-                        assert len(ends) >= i + 1
-                        lines[i:i + 2] = [line + end[-1] + lines[i + 1]]
-                        ends[i:i + 2] = [end + ends[i + 1]]
-                    else:
-                        # We only increment if we don't correct a line, to
-                        # handle the case of a single line having multiple
-                        # additional_breaks characters that need correcting.
-                        i += 1
+            lines = []
+            while line_start.compare(end) < 0:
+                line_end = line_start.copy()
+                if not line_end.ends_line():
+                    line_end.forward_to_line_end()
+                txt = self.buf.get_text(line_start, line_end, False)
+                filter_txt = self.textfilter(txt, self.buf, line_start, end)
+                lines.append(filter_txt)
+                line_start.forward_visible_line()
 
             return lines
 
