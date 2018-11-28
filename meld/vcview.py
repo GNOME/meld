@@ -496,7 +496,7 @@ class VcView(MeldDoc, Component):
     def on_treeview_popup_menu(self, treeview):
         cursor_path, cursor_col = treeview.get_cursor()
         if not cursor_path:
-            self.popup_menu.popup_at_pointer(Gtk.get_current_event())
+            self.popup_menu.popup_at_pointer(None)
             return True
 
         # We always want to pop up to the right of the first column,
@@ -509,7 +509,7 @@ class VcView(MeldDoc, Component):
             rect,
             Gdk.Gravity.SOUTH_EAST,
             Gdk.Gravity.NORTH_WEST,
-            Gtk.get_current_event(),
+            None,
         )
         return True
 

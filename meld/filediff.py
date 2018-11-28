@@ -1036,7 +1036,7 @@ class FileDiff(MeldDoc, Component):
             rect,
             Gdk.Gravity.SOUTH_EAST,
             Gdk.Gravity.NORTH_WEST,
-            Gtk.get_current_event(),
+            None,
         )
         return True
 
