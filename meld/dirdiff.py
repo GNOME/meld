@@ -524,12 +524,14 @@ class DirDiff(MeldDoc, Component):
 
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
-            self.custom_popup.connect("deactivate",
-                                      lambda popup: item.set_active(False))
-            self.custom_popup.popup(None, None,
-                                    misc.position_menu_under_widget,
-                                    self.filter_menu_button, 1,
-                                    Gtk.get_current_event_time())
+            self.custom_popup.connect(
+                "deactivate", lambda popup: item.set_active(False))
+            self.custom_popup.popup_at_widget(
+                self.filter_menu_button,
+                Gdk.Gravity.SOUTH_WEST,
+                Gdk.Gravity.NORTH_WEST,
+                None,
+            )
 
     def _cleanup_filter_menu_button(self, ui):
         if self.popup_deactivate_id:
