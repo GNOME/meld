@@ -493,7 +493,7 @@ class VcView(MeldDoc, Component):
         self.emit("create-diff",
                   [Gio.File.new_for_path(d) for d in diffs], kwargs)
 
-    def do_popup_treeview_menu(self, widget, event):
+    def popup_treeview_menu(self, widget, event):
         if event:
             button = event.button
             time = event.time
@@ -503,7 +503,7 @@ class VcView(MeldDoc, Component):
         self.popup_menu.popup(None, None, None, None, button, time)
 
     def on_treeview_popup_menu(self, treeview):
-        self.do_popup_treeview_menu(treeview, None)
+        self.popup_treeview_menu(treeview, None)
         return True
 
     def on_button_press_event(self, treeview, event):
@@ -520,7 +520,7 @@ class VcView(MeldDoc, Component):
                 selection.select_path(path[0])
                 treeview.set_cursor(path[0])
 
-            self.do_popup_treeview_menu(treeview, event)
+            self.popup_treeview_menu(treeview, event)
             return True
         return False
 
