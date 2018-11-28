@@ -1023,15 +1023,27 @@ class FileDiff(MeldDoc, Component):
             self.linkmap[1].queue_draw()
 
     def on_textview_popup_menu(self, textview):
-        self.popup_menu.popup(None, None, None, None, 0,
-                              Gtk.get_current_event_time())
+        buffer = textview.get_buffer()
+        cursor_it = buffer.get_iter_at_mark(buffer.get_insert())
+        location = textview.get_iter_location(cursor_it)
+
+        rect = Gdk.Rectangle()
+        rect.x, rect.y = textview.buffer_to_window_coords(
+            Gtk.TextWindowType.WIDGET, location.x, location.y)
+
+        self.popup_menu.popup_at_rect(
+            Gtk.Widget.get_window(textview),
+            rect,
+            Gdk.Gravity.SOUTH_EAST,
+            Gdk.Gravity.NORTH_WEST,
+            Gtk.get_current_event(),
+        )
         return True
 
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
-            self.popup_menu.popup(
-                None, None, None, None, event.button, event.time)
+            self.popup_menu.popup_at_pointer(event)
             return True
         return False
 
