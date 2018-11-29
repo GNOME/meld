@@ -1065,7 +1065,16 @@ class DirDiff(MeldDoc, Component):
     def on_treeview_selection_changed(self, selection, pane):
         if not self.treeview[pane].is_focus():
             return
-        have_selection = bool(selection.count_selected_rows())
+        self.update_action_sensitivity()
+
+    def update_action_sensitivity(self):
+        pane = self._get_focused_pane()
+        if pane is not None:
+            selection = self.treeview[pane].get_selection()
+            have_selection = bool(selection.count_selected_rows())
+        else:
+            have_selection = False
+
         get_action = self.actiongroup.get_action
 
         if have_selection:
