@@ -534,8 +534,6 @@ class DirDiff(MeldDoc, Component):
             )
 
     def _cleanup_filter_menu_button(self, ui):
-        if self.popup_deactivate_id:
-            self.popup_menu.disconnect(self.popup_deactivate_id)
         if self.custom_merge_id:
             ui.remove_ui(self.custom_merge_id)
         if self.filter_actiongroup in ui.get_action_groups():
@@ -546,8 +544,6 @@ class DirDiff(MeldDoc, Component):
         self.custom_merge_id = ui.new_merge_id()
         for x in self.filter_ui:
             ui.add_ui(self.custom_merge_id, *x)
-        self.popup_deactivate_id = self.popup_menu.connect(
-            "deactivate", self.on_popup_deactivate_event)
         self.custom_popup = ui.get_widget("/CustomPopup")
         self.filter_menu_button = ui.get_widget(
             "/Toolbar/FilterActions/CustomFilterMenu")
@@ -1221,27 +1217,13 @@ class DirDiff(MeldDoc, Component):
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
         self._update_diffmaps()
 
-    def on_popup_deactivate_event(self, popup):
-        for (treeview, inid, outid) in zip(
-                self.treeview, self.focus_in_events, self.focus_out_events):
-            treeview.handler_unblock(inid)
-            treeview.handler_unblock(outid)
-
     def on_treeview_focus_in_event(self, tree, event):
         self.focus_pane = tree
-        pane = self.treeview.index(tree)
-        self.on_treeview_selection_changed(tree.get_selection(), pane)
+        self.update_action_sensitivity()
         tree.emit("cursor-changed")
 
     def on_treeview_focus_out_event(self, tree, event):
-        for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
-                       "DirDelete", "Hide"):
-            self.actiongroup.get_action(action).set_sensitive(False)
-        try:
-            self.main_actiongroup.get_action("OpenExternal").set_sensitive(
-                False)
-        except AttributeError:
-            pass
+        self.update_action_sensitivity()
 
     def run_diff_from_iter(self, it):
         row_paths = self.model.value_paths(it)
@@ -1484,13 +1466,6 @@ class DirDiff(MeldDoc, Component):
         return different
 
     def popup_in_pane(self, pane, event):
-        for (treeview, inid, outid) in zip(
-                self.treeview, self.focus_in_events, self.focus_out_events):
-            treeview.handler_block(inid)
-            treeview.handler_block(outid)
-        self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
-        self.actiongroup.get_action("DirCopyRight").set_sensitive(
-            pane + 1 < self.num_panes)
         if event:
             button = event.button
             time = event.time
