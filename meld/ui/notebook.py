@@ -117,16 +117,19 @@ class MeldNotebook(Gtk.Notebook):
         self.action_group.lookup_action("tabmoveright").set_enabled(
             self.get_current_page() < self.get_n_pages() - 1)
 
-        if event:
-            button = event.button
-            time = event.time
-        else:
-            button = 0
-            time = Gtk.get_current_event_time()
         popup = Gtk.Menu.new_from_model(self.popup_menu)
         popup.attach_to_widget(widget, None)
         popup.show_all()
-        popup.popup(None, None, None, None, button, time)
+
+        if event:
+            popup.popup_at_pointer(event)
+        else:
+            popup.popup_at_widget(
+                widget,
+                Gdk.Gravity.NORTH_WEST,
+                Gdk.Gravity.NORTH_WEST,
+                event,
+            )
         return True
 
     def on_button_press_event(self, widget, event):
