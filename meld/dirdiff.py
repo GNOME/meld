@@ -1465,17 +1465,24 @@ class DirDiff(MeldDoc, Component):
                 })
         return different
 
-    def popup_in_pane(self, pane, event):
-        if event:
-            button = event.button
-            time = event.time
-        else:
-            button = 0
-            time = Gtk.get_current_event_time()
-        self.popup_menu.popup(None, None, None, None, button, time)
-
     def on_treeview_popup_menu(self, treeview):
-        self.popup_in_pane(self.treeview.index(treeview), None)
+        cursor_path, cursor_col = treeview.get_cursor()
+        if not cursor_path:
+            self.popup_menu.popup_at_pointer(None)
+            return True
+
+        # We always want to pop up to the right of the first column,
+        # ignoring the actual cursor column location.
+        rect = treeview.get_background_area(
+            cursor_path, treeview.get_column(0))
+
+        self.popup_menu.popup_at_rect(
+            treeview.get_bin_window(),
+            rect,
+            Gdk.Gravity.SOUTH_EAST,
+            Gdk.Gravity.NORTH_WEST,
+            None,
+        )
         return True
 
     def on_treeview_button_press_event(self, treeview, event):
@@ -1483,11 +1490,15 @@ class DirDiff(MeldDoc, Component):
         for t in [v for v in self.treeview[:self.num_panes] if v != treeview]:
             t.get_selection().unselect_all()
 
-        if event.button == 3:
+        if (event.triggers_context_menu() and
+                event.type == Gdk.EventType.BUTTON_PRESS):
+
             treeview.grab_focus()
+
             path = treeview.get_path_at_pos(int(event.x), int(event.y))
             if path is None:
                 return False
+
             selection = treeview.get_selection()
             model, rows = selection.get_selected_rows()
 
@@ -1496,7 +1507,7 @@ class DirDiff(MeldDoc, Component):
                 selection.select_path(path[0])
                 treeview.set_cursor(path[0])
 
-            self.popup_in_pane(self.treeview.index(treeview), event)
+            self.popup_menu.popup_at_pointer(event)
             return True
         return False
 
