@@ -119,7 +119,7 @@ class VcTreeStore(tree.DiffTreeStore):
         return self.get_value(it, self.column_index(tree.COL_PATH, 0))
 
 
-class VcView(MeldDoc, Component):
+class VcView(tree.TreeviewCommon, MeldDoc, Component):
 
     __gtype_name__ = "VcView"
 
@@ -492,48 +492,6 @@ class VcView(MeldDoc, Component):
 
         self.emit("create-diff",
                   [Gio.File.new_for_path(d) for d in diffs], kwargs)
-
-    def on_treeview_popup_menu(self, treeview):
-        cursor_path, cursor_col = treeview.get_cursor()
-        if not cursor_path:
-            self.popup_menu.popup_at_pointer(None)
-            return True
-
-        # We always want to pop up to the right of the first column,
-        # ignoring the actual cursor column location.
-        rect = treeview.get_background_area(
-            cursor_path, treeview.get_column(0))
-
-        self.popup_menu.popup_at_rect(
-            treeview.get_bin_window(),
-            rect,
-            Gdk.Gravity.SOUTH_EAST,
-            Gdk.Gravity.NORTH_WEST,
-            None,
-        )
-        return True
-
-    def on_button_press_event(self, treeview, event):
-        if (event.triggers_context_menu() and
-                event.type == Gdk.EventType.BUTTON_PRESS):
-
-            treeview.grab_focus()
-
-            path = treeview.get_path_at_pos(int(event.x), int(event.y))
-            if path is None:
-                return False
-
-            selection = treeview.get_selection()
-            model, rows = selection.get_selected_rows()
-
-            if path[0] not in rows:
-                selection.unselect_all()
-                selection.select_path(path[0])
-                treeview.set_cursor(path[0])
-
-            self.popup_menu.popup_at_pointer(event)
-            return True
-        return False
 
     def on_filter_state_toggled(self, button):
         active_filters = [

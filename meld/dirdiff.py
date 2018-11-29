@@ -285,7 +285,7 @@ class CanonicalListing:
         return element.lower()
 
 
-class DirDiff(MeldDoc, Component):
+class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
     """Two or three way folder comparison"""
 
     __gtype_name__ = "DirDiff"
@@ -1464,52 +1464,6 @@ class DirDiff(MeldDoc, Component):
                     COL_PERMS: -1
                 })
         return different
-
-    def on_treeview_popup_menu(self, treeview):
-        cursor_path, cursor_col = treeview.get_cursor()
-        if not cursor_path:
-            self.popup_menu.popup_at_pointer(None)
-            return True
-
-        # We always want to pop up to the right of the first column,
-        # ignoring the actual cursor column location.
-        rect = treeview.get_background_area(
-            cursor_path, treeview.get_column(0))
-
-        self.popup_menu.popup_at_rect(
-            treeview.get_bin_window(),
-            rect,
-            Gdk.Gravity.SOUTH_EAST,
-            Gdk.Gravity.NORTH_WEST,
-            None,
-        )
-        return True
-
-    def on_treeview_button_press_event(self, treeview, event):
-        # Unselect any selected files in other panes
-        for t in [v for v in self.treeview[:self.num_panes] if v != treeview]:
-            t.get_selection().unselect_all()
-
-        if (event.triggers_context_menu() and
-                event.type == Gdk.EventType.BUTTON_PRESS):
-
-            treeview.grab_focus()
-
-            path = treeview.get_path_at_pos(int(event.x), int(event.y))
-            if path is None:
-                return False
-
-            selection = treeview.get_selection()
-            model, rows = selection.get_selected_rows()
-
-            if path[0] not in rows:
-                selection.unselect_all()
-                selection.select_path(path[0])
-                treeview.set_cursor(path[0])
-
-            self.popup_menu.popup_at_pointer(event)
-            return True
-        return False
 
     def get_state_traversal(self, diffmapindex):
         def tree_state_iter():
