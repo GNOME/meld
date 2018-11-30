@@ -31,17 +31,30 @@ from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
 from meld.settings import interface_settings, settings
 from meld.task import LifoScheduler
-from meld.ui.gnomeglade import Component, ui_file
+from meld.ui._gtktemplate import Template
+from meld.ui.gnomeglade import ui_file
 from meld.ui.notebooklabel import NotebookLabel
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
 
-class MeldWindow(Component):
+@Template(filename='data/ui/meldapp.ui')
+class MeldWindow(Gtk.ApplicationWindow):
+
+    __gtype_name__ = 'MeldWindow'
+
+    appvbox = Template.Child("appvbox")
+    gear_menu_button = Template.Child("gear_menu_button")
+    notebook = Template.Child("notebook")
+    spinner = Template.Child("spinner")
+    toolbar_holder = Template.Child("toolbar_holder")
 
     def __init__(self):
-        super().__init__("meldapp.ui", "meldapp")
-        self.widget.set_name("meldapp")
+        super().__init__()
+
+        MeldWindow.init_template(self)
+
+        self.set_name("meldapp")
 
         actions = (
             ("FileMenu", None, _("_File")),
@@ -138,7 +151,7 @@ class MeldWindow(Component):
 
         for menuitem in ("Save", "Undo"):
             self.actiongroup.get_action(menuitem).props.is_important = True
-        self.widget.add_accel_group(self.ui.get_accel_group())
+        self.add_accel_group(self.ui.get_accel_group())
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
         self.toolbar.get_style_context().add_class(
@@ -189,23 +202,23 @@ class MeldWindow(Component):
         for (name, callback, accel) in actions:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
-            self.widget.add_action(action)
+            self.add_action(action)
 
         # Fake out the spinner on Windows. See Gitlab issue #133.
         if os.name == 'nt':
             for attr in ('stop', 'hide', 'show', 'start'):
                 setattr(self.spinner, attr, lambda *args: True)
 
-        self.widget.drag_dest_set(
+        self.drag_dest_set(
             Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
             Gtk.DestDefaults.DROP,
             None, Gdk.DragAction.COPY)
-        self.widget.drag_dest_add_uri_targets()
-        self.widget.connect("drag_data_received",
-                            self.on_widget_drag_data_received)
+        self.drag_dest_add_uri_targets()
+        self.connect(
+            "drag_data_received", self.on_widget_drag_data_received)
 
         self.window_state = SavedWindowState()
-        self.window_state.bind(self.widget)
+        self.window_state.bind(self)
 
         self.should_close = False
         self.idle_hooked = 0
@@ -215,9 +228,9 @@ class MeldWindow(Component):
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
-        self.widget.connect('realize', self.on_realize)
-        self.widget.connect('focus_in_event', self.on_focus_change)
-        self.widget.connect('focus_out_event', self.on_focus_change)
+        self.connect('realize', self.on_realize)
+        self.connect('focus_in_event', self.on_focus_change)
+        self.connect('focus_out_event', self.on_focus_change)
 
         # Set tooltip on map because the recentmenu is lazily created
         rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
@@ -225,7 +238,7 @@ class MeldWindow(Component):
 
         builder = meld.ui.util.get_builder("shortcuts.ui")
         shortcut_window = builder.get_object("shortcuts-meld")
-        self.widget.set_help_overlay(shortcut_window)
+        self.set_help_overlay(shortcut_window)
 
     def on_realize(self, user_data):
         # FIXME: Ideally this would be in do_realize, and we'd get the menu
@@ -236,8 +249,7 @@ class MeldWindow(Component):
         self.gear_menu_button.set_popover(
             Gtk.Popover.new_from_model(self.gear_menu_button, menu))
 
-        app = self.widget.get_application()
-        meld.ui.util.extract_accels_from_menu(menu, app)
+        meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 
     def _on_recentmenu_map(self, recentmenu):
         for imagemenuitem in recentmenu.get_children():
@@ -279,6 +291,7 @@ class MeldWindow(Component):
             self.actiongroup.get_action("Stop").set_sensitive(True)
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
+    @Template.Callback()
     def on_delete_event(self, *extra):
         should_cancel = False
         # Delete pages from right-to-left.  This ensures that if a version
@@ -330,6 +343,7 @@ class MeldWindow(Component):
                 undoseq.disconnect(handler)
             self.undo_handlers = tuple()
 
+    @Template.Callback()
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
@@ -358,10 +372,9 @@ class MeldWindow(Component):
 
         if newdoc:
             nbl = self.notebook.get_tab_label(newdoc.widget)
-            self.widget.set_title(nbl.get_label_text())
-            newdoc.on_container_switch_in_event(self.ui)
+            self.set_title(nbl.get_label_text())
         else:
-            self.widget.set_title("Meld")
+            self.set_title("Meld")
 
         if isinstance(newdoc, MeldDoc):
             self.diff_handler = newdoc.connect("next-diff-changed",
@@ -371,14 +384,19 @@ class MeldWindow(Component):
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
+    @Template.Callback()
     def after_switch_page(self, notebook, page, which):
+        newdoc = notebook.get_nth_page(which).pyobject
+        newdoc.on_container_switch_in_event(self.ui)
         self._update_page_action_sensitivity()
 
+    @Template.Callback()
     def after_page_reordered(self, notebook, page, page_num):
         self._update_page_action_sensitivity()
 
+    @Template.Callback()
     def on_page_label_changed(self, notebook, label_text):
-        self.widget.set_title(label_text)
+        self.set_title(label_text)
 
     def on_can_undo(self, undosequence, can):
         self.actiongroup.get_action("Undo").set_sensitive(can)
@@ -440,33 +458,33 @@ class MeldWindow(Component):
         self.current_doc().on_go_to_line_activate()
 
     def on_menu_copy_activate(self, *extra):
-        widget = self.widget.get_focus()
+        widget = self.get_focus()
         if isinstance(widget, Gtk.Editable):
             widget.copy_clipboard()
         elif isinstance(widget, Gtk.TextView):
             widget.emit("copy-clipboard")
 
     def on_menu_cut_activate(self, *extra):
-        widget = self.widget.get_focus()
+        widget = self.get_focus()
         if isinstance(widget, Gtk.Editable):
             widget.cut_clipboard()
         elif isinstance(widget, Gtk.TextView):
             widget.emit("cut-clipboard")
 
     def on_menu_paste_activate(self, *extra):
-        widget = self.widget.get_focus()
+        widget = self.get_focus()
         if isinstance(widget, Gtk.Editable):
             widget.paste_clipboard()
         elif isinstance(widget, Gtk.TextView):
             widget.emit("paste-clipboard")
 
     def on_action_fullscreen_toggled(self, widget):
-        window_state = self.widget.get_window().get_state()
+        window_state = self.get_window().get_state()
         is_full = window_state & Gdk.WindowState.FULLSCREEN
         if widget.get_active() and not is_full:
-            self.widget.fullscreen()
+            self.fullscreen()
         elif is_full:
-            self.widget.unfullscreen()
+            self.unfullscreen()
 
     def on_menu_edit_down_activate(self, *args):
         self.current_doc().next_diff(Gdk.ScrollDirection.DOWN)
@@ -501,10 +519,10 @@ class MeldWindow(Component):
             # but upstream aren't touching UIManager bugs.
             self.ui.ensure_update()
             if self.should_close:
-                cancelled = self.widget.emit(
+                cancelled = self.emit(
                     'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))
                 if not cancelled:
-                    self.widget.emit('destroy')
+                    self.emit('destroy')
 
     def on_page_state_changed(self, page, old_state, new_state):
         if self.should_close and old_state == ComparisonState.Closing:

@@ -86,14 +86,13 @@ class MeldApp(Gtk.Application):
             tab.command_line = command_line
             tab.connect('close', done)
 
-        window = self.get_active_window().meldwindow
+        window = self.get_active_window()
         if not window.has_pages():
             window.append_new_comparison()
         self.activate()
         return 0
 
     def do_window_removed(self, widget):
-        widget.meldwindow = None
         Gtk.Application.do_window_removed(self, widget)
         if not len(self.get_windows()):
             self.quit()
@@ -133,12 +132,8 @@ class MeldApp(Gtk.Application):
 
     def new_window(self):
         window = MeldWindow()
-        self.add_window(window.widget)
-        window.widget.meldwindow = window
+        self.add_window(window)
         return window
-
-    def get_meld_window(self):
-        return self.get_active_window().meldwindow
 
     def open_files(
             self, gfiles, *, window=None, close_on_error=False, **kwargs):
@@ -149,12 +144,12 @@ class MeldApp(Gtk.Application):
             None, the current window is used
         :param close_on_error: if true, close window if an error occurs
         """
-        window = window or self.get_meld_window()
+        window = window or self.get_active_window()
         try:
             return window.open_paths(gfiles, **kwargs)
         except ValueError:
             if close_on_error:
-                self.remove_window(window.widget)
+                self.remove_window(window)
             raise
 
     def diff_files_callback(self, option, opt_str, value, parser):
