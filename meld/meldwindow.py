@@ -29,7 +29,7 @@ from meld.filemerge import FileMerge
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
-from meld.settings import interface_settings, settings
+from meld.settings import interface_settings
 from meld.task import LifoScheduler
 from meld.ui._gtktemplate import Template
 from meld.ui.gnomeglade import ui_file
@@ -125,9 +125,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             ("Fullscreen", None, _("Fullscreen"), "F11",
                 _("View the comparison in fullscreen"),
                 self.on_action_fullscreen_toggled, False),
-            ("ToolbarVisible", None, _("_Toolbar"), None,
-                _("Show or hide the toolbar"),
-                None, True),
         )
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
@@ -155,11 +152,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.toolbar.get_style_context().add_class(
             Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
 
-        settings.bind('toolbar-visible',
-                      self.actiongroup.get_action('ToolbarVisible'), 'active',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('toolbar-visible', self.toolbar, 'visible',
-                      Gio.SettingsBindFlags.DEFAULT)
         interface_settings.bind('toolbar-style', self.toolbar, 'toolbar-style',
                                 Gio.SettingsBindFlags.DEFAULT)
 
