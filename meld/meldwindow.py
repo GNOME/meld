@@ -226,7 +226,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
-        self.connect('realize', self.on_realize)
         self.connect('focus_in_event', self.on_focus_change)
         self.connect('focus_out_event', self.on_focus_change)
 
@@ -238,10 +237,11 @@ class MeldWindow(Gtk.ApplicationWindow):
         shortcut_window = builder.get_object("shortcuts-meld")
         self.set_help_overlay(shortcut_window)
 
-    def on_realize(self, user_data):
-        # FIXME: Ideally this would be in do_realize, and we'd get the menu
-        # from resources, but MeldWindow would need to be a real GtkWindow
-        # subclass, and we'd need to... have resources.
+    def do_realize(self):
+        Gtk.ApplicationWindow.do_realize(self)
+
+        # FIXME: Ideally we'd get the menu from resources, but we'd need to...
+        # have resources.
         builder = meld.ui.util.get_builder("application.ui")
         menu = builder.get_object("gear-menu")
         self.gear_menu_button.set_popover(
