@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gio, Gtk
 
 import meld.conf
 # Import support module to get all builder-constructed widgets in the namespace
@@ -34,3 +34,38 @@ def get_builder(filename):
     path = meld.conf.ui_file(filename)
     builder.add_from_file(path)
     return builder
+
+
+# The functions `extract_accel_from_menu_item` and `extract_accels_from_menu`
+# are converted straight from GTK+'s GtkApplication handling. I don't
+# understand why these aren't public API, but here we are.
+
+
+def extract_accel_from_menu_item(
+        model: Gio.MenuModel, item: int, app: Gtk.Application):
+
+    accel, action, target = None, None, None
+
+    more, it = True, model.iterate_item_attributes(item)
+    while more:
+        more, key, value = it.get_next()
+        if key == 'action':
+            action = value.get_string()
+        elif key == 'accel':
+            accel = value.get_string()
+        # TODO: Handle targets
+
+    if accel and action:
+        detailed_action_name = Gio.Action.print_detailed_name(action, target)
+        app.set_accels_for_action(detailed_action_name, [accel])
+
+
+def extract_accels_from_menu(model: Gio.MenuModel, app: Gtk.Application):
+    for i in range(model.get_n_items()):
+        extract_accel_from_menu_item(model, i, app)
+
+        more, it = True, model.iterate_item_links(i)
+        while more:
+            more, name, submodel = it.get_next()
+            if submodel:
+                extract_accels_from_menu(submodel, app)
