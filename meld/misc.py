@@ -143,43 +143,6 @@ def user_critical(primary, message):
     return wrap
 
 
-# Taken from epiphany
-def position_menu_under_widget(menu, x, y, widget):
-    container = widget.get_ancestor(Gtk.Container)
-
-    widget_width = widget.get_allocation().width
-    menu_width = menu.get_allocation().width
-    menu_height = menu.get_allocation().height
-
-    screen = menu.get_screen()
-    monitor_num = screen.get_monitor_at_window(widget.get_window())
-    if monitor_num < 0:
-        monitor_num = 0
-    monitor = screen.get_monitor_geometry(monitor_num)
-
-    unused, x, y = widget.get_window().get_origin()
-    allocation = widget.get_allocation()
-    if not widget.get_has_window():
-        x += allocation.x
-        y += allocation.y
-
-    if container.get_direction() == Gtk.TextDirection.LTR:
-        x += allocation.width - widget_width
-    else:
-        x += widget_width - menu_width
-
-    if (y + allocation.height + menu_height) <= monitor.y + monitor.height:
-        y += allocation.height
-    elif (y - menu_height) >= monitor.y:
-        y -= menu_height
-    elif monitor.y + monitor.height - (y + allocation.height) > y:
-        y += allocation.height
-    else:
-        y -= menu_height
-
-    return (x, y, False)
-
-
 def make_tool_button_widget(label):
     """Make a GtkToolButton label-widget suggestive of a menu dropdown"""
     arrow = Gtk.Arrow(
