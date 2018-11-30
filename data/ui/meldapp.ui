@@ -7,6 +7,29 @@
     <property name="title" translatable="yes">Meld</property>
     <property name="icon_name">org.gnome.meld</property>
     <signal name="delete-event" handler="on_delete_event" swapped="no"/>
+
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="show-close-button">true</property>
+        <property name="visible">true</property>
+        <child>
+          <object class="GtkMenuButton" id="gear_menu_button">
+            <property name="visible">true</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="visible">true</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+
     <child>
       <object class="GtkVBox" id="appvbox">
         <property name="visible">True</property>

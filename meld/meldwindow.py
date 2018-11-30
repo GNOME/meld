@@ -251,6 +251,7 @@ class MeldWindow(Component):
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
+        self.widget.connect('realize', self.on_realize)
         self.widget.connect('focus_in_event', self.on_focus_change)
         self.widget.connect('focus_out_event', self.on_focus_change)
 
@@ -261,6 +262,18 @@ class MeldWindow(Component):
         builder = meld.ui.util.get_builder("shortcuts.ui")
         shortcut_window = builder.get_object("shortcuts-meld")
         self.widget.set_help_overlay(shortcut_window)
+
+    def on_realize(self, user_data):
+        # FIXME: Ideally this would be in do_realize, and we'd get the menu
+        # from resources, but MeldWindow would need to be a real GtkWindow
+        # subclass, and we'd need to... have resources.
+        builder = meld.ui.util.get_builder("application.ui")
+        menu = builder.get_object("gear-menu")
+        self.gear_menu_button.set_popover(
+            Gtk.Popover.new_from_model(self.gear_menu_button, menu))
+
+        app = self.widget.get_application()
+        meld.ui.util.extract_accels_from_menu(menu, app)
 
     def _on_recentmenu_map(self, recentmenu):
         for imagemenuitem in recentmenu.get_children():

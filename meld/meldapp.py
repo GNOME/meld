@@ -65,11 +65,6 @@ class MeldApp(Gtk.Application):
             action.connect('activate', callback)
             self.add_action(action)
 
-        # TODO: Should not be necessary but Builder doesn't understand Menus
-        builder = meld.ui.util.get_builder("application.ui")
-        menu = builder.get_object("app-menu")
-        self.set_app_menu(menu)
-        # self.set_menubar()
         self.new_window()
 
     def do_activate(self):
