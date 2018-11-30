@@ -323,9 +323,6 @@ class FileDiff(MeldDoc, Component):
                 self.findbar.start_find_previous(self.focus_pane)
             self.keymask &= ~mod_key
 
-    def on_focus_change(self):
-        self.keymask = 0
-
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()
         if relevant_change:
@@ -789,6 +786,7 @@ class FileDiff(MeldDoc, Component):
         self.update_text_actions_sensitivity()
 
     def on_textview_focus_out_event(self, view, event):
+        self.keymask = 0
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
 

@@ -214,8 +214,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
-        self.connect('focus_in_event', self.on_focus_change)
-        self.connect('focus_out_event', self.on_focus_change)
 
         # Set tooltip on map because the recentmenu is lazily created
         rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
@@ -240,14 +238,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def _on_recentmenu_map(self, recentmenu):
         for imagemenuitem in recentmenu.get_children():
             imagemenuitem.set_tooltip_text(imagemenuitem.get_label())
-
-    def on_focus_change(self, widget, event, callback_data=None):
-        for idx in range(self.notebook.get_n_pages()):
-            w = self.notebook.get_nth_page(idx)
-            if hasattr(w.pyobject, 'on_focus_change'):
-                w.pyobject.on_focus_change()
-        # Let the rest of the stack know about this event
-        return False
 
     def on_widget_drag_data_received(
             self, wid, context, x, y, selection_data, info, time):
