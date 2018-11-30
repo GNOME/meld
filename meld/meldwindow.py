@@ -173,11 +173,14 @@ class MeldWindow(Component):
         self.appvbox.pack_start(self.menubar, False, True, 0)
         self.toolbar_holder.pack_start(self.toolbar, True, True, 0)
 
-        # Double toolbars to work around UIManager integration issues
+        # This double toolbar works around integrating non-UIManager widgets
+        # into the toolbar. It's no longer used, but kept as a possible
+        # GAction porting helper.
         self.secondary_toolbar = Gtk.Toolbar()
         self.secondary_toolbar.get_style_context().add_class(
             Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
         self.toolbar_holder.pack_end(self.secondary_toolbar, False, True, 0)
+        self.secondary_toolbar.show_all()
 
         # Manually handle GAction additions
         actions = (
@@ -188,18 +191,10 @@ class MeldWindow(Component):
             action.connect('activate', callback)
             self.widget.add_action(action)
 
-        # Create a secondary toolbar, just to hold our progress spinner
-        toolbutton = Gtk.ToolItem()
-        self.spinner = Gtk.Spinner()
         # Fake out the spinner on Windows. See Gitlab issue #133.
         if os.name == 'nt':
             for attr in ('stop', 'hide', 'show', 'start'):
                 setattr(self.spinner, attr, lambda *args: True)
-        toolbutton.add(self.spinner)
-        self.secondary_toolbar.insert(toolbutton, -1)
-        # Set a minimum size because the spinner requests nothing
-        self.secondary_toolbar.set_size_request(30, -1)
-        self.secondary_toolbar.show_all()
 
         self.widget.drag_dest_set(
             Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
