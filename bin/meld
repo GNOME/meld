@@ -102,13 +102,8 @@ except locale.Error as e:
     locale.setlocale(locale.LC_ALL, 'C')
 gettext.textdomain(locale_domain)
 trans = gettext.translation(locale_domain, localedir=locale_dir, fallback=True)
-try:
-    _ = meld.conf._ = trans.ugettext
-    meld.conf.ngettext = trans.ungettext
-except AttributeError:
-    # py3k
-    _ = meld.conf._ = trans.gettext
-    meld.conf.ngettext = trans.ngettext
+_ = meld.conf._ = trans.gettext
+meld.conf.ngettext = trans.ngettext
 
 try:
     if os.name == 'nt':
