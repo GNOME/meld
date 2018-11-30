@@ -478,7 +478,9 @@ class MeldWindow(Component):
         self.current_doc().open_external()
 
     def on_toolbar_stop_clicked(self, *args):
-        self.current_doc().stop()
+        doc = self.current_doc()
+        if doc.scheduler.tasks_pending():
+            doc.scheduler.remove_task(doc.scheduler.get_current_task())
 
     def page_removed(self, page, status):
         if hasattr(page, 'scheduler'):
