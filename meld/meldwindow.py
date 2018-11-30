@@ -136,37 +136,6 @@ class MeldWindow(Component):
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file("meldapp-ui.xml"))
 
-        # Manually handle shells that don't show an application menu
-        gtk_settings = Gtk.Settings.get_default()
-        if not gtk_settings.props.gtk_shell_shows_app_menu:
-            from meld.meldapp import app
-
-            def make_app_action(name):
-                def app_action(*args):
-                    app.lookup_action(name).activate(None)
-                return app_action
-
-            app_actions = (
-                ("AppMenu", None, _("_Meld")),
-                ("Quit", Gtk.STOCK_QUIT, None, None, _("Quit the program"),
-                 make_app_action('quit')),
-                ("Preferences", Gtk.STOCK_PREFERENCES, _("Prefere_nces"), None,
-                 _("Configure the application"),
-                 make_app_action('preferences')),
-                ("Help", Gtk.STOCK_HELP, _("_Contents"), "F1",
-                 _("Open the Meld manual"), make_app_action('help')),
-                ("About", Gtk.STOCK_ABOUT, None, None,
-                 _("About this application"), make_app_action('about')),
-            )
-
-            app_actiongroup = Gtk.ActionGroup(name="AppActions")
-            app_actiongroup.set_translation_domain("meld")
-            app_actiongroup.add_actions(app_actions)
-            self.ui.insert_action_group(app_actiongroup, 0)
-
-            self.ui.add_ui_from_file(ui_file("appmenu-fallback.xml"))
-            self.widget.set_show_menubar(False)
-
         for menuitem in ("Save", "Undo"):
             self.actiongroup.get_action(menuitem).props.is_important = True
         self.widget.add_accel_group(self.ui.get_accel_group())
