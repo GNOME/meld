@@ -29,7 +29,6 @@ from meld.filemerge import FileMerge
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
-from meld.settings import interface_settings
 from meld.task import LifoScheduler
 from meld.ui._gtktemplate import Template
 from meld.ui.gnomeglade import ui_file
@@ -151,9 +150,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.toolbar = self.ui.get_widget('/Toolbar')
         self.toolbar.get_style_context().add_class(
             Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
-
-        interface_settings.bind('toolbar-style', self.toolbar, 'toolbar-style',
-                                Gio.SettingsBindFlags.DEFAULT)
 
         # Alternate keybindings for a few commands.
         extra_accels = (
