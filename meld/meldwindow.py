@@ -54,8 +54,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         MeldWindow.init_template(self)
 
-        self.set_name("meldapp")
-
         actions = (
             ("FileMenu", None, _("_File")),
             ("New", Gtk.STOCK_NEW, _("_New Comparison…"), "<Primary>N",
