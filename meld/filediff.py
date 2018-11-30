@@ -138,18 +138,11 @@ class FileDiff(MeldDoc, Component):
         widget_lists = [
             "diffmap", "file_save_button", "file_toolbar", "fileentry",
             "linkmap", "msgarea_mgr", "readonlytoggle",
-            "scrolledwindow", "selector_hbox", "textview", "vbox",
+            "scrolledwindow", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
             "fileentry_toolitem", "dummy_toolbar_diffmap", "statusbar",
         ]
         self.map_widgets_into_lists(widget_lists)
-
-        # This SizeGroup isn't actually necessary for FileDiff; it's for
-        # handling non-homogenous selectors in FileComp. It's also fragile.
-        column_sizes = Gtk.SizeGroup(mode=Gtk.SizeGroupMode.HORIZONTAL)
-        column_sizes.set_ignore_hidden(True)
-        for widget in self.selector_hbox:
-            column_sizes.add_widget(widget)
 
         self.warned_bad_comparison = False
         self._keymask = 0
