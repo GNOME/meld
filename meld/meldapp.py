@@ -26,7 +26,6 @@ from gi.repository import Gtk
 
 import meld.conf
 import meld.preferences
-import meld.ui.util
 from meld.conf import _
 from meld.filediff import FileDiff
 from meld.meldwindow import MeldWindow
@@ -110,11 +109,13 @@ class MeldApp(Gtk.Application):
             Gdk.Screen.get_default(), uri, Gtk.get_current_event_time())
 
     def about_callback(self, action, parameter):
-        about = meld.ui.util.get_widget("application.ui", "aboutdialog")
-        about.set_version(meld.conf.__version__)
-        about.set_transient_for(self.get_active_window())
-        about.run()
-        about.destroy()
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/about-dialog.ui')
+        dialog = builder.get_object('about-dialog')
+        dialog.set_version(meld.conf.__version__)
+        dialog.set_transient_for(self.get_active_window())
+        dialog.run()
+        dialog.destroy()
 
     def quit_callback(self, action, parameter):
         for window in self.get_windows():
