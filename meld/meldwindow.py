@@ -37,7 +37,7 @@ from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
 
-@Template(filename=ui_file('meldapp.ui'))
+@Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
 class MeldWindow(Gtk.ApplicationWindow):
 
     __gtype_name__ = 'MeldWindow'
