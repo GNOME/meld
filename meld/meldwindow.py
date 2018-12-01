@@ -219,10 +219,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
         rmenu.connect("map", self._on_recentmenu_map)
 
-        builder = meld.ui.util.get_builder("shortcuts.ui")
-        shortcut_window = builder.get_object("shortcuts-meld")
-        self.set_help_overlay(shortcut_window)
-
     def do_realize(self):
         Gtk.ApplicationWindow.do_realize(self)
 
