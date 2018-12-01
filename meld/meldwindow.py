@@ -222,10 +222,8 @@ class MeldWindow(Gtk.ApplicationWindow):
     def do_realize(self):
         Gtk.ApplicationWindow.do_realize(self)
 
-        # FIXME: Ideally we'd get the menu from resources, but we'd need to...
-        # have resources.
-        builder = meld.ui.util.get_builder("application.ui")
-        menu = builder.get_object("gear-menu")
+        app = self.get_application()
+        menu = app.get_menu_by_id("gear-menu")
         self.gear_menu_button.set_popover(
             Gtk.Popover.new_from_model(self.gear_menu_button, menu))
 
