@@ -222,10 +222,16 @@ def check_requirements():
 
 
 def setup_resources():
+    from gi.repository import Gio
     from gi.repository import GLib
     from gi.repository import Gtk
     from gi.repository import Gdk
     from gi.repository import GtkSource
+
+    if not uninstalled:
+        resource_file = os.path.join(meld.conf.DATADIR, "meld.gresource")
+        resources = Gio.resource_load(resource_file)
+        Gio.resources_register(resources)
 
     icon_dir = os.path.join(meld.conf.DATADIR, "icons")
     Gtk.IconTheme.get_default().append_search_path(icon_dir)

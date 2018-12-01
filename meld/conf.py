@@ -7,6 +7,7 @@ __package__ = "meld"
 __version__ = "3.19.2"
 
 APPLICATION_ID = "org.gnome.meld"
+RESOURCE_BASE = '/org/gnome/meld'
 
 # START; these paths are clobbered on install by meld.build_helpers
 DATADIR = Path(sys.prefix) / "share" / "meld"
@@ -45,6 +46,9 @@ def uninstalled():
     DATADIR = melddir / "data"
     LOCALEDIR = melddir / "build" / "mo"
     DATADIR_IS_UNINSTALLED = True
+
+    resource_path = melddir / "meld" / "resources"
+    os.environ['G_RESOURCE_OVERLAYS'] = f'{RESOURCE_BASE}={resource_path}'
 
 
 def ui_file(filename):
