@@ -1702,17 +1702,19 @@ class FileDiff(MeldDoc, Component):
         if not unsaved:
             return True
 
-        dialog = Component("filediff.ui", "revert_dialog")
-        dialog.widget.set_transient_for(self.widget.get_toplevel())
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/revert-dialog.ui')
+        dialog = builder.get_object('revert_dialog')
+        dialog.set_transient_for(self.widget.get_toplevel())
 
         filelist = Gtk.Label("\n".join(["\t• " + f for f in unsaved]))
         filelist.props.xalign = 0.0
         filelist.show()
-        message_area = dialog.widget.get_message_area()
+        message_area = dialog.get_message_area()
         message_area.pack_start(filelist, expand=False, fill=True, padding=0)
 
-        response = dialog.widget.run()
-        dialog.widget.destroy()
+        response = dialog.run()
+        dialog.destroy()
         return response == Gtk.ResponseType.OK
 
     def on_revert_activate(self, *extra):
