@@ -23,25 +23,54 @@ from gi.repository import GtkSource
 from meld.conf import _
 from meld.filters import FilterEntry
 from meld.settings import settings
+from meld.ui._gtktemplate import Template
 from meld.ui.gnomeglade import Component
-from meld.ui.listwidget import ListWidget
+from meld.ui.listwidget import EditableListWidget
 
 
-class FilterList(ListWidget):
+@Template(resource_path='/org/gnome/meld/ui/filter-list.ui')
+class FilterList(Gtk.VBox, EditableListWidget):
 
-    def __init__(self, key, filter_type):
-        default_entry = [_("label"), False, _("pattern"), True]
-        super().__init__(
-            "EditableList.ui", "list_vbox", ["EditableListStore"],
-            "EditableList", default_entry)
-        self.key = key
-        self.filter_type = filter_type
+    __gtype_name__ = "FilterList"
+
+    treeview = Template.Child("treeview")
+    remove = Template.Child("remove")
+    move_up = Template.Child("move_up")
+    move_down = Template.Child("move_down")
+    pattern_column = Template.Child("pattern_column")
+    validity_renderer = Template.Child("validity_renderer")
+
+    default_entry = [_("label"), False, _("pattern"), True]
+
+    filter_type = GObject.Property(
+        type=int,
+        flags=(
+            GObject.ParamFlags.READABLE |
+            GObject.ParamFlags.WRITABLE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    settings_key = GObject.Property(
+        type=str,
+        flags=(
+            GObject.ParamFlags.READABLE |
+            GObject.ParamFlags.WRITABLE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    def __init__(self, **kwargs):
+        super().__init__(self, **kwargs)
+        FilterList.init_template(self)
+        self.model = self.treeview.get_model()
 
         self.pattern_column.set_cell_data_func(
             self.validity_renderer, self.valid_icon_celldata)
 
-        for filter_params in settings.get_value(self.key):
-            filt = FilterEntry.new_from_gsetting(filter_params, filter_type)
+        for filter_params in settings.get_value(self.settings_key):
+            filt = FilterEntry.new_from_gsetting(
+                filter_params, self.filter_type)
             if filt is None:
                 continue
             valid = filt.filter is not None
@@ -52,19 +81,38 @@ class FilterList(ListWidget):
                        'rows-reordered'):
             self.model.connect(signal, self._update_filter_string)
 
-        self._update_sensitivity()
+        self.setup_sensitivity_handling()
 
     def valid_icon_celldata(self, col, cell, model, it, user_data=None):
         is_valid = model.get_value(it, 3)
         icon_name = "gtk-dialog-warning" if not is_valid else None
         cell.set_property("stock-id", icon_name)
 
+    @Template.Callback()
+    def on_add_clicked(self, button):
+        self.add_entry()
+
+    @Template.Callback()
+    def on_remove_clicked(self, button):
+        self.remove_selected_entry()
+
+    @Template.Callback()
+    def on_move_up_clicked(self, button):
+        self.move_up_selected_entry()
+
+    @Template.Callback()
+    def on_move_down_clicked(self, button):
+        self.move_down_selected_entry()
+
+    @Template.Callback()
     def on_name_edited(self, ren, path, text):
         self.model[path][0] = text
 
+    @Template.Callback()
     def on_cellrenderertoggle_toggled(self, ren, path):
         self.model[path][1] = not ren.get_active()
 
+    @Template.Callback()
     def on_pattern_edited(self, ren, path, text):
         valid = FilterEntry.check_filter(text, self.filter_type)
         self.model[path][2] = text
@@ -72,10 +120,20 @@ class FilterList(ListWidget):
 
     def _update_filter_string(self, *args):
         value = [(row[0], row[1], row[2]) for row in self.model]
-        settings.set_value(self.key, GLib.Variant('a(sbs)', value))
+        settings.set_value(self.settings_key, GLib.Variant('a(sbs)', value))
 
 
-class ColumnList(ListWidget):
+@Template(resource_path='/org/gnome/meld/ui/column-list.ui')
+class ColumnList(Gtk.VBox, EditableListWidget):
+
+    __gtype_name__ = "ColumnList"
+
+    treeview = Template.Child("treeview")
+    remove = Template.Child("remove")
+    move_up = Template.Child("move_up")
+    move_down = Template.Child("move_down")
+
+    default_entry = [_("label"), False, _("pattern"), True]
 
     available_columns = {
         "size": _("Size"),
@@ -83,14 +141,24 @@ class ColumnList(ListWidget):
         "permissions": _("Permissions"),
     }
 
-    def __init__(self, key):
-        super().__init__(
-            "EditableList.ui", "columns_ta", ["ColumnsListStore"],
-            "columns_treeview")
-        self.key = key
+    settings_key = GObject.Property(
+        type=str,
+        flags=(
+            GObject.ParamFlags.READABLE |
+            GObject.ParamFlags.WRITABLE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    def __init__(self, **kwargs):
+        super().__init__(self, **kwargs)
+        ColumnList.init_template(self)
+        self.model = self.treeview.get_model()
 
         # Unwrap the variant
-        prefs_columns = [(k, v) for k, v in settings.get_value(self.key)]
+        prefs_columns = [
+            (k, v) for k, v in settings.get_value(self.settings_key)
+        ]
         column_vis = {}
         column_order = {}
         for sort_key, (column_name, visibility) in enumerate(prefs_columns):
@@ -110,14 +178,23 @@ class ColumnList(ListWidget):
                        'rows-reordered'):
             self.model.connect(signal, self._update_columns)
 
-        self._update_sensitivity()
+        self.setup_sensitivity_handling()
 
+    @Template.Callback()
+    def on_move_up_clicked(self, button):
+        self.move_up_selected_entry()
+
+    @Template.Callback()
+    def on_move_down_clicked(self, button):
+        self.move_down_selected_entry()
+
+    @Template.Callback()
     def on_cellrenderertoggle_toggled(self, ren, path):
         self.model[path][0] = not ren.get_active()
 
     def _update_columns(self, *args):
         value = [(c[1].lower(), c[0]) for c in self.model]
-        settings.set_value(self.key, GLib.Variant('a(sb)', value))
+        settings.set_value(self.settings_key, GLib.Variant('a(sb)', value))
 
 
 class GSettingsComboBox(Gtk.ComboBox):
@@ -237,14 +314,20 @@ class PreferencesDialog(Component):
         self.checkbutton_wrap_text.set_active(wrap_mode != Gtk.WrapMode.NONE)
         self.checkbutton_wrap_word.set_active(wrap_mode == Gtk.WrapMode.WORD)
 
-        filefilter = FilterList("filename-filters", FilterEntry.SHELL)
-        self.file_filters_vbox.pack_start(filefilter.widget, True, True, 0)
+        filefilter = FilterList(
+            filter_type=FilterEntry.SHELL,
+            settings_key="filename-filters",
+        )
+        self.file_filters_vbox.pack_start(filefilter, True, True, 0)
 
-        textfilter = FilterList("text-filters", FilterEntry.REGEX)
-        self.text_filters_vbox.pack_start(textfilter.widget, True, True, 0)
+        textfilter = FilterList(
+            filter_type=FilterEntry.REGEX,
+            settings_key="text-filters",
+        )
+        self.text_filters_vbox.pack_start(textfilter, True, True, 0)
 
-        columnlist = ColumnList("folder-columns")
-        self.column_list_vbox.pack_start(columnlist.widget, True, True, 0)
+        columnlist = ColumnList(settings_key="folder-columns")
+        self.column_list_vbox.pack_start(columnlist, True, True, 0)
 
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
