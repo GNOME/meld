@@ -16,10 +16,10 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkDialog" id="preferencesdialog">
+  <template class="PreferencesDialog" parent="GtkDialog">
     <property name="can_focus">False</property>
     <property name="border_width">0</property>
-    <property name="title" translatable="yes">Meld Preferences</property>
+    <property name="title" translatable="yes">Preferences</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
@@ -1514,7 +1514,7 @@
         </child>
       </object>
     </child>
-  </object>
+  </template>
   <object class="GtkSizeGroup" id="sizegroup_editor">
     <widgets>
       <widget name="label_fontpicker"/>

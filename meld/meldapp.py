@@ -25,10 +25,10 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import meld.conf
-import meld.preferences
 from meld.conf import _
 from meld.filediff import FileDiff
 from meld.meldwindow import MeldWindow
+from meld.preferences import PreferencesDialog
 
 log = logging.getLogger(__name__)
 
@@ -98,7 +98,9 @@ class MeldApp(Gtk.Application):
     #     return False
 
     def preferences_callback(self, action, parameter):
-        meld.preferences.PreferencesDialog(self.get_active_window())
+        parent = self.get_active_window()
+        dialog = PreferencesDialog(transient_for=parent)
+        dialog.present()
 
     def help_callback(self, action, parameter):
         if meld.conf.DATADIR_IS_UNINSTALLED:

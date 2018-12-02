@@ -24,7 +24,6 @@ from meld.conf import _
 from meld.filters import FilterEntry
 from meld.settings import settings
 from meld.ui._gtktemplate import Template
-from meld.ui.gnomeglade import Component
 from meld.ui.listwidget import EditableListWidget
 
 
@@ -255,17 +254,42 @@ class GSettingsStringComboBox(GSettingsComboBox):
     gsettings_value = GObject.Property(type=str, default="")
 
 
-class PreferencesDialog(Component):
+@Template(resource_path='/org/gnome/meld/ui/preferences.ui')
+class PreferencesDialog(Gtk.Dialog):
 
-    def __init__(self, parent):
-        super().__init__(
-            "preferences.ui", "preferencesdialog", [
-                "adjustment1", "adjustment2", "fileorderstore",
-                "sizegroup_editor", "timestampstore", "mergeorderstore",
-                "sizegroup_file_order_labels", "sizegroup_file_order_combos",
-                "syntaxschemestore"
-            ])
-        self.widget.set_transient_for(parent)
+    __gtype_name__ = "PreferencesDialog"
+
+    checkbutton_break_commit_lines = Template.Child("checkbutton_break_commit_lines")  # noqa: E501
+    checkbutton_default_font = Template.Child("checkbutton_default_font")
+    checkbutton_folder_filter_text = Template.Child("checkbutton_folder_filter_text")  # noqa: E501
+    checkbutton_highlight_current_line = Template.Child("checkbutton_highlight_current_line")  # noqa: E501
+    checkbutton_ignore_blank_lines = Template.Child("checkbutton_ignore_blank_lines")  # noqa: E501
+    checkbutton_ignore_symlinks = Template.Child("checkbutton_ignore_symlinks")
+    checkbutton_shallow_compare = Template.Child("checkbutton_shallow_compare")
+    checkbutton_show_commit_margin = Template.Child("checkbutton_show_commit_margin")  # noqa: E501
+    checkbutton_show_line_numbers = Template.Child("checkbutton_show_line_numbers")  # noqa: E501
+    checkbutton_show_whitespace = Template.Child("checkbutton_show_whitespace")
+    checkbutton_spaces_instead_of_tabs = Template.Child("checkbutton_spaces_instead_of_tabs")  # noqa: E501
+    checkbutton_use_syntax_highlighting = Template.Child("checkbutton_use_syntax_highlighting")  # noqa: E501
+    checkbutton_wrap_text = Template.Child("checkbutton_wrap_text")
+    checkbutton_wrap_word = Template.Child("checkbutton_wrap_word")
+    column_list_vbox = Template.Child("column_list_vbox")
+    combo_file_order = Template.Child("combo_file_order")
+    combo_merge_order = Template.Child("combo_merge_order")
+    combo_timestamp = Template.Child("combo_timestamp")
+    combobox_style_scheme = Template.Child("combobox_style_scheme")
+    custom_edit_command_entry = Template.Child("custom_edit_command_entry")
+    file_filters_vbox = Template.Child("file_filters_vbox")
+    fontpicker = Template.Child("fontpicker")
+    spinbutton_commit_margin = Template.Child("spinbutton_commit_margin")
+    spinbutton_tabsize = Template.Child("spinbutton_tabsize")
+    syntaxschemestore = Template.Child("syntaxschemestore")
+    system_editor_checkbutton = Template.Child("system_editor_checkbutton")
+    text_filters_vbox = Template.Child("text_filters_vbox")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.init_template()
 
         bindings = [
             ('use-system-font', self.checkbutton_default_font, 'active'),
@@ -340,8 +364,9 @@ class PreferencesDialog(Component):
             self.syntaxschemestore.append([scheme_id, scheme.get_name()])
         self.combobox_style_scheme.bind_to('style-scheme')
 
-        self.widget.show()
+        self.show()
 
+    @Template.Callback()
     def on_checkbutton_wrap_text_toggled(self, button):
         if not self.checkbutton_wrap_text.get_active():
             wrap_mode = Gtk.WrapMode.NONE
@@ -351,9 +376,11 @@ class PreferencesDialog(Component):
             wrap_mode = Gtk.WrapMode.CHAR
         settings.set_enum('wrap-mode', wrap_mode)
 
+    @Template.Callback()
     def on_checkbutton_show_whitespace_toggled(self, widget):
         value = GtkSource.DrawSpacesFlags.ALL if widget.get_active() else 0
         settings.set_flags('draw-spaces', value)
 
+    @Template.Callback()
     def on_response(self, dialog, response_id):
-        self.widget.destroy()
+        self.destroy()
