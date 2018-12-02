@@ -24,19 +24,26 @@ from gi.repository import Pango
 
 from meld.conf import _
 from meld.settings import meldsettings, settings
-from meld.ui.gnomeglade import Component
+from meld.ui._gtktemplate import Template
 
 
-class CommitDialog(GObject.GObject, Component):
+@Template(resource_path='/org/gnome/meld/ui/commit-dialog.ui')
+class CommitDialog(Gtk.Dialog):
 
     __gtype_name__ = "CommitDialog"
 
     break_commit_message = GObject.Property(type=bool, default=False)
 
+    changedfiles = Template.Child("changedfiles")
+    textview = Template.Child("textview")
+    scrolledwindow1 = Template.Child("scrolledwindow1")
+    previousentry = Template.Child("previousentry")
+
     def __init__(self, parent):
-        GObject.GObject.__init__(self)
-        Component.__init__(self, "vcview.ui", "commitdialog")
-        self.widget.set_transient_for(parent.widget.get_toplevel())
+        super().__init__()
+        self.init_template()
+
+        self.set_transient_for(parent.widget.get_toplevel())
         selected = parent._get_selected_files()
 
         try:
@@ -73,12 +80,12 @@ class CommitDialog(GObject.GObject, Component):
                       'right-margin-position', Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-break-commit-message', self,
                       'break-commit-message', Gio.SettingsBindFlags.DEFAULT)
-        self.widget.show_all()
+        self.show_all()
 
     def run(self):
         self.previousentry.set_active(-1)
         self.textview.grab_focus()
-        response = self.widget.run()
+        response = super().run()
         msg = None
         if response == Gtk.ResponseType.OK:
             show_margin = self.textview.get_show_right_margin()
@@ -91,7 +98,7 @@ class CommitDialog(GObject.GObject, Component):
                 msg = "\n\n".join(textwrap.fill(p, margin) for p in paragraphs)
             if msg.strip():
                 self.previousentry.prepend_history(msg)
-        self.widget.destroy()
+        self.destroy()
         return response, msg
 
     def on_previousentry_activate(self, gentry):
@@ -102,17 +109,22 @@ class CommitDialog(GObject.GObject, Component):
             buf.set_text(model[idx][1])
 
 
-class PushDialog(Component):
+@Template(resource_path='/org/gnome/meld/ui/push-dialog.ui')
+class PushDialog(Gtk.MessageDialog):
+
+    __gtype_name__ = "PushDialog"
 
     def __init__(self, parent):
-        super().__init__("vcview.ui", "pushdialog")
-        self.widget.set_transient_for(parent.widget.get_toplevel())
-        self.widget.show_all()
+        super().__init__()
+        self.init_template()
+
+        self.set_transient_for(parent.widget.get_toplevel())
+        self.show_all()
 
     def run(self):
         # TODO: Ask the VC for a more informative label for what will happen.
         # In git, this is probably the parsed output of push --dry-run.
 
-        response = self.widget.run()
-        self.widget.destroy()
+        response = super().run()
+        self.destroy()
         return response
