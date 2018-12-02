@@ -850,9 +850,12 @@ class FileDiff(MeldDoc, Component):
         modified = [b.get_modified() for b in buffers]
         labels = [b.data.label for b in buffers]
         if any(modified):
-            dialog = Component("filediff.ui", "check_save_dialog")
-            dialog.widget.set_transient_for(self.widget.get_toplevel())
-            message_area = dialog.widget.get_message_area()
+            builder = Gtk.Builder.new_from_resource(
+                '/org/gnome/meld/ui/save-confirm-dialog.ui')
+            dialog = builder.get_object('save-confirm-dialog')
+            dialog.set_transient_for(self.widget.get_toplevel())
+            message_area = dialog.get_message_area()
+
             buttons = []
             for label, should_save in zip(labels, modified):
                 button = Gtk.CheckButton.new_with_label(label)
@@ -862,9 +865,9 @@ class FileDiff(MeldDoc, Component):
                     button, expand=False, fill=True, padding=0)
                 buttons.append(button)
             message_area.show_all()
-            response = dialog.widget.run()
+            response = dialog.run()
             try_save = [b.get_active() for b in buttons]
-            dialog.widget.destroy()
+            dialog.destroy()
             if response == Gtk.ResponseType.OK and any(try_save):
                 for i in range(self.num_panes):
                     if try_save[i]:
