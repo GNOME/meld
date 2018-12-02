@@ -1,46 +1,5 @@
 
-from gi.repository import GLib
-from gi.repository import Gtk
-
-from meld.conf import ui_file
-
-
-def with_template_file(template_file):
-    """Class decorator for setting a widget template"""
-
-    def add_template(cls):
-        template_path = ui_file(template_file)
-        template = open(template_path, 'rb').read()
-        template_bytes = GLib.Bytes.new(template)
-        cls.set_template(template_bytes)
-        return cls
-
-    return add_template
-
-
-class TemplateHackMixin:
-
-    def get_template_child(self, widget_type, name):
-        # Taken from an in-progress patch on bgo#701843
-
-        def get_template_child(widget, widget_type, name):
-            # Explicitly use gtk_buildable_get_name() because it is masked by
-            # gtk_widget_get_name() in GI.
-            if isinstance(widget, widget_type) and \
-                    isinstance(widget, Gtk.Buildable) and \
-                    Gtk.Buildable.get_name(widget) == name:
-                return widget
-
-            if isinstance(widget, Gtk.Container):
-                for child in widget.get_children():
-                    result = get_template_child(child, widget_type, name)
-                    if result is not None:
-                        return result
-
-        return get_template_child(self, widget_type, name)
-
-
-class FilteredListSelector(TemplateHackMixin):
+class FilteredListSelector:
 
     # FilteredListSelector was intially based on gedit's
     # GeditHighlightModeSelector
@@ -53,11 +12,9 @@ class FilteredListSelector(TemplateHackMixin):
     NAME_COLUMN, VALUE_COLUMN = 0, 1
 
     def __init__(self):
-        Gtk.Grid.__init__(self)
+        super().__init__()
         self.init_template()
 
-        self.entry = self.get_template_child(Gtk.SearchEntry, 'entry')
-        self.treeview = self.get_template_child(Gtk.TreeView, 'treeview')
         self.treeview_selection = self.treeview.get_selection()
         # FIXME: Should be able to access as a template child, but can't.
         self.listfilter = self.treeview.get_model()
