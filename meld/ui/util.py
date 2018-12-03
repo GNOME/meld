@@ -13,11 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
 from gi.repository import Gio, Gtk
 
 import meld.conf
 # Import support module to get all builder-constructed widgets in the namespace
 from meld.ui import gladesupport  # noqa: F401
+
+log = logging.getLogger(__name__)
 
 
 def get_widget(filename, widget):
@@ -34,6 +38,29 @@ def get_builder(filename):
     path = meld.conf.ui_file(filename)
     builder.add_from_file(path)
     return builder
+
+
+def map_widgets_into_lists(widget, widgetnames):
+    """Put sequentially numbered widgets into lists.
+
+    Given an object with widgets self.button0, self.button1, ...,
+    after a call to object.map_widgets_into_lists(["button"])
+    object.button == [self.button0, self.button1, ...]
+    """
+    for item in widgetnames:
+        i, lst = 0, []
+        while 1:
+            key = "%s%i" % (item, i)
+            try:
+                val = getattr(widget, key)
+            except AttributeError:
+                if i == 0:
+                    log.critical(
+                        f"Tried to map missing attribute {key}")
+                break
+            lst.append(val)
+            i += 1
+        setattr(widget, item, lst)
 
 
 # The functions `extract_accel_from_menu_item` and `extract_accels_from_menu`
