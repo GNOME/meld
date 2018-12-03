@@ -156,7 +156,10 @@ class MeldNotebook(Gtk.Notebook):
         child.pyobject.disconnect_by_func(self.on_label_changed)
 
     def on_label_changed(self, component, text, tooltip):
-        page = component.widget
+        try:
+            page = component.widget
+        except RuntimeError:
+            page = component
         nbl = self.get_tab_label(page)
         nbl.set_label_text(text)
         nbl.set_tooltip_text(tooltip)
