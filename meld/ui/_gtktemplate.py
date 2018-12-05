@@ -24,7 +24,9 @@ def connect_func(builder, obj, signal_name, handler_name,
                  connect_object, flags, cls):
 
     if handler_name not in cls.__gtktemplate_methods__:
-        return
+        raise RuntimeError(
+            "Handler '%s' was specified in template, but has no "
+            "matching @Gtk.Template.Callback" % handler_name)
 
     method_name = cls.__gtktemplate_methods__[handler_name]
     template_inst = builder.get_object(cls.__gtype_name__)
