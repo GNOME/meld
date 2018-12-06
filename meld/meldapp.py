@@ -150,7 +150,9 @@ class MeldApp(Gtk.Application):
 
         paths = [f.get_path() for f in files]
         try:
-            return window.open_paths(paths, **kwargs)
+            tab = window.open_paths(paths, **kwargs)
+            window.widget.show()
+            return tab
         except ValueError:
             if not new_tab:
                 self.remove_window(window.widget)
