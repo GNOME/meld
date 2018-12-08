@@ -82,11 +82,14 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
                                  ()),
         'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
-        'state-changed': (GObject.SignalFlags.RUN_FIRST, None, (int, int)),
     }
 
     @GObject.Signal(name='close')
     def close_signal(self, exit_code: int) -> None:
+        ...
+
+    @GObject.Signal
+    def tab_state_changed(self, old_state: int, new_state: int) -> None:
         ...
 
     def __init__(self):
@@ -104,7 +107,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def state(self, value):
         if value == self._state:
             return
-        self.emit('state-changed', self._state, value)
+        self.tab_state_changed.emit(self._state, value)
         self._state = value
 
     def get_comparison(self) -> RecentType:

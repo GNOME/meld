@@ -530,7 +530,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             page.connect("file-changed", self.on_file_changed)
             page.connect("create-diff", lambda obj, arg, kwargs:
                          self.append_diff(arg, **kwargs))
-            page.connect("state-changed", self.on_page_state_changed)
+            page.tab_state_changed.connect(self.on_page_state_changed)
         page.close_signal.connect(self.page_removed)
 
         self.notebook.set_tab_reorderable(tab_widget(page), True)
