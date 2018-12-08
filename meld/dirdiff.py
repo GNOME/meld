@@ -42,10 +42,12 @@ from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
+from meld.ui._gtktemplate import Template
 from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
-from meld.ui.gnomeglade import Component, ui_file
+from meld.ui.gnomeglade import ui_file
+from meld.ui.util import map_widgets_into_lists
 
 
 class StatItem(namedtuple('StatItem', 'mode size time')):
@@ -285,10 +287,17 @@ class CanonicalListing:
         return element.lower()
 
 
-class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
-    """Two or three way folder comparison"""
+@Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
+class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "DirDiff"
+
+    close_signal = MeldDoc.close_signal
+    create_diff_signal = MeldDoc.create_diff_signal
+    file_changed_signal = MeldDoc.file_changed_signal
+    label_changed = MeldDoc.label_changed
+    next_diff_changed_signal = MeldDoc.next_diff_changed_signal
+    tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
         ('folder-ignore-symlinks', 'ignore-symlinks'),
@@ -339,6 +348,33 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         default=100,
     )
 
+    actiongroup = Template.Child('DirdiffActions')
+
+    treeview0 = Template.Child()
+    treeview1 = Template.Child()
+    treeview2 = Template.Child()
+    fileentry0 = Template.Child()
+    fileentry1 = Template.Child()
+    fileentry2 = Template.Child()
+    scrolledwindow0 = Template.Child()
+    scrolledwindow1 = Template.Child()
+    scrolledwindow2 = Template.Child()
+    diffmap0 = Template.Child()
+    diffmap1 = Template.Child()
+    linkmap0 = Template.Child()
+    linkmap1 = Template.Child()
+    msgarea_mgr0 = Template.Child()
+    msgarea_mgr1 = Template.Child()
+    msgarea_mgr2 = Template.Child()
+    vbox0 = Template.Child()
+    vbox1 = Template.Child()
+    vbox2 = Template.Child()
+    dummy_toolbar_linkmap0 = Template.Child()
+    dummy_toolbar_linkmap1 = Template.Child()
+    file_toolbar0 = Template.Child()
+    file_toolbar1 = Template.Child()
+    file_toolbar2 = Template.Child()
+
     """Dictionary mapping tree states to corresponding difflib-like terms"""
     chunk_type_map = {
         tree.STATE_NORMAL: None,
@@ -359,12 +395,20 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
     }
 
     def __init__(self, num_panes):
+        super().__init__()
+        # FIXME:
+        # This unimaginable hack exists because GObject (or GTK+?)
+        # doesn't actually correctly chain init calls, even if they're
+        # not to GObjects. As a workaround, we *should* just be able to
+        # put our class first, but because of Gtk.Template we can't do
+        # that if it's a GObject, because GObject doesn't support
+        # multiple inheritance and we need to inherit from our Widget
+        # parent to make Template work.
         MeldDoc.__init__(self)
-        Component.__init__(self, "dirdiff.ui", "dirdiff", ["DirdiffActions"])
+        self.init_template()
         bind_settings(self)
 
         self.ui_file = ui_file("dirdiff-ui.xml")
-        self.actiongroup = self.DirdiffActions
         self.actiongroup.set_translation_domain("meld")
 
         self.name_filters = []
@@ -378,18 +422,22 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
                                  self.on_text_filters_changed)
         ]
 
-        self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
-                                     "diffmap", "linkmap", "msgarea_mgr",
-                                     "vbox", "dummy_toolbar_linkmap",
-                                     "file_toolbar"])
+        map_widgets_into_lists(
+            self,
+            [
+                "treeview", "fileentry", "scrolledwindow", "diffmap",
+                "linkmap", "msgarea_mgr", "vbox", "dummy_toolbar_linkmap",
+                "file_toolbar",
+            ]
+        )
 
-        self.widget.ensure_style()
+        self.ensure_style()
 
         self.custom_labels = []
         self.set_num_panes(num_panes)
 
-        self.widget.connect("style-updated", self.model.on_style_updated)
-        self.model.on_style_updated(self.widget)
+        self.connect("style-updated", self.model.on_style_updated)
+        self.model.on_style_updated(self)
 
         self.do_to_others_lock = False
         self.focus_in_events = []
@@ -491,6 +539,10 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
 
         self._scan_in_progress = 0
 
+        # FIXME: Awful migration hack; this means that we don't have to
+        # address `.pyobject` access before all tab types are updated.
+        self.pyobject = self
+
     def queue_draw(self):
         for treeview in self.treeview:
             treeview.queue_draw()
@@ -522,6 +574,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
                 last_column = current_column
             treeview.set_headers_visible(extra_cols)
 
+    @Template.Callback()
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
             self.custom_popup.connect(
@@ -668,6 +721,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
             it = self.model.iter_parent(it)
         self._update_diffmaps()
 
+    @Template.Callback()
     def on_fileentry_file_set(self, entry):
         files = [e.get_file() for e in self.fileentry[:self.num_panes]]
         paths = [f.get_path() for f in files]
@@ -1114,6 +1168,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
                 act = self.main_actiongroup.get_action("OpenExternal")
                 act.set_sensitive(False)
 
+    @Template.Callback()
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
         if pane is None or len(self.model) == 0:
@@ -1161,6 +1216,16 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
             self.next_diff_changed_signal.emit(*have_next_diffs)
         self.current_path = cursor_path
 
+    @Template.Callback()
+    def on_treeview_popup_menu(self, treeview):
+        tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
+
+    @Template.Callback()
+    def on_treeview_button_press_event(self, treeview, event):
+        tree.TreeviewCommon.on_treeview_button_press_event(
+            self, treeview, event)
+
+    @Template.Callback()
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)
         tree = None
@@ -1182,6 +1247,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
             tree.emit("cursor-changed")
         return event.keyval in (Gdk.KEY_Left, Gdk.KEY_Right)  # handled
 
+    @Template.Callback()
     def on_treeview_row_activated(self, view, path, column):
         pane = self.treeview.index(view)
         rows = self.model.value_paths(self.model.get_iter(path))
@@ -1205,6 +1271,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
             else:
                 view.expand_row(path, False)
 
+    @Template.Callback()
     def on_treeview_row_expanded(self, view, it, path):
         self.row_expansions.add(str(path))
         for row in self.model[path].iterchildren():
@@ -1214,6 +1281,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         self._do_to_others(view, self.treeview, "expand_row", (path, False))
         self._update_diffmaps()
 
+    @Template.Callback()
     def on_treeview_row_collapsed(self, view, me, path):
         self.row_expansions.discard(str(path))
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
@@ -1233,6 +1301,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
                   for p in row_paths if os.path.exists(p)]
         self.create_diff_signal.emit(gfiles, {})
 
+    @Template.Callback()
     def on_button_diff_clicked(self, button):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1242,6 +1311,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         for row in selected:
             self.run_diff_from_iter(self.model.get_iter(row))
 
+    @Template.Callback()
     def on_collapse_recursive_clicked(self, action):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1262,6 +1332,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         path = filter_model.convert_path_to_child_path(filter_path)
         paths_to_collapse.append(path)
 
+    @Template.Callback()
     def on_expand_recursive_clicked(self, action):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1271,12 +1342,15 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         for path in paths:
             self.treeview[pane].expand_row(path, True)
 
+    @Template.Callback()
     def on_button_copy_left_clicked(self, button):
         self.copy_selected(-1)
 
+    @Template.Callback()
     def on_button_copy_right_clicked(self, button):
         self.copy_selected(1)
 
+    @Template.Callback()
     def on_button_delete_clicked(self, button):
         self.delete_selected()
 
@@ -1292,9 +1366,11 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         if files:
             self._open_files(files)
 
+    @Template.Callback()
     def on_button_ignore_case_toggled(self, button):
         self.refresh()
 
+    @Template.Callback()
     def on_filter_state_toggled(self, button):
         active_filters = [
             state for state, (_, action_name) in self.state_actions.items()
@@ -1314,6 +1390,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         self.name_filters[idx].active = button.get_active()
         self.refresh()
 
+    @Template.Callback()
     def on_filter_hide_current_clicked(self, button):
         pane = self._get_focused_pane()
         if pane is not None:
@@ -1593,6 +1670,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         self._update_diffmaps()
         self.force_cursor_recalculate = True
 
+    @Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
         self.next_diff(event.direction)
 
