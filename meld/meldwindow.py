@@ -527,7 +527,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         if hasattr(page, 'scheduler'):
             self.scheduler.add_scheduler(page.scheduler)
         if isinstance(page, MeldDoc):
-            page.connect("file-changed", self.on_file_changed)
+            page.file_changed_signal.connect(self.on_file_changed)
             page.connect("create-diff", lambda obj, arg, kwargs:
                          self.append_diff(arg, **kwargs))
             page.tab_state_changed.connect(self.on_page_state_changed)

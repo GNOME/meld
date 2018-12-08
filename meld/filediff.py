@@ -1631,7 +1631,7 @@ class FileDiff(MeldDoc, Component):
             self.state = ComparisonState.SavingError
             return
 
-        self.emit('file-changed', gfile.get_path())
+        self.file_changed_signal.emit(gfile.get_path())
         self.undosequence.checkpoint(buf)
         buf.data.update_mtime()
         if pane == 1 and self.num_panes == 3:
