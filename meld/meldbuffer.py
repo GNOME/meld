@@ -87,9 +87,9 @@ class MeldBuffer(GtkSource.Buffer):
 
 class MeldBufferData(GObject.GObject):
 
-    __gsignals__ = {
-        str('file-changed'): (GObject.SignalFlags.RUN_FIRST, None, ()),
-    }
+    @GObject.Signal('file-changed')
+    def file_changed_signal(self) -> None:
+        ...
 
     encoding = GObject.Property(
         type=GtkSource.Encoding,
@@ -160,7 +160,7 @@ class MeldBufferData(GObject.GObject):
     def _handle_file_change(self, monitor, f, other_file, event_type):
         mtime = self._query_mtime(f)
         if self._disk_mtime and mtime and mtime > self._disk_mtime:
-            self.emit('file-changed')
+            self.file_changed_signal.emit()
         self._disk_mtime = mtime or self._disk_mtime
 
     @property

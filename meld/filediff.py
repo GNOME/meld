@@ -178,7 +178,7 @@ class FileDiff(MeldDoc, Component):
             buf.undo_sequence = self.undosequence
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
-            buf.data.connect('file-changed', self.notify_file_changed)
+            buf.data.file_changed_signal.connect(self.notify_file_changed)
 
         self.ui_file = ui_file("filediff-ui.xml")
         self.actiongroup = self.FilediffActions
