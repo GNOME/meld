@@ -354,8 +354,8 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.set_title("Meld")
 
         if isinstance(newdoc, MeldDoc):
-            self.diff_handler = newdoc.connect("next-diff-changed",
-                                               self.on_next_diff_changed)
+            self.diff_handler = newdoc.next_diff_changed_signal.connect(
+                self.on_next_diff_changed)
         else:
             self.diff_handler = None
         if hasattr(newdoc, 'scheduler'):

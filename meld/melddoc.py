@@ -72,11 +72,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     """Base class for documents in the meld application.
     """
 
-    __gsignals__ = {
-        'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
-                                 (bool, bool)),
-    }
-
     @GObject.Signal(name='close')
     def close_signal(self, exit_code: int) -> None:
         ...
@@ -88,6 +83,11 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
     @GObject.Signal('file-changed')
     def file_changed_signal(self, path: str) -> None:
+        ...
+
+    @GObject.Signal('next-diff-changed')
+    def next_diff_changed_signal(
+            self, have_prev: bool, have_next: bool) -> None:
         ...
 
     @GObject.Signal

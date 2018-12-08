@@ -379,8 +379,8 @@ class FileDiff(MeldDoc, Component):
                 self.cursor.chunk = chunk
                 self.on_current_diff_changed()
             if prev != self.cursor.prev or next_ != self.cursor.next or force:
-                self.emit(
-                    "next-diff-changed", prev is not None, next_ is not None)
+                self.next_diff_changed_signal.emit(
+                    prev is not None, next_ is not None)
 
             prev_conflict, next_conflict = None, None
             for conflict in self.linediffer.conflicts:

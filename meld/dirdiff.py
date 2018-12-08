@@ -1121,7 +1121,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
 
         cursor_path, cursor_col = self.treeview[pane].get_cursor()
         if not cursor_path:
-            self.emit("next-diff-changed", False, False)
+            self.next_diff_changed_signal.emit(False, False)
             self.current_path = cursor_path
             return
 
@@ -1158,7 +1158,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
             prev, next = self.model._find_next_prev_diff(cursor_path)
             self.prev_path, self.next_path = prev, next
             have_next_diffs = (prev is not None, next is not None)
-            self.emit("next-diff-changed", *have_next_diffs)
+            self.next_diff_changed_signal.emit(*have_next_diffs)
         self.current_path = cursor_path
 
     def on_treeview_key_press_event(self, view, event):
