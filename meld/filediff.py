@@ -917,7 +917,7 @@ class FileDiff(MeldDoc, Component):
             # figure out what's keeping MeldDocs alive for too long.
             del self._cached_match
             # TODO: Base the return code on something meaningful for VC tools
-            self.emit('close', 0)
+            self.close_signal.emit(0)
         return response
 
     def _scroll_to_actions(self, actions):

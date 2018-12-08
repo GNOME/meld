@@ -21,7 +21,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from meld.conf import _
-from meld.melddoc import LabeledObjectMixin
+from meld.melddoc import LabeledObjectMixin, MeldDoc
 from meld.recent import recent_comparisons
 from meld.ui._gtktemplate import Template
 from meld.ui.util import map_widgets_into_lists
@@ -44,10 +44,10 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
-        'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
         'diff-created': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
 
+    close_signal = MeldDoc.close_signal
     label_changed_signal = LabeledObjectMixin.label_changed
 
     label_text = _("New comparison")
@@ -196,9 +196,5 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
         pass
 
     def on_delete_event(self, *args):
-        self.emit('close', 0)
+        self.close_signal.emit(0)
         return Gtk.ResponseType.OK
-
-from gi._signalhelper import install_signals
-
-install_signals(NewDiffTab)

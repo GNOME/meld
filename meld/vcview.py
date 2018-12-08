@@ -417,7 +417,7 @@ class VcView(tree.TreeviewCommon, MeldDoc, Component):
 
     def on_delete_event(self):
         self.scheduler.remove_all_tasks()
-        self.emit('close', 0)
+        self.close_signal.emit(0)
         return Gtk.ResponseType.OK
 
     def on_row_activated(self, treeview, path, tvc):

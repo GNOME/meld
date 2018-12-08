@@ -1613,7 +1613,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
     def on_delete_event(self):
         for h in self.settings_handlers:
             meldsettings.disconnect(h)
-        self.emit('close', 0)
+        self.close_signal.emit(0)
         return Gtk.ResponseType.OK
 
     def on_find_activate(self, *extra):

@@ -83,7 +83,7 @@ class MeldApp(Gtk.Application):
 
             self.hold()
             tab.command_line = command_line
-            tab.connect('close', done)
+            tab.close_signal.connect(done)
 
         window = self.get_active_window()
         if not window.has_pages():

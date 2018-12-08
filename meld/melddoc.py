@@ -82,9 +82,12 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
                                  ()),
         'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
-        'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
         'state-changed': (GObject.SignalFlags.RUN_FIRST, None, (int, int)),
     }
+
+    @GObject.Signal(name='close')
+    def close_signal(self, exit_code: int) -> None:
+        ...
 
     def __init__(self):
         super().__init__()
