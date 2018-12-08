@@ -194,7 +194,6 @@ class FileDiff(MeldDoc, Component):
 
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
-        self.connect("current-diff-changed", self.on_current_diff_changed)
         for t in self.textview:
             t.connect("focus-in-event", self.on_current_diff_changed)
             t.connect("focus-out-event", self.on_current_diff_changed)
@@ -378,7 +377,7 @@ class FileDiff(MeldDoc, Component):
             chunk, prev, next_ = self.linediffer.locate_chunk(pane, line)
             if chunk != self.cursor.chunk or force:
                 self.cursor.chunk = chunk
-                self.emit("current-diff-changed")
+                self.on_current_diff_changed()
             if prev != self.cursor.prev or next_ != self.cursor.next or force:
                 self.emit(
                     "next-diff-changed", prev is not None, next_ is not None)
@@ -400,7 +399,7 @@ class FileDiff(MeldDoc, Component):
             self.cursor.next_conflict = next_conflict
         self.cursor.line, self.cursor.offset = line, offset
 
-    def on_current_diff_changed(self, widget, *args):
+    def on_current_diff_changed(self, *args):
         pane = self._get_focused_pane()
         if pane != -1:
             # While this *should* be redundant, it's possible for focus pane

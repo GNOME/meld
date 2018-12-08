@@ -78,8 +78,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         'create-diff':          (GObject.SignalFlags.RUN_FIRST, None,
                                  (GObject.TYPE_PYOBJECT,
                                   GObject.TYPE_PYOBJECT)),
-        'current-diff-changed': (GObject.SignalFlags.RUN_FIRST, None,
-                                 ()),
         'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
     }
