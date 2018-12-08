@@ -329,7 +329,7 @@ class VcView(tree.TreeviewCommon, MeldDoc, Component):
         self.label_text = os.path.basename(self.location)
         # TRANSLATORS: This is the location of the directory being viewed
         self.tooltip_text = _("%s: %s") % (_("Location"), self.location)
-        self.label_changed()
+        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def _search_recursively_iter(self, start_path, replace=False):
 

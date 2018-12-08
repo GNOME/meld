@@ -44,12 +44,11 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
-        'label-changed': (
-            GObject.SignalFlags.RUN_FIRST, None,
-            (GObject.TYPE_STRING, GObject.TYPE_STRING)),
         'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
         'diff-created': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
+
+    label_changed_signal = LabeledObjectMixin.label_changed
 
     label_text = _("New comparison")
 
@@ -191,7 +190,7 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
         self.emit('diff-created', tab)
 
     def on_container_switch_in_event(self, *args):
-        self.label_changed()
+        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def on_container_switch_out_event(self, *args):
         pass

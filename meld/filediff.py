@@ -1085,7 +1085,7 @@ class FileDiff(MeldDoc, Component):
         else:
             self.label_text = " — ".join(shortnames)
         self.tooltip_text = self.label_text
-        self.label_changed()
+        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def pre_comparison_init(self):
         self._disconnect_buffer_handlers()

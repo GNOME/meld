@@ -1535,7 +1535,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
             shortnames = misc.shorten_names(*filenames)
         self.label_text = " : ".join(shortnames)
         self.tooltip_text = self.label_text
-        self.label_changed()
+        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]

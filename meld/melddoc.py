@@ -59,17 +59,13 @@ class ComparisonState(enum.IntEnum):
 
 
 class LabeledObjectMixin(GObject.GObject):
-    __gsignals__ = {
-        'label-changed': (
-            GObject.SignalFlags.RUN_FIRST, None,
-            (GObject.TYPE_STRING, GObject.TYPE_STRING)),
-    }
 
     label_text = _("untitled")
     tooltip_text = None
 
-    def label_changed(self):
-        self.emit("label-changed", self.label_text, self.tooltip_text)
+    @GObject.Signal
+    def label_changed(self, label_text: str, tooltip_text: str) -> None:
+        ...
 
 
 class MeldDoc(LabeledObjectMixin, GObject.GObject):
