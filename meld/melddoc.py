@@ -73,15 +73,17 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     """
 
     __gsignals__ = {
-        'create-diff':          (GObject.SignalFlags.RUN_FIRST, None,
-                                 (GObject.TYPE_PYOBJECT,
-                                  GObject.TYPE_PYOBJECT)),
         'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
                                  (bool, bool)),
     }
 
     @GObject.Signal(name='close')
     def close_signal(self, exit_code: int) -> None:
+        ...
+
+    @GObject.Signal(name='create-diff')
+    def create_diff_signal(
+            self, gfiles: object, options: object) -> None:
         ...
 
     @GObject.Signal('file-changed')

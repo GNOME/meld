@@ -528,8 +528,8 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.scheduler.add_scheduler(page.scheduler)
         if isinstance(page, MeldDoc):
             page.file_changed_signal.connect(self.on_file_changed)
-            page.connect("create-diff", lambda obj, arg, kwargs:
-                         self.append_diff(arg, **kwargs))
+            page.create_diff_signal.connect(
+                lambda obj, arg, kwargs: self.append_diff(arg, **kwargs))
             page.tab_state_changed.connect(self.on_page_state_changed)
         page.close_signal.connect(self.page_removed)
 
@@ -635,8 +635,8 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.scheduler.add_scheduler(doc.scheduler)
         path = gfile.get_path()
         doc.set_location(path)
-        doc.connect("create-diff", lambda obj, arg, kwargs:
-                    self.append_diff(arg, **kwargs))
+        doc.create_diff_signal.connect(
+            lambda obj, arg, kwargs: self.append_diff(arg, **kwargs))
         doc.run_diff(path)
 
     def open_paths(self, gfiles, auto_compare=False, auto_merge=False,

@@ -434,7 +434,7 @@ class VcView(tree.TreeviewCommon, MeldDoc, Component):
 
     def run_diff(self, path):
         if os.path.isdir(path):
-            self.emit("create-diff", [Gio.File.new_for_path(path)], {})
+            self.create_diff_signal.emit([Gio.File.new_for_path(path)], {})
             return
 
         basename = os.path.basename(path)
@@ -490,8 +490,10 @@ class VcView(tree.TreeviewCommon, MeldDoc, Component):
             os.chmod(temp_file, 0o444)
             _temp_files.append(temp_file)
 
-        self.emit("create-diff",
-                  [Gio.File.new_for_path(d) for d in diffs], kwargs)
+        self.create_diff_signal.emit(
+            [Gio.File.new_for_path(d) for d in diffs],
+            kwargs,
+        )
 
     def on_filter_state_toggled(self, button):
         active_filters = [

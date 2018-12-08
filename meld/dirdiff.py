@@ -1195,8 +1195,10 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         if not rows[pane]:
             return
         if os.path.isfile(rows[pane]):
-            self.emit("create-diff", [Gio.File.new_for_path(r)
-                      for r in rows if os.path.isfile(r)], {})
+            self.create_diff_signal.emit(
+                [Gio.File.new_for_path(r) for r in rows if os.path.isfile(r)],
+                {}
+            )
         elif os.path.isdir(rows[pane]):
             if view.row_expanded(path):
                 view.collapse_row(path)
@@ -1229,7 +1231,7 @@ class DirDiff(tree.TreeviewCommon, MeldDoc, Component):
         row_paths = self.model.value_paths(it)
         gfiles = [Gio.File.new_for_path(p)
                   for p in row_paths if os.path.exists(p)]
-        self.emit("create-diff", gfiles, {})
+        self.create_diff_signal.emit(gfiles, {})
 
     def on_button_diff_clicked(self, button):
         pane = self._get_focused_pane()
