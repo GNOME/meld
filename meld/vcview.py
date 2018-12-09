@@ -239,10 +239,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 self.actiongroup.get_action(
                     self.state_actions[s][0]).set_active(True)
 
-        # FIXME: Awful migration hack; this means that we don't have to
-        # address `.pyobject` access before all tab types are updated.
-        self.pyobject = self
-
     def _set_external_action_sensitivity(self, focused):
         try:
             self.main_actiongroup.get_action("OpenExternal").set_sensitive(

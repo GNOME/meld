@@ -339,10 +339,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 
-        # FIXME: Awful migration hack; this means that we don't have to
-        # address `.pyobject` access before all tab types are updated.
-        self.pyobject = self
-
     def on_container_switch_in_event(self, ui):
         MeldDoc.on_container_switch_in_event(self, ui)
 

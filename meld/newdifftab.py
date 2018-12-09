@@ -96,10 +96,6 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
 
         self.show()
 
-        # FIXME: Awful migration hack; this means that we don't have to
-        # address `.pyobject` access before all tab types are updated.
-        self.pyobject = self
-
     @Template.Callback()
     def on_button_type_toggled(self, button, *args):
         if not button.get_active():

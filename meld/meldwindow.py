@@ -265,8 +265,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         should_cancel = False
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
-        for c in reversed(self.notebook.get_children()):
-            page = c.pyobject
+        for page in reversed(self.notebook.get_children()):
             self.notebook.set_current_page(self.notebook.page_num(page))
             response = page.on_delete_event()
             if response == Gtk.ResponseType.CANCEL:
@@ -284,7 +283,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         current_page = self.notebook.get_current_page()
 
         if current_page != -1:
-            page = self.notebook.get_nth_page(current_page).pyobject
+            page = self.notebook.get_nth_page(current_page)
         else:
             page = None
 
@@ -316,10 +315,10 @@ class MeldWindow(Gtk.ApplicationWindow):
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
-            olddoc = notebook.get_nth_page(oldidx).pyobject
+            olddoc = notebook.get_nth_page(oldidx)
             self.handle_current_doc_switch(olddoc)
 
-        newdoc = notebook.get_nth_page(which).pyobject if which >= 0 else None
+        newdoc = notebook.get_nth_page(which) if which >= 0 else None
         try:
             undoseq = newdoc.undosequence
             can_undo = undoseq.can_undo()
@@ -355,7 +354,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     @Template.Callback()
     def after_switch_page(self, notebook, page, which):
-        newdoc = notebook.get_nth_page(which).pyobject
+        newdoc = notebook.get_nth_page(which)
         newdoc.on_container_switch_in_event(self.ui)
         self._update_page_action_sensitivity()
 
@@ -399,7 +398,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     def on_menu_close_activate(self, *extra):
         i = self.notebook.get_current_page()
         if i >= 0:
-            page = self.notebook.get_nth_page(i).pyobject
+            page = self.notebook.get_nth_page(i)
             page.on_delete_event()
 
     def on_menu_undo_activate(self, *extra):
@@ -499,8 +498,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.should_close = False
 
     def on_file_changed(self, srcpage, filename):
-        for c in self.notebook.get_children():
-            page = c.pyobject
+        for page in self.notebook.get_children():
             if page != srcpage:
                 page.on_file_changed(filename)
 
@@ -656,7 +654,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         "Get the current doc or a dummy object if there is no current"
         index = self.notebook.get_current_page()
         if index >= 0:
-            page = self.notebook.get_nth_page(index).pyobject
+            page = self.notebook.get_nth_page(index)
             if isinstance(page, MeldDoc):
                 return page
 

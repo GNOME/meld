@@ -538,10 +538,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         self._scan_in_progress = 0
 
-        # FIXME: Awful migration hack; this means that we don't have to
-        # address `.pyobject` access before all tab types are updated.
-        self.pyobject = self
-
     def queue_draw(self):
         for treeview in self.treeview:
             treeview.queue_draw()
