@@ -113,7 +113,7 @@ class MeldSourceView(GtkSource.View):
         if show == self._show_line_numbers:
             return
 
-        if self.line_renderer:
+        if getattr(self, 'line_renderer', None):
             self.line_renderer.set_visible(show)
 
         self._show_line_numbers = bool(show)
