@@ -47,7 +47,7 @@ class PatchDialog(Gtk.Dialog):
         super().__init__()
         self.init_template()
 
-        self.set_transient_for(filediff.widget.get_toplevel())
+        self.set_transient_for(filediff.get_toplevel())
         self.filediff = filediff
 
         buf = GtkSource.Buffer()

@@ -224,8 +224,7 @@ class GutterRendererChunkAction(
         copy_menu.show_all()
 
         # FIXME: This is horrible
-        widget = self.filediff.widget
-        copy_menu.attach_to_widget(widget, None)
+        copy_menu.attach_to_widget(self.filediff, None)
 
         def copy_chunk(widget, chunk, copy_up):
             self.filediff.copy_chunk(self.from_pane, self.to_pane, chunk,
