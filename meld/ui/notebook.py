@@ -155,11 +155,7 @@ class MeldNotebook(Gtk.Notebook):
     def on_page_removed(self, notebook, child, page_num, *args):
         child.pyobject.disconnect_by_func(self.on_label_changed)
 
-    def on_label_changed(self, component, text, tooltip):
-        try:
-            page = component.widget
-        except RuntimeError:
-            page = component
+    def on_label_changed(self, page, text, tooltip):
         nbl = self.get_tab_label(page)
         nbl.set_label_text(text)
         nbl.set_tooltip_text(tooltip)

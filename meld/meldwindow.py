@@ -36,13 +36,6 @@ from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
 
-def tab_widget(widget):
-    try:
-        return widget.widget
-    except RuntimeError:
-        return widget
-
-
 @Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
 class MeldWindow(Gtk.ApplicationWindow):
 
@@ -274,7 +267,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         # control page is open in the far left page, it will be closed last.
         for c in reversed(self.notebook.get_children()):
             page = c.pyobject
-            self.notebook.set_current_page(self.notebook.page_num(tab_widget(page)))
+            self.notebook.set_current_page(self.notebook.page_num(page))
             response = page.on_delete_event()
             if response == Gtk.ResponseType.CANCEL:
                 should_cancel = True
@@ -347,7 +340,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.actiongroup.get_action("SaveAs").set_sensitive(True)
 
         if newdoc:
-            nbl = self.notebook.get_tab_label(tab_widget(newdoc))
+            nbl = self.notebook.get_tab_label(newdoc)
             self.set_title(nbl.get_label_text())
         else:
             self.set_title("Meld")
@@ -480,7 +473,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         if hasattr(page, 'scheduler'):
             self.scheduler.remove_scheduler(page.scheduler)
 
-        page_num = self.notebook.page_num(tab_widget(page))
+        page_num = self.notebook.page_num(page)
 
         if self.notebook.get_current_page() == page_num:
             self.handle_current_doc_switch(page)
@@ -513,7 +506,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def _append_page(self, page, icon):
         nbl = NotebookLabel(icon, "", lambda b: page.on_delete_event())
-        self.notebook.append_page(tab_widget(page), nbl)
+        self.notebook.append_page(page, nbl)
 
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents
@@ -521,7 +514,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         if isinstance(self.current_doc(), DirDiff) or \
            isinstance(self.current_doc(), VcView) or \
            isinstance(page, NewDiffTab):
-            self.notebook.set_current_page(self.notebook.page_num(tab_widget(page)))
+            self.notebook.set_current_page(self.notebook.page_num(page))
 
         if hasattr(page, 'scheduler'):
             self.scheduler.add_scheduler(page.scheduler)
@@ -532,7 +525,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             page.tab_state_changed.connect(self.on_page_state_changed)
         page.close_signal.connect(self.page_removed)
 
-        self.notebook.set_tab_reorderable(tab_widget(page), True)
+        self.notebook.set_tab_reorderable(page, True)
 
     def append_new_comparison(self):
         doc = NewDiffTab(self)
@@ -541,7 +534,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         def diff_created_cb(doc, newdoc):
             doc.on_delete_event()
-            idx = self.notebook.page_num(tab_widget(newdoc))
+            idx = self.notebook.page_num(newdoc)
             self.notebook.set_current_page(idx)
 
         doc.connect("diff-created", diff_created_cb)
@@ -621,7 +614,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             RecentType.VersionControl: self.append_vcview,
         }
         tab = comparison_method[comparison_type](gfiles)
-        self.notebook.set_current_page(self.notebook.page_num(tab_widget(tab)))
+        self.notebook.set_current_page(self.notebook.page_num(tab))
         recent_comparisons.add(tab)
         return tab
 
@@ -655,8 +648,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         if tab:
             recent_comparisons.add(tab)
             if focus:
-                self.notebook.set_current_page(
-                    self.notebook.page_num(tab_widget(tab)))
+                self.notebook.set_current_page(self.notebook.page_num(tab))
 
         return tab
 
