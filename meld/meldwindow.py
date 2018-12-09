@@ -22,7 +22,7 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import meld.ui.util
-from meld.conf import _
+from meld.conf import _, ui_file
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
 from meld.filemerge import FileMerge
@@ -31,7 +31,6 @@ from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
 from meld.task import LifoScheduler
 from meld.ui._gtktemplate import Template
-from meld.ui.gnomeglade import ui_file
 from meld.ui.notebooklabel import NotebookLabel
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState

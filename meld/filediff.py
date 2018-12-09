@@ -27,7 +27,7 @@ from gi.repository import GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
-from meld.conf import _
+from meld.conf import _, ui_file
 from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE, NEWLINES
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
@@ -44,7 +44,6 @@ from meld.sourceview import (
     get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
 from meld.ui._gtktemplate import Template
 from meld.ui.findbar import FindBar
-from meld.ui.gnomeglade import ui_file
 from meld.ui.util import map_widgets_into_lists
 from meld.undo import UndoSequence
 

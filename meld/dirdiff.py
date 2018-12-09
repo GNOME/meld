@@ -35,7 +35,7 @@ from gi.repository import Gtk
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld import tree
-from meld.conf import _
+from meld.conf import _, ui_file
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
@@ -46,7 +46,6 @@ from meld.ui._gtktemplate import Template
 from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
-from meld.ui.gnomeglade import ui_file
 from meld.ui.util import map_widgets_into_lists
 
 

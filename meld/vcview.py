@@ -31,14 +31,13 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld import tree
-from meld.conf import _
+from meld.conf import _, ui_file
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import error_dialog, read_pipe_iter
 from meld.recent import RecentType
 from meld.settings import bind_settings, settings
 from meld.ui._gtktemplate import Template
-from meld.ui.gnomeglade import ui_file
 from meld.ui.vcdialogs import CommitDialog, PushDialog
 from meld.vc import _null, get_vcs
 from meld.vc._vc import Entry
