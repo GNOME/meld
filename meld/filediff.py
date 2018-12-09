@@ -252,7 +252,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         )
 
         self.findbar = FindBar(self.grid)
-        self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
+        self.grid.attach(self.findbar, 1, 2, 5, 1)
 
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
