@@ -124,14 +124,12 @@ class RecentFiles:
         if not comp_gfile.query_exists(None) or not comp_path:
             raise IOError("Recent comparison file does not exist")
 
-        # TODO: remove reading paths in next release
         try:
             config = configparser.RawConfigParser()
             config.read(comp_path)
             assert (config.has_section("Comparison") and
                     config.has_option("Comparison", "type") and
-                    (config.has_option("Comparison", "paths") or
-                     config.has_option("Comparison", "uris")))
+                    config.has_option("Comparison", "uris"))
         except (configparser.Error, AssertionError):
             raise ValueError("Invalid recent comparison file")
 
@@ -140,12 +138,8 @@ class RecentFiles:
         except ValueError:
             raise ValueError("Invalid recent comparison file")
 
-        if config.has_option("Comparison", "uris"):
-            uris = config.get("Comparison", "uris").split(";")
-            gfiles = [Gio.File.new_for_uri(u) for u in uris]
-        else:
-            paths = config.get("Comparison", "paths").split(";")
-            gfiles = [Gio.File.new_for_path(p) for p in paths]
+        uris = config.get("Comparison", "uris").split(";")
+        gfiles = [Gio.File.new_for_uri(u) for u in uris]
 
         return recent_type, gfiles
 
