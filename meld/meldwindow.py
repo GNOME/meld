@@ -605,7 +605,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         return doc
 
     def append_recent(self, uri):
-        comparison_type, gfiles, flags = recent_comparisons.read(uri)
+        comparison_type, gfiles = recent_comparisons.read(uri)
         comparison_method = {
             RecentType.File: self.append_filediff,
             RecentType.Folder: self.append_dirdiff,

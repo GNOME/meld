@@ -149,9 +149,8 @@ class RecentFiles:
         else:
             paths = config.get("Comparison", "paths").split(";")
             gfiles = tuple(Gio.File.new_for_path(p) for p in paths)
-        flags = tuple()
 
-        return recent_type, gfiles, flags
+        return recent_type, gfiles
 
     def _write_recent_file(self, recent_type: RecentType, uris):
         # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're
@@ -198,10 +197,10 @@ class RecentFiles:
         self._stored_comparisons = {}
         for item_uri in item_uris:
             try:
-                recent_type, gfiles, flags = self.read(item_uri)
+                recent_type, gfiles = self.read(item_uri)
             except (IOError, ValueError):
                 continue
-            # Store and look up comparisons by type and paths, ignoring flags
+            # Store and look up comparisons by type and paths
             gfile_uris = tuple(gfile.get_uri() for gfile in gfiles)
             self._stored_comparisons[recent_type, gfile_uris] = item_uri
 
