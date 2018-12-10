@@ -29,6 +29,7 @@ import enum
 import os
 import sys
 import tempfile
+from typing import List, Tuple
 
 from gi.repository import Gio
 from gi.repository import GLib
@@ -116,12 +117,8 @@ class RecentFiles:
         recent_metadata.is_private = True
         self.recent_manager.add_full(gfile.get_uri(), recent_metadata)
 
-    def read(self, uri):
-        """Read stored comparison from URI
-
-        Returns the comparison type, the URIs involved and the comparison
-        flags.
-        """
+    def read(self, uri: str) -> Tuple[RecentType, List[Gio.File]]:
+        """Read stored comparison from URI"""
         comp_gfile = Gio.File.new_for_uri(uri)
         comp_path = comp_gfile.get_path()
         if not comp_gfile.query_exists(None) or not comp_path:
@@ -145,10 +142,10 @@ class RecentFiles:
 
         if config.has_option("Comparison", "uris"):
             uris = config.get("Comparison", "uris").split(";")
-            gfiles = tuple(Gio.File.new_for_uri(u) for u in uris)
+            gfiles = [Gio.File.new_for_uri(u) for u in uris]
         else:
             paths = config.get("Comparison", "paths").split(";")
-            gfiles = tuple(Gio.File.new_for_path(p) for p in paths)
+            gfiles = [Gio.File.new_for_path(p) for p in paths]
 
         return recent_type, gfiles
 
