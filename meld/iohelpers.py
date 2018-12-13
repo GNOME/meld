@@ -1,4 +1,6 @@
 
+from typing import Optional
+
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -8,7 +10,7 @@ from meld.misc import get_modal_parent, modal_dialog
 from meld.ui.filechooser import MeldFileChooserDialog
 
 
-def trash_or_confirm(gfile: Gio.File):
+def trash_or_confirm(gfile: Gio.File) -> bool:
     """Trash or delete the given Gio.File
 
     Files and folders will be moved to the system Trash location
@@ -63,8 +65,12 @@ def trash_or_confirm(gfile: Gio.File):
     except Exception as e:
         raise RuntimeError(str(e))
 
+    return True
 
-def prompt_save_filename(title: str, parent: Gtk.Widget = None) -> Gio.File:
+
+def prompt_save_filename(
+        title: str, parent: Optional[Gtk.Widget] = None) -> Optional[Gio.File]:
+
     dialog = MeldFileChooserDialog(
         title,
         transient_for=get_modal_parent(parent),
@@ -76,7 +82,7 @@ def prompt_save_filename(title: str, parent: Gtk.Widget = None) -> Gio.File:
     dialog.destroy()
 
     if response != Gtk.ResponseType.ACCEPT or not gfile:
-        return
+        return None
 
     try:
         file_info = gfile.query_info(
@@ -103,6 +109,6 @@ def prompt_save_filename(title: str, parent: Gtk.Widget = None) -> Gio.File:
         messagetype=Gtk.MessageType.WARNING,
     )
     if replace != Gtk.ResponseType.OK:
-        return
+        return None
 
     return gfile
