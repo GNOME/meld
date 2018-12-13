@@ -101,7 +101,8 @@ except locale.Error as e:
     print("Couldn't set the locale: %s; falling back to 'C' locale" % e)
     locale.setlocale(locale.LC_ALL, 'C')
 gettext.textdomain(locale_domain)
-trans = gettext.translation(locale_domain, localedir=locale_dir, fallback=True)
+trans = gettext.translation(
+    locale_domain, localedir=str(locale_dir), fallback=True)
 _ = meld.conf._ = trans.gettext
 meld.conf.ngettext = trans.ngettext
 

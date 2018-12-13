@@ -20,7 +20,7 @@ PYTHON_REQUIREMENT_TUPLE = (3, 4)
 
 
 # Installed from main script
-def no_translation(gettext_string, *args):
+def no_translation(gettext_string: str) -> str:
     return gettext_string
 
 
