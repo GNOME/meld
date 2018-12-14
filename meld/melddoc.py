@@ -146,8 +146,9 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             elif file_type == Gio.FileType.REGULAR:
                 content_type = info.get_content_type()
                 # FIXME: Content types are broken on Windows with current gio
-                if Gio.content_type_is_a(content_type, "text/plain") or \
-                        sys.platform == "win32":
+                # If we can't access a content type, assume it's text.
+                if not content_type or Gio.content_type_is_a(
+                        content_type, "text/plain"):
                     if settings.get_boolean('use-system-editor'):
                         gfile = Gio.File.new_for_path(path)
                         if sys.platform == "win32":
