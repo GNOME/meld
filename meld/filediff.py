@@ -887,32 +887,35 @@ class FileDiff(MeldDoc, Component):
             response = Gtk.ResponseType.OK
 
         if response == Gtk.ResponseType.OK and self.meta:
-            parent = self.meta.get('parent', None)
-            saved = self.meta.get('middle_saved', False)
-            prompt_resolve = self.meta.get('prompt_resolve', False)
-            if prompt_resolve and saved and parent.has_command('resolve'):
-                primary = _("Mark conflict as resolved?")
-                secondary = _(
-                    "If the conflict was resolved successfully, you may mark "
-                    "it as resolved now.")
-                buttons = ((_("Cancel"), Gtk.ResponseType.CANCEL),
-                           (_("Mark _Resolved"), Gtk.ResponseType.OK))
-                resolve_response = misc.modal_dialog(
-                    primary, secondary, buttons, parent=self.widget,
-                    messagetype=Gtk.MessageType.QUESTION)
-
-                if resolve_response == Gtk.ResponseType.OK:
-                    bufdata = self.textbuffer[1].data
-                    conflict_gfile = bufdata.savefile or bufdata.gfile
-                    # It's possible that here we're in a quit callback,
-                    # so we can't schedule the resolve action to an
-                    # idle loop; it might never happen.
-                    parent.command(
-                        'resolve', [conflict_gfile.get_path()], sync=True)
+            self.prompt_resolve_conflict()
         elif response == Gtk.ResponseType.CANCEL:
             self.state = ComparisonState.Normal
 
         return response
+
+    def prompt_resolve_conflict(self):
+        parent = self.meta.get('parent', None)
+        saved = self.meta.get('middle_saved', False)
+        prompt_resolve = self.meta.get('prompt_resolve', False)
+        if prompt_resolve and saved and parent.has_command('resolve'):
+            primary = _("Mark conflict as resolved?")
+            secondary = _(
+                "If the conflict was resolved successfully, you may mark "
+                "it as resolved now.")
+            buttons = ((_("Cancel"), Gtk.ResponseType.CANCEL),
+                       (_("Mark _Resolved"), Gtk.ResponseType.OK))
+            resolve_response = misc.modal_dialog(
+                primary, secondary, buttons, parent=self.widget,
+                messagetype=Gtk.MessageType.QUESTION)
+
+            if resolve_response == Gtk.ResponseType.OK:
+                bufdata = self.textbuffer[1].data
+                conflict_gfile = bufdata.savefile or bufdata.gfile
+                # It's possible that here we're in a quit callback,
+                # so we can't schedule the resolve action to an
+                # idle loop; it might never happen.
+                parent.command(
+                    'resolve', [conflict_gfile.get_path()], sync=True)
 
     def on_delete_event(self):
         self.state = ComparisonState.Closing
