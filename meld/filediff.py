@@ -856,24 +856,25 @@ class FileDiff(MeldDoc, Component):
     def check_save_modified(self, buffers=None):
         response = Gtk.ResponseType.OK
         buffers = buffers or self.textbuffer[:self.num_panes]
-        modified = [b.get_modified() for b in buffers]
-        labels = [b.data.label for b in buffers]
-        if any(modified):
+        if any(b.get_modified() for b in buffers):
             dialog = Component("filediff.ui", "check_save_dialog")
             dialog.widget.set_transient_for(self.widget.get_toplevel())
             message_area = dialog.widget.get_message_area()
             buttons = []
-            for label, should_save in zip(labels, modified):
-                button = Gtk.CheckButton.new_with_label(label)
-                button.set_sensitive(should_save)
-                button.set_active(should_save)
+            for buf in buffers:
+                button = Gtk.CheckButton.new_with_label(buf.data.label)
+                needs_save = buf.get_modified()
+                button.set_sensitive(needs_save)
+                button.set_active(needs_save)
                 message_area.pack_start(
                     button, expand=False, fill=True, padding=0)
                 buttons.append(button)
             message_area.show_all()
+
             response = dialog.widget.run()
             try_save = [b.get_active() for b in buttons]
             dialog.widget.destroy()
+
             if response == Gtk.ResponseType.OK and any(try_save):
                 for i in range(self.num_panes):
                     if try_save[i]:
