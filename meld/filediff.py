@@ -777,12 +777,12 @@ class FileDiff(MeldDoc, Component):
             gfiles = [Gio.File.new_for_uri(uri) for uri in uris]
 
             if len(gfiles) == self.num_panes:
-                if self.check_save_modified() == Gtk.ResponseType.OK:
+                if self.check_unsaved_changes():
                     self.set_files(gfiles)
             elif len(gfiles) == 1:
                 pane = self.textview.index(widget)
                 buffer = self.textbuffer[pane]
-                if self.check_save_modified([buffer]) == Gtk.ResponseType.OK:
+                if self.check_unsaved_changes([buffer]):
                     self.set_file(pane, gfiles[0])
             return True
 
@@ -1684,7 +1684,7 @@ class FileDiff(MeldDoc, Component):
     def on_fileentry_file_set(self, entry):
         pane = self.fileentry[:self.num_panes].index(entry)
         buffer = self.textbuffer[pane]
-        if self.check_save_modified([buffer]) == Gtk.ResponseType.OK:
+        if self.check_unsaved_changes():
             # TODO: Use encoding file selectors in FileDiff
             self.set_file(pane, entry.get_file())
         else:
@@ -1698,6 +1698,14 @@ class FileDiff(MeldDoc, Component):
         return -1
 
     def check_unsaved_changes(self, buffers=None):
+        """Confirm discard of any unsaved changes
+
+        Unlike `check_save_modified`, this does *not* prompt the user
+        to save, but rather just confirms whether they want to discard
+        changes. This simplifies call sites a *lot* because they don't
+        then need to deal with the async state/callback issues
+        associated with saving a file.
+        """
         buffers = buffers or self.textbuffer
         unsaved = [b.data.label for b in buffers if b.get_modified()]
         if not unsaved:
