@@ -875,16 +875,20 @@ class FileDiff(MeldDoc, Component):
             try_save = [b.get_active() for b in buttons]
             dialog.widget.destroy()
 
-            if response == Gtk.ResponseType.OK and any(try_save):
-                for i in range(self.num_panes):
+            if response == Gtk.ResponseType.OK:
+                for i, buf in enumerate(buffers):
                     if try_save[i]:
-                        self.save_file(i)
-                return Gtk.ResponseType.CANCEL
+                        self.save_file(self.textbuffer.index(buf))
 
-        if response == Gtk.ResponseType.DELETE_EVENT:
-            response = Gtk.ResponseType.CANCEL
-        elif response == Gtk.ResponseType.CLOSE:
-            response = Gtk.ResponseType.OK
+                # Regardless of whether these saves are successful or not,
+                # we return a cancel here, so that other closing logic
+                # doesn't run. Instead, the file-saved callback from
+                # save_file() handles closing files and setting state.
+                return Gtk.ResponseType.CANCEL
+            elif response == Gtk.ResponseType.DELETE_EVENT:
+                response = Gtk.ResponseType.CANCEL
+            elif response == Gtk.ResponseType.CLOSE:
+                response = Gtk.ResponseType.OK
 
         if response == Gtk.ResponseType.OK and self.meta:
             self.prompt_resolve_conflict()
