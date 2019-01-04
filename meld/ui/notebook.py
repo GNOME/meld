@@ -151,9 +151,11 @@ class MeldNotebook(Gtk.Notebook):
 
     def on_page_added(self, notebook, child, page_num, *args):
         child.connect("label-changed", self.on_label_changed)
+        self.props.show_tabs = self.get_n_pages() > 1
 
     def on_page_removed(self, notebook, child, page_num, *args):
         child.disconnect_by_func(self.on_label_changed)
+        self.props.show_tabs = self.get_n_pages() > 1
 
     def on_label_changed(self, page, text, tooltip):
         nbl = self.get_tab_label(page)

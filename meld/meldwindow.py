@@ -505,6 +505,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     def _append_page(self, page, icon):
         nbl = NotebookLabel(icon_name=icon, page=page)
         self.notebook.append_page(page, nbl)
+        self.notebook.child_set_property(page, 'tab-expand', True)
 
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents
