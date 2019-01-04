@@ -146,6 +146,8 @@ class MeldStatusBar(Gtk.Statusbar):
             self.construct_highlighting_selector(), False, True, 0)
         self.box_box.pack_end(
             self.construct_encoding_selector(), False, True, 0)
+        self.box_box.pack_end(
+            self.construct_display_popover(), False, True, 0)
         self.box_box.show_all()
 
     def construct_line_display(self):
@@ -260,6 +262,22 @@ class MeldStatusBar(Gtk.Statusbar):
         self.bind_property(
             'source-language', button, 'label', GObject.BindingFlags.DEFAULT,
             lambda binding, enc: selector.get_value_label(enc))
+        button.set_popover(pop)
+        button.show()
+
+        return button
+
+    def construct_display_popover(self):
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/statusbar-menu.ui')
+        menu = builder.get_object('statusbar-menu')
+
+        pop = Gtk.Popover()
+        pop.bind_model(menu, 'view')
+        pop.set_position(Gtk.PositionType.TOP)
+
+        button = MeldStatusMenuButton()
+        button.set_label(_('Display'))
         button.set_popover(pop)
         button.show()
 
