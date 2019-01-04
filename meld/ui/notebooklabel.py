@@ -1,5 +1,5 @@
 # Copyright (C) 2002-2009 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2008-2009, 2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2008-2009, 2013, 2019 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,79 +15,61 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gdk
-from gi.repository import Gio
+from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import Pango
 
-from meld.conf import _
+from meld.ui._gtktemplate import Template
 
 
-class NotebookLabel(Gtk.HBox):
-    __gtype_name__ = "NotebookLabel"
+@Template(resource_path='/org/gnome/meld/ui/notebook-label.ui')
+class NotebookLabel(Gtk.EventBox):
 
-    tab_width_in_chars = 30
+    __gtype_name__ = 'NotebookLabel'
 
-    def __init__(self, iconname, text, onclose):
-        super().__init__(homogeneous=False, spacing=4)
+    icon = Template.Child()
+    label = Template.Child()
 
-        label = Gtk.Label(label=text)
-        # FIXME: ideally, we would use custom ellipsization that ellipsized the
-        # two paths separately, but that requires significant changes to label
-        # generation in many different parts of the code
-        label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-        label.set_single_line_mode(True)
-        label.set_alignment(0.0, 0.5)
-        label.set_padding(0, 0)
+    icon_name = GObject.Property(
+        type=str,
+        nick='Name of the icon to display',
+        default=None,
+    )
 
-        style_context = self.get_style_context()
-        style_context.save()
-        style_context.set_state(Gtk.StateFlags.NORMAL)
-        font_desc = style_context.get_font(style_context.get_state())
-        style_context.restore()
+    label_text = GObject.Property(
+        type=str,
+        nick='Text of this notebook label',
+        default='',
+    )
 
-        context = self.get_pango_context()
-        metrics = context.get_metrics(font_desc, context.get_language())
-        char_width = metrics.get_approximate_char_width() / Pango.SCALE
-        valid, w, h = Gtk.icon_size_lookup_for_settings(
-            self.get_settings(), Gtk.IconSize.MENU)
-        # FIXME: PIXELS replacement
-        self.set_size_request(
-            self.tab_width_in_chars * char_width + 2 * w, -1)
+    page = GObject.Property(
+        type=object,
+        nick='Notebook page for which this is the label',
+        default=None,
+    )
 
-        button = Gtk.Button()
-        button.set_relief(Gtk.ReliefStyle.NONE)
-        button.set_focus_on_click(False)
-        icon = Gio.ThemedIcon.new_with_default_fallbacks(
-            'window-close-symbolic')
-        image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.MENU)
-        image.set_tooltip_text(_("Close tab"))
-        button.add(image)
-        button.connect("clicked", onclose)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.init_template()
 
-        icon = Gtk.Image.new_from_icon_name(iconname, Gtk.IconSize.MENU)
+        self.bind_property(
+            'icon-name', self.icon, 'icon-name',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
+        self.bind_property(
+            'label-text', self.label, 'label',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
+        self.bind_property(
+            'label-text', self, 'tooltip-text',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
 
-        label_box = Gtk.EventBox()
-        label_box.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
-        label_box.props.visible_window = False
-        label_box.connect("button-press-event", self.on_label_clicked)
-        label_box.add(label)
-
-        self.pack_start(icon, False, True, 0)
-        self.pack_start(label_box, True, True, 0)
-        self.pack_start(button, False, True, 0)
-        self.set_tooltip_text(text)
-        self.show_all()
-
-        self.__label = label
-        self.__onclose = onclose
-
-    def on_label_clicked(self, box, event):
+    @Template.Callback()
+    def on_label_button_press_event(self, widget, event):
+        # Middle-click on the tab closes the tab.
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 2:
-            self.__onclose(None)
+            self.page.on_delete_event()
 
-    def get_label_text(self):
-        return self.__label.get_text()
-
-    def set_label_text(self, text):
-        self.__label.set_text(text)
-        self.set_tooltip_text(text)
+    @Template.Callback()
+    def on_close_button_clicked(self, widget):
+        self.page.on_delete_event()

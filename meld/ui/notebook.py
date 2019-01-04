@@ -157,8 +157,7 @@ class MeldNotebook(Gtk.Notebook):
 
     def on_label_changed(self, page, text, tooltip):
         nbl = self.get_tab_label(page)
-        nbl.set_label_text(text)
-        nbl.set_tooltip_text(tooltip)
+        nbl.props.label_text = text
 
         # Only update the window title if the current page is active
         if self.get_current_page() == self.page_num(page):

@@ -340,7 +340,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         if newdoc:
             nbl = self.notebook.get_tab_label(newdoc)
-            self.set_title(nbl.get_label_text())
+            self.set_title(nbl.props.label_text)
         else:
             self.set_title("Meld")
 
@@ -503,7 +503,7 @@ class MeldWindow(Gtk.ApplicationWindow):
                 page.on_file_changed(filename)
 
     def _append_page(self, page, icon):
-        nbl = NotebookLabel(icon, "", lambda b: page.on_delete_event())
+        nbl = NotebookLabel(icon_name=icon, page=page)
         self.notebook.append_page(page, nbl)
 
         # Change focus to the newly created page only if the user is on a
