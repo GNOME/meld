@@ -123,6 +123,15 @@ class MeldSourceView(GtkSource.View):
         type=bool, default=False, getter=get_show_line_numbers,
         setter=set_show_line_numbers)
 
+    wrap_mode_bool = GObject.Property(
+        type=bool, default=False,
+        nick="Wrap mode (Boolean version)",
+        blurb=(
+            "Mirror of the wrap-mode GtkTextView property, reduced to "
+            "a single Boolean for UI ease-of-use."
+        ),
+    )
+
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
         (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
@@ -228,6 +237,29 @@ class MeldSourceView(GtkSource.View):
 
     def do_realize(self):
         bind_settings(self)
+
+        def wrap_mode_from_bool(binding, from_value):
+            if from_value:
+                settings_mode = settings.get_enum('wrap-mode')
+                if settings_mode == Gtk.WrapMode.NONE:
+                    mode = Gtk.WrapMode.WORD
+                else:
+                    mode = settings_mode
+            else:
+                mode = Gtk.WrapMode.NONE
+            return mode
+
+        def wrap_mode_to_bool(binding, from_value):
+            return bool(from_value)
+
+        self.bind_property(
+            'wrap-mode-bool', self, 'wrap-mode',
+            GObject.BindingFlags.BIDIRECTIONAL,
+            wrap_mode_from_bool,
+            wrap_mode_to_bool,
+        )
+        self.wrap_mode_bool = wrap_mode_to_bool(None, self.props.wrap_mode)
+
         self.on_setting_changed(meldsettings, 'font')
         self.on_setting_changed(meldsettings, 'style-scheme')
         return GtkSource.View.do_realize(self)
