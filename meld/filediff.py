@@ -44,7 +44,8 @@ from meld.sourceview import (
     get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
 from meld.ui._gtktemplate import Template
 from meld.ui.findbar import FindBar
-from meld.ui.util import map_widgets_into_lists
+from meld.ui.util import (
+    make_multiobject_property_action, map_widgets_into_lists)
 from meld.undo import UndoSequence
 
 
@@ -235,6 +236,19 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.syncpoints = []
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher(self.scheduler)
+
+        # Set up property actions for statusbar toggles
+        sourceview_prop_actions = [
+            'highlight-current-line-local',
+            'show-line-numbers',
+            'wrap-mode-bool',
+        ]
+
+        prop_action_group = Gio.SimpleActionGroup()
+        for prop in sourceview_prop_actions:
+            action = make_multiobject_property_action(self.textview, prop)
+            prop_action_group.add_action(action)
+        self.insert_action_group('view', prop_action_group)
 
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence
