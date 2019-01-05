@@ -94,7 +94,7 @@ class MeldSourceView(GtkSource.View):
 
     __gtype_name__ = "MeldSourceView"
 
-    __gsettings_bindings__ = (
+    __gsettings_bindings_view__ = (
         ('highlight-current-line', 'highlight-current-line-local'),
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),

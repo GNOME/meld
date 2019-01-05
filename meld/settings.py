@@ -106,6 +106,12 @@ def bind_settings(obj):
         settings_id, property_id = binding
         settings.bind(settings_id, obj, property_id, bind_flags)
 
+    bind_flags = (
+        Gio.SettingsBindFlags.GET | Gio.SettingsBindFlags.NO_SENSITIVITY)
+    for binding in getattr(obj, '__gsettings_bindings_view__', ()):
+        settings_id, property_id = binding
+        settings.bind(settings_id, obj, property_id, bind_flags)
+
 
 settings = None
 interface_settings = None
