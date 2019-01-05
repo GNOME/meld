@@ -124,7 +124,7 @@ class MeldStatusBar(Gtk.Statusbar):
     _line_column_text = _("Ln %i, Col %i")
 
     def __init__(self):
-        GObject.GObject.__init__(self)
+        super().__init__()
         self.props.margin = 0
         self.props.spacing = 6
 
@@ -134,6 +134,9 @@ class MeldStatusBar(Gtk.Statusbar):
         label.props.ellipsize = Pango.EllipsizeMode.NONE
         hbox.remove(label)
         hbox.pack_end(label, False, True, 0)
+
+    def do_realize(self):
+        Gtk.Statusbar.do_realize(self)
 
         self.box_box = Gtk.HBox(homogeneous=False, spacing=6)
         self.pack_end(self.box_box, False, True, 0)
