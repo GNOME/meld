@@ -17,7 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
 # USA
 
-from gi.repository import GLib, GObject, Gio
+from gi.repository import Gio, GLib, GObject
 
 
 def connect_func(builder, obj, signal_name, handler_name,
