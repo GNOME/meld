@@ -1,5 +1,5 @@
 import pytest
-from meld.dirdiff import remove_blank_lines
+
 
 @pytest.mark.parametrize('txt, expected', [
     # blank to be equal blank
@@ -25,5 +25,7 @@ from meld.dirdiff import remove_blank_lines
     (b'\n\n\ncontent\n\n\ncontent\n\n\n', b'content\ncontent'),
 ])
 def test_remove_blank_lines(txt, expected):
+    from meld.dirdiff import remove_blank_lines
+
     result = remove_blank_lines(txt)
     assert result == expected

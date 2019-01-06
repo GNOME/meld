@@ -1,10 +1,9 @@
-import pytest
-
 from enum import Enum
 from os import path
-from meld.dirdiff import _files_same
-from .fixture import make
 
+import pytest
+
+from .fixture import make
 
 DiffResult = Enum('DiffResult', 'Same SameFiltered DodgySame DodgyDifferent Different FileError')
 
@@ -32,6 +31,7 @@ no_ignore_args['apply-text-filters'] = False
 
 dodgy_args = dict(cmp_args)
 dodgy_args['shallow-comparison'] = True
+
 
 @pytest.mark.parametrize('files, regexes, comparison_args, expected', [
     # empty file list
@@ -70,6 +70,8 @@ dodgy_args['shallow-comparison'] = True
     (('diffs/a/crlftrailing.txt', 'diffs/b/lftrailing.txt'), [], no_ignore_args, DiffResult.Different),
 ])
 def test_files_same(files, regexes, comparison_args, expected, differnt_dirs):
+    from meld.dirdiff import _files_same
+
     files_path = abspath(*files)
     result = _files_same(files_path, regexes, comparison_args)
     actual = DiffResult(result + 1)
